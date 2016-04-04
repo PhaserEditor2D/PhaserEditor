@@ -1,0 +1,9 @@
+{
+    "author": {
+        "website": "http://gamemechanicexplorer.com",
+        "name": "John Watson",
+        "email": "john@watson-net.com"
+    },
+    "description": "<p>The missile will target the pointer (or tap). Move the pointer around the example area.<\/p><p>Missiles explode when they get within a specific distance of the target. This example introduces a function <code>getExplosion()<\/code> which either creates a new explosion object or re-uses one that was created earlier. This approach allows the number of explosion sprites to increase dynamically but never creates more than are needed to display on screen at any one time. Rockets are recycled in exactly the same way.<\/p>",
+    "mainFile": "ex-missile-04.js"
+}

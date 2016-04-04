@@ -1,0 +1,388 @@
+[
+    {
+        "slug": "platformer",
+        "name": "Walking and jumping",
+        "category": "mechanic",
+        "examples": [
+            {
+                "script": "ex-walking-01.js",
+                "name": "Basic walking",
+                "webgl": false,
+                "description": "<p>In this set of examples, we'll look at the components of platformer-style movement. Here, the movement is very simple: the player is either stopped or moving at full speed. It works but it doesn't feel very good.</p><p>Use the arrow keys or tap to move the player left and right.</p>"
+            },
+            {
+                "script": "ex-walking-02.js",
+                "name": "With acceleration",
+                "webgl": false,
+                "description": "<p>Use the arrow keys or tap to move the player left and right.</p><p>The player now gradually accelerates from zero to top speed while a key is pressed.</p><p>Did you notice the side-effect caused by the way the movement is coded? If you hold <code>RIGHT</code>, release it, then hold <code>LEFT</code>, the player moves right, stops, then moves left. But if you hold <code>RIGHT</code> then start holding <code>LEFT</code>, the player will gradually change direction to the left. The code to stop the player is never called because a key is being held down at all times. And the player moves left when both keys are held down because <code>LEFT</code> is tested first. You can fix this by stopping the player whenever the movement direction changes. But look at the next example for a better solution.</p>"
+            },
+            {
+                "script": "ex-walking-03.js",
+                "name": "With drag",
+                "webgl": false,
+                "description": "<p>Use the arrow keys or tap to move the player left and right.</p><p>The player now has a <code>DRAG</code> component. <code>DRAG</code> works by applying a velocity in the opposite direction of the player movement whenever the player is not accelerating. This causes the player to slow down gradually when no keys are pressed. Note that <code>ACCELERATION</code> is greater than <code>DRAG</code>. This allows the player to slow down and change direction faster by pressing the opposite arrow key; or to coast to a stop by releasing all of the keys.</p>"
+            },
+            {
+                "script": "ex-walking-04.js",
+                "name": "Jumping",
+                "webgl": false,
+                "description": "<p>Use the arrow keys or tap to move the player left and right. Press the up arrow or tap the center to jump.</p><p>Jumping is a combination of two things: an upward velocity and gravity. When the up arrow is pressed and the player is touching the ground, an upward velocity is added to the player. Gravity then accelerates the character back towards the ground. The parabolic path of the player while jumping is simply a result of the player being affected by gravity.</p>"
+            },
+            {
+                "script": "ex-walking-05.js",
+                "name": "Double jump",
+                "webgl": false,
+                "description": "<p>Use the arrow keys or tap to move the player left and right. Press the up arrow or tap the center to jump.</p><p>While in the air, press the up arrow to jump again.</p>"
+            },
+            {
+                "script": "ex-walking-06.js",
+                "name": "Variable jump height",
+                "webgl": false,
+                "description": "<p>Use the arrow keys or tap to move the player left and right. Press the up arrow or tap the center to jump and double jump (while in the air).</p><p>You can control the height of the jump by how long you hold down the jump button.</p>"
+            }
+        ]
+    },
+    {
+        "slug": "bullets",
+        "name": "Bullets",
+        "category": "mechanic",
+        "examples": [
+            {
+                "script": "ex-bullet-01.js",
+                "name": "Single shot",
+                "webgl": false,
+                "description": "<p>Click or tap to fire a bullet.</p><p>Here we fire a single bullet and only a single bullet may be on screen at any time. This example also shows how to use an object pool to recycle bullet objects. Recycling objects in this way is essential for good performance. Because there is only one bullet in this pool, only one bullet can appear at any given time.</p>"
+            },
+            {
+                "script": "ex-bullet-02.js",
+                "name": "Rapid fire",
+                "webgl": false,
+                "description": "<p>Click or tap to fire a bullet. Hold to fire multiple bullets.</p><p>We can enable rapid fire simply by increasing the number of available bullets in the <code>bulletPool</code>.</p>"
+            },
+            {
+                "script": "ex-bullet-03.js",
+                "name": "Aiming",
+                "webgl": false,
+                "description": "<p>Click or tap to fire a bullet. Hold to fire multiple bullets.</p><p>Bullets will fire in the direction of the pointer or tap.</p>"
+            },
+            {
+                "script": "ex-bullet-04.js",
+                "name": "Artillery",
+                "webgl": false,
+                "description": "<p>Click or tap to fire an artillery shell. Hold to fire multiple shots.</p><p>These bullets are affected by gravity so they make a parabolic arc to their target.</p><p>This example introduces a function <code>getExplosion()</code> which either creates a new explosion object or re-uses one that was created earlier. This approach allows the number of explosion sprites to increase dynamically but never creates more than are needed to display on screen at any one time.</p>"
+            },
+            {
+                "script": "ex-bullet-05.js",
+                "name": "Display trajectory",
+                "webgl": false,
+                "description": "<p>Click or tap to fire an artillery shell. Hold to fire multiple shots.</p><p>The trajectory is calculated and plotted based on the firing angle, gravity, and initial bullet velocity.</p>",
+                "hatTip": "http://en.wikipedia.org/wiki/Trajectory_of_a_projectile"
+            }
+        ]
+    },
+    {
+        "slug": "thrust",
+        "name": "Spaceship motion",
+        "category": "mechanic",
+        "examples": [
+            {
+                "script": "ex-thrust-01.js",
+                "name": "Basic movement",
+                "webgl": false,
+                "description": "<p>Use the left and right arrow keys or tap near the edges to rotate the ship. Press the up arrow key or tap the center to turn on the engine.</p><p>This is an example of Asteroids-style motion. The ship moves in straight lines until the engine is turned on and accelerates. When the ship reaches any of the stage boundaries it is repositioned to the opposite side. The ship rotates at <code>ROTATION_SPEED</code> degrees/second.</p>"
+            },
+            {
+                "script": "ex-thrust-02.js",
+                "name": "With drag",
+                "webgl": false,
+                "description": "<p>Use the left and right arrow keys or tap near the edges to rotate the ship. Press the up arrow key or tap the center to turn on the engine.</p><p>The ship now has a <code>DRAG</code> component. <code>DRAG</code> works by applying a velocity in the opposite direction of the ship movement whenever the ship is not accelerating. This causes the ship to slow down gradually when the engine is off.</p>"
+            },
+            {
+                "script": "ex-thrust-03.js",
+                "name": "With gravity",
+                "webgl": false,
+                "description": "<p>Use the left and right arrow keys or tap near the edges to rotate the ship. Press the up arrow key or tap the center to turn on the engine.</p><p>The world now has gravity and a ground you can land on. The ship's <code>ACCELERATION</code> must be stronger than <code>GRAVITY</code> or it will never be able to move up.</p>"
+            },
+            {
+                "script": "ex-thrust-04.js",
+                "name": "Lunar lander",
+                "webgl": false,
+                "description": "<p>Use the left and right arrow keys or tap near the edges to rotate the ship. Press the up arrow key or tap the center to turn on the engine.</p><p>Try to land the ship safely on the ground. You must land gently or the ship will explode!</p><p>This example introduces a function <code>getExplosion()</code> which either creates a new explosion object or re-uses one that was created earlier. This approach allows the number of explosion sprites to increase dynamically but never creates more than are needed to display on screen at any one time.</p>"
+            }
+        ]
+    },
+    {
+        "slug": "follow",
+        "name": "Following",
+        "category": "mechanic",
+        "examples": [
+            {
+                "script": "ex-follow-01.js",
+                "name": "Single follower",
+                "webgl": false,
+                "description": "<p>The object will follow wherever you point or tap.</p><p>This example defines a Follower that takes a <code>target</code> as one of its parameters. The Follower updates its velocity every frame to move it in the direction of the target. It stops when it is within <code>MIN_DISTANCE</code>.</p>"
+            },
+            {
+                "script": "ex-follow-02.js",
+                "name": "Multiple followers",
+                "webgl": false,
+                "description": "<p>The object will follow wherever you point or tap.</p><p>This example uses the same Follower as the last example. The only difference is that each Follower (except the first one) targets the Follower in front of it. The first follower still targets the pointer position.</p>"
+            },
+            {
+                "script": "ex-follow-03.js",
+                "name": "Identical paths",
+                "webgl": false,
+                "description": "<p>The object will follow wherever you point or tap.</p><p>In the Multiple Followers example, you may have noticed that the followers don't move very organically when they cross paths or when making tight turns. They behave sort of like a chain lying on the ground. This example addresses that by recording a path history for each Follower. Each follower will use the history to follow exactly the same path as its target.</p>"
+            },
+            {
+                "script": "ex-follow-04.js",
+                "name": "Multiple groups",
+                "webgl": false,
+                "description": "<p>The object will follow wherever you point or tap.</p><p>Because all of the following logic is self-contained in the Follower class, you can have as many different Followers or groups of Followers as you need. In this example, a second group of Followers is added that targets a flag moving around the perimeter of the stage.</p>"
+            }
+        ]
+    },
+    {
+        "slug": "homingmissiles",
+        "name": "Homing missiles",
+        "category": "mechanic",
+        "examples": [
+            {
+                "script": "ex-missile-01.js",
+                "name": "Basic missile",
+                "webgl": false,
+                "description": "<p>This example implements a basic homing missile algorithm. The missile will automatically steer itself towards the pointer (or tap). Move the pointer around the example area. The missile's turning radius is determined by the variables <code>this.SPEED</code> and <code>this.TURN_RATE</code>.</p>"
+            },
+            {
+                "script": "ex-missile-02.js",
+                "name": "Missile with wobble",
+                "webgl": false,
+                "description": "<p>The missile will target the pointer (or tap). Move the pointer around the example area.</p><p>This example adds a neat little wobble to the straight line motion of the missile. It's purely visual but adds a lot of character. The wobble is implemented as a variable <code>this.wobble</code> that tweens back and forth between two values.</p>"
+            },
+            {
+                "script": "ex-missile-03.js",
+                "name": "Smoke trails",
+                "webgl": false,
+                "description": "<p>The missile will target the pointer (or tap). Move the pointer around the example area.</p><p>What's a missile without a smoke trail? A simple particle emitter is attached to the tail of the missile. The tricky part is continuously repositioning the emitter at the tail of the rocket in <code>Missile.prototype.update</code>.</p>"
+            },
+            {
+                "script": "ex-missile-04.js",
+                "name": "Explosions",
+                "webgl": false,
+                "description": "<p>The missile will target the pointer (or tap). Move the pointer around the example area.</p><p>Missiles explode when they get within a specific distance of the target. This example introduces a function <code>getExplosion()</code> which either creates a new explosion object or re-uses one that was created earlier. This approach allows the number of explosion sprites to increase dynamically but never creates more than are needed to display on screen at any one time. Rockets are recycled in exactly the same way.</p>"
+            },
+            {
+                "script": "ex-missile-05.js",
+                "name": "Multiple missiles",
+                "webgl": false,
+                "description": "<p>The missiles will target the pointer (or tap). Move the pointer around the example area.</p><p>Launching multiple missiles is as simple as creating a <code>new Missile()</code> since all of the steering control for each missile is self-contained within the missile object itself.</p>"
+            },
+            {
+                "script": "ex-missile-06.js",
+                "name": "Flocking",
+                "webgl": false,
+                "description": "<p>The missiles will target the pointer (or tap). Move the pointer around the example area.</p><p>The last example was fine but it is possible to get the missiles to bunch up and begin to follow exactly the same path. One way to solve that problem is to make each missile keep its distance from its neighbors. In this example the missiles attempt to steer away from other missiles that are too close. Each missile calculates the distance to every other missile and attempts to steer 90 degrees away from close ones.</p><p>Look at the code for <code>avoidAngle</code> for the implementation.</p><p>This looks like a lot of math to be doing every frame for every missile. But profiling shows that this has almost no effect on frame rate (4% per frame for 100 missiles on my desktop). The biggest impact on frame rate is the number of smoke particles per missile.</p>"
+            }
+        ]
+    },
+    {
+        "slug": "fluid",
+        "name": "Fluid simulation",
+        "category": "mechanic",
+        "examples": [
+            {
+                "script": "ex-fluid-01.js",
+                "name": "Fluid with gravity",
+                "webgl": true,
+                "description": "<p>A simple fluid simulation created using physics bodies and WebGL shaders. Move the mouse (or your finger) through the fluid to interact with it. Click or tap to show the physics objects that are behind the simulation. The liquid is faked by using physics particles to provide a base texture and shaders to modify that texture to look like a liquid.</p>",
+                "hatTip": "http://www.patrickmatte.com/stuff/physicsLiquid/"
+            },
+            {
+                "script": "ex-fluid-02.js",
+                "name": "Fluid, no gravity",
+                "webgl": true,
+                "description": "<p>A simple fluid simulation created using physics bodies and WebGL shaders. Move the mouse (or your finger) through the fluid to interact with it. Click or tap to show the physics objects that are behind the simulation. The liquid is faked by using physics particles to provide a base texture and shaders to modify that texture to look like a liquid.</p>",
+                "hatTip": "http://www.patrickmatte.com/stuff/physicsLiquid/"
+            },
+            {
+                "script": "ex-fluid-03.js",
+                "name": "Fountain",
+                "webgl": true,
+                "description": "<p>A simple fluid simulation created using physics bodies and WebGL shaders. Move the mouse (or your finger) through the fluid to interact with it. Click or tap to show the physics objects that are behind the simulation. The liquid is faked by using physics particles to provide a base texture and shaders to modify that texture to look like a liquid.</p>",
+                "hatTip": "http://www.patrickmatte.com/stuff/physicsLiquid/"
+            }
+        ]
+    },
+    {
+        "slug": "raycasting",
+        "name": "Raycasting and shadows",
+        "category": "effect",
+        "examples": [
+            {
+                "script": "ex-raycast-01.js",
+                "name": "Line of sight",
+                "webgl": false,
+                "description": "<p>Move the pointer or tap to move the ball.</p><p>The basic concept is that you draw imaginary lines from each of the people to the ball. If any of the lines intersect a wall then the person cannot see the ball.</p>"
+            },
+            {
+                "script": "ex-raycast-02.js",
+                "name": "Shadows",
+                "webgl": true,
+                "description": "<p>Move the pointer or tap to move the light source.</p><p>This example casts rays in a circle around the light and finds all of the intersection points. Then a texture is created that connects the dots and fills in the shape. The texture is drawn using the <code>MULTIPLY</code> blend mode (WebGL required) which darkens the colors of everything underneath it giving the appearance of a shadow.</p><p>This is a fairly intense process but there are lots of ways to optimize it. One way would be to only test the corners of each wall instead of casting hundreds of rays in a circle.</p>"
+            },
+            {
+                "script": "ex-raycast-03.js",
+                "name": "Optimized shadows",
+                "webgl": true,
+                "description": "<p>Move the pointer or tap to move the light source. Click or tap to show or hide the rays.</p><p>Unlike the last example which cast hundreds of rays in every direction, this example achieves the same result with many fewer rays by only casting rays towards the corners of walls. The code is more complicated but significantly less CPU time is spent in the update loop. On my machine it's about 10 times faster.</p><p>Of course this could be optimized further. For example, you could check walls starting with the closest first. Then only check corners of other walls if they aren't already in shadow.</p>"
+            },
+            {
+                "script": "ex-raycast-04.js",
+                "name": "Multiple lights",
+                "webgl": true,
+                "description": "<p>Move the pointer or tap to move the light source. Click or tap to show or hide the rays.</p><p>For multiple lights, just do everything again for each light.</p>"
+            }
+        ]
+    },
+    {
+        "slug": "lighting",
+        "name": "Lights",
+        "category": "effect",
+        "examples": [
+            {
+                "script": "ex-lighting-01.js",
+                "name": "Flashlight",
+                "webgl": true,
+                "description": "<p>Move the pointer or tap to move the light.</p><p>A texture is updated every frame with the darkened background and a white circle where the light is located. The texture is drawn on top of the stage using the <code>MULTIPLY</code> blend mode (WebGL required) which darkens the colors of everything underneath it giving the appearance of a shadow.</p>"
+            },
+            {
+                "script": "ex-lighting-02.js",
+                "name": "With soft edge",
+                "webgl": true,
+                "description": "<p>Move the pointer or tap to move the light.</p><p>This version uses a gradient to create light with a soft edge.</p>"
+            },
+            {
+                "script": "ex-lighting-03.js",
+                "name": "Flickering light",
+                "webgl": true,
+                "description": "<p>Move the pointer or tap to move the light.</p><p>Lights are given a flickering appearance, as if by torches or a campfire, by randomly changing the size of the light texture.</p>"
+            },
+            {
+                "script": "ex-lighting-04.js",
+                "name": "Using additive blending",
+                "webgl": true,
+                "description": "<p>Move the pointer or tap to move the light.</p><p>This version uses a different lighting technique. Rather than draw a bitmap that is overlayed on the scene with the <code>MULTIPLY</code> blend mode, each torch object creates a child <code>glow</code> object. The <code>glow</code> object is drawn on top of each torch with the <code>ADD</code> blend mode. This creates a similar but different effect than the other examples. The <code>ADD</code> blend mode brightens the colors of everything beneath it. Note the differences where two lights overlap.</p>"
+            }
+        ]
+    },
+    {
+        "slug": "lightning",
+        "name": "Lightning",
+        "category": "effect",
+        "examples": [
+            {
+                "script": "ex-lightning-01.js",
+                "name": "Basic lightning",
+                "webgl": false,
+                "description": "<p>Click or tap to create a lightning bolt.</p><p>Lightning bolts are created procedurally by drawing line segments from a starting position until the ground is reached. The end point of each line segment is randomly offset horizontally and vertically to give the jagged appearance. There are many other ways to accomplish this. For example, instead of drawing each segment, you could use a texture for each segment, stretched to the correct length. <a href='http://gamedevelopment.tutsplus.com/tutorials/how-to-generate-shockingly-good-2d-lightning-effects--gamedev-2681' target='_blank'>Here's a good example</a> of that method.</p>"
+            },
+            {
+                "script": "ex-lightning-02.js",
+                "name": "With branches",
+                "webgl": false,
+                "description": "<p>Click or tap to create a lightning bolt.</p><p>This version adds branches of smaller bolts by recursively calling the <code>createLightningTexture()</code> method at random intervals. Parameters were added to <code>createLightningTexture()</code> to allow for the same function to be used for drawing the main bolt and branches.</p>"
+            },
+            {
+                "script": "ex-lightning-03.js",
+                "name": "With glow",
+                "webgl": true,
+                "description": "<p>Click or tap to create a lightning bolt.</p><p>This version introduces a WebGL fragment shader to add a glow to the lightning bolt. Another way of creating glow would be to use a texture for each segment with the glow baked in instead of drawing each segment by hand. The ADD blend mode could also be used to good effect. Fragment shaders are beyond the scope of this tutorial. But most frameworks have a way to use shaders and usually come with some popular ones built-in.</p>"
+            },
+            {
+                "script": "ex-lightning-04.js",
+                "name": "With shake and flash",
+                "webgl": true,
+                "description": "<p>Click or tap to create a lightning bolt.</p><p>Here, we add a flash by briefly showing a white rectangle covering the entire stage. Shake is added by rapidly moving the in-game camera up and down.</p>"
+            },
+            {
+                "script": "ex-lightning-05.js",
+                "name": "You are Zeus",
+                "webgl": true,
+                "description": "<p>Click or tap to create a lightning bolt.</p><p>Finally, this example allows you to aim the lightning bolts anywhere on the screen. Bolts are drawn in almost exactly the same way as the previous examples. The only difference is that the last segment of the bolt is always terminated at the horizontal center of the texture and then the entire lightning bolt is rotated towards the pointer.</p><p>When a lightning bolt hits a monster, it dies. Wield your mighty power with wisdom.</p>"
+            }
+        ]
+    },
+    {
+        "slug": "easing",
+        "name": "Easing functions",
+        "category": "effect",
+        "examples": [
+            {
+                "script": "ex-easing-01.js",
+                "name": "Linear",
+                "webgl": false,
+                "description": "<p>Click or tap to toggle between In, Out, and InOut versions of the easing function.</p><p>Easing functions are used to interpolate one value to another value over a period of time. Typically they are used to change the value of a property of a sprite such as its position or size. Game engines usually provide easing functions that apply the named function at the beginning of the ease (In), at the end (Out), or both (InOut). In all of these examples, the ball is moved at a constant speed from the left side of the screen to the right while its vertical position is controlled by the named easing function.</p>"
+            },
+            {
+                "script": "ex-easing-02.js",
+                "name": "Quadratic",
+                "webgl": false,
+                "description": "<p>Click or tap to toggle between In, Out, and InOut versions of the easing function.</p><p>Easing functions are used to interpolate one value to another value over a period of time. Typically they are used to change the value of a property of a sprite such as its position or size. Game engines usually provide easing functions that apply the named function at the beginning of the ease (In), at the end (Out), or both (InOut). In all of these examples, the ball is moved at a constant speed from the left side of the screen to the right while its vertical position is controlled by the named easing function.</p>"
+            },
+            {
+                "script": "ex-easing-03.js",
+                "name": "Cubic",
+                "webgl": false,
+                "description": "<p>Click or tap to toggle between In, Out, and InOut versions of the easing function.</p><p>Easing functions are used to interpolate one value to another value over a period of time. Typically they are used to change the value of a property of a sprite such as its position or size. Game engines usually provide easing functions that apply the named function at the beginning of the ease (In), at the end (Out), or both (InOut). In all of these examples, the ball is moved at a constant speed from the left side of the screen to the right while its vertical position is controlled by the named easing function.</p>"
+            },
+            {
+                "script": "ex-easing-04.js",
+                "name": "Quartic",
+                "webgl": false,
+                "description": "<p>Click or tap to toggle between In, Out, and InOut versions of the easing function.</p><p>Easing functions are used to interpolate one value to another value over a period of time. Typically they are used to change the value of a property of a sprite such as its position or size. Game engines usually provide easing functions that apply the named function at the beginning of the ease (In), at the end (Out), or both (InOut). In all of these examples, the ball is moved at a constant speed from the left side of the screen to the right while its vertical position is controlled by the named easing function.</p>"
+            },
+            {
+                "script": "ex-easing-05.js",
+                "name": "Quintic",
+                "webgl": false,
+                "description": "<p>Click or tap to toggle between In, Out, and InOut versions of the easing function.</p><p>Easing functions are used to interpolate one value to another value over a period of time. Typically they are used to change the value of a property of a sprite such as its position or size. Game engines usually provide easing functions that apply the named function at the beginning of the ease (In), at the end (Out), or both (InOut). In all of these examples, the ball is moved at a constant speed from the left side of the screen to the right while its vertical position is controlled by the named easing function.</p>"
+            },
+            {
+                "script": "ex-easing-06.js",
+                "name": "Sinusoidal",
+                "webgl": false,
+                "description": "<p>Click or tap to toggle between In, Out, and InOut versions of the easing function.</p><p>Easing functions are used to interpolate one value to another value over a period of time. Typically they are used to change the value of a property of a sprite such as its position or size. Game engines usually provide easing functions that apply the named function at the beginning of the ease (In), at the end (Out), or both (InOut). In all of these examples, the ball is moved at a constant speed from the left side of the screen to the right while its vertical position is controlled by the named easing function.</p>"
+            },
+            {
+                "script": "ex-easing-07.js",
+                "name": "Exponential",
+                "webgl": false,
+                "description": "<p>Click or tap to toggle between In, Out, and InOut versions of the easing function.</p><p>Easing functions are used to interpolate one value to another value over a period of time. Typically they are used to change the value of a property of a sprite such as its position or size. Game engines usually provide easing functions that apply the named function at the beginning of the ease (In), at the end (Out), or both (InOut). In all of these examples, the ball is moved at a constant speed from the left side of the screen to the right while its vertical position is controlled by the named easing function.</p>"
+            },
+            {
+                "script": "ex-easing-08.js",
+                "name": "Circular",
+                "webgl": false,
+                "description": "<p>Click or tap to toggle between In, Out, and InOut versions of the easing function.</p><p>Easing functions are used to interpolate one value to another value over a period of time. Typically they are used to change the value of a property of a sprite such as its position or size. Game engines usually provide easing functions that apply the named function at the beginning of the ease (In), at the end (Out), or both (InOut). In all of these examples, the ball is moved at a constant speed from the left side of the screen to the right while its vertical position is controlled by the named easing function.</p>"
+            },
+            {
+                "script": "ex-easing-09.js",
+                "name": "Elastic",
+                "webgl": false,
+                "description": "<p>Click or tap to toggle between In, Out, and InOut versions of the easing function.</p><p>Easing functions are used to interpolate one value to another value over a period of time. Typically they are used to change the value of a property of a sprite such as its position or size. Game engines usually provide easing functions that apply the named function at the beginning of the ease (In), at the end (Out), or both (InOut). In all of these examples, the ball is moved at a constant speed from the left side of the screen to the right while its vertical position is controlled by the named easing function.</p>"
+            },
+            {
+                "script": "ex-easing-10.js",
+                "name": "Back",
+                "webgl": false,
+                "description": "<p>Click or tap to toggle between In, Out, and InOut versions of the easing function.</p><p>Easing functions are used to interpolate one value to another value over a period of time. Typically they are used to change the value of a property of a sprite such as its position or size. Game engines usually provide easing functions that apply the named function at the beginning of the ease (In), at the end (Out), or both (InOut). In all of these examples, the ball is moved at a constant speed from the left side of the screen to the right while its vertical position is controlled by the named easing function.</p>"
+            },
+            {
+                "script": "ex-easing-11.js",
+                "name": "Bounce",
+                "webgl": false,
+                "description": "<p>Click or tap to toggle between In, Out, and InOut versions of the easing function.</p><p>Easing functions are used to interpolate one value to another value over a period of time. Typically they are used to change the value of a property of a sprite such as its position or size. Game engines usually provide easing functions that apply the named function at the beginning of the ease (In), at the end (Out), or both (InOut). In all of these examples, the ball is moved at a constant speed from the left side of the screen to the right while its vertical position is controlled by the named easing function.</p>"
+            }
+        ]
+    }
+]

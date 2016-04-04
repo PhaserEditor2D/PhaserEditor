@@ -1,0 +1,214 @@
+{ "templates": 
+	[
+	    {
+	        "Loader": {
+	            "Load Image": "game.load.image('${key}', '${url}');",
+	            "Load Texture Atlas": "game.load.atlas('${key}', '${textureUrl}', '${atlasUrl}');",
+	            "Load Texture Atlas (Array)": "game.load.atlasJSONArray('${key}', '${textureUrl}', '${atlasUrl}');",
+	            "Load Texture Atlas (XML)": "game.load.atlasXML('${key}', '${textureUrl}', '${atlasUrl}');",
+	            "Load Sprite Sheet": "game.load.spritesheet('${key}', '${url}', ${frameWidth}, ${frameHeight});",
+	            "Load Audio": "game.load.audio('${key}', ['${urls}'], ${true});",
+	            "Load Audio Sprite": "game.load.audiosprite('${key}', ['${urls}'], '${jsonURL}');",
+	            "Load Tilemap": "game.load.tilemap('${key}', '${url}', null, Phaser.Tilemap.TILED_JSON);",
+	            "Load CSV Tilemap": "game.load.tilemap('${key}', '${url}');",
+	            "Load Bitmap Font": "game.load.bitmapFont('${key}', '${textureURL}', '${xmlURL}');",
+	            "Load XML": "game.load.xml('${key}', '${url}');",
+	            "Load Text": "game.load.text('${key}', '${url}');",
+	            "Load JSON": "game.load.json('${key}', '${url}');",
+	            "Load Physics Data": "game.load.physics('${key}', '${url}');",
+	            "Load JavaScript": "game.load.script('${key}', '${url}', '${callback}', '${callbackContext}');",
+	            "Load Binary File": "game.load.binary('${key}', '${url}', '${callback}', '${callbackContext}');",
+	            "div": "",
+	            "Set Preload Sprite": "game.load.setPreloadSprite('${sprite}');",
+	            "Set Base URL": "game.load.baseURL = '${url}';",
+	            "Set CrossOrigin": "game.load.crossOrigin = 'anonymous';"
+	
+	        }
+	    },
+	
+	    {
+	        "GameObjectFactory": {
+	            "Add Sprite": "game.add.sprite(${x}, ${y}, '${key}', ${null} ${frame});",
+	            "Add Image": "game.add.image(${x}, ${y}, '${key}', ${null} ${frame});",
+	            "Add Sound": "game.add.sound('${key}', 1 ${volume}}, ${false} ${loop});",
+	            "Add Bitmap Text": "game.add.bitmapText(${x}, ${y}, '${font}', '${text}', ${size});",
+	            "Add Text": "game.add.text(${x}, ${y}, '${text}', { font: \"65px Arial\", fill: \"#ff0044\" });",
+	            "Add Group": "game.add.group();",
+	            "Add Physics Group": "game.add.physicsGroup();",
+	            "Add Graphics": "game.add.graphics();",
+	            "Add TileSprite": "game.add.tileSprite(${x}, ${y}, ${width}, ${height}, '${key}', ${null} ${frame});",
+	            "Add Emitter": "game.add.emitter(${x}, ${y}, ${maxParticles});",
+	            "Add Tilemap": "game.add.tilemap('${key}', ${tileWidth}, ${tileHeight});",
+	            "Add Render Texture": "game.add.renderTexture(${width}, ${height}, '${key}');",
+	            "Add BitmapData": "game.add.bitmapData(${width}, ${height}, '${key}');",
+	            "Add Sprite Batch": "game.add.spriteBatch();",
+	            "Add AudioSprite": "game.add.audioSprite('${key}');"
+	
+	        },
+	
+	        "Arcade Physics": {
+	            "Enable Sprite for Physics": "game.physics.arcade.enable(${sprite});",
+	            "Gravity": "${sprite}.body.gravity.set(${x}, ${y});",
+	            "Velocity": "${sprite}.body.velocity.set(${x}, ${y});",
+	            "Acceleration": "${sprite}.body.acceleration.set(${x}, ${y});",
+	            "Drag": "${sprite}.body.drag.set(${x}, ${y});",
+	            "Bounce": "${sprite}.body.bounce.set(${x}, ${y});",
+	            "Set Body Size": "${sprite}.body.setSize(${width}, ${height}, ${offsetX}, ${offsetY});",
+	            "World Gravity": "game.physics.arcade.gravity.set(x: ${x}, y: ${y});",
+	            "Start": "game.physics.startSystem(Phaser.Physics.ARCADE);"
+	        },
+	
+	        "Animation": {
+	            "Add Animation to Sprite": "${sprite}.animations.add('${name}', [ ${frames} ], ${frameRate}, ${loop});",
+	            "Play Animation": "${sprite}.animations.play('${key}', ${frameRate}, ${loop}, ${killOnComplete});",
+	            "Stop Animation": "${sprite}.animations.stop('${key}');"
+	        },
+	
+	        "Sound": {
+	            "Play Sound": "var ${sound} = game.sound.play('${key}', ${volume});",
+	            "Loop Sound": "var ${sound} = game.sound.play('${key}', ${volume}, true);",
+	            "Stop Sound": "game.sound.stop('${key}');",
+	            "Mute Sound": "game.sound.mute = true;",
+	            "Unmute Sound": "game.sound.mute = false;"
+	        },
+	
+	        "Sprite": {
+	            "Set Alpha": "${sprite}.alpha = ${alpha};",
+	            "Set Angle": "${sprite}.angle = ${degrees};",
+	            "Set Rotation": "${sprite}.rotation = ${radians};",
+	            "Set Scale": "${sprite}.scale.set(${x}, ${y});",
+	            "Set Anchor": "${sprite}.anchor.set(${x}, ${y});",
+	            "Set Pivot": "${sprite}.pivot.set(${x}, ${y});",
+	            "Set Visible": "${sprite}.visible = true;",
+	            "Set Invisible": "${sprite}.visible = false;",
+	            "Set Texture": "${sprite}.loadTexture('${key}');"
+	        },
+	
+	        "Events": {
+	            "onAddedToGroup": "${sprite}.events.onAddedToGroup.add(${callback}, ${callbackContext});",
+	            "onRemovedFromGroup": "${sprite}.events.onRemovedFromGroup.add(${callback}, ${callbackContext});",
+	            "onRemovedFromWorld": "${sprite}.events.onRemovedFromWorld.add(${callback}, ${callbackContext});",
+	            "onDestroy": "${sprite}.events.onDestroy.add(${callback}, ${callbackContext});",
+	            "onKilled": "${sprite}.events.onKilled.add(${callback}, ${callbackContext});",
+	            "onRevived": "${sprite}.events.onRevived.add(${callback}, ${callbackContext});",
+	            "onOutOfBounds": "${sprite}.events.onOutOfBounds.add(${callback}, ${callbackContext});",
+	            "onEnterBounds": "${sprite}.events.onEnterBounds.add(${callback}, ${callbackContext});",
+	            "onInputOver": "${sprite}.events.onInputOver.add(${callback}, ${callbackContext});",
+	            "onInputOut": "${sprite}.events.onInputOut.add(${callback}, ${callbackContext});",
+	            "onInputDown": "${sprite}.events.onInputDown.add(${callback}, ${callbackContext});",
+	            "onInputUp": "${sprite}.events.onInputUp.add(${callback}, ${callbackContext});",
+	            "onDragStart": "${sprite}.events.onDragStart.add(${callback}, ${callbackContext});",
+	            "onDragStop": "${sprite}.events.onDragStop.add(${callback}, ${callbackContext});",
+	            "onAnimationStart": "${sprite}.events.onAnimationStart.add(${callback}, ${callbackContext});",
+	            "onAnimationComplete": "${sprite}.events.onAnimationComplete.add(${callback}, ${callbackContext});",
+	            "onAnimationLoop": "${sprite}.events.onAnimationLoop.add(${callback}, ${callbackContext});"
+	        },
+	
+	        "Group": {
+	            "Add Child to Group": "${group}.add(${child});",
+	            "Add Multiple Children to Group": "${group}.addMultiple([ ${child1}, ${child2} ]);",
+	            "Add Child at Position": "${group}.addAt(${child}, ${index});",
+	            "Create in Group": "${group}.create(${x}, ${y}, '${key}', ${null} ${frame});",
+	            "Create Multiple Children": "${group}.createMultiple(${quantity}, '${key}', ${null} ${frame});",
+	            "Get First Child that Exists": "${group}.getFirstExists(${true} ${exists});",
+	            "Get First Child that is Alive": "${group}.getFirstAlive();",
+	            "Get First Dead Child": "${group}.getFirstDead();",
+	            "Get Top Child": "${group}.getTop();",
+	            "Get Bottom Child": "${group}.getBottom();",
+	            "Get Child at Position": "${group}.getAt(${index});",
+	            "Get Index of Child": "${group}.getIndex(${child});",
+	            "Get Random Child": "${group}.getRandom();",
+	            "Swap Children": "${group}.swap(${child1}, ${child2});",
+	            "Replace Child": "${group}.replace(${oldchild}, ${newchild});",
+	            "Bring Child to Top": "${group}.bringToTop(${child1});",
+	            "Send Child to Back": "${group}.sendToBack(${child1});",
+	            "Move Child Up": "${group}.moveUp(${child1});",
+	            "Move Child Down": "${group}.moveDown(${child1});",
+	            "Remove Child from Group": "${group}.remove(${child});",
+	            "Remove All from Group": "${group}.removeAll(${false} ${destroy});",
+	            "Remove Between": "${group}.removeBetween(${startIndex}, ${stopIndex}, ${false} ${destroy});",
+	            "Child has Property": "${group}.hasProperty(${child}, '${key}');",
+	            "Set Child Property": "${group}.setProperty(${child}, '${key}', ${value});",
+	            "Check Child Property": "${group}.checkProperty(${child}, '${key}', ${value});",
+	            "Set Property on All Children": "${group}.setAll('${key}', ${value}, ${checkAlive}, ${checkVisible});",
+	            "Call Function on All Children": "${group}.callAll(${function}, ${context});",
+	            "For Each Child": "${group}.forEach(${function}, ${context});",
+	            "For Each Existing Child": "${group}.forEachExists(${function}, ${context});",
+	            "For Each Alive Child": "${group}.forEachAlive(${function}, ${context});",
+	            "For Each Dead Child": "${group}.forEachDead(${function}, ${context});",
+	            "Count Living": "${group}.countLiving();",
+	            "Count Dead": "${group}.countDead();"
+	
+	        },
+	
+	        "Tween": {
+	            "Tween.to": "game.add.tween(${object}).to( { ${properties} }, ${duration}, \"${Linear}\", ${autoStart});",
+	            "Tween.from": "game.add.tween(${object}).from( { ${properties} }, ${duration}, \"${Linear}\", ${autoStart});",
+	            "Tween Position": "game.add.tween(${sprite}).to( { x: ${x}, y: ${y} }, ${duration}, \"${Linear}\", true);",
+	            "Tween Scale": "game.add.tween(${sprite}.scale).to( { x: ${x}, y: ${y} }, ${duration}, \"${Linear}\", true);",
+	            "Tween Loop": "game.add.tween(${sprite}).to( { ${properties} }, ${duration}, \"${Linear}\", true, 0, 0, true);"
+	        },
+	
+	        "Input": {
+	            "Any Pointer onDown": "game.input.onDown.add(${function}, ${context});",
+	            "Any Pointer onUp": "game.input.onUp.add(${function}, ${context});",
+	            "Enable Sprite for Input": "${sprite}.inputEnabled = true;",
+	            "Enable Sprite for Drag": "${sprite}.input.enableDrag(${lockCenter}, ${bringToTop}, ${pixelPerfect});",
+	            "Add Movement Callback": "game.input.addMoveCallback(${function}, ${context});",
+	            "Create Cursor Keys": "game.input.keyboard.createCursorKeys();",
+	            "Add Key": "game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);",
+	            "Remove Key": "game.input.keyboard.removeKey(Phaser.Keyboard.SPACEBAR);"
+	        },
+	
+	        "Core": {
+	            "World Bounds": "game.world.setBounds(${x}, ${y}, ${width}, ${height});",
+	            "World Resize": "game.world.resize(${width}, ${height});",
+	            "Camera Follow": "game.camera.follow(${sprite}, ${height});"
+	        },
+	
+	        "Time": {
+	            "Create Timed Event": "game.time.events.add(${duration}, ${function}, ${context});",
+	            "Create Repeated Event": "game.time.events.repeat(${duration}, ${repeatTotal}, ${function}, ${context});",
+	            "Create Looped Event": "game.time.events.loop(${duration}, ${function}, ${context});",
+	            "Create Custom Timer": "var timer = game.time.create(false);"
+	        },
+	
+	        "Geometry": {
+	            "Point": "new Phaser.Point(${x}, ${y});",
+	            "Rectangle": "new Phaser.Rectangle(${x}, ${y}, ${width}, ${height});",
+	            "Circle": "new Phaser.Circle(${x}, ${y}, ${diameter});",
+	            "Line": "new Phaser.Line(${x1}, ${y1}, ${x2}, ${y2});",
+	            "Ellipse": "new Phaser.Ellipse(${x}, ${y}, ${width}, ${height});",
+	            "Polygon": "new Phaser.Polygon([${x}, ${y}]);"
+	        }
+	
+	    },
+	
+	    {
+	        "Arcade Physics": {
+	            "Collide": "game.physics.arcade.collide(${object1}, ${object2}, ${collideCallback}, ${processCallback}, ${callbackContext});",
+	            "Overlap": "game.physics.arcade.overlap(${object1}, ${object2}, ${overlapCallback}, ${processCallback}, ${callbackContext});",
+	            "Move To Object": "game.physics.arcade.moveToObject(${sprite}, ${destination}, ${speed});",
+	            "Move To Pointer": "game.physics.arcade.moveToPointer(${sprite}, ${speed});",
+	            "Move To XY": "game.physics.arcade.moveToXY(${sprite}, ${x}, ${y}, ${speed});",
+	            "Velocity From Angle": "game.physics.arcade.velocityFromAngle(${angle}, ${speed}, ${point});",
+	            "Velocity From Rotation": "game.physics.arcade.velocityFromRotation(${rotation}, ${speed}, ${point});",
+	            "Acceleration From Rotation": "game.physics.arcade.accelerationFromRotation(${rotation}, ${speed}, ${point});",
+	            "Distance Between": "game.physics.arcade.distanceBetween(${sprite1}, ${sprite2});",
+	            "Angle Between": "game.physics.arcade.angleBetween(${sprite1}, ${sprite2});"
+	        }
+	
+	    },
+	
+	    {
+	        "Debug": {
+	            "Text": "game.debug.text('${text}', ${x}, ${y}, '${rgb(255,255,255)}');",
+	            "Physics Body": "game.debug.body(${sprite}, '${rgba(0,255,0,0.4)}');",
+	            "Geometry": "game.debug.geom(${geometryObject}, '${rgba(0,255,0,0.4)}', true);",
+	            "Sprite Info": "game.debug.spriteInfo(${sprite}, ${x}, ${y});",
+	            "Camera Info": "game.debug.cameraInfo(${game.camera}, ${x}, ${y});",
+	            "Sound Info": "game.debug.soundInfo(${sound}, ${x}, ${y});"
+	        }
+	    }
+	]
+}

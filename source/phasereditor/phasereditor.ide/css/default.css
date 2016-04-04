@@ -1,0 +1,126 @@
+//@import url('platform:/plugin/phasereditor.ide/css/moonrise.css');
+
+.MTrimmedWindow.topLevel {
+    margin-top: 4px;
+    margin-bottom: 2px;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.MPartStack {
+    background-color: #313538;
+    color: #f7f8f8;
+    swt-tab-renderer: url('bundleclass://org.eclipse.e4.ui.workbench.renderers.swt/org.eclipse.e4.ui.workbench.renderers.swt.CTabRendering');
+
+    swt-tab-height: 32px;
+    
+    padding: 1px 6px 6px 6px; /* top left bottom right */
+    swt-tab-outline: #3B4042; /* border color for selected tab */
+    swt-outer-keyline-color: #515658; /* border color for whole tabs container */
+    swt-unselected-tabs-color: #515658 #464649 #313538 99% 100%; /* title background for unselected tab */
+    swt-selected-tab-fill: #313538; /* title background for selected tab (gradient bottom color) */		
+
+    swt-shadow-color: #0b0b0b;
+    swt-shadow-visible: true;
+
+    swt-mru-visible: true;
+
+    swt-corner-radius: 16px;
+}
+
+.MPartStack.active {
+    background-color: #292929;   /* ignored (<2>) */
+    swt-inner-keyline-color: #FFFFFF;
+    swt-tab-outline: #484848; /* border color for selected tab */
+    swt-outer-keyline-color: #4B4C4F; /* border color for whole tabs container */
+    swt-unselected-tabs-color: #494A4D #404043 #272727 99% 100%; /* title background for unselected tab */
+    swt-selected-tab-fill: #292929; /* title background for selected tab (gradient bottom color) */
+}
+.MPartStack.active > * {
+    /* Workaround for (<2>) to set the color of the inner border for the active tab */
+    background-color: #292929;
+}
+
+.MPartStack.empty {
+    swt-unselected-tabs-color: #515658 #4F5456 #4F5456 99% 100%; /* title background for unselected tab */
+    swt-tab-outline: #535354; /* border color for selected tab */
+    swt-outer-keyline-color: #515658; /* border color for whole tabs container */
+}
+
+CTabItem,
+CTabItem CLabel {
+    background-color: #313538; /* HACK for background of CTabFolder inner Toolbars */
+    color: #999999;
+    /*font-family: 'Segoe Print';*/ /* currently, there is no way to define a fallback for font-family */
+    /*font-size: 8;*/
+}
+CTabItem:selected,
+CTabItem:selected CLabel {
+    color: #DDDDDD;
+}
+
+.MPartStack.active > CTabItem,
+.MPartStack.active > CTabItem CLabel Label {
+    background-color: #292929; /* HACK for background of CTabFolder inner Toolbars */
+    color: #AAAAAA;
+}
+.MPartStack.active > CTabItem:selected,
+.MPartStack.active > CTabItem:selected CLabel Label {
+    color: #FFFFFF;
+}
+
+CTabItem.busy {
+	color: #888888;
+}
+
+.MTrimmedWindow {
+   background-color: #515658;
+}
+
+.MTrimBar {
+    background-color: #515658;
+}
+
+.MTrimBar .Draggable {
+    handle-image: url('./dragHandle.png');
+}
+
+.TrimStack {
+    frame-cuts: 4px 2px 5px 16px;
+    handle-image: url('./dragHandle.png');
+}
+
+CTabFolder.MArea .MPartStack,CTabFolder.MArea .MPartStack.active {
+    swt-shadow-visible: false;
+}
+
+.MToolControl.TrimStack {
+    frame-cuts: 5px 1px 5px 16px;
+}
+
+CTabItem CLabel:hover {
+/* SWT-BUG #362532: The event is never triggered so the native rule cannot be overridden (for hover event) */
+    background-color: #252525;
+    color: #dddddd;
+}
+
+/* arian */
+
+SashForm {
+	background-color: #2F2F2F;
+}
+
+.TitleLabel {
+	color: #515658;
+	font-weight: bold;
+}
+
+.WhiteTitleLabel {
+	color: #000;
+	font-weight: bold;
+}
+
+.DarkComposite, .DarkComposite > Label,  .DarkComposite > Text {
+	background-color: #515658;
+	color: #f7f8f8;
+}

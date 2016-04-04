@@ -1,0 +1,9 @@
+{
+    "author": {
+        "website": "http://gamemechanicexplorer.com",
+        "name": "John Watson",
+        "email": "john@watson-net.com"
+    },
+    "description": "<p>Click or tap to fire a bullet.<\/p><p>Here we fire a single bullet and only a single bullet may be on screen at any time. This example also shows how to use an object pool to recycle bullet objects. Recycling objects in this way is essential for good performance. Because there is only one bullet in this pool, only one bullet can appear at any given time.<\/p>",
+    "mainFile": "ex-bullet-01.js"
+}

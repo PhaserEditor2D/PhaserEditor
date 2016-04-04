@@ -1,0 +1,249 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: TimerEvent</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a>.</span> TimerEvent </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="TimerEvent"><span class="type-signature"></span>new TimerEvent<span class="signature">(timer, delay, tick, repeatCount, loop, callback, callbackContext, arguments)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A TimerEvent is a single event that is processed by a Phaser.Timer.</p> 
+     <p>It consists of a delay, which is a value in milliseconds after which the event will fire. When the event fires it calls a specific callback with the specified arguments.</p> 
+     <p>Use <a href="Phaser.Timer.html#add">Phaser.Timer#add</a>, <a href="Phaser.Timer.html#add">Phaser.Timer#add</a>, or <a href="Phaser.Timer.html#add">Phaser.Timer#add</a> methods to create a new event.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>timer</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Timer.html">Phaser.Timer</a></span> </td> 
+       <td class="description last"><p>The Timer object that this TimerEvent belongs to.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>delay</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The delay in ms at which this TimerEvent fires.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>tick</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The tick is the next game clock time that this event will fire at.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>repeatCount</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>If this TimerEvent repeats it will do so this many times.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>loop</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="description last"><p>True if this TimerEvent loops, otherwise false.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>callback</code></td> 
+       <td class="type"> <span class="param-type">function</span> </td> 
+       <td class="description last"><p>The callback that will be called when the TimerEvent occurs.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>callbackContext</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="description last"><p>The context in which the callback will be called.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>arguments</code></td> 
+       <td class="type"> <span class="param-type">Array.&lt;any&gt;</span> </td> 
+       <td class="description last"><p>Additional arguments to be passed to the callback.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_TimerEvent.js.html">time/TimerEvent.js</a>, 
+      <a href="src_time_TimerEvent.js.html#sunlight-1-line-26">line 26</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="args"><span class="type-signature"></span>args<span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <dl class="details"> 
+     <h5 class="subsection-title">Properties:</h5> 
+     <dl> 
+      <table class="props table table-striped"> 
+       <thead> 
+        <tr> 
+         <th>Name</th> 
+         <th>Type</th> 
+         <th class="last">Description</th> 
+        </tr> 
+       </thead> 
+       <tbody> 
+        <tr> 
+         <td class="name"><code>arguments</code></td> 
+         <td class="type"> <span class="param-type">Array.&lt;any&gt;</span> </td> 
+         <td class="description last"><p>Additional arguments to be passed to the callback.</p></td> 
+        </tr> 
+       </tbody> 
+      </table> 
+     </dl> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_TimerEvent.js.html">time/TimerEvent.js</a>, 
+      <a href="src_time_TimerEvent.js.html#sunlight-1-line-68">line 68</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="callback"><span class="type-signature"></span>callback<span class="type-signature"> :function</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The callback that will be called when the TimerEvent occurs.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_TimerEvent.js.html">time/TimerEvent.js</a>, 
+      <a href="src_time_TimerEvent.js.html#sunlight-1-line-58">line 58</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="callbackContext"><span class="type-signature"></span>callbackContext<span class="type-signature"> :object</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The context in which the callback will be called.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_TimerEvent.js.html">time/TimerEvent.js</a>, 
+      <a href="src_time_TimerEvent.js.html#sunlight-1-line-63">line 63</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="delay"><span class="type-signature"></span>delay<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The delay in ms at which this TimerEvent fires.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_TimerEvent.js.html">time/TimerEvent.js</a>, 
+      <a href="src_time_TimerEvent.js.html#sunlight-1-line-38">line 38</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="loop"><span class="type-signature"></span>loop<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>True if this TimerEvent loops, otherwise false.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_TimerEvent.js.html">time/TimerEvent.js</a>, 
+      <a href="src_time_TimerEvent.js.html#sunlight-1-line-53">line 53</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="pendingDelete"><span class="type-signature">&lt;internal&gt; </span>pendingDelete<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A flag that controls if the TimerEvent is pending deletion.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_TimerEvent.js.html">time/TimerEvent.js</a>, 
+      <a href="src_time_TimerEvent.js.html#sunlight-1-line-74">line 74</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="repeatCount"><span class="type-signature"></span>repeatCount<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If this TimerEvent repeats it will do so this many times.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_TimerEvent.js.html">time/TimerEvent.js</a>, 
+      <a href="src_time_TimerEvent.js.html#sunlight-1-line-48">line 48</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="tick"><span class="type-signature"></span>tick<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The tick is the next game clock time that this event will fire at.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_TimerEvent.js.html">time/TimerEvent.js</a>, 
+      <a href="src_time_TimerEvent.js.html#sunlight-1-line-43">line 43</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="timer"><span class="type-signature">&lt;internal, readonly&gt; </span>timer<span class="type-signature"> :<a href="Phaser.Timer.html">Phaser.Timer</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The Timer object that this TimerEvent belongs to.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_TimerEvent.js.html">time/TimerEvent.js</a>, 
+      <a href="src_time_TimerEvent.js.html#sunlight-1-line-33">line 33</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

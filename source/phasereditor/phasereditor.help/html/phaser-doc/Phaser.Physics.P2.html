@@ -1,0 +1,3077 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: P2</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a><a href="Phaser.Physics.html">.Physics</a>.</span> P2 </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="P2"><span class="type-signature"></span>new P2<span class="signature">(game, <span class="optional">config</span>)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This is your main access to the P2 Physics World. From here you can create materials, listen for events and add bodies into the physics simulation.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>game</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Game.html">Phaser.Game</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>Reference to the current game instance.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>config</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>Physics configuration object passed in from the game constructor.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-20">line 20</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Classes</h3> 
+  <dl> 
+   <dt class="class-depth-3"> 
+    <a href="Phaser.Physics.P2.Body.html">Body</a> 
+   </dt> 
+   <dd> 
+   </dd> 
+   <dt class="class-depth-3"> 
+    <a href="Phaser.Physics.P2.BodyDebug.html">BodyDebug</a> 
+   </dt> 
+   <dd> 
+   </dd> 
+   <dt class="class-depth-3"> 
+    <a href="Phaser.Physics.P2.CollisionGroup.html">CollisionGroup</a> 
+   </dt> 
+   <dd> 
+   </dd> 
+   <dt class="class-depth-3"> 
+    <a href="Phaser.Physics.P2.ContactMaterial.html">ContactMaterial</a> 
+   </dt> 
+   <dd> 
+   </dd> 
+   <dt class="class-depth-3"> 
+    <a href="Phaser.Physics.P2.DistanceConstraint.html">DistanceConstraint</a> 
+   </dt> 
+   <dd> 
+   </dd> 
+   <dt class="class-depth-3"> 
+    <a href="Phaser.Physics.P2.FixtureList.html">FixtureList</a> 
+   </dt> 
+   <dd> 
+   </dd> 
+   <dt class="class-depth-3"> 
+    <a href="Phaser.Physics.P2.GearConstraint.html">GearConstraint</a> 
+   </dt> 
+   <dd> 
+   </dd> 
+   <dt class="class-depth-3"> 
+    <a href="Phaser.Physics.P2.InversePointProxy.html">InversePointProxy</a> 
+   </dt> 
+   <dd> 
+   </dd> 
+   <dt class="class-depth-3"> 
+    <a href="Phaser.Physics.P2.LockConstraint.html">LockConstraint</a> 
+   </dt> 
+   <dd> 
+   </dd> 
+   <dt class="class-depth-3"> 
+    <a href="Phaser.Physics.P2.Material.html">Material</a> 
+   </dt> 
+   <dd> 
+   </dd> 
+   <dt class="class-depth-3"> 
+    <a href="Phaser.Physics.P2.PointProxy.html">PointProxy</a> 
+   </dt> 
+   <dd> 
+   </dd> 
+   <dt class="class-depth-3"> 
+    <a href="Phaser.Physics.P2.PrismaticConstraint.html">PrismaticConstraint</a> 
+   </dt> 
+   <dd> 
+   </dd> 
+   <dt class="class-depth-3"> 
+    <a href="Phaser.Physics.P2.RevoluteConstraint.html">RevoluteConstraint</a> 
+   </dt> 
+   <dd> 
+   </dd> 
+   <dt class="class-depth-3"> 
+    <a href="Phaser.Physics.P2.RotationalSpring.html">RotationalSpring</a> 
+   </dt> 
+   <dd> 
+   </dd> 
+   <dt class="class-depth-3"> 
+    <a href="Phaser.Physics.P2.Spring.html">Spring</a> 
+   </dt> 
+   <dd> 
+   </dd> 
+  </dl> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="applyDamping"><span class="type-signature"></span>applyDamping<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Enable to automatically apply body damping each step.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1935">line 1935</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="applyGravity"><span class="type-signature"></span>applyGravity<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Enable to automatically apply gravity each step.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1955">line 1955</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="applySpringForces"><span class="type-signature"></span>applySpringForces<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Enable to automatically apply spring forces each step.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1915">line 1915</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="boundsCollidesWith"><span class="type-signature"></span>boundsCollidesWith<span class="type-signature"> :array</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>An array of the bodies the world bounds collides with.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-232">line 232</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="boundsCollisionGroup"><span class="type-signature"></span>boundsCollisionGroup<span class="type-signature"> :<a href="Phaser.Physics.P2.CollisionGroup.html">Phaser.Physics.P2.CollisionGroup</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A default collision group.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-222">line 222</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="callbackContext"><span class="type-signature"></span>callbackContext<span class="type-signature"> :object</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The context under which the callbacks are fired.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-170">line 170</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="collisionGroups"><span class="type-signature"></span>collisionGroups<span class="type-signature"> :array</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>An array containing the collision groups that have been defined in the World.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-212">line 212</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="config"><span class="type-signature">&lt;internal&gt; </span>config<span class="type-signature"> :object</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The p2 World configuration object.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-48">line 48</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="contactMaterial"><span class="type-signature"></span>contactMaterial<span class="type-signature"> :p2.ContactMaterial</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The default Contact Material being used by the World.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1895">line 1895</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="emitImpactEvent"><span class="type-signature"></span>emitImpactEvent<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Set to true if you want to the world to emit the "impact" event. Turning this off could improve performance.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-2010">line 2010</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="everythingCollisionGroup"><span class="type-signature"></span>everythingCollisionGroup<span class="type-signature"> :<a href="Phaser.Physics.P2.CollisionGroup.html">Phaser.Physics.P2.CollisionGroup</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A default collision group.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-227">line 227</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="frameRate"><span class="type-signature"></span>frameRate<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The frame rate the world will be stepped at. Defaults to 1 / 60, but you can change here. Also see useElapsedTime property.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-60">line 60</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="friction"><span class="type-signature"></span>friction<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Friction between colliding bodies. This value is used if no matching ContactMaterial is found for a Material pair.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1855">line 1855</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="game"><span class="type-signature"></span>game<span class="type-signature"> :<a href="Phaser.Game.html">Phaser.Game</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Local reference to game.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-25">line 25</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="gravity"><span class="type-signature"></span>gravity<span class="type-signature"> :<a href="Phaser.Physics.P2.InversePointProxy.html">Phaser.Physics.P2.InversePointProxy</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The gravity applied to all bodies each step.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-83">line 83</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="materials"><span class="type-signature">&lt;internal&gt; </span>materials<span class="type-signature"> :array.&lt;<a href="Phaser.Physics.P2.Material.html">Phaser.Physics.P2.Material</a>&gt;</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A local array of all created Materials.</p> 
+    </div> 
+    <h5>Type:</h5> 
+    <ul> 
+     <li> <span class="param-type">array.&lt;<a href="Phaser.Physics.P2.Material.html">Phaser.Physics.P2.Material</a>&gt;</span> </li> 
+    </ul> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-78">line 78</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="nothingCollisionGroup"><span class="type-signature"></span>nothingCollisionGroup<span class="type-signature"> :<a href="Phaser.Physics.P2.CollisionGroup.html">Phaser.Physics.P2.CollisionGroup</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A default collision group.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-217">line 217</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onBeginContact"><span class="type-signature"></span>onBeginContact<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This Signal is dispatched when a first contact is created between two bodies. This happens <em>before</em> the step has been done.</p> 
+     <p>It sends 5 arguments: <code>bodyA</code>, <code>bodyB</code>, <code>shapeA</code>, <code>shapeB</code> and <code>contactEquations</code>.</p> 
+     <p>It is possible that in certain situations the <code>bodyA</code> or <code>bodyB</code> values are <code>null</code>. You should check for this in your own code to avoid processing potentially null physics bodies.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-182">line 182</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onBodyAdded"><span class="type-signature"></span>onBodyAdded<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched when a new Body is added to the World.</p> 
+     <p>It sends 1 argument: <code>body</code> which is the <code>Phaser.Physics.P2.Body</code> that was added to the world.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-97">line 97</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onBodyRemoved"><span class="type-signature"></span>onBodyRemoved<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched when a Body is removed to the World.</p> 
+     <p>It sends 1 argument: <code>body</code> which is the <code>Phaser.Physics.P2.Body</code> that was removed from the world.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-106">line 106</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onConstraintAdded"><span class="type-signature"></span>onConstraintAdded<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched when a Constraint is added to the World.</p> 
+     <p>It sends 1 argument: <code>constraint</code> which is the <code>Phaser.Physics.P2.Constraint</code> that was added to the world.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-133">line 133</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onConstraintRemoved"><span class="type-signature"></span>onConstraintRemoved<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched when a Constraint is removed from the World.</p> 
+     <p>It sends 1 argument: <code>constraint</code> which is the <code>Phaser.Physics.P2.Constraint</code> that was removed from the world.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-142">line 142</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onContactMaterialAdded"><span class="type-signature"></span>onContactMaterialAdded<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched when a Contact Material is added to the World.</p> 
+     <p>It sends 1 argument: <code>material</code> which is the <code>Phaser.Physics.P2.ContactMaterial</code> that was added to the world.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-151">line 151</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onContactMaterialRemoved"><span class="type-signature"></span>onContactMaterialRemoved<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched when a Contact Material is removed from the World.</p> 
+     <p>It sends 1 argument: <code>material</code> which is the <code>Phaser.Physics.P2.ContactMaterial</code> that was removed from the world.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-160">line 160</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onEndContact"><span class="type-signature"></span>onEndContact<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This Signal is dispatched when final contact occurs between two bodies. This happens <em>before</em> the step has been done.</p> 
+     <p>It sends 4 arguments: <code>bodyA</code>, <code>bodyB</code>, <code>shapeA</code> and <code>shapeB</code>.</p> 
+     <p>It is possible that in certain situations the <code>bodyA</code> or <code>bodyB</code> values are <code>null</code>. You should check for this in your own code to avoid processing potentially null physics bodies.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-194">line 194</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onSpringAdded"><span class="type-signature"></span>onSpringAdded<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched when a Spring is added to the World.</p> 
+     <p>It sends 1 argument: <code>spring</code> which is either a <code>Phaser.Physics.P2.Spring</code>, <code>p2.LinearSpring</code> or <code>p2.RotationalSpring</code> that was added to the world.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-115">line 115</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onSpringRemoved"><span class="type-signature"></span>onSpringRemoved<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched when a Spring is removed from the World.</p> 
+     <p>It sends 1 argument: <code>spring</code> which is either a <code>Phaser.Physics.P2.Spring</code>, <code>p2.LinearSpring</code> or <code>p2.RotationalSpring</code> that was removed from the world.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-124">line 124</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="paused"><span class="type-signature"></span>paused<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The paused state of the P2 World.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-72">line 72</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="postBroadphaseCallback"><span class="type-signature"></span>postBroadphaseCallback<span class="type-signature"> :function</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A postBroadphase callback.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-165">line 165</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="restitution"><span class="type-signature"></span>restitution<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Default coefficient of restitution between colliding bodies. This value is used if no matching ContactMaterial is found for a Material pair.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1875">line 1875</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="sleepMode"><span class="type-signature"></span>sleepMode<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>How to deactivate bodies during simulation. Possible modes are: World.NO_SLEEPING, World.BODY_SLEEPING and World.ISLAND_SLEEPING. If sleeping is enabled, you might need to wake up the bodies if they fall asleep when they shouldn't. If you want to enable sleeping in the world, but want to disable it for a particular body, see Body.allowSleep.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-2030">line 2030</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="solveConstraints"><span class="type-signature"></span>solveConstraints<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Enable/disable constraint solving in each step.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1975">line 1975</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="time"><span class="type-signature">&lt;readonly&gt; </span>time<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The World time.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1995">line 1995</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="total"><span class="type-signature">&lt;readonly&gt; </span>total<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The total number of bodies in the world.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-2052">line 2052</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="useElapsedTime"><span class="type-signature"></span>useElapsedTime<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If true the frameRate value will be ignored and instead p2 will step with the value of Game.Time.physicsElapsed, which is a delta time value.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-66">line 66</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="walls"><span class="type-signature"></span>walls<span class="type-signature"> :object</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>An object containing the 4 wall bodies that bound the physics world.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-88">line 88</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="world"><span class="type-signature">&lt;internal&gt; </span>world<span class="type-signature"> :p2.World</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The p2 World in which the simulation is run.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-54">line 54</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+  <h3 class="subsection-title">Methods</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="addBody"><span class="type-signature"></span>addBody<span class="signature">(body)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Add a body to the world.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>body</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a></span> </td> 
+       <td class="description last"><p>The Body to add to the World.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>True if the Body was added successfully, otherwise false.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-903">line 903</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="addConstraint"><span class="type-signature"></span>addConstraint<span class="signature">(constraint)</span><span class="type-signature"> ? {Phaser.Physics.P2.Constraint}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Adds a Constraint to the world.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>constraint</code></td> 
+       <td class="type"> <span class="param-type">Phaser.Physics.P2.Constraint</span> </td> 
+       <td class="description last"><p>The Constraint to add to the World.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">Phaser.Physics.P2.Constraint</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The Constraint that was added.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1135">line 1135</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="addContactMaterial"><span class="type-signature"></span>addContactMaterial<span class="signature">(material)</span><span class="type-signature"> ? {<a href="Phaser.Physics.P2.ContactMaterial.html">Phaser.Physics.P2.ContactMaterial</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Adds a Contact Material to the world.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>material</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Physics.P2.ContactMaterial.html">Phaser.Physics.P2.ContactMaterial</a></span> </td> 
+       <td class="description last"><p>The Contact Material to be added to the World.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Physics.P2.ContactMaterial.html">Phaser.Physics.P2.ContactMaterial</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The Contact Material that was added.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1169">line 1169</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="addSpring"><span class="type-signature"></span>addSpring<span class="signature">(spring)</span><span class="type-signature"> ? {<a href="Phaser.Physics.P2.Spring.html">Phaser.Physics.P2.Spring</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Adds a Spring to the world.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>spring</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Physics.P2.Spring.html">Phaser.Physics.P2.Spring</a></span> | <span class="param-type">p2.LinearSpring</span> | <span class="param-type">p2.RotationalSpring</span> </td> 
+       <td class="description last"><p>The Spring to add to the World.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Physics.P2.Spring.html">Phaser.Physics.P2.Spring</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The Spring that was added.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-947">line 947</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="beginContactHandler"><span class="type-signature"></span>beginContactHandler<span class="signature">(event)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Handles a p2 begin contact event.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>event</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="description last"><p>The event data.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-502">line 502</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="clear"><span class="type-signature"></span>clear<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Clears all bodies from the simulation, resets callbacks and resets the collision bitmask.</p> 
+     <p>The P2 world is also cleared:</p> 
+     <ul> 
+      <li>Removes all solver equations</li> 
+      <li>Removes all constraints</li> 
+      <li>Removes all bodies</li> 
+      <li>Removes all springs</li> 
+      <li>Removes all contact materials</li> 
+     </ul> 
+     <p>This is called automatically when you switch state.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-819">line 819</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="clearTilemapLayerBodies"><span class="type-signature"></span>clearTilemapLayerBodies<span class="signature">(map, <span class="optional">layer</span>)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Clears all physics bodies from the given TilemapLayer that were created with <code>World.convertTilemap</code>.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>map</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Tilemap.html">Phaser.Tilemap</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>The Tilemap to get the map data from.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>layer</code></td> 
+       <td class="type"> <span class="param-type">number</span> | <span class="param-type">string</span> | <span class="param-type"><a href="Phaser.TilemapLayer.html">Phaser.TilemapLayer</a></span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>The layer to operate on. If not given will default to map.currentLayer.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1682">line 1682</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="convertCollisionObjects"><span class="type-signature"></span>convertCollisionObjects<span class="signature">(map, <span class="optional">layer</span>, <span class="optional">addToWorld</span>)</span><span class="type-signature"> ? {array}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Converts all of the polylines objects inside a Tiled ObjectGroup into physics bodies that are added to the world. Note that the polylines must be created in such a way that they can withstand polygon decomposition.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>map</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Tilemap.html">Phaser.Tilemap</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The Tilemap to get the map data from.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>layer</code></td> 
+       <td class="type"> <span class="param-type">number</span> | <span class="param-type">string</span> | <span class="param-type"><a href="Phaser.TilemapLayer.html">Phaser.TilemapLayer</a></span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The layer to operate on. If not given will default to map.currentLayer.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>addToWorld</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> true </td> 
+       <td class="description last"><p>If true it will automatically add each body to the world.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">array</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>An array of the Phaser.Physics.Body objects that have been created.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1641">line 1641</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="convertTilemap"><span class="type-signature"></span>convertTilemap<span class="signature">(map, <span class="optional">layer</span>, <span class="optional">addToWorld</span>, <span class="optional">optimize</span>)</span><span class="type-signature"> ? {array}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Goes through all tiles in the given Tilemap and TilemapLayer and converts those set to collide into physics bodies. Only call this <em>after</em> you have specified all of the tiles you wish to collide with calls like Tilemap.setCollisionBetween, etc. Every time you call this method it will destroy any previously created bodies and remove them from the world. Therefore understand it's a very expensive operation and not to be done in a core game update loop.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>map</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Tilemap.html">Phaser.Tilemap</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The Tilemap to get the map data from.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>layer</code></td> 
+       <td class="type"> <span class="param-type">number</span> | <span class="param-type">string</span> | <span class="param-type"><a href="Phaser.TilemapLayer.html">Phaser.TilemapLayer</a></span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The layer to operate on. If not given will default to map.currentLayer.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>addToWorld</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> true </td> 
+       <td class="description last"><p>If true it will automatically add each body to the world, otherwise it's up to you to do so.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>optimize</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> true </td> 
+       <td class="description last"><p>If true adjacent colliding tiles will be combined into a single body to save processing. However it means you cannot perform specific Tile to Body collision responses.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">array</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>An array of the Phaser.Physics.P2.Body objects that were created.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1704">line 1704</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="createBody"><span class="type-signature"></span>createBody<span class="signature">(x, y, mass, <span class="optional">addToWorld</span>, options, points)</span><span class="type-signature"> ? {<a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Creates a new Body and adds it to the World.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>x</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The x coordinate of Body.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>y</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The y coordinate of Body.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>mass</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The mass of the Body. A mass of 0 means a 'static' Body is created.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>addToWorld</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>Automatically add this Body to the world? (usually false as it won't have any shapes on construction).</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>options</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>An object containing the build options:</p> <h6>Properties</h6> 
+        <table class="params table table-striped"> 
+         <thead> 
+          <tr> 
+           <th>Name</th> 
+           <th>Type</th> 
+           <th>Argument</th> 
+           <th>Default</th> 
+           <th class="last">Description</th> 
+          </tr> 
+         </thead> 
+         <tbody> 
+          <tr> 
+           <td class="name"><code>optimalDecomp</code></td> 
+           <td class="type"> <span class="param-type">boolean</span> </td> 
+           <td class="attributes"> &lt;optional&gt;<br> </td> 
+           <td class="default"> false </td> 
+           <td class="description last"><p>Set to true if you need optimal decomposition. Warning: very slow for polygons with more than 10 vertices.</p></td> 
+          </tr> 
+          <tr> 
+           <td class="name"><code>skipSimpleCheck</code></td> 
+           <td class="type"> <span class="param-type">boolean</span> </td> 
+           <td class="attributes"> &lt;optional&gt;<br> </td> 
+           <td class="default"> false </td> 
+           <td class="description last"><p>Set to true if you already know that the path is not intersecting itself.</p></td> 
+          </tr> 
+          <tr> 
+           <td class="name"><code>removeCollinearPoints</code></td> 
+           <td class="type"> <span class="param-type">boolean</span> | <span class="param-type">number</span> </td> 
+           <td class="attributes"> &lt;optional&gt;<br> </td> 
+           <td class="default"> false </td> 
+           <td class="description last"><p>Set to a number (angle threshold value) to remove collinear points, or false to keep all points.</p></td> 
+          </tr> 
+         </tbody> 
+        </table> </td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>points</code></td> 
+       <td class="type"> <span class="param-type">Array.&lt;number&gt;</span> | <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>An array of 2d vectors that form the convex or concave polygon. Either [[0,0], [0,1],...] or a flat array of numbers that will be interpreted as [x,y, x,y, ...], or the arguments passed can be flat x,y values e.g. <code>setPolygon(options, x,y, x,y, x,y, ...)</code> where <code>x</code> and <code>y</code> are numbers.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The body</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1558">line 1558</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="createCollisionGroup"><span class="type-signature"></span>createCollisionGroup<span class="signature">(<span class="optional">object</span>)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Creates a new Collision Group and optionally applies it to the given object. Collision Groups are handled using bitmasks, therefore you have a fixed limit you can create before you need to re-use older groups.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>object</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Group.html">Phaser.Group</a></span> | <span class="param-type"><a href="Phaser.Sprite.html">Phaser.Sprite</a></span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>An optional Sprite or Group to apply the Collision Group to. If a Group is given it will be applied to all top-level children.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1427">line 1427</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="createContactMaterial"><span class="type-signature"></span>createContactMaterial<span class="signature">(<span class="optional">materialA</span>, <span class="optional">materialB</span>, <span class="optional">options</span>)</span><span class="type-signature"> ? {<a href="Phaser.Physics.P2.ContactMaterial.html">Phaser.Physics.P2.ContactMaterial</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Creates a Contact Material from the two given Materials. You can then edit the properties of the Contact Material directly.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>materialA</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Physics.P2.Material.html">Phaser.Physics.P2.Material</a></span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>The first Material to create the ContactMaterial from. If undefined it will create a new Material object first.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>materialB</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Physics.P2.Material.html">Phaser.Physics.P2.Material</a></span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>The second Material to create the ContactMaterial from. If undefined it will create a new Material object first.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>options</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>Material options object.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Physics.P2.ContactMaterial.html">Phaser.Physics.P2.ContactMaterial</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The Contact Material that was created.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1262">line 1262</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="createDistanceConstraint"><span class="type-signature"></span>createDistanceConstraint<span class="signature">(bodyA, bodyB, distance, <span class="optional">localAnchorA</span>, <span class="optional">localAnchorB</span>, <span class="optional">maxForce</span>)</span><span class="type-signature"> ? {<a href="Phaser.Physics.P2.DistanceConstraint.html">Phaser.Physics.P2.DistanceConstraint</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Creates a constraint that tries to keep the distance between two bodies constant.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>bodyA</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Sprite.html">Phaser.Sprite</a></span> | <span class="param-type"><a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a></span> | <span class="param-type"><a href="p2.Body.html">p2.Body</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>First connected body.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>bodyB</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Sprite.html">Phaser.Sprite</a></span> | <span class="param-type"><a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a></span> | <span class="param-type"><a href="p2.Body.html">p2.Body</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>Second connected body.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>distance</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>The distance to keep between the bodies.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>localAnchorA</code></td> 
+       <td class="type"> <span class="param-type">Array</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>The anchor point for bodyA, defined locally in bodyA frame. Defaults to [0,0].</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>localAnchorB</code></td> 
+       <td class="type"> <span class="param-type">Array</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>The anchor point for bodyB, defined locally in bodyB frame. Defaults to [0,0].</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>maxForce</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>The maximum force that should be applied to constrain the bodies.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Physics.P2.DistanceConstraint.html">Phaser.Physics.P2.DistanceConstraint</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The constraint</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-995">line 995</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="createGearConstraint"><span class="type-signature"></span>createGearConstraint<span class="signature">(bodyA, bodyB, <span class="optional">angle</span>, <span class="optional">ratio</span>)</span><span class="type-signature"> ? {<a href="Phaser.Physics.P2.GearConstraint.html">Phaser.Physics.P2.GearConstraint</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Creates a constraint that tries to keep the distance between two bodies constant.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>bodyA</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Sprite.html">Phaser.Sprite</a></span> | <span class="param-type"><a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a></span> | <span class="param-type"><a href="p2.Body.html">p2.Body</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>First connected body.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>bodyB</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Sprite.html">Phaser.Sprite</a></span> | <span class="param-type"><a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a></span> | <span class="param-type"><a href="p2.Body.html">p2.Body</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>Second connected body.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>angle</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>The relative angle</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>ratio</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 1 </td> 
+       <td class="description last"><p>The gear ratio.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Physics.P2.GearConstraint.html">Phaser.Physics.P2.GearConstraint</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The constraint</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1023">line 1023</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="createLockConstraint"><span class="type-signature"></span>createLockConstraint<span class="signature">(bodyA, bodyB, <span class="optional">offset</span>, <span class="optional">angle</span>, <span class="optional">maxForce</span>)</span><span class="type-signature"> ? {<a href="Phaser.Physics.P2.LockConstraint.html">Phaser.Physics.P2.LockConstraint</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Locks the relative position between two bodies.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>bodyA</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Sprite.html">Phaser.Sprite</a></span> | <span class="param-type"><a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a></span> | <span class="param-type"><a href="p2.Body.html">p2.Body</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>First connected body.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>bodyB</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Sprite.html">Phaser.Sprite</a></span> | <span class="param-type"><a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a></span> | <span class="param-type"><a href="p2.Body.html">p2.Body</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>Second connected body.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>offset</code></td> 
+       <td class="type"> <span class="param-type">Array</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The offset of bodyB in bodyA's frame. The value is an array with 2 elements matching x and y, i.e: [32, 32].</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>angle</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>The angle of bodyB in bodyA's frame.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>maxForce</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The maximum force that should be applied to constrain the bodies.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Physics.P2.LockConstraint.html">Phaser.Physics.P2.LockConstraint</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The constraint</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1078">line 1078</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="createMaterial"><span class="type-signature"></span>createMaterial<span class="signature">(<span class="optional">name</span>, <span class="optional">body</span>)</span><span class="type-signature"> ? {<a href="Phaser.Physics.P2.Material.html">Phaser.Physics.P2.Material</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Creates a Material. Materials are applied to Shapes owned by a Body and can be set with Body.setMaterial(). Materials are a way to control what happens when Shapes collide. Combine unique Materials together to create Contact Materials. Contact Materials have properties such as friction and restitution that allow for fine-grained collision control between different Materials.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>name</code></td> 
+       <td class="type"> <span class="param-type">string</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>Optional name of the Material. Each Material has a unique ID but string names are handy for debugging.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>body</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a></span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>Optional Body. If given it will assign the newly created Material to the Body shapes.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Physics.P2.Material.html">Phaser.Physics.P2.Material</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The Material that was created. This is also stored in Phaser.Physics.P2.materials.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1235">line 1235</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="createParticle"><span class="type-signature"></span>createParticle<span class="signature">(x, y, mass, <span class="optional">addToWorld</span>, options, points)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Creates a new Particle and adds it to the World.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>x</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The x coordinate of Body.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>y</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The y coordinate of Body.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>mass</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The mass of the Body. A mass of 0 means a 'static' Body is created.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>addToWorld</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>Automatically add this Body to the world? (usually false as it won't have any shapes on construction).</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>options</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>An object containing the build options:</p> <h6>Properties</h6> 
+        <table class="params table table-striped"> 
+         <thead> 
+          <tr> 
+           <th>Name</th> 
+           <th>Type</th> 
+           <th>Argument</th> 
+           <th>Default</th> 
+           <th class="last">Description</th> 
+          </tr> 
+         </thead> 
+         <tbody> 
+          <tr> 
+           <td class="name"><code>optimalDecomp</code></td> 
+           <td class="type"> <span class="param-type">boolean</span> </td> 
+           <td class="attributes"> &lt;optional&gt;<br> </td> 
+           <td class="default"> false </td> 
+           <td class="description last"><p>Set to true if you need optimal decomposition. Warning: very slow for polygons with more than 10 vertices.</p></td> 
+          </tr> 
+          <tr> 
+           <td class="name"><code>skipSimpleCheck</code></td> 
+           <td class="type"> <span class="param-type">boolean</span> </td> 
+           <td class="attributes"> &lt;optional&gt;<br> </td> 
+           <td class="default"> false </td> 
+           <td class="description last"><p>Set to true if you already know that the path is not intersecting itself.</p></td> 
+          </tr> 
+          <tr> 
+           <td class="name"><code>removeCollinearPoints</code></td> 
+           <td class="type"> <span class="param-type">boolean</span> | <span class="param-type">number</span> </td> 
+           <td class="attributes"> &lt;optional&gt;<br> </td> 
+           <td class="default"> false </td> 
+           <td class="description last"><p>Set to a number (angle threshold value) to remove collinear points, or false to keep all points.</p></td> 
+          </tr> 
+         </tbody> 
+        </table> </td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>points</code></td> 
+       <td class="type"> <span class="param-type">Array.&lt;number&gt;</span> | <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>An array of 2d vectors that form the convex or concave polygon. Either [[0,0], [0,1],...] or a flat array of numbers that will be interpreted as [x,y, x,y, ...], or the arguments passed can be flat x,y values e.g. <code>setPolygon(options, x,y, x,y, x,y, ...)</code> where <code>x</code> and <code>y</code> are numbers.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1600">line 1600</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="createPrismaticConstraint"><span class="type-signature"></span>createPrismaticConstraint<span class="signature">(bodyA, bodyB, <span class="optional">lockRotation</span>, <span class="optional">anchorA</span>, <span class="optional">anchorB</span>, <span class="optional">axis</span>, <span class="optional">maxForce</span>)</span><span class="type-signature"> ? {<a href="Phaser.Physics.P2.PrismaticConstraint.html">Phaser.Physics.P2.PrismaticConstraint</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Constraint that only allows bodies to move along a line, relative to each other. See http://www.iforce2d.net/b2dtut/joints-prismatic</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>bodyA</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Sprite.html">Phaser.Sprite</a></span> | <span class="param-type"><a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a></span> | <span class="param-type"><a href="p2.Body.html">p2.Body</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>First connected body.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>bodyB</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Sprite.html">Phaser.Sprite</a></span> | <span class="param-type"><a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a></span> | <span class="param-type"><a href="p2.Body.html">p2.Body</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>Second connected body.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>lockRotation</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> true </td> 
+       <td class="description last"><p>If set to false, bodyB will be free to rotate around its anchor point.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>anchorA</code></td> 
+       <td class="type"> <span class="param-type">Array</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>Body A's anchor point, defined in its own local frame. The value is an array with 2 elements matching x and y, i.e: [32, 32].</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>anchorB</code></td> 
+       <td class="type"> <span class="param-type">Array</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>Body A's anchor point, defined in its own local frame. The value is an array with 2 elements matching x and y, i.e: [32, 32].</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>axis</code></td> 
+       <td class="type"> <span class="param-type">Array</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>An axis, defined in body A frame, that body B's anchor point may slide along. The value is an array with 2 elements matching x and y, i.e: [32, 32].</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>maxForce</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The maximum force that should be applied to constrain the bodies.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Physics.P2.PrismaticConstraint.html">Phaser.Physics.P2.PrismaticConstraint</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The constraint</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1105">line 1105</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="createRevoluteConstraint"><span class="type-signature"></span>createRevoluteConstraint<span class="signature">(bodyA, pivotA, bodyB, pivotB, <span class="optional">maxForce</span>, <span class="optional">worldPivot</span>)</span><span class="type-signature"> ? {<a href="Phaser.Physics.P2.RevoluteConstraint.html">Phaser.Physics.P2.RevoluteConstraint</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Connects two bodies at given offset points, letting them rotate relative to each other around this point. The pivot points are given in world (pixel) coordinates.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>bodyA</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Sprite.html">Phaser.Sprite</a></span> | <span class="param-type"><a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a></span> | <span class="param-type"><a href="p2.Body.html">p2.Body</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>First connected body.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>pivotA</code></td> 
+       <td class="type"> <span class="param-type">Array</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The point relative to the center of mass of bodyA which bodyA is constrained to. The value is an array with 2 elements matching x and y, i.e: [32, 32].</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>bodyB</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Sprite.html">Phaser.Sprite</a></span> | <span class="param-type"><a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a></span> | <span class="param-type"><a href="p2.Body.html">p2.Body</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>Second connected body.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>pivotB</code></td> 
+       <td class="type"> <span class="param-type">Array</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The point relative to the center of mass of bodyB which bodyB is constrained to. The value is an array with 2 elements matching x and y, i.e: [32, 32].</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>maxForce</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>The maximum force that should be applied to constrain the bodies.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>worldPivot</code></td> 
+       <td class="type"> <span class="param-type">Float32Array</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> null </td> 
+       <td class="description last"><p>A pivot point given in world coordinates. If specified, localPivotA and localPivotB are automatically computed from this value.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Physics.P2.RevoluteConstraint.html">Phaser.Physics.P2.RevoluteConstraint</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The constraint</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1049">line 1049</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="createRotationalSpring"><span class="type-signature"></span>createRotationalSpring<span class="signature">(bodyA, bodyB, <span class="optional">restAngle</span>, <span class="optional">stiffness</span>, <span class="optional">damping</span>)</span><span class="type-signature"> ? {<a href="Phaser.Physics.P2.RotationalSpring.html">Phaser.Physics.P2.RotationalSpring</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Creates a rotational spring, connecting two bodies. A spring can have a resting length, a stiffness and damping.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>bodyA</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Sprite.html">Phaser.Sprite</a></span> | <span class="param-type"><a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a></span> | <span class="param-type"><a href="p2.Body.html">p2.Body</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>First connected body.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>bodyB</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Sprite.html">Phaser.Sprite</a></span> | <span class="param-type"><a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a></span> | <span class="param-type"><a href="p2.Body.html">p2.Body</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>Second connected body.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>restAngle</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The relative angle of bodies at which the spring is at rest. If not given, it's set to the current relative angle between the bodies.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>stiffness</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 100 </td> 
+       <td class="description last"><p>Stiffness of the spring. A number &gt;= 0.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>damping</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 1 </td> 
+       <td class="description last"><p>Damping of the spring. A number &gt;= 0.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Physics.P2.RotationalSpring.html">Phaser.Physics.P2.RotationalSpring</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The spring</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1531">line 1531</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="createSpring"><span class="type-signature"></span>createSpring<span class="signature">(bodyA, bodyB, <span class="optional">restLength</span>, <span class="optional">stiffness</span>, <span class="optional">damping</span>, <span class="optional">worldA</span>, <span class="optional">worldB</span>, <span class="optional">localA</span>, <span class="optional">localB</span>)</span><span class="type-signature"> ? {<a href="Phaser.Physics.P2.Spring.html">Phaser.Physics.P2.Spring</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Creates a linear spring, connecting two bodies. A spring can have a resting length, a stiffness and damping.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>bodyA</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Sprite.html">Phaser.Sprite</a></span> | <span class="param-type"><a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a></span> | <span class="param-type"><a href="p2.Body.html">p2.Body</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>First connected body.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>bodyB</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Sprite.html">Phaser.Sprite</a></span> | <span class="param-type"><a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a></span> | <span class="param-type"><a href="p2.Body.html">p2.Body</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>Second connected body.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>restLength</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 1 </td> 
+       <td class="description last"><p>Rest length of the spring. A number &gt; 0.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>stiffness</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 100 </td> 
+       <td class="description last"><p>Stiffness of the spring. A number &gt;= 0.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>damping</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 1 </td> 
+       <td class="description last"><p>Damping of the spring. A number &gt;= 0.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>worldA</code></td> 
+       <td class="type"> <span class="param-type">Array</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>Where to hook the spring to body A in world coordinates. This value is an array by 2 elements, x and y, i.e: [32, 32].</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>worldB</code></td> 
+       <td class="type"> <span class="param-type">Array</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>Where to hook the spring to body B in world coordinates. This value is an array by 2 elements, x and y, i.e: [32, 32].</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>localA</code></td> 
+       <td class="type"> <span class="param-type">Array</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>Where to hook the spring to body A in local body coordinates. This value is an array by 2 elements, x and y, i.e: [32, 32].</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>localB</code></td> 
+       <td class="type"> <span class="param-type">Array</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>Where to hook the spring to body B in local body coordinates. This value is an array by 2 elements, x and y, i.e: [32, 32].</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Physics.P2.Spring.html">Phaser.Physics.P2.Spring</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The spring</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1500">line 1500</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="destroy"><span class="type-signature"></span>destroy<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Clears all bodies from the simulation and unlinks World from Game. Should only be called on game shutdown. Call <code>clear</code> on a State change.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-890">line 890</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="enable"><span class="type-signature"></span>enable<span class="signature">(object, <span class="optional">debug</span>, <span class="optional">children</span>)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This will create a P2 Physics body on the given game object or array of game objects. A game object can only have 1 physics body active at any one time, and it can't be changed until the object is destroyed. Note: When the game object is enabled for P2 physics it has its anchor x/y set to 0.5 so it becomes centered.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>object</code></td> 
+       <td class="type"> <span class="param-type">object</span> | <span class="param-type">array</span> | <span class="param-type"><a href="Phaser.Group.html">Phaser.Group</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The game object to create the physics body on. Can also be an array or Group of objects, a body will be created on every child that has a <code>body</code> property.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>debug</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>Create a debug object to go with this body?</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>children</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> true </td> 
+       <td class="description last"><p>Should a body be created on all children of this object? If true it will recurse down the display list as far as it can go.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-313">line 313</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="enableBody"><span class="type-signature"></span>enableBody<span class="signature">(object, debug)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Creates a P2 Physics body on the given game object. A game object can only have 1 physics body active at any one time, and it can't be changed until the body is nulled.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>object</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="description last"><p>The game object to create the physics body on. A body will only be created if this object has a null <code>body</code> property.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>debug</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="description last"><p>Create a debug object to go with this body?</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-372">line 372</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="endContactHandler"><span class="type-signature"></span>endContactHandler<span class="signature">(event)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Handles a p2 end contact event.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>event</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="description last"><p>The event data.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-527">line 527</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="getBodies"><span class="type-signature"></span>getBodies<span class="signature">()</span><span class="type-signature"> ? {array.&lt;<a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a>&gt;}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Populates and returns an array with references to of all current Bodies in the world.</p> 
+    </div> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">array.&lt;<a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a>&gt;</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>An array containing all current Bodies in the world.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1282">line 1282</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="getBody"><span class="type-signature"></span>getBody<span class="signature">(object)</span><span class="type-signature"> ? {<a href="p2.Body.html">p2.Body</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Checks the given object to see if it has a p2.Body and if so returns it.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>object</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="description last"><p>The object to check for a p2.Body on.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="p2.Body.html">p2.Body</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The p2.Body, or null if not found.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1302">line 1302</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="getConstraints"><span class="type-signature"></span>getConstraints<span class="signature">()</span><span class="type-signature"> ? {array.&lt;Phaser.Physics.P2.Constraint&gt;}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Populates and returns an array of all current Constraints in the world. You will get an array of p2 constraints back. This can be of mixed types, for example the array may contain PrismaticConstraints, RevoluteConstraints or any other valid p2 constraint type.</p> 
+    </div> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">array.&lt;Phaser.Physics.P2.Constraint&gt;</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>An array containing all current Constraints in the world.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1351">line 1351</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="getContactMaterial"><span class="type-signature"></span>getContactMaterial<span class="signature">(materialA, materialB)</span><span class="type-signature"> ? {<a href="Phaser.Physics.P2.ContactMaterial.html">Phaser.Physics.P2.ContactMaterial</a>|boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Gets a Contact Material based on the two given Materials.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>materialA</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Physics.P2.Material.html">Phaser.Physics.P2.Material</a></span> </td> 
+       <td class="description last"><p>The first Material to search for.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>materialB</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Physics.P2.Material.html">Phaser.Physics.P2.Material</a></span> </td> 
+       <td class="description last"><p>The second Material to search for.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Physics.P2.ContactMaterial.html">Phaser.Physics.P2.ContactMaterial</a></span> | 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The Contact Material or false if none was found matching the Materials given.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1203">line 1203</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="getSprings"><span class="type-signature"></span>getSprings<span class="signature">()</span><span class="type-signature"> ? {array.&lt;<a href="Phaser.Physics.P2.Spring.html">Phaser.Physics.P2.Spring</a>&gt;}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Populates and returns an array of all current Springs in the world.</p> 
+    </div> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">array.&lt;<a href="Phaser.Physics.P2.Spring.html">Phaser.Physics.P2.Spring</a>&gt;</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>An array containing all current Springs in the world.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1331">line 1331</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="hitTest"><span class="type-signature"></span>hitTest<span class="signature">(worldPoint, <span class="optional">bodies</span>, <span class="optional">precision</span>, <span class="optional">filterStatic</span>)</span><span class="type-signature"> ? {Array}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Test if a world point overlaps bodies. You will get an array of actual P2 bodies back. You can find out which Sprite a Body belongs to (if any) by checking the Body.parent.sprite property. Body.parent is a Phaser.Physics.P2.Body property.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>worldPoint</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Point.html">Phaser.Point</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>Point to use for intersection tests. The points values must be in world (pixel) coordinates.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>bodies</code></td> 
+       <td class="type"> <span class="param-type">Array.&lt;(<a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a>|<a href="Phaser.Sprite.html">Phaser.Sprite</a>|<a href="p2.Body.html">p2.Body</a>)&gt;</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>A list of objects to check for intersection. If not given it will check Phaser.Physics.P2.world.bodies (i.e. all world bodies)</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>precision</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 5 </td> 
+       <td class="description last"><p>Used for matching against particles and lines. Adds some margin to these infinitesimal objects.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>filterStatic</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>If true all Static objects will be removed from the results array.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">Array</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>Array of bodies that overlap the point.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1373">line 1373</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="mpx"><span class="type-signature"></span>mpx<span class="signature">(v)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Convert p2 physics value (meters) to pixel scale. By default Phaser uses a scale of 20px per meter. If you need to modify this you can over-ride these functions via the Physics Configuration object.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>v</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The value to convert.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The scaled value.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1793">line 1793</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="mpxi"><span class="type-signature"></span>mpxi<span class="signature">(v)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Convert p2 physics value (meters) to pixel scale and inverses it. By default Phaser uses a scale of 20px per meter. If you need to modify this you can over-ride these functions via the Physics Configuration object.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>v</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The value to convert.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The scaled value.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1823">line 1823</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="pause"><span class="type-signature"></span>pause<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Pauses the P2 World independent of the game pause state.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-752">line 752</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="preUpdate"><span class="type-signature"></span>preUpdate<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Called at the start of the core update loop. Purges flagged bodies from the world.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-295">line 295</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="pxm"><span class="type-signature"></span>pxm<span class="signature">(v)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Convert pixel value to p2 physics scale (meters). By default Phaser uses a scale of 20px per meter. If you need to modify this you can over-ride these functions via the Physics Configuration object.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>v</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The value to convert.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The scaled value.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1808">line 1808</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="pxmi"><span class="type-signature"></span>pxmi<span class="signature">(v)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Convert pixel value to p2 physics scale (meters) and inverses it. By default Phaser uses a scale of 20px per meter. If you need to modify this you can over-ride these functions via the Physics Configuration object.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>v</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The value to convert.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The scaled value.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1838">line 1838</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="removeBody"><span class="type-signature"></span>removeBody<span class="signature">(body)</span><span class="type-signature"> ? {<a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Removes a body from the world. This will silently fail if the body wasn't part of the world to begin with.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>body</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a></span> </td> 
+       <td class="description last"><p>The Body to remove from the World.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The Body that was removed.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-927">line 927</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="removeBodyNextStep"><span class="type-signature"></span>removeBodyNextStep<span class="signature">(body)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This will add a P2 Physics body into the removal list for the next step.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>body</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a></span> </td> 
+       <td class="description last"><p>The body to remove at the start of the next step.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-283">line 283</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="removeConstraint"><span class="type-signature"></span>removeConstraint<span class="signature">(constraint)</span><span class="type-signature"> ? {Phaser.Physics.P2.Constraint}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Removes a Constraint from the world.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>constraint</code></td> 
+       <td class="type"> <span class="param-type">Phaser.Physics.P2.Constraint</span> </td> 
+       <td class="description last"><p>The Constraint to be removed from the World.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">Phaser.Physics.P2.Constraint</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The Constraint that was removed.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1152">line 1152</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="removeContactMaterial"><span class="type-signature"></span>removeContactMaterial<span class="signature">(material)</span><span class="type-signature"> ? {<a href="Phaser.Physics.P2.ContactMaterial.html">Phaser.Physics.P2.ContactMaterial</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Removes a Contact Material from the world.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>material</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Physics.P2.ContactMaterial.html">Phaser.Physics.P2.ContactMaterial</a></span> </td> 
+       <td class="description last"><p>The Contact Material to be removed from the World.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Physics.P2.ContactMaterial.html">Phaser.Physics.P2.ContactMaterial</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The Contact Material that was removed.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1186">line 1186</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="removeSpring"><span class="type-signature"></span>removeSpring<span class="signature">(spring)</span><span class="type-signature"> ? {<a href="Phaser.Physics.P2.Spring.html">Phaser.Physics.P2.Spring</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Removes a Spring from the world.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>spring</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Physics.P2.Spring.html">Phaser.Physics.P2.Spring</a></span> </td> 
+       <td class="description last"><p>The Spring to remove from the World.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Physics.P2.Spring.html">Phaser.Physics.P2.Spring</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The Spring that was removed.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-971">line 971</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="reset"><span class="type-signature"></span>reset<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Called by Phaser.Physics when a State swap occurs. Starts the begin and end Contact listeners again.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-798">line 798</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="resume"><span class="type-signature"></span>resume<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Resumes a paused P2 World.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-763">line 763</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="setBounds"><span class="type-signature"></span>setBounds<span class="signature">(x, y, width, height, <span class="optional">left</span>, <span class="optional">right</span>, <span class="optional">top</span>, <span class="optional">bottom</span>, <span class="optional">setCollisionGroup</span>)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Sets the bounds of the Physics world to match the given world pixel dimensions. You can optionally set which 'walls' to create: left, right, top or bottom. If none of the walls are given it will default to use the walls settings it had previously. I.e. if you previously told it to not have the left or right walls, and you then adjust the world size the newly created bounds will also not have the left and right walls. Explicitly state them in the parameters to override this.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>x</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The x coordinate of the top-left corner of the bounds.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>y</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The y coordinate of the top-left corner of the bounds.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>width</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The width of the bounds.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>height</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The height of the bounds.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>left</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> true </td> 
+       <td class="description last"><p>If true will create the left bounds wall.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>right</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> true </td> 
+       <td class="description last"><p>If true will create the right bounds wall.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>top</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> true </td> 
+       <td class="description last"><p>If true will create the top bounds wall.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>bottom</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> true </td> 
+       <td class="description last"><p>If true will create the bottom bounds wall.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>setCollisionGroup</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> true </td> 
+       <td class="description last"><p>If true the Bounds will be set to use its own Collision Group.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-644">line 644</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="setImpactEvents"><span class="type-signature"></span>setImpactEvents<span class="signature">(state)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Impact event handling is disabled by default. Enable it before any impact events will be dispatched. In a busy world hundreds of impact events can be generated every step, so only enable this if you cannot do what you need via beginContact or collision masks.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>state</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="description last"><p>Set to true to enable impact events, or false to disable.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-393">line 393</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="setMaterial"><span class="type-signature"></span>setMaterial<span class="signature">(material, bodies)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Sets the given Material against all Shapes owned by all the Bodies in the given array.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>material</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Physics.P2.Material.html">Phaser.Physics.P2.Material</a></span> </td> 
+       <td class="description last"><p>The Material to be applied to the given Bodies.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>bodies</code></td> 
+       <td class="type"> <span class="param-type">array.&lt;<a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a>&gt;</span> </td> 
+       <td class="description last"><p>An Array of Body objects that the given Material will be set on.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1217">line 1217</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="setPostBroadphaseCallback"><span class="type-signature"></span>setPostBroadphaseCallback<span class="signature">(callback, context)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Sets a callback to be fired after the Broadphase has collected collision pairs in the world. Just because a pair exists it doesn't mean they <em>will</em> collide, just that they potentially could do. If your calback returns <code>false</code> the pair will be removed from the narrowphase. This will stop them testing for collision this step. Returning <code>true</code> from the callback will ensure they are checked in the narrowphase.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>callback</code></td> 
+       <td class="type"> <span class="param-type">function</span> </td> 
+       <td class="description last"><p>The callback that will receive the postBroadphase event data. It must return a boolean. Set to null to disable an existing callback.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>context</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="description last"><p>The context under which the callback will be fired.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-413">line 413</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="toJSON"><span class="type-signature"></span>toJSON<span class="signature">()</span><span class="type-signature"> ? {object}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Converts the current world into a JSON object.</p> 
+    </div> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">object</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>A JSON representation of the world.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1415">line 1415</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="update"><span class="type-signature"></span>update<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Internal P2 update loop.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-774">line 774</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="updateBoundsCollisionGroup"><span class="type-signature"></span>updateBoundsCollisionGroup<span class="signature">(<span class="optional">setCollisionGroup</span>)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>By default the World will be set to collide everything with everything. The bounds of the world is a Body with 4 shapes, one for each face. If you start to use your own collision groups then your objects will no longer collide with the bounds. To fix this you need to adjust the bounds to use its own collision group first BEFORE changing your Sprites collision group.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>setCollisionGroup</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> true </td> 
+       <td class="description last"><p>If true the Bounds will be set to use its own Collision Group.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-608">line 608</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

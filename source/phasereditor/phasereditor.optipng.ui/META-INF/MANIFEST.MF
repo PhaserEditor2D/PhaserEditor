@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Phaser Editor - Opti PNG UI
+Bundle-SymbolicName: phasereditor.optipng.ui;singleton:=true
+Bundle-Version: 1.1.1.qualifier
+Bundle-Activator: phasereditor.optipng.ui.Activator
+Bundle-Vendor: Boniatillo.com
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources;bundle-version="3.9.1",
+ phasereditor.optipng.core;bundle-version="1.1.1",
+ org.eclipse.ui.navigator;bundle-version="3.5.401",
+ phasereditor.ui;bundle-version="1.1.1"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy

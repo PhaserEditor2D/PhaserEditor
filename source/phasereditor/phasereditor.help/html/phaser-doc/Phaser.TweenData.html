@@ -1,0 +1,691 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: TweenData</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a>.</span> TweenData </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="TweenData"><span class="type-signature"></span>new TweenData<span class="signature">(parent)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A Phaser.Tween contains at least one TweenData object. It contains all of the tween data values, such as the starting and ending values, the ease function, interpolation and duration. The Tween acts as a timeline manager for TweenData objects and can contain multiple TweenData objects.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>parent</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Tween.html">Phaser.Tween</a></span> </td> 
+       <td class="description last"><p>The Tween that owns this TweenData object.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-16">line 16</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id=".COMPLETE"><span class="type-signature">&lt;static, constant&gt; </span>COMPLETE<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-173">line 173</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id=".LOOPED"><span class="type-signature">&lt;static, constant&gt; </span>LOOPED<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-167">line 167</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id=".PENDING"><span class="type-signature">&lt;static, constant&gt; </span>PENDING<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-155">line 155</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id=".RUNNING"><span class="type-signature">&lt;static, constant&gt; </span>RUNNING<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-161">line 161</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="delay"><span class="type-signature"></span>delay<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The amount to delay by until the Tween starts (in ms). Only applies to the start, use repeatDelay to handle repeats.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-107">line 107</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="dt"><span class="type-signature"></span>dt<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Current time value.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-112">line 112</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="duration"><span class="type-signature"></span>duration<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The duration of the tween in ms.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>1000</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-56">line 56</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="easingFunction"><span class="type-signature"></span>easingFunction<span class="type-signature"> :function</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The easing function used for the Tween.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>Phaser.Easing.Default</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-123">line 123</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="game"><span class="type-signature"></span>game<span class="type-signature"> :<a href="Phaser.Game.html">Phaser.Game</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A reference to the currently running Game.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-26">line 26</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="inReverse"><span class="type-signature"></span>inReverse<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>When a Tween is yoyoing this value holds if it's currently playing forwards (false) or in reverse (true).</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-101">line 101</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="interpolate"><span class="type-signature"></span>interpolate<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>True if the Tween will use interpolation (i.e. is an Array to Array tween)</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-84">line 84</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="interpolationContext"><span class="type-signature"></span>interpolationContext<span class="type-signature"> :object</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The interpolation function context used for the Tween.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>Phaser.Math</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-135">line 135</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="interpolationFunction"><span class="type-signature"></span>interpolationFunction<span class="type-signature"> :function</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The interpolation function used for the Tween.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>Phaser.Math.linearInterpolation</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-129">line 129</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="isFrom"><span class="type-signature"></span>isFrom<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Is this a from tween or a to tween?</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-147">line 147</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="isRunning"><span class="type-signature"></span>isRunning<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If the tween is running this is set to <code>true</code>. Unless Phaser.Tween a TweenData that is waiting for a delay to expire is <em>not</em> considered as running.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-141">line 141</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="parent"><span class="type-signature"></span>parent<span class="type-signature"> :<a href="Phaser.Tween.html">Phaser.Tween</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The Tween which owns this TweenData.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-21">line 21</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="percent"><span class="type-signature">&lt;readonly&gt; </span>percent<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A value between 0 and 1 that represents how far through the duration this tween is.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-62">line 62</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="repeatCounter"><span class="type-signature"></span>repeatCounter<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If the Tween is set to repeat this contains the current repeat count.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-73">line 73</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="repeatDelay"><span class="type-signature"></span>repeatDelay<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The amount of time in ms between repeats of this tween.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-78">line 78</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="startTime"><span class="type-signature"></span>startTime<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The time the Tween started or null if it hasn't yet started.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-117">line 117</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="value"><span class="type-signature">&lt;readonly&gt; </span>value<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The current calculated value.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-68">line 68</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="yoyo"><span class="type-signature"></span>yoyo<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>True if the Tween is set to yoyo, otherwise false.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-90">line 90</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="yoyoDelay"><span class="type-signature"></span>yoyoDelay<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The amount of time in ms between yoyos of this tween.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-95">line 95</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+  <h3 class="subsection-title">Methods</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="from"><span class="type-signature"></span>from<span class="signature">(properties, <span class="optional">duration</span>, <span class="optional">ease</span>, <span class="optional">delay</span>, <span class="optional">repeat</span>, <span class="optional">yoyo</span>)</span><span class="type-signature"> ? {<a href="Phaser.TweenData.html">Phaser.TweenData</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Sets this tween to be a <code>from</code> tween on the properties given. A <code>from</code> tween sets the target to the destination value and tweens to its current value. For example a Sprite with an <code>x</code> coordinate of 100 tweened from <code>x</code> 500 would be set to <code>x</code> 500 and then tweened to <code>x</code> 100 by giving a properties object of <code>{ x: 500 }</code>.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>properties</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The properties you want to tween, such as <code>Sprite.x</code> or <code>Sound.volume</code>. Given as a JavaScript object.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>duration</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 1000 </td> 
+       <td class="description last"><p>Duration of this tween in ms.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>ease</code></td> 
+       <td class="type"> <span class="param-type">function</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> null </td> 
+       <td class="description last"><p>Easing function. If not set it will default to Phaser.Easing.Default, which is Phaser.Easing.Linear.None by default but can be over-ridden at will.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>delay</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>Delay before this tween will start, defaults to 0 (no delay). Value given is in ms.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>repeat</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>Should the tween automatically restart once complete? If you want it to run forever set as -1. This ignores any chained tweens.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>yoyo</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>A tween that yoyos will reverse itself and play backwards automatically. A yoyo'd tween doesn't fire the Tween.onComplete event, so listen for Tween.onLoop instead.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.TweenData.html">Phaser.TweenData</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This Tween object.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-205">line 205</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="generateData"><span class="type-signature"></span>generateData<span class="signature">(<span class="optional">frameRate</span>)</span><span class="type-signature"> ? {array}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This will generate an array populated with the tweened object values from start to end. It works by running the tween simulation at the given frame rate based on the values set-up in Tween.to and Tween.from. Just one play through of the tween data is returned, including yoyo if set.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>frameRate</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 60 </td> 
+       <td class="description last"><p>The speed in frames per second that the data should be generated at. The higher the value, the larger the array it creates.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">array</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>An array of tweened values.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-404">line 404</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="start"><span class="type-signature"></span>start<span class="signature">()</span><span class="type-signature"> ? {<a href="Phaser.TweenData.html">Phaser.TweenData</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Starts the Tween running.</p> 
+    </div> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.TweenData.html">Phaser.TweenData</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This Tween object.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-233">line 233</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="to"><span class="type-signature"></span>to<span class="signature">(properties, <span class="optional">duration</span>, <span class="optional">ease</span>, <span class="optional">delay</span>, <span class="optional">repeat</span>, <span class="optional">yoyo</span>)</span><span class="type-signature"> ? {<a href="Phaser.TweenData.html">Phaser.TweenData</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Sets this tween to be a <code>to</code> tween on the properties given. A <code>to</code> tween starts at the current value and tweens to the destination value given. For example a Sprite with an <code>x</code> coordinate of 100 could be tweened to <code>x</code> 200 by giving a properties object of <code>{ x: 200 }</code>.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>properties</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The properties you want to tween, such as <code>Sprite.x</code> or <code>Sound.volume</code>. Given as a JavaScript object.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>duration</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 1000 </td> 
+       <td class="description last"><p>Duration of this tween in ms.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>ease</code></td> 
+       <td class="type"> <span class="param-type">function</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> null </td> 
+       <td class="description last"><p>Easing function. If not set it will default to Phaser.Easing.Default, which is Phaser.Easing.Linear.None by default but can be over-ridden at will.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>delay</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>Delay before this tween will start, defaults to 0 (no delay). Value given is in ms.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>repeat</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>Should the tween automatically restart once complete? If you want it to run forever set as -1. This ignores any chained tweens.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>yoyo</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>A tween that yoyos will reverse itself and play backwards automatically. A yoyo'd tween doesn't fire the Tween.onComplete event, so listen for Tween.onLoop instead.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.TweenData.html">Phaser.TweenData</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This Tween object.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-177">line 177</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="update"><span class="type-signature">&lt;internal&gt; </span>update<span class="signature">(time)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Updates this Tween. This is called automatically by Phaser.Tween.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>time</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>A timestamp passed in by the Tween parent.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The current status of this Tween. One of the Phaser.TweenData constants: PENDING, RUNNING, LOOPED or COMPLETE.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_TweenData.js.html">tween/TweenData.js</a>, 
+      <a href="src_tween_TweenData.js.html#sunlight-1-line-333">line 333</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

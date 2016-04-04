@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Phaser Editor - LibGDX
+Bundle-SymbolicName: phasereditor.libgdx
+Bundle-Version: 1.1.1.qualifier
+Bundle-Vendor: Boniatillo.com
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: com.badlogic.gdx,
+ com.badlogic.gdx.audio,
+ com.badlogic.gdx.backends.lwjgl.audio,
+ com.badlogic.gdx.files,
+ com.badlogic.gdx.graphics,
+ com.badlogic.gdx.graphics.g2d,
+ com.badlogic.gdx.tools,
+ com.badlogic.gdx.tools.texturepacker,
+ com.badlogic.gdx.utils,
+ org.lwjgl.openal
+Bundle-ClassPath: lib/gdx-backend-jglfw.jar,
+ lib/gdx-backend-lwjgl.jar,
+ lib/gdx.jar,
+ lib/gdx-tools.jar,
+ lib/gdx-natives.jar,
+ .

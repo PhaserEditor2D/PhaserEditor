@@ -1,0 +1,27 @@
+{
+    "level": [{
+        "type": "image",
+        "overwrite": false,
+        "key": "mono",
+        "url": "assets/images/mono.png"
+    }],
+    "meta": {
+        "app": "Phaser Editor",
+        "copyright": "Arian Fornaris (boniatillo.com) 2015",
+        "generated": "1433372306339",
+        "version": "1.0",
+        "url": "http://boniatillo.com"
+    },
+    "start": [{
+        "type": "image",
+        "overwrite": false,
+        "key": "tap-to-start",
+        "url": "assets/images/tap-to-start.png"
+    }],
+    "preload": [{
+        "type": "image",
+        "overwrite": false,
+        "key": "loading",
+        "url": "assets/images/loading.png"
+    }]
+}

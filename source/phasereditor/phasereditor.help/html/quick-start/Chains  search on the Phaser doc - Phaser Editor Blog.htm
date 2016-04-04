@@ -1,0 +1,95 @@
+<html>
+
+<head>
+
+</head>
+
+<body>
+
+                <h2 class="title" itemprop="headline"><a href="http://phasereditor.boniatillo.com/blog/quick-start/035-chains">Chains: search on the Phaser doc</a></h2>
+                <div class="desc text-left" itemprop="articleBody">
+                    <p>Phaser Chains is a tool we did to search the Phaser docs. It has an <a href="http://phaserchains.boniatillo.com/">original online version</a> and was integrated in some editors like Brackets, IntelliJ, Eclipse and the <a href="http://phaser.io/learn/chains">Phaser website</a>.</p>
+
+<p><a href="https://www.youtube.com/watch?v=ix2tkLQBTBU&amp;index=4&amp;list=PLB8gI_5U0MvCJuhPv-LBdi_a9PQxYxFqK">Watch a demo video</a></p>
+
+<p>In Phaser Editor we support a native and well integrated version of 
+Chains. When you open Phaser Editor, by default it shows the Chains view
+ in the bottom panel. It is the main source you have to access the 
+Phaser documentation.</p>
+
+<p>However Chains is used by hundred of developers is possible some 
+methods or properties are not listed there, it happens because to build 
+the chains we parse the Phaser jsdocs and this is not always 100% 
+accurate, so if you see there is a method or property is missing in 
+Chains we recommend to checkout the official Phaser Documentation.</p>
+
+<h2>Search for chains</h2>
+
+<p>The main difference of this tool with a common documentation view is that you search for a method chain like:</p>
+
+<p><code>game.add.</code></p>
+
+<p>As you can see the Phaser API makes an extensive use of method/properties chains like <code>game.load.image()</code> or <code>sprite.animations.add</code>.
+ So the Chains idea is that you type the chain you are interested to 
+investigate and then it shows all the matching chains of the Phaser API.</p>
+
+<p><img src="Chains%20%20search%20on%20the%20Phaser%20doc%20-%20Phaser%20Editor%20Blog_files/20151022092416-Chains_SearchChain.png" alt="Chains: search chain"></p>
+
+<p>In the screenshot you can see in the left panel it shows the matching
+ chains. If you click it then it opens the documentation of the last 
+element of the chain. This documentation is shown in the JSDoc tab that 
+is next to the Search tab:</p>
+
+<p><img src="Chains%20%20search%20on%20the%20Phaser%20doc%20-%20Phaser%20Editor%20Blog_files/20151022094428-Chains_JSDoc.png" alt="Chains: JSDoc tab"></p>
+
+<p>In addition to the JSDoc you can see the source code of a chain. Just
+ right click on a chain and select Show Source Code. It opens an editor 
+with the source code of the chain.</p>
+
+<h2>Search examples</h2>
+
+<p>An important source to learn the Phaser stuff is browsing the 
+examples are published in the Phaser website and included in the Phaser 
+download. These examples are small but complete snippets of code that 
+demonstrate and explain a particular question of Phaser.</p>
+
+<p>In Phaser Editor we provide these examples as project templates so 
+you can study Phaser creating an example project. However, it is very 
+useful to have the examples also available in Chains, they are a perfect
+ complement for the  documentation. So when you search for a chain, in 
+the right panel of Chains it shows the matching lines in the different 
+examples. In this way you can discover how that API is used in Phaser.</p>
+
+<p>To see the complete example, as we said, you can create a project 
+based in a particular example, but also in Chains you can click the row 
+of the example and it opens the complete example's file.</p>
+
+<p>The drawback of an example opened from the Chains is that you cannot 
+run it, but the advantage is that you get a quick view of it.</p>
+
+<h2>Using wildcards</h2>
+
+<p>A powerful feature of Chains is that you can search using wildcards <code>*</code>.
+ This allow to you to find chains that you are not sure how they are 
+writing but you remember some parts of it. For example, if in your game 
+you need to listen for an input down event you can write a search 
+pattern like this:</p>
+
+<p><code>game*down*add</code></p>
+
+<p>It matches with:</p>
+
+<p><img src="Chains%20%20search%20on%20the%20Phaser%20doc%20-%20Phaser%20Editor%20Blog_files/20151022105406-Chains_Match1.png" alt="Chains: matches down signal"></p>
+
+<p>If you want to know what classes are extending the <code>Phaser.Sprite</code> then you can search for:</p>
+
+<p><code>extends*Sprite</code></p>
+
+<p><img src="Chains%20%20search%20on%20the%20Phaser%20doc%20-%20Phaser%20Editor%20Blog_files/20151022105827-Chains_Match2.png" alt="Chains: matches Sprite inheritance"></p>
+
+<p>So you can do many combinations.</p>
+                </div><!--//desc-->
+				
+</body>
+</html>
+            

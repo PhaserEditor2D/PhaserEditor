@@ -1,0 +1,817 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: Time</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a>.</span> Time </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="Time"><span class="type-signature"></span>new Time<span class="signature">(game)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This is the core internal game clock.</p> 
+     <p>It manages the elapsed time and calculation of elapsed values, used for game object motion and tweens, and also handles the standard Timer pool.</p> 
+     <p>To create a general timed event, use the master <a href="Phaser.Timer.html">Phaser.Timer</a> accessible through events.</p> 
+     <p>There are different <em>types</em> of time in Phaser:</p> 
+     <ul> 
+      <li><p><strong><em>Game time</em></strong> always runs at the speed of time in real life.</p> <p>Unlike wall-clock time, <em>game time stops when Phaser is paused</em>.</p> <p>Game time is used for <a href="Phaser.Timer.html">timer events</a>.</p> </li> 
+      <li><p><strong><em>Physics time</em></strong> represents the amount of time given to physics calculations.</p> <p><em>When <a href="Phaser.Time.html#slowMotion">slowMotion</a> is in effect physics time runs slower than game time.</em> Like game time, physics time stops when Phaser is paused.</p> <p>Physics time is used for physics calculations and <a href="Phaser.Tween.html">tweens</a>.</p> </li> 
+      <li><p><a href="https://en.wikipedia.org/wiki/Wall-clock_time"><strong><em>Wall-clock time</em></strong></a> represents the duration between two events in real life time.</p> <p>This time is independent of Phaser and always progresses, regardless of if Phaser is paused.</p> </li> 
+     </ul> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>game</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Game.html">Phaser.Game</a></span> </td> 
+       <td class="description last"><p>A reference to the currently running game.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-38">line 38</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="advancedTiming"><span class="type-signature"></span>advancedTiming<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If true then advanced profiling, including the fps rate, fps min/max, suggestedFps and msMin/msMax are updated.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-165">line 165</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="desiredFps"><span class="type-signature"></span>desiredFps<span class="type-signature"> :integer</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The desired frame rate of the game.</p> 
+     <p>This is used is used to calculate the physic / logic multiplier and how to apply catch-up logic updates. The desired frame rate of the game. Defaults to 60.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-596">line 596</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="desiredFpsMult"><span class="type-signature">&lt;internal&gt; </span>desiredFpsMult<span class="type-signature"> :integer</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The desiredFps multiplier as used by Game.update.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-126">line 126</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="elapsed"><span class="type-signature">&lt;internal&gt; </span>elapsed<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Elapsed time since the last time update, in milliseconds, based on <code>now</code>.</p> 
+     <p>This value <em>may</em> include time that the game is paused/inactive.</p> 
+     <p><em>Note:</em> This is updated only once per game loop - even if multiple logic update steps are done. Use physicsTime as a basis of game/logic calculations instead.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-86">line 86</a> 
+     </dt> 
+     <dt class="tag-see">
+      See:
+     </dt> 
+     <dd class="tag-see"> 
+      <ul> 
+       <li>Phaser.Time.time</li> 
+      </ul> 
+     </dd> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="elapsedMS"><span class="type-signature">&lt;internal&gt; </span>elapsedMS<span class="type-signature"> :integer</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The time in ms since the last time update, in milliseconds, based on <code>time</code>.</p> 
+     <p>This value is corrected for game pauses and will be "about zero" after a game is resumed.</p> 
+     <p><em>Note:</em> This is updated once per game loop - even if multiple logic update steps are done. Use physicsTime as a basis of game/logic calculations instead.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-99">line 99</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="events"><span class="type-signature"></span>events<span class="type-signature"> :<a href="Phaser.Timer.html">Phaser.Timer</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A <a href="Phaser.Timer.html">Phaser.Timer</a> object bound to the master clock (this Time object) which events can be added to.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-245">line 245</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="fps"><span class="type-signature">&lt;readonly&gt; </span>fps<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Advanced timing result: Frames per second.</p> 
+     <p>Only calculated if <a href="Phaser.Time.html#advancedTiming">advancedTiming</a> is enabled.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-183">line 183</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="fpsMax"><span class="type-signature"></span>fpsMax<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Advanced timing result: The highest rate the fps has reached (usually no higher than 60fps).</p> 
+     <p>Only calculated if <a href="Phaser.Time.html#advancedTiming">advancedTiming</a> is enabled. This value can be manually reset.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-201">line 201</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="fpsMin"><span class="type-signature"></span>fpsMin<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Advanced timing result: The lowest rate the fps has dropped to.</p> 
+     <p>Only calculated if <a href="Phaser.Time.html#advancedTiming">advancedTiming</a> is enabled. This value can be manually reset.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-192">line 192</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="frames"><span class="type-signature">&lt;readonly&gt; </span>frames<span class="type-signature"> :integer</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Advanced timing result: The number of render frames record in the last second.</p> 
+     <p>Only calculated if <a href="Phaser.Time.html#advancedTiming">advancedTiming</a> is enabled.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-174">line 174</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="game"><span class="type-signature">&lt;internal&gt; </span>game<span class="type-signature"> :<a href="Phaser.Game.html">Phaser.Game</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Local reference to game.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-44">line 44</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="msMax"><span class="type-signature"></span>msMax<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Advanced timing result: The maximum amount of time the game has taken between consecutive frames.</p> 
+     <p>Only calculated if <a href="Phaser.Time.html#advancedTiming">advancedTiming</a> is enabled. This value can be manually reset.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-220">line 220</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="msMin"><span class="type-signature"></span>msMin<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Advanced timing result: The minimum amount of time the game has taken between consecutive frames.</p> 
+     <p>Only calculated if <a href="Phaser.Time.html#advancedTiming">advancedTiming</a> is enabled. This value can be manually reset.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>1000</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-211">line 211</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="now"><span class="type-signature">&lt;internal&gt; </span>now<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>An increasing value representing cumulative milliseconds since an undisclosed epoch.</p> 
+     <p>While this value is in milliseconds and can be used to compute time deltas, it must must <em>not</em> be used with <code>Date.now()</code> as it may not use the same epoch / starting reference.</p> 
+     <p>The source may either be from a high-res source (eg. if RAF is available) or the standard Date.now; the value can only be relied upon within a particular game instance.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-72">line 72</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="pauseDuration"><span class="type-signature"></span>pauseDuration<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Records how long the game was last paused, in milliseconds. (This is not updated until the game is resumed.)</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-227">line 227</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="physicsElapsed"><span class="type-signature"></span>physicsElapsed<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The physics update delta, in fractional seconds.</p> 
+     <p>This should be used as an applicable multiplier by all logic update steps (eg. <code>preUpdate/postUpdate/update</code>) to ensure consistent game timing. Game/logic timing can drift from real-world time if the system is unable to consistently maintain the desired FPS.</p> 
+     <p>With fixed-step updates this is normally equivalent to <code>1.0 / desiredFps</code>.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-112">line 112</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="physicsElapsedMS"><span class="type-signature"></span>physicsElapsedMS<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The physics update delta, in milliseconds - equivalent to <code>physicsElapsed * 1000</code>.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-119">line 119</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="prevTime"><span class="type-signature">&lt;internal&gt; </span>prevTime<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The <code>now</code> when the previous update occurred.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-58">line 58</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="slowMotion"><span class="type-signature"></span>slowMotion<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Scaling factor to make the game move smoothly in slow motion</p> 
+     <ul> 
+      <li>1.0 = normal speed</li> 
+      <li>2.0 = half speed</li> 
+     </ul> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>1</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-158">line 158</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="suggestedFps"><span class="type-signature"></span>suggestedFps<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The suggested frame rate for your game, based on an averaged real frame rate. This value is only populated if <code>Time.advancedTiming</code> is enabled.</p> 
+     <p><em>Note:</em> This is not available until after a few frames have passed; until then it's set to the same value as desiredFps.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-149">line 149</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="time"><span class="type-signature">&lt;internal&gt; </span>time<span class="type-signature"> :integer</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The <code>Date.now()</code> value when the time was last updated.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-51">line 51</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="timeExpected"><span class="type-signature">&lt;internal&gt; </span>timeExpected<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The time when the next call is expected when using setTimer to control the update loop</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-239">line 239</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="timeToCall"><span class="type-signature">&lt;internal&gt; </span>timeToCall<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The value that setTimeout needs to work out when to next update</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-233">line 233</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+  <h3 class="subsection-title">Methods</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="add"><span class="type-signature"></span>add<span class="signature">(timer)</span><span class="type-signature"> ? {<a href="Phaser.Timer.html">Phaser.Timer</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Adds an existing Phaser.Timer object to the Timer pool.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>timer</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Timer.html">Phaser.Timer</a></span> </td> 
+       <td class="description last"><p>An existing Phaser.Timer object.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Timer.html">Phaser.Timer</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The given Phaser.Timer object.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-308">line 308</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="boot"><span class="type-signature">&lt;internal&gt; </span>boot<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Called automatically by Phaser.Game after boot. Should not be called directly.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-293">line 293</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="create"><span class="type-signature"></span>create<span class="signature">(<span class="optional">autoDestroy</span>)</span><span class="type-signature"> ? {<a href="Phaser.Timer.html">Phaser.Timer</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Creates a new stand-alone Phaser.Timer object.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>autoDestroy</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> true </td> 
+       <td class="description last"><p>A Timer that is set to automatically destroy itself will do so after all of its events have been dispatched (assuming no looping events).</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Timer.html">Phaser.Timer</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The Timer object that was created.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-323">line 323</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="elapsedSecondsSince"><span class="type-signature"></span>elapsedSecondsSince<span class="signature">(since)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>How long has passed since the given time (in seconds).</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>since</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The time you want to measure (in seconds).</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>Duration between given time and now (in seconds).</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-571">line 571</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="elapsedSince"><span class="type-signature"></span>elapsedSince<span class="signature">(since)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>How long has passed since the given time.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>since</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The time you want to measure against.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The difference between the given time and now.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-560">line 560</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="refresh"><span class="type-signature"></span>refresh<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Refreshes the Time.time and Time.elapsedMS properties from the system clock.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-360">line 360</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="removeAll"><span class="type-signature"></span>removeAll<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Remove all Timer objects, regardless of their state and clears all Timers from the <a href="Phaser.Time.html#events">events</a> timer.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-342">line 342</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="reset"><span class="type-signature"></span>reset<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Resets the private _started value to now and removes all currently running Timers.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-582">line 582</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="totalElapsedSeconds"><span class="type-signature"></span>totalElapsedSeconds<span class="signature">()</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The number of seconds that have elapsed since the game was started.</p> 
+    </div> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The number of seconds that have elapsed since the game was started.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-550">line 550</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="update"><span class="type-signature">&lt;internal&gt; </span>update<span class="signature">(time)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Updates the game clock and if enabled the advanced timing data. This is called automatically by Phaser.Game.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>time</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The current relative timestamp; see <a href="Phaser.Time.html#now">now</a>.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Time.js.html">time/Time.js</a>, 
+      <a href="src_time_Time.js.html#sunlight-1-line-378">line 378</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

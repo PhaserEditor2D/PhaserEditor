@@ -1,0 +1,3 @@
+- javascript content assist auto activation.
+- javascript validation (enable all warnings).
+- workspace auto refresh.

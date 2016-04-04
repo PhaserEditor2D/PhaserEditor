@@ -1,0 +1,352 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: Events</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a>.</span> Events </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="Events"><span class="type-signature"></span>new Events<span class="signature">(sprite)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The Events component is a collection of events fired by the parent game object.</p> 
+     <p>For example to tell when a Sprite has been added to a new group:</p> 
+     <p><code>sprite.events.onAddedToGroup.add(yourFunction, this);</code></p> 
+     <p>Where <code>yourFunction</code> is the function you want called when this event occurs.</p> 
+     <p>The Input-related events will only be dispatched if the Sprite has had <code>inputEnabled</code> set to <code>true</code> and the Animation-related events only apply to game objects with animations like <a href="Phaser.Sprite.html">Phaser.Sprite</a>.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>sprite</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Sprite.html">Phaser.Sprite</a></span> </td> 
+       <td class="description last"><p>A reference to the game object / Sprite that owns this Events object.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-23">line 23</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="onAddedToGroup"><span class="type-signature"></span>onAddedToGroup<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched when the parent is added to a new Group.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-73">line 73</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onAnimationComplete"><span class="type-signature"></span>onAnimationComplete<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched when the parent has an animation that finishes playing.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-153">line 153</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onAnimationLoop"><span class="type-signature"></span>onAnimationLoop<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched when the parent has an animation that loops playback.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-158">line 158</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onAnimationStart"><span class="type-signature"></span>onAnimationStart<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched when the parent has an animation that is played.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-148">line 148</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onDestroy"><span class="type-signature"></span>onDestroy<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched when the parent is destroyed.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-88">line 88</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onDragStart"><span class="type-signature"></span>onDragStart<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched if the parent is inputEnabled and receives a drag start event from a Pointer.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-133">line 133</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onDragStop"><span class="type-signature"></span>onDragStop<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched if the parent is inputEnabled and receives a drag stop event from a Pointer.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-143">line 143</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onDragUpdate"><span class="type-signature"></span>onDragUpdate<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched if the parent is inputEnabled and receives a drag update event from a Pointer.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-138">line 138</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onEnterBounds"><span class="type-signature"></span>onEnterBounds<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched when the parent returns within the world bounds (only if Sprite.checkWorldBounds is true).</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-108">line 108</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onInputDown"><span class="type-signature"></span>onInputDown<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched if the parent is inputEnabled and receives a down event from a Pointer.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-123">line 123</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onInputOut"><span class="type-signature"></span>onInputOut<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched if the parent is inputEnabled and receives an out event from a Pointer.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-118">line 118</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onInputOver"><span class="type-signature"></span>onInputOver<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched if the parent is inputEnabled and receives an over event from a Pointer.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-113">line 113</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onInputUp"><span class="type-signature"></span>onInputUp<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched if the parent is inputEnabled and receives an up event from a Pointer.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-128">line 128</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onKilled"><span class="type-signature"></span>onKilled<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched when the parent is killed.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-93">line 93</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onOutOfBounds"><span class="type-signature"></span>onOutOfBounds<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched when the parent leaves the world bounds (only if Sprite.checkWorldBounds is true).</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-103">line 103</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onRemovedFromGroup"><span class="type-signature"></span>onRemovedFromGroup<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched when the parent is removed from a Group.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-78">line 78</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onRemovedFromWorld"><span class="type-signature"></span>onRemovedFromWorld<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched if this item or any of its parents are removed from the game world.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-83">line 83</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onRevived"><span class="type-signature"></span>onRevived<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched when the parent is revived.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-98">line 98</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="parent"><span class="type-signature"></span>parent<span class="type-signature"> :<a href="Phaser.Sprite.html">Phaser.Sprite</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The Sprite that owns these events.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-28">line 28</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+  <h3 class="subsection-title">Methods</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="destroy"><span class="type-signature"></span>destroy<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Removes all events.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-36">line 36</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Phaser Editor - Flocking</title>
+<script src="lib/phaser.js"></script>
+<script src='ex-missile-06.js'></script>
+</head>
+<body>
+
+<p>
+<p>The missiles will target the pointer (or tap). Move the pointer around the example area.</p><p>The last example was fine but it is possible to get the missiles to bunch up and begin to follow exactly the same path. One way to solve that problem is to make each missile keep its distance from its neighbors. In this example the missiles attempt to steer away from other missiles that are too close. Each missile calculates the distance to every other missile and attempts to steer 90 degrees away from close ones.</p><p>Look at the code for <code>avoidAngle</code> for the implementation.</p><p>This looks like a lot of math to be doing every frame for every missile. But profiling shows that this has almost no effect on frame rate (4% per frame for 100 missiles on my desktop). The biggest impact on frame rate is the number of smoke particles per missile.</p>
+</p>
+
+	 <div id="game"></div>
+
+<p>
+Game Mechanic Explorer Assets
+</p>
+<p>
+Copyright &copy; 2014 John Watson<br>
+Licensed under the terms of the Creative Commons Attribution license (CC BY 3.0)<br>
+<a href="http://creativecommons.org/licenses/by/3.0/us/">http://creativecommons.org/licenses/by/3.0/us/</a><br>
+</p>
+Provide credit like this
+<br>
+"Game Mechanic Explorer Assets" by John Watson is licensed under CC BY 3.0
+<br>
+with a link to
+<br><br>
+<a href="http://gamemechanicexplorer.com">http://gamemechanicexplorer.com</a>
+<br><br>
+Thank you!
+</body>
+</html>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+ 	<extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            base-type="org.eclipse.wst.jsdt.core.jsonSource"
+            describer="phasereditor.assetpack.core.AssetPackContentDescriber"
+            file-extensions="json"
+            id="phasereditor.assetpack.contentType"
+            name="Phaser Asset Pack">
+      </content-type>
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            describer="phasereditor.assetpack.core.TilemapJSONDescriber"
+            file-extensions="json"
+            id="phasereditor.assetpack.tilemapJson"
+            name="Phaser Tilemap">
+      </content-type>
+   </extension>
+</plugin>

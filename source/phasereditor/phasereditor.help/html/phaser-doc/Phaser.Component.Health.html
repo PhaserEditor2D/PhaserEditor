@@ -1,0 +1,121 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: Health</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a><a href="Phaser.html#.Component">.Component</a>.</span> Health </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="Health"><span class="type-signature"></span>new Health<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The Health component provides the ability for Game Objects to have a <code>health</code> property that can be damaged and reset through game code. Requires the LifeSpan component.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Health.js.html">gameobjects/components/Health.js</a>, 
+      <a href="src_gameobjects_components_Health.js.html#sunlight-1-line-14">line 14</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="damage"><span class="type-signature"></span>damage<span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Damages the Game Object. This removes the given amount of health from the <code>health</code> property.</p> 
+     <p>If health is taken below or is equal to zero then the <code>kill</code> method is called.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Health.js.html">gameobjects/components/Health.js</a>, 
+      <a href="src_gameobjects_components_Health.js.html#sunlight-1-line-46">line 46</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="heal"><span class="type-signature"></span>heal<span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Heal the Game Object. This adds the given amount of health to the <code>health</code> property.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Health.js.html">gameobjects/components/Health.js</a>, 
+      <a href="src_gameobjects_components_Health.js.html#sunlight-1-line-90">line 90</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="health"><span class="type-signature"></span>health<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The Game Objects health value. This is a handy property for setting and manipulating health on a Game Object.</p> 
+     <p>It can be used in combination with the <code>damage</code> method or modified directly.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>1</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Health.js.html">gameobjects/components/Health.js</a>, 
+      <a href="src_gameobjects_components_Health.js.html#sunlight-1-line-26">line 26</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="maxHealth"><span class="type-signature"></span>maxHealth<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The Game Objects maximum health value. This works in combination with the <code>heal</code> method to ensure the health value never exceeds the maximum.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>100</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Health.js.html">gameobjects/components/Health.js</a>, 
+      <a href="src_gameobjects_components_Health.js.html#sunlight-1-line-35">line 35</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="setHealth"><span class="type-signature"></span>setHealth<span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Sets the health property of the Game Object to the given amount. Will never exceed the <code>maxHealth</code> value.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Health.js.html">gameobjects/components/Health.js</a>, 
+      <a href="src_gameobjects_components_Health.js.html#sunlight-1-line-70">line 70</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

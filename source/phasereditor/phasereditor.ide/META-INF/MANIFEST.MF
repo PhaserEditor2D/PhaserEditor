@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Phaser Editor - IDE
+Bundle-SymbolicName: phasereditor.ide;singleton:=true
+Bundle-Version: 1.1.1.qualifier
+Bundle-Activator: phasereditor.ide.IDEPlugin
+Bundle-Vendor: Boniatillo.com
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.intro,
+ org.eclipse.ui.ide.application;bundle-version="1.0.501",
+ org.eclipse.ui.ide,
+ phasereditor.assetpack.core;bundle-version="1.1.1",
+ phasereditor.assetpack.ui;bundle-version="1.1.1",
+ org.eclipse.wst.jsdt.ui;bundle-version="1.1.500",
+ phasereditor.chains.ui;bundle-version="1.1.1",
+ phasereditor.ui;bundle-version="1.1.1",
+ phasereditor.lic;bundle-version="1.1.1"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+<extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="phasereditor.ui.phaserCategory"
+            description="Optimize the selected PNG files"
+            id="phasereditor.optipng.optimize"
+            name="Optimize Selected PNG Files">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="phasereditor.optipng.ui.OptimizeImagesHandler"
+            commandId="phasereditor.optipng.optimize">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:file?after=additions">
+         <command
+               commandId="phasereditor.optipng.optimize"
+               icon="platform:/plugin/phasereditor.ui/icons/compress.png"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.eclipse.ui.workbench.file?after=additions">
+         <command
+               commandId="phasereditor.optipng.optimize"
+               icon="platform:/plugin/phasereditor.ui/icons/compress.png"
+               style="push"
+               tooltip="Optimize the selected PNG files.">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu?before=additions">
+         <command
+               commandId="phasereditor.optipng.optimize"
+               icon="platform:/plugin/phasereditor.ui/icons/compress.png"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="phasereditor.optipng.ui.OptiPNGPreferencePage"
+            id="phasereditor.optipng.prefpage"
+            name="Optimize PNG">
+      </page>
+   </extension>
+</plugin>

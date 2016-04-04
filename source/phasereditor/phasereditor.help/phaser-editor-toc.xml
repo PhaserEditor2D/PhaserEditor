@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Phaser Editor Guide">
+   <topic href="html/whats-new/Whats new - Phaser Editor Blog.htm" label="What&apos;s new in Phaser Editor v1.1.2">
+      <anchor id="whats-new"/>
+   </topic>
+   <topic label="Quick Start">
+      <anchor id="quick-start"/>
+   </topic>
+</toc>

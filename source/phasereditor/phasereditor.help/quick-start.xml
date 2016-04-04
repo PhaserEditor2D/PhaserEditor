@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<toc label="Quick Start" link_to="phaser-editor-toc.xml#quick-start">
+   <topic href="html/quick-start/First steps - Phaser Editor Blog.htm" label="First steps">
+   </topic>
+   <topic href="html/quick-start/Asset Manager (the pack file) - Phaser Editor Blog.htm" label="Asset Manager (the pack file)">
+   </topic>
+   <topic href="html/quick-start/Coding the game  the Java Script editor - Phaser Editor Blog.htm" label="Coding the game: the Java Script editor">
+   </topic>
+   <topic href="html/quick-start/Chains  search on the Phaser doc - Phaser Editor Blog.htm" label="Chains: search the Phaser doc">
+   </topic>
+   <topic href="html/quick-start/The Preview window - Phaser Editor Blog.htm" label="The Preview window">
+   </topic>
+   <topic href="html/quick-start/Texture Atlas editor - Phaser Editor Blog.htm" label="Texture Atlas editor">
+   </topic>
+   <topic href="html/quick-start/Optimize the PNG image files - Phaser Editor Blog.htm" label="Optimize the PNG image files">
+   </topic>
+   <topic href="html/quick-start/Audio Sprites editor - Phaser Editor Blog.htm" label="Audio Sprites editor">
+   </topic>
+</toc>

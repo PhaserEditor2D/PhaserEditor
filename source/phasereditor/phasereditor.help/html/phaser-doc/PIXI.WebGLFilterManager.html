@@ -1,0 +1,254 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: WebGLFilterManager</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="PIXI.html">PIXI</a>.</span> WebGLFilterManager </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="WebGLFilterManager"><span class="type-signature"></span>new WebGLFilterManager<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_renderers_webgl_utils_WebGLFilterManager.js.html">pixi/renderers/webgl/utils/WebGLFilterManager.js</a>, 
+      <a href="src_pixi_renderers_webgl_utils_WebGLFilterManager.js.html#sunlight-1-line-5">line 5</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="filterStack"><span class="type-signature"></span>filterStack<span class="type-signature"> :Array</span></h4> 
+   </dt> 
+   <dd> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_renderers_webgl_utils_WebGLFilterManager.js.html">pixi/renderers/webgl/utils/WebGLFilterManager.js</a>, 
+      <a href="src_pixi_renderers_webgl_utils_WebGLFilterManager.js.html#sunlight-1-line-11">line 11</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="offsetX"><span class="type-signature"></span>offsetX<span class="type-signature"> :Number</span></h4> 
+   </dt> 
+   <dd> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_renderers_webgl_utils_WebGLFilterManager.js.html">pixi/renderers/webgl/utils/WebGLFilterManager.js</a>, 
+      <a href="src_pixi_renderers_webgl_utils_WebGLFilterManager.js.html#sunlight-1-line-17">line 17</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="offsetY"><span class="type-signature"></span>offsetY<span class="type-signature"> :Number</span></h4> 
+   </dt> 
+   <dd> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_renderers_webgl_utils_WebGLFilterManager.js.html">pixi/renderers/webgl/utils/WebGLFilterManager.js</a>, 
+      <a href="src_pixi_renderers_webgl_utils_WebGLFilterManager.js.html#sunlight-1-line-23">line 23</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+  <h3 class="subsection-title">Methods</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="applyFilterPass"><span class="type-signature"></span>applyFilterPass<span class="signature">(filter, filterArea, width, height)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Applies the filter to the specified area.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>filter</code></td> 
+       <td class="type"> <span class="param-type"><a href="PIXI.AbstractFilter.html">PIXI.AbstractFilter</a></span> </td> 
+       <td class="description last"><p>the filter that needs to be applied</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>filterArea</code></td> 
+       <td class="type"> <span class="param-type"><a href="PIXI.Texture.html">PIXI.Texture</a></span> </td> 
+       <td class="description last"><p>TODO - might need an update</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>width</code></td> 
+       <td class="type"> <span class="param-type">Number</span> </td> 
+       <td class="description last"><p>the horizontal range of the filter</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>height</code></td> 
+       <td class="type"> <span class="param-type">Number</span> </td> 
+       <td class="description last"><p>the vertical range of the filter</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_renderers_webgl_utils_WebGLFilterManager.js.html">pixi/renderers/webgl/utils/WebGLFilterManager.js</a>, 
+      <a href="src_pixi_renderers_webgl_utils_WebGLFilterManager.js.html#sunlight-1-line-336">line 336</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="begin"><span class="type-signature"></span>begin<span class="signature">(renderSession, buffer)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>renderSession</code></td> 
+       <td class="type"> <span class="param-type">RenderSession</span> </td> 
+       <td class="description last"><p>-</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>buffer</code></td> 
+       <td class="type"> <span class="param-type">ArrayBuffer</span> </td> 
+       <td class="description last"><p>-</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_renderers_webgl_utils_WebGLFilterManager.js.html">pixi/renderers/webgl/utils/WebGLFilterManager.js</a>, 
+      <a href="src_pixi_renderers_webgl_utils_WebGLFilterManager.js.html#sunlight-1-line-46">line 46</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="destroy"><span class="type-signature"></span>destroy<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Destroys the filter and removes it from the filter stack.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_renderers_webgl_utils_WebGLFilterManager.js.html">pixi/renderers/webgl/utils/WebGLFilterManager.js</a>, 
+      <a href="src_pixi_renderers_webgl_utils_WebGLFilterManager.js.html#sunlight-1-line-445">line 445</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="initShaderBuffers"><span class="type-signature"></span>initShaderBuffers<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Initialises the shader buffers.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_renderers_webgl_utils_WebGLFilterManager.js.html">pixi/renderers/webgl/utils/WebGLFilterManager.js</a>, 
+      <a href="src_pixi_renderers_webgl_utils_WebGLFilterManager.js.html#sunlight-1-line-397">line 397</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="popFilter"><span class="type-signature"></span>popFilter<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Removes the last filter from the filter stack and doesn't return it.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_renderers_webgl_utils_WebGLFilterManager.js.html">pixi/renderers/webgl/utils/WebGLFilterManager.js</a>, 
+      <a href="src_pixi_renderers_webgl_utils_WebGLFilterManager.js.html#sunlight-1-line-145">line 145</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="pushFilter"><span class="type-signature"></span>pushFilter<span class="signature">(filterBlock)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Applies the filter and adds it to the current filter stack.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>filterBlock</code></td> 
+       <td class="type"> <span class="param-type">Object</span> </td> 
+       <td class="description last"><p>the filter that will be pushed to the current filter stack</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_renderers_webgl_utils_WebGLFilterManager.js.html">pixi/renderers/webgl/utils/WebGLFilterManager.js</a>, 
+      <a href="src_pixi_renderers_webgl_utils_WebGLFilterManager.js.html#sunlight-1-line-62">line 62</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="setContext"><span class="type-signature"></span>setContext<span class="signature">(gl)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Initialises the context and the properties.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>gl</code></td> 
+       <td class="type"> <span class="param-type">WebGLContext</span> </td> 
+       <td class="description last"><p>the current WebGL drawing context</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_renderers_webgl_utils_WebGLFilterManager.js.html">pixi/renderers/webgl/utils/WebGLFilterManager.js</a>, 
+      <a href="src_pixi_renderers_webgl_utils_WebGLFilterManager.js.html#sunlight-1-line-32">line 32</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Phaser Editor - Chains UI
+Bundle-SymbolicName: phasereditor.chains.ui;singleton:=true
+Bundle-Version: 1.1.1.qualifier
+Bundle-Activator: phasereditor.chains.ui.Activator
+Bundle-Vendor: Boniatillo.com
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ phasereditor.chains.core;bundle-version="1.1.1",
+ phasereditor.inspect.core;bundle-version="1.1.1",
+ phasereditor.inspect.core.resources;bundle-version="1.1.1",
+ org.eclipse.ui.ide;bundle-version="3.10.2",
+ org.eclipse.core.filesystem;bundle-version="1.4.100",
+ org.eclipse.wst.jsdt.ui;bundle-version="1.1.500",
+ org.eclipse.jface.text;bundle-version="3.9.2",
+ org.json;bundle-version="1.0.0",
+ phasereditor.ui;bundle-version="1.1.1",
+ org.eclipse.help;bundle-version="3.6.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy

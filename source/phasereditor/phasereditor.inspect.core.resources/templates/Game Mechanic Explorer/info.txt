@@ -1,0 +1,8 @@
+Game Mechanic Explorer examples
+
+http://gamemechanicexplorer.com
+
+Copyright © 2015 John Watson
+
+The example source code is licensed under the terms of the MIT License.
+Art assets in the examples are licensed under the Creative Commons Attribution license (CC BY 3.0).

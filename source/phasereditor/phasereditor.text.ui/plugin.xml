@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+<!-- proposals categories -->
+	
+	<extension
+		point="org.eclipse.wst.jsdt.ui.javaCompletionProposalComputer"
+		id="phasereditor.text.ui.phaserProposalCategory"
+		name="Phaser Proposals">
+		<proposalCategory
+				icon="icons/phaser-ship.png"
+			/>
+	</extension>
+  <!--
+   <extension
+		point="org.eclipse.wst.jsdt.ui.javaCompletionProposalComputer"
+		id="phasereditor.text.ui.phaserKeysProposalCategory"
+		name="Phaser Asset Keys">
+		<proposalCategory
+				icon="icons/phaser-ship.png"
+			/>
+	</extension>
+	
+	<extension
+		point="org.eclipse.wst.jsdt.ui.javaCompletionProposalComputer"
+		id="phasereditor.text.ui.phaserFileNamesProposalCategory"
+		name="Phaser File Names">
+		<proposalCategory
+				icon="icons/phaser-ship.png"
+			/>
+	</extension>
+	
+	<extension
+		point="org.eclipse.wst.jsdt.ui.javaCompletionProposalComputer"
+		id="phasereditor.text.ui.phaserEasingShortcutsProposalCategory"
+		name="Phaser Easing Shortcuts">
+		<proposalCategory
+				icon="icons/phaser-ship.png"
+			/>
+	</extension>
+	
+	-->
+   
+   <!-- proposals computers -->
+   
+   <extension
+         id="phasereditor.text.ui.easingCompletionProposalComputer"
+         name="Phaser Easing Shortcuts"
+         point="org.eclipse.wst.jsdt.ui.javaCompletionProposalComputer">
+         <javaCompletionProposalComputer
+      		class="phasereditor.text.ui.EasingProposalComputer"
+      		categoryId="phasereditor.text.ui.phaserProposalCategory"
+      		activate="true">
+      		<partition type="__java_string"/>
+   		</javaCompletionProposalComputer>
+   </extension>
+   
+   <extension
+         id="phasereditor.text.ui.filesCompletionProposalComputer"
+         name="Phaser File Names"
+         point="org.eclipse.wst.jsdt.ui.javaCompletionProposalComputer">
+         <javaCompletionProposalComputer
+      		class="phasereditor.text.ui.FilesProposalComputer"
+      		categoryId="phasereditor.text.ui.phaserProposalCategory"
+      		activate="true">
+      		<partition type="__java_string"/>
+   		</javaCompletionProposalComputer>
+   </extension>
+   
+   <extension
+         id="phasereditor.text.ui.assetsCompletionProposalComputer"
+         name="Phaser Asset Keys"
+         point="org.eclipse.wst.jsdt.ui.javaCompletionProposalComputer">
+         <javaCompletionProposalComputer
+      		class="phasereditor.text.ui.AssetProposalComputer"
+      		categoryId="phasereditor.text.ui.phaserProposalCategory"
+      		activate="true">
+      		<partition type="__java_string"/>
+   		</javaCompletionProposalComputer>
+   </extension>
+   <extension
+         id="phasereditor.text.ui.templatesCompletionProposalComputer"
+         name="Phaser Snippets"
+         point="org.eclipse.wst.jsdt.ui.javaCompletionProposalComputer">
+      <javaCompletionProposalComputer
+            activate="true"
+            categoryId="phasereditor.text.ui.phaserProposalCategory"
+            class="phasereditor.text.ui.PhaserTemplateProposalComputer">
+      </javaCompletionProposalComputer>
+   </extension>
+   <extension
+         point="org.eclipse.wst.jsdt.ui.javaEditorTextHovers">
+      <hover
+            activate="true"
+            class="phasereditor.text.ui.PhaserStringHover"
+            description="Show information about Phaser related strings"
+            id="phasereditor.text.ui.phaserStringHover"
+            label="Phaser String Hover">
+      </hover>
+   </extension>
+   
+  <extension
+        point="org.eclipse.ui.menus">
+     <menuContribution
+           allPopups="false"
+           locationURI="popup:org.eclipse.wst.jsdt.ui.CompilationUnitEditor.EditorContext?after=OpenEditor">
+        <command
+              commandId="phasereditor.ui.commands.showInPreview"
+              icon="platform:/plugin/phasereditor.ui/icons/eye.png"
+              style="push">
+        </command>
+     </menuContribution>
+  </extension>
+  <extension
+        point="org.eclipse.ui.handlers">
+     <handler
+           class="phasereditor.text.ui.handlers.PreviewJavaScriptElementHandler"
+           commandId="phasereditor.ui.commands.showInPreview">
+        <activeWhen>
+           <with
+                 variable="activePart">
+              <instanceof
+                    value="org.eclipse.wst.jsdt.internal.ui.javaeditor.JavaEditor">
+              </instanceof>
+           </with>
+        </activeWhen>
+     </handler>
+  </extension>
+  <extension
+         point="org.eclipse.wst.jsdt.ui.documentationProvider">
+      <documentationProvider
+            class="phasereditor.text.ui.PhaserDocumentationReader">
+      </documentationProvider>
+      <documentationProvider
+            class="phasereditor.text.ui.LibraryDocumentationReader">
+      </documentationProvider>
+   </extension>
+</plugin>

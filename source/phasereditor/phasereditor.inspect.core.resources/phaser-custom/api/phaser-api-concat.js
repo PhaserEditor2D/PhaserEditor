@@ -1,0 +1,142 @@
+
+
+
+// This API is manually added because for some reason it is not covered by the JSDoc JSON files.
+
+// phaser globals
+
+Phaser.blendModes = {
+	NORMAL : 0,
+	ADD : 1,
+	MULTIPLY : 2,
+	SCREEN : 3,
+	OVERLAY : 4,
+	DARKEN : 5,
+	LIGHTEN : 6,
+	COLOR_DODGE : 7,
+	COLOR_BURN : 8,
+	HARD_LIGHT : 9,
+	SOFT_LIGHT : 10,
+	DIFFERENCE : 11,
+	EXCLUSION : 12,
+	HUE : 13,
+	SATURATION : 14,
+	COLOR : 15,
+	LUMINOSITY : 16
+};
+Phaser.scaleModes = {
+	DEFAULT : 0,
+	LINEAR : 0,
+	NEAREST : 1
+};
+
+// Phaser.Physics constants
+
+Phaser_Physics.ARCADE = 0;
+Phaser_Physics.P2JS = 1;
+Phaser_Physics.NINJA = 2;
+Phaser_Physics.BOX2D = 3;
+Phaser_Physics.CHIPMUNK = 4;
+
+// Phaser_Keyboard constants
+
+Phaser_Keyboard.A = 0;
+Phaser_Keyboard.B = 0;
+Phaser_Keyboard.C = 0;
+Phaser_Keyboard.D = 0;
+Phaser_Keyboard.E = 0;
+Phaser_Keyboard.F = 0;
+Phaser_Keyboard.G = 0;
+Phaser_Keyboard.H = 0;
+Phaser_Keyboard.I = 0;
+Phaser_Keyboard.J = 0;
+Phaser_Keyboard.K = 0;
+Phaser_Keyboard.L = 0;
+Phaser_Keyboard.M = 0;
+Phaser_Keyboard.N = 0;
+Phaser_Keyboard.O = 0;
+Phaser_Keyboard.P = 0;
+Phaser_Keyboard.Q = 0;
+Phaser_Keyboard.R = 0;
+Phaser_Keyboard.S = 0;
+Phaser_Keyboard.T = 0;
+Phaser_Keyboard.U = 0;
+Phaser_Keyboard.V = 0;
+Phaser_Keyboard.W = 0;
+Phaser_Keyboard.X = 0;
+Phaser_Keyboard.Y = 0;
+Phaser_Keyboard.Z = 0;
+Phaser_Keyboard.ZERO = 0;
+Phaser_Keyboard.ONE = 0;
+Phaser_Keyboard.TWO = 0;
+Phaser_Keyboard.THREE = 0;
+Phaser_Keyboard.FOUR = 0;
+Phaser_Keyboard.FIVE = 0;
+Phaser_Keyboard.SIX = 0;
+Phaser_Keyboard.SEVEN = 0;
+Phaser_Keyboard.EIGHT = 0;
+Phaser_Keyboard.NINE = 0;
+Phaser_Keyboard.NUMPAD_0 = 96;
+Phaser_Keyboard.NUMPAD_1 = 97;
+Phaser_Keyboard.NUMPAD_2 = 98;
+Phaser_Keyboard.NUMPAD_3 = 99;
+Phaser_Keyboard.NUMPAD_4 = 100;
+Phaser_Keyboard.NUMPAD_5 = 101;
+Phaser_Keyboard.NUMPAD_6 = 102;
+Phaser_Keyboard.NUMPAD_7 = 103;
+Phaser_Keyboard.NUMPAD_8 = 104;
+Phaser_Keyboard.NUMPAD_9 = 105;
+Phaser_Keyboard.NUMPAD_MULTIPLY = 106;
+Phaser_Keyboard.NUMPAD_ADD = 107;
+Phaser_Keyboard.NUMPAD_ENTER = 108;
+Phaser_Keyboard.NUMPAD_SUBTRACT = 109;
+Phaser_Keyboard.NUMPAD_DECIMAL = 110;
+Phaser_Keyboard.NUMPAD_DIVIDE = 111;
+Phaser_Keyboard.F1 = 112;
+Phaser_Keyboard.F2 = 113;
+Phaser_Keyboard.F3 = 114;
+Phaser_Keyboard.F4 = 115;
+Phaser_Keyboard.F5 = 116;
+Phaser_Keyboard.F6 = 117;
+Phaser_Keyboard.F7 = 118;
+Phaser_Keyboard.F8 = 119;
+Phaser_Keyboard.F9 = 120;
+Phaser_Keyboard.F10 = 121;
+Phaser_Keyboard.F11 = 122;
+Phaser_Keyboard.F12 = 123;
+Phaser_Keyboard.F13 = 124;
+Phaser_Keyboard.F14 = 125;
+Phaser_Keyboard.F15 = 126;
+Phaser_Keyboard.COLON = 186;
+Phaser_Keyboard.EQUALS = 187;
+Phaser_Keyboard.UNDERSCORE = 189;
+Phaser_Keyboard.QUESTION_MARK = 191;
+Phaser_Keyboard.TILDE = 192;
+Phaser_Keyboard.OPEN_BRACKET = 219;
+Phaser_Keyboard.BACKWARD_SLASH = 220;
+Phaser_Keyboard.CLOSED_BRACKET = 221;
+Phaser_Keyboard.QUOTES = 222;
+Phaser_Keyboard.BACKSPACE = 8;
+Phaser_Keyboard.TAB = 9;
+Phaser_Keyboard.CLEAR = 12;
+Phaser_Keyboard.ENTER = 13;
+Phaser_Keyboard.SHIFT = 16;
+Phaser_Keyboard.CONTROL = 17;
+Phaser_Keyboard.ALT = 18;
+Phaser_Keyboard.CAPS_LOCK = 20;
+Phaser_Keyboard.ESC = 27;
+Phaser_Keyboard.SPACEBAR = 32;
+Phaser_Keyboard.PAGE_UP = 33;
+Phaser_Keyboard.PAGE_DOWN = 34;
+Phaser_Keyboard.END = 35;
+Phaser_Keyboard.HOME = 36;
+Phaser_Keyboard.LEFT = 37;
+Phaser_Keyboard.UP = 38;
+Phaser_Keyboard.RIGHT = 39;
+Phaser_Keyboard.DOWN = 40;
+Phaser_Keyboard.INSERT = 45;
+Phaser_Keyboard.DELETE = 46;
+Phaser_Keyboard.HELP = 47;
+Phaser_Keyboard.NUM_LOCK = 144;
+Phaser_Keyboard.PLUS = 43;
+Phaser_Keyboard.MINUS = 45;

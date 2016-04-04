@@ -1,0 +1,478 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: Signal</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a>.</span> Signal </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="Signal"><span class="type-signature"></span>new Signal<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A Signal is an event dispatch mechanism that supports broadcasting to multiple listeners.</p> 
+     <p>Event listeners are uniquely identified by the listener/callback function and the context.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_core_Signal.js.html">core/Signal.js</a>, 
+      <a href="src_core_Signal.js.html#sunlight-1-line-16">line 16</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="active"><span class="type-signature"></span>active<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Is the Signal active? Only active signals will broadcast dispatched events.</p> 
+     <p>Setting this property during a dispatch will only affect the next dispatch. To stop the propagation of a signal from a listener use <a href="Phaser.Signal.html#halt">halt</a>.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>true</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_core_Signal.js.html">core/Signal.js</a>, 
+      <a href="src_core_Signal.js.html#sunlight-1-line-57">line 57</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="memorize"><span class="type-signature"></span>memorize<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Memorize the previously dispatched event?</p> 
+     <p>If an event has been memorized it is automatically dispatched when a new listener is added with <a href="Phaser.Signal.html#add">add</a> or <a href="Phaser.Signal.html#addOnce">addOnce</a>. Use <a href="Phaser.Signal.html#forget">forget</a> to clear any currently memorized event.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_core_Signal.js.html">core/Signal.js</a>, 
+      <a href="src_core_Signal.js.html#sunlight-1-line-41">line 41</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+  <h3 class="subsection-title">Methods</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="add"><span class="type-signature"></span>add<span class="signature">(listener, <span class="optional">listenerContext</span>, <span class="optional">priority</span>, <span class="optional">args</span>)</span><span class="type-signature"> ? {<a href="Phaser.SignalBinding.html">Phaser.SignalBinding</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Add an event listener for this signal.</p> 
+     <p>An event listener is a callback with a related context and priority.</p> 
+     <p>You can optionally provide extra arguments which will be passed to the callback after any internal parameters.</p> 
+     <p>For example: <code>Phaser.Key.onDown</code> when dispatched will send the Phaser.Key object that caused the signal as the first parameter. Any arguments you've specified after <code>priority</code> will be sent as well:</p> 
+     <p><code>fireButton.onDown.add(shoot, this, 0, 'lazer', 100);</code></p> 
+     <p>When onDown dispatches it will call the <code>shoot</code> callback passing it: <code>Phaser.Key, 'lazer', 100</code>.</p> 
+     <p>Where the first parameter is the one that Key.onDown dispatches internally and 'lazer', and the value 100 were the custom arguments given in the call to 'add'.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>listener</code></td> 
+       <td class="type"> <span class="param-type">function</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The function to call when this Signal is dispatched.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>listenerContext</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The context under which the listener will be executed (i.e. the object that should represent the <code>this</code> variable).</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>priority</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The priority level of the event listener. Listeners with higher priority will be executed before listeners with lower priority. Listeners with same priority level will be executed at the same order as they were added (default = 0)</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>args</code></td> 
+       <td class="type"> <span class="param-type">any</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> &lt;repeatable&gt;<br> </td> 
+       <td class="default"> (none) </td> 
+       <td class="description last"><p>Additional arguments to pass to the callback (listener) function. They will be appended after any arguments usually dispatched.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.SignalBinding.html">Phaser.SignalBinding</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>An Object representing the binding between the Signal and listener.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_core_Signal.js.html">core/Signal.js</a>, 
+      <a href="src_core_Signal.js.html#sunlight-1-line-189">line 189</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="addOnce"><span class="type-signature"></span>addOnce<span class="signature">(listener, <span class="optional">listenerContext</span>, <span class="optional">priority</span>, <span class="optional">args</span>)</span><span class="type-signature"> ? {<a href="Phaser.SignalBinding.html">Phaser.SignalBinding</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Add a one-time listener - the listener is automatically removed after the first execution.</p> 
+     <p>If there is as <a href="Phaser.Signal.html#memorize">memorized</a> event then it will be dispatched and the listener will be removed immediately.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>listener</code></td> 
+       <td class="type"> <span class="param-type">function</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The function to call when this Signal is dispatched.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>listenerContext</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The context under which the listener will be executed (i.e. the object that should represent the <code>this</code> variable).</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>priority</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The priority level of the event listener. Listeners with higher priority will be executed before listeners with lower priority. Listeners with same priority level will be executed at the same order as they were added (default = 0)</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>args</code></td> 
+       <td class="type"> <span class="param-type">any</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> &lt;repeatable&gt;<br> </td> 
+       <td class="default"> (none) </td> 
+       <td class="description last"><p>Additional arguments to pass to the callback (listener) function. They will be appended after any arguments usually dispatched.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.SignalBinding.html">Phaser.SignalBinding</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>An Object representing the binding between the Signal and listener.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_core_Signal.js.html">core/Signal.js</a>, 
+      <a href="src_core_Signal.js.html#sunlight-1-line-231">line 231</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="dispatch"><span class="type-signature"></span>dispatch<span class="signature">(<span class="optional">params</span>)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Dispatch / broadcast the event to all listeners.</p> 
+     <p>To create an instance-bound dispatch for this Signal, use boundDispatch.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>params</code></td> 
+       <td class="type"> <span class="param-type">any</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>Parameters that should be passed to each handler.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_core_Signal.js.html">core/Signal.js</a>, 
+      <a href="src_core_Signal.js.html#sunlight-1-line-352">line 352</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="dispose"><span class="type-signature"></span>dispose<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Dispose the signal - no more events can be dispatched.</p> 
+     <p>This removes all event listeners and clears references to external objects. Calling methods on a disposed objects results in undefined behavior.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_core_Signal.js.html">core/Signal.js</a>, 
+      <a href="src_core_Signal.js.html#sunlight-1-line-408">line 408</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="forget"><span class="type-signature"></span>forget<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Forget the currently <a href="Phaser.Signal.html#memorize">memorized</a> event, if any.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_core_Signal.js.html">core/Signal.js</a>, 
+      <a href="src_core_Signal.js.html#sunlight-1-line-394">line 394</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="getNumListeners"><span class="type-signature"></span>getNumListeners<span class="signature">()</span><span class="type-signature"> ? {integer}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Gets the total number of listeners attached to this Signal.</p> 
+    </div> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">integer</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>Number of listeners attached to the Signal.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_core_Signal.js.html">core/Signal.js</a>, 
+      <a href="src_core_Signal.js.html#sunlight-1-line-326">line 326</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="halt"><span class="type-signature"></span>halt<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Stop propagation of the event, blocking the dispatch to next listener on the queue.</p> 
+     <p>This should be called only during event dispatch as calling it before/after dispatch won't affect another broadcast. See <a href="Phaser.Signal.html#active">active</a> to enable/disable the signal entirely.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_core_Signal.js.html">core/Signal.js</a>, 
+      <a href="src_core_Signal.js.html#sunlight-1-line-338">line 338</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="has"><span class="type-signature"></span>has<span class="signature">(listener, <span class="optional">context</span>)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Check if a specific listener is attached.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>listener</code></td> 
+       <td class="type"> <span class="param-type">function</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>Signal handler function.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>context</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>Context on which listener will be executed (object that should represent the <code>this</code> variable inside listener function).</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>If Signal has the specified listener.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_core_Signal.js.html">core/Signal.js</a>, 
+      <a href="src_core_Signal.js.html#sunlight-1-line-175">line 175</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="remove"><span class="type-signature"></span>remove<span class="signature">(listener, <span class="optional">context</span>)</span><span class="type-signature"> ? {function}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Remove a single event listener.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>listener</code></td> 
+       <td class="type"> <span class="param-type">function</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>Handler function that should be removed.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>context</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> null </td> 
+       <td class="description last"><p>Execution context (since you can add the same handler multiple times if executing in a different context).</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">function</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>Listener handler function.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_core_Signal.js.html">core/Signal.js</a>, 
+      <a href="src_core_Signal.js.html#sunlight-1-line-262">line 262</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="removeAll"><span class="type-signature"></span>removeAll<span class="signature">(<span class="optional">context</span>)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Remove all event listeners.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>context</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> null </td> 
+       <td class="description last"><p>If specified only listeners for the given context will be removed.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_core_Signal.js.html">core/Signal.js</a>, 
+      <a href="src_core_Signal.js.html#sunlight-1-line-286">line 286</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="toString"><span class="type-signature"></span>toString<span class="signature">()</span><span class="type-signature"> ? {string}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A string representation of the object.</p> 
+    </div> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">string</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>String representation of the object.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_core_Signal.js.html">core/Signal.js</a>, 
+      <a href="src_core_Signal.js.html#sunlight-1-line-428">line 428</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

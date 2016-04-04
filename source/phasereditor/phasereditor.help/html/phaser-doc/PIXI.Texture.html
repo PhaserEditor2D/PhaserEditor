@@ -1,0 +1,510 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: Texture</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="PIXI.html">PIXI</a>.</span> Texture </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="Texture"><span class="type-signature"></span>new Texture<span class="signature">(baseTexture, frame, <span class="optional">crop</span>, <span class="optional">trim</span>)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A texture stores the information that represents an image or part of an image. It cannot be added to the display list directly. Instead use it as the texture for a PIXI.Sprite. If no frame is provided then the whole image is used.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>baseTexture</code></td> 
+       <td class="type"> <span class="param-type"><a href="PIXI.BaseTexture.html">PIXI.BaseTexture</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>The base texture source to create the texture from</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>frame</code></td> 
+       <td class="type"> <span class="param-type">Rectangle</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>The rectangle frame of the texture to show</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>crop</code></td> 
+       <td class="type"> <span class="param-type">Rectangle</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>The area of original texture</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>trim</code></td> 
+       <td class="type"> <span class="param-type">Rectangle</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>Trimmed texture rectangle</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-19">line 19</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="baseTexture"><span class="type-signature"></span>baseTexture<span class="type-signature"> :<a href="PIXI.BaseTexture.html">PIXI.BaseTexture</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The base texture that this texture uses.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-52">line 52</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="crop"><span class="type-signature"></span>crop<span class="type-signature"> :Rectangle</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This is the area of the BaseTexture image to actually copy to the Canvas / WebGL when rendering, irrespective of the actual frame size or placement (which can be influenced by trimmed texture atlases)</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-133">line 133</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="frame"><span class="type-signature"></span>frame<span class="type-signature"> :Rectangle</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The frame specifies the region of the base texture that this texture uses</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-60">line 60</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="height"><span class="type-signature"></span>height<span class="type-signature"> :Number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The height of the Texture in pixels.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-125">line 125</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="isTiling"><span class="type-signature"></span>isTiling<span class="type-signature"> :Boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Is this a tiling texture? As used by the likes of a TilingSprite.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-84">line 84</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="noFrame"><span class="type-signature"></span>noFrame<span class="type-signature"> :Boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Does this Texture have any frame data assigned to it?</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-33">line 33</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="requiresReTint"><span class="type-signature"></span>requiresReTint<span class="type-signature"> :Boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This will let a renderer know that a tinted parent has updated its texture.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-100">line 100</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="requiresUpdate"><span class="type-signature"></span>requiresUpdate<span class="type-signature"> :Boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This will let a renderer know that a texture has been updated (used mainly for webGL uv updates)</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-92">line 92</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="trim"><span class="type-signature"></span>trim<span class="type-signature"> :Rectangle</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The texture trim data.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-68">line 68</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="valid"><span class="type-signature"></span>valid<span class="type-signature"> :Boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This will let the renderer know if the texture is valid. If it's not then it cannot be rendered.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-76">line 76</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="width"><span class="type-signature"></span>width<span class="type-signature"> :Number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The width of the Texture in pixels.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-117">line 117</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+  <h3 class="subsection-title">Methods</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id=".addTextureToCache"><span class="type-signature">&lt;static&gt; </span>addTextureToCache<span class="signature">(texture, id)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Adds a texture to the global PIXI.TextureCache. This cache is shared across the whole PIXI object.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>texture</code></td> 
+       <td class="type"> <span class="param-type"><a href="PIXI.Texture.html">PIXI.Texture</a></span> </td> 
+       <td class="description last"><p>The Texture to add to the cache.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>id</code></td> 
+       <td class="type"> <span class="param-type">String</span> </td> 
+       <td class="description last"><p>The id that the texture will be stored against.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-310">line 310</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id=".fromCanvas"><span class="type-signature">&lt;static&gt; </span>fromCanvas<span class="signature">(canvas, scaleMode)</span><span class="type-signature"> ? {<a href="PIXI.Texture.html">PIXI.Texture</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Helper function that creates a new a Texture based on the given canvas element.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>canvas</code></td> 
+       <td class="type"> <span class="param-type">Canvas</span> </td> 
+       <td class="description last"><p>The canvas element source of the texture</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>scaleMode</code></td> 
+       <td class="type"> <span class="param-type">Number</span> </td> 
+       <td class="description last"><p>See {{#crossLink "PIXI/scaleModes:property"}}PIXI.scaleModes{{/crossLink}} for possible values</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="PIXI.Texture.html">PIXI.Texture</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-294">line 294</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id=".fromFrame"><span class="type-signature">&lt;static&gt; </span>fromFrame<span class="signature">(frameId)</span><span class="type-signature"> ? {<a href="PIXI.Texture.html">PIXI.Texture</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Helper function that returns a Texture objected based on the given frame id. If the frame id is not in the texture cache an error will be thrown.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>frameId</code></td> 
+       <td class="type"> <span class="param-type">String</span> </td> 
+       <td class="description last"><p>The frame id of the texture</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="PIXI.Texture.html">PIXI.Texture</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-278">line 278</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id=".fromImage"><span class="type-signature">&lt;static&gt; </span>fromImage<span class="signature">(imageUrl, crossorigin, scaleMode)</span><span class="type-signature"> ? {<a href="PIXI.Texture.html">PIXI.Texture</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Helper function that creates a Texture object from the given image url. If the image is not in the texture cache it will be created and loaded.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>imageUrl</code></td> 
+       <td class="type"> <span class="param-type">String</span> </td> 
+       <td class="description last"><p>The image url of the texture</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>crossorigin</code></td> 
+       <td class="type"> <span class="param-type">Boolean</span> </td> 
+       <td class="description last"><p>Whether requests should be treated as crossorigin</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>scaleMode</code></td> 
+       <td class="type"> <span class="param-type">Number</span> </td> 
+       <td class="description last"><p>See {{#crossLink "PIXI/scaleModes:property"}}PIXI.scaleModes{{/crossLink}} for possible values</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="PIXI.Texture.html">PIXI.Texture</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-254">line 254</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id=".removeTextureFromCache"><span class="type-signature">&lt;static&gt; </span>removeTextureFromCache<span class="signature">(id)</span><span class="type-signature"> ? {<a href="PIXI.Texture.html">PIXI.Texture</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Remove a texture from the global PIXI.TextureCache.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>id</code></td> 
+       <td class="type"> <span class="param-type">String</span> </td> 
+       <td class="description last"><p>The id of the texture to be removed</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="PIXI.Texture.html">PIXI.Texture</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The texture that was removed</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-323">line 323</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="destroy"><span class="type-signature"></span>destroy<span class="signature">(destroyBase)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Destroys this texture</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>destroyBase</code></td> 
+       <td class="type"> <span class="param-type">Boolean</span> </td> 
+       <td class="description last"><p>Whether to destroy the base texture as well</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-170">line 170</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="setFrame"><span class="type-signature"></span>setFrame<span class="signature">(frame)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Specifies the region of the baseTexture that this texture will use.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>frame</code></td> 
+       <td class="type"> <span class="param-type">Rectangle</span> </td> 
+       <td class="description last"><p>The frame of the texture to set it to</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-183">line 183</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

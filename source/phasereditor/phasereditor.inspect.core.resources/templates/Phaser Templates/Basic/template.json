@@ -1,0 +1,9 @@
+{
+	"author": {
+		"name": "Phaser.io",
+		"email": "rich@photonstorm.com",
+		"website": "http://github.io/photonstorm/phaser",
+	},
+	"mainFile": "Game.js",
+	"description": "Basic template with Boot, Preloader, MainMenu and Game states."
+}

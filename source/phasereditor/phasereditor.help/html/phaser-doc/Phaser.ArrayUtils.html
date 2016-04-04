@@ -1,0 +1,457 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: ArrayUtils</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a>.</span> ArrayUtils </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="ArrayUtils"><span class="type-signature"></span>new ArrayUtils<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Utility functions for dealing with Arrays.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArrayUtils.js.html">utils/ArrayUtils.js</a>, 
+      <a href="src_utils_ArrayUtils.js.html#sunlight-1-line-13">line 13</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Methods</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id=".findClosest"><span class="type-signature">&lt;static&gt; </span>findClosest<span class="signature">(value, arr)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Snaps a value to the nearest value in an array. The result will always be in the range <code>[first_value, last_value]</code>.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>value</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The search value</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>arr</code></td> 
+       <td class="type"> <span class="param-type">Array.&lt;number&gt;</span> </td> 
+       <td class="description last"><p>The input array which <em>must</em> be sorted.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The nearest value found.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArrayUtils.js.html">utils/ArrayUtils.js</a>, 
+      <a href="src_utils_ArrayUtils.js.html#sunlight-1-line-172">line 172</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id=".getRandomItem"><span class="type-signature">&lt;static&gt; </span>getRandomItem<span class="signature">(objects, startIndex, length)</span><span class="type-signature"> ? {object}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Fetch a random entry from the given array.</p> 
+     <p>Will return null if there are no array items that fall within the specified range or if there is no item for the randomly chosen index.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>objects</code></td> 
+       <td class="type"> <span class="param-type">Array.&lt;any&gt;</span> </td> 
+       <td class="description last"><p>An array of objects.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>startIndex</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="description last"><p>Optional offset off the front of the array. Default value is 0, or the beginning of the array.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>length</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="description last"><p>Optional restriction on the number of values you want to randomly select from.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">object</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The random object that was selected.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArrayUtils.js.html">utils/ArrayUtils.js</a>, 
+      <a href="src_utils_ArrayUtils.js.html#sunlight-1-line-27">line 27</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id=".removeRandomItem"><span class="type-signature">&lt;static&gt; </span>removeRandomItem<span class="signature">(objects, startIndex, length)</span><span class="type-signature"> ? {object}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Removes a random object from the given array and returns it.</p> 
+     <p>Will return null if there are no array items that fall within the specified range or if there is no item for the randomly chosen index.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>objects</code></td> 
+       <td class="type"> <span class="param-type">Array.&lt;any&gt;</span> </td> 
+       <td class="description last"><p>An array of objects.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>startIndex</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="description last"><p>Optional offset off the front of the array. Default value is 0, or the beginning of the array.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>length</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="description last"><p>Optional restriction on the number of values you want to randomly select from.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">object</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The random object that was removed.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArrayUtils.js.html">utils/ArrayUtils.js</a>, 
+      <a href="src_utils_ArrayUtils.js.html#sunlight-1-line-51">line 51</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id=".rotate"><span class="type-signature">&lt;static&gt; </span>rotate<span class="signature">(array)</span><span class="type-signature"> ? {any}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Moves the element from the start of the array to the end, shifting all items in the process. The "rotation" happens to the left.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>array</code></td> 
+       <td class="type"> <span class="param-type">Array.&lt;any&gt;</span> </td> 
+       <td class="description last"><p>The array to shift/rotate. The array is modified.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">any</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The shifted value.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArrayUtils.js.html">utils/ArrayUtils.js</a>, 
+      <a href="src_utils_ArrayUtils.js.html#sunlight-1-line-195">line 195</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id=".rotateMatrix"><span class="type-signature">&lt;static&gt; </span>rotateMatrix<span class="signature">(matrix, direction)</span><span class="type-signature"> ? {Array.&lt;Array.&lt;any&gt;&gt;}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Rotates the given matrix (array of arrays).</p> 
+     <p>Based on the routine from <a href="http://jsfiddle.net/MrPolywhirl/NH42z/">http://jsfiddle.net/MrPolywhirl/NH42z/</a>.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>matrix</code></td> 
+       <td class="type"> <span class="param-type">Array.&lt;Array.&lt;any&gt;&gt;</span> </td> 
+       <td class="description last"><p>The array to rotate; this matrix <em>may</em> be altered.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>direction</code></td> 
+       <td class="type"> <span class="param-type">number</span> | <span class="param-type">string</span> </td> 
+       <td class="description last"><p>The amount to rotate: the rotation in degrees (90, -90, 270, -270, 180) or a string command ('rotateLeft', 'rotateRight' or 'rotate180').</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">Array.&lt;Array.&lt;any&gt;&gt;</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The rotated matrix. The source matrix should be discarded for the returned matrix.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArrayUtils.js.html">utils/ArrayUtils.js</a>, 
+      <a href="src_utils_ArrayUtils.js.html#sunlight-1-line-132">line 132</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id=".shuffle"><span class="type-signature">&lt;static&gt; </span>shuffle<span class="signature">(array)</span><span class="type-signature"> ? {Array.&lt;any&gt;}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A standard Fisher-Yates Array shuffle implementation which modifies the array in place.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>array</code></td> 
+       <td class="type"> <span class="param-type">Array.&lt;any&gt;</span> </td> 
+       <td class="description last"><p>The array to shuffle.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">Array.&lt;any&gt;</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The original array, now shuffled.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArrayUtils.js.html">utils/ArrayUtils.js</a>, 
+      <a href="src_utils_ArrayUtils.js.html#sunlight-1-line-80">line 80</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id=".transposeMatrix"><span class="type-signature">&lt;static&gt; </span>transposeMatrix<span class="signature">(array)</span><span class="type-signature"> ? {Array.&lt;Array.&lt;any&gt;&gt;}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Transposes the elements of the given matrix (array of arrays).</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>array</code></td> 
+       <td class="type"> <span class="param-type">Array.&lt;Array.&lt;any&gt;&gt;</span> </td> 
+       <td class="description last"><p>The matrix to transpose.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">Array.&lt;Array.&lt;any&gt;&gt;</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>A new transposed matrix</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArrayUtils.js.html">utils/ArrayUtils.js</a>, 
+      <a href="src_utils_ArrayUtils.js.html#sunlight-1-line-101">line 101</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="numberArray"><span class="type-signature"></span>numberArray<span class="signature">(start, end)</span><span class="type-signature"> ? {Array.&lt;number&gt;}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Create an array representing the inclusive range of numbers (usually integers) in <code>[start, end]</code>. This is equivalent to <code>numberArrayStep(start, end, 1)</code>.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>start</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The minimum value the array starts with.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>end</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The maximum value the array contains.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">Array.&lt;number&gt;</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The array of number values.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArrayUtils.js.html">utils/ArrayUtils.js</a>, 
+      <a href="src_utils_ArrayUtils.js.html#sunlight-1-line-212">line 212</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="numberArrayStep"><span class="type-signature"></span>numberArrayStep<span class="signature">(start, <span class="optional">end</span>, <span class="optional">step</span>)</span><span class="type-signature"> ? {Array}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Create an array of numbers (positive and/or negative) progressing from <code>start</code> up to but not including <code>end</code> by advancing by <code>step</code>.</p> 
+     <p>If <code>start</code> is less than <code>end</code> a zero-length range is created unless a negative <code>step</code> is specified.</p> 
+     <p>Certain values for <code>start</code> and <code>end</code> (eg. NaN/undefined/null) are currently coerced to 0; for forward compatibility make sure to pass in actual numbers.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>start</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The start of the range.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>end</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The end of the range.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>step</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 1 </td> 
+       <td class="description last"><p>The value to increment or decrement by.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">Array</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>Returns the new array of numbers.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArrayUtils.js.html">utils/ArrayUtils.js</a>, 
+      <a href="src_utils_ArrayUtils.js.html#sunlight-1-line-234">line 234</a> 
+     </dt> 
+    </dl> 
+    <h5>Example</h5> 
+    <pre class="sunlight-highlight-javascript">Phaser.ArrayUtils.numberArrayStep(4);// =&gt; [0, 1, 2, 3]Phaser.ArrayUtils.numberArrayStep(1, 5);// =&gt; [1, 2, 3, 4]Phaser.ArrayUtils.numberArrayStep(0, 20, 5);// =&gt; [0, 5, 10, 15]Phaser.ArrayUtils.numberArrayStep(0, -4, -1);// =&gt; [0, -1, -2, -3]Phaser.ArrayUtils.numberArrayStep(1, 4, 0);// =&gt; [1, 1, 1]Phaser.ArrayUtils.numberArrayStep(0);// =&gt; []</pre> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

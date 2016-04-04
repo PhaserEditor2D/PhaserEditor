@@ -1,0 +1,64 @@
+<html>
+
+<head>
+
+</head>
+
+<body>
+
+                <h2 class="title" itemprop="headline"><a href="http://phasereditor.boniatillo.com/blog/quick-start/070-audio-sprites">Audio Sprites editor</a></h2>
+                <div class="desc text-left" itemprop="articleBody">
+                    <blockquote>
+  <p>Audio Sprites are generally a 'hang over' from pre-Web Audio days, 
+where they were literally the only way to have multiple sound effects / 
+music in a game. However they're still pretty useful even for web audio 
+playback, as it means less http requests and mostly retains 
+compatibility with older devices that still don't support Web Audio, or 
+browsers like IE that don't at all either. -- <a href="http://www.html5gamedevs.com/topic/6582-advantages-audio-sprites/#entry39190">Richard Davey</a>.</p>
+</blockquote>
+
+<p><a href="https://www.youtube.com/watch?v=piXc7F1SB1g&amp;index=8&amp;list=PLB8gI_5U0MvCJuhPv-LBdi_a9PQxYxFqK">Watch a demo video</a></p>
+
+<p>Audio Sprites are a combination of audio files and a JSON configuration. The JSON follows the format of that created by <a href="https://github.com/tonistiigi/audiosprite">tonistiigi</a> . In Phaser Editor we provide an editor to easy create and edit audio sprites.</p>
+
+<p>To create an audio sprites go to the File menu and select <code>New &gt; Audio Sprites File</code> and it opens a dialog to select the container folder and set the file name.</p>
+
+<p><img src="Audio%20Sprites%20editor%20-%20Phaser%20Editor%20Blog_files/20151022034420-AudioSpritesWizard.png" alt="Create audio sprites"></p>
+
+<p>When you press finish it creates a JSON file with the sprites 
+definitions. This file is opened in the Audio Sprite Editor, then you 
+can drag some audio files from the Project Explorer and drop them into 
+the editor. When you drop the audio files into the editor they are 
+appended to a single audio file. Remember that audio sprites contains a 
+"big" audio file formed by the concatenation of the different sounds 
+spaced by a little time of silence.</p>
+
+<p>For example, if your audio sprites JSON is <code>sounds.json</code>, then when you add audio files to the editor, these audio files are appended to a <code>sounds.wav</code> file new sprites entries are created with default values.</p>
+
+<p>This resultant <code>sounds.wav</code> file is transcoded to MP3 and OGG formats, so at the end you get two other <code>sounds.mp3</code> and <code>sounds.ogg</code> files.</p>
+
+<p>All the audio manipulation is done using the <a href="https://www.ffmpeg.org/">FFMpeg</a> tool.</p>
+
+<p><img src="Audio%20Sprites%20editor%20-%20Phaser%20Editor%20Blog_files/20151022034623-AudioSpritesEditor.png" alt="Audio Sprites editor"></p>
+
+<p>As you can see in the above image, the editor has two panels, the top
+ panel show the audio waves and the range of the sprites. When you move 
+the mouse over this panel a vertical line indicates the time at the 
+cursor's position.</p>
+
+<p>In the bottom panel are listed the sprites. You can edit, add or 
+remove the sprites. To edit it select the row of the sprite and click 
+cell with the value you want to change.</p>
+
+<p>If you drag new audio files, new sprites are created and get the name and range from the audio files.</p>
+
+<p>It is possible that some audio files cannot be concatenated with a 
+good result, audio files have a diversity of sources but we process them
+ with the same ffmpeg configuration. In any case, if you have troubles 
+concatenating the files, you can do it with a tool like Audacity and 
+then edit the sprites info with Phaser Editor.</p>
+                </div><!--//desc-->
+    
+
+</body>
+</html>	
