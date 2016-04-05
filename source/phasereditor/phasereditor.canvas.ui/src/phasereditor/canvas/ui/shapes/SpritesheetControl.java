@@ -32,8 +32,8 @@ import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetPackUI.FrameData;
 import phasereditor.canvas.core.SpritesheetShapeModel;
 import phasereditor.canvas.ui.editors.ShapeCanvas;
+import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
-import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
 
 /**
@@ -43,7 +43,7 @@ import phasereditor.canvas.ui.editors.grid.PGridSection;
 public class SpritesheetControl extends BaseSpriteShapeControl<SpritesheetShapeModel> {
 
 	private List<FrameData> _frames;
-	private PGridNumberProperty _frame_property;
+	private PGridFrameProperty _frame_property;
 
 	public SpritesheetControl(ShapeCanvas canvas, SpritesheetShapeModel model) {
 		super(canvas, model);
@@ -107,11 +107,15 @@ public class SpritesheetControl extends BaseSpriteShapeControl<SpritesheetShapeM
 		return _frames.get(getModel().getFrameIndex());
 	}
 
+	public List<FrameData> getFrames() {
+		return _frames;
+	}
+
 	@Override
 	protected void initPropertyModel(PGridModel propModel) {
 		super.initPropertyModel(propModel);
 
-		_frame_property = new PGridNumberProperty("frame") {
+		_frame_property = new PGridFrameProperty("frame", this) {
 
 			@Override
 			public boolean isModified() {
@@ -119,14 +123,14 @@ public class SpritesheetControl extends BaseSpriteShapeControl<SpritesheetShapeM
 			}
 
 			@Override
-			public void setValue(Double value) {
+			public void setValue(Integer value) {
 				getModel().setFrameIndex(value.intValue());
 				updateGridChange();
 			}
 
 			@Override
-			public Double getValue() {
-				return Double.valueOf(getModel().getFrameIndex());
+			public Integer getValue() {
+				return Integer.valueOf(getModel().getFrameIndex());
 			}
 		};
 

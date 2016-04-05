@@ -1,4 +1,4 @@
-#Mon Apr 04 21:59:43 EDT 2016
+#Tue Apr 05 00:58:21 EDT 2016
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.unusedExceptionParameter=ignore
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.missingHashCodeMethod=warning
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.codeComplete.fieldSuffixes=
@@ -37,6 +37,7 @@ file_export_version=3.0
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.missingDeprecatedAnnotation=warning
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.unqualifiedFieldAccess=ignore
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.builder.resourceCopyExclusionFilter=
+/instance/org.eclipse.wb.core/design.structure.flyout.width=200
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.missingSynchronizedOnInheritedMethod=warning
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.potentialNullReference=warning
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.undocumentedEmptyBlock=warning
@@ -46,6 +47,7 @@ file_export_version=3.0
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.enumIdentifier=error
 /instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.formatterprofiles.version=12
 \!/=
+@org.eclipse.wb.core=1.8.0.r45x201506110820
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.codeComplete.localSuffixes=
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.potentiallyUnclosedCloseable=warning
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.codeComplete.argumentSuffixes=
@@ -58,5 +60,6 @@ file_export_version=3.0
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.indirectStaticAccess=warning
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode=enabled
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.unusedObjectAllocation=warning
+/instance/org.eclipse.wb.core/design.palette.flyout.width=150
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.codeComplete.localPrefixes=
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.codeComplete.argumentPrefixes=

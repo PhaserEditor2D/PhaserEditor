@@ -27,6 +27,8 @@ import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.widgets.Composite;
 
+import phasereditor.canvas.ui.editors.grid.editors.FrameCellEditor;
+
 /**
  * @author arian
  *
@@ -39,10 +41,15 @@ public class PGridEditingSupport extends EditingSupport {
 
 	@Override
 	protected CellEditor getCellEditor(Object element) {
+		Composite parent = (Composite) getViewer().getControl();
+
 		if (element instanceof PGridNumberProperty) {
-			return new NumberCellEditor((Composite) getViewer().getControl());
+			return new NumberCellEditor(parent);
 		} else if (element instanceof PGridStringProperty) {
-			return new TextCellEditor((Composite) getViewer().getControl());
+			return new TextCellEditor(parent);
+		} else if (element instanceof PGridFrameProperty) {
+			PGridFrameProperty prop = (PGridFrameProperty) element;
+			return new FrameCellEditor(parent, prop.getControl());
 		}
 		return null;
 	}
