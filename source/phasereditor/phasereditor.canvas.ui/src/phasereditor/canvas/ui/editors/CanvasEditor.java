@@ -173,6 +173,7 @@ public class CanvasEditor extends EditorPart {
 		// outline
 
 		_outlineTree.getViewer().setInput(_canvas);
+		_outlineTree.getViewer().expandAll();
 	}
 
 	private static MenuManager createContextMenu() {

@@ -28,6 +28,7 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
 
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
@@ -142,7 +143,14 @@ public class SelectionBehavior implements ISelectionProvider {
 	public void setSelection(ISelection selection) {
 		setSelection_private(selection);
 		if (!selection.isEmpty()) {
-			_canvas.getOutline().setSelection(selection, true);
+			TreeViewer outline = _canvas.getOutline();
+//			Object[] elems = ((IStructuredSelection) selection).toArray();
+//			if (elems.length == 0) {
+//				BaseObjectNode node = (BaseObjectNode) elems[0];
+//				outline.expandToLevel(node.getParent(), 1);
+//				outline.reveal(node);
+//			}
+			outline.setSelection(selection, true);
 		}
 	}
 
