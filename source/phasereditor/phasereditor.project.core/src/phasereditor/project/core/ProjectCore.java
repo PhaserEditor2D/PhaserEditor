@@ -69,11 +69,9 @@ public class ProjectCore {
 	public static IPath getDesignPath(IProject project) {
 		IPath path = project.getFullPath();
 
-		if (project != null) {
-			IContainer folder = project.getFolder("Design");
-			if (folder.exists()) {
-				path = folder.getFullPath();
-			}
+		IContainer folder = project.getFolder("Design");
+		if (folder.exists()) {
+			path = folder.getFullPath();
 		}
 
 		return path;
@@ -88,36 +86,33 @@ public class ProjectCore {
 	 */
 	public static IPath getWebContentPath(IProject project) {
 		IPath path = project.getFullPath();
+		IContainer folder = project.getFolder("WebContent");
+		if (!folder.exists()) {
+			// default to project, but look for index.html
+			IContainer[] result = { project };
+			try {
+				project.accept(new IResourceVisitor() {
 
-		if (project != null) {
-			IContainer folder = project.getFolder("WebContent");
-			if (!folder.exists()) {
-				// default to project, but look for index.html
-				IContainer[] result = { project };
-				try {
-					project.accept(new IResourceVisitor() {
-
-						@Override
-						public boolean visit(IResource resource) throws CoreException {
-							if (result[0] != null) {
-								return false;
-							}
-
-							if (resource instanceof IFile && resource.getName().equals("index.html")) {
-								result[0] = ((IFile) resource).getParent();
-								return false;
-							}
-							return true;
+					@Override
+					public boolean visit(IResource resource) throws CoreException {
+						if (result[0] != null) {
+							return false;
 						}
-					});
-					folder = result[0];
-				} catch (CoreException e) {
-					throw new RuntimeException(e);
-				}
-			}
 
-			path = folder.getFullPath();
+						if (resource instanceof IFile && resource.getName().equals("index.html")) {
+							result[0] = ((IFile) resource).getParent();
+							return false;
+						}
+						return true;
+					}
+				});
+				folder = result[0];
+			} catch (CoreException e) {
+				throw new RuntimeException(e);
+			}
 		}
+
+		path = folder.getFullPath();
 
 		return path;
 	}

@@ -112,8 +112,10 @@ public abstract class BaseSpriteShapeControl<T extends BaseSpriteShapeModel> ext
 		propModel.getSections().add(spriteSection);
 	}
 
+	@Override
 	public abstract double getWidth();
 
+	@Override
 	public abstract double getHeight();
 
 }

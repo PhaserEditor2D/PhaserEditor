@@ -118,6 +118,7 @@ public class CreateBehavior {
 		// reverse it because in selection it is reversed
 		Collections.reverse(children);
 
+		@SuppressWarnings("null")
 		BaseObjectControl<?> parentControl = parent.getControl();
 		GroupModel parentModel = (GroupModel) parentControl.getModel();
 		GroupModel groupModel = new GroupModel(parentModel);

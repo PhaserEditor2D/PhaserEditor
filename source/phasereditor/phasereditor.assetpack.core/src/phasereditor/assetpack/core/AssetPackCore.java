@@ -430,7 +430,7 @@ public class AssetPackCore {
 			for (AssetPackModel model : _filePackMap.values()) {
 				IFile file = model.getFile();
 				IProject project2 = file.getProject();
-				if (file != null && project2.equals(project)) {
+				if (project2.equals(project)) {
 					list.add(model);
 				}
 			}

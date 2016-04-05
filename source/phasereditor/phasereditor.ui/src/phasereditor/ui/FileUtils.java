@@ -132,6 +132,7 @@ public class FileUtils {
 			boolean fork = done != null;
 			dlg.run(fork, false, new IRunnableWithProgress() {
 
+				@SuppressWarnings("null")
 				@Override
 				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 					try {

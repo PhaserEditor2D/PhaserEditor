@@ -375,7 +375,7 @@ public class PhaserEditorUI {
 		});
 	}
 
-	public static <T extends Control> void swtRun(Runnable run) {
+	public static void swtRun(Runnable run) {
 		try {
 			Display display = Display.getDefault();
 			display.asyncExec(new Runnable() {
