@@ -112,7 +112,9 @@ public class CreateBehavior {
 
 		// remove selected nodes
 		for (BaseObjectNode child : children) {
-			child.getGroup().getChildren().remove(child);
+			if (child.getGroup() != null) {
+				child.getGroup().getChildren().remove(child);
+			}
 		}
 
 		// reverse it because in selection it is reversed
@@ -140,5 +142,22 @@ public class CreateBehavior {
 		canvas.getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
 
 		canvas.getSelectionBehavior().setSelection(new StructuredSelection(group));
+	}
+
+	public void makeEmptyGroup(BaseObjectNode parent) {
+		BaseObjectControl<?> parentControl = parent.getControl();
+		GroupModel parentModel = (GroupModel) parentControl.getModel();
+		GroupModel groupModel = new GroupModel(parentModel);
+		ShapeCanvas canvas = parentControl.getCanvas();
+
+		groupModel.setEditorName(_canvas.getWorldModel().createName("group"));
+		GroupControl groupControl = new GroupControl(canvas, groupModel);
+		GroupNode group = groupControl.getGroupNode();
+		parentModel.addChild(groupModel);
+		parent.getChildren().add(group);
+
+		canvas.getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
+		canvas.getSelectionBehavior().setSelection(new StructuredSelection(group));
+
 	}
 }

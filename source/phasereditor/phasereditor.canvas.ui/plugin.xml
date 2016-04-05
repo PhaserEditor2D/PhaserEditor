@@ -52,10 +52,6 @@
                label="Lower To Bottom"
                style="push">
          </command>
-         <command
-               commandId="org.eclipse.ui.edit.delete"
-               style="push">
-         </command>
          <separator
                name="phasereditor.canvas.ui.separator1"
                visible="true">
@@ -64,6 +60,20 @@
                commandId="phasereditor.canvas.ui.makegroup"
                icon="platform:/plugin/phasereditor.ui/icons/shape_group.png"
                label="Make Group With Selection"
+               style="push">
+         </command>
+         <command
+               commandId="phasereditor.canvas.ui.emptygroup"
+               icon="platform:/plugin/phasereditor.ui/icons/shape_square_group.png"
+               label="Make Empty Group"
+               style="push">
+         </command>
+         <separator
+               name="phasereditor.canvas.ui.separator2"
+               visible="true">
+         </separator>
+         <command
+               commandId="org.eclipse.ui.edit.delete"
                style="push">
          </command>
       </menuContribution>
@@ -98,6 +108,11 @@
             categoryId="phasereditor.canvas.ui.editor.category"
             id="phasereditor.canvas.ui.makegroup"
             name="Make Group">
+      </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.emptygroup"
+            name="Make Empty Group">
       </command>
       
    </extension>
@@ -158,15 +173,20 @@
          </enabledWhen>
       </handler>
       <handler
-            class="phasereditor.canvas.ui.handlers.MakeGroupHandler"
+            class="phasereditor.canvas.ui.handlers.MakeEmptyGroupHandler"
             commandId="phasereditor.canvas.ui.emptygroup">
          <activeWhen>
-            <iterate
-                  ifEmpty="true">
-               <instanceof
-                     value="phasereditor.canvas.ui.shapes.BaseObjectNode">
-               </instanceof>
-            </iterate>
+            <and>
+               <reference
+                     definitionId="phasereditor.canvas.ui.shapesSelected">
+               </reference>
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+               </with>
+            </and>
          </activeWhen>
       </handler>
    </extension>
