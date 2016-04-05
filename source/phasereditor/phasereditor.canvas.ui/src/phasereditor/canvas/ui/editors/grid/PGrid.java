@@ -216,19 +216,24 @@ public class PGrid extends Composite {
 	}
 
 	public void setModel(PGridModel model) {
-		_model = model;
-		if (_model != null && _model == _treeViewer.getInput()) {
+		if (model == null) {
+			_treeViewer.setInput(null);
+			_model = null;
+			return;
+		}
+
+		if (model == _model) {
 			_treeViewer.refresh();
 		} else {
 			Object[] expanded = _treeViewer.getExpandedElements();
 			Object[] selected = ((IStructuredSelection) _treeViewer.getSelection()).toArray();
 
 			_treeViewer.getTree().setRedraw(false);
-			_treeViewer.setInput(_model);
+			_treeViewer.setInput(model);
 
 			List<Object> toexpand = new ArrayList<>();
 			List<Object> toselect = new ArrayList<>();
-			for (PGridSection section : _model.getSections()) {
+			for (PGridSection section : model.getSections()) {
 
 				for (Object obj : expanded) {
 					if (obj instanceof PGridSection) {
@@ -255,6 +260,13 @@ public class PGrid extends Composite {
 			_tree.showSelection();
 			_treeViewer.getTree().setRedraw(true);
 		}
+
+		// expand it first time
+		if (_model == null) {
+			_treeViewer.expandAll();
+		}
+
+		_model = model;
 	}
 
 	protected void updateColumnsLayout() {

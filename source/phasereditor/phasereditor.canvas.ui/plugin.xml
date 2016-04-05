@@ -29,6 +29,12 @@
             allPopups="false"
             locationURI="popup:phasereditor.canvas.ui.editors.canvas?after=object">
          <command
+               commandId="phasereditor.canvas.ui.riseToTop"
+               icon="platform:/plugin/phasereditor.ui/icons/shape_move_front.png"
+               label="Rise To Top"
+               style="push">
+         </command>
+         <command
                commandId="phasereditor.canvas.ui.rise"
                icon="platform:/plugin/phasereditor.ui/icons/shape_move_forwards.png"
                label="Rise"
@@ -38,12 +44,6 @@
                commandId="phasereditor.canvas.ui.lower"
                icon="platform:/plugin/phasereditor.ui/icons/shape_move_backwards.png"
                label="Lower"
-               style="push">
-         </command>
-         <command
-               commandId="phasereditor.canvas.ui.riseToTop"
-               icon="platform:/plugin/phasereditor.ui/icons/shape_move_front.png"
-               label="Rise To Top"
                style="push">
          </command>
          <command
