@@ -62,8 +62,10 @@ public class DragBehavior {
 			if (picked == null) {
 				return;
 			}
+			
 			_dragNode = picked;
 			_startNodePoint = new Point2D(picked.getLayoutX(), picked.getLayoutY());
+			
 			_startScenePoint = new Point2D(event.getSceneX(), event.getSceneY());
 		});
 

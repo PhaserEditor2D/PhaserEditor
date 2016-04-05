@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -65,7 +68,13 @@ public class SelectionBehavior implements ISelectionProvider {
 				return;
 			}
 
-			setSelection(new StructuredSelection(picked));
+			if (_selection != null && !_selection.isEmpty() && event.isControlDown()) {
+				HashSet<Object> selection = new HashSet<>(Arrays.asList(_selection.toArray()));
+				selection.add(picked);
+				setSelection(new StructuredSelection(selection.toArray()));
+			} else {
+				setSelection(new StructuredSelection(picked));
+			}
 		});
 		_canvas.getOutline().addSelectionChangedListener(new ISelectionChangedListener() {
 
@@ -144,12 +153,6 @@ public class SelectionBehavior implements ISelectionProvider {
 		setSelection_private(selection);
 		if (!selection.isEmpty()) {
 			TreeViewer outline = _canvas.getOutline();
-//			Object[] elems = ((IStructuredSelection) selection).toArray();
-//			if (elems.length == 0) {
-//				BaseObjectNode node = (BaseObjectNode) elems[0];
-//				outline.expandToLevel(node.getParent(), 1);
-//				outline.reveal(node);
-//			}
 			outline.setSelection(selection, true);
 		}
 	}
