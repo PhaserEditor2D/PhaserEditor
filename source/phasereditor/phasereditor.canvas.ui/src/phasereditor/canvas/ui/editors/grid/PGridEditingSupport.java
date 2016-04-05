@@ -76,7 +76,10 @@ public class PGridEditingSupport extends EditingSupport {
 			((PGridNumberProperty) element).setValue((Double) value);
 		} else if (element instanceof PGridStringProperty) {
 			((PGridStringProperty) element).setValue((String) value);
+		} else if (element instanceof PGridFrameProperty) {
+			((PGridFrameProperty) element).setValue((Integer) value);
 		}
+
 		getViewer().refresh(element);
 	}
 }

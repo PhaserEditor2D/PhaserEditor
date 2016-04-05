@@ -22,9 +22,6 @@
 package phasereditor.canvas.ui.shapes;
 
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeType;
 import phasereditor.canvas.core.BaseObjectModel;
 
 /**
@@ -32,26 +29,22 @@ import phasereditor.canvas.core.BaseObjectModel;
  *
  */
 public class BaseObjectNode extends Pane {
+	private static final int SELECTION_BORDER_WIDTH = 2;
 	private BaseObjectControl<?> _control;
-	protected final Rectangle _selectionRect;
+	private boolean _selected;
 
 	BaseObjectNode(BaseObjectControl<?> control) {
 		_control = control;
-
-		_selectionRect = new Rectangle(0, 0, Color.TRANSPARENT);
-		_selectionRect.setStrokeType(StrokeType.OUTSIDE);
-		_selectionRect.setStroke(Color.BLUE);
-		_selectionRect.setStrokeWidth(1);
-		_selectionRect.getStrokeDashArray().addAll(Double.valueOf(2), Double.valueOf(5));
-		_selectionRect.setLayoutX(0);
-		_selectionRect.setLayoutY(0);
-		_selectionRect.setVisible(false);
-
-		getChildren().add(_selectionRect);
-
-		_selectionRect.setMouseTransparent(true);
-
 		setPickOnBounds(false);
+		updateStyle();
+	}
+
+	protected void updateStyle() {
+		String style = "";
+		style += "-fx-border-color: blue;";
+		style += "-fx-border-width: " + (_selected ? SELECTION_BORDER_WIDTH : 0) + "px;";
+		style += "-fx-border-style: dashed;";
+		setStyle(style);
 	}
 
 	public BaseObjectModel getModel() {
@@ -76,11 +69,12 @@ public class BaseObjectNode extends Pane {
 	}
 
 	public void setSelected(boolean selected) {
-		_selectionRect.setVisible(selected);
+		_selected = selected;
+		updateStyle();
 	}
 
 	public boolean isSelected() {
-		return _selectionRect.isVisible();
+		return _selected;
 	}
 
 	public BaseObjectControl<?> getControl() {

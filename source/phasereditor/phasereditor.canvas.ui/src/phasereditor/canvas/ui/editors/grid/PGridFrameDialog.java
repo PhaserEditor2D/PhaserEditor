@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid;
 
-import static java.lang.System.out;
-
 import java.util.List;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -87,26 +85,28 @@ public class PGridFrameDialog extends Dialog {
 	}
 
 	private void afterCreateWidgets() {
-		 TilePane tile = new TilePane(5, 5);
+		TilePane tilePane = new TilePane(5, 5);
 
 		_canvas.addControlListener(new ControlAdapter() {
 			@Override
 			public void controlResized(ControlEvent e) {
 				Point size = _canvas.getSize();
-				tile.setPrefSize(size.x - 40, size.y - 40);
+				tilePane.setPrefSize(size.x - 40, size.y - 40);
 			}
 		});
 
 		Point size = _canvas.getSize();
-		tile.setPrefSize(size.x, size.y);
+		tilePane.setPrefSize(size.x, size.y);
 
 		for (FrameData frame : _frames) {
-			ImageView view = new ImageView(_image);
+			ImageView imgview = new ImageView(_image);
+			imgview.setPickOnBounds(true);
 			Rectangle src = frame.src;
-			view.setViewport(new Rectangle2D(src.x, src.y, src.width, src.height));
-			tile.getChildren().add(view);
+			imgview.setViewport(new Rectangle2D(src.x, src.y, src.width, src.height));
+			tilePane.getChildren().add(imgview);
 		}
-		BorderPane bpane = new BorderPane(tile);
+
+		BorderPane bpane = new BorderPane(tilePane);
 		ScrollPane pane = new ScrollPane(bpane);
 		Scene scene = new Scene(pane);
 		_canvas.setScene(scene);
@@ -116,14 +116,15 @@ public class PGridFrameDialog extends Dialog {
 		scene.setOnMouseClicked(event -> {
 			Node picked = event.getPickResult().getIntersectedNode();
 			if (picked != null && picked instanceof ImageView) {
-				out.println("selected " + picked);
-				tile.getChildren().forEach(node -> {
-					ImageView iv = (ImageView) node;
-					iv.setEffect(null);
-					_selframe = tile.getChildren().indexOf(iv);
+
+				tilePane.getChildren().forEach(node -> {
+					ImageView imgView = (ImageView) node;
+					imgView.setEffect(null);
 				});
-				ImageView iv = (ImageView) picked;
-				iv.setEffect(new DropShadow());
+
+				ImageView imgView = (ImageView) picked;
+				imgView.setEffect(new DropShadow());
+				_selframe = tilePane.getChildren().indexOf(imgView);
 			}
 		});
 	}
@@ -154,7 +155,7 @@ public class PGridFrameDialog extends Dialog {
 	public void setImage(Image image) {
 		_image = image;
 	}
-	
+
 	public int getSelectedFrame() {
 		return _selframe;
 	}

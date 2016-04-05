@@ -24,7 +24,6 @@ package phasereditor.canvas.ui.shapes;
 import org.eclipse.core.resources.IFile;
 
 import javafx.geometry.Rectangle2D;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
 
@@ -45,13 +44,6 @@ public class SpriteShapeNode extends BaseObjectNode {
 		_imageView = imageView;
 
 		getChildren().add(imageView);
-		// imageView.setMouseTransparent(true);
-
-		{
-			Image img = _imageView.getImage();
-			_selectionRect.setWidth(img.getWidth());
-			_selectionRect.setHeight(img.getHeight());
-		}
 	}
 
 	public ImageView getImageView() {
@@ -60,9 +52,6 @@ public class SpriteShapeNode extends BaseObjectNode {
 
 	public void setViewport(Rectangle2D rect) {
 		_imageView.setViewport(rect);
-
-		_selectionRect.setWidth(rect.getWidth());
-		_selectionRect.setHeight(rect.getHeight());
 	}
 
 	@SuppressWarnings("unused")

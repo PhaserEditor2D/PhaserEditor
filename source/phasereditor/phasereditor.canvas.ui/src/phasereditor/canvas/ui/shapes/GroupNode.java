@@ -29,12 +29,10 @@ public class GroupNode extends BaseObjectNode {
 
 	GroupNode(GroupControl control) {
 		super(control);
-		// setStyle("-fx-background-color: gray");
 	}
 
 	@Override
 	public GroupControl getControl() {
 		return (GroupControl) super.getControl();
 	}
-
 }
