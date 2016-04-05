@@ -50,16 +50,16 @@ public class SelectionBehavior implements ISelectionProvider {
 		_listenerList = new ListenerList(ListenerList.IDENTITY);
 
 		_canvas.getScene().addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-			Node picked = event.getPickResult().getIntersectedNode();
+			Node userPicked = event.getPickResult().getIntersectedNode();
 
-			picked = findObject(picked);
+			BaseObjectNode picked = findBestToPick(userPicked);
 
 			// to know the bounds in the scene.
 			// if (picked != null) {
 			// out.println(picked.localToScreen(picked.getBoundsInLocal()));
 			// }
 
-			if (picked == null || picked instanceof GroupNode) {
+			if (picked == null) {
 				setSelection(StructuredSelection.EMPTY);
 				return;
 			}
@@ -79,10 +79,30 @@ public class SelectionBehavior implements ISelectionProvider {
 	}
 
 	/**
+	 * Find the real object to pick when an object is picked by the user. The
+	 * rule is to pick a "BaseObjectNode" but also if there is a parent that is
+	 * already selected, the return that parent.
+	 * 
 	 * @param picked
+	 *            The real object to pick, or the group this object belongs if
+	 *            that group is selected.
 	 * @return
 	 */
-	public static BaseObjectNode findObject(Node picked) {
+	public static BaseObjectNode findBestToPick(Node picked) {
+		if (picked == null) {
+			return null;
+		}
+
+		GroupNode selected = findSelectedParent(picked);
+
+		if (selected != null) {
+			return selected;
+		}
+
+		return findBestToPick2(picked);
+	}
+
+	private static BaseObjectNode findBestToPick2(Node picked) {
 		if (picked == null) {
 			return null;
 		}
@@ -91,7 +111,21 @@ public class SelectionBehavior implements ISelectionProvider {
 			return (BaseObjectNode) picked;
 		}
 
-		return findObject(picked.getParent());
+		return findBestToPick2(picked.getParent());
+	}
+
+	private static GroupNode findSelectedParent(Node picked) {
+		if (picked == null) {
+			return null;
+		}
+
+		if (picked instanceof GroupNode) {
+			if (((GroupNode) picked).isSelected()) {
+				return (GroupNode) picked;
+			}
+		}
+
+		return findSelectedParent(picked.getParent());
 	}
 
 	@Override

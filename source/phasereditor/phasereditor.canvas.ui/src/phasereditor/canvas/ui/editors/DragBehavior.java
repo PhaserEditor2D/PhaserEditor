@@ -31,7 +31,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.PickResult;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
-import phasereditor.canvas.ui.shapes.SpriteShapeNode;
+import phasereditor.canvas.ui.shapes.BaseObjectNode;
 
 /**
  * @author arian
@@ -40,7 +40,7 @@ import phasereditor.canvas.ui.shapes.SpriteShapeNode;
 public class DragBehavior {
 	private ShapeCanvas _canvas;
 	private Scene _scene;
-	private SpriteShapeNode _dragNode;
+	private BaseObjectNode _dragNode;
 	private Point2D _startScenePoint;
 	private Point2D _startNodePoint;
 
@@ -56,13 +56,15 @@ public class DragBehavior {
 			}
 
 			PickResult pick = event.getPickResult();
-			Node picked = pick.getIntersectedNode();
-			picked = SelectionBehavior.findObject(picked);
-			if (picked instanceof SpriteShapeNode) {
-				_dragNode = (SpriteShapeNode) picked;
-				_startNodePoint = new Point2D(picked.getLayoutX(), picked.getLayoutY());
-				_startScenePoint = new Point2D(event.getSceneX(), event.getSceneY());
+			Node userPicked = pick.getIntersectedNode();
+			BaseObjectNode picked = SelectionBehavior.findBestToPick(userPicked);
+
+			if (picked == null) {
+				return;
 			}
+			_dragNode = picked;
+			_startNodePoint = new Point2D(picked.getLayoutX(), picked.getLayoutY());
+			_startScenePoint = new Point2D(event.getSceneX(), event.getSceneY());
 		});
 
 		_scene.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
