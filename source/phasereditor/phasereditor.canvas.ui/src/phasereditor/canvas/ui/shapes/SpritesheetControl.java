@@ -26,11 +26,15 @@ import java.util.List;
 import org.eclipse.swt.graphics.Rectangle;
 
 import javafx.geometry.Rectangle2D;
+import javafx.scene.image.Image;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetPackUI.FrameData;
 import phasereditor.canvas.core.SpritesheetShapeModel;
 import phasereditor.canvas.ui.editors.ShapeCanvas;
+import phasereditor.canvas.ui.editors.grid.PGridModel;
+import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
+import phasereditor.canvas.ui.editors.grid.PGridSection;
 
 /**
  * @author arian
@@ -39,6 +43,7 @@ import phasereditor.canvas.ui.editors.ShapeCanvas;
 public class SpritesheetControl extends BaseSpriteShapeControl<SpritesheetShapeModel> {
 
 	private List<FrameData> _frames;
+	private PGridNumberProperty _frame_property;
 
 	public SpritesheetControl(ShapeCanvas canvas, SpritesheetShapeModel model) {
 		super(canvas, model);
@@ -51,9 +56,11 @@ public class SpritesheetControl extends BaseSpriteShapeControl<SpritesheetShapeM
 		SpritesheetAssetModel asset = model.getAsset();
 		SpriteShapeNode node = createImageNode(asset.getUrlFile());
 
-		Rectangle b = new Rectangle(0, 0, asset.getFrameWidth(), asset.getFrameHeight());
+		Image img = node.getImageView().getImage();
+		Rectangle src = new Rectangle(0, 0, (int) img.getWidth(), (int) img.getHeight());
+		Rectangle dst = new Rectangle(0, 0, asset.getFrameWidth(), asset.getFrameHeight());
 
-		_frames = AssetPackUI.generateSpriteSheetRects(asset, b, b);
+		_frames = AssetPackUI.generateSpriteSheetRects(asset, src, dst);
 
 		{
 			int last = _frames.size() - 1;
@@ -65,6 +72,18 @@ public class SpritesheetControl extends BaseSpriteShapeControl<SpritesheetShapeM
 		updateViewport(node);
 
 		return node;
+	}
+
+	@Override
+	public SpriteShapeNode getNode() {
+		return (SpriteShapeNode) super.getNode();
+	}
+
+	@Override
+	public void updateFromModel() {
+		super.updateFromModel();
+
+		updateViewport(getNode());
 	}
 
 	@Override
@@ -86,5 +105,34 @@ public class SpritesheetControl extends BaseSpriteShapeControl<SpritesheetShapeM
 
 	private FrameData getCurrentFrame() {
 		return _frames.get(getModel().getFrameIndex());
+	}
+
+	@Override
+	protected void initPropertyModel(PGridModel propModel) {
+		super.initPropertyModel(propModel);
+
+		_frame_property = new PGridNumberProperty("frame") {
+
+			@Override
+			public boolean isModified() {
+				return getModel().getFrameIndex() != 0;
+			}
+
+			@Override
+			public void setValue(Double value) {
+				getModel().setFrameIndex(value.intValue());
+				updateGridChange();
+			}
+
+			@Override
+			public Double getValue() {
+				return Double.valueOf(getModel().getFrameIndex());
+			}
+		};
+
+		PGridSection section = new PGridSection("Sprite Sheet");
+		section.add(_frame_property);
+
+		propModel.getSections().add(section);
 	}
 }
