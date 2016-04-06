@@ -148,6 +148,10 @@ public class SelectionBehavior implements ISelectionProvider {
 		return _selection;
 	}
 
+	public boolean containsInSelection(Node node) {
+		return _selection != null && _selection.toList().contains(node);
+	}
+
 	@Override
 	public void setSelection(ISelection selection) {
 		setSelection_private(selection);

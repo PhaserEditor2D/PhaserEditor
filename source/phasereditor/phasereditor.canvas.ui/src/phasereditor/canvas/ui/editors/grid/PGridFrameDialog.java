@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid;
 
+import static java.lang.String.format;
+import static java.lang.System.out;
+
 import java.util.List;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -29,21 +32,23 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import javafx.embed.swt.FXCanvas;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import phasereditor.assetpack.ui.AssetPackUI.FrameData;
 
@@ -52,10 +57,14 @@ import phasereditor.assetpack.ui.AssetPackUI.FrameData;
  *
  */
 public class PGridFrameDialog extends Dialog {
+	/**
+	 * 
+	 */
+	private static final String ITEM_TOKEN = "item";
 	FXCanvas _canvas;
 	private List<FrameData> _frames;
 	private Image _image;
-	private int _selframe;
+	private int _selectedframe;
 
 	/**
 	 * Create the dialog.
@@ -84,7 +93,13 @@ public class PGridFrameDialog extends Dialog {
 		return container;
 	}
 
+	@SuppressWarnings("boxing")
 	private void afterCreateWidgets() {
+		RGB rgb = SWTResourceManager.getColor(SWT.COLOR_LIST_SELECTION).getRGB();
+		String commonStyle = "-fx-padding:5px;";
+		String selectedStyle = commonStyle
+				+ format("-fx-background-color:rgb(%s,%s,%s);", rgb.red, rgb.green, rgb.blue);
+
 		TilePane tilePane = new TilePane(5, 5);
 
 		_canvas.addControlListener(new ControlAdapter() {
@@ -99,12 +114,21 @@ public class PGridFrameDialog extends Dialog {
 		tilePane.setPrefSize(size.x, size.y);
 
 		for (FrameData frame : _frames) {
-			ImageView imgview = new ImageView(_image);
-			imgview.setPickOnBounds(true);
 			Rectangle src = frame.src;
-			imgview.setViewport(new Rectangle2D(src.x, src.y, src.width, src.height));
-			tilePane.getChildren().add(imgview);
+
+			ImageView imgView = new ImageView(_image);
+			imgView.setMouseTransparent(true);
+			imgView.setViewport(new Rectangle2D(src.x, src.y, src.width, src.height));
+
+			BorderPane item = new BorderPane(imgView);
+			item.setUserData(ITEM_TOKEN);
+			item.setStyle(commonStyle);
+			item.setPickOnBounds(true);
+			item.setMouseTransparent(false);
+			tilePane.getChildren().add(item);
 		}
+
+		tilePane.getChildren().get(_selectedframe).setStyle(selectedStyle);
 
 		BorderPane bpane = new BorderPane(tilePane);
 		ScrollPane pane = new ScrollPane(bpane);
@@ -113,18 +137,18 @@ public class PGridFrameDialog extends Dialog {
 
 		_canvas.getShell().setText("Sprite Sheet Frame");
 
-		scene.setOnMouseClicked(event -> {
+		tilePane.setOnMouseClicked(event -> {
 			Node picked = event.getPickResult().getIntersectedNode();
-			if (picked != null && picked instanceof ImageView) {
-
+			out.println(picked);
+			if (picked != null && picked.getUserData() == ITEM_TOKEN) {
 				tilePane.getChildren().forEach(node -> {
-					ImageView imgView = (ImageView) node;
-					imgView.setEffect(null);
+					Pane item = (Pane) node;
+					item.setStyle(commonStyle);
 				});
 
-				ImageView imgView = (ImageView) picked;
-				imgView.setEffect(new DropShadow());
-				_selframe = tilePane.getChildren().indexOf(imgView);
+				Pane item = (Pane) picked;
+				item.setStyle(selectedStyle);
+				_selectedframe = tilePane.getChildren().indexOf(item);
 			}
 		});
 	}
@@ -157,7 +181,10 @@ public class PGridFrameDialog extends Dialog {
 	}
 
 	public int getSelectedFrame() {
-		return _selframe;
+		return _selectedframe;
 	}
 
+	public void setSelectedframe(int selframe) {
+		_selectedframe = selframe;
+	}
 }

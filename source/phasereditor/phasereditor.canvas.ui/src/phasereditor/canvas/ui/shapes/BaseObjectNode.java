@@ -35,8 +35,8 @@ public class BaseObjectNode extends Pane {
 
 	BaseObjectNode(BaseObjectControl<?> control) {
 		_control = control;
-		setPickOnBounds(false);
 		updateStyle();
+		setPickOnBounds(false);
 	}
 
 	protected void updateStyle() {

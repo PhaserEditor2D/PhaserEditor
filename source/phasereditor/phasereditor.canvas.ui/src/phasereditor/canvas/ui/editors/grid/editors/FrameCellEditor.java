@@ -47,6 +47,7 @@ public class FrameCellEditor extends DialogCellEditor {
 		PGridFrameDialog dlg = new PGridFrameDialog(cellEditorWindow.getShell());
 		dlg.setFrames(_control.getFrames());
 		dlg.setImage(_control.getNode().getImageView().getImage());
+		dlg.setSelectedframe(_control.getModel().getFrameIndex());
 		if (dlg.open() == Window.OK) {
 			return Integer.valueOf(dlg.getSelectedFrame());
 		}
