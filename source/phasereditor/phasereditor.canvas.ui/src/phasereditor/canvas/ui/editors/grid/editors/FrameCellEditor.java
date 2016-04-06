@@ -26,7 +26,6 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import phasereditor.canvas.ui.editors.grid.PGridFrameDialog;
 import phasereditor.canvas.ui.shapes.SpritesheetControl;
 
 /**
