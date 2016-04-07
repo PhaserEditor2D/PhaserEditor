@@ -102,7 +102,7 @@ public class SelectionBehavior implements ISelectionProvider {
 	 *            that group is selected.
 	 * @return
 	 */
-	public static BaseObjectNode findBestToPick(Node picked) {
+	public BaseObjectNode findBestToPick(Node picked) {
 		if (picked == null) {
 			return null;
 		}
@@ -128,18 +128,32 @@ public class SelectionBehavior implements ISelectionProvider {
 		return findBestToPick2(picked.getParent());
 	}
 
-	private static GroupNode findSelectedParent(Node picked) {
+	private GroupNode findSelectedParent(Node picked) {
 		if (picked == null) {
 			return null;
 		}
 
 		if (picked instanceof GroupNode) {
-			if (((GroupNode) picked).isSelected()) {
+			if (isSelected(picked)) {
 				return (GroupNode) picked;
 			}
 		}
 
 		return findSelectedParent(picked.getParent());
+	}
+
+	public boolean isSelected(Object node) {
+		if (_selection == null) {
+			return false;
+		}
+
+		for (Object e : _selection.toArray()) {
+			if (e == node) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	@Override
@@ -184,7 +198,6 @@ public class SelectionBehavior implements ISelectionProvider {
 			for (Object obj : _selection.toArray()) {
 				if (obj instanceof BaseObjectNode) {
 					BaseObjectNode node = (BaseObjectNode) obj;
-					node.setSelected(true);
 
 					Bounds nodeLocal = node.getBoundsInLocal();
 					Bounds nodeScene = node.localToScene(nodeLocal);
@@ -197,25 +210,13 @@ public class SelectionBehavior implements ISelectionProvider {
 					selnode.setLayoutY(nodeScene.getMinY());
 					selnode.setMinWidth(nodeScene.getWidth());
 					selnode.setMinHeight(nodeScene.getHeight());
-					selnode.setStyle("-fx-background-color:rgba(200, 0, 0, 150)-fx-border-color: red;-fx-border-width:2px;-fx-border-style:dashed;");
+					selnode.setStyle(
+							"-fx-background-color:rgba(200, 0, 0, 150)-fx-border-color: red;-fx-border-width:2px;-fx-border-style:dashed;");
 					selpane.getChildren().add(selnode);
 				}
 			}
 		} else {
-			for (Object obj : _selection.toArray()) {
-				if (obj instanceof BaseObjectNode) {
-					BaseObjectNode node = (BaseObjectNode) obj;
-					node.setSelected(false);
-				}
-			}
 			selpane.getChildren().clear();
-		}
-
-		for (Object obj : _selection.toArray()) {
-			if (obj instanceof BaseObjectNode) {
-				BaseObjectNode node = (BaseObjectNode) obj;
-				node.setSelected(sel);
-			}
 		}
 	}
 

@@ -19,45 +19,42 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.shapes;
+package phasereditor.canvas.ui.editors.grid.editors;
 
-import javafx.scene.layout.Pane;
-import phasereditor.canvas.core.BaseObjectModel;
+import org.eclipse.swt.graphics.Rectangle;
+
+import javafx.geometry.Rectangle2D;
+import javafx.scene.control.ListCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import phasereditor.assetpack.ui.AssetPackUI.FrameData;
 
 /**
  * @author arian
  *
  */
-public class BaseObjectNode extends Pane {
-	private BaseObjectControl<?> _control;
+public class FrameCell extends ListCell<FrameData> {
 
-	BaseObjectNode(BaseObjectControl<?> control) {
-		_control = control;
-		setPickOnBounds(false);
+	private Image _image;
+
+	public FrameCell(Image image) {
+		super();
+		_image = image;
 	}
 
-	public BaseObjectModel getModel() {
-		return getControl().getModel();
-	}
+	@Override
+	protected void updateItem(FrameData item, boolean empty) {
+		super.updateItem(item, empty);
 
-	public int getDepthLevel() {
-		GroupNode group = getGroup();
-
-		if (group == null) {
-			return 0;
+		if (empty || item == null) {
+			setGraphic(null);
+			setText(null);
+			return;
 		}
 
-		return group.getDepthLevel() + 1;
-	}
-
-	public GroupNode getGroup() {
-		if (getParent() instanceof GroupNode) {
-			return (GroupNode) getParent();
-		}
-		return null;
-	}
-
-	public BaseObjectControl<?> getControl() {
-		return _control;
+		ImageView imgView = new ImageView(_image);
+		Rectangle src = item.src;
+		imgView.setViewport(new Rectangle2D(src.x, src.y, src.width, src.height));
+		setGraphic(imgView);
 	}
 }
