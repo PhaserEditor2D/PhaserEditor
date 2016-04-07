@@ -35,16 +35,7 @@ public class BaseObjectNode extends Pane {
 
 	BaseObjectNode(BaseObjectControl<?> control) {
 		_control = control;
-		updateStyle();
 		setPickOnBounds(false);
-	}
-
-	protected void updateStyle() {
-		String style = "";
-		style += "-fx-border-color: blue;";
-		style += "-fx-border-width: " + (_selected ? SELECTION_BORDER_WIDTH : 0) + "px;";
-		style += "-fx-border-style: dashed;";
-		setStyle(style);
 	}
 
 	public BaseObjectModel getModel() {
@@ -68,11 +59,12 @@ public class BaseObjectNode extends Pane {
 		return null;
 	}
 
+	@Deprecated
 	public void setSelected(boolean selected) {
 		_selected = selected;
-		updateStyle();
 	}
 
+	@Deprecated
 	public boolean isSelected() {
 		return _selected;
 	}

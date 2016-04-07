@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
+import static java.lang.System.out;
+
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -33,8 +35,10 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 
+import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import phasereditor.canvas.ui.shapes.BaseObjectNode;
 import phasereditor.canvas.ui.shapes.GroupNode;
 
@@ -175,6 +179,38 @@ public class SelectionBehavior implements ISelectionProvider {
 	}
 
 	private void updateSelectedNodes(boolean sel) {
+		Pane selpane = _canvas.getSelectionPane();
+		if (sel) {
+			for (Object obj : _selection.toArray()) {
+				if (obj instanceof BaseObjectNode) {
+					BaseObjectNode node = (BaseObjectNode) obj;
+					node.setSelected(true);
+
+					Bounds nodeLocal = node.getBoundsInLocal();
+					Bounds nodeScene = node.localToScene(nodeLocal);
+
+					out.println("nodeLocal " + nodeLocal);
+					out.println("nodeScene " + nodeScene);
+
+					Pane selnode = new Pane();
+					selnode.setLayoutX(nodeScene.getMinX());
+					selnode.setLayoutY(nodeScene.getMinY());
+					selnode.setMinWidth(nodeScene.getWidth());
+					selnode.setMinHeight(nodeScene.getHeight());
+					selnode.setStyle("-fx-background-color:rgba(200, 0, 0, 150)-fx-border-color: red;-fx-border-width:2px;-fx-border-style:dashed;");
+					selpane.getChildren().add(selnode);
+				}
+			}
+		} else {
+			for (Object obj : _selection.toArray()) {
+				if (obj instanceof BaseObjectNode) {
+					BaseObjectNode node = (BaseObjectNode) obj;
+					node.setSelected(false);
+				}
+			}
+			selpane.getChildren().clear();
+		}
+
 		for (Object obj : _selection.toArray()) {
 			if (obj instanceof BaseObjectNode) {
 				BaseObjectNode node = (BaseObjectNode) obj;

@@ -21,10 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.paint.Color;
 import phasereditor.canvas.core.WorldModel;
 
 /**
@@ -35,12 +31,8 @@ public class WorldNode extends GroupNode {
 
 	public WorldNode(WorldControl control) {
 		super(control);
-
+		setStyle("-fx-border-styke:solid;border-color:darkgray;border-width:1px;");
 		updateFromModel();
-
-		// p.setStyle("-fx-background-color: black");
-		setBorder(new Border(
-				new BorderStroke(Color.DARKGRAY, BorderStrokeStyle.SOLID, null, BorderStroke.DEFAULT_WIDTHS)));
 	}
 
 	private void updateFromModel() {
@@ -48,5 +40,4 @@ public class WorldNode extends GroupNode {
 		setMinSize(model.getWorldWidth(), model.getWorldHeight());
 		setMaxSize(model.getWorldWidth(), model.getWorldHeight());
 	}
-
 }

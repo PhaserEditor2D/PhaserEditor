@@ -35,6 +35,7 @@ import javafx.embed.swt.FXCanvas;
 import javafx.scene.Scene;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.grid.PGrid;
@@ -51,6 +52,7 @@ import phasereditor.canvas.ui.shapes.WorldNode;
 public class ShapeCanvas extends FXCanvas {
 	private CreateBehavior _createBehaviors;
 	private BorderPane _rootPane;
+	private Pane _selectionPane;
 	private SelectionBehavior _selectionBehavior;
 	private DragBehavior _dragBehavior;
 	private WorldModel _model;
@@ -126,9 +128,15 @@ public class ShapeCanvas extends FXCanvas {
 	private void createScene() {
 		_rootPane = new BorderPane();
 
+		_selectionPane = new Pane();
+		
 		_worldControl = new WorldControl(this, _model);
 
-		_rootPane.setCenter(_worldControl.getNode());
+		Pane centerPane = new Pane();
+		centerPane.getChildren().add(_worldControl.getNode());
+		centerPane.getChildren().add(_selectionPane);
+
+		_rootPane.setCenter(centerPane);
 
 		Scene scene = new Scene(_rootPane);
 		setScene(scene);
@@ -136,6 +144,10 @@ public class ShapeCanvas extends FXCanvas {
 
 	public WorldNode getWorldNode() {
 		return _worldControl.getNode();
+	}
+
+	public Pane getSelectionPane() {
+		return _selectionPane;
 	}
 
 	public void dropToWorld(BaseObjectControl<?> control, double sceneX, double sceneY) {
