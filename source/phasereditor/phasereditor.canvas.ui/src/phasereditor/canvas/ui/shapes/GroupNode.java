@@ -21,18 +21,51 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
+import javafx.scene.Node;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Shape;
+import phasereditor.canvas.core.BaseObjectModel;
+
 /**
  * @author arian
  *
  */
-public class GroupNode extends BaseObjectNode {
+public class GroupNode extends Pane implements IObjectNode {
+
+	private GroupControl _control;
 
 	GroupNode(GroupControl control) {
-		super(control);
+		_control = control;
 	}
 
 	@Override
 	public GroupControl getControl() {
-		return (GroupControl) super.getControl();
+		return _control;
+	}
+
+	@Override
+	public BaseObjectModel getModel() {
+		return _control.getModel();
+	}
+
+	@Override
+	public GroupNode getNode() {
+		return this;
+	}
+
+	@Override
+	public Shape computeShape() {
+		Shape result = null;
+
+		for (Node child : getChildren()) {
+			Shape shape = ((IObjectNode) child).computeShape();
+			if (result == null) {
+				result = shape;
+			} else {
+				result = Shape.union(result, shape);
+			}
+		}
+		
+		return result;
 	}
 }

@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
-import javafx.scene.image.ImageView;
 import phasereditor.canvas.core.ImageSpriteShapeModel;
 import phasereditor.canvas.ui.editors.ShapeCanvas;
 
@@ -30,26 +29,25 @@ import phasereditor.canvas.ui.editors.ShapeCanvas;
  *
  */
 public class ImageSpriteControl extends BaseSpriteShapeControl<ImageSpriteShapeModel> {
-	private ImageView _imageView;
+	private SpriteNode _spriteNode;
 
 	public ImageSpriteControl(ShapeCanvas canvas, ImageSpriteShapeModel model) {
 		super(canvas, model);
 	}
 
 	@Override
-	protected SpriteShapeNode createShapeNode() {
-		SpriteShapeNode node = createImageNode(getModel().getAsset().getUrlFile());
-		_imageView = node.getImageView();
-		return node;
+	protected SpriteNode createShapeNode() {
+		_spriteNode = createImageNode(getModel().getAsset().getUrlFile());
+		return _spriteNode;
 	}
 
 	@Override
 	public double getWidth() {
-		return _imageView.getImage().getWidth();
+		return _spriteNode.getImage().getWidth();
 	}
 
 	@Override
 	public double getHeight() {
-		return _imageView.getImage().getHeight();
+		return _spriteNode.getImage().getHeight();
 	}
 }

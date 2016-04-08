@@ -28,7 +28,7 @@ import java.util.List;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import phasereditor.canvas.ui.shapes.BaseObjectNode;
+import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.GroupNode;
 
 /**
@@ -71,7 +71,7 @@ public class OutlineContentProvider implements ITreeContentProvider {
 			Object[] array = ((GroupNode) parent).getChildren().toArray();
 			List<Object> list = new ArrayList<>();
 			for (Object elem : array) {
-				if (elem instanceof BaseObjectNode) {
+				if (elem instanceof IObjectNode) {
 					list.add(elem);
 				}
 			}

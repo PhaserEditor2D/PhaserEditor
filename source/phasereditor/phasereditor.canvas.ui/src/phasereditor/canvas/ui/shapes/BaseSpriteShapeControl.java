@@ -58,12 +58,6 @@ public abstract class BaseSpriteShapeControl<T extends BaseSpriteShapeModel> ext
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see phasereditor.canvas.ui.shapes.BaseObjectControl#initPropertyModel(
-	 * phasereditor.canvas.ui.editors.grid.PGridModel)
-	 */
 	@Override
 	protected void initPropertyModel(PGridModel propModel) {
 		super.initPropertyModel(propModel);

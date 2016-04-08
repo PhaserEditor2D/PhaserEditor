@@ -33,7 +33,7 @@ import phasereditor.canvas.ui.editors.grid.PGrid;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridProperty;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
-import phasereditor.canvas.ui.shapes.BaseObjectNode;
+import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
  * A class to update the grid, from canvas changes, and update the canvas, from
@@ -95,8 +95,8 @@ public class UpdateChangeBehavior {
 
 	private static PGridModel createGridModelFromElement(Object element) {
 
-		if (element instanceof BaseObjectNode) {
-			BaseObjectNode node = (BaseObjectNode) element;
+		if (element instanceof IObjectNode) {
+			IObjectNode node = (IObjectNode) element;
 			BaseObjectControl<?> control = node.getControl();
 			return control.getPropertyModel();
 		}
@@ -104,7 +104,7 @@ public class UpdateChangeBehavior {
 		throw new InvalidParameterException("All elements needs a property model.");
 	}
 
-	public void update_Outline(BaseObjectNode node) {
+	public void update_Outline(IObjectNode node) {
 		_outline.refresh(node);
 	}
 

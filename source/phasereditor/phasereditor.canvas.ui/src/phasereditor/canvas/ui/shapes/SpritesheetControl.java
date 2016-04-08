@@ -50,13 +50,13 @@ public class SpritesheetControl extends BaseSpriteShapeControl<SpritesheetShapeM
 	}
 
 	@Override
-	protected SpriteShapeNode createShapeNode() {
+	protected SpriteNode createShapeNode() {
 		SpritesheetShapeModel model = getModel();
 
 		SpritesheetAssetModel asset = model.getAsset();
-		SpriteShapeNode node = createImageNode(asset.getUrlFile());
+		SpriteNode node = createImageNode(asset.getUrlFile());
 
-		Image img = node.getImageView().getImage();
+		Image img = node.getImage();
 		Rectangle src = new Rectangle(0, 0, (int) img.getWidth(), (int) img.getHeight());
 		Rectangle dst = new Rectangle(0, 0, asset.getFrameWidth(), asset.getFrameHeight());
 
@@ -75,8 +75,8 @@ public class SpritesheetControl extends BaseSpriteShapeControl<SpritesheetShapeM
 	}
 
 	@Override
-	public SpriteShapeNode getNode() {
-		return (SpriteShapeNode) super.getNode();
+	public SpriteNode getNode() {
+		return (SpriteNode) super.getNode();
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class SpritesheetControl extends BaseSpriteShapeControl<SpritesheetShapeM
 		return getModel().getAsset().getFrameWidth();
 	}
 
-	private void updateViewport(SpriteShapeNode node) {
+	private void updateViewport(SpriteNode node) {
 		FrameData frame = getCurrentFrame();
 		Rectangle src = frame.src;
 

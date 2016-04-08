@@ -21,43 +21,20 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
-import org.eclipse.core.resources.IFile;
-
-import javafx.geometry.Rectangle2D;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelReader;
+import javafx.scene.Node;
+import javafx.scene.shape.Shape;
+import phasereditor.canvas.core.BaseObjectModel;
 
 /**
  * @author arian
  *
  */
-public class SpriteShapeNode extends BaseObjectNode {
-	private ImageView _imageView;
+public interface IObjectNode  {
+	public BaseObjectModel getModel();
 
-	SpriteShapeNode(BaseObjectControl<?> control, IFile imageFile) {
-		this(control, new ImageView("file:" + imageFile.getLocation().makeAbsolute().toPortableString()));
-	}
-
-	SpriteShapeNode(BaseObjectControl<?> control, ImageView imageView) {
-		super(control);
-
-		_imageView = imageView;
-
-		getChildren().add(imageView);
-	}
-
-	public ImageView getImageView() {
-		return _imageView;
-	}
-
-	public void setViewport(Rectangle2D rect) {
-		_imageView.setViewport(rect);
-	}
-
-	@SuppressWarnings("unused")
-	private boolean isTransparent(double x, double y) {
-		PixelReader reader = _imageView.getImage().getPixelReader();
-		return reader.getArgb((int) x, (int) y) == 0;
-	}
-
+	public BaseObjectControl<?> getControl();
+	
+	public Node getNode();
+	
+	public Shape computeShape();
 }

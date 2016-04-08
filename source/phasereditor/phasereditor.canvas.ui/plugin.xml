@@ -226,7 +226,7 @@
             <iterate
                   ifEmpty="false">
                <instanceof
-                     value="phasereditor.canvas.ui.shapes.BaseObjectNode">
+                     value="phasereditor.canvas.ui.shapes.IObjectNode">
                </instanceof>
             </iterate>
          </with>

@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
 import javafx.collections.ObservableList;
-import javafx.scene.layout.Pane;
+import javafx.scene.Node;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import phasereditor.canvas.core.BaseObjectModel;
@@ -44,7 +44,8 @@ import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
 @SuppressWarnings("synthetic-access")
 public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	private T _model;
-	private BaseObjectNode _node;
+	private Node _node;
+	private IObjectNode _inode;
 	private ShapeCanvas _canvas;
 	private PGridModel _propModel;
 	private PGridNumberProperty _x_property;
@@ -59,9 +60,27 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		_canvas = canvas;
 		_model = model;
 
-		_node = createShapeNode();
+		_inode = createShapeNode();
+		_node = _inode.getNode();
 
 		updateFromModel();
+	}
+
+	public int getDepthLevel() {
+		GroupNode group = getGroup();
+
+		if (group == null) {
+			return 0;
+		}
+
+		return group.getControl().getDepthLevel() + 1;
+	}
+
+	public GroupNode getGroup() {
+		if (_node.getParent() instanceof GroupNode) {
+			return (GroupNode) _node.getParent();
+		}
+		return null;
 	}
 
 	public void updateFromModel() {
@@ -125,7 +144,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			@Override
 			public void setValue(String value) {
 				_model.setEditorName(value);
-				_canvas.getUpdateBehavior().update_Outline(getNode());
+				_canvas.getUpdateBehavior().update_Outline(_inode);
 				_canvas.dirty();
 			}
 
@@ -319,15 +338,19 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		return _canvas;
 	}
 
-	protected abstract BaseObjectNode createShapeNode();
+	protected abstract IObjectNode createShapeNode();
 
-	public BaseObjectNode getNode() {
+	public Node getNode() {
 		return _node;
 	}
 
-	protected SpriteShapeNode createImageNode(IFile file) {
+	public IObjectNode getIObjectNode() {
+		return (IObjectNode) _node;
+	}
+
+	protected SpriteNode createImageNode(IFile file) {
 		try {
-			return new SpriteShapeNode(this, file);
+			return new SpriteNode(this, file);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -351,8 +374,8 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	public abstract double getHeight();
 
 	public void sendNodeTo(ZOperation op) {
-		Pane parent = (Pane) _node.getParent();
+		GroupNode parent = (GroupNode) _node.getParent();
 		op.perform(parent.getChildren(), _node);
-		_canvas.getWorldModel().sendTo(_node.getControl().getModel(), op);
+		_canvas.getWorldModel().sendTo(getModel(), op);
 	}
 }

@@ -30,6 +30,7 @@ import java.util.Set;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 
+import javafx.scene.Node;
 import javafx.scene.input.DragEvent;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.IAssetElementModel;
@@ -39,7 +40,7 @@ import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.ObjectModelFactory;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
-import phasereditor.canvas.ui.shapes.BaseObjectNode;
+import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.ShapeFactory;
@@ -55,9 +56,9 @@ public class CreateBehavior {
 		_canvas = canvas;
 	}
 
-	public List<BaseObjectNode> dropAssets(IStructuredSelection selection, DragEvent event) {
+	public List<Node> dropAssets(IStructuredSelection selection, DragEvent event) {
 		Object[] elems = selection.toArray();
-		List<BaseObjectNode> _newnodes = new ArrayList<>();
+		List<Node> _newnodes = new ArrayList<>();
 		if (elems.length == 1) {
 			Object elem = elems[0];
 			if (elem instanceof IAssetElementModel || elem instanceof AssetModel) {
@@ -86,23 +87,23 @@ public class CreateBehavior {
 	 * @param elems
 	 */
 	public void makeGroup(Object... elems) {
-		List<BaseObjectNode> children = new ArrayList<>();
+		List<Node> children = new ArrayList<>();
 
 		Set<Object> used = new HashSet<>();
 
 		GroupNode parent = null;
 
 		for (Object elem : elems) {
-			BaseObjectNode node = (BaseObjectNode) elem;
+			Node node = (Node) elem;
 
 			// skip nodes under used groups
-			GroupNode group = node.getGroup();
+			GroupNode group = ((IObjectNode) node).getControl().getGroup();
 
 			if (group != null) {
 				if (used.contains(group)) {
 					continue;
 				}
-				if (parent == null || group.getDepthLevel() < parent.getDepthLevel()) {
+				if (parent == null || group.getControl().getDepthLevel() < parent.getControl().getDepthLevel()) {
 					parent = group;
 				}
 			}
@@ -111,9 +112,10 @@ public class CreateBehavior {
 		}
 
 		// remove selected nodes
-		for (BaseObjectNode child : children) {
-			if (child.getGroup() != null) {
-				child.getGroup().getChildren().remove(child);
+		for (Node child : children) {
+			GroupNode group = ((IObjectNode) child).getControl().getGroup();
+			if (group != null) {
+				group.getChildren().remove(child);
 			}
 		}
 
@@ -126,8 +128,8 @@ public class CreateBehavior {
 		GroupModel groupModel = new GroupModel(parentModel);
 		groupModel.setEditorName(_canvas.getWorldModel().createName("group"));
 
-		for (BaseObjectNode node : children) {
-			BaseObjectModel model = node.getControl().getModel();
+		for (Node node : children) {
+			BaseObjectModel model =  ((IObjectNode) node).getControl().getModel();
 			groupModel.addChild(model);
 		}
 
@@ -144,7 +146,7 @@ public class CreateBehavior {
 		canvas.getSelectionBehavior().setSelection(new StructuredSelection(group));
 	}
 
-	public void makeEmptyGroup(BaseObjectNode parent) {
+	public void makeEmptyGroup(GroupNode parent) {
 		BaseObjectControl<?> parentControl = parent.getControl();
 		GroupModel parentModel = (GroupModel) parentControl.getModel();
 		GroupModel groupModel = new GroupModel(parentModel);

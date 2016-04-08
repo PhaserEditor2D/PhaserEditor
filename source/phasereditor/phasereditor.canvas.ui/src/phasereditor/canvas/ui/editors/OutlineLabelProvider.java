@@ -25,9 +25,9 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import phasereditor.canvas.core.BaseObjectModel;
-import phasereditor.canvas.ui.shapes.BaseObjectNode;
+import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.GroupNode;
-import phasereditor.canvas.ui.shapes.SpriteShapeNode;
+import phasereditor.canvas.ui.shapes.SpriteNode;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 
@@ -41,7 +41,7 @@ public class OutlineLabelProvider extends LabelProvider implements IEditorShared
 		if (element instanceof GroupNode) {
 			return EditorSharedImages.getImage(IMG_SHAPE_GROUP_NODE);
 		}
-		if (element instanceof SpriteShapeNode) {
+		if (element instanceof SpriteNode) {
 			return EditorSharedImages.getImage(IMG_SHAPE);
 		}
 		return super.getImage(element);
@@ -49,8 +49,8 @@ public class OutlineLabelProvider extends LabelProvider implements IEditorShared
 
 	@Override
 	public String getText(Object element) {
-		if (element instanceof BaseObjectNode) {
-			BaseObjectModel model = ((BaseObjectNode) element).getControl().getModel();
+		if (element instanceof IObjectNode) {
+			BaseObjectModel model = ((IObjectNode) element).getControl().getModel();
 			return model.getEditorName();
 		}
 		return super.getText(element);

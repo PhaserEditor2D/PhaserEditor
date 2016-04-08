@@ -8,7 +8,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.canvas.core.WorldModel.ZOperation;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
-import phasereditor.canvas.ui.shapes.BaseObjectNode;
+import phasereditor.canvas.ui.shapes.IObjectNode;
 
 public abstract class ChangeShapeZHandler extends AbstractHandler {
 
@@ -24,7 +24,7 @@ public abstract class ChangeShapeZHandler extends AbstractHandler {
 		Object[] elems = selection.toArray();
 		for (int i = elems.length - 1; i >= 0; i--) {
 			Object elem = elems[i];
-			BaseObjectNode node = (BaseObjectNode) elem;
+			IObjectNode node = (IObjectNode) elem;
 			BaseObjectControl<?> shape = node.getControl();
 			shape.sendNodeTo(_zoperation);
 		}

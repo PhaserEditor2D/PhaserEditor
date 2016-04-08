@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
+import java.awt.Rectangle;
 import java.util.List;
 
 import org.eclipse.jface.util.LocalSelectionTransfer;
@@ -32,16 +33,18 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import javafx.embed.swt.FXCanvas;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.grid.PGrid;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
-import phasereditor.canvas.ui.shapes.BaseObjectNode;
 import phasereditor.canvas.ui.shapes.GroupNode;
+import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.WorldControl;
 import phasereditor.canvas.ui.shapes.WorldNode;
 
@@ -51,8 +54,7 @@ import phasereditor.canvas.ui.shapes.WorldNode;
  */
 public class ShapeCanvas extends FXCanvas {
 	private CreateBehavior _createBehaviors;
-	private BorderPane _rootPane;
-	private Pane _selectionPane;
+	private Group _selectionPane;
 	private SelectionBehavior _selectionBehavior;
 	private DragBehavior _dragBehavior;
 	private WorldModel _model;
@@ -120,38 +122,33 @@ public class ShapeCanvas extends FXCanvas {
 
 		getScene().setOnDragDropped(event -> {
 			ISelection selection = LocalSelectionTransfer.getTransfer().getSelection();
-			List<BaseObjectNode> newnodes = _createBehaviors.dropAssets((IStructuredSelection) selection, event);
+			List<Node> newnodes = _createBehaviors.dropAssets((IStructuredSelection) selection, event);
 			_selectionBehavior.setSelection(new StructuredSelection(newnodes.toArray()));
 		});
 	}
 
 	private void createScene() {
-		_rootPane = new BorderPane();
+		_selectionPane = new Group();
+		_selectionPane.setMouseTransparent(true);
 
-		_selectionPane = new Pane();
-		
 		_worldControl = new WorldControl(this, _model);
 
-		Pane centerPane = new Pane();
-		centerPane.getChildren().add(_worldControl.getNode());
-		centerPane.getChildren().add(_selectionPane);
+		WorldNode world = _worldControl.getNode();
 
-		_rootPane.setCenter(centerPane);
+		setScene(new Scene(new Pane(world, _selectionPane)));
 
-		Scene scene = new Scene(_rootPane);
-		setScene(scene);
 	}
 
 	public WorldNode getWorldNode() {
 		return _worldControl.getNode();
 	}
 
-	public Pane getSelectionPane() {
+	public Group getSelectionPane() {
 		return _selectionPane;
 	}
 
 	public void dropToWorld(BaseObjectControl<?> control, double sceneX, double sceneY) {
-		BaseObjectNode node = control.getNode();
+		Node node = control.getNode();
 		WorldNode worldNode = getWorldNode();
 		double x = sceneX - worldNode.getLayoutX();
 		double y = sceneY - worldNode.getLayoutY();
@@ -175,11 +172,12 @@ public class ShapeCanvas extends FXCanvas {
 				continue;
 			}
 
-			BaseObjectNode node = (BaseObjectNode) elem;
+			IObjectNode inode = (IObjectNode) elem;
+			Node node = inode.getNode();
 			GroupNode parent = (GroupNode) node.getParent();
 			parent.getChildren().remove(node);
 			GroupModel groupModel = parent.getControl().getModel();
-			groupModel.removeChild(node.getControl().getModel());
+			groupModel.removeChild(inode.getControl().getModel());
 			getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
 		}
 	}

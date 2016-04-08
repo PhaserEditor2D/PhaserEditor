@@ -27,17 +27,18 @@ import phasereditor.canvas.core.WorldModel;
  * @author arian
  *
  */
+@Deprecated
 public class WorldNode extends GroupNode {
 
 	public WorldNode(WorldControl control) {
 		super(control);
-		setStyle("-fx-border-styke:solid;border-color:darkgray;border-width:1px;");
+		//setStyle("-fx-border-style:solid;border-color:darkgray;border-width:1px;");
 		updateFromModel();
 	}
 
 	private void updateFromModel() {
 		WorldModel model = (WorldModel) getControl().getModel();
-		setMinSize(model.getWorldWidth(), model.getWorldHeight());
-		setMaxSize(model.getWorldWidth(), model.getWorldHeight());
+//		setMinSize(model.getWorldWidth(), model.getWorldHeight());
+//		setMaxSize(model.getWorldWidth(), model.getWorldHeight());
 	}
 }

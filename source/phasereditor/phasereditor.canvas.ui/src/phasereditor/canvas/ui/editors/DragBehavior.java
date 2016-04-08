@@ -31,7 +31,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.PickResult;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
-import phasereditor.canvas.ui.shapes.BaseObjectNode;
+import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
  * @author arian
@@ -40,7 +40,7 @@ import phasereditor.canvas.ui.shapes.BaseObjectNode;
 public class DragBehavior {
 	private ShapeCanvas _canvas;
 	private Scene _scene;
-	private BaseObjectNode _dragNode;
+	private Node _dragNode;
 	private Point2D _startScenePoint;
 	private Point2D _startNodePoint;
 
@@ -57,7 +57,7 @@ public class DragBehavior {
 
 			PickResult pick = event.getPickResult();
 			Node userPicked = pick.getIntersectedNode();
-			BaseObjectNode picked = _canvas.getSelectionBehavior().findBestToPick(userPicked);
+			Node picked =  _canvas.getSelectionBehavior().findBestToPick(userPicked);
 
 			if (picked == null) {
 				return;
@@ -82,7 +82,7 @@ public class DragBehavior {
 
 		_scene.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
 			if (_dragNode != null) {
-				BaseObjectControl<?> control = _dragNode.getControl();
+				BaseObjectControl<?> control =  ((IObjectNode) _dragNode).getControl();
 				BaseObjectModel model = control.getModel();
 				model.setLocation(_dragNode.getLayoutX(), _dragNode.getLayoutY());
 

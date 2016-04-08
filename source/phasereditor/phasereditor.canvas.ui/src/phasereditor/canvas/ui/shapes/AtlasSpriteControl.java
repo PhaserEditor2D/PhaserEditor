@@ -40,12 +40,12 @@ public class AtlasSpriteControl extends BaseSpriteShapeControl<AtlasSpriteShapeM
 	}
 
 	@Override
-	protected SpriteShapeNode createShapeNode() {
+	protected SpriteNode createShapeNode() {
 		_frame = getModel().getFrame();
 
 		AtlasAssetModel asset = (AtlasAssetModel) _frame.getAsset();
 
-		SpriteShapeNode node = createImageNode(asset.getTextureFile());
+		SpriteNode node = createImageNode(asset.getTextureFile());
 
 		Rectangle2D viewport = new Rectangle2D(_frame.getFrameX(), _frame.getFrameY(), _frame.getSpriteW(),
 				_frame.getSpriteH());

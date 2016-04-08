@@ -21,43 +21,49 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
-import javafx.scene.layout.Pane;
+import org.eclipse.core.resources.IFile;
+
+import javafx.geometry.Bounds;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.image.ImageView;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import phasereditor.canvas.core.BaseObjectModel;
 
 /**
  * @author arian
  *
  */
-public class BaseObjectNode extends Pane {
+public class SpriteNode extends ImageView implements IObjectNode {
 	private BaseObjectControl<?> _control;
 
-	BaseObjectNode(BaseObjectControl<?> control) {
+	SpriteNode(BaseObjectControl<?> control, IFile imageFile) {
+		super("file:" + imageFile.getLocation().makeAbsolute().toPortableString());
 		_control = control;
-		setPickOnBounds(false);
 	}
 
-	public BaseObjectModel getModel() {
-		return getControl().getModel();
-	}
-
-	public int getDepthLevel() {
-		GroupNode group = getGroup();
-
-		if (group == null) {
-			return 0;
-		}
-
-		return group.getDepthLevel() + 1;
-	}
-
-	public GroupNode getGroup() {
-		if (getParent() instanceof GroupNode) {
-			return (GroupNode) getParent();
-		}
-		return null;
-	}
-
+	@Override
 	public BaseObjectControl<?> getControl() {
 		return _control;
 	}
+
+	@Override
+	public BaseObjectModel getModel() {
+		return _control.getModel();
+	}
+
+	@Override
+	public SpriteNode getNode() {
+		return this;
+	}
+
+	@Override
+	public Shape computeShape() {
+		Bounds b = getBoundsInLocal();
+		b = localToScene(b);
+		Rectangle shape = new Rectangle(b.getMinX(), b.getMinY(), b.getWidth(), b.getHeight());
+		shape.getTransforms().add(getLocalToSceneTransform());
+		return shape;
+	}
+
 }

@@ -21,10 +21,10 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
-import static java.lang.System.out;
-
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.viewers.ISelection;
@@ -35,12 +35,14 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 
+import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import phasereditor.canvas.ui.shapes.BaseObjectNode;
 import phasereditor.canvas.ui.shapes.GroupNode;
+import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
  * @author arian
@@ -59,13 +61,7 @@ public class SelectionBehavior implements ISelectionProvider {
 
 		_canvas.getScene().addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
 			Node userPicked = event.getPickResult().getIntersectedNode();
-
-			BaseObjectNode picked = findBestToPick(userPicked);
-
-			// to know the bounds in the scene.
-			// if (picked != null) {
-			// out.println(picked.localToScreen(picked.getBoundsInLocal()));
-			// }
+			Node picked = findBestToPick(userPicked);
 
 			if (picked == null) {
 				setSelection(StructuredSelection.EMPTY);
@@ -80,6 +76,7 @@ public class SelectionBehavior implements ISelectionProvider {
 				setSelection(new StructuredSelection(picked));
 			}
 		});
+		
 		_canvas.getOutline().addSelectionChangedListener(new ISelectionChangedListener() {
 
 			@SuppressWarnings("synthetic-access")
@@ -102,7 +99,7 @@ public class SelectionBehavior implements ISelectionProvider {
 	 *            that group is selected.
 	 * @return
 	 */
-	public BaseObjectNode findBestToPick(Node picked) {
+	public Node findBestToPick(Node picked) {
 		if (picked == null) {
 			return null;
 		}
@@ -116,13 +113,13 @@ public class SelectionBehavior implements ISelectionProvider {
 		return findBestToPick2(picked);
 	}
 
-	private static BaseObjectNode findBestToPick2(Node picked) {
+	private static Node findBestToPick2(Node picked) {
 		if (picked == null) {
 			return null;
 		}
 
-		if (picked instanceof BaseObjectNode) {
-			return (BaseObjectNode) picked;
+		if (picked instanceof IObjectNode) {
+			return picked;
 		}
 
 		return findBestToPick2(picked.getParent());
@@ -193,30 +190,72 @@ public class SelectionBehavior implements ISelectionProvider {
 	}
 
 	private void updateSelectedNodes(boolean sel) {
-		Pane selpane = _canvas.getSelectionPane();
+		Group selpane = _canvas.getSelectionPane();
+		selpane.getChildren().clear();
 		if (sel) {
 			for (Object obj : _selection.toArray()) {
-				if (obj instanceof BaseObjectNode) {
-					BaseObjectNode node = (BaseObjectNode) obj;
+				if (obj instanceof IObjectNode) {
+					Node node = ((IObjectNode) obj).getNode();
 
-					Bounds nodeLocal = node.getBoundsInLocal();
-					Bounds nodeScene = node.localToScene(nodeLocal);
-
-					out.println("nodeLocal " + nodeLocal);
-					out.println("nodeScene " + nodeScene);
+					Bounds rect = buildSelectionBounds(node);
 
 					Pane selnode = new Pane();
-					selnode.setLayoutX(nodeScene.getMinX());
-					selnode.setLayoutY(nodeScene.getMinY());
-					selnode.setMinWidth(nodeScene.getWidth());
-					selnode.setMinHeight(nodeScene.getHeight());
-					selnode.setStyle(
-							"-fx-background-color:rgba(200, 0, 0, 150)-fx-border-color: red;-fx-border-width:2px;-fx-border-style:dashed;");
+					selnode.setLayoutX(rect.getMinX());
+					selnode.setLayoutY(rect.getMinY());
+					selnode.setPrefSize(rect.getWidth(), rect.getHeight());
+					selnode.setStyle("-fx-border-color: blue;-fx-border-width:2px;-fx-border-style:dashed;");
 					selpane.getChildren().add(selnode);
 				}
 			}
+		}
+	}
+
+	private Bounds buildSelectionBounds(Node node) {
+		List<Bounds> list = new ArrayList<>();
+
+		buildSelectionBounds(node, list);
+
+		Bounds first = list.get(0);
+
+		double x0 = first.getMinX();
+		double y0 = first.getMinY();
+		double x1 = x0 + first.getWidth();
+		double y1 = y0 + first.getHeight();
+
+		for (Bounds r : list) {
+			double r_x0 = r.getMinX();
+			double r_x1 = r_x0 + r.getWidth();
+			double r_y0 = r.getMinY();
+			double r_y1 = r_y0 + r.getHeight();
+
+			if (r_x0 < x0) {
+				x0 = r_x0;
+			}
+
+			if (r_x1 > x1) {
+				x1 = r_x1;
+			}
+
+			if (r_y0 < y0) {
+				y0 = r_y0;
+			}
+
+			if (r_y1 > y1) {
+				y1 = r_y1;
+			}
+		}
+
+		return new BoundingBox(x0, y0, x1 - x0, y1 - y0);
+	}
+
+	private void buildSelectionBounds(Node node, List<Bounds> list) {
+		if (node instanceof GroupNode) {
+			for (Node child : ((GroupNode) node).getChildren()) {
+				buildSelectionBounds(child, list);
+			}
 		} else {
-			selpane.getChildren().clear();
+			Bounds b = node.localToScene(node.getBoundsInLocal());
+			list.add(b);
 		}
 	}
 

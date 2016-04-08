@@ -36,7 +36,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 	}
 
 	@Override
-	protected final BaseObjectNode createShapeNode() {
+	protected final IObjectNode createShapeNode() {
 		GroupNode group = createGroupNode();
 		for (BaseObjectModel child : getModel().getChildren()) {
 			BaseObjectControl<?> control = ShapeFactory.createShapeControl(getCanvas(), child);

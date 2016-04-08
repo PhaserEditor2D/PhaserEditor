@@ -28,7 +28,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.canvas.ui.editors.CanvasEditor;
-import phasereditor.canvas.ui.shapes.BaseObjectNode;
+import phasereditor.canvas.ui.shapes.GroupNode;
 
 /**
  * @author arian
@@ -41,7 +41,7 @@ public class MakeEmptyGroupHandler extends AbstractHandler {
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
 		Object[] elems = selection.toArray();
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
-		editor.getCanvas().getCreateBehaviors().makeEmptyGroup((BaseObjectNode) elems[0]);
+		editor.getCanvas().getCreateBehaviors().makeEmptyGroup((GroupNode) elems[0]);
 		return null;
 	}
 
