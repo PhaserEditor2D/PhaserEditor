@@ -49,10 +49,11 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 		return new GroupNode(this);
 	}
 
-	public GroupNode getGroupNode() {
-		return (GroupNode) getNode();
+	@Override
+	public GroupNode getNode() {
+		return (GroupNode) super.getNode();
 	}
-
+	
 	@Override
 	public double getWidth() {
 		// 0 for now

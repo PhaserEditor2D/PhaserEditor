@@ -37,12 +37,20 @@ import org.eclipse.jface.viewers.TreeViewer;
 
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
+import javafx.scene.shape.StrokeType;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
+import phasereditor.canvas.ui.shapes.SpriteNode;
 
 /**
  * @author arian
@@ -76,7 +84,7 @@ public class SelectionBehavior implements ISelectionProvider {
 				setSelection(new StructuredSelection(picked));
 			}
 		});
-		
+
 		_canvas.getOutline().addSelectionChangedListener(new ISelectionChangedListener() {
 
 			@SuppressWarnings("synthetic-access")
@@ -118,7 +126,7 @@ public class SelectionBehavior implements ISelectionProvider {
 			return null;
 		}
 
-		if (picked instanceof IObjectNode) {
+		if (picked instanceof SpriteNode) {
 			return picked;
 		}
 
@@ -177,8 +185,6 @@ public class SelectionBehavior implements ISelectionProvider {
 	}
 
 	private void setSelection_private(ISelection selection) {
-		updateSelectedNodes(false);
-
 		_selection = (IStructuredSelection) selection;
 
 		Object[] list = _listenerList.getListeners();
@@ -186,26 +192,45 @@ public class SelectionBehavior implements ISelectionProvider {
 			((ISelectionChangedListener) l).selectionChanged(new SelectionChangedEvent(this, selection));
 		}
 
-		updateSelectedNodes(true);
+		updateSelectedNodes();
 	}
 
-	private void updateSelectedNodes(boolean sel) {
-		Group selpane = _canvas.getSelectionPane();
+	@SuppressWarnings("boxing")
+	public void updateSelectedNodes() {
+		Pane selpane = _canvas.getSelectionPane();
+
 		selpane.getChildren().clear();
-		if (sel) {
-			for (Object obj : _selection.toArray()) {
-				if (obj instanceof IObjectNode) {
-					Node node = ((IObjectNode) obj).getNode();
 
-					Bounds rect = buildSelectionBounds(node);
+		for (Object obj : _selection.toArray()) {
+			if (obj instanceof IObjectNode) {
+				Node node = ((IObjectNode) obj).getNode();
 
-					Pane selnode = new Pane();
-					selnode.setLayoutX(rect.getMinX());
-					selnode.setLayoutY(rect.getMinY());
-					selnode.setPrefSize(rect.getWidth(), rect.getHeight());
-					selnode.setStyle("-fx-border-color: blue;-fx-border-width:2px;-fx-border-style:dashed;");
-					selpane.getChildren().add(selnode);
+				Bounds rect = buildSelectionBounds(node);
+
+				if (rect == null) {
+					continue;
 				}
+
+				Pane selnode = new Pane();
+				selnode.setLayoutX(rect.getMinX());
+				selnode.setLayoutY(rect.getMinY());
+				selnode.setPrefSize(rect.getWidth(), rect.getHeight());
+
+				{
+					BorderWidths bw = new BorderWidths(2);
+					List<Double> dashed = Arrays.asList(5d, 2d);
+					BorderStrokeStyle style1 = new BorderStrokeStyle(StrokeType.INSIDE, StrokeLineJoin.MITER,
+							StrokeLineCap.BUTT, 10, 10, dashed);
+					BorderStrokeStyle style2 = new BorderStrokeStyle(StrokeType.INSIDE, StrokeLineJoin.MITER,
+							StrokeLineCap.BUTT, 10, 0, dashed);
+
+					BorderStroke s1 = new BorderStroke(Color.WHITE, style1, null, bw);
+					BorderStroke s2 = new BorderStroke(Color.BLACK, style2, null, bw);
+
+					selnode.setBorder(new Border(s1, s2));
+				}
+
+				selpane.getChildren().add(selnode);
 			}
 		}
 	}
@@ -214,6 +239,10 @@ public class SelectionBehavior implements ISelectionProvider {
 		List<Bounds> list = new ArrayList<>();
 
 		buildSelectionBounds(node, list);
+
+		if (list.isEmpty()) {
+			return null;
+		}
 
 		Bounds first = list.get(0);
 
@@ -254,14 +283,37 @@ public class SelectionBehavior implements ISelectionProvider {
 				buildSelectionBounds(child, list);
 			}
 		} else {
-			Bounds b = node.localToScene(node.getBoundsInLocal());
+			Bounds b = localToAncestor(node.getBoundsInLocal(), node, _canvas.getWorldNode());
 			list.add(b);
 		}
+	}
+
+	private static Bounds localToAncestor(Bounds bounds, Node local, Node ancestor) {
+		if (local == ancestor) {
+			return bounds;
+		}
+
+		Bounds b = local.localToParent(bounds);
+		return localToAncestor(b, local.getParent(), ancestor);
 	}
 
 	@Override
 	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
 		_listenerList.remove(listener);
+	}
+
+	/**
+	 * If the given node is selected, remove it from the selection.
+	 * 
+	 * @param node
+	 */
+	public void removeNodeFromSelection(Node node) {
+		if (isSelected(node)) {
+			@SuppressWarnings("unchecked")
+			List<Object> list = new ArrayList<>(_selection.toList());
+			list.remove(node);
+			setSelection(new StructuredSelection(list));
+		}
 	}
 
 }

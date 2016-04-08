@@ -57,7 +57,7 @@ public class DragBehavior {
 
 			PickResult pick = event.getPickResult();
 			Node userPicked = pick.getIntersectedNode();
-			Node picked =  _canvas.getSelectionBehavior().findBestToPick(userPicked);
+			Node picked = _canvas.getSelectionBehavior().findBestToPick(userPicked);
 
 			if (picked == null) {
 				return;
@@ -77,12 +77,12 @@ public class DragBehavior {
 			double dy = event.getSceneY() - _startScenePoint.getY();
 			_dragNode.setLayoutX(_startNodePoint.getX() + dx);
 			_dragNode.setLayoutY(_startNodePoint.getY() + dy);
-
+			_canvas.getSelectionBehavior().updateSelectedNodes();
 		});
 
 		_scene.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
 			if (_dragNode != null) {
-				BaseObjectControl<?> control =  ((IObjectNode) _dragNode).getControl();
+				BaseObjectControl<?> control = ((IObjectNode) _dragNode).getControl();
 				BaseObjectModel model = control.getModel();
 				model.setLocation(_dragNode.getLayoutX(), _dragNode.getLayoutY());
 

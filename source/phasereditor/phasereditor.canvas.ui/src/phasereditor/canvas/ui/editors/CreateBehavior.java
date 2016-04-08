@@ -135,7 +135,7 @@ public class CreateBehavior {
 
 		ShapeCanvas canvas = parentControl.getCanvas();
 		GroupControl groupControl = new GroupControl(canvas, groupModel);
-		GroupNode group = groupControl.getGroupNode();
+		GroupNode group = groupControl.getNode();
 
 		parentModel.addChild(groupModel);
 
@@ -154,7 +154,7 @@ public class CreateBehavior {
 
 		groupModel.setEditorName(_canvas.getWorldModel().createName("group"));
 		GroupControl groupControl = new GroupControl(canvas, groupModel);
-		GroupNode group = groupControl.getGroupNode();
+		GroupNode group = groupControl.getNode();
 		parentModel.addChild(groupModel);
 		parent.getChildren().add(group);
 

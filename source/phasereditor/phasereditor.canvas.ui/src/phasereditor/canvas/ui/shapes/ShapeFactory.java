@@ -26,7 +26,6 @@ import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.ImageSpriteShapeModel;
 import phasereditor.canvas.core.SpritesheetShapeModel;
-import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.ShapeCanvas;
 
 /**
@@ -35,9 +34,7 @@ import phasereditor.canvas.ui.editors.ShapeCanvas;
  */
 public class ShapeFactory {
 	public static BaseObjectControl<?> createShapeControl(ShapeCanvas canvas, BaseObjectModel model) {
-		if (model instanceof WorldModel) {
-			return new WorldControl(canvas, (WorldModel) model);
-		} else if (model instanceof GroupModel) {
+		if (model instanceof GroupModel) {
 			return new GroupControl(canvas, (GroupModel) model);
 		} else if (model instanceof ImageSpriteShapeModel) {
 			return new ImageSpriteControl(canvas, (ImageSpriteShapeModel) model);
