@@ -65,7 +65,6 @@ public class DragBehavior {
 
 			_dragNode = picked;
 			_startNodePoint = new Point2D(picked.getLayoutX(), picked.getLayoutY());
-
 			_startScenePoint = new Point2D(event.getSceneX(), event.getSceneY());
 		});
 
@@ -75,6 +74,17 @@ public class DragBehavior {
 			}
 			double dx = event.getSceneX() - _startScenePoint.getX();
 			double dy = event.getSceneY() - _startScenePoint.getY();
+			
+			Point2D delta = new Point2D(dx, dy);
+			try {
+				delta = _dragNode.getParent().getLocalToSceneTransform().inverseDeltaTransform(dx, dy);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			dx = delta.getX();
+			dy = delta.getY();
+			
 			_dragNode.setLayoutX(_startNodePoint.getX() + dx);
 			_dragNode.setLayoutY(_startNodePoint.getY() + dy);
 			_canvas.getSelectionBehavior().updateSelectedNodes();

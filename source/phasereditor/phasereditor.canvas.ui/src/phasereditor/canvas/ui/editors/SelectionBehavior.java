@@ -112,6 +112,10 @@ public class SelectionBehavior implements ISelectionProvider {
 			return null;
 		}
 
+		if (picked == _canvas.getWorldNode()) {
+			return null;
+		}
+
 		GroupNode selected = findSelectedParent(picked);
 
 		if (selected != null) {
@@ -135,6 +139,10 @@ public class SelectionBehavior implements ISelectionProvider {
 
 	private GroupNode findSelectedParent(Node picked) {
 		if (picked == null) {
+			return null;
+		}
+
+		if (picked == _canvas.getWorldNode()) {
 			return null;
 		}
 

@@ -76,6 +76,10 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		return group.getControl().getDepthLevel() + 1;
 	}
 
+	public boolean isWorld() {
+		return !(_node.getParent() instanceof GroupNode);
+	}
+
 	public GroupNode getGroup() {
 		if (_node.getParent() instanceof GroupNode) {
 			return (GroupNode) _node.getParent();
@@ -155,36 +159,40 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 		});
 
-		editorSec.add(new PGridNumberProperty("generate") {
+		if (!isWorld()) {
+			editorSec.add(new PGridNumberProperty("generate") {
 
-			@Override
-			public boolean isModified() {
-				return false;
-			}
-		});
+				@Override
+				public boolean isModified() {
+					return false;
+				}
+			});
 
-		editorSec.add(new PGridStringProperty("factory") {
+			editorSec.add(new PGridStringProperty("factory") {
 
-			@Override
-			public String getValue() {
-				return _model.getEditorFactory();
-			}
+				@Override
+				public String getValue() {
+					return _model.getEditorFactory();
+				}
 
-			@Override
-			public void setValue(String value) {
-				_model.setEditorFactory(value);
-				_canvas.dirty();
-			}
+				@Override
+				public void setValue(String value) {
+					_model.setEditorFactory(value);
+					_canvas.dirty();
+				}
 
-			@Override
-			public boolean isModified() {
-				return _model.getEditorFactory() != null && _model.getEditorFactory().length() > 0;
-			}
-
-		});
+				@Override
+				public boolean isModified() {
+					return _model.getEditorFactory() != null && _model.getEditorFactory().length() > 0;
+				}
+			});
+		}
 
 		PGridSection objectSec = new PGridSection("Display");
-		propModel.getSections().add(objectSec);
+
+		if (!isWorld()) {
+			propModel.getSections().add(objectSec);
+		}
 
 		_x_property = new PGridNumberProperty("x") {
 			@Override
