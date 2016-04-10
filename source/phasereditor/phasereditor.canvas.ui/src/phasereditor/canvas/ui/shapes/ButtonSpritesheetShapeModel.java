@@ -49,6 +49,11 @@ public class ButtonSpritesheetShapeModel extends SpritesheetShapeModel {
 	public ButtonSpritesheetShapeModel(GroupModel parent, SpritesheetAssetModel asset) {
 		super(parent, asset);
 	}
+	
+	@Override
+	public String getLabel() {
+		return getEditorName() + "[btn]" ;
+	}
 
 	public String getCallback() {
 		return _callback;

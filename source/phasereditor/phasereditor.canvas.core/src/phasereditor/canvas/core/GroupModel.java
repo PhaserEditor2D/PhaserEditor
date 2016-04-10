@@ -46,6 +46,11 @@ public class GroupModel extends BaseObjectModel {
 		super(parent, "group");
 		_children = new ArrayList<>();
 	}
+	
+	@Override
+	public String getLabel() {
+		return "[grp] " + getEditorName();
+	}
 
 	public Iterable<BaseObjectModel> getChildren() {
 		return _children;

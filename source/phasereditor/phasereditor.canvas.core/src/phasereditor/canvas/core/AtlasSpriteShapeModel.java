@@ -44,7 +44,7 @@ public class AtlasSpriteShapeModel extends BaseSpriteShapeModel {
 	public AtlasSpriteShapeModel(GroupModel parent, JSONObject obj) {
 		super(parent, TYPE_NAME, obj);
 	}
-
+	
 	@Override
 	protected void writeMetadata(JSONObject obj) {
 		super.writeMetadata(obj);

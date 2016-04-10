@@ -51,6 +51,11 @@ public class ButtonAtlasShapeModel extends AtlasSpriteShapeModel {
 		super(parent, obj);
 	}
 
+	@Override
+	public String getLabel() {
+		return "[btn] " + getEditorName();
+	}
+
 	public String getCallback() {
 		return _callback;
 	}

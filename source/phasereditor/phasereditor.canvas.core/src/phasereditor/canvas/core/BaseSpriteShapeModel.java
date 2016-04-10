@@ -43,6 +43,11 @@ public abstract class BaseSpriteShapeModel extends BaseObjectModel {
 		_anchorX = 0;
 		_anchorY = 0;
 	}
+	
+	@Override
+	public String getLabel() {
+		return "[spr] " + getEditorName();
+	}
 
 	public double getAnchorX() {
 		return _anchorX;

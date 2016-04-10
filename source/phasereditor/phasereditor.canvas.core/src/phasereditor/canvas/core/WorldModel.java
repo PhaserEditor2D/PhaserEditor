@@ -51,6 +51,11 @@ public class WorldModel extends GroupModel {
 		super(null, data);
 		init();
 	}
+	
+	@Override
+	public String getLabel() {
+		return "[wrd] " + getEditorName();
+	}
 
 	private void init() {
 		// TODO: read from json

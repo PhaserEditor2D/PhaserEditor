@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
+import static java.lang.System.out;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -37,17 +39,10 @@ import org.eclipse.jface.viewers.TreeViewer;
 
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.shape.StrokeLineJoin;
-import javafx.scene.shape.StrokeType;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.SpriteNode;
@@ -70,6 +65,8 @@ public class SelectionBehavior implements ISelectionProvider {
 		_canvas.getScene().addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
 			Node userPicked = event.getPickResult().getIntersectedNode();
 			Node picked = findBestToPick(userPicked);
+
+			out.println(userPicked + " --> " + picked);
 
 			if (picked == null) {
 				setSelection(StructuredSelection.EMPTY);
@@ -203,7 +200,6 @@ public class SelectionBehavior implements ISelectionProvider {
 		updateSelectedNodes();
 	}
 
-	@SuppressWarnings("boxing")
 	public void updateSelectedNodes() {
 		Pane selpane = _canvas.getSelectionPane();
 
@@ -211,7 +207,8 @@ public class SelectionBehavior implements ISelectionProvider {
 
 		for (Object obj : _selection.toArray()) {
 			if (obj instanceof IObjectNode) {
-				Node node = ((IObjectNode) obj).getNode();
+				IObjectNode inode = (IObjectNode) obj;
+				Node node = inode.getNode();
 
 				Bounds rect = buildSelectionBounds(node);
 
@@ -219,26 +216,7 @@ public class SelectionBehavior implements ISelectionProvider {
 					continue;
 				}
 
-				Pane selnode = new Pane();
-				selnode.setLayoutX(rect.getMinX());
-				selnode.setLayoutY(rect.getMinY());
-				selnode.setPrefSize(rect.getWidth(), rect.getHeight());
-
-				{
-					BorderWidths bw = new BorderWidths(2);
-					List<Double> dashed = Arrays.asList(5d, 2d);
-					BorderStrokeStyle style1 = new BorderStrokeStyle(StrokeType.INSIDE, StrokeLineJoin.MITER,
-							StrokeLineCap.BUTT, 10, 10, dashed);
-					BorderStrokeStyle style2 = new BorderStrokeStyle(StrokeType.INSIDE, StrokeLineJoin.MITER,
-							StrokeLineCap.BUTT, 10, 0, dashed);
-
-					BorderStroke s1 = new BorderStroke(Color.WHITE, style1, null, bw);
-					BorderStroke s2 = new BorderStroke(Color.BLACK, style2, null, bw);
-
-					selnode.setBorder(new Border(s1, s2));
-				}
-
-				selpane.getChildren().add(selnode);
+				selpane.getChildren().add(new SelectionNode(inode, rect));
 			}
 		}
 	}
@@ -286,17 +264,29 @@ public class SelectionBehavior implements ISelectionProvider {
 	}
 
 	private void buildSelectionBounds(Node node, List<Bounds> list) {
+		GroupNode world = _canvas.getWorldNode();
 		if (node instanceof GroupNode) {
+			// add the children bounds
 			for (Node child : ((GroupNode) node).getChildren()) {
 				buildSelectionBounds(child, list);
 			}
 		} else {
-			Bounds b = localToAncestor(node.getBoundsInLocal(), node, _canvas.getWorldNode());
+			Bounds b = localToAncestor(node.getBoundsInLocal(), node, world);
 			list.add(b);
 		}
+
 	}
 
-	private static Bounds localToAncestor(Bounds bounds, Node local, Node ancestor) {
+	public static Point2D localToAncestor(Point2D point, Node local, Node ancestor) {
+		if (local == ancestor) {
+			return point;
+		}
+
+		Point2D p = local.localToParent(point);
+		return localToAncestor(p, local.getParent(), ancestor);
+	}
+
+	public static Bounds localToAncestor(Bounds bounds, Node local, Node ancestor) {
 		if (local == ancestor) {
 			return bounds;
 		}

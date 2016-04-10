@@ -133,16 +133,20 @@ public class ShapeCanvas extends FXCanvas {
 		_worldControl = new GroupControl(this, _model);
 
 		GroupNode world = _worldControl.getNode();
+		world.setStyle("-fx-background-color:white;-fx-border-color:darkGray;border-style:solid;");
 
 		_root = new Pane(world, _selectionPane);
-		_root.setStyle("-fx-border-color:lightGray;border-style:solid;");
 
-		_root.setMinSize(640, 320);
-		_root.setMaxSize(640, 320);
-		_selectionPane.setMinSize(640, 320);
-		_selectionPane.setMaxSize(640, 320);
+		world.setMinSize(_model.getWorldWidth(), _model.getWorldHeight());
+		world.setMaxSize(_model.getWorldWidth(), _model.getWorldHeight());
+		_root.setMinSize(_model.getWorldWidth(), _model.getWorldHeight());
+		_root.setMaxSize(_model.getWorldWidth(), _model.getWorldHeight());
+		_selectionPane.setMinSize(_model.getWorldWidth(), _model.getWorldHeight());
+		_selectionPane.setMaxSize(_model.getWorldWidth(), _model.getWorldHeight());
 
-		setScene(new Scene(new BorderPane(_root)));
+		BorderPane main = new BorderPane(_root);
+		main.setStyle("-fx-background-color:lightgray;");
+		setScene(new Scene(main));
 	}
 
 	public Pane getRoot() {

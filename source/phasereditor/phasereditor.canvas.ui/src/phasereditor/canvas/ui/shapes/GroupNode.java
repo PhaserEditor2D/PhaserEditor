@@ -36,6 +36,7 @@ public class GroupNode extends Pane implements IObjectNode {
 
 	GroupNode(GroupControl control) {
 		_control = control;
+		setPickOnBounds(false);
 	}
 
 	@Override

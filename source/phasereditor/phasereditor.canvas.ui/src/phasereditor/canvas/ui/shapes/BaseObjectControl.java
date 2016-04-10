@@ -149,7 +149,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			public void setValue(String value) {
 				_model.setEditorName(value);
 				_canvas.getUpdateBehavior().update_Outline(_inode);
-				_canvas.dirty();
+				updateGridChange();
 			}
 
 			@Override

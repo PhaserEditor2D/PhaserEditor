@@ -91,6 +91,7 @@ public class UpdateChangeBehavior {
 	public void update_Canvas_from_GridChange(BaseObjectControl<?> changedShape) {
 		_canvas.dirty();
 		changedShape.updateFromModel();
+		_canvas.getSelectionBehavior().updateSelectedNodes();
 	}
 
 	private static PGridModel createGridModelFromElement(Object element) {

@@ -43,7 +43,7 @@ public class SpritesheetShapeModel extends AssetShapeModel<SpritesheetAssetModel
 	public SpritesheetShapeModel(GroupModel parent, JSONObject obj) {
 		super(parent, TYPE_NAME, obj);
 	}
-
+	
 	public int getFrameIndex() {
 		return _frameIndex;
 	}

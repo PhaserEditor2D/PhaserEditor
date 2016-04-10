@@ -39,6 +39,7 @@ public class SpriteNode extends ImageView implements IObjectNode {
 	SpriteNode(BaseObjectControl<?> control, IFile imageFile) {
 		super("file:" + imageFile.getLocation().makeAbsolute().toPortableString());
 		_control = control;
+		setPickOnBounds(false);
 	}
 
 	@Override
