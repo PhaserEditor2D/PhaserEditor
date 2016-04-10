@@ -87,6 +87,9 @@ public class SelectionBehavior implements ISelectionProvider {
 		}
 
 		if (isSelected(picked)) {
+			if (event.isControlDown()) {
+				removeNodeFromSelection(picked);
+			}
 			return;
 		}
 
