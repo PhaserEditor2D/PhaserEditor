@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
-import static java.lang.System.out;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -55,33 +53,16 @@ public class SelectionBehavior implements ISelectionProvider {
 	private ShapeCanvas _canvas;
 	private ListenerList _listenerList;
 	private IStructuredSelection _selection;
+	private List<IObjectNode> _selectedNodes;
 
 	public SelectionBehavior(ShapeCanvas canvas) {
 		super();
 		_canvas = canvas;
 		_selection = StructuredSelection.EMPTY;
+		_selectedNodes = new ArrayList<>();
 		_listenerList = new ListenerList(ListenerList.IDENTITY);
 
-		_canvas.getScene().addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-			Node userPicked = event.getPickResult().getIntersectedNode();
-			Node picked = findBestToPick(userPicked);
-
-			out.println(userPicked + " --> " + picked);
-
-			if (picked == null) {
-				setSelection(StructuredSelection.EMPTY);
-				return;
-			}
-
-			if (_selection != null && !_selection.isEmpty() && event.isControlDown()) {
-				HashSet<Object> selection = new HashSet<>(Arrays.asList(_selection.toArray()));
-				selection.add(picked);
-				setSelection(new StructuredSelection(selection.toArray()));
-			} else {
-				setSelection(new StructuredSelection(picked));
-			}
-		});
-
+		_canvas.getScene().addEventHandler(MouseEvent.MOUSE_PRESSED, this::handleMousePressed);
 		_canvas.getOutline().addSelectionChangedListener(new ISelectionChangedListener() {
 
 			@SuppressWarnings("synthetic-access")
@@ -92,6 +73,30 @@ public class SelectionBehavior implements ISelectionProvider {
 				}
 			}
 		});
+	}
+
+	private void handleMousePressed(MouseEvent event) {
+		Node userPicked = event.getPickResult().getIntersectedNode();
+		Node picked = findBestToPick(userPicked);
+
+		// out.println(userPicked + " --> " + picked);
+
+		if (picked == null) {
+			setSelection(StructuredSelection.EMPTY);
+			return;
+		}
+
+		if (isSelected(picked)) {
+			return;
+		}
+
+		if (_selection != null && !_selection.isEmpty() && event.isControlDown()) {
+			HashSet<Object> selection = new HashSet<>(Arrays.asList(_selection.toArray()));
+			selection.add(picked);
+			setSelection(new StructuredSelection(selection.toArray()));
+		} else {
+			setSelection(new StructuredSelection(picked));
+		}
 	}
 
 	/**
@@ -176,6 +181,10 @@ public class SelectionBehavior implements ISelectionProvider {
 		return _selection;
 	}
 
+	public List<IObjectNode> getSelectedNodes() {
+		return _selectedNodes;
+	}
+
 	public boolean containsInSelection(Node node) {
 		return _selection != null && _selection.toList().contains(node);
 	}
@@ -183,18 +192,25 @@ public class SelectionBehavior implements ISelectionProvider {
 	@Override
 	public void setSelection(ISelection selection) {
 		setSelection_private(selection);
-		if (!selection.isEmpty()) {
-			TreeViewer outline = _canvas.getOutline();
-			outline.setSelection(selection, true);
-		}
+		TreeViewer outline = _canvas.getOutline();
+		outline.setSelection(selection, true);
 	}
 
 	private void setSelection_private(ISelection selection) {
-		_selection = (IStructuredSelection) selection;
+		{
+			_selection = (IStructuredSelection) selection;
+			List<IObjectNode> list = new ArrayList<>();
+			for (Object obj : _selection.toArray()) {
+				list.add((IObjectNode) obj);
+			}
+			_selectedNodes = list;
+		}
 
-		Object[] list = _listenerList.getListeners();
-		for (Object l : list) {
-			((ISelectionChangedListener) l).selectionChanged(new SelectionChangedEvent(this, selection));
+		{
+			Object[] list = _listenerList.getListeners();
+			for (Object l : list) {
+				((ISelectionChangedListener) l).selectionChanged(new SelectionChangedEvent(this, selection));
+			}
 		}
 
 		updateSelectedNodes();

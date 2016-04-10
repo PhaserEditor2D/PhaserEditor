@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -28,7 +31,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.PickResult;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.IObjectNode;
@@ -40,76 +42,122 @@ import phasereditor.canvas.ui.shapes.IObjectNode;
 public class DragBehavior {
 	private ShapeCanvas _canvas;
 	private Scene _scene;
-	private Node _dragNode;
 	private Point2D _startScenePoint;
-	private Point2D _startNodePoint;
+	private List<DragInfo> _dragInfoList;
+	private SelectionBehavior _selbehavior;
+
+	static class DragInfo {
+		private Node _node;
+		private Point2D _start;
+
+		public DragInfo(Node node, Point2D start) {
+			super();
+			this._node = node;
+			this._start = start;
+		}
+
+		public Node getNode() {
+			return _node;
+		}
+
+		public Point2D getStart() {
+			return _start;
+		}
+
+	}
 
 	public DragBehavior(ShapeCanvas canvas) {
 		super();
 		_canvas = canvas;
-
 		_scene = _canvas.getScene();
+		_selbehavior = canvas.getSelectionBehavior(); 
+		_dragInfoList = new ArrayList<>();
 
-		_scene.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
-			if (event.getButton() != MouseButton.PRIMARY) {
-				return;
+		_scene.addEventHandler(MouseEvent.MOUSE_PRESSED, this::handleMousePressed);
+		_scene.addEventHandler(MouseEvent.MOUSE_DRAGGED, this::handleMouseDragged);
+		_scene.addEventHandler(MouseEvent.MOUSE_RELEASED, this::handleMouseReleased);
+		_scene.addEventHandler(KeyEvent.KEY_RELEASED, this::handleKeyReleased);
+	}
+
+
+	private void handleKeyReleased(KeyEvent event) {
+		if (_dragInfoList.isEmpty()) {
+			return;
+		}
+
+		if (event.getCode() == KeyCode.ESCAPE) {
+			for (DragInfo draginfo : _dragInfoList) {
+				Point2D start = draginfo.getStart();
+				Node node = draginfo.getNode();
+				node.relocate(start.getX(), start.getY());
 			}
+			_dragInfoList.clear();
+			_selbehavior.updateSelectedNodes();
+		}
+	}
 
-			PickResult pick = event.getPickResult();
-			Node userPicked = pick.getIntersectedNode();
-			Node picked = _canvas.getSelectionBehavior().findBestToPick(userPicked);
+	private void handleMouseReleased(@SuppressWarnings("unused") MouseEvent event) {
+		if (_dragInfoList.isEmpty()) {
+			return;
+		}
 
-			if (picked == null) {
-				return;
-			}
+		for (DragInfo draginfo : _dragInfoList) {
+			Node node = draginfo.getNode();
+			BaseObjectControl<?> control = ((IObjectNode) node).getControl();
+			BaseObjectModel model = control.getModel();
+			model.setLocation(node.getLayoutX(), node.getLayoutY());
 
-			_dragNode = picked;
-			_startNodePoint = new Point2D(picked.getLayoutX(), picked.getLayoutY());
-			_startScenePoint = new Point2D(event.getSceneX(), event.getSceneY());
-		});
+			UpdateChangeBehavior updateBehavior = _canvas.getUpdateBehavior();
+			updateBehavior.update_Grid_from_PropertyChange(control.getX_property());
+			updateBehavior.update_Grid_from_PropertyChange(control.getY_property());
+		}
 
-		_scene.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
-			if (_dragNode == null) {
-				return;
-			}
-			double dx = event.getSceneX() - _startScenePoint.getX();
-			double dy = event.getSceneY() - _startScenePoint.getY();
-			
+		_dragInfoList.clear();
+	}
+
+	private void handleMouseDragged(MouseEvent event) {
+		if (_dragInfoList.isEmpty()) {
+			return;
+		}
+		double dx = event.getSceneX() - _startScenePoint.getX();
+		double dy = event.getSceneY() - _startScenePoint.getY();
+
+		for (DragInfo draginfo : _dragInfoList) {
+			Node dragnode = draginfo.getNode();
+			Point2D start = draginfo.getStart();
+
 			Point2D delta = new Point2D(dx, dy);
 			try {
-				delta = _dragNode.getParent().getLocalToSceneTransform().inverseDeltaTransform(dx, dy);
+				delta = dragnode.getParent().getLocalToSceneTransform().inverseDeltaTransform(dx, dy);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+
 			dx = delta.getX();
 			dy = delta.getY();
-			
-			_dragNode.setLayoutX(_startNodePoint.getX() + dx);
-			_dragNode.setLayoutY(_startNodePoint.getY() + dy);
-			_canvas.getSelectionBehavior().updateSelectedNodes();
-		});
 
-		_scene.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
-			if (_dragNode != null) {
-				BaseObjectControl<?> control = ((IObjectNode) _dragNode).getControl();
-				BaseObjectModel model = control.getModel();
-				model.setLocation(_dragNode.getLayoutX(), _dragNode.getLayoutY());
+			dragnode.setLayoutX(start.getX() + dx);
+			dragnode.setLayoutY(start.getY() + dy);
+		}
+		_canvas.getSelectionBehavior().updateSelectedNodes();
+	}
 
-				UpdateChangeBehavior updateBehavior = _canvas.getUpdateBehavior();
-				updateBehavior.update_Grid_from_PropertyChange(control.getX_property());
-				updateBehavior.update_Grid_from_PropertyChange(control.getY_property());
+	private void handleMousePressed(MouseEvent event) {
+		if (event.getButton() != MouseButton.PRIMARY) {
+			return;
+		}
+
+		for (IObjectNode selnode : _selbehavior.getSelectedNodes()) {
+			Node dragnode = selnode.getNode();
+
+			if (_dragInfoList.stream().anyMatch(info -> info.getNode() == dragnode)) {
+				continue;
 			}
-			_dragNode = null;
-		});
 
-		_scene.addEventHandler(KeyEvent.KEY_RELEASED, event -> {
-			if (_dragNode != null) {
-				if (event.getCode() == KeyCode.ESCAPE) {
-					_dragNode.relocate(_startScenePoint.getX(), _startScenePoint.getY());
-					_dragNode = null;
-				}
-			}
-		});
+			Point2D start = new Point2D(dragnode.getLayoutX(), dragnode.getLayoutY());
+			_dragInfoList.add(new DragInfo(dragnode, start));
+		}
+
+		_startScenePoint = new Point2D(event.getSceneX(), event.getSceneY());
 	}
 }
