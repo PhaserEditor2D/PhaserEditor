@@ -43,11 +43,11 @@ import phasereditor.canvas.ui.shapes.IObjectNode;
  *
  */
 public class UpdateChangeBehavior {
-	private ShapeCanvas _canvas;
+	private ObjectCanvas _canvas;
 	private PGrid _grid;
 	private TreeViewer _outline;
 
-	public UpdateChangeBehavior(ShapeCanvas canvas, PGrid grid, TreeViewer outline) {
+	public UpdateChangeBehavior(ObjectCanvas canvas, PGrid grid, TreeViewer outline) {
 		super();
 		_canvas = canvas;
 		_grid = grid;

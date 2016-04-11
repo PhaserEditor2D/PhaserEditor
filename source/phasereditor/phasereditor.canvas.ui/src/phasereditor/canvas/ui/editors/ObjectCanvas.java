@@ -29,12 +29,17 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
 import javafx.embed.swt.FXCanvas;
 import javafx.geometry.Bounds;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -50,7 +55,7 @@ import phasereditor.canvas.ui.shapes.IObjectNode;
  * @author arian
  *
  */
-public class ShapeCanvas extends FXCanvas {
+public class ObjectCanvas extends FXCanvas {
 	private CreateBehavior _createBehaviors;
 	private Pane _selectionPane;
 	private SelectionBehavior _selectionBehavior;
@@ -61,8 +66,10 @@ public class ShapeCanvas extends FXCanvas {
 	private GroupControl _worldControl;
 	private TreeViewer _outline;
 	private Pane _root;
+	private BorderPane _borderPane;
+	private ScrollPane _scrollPane;
 
-	public ShapeCanvas(Composite parent) {
+	public ObjectCanvas(Composite parent) {
 		super(parent, SWT.NONE);
 	}
 
@@ -137,16 +144,38 @@ public class ShapeCanvas extends FXCanvas {
 
 		_root = new Pane(world, _selectionPane);
 
-		world.setMinSize(_model.getWorldWidth(), _model.getWorldHeight());
-		world.setMaxSize(_model.getWorldWidth(), _model.getWorldHeight());
-		_root.setMinSize(_model.getWorldWidth(), _model.getWorldHeight());
-		_root.setMaxSize(_model.getWorldWidth(), _model.getWorldHeight());
-		_selectionPane.setMinSize(_model.getWorldWidth(), _model.getWorldHeight());
-		_selectionPane.setMaxSize(_model.getWorldWidth(), _model.getWorldHeight());
+		int width = _model.getWorldWidth();
+		int height = _model.getWorldHeight();
+		world.setMinSize(width, height);
+		world.setMaxSize(width, height);
+		_root.setMinSize(width, height);
+		_root.setMaxSize(width, height);
+		_root.setPrefSize(width, height);
 
-		BorderPane main = new BorderPane(_root);
-		main.setStyle("-fx-background-color:lightgray;");
-		setScene(new Scene(main));
+		_selectionPane.setMinSize(width, height);
+		_selectionPane.setMaxSize(width, height);
+
+		_borderPane = new BorderPane(_root);
+
+		Group content = new Group(_borderPane);
+
+		_scrollPane = new ScrollPane(content);
+
+		setScene(new Scene(_scrollPane));
+		addControlListener(new ControlAdapter() {
+			@Override
+			public void controlResized(ControlEvent e) {
+				updateBorderPane();
+			}
+
+		});
+
+		updateBorderPane();
+	}
+
+	void updateBorderPane() {
+		Rectangle b = getClientArea();
+		_borderPane.setPrefSize(b.width - 5, b.height - 5);
 	}
 
 	public Pane getRoot() {

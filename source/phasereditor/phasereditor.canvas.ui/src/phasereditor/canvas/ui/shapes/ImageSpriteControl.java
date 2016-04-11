@@ -22,7 +22,7 @@
 package phasereditor.canvas.ui.shapes;
 
 import phasereditor.canvas.core.ImageSpriteShapeModel;
-import phasereditor.canvas.ui.editors.ShapeCanvas;
+import phasereditor.canvas.ui.editors.ObjectCanvas;
 
 /**
  * @author arian
@@ -31,7 +31,7 @@ import phasereditor.canvas.ui.editors.ShapeCanvas;
 public class ImageSpriteControl extends BaseSpriteShapeControl<ImageSpriteShapeModel> {
 	private SpriteNode _spriteNode;
 
-	public ImageSpriteControl(ShapeCanvas canvas, ImageSpriteShapeModel model) {
+	public ImageSpriteControl(ObjectCanvas canvas, ImageSpriteShapeModel model) {
 		super(canvas, model);
 	}
 

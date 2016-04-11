@@ -31,7 +31,7 @@ import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.WorldModel.ZOperation;
-import phasereditor.canvas.ui.editors.ShapeCanvas;
+import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
@@ -46,7 +46,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	private T _model;
 	private Node _node;
 	private IObjectNode _inode;
-	private ShapeCanvas _canvas;
+	private ObjectCanvas _canvas;
 	private PGridModel _propModel;
 	private PGridNumberProperty _x_property;
 	private PGridNumberProperty _y_property;
@@ -56,7 +56,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	private PGridNumberProperty _pivot_x_property;
 	private PGridNumberProperty _pivot_y_property;
 
-	public BaseObjectControl(ShapeCanvas canvas, T model) {
+	public BaseObjectControl(ObjectCanvas canvas, T model) {
 		_canvas = canvas;
 		_model = model;
 
@@ -342,7 +342,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		return _y_property;
 	}
 
-	public ShapeCanvas getCanvas() {
+	public ObjectCanvas getCanvas() {
 		return _canvas;
 	}
 

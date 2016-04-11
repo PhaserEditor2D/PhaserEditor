@@ -6,14 +6,14 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.canvas.ui.editors.CanvasEditor;
-import phasereditor.canvas.ui.editors.ShapeCanvas;
+import phasereditor.canvas.ui.editors.ObjectCanvas;
 
 public class AbortOperationHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
-		ShapeCanvas canvas = editor.getCanvas();
+		ObjectCanvas canvas = editor.getCanvas();
 
 		// cancel dragging and selection
 

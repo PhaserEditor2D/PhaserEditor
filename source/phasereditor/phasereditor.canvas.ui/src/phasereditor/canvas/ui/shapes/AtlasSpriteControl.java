@@ -25,7 +25,7 @@ import javafx.geometry.Rectangle2D;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
 import phasereditor.canvas.core.AtlasSpriteShapeModel;
-import phasereditor.canvas.ui.editors.ShapeCanvas;
+import phasereditor.canvas.ui.editors.ObjectCanvas;
 
 /**
  * @author arian
@@ -35,7 +35,7 @@ public class AtlasSpriteControl extends BaseSpriteShapeControl<AtlasSpriteShapeM
 
 	private FrameItem _frame;
 
-	public AtlasSpriteControl(ShapeCanvas canvas, AtlasSpriteShapeModel model) {
+	public AtlasSpriteControl(ObjectCanvas canvas, AtlasSpriteShapeModel model) {
 		super(canvas, model);
 	}
 

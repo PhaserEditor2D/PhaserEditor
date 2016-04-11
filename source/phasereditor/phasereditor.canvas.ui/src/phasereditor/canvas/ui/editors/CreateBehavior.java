@@ -50,9 +50,9 @@ import phasereditor.canvas.ui.shapes.ShapeFactory;
  *
  */
 public class CreateBehavior {
-	private ShapeCanvas _canvas;
+	private ObjectCanvas _canvas;
 
-	public CreateBehavior(ShapeCanvas canvas) {
+	public CreateBehavior(ObjectCanvas canvas) {
 		_canvas = canvas;
 	}
 
@@ -133,7 +133,7 @@ public class CreateBehavior {
 			groupModel.addChild(model);
 		}
 
-		ShapeCanvas canvas = parentControl.getCanvas();
+		ObjectCanvas canvas = parentControl.getCanvas();
 		GroupControl groupControl = new GroupControl(canvas, groupModel);
 		GroupNode group = groupControl.getNode();
 
@@ -150,7 +150,7 @@ public class CreateBehavior {
 		BaseObjectControl<?> parentControl = parent.getControl();
 		GroupModel parentModel = (GroupModel) parentControl.getModel();
 		GroupModel groupModel = new GroupModel(parentModel);
-		ShapeCanvas canvas = parentControl.getCanvas();
+		ObjectCanvas canvas = parentControl.getCanvas();
 
 		groupModel.setEditorName(_canvas.getWorldModel().createName("group"));
 		GroupControl groupControl = new GroupControl(canvas, groupModel);

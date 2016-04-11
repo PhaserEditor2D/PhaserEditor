@@ -25,7 +25,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import phasereditor.canvas.core.BaseSpriteShapeModel;
-import phasereditor.canvas.ui.editors.ShapeCanvas;
+import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
@@ -39,7 +39,7 @@ public abstract class BaseSpriteShapeControl<T extends BaseSpriteShapeModel> ext
 	private PGridNumberProperty _anchor_x_property;
 	private PGridNumberProperty _anchor_y_property;
 
-	public BaseSpriteShapeControl(ShapeCanvas canvas, T model) {
+	public BaseSpriteShapeControl(ObjectCanvas canvas, T model) {
 		super(canvas, model);
 	}
 

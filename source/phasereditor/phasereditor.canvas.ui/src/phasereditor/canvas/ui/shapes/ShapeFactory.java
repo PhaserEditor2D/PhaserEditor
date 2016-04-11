@@ -26,14 +26,14 @@ import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.ImageSpriteShapeModel;
 import phasereditor.canvas.core.SpritesheetShapeModel;
-import phasereditor.canvas.ui.editors.ShapeCanvas;
+import phasereditor.canvas.ui.editors.ObjectCanvas;
 
 /**
  * @author arian
  *
  */
 public class ShapeFactory {
-	public static BaseObjectControl<?> createShapeControl(ShapeCanvas canvas, BaseObjectModel model) {
+	public static BaseObjectControl<?> createShapeControl(ObjectCanvas canvas, BaseObjectModel model) {
 		if (model instanceof GroupModel) {
 			return new GroupControl(canvas, (GroupModel) model);
 		} else if (model instanceof ImageSpriteShapeModel) {

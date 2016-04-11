@@ -31,7 +31,7 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetPackUI.FrameData;
 import phasereditor.canvas.core.SpritesheetShapeModel;
-import phasereditor.canvas.ui.editors.ShapeCanvas;
+import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
@@ -45,7 +45,7 @@ public class SpritesheetControl extends BaseSpriteShapeControl<SpritesheetShapeM
 	private List<FrameData> _frames;
 	private PGridFrameProperty _frame_property;
 
-	public SpritesheetControl(ShapeCanvas canvas, SpritesheetShapeModel model) {
+	public SpritesheetControl(ObjectCanvas canvas, SpritesheetShapeModel model) {
 		super(canvas, model);
 	}
 

@@ -23,7 +23,7 @@ package phasereditor.canvas.ui.shapes;
 
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.GroupModel;
-import phasereditor.canvas.ui.editors.ShapeCanvas;
+import phasereditor.canvas.ui.editors.ObjectCanvas;
 
 /**
  * @author arian
@@ -31,7 +31,7 @@ import phasereditor.canvas.ui.editors.ShapeCanvas;
  */
 public class GroupControl extends BaseObjectControl<GroupModel> {
 
-	public GroupControl(ShapeCanvas canvas, GroupModel model) {
+	public GroupControl(ObjectCanvas canvas, GroupModel model) {
 		super(canvas, model);
 	}
 

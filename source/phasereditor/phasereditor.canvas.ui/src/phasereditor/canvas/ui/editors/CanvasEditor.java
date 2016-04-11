@@ -58,7 +58,7 @@ public class CanvasEditor extends EditorPart {
 
 	public final static String ID = "phasereditor.canvas.ui.editors.canvas";
 
-	private ShapeCanvas _canvas;
+	private ObjectCanvas _canvas;
 	private WorldModel _model;
 
 	private PGrid _grid;
@@ -145,7 +145,7 @@ public class CanvasEditor extends EditorPart {
 		_outlineTree.getViewer().setContentProvider(new OutlineContentProvider());
 
 		_grid = new PGrid(_sashForm, SWT.NONE);
-		_canvas = new ShapeCanvas(sashForm);
+		_canvas = new ObjectCanvas(sashForm);
 		_sashForm.setWeights(new int[] { 1, 1 });
 		sashForm.setWeights(new int[] { 3, 4 });
 
@@ -187,7 +187,7 @@ public class CanvasEditor extends EditorPart {
 		_canvas.setFocus();
 	}
 
-	public ShapeCanvas getCanvas() {
+	public ObjectCanvas getCanvas() {
 		return _canvas;
 	}
 }

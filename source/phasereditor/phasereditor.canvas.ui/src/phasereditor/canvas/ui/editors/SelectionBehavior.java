@@ -51,12 +51,12 @@ import phasereditor.canvas.ui.shapes.SpriteNode;
  *
  */
 public class SelectionBehavior implements ISelectionProvider {
-	private ShapeCanvas _canvas;
+	private ObjectCanvas _canvas;
 	private ListenerList _listenerList;
 	private IStructuredSelection _selection;
 	private List<IObjectNode> _selectedNodes;
 
-	public SelectionBehavior(ShapeCanvas canvas) {
+	public SelectionBehavior(ObjectCanvas canvas) {
 		super();
 		_canvas = canvas;
 		_selection = StructuredSelection.EMPTY;
@@ -64,7 +64,7 @@ public class SelectionBehavior implements ISelectionProvider {
 		_listenerList = new ListenerList(ListenerList.IDENTITY);
 
 		Scene scene = _canvas.getScene();
-		scene.addEventHandler(MouseEvent.MOUSE_PRESSED, this::handleMousePressed);
+		scene.addEventFilter(MouseEvent.MOUSE_PRESSED, this::handleMousePressed);
 
 		_canvas.getOutline().addSelectionChangedListener(new ISelectionChangedListener() {
 

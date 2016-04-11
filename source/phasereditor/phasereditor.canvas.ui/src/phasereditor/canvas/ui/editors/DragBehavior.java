@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
+import static java.lang.System.out;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +40,7 @@ import phasereditor.canvas.ui.shapes.IObjectNode;
  *
  */
 public class DragBehavior {
-	private ShapeCanvas _canvas;
+	private ObjectCanvas _canvas;
 	private Scene _scene;
 	private Point2D _startScenePoint;
 	private List<DragInfo> _dragInfoList;
@@ -65,16 +67,16 @@ public class DragBehavior {
 
 	}
 
-	public DragBehavior(ShapeCanvas canvas) {
+	public DragBehavior(ObjectCanvas canvas) {
 		super();
 		_canvas = canvas;
 		_scene = _canvas.getScene();
 		_selbehavior = canvas.getSelectionBehavior();
 		_dragInfoList = new ArrayList<>();
 
-		_scene.addEventHandler(MouseEvent.MOUSE_PRESSED, this::handleMousePressed);
-		_scene.addEventHandler(MouseEvent.MOUSE_DRAGGED, this::handleMouseDragged);
-		_scene.addEventHandler(MouseEvent.MOUSE_RELEASED, this::handleMouseReleased);
+		_scene.addEventFilter(MouseEvent.MOUSE_PRESSED, this::handleMousePressed);
+		_scene.addEventFilter(MouseEvent.MOUSE_DRAGGED, this::handleMouseDragged);
+		_scene.addEventFilter(MouseEvent.MOUSE_RELEASED, this::handleMouseReleased);
 	}
 
 	private void handleMouseReleased(@SuppressWarnings("unused") MouseEvent event) {
@@ -103,9 +105,10 @@ public class DragBehavior {
 			return;
 		}
 		_dragging = true;
+		
 		double dx = event.getSceneX() - _startScenePoint.getX();
 		double dy = event.getSceneY() - _startScenePoint.getY();
-
+		
 		for (DragInfo draginfo : _dragInfoList) {
 			Node dragnode = draginfo.getNode();
 			Point2D start = draginfo.getStart();
