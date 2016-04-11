@@ -27,8 +27,6 @@ import java.util.List;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import phasereditor.canvas.core.BaseObjectModel;
@@ -45,6 +43,7 @@ public class DragBehavior {
 	private Point2D _startScenePoint;
 	private List<DragInfo> _dragInfoList;
 	private SelectionBehavior _selbehavior;
+	private boolean _dragging;
 
 	static class DragInfo {
 		private Node _node;
@@ -70,36 +69,20 @@ public class DragBehavior {
 		super();
 		_canvas = canvas;
 		_scene = _canvas.getScene();
-		_selbehavior = canvas.getSelectionBehavior(); 
+		_selbehavior = canvas.getSelectionBehavior();
 		_dragInfoList = new ArrayList<>();
 
 		_scene.addEventHandler(MouseEvent.MOUSE_PRESSED, this::handleMousePressed);
 		_scene.addEventHandler(MouseEvent.MOUSE_DRAGGED, this::handleMouseDragged);
 		_scene.addEventHandler(MouseEvent.MOUSE_RELEASED, this::handleMouseReleased);
-		_scene.addEventHandler(KeyEvent.KEY_RELEASED, this::handleKeyReleased);
-	}
-
-
-	private void handleKeyReleased(KeyEvent event) {
-		if (_dragInfoList.isEmpty()) {
-			return;
-		}
-
-		if (event.getCode() == KeyCode.ESCAPE) {
-			for (DragInfo draginfo : _dragInfoList) {
-				Point2D start = draginfo.getStart();
-				Node node = draginfo.getNode();
-				node.relocate(start.getX(), start.getY());
-			}
-			_dragInfoList.clear();
-			_selbehavior.updateSelectedNodes();
-		}
 	}
 
 	private void handleMouseReleased(@SuppressWarnings("unused") MouseEvent event) {
 		if (_dragInfoList.isEmpty()) {
 			return;
 		}
+
+		_dragging = false;
 
 		for (DragInfo draginfo : _dragInfoList) {
 			Node node = draginfo.getNode();
@@ -119,6 +102,7 @@ public class DragBehavior {
 		if (_dragInfoList.isEmpty()) {
 			return;
 		}
+		_dragging = true;
 		double dx = event.getSceneX() - _startScenePoint.getX();
 		double dy = event.getSceneY() - _startScenePoint.getY();
 
@@ -159,5 +143,23 @@ public class DragBehavior {
 		}
 
 		_startScenePoint = new Point2D(event.getSceneX(), event.getSceneY());
+	}
+
+	public void abort() {
+		if (_dragInfoList.isEmpty()) {
+			return;
+		}
+
+		for (DragInfo draginfo : _dragInfoList) {
+			Point2D start = draginfo.getStart();
+			Node node = draginfo.getNode();
+			node.relocate(start.getX(), start.getY());
+		}
+		_dragInfoList.clear();
+		_selbehavior.updateSelectedNodes();
+	}
+
+	public boolean isDragging() {
+		return !_dragInfoList.isEmpty() && _dragging;
 	}
 }

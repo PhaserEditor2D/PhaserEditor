@@ -39,6 +39,7 @@ import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import phasereditor.canvas.ui.shapes.GroupNode;
@@ -62,7 +63,9 @@ public class SelectionBehavior implements ISelectionProvider {
 		_selectedNodes = new ArrayList<>();
 		_listenerList = new ListenerList(ListenerList.IDENTITY);
 
-		_canvas.getScene().addEventHandler(MouseEvent.MOUSE_PRESSED, this::handleMousePressed);
+		Scene scene = _canvas.getScene();
+		scene.addEventHandler(MouseEvent.MOUSE_PRESSED, this::handleMousePressed);
+
 		_canvas.getOutline().addSelectionChangedListener(new ISelectionChangedListener() {
 
 			@SuppressWarnings("synthetic-access")
@@ -78,8 +81,6 @@ public class SelectionBehavior implements ISelectionProvider {
 	private void handleMousePressed(MouseEvent event) {
 		Node userPicked = event.getPickResult().getIntersectedNode();
 		Node picked = findBestToPick(userPicked);
-
-		// out.println(userPicked + " --> " + picked);
 
 		if (picked == null) {
 			setSelection(StructuredSelection.EMPTY);
@@ -331,6 +332,14 @@ public class SelectionBehavior implements ISelectionProvider {
 			list.remove(node);
 			setSelection(new StructuredSelection(list));
 		}
+	}
+
+	public void abort() {
+		if (_selectedNodes.isEmpty()) {
+			return;
+		}
+
+		setSelection(StructuredSelection.EMPTY);
 	}
 
 }

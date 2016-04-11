@@ -114,6 +114,11 @@
             id="phasereditor.canvas.ui.emptygroup"
             name="Make Empty Group">
       </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.escape"
+            name="Escape">
+      </command>
       
    </extension>
    <extension
@@ -189,6 +194,18 @@
             </and>
          </activeWhen>
       </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.AbortOperationHandler"
+            commandId="phasereditor.canvas.ui.escape">
+         <activeWhen>
+            <with
+                  variable="activePartId">
+               <equals
+                     value="phasereditor.canvas.ui.editors.canvas">
+               </equals>
+            </with>
+         </activeWhen>
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
@@ -215,6 +232,12 @@
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="PAGE_DOWN">
+      </key>
+      <key
+            commandId="phasereditor.canvas.ui.escape"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="ESC">
       </key>
    </extension>
    <extension
