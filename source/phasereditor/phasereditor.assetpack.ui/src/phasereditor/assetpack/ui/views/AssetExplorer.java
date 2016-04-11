@@ -24,6 +24,7 @@ package phasereditor.assetpack.ui.views;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -35,6 +36,7 @@ import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSourceAdapter;
@@ -47,6 +49,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IPartListener;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import phasereditor.assetpack.core.AssetModel;
@@ -99,7 +108,58 @@ public class AssetExplorer extends ViewPart {
 	}
 
 	static class AssetExplorerContentProvider extends AssetsContentProvider {
+
+		IPartListener _partListener;
+		private TreeViewer _viewer;
+
 		public AssetExplorerContentProvider() {
+			_partListener = new IPartListener() {
+
+				@Override
+				public void partOpened(IWorkbenchPart part) {
+					refreshViewer();
+				}
+
+				@Override
+				public void partDeactivated(IWorkbenchPart part) {
+					refreshViewer();
+				}
+
+				@Override
+				public void partClosed(IWorkbenchPart part) {
+					refreshViewer();
+				}
+
+				@Override
+				public void partBroughtToTop(IWorkbenchPart part) {
+					refreshViewer();
+				}
+
+				@Override
+				public void partActivated(IWorkbenchPart part) {
+					refreshViewer();
+				}
+			};
+			getActivePage().addPartListener(_partListener);
+		}
+
+		/**
+		 * @return
+		 */
+		private static IWorkbenchPage getActivePage() {
+			return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		}
+
+		@Override
+		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+			super.inputChanged(viewer, oldInput, newInput);
+			_viewer = (TreeViewer) viewer;
+		}
+
+		@Override
+		public void dispose() {
+			super.dispose();
+			getActivePage().removePartListener(_partListener);
 		}
 
 		@Override
@@ -107,11 +167,14 @@ public class AssetExplorer extends ViewPart {
 			if (parent == ROOT) {
 				IWorkspace workspace = ResourcesPlugin.getWorkspace();
 				List<Object> list = new ArrayList<>();
+				IProject activeProjet = getActiveProject();
+
 				for (IProject project : workspace.getRoot().getProjects()) {
-					List<AssetPackModel> packs = AssetPackCore.getAssetPackModels(project);
-					if (!packs.isEmpty()) {
-						list.add(project);
+					if (activeProjet != null && activeProjet != project) {
+						continue;
 					}
+					List<AssetPackModel> packs = AssetPackCore.getAssetPackModels(project);
+					list.addAll(packs);
 				}
 				return list.toArray();
 			}
@@ -148,6 +211,30 @@ public class AssetExplorer extends ViewPart {
 			}
 
 			return super.getChildren(parent);
+		}
+
+		private static IProject getActiveProject() {
+			IProject activeProjet = null;
+			IEditorPart editor = getActivePage().getActiveEditor();
+			if (editor != null) {
+				IEditorInput input = editor.getEditorInput();
+				if (input instanceof IFileEditorInput) {
+					IFile file = ((IFileEditorInput) input).getFile();
+					activeProjet = file.getProject();
+				}
+			}
+			return activeProjet;
+		}
+
+		Object _lastToken = null;
+
+		void refreshViewer() {
+			_viewer.refresh();
+			IProject project = getActiveProject();
+			if (project != _lastToken) {
+				_viewer.expandAll();
+				_lastToken = project;
+			}
 		}
 	}
 
