@@ -27,6 +27,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import javafx.scene.Node;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ShapeCanvas;
 import phasereditor.canvas.ui.shapes.GroupNode;
@@ -43,7 +44,19 @@ public class MakeEmptyGroupHandler extends AbstractHandler {
 		Object[] elems = selection.toArray();
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 		ShapeCanvas canvas = editor.getCanvas();
-		GroupNode parent = elems.length == 0 ? canvas.getWorldNode() :  (GroupNode) elems[0];
+		GroupNode parent = elems.length == 0 ? canvas.getWorldNode() : (GroupNode) elems[0];
+
+		if (elems.length == 0) {
+			parent = canvas.getWorldNode();
+		} else {
+			Node node = (Node) elems[0];
+			if (node instanceof GroupNode) {
+				parent = (GroupNode) node;
+			} else {
+				parent = (GroupNode) node.getParent();
+			}
+		}
+
 		canvas.getCreateBehaviors().makeEmptyGroup(parent);
 		return null;
 	}
