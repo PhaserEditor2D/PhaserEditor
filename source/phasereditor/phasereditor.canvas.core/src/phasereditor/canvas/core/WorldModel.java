@@ -43,7 +43,7 @@ public class WorldModel extends GroupModel {
 
 	public WorldModel() {
 		super(null);
-		setEditorName("world");
+//		setEditorName("world");
 		init();
 	}
 

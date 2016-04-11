@@ -59,7 +59,7 @@ public class BaseObjectModel {
 		readMetadata(obj);
 		readInfo(jsonInfo);
 	}
-	
+
 	@SuppressWarnings("unused")
 	protected void readMetadata(JSONObject obj) {
 		// nothing
@@ -83,7 +83,7 @@ public class BaseObjectModel {
 	public String getLabel() {
 		return _editorName + "[" + _typeName + "]";
 	}
-	
+
 	public GroupModel getParent() {
 		return _parent;
 	}
@@ -184,7 +184,7 @@ public class BaseObjectModel {
 	public void setPivotY(double pivotY) {
 		_pivotY = pivotY;
 	}
-	
+
 	public final void write(JSONObject obj) {
 		writeMetadata(obj);
 

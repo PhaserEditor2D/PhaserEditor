@@ -84,6 +84,9 @@ public class NewCanvasWizard extends Wizard implements INewWizard {
 			{
 				// set default content
 				WorldModel model = new WorldModel();
+				String name = _newCanvasPage.getFileName();
+				name = name.substring(0, name.length() - _newCanvasPage.getFileExtension().length() - 1);
+				model.setEditorName(name);
 				JSONObject obj = new JSONObject();
 				model.write(obj);
 				try {
