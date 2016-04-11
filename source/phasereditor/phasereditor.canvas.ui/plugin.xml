@@ -181,17 +181,25 @@
             class="phasereditor.canvas.ui.handlers.MakeEmptyGroupHandler"
             commandId="phasereditor.canvas.ui.emptygroup">
          <activeWhen>
-            <and>
-               <reference
-                     definitionId="phasereditor.canvas.ui.shapesSelected">
-               </reference>
-               <with
-                     variable="selection">
-                  <count
-                        value="1">
-                  </count>
-               </with>
-            </and>
+            <or>
+            	<and>
+               		<reference
+                     		definitionId="phasereditor.canvas.ui.shapesSelected">
+               		</reference>
+               		<with
+                     	variable="selection">
+                  		<count
+                        	value="1">
+                  		</count>
+               		</with>
+            	</and>
+            	<with
+                	variable="selection">
+              		<count
+                       	value="!">
+           			</count>
+               	</with>
+             </or>  		
          </activeWhen>
       </handler>
       <handler
