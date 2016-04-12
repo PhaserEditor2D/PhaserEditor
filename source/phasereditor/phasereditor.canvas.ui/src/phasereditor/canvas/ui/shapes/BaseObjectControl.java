@@ -178,7 +178,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 				@Override
 				public void setValue(String value) {
 					_model.setEditorFactory(value);
-					_canvas.dirty();
+					updateGridChange();
 				}
 
 				@Override

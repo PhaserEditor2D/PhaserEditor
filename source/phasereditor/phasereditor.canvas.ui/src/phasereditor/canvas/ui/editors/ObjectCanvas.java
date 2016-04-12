@@ -143,7 +143,6 @@ public class ObjectCanvas extends FXCanvas {
 		world.setStyle("-fx-background-color:white;-fx-border-color:darkGray;border-style:solid;");
 
 		_root = new Pane(world, _selectionPane);
-
 		int width = _model.getWorldWidth();
 		int height = _model.getWorldHeight();
 		world.setMinSize(width, height);
@@ -151,7 +150,6 @@ public class ObjectCanvas extends FXCanvas {
 		_root.setMinSize(width, height);
 		_root.setMaxSize(width, height);
 		_root.setPrefSize(width, height);
-
 		_selectionPane.setMinSize(width, height);
 		_selectionPane.setMaxSize(width, height);
 
@@ -175,7 +173,9 @@ public class ObjectCanvas extends FXCanvas {
 
 	void updateBorderPane() {
 		Rectangle b = getClientArea();
-		_borderPane.setPrefSize(b.width - 5, b.height - 5);
+		int width = b.width;
+		int height = b.height;
+		_borderPane.setPrefSize(width - 5, height - 5);
 	}
 
 	public Pane getRoot() {

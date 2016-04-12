@@ -59,8 +59,8 @@ public class WorldModel extends GroupModel {
 
 	private void init() {
 		// TODO: read from json
-		_worldWidth = 480;
-		_worldHeight = 320;
+		_worldWidth = 640;
+		_worldHeight = 480;
 		// --
 
 		_dirty = false;
