@@ -21,12 +21,23 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
+import static phasereditor.ui.PhaserEditorUI.swtRun;
+
 import java.beans.PropertyChangeEvent;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.IResourceDeltaVisitor;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.MenuManager;
@@ -35,6 +46,7 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -43,6 +55,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.part.EditorPart;
+import org.eclipse.ui.part.FileEditorInput;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -54,7 +67,7 @@ import phasereditor.canvas.ui.editors.grid.PGrid;
  * @author arian
  *
  */
-public class CanvasEditor extends EditorPart {
+public class CanvasEditor extends EditorPart implements IResourceChangeListener {
 
 	public final static String ID = "phasereditor.canvas.ui.editors.canvas";
 
@@ -98,6 +111,8 @@ public class CanvasEditor extends EditorPart {
 
 			_model = new WorldModel(data);
 			_model.addPropertyChangeListener(WorldModel.PROP_DIRTY, this::modelDirtyChanged);
+
+			swtRun(this::updateTitle);
 
 		} catch (IOException | CoreException e) {
 			e.printStackTrace();
@@ -153,6 +168,9 @@ public class CanvasEditor extends EditorPart {
 	}
 
 	private void afterCreateWidgets() {
+		// name
+
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
 
 		// canvas
 
@@ -189,5 +207,69 @@ public class CanvasEditor extends EditorPart {
 
 	public ObjectCanvas getCanvas() {
 		return _canvas;
+	}
+
+	@Override
+	public void dispose() {
+		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
+		super.dispose();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.core.resources.IResourceChangeListener#resourceChanged(org.
+	 * eclipse.core.resources.IResourceChangeEvent)
+	 */
+	@Override
+	public void resourceChanged(IResourceChangeEvent event) {
+		try {
+			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+			if (event.getDelta() == null) {
+				return;
+			}
+			event.getDelta().accept(new IResourceDeltaVisitor() {
+
+				@Override
+				public boolean visit(IResourceDelta delta) throws CoreException {
+					IFile thisFile = getEditorInputFile();
+					IResource deltaFile = delta.getResource();
+					if (deltaFile.equals(thisFile)) {
+						if (delta.getKind() == IResourceDelta.REMOVED) {
+							IPath movedTo = delta.getMovedToPath();
+							if (movedTo == null) {
+								// delete
+								Display display = Display.getDefault();
+								display.asyncExec(new Runnable() {
+
+									@Override
+									public void run() {
+										getSite().getPage().closeEditor(CanvasEditor.this, false);
+									}
+								});
+
+							} else {
+								// rename
+								setInput(new FileEditorInput(root.getFile(movedTo)));
+								swtRun(CanvasEditor.this::updateTitle);
+							}
+						}
+					}
+					return true;
+				}
+			});
+		} catch (CoreException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public IFile getEditorInputFile() {
+		return ((IFileEditorInput) getEditorInput()).getFile();
+	}
+
+	protected void updateTitle() {
+		setPartName(getEditorInputFile().getName());
+		firePropertyChange(PROP_TITLE);
 	}
 }
