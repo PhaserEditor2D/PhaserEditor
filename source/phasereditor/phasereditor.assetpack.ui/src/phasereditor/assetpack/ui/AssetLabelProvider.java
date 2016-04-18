@@ -30,7 +30,6 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISharedImages;
@@ -171,6 +170,24 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 					FrameData fd = new FrameData();
 					fd.src = new Rectangle(frame.getFrameX(), frame.getFrameY(), frame.getFrameW(), frame.getFrameH());
 					fd.dst = new Rectangle(0, 0, frame.getFrameW(), frame.getFrameH());
+					return buildFrameImage(texture, fd);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		if (element instanceof SpritesheetAssetModel.FrameModel) {
+			SpritesheetAssetModel.FrameModel frame = (SpritesheetAssetModel.FrameModel) element;
+			SpritesheetAssetModel asset = (frame).getAsset();
+			IFile file = asset.getUrlFile();
+			if (file != null) {
+				try {
+					Image texture = getFileImage(file);
+					FrameData fd = new FrameData();
+					Rectangle b = frame.getBounds();
+					fd.src = b;
+					fd.dst = new Rectangle(0, 0, b.width, b.height);
 					return buildFrameImage(texture, fd);
 				} catch (Exception e) {
 					e.printStackTrace();

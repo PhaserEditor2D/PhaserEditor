@@ -21,10 +21,16 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.Rectangle;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,15 +42,16 @@ public class SpritesheetAssetModel extends AssetModel {
 	private int _frameMax;
 	private int _margin;
 	private int _spacing;
+	private List<FrameModel> _frames;
 
 	{
 		_frameMax = -1;
 		_margin = 0;
 		_spacing = 0;
+		_frames = new ArrayList<>();
 	}
 
-	public SpritesheetAssetModel(JSONObject definition,
-			AssetSectionModel section) throws JSONException {
+	public SpritesheetAssetModel(JSONObject definition, AssetSectionModel section) throws JSONException {
 		super(definition, section);
 		_url = definition.optString("url", null);
 		_frameWidth = definition.optInt("frameWidth", 0);
@@ -54,8 +61,7 @@ public class SpritesheetAssetModel extends AssetModel {
 		_spacing = definition.optInt("spacing", 0);
 	}
 
-	public SpritesheetAssetModel(String key, AssetSectionModel section)
-			throws JSONException {
+	public SpritesheetAssetModel(String key, AssetSectionModel section) throws JSONException {
 		super(key, AssetType.spritesheet, section);
 	}
 
@@ -133,9 +139,108 @@ public class SpritesheetAssetModel extends AssetModel {
 		firePropertyChange("spacing");
 	}
 
+	public List<FrameModel> getFrames() {
+		return _frames;
+	}
+
+	@Override
+	public List<? extends IAssetElementModel> getSubElements() {
+		return _frames;
+	}
+
 	@Override
 	public void internalBuild(List<IStatus> problems) {
 		validateUrl(problems, "url", _url);
+
+		buildFrames();
 	}
 
+	public static class FrameModel implements IAssetElementModel {
+		public Rectangle _bounds;
+		private SpritesheetAssetModel _asset;
+		private int _index;
+
+		public FrameModel(SpritesheetAssetModel asset, int index, Rectangle bounds) {
+			super();
+			_asset = asset;
+			_index = index;
+			_bounds = bounds;
+		}
+
+		public int getIndex() {
+			return _index;
+		}
+
+		public Rectangle getBounds() {
+			return _bounds;
+		}
+
+		@Override
+		public String getName() {
+			return Integer.toString(_index);
+		}
+
+		@Override
+		public SpritesheetAssetModel getAsset() {
+			return _asset;
+		}
+	}
+
+	private void buildFrames() {
+		// taken from AssetPackUI.generateSpriteSheetRects(...) method.
+
+		List<FrameModel> list = new ArrayList<>();
+		try {
+			int w = getFrameWidth();
+			int h = getFrameHeight();
+			int margin = getMargin();
+			int spacing = getSpacing();
+
+			if (w <= 0 || h <= 0 || spacing < 0 || margin < 0) {
+				// invalid parameters
+				return;
+			}
+
+			IFile file = getUrlFile();
+			if (file == null) {
+				return;
+			}
+
+			Rectangle b;
+			try (InputStream contents = file.getContents()) {
+				ImageData data = new ImageData(contents);
+				b = new Rectangle(0, 0, data.width, data.height);
+			} catch (IOException | CoreException e) {
+				e.printStackTrace();
+				return;
+			}
+
+			int max = getFrameMax();
+			if (max <= 0) {
+				max = Integer.MAX_VALUE;
+			}
+
+			int i = 0;
+			int x = margin;
+			int y = margin;
+			while (true) {
+				if (i >= max || y >= b.height) {
+					break;
+				}
+
+				FrameModel frame = new FrameModel(this, i, new Rectangle(x, y, w, h));
+
+				list.add(frame);
+
+				x += w + spacing;
+				if (x >= b.width) {
+					x = margin;
+					y += h + spacing;
+				}
+				i++;
+			}
+		} finally {
+			_frames = list;
+		}
+	}
 }
