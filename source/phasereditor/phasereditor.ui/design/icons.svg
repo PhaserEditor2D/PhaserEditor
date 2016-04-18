@@ -369,8 +369,8 @@
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1366"
-     inkscape:window-height="705"
+     inkscape:window-width="1440"
+     inkscape:window-height="837"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1" />
@@ -8272,7 +8272,10 @@
       </g>
     </g>
     <g
-       id="g5688">
+       id="g5688"
+       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Public\source\phasereditor\phasereditor.ui\icons\box_add.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
       <image
          width="16"
          height="16"
@@ -8291,5 +8294,22 @@
          x="-1827.5781"
          y="1309.5272" />
     </g>
+    <rect
+       style="opacity:0.81999978;fill:none;fill-opacity:1;stroke:none;stroke-width:0.96100003;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect5692"
+       width="113.84419"
+       height="32"
+       x="-1906.3599"
+       y="1458.7684" />
+    <rect
+       style="opacity:0.81999972;fill:#fcaf3e;fill-opacity:1;stroke:none;stroke-width:0.96100003;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect5694"
+       width="32"
+       height="32"
+       x="-1839.1847"
+       y="1419.8776"
+       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Public\source\phasereditor\phasereditor.ui\icons\empty32.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
   </g>
 </svg>

@@ -41,6 +41,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import phasereditor.assetpack.core.AssetPackCore;
@@ -121,9 +122,15 @@ public class AssetExplorer extends ViewPart {
 
 					@Override
 					public void run() {
-						if (!_viewer.getControl().isDisposed()) {
-							_viewer.refresh();
+						if (_viewer.getControl().isDisposed()) {
+							return;
 						}
+
+						if (PlatformUI.getWorkbench().isClosing()) {
+							return;
+						}
+
+						_viewer.refresh();
 					}
 				});
 			}

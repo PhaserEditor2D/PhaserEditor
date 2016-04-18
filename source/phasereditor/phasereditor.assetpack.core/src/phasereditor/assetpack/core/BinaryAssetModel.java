@@ -63,6 +63,10 @@ public class BinaryAssetModel extends AssetModel {
 		firePropertyChange("url");
 	}
 
+	public IFile getUrlFile() {
+		return getFileFromUrl(_url);
+	}
+	
 	@Override
 	public IFile[] getUsedFiles() {
 		return new IFile[] { getFileFromUrl(_url) };

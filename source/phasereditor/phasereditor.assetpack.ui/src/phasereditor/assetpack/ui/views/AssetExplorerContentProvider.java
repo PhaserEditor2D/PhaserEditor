@@ -175,6 +175,10 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 	Object _lastToken = null;
 
 	void refreshViewer() {
+		if (PlatformUI.getWorkbench().isClosing()) {
+			return;
+		}
+
 		_viewer.refresh();
 		IProject project = getActiveProject();
 		if (project != _lastToken) {

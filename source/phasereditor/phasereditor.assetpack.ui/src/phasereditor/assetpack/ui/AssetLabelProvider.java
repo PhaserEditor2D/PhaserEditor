@@ -46,15 +46,18 @@ import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.ScriptAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.ui.AssetPackUI.FrameData;
 import phasereditor.audio.core.AudioCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.ImageFileCache;
+import phasereditor.ui.PhaserEditorUI;
 
 public class AssetLabelProvider extends LabelProvider implements IEditorSharedImages {
 	private static final int ICON_SIZE = 32;
+	private static final Rectangle ICON_RECT = new Rectangle(0, 0, ICON_SIZE, ICON_SIZE);
 	private WorkbenchLabelProvider _workbenchLabelProvider;
 	private ImageFileCache _cache = new ImageFileCache();
 
@@ -109,8 +112,8 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 
 			if (file != null) {
 				try {
-					Image img = getFileImage(file);
-					return img;
+					Image orig = getFileImage(file);
+					return orig;
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -169,7 +172,6 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 					Image texture = getFileImage(file);
 					FrameData fd = new FrameData();
 					fd.src = new Rectangle(frame.getFrameX(), frame.getFrameY(), frame.getFrameW(), frame.getFrameH());
-					fd.dst = new Rectangle(0, 0, frame.getFrameW(), frame.getFrameH());
 					return buildFrameImage(texture, fd);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -192,6 +194,13 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+			}
+		}
+
+		if (element instanceof ScriptAssetModel) {
+			IFile file = ((ScriptAssetModel) element).getUrlFile();
+			if (file != null) {
+				return WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider().getImage(file);
 			}
 		}
 
@@ -218,15 +227,38 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 		return getFolderImage();
 	}
 
-	private Image buildFrameImage(Image texture, FrameData fd) {
-		Image frameImg = new Image(Display.getCurrent(), fd.dst);
+	@SuppressWarnings("unused")
+	private Image scaleDownImage(Image orig, boolean keepRatio) {
+		Rectangle src = orig.getBounds();
+		Rectangle dst = ICON_RECT;
+		Image img2 = new Image(Display.getCurrent(), dst.width, dst.height);
+		GC gc = new GC(img2);
+		scaleDraw(gc, orig, src, keepRatio);
+		gc.dispose();
+		_cache.addExtraImageToDispose(img2);
+		return img2;
+	}
 
+	private static void scaleDraw(GC gc, Image orig, Rectangle src, boolean keepRatio) {
+		Rectangle dst = ICON_RECT;
+		Rectangle zoom;
+		if (keepRatio && dst.width < src.width && dst.height < src.height) {
+			zoom = PhaserEditorUI.computeImageZoom(src, dst);
+		} else {
+			zoom = dst;
+		}
+		gc.drawImage(orig, src.x, src.y, src.width, src.height, zoom.x, zoom.y, zoom.width, zoom.height);
+	}
+
+	private Image buildFrameImage(Image texture, FrameData fd) {
+		Image frameImg = new Image(Display.getCurrent(), ICON_SIZE, ICON_SIZE);
 		GC gc = new GC(frameImg);
-		gc.drawImage(texture, fd.src.x, fd.src.y, fd.src.width, fd.src.height, fd.dst.x, fd.dst.y, fd.dst.width,
-				fd.dst.height);
+		gc.fillRectangle(ICON_RECT);
+		gc.drawImage(texture, fd.src.x, fd.src.y, fd.src.width, fd.src.height, 0, 0, ICON_SIZE, ICON_SIZE);
 		gc.dispose();
 		_cache.addExtraImageToDispose(frameImg);
 		return frameImg;
+
 	}
 
 	private Image getFileImage(IFile file) {
