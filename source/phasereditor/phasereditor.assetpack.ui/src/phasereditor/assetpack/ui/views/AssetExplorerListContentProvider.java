@@ -21,24 +21,45 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.views;
 
-import phasereditor.assetpack.ui.AssetLabelProvider;
-import phasereditor.assetpack.ui.views.AssetExplorer.Container;
+import java.util.ArrayList;
+import java.util.List;
 
-class AssetExplorerLabelProvider extends AssetLabelProvider {
-	public AssetExplorerLabelProvider() {
-		super();
-	}
-	
-	protected AssetExplorerLabelProvider(int iconSize, boolean keepRatio) {
-		super(iconSize, keepRatio);
-	}
+import phasereditor.assetpack.core.AtlasAssetModel;
+import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel;
+
+/**
+ * @author arian
+ *
+ */
+public class AssetExplorerListContentProvider extends AssetExplorerContentProvider {
 
 	@Override
-	public String getText(Object element) {
-		if (element instanceof Container) {
-			return ((Container) element).name;
+	public Object[] getChildren(Object parent) {
+
+		if (parent == AssetExplorer.ROOT) {
+			List<Object> list = new ArrayList<>();
+			fillList(parent, list);
+			return list.toArray();
 		}
 
-		return super.getText(element);
+		return super.getChildren(parent);
+	}
+
+	private void fillList(Object elem, List<Object> list) {
+		boolean add = false;
+		add = add || elem instanceof ImageAssetModel;
+		add = add || elem instanceof SpritesheetAssetModel.FrameModel;
+		add = add || elem instanceof AtlasAssetModel.FrameItem;
+
+		if (add) {
+			list.add(elem);
+		}
+
+		Object[] children = super.getChildren(elem);
+
+		for (Object child : children) {
+			fillList(child, list);
+		}
 	}
 }

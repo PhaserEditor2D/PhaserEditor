@@ -465,6 +465,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	}
 
 	private void afterCreatedWidgets() {
+		((AssetLabelProvider) _allAssetsViewer.getLabelProvider()).setControl(_allAssetsViewer.getControl());
+		
 		_labelAssetsTitle.setFont(SWTResourceManager.getBoldFont(_labelAssetsTitle.getFont()));
 
 		AssetPackModel model = getModel();

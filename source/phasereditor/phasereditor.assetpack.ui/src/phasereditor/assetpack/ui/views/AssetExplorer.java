@@ -47,6 +47,7 @@ import org.eclipse.ui.part.ViewPart;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackCore.IPacksChangeListener;
 import phasereditor.assetpack.core.AssetPackCore.PackDelta;
+import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.PhaserEditorUI;
 
@@ -99,6 +100,8 @@ public class AssetExplorer extends ViewPart {
 		tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		_viewer.setLabelProvider(new AssetExplorerLabelProvider());
 		_viewer.setContentProvider(new AssetExplorerContentProvider());
+		// _viewer.setLabelProvider(new AssetExplorerListLabelProvider());
+		// _viewer.setContentProvider(new AssetExplorerListContentProvider());
 
 		afterCreateWidgets();
 
@@ -171,6 +174,8 @@ public class AssetExplorer extends ViewPart {
 		getViewSite().setSelectionProvider(_viewer);
 
 		AssetPackUI.installAssetTooltips(_viewer);
+
+		((AssetLabelProvider) _viewer.getLabelProvider()).setControl(_viewer.getControl());
 	}
 
 	@Override

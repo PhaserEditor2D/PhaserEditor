@@ -21,24 +21,33 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.views;
 
-import phasereditor.assetpack.ui.AssetLabelProvider;
-import phasereditor.assetpack.ui.views.AssetExplorer.Container;
+import phasereditor.assetpack.core.AtlasAssetModel;
+import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
+import phasereditor.assetpack.core.SpritesheetAssetModel;
 
-class AssetExplorerLabelProvider extends AssetLabelProvider {
-	public AssetExplorerLabelProvider() {
-		super();
-	}
-	
-	protected AssetExplorerLabelProvider(int iconSize, boolean keepRatio) {
-		super(iconSize, keepRatio);
+/**
+ * @author arian
+ *
+ */
+public class AssetExplorerListLabelProvider extends AssetExplorerLabelProvider {
+
+	public AssetExplorerListLabelProvider() {
+		super(48, true);
 	}
 
 	@Override
 	public String getText(Object element) {
-		if (element instanceof Container) {
-			return ((Container) element).name;
+		if (element instanceof SpritesheetAssetModel.FrameModel) {
+			SpritesheetAssetModel.FrameModel frame = (SpritesheetAssetModel.FrameModel) element;
+			SpritesheetAssetModel asset = frame.getAsset();
+			return frame.getIndex() + " (" + asset.getKey() + ")";
 		}
 
+		if (element instanceof AtlasAssetModel.FrameItem) {
+			AtlasAssetModel.FrameItem frame = (FrameItem) element;
+			return frame.getName() + " (" + frame.getAsset().getKey() + ")";
+		}
 		return super.getText(element);
 	}
+
 }

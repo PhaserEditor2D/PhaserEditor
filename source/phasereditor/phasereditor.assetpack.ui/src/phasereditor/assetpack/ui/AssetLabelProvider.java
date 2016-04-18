@@ -28,9 +28,11 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
@@ -56,13 +58,35 @@ import phasereditor.ui.ImageFileCache;
 import phasereditor.ui.PhaserEditorUI;
 
 public class AssetLabelProvider extends LabelProvider implements IEditorSharedImages {
-	private static final int ICON_SIZE = 32;
-	private static final Rectangle ICON_RECT = new Rectangle(0, 0, ICON_SIZE, ICON_SIZE);
+	private final int _iconSize;
+	private final Rectangle _iconRect;
 	private WorkbenchLabelProvider _workbenchLabelProvider;
 	private ImageFileCache _cache = new ImageFileCache();
+	private Control _control;
+	private final boolean _keepRatio;
+
+	public AssetLabelProvider(int iconSize, boolean keepRatio) {
+		_iconSize = iconSize;
+		_keepRatio = keepRatio;
+		_iconRect = new Rectangle(0, 0, _iconSize, _iconSize);
+		_workbenchLabelProvider = new WorkbenchLabelProvider();
+	}
 
 	public AssetLabelProvider() {
-		_workbenchLabelProvider = new WorkbenchLabelProvider();
+		// TODO: we should query for the best screen/resolution icon.
+		this(16, false);
+	}
+
+	public void setControl(Control control) {
+		_control = control;
+	}
+
+	public Control getControl() {
+		return _control;
+	}
+
+	public ImageFileCache getCache() {
+		return _cache;
 	}
 
 	@Override
@@ -113,7 +137,9 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 			if (file != null) {
 				try {
 					Image orig = getFileImage(file);
-					return orig;
+					Image copy = scaleDownImage(orig, _keepRatio);
+					_cache.addExtraImageToDispose(copy);
+					return copy;
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -132,11 +158,11 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 			}
 			if (wavesFile != null) {
 				Image orig = getFileImage(wavesFile);
-				Image copy = new Image(Display.getCurrent(), ICON_SIZE, ICON_SIZE);
+				Image copy = new Image(Display.getCurrent(), _iconSize, _iconSize);
 				GC gc = new GC(copy);
 				gc.setBackground(gc.getDevice().getSystemColor(SWT.COLOR_WHITE));
 				gc.setXORMode(true);
-				gc.drawImage(orig, 0, 0, orig.getBounds().width, orig.getBounds().height, 0, 0, ICON_SIZE, ICON_SIZE);
+				gc.drawImage(orig, 0, 0, orig.getBounds().width, orig.getBounds().height, 0, 0, _iconSize, _iconSize);
 				gc.dispose();
 				_cache.addExtraImageToDispose(copy);
 				return copy;
@@ -227,10 +253,9 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 		return getFolderImage();
 	}
 
-	@SuppressWarnings("unused")
 	private Image scaleDownImage(Image orig, boolean keepRatio) {
 		Rectangle src = orig.getBounds();
-		Rectangle dst = ICON_RECT;
+		Rectangle dst = _iconRect;
 		Image img2 = new Image(Display.getCurrent(), dst.width, dst.height);
 		GC gc = new GC(img2);
 		scaleDraw(gc, orig, src, keepRatio);
@@ -239,9 +264,14 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 		return img2;
 	}
 
-	private static void scaleDraw(GC gc, Image orig, Rectangle src, boolean keepRatio) {
-		Rectangle dst = ICON_RECT;
+	private void scaleDraw(GC gc, Image orig, Rectangle src, boolean keepRatio) {
+		Rectangle dst = _iconRect;
 		Rectangle zoom;
+		if (_control != null) {
+			Color c = _control.getBackground();
+			gc.setBackground(c);
+			gc.fillRectangle(_iconRect);
+		}
 		if (keepRatio && dst.width < src.width && dst.height < src.height) {
 			zoom = PhaserEditorUI.computeImageZoom(src, dst);
 		} else {
@@ -251,10 +281,19 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 	}
 
 	private Image buildFrameImage(Image texture, FrameData fd) {
-		Image frameImg = new Image(Display.getCurrent(), ICON_SIZE, ICON_SIZE);
+		Image frameImg = new Image(Display.getCurrent(), _iconSize, _iconSize);
 		GC gc = new GC(frameImg);
-		gc.fillRectangle(ICON_RECT);
-		gc.drawImage(texture, fd.src.x, fd.src.y, fd.src.width, fd.src.height, 0, 0, ICON_SIZE, ICON_SIZE);
+		if (_control != null) {
+			Color c = _control.getBackground();
+			gc.setBackground(c);
+			gc.fillRectangle(_iconRect);
+		}
+		if (_keepRatio) {
+			Rectangle z = PhaserEditorUI.computeImageZoom(fd.src, _iconRect);
+			gc.drawImage(texture, fd.src.x, fd.src.y, fd.src.width, fd.src.height, z.x, z.y, z.width, z.height);
+		} else {
+			gc.drawImage(texture, fd.src.x, fd.src.y, fd.src.width, fd.src.height, 0, 0, _iconSize, _iconSize);
+		}
 		gc.dispose();
 		_cache.addExtraImageToDispose(frameImg);
 		return frameImg;

@@ -132,4 +132,12 @@ public class ImageFileCache {
 		//
 		return image;
 	}
+
+	/**
+	 * Reset the cache but does not dispose the images.
+	 */
+	public void resetCache() {
+		_imgCache = new HashMap<>();
+		_timeCache = new HashMap<>();
+	}
 }
