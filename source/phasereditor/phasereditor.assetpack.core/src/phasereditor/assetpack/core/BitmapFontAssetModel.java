@@ -72,6 +72,10 @@ public class BitmapFontAssetModel extends AssetModel {
 		_textureURL = textureURL;
 		firePropertyChange("textureURL");
 	}
+	
+	public IFile getTextureFile() {
+		return getFileFromUrl(getTextureURL());
+	}
 
 	public String getAtlasURL() {
 		return _atlasURL;

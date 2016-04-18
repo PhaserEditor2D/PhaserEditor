@@ -157,7 +157,7 @@ public class SWTResourceManager {
 		}
 		return image;
 	}
-
+	
 	/**
 	 * Returns an {@link Image} stored in the file at the specified path
 	 * relative to the specified class.

@@ -363,14 +363,14 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.25"
-     inkscape:cx="-1029.968"
-     inkscape:cy="-286.58347"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="-1743.9602"
+     inkscape:cy="-268.84802"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1536"
-     inkscape:window-height="803"
+     inkscape:window-width="1366"
+     inkscape:window-height="705"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1" />
@@ -8270,6 +8270,26 @@
            id="rect5706"
            style="opacity:1;fill:#e7e7e7;fill-opacity:1;stroke:#989898;stroke-width:0.43242326;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       </g>
+    </g>
+    <g
+       id="g5688">
+      <image
+         width="16"
+         height="16"
+         preserveAspectRatio="none"
+         xlink:href="file:///C:/Users/arian/Documents/Source/PhaserEditor/Public/source/phasereditor/phasereditor.ui/icons/box.png"
+         id="image5683"
+         x="-1836.5781"
+         y="1309.5272"
+         sodipodi:absref="C:\Users\arian\Documents\Source\PhaserEditor\Public\source\phasereditor\phasereditor.ui\icons\box.png" />
+      <image
+         width="7"
+         height="7"
+         preserveAspectRatio="none"
+         xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAABHNCSVQICAgIfAhkiAAAAIlJREFU CJlVjiELwlAcxH//fQWjwTL2dbTJ7BazsOSKSaOCInaDQbQs+GksL9uc8vY8wxDewnEcdxw/JPHX fZ8pzp3iG56KBwlAtUnlfQDA+0C1TQVgl/VAw9kVANQaBrfdCJPEadkXwHi64nwsQJCXzhKAycLZ p27Q68G7bshLZ+1TRHeY9zq0P5LuZXcZbRfFAAAAAElFTkSuQmCC "
+         id="image5686"
+         x="-1827.5781"
+         y="1309.5272" />
     </g>
   </g>
 </svg>

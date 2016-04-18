@@ -25,6 +25,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -60,7 +61,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
@@ -525,12 +525,33 @@ public class PhaserEditorUI {
 	}
 
 	public static Image getFileImage(IFile file) {
-		ImageLoader loader = new ImageLoader();
 		try (InputStream contents = file.getContents();) {
-			ImageData[] data = loader.load(contents);
-			return new Image(Display.getDefault(), data[0]);
+			Image img = getStreamImage(contents);
+			return img;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
+		}
+	}
+	
+	public static Image getFileImage(Path file) {
+		try (InputStream contents = Files.newInputStream(file)) {
+			Image img = getStreamImage(contents);
+			return img;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public static Image getStreamImage(InputStream stream) throws IOException {
+		try {
+			Display display = Display.getCurrent();
+			ImageData data = new ImageData(stream);
+			if (data.transparentPixel > 0) {
+				return new Image(display, data, data.getTransparencyMask());
+			}
+			return new Image(display, data);
+		} finally {
+			stream.close();
 		}
 	}
 }

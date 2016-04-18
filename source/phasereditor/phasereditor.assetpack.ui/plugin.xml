@@ -112,7 +112,7 @@
             category="phasereditor.ui.wizardCategory"
             class="phasereditor.assetpack.ui.wizards.NewAssetPackWizard"
             finalPerspective="phasereditor.ide.ui.perspective"
-            icon="platform:/plugin/phasereditor.ui/icons/package_add.png"
+            icon="platform:/plugin/phasereditor.ui/icons/box_add.png"
             id="phasereditor.assetpack.ui.wizards.new"
             name="Asset Pack File">
       </wizard>

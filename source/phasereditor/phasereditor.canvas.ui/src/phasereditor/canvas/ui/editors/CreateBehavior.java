@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
+import static java.lang.System.out;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -80,6 +82,10 @@ public class CreateBehavior {
 	}
 
 	public void dropShape(BaseObjectControl<?> control, DragEvent event) {
+		Node intersectedNode = event.getPickResult().getIntersectedNode();
+		out.println("drop into " + intersectedNode);
+		Node picked = _canvas.getSelectionBehavior().findBestToPick(intersectedNode);
+		out.println("accept " + picked);
 		_canvas.dropToWorld(control, event.getSceneX(), event.getSceneY());
 	}
 
@@ -129,7 +135,7 @@ public class CreateBehavior {
 		groupModel.setEditorName(_canvas.getWorldModel().createName("group"));
 
 		for (Node node : children) {
-			BaseObjectModel model =  ((IObjectNode) node).getControl().getModel();
+			BaseObjectModel model = ((IObjectNode) node).getControl().getModel();
 			groupModel.addChild(model);
 		}
 

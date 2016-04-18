@@ -70,7 +70,6 @@ import phasereditor.assetpack.core.AudioSpriteAssetModel.AssetAudioSprite;
 import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel.Tilemap;
-import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetsContentProvider;
 import phasereditor.ui.PhaserEditorUI;
@@ -80,21 +79,6 @@ public class AssetExplorer extends ViewPart {
 	TreeViewer _viewer;
 	private IPacksChangeListener _changeListener;
 	static String ROOT = "root";
-
-	static class AssetExplorerLabelProvider extends AssetLabelProvider {
-		public AssetExplorerLabelProvider() {
-		}
-
-		@Override
-		public String getText(Object element) {
-			if (element instanceof Container) {
-				return ((Container) element).name;
-			}
-
-			return super.getText(element);
-		}
-
-	}
 
 	static class Container {
 		public Object[] children;

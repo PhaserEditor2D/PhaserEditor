@@ -78,8 +78,6 @@ public class AudioSpriteAssetPreviewComp extends Composite {
 	public AudioSpriteAssetPreviewComp(Composite parent, int style) {
 		super(parent, style);
 
-		setData("org.eclipse.e4.ui.css.CssClassName", "DarkComposite");
-
 		setLayout(new GridLayout(1, false));
 
 		_spritesViewer = new ComboViewer(this, SWT.READ_ONLY);

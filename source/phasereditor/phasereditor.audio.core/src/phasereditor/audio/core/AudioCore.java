@@ -379,6 +379,10 @@ public class AudioCore {
 	}
 
 	public synchronized static Path getSoundWavesFile(IFile file) {
+		return getSoundWavesFile(file, true);
+	}
+
+	public synchronized static Path getSoundWavesFile(IFile file, boolean forceMake) {
 		try {
 			String filename = file.getPersistentProperty(WAVEFORM_FILENAME_KEY);
 			String home = System.getProperty("user.home");
@@ -392,8 +396,10 @@ public class AudioCore {
 				path = dir.resolve(filename);
 			}
 
-			if (!Files.exists(path)) {
-				makeSoundWaves(file, path);
+			if (forceMake) {
+				if (!Files.exists(path)) {
+					makeSoundWaves(file, path);
+				}
 			}
 
 			return path;

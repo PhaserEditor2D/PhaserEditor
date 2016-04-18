@@ -149,6 +149,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		_model.save(monitor);
 		firePropertyChange(PROP_DIRTY);
 		saveEditingPoint();
+		refresh();
 	}
 
 	@Override

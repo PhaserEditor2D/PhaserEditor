@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015 Arian Fornaris
+// Copyright (c) 2015, 2016 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -19,12 +19,21 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.core;
+package phasereditor.assetpack.ui.views;
 
-public enum AssetType {
-	image, spritesheet, atlas, audio, audiosprite, tilemap, bitmapFont, physics, text, json, script, binary;
+import phasereditor.assetpack.ui.AssetLabelProvider;
+import phasereditor.assetpack.ui.views.AssetExplorer.Container;
 
-	public String capitalName() {
-		return name().substring(0, 1).toUpperCase() + name().substring(1);
+class AssetExplorerLabelProvider extends AssetLabelProvider {
+	public AssetExplorerLabelProvider() {
+	}
+
+	@Override
+	public String getText(Object element) {
+		if (element instanceof Container) {
+			return ((Container) element).name;
+		}
+
+		return super.getText(element);
 	}
 }
