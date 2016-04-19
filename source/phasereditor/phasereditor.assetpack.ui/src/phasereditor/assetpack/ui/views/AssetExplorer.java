@@ -24,6 +24,7 @@ package phasereditor.assetpack.ui.views;
 import org.eclipse.help.HelpSystem;
 import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -39,6 +40,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.PlatformUI;
@@ -173,8 +175,19 @@ public class AssetExplorer extends ViewPart {
 
 		getViewSite().setSelectionProvider(_viewer);
 
+		{
+			// menu
+			MenuManager manager = new MenuManager();
+			Tree tree = _viewer.getTree();
+			Menu menu = manager.createContextMenu(tree);
+			tree.setMenu(menu);
+			getViewSite().registerContextMenu(manager, _viewer);
+		}
+
+		// tooltips
 		AssetPackUI.installAssetTooltips(_viewer);
 
+		// labels
 		((AssetLabelProvider) _viewer.getLabelProvider()).setControl(_viewer.getControl());
 	}
 

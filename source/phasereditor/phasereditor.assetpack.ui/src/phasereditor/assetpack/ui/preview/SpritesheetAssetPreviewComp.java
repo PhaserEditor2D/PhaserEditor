@@ -107,7 +107,7 @@ public class SpritesheetAssetPreviewComp extends Composite {
 		composite.setLayout(gl_composite);
 
 		_gridButton = new Button(composite, SWT.NONE);
-		_gridButton.setText("Grid");
+		_gridButton.setText("Play");
 		GridData gd_allButton = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_allButton.widthHint = 80;
 		_gridButton.setLayoutData(gd_allButton);
@@ -181,7 +181,7 @@ public class SpritesheetAssetPreviewComp extends Composite {
 	protected void gridButtonPressed() {
 		boolean single = _canvas.isSingleFrame();
 		single = !single;
-		_gridButton.setText(single ? "Grid" : "Play");
+		_gridButton.setText(single ? "Stop" : "Play");
 		_animation.pause(!single);
 		_canvas.setSingleFrame(single);
 		_canvas.redraw();
@@ -202,14 +202,11 @@ public class SpritesheetAssetPreviewComp extends Composite {
 		IFile file = model.getUrlFile();
 		_canvas.setImageFile(file);
 		_canvas.setFrame(0);
-		_canvas.setSingleFrame(true);
-		_gridButton.setText("Grid");
-		setFps(30);
-		if (_animation == null) {
-			animate();
-		} else {
-			_animation.pause(false);
-		}
+		_canvas.setSingleFrame(false);
+		_gridButton.setText("Play");
+		animate();
+		_animation.pause(true);
+		setFps(5);
 	}
 
 	public SpritesheetAssetModel getModel() {

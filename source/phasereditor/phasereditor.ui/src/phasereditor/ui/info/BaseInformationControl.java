@@ -47,7 +47,7 @@ public abstract class BaseInformationControl extends AbstractInformationControl
 
 	@Override
 	public Point computeSizeHint() {
-		return new Point(400, 400);
+		return new Point(255, 200);
 	}
 
 	@Override

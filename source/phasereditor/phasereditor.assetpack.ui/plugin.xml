@@ -63,7 +63,6 @@
          point="org.eclipse.ui.commands">
       <command
             categoryId="phasereditor.ui.phaserCategory"
-            defaultHandler="phasereditor.assetpack.ui.handlers.EditInPackEditorHandler"
             id="phasereditor.assetpack.shownInEditor"
             name="Edit In Asset Pack Editor">
       </command>
@@ -90,6 +89,22 @@
                tooltip="Edit selected object.">
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:phasereditor.assetpack.views.assetExplorer?after=additions">
+         <command
+               commandId="phasereditor.assetpack.shownInEditor"
+               icon="platform:/plugin/org.eclipse.ui/icons/full/etool16/editor_area.png"
+               style="push"
+               tooltip="Edit selected object.">
+         </command>
+         <command
+               commandId="phasereditor.ui.commands.showInPreview"
+               icon="platform:/plugin/phasereditor.ui/icons/eye.png"
+               style="push"
+               tooltip="Show the selection in the Preview window.">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -98,10 +113,50 @@
             commandId="phasereditor.ui.commands.showInPreview">
          <activeWhen>
             <with
-                  variable="activePart">
-               <instanceof
-                     value="phasereditor.assetpack.ui.views.AssetExplorer">
-               </instanceof>
+                  variable="selection">
+               <and>
+                  <count
+                        value="1">
+                  </count>
+                  <iterate
+                        ifEmpty="false">
+                     <adapt
+                           type="phasereditor.ui.views.IPreviewFactory">
+                     </adapt>
+                  </iterate>
+               </and>
+            </with>
+         </activeWhen>
+      </handler>
+      <handler
+            class="phasereditor.assetpack.ui.handlers.EditInPackEditorHandler"
+            commandId="phasereditor.assetpack.shownInEditor">
+         <activeWhen>
+            <with
+                  variable="selection">
+               <and>
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <or>
+                        <instanceof
+                              value="phasereditor.assetpack.core.AssetModel">
+                        </instanceof>
+                        <instanceof
+                              value="phasereditor.assetpack.core.AssetSectionModel">
+                        </instanceof>
+                        <instanceof
+                              value="phasereditor.assetpack.core.AssetPackModel">
+                        </instanceof>
+                        <instanceof
+                              value="phasereditor.assetpack.core.AssetGroupModel">
+                        </instanceof>
+                     </or>
+                  </iterate>
+                  <count
+                        value="1">
+                  </count>
+               </and>
             </with>
          </activeWhen>
       </handler>
