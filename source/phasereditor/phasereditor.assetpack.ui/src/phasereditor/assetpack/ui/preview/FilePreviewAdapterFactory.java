@@ -82,7 +82,7 @@ public class FilePreviewAdapterFactory implements IAdapterFactory {
 			}
 
 			@Override
-			public boolean canReusePreviewControl(Control c) {
+			public boolean canReusePreviewControl(Control c, Object elem) {
 				return c instanceof ImagePreviewComposite;
 			}
 
@@ -117,7 +117,7 @@ public class FilePreviewAdapterFactory implements IAdapterFactory {
 			}
 
 			@Override
-			public boolean canReusePreviewControl(Control c) {
+			public boolean canReusePreviewControl(Control c, Object elem) {
 				return c instanceof GdxMusicControl;
 			}
 		};

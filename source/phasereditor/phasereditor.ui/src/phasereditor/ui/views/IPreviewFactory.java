@@ -27,7 +27,7 @@ import org.eclipse.ui.IPersistableElement;
 
 public interface IPreviewFactory {
 
-	public boolean canReusePreviewControl(Control c);
+	public boolean canReusePreviewControl(Control c, Object elem);
 
 	public Control createControl(Composite previewContainer);
 

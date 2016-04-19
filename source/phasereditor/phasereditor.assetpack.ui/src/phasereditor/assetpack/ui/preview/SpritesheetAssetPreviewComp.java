@@ -45,6 +45,7 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -53,6 +54,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import phasereditor.assetpack.core.SpritesheetAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
 import phasereditor.assetpack.ui.widgets.SpritesheetPreviewCanvas;
 import phasereditor.ui.Animation;
 
@@ -99,25 +101,25 @@ public class SpritesheetAssetPreviewComp extends Composite {
 		_canvas = new SpritesheetPreviewCanvas(this, SWT.NONE);
 		_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		Composite composite = new Composite(this, SWT.NONE);
-		composite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		GridLayout gl_composite = new GridLayout(3, false);
-		gl_composite.marginWidth = 0;
-		gl_composite.marginHeight = 0;
-		composite.setLayout(gl_composite);
+		_bottomPanel = new Composite(this, SWT.NONE);
+		_bottomPanel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		GridLayout gl_bottomPanel = new GridLayout(3, false);
+		gl_bottomPanel.marginWidth = 0;
+		gl_bottomPanel.marginHeight = 0;
+		_bottomPanel.setLayout(gl_bottomPanel);
 
-		_gridButton = new Button(composite, SWT.NONE);
+		_gridButton = new Button(_bottomPanel, SWT.NONE);
 		_gridButton.setText("Play");
 		GridData gd_allButton = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_allButton.widthHint = 80;
 		_gridButton.setLayoutData(gd_allButton);
 		_gridButton.setToolTipText("If pressedm it show the whole image and the frames grid.");
 
-		_label = new Label(composite, SWT.NONE);
+		_label = new Label(_bottomPanel, SWT.NONE);
 		_label.setText("fps");
 		_label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
 
-		_comboViewer = new ComboViewer(composite, SWT.READ_ONLY);
+		_comboViewer = new ComboViewer(_bottomPanel, SWT.READ_ONLY);
 		Combo combo = _comboViewer.getCombo();
 		GridData gd_combo = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_combo.widthHint = 50;
@@ -155,6 +157,8 @@ public class SpritesheetAssetPreviewComp extends Composite {
 	protected Animation _animation;
 
 	private SpritesheetAssetModel _model;
+
+	private FrameModel _frameToShow;
 
 	private void animate() {
 		_animation = new Animation(30) {
@@ -209,6 +213,23 @@ public class SpritesheetAssetPreviewComp extends Composite {
 		setFps(5);
 	}
 
+	public void justShowThisFrame(FrameModel frame) {
+		_frameToShow = frame;
+		_canvas.setFrame(frame.getIndex());
+		_canvas.setSingleFrame(true);
+		_bottomPanel.dispose();
+		setLayout(new FillLayout());
+		layout();
+	}
+	
+	public FrameModel getFrameToShow() {
+		return _frameToShow;
+	}
+
+	public boolean isJustOneFrameMode() {
+		return _bottomPanel.isDisposed();
+	}
+
 	public SpritesheetAssetModel getModel() {
 		return _model;
 	}
@@ -236,6 +257,7 @@ public class SpritesheetAssetPreviewComp extends Composite {
 
 	private transient final PropertyChangeSupport support = new PropertyChangeSupport(this);
 	private ComboViewer _comboViewer;
+	private Composite _bottomPanel;
 
 	public void addPropertyChangeListener(PropertyChangeListener l) {
 		support.addPropertyChangeListener(l);

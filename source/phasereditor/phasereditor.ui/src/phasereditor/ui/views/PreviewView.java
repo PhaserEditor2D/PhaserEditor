@@ -227,7 +227,7 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 			if (factory != null) {
 				// try to reuse some of the already created controls
 				for (Control c : _previewContainer.getChildren()) {
-					if (factory.canReusePreviewControl(c)) {
+					if (factory.canReusePreviewControl(c, elem)) {
 						preview = c;
 						break;
 					}

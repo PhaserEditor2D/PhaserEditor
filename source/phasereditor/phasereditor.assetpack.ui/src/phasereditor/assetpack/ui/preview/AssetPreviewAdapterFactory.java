@@ -177,7 +177,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			}
 
 			@Override
-			public boolean canReusePreviewControl(Control c) {
+			public boolean canReusePreviewControl(Control c, Object elem) {
 				return c instanceof PhysicsAssetPreviewComp;
 			}
 
@@ -198,7 +198,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			}
 
 			@Override
-			public boolean canReusePreviewControl(Control c) {
+			public boolean canReusePreviewControl(Control c, Object elem) {
 				return c instanceof BitmapFontAssetPreviewComp;
 			}
 		};
@@ -223,7 +223,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			}
 
 			@Override
-			public boolean canReusePreviewControl(Control c) {
+			public boolean canReusePreviewControl(Control c, Object elem) {
 				return c instanceof TilemapAssetPreviewComp;
 			}
 		};
@@ -250,7 +250,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			}
 
 			@Override
-			public boolean canReusePreviewControl(Control c) {
+			public boolean canReusePreviewControl(Control c, Object elem) {
 				return c instanceof AtlasAssetPreviewComp;
 			}
 		};
@@ -280,7 +280,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			}
 
 			@Override
-			public boolean canReusePreviewControl(Control c) {
+			public boolean canReusePreviewControl(Control c, Object elem) {
 				return c instanceof GdxMusicControl;
 			}
 		};
@@ -313,7 +313,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			}
 
 			@Override
-			public boolean canReusePreviewControl(Control c) {
+			public boolean canReusePreviewControl(Control c, Object elem) {
 				return c instanceof AudioSpriteAssetPreviewComp;
 			}
 		};
@@ -330,13 +330,21 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			}
 
 			@Override
+			public void selectInControl(Control preview, Object element) {
+				SpritesheetAssetPreviewComp comp = (SpritesheetAssetPreviewComp) preview;
+				SpritesheetAssetModel.FrameModel frame = (SpritesheetAssetModel.FrameModel) element;
+				comp.justShowThisFrame(frame);
+			}
+
+			@Override
 			public Control createControl(Composite previewContainer) {
 				return new SpritesheetAssetPreviewComp(previewContainer, SWT.NONE);
 			}
 
 			@Override
-			public boolean canReusePreviewControl(Control c) {
-				return c instanceof SpritesheetAssetPreviewComp;
+			public boolean canReusePreviewControl(Control c, Object elem) {
+				return c instanceof SpritesheetAssetPreviewComp
+						&& !((SpritesheetAssetPreviewComp) c).isJustOneFrameMode();
 			}
 
 			@Override
@@ -349,7 +357,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 	private static IPreviewFactory createImagePreviewAdapter() {
 		return new AssetModelPreviewFactory() {
 			@Override
-			public boolean canReusePreviewControl(Control c) {
+			public boolean canReusePreviewControl(Control c, Object elem) {
 				return c instanceof ImageAssetPreviewComp;
 			}
 
