@@ -542,6 +542,8 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 
 					Array<Region> regions = data.getRegions();
 
+					_frameRegionNameMap = new HashMap<>();
+					
 					for (TextureAtlasData.Page page : data.getPages()) {
 						File textureFile = page.textureFile.file();
 
@@ -550,8 +552,6 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 
 						ResultPage resultPage = new ResultPage();
 						resultPage.setImage(img);
-
-						_frameRegionNameMap = new HashMap<>();
 
 						for (Region region : regions) {
 							if (region.page == page) {
