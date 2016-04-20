@@ -557,7 +557,7 @@ public class AssetPackUI {
 
 				@Override
 				public boolean isSupported(Object info) {
-					return info instanceof SpritesheetAssetModel;
+					return info instanceof SpritesheetAssetModel || info instanceof SpritesheetAssetModel.FrameModel;
 				}
 			});
 

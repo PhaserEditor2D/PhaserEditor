@@ -65,4 +65,8 @@ public class QuickSpritesheetAssetPreviewComp extends Composite {
 				+ asset.getMargin() + " s=" + asset.getSpacing());
 		setImageFile(asset.getUrlFile());
 	}
+	
+	public SpritesheetPreviewCanvas getCanvas() {
+		return _canvas;
+	}
 }

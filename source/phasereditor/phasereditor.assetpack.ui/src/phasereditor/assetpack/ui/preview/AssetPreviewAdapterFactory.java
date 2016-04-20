@@ -108,12 +108,17 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 		@Override
 		public String getTitle(Object element) {
 			AssetModel asset;
+			String title = "";
 			if (element instanceof IAssetElementModel) {
-				asset = ((IAssetElementModel) element).getAsset();
+				IAssetElementModel assetElem = (IAssetElementModel) element;
+				title = " (" + assetElem.getName() + ")";
+				asset = assetElem.getAsset();
+
 			} else {
 				asset = (AssetModel) element;
 			}
-			return asset.getKey();
+			title = asset.getKey() + title;
+			return title;
 		}
 
 		@Override

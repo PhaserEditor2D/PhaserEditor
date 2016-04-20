@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 import phasereditor.assetpack.core.SpritesheetAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
 import phasereditor.ui.info.BaseInformationControl;
 
 public class SpritesheetAssetInformationControl extends BaseInformationControl {
@@ -37,13 +38,24 @@ public class SpritesheetAssetInformationControl extends BaseInformationControl {
 
 	@Override
 	protected void updateContent(Control control, Object model) {
-		SpritesheetAssetModel asset = (SpritesheetAssetModel) model;
-		((QuickSpritesheetAssetPreviewComp) control).setModel(asset);
+		QuickSpritesheetAssetPreviewComp comp = (QuickSpritesheetAssetPreviewComp) control;
+		SpritesheetAssetModel asset;
+		if (model instanceof SpritesheetAssetModel) {
+			asset = (SpritesheetAssetModel) model;
+			comp.setModel(asset);
+		} else {
+			FrameModel frame = (SpritesheetAssetModel.FrameModel) model;
+			asset = frame.getAsset();
+			comp.setModel(asset);
+			comp.getCanvas().setSpritesheet(asset);
+			comp.getCanvas().setFrame(frame.getIndex());
+			comp.getCanvas().setSingleFrame(true);
+		}
 	}
 
 	@Override
 	protected Control createContent2(Composite parentComp) {
-		return new QuickSpritesheetAssetPreviewComp(parentComp, SWT.NONE);
+		QuickSpritesheetAssetPreviewComp comp = new QuickSpritesheetAssetPreviewComp(parentComp, SWT.NONE);
+		return comp;
 	}
-
 }
