@@ -87,6 +87,8 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
@@ -94,6 +96,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
@@ -122,18 +125,60 @@ import phasereditor.atlas.core.SettingsBean;
 import phasereditor.atlas.ui.AtlasCanvas;
 import phasereditor.atlas.ui.editors.AtlasGeneratorEditorModel.EditorPage;
 import phasereditor.ui.IEditorSharedImages;
+import phasereditor.ui.ImageFileCache;
 import phasereditor.ui.PhaserEditorUI;
 
 public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedImages, IResourceChangeListener {
-	static class FramesLabelProvider extends LabelProvider {
+	class FramesLabelProvider extends LabelProvider {
+
+		private ImageFileCache _cache = new ImageFileCache();
+		private int _iconSize = 32;
+		private Rectangle _iconRect = new Rectangle(0, 0, _iconSize, _iconSize);
+
+		@Override
+		public void dispose() {
+			super.dispose();
+			_cache.dispose();
+		}
+
 		@Override
 		public String getText(Object element) {
 			return ((AtlasFrame) element).getName();
 		}
+
+		@Override
+		public Image getImage(Object element) {
+			AtlasFrame frame = (AtlasFrame) element;
+			IFile file = findFile(frame);
+			if (file != null) {
+				Image img = _cache.getImage(file);
+				img = scaleDownImage(img);
+				return img;
+			}
+			return super.getImage(element);
+		}
+
+		private Image scaleDownImage(Image img) {
+			Image scaledImg = new Image(Display.getCurrent(), _iconSize, _iconSize);
+			GC gc = new GC(scaledImg);
+			Control _control = _framesViewer.getTable();
+			if (_control != null) {
+				Color c = _control.getBackground();
+				gc.setBackground(c);
+				gc.fillRectangle(_iconRect);
+			}
+			Rectangle b = img.getBounds();
+			Rectangle z = PhaserEditorUI.computeImageZoom(b, _iconRect);
+			gc.drawImage(img, 0, 0, b.width, b.height, z.x, z.y, z.width, z.height);
+			gc.dispose();
+			_cache.addExtraImageToDispose(scaledImg);
+			return scaledImg;
+
+		}
 	}
 
 	public static final String ID = "phasereditor.atlas.ui.editors.AtlasGenEditor"; //$NON-NLS-1$
-	private TableViewer _framesViewer;
+	TableViewer _framesViewer;
 	protected AtlasGeneratorEditorModel _model;
 	HashMap<AtlasFrame, String> _frameRegionNameMap;
 	private Composite _container;
@@ -297,20 +342,26 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 			List<IFile> toRemove = new ArrayList<>();
 			for (Object item : sel) {
 				AtlasFrame frame = (AtlasFrame) item;
-				String name = _frameRegionNameMap.get(frame);
-				String path = Paths.get(name).toString();
-				for (IFile file : _model.getImageFiles()) {
-					String path2 = eclipseFileToJavaPath(file).toString();
-					if (path2.toString().startsWith(path)) {
-						toRemove.add(file);
-					}
-				}
+				IFile file = findFile(frame);
+				toRemove.add(file);
 			}
 
 			_model.getImageFiles().removeAll(toRemove);
 
 			build(true);
 		}
+	}
+
+	IFile findFile(AtlasFrame frame) {
+		String name = _frameRegionNameMap.get(frame);
+		String path = Paths.get(name).toString();
+		for (IFile file : _model.getImageFiles()) {
+			String path2 = eclipseFileToJavaPath(file).toString();
+			if (path2.toString().startsWith(path)) {
+				return file;
+			}
+		}
+		return null;
 	}
 
 	protected void frameSelectedInViewerSelected() {
@@ -543,7 +594,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 					Array<Region> regions = data.getRegions();
 
 					_frameRegionNameMap = new HashMap<>();
-					
+
 					for (TextureAtlasData.Page page : data.getPages()) {
 						File textureFile = page.textureFile.file();
 
