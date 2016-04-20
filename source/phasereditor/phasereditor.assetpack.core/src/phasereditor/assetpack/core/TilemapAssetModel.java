@@ -103,6 +103,11 @@ public class TilemapAssetModel extends AssetModel {
 		public String toString() {
 			return "Layer of tilemap '" + getKey() + "'.";
 		}
+
+		@Override
+		public <T> T getAdapter(Class<T> adapter) {
+			return null;
+		}
 	}
 
 	public class Tileset implements IAssetElementModel {
@@ -144,6 +149,11 @@ public class TilemapAssetModel extends AssetModel {
 					}
 				}
 			}
+			return null;
+		}
+
+		@Override
+		public <T> T getAdapter(Class<T> adapter) {
 			return null;
 		}
 	}

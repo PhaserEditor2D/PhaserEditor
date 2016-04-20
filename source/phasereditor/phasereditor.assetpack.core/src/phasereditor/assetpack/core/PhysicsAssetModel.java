@@ -44,8 +44,7 @@ public class PhysicsAssetModel extends AssetModel {
 		_format = LIME_CORONA_JSON;
 	}
 
-	public PhysicsAssetModel(JSONObject jsonDoc, AssetSectionModel section)
-			throws JSONException {
+	public PhysicsAssetModel(JSONObject jsonDoc, AssetSectionModel section) throws JSONException {
 		super(jsonDoc, section);
 		_url = jsonDoc.optString("url", null);
 		{
@@ -57,8 +56,7 @@ public class PhysicsAssetModel extends AssetModel {
 		_format = jsonDoc.optString("format", LIME_CORONA_JSON);
 	}
 
-	public PhysicsAssetModel(String key, AssetSectionModel section)
-			throws JSONException {
+	public PhysicsAssetModel(String key, AssetSectionModel section) throws JSONException {
 		super(key, AssetType.physics, section);
 	}
 
@@ -92,6 +90,11 @@ public class PhysicsAssetModel extends AssetModel {
 
 		public void setName(String name) {
 			_name = name;
+		}
+
+		@Override
+		public <T> T getAdapter(Class<T> adapter) {
+			return null;
 		}
 	}
 

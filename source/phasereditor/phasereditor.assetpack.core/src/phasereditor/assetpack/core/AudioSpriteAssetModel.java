@@ -170,6 +170,11 @@ public class AudioSpriteAssetModel extends AudioAssetModel {
 				return false;
 			return true;
 		}
+		
+		@Override
+		public <T> T getAdapter(Class<T> adapter) {
+			return null;
+		}
 	}
 
 	public List<AssetAudioSprite> getSpriteMap() {

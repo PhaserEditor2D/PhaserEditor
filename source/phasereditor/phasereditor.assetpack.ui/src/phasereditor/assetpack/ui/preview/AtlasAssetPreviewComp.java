@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -44,6 +45,8 @@ import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.atlas.ui.AtlasCanvas;
 
 public class AtlasAssetPreviewComp extends Composite {
+	static final Object NO_SELECTION = "none";
+
 	private class AtlasLabelProvider extends AssetLabelProvider {
 
 		public AtlasLabelProvider() {
@@ -52,6 +55,10 @@ public class AtlasAssetPreviewComp extends Composite {
 		@SuppressWarnings("boxing")
 		@Override
 		public String getText(Object element) {
+			if (element == NO_SELECTION) {
+				return "(None)";
+			}
+
 			if (element instanceof FrameItem) {
 				FrameItem fd = (FrameItem) element;
 				return String.format("%s (%dx%d)", fd.getName(), fd.getSourceW(), fd.getSourceH());
@@ -107,7 +114,13 @@ public class AtlasAssetPreviewComp extends Composite {
 
 	protected void spriteSelected() {
 		IStructuredSelection sel = (IStructuredSelection) _spritesViewer.getSelection();
-		FrameItem frame = (FrameItem) sel.getFirstElement();
+		Object elem = sel.getFirstElement();
+		FrameItem frame;
+		if (elem == NO_SELECTION) {
+			frame = null;
+		} else {
+			frame = (FrameItem) elem;
+		}
 		_atlasCanvas.setFrame(frame);
 		_atlasCanvas.redraw();
 	}
@@ -131,12 +144,17 @@ public class AtlasAssetPreviewComp extends Composite {
 		IFile file = model.getFileFromUrl(url);
 		_atlasCanvas.setImageFile(file);
 		List<FrameItem> frames = model.getAtlasFrames();
-		_spritesViewer.setInput(frames);
 		_atlasCanvas.setFrames(frames);
 		_atlasCanvas.redraw();
 
+		{
+			List<Object> input = new ArrayList<>(frames);
+			input.add(0, NO_SELECTION);
+			_spritesViewer.setInput(input);
+		}
+
 		if (!frames.isEmpty()) {
-			selectElement(frames.get(0));
+			selectElement(NO_SELECTION);
 		}
 	}
 
@@ -147,7 +165,7 @@ public class AtlasAssetPreviewComp extends Composite {
 	public void selectElement(Object element) {
 		_spritesViewer.setSelection(new StructuredSelection(element));
 	}
-	
+
 	public AtlasCanvas getAtlasCanvas() {
 		return _atlasCanvas;
 	}

@@ -128,12 +128,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 
 		@Override
 		public IPersistableElement getPersistable(Object elem) {
-			Object toPersist;
-			if (elem instanceof IAssetElementModel) {
-				toPersist = ((IAssetElementModel) elem).getAsset();
-			} else {
-				toPersist = elem;
-			}
+			Object toPersist = elem;
 			return new IPersistableElement() {
 
 				@Override
@@ -141,15 +136,14 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 					AssetPackModel pack = null;
 					if (toPersist instanceof AssetModel) {
 						pack = ((AssetModel) toPersist).getPack();
-					} else
-
-					if (toPersist instanceof AssetSectionModel) {
+					} else if (toPersist instanceof AssetSectionModel) {
 						pack = ((AssetSectionModel) toPersist).getPack();
-					} else
-
-					if (toPersist instanceof AssetGroupModel) {
+					} else if (toPersist instanceof AssetGroupModel) {
 						pack = ((AssetGroupModel) toPersist).getSection().getPack();
+					} else if (toPersist instanceof IAssetElementModel) {
+						pack = ((IAssetElementModel) toPersist).getAsset().getPack();
 					}
+
 					if (pack != null) {
 						pack.saveState(memento, toPersist);
 					}
@@ -257,7 +251,8 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 
 			@Override
 			public boolean canReusePreviewControl(Control c, Object elem) {
-				return c instanceof AtlasAssetPreviewComp && elem instanceof AtlasAssetModel;
+				return c instanceof AtlasAssetPreviewComp
+						&& !((AtlasAssetPreviewComp) c).getAtlasCanvas().isSingleFrame();
 			}
 		};
 	}

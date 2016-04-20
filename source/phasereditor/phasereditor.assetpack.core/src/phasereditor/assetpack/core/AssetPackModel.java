@@ -477,6 +477,7 @@ public final class AssetPackModel {
 		AssetSectionModel section = null;
 		AssetGroupModel group = null;
 		AssetModel asset = null;
+		IAssetElementModel sprite = null;
 		if (element instanceof AssetSectionModel) {
 			section = (AssetSectionModel) element;
 		} else if (element instanceof AssetGroupModel) {
@@ -484,6 +485,10 @@ public final class AssetPackModel {
 			section = group.getSection();
 		} else if (element instanceof AssetModel) {
 			asset = (AssetModel) element;
+			section = asset.getSection();
+		} else if (element instanceof IAssetElementModel) {
+			sprite = (IAssetElementModel) element;
+			asset = sprite.getAsset();
 			section = asset.getSection();
 		}
 		if (section != null) {
@@ -494,6 +499,9 @@ public final class AssetPackModel {
 		}
 		if (asset != null) {
 			obj.put("asset", asset.getKey());
+		}
+		if (sprite != null) {
+			obj.put("sprite", sprite.getName());
 		}
 		return obj;
 	}
@@ -526,6 +534,16 @@ public final class AssetPackModel {
 				return null;
 			}
 			asset = section.findAsset(obj.getString("asset"));
+			
+			if (obj.has("sprite")) {
+				String spriteName = obj.getString("sprite");
+				for (IAssetElementModel elem : asset.getSubElements()) {
+					if (elem.getName().equals(spriteName)) {
+						return elem;
+					}
+				}
+			}
+			
 			return asset;
 		}
 		return section;

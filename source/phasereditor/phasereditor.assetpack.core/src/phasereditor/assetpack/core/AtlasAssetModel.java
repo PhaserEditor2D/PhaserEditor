@@ -157,6 +157,11 @@ public class AtlasAssetModel extends AssetModel {
 		public AssetModel getAsset() {
 			return _asset;
 		}
+
+		@Override
+		public <T> T getAdapter(Class<T> adapter) {
+			return null;
+		}
 	}
 
 	public List<FrameItem> getAtlasFrames() {

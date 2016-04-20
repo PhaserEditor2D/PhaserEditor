@@ -184,6 +184,11 @@ public class SpritesheetAssetModel extends AssetModel {
 		public SpritesheetAssetModel getAsset() {
 			return _asset;
 		}
+
+		@Override
+		public <T> T getAdapter(Class<T> adapter) {
+			return null;
+		}
 	}
 
 	private void buildFrames() {
