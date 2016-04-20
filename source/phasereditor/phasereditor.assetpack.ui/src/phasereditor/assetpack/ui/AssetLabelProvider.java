@@ -27,13 +27,9 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
@@ -54,27 +50,22 @@ import phasereditor.assetpack.ui.AssetPackUI.FrameData;
 import phasereditor.audio.core.AudioCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
-import phasereditor.ui.ImageFileCache;
+import phasereditor.ui.IconCache;
 import phasereditor.ui.PhaserEditorUI;
 
 public class AssetLabelProvider extends LabelProvider implements IEditorSharedImages {
 	private final int _iconSize;
-	private final Rectangle _iconRect;
 	private WorkbenchLabelProvider _workbenchLabelProvider;
-	private ImageFileCache _cache = new ImageFileCache();
+	private IconCache _cache = new IconCache();
 	private Control _control;
-	private final boolean _keepRatio;
 
-	public AssetLabelProvider(int iconSize, boolean keepRatio) {
+	public AssetLabelProvider(int iconSize) {
 		_iconSize = iconSize;
-		_keepRatio = keepRatio;
-		_iconRect = new Rectangle(0, 0, _iconSize, _iconSize);
 		_workbenchLabelProvider = new WorkbenchLabelProvider();
 	}
 
 	public AssetLabelProvider() {
-		// TODO: we should query for the best screen/resolution icon.
-		this(16, false);
+		this(16);
 	}
 
 	public void setControl(Control control) {
@@ -85,7 +76,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 		return _control;
 	}
 
-	public ImageFileCache getCache() {
+	public IconCache getCache() {
 		return _cache;
 	}
 
@@ -111,7 +102,6 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 		return EditorSharedImages.getImage(IMG_ASSET_KEY);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public Image getImage(Object element) {
 		if (element instanceof IResource) {
@@ -136,10 +126,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 
 			if (file != null) {
 				try {
-					Image orig = getFileImage(file);
-					Image copy = scaleDownImage(orig, _keepRatio);
-					_cache.addExtraImageToDispose(copy);
-					return copy;
+					return _cache.getIcon(file, _iconSize);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -157,15 +144,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 				}
 			}
 			if (wavesFile != null) {
-				Image orig = getFileImage(wavesFile);
-				Image copy = new Image(Display.getCurrent(), _iconSize, _iconSize);
-				GC gc = new GC(copy);
-				gc.setBackground(gc.getDevice().getSystemColor(SWT.COLOR_WHITE));
-				gc.setXORMode(true);
-				gc.drawImage(orig, 0, 0, orig.getBounds().width, orig.getBounds().height, 0, 0, _iconSize, _iconSize);
-				gc.dispose();
-				_cache.addExtraImageToDispose(copy);
-				return copy;
+				return _cache.getIcon(wavesFile, _iconSize);
 			}
 		}
 
@@ -174,16 +153,13 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 			IFile file = asset.getUrlFile();
 			if (file != null) {
 				try {
-					Image img = getFileImage(file);
-					if (img != null) {
-						Rectangle b = img.getBounds();
-						List<FrameData> frames = AssetPackUI.generateSpriteSheetRects(asset, b, b);
-						if (frames.isEmpty()) {
-							return img;
-						}
-						FrameData fd = frames.get(0);
-						return buildFrameImage(img, fd);
+					Rectangle b = PhaserEditorUI.getImageBounds(file);
+					List<FrameData> frames = AssetPackUI.generateSpriteSheetRects(asset, b, b);
+					if (frames.isEmpty()) {
+						return _cache.getIcon(file, _iconSize);
 					}
+					FrameData fd = frames.get(0);
+					return _cache.getIcon(file, fd.src, _iconSize);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -195,10 +171,9 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 			IFile file = ((AtlasAssetModel) frame.getAsset()).getTextureFile();
 			if (file != null) {
 				try {
-					Image texture = getFileImage(file);
-					FrameData fd = new FrameData();
-					fd.src = new Rectangle(frame.getFrameX(), frame.getFrameY(), frame.getFrameW(), frame.getFrameH());
-					return buildFrameImage(texture, fd);
+					Rectangle src = new Rectangle(frame.getFrameX(), frame.getFrameY(), frame.getFrameW(),
+							frame.getFrameH());
+					return _cache.getIcon(file, src, _iconSize);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -211,12 +186,8 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 			IFile file = asset.getUrlFile();
 			if (file != null) {
 				try {
-					Image texture = getFileImage(file);
-					FrameData fd = new FrameData();
 					Rectangle b = frame.getBounds();
-					fd.src = b;
-					fd.dst = new Rectangle(0, 0, b.width, b.height);
-					return buildFrameImage(texture, fd);
+					return _cache.getIcon(file, b, _iconSize);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -251,61 +222,6 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 		}
 
 		return getFolderImage();
-	}
-
-	private Image scaleDownImage(Image orig, boolean keepRatio) {
-		Rectangle src = orig.getBounds();
-		Rectangle dst = _iconRect;
-		Image img2 = new Image(Display.getCurrent(), dst.width, dst.height);
-		GC gc = new GC(img2);
-		scaleDraw(gc, orig, src, keepRatio);
-		gc.dispose();
-		_cache.addExtraImageToDispose(img2);
-		return img2;
-	}
-
-	private void scaleDraw(GC gc, Image orig, Rectangle src, boolean keepRatio) {
-		Rectangle dst = _iconRect;
-		Rectangle zoom;
-		if (_control != null) {
-			Color c = _control.getBackground();
-			gc.setBackground(c);
-			gc.fillRectangle(_iconRect);
-		}
-		if (keepRatio && dst.width < src.width && dst.height < src.height) {
-			zoom = PhaserEditorUI.computeImageZoom(src, dst);
-		} else {
-			zoom = dst;
-		}
-		gc.drawImage(orig, src.x, src.y, src.width, src.height, zoom.x, zoom.y, zoom.width, zoom.height);
-	}
-
-	private Image buildFrameImage(Image texture, FrameData fd) {
-		Image frameImg = new Image(Display.getCurrent(), _iconSize, _iconSize);
-		GC gc = new GC(frameImg);
-		if (_control != null) {
-			Color c = _control.getBackground();
-			gc.setBackground(c);
-			gc.fillRectangle(_iconRect);
-		}
-		if (_keepRatio) {
-			Rectangle z = PhaserEditorUI.computeImageZoom(fd.src, _iconRect);
-			gc.drawImage(texture, fd.src.x, fd.src.y, fd.src.width, fd.src.height, z.x, z.y, z.width, z.height);
-		} else {
-			gc.drawImage(texture, fd.src.x, fd.src.y, fd.src.width, fd.src.height, 0, 0, _iconSize, _iconSize);
-		}
-		gc.dispose();
-		_cache.addExtraImageToDispose(frameImg);
-		return frameImg;
-
-	}
-
-	private Image getFileImage(IFile file) {
-		return _cache.getImage(file);
-	}
-
-	private Image getFileImage(Path file) {
-		return _cache.getImage(file);
 	}
 
 	@Override

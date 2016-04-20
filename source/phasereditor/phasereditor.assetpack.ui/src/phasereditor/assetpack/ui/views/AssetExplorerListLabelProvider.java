@@ -32,7 +32,7 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
 public class AssetExplorerListLabelProvider extends AssetExplorerLabelProvider {
 
 	public AssetExplorerListLabelProvider() {
-		super(48, true);
+		super(48);
 	}
 
 	@Override

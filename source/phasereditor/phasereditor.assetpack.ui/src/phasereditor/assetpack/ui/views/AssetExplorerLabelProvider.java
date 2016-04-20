@@ -28,9 +28,9 @@ class AssetExplorerLabelProvider extends AssetLabelProvider {
 	public AssetExplorerLabelProvider() {
 		super();
 	}
-	
-	protected AssetExplorerLabelProvider(int iconSize, boolean keepRatio) {
-		super(iconSize, keepRatio);
+
+	protected AssetExplorerLabelProvider(int iconSize) {
+		super(iconSize);
 	}
 
 	@Override

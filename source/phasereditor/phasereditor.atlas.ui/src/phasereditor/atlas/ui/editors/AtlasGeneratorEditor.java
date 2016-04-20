@@ -122,13 +122,13 @@ import phasereditor.atlas.core.SettingsBean;
 import phasereditor.atlas.ui.AtlasCanvas;
 import phasereditor.atlas.ui.editors.AtlasGeneratorEditorModel.EditorPage;
 import phasereditor.ui.IEditorSharedImages;
-import phasereditor.ui.ImageFileCache;
+import phasereditor.ui.IconCache;
 import phasereditor.ui.PhaserEditorUI;
 
 public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedImages, IResourceChangeListener {
 	class FramesLabelProvider extends LabelProvider {
 
-		private ImageFileCache _cache = new ImageFileCache();
+		private IconCache _cache = new IconCache();
 
 		@Override
 		public void dispose() {
@@ -146,7 +146,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 			AtlasFrame frame = (AtlasFrame) element;
 			IFile file = findFile(frame);
 			if (file != null) {
-				Image img = _cache.getScaledImage(file, 32);
+				Image img = _cache.getIcon(file, 32);
 				return img;
 			}
 			return super.getImage(element);

@@ -22,6 +22,7 @@
 package phasereditor.ui;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -38,6 +39,10 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.FileImageInputStream;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -532,7 +537,7 @@ public class PhaserEditorUI {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public static Image getFileImage(Path file) {
 		try (InputStream contents = Files.newInputStream(file)) {
 			Image img = getStreamImage(contents);
@@ -541,7 +546,7 @@ public class PhaserEditorUI {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public static Image getStreamImage(InputStream stream) throws IOException {
 		try {
 			Display display = Display.getCurrent();
@@ -553,5 +558,19 @@ public class PhaserEditorUI {
 		} finally {
 			stream.close();
 		}
+	}
+
+	public static Rectangle getImageBounds(String filepath) throws IOException {
+		try (FileImageInputStream input = new FileImageInputStream(new File(filepath))) {
+			ImageReader reader = ImageIO.getImageReaders(input).next();
+			reader.setInput(input);
+			int w = reader.getWidth(0);
+			int h = reader.getHeight(0);
+			return new Rectangle(0, 0, w, h);
+		}
+	}
+
+	public static Rectangle getImageBounds(IFile file) throws IOException {
+		return getImageBounds(file.getLocation().toPortableString());
 	}
 }

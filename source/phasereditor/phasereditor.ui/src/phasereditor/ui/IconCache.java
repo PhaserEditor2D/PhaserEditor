@@ -40,8 +40,6 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
@@ -53,25 +51,15 @@ import org.eclipse.swt.widgets.Display;
  * @author arian
  *
  */
-public class ImageFileCache {
-	private static final int MISSING_IMAGE_SIZE = 16;
+public class IconCache {
 	private Map<String, Long> _timeCache;
 	private Map<String, Image> _imgCache;
 	private List<Image> _extraDispose;
 
-	public ImageFileCache() {
+	public IconCache() {
 		_timeCache = new HashMap<>();
 		_imgCache = new HashMap<>();
 		_extraDispose = new ArrayList<>();
-	}
-
-	public Image getImage(IFile file) {
-		String filepath = file.getLocation().toPortableString();
-		return getImage(filepath);
-	}
-
-	public Image getImage(Path file) {
-		return getImage(file.toAbsolutePath().toString());
 	}
 
 	private static Image scaleImage(String filepath, Rectangle src, int newSize) {
@@ -94,17 +82,28 @@ public class ImageFileCache {
 		}
 	}
 
-	public Image getScaledImage(String filepath, int newSize) {
+	public Image getIcon(Path file, int iconSize) {
+		return getIcon(file.toAbsolutePath().toString(), iconSize);
+	}
+
+	public Image getIcon(String filepath, int newSize) {
 		return getScaledImage(filepath, null, newSize);
 	}
 
-	public Image getScaledImage(IFile file, int newSize) {
+	public Image getIcon(IFile file, int newSize) {
 		return getScaledImage(file.getLocation().toPortableString(), null, newSize);
+	}
+
+	public Image getIcon(IFile file, Rectangle src, int newSize) {
+		return getScaledImage(file.getLocation().toPortableString(), src, newSize);
 	}
 
 	public Image getScaledImage(String filepath, Rectangle src, int newSize) {
 		Path file = Paths.get(filepath);
-		String k = filepath;
+		String k = computeKey(filepath, src, newSize);
+
+		// check if the file changed
+
 		long t0;
 		try {
 			t0 = Files.getLastModifiedTime(file).toMillis();
@@ -112,12 +111,17 @@ public class ImageFileCache {
 			e1.printStackTrace();
 			t0 = currentTimeMillis();
 		}
+
 		if (_imgCache.containsKey(k)) {
 			long t1 = _timeCache.get(k).longValue();
 			if (t0 == t1) {
+				// file no changed, return cached
 				return _imgCache.get(k);
 			}
 		}
+
+		// time changed, create new cache
+
 		_timeCache.put(k, Long.valueOf(t0));
 		try {
 			Image img = scaleImage(filepath, src, newSize);
@@ -128,42 +132,12 @@ public class ImageFileCache {
 			return img;
 		} catch (Exception e) {
 			e.printStackTrace();
-			Image img = getMissingImage();
-			_imgCache.put(k, img);
-			return img;
+			return null;
 		}
 	}
 
-	private Image getImage(String filepath) {
-		Path file = Paths.get(filepath);
-		String k = filepath;
-		long t0;
-		try {
-			t0 = Files.getLastModifiedTime(file).toMillis();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-			t0 = currentTimeMillis();
-		}
-		if (_imgCache.containsKey(k)) {
-			long t1 = _timeCache.get(k).longValue();
-			if (t0 == t1) {
-				return _imgCache.get(k);
-			}
-		}
-		_timeCache.put(k, Long.valueOf(t0));
-		try {
-			Image img = PhaserEditorUI.getFileImage(file);
-			Image old = _imgCache.put(k, img);
-			if (old != null) {
-				_extraDispose.add(old);
-			}
-			return img;
-		} catch (Exception e) {
-			e.printStackTrace();
-			Image img = getMissingImage();
-			_imgCache.put(k, img);
-			return img;
-		}
+	private static String computeKey(String filepath, Rectangle src, int newSize) {
+		return filepath + "#" + src + "#" + newSize;
 	}
 
 	public void dispose() {
@@ -184,21 +158,6 @@ public class ImageFileCache {
 		_imgCache = new HashMap<>();
 		_timeCache = new HashMap<>();
 		_extraDispose = new ArrayList<>();
-	}
-
-	public void addExtraImageToDispose(Image img) {
-		_extraDispose.add(img);
-	}
-
-	private static Image getMissingImage() {
-		Image image = new Image(Display.getCurrent(), MISSING_IMAGE_SIZE, MISSING_IMAGE_SIZE);
-		//
-		GC gc = new GC(image);
-		gc.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
-		gc.fillRectangle(0, 0, MISSING_IMAGE_SIZE, MISSING_IMAGE_SIZE);
-		gc.dispose();
-		//
-		return image;
 	}
 
 	/**
