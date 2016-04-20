@@ -149,7 +149,7 @@ public class AssetProposalComputer extends BaseProposalComputer {
 							proposal.setControlCreator(new GenericInformationControlCreator(
 									AudioSpriteAssetElementInformationControl.class,
 									AudioSpriteAssetElementInformationControl::new));
-							proposal.setImage(_elementImage);
+							proposal.setImage(_labelProvider.getImage(asset));
 							list.add(proposal);
 						}
 					}
@@ -166,7 +166,7 @@ public class AssetProposalComputer extends BaseProposalComputer {
 							ProposalData proposal = new ProposalData(frame, name, display, SPRITE_ATLAS_ORDER);
 							proposal.setControlCreator(new GenericInformationControlCreator(
 									AtlasFrameInformationControl.class, AtlasFrameInformationControl::new));
-							proposal.setImage(_elementImage);
+							proposal.setImage(_labelProvider.getImage(frame));
 							list.add(proposal);
 						}
 					}
