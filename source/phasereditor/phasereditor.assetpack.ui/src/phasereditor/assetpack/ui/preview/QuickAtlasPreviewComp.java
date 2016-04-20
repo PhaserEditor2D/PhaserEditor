@@ -64,6 +64,7 @@ public class QuickAtlasPreviewComp extends Composite {
 
 	public void setFrame(AtlasFrame frame) {
 		_canvas.setFrame(frame);
+		_canvas.setSingleFrame(true);
 
 		if (frame == null) {
 			_resolutionLabel.setText("<No frame>");

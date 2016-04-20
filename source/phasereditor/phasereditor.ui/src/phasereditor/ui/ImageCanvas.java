@@ -124,7 +124,7 @@ public class ImageCanvas extends Canvas implements PaintListener {
 
 	protected void drawBorder(GC gc, Rectangle rect) {
 		gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLACK));
-		gc.drawRectangle(rect.x, rect.y, rect.width, rect.height);
+		gc.drawRectangle(rect.x, rect.y, rect.width - 1, rect.height - 1);
 		gc.setLineWidth(1);
 	}
 

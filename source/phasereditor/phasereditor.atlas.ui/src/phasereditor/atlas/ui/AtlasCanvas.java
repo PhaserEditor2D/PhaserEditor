@@ -53,12 +53,6 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 		addMouseMoveListener(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see phasereditor.ui.ImageCanvas#drawImage(org.eclipse.swt.graphics.GC,
-	 * int, int, int, int, int, int, int, int)
-	 */
 	@Override
 	protected void drawImage(GC gc, int srcX, int srcY, int srcW, int srcH, int dstW, int dstH, int dstX, int dstY) {
 		if (_frame != null) {
@@ -73,6 +67,11 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 
 	@Override
 	public void paintControl(PaintEvent e) {
+		if (_singleFrame && _frame != null) {
+			paintSingleFrame(e);
+			return;
+		}
+
 		super.paintControl(e);
 
 		if (_frames != null && _image != null) {
@@ -97,6 +96,24 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 
 				i++;
 			}
+		}
+	}
+
+	private void paintSingleFrame(PaintEvent e) {
+		GC gc = e.gc;
+
+		Rectangle dst = getBounds();
+		PhaserEditorUI.paintPreviewBackground(gc, new Rectangle(0, 0, dst.width, dst.height));
+
+		if (_image == null) {
+			PhaserEditorUI.paintPreviewMessage(gc, dst, getNoImageMessage());
+		} else {
+			Rectangle src = new Rectangle(_frame.getFrameX(), _frame.getFrameY(), _frame.getFrameW(),
+					_frame.getFrameH());
+			Rectangle z = PhaserEditorUI.computeImageZoom(src, dst);
+			gc.drawImage(_image, src.x, src.y, src.width, src.height, z.x, z.y, z.width, z.height);
+			gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLACK));
+			gc.drawRectangle(z.x, z.y, z.width - 1, z.height - 1);
 		}
 	}
 

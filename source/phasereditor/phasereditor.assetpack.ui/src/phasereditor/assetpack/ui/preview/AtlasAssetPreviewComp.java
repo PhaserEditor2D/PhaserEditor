@@ -147,4 +147,8 @@ public class AtlasAssetPreviewComp extends Composite {
 	public void selectElement(Object element) {
 		_spritesViewer.setSelection(new StructuredSelection(element));
 	}
+	
+	public AtlasCanvas getAtlasCanvas() {
+		return _atlasCanvas;
+	}
 }

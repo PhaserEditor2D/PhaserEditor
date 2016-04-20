@@ -247,6 +247,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			public void selectInControl(Control preview, Object element) {
 				AtlasAssetPreviewComp comp = (AtlasAssetPreviewComp) preview;
 				comp.selectElement(element);
+				comp.getAtlasCanvas().setSingleFrame(true);
 			}
 
 			@Override
@@ -256,7 +257,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 
 			@Override
 			public boolean canReusePreviewControl(Control c, Object elem) {
-				return c instanceof AtlasAssetPreviewComp;
+				return c instanceof AtlasAssetPreviewComp && elem instanceof AtlasAssetModel;
 			}
 		};
 	}
