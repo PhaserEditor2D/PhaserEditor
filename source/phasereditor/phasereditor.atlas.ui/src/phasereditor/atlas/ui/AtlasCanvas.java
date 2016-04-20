@@ -45,11 +45,30 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 	private List<Rectangle> _framesRects;
 	private AtlasFrame _overFrame;
 	private AtlasFrame _frame;
+	private boolean _singleFrame;
 
 	public AtlasCanvas(Composite parent, int style) {
 		super(parent, style);
 		addControlListener(this);
 		addMouseMoveListener(this);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see phasereditor.ui.ImageCanvas#drawImage(org.eclipse.swt.graphics.GC,
+	 * int, int, int, int, int, int, int, int)
+	 */
+	@Override
+	protected void drawImage(GC gc, int srcX, int srcY, int srcW, int srcH, int dstW, int dstH, int dstX, int dstY) {
+		if (_frame != null) {
+			gc.setAlpha(100);
+			super.drawImage(gc, srcX, srcY, srcW, srcH, dstW, dstH, dstX, dstY);
+			gc.setAlpha(255);
+			return;
+		}
+
+		super.drawImage(gc, srcX, srcY, srcW, srcH, dstW, dstH, dstX, dstY);
 	}
 
 	@Override
@@ -58,18 +77,24 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 
 		if (_frames != null && _image != null) {
 			GC gc = e.gc;
-
-			gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+			gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 			int i = 0;
 			for (Rectangle r : _framesRects) {
 				AtlasFrame frame = _frames.get(i);
-				if (_frame != null && _frame != frame) {
-					gc.setAlpha(140);
-					PhaserEditorUI.paintPreviewBackground(gc, r);
-				} else if (_frame == frame || _overFrame == frame) {
-					gc.setAlpha(255);
+				if (frame == _frame) {
+					gc.setClipping(r);
+					Rectangle src = _image.getBounds();
+					Rectangle dst = PhaserEditorUI.computeImageZoom(src, getBounds());
+					gc.drawImage(_image, src.x, src.y, src.width, src.height, dst.x, dst.y, dst.width, dst.height);
+					gc.setClipping((Rectangle) null);
+					gc.drawRectangle(r);
+
+				}
+
+				if (frame == _frame || frame == _overFrame) {
 					gc.drawRectangle(r);
 				}
+
 				i++;
 			}
 		}
@@ -119,6 +144,14 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 
 	public void setFrame(AtlasFrame frame) {
 		_frame = frame;
+	}
+
+	public void setSingleFrame(boolean singleFrame) {
+		_singleFrame = singleFrame;
+	}
+
+	public boolean isSingleFrame() {
+		return _singleFrame;
 	}
 
 	@Override
