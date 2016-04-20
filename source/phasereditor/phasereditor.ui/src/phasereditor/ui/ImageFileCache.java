@@ -23,6 +23,11 @@ package phasereditor.ui;
 
 import static java.lang.System.currentTimeMillis;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -32,10 +37,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 
 /**
@@ -64,6 +72,66 @@ public class ImageFileCache {
 
 	public Image getImage(Path file) {
 		return getImage(file.toAbsolutePath().toString());
+	}
+
+	private static Image scaleImage(String filepath, Rectangle src, int newSize) {
+		try {
+			BufferedImage swingimg = ImageIO.read(new File(filepath));
+			BufferedImage swingimg2 = new BufferedImage(newSize, newSize, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2 = swingimg2.createGraphics();
+			Rectangle src2 = src == null ? new Rectangle(0, 0, swingimg.getWidth(), swingimg.getHeight()) : src;
+			Rectangle z = PhaserEditorUI.computeImageZoom(src2, new Rectangle(0, 0, newSize, newSize));
+			g2.drawImage(swingimg, z.x, z.y, z.x + z.width, z.y + z.height, src2.x, src2.y, src2.x + src2.width,
+					src2.y + src2.height, null);
+			g2.dispose();
+			ByteArrayOutputStream memory = new ByteArrayOutputStream();
+			ImageIO.write(swingimg2, "png", memory);
+			Image img = new Image(Display.getCurrent(), new ByteArrayInputStream(memory.toByteArray()));
+			return img;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public Image getScaledImage(String filepath, int newSize) {
+		return getScaledImage(filepath, null, newSize);
+	}
+
+	public Image getScaledImage(IFile file, int newSize) {
+		return getScaledImage(file.getLocation().toPortableString(), null, newSize);
+	}
+
+	public Image getScaledImage(String filepath, Rectangle src, int newSize) {
+		Path file = Paths.get(filepath);
+		String k = filepath;
+		long t0;
+		try {
+			t0 = Files.getLastModifiedTime(file).toMillis();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			t0 = currentTimeMillis();
+		}
+		if (_imgCache.containsKey(k)) {
+			long t1 = _timeCache.get(k).longValue();
+			if (t0 == t1) {
+				return _imgCache.get(k);
+			}
+		}
+		_timeCache.put(k, Long.valueOf(t0));
+		try {
+			Image img = scaleImage(filepath, src, newSize);
+			Image old = _imgCache.put(k, img);
+			if (old != null) {
+				_extraDispose.add(old);
+			}
+			return img;
+		} catch (Exception e) {
+			e.printStackTrace();
+			Image img = getMissingImage();
+			_imgCache.put(k, img);
+			return img;
+		}
 	}
 
 	private Image getImage(String filepath) {
