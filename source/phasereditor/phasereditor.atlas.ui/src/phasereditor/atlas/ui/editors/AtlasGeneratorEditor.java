@@ -61,6 +61,7 @@ import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
@@ -174,6 +175,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 	private CTabFolder _tabsFolder;
 	private List<IFile> _guessLastOutputFiles;
 	private boolean _showFileList;
+	private MenuManager _popupManager;
 
 	public AtlasGeneratorEditor() {
 		_guessLastOutputFiles = new ArrayList<>();
@@ -310,7 +312,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 				"Drag the files from the Project Explorer and drop them here.");
 	}
 
-	protected void deleteSelection() {
+	public void deleteSelection() {
 		Object[] sel = ((IStructuredSelection) _framesViewer.getSelection()).toArray();
 		if (sel.length > 0) {
 			List<IFile> toRemove = new ArrayList<>();
@@ -384,6 +386,8 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 			});
 		}
 
+		// menu
+
 		ToolBarManager manager = new ToolBarManager(_toolBar);
 		manager.add(_addAction);
 		manager.add(_delAction);
@@ -393,7 +397,11 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 
 		manager.update(true);
 
-		// _sashForm.setMaximizedControl(_tabsFolder);
+		getEditorSite().setSelectionProvider(_framesViewer);
+		_popupManager = new MenuManager();
+		getEditorSite().registerContextMenu(_popupManager, _framesViewer, false);
+		Table table = _framesViewer.getTable();
+		table.setMenu(_popupManager.createContextMenu(table));
 
 		build(false);
 
@@ -906,6 +914,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 				// nothing
 			}
 		});
+		canvas.setMenu(_popupManager.createContextMenu(canvas));
 		return canvas;
 	}
 

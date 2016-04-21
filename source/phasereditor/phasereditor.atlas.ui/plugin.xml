@@ -51,5 +51,31 @@
             name="Atlas Generator">
       </editor>
    </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:phasereditor.atlas.ui.editors.AtlasGenEditor?before=additions">
+         <command
+               commandId="org.eclipse.ui.edit.delete"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="phasereditor.atlas.ui.handlers.DeleteAtlasSelectionHandler"
+            commandId="org.eclipse.ui.edit.delete">
+         <activeWhen>
+            <with
+                  variable="selection">
+               <count
+                     value="+">
+               </count>
+            </with>
+         </activeWhen>
+      </handler>
+   </extension>
 
 </plugin>
