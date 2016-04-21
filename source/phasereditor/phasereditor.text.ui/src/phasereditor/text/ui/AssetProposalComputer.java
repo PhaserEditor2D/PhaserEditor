@@ -122,8 +122,7 @@ public class AssetProposalComputer extends BaseProposalComputer {
 					propData.setImage(_labelProvider.getImage(asset));
 					list.add(propData);
 				}
-				// inner names
-
+				
 				switch (type) {
 				case image:
 					propData.setControlCreator(new GenericInformationControlCreator(ImageAssetInformationControl.class,

@@ -43,6 +43,8 @@ public class FilePreviewAdapterFactory implements IAdapterFactory {
 			IFile file = (IFile) adaptableObject;
 			if (AssetPackCore.isImage(file)) {
 				return createImageFilePreviewFactory();
+			} else if (AssetPackCore.isVideo(file)) {
+				return createVideoFilePreviewFactory();
 			} else if (AssetPackCore.isAudio(file)) {
 				return createAudioFilePreviewFactory();
 			}
@@ -119,6 +121,34 @@ public class FilePreviewAdapterFactory implements IAdapterFactory {
 			@Override
 			public boolean canReusePreviewControl(Control c, Object elem) {
 				return c instanceof GdxMusicControl;
+			}
+		};
+	}
+
+	private static IPreviewFactory createVideoFilePreviewFactory() {
+		return new FilePreviewFactory() {
+
+			@Override
+			public void updateControl(Control preview, Object element) {
+				IFile file = (IFile) element;
+				if (file.exists()) {
+					((VideoPreviewComp) preview).setVideoFile(file);
+				}
+			}
+
+			@Override
+			public Control createControl(Composite previewContainer) {
+				return new VideoPreviewComp(previewContainer, 0);
+			}
+
+			@Override
+			public void hiddenControl(Control preview) {
+				((VideoPreviewComp) preview).setVideoFile(null);
+			}
+
+			@Override
+			public boolean canReusePreviewControl(Control c, Object elem) {
+				return c instanceof VideoPreviewComp;
 			}
 		};
 	}

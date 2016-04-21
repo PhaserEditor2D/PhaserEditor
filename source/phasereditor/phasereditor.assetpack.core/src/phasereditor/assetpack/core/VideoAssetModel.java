@@ -107,6 +107,10 @@ public class VideoAssetModel extends AssetModel {
 	public List<String> getUrls() {
 		return _urls;
 	}
+	
+	public List<IFile> getUrlFiles() {
+		return getFilesFromUrls(_urls);
+	}
 
 	public void setUrls(List<String> urls) {
 		_urls = urls;

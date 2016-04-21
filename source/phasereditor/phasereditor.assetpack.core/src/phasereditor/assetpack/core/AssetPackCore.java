@@ -77,7 +77,7 @@ public class AssetPackCore {
 
 		_audioExtensions = new HashSet<>();
 		// TODO: missing audio extensions
-		_audioExtensions.addAll(Arrays.asList("wav", "ogg", "mp3", "mp4", "flac", "wma", "au", "webm"));
+		_audioExtensions.addAll(Arrays.asList("wav", "ogg", "mp3", "flac", "wma", "au", "webm"));
 
 		_videoExtensions = new HashSet<>();
 		// TODO: missing video extensions

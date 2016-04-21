@@ -76,6 +76,7 @@ import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
+import phasereditor.assetpack.core.VideoAssetModel;
 import phasereditor.assetpack.ui.editors.AssetPackEditor;
 import phasereditor.assetpack.ui.preview.AtlasAssetInformationControl;
 import phasereditor.assetpack.ui.preview.AtlasFrameInformationControl;
@@ -91,6 +92,8 @@ import phasereditor.assetpack.ui.preview.PhysicsAssetInformationControl;
 import phasereditor.assetpack.ui.preview.SpritesheetAssetInformationControl;
 import phasereditor.assetpack.ui.preview.TilemapAssetInformationControl;
 import phasereditor.assetpack.ui.preview.TilemapTilesetInformationControl;
+import phasereditor.assetpack.ui.preview.VideoAssetInformationControl;
+import phasereditor.assetpack.ui.preview.VideoFileInformationControl;
 import phasereditor.assetpack.ui.widgets.AudioResourceDialog;
 import phasereditor.assetpack.ui.widgets.ImageResourceDialog;
 import phasereditor.assetpack.ui.widgets.VideoResourceDialog;
@@ -558,6 +561,21 @@ public class AssetPackUI {
 				}
 			});
 
+			// video file
+
+			_informationControlCreators.add(new ICustomInformationControlCreator() {
+
+				@Override
+				public IInformationControl createInformationControl(Shell parent) {
+					return new VideoFileInformationControl(parent);
+				}
+
+				@Override
+				public boolean isSupported(Object info) {
+					return info != null && info instanceof IFile;
+				}
+			});
+
 			// audio file
 
 			_informationControlCreators.add(new ICustomInformationControlCreator() {
@@ -650,6 +668,21 @@ public class AssetPackUI {
 				@Override
 				public boolean isSupported(Object info) {
 					return info instanceof AudioSpriteAssetModel.AssetAudioSprite;
+				}
+			});
+
+			// video
+
+			_informationControlCreators.add(new ICustomInformationControlCreator() {
+
+				@Override
+				public IInformationControl createInformationControl(Shell parent) {
+					return new VideoAssetInformationControl(parent);
+				}
+
+				@Override
+				public boolean isSupported(Object info) {
+					return info != null && info instanceof VideoAssetModel;
 				}
 			});
 

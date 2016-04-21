@@ -46,6 +46,7 @@ import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
+import phasereditor.assetpack.core.VideoAssetModel;
 import phasereditor.audiosprite.ui.GdxMusicControl;
 import phasereditor.ui.views.IPreviewFactory;
 
@@ -65,6 +66,8 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 				return createSpritesheetPreviewAdapter();
 			case audio:
 				return createAudioPreviewAdpter();
+			case video:
+				return createVideoPreviewAdpter();
 			case audiosprite:
 				return createAudioSpritePreviewAdpter();
 			case atlas:
@@ -283,6 +286,34 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			@Override
 			public boolean canReusePreviewControl(Control c, Object elem) {
 				return c instanceof GdxMusicControl;
+			}
+		};
+	}
+
+	private static IPreviewFactory createVideoPreviewAdpter() {
+		return new AssetModelPreviewFactory() {
+
+			@Override
+			public void updateControl2(Control preview, Object element) {
+				VideoPreviewComp comp = (VideoPreviewComp) preview;
+				VideoAssetModel model = (VideoAssetModel) element;
+				comp.setModel(model);
+			}
+
+			@Override
+			public void hiddenControl(Control preview) {
+				VideoPreviewComp comp = (VideoPreviewComp) preview;
+				comp.setVideoFile(null);
+			}
+
+			@Override
+			public Control createControl(Composite previewContainer) {
+				return new VideoPreviewComp(previewContainer, SWT.NONE);
+			}
+
+			@Override
+			public boolean canReusePreviewControl(Control c, Object elem) {
+				return c instanceof VideoPreviewComp;
 			}
 		};
 	}
