@@ -95,6 +95,7 @@ import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.BinaryAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
+import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.ScriptAssetModel;
@@ -466,7 +467,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	private void afterCreatedWidgets() {
 		((AssetLabelProvider) _allAssetsViewer.getLabelProvider()).setControl(_allAssetsViewer.getControl());
-		
+
 		_labelAssetsTitle.setFont(SWTResourceManager.getBoldFont(_labelAssetsTitle.getFont()));
 
 		AssetPackModel model = getModel();
@@ -803,10 +804,12 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	}
 
 	public void revealElement(Object elem) {
-		if (elem != null) {
-			_allAssetsViewer.getTree().setFocus();
-			_allAssetsViewer.setSelection(new StructuredSelection(elem), true);
+		if (elem == null) {
+			return;
 		}
+		Object reveal = elem instanceof IAssetElementModel ? ((IAssetElementModel) elem).getAsset() : elem;
+		_allAssetsViewer.getTree().setFocus();
+		_allAssetsViewer.setSelection(new StructuredSelection(reveal), true);
 	}
 
 	public ISelection getSelection() {

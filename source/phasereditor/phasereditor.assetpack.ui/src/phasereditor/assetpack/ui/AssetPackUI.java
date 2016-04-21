@@ -71,6 +71,7 @@ import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
+import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
@@ -120,6 +121,8 @@ public class AssetPackUI {
 			pack = (AssetPackModel) elem;
 		} else if (elem instanceof AssetGroupModel) {
 			pack = ((AssetGroupModel) elem).getSection().getPack();
+		} else if (elem instanceof IAssetElementModel) {
+			pack = ((IAssetElementModel) elem).getAsset().getPack();
 		} else {
 			return false;
 		}
