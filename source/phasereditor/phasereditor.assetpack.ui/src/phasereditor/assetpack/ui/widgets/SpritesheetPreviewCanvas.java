@@ -60,9 +60,11 @@ public class SpritesheetPreviewCanvas extends ImageCanvas {
 			Rectangle r = new Rectangle(0, 0, _spritesheet.getFrameWidth(), _spritesheet.getFrameHeight());
 			r = PhaserEditorUI.computeImageZoom(r, getBounds());
 			super.drawBorder(gc, r);
-		} else {
-			super.drawBorder(gc, rect);
 		}
+		// do not draw border when it shows the whole tape
+		// else {
+		// super.drawBorder(gc, rect);
+		// }
 	}
 
 	@Override
@@ -96,19 +98,21 @@ public class SpritesheetPreviewCanvas extends ImageCanvas {
 				if (list.isEmpty()) {
 					PhaserEditorUI.paintPreviewMessage(gc, canvasBounds, "Cannot compute the grid.");
 				} else {
-					gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_RED));
 					int i = 0;
 					for (FrameData fd : list) {
+						gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_RED));
 						Rectangle r = fd.dst;
 						gc.drawRectangle(r.x, r.y, r.width, r.height);
 						String label = Integer.toString(i);
 						Point labelRect = gc.stringExtent(Integer.toString(i));
 						int left = r.x + r.width / 2 - labelRect.x / 2;
 						int top = Math.min(r.y + r.height + 5, getBounds().height - labelRect.y - 5);
+						gc.setAlpha(200);
 						gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
-						gc.fillRectangle(left, top, labelRect.x, labelRect.y);
+						gc.fillRectangle(left - 2, top, labelRect.x + 4, labelRect.y);
+						gc.setAlpha(255);
 						gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLACK));
-						gc.drawString(label, left, top);
+						gc.drawString(label, left, top, true);
 						i++;
 					}
 				}
