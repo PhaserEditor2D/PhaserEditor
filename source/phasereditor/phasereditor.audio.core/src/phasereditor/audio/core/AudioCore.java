@@ -347,9 +347,7 @@ public class AudioCore {
 		try {
 			proc = pb.start();
 			String output = FileUtils.readStream(proc.getInputStream());
-			out.println("before wait");
 			int exitValue = proc.waitFor();
-			out.println("after wait");
 			if (exitValue != 0) {
 				out.println(Arrays.toString(pb.command().toArray()));
 				throw new IOException("FFMpeg termination exitValue " + exitValue);

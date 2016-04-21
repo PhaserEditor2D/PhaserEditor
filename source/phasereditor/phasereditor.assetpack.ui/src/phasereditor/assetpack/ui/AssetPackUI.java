@@ -29,6 +29,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IFontProvider;
@@ -572,7 +573,7 @@ public class AssetPackUI {
 
 				@Override
 				public boolean isSupported(Object info) {
-					return info != null && info instanceof IFile;
+					return info != null && info instanceof IFile && AssetPackCore.isVideo((IResource) info);
 				}
 			});
 

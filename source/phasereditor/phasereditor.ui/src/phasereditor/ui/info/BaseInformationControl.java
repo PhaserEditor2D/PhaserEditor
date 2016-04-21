@@ -58,6 +58,22 @@ public abstract class BaseInformationControl extends AbstractInformationControl
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.text.AbstractInformationControl#dispose()
+	 */
+	@Override
+	public void dispose() {
+		super.dispose();
+		disposeControl(_contentControl);
+	}
+
+	@SuppressWarnings("unused")
+	protected void disposeControl(Control control) {
+		// nothing
+	}
+
 	@SuppressWarnings("unused")
 	protected void handleHidden(Control control) {
 		// nothing

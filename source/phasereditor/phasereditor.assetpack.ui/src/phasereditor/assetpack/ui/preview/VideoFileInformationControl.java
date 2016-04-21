@@ -51,6 +51,11 @@ public class VideoFileInformationControl extends BaseInformationControl {
 
 	@Override
 	protected void handleHidden(Control control) {
+		disposeControl(control);
+	}
+
+	@Override
+	protected void disposeControl(Control control) {
 		((VideoCanvas) control).setVideoFile(null);
 	}
 }
