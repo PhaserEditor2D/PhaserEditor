@@ -46,6 +46,7 @@ import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.ScriptAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
+import phasereditor.assetpack.core.VideoAssetModel;
 import phasereditor.assetpack.ui.AssetPackUI.FrameData;
 import phasereditor.audio.core.AudioCore;
 import phasereditor.ui.EditorSharedImages;
@@ -140,11 +141,22 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 			for (IFile file : files) {
 				wavesFile = AudioCore.getSoundWavesFile(file, false);
 				if (wavesFile != null) {
-					break;
+					Image icon = _cache.getIcon(wavesFile, _iconSize);
+					return icon == null? getKeyImage() : icon;
 				}
 			}
-			if (wavesFile != null) {
-				return _cache.getIcon(wavesFile, _iconSize);
+		}
+
+		if (element instanceof VideoAssetModel) {
+			VideoAssetModel asset = (VideoAssetModel) element;
+			List<IFile> files = asset.getUrlFiles();
+			Path snapshotFile = null;
+			for (IFile file : files) {
+				snapshotFile = AudioCore.getVideoSnapshotFile(file, false);
+				if (snapshotFile != null) {
+					Image icon = _cache.getIcon(snapshotFile, _iconSize);
+					return icon == null? getKeyImage() : icon;
+				}
 			}
 		}
 

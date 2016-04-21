@@ -81,7 +81,7 @@ public class AssetPackCore {
 
 		_videoExtensions = new HashSet<>();
 		// TODO: missing video extensions
-		_videoExtensions.addAll(Arrays.asList("mp4", "ogg", "ogv", "webm", "flv", "wmv", "avi", "mpg"));
+		_videoExtensions.addAll(Arrays.asList("mp4", "ogv", "webm", "flv", "wmv", "avi", "mpg"));
 
 		initWorkspaceListener();
 	}

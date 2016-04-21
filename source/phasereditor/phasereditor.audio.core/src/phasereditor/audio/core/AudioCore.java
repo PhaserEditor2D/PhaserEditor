@@ -42,9 +42,11 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
+import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.QualifiedName;
@@ -60,12 +62,23 @@ import com.badlogic.gdx.utils.GdxNativesLoader;
 
 import phasereditor.ui.FileUtils;
 
+/**
+ * We should call this class MediaCore, and the plugin phasereditor.media.core
+ * 
+ * @author arian
+ *
+ */
 public class AudioCore {
 	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
 
 	private static final QualifiedName WAVEFORM_FILENAME_KEY = new QualifiedName("phasereditor.audio.core",
 			"waveform-file");
 	private static final QualifiedName DURATION_KEY = new QualifiedName("phasereditor.audio.core", "duration");
+
+	private static final String[] SUPPORTED_VIDEO_EXTENSIONS = { "mp4", "ogv", "webm", "flv", "wmv", "avi", "mpg" };
+
+	private static final QualifiedName SNAPSHOT_FILENAME_KEY = new QualifiedName("phasereditor.audio.core",
+			"snapshot-file");
 
 	public static String[] SUPPORTED_SOUND_EXTENSIONS = { "wav", "ogg", "mp3" };
 
@@ -201,6 +214,19 @@ public class AudioCore {
 
 	public static boolean isSupportedAudio(File file) {
 		for (String ext : SUPPORTED_SOUND_EXTENSIONS) {
+			if (file.getName().toLowerCase().endsWith(ext)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static boolean isSupportedVideo(IFile file) {
+		return isSupportedVideo(file.getLocation().toFile());
+	}
+
+	public static boolean isSupportedVideo(File file) {
+		for (String ext : SUPPORTED_VIDEO_EXTENSIONS) {
 			if (file.getName().toLowerCase().endsWith(ext)) {
 				return true;
 			}
@@ -461,4 +487,110 @@ public class AudioCore {
 			return 0;
 		}
 	}
+
+	public static void makeVideoSnapshot(IResourceDelta projectDelta) {
+		try {
+			projectDelta.accept(new IResourceDeltaVisitor() {
+
+				@Override
+				public boolean visit(IResourceDelta delta) throws CoreException {
+					IResource resource = delta.getResource();
+					if (resource instanceof IFile) {
+						IFile file = (IFile) resource;
+						if (resource.exists() && isSupportedVideo(file)) {
+							if (delta.getKind() == IResourceDelta.CHANGED) {
+								removeVideoProperties(file);
+							}
+							getVideoSnapshotFile(file);
+						}
+					}
+					return true;
+				}
+			});
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+	}
+
+	protected static void removeVideoProperties(IFile file) {
+		try {
+			file.setPersistentProperty(SNAPSHOT_FILENAME_KEY, null);
+		} catch (CoreException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public synchronized static Path getVideoSnapshotFile(IFile file) {
+		return getVideoSnapshotFile(file, true);
+	}
+
+	public synchronized static Path getVideoSnapshotFile(IFile file, boolean forceMake) {
+		try {
+			String filename = file.getPersistentProperty(SNAPSHOT_FILENAME_KEY);
+			String home = System.getProperty("user.home");
+			Path dir = Paths.get(home).resolve(".phasereditor/snapshots");
+			Path path;
+			if (filename == null) {
+				filename = UUID.randomUUID().toString() + ".jpg";
+			}
+			path = dir.resolve(filename);
+
+			if (forceMake) {
+				if (!Files.exists(path)) {
+					makeVideoSnapshot(file, path);
+				}
+			}
+
+			file.setPersistentProperty(SNAPSHOT_FILENAME_KEY, filename);
+
+			return path;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private static void makeVideoSnapshot(IFile file, Path path) throws IOException {
+		Files.createDirectories(path.getParent());
+
+		String videoPath = eclipseFileToJavaPath(file).toString();
+		out.println("make screenshot of " + file + " to " + path);
+		ProcessBuilder pb = createFFMpegProcessBuilder("-hide_banner", "-loglevel", "0", "-ss", "00:00:01", "-i",
+				videoPath, "-vframes", "1", "-vf", "scale=128:-1", path.toAbsolutePath().toString());
+		Process proc = pb.start();
+		try {
+			proc.waitFor();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void makeMediaSnapshots(IProject project) {
+		try {
+			project.accept(new IResourceVisitor() {
+
+				@Override
+				public boolean visit(IResource resource) throws CoreException {
+					if (resource instanceof IFile) {
+						IFile file = (IFile) resource;
+						if (resource.exists()) {
+							if (isSupportedVideo(file)) {
+								removeVideoProperties(file);
+								getVideoSnapshotFile(file);
+							} else if (isSupportedAudio(file)) {
+								removeSoundProperties(file);
+								getSoundWavesFile(file);
+								getSoundDuration(file);
+							}
+						}
+					}
+					return true;
+				}
+			});
+		} catch (CoreException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+
+	}
+
 }

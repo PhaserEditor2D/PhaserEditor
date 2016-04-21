@@ -55,7 +55,17 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 	protected void startupOnInitialize() {
 		super.startupOnInitialize();
 
+		fullBuild();
+	}
+
+	@Override
+	protected void clean(IProgressMonitor monitor) throws CoreException {
+		fullBuild();
+	}
+
+	private void fullBuild() {
 		buildPacks(null, new PackDelta());
+		AudioCore.makeMediaSnapshots(getProject());
 	}
 
 	@Override
@@ -110,13 +120,16 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 			});
 		}
 
+		if (mainDelta == null) {
+			AudioCore.makeMediaSnapshots(getProject());
+		} else {
+			AudioCore.makeSoundWavesAndMetadata(mainDelta);
+			AudioCore.makeVideoSnapshot(mainDelta);
+		}
+
 		// Any change on the project implies to rebuild all the packs of that
 		// project.
 		buildPacks(mainDelta, packDelta);
-
-		if (mainDelta != null) {
-			AudioCore.makeSoundWavesAndMetadata(mainDelta);
-		}
 
 		return null;
 	}

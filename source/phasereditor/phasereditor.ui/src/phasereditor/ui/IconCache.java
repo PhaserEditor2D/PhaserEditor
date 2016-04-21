@@ -77,7 +77,7 @@ public class IconCache {
 			Image img = new Image(Display.getCurrent(), new ByteArrayInputStream(memory.toByteArray()));
 			return img;
 		} catch (IOException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 			return null;
 		}
 	}
@@ -100,6 +100,11 @@ public class IconCache {
 
 	public Image getScaledImage(String filepath, Rectangle src, int newSize) {
 		Path file = Paths.get(filepath);
+		
+		if (!Files.exists(file)) {
+			return null;
+		}
+		
 		String k = computeKey(filepath, src, newSize);
 
 		// check if the file changed
@@ -125,6 +130,11 @@ public class IconCache {
 		_timeCache.put(k, Long.valueOf(t0));
 		try {
 			Image img = scaleImage(filepath, src, newSize);
+			
+			if (img == null) {
+				return null;
+			}
+			
 			Image old = _imgCache.put(k, img);
 			if (old != null) {
 				_extraDispose.add(old);
