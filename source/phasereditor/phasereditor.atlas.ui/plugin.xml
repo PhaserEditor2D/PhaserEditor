@@ -90,12 +90,20 @@
             class="phasereditor.atlas.ui.handlers.DeleteAtlasSelectionHandler"
             commandId="org.eclipse.ui.edit.delete">
          <activeWhen>
+         	<and>
             <with
                   variable="selection">
                <count
                      value="+">
                </count>
             </with>
+            <with
+                  variable="activePartId">
+               <equals
+                     value="phasereditor.atlas.ui.editors.AtlasGenEditor">
+               </equals>
+            </with>
+            </and>
          </activeWhen>
       </handler>
    </extension>
