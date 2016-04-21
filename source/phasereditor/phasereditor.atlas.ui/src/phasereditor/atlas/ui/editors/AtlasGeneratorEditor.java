@@ -248,7 +248,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		_delAction.setImageDescriptor(
 				ResourceManager.getPluginImageDescriptor("phasereditor.ui", "icons/picture_delete.png"));
 
-		_addAction = new Action("Add images files") {
+		_addAction = new Action("Add image files") {
 			@Override
 			public void run() {
 				addFiles();
@@ -257,8 +257,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		_addAction.setImageDescriptor(
 				ResourceManager.getPluginImageDescriptor("phasereditor.ui", "icons/picture_add.png"));
 
-		_buildAction = new Action("Rebuild atlas") {
-			@SuppressWarnings("synthetic-access")
+		_buildAction = new Action("Build Atlas") {
 			@Override
 			public void run() {
 				manuallyBuild();
@@ -269,7 +268,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		_settingsAction = new Action("Settings") {
 			@Override
 			public void run() {
-				settingsDialog();
+				openSettingsDialog();
 			}
 		};
 		_settingsAction
@@ -285,7 +284,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 				ResourceManager.getPluginImageDescriptor("phasereditor.ui", "icons/application_side_expand.png"));
 	}
 
-	protected void changeLayout() {
+	public void changeLayout() {
 		String icon;
 		if (_sashForm.getMaximizedControl() == null) {
 			_sashForm.setMaximizedControl(_tabsFolder);
@@ -298,7 +297,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		persistShowFileListState();
 	}
 
-	protected void settingsDialog() {
+	public void openSettingsDialog() {
 		AtlasSettingsDialog dlg = new AtlasSettingsDialog(getEditorSite().getShell());
 		dlg.setSettings(_model.getSettings().clone());
 		if (dlg.open() == Window.OK) {
@@ -307,7 +306,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		}
 	}
 
-	protected void addFiles() {
+	public void addFiles() {
 		MessageDialog.openInformation(getEditorSite().getShell(), "Add Files",
 				"Drag the files from the Project Explorer and drop them here.");
 	}
@@ -399,9 +398,9 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 
 		getEditorSite().setSelectionProvider(_framesViewer);
 		_popupManager = new MenuManager();
-		getEditorSite().registerContextMenu(_popupManager, _framesViewer, false);
 		Table table = _framesViewer.getTable();
 		table.setMenu(_popupManager.createContextMenu(table));
+		getEditorSite().registerContextMenu(_popupManager, _framesViewer, false);
 
 		build(false);
 
@@ -676,7 +675,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 						@Override
 						public void run() {
 							MessageDialog.openError(getEditorSite().getShell(), "Build Atlas", e.getMessage());
-							settingsDialog();
+							openSettingsDialog();
 						}
 					});
 				} finally {
@@ -997,7 +996,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		firePropertyChange(PROP_TITLE);
 	}
 
-	private void manuallyBuild() {
+	public void manuallyBuild() {
 		build(true, new Runnable() {
 
 			@SuppressWarnings("synthetic-access")

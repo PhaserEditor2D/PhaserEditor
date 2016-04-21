@@ -57,7 +57,29 @@
             allPopups="false"
             locationURI="popup:phasereditor.atlas.ui.editors.AtlasGenEditor?before=additions">
          <command
+               commandId="phasereditor.atlas.ui.editor.addfiles"
+               icon="platform:/plugin/phasereditor.ui/icons/picture_add.png"
+               style="push"
+               tooltip="Add image files.">
+         </command>
+         <command
                commandId="org.eclipse.ui.edit.delete"
+               style="push"
+               tooltip="Delete selected sprites.">
+         </command>
+         <command
+               commandId="phasereditor.atlas.ui.editor.buildatlas"
+               icon="platform:/plugin/phasereditor.ui/icons/cog.png"
+               style="push">
+         </command>
+         <command
+               commandId="phasereditor.atlas.ui.editor.changelayout"
+               icon="platform:/plugin/phasereditor.ui/icons/application_side_expand.png"
+               style="push">
+         </command>
+         <command
+               commandId="phasereditor.atlas.ui.editor.showsettings"
+               icon="platform:/plugin/phasereditor.ui/icons/settings.png"
                style="push">
          </command>
       </menuContribution>
@@ -76,6 +98,37 @@
             </with>
          </activeWhen>
       </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="phasereditor.atlas.ui.category"
+            name="Atlas Generator">
+      </category>
+      <command
+            categoryId="phasereditor.atlas.ui.category"
+            defaultHandler="phasereditor.atlas.ui.handlers.AddFilesHandler"
+            id="phasereditor.atlas.ui.editor.addfiles"
+            name="Add Files">
+      </command>
+      <command
+            categoryId="phasereditor.atlas.ui.category"
+            defaultHandler="phasereditor.atlas.ui.handlers.BuildAtlasHandler"
+            id="phasereditor.atlas.ui.editor.buildatlas"
+            name="Build Atlas">
+      </command>
+      <command
+            categoryId="phasereditor.atlas.ui.category"
+            defaultHandler="phasereditor.atlas.ui.handlers.ShowSettingsHandler"
+            id="phasereditor.atlas.ui.editor.showsettings"
+            name="Settings">
+      </command>
+      <command
+            categoryId="phasereditor.atlas.ui.category"
+            defaultHandler="phasereditor.atlas.ui.handlers.ChangeLayoutHandler"
+            id="phasereditor.atlas.ui.editor.changelayout"
+            name="Side Panel">
+      </command>
    </extension>
 
 </plugin>
