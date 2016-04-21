@@ -54,7 +54,7 @@
       <view
             category="phasereditor.ui.phaser"
             class="phasereditor.assetpack.ui.views.AssetExplorer"
-            icon="platform:/plugin/phasereditor.ui/icons/package_search.png"
+            icon="platform:/plugin/phasereditor.ui/icons/box_search.png"
             id="phasereditor.assetpack.views.assetExplorer"
             name="Asset Pack Explorer">
       </view>
