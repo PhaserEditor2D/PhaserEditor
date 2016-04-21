@@ -126,6 +126,14 @@ public class AtlasAssetPreviewComp extends Composite {
 	}
 
 	protected void atlasCanvasClicked() {
+		// if single frame mode we do not have nothing to select.
+
+		if (_atlasCanvas.isSingleFrame()) {
+			return;
+		}
+
+		// select the last pointed frame
+
 		FrameItem over = (FrameItem) _atlasCanvas.getOverFrame();
 		_atlasCanvas.setFrame(over);
 		_atlasCanvas.redraw();
