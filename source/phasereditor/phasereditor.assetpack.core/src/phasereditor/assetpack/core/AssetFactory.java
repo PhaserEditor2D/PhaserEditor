@@ -93,6 +93,22 @@ public abstract class AssetFactory {
 				return asset;
 			}
 		});
+		
+		cache(new AssetFactory(AssetType.video) {
+
+			@Override
+			public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
+				return new VideoAssetModel(jsonDoc, section);
+			}
+
+			@Override
+			public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
+				VideoAssetModel asset = new VideoAssetModel(key, section);
+				AssetPackModel pack = section.getPack();
+				initVideoFiles(asset, pack);
+				return asset;
+			}
+		});
 
 		cache(new AssetFactory(AssetType.audiosprite) {
 
@@ -120,7 +136,8 @@ public abstract class AssetFactory {
 				return asset;
 			}
 		});
-
+		
+		
 		cache(new AssetFactory(AssetType.tilemap) {
 			@Override
 			public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
@@ -306,6 +323,15 @@ public abstract class AssetFactory {
 
 	static void initAudioFiles(AudioAssetModel asset, AssetPackModel pack) throws CoreException {
 		List<IFile> files = pack.pickAudioFiles();
+		if (!files.isEmpty()) {
+			asset.setKey(pack.createKey(files.get(0)));
+			List<String> urls = asset.getUrlsFromFiles(files);
+			asset.setUrls(urls);
+		}
+	}
+	
+	static void initVideoFiles(VideoAssetModel asset, AssetPackModel pack) throws CoreException {
+		List<IFile> files = pack.pickVideoFiles();
 		if (!files.isEmpty()) {
 			asset.setKey(pack.createKey(files.get(0)));
 			List<String> urls = asset.getUrlsFromFiles(files);

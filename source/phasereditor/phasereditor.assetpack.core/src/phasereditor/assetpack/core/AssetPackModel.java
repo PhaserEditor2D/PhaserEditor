@@ -252,6 +252,10 @@ public final class AssetPackModel {
 	public List<IFile> discoverAudioFiles() throws CoreException {
 		return AssetPackCore.discoverAudioFiles(getAssetsFolder());
 	}
+	
+	public List<IFile> discoverVideoFiles() throws CoreException {
+		return AssetPackCore.discoverVideoFiles(getAssetsFolder());
+	}
 
 	public List<IFile> discoverAudioSpriteFiles() throws CoreException {
 		return AssetPackCore.discoverAudioSpriteFiles(getAssetsFolder());
@@ -368,6 +372,30 @@ public final class AssetPackModel {
 			for (IFile audio : audios) {
 				if (!used.contains(audio)) {
 					List<IFile> closure = AssetPackCore.getSameNameFiles(audio, audios);
+					result.addAll(closure);
+					break;
+				}
+			}
+		}
+		return new ArrayList<>(result);
+	}
+	
+
+	/**
+	 * Pick a list of not used audio files.
+	 * 
+	 * @return The list or not used audio files, or null if there is not anyone
+	 *         available.
+	 * @throws CoreException
+	 */
+	public List<IFile> pickVideoFiles() throws CoreException {
+		Set<IFile> used = findUsedFiles();
+		List<IFile> videos = discoverVideoFiles();
+		Set<IFile> result = new HashSet<>();
+		if (videos.size() > 0) {
+			for (IFile video : videos) {
+				if (!used.contains(video)) {
+					List<IFile> closure = AssetPackCore.getSameNameFiles(video, videos);
 					result.addAll(closure);
 					break;
 				}

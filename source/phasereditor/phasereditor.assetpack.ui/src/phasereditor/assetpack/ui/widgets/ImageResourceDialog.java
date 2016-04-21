@@ -56,6 +56,7 @@ public class ImageResourceDialog extends Dialog {
 	 */
 	public ImageResourceDialog(Shell parentShell) {
 		super(parentShell);
+		setShellStyle(SWT.DIALOG_TRIM | SWT.RESIZE);
 	}
 
 	/**
@@ -186,14 +187,11 @@ public class ImageResourceDialog extends Dialog {
 		return _imagePreviewCanvas;
 	}
 
-	/**
-	 * Return the initial size of the dialog.
-	 */
 	@Override
 	protected Point getInitialSize() {
-		return new Point(737, 554);
+		return new Point(457, 481);
 	}
-
+	
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
@@ -203,4 +201,6 @@ public class ImageResourceDialog extends Dialog {
 	public void setInitial(IResource initial) {
 		_initial = initial;
 	}
+	
+	
 }

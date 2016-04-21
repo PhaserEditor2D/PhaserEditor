@@ -69,6 +69,7 @@ public class AssetPackCore {
 
 	private static final Set<String> _imageExtensions;
 	private static final Set<String> _audioExtensions;
+	private static final Set<String> _videoExtensions;
 
 	static {
 		_imageExtensions = new HashSet<>();
@@ -77,6 +78,10 @@ public class AssetPackCore {
 		_audioExtensions = new HashSet<>();
 		// TODO: missing audio extensions
 		_audioExtensions.addAll(Arrays.asList("wav", "ogg", "mp3", "mp4", "flac", "wma", "au", "webm"));
+
+		_videoExtensions = new HashSet<>();
+		// TODO: missing video extensions
+		_videoExtensions.addAll(Arrays.asList("mp4", "ogg", "ogv", "webm", "flv", "wmv", "avi", "mpg"));
 
 		initWorkspaceListener();
 	}
@@ -145,6 +150,17 @@ public class AssetPackCore {
 	}
 
 	/**
+	 * If the given resource is a video.
+	 * 
+	 * @param resource
+	 *            The resource to test.
+	 * @return If it is an audio.
+	 */
+	public static boolean isVideo(IResource resource) {
+		return resource instanceof IFile && _videoExtensions.contains(resource.getFullPath().getFileExtension());
+	}
+
+	/**
 	 * Build a list with the files with the same name but different extension.
 	 * 
 	 * 
@@ -201,6 +217,19 @@ public class AssetPackCore {
 	 */
 	public static List<IFile> discoverAudioFiles(IContainer folder) throws CoreException {
 		return discoverFiles(folder, AssetPackCore::isAudio);
+	}
+
+	/**
+	 * Discover all video files under the given folder.
+	 * 
+	 * @param folder
+	 *            The folder where to search.
+	 * @return The list of the discovered audio.
+	 * @throws CoreException
+	 *             If error.
+	 */
+	public static List<IFile> discoverVideoFiles(IContainer folder) throws CoreException {
+		return discoverFiles(folder, AssetPackCore::isVideo);
 	}
 
 	/**

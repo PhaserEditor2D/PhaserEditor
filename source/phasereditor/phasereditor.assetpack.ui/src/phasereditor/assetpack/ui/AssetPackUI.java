@@ -93,6 +93,7 @@ import phasereditor.assetpack.ui.preview.TilemapAssetInformationControl;
 import phasereditor.assetpack.ui.preview.TilemapTilesetInformationControl;
 import phasereditor.assetpack.ui.widgets.AudioResourceDialog;
 import phasereditor.assetpack.ui.widgets.ImageResourceDialog;
+import phasereditor.assetpack.ui.widgets.VideoResourceDialog;
 import phasereditor.audio.core.AudioCore;
 import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.views.PreviewView;
@@ -271,6 +272,49 @@ public class AssetPackUI {
 		AudioResourceDialog dlg = new AudioResourceDialog(shell);
 		dlg.setLabelProvider(createFilesLabelProvider(packModel, usedFiles, shell));
 		dlg.setInput(audioFiles);
+
+		if (initialFiles != null) {
+			dlg.setInitialFiles(initialFiles);
+		}
+
+		if (dlg.open() == Window.OK) {
+			List<IFile> selection = dlg.getSelection();
+			if (selection != null) {
+				JSONArray array = new JSONArray();
+				for (IFile file : selection) {
+					String url = packModel.getAssetUrl(file);
+					array.put(url);
+				}
+				String json = array.toString();
+				action.accept(json);
+				return json;
+			}
+		}
+
+		return "";
+	}
+
+	public static String browseVideoUrl(AssetPackModel packModel, List<IFile> curVideoFiles, List<IFile> videoFiles,
+			Shell shell, Consumer<String> action) {
+
+		Set<IFile> usedFiles = packModel.findUsedFiles();
+
+		// remove from the current files those are not part of the available
+		// files
+		for (IFile file : new ArrayList<>(curVideoFiles)) {
+			if (!videoFiles.contains(file)) {
+				curVideoFiles.remove(file);
+			}
+		}
+
+		List<IFile> initialFiles = curVideoFiles;
+		if (initialFiles == null && !videoFiles.isEmpty()) {
+			initialFiles = new ArrayList<>(Arrays.asList(videoFiles.get(0)));
+		}
+
+		VideoResourceDialog dlg = new VideoResourceDialog(shell);
+		dlg.setLabelProvider(createFilesLabelProvider(packModel, usedFiles, shell));
+		dlg.setInput(videoFiles);
 
 		if (initialFiles != null) {
 			dlg.setInitialFiles(initialFiles);

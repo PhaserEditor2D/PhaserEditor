@@ -102,6 +102,7 @@ import phasereditor.assetpack.core.ScriptAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.TextAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
+import phasereditor.assetpack.core.VideoAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetsContentProvider;
@@ -316,6 +317,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	private ScriptAssetEditorComp _scriptAssetEditorComp;
 	private Object _editingElement;
 
+	private VideoAssetEditorComp _videoAssetEditorComp;
+
 	@SuppressWarnings("unused")
 	@Override
 	public void createPartControl(Composite parent) {
@@ -422,6 +425,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		_spritesheetAssetEditorComp = new SpritesheetAssetEditorComp(_editorsContainer, SWT.NONE);
 
 		_audioAssetEditorComp = new AudioAssetEditorComp(_editorsContainer, SWT.NONE);
+
+		_videoAssetEditorComp = new VideoAssetEditorComp(_editorsContainer, SWT.NONE);
 
 		_audioSpriteEditorComp = new AudioSpriteAssetEditorComp(_editorsContainer, SWT.NONE);
 
@@ -701,6 +706,10 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				case audio:
 					_audioAssetEditorComp.setModel((AudioAssetModel) asset);
 					editor = _audioAssetEditorComp;
+					break;
+				case video:
+					_videoAssetEditorComp.setModel((VideoAssetModel) asset);
+					editor = _videoAssetEditorComp;
 					break;
 				case audiosprite:
 					_audioSpriteEditorComp.setModel((AudioSpriteAssetModel) asset);

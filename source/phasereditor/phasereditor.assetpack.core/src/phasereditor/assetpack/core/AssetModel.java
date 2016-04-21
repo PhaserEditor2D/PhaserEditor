@@ -91,8 +91,8 @@ public abstract class AssetModel implements IAdaptable {
 		_lastUsedFiles = new IFile[0];
 	}
 
-	public AssetModel(JSONObject jsonDoc, AssetSectionModel section) throws JSONException {
-		this(jsonDoc.getString("key"), readAssetType(jsonDoc), section);
+	public AssetModel(JSONObject jsonDef, AssetSectionModel section) throws JSONException {
+		this(jsonDef.getString("key"), readAssetType(jsonDef), section);
 	}
 
 	public final JSONObject toJSON() {
