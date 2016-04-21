@@ -34,6 +34,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.resources.IContainer;
@@ -52,6 +53,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.help.HelpSystem;
@@ -87,6 +89,7 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
@@ -97,7 +100,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -106,7 +108,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.wb.swt.ResourceManager;
-import org.eclipse.wb.swt.SWTResourceManager;
 import org.json.JSONObject;
 
 import com.badlogic.gdx.files.FileHandle;
@@ -154,6 +155,9 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 	}
 
 	public static final String ID = "phasereditor.atlas.ui.editors.AtlasGenEditor"; //$NON-NLS-1$
+	private static final QualifiedName QNAME_SHOW_FILE_LIST = new QualifiedName("com.phasereditor.atlas.editor",
+			"show-file-list");
+
 	TableViewer _framesViewer;
 	protected AtlasGeneratorEditorModel _model;
 	HashMap<AtlasFrame, String> _frameRegionNameMap;
@@ -169,7 +173,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 	private Action _layoutAction;
 	private CTabFolder _tabsFolder;
 	private List<IFile> _guessLastOutputFiles;
-	private Text _infoText;
+	private boolean _showFileList;
 
 	public AtlasGeneratorEditor() {
 		_guessLastOutputFiles = new ArrayList<>();
@@ -198,10 +202,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		_sashForm = new SashForm(_container, SWT.NONE);
 		_sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		SashForm leftSashComp = new SashForm(_sashForm, SWT.VERTICAL);
-		leftSashComp.setLayout(new GridLayout(1, false));
-
-		_framesViewer = new TableViewer(leftSashComp, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);
+		_framesViewer = new TableViewer(_sashForm, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);
 		_framesViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
@@ -210,10 +211,6 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		});
 		Table table = _framesViewer.getTable();
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-
-		_infoText = new Text(leftSashComp, SWT.BORDER | SWT.WRAP | SWT.MULTI);
-		_infoText.setBackground(SWTResourceManager.getColor(SWT.COLOR_INFO_BACKGROUND));
-		leftSashComp.setWeights(new int[] { 100, 50 });
 		table.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -224,7 +221,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		_framesViewer.setContentProvider(new ArrayContentProvider());
 		_tabsFolder = new CTabFolder(_sashForm, SWT.FLAT | SWT.BOTTOM);
 
-		_sashForm.setWeights(new int[] { 50, 100 });
+		_sashForm.setWeights(new int[] { 20, 100 });
 
 		_tabsFolder.setSelection(0);
 
@@ -296,6 +293,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 			icon = "icons/application_side_contract.png";
 		}
 		_layoutAction.setImageDescriptor(ResourceManager.getPluginImageDescriptor("phasereditor.ui", icon));
+		persistShowFileListState();
 	}
 
 	protected void settingsDialog() {
@@ -341,30 +339,23 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 	}
 
 	protected void frameSelectedInViewerSelected() {
-		AtlasFrame selected = (AtlasFrame) ((IStructuredSelection) _framesViewer.getSelection()).getFirstElement();
-		if (selected != null) {
-			for (int i = 0; i < _tabsFolder.getItemCount(); i++) {
-				AtlasCanvas canvas = (AtlasCanvas) _tabsFolder.getItem(i).getControl();
-				if (canvas.getFrames().contains(selected)) {
-					_tabsFolder.setSelection(i);
-					canvas.setFrame(selected);
-					canvas.redraw();
-					updateSpriteInfoLabel(selected);
-					break;
-				}
+		AtlasFrame selected = getSelectedFrame();
+		for (int i = 0; i < _tabsFolder.getItemCount(); i++) {
+			AtlasCanvas canvas = getAtlasCanvas(i);
+			canvas.setFrame(selected);
+			canvas.redraw();
+			canvas.setToolTipText(buildTooltip(selected));
+
+			if (selected != null && canvas.getFrames().contains(selected)) {
+				_tabsFolder.setSelection(i);
+				canvas.setFocus();
+				break;
 			}
 		}
-		updateInfoText();
 	}
 
-	@SuppressWarnings("unused")
-	private void updateSpriteInfoLabel(AtlasFrame frame) {
-		// if (frame == null) {
-		// _spriteInfoLabel.setText("");
-		// } else {
-		// _spriteInfoLabel.setText(frame.getName() + " " + frame.getSourceW() +
-		// "x" + frame.getSourceH());
-		// }
+	private AtlasCanvas getAtlasCanvas(int i) {
+		return (AtlasCanvas) _tabsFolder.getItem(i).getControl();
 	}
 
 	protected void handleDispose() {
@@ -402,11 +393,14 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 
 		manager.update(true);
 
-		_sashForm.setMaximizedControl(_tabsFolder);
+		// _sashForm.setMaximizedControl(_tabsFolder);
 
 		build(false);
 
+		updateLayout(_showFileList);
+
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
+
 	}
 
 	@Override
@@ -461,10 +455,11 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 
 		IFile file = ((IFileEditorInput) input).getFile();
 		try {
+			boolean hasUI = _framesViewer != null;
 			if (_model == null) {
 				_model = new AtlasGeneratorEditorModel(file);
 
-				if (_framesViewer != null) {
+				if (hasUI) {
 					build(false);
 				}
 			} else {
@@ -472,10 +467,32 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 			}
 			setPartName(file.getName());
 
+			Map<QualifiedName, String> props = file.getPersistentProperties();
+			_showFileList = props.getOrDefault(QNAME_SHOW_FILE_LIST, Boolean.TRUE.toString())
+					.equals(Boolean.TRUE.toString());
+			if (hasUI) {
+				updateLayout(_showFileList);
+			}
+
 		} catch (IOException | CoreException e) {
 			throw new RuntimeException(e);
 		}
 
+	}
+
+	/**
+	 * @param showFileList
+	 */
+	private void updateLayout(boolean showFileList) {
+		String icon;
+		if (showFileList) {
+			_sashForm.setMaximizedControl(null);
+			icon = "icons/application_side_contract.png";
+		} else {
+			_sashForm.setMaximizedControl(_tabsFolder);
+			icon = "icons/application_side_expand.png";
+		}
+		_layoutAction.setImageDescriptor(ResourceManager.getPluginImageDescriptor("phasereditor.ui", icon));
 	}
 
 	private void build(boolean dirty) {
@@ -742,12 +759,23 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 					i++;
 				}
 			}
+
 			refreshFolder(monitor);
 
 			_dirty = false;
 			firePropertyChange(PROP_DIRTY);
 		} catch (CoreException e) {
 			throw new RuntimeException(e);
+		}
+	}
+
+	private void persistShowFileListState() {
+		// save UI state
+		try {
+			Object value = _sashForm.getMaximizedControl() == null ? Boolean.TRUE : Boolean.FALSE;
+			_model.getFile().setPersistentProperty(QNAME_SHOW_FILE_LIST, value.toString());
+		} catch (CoreException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -795,7 +823,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 			AtlasCanvas canvas;
 			canvas = createAtlasCanvas();
 			CTabItem item = new CTabItem(_tabsFolder, SWT.NONE);
-			item.setText("P" + i);
+			item.setText("page " + i);
 			item.setControl(canvas);
 			canvas.setImage(page.getImage());
 			canvas.setFrames(page.getFrames());
@@ -814,25 +842,22 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		}
 		_framesViewer.setInput(frames);
 
-		updateInfoText();
+		buildTooltip(getSelectedFrame());
 	}
 
-	private void updateInfoText() {
-		AtlasFrame sel = (AtlasFrame) ((IStructuredSelection) _framesViewer.getSelection()).getFirstElement();
-
+	private String buildTooltip(AtlasFrame frame) {
 		StringBuilder sb = new StringBuilder();
 
-		if (sel != null) {
-			sb.append("Sprite	: 	" + sel.getName() + "\n");
-			sb.append(String.format("Frame	: 	XYWH=(%s,%s,%s,%s)\n", Integer.toString(sel.getFrameX()),
-					Integer.toString(sel.getFrameY()), Integer.toString(sel.getFrameW()),
-					Integer.toString(sel.getFrameH())));
-			sb.append(String.format("Sprite	: 	XYWH=(%s,%s,%s,%s)\n", Integer.toString(sel.getSpriteX()),
-					Integer.toString(sel.getSpriteY()), Integer.toString(sel.getSpriteW()),
-					Integer.toString(sel.getSpriteH())));
-			sb.append(String.format("Source	: 	WH=(%s,%s)\n", Integer.toString(sel.getSourceW()),
-					Integer.toString(sel.getSourceH())));
-			sb.append("\n");
+		if (frame != null) {
+			sb.append("name: " + frame.getName() + "\n");
+			sb.append(String.format("frame: x=%s, y=%s, w=%s, h=%s\n", Integer.toString(frame.getFrameX()),
+					Integer.toString(frame.getFrameY()), Integer.toString(frame.getFrameW()),
+					Integer.toString(frame.getFrameH())));
+			sb.append(String.format("sprite: x=%s, y=%s, w=%s, h=%s\n", Integer.toString(frame.getSpriteX()),
+					Integer.toString(frame.getSpriteY()), Integer.toString(frame.getSpriteW()),
+					Integer.toString(frame.getSpriteH())));
+			sb.append(String.format("source: w=%s, h=%s\n", Integer.toString(frame.getSourceW()),
+					Integer.toString(frame.getSourceH())));
 		}
 
 		if (_result != null) {
@@ -840,13 +865,20 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 			for (ResultPage page : _result.getPages()) {
 				Image img = page.getImage();
 				Rectangle b = img.getBounds();
-				sb.append(String.format("Page %s	: 	W=%s H=%s\n", Integer.toString(i), Integer.toString(b.width),
+				sb.append(String.format("page %s: w=%s h=%s\n", Integer.toString(i), Integer.toString(b.width),
 						Integer.toString(b.height)));
 				i++;
 			}
 		}
 
-		_infoText.setText(sb.toString());
+		return sb.toString();
+	}
+
+	/**
+	 * @return
+	 */
+	private AtlasFrame getSelectedFrame() {
+		return (AtlasFrame) ((IStructuredSelection) _framesViewer.getSelection()).getFirstElement();
 	}
 
 	private AtlasCanvas createAtlasCanvas() {
@@ -855,6 +887,23 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 			@Override
 			public void mouseUp(MouseEvent e) {
 				atlasCanvasClicked(canvas);
+			}
+		});
+		canvas.addMouseTrackListener(new MouseTrackListener() {
+
+			@Override
+			public void mouseHover(MouseEvent e) {
+				atlasCanvasHover(canvas);
+			}
+
+			@Override
+			public void mouseExit(MouseEvent e) {
+				// nothing
+			}
+
+			@Override
+			public void mouseEnter(MouseEvent e) {
+				// nothing
 			}
 		});
 		return canvas;
@@ -868,16 +917,24 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 			_framesViewer.setSelection(new StructuredSelection(over), true);
 			_framesViewer.getTable().forceFocus();
 		}
-		updateSpriteInfoLabel(over);
+	}
+
+	protected void atlasCanvasHover(AtlasCanvas canvas) {
+		AtlasFrame over = canvas.getOverFrame();
+		if (over != null && !canvas.isFocusControl()) {
+			canvas.setFocus();
+		}
+		canvas.setToolTipText(buildTooltip(over));
 	}
 
 	private void addMainTab() {
 		CTabItem item = new CTabItem(_tabsFolder, SWT.NONE);
-		item.setText("P1");
+		item.setText("page 1");
 		AtlasCanvas canvas = createAtlasCanvas();
 		canvas.setNoImageMessage("(drop image files here)");
 		item.setControl(canvas);
 		_tabsFolder.setSelection(0);
+		canvas.setFocus();
 	}
 
 	public IFile getEditorInputFile() {
