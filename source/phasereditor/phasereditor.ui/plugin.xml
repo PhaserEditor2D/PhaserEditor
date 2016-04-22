@@ -83,7 +83,7 @@
             categoryId="phasereditor.ui.phaserCategory"
             description="Show selection in the Preview window"
             id="phasereditor.ui.commands.showInPreview"
-            name="Open Preview">
+            name="Open In Preview">
       </command>
    </extension>
    <extension
