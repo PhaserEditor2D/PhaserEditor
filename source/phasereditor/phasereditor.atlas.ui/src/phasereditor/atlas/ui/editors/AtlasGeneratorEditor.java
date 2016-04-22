@@ -148,7 +148,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 			AtlasFrame frame = (AtlasFrame) element;
 			IFile file = findFile(frame);
 			if (file != null) {
-				Image img = _cache.getIcon(file, 32);
+				Image img = _cache.getIcon(file, 32, null);
 				return img;
 			}
 			return super.getImage(element);

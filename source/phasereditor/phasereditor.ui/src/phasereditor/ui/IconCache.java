@@ -62,7 +62,7 @@ public class IconCache {
 		_extraDispose = new ArrayList<>();
 	}
 
-	private static Image scaleImage(String filepath, Rectangle src, int newSize) {
+	private static Image scaleImage(String filepath, Rectangle src, int newSize, BufferedImage overlay) {
 		try {
 			BufferedImage swingimg = ImageIO.read(new File(filepath));
 			BufferedImage swingimg2 = new BufferedImage(newSize, newSize, BufferedImage.TYPE_INT_ARGB);
@@ -71,6 +71,9 @@ public class IconCache {
 			Rectangle z = PhaserEditorUI.computeImageZoom(src2, new Rectangle(0, 0, newSize, newSize));
 			g2.drawImage(swingimg, z.x, z.y, z.x + z.width, z.y + z.height, src2.x, src2.y, src2.x + src2.width,
 					src2.y + src2.height, null);
+			if (overlay != null) {
+				g2.drawImage(overlay, 0, 0, null);
+			}
 			g2.dispose();
 			ByteArrayOutputStream memory = new ByteArrayOutputStream();
 			ImageIO.write(swingimg2, "png", memory);
@@ -82,30 +85,30 @@ public class IconCache {
 		}
 	}
 
-	public Image getIcon(Path file, int iconSize) {
-		return getIcon(file.toAbsolutePath().toString(), iconSize);
+	public Image getIcon(Path file, int iconSize, BufferedImage overlay) {
+		return getIcon(file.toAbsolutePath().toString(), iconSize, overlay);
 	}
 
-	public Image getIcon(String filepath, int newSize) {
-		return getScaledImage(filepath, null, newSize);
+	public Image getIcon(String filepath, int newSize, BufferedImage overlay) {
+		return getScaledImage(filepath, null, newSize, overlay);
 	}
 
-	public Image getIcon(IFile file, int newSize) {
-		return getScaledImage(file.getLocation().toPortableString(), null, newSize);
+	public Image getIcon(IFile file, int newSize, BufferedImage overlay) {
+		return getScaledImage(file.getLocation().toPortableString(), null, newSize, overlay);
 	}
 
-	public Image getIcon(IFile file, Rectangle src, int newSize) {
-		return getScaledImage(file.getLocation().toPortableString(), src, newSize);
+	public Image getIcon(IFile file, Rectangle src, int newSize, BufferedImage overlay) {
+		return getScaledImage(file.getLocation().toPortableString(), src, newSize, overlay);
 	}
 
-	public Image getScaledImage(String filepath, Rectangle src, int newSize) {
+	public Image getScaledImage(String filepath, Rectangle src, int newSize, BufferedImage overlay) {
 		Path file = Paths.get(filepath);
-		
+
 		if (!Files.exists(file)) {
 			return null;
 		}
-		
-		String k = computeKey(filepath, src, newSize);
+
+		String k = computeKey(filepath, src, newSize, overlay);
 
 		// check if the file changed
 
@@ -129,12 +132,12 @@ public class IconCache {
 
 		_timeCache.put(k, Long.valueOf(t0));
 		try {
-			Image img = scaleImage(filepath, src, newSize);
-			
+			Image img = scaleImage(filepath, src, newSize, overlay);
+
 			if (img == null) {
 				return null;
 			}
-			
+
 			Image old = _imgCache.put(k, img);
 			if (old != null) {
 				_extraDispose.add(old);
@@ -146,8 +149,8 @@ public class IconCache {
 		}
 	}
 
-	private static String computeKey(String filepath, Rectangle src, int newSize) {
-		return filepath + "#" + src + "#" + newSize;
+	private static String computeKey(String filepath, Rectangle src, int newSize, BufferedImage overlay) {
+		return filepath + "#" + src + "#" + newSize + (overlay == null? "" : "#overlay-" + overlay.hashCode());
 	}
 
 	public void dispose() {

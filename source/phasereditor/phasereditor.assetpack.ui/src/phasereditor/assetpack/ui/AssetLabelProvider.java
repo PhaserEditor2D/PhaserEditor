@@ -21,8 +21,13 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -59,10 +64,16 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 	private WorkbenchLabelProvider _workbenchLabelProvider;
 	private IconCache _cache = new IconCache();
 	private Control _control;
+	private BufferedImage _filmOverlay;
 
 	public AssetLabelProvider(int iconSize) {
 		_iconSize = iconSize;
 		_workbenchLabelProvider = new WorkbenchLabelProvider();
+		try {
+			_filmOverlay = ImageIO.read(new URL("platform:/plugin/phasereditor.ui/icons/film-overlay.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public AssetLabelProvider() {
@@ -127,7 +138,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 
 			if (file != null) {
 				try {
-					return _cache.getIcon(file, _iconSize);
+					return _cache.getIcon(file, _iconSize, null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -141,7 +152,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 			for (IFile file : files) {
 				wavesFile = AudioCore.getSoundWavesFile(file, false);
 				if (wavesFile != null) {
-					Image icon = _cache.getIcon(wavesFile, _iconSize);
+					Image icon = _cache.getIcon(wavesFile, _iconSize, null);
 					return icon == null? getKeyImage() : icon;
 				}
 			}
@@ -154,7 +165,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 			for (IFile file : files) {
 				snapshotFile = AudioCore.getVideoSnapshotFile(file, false);
 				if (snapshotFile != null) {
-					Image icon = _cache.getIcon(snapshotFile, _iconSize);
+					Image icon = _cache.getIcon(snapshotFile, _iconSize, _filmOverlay);
 					return icon == null? getKeyImage() : icon;
 				}
 			}
@@ -168,10 +179,10 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 					Rectangle b = PhaserEditorUI.getImageBounds(file);
 					List<FrameData> frames = AssetPackUI.generateSpriteSheetRects(asset, b, b);
 					if (frames.isEmpty()) {
-						return _cache.getIcon(file, _iconSize);
+						return _cache.getIcon(file, _iconSize, null);
 					}
 					FrameData fd = frames.get(0);
-					return _cache.getIcon(file, fd.src, _iconSize);
+					return _cache.getIcon(file, fd.src, _iconSize, null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -185,7 +196,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 				try {
 					Rectangle src = new Rectangle(frame.getFrameX(), frame.getFrameY(), frame.getFrameW(),
 							frame.getFrameH());
-					return _cache.getIcon(file, src, _iconSize);
+					return _cache.getIcon(file, src, _iconSize, null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -199,7 +210,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 			if (file != null) {
 				try {
 					Rectangle b = frame.getBounds();
-					return _cache.getIcon(file, b, _iconSize);
+					return _cache.getIcon(file, b, _iconSize, null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
