@@ -45,7 +45,6 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.FileImageInputStream;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -107,10 +106,6 @@ public class PhaserEditorUI {
 	}
 
 	public static Path eclipseFileToJavaPath(IFile file) {
-		return Paths.get(file.getLocation().toPortableString());
-	}
-
-	public static Path javaPathToEclipseFile(IResource file) {
 		return Paths.get(file.getLocation().toPortableString());
 	}
 

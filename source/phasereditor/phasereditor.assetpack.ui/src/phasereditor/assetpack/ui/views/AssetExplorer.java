@@ -55,6 +55,7 @@ import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.PhaserEditorUI;
 
 public class AssetExplorer extends ViewPart {
+	public static final String ID = "phasereditor.assetpack.views.assetExplorer";
 	Text _searchText;
 	TreeViewer _viewer;
 	private IPacksChangeListener _changeListener;

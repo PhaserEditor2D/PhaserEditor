@@ -391,6 +391,16 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2.21790528;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect5924"
+       width="13.782095"
+       height="13.782095"
+       x="-1956.2937"
+       y="1395.2275"
+       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Public\source\phasereditor\phasereditor.ui\icons\film-overlay.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
        style="opacity:1;fill:#008000;fill-opacity:1;stroke:#ffffff;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect5729"
        width="96.520073"
@@ -8350,136 +8360,128 @@
        height="16"
        width="16" />
     <g
-       id="g5946"
-       transform="matrix(1,0,0,0.99874464,0,1.7694057)">
-      <rect
-         y="1393.48"
-         x="-1956.7559"
-         height="16"
-         width="16"
-         id="rect5924"
-         style="opacity:1;fill:#babdb6;fill-opacity:1;stroke:none;stroke-width:2.57482529;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+       id="g5926"
+       transform="matrix(1.0154922,0,0,1.0460338,44.662896,-63.97792)"
+       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Public\source\phasereditor\phasereditor.ui\icons\film-overlay.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
       <g
-         transform="matrix(1.0154922,0,0,1.0460338,45.309665,-64.616619)"
-         id="g5926">
+         transform="matrix(0.32773369,0,0,0.31580333,-1325.342,964.27912)"
+         id="g5750">
+        <rect
+           style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2.44716978;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="rect5712"
+           width="5.8165007"
+           height="45.626526"
+           x="-1970.4208"
+           y="1361.6906"
+           ry="0" />
+        <rect
+           style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="rect5714"
+           width="5.25"
+           height="6.375"
+           x="-1970.1062"
+           y="1361.9476" />
+        <rect
+           y="1369.7601"
+           x="-1970.1687"
+           height="6.375"
+           width="5.25"
+           id="rect5716"
+           style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <rect
+           style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="rect5718"
+           width="5.25"
+           height="6.375"
+           x="-1970.1687"
+           y="1377.5726" />
         <g
-           id="g5750"
-           transform="matrix(0.32773369,0,0,0.31580333,-1325.342,964.27912)">
-          <rect
-             ry="0"
-             y="1361.6906"
-             x="-1970.4208"
-             height="45.626526"
-             width="5.8165007"
-             id="rect5712"
-             style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2.44716978;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-          <rect
-             y="1361.9476"
-             x="-1970.1062"
-             height="6.375"
-             width="5.25"
-             id="rect5714"
-             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+           id="g5733"
+           transform="translate(-144.98126,44.384605)"
+           style="stroke:#000000">
           <rect
              style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-             id="rect5716"
+             id="rect5735"
              width="5.25"
              height="6.375"
-             x="-1970.1687"
-             y="1369.7601" />
-          <rect
-             y="1377.5726"
-             x="-1970.1687"
-             height="6.375"
-             width="5.25"
-             id="rect5718"
-             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-          <g
-             style="stroke:#000000"
-             transform="translate(-144.98126,44.384605)"
-             id="g5733">
-            <rect
-               y="1340.9872"
-               x="-1825.125"
-               height="6.375"
-               width="5.25"
-               id="rect5735"
-               style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-          </g>
-          <rect
-             y="1393.1843"
-             x="-1970.1687"
-             height="6.375"
-             width="5.25"
-             id="rect5737"
-             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-          <rect
-             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-             id="rect5739"
-             width="5.25"
-             height="6.375"
-             x="-1970.1687"
-             y="1400.9968" />
+             x="-1825.125"
+             y="1340.9872" />
         </g>
+        <rect
+           style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="rect5737"
+           width="5.25"
+           height="6.375"
+           x="-1970.1687"
+           y="1393.1843" />
+        <rect
+           y="1400.9968"
+           x="-1970.1687"
+           height="6.375"
+           width="5.25"
+           id="rect5739"
+           style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      </g>
+      <g
+         transform="matrix(0.32773369,0,0,0.31580333,-1312.3065,964.33495)"
+         id="g5760">
+        <rect
+           ry="0"
+           y="1361.6906"
+           x="-1970.4208"
+           height="45.626526"
+           width="5.8165007"
+           id="rect5762"
+           style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2.44716978;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <rect
+           y="1361.9476"
+           x="-1970.1062"
+           height="6.375"
+           width="5.25"
+           id="rect5764"
+           style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <rect
+           style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="rect5766"
+           width="5.25"
+           height="6.375"
+           x="-1970.1687"
+           y="1369.7601" />
+        <rect
+           y="1377.5726"
+           x="-1970.1687"
+           height="6.375"
+           width="5.25"
+           id="rect5768"
+           style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
         <g
-           id="g5760"
-           transform="matrix(0.32773369,0,0,0.31580333,-1312.3065,964.33495)">
+           style="stroke:#000000"
+           transform="translate(-144.98126,44.384605)"
+           id="g5770">
           <rect
-             style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2.44716978;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-             id="rect5762"
-             width="5.8165007"
-             height="45.626526"
-             x="-1970.4208"
-             y="1361.6906"
-             ry="0" />
-          <rect
-             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-             id="rect5764"
-             width="5.25"
-             height="6.375"
-             x="-1970.1062"
-             y="1361.9476" />
-          <rect
-             y="1369.7601"
-             x="-1970.1687"
+             y="1340.9872"
+             x="-1825.125"
              height="6.375"
              width="5.25"
-             id="rect5766"
-             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-          <rect
-             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-             id="rect5768"
-             width="5.25"
-             height="6.375"
-             x="-1970.1687"
-             y="1377.5726" />
-          <g
-             id="g5770"
-             transform="translate(-144.98126,44.384605)"
-             style="stroke:#000000">
-            <rect
-               style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-               id="rect5772"
-               width="5.25"
-               height="6.375"
-               x="-1825.125"
-               y="1340.9872" />
-          </g>
-          <rect
-             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-             id="rect5774"
-             width="5.25"
-             height="6.375"
-             x="-1970.1687"
-             y="1393.1843" />
-          <rect
-             y="1400.9968"
-             x="-1970.1687"
-             height="6.375"
-             width="5.25"
-             id="rect5776"
+             id="rect5772"
              style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
         </g>
+        <rect
+           y="1393.1843"
+           x="-1970.1687"
+           height="6.375"
+           width="5.25"
+           id="rect5774"
+           style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <rect
+           style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="rect5776"
+           width="5.25"
+           height="6.375"
+           x="-1970.1687"
+           y="1400.9968" />
       </g>
     </g>
     <g

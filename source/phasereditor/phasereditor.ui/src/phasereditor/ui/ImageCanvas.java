@@ -68,10 +68,15 @@ public class ImageCanvas extends Canvas implements PaintListener {
 		}
 
 		_imageFile = file;
+		
+		String filepath = file.getLocation().toFile().getAbsolutePath();
+		loadImage(filepath);
+	}
 
+	public void loadImage(String filepath) {
 		Image image;
 		try {
-			image = new Image(getDisplay(), _imageFile.getLocation().toFile().getAbsolutePath());
+			image = new Image(getDisplay(), filepath);
 		} catch (Exception e) {
 			e.printStackTrace();
 			image = null;

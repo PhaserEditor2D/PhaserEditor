@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.widgets;
 
+import java.nio.file.Path;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -59,6 +61,16 @@ public class ImagePreviewComposite extends Composite {
 		} else {
 			_imagePreviewCanvas.setImageFile(file);
 			_resolutionLabel.setText(file.getName() + " (" + _imagePreviewCanvas.getResolution() + ")");
+		}
+	}
+
+	public void loadImage(Path path, String label) {
+		if (path == null) {
+			_imagePreviewCanvas.setImage(null);
+			_resolutionLabel.setText("<No image>");
+		} else {
+			_imagePreviewCanvas.loadImage(path.toAbsolutePath().toString());
+			_resolutionLabel.setText(label + " (" + _imagePreviewCanvas.getResolution() + ")");
 		}
 	}
 }

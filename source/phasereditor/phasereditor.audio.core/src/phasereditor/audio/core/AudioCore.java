@@ -523,6 +523,10 @@ public class AudioCore {
 	}
 
 	public synchronized static Path getVideoSnapshotFile(IFile file, boolean forceMake) {
+		if (file == null) {
+			return null;
+		}
+		
 		try {
 			String filename = file.getPersistentProperty(SNAPSHOT_FILENAME_KEY);
 			String home = System.getProperty("user.home");

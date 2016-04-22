@@ -33,11 +33,13 @@ import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.preview.AudioFileInformationControl;
 import phasereditor.assetpack.ui.preview.ImageFileInformationControl;
+import phasereditor.assetpack.ui.preview.VideoAssetScreenshotInformationControl;
 import phasereditor.audio.core.AudioCore;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.info.GenericInformationControlCreator;
@@ -46,9 +48,11 @@ import phasereditor.ui.info.TextInformationControlCreator;
 public class FilesProposalComputer extends BaseProposalComputer {
 	protected static final int RELEVANCE = 0;
 	protected static Image _filePropImage;
+	protected static WorkbenchLabelProvider _defaultLabelProvider;
 
 	static {
 		_filePropImage = AssetLabelProvider.getFileImage();
+		_defaultLabelProvider = new WorkbenchLabelProvider();
 	}
 
 	public FilesProposalComputer() {
@@ -78,16 +82,22 @@ public class FilesProposalComputer extends BaseProposalComputer {
 						String display = "\"" + filename + "\"";
 
 						Object obj = null;
-						if (AssetPackCore.isAudio(resource) || AssetPackCore.isImage(resource)) {
+						if (AssetPackCore.isAudio(resource) || AssetPackCore.isImage(resource)
+								|| AssetPackCore.isVideo(resource)) {
 							obj = resource;
 						}
 
 						ProposalData proposal = new ProposalData(obj, filename, display, RELEVANCE);
-						proposal.setImage(_filePropImage);
+						Image icon = _defaultLabelProvider.getImage(resource);
+						proposal.setImage(icon == null ? _filePropImage : icon);
 
 						if (AssetPackCore.isImage(resource)) {
 							proposal.setControlCreator(new GenericInformationControlCreator(
 									ImageFileInformationControl.class, ImageFileInformationControl::new));
+						} else if (AudioCore.isSupportedVideo((IFile) resource)) {
+							proposal.setControlCreator(
+									new GenericInformationControlCreator(VideoAssetScreenshotInformationControl.class,
+											VideoAssetScreenshotInformationControl::new));
 						} else if (AudioCore.isSupportedAudio((IFile) resource)) {
 							proposal.setControlCreator(new GenericInformationControlCreator(
 									AudioFileInformationControl.class, AudioFileInformationControl::new));

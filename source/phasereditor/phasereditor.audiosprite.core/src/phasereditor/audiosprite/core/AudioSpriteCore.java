@@ -24,7 +24,6 @@ package phasereditor.audiosprite.core;
 import static java.lang.System.out;
 import static phasereditor.ui.PhaserEditorUI.eclipseFileToJavaPath;
 import static phasereditor.ui.PhaserEditorUI.getNameFromFilename;
-import static phasereditor.ui.PhaserEditorUI.javaPathToEclipseFile;
 import static phasereditor.ui.PhaserEditorUI.pickFileWithoutExtension;
 
 import java.io.ByteArrayInputStream;
@@ -182,7 +181,7 @@ public class AudioSpriteCore {
 						throw new CancellationException();
 					}
 
-					java.nio.file.Path current = javaPathToEclipseFile(file);
+					java.nio.file.Path current = eclipseFileToJavaPath(file);
 
 					monitor.subTask("Processing " + file.getName() + "...");
 
@@ -247,7 +246,7 @@ public class AudioSpriteCore {
 				// move resulting audio-sprite sound file to the workspace
 
 				if (join != null) {
-					java.nio.file.Path dstPath = javaPathToEclipseFile(dstAudioFile);
+					java.nio.file.Path dstPath = eclipseFileToJavaPath(dstAudioFile);
 
 					// the join var is pointing to the original file
 					if (join.getFileName().toString().toLowerCase().endsWith(".wav")) {

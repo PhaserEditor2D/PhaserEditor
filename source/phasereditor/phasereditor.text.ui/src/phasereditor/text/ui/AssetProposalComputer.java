@@ -53,6 +53,7 @@ import phasereditor.assetpack.ui.preview.PhysicsAssetInformationControl;
 import phasereditor.assetpack.ui.preview.SpritesheetAssetInformationControl;
 import phasereditor.assetpack.ui.preview.TilemapAssetInformationControl;
 import phasereditor.assetpack.ui.preview.TilemapTilesetInformationControl;
+import phasereditor.assetpack.ui.preview.VideoAssetScreenshotInformationControl;
 import phasereditor.ui.info.GenericInformationControlCreator;
 
 public class AssetProposalComputer extends BaseProposalComputer {
@@ -206,6 +207,10 @@ public class AssetProposalComputer extends BaseProposalComputer {
 					}
 					break;
 				}
+				case video:
+					propData.setControlCreator(new GenericInformationControlCreator(VideoAssetScreenshotInformationControl.class,
+							VideoAssetScreenshotInformationControl::new));
+					break;
 				default:
 					break;
 				}

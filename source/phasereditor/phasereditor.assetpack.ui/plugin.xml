@@ -78,6 +78,12 @@
             id="phasereditor.assetpack.ui.explorer.showtree"
             name="All Assets">
       </command>
+      <command
+            categoryId="phasereditor.ui.phaserCategory"
+            defaultHandler="phasereditor.assetpack.ui.handlers.NewAssetExplorrHandler"
+            id="phasereditor.assetpack.ui.explorer.newview"
+            name="Open New Window">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -95,6 +101,11 @@
                icon="platform:/plugin/org.eclipse.ui/icons/full/etool16/editor_area.png"
                style="push"
                tooltip="Edit selected object.">
+         </command>
+         <command
+               commandId="phasereditor.assetpack.ui.explorer.newview"
+               icon="platform:/plugin/phasereditor.ui/icons/new.png"
+               style="push">
          </command>
          <!--
          <separator
@@ -127,6 +138,11 @@
                icon="platform:/plugin/phasereditor.ui/icons/eye.png"
                style="push"
                tooltip="Show the selection in the Preview window.">
+         </command>
+         <command
+               commandId="phasereditor.assetpack.ui.explorer.newview"
+               icon="platform:/plugin/phasereditor.ui/icons/new.png"
+               style="push">
          </command>
          <!--
          <command
