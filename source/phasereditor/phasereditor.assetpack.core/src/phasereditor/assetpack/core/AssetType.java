@@ -22,7 +22,7 @@
 package phasereditor.assetpack.core;
 
 public enum AssetType {
-	image, spritesheet, atlas, audio, audiosprite, tilemap, bitmapFont, physics, text, json, script, binary, video;
+	image, spritesheet, atlas, audio, audiosprite, video, tilemap, bitmapFont, physics, text, json, script, binary;
 
 	public String capitalName() {
 		return name().substring(0, 1).toUpperCase() + name().substring(1);

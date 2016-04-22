@@ -252,7 +252,7 @@ public final class AssetPackModel {
 	public List<IFile> discoverAudioFiles() throws CoreException {
 		return AssetPackCore.discoverAudioFiles(getAssetsFolder());
 	}
-	
+
 	public List<IFile> discoverVideoFiles() throws CoreException {
 		return AssetPackCore.discoverVideoFiles(getAssetsFolder());
 	}
@@ -371,7 +371,7 @@ public final class AssetPackModel {
 		if (audios.size() > 0) {
 			for (IFile audio : audios) {
 				if (!used.contains(audio)) {
-					List<IFile> closure = AssetPackCore.getSameNameFiles(audio, audios);
+					List<IFile> closure = AssetPackCore.getSameNameFiles(audio, audios, AssetPackCore::isAudio);
 					result.addAll(closure);
 					break;
 				}
@@ -379,7 +379,6 @@ public final class AssetPackModel {
 		}
 		return new ArrayList<>(result);
 	}
-	
 
 	/**
 	 * Pick a list of not used audio files.
@@ -395,7 +394,7 @@ public final class AssetPackModel {
 		if (videos.size() > 0) {
 			for (IFile video : videos) {
 				if (!used.contains(video)) {
-					List<IFile> closure = AssetPackCore.getSameNameFiles(video, videos);
+					List<IFile> closure = AssetPackCore.getSameNameFiles(video, videos, AssetPackCore::isVideo);
 					result.addAll(closure);
 					break;
 				}
@@ -562,7 +561,7 @@ public final class AssetPackModel {
 				return null;
 			}
 			asset = section.findAsset(obj.getString("asset"));
-			
+
 			if (obj.has("sprite")) {
 				String spriteName = obj.getString("sprite");
 				for (IAssetElementModel elem : asset.getSubElements()) {
@@ -571,7 +570,7 @@ public final class AssetPackModel {
 					}
 				}
 			}
-			
+
 			return asset;
 		}
 		return section;

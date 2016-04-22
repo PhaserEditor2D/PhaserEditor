@@ -36,6 +36,7 @@ import java.util.function.Function;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
@@ -157,7 +158,15 @@ public class AssetPackCore {
 	 * @return If it is an audio.
 	 */
 	public static boolean isVideo(IResource resource) {
-		return resource instanceof IFile && _videoExtensions.contains(resource.getFullPath().getFileExtension());
+		if (resource instanceof IFolder) {
+			return false;
+		}
+
+		String ext = resource.getFullPath().getFileExtension();
+
+		boolean b = _videoExtensions.contains(ext);
+
+		return b;
 	}
 
 	/**
@@ -170,7 +179,7 @@ public class AssetPackCore {
 	 *            All the files.
 	 * @return All the files with the mainFile's name.
 	 */
-	public static List<IFile> getSameNameFiles(IFile mainFile, List<IFile> files) {
+	public static List<IFile> getSameNameFiles(IFile mainFile, List<IFile> files, Function<IFile, Boolean> accept) {
 		Set<IFile> set = new HashSet<>();
 
 		String mainName = mainFile.getName();
@@ -181,11 +190,14 @@ public class AssetPackCore {
 
 		for (IFile file : files) {
 			String ext = file.getFileExtension();
-			if (ext.length() > 0 && isAudio(file)) {
-				String name = file.getName();
-				name = name.substring(0, name.length() - ext.length() - 1);
-				if (name.equals(mainName)) {
-					set.add(file);
+			if (ext.length() > 0) {
+				Boolean b = accept.apply(file);
+				if (b.booleanValue()) {
+					String name = file.getName();
+					name = name.substring(0, name.length() - ext.length() - 1);
+					if (name.equals(mainName)) {
+						set.add(file);
+					}
 				}
 			}
 		}
@@ -303,10 +315,21 @@ public class AssetPackCore {
 
 			@Override
 			public boolean visit(IResource resource) throws CoreException {
-				if (!resource.isDerived() && resource instanceof IFile
-						&& (accept == null || accept.apply((IFile) resource).booleanValue())) {
-					list.add((IFile) resource);
+				if (resource.isDerived()) {
+					return true;
 				}
+
+				if (resource instanceof IFolder) {
+					return true;
+				}
+
+				IFile file = (IFile) resource;
+
+				Boolean b = accept.apply(file);
+				if (b.booleanValue()) {
+					list.add(file);
+				}
+
 				return true;
 			}
 		});

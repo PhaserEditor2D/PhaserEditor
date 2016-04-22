@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
-import static java.lang.System.out;
-
 import java.net.MalformedURLException;
 import java.util.List;
 
@@ -90,7 +88,6 @@ public class VideoCanvas extends Composite {
 	}
 
 	public void setVideoFile(IFile file) {
-		out.println("load file " + file);
 		_file = file;
 		try {
 			MediaPlayer player = _mediaView.getMediaPlayer();
@@ -98,7 +95,6 @@ public class VideoCanvas extends Composite {
 				if (player.getStatus() == Status.PLAYING) {
 					player.stop();
 				}
-				out.println("dispose " + player.getMedia().getSource());
 				player.dispose();
 			}
 
