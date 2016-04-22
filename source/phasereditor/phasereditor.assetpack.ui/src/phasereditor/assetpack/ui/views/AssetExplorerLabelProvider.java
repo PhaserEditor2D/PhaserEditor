@@ -26,7 +26,7 @@ import phasereditor.assetpack.ui.views.AssetExplorer.Container;
 
 class AssetExplorerLabelProvider extends AssetLabelProvider {
 	public AssetExplorerLabelProvider() {
-		super();
+		super(16);
 	}
 
 	protected AssetExplorerLabelProvider(int iconSize) {

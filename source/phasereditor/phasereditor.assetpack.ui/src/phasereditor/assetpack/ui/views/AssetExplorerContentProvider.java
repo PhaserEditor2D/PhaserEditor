@@ -178,8 +178,13 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 		if (PlatformUI.getWorkbench().isClosing()) {
 			return;
 		}
-
+		
+		if (_viewer == null) {
+			return;
+		}
+		
 		_viewer.refresh();
+		
 		IProject project = getActiveProject();
 		if (project != _lastToken) {
 			_viewer.expandAll();

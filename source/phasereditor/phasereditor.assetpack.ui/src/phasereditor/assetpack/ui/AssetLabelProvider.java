@@ -23,6 +23,7 @@ package phasereditor.assetpack.ui;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.List;
@@ -70,10 +71,15 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 		_iconSize = iconSize;
 		_workbenchLabelProvider = new WorkbenchLabelProvider();
 		try {
-			_filmOverlay = ImageIO.read(new URL("platform:/plugin/phasereditor.ui/icons/film-overlay.png"));
+			_filmOverlay = getFilmOverlay();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@SuppressWarnings("static-method")
+	protected BufferedImage getFilmOverlay() throws IOException, MalformedURLException {
+		return ImageIO.read(new URL("platform:/plugin/phasereditor.ui/icons/film-overlay.png"));
 	}
 
 	public AssetLabelProvider() {
@@ -153,7 +159,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 				wavesFile = AudioCore.getSoundWavesFile(file, false);
 				if (wavesFile != null) {
 					Image icon = _cache.getIcon(wavesFile, _iconSize, null);
-					return icon == null? getKeyImage() : icon;
+					return icon == null ? getKeyImage() : icon;
 				}
 			}
 		}
@@ -166,7 +172,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 				snapshotFile = AudioCore.getVideoSnapshotFile(file, false);
 				if (snapshotFile != null) {
 					Image icon = _cache.getIcon(snapshotFile, _iconSize, _filmOverlay);
-					return icon == null? getKeyImage() : icon;
+					return icon == null ? getKeyImage() : icon;
 				}
 			}
 		}

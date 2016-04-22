@@ -66,6 +66,18 @@
             id="phasereditor.assetpack.shownInEditor"
             name="Edit In Asset Pack Editor">
       </command>
+      <command
+            categoryId="phasereditor.ui.phaserCategory"
+            defaultHandler="phasereditor.assetpack.ui.handlers.AssetExplorerShowListHandler"
+            id="phasereditor.assetpack.ui.explorer.showlist"
+            name="Only Sprites">
+      </command>
+      <command
+            categoryId="phasereditor.ui.phaserCategory"
+            defaultHandler="phasereditor.assetpack.ui.handlers.AssetExplorerShowTreeHandler"
+            id="phasereditor.assetpack.ui.explorer.showtree"
+            name="All Assets">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -78,16 +90,28 @@
                style="push"
                tooltip="Show the selection in the Preview window.">
          </command>
-      </menuContribution>
-      <menuContribution
-            allPopups="false"
-            locationURI="toolbar:phasereditor.assetpack.views.assetExplorer?before=additions">
          <command
                commandId="phasereditor.assetpack.shownInEditor"
                icon="platform:/plugin/org.eclipse.ui/icons/full/etool16/editor_area.png"
                style="push"
                tooltip="Edit selected object.">
          </command>
+         <!--
+         <separator
+               name="phasereditor.assetpack.ui.separator1"
+               visible="true">
+         </separator>
+         <command
+               commandId="phasereditor.assetpack.ui.explorer.showlist"
+               icon="platform:/plugin/phasereditor.ui/icons/application_view_icons.png"
+               style="push">
+         </command>
+         <command
+               commandId="phasereditor.assetpack.ui.explorer.showtree"
+               icon="platform:/plugin/phasereditor.ui/icons/application_view_list.png"
+               style="push">
+         </command>
+         -->
       </menuContribution>
       <menuContribution
             allPopups="false"
@@ -104,6 +128,18 @@
                style="push"
                tooltip="Show the selection in the Preview window.">
          </command>
+         <!--
+         <command
+               commandId="phasereditor.assetpack.ui.explorer.showlist"
+               icon="platform:/plugin/phasereditor.ui/icons/application_view_icons.png"
+               style="push">
+         </command>
+         <command
+               commandId="phasereditor.assetpack.ui.explorer.showtree"
+               icon="platform:/plugin/phasereditor.ui/icons/application_view_list.png"
+               style="push">
+         </command>
+         -->
       </menuContribution>
    </extension>
    <extension
@@ -150,6 +186,9 @@
                         </instanceof>
                         <instanceof
                               value="phasereditor.assetpack.core.AssetGroupModel">
+                        </instanceof>
+                        <instanceof
+                              value="phasereditor.assetpack.core.IAssetElementModel">
                         </instanceof>
                      </or>
                   </iterate>

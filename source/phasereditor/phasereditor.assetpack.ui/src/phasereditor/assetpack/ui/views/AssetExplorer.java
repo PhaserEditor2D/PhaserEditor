@@ -28,6 +28,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -57,6 +58,10 @@ public class AssetExplorer extends ViewPart {
 	Text _searchText;
 	TreeViewer _viewer;
 	private IPacksChangeListener _changeListener;
+	// private AssetExplorerLabelProvider _treeLabelProvider;
+	// private AssetExplorerContentProvider _treeContentProvider;
+	// private AssetExplorerListLabelProvider _listLabelProvider;
+	// private AssetExplorerListContentProvider _listContentProvider;
 	static String ROOT = "root";
 
 	static class Container {
@@ -100,11 +105,9 @@ public class AssetExplorer extends ViewPart {
 		});
 		Tree tree = _viewer.getTree();
 		tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		_viewer.setLabelProvider(new AssetExplorerLabelProvider());
 		_viewer.setContentProvider(new AssetExplorerContentProvider());
-		// _viewer.setLabelProvider(new AssetExplorerListLabelProvider());
-		// _viewer.setContentProvider(new AssetExplorerListContentProvider());
-
+		_viewer.setLabelProvider(new AssetExplorerLabelProvider());
+		
 		afterCreateWidgets();
 
 	}
@@ -115,6 +118,14 @@ public class AssetExplorer extends ViewPart {
 	}
 
 	private void afterCreateWidgets() {
+		// _treeLabelProvider = new AssetExplorerLabelProvider();
+		// _treeContentProvider = new AssetExplorerContentProvider();
+		// _listLabelProvider = new AssetExplorerListLabelProvider();
+		// _listContentProvider = new AssetExplorerListContentProvider();
+
+		// _viewer.setLabelProvider(_treeLabelProvider);
+		// _viewer.setContentProvider(_treeContentProvider);
+
 		// change listener
 
 		AssetPackCore.getAssetPackModels();
@@ -147,7 +158,7 @@ public class AssetExplorer extends ViewPart {
 		_viewer.setInput(ROOT);
 		_viewer.expandToLevel(3);
 		// UIUtils.initSearchText(_searchText, _viewer, new AssetsFilter());
-		PhaserEditorUI.initSearchText(_searchText, _viewer, new AssetExplorerLabelProvider());
+		PhaserEditorUI.initSearchText(_searchText, _viewer, (ILabelProvider) _viewer.getLabelProvider());
 
 		// drag and drop
 
@@ -227,4 +238,25 @@ public class AssetExplorer extends ViewPart {
 		}
 		return super.getAdapter(adapter);
 	}
+
+	public void showList() {
+		// changeViewMode(_listLabelProvider, _listContentProvider);
+	}
+
+	public void showTree() {
+		// changeViewMode(_treeLabelProvider, _treeContentProvider);
+	}
+
+	// private void changeViewMode(ILabelProvider labelProvider,
+	// ITreeContentProvider contentProvider) {
+	// Object provider = _viewer.getLabelProvider();
+	// if (provider != labelProvider) {
+	// _viewer.getTree().clearAll(true);
+	// _viewer.setLabelProvider(labelProvider);
+	// _viewer.setContentProvider(contentProvider);
+	// _viewer.setInput(ROOT);
+	// _viewer.getTree().setRedraw(true);
+	// _viewer.expandToLevel(3);
+	// }
+	// }
 }
