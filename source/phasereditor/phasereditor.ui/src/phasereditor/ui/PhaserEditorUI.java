@@ -560,17 +560,20 @@ public class PhaserEditorUI {
 		}
 	}
 
-	public static Rectangle getImageBounds(String filepath) throws IOException {
+	public static Rectangle getImageBounds(String filepath) {
 		try (FileImageInputStream input = new FileImageInputStream(new File(filepath))) {
 			ImageReader reader = ImageIO.getImageReaders(input).next();
 			reader.setInput(input);
 			int w = reader.getWidth(0);
 			int h = reader.getHeight(0);
 			return new Rectangle(0, 0, w, h);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 
-	public static Rectangle getImageBounds(IFile file) throws IOException {
+	public static Rectangle getImageBounds(IFile file) {
 		return getImageBounds(file.getLocation().toPortableString());
 	}
 }

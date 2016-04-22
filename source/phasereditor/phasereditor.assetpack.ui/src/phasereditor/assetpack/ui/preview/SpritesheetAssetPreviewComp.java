@@ -45,12 +45,12 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
 import phasereditor.assetpack.core.SpritesheetAssetModel;
@@ -96,14 +96,15 @@ public class SpritesheetAssetPreviewComp extends Composite {
 				}
 			}
 		});
-		setLayout(new GridLayout(1, false));
+		GridLayout gridLayout = new GridLayout(1, false);
+		setLayout(gridLayout);
 
 		_canvas = new SpritesheetPreviewCanvas(this, SWT.NONE);
 		_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		_bottomPanel = new Composite(this, SWT.NONE);
 		_bottomPanel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		GridLayout gl_bottomPanel = new GridLayout(3, false);
+		GridLayout gl_bottomPanel = new GridLayout(4, false);
 		gl_bottomPanel.marginWidth = 0;
 		gl_bottomPanel.marginHeight = 0;
 		_bottomPanel.setLayout(gl_bottomPanel);
@@ -115,9 +116,13 @@ public class SpritesheetAssetPreviewComp extends Composite {
 		_gridButton.setLayoutData(gd_allButton);
 		_gridButton.setToolTipText("If pressedm it show the whole image and the frames grid.");
 
+		_sizeLabel = new Label(_bottomPanel, SWT.NONE);
+		_sizeLabel.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1));
+		_sizeLabel.setText("0x0");
+
 		_label = new Label(_bottomPanel, SWT.NONE);
 		_label.setText("fps");
-		_label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
+		_label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 
 		_comboViewer = new ComboViewer(_bottomPanel, SWT.READ_ONLY);
 		Combo combo = _comboViewer.getCombo();
@@ -201,10 +206,15 @@ public class SpritesheetAssetPreviewComp extends Composite {
 
 	public void setModel(SpritesheetAssetModel model) {
 		_model = model;
-
+		_sizeLabel.setText(model.getFrameWidth() + "x" + model.getFrameHeight());
 		_canvas.setSpritesheet(model);
 		IFile file = model.getUrlFile();
 		_canvas.setImageFile(file);
+		
+		if (isJustOneFrameMode()) {
+			return;
+		}
+		
 		_canvas.setFrame(0);
 		_canvas.setSingleFrame(false);
 		_gridButton.setText("Play");
@@ -217,17 +227,27 @@ public class SpritesheetAssetPreviewComp extends Composite {
 		_frameToShow = frame;
 		_canvas.setFrame(frame.getIndex());
 		_canvas.setSingleFrame(true);
-		_bottomPanel.dispose();
-		setLayout(new FillLayout());
+		
+		for (Control c : _bottomPanel.getChildren()) {
+			if (c != _sizeLabel) {
+				c.dispose();
+			}
+		}
+		
+		GridLayout layout = (GridLayout) getLayout();
+		layout.verticalSpacing = 0;
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+		
 		layout();
 	}
-	
+
 	public FrameModel getFrameToShow() {
 		return _frameToShow;
 	}
 
 	public boolean isJustOneFrameMode() {
-		return _bottomPanel.isDisposed();
+		return _gridButton.isDisposed();
 	}
 
 	public SpritesheetAssetModel getModel() {
@@ -258,6 +278,7 @@ public class SpritesheetAssetPreviewComp extends Composite {
 	private transient final PropertyChangeSupport support = new PropertyChangeSupport(this);
 	private ComboViewer _comboViewer;
 	private Composite _bottomPanel;
+	private Label _sizeLabel;
 
 	public void addPropertyChangeListener(PropertyChangeListener l) {
 		support.addPropertyChangeListener(l);
