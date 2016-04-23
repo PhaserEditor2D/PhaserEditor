@@ -21,7 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.text.ui;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
@@ -56,7 +58,19 @@ public class PhaserStringHover extends AbstractJavaEditorTextHover implements IT
 	private List<ICustomInformationControlCreator> _creators;
 
 	public PhaserStringHover() {
-		_creators = AssetPackUI.getInformationControlCreatorsForTooltips();
+		_creators =  new ArrayList<>( AssetPackUI.getInformationControlCreatorsForTooltips());
+		_creators.add(new ICustomInformationControlCreator() {
+			
+			@Override
+			public IInformationControl createInformationControl(Shell parent) {
+				return new EasingInformationControl(parent);
+			}
+			
+			@Override
+			public boolean isSupported(Object info) {
+				return info instanceof Function;
+			}
+		});
 	}
 
 	/*

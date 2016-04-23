@@ -26,7 +26,7 @@ public interface IEditorSharedImages {
 	String IMG_SHAPE_GROUP_NODE = "icons/shape_square_group.png";
 	String IMG_SHAPE_KEY = "icons/shape_square_key.png";
 	String IMG_DELETE = "icons/delete.png";
-	String IMG_CHART_CURVE = "icons/chart_curve.png";
+	String IMG_EASING_ICON = "icons/vector.png";
 	String IMG_CLASS_OBJ = "icons/class_obj.png";
 	String IMG_FIELD_DEFAULT_OBJ = "icons/field_default_obj.png";
 	String IMG_FIELD_PUBLIC_OBJ = "icons/field_public_obj.png";

@@ -161,6 +161,14 @@ public class TextUI {
 				result = assetObjects.get(0);
 			}
 		}
+		if (result == null) {
+			for(Object[] tuple : EasingProposalComputer.EASING_TUPLES) {
+				Object key = tuple[0];
+				if (key.equals(str)) {
+					return tuple[2];
+				}
+			}
+		}
 		return result;
 	}
 

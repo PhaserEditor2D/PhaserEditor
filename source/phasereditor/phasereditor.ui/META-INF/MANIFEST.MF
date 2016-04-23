@@ -17,6 +17,7 @@ Bundle-ActivationPolicy: lazy
 Export-Package: com.subshell.snippets.jface.tooltip.tooltipsupport,
  org.eclipse.wb.swt,
  phasereditor.ui,
+ phasereditor.ui.animations,
  phasereditor.ui.handlers,
  phasereditor.ui.info,
  phasereditor.ui.views

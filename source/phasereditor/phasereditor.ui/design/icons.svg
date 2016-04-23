@@ -364,7 +364,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="8"
-     inkscape:cx="-1957.2842"
+     inkscape:cx="-1978.5967"
      inkscape:cy="-341.67597"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -8604,6 +8604,26 @@
            id="rect5836"
            style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       </g>
+    </g>
+    <g
+       transform="translate(-2474.5919,1605.8949)"
+       id="g4197"
+       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Public\source\phasereditor\phasereditor.ui\icons\easing.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <path
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.87391436;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 491.09651,-206.20609 c 5.20844,0.82604 6.09336,-2.10138 7.37101,-5.06574 0.96797,-2.24587 3.35735,-3.47159 6.42812,-3.1805"
+         id="path4167"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="csc" />
+      <rect
+         y="-218.28273"
+         x="489.96689"
+         height="16"
+         width="16"
+         id="rect4189"
+         style="opacity:1;fill:none;fill-opacity:1;stroke:none;stroke-width:0.21158694;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     </g>
   </g>
 </svg>

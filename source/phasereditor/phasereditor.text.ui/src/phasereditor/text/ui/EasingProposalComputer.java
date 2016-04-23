@@ -23,13 +23,15 @@ package phasereditor.text.ui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.swt.graphics.Image;
 
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
-import phasereditor.ui.info.TextInformationControlCreator;
+import phasereditor.ui.animations.Easing;
+import phasereditor.ui.info.GenericInformationControlCreator;
 
 public class EasingProposalComputer extends BaseProposalComputer {
 
@@ -37,49 +39,115 @@ public class EasingProposalComputer extends BaseProposalComputer {
 	private static Image image;
 
 	static {
-		image = EditorSharedImages.getImage(IEditorSharedImages.IMG_CHART_CURVE);
+		image = EditorSharedImages.getImage(IEditorSharedImages.IMG_EASING_ICON);
 	}
 
-	private static String[][] EASING_MAP = { { "Power0", "Phaser.Easing.Power0" }, { "Power1", "Phaser.Easing.Power1" },
-			{ "Power2", "Phaser.Easing.Power2" }, { "Power3", "Phaser.Easing.Power3" },
-			{ "Power4", "Phaser.Easing.Power4" },
+	public static Object[][] EASING_TUPLES = {
 
-			{ "Linear", "Phaser.Easing.Linear.None" }, { "Quad", "Phaser.Easing.Quadratic.Out" },
-			{ "Cubic", "Phaser.Easing.Cubic.Out" }, { "Quart", "Phaser.Easing.Quartic.Out" },
-			{ "Quint", "Phaser.Easing.Quintic.Out" }, { "Sine", "Phaser.Easing.Sinusoidal.Out" },
-			{ "Expo", "Phaser.Easing.Exponential.Out" }, { "Circ", "Phaser.Easing.Circular.Out" },
-			{ "Elastic", "Phaser.Easing.Elastic.Out" }, { "Back", "Phaser.Easing.Back.Out" },
-			{ "Bounce", "Phaser.Easing.Bounce.Out" },
+			{ "Power0", "Phaser.Easing.Power0", (Function<Double, Double>) Easing::Linear },
 
-			{ "Quad.easeIn", "Phaser.Easing.Quadratic.In" }, { "Cubic.easeIn", "Phaser.Easing.Cubic.In" },
-			{ "Quart.easeIn", "Phaser.Easing.Quartic.In" }, { "Quint.easeIn", "Phaser.Easing.Quintic.In" },
-			{ "Sine.easeIn", "Phaser.Easing.Sinusoidal.In" }, { "Expo.easeIn", "Phaser.Easing.Exponential.In" },
-			{ "Circ.easeIn", "Phaser.Easing.Circular.In" }, { "Elastic.easeIn", "Phaser.Easing.Elastic.In" },
-			{ "Back.easeIn", "Phaser.Easing.Back.In" }, { "Bounce.easeIn", "Phaser.Easing.Bounce.In" },
+			{ "Power1", "Phaser.Easing.Power1", (Function<Double, Double>) Easing::QuadraticOut },
 
-			{ "Quad.easeOut", "Phaser.Easing.Quadratic.Out" }, { "Cubic.easeOut", "Phaser.Easing.Cubic.Out" },
-			{ "Quart.easeOut", "Phaser.Easing.Quartic.Out" }, { "Quint.easeOut", "Phaser.Easing.Quintic.Out" },
-			{ "Sine.easeOut", "Phaser.Easing.Sinusoidal.Out" }, { "Expo.easeOut", "Phaser.Easing.Exponential.Out" },
-			{ "Circ.easeOut", "Phaser.Easing.Circular.Out" }, { "Elastic.easeOut", "Phaser.Easing.Elastic.Out" },
-			{ "Back.easeOut", "Phaser.Easing.Back.Out" }, { "Bounce.easeOut", "Phaser.Easing.Bounce.Out" },
+			{ "Power2", "Phaser.Easing.Power2", (Function<Double, Double>) Easing::CubicOut },
 
-			{ "Quad.easeInOut", "Phaser.Easing.Quadratic.InOut" }, { "Cubic.easeInOut", "Phaser.Easing.Cubic.InOut" },
-			{ "Quart.easeInOut", "Phaser.Easing.Quartic.InOut" }, { "Quint.easeInOut", "Phaser.Easing.Quintic.InOut" },
-			{ "Sine.easeInOut", "Phaser.Easing.Sinusoidal.InOut" },
-			{ "Expo.easeInOut", "Phaser.Easing.Exponential.InOut" },
-			{ "Circ.easeInOut", "Phaser.Easing.Circular.InOut" },
-			{ "Elastic.easeInOut", "Phaser.Easing.Elastic.InOut" }, { "Back.easeInOut", "Phaser.Easing.Back.InOut" },
-			{ "Bounce.easeInOut", "Phaser.Easing.Bounce.InOut" } };
+			{ "Power3", "Phaser.Easing.Power3", (Function<Double, Double>) Easing::QuarticOut },
+
+			{ "Power4", "Phaser.Easing.Power4", (Function<Double, Double>) Easing::QuinticOut },
+
+			{ "Linear", "Phaser.Easing.Linear.None", (Function<Double, Double>) Easing::Linear }
+
+			, { "Quad", "Phaser.Easing.Quadratic.Out", (Function<Double, Double>) Easing::QuadraticOut },
+
+			{ "Cubic", "Phaser.Easing.Cubic.Out", (Function<Double, Double>) Easing::CubicOut },
+
+			{ "Quart", "Phaser.Easing.Quartic.Out", (Function<Double, Double>) Easing::QuarticOut },
+
+			{ "Quint", "Phaser.Easing.Quintic.Out", (Function<Double, Double>) Easing::QuinticOut },
+
+			{ "Sine", "Phaser.Easing.Sinusoidal.Out", (Function<Double, Double>) Easing::SinusoidalOut },
+
+			{ "Expo", "Phaser.Easing.Exponential.Out", (Function<Double, Double>) Easing::ExponentialOut },
+
+			{ "Circ", "Phaser.Easing.Circular.Out", (Function<Double, Double>) Easing::CircularOut },
+
+			{ "Elastic", "Phaser.Easing.Elastic.Out", (Function<Double, Double>) Easing::ElasticOut },
+
+			{ "Back", "Phaser.Easing.Back.Out", (Function<Double, Double>) Easing::BackOut },
+
+			{ "Bounce", "Phaser.Easing.Bounce.Out", (Function<Double, Double>) Easing::BounceOut },
+
+			{ "Quad.easeIn", "Phaser.Easing.Quadratic.In", (Function<Double, Double>) Easing::QuadraticIn },
+
+			{ "Cubic.easeIn", "Phaser.Easing.Cubic.In", (Function<Double, Double>) Easing::CubicIn },
+
+			{ "Quart.easeIn", "Phaser.Easing.Quartic.In", (Function<Double, Double>) Easing::QuarticIn },
+
+			{ "Quint.easeIn", "Phaser.Easing.Quintic.In", (Function<Double, Double>) Easing::QuinticIn },
+
+			{ "Sine.easeIn", "Phaser.Easing.Sinusoidal.In", (Function<Double, Double>) Easing::SinusoidalIn },
+
+			{ "Expo.easeIn", "Phaser.Easing.Exponential.In", (Function<Double, Double>) Easing::ExponentialIn },
+
+			{ "Circ.easeIn", "Phaser.Easing.Circular.In", (Function<Double, Double>) Easing::CircularIn },
+
+			{ "Elastic.easeIn", "Phaser.Easing.Elastic.In", (Function<Double, Double>) Easing::ElasticIn },
+
+			{ "Back.easeIn", "Phaser.Easing.Back.In", (Function<Double, Double>) Easing::BackIn },
+
+			{ "Bounce.easeIn", "Phaser.Easing.Bounce.In", (Function<Double, Double>) Easing::BounceIn },
+
+			{ "Quad.easeOut", "Phaser.Easing.Quadratic.Out", (Function<Double, Double>) Easing::QuadraticOut },
+
+			{ "Cubic.easeOut", "Phaser.Easing.Cubic.Out", (Function<Double, Double>) Easing::CubicOut },
+
+			{ "Quart.easeOut", "Phaser.Easing.Quartic.Out", (Function<Double, Double>) Easing::QuarticOut },
+
+			{ "Quint.easeOut", "Phaser.Easing.Quintic.Out", (Function<Double, Double>) Easing::QuinticOut },
+
+			{ "Sine.easeOut", "Phaser.Easing.Sinusoidal.Out", (Function<Double, Double>) Easing::SinusoidalOut },
+
+			{ "Expo.easeOut", "Phaser.Easing.Exponential.Out", (Function<Double, Double>) Easing::CircularOut },
+
+			{ "Circ.easeOut", "Phaser.Easing.Circular.Out", (Function<Double, Double>) Easing::CircularOut },
+
+			{ "Elastic.easeOut", "Phaser.Easing.Elastic.Out", (Function<Double, Double>) Easing::ElasticOut },
+
+			{ "Back.easeOut", "Phaser.Easing.Back.Out", (Function<Double, Double>) Easing::BackOut },
+
+			{ "Bounce.easeOut", "Phaser.Easing.Bounce.Out", (Function<Double, Double>) Easing::BounceOut },
+
+			{ "Quad.easeInOut", "Phaser.Easing.Quadratic.InOut", (Function<Double, Double>) Easing::QuadraticInOut },
+
+			{ "Cubic.easeInOut", "Phaser.Easing.Cubic.InOut", (Function<Double, Double>) Easing::CubicInOut },
+
+			{ "Quart.easeInOut", "Phaser.Easing.Quartic.InOut", (Function<Double, Double>) Easing::QuadraticInOut },
+
+			{ "Quint.easeInOut", "Phaser.Easing.Quintic.InOut", (Function<Double, Double>) Easing::QuinticInOut },
+
+			{ "Sine.easeInOut", "Phaser.Easing.Sinusoidal.InOut", (Function<Double, Double>) Easing::SinusoidalInOut },
+
+			{ "Expo.easeInOut", "Phaser.Easing.Exponential.InOut",
+					(Function<Double, Double>) Easing::ExponentialInOut },
+
+			{ "Circ.easeInOut", "Phaser.Easing.Circular.InOut", (Function<Double, Double>) Easing::CircularInOut },
+
+			{ "Elastic.easeInOut", "Phaser.Easing.Elastic.InOut", (Function<Double, Double>) Easing::ElasticInOut },
+
+			{ "Back.easeInOut", "Phaser.Easing.Back.InOut", (Function<Double, Double>) Easing::BackInOut },
+
+			{ "Bounce.easeInOut", "Phaser.Easing.Bounce.InOut", (Function<Double, Double>) Easing::BounceInOut }
+
+	};
 
 	@Override
 	protected List<ProposalData> computeProjectProposals(IProject project) {
 		List<ProposalData> list = new ArrayList<>();
 
-		for (String[] easing : EASING_MAP) {
-			String value = easing[0];
-			String info = "Shortcut for " + easing[1];
+		for (Object[] easing : EASING_TUPLES) {
+			String value = (String) easing[0];
 			ProposalData propData = new ProposalData(easing, value, value, RELEVANCE);
-			propData.setControlCreator(new TextInformationControlCreator(info));
+			propData.setControlCreator(new GenericInformationControlCreator(EasingInformationControl.class,
+					EasingInformationControl::new));
 			propData.setImage(image);
 			list.add(propData);
 		}
