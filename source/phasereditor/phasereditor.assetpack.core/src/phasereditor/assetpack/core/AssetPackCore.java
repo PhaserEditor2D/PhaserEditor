@@ -69,6 +69,7 @@ public class AssetPackCore {
 	public static final String ASSET_EDITOR_GOTO_MARKER_ATTR = "gotoMarker";
 
 	private static final Set<String> _imageExtensions;
+	private static final Set<String> _shaderExtensions;
 	private static final Set<String> _audioExtensions;
 	private static final Set<String> _videoExtensions;
 
@@ -84,6 +85,9 @@ public class AssetPackCore {
 		// TODO: missing video extensions
 		_videoExtensions.addAll(Arrays.asList("mp4", "ogv", "webm", "flv", "wmv", "avi", "mpg"));
 
+		_shaderExtensions = new HashSet<>();
+		_shaderExtensions.addAll(Arrays.asList("vert", "frag", "tesc", "tese", "geom", "comp"));
+
 		initWorkspaceListener();
 	}
 
@@ -96,6 +100,10 @@ public class AssetPackCore {
 	 */
 	public static boolean isImage(IResource resource) {
 		return resource instanceof IFile && _imageExtensions.contains(resource.getFullPath().getFileExtension());
+	}
+
+	public static boolean isShader(IResource resource) {
+		return resource instanceof IFile && _shaderExtensions.contains(resource.getFullPath().getFileExtension());
 	}
 
 	private static void initWorkspaceListener() {
@@ -341,7 +349,17 @@ public class AssetPackCore {
 
 			@Override
 			public Boolean apply(IFile t) {
-				return isImage(t) || isAudio(t) ? Boolean.FALSE : Boolean.TRUE;
+				return isImage(t) || isAudio(t) || isVideo(t) || isShader(t) ? Boolean.FALSE : Boolean.TRUE;
+			}
+		});
+	}
+
+	public static List<IFile> discoverShaderFiles(IContainer folder) throws CoreException {
+		return discoverFiles(folder, new Function<IFile, Boolean>() {
+
+			@Override
+			public Boolean apply(IFile t) {
+				return isShader(t) ? Boolean.TRUE : Boolean.FALSE;
 			}
 		});
 	}

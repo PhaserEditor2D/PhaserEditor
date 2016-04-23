@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015 Arian Fornaris
+// Copyright (c) 2015, 2016 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -24,14 +24,19 @@ package phasereditor.assetpack.core;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class BinaryAssetModel extends UrlAssetModel {
+/**
+ * @author arian
+ *
+ */
+public class ShaderAssetModel extends TextAssetModel {
 
-	public BinaryAssetModel(String key, AssetSectionModel section) throws JSONException {
-		super(key, AssetType.binary, section);
+	
+	public ShaderAssetModel(JSONObject jsonDoc, AssetSectionModel section) throws JSONException {
+		super(jsonDoc, section);
 	}
 
-	public BinaryAssetModel(JSONObject jsonDoc, AssetSectionModel section) throws JSONException {
-		super(jsonDoc, section);
+	public ShaderAssetModel(String key, AssetSectionModel section) {
+		super(key, AssetType.shader, section);
 	}
 
 }

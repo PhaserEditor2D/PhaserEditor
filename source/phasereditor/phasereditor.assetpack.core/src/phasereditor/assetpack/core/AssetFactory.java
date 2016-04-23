@@ -93,7 +93,7 @@ public abstract class AssetFactory {
 				return asset;
 			}
 		});
-		
+
 		cache(new AssetFactory(AssetType.video) {
 
 			@Override
@@ -136,8 +136,7 @@ public abstract class AssetFactory {
 				return asset;
 			}
 		});
-		
-		
+
 		cache(new AssetFactory(AssetType.tilemap) {
 			@Override
 			public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
@@ -278,11 +277,33 @@ public abstract class AssetFactory {
 			}
 
 			@Override
+			public AssetModel createAsset(JSONObject jsonDef, AssetSectionModel section) throws Exception {
+				return new JsonAssetModel(jsonDef, section);
+			}
+
+			@Override
 			protected TextAssetModel makeAsset(String key, AssetSectionModel section) {
 				return new JsonAssetModel(key, section);
 			}
 		}
 		cache(new JsonAssetFactory());
+
+		class ShaderAssetFactory extends TextAssetFactory {
+			public ShaderAssetFactory() {
+				super(AssetType.shader, "vert", "frag", "tesc", "tese", "geom", "comp");
+			}
+
+			@Override
+			public AssetModel createAsset(JSONObject jsonDef, AssetSectionModel section) throws Exception {
+				return new ShaderAssetModel(jsonDef, section);
+			}
+
+			@Override
+			protected ShaderAssetModel makeAsset(String key, AssetSectionModel section) {
+				return new ShaderAssetModel(key, section);
+			}
+		}
+		cache(new ShaderAssetFactory());
 
 		cache(new AssetFactory(AssetType.binary) {
 			@Override
@@ -329,7 +350,7 @@ public abstract class AssetFactory {
 			asset.setUrls(urls);
 		}
 	}
-	
+
 	static void initVideoFiles(VideoAssetModel asset, AssetPackModel pack) throws CoreException {
 		List<IFile> files = pack.pickVideoFiles();
 		if (!files.isEmpty()) {

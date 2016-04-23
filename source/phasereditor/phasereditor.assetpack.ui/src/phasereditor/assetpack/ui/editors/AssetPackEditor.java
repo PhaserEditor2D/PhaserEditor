@@ -99,6 +99,7 @@ import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.ScriptAssetModel;
+import phasereditor.assetpack.core.ShaderAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.TextAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
@@ -319,6 +320,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	private VideoAssetEditorComp _videoAssetEditorComp;
 
+	private ShaderAssetEditorComp _shaderAssetEditorComp;
+
 	@SuppressWarnings("unused")
 	@Override
 	public void createPartControl(Composite parent) {
@@ -443,6 +446,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		_atlasAssetEditorComp = new AtlasAssetEditorComp(_editorsContainer, SWT.NONE);
 
 		_textAssetEditorComp = new TextAssetEditorComp(_editorsContainer, SWT.NONE);
+		
+		_shaderAssetEditorComp = new ShaderAssetEditorComp(_editorsContainer, SWT.NONE);
 
 		_binaryAssetEditorComp = new BinaryAssetEditorComp(_editorsContainer, SWT.NONE);
 
@@ -735,6 +740,10 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				case json:
 					_textAssetEditorComp.setModel((TextAssetModel) asset);
 					editor = _textAssetEditorComp;
+					break;
+				case shader:
+					_shaderAssetEditorComp.setModel((ShaderAssetModel) asset);
+					editor = _shaderAssetEditorComp;
 					break;
 				case script:
 					_scriptAssetEditorComp.setModel((ScriptAssetModel) asset);

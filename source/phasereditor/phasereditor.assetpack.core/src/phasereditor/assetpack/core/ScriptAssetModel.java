@@ -24,7 +24,7 @@ package phasereditor.assetpack.core;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ScriptAssetModel extends BinaryAssetModel {
+public class ScriptAssetModel extends UrlAssetModel {
 
 	public ScriptAssetModel(JSONObject jsonDoc, AssetSectionModel section)
 			throws JSONException {

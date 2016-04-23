@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015 Arian Fornaris
+// Copyright (c) 2015, 2016 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -21,17 +21,55 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core;
 
+import java.util.List;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IStatus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class BinaryAssetModel extends UrlAssetModel {
+/**
+ * @author arian
+ *
+ */
+public class UrlAssetModel extends AssetModel {
+	private String _url;
 
-	public BinaryAssetModel(String key, AssetSectionModel section) throws JSONException {
-		super(key, AssetType.binary, section);
-	}
-
-	public BinaryAssetModel(JSONObject jsonDoc, AssetSectionModel section) throws JSONException {
+	public UrlAssetModel(JSONObject jsonDoc, AssetSectionModel section) throws JSONException {
 		super(jsonDoc, section);
+		_url = jsonDoc.optString("url", null);
 	}
 
+	protected UrlAssetModel(String key, AssetType type, AssetSectionModel section) {
+		super(key, type, section);
+	}
+
+	@Override
+	protected void writeParameters(JSONObject obj) {
+		super.writeParameters(obj);
+		obj.put("url", _url);
+	}
+
+	public String getUrl() {
+		return _url;
+	}
+
+	public void setUrl(String url) {
+		_url = url;
+		firePropertyChange("url");
+	}
+
+	public IFile getUrlFile() {
+		return getFileFromUrl(_url);
+	}
+
+	@Override
+	public IFile[] getUsedFiles() {
+		return new IFile[] { getFileFromUrl(_url) };
+	}
+
+	@Override
+	public void internalBuild(List<IStatus> problems) {
+		validateUrl(problems, "url", _url);
+	}
 }

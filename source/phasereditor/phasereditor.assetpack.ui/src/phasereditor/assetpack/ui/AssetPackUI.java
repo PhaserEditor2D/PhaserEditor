@@ -39,6 +39,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -52,6 +53,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListDialog;
+import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.wb.swt.SWTResourceManager;
@@ -343,6 +345,20 @@ public class AssetPackUI {
 
 	private static LabelProvider createFilesLabelProvider(AssetPackModel packModel, Set<IFile> usedFiles, Shell shell) {
 		class FilesLabelProvider extends LabelProvider implements IFontProvider {
+
+			private WorkbenchLabelProvider _baseLabels = new WorkbenchLabelProvider();
+
+			@Override
+			public void dispose() {
+				super.dispose();
+				_baseLabels.dispose();
+			}
+
+			@Override
+			public Image getImage(Object element) {
+				return _baseLabels.getImage(element);
+			}
+
 			@Override
 			public Font getFont(Object element) {
 				Font font = shell.getFont();

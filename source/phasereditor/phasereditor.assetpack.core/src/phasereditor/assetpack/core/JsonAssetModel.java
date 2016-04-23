@@ -26,9 +26,9 @@ import org.json.JSONObject;
 
 public class JsonAssetModel extends TextAssetModel {
 
-	public JsonAssetModel(JSONObject jsonDoc, AssetSectionModel section)
+	public JsonAssetModel(JSONObject jsonDef, AssetSectionModel section)
 			throws JSONException {
-		super(jsonDoc, section);
+		super(jsonDef, section);
 	}
 
 	public JsonAssetModel(String key, AssetSectionModel section)
