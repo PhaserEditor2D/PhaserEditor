@@ -28,7 +28,6 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -42,9 +41,10 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.FilteredTree;
+import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.part.ViewPart;
 
 import phasereditor.assetpack.core.AssetPackCore;
@@ -52,13 +52,13 @@ import phasereditor.assetpack.core.AssetPackCore.IPacksChangeListener;
 import phasereditor.assetpack.core.AssetPackCore.PackDelta;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
-import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.FilteredTree2;
 
 public class AssetExplorer extends ViewPart {
 	public static final String ID = "phasereditor.assetpack.views.assetExplorer";
-	Text _searchText;
 	TreeViewer _viewer;
 	private IPacksChangeListener _changeListener;
+	private FilteredTree _filteredTree;
 	// private AssetExplorerLabelProvider _treeLabelProvider;
 	// private AssetExplorerContentProvider _treeContentProvider;
 	// private AssetExplorerListLabelProvider _listLabelProvider;
@@ -83,21 +83,10 @@ public class AssetExplorer extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		GridLayout gl_parent = new GridLayout(1, false);
-		gl_parent.marginWidth = 0;
-		gl_parent.marginHeight = 0;
 		parent.setLayout(gl_parent);
 
-		Composite composite = new Composite(parent, SWT.NONE);
-		GridLayout gl_composite = new GridLayout(1, false);
-		gl_composite.marginWidth = 0;
-		gl_composite.marginHeight = 0;
-		composite.setLayout(gl_composite);
-		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-
-		_searchText = new Text(composite, SWT.BORDER);
-		_searchText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		_viewer = new TreeViewer(composite, SWT.NONE);
+		_filteredTree = new FilteredTree2(parent, SWT.NONE, new PatternFilter(), 4);
+		_viewer = _filteredTree.getViewer();
 		_viewer.addDoubleClickListener(new IDoubleClickListener() {
 			@Override
 			public void doubleClick(DoubleClickEvent event) {
@@ -108,7 +97,7 @@ public class AssetExplorer extends ViewPart {
 		tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		_viewer.setContentProvider(new AssetExplorerContentProvider());
 		_viewer.setLabelProvider(new AssetExplorerLabelProvider());
-		
+
 		afterCreateWidgets();
 
 	}
@@ -158,8 +147,6 @@ public class AssetExplorer extends ViewPart {
 
 		_viewer.setInput(ROOT);
 		_viewer.expandToLevel(3);
-		// UIUtils.initSearchText(_searchText, _viewer, new AssetsFilter());
-		PhaserEditorUI.initSearchText(_searchText, _viewer, (ILabelProvider) _viewer.getLabelProvider());
 
 		// drag and drop
 
