@@ -139,7 +139,7 @@ PIXI.Graphics.prototype.constructor = PIXI.Graphics;
 /**
  * Specifies the line style used for subsequent calls to Graphics methods such as the lineTo() method or the drawCircle() method.
  *
- * @method PIXI.Graphics.prototype.lineStyle
+ * @method lineStyle
  * @param lineWidth {Number} width of the line to draw, will update the objects stored style
  * @param color {Number} color of the line to draw, will update the objects stored style
  * @param alpha {Number} alpha of the line to draw, will update the objects stored style
@@ -173,7 +173,7 @@ PIXI.Graphics.prototype.lineStyle = function(lineWidth, color, alpha)
 /**
  * Moves the current drawing position to x, y.
  *
- * @method PIXI.Graphics.prototype.moveTo
+ * @method moveTo
  * @param x {Number} the X coordinate to move to
  * @param y {Number} the Y coordinate to move to
  * @return {Graphics}
@@ -189,7 +189,7 @@ PIXI.Graphics.prototype.moveTo = function(x, y)
  * Draws a line using the current line style from the current drawing position to (x, y);
  * The current drawing position is then set to (x, y).
  *
- * @method PIXI.Graphics.prototype.lineTo
+ * @method lineTo
  * @param x {Number} the X coordinate to draw to
  * @param y {Number} the Y coordinate to draw to
  * @return {Graphics}
@@ -211,7 +211,7 @@ PIXI.Graphics.prototype.lineTo = function(x, y)
  * Calculate the points for a quadratic bezier curve and then draws it.
  * Based on: https://stackoverflow.com/questions/785097/how-do-i-implement-a-bezier-curve-in-c
  *
- * @method PIXI.Graphics.prototype.quadraticCurveTo
+ * @method quadraticCurveTo
  * @param cpX {Number} Control point x
  * @param cpY {Number} Control point y
  * @param toX {Number} Destination point x
@@ -264,7 +264,7 @@ PIXI.Graphics.prototype.quadraticCurveTo = function(cpX, cpY, toX, toY)
 /**
  * Calculate the points for a bezier curve and then draws it.
  *
- * @method PIXI.Graphics.prototype.bezierCurveTo
+ * @method bezierCurveTo
  * @param cpX {Number} Control point x
  * @param cpY {Number} Control point y
  * @param cpX2 {Number} Second Control point x
@@ -319,12 +319,12 @@ PIXI.Graphics.prototype.bezierCurveTo = function(cpX, cpY, cpX2, cpY2, toX, toY)
     return this;
 };
 
-/**
+/*
  * The arcTo() method creates an arc/curve between two tangents on the canvas.
  * 
  * "borrowed" from https://code.google.com/p/fxcanvas/ - thanks google!
  *
- * @method PIXI.Graphics.prototype.arcTo
+ * @method arcTo
  * @param x1 {Number} The x-coordinate of the beginning of the arc
  * @param y1 {Number} The y-coordinate of the beginning of the arc
  * @param x2 {Number} The x-coordinate of the end of the arc
@@ -391,7 +391,7 @@ PIXI.Graphics.prototype.arcTo = function(x1, y1, x2, y2, radius)
 /**
  * The arc method creates an arc/curve (used to create circles, or parts of circles).
  *
- * @method PIXI.Graphics.prototype.arc
+ * @method arc
  * @param cx {Number} The x-coordinate of the center of the circle
  * @param cy {Number} The y-coordinate of the center of the circle
  * @param radius {Number} The radius of the circle
@@ -477,7 +477,7 @@ PIXI.Graphics.prototype.arc = function(cx, cy, radius, startAngle, endAngle, ant
  * Specifies a simple one-color fill that subsequent calls to other Graphics methods
  * (such as lineTo() or drawCircle()) use when drawing.
  *
- * @method PIXI.Graphics.prototype.beginFill
+ * @method beginFill
  * @param color {Number} the color of the fill
  * @param alpha {Number} the alpha of the fill
  * @return {Graphics}
@@ -504,7 +504,7 @@ PIXI.Graphics.prototype.beginFill = function(color, alpha)
 /**
  * Applies a fill to the lines and shapes that were added since the last call to the beginFill() method.
  *
- * @method PIXI.Graphics.prototype.endFill
+ * @method endFill
  * @return {Graphics}
  */
 PIXI.Graphics.prototype.endFill = function()
@@ -517,7 +517,7 @@ PIXI.Graphics.prototype.endFill = function()
 };
 
 /**
- * @method PIXI.Graphics.prototype.drawRect
+ * @method drawRect
  *
  * @param x {Number} The X coord of the top-left of the rectangle
  * @param y {Number} The Y coord of the top-left of the rectangle
@@ -533,7 +533,7 @@ PIXI.Graphics.prototype.drawRect = function(x, y, width, height)
 };
 
 /**
- * @method PIXI.Graphics.prototype.drawRoundedRect
+ * @method drawRoundedRect
  * @param x {Number} The X coord of the top-left of the rectangle
  * @param y {Number} The Y coord of the top-left of the rectangle
  * @param width {Number} The width of the rectangle
@@ -550,7 +550,7 @@ PIXI.Graphics.prototype.drawRoundedRect = function(x, y, width, height, radius)
 /**
  * Draws a circle.
  *
- * @method PIXI.Graphics.prototype.drawCircle
+ * @method drawCircle
  * @param x {Number} The X coordinate of the center of the circle
  * @param y {Number} The Y coordinate of the center of the circle
  * @param diameter {Number} The diameter of the circle
@@ -566,7 +566,7 @@ PIXI.Graphics.prototype.drawCircle = function(x, y, diameter)
 /**
  * Draws an ellipse.
  *
- * @method PIXI.Graphics.prototype.drawEllipse
+ * @method drawEllipse
  * @param x {Number} The X coordinate of the center of the ellipse
  * @param y {Number} The Y coordinate of the center of the ellipse
  * @param width {Number} The half width of the ellipse
@@ -583,7 +583,7 @@ PIXI.Graphics.prototype.drawEllipse = function(x, y, width, height)
 /**
  * Draws a polygon using the given path.
  *
- * @method PIXI.Graphics.prototype.drawPolygon
+ * @method drawPolygon
  * @param path {Array|Phaser.Polygon} The path data used to construct the polygon. Can either be an array of points or a Phaser.Polygon object.
  * @return {Graphics}
  */
@@ -618,7 +618,7 @@ PIXI.Graphics.prototype.drawPolygon = function(path)
 /**
  * Clears the graphics that were drawn to this Graphics object, and resets fill and line style settings.
  *
- * @method PIXI.Graphics.prototype.clear
+ * @method clear
  * @return {Graphics}
  */
 PIXI.Graphics.prototype.clear = function()
@@ -637,7 +637,7 @@ PIXI.Graphics.prototype.clear = function()
  * Useful function that returns a texture of the graphics object that can then be used to create sprites
  * This can be quite useful if your geometry is complicated and needs to be reused multiple times.
  *
- * @method PIXI.Graphics.prototype.generateTexture
+ * @method generateTexture
  * @param [resolution=1] {Number} The resolution of the texture being generated
  * @param [scaleMode=0] {Number} Should be one of the PIXI.scaleMode consts
  * @param [padding=0] {Number} Add optional extra padding to the generated texture (default 0)
@@ -674,7 +674,7 @@ PIXI.Graphics.prototype.generateTexture = function(resolution, scaleMode, paddin
 /**
 * Renders the object using the WebGL renderer
 *
-* @method PIXI.Graphics.prototype._renderWebGL
+* @method _renderWebGL
 * @param renderSession {RenderSession} 
 * @private
 */
@@ -753,7 +753,7 @@ PIXI.Graphics.prototype._renderWebGL = function(renderSession)
 /**
 * Renders the object using the Canvas renderer
 *
-* @method PIXI.Graphics.prototype._renderCanvas
+* @method _renderCanvas
 * @param renderSession {RenderSession} 
 * @private
 */
@@ -804,13 +804,15 @@ PIXI.Graphics.prototype._renderCanvas = function(renderSession)
         }
 
         var resolution = renderSession.resolution;
+        var tx = (transform.tx * renderSession.resolution) + renderSession.shakeX;
+        var ty = (transform.ty * renderSession.resolution) + renderSession.shakeY;
 
         context.setTransform(transform.a * resolution,
                              transform.b * resolution,
                              transform.c * resolution,
                              transform.d * resolution,
-                             transform.tx * resolution,
-                             transform.ty * resolution);
+                             tx,
+                             ty);
 
         PIXI.CanvasGraphics.renderGraphics(this, context);
 
@@ -830,7 +832,7 @@ PIXI.Graphics.prototype._renderCanvas = function(renderSession)
 /**
  * Retrieves the bounds of the graphic shape as a rectangle object
  *
- * @method PIXI.Graphics.prototype.getBounds
+ * @method getBounds
  * @return {Rectangle} the rectangular bounding area
  */
 PIXI.Graphics.prototype.getBounds = function(matrix)
@@ -953,7 +955,7 @@ PIXI.Graphics.prototype.containsPoint = function( point )
 /**
  * Update the bounds of the object
  *
- * @method PIXI.Graphics.prototype.updateLocalBounds
+ * @method updateLocalBounds
  */
 PIXI.Graphics.prototype.updateLocalBounds = function()
 {
@@ -1140,7 +1142,7 @@ PIXI.Graphics.prototype.destroyCachedSprite = function()
 /**
  * Draws the given shape to this Graphics object. Can be any of Circle, Rectangle, Ellipse, Line or Polygon.
  *
- * @method PIXI.Graphics.prototype.drawShape
+ * @method drawShape
  * @param {Circle|Rectangle|Ellipse|Line|Polygon} shape The Shape object to draw.
  * @return {GraphicsData} The generated GraphicsData object.
  */
@@ -1185,7 +1187,7 @@ PIXI.Graphics.prototype.drawShape = function(shape)
  * It is also useful if you need the graphics object to be anti-aliased, because it will be rendered using canvas.
  * This is not recommended if you are constantly redrawing the graphics element.
  *
- * @property PIXI.Graphics.prototype.cacheAsBitmap
+ * @property cacheAsBitmap
  * @type Boolean
  * @default false
  * @private

@@ -1,2 +1,0 @@
-- We modified the file: phaser-master\src\input\Keyboard.js
-and make Phaser.KeyCode a @class and not a @namespace.

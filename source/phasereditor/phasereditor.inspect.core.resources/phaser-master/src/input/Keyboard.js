@@ -1,6 +1,6 @@
 /**
 * @author       Richard Davey <rich@photonstorm.com>
-* @copyright    2015 Photon Storm Ltd.
+* @copyright    2016 Photon Storm Ltd.
 * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
 */
 
@@ -9,6 +9,10 @@
 *
 * _Note_: many keyboards are unable to process certain combinations of keys due to hardware limitations known as ghosting.
 * See http://www.html5gamedevs.com/topic/4876-impossible-to-use-more-than-2-keyboard-input-buttons-at-the-same-time/ for more details.
+*
+* Also please be aware that certain browser extensions can disable or override Phaser keyboard handling.
+* For example the Chrome extension vimium is known to disable Phaser from using the D key. And there are others.
+* So please check your extensions before opening Phaser issues.
 *
 * @class Phaser.Keyboard
 * @constructor
@@ -599,209 +603,515 @@ Phaser.Keyboard.prototype.constructor = Phaser.Keyboard;
 * @class Phaser.KeyCode
 */
 Phaser.KeyCode = {
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     A: "A".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     B: "B".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     C: "C".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     D: "D".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     E: "E".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     F: "F".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     G: "G".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     H: "H".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     I: "I".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     J: "J".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     K: "K".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     L: "L".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     M: "M".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     N: "N".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     O: "O".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     P: "P".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     Q: "Q".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     R: "R".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     S: "S".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     T: "T".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     U: "U".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     V: "V".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     W: "W".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     X: "X".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     Y: "Y".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     Z: "Z".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     ZERO: "0".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     ONE: "1".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     TWO: "2".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     THREE: "3".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     FOUR: "4".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     FIVE: "5".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     SIX: "6".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     SEVEN: "7".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     EIGHT: "8".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     NINE: "9".charCodeAt(0),
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     NUMPAD_0: 96,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     NUMPAD_1: 97,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     NUMPAD_2: 98,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     NUMPAD_3: 99,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     NUMPAD_4: 100,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     NUMPAD_5: 101,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     NUMPAD_6: 102,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     NUMPAD_7: 103,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     NUMPAD_8: 104,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     NUMPAD_9: 105,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     NUMPAD_MULTIPLY: 106,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     NUMPAD_ADD: 107,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     NUMPAD_ENTER: 108,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     NUMPAD_SUBTRACT: 109,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     NUMPAD_DECIMAL: 110,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     NUMPAD_DIVIDE: 111,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     F1: 112,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     F2: 113,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     F3: 114,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     F4: 115,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     F5: 116,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     F6: 117,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     F7: 118,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     F8: 119,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     F9: 120,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     F10: 121,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     F11: 122,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     F12: 123,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     F13: 124,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     F14: 125,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     F15: 126,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     COLON: 186,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     EQUALS: 187,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     COMMA: 188,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     UNDERSCORE: 189,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     PERIOD: 190,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     QUESTION_MARK: 191,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     TILDE: 192,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     OPEN_BRACKET: 219,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     BACKWARD_SLASH: 220,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     CLOSED_BRACKET: 221,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     QUOTES: 222,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     BACKSPACE: 8,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     TAB: 9,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     CLEAR: 12,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     ENTER: 13,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     SHIFT: 16,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     CONTROL: 17,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     ALT: 18,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     CAPS_LOCK: 20,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     ESC: 27,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     SPACEBAR: 32,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     PAGE_UP: 33,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     PAGE_DOWN: 34,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     END: 35,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     HOME: 36,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     LEFT: 37,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     UP: 38,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     RIGHT: 39,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     DOWN: 40,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     PLUS: 43,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     MINUS: 44,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     INSERT: 45,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     DELETE: 46,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     HELP: 47,
-    /** @static */
+    /** 
+	@static 
+	@type {Number}
+	*/
     NUM_LOCK: 144
 };
 

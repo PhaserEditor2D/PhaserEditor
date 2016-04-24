@@ -1,6 +1,6 @@
 /**
 * @author       Richard Davey <rich@photonstorm.com>
-* @copyright    2015 Photon Storm Ltd.
+* @copyright    2016 Photon Storm Ltd.
 * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
 */
 
@@ -289,7 +289,7 @@ Phaser.Group.prototype.add = function (child, silent) {
 
     if (child.parent !== this)
     {
-        if (child.body && child.parent)
+        if (child.body && child.parent && child.parent.hash)
         {
             child.parent.removeFromHash(child);
         }
@@ -796,6 +796,29 @@ Phaser.Group.prototype.reverse = function () {
 Phaser.Group.prototype.getIndex = function (child) {
 
     return this.children.indexOf(child);
+
+};
+
+/**
+* Searches the Group for the first instance of a child with the `name`
+* property matching the given argument. Should more than one child have
+* the same name only the first instance is returned.
+*
+* @method Phaser.Group#getByName
+* @param {string} name - The name to search for.
+* @return {any} The first child with a matching name, or null if none were found.
+*/
+Phaser.Group.prototype.getByName = function (name) {
+
+    for (var i = 0; i < this.children.length; i++)
+    {
+        if (this.children[i].name === name)
+        {
+            return this.children[i];
+        }
+    }
+
+    return null;
 
 };
 
@@ -1412,7 +1435,6 @@ Phaser.Group.prototype.postUpdate = function () {
     }
 
 };
-
 
 /**
 * Find children matching a certain predicate.
