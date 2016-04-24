@@ -94,7 +94,11 @@ public class BuildPhaserAPI {
 			// extends
 
 			if (type.getExtends() != null) {
-				sb.append(typeName + ".prototype = new " + type.getExtends() + "();\n");
+				String base = "Object";
+				if (type.getExtends().size() == 1) {
+					base = type.getExtends().get(0);
+				}
+				sb.append(typeName + ".prototype = new " + base + "();\n");
 			}
 
 			// constants

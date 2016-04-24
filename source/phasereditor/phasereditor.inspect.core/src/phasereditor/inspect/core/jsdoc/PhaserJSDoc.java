@@ -178,24 +178,39 @@ public class PhaserJSDoc {
 			// first pass to get all the classes in the map
 
 			for (int i = 0; i < jsdocElements.length(); i++) {
-				JSONObject jsdocElement = jsdocElements.getJSONObject(i);
+				JSONObject obj = jsdocElements.getJSONObject(i);
 
-				buildClass(jsdocElement, typeMap);
+				if (obj.getString("longname").contains("~")) {
+					continue;
+				}
+
+				buildClass(obj, typeMap);
 			}
 
 			for (int i = 0; i < jsdocElements.length(); i++) {
 				JSONObject jsdocElement = jsdocElements.getJSONObject(i);
+
+				if (jsdocElement.getString("longname").contains("~")) {
+					continue;
+				}
 
 				String access = jsdocElement.optString("access", "");
 				if (access.equals("private")) {
 					continue;
 				}
 
+				{
+					boolean added = buildConstant(jsdocElement, typeMap);
+					if (added) {
+						// just to avoid the same obj is parsed as other kind of
+						// member.
+						continue;
+					}
+				}
+
 				buildMethod(jsdocElement, typeMap);
 
 				buildProperty(jsdocElement, typeMap);
-
-				buildConstant(jsdocElement, typeMap);
 			}
 
 			Collection<PhaserType> types = typeMap.values();
@@ -317,56 +332,71 @@ public class PhaserJSDoc {
 		}
 	}
 
-	private void buildConstant(JSONObject obj, Map<String, PhaserType> typeMap) {
-		if (obj.getString("kind").equals("constant")) {
-			String name = obj.getString("name");
-			String desc = obj.optString("description", "");
-			Object defaultValue = obj.opt("defaultvalue");
+	private boolean buildConstant(JSONObject obj, Map<String, PhaserType> typeMap) {
+		boolean isCons = obj.getString("kind").equals("constant");
 
-			String[] types;
-			if (obj.has("type")) {
-				JSONArray jsonTypes = obj.getJSONObject("type").getJSONArray("names");
-				types = getStringArray(jsonTypes);
-			} else {
-				// FIXME: this is the case of blendModes and scaleModes
-				types = new String[] { "Object" };
-			}
-			PhaserConstant cons = new PhaserConstant();
-			{
-				// static flag
-				String scope = obj.optString("scope", "");
-				if (scope.equals("static")) {
-					cons.setStatic(true);
-				}
-			}
-			cons.setName(name);
-			cons.setHelp(desc);
-			cons.setTypes(types);
-			cons.setDefaultValue(defaultValue);
-			String memberof = obj.optString("memberof", null);
-			if (memberof == null) {
-				// global constant
-				buildMeta(cons, obj);
-
-				// FIXME: only add those Phaser.js constants
-				if (cons.getFile().getFileName().toString().equals("Phaser.js")) {
-					_globalConstants.add(cons);
-				} else {
-					out.println(obj.toString(2));
-					throw new AssertionFailedException("All global constants should come from Phaser.js and not from "
-							+ cons.getFile().getFileName() + "#" + cons.getName());
-				}
-
-			} else {
-				PhaserType type = typeMap.get(memberof);
-
-				if (!type.getMemberMap().containsKey(name)) {
-					type.getMemberMap().put(name, cons);
-					cons.setDeclType(type);
-					buildMeta(cons, obj);
+		if (!isCons) {
+			if (obj.optString("scope", "").equals("static")) {
+				String name = obj.getString("name");
+				if (obj.getString("kind").equals("member") && name.toUpperCase().equals(name)) {
+					isCons = true;
 				}
 			}
 		}
+
+		if (!isCons) {
+			return false;
+		}
+
+		out.println("cons " + obj.getString("longname"));
+
+		String name = obj.getString("name");
+		String desc = obj.optString("description", "");
+		Object defaultValue = obj.opt("defaultvalue");
+
+		String[] types;
+		if (obj.has("type")) {
+			JSONArray jsonTypes = obj.getJSONObject("type").getJSONArray("names");
+			types = getStringArray(jsonTypes);
+		} else {
+			// FIXME: this is the case of blendModes and scaleModes
+			types = new String[] { "Object" };
+		}
+		PhaserConstant cons = new PhaserConstant();
+		{
+			// static flag
+			String scope = obj.optString("scope", "");
+			if (scope.equals("static")) {
+				cons.setStatic(true);
+			}
+		}
+		cons.setName(name);
+		cons.setHelp(desc);
+		cons.setTypes(types);
+		cons.setDefaultValue(defaultValue);
+		String memberof = obj.optString("memberof", null);
+		if (memberof == null) {
+			// global constant
+			buildMeta(cons, obj);
+
+			// FIXME: only add those Phaser.js constants
+			if (cons.getFile().getFileName().toString().equals("Phaser.js")) {
+				_globalConstants.add(cons);
+			} else {
+				out.println(obj.toString(2));
+				throw new AssertionFailedException("All global constants should come from Phaser.js and not from "
+						+ cons.getFile().getFileName() + "#" + cons.getName());
+			}
+
+		} else {
+			PhaserType type = typeMap.get(memberof);
+			if (!type.getMemberMap().containsKey(name)) {
+				type.getMemberMap().put(name, cons);
+				cons.setDeclType(type);
+				buildMeta(cons, obj);
+			}
+		}
+		return true;
 	}
 
 	private static void buildProperty(JSONObject obj, Map<String, PhaserType> typeMap) {
@@ -501,9 +531,6 @@ public class PhaserJSDoc {
 		if (kind.equals("class")) {
 
 			String name = obj.getString("longname");
-			if (name.startsWith("module:PIXI~")) {
-				name = name.substring(12);
-			}
 
 			if (name.equals("module:PIXI.PIXI")) {
 				return;

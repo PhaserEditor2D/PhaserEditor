@@ -58,7 +58,9 @@ public class Phaser_Member_Exists_Test {
 				"Phaser.PENDING_ATLAS", //
 				"Phaser.Physics.Arcade.Body.onCeiling", //
 				"Phaser.Loader.audioSprite", //
-				"Phaser.Graphics.lineTo", //
+				
+				// TODO: check for PIXI.Graphics, method should be inherited from there.
+				// "Phaser.Graphics.lineTo", //
 
 				// requires PIXI.Graphics.tint update
 				// "Phaser.Graphics.tint",
