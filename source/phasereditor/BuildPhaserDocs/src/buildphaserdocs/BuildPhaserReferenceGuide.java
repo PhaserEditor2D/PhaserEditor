@@ -41,7 +41,7 @@ import org.jsoup.select.Elements;
 public class BuildPhaserReferenceGuide {
 	public static void main(String[] args) throws IOException {
 		StringBuilder toc = new StringBuilder();
-		toc.append("<toc label='Phaser Documentation' link_to='toc.xml#phaser-doc'>\n");
+		toc.append("<toc label='Phaser Documentation 2.4.7' link_to='toc.xml#phaser-doc'>\n");
 
 		Files.walk(Paths.get("input-docs")).forEach(p -> {
 			String name = p.getFileName().toString();

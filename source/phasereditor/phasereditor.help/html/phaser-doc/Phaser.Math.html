@@ -564,11 +564,11 @@
     </dl> 
    </dd> 
    <dt> 
-    <h4 class="name " id="clamp"><span class="type-signature"></span>clamp<span class="signature">(x, a, b)</span><span class="type-signature"> ? {number}</span></h4> 
+    <h4 class="name " id="clamp"><span class="type-signature"></span>clamp<span class="signature">(v, min, max)</span><span class="type-signature"> ? {number}</span></h4> 
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Force a value within the boundaries by clamping <code>x</code> to the range <code>[a, b]</code>.</p> 
+     <p>Force a value within the boundaries by clamping it to the range <code>min</code>, <code>max</code>.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -581,19 +581,19 @@
      </thead> 
      <tbody> 
       <tr> 
-       <td class="name"><code>x</code></td> 
-       <td class="type"> <span class="param-type">number</span> </td> 
-       <td class="description last"></td> 
+       <td class="name"><code>v</code></td> 
+       <td class="type"> <span class="param-type">float</span> </td> 
+       <td class="description last"><p>The value to be clamped.</p></td> 
       </tr> 
       <tr> 
-       <td class="name"><code>a</code></td> 
-       <td class="type"> <span class="param-type">number</span> </td> 
-       <td class="description last"></td> 
+       <td class="name"><code>min</code></td> 
+       <td class="type"> <span class="param-type">float</span> </td> 
+       <td class="description last"><p>The minimum bounds.</p></td> 
       </tr> 
       <tr> 
-       <td class="name"><code>b</code></td> 
-       <td class="type"> <span class="param-type">number</span> </td> 
-       <td class="description last"></td> 
+       <td class="name"><code>max</code></td> 
+       <td class="type"> <span class="param-type">float</span> </td> 
+       <td class="description last"><p>The maximum bounds.</p></td> 
       </tr> 
      </tbody> 
     </table> 
@@ -603,6 +603,7 @@
       <span class="param-type">number</span> - 
      </div> 
      <div class="returns-desc param-desc"> 
+      <p>The clamped value.</p> 
      </div> 
     </div> 
     <dl class="details"> 
@@ -654,7 +655,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_math_Math.js.html">math/Math.js</a>, 
-      <a href="src_math_Math.js.html#sunlight-1-line-911">line 911</a> 
+      <a href="src_math_Math.js.html#sunlight-1-line-924">line 924</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -695,7 +696,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_math_Math.js.html">math/Math.js</a>, 
-      <a href="src_math_Math.js.html#sunlight-1-line-1027">line 1027</a> 
+      <a href="src_math_Math.js.html#sunlight-1-line-1045">line 1045</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1536,7 +1537,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_math_Math.js.html">math/Math.js</a>, 
-      <a href="src_math_Math.js.html#sunlight-1-line-938">line 938</a> 
+      <a href="src_math_Math.js.html#sunlight-1-line-951">line 951</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1851,7 +1852,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_math_Math.js.html">math/Math.js</a>, 
-      <a href="src_math_Math.js.html#sunlight-1-line-994">line 994</a> 
+      <a href="src_math_Math.js.html#sunlight-1-line-1012">line 1012</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1860,7 +1861,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Convert degrees to radians.</p> 
+     <p>Convert radians to degrees.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -1892,7 +1893,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_math_Math.js.html">math/Math.js</a>, 
-      <a href="src_math_Math.js.html#sunlight-1-line-1038">line 1038</a> 
+      <a href="src_math_Math.js.html#sunlight-1-line-1056">line 1056</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2126,7 +2127,7 @@ roundTo(2000/7,-5,2) == 285.71875 -- 100011101.10111</code></pre>
      <dt class="tag-source">
       Source - 
       <a href="src_math_Math.js.html">math/Math.js</a>, 
-      <a href="src_math_Math.js.html#sunlight-1-line-981">line 981</a> 
+      <a href="src_math_Math.js.html#sunlight-1-line-999">line 999</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2187,7 +2188,7 @@ roundTo(2000/7,-5,2) == 285.71875 -- 100011101.10111</code></pre>
     </dl> 
    </dd> 
    <dt> 
-    <h4 class="name " id="smootherstep"><span class="type-signature"></span>smootherstep<span class="signature">(x, min, max)</span><span class="type-signature"> ? {number}</span></h4> 
+    <h4 class="name " id="smootherstep"><span class="type-signature"></span>smootherstep<span class="signature">(x, min, max)</span><span class="type-signature"> ? {float}</span></h4> 
    </dt> 
    <dd> 
     <div class="description"> 
@@ -2205,39 +2206,40 @@ roundTo(2000/7,-5,2) == 285.71875 -- 100011101.10111</code></pre>
      <tbody> 
       <tr> 
        <td class="name"><code>x</code></td> 
-       <td class="type"> <span class="param-type">number</span> </td> 
-       <td class="description last"></td> 
+       <td class="type"> <span class="param-type">float</span> </td> 
+       <td class="description last"><p>The input value.</p></td> 
       </tr> 
       <tr> 
        <td class="name"><code>min</code></td> 
-       <td class="type"> <span class="param-type">number</span> </td> 
-       <td class="description last"></td> 
+       <td class="type"> <span class="param-type">float</span> </td> 
+       <td class="description last"><p>The left edge. Should be smaller than the right edge.</p></td> 
       </tr> 
       <tr> 
        <td class="name"><code>max</code></td> 
-       <td class="type"> <span class="param-type">number</span> </td> 
-       <td class="description last"></td> 
+       <td class="type"> <span class="param-type">float</span> </td> 
+       <td class="description last"><p>The right edge.</p></td> 
       </tr> 
      </tbody> 
     </table> 
     <h5>Returns:</h5> 
     <div class="returns"> 
      <div class="returns-type"> 
-      <span class="param-type">number</span> - 
+      <span class="param-type">float</span> - 
      </div> 
      <div class="returns-desc param-desc"> 
+      <p>A value between 0 and 1.</p> 
      </div> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
       <a href="src_math_Math.js.html">math/Math.js</a>, 
-      <a href="src_math_Math.js.html#sunlight-1-line-967">line 967</a> 
+      <a href="src_math_Math.js.html#sunlight-1-line-985">line 985</a> 
      </dt> 
     </dl> 
    </dd> 
    <dt> 
-    <h4 class="name " id="smoothstep"><span class="type-signature"></span>smoothstep<span class="signature">(x, min, max)</span><span class="type-signature"> ? {number}</span></h4> 
+    <h4 class="name " id="smoothstep"><span class="type-signature"></span>smoothstep<span class="signature">(x, min, max)</span><span class="type-signature"> ? {float}</span></h4> 
    </dt> 
    <dd> 
     <div class="description"> 
@@ -2255,34 +2257,35 @@ roundTo(2000/7,-5,2) == 285.71875 -- 100011101.10111</code></pre>
      <tbody> 
       <tr> 
        <td class="name"><code>x</code></td> 
-       <td class="type"> <span class="param-type">number</span> </td> 
-       <td class="description last"></td> 
+       <td class="type"> <span class="param-type">float</span> </td> 
+       <td class="description last"><p>The input value.</p></td> 
       </tr> 
       <tr> 
        <td class="name"><code>min</code></td> 
-       <td class="type"> <span class="param-type">number</span> </td> 
-       <td class="description last"></td> 
+       <td class="type"> <span class="param-type">float</span> </td> 
+       <td class="description last"><p>The left edge. Should be smaller than the right edge.</p></td> 
       </tr> 
       <tr> 
        <td class="name"><code>max</code></td> 
-       <td class="type"> <span class="param-type">number</span> </td> 
-       <td class="description last"></td> 
+       <td class="type"> <span class="param-type">float</span> </td> 
+       <td class="description last"><p>The right edge.</p></td> 
       </tr> 
      </tbody> 
     </table> 
     <h5>Returns:</h5> 
     <div class="returns"> 
      <div class="returns-type"> 
-      <span class="param-type">number</span> - 
+      <span class="param-type">float</span> - 
      </div> 
      <div class="returns-desc param-desc"> 
+      <p>A value between 0 and 1.</p> 
      </div> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
       <a href="src_math_Math.js.html">math/Math.js</a>, 
-      <a href="src_math_Math.js.html#sunlight-1-line-953">line 953</a> 
+      <a href="src_math_Math.js.html#sunlight-1-line-966">line 966</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2498,7 +2501,7 @@ roundTo(2000/7,-5,2) == 285.71875 -- 100011101.10111</code></pre>
      <dt class="tag-source">
       Source - 
       <a href="src_math_Math.js.html">math/Math.js</a>, 
-      <a href="src_math_Math.js.html#sunlight-1-line-924">line 924</a> 
+      <a href="src_math_Math.js.html#sunlight-1-line-937">line 937</a> 
      </dt> 
      <dt class="tag-see">
       See:

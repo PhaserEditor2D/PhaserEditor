@@ -12,7 +12,7 @@
     <div class="description"> 
      <p>The Sound Manager is responsible for playing back audio via either the Legacy HTML Audio tag or via Web Audio if the browser supports it. Note: On Firefox 25+ on Linux if you have media.gstreamer disabled in about:config then it cannot play back mp3 or m4a files. The audio file type and the encoding of those files are extremely important. Not all browsers can play all audio formats. There is a good guide to what's supported here: http://hpr.dogphilosophy.net/test/</p> 
      <p>If you are reloading a Phaser Game on a page that never properly refreshes (such as in an AngularJS project) then you will quickly run out of AudioContext nodes. If this is the case create a global var called PhaserGlobal on the window object before creating the game. The active AudioContext will then be saved to window.PhaserGlobal.audioContext when the Phaser game is destroyed, and re-used when it starts again.</p> 
-     <p>Mobile warning: There are some mobile devices (certain iPad 2 and iPad Mini revisions) that cannot play 48000 Hz audio. When they try to play the audio becomes extremely distorted and buzzes, eventually crashing the sound system. The solution is to use a lower encoding rate such as 44100 Hz.</p> 
+     <p>Mobile warning: There are some mobile devices (certain iPad 2 and iPad Mini revisions) that cannot play 48000 Hz audio. When they try to play the audio becomes extremely distorted and buzzes, eventually crashing the sound system. The solution is to use a lower encoding rate such as 44100 Hz. Sometimes the audio context will be created with a sampleRate of 48000. If this happens and audio distorts you should re-create the context.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -35,7 +35,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-25">line 25</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-26">line 26</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -61,7 +61,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-95">line 95</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-96">line 96</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -84,7 +84,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-83">line 83</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-84">line 84</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -99,7 +99,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-59">line 59</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-60">line 60</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -114,7 +114,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-30">line 30</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-31">line 31</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -129,7 +129,30 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-747">line 747</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-765">line 765</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="muteOnPause"><span class="type-signature"></span>muteOnPause<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Set to true to have all sound muted when the Phaser game pauses (such as on loss of focus), or set to false to keep audio playing, regardless of the game pause state. You may need to do this should you wish to control audio muting via external DOM buttons or similar.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>true</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-105">line 105</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -144,7 +167,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-77">line 77</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-78">line 78</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -159,7 +182,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-47">line 47</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-48">line 48</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -174,7 +197,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-35">line 35</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-36">line 36</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -189,7 +212,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-53">line 53</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-54">line 54</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -204,7 +227,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-41">line 41</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-42">line 42</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -219,7 +242,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-89">line 89</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-90">line 90</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -234,7 +257,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-71">line 71</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-72">line 72</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -249,7 +272,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-65">line 65</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-66">line 66</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -264,7 +287,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-787">line 787</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-805">line 805</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -333,7 +356,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-530">line 530</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-540">line 540</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -374,7 +397,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-554">line 554</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-564">line 564</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -397,7 +420,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-159">line 159</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-169">line 169</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -437,7 +460,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-396">line 396</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-406">line 406</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -452,7 +475,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-712">line 712</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-722">line 722</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -467,7 +490,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-352">line 352</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-362">line 362</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -526,7 +549,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-621">line 621</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-631">line 631</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -567,7 +590,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-569">line 569</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-579">line 579</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -608,7 +631,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-594">line 594</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-604">line 604</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -623,7 +646,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-374">line 374</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-384">line 384</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -665,7 +688,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-433">line 433</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-443">line 443</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -680,7 +703,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-260">line 260</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-270">line 270</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -695,7 +718,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-330">line 330</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-340">line 340</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -719,7 +742,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-286">line 286</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-296">line 296</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -742,7 +765,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_sound_SoundManager.js.html">sound/SoundManager.js</a>, 
-      <a href="src_sound_SoundManager.js.html#sunlight-1-line-483">line 483</a> 
+      <a href="src_sound_SoundManager.js.html#sunlight-1-line-493">line 493</a> 
      </dt> 
     </dl> 
    </dd> 
