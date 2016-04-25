@@ -246,6 +246,12 @@ public class BuildPhaserAPI {
 		default:
 			break;
 		}
+		
+		// this is the case of the Array(DisplayObject), that is converted to [new DisplayObject()]
+		if (varType.startsWith("[new")) {
+			return varType;
+		}
+		
 		return "new " + varType + "()";
 	}
 
@@ -329,6 +335,22 @@ public class BuildPhaserAPI {
 			return "Object";
 		}
 		String name = types[0];
+
+		if (name.startsWith("Array(") && name.endsWith(")")) {
+			String elemType = name.substring(6, name.length() - 1);
+			
+			// a patch to the rule because the worths it 
+			if (elemType.equals("DisplayObject")) {
+				elemType = "PIXI_DisplayObject";
+			}
+			return "[new " + elemType + "()]";
+			
+		}
+
+		if (name.toLowerCase().startsWith("array")) {
+			return "Array";
+		}
+
 		switch (name) {
 		case "string":
 			return "String";

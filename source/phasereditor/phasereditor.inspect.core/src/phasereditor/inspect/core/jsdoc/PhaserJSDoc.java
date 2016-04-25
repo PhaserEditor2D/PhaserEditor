@@ -348,8 +348,6 @@ public class PhaserJSDoc {
 			return false;
 		}
 
-		out.println("cons " + obj.getString("longname"));
-
 		String name = obj.getString("name");
 		String desc = obj.optString("description", "");
 		Object defaultValue = obj.opt("defaultvalue");
