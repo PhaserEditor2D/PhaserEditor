@@ -44,7 +44,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.FilteredTree;
-import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.part.ViewPart;
 
 import phasereditor.assetpack.core.AssetPackCore;
@@ -53,6 +52,7 @@ import phasereditor.assetpack.core.AssetPackCore.PackDelta;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.FilteredTree2;
+import phasereditor.ui.PatternFilter2;
 
 public class AssetExplorer extends ViewPart {
 	public static final String ID = "phasereditor.assetpack.views.assetExplorer";
@@ -85,7 +85,7 @@ public class AssetExplorer extends ViewPart {
 		GridLayout gl_parent = new GridLayout(1, false);
 		parent.setLayout(gl_parent);
 
-		_filteredTree = new FilteredTree2(parent, SWT.NONE, new PatternFilter(), 4);
+		_filteredTree = new FilteredTree2(parent, SWT.NONE, new PatternFilter2(), 4);
 		_viewer = _filteredTree.getViewer();
 		_viewer.addDoubleClickListener(new IDoubleClickListener() {
 			@Override

@@ -49,18 +49,19 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.wb.swt.ResourceManager;
 
 import phasereditor.inspect.core.IPhaserCategory;
 import phasereditor.inspect.core.IPhaserTemplate;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.TemplateInfo;
+import phasereditor.inspect.core.examples.ExampleCategoryModel;
 import phasereditor.inspect.core.examples.ExamplesModel;
 import phasereditor.inspect.core.templates.TemplateCategoryModel;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTree2;
 import phasereditor.ui.IEditorSharedImages;
+import phasereditor.ui.PatternFilter2;
 
 public class PhaserTemplateWizardPage extends WizardPage {
 
@@ -109,6 +110,15 @@ public class PhaserTemplateWizardPage extends WizardPage {
 
 		@Override
 		public Object getParent(Object element) {
+			if (element instanceof IPhaserTemplate) {
+				return ((IPhaserTemplate) element).getCategory();
+			}
+			if (element instanceof ExampleCategoryModel) {
+				return PHASER_EXAMPLES;
+			}
+			if (element instanceof TemplateCategoryModel) {
+				return InspectCore.getGeneralTemplates();
+			}
 			return null;
 		}
 
@@ -172,51 +182,51 @@ public class PhaserTemplateWizardPage extends WizardPage {
 		gl_container.marginWidth = 0;
 		gl_container.marginHeight = 0;
 		container.setLayout(gl_container);
-		
-				Button btnNewButton = new Button(container, SWT.NONE);
-				GridData gd_btnNewButton = new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1);
-				gd_btnNewButton.heightHint = 20;
-				gd_btnNewButton.widthHint = 20;
-				btnNewButton.setLayoutData(gd_btnNewButton);
-				btnNewButton.addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						_treeViewer.expandAll();
-					}
-				});
-				btnNewButton.setToolTipText("Expand All");
-				btnNewButton.setImage(ResourceManager.getPluginImage("org.eclipse.ui", "/icons/full/elcl16/expandall.png"));
-		
-				Button btnCollapse = new Button(container, SWT.NONE);
-				GridData gd_btnCollapse = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-				gd_btnCollapse.widthHint = 20;
-				gd_btnCollapse.heightHint = 20;
-				btnCollapse.setLayoutData(gd_btnCollapse);
-				btnCollapse.addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						_treeViewer.collapseAll();
-					}
-				});
-				btnCollapse.setToolTipText("Collapse All");
-				btnCollapse.setImage(ResourceManager.getPluginImage("org.eclipse.ui", "/icons/full/elcl16/collapseall.png"));
+
+		Button btnNewButton = new Button(container, SWT.NONE);
+		GridData gd_btnNewButton = new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1);
+		gd_btnNewButton.heightHint = 20;
+		gd_btnNewButton.widthHint = 20;
+		btnNewButton.setLayoutData(gd_btnNewButton);
+		btnNewButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				_treeViewer.expandAll();
+			}
+		});
+		btnNewButton.setToolTipText("Expand All");
+		btnNewButton.setImage(ResourceManager.getPluginImage("org.eclipse.ui", "/icons/full/elcl16/expandall.png"));
+
+		Button btnCollapse = new Button(container, SWT.NONE);
+		GridData gd_btnCollapse = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnCollapse.widthHint = 20;
+		gd_btnCollapse.heightHint = 20;
+		btnCollapse.setLayoutData(gd_btnCollapse);
+		btnCollapse.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				_treeViewer.collapseAll();
+			}
+		});
+		btnCollapse.setToolTipText("Collapse All");
+		btnCollapse.setImage(ResourceManager.getPluginImage("org.eclipse.ui", "/icons/full/elcl16/collapseall.png"));
 
 		SashForm sashForm = new SashForm(container, SWT.VERTICAL);
 		sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-		
-				_filteredTree = new FilteredTree2(sashForm, SWT.BORDER, new PatternFilter(), 1);
-				_treeViewer = _filteredTree.getViewer();
-				_treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-					@Override
-					public void selectionChanged(SelectionChangedEvent event) {
-						updateFromSelection();
-					}
-				});
-				_treeViewer.setContentProvider(new TemplateContentProvider());
-				_treeViewer.setLabelProvider(new TemplatesLabelProvider());
+
+		_filteredTree = new FilteredTree2(sashForm, SWT.BORDER, new PatternFilter2(), 1);
+		_treeViewer = _filteredTree.getViewer();
+		_treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				updateFromSelection();
+			}
+		});
+		_treeViewer.setContentProvider(new TemplateContentProvider());
+		_treeViewer.setLabelProvider(new TemplatesLabelProvider());
 
 		_infoText = new Browser(sashForm, SWT.BORDER);
-		sashForm.setWeights(new int[] { 2, 1});
+		sashForm.setWeights(new int[] { 2, 1 });
 
 		afterCreateWidgets();
 	}

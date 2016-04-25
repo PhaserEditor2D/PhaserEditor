@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -57,14 +58,19 @@ public class ExamplesModel {
 	}
 
 	private void buildExamples(IProgressMonitor monitor) throws IOException {
-		Path assets = _examplesRepoPath.resolve("examples/assets");
-		Path[] assetFiles = Files.walk(assets)
-				.filter(p -> !Files.isDirectory(p)).toArray(Path[]::new);
+		Path examplesPath = _examplesRepoPath.resolve("examples");
+		Path assetsPath = examplesPath.resolve("assets");
+		Path pluginsPath = examplesPath.resolve("_plugins");
 
-		Path examples = _examplesRepoPath.resolve("examples");
+		List<Path> requiredFiles = new ArrayList<>();
+		{
+			Path[] inAssets = Files.walk(assetsPath).filter(p -> !Files.isDirectory(p)).toArray(Path[]::new);
+			Path[] inPlugins = Files.walk(pluginsPath).filter(p -> !Files.isDirectory(p)).toArray(Path[]::new);
+			requiredFiles.addAll(Arrays.asList(inAssets));
+			requiredFiles.addAll(Arrays.asList(inPlugins));
+		}
 
-		Path[] jsFiles = Files.walk(examples).filter(this::isExampleJSFile)
-				.toArray(Path[]::new);
+		Path[] jsFiles = Files.walk(examplesPath).filter(this::isExampleJSFile).toArray(Path[]::new);
 
 		out.println("Examples: " + jsFiles.length);
 
@@ -84,24 +90,19 @@ public class ExamplesModel {
 				_examplesCategories.add(catModel);
 			}
 
-			String mainFile = jsFile.getFileName().toString()
-					.replace("\\", "/");
-			ExampleModel exampleModel = new ExampleModel(this, catModel,
-					getName(jsFile), mainFile);
+			String mainFile = jsFile.getFileName().toString().replace("\\", "/");
+			ExampleModel exampleModel = new ExampleModel(this, catModel, getName(jsFile), mainFile);
 
 			// add main example file
-			exampleModel.addMapping(_reposFolder.relativize(jsFile), jsFile
-					.getFileName().toString());
+			exampleModel.addMapping(_reposFolder.relativize(jsFile), jsFile.getFileName().toString());
 			catModel.addExample(exampleModel);
 
 			// add assets files
 			String content = new String(Files.readAllBytes(jsFile));
-			for (Path asset : assetFiles) {
-				String assetRelPath = assets.getParent().relativize(asset)
-						.toString().replace("\\", "/");
-				if (content.contains(assetRelPath)) {
-					exampleModel.addMapping(_reposFolder.relativize(asset),
-							assetRelPath);
+			for (Path file : requiredFiles) {
+				String assetRelPath = examplesPath.relativize(file).toString().replace("\\", "/");
+				if (content.contains(assetRelPath) || content.contains("../" + assetRelPath)) {
+					exampleModel.addMapping(_reposFolder.relativize(file), assetRelPath);
 				}
 			}
 
@@ -159,9 +160,13 @@ public class ExamplesModel {
 	}
 
 	private boolean isExampleJSFile(Path p) {
+		if (p.getParent().getFileName().toString().equals("_plugins")) {
+			return false;
+		}
+
 		String str = p.toString();
-		return !str.contains("_site") && !str.contains("wip")
-				&& str.endsWith(".js");
+
+		return !str.contains("_site") && !str.contains("wip") && str.endsWith(".js");
 	}
 
 	public Path getExamplesRepoPath() {
@@ -180,23 +185,19 @@ public class ExamplesModel {
 			jsonDoc = new JSONObject(new JSONTokener(input));
 		}
 
-		loadCategories(jsonDoc.getJSONArray("examplesCategories"),
-				_examplesCategories);
+		loadCategories(jsonDoc.getJSONArray("examplesCategories"), _examplesCategories);
 	}
 
-	private void loadCategories(JSONArray jsonCategories,
-			List<ExampleCategoryModel> categories) {
+	private void loadCategories(JSONArray jsonCategories, List<ExampleCategoryModel> categories) {
 		for (int i = 0; i < jsonCategories.length(); i++) {
 			JSONObject jsonCategory = jsonCategories.getJSONObject(i);
-			ExampleCategoryModel category = new ExampleCategoryModel(
-					jsonCategory.getString("name"));
+			ExampleCategoryModel category = new ExampleCategoryModel(jsonCategory.getString("name"));
 			categories.add(category);
 
 			JSONArray jsonExamples = jsonCategory.getJSONArray("examples");
 			for (int j = 0; j < jsonExamples.length(); j++) {
 				JSONObject jsonExample = jsonExamples.getJSONObject(j);
-				ExampleModel example = new ExampleModel(this, category,
-						jsonExample.getString("name"),
+				ExampleModel example = new ExampleModel(this, category, jsonExample.getString("name"),
 						jsonExample.getString("mainFile"));
 				category.addExample(example);
 
@@ -204,8 +205,7 @@ public class ExamplesModel {
 				for (int k = 0; k < jsonMaps.length(); k++) {
 					JSONObject jsonMap = jsonMaps.getJSONObject(k);
 					String orig = jsonMap.getString("orig");
-					example.addMapping(_reposFolder.resolve(orig),
-							jsonMap.getString("dst"));
+					example.addMapping(_reposFolder.resolve(orig), jsonMap.getString("dst"));
 				}
 			}
 		}
@@ -221,8 +221,7 @@ public class ExamplesModel {
 		Files.write(cache, jsonDoc.toString().getBytes());
 	}
 
-	private static void saveCategories(JSONArray jsonExamplesCategories,
-			List<ExampleCategoryModel> categories) {
+	private static void saveCategories(JSONArray jsonExamplesCategories, List<ExampleCategoryModel> categories) {
 		for (ExampleCategoryModel category : categories) {
 			JSONObject jsonCategory = new JSONObject();
 			jsonCategory.put("name", category.getName());
@@ -241,8 +240,7 @@ public class ExamplesModel {
 				for (Mapping map : example.getFilesMapping()) {
 					JSONObject jsonMap = new JSONObject();
 					jsonMaps.put(jsonMap);
-					jsonMap.put("orig",
-							map.getOriginal().toString().replace("\\", "/"));
+					jsonMap.put("orig", map.getOriginal().toString().replace("\\", "/"));
 					jsonMap.put("dst", map.getDestiny());
 				}
 			}
