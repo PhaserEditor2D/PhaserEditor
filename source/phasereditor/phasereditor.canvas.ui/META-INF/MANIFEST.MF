@@ -4,7 +4,7 @@ Bundle-Name: Phaser Editor - Canvas
 Bundle-SymbolicName: phasereditor.canvas.ui;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: phasereditor.canvas.ui.Activator
-Bundle-Vendor: Boniatillo.com
+Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.ide;bundle-version="3.11.0",

@@ -4,7 +4,7 @@ Bundle-Name: Phaser Editor - OptiPNG Core
 Bundle-SymbolicName: phasereditor.optipng.core
 Bundle-Version: 1.1.1.qualifier
 Bundle-Activator: phasereditor.optipng.core.Activator
-Bundle-Vendor: Boniatillo.com
+Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources;bundle-version="3.9.1",

@@ -4,7 +4,7 @@ Bundle-Name: Phaser Editor - Audio Sprite UI
 Bundle-SymbolicName: phasereditor.audiosprite.ui;singleton:=true
 Bundle-Version: 1.1.1.qualifier
 Bundle-Activator: phasereditor.audiosprite.ui.Activator
-Bundle-Vendor: Boniatillo.com
+Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.editors;bundle-version="3.8.200",

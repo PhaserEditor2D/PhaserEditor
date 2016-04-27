@@ -4,7 +4,7 @@ Bundle-Name: Phaser Editor - Inspect Core Resources
 Bundle-SymbolicName: phasereditor.inspect.core.resources
 Bundle-Version: 1.1.1.qualifier
 Bundle-Activator: phasereditor.inspect.core.resources.Activator
-Bundle-Vendor: Boniatillo.com
+Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

@@ -4,7 +4,7 @@ Bundle-Name: Phaser Editor - Project Core
 Bundle-SymbolicName: phasereditor.project.core;singleton:=true
 Bundle-Version: 1.1.1.qualifier
 Bundle-Activator: phasereditor.project.core.Activator
-Bundle-Vendor: Boniatillo.com
+Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.wst.jsdt.core;bundle-version="1.3.300",

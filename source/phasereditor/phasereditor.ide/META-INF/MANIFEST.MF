@@ -4,7 +4,7 @@ Bundle-Name: Phaser Editor - IDE
 Bundle-SymbolicName: phasereditor.ide;singleton:=true
 Bundle-Version: 1.1.1.qualifier
 Bundle-Activator: phasereditor.ide.IDEPlugin
-Bundle-Vendor: Boniatillo.com
+Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.intro,

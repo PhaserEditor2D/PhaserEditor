@@ -4,7 +4,7 @@ Bundle-Name: Phaser Editor - Atlas Core
 Bundle-SymbolicName: phasereditor.atlas.core;singleton:=true
 Bundle-Version: 1.1.1.qualifier
 Bundle-Activator: phasereditor.atlas.core.Activator
-Bundle-Vendor: Boniatillo.com
+Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources;bundle-version="3.9.1",

@@ -4,7 +4,7 @@ Bundle-Name: Phaser Editor - Chains Core
 Bundle-SymbolicName: phasereditor.chains.core
 Bundle-Version: 1.1.1.qualifier
 Bundle-Activator: phasereditor.chains.core.Activator
-Bundle-Vendor: Boniatillo.com
+Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  phasereditor.inspect.core;bundle-version="1.1.1",

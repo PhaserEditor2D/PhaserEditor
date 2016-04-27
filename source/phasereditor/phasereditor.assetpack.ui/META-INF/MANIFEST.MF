@@ -4,7 +4,7 @@ Bundle-Name: Phaser Editor - Asset Pack UI
 Bundle-SymbolicName: phasereditor.assetpack.ui;singleton:=true
 Bundle-Version: 1.1.1.qualifier
 Bundle-Activator: phasereditor.assetpack.ui.Activator
-Bundle-Vendor: Boniatillo.com
+Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.ide;bundle-version="3.10.2",
