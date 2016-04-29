@@ -36,7 +36,6 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -62,6 +61,7 @@ import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTree2;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.PatternFilter2;
+import phasereditor.ui.WebkitBrowser;
 
 public class PhaserTemplateWizardPage extends WizardPage {
 
@@ -131,7 +131,7 @@ public class PhaserTemplateWizardPage extends WizardPage {
 	TreeViewer _treeViewer;
 	ExamplesModel _examples;
 	private IPhaserTemplate _template;
-	private Browser _infoText;
+	private WebkitBrowser _infoText;
 	private FilteredTree2 _filteredTree;
 
 	public PhaserTemplateWizardPage() {
@@ -225,7 +225,7 @@ public class PhaserTemplateWizardPage extends WizardPage {
 		_treeViewer.setContentProvider(new TemplateContentProvider());
 		_treeViewer.setLabelProvider(new TemplatesLabelProvider());
 
-		_infoText = new Browser(sashForm, SWT.BORDER);
+		_infoText = new WebkitBrowser(sashForm, SWT.BORDER);
 		sashForm.setWeights(new int[] { 2, 1 });
 
 		afterCreateWidgets();

@@ -6,9 +6,9 @@
    <aboutInfo>
       <image path="icons/icon128.png"/>
       <text>
-         Phaser Editor 1.1.2
+         Phaser Editor 1.1.3
 
-Supports Phaser v2.4.6
+Supports Phaser v2.4.7
 
 Powered by:
 
@@ -30,7 +30,7 @@ Copyright (c) Arian Fornaris 2015, 2016
    </configIni>
 
    <launcherArgs>
-      <vmArgs>-Dorg.osgi.framework.bundle.parent=ext
+      <vmArgs>-Dosgi.requiredJavaVersion=1.8 -Dosgi.framework.extensions=org.eclipse.fx.osgi
       </vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
       </vmArgsMac>

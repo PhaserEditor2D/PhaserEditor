@@ -54,7 +54,7 @@
          </property>
          <property
                name="aboutText"
-               value="Phaser Editor 1.1.2&#x0A;&#x0A;Supports Phaser v2.4.6&#x0A;&#x0A;Powered by:&#x0A;&#x0A;PhaserJS (http://phaser.io)&#x0A;Eclipse (http://eclipse.org)&#x0A;Libgdx (http://libgdx.badlogicgames.com)&#x0A;FFMpeg (http://ffmpeg.org)&#x0A;OptiPNG (http://optipng.sourceforge.net)&#x0A;Eclipse Color Themes (http://eclipsecolorthemes.com)&#x0A;How To Draw Funny Cartoons (http://how-to-draw-funny-cartoons.com)&#x0A;&#x0A;Keep in touch with the Phaser Editor community: http://phasereditor.boniatillo.com&#x0A;&#x0A;Copyright (c) Arian Fornaris 2015, 2016">
+               value="Phaser Editor 1.1.3&#x0A;&#x0A;Supports Phaser v2.4.7&#x0A;&#x0A;Powered by:&#x0A;&#x0A;PhaserJS (http://phaser.io)&#x0A;Eclipse (http://eclipse.org)&#x0A;Libgdx (http://libgdx.badlogicgames.com)&#x0A;FFMpeg (http://ffmpeg.org)&#x0A;OptiPNG (http://optipng.sourceforge.net)&#x0A;Eclipse Color Themes (http://eclipsecolorthemes.com)&#x0A;How To Draw Funny Cartoons (http://how-to-draw-funny-cartoons.com)&#x0A;&#x0A;Keep in touch with the Phaser Editor community: http://phasereditor.boniatillo.com&#x0A;&#x0A;Copyright (c) Arian Fornaris 2015, 2016">
          </property>
         
       </product>

@@ -35,7 +35,7 @@ public class InspectCore {
 
 	public static final String RESOURCES_PLUGIN_ID = InspectCoreResources.PLUGIN_ID;
 
-	public static final String PHASER_VERSION = "2.4.6";
+	public static final String PHASER_VERSION = "2.4.7";
 
 	protected static ExamplesModel _examplesModel;
 	private static TemplatesModel _builtInTemplates;

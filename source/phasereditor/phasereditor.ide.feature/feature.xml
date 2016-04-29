@@ -1014,13 +1014,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.fx.javafx"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.equinox.http.servlet"
          download-size="0"
          install-size="0"
@@ -1891,5 +1884,23 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          install-size="0"
          version="0.0.0"
          fragment="true"/>
+
+   <plugin
+         id="phasereditor.jfxswt"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="phasereditor.jfxswt.win32"
+         os="win32"
+         ws="win32"
+         arch="x86_64"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
 
 </feature>

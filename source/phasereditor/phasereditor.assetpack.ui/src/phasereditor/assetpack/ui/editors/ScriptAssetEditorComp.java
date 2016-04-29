@@ -78,7 +78,7 @@ public class ScriptAssetEditorComp extends Composite {
 		GridData gd_titleLabel = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_titleLabel.widthHint = 200;
 		_titleLabel.setLayoutData(gd_titleLabel);
-		_titleLabel.setText("Set the properties of the 'binary' file. Required fields are denoted by '*'.");
+		_titleLabel.setText("Set the properties of the 'script' file. Required fields are denoted by '*'.");
 
 		Composite composite = new Composite(this, SWT.NONE);
 		GridData gd_composite = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);

@@ -49,9 +49,6 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.browser.LocationEvent;
-import org.eclipse.swt.browser.LocationListener;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
@@ -93,6 +90,7 @@ import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
 import phasereditor.inspect.core.resources.InspectCoreResources;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
+import phasereditor.ui.WebkitBrowser;
 
 @SuppressWarnings("restriction")
 public class ChainsView extends ViewPart {
@@ -103,7 +101,7 @@ public class ChainsView extends ViewPart {
 	private TableColumn _chainTableColumn;
 	private TableViewer _examplesViewer;
 	private TableColumn _examplesTableColumn;
-	private Browser _docBrowser;
+	private WebkitBrowser _docBrowser;
 	protected CTabFolder _tabFolder;
 
 	class ChainsLabelProvider extends StyledCellLabelProvider {
@@ -356,7 +354,7 @@ public class ChainsView extends ViewPart {
 								gl_composite_1.marginHeight = 0;
 								composite_1.setLayout(gl_composite_1);
 								{
-									_docBrowser = new Browser(composite_1, SWT.NONE);
+									_docBrowser = new WebkitBrowser(composite_1, SWT.NONE);
 									_docBrowser.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 								}
 							}
@@ -523,27 +521,28 @@ public class ChainsView extends ViewPart {
 			}
 		}.schedule();
 
-		_docBrowser.addLocationListener(new LocationListener() {
-
-			@Override
-			public void changing(LocationEvent event) {
-				String loc = event.location;
-				int i = loc.indexOf("#member:");
-				if (i >= 0) {
-					String member = loc.substring(i + 8);
-					if (_chainsModel.isPhaserType(member)) {
-						member += ".";
-					}
-					_queryText.setText(member);
-					_tabFolder.setSelection(0);
-				}
-			}
-
-			@Override
-			public void changed(LocationEvent event) {
-				// nothing
-			}
-		});
+		//TODO:
+//		_docBrowser.addLocationListener(new LocationListener() {
+//
+//			@Override
+//			public void changing(LocationEvent event) {
+//				String loc = event.location;
+//				int i = loc.indexOf("#member:");
+//				if (i >= 0) {
+//					String member = loc.substring(i + 8);
+//					if (_chainsModel.isPhaserType(member)) {
+//						member += ".";
+//					}
+//					_queryText.setText(member);
+//					_tabFolder.setSelection(0);
+//				}
+//			}
+//
+//			@Override
+//			public void changed(LocationEvent event) {
+//				// nothing
+//			}
+//		});
 		_docBrowser.setText(wrapBody("<b>Double click a chain to see the JSDoc here.</b>"));
 	}
 
