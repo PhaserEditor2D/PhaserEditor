@@ -69,52 +69,53 @@ public class SpritesheetPreviewCanvas extends ImageCanvas {
 
 	@Override
 	protected void drawMore(GC gc, int srcW, int srcH, int dstW, int dstH, int dstX, int dstY) {
+		if (_spritesheet == null) {
+			return;
+		}
+		
 		SpritesheetAssetModel spritesheet = _spritesheet;
-		if (spritesheet != null) {
-			Rectangle canvasBounds = getBounds();
-			List<FrameData> list;
-			Rectangle imgBounds = _image.getBounds();
-			if (_singleFrame) {
-				Rectangle dst = PhaserEditorUI.computeImageZoom(imgBounds, canvasBounds);
-				list = AssetPackUI.generateSpriteSheetRects(spritesheet, imgBounds, dst);
-				if (list.isEmpty()) {
-					PhaserEditorUI.paintPreviewMessage(gc, canvasBounds, "Cannot compute the grid.");
-				} else {
-					FrameData fd = list.get(_frame % list.size());
-
-					Rectangle r = new Rectangle(0, 0, fd.src.width, fd.src.height);
-					r = PhaserEditorUI.computeImageZoom(r, getBounds());
-
-					try {
-						gc.drawImage(_image, fd.src.x, fd.src.y, fd.src.width, fd.src.height, r.x, r.y, r.width,
-								r.height);
-					} catch (IllegalArgumentException e) {
-						// wrong parameters
-					}
-				}
+		Rectangle canvasBounds = getBounds();
+		List<FrameData> list;
+		Rectangle imgBounds = _image.getBounds();
+		if (_singleFrame) {
+			Rectangle dst = PhaserEditorUI.computeImageZoom(imgBounds, canvasBounds);
+			list = AssetPackUI.generateSpriteSheetRects(spritesheet, imgBounds, dst);
+			if (list.isEmpty()) {
+				PhaserEditorUI.paintPreviewMessage(gc, canvasBounds, "Cannot compute the grid.");
 			} else {
-				Rectangle dst = PhaserEditorUI.computeImageZoom(imgBounds, canvasBounds);
-				list = AssetPackUI.generateSpriteSheetRects(spritesheet, imgBounds, dst);
-				if (list.isEmpty()) {
-					PhaserEditorUI.paintPreviewMessage(gc, canvasBounds, "Cannot compute the grid.");
-				} else {
-					int i = 0;
-					for (FrameData fd : list) {
-						gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_RED));
-						Rectangle r = fd.dst;
-						gc.drawRectangle(r.x, r.y, r.width, r.height);
-						String label = Integer.toString(i);
-						Point labelRect = gc.stringExtent(Integer.toString(i));
-						int left = r.x + r.width / 2 - labelRect.x / 2;
-						int top = Math.min(r.y + r.height + 5, getBounds().height - labelRect.y - 5);
-						gc.setAlpha(200);
-						gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
-						gc.fillRectangle(left - 2, top, labelRect.x + 4, labelRect.y);
-						gc.setAlpha(255);
-						gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLACK));
-						gc.drawString(label, left, top, true);
-						i++;
-					}
+				FrameData fd = list.get(_frame % list.size());
+
+				Rectangle r = new Rectangle(0, 0, fd.src.width, fd.src.height);
+				r = PhaserEditorUI.computeImageZoom(r, getBounds());
+
+				try {
+					gc.drawImage(_image, fd.src.x, fd.src.y, fd.src.width, fd.src.height, r.x, r.y, r.width, r.height);
+				} catch (IllegalArgumentException e) {
+					// wrong parameters
+				}
+			}
+		} else {
+			Rectangle dst = PhaserEditorUI.computeImageZoom(imgBounds, canvasBounds);
+			list = AssetPackUI.generateSpriteSheetRects(spritesheet, imgBounds, dst);
+			if (list.isEmpty()) {
+				PhaserEditorUI.paintPreviewMessage(gc, canvasBounds, "Cannot compute the grid.");
+			} else {
+				int i = 0;
+				for (FrameData fd : list) {
+					gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_RED));
+					Rectangle r = fd.dst;
+					gc.drawRectangle(r.x, r.y, r.width, r.height);
+					String label = Integer.toString(i);
+					Point labelRect = gc.stringExtent(Integer.toString(i));
+					int left = r.x + r.width / 2 - labelRect.x / 2;
+					int top = Math.min(r.y + r.height + 5, getBounds().height - labelRect.y - 5);
+					gc.setAlpha(200);
+					gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
+					gc.fillRectangle(left - 2, top, labelRect.x + 4, labelRect.y);
+					gc.setAlpha(255);
+					gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLACK));
+					gc.drawString(label, left, top, true);
+					i++;
 				}
 			}
 		}

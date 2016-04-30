@@ -52,18 +52,17 @@ public class QuickSpritesheetAssetPreviewComp extends Composite {
 		_resolutionLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 	}
 
-	private void setImageFile(IFile file) {
-		if (file == null) {
-			_canvas.setImage(null);
-		} else {
-			_canvas.setImageFile(file);
-		}
-	}
 
 	public void setModel(SpritesheetAssetModel asset) {
 		_resolutionLabel.setText("w=" + asset.getFrameWidth() + " h=" + asset.getFrameHeight() + " m="
 				+ asset.getMargin() + " s=" + asset.getSpacing());
-		setImageFile(asset.getUrlFile());
+		IFile file = asset.getUrlFile();
+		if (file == null) {
+			_canvas.setImage(null);
+		} else {
+			_canvas.setSpritesheet(asset);
+			_canvas.setImageFile(file);
+		}
 	}
 	
 	public SpritesheetPreviewCanvas getCanvas() {
