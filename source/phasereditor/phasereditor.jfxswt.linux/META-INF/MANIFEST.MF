@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Phaser Editor - JFXSWT Linux
+Bundle-SymbolicName: phasereditor.jfxswt.linux
+Bundle-Version: 1.0.0.qualifier
+Fragment-Host: phasereditor.jfxswt;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ClassPath: jfxswt.jar,
+ .
+Export-Package: javafx.embed.swt
