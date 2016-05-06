@@ -43,7 +43,9 @@ import phasereditor.inspect.core.jsdoc.PhaserVariable;
 public class BuildOnlinePhaserChainsResources {
 
 	public static void main(String[] args) throws IOException {
-		Path docGenOputput = Paths.get("../../phaserchains/phaser-docgen-output");
+		String repoDir = args[0];
+		
+		Path docGenOputput = Paths.get(repoDir).resolve("phaser-docgen-output");
 		docGenOputput = docGenOputput.toAbsolutePath().normalize();
 
 		Path wsPath = Paths.get(".").toAbsolutePath().getParent().getParent();
