@@ -35,11 +35,14 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 
+import javafx.collections.ObservableList;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import phasereditor.canvas.ui.shapes.GroupNode;
@@ -78,8 +81,38 @@ public class SelectionBehavior implements ISelectionProvider {
 		});
 	}
 
-	private void handleMousePressed(MouseEvent event) {
-		Node userPicked = event.getPickResult().getIntersectedNode();
+	private Node pickNode(Node test, double sceneX, double sceneY) {
+		if (test instanceof Parent) {
+			ObservableList<Node> list = ((Parent) test).getChildrenUnmodifiable();
+			for (int i = list.size() - 1; i >= 0; i--) {
+				Node child = list.get(i);
+				Node result = pickNode(child, sceneX, sceneY);
+				if (result != null) {
+					return result;
+				}
+			}
+		}
+
+		Point2D p = test.sceneToLocal(sceneX, sceneY);
+		if (test.contains(p)) {
+			return test;
+		}
+
+		return null;
+	}
+
+	private void handleMousePressed(MouseEvent e) {
+		if (ignoreEvent(e)) {
+			return;
+		}
+
+		Node userPicked = pickNode(_canvas.getSelectionPane(), e.getSceneX(), e.getSceneY());
+		userPicked = findBestToPick2(userPicked);
+
+		if (userPicked == null) {
+			userPicked = pickNode(_canvas.getWorldNode(), e.getSceneX(), e.getSceneY());
+		}
+
 		Node picked = findBestToPick(userPicked);
 
 		if (picked == null) {
@@ -88,19 +121,30 @@ public class SelectionBehavior implements ISelectionProvider {
 		}
 
 		if (isSelected(picked)) {
-			if (event.isControlDown()) {
+			if (e.isControlDown()) {
 				removeNodeFromSelection(picked);
 			}
 			return;
 		}
 
-		if (_selection != null && !_selection.isEmpty() && event.isControlDown()) {
+		if (_selection != null && !_selection.isEmpty() && e.isControlDown()) {
 			HashSet<Object> selection = new HashSet<>(Arrays.asList(_selection.toArray()));
 			selection.add(picked);
 			setSelection(new StructuredSelection(selection.toArray()));
 		} else {
 			setSelection(new StructuredSelection(picked));
 		}
+	}
+
+	public boolean ignoreEvent(MouseEvent e) {
+		if (isScrollBar(e.getPickResult().getIntersectedNode())) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean isScrollBar(Node node) {
+		return node != null && (node instanceof ScrollBar || isScrollBar(node.getParent()));
 	}
 
 	/**
@@ -138,6 +182,12 @@ public class SelectionBehavior implements ISelectionProvider {
 
 		if (picked instanceof SpriteNode) {
 			return picked;
+		}
+
+		if (picked instanceof SelectionNode) {
+			SelectionNode wrapperNode = (SelectionNode) picked;
+			Node selected = wrapperNode.getObjectNode().getNode();
+			return findBestToPick2(selected);
 		}
 
 		return findBestToPick2(picked.getParent());

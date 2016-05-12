@@ -103,10 +103,10 @@ public class DragBehavior {
 			return;
 		}
 		_dragging = true;
-		
+
 		double dx = event.getSceneX() - _startScenePoint.getX();
 		double dy = event.getSceneY() - _startScenePoint.getY();
-		
+
 		for (DragInfo draginfo : _dragInfoList) {
 			Node dragnode = draginfo.getNode();
 			Point2D start = draginfo.getStart();
@@ -129,6 +129,10 @@ public class DragBehavior {
 
 	private void handleMousePressed(MouseEvent event) {
 		if (event.getButton() != MouseButton.PRIMARY) {
+			return;
+		}
+
+		if (_canvas.getSelectionBehavior().ignoreEvent(event)) {
 			return;
 		}
 

@@ -135,7 +135,7 @@ public class ObjectCanvas extends FXCanvas {
 
 	private void createScene() {
 		_selectionPane = new Pane();
-		_selectionPane.setMouseTransparent(true);
+		_selectionPane.setId("__selection-pane__");
 
 		_worldControl = new GroupControl(this, _model);
 

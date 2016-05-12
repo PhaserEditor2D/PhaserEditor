@@ -63,7 +63,10 @@ public class SelectionNode extends Pane {
 		_border = new Border(s1, s2);
 	}
 
+	private IObjectNode _objectNode;
+
 	public SelectionNode(IObjectNode inode, Bounds rect) {
+		_objectNode = inode;
 		setLayoutX(rect.getMinX());
 		setLayoutY(rect.getMinY());
 		setMinSize(rect.getWidth(), rect.getHeight());
@@ -80,10 +83,15 @@ public class SelectionNode extends Pane {
 		sb.append((long) node.getLayoutY());
 
 		Label label = new Label(sb.toString());
+		label.setId("label " + node.getId());
 		label.setStyle("-fx-background-color:white;-fx-padding:0px 5px 0px 5px;");
 		label.setMinHeight(20);
 		label.setMaxHeight(20);
 		label.relocate(0, -label.getMinHeight());
 		getChildren().add(label);
+	}
+
+	public IObjectNode getObjectNode() {
+		return _objectNode;
 	}
 }
