@@ -23,7 +23,9 @@ package phasereditor.inspect.core.build;
 
 import static java.lang.System.out;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -42,10 +44,12 @@ import phasereditor.inspect.core.jsdoc.PhaserType;
  * @author arian
  *
  */
-public class BuildTernSpecs {
+public class BuildTernPlugin {
 	private static PhaserJSDoc _phaserJSDoc;
 
 	public static void main(String[] args) throws IOException {
+		// this generates a Phaser Tern plugin
+
 		Path wsPath = Paths.get(".").toAbsolutePath().getParent().getParent();
 		Path projectPath = wsPath.resolve(InspectCore.RESOURCES_PLUGIN_ID);
 		_phaserJSDoc = new PhaserJSDoc(projectPath.resolve("phaser-master/src"),
@@ -83,7 +87,7 @@ public class BuildTernSpecs {
 				}
 				JSONObject jsonMember = new JSONObject();
 				jsonMember.put("!type", rettype);
-				jsonMember.put("!doc", "Phaser." + cons.getName());
+				jsonMember.put("!doc", cons.getHelp());
 				phaserDefs.put(cons.getName(), jsonMember);
 			}
 		}
@@ -101,7 +105,7 @@ public class BuildTernSpecs {
 				// metadata
 				// tern queries does not support qualified names, so we do it
 				// via !doc
-				current.put("!doc", type.getName());
+				current.put("!doc", type.getHelp());
 			}
 
 			{
@@ -142,7 +146,7 @@ public class BuildTernSpecs {
 						jsonMember = new JSONObject();
 					}
 					jsonMember.put("!type", signarutre);
-					jsonMember.put("!doc", type.getName() + "." + method.getName());
+					jsonMember.put("!doc", method.getHelp());
 					if (method.isStatic()) {
 						current.put(method.getName(), jsonMember);
 					} else {
@@ -162,7 +166,7 @@ public class BuildTernSpecs {
 					}
 					JSONObject jsonMember = new JSONObject();
 					jsonMember.put("!type", rettype);
-					jsonMember.put("!doc", type.getName() + "." + prop.getName());
+					jsonMember.put("!doc", prop.getHelp());
 					jsonProto.put(prop.getName(), jsonMember);
 					if (prop.isStatic()) {
 						current.put(prop.getName(), jsonMember);
@@ -173,7 +177,19 @@ public class BuildTernSpecs {
 			}
 		}
 
-		out.println(jsonDoc.toString(2));
+		StringBuilder sb = new StringBuilder();
+		try (BufferedReader reader = new BufferedReader(
+				new InputStreamReader(BuildTernPlugin.class.getResourceAsStream("PhaserTernPlugin.js")))) {
+
+			String line;
+			while ((line = reader.readLine()) != null) {
+				sb.append(line + "\n");
+			}
+		}
+
+		String templ = sb.toString();
+
+		out.println(templ.replace("$defs$", jsonDoc.toString(2)));
 	}
 
 	private static String getFuncSignature(List<PhaserMethodArg> args) {
