@@ -64,13 +64,16 @@ public class SelectionNode extends Pane {
 	}
 
 	private IObjectNode _objectNode;
+	private Bounds _rect;
+	private ObjectCanvas _canvas;
 
-	public SelectionNode(IObjectNode inode, Bounds rect) {
+	public SelectionNode(ObjectCanvas canvas, IObjectNode inode, Bounds rect) {
 		_objectNode = inode;
-		setLayoutX(rect.getMinX());
-		setLayoutY(rect.getMinY());
-		setMinSize(rect.getWidth(), rect.getHeight());
-		setMaxSize(rect.getWidth(), rect.getHeight());
+		_rect = rect;
+		_canvas = canvas;
+
+		updateScale();
+
 		setBorder(_border);
 
 		BaseObjectModel model = inode.getModel();
@@ -89,6 +92,21 @@ public class SelectionNode extends Pane {
 		label.setMaxHeight(20);
 		label.relocate(0, -label.getMinHeight());
 		getChildren().add(label);
+	}
+
+	public void updateScale() {
+		double scale = _canvas.getScale();
+
+		double x = _rect.getMinX() * scale;
+		double y = _rect.getMinY() * scale;
+		
+		double h = _rect.getHeight() * scale;
+		double w = _rect.getWidth() * scale;
+
+		//relocate(x * scale, y * scale);
+		relocate(x, y);
+		setMinSize(w, h);
+		setMaxSize(w, h);
 	}
 
 	public IObjectNode getObjectNode() {

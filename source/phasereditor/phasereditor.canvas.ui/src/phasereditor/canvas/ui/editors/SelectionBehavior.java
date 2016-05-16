@@ -286,7 +286,7 @@ public class SelectionBehavior implements ISelectionProvider {
 					continue;
 				}
 
-				selpane.getChildren().add(new SelectionNode(inode, rect));
+				selpane.getChildren().add(new SelectionNode(_canvas, inode, rect));
 			}
 		}
 	}
@@ -345,6 +345,10 @@ public class SelectionBehavior implements ISelectionProvider {
 			list.add(b);
 		}
 
+	}
+
+	public static Point2D localToAncestor(double x, double y, Node local, Node ancestor) {
+		return localToAncestor(new Point2D(x, y), local.getParent(), ancestor);
 	}
 
 	public static Point2D localToAncestor(Point2D point, Node local, Node ancestor) {
