@@ -137,9 +137,19 @@ public class ZoomBehavior {
 		return _scale;
 	}
 
+	public void setScale(double scale) {
+		_scale = scale;
+		updateZoomAndPan();
+	}
+
 	public Point2D getTranslate() {
 		GroupNode world = getCanvas().getWorldNode();
 		return new Point2D(world.getTranslateX(), world.getTranslateY());
+	}
+
+	public void setTranslate(Point2D translate) {
+		_translate = translate;
+		updateZoomAndPan();
 	}
 
 	static double clamp(double value, double min, double max) {

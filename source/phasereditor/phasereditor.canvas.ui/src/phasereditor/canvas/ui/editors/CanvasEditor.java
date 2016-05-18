@@ -51,6 +51,8 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IPersistableEditor;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
@@ -60,6 +62,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import javafx.geometry.Point2D;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.grid.PGrid;
 
@@ -67,7 +70,7 @@ import phasereditor.canvas.ui.editors.grid.PGrid;
  * @author arian
  *
  */
-public class CanvasEditor extends EditorPart implements IResourceChangeListener {
+public class CanvasEditor extends EditorPart implements IResourceChangeListener, IPersistableEditor {
 
 	public final static String ID = "phasereditor.canvas.ui.editors.canvas";
 
@@ -192,6 +195,12 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener 
 
 		_outlineTree.getViewer().setInput(_canvas);
 		_outlineTree.getViewer().expandAll();
+
+		// restore state
+		if (_state != null) {
+			_canvas.getZoomBehavior().setScale(_state.zoomScale);
+			_canvas.getZoomBehavior().setTranslate(_state.translate);
+		}
 	}
 
 	private static MenuManager createContextMenu() {
@@ -271,5 +280,36 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener 
 	protected void updateTitle() {
 		setPartName(getEditorInputFile().getName());
 		firePropertyChange(PROP_TITLE);
+	}
+
+	@Override
+	public void saveState(IMemento memento) {
+		ZoomBehavior zoom = _canvas.getZoomBehavior();
+		memento.putFloat("canvas.zoom.scale", (float) zoom.getScale());
+		memento.putFloat("canvas.translate.x", (float) zoom.getTranslate().getX());
+		memento.putFloat("canvas.translate.y", (float) zoom.getTranslate().getY());
+	}
+
+	static class State {
+		double zoomScale = 0;
+		Point2D translate = new Point2D(0, 0);
+	}
+
+	private State _state;
+
+	@Override
+	public void restoreState(IMemento memento) {
+		_state = new State();
+
+		{
+			Float scale = memento.getFloat("canvas.zoom.scale");
+			_state.zoomScale = scale == null ? 0 : scale.doubleValue();
+		}
+
+		{
+			Float x = memento.getFloat("canvas.translate.x");
+			Float y = memento.getFloat("canvas.translate.y");
+			_state.translate = new Point2D(x == null ? 0 : x.doubleValue(), y == null ? 0 : y.doubleValue());
+		}
 	}
 }
