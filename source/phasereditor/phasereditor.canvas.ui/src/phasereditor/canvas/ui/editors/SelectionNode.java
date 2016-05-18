@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Border;
@@ -72,7 +73,7 @@ public class SelectionNode extends Pane {
 		_rect = rect;
 		_canvas = canvas;
 
-		updateScale();
+		updateZoomAndPan();
 
 		setBorder(_border);
 
@@ -94,16 +95,19 @@ public class SelectionNode extends Pane {
 		getChildren().add(label);
 	}
 
-	public void updateScale() {
-		double scale = _canvas.getScale();
+	public ObjectCanvas getCanvas() {
+		return _canvas;
+	}
 
-		double x = _rect.getMinX() * scale;
-		double y = _rect.getMinY() * scale;
-		
+	public void updateZoomAndPan() {
+		double scale = _canvas.getZoomBehavior().getScale();
+		Point2D translate = _canvas.getZoomBehavior().getTranslate();
+		double x = translate.getX() + _rect.getMinX() * scale;
+		double y = translate.getY() + _rect.getMinY() * scale;
+
 		double h = _rect.getHeight() * scale;
 		double w = _rect.getWidth() * scale;
 
-		//relocate(x * scale, y * scale);
 		relocate(x, y);
 		setMinSize(w, h);
 		setMaxSize(w, h);

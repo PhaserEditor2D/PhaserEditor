@@ -42,7 +42,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ScrollBar;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import phasereditor.canvas.ui.shapes.GroupNode;
@@ -102,7 +102,7 @@ public class SelectionBehavior implements ISelectionProvider {
 	}
 
 	private void handleMousePressed(MouseEvent e) {
-		if (ignoreEvent(e)) {
+		if (e.getButton() != MouseButton.PRIMARY) {
 			return;
 		}
 
@@ -134,17 +134,6 @@ public class SelectionBehavior implements ISelectionProvider {
 		} else {
 			setSelection(new StructuredSelection(picked));
 		}
-	}
-
-	public boolean ignoreEvent(MouseEvent e) {
-		if (isScrollBar(e.getPickResult().getIntersectedNode())) {
-			return true;
-		}
-		return false;
-	}
-
-	private boolean isScrollBar(Node node) {
-		return node != null && (node instanceof ScrollBar || isScrollBar(node.getParent()));
 	}
 
 	/**

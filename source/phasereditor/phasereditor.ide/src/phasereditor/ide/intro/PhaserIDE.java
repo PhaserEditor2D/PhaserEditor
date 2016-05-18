@@ -127,6 +127,8 @@ public class PhaserIDE implements IApplication, IExecutableExtension {
 	 */
 	@Override
 	public Object start(IApplicationContext appContext) throws Exception {
+		javafx.application.Platform.setImplicitExit(false);
+
 		LicCore.startEvaluationThread();
 
 		Display display = createDisplay();
@@ -579,5 +581,6 @@ public class PhaserIDE implements IApplication, IExecutableExtension {
 					workbench.close();
 			}
 		});
+		javafx.application.Platform.exit();
 	}
 }

@@ -106,33 +106,28 @@ public class DragBehavior {
 
 		double dx = event.getSceneX() - _startScenePoint.getX();
 		double dy = event.getSceneY() - _startScenePoint.getY();
+		Point2D delta = new Point2D(dx, dy);
+
+		double scale = _canvas.getZoomBehavior().getScale();
 
 		for (DragInfo draginfo : _dragInfoList) {
 			Node dragnode = draginfo.getNode();
 			Point2D start = draginfo.getStart();
 
-			Point2D delta = new Point2D(dx, dy);
-			try {
-				delta = dragnode.getParent().getLocalToSceneTransform().inverseDeltaTransform(dx, dy);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
 			dx = delta.getX();
 			dy = delta.getY();
 
-			dragnode.setLayoutX(start.getX() + dx);
-			dragnode.setLayoutY(start.getY() + dy);
+			double x = start.getX() + dx / scale;
+			double y = start.getY() + dy / scale;
+
+			dragnode.setLayoutX(x);
+			dragnode.setLayoutY(y);
 		}
 		_canvas.getSelectionBehavior().updateSelectedNodes();
 	}
 
 	private void handleMousePressed(MouseEvent event) {
 		if (event.getButton() != MouseButton.PRIMARY) {
-			return;
-		}
-
-		if (_canvas.getSelectionBehavior().ignoreEvent(event)) {
 			return;
 		}
 
@@ -158,6 +153,7 @@ public class DragBehavior {
 		for (DragInfo draginfo : _dragInfoList) {
 			Point2D start = draginfo.getStart();
 			Node node = draginfo.getNode();
+
 			node.relocate(start.getX(), start.getY());
 		}
 		_dragInfoList.clear();

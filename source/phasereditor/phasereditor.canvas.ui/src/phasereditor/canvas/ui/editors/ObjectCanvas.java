@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
-import static java.lang.System.out;
-
 import java.util.List;
 
 import org.eclipse.jface.util.LocalSelectionTransfer;
@@ -34,7 +32,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import javafx.embed.swt.FXCanvas;
-import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.TransferMode;
@@ -61,7 +60,7 @@ public class ObjectCanvas extends FXCanvas {
 	private UpdateChangeBehavior _updateBehavior;
 	private GroupControl _worldControl;
 	private TreeViewer _outline;
-	private Pane _root;
+	private Group _root;
 	private ZoomBehavior _zoomBehavior;
 
 	public ObjectCanvas(Composite parent) {
@@ -98,6 +97,10 @@ public class ObjectCanvas extends FXCanvas {
 
 	public CreateBehavior getCreateBehaviors() {
 		return _createBehaviors;
+	}
+
+	public ZoomBehavior getZoomBehavior() {
+		return _zoomBehavior;
 	}
 
 	public SelectionBehavior getSelectionBehavior() {
@@ -139,21 +142,18 @@ public class ObjectCanvas extends FXCanvas {
 
 		world.setStyle("-fx-background-color:white;-fx-border-color:darkGray;border-style:solid;");
 
-		_root = new Pane(world, _selectionPane);
+		_root = new Group(world, _selectionPane);
 		int width = _model.getWorldWidth();
 		int height = _model.getWorldHeight();
 		world.setMinSize(width, height);
 		world.setMaxSize(width, height);
-		_root.setMinSize(width, height);
-		_root.setMaxSize(width, height);
-		_root.setPrefSize(width, height);
 		_selectionPane.setMinSize(width, height);
 		_selectionPane.setMaxSize(width, height);
 
 		setScene(new Scene(_root));
 	}
 
-	public Pane getRoot() {
+	public Group getRoot() {
 		return _root;
 	}
 
@@ -169,16 +169,16 @@ public class ObjectCanvas extends FXCanvas {
 		Node node = control.getNode();
 		GroupNode worldNode = getWorldNode();
 
-		Bounds b = SelectionBehavior.localToAncestor(worldNode.getBoundsInLocal(), worldNode, getRoot());
-		out.println(sceneX + ", " + sceneY + " into " + b);
+		double invScale = 1 / _zoomBehavior.getScale();
+		Point2D translate = _zoomBehavior.getTranslate();
 
-		double x = sceneX - b.getMinX();
-		double y = sceneY - b.getMinY();
-		x = sceneX;
-		y = sceneY;
+		double x = (sceneX - translate.getX()) * invScale;
+		double y = (sceneY - translate.getY()) * invScale;
 
-		node.setLayoutX(x - control.getWidth() / 2);
-		node.setLayoutY(y - control.getHeight() / 2);
+		double w = control.getWidth() / 2;
+		double h = control.getHeight() / 2;
+		node.setLayoutX(x - w);
+		node.setLayoutY(y - h);
 
 		worldNode.getChildren().add(node);
 
@@ -206,14 +206,5 @@ public class ObjectCanvas extends FXCanvas {
 
 			_selectionBehavior.removeNodeFromSelection((Node) elem);
 		}
-	}
-
-	public double getScale() {
-		return _worldControl.getNode().getScaleY();
-	}
-
-	public void setScale(double scale) {
-		_worldControl.getNode().setScaleX(scale);
-		_worldControl.getNode().setScaleY(scale);
 	}
 }

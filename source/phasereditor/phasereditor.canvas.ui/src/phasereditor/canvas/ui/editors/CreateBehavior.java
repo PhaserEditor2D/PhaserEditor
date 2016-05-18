@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
-import static java.lang.System.out;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -42,9 +40,9 @@ import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.ObjectModelFactory;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
-import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
+import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.ShapeFactory;
 
 /**
@@ -82,16 +80,9 @@ public class CreateBehavior {
 	}
 
 	public void dropShape(BaseObjectControl<?> control, DragEvent event) {
-		Node intersectedNode = event.getPickResult().getIntersectedNode();
-		out.println("drop into " + intersectedNode);
-		Node picked = _canvas.getSelectionBehavior().findBestToPick(intersectedNode);
-		out.println("accept " + picked);
 		_canvas.dropToWorld(control, event.getSceneX(), event.getSceneY());
 	}
 
-	/**
-	 * @param elems
-	 */
 	public void makeGroup(Object... elems) {
 		List<Node> children = new ArrayList<>();
 
