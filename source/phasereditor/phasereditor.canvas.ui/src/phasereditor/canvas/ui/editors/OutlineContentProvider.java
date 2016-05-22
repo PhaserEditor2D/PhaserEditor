@@ -28,8 +28,8 @@ import java.util.List;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.GroupNode;
+import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
  * @author arian
@@ -64,7 +64,7 @@ public class OutlineContentProvider implements ITreeContentProvider {
 	@Override
 	public Object[] getChildren(Object parent) {
 		if (parent instanceof ObjectCanvas) {
-			return new Object[] { ((ObjectCanvas) parent).getWorldNode() };
+			return getChildren(((ObjectCanvas) parent).getWorldNode());
 		}
 
 		if (parent instanceof GroupNode) {

@@ -31,7 +31,7 @@ import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
  * @author arian
  *
  */
-public class AtlasSpriteShapeModel extends BaseSpriteShapeModel {
+public class AtlasSpriteShapeModel extends BaseSpriteShapeModel implements IAssetFrameShapeModel {
 	public static final String TYPE_NAME = "atlas-sprite";
 	private FrameItem _frame;
 
@@ -44,7 +44,7 @@ public class AtlasSpriteShapeModel extends BaseSpriteShapeModel {
 	public AtlasSpriteShapeModel(GroupModel parent, JSONObject obj) {
 		super(parent, TYPE_NAME, obj);
 	}
-	
+
 	@Override
 	protected void writeMetadata(JSONObject obj) {
 		super.writeMetadata(obj);
@@ -68,6 +68,7 @@ public class AtlasSpriteShapeModel extends BaseSpriteShapeModel {
 		}
 	}
 
+	@Override
 	public FrameItem getFrame() {
 		return _frame;
 	}

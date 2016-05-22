@@ -8,4 +8,3 @@ Fragment-Host: phasereditor.optipng.core;bundle-version="1.1.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-BundleShape: dir
 Eclipse-PlatformFilter: (osgi.os=linux)
-Bundle-Vendor: Arian Fornaris

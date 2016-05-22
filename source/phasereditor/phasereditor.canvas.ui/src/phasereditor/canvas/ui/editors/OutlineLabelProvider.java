@@ -21,12 +21,18 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
+import static java.lang.System.out;
+
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
+import phasereditor.assetpack.ui.AssetLabelProvider;
+import phasereditor.canvas.core.AssetShapeModel;
 import phasereditor.canvas.core.BaseObjectModel;
-import phasereditor.canvas.ui.shapes.IObjectNode;
+import phasereditor.canvas.core.IAssetFrameShapeModel;
+import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
+import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.SpriteNode;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
@@ -36,14 +42,37 @@ import phasereditor.ui.IEditorSharedImages;
  *
  */
 public class OutlineLabelProvider extends LabelProvider implements IEditorSharedImages {
+
+	private AssetLabelProvider _assetsLabelProvider = new AssetLabelProvider();
+
 	@Override
 	public Image getImage(Object element) {
+
+		out.println("get image");
+
 		if (element instanceof GroupNode) {
 			return EditorSharedImages.getImage(IMG_SHAPE_GROUP_NODE);
 		}
+
 		if (element instanceof SpriteNode) {
-			return EditorSharedImages.getImage(IMG_SHAPE);
+
+			SpriteNode node = (SpriteNode) element;
+			BaseObjectControl<?> control = node.getControl();
+			BaseObjectModel model = control.getModel();
+
+			if (model instanceof AssetShapeModel) {
+				AssetShapeModel<?> asstModel = (AssetShapeModel<?>) model;
+				return _assetsLabelProvider.getImage(asstModel.getAsset());
+			}
+
+			if (model instanceof IAssetFrameShapeModel) {
+				IAssetFrameShapeModel asstModel = (IAssetFrameShapeModel) model;
+				return _assetsLabelProvider.getImage(asstModel.getFrame());
+			}
+
+			// return EditorSharedImages.getImage(IMG_SHAPE);
 		}
+
 		return super.getImage(element);
 	}
 

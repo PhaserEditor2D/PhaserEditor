@@ -93,6 +93,7 @@ class DragContext {
 /**
  * Listeners for making the nodes draggable via left mouse button. Considers if parent is zoomed.
  */
+@SuppressWarnings("all")
 class NodeGestures {
 
     private DragContext nodeDragContext = new DragContext();
@@ -155,6 +156,7 @@ class NodeGestures {
 /**
  * Listeners for making the scene's canvas draggable and zoomable
  */
+@SuppressWarnings("all")
 class SceneGestures {
 
     private static final double MAX_SCALE = 10.0d;
@@ -266,6 +268,7 @@ class SceneGestures {
 /**
  * An application with a zoomable and pannable canvas.
  */
+@SuppressWarnings("all")
 public class ZoomAndScrollApplication extends Application {
     public static void main(String[] args) {
         launch(args);
