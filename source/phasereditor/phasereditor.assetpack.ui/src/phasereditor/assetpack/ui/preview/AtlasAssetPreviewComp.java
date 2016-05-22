@@ -25,13 +25,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSource;
+import org.eclipse.swt.dnd.DragSourceAdapter;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
@@ -44,6 +52,7 @@ import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.atlas.ui.AtlasCanvas;
 
+@SuppressWarnings("synthetic-access")
 public class AtlasAssetPreviewComp extends Composite {
 	static final Object NO_SELECTION = "none";
 
@@ -110,6 +119,46 @@ public class AtlasAssetPreviewComp extends Composite {
 
 	private void afterCreateWidgets() {
 		// nothing
+		DragSource dragSource = new DragSource(_atlasCanvas, DND.DROP_MOVE | DND.DROP_DEFAULT);
+		dragSource.setTransfer(new Transfer[] { TextTransfer.getInstance(), LocalSelectionTransfer.getTransfer() });
+		dragSource.addDragListener(new DragSourceAdapter() {
+
+			@Override
+			public void dragStart(DragSourceEvent event) {
+				ISelection sel = getSelection();
+				if (sel.isEmpty()) {
+					event.doit = false;
+					return;
+				}
+				LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
+				transfer.setSelection(sel);
+			}
+
+			private ISelection getSelection() {
+				if (_atlasCanvas.isSingleFrame()) {
+					return StructuredSelection.EMPTY;
+				}
+
+				FrameItem over = (FrameItem) _atlasCanvas.getOverFrame();
+
+				if (over == null) {
+					return StructuredSelection.EMPTY;
+				}
+
+				return new StructuredSelection(over);
+			}
+
+			@Override
+			public void dragSetData(DragSourceEvent event) {
+				IStructuredSelection sel = _spritesViewer.getStructuredSelection();
+				Object[] elems = sel.toArray();
+				if (elems.length == 1) {
+					Object elem = elems[0];
+					//event.data = AssetPackCore.getAssetStringReference(elem);
+					event.data = elem;
+				}
+			}
+		});
 	}
 
 	protected void spriteSelected() {

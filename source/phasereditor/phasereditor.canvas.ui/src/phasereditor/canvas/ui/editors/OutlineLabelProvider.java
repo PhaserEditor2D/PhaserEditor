@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
-import static java.lang.System.out;
-
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
@@ -47,9 +45,6 @@ public class OutlineLabelProvider extends LabelProvider implements IEditorShared
 
 	@Override
 	public Image getImage(Object element) {
-
-		out.println("get image");
-
 		if (element instanceof GroupNode) {
 			return EditorSharedImages.getImage(IMG_SHAPE_GROUP_NODE);
 		}

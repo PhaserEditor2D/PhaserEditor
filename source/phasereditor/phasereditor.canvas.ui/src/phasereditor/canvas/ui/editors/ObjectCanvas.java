@@ -122,6 +122,7 @@ public class ObjectCanvas extends FXCanvas {
 				event.consume();
 			} else {
 				event.acceptTransferModes(TransferMode.ANY);
+				ObjectCanvas.this.setFocus();
 			}
 		});
 
