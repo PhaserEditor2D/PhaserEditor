@@ -22,7 +22,15 @@
 package phasereditor.assetpack.ui.preview;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.util.LocalSelectionTransfer;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSource;
+import org.eclipse.swt.dnd.DragSourceAdapter;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -32,9 +40,10 @@ import org.eclipse.swt.widgets.Label;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.ui.ImageCanvas;
 
+@SuppressWarnings("synthetic-access")
 public class ImageAssetPreviewComp extends Composite {
 
-	private ImageCanvas _imagePreviewCanvas;
+	private ImageCanvas _canvas;
 	private Label _resolutionLabel;
 	private ImageAssetModel _model;
 
@@ -54,21 +63,41 @@ public class ImageAssetPreviewComp extends Composite {
 		gridLayout.horizontalSpacing = 0;
 		setLayout(gridLayout);
 
-		_imagePreviewCanvas = new ImageCanvas(this, SWT.NONE);
-		_imagePreviewCanvas.setPreferredSize(new Point(200, 200));
-		_imagePreviewCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		_canvas = new ImageCanvas(this, SWT.NONE);
+		_canvas.setPreferredSize(new Point(200, 200));
+		_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		_resolutionLabel = new Label(this, SWT.NONE);
 		_resolutionLabel.setText("0x0");
 		_resolutionLabel.setAlignment(SWT.CENTER);
 		_resolutionLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+
+		afterCreateWidgets();
+	}
+
+	private void afterCreateWidgets() {
+		DragSource dragSource = new DragSource(_canvas, DND.DROP_MOVE | DND.DROP_DEFAULT);
+		dragSource.setTransfer(new Transfer[] { TextTransfer.getInstance(), LocalSelectionTransfer.getTransfer() });
+		dragSource.addDragListener(new DragSourceAdapter() {
+
+			@Override
+			public void dragStart(DragSourceEvent event) {
+				LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
+				transfer.setSelection(new StructuredSelection(_model));
+			}
+
+			@Override
+			public void dragSetData(DragSourceEvent event) {
+				event.data = _model.getKey();
+			}
+		});
 	}
 
 	public void setModel(ImageAssetModel model) {
 		_model = model;
 		IFile file = model.getUrlFile();
-		_imagePreviewCanvas.setImageFile(file);
-		_resolutionLabel.setText(_imagePreviewCanvas.getResolution());
+		_canvas.setImageFile(file);
+		_resolutionLabel.setText(_canvas.getResolution());
 	}
 
 	public ImageAssetModel getModel() {
