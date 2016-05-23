@@ -204,14 +204,16 @@ public class AtlasAssetPreviewComp extends Composite {
 		_atlasCanvas.setFrames(frames);
 		_atlasCanvas.redraw();
 
-		{
-			List<Object> input = new ArrayList<>(frames);
-			input.add(0, NO_SELECTION);
-			_spritesViewer.setInput(input);
-		}
+		if (!_atlasCanvas.isSingleFrame()) {
+			{
+				List<Object> input = new ArrayList<>(frames);
+				input.add(0, NO_SELECTION);
+				_spritesViewer.setInput(input);
+			}
 
-		if (!frames.isEmpty()) {
-			selectElement(NO_SELECTION);
+			if (!frames.isEmpty()) {
+				selectElement(NO_SELECTION);
+			}
 		}
 	}
 
@@ -225,5 +227,13 @@ public class AtlasAssetPreviewComp extends Composite {
 
 	public AtlasCanvas getAtlasCanvas() {
 		return _atlasCanvas;
+	}
+
+	public void setSingleFrame(AtlasAssetModel.FrameItem frame) {
+		if (!_spritesViewer.getControl().isDisposed()) {
+			_spritesViewer.getControl().dispose();
+		}
+		_atlasCanvas.setFrame(frame);
+		_atlasCanvas.setSingleFrame(true);
 	}
 }

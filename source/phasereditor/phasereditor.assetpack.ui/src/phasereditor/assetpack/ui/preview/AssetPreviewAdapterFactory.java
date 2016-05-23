@@ -39,6 +39,7 @@ import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AtlasAssetModel;
+import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
 import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
@@ -91,9 +92,9 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 
 		public AssetModelPreviewFactory() {
 		}
-		
+
 		private AssetLabelProvider _labelProvider = new AssetLabelProvider();
-		
+
 		@Override
 		public Image getIcon(Object element) {
 			return _labelProvider.getImage(element);
@@ -252,8 +253,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			@Override
 			public void selectInControl(Control preview, Object element) {
 				AtlasAssetPreviewComp comp = (AtlasAssetPreviewComp) preview;
-				comp.selectElement(element);
-				comp.getAtlasCanvas().setSingleFrame(true);
+				comp.setSingleFrame((FrameItem) element);
 			}
 
 			@Override
@@ -263,8 +263,14 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 
 			@Override
 			public boolean canReusePreviewControl(Control c, Object elem) {
-				return c instanceof AtlasAssetPreviewComp
-						&& !((AtlasAssetPreviewComp) c).getAtlasCanvas().isSingleFrame();
+				if (c instanceof AtlasAssetPreviewComp) {
+					AtlasAssetPreviewComp comp = (AtlasAssetPreviewComp) c;
+					if (comp.getAtlasCanvas().isSingleFrame() && !(elem instanceof AtlasAssetModel.FrameItem)) {
+						return false;
+					}
+					return true;
+				}
+				return false;
 			}
 		};
 	}
