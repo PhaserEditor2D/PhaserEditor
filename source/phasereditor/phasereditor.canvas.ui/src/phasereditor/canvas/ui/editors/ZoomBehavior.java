@@ -21,7 +21,10 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
+import static java.lang.System.out;
+
 import javafx.collections.ObservableList;
+import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -96,7 +99,22 @@ public class ZoomBehavior {
 
 		scale = clamp(scale, 0.1d, 10d);
 
+		GroupNode world = getCanvas().getWorldNode();
+
+		Bounds now = world.getBoundsInParent();
+		Point2D local = world.sceneToLocal(e.getSceneX(), e.getSceneY());
+		double fw = local.getX() / world.getBoundsInLocal().getWidth();
+		double fh = local.getY() / world.getBoundsInLocal().getHeight();
+
 		_scale = scale;
+		updateZoomAndPan();
+
+		Bounds later = world.getBoundsInParent();
+
+		double wd = now.getWidth() - later.getWidth();
+		double wh = now.getHeight() - later.getHeight();
+
+		_translate = _translate.add(wd * fw, wh * fh);
 
 		updateZoomAndPan();
 	}

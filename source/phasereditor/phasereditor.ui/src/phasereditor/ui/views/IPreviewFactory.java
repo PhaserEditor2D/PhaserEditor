@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IPersistableElement;
 
+@SuppressWarnings("unused")
 public interface IPreviewFactory {
 
 	public boolean canReusePreviewControl(Control c, Object elem);
@@ -34,7 +35,6 @@ public interface IPreviewFactory {
 
 	public void updateControl(Control preview, Object element);
 
-	@SuppressWarnings("unused")
 	public default void selectInControl(Control preview, Object element) {
 		// do nothing
 	}
@@ -44,7 +44,7 @@ public interface IPreviewFactory {
 	public String getTitle(Object element);
 
 	public IPersistableElement getPersistable(Object elem);
-	
+
 	public default Image getIcon(Object element) {
 		return null;
 	}
