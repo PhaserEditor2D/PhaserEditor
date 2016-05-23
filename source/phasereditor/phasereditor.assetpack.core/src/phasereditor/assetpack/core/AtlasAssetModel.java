@@ -123,7 +123,6 @@ public class AtlasAssetModel extends AssetModel {
 	public void setAtlasURL(String atlasURL) {
 		_atlasURL = atlasURL;
 		firePropertyChange("atlasURL");
-		buildFrames();
 	}
 
 	public String getAtlasData() {
@@ -133,7 +132,6 @@ public class AtlasAssetModel extends AssetModel {
 	public void setAtlasData(String atlasData) {
 		_atlasData = atlasData;
 		firePropertyChange("atlasData");
-		buildFrames();
 	}
 
 	public String getFormat() {
@@ -143,7 +141,6 @@ public class AtlasAssetModel extends AssetModel {
 	public void setFormat(String format) {
 		_format = format;
 		firePropertyChange("format");
-		buildFrames();
 	}
 
 	public static class FrameItem extends AtlasFrame implements IAssetElementModel {

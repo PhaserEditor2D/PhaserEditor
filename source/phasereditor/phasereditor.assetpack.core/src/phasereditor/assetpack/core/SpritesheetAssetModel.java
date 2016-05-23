@@ -48,7 +48,7 @@ public class SpritesheetAssetModel extends AssetModel {
 		_frameMax = -1;
 		_margin = 0;
 		_spacing = 0;
-		_frames = new ArrayList<>();
+		_frames = null;
 	}
 
 	public SpritesheetAssetModel(JSONObject definition, AssetSectionModel section) throws JSONException {
@@ -145,6 +145,9 @@ public class SpritesheetAssetModel extends AssetModel {
 
 	@Override
 	public List<? extends IAssetElementModel> getSubElements() {
+		if (_frames == null) {
+			buildFrames();
+		}
 		return _frames;
 	}
 

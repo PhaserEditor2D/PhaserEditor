@@ -35,6 +35,7 @@ import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AssetType;
+import phasereditor.assetpack.core.IAssetElementModel;
 
 public class AssetsContentProvider implements ITreeContentProvider {
 	public AssetsContentProvider() {
@@ -106,6 +107,10 @@ public class AssetsContentProvider implements ITreeContentProvider {
 		if (element instanceof AssetModel) {
 			AssetModel asset = (AssetModel) element;
 			return asset.getGroup();
+		}
+
+		if (element instanceof IAssetElementModel) {
+			return ((IAssetElementModel) element).getAsset();
 		}
 
 		return null;
