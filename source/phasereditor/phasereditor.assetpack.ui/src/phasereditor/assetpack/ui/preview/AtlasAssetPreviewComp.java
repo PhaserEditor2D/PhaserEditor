@@ -50,6 +50,7 @@ import org.eclipse.swt.widgets.Composite;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
 import phasereditor.assetpack.ui.AssetLabelProvider;
+import phasereditor.atlas.core.AtlasFrame;
 import phasereditor.atlas.ui.AtlasCanvas;
 
 @SuppressWarnings("synthetic-access")
@@ -79,6 +80,7 @@ public class AtlasAssetPreviewComp extends Composite {
 	private ComboViewer _spritesViewer;
 	private AtlasCanvas _atlasCanvas;
 	private AtlasAssetModel _model;
+	protected AtlasFrame _overFrame;
 
 	/**
 	 * Create the composite.
@@ -107,6 +109,17 @@ public class AtlasAssetPreviewComp extends Composite {
 
 		_atlasCanvas = new AtlasCanvas(this, SWT.NONE);
 		_atlasCanvas.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseDown(MouseEvent e) {
+				if (_atlasCanvas.isSingleFrame()) {
+					_overFrame = _atlasCanvas.getFrame();
+					return;
+				}
+
+				_overFrame = _atlasCanvas.getOverFrame();
+			}
+
 			@Override
 			public void mouseUp(MouseEvent e) {
 				atlasCanvasClicked();
@@ -118,7 +131,6 @@ public class AtlasAssetPreviewComp extends Composite {
 	}
 
 	private void afterCreateWidgets() {
-		// nothing
 		DragSource dragSource = new DragSource(_atlasCanvas, DND.DROP_MOVE | DND.DROP_DEFAULT);
 		dragSource.setTransfer(new Transfer[] { TextTransfer.getInstance(), LocalSelectionTransfer.getTransfer() });
 		dragSource.addDragListener(new DragSourceAdapter() {
@@ -135,28 +147,16 @@ public class AtlasAssetPreviewComp extends Composite {
 			}
 
 			private ISelection getSelection() {
-				if (_atlasCanvas.isSingleFrame()) {
+				if (_overFrame == null) {
 					return StructuredSelection.EMPTY;
 				}
 
-				FrameItem over = (FrameItem) _atlasCanvas.getOverFrame();
-
-				if (over == null) {
-					return StructuredSelection.EMPTY;
-				}
-
-				return new StructuredSelection(over);
+				return new StructuredSelection(_overFrame);
 			}
 
 			@Override
 			public void dragSetData(DragSourceEvent event) {
-				IStructuredSelection sel = _spritesViewer.getStructuredSelection();
-				Object[] elems = sel.toArray();
-				if (elems.length == 1) {
-					Object elem = elems[0];
-					//event.data = AssetPackCore.getAssetStringReference(elem);
-					event.data = elem;
-				}
+				event.data = _overFrame.getName();
 			}
 		});
 	}

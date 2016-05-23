@@ -24,27 +24,33 @@ package phasereditor.assetpack.ui.widgets;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
 import phasereditor.assetpack.core.SpritesheetAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetPackUI.FrameData;
 import phasereditor.ui.ImageCanvas;
 import phasereditor.ui.PhaserEditorUI;
 
-public class SpritesheetPreviewCanvas extends ImageCanvas {
+public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveListener {
 
 	private SpritesheetAssetModel _spritesheet;
 	private int _frame;
 	private boolean _singleFrame;
+	private FrameModel _over;
+	private List<FrameData> _rects;
 
 	public SpritesheetPreviewCanvas(Composite parent, int style) {
 		super(parent, style);
 		setPreferredSize(new Point(100, 100));
 		_singleFrame = false;
+		addMouseMoveListener(this);
 	}
 
 	@Override
@@ -72,18 +78,17 @@ public class SpritesheetPreviewCanvas extends ImageCanvas {
 		if (_spritesheet == null) {
 			return;
 		}
-		
+
 		SpritesheetAssetModel spritesheet = _spritesheet;
 		Rectangle canvasBounds = getBounds();
-		List<FrameData> list;
 		Rectangle imgBounds = _image.getBounds();
 		if (_singleFrame) {
 			Rectangle dst = PhaserEditorUI.computeImageZoom(imgBounds, canvasBounds);
-			list = AssetPackUI.generateSpriteSheetRects(spritesheet, imgBounds, dst);
-			if (list.isEmpty()) {
+			_rects = AssetPackUI.generateSpriteSheetRects(spritesheet, imgBounds, dst);
+			if (_rects.isEmpty()) {
 				PhaserEditorUI.paintPreviewMessage(gc, canvasBounds, "Cannot compute the grid.");
 			} else {
-				FrameData fd = list.get(_frame % list.size());
+				FrameData fd = _rects.get(_frame % _rects.size());
 
 				Rectangle r = new Rectangle(0, 0, fd.src.width, fd.src.height);
 				r = PhaserEditorUI.computeImageZoom(r, getBounds());
@@ -96,12 +101,12 @@ public class SpritesheetPreviewCanvas extends ImageCanvas {
 			}
 		} else {
 			Rectangle dst = PhaserEditorUI.computeImageZoom(imgBounds, canvasBounds);
-			list = AssetPackUI.generateSpriteSheetRects(spritesheet, imgBounds, dst);
-			if (list.isEmpty()) {
+			_rects = AssetPackUI.generateSpriteSheetRects(spritesheet, imgBounds, dst);
+			if (_rects.isEmpty()) {
 				PhaserEditorUI.paintPreviewMessage(gc, canvasBounds, "Cannot compute the grid.");
 			} else {
 				int i = 0;
-				for (FrameData fd : list) {
+				for (FrameData fd : _rects) {
 					gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_RED));
 					Rectangle r = fd.dst;
 					gc.drawRectangle(r.x, r.y, r.width, r.height);
@@ -119,6 +124,34 @@ public class SpritesheetPreviewCanvas extends ImageCanvas {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void mouseMove(MouseEvent e) {
+		_over = null;
+
+		if (_singleFrame) {
+			_over = _spritesheet.getFrames().get(_frame);
+			return;
+		}
+
+		if (_rects == null || _rects.isEmpty()) {
+			return;
+		}
+
+		int i = 0;
+		for (FrameData rect : _rects) {
+			if (rect.dst.contains(e.x, e.y)) {
+				_over = _spritesheet.getFrames().get(i);
+				return;
+			}
+			i++;
+		}
+
+	}
+
+	public SpritesheetAssetModel.FrameModel getOverFrame() {
+		return _over;
 	}
 
 	public SpritesheetAssetModel getSpritesheet() {

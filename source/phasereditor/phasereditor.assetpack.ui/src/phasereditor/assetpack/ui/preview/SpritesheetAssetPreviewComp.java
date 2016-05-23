@@ -36,13 +36,24 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSource;
+import org.eclipse.swt.dnd.DragSourceAdapter;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -63,6 +74,8 @@ public class SpritesheetAssetPreviewComp extends Composite {
 
 	SpritesheetPreviewCanvas _canvas;
 	private Button _gridButton;
+
+	protected FrameModel _overFrame;
 
 	public static class FpsValidator implements IValidator {
 
@@ -155,6 +168,47 @@ public class SpritesheetAssetPreviewComp extends Composite {
 		fpsList[1] = Integer.valueOf(5);
 
 		_comboViewer.setInput(fpsList);
+
+		// DnD
+
+		_canvas.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				_overFrame = _canvas.getOverFrame();
+			}
+		});
+
+		DragSource dragSource = new DragSource(_canvas, DND.DROP_MOVE | DND.DROP_DEFAULT);
+		dragSource.setTransfer(new Transfer[] { TextTransfer.getInstance(), LocalSelectionTransfer.getTransfer() });
+		dragSource.addDragListener(new DragSourceAdapter() {
+
+			@Override
+			public void dragStart(DragSourceEvent event) {
+				ISelection sel = getSelection();
+				if (sel.isEmpty()) {
+					event.doit = false;
+					return;
+				}
+				LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
+				transfer.setSelection(sel);
+			}
+
+			private ISelection getSelection() {
+				if (_overFrame == null) {
+					return StructuredSelection.EMPTY;
+				}
+
+				return new StructuredSelection(_overFrame);
+			}
+
+			@Override
+			public void dragSetData(DragSourceEvent event) {
+				if (_overFrame != null) {
+					event.data = _overFrame.getName();
+				}
+			}
+		});
+
 	}
 
 	private Label _label;
@@ -210,11 +264,11 @@ public class SpritesheetAssetPreviewComp extends Composite {
 		_canvas.setSpritesheet(model);
 		IFile file = model.getUrlFile();
 		_canvas.setImageFile(file);
-		
+
 		if (isJustOneFrameMode()) {
 			return;
 		}
-		
+
 		_canvas.setFrame(0);
 		_canvas.setSingleFrame(false);
 		_gridButton.setText("Play");
@@ -227,18 +281,18 @@ public class SpritesheetAssetPreviewComp extends Composite {
 		_frameToShow = frame;
 		_canvas.setFrame(frame.getIndex());
 		_canvas.setSingleFrame(true);
-		
+
 		for (Control c : _bottomPanel.getChildren()) {
 			if (c != _sizeLabel) {
 				c.dispose();
 			}
 		}
-		
+
 		GridLayout layout = (GridLayout) getLayout();
 		layout.verticalSpacing = 0;
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
-		
+
 		layout();
 	}
 
