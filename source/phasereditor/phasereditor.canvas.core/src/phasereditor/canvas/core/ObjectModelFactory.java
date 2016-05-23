@@ -22,8 +22,10 @@
 package phasereditor.canvas.core;
 
 import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
+import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
 
 /**
  * @author arian
@@ -35,7 +37,13 @@ public class ObjectModelFactory {
 			return new ImageSpriteShapeModel(parent, (ImageAssetModel) obj);
 		} else if (obj instanceof SpritesheetAssetModel) {
 			return new SpritesheetShapeModel(parent, (SpritesheetAssetModel) obj);
-		} else if (obj instanceof FrameItem) {
+		} else if (obj instanceof SpritesheetAssetModel.FrameModel) {
+			FrameModel frame = (SpritesheetAssetModel.FrameModel) obj;
+			SpritesheetAssetModel asset = frame.getAsset();
+			SpritesheetShapeModel model = new SpritesheetShapeModel(parent, asset);
+			model.setFrameIndex(frame.getIndex());
+			return model;
+		} else if (obj instanceof AtlasAssetModel.FrameItem) {
 			return new AtlasSpriteShapeModel(parent, (FrameItem) obj);
 		}
 		return null;
