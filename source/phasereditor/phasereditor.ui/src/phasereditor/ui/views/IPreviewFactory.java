@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui.views;
 
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IPersistableElement;
@@ -43,4 +44,8 @@ public interface IPreviewFactory {
 	public String getTitle(Object element);
 
 	public IPersistableElement getPersistable(Object elem);
+	
+	public default Image getIcon(Object element) {
+		return null;
+	}
 }

@@ -26,6 +26,7 @@ import static phasereditor.ui.PhaserEditorUI.pickFileWithoutExtension;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IMemento;
@@ -47,6 +48,7 @@ import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.VideoAssetModel;
+import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.audiosprite.ui.GdxMusicControl;
 import phasereditor.ui.views.IPreviewFactory;
 
@@ -88,6 +90,13 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 	private static abstract class AssetModelPreviewFactory implements IPreviewFactory {
 
 		public AssetModelPreviewFactory() {
+		}
+		
+		private AssetLabelProvider _labelProvider = new AssetLabelProvider();
+		
+		@Override
+		public Image getIcon(Object element) {
+			return _labelProvider.getImage(element);
 		}
 
 		@Override

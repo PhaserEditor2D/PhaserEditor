@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import phasereditor.assetpack.ui.AssetLabelProvider;
@@ -33,42 +32,37 @@ import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.SpriteNode;
 import phasereditor.ui.EditorSharedImages;
-import phasereditor.ui.IEditorSharedImages;
 
 /**
  * @author arian
  *
  */
-public class OutlineLabelProvider extends LabelProvider implements IEditorSharedImages {
-
-	private AssetLabelProvider _assetsLabelProvider = new AssetLabelProvider();
+public class OutlineLabelProvider extends AssetLabelProvider {
 
 	@Override
 	public Image getImage(Object element) {
+
 		if (element instanceof GroupNode) {
 			return EditorSharedImages.getImage(IMG_SHAPE_GROUP_NODE);
 		}
 
 		if (element instanceof SpriteNode) {
-
 			SpriteNode node = (SpriteNode) element;
 			BaseObjectControl<?> control = node.getControl();
 			BaseObjectModel model = control.getModel();
 
 			if (model instanceof AssetShapeModel) {
 				AssetShapeModel<?> asstModel = (AssetShapeModel<?>) model;
-				return _assetsLabelProvider.getImage(asstModel.getAsset());
+				return super.getImage(asstModel.getAsset());
 			}
 
 			if (model instanceof IAssetFrameShapeModel) {
 				IAssetFrameShapeModel asstModel = (IAssetFrameShapeModel) model;
-				return _assetsLabelProvider.getImage(asstModel.getFrame());
+				return super.getImage(asstModel.getFrame());
 			}
-
-			// return EditorSharedImages.getImage(IMG_SHAPE);
 		}
 
-		return super.getImage(element);
+		return EditorSharedImages.getImage(IMG_SHAPE);
 	}
 
 	@Override

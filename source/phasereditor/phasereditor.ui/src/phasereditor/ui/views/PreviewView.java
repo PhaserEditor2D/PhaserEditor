@@ -42,6 +42,7 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Canvas;
@@ -57,6 +58,8 @@ import org.eclipse.ui.part.IShowInTarget;
 import org.eclipse.ui.part.ShowInContext;
 import org.eclipse.ui.part.ViewPart;
 
+import phasereditor.ui.EditorSharedImages;
+import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.PhaserEditorUI;
 
 public class PreviewView extends ViewPart implements IShowInTarget {
@@ -217,6 +220,8 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 		_previewFactory = null;
 		_previewControl = null;
 
+		setTitleImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_EYE));
+		
 		if (elem == null) {
 			preview = _noPreviewComp;
 			setPartName("Preview");
@@ -240,6 +245,11 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 
 				factory.updateControl(preview, elem);
 				setPartName("Preview - " + factory.getTitle(elem));
+				
+				Image icon = factory.getIcon(elem);
+				if (icon != null) {
+					setTitleImage(icon);
+				}
 
 				_previewFactory = factory;
 				_previewControl = preview;

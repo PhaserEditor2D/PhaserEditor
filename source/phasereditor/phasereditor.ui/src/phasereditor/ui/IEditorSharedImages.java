@@ -48,4 +48,5 @@ public interface IEditorSharedImages {
 	String IMG_NEWJSCRIPT_WIZ = "icons/newjscript_wiz.gif";
 	String IMG_COMPRESS = "icons/compress.png";
 	String IMG_BUILD = "icons/cog.png";
+	String IMG_EYE = "icons/eye.png";
 }

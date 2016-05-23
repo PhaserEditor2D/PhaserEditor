@@ -23,9 +23,11 @@ package phasereditor.assetpack.ui.preview;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdapterFactory;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IPersistableElement;
+import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.ui.widgets.ImagePreviewComposite;
@@ -64,6 +66,13 @@ public class FilePreviewAdapterFactory implements IAdapterFactory {
 		@Override
 		public IPersistableElement getPersistable(Object elem) {
 			return new FilePersistableElement((IFile) elem);
+		}
+
+		private WorkbenchLabelProvider _labelProvider = new WorkbenchLabelProvider();
+
+		@Override
+		public Image getIcon(Object element) {
+			return _labelProvider.getImage(element);
 		}
 	}
 
