@@ -38,6 +38,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
+import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.grid.PGrid;
@@ -178,8 +179,12 @@ public class ObjectCanvas extends FXCanvas {
 
 		double w = control.getWidth() / 2;
 		double h = control.getHeight() / 2;
-		node.setLayoutX(x - w);
-		node.setLayoutY(y - h);
+
+		BaseObjectModel model = control.getModel();
+		model.setX(x - w);
+		model.setY(y - h);
+
+		control.updateFromModel();
 
 		worldNode.getChildren().add(node);
 
