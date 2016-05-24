@@ -41,12 +41,15 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -56,6 +59,8 @@ import org.eclipse.ui.IPersistableEditor;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
+import org.eclipse.ui.menus.CommandContributionItem;
+import org.eclipse.ui.menus.CommandContributionItemParameter;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.json.JSONException;
@@ -65,6 +70,7 @@ import org.json.JSONTokener;
 import javafx.geometry.Point2D;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.grid.PGrid;
+import phasereditor.ui.EditorSharedImages;
 
 /**
  * @author arian
@@ -80,6 +86,8 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 	private PGrid _grid;
 	private SashForm _sashForm;
 	private FilteredTree _outlineTree;
+
+	private ToolBarManager _toolBarManager;
 
 	public CanvasEditor() {
 	}
@@ -163,9 +171,20 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 		_outlineTree.getViewer().setContentProvider(new OutlineContentProvider());
 
 		_grid = new PGrid(_sashForm, SWT.NONE);
-		_canvas = new ObjectCanvas(sashForm);
 		_sashForm.setWeights(new int[] { 1, 1 });
-		sashForm.setWeights(new int[] { 3, 4 });
+
+		_composite = new Composite(sashForm, SWT.NONE);
+		GridLayout gl_composite = new GridLayout(1, false);
+		gl_composite.verticalSpacing = 2;
+		gl_composite.marginHeight = 0;
+		gl_composite.marginWidth = 0;
+		_composite.setLayout(gl_composite);
+		_toolBar = new ToolBar(_composite, SWT.FLAT | SWT.RIGHT);
+		_toolBar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		_canvas = new ObjectCanvas(_composite, SWT.BORDER);
+		_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+
+		sashForm.setWeights(new int[] { 3, 3 });
 
 		afterCreateWidgets();
 	}
@@ -183,13 +202,8 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 
 		getEditorSite().setSelectionProvider(_canvas.getSelectionBehavior());
 
-		// menu
-
-		MenuManager manager = createContextMenu();
-		getEditorSite().registerContextMenu(manager, _canvas.getSelectionBehavior(), false);
-
-		_canvas.setMenu(manager.createContextMenu(_canvas));
-		_outlineTree.getViewer().getControl().setMenu(manager.createContextMenu(_outlineTree));
+		createMenuManager();
+		createToolbarManager();
 
 		// outline
 
@@ -201,6 +215,67 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 			_canvas.getZoomBehavior().setScale(_state.zoomScale);
 			_canvas.getZoomBehavior().setTranslate(_state.translate);
 		}
+	}
+
+	private void createMenuManager() {
+		MenuManager manager = createContextMenu();
+		getEditorSite().registerContextMenu(manager, _canvas.getSelectionBehavior(), false);
+
+		_canvas.setMenu(manager.createContextMenu(_canvas));
+		_outlineTree.getViewer().getControl().setMenu(manager.createContextMenu(_outlineTree));
+	}
+
+	private void createToolbarManager() {
+		_toolBarManager = new ToolBarManager(_toolBar);
+
+		// depth commands
+
+		String[] defs = {
+
+				"riseToTop", "shape_move_front.png",
+
+				"rise", "shape_move_forwards.png",
+
+				"lower", "shape_move_backwards.png",
+
+				"lowerBottom", "shape_move_back.png",
+
+				"-", "-",
+
+				"align.left", "shape_align_left.png",
+
+				"align.right", "shape_align_right.png",
+
+				"align.top", "shape_align_top.png",
+
+				"align.bottom", "shape_align_bottom.png",
+
+				"align.center", "shape_align_center.png",
+
+				"align.middle", "shape_align_middle.png", };
+
+		defsCommands(defs);
+
+		// XY commands
+
+		_toolBarManager.update(true);
+	}
+
+	private void defsCommands(String[] defs) {
+		for (int i = 0; i < defs.length; i += 2) {
+			if (defs[i].equals("-")) {
+				_toolBarManager.add(new Separator());
+				continue;
+			}
+
+			_toolBarManager.add(simpleCommand("phasereditor.canvas.ui." + defs[i], defs[i + 1]));
+		}
+	}
+
+	private CommandContributionItem simpleCommand(String cmd, String imgname) {
+		CommandContributionItemParameter p = new CommandContributionItemParameter(getSite(), null, cmd, SWT.PUSH);
+		p.icon = EditorSharedImages.getImageDescriptor("icons/" + imgname);
+		return new CommandContributionItem(p);
 	}
 
 	private static MenuManager createContextMenu() {
@@ -296,6 +371,8 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 	}
 
 	private State _state;
+	private ToolBar _toolBar;
+	private Composite _composite;
 
 	@Override
 	public void restoreState(IMemento memento) {

@@ -93,7 +93,7 @@ public class SpritesheetControl extends BaseSpriteShapeControl<SpritesheetShapeM
 
 	@Override
 	public double getHeight() {
-		return getModel().getAsset().getFrameWidth();
+		return getModel().getAsset().getFrameHeight();
 	}
 
 	private void updateViewport(SpriteNode node) {

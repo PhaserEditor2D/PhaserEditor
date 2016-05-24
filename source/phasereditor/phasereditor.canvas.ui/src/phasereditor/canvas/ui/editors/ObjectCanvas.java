@@ -28,7 +28,6 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import javafx.embed.swt.FXCanvas;
@@ -64,8 +63,8 @@ public class ObjectCanvas extends FXCanvas {
 	private Group _root;
 	private ZoomBehavior _zoomBehavior;
 
-	public ObjectCanvas(Composite parent) {
-		super(parent, SWT.NONE);
+	public ObjectCanvas(Composite parent, int style) {
+		super(parent, style);
 	}
 
 	public void init(WorldModel model, PGrid grid, TreeViewer outline) {

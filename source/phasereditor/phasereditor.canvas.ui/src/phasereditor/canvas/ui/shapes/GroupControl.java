@@ -23,6 +23,7 @@ package phasereditor.canvas.ui.shapes;
 
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.GroupModel;
+import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 
 /**
@@ -53,17 +54,21 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 	public GroupNode getNode() {
 		return (GroupNode) super.getNode();
 	}
-	
+
 	@Override
 	public double getWidth() {
-		// 0 for now
-		return 0;
+		if (getModel() instanceof WorldModel) {
+			return getModel().getWorld().getWorldWidth();
+		}
+		return getNode().getBoundsInLocal().getWidth();
 	}
 
 	@Override
 	public double getHeight() {
-		// 0 for now
-		return 0;
+		if (getModel() instanceof WorldModel) {
+			return getModel().getWorld().getWorldHeight();
+		}
+		return getNode().getBoundsInLocal().getHeight();
 	}
 
 }

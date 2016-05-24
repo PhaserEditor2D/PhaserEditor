@@ -119,6 +119,36 @@
             id="phasereditor.canvas.ui.escape"
             name="Escape">
       </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.align.left"
+            name="Align Left">
+      </command>
+     <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.align.top"
+            name="Align Top">
+      </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.align.right"
+            name="Align Right">
+      </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.align.bottom"
+            name="Align Bottom">
+      </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.align.center"
+            name="Align Center">
+      </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.align.middle"
+            name="Align Middle">
+      </command>
       
    </extension>
    <extension
@@ -213,6 +243,60 @@
                </equals>
             </with>
          </activeWhen>
+      </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.AlignShapeHandler"
+            commandId="phasereditor.canvas.ui.align.left">
+         <enabledWhen>
+            <reference
+                  definitionId="phasereditor.canvas.ui.shapesSelected">
+            </reference>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.AlignShapeHandler"
+            commandId="phasereditor.canvas.ui.align.top">
+         <enabledWhen>
+            <reference
+                  definitionId="phasereditor.canvas.ui.shapesSelected">
+            </reference>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.AlignShapeHandler"
+            commandId="phasereditor.canvas.ui.align.right">
+         <enabledWhen>
+            <reference
+                  definitionId="phasereditor.canvas.ui.shapesSelected">
+            </reference>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.AlignShapeHandler"
+            commandId="phasereditor.canvas.ui.align.bottom">
+         <enabledWhen>
+            <reference
+                  definitionId="phasereditor.canvas.ui.shapesSelected">
+            </reference>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.AlignShapeHandler"
+            commandId="phasereditor.canvas.ui.align.center">
+         <enabledWhen>
+            <reference
+                  definitionId="phasereditor.canvas.ui.shapesSelected">
+            </reference>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.AlignShapeHandler"
+            commandId="phasereditor.canvas.ui.align.middle">
+         <enabledWhen>
+            <reference
+                  definitionId="phasereditor.canvas.ui.shapesSelected">
+            </reference>
+         </enabledWhen>
       </handler>
    </extension>
    <extension
