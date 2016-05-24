@@ -27,6 +27,7 @@ import java.beans.PropertyChangeEvent;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -84,10 +85,12 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 	private WorldModel _model;
 
 	private PGrid _grid;
-	private SashForm _sashForm;
+	private SashForm _leftSashForm;
 	private FilteredTree _outlineTree;
 
 	private ToolBarManager _toolBarManager;
+
+	private SashForm _mainSashForm;
 
 	public CanvasEditor() {
 	}
@@ -160,20 +163,20 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 		gl_parent.marginHeight = 3;
 		parent.setLayout(gl_parent);
 
-		SashForm sashForm = new SashForm(parent, SWT.NONE);
-		sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		_mainSashForm = new SashForm(parent, SWT.NONE);
+		_mainSashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		_sashForm = new SashForm(sashForm, SWT.VERTICAL);
+		_leftSashForm = new SashForm(_mainSashForm, SWT.VERTICAL);
 
-		_outlineTree = new FilteredTree(_sashForm, SWT.BORDER | SWT.MULTI, new PatternFilter(), true);
+		_outlineTree = new FilteredTree(_leftSashForm, SWT.BORDER | SWT.MULTI, new PatternFilter(), true);
 		Tree tree = _outlineTree.getViewer().getTree();
 		_outlineTree.getViewer().setLabelProvider(new OutlineLabelProvider());
 		_outlineTree.getViewer().setContentProvider(new OutlineContentProvider());
 
-		_grid = new PGrid(_sashForm, SWT.NONE);
-		_sashForm.setWeights(new int[] { 1, 1 });
+		_grid = new PGrid(_leftSashForm, SWT.NONE);
+		_leftSashForm.setWeights(new int[] { 1, 1 });
 
-		_composite = new Composite(sashForm, SWT.NONE);
+		_composite = new Composite(_mainSashForm, SWT.NONE);
 		GridLayout gl_composite = new GridLayout(1, false);
 		gl_composite.verticalSpacing = 2;
 		gl_composite.marginHeight = 0;
@@ -184,7 +187,7 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 		_canvas = new ObjectCanvas(_composite, SWT.BORDER);
 		_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		sashForm.setWeights(new int[] { 3, 3 });
+		_mainSashForm.setWeights(new int[] { 1, 4 });
 
 		afterCreateWidgets();
 	}
@@ -214,6 +217,7 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 		if (_state != null) {
 			_canvas.getZoomBehavior().setScale(_state.zoomScale);
 			_canvas.getZoomBehavior().setTranslate(_state.translate);
+			_mainSashForm.setWeights(_state.sashWights);
 		}
 	}
 
@@ -363,11 +367,14 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 		memento.putFloat("canvas.zoom.scale", (float) zoom.getScale());
 		memento.putFloat("canvas.translate.x", (float) zoom.getTranslate().getX());
 		memento.putFloat("canvas.translate.y", (float) zoom.getTranslate().getY());
+		int[] weights = _mainSashForm.getWeights();
+		memento.putString("canvas.sash.weights", Arrays.toString(weights));
 	}
 
 	static class State {
 		double zoomScale = 0;
 		Point2D translate = new Point2D(0, 0);
+		int[] sashWights = new int[] { 1, 5 };
 	}
 
 	private State _state;
@@ -376,17 +383,33 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 
 	@Override
 	public void restoreState(IMemento memento) {
-		_state = new State();
+		try {
+			_state = new State();
 
-		{
-			Float scale = memento.getFloat("canvas.zoom.scale");
-			_state.zoomScale = scale == null ? 0 : scale.doubleValue();
-		}
+			{
+				Float scale = memento.getFloat("canvas.zoom.scale");
+				_state.zoomScale = scale == null ? 0 : scale.doubleValue();
+			}
 
-		{
-			Float x = memento.getFloat("canvas.translate.x");
-			Float y = memento.getFloat("canvas.translate.y");
-			_state.translate = new Point2D(x == null ? 0 : x.doubleValue(), y == null ? 0 : y.doubleValue());
+			{
+				Float x = memento.getFloat("canvas.translate.x");
+				Float y = memento.getFloat("canvas.translate.y");
+				_state.translate = new Point2D(x == null ? 0 : x.doubleValue(), y == null ? 0 : y.doubleValue());
+			}
+
+			{
+				String value = memento.getString("canvas.sash.weights");
+				if (value != null) {
+					value = value.replace("[", "").replace("]", "");
+					String[] array = value.split(",");
+					_state.sashWights = new int[array.length];
+					for (int i = 0; i < array.length; i++) {
+						_state.sashWights[i] = Integer.parseInt(array[i].trim());
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }

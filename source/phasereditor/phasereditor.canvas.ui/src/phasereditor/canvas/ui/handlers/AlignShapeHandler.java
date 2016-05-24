@@ -6,6 +6,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import javafx.geometry.Rectangle2D;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
@@ -22,15 +23,25 @@ public class AlignShapeHandler extends AbstractHandler {
 
 		Object[] elems = sel.toArray();
 
-		IObjectNode pivot = (IObjectNode) elems[0];
+		IObjectNode first = (IObjectNode) elems[0];
+		Rectangle2D pivot = makeRect(first);
+
+		double sum = 0;
 
 		if (elems.length == 1) {
-			pivot = pivot.getControl().getGroup();
+			pivot = makeRect(first.getGroup());
+			switch (place) {
+			case "center":
+				sum = pivot.getMinX() + pivot.getWidth() / 2;
+				break;
+			case "middle":
+				sum = pivot.getMinY() + pivot.getHeight() / 2;
+				break;
+			default:
+				break;
+			}
 		} else {
 			for (Object elem : elems) {
-				BaseObjectModel pivotModel = pivot.getModel();
-				BaseObjectControl<?> pivotControl = pivot.getControl();
-
 				IObjectNode inode = (IObjectNode) elem;
 				BaseObjectModel model = inode.getModel();
 				BaseObjectControl<?> control = inode.getControl();
@@ -38,28 +49,35 @@ public class AlignShapeHandler extends AbstractHandler {
 				boolean update = false;
 				switch (place) {
 				case "left":
-					update = model.getX() < pivotModel.getX();
+					update = model.getX() < pivot.getMinX();
 					break;
 				case "top":
-					update = model.getY() < pivotModel.getY();
+					update = model.getY() < pivot.getMinY();
 					break;
 				case "right":
-					update = model.getX() + control.getWidth() > pivotModel.getX() + pivotControl.getWidth();
+					update = model.getX() + control.getWidth() > pivot.getMinX() + pivot.getWidth();
 					break;
 				case "bottom":
-					update = model.getY() + control.getHeight() > pivotModel.getY() + pivotControl.getHeight();
+					update = model.getY() + control.getHeight() > pivot.getMinY() + pivot.getHeight();
+					break;
+				case "center":
+					sum += model.getX() + control.getWidth() / 2;
+					break;
+				case "middle":
+					sum += model.getY() + control.getHeight() / 2;
 					break;
 				default:
 					break;
 				}
 
 				if (update) {
-					pivot = inode;
+					pivot = makeRect(inode);
 				}
 			}
 		}
 
-		align(place, elems, pivot);
+		double avg = sum / elems.length;
+		align(place, elems, pivot, avg);
 
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 		editor.getCanvas().getSelectionBehavior().updateSelectedNodes();
@@ -67,10 +85,12 @@ public class AlignShapeHandler extends AbstractHandler {
 		return null;
 	}
 
-	private static void align(String place, Object[] elems, IObjectNode pivot) {
-		BaseObjectControl<?> pivotControl = pivot.getControl();
-		BaseObjectModel pivotModel = pivot.getModel();
+	private static Rectangle2D makeRect(IObjectNode node) {
+		return new Rectangle2D(node.getModel().getX(), node.getModel().getY(), node.getControl().getWidth(),
+				node.getControl().getHeight());
+	}
 
+	private static void align(String place, Object[] elems, Rectangle2D pivot, double avg) {
 		for (Object elem : elems) {
 			IObjectNode inode = (IObjectNode) elem;
 			BaseObjectModel model = inode.getModel();
@@ -78,16 +98,22 @@ public class AlignShapeHandler extends AbstractHandler {
 
 			switch (place) {
 			case "left":
-				model.setX(pivotModel.getX());
+				model.setX(pivot.getMinX());
 				break;
 			case "top":
-				model.setY(pivotModel.getY());
+				model.setY(pivot.getMinY());
 				break;
 			case "right":
-				model.setX(pivotModel.getX() + pivotControl.getWidth() - control.getWidth());
+				model.setX(pivot.getMinX() + pivot.getWidth() - control.getWidth());
 				break;
 			case "bottom":
-				model.setY(pivotModel.getY() + pivotControl.getHeight() - control.getHeight());
+				model.setY(pivot.getMinY() + pivot.getHeight() - control.getHeight());
+				break;
+			case "center":
+				model.setX(avg - control.getWidth() / 2);
+				break;
+			case "middle":
+				model.setY(avg - control.getHeight() / 2);
 				break;
 			default:
 				break;

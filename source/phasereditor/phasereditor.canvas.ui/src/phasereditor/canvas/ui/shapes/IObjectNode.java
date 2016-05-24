@@ -37,4 +37,8 @@ public interface IObjectNode  {
 	public Node getNode();
 	
 	public Shape computeShape();
+	
+	public default GroupNode getGroup() {
+		return getControl().getGroup();
+	}
 }
