@@ -19,55 +19,30 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.shapes;
-
-import javafx.scene.Node;
-import javafx.scene.layout.Pane;
-import javafx.scene.shape.Shape;
-import phasereditor.canvas.core.BaseObjectModel;
-import phasereditor.canvas.core.GroupModel;
+package phasereditor.canvas.ui.editors.grid;
 
 /**
  * @author arian
  *
  */
-public class GroupNode extends Pane implements IObjectNode {
+public abstract class PGridBooleanProperty extends PGridProperty<Boolean> {
 
-	private GroupControl _control;
+	private boolean _value;
 
-	GroupNode(GroupControl control) {
-		_control = control;
-		setPickOnBounds(false);
+	/**
+	 * @param name
+	 */
+	public PGridBooleanProperty(String name) {
+		super(name);
 	}
 
 	@Override
-	public GroupControl getControl() {
-		return _control;
+	public Boolean getValue() {
+		return Boolean.valueOf(_value);
 	}
 
 	@Override
-	public GroupModel getModel() {
-		return _control.getModel();
-	}
-
-	@Override
-	public GroupNode getNode() {
-		return this;
-	}
-
-	@Override
-	public Shape computeShape() {
-		Shape result = null;
-
-		for (Node child : getChildren()) {
-			Shape shape = ((IObjectNode) child).computeShape();
-			if (result == null) {
-				result = shape;
-			} else {
-				result = Shape.union(result, shape);
-			}
-		}
-		
-		return result;
+	public void setValue(Boolean value) {
+		_value = value.booleanValue();
 	}
 }

@@ -112,8 +112,8 @@ public class SpritesheetControl extends BaseSpriteShapeControl<SpritesheetShapeM
 	}
 
 	@Override
-	protected void initPropertyModel(PGridModel propModel) {
-		super.initPropertyModel(propModel);
+	protected void initPGridModel(PGridModel propModel) {
+		super.initPGridModel(propModel);
 
 		_frame_property = new PGridFrameProperty("frame", this) {
 

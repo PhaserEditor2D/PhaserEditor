@@ -106,12 +106,7 @@ public class SelectionBehavior implements ISelectionProvider {
 			return;
 		}
 
-		Node userPicked = pickNode(_canvas.getSelectionPane(), e.getSceneX(), e.getSceneY());
-		userPicked = findBestToPick2(userPicked);
-
-		if (userPicked == null) {
-			userPicked = pickNode(_canvas.getWorldNode(), e.getSceneX(), e.getSceneY());
-		}
+		Node userPicked = pickNode(_canvas.getWorldNode(), e.getSceneX(), e.getSceneY());
 
 		Node picked = findBestToPick(userPicked);
 
@@ -136,16 +131,6 @@ public class SelectionBehavior implements ISelectionProvider {
 		}
 	}
 
-	/**
-	 * Find the real object to pick when an object is picked by the user. The
-	 * rule is to pick a "BaseObjectNode" but also if there is a parent that is
-	 * already selected, the return that parent.
-	 * 
-	 * @param picked
-	 *            The real object to pick, or the group this object belongs if
-	 *            that group is selected.
-	 * @return
-	 */
 	public Node findBestToPick(Node picked) {
 		if (picked == null) {
 			return null;
@@ -155,34 +140,19 @@ public class SelectionBehavior implements ISelectionProvider {
 			return null;
 		}
 
-		GroupNode selected = findSelectedParent(picked);
-
-		if (selected != null) {
-			return selected;
-		}
-
-		return findBestToPick2(picked);
-	}
-
-	private static Node findBestToPick2(Node picked) {
-		if (picked == null) {
-			return null;
+		GroupNode closed = findClosedParent(picked);
+		if (closed != null) {
+			return closed;
 		}
 
 		if (picked instanceof SpriteNode) {
 			return picked;
 		}
 
-		if (picked instanceof SelectionNode) {
-			SelectionNode wrapperNode = (SelectionNode) picked;
-			Node selected = wrapperNode.getObjectNode().getNode();
-			return findBestToPick2(selected);
-		}
-
-		return findBestToPick2(picked.getParent());
+		return findBestToPick(picked.getParent());
 	}
 
-	private GroupNode findSelectedParent(Node picked) {
+	private GroupNode findClosedParent(Node picked) {
 		if (picked == null) {
 			return null;
 		}
@@ -192,12 +162,13 @@ public class SelectionBehavior implements ISelectionProvider {
 		}
 
 		if (picked instanceof GroupNode) {
-			if (isSelected(picked)) {
-				return (GroupNode) picked;
+			GroupNode group = (GroupNode) picked;
+			if (group.getModel().isEditorClosed()) {
+				return group;
 			}
 		}
 
-		return findSelectedParent(picked.getParent());
+		return findClosedParent(picked.getParent());
 	}
 
 	public boolean isSelected(Object node) {
@@ -324,13 +295,15 @@ public class SelectionBehavior implements ISelectionProvider {
 
 	private void buildSelectionBounds(Node node, List<Bounds> list) {
 		GroupNode world = _canvas.getWorldNode();
+		Bounds b = localToAncestor(node.getBoundsInLocal(), node, world);
 		if (node instanceof GroupNode) {
 			// add the children bounds
 			for (Node child : ((GroupNode) node).getChildren()) {
 				buildSelectionBounds(child, list);
 			}
+			// add the left corner of the group
+			list.add(new BoundingBox(b.getMinX(), b.getMinY(), 1, 1));
 		} else {
-			Bounds b = localToAncestor(node.getBoundsInLocal(), node, world);
 			list.add(b);
 		}
 

@@ -129,35 +129,14 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	public PGridModel getPropertyModel() {
 		if (_propModel == null) {
 			_propModel = new PGridModel();
-			initPropertyModel(_propModel);
+			initPGridModel(_propModel);
 		}
 		return _propModel;
 	}
 
-	protected void initPropertyModel(PGridModel propModel) {
+	protected void initPGridModel(PGridModel propModel) {
 		PGridSection editorSec = new PGridSection("Editor");
-		propModel.getSections().add(editorSec);
-
-		editorSec.add(new PGridStringProperty("name") {
-
-			@Override
-			public String getValue() {
-				return _model.getEditorName();
-			}
-
-			@Override
-			public void setValue(String value) {
-				_model.setEditorName(value);
-				_canvas.getUpdateBehavior().update_Outline(_inode);
-				updateGridChange();
-			}
-
-			@Override
-			public boolean isModified() {
-				return true;
-			}
-
-		});
+		initEditorPGridModel(propModel, editorSec);
 
 		if (!isWorld()) {
 			editorSec.add(new PGridNumberProperty("generate") {
@@ -328,6 +307,30 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		objectSec.add(_pivot_x_property);
 		objectSec.add(_pivot_y_property);
 
+	}
+
+	protected void initEditorPGridModel(PGridModel propModel, PGridSection editorSec) {
+		propModel.getSections().add(editorSec);
+
+		editorSec.add(new PGridStringProperty("name") {
+
+			@Override
+			public String getValue() {
+				return _model.getEditorName();
+			}
+
+			@Override
+			public void setValue(String value) {
+				_model.setEditorName(value);
+				_canvas.getUpdateBehavior().update_Outline(_inode);
+				updateGridChange();
+			}
+
+			@Override
+			public boolean isModified() {
+				return true;
+			}
+		});
 	}
 
 	protected void updateGridChange() {

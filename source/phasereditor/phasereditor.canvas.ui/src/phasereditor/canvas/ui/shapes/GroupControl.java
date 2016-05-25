@@ -25,6 +25,9 @@ import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
+import phasereditor.canvas.ui.editors.grid.PGridModel;
+import phasereditor.canvas.ui.editors.grid.PGridSection;
 
 /**
  * @author arian
@@ -71,4 +74,30 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 		return getNode().getBoundsInLocal().getHeight();
 	}
 
+	@Override
+	protected void initEditorPGridModel(PGridModel propModel, PGridSection section) {
+		super.initEditorPGridModel(propModel, section);
+
+		GroupModel model = getModel();
+
+		section.add(new PGridBooleanProperty("closed") {
+
+			@Override
+			public Boolean getValue() {
+				return Boolean.valueOf(model.isEditorClosed());
+			}
+
+			@Override
+			public void setValue(Boolean value) {
+				model.setEditorClosed(value.booleanValue());
+				getCanvas().getUpdateBehavior().update_Outline(getNode());
+				updateGridChange();
+			}
+
+			@Override
+			public boolean isModified() {
+				return model.isEditorClosed();
+			}
+		});
+	}
 }

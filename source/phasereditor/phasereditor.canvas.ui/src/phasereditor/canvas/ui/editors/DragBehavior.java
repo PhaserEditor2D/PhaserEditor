@@ -72,9 +72,9 @@ public class DragBehavior {
 		_selbehavior = canvas.getSelectionBehavior();
 		_dragInfoList = new ArrayList<>();
 
-		_scene.addEventFilter(MouseEvent.MOUSE_PRESSED, this::handleMousePressed);
-		_scene.addEventFilter(MouseEvent.MOUSE_DRAGGED, this::handleMouseDragged);
-		_scene.addEventFilter(MouseEvent.MOUSE_RELEASED, this::handleMouseReleased);
+		_scene.addEventHandler(MouseEvent.MOUSE_PRESSED, this::handleMousePressed);
+		_scene.addEventHandler(MouseEvent.MOUSE_DRAGGED, this::handleMouseDragged);
+		_scene.addEventHandler(MouseEvent.MOUSE_RELEASED, this::handleMouseReleased);
 	}
 
 	private void handleMouseReleased(@SuppressWarnings("unused") MouseEvent event) {
@@ -143,6 +143,8 @@ public class DragBehavior {
 		}
 
 		_startScenePoint = new Point2D(event.getSceneX(), event.getSceneY());
+
+		_canvas.getScene().startFullDrag();
 	}
 
 	public void abort() {

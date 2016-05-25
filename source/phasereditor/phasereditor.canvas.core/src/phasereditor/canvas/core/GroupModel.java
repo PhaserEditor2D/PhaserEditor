@@ -37,6 +37,7 @@ public class GroupModel extends BaseObjectModel {
 
 	private static final String TYPE_NAME = "group";
 	private List<BaseObjectModel> _children;
+	private boolean _editorClosed;
 
 	public GroupModel(GroupModel parent, JSONObject data) {
 		super(parent, TYPE_NAME, data);
@@ -46,7 +47,15 @@ public class GroupModel extends BaseObjectModel {
 		super(parent, "group");
 		_children = new ArrayList<>();
 	}
-	
+
+	public boolean isEditorClosed() {
+		return _editorClosed;
+	}
+
+	public void setEditorClosed(boolean editorClosed) {
+		_editorClosed = editorClosed;
+	}
+
 	@Override
 	public String getLabel() {
 		return "[grp] " + getEditorName();
@@ -101,6 +110,8 @@ public class GroupModel extends BaseObjectModel {
 	protected void readInfo(JSONObject jsonInfo) {
 		super.readInfo(jsonInfo);
 
+		_editorClosed = jsonInfo.optBoolean("editorClosed", false);
+
 		_children = new ArrayList<>();
 
 		try {
@@ -138,6 +149,8 @@ public class GroupModel extends BaseObjectModel {
 	@Override
 	protected void writeInfo(JSONObject jsonInfo) {
 		super.writeInfo(jsonInfo);
+
+		jsonInfo.put("editorClosed", _editorClosed);
 
 		JSONArray shapesArray = new JSONArray();
 

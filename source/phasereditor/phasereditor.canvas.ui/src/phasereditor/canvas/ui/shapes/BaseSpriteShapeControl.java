@@ -59,8 +59,8 @@ public abstract class BaseSpriteShapeControl<T extends BaseSpriteShapeModel> ext
 	}
 
 	@Override
-	protected void initPropertyModel(PGridModel propModel) {
-		super.initPropertyModel(propModel);
+	protected void initPGridModel(PGridModel propModel) {
+		super.initPGridModel(propModel);
 
 		_anchor_x_property = new PGridNumberProperty("anchor.x") {
 			@Override
