@@ -38,7 +38,6 @@ import javafx.scene.Scene;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
 import phasereditor.canvas.core.BaseObjectModel;
-import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.grid.PGrid;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
@@ -167,7 +166,7 @@ public class ObjectCanvas extends FXCanvas {
 	}
 
 	public void dropToWorld(BaseObjectControl<?> control, double sceneX, double sceneY) {
-		Node node = control.getNode();
+		IObjectNode node = control.getIObjectNode();
 		GroupNode worldNode = getWorldNode();
 
 		double invScale = 1 / _zoomBehavior.getScale();
@@ -185,9 +184,9 @@ public class ObjectCanvas extends FXCanvas {
 
 		control.updateFromModel();
 
-		worldNode.getChildren().add(node);
+		worldNode.getControl().addChild(node);
 
-		_model.addChild(control.getModel());
+		getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
 	}
 
 	public void dirty() {
@@ -202,14 +201,11 @@ public class ObjectCanvas extends FXCanvas {
 			}
 
 			IObjectNode inode = (IObjectNode) elem;
-			Node node = inode.getNode();
-			GroupNode parent = (GroupNode) node.getParent();
-			parent.getChildren().remove(node);
-			GroupModel groupModel = parent.getControl().getModel();
-			groupModel.removeChild(inode.getControl().getModel());
-			getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
-
+			GroupNode parent = inode.getGroup();
+			parent.getControl().removeChild(inode);
 			_selectionBehavior.removeNodeFromSelection((Node) elem);
 		}
+
+		getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
 	}
 }

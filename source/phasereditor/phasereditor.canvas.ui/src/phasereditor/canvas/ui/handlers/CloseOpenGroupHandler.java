@@ -19,54 +19,41 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.shapes;
+package phasereditor.canvas.ui.handlers;
 
-import javafx.scene.Node;
-import javafx.scene.layout.Pane;
-import javafx.scene.shape.Shape;
-import phasereditor.canvas.core.GroupModel;
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.ui.handlers.HandlerUtil;
+
+import phasereditor.canvas.ui.editors.CanvasEditor;
+import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.shapes.GroupNode;
 
 /**
  * @author arian
  *
  */
-public class GroupNode extends Pane implements IObjectNode {
-
-	private GroupControl _control;
-
-	GroupNode(GroupControl control) {
-		_control = control;
-		setPickOnBounds(false);
-	}
+public class CloseOpenGroupHandler extends AbstractHandler {
 
 	@Override
-	public GroupControl getControl() {
-		return _control;
-	}
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		IStructuredSelection sel = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
 
-	@Override
-	public GroupModel getModel() {
-		return _control.getModel();
-	}
+		boolean cmd = event.getCommand().getId().endsWith("closeGroup");
 
-	@Override
-	public GroupNode getNode() {
-		return this;
-	}
+		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
+		ObjectCanvas canvas = editor.getCanvas();
 
-	@Override
-	public Shape computeShape() {
-		Shape result = null;
-
-		for (Node child : getChildren()) {
-			Shape shape = ((IObjectNode) child).computeShape();
-			if (result == null) {
-				result = shape;
-			} else {
-				result = Shape.union(result, shape);
-			}
+		for (Object obj : sel.toArray()) {
+			GroupNode group = (GroupNode) obj;
+			group.getModel().setEditorClosed(cmd);
+			canvas.getUpdateBehavior().update_Outline(group);
+			canvas.getUpdateBehavior().update_Grid_from_PropertyChange(group.getControl().getClosed_property());
 		}
-		
-		return result;
+
+		return null;
 	}
+
 }

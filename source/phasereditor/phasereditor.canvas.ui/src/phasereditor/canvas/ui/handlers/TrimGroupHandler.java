@@ -19,54 +19,35 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.shapes;
+package phasereditor.canvas.ui.handlers;
 
-import javafx.scene.Node;
-import javafx.scene.layout.Pane;
-import javafx.scene.shape.Shape;
-import phasereditor.canvas.core.GroupModel;
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.ui.handlers.HandlerUtil;
+
+import phasereditor.canvas.ui.editors.CanvasEditor;
+import phasereditor.canvas.ui.shapes.GroupNode;
 
 /**
  * @author arian
  *
  */
-public class GroupNode extends Pane implements IObjectNode {
-
-	private GroupControl _control;
-
-	GroupNode(GroupControl control) {
-		_control = control;
-		setPickOnBounds(false);
-	}
+public class TrimGroupHandler extends AbstractHandler {
 
 	@Override
-	public GroupControl getControl() {
-		return _control;
-	}
-
-	@Override
-	public GroupModel getModel() {
-		return _control.getModel();
-	}
-
-	@Override
-	public GroupNode getNode() {
-		return this;
-	}
-
-	@Override
-	public Shape computeShape() {
-		Shape result = null;
-
-		for (Node child : getChildren()) {
-			Shape shape = ((IObjectNode) child).computeShape();
-			if (result == null) {
-				result = shape;
-			} else {
-				result = Shape.union(result, shape);
-			}
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		IStructuredSelection sel = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
+		for (Object obj : sel.toArray()) {
+			GroupNode group = (GroupNode) obj;
+			group.getControl().trim();
 		}
-		
-		return result;
+
+		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
+		editor.getCanvas().getSelectionBehavior().updateSelectedNodes();
+
+		return null;
 	}
+
 }

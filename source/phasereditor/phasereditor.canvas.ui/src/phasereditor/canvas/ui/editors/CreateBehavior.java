@@ -83,7 +83,7 @@ public class CreateBehavior {
 		_canvas.dropToWorld(control, event.getSceneX(), event.getSceneY());
 	}
 
-	public void makeGroup(Object... elems) {
+	public GroupNode makeGroup(Object... elems) {
 		List<Node> children = new ArrayList<>();
 
 		Set<Object> used = new HashSet<>();
@@ -141,22 +141,21 @@ public class CreateBehavior {
 		canvas.getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
 
 		canvas.getSelectionBehavior().setSelection(new StructuredSelection(group));
+		
+		return group;
 	}
 
 	public void makeEmptyGroup(GroupNode parent) {
-		BaseObjectControl<?> parentControl = parent.getControl();
-		GroupModel parentModel = (GroupModel) parentControl.getModel();
-		GroupModel groupModel = new GroupModel(parentModel);
-		ObjectCanvas canvas = parentControl.getCanvas();
+		GroupControl parentControl = parent.getControl();
 
-		groupModel.setEditorName(_canvas.getWorldModel().createName("group"));
-		GroupControl groupControl = new GroupControl(canvas, groupModel);
-		GroupNode group = groupControl.getNode();
-		parentModel.addChild(groupModel);
-		parent.getChildren().add(group);
+		GroupModel newModel = new GroupModel(parentControl.getModel());
+		newModel.setEditorName(_canvas.getWorldModel().createName("group"));
 
-		canvas.getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
-		canvas.getSelectionBehavior().setSelection(new StructuredSelection(group));
+		GroupControl newControl = new GroupControl(_canvas, newModel);
+		parentControl.addChild(newControl.getNode());
+		
+		_canvas.getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
+		_canvas.getSelectionBehavior().setSelection(new StructuredSelection(newControl.getNode()));
 
 	}
 }

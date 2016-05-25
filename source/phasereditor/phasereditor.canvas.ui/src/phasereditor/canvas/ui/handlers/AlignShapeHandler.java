@@ -29,7 +29,8 @@ public class AlignShapeHandler extends AbstractHandler {
 		double sum = 0;
 
 		if (elems.length == 1) {
-			pivot = makeRect(first.getGroup());
+			// the rect of the parent starts in 0,0
+			pivot = makeRect(0, 0, first.getGroup());
 			switch (place) {
 			case "center":
 				sum = pivot.getMinX() + pivot.getWidth() / 2;
@@ -85,9 +86,12 @@ public class AlignShapeHandler extends AbstractHandler {
 		return null;
 	}
 
+	private static Rectangle2D makeRect(double x, double y, IObjectNode node) {
+		return new Rectangle2D(x, y, node.getControl().getWidth(), node.getControl().getHeight());
+	}
+
 	private static Rectangle2D makeRect(IObjectNode node) {
-		return new Rectangle2D(node.getModel().getX(), node.getModel().getY(), node.getControl().getWidth(),
-				node.getControl().getHeight());
+		return makeRect(node.getModel().getX(), node.getModel().getY(), node);
 	}
 
 	private static void align(String place, Object[] elems, Rectangle2D pivot, double avg) {

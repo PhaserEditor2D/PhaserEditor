@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
+import javafx.scene.Node;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.WorldModel;
@@ -34,6 +35,8 @@ import phasereditor.canvas.ui.editors.grid.PGridSection;
  *
  */
 public class GroupControl extends BaseObjectControl<GroupModel> {
+
+	private PGridBooleanProperty _closed_property;
 
 	public GroupControl(ObjectCanvas canvas, GroupModel model) {
 		super(canvas, model);
@@ -73,6 +76,10 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 		}
 		return getNode().getBoundsInLocal().getHeight();
 	}
+	
+	public PGridBooleanProperty getClosed_property() {
+		return _closed_property;
+	}
 
 	@Override
 	protected void initEditorPGridModel(PGridModel propModel, PGridSection section) {
@@ -80,7 +87,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 
 		GroupModel model = getModel();
 
-		section.add(new PGridBooleanProperty("closed") {
+		_closed_property = new PGridBooleanProperty("closed") {
 
 			@Override
 			public Boolean getValue() {
@@ -98,6 +105,46 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 			public boolean isModified() {
 				return model.isEditorClosed();
 			}
-		});
+		};
+		section.add(_closed_property);
+	}
+
+	public void removeChild(IObjectNode inode) {
+		getModel().removeChild(inode.getModel());
+		getNode().getChildren().remove(inode.getNode());
+	}
+
+	public void addChild(IObjectNode inode) {
+		getModel().addChild(inode.getModel());
+		getNode().getChildren().add(inode.getNode());
+	}
+
+	/**
+	 * 
+	 */
+	public void trim() {
+		// remove the empty space from the left and top.
+		GroupNode group = getNode();
+		double minx = Double.MAX_VALUE;
+		double miny = Double.MAX_VALUE;
+		for (Node node : group.getChildren()) {
+			BaseObjectModel model = ((SpriteNode) node).getModel();
+			minx = Math.min(model.getX(), minx);
+			miny = Math.min(model.getY(), miny);
+		}
+
+		GroupModel groupModel = group.getModel();
+		groupModel.setX(groupModel.getX() + minx);
+		groupModel.setY(groupModel.getY() + miny);
+
+		for (Node node : group.getChildren()) {
+			SpriteNode sprite = (SpriteNode) node;
+			BaseObjectModel model = sprite.getModel();
+			model.setX(model.getX() - minx);
+			model.setY(model.getY() - miny);
+			sprite.getControl().updateFromModel();
+		}
+
+		group.getControl().updateFromModel();
 	}
 }

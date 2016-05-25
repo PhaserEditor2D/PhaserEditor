@@ -26,6 +26,7 @@ import org.eclipse.swt.graphics.Image;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.canvas.core.AssetShapeModel;
 import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.IAssetFrameShapeModel;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
@@ -67,10 +68,26 @@ public class OutlineLabelProvider extends AssetLabelProvider {
 
 	@Override
 	public String getText(Object element) {
+
 		if (element instanceof IObjectNode) {
+			StringBuilder sb = new StringBuilder();
 			BaseObjectModel model = ((IObjectNode) element).getControl().getModel();
-			return model.getEditorName();
+			
+			sb.append(model.getEditorName() + " ");
+
+			if (element instanceof GroupNode) {
+				if (((GroupModel) model).isEditorClosed()) {
+					sb.append("[c]");
+				}
+			}
+
+			if (!model.isEditorPick()) {
+				sb.append("[np]");
+			}
+
+			return sb.toString();
 		}
+
 		return super.getText(element);
 	}
 }

@@ -28,30 +28,77 @@
       <menuContribution
             allPopups="false"
             locationURI="popup:phasereditor.canvas.ui.editors.canvas?after=object">
-         <command
-               commandId="phasereditor.canvas.ui.riseToTop"
-               icon="platform:/plugin/phasereditor.ui/icons/shape_move_front.png"
-               label="Rise To Top"
-               style="push">
-         </command>
-         <command
-               commandId="phasereditor.canvas.ui.rise"
-               icon="platform:/plugin/phasereditor.ui/icons/shape_move_forwards.png"
-               label="Rise"
-               style="push">
-         </command>
-         <command
-               commandId="phasereditor.canvas.ui.lower"
-               icon="platform:/plugin/phasereditor.ui/icons/shape_move_backwards.png"
-               label="Lower"
-               style="push">
-         </command>
-         <command
-               commandId="phasereditor.canvas.ui.lowerBottom"
-               icon="platform:/plugin/phasereditor.ui/icons/shape_move_back.png"
-               label="Lower To Bottom"
-               style="push">
-         </command>
+        
+	         <menu
+                icon="platform:/plugin/phasereditor.ui/icons/shape_move_front.png"
+                label="Rise And Lower">
+	               
+	                <command
+	               commandId="phasereditor.canvas.ui.riseToTop"
+	               icon="platform:/plugin/phasereditor.ui/icons/shape_move_front.png"
+	               label="Rise To Top"
+	               style="push">
+	         </command>
+	         <command
+	               commandId="phasereditor.canvas.ui.rise"
+	               icon="platform:/plugin/phasereditor.ui/icons/shape_move_forwards.png"
+	               label="Rise"
+	               style="push">
+	         </command>
+	         <command
+	               commandId="phasereditor.canvas.ui.lower"
+	               icon="platform:/plugin/phasereditor.ui/icons/shape_move_backwards.png"
+	               label="Lower"
+	               style="push">
+	         </command>
+	         <command
+	               commandId="phasereditor.canvas.ui.lowerBottom"
+	               icon="platform:/plugin/phasereditor.ui/icons/shape_move_back.png"
+	               label="Lower To Bottom"
+	               style="push">
+	         </command>
+	         
+         </menu>
+         <menu
+               icon="platform:/plugin/phasereditor.ui/icons/shape_align_center.png"
+               label="Align">
+            
+            
+            
+            <command
+                  commandId="phasereditor.canvas.ui.align.left"
+                  icon="platform:/plugin/phasereditor.ui/icons/shape_align_left.png"
+                  style="push">
+            </command>
+            <command
+                  commandId="phasereditor.canvas.ui.align.right"
+                  icon="platform:/plugin/phasereditor.ui/icons/shape_align_right.png"
+                  style="push">
+            </command>
+            <command
+                  commandId="phasereditor.canvas.ui.align.top"
+                  icon="platform:/plugin/phasereditor.ui/icons/shape_align_top.png"
+                  style="push">
+            </command>
+            <command
+                  commandId="phasereditor.canvas.ui.align.bottom"
+                  icon="platform:/plugin/phasereditor.ui/icons/shape_align_bottom.png"
+                  style="push">
+            </command>
+            <command
+                  commandId="phasereditor.canvas.ui.align.center"
+                  icon="platform:/plugin/phasereditor.ui/icons/shape_align_center.png"
+                  style="push">
+            </command>
+            <command
+                  commandId="phasereditor.canvas.ui.align.middle"
+                  icon="platform:/plugin/phasereditor.ui/icons/shape_align_middle.png"
+                  style="push">
+            </command>
+            
+            
+            
+         </menu>
          <separator
                name="phasereditor.canvas.ui.separator1"
                visible="true">
@@ -59,13 +106,29 @@
          <command
                commandId="phasereditor.canvas.ui.makegroup"
                icon="platform:/plugin/phasereditor.ui/icons/shape_group.png"
-               label="Make Group With Selection"
+               label="Make Group"
                style="push">
          </command>
          <command
                commandId="phasereditor.canvas.ui.emptygroup"
                icon="platform:/plugin/phasereditor.ui/icons/shape_square_group.png"
                label="Make Empty Group"
+               style="push">
+         </command>
+         <command
+               commandId="phasereditor.canvas.ui.ungroup"
+               style="push">
+         </command>
+         <command
+               commandId="phasereditor.canvas.ui.trimGroup"
+               style="push">
+         </command>
+         <command
+               commandId="phasereditor.canvas.ui.closeGroup"
+               style="push">
+         </command>
+         <command
+               commandId="phasereditor.canvas.ui.openGroup"
                style="push">
          </command>
          <separator
@@ -148,6 +211,28 @@
             categoryId="phasereditor.canvas.ui.editor.category"
             id="phasereditor.canvas.ui.align.middle"
             name="Align Middle">
+      </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            description="Remove the white space from the left and top of the groups."
+            id="phasereditor.canvas.ui.trimGroup"
+            name="Trim Group">
+      </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            description="Remove children from group."
+            id="phasereditor.canvas.ui.ungroup"
+            name="Un-Group">
+      </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.openGroup"
+            name="Open Group">
+      </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.closeGroup"
+            name="Close Group">
       </command>
       
    </extension>
@@ -298,6 +383,42 @@
             </reference>
          </enabledWhen>
       </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.TrimGroupHandler"
+            commandId="phasereditor.canvas.ui.trimGroup">
+         <enabledWhen>
+            <reference
+                  definitionId="phasereditor.canvas.ui.groupsSelected">
+            </reference>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.UngroupHandler"
+            commandId="phasereditor.canvas.ui.ungroup">
+         <enabledWhen>
+            <reference
+                  definitionId="phasereditor.canvas.ui.groupsSelected">
+            </reference>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.CloseOpenGroupHandler"
+            commandId="phasereditor.canvas.ui.openGroup">
+         <enabledWhen>
+            <reference
+                  definitionId="phasereditor.canvas.ui.groupsSelected">
+            </reference>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.CloseOpenGroupHandler"
+            commandId="phasereditor.canvas.ui.closeGroup">
+         <enabledWhen>
+            <reference
+                  definitionId="phasereditor.canvas.ui.groupsSelected">
+            </reference>
+         </enabledWhen>
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
@@ -331,6 +452,36 @@
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="ESC">
       </key>
+      <key
+            commandId="phasereditor.canvas.ui.openGroup"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+O">
+      </key>
+      <key
+            commandId="phasereditor.canvas.ui.closeGroup"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+C">
+      </key>
+      <key
+            commandId="phasereditor.canvas.ui.trimGroup"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+T">
+      </key>
+      <key
+            commandId="phasereditor.canvas.ui.ungroup"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+U">
+      </key>
+      <key
+            commandId="phasereditor.canvas.ui.makegroup"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+G">
+      </key>
    </extension>
    <extension
          point="org.eclipse.core.expressions.definitions">
@@ -342,6 +493,18 @@
                   ifEmpty="false">
                <instanceof
                      value="phasereditor.canvas.ui.shapes.IObjectNode">
+               </instanceof>
+            </iterate>
+         </with>
+      </definition>
+      <definition
+            id="phasereditor.canvas.ui.groupsSelected">
+         <with
+               variable="selection">
+            <iterate
+                  ifEmpty="false">
+               <instanceof
+                     value="phasereditor.canvas.ui.shapes.GroupNode">
                </instanceof>
             </iterate>
          </with>

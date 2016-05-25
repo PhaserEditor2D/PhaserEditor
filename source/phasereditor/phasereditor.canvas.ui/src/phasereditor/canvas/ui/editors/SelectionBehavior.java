@@ -82,6 +82,12 @@ public class SelectionBehavior implements ISelectionProvider {
 	}
 
 	private Node pickNode(Node test, double sceneX, double sceneY) {
+		if (test instanceof IObjectNode) {
+			if (!((IObjectNode) test).getModel().isEditorPick()) {
+				return null;
+			}
+		}
+
 		if (test instanceof Parent) {
 			ObservableList<Node> list = ((Parent) test).getChildrenUnmodifiable();
 			for (int i = list.size() - 1; i >= 0; i--) {
@@ -141,6 +147,7 @@ public class SelectionBehavior implements ISelectionProvider {
 		}
 
 		GroupNode closed = findClosedParent(picked);
+
 		if (closed != null) {
 			return closed;
 		}
@@ -161,6 +168,12 @@ public class SelectionBehavior implements ISelectionProvider {
 			return null;
 		}
 
+		GroupNode closed = findClosedParent(picked.getParent());
+
+		if (closed != null) {
+			return closed;
+		}
+
 		if (picked instanceof GroupNode) {
 			GroupNode group = (GroupNode) picked;
 			if (group.getModel().isEditorClosed()) {
@@ -168,7 +181,7 @@ public class SelectionBehavior implements ISelectionProvider {
 			}
 		}
 
-		return findClosedParent(picked.getParent());
+		return null;
 	}
 
 	public boolean isSelected(Object node) {

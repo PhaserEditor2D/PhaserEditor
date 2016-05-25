@@ -38,7 +38,6 @@ import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.shape.StrokeType;
 import phasereditor.canvas.core.BaseObjectModel;
-import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
@@ -48,8 +47,7 @@ import phasereditor.canvas.ui.shapes.IObjectNode;
 
 public class SelectionNode extends Pane {
 
-	private static Border _border0;
-	private static Border _border1;
+	private static Border _border;
 
 	static {
 		BorderWidths bw = new BorderWidths(1);
@@ -60,12 +58,10 @@ public class SelectionNode extends Pane {
 		BorderStrokeStyle style2 = new BorderStrokeStyle(StrokeType.INSIDE, StrokeLineJoin.MITER, StrokeLineCap.BUTT,
 				10, 0, dashed);
 
-		BorderStroke s0 = new BorderStroke(Color.DARKBLUE, style1, null, bw);
 		BorderStroke s1 = new BorderStroke(Color.WHITE, style1, null, bw);
 		BorderStroke s2 = new BorderStroke(Color.BLACK, style2, null, bw);
 
-		_border0 = new Border(s1, s0);
-		_border1 = new Border(s1, s2);
+		_border = new Border(s1, s2);
 	}
 
 	private IObjectNode _objectNode;
@@ -82,11 +78,7 @@ public class SelectionNode extends Pane {
 
 		BaseObjectModel model = inode.getModel();
 
-		Border border = _border1;
-		if (model instanceof GroupModel && ((GroupModel) model).isEditorClosed()) {
-			border = _border0;
-		}
-		setBorder(border);
+		setBorder(_border);
 
 		Node node = inode.getNode();
 		StringBuilder sb = new StringBuilder();

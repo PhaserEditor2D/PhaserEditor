@@ -32,6 +32,7 @@ import javafx.scene.transform.Translate;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.WorldModel.ZOperation;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
@@ -55,6 +56,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	private PGridNumberProperty _scale_y_property;
 	private PGridNumberProperty _pivot_x_property;
 	private PGridNumberProperty _pivot_y_property;
+	private PGridBooleanProperty _editorPick_property;
 
 	public BaseObjectControl(ObjectCanvas canvas, T model) {
 		_canvas = canvas;
@@ -137,35 +139,6 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	protected void initPGridModel(PGridModel propModel) {
 		PGridSection editorSec = new PGridSection("Editor");
 		initEditorPGridModel(propModel, editorSec);
-
-		if (!isWorld()) {
-			editorSec.add(new PGridNumberProperty("generate") {
-
-				@Override
-				public boolean isModified() {
-					return false;
-				}
-			});
-
-			editorSec.add(new PGridStringProperty("factory") {
-
-				@Override
-				public String getValue() {
-					return _model.getEditorFactory();
-				}
-
-				@Override
-				public void setValue(String value) {
-					_model.setEditorFactory(value);
-					updateGridChange();
-				}
-
-				@Override
-				public boolean isModified() {
-					return _model.getEditorFactory() != null && _model.getEditorFactory().length() > 0;
-				}
-			});
-		}
 
 		PGridSection objectSec = new PGridSection("Display");
 
@@ -309,10 +282,10 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 	}
 
-	protected void initEditorPGridModel(PGridModel propModel, PGridSection editorSec) {
-		propModel.getSections().add(editorSec);
+	protected void initEditorPGridModel(PGridModel propModel, PGridSection section) {
+		propModel.getSections().add(section);
 
-		editorSec.add(new PGridStringProperty("name") {
+		section.add(new PGridStringProperty("name") {
 
 			@Override
 			public String getValue() {
@@ -331,6 +304,54 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 				return true;
 			}
 		});
+
+		section.add(new PGridNumberProperty("generate") {
+
+			@Override
+			public boolean isModified() {
+				return false;
+			}
+		});
+
+		section.add(new PGridStringProperty("factory") {
+
+			@Override
+			public String getValue() {
+				return _model.getEditorFactory();
+			}
+
+			@Override
+			public void setValue(String value) {
+				_model.setEditorFactory(value);
+				updateGridChange();
+			}
+
+			@Override
+			public boolean isModified() {
+				return _model.getEditorFactory() != null && _model.getEditorFactory().length() > 0;
+			}
+		});
+
+		_editorPick_property = new PGridBooleanProperty("pick") {
+
+			@Override
+			public Boolean getValue() {
+				return Boolean.valueOf(_model.isEditorPick());
+			}
+
+			@Override
+			public void setValue(Boolean value) {
+				_model.setEditorPick(value.booleanValue());
+				_canvas.getUpdateBehavior().update_Outline(getIObjectNode());
+			}
+
+			@Override
+			public boolean isModified() {
+				return !_model.isEditorPick();
+			}
+		};
+		section.add(_editorPick_property);
+
 	}
 
 	protected void updateGridChange() {
@@ -343,6 +364,10 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 	public PGridNumberProperty getY_property() {
 		return _y_property;
+	}
+
+	public PGridBooleanProperty getEditorPick_property() {
+		return _editorPick_property;
 	}
 
 	public ObjectCanvas getCanvas() {

@@ -38,6 +38,7 @@ public class BaseObjectModel {
 	private String _editorName;
 	private String _editorFactory;
 	private boolean _editorGenerate;
+	private boolean _editorPick;
 
 	private double _x;
 	private double _y;
@@ -47,12 +48,6 @@ public class BaseObjectModel {
 	private double _pivotX;
 	private double _pivotY;
 
-	public static Object findAsset(JSONObject jsonModel) {
-		JSONObject assetRef = jsonModel.getJSONObject("asset-ref");
-		AssetModel asset = (AssetModel) AssetPackCore.findAssetElement(assetRef);
-		return asset;
-	}
-
 	public BaseObjectModel(GroupModel parent, String typeName, JSONObject obj) {
 		this(parent, typeName);
 		JSONObject jsonInfo = obj.getJSONObject("info");
@@ -60,16 +55,12 @@ public class BaseObjectModel {
 		readInfo(jsonInfo);
 	}
 
-	@SuppressWarnings("unused")
-	protected void readMetadata(JSONObject obj) {
-		// nothing
-	}
-
 	public BaseObjectModel(GroupModel parent, String typeName) {
 		_parent = parent;
 		_typeName = typeName;
 
 		_editorName = typeName;
+		_editorPick = true;
 		_editorFactory = null;
 		_editorGenerate = true;
 
@@ -78,6 +69,17 @@ public class BaseObjectModel {
 		_rotation = 0;
 		_pivotX = 0;
 		_pivotY = 0;
+	}
+
+	public static Object findAsset(JSONObject jsonModel) {
+		JSONObject assetRef = jsonModel.getJSONObject("asset-ref");
+		AssetModel asset = (AssetModel) AssetPackCore.findAssetElement(assetRef);
+		return asset;
+	}
+
+	@SuppressWarnings("unused")
+	protected void readMetadata(JSONObject obj) {
+		// nothing
 	}
 
 	public String getLabel() {
@@ -102,6 +104,14 @@ public class BaseObjectModel {
 
 	public void setEditorFactory(String editorFactory) {
 		_editorFactory = editorFactory;
+	}
+
+	public boolean isEditorPick() {
+		return _editorPick;
+	}
+
+	public void setEditorPick(boolean editorPick) {
+		_editorPick = editorPick;
 	}
 
 	public boolean isEditorGenerate() {
@@ -201,6 +211,7 @@ public class BaseObjectModel {
 		jsonInfo.put("editorName", _editorName);
 		jsonInfo.put("editorFactory", _editorFactory);
 		jsonInfo.put("editorGenerate", _editorGenerate);
+		jsonInfo.put("editorPick", _editorPick);
 
 		jsonInfo.put("x", _x);
 		jsonInfo.put("y", _y);
@@ -215,6 +226,7 @@ public class BaseObjectModel {
 		_editorName = jsonInfo.optString("editorName");
 		_editorFactory = jsonInfo.optString("editorFactory");
 		_editorGenerate = jsonInfo.optBoolean("editorGenerate", true);
+		_editorPick = jsonInfo.optBoolean("editorPick", true);
 
 		_x = jsonInfo.optDouble("x", 0);
 		_y = jsonInfo.optDouble("y", 0);

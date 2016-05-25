@@ -65,12 +65,6 @@ public class GroupModel extends BaseObjectModel {
 		return _children;
 	}
 
-	public void addChild(BaseObjectModel model) {
-		model.getParent()._children.remove(model);
-		_children.add(model);
-		getWorld().firePropertyChange(WorldModel.PROP_STRUCTURE);
-	}
-
 	public BaseObjectModel findByName(String name) {
 		if (getEditorName().equals(name)) {
 			return this;
@@ -98,11 +92,6 @@ public class GroupModel extends BaseObjectModel {
 	public void riseToBottom(BaseObjectModel model) {
 		_children.remove(model);
 		_children.add(0, model);
-		getWorld().firePropertyChange(WorldModel.PROP_STRUCTURE);
-	}
-
-	public void removeChild(BaseObjectModel model) {
-		_children.remove(model);
 		getWorld().firePropertyChange(WorldModel.PROP_STRUCTURE);
 	}
 
@@ -161,6 +150,15 @@ public class GroupModel extends BaseObjectModel {
 		}
 
 		jsonInfo.put("children", shapesArray);
+	}
+
+	public void addChild(BaseObjectModel model) {
+		model.getParent()._children.remove(model);
+		_children.add(model);
+	}
+
+	public void removeChild(BaseObjectModel model) {
+		_children.remove(model);
 	}
 
 }
