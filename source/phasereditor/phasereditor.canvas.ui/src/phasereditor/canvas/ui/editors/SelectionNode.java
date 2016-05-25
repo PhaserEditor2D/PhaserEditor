@@ -38,6 +38,7 @@ import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.shape.StrokeType;
 import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
@@ -47,7 +48,8 @@ import phasereditor.canvas.ui.shapes.IObjectNode;
 
 public class SelectionNode extends Pane {
 
-	private static Border _border;
+	private static Border _border0;
+	private static Border _border1;
 
 	static {
 		BorderWidths bw = new BorderWidths(1);
@@ -58,15 +60,18 @@ public class SelectionNode extends Pane {
 		BorderStrokeStyle style2 = new BorderStrokeStyle(StrokeType.INSIDE, StrokeLineJoin.MITER, StrokeLineCap.BUTT,
 				10, 0, dashed);
 
+		BorderStroke s0 = new BorderStroke(Color.DARKBLUE, style1, null, bw);
 		BorderStroke s1 = new BorderStroke(Color.WHITE, style1, null, bw);
 		BorderStroke s2 = new BorderStroke(Color.BLACK, style2, null, bw);
 
-		_border = new Border(s1, s2);
+		_border0 = new Border(s1, s0);
+		_border1 = new Border(s1, s2);
 	}
 
 	private IObjectNode _objectNode;
 	private Bounds _rect;
 	private ObjectCanvas _canvas;
+	private Label _label;
 
 	public SelectionNode(ObjectCanvas canvas, IObjectNode inode, Bounds rect) {
 		_objectNode = inode;
@@ -75,9 +80,14 @@ public class SelectionNode extends Pane {
 
 		updateZoomAndPan();
 
-		setBorder(_border);
-
 		BaseObjectModel model = inode.getModel();
+
+		Border border = _border1;
+		if (model instanceof GroupModel && ((GroupModel) model).isEditorClosed()) {
+			border = _border0;
+		}
+		setBorder(border);
+
 		Node node = inode.getNode();
 		StringBuilder sb = new StringBuilder();
 		sb.append(model.getLabel());
@@ -86,15 +96,16 @@ public class SelectionNode extends Pane {
 		sb.append(",");
 		sb.append((long) node.getLayoutY());
 
-		Label label = new Label(sb.toString());
-		label.setId("label " + node.getId());
-		label.setStyle("-fx-background-color:white;-fx-padding:0px 5px 0px 5px;");
-		label.setMinHeight(20);
-		label.setMaxHeight(20);
-		label.relocate(0, -label.getMinHeight());
-		getChildren().add(label);
+		_label = new Label(sb.toString());
+		_label.setId("label " + node.getId());
+		_label.setStyle("-fx-background-color:white;-fx-padding:0px 5px 0px 5px;");
+		_label.setMinHeight(20);
+		_label.setMaxHeight(20);
+		_label.relocate(0, -_label.getMinHeight());
+		_label.setVisible(false);
+		getChildren().add(_label);
 	}
-
+	
 	public ObjectCanvas getCanvas() {
 		return _canvas;
 	}
