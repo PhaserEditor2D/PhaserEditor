@@ -71,6 +71,7 @@ public class OutlineLabelProvider extends AssetLabelProvider {
 
 		if (element instanceof IObjectNode) {
 			StringBuilder sb = new StringBuilder();
+			
 			BaseObjectModel model = ((IObjectNode) element).getControl().getModel();
 			
 			sb.append(model.getEditorName() + " ");

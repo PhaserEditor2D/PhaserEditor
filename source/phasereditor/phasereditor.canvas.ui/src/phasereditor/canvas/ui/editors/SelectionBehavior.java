@@ -58,6 +58,8 @@ public class SelectionBehavior implements ISelectionProvider {
 	private ListenerList _listenerList;
 	private IStructuredSelection _selection;
 	private List<IObjectNode> _selectedNodes;
+	private SelectionBoxNode _selectionBox;
+	private Point2D _boxStart;
 
 	public SelectionBehavior(ObjectCanvas canvas) {
 		super();
@@ -68,6 +70,8 @@ public class SelectionBehavior implements ISelectionProvider {
 
 		Scene scene = _canvas.getScene();
 		scene.addEventFilter(MouseEvent.MOUSE_PRESSED, this::handleMousePressed);
+		scene.addEventFilter(MouseEvent.MOUSE_DRAGGED, this::handleMouseDragged);
+		scene.addEventFilter(MouseEvent.MOUSE_RELEASED, this::handleMouseReleased);
 
 		_canvas.getOutline().addSelectionChangedListener(new ISelectionChangedListener() {
 
@@ -112,6 +116,11 @@ public class SelectionBehavior implements ISelectionProvider {
 			return;
 		}
 
+		if (e.isShiftDown()) {
+			startBoxSelectionPressed(e);
+			return;
+		}
+
 		Node userPicked = pickNode(_canvas.getWorldNode(), e.getSceneX(), e.getSceneY());
 
 		Node picked = findBestToPick(userPicked);
@@ -134,6 +143,58 @@ public class SelectionBehavior implements ISelectionProvider {
 			setSelection(new StructuredSelection(selection.toArray()));
 		} else {
 			setSelection(new StructuredSelection(picked));
+		}
+	}
+
+	private void startBoxSelectionPressed(MouseEvent e) {
+		try {
+			Pane glassPane = _canvas.getSelectionGlassPane();
+			Point2D point = glassPane.sceneToLocal(e.getSceneX(), e.getSceneY());
+			_boxStart = point;
+			_selectionBox = new SelectionBoxNode();
+			_selectionBox.setBox(point, point.add(0, 0));
+			glassPane.getChildren().add(_selectionBox);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	private void handleMouseDragged(MouseEvent e) {
+		if (_selectionBox != null) {
+			boxSelectionDragged(e);
+		}
+	}
+
+	private void boxSelectionDragged(MouseEvent e) {
+		Point2D point = _canvas.getSelectionGlassPane().sceneToLocal(e.getSceneX(), e.getSceneY());
+		_selectionBox.setBox(_boxStart, point);
+	}
+
+	@SuppressWarnings("unused")
+	private void handleMouseReleased(MouseEvent e) {
+		_canvas.getSelectionGlassPane().getChildren().remove(_selectionBox);
+		if (_selectionBox != null) {
+			selectBox(_selectionBox);
+			_selectionBox = null;
+		}
+	}
+
+	private void selectBox(SelectionBoxNode selectionBox) {
+		try {
+			List<Object> list = new ArrayList<>();
+			Bounds selBounds = selectionBox.localToScene(selectionBox.getBoundsInLocal());
+
+			_canvas.getWorldNode().walkTree(inode -> {
+				Node node = inode.getNode();
+				Bounds b = node.localToScene(node.getBoundsInLocal());
+				if (selBounds.contains(b)) {
+					list.add(inode);
+				}
+			} , false);
+
+			setSelection(new StructuredSelection(list));
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -196,6 +257,10 @@ public class SelectionBehavior implements ISelectionProvider {
 		}
 
 		return false;
+	}
+
+	public boolean isSelectingBox() {
+		return _selectionBox != null;
 	}
 
 	@Override

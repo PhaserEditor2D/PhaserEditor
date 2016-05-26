@@ -131,6 +131,11 @@ public class DragBehavior {
 			return;
 		}
 
+		if (event.isShiftDown()) {
+			// we do not want to drag nothing if the selection box is in action
+			return;
+		}
+
 		for (IObjectNode selnode : _selbehavior.getSelectedNodes()) {
 			Node dragnode = selnode.getNode();
 

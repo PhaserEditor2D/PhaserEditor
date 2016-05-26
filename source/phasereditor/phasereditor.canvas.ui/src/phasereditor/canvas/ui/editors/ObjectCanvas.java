@@ -61,6 +61,7 @@ public class ObjectCanvas extends FXCanvas {
 	private TreeViewer _outline;
 	private Group _root;
 	private ZoomBehavior _zoomBehavior;
+	private Pane _selectionGlassPane;
 
 	public ObjectCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -136,19 +137,24 @@ public class ObjectCanvas extends FXCanvas {
 		_selectionPane = new Pane();
 		_selectionPane.setId("__selection-pane__");
 
+		_selectionGlassPane = new Pane();
+		_selectionGlassPane.setId("__selection-glass-pane__");
+
 		_worldControl = new GroupControl(this, _model);
 
 		GroupNode world = _worldControl.getNode();
 
 		world.setStyle("-fx-background-color:white;-fx-border-color:darkGray;border-style:solid;");
 
-		_root = new Group(world, _selectionPane);
+		_root = new Group(world, _selectionPane, _selectionGlassPane);
 		int width = _model.getWorldWidth();
 		int height = _model.getWorldHeight();
 		world.setMinSize(width, height);
 		world.setMaxSize(width, height);
 		_selectionPane.setMinSize(width, height);
 		_selectionPane.setMaxSize(width, height);
+		_selectionGlassPane.setMinSize(width, height);
+		_selectionGlassPane.setMaxSize(width, height);
 
 		setScene(new Scene(_root));
 	}
@@ -163,6 +169,10 @@ public class ObjectCanvas extends FXCanvas {
 
 	public Pane getSelectionPane() {
 		return _selectionPane;
+	}
+	
+	public Pane getSelectionGlassPane() {
+		return _selectionGlassPane;
 	}
 
 	public void dropToWorld(BaseObjectControl<?> control, double sceneX, double sceneY) {

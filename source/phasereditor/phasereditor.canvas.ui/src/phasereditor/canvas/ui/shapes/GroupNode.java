@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
+import java.util.function.Consumer;
+
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Shape;
@@ -66,7 +68,24 @@ public class GroupNode extends Pane implements IObjectNode {
 				result = Shape.union(result, shape);
 			}
 		}
-		
+
 		return result;
+	}
+
+	public void walkTree(Consumer<IObjectNode> visitor, boolean enterClosedGroups) {
+		visitor.accept(this);
+
+		if (getModel().isEditorClosed()) {
+			return;
+		}
+
+		for (Node n : getChildren()) {
+			if (n instanceof GroupNode) {
+				GroupNode g = (GroupNode) n;
+				g.walkTree(visitor, enterClosedGroups);
+			} else {
+				visitor.accept((IObjectNode) n);
+			}
+		}
 	}
 }
