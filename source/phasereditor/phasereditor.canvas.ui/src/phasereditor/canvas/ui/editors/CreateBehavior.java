@@ -34,7 +34,6 @@ import javafx.scene.Node;
 import javafx.scene.input.DragEvent;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.IAssetElementModel;
-import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BaseSpriteShapeModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.ObjectModelFactory;
@@ -84,7 +83,7 @@ public class CreateBehavior {
 	}
 
 	public GroupNode makeGroup(Object... elems) {
-		List<Node> children = new ArrayList<>();
+		List<IObjectNode> children = new ArrayList<>();
 
 		Set<Object> used = new HashSet<>();
 
@@ -105,44 +104,50 @@ public class CreateBehavior {
 				}
 			}
 
-			children.add(node);
+			children.add((IObjectNode) node);
 		}
 
 		// remove selected nodes
-		for (Node child : children) {
-			GroupNode group = ((IObjectNode) child).getControl().getGroup();
-			if (group != null) {
-				group.getChildren().remove(child);
-			}
+
+		for (IObjectNode child : children) {
+			GroupNode group = child.getControl().getGroup();
+			group.getControl().removeChild(child);
 		}
 
 		// reverse it because in selection it is reversed
+
 		Collections.reverse(children);
+
+		// create the new group
 
 		@SuppressWarnings("null")
 		BaseObjectControl<?> parentControl = parent.getControl();
 		GroupModel parentModel = (GroupModel) parentControl.getModel();
-		GroupModel groupModel = new GroupModel(parentModel);
-		groupModel.setEditorName(_canvas.getWorldModel().createName("group"));
+		GroupControl newGroupControl = new GroupControl(_canvas, new GroupModel(parentModel));
 
-		for (Node node : children) {
-			BaseObjectModel model = ((IObjectNode) node).getControl().getModel();
-			groupModel.addChild(model);
+		// init model
+
+		newGroupControl.getModel().setEditorName(_canvas.getWorldModel().createName("group"));
+
+		// add children
+
+		for (IObjectNode node : children) {
+			newGroupControl.addChild(node);
 		}
 
-		ObjectCanvas canvas = parentControl.getCanvas();
-		GroupControl groupControl = new GroupControl(canvas, groupModel);
-		GroupNode group = groupControl.getNode();
+		// add to the parent
 
-		parentModel.addChild(groupModel);
+		parent.getControl().addChild(newGroupControl.getNode());
 
-		parent.getChildren().add(group);
+		// notify a world change
 
-		canvas.getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
+		_canvas.getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
 
-		canvas.getSelectionBehavior().setSelection(new StructuredSelection(group));
-		
-		return group;
+		// select the new group
+
+		_canvas.getSelectionBehavior().setSelection(new StructuredSelection(newGroupControl.getNode()));
+
+		return newGroupControl.getNode();
 	}
 
 	public void makeEmptyGroup(GroupNode parent) {
@@ -153,7 +158,7 @@ public class CreateBehavior {
 
 		GroupControl newControl = new GroupControl(_canvas, newModel);
 		parentControl.addChild(newControl.getNode());
-		
+
 		_canvas.getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
 		_canvas.getSelectionBehavior().setSelection(new StructuredSelection(newControl.getNode()));
 
