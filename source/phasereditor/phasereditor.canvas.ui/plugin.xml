@@ -424,63 +424,63 @@
          point="org.eclipse.ui.bindings">
       <key
             commandId="phasereditor.canvas.ui.rise"
-            contextId="org.eclipse.ui.contexts.window"
+            contextId="phasereditor.canvas.ui.nodescontext"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence ="HOME">
             </key>
       <key
             commandId="phasereditor.canvas.ui.riseToTop"
-            contextId="org.eclipse.ui.contexts.window"
+            contextId="phasereditor.canvas.ui.nodescontext"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="PAGE_UP">
       </key>
       <key
             commandId="phasereditor.canvas.ui.lower"
-            contextId="org.eclipse.ui.contexts.window"
+            contextId="phasereditor.canvas.ui.nodescontext"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="END">
       </key>
       <key
             commandId="phasereditor.canvas.ui.lowerBottom"
-            contextId="org.eclipse.ui.contexts.window"
+            contextId="phasereditor.canvas.ui.nodescontext"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="PAGE_DOWN">
       </key>
       <key
             commandId="phasereditor.canvas.ui.escape"
-            contextId="org.eclipse.ui.contexts.window"
+            contextId="phasereditor.canvas.ui.nodescontext"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="ESC">
       </key>
       <key
             commandId="phasereditor.canvas.ui.openGroup"
-            contextId="org.eclipse.ui.contexts.window"
+            contextId="phasereditor.canvas.ui.nodescontext"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M3+O">
+            sequence="O">
       </key>
       <key
             commandId="phasereditor.canvas.ui.closeGroup"
-            contextId="org.eclipse.ui.contexts.window"
+            contextId="phasereditor.canvas.ui.nodescontext"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M3+C">
+            sequence="C">
       </key>
       <key
             commandId="phasereditor.canvas.ui.trimGroup"
-            contextId="org.eclipse.ui.contexts.window"
+            contextId="phasereditor.canvas.ui.nodescontext"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M3+T">
+            sequence="T">
       </key>
       <key
             commandId="phasereditor.canvas.ui.ungroup"
-            contextId="org.eclipse.ui.contexts.window"
+            contextId="phasereditor.canvas.ui.nodescontext"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M3+U">
+            sequence="U">
       </key>
       <key
             commandId="phasereditor.canvas.ui.makegroup"
-            contextId="org.eclipse.ui.contexts.window"
+            contextId="phasereditor.canvas.ui.nodescontext"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M3+G">
+            sequence="G">
       </key>
    </extension>
    <extension
@@ -509,6 +509,15 @@
             </iterate>
          </with>
       </definition>
+   </extension>
+   <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            description="A context where nodes can be accessed, like canvas and the canvas outline."
+            id="phasereditor.canvas.ui.nodescontext"
+            name="Nodes Area Context"
+            parentId="org.eclipse.ui.contexts.window">
+      </context>
    </extension>
 
 </plugin>

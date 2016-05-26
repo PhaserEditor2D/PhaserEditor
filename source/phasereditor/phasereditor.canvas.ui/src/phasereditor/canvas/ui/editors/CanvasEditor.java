@@ -46,6 +46,8 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -58,6 +60,8 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPersistableEditor;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.contexts.IContextActivation;
+import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.menus.CommandContributionItem;
@@ -80,6 +84,7 @@ import phasereditor.ui.EditorSharedImages;
 public class CanvasEditor extends EditorPart implements IResourceChangeListener, IPersistableEditor {
 
 	public final static String ID = "phasereditor.canvas.ui.editors.canvas";
+	public final static String NODES_CONTEXT_ID = "phasereditor.canvas.ui.nodescontext";
 
 	private ObjectCanvas _canvas;
 	private WorldModel _model;
@@ -91,6 +96,7 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 	private ToolBarManager _toolBarManager;
 
 	private SashForm _mainSashForm;
+	protected IContextActivation _context;
 
 	public CanvasEditor() {
 	}
@@ -219,6 +225,26 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 			_canvas.getZoomBehavior().setTranslate(_state.translate);
 			_mainSashForm.setWeights(_state.sashWights);
 		}
+
+		FocusListener contextFocusHandler = new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				getContextService().deactivateContext(_context);
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				_context = getContextService().activateContext(NODES_CONTEXT_ID);
+			}
+		};
+		_canvas.addFocusListener(contextFocusHandler);
+		_outlineTree.addFocusListener(contextFocusHandler);
+	}
+
+	public IContextService getContextService() {
+		IContextService service = getSite().getService(IContextService.class);
+		return service;
 	}
 
 	private void createMenuManager() {
