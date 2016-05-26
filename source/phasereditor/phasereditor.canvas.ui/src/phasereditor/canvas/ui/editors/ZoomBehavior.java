@@ -39,7 +39,7 @@ public class ZoomBehavior {
 	private ObjectCanvas _canvas;
 	private double _scale;
 	private Point2D _translate;
-	private Point2D _startDragPoint;
+	private Point2D _startPanPoint;
 	private Point2D _startTranslationPoint;
 
 	public ZoomBehavior(ObjectCanvas canvas) {
@@ -56,14 +56,14 @@ public class ZoomBehavior {
 		});
 
 		_canvas.getScene().addEventFilter(MouseEvent.MOUSE_DRAGGED, e -> {
-			if (isDragging()) {
+			if (isPanning()) {
 				onPan(e);
 				e.consume();
 			}
 		});
 
 		_canvas.getScene().addEventFilter(MouseEvent.MOUSE_RELEASED, e -> {
-			if (isDragging()) {
+			if (isPanning()) {
 				onPanDone();
 				e.consume();
 			}
@@ -76,12 +76,12 @@ public class ZoomBehavior {
 	}
 
 	private void onPanDone() {
-		_startDragPoint = null;
+		_startPanPoint = null;
 		_startTranslationPoint = null;
 	}
 
-	private boolean isDragging() {
-		return _startDragPoint != null;
+	public boolean isPanning() {
+		return _startPanPoint != null;
 	}
 
 	private void onZoom(ScrollEvent e) {
@@ -120,7 +120,7 @@ public class ZoomBehavior {
 	private void onPan(MouseEvent e) {
 		Point2D p = new Point2D(e.getSceneX(), e.getSceneY());
 
-		Point2D delta = p.subtract(_startDragPoint);
+		Point2D delta = p.subtract(_startPanPoint);
 		_translate = delta.add(_startTranslationPoint);
 
 		updateZoomAndPan();
@@ -128,7 +128,7 @@ public class ZoomBehavior {
 
 	private void onPanInit(MouseEvent e) {
 		Point2D p = new Point2D(e.getSceneX(), e.getSceneY());
-		_startDragPoint = p;
+		_startPanPoint = p;
 		GroupNode world = _canvas.getWorldNode();
 		_startTranslationPoint = new Point2D(world.getTranslateX(), world.getTranslateY());
 		return;

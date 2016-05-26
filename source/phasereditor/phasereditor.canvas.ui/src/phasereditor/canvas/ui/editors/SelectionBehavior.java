@@ -69,9 +69,9 @@ public class SelectionBehavior implements ISelectionProvider {
 		_listenerList = new ListenerList(ListenerList.IDENTITY);
 
 		Scene scene = _canvas.getScene();
-		scene.addEventFilter(MouseEvent.MOUSE_PRESSED, this::handleMousePressed);
-		scene.addEventFilter(MouseEvent.MOUSE_DRAGGED, this::handleMouseDragged);
 		scene.addEventFilter(MouseEvent.MOUSE_RELEASED, this::handleMouseReleased);
+		scene.addEventFilter(MouseEvent.DRAG_DETECTED, this::handleDragDetected);
+		scene.addEventFilter(MouseEvent.MOUSE_DRAGGED, this::handleMouseDragged);
 
 		_canvas.getOutline().addSelectionChangedListener(new ISelectionChangedListener() {
 
@@ -111,13 +111,23 @@ public class SelectionBehavior implements ISelectionProvider {
 		return null;
 	}
 
-	private void handleMousePressed(MouseEvent e) {
+	private void handleMouseReleased(MouseEvent e) {
+		if (isSelectingBox()) {
+			selectBox(_selectionBox);
+			_canvas.getSelectionGlassPane().getChildren().remove(_selectionBox);
+			_selectionBox = null;
+			return;
+		}
+
+		if (_canvas.getDragBehavior().isDragging()) {
+			return;
+		}
+
 		if (e.getButton() != MouseButton.PRIMARY) {
 			return;
 		}
 
-		if (e.isShiftDown()) {
-			startBoxSelectionPressed(e);
+		if (isSelectingBox()) {
 			return;
 		}
 
@@ -146,8 +156,19 @@ public class SelectionBehavior implements ISelectionProvider {
 		}
 	}
 
-	private void startBoxSelectionPressed(MouseEvent e) {
+	private void handleDragDetected(MouseEvent e) {
 		try {
+
+			if (_canvas.getZoomBehavior().isPanning()) {
+				return;
+			}
+
+			if (isPointingToSelection(e)) {
+				return;
+			}
+
+			// init the drag
+
 			Pane glassPane = _canvas.getSelectionGlassPane();
 			Point2D point = glassPane.sceneToLocal(e.getSceneX(), e.getSceneY());
 			_boxStart = point;
@@ -159,23 +180,21 @@ public class SelectionBehavior implements ISelectionProvider {
 		}
 	}
 
+	public boolean isPointingToSelection(MouseEvent e) {
+		for (IObjectNode inode : _selectedNodes) {
+			Node node = inode.getNode();
+			Bounds b = node.getBoundsInLocal();
+			if (node.localToScene(b).contains(e.getSceneX(), e.getSceneY())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private void handleMouseDragged(MouseEvent e) {
 		if (_selectionBox != null) {
-			boxSelectionDragged(e);
-		}
-	}
-
-	private void boxSelectionDragged(MouseEvent e) {
-		Point2D point = _canvas.getSelectionGlassPane().sceneToLocal(e.getSceneX(), e.getSceneY());
-		_selectionBox.setBox(_boxStart, point);
-	}
-
-	@SuppressWarnings("unused")
-	private void handleMouseReleased(MouseEvent e) {
-		_canvas.getSelectionGlassPane().getChildren().remove(_selectionBox);
-		if (_selectionBox != null) {
-			selectBox(_selectionBox);
-			_selectionBox = null;
+			Point2D point = _canvas.getSelectionGlassPane().sceneToLocal(e.getSceneX(), e.getSceneY());
+			_selectionBox.setBox(_boxStart, point);
 		}
 	}
 
@@ -185,6 +204,10 @@ public class SelectionBehavior implements ISelectionProvider {
 			Bounds selBounds = selectionBox.localToScene(selectionBox.getBoundsInLocal());
 
 			_canvas.getWorldNode().walkTree(inode -> {
+				if (!inode.getModel().isEditorPick()) {
+					return;
+				}
+
 				Node node = inode.getNode();
 				Bounds b = node.localToScene(node.getBoundsInLocal());
 				if (selBounds.contains(b)) {
@@ -245,6 +268,10 @@ public class SelectionBehavior implements ISelectionProvider {
 		return null;
 	}
 
+	public boolean isSelectingBox() {
+		return _selectionBox != null;
+	}
+
 	public boolean isSelected(Object node) {
 		if (_selection == null) {
 			return false;
@@ -257,10 +284,6 @@ public class SelectionBehavior implements ISelectionProvider {
 		}
 
 		return false;
-	}
-
-	public boolean isSelectingBox() {
-		return _selectionBox != null;
 	}
 
 	@Override

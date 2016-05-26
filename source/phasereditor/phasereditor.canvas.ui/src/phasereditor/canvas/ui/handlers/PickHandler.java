@@ -17,7 +17,7 @@ public class PickHandler extends AbstractHandler {
 
 		for (Object elem : sel.toArray()) {
 			IObjectNode inode = (IObjectNode) elem;
-			inode.getModel().setEditorPick(pick);
+			inode.getControl().getEditorPick_property().setValue(Boolean.valueOf(pick));
 		}
 
 		return null;

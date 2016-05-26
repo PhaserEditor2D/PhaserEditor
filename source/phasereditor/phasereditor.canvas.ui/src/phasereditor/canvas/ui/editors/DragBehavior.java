@@ -131,8 +131,7 @@ public class DragBehavior {
 			return;
 		}
 
-		if (event.isShiftDown()) {
-			// we do not want to drag nothing if the selection box is in action
+		if (!_selbehavior.isPointingToSelection(event)) {
 			return;
 		}
 
