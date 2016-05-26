@@ -239,7 +239,7 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 			}
 		};
 		_canvas.addFocusListener(contextFocusHandler);
-		_outlineTree.addFocusListener(contextFocusHandler);
+		_outlineTree.getViewer().getControl().addFocusListener(contextFocusHandler);
 	}
 
 	public IContextService getContextService() {

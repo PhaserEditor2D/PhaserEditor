@@ -128,7 +128,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 		double minx = Double.MAX_VALUE;
 		double miny = Double.MAX_VALUE;
 		for (Node node : group.getChildren()) {
-			BaseObjectModel model = ((SpriteNode) node).getModel();
+			BaseObjectModel model = ((IObjectNode) node).getModel();
 			minx = Math.min(model.getX(), minx);
 			miny = Math.min(model.getY(), miny);
 		}

@@ -234,6 +234,18 @@
             id="phasereditor.canvas.ui.closeGroup"
             name="Close Group">
       </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            description="Allow a node to be picked by the mouse."
+            id="phasereditor.canvas.ui.pick"
+            name="Allow Pick">
+      </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            description="Allow a node to be picked by the mouse."
+            id="phasereditor.canvas.ui.nopick"
+            name="Allow Pick">
+      </command>
       
    </extension>
    <extension
@@ -419,6 +431,24 @@
             </reference>
          </enabledWhen>
       </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.PickHandler"
+            commandId="phasereditor.canvas.ui.pick">
+         <enabledWhen>
+            <reference
+                  definitionId="phasereditor.canvas.ui.shapesSelected">
+            </reference>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.PickHandler"
+            commandId="phasereditor.canvas.ui.nopick">
+         <enabledWhen>
+            <reference
+                  definitionId="phasereditor.canvas.ui.shapesSelected">
+            </reference>
+         </enabledWhen>
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
@@ -456,7 +486,7 @@
             commandId="phasereditor.canvas.ui.openGroup"
             contextId="phasereditor.canvas.ui.nodescontext"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="O">
+            sequence="M2+C">
       </key>
       <key
             commandId="phasereditor.canvas.ui.closeGroup"
@@ -474,13 +504,25 @@
             commandId="phasereditor.canvas.ui.ungroup"
             contextId="phasereditor.canvas.ui.nodescontext"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="U">
+            sequence="M2+G">
       </key>
       <key
             commandId="phasereditor.canvas.ui.makegroup"
             contextId="phasereditor.canvas.ui.nodescontext"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="G">
+      </key>
+      <key
+            commandId="phasereditor.canvas.ui.pick"
+            contextId="phasereditor.canvas.ui.nodescontext"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="P">
+      </key>
+      <key
+            commandId="phasereditor.canvas.ui.nopick"
+            contextId="phasereditor.canvas.ui.nodescontext"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M2+P">
       </key>
    </extension>
    <extension
