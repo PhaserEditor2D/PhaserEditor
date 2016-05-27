@@ -27,7 +27,9 @@ import java.beans.PropertyChangeEvent;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -44,8 +46,20 @@ import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.jface.util.LocalSelectionTransfer;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.ViewerDropAdapter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.DragSourceListener;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.layout.GridData;
@@ -75,6 +89,8 @@ import org.json.JSONTokener;
 import javafx.geometry.Point2D;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.grid.PGrid;
+import phasereditor.canvas.ui.shapes.GroupNode;
+import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.ui.EditorSharedImages;
 
 /**
@@ -203,29 +219,21 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
 
-		// canvas
+		initCanvas();
 
-		_canvas.init(_model, _grid, _outlineTree.getViewer());
+		initMenus();
 
-		// selection
+		initOutline();
 
-		getEditorSite().setSelectionProvider(_canvas.getSelectionBehavior());
+		restoreState();
 
-		createMenuManager();
-		createToolbarManager();
+		initContexts();
+	}
 
-		// outline
-
-		_outlineTree.getViewer().setInput(_canvas);
-		_outlineTree.getViewer().expandAll();
-
-		// restore state
-		if (_state != null) {
-			_canvas.getZoomBehavior().setScale(_state.zoomScale);
-			_canvas.getZoomBehavior().setTranslate(_state.translate);
-			_mainSashForm.setWeights(_state.sashWights);
-		}
-
+	/**
+	 * 
+	 */
+	private void initContexts() {
 		FocusListener contextFocusHandler = new FocusListener() {
 
 			@Override
@@ -240,6 +248,110 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 		};
 		_canvas.addFocusListener(contextFocusHandler);
 		_outlineTree.getViewer().getControl().addFocusListener(contextFocusHandler);
+	}
+
+	private void initMenus() {
+		createMenuManager();
+		createToolbarManager();
+	}
+
+	private void initCanvas() {
+		_canvas.init(_model, _grid, _outlineTree.getViewer());
+		getEditorSite().setSelectionProvider(_canvas.getSelectionBehavior());
+	}
+
+	private void restoreState() {
+		if (_state != null) {
+			_canvas.getZoomBehavior().setScale(_state.zoomScale);
+			_canvas.getZoomBehavior().setTranslate(_state.translate);
+			_mainSashForm.setWeights(_state.sashWights);
+		}
+	}
+
+	private void initOutline() {
+		TreeViewer viewer = _outlineTree.getViewer();
+
+		viewer.setInput(_canvas);
+
+		viewer.expandAll();
+
+		int operations = DND.DROP_DEFAULT | DND.DROP_MOVE;
+		Transfer[] transfers = new Transfer[] { LocalSelectionTransfer.getTransfer() };
+		viewer.addDragSupport(operations, transfers, new DragSourceListener() {
+
+			private ISelection _data;
+
+			@Override
+			public void dragStart(DragSourceEvent event) {
+				_data = viewer.getSelection();
+			}
+
+			@Override
+			public void dragSetData(DragSourceEvent event) {
+				event.data = _data;
+				LocalSelectionTransfer.getTransfer().setSelection(_data);
+			}
+
+			@Override
+			public void dragFinished(DragSourceEvent event) {
+				// finished
+			}
+		});
+
+		viewer.addDropSupport(operations, transfers, new ViewerDropAdapter(viewer) {
+
+			private int _location;
+			private Object _target;
+
+			@Override
+			public boolean validateDrop(Object target, int operation, TransferData transferType) {
+				return true;
+			}
+
+			@Override
+			public void dragOver(DropTargetEvent event) {
+				_location = determineLocation(event);
+				_target = determineTarget(event);
+				super.dragOver(event);
+			}
+
+			@Override
+			public boolean performDrop(Object data) {
+				IObjectNode target = (IObjectNode) _target;
+				List<IObjectNode> nodes = new ArrayList<>();
+				for (Object obj : ((IStructuredSelection) data).toArray()) {
+					if (obj instanceof IObjectNode) {
+						IObjectNode node = (IObjectNode) obj;
+						GroupNode group = target.getGroup();
+						int i = group.getChildren().indexOf(group);
+						if (i < 0) {
+							i = group.getChildren().size();
+						}
+						switch (_location) {
+						case LOCATION_BEFORE:
+							group.getControl().addChild(i, node);
+							break;
+						case LOCATION_AFTER:
+							group.getControl().addChild(i, node);
+							break;
+						case LOCATION_ON:
+							if (target instanceof GroupNode) {
+								((GroupNode) target).getControl().addChild(node);
+							}
+							break;
+						default:
+							break;
+						}
+						nodes.add(node);
+					}
+				}
+
+				getCanvas().getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
+				getCanvas().getSelectionBehavior().setSelection(new StructuredSelection(nodes));
+				return true;
+			}
+		});
+
 	}
 
 	public IContextService getContextService() {

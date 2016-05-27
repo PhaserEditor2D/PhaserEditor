@@ -78,77 +78,89 @@ public class DragBehavior {
 	}
 
 	private void handleMouseReleased(@SuppressWarnings("unused") MouseEvent event) {
-		if (_dragInfoList.isEmpty()) {
-			return;
+		try {
+			if (_dragInfoList.isEmpty()) {
+				return;
+			}
+
+			_dragging = false;
+
+			for (DragInfo draginfo : _dragInfoList) {
+				Node node = draginfo.getNode();
+				BaseObjectControl<?> control = ((IObjectNode) node).getControl();
+				BaseObjectModel model = control.getModel();
+				model.setLocation(node.getLayoutX(), node.getLayoutY());
+
+				UpdateChangeBehavior updateBehavior = _canvas.getUpdateBehavior();
+				updateBehavior.update_Grid_from_PropertyChange(control.getX_property());
+				updateBehavior.update_Grid_from_PropertyChange(control.getY_property());
+			}
+
+			_dragInfoList.clear();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
-		_dragging = false;
-
-		for (DragInfo draginfo : _dragInfoList) {
-			Node node = draginfo.getNode();
-			BaseObjectControl<?> control = ((IObjectNode) node).getControl();
-			BaseObjectModel model = control.getModel();
-			model.setLocation(node.getLayoutX(), node.getLayoutY());
-
-			UpdateChangeBehavior updateBehavior = _canvas.getUpdateBehavior();
-			updateBehavior.update_Grid_from_PropertyChange(control.getX_property());
-			updateBehavior.update_Grid_from_PropertyChange(control.getY_property());
-		}
-
-		_dragInfoList.clear();
 	}
 
 	private void handleMouseDragged(MouseEvent event) {
-		if (_dragInfoList.isEmpty()) {
-			return;
+		try {
+			if (_dragInfoList.isEmpty()) {
+				return;
+			}
+			_dragging = true;
+
+			double dx = event.getSceneX() - _startScenePoint.getX();
+			double dy = event.getSceneY() - _startScenePoint.getY();
+			Point2D delta = new Point2D(dx, dy);
+
+			double scale = _canvas.getZoomBehavior().getScale();
+
+			for (DragInfo draginfo : _dragInfoList) {
+				Node dragnode = draginfo.getNode();
+				Point2D start = draginfo.getStart();
+
+				dx = delta.getX();
+				dy = delta.getY();
+
+				double x = start.getX() + dx / scale;
+				double y = start.getY() + dy / scale;
+
+				dragnode.setLayoutX(x);
+				dragnode.setLayoutY(y);
+			}
+			_canvas.getSelectionBehavior().updateSelectedNodes();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
-		_dragging = true;
-
-		double dx = event.getSceneX() - _startScenePoint.getX();
-		double dy = event.getSceneY() - _startScenePoint.getY();
-		Point2D delta = new Point2D(dx, dy);
-
-		double scale = _canvas.getZoomBehavior().getScale();
-
-		for (DragInfo draginfo : _dragInfoList) {
-			Node dragnode = draginfo.getNode();
-			Point2D start = draginfo.getStart();
-
-			dx = delta.getX();
-			dy = delta.getY();
-
-			double x = start.getX() + dx / scale;
-			double y = start.getY() + dy / scale;
-
-			dragnode.setLayoutX(x);
-			dragnode.setLayoutY(y);
-		}
-		_canvas.getSelectionBehavior().updateSelectedNodes();
 	}
 
 	private void handleMousePressed(MouseEvent event) {
-		if (event.getButton() != MouseButton.PRIMARY) {
-			return;
-		}
-
-		if (!_selbehavior.isPointingToSelection(event)) {
-			return;
-		}
-
-		for (IObjectNode selnode : _selbehavior.getSelectedNodes()) {
-			Node dragnode = selnode.getNode();
-
-			if (_dragInfoList.stream().anyMatch(info -> info.getNode() == dragnode)) {
-				continue;
+		try {
+			if (event.getButton() != MouseButton.PRIMARY) {
+				return;
 			}
 
-			Point2D start = new Point2D(dragnode.getLayoutX(), dragnode.getLayoutY());
-			_dragInfoList.add(new DragInfo(dragnode, start));
+			if (!_selbehavior.isPointingToSelection(event)) {
+				return;
+			}
+
+			for (IObjectNode selnode : _selbehavior.getSelectedNodes()) {
+				Node dragnode = selnode.getNode();
+
+				if (_dragInfoList.stream().anyMatch(info -> info.getNode() == dragnode)) {
+					continue;
+				}
+
+				Point2D start = new Point2D(dragnode.getLayoutX(), dragnode.getLayoutY());
+				_dragInfoList.add(new DragInfo(dragnode, start));
+			}
+
+			_startScenePoint = new Point2D(event.getSceneX(), event.getSceneY());
+
+			_canvas.getScene().startFullDrag();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
-
-		_startScenePoint = new Point2D(event.getSceneX(), event.getSceneY());
-
-		_canvas.getScene().startFullDrag();
 	}
 
 	public void abort() {

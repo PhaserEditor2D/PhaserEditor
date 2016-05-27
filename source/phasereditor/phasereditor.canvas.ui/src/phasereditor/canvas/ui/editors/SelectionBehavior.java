@@ -69,9 +69,9 @@ public class SelectionBehavior implements ISelectionProvider {
 		_listenerList = new ListenerList(ListenerList.IDENTITY);
 
 		Scene scene = _canvas.getScene();
-		scene.addEventFilter(MouseEvent.MOUSE_RELEASED, this::handleMouseReleased);
-		scene.addEventFilter(MouseEvent.DRAG_DETECTED, this::handleDragDetected);
-		scene.addEventFilter(MouseEvent.MOUSE_DRAGGED, this::handleMouseDragged);
+		scene.addEventHandler(MouseEvent.MOUSE_RELEASED, this::handleMouseReleased);
+		scene.addEventHandler(MouseEvent.DRAG_DETECTED, this::handleDragDetected);
+		scene.addEventHandler(MouseEvent.MOUSE_DRAGGED, this::handleMouseDragged);
 
 		_canvas.getOutline().addSelectionChangedListener(new ISelectionChangedListener() {
 
@@ -112,47 +112,52 @@ public class SelectionBehavior implements ISelectionProvider {
 	}
 
 	private void handleMouseReleased(MouseEvent e) {
-		if (isSelectingBox()) {
-			selectBox(_selectionBox);
-			_canvas.getSelectionGlassPane().getChildren().remove(_selectionBox);
-			_selectionBox = null;
-			return;
-		}
-
-		if (_canvas.getDragBehavior().isDragging()) {
-			return;
-		}
-
-		if (e.getButton() != MouseButton.PRIMARY) {
-			return;
-		}
-
-		if (isSelectingBox()) {
-			return;
-		}
-
-		Node userPicked = pickNode(_canvas.getWorldNode(), e.getSceneX(), e.getSceneY());
-
-		Node picked = findBestToPick(userPicked);
-
-		if (picked == null) {
-			setSelection(StructuredSelection.EMPTY);
-			return;
-		}
-
-		if (isSelected(picked)) {
-			if (e.isControlDown()) {
-				removeNodeFromSelection(picked);
+		try {
+			if (isSelectingBox()) {
+				selectBox(_selectionBox);
+				_selectionBox.setMaxSize(0, 0);
+				_canvas.getSelectionGlassPane().getChildren().remove(_selectionBox);
+				_selectionBox = null;
+				return;
 			}
-			return;
-		}
 
-		if (_selection != null && !_selection.isEmpty() && e.isControlDown()) {
-			HashSet<Object> selection = new HashSet<>(Arrays.asList(_selection.toArray()));
-			selection.add(picked);
-			setSelection(new StructuredSelection(selection.toArray()));
-		} else {
-			setSelection(new StructuredSelection(picked));
+			if (_canvas.getDragBehavior().isDragging()) {
+				return;
+			}
+
+			if (e.getButton() != MouseButton.PRIMARY) {
+				return;
+			}
+
+			if (isSelectingBox()) {
+				return;
+			}
+
+			Node userPicked = pickNode(_canvas.getWorldNode(), e.getSceneX(), e.getSceneY());
+
+			Node picked = findBestToPick(userPicked);
+
+			if (picked == null) {
+				setSelection(StructuredSelection.EMPTY);
+				return;
+			}
+
+			if (isSelected(picked)) {
+				if (e.isControlDown()) {
+					removeNodeFromSelection(picked);
+				}
+				return;
+			}
+
+			if (_selection != null && !_selection.isEmpty() && e.isControlDown()) {
+				HashSet<Object> selection = new HashSet<>(Arrays.asList(_selection.toArray()));
+				selection.add(picked);
+				setSelection(new StructuredSelection(selection.toArray()));
+			} else {
+				setSelection(new StructuredSelection(picked));
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 
@@ -192,9 +197,13 @@ public class SelectionBehavior implements ISelectionProvider {
 	}
 
 	private void handleMouseDragged(MouseEvent e) {
-		if (_selectionBox != null) {
-			Point2D point = _canvas.getSelectionGlassPane().sceneToLocal(e.getSceneX(), e.getSceneY());
-			_selectionBox.setBox(_boxStart, point);
+		try {
+			if (_selectionBox != null) {
+				Point2D point = _canvas.getSelectionGlassPane().sceneToLocal(e.getSceneX(), e.getSceneY());
+				_selectionBox.setBox(_boxStart, point);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 

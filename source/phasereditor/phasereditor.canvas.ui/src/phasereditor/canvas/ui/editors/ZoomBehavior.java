@@ -48,30 +48,47 @@ public class ZoomBehavior {
 		_scale = 1;
 		_translate = new Point2D(0, 0);
 
-		_canvas.getScene().addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
-			if (e.getButton() == MouseButton.MIDDLE) {
-				onPanInit(e);
-				e.consume();
+		_canvas.getScene().addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
+			try {
+
+				if (e.getButton() == MouseButton.MIDDLE) {
+					onPanInit(e);
+					e.consume();
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
 			}
 		});
 
-		_canvas.getScene().addEventFilter(MouseEvent.MOUSE_DRAGGED, e -> {
-			if (isPanning()) {
-				onPan(e);
-				e.consume();
+		_canvas.getScene().addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
+			try {
+				if (isPanning()) {
+					onPan(e);
+					e.consume();
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
 			}
 		});
 
-		_canvas.getScene().addEventFilter(MouseEvent.MOUSE_RELEASED, e -> {
-			if (isPanning()) {
-				onPanDone();
-				e.consume();
+		_canvas.getScene().addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
+			try {
+				if (isPanning()) {
+					onPanDone();
+					e.consume();
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
 			}
 		});
 
-		_canvas.getScene().addEventFilter(ScrollEvent.ANY, e -> {
-			onZoom(e);
-			e.consume();
+		_canvas.getScene().addEventHandler(ScrollEvent.ANY, e -> {
+			try {
+				onZoom(e);
+				e.consume();
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		});
 	}
 

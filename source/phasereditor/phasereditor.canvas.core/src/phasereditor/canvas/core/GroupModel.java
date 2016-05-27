@@ -153,12 +153,15 @@ public class GroupModel extends BaseObjectModel {
 	}
 
 	public void addChild(BaseObjectModel model) {
+		addChild(_children.size(), model);
+	}
+
+	public void addChild(int i, BaseObjectModel model) {
 		model.getParent()._children.remove(model);
-		_children.add(model);
+		_children.add(i, model);
 	}
 
 	public void removeChild(BaseObjectModel model) {
 		_children.remove(model);
 	}
-
 }

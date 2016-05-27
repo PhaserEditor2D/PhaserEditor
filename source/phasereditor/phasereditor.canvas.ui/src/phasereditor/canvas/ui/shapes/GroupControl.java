@@ -76,7 +76,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 		}
 		return getNode().getBoundsInLocal().getHeight();
 	}
-	
+
 	public PGridBooleanProperty getClosed_property() {
 		return _closed_property;
 	}
@@ -115,8 +115,12 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 	}
 
 	public void addChild(IObjectNode inode) {
-		getModel().addChild(inode.getModel());
-		getNode().getChildren().add(inode.getNode());
+		addChild(getNode().getChildren().size(), inode);
+	}
+
+	public void addChild(int i, IObjectNode inode) {
+		getModel().addChild(i, inode.getModel());
+		getNode().getChildren().add(i, inode.getNode());
 	}
 
 	/**
