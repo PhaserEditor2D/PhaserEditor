@@ -77,6 +77,7 @@ public class OutlineContentProvider implements ITreeContentProvider {
 			}
 
 			Collections.reverse(list);
+			
 			return list.toArray();
 		}
 		return EMPTY;

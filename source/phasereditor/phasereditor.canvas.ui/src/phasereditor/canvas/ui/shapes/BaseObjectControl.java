@@ -383,6 +383,10 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	public IObjectNode getIObjectNode() {
 		return (IObjectNode) _node;
 	}
+	
+	public void removeme() {
+		getGroup().getControl().removeChild(this._inode);
+	}
 
 	protected SpriteNode createImageNode(IFile file) {
 		try {

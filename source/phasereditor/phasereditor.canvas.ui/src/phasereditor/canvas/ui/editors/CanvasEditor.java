@@ -318,19 +318,30 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 
 			@Override
 			public boolean performDrop(Object data) {
+				if (_target == null) {
+					return false;
+				}
+
 				IObjectNode target = (IObjectNode) _target;
+
 				List<IObjectNode> nodes = new ArrayList<>();
 				for (Object obj : ((IStructuredSelection) data).toArray()) {
 					if (obj instanceof IObjectNode) {
 						IObjectNode node = (IObjectNode) obj;
 						GroupNode group = target.getGroup();
-						int i = group.getChildren().indexOf(group);
+
+						if (_location != LOCATION_NONE) {
+							node.getControl().removeme();
+						}
+
+						int i = group.getChildren().indexOf(target);
 						if (i < 0) {
 							i = group.getChildren().size();
 						}
+
 						switch (_location) {
 						case LOCATION_BEFORE:
-							group.getControl().addChild(i, node);
+							group.getControl().addChild(i + 1, node);
 							break;
 						case LOCATION_AFTER:
 							group.getControl().addChild(i, node);
@@ -338,6 +349,8 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 						case LOCATION_ON:
 							if (target instanceof GroupNode) {
 								((GroupNode) target).getControl().addChild(node);
+							} else {
+								group.getControl().addChild(i, node);
 							}
 							break;
 						default:
