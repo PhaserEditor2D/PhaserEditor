@@ -19,16 +19,17 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors;
+package phasereditor.canvas.ui.editors.behaviors;
 
 import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Transform;
+import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.SelectionNode;
 import phasereditor.canvas.ui.shapes.GroupNode;
 
 /**
@@ -47,49 +48,27 @@ public class ZoomBehavior {
 		_canvas = canvas;
 		_scale = 1;
 		_translate = new Point2D(0, 0);
+	}
 
-		_canvas.getScene().addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
-			try {
+	void handleScroll(ScrollEvent e) {
+		onZoom(e);
+	}
 
-				if (e.getButton() == MouseButton.MIDDLE) {
-					onPanInit(e);
-					e.consume();
-				}
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		});
+	@SuppressWarnings("unused")
+	void handleMouseReleased(MouseEvent e) {
+		if (isPanning()) {
+			onPanDone();
+		}
+	}
 
-		_canvas.getScene().addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
-			try {
-				if (isPanning()) {
-					onPan(e);
-					e.consume();
-				}
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		});
+	void handleMouseDragged(MouseEvent e) {
+		if (isPanning()) {
+			onPan(e);
+		}
+	}
 
-		_canvas.getScene().addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
-			try {
-				if (isPanning()) {
-					onPanDone();
-					e.consume();
-				}
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		});
-
-		_canvas.getScene().addEventHandler(ScrollEvent.ANY, e -> {
-			try {
-				onZoom(e);
-				e.consume();
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		});
+	void handleMousePressed(MouseEvent e) {
+		onPanInit(e);
 	}
 
 	private void onPanDone() {

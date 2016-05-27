@@ -88,6 +88,7 @@ import org.json.JSONTokener;
 
 import javafx.geometry.Point2D;
 import phasereditor.canvas.core.WorldModel;
+import phasereditor.canvas.ui.editors.behaviors.ZoomBehavior;
 import phasereditor.canvas.ui.editors.grid.PGrid;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;

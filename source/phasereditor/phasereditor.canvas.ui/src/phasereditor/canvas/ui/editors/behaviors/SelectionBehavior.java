@@ -19,7 +19,9 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors;
+package phasereditor.canvas.ui.editors.behaviors;
+
+import static java.lang.System.out;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,10 +43,11 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.SelectionBoxNode;
+import phasereditor.canvas.ui.editors.SelectionNode;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.SpriteNode;
@@ -67,11 +70,6 @@ public class SelectionBehavior implements ISelectionProvider {
 		_selection = StructuredSelection.EMPTY;
 		_selectedNodes = new ArrayList<>();
 		_listenerList = new ListenerList(ListenerList.IDENTITY);
-
-		Scene scene = _canvas.getScene();
-		scene.addEventHandler(MouseEvent.MOUSE_RELEASED, this::handleMouseReleased);
-		scene.addEventHandler(MouseEvent.DRAG_DETECTED, this::handleDragDetected);
-		scene.addEventHandler(MouseEvent.MOUSE_DRAGGED, this::handleMouseDragged);
 
 		_canvas.getOutline().addSelectionChangedListener(new ISelectionChangedListener() {
 
@@ -111,78 +109,47 @@ public class SelectionBehavior implements ISelectionProvider {
 		return null;
 	}
 
-	private void handleMouseReleased(MouseEvent e) {
-		try {
-			if (isSelectingBox()) {
-				selectBox(_selectionBox);
-				_selectionBox.setMaxSize(0, 0);
-				_canvas.getSelectionGlassPane().getChildren().remove(_selectionBox);
-				_selectionBox = null;
-				return;
+	void handleMouseReleased(MouseEvent e) {
+		out.println("selecting box " + isSelectingBox());
+		if (isSelectingBox()) {
+			_canvas.getSelectionGlassPane().getChildren().remove(_selectionBox);
+			selectBox(_selectionBox);
+			_selectionBox = null;
+			return;
+		}
+
+		Node userPicked = pickNode(_canvas.getWorldNode(), e.getSceneX(), e.getSceneY());
+
+		Node picked = findBestToPick(userPicked);
+
+		if (picked == null) {
+			setSelection(StructuredSelection.EMPTY);
+			return;
+		}
+
+		if (isSelected(picked)) {
+			if (e.isControlDown()) {
+				removeNodeFromSelection(picked);
 			}
+			return;
+		}
 
-			if (_canvas.getDragBehavior().isDragging()) {
-				return;
-			}
-
-			if (e.getButton() != MouseButton.PRIMARY) {
-				return;
-			}
-
-			if (isSelectingBox()) {
-				return;
-			}
-
-			Node userPicked = pickNode(_canvas.getWorldNode(), e.getSceneX(), e.getSceneY());
-
-			Node picked = findBestToPick(userPicked);
-
-			if (picked == null) {
-				setSelection(StructuredSelection.EMPTY);
-				return;
-			}
-
-			if (isSelected(picked)) {
-				if (e.isControlDown()) {
-					removeNodeFromSelection(picked);
-				}
-				return;
-			}
-
-			if (_selection != null && !_selection.isEmpty() && e.isControlDown()) {
-				HashSet<Object> selection = new HashSet<>(Arrays.asList(_selection.toArray()));
-				selection.add(picked);
-				setSelection(new StructuredSelection(selection.toArray()));
-			} else {
-				setSelection(new StructuredSelection(picked));
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		if (_selection != null && !_selection.isEmpty() && e.isControlDown()) {
+			HashSet<Object> selection = new HashSet<>(Arrays.asList(_selection.toArray()));
+			selection.add(picked);
+			setSelection(new StructuredSelection(selection.toArray()));
+		} else {
+			setSelection(new StructuredSelection(picked));
 		}
 	}
 
-	private void handleDragDetected(MouseEvent e) {
-		try {
-
-			if (_canvas.getZoomBehavior().isPanning()) {
-				return;
-			}
-
-			if (isPointingToSelection(e)) {
-				return;
-			}
-
-			// init the drag
-
-			Pane glassPane = _canvas.getSelectionGlassPane();
-			Point2D point = glassPane.sceneToLocal(e.getSceneX(), e.getSceneY());
-			_boxStart = point;
-			_selectionBox = new SelectionBoxNode();
-			_selectionBox.setBox(point, point.add(0, 0));
-			glassPane.getChildren().add(_selectionBox);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+	void handleDragDetected(MouseEvent e) {
+		Pane glassPane = _canvas.getSelectionGlassPane();
+		Point2D point = glassPane.sceneToLocal(e.getSceneX(), e.getSceneY());
+		_boxStart = point;
+		_selectionBox = new SelectionBoxNode();
+		_selectionBox.setBox(point, point.add(0, 0));
+		glassPane.getChildren().add(_selectionBox);
 	}
 
 	public boolean isPointingToSelection(MouseEvent e) {
@@ -196,38 +163,35 @@ public class SelectionBehavior implements ISelectionProvider {
 		return false;
 	}
 
-	private void handleMouseDragged(MouseEvent e) {
-		try {
-			if (_selectionBox != null) {
-				Point2D point = _canvas.getSelectionGlassPane().sceneToLocal(e.getSceneX(), e.getSceneY());
-				_selectionBox.setBox(_boxStart, point);
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
+	void handleMouseDragged(MouseEvent e) {
+		if (_selectionBox != null) {
+			Point2D point = _canvas.getSelectionGlassPane().sceneToLocal(e.getSceneX(), e.getSceneY());
+			_selectionBox.setBox(_boxStart, point);
 		}
 	}
 
 	private void selectBox(SelectionBoxNode selectionBox) {
-		try {
-			List<Object> list = new ArrayList<>();
-			Bounds selBounds = selectionBox.localToScene(selectionBox.getBoundsInLocal());
+		List<Object> list = new ArrayList<>();
+		Bounds selBounds = selectionBox.localToScene(selectionBox.getBoundsInLocal());
 
-			_canvas.getWorldNode().walkTree(inode -> {
-				if (!inode.getModel().isEditorPick()) {
-					return;
-				}
+		_canvas.getWorldNode().walkTree(inode -> {
+			if (!inode.getModel().isEditorPick()) {
+				return;
+			}
 
-				Node node = inode.getNode();
-				Bounds b = node.localToScene(node.getBoundsInLocal());
-				if (selBounds.contains(b)) {
-					list.add(inode);
-				}
-			} , false);
+			if (inode instanceof GroupNode && !((GroupNode) inode).getModel().isEditorClosed()) {
+				// do not select open groups, else the children of the group
+				return;
+			}
 
-			setSelection(new StructuredSelection(list));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			Node node = inode.getNode();
+			Bounds b = node.localToScene(node.getBoundsInLocal());
+			if (selBounds.contains(b)) {
+				list.add(inode);
+			}
+		} , false);
+
+		setSelection(new StructuredSelection(list));
 	}
 
 	public Node findBestToPick(Node picked) {
@@ -359,6 +323,8 @@ public class SelectionBehavior implements ISelectionProvider {
 				selpane.getChildren().add(new SelectionNode(_canvas, inode, rect));
 			}
 		}
+		
+		selpane.requestLayout();
 	}
 
 	private Bounds buildSelectionBounds(Node node) {
@@ -467,5 +433,4 @@ public class SelectionBehavior implements ISelectionProvider {
 
 		setSelection(StructuredSelection.EMPTY);
 	}
-
 }

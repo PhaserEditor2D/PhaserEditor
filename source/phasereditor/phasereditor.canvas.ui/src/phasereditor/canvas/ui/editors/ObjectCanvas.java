@@ -32,13 +32,20 @@ import org.eclipse.swt.widgets.Composite;
 
 import javafx.embed.swt.FXCanvas;
 import javafx.geometry.Point2D;
-import javafx.scene.Group;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.WorldModel;
+import phasereditor.canvas.ui.editors.behaviors.CreateBehavior;
+import phasereditor.canvas.ui.editors.behaviors.DragBehavior;
+import phasereditor.canvas.ui.editors.behaviors.MouseBehavior;
+import phasereditor.canvas.ui.editors.behaviors.SelectionBehavior;
+import phasereditor.canvas.ui.editors.behaviors.UpdateChangeBehavior;
+import phasereditor.canvas.ui.editors.behaviors.ZoomBehavior;
 import phasereditor.canvas.ui.editors.grid.PGrid;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.GroupControl;
@@ -50,7 +57,7 @@ import phasereditor.canvas.ui.shapes.IObjectNode;
  *
  */
 public class ObjectCanvas extends FXCanvas {
-	private CreateBehavior _createBehaviors;
+	private CreateBehavior _createBehavior;
 	private Pane _selectionPane;
 	private SelectionBehavior _selectionBehavior;
 	private DragBehavior _dragBehavior;
@@ -59,9 +66,10 @@ public class ObjectCanvas extends FXCanvas {
 	private UpdateChangeBehavior _updateBehavior;
 	private GroupControl _worldControl;
 	private TreeViewer _outline;
-	private Group _root;
+	private StackPane _root;
 	private ZoomBehavior _zoomBehavior;
 	private Pane _selectionGlassPane;
+	private MouseBehavior _mouseBehavior;
 
 	public ObjectCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -76,13 +84,14 @@ public class ObjectCanvas extends FXCanvas {
 
 		initDrop();
 
-		_createBehaviors = new CreateBehavior(this);
+		_createBehavior = new CreateBehavior(this);
 		_selectionBehavior = new SelectionBehavior(this);
 		_dragBehavior = new DragBehavior(this);
 		_updateBehavior = new UpdateChangeBehavior(this, _grid, outline);
 		_zoomBehavior = new ZoomBehavior(this);
+		_mouseBehavior = new MouseBehavior(this);
 	}
-
+	
 	public TreeViewer getOutline() {
 		return _outline;
 	}
@@ -95,8 +104,12 @@ public class ObjectCanvas extends FXCanvas {
 		return _model;
 	}
 
-	public CreateBehavior getCreateBehaviors() {
-		return _createBehaviors;
+	public MouseBehavior getMouseBehavior() {
+		return _mouseBehavior;
+	}
+	
+	public CreateBehavior getCreateBehavior() {
+		return _createBehavior;
 	}
 
 	public ZoomBehavior getZoomBehavior() {
@@ -128,7 +141,7 @@ public class ObjectCanvas extends FXCanvas {
 
 		getScene().setOnDragDropped(event -> {
 			ISelection selection = LocalSelectionTransfer.getTransfer().getSelection();
-			List<Node> newnodes = _createBehaviors.dropAssets((IStructuredSelection) selection, event);
+			List<Node> newnodes = _createBehavior.dropAssets((IStructuredSelection) selection, event);
 			_selectionBehavior.setSelection(new StructuredSelection(newnodes.toArray()));
 		});
 	}
@@ -146,9 +159,12 @@ public class ObjectCanvas extends FXCanvas {
 
 		world.setStyle("-fx-background-color:white;-fx-border-color:darkGray;border-style:solid;");
 
-		_root = new Group(world, _selectionPane, _selectionGlassPane);
+		_root = new StackPane(world, _selectionPane, _selectionGlassPane);
+		_root.setAlignment(Pos.TOP_LEFT);
 		int width = _model.getWorldWidth();
 		int height = _model.getWorldHeight();
+		_root.setMinSize(width, height);
+		_root.setMaxSize(width, height);
 		world.setMinSize(width, height);
 		world.setMaxSize(width, height);
 		_selectionPane.setMinSize(width, height);
@@ -159,7 +175,7 @@ public class ObjectCanvas extends FXCanvas {
 		setScene(new Scene(_root));
 	}
 
-	public Group getRoot() {
+	public Pane getRoot() {
 		return _root;
 	}
 

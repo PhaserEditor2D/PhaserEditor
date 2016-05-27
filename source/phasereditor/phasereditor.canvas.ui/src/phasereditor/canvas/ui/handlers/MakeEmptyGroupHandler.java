@@ -52,7 +52,7 @@ public class MakeEmptyGroupHandler extends AbstractHandler {
 			parent = ((IObjectNode) elems[0]).getGroup();
 		}
 
-		canvas.getCreateBehaviors().makeEmptyGroup(parent);
+		canvas.getCreateBehavior().makeEmptyGroup(parent);
 		return null;
 	}
 

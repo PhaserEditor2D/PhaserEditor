@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors;
+package phasereditor.canvas.ui.editors.behaviors;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,6 +38,7 @@ import phasereditor.canvas.core.BaseSpriteShapeModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.ObjectModelFactory;
 import phasereditor.canvas.core.WorldModel;
+import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.GroupNode;

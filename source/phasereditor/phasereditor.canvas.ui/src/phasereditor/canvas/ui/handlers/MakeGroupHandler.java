@@ -41,7 +41,7 @@ public class MakeGroupHandler extends AbstractHandler {
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
 		Object[] elems = selection.toArray();
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
-		GroupNode group = editor.getCanvas().getCreateBehaviors().makeGroup(elems);
+		GroupNode group = editor.getCanvas().getCreateBehavior().makeGroup(elems);
 		group.getControl().trim();
 		editor.getCanvas().getSelectionBehavior().updateSelectedNodes();
 		editor.getCanvas().getOutline().expandToLevel(group, 1);
