@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.scene.Node;
 import javafx.scene.shape.Shape;
 import phasereditor.canvas.core.BaseObjectModel;
@@ -40,5 +43,17 @@ public interface IObjectNode  {
 	
 	public default GroupNode getGroup() {
 		return getControl().getGroup();
+	}
+	
+	public default List<GroupNode> getAncestors() {
+		List<GroupNode> list = new ArrayList<>();
+		
+		GroupNode parent = getGroup();
+		
+		if (parent != getControl().getCanvas().getWorldNode()) {
+			list.add(parent);
+			list.addAll(parent.getAncestors());
+		}
+		return list;
 	}
 }

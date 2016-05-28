@@ -29,7 +29,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -306,6 +308,7 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 
 			@Override
 			public boolean validateDrop(Object target, int operation, TransferData transferType) {
+				
 				return true;
 			}
 
@@ -326,37 +329,54 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 
 				List<IObjectNode> nodes = new ArrayList<>();
 				for (Object obj : ((IStructuredSelection) data).toArray()) {
+					
+					if (obj == target) {
+						return false;
+					}
+					
 					if (obj instanceof IObjectNode) {
-						IObjectNode node = (IObjectNode) obj;
-						GroupNode group = target.getGroup();
+						nodes.add((IObjectNode) obj);
+					}
+				}
 
-						if (_location != LOCATION_NONE) {
-							node.getControl().removeme();
+				Set<IObjectNode> set = new HashSet<>(nodes);
+				
+				for (IObjectNode node : set) {
+					for(IObjectNode ancestor : node.getAncestors()) {
+						if (set.contains(ancestor)) {
+							nodes.remove(node);
 						}
+					}
+				}
+				
+				for (IObjectNode node : nodes) {
+					GroupNode group = target.getGroup();
 
-						int i = group.getChildren().indexOf(target);
-						if (i < 0) {
-							i = group.getChildren().size();
-						}
+					if (_location != LOCATION_NONE) {
+						node.getControl().removeme();
+					}
 
-						switch (_location) {
-						case LOCATION_BEFORE:
-							group.getControl().addChild(i + 1, node);
-							break;
-						case LOCATION_AFTER:
+					int i = group.getChildren().indexOf(target);
+					if (i < 0) {
+						i = group.getChildren().size();
+					}
+
+					switch (_location) {
+					case LOCATION_BEFORE:
+						group.getControl().addChild(i + 1, node);
+						break;
+					case LOCATION_AFTER:
+						group.getControl().addChild(i, node);
+						break;
+					case LOCATION_ON:
+						if (target instanceof GroupNode) {
+							((GroupNode) target).getControl().addChild(node);
+						} else {
 							group.getControl().addChild(i, node);
-							break;
-						case LOCATION_ON:
-							if (target instanceof GroupNode) {
-								((GroupNode) target).getControl().addChild(node);
-							} else {
-								group.getControl().addChild(i, node);
-							}
-							break;
-						default:
-							break;
 						}
-						nodes.add(node);
+						break;
+					default:
+						break;
 					}
 				}
 

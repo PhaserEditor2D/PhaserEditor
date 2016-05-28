@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.behaviors;
 
-import static java.lang.System.out;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -110,7 +108,6 @@ public class SelectionBehavior implements ISelectionProvider {
 	}
 
 	void handleMouseReleased(MouseEvent e) {
-		out.println("selecting box " + isSelectingBox());
 		if (isSelectingBox()) {
 			_canvas.getSelectionGlassPane().getChildren().remove(_selectionBox);
 			selectBox(_selectionBox);
