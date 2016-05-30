@@ -91,7 +91,7 @@ public class ZoomBehavior {
 			scale *= delta;
 		}
 
-		scale = clamp(scale, 0.1d, 10d);
+		scale = clamp(scale, 0.01d, 10d);
 
 		GroupNode world = getCanvas().getWorldNode();
 
@@ -143,6 +143,8 @@ public class ZoomBehavior {
 		_canvas.getSelectionPane().getChildren().forEach(n -> {
 			((SelectionNode) n).updateZoomAndPan();
 		});
+		
+		_canvas.getGridNode().repaint();
 	}
 
 	public double getScale() {

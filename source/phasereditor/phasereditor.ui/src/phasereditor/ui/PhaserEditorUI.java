@@ -77,8 +77,8 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import phasereditor.ui.views.PreviewView;
 
 public class PhaserEditorUI {
-	private static Color color1 = SWTResourceManager.getColor(180, 180, 180);
-	private static Color color2 = SWTResourceManager.getColor(200, 200, 200);
+	public static Color PREVIEW_BG_DARK = SWTResourceManager.getColor(180, 180, 180);
+	public static Color PREVIEW_BG_LIGHT = SWTResourceManager.getColor(200, 200, 200);
 	private static Set<Object> _supportedImageExts = new HashSet<>(Arrays.asList("png", "bmp", "jpg", "gif", "ico"));
 
 	private PhaserEditorUI() {
@@ -347,9 +347,9 @@ public class PhaserEditorUI {
 				int fx = canvasBounds.x / space * space + x * space;
 				int fy = canvasBounds.y / space * space + y * space;
 				if ((fx / space + fy / space) % 2 == 0) {
-					gc.setBackground(color1);
+					gc.setBackground(PREVIEW_BG_DARK);
 				} else {
-					gc.setBackground(color2);
+					gc.setBackground(PREVIEW_BG_LIGHT);
 				}
 				gc.fillRectangle(fx, fy, space, space);
 			}
@@ -364,7 +364,7 @@ public class PhaserEditorUI {
 			x = 5;
 		}
 		int y = canvasBounds.height / 2 - msgSize.y / 2;
-		gc.setBackground(color1);
+		gc.setBackground(PREVIEW_BG_DARK);
 		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		gc.drawText(msg, x, y);
 	}

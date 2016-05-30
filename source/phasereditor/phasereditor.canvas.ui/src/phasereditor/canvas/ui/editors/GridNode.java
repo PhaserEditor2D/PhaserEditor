@@ -1,0 +1,139 @@
+// The MIT License (MIT)
+//
+// Copyright (c) 2015, 2016 Arian Fornaris
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions: The above copyright notice and this permission
+// notice shall be included in all copies or substantial portions of the
+// Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+package phasereditor.canvas.ui.editors;
+
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.BoundingBox;
+import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import phasereditor.canvas.ui.shapes.GroupNode;
+
+/**
+ * @author arian
+ *
+ */
+public class GridNode extends Canvas {
+	private final static double MIN_WIDTH = 10;
+	private final static double MAX_WIDTH = 200;
+
+	private ObjectCanvas _canvas;
+	private Color _bgColor;
+	private Color _gridColor;
+
+	public GridNode(ObjectCanvas canvas) {
+		super();
+		_canvas = canvas;
+		_canvas.addControlListener(new ControlListener() {
+
+			@Override
+			public void controlResized(ControlEvent e) {
+				repaint();
+			}
+
+			@Override
+			public void controlMoved(ControlEvent e) {
+				repaint();
+			}
+		});
+		
+		Scene scene = canvas.getScene();
+
+		widthProperty().bind(scene.widthProperty());
+		heightProperty().bind(scene.heightProperty());
+		ChangeListener<Number> sizeListener = new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				repaint();
+			}
+		};
+		widthProperty().addListener(sizeListener);
+		heightProperty().addListener(sizeListener);
+
+		_bgColor = Color.gray(180d / 256d);
+		_gridColor = Color.gray(200d / 256d);
+	}
+
+	public void repaint() {
+		GraphicsContext g2 = getGraphicsContext2D();
+		
+		g2.setFill(_bgColor);
+		g2.fillRect(0, 0, getScene().getWidth(), getScene().getHeight());
+
+		g2.setStroke(_gridColor);
+		g2.setLineWidth(1);
+		GroupNode world = _canvas.getWorldNode();
+		Point2D origin = world.localToScene(0, 0);
+
+		Bounds proj;
+
+		proj = world.localToScene(new BoundingBox(0, 0, 100, 100));
+		pass(g2, origin, proj);
+
+		proj = world.localToScene(new BoundingBox(0, 0, 1_000, 1_000));
+		pass(g2, origin, proj);
+
+		proj = world.localToScene(new BoundingBox(0, 0, 10_000, 10_000));
+		pass(g2, origin, proj);
+	}
+
+	private void pass(GraphicsContext g2, Point2D origin, Bounds proj) {
+		if (proj.getWidth() < MIN_WIDTH) {
+			return;
+		}
+
+		double width = getScene().getWidth();
+		double height = getScene().getHeight();
+
+		double xoffs = origin.getX() % proj.getWidth();
+		double yoffs = origin.getY() % proj.getHeight();
+
+		double alpha = 1;
+
+		if (proj.getWidth() < MAX_WIDTH) {
+			double min = MIN_WIDTH;
+			double alpha1 = (proj.getWidth() - min) / (MAX_WIDTH - min) * 0.6;
+			alpha = Math.max(0.02, Math.min(0.6, alpha1));
+		}
+
+		g2.setGlobalAlpha(alpha);
+
+		for (double x = 0; x < width + proj.getWidth(); x += proj.getWidth()) {
+			double x2 = x + xoffs;
+			for (double y = 0; y < height + proj.getHeight(); y += proj.getHeight()) {
+				double y2 = y + yoffs;
+				g2.strokeLine(x2, 0, x2, height);
+				g2.strokeLine(0, y2, width, y2);
+			}
+		}
+
+		g2.setGlobalAlpha(1);
+	}
+}

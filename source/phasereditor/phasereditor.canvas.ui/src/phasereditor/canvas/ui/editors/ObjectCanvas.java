@@ -62,7 +62,7 @@ public class ObjectCanvas extends FXCanvas {
 	private SelectionBehavior _selectionBehavior;
 	private DragBehavior _dragBehavior;
 	private WorldModel _model;
-	private PGrid _grid;
+	private PGrid _pgrid;
 	private UpdateChangeBehavior _updateBehavior;
 	private GroupControl _worldControl;
 	private TreeViewer _outline;
@@ -70,6 +70,7 @@ public class ObjectCanvas extends FXCanvas {
 	private ZoomBehavior _zoomBehavior;
 	private Pane _selectionGlassPane;
 	private MouseBehavior _mouseBehavior;
+	private GridNode _gridNode;
 
 	public ObjectCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -77,7 +78,7 @@ public class ObjectCanvas extends FXCanvas {
 
 	public void init(WorldModel model, PGrid grid, TreeViewer outline) {
 		_model = model;
-		_grid = grid;
+		_pgrid = grid;
 		_outline = outline;
 
 		createScene();
@@ -87,17 +88,17 @@ public class ObjectCanvas extends FXCanvas {
 		_createBehavior = new CreateBehavior(this);
 		_selectionBehavior = new SelectionBehavior(this);
 		_dragBehavior = new DragBehavior(this);
-		_updateBehavior = new UpdateChangeBehavior(this, _grid, outline);
+		_updateBehavior = new UpdateChangeBehavior(this, _pgrid, outline);
 		_zoomBehavior = new ZoomBehavior(this);
 		_mouseBehavior = new MouseBehavior(this);
 	}
-	
+
 	public TreeViewer getOutline() {
 		return _outline;
 	}
 
-	public PGrid getGrid() {
-		return _grid;
+	public PGrid getPGrid() {
+		return _pgrid;
 	}
 
 	public WorldModel getWorldModel() {
@@ -107,7 +108,7 @@ public class ObjectCanvas extends FXCanvas {
 	public MouseBehavior getMouseBehavior() {
 		return _mouseBehavior;
 	}
-	
+
 	public CreateBehavior getCreateBehavior() {
 		return _createBehavior;
 	}
@@ -156,10 +157,10 @@ public class ObjectCanvas extends FXCanvas {
 		_worldControl = new GroupControl(this, _model);
 
 		GroupNode world = _worldControl.getNode();
-
-		world.setStyle("-fx-background-color:white;-fx-border-color:darkGray;border-style:solid;");
-
+		
 		_root = new StackPane(world, _selectionPane, _selectionGlassPane);
+		setScene(new Scene(_root));
+
 		_root.setAlignment(Pos.TOP_LEFT);
 		int width = _model.getWorldWidth();
 		int height = _model.getWorldHeight();
@@ -171,10 +172,18 @@ public class ObjectCanvas extends FXCanvas {
 		_selectionPane.setMaxSize(width, height);
 		_selectionGlassPane.setMinSize(width, height);
 		_selectionGlassPane.setMaxSize(width, height);
-
-		setScene(new Scene(_root));
+		
+		_gridNode = new GridNode(this);
+		
+		_root.getChildren().add(0, _gridNode);
+		
+		_gridNode.repaint();
 	}
 
+	public GridNode getGridNode() {
+		return _gridNode;
+	}
+	
 	public Pane getRoot() {
 		return _root;
 	}
@@ -186,7 +195,7 @@ public class ObjectCanvas extends FXCanvas {
 	public Pane getSelectionPane() {
 		return _selectionPane;
 	}
-	
+
 	public Pane getSelectionGlassPane() {
 		return _selectionGlassPane;
 	}
