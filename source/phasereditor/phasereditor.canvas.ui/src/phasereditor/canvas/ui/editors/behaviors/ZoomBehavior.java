@@ -144,7 +144,7 @@ public class ZoomBehavior {
 			((SelectionNode) n).updateZoomAndPan();
 		});
 		
-		_canvas.getGridNode().repaint();
+		_canvas.getPaintBehavior().repaint();
 	}
 
 	public double getScale() {

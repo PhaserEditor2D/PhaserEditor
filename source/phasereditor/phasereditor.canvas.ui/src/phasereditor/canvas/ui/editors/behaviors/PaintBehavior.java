@@ -19,20 +19,53 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors;
+package phasereditor.canvas.ui.editors.behaviors;
 
-import javafx.scene.canvas.Canvas;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import phasereditor.canvas.ui.editors.ObjectCanvas;
 
 /**
  * @author arian
  *
  */
-public class WorldGlassNode extends Canvas {
+public class PaintBehavior {
 	private ObjectCanvas _canvas;
 
-	public WorldGlassNode(ObjectCanvas canvas) {
+	public PaintBehavior(ObjectCanvas canvas) {
 		super();
 		_canvas = canvas;
+
+		_canvas.addControlListener(new ControlListener() {
+
+			@Override
+			public void controlResized(ControlEvent e) {
+				repaint();
+			}
+
+			@Override
+			public void controlMoved(ControlEvent e) {
+				repaint();
+			}
+		});
+
+		ChangeListener<Number> sizeListener = new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				repaint();
+			}
+		};
+		_canvas.getScene().widthProperty().addListener(sizeListener);
+		_canvas.getScene().heightProperty().addListener(sizeListener);
+	}
+
+	public void repaint() {
+		_canvas.getGridPane().repaint();
+		_canvas.getWorldGlassPane().repaint();
 	}
 
 }

@@ -21,11 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
-import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.ControlListener;
-
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
@@ -39,46 +34,23 @@ import phasereditor.canvas.ui.shapes.GroupNode;
  * @author arian
  *
  */
-public class GridNode extends Canvas {
+public class GridPane extends Canvas {
 	private final static double MIN_WIDTH = 10;
-	private final static double MAX_WIDTH = 200;
+	private final static double MAX_WIDTH = 100;
 
 	private ObjectCanvas _canvas;
 	private Color _bgColor;
 	private Color _gridColor;
 
-	public GridNode(ObjectCanvas canvas) {
+	public GridPane(ObjectCanvas canvas) {
 		super();
 		_canvas = canvas;
-		_canvas.addControlListener(new ControlListener() {
-
-			@Override
-			public void controlResized(ControlEvent e) {
-				repaint();
-			}
-
-			@Override
-			public void controlMoved(ControlEvent e) {
-				repaint();
-			}
-		});
-		
-		Scene scene = canvas.getScene();
-
-		widthProperty().bind(scene.widthProperty());
-		heightProperty().bind(scene.heightProperty());
-		ChangeListener<Number> sizeListener = new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				repaint();
-			}
-		};
-		widthProperty().addListener(sizeListener);
-		heightProperty().addListener(sizeListener);
-
 		_bgColor = Color.gray(180d / 256d);
 		_gridColor = Color.gray(200d / 256d);
+		
+		Scene scene = canvas.getScene();
+		widthProperty().bind(scene.widthProperty());
+		heightProperty().bind(scene.heightProperty());
 	}
 
 	public void repaint() {
@@ -94,6 +66,9 @@ public class GridNode extends Canvas {
 
 		Bounds proj;
 
+		proj = world.localToScene(new BoundingBox(0, 0, 10, 10));
+		pass(g2, origin, proj);
+		
 		proj = world.localToScene(new BoundingBox(0, 0, 100, 100));
 		pass(g2, origin, proj);
 
@@ -109,8 +84,8 @@ public class GridNode extends Canvas {
 			return;
 		}
 
-		double width = getScene().getWidth();
-		double height = getScene().getHeight();
+		double width = Math.floor(getScene().getWidth());
+		double height = Math.floor(getScene().getHeight());
 
 		double xoffs = origin.getX() % proj.getWidth();
 		double yoffs = origin.getY() % proj.getHeight();
@@ -126,9 +101,9 @@ public class GridNode extends Canvas {
 		g2.setGlobalAlpha(alpha);
 
 		for (double x = 0; x < width + proj.getWidth(); x += proj.getWidth()) {
-			double x2 = x + xoffs;
+			double x2 = Math.floor(x + xoffs);
 			for (double y = 0; y < height + proj.getHeight(); y += proj.getHeight()) {
-				double y2 = y + yoffs;
+				double y2 = Math.floor(y + yoffs);
 				g2.strokeLine(x2, 0, x2, height);
 				g2.strokeLine(0, y2, width, y2);
 			}
