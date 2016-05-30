@@ -42,12 +42,12 @@ public class ImageSpriteControl extends BaseSpriteShapeControl<ImageSpriteShapeM
 	}
 
 	@Override
-	public double getWidth() {
+	public double getTextureWidth() {
 		return _spriteNode.getImage().getWidth();
 	}
 
 	@Override
-	public double getHeight() {
+	public double getTextureHeight() {
 		return _spriteNode.getImage().getHeight();
 	}
 }

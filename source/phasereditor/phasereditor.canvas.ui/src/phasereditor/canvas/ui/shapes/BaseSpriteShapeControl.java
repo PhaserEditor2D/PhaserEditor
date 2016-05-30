@@ -51,8 +51,8 @@ public abstract class BaseSpriteShapeControl<T extends BaseSpriteShapeModel> ext
 			// anchor
 			double anchorX = getModel().getAnchorX();
 			double anchorY = getModel().getAnchorY();
-			double x = -getWidth() * anchorX;
-			double y = -getHeight() * anchorY;
+			double x = -getTextureWidth() * anchorX;
+			double y = -getTextureHeight() * anchorY;
 			Translate anchor = Transform.translate(x, y);
 			transforms.add(anchor);
 		}
@@ -107,9 +107,31 @@ public abstract class BaseSpriteShapeControl<T extends BaseSpriteShapeModel> ext
 	}
 
 	@Override
-	public abstract double getWidth();
+	public abstract double getTextureWidth();
 
 	@Override
-	public abstract double getHeight();
+	public abstract double getTextureHeight();
+
+	@Override
+	public double getTextureLeft() {
+		T model = getModel();
+		return model.getX() - getTextureWidth() * model.getAnchorX();
+	}
+
+	@Override
+	public double getTextureTop() {
+		T model = getModel();
+		return model.getY() - getTextureHeight() * model.getAnchorY();
+	}
+
+	@Override
+	public double getTextureRight() {
+		return getTextureLeft() + getTextureWidth();
+	}
+
+	@Override
+	public double getTextureBottom() {
+		return getTextureTop() + getTextureHeight();
+	}
 
 }

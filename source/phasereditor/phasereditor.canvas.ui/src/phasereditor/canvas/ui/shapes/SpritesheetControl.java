@@ -87,12 +87,12 @@ public class SpritesheetControl extends BaseSpriteShapeControl<SpritesheetShapeM
 	}
 
 	@Override
-	public double getWidth() {
+	public double getTextureWidth() {
 		return getModel().getAsset().getFrameWidth();
 	}
 
 	@Override
-	public double getHeight() {
+	public double getTextureHeight() {
 		return getModel().getAsset().getFrameHeight();
 	}
 

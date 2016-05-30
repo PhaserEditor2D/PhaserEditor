@@ -383,7 +383,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	public IObjectNode getIObjectNode() {
 		return (IObjectNode) _node;
 	}
-	
+
 	public void removeme() {
 		getGroup().getControl().removeChild(this._inode);
 	}
@@ -409,9 +409,27 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		return _model.getY();
 	}
 
-	public abstract double getWidth();
+	public abstract double getTextureWidth();
 
-	public abstract double getHeight();
+	public abstract double getTextureHeight();
+
+	public double getTextureLeft() {
+		T model = getModel();
+		return model.getX();
+	}
+
+	public double getTextureTop() {
+		T model = getModel();
+		return model.getY();
+	}
+
+	public double getTextureRight() {
+		return getX() + getTextureWidth();
+	}
+
+	public double getTextureBottom() {
+		return getY() + getTextureHeight();
+	}
 
 	public void sendNodeTo(ZOperation op) {
 		GroupNode parent = (GroupNode) _node.getParent();

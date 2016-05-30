@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.GroupModel;
@@ -62,19 +63,92 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 	}
 
 	@Override
-	public double getWidth() {
+	public double getTextureLeft() {
 		if (getModel() instanceof WorldModel) {
-			return getModel().getWorld().getWorldWidth();
+			return 0;
 		}
-		return getNode().getBoundsInLocal().getWidth();
+
+		ObservableList<Node> list = getNode().getChildren();
+		if (list.isEmpty()) {
+			return 0;
+		}
+
+		double modelx = getModel().getX();
+		double x = Double.MAX_VALUE;
+
+		for (Object obj : getNode().getChildren()) {
+			IObjectNode node = (IObjectNode) obj;
+			x = Math.min(modelx + node.getControl().getTextureLeft(), x);
+		}
+
+		return x;
 	}
 
 	@Override
-	public double getHeight() {
+	public double getTextureTop() {
+		if (getModel() instanceof WorldModel) {
+			return 0;
+		}
+
+		ObservableList<Node> list = getNode().getChildren();
+		if (list.isEmpty()) {
+			return 0;
+		}
+
+		double modely = getModel().getY();
+		double y = Double.MAX_VALUE;
+
+		for (Object obj : list) {
+			IObjectNode node = (IObjectNode) obj;
+			y = Math.min(modely + node.getControl().getTextureTop(), y);
+		}
+		return y;
+	}
+
+	@Override
+	public double getTextureWidth() {
+		if (getModel() instanceof WorldModel) {
+			return getModel().getWorld().getWorldWidth();
+		}
+
+		ObservableList<Node> list = getNode().getChildren();
+		if (list.isEmpty()) {
+			return 0;
+		}
+
+		double min = Double.MAX_VALUE;
+		double max = Double.MIN_VALUE;
+
+		for (Object obj : list) {
+			IObjectNode node = (IObjectNode) obj;
+			min = Math.min(node.getControl().getTextureLeft(), min);
+			max = Math.max(node.getControl().getTextureRight(), max);
+		}
+
+		return max - min;
+	}
+
+	@Override
+	public double getTextureHeight() {
 		if (getModel() instanceof WorldModel) {
 			return getModel().getWorld().getWorldHeight();
 		}
-		return getNode().getBoundsInLocal().getHeight();
+
+		ObservableList<Node> list = getNode().getChildren();
+		if (list.isEmpty()) {
+			return 0;
+		}
+
+		double min = Double.MAX_VALUE;
+		double max = Double.MIN_VALUE;
+
+		for (Object obj : list) {
+			IObjectNode node = (IObjectNode) obj;
+			min = Math.min(node.getControl().getTextureTop(), min);
+			max = Math.max(node.getControl().getTextureBottom(), max);
+		}
+
+		return max - min;
 	}
 
 	public PGridBooleanProperty getClosed_property() {

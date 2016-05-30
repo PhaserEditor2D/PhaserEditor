@@ -103,9 +103,6 @@ public class WorldGlassPane extends Canvas {
 		}
 	}
 
-	/**
-	 * 
-	 */
 	private void paintWorldBounds() {
 		WorldModel model = _canvas.getWorldModel();
 		GroupNode node = _canvas.getWorldNode();

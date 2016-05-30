@@ -225,8 +225,8 @@ public class ObjectCanvas extends FXCanvas {
 		double x = (sceneX - translate.getX()) * invScale;
 		double y = (sceneY - translate.getY()) * invScale;
 
-		double w = control.getWidth() / 2;
-		double h = control.getHeight() / 2;
+		double w = control.getTextureWidth() / 2;
+		double h = control.getTextureHeight() / 2;
 
 		BaseObjectModel model = control.getModel();
 		model.setX(x - w);

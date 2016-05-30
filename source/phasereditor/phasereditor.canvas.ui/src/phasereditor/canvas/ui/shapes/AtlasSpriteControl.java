@@ -56,12 +56,12 @@ public class AtlasSpriteControl extends BaseSpriteShapeControl<AtlasSpriteShapeM
 	}
 
 	@Override
-	public double getWidth() {
+	public double getTextureWidth() {
 		return _frame.getSpriteW();
 	}
 
 	@Override
-	public double getHeight() {
+	public double getTextureHeight() {
 		return _frame.getSpriteH();
 	}
 }
