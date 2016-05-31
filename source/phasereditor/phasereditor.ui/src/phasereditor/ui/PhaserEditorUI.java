@@ -65,7 +65,9 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -570,5 +572,28 @@ public class PhaserEditorUI {
 
 	public static Rectangle getImageBounds(IFile file) {
 		return getImageBounds(file.getLocation().toPortableString());
+	}
+
+	public static Image makeColorIcon(RGB rgb) {
+		RGB black = new RGB(0, 0, 0);
+		PaletteData dataPalette = new PaletteData(new RGB[] { black, black, rgb });
+		ImageData data = new ImageData(16, 16, 4, dataPalette);
+		data.transparentPixel = 0;
+
+		int start = 3;
+		int end = 16 - start;
+		for (int y = start; y <= end; y++) {
+			for (int x = start; x <= end; x++) {
+				if (x == start || y == start || x == end || y == end) {
+					data.setPixel(x, y, 1);
+				} else {
+					data.setPixel(x, y, 2);
+				}
+			}
+		}
+
+		Image img = new Image(Display.getCurrent(), data);
+
+		return img;
 	}
 }

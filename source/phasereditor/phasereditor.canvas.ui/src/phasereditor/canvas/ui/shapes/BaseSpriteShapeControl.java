@@ -24,7 +24,6 @@ package phasereditor.canvas.ui.shapes;
 import org.eclipse.swt.graphics.RGB;
 
 import javafx.collections.ObservableList;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.effect.Blend;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.ColorInput;
@@ -79,11 +78,13 @@ public abstract class BaseSpriteShapeControl<T extends BaseSpriteShapeModel> ext
 
 		String tint = getModel().getTint();
 
-		Rectangle2D viewport = node.getViewport();
-
 		if (tint != null) {
 			Blend multiply = new Blend(BlendMode.MULTIPLY);
-			ColorInput value = new ColorInput(0, 0, viewport.getWidth(), viewport.getHeight(), Color.valueOf(tint));
+
+			double width = getTextureWidth();
+			double height = getTextureHeight();
+
+			ColorInput value = new ColorInput(0, 0, width, height, Color.valueOf(tint));
 			multiply.setTopInput(value);
 
 			Blend atop = new Blend(BlendMode.SRC_ATOP);
@@ -165,6 +166,7 @@ public abstract class BaseSpriteShapeControl<T extends BaseSpriteShapeModel> ext
 				return new RGB((int) (c.getRed() * 255), (int) (c.getGreen() * 255), (int) (c.getBlue() * 255));
 			}
 		};
+		_tint_property.setDefaultRGB(new RGB(255, 255, 255));
 
 		PGridSection spriteSection = new PGridSection("Sprite");
 

@@ -19,28 +19,64 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors.grid;
+package phasereditor.canvas.ui.editors.grid.editors;
 
+import org.eclipse.jface.viewers.DialogCellEditor;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.ColorDialog;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+
+import phasereditor.canvas.ui.editors.grid.ValueLabelProvider;
 
 /**
  * @author arian
  *
  */
-public abstract class PGridColorProperty extends PGridProperty<RGB>{
+public class RGBCellEditor extends DialogCellEditor {
 
 	private RGB _defaultRGB;
-	
-	public PGridColorProperty(String name) {
-		super(name);
+
+	public RGBCellEditor(Composite parent, RGB defaultRGB) {
+		super(parent);
+		_defaultRGB = defaultRGB;
 	}
-	
+
 	public RGB getDefaultRGB() {
 		return _defaultRGB;
 	}
-	
+
 	public void setDefaultRGB(RGB defaultRGB) {
 		_defaultRGB = defaultRGB;
 	}
-	
+
+	@Override
+	protected Object openDialogBox(Control cellEditorWindow) {
+		ColorDialog dialog = new ColorDialog(cellEditorWindow.getShell());
+		Object value = getValue();
+		if (value != null) {
+			dialog.setRGB((RGB) value);
+		}
+		value = dialog.open();
+		return dialog.getRGB();
+	}
+
+	@Override
+	protected void updateContents(Object value) {
+		super.updateContents(value);
+
+		if (value != null) {
+			RGB rgb = (RGB) value;
+			getDefaultLabel().setText("  " + getRGBString(rgb));
+		}
+	}
+
+	private String getRGBString(RGB rgb) {
+		if (_defaultRGB != null && _defaultRGB.equals(rgb)) {
+			return "(default)";
+		}
+
+		return ValueLabelProvider.getRGBString(rgb);
+	}
+
 }

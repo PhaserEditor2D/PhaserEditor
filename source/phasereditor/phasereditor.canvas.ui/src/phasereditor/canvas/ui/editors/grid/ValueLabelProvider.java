@@ -21,7 +21,14 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.jface.viewers.ColumnViewer;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.RGB;
+
+import phasereditor.ui.PhaserEditorUI;
 
 /**
  * @author arian
@@ -41,9 +48,17 @@ public class ValueLabelProvider extends GridLabelProvider {
 
 		if (element instanceof PGridColorProperty) {
 			PGridColorProperty prop = (PGridColorProperty) element;
-			if (!prop.isModified()) {
+			RGB rgb = prop.getValue();
+
+			if (rgb == null) {
 				return "";
 			}
+
+			if (prop.getDefaultRGB() != null && prop.getDefaultRGB().equals(rgb)) {
+				return "(default)";
+			}
+
+			return getRGBString(rgb);
 		}
 
 		if (element instanceof PGridProperty) {
@@ -52,5 +67,43 @@ public class ValueLabelProvider extends GridLabelProvider {
 		}
 
 		return super.getText(element);
+	}
+
+	public static String getRGBString(RGB rgb) {
+		return "rgb(" + rgb.red + "," + rgb.green + "," + rgb.blue + ")";
+	}
+
+	private Map<Object, Image> _images = new HashMap<>();
+
+	@Override
+	public Image getImage(Object element) {
+		if (element instanceof PGridColorProperty) {
+			PGridColorProperty prop = (PGridColorProperty) element;
+
+			if (!prop.isModified()) {
+				return null;
+			}
+
+			RGB value = prop.getValue();
+			if (value == null) {
+				return null;
+			}
+			if (_images.containsKey(value)) {
+				return _images.get(value);
+			}
+			Image image = PhaserEditorUI.makeColorIcon(value);
+			_images.put(value, image);
+			return image;
+		}
+		return super.getImage(element);
+	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		for (Image img : _images.values()) {
+			img.dispose();
+		}
+		_images.clear();
 	}
 }
