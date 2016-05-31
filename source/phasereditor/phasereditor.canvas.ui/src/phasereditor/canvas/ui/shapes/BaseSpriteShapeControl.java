@@ -21,11 +21,19 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
+import org.eclipse.swt.graphics.RGB;
+
 import javafx.collections.ObservableList;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.effect.Blend;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.effect.ColorInput;
+import javafx.scene.paint.Color;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import phasereditor.canvas.core.BaseSpriteShapeModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.grid.PGridColorProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
@@ -38,6 +46,7 @@ public abstract class BaseSpriteShapeControl<T extends BaseSpriteShapeModel> ext
 
 	private PGridNumberProperty _anchor_x_property;
 	private PGridNumberProperty _anchor_y_property;
+	private PGridColorProperty _tint_property;
 
 	public BaseSpriteShapeControl(ObjectCanvas canvas, T model) {
 		super(canvas, model);
@@ -55,6 +64,31 @@ public abstract class BaseSpriteShapeControl<T extends BaseSpriteShapeModel> ext
 			double y = -getTextureHeight() * anchorY;
 			Translate anchor = Transform.translate(x, y);
 			transforms.add(anchor);
+		}
+	}
+
+	@Override
+	public void updateFromModel() {
+		super.updateFromModel();
+
+		updateTint();
+	}
+
+	protected void updateTint() {
+		SpriteNode node = (SpriteNode) getNode();
+
+		String tint = getModel().getTint();
+
+		Rectangle2D viewport = node.getViewport();
+
+		if (tint != null) {
+			Blend multiply = new Blend(BlendMode.MULTIPLY);
+			ColorInput value = new ColorInput(0, 0, viewport.getWidth(), viewport.getHeight(), Color.valueOf(tint));
+			multiply.setTopInput(value);
+
+			Blend atop = new Blend(BlendMode.SRC_ATOP);
+			atop.setTopInput(multiply);
+			node.setEffect(atop);
 		}
 	}
 
@@ -98,10 +132,45 @@ public abstract class BaseSpriteShapeControl<T extends BaseSpriteShapeModel> ext
 			}
 		};
 
+		_tint_property = new PGridColorProperty("tint") {
+
+			@Override
+			public void setValue(RGB value) {
+				String tint;
+				if (value == null) {
+					tint = null;
+				} else {
+					tint = "rgb(" + value.red + "," + value.green + "," + value.blue + ")";
+				}
+
+				getModel().setTint(tint);
+				updateGridChange();
+			}
+
+			@Override
+			public boolean isModified() {
+				String tint = getModel().getTint();
+				return tint != null && !tint.equals("rgb(255,255,255)");
+			}
+
+			@Override
+			public RGB getValue() {
+				String tint = getModel().getTint();
+
+				if (tint == null) {
+					return null;
+				}
+
+				Color c = Color.valueOf(tint);
+				return new RGB((int) (c.getRed() * 255), (int) (c.getGreen() * 255), (int) (c.getBlue() * 255));
+			}
+		};
+
 		PGridSection spriteSection = new PGridSection("Sprite");
 
 		spriteSection.add(_anchor_x_property);
 		spriteSection.add(_anchor_y_property);
+		spriteSection.add(_tint_property);
 
 		propModel.getSections().add(spriteSection);
 	}

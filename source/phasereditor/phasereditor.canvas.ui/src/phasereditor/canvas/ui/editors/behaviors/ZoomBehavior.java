@@ -141,7 +141,7 @@ public class ZoomBehavior {
 		tx.add(new Scale(_scale, _scale));
 
 		_canvas.getSelectionPane().getChildren().forEach(n -> {
-			((SelectionNode) n).updateZoomAndPan();
+			((SelectionNode) n).updateFromZoomAndPanVariables();
 		});
 		
 		_canvas.getPaintBehavior().repaint();

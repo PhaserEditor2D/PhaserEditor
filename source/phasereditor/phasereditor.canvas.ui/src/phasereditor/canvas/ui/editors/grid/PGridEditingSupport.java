@@ -23,9 +23,11 @@ package phasereditor.canvas.ui.editors.grid;
 
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
+import org.eclipse.jface.viewers.ColorCellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
 
 import phasereditor.canvas.ui.editors.grid.editors.FrameCellEditor;
@@ -53,6 +55,8 @@ public class PGridEditingSupport extends EditingSupport {
 		} else if (element instanceof PGridFrameProperty) {
 			PGridFrameProperty prop = (PGridFrameProperty) element;
 			return new FrameCellEditor(parent, prop.getControl());
+		} else if (element instanceof PGridColorProperty) {
+			return new ColorCellEditor(parent);
 		}
 
 		return null;
@@ -84,6 +88,8 @@ public class PGridEditingSupport extends EditingSupport {
 			((PGridBooleanProperty) element).setValue((Boolean) value);
 		} else if (element instanceof PGridFrameProperty) {
 			((PGridFrameProperty) element).setValue((Integer) value);
+		} else if (element instanceof PGridColorProperty) {
+			((PGridColorProperty) element).setValue((RGB) value);
 		}
 
 		getViewer().refresh(element);

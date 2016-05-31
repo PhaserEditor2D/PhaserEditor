@@ -81,9 +81,9 @@ public class SpritesheetControl extends BaseSpriteShapeControl<SpritesheetShapeM
 
 	@Override
 	public void updateFromModel() {
-		super.updateFromModel();
-
 		updateViewport(getNode());
+		
+		super.updateFromModel();
 	}
 
 	@Override
@@ -99,7 +99,6 @@ public class SpritesheetControl extends BaseSpriteShapeControl<SpritesheetShapeM
 	private void updateViewport(SpriteNode node) {
 		FrameData frame = getCurrentFrame();
 		Rectangle src = frame.src;
-
 		node.setViewport(new Rectangle2D(src.x, src.y, src.width, src.height));
 	}
 

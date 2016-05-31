@@ -27,11 +27,7 @@ import java.beans.PropertyChangeEvent;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -50,18 +46,13 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.ViewerDropAdapter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
-import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.layout.GridData;
@@ -92,8 +83,6 @@ import javafx.geometry.Point2D;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.behaviors.ZoomBehavior;
 import phasereditor.canvas.ui.editors.grid.PGrid;
-import phasereditor.canvas.ui.shapes.GroupNode;
-import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.ui.EditorSharedImages;
 
 /**
@@ -301,90 +290,7 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 			}
 		});
 
-		viewer.addDropSupport(operations, transfers, new ViewerDropAdapter(viewer) {
-
-			private int _location;
-			private Object _target;
-
-			@Override
-			public boolean validateDrop(Object target, int operation, TransferData transferType) {
-				
-				return true;
-			}
-
-			@Override
-			public void dragOver(DropTargetEvent event) {
-				_location = determineLocation(event);
-				_target = determineTarget(event);
-				super.dragOver(event);
-			}
-
-			@Override
-			public boolean performDrop(Object data) {
-				if (_target == null) {
-					return false;
-				}
-
-				IObjectNode target = (IObjectNode) _target;
-
-				List<IObjectNode> nodes = new ArrayList<>();
-				for (Object obj : ((IStructuredSelection) data).toArray()) {
-					
-					if (obj == target) {
-						return false;
-					}
-					
-					if (obj instanceof IObjectNode) {
-						nodes.add((IObjectNode) obj);
-					}
-				}
-
-				Set<IObjectNode> set = new HashSet<>(nodes);
-				
-				for (IObjectNode node : set) {
-					for(IObjectNode ancestor : node.getAncestors()) {
-						if (set.contains(ancestor)) {
-							nodes.remove(node);
-						}
-					}
-				}
-				
-				for (IObjectNode node : nodes) {
-					GroupNode group = target.getGroup();
-
-					if (_location != LOCATION_NONE) {
-						node.getControl().removeme();
-					}
-
-					int i = group.getChildren().indexOf(target);
-					if (i < 0) {
-						i = group.getChildren().size();
-					}
-
-					switch (_location) {
-					case LOCATION_BEFORE:
-						group.getControl().addChild(i + 1, node);
-						break;
-					case LOCATION_AFTER:
-						group.getControl().addChild(i, node);
-						break;
-					case LOCATION_ON:
-						if (target instanceof GroupNode) {
-							((GroupNode) target).getControl().addChild(node);
-						} else {
-							group.getControl().addChild(i, node);
-						}
-						break;
-					default:
-						break;
-					}
-				}
-
-				getCanvas().getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
-				getCanvas().getSelectionBehavior().setSelection(new StructuredSelection(nodes));
-				return true;
-			}
-		});
+		viewer.addDropSupport(operations, transfers, new OutilineDropAdapter(this));
 
 	}
 
@@ -467,6 +373,10 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 
 	public ObjectCanvas getCanvas() {
 		return _canvas;
+	}
+
+	public TreeViewer getOutline() {
+		return _outlineTree.getViewer();
 	}
 
 	@Override

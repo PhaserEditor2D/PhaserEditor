@@ -74,7 +74,7 @@ public class SelectionNode extends Pane {
 		_rect = rect;
 		_canvas = canvas;
 
-		updateZoomAndPan();
+		updateFromZoomAndPanVariables();
 
 		BaseObjectModel model = inode.getModel();
 
@@ -102,7 +102,7 @@ public class SelectionNode extends Pane {
 		return _canvas;
 	}
 
-	public void updateZoomAndPan() {
+	public void updateFromZoomAndPanVariables() {
 		double scale = _canvas.getZoomBehavior().getScale();
 		Point2D translate = _canvas.getZoomBehavior().getTranslate();
 		double x = translate.getX() + _rect.getMinX() * scale;

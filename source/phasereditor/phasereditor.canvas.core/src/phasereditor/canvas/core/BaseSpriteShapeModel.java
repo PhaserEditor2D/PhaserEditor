@@ -30,6 +30,7 @@ import org.json.JSONObject;
 public abstract class BaseSpriteShapeModel extends BaseObjectModel {
 	private double _anchorX;
 	private double _anchorY;
+	private String _tint;
 
 	public BaseSpriteShapeModel(GroupModel parent, String typeName, JSONObject obj) {
 		this(parent, typeName);
@@ -42,6 +43,7 @@ public abstract class BaseSpriteShapeModel extends BaseObjectModel {
 		super(parent, typeName);
 		_anchorX = 0;
 		_anchorY = 0;
+		_tint = null;
 	}
 	
 	@Override
@@ -64,12 +66,21 @@ public abstract class BaseSpriteShapeModel extends BaseObjectModel {
 	public void setAnchorY(double anchorY) {
 		_anchorY = anchorY;
 	}
+	
+	public String getTint() {
+		return _tint;
+	}
+	
+	public void setTint(String tint) {
+		_tint = tint;
+	}
 
 	@Override
 	protected void writeInfo(JSONObject jsonInfo) {
 		super.writeInfo(jsonInfo);
 		jsonInfo.put("anchor.x", _anchorX);
 		jsonInfo.put("anchor.y", _anchorY);
+		jsonInfo.put("tint", _tint);
 	}
 
 	@Override
@@ -77,5 +88,6 @@ public abstract class BaseSpriteShapeModel extends BaseObjectModel {
 		super.readInfo(jsonInfo);
 		_anchorX = jsonInfo.optDouble("anchor.x", 0);
 		_anchorY = jsonInfo.optDouble("anchor.y", 0);
+		_tint = jsonInfo.optString("tint", null);
 	}
 }

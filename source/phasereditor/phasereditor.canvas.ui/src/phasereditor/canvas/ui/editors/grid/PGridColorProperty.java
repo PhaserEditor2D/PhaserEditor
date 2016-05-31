@@ -21,36 +21,16 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid;
 
-import org.eclipse.jface.viewers.ColumnViewer;
+import org.eclipse.swt.graphics.RGB;
 
 /**
  * @author arian
  *
  */
-public class ValueLabelProvider extends GridLabelProvider {
+public abstract class PGridColorProperty extends PGridProperty<RGB>{
 
-	public ValueLabelProvider(ColumnViewer viewer) {
-		super(viewer);
+	public PGridColorProperty(String name) {
+		super(name);
 	}
-
-	@Override
-	public String getText(Object element) {
-		if (element instanceof PGridSection) {
-			return "(properties)";
-		}
-
-		if (element instanceof PGridColorProperty) {
-			PGridColorProperty prop = (PGridColorProperty) element;
-			if (!prop.isModified()) {
-				return "";
-			}
-		}
-
-		if (element instanceof PGridProperty) {
-			Object value = ((PGridProperty<?>) element).getValue();
-			return value == null ? "" : value.toString();
-		}
-
-		return super.getText(element);
-	}
+	
 }
