@@ -320,7 +320,7 @@ public class SelectionBehavior implements ISelectionProvider {
 				selpane.getChildren().add(new SelectionNode(_canvas, inode, rect));
 			}
 		}
-		
+
 		selpane.requestLayout();
 	}
 
@@ -429,5 +429,9 @@ public class SelectionBehavior implements ISelectionProvider {
 		}
 
 		setSelection(StructuredSelection.EMPTY);
+	}
+
+	public void selectAll() {
+		_canvas.getSelectionBehavior().setSelection(new StructuredSelection(_canvas.getWorldNode().getChildren()));
 	}
 }

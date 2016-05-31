@@ -96,6 +96,10 @@ public class ObjectCanvas extends FXCanvas {
 		_mouseBehavior = new MouseBehavior(this);
 		_paintBehavior = new PaintBehavior(this);
 	}
+	
+	public void selectAll() {
+		_selectionBehavior.selectAll();
+	}
 
 	public PaintBehavior getPaintBehavior() {
 		return _paintBehavior;

@@ -93,6 +93,7 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 
 	public final static String ID = "phasereditor.canvas.ui.editors.canvas";
 	public final static String NODES_CONTEXT_ID = "phasereditor.canvas.ui.nodescontext";
+	protected static final String SCENE_CONTEXT_ID = "phasereditor.canvas.ui.scenecontext";
 
 	private ObjectCanvas _canvas;
 	private WorldModel _model;
@@ -104,7 +105,6 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 	private ToolBarManager _toolBarManager;
 
 	private SashForm _mainSashForm;
-	protected IContextActivation _context;
 
 	public CanvasEditor() {
 	}
@@ -222,24 +222,38 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 		initContexts();
 	}
 
-	/**
-	 * 
-	 */
 	private void initContexts() {
-		FocusListener contextFocusHandler = new FocusListener() {
+		_canvas.addFocusListener(new FocusListener() {
+
+			private IContextActivation _sceneContext;
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				getContextService().deactivateContext(_context);
+				getContextService().deactivateContext(_sceneContext);
 			}
 
 			@Override
 			public void focusGained(FocusEvent e) {
-				_context = getContextService().activateContext(NODES_CONTEXT_ID);
+				_sceneContext = getContextService().activateContext(SCENE_CONTEXT_ID);
+			}
+		});
+
+		FocusListener nodesContextHandler = new FocusListener() {
+
+			private IContextActivation _nodesContext;
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				getContextService().deactivateContext(_nodesContext);
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				_nodesContext = getContextService().activateContext(NODES_CONTEXT_ID);
 			}
 		};
-		_canvas.addFocusListener(contextFocusHandler);
-		_outlineTree.getViewer().getControl().addFocusListener(contextFocusHandler);
+		_canvas.addFocusListener(nodesContextHandler);
+		_outlineTree.getViewer().getControl().addFocusListener(nodesContextHandler);
 	}
 
 	private void initMenus() {

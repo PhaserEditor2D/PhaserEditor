@@ -68,31 +68,37 @@
             <command
                   commandId="phasereditor.canvas.ui.align.left"
                   icon="platform:/plugin/phasereditor.ui/icons/shape_align_left.png"
+                  label="Align Left"
                   style="push">
             </command>
             <command
                   commandId="phasereditor.canvas.ui.align.right"
                   icon="platform:/plugin/phasereditor.ui/icons/shape_align_right.png"
+                  label="Align Right"
                   style="push">
             </command>
             <command
                   commandId="phasereditor.canvas.ui.align.top"
                   icon="platform:/plugin/phasereditor.ui/icons/shape_align_top.png"
+                  label="Align Top"
                   style="push">
             </command>
             <command
                   commandId="phasereditor.canvas.ui.align.bottom"
                   icon="platform:/plugin/phasereditor.ui/icons/shape_align_bottom.png"
+                  label="Align Bottom"
                   style="push">
             </command>
             <command
                   commandId="phasereditor.canvas.ui.align.center"
                   icon="platform:/plugin/phasereditor.ui/icons/shape_align_center.png"
+                  label="Align Center"
                   style="push">
             </command>
             <command
                   commandId="phasereditor.canvas.ui.align.middle"
                   icon="platform:/plugin/phasereditor.ui/icons/shape_align_middle.png"
+                  label="Align Middle"
                   style="push">
             </command>
             
@@ -106,29 +112,43 @@
          <command
                commandId="phasereditor.canvas.ui.makegroup"
                icon="platform:/plugin/phasereditor.ui/icons/shape_group.png"
-               label="Make Group"
+               label="Group Selection"
                style="push">
          </command>
          <command
                commandId="phasereditor.canvas.ui.emptygroup"
                icon="platform:/plugin/phasereditor.ui/icons/shape_square_group.png"
-               label="Make Empty Group"
+               label="Create Empty Group"
                style="push">
          </command>
          <command
                commandId="phasereditor.canvas.ui.ungroup"
+               label="Break Group"
                style="push">
          </command>
          <command
                commandId="phasereditor.canvas.ui.trimGroup"
+               label="Trim Group"
                style="push">
          </command>
          <command
                commandId="phasereditor.canvas.ui.closeGroup"
+               label="Close Group"
                style="push">
          </command>
          <command
                commandId="phasereditor.canvas.ui.openGroup"
+               label="Open Group"
+               style="push">
+         </command>
+         <command
+               commandId="phasereditor.canvas.ui.pick"
+               label="Allow Pick Group"
+               style="push">
+         </command>
+         <command
+               commandId="phasereditor.canvas.ui.nopick"
+               label="Deny Pick Group"
                style="push">
          </command>
          <separator
@@ -149,102 +169,116 @@
       </category>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
+            description="Rise one level the selected node."
             id="phasereditor.canvas.ui.rise"
-            name="Rise">
+            name="Canvas: Rise">
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
+            description="Lower one level the selected node."
             id="phasereditor.canvas.ui.lower"
-            name="Lower">
+            name="Canvas: Lower">
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
+            description="Lower to bottom the selected node."
             id="phasereditor.canvas.ui.lowerBottom"
-            name="Lower To Bottom">
+            name="Canvas: Lower To Bottom">
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
+            description="Rise to top the selected node."
             id="phasereditor.canvas.ui.riseToTop"
-            name="Rise To Top">
+            name="Canvas: Rise To Top">
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
+            description="Make a group with the selected nodes."
             id="phasereditor.canvas.ui.makegroup"
-            name="Make Group">
+            name="Canvas: Make Group">
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
+            description="Make empty group."
             id="phasereditor.canvas.ui.emptygroup"
-            name="Make Empty Group">
+            name="Canvas: Make Empty Group">
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
             id="phasereditor.canvas.ui.escape"
-            name="Escape">
+            name="Canvas: Escape">
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
+            description="Align to left the selected nodes."
             id="phasereditor.canvas.ui.align.left"
-            name="Align Left">
+            name="Canvas: Align Left">
       </command>
      <command
-            categoryId="phasereditor.canvas.ui.editor.category"
-            id="phasereditor.canvas.ui.align.top"
-            name="Align Top">
+           categoryId="phasereditor.canvas.ui.editor.category"
+           description="Align to top the selected nodes."
+           id="phasereditor.canvas.ui.align.top"
+           name="Canvas: Align Top">
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
+            description="Align to right the selected nodes."
             id="phasereditor.canvas.ui.align.right"
-            name="Align Right">
+            name="Canvas: Align Right">
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
+            description="Align to bottom the selected nodes."
             id="phasereditor.canvas.ui.align.bottom"
-            name="Align Bottom">
+            name="Canvas: Align Bottom">
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
+            description="Align to bottom the selected nodes."
             id="phasereditor.canvas.ui.align.center"
-            name="Align Center">
+            name="Canvas: Align Center">
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
+            description="Align to middle the selected nodes."
             id="phasereditor.canvas.ui.align.middle"
-            name="Align Middle">
+            name="Canvas: Align Middle">
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
             description="Remove the white space from the left and top of the groups."
             id="phasereditor.canvas.ui.trimGroup"
-            name="Trim Group">
+            name="Canvas: Trim Group">
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
-            description="Remove children from group."
+            description="break up a group."
             id="phasereditor.canvas.ui.ungroup"
-            name="Un-Group">
+            name="Canvas: Break Group">
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
+            description="Open a group for selection."
             id="phasereditor.canvas.ui.openGroup"
-            name="Open Group">
+            name="Canvas: Open Group">
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
+            description="close a group for selection."
             id="phasereditor.canvas.ui.closeGroup"
-            name="Close Group">
+            name="Canvas: Close Group">
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
             description="Allow a node to be picked by the mouse."
             id="phasereditor.canvas.ui.pick"
-            name="Allow Pick">
+            name="Canvas: Allow Pick">
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
-            description="Allow a node to be picked by the mouse."
+            description="Deny a node to be picked by the mouse."
             id="phasereditor.canvas.ui.nopick"
-            name="Allow Pick">
+            name="Canvas: Allow Pick">
       </command>
       
    </extension>
@@ -555,10 +589,14 @@
    <extension
          point="org.eclipse.ui.contexts">
       <context
-            description="A context where nodes can be accessed, like canvas and the canvas outline."
+            description="In scene and outline."
             id="phasereditor.canvas.ui.nodescontext"
             name="Nodes Area Context"
             parentId="org.eclipse.ui.contexts.window">
+      </context>
+      <context
+            id="phasereditor.canvas.ui.scenecontext"
+            name="In scene.">
       </context>
    </extension>
 
