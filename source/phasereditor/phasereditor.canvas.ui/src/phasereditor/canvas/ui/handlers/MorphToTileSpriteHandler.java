@@ -52,7 +52,7 @@ public class MorphToTileSpriteHandler extends AbstractHandler {
 		}
 
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
-		editor.getCanvas().getWorldModel().firePropertyChange(WorldModel.PROP_DIRTY);
+		editor.getCanvas().getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
 		editor.getCanvas().getSelectionBehavior().setSelection(new StructuredSelection(newSelection));
 
 		return null;

@@ -85,8 +85,8 @@ public class TileSpriteNode extends Canvas implements ISpriteNode {
 		double w1 = _frame.dst.width * model.getTileScaleX();
 		double h1 = _frame.dst.height * model.getTileScaleY();
 
-		for (double x = 0; x < getWidth() * 3; x += w1) {
-			for (double y = 0; y < getHeight() * 3; y += h1) {
+		for (double x = 0; x1 + x < getWidth() * 3; x += w1) {
+			for (double y = 0; y1 + y < getHeight() * 3; y += h1) {
 				g2.drawImage(_image, x0, y0, w0, h0, x1 + x, y1 + y, w1, h1);
 			}
 		}
