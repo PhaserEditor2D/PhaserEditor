@@ -33,7 +33,7 @@ import phasereditor.canvas.ui.editors.ObjectCanvas;
  * @author arian
  *
  */
-public class ObjectFactory {
+public class CanvasObjectFactory {
 	public static BaseObjectControl<?> createObjectControl(ObjectCanvas canvas, BaseObjectModel model) {
 		if (model instanceof GroupModel) {
 			return new GroupControl(canvas, (GroupModel) model);

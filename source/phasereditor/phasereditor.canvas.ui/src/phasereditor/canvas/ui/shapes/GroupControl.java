@@ -47,7 +47,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 	protected final IObjectNode createNode() {
 		GroupNode group = createGroupNode();
 		for (BaseObjectModel child : getModel().getChildren()) {
-			BaseObjectControl<?> control = ObjectFactory.createObjectControl(getCanvas(), child);
+			BaseObjectControl<?> control = CanvasObjectFactory.createObjectControl(getCanvas(), child);
 			group.getChildren().add(control.getNode());
 		}
 		return group;

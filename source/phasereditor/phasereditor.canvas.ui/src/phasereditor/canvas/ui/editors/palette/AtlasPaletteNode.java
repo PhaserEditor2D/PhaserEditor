@@ -19,34 +19,30 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.core;
+package phasereditor.canvas.ui.editors.palette;
 
-import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
+import javafx.geometry.Rectangle2D;
 import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.IAssetKey;
-import phasereditor.assetpack.core.ImageAssetModel;
-import phasereditor.assetpack.core.SpritesheetAssetModel;
-import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
+import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
 
 /**
  * @author arian
  *
  */
-public class ObjectModelFactory {
-	public static BaseSpriteModel createModel(GroupModel parent, IAssetKey obj) {
-		if (obj instanceof ImageAssetModel) {
-			return new ImageSpriteModel(parent, (ImageAssetModel) obj);
-		} else if (obj instanceof SpritesheetAssetModel) {
-			return new SpritesheetSpriteModel(parent, (SpritesheetAssetModel) obj);
-		} else if (obj instanceof SpritesheetAssetModel.FrameModel) {
-			FrameModel frame = (SpritesheetAssetModel.FrameModel) obj;
-			SpritesheetAssetModel asset = frame.getAsset();
-			SpritesheetSpriteModel model = new SpritesheetSpriteModel(parent, asset);
-			model.setFrameIndex(frame.getIndex());
-			return model;
-		} else if (obj instanceof AtlasAssetModel.FrameItem) {
-			return new AtlasSpriteModel(parent, (FrameItem) obj);
-		}
-		return null;
+public class AtlasPaletteNode extends BasePaletteNode {
+
+	private FrameItem _frame;
+
+	public AtlasPaletteNode(AtlasAssetModel.FrameItem frame) {
+		super(frame.getAsset().getTextureFile());
+		_frame = frame;
 	}
+
+	@Override
+	public void configure(double size) {
+		getImageView().setViewport(
+				new Rectangle2D(_frame.getFrameX(), _frame.getFrameY(), _frame.getFrameW(), _frame.getFrameH()));
+		super.configure(size);
+	}
+
 }

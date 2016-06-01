@@ -32,18 +32,17 @@ import org.eclipse.jface.viewers.StructuredSelection;
 
 import javafx.scene.Node;
 import javafx.scene.input.DragEvent;
-import phasereditor.assetpack.core.AssetModel;
-import phasereditor.assetpack.core.IAssetElementModel;
+import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.ObjectModelFactory;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
+import phasereditor.canvas.ui.shapes.CanvasObjectFactory;
 import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
-import phasereditor.canvas.ui.shapes.ObjectFactory;
 
 /**
  * @author arian
@@ -61,14 +60,14 @@ public class CreateBehavior {
 		List<Node> _newnodes = new ArrayList<>();
 		if (elems.length == 1) {
 			Object elem = elems[0];
-			if (elem instanceof IAssetElementModel || elem instanceof AssetModel) {
+			if (elem instanceof IAssetKey) {
 				// TODO: for now get as parent the world
 				WorldModel worldModel = _canvas.getWorldModel();
-				BaseSpriteModel model = ObjectModelFactory.createModel(worldModel, elem);
+				BaseSpriteModel model = ObjectModelFactory.createModel(worldModel, (IAssetKey) elem);
 				if (model != null) {
 					String newname = worldModel.createName(model.getEditorName());
 					model.setEditorName(newname);
-					BaseObjectControl<?> control = ObjectFactory.createObjectControl(_canvas, model);
+					BaseObjectControl<?> control = CanvasObjectFactory.createObjectControl(_canvas, model);
 					if (control != null) {
 						_newnodes.add(control.getNode());
 						dropShape(control, event);
