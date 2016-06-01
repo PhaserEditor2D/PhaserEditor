@@ -32,19 +32,19 @@ import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
  *
  */
 public class ObjectModelFactory {
-	public static BaseSpriteShapeModel createModel(GroupModel parent, Object obj) {
+	public static BaseSpriteModel createModel(GroupModel parent, Object obj) {
 		if (obj instanceof ImageAssetModel) {
-			return new ImageSpriteShapeModel(parent, (ImageAssetModel) obj);
+			return new ImageSpriteModel(parent, (ImageAssetModel) obj);
 		} else if (obj instanceof SpritesheetAssetModel) {
-			return new SpritesheetShapeModel(parent, (SpritesheetAssetModel) obj);
+			return new SpritesheetSpriteModel(parent, (SpritesheetAssetModel) obj);
 		} else if (obj instanceof SpritesheetAssetModel.FrameModel) {
 			FrameModel frame = (SpritesheetAssetModel.FrameModel) obj;
 			SpritesheetAssetModel asset = frame.getAsset();
-			SpritesheetShapeModel model = new SpritesheetShapeModel(parent, asset);
+			SpritesheetSpriteModel model = new SpritesheetSpriteModel(parent, asset);
 			model.setFrameIndex(frame.getIndex());
 			return model;
 		} else if (obj instanceof AtlasAssetModel.FrameItem) {
-			return new AtlasSpriteShapeModel(parent, (FrameItem) obj);
+			return new AtlasSpriteModel(parent, (FrameItem) obj);
 		}
 		return null;
 	}

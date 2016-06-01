@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2016 Arian Fornaris
+// Copyright (c) 2015, 2016 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -19,49 +19,37 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.core;
+package phasereditor.canvas.ui.shapes;
 
-import org.json.JSONObject;
+import org.eclipse.core.resources.IFile;
 
-import phasereditor.assetpack.core.AssetModel;
-import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.assetpack.core.AssetType;
+import javafx.scene.image.ImageView;
+import phasereditor.canvas.core.BaseObjectModel;
 
 /**
  * @author arian
  *
  */
-public class AssetShapeModel<T extends AssetModel> extends BaseSpriteShapeModel {
-	private T _asset;
+public class ImageSpriteNode extends ImageView implements ISpriteNode {
+	private BaseObjectControl<?> _control;
 
-	@SuppressWarnings("unchecked")
-	public AssetShapeModel(GroupModel parent, String typeName, JSONObject obj) {
-		super(parent, typeName, obj);
-		_asset = (T) findAsset(obj);
-	}
-
-	public AssetShapeModel(GroupModel parent, T asset, String typeName) {
-		super(parent, typeName);
-		_asset = asset;
-		setEditorName(asset.getKey());
-	}
-
-	public T getAsset() {
-		return _asset;
-	}
-
-	public void setAsset(T asset) {
-		_asset = asset;
-	}
-
-	public AssetType getAssetType() {
-		return _asset.getType();
+	ImageSpriteNode(BaseObjectControl<?> control, IFile imageFile) {
+		super("file:" + imageFile.getLocation().makeAbsolute().toPortableString());
+		_control = control;
 	}
 
 	@Override
-	protected void writeMetadata(JSONObject obj) {
-		super.writeMetadata(obj);
-		// TODO: change it to use the UUID of asset packs!
-		obj.put("asset-ref", AssetPackCore.getAssetJSONReference(_asset));
+	public BaseObjectControl<?> getControl() {
+		return _control;
+	}
+
+	@Override
+	public BaseObjectModel getModel() {
+		return _control.getModel();
+	}
+
+	@Override
+	public ImageSpriteNode getNode() {
+		return this;
 	}
 }

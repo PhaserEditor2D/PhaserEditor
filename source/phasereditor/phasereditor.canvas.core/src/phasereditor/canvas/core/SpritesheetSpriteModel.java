@@ -23,71 +23,44 @@ package phasereditor.canvas.core;
 
 import org.json.JSONObject;
 
+import phasereditor.assetpack.core.SpritesheetAssetModel;
+
 /**
  * @author arian
  *
  */
-public abstract class BaseSpriteShapeModel extends BaseObjectModel {
-	private double _anchorX;
-	private double _anchorY;
-	private String _tint;
+public class SpritesheetSpriteModel extends AssetSpriteModel<SpritesheetAssetModel> {
 
-	public BaseSpriteShapeModel(GroupModel parent, String typeName, JSONObject obj) {
-		this(parent, typeName);
-		JSONObject jsonInfo = obj.getJSONObject("info");
-		readMetadata(obj);
-		readInfo(jsonInfo);
+	public static final String TYPE_NAME = "spritesheet";
+
+	private int _frameIndex;
+
+	public SpritesheetSpriteModel(GroupModel parent, SpritesheetAssetModel asset) {
+		super(parent, asset, TYPE_NAME);
+		_frameIndex = 0;
 	}
 
-	public BaseSpriteShapeModel(GroupModel parent, String typeName) {
-		super(parent, typeName);
-		_anchorX = 0;
-		_anchorY = 0;
-		_tint = null;
+	public SpritesheetSpriteModel(GroupModel parent, JSONObject obj) {
+		super(parent, TYPE_NAME, obj);
 	}
 	
-	@Override
-	public String getLabel() {
-		return "[spr] " + getEditorName();
+	public int getFrameIndex() {
+		return _frameIndex;
 	}
 
-	public double getAnchorX() {
-		return _anchorX;
-	}
-
-	public void setAnchorX(double anchorX) {
-		_anchorX = anchorX;
-	}
-
-	public double getAnchorY() {
-		return _anchorY;
-	}
-
-	public void setAnchorY(double anchorY) {
-		_anchorY = anchorY;
-	}
-	
-	public String getTint() {
-		return _tint;
-	}
-	
-	public void setTint(String tint) {
-		_tint = tint;
+	public void setFrameIndex(int frameIndex) {
+		_frameIndex = frameIndex;
 	}
 
 	@Override
 	protected void writeInfo(JSONObject jsonInfo) {
 		super.writeInfo(jsonInfo);
-		jsonInfo.put("anchor.x", _anchorX);
-		jsonInfo.put("anchor.y", _anchorY);
-		jsonInfo.put("tint", _tint);
+		jsonInfo.put("frameIndex", _frameIndex);
 	}
 
 	@Override
 	protected void readInfo(JSONObject jsonInfo) {
 		super.readInfo(jsonInfo);
-		_anchorX = jsonInfo.optDouble("anchor.x", 0);
-		_anchorY = jsonInfo.optDouble("anchor.y", 0);
-		_tint = jsonInfo.optString("tint", null);
+		_frameIndex = jsonInfo.getInt("frameIndex");
 	}
 }

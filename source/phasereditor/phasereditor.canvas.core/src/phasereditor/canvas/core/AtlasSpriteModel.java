@@ -19,30 +19,48 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.shapes;
+package phasereditor.canvas.core;
 
-import phasereditor.canvas.core.AtlasSpriteShapeModel;
-import phasereditor.canvas.core.BaseObjectModel;
-import phasereditor.canvas.core.GroupModel;
-import phasereditor.canvas.core.ImageSpriteShapeModel;
-import phasereditor.canvas.core.SpritesheetShapeModel;
-import phasereditor.canvas.ui.editors.ObjectCanvas;
+import org.json.JSONObject;
+
+import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
 
 /**
  * @author arian
  *
  */
-public class ShapeFactory {
-	public static BaseObjectControl<?> createShapeControl(ObjectCanvas canvas, BaseObjectModel model) {
-		if (model instanceof GroupModel) {
-			return new GroupControl(canvas, (GroupModel) model);
-		} else if (model instanceof ImageSpriteShapeModel) {
-			return new ImageSpriteControl(canvas, (ImageSpriteShapeModel) model);
-		} else if (model instanceof SpritesheetShapeModel) {
-			return new SpritesheetControl(canvas, (SpritesheetShapeModel) model);
-		} else if (model instanceof AtlasSpriteShapeModel) {
-			return new AtlasSpriteControl(canvas, (AtlasSpriteShapeModel) model);
-		}
-		return null;
+public class AtlasSpriteModel extends BaseSpriteModel implements IAssetFrameShapeModel {
+	public static final String TYPE_NAME = "atlas-sprite";
+	private FrameItem _frame;
+
+	public AtlasSpriteModel(GroupModel parent, FrameItem frame) {
+		super(parent, TYPE_NAME);
+		_frame = frame;
+		setEditorName(frame.getName());
+	}
+
+	public AtlasSpriteModel(GroupModel parent, JSONObject obj) {
+		super(parent, TYPE_NAME, obj);
+	}
+
+	@Override
+	protected void writeMetadata(JSONObject obj) {
+		super.writeMetadata(obj);
+		JSONObject assetRef = AssetPackCore.getAssetJSONReference(_frame);
+		obj.put("asset-ref", assetRef);
+	}
+
+	@Override
+	protected void readMetadata(JSONObject obj) {
+		super.readMetadata(obj);
+
+		JSONObject ref = obj.getJSONObject("asset-ref");
+		_frame = (FrameItem) AssetPackCore.findAssetElement(ref);
+	}
+
+	@Override
+	public FrameItem getFrame() {
+		return _frame;
 	}
 }

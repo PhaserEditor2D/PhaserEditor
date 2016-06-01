@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2016 Arian Fornaris
+// Copyright (c) 2015, 2016 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -19,48 +19,25 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.core;
+package phasereditor.canvas.ui.shapes;
 
-import org.json.JSONObject;
-
-import phasereditor.assetpack.core.SpritesheetAssetModel;
+import javafx.geometry.Bounds;
+import javafx.scene.Node;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 
 /**
  * @author arian
  *
  */
-public class SpritesheetShapeModel extends AssetShapeModel<SpritesheetAssetModel> {
-
-	public static final String TYPE_NAME = "spritesheet";
-
-	private int _frameIndex;
-
-	public SpritesheetShapeModel(GroupModel parent, SpritesheetAssetModel asset) {
-		super(parent, asset, TYPE_NAME);
-		_frameIndex = 0;
-	}
-
-	public SpritesheetShapeModel(GroupModel parent, JSONObject obj) {
-		super(parent, TYPE_NAME, obj);
-	}
-	
-	public int getFrameIndex() {
-		return _frameIndex;
-	}
-
-	public void setFrameIndex(int frameIndex) {
-		_frameIndex = frameIndex;
-	}
-
+public interface ISpriteNode extends IObjectNode {
 	@Override
-	protected void writeInfo(JSONObject jsonInfo) {
-		super.writeInfo(jsonInfo);
-		jsonInfo.put("frameIndex", _frameIndex);
-	}
-
-	@Override
-	protected void readInfo(JSONObject jsonInfo) {
-		super.readInfo(jsonInfo);
-		_frameIndex = jsonInfo.getInt("frameIndex");
+	public default Shape computeShape() {
+		Node node = getNode();
+		Bounds b = node.getBoundsInLocal();
+		b = node.localToScene(b);
+		Rectangle shape = new Rectangle(b.getMinX(), b.getMinY(), b.getWidth(), b.getHeight());
+		shape.getTransforms().add(node.getLocalToSceneTransform());
+		return shape;
 	}
 }

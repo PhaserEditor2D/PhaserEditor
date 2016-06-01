@@ -144,14 +144,14 @@ public class AtlasAssetModel extends AssetModel {
 	}
 
 	public static class FrameItem extends AtlasFrame implements IAssetElementModel {
-		private final AssetModel _asset;
+		private final AtlasAssetModel _asset;
 
-		public FrameItem(AssetModel asset) {
+		public FrameItem(AtlasAssetModel asset) {
 			_asset = asset;
 		}
 
 		@Override
-		public AssetModel getAsset() {
+		public AtlasAssetModel getAsset() {
 			return _asset;
 		}
 

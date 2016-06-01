@@ -30,7 +30,7 @@ import javafx.scene.image.Image;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetPackUI.FrameData;
-import phasereditor.canvas.core.SpritesheetShapeModel;
+import phasereditor.canvas.core.SpritesheetSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
@@ -40,21 +40,21 @@ import phasereditor.canvas.ui.editors.grid.PGridSection;
  * @author arian
  *
  */
-public class SpritesheetControl extends BaseSpriteShapeControl<SpritesheetShapeModel> {
+public class SpritesheetControl extends BaseSpriteControl<SpritesheetSpriteModel> {
 
 	private List<FrameData> _frames;
 	private PGridFrameProperty _frame_property;
 
-	public SpritesheetControl(ObjectCanvas canvas, SpritesheetShapeModel model) {
+	public SpritesheetControl(ObjectCanvas canvas, SpritesheetSpriteModel model) {
 		super(canvas, model);
 	}
 
 	@Override
-	protected SpriteNode createShapeNode() {
-		SpritesheetShapeModel model = getModel();
+	protected ImageSpriteNode createNode() {
+		SpritesheetSpriteModel model = getModel();
 
-		SpritesheetAssetModel asset = model.getAsset();
-		SpriteNode node = createImageNode(asset.getUrlFile());
+		SpritesheetAssetModel asset = model.getAssetKey();
+		ImageSpriteNode node = createImageNode(asset.getUrlFile());
 
 		Image img = node.getImage();
 		Rectangle src = new Rectangle(0, 0, (int) img.getWidth(), (int) img.getHeight());
@@ -75,8 +75,8 @@ public class SpritesheetControl extends BaseSpriteShapeControl<SpritesheetShapeM
 	}
 
 	@Override
-	public SpriteNode getNode() {
-		return (SpriteNode) super.getNode();
+	public ImageSpriteNode getNode() {
+		return (ImageSpriteNode) super.getNode();
 	}
 
 	@Override
@@ -88,15 +88,15 @@ public class SpritesheetControl extends BaseSpriteShapeControl<SpritesheetShapeM
 
 	@Override
 	public double getTextureWidth() {
-		return getModel().getAsset().getFrameWidth();
+		return getModel().getAssetKey().getFrameWidth();
 	}
 
 	@Override
 	public double getTextureHeight() {
-		return getModel().getAsset().getFrameHeight();
+		return getModel().getAssetKey().getFrameHeight();
 	}
 
-	private void updateViewport(SpriteNode node) {
+	private void updateViewport(ImageSpriteNode node) {
 		FrameData frame = getCurrentFrame();
 		Rectangle src = frame.src;
 		node.setViewport(new Rectangle2D(src.x, src.y, src.width, src.height));

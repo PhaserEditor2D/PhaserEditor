@@ -110,14 +110,17 @@ public class GroupModel extends BaseObjectModel {
 				JSONObject jsonModel = modelList.getJSONObject(i);
 				String type = jsonModel.getString("type");
 				switch (type) {
-				case ImageSpriteShapeModel.TYPE_NAME:
-					model = new ImageSpriteShapeModel(this, jsonModel);
+				case ImageSpriteModel.TYPE_NAME:
+					model = new ImageSpriteModel(this, jsonModel);
 					break;
-				case SpritesheetShapeModel.TYPE_NAME:
-					model = new SpritesheetShapeModel(this, jsonModel);
+				case SpritesheetSpriteModel.TYPE_NAME:
+					model = new SpritesheetSpriteModel(this, jsonModel);
 					break;
-				case AtlasSpriteShapeModel.TYPE_NAME:
-					model = new AtlasSpriteShapeModel(this, jsonModel);
+				case AtlasSpriteModel.TYPE_NAME:
+					model = new AtlasSpriteModel(this, jsonModel);
+					break;
+				case TileSpriteModel.TYPE_NAME:
+					model = new TileSpriteModel(this, jsonModel);
 					break;
 				case GroupModel.TYPE_NAME:
 					model = new GroupModel(this, jsonModel);

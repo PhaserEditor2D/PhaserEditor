@@ -27,6 +27,7 @@ import org.eclipse.ui.PlatformUI;
 
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.image.ImageView;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import phasereditor.canvas.core.BaseObjectModel;
@@ -62,9 +63,10 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		_canvas = canvas;
 		_model = model;
 
-		_inode = createShapeNode();
+		_inode = createNode();
+		
 		_node = _inode.getNode();
-
+		
 		updateFromModel();
 	}
 
@@ -374,7 +376,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		return _canvas;
 	}
 
-	protected abstract IObjectNode createShapeNode();
+	protected abstract IObjectNode createNode();
 
 	public Node getNode() {
 		return _node;
@@ -388,9 +390,18 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		getGroup().getControl().removeChild(this._inode);
 	}
 
-	protected SpriteNode createImageNode(IFile file) {
+	protected ImageSpriteNode createImageNode(IFile file) {
 		try {
-			return new SpriteNode(this, file);
+			return new ImageSpriteNode(this, file);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected static ImageView createImageView(IFile file) {
+		try {
+			return new ImageView("file:" + file.getLocation().makeAbsolute().toPortableString());
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);

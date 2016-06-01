@@ -63,6 +63,7 @@ public class OutlineContentProvider implements ITreeContentProvider {
 
 	@Override
 	public Object[] getChildren(Object parent) {
+		
 		if (parent instanceof ObjectCanvas) {
 			return getChildren(((ObjectCanvas) parent).getWorldNode());
 		}
@@ -80,6 +81,7 @@ public class OutlineContentProvider implements ITreeContentProvider {
 			
 			return list.toArray();
 		}
+		
 		return EMPTY;
 	}
 

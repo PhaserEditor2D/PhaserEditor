@@ -49,6 +49,7 @@ import org.eclipse.ui.part.ViewPart;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackCore.IPacksChangeListener;
 import phasereditor.assetpack.core.AssetPackCore.PackDelta;
+import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.FilteredTree2;
@@ -165,7 +166,7 @@ public class AssetExplorer extends ViewPart {
 				Object[] elems = sel.toArray();
 				if (elems.length == 1) {
 					Object elem = elems[0];
-					event.data = AssetPackCore.getAssetStringReference(elem);
+					event.data = AssetPackCore.getAssetStringReference((IAssetKey) elem);
 				}
 			}
 		});

@@ -23,47 +23,50 @@ package phasereditor.canvas.ui.shapes;
 
 import org.eclipse.core.resources.IFile;
 
-import javafx.geometry.Bounds;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.image.ImageView;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
-import phasereditor.canvas.core.BaseObjectModel;
+import javafx.scene.layout.Pane;
+import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
+import phasereditor.canvas.core.AtlasSpriteModel;
 
 /**
  * @author arian
  *
  */
-public class SpriteNode extends ImageView implements IObjectNode {
-	private BaseObjectControl<?> _control;
+public class AtlasSpriteNode extends Pane implements ISpriteNode {
 
-	SpriteNode(BaseObjectControl<?> control, IFile imageFile) {
-		super("file:" + imageFile.getLocation().makeAbsolute().toPortableString());
+	private AtlasSpriteControl _control;
+	private ImageView _image;
+
+	public AtlasSpriteNode(AtlasSpriteControl control, IFile imageFile) {
 		_control = control;
-		setPickOnBounds(false);
+
+		FrameItem frame = control.getModel().getFrame();
+
+		_image = new ImageView("file:" + imageFile.getLocation().makeAbsolute().toPortableString());
+		
+		_image.relocate(frame.getSpriteX(), frame.getSpriteY());
+		_image.setViewport(new Rectangle2D(frame.getFrameX(), frame.getFrameY(), frame.getFrameW(), frame.getFrameH()));
+
+		setMaxSize(frame.getSourceW(), frame.getSourceH());
+		setMinSize(frame.getSourceW(), frame.getSourceH());
+		
+		getChildren().add(_image);
 	}
 
 	@Override
-	public BaseObjectControl<?> getControl() {
-		return _control;
-	}
-
-	@Override
-	public BaseObjectModel getModel() {
+	public AtlasSpriteModel getModel() {
 		return _control.getModel();
 	}
 
 	@Override
-	public SpriteNode getNode() {
-		return this;
+	public AtlasSpriteControl getControl() {
+		return _control;
 	}
 
 	@Override
-	public Shape computeShape() {
-		Bounds b = getBoundsInLocal();
-		b = localToScene(b);
-		Rectangle shape = new Rectangle(b.getMinX(), b.getMinY(), b.getWidth(), b.getHeight());
-		shape.getTransforms().add(getLocalToSceneTransform());
-		return shape;
+	public Node getNode() {
+		return this;
 	}
-
 }

@@ -21,48 +21,32 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
-import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
 import phasereditor.canvas.core.AtlasSpriteModel;
+import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.GroupModel;
+import phasereditor.canvas.core.ImageSpriteModel;
+import phasereditor.canvas.core.SpritesheetSpriteModel;
+import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 
 /**
  * @author arian
  *
  */
-public class AtlasSpriteControl extends BaseSpriteControl<AtlasSpriteModel> {
-
-	private FrameItem _frame;
-
-	public AtlasSpriteControl(ObjectCanvas canvas, AtlasSpriteModel model) {
-		super(canvas, model);
-	}
-	
-	@Override
-	public AtlasSpriteNode getNode() {
-		return (AtlasSpriteNode) super.getNode();
-	}
-	
-
-	@Override
-	protected ISpriteNode createNode() {
-
-		_frame = getModel().getFrame();
-
-		AtlasAssetModel asset = _frame.getAsset();
-
-		AtlasSpriteNode node = new AtlasSpriteNode(this, asset.getTextureFile());
-
-		return node;
-	}
-
-	@Override
-	public double getTextureWidth() {
-		return _frame.getSourceW();
-	}
-
-	@Override
-	public double getTextureHeight() {
-		return _frame.getSourceH();
+public class ObjectFactory {
+	public static BaseObjectControl<?> createObjectControl(ObjectCanvas canvas, BaseObjectModel model) {
+		if (model instanceof GroupModel) {
+			return new GroupControl(canvas, (GroupModel) model);
+		} else if (model instanceof ImageSpriteModel) {
+			return new ImageSpriteControl(canvas, (ImageSpriteModel) model);
+		} else if (model instanceof SpritesheetSpriteModel) {
+			return new SpritesheetControl(canvas, (SpritesheetSpriteModel) model);
+		} else if (model instanceof AtlasSpriteModel) {
+			AtlasSpriteControl control = new AtlasSpriteControl(canvas, (AtlasSpriteModel) model);
+			return control;
+		} else if (model instanceof TileSpriteModel) {
+			return new TileSpriteControl(canvas, (TileSpriteModel) model);
+		}
+		return null;
 	}
 }

@@ -40,6 +40,7 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -380,6 +381,7 @@ public class AssetPackUI {
 	public static class FrameData {
 		public Rectangle src;
 		public Rectangle dst;
+		public Point srcSize;
 	}
 
 	public static List<FrameData> generateSpriteSheetRects(SpritesheetAssetModel s, Rectangle src, Rectangle dst) {

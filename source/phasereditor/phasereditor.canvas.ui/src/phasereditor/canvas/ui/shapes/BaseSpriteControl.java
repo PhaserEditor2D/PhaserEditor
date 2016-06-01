@@ -24,13 +24,14 @@ package phasereditor.canvas.ui.shapes;
 import org.eclipse.swt.graphics.RGB;
 
 import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.effect.Blend;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.ColorInput;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
-import phasereditor.canvas.core.BaseSpriteShapeModel;
+import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridColorProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
@@ -41,13 +42,13 @@ import phasereditor.canvas.ui.editors.grid.PGridSection;
  * @author arian
  *
  */
-public abstract class BaseSpriteShapeControl<T extends BaseSpriteShapeModel> extends BaseObjectControl<T> {
+public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseObjectControl<T> {
 
 	private PGridNumberProperty _anchor_x_property;
 	private PGridNumberProperty _anchor_y_property;
 	private PGridColorProperty _tint_property;
 
-	public BaseSpriteShapeControl(ObjectCanvas canvas, T model) {
+	public BaseSpriteControl(ObjectCanvas canvas, T model) {
 		super(canvas, model);
 	}
 
@@ -74,7 +75,7 @@ public abstract class BaseSpriteShapeControl<T extends BaseSpriteShapeModel> ext
 	}
 
 	protected void updateTint() {
-		SpriteNode node = (SpriteNode) getNode();
+		Node node = getNode();
 
 		String tint = getModel().getTint();
 

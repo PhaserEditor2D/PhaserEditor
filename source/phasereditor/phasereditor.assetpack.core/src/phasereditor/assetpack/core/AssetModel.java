@@ -47,7 +47,7 @@ import phasereditor.inspect.core.jsdoc.PhaserMethod;
 import phasereditor.inspect.core.jsdoc.PhaserType;
 import phasereditor.inspect.core.jsdoc.PhaserVariable;
 
-public abstract class AssetModel implements IAdaptable {
+public abstract class AssetModel implements IAssetKey, IAdaptable {
 	private static Map<AssetType, PhaserMethod> _methodMap = new HashMap<>();
 
 	static {
@@ -59,6 +59,11 @@ public abstract class AssetModel implements IAdaptable {
 			PhaserMethod method = (PhaserMethod) map.get(assetType.name());
 			_methodMap.put(assetType, method);
 		}
+	}
+	
+	@Override
+	public AssetModel getAsset() {
+		return this;
 	}
 
 	public static String getHelp(AssetType type) throws JSONException {
@@ -110,6 +115,7 @@ public abstract class AssetModel implements IAdaptable {
 		return AssetType.valueOf(definition.getString("type"));
 	}
 
+	@Override
 	public String getKey() {
 		return _key;
 	}

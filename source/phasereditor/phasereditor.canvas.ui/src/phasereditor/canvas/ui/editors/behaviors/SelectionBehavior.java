@@ -40,7 +40,6 @@ import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
@@ -48,7 +47,7 @@ import phasereditor.canvas.ui.editors.SelectionBoxNode;
 import phasereditor.canvas.ui.editors.SelectionNode;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
-import phasereditor.canvas.ui.shapes.SpriteNode;
+import phasereditor.canvas.ui.shapes.ISpriteNode;
 
 /**
  * @author arian
@@ -75,7 +74,11 @@ public class SelectionBehavior implements ISelectionProvider {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				if (!event.getSelection().isEmpty()) {
-					setSelection_private(event.getSelection());
+					try {
+						setSelection_private(event.getSelection());
+					} catch (Exception e) {
+						throw e;
+					}
 				}
 			}
 		});
@@ -88,8 +91,8 @@ public class SelectionBehavior implements ISelectionProvider {
 			}
 		}
 
-		if (test instanceof Parent) {
-			ObservableList<Node> list = ((Parent) test).getChildrenUnmodifiable();
+		if (test instanceof GroupNode) {
+			ObservableList<Node> list = ((GroupNode) test).getChildren();
 			for (int i = list.size() - 1; i >= 0; i--) {
 				Node child = list.get(i);
 				Node result = pickNode(child, sceneX, sceneY);
@@ -206,7 +209,7 @@ public class SelectionBehavior implements ISelectionProvider {
 			return closed;
 		}
 
-		if (picked instanceof SpriteNode) {
+		if (picked instanceof ISpriteNode) {
 			return picked;
 		}
 
@@ -369,6 +372,7 @@ public class SelectionBehavior implements ISelectionProvider {
 	private void buildSelectionBounds(Node node, List<Bounds> list) {
 		GroupNode world = _canvas.getWorldNode();
 		Bounds b = localToAncestor(node.getBoundsInLocal(), node, world);
+
 		if (node instanceof GroupNode) {
 			// add the children bounds
 			for (Node child : ((GroupNode) node).getChildren()) {

@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015 Arian Fornaris
+// Copyright (c) 2015, 2016 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -21,23 +21,12 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core;
 
-import org.eclipse.core.runtime.IAdaptable;
-
 /**
- * Some assets have sub-elements like the atlas or the audio sprite. This
- * sub-elements have common features described in this interface.
- * 
  * @author arian
  *
  */
-public interface IAssetElementModel extends IAssetKey, IAdaptable {
-	public String getName();
-
-	@Override
-	public default String getKey() {
-		return getName();
-	}
-
-	@Override
+public interface IAssetKey {
+	public String getKey();
+	
 	public AssetModel getAsset();
 }

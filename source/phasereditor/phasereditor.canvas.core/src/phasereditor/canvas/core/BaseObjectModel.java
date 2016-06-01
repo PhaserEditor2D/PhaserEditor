@@ -23,8 +23,8 @@ package phasereditor.canvas.core;
 
 import org.json.JSONObject;
 
-import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.IAssetKey;
 
 /**
  * Common features to groups and shapes.
@@ -50,9 +50,7 @@ public class BaseObjectModel {
 
 	public BaseObjectModel(GroupModel parent, String typeName, JSONObject obj) {
 		this(parent, typeName);
-		JSONObject jsonInfo = obj.getJSONObject("info");
-		readMetadata(obj);
-		readInfo(jsonInfo);
+		read(obj);
 	}
 
 	public BaseObjectModel(GroupModel parent, String typeName) {
@@ -71,10 +69,10 @@ public class BaseObjectModel {
 		_pivotY = 0;
 	}
 
-	public static Object findAsset(JSONObject jsonModel) {
+	public static IAssetKey findAsset(JSONObject jsonModel) {
 		JSONObject assetRef = jsonModel.getJSONObject("asset-ref");
-		AssetModel asset = (AssetModel) AssetPackCore.findAssetElement(assetRef);
-		return asset;
+		IAssetKey key = (IAssetKey) AssetPackCore.findAssetElement(assetRef);
+		return key;
 	}
 
 	@SuppressWarnings("unused")
@@ -195,6 +193,27 @@ public class BaseObjectModel {
 		_pivotY = pivotY;
 	}
 
+	protected void read(JSONObject obj) {
+		readMetadata(obj);
+		JSONObject jsonInfo = obj.getJSONObject("info");
+		readInfo(jsonInfo);
+	}
+
+	protected void readInfo(JSONObject jsonInfo) {
+		_editorName = jsonInfo.optString("editorName");
+		_editorFactory = jsonInfo.optString("editorFactory");
+		_editorGenerate = jsonInfo.optBoolean("editorGenerate", true);
+		_editorPick = jsonInfo.optBoolean("editorPick", true);
+
+		_x = jsonInfo.optDouble("x", 0);
+		_y = jsonInfo.optDouble("y", 0);
+		_rotation = jsonInfo.optDouble("rotation", 0);
+		_scaleX = jsonInfo.optDouble("scale.x", 1);
+		_scaleY = jsonInfo.optDouble("scale.y", 1);
+		_pivotX = jsonInfo.optDouble("pivot.x", 0);
+		_pivotY = jsonInfo.optDouble("pivot.y", 0);
+	}
+
 	public final void write(JSONObject obj) {
 		writeMetadata(obj);
 
@@ -222,25 +241,16 @@ public class BaseObjectModel {
 		jsonInfo.put("pivot.y", _pivotY);
 	}
 
-	protected void readInfo(JSONObject jsonInfo) {
-		_editorName = jsonInfo.optString("editorName");
-		_editorFactory = jsonInfo.optString("editorFactory");
-		_editorGenerate = jsonInfo.optBoolean("editorGenerate", true);
-		_editorPick = jsonInfo.optBoolean("editorPick", true);
-
-		_x = jsonInfo.optDouble("x", 0);
-		_y = jsonInfo.optDouble("y", 0);
-		_rotation = jsonInfo.optDouble("rotation", 0);
-		_scaleX = jsonInfo.optDouble("scale.x", 1);
-		_scaleY = jsonInfo.optDouble("scale.y", 1);
-		_pivotX = jsonInfo.optDouble("pivot.x", 0);
-		_pivotY = jsonInfo.optDouble("pivot.y", 0);
-	}
-
 	public WorldModel getWorld() {
 		if (this instanceof WorldModel) {
 			return (WorldModel) this;
 		}
 		return _parent.getWorld();
+	}
+
+	public void updateWith(BaseObjectModel model) {
+		JSONObject obj = new JSONObject();
+		model.writeInfo(obj);
+		readInfo(obj);
 	}
 }

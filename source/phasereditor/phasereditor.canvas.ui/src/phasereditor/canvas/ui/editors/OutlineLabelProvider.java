@@ -24,14 +24,14 @@ package phasereditor.canvas.ui.editors;
 import org.eclipse.swt.graphics.Image;
 
 import phasereditor.assetpack.ui.AssetLabelProvider;
-import phasereditor.canvas.core.AssetShapeModel;
+import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.IAssetFrameShapeModel;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
-import phasereditor.canvas.ui.shapes.SpriteNode;
+import phasereditor.canvas.ui.shapes.ISpriteNode;
 import phasereditor.ui.EditorSharedImages;
 
 /**
@@ -47,14 +47,14 @@ public class OutlineLabelProvider extends AssetLabelProvider {
 			return EditorSharedImages.getImage(IMG_SHAPE_GROUP_NODE);
 		}
 
-		if (element instanceof SpriteNode) {
-			SpriteNode node = (SpriteNode) element;
+		if (element instanceof ISpriteNode) {
+			ISpriteNode node = (ISpriteNode) element;
 			BaseObjectControl<?> control = node.getControl();
 			BaseObjectModel model = control.getModel();
 
-			if (model instanceof AssetShapeModel) {
-				AssetShapeModel<?> asstModel = (AssetShapeModel<?>) model;
-				return super.getImage(asstModel.getAsset());
+			if (model instanceof AssetSpriteModel) {
+				AssetSpriteModel<?> asstModel = (AssetSpriteModel<?>) model;
+				return super.getImage(asstModel.getAssetKey());
 			}
 
 			if (model instanceof IAssetFrameShapeModel) {

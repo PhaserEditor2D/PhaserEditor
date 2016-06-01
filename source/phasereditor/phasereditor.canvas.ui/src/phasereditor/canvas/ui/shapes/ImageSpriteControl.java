@@ -21,24 +21,29 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
-import phasereditor.canvas.core.ImageSpriteShapeModel;
+import phasereditor.canvas.core.ImageSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 
 /**
  * @author arian
  *
  */
-public class ImageSpriteControl extends BaseSpriteShapeControl<ImageSpriteShapeModel> {
-	private SpriteNode _spriteNode;
+public class ImageSpriteControl extends BaseSpriteControl<ImageSpriteModel> {
+	private ImageSpriteNode _spriteNode;
 
-	public ImageSpriteControl(ObjectCanvas canvas, ImageSpriteShapeModel model) {
+	public ImageSpriteControl(ObjectCanvas canvas, ImageSpriteModel model) {
 		super(canvas, model);
 	}
 
 	@Override
-	protected SpriteNode createShapeNode() {
-		_spriteNode = createImageNode(getModel().getAsset().getUrlFile());
+	protected ImageSpriteNode createNode() {
+		_spriteNode = createImageNode(getModel().getAssetKey().getUrlFile());
 		return _spriteNode;
+	}
+
+	@Override
+	public ImageSpriteNode getNode() {
+		return (ImageSpriteNode) super.getNode();
 	}
 
 	@Override

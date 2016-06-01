@@ -44,10 +44,10 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 	}
 
 	@Override
-	protected final IObjectNode createShapeNode() {
+	protected final IObjectNode createNode() {
 		GroupNode group = createGroupNode();
 		for (BaseObjectModel child : getModel().getChildren()) {
-			BaseObjectControl<?> control = ShapeFactory.createShapeControl(getCanvas(), child);
+			BaseObjectControl<?> control = ObjectFactory.createObjectControl(getCanvas(), child);
 			group.getChildren().add(control.getNode());
 		}
 		return group;
@@ -216,7 +216,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 		groupModel.setY(groupModel.getY() + miny);
 
 		for (Node node : group.getChildren()) {
-			SpriteNode sprite = (SpriteNode) node;
+			ISpriteNode sprite = (ISpriteNode) node;
 			BaseObjectModel model = sprite.getModel();
 			model.setX(model.getX() - minx);
 			model.setY(model.getY() - miny);

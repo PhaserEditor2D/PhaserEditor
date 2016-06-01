@@ -24,52 +24,40 @@ package phasereditor.canvas.core;
 import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
+import phasereditor.assetpack.core.AssetType;
+import phasereditor.assetpack.core.IAssetKey;
 
 /**
  * @author arian
  *
  */
-public class AtlasSpriteShapeModel extends BaseSpriteShapeModel implements IAssetFrameShapeModel {
-	public static final String TYPE_NAME = "atlas-sprite";
-	private FrameItem _frame;
+public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
+	private T _assetKey;
 
-	public AtlasSpriteShapeModel(GroupModel parent, FrameItem frame) {
-		super(parent, TYPE_NAME);
-		_frame = frame;
-		setEditorName(frame.getName());
+	@SuppressWarnings("unchecked")
+	public AssetSpriteModel(GroupModel parent, String typeName, JSONObject obj) {
+		super(parent, typeName, obj);
+		_assetKey = (T) findAsset(obj);
 	}
 
-	public AtlasSpriteShapeModel(GroupModel parent, JSONObject obj) {
-		super(parent, TYPE_NAME, obj);
+	public AssetSpriteModel(GroupModel parent, T asset, String typeName) {
+		super(parent, typeName);
+		_assetKey = asset;
+		setEditorName(asset.getKey());
+	}
+
+	public T getAssetKey() {
+		return _assetKey;
+	}
+
+	public AssetType getAssetType() {
+		return _assetKey.getAsset().getType();
 	}
 
 	@Override
 	protected void writeMetadata(JSONObject obj) {
 		super.writeMetadata(obj);
-		JSONObject asset = AssetPackCore.getAssetJSONReference(_frame.getAsset());
-		obj.put("asset-ref", asset);
-		obj.put("frame-name", _frame.getName());
-	}
-
-	@Override
-	protected void readMetadata(JSONObject obj) {
-		super.readMetadata(obj);
-		JSONObject ref = obj.getJSONObject("asset-ref");
-		AtlasAssetModel asset = (AtlasAssetModel) AssetPackCore.findAssetElement(ref);
-		String name = obj.getString("frame-name");
-
-		for (FrameItem frame : asset.getAtlasFrames()) {
-			if (frame.getName().equals(name)) {
-				_frame = frame;
-				break;
-			}
-		}
-	}
-
-	@Override
-	public FrameItem getFrame() {
-		return _frame;
+		// TODO: change it to use the UUID of asset packs!
+		obj.put("asset-ref", AssetPackCore.getAssetJSONReference(_assetKey));
 	}
 }

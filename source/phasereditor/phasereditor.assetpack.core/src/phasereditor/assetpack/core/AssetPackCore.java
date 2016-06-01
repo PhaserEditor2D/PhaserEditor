@@ -612,23 +612,18 @@ public class AssetPackCore {
 		}
 	}
 
-	public static String getAssetStringReference(Object elem) {
-		JSONObject ref = getAssetJSONReference(elem);
+	public static String getAssetStringReference(IAssetKey key) {
+		JSONObject ref = getAssetJSONReference(key);
 		if (ref == null) {
 			return null;
 		}
 		return ref.toString(2);
 	}
 
-	public static JSONObject getAssetJSONReference(Object elem) {
-		AssetPackModel pack = null;
-		if (elem instanceof AssetModel) {
-			pack = ((AssetModel) elem).getPack();
-		} else if (elem instanceof IAssetElementModel) {
-			pack = ((IAssetElementModel) elem).getAsset().getPack();
-		}
+	public static JSONObject getAssetJSONReference(IAssetKey key) {
+		AssetPackModel pack = key.getAsset().getPack();
 		if (pack != null) {
-			return pack.getAssetJSONRefrence(elem);
+			return pack.getAssetJSONRefrence(key);
 		}
 		return null;
 	}

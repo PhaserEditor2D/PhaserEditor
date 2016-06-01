@@ -24,7 +24,7 @@ package phasereditor.canvas.ui.shapes;
 import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
-import phasereditor.canvas.core.AtlasSpriteShapeModel;
+import phasereditor.canvas.core.AtlasSpriteModel;
 import phasereditor.canvas.core.GroupModel;
 
 /**
@@ -34,7 +34,7 @@ import phasereditor.canvas.core.GroupModel;
  * @author arian
  *
  */
-public class ButtonAtlasShapeModel extends AtlasSpriteShapeModel {
+public class ButtonAtlasShapeModel extends AtlasSpriteModel {
 
 	private String _callback;
 	private String _callbackContext;

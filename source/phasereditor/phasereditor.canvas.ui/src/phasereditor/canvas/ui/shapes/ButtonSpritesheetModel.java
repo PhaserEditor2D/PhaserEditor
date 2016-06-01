@@ -25,7 +25,7 @@ import org.json.JSONObject;
 
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.canvas.core.GroupModel;
-import phasereditor.canvas.core.SpritesheetShapeModel;
+import phasereditor.canvas.core.SpritesheetSpriteModel;
 
 /**
  * A button based on a spritesheet. The frames are indexes of the sheet. It uses
@@ -33,7 +33,7 @@ import phasereditor.canvas.core.SpritesheetShapeModel;
  * 
  * @author arian
  */
-public class ButtonSpritesheetShapeModel extends SpritesheetShapeModel {
+public class ButtonSpritesheetModel extends SpritesheetSpriteModel {
 
 	private String _callback;
 	private String _callbackContext;
@@ -42,11 +42,11 @@ public class ButtonSpritesheetShapeModel extends SpritesheetShapeModel {
 	private Integer _downFrame;
 	private Integer _upFrame;
 
-	public ButtonSpritesheetShapeModel(GroupModel parent, JSONObject obj) {
+	public ButtonSpritesheetModel(GroupModel parent, JSONObject obj) {
 		super(parent, obj);
 	}
 
-	public ButtonSpritesheetShapeModel(GroupModel parent, SpritesheetAssetModel asset) {
+	public ButtonSpritesheetModel(GroupModel parent, SpritesheetAssetModel asset) {
 		super(parent, asset);
 	}
 	
