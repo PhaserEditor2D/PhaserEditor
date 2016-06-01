@@ -25,6 +25,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 
+import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -59,6 +60,22 @@ public class TileSpriteNode extends Pane implements ISpriteNode {
 		}
 
 		updateFromModel();
+	}
+
+	@Override
+	public boolean contains(double localX, double localY) {
+		if (!getClip().contains(localX, localY)) {
+			return false;
+		}
+
+		for (Node node : getChildren()) {
+			Point2D point = node.parentToLocal(localX, localY);
+			if (node.contains(point)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public void updateFromModel() {
