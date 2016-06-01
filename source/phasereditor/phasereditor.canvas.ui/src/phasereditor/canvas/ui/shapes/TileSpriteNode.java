@@ -25,10 +25,11 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import phasereditor.assetpack.ui.AssetPackUI.FrameData;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.TileSpriteModel;
@@ -37,7 +38,7 @@ import phasereditor.canvas.core.TileSpriteModel;
  * @author arian
  *
  */
-public class TileSpriteNode extends Canvas implements ISpriteNode {
+public class TileSpriteNode extends Pane implements ISpriteNode {
 
 	private FrameData _frame;
 	private TileSpriteControl _control;
@@ -69,27 +70,53 @@ public class TileSpriteNode extends Canvas implements ISpriteNode {
 		setWidth(width);
 		setHeight(height);
 
-		GraphicsContext g2 = getGraphicsContext2D();
-		g2.clearRect(0, 0, width, height);
+		// GraphicsContext g2 = getGraphicsContext2D();
+		// g2.clearRect(0, 0, width, height);
 
-		double xoffs = model.getTilePositionX() % width;
-		double yoffs = model.getTilePositionY() % height;
+		double xoffs = model.getTilePositionX() % _frame.srcSize.x;
+		double yoffs = model.getTilePositionY() % _frame.srcSize.y;
 
 		double x0 = _frame.src.x;
 		double y0 = _frame.src.y;
 		double w0 = _frame.src.width;
 		double h0 = _frame.src.height;
 
-		double x1 = xoffs - (_frame.srcSize.x + _frame.dst.x) * model.getTileScaleX();
-		double y1 = yoffs - (_frame.srcSize.y + _frame.dst.y) * model.getTileScaleY();
+		double x1;
+		double y1;
+
+		if (xoffs == 0) {
+			x1 = _frame.dst.x * model.getTileScaleX();
+		} else if (xoffs < 0) {
+			x1 = xoffs + _frame.dst.x * model.getTileScaleX();
+		} else {
+			x1 = xoffs - (_frame.srcSize.x + _frame.dst.x) * model.getTileScaleX();
+		}
+
+		if (yoffs == 0) {
+			y1 = _frame.dst.y * model.getTileScaleY();
+		} else if (yoffs < 0) {
+			y1 = yoffs + _frame.dst.y * model.getTileScaleY();
+		} else {
+			y1 = yoffs - (_frame.srcSize.y + _frame.dst.y) * model.getTileScaleY();
+		}
+
 		double w1 = _frame.dst.width * model.getTileScaleX();
 		double h1 = _frame.dst.height * model.getTileScaleY();
 
-		for (double x = 0; x1 + x < getWidth() * 3; x += w1) {
-			for (double y = 0; y1 + y < getHeight() * 3; y += h1) {
-				g2.drawImage(_image, x0, y0, w0, h0, x1 + x, y1 + y, w1, h1);
+		getChildren().clear();
+
+		for (double x = x1; x < getWidth(); x += w1) {
+			for (double y = y1; y < getHeight(); y += h1) {
+				ImageView img = new ImageView(_image);
+				img.setViewport(new Rectangle2D(x0, y0, w0, h0));
+				img.relocate(x, y);
+				img.setFitWidth(w1);
+				img.setFitHeight(h1);
+				getChildren().add(img);
 			}
 		}
+
+		setClip(new javafx.scene.shape.Rectangle(0, 0, width, height));
 	}
 
 	public Image getImage() {
