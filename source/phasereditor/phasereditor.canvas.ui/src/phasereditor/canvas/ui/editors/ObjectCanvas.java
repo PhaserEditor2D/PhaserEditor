@@ -21,9 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
-import static java.lang.System.out;
-
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.jface.util.LocalSelectionTransfer;
@@ -31,11 +28,6 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.dnd.DropTarget;
-import org.eclipse.swt.dnd.DropTargetAdapter;
-import org.eclipse.swt.dnd.DropTargetEvent;
-import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
 
 import javafx.embed.swt.FXCanvas;

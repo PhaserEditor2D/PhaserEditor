@@ -58,8 +58,8 @@ public class CreateBehavior {
 	public List<Node> dropAssets(IStructuredSelection selection, DragEvent event) {
 		Object[] elems = selection.toArray();
 		List<Node> _newnodes = new ArrayList<>();
-		if (elems.length == 1) {
-			Object elem = elems[0];
+		int i = 0;
+		for (Object elem : elems) {
 			if (elem instanceof IAssetKey) {
 				// TODO: for now get as parent the world
 				WorldModel worldModel = _canvas.getWorldModel();
@@ -70,7 +70,10 @@ public class CreateBehavior {
 					BaseObjectControl<?> control = CanvasObjectFactory.createObjectControl(_canvas, model);
 					if (control != null) {
 						_newnodes.add(control.getNode());
-						dropShape(control, event);
+						double x = event.getSceneX() + i * 50;
+						double y = event.getSceneY() + i * 50;
+						dropSprite(control, x, y);
+						i++;
 					}
 				}
 			}
@@ -78,8 +81,8 @@ public class CreateBehavior {
 		return _newnodes;
 	}
 
-	public void dropShape(BaseObjectControl<?> control, DragEvent event) {
-		_canvas.dropToWorld(control, event.getSceneX(), event.getSceneY());
+	public void dropSprite(BaseObjectControl<?> control, double sceneX, double sceneY) {
+		_canvas.dropToWorld(control, sceneX, sceneY);
 	}
 
 	public GroupNode makeGroup(Object... elems) {
