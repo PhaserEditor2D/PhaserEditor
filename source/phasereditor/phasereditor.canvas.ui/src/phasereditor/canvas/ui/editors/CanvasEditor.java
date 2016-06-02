@@ -85,6 +85,7 @@ import phasereditor.canvas.ui.editors.behaviors.ZoomBehavior;
 import phasereditor.canvas.ui.editors.grid.PGrid;
 import phasereditor.canvas.ui.editors.palette.CanvasPalette;
 import phasereditor.ui.EditorSharedImages;
+import org.eclipse.swt.widgets.Label;
 
 /**
  * @author arian
@@ -199,13 +200,8 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 		_composite.setLayout(gl_composite);
 		_toolBar = new ToolBar(_composite, SWT.FLAT | SWT.RIGHT);
 		_toolBar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		_sashForm = new SashForm(_composite, SWT.VERTICAL);
-		_sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		_canvas = new ObjectCanvas(_sashForm, SWT.BORDER);
-		
-		_canvasPalette = new CanvasPalette(_sashForm, SWT.NONE);
-		_sashForm.setWeights(new int[] {5, 1});
+		_canvas = new ObjectCanvas(_composite, SWT.BORDER);
+		_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		_mainSashForm.setWeights(new int[] { 1, 4 });
 
@@ -482,8 +478,6 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 	private State _state;
 	private ToolBar _toolBar;
 	private Composite _composite;
-	private SashForm _sashForm;
-	private CanvasPalette _canvasPalette;
 
 	@Override
 	public void restoreState(IMemento memento) {
@@ -515,9 +509,5 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public CanvasPalette getCanvasPalette() {
-		return _canvasPalette;
 	}
 }
