@@ -150,8 +150,10 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 			target.addDropListener(new DropTargetAdapter() {
 				@Override
 				public void drop(DropTargetEvent event) {
-					if (event.data instanceof ISelection) {
-						selectionDropped((ISelection) event.data);
+					if (event.data instanceof Object[]) {
+						selectionDropped((Object[]) event.data);
+					} if (event.data instanceof IStructuredSelection) {
+						selectionDropped( ((IStructuredSelection )event.data).toArray());
 					}
 				}
 			});
@@ -196,10 +198,10 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 		_previewContainer.setFocus();
 	}
 
-	public void selectionDropped(ISelection selection) {
-		if (selection instanceof IStructuredSelection) {
-			Object elem = ((IStructuredSelection) selection).getFirstElement();
+	public void selectionDropped(Object[] data) {
+		for (Object elem : data) {
 			preview(elem);
+			break; // TODO:it could open new preview windows.
 		}
 	}
 
@@ -221,7 +223,7 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 		_previewControl = null;
 
 		setTitleImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_EYE));
-		
+
 		if (elem == null) {
 			preview = _noPreviewComp;
 			setPartName("Preview");
@@ -245,7 +247,7 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 
 				factory.updateControl(preview, elem);
 				setPartName("Preview - " + factory.getTitle(elem));
-				
+
 				Image icon = factory.getIcon(elem);
 				if (icon != null) {
 					setTitleImage(icon);

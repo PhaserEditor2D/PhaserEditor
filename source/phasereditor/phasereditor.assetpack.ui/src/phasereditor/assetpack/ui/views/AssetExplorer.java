@@ -29,6 +29,7 @@ import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
@@ -45,6 +46,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.part.ViewPart;
+import org.json.JSONArray;
 
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackCore.IPacksChangeListener;
@@ -86,7 +88,7 @@ public class AssetExplorer extends ViewPart {
 		GridLayout gl_parent = new GridLayout(1, false);
 		parent.setLayout(gl_parent);
 
-		_filteredTree = new FilteredTree2(parent, SWT.NONE, new PatternFilter2(), 4);
+		_filteredTree = new FilteredTree2(parent, SWT.MULTI, new PatternFilter2(), 4);
 		_viewer = _filteredTree.getViewer();
 		_viewer.addDoubleClickListener(new IDoubleClickListener() {
 			@Override
@@ -154,20 +156,24 @@ public class AssetExplorer extends ViewPart {
 		Transfer[] types = { LocalSelectionTransfer.getTransfer(), TextTransfer.getInstance() };
 		_viewer.addDragSupport(DND.DROP_MOVE | DND.DROP_DEFAULT, types, new DragSourceAdapter() {
 
+			private Object[] _data;
+
 			@Override
 			public void dragStart(DragSourceEvent event) {
 				LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
-				transfer.setSelection(_viewer.getSelection());
+				_data = ((IStructuredSelection) _viewer.getSelection()).toArray();
+				transfer.setSelection(new StructuredSelection(_data));
 			}
 
 			@Override
 			public void dragSetData(DragSourceEvent event) {
-				IStructuredSelection sel = _viewer.getStructuredSelection();
-				Object[] elems = sel.toArray();
-				if (elems.length == 1) {
-					Object elem = elems[0];
-					event.data = AssetPackCore.getAssetStringReference((IAssetKey) elem);
+				JSONArray array = new JSONArray();
+				for (Object elem : _data) {
+					if (elem instanceof IAssetKey) {
+						array.put(AssetPackCore.getAssetJSONReference((IAssetKey) elem));
+					}
 				}
+				event.data = array.toString();
 			}
 		});
 
@@ -176,11 +182,13 @@ public class AssetExplorer extends ViewPart {
 		getViewSite().setSelectionProvider(_viewer);
 
 		{
+
 			// menu
 			MenuManager manager = new MenuManager();
 			Tree tree = _viewer.getTree();
 			Menu menu = manager.createContextMenu(tree);
 			tree.setMenu(menu);
+
 			getViewSite().registerContextMenu(manager, _viewer);
 		}
 
@@ -189,6 +197,7 @@ public class AssetExplorer extends ViewPart {
 
 		// labels
 		((AssetLabelProvider) _viewer.getLabelProvider()).setControl(_viewer.getControl());
+
 	}
 
 	@Override

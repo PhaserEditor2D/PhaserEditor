@@ -19,55 +19,43 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.shapes;
+package phasereditor.ui;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
-import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
-import phasereditor.canvas.core.AtlasSpriteModel;
-import phasereditor.ui.ImageCache;
+import javafx.scene.image.Image;
 
 /**
  * @author arian
  *
  */
-public class AtlasSpriteNode extends Pane implements ISpriteNode {
-
-	private AtlasSpriteControl _control;
-	private ImageView _image;
-
-	public AtlasSpriteNode(AtlasSpriteControl control, IFile imageFile) {
-		_control = control;
-
-		FrameItem frame = control.getModel().getFrame();
-
-		_image = new ImageView(ImageCache.getFXImage(imageFile));
-		
-		_image.relocate(frame.getSpriteX(), frame.getSpriteY());
-		_image.setViewport(new Rectangle2D(frame.getFrameX(), frame.getFrameY(), frame.getFrameW(), frame.getFrameH()));
-
-		setMaxSize(frame.getSourceW(), frame.getSourceH());
-		setMinSize(frame.getSourceW(), frame.getSourceH());
-		
-		getChildren().add(_image);
+public class ImageCache {
+	static class Container<T> {
+		public T value;
+		public long token;
 	}
 
-	@Override
-	public AtlasSpriteModel getModel() {
-		return _control.getModel();
+	private static Map<IFile, Container<Image>> _fxcache = new HashMap<>();
+
+	public static Image getFXImage(IFile file) {
+		synchronized (_fxcache) {
+			long t = file.getModificationStamp();
+			if (_fxcache.containsKey(file)) {
+				Container<Image> c = _fxcache.get(file);
+				if (t != c.token) {
+					c.token = t;
+					c.value = new Image("file:" + file.getLocation().makeAbsolute().toOSString());
+				}
+				return c.value;
+			}
+			Container<Image> c = new Container<>();
+			c.token = t;
+			c.value = new Image("file:" + file.getLocation().makeAbsolute().toOSString());
+			return c.value;
+		}
 	}
 
-	@Override
-	public AtlasSpriteControl getControl() {
-		return _control;
-	}
-
-	@Override
-	public Node getNode() {
-		return this;
-	}
 }

@@ -34,6 +34,7 @@ import javafx.scene.layout.Pane;
 import phasereditor.assetpack.ui.AssetPackUI.FrameData;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.TileSpriteModel;
+import phasereditor.ui.ImageCache;
 
 /**
  * @author arian
@@ -47,7 +48,7 @@ public class TileSpriteNode extends Pane implements ISpriteNode {
 
 	public TileSpriteNode(IFile imageFile, FrameData frame, TileSpriteControl control) {
 		_control = control;
-		_image = new Image("file:" + imageFile.getLocation().makeAbsolute().toPortableString());
+		_image = ImageCache.getFXImage(imageFile);
 
 		if (frame == null) {
 			Rectangle rect = new Rectangle(0, 0, (int) _image.getWidth(), (int) _image.getHeight());

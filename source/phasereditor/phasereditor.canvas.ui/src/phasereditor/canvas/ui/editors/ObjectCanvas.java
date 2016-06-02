@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
+import static java.lang.System.out;
+
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.jface.util.LocalSelectionTransfer;
@@ -28,6 +31,11 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.dnd.DropTargetAdapter;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
 
 import javafx.embed.swt.FXCanvas;
@@ -96,7 +104,7 @@ public class ObjectCanvas extends FXCanvas {
 		_mouseBehavior = new MouseBehavior(this);
 		_paintBehavior = new PaintBehavior(this);
 	}
-	
+
 	public void selectAll() {
 		_selectionBehavior.selectAll();
 	}
@@ -157,6 +165,7 @@ public class ObjectCanvas extends FXCanvas {
 			List<Node> newnodes = _createBehavior.dropAssets((IStructuredSelection) selection, event);
 			_selectionBehavior.setSelection(new StructuredSelection(newnodes.toArray()));
 		});
+
 	}
 
 	private void createScene() {
@@ -165,10 +174,10 @@ public class ObjectCanvas extends FXCanvas {
 
 		_gridPane = new GridPane(this);
 		_gridPane.setId("__grid-pane__");
-		
+
 		_worldControl = new GroupControl(this, _model);
 		GroupNode world = _worldControl.getNode();
-		
+
 		_worldGlassPane = new WorldGlassPane(this);
 		_worldGlassPane.setId("__world-glass-pane__");
 

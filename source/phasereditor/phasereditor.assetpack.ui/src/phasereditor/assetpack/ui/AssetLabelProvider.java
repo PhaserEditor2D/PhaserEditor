@@ -197,7 +197,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 
 		if (element instanceof FrameItem) {
 			FrameItem frame = (FrameItem) element;
-			IFile file = ((AtlasAssetModel) frame.getAsset()).getTextureFile();
+			IFile file = frame.getAsset().getTextureFile();
 			if (file != null) {
 				try {
 					Rectangle src = new Rectangle(frame.getFrameX(), frame.getFrameY(), frame.getFrameW(),
