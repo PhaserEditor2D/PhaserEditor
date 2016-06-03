@@ -29,6 +29,7 @@ import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
 
+import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.canvas.ui.editors.grid.editors.FrameCellEditor;
 import phasereditor.canvas.ui.editors.grid.editors.RGBCellEditor;
 
@@ -54,7 +55,7 @@ public class PGridEditingSupport extends EditingSupport {
 			return new CheckboxCellEditor(parent);
 		} else if (element instanceof PGridFrameProperty) {
 			PGridFrameProperty prop = (PGridFrameProperty) element;
-			return new FrameCellEditor(parent, prop.getControl());
+			return new FrameCellEditor(parent, prop);
 		} else if (element instanceof PGridColorProperty) {
 			return new RGBCellEditor(parent, ((PGridColorProperty) element).getDefaultRGB());
 		}
@@ -87,7 +88,7 @@ public class PGridEditingSupport extends EditingSupport {
 		} else if (element instanceof PGridBooleanProperty) {
 			((PGridBooleanProperty) element).setValue((Boolean) value);
 		} else if (element instanceof PGridFrameProperty) {
-			((PGridFrameProperty) element).setValue((Integer) value);
+			((PGridFrameProperty) element).setValue( (IAssetFrameModel) value);
 		} else if (element instanceof PGridColorProperty) {
 			((PGridColorProperty) element).setValue((RGB) value);
 		}

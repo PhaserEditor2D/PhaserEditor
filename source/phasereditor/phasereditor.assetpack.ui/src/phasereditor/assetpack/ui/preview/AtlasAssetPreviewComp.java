@@ -48,7 +48,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
 import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
+import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.atlas.core.AtlasFrame;
 import phasereditor.atlas.ui.AtlasCanvas;
@@ -69,8 +69,8 @@ public class AtlasAssetPreviewComp extends Composite {
 				return "(None)";
 			}
 
-			if (element instanceof FrameItem) {
-				FrameItem fd = (FrameItem) element;
+			if (element instanceof Frame) {
+				Frame fd = (Frame) element;
 				return String.format("%s (%dx%d)", fd.getName(), fd.getSourceW(), fd.getSourceH());
 			}
 			return super.getText(element);
@@ -164,11 +164,11 @@ public class AtlasAssetPreviewComp extends Composite {
 	protected void spriteSelected() {
 		IStructuredSelection sel = (IStructuredSelection) _spritesViewer.getSelection();
 		Object elem = sel.getFirstElement();
-		FrameItem frame;
+		Frame frame;
 		if (elem == NO_SELECTION) {
 			frame = null;
 		} else {
-			frame = (FrameItem) elem;
+			frame = (Frame) elem;
 		}
 		_atlasCanvas.setFrame(frame);
 		_atlasCanvas.redraw();
@@ -183,7 +183,7 @@ public class AtlasAssetPreviewComp extends Composite {
 
 		// select the last pointed frame
 
-		FrameItem over = (FrameItem) _atlasCanvas.getOverFrame();
+		Frame over = (Frame) _atlasCanvas.getOverFrame();
 		_atlasCanvas.setFrame(over);
 		_atlasCanvas.redraw();
 		Combo combo = _spritesViewer.getCombo();
@@ -200,7 +200,7 @@ public class AtlasAssetPreviewComp extends Composite {
 		String url = model.getTextureURL();
 		IFile file = model.getFileFromUrl(url);
 		_atlasCanvas.setImageFile(file);
-		List<FrameItem> frames = model.getAtlasFrames();
+		List<Frame> frames = model.getAtlasFrames();
 		_atlasCanvas.setFrames(frames);
 		_atlasCanvas.redraw();
 
@@ -229,7 +229,7 @@ public class AtlasAssetPreviewComp extends Composite {
 		return _atlasCanvas;
 	}
 
-	public void setSingleFrame(AtlasAssetModel.FrameItem frame) {
+	public void setSingleFrame(AtlasAssetModel.Frame frame) {
 		if (!_spritesViewer.getControl().isDisposed()) {
 			_spritesViewer.getControl().dispose();
 		}

@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
+import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 
 public class AtlasFrameInformationControl extends AtlasAssetInformationControl {
 
@@ -35,7 +35,7 @@ public class AtlasFrameInformationControl extends AtlasAssetInformationControl {
 
 	@Override
 	protected void updateContent(Control control, Object model) {
-		AtlasAssetModel.FrameItem frame = (FrameItem) model;
+		AtlasAssetModel.Frame frame = (Frame) model;
 		super.updateContent(control, frame.getAsset());
 		QuickAtlasPreviewComp comp = (QuickAtlasPreviewComp) control;
 		comp.setFrame(frame);

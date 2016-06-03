@@ -42,7 +42,7 @@ import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
+import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel.AssetAudioSprite;
 import phasereditor.assetpack.core.PhysicsAssetModel;
@@ -140,7 +140,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 				List<AssetAudioSprite> spritemap = ((AudioSpriteAssetModel) asset).getSpriteMap();
 				return spritemap.toArray();
 			case atlas:
-				List<FrameItem> frames = ((AtlasAssetModel) asset).getAtlasFrames();
+				List<Frame> frames = ((AtlasAssetModel) asset).getAtlasFrames();
 				return frames.toArray();
 			case spritesheet:
 				return asset.getSubElements().toArray();

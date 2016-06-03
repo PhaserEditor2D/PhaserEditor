@@ -21,23 +21,26 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid;
 
-import phasereditor.canvas.ui.shapes.SpritesheetControl;
+import java.util.List;
+
+import phasereditor.assetpack.core.IAssetFrameModel;
 
 /**
  * @author arian
  *
  */
-public abstract class PGridFrameProperty extends PGridProperty<Integer> {
+public abstract class PGridFrameProperty extends PGridProperty<IAssetFrameModel> {
 
-	private SpritesheetControl _control;
 
-	public PGridFrameProperty(String name, SpritesheetControl control) {
+	public PGridFrameProperty(String name) {
 		super(name);
-		_control = control;
 	}
 
-	public SpritesheetControl getControl() {
-		return _control;
+	public String getLabel() {
+		 IAssetFrameModel value = getValue();
+		return value == null ? "" : value.getKey();
 	}
+	
+	public abstract List<?> getFrames();
 
 }

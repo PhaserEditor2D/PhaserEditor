@@ -38,9 +38,7 @@ import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
 import javafx.util.Callback;
-import phasereditor.assetpack.ui.AssetPackUI.FrameData;
 
 /**
  * @author arian
@@ -48,10 +46,9 @@ import phasereditor.assetpack.ui.AssetPackUI.FrameData;
  */
 public class PGridFrameDialog extends Dialog {
 	private FXCanvas _canvas;
-	private List<FrameData> _frames;
-	Image _image;
-	private int _selectedframe;
-	private ListView<FrameData> _listView;
+	private List<Object> _frames;
+	private Object _selectedframe;
+	private ListView<Object> _listView;
 
 	/**
 	 * Create the dialog.
@@ -88,22 +85,22 @@ public class PGridFrameDialog extends Dialog {
 
 	private void afterCreateWidgets() {
 		_listView = new ListView<>(FXCollections.observableList(_frames));
-		_listView.setOrientation(Orientation.HORIZONTAL);
-		_listView.setCellFactory(new Callback<ListView<FrameData>, ListCell<FrameData>>() {
+		_listView.setOrientation(Orientation.VERTICAL);
+		_listView.setCellFactory(new Callback<ListView<Object>, ListCell<Object>>() {
 
 			@Override
-			public ListCell<FrameData> call(ListView<FrameData> param) {
-				return new FrameCell(_image);
+			public ListCell<Object> call(ListView<Object> param) {
+				return new FrameCell();
 			}
 		});
-		_listView.getSelectionModel().select(_selectedframe);
+		_listView.getSelectionModel().select(_listView.getItems().indexOf(_selectedframe));
 		_canvas.setScene(new Scene(_listView));
 		_canvas.setFocus();
 	}
 
 	@Override
 	protected void okPressed() {
-		_selectedframe = _listView.getSelectionModel().getSelectedIndex();
+		_selectedframe = _listView.getSelectionModel().getSelectedItem();
 		super.okPressed();
 	}
 
@@ -126,19 +123,16 @@ public class PGridFrameDialog extends Dialog {
 		return new Point(367, 287);
 	}
 
-	public void setFrames(List<FrameData> frames) {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void setFrames(List frames) {
 		_frames = frames;
 	}
 
-	public void setImage(Image image) {
-		_image = image;
-	}
-
-	public int getSelectedFrame() {
+	public Object getSelectedFrame() {
 		return _selectedframe;
 	}
 
-	public void setSelectedframe(int selframe) {
+	public void setSelectedframe(Object selframe) {
 		_selectedframe = selframe;
 	}
 }

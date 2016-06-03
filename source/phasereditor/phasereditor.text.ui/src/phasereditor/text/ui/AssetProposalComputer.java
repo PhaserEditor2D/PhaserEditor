@@ -33,7 +33,7 @@ import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
+import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel.AssetAudioSprite;
 import phasereditor.assetpack.core.PhysicsAssetModel;
@@ -158,8 +158,8 @@ public class AssetProposalComputer extends BaseProposalComputer {
 					propData.setControlCreator(new GenericInformationControlCreator(AtlasAssetInformationControl.class,
 							AtlasAssetInformationControl::new));
 
-					List<FrameItem> frames = ((AtlasAssetModel) asset).getAtlasFrames();
-					for (FrameItem frame : frames) {
+					List<Frame> frames = ((AtlasAssetModel) asset).getAtlasFrames();
+					for (Frame frame : frames) {
 						String name = frame.getName();
 						if (name != null) {
 							String display = "\"" + name + "\" - sprite of atlas";

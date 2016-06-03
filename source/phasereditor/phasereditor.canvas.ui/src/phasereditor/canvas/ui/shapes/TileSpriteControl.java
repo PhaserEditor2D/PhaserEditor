@@ -27,10 +27,10 @@ import org.eclipse.swt.graphics.Rectangle;
 
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
+import phasereditor.assetpack.core.AtlasAssetModel.Frame;
+import phasereditor.assetpack.core.FrameData;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
-import phasereditor.assetpack.ui.AssetPackUI.FrameData;
 import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
@@ -88,8 +88,8 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			}
 		}
 
-		if (key instanceof AtlasAssetModel.FrameItem) {
-			AtlasAssetModel.FrameItem frame = (FrameItem) key;
+		if (key instanceof AtlasAssetModel.Frame) {
+			AtlasAssetModel.Frame frame = (Frame) key;
 			AtlasAssetModel asset = frame.getAsset();
 			IFile file = asset.getTextureFile();
 			FrameData fd = new FrameData();

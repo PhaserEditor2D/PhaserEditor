@@ -122,6 +122,9 @@ public class GroupModel extends BaseObjectModel {
 				case TileSpriteModel.TYPE_NAME:
 					model = new TileSpriteModel(this, jsonModel);
 					break;
+				case ButtonSpriteModel.TYPE_NAME:
+					model = new ButtonSpriteModel(this, jsonModel);
+					break;
 				case GroupModel.TYPE_NAME:
 					model = new GroupModel(this, jsonModel);
 					break;

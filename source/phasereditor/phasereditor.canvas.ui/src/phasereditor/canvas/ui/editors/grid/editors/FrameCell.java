@@ -25,25 +25,23 @@ import org.eclipse.swt.graphics.Rectangle;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.ListCell;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import phasereditor.assetpack.ui.AssetPackUI.FrameData;
+import javafx.scene.layout.BorderPane;
+import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.ui.ImageCache;
 
 /**
  * @author arian
  *
  */
-public class FrameCell extends ListCell<FrameData> {
+public class FrameCell extends ListCell<Object> {
 
-	private Image _image;
-
-	public FrameCell(Image image) {
+	public FrameCell() {
 		super();
-		_image = image;
 	}
 
 	@Override
-	protected void updateItem(FrameData item, boolean empty) {
+	protected void updateItem(Object item, boolean empty) {
 		super.updateItem(item, empty);
 
 		if (empty || item == null) {
@@ -52,9 +50,16 @@ public class FrameCell extends ListCell<FrameData> {
 			return;
 		}
 
-		ImageView imgView = new ImageView(_image);
-		Rectangle src = item.src;
+		IAssetFrameModel frame = (IAssetFrameModel) item;
+		ImageView imgView = new ImageView(ImageCache.getFXImage(frame.getImageFile()));
+		imgView.setFitWidth(64);
+		imgView.setFitHeight(64);
+		imgView.setPreserveRatio(true);
+		Rectangle src = frame.getFrameData().src;
 		imgView.setViewport(new Rectangle2D(src.x, src.y, src.width, src.height));
-		setGraphic(imgView);
+		BorderPane pane = new BorderPane(imgView);
+		pane.setMinSize(64, 64);
+		setGraphic(pane);
+		setText(frame.getKey());
 	}
 }

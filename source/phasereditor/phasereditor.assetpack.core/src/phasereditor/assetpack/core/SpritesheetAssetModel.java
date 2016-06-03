@@ -30,6 +30,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -158,7 +159,7 @@ public class SpritesheetAssetModel extends AssetModel {
 		buildFrames();
 	}
 
-	public static class FrameModel implements IAssetElementModel {
+	public static class FrameModel implements IAssetElementModel, IAssetFrameModel {
 		public Rectangle _bounds;
 		private SpritesheetAssetModel _asset;
 		private int _index;
@@ -168,6 +169,20 @@ public class SpritesheetAssetModel extends AssetModel {
 			_asset = asset;
 			_index = index;
 			_bounds = bounds;
+		}
+
+		@Override
+		public FrameData getFrameData() {
+			FrameData data = new FrameData();
+			data.src = _bounds;
+			data.dst = _bounds;
+			data.srcSize = new Point(_bounds.width, _bounds.height);
+			return data;
+		}
+
+		@Override
+		public IFile getImageFile() {
+			return _asset.getUrlFile();
 		}
 
 		public int getIndex() {

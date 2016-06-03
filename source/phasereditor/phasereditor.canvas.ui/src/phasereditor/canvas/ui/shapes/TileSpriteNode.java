@@ -31,7 +31,7 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import phasereditor.assetpack.ui.AssetPackUI.FrameData;
+import phasereditor.assetpack.core.FrameData;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.ui.ImageCache;

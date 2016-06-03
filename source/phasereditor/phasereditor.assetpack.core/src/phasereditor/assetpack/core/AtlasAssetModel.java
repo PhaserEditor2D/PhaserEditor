@@ -30,6 +30,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,7 +49,7 @@ public class AtlasAssetModel extends AssetModel {
 	private String _atlasURL;
 	private String _atlasData;
 	private String _format;
-	private List<FrameItem> _frames;
+	private List<Frame> _frames;
 
 	{
 		_format = AtlasCore.TEXTURE_ATLAS_JSON_ARRAY;
@@ -143,10 +145,10 @@ public class AtlasAssetModel extends AssetModel {
 		firePropertyChange("format");
 	}
 
-	public static class FrameItem extends AtlasFrame implements IAssetElementModel {
+	public static class Frame extends AtlasFrame implements IAssetElementModel, IAssetFrameModel {
 		private final AtlasAssetModel _asset;
 
-		public FrameItem(AtlasAssetModel asset) {
+		public Frame(AtlasAssetModel asset) {
 			_asset = asset;
 		}
 
@@ -159,9 +161,23 @@ public class AtlasAssetModel extends AssetModel {
 		public <T> T getAdapter(Class<T> adapter) {
 			return null;
 		}
+
+		@Override
+		public FrameData getFrameData() {
+			FrameData data = new FrameData();
+			data.src = new Rectangle(getFrameX(), getFrameY(), getFrameW(), getFrameH());
+			data.dst = new Rectangle(getSpriteX(), getSpriteY(), getSpriteW(), getSpriteH());
+			data.srcSize = new Point(getSourceW(), getSourceH());
+			return data;
+		}
+		
+		@Override
+		public IFile getImageFile() {
+			return _asset.getTextureFile();
+		}
 	}
 
-	public List<FrameItem> getAtlasFrames() {
+	public List<Frame> getAtlasFrames() {
 		if (_frames == null) {
 			buildFrames();
 		}
@@ -169,7 +185,7 @@ public class AtlasAssetModel extends AssetModel {
 	}
 
 	@Override
-	public List<? extends IAssetElementModel> getSubElements() {
+	public List<Frame> getSubElements() {
 		return getAtlasFrames();
 	}
 
@@ -177,7 +193,7 @@ public class AtlasAssetModel extends AssetModel {
 
 		// TODO: use AtlasCore.readAtlasFrames(..) method.
 
-		List<FrameItem> list = new ArrayList<>();
+		List<Frame> list = new ArrayList<>();
 		try {
 			String data = normalizeString(_atlasData);
 			if (data == null) {
@@ -201,7 +217,7 @@ public class AtlasAssetModel extends AssetModel {
 				JSONArray array = obj.getJSONArray("frames");
 				for (int i = 0; i < array.length(); i++) {
 					JSONObject item = array.getJSONObject(i);
-					FrameItem fi = new FrameItem(this);
+					Frame fi = new Frame(this);
 					fi.update(AtlasFrame.fromArrayItem(item));
 					list.add(fi);
 				}
@@ -211,7 +227,7 @@ public class AtlasAssetModel extends AssetModel {
 				JSONObject frames = obj.getJSONObject("frames");
 				for (String k : frames.keySet()) {
 					JSONObject item = frames.getJSONObject(k);
-					FrameItem fi = new FrameItem(this);
+					Frame fi = new Frame(this);
 					fi.update(AtlasFrame.fromHashItem(k, item));
 					list.add(fi);
 				}
@@ -223,7 +239,7 @@ public class AtlasAssetModel extends AssetModel {
 				for (int i = 0; i < elems.getLength(); i++) {
 					Node elem = elems.item(i);
 					if (elem.getNodeType() == Node.ELEMENT_NODE) {
-						FrameItem fi = new FrameItem(this);
+						Frame fi = new Frame(this);
 						fi.update(AtlasFrame.fromXMLItem((Element) elem));
 						list.add(fi);
 					}

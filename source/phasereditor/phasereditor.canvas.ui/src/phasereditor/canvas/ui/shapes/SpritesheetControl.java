@@ -27,9 +27,10 @@ import org.eclipse.swt.graphics.Rectangle;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
+import phasereditor.assetpack.core.FrameData;
+import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.ui.AssetPackUI;
-import phasereditor.assetpack.ui.AssetPackUI.FrameData;
 import phasereditor.canvas.core.SpritesheetSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
@@ -82,7 +83,7 @@ public class SpritesheetControl extends BaseSpriteControl<SpritesheetSpriteModel
 	@Override
 	public void updateFromModel() {
 		updateViewport(getNode());
-		
+
 		super.updateFromModel();
 	}
 
@@ -114,7 +115,7 @@ public class SpritesheetControl extends BaseSpriteControl<SpritesheetSpriteModel
 	protected void initPGridModel(PGridModel propModel) {
 		super.initPGridModel(propModel);
 
-		_frame_property = new PGridFrameProperty("frame", this) {
+		_frame_property = new PGridFrameProperty("frame") {
 
 			@Override
 			public boolean isModified() {
@@ -122,14 +123,19 @@ public class SpritesheetControl extends BaseSpriteControl<SpritesheetSpriteModel
 			}
 
 			@Override
-			public void setValue(Integer value) {
-				getModel().setFrameIndex(value.intValue());
+			public void setValue(IAssetFrameModel value) {
+				getModel().setFrameIndex( ((SpritesheetAssetModel.FrameModel) value).getIndex());
 				updateGridChange();
 			}
 
 			@Override
-			public Integer getValue() {
-				return Integer.valueOf(getModel().getFrameIndex());
+			public IAssetFrameModel getValue() {
+				return (IAssetFrameModel) getModel().getFrames().get(getModel().getFrameIndex());
+			}
+
+			@Override
+			public List<?> getFrames() {
+				return getModel().getFrames();
 			}
 		};
 

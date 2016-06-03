@@ -34,10 +34,8 @@ import phasereditor.assetpack.core.IAssetKey;
 public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 	private T _assetKey;
 
-	@SuppressWarnings("unchecked")
 	public AssetSpriteModel(GroupModel parent, String typeName, JSONObject obj) {
 		super(parent, typeName, obj);
-		_assetKey = (T) findAsset(obj);
 	}
 
 	public AssetSpriteModel(GroupModel parent, T asset, String typeName) {
@@ -50,6 +48,10 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 		return _assetKey;
 	}
 
+	public void setAssetKey(T assetKey) {
+		_assetKey = assetKey;
+	}
+
 	public AssetType getAssetType() {
 		return _assetKey.getAsset().getType();
 	}
@@ -59,5 +61,13 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 		super.writeMetadata(obj);
 		// TODO: change it to use the UUID of asset packs!
 		obj.put("asset-ref", AssetPackCore.getAssetJSONReference(_assetKey));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void readMetadata(JSONObject obj) {
+		super.readMetadata(obj);
+
+		_assetKey = (T) findAsset(obj);
 	}
 }

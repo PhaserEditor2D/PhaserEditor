@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
-import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
 import phasereditor.canvas.core.AtlasSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 
@@ -32,37 +30,28 @@ import phasereditor.canvas.ui.editors.ObjectCanvas;
  */
 public class AtlasSpriteControl extends BaseSpriteControl<AtlasSpriteModel> {
 
-	private FrameItem _frame;
-
 	public AtlasSpriteControl(ObjectCanvas canvas, AtlasSpriteModel model) {
 		super(canvas, model);
 	}
-	
+
 	@Override
 	public AtlasSpriteNode getNode() {
 		return (AtlasSpriteNode) super.getNode();
 	}
-	
 
 	@Override
 	protected ISpriteNode createNode() {
-
-		_frame = getModel().getFrame();
-
-		AtlasAssetModel asset = _frame.getAsset();
-
-		AtlasSpriteNode node = new AtlasSpriteNode(this, asset.getTextureFile());
-
+		AtlasSpriteNode node = new AtlasSpriteNode(this);
 		return node;
 	}
 
 	@Override
 	public double getTextureWidth() {
-		return _frame.getSourceW();
+		return getModel().getFrame().getSourceW();
 	}
 
 	@Override
 	public double getTextureHeight() {
-		return _frame.getSourceH();
+		return getModel().getFrame().getSourceH();
 	}
 }

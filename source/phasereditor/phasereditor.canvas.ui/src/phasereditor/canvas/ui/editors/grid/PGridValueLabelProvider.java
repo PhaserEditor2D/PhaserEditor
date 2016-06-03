@@ -34,9 +34,9 @@ import phasereditor.ui.PhaserEditorUI;
  * @author arian
  *
  */
-public class ValueLabelProvider extends GridLabelProvider {
+public class PGridValueLabelProvider extends GridLabelProvider {
 
-	public ValueLabelProvider(ColumnViewer viewer) {
+	public PGridValueLabelProvider(ColumnViewer viewer) {
 		super(viewer);
 	}
 
@@ -60,7 +60,12 @@ public class ValueLabelProvider extends GridLabelProvider {
 
 			return getRGBString(rgb);
 		}
-
+		
+		if (element instanceof PGridFrameProperty) {
+			String label = ((PGridFrameProperty) element).getLabel();
+			return label == null ? "" : label;
+		}
+		
 		if (element instanceof PGridProperty) {
 			Object value = ((PGridProperty<?>) element).getValue();
 			return value == null ? "" : value.toString();

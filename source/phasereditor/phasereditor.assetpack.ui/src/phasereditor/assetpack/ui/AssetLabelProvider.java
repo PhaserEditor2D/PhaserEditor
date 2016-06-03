@@ -45,7 +45,7 @@ import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
+import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetElementModel;
@@ -53,7 +53,7 @@ import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.ScriptAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.VideoAssetModel;
-import phasereditor.assetpack.ui.AssetPackUI.FrameData;
+import phasereditor.assetpack.core.FrameData;
 import phasereditor.audio.core.AudioCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
@@ -195,8 +195,8 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 			}
 		}
 
-		if (element instanceof FrameItem) {
-			FrameItem frame = (FrameItem) element;
+		if (element instanceof Frame) {
+			Frame frame = (Frame) element;
 			IFile file = frame.getAsset().getTextureFile();
 			if (file != null) {
 				try {

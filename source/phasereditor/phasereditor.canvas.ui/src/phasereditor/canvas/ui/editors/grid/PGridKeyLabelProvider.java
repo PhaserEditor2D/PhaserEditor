@@ -19,30 +19,39 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors.palette;
+package phasereditor.canvas.ui.editors.grid;
 
-import javafx.geometry.Rectangle2D;
-import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel.Frame;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.swt.graphics.Font;
 
 /**
  * @author arian
  *
  */
-public class AtlasPaletteNode extends BasePaletteNode {
+public class PGridKeyLabelProvider extends GridLabelProvider {
 
-	private Frame _frame;
-
-	public AtlasPaletteNode(AtlasAssetModel.Frame frame) {
-		super(frame.getAsset().getTextureFile());
-		_frame = frame;
+	public PGridKeyLabelProvider(Viewer viewer) {
+		super(viewer);
 	}
 
 	@Override
-	public void configure(double size) {
-		getImageView().setViewport(
-				new Rectangle2D(_frame.getFrameX(), _frame.getFrameY(), _frame.getFrameW(), _frame.getFrameH()));
-		super.configure(size);
+	public String getText(Object element) {
+		if (element instanceof PGridSection) {
+			return ((PGridSection) element).getName();
+		}
+
+		if (element instanceof PGridProperty<?>) {
+			return ((PGridProperty<?>) element).getName();
+		}
+
+		return super.getText(element);
 	}
 
+	@Override
+	public Font getFont(Object element) {
+		if (element instanceof PGridSection) {
+			return getNormalFont();
+		}
+		return super.getFont(element);
+	}
 }

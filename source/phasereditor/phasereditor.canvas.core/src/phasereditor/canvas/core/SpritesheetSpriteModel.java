@@ -21,8 +21,11 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
+import java.util.List;
+
 import org.json.JSONObject;
 
+import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 
 /**
@@ -50,6 +53,10 @@ public class SpritesheetSpriteModel extends AssetSpriteModel<SpritesheetAssetMod
 
 	public void setFrameIndex(int frameIndex) {
 		_frameIndex = frameIndex;
+	}
+	
+	public List<? extends IAssetElementModel> getFrames() {
+		return getAssetKey().getAsset().getSubElements();
 	}
 
 	@Override

@@ -21,39 +21,20 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
-import org.eclipse.core.resources.IFile;
-
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
-import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
 import phasereditor.canvas.core.AtlasSpriteModel;
-import phasereditor.ui.ImageCache;
 
 /**
  * @author arian
  *
  */
-public class AtlasSpriteNode extends Pane implements ISpriteNode {
+public class AtlasSpriteNode extends FrameNode implements ISpriteNode {
 
 	private AtlasSpriteControl _control;
-	private ImageView _image;
 
-	public AtlasSpriteNode(AtlasSpriteControl control, IFile imageFile) {
+	public AtlasSpriteNode(AtlasSpriteControl control) {
+		super(control.getModel().getFrame());
 		_control = control;
-
-		FrameItem frame = control.getModel().getFrame();
-
-		_image = new ImageView(ImageCache.getFXImage(imageFile));
-		
-		_image.relocate(frame.getSpriteX(), frame.getSpriteY());
-		_image.setViewport(new Rectangle2D(frame.getFrameX(), frame.getFrameY(), frame.getFrameW(), frame.getFrameH()));
-
-		setMaxSize(frame.getSourceW(), frame.getSourceH());
-		setMinSize(frame.getSourceW(), frame.getSourceH());
-		
-		getChildren().add(_image);
 	}
 
 	@Override

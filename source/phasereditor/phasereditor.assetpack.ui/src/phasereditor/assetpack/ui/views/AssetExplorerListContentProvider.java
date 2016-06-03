@@ -50,7 +50,7 @@ public class AssetExplorerListContentProvider extends AssetExplorerContentProvid
 		boolean add = false;
 		add = add || elem instanceof ImageAssetModel;
 		add = add || elem instanceof SpritesheetAssetModel.FrameModel;
-		add = add || elem instanceof AtlasAssetModel.FrameItem;
+		add = add || elem instanceof AtlasAssetModel.Frame;
 
 		if (add) {
 			list.add(elem);

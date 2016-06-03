@@ -22,7 +22,7 @@
 package phasereditor.assetpack.ui.views;
 
 import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
+import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 
 /**
@@ -43,8 +43,8 @@ public class AssetExplorerListLabelProvider extends AssetExplorerLabelProvider {
 			return frame.getIndex() + " (" + asset.getKey() + ")";
 		}
 
-		if (element instanceof AtlasAssetModel.FrameItem) {
-			AtlasAssetModel.FrameItem frame = (FrameItem) element;
+		if (element instanceof AtlasAssetModel.Frame) {
+			AtlasAssetModel.Frame frame = (Frame) element;
 			return frame.getName() + " (" + frame.getAsset().getKey() + ")";
 		}
 		return super.getText(element);

@@ -19,30 +19,41 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors.palette;
+package phasereditor.canvas.ui.shapes;
 
 import javafx.geometry.Rectangle2D;
-import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel.Frame;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import phasereditor.assetpack.core.FrameData;
+import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.ui.ImageCache;
 
 /**
  * @author arian
  *
  */
-public class AtlasPaletteNode extends BasePaletteNode {
+public class FrameNode extends Pane {
 
-	private Frame _frame;
+	private ImageView _image;
 
-	public AtlasPaletteNode(AtlasAssetModel.Frame frame) {
-		super(frame.getAsset().getTextureFile());
-		_frame = frame;
+	public FrameNode(IAssetFrameModel frameModel) {
+		_image = new ImageView(ImageCache.getFXImage(frameModel.getImageFile()));
+		getChildren().add(_image);
+
+		updateContent(frameModel);
+	}
+	
+	public ImageView getImageView() {
+		return _image;
 	}
 
-	@Override
-	public void configure(double size) {
-		getImageView().setViewport(
-				new Rectangle2D(_frame.getFrameX(), _frame.getFrameY(), _frame.getFrameW(), _frame.getFrameH()));
-		super.configure(size);
-	}
+	protected void updateContent(IAssetFrameModel frameModel) {
+		FrameData frame = frameModel.getFrameData();
 
+		_image.relocate(frame.dst.x, frame.dst.y);
+		_image.setViewport(new Rectangle2D(frame.src.x, frame.src.y, frame.src.width, frame.src.height));
+
+		setMaxSize(frame.srcSize.x, frame.srcSize.y);
+		setMinSize(frame.srcSize.x, frame.srcSize.y);
+	}
 }

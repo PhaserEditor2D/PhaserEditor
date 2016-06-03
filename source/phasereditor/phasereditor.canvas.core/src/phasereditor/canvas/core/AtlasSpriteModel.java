@@ -24,7 +24,7 @@ package phasereditor.canvas.core;
 import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
+import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 
 /**
  * @author arian
@@ -32,9 +32,9 @@ import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
  */
 public class AtlasSpriteModel extends BaseSpriteModel implements IAssetFrameShapeModel {
 	public static final String TYPE_NAME = "atlas-sprite";
-	private FrameItem _frame;
+	private Frame _frame;
 
-	public AtlasSpriteModel(GroupModel parent, FrameItem frame) {
+	public AtlasSpriteModel(GroupModel parent, Frame frame) {
 		super(parent, TYPE_NAME);
 		_frame = frame;
 		setEditorName(frame.getName());
@@ -56,11 +56,11 @@ public class AtlasSpriteModel extends BaseSpriteModel implements IAssetFrameShap
 		super.readMetadata(obj);
 
 		JSONObject ref = obj.getJSONObject("asset-ref");
-		_frame = (FrameItem) AssetPackCore.findAssetElement(ref);
+		_frame = (Frame) AssetPackCore.findAssetElement(ref);
 	}
 
 	@Override
-	public FrameItem getFrame() {
+	public Frame getFrame() {
 		return _frame;
 	}
 }

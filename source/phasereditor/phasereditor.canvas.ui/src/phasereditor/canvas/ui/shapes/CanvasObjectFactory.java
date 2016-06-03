@@ -23,6 +23,7 @@ package phasereditor.canvas.ui.shapes;
 
 import phasereditor.canvas.core.AtlasSpriteModel;
 import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.ButtonSpriteModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.ImageSpriteModel;
 import phasereditor.canvas.core.SpritesheetSpriteModel;
@@ -46,6 +47,8 @@ public class CanvasObjectFactory {
 			return control;
 		} else if (model instanceof TileSpriteModel) {
 			return new TileSpriteControl(canvas, (TileSpriteModel) model);
+		} else if (model instanceof ButtonSpriteModel) {
+			return new ButtonSpriteControl(canvas, (ButtonSpriteModel) model);
 		}
 		return null;
 	}

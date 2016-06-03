@@ -19,30 +19,36 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors.palette;
+package phasereditor.canvas.ui.shapes;
 
-import javafx.geometry.Rectangle2D;
-import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel.Frame;
+import javafx.scene.Node;
+import phasereditor.canvas.core.ButtonSpriteModel;
 
 /**
  * @author arian
  *
  */
-public class AtlasPaletteNode extends BasePaletteNode {
+public class ButtonSpriteNode extends FrameNode implements ISpriteNode {
 
-	private Frame _frame;
+	private ButtonSpriteControl _control;
 
-	public AtlasPaletteNode(AtlasAssetModel.Frame frame) {
-		super(frame.getAsset().getTextureFile());
-		_frame = frame;
+	public ButtonSpriteNode(ButtonSpriteControl control) {
+		super(control.getModel().getFrame());
+		_control = control;
 	}
 
 	@Override
-	public void configure(double size) {
-		getImageView().setViewport(
-				new Rectangle2D(_frame.getFrameX(), _frame.getFrameY(), _frame.getFrameW(), _frame.getFrameH()));
-		super.configure(size);
+	public ButtonSpriteModel getModel() {
+		return _control.getModel();
 	}
 
+	@Override
+	public ButtonSpriteControl getControl() {
+		return _control;
+	}
+
+	@Override
+	public Node getNode() {
+		return this;
+	}
 }

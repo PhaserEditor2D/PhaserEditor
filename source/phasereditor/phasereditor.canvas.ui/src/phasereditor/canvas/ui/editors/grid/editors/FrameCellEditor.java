@@ -26,7 +26,8 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import phasereditor.canvas.ui.shapes.SpritesheetControl;
+import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
 
 /**
  * @author arian
@@ -34,21 +35,32 @@ import phasereditor.canvas.ui.shapes.SpritesheetControl;
  */
 public class FrameCellEditor extends DialogCellEditor {
 
-	private SpritesheetControl _control;
+	private PGridFrameProperty _source;
 
-	public FrameCellEditor(Composite parent, SpritesheetControl control) {
+	public FrameCellEditor(Composite parent, PGridFrameProperty source) {
 		super(parent);
-		_control = control;
+		_source = source;
+	}
+
+	@Override
+	protected void updateContents(Object value) {
+		super.updateContents(value);
+		
+		if(value == null) {
+			getDefaultLabel().setText("");
+			return;
+		}
+		
+		getDefaultLabel().setText(((IAssetFrameModel) value).getKey());
 	}
 
 	@Override
 	protected Object openDialogBox(Control cellEditorWindow) {
 		PGridFrameDialog dlg = new PGridFrameDialog(cellEditorWindow.getShell());
-		dlg.setFrames(_control.getFrames());
-		dlg.setImage(_control.getNode().getImage());
-		dlg.setSelectedframe(_control.getModel().getFrameIndex());
+		dlg.setFrames(_source.getFrames());
+		dlg.setSelectedframe(_source.getValue());
 		if (dlg.open() == Window.OK) {
-			return Integer.valueOf(dlg.getSelectedFrame());
+			return dlg.getSelectedFrame();
 		}
 		return null;
 	}

@@ -39,7 +39,7 @@ import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
+import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
@@ -253,7 +253,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			@Override
 			public void selectInControl(Control preview, Object element) {
 				AtlasAssetPreviewComp comp = (AtlasAssetPreviewComp) preview;
-				comp.setSingleFrame((FrameItem) element);
+				comp.setSingleFrame((Frame) element);
 			}
 
 			@Override
@@ -265,7 +265,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			public boolean canReusePreviewControl(Control c, Object elem) {
 				if (c instanceof AtlasAssetPreviewComp) {
 					AtlasAssetPreviewComp comp = (AtlasAssetPreviewComp) c;
-					if (comp.getAtlasCanvas().isSingleFrame() && !(elem instanceof AtlasAssetModel.FrameItem)) {
+					if (comp.getAtlasCanvas().isSingleFrame() && !(elem instanceof AtlasAssetModel.Frame)) {
 						return false;
 					}
 					return true;

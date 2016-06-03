@@ -21,7 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
-import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
+import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
@@ -44,8 +44,8 @@ public class ObjectModelFactory {
 			SpritesheetSpriteModel model = new SpritesheetSpriteModel(parent, asset);
 			model.setFrameIndex(frame.getIndex());
 			return model;
-		} else if (obj instanceof AtlasAssetModel.FrameItem) {
-			return new AtlasSpriteModel(parent, (FrameItem) obj);
+		} else if (obj instanceof AtlasAssetModel.Frame) {
+			return new AtlasSpriteModel(parent, (Frame) obj);
 		}
 		return null;
 	}

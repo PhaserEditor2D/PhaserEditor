@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Composite;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
 import phasereditor.assetpack.ui.AssetPackUI;
-import phasereditor.assetpack.ui.AssetPackUI.FrameData;
+import phasereditor.assetpack.core.FrameData;
 import phasereditor.ui.ImageCanvas;
 import phasereditor.ui.PhaserEditorUI;
 

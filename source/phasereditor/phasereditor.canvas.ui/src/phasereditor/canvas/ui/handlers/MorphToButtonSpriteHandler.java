@@ -11,21 +11,24 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.assetpack.core.AtlasAssetModel.Frame;
+import phasereditor.assetpack.core.IAssetElementModel;
+import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.canvas.core.BaseSpriteModel;
-import phasereditor.canvas.core.TileSpriteModel;
+import phasereditor.canvas.core.ButtonSpriteModel;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.shapes.AtlasSpriteControl;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
+import phasereditor.canvas.ui.shapes.ButtonSpriteControl;
 import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
 import phasereditor.canvas.ui.shapes.ImageSpriteControl;
-import phasereditor.canvas.ui.shapes.TileSpriteControl;
+import phasereditor.canvas.ui.shapes.SpritesheetControl;
 
-public class MorphToTileSpriteHandler extends AbstractHandler {
+public class MorphToButtonSpriteHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -48,6 +51,12 @@ public class MorphToTileSpriteHandler extends AbstractHandler {
 
 				morph(newSelection, srcControl.getNode(), source);
 
+			} else if (control instanceof SpritesheetControl) {
+				SpritesheetControl srcControl = (SpritesheetControl) control;
+				IAssetElementModel source = srcControl.getModel().getAssetKey().getAsset().getSubElements()
+						.get(srcControl.getModel().getFrameIndex());
+
+				morph(newSelection, srcControl.getNode(), source);
 			}
 		}
 
@@ -63,19 +72,17 @@ public class MorphToTileSpriteHandler extends AbstractHandler {
 		GroupControl parent = srcControl.getIObjectNode().getGroup().getControl();
 		BaseSpriteModel srcModel = (BaseSpriteModel) srcControl.getModel();
 
-		TileSpriteModel model = new TileSpriteModel(parent.getModel(), assetKey);
+		ButtonSpriteModel model = new ButtonSpriteModel(parent.getModel(),  (IAssetFrameModel) assetKey);
 
 		model.updateWith(srcModel);
-		model.setWidth(srcControl.getTextureWidth());
-		model.setHeight(srcControl.getTextureHeight());
 
-		TileSpriteControl tileControl = new TileSpriteControl(srcControl.getCanvas(), model);
+		ButtonSpriteControl buttonControl = new ButtonSpriteControl(srcControl.getCanvas(), model);
 
 		int i = parent.getNode().getChildren().indexOf(srcNode);
 		parent.removeChild(srcControl.getIObjectNode());
-		parent.addChild(i, tileControl.getIObjectNode());
+		parent.addChild(i, buttonControl.getIObjectNode());
 
-		newSelection.add(tileControl.getNode());
+		newSelection.add(buttonControl.getNode());
 	}
 
 }

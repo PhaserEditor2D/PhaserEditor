@@ -23,7 +23,7 @@ package phasereditor.canvas.ui.shapes;
 
 import org.json.JSONObject;
 
-import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
+import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.canvas.core.AtlasSpriteModel;
 import phasereditor.canvas.core.GroupModel;
 
@@ -43,7 +43,7 @@ public class ButtonAtlasShapeModel extends AtlasSpriteModel {
 	private Integer _downFrame;
 	private Integer _upFrame;
 
-	public ButtonAtlasShapeModel(GroupModel parent, FrameItem frame) {
+	public ButtonAtlasShapeModel(GroupModel parent, Frame frame) {
 		super(parent, frame);
 	}
 

@@ -40,7 +40,6 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -75,6 +74,7 @@ import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
+import phasereditor.assetpack.core.FrameData;
 import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.PhysicsAssetModel;
@@ -376,12 +376,6 @@ public class AssetPackUI {
 			}
 		}
 		return new FilesLabelProvider();
-	}
-
-	public static class FrameData {
-		public Rectangle src;
-		public Rectangle dst;
-		public Point srcSize;
 	}
 
 	public static List<FrameData> generateSpriteSheetRects(SpritesheetAssetModel s, Rectangle src, Rectangle dst) {
@@ -731,7 +725,7 @@ public class AssetPackUI {
 
 				@Override
 				public boolean isSupported(Object info) {
-					return info instanceof AtlasAssetModel.FrameItem;
+					return info instanceof AtlasAssetModel.Frame;
 				}
 			});
 

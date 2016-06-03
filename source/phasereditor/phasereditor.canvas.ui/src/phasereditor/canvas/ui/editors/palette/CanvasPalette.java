@@ -35,7 +35,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.TilePane;
 import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel.FrameItem;
+import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 
@@ -99,8 +99,8 @@ public class CanvasPalette extends FXCanvas {
 
 		if (source instanceof ImageAssetModel) {
 			node = new ImagePaletteNode((ImageAssetModel) source);
-		} else if (source instanceof AtlasAssetModel.FrameItem) {
-			node = new AtlasPaletteNode((FrameItem) source);
+		} else if (source instanceof AtlasAssetModel.Frame) {
+			node = new AtlasPaletteNode((Frame) source);
 		}
 		if (source instanceof AtlasAssetModel) {
 			for (IAssetElementModel elem : ((AtlasAssetModel) source).getSubElements()) {

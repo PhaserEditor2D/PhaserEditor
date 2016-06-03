@@ -19,30 +19,15 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors.palette;
+package phasereditor.assetpack.core;
 
-import javafx.geometry.Rectangle2D;
-import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel.Frame;
+import org.eclipse.core.resources.IFile;
 
 /**
  * @author arian
  *
  */
-public class AtlasPaletteNode extends BasePaletteNode {
-
-	private Frame _frame;
-
-	public AtlasPaletteNode(AtlasAssetModel.Frame frame) {
-		super(frame.getAsset().getTextureFile());
-		_frame = frame;
-	}
-
-	@Override
-	public void configure(double size) {
-		getImageView().setViewport(
-				new Rectangle2D(_frame.getFrameX(), _frame.getFrameY(), _frame.getFrameW(), _frame.getFrameH()));
-		super.configure(size);
-	}
-
+public interface IAssetFrameModel extends IAssetKey {
+	public FrameData getFrameData();
+	public IFile getImageFile();
 }

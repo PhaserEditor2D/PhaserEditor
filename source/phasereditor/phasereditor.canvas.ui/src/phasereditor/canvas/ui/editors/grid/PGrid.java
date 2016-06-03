@@ -87,7 +87,7 @@ public class PGrid extends Composite {
 		});
 
 		_colProperty = new TreeViewerColumn(_treeViewer, SWT.NONE);
-		_colProperty.setLabelProvider(new KeyLabelProvider(_treeViewer));
+		_colProperty.setLabelProvider(new PGridKeyLabelProvider(_treeViewer));
 		TreeColumn trclmnProperty = _colProperty.getColumn();
 		trclmnProperty.addControlListener(new ControlAdapter() {
 			@Override
@@ -100,7 +100,7 @@ public class PGrid extends Composite {
 
 		_colValue = new TreeViewerColumn(_treeViewer, SWT.NONE);
 		_colValue.setEditingSupport(new PGridEditingSupport(_treeViewer));
-		_colValue.setLabelProvider(new ValueLabelProvider(_treeViewer));
+		_colValue.setLabelProvider(new PGridValueLabelProvider(_treeViewer));
 		TreeColumn trclmnValue = _colValue.getColumn();
 		trclmnValue.setWidth(100);
 		trclmnValue.setText("value");
@@ -113,7 +113,7 @@ public class PGrid extends Composite {
 	private PatternFilter createPatternFilter() {
 		PatternFilter filter = new PatternFilter() {
 
-			private KeyLabelProvider labelProvider = new KeyLabelProvider(_treeViewer);
+			private PGridKeyLabelProvider labelProvider = new PGridKeyLabelProvider(_treeViewer);
 
 			@Override
 			protected boolean isLeafMatch(Viewer viewer, Object element) {
