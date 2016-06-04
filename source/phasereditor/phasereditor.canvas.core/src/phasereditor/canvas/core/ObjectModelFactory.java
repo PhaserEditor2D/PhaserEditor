@@ -21,12 +21,11 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
-import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.core.AtlasAssetModel;
+import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
-import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
 
 /**
  * @author arian
@@ -37,12 +36,9 @@ public class ObjectModelFactory {
 		if (obj instanceof ImageAssetModel) {
 			return new ImageSpriteModel(parent, (ImageAssetModel) obj);
 		} else if (obj instanceof SpritesheetAssetModel) {
-			return new SpritesheetSpriteModel(parent, (SpritesheetAssetModel) obj);
+			return new SpritesheetSpriteModel(parent, ((SpritesheetAssetModel) obj).getFrames().get(0));
 		} else if (obj instanceof SpritesheetAssetModel.FrameModel) {
-			FrameModel frame = (SpritesheetAssetModel.FrameModel) obj;
-			SpritesheetAssetModel asset = frame.getAsset();
-			SpritesheetSpriteModel model = new SpritesheetSpriteModel(parent, asset);
-			model.setFrameIndex(frame.getIndex());
+			SpritesheetSpriteModel model = new SpritesheetSpriteModel(parent, (SpritesheetAssetModel.FrameModel) obj);
 			return model;
 		} else if (obj instanceof AtlasAssetModel.Frame) {
 			return new AtlasSpriteModel(parent, (Frame) obj);

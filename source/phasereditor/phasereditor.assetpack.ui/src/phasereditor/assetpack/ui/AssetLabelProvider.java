@@ -35,7 +35,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
@@ -48,12 +47,12 @@ import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
+import phasereditor.assetpack.core.FrameData;
 import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.ScriptAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.VideoAssetModel;
-import phasereditor.assetpack.core.FrameData;
 import phasereditor.audio.core.AudioCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
@@ -61,14 +60,19 @@ import phasereditor.ui.IconCache;
 import phasereditor.ui.PhaserEditorUI;
 
 public class AssetLabelProvider extends LabelProvider implements IEditorSharedImages {
+
+	public final static AssetLabelProvider GLOBAL_16 = new AssetLabelProvider(16, true);
+	public final static AssetLabelProvider GLOBAL_48 = new AssetLabelProvider(48, true);
+
 	private final int _iconSize;
 	private WorkbenchLabelProvider _workbenchLabelProvider;
 	private IconCache _cache = new IconCache();
-	private Control _control;
 	private BufferedImage _filmOverlay;
+	private boolean _global;
 
-	public AssetLabelProvider(int iconSize) {
+	protected AssetLabelProvider(int iconSize, boolean global) {
 		_iconSize = iconSize;
+		_global = global;
 		_workbenchLabelProvider = new WorkbenchLabelProvider();
 		try {
 			_filmOverlay = getFilmOverlay();
@@ -82,18 +86,6 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 		return ImageIO.read(new URL("platform:/plugin/phasereditor.ui/icons/film-overlay.png"));
 	}
 
-	public AssetLabelProvider() {
-		this(16);
-	}
-
-	public void setControl(Control control) {
-		_control = control;
-	}
-
-	public Control getControl() {
-		return _control;
-	}
-
 	public IconCache getCache() {
 		return _cache;
 	}
@@ -101,7 +93,9 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 	@Override
 	public void dispose() {
 		super.dispose();
-		_cache.dispose();
+		if (!_global) {
+			_cache.dispose();
+		}
 	}
 
 	public static Image getFileImage() {
@@ -122,6 +116,10 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 
 	@Override
 	public Image getImage(Object element) {
+		if (element == null) {
+			return null;
+		}
+
 		if (element instanceof IResource) {
 			return _workbenchLabelProvider.getImage(element);
 		}

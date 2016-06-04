@@ -30,9 +30,11 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
@@ -53,7 +55,7 @@ public class AudioSpriteAssetPreviewComp extends Composite {
 	private AudioSpriteAssetModel _model;
 	private Label _filesLabel;
 
-	private static class AudioSpritesLabelProvider extends AssetLabelProvider {
+	private static class AudioSpritesLabelProvider extends LabelProvider {
 
 		public AudioSpritesLabelProvider() {
 		}
@@ -64,7 +66,12 @@ public class AudioSpriteAssetPreviewComp extends Composite {
 				AssetAudioSprite sprite = (AssetAudioSprite) element;
 				return sprite.getName() + " [" + sprite.getStart() + ", " + sprite.getEnd() + "]";
 			}
-			return super.getText(element);
+			return AssetLabelProvider.GLOBAL_16.getText(element);
+		}
+		
+		@Override
+		public Image getImage(Object element) {
+			return AssetLabelProvider.GLOBAL_16.getImage(element);
 		}
 
 	}

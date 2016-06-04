@@ -21,24 +21,26 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.canvas.core.AssetSpriteModel;
+import phasereditor.canvas.core.AtlasSpriteModel;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.GroupModel;
-import phasereditor.canvas.core.IAssetFrameShapeModel;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
 import phasereditor.ui.EditorSharedImages;
+import phasereditor.ui.IEditorSharedImages;
 
 /**
  * @author arian
  *
  */
-public class OutlineLabelProvider extends AssetLabelProvider {
+public class OutlineLabelProvider extends LabelProvider implements IEditorSharedImages {
 
 	@Override
 	public Image getImage(Object element) {
@@ -54,12 +56,11 @@ public class OutlineLabelProvider extends AssetLabelProvider {
 
 			if (model instanceof AssetSpriteModel) {
 				AssetSpriteModel<?> asstModel = (AssetSpriteModel<?>) model;
-				return super.getImage(asstModel.getAssetKey());
+				return AssetLabelProvider.GLOBAL_16.getImage(asstModel.getAssetKey());
 			}
 
-			if (model instanceof IAssetFrameShapeModel) {
-				IAssetFrameShapeModel asstModel = (IAssetFrameShapeModel) model;
-				return super.getImage(asstModel.getFrame());
+			if (model instanceof AtlasSpriteModel) {
+				return AssetLabelProvider.GLOBAL_16.getImage(((AtlasSpriteModel) model).getAssetKey());
 			}
 		}
 
@@ -71,9 +72,9 @@ public class OutlineLabelProvider extends AssetLabelProvider {
 
 		if (element instanceof IObjectNode) {
 			StringBuilder sb = new StringBuilder();
-			
+
 			BaseObjectModel model = ((IObjectNode) element).getControl().getModel();
-			
+
 			sb.append(model.getEditorName() + " ");
 
 			if (element instanceof GroupNode) {

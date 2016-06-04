@@ -21,16 +21,15 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.views;
 
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.swt.graphics.Image;
+
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.views.AssetExplorer.Container;
 
-class AssetExplorerLabelProvider extends AssetLabelProvider {
-	public AssetExplorerLabelProvider() {
-		super(16);
-	}
+class AssetExplorerLabelProvider extends LabelProvider {
 
-	protected AssetExplorerLabelProvider(int iconSize) {
-		super(iconSize);
+	public AssetExplorerLabelProvider() {
 	}
 
 	@Override
@@ -39,6 +38,11 @@ class AssetExplorerLabelProvider extends AssetLabelProvider {
 			return ((Container) element).name;
 		}
 
-		return super.getText(element);
+		return AssetLabelProvider.GLOBAL_16.getText(element);
+	}
+
+	@Override
+	public Image getImage(Object element) {
+		return AssetLabelProvider.GLOBAL_16.getImage(element);
 	}
 }

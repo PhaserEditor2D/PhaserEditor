@@ -37,11 +37,28 @@ import phasereditor.canvas.ui.editors.grid.PGridSection;
  */
 public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 
-	private IAssetFrameModel _frame;
 	private FrameData _frameData;
 
 	public ButtonSpriteControl(ObjectCanvas canvas, ButtonSpriteModel model) {
 		super(canvas, model);
+	}
+
+	abstract class ButtonFrameProperty extends PGridFrameProperty {
+
+		public ButtonFrameProperty(String name) {
+			super(name);
+		}
+		
+		@Override
+		public List<?> getFrames() {
+			return getModel().getAssetKey().getAsset().getSubElements();
+		}
+
+		@Override
+		public boolean isModified() {
+			return getValue() != null;
+		}
+
 	}
 
 	@Override
@@ -50,13 +67,22 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 
 		PGridSection section = new PGridSection("Button");
 
-		PGridFrameProperty overFrame_property = new PGridFrameProperty("overFrame") {
+		ButtonFrameProperty frame_property = new ButtonFrameProperty("frame") {
 
 			@Override
-			public List<?> getFrames() {
-				return getModel().getAssetKey().getAsset().getSubElements();
+			public void setValue(IAssetFrameModel value) {
+				getModel().setAssetKey(value);
+				updateGridChange();
 			}
-			
+
+			@Override
+			public IAssetFrameModel getValue() {
+				return (IAssetFrameModel) getModel().getAssetKey();
+			}
+		};
+
+		PGridFrameProperty overFrame_property = new ButtonFrameProperty("overFrame") {
+
 			@Override
 			public void setValue(IAssetFrameModel value) {
 				getModel().setOverFrame(value);
@@ -64,25 +90,12 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 			}
 
 			@Override
-			public boolean isModified() {
-				return getModel().getOverFrame() != null;
-			}
-
-			@Override
 			public IAssetFrameModel getValue() {
-				if (getModel().getOverFrame() == null) {
-					return null;
-				}
 				return getModel().getOverFrame();
-			}
-
-			@Override
-			public String getLabel() {
-				IAssetFrameModel frame = getModel().getOverFrame();
-				return frame == null ? "" : frame.getKey();
 			}
 		};
 
+		section.add(frame_property);
 		section.add(overFrame_property);
 
 		propModel.getSections().add(section);
@@ -91,9 +104,13 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 
 	@Override
 	public void updateFromModel() {
-		_frame = getModel().getFrame();
-		_frameData = _frame.getFrameData();
+		IAssetFrameModel frame = (IAssetFrameModel) getModel().getAssetKey();
+
+		_frameData = frame.getFrameData();
+
 		super.updateFromModel();
+
+		getNode().updateContent(frame);
 	}
 
 	@Override

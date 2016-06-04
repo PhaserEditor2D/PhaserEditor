@@ -31,6 +31,9 @@ import javafx.scene.effect.ColorInput;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
+import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridColorProperty;
@@ -69,6 +72,19 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 
 	@Override
 	public void updateFromModel() {
+		T model = getModel();
+
+		// update node of frame based sprites
+		if (model instanceof AssetSpriteModel<?>) {
+			IAssetKey key = ((AssetSpriteModel<?>) model).getAssetKey();
+			if (key != null && key instanceof IAssetFrameModel) {
+				IAssetFrameModel frame = (IAssetFrameModel) key;
+				if (getNode() instanceof FrameNode) {
+					((FrameNode) getNode()).updateContent(frame);
+				}
+			}
+		}
+
 		super.updateFromModel();
 
 		updateTint();

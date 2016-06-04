@@ -93,7 +93,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 		public AssetModelPreviewFactory() {
 		}
 
-		private AssetLabelProvider _labelProvider = new AssetLabelProvider();
+		private AssetLabelProvider _labelProvider = AssetLabelProvider.GLOBAL_16;
 
 		@Override
 		public Image getIcon(Object element) {

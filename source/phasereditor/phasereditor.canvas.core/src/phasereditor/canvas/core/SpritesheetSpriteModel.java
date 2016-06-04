@@ -32,42 +32,19 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
  * @author arian
  *
  */
-public class SpritesheetSpriteModel extends AssetSpriteModel<SpritesheetAssetModel> {
+public class SpritesheetSpriteModel extends AssetSpriteModel<SpritesheetAssetModel.FrameModel> {
 
 	public static final String TYPE_NAME = "spritesheet";
 
-	private int _frameIndex;
-
-	public SpritesheetSpriteModel(GroupModel parent, SpritesheetAssetModel asset) {
-		super(parent, asset, TYPE_NAME);
-		_frameIndex = 0;
+	public SpritesheetSpriteModel(GroupModel parent, SpritesheetAssetModel.FrameModel frame) {
+		super(parent, frame, TYPE_NAME);
 	}
 
 	public SpritesheetSpriteModel(GroupModel parent, JSONObject obj) {
 		super(parent, TYPE_NAME, obj);
 	}
 	
-	public int getFrameIndex() {
-		return _frameIndex;
-	}
-
-	public void setFrameIndex(int frameIndex) {
-		_frameIndex = frameIndex;
-	}
-	
 	public List<? extends IAssetElementModel> getFrames() {
 		return getAssetKey().getAsset().getSubElements();
-	}
-
-	@Override
-	protected void writeInfo(JSONObject jsonInfo) {
-		super.writeInfo(jsonInfo);
-		jsonInfo.put("frameIndex", _frameIndex);
-	}
-
-	@Override
-	protected void readInfo(JSONObject jsonInfo) {
-		super.readInfo(jsonInfo);
-		_frameIndex = jsonInfo.getInt("frameIndex");
 	}
 }

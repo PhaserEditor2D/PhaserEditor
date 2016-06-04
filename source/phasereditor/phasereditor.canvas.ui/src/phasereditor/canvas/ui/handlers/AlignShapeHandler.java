@@ -10,7 +10,7 @@ import javafx.geometry.Rectangle2D;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
-import phasereditor.canvas.ui.editors.behaviors.UpdateChangeBehavior;
+import phasereditor.canvas.ui.editors.behaviors.UpdateBehavior;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
@@ -141,7 +141,7 @@ public class AlignShapeHandler extends AbstractHandler {
 
 			control.updateFromModel();
 
-			UpdateChangeBehavior update = control.getCanvas().getUpdateBehavior();
+			UpdateBehavior update = control.getCanvas().getUpdateBehavior();
 			update.update_Grid_from_PropertyChange(control.getX_property());
 			update.update_Grid_from_PropertyChange(control.getY_property());
 		}

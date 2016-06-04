@@ -55,7 +55,7 @@ public class PhysicsAssetPreviewComp extends Composite {
 		_tableViewer = new TableViewer(this, SWT.FULL_SELECTION);
 		Table _table = _tableViewer.getTable();
 		_table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		_tableViewer.setLabelProvider(new AssetLabelProvider());
+		_tableViewer.setLabelProvider(AssetLabelProvider.GLOBAL_16);
 		_tableViewer.setContentProvider(new ArrayContentProvider());
 
 		afterCreateWidgets();

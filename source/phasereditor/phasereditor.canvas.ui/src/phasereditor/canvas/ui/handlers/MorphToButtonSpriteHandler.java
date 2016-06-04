@@ -26,7 +26,7 @@ import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
 import phasereditor.canvas.ui.shapes.ImageSpriteControl;
-import phasereditor.canvas.ui.shapes.SpritesheetControl;
+import phasereditor.canvas.ui.shapes.SpritesheetSpriteControl;
 
 public class MorphToButtonSpriteHandler extends AbstractHandler {
 
@@ -47,14 +47,13 @@ public class MorphToButtonSpriteHandler extends AbstractHandler {
 
 			} else if (control instanceof AtlasSpriteControl) {
 				AtlasSpriteControl srcControl = (AtlasSpriteControl) control;
-				Frame source = srcControl.getModel().getFrame();
+				Frame source = srcControl.getModel().getAssetKey();
 
 				morph(newSelection, srcControl.getNode(), source);
 
-			} else if (control instanceof SpritesheetControl) {
-				SpritesheetControl srcControl = (SpritesheetControl) control;
-				IAssetElementModel source = srcControl.getModel().getAssetKey().getAsset().getSubElements()
-						.get(srcControl.getModel().getFrameIndex());
+			} else if (control instanceof SpritesheetSpriteControl) {
+				SpritesheetSpriteControl srcControl = (SpritesheetSpriteControl) control;
+				IAssetElementModel source = srcControl.getModel().getAssetKey();
 
 				morph(newSelection, srcControl.getNode(), source);
 			}

@@ -447,4 +447,9 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		op.perform(parent.getChildren(), _node);
 		_canvas.getWorldModel().sendTo(getModel(), op);
 	}
+
+	public void rebuild() {
+		T model = getModel();
+		model.rebuild();
+	}
 }

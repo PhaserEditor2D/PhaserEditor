@@ -68,7 +68,7 @@ public class AssetProposalComputer extends BaseProposalComputer {
 
 	static {
 		_elementImage = AssetLabelProvider.getElementImage();
-		_labelProvider = new AssetLabelProvider();
+		_labelProvider = AssetLabelProvider.GLOBAL_16;
 	}
 
 	public AssetProposalComputer() {

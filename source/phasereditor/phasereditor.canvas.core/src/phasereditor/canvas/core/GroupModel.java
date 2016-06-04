@@ -170,4 +170,11 @@ public class GroupModel extends BaseObjectModel {
 	public void removeChild(BaseObjectModel model) {
 		_children.remove(model);
 	}
+
+	@Override
+	public void rebuild() {
+		for(BaseObjectModel model : _children) {
+			model.rebuild();
+		}
+	}
 }

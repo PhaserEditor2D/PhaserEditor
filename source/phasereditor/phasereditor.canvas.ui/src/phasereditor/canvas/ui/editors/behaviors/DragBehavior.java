@@ -79,7 +79,7 @@ public class DragBehavior {
 			BaseObjectModel model = control.getModel();
 			model.setLocation(node.getLayoutX(), node.getLayoutY());
 
-			UpdateChangeBehavior updateBehavior = _canvas.getUpdateBehavior();
+			UpdateBehavior updateBehavior = _canvas.getUpdateBehavior();
 			updateBehavior.update_Grid_from_PropertyChange(control.getX_property());
 			updateBehavior.update_Grid_from_PropertyChange(control.getY_property());
 		}

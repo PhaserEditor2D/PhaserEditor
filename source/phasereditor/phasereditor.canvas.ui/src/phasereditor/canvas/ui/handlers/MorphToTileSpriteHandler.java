@@ -44,7 +44,7 @@ public class MorphToTileSpriteHandler extends AbstractHandler {
 
 			} else if (control instanceof AtlasSpriteControl) {
 				AtlasSpriteControl srcControl = (AtlasSpriteControl) control;
-				Frame source = srcControl.getModel().getFrame();
+				Frame source = srcControl.getModel().getAssetKey();
 
 				morph(newSelection, srcControl.getNode(), source);
 

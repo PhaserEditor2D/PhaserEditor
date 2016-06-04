@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.core;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -211,13 +210,14 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 
 		// build and validate all the affected packs
 		{
-			Collection<AssetPackModel> buildPacks;
-			if (buildDelta == null) {
-				buildPacks = packDelta.getPacks();
-			} else {
-				buildPacks = allPacks;
-			}
-			for (AssetPackModel pack : buildPacks) {
+//			Collection<AssetPackModel> buildPacks;
+//			if (buildDelta == null) {
+//				buildPacks = packDelta.getPacks();
+//			} else {
+//				buildPacks = allPacks;
+//			}
+			
+			for (AssetPackModel pack : packDelta.getPacks()) {
 				List<IStatus> problems = pack.build();
 				for (IStatus problem : problems) {
 					createAssetPackMarker(pack.getFile(), problem);

@@ -23,8 +23,10 @@ package phasereditor.canvas.core;
 
 import org.json.JSONObject;
 
+import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetType;
+import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.IAssetKey;
 
 /**
@@ -69,5 +71,38 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 		super.readMetadata(obj);
 
 		_assetKey = (T) findAsset(obj);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see phasereditor.canvas.core.BaseObjectModel#rebuild()
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public void rebuild() {
+		if (_assetKey == null) {
+			// nothing to do
+			return;
+		}
+
+		AssetModel asset = _assetKey.getAsset();
+		if (!asset.isOnWorkspace()) {
+			// the asset was deleted! set the key to null.
+			_assetKey = null;
+			return;
+		}
+
+		// if the asset key is a sub-element then reconnect with it
+		if (_assetKey instanceof IAssetElementModel) {
+			for (IAssetElementModel elem : asset.getSubElements()) {
+				if (elem.getKey().equals(_assetKey.getKey())) {
+					_assetKey = (T) elem;
+					return;
+				}
+			}
+			// elem not found, set it to null
+			_assetKey = null;
+		}
 	}
 }

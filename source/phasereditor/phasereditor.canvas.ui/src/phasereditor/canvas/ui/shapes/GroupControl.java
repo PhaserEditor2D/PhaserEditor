@@ -225,4 +225,26 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 
 		group.getControl().updateFromModel();
 	}
+
+	@Override
+	public void rebuild() {
+		for (Node node : getNode().getChildren()) {
+			IObjectNode inode = (IObjectNode) node;
+			inode.getControl().rebuild();
+		}
+	}
+
+	public void updateAllFromModel() {
+		for (Node node : getNode().getChildren()) {
+			IObjectNode inode = (IObjectNode) node;
+			BaseObjectControl<?> control = inode.getControl();
+			if (control instanceof GroupControl) {
+				((GroupControl) control).updateAllFromModel();
+			} else {
+				control.updateFromModel();
+			}
+		}
+
+		updateFromModel();
+	}
 }

@@ -88,7 +88,7 @@ public class PGridEditingSupport extends EditingSupport {
 		} else if (element instanceof PGridBooleanProperty) {
 			((PGridBooleanProperty) element).setValue((Boolean) value);
 		} else if (element instanceof PGridFrameProperty) {
-			((PGridFrameProperty) element).setValue( (IAssetFrameModel) value);
+			((PGridFrameProperty) element).setValue((IAssetFrameModel) value);
 		} else if (element instanceof PGridColorProperty) {
 			((PGridColorProperty) element).setValue((RGB) value);
 		}

@@ -21,34 +21,39 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid.editors;
 
+import static java.lang.System.out;
+
 import java.util.List;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.dialogs.FilteredTree;
+import org.eclipse.ui.dialogs.PatternFilter;
 
-import javafx.collections.FXCollections;
-import javafx.embed.swt.FXCanvas;
-import javafx.geometry.Orientation;
-import javafx.scene.Scene;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.util.Callback;
+import phasereditor.assetpack.ui.AssetLabelProvider;
 
 /**
  * @author arian
  *
  */
 public class PGridFrameDialog extends Dialog {
-	private FXCanvas _canvas;
-	private List<Object> _frames;
-	private Object _selectedframe;
-	private ListView<Object> _listView;
+
+	private Composite _container;
+	private TreeViewer _viewer;
+	private List<?> _frames;
+	private Object _result;
+	private Object _selection;
 
 	/**
 	 * Create the dialog.
@@ -57,7 +62,6 @@ public class PGridFrameDialog extends Dialog {
 	 */
 	public PGridFrameDialog(Shell parentShell) {
 		super(parentShell);
-		setShellStyle(SWT.SHELL_TRIM);
 	}
 
 	/**
@@ -67,41 +71,80 @@ public class PGridFrameDialog extends Dialog {
 	 */
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		Composite container = (Composite) super.createDialogArea(parent);
-
-		_canvas = new FXCanvas(container, SWT.BORDER);
-		_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		_container = (Composite) super.createDialogArea(parent);
+		FillLayout fl_container = new FillLayout(SWT.HORIZONTAL);
+		fl_container.marginWidth = 5;
+		fl_container.marginHeight = 5;
+		_container.setLayout(fl_container);
 
 		afterCreateWidgets();
 
-		return container;
-	}
-
-	@Override
-	protected void configureShell(Shell newShell) {
-		super.configureShell(newShell);
-		newShell.setText("Frame Selector");
+		return _container;
 	}
 
 	private void afterCreateWidgets() {
-		_listView = new ListView<>(FXCollections.observableList(_frames));
-		_listView.setOrientation(Orientation.VERTICAL);
-		_listView.setCellFactory(new Callback<ListView<Object>, ListCell<Object>>() {
+		FilteredTree tree = new FilteredTree(_container, SWT.SINGLE, new PatternFilter(), true);
+		tree.setQuickSelectionMode(true);
+		_viewer = tree.getViewer();
+		_viewer.setContentProvider(new ITreeContentProvider() {
 
 			@Override
-			public ListCell<Object> call(ListView<Object> param) {
-				return new FrameCell();
+			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+				//
+			}
+
+			@Override
+			public void dispose() {
+				//
+			}
+
+			@Override
+			public boolean hasChildren(Object element) {
+				return false;
+			}
+
+			@Override
+			public Object getParent(Object element) {
+				return null;
+			}
+
+			@SuppressWarnings("synthetic-access")
+			@Override
+			public Object[] getElements(Object inputElement) {
+				if (inputElement == _frames) {
+					return _frames.toArray();
+				}
+				return new Object[0];
+			}
+
+			@Override
+			public Object[] getChildren(Object parentElement) {
+				return getElements(parentElement);
 			}
 		});
-		_listView.getSelectionModel().select(_listView.getItems().indexOf(_selectedframe));
-		_canvas.setScene(new Scene(_listView));
-		_canvas.setFocus();
+		_viewer.setLabelProvider(AssetLabelProvider.GLOBAL_48);
+		_viewer.setInput(_frames);
+		out.println(_selection.hashCode() + " here567");
+		_viewer.setSelection(new StructuredSelection(_selection), true);
 	}
 
+	public void setFrames(List<?> frames) {
+		_frames = frames;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.dialogs.Dialog#okPressed()
+	 */
 	@Override
 	protected void okPressed() {
-		_selectedframe = _listView.getSelectionModel().getSelectedItem();
+		_result = ((IStructuredSelection) _viewer.getSelection()).getFirstElement();
 		super.okPressed();
+	}
+
+	public Object getResult() {
+		return _result;
 	}
 
 	/**
@@ -120,19 +163,11 @@ public class PGridFrameDialog extends Dialog {
 	 */
 	@Override
 	protected Point getInitialSize() {
-		return new Point(367, 287);
+		return new Point(450, 300);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void setFrames(List frames) {
-		_frames = frames;
+	public void setSelectedItem(Object selection) {
+		_selection = selection;
 	}
 
-	public Object getSelectedFrame() {
-		return _selectedframe;
-	}
-
-	public void setSelectedframe(Object selframe) {
-		_selectedframe = selframe;
-	}
 }

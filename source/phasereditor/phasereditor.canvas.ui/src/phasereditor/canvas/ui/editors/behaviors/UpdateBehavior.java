@@ -21,42 +21,96 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.behaviors;
 
+import static java.lang.System.out;
+
 import java.beans.PropertyChangeEvent;
 import java.security.InvalidParameterException;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 
+import javafx.application.Platform;
+import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.AssetPackCore.IPacksChangeListener;
+import phasereditor.assetpack.core.AssetPackCore.PackDelta;
+import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGrid;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridProperty;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
+import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
- * A class to update the grid, from canvas changes, and update the canvas, from
- * grid changes.
- * 
  * @author arian
- *
  */
-public class UpdateChangeBehavior {
+public class UpdateBehavior {
 	private ObjectCanvas _canvas;
 	private PGrid _grid;
 	private TreeViewer _outline;
+	private IPacksChangeListener _packListener;
 
-	public UpdateChangeBehavior(ObjectCanvas canvas, PGrid grid, TreeViewer outline) {
+	public UpdateBehavior(ObjectCanvas canvas, PGrid grid, TreeViewer outline) {
 		super();
 		_canvas = canvas;
 		_grid = grid;
 		_outline = outline;
 
 		outline.addSelectionChangedListener(this::update_Grid_from_Selection);
-		canvas.getSelectionBehavior().addSelectionChangedListener(this::update_Grid_from_Selection);
-		canvas.getWorldModel().addPropertyChangeListener(WorldModel.PROP_STRUCTURE, this::modelStructuredChanged);
+		_canvas.getSelectionBehavior().addSelectionChangedListener(this::update_Grid_from_Selection);
+		_canvas.getWorldModel().addPropertyChangeListener(WorldModel.PROP_STRUCTURE, this::modelStructuredChanged);
+
+		_packListener = new IPacksChangeListener() {
+
+			@Override
+			public void packsChanged(PackDelta delta) {
+				IProject project = canvas.getWorldModel().getFile().getProject();
+				for (AssetPackModel pack : delta.getPacks()) {
+					if (pack.getFile().getProject().equals(project)) {
+						rebuild();
+						return;
+					}
+				}
+
+				// TODO: this can be improved and update only the affected
+				// nodes!
+				for (AssetModel asset : delta.getAssets()) {
+					AssetPackModel pack = asset.getPack();
+					if (pack.getFile().getProject().equals(project)) {
+						rebuild();
+						return;
+					}
+				}
+			}
+
+		};
+		AssetPackCore.addPacksChangedListener(_packListener);
+	}
+
+	public void dispose() {
+		AssetPackCore.removePacksChangedListener(_packListener);
+	}
+
+	public void rebuild() {
+		out.println("Rebuild canvas " + _canvas.getWorldModel().getFile().getLocation());
+
+		GroupControl control = _canvas.getWorldNode().getControl();
+		control.rebuild();
+		Platform.runLater(new Runnable() {
+
+			@SuppressWarnings("synthetic-access")
+			@Override
+			public void run() {
+				control.updateAllFromModel();
+				_canvas.getZoomBehavior().updateZoomAndPan();
+				_canvas.getSelectionBehavior().updateSelectedNodes();
+			}
+		});
 	}
 
 	@SuppressWarnings("unused")

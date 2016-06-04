@@ -32,7 +32,7 @@ import phasereditor.assetpack.core.IAssetKey;
  * @author arian
  *
  */
-public class BaseObjectModel {
+public abstract class BaseObjectModel {
 	private GroupModel _parent;
 	private String _typeName;
 	private String _editorName;
@@ -79,6 +79,8 @@ public class BaseObjectModel {
 	protected void readMetadata(JSONObject obj) {
 		// nothing
 	}
+	
+	public abstract void rebuild();
 
 	public String getLabel() {
 		return _editorName + "[" + _typeName + "]";

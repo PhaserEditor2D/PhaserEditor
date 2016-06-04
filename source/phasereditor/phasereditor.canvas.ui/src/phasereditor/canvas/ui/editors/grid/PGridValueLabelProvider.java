@@ -28,6 +28,7 @@ import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 
+import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.ui.PhaserEditorUI;
 
 /**
@@ -100,6 +101,11 @@ public class PGridValueLabelProvider extends GridLabelProvider {
 			_images.put(value, image);
 			return image;
 		}
+		
+		if (element instanceof PGridFrameProperty) {
+			return AssetLabelProvider.GLOBAL_16.getImage(((PGridFrameProperty) element).getValue());
+		}
+		
 		return super.getImage(element);
 	}
 

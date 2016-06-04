@@ -47,11 +47,11 @@ public class AtlasSpriteControl extends BaseSpriteControl<AtlasSpriteModel> {
 
 	@Override
 	public double getTextureWidth() {
-		return getModel().getFrame().getSourceW();
+		return getModel().getAssetKey().getSourceW();
 	}
 
 	@Override
 	public double getTextureHeight() {
-		return getModel().getFrame().getSourceH();
+		return getModel().getAssetKey().getSourceH();
 	}
 }

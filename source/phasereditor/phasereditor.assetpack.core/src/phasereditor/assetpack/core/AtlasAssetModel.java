@@ -189,7 +189,7 @@ public class AtlasAssetModel extends AssetModel {
 		return getAtlasFrames();
 	}
 
-	private void buildFrames() {
+	private synchronized void buildFrames() {
 
 		// TODO: use AtlasCore.readAtlasFrames(..) method.
 

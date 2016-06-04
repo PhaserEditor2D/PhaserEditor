@@ -52,7 +52,6 @@ import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackCore.IPacksChangeListener;
 import phasereditor.assetpack.core.AssetPackCore.PackDelta;
 import phasereditor.assetpack.core.IAssetKey;
-import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.FilteredTree2;
 import phasereditor.ui.PatternFilter2;
@@ -194,9 +193,6 @@ public class AssetExplorer extends ViewPart {
 
 		// tooltips
 		AssetPackUI.installAssetTooltips(_viewer);
-
-		// labels
-		((AssetLabelProvider) _viewer.getLabelProvider()).setControl(_viewer.getControl());
 
 	}
 

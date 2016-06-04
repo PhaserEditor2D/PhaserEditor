@@ -23,14 +23,8 @@ package phasereditor.canvas.ui.shapes;
 
 import java.util.List;
 
-import org.eclipse.swt.graphics.Rectangle;
-
-import javafx.geometry.Rectangle2D;
-import javafx.scene.image.Image;
-import phasereditor.assetpack.core.FrameData;
 import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.assetpack.core.SpritesheetAssetModel;
-import phasereditor.assetpack.ui.AssetPackUI;
+import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
 import phasereditor.canvas.core.SpritesheetSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
@@ -41,96 +35,58 @@ import phasereditor.canvas.ui.editors.grid.PGridSection;
  * @author arian
  *
  */
-public class SpritesheetControl extends BaseSpriteControl<SpritesheetSpriteModel> {
+public class SpritesheetSpriteControl extends BaseSpriteControl<SpritesheetSpriteModel> {
 
-	private List<FrameData> _frames;
 	private PGridFrameProperty _frame_property;
+	private int _initFrameIndex;
 
-	public SpritesheetControl(ObjectCanvas canvas, SpritesheetSpriteModel model) {
+	public SpritesheetSpriteControl(ObjectCanvas canvas, SpritesheetSpriteModel model) {
 		super(canvas, model);
 	}
 
 	@Override
-	protected ImageSpriteNode createNode() {
-		SpritesheetSpriteModel model = getModel();
-
-		SpritesheetAssetModel asset = model.getAssetKey();
-		ImageSpriteNode node = createImageNode(asset.getUrlFile());
-
-		Image img = node.getImage();
-		Rectangle src = new Rectangle(0, 0, (int) img.getWidth(), (int) img.getHeight());
-		Rectangle dst = new Rectangle(0, 0, asset.getFrameWidth(), asset.getFrameHeight());
-
-		_frames = AssetPackUI.generateSpriteSheetRects(asset, src, dst);
-
-		{
-			int last = _frames.size() - 1;
-			if (model.getFrameIndex() > last) {
-				model.setFrameIndex(0);
-			}
-		}
-
-		updateViewport(node);
-
-		return node;
+	protected SpritesheetSpriteNode createNode() {
+		return new SpritesheetSpriteNode(this);
 	}
 
 	@Override
-	public ImageSpriteNode getNode() {
-		return (ImageSpriteNode) super.getNode();
-	}
-
-	@Override
-	public void updateFromModel() {
-		updateViewport(getNode());
-
-		super.updateFromModel();
+	public SpritesheetSpriteNode getNode() {
+		return (SpritesheetSpriteNode) super.getNode();
 	}
 
 	@Override
 	public double getTextureWidth() {
-		return getModel().getAssetKey().getFrameWidth();
+		return getModel().getAssetKey().getAsset().getFrameWidth();
 	}
 
 	@Override
 	public double getTextureHeight() {
-		return getModel().getAssetKey().getFrameHeight();
-	}
-
-	private void updateViewport(ImageSpriteNode node) {
-		FrameData frame = getCurrentFrame();
-		Rectangle src = frame.src;
-		node.setViewport(new Rectangle2D(src.x, src.y, src.width, src.height));
-	}
-
-	private FrameData getCurrentFrame() {
-		return _frames.get(getModel().getFrameIndex());
-	}
-
-	public List<FrameData> getFrames() {
-		return _frames;
+		return getModel().getAssetKey().getAsset().getFrameHeight();
 	}
 
 	@Override
 	protected void initPGridModel(PGridModel propModel) {
 		super.initPGridModel(propModel);
 
+		_initFrameIndex = getModel().getAssetKey().getIndex();
+		
 		_frame_property = new PGridFrameProperty("frame") {
 
+			@SuppressWarnings("synthetic-access")
 			@Override
 			public boolean isModified() {
-				return getModel().getFrameIndex() != 0;
+				return _initFrameIndex != getModel().getAssetKey().getIndex();
 			}
 
 			@Override
 			public void setValue(IAssetFrameModel value) {
-				getModel().setFrameIndex( ((SpritesheetAssetModel.FrameModel) value).getIndex());
+				getModel().setAssetKey((FrameModel) value);
 				updateGridChange();
 			}
 
 			@Override
 			public IAssetFrameModel getValue() {
-				return (IAssetFrameModel) getModel().getFrames().get(getModel().getFrameIndex());
+				return getModel().getAssetKey();
 			}
 
 			@Override

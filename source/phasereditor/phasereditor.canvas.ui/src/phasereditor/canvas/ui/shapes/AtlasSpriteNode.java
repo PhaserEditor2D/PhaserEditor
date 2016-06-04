@@ -33,7 +33,7 @@ public class AtlasSpriteNode extends FrameNode implements ISpriteNode {
 	private AtlasSpriteControl _control;
 
 	public AtlasSpriteNode(AtlasSpriteControl control) {
-		super(control.getModel().getFrame());
+		super(control.getModel().getAssetKey());
 		_control = control;
 	}
 

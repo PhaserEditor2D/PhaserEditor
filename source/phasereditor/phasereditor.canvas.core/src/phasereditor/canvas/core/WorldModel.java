@@ -23,9 +23,14 @@ package phasereditor.canvas.core;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 /**
  * @author arian
@@ -40,18 +45,34 @@ public class WorldModel extends GroupModel {
 	private int _worldWidth;
 	private int _worldHeight;
 	private boolean _dirty;
+	private IFile file;
 
 	public WorldModel() {
 		super(null);
-//		setEditorName("world");
+		// setEditorName("world");
 		init();
 	}
 
-	public WorldModel(JSONObject data) {
+	public WorldModel(IFile file) throws Exception {
+		this(readJson(file));
+		this.file = file;
+	}
+
+	private static JSONObject readJson(IFile file) throws CoreException, IOException {
+		try (InputStream input = file.getContents()) {
+			return new JSONObject(new JSONTokener(input));
+		}
+	}
+
+	private WorldModel(JSONObject data) {
 		super(null, data);
 		init();
 	}
 	
+	public IFile getFile() {
+		return file;
+	}
+
 	@Override
 	public String getLabel() {
 		return "[wrd] " + getEditorName();

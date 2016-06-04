@@ -19,47 +19,36 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors.grid.editors;
+package phasereditor.canvas.ui.shapes;
 
-import org.eclipse.swt.graphics.Rectangle;
-
-import javafx.geometry.Rectangle2D;
-import javafx.scene.control.ListCell;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.ui.ImageCache;
+import javafx.scene.Node;
+import phasereditor.canvas.core.SpritesheetSpriteModel;
 
 /**
  * @author arian
  *
  */
-public class FrameCell extends ListCell<Object> {
+public class SpritesheetSpriteNode extends FrameNode implements ISpriteNode {
 
-	public FrameCell() {
-		super();
+	private SpritesheetSpriteControl _control;
+
+	public SpritesheetSpriteNode(SpritesheetSpriteControl control) {
+		super(control.getModel().getAssetKey());
+		_control = control;
 	}
 
 	@Override
-	protected void updateItem(Object item, boolean empty) {
-		super.updateItem(item, empty);
+	public SpritesheetSpriteModel getModel() {
+		return _control.getModel();
+	}
 
-		if (empty || item == null) {
-			setGraphic(null);
-			setText(null);
-			return;
-		}
+	@Override
+	public BaseObjectControl<?> getControl() {
+		return _control;
+	}
 
-		IAssetFrameModel frame = (IAssetFrameModel) item;
-		ImageView imgView = new ImageView(ImageCache.getFXImage(frame.getImageFile()));
-		imgView.setFitWidth(64);
-		imgView.setFitHeight(64);
-		imgView.setPreserveRatio(true);
-		Rectangle src = frame.getFrameData().src;
-		imgView.setViewport(new Rectangle2D(src.x, src.y, src.width, src.height));
-		BorderPane pane = new BorderPane(imgView);
-		pane.setMinSize(64, 64);
-		setGraphic(pane);
-		setText(frame.getKey());
+	@Override
+	public Node getNode() {
+		return this;
 	}
 }

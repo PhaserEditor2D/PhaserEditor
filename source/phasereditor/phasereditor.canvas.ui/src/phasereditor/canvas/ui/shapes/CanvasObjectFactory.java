@@ -41,7 +41,7 @@ public class CanvasObjectFactory {
 		} else if (model instanceof ImageSpriteModel) {
 			return new ImageSpriteControl(canvas, (ImageSpriteModel) model);
 		} else if (model instanceof SpritesheetSpriteModel) {
-			return new SpritesheetControl(canvas, (SpritesheetSpriteModel) model);
+			return new SpritesheetSpriteControl(canvas, (SpritesheetSpriteModel) model);
 		} else if (model instanceof AtlasSpriteModel) {
 			AtlasSpriteControl control = new AtlasSpriteControl(canvas, (AtlasSpriteModel) model);
 			return control;

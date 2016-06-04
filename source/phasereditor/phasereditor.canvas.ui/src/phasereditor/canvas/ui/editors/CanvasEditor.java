@@ -25,8 +25,6 @@ import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.beans.PropertyChangeEvent;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 
 import org.eclipse.core.resources.IFile;
@@ -77,7 +75,6 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import javafx.geometry.Point2D;
 import phasereditor.canvas.core.WorldModel;
@@ -110,7 +107,7 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 	}
 
 	@SuppressWarnings("unused")
-	private void modelDirtyChanged(PropertyChangeEvent event) {
+	public void modelDirtyChanged(PropertyChangeEvent event) {
 		firePropertyChange(PROP_DIRTY);
 	}
 
@@ -134,15 +131,11 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 	protected void setInput(IEditorInput input) {
 		super.setInput(input);
 		IFileEditorInput fileInput = (IFileEditorInput) input;
-		try (InputStream contents = fileInput.getFile().getContents()) {
-			JSONObject data = new JSONObject(new JSONTokener(contents));
-
-			_model = new WorldModel(data);
+		try {
+			_model = new WorldModel(fileInput.getFile());
 			_model.addPropertyChangeListener(WorldModel.PROP_DIRTY, this::modelDirtyChanged);
-
 			swtRun(this::updateTitle);
-
-		} catch (IOException | CoreException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
@@ -396,6 +389,7 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 	@Override
 	public void dispose() {
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
+		_canvas.getUpdateBehavior().dispose();
 		super.dispose();
 	}
 

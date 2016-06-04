@@ -45,7 +45,7 @@ import phasereditor.canvas.ui.editors.behaviors.DragBehavior;
 import phasereditor.canvas.ui.editors.behaviors.MouseBehavior;
 import phasereditor.canvas.ui.editors.behaviors.PaintBehavior;
 import phasereditor.canvas.ui.editors.behaviors.SelectionBehavior;
-import phasereditor.canvas.ui.editors.behaviors.UpdateChangeBehavior;
+import phasereditor.canvas.ui.editors.behaviors.UpdateBehavior;
 import phasereditor.canvas.ui.editors.behaviors.ZoomBehavior;
 import phasereditor.canvas.ui.editors.grid.PGrid;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
@@ -64,7 +64,7 @@ public class ObjectCanvas extends FXCanvas {
 	private DragBehavior _dragBehavior;
 	private WorldModel _model;
 	private PGrid _pgrid;
-	private UpdateChangeBehavior _updateBehavior;
+	private UpdateBehavior _updateBehavior;
 	private GroupControl _worldControl;
 	private TreeViewer _outline;
 	private StackPane _root;
@@ -91,7 +91,7 @@ public class ObjectCanvas extends FXCanvas {
 		_createBehavior = new CreateBehavior(this);
 		_selectionBehavior = new SelectionBehavior(this);
 		_dragBehavior = new DragBehavior(this);
-		_updateBehavior = new UpdateChangeBehavior(this, _pgrid, outline);
+		_updateBehavior = new UpdateBehavior(this, _pgrid, outline);
 		_zoomBehavior = new ZoomBehavior(this);
 		_mouseBehavior = new MouseBehavior(this);
 		_paintBehavior = new PaintBehavior(this);
@@ -137,25 +137,33 @@ public class ObjectCanvas extends FXCanvas {
 		return _dragBehavior;
 	}
 
-	public UpdateChangeBehavior getUpdateBehavior() {
+	public UpdateBehavior getUpdateBehavior() {
 		return _updateBehavior;
 	}
 
 	private void initDrop() {
 		getScene().setOnDragOver(event -> {
-			ISelection selection = LocalSelectionTransfer.getTransfer().getSelection();
-			if (selection == null) {
-				event.consume();
-			} else {
-				event.acceptTransferModes(TransferMode.ANY);
-				ObjectCanvas.this.setFocus();
+			try {
+				ISelection selection = LocalSelectionTransfer.getTransfer().getSelection();
+				if (selection == null) {
+					event.consume();
+				} else {
+					event.acceptTransferModes(TransferMode.ANY);
+					ObjectCanvas.this.setFocus();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 
 		getScene().setOnDragDropped(event -> {
-			ISelection selection = LocalSelectionTransfer.getTransfer().getSelection();
-			List<Node> newnodes = _createBehavior.dropAssets((IStructuredSelection) selection, event);
-			_selectionBehavior.setSelection(new StructuredSelection(newnodes.toArray()));
+			try {
+				ISelection selection = LocalSelectionTransfer.getTransfer().getSelection();
+				List<Node> newnodes = _createBehavior.dropAssets((IStructuredSelection) selection, event);
+				_selectionBehavior.setSelection(new StructuredSelection(newnodes.toArray()));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		});
 
 	}

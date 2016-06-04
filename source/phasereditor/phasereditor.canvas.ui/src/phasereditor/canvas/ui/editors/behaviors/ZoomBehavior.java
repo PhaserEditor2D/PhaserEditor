@@ -130,7 +130,7 @@ public class ZoomBehavior {
 		return;
 	}
 
-	private void updateZoomAndPan() {
+	public void updateZoomAndPan() {
 		GroupNode world = _canvas.getWorldNode();
 
 		world.setTranslateX(_translate.getX());

@@ -362,7 +362,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		GridData gd_tree = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 		gd_tree.heightHint = 50;
 		tree.setLayoutData(gd_tree);
-		_allAssetsViewer.setLabelProvider(new AssetLabelProvider());
+		_allAssetsViewer.setLabelProvider(AssetLabelProvider.GLOBAL_16);
 		_allAssetsViewer.setContentProvider(new AssetsContentProvider());
 
 		Composite composite_2 = new Composite(composite, SWT.NONE);
@@ -476,8 +476,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	}
 
 	private void afterCreatedWidgets() {
-		((AssetLabelProvider) _allAssetsViewer.getLabelProvider()).setControl(_allAssetsViewer.getControl());
-
 		_labelAssetsTitle.setFont(SWTResourceManager.getBoldFont(_labelAssetsTitle.getFont()));
 
 		AssetPackModel model = getModel();
@@ -530,7 +528,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	protected void moveAssetElement() {
 		ListDialog dlg = new ListDialog(getSite().getShell());
 		dlg.setContentProvider(new ArrayContentProvider());
-		dlg.setLabelProvider(new AssetLabelProvider());
+		dlg.setLabelProvider(AssetLabelProvider.GLOBAL_16);
 		AssetPackModel model = getModel();
 		dlg.setInput(model.getSections());
 		dlg.setTitle("Move Assets");

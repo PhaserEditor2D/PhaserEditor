@@ -31,6 +31,7 @@ import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
@@ -42,6 +43,7 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
@@ -57,10 +59,7 @@ import phasereditor.atlas.ui.AtlasCanvas;
 public class AtlasAssetPreviewComp extends Composite {
 	static final Object NO_SELECTION = "none";
 
-	private class AtlasLabelProvider extends AssetLabelProvider {
-
-		public AtlasLabelProvider() {
-		}
+	private class AtlasLabelProvider extends LabelProvider {
 
 		@SuppressWarnings("boxing")
 		@Override
@@ -73,7 +72,13 @@ public class AtlasAssetPreviewComp extends Composite {
 				Frame fd = (Frame) element;
 				return String.format("%s (%dx%d)", fd.getName(), fd.getSourceW(), fd.getSourceH());
 			}
-			return super.getText(element);
+			
+			return AssetLabelProvider.GLOBAL_16.getText(element);
+		}
+		
+		@Override
+		public Image getImage(Object element) {
+			return AssetLabelProvider.GLOBAL_16.getImage(element);
 		}
 	}
 

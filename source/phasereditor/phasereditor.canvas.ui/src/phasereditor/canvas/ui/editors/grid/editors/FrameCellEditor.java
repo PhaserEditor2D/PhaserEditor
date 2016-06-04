@@ -35,11 +35,11 @@ import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
  */
 public class FrameCellEditor extends DialogCellEditor {
 
-	private PGridFrameProperty _source;
+	private PGridFrameProperty _prop;
 
-	public FrameCellEditor(Composite parent, PGridFrameProperty source) {
+	public FrameCellEditor(Composite parent, PGridFrameProperty prop) {
 		super(parent);
-		_source = source;
+		_prop = prop;
 	}
 
 	@Override
@@ -51,17 +51,18 @@ public class FrameCellEditor extends DialogCellEditor {
 			return;
 		}
 		
-		getDefaultLabel().setText(((IAssetFrameModel) value).getKey());
+		getDefaultLabel().setText(" " + ((IAssetFrameModel) value).getKey());
 	}
 
 	@Override
 	protected Object openDialogBox(Control cellEditorWindow) {
 		PGridFrameDialog dlg = new PGridFrameDialog(cellEditorWindow.getShell());
-		dlg.setFrames(_source.getFrames());
-		dlg.setSelectedframe(_source.getValue());
+		dlg.setFrames(_prop.getFrames());
+		dlg.setSelectedItem(_prop.getValue());
 		if (dlg.open() == Window.OK) {
-			return dlg.getSelectedFrame();
+			return dlg.getResult();
 		}
+
 		return null;
 	}
 }
