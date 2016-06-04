@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 
@@ -32,6 +31,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import phasereditor.assetpack.core.FrameData;
+import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.ui.ImageCache;
@@ -44,21 +46,9 @@ public class TileSpriteNode extends Pane implements ISpriteNode {
 
 	private FrameData _frame;
 	private TileSpriteControl _control;
-	private Image _image;
 
-	public TileSpriteNode(IFile imageFile, FrameData frame, TileSpriteControl control) {
+	public TileSpriteNode(TileSpriteControl control) {
 		_control = control;
-		_image = ImageCache.getFXImage(imageFile);
-
-		if (frame == null) {
-			Rectangle rect = new Rectangle(0, 0, (int) _image.getWidth(), (int) _image.getHeight());
-			_frame = new FrameData();
-			_frame.src = rect;
-			_frame.dst = rect;
-			_frame.srcSize = new Point(rect.width, rect.height);
-		} else {
-			_frame = frame;
-		}
 
 		updateFromModel();
 	}
@@ -80,6 +70,24 @@ public class TileSpriteNode extends Pane implements ISpriteNode {
 	}
 
 	public void updateFromModel() {
+		IAssetKey assetKey = _control.getModel().getAssetKey();
+
+		Image image;
+		
+		if (assetKey instanceof ImageAssetModel) {
+			image = ImageCache.getFXImage(((ImageAssetModel) assetKey).getUrlFile());
+			Rectangle rect = new Rectangle(0, 0, (int) image.getWidth(), (int) image.getHeight());
+			_frame = new FrameData();
+			_frame.src = rect;
+			_frame.dst = rect;
+			_frame.srcSize = new Point(rect.width, rect.height);
+		} else {
+			IAssetFrameModel frameModel = (IAssetFrameModel) assetKey;
+			image = ImageCache.getFXImage(frameModel.getImageFile());
+			_frame = frameModel.getFrameData();
+		}
+
+
 		TileSpriteModel model = _control.getModel();
 
 		double width = model.getWidth();
@@ -125,7 +133,7 @@ public class TileSpriteNode extends Pane implements ISpriteNode {
 
 		for (double x = x1; x < getWidth(); x += w1) {
 			for (double y = y1; y < getHeight(); y += h1) {
-				ImageView img = new ImageView(_image);
+				ImageView img = new ImageView(image);
 				img.setViewport(new Rectangle2D(x0, y0, w0, h0));
 				img.relocate(x, y);
 				img.setFitWidth(w1);
@@ -135,10 +143,6 @@ public class TileSpriteNode extends Pane implements ISpriteNode {
 		}
 
 		setClip(new javafx.scene.shape.Rectangle(0, 0, width, height));
-	}
-
-	public Image getImage() {
-		return _image;
 	}
 
 	@Override

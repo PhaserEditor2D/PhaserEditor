@@ -21,18 +21,15 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
+import java.util.List;
 
 import phasereditor.assetpack.core.AssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel.Frame;
-import phasereditor.assetpack.core.FrameData;
-import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridProperty;
@@ -78,28 +75,7 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 
 	@Override
 	protected IObjectNode createNode() {
-		IAssetKey key = getModel().getAssetKey();
-
-		{
-			AssetModel asset = key.getAsset();
-			if (asset instanceof ImageAssetModel) {
-				IFile file = ((ImageAssetModel) asset).getUrlFile();
-				return new TileSpriteNode(file, null, this);
-			}
-		}
-
-		if (key instanceof AtlasAssetModel.Frame) {
-			AtlasAssetModel.Frame frame = (Frame) key;
-			AtlasAssetModel asset = frame.getAsset();
-			IFile file = asset.getTextureFile();
-			FrameData fd = new FrameData();
-			fd.src = new Rectangle(frame.getFrameX(), frame.getFrameY(), frame.getFrameW(), frame.getFrameH());
-			fd.dst = new Rectangle(frame.getSpriteX(), frame.getSpriteY(), frame.getSpriteW(), frame.getSpriteH());
-			fd.srcSize = new Point(frame.getSourceW(), frame.getSourceH());
-			return new TileSpriteNode(file, fd, this);
-		}
-
-		return null;
+		return new TileSpriteNode(this);
 	}
 
 	@SuppressWarnings("boxing")
@@ -108,6 +84,8 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 		super.initPGridModel(propModel);
 		PGridSection section = new PGridSection("Sprite Tile");
 		propModel.getSections().add(section);
+
+		initFrameProperty();
 
 		_tilePositionX_property = new PGridNumberProperty("tilePosition.x") {
 
@@ -229,6 +207,45 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 		section.add(_height_property);
 		section.add(_tileScaleX_property);
 		section.add(_tileScaleY_property);
+
+	}
+
+	private void initFrameProperty() {
+		AssetModel asset = getModel().getAssetKey().getAsset();
+
+		if (asset instanceof ImageAssetModel) {
+			return;
+		}
+
+		String initKey = getModel().getAssetKey().getKey();
+
+		String name = asset instanceof SpritesheetAssetModel ? "frame" : "frameName";
+
+		PGridFrameProperty frame_property = new PGridFrameProperty(name) {
+
+			@Override
+			public void setValue(IAssetFrameModel value) {
+				getModel().setAssetKey(value);
+				updateGridChange();
+			}
+
+			@Override
+			public boolean isModified() {
+				return !getModel().getAssetKey().getKey().equals(initKey);
+			}
+
+			@Override
+			public IAssetFrameModel getValue() {
+				return (IAssetFrameModel) getModel().getAssetKey();
+			}
+
+			@Override
+			public List<?> getFrames() {
+				return asset.getSubElements();
+			}
+		};
+
+		getSpriteSection().add(frame_property);
 
 	}
 

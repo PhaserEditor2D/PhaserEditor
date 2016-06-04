@@ -28,7 +28,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ImageAssetModel extends AssetModel {
+public class ImageAssetModel extends AssetModel  {
 
 	private String _url;
 	private boolean _overwrite;
