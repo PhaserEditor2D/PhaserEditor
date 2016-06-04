@@ -30,4 +30,12 @@ public class InspectCoreResources {
 	public static Path getBundleFolder() {
 		return Activator.getDefault().getBundleFolder();
 	}
+	
+	public static Path getBuiltInPhaserVersionFolder() {
+		return getBundleFolder().resolve("phaser-version");
+	}
+	
+	public static Path getPhaserVersionFolder() {
+		return getBuiltInPhaserVersionFolder();
+	}
 }
