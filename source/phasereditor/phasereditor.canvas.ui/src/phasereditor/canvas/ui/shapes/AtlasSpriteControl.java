@@ -21,8 +21,14 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
+import java.util.List;
+
+import phasereditor.assetpack.core.AtlasAssetModel.Frame;
+import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.canvas.core.AtlasSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
+import phasereditor.canvas.ui.editors.grid.PGridModel;
 
 /**
  * @author arian
@@ -53,5 +59,38 @@ public class AtlasSpriteControl extends BaseSpriteControl<AtlasSpriteModel> {
 	@Override
 	public double getTextureHeight() {
 		return getModel().getAssetKey().getSourceH();
+	}
+
+	@Override
+	protected void initPGridModel(PGridModel propModel) {
+		super.initPGridModel(propModel);
+
+		String initFrameName = getModel().getAssetKey().getKey();
+
+		PGridFrameProperty frame_property = new PGridFrameProperty("frameName") {
+
+			@Override
+			public boolean isModified() {
+				return initFrameName != getModel().getAssetKey().getKey();
+			}
+
+			@Override
+			public void setValue(IAssetFrameModel value) {
+				getModel().setAssetKey((Frame) value);
+				updateGridChange();
+			}
+
+			@Override
+			public IAssetFrameModel getValue() {
+				return getModel().getAssetKey();
+			}
+
+			@Override
+			public List<?> getFrames() {
+				return getModel().getAssetKey().getAsset().getSubElements();
+			}
+		};
+
+		getSpriteSection().add(frame_property);
 	}
 }

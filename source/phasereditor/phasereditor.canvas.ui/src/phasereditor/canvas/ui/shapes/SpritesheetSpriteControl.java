@@ -29,16 +29,12 @@ import phasereditor.canvas.core.SpritesheetSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
-import phasereditor.canvas.ui.editors.grid.PGridSection;
 
 /**
  * @author arian
  *
  */
 public class SpritesheetSpriteControl extends BaseSpriteControl<SpritesheetSpriteModel> {
-
-	private PGridFrameProperty _frame_property;
-	private int _initFrameIndex;
 
 	public SpritesheetSpriteControl(ObjectCanvas canvas, SpritesheetSpriteModel model) {
 		super(canvas, model);
@@ -68,14 +64,13 @@ public class SpritesheetSpriteControl extends BaseSpriteControl<SpritesheetSprit
 	protected void initPGridModel(PGridModel propModel) {
 		super.initPGridModel(propModel);
 
-		_initFrameIndex = getModel().getAssetKey().getIndex();
-		
-		_frame_property = new PGridFrameProperty("frame") {
+		int initFrameIndex = getModel().getAssetKey().getIndex();
 
-			@SuppressWarnings("synthetic-access")
+		PGridFrameProperty frame_property = new PGridFrameProperty("frame") {
+
 			@Override
 			public boolean isModified() {
-				return _initFrameIndex != getModel().getAssetKey().getIndex();
+				return initFrameIndex != getModel().getAssetKey().getIndex();
 			}
 
 			@Override
@@ -94,10 +89,6 @@ public class SpritesheetSpriteControl extends BaseSpriteControl<SpritesheetSprit
 				return getModel().getFrames();
 			}
 		};
-
-		PGridSection section = new PGridSection("Sprite Sheet");
-		section.add(_frame_property);
-
-		propModel.getSections().add(section);
+		getSpriteSection().add(frame_property);
 	}
 }

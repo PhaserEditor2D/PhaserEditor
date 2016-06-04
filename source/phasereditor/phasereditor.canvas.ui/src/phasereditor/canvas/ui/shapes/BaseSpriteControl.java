@@ -50,6 +50,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 	private PGridNumberProperty _anchor_x_property;
 	private PGridNumberProperty _anchor_y_property;
 	private PGridColorProperty _tint_property;
+	private PGridSection _spriteSection;
 
 	public BaseSpriteControl(ObjectCanvas canvas, T model) {
 		super(canvas, model);
@@ -113,6 +114,8 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 	@Override
 	protected void initPGridModel(PGridModel propModel) {
 		super.initPGridModel(propModel);
+
+		_spriteSection = new PGridSection("Sprite");
 
 		_anchor_x_property = new PGridNumberProperty("anchor.x") {
 			@Override
@@ -183,15 +186,18 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 				return new RGB((int) (c.getRed() * 255), (int) (c.getGreen() * 255), (int) (c.getBlue() * 255));
 			}
 		};
+
 		_tint_property.setDefaultRGB(new RGB(255, 255, 255));
 
-		PGridSection spriteSection = new PGridSection("Sprite");
+		_spriteSection.add(_anchor_x_property);
+		_spriteSection.add(_anchor_y_property);
+		_spriteSection.add(_tint_property);
 
-		spriteSection.add(_anchor_x_property);
-		spriteSection.add(_anchor_y_property);
-		spriteSection.add(_tint_property);
+		propModel.getSections().add(_spriteSection);
+	}
 
-		propModel.getSections().add(spriteSection);
+	protected PGridSection getSpriteSection() {
+		return _spriteSection;
 	}
 
 	@Override
