@@ -344,6 +344,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			@Override
 			public void setValue(Boolean value) {
 				_model.setEditorPick(value.booleanValue());
+				updateGridChange();
 				_canvas.getUpdateBehavior().update_Outline(getIObjectNode());
 			}
 
