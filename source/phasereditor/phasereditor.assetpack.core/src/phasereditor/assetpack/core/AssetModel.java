@@ -53,14 +53,19 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 	static {
 		PhaserJSDoc jsdoc = PhaserJSDoc.getInstance();
 		PhaserType phaserType = jsdoc.getTypesMap().get("Phaser.Loader");
-		Map<String, PhaserMember> map = phaserType.getMemberMap();
 
-		for (AssetType assetType : AssetType.values()) {
-			PhaserMethod method = (PhaserMethod) map.get(assetType.name());
-			_methodMap.put(assetType, method);
+		// the phaserType can be null if the phaser version is wrong.
+		if (phaserType != null) {
+
+			Map<String, PhaserMember> map = phaserType.getMemberMap();
+
+			for (AssetType assetType : AssetType.values()) {
+				PhaserMethod method = (PhaserMethod) map.get(assetType.name());
+				_methodMap.put(assetType, method);
+			}
 		}
 	}
-	
+
 	@Override
 	public AssetModel getAsset() {
 		return this;
@@ -68,13 +73,28 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 
 	public static String getHelp(AssetType type) throws JSONException {
 		PhaserMethod method = _methodMap.get(type);
+
+		if (method == null) {
+			return "<Help not found>";
+		}
+
 		String help = method.getHelp();
 		return help.replace("\\n", "\n");
 	}
 
 	public static String getHelp(AssetType type, String parameter) throws JSONException {
 		PhaserMethod method = _methodMap.get(type);
+
+		if (method == null) {
+			return "<Help not found>";
+		}
+
 		PhaserVariable arg = method.getArgsMap().get(parameter);
+
+		if (arg == null) {
+			return "<Help not found>";
+		}
+
 		return arg.getHelp().replace("\\n", "\n");
 	}
 

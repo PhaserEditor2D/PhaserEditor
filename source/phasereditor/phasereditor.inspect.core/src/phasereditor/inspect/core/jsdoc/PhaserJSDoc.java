@@ -38,23 +38,28 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.AssertionFailedException;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.wst.jsdt.core.IMember;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import phasereditor.inspect.core.InspectCore;
-import phasereditor.inspect.core.resources.InspectCoreResources;
 
 public class PhaserJSDoc {
 	private static PhaserJSDoc _instance;
 
 	public synchronized static PhaserJSDoc getInstance() {
+		
+		Location location = Platform.getConfigurationLocation();
+		out.println("Configuration: " + location.getURL());
+		
 		if (_instance == null) {
 			long t = currentTimeMillis();
-			Path bundleFolder = InspectCoreResources.getBundleFolder();
-			Path docsJsonFile = bundleFolder.resolve("phaser-custom/jsdoc/docs.json").toAbsolutePath().normalize();
-			Path srcFolder = bundleFolder.resolve("phaser-master/src");
+			Path phaserVersionFolder = InspectCore.getPhaserVersionFolder();
+			Path docsJsonFile = phaserVersionFolder.resolve("phaser-custom/jsdoc/docs.json").toAbsolutePath().normalize();
+			Path srcFolder = phaserVersionFolder.resolve("phaser-master/src");
 
 			try {
 				_instance = new PhaserJSDoc(srcFolder, docsJsonFile);
@@ -154,6 +159,10 @@ public class PhaserJSDoc {
 	}
 
 	private Map<String, PhaserType> buildPhaserJSDoc(Path docsJsonFile) throws IOException {
+		if (!Files.exists(docsJsonFile)) {
+			return new HashMap<>();
+		}
+		
 		try (InputStream input = Files.newInputStream(docsJsonFile)) {
 			JSONArray jsdocElements = new JSONArray(new JSONTokener(input));
 

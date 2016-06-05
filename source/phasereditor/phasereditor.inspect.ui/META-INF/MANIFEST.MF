@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Phaser Editor - Inspect UI
+Bundle-SymbolicName: phasereditor.inspect.ui;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: phasereditor.inspect.ui.Activator
+Bundle-Vendor: Arian Fornaris
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ phasereditor.inspect.core;bundle-version="1.1.1"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy

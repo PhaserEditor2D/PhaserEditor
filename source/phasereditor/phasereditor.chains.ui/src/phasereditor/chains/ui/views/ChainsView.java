@@ -84,10 +84,10 @@ import phasereditor.chains.core.ChainsCore;
 import phasereditor.chains.core.ChainsModel;
 import phasereditor.chains.core.Line;
 import phasereditor.chains.core.Match;
+import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.core.jsdoc.JSDocRenderer;
 import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
-import phasereditor.inspect.core.resources.InspectCoreResources;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.WebkitBrowser;
@@ -406,8 +406,8 @@ public class ChainsView extends ViewPart {
 			file = "examples/" + file;
 		}
 
-		Path bundleFolder = InspectCoreResources.getBundleFolder();
-		Path filePath = bundleFolder.resolve("phaser-examples-master/" + file);
+		Path phaserVersionFolder = InspectCore.getPhaserVersionFolder();
+		Path filePath = phaserVersionFolder.resolve("phaser-examples-master/" + file);
 
 		openJSEditor(linenum, -1, filePath);
 	}

@@ -27,7 +27,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import phasereditor.inspect.core.resources.InspectCoreResources;
+import phasereditor.inspect.core.InspectCore;
 
 public class TemplatesModel {
 	private List<TemplateCategoryModel> _categories;
@@ -37,7 +37,7 @@ public class TemplatesModel {
 	public TemplatesModel(Path templatesFolder) throws IOException {
 		_categories = new ArrayList<>();
 		_templatesFolder = templatesFolder;
-		Path bundleFolder = InspectCoreResources.getBundleFolder();
+		Path bundleFolder = InspectCore.getPhaserVersionFolder();
 		_phaserJs = bundleFolder.resolve("phaser-master/build/phaser.js");
 		load();
 	}

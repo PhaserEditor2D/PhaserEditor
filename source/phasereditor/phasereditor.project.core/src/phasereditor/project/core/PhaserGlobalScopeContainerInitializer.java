@@ -21,13 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.core;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.jsdt.core.IIncludePathAttribute;
 import org.eclipse.wst.jsdt.core.IIncludePathEntry;
 import org.eclipse.wst.jsdt.core.JavaScriptCore;
@@ -52,8 +47,12 @@ public class PhaserGlobalScopeContainerInitializer extends JsGlobalScopeContaine
 
 		@Override
 		public IPath getLibraryPathInPlugin() {
-			return new Path("phaser-custom/api/");
+			if (InspectCore.isBuiltInPhaserVersion()) {
+				return new Path("phaser-version/phaser-custom/api/");
+			}
+			return new Path("phaser-libraries/");
 		}
+
 	}
 
 	private LibraryLocation _libLocation;
@@ -68,7 +67,7 @@ public class PhaserGlobalScopeContainerInitializer extends JsGlobalScopeContaine
 
 	@Override
 	public String getDescription() {
-		return "Phaser API " + InspectCore.PHASER_VERSION + " Library";
+		return "Phaser API " + InspectCore.getCurrentPhaserVersion() + " Library";
 	}
 
 	@Override
@@ -79,31 +78,29 @@ public class PhaserGlobalScopeContainerInitializer extends JsGlobalScopeContaine
 	@Override
 	public IIncludePathEntry[] getIncludepathEntries() {
 		// attach JSDoc to the phaser lib.
-		try {
-			String jsdocKey = IIncludePathAttribute.JSDOC_LOCATION_ATTRIBUTE_NAME;
 
-			IIncludePathEntry[] entries = super.getIncludepathEntries();
+		IIncludePathEntry[] entries = super.getIncludepathEntries();
 
-			File bundleFile = FileLocator.getBundleFile(Platform.getBundle(InspectCore.RESOURCES_PLUGIN_ID));
+		// java.nio.file.Path phaserVersionFolder =
+		// InspectCoreResources.getPhaserVersionFolder();
+		// String jsdocKey =
+		// IIncludePathAttribute.JSDOC_LOCATION_ATTRIBUTE_NAME;
+		// String jsdocValue =
+		// phaserVersionFolder.resolve("phaser-master/docs").toFile().getAbsoluteFile()
+		// .getCanonicalPath();
 
-			String jsdocValue = new File(bundleFile, "phaser-master/docs").getAbsoluteFile().getCanonicalPath();
+		IIncludePathAttribute[] extraAttrs = {};
 
-			IIncludePathAttribute[] extraAttrs = { JavaScriptCore.newIncludepathAttribute(jsdocKey, jsdocValue) };
+		// i am sure there is only one entry.
 
-			// i am sure there is only one entry.
+		IIncludePathEntry oldEntry = entries[0];
 
-			IIncludePathEntry oldEntry = entries[0];
+		IIncludePathEntry newEntry = JavaScriptCore.newLibraryEntry(oldEntry.getPath(),
+				oldEntry.getSourceAttachmentPath(), oldEntry.getSourceAttachmentRootPath(), oldEntry.getAccessRules(),
+				extraAttrs, true);
 
-			IIncludePathEntry newEntry = JavaScriptCore.newLibraryEntry(oldEntry.getPath(),
-					oldEntry.getSourceAttachmentPath(), oldEntry.getSourceAttachmentRootPath(),
-					oldEntry.getAccessRules(), extraAttrs, true);
+		entries[0] = newEntry;
 
-			entries[0] = newEntry;
-
-			return entries;
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
+		return entries;
 	}
 }

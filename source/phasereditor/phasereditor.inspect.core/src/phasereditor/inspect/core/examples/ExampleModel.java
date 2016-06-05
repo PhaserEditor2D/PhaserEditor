@@ -124,7 +124,7 @@ public class ExampleModel implements IPhaserTemplate {
 			}
 
 			Path custom = root.resolve("phaser-custom");
-			Path indexhtml = custom.resolve("examples-index.html");
+			Path indexhtml = custom.resolve("examples/examples-index.html");
 			String content = new String(Files.readAllBytes(indexhtml));
 
 			content = content.replace("{{title}}", folder.getProject().getName());
