@@ -102,8 +102,9 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 
 	@Override
 	public void dispose() {
-		super.dispose();
 		getActivePage().removePartListener(_partListener);
+		
+		super.dispose();
 	}
 
 	@Override
@@ -187,7 +188,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 		
 		IProject project = getActiveProject();
 		if (project != _lastToken) {
-			_viewer.expandAll();
+			_viewer.expandToLevel(4);
 			_lastToken = project;
 		}
 	}

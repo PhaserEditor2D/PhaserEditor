@@ -37,7 +37,7 @@ import phasereditor.assetpack.ui.views.AssetExplorer;
  * @author arian
  *
  */
-public class NewAssetExplorrHandler extends AbstractHandler {
+public class NewAssetExplorerHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {

@@ -80,7 +80,7 @@
       </command>
       <command
             categoryId="phasereditor.ui.phaserCategory"
-            defaultHandler="phasereditor.assetpack.ui.handlers.NewAssetExplorrHandler"
+            defaultHandler="phasereditor.assetpack.ui.handlers.NewAssetExplorerHandler"
             id="phasereditor.assetpack.ui.explorer.newview"
             name="Open New Window">
       </command>

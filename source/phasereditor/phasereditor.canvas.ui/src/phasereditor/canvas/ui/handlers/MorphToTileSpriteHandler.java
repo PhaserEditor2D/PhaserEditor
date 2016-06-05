@@ -13,6 +13,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.core.WorldModel;
@@ -23,6 +24,7 @@ import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
 import phasereditor.canvas.ui.shapes.ImageSpriteControl;
+import phasereditor.canvas.ui.shapes.SpritesheetSpriteControl;
 import phasereditor.canvas.ui.shapes.TileSpriteControl;
 
 public class MorphToTileSpriteHandler extends AbstractHandler {
@@ -47,7 +49,11 @@ public class MorphToTileSpriteHandler extends AbstractHandler {
 				Frame source = srcControl.getModel().getAssetKey();
 
 				morph(newSelection, srcControl.getNode(), source);
+			} else if (control instanceof SpritesheetSpriteControl) {
+				SpritesheetSpriteControl srcControl = (SpritesheetSpriteControl) control;
+				 FrameModel source = srcControl.getModel().getAssetKey();
 
+				morph(newSelection, srcControl.getNode(), source);
 			}
 		}
 

@@ -477,6 +477,12 @@ public class ChainsView extends ViewPart {
 	}
 
 	protected void queryTextModified() {
+		
+		// this method is executed async sowe should check this
+		if (_queryText.isDisposed()) {
+			return;
+		}
+		
 		String query = _queryText.getText();
 		int chainsSize = 0;
 		int examplesSize = 0;
