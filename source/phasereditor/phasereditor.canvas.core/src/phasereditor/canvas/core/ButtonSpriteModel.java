@@ -21,13 +21,12 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
-import phasereditor.assetpack.core.IAssetKey;
-
 import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.IAssetKey;
 
 /**
  * @author arian

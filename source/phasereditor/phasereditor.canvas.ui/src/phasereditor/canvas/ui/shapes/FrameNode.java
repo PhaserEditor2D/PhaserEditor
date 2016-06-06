@@ -21,7 +21,10 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
+import org.eclipse.core.resources.IFile;
+
 import javafx.geometry.Rectangle2D;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import phasereditor.assetpack.core.FrameData;
@@ -37,7 +40,9 @@ public class FrameNode extends Pane {
 	private ImageView _imageView;
 
 	public FrameNode(IAssetFrameModel frameModel) {
-		_imageView = new ImageView(ImageCache.getFXImage(frameModel.getImageFile()));
+		IFile file = frameModel.getImageFile();
+		Image image = ImageCache.getFXImage(file);
+		_imageView = new ImageView(image);
 		getChildren().add(_imageView);
 
 		updateContent(frameModel);

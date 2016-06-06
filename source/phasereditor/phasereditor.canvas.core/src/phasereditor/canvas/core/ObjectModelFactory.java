@@ -34,7 +34,7 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
 public class ObjectModelFactory {
 	public static BaseSpriteModel createModel(GroupModel parent, IAssetKey obj) {
 		if (obj instanceof ImageAssetModel) {
-			return new ImageSpriteModel(parent, (ImageAssetModel) obj);
+			return new ImageSpriteModel(parent, ((ImageAssetModel) obj).getFrame());
 		} else if (obj instanceof SpritesheetAssetModel) {
 			return new SpritesheetSpriteModel(parent, ((SpritesheetAssetModel) obj).getFrames().get(0));
 		} else if (obj instanceof SpritesheetAssetModel.FrameModel) {

@@ -23,29 +23,20 @@ package phasereditor.canvas.ui.shapes;
 
 import phasereditor.canvas.core.ImageSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
-import phasereditor.ui.ImageCache;
 
 /**
  * @author arian
  *
  */
 public class ImageSpriteControl extends BaseSpriteControl<ImageSpriteModel> {
-	private ImageSpriteNode _spriteNode;
 
 	public ImageSpriteControl(ObjectCanvas canvas, ImageSpriteModel model) {
 		super(canvas, model);
 	}
 
 	@Override
-	public void updateFromModel() {
-		super.updateFromModel();
-		getNode().setImage(ImageCache.getFXImage(getModel().getAssetKey().getUrlFile()));
-	}
-	
-	@Override
 	protected ImageSpriteNode createNode() {
-		_spriteNode = createImageNode(getModel().getAssetKey().getUrlFile());
-		return _spriteNode;
+		return new ImageSpriteNode(this);
 	}
 
 	@Override
@@ -55,11 +46,11 @@ public class ImageSpriteControl extends BaseSpriteControl<ImageSpriteModel> {
 
 	@Override
 	public double getTextureWidth() {
-		return _spriteNode.getImage().getWidth();
+		return getModel().getAssetKey().getFrameData().srcSize.x;
 	}
 
 	@Override
 	public double getTextureHeight() {
-		return _spriteNode.getImage().getHeight();
+		return getModel().getAssetKey().getFrameData().srcSize.y;
 	}
 }

@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid.editors;
 
-import static java.lang.System.out;
-
 import java.util.List;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -124,8 +122,8 @@ public class PGridFrameDialog extends Dialog {
 		});
 		_viewer.setLabelProvider(AssetLabelProvider.GLOBAL_48);
 		_viewer.setInput(_frames);
-		out.println(_selection.hashCode() + " here567");
-		_viewer.setSelection(new StructuredSelection(_selection), true);
+		_viewer.setSelection(_selection == null ? StructuredSelection.EMPTY : new StructuredSelection(_selection),
+				true);
 	}
 
 	public void setFrames(List<?> frames) {

@@ -28,6 +28,7 @@ import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.core.ImageAssetModel;
 
 /**
  * @author arian
@@ -62,7 +63,15 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 	protected void writeMetadata(JSONObject obj) {
 		super.writeMetadata(obj);
 		// TODO: change it to use the UUID of asset packs!
-		obj.put("asset-ref", AssetPackCore.getAssetJSONReference(_assetKey));
+		IAssetKey key = _assetKey;
+
+		// if the key is an image frame, then we save only the refs to the image
+		// asset.
+		if (key instanceof ImageAssetModel.Frame) {
+			key = key.getAsset();
+		}
+
+		obj.put("asset-ref", AssetPackCore.getAssetJSONReference(key));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -70,7 +79,14 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 	protected void readMetadata(JSONObject obj) {
 		super.readMetadata(obj);
 
-		_assetKey = (T) findAsset(obj);
+		IAssetKey asset = findAsset(obj);
+
+		// what we really need is to get the frame of the image.
+		if (asset instanceof ImageAssetModel) {
+			_assetKey = (T) ((ImageAssetModel) asset).getFrame();
+		} else {
+			_assetKey = (T) asset;
+		}
 	}
 
 	/*

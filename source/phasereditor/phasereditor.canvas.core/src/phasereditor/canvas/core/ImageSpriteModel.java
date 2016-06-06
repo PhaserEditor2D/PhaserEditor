@@ -29,11 +29,11 @@ import phasereditor.assetpack.core.ImageAssetModel;
  * @author arian
  *
  */
-public class ImageSpriteModel extends AssetSpriteModel<ImageAssetModel> {
+public class ImageSpriteModel extends AssetSpriteModel<ImageAssetModel.Frame> {
 
 	public static final String TYPE_NAME = "image";
 
-	public ImageSpriteModel(GroupModel parent, ImageAssetModel asset) {
+	public ImageSpriteModel(GroupModel parent, ImageAssetModel.Frame asset) {
 		super(parent, asset, TYPE_NAME);
 	}
 

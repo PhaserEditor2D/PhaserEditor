@@ -21,29 +21,74 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ImageAssetModel extends AssetModel  {
+import phasereditor.ui.PhaserEditorUI;
+
+public class ImageAssetModel extends AssetModel {
+
+	public final class Frame implements IAssetFrameModel, IAssetElementModel {
+		public Frame() {
+		}
+
+		@Override
+		public String getKey() {
+			return ImageAssetModel.this.getKey();
+		}
+
+		@Override
+		public AssetModel getAsset() {
+			return ImageAssetModel.this;
+		}
+
+		@Override
+		public IFile getImageFile() {
+			return ImageAssetModel.this.getUrlFile();
+		}
+
+		@Override
+		public FrameData getFrameData() {
+			Rectangle b = PhaserEditorUI.getImageBounds(getImageFile());
+			FrameData fd = new FrameData();
+			fd.src = b;
+			fd.dst = b;
+			fd.srcSize = new Point(b.width, b.height);
+			return fd;
+		}
+
+		@Override
+		public <T> T getAdapter(Class<T> adapter) {
+			return null;
+		}
+
+		@Override
+		public String getName() {
+			return getKey();
+		}
+	}
 
 	private String _url;
 	private boolean _overwrite;
+	private Frame _frame;
+	private ArrayList<IAssetElementModel> _elements;
 
 	{
 		_overwrite = false;
 	}
 
-	public ImageAssetModel(String key, AssetSectionModel section)
-			throws JSONException {
+	public ImageAssetModel(String key, AssetSectionModel section) throws JSONException {
 		super(key, AssetType.image, section);
 	}
 
-	public ImageAssetModel(JSONObject definition, AssetSectionModel section)
-			throws JSONException {
+	public ImageAssetModel(JSONObject definition, AssetSectionModel section) throws JSONException {
 		super(definition, section);
 		_url = definition.getString("url");
 		_overwrite = definition.getBoolean("overwrite");
@@ -86,5 +131,28 @@ public class ImageAssetModel extends AssetModel  {
 	@Override
 	public void internalBuild(List<IStatus> problems) {
 		validateUrl(problems, "url", _url);
+		try {
+			buildFrame();
+		} catch (Exception e) {
+			problems.add(errorStatus(e.getMessage()));
+		}
+	}
+
+	public Frame getFrame() {
+		if (_frame == null) {
+			buildFrame();
+		}
+		return _frame;
+	}
+
+	@Override
+	public List<? extends IAssetElementModel> getSubElements() {
+		return _elements;
+	}
+
+	private synchronized void buildFrame() {
+		_frame = new Frame();
+		_elements = new ArrayList<>();
+		_elements.add(_frame);
 	}
 }

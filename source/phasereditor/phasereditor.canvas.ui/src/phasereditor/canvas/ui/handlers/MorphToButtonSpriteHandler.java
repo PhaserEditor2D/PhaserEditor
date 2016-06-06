@@ -41,7 +41,7 @@ public class MorphToButtonSpriteHandler extends AbstractHandler {
 
 			if (control instanceof ImageSpriteControl) {
 				ImageSpriteControl srcControl = (ImageSpriteControl) control;
-				ImageAssetModel source = srcControl.getModel().getAssetKey();
+				ImageAssetModel.Frame source = srcControl.getModel().getAssetKey();
 
 				morph(newSelection, srcControl.getNode(), source);
 
@@ -71,7 +71,7 @@ public class MorphToButtonSpriteHandler extends AbstractHandler {
 		GroupControl parent = srcControl.getIObjectNode().getGroup().getControl();
 		BaseSpriteModel srcModel = (BaseSpriteModel) srcControl.getModel();
 
-		ButtonSpriteModel model = new ButtonSpriteModel(parent.getModel(),  (IAssetFrameModel) assetKey);
+		ButtonSpriteModel model = new ButtonSpriteModel(parent.getModel(), (IAssetFrameModel) assetKey);
 
 		model.updateWith(srcModel);
 

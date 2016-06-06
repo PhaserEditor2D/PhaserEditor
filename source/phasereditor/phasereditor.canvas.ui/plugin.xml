@@ -550,6 +550,9 @@
                      <instanceof
                            value="phasereditor.canvas.ui.shapes.AtlasSpriteNode">
                      </instanceof>
+                     <instanceof
+                           value="phasereditor.canvas.ui.shapes.SpritesheetSpriteNode">
+                     </instanceof>
                   </or>
                </iterate>
             </with>

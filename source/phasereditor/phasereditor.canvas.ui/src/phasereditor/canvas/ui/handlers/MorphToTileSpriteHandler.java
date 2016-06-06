@@ -40,7 +40,7 @@ public class MorphToTileSpriteHandler extends AbstractHandler {
 
 			if (control instanceof ImageSpriteControl) {
 				ImageSpriteControl srcControl = (ImageSpriteControl) control;
-				ImageAssetModel source = srcControl.getModel().getAssetKey();
+				ImageAssetModel.Frame source = srcControl.getModel().getAssetKey();
 
 				morph(newSelection, srcControl.getNode(), source);
 
@@ -51,7 +51,7 @@ public class MorphToTileSpriteHandler extends AbstractHandler {
 				morph(newSelection, srcControl.getNode(), source);
 			} else if (control instanceof SpritesheetSpriteControl) {
 				SpritesheetSpriteControl srcControl = (SpritesheetSpriteControl) control;
-				 FrameModel source = srcControl.getModel().getAssetKey();
+				FrameModel source = srcControl.getModel().getAssetKey();
 
 				morph(newSelection, srcControl.getNode(), source);
 			}

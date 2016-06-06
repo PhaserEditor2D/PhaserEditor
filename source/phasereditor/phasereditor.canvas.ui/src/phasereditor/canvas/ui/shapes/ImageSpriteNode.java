@@ -21,21 +21,17 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
-import org.eclipse.core.resources.IFile;
-
-import javafx.scene.image.ImageView;
 import phasereditor.canvas.core.BaseObjectModel;
-import phasereditor.ui.ImageCache;
 
 /**
  * @author arian
  *
  */
-public class ImageSpriteNode extends ImageView implements ISpriteNode {
+public class ImageSpriteNode extends FrameNode implements ISpriteNode {
 	private BaseObjectControl<?> _control;
 
-	ImageSpriteNode(BaseObjectControl<?> control, IFile imageFile) {
-		super(ImageCache.getFXImage(imageFile));
+	ImageSpriteNode(ImageSpriteControl control) {
+		super(control.getModel().getAssetKey());
 		_control = control;
 	}
 

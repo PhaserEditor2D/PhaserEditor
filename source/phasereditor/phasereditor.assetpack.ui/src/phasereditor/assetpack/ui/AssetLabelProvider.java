@@ -131,6 +131,10 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 			if (element instanceof ImageAssetModel) {
 				file = ((ImageAssetModel) element).getUrlFile();
 			}
+			
+			if (element instanceof ImageAssetModel.Frame) {
+				file = ((ImageAssetModel.Frame) element).getImageFile();
+			}
 
 			if (element instanceof AtlasAssetModel) {
 				file = ((AtlasAssetModel) element).getTextureFile();
