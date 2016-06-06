@@ -24,8 +24,12 @@ package phasereditor.canvas.ui.editors.grid;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.wb.swt.SWTResourceManager;
+
+import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.ui.AssetLabelProvider;
 
 /**
  * @author arian
@@ -43,7 +47,7 @@ public class PGridLabelProvider extends ColumnLabelProvider {
 	public Viewer getViewer() {
 		return _viewer;
 	}
-	
+
 	@Override
 	public String getToolTipText(Object element) {
 		if (element instanceof PGridProperty) {
@@ -51,6 +55,15 @@ public class PGridLabelProvider extends ColumnLabelProvider {
 			return prop.getTooltip();
 		}
 		return super.getToolTipText(element);
+	}
+
+	@Override
+	public Image getToolTipImage(Object object) {
+		if (object instanceof PGridFrameProperty) {
+			IAssetFrameModel value = ((PGridFrameProperty) object).getValue();
+			return AssetLabelProvider.GLOBAL_48.getImage(value);
+		}
+		return super.getToolTipImage(object);
 	}
 
 	@Override

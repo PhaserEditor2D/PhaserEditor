@@ -144,7 +144,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 				file = ((BitmapFontAssetModel) element).getTextureFile();
 			}
 
-			if (file != null) {
+			if (file != null && file.exists()) {
 				try {
 					return _cache.getIcon(file, _iconSize, null);
 				} catch (Exception e) {

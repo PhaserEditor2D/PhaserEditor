@@ -117,13 +117,13 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 
 				@Override
 				public void setValue(IAssetFrameModel value) {
-					getModel().setOverFrame(value);
+					getModel().setOutFrame(value);
 					updateGridChange();
 				}
 
 				@Override
 				public IAssetFrameModel getValue() {
-					return getModel().getOverFrame();
+					return getModel().getOutFrame();
 				}
 
 				@Override
@@ -136,13 +136,13 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 
 				@Override
 				public void setValue(IAssetFrameModel value) {
-					getModel().setOverFrame(value);
+					getModel().setDownFrame(value);
 					updateGridChange();
 				}
 
 				@Override
 				public IAssetFrameModel getValue() {
-					return getModel().getOverFrame();
+					return getModel().getDownFrame();
 				}
 
 				@Override
@@ -155,13 +155,13 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 
 				@Override
 				public void setValue(IAssetFrameModel value) {
-					getModel().setOverFrame(value);
+					getModel().setUpFrame(value);
 					updateGridChange();
 				}
 
 				@Override
 				public IAssetFrameModel getValue() {
-					return getModel().getOverFrame();
+					return getModel().getUpFrame();
 				}
 
 				@Override
