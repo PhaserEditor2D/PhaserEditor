@@ -80,6 +80,7 @@ import javafx.geometry.Point2D;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.behaviors.ZoomBehavior;
 import phasereditor.canvas.ui.editors.grid.PGrid;
+import phasereditor.canvas.ui.editors.palette.PaletteComp;
 import phasereditor.ui.EditorSharedImages;
 
 /**
@@ -184,15 +185,19 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 		_leftSashForm.setWeights(new int[] { 1, 1 });
 
 		_composite = new Composite(_mainSashForm, SWT.NONE);
-		GridLayout gl_composite = new GridLayout(1, false);
+		GridLayout gl_composite = new GridLayout(2, false);
+		gl_composite.horizontalSpacing = 0;
 		gl_composite.verticalSpacing = 2;
-		gl_composite.marginHeight = 0;
-		gl_composite.marginWidth = 0;
 		_composite.setLayout(gl_composite);
 		_toolBar = new ToolBar(_composite, SWT.FLAT | SWT.RIGHT);
-		_toolBar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		_toolBar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		_canvas = new ObjectCanvas(_composite, SWT.BORDER);
 		_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		
+		PaletteComp paletteComp = new PaletteComp(_composite, SWT.NONE);
+		GridData gd_paletteComp = new GridData(SWT.RIGHT, SWT.FILL, false, true, 1, 1);
+		gd_paletteComp.widthHint = 80;
+		paletteComp.setLayoutData(gd_paletteComp);
 
 		_mainSashForm.setWeights(new int[] { 1, 4 });
 
