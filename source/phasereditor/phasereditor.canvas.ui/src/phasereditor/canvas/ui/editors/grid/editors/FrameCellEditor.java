@@ -45,18 +45,29 @@ public class FrameCellEditor extends DialogCellEditor {
 	@Override
 	protected void updateContents(Object value) {
 		super.updateContents(value);
-		
-		if(value == null) {
+
+		if (value == null) {
 			getDefaultLabel().setText("");
 			return;
 		}
-		
+
 		getDefaultLabel().setText(" " + ((IAssetFrameModel) value).getKey());
+	}
+
+	@Override
+	protected void doSetValue(Object value) {
+		if (value == PGridFrameProperty.NULL_FRAME) {
+			super.doSetValue(null);
+			return;
+		}
+
+		super.doSetValue(value);
 	}
 
 	@Override
 	protected Object openDialogBox(Control cellEditorWindow) {
 		PGridFrameDialog dlg = new PGridFrameDialog(cellEditorWindow.getShell());
+		dlg.setAllowNull(_prop.isAllowNull());
 		dlg.setFrames(_prop.getFrames());
 		dlg.setSelectedItem(_prop.getValue());
 		if (dlg.open() == Window.OK) {

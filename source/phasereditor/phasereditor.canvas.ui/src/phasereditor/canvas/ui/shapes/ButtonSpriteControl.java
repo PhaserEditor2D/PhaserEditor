@@ -46,9 +46,13 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 	}
 
 	abstract class ButtonFrameProperty extends PGridFrameProperty {
-
 		public ButtonFrameProperty(String name) {
+			this(name, true);
+		}
+
+		public ButtonFrameProperty(String name, boolean allowNull) {
 			super(name);
+			setAllowNull(allowNull);
 		}
 
 		@Override
@@ -73,7 +77,7 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 
 		if (!isImage) { // image assets does not have frames
 			String name = getModel().getAssetKey() instanceof SpritesheetAssetModel.FrameModel ? "frame" : "frameName";
-			ButtonFrameProperty frame_property = new ButtonFrameProperty(name) {
+			ButtonFrameProperty frame_property = new ButtonFrameProperty(name, false) {
 
 				@Override
 				public void setValue(IAssetFrameModel value) {

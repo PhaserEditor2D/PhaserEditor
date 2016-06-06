@@ -25,6 +25,8 @@ import java.util.List;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -40,6 +42,7 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 
 import phasereditor.assetpack.ui.AssetLabelProvider;
+import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
 
 /**
  * @author arian
@@ -52,6 +55,7 @@ public class PGridFrameDialog extends Dialog {
 	private List<?> _frames;
 	private Object _result;
 	private Object _selection;
+	private boolean _allowNull;
 
 	/**
 	 * Create the dialog.
@@ -124,10 +128,27 @@ public class PGridFrameDialog extends Dialog {
 		_viewer.setInput(_frames);
 		_viewer.setSelection(_selection == null ? StructuredSelection.EMPTY : new StructuredSelection(_selection),
 				true);
+		_viewer.addDoubleClickListener(new IDoubleClickListener() {
+
+			@Override
+			public void doubleClick(DoubleClickEvent event) {
+				okPressed();
+			}
+		});
 	}
 
 	public void setFrames(List<?> frames) {
 		_frames = frames;
+	}
+
+	@Override
+	protected void buttonPressed(int buttonId) {
+		if (buttonId == IDialogConstants.CLIENT_ID) {
+			_result = PGridFrameProperty.NULL_FRAME;
+			setReturnCode(OK);
+			close();
+		}
+		super.buttonPressed(buttonId);
 	}
 
 	/*
@@ -152,8 +173,19 @@ public class PGridFrameDialog extends Dialog {
 	 */
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
+		if (_allowNull) {
+			createButton(parent, IDialogConstants.CLIENT_ID, "Set Null", false);
+		}
 		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
 		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
+	}
+
+	public boolean isAllowNull() {
+		return _allowNull;
+	}
+
+	public void setAllowNull(boolean allowNull) {
+		_allowNull = allowNull;
 	}
 
 	/**
