@@ -29,6 +29,7 @@ import phasereditor.canvas.core.SpritesheetSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
+import phasereditor.inspect.core.InspectCore;
 
 /**
  * @author arian
@@ -87,6 +88,11 @@ public class SpritesheetSpriteControl extends BaseSpriteControl<SpritesheetSprit
 			@Override
 			public List<?> getFrames() {
 				return getModel().getFrames();
+			}
+			
+			@Override
+			public String getTooltip() {
+				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Sprite.frame");
 			}
 		};
 		getSpriteSection().add(frame_property);

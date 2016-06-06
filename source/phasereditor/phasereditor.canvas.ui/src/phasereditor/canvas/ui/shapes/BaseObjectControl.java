@@ -36,6 +36,7 @@ import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
 import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
+import phasereditor.inspect.core.InspectCore;
 
 /**
  * @author arian
@@ -62,9 +63,9 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		_model = model;
 
 		_inode = createNode();
-		
+
 		_node = _inode.getNode();
-		
+
 		updateFromModel();
 	}
 
@@ -162,6 +163,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			public boolean isModified() {
 				return getModel().getX() != 0;
 			}
+
+			@Override
+			public String getTooltip() {
+				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Sprite.x");
+			}
 		};
 
 		_y_property = new PGridNumberProperty("y") {
@@ -179,6 +185,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			@Override
 			public boolean isModified() {
 				return getModel().getY() != 0;
+			}
+
+			@Override
+			public String getTooltip() {
+				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Sprite.y");
 			}
 		};
 
@@ -198,6 +209,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			public boolean isModified() {
 				return getModel().getAngle() != 0;
 			}
+
+			@Override
+			public String getTooltip() {
+				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Sprite.angle");
+			}
 		};
 
 		_scale_x_property = new PGridNumberProperty("scale.x") {
@@ -215,6 +231,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			@Override
 			public boolean isModified() {
 				return getModel().getScaleX() != 1;
+			}
+
+			@Override
+			public String getTooltip() {
+				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Sprite.scale");
 			}
 		};
 
@@ -234,6 +255,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			public boolean isModified() {
 				return getModel().getScaleY() != 1;
 			}
+
+			@Override
+			public String getTooltip() {
+				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Sprite.scale");
+			}
 		};
 
 		_pivot_x_property = new PGridNumberProperty("pivot.x") {
@@ -252,6 +278,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			public boolean isModified() {
 				return getModel().getPivotX() != 0;
 			}
+
+			@Override
+			public String getTooltip() {
+				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Sprite.pivot");
+			}
 		};
 
 		_pivot_y_property = new PGridNumberProperty("pivot.y") {
@@ -269,6 +300,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			@Override
 			public boolean isModified() {
 				return getModel().getPivotY() != 0;
+			}
+
+			@Override
+			public String getTooltip() {
+				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Sprite.pivot");
 			}
 		};
 
@@ -302,33 +338,6 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			@Override
 			public boolean isModified() {
 				return true;
-			}
-		});
-
-		section.add(new PGridNumberProperty("generate") {
-
-			@Override
-			public boolean isModified() {
-				return false;
-			}
-		});
-
-		section.add(new PGridStringProperty("factory") {
-
-			@Override
-			public String getValue() {
-				return _model.getEditorFactory();
-			}
-
-			@Override
-			public void setValue(String value) {
-				_model.setEditorFactory(value);
-				updateGridChange();
-			}
-
-			@Override
-			public boolean isModified() {
-				return _model.getEditorFactory() != null && _model.getEditorFactory().length() > 0;
 			}
 		});
 

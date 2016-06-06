@@ -40,6 +40,7 @@ import phasereditor.canvas.ui.editors.grid.PGridColorProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
+import phasereditor.inspect.core.InspectCore;
 
 /**
  * @author arian
@@ -133,6 +134,11 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 			public boolean isModified() {
 				return getModel().getAnchorX() != 0;
 			}
+			
+			@Override
+			public String getTooltip() {
+				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Sprite.anchor");
+			}
 		};
 
 		_anchor_y_property = new PGridNumberProperty("anchor.y") {
@@ -150,6 +156,11 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 			@Override
 			public boolean isModified() {
 				return getModel().getAnchorY() != 0;
+			}
+			
+			@Override
+			public String getTooltip() {
+				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Sprite.anchor");
 			}
 		};
 
@@ -184,6 +195,11 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 
 				Color c = Color.valueOf(tint);
 				return new RGB((int) (c.getRed() * 255), (int) (c.getGreen() * 255), (int) (c.getBlue() * 255));
+			}
+			
+			@Override
+			public String getTooltip() {
+				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Sprite.tint");
 			}
 		};
 

@@ -51,14 +51,15 @@ public class PhaserJSDoc {
 	private static PhaserJSDoc _instance;
 
 	public synchronized static PhaserJSDoc getInstance() {
-		
+
 		Location location = Platform.getConfigurationLocation();
 		out.println("Configuration: " + location.getURL());
-		
+
 		if (_instance == null) {
 			long t = currentTimeMillis();
 			Path phaserVersionFolder = InspectCore.getPhaserVersionFolder();
-			Path docsJsonFile = phaserVersionFolder.resolve("phaser-custom/jsdoc/docs.json").toAbsolutePath().normalize();
+			Path docsJsonFile = phaserVersionFolder.resolve("phaser-custom/jsdoc/docs.json").toAbsolutePath()
+					.normalize();
 			Path srcFolder = phaserVersionFolder.resolve("phaser-master/src");
 
 			try {
@@ -162,7 +163,7 @@ public class PhaserJSDoc {
 		if (!Files.exists(docsJsonFile)) {
 			return new HashMap<>();
 		}
-		
+
 		try (InputStream input = Files.newInputStream(docsJsonFile)) {
 			JSONArray jsdocElements = new JSONArray(new JSONTokener(input));
 
@@ -627,5 +628,26 @@ public class PhaserJSDoc {
 			argTypes[k] = jsonTypes.getString(k);
 		}
 		return argTypes;
+	}
+
+	public String getMemberHelp(String memberFullName) {
+		IPhaserMember member = _membersMap.get(memberFullName);
+		if (member == null) {
+			return "<No help available>";
+		}
+		return member.getHelp();
+	}
+
+	public String getMethodArgHelp(String methodName, String argName) {
+		IPhaserMember member = _membersMap.get(methodName);
+		if (member instanceof PhaserMethod) {
+			List<PhaserMethodArg> args = ((PhaserMethod) member).getArgs();
+			for(PhaserMethodArg arg : args) {
+				if (arg.getName().equals(argName)) {
+					return arg.getHelp();
+				}
+			}
+		}
+			return "<No help available>";
 	}
 }

@@ -35,6 +35,7 @@ import org.eclipse.wst.jsdt.core.IType;
 import org.json.JSONObject;
 
 import phasereditor.inspect.core.examples.ExamplesModel;
+import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
 import phasereditor.inspect.core.resources.InspectCoreResources;
 import phasereditor.inspect.core.templates.TemplatesModel;
 
@@ -50,6 +51,10 @@ public class InspectCore {
 	protected static ExamplesModel _examplesModel;
 	private static TemplatesModel _builtInTemplates;
 
+	public static PhaserJSDoc getPhaserHelp() {
+		return PhaserJSDoc.getInstance();
+	}
+	
 	public static ExamplesModel getExamplesModel() {
 		if (_examplesModel == null) {
 			try {

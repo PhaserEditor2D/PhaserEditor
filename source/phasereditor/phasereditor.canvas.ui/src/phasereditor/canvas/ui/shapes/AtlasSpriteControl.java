@@ -29,6 +29,7 @@ import phasereditor.canvas.core.AtlasSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
+import phasereditor.inspect.core.InspectCore;
 
 /**
  * @author arian
@@ -88,6 +89,11 @@ public class AtlasSpriteControl extends BaseSpriteControl<AtlasSpriteModel> {
 			@Override
 			public List<?> getFrames() {
 				return getModel().getAssetKey().getAsset().getSubElements();
+			}
+			
+			@Override
+			public String getTooltip() {
+				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Sprite.frameName");
 			}
 		};
 

@@ -28,7 +28,7 @@ import org.eclipse.swt.graphics.Font;
  * @author arian
  *
  */
-public class PGridKeyLabelProvider extends GridLabelProvider {
+public class PGridKeyLabelProvider extends PGridLabelProvider {
 
 	public PGridKeyLabelProvider(Viewer viewer) {
 		super(viewer);

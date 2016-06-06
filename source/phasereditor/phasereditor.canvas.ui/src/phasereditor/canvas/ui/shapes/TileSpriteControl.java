@@ -34,6 +34,7 @@ import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
+import phasereditor.inspect.core.InspectCore;
 
 /**
  * @author arian
@@ -104,6 +105,11 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			public boolean isModified() {
 				return getModel().getTilePositionX() != 0;
 			}
+
+			@Override
+			public String getTooltip() {
+				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.TileSprite.tilePosition");
+			}
 		};
 
 		_tilePositionY_property = new PGridNumberProperty("tilePosition.y") {
@@ -122,6 +128,11 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			@Override
 			public boolean isModified() {
 				return getModel().getTilePositionY() != 0;
+			}
+
+			@Override
+			public String getTooltip() {
+				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.TileSprite.tilePosition");
 			}
 		};
 
@@ -142,6 +153,11 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			public boolean isModified() {
 				return true;
 			}
+
+			@Override
+			public String getTooltip() {
+				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.TileSprite.width");
+			}
 		};
 
 		_height_property = new PGridNumberProperty("height") {
@@ -160,6 +176,11 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			@Override
 			public boolean isModified() {
 				return true;
+			}
+
+			@Override
+			public String getTooltip() {
+				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.TileSprite.height");
 			}
 		};
 
@@ -180,6 +201,11 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			public boolean isModified() {
 				return getModel().getTileScaleX() != 1;
 			}
+
+			@Override
+			public String getTooltip() {
+				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.TileSprite.tileScale");
+			}
 		};
 
 		_tileScaleY_property = new PGridNumberProperty("tileScale.y") {
@@ -198,6 +224,11 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			@Override
 			public boolean isModified() {
 				return getModel().getTileScaleY() != 1;
+			}
+
+			@Override
+			public String getTooltip() {
+				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.TileSprite.tileScale");
 			}
 		};
 

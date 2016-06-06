@@ -36,8 +36,6 @@ public abstract class BaseObjectModel {
 	private GroupModel _parent;
 	private String _typeName;
 	private String _editorName;
-	private String _editorFactory;
-	private boolean _editorGenerate;
 	private boolean _editorPick;
 
 	private double _x;
@@ -59,8 +57,6 @@ public abstract class BaseObjectModel {
 
 		_editorName = typeName;
 		_editorPick = true;
-		_editorFactory = null;
-		_editorGenerate = true;
 
 		_scaleX = 1;
 		_scaleY = 1;
@@ -79,7 +75,7 @@ public abstract class BaseObjectModel {
 	protected void readMetadata(JSONObject obj) {
 		// nothing
 	}
-	
+
 	public abstract void rebuild();
 
 	public String getLabel() {
@@ -98,28 +94,12 @@ public abstract class BaseObjectModel {
 		_editorName = editorName;
 	}
 
-	public String getEditorFactory() {
-		return _editorFactory;
-	}
-
-	public void setEditorFactory(String editorFactory) {
-		_editorFactory = editorFactory;
-	}
-
 	public boolean isEditorPick() {
 		return _editorPick;
 	}
 
 	public void setEditorPick(boolean editorPick) {
 		_editorPick = editorPick;
-	}
-
-	public boolean isEditorGenerate() {
-		return _editorGenerate;
-	}
-
-	public void setEditorGenerate(boolean editorGenerate) {
-		_editorGenerate = editorGenerate;
 	}
 
 	public final String getTypeName() {
@@ -203,8 +183,6 @@ public abstract class BaseObjectModel {
 
 	protected void readInfo(JSONObject jsonInfo) {
 		_editorName = jsonInfo.optString("editorName");
-		_editorFactory = jsonInfo.optString("editorFactory");
-		_editorGenerate = jsonInfo.optBoolean("editorGenerate", true);
 		_editorPick = jsonInfo.optBoolean("editorPick", true);
 
 		_x = jsonInfo.optDouble("x", 0);
@@ -230,8 +208,6 @@ public abstract class BaseObjectModel {
 
 	protected void writeInfo(JSONObject jsonInfo) {
 		jsonInfo.put("editorName", _editorName);
-		jsonInfo.put("editorFactory", _editorFactory);
-		jsonInfo.put("editorGenerate", _editorGenerate);
 		jsonInfo.put("editorPick", _editorPick);
 
 		jsonInfo.put("x", _x);

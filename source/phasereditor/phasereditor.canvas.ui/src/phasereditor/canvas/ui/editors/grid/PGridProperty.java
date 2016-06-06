@@ -27,6 +27,7 @@ package phasereditor.canvas.ui.editors.grid;
  */
 public abstract class PGridProperty<T> {
 	private String _name;
+	private String _tooltip;
 
 	public PGridProperty(String name) {
 		super();
@@ -46,4 +47,12 @@ public abstract class PGridProperty<T> {
 	public abstract void setValue(T value);
 
 	public abstract boolean isModified();
+
+	public String getTooltip() {
+		return _tooltip;
+	}
+
+	public void setTooltip(String tooltip) {
+		_tooltip = tooltip;
+	}
 }

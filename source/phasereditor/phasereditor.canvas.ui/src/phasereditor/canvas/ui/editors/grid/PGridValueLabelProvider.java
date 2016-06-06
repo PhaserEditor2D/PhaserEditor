@@ -35,7 +35,7 @@ import phasereditor.ui.PhaserEditorUI;
  * @author arian
  *
  */
-public class PGridValueLabelProvider extends GridLabelProvider {
+public class PGridValueLabelProvider extends PGridLabelProvider {
 
 	public PGridValueLabelProvider(ColumnViewer viewer) {
 		super(viewer);

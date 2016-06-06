@@ -31,17 +31,26 @@ import org.eclipse.wb.swt.SWTResourceManager;
  * @author arian
  *
  */
-public class GridLabelProvider extends ColumnLabelProvider {
+public class PGridLabelProvider extends ColumnLabelProvider {
 	private static final double FACTOR = 0.7;
 
 	private Viewer _viewer;
 
-	public GridLabelProvider(Viewer viewer) {
+	public PGridLabelProvider(Viewer viewer) {
 		_viewer = viewer;
 	}
 
 	public Viewer getViewer() {
 		return _viewer;
+	}
+	
+	@Override
+	public String getToolTipText(Object element) {
+		if (element instanceof PGridProperty) {
+			PGridProperty<?> prop = (PGridProperty<?>) element;
+			return prop.getTooltip();
+		}
+		return super.getToolTipText(element);
 	}
 
 	@Override

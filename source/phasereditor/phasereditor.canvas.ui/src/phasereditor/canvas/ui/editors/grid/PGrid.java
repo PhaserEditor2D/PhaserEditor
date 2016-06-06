@@ -24,6 +24,7 @@ package phasereditor.canvas.ui.editors.grid;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -127,6 +128,8 @@ public class PGrid extends Composite {
 	}
 
 	private void afterCreateWidgets() {
+		ColumnViewerToolTipSupport.enableFor(_treeViewer);
+		
 		_tree.setLinesVisible(true);
 		_tree.addMouseListener(new MouseListener() {
 
@@ -200,8 +203,8 @@ public class PGrid extends Composite {
 				}
 
 				Object element = item.getData();
-				if (GridLabelProvider.isModified(element)) {
-					RGB rgb = GridLabelProvider.brighter(GridLabelProvider.brighter(_tree.getBackground().getRGB()));
+				if (PGridLabelProvider.isModified(element)) {
+					RGB rgb = PGridLabelProvider.brighter(PGridLabelProvider.brighter(_tree.getBackground().getRGB()));
 					gc.setBackground(SWTResourceManager.getColor(rgb));
 					gc.fillRectangle(0, event.y, _tree.getClientArea().width, event.height);
 				}
