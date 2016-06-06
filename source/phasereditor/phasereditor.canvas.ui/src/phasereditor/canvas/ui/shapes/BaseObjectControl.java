@@ -137,6 +137,14 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		return _propModel;
 	}
 
+	protected static String help(String member) {
+		return member + "\n\n" + InspectCore.getPhaserHelp().getMemberHelp(member);
+	}
+
+	protected static String help(String member, String arg) {
+		return member + "(...," + arg + ",...)" + "\n\n" + InspectCore.getPhaserHelp().getMethodArgHelp(member, arg);
+	}
+
 	protected void initPGridModel(PGridModel propModel) {
 		PGridSection editorSec = new PGridSection("Editor");
 		initEditorPGridModel(propModel, editorSec);
@@ -166,7 +174,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 			@Override
 			public String getTooltip() {
-				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Sprite.x");
+				return help("Phaser.Sprite.x");
 			}
 		};
 
@@ -189,7 +197,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 			@Override
 			public String getTooltip() {
-				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Sprite.y");
+				return help("Phaser.Sprite.y");
 			}
 		};
 
@@ -212,7 +220,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 			@Override
 			public String getTooltip() {
-				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Sprite.angle");
+				return help("Phaser.Sprite.angle");
 			}
 		};
 
@@ -235,7 +243,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 			@Override
 			public String getTooltip() {
-				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Sprite.scale");
+				return help("Phaser.Sprite.scale");
 			}
 		};
 
@@ -258,7 +266,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 			@Override
 			public String getTooltip() {
-				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Sprite.scale");
+				return help("Phaser.Sprite.scale");
 			}
 		};
 
@@ -281,7 +289,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 			@Override
 			public String getTooltip() {
-				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Sprite.pivot");
+				return help("Phaser.Sprite.pivot");
 			}
 		};
 
@@ -304,7 +312,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 			@Override
 			public String getTooltip() {
-				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Sprite.pivot");
+				return help("Phaser.Sprite.pivot");
 			}
 		};
 

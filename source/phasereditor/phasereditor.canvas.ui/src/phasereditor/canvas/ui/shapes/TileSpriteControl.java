@@ -34,7 +34,6 @@ import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
-import phasereditor.inspect.core.InspectCore;
 
 /**
  * @author arian
@@ -108,7 +107,7 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 
 			@Override
 			public String getTooltip() {
-				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.TileSprite.tilePosition");
+				return help("Phaser.TileSprite.tilePosition");
 			}
 		};
 
@@ -132,7 +131,7 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 
 			@Override
 			public String getTooltip() {
-				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.TileSprite.tilePosition");
+				return help("Phaser.TileSprite.tilePosition");
 			}
 		};
 
@@ -156,7 +155,7 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 
 			@Override
 			public String getTooltip() {
-				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.TileSprite.width");
+				return help("Phaser.TileSprite.width");
 			}
 		};
 
@@ -180,7 +179,7 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 
 			@Override
 			public String getTooltip() {
-				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.TileSprite.height");
+				return help("Phaser.TileSprite.height");
 			}
 		};
 
@@ -204,7 +203,7 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 
 			@Override
 			public String getTooltip() {
-				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.TileSprite.tileScale");
+				return help("Phaser.TileSprite.tileScale");
 			}
 		};
 
@@ -228,7 +227,7 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 
 			@Override
 			public String getTooltip() {
-				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.TileSprite.tileScale");
+				return help("Phaser.TileSprite.tileScale");
 			}
 		};
 

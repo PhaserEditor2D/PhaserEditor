@@ -31,6 +31,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -640,14 +641,19 @@ public class PhaserJSDoc {
 
 	public String getMethodArgHelp(String methodName, String argName) {
 		IPhaserMember member = _membersMap.get(methodName);
+		List<PhaserMethodArg> args = Collections.emptyList();
+		
 		if (member instanceof PhaserMethod) {
-			List<PhaserMethodArg> args = ((PhaserMethod) member).getArgs();
-			for(PhaserMethodArg arg : args) {
-				if (arg.getName().equals(argName)) {
-					return arg.getHelp();
-				}
+			args = ((PhaserMethod) member).getArgs();
+		} else if (member instanceof PhaserType) {
+			args = ((PhaserType) member).getConstructorArgs();
+		}
+		
+		for (PhaserMethodArg arg : args) {
+			if (arg.getName().equals(argName)) {
+				return arg.getHelp();
 			}
 		}
-			return "<No help available>";
+		return "<No help available>";
 	}
 }

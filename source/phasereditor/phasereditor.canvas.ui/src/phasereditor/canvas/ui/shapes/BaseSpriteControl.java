@@ -40,7 +40,6 @@ import phasereditor.canvas.ui.editors.grid.PGridColorProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
-import phasereditor.inspect.core.InspectCore;
 
 /**
  * @author arian
@@ -137,7 +136,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 			
 			@Override
 			public String getTooltip() {
-				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Sprite.anchor");
+				return help("Phaser.Sprite.anchor");
 			}
 		};
 
@@ -160,7 +159,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 			
 			@Override
 			public String getTooltip() {
-				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Sprite.anchor");
+				return help("Phaser.Sprite.anchor");
 			}
 		};
 
@@ -199,7 +198,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 			
 			@Override
 			public String getTooltip() {
-				return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Sprite.tint");
+				return help("Phaser.Sprite.tint");
 			}
 		};
 

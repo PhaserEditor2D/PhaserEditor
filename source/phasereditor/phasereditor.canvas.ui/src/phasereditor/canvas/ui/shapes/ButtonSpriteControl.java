@@ -32,7 +32,6 @@ import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
-import phasereditor.inspect.core.InspectCore;
 
 /**
  * @author arian
@@ -86,10 +85,10 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 				public IAssetFrameModel getValue() {
 					return (IAssetFrameModel) getModel().getAssetKey();
 				}
-				
+
 				@Override
 				public String getTooltip() {
-					return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Sprite." + getName());
+					return help("Phaser.Sprite." + getName());
 				}
 			};
 
@@ -107,10 +106,10 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 				public IAssetFrameModel getValue() {
 					return getModel().getOverFrame();
 				}
-				
+
 				@Override
 				public String getTooltip() {
-					return InspectCore.getPhaserHelp().getMethodArgHelp("Phaser.GameObjectFactory.button", "overFrame");
+					return help("Phaser.Button", "overFrame");
 				}
 			};
 
@@ -126,10 +125,10 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 				public IAssetFrameModel getValue() {
 					return getModel().getOverFrame();
 				}
-				
+
 				@Override
 				public String getTooltip() {
-					return InspectCore.getPhaserHelp().getMethodArgHelp("Phaser.GameObjectFactory.button", "outFrame");
+					return help("Phaser.Button", "outFrame");
 				}
 			};
 
@@ -145,10 +144,10 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 				public IAssetFrameModel getValue() {
 					return getModel().getOverFrame();
 				}
-				
+
 				@Override
 				public String getTooltip() {
-					return InspectCore.getPhaserHelp().getMethodArgHelp("Phaser.GameObjectFactory.button", "downFrame");
+					return help("Phaser.Button", "downFrame");
 				}
 			};
 
@@ -164,10 +163,10 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 				public IAssetFrameModel getValue() {
 					return getModel().getOverFrame();
 				}
-				
+
 				@Override
 				public String getTooltip() {
-					return InspectCore.getPhaserHelp().getMethodArgHelp("Phaser.GameObjectFactory.button", "upFrame");
+					return help("Phaser.Button", "upFrame");
 				}
 			};
 
