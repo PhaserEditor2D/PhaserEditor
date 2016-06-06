@@ -70,7 +70,7 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 		PGridSection section = new PGridSection("Button");
 
 		boolean isImage = getModel().getAssetKey().getAsset() instanceof ImageAssetModel;
-		
+
 		if (!isImage) { // image assets does not have frames
 			String name = getModel().getAssetKey() instanceof SpritesheetAssetModel.FrameModel ? "frame" : "frameName";
 			ButtonFrameProperty frame_property = new ButtonFrameProperty(name) {
@@ -103,7 +103,52 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 				}
 			};
 
+			PGridFrameProperty outFrame_property = new ButtonFrameProperty("outFrame") {
+
+				@Override
+				public void setValue(IAssetFrameModel value) {
+					getModel().setOverFrame(value);
+					updateGridChange();
+				}
+
+				@Override
+				public IAssetFrameModel getValue() {
+					return getModel().getOverFrame();
+				}
+			};
+
+			PGridFrameProperty downFrame_property = new ButtonFrameProperty("downFrame") {
+
+				@Override
+				public void setValue(IAssetFrameModel value) {
+					getModel().setOverFrame(value);
+					updateGridChange();
+				}
+
+				@Override
+				public IAssetFrameModel getValue() {
+					return getModel().getOverFrame();
+				}
+			};
+
+			PGridFrameProperty upFrame_property = new ButtonFrameProperty("upFrame") {
+
+				@Override
+				public void setValue(IAssetFrameModel value) {
+					getModel().setOverFrame(value);
+					updateGridChange();
+				}
+
+				@Override
+				public IAssetFrameModel getValue() {
+					return getModel().getOverFrame();
+				}
+			};
+
 			section.add(overFrame_property);
+			section.add(outFrame_property);
+			section.add(downFrame_property);
+			section.add(upFrame_property);
 		}
 
 		propModel.getSections().add(section);
