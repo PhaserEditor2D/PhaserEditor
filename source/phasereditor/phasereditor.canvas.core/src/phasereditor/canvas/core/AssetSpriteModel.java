@@ -41,10 +41,10 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 		super(parent, typeName, obj);
 	}
 
-	public AssetSpriteModel(GroupModel parent, T asset, String typeName) {
+	public AssetSpriteModel(GroupModel parent, T assetKey, String typeName) {
 		super(parent, typeName);
-		_assetKey = asset;
-		setEditorName(asset.getKey());
+		_assetKey = assetKey;
+		setEditorName(assetKey.getAsset().getKey());
 	}
 
 	public T getAssetKey() {
