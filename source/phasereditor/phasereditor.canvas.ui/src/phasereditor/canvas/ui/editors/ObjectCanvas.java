@@ -48,6 +48,7 @@ import phasereditor.canvas.ui.editors.behaviors.SelectionBehavior;
 import phasereditor.canvas.ui.editors.behaviors.UpdateBehavior;
 import phasereditor.canvas.ui.editors.behaviors.ZoomBehavior;
 import phasereditor.canvas.ui.editors.grid.PGrid;
+import phasereditor.canvas.ui.editors.palette.PaletteComp;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
@@ -79,7 +80,7 @@ public class ObjectCanvas extends FXCanvas {
 		super(parent, style);
 	}
 
-	public void init(WorldModel model, PGrid grid, TreeViewer outline) {
+	public void init(WorldModel model, PGrid grid, TreeViewer outline, PaletteComp palette) {
 		_model = model;
 		_pgrid = grid;
 		_outline = outline;
@@ -88,7 +89,7 @@ public class ObjectCanvas extends FXCanvas {
 
 		initDrop();
 
-		_createBehavior = new CreateBehavior(this);
+		_createBehavior = new CreateBehavior(this, palette);
 		_selectionBehavior = new SelectionBehavior(this);
 		_dragBehavior = new DragBehavior(this);
 		_updateBehavior = new UpdateBehavior(this, _pgrid, outline);

@@ -154,6 +154,10 @@ public class PaletteComp extends Composite {
 		updateWidth();
 	}
 
+	public void drop(Object[] items) {
+		drop(_list.size(), items);
+	}
+
 	public void updateWidth() {
 		ScrollBar bar = _viewer.getTable().getVerticalBar();
 
@@ -165,11 +169,11 @@ public class PaletteComp extends Composite {
 				if (!bar.isVisible()) {
 					hint -= bar.getSize().x;
 				}
-				
+
 				if (hint < 48) {
 					hint = 48;
 				}
-				
+
 			} else {
 				hint = 0;
 			}

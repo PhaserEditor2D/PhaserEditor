@@ -38,6 +38,7 @@ import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.ObjectModelFactory;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.palette.PaletteComp;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.CanvasObjectFactory;
 import phasereditor.canvas.ui.shapes.GroupControl;
@@ -50,9 +51,11 @@ import phasereditor.canvas.ui.shapes.IObjectNode;
  */
 public class CreateBehavior {
 	private ObjectCanvas _canvas;
+	private PaletteComp _palette;
 
-	public CreateBehavior(ObjectCanvas canvas) {
+	public CreateBehavior(ObjectCanvas canvas, PaletteComp palette) {
 		_canvas = canvas;
+		_palette = palette;
 	}
 
 	public List<Node> dropAssets(IStructuredSelection selection, DragEvent event) {
@@ -78,6 +81,9 @@ public class CreateBehavior {
 				}
 			}
 		}
+
+		_palette.drop(elems);
+
 		return _newnodes;
 	}
 

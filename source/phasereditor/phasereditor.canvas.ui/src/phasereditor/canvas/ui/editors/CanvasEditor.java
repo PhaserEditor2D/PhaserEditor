@@ -47,7 +47,6 @@ import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ST;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSourceEvent;
@@ -286,7 +285,7 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 	}
 
 	private void initCanvas() {
-		_canvas.init(_model, _grid, _outlineTree.getViewer());
+		_canvas.init(_model, _grid, _outlineTree.getViewer(), _paletteComp);
 		getEditorSite().setSelectionProvider(_canvas.getSelectionBehavior());
 	}
 
