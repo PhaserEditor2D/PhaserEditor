@@ -75,6 +75,7 @@ public class ObjectCanvas extends FXCanvas {
 	private GridPane _gridPane;
 	private WorldGlassPane _worldGlassPane;
 	private PaintBehavior _paintBehavior;
+	private PaletteComp _palette;
 
 	public ObjectCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -84,6 +85,7 @@ public class ObjectCanvas extends FXCanvas {
 		_model = model;
 		_pgrid = grid;
 		_outline = outline;
+		_palette = palette;
 
 		createScene();
 
@@ -106,6 +108,10 @@ public class ObjectCanvas extends FXCanvas {
 		return _paintBehavior;
 	}
 
+	public PaletteComp getPalette() {
+		return _palette;
+	}
+	
 	public TreeViewer getOutline() {
 		return _outline;
 	}

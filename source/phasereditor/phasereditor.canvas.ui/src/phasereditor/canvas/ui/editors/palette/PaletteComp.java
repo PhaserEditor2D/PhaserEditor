@@ -54,6 +54,7 @@ import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
+import phasereditor.assetpack.ui.AssetPackUI;
 
 /**
  * @author arian
@@ -141,6 +142,8 @@ public class PaletteComp extends Composite {
 				}
 			});
 		}
+
+		AssetPackUI.installAssetTooltips(_viewer);
 	}
 
 	void drop(int index, Object[] data) {

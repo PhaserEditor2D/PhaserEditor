@@ -34,6 +34,7 @@ import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.events.DisposeEvent;
@@ -60,6 +61,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import org.json.JSONArray;
 
 import com.subshell.snippets.jface.tooltip.tooltipsupport.ICustomInformationControlCreator;
+import com.subshell.snippets.jface.tooltip.tooltipsupport.TableViewerInformationProvider;
 import com.subshell.snippets.jface.tooltip.tooltipsupport.Tooltips;
 import com.subshell.snippets.jface.tooltip.tooltipsupport.TreeViewerInformationProvider;
 
@@ -548,6 +550,12 @@ public class AssetPackUI {
 		List<ICustomInformationControlCreator> creators = getInformationControlCreatorsForTooltips();
 
 		Tooltips.install(viewer.getControl(), new TreeViewerInformationProvider(viewer), creators, false);
+	}
+
+	public static void installAssetTooltips(TableViewer viewer) {
+		List<ICustomInformationControlCreator> creators = getInformationControlCreatorsForTooltips();
+
+		Tooltips.install(viewer.getControl(), new TableViewerInformationProvider(viewer), creators, false);
 	}
 
 	public static List<ICustomInformationControlCreator> getInformationControlCreatorsForTooltips() {

@@ -81,7 +81,7 @@ public class CreateBehavior {
 				}
 			}
 		}
-
+		
 		_palette.drop(elems);
 
 		return _newnodes;
