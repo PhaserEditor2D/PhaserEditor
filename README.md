@@ -20,7 +20,7 @@ Links:
 * [Website][pe_website]
 * [Blog][pe_blog]
 * [Youtube Channel][pe_youtube]
-* [HTML5GameDevs forum][html5gamesdev]
+* [HTML5GameDevs forum][html5gamedevs]
 * [Twitter][pe_twitter]
 * [Facebook][pe_facebook]
 * [Older versions on Bitbucket][bitbucket]
@@ -38,7 +38,7 @@ Please use the issues of this repo to report bugs or request features. In additi
 [bitbucket]: https://bitbucket.org/boniatillo/phasereditor
 [pe_website]: http://phasereditor.boniatillo.com
 [pe_blog]: http://phasereditor.boniatillo.com/blog
-[html5gamedev]: http://www.html5gamedevs.com/profile/8392-arian-fornaris
+[html5gamedevs]: http://www.html5gamedevs.com/profile/8392-arian-fornaris
 [pe_youtube]: https://www.youtube.com/playlist?list=PLB8gI_5U0MvCJuhPv-LBdi_a9PQxYxFqK
 [pe_twitter]: https://twitter.org/boniatillo_com
 [pe_facebook]: https://www.facebook.com/phasereditor/
