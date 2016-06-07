@@ -1,10 +1,29 @@
+![Phaser editor scheernshot](https://github.com/boniatillo-com/PhaserEditor/raw/master/screens/general-picture.png "Screenshot")
+
 # Phaser Editor
 
 A friendly IDE to develop HTML5 games based on the popular [Phaser][phaser] framework.
 
-(Older versions of the editor are hosted on [Bitbucket][bitbucket])
+Based on Eclipse, this IDE provides lot of functionalities made just to develop Phaser games:
 
-**Just visit the [Phaser Editor Website][pe_website].**
+* Load of Phaser project templates, including the official Phaser examples and tutorials.
+* Improved JavaScript editor, with Phaser API auto-completion and inline preview of the assets.
+* Assets management, with assisting editors and viewers.
+* Texture and audio packer.
+* Previsualization of spritesheets, atlas, images, videos, audio.
+* Advanced Phaser documentation search (Chains) and offline Phaser Documentation.
+* PNG images optimization.
+* And all that great stuff that you can find in a Eclipse based IDE, like a super flexible layout, projects explorer, customizable key shortcuts, native look and feel and a huge community, just to mention some of them.
+
+Links:
+
+* [Website][pe_website]
+* [Blog][pe_blog]
+* [Youtube Channel][pe_youtube]
+* [HTML5GameDevs forum][html5gamesdev]
+* [Twitter][pe_twitter]
+* [Facebook][pe_facebook]
+* [Older versions on Bitbucket][bitbucket]
 
 
 ### Report bugs or request features
@@ -18,3 +37,8 @@ Please use the issues of this repo to report bugs or request features. In additi
 [bitbucket]: https://bitbucket.org/boniatillo/phasereditor
 [bitbucket]: https://bitbucket.org/boniatillo/phasereditor
 [pe_website]: http://phasereditor.boniatillo.com
+[pe_blog]: http://phasereditor.boniatillo.com/blog
+[html5gamedev]: http://www.html5gamedevs.com/profile/8392-arian-fornaris
+[pe_youtube]: https://www.youtube.com/playlist?list=PLB8gI_5U0MvCJuhPv-LBdi_a9PQxYxFqK
+[pe_twitter]: https://twitter.org/boniatillo_com
+[pe_facebook]: https://www.facebook.com/phasereditor/
