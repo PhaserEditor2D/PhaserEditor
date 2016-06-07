@@ -129,7 +129,7 @@ public class PGrid extends Composite {
 
 	private void afterCreateWidgets() {
 		ColumnViewerToolTipSupport.enableFor(_treeViewer);
-		
+
 		_tree.setLinesVisible(true);
 		_tree.addMouseListener(new MouseListener() {
 

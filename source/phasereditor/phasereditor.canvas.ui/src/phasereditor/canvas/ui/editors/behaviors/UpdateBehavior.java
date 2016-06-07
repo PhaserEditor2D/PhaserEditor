@@ -121,8 +121,8 @@ public class UpdateBehavior {
 	private void update_Grid_from_Selection(SelectionChangedEvent event) {
 		IStructuredSelection sel = (IStructuredSelection) event.getSelection();
 
-		if (sel.isEmpty()) {
-			// TODO: implement support for no selection.
+		if (sel.toArray().length != 1) {
+			_grid.setModel(null);
 			return;
 		}
 

@@ -44,6 +44,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ScrollBar;
+import org.eclipse.swt.widgets.Table;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -162,7 +163,13 @@ public class PaletteComp extends Composite {
 	}
 
 	public void updateWidth() {
-		ScrollBar bar = _viewer.getTable().getVerticalBar();
+		Table table = _viewer.getTable();
+
+		if (table.isDisposed()) {
+			return;
+		}
+
+		ScrollBar bar = table.getVerticalBar();
 
 		Object layoutData = getLayoutData();
 		if (layoutData instanceof GridData) {
