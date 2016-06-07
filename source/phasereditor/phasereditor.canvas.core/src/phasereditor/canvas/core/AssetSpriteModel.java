@@ -29,6 +29,7 @@ import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel;
 
 /**
  * @author arian
@@ -44,7 +45,13 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 	public AssetSpriteModel(GroupModel parent, T assetKey, String typeName) {
 		super(parent, typeName);
 		_assetKey = assetKey;
-		setEditorName(assetKey.getAsset().getKey());
+
+		String name = assetKey.getKey();
+		if (assetKey.getAsset() instanceof SpritesheetAssetModel) {
+			name = assetKey.getAsset().getKey();
+		}
+
+		setEditorName(name);
 	}
 
 	public T getAssetKey() {

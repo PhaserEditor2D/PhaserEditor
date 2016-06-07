@@ -7,12 +7,17 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.canvas.ui.editors.CanvasEditor;
 
-public class DeleteShapesHandler extends AbstractHandler {
+public class DeleteHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
-		editor.getCanvas().deleteSelected();
+		boolean paletteFocused = editor.getPalette().getViewer().getTable().isFocusControl();
+		if (paletteFocused) {
+			editor.getPalette().deleteSelected();
+		} else {
+			editor.getCanvas().deleteSelected();
+		}
 		return null;
 	}
 

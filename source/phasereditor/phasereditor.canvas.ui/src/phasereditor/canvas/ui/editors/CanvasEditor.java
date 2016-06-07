@@ -38,6 +38,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
@@ -46,6 +47,7 @@ import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ST;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSourceEvent;
@@ -82,6 +84,7 @@ import phasereditor.canvas.ui.editors.behaviors.ZoomBehavior;
 import phasereditor.canvas.ui.editors.grid.PGrid;
 import phasereditor.canvas.ui.editors.palette.PaletteComp;
 import phasereditor.ui.EditorSharedImages;
+import phasereditor.ui.IEditorSharedImages;
 
 /**
  * @author arian
@@ -89,6 +92,10 @@ import phasereditor.ui.EditorSharedImages;
  */
 public class CanvasEditor extends EditorPart implements IResourceChangeListener, IPersistableEditor {
 
+	/**
+	 * 
+	 */
+	private static final String PALETTE_CONTEXT_ID = "phasereditor.canvas.ui.palettecontext";
 	public final static String ID = "phasereditor.canvas.ui.editors.canvas";
 	public final static String NODES_CONTEXT_ID = "phasereditor.canvas.ui.nodescontext";
 	protected static final String SCENE_CONTEXT_ID = "phasereditor.canvas.ui.scenecontext";
@@ -103,6 +110,10 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 	private ToolBarManager _toolBarManager;
 
 	private SashForm _mainSashForm;
+	private PaletteComp _paletteComp;
+	protected IContextActivation _paletteContext;
+	private Action _showPaletteAction;
+	private Action _showSidePaneAction;
 
 	public CanvasEditor() {
 	}
@@ -184,20 +195,20 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 		_grid = new PGrid(_leftSashForm, SWT.NONE);
 		_leftSashForm.setWeights(new int[] { 1, 1 });
 
-		_composite = new Composite(_mainSashForm, SWT.NONE);
+		_centerComposite = new Composite(_mainSashForm, SWT.NONE);
 		GridLayout gl_composite = new GridLayout(2, false);
 		gl_composite.horizontalSpacing = 0;
 		gl_composite.verticalSpacing = 2;
-		_composite.setLayout(gl_composite);
-		_toolBar = new ToolBar(_composite, SWT.FLAT | SWT.RIGHT);
+		_centerComposite.setLayout(gl_composite);
+		_toolBar = new ToolBar(_centerComposite, SWT.FLAT | SWT.RIGHT);
 		_toolBar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-		_canvas = new ObjectCanvas(_composite, SWT.BORDER);
+		_canvas = new ObjectCanvas(_centerComposite, SWT.BORDER);
 		_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		
-		PaletteComp paletteComp = new PaletteComp(_composite, SWT.NONE);
+
+		_paletteComp = new PaletteComp(_centerComposite, SWT.NONE);
 		GridData gd_paletteComp = new GridData(SWT.RIGHT, SWT.FILL, false, true, 1, 1);
 		gd_paletteComp.widthHint = 80;
-		paletteComp.setLayoutData(gd_paletteComp);
+		_paletteComp.setLayoutData(gd_paletteComp);
 
 		_mainSashForm.setWeights(new int[] { 1, 4 });
 
@@ -252,6 +263,21 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 		};
 		_canvas.addFocusListener(nodesContextHandler);
 		_outlineTree.getViewer().getControl().addFocusListener(nodesContextHandler);
+
+		// palette
+
+		_paletteComp.getViewer().getTable().addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				getContextService().deactivateContext(_paletteContext);
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				_paletteContext = getContextService().activateContext(PALETTE_CONTEXT_ID);
+			}
+		});
 	}
 
 	private void initMenus() {
@@ -269,6 +295,16 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 			_canvas.getZoomBehavior().setScale(_state.zoomScale);
 			_canvas.getZoomBehavior().setTranslate(_state.translate);
 			_mainSashForm.setWeights(_state.sashWights);
+
+			if (_state.paletteData != null) {
+				_paletteComp.updateFromJSON(new JSONObject(_state.paletteData));
+				_showPaletteAction.setChecked(_paletteComp.isPaletteVisible());
+			}
+
+			if (!_state.showSidePane) {
+				_showSidePaneAction.run();
+			}
+			_showSidePaneAction.setChecked(_state.showSidePane);
 		}
 	}
 
@@ -350,8 +386,44 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 
 		defsCommands(defs);
 
-		// XY commands
+		{
+			_toolBarManager.add(new Separator());
 
+			_showSidePaneAction = new Action("", SWT.TOGGLE) {
+				{
+					setImageDescriptor(
+							EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_APPLICATION_SIDE_TREE));
+				}
+
+				@SuppressWarnings("synthetic-access")
+				@Override
+				public void run() {
+					if (_mainSashForm.getMaximizedControl() == _centerComposite) {
+						_mainSashForm.setMaximizedControl(null);
+					} else {
+						_mainSashForm.setMaximizedControl(_centerComposite);
+					}
+				}
+			};
+			_showSidePaneAction.setChecked(true);
+			_toolBarManager.add(_showSidePaneAction);
+
+			_showPaletteAction = new Action("", SWT.TOGGLE) {
+				{
+					setChecked(false);
+					setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_PALETTE));
+				}
+
+				@Override
+				public void run() {
+					boolean visible = getPalette().isPaletteVisible();
+					getPalette().setPaletteVisble(!visible);
+				}
+			};
+			getPalette().setPaletteVisble(_showPaletteAction.isChecked());
+		}
+
+		_toolBarManager.add(_showPaletteAction);
 		_toolBarManager.update(true);
 	}
 
@@ -381,6 +453,10 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 	@Override
 	public void setFocus() {
 		_canvas.setFocus();
+	}
+
+	public PaletteComp getPalette() {
+		return _paletteComp;
 	}
 
 	public ObjectCanvas getCanvas() {
@@ -462,19 +538,23 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 		memento.putFloat("canvas.zoom.scale", (float) zoom.getScale());
 		memento.putFloat("canvas.translate.x", (float) zoom.getTranslate().getX());
 		memento.putFloat("canvas.translate.y", (float) zoom.getTranslate().getY());
+		memento.putString("canvas.palette.data", _paletteComp.toJSON().toString());
 		int[] weights = _mainSashForm.getWeights();
 		memento.putString("canvas.sash.weights", Arrays.toString(weights));
+		memento.putBoolean("canvas.sidepane.show", _mainSashForm.getMaximizedControl() == null);
 	}
 
 	static class State {
 		double zoomScale = 0;
 		Point2D translate = new Point2D(0, 0);
 		int[] sashWights = new int[] { 1, 5 };
+		String paletteData;
+		boolean showSidePane;
 	}
 
 	private State _state;
 	private ToolBar _toolBar;
-	private Composite _composite;
+	private Composite _centerComposite;
 
 	@Override
 	public void restoreState(IMemento memento) {
@@ -502,6 +582,15 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 						_state.sashWights[i] = Integer.parseInt(array[i].trim());
 					}
 				}
+			}
+
+			{
+				_state.paletteData = memento.getString("canvas.palette.data");
+			}
+
+			{
+				Boolean b = memento.getBoolean("canvas.sidepane.show");
+				_state.showSidePane = b != null && b.booleanValue();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

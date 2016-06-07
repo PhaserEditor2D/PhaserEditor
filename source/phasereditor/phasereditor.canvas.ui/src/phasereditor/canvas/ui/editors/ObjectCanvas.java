@@ -203,7 +203,7 @@ public class ObjectCanvas extends FXCanvas {
 
 		_gridPane.repaint();
 	}
-
+	
 	public GridPane getGridPane() {
 		return _gridPane;
 	}

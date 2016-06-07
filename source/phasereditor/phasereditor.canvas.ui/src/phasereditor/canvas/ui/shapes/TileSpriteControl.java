@@ -273,6 +273,11 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			public List<?> getFrames() {
 				return asset.getSubElements();
 			}
+
+			@Override
+			public String getTooltip() {
+				return help("Phaser.Sprite." + getName());
+			}
 		};
 
 		getSpriteSection().add(frame_property);

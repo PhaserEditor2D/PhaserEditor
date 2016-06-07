@@ -47,7 +47,7 @@ public class PGridLabelProvider extends ColumnLabelProvider {
 	public Viewer getViewer() {
 		return _viewer;
 	}
-
+	
 	@Override
 	public String getToolTipText(Object element) {
 		if (element instanceof PGridProperty) {

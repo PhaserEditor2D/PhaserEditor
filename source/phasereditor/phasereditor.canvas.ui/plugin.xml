@@ -312,6 +312,42 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
+            class="phasereditor.canvas.ui.handlers.DeleteHandler"
+            commandId="org.eclipse.ui.edit.delete">
+         <enabledWhen>
+         	<or>
+         	
+         		<with
+                   variable="activeContexts">
+                <iterate
+                      ifEmpty="false"
+                      operator="or">
+                       <equals
+                            value="phasereditor.canvas.ui.palettecontext">
+                      </equals>
+                </iterate>
+             </with>
+                     
+                      
+            <and>
+            	<reference
+                  definitionId="phasereditor.canvas.ui.shapesSelected">
+            	</reference>
+             <with
+                   variable="activeContexts">
+                <iterate
+                      ifEmpty="false"
+                      operator="or">
+                      <equals
+                            value="phasereditor.canvas.ui.nodescontext">
+                      </equals>
+                </iterate>
+             </with>
+            </and>
+            </or>
+         </enabledWhen>
+      </handler>
+      <handler
             class="phasereditor.canvas.ui.handlers.RiseShapeHandler"
             commandId="phasereditor.canvas.ui.rise">
          <enabledWhen>
@@ -341,15 +377,6 @@
       <handler
             class="phasereditor.canvas.ui.handlers.LowerBottomShapeHandler"
             commandId="phasereditor.canvas.ui.lowerBottom">
-         <enabledWhen>
-            <reference
-                  definitionId="phasereditor.canvas.ui.shapesSelected">
-            </reference>
-         </enabledWhen>
-      </handler>
-      <handler
-            class="phasereditor.canvas.ui.handlers.DeleteShapesHandler"
-            commandId="org.eclipse.ui.edit.delete">
          <enabledWhen>
             <reference
                   definitionId="phasereditor.canvas.ui.shapesSelected">
@@ -664,14 +691,18 @@
    <extension
          point="org.eclipse.ui.contexts">
       <context
-            description="In scene and outline."
             id="phasereditor.canvas.ui.nodescontext"
-            name="Nodes Area Context"
+            name="In scene and outline"
             parentId="org.eclipse.ui.contexts.window">
       </context>
       <context
             id="phasereditor.canvas.ui.scenecontext"
-            name="In scene.">
+            name="In scene">
+      </context>
+      <context
+            id="phasereditor.canvas.ui.palettecontext"
+            name="In palette"
+            parentId="org.eclipse.ui.contexts.window">
       </context>
    </extension>
 

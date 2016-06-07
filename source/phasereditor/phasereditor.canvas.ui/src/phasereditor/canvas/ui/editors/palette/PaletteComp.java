@@ -22,6 +22,7 @@
 package phasereditor.canvas.ui.editors.palette;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -34,19 +35,24 @@ import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DropTarget;
-import org.eclipse.swt.dnd.DropTargetAdapter;
-import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.ScrollBar;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 
 /**
@@ -55,13 +61,14 @@ import phasereditor.assetpack.ui.AssetLabelProvider;
  */
 public class PaletteComp extends Composite {
 	TableViewer _viewer;
-	private ArrayList<Object> _list;
+	ArrayList<Object> _list;
+	private boolean _paletteVisible;
 
 	public PaletteComp(Composite parent, int style) {
 		super(parent, style);
 		setLayout(new FillLayout(SWT.HORIZONTAL));
 
-		_viewer = new TableViewer(this, SWT.FULL_SELECTION | SWT.MULTI);
+		_viewer = new TableViewer(this, SWT.FULL_SELECTION | SWT.MULTI | SWT.BORDER);
 
 		afterCreateWidgets();
 
@@ -75,17 +82,7 @@ public class PaletteComp extends Composite {
 			DropTarget target = new DropTarget(_viewer.getTable(), options);
 			Transfer[] types = { LocalSelectionTransfer.getTransfer() };
 			target.setTransfer(types);
-			target.addDropListener(new DropTargetAdapter() {
-				@Override
-				public void drop(DropTargetEvent event) {
-					if (event.data instanceof Object[]) {
-						selectionDropped((Object[]) event.data);
-					}
-					if (event.data instanceof IStructuredSelection) {
-						selectionDropped(((IStructuredSelection) event.data).toArray());
-					}
-				}
-			});
+			target.addDropListener(new PaletteDropAdapter(this));
 		}
 		{
 			Transfer[] types = { LocalSelectionTransfer.getTransfer(), TextTransfer.getInstance() };
@@ -129,30 +126,129 @@ public class PaletteComp extends Composite {
 		});
 		_viewer.setContentProvider(new ArrayContentProvider());
 		_viewer.setInput(_list);
+
+		{
+			addControlListener(new ControlListener() {
+
+				@Override
+				public void controlResized(ControlEvent e) {
+					e.display.asyncExec(PaletteComp.this::updateWidth);
+				}
+
+				@Override
+				public void controlMoved(ControlEvent e) {
+					e.display.asyncExec(PaletteComp.this::updateWidth);
+				}
+			});
+		}
 	}
 
-	void selectionDropped(Object[] data) {
-		Object reveal = processDrop(data);
+	void drop(int index, Object[] data) {
+		Object reveal = processDrop(index, data);
 		if (reveal != null) {
 			_viewer.refresh();
 			_viewer.reveal(reveal);
 			// _viewer.getTable().setTopIndex(_list.indexOf(reveal));
 		}
+
+		updateWidth();
 	}
 
-	private Object processDrop(Object[] data) {
+	public void updateWidth() {
+		ScrollBar bar = _viewer.getTable().getVerticalBar();
+
+		Object layoutData = getLayoutData();
+		if (layoutData instanceof GridData) {
+			int hint;
+			if (isPaletteVisible()) {
+				hint = computeSize(SWT.DEFAULT, getBounds().height).x;
+				if (!bar.isVisible()) {
+					hint -= bar.getSize().x;
+				}
+				
+				if (hint < 48) {
+					hint = 48;
+				}
+				
+			} else {
+				hint = 0;
+			}
+
+			GridData gd = (GridData) layoutData;
+
+			if (gd.widthHint != hint) {
+				gd.widthHint = hint;
+				getParent().layout();
+			}
+		}
+	}
+
+	private Object processDrop(int index, Object[] data) {
 		Object reveal = null;
 		for (Object elem : data) {
-			if (elem instanceof IAssetFrameModel) {
+			if (elem instanceof IAssetFrameModel || elem instanceof ImageAssetModel) {
 				if (!_list.contains(elem)) {
-					_list.add(elem);
+					_list.add(index, elem);
 					reveal = elem;
 				}
 			} else if (elem instanceof AssetModel) {
-				reveal = processDrop(((AssetModel) elem).getSubElements().toArray());
+				List<? extends IAssetElementModel> elems = ((AssetModel) elem).getSubElements();
+				if (elems != null) {
+					reveal = processDrop(index, elems.toArray());
+				}
 			}
 		}
 		return reveal;
+	}
+
+	public JSONObject toJSON() {
+		JSONObject data = new JSONObject();
+		JSONArray items = new JSONArray();
+		for (Object obj : _list) {
+			JSONObject item = AssetPackCore.getAssetJSONReference((IAssetKey) obj);
+			if (item != null) {
+				items.put(item);
+			}
+		}
+		data.put("assets", items);
+		data.put("visible", isPaletteVisible());
+		return data;
+	}
+
+	public void updateFromJSON(JSONObject data) {
+		_list.clear();
+		JSONArray list = data.getJSONArray("assets");
+		for (int i = 0; i < list.length(); i++) {
+			JSONObject assetRef = list.getJSONObject(i);
+			Object asset = AssetPackCore.findAssetElement(assetRef);
+			if (asset != null) {
+				_list.add(asset);
+			}
+
+		}
+		_viewer.refresh();
+
+		boolean visible = data.optBoolean("visible", true);
+		setPaletteVisble(visible);
+	}
+
+	public TableViewer getViewer() {
+		return _viewer;
+	}
+
+	public void deleteSelected() {
+		_list.removeAll(((StructuredSelection) _viewer.getSelection()).toList());
+		_viewer.refresh();
+		updateWidth();
+	}
+
+	public void setPaletteVisble(boolean visible) {
+		_paletteVisible = visible;
+		updateWidth();
+	}
+
+	public boolean isPaletteVisible() {
+		return _paletteVisible;
 	}
 
 }

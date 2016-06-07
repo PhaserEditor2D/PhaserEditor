@@ -49,4 +49,6 @@ public interface IEditorSharedImages {
 	String IMG_COMPRESS = "icons/compress.png";
 	String IMG_BUILD = "icons/cog.png";
 	String IMG_EYE = "icons/eye.png";
+	String IMG_PALETTE = "icons/palette.png";
+	String IMG_APPLICATION_SIDE_TREE = "icons/application_side_tree.png";
 }
