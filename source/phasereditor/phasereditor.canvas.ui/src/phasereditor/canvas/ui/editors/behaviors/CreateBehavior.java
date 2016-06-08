@@ -176,7 +176,28 @@ public class CreateBehavior {
 	}
 
 	public List<IObjectNode> paste(Object[] data) {
-		GroupControl parent = _canvas.getWorldNode().getControl();
+		GroupControl worldControl = _canvas.getWorldNode().getControl();
+		GroupControl parent = worldControl;
+
+		{
+			List<IObjectNode> selnodes = _canvas.getSelectionBehavior().getSelectedNodes();
+			if (selnodes.size() == 1) {
+				IObjectNode node = selnodes.get(0);
+				if (node instanceof GroupNode) {
+					boolean ok = true;
+					for (Object obj : data) {
+						if (obj == node) {
+							ok = false;
+							break;
+						}
+					}
+					if (ok) {
+						parent = (GroupControl) node.getControl();
+					}
+				}
+			}
+		}
+
 		List<IObjectNode> newnodes = new ArrayList<>();
 
 		double x = _canvas.getScene().getWidth() / 2 + 50 - Math.random() * 100;
@@ -195,7 +216,17 @@ public class CreateBehavior {
 				String copyName = _canvas.getWorldModel().createName(copyModel.getEditorName());
 				copyModel.setEditorName(copyName);
 				BaseObjectControl<?> copyControl = CanvasObjectFactory.createObjectControl(_canvas, copyModel);
+				
 				dropSprite(copyControl, x + i * 20, y + i * 20);
+				
+				if (parent != worldControl) {
+					copyControl.removeme();
+					parent.addChild(copyControl.getIObjectNode());
+					copyControl.getModel().setX(0);
+					copyControl.getModel().setY(0);
+				}
+				
+				
 				newnodes.add((IObjectNode) copyControl.getNode());
 				i++;
 			}
