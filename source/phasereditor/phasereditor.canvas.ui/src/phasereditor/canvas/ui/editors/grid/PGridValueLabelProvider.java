@@ -59,20 +59,29 @@ public class PGridValueLabelProvider extends PGridLabelProvider {
 				return "(default)";
 			}
 
-			return getRGBString(rgb);
+			return getHexString(rgb);
 		}
-		
+
 		if (element instanceof PGridFrameProperty) {
 			String label = ((PGridFrameProperty) element).getLabel();
 			return label == null ? "" : label;
 		}
-		
+
 		if (element instanceof PGridProperty) {
 			Object value = ((PGridProperty<?>) element).getValue();
 			return value == null ? "" : value.toString();
 		}
 
 		return super.getText(element);
+	}
+
+	public static String getHexString(RGB rgb) {
+		return "#" + toHexString(rgb.red) + toHexString(rgb.green) + toHexString(rgb.blue);
+	}
+
+	public static String toHexString(int n) {
+		String s = Integer.toHexString(n);
+		return (s.length() == 1 ? "0" : "") + s;
 	}
 
 	public static String getRGBString(RGB rgb) {
@@ -101,11 +110,11 @@ public class PGridValueLabelProvider extends PGridLabelProvider {
 			_images.put(value, image);
 			return image;
 		}
-		
+
 		if (element instanceof PGridFrameProperty) {
 			return AssetLabelProvider.GLOBAL_16.getImage(((PGridFrameProperty) element).getValue());
 		}
-		
+
 		return super.getImage(element);
 	}
 

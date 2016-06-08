@@ -121,14 +121,10 @@ public class UpdateBehavior {
 	private void update_Grid_from_Selection(SelectionChangedEvent event) {
 		IStructuredSelection sel = (IStructuredSelection) event.getSelection();
 
-		if (sel.toArray().length != 1) {
-			_grid.setModel(null);
-			return;
-		}
-
 		Object[] elements = sel.toArray();
-		if (elements.length > 1) {
-			// TODO: implement support for multiple elements.
+
+		if (elements.length != 1) {
+			_grid.setModel(null);
 			return;
 		}
 
@@ -163,5 +159,4 @@ public class UpdateBehavior {
 	public void update_Outline(IObjectNode node) {
 		_outline.refresh(node);
 	}
-
 }

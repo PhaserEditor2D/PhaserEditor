@@ -76,7 +76,7 @@ public class RGBCellEditor extends DialogCellEditor {
 			return "(default)";
 		}
 
-		return PGridValueLabelProvider.getRGBString(rgb);
+		return PGridValueLabelProvider.getHexString(rgb);
 	}
 
 }
