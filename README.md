@@ -12,8 +12,11 @@ Based on Eclipse, this IDE provides lot of functionalities made just to develop 
 * Texture and audio packer.
 * Previsualization of spritesheets, atlas, images, videos, audio.
 * Advanced Phaser documentation search (Chains) and offline Phaser Documentation.
+* Built-in HTTP server.
 * PNG images optimization.
 * And all that great stuff that you can find in a Eclipse based IDE, like a super flexible layout, projects explorer, customizable key shortcuts, native look and feel and a huge community, just to mention some of them.
+
+[Read more...][pe_features]
 
 Links:
 
@@ -38,6 +41,7 @@ Please use the issues of this repo to report bugs or request features. In additi
 [bitbucket]: https://bitbucket.org/boniatillo/phasereditor
 [pe_website]: http://phasereditor.boniatillo.com
 [pe_blog]: http://phasereditor.boniatillo.com/blog
+[pe_features]: http://phasereditor.boniatillo.com/blog/features
 [html5gamedevs]: http://www.html5gamedevs.com/profile/8392-arian-fornaris
 [pe_youtube]: https://www.youtube.com/playlist?list=PLB8gI_5U0MvCJuhPv-LBdi_a9PQxYxFqK
 [pe_twitter]: https://twitter.org/boniatillo_com
