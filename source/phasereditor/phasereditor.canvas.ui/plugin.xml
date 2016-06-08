@@ -596,6 +596,17 @@
       </handler>
       
       <handler
+            class="phasereditor.canvas.ui.handlers.CutHandler"
+            commandId="org.eclipse.ui.edit.cut">
+         <activeWhen>
+            <reference
+                  definitionId="phasereditor.canvas.ui.nodesSelected">
+            </reference>
+         </activeWhen>
+      </handler>
+      
+      
+      <handler
             class="phasereditor.canvas.ui.handlers.PasteHandler"
             commandId="org.eclipse.ui.edit.paste">
          <activeWhen>
