@@ -29,10 +29,12 @@ import java.util.Set;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.json.JSONObject;
 
 import javafx.scene.Node;
 import javafx.scene.input.DragEvent;
 import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.ObjectModelFactory;
@@ -73,15 +75,15 @@ public class CreateBehavior {
 					BaseObjectControl<?> control = CanvasObjectFactory.createObjectControl(_canvas, model);
 					if (control != null) {
 						_newnodes.add(control.getNode());
-						double x = event.getSceneX() + i * 50;
-						double y = event.getSceneY() + i * 50;
+						double x = event.getSceneX() + i * 20;
+						double y = event.getSceneY() + i * 20;
 						dropSprite(control, x, y);
 						i++;
 					}
 				}
 			}
 		}
-		
+
 		_palette.drop(elems);
 
 		return _newnodes;
@@ -171,5 +173,34 @@ public class CreateBehavior {
 		_canvas.getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
 		_canvas.getSelectionBehavior().setSelection(new StructuredSelection(newControl.getNode()));
 
+	}
+
+	public List<IObjectNode> paste(Object[] data) {
+		GroupControl parent = _canvas.getWorldNode().getControl();
+		List<IObjectNode> newnodes = new ArrayList<>();
+
+		double x = _canvas.getScene().getWidth() / 2 + 50 - Math.random() * 100;
+		double y = _canvas.getScene().getHeight() / 2 + 50 - Math.random() * 100;
+
+		int i = 0;
+
+		for (Object elem : data) {
+			if (elem instanceof IObjectNode) {
+				IObjectNode node = (IObjectNode) elem;
+
+				JSONObject copyJson = new JSONObject();
+				node.getModel().write(copyJson);
+
+				BaseObjectModel copyModel = ObjectModelFactory.createModel(parent.getModel(), copyJson);
+				String copyName = _canvas.getWorldModel().createName(copyModel.getEditorName());
+				copyModel.setEditorName(copyName);
+				BaseObjectControl<?> copyControl = CanvasObjectFactory.createObjectControl(_canvas, copyModel);
+				dropSprite(copyControl, x + i * 20, y + i * 20);
+				newnodes.add((IObjectNode) copyControl.getNode());
+				i++;
+			}
+		}
+
+		return newnodes;
 	}
 }

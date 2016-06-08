@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
+import org.json.JSONObject;
+
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.core.IAssetKey;
@@ -44,5 +46,33 @@ public class ObjectModelFactory {
 			return new AtlasSpriteModel(parent, (Frame) obj);
 		}
 		return null;
+	}
+
+	public static BaseObjectModel createModel(GroupModel parent, JSONObject jsonModel) {
+		BaseObjectModel model = null;
+		String type = jsonModel.getString("type");
+		switch (type) {
+		case ImageSpriteModel.TYPE_NAME:
+			model = new ImageSpriteModel(parent, jsonModel);
+			break;
+		case SpritesheetSpriteModel.TYPE_NAME:
+			model = new SpritesheetSpriteModel(parent, jsonModel);
+			break;
+		case AtlasSpriteModel.TYPE_NAME:
+			model = new AtlasSpriteModel(parent, jsonModel);
+			break;
+		case TileSpriteModel.TYPE_NAME:
+			model = new TileSpriteModel(parent, jsonModel);
+			break;
+		case ButtonSpriteModel.TYPE_NAME:
+			model = new ButtonSpriteModel(parent, jsonModel);
+			break;
+		case GroupModel.TYPE_NAME:
+			model = new GroupModel(parent, jsonModel);
+			break;
+		default:
+			break;
+		}
+		return model;
 	}
 }

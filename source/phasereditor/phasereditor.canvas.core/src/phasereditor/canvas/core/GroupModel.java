@@ -35,7 +35,7 @@ import phasereditor.canvas.core.WorldModel.ZOperation;
  */
 public class GroupModel extends BaseObjectModel {
 
-	private static final String TYPE_NAME = "group";
+	public static final String TYPE_NAME = "group";
 	private List<BaseObjectModel> _children;
 	private boolean _editorClosed;
 
@@ -106,31 +106,8 @@ public class GroupModel extends BaseObjectModel {
 		try {
 			JSONArray modelList = jsonInfo.getJSONArray("children");
 			for (int i = 0; i < modelList.length(); i++) {
-				BaseObjectModel model = null;
 				JSONObject jsonModel = modelList.getJSONObject(i);
-				String type = jsonModel.getString("type");
-				switch (type) {
-				case ImageSpriteModel.TYPE_NAME:
-					model = new ImageSpriteModel(this, jsonModel);
-					break;
-				case SpritesheetSpriteModel.TYPE_NAME:
-					model = new SpritesheetSpriteModel(this, jsonModel);
-					break;
-				case AtlasSpriteModel.TYPE_NAME:
-					model = new AtlasSpriteModel(this, jsonModel);
-					break;
-				case TileSpriteModel.TYPE_NAME:
-					model = new TileSpriteModel(this, jsonModel);
-					break;
-				case ButtonSpriteModel.TYPE_NAME:
-					model = new ButtonSpriteModel(this, jsonModel);
-					break;
-				case GroupModel.TYPE_NAME:
-					model = new GroupModel(this, jsonModel);
-					break;
-				default:
-					break;
-				}
+				BaseObjectModel model = ObjectModelFactory.createModel(this, jsonModel);
 
 				if (model != null) {
 					_children.add(model);
@@ -173,7 +150,7 @@ public class GroupModel extends BaseObjectModel {
 
 	@Override
 	public void rebuild() {
-		for(BaseObjectModel model : _children) {
+		for (BaseObjectModel model : _children) {
 			model.rebuild();
 		}
 	}
