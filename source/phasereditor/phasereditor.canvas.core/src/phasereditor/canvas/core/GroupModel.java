@@ -82,7 +82,7 @@ public class GroupModel extends BaseObjectModel {
 		}
 		return null;
 	}
-
+	
 	public void sendTo(BaseObjectModel model, ZOperation op) {
 		if (op.perform(_children, model)) {
 			getWorld().firePropertyChange(WorldModel.PROP_STRUCTURE);

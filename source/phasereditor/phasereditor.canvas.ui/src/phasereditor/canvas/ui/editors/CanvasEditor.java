@@ -27,6 +27,7 @@ import java.beans.PropertyChangeEvent;
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 
+import org.eclipse.core.commands.operations.IUndoContext;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
@@ -91,13 +92,23 @@ import phasereditor.ui.IEditorSharedImages;
  */
 public class CanvasEditor extends EditorPart implements IResourceChangeListener, IPersistableEditor {
 
-	/**
-	 * 
-	 */
 	private static final String PALETTE_CONTEXT_ID = "phasereditor.canvas.ui.palettecontext";
 	public final static String ID = "phasereditor.canvas.ui.editors.canvas";
 	public final static String NODES_CONTEXT_ID = "phasereditor.canvas.ui.nodescontext";
 	protected static final String SCENE_CONTEXT_ID = "phasereditor.canvas.ui.scenecontext";
+
+	public static final IUndoContext UNDO_CONTEXT = new IUndoContext() {
+
+		@Override
+		public boolean matches(IUndoContext context) {
+			return context == this;
+		}
+
+		@Override
+		public String getLabel() {
+			return "CANVAS_CONTEXT";
+		}
+	};
 
 	private ObjectCanvas _canvas;
 	private WorldModel _model;
@@ -115,6 +126,15 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 	private Action _showSidePaneAction;
 
 	public CanvasEditor() {
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public Object getAdapter(Class adapter) {
+		if (adapter == CanvasEditor.class) {
+			return this;
+		}
+		return super.getAdapter(adapter);
 	}
 
 	@SuppressWarnings("unused")
@@ -285,7 +305,7 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 	}
 
 	private void initCanvas() {
-		_canvas.init(_model, _grid, _outlineTree.getViewer(), _paletteComp);
+		_canvas.init(this, _model, _grid, _outlineTree.getViewer(), _paletteComp);
 		getEditorSite().setSelectionProvider(_canvas.getSelectionBehavior());
 	}
 

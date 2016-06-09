@@ -27,20 +27,20 @@ import org.eclipse.swt.graphics.RGB;
  * @author arian
  *
  */
-public abstract class PGridColorProperty extends PGridProperty<RGB>{
+public abstract class PGridColorProperty extends PGridProperty<RGB> {
 
 	private RGB _defaultRGB;
-	
-	public PGridColorProperty(String name) {
-		super(name);
+
+	public PGridColorProperty(String controlId, String name) {
+		super(controlId, name);
 	}
-	
+
 	public RGB getDefaultRGB() {
 		return _defaultRGB;
 	}
-	
+
 	public void setDefaultRGB(RGB defaultRGB) {
 		_defaultRGB = defaultRGB;
 	}
-	
+
 }

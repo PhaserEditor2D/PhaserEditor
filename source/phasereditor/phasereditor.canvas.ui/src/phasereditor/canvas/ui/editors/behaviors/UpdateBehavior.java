@@ -26,10 +26,13 @@ import static java.lang.System.out;
 import java.beans.PropertyChangeEvent;
 import java.security.InvalidParameterException;
 
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.ui.IWorkbench;
 
 import javafx.application.Platform;
 import phasereditor.assetpack.core.AssetModel;
@@ -42,6 +45,8 @@ import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGrid;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridProperty;
+import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
+import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.IObjectNode;
@@ -158,5 +163,22 @@ public class UpdateBehavior {
 
 	public void update_Outline(IObjectNode node) {
 		_outline.refresh(node);
+	}
+
+	public void changeLocation(IObjectNode node, double x, double y) {
+		BaseObjectControl<?> control = node.getControl();
+		ChangePropertyOperation<?> changeX = new ChangePropertyOperation<>(control.getUniqueId(),
+				control.getX_property().getName(), Double.valueOf(x));
+		ChangePropertyOperation<?> changeY = new ChangePropertyOperation<>(control.getUniqueId(),
+				control.getY_property().getName(), Double.valueOf(y));
+
+		CompositeOperation change = new CompositeOperation(changeX, changeY);
+		IWorkbench workbench = _canvas.getEditor().getSite().getWorkbenchWindow().getWorkbench();
+		try {
+			IOperationHistory history = workbench.getOperationSupport().getOperationHistory();
+			history.execute(change, null, _canvas.getEditor());
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
 	}
 }

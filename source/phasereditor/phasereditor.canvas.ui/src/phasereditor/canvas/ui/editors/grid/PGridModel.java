@@ -38,4 +38,15 @@ public class PGridModel {
 	public List<PGridSection> getSections() {
 		return _sections;
 	}
+
+	public PGridProperty<?> findById(String id) {
+		for (PGridSection section : _sections) {
+			for (PGridProperty<?> prop : section) {
+				if (prop.getName().equals(id)) {
+					return prop;
+				}
+			}
+		}
+		return null;
+	}
 }

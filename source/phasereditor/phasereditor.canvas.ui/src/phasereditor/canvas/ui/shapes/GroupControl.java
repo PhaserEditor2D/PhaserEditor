@@ -42,6 +42,22 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 	public GroupControl(ObjectCanvas canvas, GroupModel model) {
 		super(canvas, model);
 	}
+	
+	@Override
+	public BaseObjectControl<?> findById(String id) {
+		if (getUniqueId().equals(id)) {
+			return this;
+		}
+
+		for (Node node : getNode().getChildren()) {
+			BaseObjectControl<?> control = ((IObjectNode)node).getControl();
+			BaseObjectControl<?> result = control.findById(id);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
 
 	@Override
 	protected final IObjectNode createNode() {
@@ -161,7 +177,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 
 		GroupModel model = getModel();
 
-		_closed_property = new PGridBooleanProperty("closed") {
+		_closed_property = new PGridBooleanProperty(getUniqueId(), "closed") {
 
 			@Override
 			public Boolean getValue() {

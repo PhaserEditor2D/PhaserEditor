@@ -51,7 +51,7 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 		}
 
 		public ButtonFrameProperty(String name, boolean allowNull) {
-			super(name);
+			super(getUniqueId(), name);
 			setAllowNull(allowNull);
 		}
 

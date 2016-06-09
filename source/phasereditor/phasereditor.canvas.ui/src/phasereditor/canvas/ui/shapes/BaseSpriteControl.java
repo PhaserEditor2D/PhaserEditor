@@ -117,7 +117,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 
 		_spriteSection = new PGridSection("Sprite");
 
-		_anchor_x_property = new PGridNumberProperty("anchor.x") {
+		_anchor_x_property = new PGridNumberProperty(getUniqueId(), "anchor.x") {
 			@Override
 			public Double getValue() {
 				return Double.valueOf(getModel().getAnchorX());
@@ -133,14 +133,14 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 			public boolean isModified() {
 				return getModel().getAnchorX() != 0;
 			}
-			
+
 			@Override
 			public String getTooltip() {
 				return help("Phaser.Sprite.anchor");
 			}
 		};
 
-		_anchor_y_property = new PGridNumberProperty("anchor.y") {
+		_anchor_y_property = new PGridNumberProperty(getUniqueId(), "anchor.y") {
 			@Override
 			public Double getValue() {
 				return Double.valueOf(getModel().getAnchorY());
@@ -156,14 +156,14 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 			public boolean isModified() {
 				return getModel().getAnchorY() != 0;
 			}
-			
+
 			@Override
 			public String getTooltip() {
 				return help("Phaser.Sprite.anchor");
 			}
 		};
 
-		_tint_property = new PGridColorProperty("tint") {
+		_tint_property = new PGridColorProperty(getUniqueId(), "tint") {
 
 			@Override
 			public void setValue(RGB value) {
@@ -195,7 +195,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 				Color c = Color.valueOf(tint);
 				return new RGB((int) (c.getRed() * 255), (int) (c.getGreen() * 255), (int) (c.getBlue() * 255));
 			}
-			
+
 			@Override
 			public String getTooltip() {
 				return help("Phaser.Sprite.tint");

@@ -88,4 +88,7 @@ public class GroupNode extends Pane implements IObjectNode {
 			}
 		}
 	}
+
+
+
 }

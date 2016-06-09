@@ -31,29 +31,28 @@ import phasereditor.assetpack.core.IAssetFrameModel;
  */
 public abstract class PGridFrameProperty extends PGridProperty<IAssetFrameModel> {
 
-
 	public static final Object NULL_FRAME = "<NULL FRAME>";
 
 	private boolean _allowNull;
-	
-	public PGridFrameProperty(String name) {
-		super(name);
+
+	public PGridFrameProperty(String controlId, String name) {
+		super(controlId, name);
 		_allowNull = false;
 	}
-	
+
 	public boolean isAllowNull() {
 		return _allowNull;
 	}
-	
+
 	public void setAllowNull(boolean allowNull) {
 		_allowNull = allowNull;
 	}
 
 	public String getLabel() {
-		 IAssetFrameModel value = getValue();
+		IAssetFrameModel value = getValue();
 		return value == null ? "" : value.getKey();
 	}
-	
+
 	public abstract List<?> getFrames();
 
 }

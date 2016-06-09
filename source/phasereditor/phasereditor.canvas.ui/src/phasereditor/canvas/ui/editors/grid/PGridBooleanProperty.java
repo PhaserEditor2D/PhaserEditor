@@ -32,8 +32,8 @@ public abstract class PGridBooleanProperty extends PGridProperty<Boolean> {
 	/**
 	 * @param name
 	 */
-	public PGridBooleanProperty(String name) {
-		super(name);
+	public PGridBooleanProperty(String controlId, String name) {
+		super(controlId, name);
 	}
 
 	@Override

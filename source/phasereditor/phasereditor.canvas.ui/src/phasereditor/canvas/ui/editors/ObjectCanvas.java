@@ -76,12 +76,14 @@ public class ObjectCanvas extends FXCanvas {
 	private WorldGlassPane _worldGlassPane;
 	private PaintBehavior _paintBehavior;
 	private PaletteComp _palette;
+	private CanvasEditor _editor;
 
 	public ObjectCanvas(Composite parent, int style) {
 		super(parent, style);
 	}
 
-	public void init(WorldModel model, PGrid grid, TreeViewer outline, PaletteComp palette) {
+	public void init(CanvasEditor editor, WorldModel model, PGrid grid, TreeViewer outline, PaletteComp palette) {
+		_editor = editor;
 		_model = model;
 		_pgrid = grid;
 		_outline = outline;
@@ -100,6 +102,10 @@ public class ObjectCanvas extends FXCanvas {
 		_paintBehavior = new PaintBehavior(this);
 	}
 
+	public CanvasEditor getEditor() {
+		return _editor;
+	}
+
 	public void selectAll() {
 		_selectionBehavior.selectAll();
 	}
@@ -111,7 +117,7 @@ public class ObjectCanvas extends FXCanvas {
 	public PaletteComp getPalette() {
 		return _palette;
 	}
-	
+
 	public TreeViewer getOutline() {
 		return _outline;
 	}
@@ -210,7 +216,7 @@ public class ObjectCanvas extends FXCanvas {
 
 		_gridPane.repaint();
 	}
-	
+
 	public GridPane getGridPane() {
 		return _gridPane;
 	}

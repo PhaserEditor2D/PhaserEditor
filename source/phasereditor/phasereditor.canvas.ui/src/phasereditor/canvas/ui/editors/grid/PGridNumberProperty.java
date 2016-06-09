@@ -28,8 +28,8 @@ package phasereditor.canvas.ui.editors.grid;
 public abstract class PGridNumberProperty extends PGridProperty<Double> {
 	private double _value;
 
-	public PGridNumberProperty(String name) {
-		super(name);
+	public PGridNumberProperty(String controlId, String name) {
+		super(controlId, name);
 	}
 
 	@Override

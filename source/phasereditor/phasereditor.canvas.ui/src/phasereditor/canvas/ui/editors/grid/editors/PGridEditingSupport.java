@@ -19,19 +19,30 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors.grid;
+package phasereditor.canvas.ui.editors.grid.editors;
 
+import static java.lang.System.out;
+
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TextCellEditor;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.PlatformUI;
 
-import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.canvas.ui.editors.grid.editors.FrameCellEditor;
-import phasereditor.canvas.ui.editors.grid.editors.RGBCellEditor;
+import phasereditor.canvas.ui.editors.CanvasEditor;
+import phasereditor.canvas.ui.editors.grid.NumberCellEditor;
+import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
+import phasereditor.canvas.ui.editors.grid.PGridColorProperty;
+import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
+import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
+import phasereditor.canvas.ui.editors.grid.PGridProperty;
+import phasereditor.canvas.ui.editors.grid.PGridSection;
+import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
+import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 
 /**
  * @author arian
@@ -79,19 +90,58 @@ public class PGridEditingSupport extends EditingSupport {
 		return null;
 	}
 
+	@SuppressWarnings("null")
 	@Override
 	protected void setValue(Object element, Object value) {
-		if (element instanceof PGridNumberProperty) {
-			((PGridNumberProperty) element).setValue((Double) value);
-		} else if (element instanceof PGridStringProperty) {
-			((PGridStringProperty) element).setValue((String) value);
-		} else if (element instanceof PGridBooleanProperty) {
-			((PGridBooleanProperty) element).setValue((Boolean) value);
-		} else if (element instanceof PGridFrameProperty) {
-			((PGridFrameProperty) element).setValue((IAssetFrameModel) value);
-		} else if (element instanceof PGridColorProperty) {
-			((PGridColorProperty) element).setValue((RGB) value);
+		PGridProperty<?> prop = (PGridProperty<?>) element;
+
+		Object old = prop.getValue();
+
+		boolean changed = false;
+
+		if (old == null && value == null) {
+			return;
 		}
+
+		if (old == null && value != null) {
+			changed = true;
+		}
+
+		if (old != null && value == null) {
+			changed = true;
+		}
+
+		if (!changed) {
+			changed = !old.equals(value);
+		}
+
+		if (changed) {
+			out.println(prop.getName() + ".setValue(" + value + ")");
+			ChangePropertyOperation<? extends Object> op = new ChangePropertyOperation<>(prop.getControlId(),
+					prop.getName(), value);
+			IOperationHistory history = PlatformUI.getWorkbench().getOperationSupport().getOperationHistory();
+			try {
+				CanvasEditor editor = (CanvasEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+						.getActivePage().getActiveEditor();
+				history.execute(op, null, editor);
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
+		}
+
+		// if (element instanceof PGridNumberProperty) {
+		// ((PGridNumberProperty) element).setUndoableValue((Double) value);
+		// } else if (element instanceof PGridStringProperty) {
+		// ((PGridStringProperty) element).setUndoableValue((String) value);
+		// } else if (element instanceof PGridBooleanProperty) {
+		// ((PGridBooleanProperty) element).setValue((Boolean) value);
+		// } else if (element instanceof PGridFrameProperty) {
+		// ((PGridFrameProperty) element).setUndoableValue((IAssetFrameModel)
+		// value);
+		// } else if (element instanceof PGridColorProperty) {
+		// ((PGridColorProperty) element).setUndoableValue((RGB) value);
+		// }
 
 		getViewer().refresh(element);
 	}

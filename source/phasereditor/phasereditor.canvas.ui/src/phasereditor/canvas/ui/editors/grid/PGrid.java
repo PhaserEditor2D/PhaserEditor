@@ -52,6 +52,8 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import phasereditor.canvas.ui.editors.grid.editors.PGridEditingSupport;
+
 /**
  * @author arian
  *
@@ -72,7 +74,7 @@ public class PGrid extends Composite {
 	 * @param parent
 	 * @param style
 	 */
-	public PGrid(Composite parent, int style) {
+	public PGrid( Composite parent, int style) {
 		super(parent, style);
 		setLayout(new FillLayout(SWT.HORIZONTAL));
 

@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
+import java.util.UUID;
+
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
@@ -44,6 +46,7 @@ import phasereditor.inspect.core.InspectCore;
  */
 @SuppressWarnings("synthetic-access")
 public abstract class BaseObjectControl<T extends BaseObjectModel> {
+	private String _uniqueId;
 	private T _model;
 	private Node _node;
 	private IObjectNode _inode;
@@ -59,14 +62,24 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	private PGridBooleanProperty _editorPick_property;
 
 	public BaseObjectControl(ObjectCanvas canvas, T model) {
+		_uniqueId = UUID.randomUUID().toString();
 		_canvas = canvas;
 		_model = model;
-
 		_inode = createNode();
-
 		_node = _inode.getNode();
 
 		updateFromModel();
+	}
+
+	public String getUniqueId() {
+		return _uniqueId;
+	}
+
+	public BaseObjectControl<?> findById(String id) {
+		if (_uniqueId.equals(id)) {
+			return this;
+		}
+		return null;
 	}
 
 	public int getDepthLevel() {
@@ -155,7 +168,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			propModel.getSections().add(objectSec);
 		}
 
-		_x_property = new PGridNumberProperty("x") {
+		_x_property = new PGridNumberProperty(getUniqueId(), "x") {
 			@Override
 			public Double getValue() {
 				return Double.valueOf(getModel().getX());
@@ -178,7 +191,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			}
 		};
 
-		_y_property = new PGridNumberProperty("y") {
+		_y_property = new PGridNumberProperty(getUniqueId(), "y") {
 			@Override
 			public Double getValue() {
 				return Double.valueOf(getModel().getY());
@@ -201,7 +214,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			}
 		};
 
-		_angle_property = new PGridNumberProperty("angle") {
+		_angle_property = new PGridNumberProperty(getUniqueId(), "angle") {
 			@Override
 			public Double getValue() {
 				return Double.valueOf(getModel().getAngle());
@@ -224,7 +237,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			}
 		};
 
-		_scale_x_property = new PGridNumberProperty("scale.x") {
+		_scale_x_property = new PGridNumberProperty(getUniqueId(), "scale.x") {
 			@Override
 			public Double getValue() {
 				return Double.valueOf(getModel().getScaleX());
@@ -247,7 +260,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			}
 		};
 
-		_scale_y_property = new PGridNumberProperty("scale.y") {
+		_scale_y_property = new PGridNumberProperty(getUniqueId(), "scale.y") {
 			@Override
 			public Double getValue() {
 				return Double.valueOf(getModel().getScaleY());
@@ -270,7 +283,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			}
 		};
 
-		_pivot_x_property = new PGridNumberProperty("pivot.x") {
+		_pivot_x_property = new PGridNumberProperty(getUniqueId(), "pivot.x") {
 			@Override
 			public Double getValue() {
 				return Double.valueOf(getModel().getPivotX());
@@ -293,7 +306,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			}
 		};
 
-		_pivot_y_property = new PGridNumberProperty("pivot.y") {
+		_pivot_y_property = new PGridNumberProperty(getUniqueId(), "pivot.y") {
 			@Override
 			public Double getValue() {
 				return Double.valueOf(getModel().getPivotY());
@@ -329,7 +342,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	protected void initEditorPGridModel(PGridModel propModel, PGridSection section) {
 		propModel.getSections().add(section);
 
-		section.add(new PGridStringProperty("name") {
+		section.add(new PGridStringProperty(getUniqueId(), "name") {
 
 			@Override
 			public String getValue() {
@@ -349,7 +362,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			}
 		});
 
-		_editorPick_property = new PGridBooleanProperty("pick") {
+		_editorPick_property = new PGridBooleanProperty(_uniqueId, "pick") {
 
 			@Override
 			public Boolean getValue() {

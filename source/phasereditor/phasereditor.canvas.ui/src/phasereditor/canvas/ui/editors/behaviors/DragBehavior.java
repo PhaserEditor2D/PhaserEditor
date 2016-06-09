@@ -27,9 +27,7 @@ import java.util.List;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
-import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
-import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
@@ -75,13 +73,7 @@ public class DragBehavior {
 
 		for (DragInfo draginfo : _dragInfoList) {
 			Node node = draginfo.getNode();
-			BaseObjectControl<?> control = ((IObjectNode) node).getControl();
-			BaseObjectModel model = control.getModel();
-			model.setLocation(node.getLayoutX(), node.getLayoutY());
-
-			UpdateBehavior updateBehavior = _canvas.getUpdateBehavior();
-			updateBehavior.update_Grid_from_PropertyChange(control.getX_property());
-			updateBehavior.update_Grid_from_PropertyChange(control.getY_property());
+			_canvas.getUpdateBehavior().changeLocation((IObjectNode) node, node.getLayoutX(), node.getLayoutY());
 		}
 
 		_dragInfoList.clear();
@@ -112,7 +104,7 @@ public class DragBehavior {
 
 	void handleDragDetected(MouseEvent event) {
 		_dragging = true;
-		
+
 		for (IObjectNode selnode : _selbehavior.getSelectedNodes()) {
 			Node dragnode = selnode.getNode();
 
