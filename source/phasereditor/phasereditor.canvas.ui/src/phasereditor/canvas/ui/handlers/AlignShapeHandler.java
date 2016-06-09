@@ -11,6 +11,7 @@ import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.behaviors.UpdateBehavior;
+import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
@@ -106,44 +107,57 @@ public class AlignShapeHandler extends AbstractHandler {
 	}
 
 	private static void align(String place, Object[] elems, Rectangle2D pivot, double avg) {
+
+		CompositeOperation operations = new CompositeOperation();
+		UpdateBehavior update = null;
+
 		for (Object elem : elems) {
 			IObjectNode inode = (IObjectNode) elem;
 			BaseObjectModel model = inode.getModel();
 			BaseObjectControl<?> control = inode.getControl();
 
-			double xoffs = model.getX() - control.getTextureLeft();
-			double yoffs = model.getY() - control.getTextureTop();
+			double ix = model.getX();
+			double iy = model.getY();
+
+			double xoffs = ix - control.getTextureLeft();
+			double yoffs = iy - control.getTextureTop();
+
+			double x = ix;
+			double y = iy;
 
 			switch (place) {
 			case "left":
-				model.setX(pivot.getMinX() + xoffs);
+				x = pivot.getMinX() + xoffs;
 				break;
 			case "top":
-				model.setY(pivot.getMinY() + yoffs);
+				y = pivot.getMinY() + yoffs;
 				break;
 			case "right":
 				double textureWidth = control.getTextureWidth();
-				model.setX(pivot.getMinX() + pivot.getWidth() - textureWidth + xoffs);
+				x = pivot.getMinX() + pivot.getWidth() - textureWidth + xoffs;
 				break;
 			case "bottom":
 				double textureHeight = control.getTextureHeight();
-				model.setY(pivot.getMinY() + pivot.getHeight() - textureHeight + yoffs);
+				y = pivot.getMinY() + pivot.getHeight() - textureHeight + yoffs;
 				break;
 			case "center":
-				model.setX(avg - control.getTextureWidth() / 2 + xoffs);
+				x = avg - control.getTextureWidth() / 2 + xoffs;
 				break;
 			case "middle":
-				model.setY(avg - control.getTextureHeight() / 2 + yoffs);
+				y = avg - control.getTextureHeight() / 2 + yoffs;
 				break;
 			default:
 				break;
 			}
 
-			control.updateFromModel();
+			if (x != ix || y != iy) {
+				update = control.getCanvas().getUpdateBehavior();
+				update.addUpdateLocationOperation(operations, inode, x, y);
+			}
+		}
 
-			UpdateBehavior update = control.getCanvas().getUpdateBehavior();
-			update.update_Grid_from_PropertyChange(control.getX_property());
-			update.update_Grid_from_PropertyChange(control.getY_property());
+		if (update != null) {
+			update.executeOperations(operations);
 		}
 	}
 

@@ -58,6 +58,9 @@ public class ChangePropertyOperation<T> extends AbstractOperation {
 			PGridProperty<T> prop = findProperty(info);
 			_undoValue = prop.getValue();
 			prop.setValue(value);
+			BaseObjectControl<?> control = findControl(info);
+			control.updateFromModel();
+
 			CanvasEditor editor = info.getAdapter(CanvasEditor.class);
 			editor.getCanvas().getUpdateBehavior().update_Grid_from_PropertyChange(prop);
 			editor.getCanvas().getSelectionBehavior().updateSelectedNodes();
@@ -86,9 +89,7 @@ public class ChangePropertyOperation<T> extends AbstractOperation {
 
 	@SuppressWarnings("unchecked")
 	private PGridProperty<T> findProperty(IAdaptable info) {
-		CanvasEditor editor = info.getAdapter(CanvasEditor.class);
-
-		BaseObjectControl<?> control = editor.getCanvas().getWorldNode().getControl().findById(_controlId);
+		BaseObjectControl<?> control = findControl(info);
 
 		if (control == null) {
 			throw new IllegalStateException("Cannot find control " + _controlId);
@@ -101,5 +102,10 @@ public class ChangePropertyOperation<T> extends AbstractOperation {
 			throw new IllegalStateException("Cannot find property " + _propId);
 		}
 		return prop;
+	}
+
+	private BaseObjectControl<?> findControl(IAdaptable info) {
+		CanvasEditor editor = info.getAdapter(CanvasEditor.class);
+		return editor.getCanvas().getWorldNode().getControl().findById(_controlId);
 	}
 }

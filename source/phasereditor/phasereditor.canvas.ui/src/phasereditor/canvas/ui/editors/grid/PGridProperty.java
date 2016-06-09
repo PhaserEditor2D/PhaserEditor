@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid;
 
-import static java.lang.System.out;
-
 /**
  * @author arian
  *
@@ -48,34 +46,6 @@ public abstract class PGridProperty<T> {
 
 	public void setName(String name) {
 		_name = name;
-	}
-
-	@SuppressWarnings("null")
-	public final void setUndoableValue(T value) {
-		T old = getValue();
-
-		boolean changed = false;
-		
-		if (old == null && value == null) {
-			return;
-		}
-		
-		if (old == null && value != null) {
-			changed = true;
-		}
-		
-		if (old != null && value == null) {
-			changed = true;
-		}
-		
-		if (!changed) {
-			changed = !old.equals(value); 
-		}
-		
-		if (changed) {
-			out.println(_name + ".setUndoableValue(" + value + ")");
-			setValue(value);
-		}
 	}
 
 	public abstract T getValue();

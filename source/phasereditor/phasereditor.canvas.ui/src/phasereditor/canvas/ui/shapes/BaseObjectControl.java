@@ -67,7 +67,9 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		_model = model;
 		_inode = createNode();
 		_node = _inode.getNode();
+		_propModel = new PGridModel();
 
+		initPGridModel(_propModel);
 		updateFromModel();
 	}
 
@@ -143,10 +145,6 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	}
 
 	public PGridModel getPropertyModel() {
-		if (_propModel == null) {
-			_propModel = new PGridModel();
-			initPGridModel(_propModel);
-		}
 		return _propModel;
 	}
 
@@ -159,14 +157,12 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	}
 
 	protected void initPGridModel(PGridModel propModel) {
-		PGridSection editorSec = new PGridSection("Editor");
-		initEditorPGridModel(propModel, editorSec);
+		PGridSection editorSection = new PGridSection("Editor");
+		initEditorPGridModel(propModel, editorSection);
 
-		PGridSection objectSec = new PGridSection("Display");
+		PGridSection displaySection = new PGridSection("Display");
 
-		if (!isWorld()) {
-			propModel.getSections().add(objectSec);
-		}
+		propModel.getSections().add(displaySection);
 
 		_x_property = new PGridNumberProperty(getUniqueId(), "x") {
 			@Override
@@ -329,13 +325,13 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			}
 		};
 
-		objectSec.add(_x_property);
-		objectSec.add(_y_property);
-		objectSec.add(_angle_property);
-		objectSec.add(_scale_x_property);
-		objectSec.add(_scale_y_property);
-		objectSec.add(_pivot_x_property);
-		objectSec.add(_pivot_y_property);
+		displaySection.add(_x_property);
+		displaySection.add(_y_property);
+		displaySection.add(_angle_property);
+		displaySection.add(_scale_x_property);
+		displaySection.add(_scale_y_property);
+		displaySection.add(_pivot_x_property);
+		displaySection.add(_pivot_y_property);
 
 	}
 

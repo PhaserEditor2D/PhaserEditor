@@ -28,6 +28,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
@@ -71,10 +72,17 @@ public class DragBehavior {
 	void handleMouseReleased(@SuppressWarnings("unused") MouseEvent event) {
 		_dragging = false;
 
+		CompositeOperation operations = new CompositeOperation();
+		UpdateBehavior update = _canvas.getUpdateBehavior();
+
 		for (DragInfo draginfo : _dragInfoList) {
 			Node node = draginfo.getNode();
-			_canvas.getUpdateBehavior().changeLocation((IObjectNode) node, node.getLayoutX(), node.getLayoutY());
+			double x = node.getLayoutX();
+			double y = node.getLayoutY();
+			update.addUpdateLocationOperation(operations, (IObjectNode) node, x, y);
 		}
+
+		update.executeOperations(operations);
 
 		_dragInfoList.clear();
 	}

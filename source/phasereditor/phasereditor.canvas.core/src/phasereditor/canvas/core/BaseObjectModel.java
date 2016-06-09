@@ -122,11 +122,6 @@ public abstract class BaseObjectModel {
 		_y = y;
 	}
 
-	public void setLocation(double x, double y) {
-		setX(x);
-		setY(y);
-	}
-
 	public double getRotation() {
 		return _rotation;
 	}

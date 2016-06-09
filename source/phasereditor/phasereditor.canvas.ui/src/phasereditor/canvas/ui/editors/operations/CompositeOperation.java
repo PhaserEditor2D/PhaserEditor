@@ -21,6 +21,10 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.operations;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.AbstractOperation;
 import org.eclipse.core.commands.operations.IUndoableOperation;
@@ -37,12 +41,20 @@ import phasereditor.canvas.ui.editors.CanvasEditor;
  */
 public class CompositeOperation extends AbstractOperation {
 
-	private IUndoableOperation[] _operations;
+	private List<IUndoableOperation> _operations;
 
 	public CompositeOperation(IUndoableOperation... operations) {
 		super("CompositeChangePropertyOperation");
-		_operations = operations;
+		_operations = new ArrayList<>(Arrays.asList(operations));
 		addContext(CanvasEditor.UNDO_CONTEXT);
+	}
+	
+	public boolean isEmpty() {
+		return _operations.isEmpty();
+	}
+
+	public void add(IUndoableOperation operation) {
+		_operations.add(operation);
 	}
 
 	@Override

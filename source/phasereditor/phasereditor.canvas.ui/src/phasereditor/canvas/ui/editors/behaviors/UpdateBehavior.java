@@ -165,7 +165,7 @@ public class UpdateBehavior {
 		_outline.refresh(node);
 	}
 
-	public void changeLocation(IObjectNode node, double x, double y) {
+	public void updateLocation_undoable(IObjectNode node, double x, double y) {
 		BaseObjectControl<?> control = node.getControl();
 		ChangePropertyOperation<?> changeX = new ChangePropertyOperation<>(control.getUniqueId(),
 				control.getX_property().getName(), Double.valueOf(x));
@@ -181,4 +181,31 @@ public class UpdateBehavior {
 			e.printStackTrace();
 		}
 	}
+
+	@SuppressWarnings("static-method")
+	public void addUpdateLocationOperation(CompositeOperation group, IObjectNode node, double x, double y) {
+		BaseObjectControl<?> control = node.getControl();
+		ChangePropertyOperation<?> changeX = new ChangePropertyOperation<>(control.getUniqueId(),
+				control.getX_property().getName(), Double.valueOf(x));
+		ChangePropertyOperation<?> changeY = new ChangePropertyOperation<>(control.getUniqueId(),
+				control.getY_property().getName(), Double.valueOf(y));
+
+		group.add(changeX);
+		group.add(changeY);
+	}
+
+	public void executeOperations(CompositeOperation group) {
+		if (group.isEmpty()) {
+			return;
+		}
+
+		IWorkbench workbench = _canvas.getEditor().getSite().getWorkbenchWindow().getWorkbench();
+		try {
+			IOperationHistory history = workbench.getOperationSupport().getOperationHistory();
+			history.execute(group, null, _canvas.getEditor());
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+	}
+
 }
