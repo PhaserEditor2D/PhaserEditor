@@ -37,7 +37,7 @@ import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.GroupModel;
-import phasereditor.canvas.core.ObjectModelFactory;
+import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.palette.PaletteComp;
@@ -68,7 +68,7 @@ public class CreateBehavior {
 			if (elem instanceof IAssetKey) {
 				// TODO: for now get as parent the world
 				WorldModel worldModel = _canvas.getWorldModel();
-				BaseSpriteModel model = ObjectModelFactory.createModel(worldModel, (IAssetKey) elem);
+				BaseSpriteModel model = CanvasModelFactory.createModel(worldModel, (IAssetKey) elem);
 				if (model != null) {
 					String newname = worldModel.createName(model.getEditorName());
 					model.setEditorName(newname);
@@ -212,7 +212,7 @@ public class CreateBehavior {
 				JSONObject copyJson = new JSONObject();
 				node.getModel().write(copyJson);
 
-				BaseObjectModel copyModel = ObjectModelFactory.createModel(parent.getModel(), copyJson);
+				BaseObjectModel copyModel = CanvasModelFactory.createModel(parent.getModel(), copyJson);
 				String copyName = _canvas.getWorldModel().createName(copyModel.getEditorName());
 				copyModel.setEditorName(copyName);
 				BaseObjectControl<?> copyControl = CanvasObjectFactory.createObjectControl(_canvas, copyModel);

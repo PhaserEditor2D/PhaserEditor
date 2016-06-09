@@ -400,7 +400,7 @@ public class SelectionBehavior implements ISelectionProvider {
 	}
 
 	public static Bounds localToAncestor(Bounds bounds, Node local, Node ancestor) {
-		if (local == ancestor) {
+		if (local == ancestor || local == null) {
 			return bounds;
 		}
 

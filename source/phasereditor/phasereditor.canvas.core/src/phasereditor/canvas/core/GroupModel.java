@@ -107,7 +107,7 @@ public class GroupModel extends BaseObjectModel {
 			JSONArray modelList = jsonInfo.getJSONArray("children");
 			for (int i = 0; i < modelList.length(); i++) {
 				JSONObject jsonModel = modelList.getJSONObject(i);
-				BaseObjectModel model = ObjectModelFactory.createModel(this, jsonModel);
+				BaseObjectModel model = CanvasModelFactory.createModel(this, jsonModel);
 
 				if (model != null) {
 					_children.add(model);

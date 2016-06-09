@@ -48,7 +48,7 @@ public class CompositeOperation extends AbstractOperation {
 		_operations = new ArrayList<>(Arrays.asList(operations));
 		addContext(CanvasEditor.UNDO_CONTEXT);
 	}
-	
+
 	public boolean isEmpty() {
 		return _operations.isEmpty();
 	}
@@ -83,7 +83,10 @@ public class CompositeOperation extends AbstractOperation {
 	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		IStatus status = Status.OK_STATUS;
 
-		for (IUndoableOperation op : _operations) {
+		// undo in reverse
+
+		for (int i = _operations.size() - 1; i >= 0; i--) {
+			IUndoableOperation op = _operations.get(i);
 			status = op.undo(monitor, info);
 		}
 

@@ -22,7 +22,6 @@
 package phasereditor.canvas.ui.editors.operations;
 
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.operations.AbstractOperation;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -38,16 +37,13 @@ import phasereditor.canvas.ui.shapes.BaseObjectControl;
  * @author arian
  *
  */
-public class ChangePropertyOperation<T> extends AbstractOperation {
-
-	private String _controlId;
+public class ChangePropertyOperation<T> extends AbstractNodeOperation {
 	private String _propId;
 	private T _value;
 	private T _undoValue;
 
 	public ChangePropertyOperation(String controlId, String propId, T value) {
-		super("NodesOperation");
-		_controlId = controlId;
+		super("ChangePropertyOperation", controlId);
 		_propId = propId;
 		_value = value;
 		addContext(CanvasEditor.UNDO_CONTEXT);
@@ -62,8 +58,10 @@ public class ChangePropertyOperation<T> extends AbstractOperation {
 			control.updateFromModel();
 
 			CanvasEditor editor = info.getAdapter(CanvasEditor.class);
+
 			editor.getCanvas().getUpdateBehavior().update_Grid_from_PropertyChange(prop);
 			editor.getCanvas().getSelectionBehavior().updateSelectedNodes();
+
 		} catch (IllegalStateException e) {
 			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage());
 		}
@@ -102,10 +100,5 @@ public class ChangePropertyOperation<T> extends AbstractOperation {
 			throw new IllegalStateException("Cannot find property " + _propId);
 		}
 		return prop;
-	}
-
-	private BaseObjectControl<?> findControl(IAdaptable info) {
-		CanvasEditor editor = info.getAdapter(CanvasEditor.class);
-		return editor.getCanvas().getWorldNode().getControl().findById(_controlId);
 	}
 }
