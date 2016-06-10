@@ -27,7 +27,7 @@ import phasereditor.canvas.core.WorldModel.ZOperation;
  * @author arian
  *
  */
-public class RiseTopShapeHandler extends ChangeShapeZHandler {
+public class RiseTopShapeHandler extends ChangeNodeZHandler {
 
 	public RiseTopShapeHandler() {
 		super(ZOperation.RISE_TOP);

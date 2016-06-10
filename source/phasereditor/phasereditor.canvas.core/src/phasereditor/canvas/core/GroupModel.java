@@ -27,8 +27,6 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import phasereditor.canvas.core.WorldModel.ZOperation;
-
 /**
  * @author arian
  *
@@ -61,7 +59,7 @@ public class GroupModel extends BaseObjectModel {
 		return "[grp] " + getEditorName();
 	}
 
-	public Iterable<BaseObjectModel> getChildren() {
+	public List<BaseObjectModel> getChildren() {
 		return _children;
 	}
 
@@ -81,18 +79,6 @@ public class GroupModel extends BaseObjectModel {
 			}
 		}
 		return null;
-	}
-	
-	public void sendTo(BaseObjectModel model, ZOperation op) {
-		if (op.perform(_children, model)) {
-			getWorld().firePropertyChange(WorldModel.PROP_STRUCTURE);
-		}
-	}
-
-	public void riseToBottom(BaseObjectModel model) {
-		_children.remove(model);
-		_children.add(0, model);
-		getWorld().firePropertyChange(WorldModel.PROP_STRUCTURE);
 	}
 
 	@Override

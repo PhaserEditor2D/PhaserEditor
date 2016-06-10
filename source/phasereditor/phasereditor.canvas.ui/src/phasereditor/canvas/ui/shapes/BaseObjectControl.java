@@ -445,10 +445,10 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		return getY() + getTextureHeight();
 	}
 
-	public void sendNodeTo(ZOperation op) {
+	public void applyZOperation(ZOperation op) {
 		GroupNode parent = (GroupNode) _node.getParent();
 		op.perform(parent.getChildren(), _node);
-		_canvas.getWorldModel().sendTo(getModel(), op);
+		op.perform(parent.getModel().getChildren(), getIObjectNode().getModel());
 	}
 
 	public void rebuild() {

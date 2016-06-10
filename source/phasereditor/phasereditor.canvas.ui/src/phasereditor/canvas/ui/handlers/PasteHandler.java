@@ -30,8 +30,6 @@ public class PasteHandler extends AbstractHandler {
 		
 		cb.dispose();
 		
-		
-
 		if (nodes != null) {
 			CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 			List<IObjectNode> newnodes = editor.getCanvas().getCreateBehavior().paste(nodes.toArray());

@@ -24,15 +24,11 @@ package phasereditor.canvas.ui.editors.behaviors;
 import static java.lang.System.out;
 
 import java.beans.PropertyChangeEvent;
-import java.lang.reflect.InvocationTargetException;
 import java.security.InvalidParameterException;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -52,7 +48,6 @@ import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridProperty;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
-import phasereditor.canvas.ui.editors.operations.WorldSanpshotOperation;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.IObjectNode;
@@ -219,16 +214,4 @@ public class UpdateBehavior {
 			throw new RuntimeException(e);
 		}
 	}
-
-	public void executeModification(String name, Runnable modification) {
-		WorldSanpshotOperation op = new WorldSanpshotOperation(name, modification);
-		IWorkbench workbench = _canvas.getEditor().getSite().getWorkbenchWindow().getWorkbench();
-		try {
-			IOperationHistory history = workbench.getOperationSupport().getOperationHistory();
-			history.execute(op, null, _canvas.getEditor());
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
-	}
-
 }

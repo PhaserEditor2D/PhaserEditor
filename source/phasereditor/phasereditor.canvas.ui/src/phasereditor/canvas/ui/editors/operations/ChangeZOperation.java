@@ -21,72 +21,61 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.operations;
 
+import java.util.List;
+
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.operations.AbstractOperation;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.json.JSONObject;
 
-import phasereditor.canvas.core.WorldModel;
-import phasereditor.canvas.ui.editors.CanvasEditor;
-import phasereditor.canvas.ui.editors.ObjectCanvas;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.WorldModel.ZOperation;
+import phasereditor.canvas.ui.shapes.BaseObjectControl;
 
 /**
  * @author arian
- *
  */
-@Deprecated
-public class WorldSanpshotOperation extends AbstractOperation {
+public class ChangeZOperation extends AbstractNodeOperation {
 
-	private JSONObject _beforeState;
-	private JSONObject _afterState;
-	private Runnable _action;
+	private ZOperation _zop;
+	private int _beforeIndex;
+	private int _afterIndex;
 
-	public WorldSanpshotOperation(String label, Runnable action) {
-		super(label);
-		_action = action;
-		addContext(CanvasEditor.UNDO_CONTEXT);
+	public ChangeZOperation(String controlId, ZOperation zop) {
+		super("ChangeZOperation", controlId);
+		_zop = zop;
 	}
 
 	@Override
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		CanvasEditor editor = info.getAdapter(CanvasEditor.class);
-		WorldModel model = editor.getCanvas().getWorldModel();
-
-		_beforeState = new JSONObject();
-		_afterState = new JSONObject();
-
-		model.write(_beforeState);
-
-		_action.run();
-
-		model.write(_afterState);
-
-		return Status.OK_STATUS;
+		BaseObjectControl<?> control = findControl(info);
+		ObservableList<Node> children = control.getGroup().getChildren();
+		_beforeIndex = children.indexOf(control.getNode());
+		control.applyZOperation(_zop);
+		_afterIndex = control.getGroup().getChildren().indexOf(control.getNode());
+		return null;
 	}
 
 	@Override
 	public IStatus redo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		return loadState(info, _afterState);
+		BaseObjectControl<?> control = findControl(info);
+		control.applyZOperation(_zop);
+		return Status.OK_STATUS;
 	}
 
 	@Override
 	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		return loadState(info, _beforeState);
-	}
+		BaseObjectControl<?> control = findControl(info);
+		ObservableList<Node> nodes = control.getGroup().getChildren();
+		nodes.remove(_afterIndex);
+		nodes.add(_beforeIndex, control.getNode());
 
-	private static IStatus loadState(IAdaptable info, JSONObject state) {
-		CanvasEditor editor = info.getAdapter(CanvasEditor.class);
-		ObjectCanvas canvas = editor.getCanvas();
-		WorldModel model = canvas.getWorldModel();
-		
-
-		model.read(state);
-
-		canvas.getWorldNode().getControl().updateStructureFromModel();
-		canvas.getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
+		List<BaseObjectModel> models = control.getGroup().getModel().getChildren();
+		models.remove(_afterIndex);
+		models.add(_beforeIndex, control.getModel());
 
 		return Status.OK_STATUS;
 	}

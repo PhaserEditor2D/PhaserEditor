@@ -27,7 +27,7 @@ import phasereditor.canvas.core.WorldModel.ZOperation;
  * @author arian
  *
  */
-public class LowerBottomShapeHandler extends ChangeShapeZHandler {
+public class LowerBottomShapeHandler extends ChangeNodeZHandler {
 
 	public LowerBottomShapeHandler() {
 		super(ZOperation.LOWER_BOTTOM);

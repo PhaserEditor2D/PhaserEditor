@@ -36,6 +36,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.widgets.Display;
 
+import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 
 /**
@@ -79,6 +80,8 @@ public class CompositeOperation extends AbstractOperation {
 							monitor2.worked(1);
 						}
 
+						fireWorldChanged(info);
+
 					} catch (ExecutionException e) {
 						e.printStackTrace();
 					}
@@ -91,9 +94,15 @@ public class CompositeOperation extends AbstractOperation {
 			for (IUndoableOperation op : _operations) {
 				op.execute(monitor, info);
 			}
+			fireWorldChanged(info);
 		}
 
 		return status;
+	}
+
+	private static void fireWorldChanged(IAdaptable info) {
+		CanvasEditor editor = info.getAdapter(CanvasEditor.class);
+		editor.getCanvas().getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
 	}
 
 	@Override
@@ -109,6 +118,9 @@ public class CompositeOperation extends AbstractOperation {
 							op.redo(monitor, info);
 							monitor2.worked(1);
 						}
+
+						fireWorldChanged(info);
+
 					} catch (ExecutionException e) {
 						e.printStackTrace();
 					}
@@ -122,6 +134,7 @@ public class CompositeOperation extends AbstractOperation {
 				IUndoableOperation op = _operations.get(i);
 				status = op.redo(monitor, info);
 			}
+			fireWorldChanged(info);
 		}
 
 		return status;
@@ -140,6 +153,8 @@ public class CompositeOperation extends AbstractOperation {
 							op.undo(monitor2, info);
 							monitor2.worked(1);
 						}
+
+						fireWorldChanged(info);
 					} catch (ExecutionException e) {
 						e.printStackTrace();
 					}

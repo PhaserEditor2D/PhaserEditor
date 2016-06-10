@@ -7,14 +7,16 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.canvas.core.WorldModel.ZOperation;
-import phasereditor.canvas.ui.shapes.BaseObjectControl;
+import phasereditor.canvas.ui.editors.CanvasEditor;
+import phasereditor.canvas.ui.editors.operations.ChangeZOperation;
+import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
-public abstract class ChangeShapeZHandler extends AbstractHandler {
+public abstract class ChangeNodeZHandler extends AbstractHandler {
 
 	private ZOperation _zoperation;
 
-	public ChangeShapeZHandler(ZOperation zoperation) {
+	public ChangeNodeZHandler(ZOperation zoperation) {
 		_zoperation = zoperation;
 	}
 
@@ -22,12 +24,18 @@ public abstract class ChangeShapeZHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
 		Object[] elems = selection.toArray();
+
+		CompositeOperation operations = new CompositeOperation();
+
 		for (int i = elems.length - 1; i >= 0; i--) {
 			Object elem = elems[i];
 			IObjectNode node = (IObjectNode) elem;
-			BaseObjectControl<?> shape = node.getControl();
-			shape.sendNodeTo(_zoperation);
+			operations.add(new ChangeZOperation(node.getModel().getId(), _zoperation));
 		}
+
+		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
+		editor.getCanvas().getUpdateBehavior().executeOperations(operations);
+
 		return null;
 	}
 
