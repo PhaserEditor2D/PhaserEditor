@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import phasereditor.canvas.core.BaseObjectModel;
@@ -42,7 +45,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 	public GroupControl(ObjectCanvas canvas, GroupModel model) {
 		super(canvas, model);
 	}
-	
+
 	@Override
 	public BaseObjectControl<?> findById(String id) {
 		if (getUniqueId().equals(id)) {
@@ -50,7 +53,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 		}
 
 		for (Node node : getNode().getChildren()) {
-			BaseObjectControl<?> control = ((IObjectNode)node).getControl();
+			BaseObjectControl<?> control = ((IObjectNode) node).getControl();
 			BaseObjectControl<?> result = control.findById(id);
 			if (result != null) {
 				return result;
@@ -261,6 +264,16 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 			}
 		}
 
+		updateFromModel();
+	}
+
+	public void updateStructureFromModel() {
+		List<Node> list = new ArrayList<>();
+		for (BaseObjectModel model : getModel().getChildren()) {
+			BaseObjectControl<?> control = CanvasObjectFactory.createObjectControl(getCanvas(), model);
+			list.add(control.getNode());
+		}
+		getNode().getChildren().setAll(list);
 		updateFromModel();
 	}
 }

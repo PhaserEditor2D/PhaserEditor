@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.operations;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +33,8 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.swt.widgets.Display;
 
 import phasereditor.canvas.ui.editors.CanvasEditor;
 
@@ -53,6 +56,10 @@ public class CompositeOperation extends AbstractOperation {
 		return _operations.isEmpty();
 	}
 
+	public int getSize() {
+		return _operations.size();
+	}
+
 	public void add(IUndoableOperation operation) {
 		_operations.add(operation);
 	}
@@ -61,8 +68,29 @@ public class CompositeOperation extends AbstractOperation {
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		IStatus status = Status.OK_STATUS;
 
-		for (IUndoableOperation op : _operations) {
-			status = op.execute(monitor, info);
+		if (getSize() > 2) {
+			try {
+				new ProgressMonitorDialog(Display.getCurrent().getActiveShell()).run(false, false, monitor2 -> {
+					try {
+						monitor2.beginTask("Undo operation", getSize());
+
+						for (IUndoableOperation op : _operations) {
+							op.execute(monitor, info);
+							monitor2.worked(1);
+						}
+
+					} catch (ExecutionException e) {
+						e.printStackTrace();
+					}
+					monitor2.done();
+				});
+			} catch (InvocationTargetException | InterruptedException e) {
+				e.printStackTrace();
+			}
+		} else {
+			for (IUndoableOperation op : _operations) {
+				op.execute(monitor, info);
+			}
 		}
 
 		return status;
@@ -72,8 +100,28 @@ public class CompositeOperation extends AbstractOperation {
 	public IStatus redo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		IStatus status = Status.OK_STATUS;
 
-		for (IUndoableOperation op : _operations) {
-			status = op.redo(monitor, info);
+		if (getSize() > 2) {
+			try {
+				new ProgressMonitorDialog(Display.getCurrent().getActiveShell()).run(false, false, monitor2 -> {
+					try {
+						monitor2.beginTask("Undo operation", getSize());
+						for (IUndoableOperation op : _operations) {
+							op.redo(monitor, info);
+							monitor2.worked(1);
+						}
+					} catch (ExecutionException e) {
+						e.printStackTrace();
+					}
+					monitor2.done();
+				});
+			} catch (InvocationTargetException | InterruptedException e) {
+				e.printStackTrace();
+			}
+		} else {
+			for (int i = _operations.size() - 1; i >= 0; i--) {
+				IUndoableOperation op = _operations.get(i);
+				status = op.redo(monitor, info);
+			}
 		}
 
 		return status;
@@ -82,12 +130,29 @@ public class CompositeOperation extends AbstractOperation {
 	@Override
 	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		IStatus status = Status.OK_STATUS;
-
-		// undo in reverse
-
-		for (int i = _operations.size() - 1; i >= 0; i--) {
-			IUndoableOperation op = _operations.get(i);
-			status = op.undo(monitor, info);
+		if (getSize() > 2) {
+			try {
+				new ProgressMonitorDialog(Display.getCurrent().getActiveShell()).run(false, false, monitor2 -> {
+					try {
+						monitor2.beginTask("Undo operation", getSize());
+						for (int i = _operations.size() - 1; i >= 0; i--) {
+							IUndoableOperation op = _operations.get(i);
+							op.undo(monitor2, info);
+							monitor2.worked(1);
+						}
+					} catch (ExecutionException e) {
+						e.printStackTrace();
+					}
+					monitor2.done();
+				});
+			} catch (InvocationTargetException | InterruptedException e) {
+				e.printStackTrace();
+			}
+		} else {
+			for (int i = _operations.size() - 1; i >= 0; i--) {
+				IUndoableOperation op = _operations.get(i);
+				status = op.undo(monitor, info);
+			}
 		}
 
 		return status;

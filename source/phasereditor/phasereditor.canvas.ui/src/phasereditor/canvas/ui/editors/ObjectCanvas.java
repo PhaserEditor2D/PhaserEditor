@@ -269,19 +269,4 @@ public class ObjectCanvas extends FXCanvas {
 		getWorldModel().setDirty(true);
 	}
 
-	public void deleteSelected() {
-		Object[] sel = _selectionBehavior.getSelection().toArray();
-		for (Object elem : sel) {
-			if (elem == getWorldNode()) {
-				continue;
-			}
-
-			IObjectNode inode = (IObjectNode) elem;
-			GroupNode parent = inode.getGroup();
-			parent.getControl().removeChild(inode);
-			_selectionBehavior.removeNodeFromSelection((Node) elem);
-		}
-
-		getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
-	}
 }

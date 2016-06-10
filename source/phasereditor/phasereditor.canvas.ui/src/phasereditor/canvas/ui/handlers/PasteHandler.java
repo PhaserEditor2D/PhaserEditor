@@ -11,7 +11,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
@@ -32,10 +31,15 @@ public class PasteHandler extends AbstractHandler {
 
 		if (data != null) {
 			CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
-			List<IObjectNode> newnodes = editor.getCanvas().getCreateBehavior().paste(data);
-
-			editor.getCanvas().getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
-			editor.getCanvas().getSelectionBehavior().setSelection(new StructuredSelection(newnodes));
+			editor.getCanvas().getUpdateBehavior().executeModification("Paste", new Runnable() {
+				
+				@Override
+				public void run() {
+					List<IObjectNode> newnodes = editor.getCanvas().getCreateBehavior().paste(data);
+					editor.getCanvas().getSelectionBehavior().setSelection(new StructuredSelection(newnodes));
+				}
+			});
+			
 		}
 
 		return null;

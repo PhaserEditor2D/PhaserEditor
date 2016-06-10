@@ -170,7 +170,7 @@ public abstract class BaseObjectModel {
 		_pivotY = pivotY;
 	}
 
-	protected void read(JSONObject obj) {
+	public void read(JSONObject obj) {
 		readMetadata(obj);
 		JSONObject jsonInfo = obj.getJSONObject("info");
 		readInfo(jsonInfo);
