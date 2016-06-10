@@ -25,6 +25,7 @@ import org.eclipse.core.commands.operations.AbstractOperation;
 import org.eclipse.core.runtime.IAdaptable;
 
 import phasereditor.canvas.ui.editors.CanvasEditor;
+import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 
 /**
@@ -47,5 +48,13 @@ public abstract class AbstractNodeOperation extends AbstractOperation {
 	protected static BaseObjectControl<?> findControl(IAdaptable info, String id) {
 		CanvasEditor editor = info.getAdapter(CanvasEditor.class);
 		return editor.getCanvas().getWorldNode().getControl().findById(id);
+	}
+	
+	protected static CanvasEditor getEditor(IAdaptable info) {
+		return  info.getAdapter(CanvasEditor.class);
+	}
+	
+	protected static ObjectCanvas getCanvas(IAdaptable info) {
+		return  info.getAdapter(CanvasEditor.class).getCanvas();
 	}
 }

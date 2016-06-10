@@ -214,4 +214,8 @@ public class UpdateBehavior {
 			throw new RuntimeException(e);
 		}
 	}
+
+	public void fireWorldChanged() {
+		_canvas.getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
+	}
 }

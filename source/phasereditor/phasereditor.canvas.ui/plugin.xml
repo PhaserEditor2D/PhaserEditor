@@ -430,7 +430,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="phasereditor.canvas.ui.handlers.AlignShapeHandler"
+            class="phasereditor.canvas.ui.handlers.AlignNodeHandler"
             commandId="phasereditor.canvas.ui.align.left">
          <enabledWhen>
             <reference
@@ -439,7 +439,7 @@
          </enabledWhen>
       </handler>
       <handler
-            class="phasereditor.canvas.ui.handlers.AlignShapeHandler"
+            class="phasereditor.canvas.ui.handlers.AlignNodeHandler"
             commandId="phasereditor.canvas.ui.align.top">
          <enabledWhen>
             <reference
@@ -448,7 +448,7 @@
          </enabledWhen>
       </handler>
       <handler
-            class="phasereditor.canvas.ui.handlers.AlignShapeHandler"
+            class="phasereditor.canvas.ui.handlers.AlignNodeHandler"
             commandId="phasereditor.canvas.ui.align.right">
          <enabledWhen>
             <reference
@@ -457,7 +457,7 @@
          </enabledWhen>
       </handler>
       <handler
-            class="phasereditor.canvas.ui.handlers.AlignShapeHandler"
+            class="phasereditor.canvas.ui.handlers.AlignNodeHandler"
             commandId="phasereditor.canvas.ui.align.bottom">
          <enabledWhen>
             <reference
@@ -466,7 +466,7 @@
          </enabledWhen>
       </handler>
       <handler
-            class="phasereditor.canvas.ui.handlers.AlignShapeHandler"
+            class="phasereditor.canvas.ui.handlers.AlignNodeHandler"
             commandId="phasereditor.canvas.ui.align.center">
          <enabledWhen>
             <reference
@@ -475,7 +475,7 @@
          </enabledWhen>
       </handler>
       <handler
-            class="phasereditor.canvas.ui.handlers.AlignShapeHandler"
+            class="phasereditor.canvas.ui.handlers.AlignNodeHandler"
             commandId="phasereditor.canvas.ui.align.middle">
          <enabledWhen>
             <reference

@@ -42,6 +42,7 @@ import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
+import phasereditor.canvas.ui.editors.operations.SelectOperation;
 import phasereditor.canvas.ui.editors.palette.PaletteComp;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.CanvasObjectFactory;
@@ -163,21 +164,7 @@ public class CreateBehavior {
 		return newGroupControl.getNode();
 	}
 
-	public void makeEmptyGroup(GroupNode parent) {
-		GroupControl parentControl = parent.getControl();
-
-		GroupModel newModel = new GroupModel(parentControl.getModel());
-		newModel.setEditorName(_canvas.getWorldModel().createName("group"));
-
-		GroupControl newControl = new GroupControl(_canvas, newModel);
-		parentControl.addChild(newControl.getNode());
-
-		_canvas.getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
-		_canvas.getSelectionBehavior().setSelection(new StructuredSelection(newControl.getNode()));
-
-	}
-
-	public List<IObjectNode> paste(Object[] data) {
+	public void paste(Object[] data) {
 		GroupControl worldControl = _canvas.getWorldNode().getControl();
 		GroupControl parent = worldControl;
 
@@ -200,8 +187,6 @@ public class CreateBehavior {
 			}
 		}
 
-		List<IObjectNode> newnodes = new ArrayList<>();
-
 		double x = _canvas.getScene().getWidth() / 2 + 50 - Math.random() * 100;
 		double y = _canvas.getScene().getHeight() / 2 + 50 - Math.random() * 100;
 
@@ -209,11 +194,15 @@ public class CreateBehavior {
 
 		int i = 0;
 
+		List<String> selection = new ArrayList<>();
+
 		for (Object elem : data) {
 			if (elem instanceof IObjectNode) {
 				IObjectNode node = (IObjectNode) elem;
 				// assign new id for pasted nodes!
-				node.getModel().setId(UUID.randomUUID().toString());
+				String id = UUID.randomUUID().toString();
+				node.getModel().setId(id);
+				selection.add(id);
 
 				JSONObject copyJson = new JSONObject();
 				node.getModel().write(copyJson);
@@ -227,34 +216,9 @@ public class CreateBehavior {
 				operations.add(op);
 
 				i++;
-
-				// BaseObjectModel copyModel =
-				// CanvasModelFactory.createModel(parent.getModel(), copyJson);
-				// String copyName =
-				// _canvas.getWorldModel().createName(copyModel.getEditorName());
-				// copyModel.setEditorName(copyName);
-				// BaseObjectControl<?> copyControl =
-				// CanvasObjectFactory.createObjectControl(_canvas, copyModel);
-				//
-				//
-				//
-				// dropSprite(copyControl, x2, y2);
-				//
-				// if (parent != worldControl) {
-				// copyControl.removeme();
-				// parent.addChild(copyControl.getIObjectNode());
-				// copyControl.getModel().setX(0);
-				// copyControl.getModel().setY(0);
-				// }
-				//
-				//
-				// newnodes.add((IObjectNode) copyControl.getNode());
-				// i++;
 			}
 		}
-
+		operations.add(new SelectOperation(selection));
 		_canvas.getUpdateBehavior().executeOperations(operations);
-
-		return newnodes;
 	}
 }

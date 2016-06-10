@@ -7,7 +7,6 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -27,13 +26,12 @@ public class PasteHandler extends AbstractHandler {
 		}
 
 		List<IObjectNode> nodes = DeleteHandler.filterSelection((IStructuredSelection) content);
-		
+
 		cb.dispose();
-		
+
 		if (nodes != null) {
 			CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
-			List<IObjectNode> newnodes = editor.getCanvas().getCreateBehavior().paste(nodes.toArray());
-			editor.getCanvas().getSelectionBehavior().setSelection(new StructuredSelection(newnodes));			
+			editor.getCanvas().getCreateBehavior().paste(nodes.toArray());
 		}
 
 		return null;

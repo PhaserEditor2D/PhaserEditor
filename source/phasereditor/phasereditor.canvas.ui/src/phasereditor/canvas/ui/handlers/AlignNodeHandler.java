@@ -15,7 +15,7 @@ import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
-public class AlignShapeHandler extends AbstractHandler {
+public class AlignNodeHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {

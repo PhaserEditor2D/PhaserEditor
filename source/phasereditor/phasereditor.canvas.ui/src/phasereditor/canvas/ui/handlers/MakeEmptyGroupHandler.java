@@ -26,9 +26,14 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.json.JSONObject;
 
+import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
+import phasereditor.canvas.ui.editors.operations.CompositeOperation;
+import phasereditor.canvas.ui.editors.operations.SelectOperation;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
@@ -45,14 +50,21 @@ public class MakeEmptyGroupHandler extends AbstractHandler {
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 		ObjectCanvas canvas = editor.getCanvas();
 		GroupNode parent;
-		
+
 		if (elems.length == 0) {
 			parent = canvas.getWorldNode();
 		} else {
 			parent = ((IObjectNode) elems[0]).getGroup();
 		}
 
-		canvas.getCreateBehavior().makeEmptyGroup(parent);
+		CompositeOperation operations = new CompositeOperation();
+		JSONObject data = new JSONObject();
+		GroupModel model = new GroupModel(null);
+		model.write(data);
+		operations.add(new AddNodeOperation(data, parent.getChildren().size(), 0, 0, parent.getModel().getId()));
+		operations.add(new SelectOperation(model.getId()));
+		canvas.getUpdateBehavior().executeOperations(operations);
+
 		return null;
 	}
 

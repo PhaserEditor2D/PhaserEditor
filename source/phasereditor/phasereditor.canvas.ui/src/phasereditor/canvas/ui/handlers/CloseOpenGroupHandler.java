@@ -29,6 +29,9 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.behaviors.UpdateBehavior;
+import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
+import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.GroupNode;
 
 /**
@@ -45,13 +48,18 @@ public class CloseOpenGroupHandler extends AbstractHandler {
 
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 		ObjectCanvas canvas = editor.getCanvas();
+		UpdateBehavior update = canvas.getUpdateBehavior();
+
+		CompositeOperation operations = new CompositeOperation();
 
 		for (Object obj : sel.toArray()) {
 			GroupNode group = (GroupNode) obj;
 			group.getModel().setEditorClosed(cmd);
-			canvas.getUpdateBehavior().update_Outline(group);
-			canvas.getUpdateBehavior().update_Grid_from_PropertyChange(group.getControl().getClosed_property());
+			operations.add(new ChangePropertyOperation<>(group.getModel().getId(),
+					group.getControl().getClosed_property().getName(), Boolean.valueOf(cmd)));
 		}
+
+		update.executeOperations(operations);
 
 		return null;
 	}
