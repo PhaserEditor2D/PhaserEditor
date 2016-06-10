@@ -29,7 +29,27 @@ public class DeleteHandler extends AbstractHandler {
 		IStructuredSelection sel = ((IStructuredSelection) HandlerUtil.getCurrentSelection(event));
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 
-		// filter those children of selected nodes
+		List<IObjectNode> nodes = filterSelection(sel);
+
+		CompositeOperation operations = new CompositeOperation();
+
+		for (IObjectNode node : nodes) {
+			operations.add(new DeleteNodeOperation(node.getControl().getUniqueId()));
+		}
+
+		editor.getCanvas().getUpdateBehavior().executeOperations(operations);
+	}
+
+	/**
+	 * If a node is in the selection but its parent is in the selection too,
+	 * then that node is filtered. This helps to do operations like delete,
+	 * paste, etc.. It removes redundant nodes.
+	 * 
+	 */
+	public static List<IObjectNode> filterSelection(IStructuredSelection sel) {
+		if (sel == null) {
+			return null;
+		}
 
 		Set<Object> set = new HashSet<>(Arrays.asList(sel.toArray()));
 		List<IObjectNode> nodes = new ArrayList<>();
@@ -48,14 +68,7 @@ public class DeleteHandler extends AbstractHandler {
 				}
 			}
 		}
-
-		CompositeOperation operations = new CompositeOperation();
-
-		for (IObjectNode node : nodes) {
-			operations.add(new DeleteNodeOperation(node.getControl().getUniqueId()));
-		}
-
-		editor.getCanvas().getUpdateBehavior().executeOperations(operations);
+		return nodes;
 	}
 
 }

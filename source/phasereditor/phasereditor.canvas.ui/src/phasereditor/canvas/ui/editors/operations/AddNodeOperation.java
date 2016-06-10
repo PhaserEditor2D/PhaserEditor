@@ -21,16 +21,16 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.operations;
 
-import java.util.UUID;
-
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.json.JSONObject;
 
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.CanvasModelFactory;
+import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
@@ -51,7 +51,7 @@ public class AddNodeOperation extends AbstractNodeOperation {
 	private int _index;
 
 	public AddNodeOperation(JSONObject data, int index, double x, double y, String parentId) {
-		super("CreateNodeOperation", UUID.randomUUID().toString());
+		super("CreateNodeOperation", null);
 		_data = data;
 		_index = index;
 		_x = x;
@@ -61,24 +61,53 @@ public class AddNodeOperation extends AbstractNodeOperation {
 
 	@Override
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		ObjectCanvas canvas = info.getAdapter(CanvasEditor.class).getCanvas();
-		GroupControl groupControl = (GroupControl) findControl(info, _parentId);
-		BaseObjectModel model = CanvasModelFactory.createModel(groupControl.getModel(), _data);
-		BaseObjectControl<?> control = CanvasObjectFactory.createObjectControl(canvas, model);
-		groupControl.addChild(_index, control.getIObjectNode());
-		canvas.getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
-		canvas.getSelectionBehavior().updateSelectedNodes();
-		return null;
+		return addNode(info);
 	}
 
 	@Override
 	public IStatus redo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		return null;
+		return addNode(info);
 	}
 
 	@Override
 	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		return null;
+		BaseObjectControl<?> control = findControl(info, _controlId);
+		ObjectCanvas canvas = control.getCanvas();
+
+		control.removeme();
+
+		canvas.getSelectionBehavior().removeNodeFromSelection(control.getNode());
+		canvas.getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
+
+		return Status.OK_STATUS;
+	}
+
+	private IStatus addNode(IAdaptable info) {
+		ObjectCanvas canvas = info.getAdapter(CanvasEditor.class).getCanvas();
+		GroupControl groupControl = (GroupControl) findControl(info, _parentId);
+		BaseObjectModel model = CanvasModelFactory.createModel(groupControl.getModel(), _data);
+
+		changeName(canvas, model);
+
+		model.setX(_x);
+		model.setY(_y);
+		BaseObjectControl<?> control = CanvasObjectFactory.createObjectControl(canvas, model);
+		_controlId = control.getUniqueId();
+		groupControl.addChild(_index, control.getIObjectNode());
+		canvas.getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
+		canvas.getSelectionBehavior().updateSelectedNodes();
+		return Status.OK_STATUS;
+	}
+
+	private static void changeName(ObjectCanvas canvas, BaseObjectModel model) {
+		model.setEditorName(canvas.getWorldModel().createName(model.getEditorName()));
+
+		if (model instanceof GroupModel) {
+			GroupModel group = (GroupModel) model;
+			for (BaseObjectModel child : group.getChildren()) {
+				changeName(canvas, child);
+			}
+		}
 	}
 
 }

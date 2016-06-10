@@ -34,12 +34,13 @@ import org.json.JSONObject;
 import javafx.scene.Node;
 import javafx.scene.input.DragEvent;
 import phasereditor.assetpack.core.IAssetKey;
-import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BaseSpriteModel;
-import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.CanvasModelFactory;
+import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
+import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.palette.PaletteComp;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.CanvasObjectFactory;
@@ -203,6 +204,8 @@ public class CreateBehavior {
 		double x = _canvas.getScene().getWidth() / 2 + 50 - Math.random() * 100;
 		double y = _canvas.getScene().getHeight() / 2 + 50 - Math.random() * 100;
 
+		CompositeOperation operations = new CompositeOperation();
+
 		int i = 0;
 
 		for (Object elem : data) {
@@ -212,25 +215,42 @@ public class CreateBehavior {
 				JSONObject copyJson = new JSONObject();
 				node.getModel().write(copyJson);
 
-				BaseObjectModel copyModel = CanvasModelFactory.createModel(parent.getModel(), copyJson);
-				String copyName = _canvas.getWorldModel().createName(copyModel.getEditorName());
-				copyModel.setEditorName(copyName);
-				BaseObjectControl<?> copyControl = CanvasObjectFactory.createObjectControl(_canvas, copyModel);
-				
-				dropSprite(copyControl, x + i * 20, y + i * 20);
-				
-				if (parent != worldControl) {
-					copyControl.removeme();
-					parent.addChild(copyControl.getIObjectNode());
-					copyControl.getModel().setX(0);
-					copyControl.getModel().setY(0);
-				}
-				
-				
-				newnodes.add((IObjectNode) copyControl.getNode());
+				double x2 = x + i * 20;
+				double y2 = y + i * 20;
+
+				int index = parent.getNode().getChildren().indexOf(node);
+
+				AddNodeOperation op = new AddNodeOperation(copyJson, index, x2, y2, parent.getUniqueId());
+				operations.add(op);
+
 				i++;
+
+				// BaseObjectModel copyModel =
+				// CanvasModelFactory.createModel(parent.getModel(), copyJson);
+				// String copyName =
+				// _canvas.getWorldModel().createName(copyModel.getEditorName());
+				// copyModel.setEditorName(copyName);
+				// BaseObjectControl<?> copyControl =
+				// CanvasObjectFactory.createObjectControl(_canvas, copyModel);
+				//
+				//
+				//
+				// dropSprite(copyControl, x2, y2);
+				//
+				// if (parent != worldControl) {
+				// copyControl.removeme();
+				// parent.addChild(copyControl.getIObjectNode());
+				// copyControl.getModel().setX(0);
+				// copyControl.getModel().setY(0);
+				// }
+				//
+				//
+				// newnodes.add((IObjectNode) copyControl.getNode());
+				// i++;
 			}
 		}
+
+		_canvas.getUpdateBehavior().executeOperations(operations);
 
 		return newnodes;
 	}

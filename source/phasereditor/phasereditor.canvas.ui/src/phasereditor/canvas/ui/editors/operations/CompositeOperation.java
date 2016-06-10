@@ -72,7 +72,7 @@ public class CompositeOperation extends AbstractOperation {
 			try {
 				new ProgressMonitorDialog(Display.getCurrent().getActiveShell()).run(false, false, monitor2 -> {
 					try {
-						monitor2.beginTask("Undo operation", getSize());
+						monitor2.beginTask("Executing operations", getSize());
 
 						for (IUndoableOperation op : _operations) {
 							op.execute(monitor, info);
@@ -104,7 +104,7 @@ public class CompositeOperation extends AbstractOperation {
 			try {
 				new ProgressMonitorDialog(Display.getCurrent().getActiveShell()).run(false, false, monitor2 -> {
 					try {
-						monitor2.beginTask("Undo operation", getSize());
+						monitor2.beginTask("Redoing operations", getSize());
 						for (IUndoableOperation op : _operations) {
 							op.redo(monitor, info);
 							monitor2.worked(1);
@@ -134,7 +134,7 @@ public class CompositeOperation extends AbstractOperation {
 			try {
 				new ProgressMonitorDialog(Display.getCurrent().getActiveShell()).run(false, false, monitor2 -> {
 					try {
-						monitor2.beginTask("Undo operation", getSize());
+						monitor2.beginTask("Undoing operations", getSize());
 						for (int i = _operations.size() - 1; i >= 0; i--) {
 							IUndoableOperation op = _operations.get(i);
 							op.undo(monitor2, info);

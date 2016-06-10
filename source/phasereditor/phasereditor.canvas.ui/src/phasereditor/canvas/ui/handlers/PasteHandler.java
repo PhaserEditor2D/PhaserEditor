@@ -26,20 +26,16 @@ public class PasteHandler extends AbstractHandler {
 			return null;
 		}
 
-		Object[] data = ((IStructuredSelection) content).toArray();
+		List<IObjectNode> nodes = DeleteHandler.filterSelection((IStructuredSelection) content);
+		
 		cb.dispose();
+		
+		
 
-		if (data != null) {
+		if (nodes != null) {
 			CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
-			editor.getCanvas().getUpdateBehavior().executeModification("Paste", new Runnable() {
-				
-				@Override
-				public void run() {
-					List<IObjectNode> newnodes = editor.getCanvas().getCreateBehavior().paste(data);
-					editor.getCanvas().getSelectionBehavior().setSelection(new StructuredSelection(newnodes));
-				}
-			});
-			
+			List<IObjectNode> newnodes = editor.getCanvas().getCreateBehavior().paste(nodes.toArray());
+			editor.getCanvas().getSelectionBehavior().setSelection(new StructuredSelection(newnodes));			
 		}
 
 		return null;
