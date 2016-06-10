@@ -77,7 +77,6 @@ public class AddNodeOperation extends AbstractNodeOperation {
 		control.removeme();
 
 		canvas.getSelectionBehavior().removeNodeFromSelection(control.getNode());
-		canvas.getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
 
 		return Status.OK_STATUS;
 	}

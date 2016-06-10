@@ -28,6 +28,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.canvas.ui.editors.CanvasEditor;
+import phasereditor.canvas.ui.editors.operations.CompositeOperation;
+import phasereditor.canvas.ui.editors.operations.TrimNodeOperation;
 import phasereditor.canvas.ui.shapes.GroupNode;
 
 /**
@@ -39,13 +41,15 @@ public class TrimGroupHandler extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IStructuredSelection sel = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
+		CompositeOperation operations = new CompositeOperation();
+
 		for (Object obj : sel.toArray()) {
 			GroupNode group = (GroupNode) obj;
-			group.getControl().trim();
+			operations.add(new TrimNodeOperation(group.getModel().getId()));
 		}
 
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
-		editor.getCanvas().getSelectionBehavior().updateSelectedNodes();
+		editor.getCanvas().getUpdateBehavior().executeOperations(operations);
 
 		return null;
 	}

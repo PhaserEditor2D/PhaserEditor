@@ -216,35 +216,6 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 		getNode().getChildren().add(i, inode.getNode());
 	}
 
-	/**
-	 * 
-	 */
-	public void trim() {
-		// remove the empty space from the left and top.
-		GroupNode group = getNode();
-		double minx = Double.MAX_VALUE;
-		double miny = Double.MAX_VALUE;
-		for (Node node : group.getChildren()) {
-			BaseObjectModel model = ((IObjectNode) node).getModel();
-			minx = Math.min(model.getX(), minx);
-			miny = Math.min(model.getY(), miny);
-		}
-
-		GroupModel groupModel = group.getModel();
-		groupModel.setX(groupModel.getX() + minx);
-		groupModel.setY(groupModel.getY() + miny);
-
-		for (Node node : group.getChildren()) {
-			ISpriteNode sprite = (ISpriteNode) node;
-			BaseObjectModel model = sprite.getModel();
-			model.setX(model.getX() - minx);
-			model.setY(model.getY() - miny);
-			sprite.getControl().updateFromModel();
-		}
-
-		group.getControl().updateFromModel();
-	}
-
 	@Override
 	public void rebuild() {
 		for (Node node : getNode().getChildren()) {

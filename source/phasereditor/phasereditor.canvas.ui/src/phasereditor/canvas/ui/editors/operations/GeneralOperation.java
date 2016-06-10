@@ -19,48 +19,47 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.handlers;
+package phasereditor.canvas.ui.editors.operations;
 
 import java.util.function.Consumer;
 
-import org.eclipse.core.commands.AbstractHandler;
-import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
-import phasereditor.canvas.ui.editors.CanvasEditor;
-import phasereditor.canvas.ui.editors.operations.CompositeOperation;
-import phasereditor.canvas.ui.editors.operations.GeneralOperation;
-import phasereditor.canvas.ui.editors.operations.TrimNodeOperation;
+import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
  * @author arian
  *
  */
-public class MakeGroupHandler extends AbstractHandler {
+public class GeneralOperation extends AbstractNodeOperation{
+
+	private Consumer<IObjectNode> _action;
+
+	public GeneralOperation(String controlId, Consumer<IObjectNode> action) {
+		super("GeneralOperation", controlId);
+		_action = action;
+	}
 
 	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
-		Object[] elems = selection.toArray();
-		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
+	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
+		BaseObjectControl<?> control = findControl(info);
+		_action.accept(control.getIObjectNode());
+		return Status.OK_STATUS;
+	}
 
-		CompositeOperation operations = new CompositeOperation();
-		String groupId = editor.getCanvas().getCreateBehavior().makeGroup(operations, elems);
-		operations.add(new TrimNodeOperation(groupId));
-		operations.add(new GeneralOperation(groupId, new Consumer<IObjectNode>() {
+	@Override
+	public IStatus redo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
+		return execute(monitor, info);
+	}
 
-			@Override
-			public void accept(IObjectNode node) {
-				editor.getCanvas().getOutline().expandToLevel(node, 1);
-			}
-		}));
-
-		editor.getCanvas().getUpdateBehavior().executeOperations(operations);
-
-		return null;
+	@Override
+	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
+		return Status.OK_STATUS;
 	}
 
 }

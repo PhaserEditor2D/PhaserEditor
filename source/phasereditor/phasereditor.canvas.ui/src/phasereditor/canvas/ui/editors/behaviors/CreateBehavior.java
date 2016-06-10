@@ -29,12 +29,12 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.json.JSONObject;
 
 import javafx.scene.Node;
 import javafx.scene.input.DragEvent;
 import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.GroupModel;
@@ -42,6 +42,7 @@ import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
+import phasereditor.canvas.ui.editors.operations.DeleteNodeOperation;
 import phasereditor.canvas.ui.editors.operations.SelectOperation;
 import phasereditor.canvas.ui.editors.palette.PaletteComp;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
@@ -96,7 +97,7 @@ public class CreateBehavior {
 		_canvas.dropToWorld(control, sceneX, sceneY);
 	}
 
-	public GroupNode makeGroup(Object... elems) {
+	public String makeGroup(CompositeOperation operations, Object... elems) {
 		List<IObjectNode> children = new ArrayList<>();
 
 		Set<Object> used = new HashSet<>();
@@ -121,47 +122,49 @@ public class CreateBehavior {
 			children.add((IObjectNode) node);
 		}
 
-		// remove selected nodes
-
-		for (IObjectNode child : children) {
-			GroupNode group = child.getControl().getGroup();
-			group.getControl().removeChild(child);
-		}
-
 		// reverse it because in selection it is reversed
 
 		Collections.reverse(children);
+
+		// remove selected nodes
+
+		for (IObjectNode child : children) {
+			// GroupNode group = child.getControl().getGroup();
+			// group.getControl().removeChild(child);
+
+			operations.add(new DeleteNodeOperation(child.getModel().getId()));
+
+		}
 
 		// create the new group
 
 		@SuppressWarnings("null")
 		BaseObjectControl<?> parentControl = parent.getControl();
 		GroupModel parentModel = (GroupModel) parentControl.getModel();
-		GroupControl newGroupControl = new GroupControl(_canvas, new GroupModel(parentModel));
-
-		// init model
-
-		newGroupControl.getModel().setEditorName(_canvas.getWorldModel().createName("group"));
+		JSONObject groupData = new JSONObject();
+		String newGroupId;
+		{
+			GroupModel model = new GroupModel(null);
+			model.setEditorName(_canvas.getWorldModel().createName("group"));
+			newGroupId = model.getId();
+			model.write(groupData);
+		}
+		// add new group
+		operations.add(new AddNodeOperation(groupData, 0, 0, 0, parentModel.getId()));
 
 		// add children
 
+		int i = 0;
 		for (IObjectNode node : children) {
-			newGroupControl.addChild(node);
+			JSONObject data = new JSONObject();
+			BaseObjectModel model = node.getModel();
+			model.write(data);
+			operations.add(new AddNodeOperation(data, i, model.getX(), model.getY(), newGroupId));
+			i++;
 		}
-
-		// add to the parent
-
-		parent.getControl().addChild(newGroupControl.getNode());
-
-		// notify a world change
-
-		_canvas.getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
-
-		// select the new group
-
-		_canvas.getSelectionBehavior().setSelection(new StructuredSelection(newGroupControl.getNode()));
-
-		return newGroupControl.getNode();
+		operations.add(new SelectOperation(newGroupId));
+		
+		return newGroupId;
 	}
 
 	public void paste(Object[] data) {
