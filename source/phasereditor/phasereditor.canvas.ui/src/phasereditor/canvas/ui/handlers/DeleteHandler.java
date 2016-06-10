@@ -21,7 +21,12 @@ public class DeleteHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		executeDelete(event);
+		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
+		if (editor.getPalette().getViewer().getTable().isFocusControl()) {
+			editor.getPalette().deleteSelected();
+		} else {
+			executeDelete(event);
+		}
 		return null;
 	}
 
@@ -34,7 +39,7 @@ public class DeleteHandler extends AbstractHandler {
 		CompositeOperation operations = new CompositeOperation();
 
 		for (IObjectNode node : nodes) {
-			operations.add(new DeleteNodeOperation(node.getControl().getUniqueId()));
+			operations.add(new DeleteNodeOperation(node.getControl().getId()));
 		}
 
 		editor.getCanvas().getUpdateBehavior().executeOperations(operations);

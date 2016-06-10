@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.operations;
 
-import static java.lang.System.out;
-
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -50,8 +48,8 @@ public class DeleteNodeOperation extends AbstractNodeOperation {
 	private int _index;
 	private JSONObject _data;
 
-	public DeleteNodeOperation(String controlId) {
-		super("DeleteNodeOperation", controlId);
+	public DeleteNodeOperation(String nodeId) {
+		super("DeleteNodeOperation", nodeId);
 	}
 
 	@Override
@@ -59,12 +57,11 @@ public class DeleteNodeOperation extends AbstractNodeOperation {
 		BaseObjectControl<?> control = findControl(info);
 		GroupNode group = control.getIObjectNode().getGroup();
 
-		_groupId = group.getControl().getUniqueId();
+		_groupId = group.getControl().getId();
 		_index = group.getChildren().indexOf(control.getNode());
 		_data = new JSONObject();
-		control.getModel().write(_data);
 
-		out.println("remove from " + _index);
+		control.getModel().write(_data);
 
 		remove(control);
 
@@ -86,8 +83,6 @@ public class DeleteNodeOperation extends AbstractNodeOperation {
 		BaseObjectModel model = CanvasModelFactory.createModel(group.getModel(), _data);
 		ObjectCanvas canvas = info.getAdapter(CanvasEditor.class).getCanvas();
 		BaseObjectControl<?> control = CanvasObjectFactory.createObjectControl(canvas, model);
-		// update the new id
-		_controlId = control.getUniqueId();
 		group.addChild(_index, control.getIObjectNode());
 		canvas.getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
 		canvas.getSelectionBehavior().updateSelectedNodes();

@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
+import java.util.UUID;
+
 import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AssetPackCore;
@@ -38,6 +40,7 @@ public abstract class BaseObjectModel {
 	private String _editorName;
 	private boolean _editorPick;
 
+	private String _id;
 	private double _x;
 	private double _y;
 	private double _rotation;
@@ -52,6 +55,8 @@ public abstract class BaseObjectModel {
 	}
 
 	public BaseObjectModel(GroupModel parent, String typeName) {
+		_id = UUID.randomUUID().toString();
+
 		_parent = parent;
 		_typeName = typeName;
 
@@ -65,15 +70,22 @@ public abstract class BaseObjectModel {
 		_pivotY = 0;
 	}
 
+	public String getId() {
+		return _id;
+	}
+
+	public void setId(String id) {
+		_id = id;
+	}
+
 	public static IAssetKey findAsset(JSONObject jsonModel) {
 		JSONObject assetRef = jsonModel.getJSONObject("asset-ref");
 		IAssetKey key = (IAssetKey) AssetPackCore.findAssetElement(assetRef);
 		return key;
 	}
 
-	@SuppressWarnings("unused")
 	protected void readMetadata(JSONObject obj) {
-		// nothing
+		_id = obj.getString("id");
 	}
 
 	public abstract void rebuild();
@@ -199,6 +211,7 @@ public abstract class BaseObjectModel {
 
 	protected void writeMetadata(JSONObject obj) {
 		obj.put("type", _typeName);
+		obj.put("id", _id);
 	}
 
 	protected void writeInfo(JSONObject jsonInfo) {

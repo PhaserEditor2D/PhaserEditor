@@ -90,7 +90,7 @@ public class ChangePropertyOperation<T> extends AbstractNodeOperation {
 		BaseObjectControl<?> control = findControl(info);
 
 		if (control == null) {
-			throw new IllegalStateException("Cannot find control " + _controlId);
+			throw new IllegalStateException("Cannot find control " + _nodeId);
 		}
 
 		PGridModel propModel = control.getPropertyModel();

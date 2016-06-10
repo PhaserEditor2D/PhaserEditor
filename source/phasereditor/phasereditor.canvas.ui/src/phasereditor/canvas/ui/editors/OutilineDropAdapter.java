@@ -27,12 +27,14 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.ViewerDropAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.TransferData;
+import org.json.JSONObject;
 
-import phasereditor.canvas.core.WorldModel;
+import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
+import phasereditor.canvas.ui.editors.operations.CompositeOperation;
+import phasereditor.canvas.ui.editors.operations.DeleteNodeOperation;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
@@ -93,11 +95,14 @@ public class OutilineDropAdapter extends ViewerDropAdapter {
 			}
 		}
 
+		CompositeOperation operations = new CompositeOperation();
+
 		for (IObjectNode node : nodes) {
 			GroupNode group = target.getGroup();
 
 			if (_location != LOCATION_NONE) {
-				node.getControl().removeme();
+				// node.getControl().removeme();
+				operations.add(new DeleteNodeOperation(node.getControl().getId()));
 			}
 
 			int i = group.getChildren().indexOf(target);
@@ -105,18 +110,29 @@ public class OutilineDropAdapter extends ViewerDropAdapter {
 				i = group.getChildren().size();
 			}
 
+			JSONObject jsonData = new JSONObject();
+			node.getModel().write(jsonData);
+			double x = node.getModel().getX();
+			double y = node.getModel().getY();
+
 			switch (_location) {
 			case LOCATION_BEFORE:
-				group.getControl().addChild(i + 1, node);
+				// group.getControl().addChild(i + 1, node);
+				operations.add(new AddNodeOperation(jsonData, i + 1, x, y, group.getControl().getId()));
 				break;
 			case LOCATION_AFTER:
-				group.getControl().addChild(i, node);
+				// group.getControl().addChild(i, node);
+				operations.add(new AddNodeOperation(jsonData, i, x, y, group.getControl().getId()));
 				break;
 			case LOCATION_ON:
 				if (target instanceof GroupNode) {
-					((GroupNode) target).getControl().addChild(node);
+					GroupNode group2 = (GroupNode) target;
+					// group2.getControl().addChild(node);
+					operations.add(new AddNodeOperation(jsonData, group2.getChildren().size(), x, y,
+							group2.getControl().getId()));
 				} else {
-					group.getControl().addChild(i, node);
+					// group.getControl().addChild(i, node);
+					operations.add(new AddNodeOperation(jsonData, i, x, y, group.getControl().getId()));
 				}
 				break;
 			default:
@@ -124,8 +140,11 @@ public class OutilineDropAdapter extends ViewerDropAdapter {
 			}
 		}
 
-		_editor.getCanvas().getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
-		_editor.getCanvas().getSelectionBehavior().setSelection(new StructuredSelection(nodes));
+		_editor.getCanvas().getUpdateBehavior().executeOperations(operations);
+
+		// _editor.getCanvas().getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
+		// _editor.getCanvas().getSelectionBehavior().setSelection(new
+		// StructuredSelection(nodes));
 
 		return true;
 	}

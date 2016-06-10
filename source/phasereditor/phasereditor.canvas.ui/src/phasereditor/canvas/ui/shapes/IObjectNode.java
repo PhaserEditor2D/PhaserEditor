@@ -50,7 +50,7 @@ public interface IObjectNode  {
 		
 		GroupNode parent = getGroup();
 		
-		if (parent != getControl().getCanvas().getWorldNode()) {
+		if (parent != null && parent != getControl().getCanvas().getWorldNode()) {
 			list.add(parent);
 			list.addAll(parent.getAncestors());
 		}

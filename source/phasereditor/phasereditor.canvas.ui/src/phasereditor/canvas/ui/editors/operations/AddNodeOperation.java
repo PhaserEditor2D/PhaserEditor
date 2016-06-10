@@ -53,7 +53,7 @@ public class AddNodeOperation extends AbstractNodeOperation {
 	public AddNodeOperation(JSONObject data, int index, double x, double y, String parentId) {
 		super("CreateNodeOperation", null);
 		_data = data;
-		_index = index;
+		_index = index == -1? 0 : index;
 		_x = x;
 		_y = y;
 		_parentId = parentId;
@@ -71,7 +71,7 @@ public class AddNodeOperation extends AbstractNodeOperation {
 
 	@Override
 	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		BaseObjectControl<?> control = findControl(info, _controlId);
+		BaseObjectControl<?> control = findControl(info, _nodeId);
 		ObjectCanvas canvas = control.getCanvas();
 
 		control.removeme();
@@ -86,13 +86,12 @@ public class AddNodeOperation extends AbstractNodeOperation {
 		ObjectCanvas canvas = info.getAdapter(CanvasEditor.class).getCanvas();
 		GroupControl groupControl = (GroupControl) findControl(info, _parentId);
 		BaseObjectModel model = CanvasModelFactory.createModel(groupControl.getModel(), _data);
-
+		_nodeId = model.getId();
 		changeName(canvas, model);
 
 		model.setX(_x);
 		model.setY(_y);
 		BaseObjectControl<?> control = CanvasObjectFactory.createObjectControl(canvas, model);
-		_controlId = control.getUniqueId();
 		groupControl.addChild(_index, control.getIObjectNode());
 		canvas.getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
 		canvas.getSelectionBehavior().updateSelectedNodes();

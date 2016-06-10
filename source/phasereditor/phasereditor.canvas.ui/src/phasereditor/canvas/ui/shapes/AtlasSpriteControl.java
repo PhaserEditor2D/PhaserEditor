@@ -67,7 +67,7 @@ public class AtlasSpriteControl extends BaseSpriteControl<AtlasSpriteModel> {
 
 		String initFrameName = getModel().getAssetKey().getKey();
 
-		PGridFrameProperty frame_property = new PGridFrameProperty(getUniqueId(), "frameName") {
+		PGridFrameProperty frame_property = new PGridFrameProperty(getId(), "frameName") {
 
 			@Override
 			public boolean isModified() {

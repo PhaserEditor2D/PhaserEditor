@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -211,6 +212,8 @@ public class CreateBehavior {
 		for (Object elem : data) {
 			if (elem instanceof IObjectNode) {
 				IObjectNode node = (IObjectNode) elem;
+				// assign new id for pasted nodes!
+				node.getModel().setId(UUID.randomUUID().toString());
 
 				JSONObject copyJson = new JSONObject();
 				node.getModel().write(copyJson);
@@ -220,7 +223,7 @@ public class CreateBehavior {
 
 				int index = parent.getNode().getChildren().indexOf(node);
 
-				AddNodeOperation op = new AddNodeOperation(copyJson, index, x2, y2, parent.getUniqueId());
+				AddNodeOperation op = new AddNodeOperation(copyJson, index, x2, y2, parent.getId());
 				operations.add(op);
 
 				i++;

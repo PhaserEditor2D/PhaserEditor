@@ -117,7 +117,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 
 		_spriteSection = new PGridSection("Sprite");
 
-		_anchor_x_property = new PGridNumberProperty(getUniqueId(), "anchor.x") {
+		_anchor_x_property = new PGridNumberProperty(getId(), "anchor.x") {
 			@Override
 			public Double getValue() {
 				return Double.valueOf(getModel().getAnchorX());
@@ -140,7 +140,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 			}
 		};
 
-		_anchor_y_property = new PGridNumberProperty(getUniqueId(), "anchor.y") {
+		_anchor_y_property = new PGridNumberProperty(getId(), "anchor.y") {
 			@Override
 			public Double getValue() {
 				return Double.valueOf(getModel().getAnchorY());
@@ -163,7 +163,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 			}
 		};
 
-		_tint_property = new PGridColorProperty(getUniqueId(), "tint") {
+		_tint_property = new PGridColorProperty(getId(), "tint") {
 
 			@Override
 			public void setValue(RGB value) {

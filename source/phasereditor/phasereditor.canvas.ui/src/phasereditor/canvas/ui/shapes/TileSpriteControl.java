@@ -87,7 +87,7 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 
 		initFrameProperty();
 
-		_tilePositionX_property = new PGridNumberProperty(getUniqueId(), "tilePosition.x") {
+		_tilePositionX_property = new PGridNumberProperty(getId(), "tilePosition.x") {
 
 			@Override
 			public Double getValue() {
@@ -111,7 +111,7 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			}
 		};
 
-		_tilePositionY_property = new PGridNumberProperty(getUniqueId(), "tilePosition.y") {
+		_tilePositionY_property = new PGridNumberProperty(getId(), "tilePosition.y") {
 
 			@Override
 			public Double getValue() {
@@ -135,7 +135,7 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			}
 		};
 
-		_width_property = new PGridNumberProperty(getUniqueId(), "width") {
+		_width_property = new PGridNumberProperty(getId(), "width") {
 
 			@Override
 			public Double getValue() {
@@ -159,7 +159,7 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			}
 		};
 
-		_height_property = new PGridNumberProperty(getUniqueId(), "height") {
+		_height_property = new PGridNumberProperty(getId(), "height") {
 
 			@Override
 			public Double getValue() {
@@ -183,7 +183,7 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			}
 		};
 
-		_tileScaleX_property = new PGridNumberProperty(getUniqueId(), "tileScale.x") {
+		_tileScaleX_property = new PGridNumberProperty(getId(), "tileScale.x") {
 
 			@Override
 			public Double getValue() {
@@ -207,7 +207,7 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			}
 		};
 
-		_tileScaleY_property = new PGridNumberProperty(getUniqueId(), "tileScale.y") {
+		_tileScaleY_property = new PGridNumberProperty(getId(), "tileScale.y") {
 
 			@Override
 			public Double getValue() {
@@ -251,7 +251,7 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 
 		String name = asset instanceof SpritesheetAssetModel ? "frame" : "frameName";
 
-		PGridFrameProperty frame_property = new PGridFrameProperty(getUniqueId(), name) {
+		PGridFrameProperty frame_property = new PGridFrameProperty(getId(), name) {
 
 			@Override
 			public void setValue(IAssetFrameModel value) {

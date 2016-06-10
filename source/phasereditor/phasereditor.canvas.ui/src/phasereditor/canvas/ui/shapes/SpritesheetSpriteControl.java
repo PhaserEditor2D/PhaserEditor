@@ -66,7 +66,7 @@ public class SpritesheetSpriteControl extends BaseSpriteControl<SpritesheetSprit
 
 		int initFrameIndex = getModel().getAssetKey().getIndex();
 
-		PGridFrameProperty frame_property = new PGridFrameProperty(getUniqueId(), "frame") {
+		PGridFrameProperty frame_property = new PGridFrameProperty(getId(), "frame") {
 
 			@Override
 			public boolean isModified() {

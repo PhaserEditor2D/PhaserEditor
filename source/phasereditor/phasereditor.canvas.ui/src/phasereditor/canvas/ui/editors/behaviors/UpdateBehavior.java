@@ -177,9 +177,9 @@ public class UpdateBehavior {
 
 	public void updateLocation_undoable(IObjectNode node, double x, double y) {
 		BaseObjectControl<?> control = node.getControl();
-		ChangePropertyOperation<?> changeX = new ChangePropertyOperation<>(control.getUniqueId(),
+		ChangePropertyOperation<?> changeX = new ChangePropertyOperation<>(control.getId(),
 				control.getX_property().getName(), Double.valueOf(x));
-		ChangePropertyOperation<?> changeY = new ChangePropertyOperation<>(control.getUniqueId(),
+		ChangePropertyOperation<?> changeY = new ChangePropertyOperation<>(control.getId(),
 				control.getY_property().getName(), Double.valueOf(y));
 
 		CompositeOperation change = new CompositeOperation(changeX, changeY);
@@ -195,9 +195,9 @@ public class UpdateBehavior {
 	@SuppressWarnings("static-method")
 	public void addUpdateLocationOperation(CompositeOperation group, IObjectNode node, double x, double y) {
 		BaseObjectControl<?> control = node.getControl();
-		ChangePropertyOperation<?> changeX = new ChangePropertyOperation<>(control.getUniqueId(),
+		ChangePropertyOperation<?> changeX = new ChangePropertyOperation<>(control.getId(),
 				control.getX_property().getName(), Double.valueOf(x));
-		ChangePropertyOperation<?> changeY = new ChangePropertyOperation<>(control.getUniqueId(),
+		ChangePropertyOperation<?> changeY = new ChangePropertyOperation<>(control.getId(),
 				control.getY_property().getName(), Double.valueOf(y));
 
 		group.add(changeX);

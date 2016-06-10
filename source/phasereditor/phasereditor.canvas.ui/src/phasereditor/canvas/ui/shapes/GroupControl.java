@@ -48,7 +48,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 
 	@Override
 	public BaseObjectControl<?> findById(String id) {
-		if (getUniqueId().equals(id)) {
+		if (getId().equals(id)) {
 			return this;
 		}
 
@@ -180,7 +180,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 
 		GroupModel model = getModel();
 
-		_closed_property = new PGridBooleanProperty(getUniqueId(), "closed") {
+		_closed_property = new PGridBooleanProperty(getId(), "closed") {
 
 			@Override
 			public Boolean getValue() {
