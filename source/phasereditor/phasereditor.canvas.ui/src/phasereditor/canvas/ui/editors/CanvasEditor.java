@@ -357,7 +357,7 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 			}
 		});
 
-		viewer.addDropSupport(operations, transfers, new OutilineDropAdapter(this));
+		viewer.addDropSupport(operations, transfers, new OutlineDropAdapter(this));
 
 	}
 

@@ -42,12 +42,12 @@ import phasereditor.canvas.ui.shapes.IObjectNode;
  * @author arian
  *
  */
-public class OutilineDropAdapter extends ViewerDropAdapter {
+public class OutlineDropAdapter extends ViewerDropAdapter {
 	private int _location;
 	private Object _target;
 	private CanvasEditor _editor;
 
-	public OutilineDropAdapter(CanvasEditor editor) {
+	public OutlineDropAdapter(CanvasEditor editor) {
 		super(editor.getOutline());
 		_editor = editor;
 	}
@@ -105,7 +105,18 @@ public class OutilineDropAdapter extends ViewerDropAdapter {
 				operations.add(new DeleteNodeOperation(node.getControl().getId()));
 			}
 
-			int i = group.getChildren().indexOf(target);
+			// If the target is on the same group of the node, then the index
+			// could be wrong because the node will be deleted.
+			// To fix this we are going to simulate a deletion and compute the
+			// index
+			int i;
+			if (target.getGroup() == node.getGroup()) {
+				List<?> list = new ArrayList<>(node.getGroup().getChildren());
+				list.remove(node);
+				i = list.indexOf(target);
+			} else {
+				i = group.getChildren().indexOf(target);
+			}
 			if (i < 0) {
 				i = group.getChildren().size();
 			}
@@ -128,8 +139,9 @@ public class OutilineDropAdapter extends ViewerDropAdapter {
 				if (target instanceof GroupNode) {
 					GroupNode group2 = (GroupNode) target;
 					// group2.getControl().addChild(node);
-					operations.add(new AddNodeOperation(jsonData, group2.getChildren().size(), x, y,
-							group2.getControl().getId()));
+					// add to the end (-1 because the node will be removed)
+					int i2 = group2.getChildren().size() - 1;
+					operations.add(new AddNodeOperation(jsonData, i2, x, y, group2.getControl().getId()));
 				} else {
 					// group.getControl().addChild(i, node);
 					operations.add(new AddNodeOperation(jsonData, i, x, y, group.getControl().getId()));
