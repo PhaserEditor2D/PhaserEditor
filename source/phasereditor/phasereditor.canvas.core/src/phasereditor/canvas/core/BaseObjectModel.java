@@ -201,6 +201,12 @@ public abstract class BaseObjectModel {
 		_pivotY = jsonInfo.optDouble("pivot.y", 0);
 	}
 
+	public JSONObject toJSON() {
+		JSONObject obj = new JSONObject();
+		write(obj);
+		return obj;
+	}
+	
 	public final void write(JSONObject obj) {
 		writeMetadata(obj);
 
