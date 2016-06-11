@@ -22,6 +22,7 @@
 package phasereditor.canvas.ui.editors.operations;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.commands.ExecutionException;
@@ -80,23 +81,23 @@ public class SelectOperation extends AbstractNodeOperation {
 
 	@Override
 	public IStatus redo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
+		return updateSelection(info, Arrays.asList(_selection));
+	}
+
+	@Override
+	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
+		return updateSelection(info, _beforeSelection);
+	}
+
+	private static IStatus updateSelection(IAdaptable info, List<String> selectionIds) {
 		List<IObjectNode> selection = new ArrayList<>();
-		for (String id : _selection) {
+		for (String id : selectionIds) {
 			BaseObjectControl<?> control = findControl(info, id);
 			selection.add(control.getIObjectNode());
 		}
 
 		ObjectCanvas canvas = getCanvas(info);
 		canvas.getSelectionBehavior().setSelection(new StructuredSelection(selection));
-		canvas.getUpdateBehavior().fireWorldChanged();
-
-		return Status.OK_STATUS;
-	}
-
-	@Override
-	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		ObjectCanvas canvas = getCanvas(info);
-		canvas.getSelectionBehavior().setSelection(new StructuredSelection(_beforeSelection));
 		canvas.getUpdateBehavior().fireWorldChanged();
 
 		return Status.OK_STATUS;

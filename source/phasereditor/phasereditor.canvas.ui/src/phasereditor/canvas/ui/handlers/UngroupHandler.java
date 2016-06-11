@@ -28,14 +28,16 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.json.JSONObject;
 
 import javafx.scene.Node;
-import phasereditor.canvas.core.WorldModel;
+import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
-import phasereditor.canvas.ui.editors.ObjectCanvas;
-import phasereditor.canvas.ui.shapes.GroupControl;
+import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
+import phasereditor.canvas.ui.editors.operations.CompositeOperation;
+import phasereditor.canvas.ui.editors.operations.DeleteNodeOperation;
+import phasereditor.canvas.ui.editors.operations.SelectOperation;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
@@ -48,38 +50,56 @@ public class UngroupHandler extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IStructuredSelection sel = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
-		List<Object> newselection = new ArrayList<>();
+		// List<Object> newselection = new ArrayList<>();
+
+		CompositeOperation operations = new CompositeOperation();
+
+		List<String> parentSelection = new ArrayList<>();
+
+		// select the group
+
 		for (Object obj : sel.toArray()) {
 			GroupNode group = (GroupNode) obj;
-			ungroup(group, newselection);
+			parentSelection.add(group.getModel().getId());
 		}
+		operations.add(new SelectOperation(parentSelection));
+
+		List<String> childrenSelection = new ArrayList<>();
+
+		// un-group
+		
+		for (Object obj : sel.toArray()) {
+			GroupNode group = (GroupNode) obj;
+
+			// delete the group
+			operations.add(new DeleteNodeOperation(group.getModel().getId()));
+
+			GroupNode parent = group.getGroup();
+			String parentId = parent.getModel().getId();
+
+			parentSelection.add(parentId);
+
+			double groupx = group.getModel().getX();
+			double groupy = group.getModel().getY();
+
+			int i = parent.getChildren().size() - 1;
+
+			for (Node node : group.getChildren()) {
+				// add node to new parent
+				IObjectNode inode = (IObjectNode) node;
+				JSONObject data = new JSONObject();
+				BaseObjectModel model = inode.getModel();
+				model.write(data);
+				double x = groupx + model.getX();
+				double y = groupy + model.getY();
+				operations.add(new AddNodeOperation(data, i, x, y, parentId));
+				childrenSelection.add(inode.getModel().getId());
+			}
+		}
+		operations.add(new SelectOperation(childrenSelection));
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
-		ObjectCanvas canvas = editor.getCanvas();
-
-		canvas.getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
-
-		canvas.getSelectionBehavior().setSelection(new StructuredSelection(newselection));
+		editor.getCanvas().getUpdateBehavior().executeOperations(operations);
 
 		return null;
 	}
-
-	private static void ungroup(GroupNode group, List<Object> list) {
-		double groupx = group.getModel().getX();
-		double groupy = group.getModel().getY();
-
-		GroupControl parent = group.getGroup().getControl();
-		parent.removeChild(group);
-
-		for (Node node : new ArrayList<>(group.getChildren())) {
-			IObjectNode inode = (IObjectNode) node;
-			parent.addChild(inode);
-
-			inode.getModel().setX(inode.getModel().getX() + groupx);
-			inode.getModel().setY(inode.getModel().getY() + groupy);
-			inode.getControl().updateFromModel();
-
-			list.add(inode);
-		}
-	}
-
 }

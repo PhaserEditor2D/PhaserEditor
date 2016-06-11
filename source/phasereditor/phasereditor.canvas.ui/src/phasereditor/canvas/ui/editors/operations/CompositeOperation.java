@@ -69,7 +69,7 @@ public class CompositeOperation extends AbstractOperation {
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		IStatus status = Status.OK_STATUS;
 
-		if (getSize() > 2) {
+		if (isLongOperation()) {
 			try {
 				new ProgressMonitorDialog(Display.getCurrent().getActiveShell()).run(false, false, monitor2 -> {
 					try {
@@ -100,6 +100,10 @@ public class CompositeOperation extends AbstractOperation {
 		return status;
 	}
 
+	private boolean isLongOperation() {
+		return getSize() > 3;
+	}
+
 	private static void fireWorldChanged(IAdaptable info) {
 		CanvasEditor editor = info.getAdapter(CanvasEditor.class);
 		editor.getCanvas().getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
@@ -109,7 +113,7 @@ public class CompositeOperation extends AbstractOperation {
 	public IStatus redo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		IStatus status = Status.OK_STATUS;
 
-		if (getSize() > 2) {
+		if (isLongOperation()) {
 			try {
 				new ProgressMonitorDialog(Display.getCurrent().getActiveShell()).run(false, false, monitor2 -> {
 					try {
@@ -143,7 +147,7 @@ public class CompositeOperation extends AbstractOperation {
 	@Override
 	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		IStatus status = Status.OK_STATUS;
-		if (getSize() > 2) {
+		if (isLongOperation()) {
 			try {
 				new ProgressMonitorDialog(Display.getCurrent().getActiveShell()).run(false, false, monitor2 -> {
 					try {
@@ -172,5 +176,4 @@ public class CompositeOperation extends AbstractOperation {
 
 		return status;
 	}
-
 }
