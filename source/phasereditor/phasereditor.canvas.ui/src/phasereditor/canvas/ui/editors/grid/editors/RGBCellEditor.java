@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import phasereditor.canvas.ui.editors.grid.PGridValueLabelProvider;
+import phasereditor.ui.ColorButtonSupport;
 
 /**
  * @author arian
@@ -76,7 +77,7 @@ public class RGBCellEditor extends DialogCellEditor {
 			return "(default)";
 		}
 
-		return PGridValueLabelProvider.getHexString(rgb);
+		return ColorButtonSupport.getHexString(rgb);
 	}
 
 }

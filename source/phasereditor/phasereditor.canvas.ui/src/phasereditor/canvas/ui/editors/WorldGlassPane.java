@@ -31,7 +31,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.shapes.GroupNode;
 
 /**
@@ -104,10 +103,10 @@ public class WorldGlassPane extends Canvas {
 	}
 
 	private void paintWorldBounds() {
-		WorldModel model = _canvas.getWorldModel();
 		GroupNode node = _canvas.getWorldNode();
+		SceneSettings settings = _canvas.getSettingsModel();
 
-		Bounds b = node.localToScene(new BoundingBox(0, 0, model.getWorldWidth(), model.getWorldHeight()));
+		Bounds b = node.localToScene(new BoundingBox(0, 0, settings.getSceneWidth(), settings.getSceneHeight()));
 
 		GraphicsContext g2 = getGraphicsContext2D();
 		g2.clearRect(0, 0, getWidth(), getHeight());

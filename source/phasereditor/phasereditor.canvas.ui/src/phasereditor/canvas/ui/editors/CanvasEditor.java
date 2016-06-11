@@ -48,6 +48,7 @@ import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.dnd.DND;
@@ -312,7 +313,7 @@ public class CanvasEditor extends EditorPart
 	}
 
 	private void initCanvas() {
-		_canvas.init(this, _model.getWorld(), _grid, _outlineTree.getViewer(), _paletteComp);
+		_canvas.init(this, _model, _grid, _outlineTree.getViewer(), _paletteComp);
 		getEditorSite().setSelectionProvider(_canvas.getSelectionBehavior());
 	}
 
@@ -450,11 +451,11 @@ public class CanvasEditor extends EditorPart
 		}
 
 		{
+			_toolBarManager.add(new Separator());
 			_toolBarManager.add(new Action("Settings", EditorSharedImages.getImageDescriptor(IMG_SETTINGS)) {
 				@Override
 				public void run() {
-					SettingsDialog dlg = new SettingsDialog(getSite().getShell());
-					dlg.open();
+					openDialogSettings();
 				}
 			});
 		}
@@ -629,6 +630,19 @@ public class CanvasEditor extends EditorPart
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	void openDialogSettings() {
+		SettingsDialog dlg = new SettingsDialog(getSite().getShell());
+		JSONObject data = new JSONObject();
+		_model.getSettings().write(data);
+		SceneSettings settings = new SceneSettings(data);
+		dlg.setModel(settings);
+		if (dlg.open() == Window.OK) {
+			settings.write(data);
+			_model.getSettings().read(data);
+			getCanvas().updateFromSettings();
 		}
 	}
 }

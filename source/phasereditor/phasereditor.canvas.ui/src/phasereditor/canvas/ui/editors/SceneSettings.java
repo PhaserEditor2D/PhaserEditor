@@ -38,7 +38,7 @@ public class SceneSettings {
 
 	public SceneSettings() {
 		_sceneWidth = 640;
-		_sceneHeight = 420;
+		_sceneHeight = 360;
 		_sceneColor = null;
 		_generateOnSave = true;
 	}

@@ -28,6 +28,8 @@ import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -38,6 +40,9 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.ResourceManager;
+
+import phasereditor.ui.ColorButtonSupport;
 
 /**
  * @author arian
@@ -50,6 +55,8 @@ public class SettingsDialog extends Dialog {
 	private Text _text_1;
 	private SceneSettings _model;
 	private Button _btnGenerateOnSave;
+	private Button _colorButton;
+	private ColorButtonSupport _colorSupport;
 
 	/**
 	 * Create the dialog.
@@ -65,38 +72,49 @@ public class SettingsDialog extends Dialog {
 	 * 
 	 * @param parent
 	 */
-	@SuppressWarnings("unused")
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite container = (Composite) super.createDialogArea(parent);
 		container.setLayout(new GridLayout(1, false));
 
 		Group grpWorld = new Group(container, SWT.NONE);
-		grpWorld.setLayout(new GridLayout(4, false));
+		grpWorld.setLayout(new GridLayout(3, false));
 		grpWorld.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		grpWorld.setText("Scene");
 
 		Label lblWidth = new Label(grpWorld, SWT.NONE);
-		lblWidth.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblWidth.setText("Width");
 
 		_text = new Text(grpWorld, SWT.BORDER);
-		_text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		_text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 
 		Label lblHeight = new Label(grpWorld, SWT.NONE);
 		lblHeight.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblHeight.setText("Height");
 
 		_text_1 = new Text(grpWorld, SWT.BORDER);
-		_text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		_text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 
 		Label lblColor = new Label(grpWorld, SWT.NONE);
 		lblColor.setText("Color");
 
-		Button btnNewButton = new Button(grpWorld, SWT.NONE);
-		btnNewButton.setText("New Button");
-		new Label(grpWorld, SWT.NONE);
-		new Label(grpWorld, SWT.NONE);
+		_colorButton = new Button(grpWorld, SWT.NONE);
+		GridData gd_colorButton = new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1);
+		gd_colorButton.widthHint = 80;
+		_colorButton.setLayoutData(gd_colorButton);
+		_colorButton.setAlignment(SWT.LEFT);
+
+		Button btnClear = new Button(grpWorld, SWT.NONE);
+		btnClear.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		btnClear.setImage(ResourceManager.getPluginImage("org.eclipse.ui", "/icons/full/etool16/clear.png"));
+		btnClear.addSelectionListener(new SelectionAdapter() {
+			@SuppressWarnings("synthetic-access")
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				_colorSupport.setColor(null);
+				_colorSupport.updateContent();
+			}
+		});
 
 		Group grpCodeGeneration = new Group(container, SWT.NONE);
 		grpCodeGeneration.setLayout(new GridLayout(1, false));
@@ -106,7 +124,21 @@ public class SettingsDialog extends Dialog {
 		_btnGenerateOnSave = new Button(grpCodeGeneration, SWT.CHECK);
 		_btnGenerateOnSave.setText("Generate on Save");
 
+		afterCreateWidgets();
+
 		return container;
+	}
+
+	private void afterCreateWidgets() {
+		_colorSupport = ColorButtonSupport.createDefault(_colorButton);
+		_colorSupport.setColor(_model.getSceneColor());
+		_colorSupport.updateContent();
+	}
+
+	@Override
+	protected void okPressed() {
+		_model.setSceneColor(_colorSupport.getColor());
+		super.okPressed();
 	}
 
 	/**
@@ -126,7 +158,7 @@ public class SettingsDialog extends Dialog {
 	 */
 	@Override
 	protected Point getInitialSize() {
-		return new Point(450, 300);
+		return new Point(300, 300);
 	}
 
 	public SceneSettings getModel() {

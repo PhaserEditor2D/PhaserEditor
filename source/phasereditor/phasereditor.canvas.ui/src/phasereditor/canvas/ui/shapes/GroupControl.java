@@ -127,7 +127,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 	@Override
 	public double getTextureWidth() {
 		if (getModel() instanceof WorldModel) {
-			return getModel().getWorld().getWorldWidth();
+			return getCanvas().getSettingsModel().getSceneWidth();
 		}
 
 		ObservableList<Node> list = getNode().getChildren();
@@ -150,7 +150,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 	@Override
 	public double getTextureHeight() {
 		if (getModel() instanceof WorldModel) {
-			return getModel().getWorld().getWorldHeight();
+			return getCanvas().getSettingsModel().getSceneHeight();
 		}
 
 		ObservableList<Node> list = getNode().getChildren();

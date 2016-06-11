@@ -38,8 +38,6 @@ public class WorldModel extends GroupModel {
 	public static final String PROP_WIDTH = "width";
 	public static final String PROP_DIRTY = "dirty";
 
-	private int _worldWidth;
-	private int _worldHeight;
 	private boolean _dirty;
 	private IFile file;
 
@@ -73,11 +71,6 @@ public class WorldModel extends GroupModel {
 	}
 
 	private void init() {
-		// TODO: read from json
-		_worldWidth = 640;
-		_worldHeight = 480;
-		// --
-
 		_dirty = false;
 
 		addPropertyChangeListener(e -> {
@@ -94,24 +87,6 @@ public class WorldModel extends GroupModel {
 	public void setDirty(boolean dirty) {
 		_dirty = dirty;
 		firePropertyChange(PROP_DIRTY);
-	}
-
-	public int getWorldWidth() {
-		return _worldWidth;
-	}
-
-	public void setWorldWidth(int width) {
-		_worldWidth = width;
-		firePropertyChange(PROP_WIDTH);
-	}
-
-	public int getWorldHeight() {
-		return _worldHeight;
-	}
-
-	public void setWorldHeight(int height) {
-		_worldHeight = height;
-		firePropertyChange(PROP_HEIGHT);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })

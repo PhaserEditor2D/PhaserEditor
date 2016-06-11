@@ -84,7 +84,7 @@ public class OutlineLabelProvider extends LabelProvider implements IEditorShared
 			}
 
 			if (!model.isEditorPick()) {
-				sb.append("[np]");
+				sb.append("[-p]");
 			}
 
 			return sb.toString();

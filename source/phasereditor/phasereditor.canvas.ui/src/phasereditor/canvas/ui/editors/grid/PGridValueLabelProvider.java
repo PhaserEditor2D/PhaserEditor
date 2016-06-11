@@ -29,6 +29,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 
 import phasereditor.assetpack.ui.AssetLabelProvider;
+import phasereditor.ui.ColorButtonSupport;
 import phasereditor.ui.PhaserEditorUI;
 
 /**
@@ -59,7 +60,7 @@ public class PGridValueLabelProvider extends PGridLabelProvider {
 				return "(default)";
 			}
 
-			return getHexString(rgb);
+			return ColorButtonSupport.getHexString(rgb);
 		}
 
 		if (element instanceof PGridFrameProperty) {
@@ -73,19 +74,6 @@ public class PGridValueLabelProvider extends PGridLabelProvider {
 		}
 
 		return super.getText(element);
-	}
-
-	public static String getHexString(RGB rgb) {
-		return "#" + toHexString(rgb.red) + toHexString(rgb.green) + toHexString(rgb.blue);
-	}
-
-	public static String toHexString(int n) {
-		String s = Integer.toHexString(n);
-		return (s.length() == 1 ? "0" : "") + s;
-	}
-
-	public static String getRGBString(RGB rgb) {
-		return "rgb(" + rgb.red + "," + rgb.green + "," + rgb.blue + ")";
 	}
 
 	private Map<Object, Image> _images = new HashMap<>();

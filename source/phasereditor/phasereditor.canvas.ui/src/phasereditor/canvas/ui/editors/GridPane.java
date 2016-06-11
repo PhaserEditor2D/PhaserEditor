@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
+import org.eclipse.swt.graphics.RGB;
+
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
@@ -47,28 +49,44 @@ public class GridPane extends Canvas {
 		_canvas = canvas;
 		_bgColor = Color.gray(180d / 256d);
 		_gridColor = Color.gray(200d / 256d);
-		
+
 		Scene scene = canvas.getScene();
 		widthProperty().bind(scene.widthProperty());
 		heightProperty().bind(scene.heightProperty());
 	}
 
 	public void repaint() {
+		GroupNode world = _canvas.getWorldNode();
+
 		GraphicsContext g2 = getGraphicsContext2D();
-		
+
+		// background
+
 		g2.setFill(_bgColor);
 		g2.fillRect(0, 0, getScene().getWidth(), getScene().getHeight());
 
+		// scene color
+
+		RGB rgb = _canvas.getSettingsModel().getSceneColor();
+		if (rgb != null) {
+			SceneSettings settings = _canvas.getSettingsModel();
+			Bounds b = world.localToScene(new BoundingBox(0, 0, settings.getSceneWidth(), settings.getSceneHeight()));
+			g2.setFill(Color.rgb(rgb.red, rgb.green, rgb.blue));
+			g2.fillRect(b.getMinX(), b.getMinY(), b.getWidth(), b.getHeight());
+		}
+
+		// grid
+
 		g2.setStroke(_gridColor);
 		g2.setLineWidth(1);
-		GroupNode world = _canvas.getWorldNode();
+
 		Point2D origin = world.localToScene(0, 0);
 
 		Bounds proj;
 
 		proj = world.localToScene(new BoundingBox(0, 0, 10, 10));
 		pass(g2, origin, proj);
-		
+
 		proj = world.localToScene(new BoundingBox(0, 0, 100, 100));
 		pass(g2, origin, proj);
 
