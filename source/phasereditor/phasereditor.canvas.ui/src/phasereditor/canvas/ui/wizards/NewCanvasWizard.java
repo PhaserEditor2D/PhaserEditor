@@ -36,7 +36,7 @@ import org.eclipse.ui.ide.IDE;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import phasereditor.canvas.core.WorldModel;
+import phasereditor.canvas.ui.editors.CanvasEditorModel;
 
 /**
  * @author arian
@@ -83,10 +83,10 @@ public class NewCanvasWizard extends Wizard implements INewWizard {
 
 			{
 				// set default content
-				WorldModel model = new WorldModel();
+				CanvasEditorModel model = new CanvasEditorModel();
 				String name = _newCanvasPage.getFileName();
 				name = name.substring(0, name.length() - _newCanvasPage.getFileExtension().length() - 1);
-				model.setEditorName(name);
+				model.getWorld().setEditorName(name);
 				JSONObject obj = new JSONObject();
 				model.write(obj);
 				try {

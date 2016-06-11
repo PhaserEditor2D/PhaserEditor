@@ -25,6 +25,7 @@ import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.beans.PropertyChangeEvent;
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.Arrays;
 
 import org.eclipse.core.commands.operations.IUndoContext;
@@ -77,6 +78,7 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import javafx.geometry.Point2D;
 import phasereditor.canvas.core.WorldModel;
@@ -90,7 +92,8 @@ import phasereditor.ui.IEditorSharedImages;
  * @author arian
  *
  */
-public class CanvasEditor extends EditorPart implements IResourceChangeListener, IPersistableEditor {
+public class CanvasEditor extends EditorPart
+		implements IResourceChangeListener, IPersistableEditor, IEditorSharedImages {
 
 	private static final String PALETTE_CONTEXT_ID = "phasereditor.canvas.ui.palettecontext";
 	public final static String ID = "phasereditor.canvas.ui.editors.canvas";
@@ -111,8 +114,7 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 	};
 
 	private ObjectCanvas _canvas;
-	private WorldModel _model;
-
+	private CanvasEditorModel _model;
 	private PGrid _grid;
 	private SashForm _leftSashForm;
 	private FilteredTree _outlineTree;
@@ -144,14 +146,13 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		IFileEditorInput input = (IFileEditorInput) getEditorInput();
-
-		JSONObject json = new JSONObject();
-		_model.write(json);
-
 		try {
-			input.getFile().setContents(new ByteArrayInputStream(json.toString(2).getBytes()), true, false, monitor);
-			_model.setDirty(false);
+			IFileEditorInput input = (IFileEditorInput) getEditorInput();
+			JSONObject data = new JSONObject();
+			_model.write(data);
+			input.getFile().setContents(new ByteArrayInputStream(data.toString(2).getBytes()), true, false, monitor);
+			_model.getWorld().setDirty(false);
+			firePropertyChange(PROP_DIRTY);
 		} catch (JSONException | CoreException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -162,9 +163,15 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 	protected void setInput(IEditorInput input) {
 		super.setInput(input);
 		IFileEditorInput fileInput = (IFileEditorInput) input;
-		try {
-			_model = new WorldModel(fileInput.getFile());
-			_model.addPropertyChangeListener(WorldModel.PROP_DIRTY, this::modelDirtyChanged);
+		IFile file = fileInput.getFile();
+		try (InputStream contents = file.getContents();) {
+			JSONObject data = new JSONObject(new JSONTokener(contents));
+			_model = new CanvasEditorModel();
+			_model.read(data);
+			_model.getWorld().setFile(file);
+			_model.getWorld().addPropertyChangeListener(WorldModel.PROP_STRUCTURE, arg -> {
+				firePropertyChange(PROP_DIRTY);
+			});
 			swtRun(this::updateTitle);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -185,7 +192,7 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 
 	@Override
 	public boolean isDirty() {
-		return _model.isDirty();
+		return _model.getWorld().isDirty();
 	}
 
 	@Override
@@ -305,7 +312,7 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 	}
 
 	private void initCanvas() {
-		_canvas.init(this, _model, _grid, _outlineTree.getViewer(), _paletteComp);
+		_canvas.init(this, _model.getWorld(), _grid, _outlineTree.getViewer(), _paletteComp);
 		getEditorSite().setSelectionProvider(_canvas.getSelectionBehavior());
 	}
 
@@ -410,8 +417,7 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 
 			_showSidePaneAction = new Action("", SWT.TOGGLE) {
 				{
-					setImageDescriptor(
-							EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_APPLICATION_SIDE_TREE));
+					setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_APPLICATION_SIDE_TREE));
 				}
 
 				@SuppressWarnings("synthetic-access")
@@ -430,7 +436,7 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 			_showPaletteAction = new Action("", SWT.TOGGLE) {
 				{
 					setChecked(false);
-					setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_PALETTE));
+					setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_PALETTE));
 				}
 
 				@Override
@@ -440,9 +446,19 @@ public class CanvasEditor extends EditorPart implements IResourceChangeListener,
 				}
 			};
 			getPalette().setPaletteVisble(_showPaletteAction.isChecked());
+			_toolBarManager.add(_showPaletteAction);
 		}
 
-		_toolBarManager.add(_showPaletteAction);
+		{
+			_toolBarManager.add(new Action("Settings", EditorSharedImages.getImageDescriptor(IMG_SETTINGS)) {
+				@Override
+				public void run() {
+					SettingsDialog dlg = new SettingsDialog(getSite().getShell());
+					dlg.open();
+				}
+			});
+		}
+
 		_toolBarManager.update(true);
 	}
 

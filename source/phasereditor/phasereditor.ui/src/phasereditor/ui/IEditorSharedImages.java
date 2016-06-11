@@ -51,4 +51,5 @@ public interface IEditorSharedImages {
 	String IMG_EYE = "icons/eye.png";
 	String IMG_PALETTE = "icons/palette.png";
 	String IMG_APPLICATION_SIDE_TREE = "icons/application_side_tree.png";
+	String IMG_SETTINGS = "icons/settings.png";
 }
