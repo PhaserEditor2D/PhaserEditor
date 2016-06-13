@@ -28,9 +28,9 @@ import org.json.JSONObject;
  *
  */
 public abstract class BaseSpriteModel extends BaseObjectModel {
-	private static final double DEF_ANCHOR_X = 0;
-	private static final double DEF_ANCHOR_Y = 0;
-	private static final String DEF_TINT = null;
+	public static final double DEF_ANCHOR_X = 0;
+	public static final double DEF_ANCHOR_Y = 0;
+	public static final String DEF_TINT = null;
 	private double _anchorX;
 	private double _anchorY;
 	private String _tint;

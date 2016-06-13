@@ -46,6 +46,11 @@ public class GroupModel extends BaseObjectModel {
 		_children = new ArrayList<>();
 	}
 
+	@SuppressWarnings("static-method")
+	public boolean isWorldModel() {
+		return false;
+	}
+	
 	public boolean isEditorClosed() {
 		return _editorClosed;
 	}

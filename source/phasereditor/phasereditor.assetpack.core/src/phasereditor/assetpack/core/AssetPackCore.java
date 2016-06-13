@@ -75,7 +75,7 @@ public class AssetPackCore {
 
 	static {
 		_imageExtensions = new HashSet<>();
-		_imageExtensions.addAll(Arrays.asList("png", "jpg", "gif", "bmp", "svg"));
+		_imageExtensions.addAll(Arrays.asList("png", "jpg", "gif", "bmp"));
 
 		_audioExtensions = new HashSet<>();
 		// TODO: missing audio extensions

@@ -40,6 +40,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.MenuManager;
@@ -82,6 +83,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import javafx.geometry.Point2D;
+import phasereditor.canvas.core.JSCodeGenerator;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.behaviors.ZoomBehavior;
 import phasereditor.canvas.ui.editors.grid.PGrid;
@@ -154,6 +156,11 @@ public class CanvasEditor extends EditorPart
 			JSONObject data = new JSONObject();
 			_model.write(data);
 			input.getFile().setContents(new ByteArrayInputStream(data.toString(2).getBytes()), true, false, monitor);
+
+			if (getCanvas().getSettingsModel().isGenerateOnSave()) {
+				generateCode();
+			}
+
 			_model.getWorld().setDirty(false);
 			firePropertyChange(PROP_DIRTY);
 		} catch (JSONException | CoreException e) {
@@ -461,8 +468,36 @@ public class CanvasEditor extends EditorPart
 				}
 			});
 		}
+		{
+			_toolBarManager.add(new Action("Generate Code", EditorSharedImages.getImageDescriptor(IMG_BUILD)) {
+				@Override
+				public void run() {
+					generateCode();
+				}
+			});
+		}
 
 		_toolBarManager.update(true);
+	}
+
+	void generateCode() {
+		JSCodeGenerator generator = new JSCodeGenerator();
+		WorldModel model = getCanvas().getWorldModel();
+		String content = generator.generate(model);
+		try {
+			String fname = model.getClassName() + ".js";
+			IFile file = getEditorInputFile().getParent().getFile(new Path(fname));
+			ByteArrayInputStream stream = new ByteArrayInputStream(content.getBytes());
+			if (file.exists()) {
+				file.setContents(stream, IResource.NONE, null);
+			} else {
+				file.create(stream, false, null);
+			}
+			file.refreshLocal(1, null);
+		} catch (CoreException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 
 	private void defsCommands(String[] defs) {

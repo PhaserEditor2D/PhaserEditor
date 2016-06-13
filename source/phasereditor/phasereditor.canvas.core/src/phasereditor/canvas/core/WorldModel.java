@@ -54,6 +54,11 @@ public class WorldModel extends GroupModel {
 		super(null, data);
 		init();
 	}
+	
+	@Override
+	public boolean isWorldModel() {
+		return true;
+	}
 
 	public IFile getFile() {
 		return file;
@@ -61,6 +66,17 @@ public class WorldModel extends GroupModel {
 
 	public void setFile(IFile file) {
 		this.file = file;
+	}
+
+	public String getClassName() {
+		if (this.file == null) {
+			return "CanvasWorld";
+		}
+
+		String name = file.getName();
+		String ext = file.getFileExtension();
+		int end = name.length() - ext.length() - 1;
+		return name.substring(0, end);
 	}
 
 	@Override
