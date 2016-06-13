@@ -96,36 +96,38 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see phasereditor.canvas.core.BaseObjectModel#rebuild()
-	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void rebuild() {
-		if (_assetKey == null) {
+		_assetKey = rebuildAssetKey(_assetKey);
+	}
+
+	/**
+	 * @param assetKey 
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	protected T rebuildAssetKey(T assetKey) {
+		if (assetKey == null) {
 			// nothing to do
-			return;
+			return null;
 		}
 
-		AssetModel asset = _assetKey.getAsset();
+		AssetModel asset = assetKey.getAsset();
 		if (!asset.isOnWorkspace()) {
 			// the asset was deleted! set the key to null.
-			_assetKey = null;
-			return;
+			return null;
 		}
 
 		// if the asset key is a sub-element then reconnect with it
-		if (_assetKey instanceof IAssetElementModel) {
+		if (assetKey instanceof IAssetElementModel) {
 			for (IAssetElementModel elem : asset.getSubElements()) {
-				if (elem.getKey().equals(_assetKey.getKey())) {
-					_assetKey = (T) elem;
-					return;
+				if (elem.getKey().equals(assetKey.getKey())) {
+					return (T) elem;
 				}
 			}
-			// elem not found, set it to null
-			_assetKey = null;
+			return null;
 		}
+		
+		return assetKey;
 	}
 }

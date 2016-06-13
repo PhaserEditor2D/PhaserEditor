@@ -27,7 +27,6 @@ import org.eclipse.swt.widgets.ColorDialog;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import phasereditor.canvas.ui.editors.grid.PGridValueLabelProvider;
 import phasereditor.ui.ColorButtonSupport;
 
 /**
