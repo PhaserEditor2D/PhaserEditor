@@ -39,7 +39,6 @@ public class ButtonSpriteModel extends AssetSpriteModel<IAssetKey> {
 	private static final String DEF_FRAME = null;
 
 	private IAssetFrameModel _overFrame;
-	private IAssetFrameModel _outFrame;
 	private IAssetFrameModel _downFrame;
 	private IAssetFrameModel _upFrame;
 
@@ -56,7 +55,6 @@ public class ButtonSpriteModel extends AssetSpriteModel<IAssetKey> {
 		super.writeInfo(jsonInfo);
 
 		jsonInfo.put("overFrame", _overFrame == null ? null : _overFrame.getKey(), DEF_FRAME);
-		jsonInfo.put("outFrame", _outFrame == null ? null : _outFrame.getKey(), DEF_FRAME);
 		jsonInfo.put("downFrame", _downFrame == null ? null : _downFrame.getKey(), DEF_FRAME);
 		jsonInfo.put("upFrame", _upFrame == null ? null : _upFrame.getKey(), DEF_FRAME);
 
@@ -67,7 +65,6 @@ public class ButtonSpriteModel extends AssetSpriteModel<IAssetKey> {
 		super.readInfo(jsonInfo);
 
 		_overFrame = findFrame(jsonInfo, "overFrame");
-		_outFrame = findFrame(jsonInfo, "outFrame");
 		_downFrame = findFrame(jsonInfo, "downFrame");
 		_upFrame = findFrame(jsonInfo, "upFrame");
 
@@ -108,11 +105,8 @@ public class ButtonSpriteModel extends AssetSpriteModel<IAssetKey> {
 	}
 
 	public IAssetFrameModel getOutFrame() {
-		return _outFrame;
-	}
-
-	public void setOutFrame(IAssetFrameModel outFrame) {
-		_outFrame = outFrame;
+		// the out frame is the sprite frame
+		return (IAssetFrameModel) getAssetKey();
 	}
 
 	public IAssetFrameModel getDownFrame() {
@@ -136,7 +130,6 @@ public class ButtonSpriteModel extends AssetSpriteModel<IAssetKey> {
 		super.rebuild();
 
 		_overFrame = (IAssetFrameModel) rebuildAssetKey(_overFrame);
-		_outFrame = (IAssetFrameModel) rebuildAssetKey(_outFrame);
 		_downFrame = (IAssetFrameModel) rebuildAssetKey(_downFrame);
 		_upFrame = (IAssetFrameModel) rebuildAssetKey(_upFrame);
 	}

@@ -26,7 +26,6 @@ import java.util.List;
 import phasereditor.assetpack.core.FrameData;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
-import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.canvas.core.ButtonSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
@@ -76,27 +75,27 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 		boolean isImage = getModel().getAssetKey().getAsset() instanceof ImageAssetModel;
 
 		if (!isImage) { // image assets does not have frames
-			String name = getModel().getAssetKey() instanceof SpritesheetAssetModel.FrameModel ? "frame" : "frameName";
-			ButtonFrameProperty frame_property = new ButtonFrameProperty(name, false) {
-
-				@Override
-				public void setValue(IAssetFrameModel value) {
-					getModel().setAssetKey(value);
-					updateGridChange();
-				}
-
-				@Override
-				public IAssetFrameModel getValue() {
-					return (IAssetFrameModel) getModel().getAssetKey();
-				}
-
-				@Override
-				public String getTooltip() {
-					return help("Phaser.Sprite." + getName());
-				}
-			};
-
-			getSpriteSection().add(frame_property);
+//			String name = getModel().getAssetKey() instanceof SpritesheetAssetModel.FrameModel ? "frame" : "frameName";
+//			ButtonFrameProperty frame_property = new ButtonFrameProperty(name, false) {
+//
+//				@Override
+//				public void setValue(IAssetFrameModel value) {
+//					getModel().setAssetKey(value);
+//					updateGridChange();
+//				}
+//
+//				@Override
+//				public IAssetFrameModel getValue() {
+//					return (IAssetFrameModel) getModel().getAssetKey();
+//				}
+//
+//				@Override
+//				public String getTooltip() {
+//					return help("Phaser.Sprite." + getName());
+//				}
+//			};
+//
+//			getSpriteSection().add(frame_property);
 
 			PGridFrameProperty overFrame_property = new ButtonFrameProperty("overFrame") {
 
@@ -117,17 +116,18 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 				}
 			};
 
+			// the outFrame is connected to the main assetKey!
 			PGridFrameProperty outFrame_property = new ButtonFrameProperty("outFrame") {
 
 				@Override
 				public void setValue(IAssetFrameModel value) {
-					getModel().setOutFrame(value);
+					getModel().setAssetKey(value);
 					updateGridChange();
 				}
 
 				@Override
 				public IAssetFrameModel getValue() {
-					return getModel().getOutFrame();
+					return (IAssetFrameModel) getModel().getAssetKey();
 				}
 
 				@Override

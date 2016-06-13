@@ -103,13 +103,9 @@ public class JSCodeGenerator implements ICodeGenerator {
 				// buttons based on image do not have outFrames
 				outFrameKey = "null";
 			} else {
-				// TODO: out frame should be the same of frameName!!!!!
-				if (button.getOutFrame() == null) {
-					outFrameKey = frameKey((IAssetFrameModel) button.getAssetKey());
-				}
+				outFrameKey = frameKey((IAssetFrameModel) button.getAssetKey());
 			}
-
-			outFrameKey = frameKey(button.getOutFrame());
+			
 			sb.append("button(" + // sprite
 					round(button.getX())// x
 					+ ", " + round(button.getY()) // y
@@ -207,6 +203,14 @@ public class JSCodeGenerator implements ICodeGenerator {
 	}
 
 	private static String frameKey(IAssetFrameModel frame) {
-		return frame == null ? "null" : "'" + frame.getKey() + "'";
+		if (frame == null) {
+			return "null";
+		}
+
+		if (frame instanceof SpritesheetAssetModel.FrameModel) {
+			return Integer.toString(((SpritesheetAssetModel.FrameModel) frame).getIndex());
+		}
+
+		return "'" + frame.getKey() + "'";
 	}
 }
