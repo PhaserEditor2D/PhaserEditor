@@ -31,6 +31,7 @@ import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
+import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
 
 /**
  * @author arian
@@ -72,30 +73,82 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 
 		PGridSection section = new PGridSection("Button");
 
+		PGridStringProperty callback_property = new PGridStringProperty(getId(), "callback") {
+
+			@Override
+			public void setValue(String value) {
+				getModel().setCallback(value);
+				updateGridChange();
+			}
+
+			@Override
+			public boolean isModified() {
+				return getValue() != null && getValue().trim().length() > 0;
+			}
+
+			@Override
+			public String getValue() {
+				return getModel().getCallback();
+			}
+
+			@Override
+			public String getTooltip() {
+				return help("Phaser.Button", "callback");
+			}
+		};
+		section.add(callback_property);
+
+		PGridStringProperty callbackContext_property = new PGridStringProperty(getId(), "callbackContext") {
+
+			@Override
+			public void setValue(String value) {
+				getModel().setCallbackContext(value);
+				updateGridChange();
+			}
+
+			@Override
+			public boolean isModified() {
+				return getValue() != null && !getValue().equals("this");
+			}
+
+			@Override
+			public String getValue() {
+				return getModel().getCallbackContext();
+			}
+
+			@Override
+			public String getTooltip() {
+				return help("Phaser.Button", "callbackContext");
+			}
+		};
+		section.add(callbackContext_property);
+
 		boolean isImage = getModel().getAssetKey().getAsset() instanceof ImageAssetModel;
 
 		if (!isImage) { // image assets does not have frames
-//			String name = getModel().getAssetKey() instanceof SpritesheetAssetModel.FrameModel ? "frame" : "frameName";
-//			ButtonFrameProperty frame_property = new ButtonFrameProperty(name, false) {
-//
-//				@Override
-//				public void setValue(IAssetFrameModel value) {
-//					getModel().setAssetKey(value);
-//					updateGridChange();
-//				}
-//
-//				@Override
-//				public IAssetFrameModel getValue() {
-//					return (IAssetFrameModel) getModel().getAssetKey();
-//				}
-//
-//				@Override
-//				public String getTooltip() {
-//					return help("Phaser.Sprite." + getName());
-//				}
-//			};
-//
-//			getSpriteSection().add(frame_property);
+			// String name = getModel().getAssetKey() instanceof
+			// SpritesheetAssetModel.FrameModel ? "frame" : "frameName";
+			// ButtonFrameProperty frame_property = new
+			// ButtonFrameProperty(name, false) {
+			//
+			// @Override
+			// public void setValue(IAssetFrameModel value) {
+			// getModel().setAssetKey(value);
+			// updateGridChange();
+			// }
+			//
+			// @Override
+			// public IAssetFrameModel getValue() {
+			// return (IAssetFrameModel) getModel().getAssetKey();
+			// }
+			//
+			// @Override
+			// public String getTooltip() {
+			// return help("Phaser.Sprite." + getName());
+			// }
+			// };
+			//
+			// getSpriteSection().add(frame_property);
 
 			PGridFrameProperty overFrame_property = new ButtonFrameProperty("overFrame") {
 

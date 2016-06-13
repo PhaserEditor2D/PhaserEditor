@@ -105,13 +105,13 @@ public class JSCodeGenerator implements ICodeGenerator {
 			} else {
 				outFrameKey = frameKey((IAssetFrameModel) button.getAssetKey());
 			}
-			
+
 			sb.append("button(" + // sprite
 					round(button.getX())// x
 					+ ", " + round(button.getY()) // y
 					+ ", '" + button.getAssetKey().getAsset().getKey() + "'" // key
-					+ ", '<missing callback>'" // callback
-					+ ", this" // context
+					+ ", " + emptyStringToNull(button.getCallback()) // callback
+					+ ", " + emptyStringToNull(button.getCallbackContext()) // context
 					+ ", " + frameKey(button.getOverFrame())// overFrame
 					+ ", " + outFrameKey// outFrame
 					+ ", " + frameKey(button.getDownFrame())// downFrame
@@ -135,10 +135,6 @@ public class JSCodeGenerator implements ICodeGenerator {
 		generateDisplayProps(indent, sb, model);
 
 		generateSpriteProps(indent, sb, model);
-	}
-
-	private static String round(double x) {
-		return Integer.toString((int) Math.round(x));
 	}
 
 	private static void generateDisplayProps(int indent, StringBuilder sb, BaseObjectModel model) {
@@ -212,5 +208,13 @@ public class JSCodeGenerator implements ICodeGenerator {
 		}
 
 		return "'" + frame.getKey() + "'";
+	}
+
+	private static String emptyStringToNull(String str) {
+		return str == null ? null : (str.trim().length() == 0 ? null : str);
+	}
+
+	private static String round(double x) {
+		return Integer.toString((int) Math.round(x));
 	}
 }

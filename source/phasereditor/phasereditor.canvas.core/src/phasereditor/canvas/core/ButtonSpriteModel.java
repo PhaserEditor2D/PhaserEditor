@@ -34,6 +34,11 @@ import phasereditor.assetpack.core.IAssetKey;
  */
 public class ButtonSpriteModel extends AssetSpriteModel<IAssetKey> {
 
+	/**
+	 * 
+	 */
+	private static final String DEF_CALLBACK_CONTEXT = "this";
+
 	public static final String TYPE_NAME = "button";
 
 	private static final String DEF_FRAME = null;
@@ -41,6 +46,8 @@ public class ButtonSpriteModel extends AssetSpriteModel<IAssetKey> {
 	private IAssetFrameModel _overFrame;
 	private IAssetFrameModel _downFrame;
 	private IAssetFrameModel _upFrame;
+	private String _callback;
+	private String _callbackContext;
 
 	public ButtonSpriteModel(GroupModel parent, JSONObject obj) {
 		super(parent, TYPE_NAME, obj);
@@ -48,12 +55,15 @@ public class ButtonSpriteModel extends AssetSpriteModel<IAssetKey> {
 
 	public ButtonSpriteModel(GroupModel parent, IAssetFrameModel frame) {
 		super(parent, frame, TYPE_NAME);
+		_callbackContext = DEF_CALLBACK_CONTEXT;
 	}
 
 	@Override
 	protected void writeInfo(JSONObject jsonInfo) {
 		super.writeInfo(jsonInfo);
 
+		jsonInfo.put("callback", _callback, null);
+		jsonInfo.put("callbackContext", _callbackContext, "this");
 		jsonInfo.put("overFrame", _overFrame == null ? null : _overFrame.getKey(), DEF_FRAME);
 		jsonInfo.put("downFrame", _downFrame == null ? null : _downFrame.getKey(), DEF_FRAME);
 		jsonInfo.put("upFrame", _upFrame == null ? null : _upFrame.getKey(), DEF_FRAME);
@@ -64,10 +74,11 @@ public class ButtonSpriteModel extends AssetSpriteModel<IAssetKey> {
 	protected void readInfo(JSONObject jsonInfo) {
 		super.readInfo(jsonInfo);
 
+		_callback = jsonInfo.optString("callback", null);
+		_callbackContext = jsonInfo.optString("callbackContext", "this");
 		_overFrame = findFrame(jsonInfo, "overFrame");
 		_downFrame = findFrame(jsonInfo, "downFrame");
 		_upFrame = findFrame(jsonInfo, "upFrame");
-
 	}
 
 	private IAssetFrameModel findFrame(JSONObject jsonInfo, String propKey) {
@@ -123,6 +134,22 @@ public class ButtonSpriteModel extends AssetSpriteModel<IAssetKey> {
 
 	public void setUpFrame(IAssetFrameModel upFrame) {
 		_upFrame = upFrame;
+	}
+
+	public String getCallback() {
+		return _callback;
+	}
+
+	public void setCallback(String callback) {
+		_callback = callback;
+	}
+
+	public String getCallbackContext() {
+		return _callbackContext;
+	}
+
+	public void setCallbackContext(String callbackContext) {
+		_callbackContext = callbackContext;
 	}
 
 	@Override
