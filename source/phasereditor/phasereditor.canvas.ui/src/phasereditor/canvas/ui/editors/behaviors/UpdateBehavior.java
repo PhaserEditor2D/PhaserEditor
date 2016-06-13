@@ -50,6 +50,7 @@ import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.GroupControl;
+import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
@@ -217,5 +218,21 @@ public class UpdateBehavior {
 
 	public void fireWorldChanged() {
 		_canvas.getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
+	}
+	
+	public void updateFromSettings() {
+		double width = _canvas.getSettingsModel().getSceneWidth();
+		double height = _canvas.getSettingsModel().getSceneHeight();
+		_canvas.getRootPane().setMinSize(width, height);
+		_canvas.getRootPane().setMaxSize(width, height);
+		GroupNode world = _canvas.getWorldNode();
+		world.setMinSize(width, height);
+		world.setMaxSize(width, height);
+		_canvas.getSelectionPane().setMinSize(width, height);
+		_canvas.getSelectionPane().setMaxSize(width, height);
+		_canvas.getSelectionGlassPane().setMinSize(width, height);
+		_canvas.getSelectionGlassPane().setMaxSize(width, height);
+		_canvas.getWorldGlassPane().repaint();
+		_canvas.getGridPane().repaint();
 	}
 }

@@ -85,6 +85,8 @@ import javafx.geometry.Point2D;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.behaviors.ZoomBehavior;
 import phasereditor.canvas.ui.editors.grid.PGrid;
+import phasereditor.canvas.ui.editors.operations.ChangeSettingsOperation;
+import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.palette.PaletteComp;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
@@ -641,8 +643,8 @@ public class CanvasEditor extends EditorPart
 		dlg.setModel(settings);
 		if (dlg.open() == Window.OK) {
 			settings.write(data);
-			_model.getSettings().read(data);
-			getCanvas().updateFromSettings();
+			getCanvas().getUpdateBehavior()
+					.executeOperations(new CompositeOperation(new ChangeSettingsOperation(data)));
 		}
 	}
 }

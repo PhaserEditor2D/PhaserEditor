@@ -103,6 +103,8 @@ public class ObjectCanvas extends FXCanvas {
 		_zoomBehavior = new ZoomBehavior(this);
 		_mouseBehavior = new MouseBehavior(this);
 		_paintBehavior = new PaintBehavior(this);
+
+		_updateBehavior.updateFromSettings();
 	}
 
 	public CanvasEditor getEditor() {
@@ -208,10 +210,8 @@ public class ObjectCanvas extends FXCanvas {
 		_selectionGlassPane.setId("__selection-glass-pane__");
 
 		_root.setAlignment(Pos.TOP_LEFT);
-	
-		_root.getChildren().setAll(_gridPane, world, _worldGlassPane, _selectionPane, _selectionGlassPane);
 
-		updateFromSettings();
+		_root.getChildren().setAll(_gridPane, world, _worldGlassPane, _selectionPane, _selectionGlassPane);
 	}
 
 	public GridPane getGridPane() {
@@ -265,21 +265,4 @@ public class ObjectCanvas extends FXCanvas {
 	public void dirty() {
 		getWorldModel().setDirty(true);
 	}
-
-	public void updateFromSettings() {
-		double width = _settingsModel.getSceneWidth();
-		double height = _settingsModel.getSceneHeight();
-		_root.setMinSize(width, height);
-		_root.setMaxSize(width, height);
-		GroupNode world = _worldControl.getNode();
-		world.setMinSize(width, height);
-		world.setMaxSize(width, height);
-		_selectionPane.setMinSize(width, height);
-		_selectionPane.setMaxSize(width, height);
-		_selectionGlassPane.setMinSize(width, height);
-		_selectionGlassPane.setMaxSize(width, height);
-		_worldGlassPane.repaint();
-		_gridPane.repaint();
-	}
-
 }
