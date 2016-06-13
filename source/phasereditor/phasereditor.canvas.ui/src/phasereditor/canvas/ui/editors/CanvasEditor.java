@@ -26,6 +26,7 @@ import static phasereditor.ui.PhaserEditorUI.swtRun;
 import java.beans.PropertyChangeEvent;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.Arrays;
 
 import org.eclipse.core.commands.operations.IUndoContext;
@@ -482,11 +483,21 @@ public class CanvasEditor extends EditorPart
 
 	void generateCode() {
 		JSCodeGenerator generator = new JSCodeGenerator();
-		WorldModel model = getCanvas().getWorldModel();
-		String content = generator.generate(model);
 		try {
+			WorldModel model = getCanvas().getWorldModel();
 			String fname = model.getClassName() + ".js";
 			IFile file = getEditorInputFile().getParent().getFile(new Path(fname));
+			String userCode = "";
+
+			if (file.exists()) {
+				byte[] bytes = Files.readAllBytes(file.getLocation().makeAbsolute().toFile().toPath());
+				userCode = new String(bytes);
+				int i = userCode.indexOf(JSCodeGenerator.END_GENERATED_CODE);
+				userCode = userCode.substring(i + JSCodeGenerator.END_GENERATED_CODE.length());
+			}
+
+			String content = generator.generate(model) + userCode;
+
 			ByteArrayInputStream stream = new ByteArrayInputStream(content.getBytes());
 			if (file.exists()) {
 				file.setContents(stream, IResource.NONE, null);
@@ -494,7 +505,7 @@ public class CanvasEditor extends EditorPart
 				file.create(stream, false, null);
 			}
 			file.refreshLocal(1, null);
-		} catch (CoreException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
@@ -563,6 +574,7 @@ public class CanvasEditor extends EditorPart
 			}
 			event.getDelta().accept(new IResourceDeltaVisitor() {
 
+				@SuppressWarnings("synthetic-access")
 				@Override
 				public boolean visit(IResourceDelta delta) throws CoreException {
 					IFile thisFile = getEditorInputFile();
@@ -583,7 +595,9 @@ public class CanvasEditor extends EditorPart
 
 							} else {
 								// rename
-								setInput(new FileEditorInput(root.getFile(movedTo)));
+								IFile file = root.getFile(movedTo);
+								CanvasEditor.super.setInput(new FileEditorInput(file));
+								getModel().getWorld().setFile(file);
 								swtRun(CanvasEditor.this::updateTitle);
 							}
 						}
@@ -598,6 +612,10 @@ public class CanvasEditor extends EditorPart
 
 	public IFile getEditorInputFile() {
 		return ((IFileEditorInput) getEditorInput()).getFile();
+	}
+
+	public CanvasEditorModel getModel() {
+		return _model;
 	}
 
 	protected void updateTitle() {

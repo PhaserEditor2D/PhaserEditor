@@ -35,6 +35,8 @@ import phasereditor.lic.LicCore;
  */
 public class JSCodeGenerator implements ICodeGenerator {
 
+	public static final String END_GENERATED_CODE = "// --- end generated code ---";
+
 	@Override
 	public String generate(WorldModel model) {
 		StringBuilder sb = new StringBuilder();
@@ -65,7 +67,7 @@ public class JSCodeGenerator implements ICodeGenerator {
 		sb.append(classname + ".prototype = Object.create(Phaser.Group.prototype);\n");
 		sb.append(classname + ".prototype.constructor = Phaser.Group;\n");
 		sb.append("\n");
-		sb.append("// --- end generated code ---");
+		sb.append(END_GENERATED_CODE);
 		return sb.toString();
 	}
 

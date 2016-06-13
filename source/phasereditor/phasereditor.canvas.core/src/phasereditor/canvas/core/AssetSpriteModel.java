@@ -51,7 +51,7 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 			name = assetKey.getAsset().getKey();
 		}
 
-		setEditorName(name);
+		setEditorName(CanvasCore.getValidJavaScriptName(name));
 	}
 
 	public T getAssetKey() {
@@ -102,7 +102,7 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 	}
 
 	/**
-	 * @param assetKey 
+	 * @param assetKey
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
@@ -127,7 +127,7 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 			}
 			return null;
 		}
-		
+
 		return assetKey;
 	}
 }
