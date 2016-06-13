@@ -259,7 +259,7 @@ public class ObjectCanvas extends FXCanvas {
 
 		worldNode.getControl().addChild(node);
 
-		getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
+		_updateBehavior.fireWorldChanged();
 	}
 
 	public void dirty() {

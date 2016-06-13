@@ -36,7 +36,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.widgets.Display;
 
-import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 
 /**
@@ -106,7 +105,8 @@ public class CompositeOperation extends AbstractOperation {
 
 	private static void fireWorldChanged(IAdaptable info) {
 		CanvasEditor editor = info.getAdapter(CanvasEditor.class);
-		editor.getCanvas().getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
+		editor.getCanvas().getSelectionBehavior().updateSelectedNodes();
+		editor.getCanvas().getUpdateBehavior().fireWorldChanged();
 	}
 
 	@Override

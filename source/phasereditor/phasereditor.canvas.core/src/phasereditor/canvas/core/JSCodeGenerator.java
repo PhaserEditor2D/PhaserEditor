@@ -42,10 +42,19 @@ public class JSCodeGenerator implements ICodeGenerator {
 		String classname = model.getClassName();
 		sb.append("function " + classname + "(game, parent) {\n");
 
-		generateGroup(0, sb, model);
+		{
+			int i = 0;
+			int last = model.getChildren().size() - 1;
+			for (BaseObjectModel child : model.getChildren()) {
+				generate(1, sb, child, "this");
+				if (i < last) {
+					sb.append("\n");
+				}
+				i++;
+			}
+		}
 
 		sb.append("\n");
-		sb.append(tabs(1) + "// call the 'userInit' method if exists \n");
 		sb.append(tabs(1) + "if (this.userInit) {\n");
 		sb.append(tabs(2) + "this.userInit();\n");
 		sb.append(tabs(1) + "}\n");
@@ -59,21 +68,18 @@ public class JSCodeGenerator implements ICodeGenerator {
 		return sb.toString();
 	}
 
-	private static void generate(int indent, StringBuilder sb, BaseObjectModel model) {
+	private static void generate(int indent, StringBuilder sb, BaseObjectModel model, String parVar) {
 		if (model instanceof GroupModel) {
-			generateGroup(indent, sb, (GroupModel) model);
+			generateGroup(indent, sb, (GroupModel) model, parVar);
 		} else if (model instanceof BaseSpriteModel) {
-			generateSprite(indent, sb, (BaseSpriteModel) model);
+			generateSprite(indent, sb, (BaseSpriteModel) model, parVar);
 		}
 	}
 
-	private static void generateSprite(int indent, StringBuilder sb, BaseSpriteModel model) {
-		GroupModel parGroup = model.getParent();
-		String parVar = parGroup.isWorldModel() ? "this" : "this." + parGroup.getEditorName();
-
+	private static void generateSprite(int indent, StringBuilder sb, BaseSpriteModel model, String parVar) {
 		sb.append(tabs(indent));
 		String varname = model.getEditorName();
-		sb.append("this." + varname + " = game.add.");
+		sb.append(parVar + "." + varname + " = game.add.");
 		if (model instanceof ImageSpriteModel) {
 			ImageSpriteModel image = (ImageSpriteModel) model;
 			sb.append("sprite(" + // sprite
@@ -167,27 +173,27 @@ public class JSCodeGenerator implements ICodeGenerator {
 		}
 	}
 
-	private static void generateGroup(int indent, StringBuilder sb, GroupModel group) {
+	private static void generateGroup(int indent, StringBuilder sb, GroupModel group, String parVar) {
 		String tabs = tabs(indent);
 
-		if (!group.isWorldModel()) {
-			GroupModel parGroup = group.getParent();
-			String parVar = parGroup.isWorldModel() ? "this" : "this." + parGroup.getEditorName();
-			sb.append(tabs);
-			sb.append(format("this.%s = game.add.group(%s);\n\n", group.getEditorName(), parVar));
-		}
-
-		int i = 0;
-		int last = group.getChildren().size() - 1;
-		for (BaseObjectModel child : group.getChildren()) {
-			generate(indent + 1, sb, child);
-			if (i < last) {
-				sb.append("\n");
-			}
-			i++;
-		}
+		sb.append(tabs);
+		sb.append(format("%s.%s = game.add.group(%s);\n", parVar, group.getEditorName(), parVar));
 
 		generateDisplayProps(indent, sb, group);
+
+		if (!group.getChildren().isEmpty()) {
+			sb.append("\n");
+			int i = 0;
+			int last = group.getChildren().size() - 1;
+
+			for (BaseObjectModel child : group.getChildren()) {
+				generate(indent, sb, child, parVar + "." + group.getEditorName());
+				if (i < last) {
+					sb.append("\n");
+				}
+				i++;
+			}
+		}
 	}
 
 	private static String tabs(int indent) {

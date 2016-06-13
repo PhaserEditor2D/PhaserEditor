@@ -31,7 +31,6 @@ import org.json.JSONObject;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.GroupModel;
-import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
@@ -53,7 +52,7 @@ public class AddNodeOperation extends AbstractNodeOperation {
 	public AddNodeOperation(JSONObject data, int index, double x, double y, String parentId) {
 		super("CreateNodeOperation", null);
 		_data = data;
-		_index = index == -1? 0 : index;
+		_index = index == -1 ? 0 : index;
 		_x = x;
 		_y = y;
 		_parentId = parentId;
@@ -92,8 +91,7 @@ public class AddNodeOperation extends AbstractNodeOperation {
 		model.setY(_y);
 		BaseObjectControl<?> control = CanvasObjectFactory.createObjectControl(canvas, model);
 		groupControl.addChild(_index, control.getIObjectNode());
-		canvas.getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
-		canvas.getSelectionBehavior().updateSelectedNodes();
+
 		return Status.OK_STATUS;
 	}
 

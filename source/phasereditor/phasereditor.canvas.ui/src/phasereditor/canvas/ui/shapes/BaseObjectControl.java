@@ -31,6 +31,7 @@ import javafx.scene.transform.Translate;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.WorldModel.ZOperation;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.behaviors.UpdateBehavior;
 import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
@@ -378,7 +379,9 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	}
 
 	protected void updateGridChange() {
-		getCanvas().getUpdateBehavior().update_Canvas_from_GridChange(this);
+		UpdateBehavior update = getCanvas().getUpdateBehavior();
+		update.update_Canvas_from_GridChange(this);
+		update.fireWorldChanged();
 	}
 
 	public PGridNumberProperty getX_property() {

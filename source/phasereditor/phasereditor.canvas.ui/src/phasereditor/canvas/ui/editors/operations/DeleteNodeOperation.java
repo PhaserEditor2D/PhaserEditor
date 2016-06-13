@@ -30,7 +30,6 @@ import org.json.JSONObject;
 
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.CanvasModelFactory;
-import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
@@ -84,8 +83,6 @@ public class DeleteNodeOperation extends AbstractNodeOperation {
 		ObjectCanvas canvas = info.getAdapter(CanvasEditor.class).getCanvas();
 		BaseObjectControl<?> control = CanvasObjectFactory.createObjectControl(canvas, model);
 		group.addChild(_index, control.getIObjectNode());
-		canvas.getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
-		canvas.getSelectionBehavior().updateSelectedNodes();
 		return Status.OK_STATUS;
 	}
 
@@ -95,7 +92,6 @@ public class DeleteNodeOperation extends AbstractNodeOperation {
 		control.removeme();
 
 		canvas.getSelectionBehavior().removeNodeFromSelection(control.getNode());
-		canvas.getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
 	}
 
 }
