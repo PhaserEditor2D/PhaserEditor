@@ -35,6 +35,14 @@ import phasereditor.assetpack.core.IAssetKey;
  *
  */
 public abstract class BaseObjectModel {
+	private static final boolean DEF_EDITOR_PICK = true;
+	private static final double DEF_X = 0;
+	private static final double DEF_Y = 0;
+	private static final double DEF_ROTATION = 0;
+	private static final double DEF_SCALE_X = 1;
+	private static final double DEF_SCALE_Y = 1;
+	private static final double DEF_PIVOT_X = 0;
+	private static final double DEF_PIVOT_Y = 0;
 	private GroupModel _parent;
 	private String _typeName;
 	private String _editorName;
@@ -190,15 +198,15 @@ public abstract class BaseObjectModel {
 
 	protected void readInfo(JSONObject jsonInfo) {
 		_editorName = jsonInfo.optString("editorName");
-		_editorPick = jsonInfo.optBoolean("editorPick", true);
+		_editorPick = jsonInfo.optBoolean("editorPick", DEF_EDITOR_PICK);
 
-		_x = jsonInfo.optDouble("x", 0);
-		_y = jsonInfo.optDouble("y", 0);
-		_rotation = jsonInfo.optDouble("rotation", 0);
-		_scaleX = jsonInfo.optDouble("scale.x", 1);
-		_scaleY = jsonInfo.optDouble("scale.y", 1);
-		_pivotX = jsonInfo.optDouble("pivot.x", 0);
-		_pivotY = jsonInfo.optDouble("pivot.y", 0);
+		_x = jsonInfo.optDouble("x", DEF_X);
+		_y = jsonInfo.optDouble("y", DEF_Y);
+		_rotation = jsonInfo.optDouble("rotation", DEF_ROTATION);
+		_scaleX = jsonInfo.optDouble("scale.x", DEF_SCALE_X);
+		_scaleY = jsonInfo.optDouble("scale.y", DEF_SCALE_Y);
+		_pivotX = jsonInfo.optDouble("pivot.x", DEF_PIVOT_X);
+		_pivotY = jsonInfo.optDouble("pivot.y", DEF_PIVOT_Y);
 	}
 
 	public JSONObject toJSON() {
@@ -206,7 +214,7 @@ public abstract class BaseObjectModel {
 		write(obj);
 		return obj;
 	}
-	
+
 	public final void write(JSONObject obj) {
 		writeMetadata(obj);
 
@@ -222,15 +230,15 @@ public abstract class BaseObjectModel {
 
 	protected void writeInfo(JSONObject jsonInfo) {
 		jsonInfo.put("editorName", _editorName);
-		jsonInfo.put("editorPick", _editorPick);
+		jsonInfo.put("editorPick", _editorPick, DEF_EDITOR_PICK);
 
-		jsonInfo.put("x", _x);
-		jsonInfo.put("y", _y);
-		jsonInfo.put("rotation", _rotation);
-		jsonInfo.put("scale.x", _scaleX);
-		jsonInfo.put("scale.y", _scaleY);
-		jsonInfo.put("pivot.x", _pivotX);
-		jsonInfo.put("pivot.y", _pivotY);
+		jsonInfo.put("x", _x, DEF_X);
+		jsonInfo.put("y", _y, DEF_Y);
+		jsonInfo.put("rotation", _rotation, DEF_ROTATION);
+		jsonInfo.put("scale.x", _scaleX, DEF_SCALE_X);
+		jsonInfo.put("scale.y", _scaleY, DEF_SCALE_Y);
+		jsonInfo.put("pivot.x", _pivotX, DEF_PIVOT_X);
+		jsonInfo.put("pivot.y", _pivotY, DEF_PIVOT_Y);
 	}
 
 	public WorldModel getWorld() {

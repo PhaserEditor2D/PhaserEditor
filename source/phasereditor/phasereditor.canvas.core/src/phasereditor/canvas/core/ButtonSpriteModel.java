@@ -36,6 +36,8 @@ public class ButtonSpriteModel extends AssetSpriteModel<IAssetKey> {
 
 	public static final String TYPE_NAME = "button";
 
+	private static final String DEF_FRAME = null;
+
 	private IAssetFrameModel _overFrame;
 	private IAssetFrameModel _outFrame;
 	private IAssetFrameModel _downFrame;
@@ -53,10 +55,10 @@ public class ButtonSpriteModel extends AssetSpriteModel<IAssetKey> {
 	protected void writeInfo(JSONObject jsonInfo) {
 		super.writeInfo(jsonInfo);
 
-		jsonInfo.put("overFrame", _overFrame == null ? null : _overFrame.getKey());
-		jsonInfo.put("outFrame", _outFrame == null ? null : _outFrame.getKey());
-		jsonInfo.put("downFrame", _downFrame == null ? null : _downFrame.getKey());
-		jsonInfo.put("upFrame", _upFrame == null ? null : _upFrame.getKey());
+		jsonInfo.put("overFrame", _overFrame == null ? null : _overFrame.getKey(), DEF_FRAME);
+		jsonInfo.put("outFrame", _outFrame == null ? null : _outFrame.getKey(), DEF_FRAME);
+		jsonInfo.put("downFrame", _downFrame == null ? null : _downFrame.getKey(), DEF_FRAME);
+		jsonInfo.put("upFrame", _upFrame == null ? null : _upFrame.getKey(), DEF_FRAME);
 
 	}
 
@@ -72,7 +74,7 @@ public class ButtonSpriteModel extends AssetSpriteModel<IAssetKey> {
 	}
 
 	private IAssetFrameModel findFrame(JSONObject jsonInfo, String propKey) {
-		String frameKey = jsonInfo.optString(propKey, null);
+		String frameKey = jsonInfo.optString(propKey, DEF_FRAME);
 
 		if (frameKey == null) {
 			return null;

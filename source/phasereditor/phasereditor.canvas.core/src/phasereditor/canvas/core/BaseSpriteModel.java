@@ -28,6 +28,9 @@ import org.json.JSONObject;
  *
  */
 public abstract class BaseSpriteModel extends BaseObjectModel {
+	private static final double DEF_ANCHOR_X = 0;
+	private static final double DEF_ANCHOR_Y = 0;
+	private static final String DEF_TINT = null;
 	private double _anchorX;
 	private double _anchorY;
 	private String _tint;
@@ -39,11 +42,11 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 
 	public BaseSpriteModel(GroupModel parent, String typeName) {
 		super(parent, typeName);
-		_anchorX = 0;
-		_anchorY = 0;
-		_tint = null;
+		_anchorX = DEF_ANCHOR_X;
+		_anchorY = DEF_ANCHOR_Y;
+		_tint = DEF_TINT;
 	}
-	
+
 	@Override
 	public String getLabel() {
 		return "[spr] " + getEditorName();
@@ -64,11 +67,11 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 	public void setAnchorY(double anchorY) {
 		_anchorY = anchorY;
 	}
-	
+
 	public String getTint() {
 		return _tint;
 	}
-	
+
 	public void setTint(String tint) {
 		_tint = tint;
 	}
@@ -76,16 +79,16 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 	@Override
 	protected void writeInfo(JSONObject jsonInfo) {
 		super.writeInfo(jsonInfo);
-		jsonInfo.put("anchor.x", _anchorX);
-		jsonInfo.put("anchor.y", _anchorY);
-		jsonInfo.put("tint", _tint);
+		jsonInfo.put("anchor.x", _anchorX, DEF_ANCHOR_X);
+		jsonInfo.put("anchor.y", _anchorY, DEF_ANCHOR_Y);
+		jsonInfo.put("tint", _tint, DEF_TINT);
 	}
 
 	@Override
 	protected void readInfo(JSONObject jsonInfo) {
 		super.readInfo(jsonInfo);
-		_anchorX = jsonInfo.optDouble("anchor.x", 0);
-		_anchorY = jsonInfo.optDouble("anchor.y", 0);
-		_tint = jsonInfo.optString("tint", null);
+		_anchorX = jsonInfo.optDouble("anchor.x", DEF_ANCHOR_X);
+		_anchorY = jsonInfo.optDouble("anchor.y", DEF_ANCHOR_Y);
+		_tint = jsonInfo.optString("tint", DEF_TINT);
 	}
 }

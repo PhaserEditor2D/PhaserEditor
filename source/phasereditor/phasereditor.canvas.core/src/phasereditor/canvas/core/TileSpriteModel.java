@@ -34,6 +34,14 @@ public class TileSpriteModel extends AssetSpriteModel<IAssetKey> {
 
 	public static final String TYPE_NAME = "tileSprite";
 
+	private static final double DEF_TILE_POSITION = 0;
+
+	private static final double DEF_TILE_SCALE = 1;
+
+	private static final double DEF_WIDTH = 0;
+
+	private static final double DEF_HEIGHT = 0;
+
 	private double _width;
 	private double _height;
 	private double _tilePositionX;
@@ -44,12 +52,12 @@ public class TileSpriteModel extends AssetSpriteModel<IAssetKey> {
 	public TileSpriteModel(GroupModel parent, IAssetKey assetKey) {
 		super(parent, assetKey, TYPE_NAME);
 
-		_tilePositionX = 0;
-		_tilePositionY = 0;
-		_tileScaleX = 1;
-		_tileScaleY = 1;
-		_width = 0;
-		_height = 0;
+		_tilePositionX = DEF_TILE_POSITION;
+		_tilePositionY = DEF_TILE_POSITION;
+		_tileScaleX = DEF_TILE_SCALE;
+		_tileScaleY = DEF_TILE_SCALE;
+		_width = DEF_WIDTH;
+		_height = DEF_HEIGHT;
 	}
 
 	public TileSpriteModel(GroupModel parent, JSONObject obj) {
@@ -60,26 +68,26 @@ public class TileSpriteModel extends AssetSpriteModel<IAssetKey> {
 	protected void readInfo(JSONObject jsonInfo) {
 		super.readInfo(jsonInfo);
 
-		_width = jsonInfo.optDouble("width", 0);
-		_height = jsonInfo.optDouble("height", 0);
+		_width = jsonInfo.optDouble("width", DEF_WIDTH);
+		_height = jsonInfo.optDouble("height", DEF_HEIGHT);
 
-		_tilePositionX = jsonInfo.optDouble("tilePosition.x", 0);
-		_tilePositionY = jsonInfo.optDouble("tilePosition.y", 0);
-		_tileScaleX = jsonInfo.optDouble("tileScale.x", 1);
-		_tileScaleY = jsonInfo.optDouble("tileScale.y", 1);
+		_tilePositionX = jsonInfo.optDouble("tilePosition.x", DEF_TILE_POSITION);
+		_tilePositionY = jsonInfo.optDouble("tilePosition.y", DEF_TILE_POSITION);
+		_tileScaleX = jsonInfo.optDouble("tileScale.x", DEF_TILE_SCALE);
+		_tileScaleY = jsonInfo.optDouble("tileScale.y", DEF_TILE_SCALE);
 	}
 
 	@Override
 	protected void writeInfo(JSONObject jsonInfo) {
 		super.writeInfo(jsonInfo);
 
-		jsonInfo.put("width", _width);
-		jsonInfo.put("height", _height);
+		jsonInfo.put("width", _width, DEF_WIDTH);
+		jsonInfo.put("height", _height, DEF_HEIGHT);
 
-		jsonInfo.put("tilePosition.x", _tilePositionX);
-		jsonInfo.put("tilePosition.y", _tilePositionY);
-		jsonInfo.put("tileScale.x", _tileScaleX);
-		jsonInfo.put("tileScale.y", _tileScaleY);
+		jsonInfo.put("tilePosition.x", _tilePositionX, DEF_TILE_POSITION);
+		jsonInfo.put("tilePosition.y", _tilePositionY, DEF_TILE_POSITION);
+		jsonInfo.put("tileScale.x", _tileScaleX, DEF_TILE_SCALE);
+		jsonInfo.put("tileScale.y", _tileScaleY, DEF_TILE_SCALE);
 		jsonInfo.put("asset-ref", AssetPackCore.getAssetJSONReference(getAssetKey()));
 	}
 

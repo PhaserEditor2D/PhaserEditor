@@ -33,9 +33,7 @@ import org.json.JSONObject;
  *
  */
 public class WorldModel extends GroupModel {
-	public static final String PROP_HEIGHT = "height";
 	public static final String PROP_STRUCTURE = "structure";
-	public static final String PROP_WIDTH = "width";
 	public static final String PROP_DIRTY = "dirty";
 
 	private boolean _dirty;
