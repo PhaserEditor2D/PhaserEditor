@@ -72,6 +72,10 @@ public class JSCodeGenerator implements ICodeGenerator {
 	}
 
 	private static void generate(int indent, StringBuilder sb, BaseObjectModel model, String parVar) {
+		if (!model.isEditorGenerate()) {
+			return;
+		}
+
 		if (model instanceof GroupModel) {
 			generateGroup(indent, sb, (GroupModel) model, parVar);
 		} else if (model instanceof BaseSpriteModel) {

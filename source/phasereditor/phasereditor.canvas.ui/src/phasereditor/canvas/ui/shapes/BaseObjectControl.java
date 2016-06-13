@@ -376,6 +376,25 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		};
 		section.add(_editorPick_property);
 
+		PGridBooleanProperty editorGenerate_property = new PGridBooleanProperty(getId(), "generate") {
+
+			@Override
+			public Boolean getValue() {
+				return Boolean.valueOf(getModel().isEditorGenerate());
+			}
+
+			@Override
+			public void setValue(Boolean value) {
+				getModel().setEditorGenerate(value.booleanValue());
+				updateGridChange();
+			}
+
+			@Override
+			public boolean isModified() {
+				return !getModel().isEditorGenerate();
+			}
+		};
+		section.add(editorGenerate_property);
 	}
 
 	protected void updateGridChange() {

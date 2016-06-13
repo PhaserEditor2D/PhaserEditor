@@ -43,10 +43,12 @@ public abstract class BaseObjectModel {
 	private static final double DEF_SCALE_Y = 1;
 	private static final double DEF_PIVOT_X = 0;
 	private static final double DEF_PIVOT_Y = 0;
+	private static final boolean DEF_EDITOR_GENERATE = true;
 	private GroupModel _parent;
 	private String _typeName;
 	private String _editorName;
 	private boolean _editorPick;
+	private boolean _editorGenerate;
 
 	private String _id;
 	private double _x;
@@ -70,6 +72,7 @@ public abstract class BaseObjectModel {
 
 		_editorName = typeName;
 		_editorPick = true;
+		_editorGenerate = true;
 
 		_scaleX = 1;
 		_scaleY = 1;
@@ -120,6 +123,14 @@ public abstract class BaseObjectModel {
 
 	public void setEditorPick(boolean editorPick) {
 		_editorPick = editorPick;
+	}
+
+	public boolean isEditorGenerate() {
+		return _editorGenerate;
+	}
+
+	public void setEditorGenerate(boolean editorGenerate) {
+		_editorGenerate = editorGenerate;
 	}
 
 	public final String getTypeName() {
@@ -199,6 +210,7 @@ public abstract class BaseObjectModel {
 	protected void readInfo(JSONObject jsonInfo) {
 		_editorName = jsonInfo.optString("editorName");
 		_editorPick = jsonInfo.optBoolean("editorPick", DEF_EDITOR_PICK);
+		_editorGenerate = jsonInfo.optBoolean("editorGenerate", DEF_EDITOR_GENERATE);
 
 		_x = jsonInfo.optDouble("x", DEF_X);
 		_y = jsonInfo.optDouble("y", DEF_Y);
@@ -231,6 +243,7 @@ public abstract class BaseObjectModel {
 	protected void writeInfo(JSONObject jsonInfo) {
 		jsonInfo.put("editorName", _editorName);
 		jsonInfo.put("editorPick", _editorPick, DEF_EDITOR_PICK);
+		jsonInfo.put("editorGenerate", _editorGenerate, DEF_EDITOR_GENERATE);
 
 		jsonInfo.put("x", _x, DEF_X);
 		jsonInfo.put("y", _y, DEF_Y);
