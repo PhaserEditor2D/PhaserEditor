@@ -40,6 +40,7 @@ import phasereditor.canvas.ui.editors.grid.PGridColorProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
+import phasereditor.ui.ColorButtonSupport;
 
 /**
  * @author arian
@@ -171,7 +172,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 				if (value == null) {
 					tint = null;
 				} else {
-					tint = "rgb(" + value.red + "," + value.green + "," + value.blue + ")";
+					tint = ColorButtonSupport.getHexString2(value);
 				}
 
 				getModel().setTint(tint);
@@ -181,7 +182,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 			@Override
 			public boolean isModified() {
 				String tint = getModel().getTint();
-				return tint != null && !tint.equals("rgb(255,255,255)");
+				return tint != null && !tint.equals("0xffffff");
 			}
 
 			@Override

@@ -148,6 +148,10 @@ public abstract class ColorButtonSupport {
 	public static String getHexString(RGB rgb) {
 		return "#" + toHexString(rgb.red) + toHexString(rgb.green) + toHexString(rgb.blue);
 	}
+	
+	public static String getHexString2(RGB rgb) {
+		return "0x" + toHexString(rgb.red) + toHexString(rgb.green) + toHexString(rgb.blue);
+	}
 
 	public static String toHexString(int n) {
 		String s = Integer.toHexString(n);
