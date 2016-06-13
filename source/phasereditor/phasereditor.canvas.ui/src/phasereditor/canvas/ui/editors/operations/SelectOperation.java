@@ -74,8 +74,6 @@ public class SelectOperation extends AbstractNodeOperation {
 
 		behavior.setSelection(new StructuredSelection(selection));
 
-		canvas.getUpdateBehavior().fireWorldChanged();
-
 		return Status.OK_STATUS;
 	}
 
@@ -98,7 +96,6 @@ public class SelectOperation extends AbstractNodeOperation {
 
 		ObjectCanvas canvas = getCanvas(info);
 		canvas.getSelectionBehavior().setSelection(new StructuredSelection(selection));
-		canvas.getUpdateBehavior().fireWorldChanged();
 
 		return Status.OK_STATUS;
 	}
