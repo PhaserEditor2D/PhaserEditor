@@ -22,6 +22,7 @@
 package phasereditor.canvas.ui.editors.grid;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jface.viewers.ColumnViewer;
@@ -29,6 +30,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 
 import phasereditor.assetpack.ui.AssetLabelProvider;
+import phasereditor.canvas.core.AnimationModel;
 import phasereditor.ui.ColorButtonSupport;
 import phasereditor.ui.PhaserEditorUI;
 
@@ -66,6 +68,11 @@ public class PGridValueLabelProvider extends PGridLabelProvider {
 		if (element instanceof PGridFrameProperty) {
 			String label = ((PGridFrameProperty) element).getLabel();
 			return label == null ? "" : label;
+		}
+		
+		if (element instanceof PGridAnimationsProperty) {
+			List<AnimationModel> value = ((PGridAnimationsProperty) element).getValue();
+			return PGridAnimationsProperty.getLabel(value);
 		}
 
 		if (element instanceof PGridProperty) {

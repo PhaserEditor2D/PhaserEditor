@@ -48,7 +48,7 @@ import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
  * @author arian
  *
  */
-public class PGridFrameDialog extends Dialog {
+public class FrameDialog extends Dialog {
 
 	private Composite _container;
 	private TreeViewer _viewer;
@@ -56,13 +56,15 @@ public class PGridFrameDialog extends Dialog {
 	private Object _result;
 	private Object _selection;
 	private boolean _allowNull;
+	private boolean _allowMultipleSelection;
+	private List<?> _multipleResult;
 
 	/**
 	 * Create the dialog.
 	 * 
 	 * @param parentShell
 	 */
-	public PGridFrameDialog(Shell parentShell) {
+	public FrameDialog(Shell parentShell) {
 		super(parentShell);
 	}
 
@@ -84,8 +86,14 @@ public class PGridFrameDialog extends Dialog {
 		return _container;
 	}
 
+	@Override
+	protected void configureShell(Shell newShell) {
+		super.configureShell(newShell);
+		newShell.setText("Frame Selector");
+	}
+
 	private void afterCreateWidgets() {
-		FilteredTree tree = new FilteredTree(_container, SWT.SINGLE, new PatternFilter(), true);
+		FilteredTree tree = new FilteredTree(_container, getTreeStyle(), new PatternFilter(), true);
 		tree.setQuickSelectionMode(true);
 		_viewer = tree.getViewer();
 		_viewer.setContentProvider(new ITreeContentProvider() {
@@ -137,6 +145,13 @@ public class PGridFrameDialog extends Dialog {
 		});
 	}
 
+	private int getTreeStyle() {
+		if (_allowMultipleSelection) {
+			return SWT.BORDER | SWT.MULTI;
+		}
+		return SWT.SINGLE | SWT.BORDER;
+	}
+
 	public void setFrames(List<?> frames) {
 		_frames = frames;
 	}
@@ -158,12 +173,18 @@ public class PGridFrameDialog extends Dialog {
 	 */
 	@Override
 	protected void okPressed() {
-		_result = ((IStructuredSelection) _viewer.getSelection()).getFirstElement();
+		IStructuredSelection sel = (IStructuredSelection) _viewer.getSelection();
+		_result = sel.getFirstElement();
+		_multipleResult = sel.toList();
 		super.okPressed();
 	}
 
 	public Object getResult() {
 		return _result;
+	}
+
+	public List<?> getMultipleResult() {
+		return _multipleResult;
 	}
 
 	/**
@@ -198,6 +219,10 @@ public class PGridFrameDialog extends Dialog {
 
 	public void setSelectedItem(Object selection) {
 		_selection = selection;
+	}
+
+	public void setAllowMultipleSelection(boolean allow) {
+		_allowMultipleSelection = allow;
 	}
 
 }

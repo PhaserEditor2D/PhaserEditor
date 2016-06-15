@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONObject;
 
 /**
@@ -34,6 +37,7 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 	private double _anchorX;
 	private double _anchorY;
 	private String _tint;
+	private List<AnimationModel> _animations;
 
 	public BaseSpriteModel(GroupModel parent, String typeName, JSONObject obj) {
 		this(parent, typeName);
@@ -45,6 +49,7 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 		_anchorX = DEF_ANCHOR_X;
 		_anchorY = DEF_ANCHOR_Y;
 		_tint = DEF_TINT;
+		_animations = new ArrayList<>();
 	}
 
 	@Override
@@ -76,12 +81,22 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 		_tint = tint;
 	}
 
+	public List<AnimationModel> getAnimations() {
+		return _animations;
+	}
+
+	public void setAnimations(List<AnimationModel> animations) {
+		_animations = animations;
+	}
+
 	@Override
 	protected void writeInfo(JSONObject jsonInfo) {
 		super.writeInfo(jsonInfo);
 		jsonInfo.put("anchor.x", _anchorX, DEF_ANCHOR_X);
 		jsonInfo.put("anchor.y", _anchorY, DEF_ANCHOR_Y);
 		jsonInfo.put("tint", _tint, DEF_TINT);
+
+		// TODO: missing write animations.
 	}
 
 	@Override
@@ -90,5 +105,9 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 		_anchorX = jsonInfo.optDouble("anchor.x", DEF_ANCHOR_X);
 		_anchorY = jsonInfo.optDouble("anchor.y", DEF_ANCHOR_Y);
 		_tint = jsonInfo.optString("tint", DEF_TINT);
+
+		_animations = new ArrayList<>();
+
+		// TODO: missing read animations
 	}
 }

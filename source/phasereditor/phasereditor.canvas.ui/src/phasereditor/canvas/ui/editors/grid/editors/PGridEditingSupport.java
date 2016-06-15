@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid.editors;
 
-import static java.lang.System.out;
-
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.jface.viewers.CellEditor;
@@ -35,6 +33,7 @@ import org.eclipse.ui.PlatformUI;
 
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.grid.NumberCellEditor;
+import phasereditor.canvas.ui.editors.grid.PGridAnimationsProperty;
 import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
 import phasereditor.canvas.ui.editors.grid.PGridColorProperty;
 import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
@@ -69,6 +68,8 @@ public class PGridEditingSupport extends EditingSupport {
 			return new FrameCellEditor(parent, prop);
 		} else if (element instanceof PGridColorProperty) {
 			return new RGBCellEditor(parent, ((PGridColorProperty) element).getDefaultRGB());
+		} else if (element instanceof PGridAnimationsProperty) {
+			return new AnimationsCellEditor(parent, (PGridAnimationsProperty) element);
 		}
 
 		return null;
@@ -116,8 +117,7 @@ public class PGridEditingSupport extends EditingSupport {
 		}
 
 		if (changed) {
-			out.println(prop.getName() + ".setValue(" + value + ")");
-			ChangePropertyOperation<? extends Object> op = new ChangePropertyOperation<>(prop.getControlId(),
+			ChangePropertyOperation<? extends Object> op = new ChangePropertyOperation<>(prop.getNodeId(),
 					prop.getName(), value);
 			IOperationHistory history = PlatformUI.getWorkbench().getOperationSupport().getOperationHistory();
 			try {

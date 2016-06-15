@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
+import java.util.List;
+
 import org.eclipse.swt.graphics.RGB;
 
 import javafx.collections.ObservableList;
@@ -33,9 +35,11 @@ import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.canvas.core.AnimationModel;
 import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.grid.PGridAnimationsProperty;
 import phasereditor.canvas.ui.editors.grid.PGridColorProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
@@ -205,9 +209,42 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 
 		_tint_property.setDefaultRGB(new RGB(255, 255, 255));
 
+		PGridAnimationsProperty animations_properties = new PGridAnimationsProperty(getId(), "animations") {
+
+			@Override
+			public void setValue(List<AnimationModel> value) {
+				getModel().setAnimations(value);
+				updateGridChange();
+			}
+
+			@Override
+			public List<AnimationModel> getValue() {
+				return getModel().getAnimations();
+			}
+
+			@Override
+			public String getTooltip() {
+				return help("Phaser.Sprite.animations");
+			}
+
+			@Override
+			public boolean isModified() {
+				return !getModel().getAnimations().isEmpty();
+			}
+
+			@Override
+			public IAssetKey getAssetKey() {
+				if (getModel() instanceof AssetSpriteModel) {
+					return ((AssetSpriteModel<?>) getModel()).getAssetKey();
+				}
+				return null;
+			}
+		};
+
 		_spriteSection.add(_anchor_x_property);
 		_spriteSection.add(_anchor_y_property);
 		_spriteSection.add(_tint_property);
+		_spriteSection.add(animations_properties);
 
 		propModel.getSections().add(_spriteSection);
 	}

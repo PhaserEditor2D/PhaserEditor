@@ -21,25 +21,49 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid.editors;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.eclipse.jface.viewers.DialogCellEditor;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
+import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.canvas.core.AnimationModel;
+import phasereditor.canvas.ui.editors.grid.PGridAnimationsProperty;
 
 /**
  * @author arian
  *
  */
-public class FrameCellEditor extends DialogCellEditor {
+public class AnimationsCellEditor extends DialogCellEditor {
 
-	private PGridFrameProperty _prop;
+	private PGridAnimationsProperty _prop;
 
-	public FrameCellEditor(Composite parent, PGridFrameProperty prop) {
+	public AnimationsCellEditor(Composite parent, PGridAnimationsProperty prop) {
 		super(parent);
 		_prop = prop;
+	}
+
+	@Override
+	protected Object openDialogBox(Control cellEditorWindow) {
+		AnimationsDialog dlg = new AnimationsDialog(cellEditorWindow.getShell());
+
+		List<AnimationModel> list = new ArrayList<>();
+		for (AnimationModel model : _prop.getValue()) {
+			list.add(model.clone());
+		}
+		IAssetKey key = _prop.getAssetKey();
+		dlg.setAvailableFrames(key == null ? Collections.emptyList() : key.getAsset().getSubElements());
+		dlg.setAnimations(list);
+
+		if (dlg.open() == Window.OK) {
+			return dlg.getValue();
+		}
+
+		return _prop.getValue();
 	}
 
 	@Override
@@ -47,33 +71,14 @@ public class FrameCellEditor extends DialogCellEditor {
 		super.updateContents(value);
 
 		if (value == null) {
-			getDefaultLabel().setText("");
+			getDefaultLabel().setText("[]");
 			return;
 		}
 
-		getDefaultLabel().setText(" " + ((IAssetFrameModel) value).getKey());
+		@SuppressWarnings("unchecked")
+		List<AnimationModel> list = (List<AnimationModel>) value;
+
+		getDefaultLabel().setText(PGridAnimationsProperty.getLabel(list));
 	}
 
-	@Override
-	protected void doSetValue(Object value) {
-		if (value == PGridFrameProperty.NULL_FRAME) {
-			super.doSetValue(null);
-			return;
-		}
-
-		super.doSetValue(value);
-	}
-
-	@Override
-	protected Object openDialogBox(Control cellEditorWindow) {
-		FrameDialog dlg = new FrameDialog(cellEditorWindow.getShell());
-		dlg.setAllowNull(_prop.isAllowNull());
-		dlg.setFrames(_prop.getFrames());
-		dlg.setSelectedItem(_prop.getValue());
-		if (dlg.open() == Window.OK) {
-			return dlg.getResult();
-		}
-
-		return null;
-	}
 }

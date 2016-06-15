@@ -21,44 +21,35 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid;
 
+import java.util.List;
+
+import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.canvas.core.AnimationModel;
+
 /**
  * @author arian
  *
  */
-public abstract class PGridProperty<T> {
-	private String _name;
-	private String _tooltip;
-	private String _nodeId;
+public abstract class PGridAnimationsProperty extends PGridProperty<List<AnimationModel>> {
 
-	public PGridProperty(String nodeId, String name) {
-		super();
-		_name = name;
-		_nodeId = nodeId;
+	public PGridAnimationsProperty(String nodeId, String name) {
+		super(nodeId, name);
+	}
+
+	public static String getLabel(List<AnimationModel> list) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		int i = 0;
+		for (AnimationModel anim : list) {
+			if (i > 0) {
+				sb.append(",");
+			}
+			sb.append(anim.getName());
+			i++;
+		}
+		sb.append("]");
+		return sb.toString();
 	}
 	
-	public String getNodeId() {
-		return _nodeId;
-	}
-
-	public String getName() {
-		return _name;
-	}
-
-	public void setName(String name) {
-		_name = name;
-	}
-
-	public abstract T getValue();
-
-	public abstract void setValue(T value);
-
-	public abstract boolean isModified();
-
-	public String getTooltip() {
-		return _tooltip;
-	}
-
-	public void setTooltip(String tooltip) {
-		_tooltip = tooltip;
-	}
+	public abstract IAssetKey getAssetKey();
 }
