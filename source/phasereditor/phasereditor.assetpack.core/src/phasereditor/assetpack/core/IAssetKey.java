@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core;
 
+import java.util.List;
+
 /**
  * @author arian
  *
@@ -29,4 +31,8 @@ public interface IAssetKey {
 	public String getKey();
 	
 	public AssetModel getAsset();
+	
+	public default List<? extends IAssetElementModel> getAllFrames() {
+		return getAsset().getSubElements();
+	}
 }

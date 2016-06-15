@@ -191,6 +191,25 @@ public class JSCodeGenerator implements ICodeGenerator {
 		if (model.getTint() != null && !model.getTint().equals("0xffffff")) {
 			sb.append(tabs + varname + ".tint = " + model.getTint() + ";\n");
 		}
+
+		if (!model.getAnimations().isEmpty()) {
+			for (AnimationModel anim : model.getAnimations()) {
+				sb.append(tabs + varname + ".animations.add(");
+				sb.append("'" + anim.getName() + "', [");
+				int i = 0;
+				for (IAssetFrameModel frame : anim.getFrames()) {
+					if (i++ > 0) {
+						sb.append(", ");
+					}
+					if (frame instanceof SpritesheetAssetModel.FrameModel) {
+						sb.append(frame.getKey());
+					} else {
+						sb.append("'" + frame.getKey() + "'");
+					}
+				}
+				sb.append("], " + anim.getFrameRate() + ", " + anim.isLoop() + ");\n");
+			}
+		}
 	}
 
 	private static void generateTileProps(int indent, StringBuilder sb, TileSpriteModel model, String parVar) {

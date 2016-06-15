@@ -24,6 +24,7 @@ package phasereditor.canvas.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -96,7 +97,15 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 		jsonInfo.put("anchor.y", _anchorY, DEF_ANCHOR_Y);
 		jsonInfo.put("tint", _tint, DEF_TINT);
 
-		// TODO: missing write animations.
+		if (!_animations.isEmpty()) {
+			JSONArray array = new JSONArray();
+			jsonInfo.put("animations", array);
+			for (AnimationModel model : _animations) {
+				JSONObject obj = new JSONObject();
+				model.write(obj);
+				array.put(obj);
+			}
+		}
 	}
 
 	@Override
@@ -107,7 +116,11 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 		_tint = jsonInfo.optString("tint", DEF_TINT);
 
 		_animations = new ArrayList<>();
-
-		// TODO: missing read animations
+		if (jsonInfo.has("animations")) {
+			JSONArray array = jsonInfo.getJSONArray("animations");
+			_animations = readAnimations(array);
+		}
 	}
+
+	protected abstract List<AnimationModel> readAnimations(JSONArray array);
 }

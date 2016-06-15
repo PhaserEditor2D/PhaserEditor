@@ -21,6 +21,10 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AssetModel;
@@ -97,8 +101,23 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 	}
 
 	@Override
+	protected List<AnimationModel> readAnimations(JSONArray array) {
+		List<AnimationModel> list = new ArrayList<>();
+		for (int i = 0; i < array.length(); i++) {
+			JSONObject obj = array.getJSONObject(i);
+			AnimationModel model = new AnimationModel(null);
+			model.read(_assetKey, obj);
+			list.add(model);
+		}
+		return list;
+	}
+
+	@Override
 	public void rebuild() {
 		_assetKey = rebuildAssetKey(_assetKey);
+		for (AnimationModel model : getAnimations()) {
+			model.rebuild(_assetKey);
+		}
 	}
 
 	/**
