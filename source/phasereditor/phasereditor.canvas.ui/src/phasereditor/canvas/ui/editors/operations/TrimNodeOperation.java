@@ -38,7 +38,6 @@ import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
-import phasereditor.canvas.ui.shapes.ISpriteNode;
 
 /**
  * @author arian
@@ -75,7 +74,7 @@ public class TrimNodeOperation extends AbstractNodeOperation {
 		_mapAfter.put(_nodeId, new Point2D(groupModel.getX(), groupModel.getY()));
 
 		for (Node node : group.getChildren()) {
-			ISpriteNode sprite = (ISpriteNode) node;
+			IObjectNode sprite = (IObjectNode) node;
 			BaseObjectModel model = sprite.getModel();
 			_mapBefore.put(model.getId(), new Point2D(model.getX(), model.getY()));
 			model.setX(model.getX() - minx);

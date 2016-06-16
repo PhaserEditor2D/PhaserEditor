@@ -202,13 +202,19 @@ public class CreateBehavior {
 		for (Object elem : data) {
 			if (elem instanceof IObjectNode) {
 				IObjectNode node = (IObjectNode) elem;
-				// assign new id for pasted nodes!
-				String id = UUID.randomUUID().toString();
-				node.getModel().setId(id);
-				selection.add(id);
 
+				// generate a new id
+				String newId = UUID.randomUUID().toString();
+				// add to the selection
+				selection.add(newId);
+				// assign the new id and keep the old
+				String oldId = node.getModel().getId();
+				node.getModel().setId(newId);
+				// create the new data
 				JSONObject copyJson = new JSONObject();
 				node.getModel().write(copyJson);
+				// restore the old id
+				node.getModel().setId(oldId);
 
 				double x2 = x + i * 20;
 				double y2 = y + i * 20;
