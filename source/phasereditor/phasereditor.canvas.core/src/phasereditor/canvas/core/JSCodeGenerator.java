@@ -119,9 +119,9 @@ public class JSCodeGenerator implements ICodeGenerator {
 			sb.append(tabs1 + " // public fields\n\n");
 			sb.append(pubs);
 		}
-		
+
 		sb.append("\n");
-		
+
 		sb.append(tabs1 + POST_INIT_CODE_BEGIN);
 		sb.append(postInit);
 		sb.append(POST_INIT_CODE_END + "\n");
@@ -221,13 +221,14 @@ public class JSCodeGenerator implements ICodeGenerator {
 					+ ")");
 		} else if (model instanceof TileSpriteModel) {
 			TileSpriteModel tile = (TileSpriteModel) model;
+			boolean isImage = tile.getAssetKey().getAsset() instanceof ImageAssetModel;
 			sb.append("tileSprite(" + // sprite
 					round(tile.getX())// x
 					+ ", " + round(tile.getY()) // y
 					+ ", " + round(tile.getWidth()) // width
 					+ ", " + round(tile.getHeight()) // height
 					+ ", '" + tile.getAssetKey().getAsset().getKey() + "'" // key
-					+ ", '" + tile.getAssetKey().getKey() + "'"// frame
+					+ ", " + (isImage ? "null" : "'" + tile.getAssetKey().getKey() + "'")// frame
 					+ ", " + parVar // group
 					+ ")");
 		}

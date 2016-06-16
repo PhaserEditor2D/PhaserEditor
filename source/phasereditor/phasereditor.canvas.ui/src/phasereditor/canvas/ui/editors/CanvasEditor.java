@@ -213,8 +213,19 @@ public class CanvasEditor extends EditorPart
 
 	@SuppressWarnings("unused")
 	@Override
-	public void createPartControl(Composite parent) {
+	public void createPartControl(Composite parent1) {
+		GridLayout gl_parent1 = new GridLayout(1, false);
+		gl_parent1.marginWidth = 0;
+		gl_parent1.marginHeight = 0;
+		parent1.setLayout(gl_parent1);
+		Composite parent = new Composite(parent1, SWT.NONE);
+		parent.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		_toolBar = new ToolBar(parent, SWT.FLAT | SWT.RIGHT);
+		_toolBar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		
 		GridLayout gl_parent = new GridLayout(1, false);
+		gl_parent.verticalSpacing = 0;
+		gl_parent.horizontalSpacing = 0;
 		gl_parent.marginWidth = 3;
 		gl_parent.marginHeight = 3;
 		parent.setLayout(gl_parent);
@@ -234,11 +245,11 @@ public class CanvasEditor extends EditorPart
 
 		_centerComposite = new Composite(_mainSashForm, SWT.NONE);
 		GridLayout gl_composite = new GridLayout(2, false);
+		gl_composite.marginHeight = 0;
+		gl_composite.marginWidth = 0;
 		gl_composite.horizontalSpacing = 0;
 		gl_composite.verticalSpacing = 2;
 		_centerComposite.setLayout(gl_composite);
-		_toolBar = new ToolBar(_centerComposite, SWT.FLAT | SWT.RIGHT);
-		_toolBar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		_canvas = new ObjectCanvas(_centerComposite, SWT.BORDER);
 		_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 

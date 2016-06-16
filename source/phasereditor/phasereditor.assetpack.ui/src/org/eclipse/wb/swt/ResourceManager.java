@@ -42,6 +42,7 @@ import org.osgi.framework.Bundle;
  * @author scheglov_ke
  * @author Dan Rubel
  */
+@SuppressWarnings("all")
 public class ResourceManager extends SWTResourceManager {
 	////////////////////////////////////////////////////////////////////////////
 	//

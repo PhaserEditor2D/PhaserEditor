@@ -29,9 +29,9 @@ import java.util.List;
  */
 public interface IAssetKey {
 	public String getKey();
-	
+
 	public AssetModel getAsset();
-	
+
 	public default List<? extends IAssetElementModel> getAllFrames() {
 		return getAsset().getSubElements();
 	}
