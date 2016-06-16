@@ -776,5 +776,34 @@
             parentId="org.eclipse.ui.contexts.window">
       </context>
    </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="*">
+         <newWizardShortcut
+               id="phasereditor.canvas.ui.newCanvasWizard">
+         </newWizardShortcut>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.viewer">
+      <viewerContentBinding
+            viewerId="org.eclipse.ui.navigator.resources.ProjectExplorer">
+         <includes>
+            <contentExtension
+                  pattern="phasereditor.assetpack.ui.*">
+            </contentExtension>
+         </includes>
+      </viewerContentBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.navigatorContent">
+      <commonWizard
+            menuGroupId="phaser.new.other"
+            type="new"
+            wizardId="phasereditor.canvas.ui.newCanvasWizard">
+         <enablement></enablement>
+      </commonWizard>
+   </extension>
 
 </plugin>
