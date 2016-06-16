@@ -229,6 +229,11 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 			public boolean isModified() {
 				return getModel().isPhysicsGroup();
 			}
+			
+			@Override
+			public String getTooltip() {
+				return help("Phaser.GameObjectFactory.physicsGroup");
+			}
 		});
 		propModel.getSections().add(section);
 	}
