@@ -61,8 +61,17 @@ public class CanvasNewFilePage extends WizardNewFileCreationPage {
 		IPath fullPath = getContainerFullPath();
 		if (fullPath != null && fullPath.segmentCount() > 0) {
 			IProject project = ProjectCore.getProjectFromPath(fullPath);
-			IPath designPath = ProjectCore.getWebContentPath(project);
-			setContainerFullPath(designPath);
+			IPath webContentPath = ProjectCore.getWebContentPath(project);
+			IPath contPath;
+			if (webContentPath.isPrefixOf(fullPath)) {
+				contPath = fullPath;
+			} else {
+				contPath = webContentPath;
+			}
+			if (contPath.toFile().isFile()) {
+				contPath = project.getFile(contPath).getParent().getFullPath();
+			}
+			setContainerFullPath(contPath);
 		}
 	}
 
