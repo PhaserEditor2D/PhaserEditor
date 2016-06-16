@@ -52,7 +52,7 @@ public class AddNodeOperation extends AbstractNodeOperation {
 	public AddNodeOperation(JSONObject data, int index, double x, double y, String parentId) {
 		super("CreateNodeOperation", null);
 		_data = data;
-		_index = index == -1 ? 0 : index;
+		_index = index;
 		_x = x;
 		_y = y;
 		_parentId = parentId;

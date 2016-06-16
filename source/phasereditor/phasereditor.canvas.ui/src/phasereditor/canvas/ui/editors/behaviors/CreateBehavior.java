@@ -150,7 +150,7 @@ public class CreateBehavior {
 			model.write(groupData);
 		}
 		// add new group
-		operations.add(new AddNodeOperation(groupData, 0, 0, 0, parentModel.getId()));
+		operations.add(new AddNodeOperation(groupData, -1, 0, 0, parentModel.getId()));
 
 		// add children
 
@@ -163,7 +163,7 @@ public class CreateBehavior {
 			i++;
 		}
 		operations.add(new SelectOperation(newGroupId));
-		
+
 		return newGroupId;
 	}
 

@@ -212,8 +212,13 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 	}
 
 	public void addChild(int i, IObjectNode inode) {
-		getModel().addChild(i, inode.getModel());
-		getNode().getChildren().add(i, inode.getNode());
+		if (i == -1) {
+			getModel().addChild(inode.getModel());
+			getNode().getChildren().add(inode.getNode());
+		} else {
+			getModel().addChild(i, inode.getModel());
+			getNode().getChildren().add(i, inode.getNode());
+		}
 	}
 
 	@Override
