@@ -31,6 +31,7 @@ import java.util.UUID;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.json.JSONObject;
 
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.DragEvent;
 import phasereditor.assetpack.core.IAssetKey;
@@ -192,6 +193,11 @@ public class CreateBehavior {
 
 		double x = _canvas.getScene().getWidth() / 2 + 50 - Math.random() * 100;
 		double y = _canvas.getScene().getHeight() / 2 + 50 - Math.random() * 100;
+		{
+			Point2D p = _canvas.getWorldNode().sceneToLocal(x, y);
+			x = p.getX();
+			y = p.getY();
+		}
 
 		CompositeOperation operations = new CompositeOperation();
 

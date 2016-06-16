@@ -37,6 +37,7 @@ public class GroupModel extends BaseObjectModel {
 	public static final String TYPE_NAME = "group";
 	private List<BaseObjectModel> _children;
 	private boolean _editorClosed;
+	private boolean _physicsGroup;
 
 	public GroupModel(GroupModel parent, JSONObject data) {
 		super(parent, TYPE_NAME, data);
@@ -58,6 +59,14 @@ public class GroupModel extends BaseObjectModel {
 
 	public void setEditorClosed(boolean editorClosed) {
 		_editorClosed = editorClosed;
+	}
+
+	public boolean isPhysicsGroup() {
+		return _physicsGroup;
+	}
+
+	public void setPhysicsGroup(boolean physicsGroup) {
+		_physicsGroup = physicsGroup;
 	}
 
 	@Override
@@ -93,6 +102,8 @@ public class GroupModel extends BaseObjectModel {
 
 		_editorClosed = jsonInfo.optBoolean("editorClosed", false);
 
+		_physicsGroup = jsonInfo.optBoolean("physicsGroup", false);
+		
 		_children = new ArrayList<>();
 
 		try {
@@ -115,6 +126,8 @@ public class GroupModel extends BaseObjectModel {
 		super.writeInfo(jsonInfo);
 
 		jsonInfo.put("editorClosed", _editorClosed);
+		
+		jsonInfo.put("physicsGroup", _physicsGroup);
 
 		JSONArray shapesArray = new JSONArray();
 

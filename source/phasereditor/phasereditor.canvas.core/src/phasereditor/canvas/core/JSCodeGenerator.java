@@ -108,7 +108,7 @@ public class JSCodeGenerator implements ICodeGenerator {
 		// public fields
 		StringBuilder pubs = new StringBuilder();
 		model.walk(obj -> {
-			if (!(obj instanceof WorldModel) && obj.isEditorPublic()) {
+			if (!(obj instanceof WorldModel) && obj.isEditorPublic() && obj.isEditorGenerate()) {
 				String name = obj.getEditorName();
 				String camel = "f" + name.substring(0, 1).toUpperCase() + name.substring(1);
 				pubs.append(tabs1 + "this." + camel + " = " + name + ";\n");
@@ -312,9 +312,18 @@ public class JSCodeGenerator implements ICodeGenerator {
 	private static void generateGroup(int indent, StringBuilder sb, GroupModel group) {
 		String tabs = tabs(indent);
 
-		sb.append(tabs);
-		sb.append(format("var %s = this.game.add.group(%s);\n", group.getEditorName(),
-				group.getParent().isWorldModel() ? "this" : group.getParent().getEditorName()));
+		{
+			sb.append(tabs);
+			sb.append("var " + group.getEditorName() + " = ");
+			if (group.isPhysicsGroup()) {
+				sb.append("this.game.add.physicsGroup(Phaser.Physics.ARCADE, "
+						+ (group.getParent().isWorldModel() ? "this" : group.getParent().getEditorName()) + ");\n");
+			} else {
+				sb.append(format("this.game.add.group(%s);\n",
+						group.getParent().isWorldModel() ? "this" : group.getParent().getEditorName()));
+
+			}
+		}
 
 		generateDisplayProps(indent, sb, group);
 

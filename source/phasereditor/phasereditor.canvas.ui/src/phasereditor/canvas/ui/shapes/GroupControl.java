@@ -202,6 +202,37 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 		section.add(_closed_property);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see phasereditor.canvas.ui.shapes.BaseObjectControl#initPGridModel(
+	 * phasereditor.canvas.ui.editors.grid.PGridModel)
+	 */
+	@Override
+	protected void initPGridModel(PGridModel propModel) {
+		super.initPGridModel(propModel);
+
+		PGridSection section = new PGridSection("Group");
+		section.add(new PGridBooleanProperty(getId(), "physicsGroup") {
+
+			@Override
+			public void setValue(Boolean value) {
+				getModel().setPhysicsGroup(value.booleanValue());
+			}
+
+			@Override
+			public Boolean getValue() {
+				return Boolean.valueOf(getModel().isPhysicsGroup());
+			}
+
+			@Override
+			public boolean isModified() {
+				return getModel().isPhysicsGroup();
+			}
+		});
+		propModel.getSections().add(section);
+	}
+
 	public void removeChild(IObjectNode inode) {
 		getModel().removeChild(inode.getModel());
 		getNode().getChildren().remove(inode.getNode());
