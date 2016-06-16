@@ -105,6 +105,7 @@ public class ObjectCanvas extends FXCanvas {
 		_paintBehavior = new PaintBehavior(this);
 
 		_updateBehavior.updateFromSettings();
+		_zoomBehavior.updateZoomAndPan();
 	}
 
 	public CanvasEditor getEditor() {

@@ -47,7 +47,7 @@ public class ZoomBehavior {
 		super();
 		_canvas = canvas;
 		_scale = 1;
-		_translate = new Point2D(0, 0);
+		_translate = new Point2D(50, 50);
 	}
 
 	void handleScroll(ScrollEvent e) {

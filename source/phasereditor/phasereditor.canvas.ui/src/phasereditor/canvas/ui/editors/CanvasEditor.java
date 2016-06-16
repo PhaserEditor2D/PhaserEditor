@@ -669,7 +669,7 @@ public class CanvasEditor extends EditorPart
 			{
 				Float x = memento.getFloat("canvas.translate.x");
 				Float y = memento.getFloat("canvas.translate.y");
-				_state.translate = new Point2D(x == null ? 0 : x.doubleValue(), y == null ? 0 : y.doubleValue());
+				_state.translate = new Point2D(x == null ? 50 : x.doubleValue(), y == null ? 50 : y.doubleValue());
 			}
 
 			{
