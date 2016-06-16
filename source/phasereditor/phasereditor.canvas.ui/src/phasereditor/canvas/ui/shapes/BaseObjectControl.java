@@ -355,6 +355,25 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			}
 		});
 
+		PGridBooleanProperty editorPublic_property = new PGridBooleanProperty(getId(), "public") {
+			@Override
+			public Boolean getValue() {
+				return Boolean.valueOf(getModel().isEditorPublic());
+			}
+
+			@Override
+			public void setValue(Boolean value) {
+				getModel().setEditorPublic(value.booleanValue());
+				updateGridChange();
+			}
+
+			@Override
+			public boolean isModified() {
+				return getModel().isEditorPublic() != BaseObjectModel.DEF_EDITOR_PUBLIC;
+			}
+		};
+		section.add(editorPublic_property);
+
 		_editorPick_property = new PGridBooleanProperty(getId(), "pick") {
 
 			@Override

@@ -26,5 +26,5 @@ package phasereditor.canvas.core;
  *
  */
 public interface ICodeGenerator {
-	public String generate(WorldModel model);
+	public String generate(WorldModel model, String replace);
 }

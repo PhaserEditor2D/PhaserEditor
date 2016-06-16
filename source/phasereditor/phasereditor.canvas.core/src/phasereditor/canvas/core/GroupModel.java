@@ -23,6 +23,7 @@ package phasereditor.canvas.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -50,7 +51,7 @@ public class GroupModel extends BaseObjectModel {
 	public boolean isWorldModel() {
 		return false;
 	}
-	
+
 	public boolean isEditorClosed() {
 		return _editorClosed;
 	}
@@ -143,6 +144,17 @@ public class GroupModel extends BaseObjectModel {
 	public void rebuild() {
 		for (BaseObjectModel model : _children) {
 			model.rebuild();
+		}
+	}
+
+	public void walk(Consumer<BaseObjectModel> visitor) {
+		visitor.accept(this);
+		for (BaseObjectModel child : getChildren()) {
+			if (child instanceof GroupModel) {
+				((GroupModel) child).walk(visitor);
+			} else {
+				visitor.accept(child);
+			}
 		}
 	}
 }

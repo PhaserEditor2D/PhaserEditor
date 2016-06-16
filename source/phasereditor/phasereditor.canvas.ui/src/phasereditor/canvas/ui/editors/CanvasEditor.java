@@ -487,16 +487,14 @@ public class CanvasEditor extends EditorPart
 			WorldModel model = getCanvas().getWorldModel();
 			String fname = model.getClassName() + ".js";
 			IFile file = getEditorInputFile().getParent().getFile(new Path(fname));
-			String userCode = "";
+			String replace = null;
 
 			if (file.exists()) {
 				byte[] bytes = Files.readAllBytes(file.getLocation().makeAbsolute().toFile().toPath());
-				userCode = new String(bytes);
-				int i = userCode.indexOf(JSCodeGenerator.END_GENERATED_CODE);
-				userCode = userCode.substring(i + JSCodeGenerator.END_GENERATED_CODE.length());
+				replace = new String(bytes);
 			}
 
-			String content = generator.generate(model) + userCode;
+			String content = generator.generate(model, replace);
 
 			ByteArrayInputStream stream = new ByteArrayInputStream(content.getBytes());
 			if (file.exists()) {
