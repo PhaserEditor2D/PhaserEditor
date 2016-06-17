@@ -21,13 +21,18 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.chains.core;
 
+import static java.lang.System.currentTimeMillis;
+import static java.lang.System.out;
+
 public class ChainsCore {
 
 	private static ChainsModel _chainsModel;
 
-	public static ChainsModel getChainsModel() {
+	public static synchronized ChainsModel getChainsModel() {
 		if (_chainsModel == null) {
+			long t = currentTimeMillis();
 			_chainsModel = new ChainsModel();
+			out.println("Building chains " + (currentTimeMillis() - t) + "ms");
 		}
 		return _chainsModel;
 	}
