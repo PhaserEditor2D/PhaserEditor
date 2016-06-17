@@ -35,6 +35,8 @@ import org.json.JSONObject;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.DeleteNodeOperation;
+import phasereditor.canvas.ui.editors.operations.ExpandOutlineOperation;
+import phasereditor.canvas.ui.editors.operations.SelectOperation;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
@@ -74,6 +76,7 @@ public class OutlineDropAdapter extends ViewerDropAdapter {
 		IObjectNode target = (IObjectNode) _target;
 
 		List<IObjectNode> nodes = new ArrayList<>();
+
 		for (Object obj : ((IStructuredSelection) data).toArray()) {
 
 			if (obj == target) {
@@ -96,6 +99,9 @@ public class OutlineDropAdapter extends ViewerDropAdapter {
 		}
 
 		CompositeOperation operations = new CompositeOperation();
+
+		List<String> selection = new ArrayList<>();
+		List<String> expandList = new ArrayList<>();
 
 		for (IObjectNode node : nodes) {
 			GroupNode group = target.getGroup();
@@ -123,28 +129,32 @@ public class OutlineDropAdapter extends ViewerDropAdapter {
 
 			JSONObject jsonData = new JSONObject();
 			node.getModel().write(jsonData);
+
+			selection.add(node.getModel().getId());
+
 			double x = node.getModel().getX();
 			double y = node.getModel().getY();
 
+			String groupId = group.getControl().getId();
 			switch (_location) {
 			case LOCATION_BEFORE:
-				// group.getControl().addChild(i + 1, node);
-				operations.add(new AddNodeOperation(jsonData, i + 1, x, y, group.getControl().getId()));
+				operations.add(new AddNodeOperation(jsonData, i + 1, x, y, groupId));
+				expandList.add(groupId);
 				break;
 			case LOCATION_AFTER:
-				// group.getControl().addChild(i, node);
-				operations.add(new AddNodeOperation(jsonData, i, x, y, group.getControl().getId()));
+				operations.add(new AddNodeOperation(jsonData, i, x, y, groupId));
+				expandList.add(groupId);
 				break;
 			case LOCATION_ON:
 				if (target instanceof GroupNode) {
-					GroupNode group2 = (GroupNode) target;
-					// group2.getControl().addChild(node);
+					GroupNode asGroup = (GroupNode) target;
 					// add to the end (-1 because the node will be removed)
-					int i2 = group2.getChildren().size() - 1;
-					operations.add(new AddNodeOperation(jsonData, i2, x, y, group2.getControl().getId()));
+					int i2 = asGroup.getChildren().size() - 1;
+					String targetId = asGroup.getControl().getId();
+					operations.add(new AddNodeOperation(jsonData, i2, x, y, targetId));
+					expandList.add(targetId);
 				} else {
-					// group.getControl().addChild(i, node);
-					operations.add(new AddNodeOperation(jsonData, i, x, y, group.getControl().getId()));
+					operations.add(new AddNodeOperation(jsonData, i, x, y, groupId));
 				}
 				break;
 			default:
@@ -152,11 +162,10 @@ public class OutlineDropAdapter extends ViewerDropAdapter {
 			}
 		}
 
+		operations.add(new ExpandOutlineOperation(expandList));
+		operations.add(new SelectOperation(selection));
+		
 		_editor.getCanvas().getUpdateBehavior().executeOperations(operations);
-
-		// _editor.getCanvas().getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
-		// _editor.getCanvas().getSelectionBehavior().setSelection(new
-		// StructuredSelection(nodes));
 
 		return true;
 	}

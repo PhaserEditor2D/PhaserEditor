@@ -21,10 +21,18 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.operations;
 
-import org.eclipse.core.commands.operations.AbstractOperation;
-import org.eclipse.core.runtime.IAdaptable;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import phasereditor.canvas.ui.editors.CanvasEditor;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.viewers.TreeViewer;
+
+import javafx.scene.Node;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 
@@ -32,29 +40,35 @@ import phasereditor.canvas.ui.shapes.BaseObjectControl;
  * @author arian
  *
  */
-public abstract class AbstractNodeOperation extends AbstractOperation {
+public class ExpandOutlineOperation extends AbstractNodeOperation {
 
-	protected String _nodeId;
+	private Set<String> _expandIds;
 
-	public AbstractNodeOperation(String label, String controlId) {
-		super(label);
-		_nodeId = controlId;
-	}
-	
-	protected BaseObjectControl<?> findControl(IAdaptable info) {
-		return findControl(info, _nodeId);
+	public ExpandOutlineOperation(List<String> expandIds) {
+		super("ExpandOperation", null);
+		_expandIds = new HashSet<>(expandIds);
 	}
 
-	protected static BaseObjectControl<?> findControl(IAdaptable info, String id) {
-		CanvasEditor editor = info.getAdapter(CanvasEditor.class);
-		return editor.getCanvas().getWorldNode().getControl().findById(id);
+	@Override
+	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
+		ObjectCanvas canvas = getCanvas(info);
+		TreeViewer viewer = canvas.getOutline();
+		for (String id : _expandIds) {
+			BaseObjectControl<?> control = findControl(info, id);
+			Node node = control.getNode();
+			viewer.expandToLevel(node, 1);
+		}
+		return Status.OK_STATUS;
 	}
-	
-	protected static CanvasEditor getEditor(IAdaptable info) {
-		return  info.getAdapter(CanvasEditor.class);
+
+	@Override
+	public IStatus redo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
+		return Status.OK_STATUS;
 	}
-	
-	protected static ObjectCanvas getCanvas(IAdaptable info) {
-		return  info.getAdapter(CanvasEditor.class).getCanvas();
+
+	@Override
+	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
+		return Status.OK_STATUS;
 	}
+
 }
