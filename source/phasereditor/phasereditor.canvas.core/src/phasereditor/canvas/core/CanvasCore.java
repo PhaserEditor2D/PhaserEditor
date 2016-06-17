@@ -37,6 +37,7 @@ public class CanvasCore {
 			} else {
 				sb.append("_");
 			}
+			i++;
 		}
 		return sb.toString();
 	}
