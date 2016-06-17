@@ -71,6 +71,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ResourceManager;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.canvas.core.AnimationModel;
 
@@ -268,7 +269,12 @@ public class AnimationsDialog extends Dialog {
 
 			@Override
 			public String getText(Object element) {
-				return "";
+				if (element instanceof SpritesheetAssetModel.FrameModel) {
+					int index = ((SpritesheetAssetModel.FrameModel) element).getIndex();
+					return Integer.toString(index);
+				}
+
+				return AssetLabelProvider.GLOBAL_48.getText(element);
 			}
 		});
 		_framesViewer.setContentProvider(ArrayContentProvider.getInstance());
