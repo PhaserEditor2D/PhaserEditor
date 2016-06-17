@@ -122,9 +122,7 @@ public class CompositeOperation extends AbstractOperation {
 							op.redo(monitor, info);
 							monitor2.worked(1);
 						}
-
 						fireWorldChanged(info);
-
 					} catch (ExecutionException e) {
 						e.printStackTrace();
 					}
@@ -171,6 +169,7 @@ public class CompositeOperation extends AbstractOperation {
 				IUndoableOperation op = _operations.get(i);
 				status = op.undo(monitor, info);
 			}
+			fireWorldChanged(info);
 		}
 
 		return status;

@@ -44,15 +44,19 @@ import phasereditor.canvas.ui.shapes.IObjectNode;
 public class SelectOperation extends AbstractNodeOperation {
 
 	private List<String> _beforeSelection;
-	private String[] _selection;
+	private List<String> _selection;
 
 	public SelectOperation(String... selectionIds) {
-		super("SelectOperation", null);
-		_selection = selectionIds;
+		this(new ArrayList<>(Arrays.asList(selectionIds)));
 	}
 
 	public SelectOperation(List<String> selection) {
-		this(selection.toArray(new String[selection.size()]));
+		super("SelectOperation", null);
+		_selection = selection;
+	}
+
+	public void add(String id) {
+		_selection.add(id);
 	}
 
 	@Override
@@ -72,6 +76,7 @@ public class SelectOperation extends AbstractNodeOperation {
 			selection.add(control.getIObjectNode());
 		}
 
+		canvas.getUpdateBehavior().fireWorldChanged();
 		behavior.setSelection(new StructuredSelection(selection));
 
 		return Status.OK_STATUS;
@@ -79,7 +84,7 @@ public class SelectOperation extends AbstractNodeOperation {
 
 	@Override
 	public IStatus redo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		return updateSelection(info, Arrays.asList(_selection));
+		return updateSelection(info, _selection);
 	}
 
 	@Override
@@ -88,16 +93,19 @@ public class SelectOperation extends AbstractNodeOperation {
 	}
 
 	private static IStatus updateSelection(IAdaptable info, List<String> selectionIds) {
+		ObjectCanvas canvas = getCanvas(info);
+		canvas.getUpdateBehavior().fireWorldChanged();
+
 		List<IObjectNode> selection = new ArrayList<>();
 		for (String id : selectionIds) {
 			BaseObjectControl<?> control = findControl(info, id);
-			// is possible the node does not exist, like in operations of create then select, then in the redo  
+			// is possible the node does not exist, like in operations of create
+			// then select, then in the redo
 			if (control != null) {
 				selection.add(control.getIObjectNode());
 			}
 		}
 
-		ObjectCanvas canvas = getCanvas(info);
 		canvas.getSelectionBehavior().setSelection(new StructuredSelection(selection));
 
 		return Status.OK_STATUS;

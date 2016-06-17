@@ -39,8 +39,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.AssertionFailedException;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.wst.jsdt.core.IMember;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -52,10 +50,6 @@ public class PhaserJSDoc {
 	private static PhaserJSDoc _instance;
 
 	public synchronized static PhaserJSDoc getInstance() {
-
-		Location location = Platform.getConfigurationLocation();
-		out.println("Configuration: " + location.getURL());
-
 		if (_instance == null) {
 			long t = currentTimeMillis();
 			Path phaserVersionFolder = InspectCore.getPhaserVersionFolder();
