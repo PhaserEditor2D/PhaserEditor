@@ -107,6 +107,10 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		_node.setLayoutX(_model.getX());
 		_node.setLayoutY(_model.getY());
 
+		if (_model.isEditorShow() != _node.isVisible()) {
+			_node.setVisible(_model.isEditorShow());
+		}
+
 		ObservableList<Transform> transforms = _node.getTransforms();
 		transforms.clear();
 
@@ -395,7 +399,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		};
 		section.add(_editorPick_property);
 
-		PGridBooleanProperty editorGenerate_property = new PGridBooleanProperty(getId(), "generate") {
+		section.add(new PGridBooleanProperty(getId(), "generate") {
 
 			@Override
 			public Boolean getValue() {
@@ -412,8 +416,26 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			public boolean isModified() {
 				return !getModel().isEditorGenerate();
 			}
-		};
-		section.add(editorGenerate_property);
+		});
+		
+		section.add(new PGridBooleanProperty(getId(), "show") {
+
+			@Override
+			public Boolean getValue() {
+				return Boolean.valueOf(getModel().isEditorShow());
+			}
+
+			@Override
+			public void setValue(Boolean value) {
+				getModel().setEditorShow(value.booleanValue());
+				updateGridChange();
+			}
+
+			@Override
+			public boolean isModified() {
+				return !getModel().isEditorShow();
+			}
+		});
 	}
 
 	protected void updateGridChange() {
