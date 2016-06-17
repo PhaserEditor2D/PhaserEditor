@@ -134,8 +134,7 @@ public class CompositeOperation extends AbstractOperation {
 				e.printStackTrace();
 			}
 		} else {
-			for (int i = _operations.size() - 1; i >= 0; i--) {
-				IUndoableOperation op = _operations.get(i);
+			for (IUndoableOperation op : _operations) {
 				status = op.redo(monitor, info);
 			}
 			fireWorldChanged(info);

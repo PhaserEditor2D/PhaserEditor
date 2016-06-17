@@ -91,7 +91,10 @@ public class SelectOperation extends AbstractNodeOperation {
 		List<IObjectNode> selection = new ArrayList<>();
 		for (String id : selectionIds) {
 			BaseObjectControl<?> control = findControl(info, id);
-			selection.add(control.getIObjectNode());
+			// is possible the node does not exist, like in operations of create then select, then in the redo  
+			if (control != null) {
+				selection.add(control.getIObjectNode());
+			}
 		}
 
 		ObjectCanvas canvas = getCanvas(info);

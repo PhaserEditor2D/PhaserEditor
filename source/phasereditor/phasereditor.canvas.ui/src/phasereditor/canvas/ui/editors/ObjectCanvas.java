@@ -21,19 +21,15 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
-import java.util.List;
-
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
 
 import javafx.embed.swt.FXCanvas;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
@@ -48,11 +44,12 @@ import phasereditor.canvas.ui.editors.behaviors.SelectionBehavior;
 import phasereditor.canvas.ui.editors.behaviors.UpdateBehavior;
 import phasereditor.canvas.ui.editors.behaviors.ZoomBehavior;
 import phasereditor.canvas.ui.editors.grid.PGrid;
+import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
+import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.palette.PaletteComp;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
-import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
  * @author arian
@@ -182,8 +179,7 @@ public class ObjectCanvas extends FXCanvas {
 		getScene().setOnDragDropped(event -> {
 			try {
 				ISelection selection = LocalSelectionTransfer.getTransfer().getSelection();
-				List<Node> newnodes = _createBehavior.dropAssets((IStructuredSelection) selection, event);
-				_selectionBehavior.setSelection(new StructuredSelection(newnodes.toArray()));
+				_createBehavior.dropAssets((IStructuredSelection) selection, event);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -239,8 +235,8 @@ public class ObjectCanvas extends FXCanvas {
 		return _selectionGlassPane;
 	}
 
-	public void dropToWorld(BaseObjectControl<?> control, double sceneX, double sceneY) {
-		IObjectNode node = control.getIObjectNode();
+	public void dropToWorld(CompositeOperation operations, BaseObjectControl<?> control, double sceneX, double sceneY) {
+		// IObjectNode node = control.getIObjectNode();
 		GroupNode worldNode = getWorldNode();
 
 		double invScale = 1 / _zoomBehavior.getScale();
@@ -253,14 +249,12 @@ public class ObjectCanvas extends FXCanvas {
 		double h = control.getTextureHeight() / 2;
 
 		BaseObjectModel model = control.getModel();
-		model.setX(x - w);
-		model.setY(y - h);
 
-		control.updateFromModel();
+		operations.add(new AddNodeOperation(model.toJSON(), -1, x - w, y - h, worldNode.getModel().getId()));
 
-		worldNode.getControl().addChild(node);
-
-		_updateBehavior.fireWorldChanged();
+		// control.updateFromModel();
+		// worldNode.getControl().addChild(node);
+		// _updateBehavior.fireWorldChanged();
 	}
 
 	public void dirty() {

@@ -64,10 +64,11 @@ public class CreateBehavior {
 		_palette = palette;
 	}
 
-	public List<Node> dropAssets(IStructuredSelection selection, DragEvent event) {
+	public void dropAssets(IStructuredSelection selection, DragEvent event) {
 		Object[] elems = selection.toArray();
-		List<Node> _newnodes = new ArrayList<>();
 		int i = 0;
+		CompositeOperation operations = new CompositeOperation();
+		List<String> selectionIds = new ArrayList<>();
 		for (Object elem : elems) {
 			if (elem instanceof IAssetKey) {
 				// TODO: for now get as parent the world
@@ -78,23 +79,21 @@ public class CreateBehavior {
 					model.setEditorName(newname);
 					BaseObjectControl<?> control = CanvasObjectFactory.createObjectControl(_canvas, model);
 					if (control != null) {
-						_newnodes.add(control.getNode());
+						selectionIds.add(control.getModel().getId());
 						double x = event.getSceneX() + i * 20;
 						double y = event.getSceneY() + i * 20;
-						dropSprite(control, x, y);
+						_canvas.dropToWorld(operations, control, x, y);
 						i++;
 					}
 				}
 			}
 		}
+		if (!operations.isEmpty()) {
+			operations.add(new SelectOperation(selectionIds));
+			_canvas.getUpdateBehavior().executeOperations(operations);
+		}
 
 		_palette.drop(elems);
-
-		return _newnodes;
-	}
-
-	public void dropSprite(BaseObjectControl<?> control, double sceneX, double sceneY) {
-		_canvas.dropToWorld(control, sceneX, sceneY);
 	}
 
 	public String makeGroup(CompositeOperation operations, Object... elems) {
