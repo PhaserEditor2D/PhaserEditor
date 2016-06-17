@@ -48,6 +48,14 @@ public class GroupModel extends BaseObjectModel {
 		_children = new ArrayList<>();
 	}
 
+	@Override
+	public void resetId() {
+		super.resetId();
+		for (BaseObjectModel child : _children) {
+			child.resetId();
+		}
+	}
+
 	@SuppressWarnings("static-method")
 	public boolean isWorldModel() {
 		return false;
@@ -103,7 +111,7 @@ public class GroupModel extends BaseObjectModel {
 		_editorClosed = jsonInfo.optBoolean("editorClosed", false);
 
 		_physicsGroup = jsonInfo.optBoolean("physicsGroup", false);
-		
+
 		_children = new ArrayList<>();
 
 		try {
@@ -126,7 +134,7 @@ public class GroupModel extends BaseObjectModel {
 		super.writeInfo(jsonInfo);
 
 		jsonInfo.put("editorClosed", _editorClosed);
-		
+
 		jsonInfo.put("physicsGroup", _physicsGroup);
 
 		JSONArray shapesArray = new JSONArray();

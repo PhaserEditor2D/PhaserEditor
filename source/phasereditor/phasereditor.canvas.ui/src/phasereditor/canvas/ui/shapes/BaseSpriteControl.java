@@ -122,7 +122,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 
 		_spriteSection = new PGridSection("Sprite");
 
-		_anchor_x_property = new PGridNumberProperty(getId(), "anchor.x") {
+		_anchor_x_property = new PGridNumberProperty(getId(), "anchor.x", help("Phaser.Sprite.anchor")) {
 			@Override
 			public Double getValue() {
 				return Double.valueOf(getModel().getAnchorX());
@@ -138,14 +138,9 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 			public boolean isModified() {
 				return getModel().getAnchorX() != 0;
 			}
-
-			@Override
-			public String getTooltip() {
-				return help("Phaser.Sprite.anchor");
-			}
 		};
 
-		_anchor_y_property = new PGridNumberProperty(getId(), "anchor.y") {
+		_anchor_y_property = new PGridNumberProperty(getId(), "anchor.y", help("Phaser.Sprite.anchor")) {
 			@Override
 			public Double getValue() {
 				return Double.valueOf(getModel().getAnchorY());
@@ -161,14 +156,9 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 			public boolean isModified() {
 				return getModel().getAnchorY() != 0;
 			}
-
-			@Override
-			public String getTooltip() {
-				return help("Phaser.Sprite.anchor");
-			}
 		};
 
-		_tint_property = new PGridColorProperty(getId(), "tint") {
+		_tint_property = new PGridColorProperty(getId(), "tint", help("Phaser.Sprite.tint")) {
 
 			@Override
 			public void setValue(RGB value) {
@@ -200,16 +190,12 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 				Color c = Color.valueOf(tint);
 				return new RGB((int) (c.getRed() * 255), (int) (c.getGreen() * 255), (int) (c.getBlue() * 255));
 			}
-
-			@Override
-			public String getTooltip() {
-				return help("Phaser.Sprite.tint");
-			}
 		};
 
 		_tint_property.setDefaultRGB(new RGB(255, 255, 255));
 
-		PGridAnimationsProperty animations_properties = new PGridAnimationsProperty(getId(), "animations") {
+		PGridAnimationsProperty animations_properties = new PGridAnimationsProperty(getId(), "animations",
+				help("Phaser.Sprite.animations")) {
 
 			@Override
 			public void setValue(List<AnimationModel> value) {
@@ -220,11 +206,6 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 			@Override
 			public List<AnimationModel> getValue() {
 				return getModel().getAnimations();
-			}
-
-			@Override
-			public String getTooltip() {
-				return help("Phaser.Sprite.animations");
 			}
 
 			@Override

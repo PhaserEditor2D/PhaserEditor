@@ -46,12 +46,12 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 	}
 
 	abstract class ButtonFrameProperty extends PGridFrameProperty {
-		public ButtonFrameProperty(String name) {
-			this(name, true);
+		public ButtonFrameProperty(String name, String tooltip) {
+			this(name, true, tooltip);
 		}
 
-		public ButtonFrameProperty(String name, boolean allowNull) {
-			super(getId(), name);
+		public ButtonFrameProperty(String name, boolean allowNull, String tooltip) {
+			super(getId(), name, tooltip);
 			setAllowNull(allowNull);
 		}
 
@@ -73,7 +73,8 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 
 		PGridSection section = new PGridSection("Button");
 
-		PGridStringProperty callback_property = new PGridStringProperty(getId(), "callback") {
+		PGridStringProperty callback_property = new PGridStringProperty(getId(), "callback",
+				help("Phaser.Button", "callback")) {
 
 			@Override
 			public void setValue(String value) {
@@ -91,14 +92,11 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 				return getModel().getCallback();
 			}
 
-			@Override
-			public String getTooltip() {
-				return help("Phaser.Button", "callback");
-			}
 		};
 		section.add(callback_property);
 
-		PGridStringProperty callbackContext_property = new PGridStringProperty(getId(), "callbackContext") {
+		PGridStringProperty callbackContext_property = new PGridStringProperty(getId(), "callbackContext",
+				help("Phaser.Button", "callbackContext")) {
 
 			@Override
 			public void setValue(String value) {
@@ -116,41 +114,15 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 				return getModel().getCallbackContext();
 			}
 
-			@Override
-			public String getTooltip() {
-				return help("Phaser.Button", "callbackContext");
-			}
 		};
 		section.add(callbackContext_property);
 
 		boolean isImage = getModel().getAssetKey().getAsset() instanceof ImageAssetModel;
 
-		if (!isImage) { // image assets does not have frames
-			// String name = getModel().getAssetKey() instanceof
-			// SpritesheetAssetModel.FrameModel ? "frame" : "frameName";
-			// ButtonFrameProperty frame_property = new
-			// ButtonFrameProperty(name, false) {
-			//
-			// @Override
-			// public void setValue(IAssetFrameModel value) {
-			// getModel().setAssetKey(value);
-			// updateGridChange();
-			// }
-			//
-			// @Override
-			// public IAssetFrameModel getValue() {
-			// return (IAssetFrameModel) getModel().getAssetKey();
-			// }
-			//
-			// @Override
-			// public String getTooltip() {
-			// return help("Phaser.Sprite." + getName());
-			// }
-			// };
-			//
-			// getSpriteSection().add(frame_property);
+		if (!isImage) {
 
-			PGridFrameProperty overFrame_property = new ButtonFrameProperty("overFrame") {
+			PGridFrameProperty overFrame_property = new ButtonFrameProperty("overFrame",
+					help("Phaser.Button", "overFrame")) {
 
 				@Override
 				public void setValue(IAssetFrameModel value) {
@@ -162,15 +134,11 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 				public IAssetFrameModel getValue() {
 					return getModel().getOverFrame();
 				}
-
-				@Override
-				public String getTooltip() {
-					return help("Phaser.Button", "overFrame");
-				}
 			};
 
 			// the outFrame is connected to the main assetKey!
-			PGridFrameProperty outFrame_property = new ButtonFrameProperty("outFrame") {
+			PGridFrameProperty outFrame_property = new ButtonFrameProperty("outFrame",
+					help("Phaser.Button", "outFrame")) {
 
 				@Override
 				public void setValue(IAssetFrameModel value) {
@@ -183,13 +151,10 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 					return (IAssetFrameModel) getModel().getAssetKey();
 				}
 
-				@Override
-				public String getTooltip() {
-					return help("Phaser.Button", "outFrame");
-				}
 			};
 
-			PGridFrameProperty downFrame_property = new ButtonFrameProperty("downFrame") {
+			PGridFrameProperty downFrame_property = new ButtonFrameProperty("downFrame",
+					help("Phaser.Button", "downFrame")) {
 
 				@Override
 				public void setValue(IAssetFrameModel value) {
@@ -202,13 +167,9 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 					return getModel().getDownFrame();
 				}
 
-				@Override
-				public String getTooltip() {
-					return help("Phaser.Button", "downFrame");
-				}
 			};
 
-			PGridFrameProperty upFrame_property = new ButtonFrameProperty("upFrame") {
+			PGridFrameProperty upFrame_property = new ButtonFrameProperty("upFrame", help("Phaser.Button", "upFrame")) {
 
 				@Override
 				public void setValue(IAssetFrameModel value) {
@@ -221,10 +182,6 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 					return getModel().getUpFrame();
 				}
 
-				@Override
-				public String getTooltip() {
-					return help("Phaser.Button", "upFrame");
-				}
 			};
 
 			section.add(overFrame_property);

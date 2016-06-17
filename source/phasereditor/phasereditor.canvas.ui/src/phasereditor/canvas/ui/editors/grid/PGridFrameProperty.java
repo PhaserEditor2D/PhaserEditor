@@ -35,8 +35,8 @@ public abstract class PGridFrameProperty extends PGridProperty<IAssetFrameModel>
 
 	private boolean _allowNull;
 
-	public PGridFrameProperty(String controlId, String name) {
-		super(controlId, name);
+	public PGridFrameProperty(String controlId, String name, String tooltip) {
+		super(controlId, name, tooltip);
 		_allowNull = false;
 	}
 

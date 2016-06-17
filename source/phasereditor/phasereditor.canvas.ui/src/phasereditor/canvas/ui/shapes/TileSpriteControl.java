@@ -87,7 +87,8 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 
 		initFrameProperty();
 
-		_tilePositionX_property = new PGridNumberProperty(getId(), "tilePosition.x") {
+		_tilePositionX_property = new PGridNumberProperty(getId(), "tilePosition.x",
+				help("Phaser.TileSprite.tilePosition")) {
 
 			@Override
 			public Double getValue() {
@@ -104,14 +105,10 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			public boolean isModified() {
 				return getModel().getTilePositionX() != 0;
 			}
-
-			@Override
-			public String getTooltip() {
-				return help("Phaser.TileSprite.tilePosition");
-			}
 		};
 
-		_tilePositionY_property = new PGridNumberProperty(getId(), "tilePosition.y") {
+		_tilePositionY_property = new PGridNumberProperty(getId(), "tilePosition.y",
+				help("Phaser.TileSprite.tilePosition")) {
 
 			@Override
 			public Double getValue() {
@@ -128,14 +125,9 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			public boolean isModified() {
 				return getModel().getTilePositionY() != 0;
 			}
-
-			@Override
-			public String getTooltip() {
-				return help("Phaser.TileSprite.tilePosition");
-			}
 		};
 
-		_width_property = new PGridNumberProperty(getId(), "width") {
+		_width_property = new PGridNumberProperty(getId(), "width", help("Phaser.TileSprite.width")) {
 
 			@Override
 			public Double getValue() {
@@ -152,14 +144,9 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			public boolean isModified() {
 				return true;
 			}
-
-			@Override
-			public String getTooltip() {
-				return help("Phaser.TileSprite.width");
-			}
 		};
 
-		_height_property = new PGridNumberProperty(getId(), "height") {
+		_height_property = new PGridNumberProperty(getId(), "height", help("Phaser.TileSprite.height")) {
 
 			@Override
 			public Double getValue() {
@@ -177,13 +164,9 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 				return true;
 			}
 
-			@Override
-			public String getTooltip() {
-				return help("Phaser.TileSprite.height");
-			}
 		};
 
-		_tileScaleX_property = new PGridNumberProperty(getId(), "tileScale.x") {
+		_tileScaleX_property = new PGridNumberProperty(getId(), "tileScale.x", help("Phaser.TileSprite.tileScale")) {
 
 			@Override
 			public Double getValue() {
@@ -200,14 +183,9 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			public boolean isModified() {
 				return getModel().getTileScaleX() != 1;
 			}
-
-			@Override
-			public String getTooltip() {
-				return help("Phaser.TileSprite.tileScale");
-			}
 		};
 
-		_tileScaleY_property = new PGridNumberProperty(getId(), "tileScale.y") {
+		_tileScaleY_property = new PGridNumberProperty(getId(), "tileScale.y", help("Phaser.TileSprite.tileScale")) {
 
 			@Override
 			public Double getValue() {
@@ -223,11 +201,6 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			@Override
 			public boolean isModified() {
 				return getModel().getTileScaleY() != 1;
-			}
-
-			@Override
-			public String getTooltip() {
-				return help("Phaser.TileSprite.tileScale");
 			}
 		};
 
@@ -251,7 +224,7 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 
 		String name = asset instanceof SpritesheetAssetModel ? "frame" : "frameName";
 
-		PGridFrameProperty frame_property = new PGridFrameProperty(getId(), name) {
+		PGridFrameProperty frame_property = new PGridFrameProperty(getId(), name, help("Phaser.Sprite." + name)) {
 
 			@Override
 			public void setValue(IAssetFrameModel value) {
@@ -274,10 +247,6 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 				return asset.getSubElements();
 			}
 
-			@Override
-			public String getTooltip() {
-				return help("Phaser.Sprite." + getName());
-			}
 		};
 
 		getSpriteSection().add(frame_property);

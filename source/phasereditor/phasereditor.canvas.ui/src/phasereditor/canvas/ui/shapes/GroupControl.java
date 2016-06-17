@@ -180,7 +180,8 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 
 		GroupModel model = getModel();
 
-		_closed_property = new PGridBooleanProperty(getId(), "closed") {
+		_closed_property = new PGridBooleanProperty(getId(), "closed",
+				"If true and you pick on a child the whole group is selected. Useful for selecting, dragging.\nThis value does not affect the game.") {
 
 			@Override
 			public Boolean getValue() {
@@ -207,7 +208,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 		super.initPGridModel(propModel);
 
 		PGridSection section = new PGridSection("Group");
-		section.add(new PGridBooleanProperty(getId(), "physicsGroup") {
+		section.add(new PGridBooleanProperty(getId(), "physicsGroup", help("Phaser.GameObjectFactory.physicsGroup")) {
 
 			@Override
 			public void setValue(Boolean value) {
@@ -224,11 +225,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 			public boolean isModified() {
 				return getModel().isPhysicsGroup();
 			}
-			
-			@Override
-			public String getTooltip() {
-				return help("Phaser.GameObjectFactory.physicsGroup");
-			}
+
 		});
 		propModel.getSections().add(section);
 	}

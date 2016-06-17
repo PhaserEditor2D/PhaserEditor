@@ -32,8 +32,8 @@ import phasereditor.canvas.core.AnimationModel;
  */
 public abstract class PGridAnimationsProperty extends PGridProperty<List<AnimationModel>> {
 
-	public PGridAnimationsProperty(String nodeId, String name) {
-		super(nodeId, name);
+	public PGridAnimationsProperty(String nodeId, String name, String tooltip) {
+		super(nodeId, name, tooltip);
 	}
 
 	public static String getLabel(List<AnimationModel> list) {

@@ -26,7 +26,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.json.JSONObject;
@@ -209,25 +208,15 @@ public class CreateBehavior {
 			if (elem instanceof IObjectNode) {
 				IObjectNode node = (IObjectNode) elem;
 
-				// generate a new id
-				String newId = UUID.randomUUID().toString();
-				// add to the selection
-				selection.add(newId);
-				// assign the new id and keep the old
-				String oldId = node.getModel().getId();
-				node.getModel().setId(newId);
-				// create the new data
-				JSONObject copyJson = new JSONObject();
-				node.getModel().write(copyJson);
-				// restore the old id
-				node.getModel().setId(oldId);
+				BaseObjectModel copy = node.getModel().copy(false);
+				selection.add(copy.getId());
 
 				double x2 = x + i * 20;
 				double y2 = y + i * 20;
 
 				int index = parent.getNode().getChildren().indexOf(node);
 
-				AddNodeOperation op = new AddNodeOperation(copyJson, index, x2, y2, parent.getId());
+				AddNodeOperation op = new AddNodeOperation(copy.toJSON(), index, x2, y2, parent.getId());
 				operations.add(op);
 
 				i++;

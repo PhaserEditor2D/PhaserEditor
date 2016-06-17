@@ -30,10 +30,11 @@ public abstract class PGridProperty<T> {
 	private String _tooltip;
 	private String _nodeId;
 
-	public PGridProperty(String nodeId, String name) {
+	public PGridProperty(String nodeId, String name, String tooltip) {
 		super();
 		_name = name;
 		_nodeId = nodeId;
+		_tooltip = tooltip;
 	}
 	
 	public String getNodeId() {

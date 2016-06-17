@@ -165,7 +165,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 		propModel.getSections().add(displaySection);
 
-		_x_property = new PGridNumberProperty(getId(), "x") {
+		_x_property = new PGridNumberProperty(getId(), "x", help("Phaser.Sprite.x")) {
 			@Override
 			public Double getValue() {
 				return Double.valueOf(getModel().getX());
@@ -181,14 +181,9 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			public boolean isModified() {
 				return getModel().getX() != 0;
 			}
-
-			@Override
-			public String getTooltip() {
-				return help("Phaser.Sprite.x");
-			}
 		};
 
-		_y_property = new PGridNumberProperty(getId(), "y") {
+		_y_property = new PGridNumberProperty(getId(), "y", help("Phaser.Sprite.y")) {
 			@Override
 			public Double getValue() {
 				return Double.valueOf(getModel().getY());
@@ -204,14 +199,9 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			public boolean isModified() {
 				return getModel().getY() != 0;
 			}
-
-			@Override
-			public String getTooltip() {
-				return help("Phaser.Sprite.y");
-			}
 		};
 
-		_angle_property = new PGridNumberProperty(getId(), "angle") {
+		_angle_property = new PGridNumberProperty(getId(), "angle", help("Phaser.Sprite.angle")) {
 			@Override
 			public Double getValue() {
 				return Double.valueOf(getModel().getAngle());
@@ -227,14 +217,9 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			public boolean isModified() {
 				return getModel().getAngle() != 0;
 			}
-
-			@Override
-			public String getTooltip() {
-				return help("Phaser.Sprite.angle");
-			}
 		};
 
-		_scale_x_property = new PGridNumberProperty(getId(), "scale.x") {
+		_scale_x_property = new PGridNumberProperty(getId(), "scale.x", help("Phaser.Sprite.scale")) {
 			@Override
 			public Double getValue() {
 				return Double.valueOf(getModel().getScaleX());
@@ -251,13 +236,9 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 				return getModel().getScaleX() != 1;
 			}
 
-			@Override
-			public String getTooltip() {
-				return help("Phaser.Sprite.scale");
-			}
 		};
 
-		_scale_y_property = new PGridNumberProperty(getId(), "scale.y") {
+		_scale_y_property = new PGridNumberProperty(getId(), "scale.y", help("Phaser.Sprite.scale")) {
 			@Override
 			public Double getValue() {
 				return Double.valueOf(getModel().getScaleY());
@@ -274,13 +255,9 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 				return getModel().getScaleY() != 1;
 			}
 
-			@Override
-			public String getTooltip() {
-				return help("Phaser.Sprite.scale");
-			}
 		};
 
-		_pivot_x_property = new PGridNumberProperty(getId(), "pivot.x") {
+		_pivot_x_property = new PGridNumberProperty(getId(), "pivot.x", help("Phaser.Sprite.pivot")) {
 			@Override
 			public Double getValue() {
 				return Double.valueOf(getModel().getPivotX());
@@ -296,14 +273,9 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			public boolean isModified() {
 				return getModel().getPivotX() != 0;
 			}
-
-			@Override
-			public String getTooltip() {
-				return help("Phaser.Sprite.pivot");
-			}
 		};
 
-		_pivot_y_property = new PGridNumberProperty(getId(), "pivot.y") {
+		_pivot_y_property = new PGridNumberProperty(getId(), "pivot.y", help("Phaser.Sprite.pivot")) {
 			@Override
 			public Double getValue() {
 				return Double.valueOf(getModel().getPivotY());
@@ -318,11 +290,6 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			@Override
 			public boolean isModified() {
 				return getModel().getPivotY() != 0;
-			}
-
-			@Override
-			public String getTooltip() {
-				return help("Phaser.Sprite.pivot");
 			}
 		};
 
@@ -339,7 +306,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	protected void initEditorPGridModel(PGridModel propModel, PGridSection section) {
 		propModel.getSections().add(section);
 
-		section.add(new PGridStringProperty(getId(), "name") {
+		section.add(new PGridStringProperty(getId(), "name", "The name of the object. Used to generate the var name.") {
 
 			@Override
 			public String getValue() {
@@ -359,7 +326,8 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			}
 		});
 
-		PGridBooleanProperty editorPublic_property = new PGridBooleanProperty(getId(), "public") {
+		PGridBooleanProperty editorPublic_property = new PGridBooleanProperty(getId(), "public",
+				"If true the object is set 'public' in the generated code.") {
 			@Override
 			public Boolean getValue() {
 				return Boolean.valueOf(getModel().isEditorPublic());
@@ -378,7 +346,8 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		};
 		section.add(editorPublic_property);
 
-		_editorPick_property = new PGridBooleanProperty(getId(), "pick") {
+		_editorPick_property = new PGridBooleanProperty(getId(), "pick",
+				"Enable the ability to pick the object in the editor,\nDoes not affect the game.") {
 
 			@Override
 			public Boolean getValue() {
@@ -399,7 +368,8 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		};
 		section.add(_editorPick_property);
 
-		section.add(new PGridBooleanProperty(getId(), "generate") {
+		section.add(new PGridBooleanProperty(getId(), "generate",
+				"If set to false the code generator ignores this object.") {
 
 			@Override
 			public Boolean getValue() {
@@ -417,8 +387,9 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 				return !getModel().isEditorGenerate();
 			}
 		});
-		
-		section.add(new PGridBooleanProperty(getId(), "show") {
+
+		section.add(new PGridBooleanProperty(getId(), "show",
+				"Set to false to hides the object in the editor.\nYou can use this in background objects, etc..\nThis value does not affect the game.") {
 
 			@Override
 			public Boolean getValue() {

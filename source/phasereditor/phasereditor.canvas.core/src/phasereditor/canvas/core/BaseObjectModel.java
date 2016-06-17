@@ -145,11 +145,11 @@ public abstract class BaseObjectModel {
 	public void setEditorGenerate(boolean editorGenerate) {
 		_editorGenerate = editorGenerate;
 	}
-	
+
 	public boolean isEditorShow() {
 		return _editorShow;
 	}
-	
+
 	public void setEditorShow(boolean editorShow) {
 		_editorShow = editorShow;
 	}
@@ -244,10 +244,24 @@ public abstract class BaseObjectModel {
 		_pivotY = jsonInfo.optDouble("pivot.y", DEF_PIVOT_Y);
 	}
 
+	public BaseObjectModel copy(boolean keepId) {
+		JSONObject obj = new JSONObject();
+		write(obj);
+		BaseObjectModel copy = CanvasModelFactory.createModel(_parent, obj);
+		if (!keepId) {
+			copy.resetId();
+		}
+		return copy;
+	}
+
 	public JSONObject toJSON() {
 		JSONObject obj = new JSONObject();
 		write(obj);
 		return obj;
+	}
+
+	public void resetId() {
+		_id = UUID.randomUUID().toString();
 	}
 
 	public final void write(JSONObject obj) {

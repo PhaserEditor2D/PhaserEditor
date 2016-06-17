@@ -67,7 +67,8 @@ public class AtlasSpriteControl extends BaseSpriteControl<AtlasSpriteModel> {
 
 		String initFrameName = getModel().getAssetKey().getKey();
 
-		PGridFrameProperty frame_property = new PGridFrameProperty(getId(), "frameName") {
+		PGridFrameProperty frame_property = new PGridFrameProperty(getId(), "frameName",
+				help("Phaser.Sprite.frameName")) {
 
 			@Override
 			public boolean isModified() {
@@ -90,10 +91,6 @@ public class AtlasSpriteControl extends BaseSpriteControl<AtlasSpriteModel> {
 				return getModel().getAssetKey().getAsset().getSubElements();
 			}
 
-			@Override
-			public String getTooltip() {
-				return help("Phaser.Sprite.frameName");
-			}
 		};
 
 		getSpriteSection().add(frame_property);

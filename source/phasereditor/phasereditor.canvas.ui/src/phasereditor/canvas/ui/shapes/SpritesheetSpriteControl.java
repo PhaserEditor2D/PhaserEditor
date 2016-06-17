@@ -66,7 +66,7 @@ public class SpritesheetSpriteControl extends BaseSpriteControl<SpritesheetSprit
 
 		int initFrameIndex = getModel().getAssetKey().getIndex();
 
-		PGridFrameProperty frame_property = new PGridFrameProperty(getId(), "frame") {
+		PGridFrameProperty frame_property = new PGridFrameProperty(getId(), "frame", help("Phaser.Sprite.frame")) {
 
 			@Override
 			public boolean isModified() {
@@ -89,10 +89,6 @@ public class SpritesheetSpriteControl extends BaseSpriteControl<SpritesheetSprit
 				return getModel().getFrames();
 			}
 
-			@Override
-			public String getTooltip() {
-				return help("Phaser.Sprite.frame");
-			}
 		};
 		getSpriteSection().add(frame_property);
 	}

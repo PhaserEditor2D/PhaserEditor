@@ -221,7 +221,7 @@ public class CanvasEditor extends EditorPart
 		Composite parent = new Composite(parent1, SWT.NONE);
 		parent.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		_toolBar = new ToolBar(parent, SWT.FLAT | SWT.RIGHT);
-		_toolBar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		_toolBar.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
 		
 		GridLayout gl_parent = new GridLayout(1, false);
 		gl_parent.verticalSpacing = 0;
@@ -437,7 +437,7 @@ public class CanvasEditor extends EditorPart
 		{
 			_toolBarManager.add(new Separator());
 
-			_showSidePaneAction = new Action("", SWT.TOGGLE) {
+			_showSidePaneAction = new Action("Toggle the side pane.", SWT.TOGGLE) {
 				{
 					setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_APPLICATION_SIDE_TREE));
 				}
@@ -455,7 +455,7 @@ public class CanvasEditor extends EditorPart
 			_showSidePaneAction.setChecked(true);
 			_toolBarManager.add(_showSidePaneAction);
 
-			_showPaletteAction = new Action("", SWT.TOGGLE) {
+			_showPaletteAction = new Action("Toggle the palette.", SWT.TOGGLE) {
 				{
 					setChecked(false);
 					setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_PALETTE));
@@ -481,7 +481,7 @@ public class CanvasEditor extends EditorPart
 			});
 		}
 		{
-			_toolBarManager.add(new Action("Generate Code", EditorSharedImages.getImageDescriptor(IMG_BUILD)) {
+			_toolBarManager.add(new Action("Generate code", EditorSharedImages.getImageDescriptor(IMG_BUILD)) {
 				@Override
 				public void run() {
 					generateCode();

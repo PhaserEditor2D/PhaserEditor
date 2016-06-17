@@ -26,7 +26,7 @@ package phasereditor.canvas.ui.editors.grid;
  *
  */
 public abstract class PGridStringProperty extends PGridProperty<String> {
-	public PGridStringProperty(String controlId, String name) {
-		super(controlId, name);
+	public PGridStringProperty(String controlId, String name, String tooltip) {
+		super(controlId, name, tooltip);
 	}
 }

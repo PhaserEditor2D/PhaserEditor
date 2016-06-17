@@ -31,8 +31,8 @@ public abstract class PGridColorProperty extends PGridProperty<RGB> {
 
 	private RGB _defaultRGB;
 
-	public PGridColorProperty(String controlId, String name) {
-		super(controlId, name);
+	public PGridColorProperty(String controlId, String name, String tooltip) {
+		super(controlId, name, tooltip);
 	}
 
 	public RGB getDefaultRGB() {
