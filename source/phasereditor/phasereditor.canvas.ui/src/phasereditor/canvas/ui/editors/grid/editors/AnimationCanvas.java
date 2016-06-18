@@ -34,12 +34,17 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.ImagePattern;
 import javafx.util.Duration;
 import phasereditor.assetpack.core.FrameData;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.canvas.core.AnimationModel;
+import phasereditor.ui.EditorSharedImages;
+import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.ImageCache;
 
 /**
@@ -58,11 +63,11 @@ public class AnimationCanvas extends FXCanvas {
 		_imgView = new ImageView();
 		_container = new Pane(_imgView);
 		BorderPane root = new BorderPane(_container);
-		// ImagePattern fill = new ImagePattern(new
-		// Image("platform:/plugin/phasereditor.ui/icons/add.png"));
-		// root.setBackground(new Background(new BackgroundFill(
-		// fill, null, null)));
+		ImagePattern fill = new ImagePattern(EditorSharedImages.getFXImage(IEditorSharedImages.IMG_PREVIEW_PATTERN), 0,
+				0, 16, 16, false);
+		root.setBackground(new Background(new BackgroundFill(fill, null, null)));
 		Scene scene = new Scene(root);
+		// scene.setFill(fill);
 		setScene(scene);
 	}
 
@@ -90,7 +95,7 @@ public class AnimationCanvas extends FXCanvas {
 		}
 		_anim.play();
 	}
-	
+
 	void showFrame(int index) {
 		List<IAssetFrameModel> frames = _model.getFrames();
 		if (index >= frames.size()) {
