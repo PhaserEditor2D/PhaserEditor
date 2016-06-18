@@ -265,4 +265,20 @@ public class PaletteComp extends Composite {
 		return _paletteVisible;
 	}
 
+	public void rebuild() {
+		List<Object> list2 = new ArrayList<>();
+		for (Object obj : _list) {
+			if (obj instanceof IAssetKey) {
+				JSONObject ref = AssetPackCore.getAssetJSONReference((IAssetKey) obj);
+				Object elem = AssetPackCore.findAssetElement(ref);
+				if (elem != null) {
+					list2.add(elem);
+				}
+			}
+		}
+		_list.clear();
+		_list.addAll(list2);
+		getDisplay().asyncExec(_viewer::refresh);
+	}
+
 }

@@ -112,6 +112,8 @@ public class UpdateBehavior {
 
 		GroupControl control = _canvas.getWorldNode().getControl();
 		control.rebuild();
+		_canvas.getPalette().rebuild();
+		
 		Platform.runLater(new Runnable() {
 
 			@SuppressWarnings("synthetic-access")
