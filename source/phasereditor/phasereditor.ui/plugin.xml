@@ -109,4 +109,12 @@
            sequence="M1+M3+V">
      </key>
   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="phasereditor.ui.prefs.PhaserEditorPreferencePage"
+            id="phasereditor.ui.prefs.phasereditor"
+            name="Phaser Editor">
+      </page>
+   </extension>
 </plugin>

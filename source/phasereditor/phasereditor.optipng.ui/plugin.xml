@@ -51,6 +51,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
+            category="phasereditor.ui.prefs.phasereditor"
             class="phasereditor.optipng.ui.OptiPNGPreferencePage"
             id="phasereditor.optipng.prefpage"
             name="Optimize PNG">

@@ -4,6 +4,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
+            category="phasereditor.ui.prefs.phasereditor"
             class="phasereditor.inspect.ui.prefs.PhaserPreferencePage"
             id="phasereditor.inspect.ui.prefs.phaserPage"
             name="Phaser">
