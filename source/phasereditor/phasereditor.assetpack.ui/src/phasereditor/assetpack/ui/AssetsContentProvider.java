@@ -38,6 +38,8 @@ import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.IAssetElementModel;
 
 public class AssetsContentProvider implements ITreeContentProvider {
+	protected static final Object[] EMPTY = new Object[0];
+
 	public AssetsContentProvider() {
 	}
 
@@ -91,7 +93,7 @@ public class AssetsContentProvider implements ITreeContentProvider {
 			return assets.toArray();
 		}
 
-		return new Object[0];
+		return EMPTY;
 	}
 
 	@Override

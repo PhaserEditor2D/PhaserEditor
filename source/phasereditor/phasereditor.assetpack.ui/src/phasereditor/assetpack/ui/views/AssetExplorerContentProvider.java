@@ -103,16 +103,17 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 	@Override
 	public void dispose() {
 		getActivePage().removePartListener(_partListener);
-		
+
 		super.dispose();
 	}
 
 	@Override
 	public Object[] getChildren(Object parent) {
+		IProject activeProjet = getActiveProject();
+
 		if (parent == AssetExplorer.ROOT) {
 			IWorkspace workspace = ResourcesPlugin.getWorkspace();
 			List<Object> list = new ArrayList<>();
-			IProject activeProjet = getActiveProject();
 
 			for (IProject project : workspace.getRoot().getProjects()) {
 				if (activeProjet != null && activeProjet != project) {
@@ -127,6 +128,10 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 		if (parent instanceof IProject) {
 			List<AssetPackModel> list = AssetPackCore.getAssetPackModels((IProject) parent);
 			return list.toArray();
+		}
+
+		if (activeProjet == null && parent instanceof AssetPackModel) {
+			return EMPTY;
 		}
 
 		if (parent instanceof Container) {
@@ -179,13 +184,13 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 		if (PlatformUI.getWorkbench().isClosing()) {
 			return;
 		}
-		
+
 		if (_viewer == null) {
 			return;
 		}
-		
+
 		_viewer.refresh();
-		
+
 		IProject project = getActiveProject();
 		if (project != _lastToken) {
 			_viewer.expandToLevel(4);
