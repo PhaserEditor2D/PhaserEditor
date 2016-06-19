@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015 Arian Fornaris
+// Copyright (c) 2015, 2016 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -24,20 +24,19 @@ package phasereditor.inspect.core.tests;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import phasereditor.inspect.core.InspectCore;
-import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
-import phasereditor.inspect.core.jsdoc.PhaserMethod;
-import phasereditor.inspect.core.jsdoc.PhaserVariable;
 
-@SuppressWarnings("static-method")
-public class Phaser_Member_Exists_Test {
-
+/**
+ * @author arian
+ *
+ */
+public class Canvas_Phaser_Help_Test {
+	@SuppressWarnings("static-method")
 	@Test
 	public void test() throws IOException {
 		Path wsPath = Paths.get(".").toAbsolutePath().getParent().getParent();
@@ -45,55 +44,45 @@ public class Phaser_Member_Exists_Test {
 		PhaserJSDoc jsDoc = new PhaserJSDoc(projectPath.resolve("phaser-master/src"),
 				projectPath.resolve("phaser-version/phaser-custom/jsdoc/docs.json"));
 
-		// test the members exist
-
-		String[] names = {
-
-				"Phaser.StateManager.getCurrentState", //
-				"Phaser.Sprite.anchor", //
+		String[] memberNames = {
+				//
+				"Phaser.Sprite.frameName", //
+				"Phaser.Sprite.x", //
+				"Phaser.Sprite.y", //
+				"Phaser.Sprite.angle", //
 				"Phaser.Sprite.scale", //
-				"Phaser.Group.scale", //
-				"Phaser.Sprite.rotation", //
-				"Phaser.KeyCode.SPACEBAR", //
-				"Phaser.PENDING_ATLAS", //
-				"Phaser.Physics.Arcade.Body.onCeiling", //
-				"Phaser.Loader.audioSprite", //
-				
-				// TODO: check for PIXI.Graphics, method should be inherited from there.
-				// "Phaser.Graphics.lineTo", //
-
-				// requires PIXI.Graphics.tint update
-				// "Phaser.Graphics.tint",
-
-				// definition not found
-				// "Phaser.RetroFont.sendToBack",
-
+				"Phaser.Sprite.pivot", //
+				"Phaser.Sprite.anchor", //
+				"Phaser.Sprite.anchor", //
+				"Phaser.Sprite.tint", //
+				"Phaser.Sprite.animations", //
+				"Phaser.GameObjectFactory.physicsGroup", //
+				"Phaser.Sprite.frame", //
+				"Phaser.TileSprite.tilePosition", //
+				"Phaser.TileSprite.tileScale", //
+				"Phaser.TileSprite.width", //
+				"Phaser.TileSprite.height"//
 		};
 
-		Map<String, IPhaserMember> map = jsDoc.getMembersMap();
-
-		for (String name : names) {
-			IPhaserMember member = map.get(name);
-			Assert.assertNotNull(name, member);
+		for (String name : memberNames) {
+			String doc = jsDoc.getMemberHelp(name);
+			Assert.assertTrue(name, !doc.equals("<No help available>"));
 		}
 
-		// test the type of the members
-
-		String[][] memberTypeMap = {
-
-				{ "Phaser.Sprite.scale", "Phaser.Point" }
-
+		String[][] memeber_arg_tuples = {
+				//
+				{ "Phaser.Button", "callback" }, //
+				{ "Phaser.Button", "callbackContext" }, //
+				{ "Phaser.Button", "overFrame" }, //
+				{ "Phaser.Button", "outFrame" }, //
+				{ "Phaser.Button", "downFrame" }, //
+				{ "Phaser.Button", "upFrame" },//
 		};
-		for (String[] tuple : memberTypeMap) {
-			IPhaserMember member = map.get(tuple[0]);
-			String result = null;
-			if (member instanceof PhaserMethod) {
-				result = ((PhaserMethod) member).getReturnTypes()[0];
-			} else {
-				result = ((PhaserVariable) member).getTypes()[0];
-			}
-			Assert.assertTrue(tuple[0] + " results " + result + "/" + tuple[1], tuple[1].equals(result));
+
+		for (String[] tuple : memeber_arg_tuples) {
+			String doc = jsDoc.getMethodArgHelp(tuple[0], tuple[1]);
+			Assert.assertTrue(tuple[0] + "#" + tuple[1], !doc.equals("<No help available>"));
 		}
+
 	}
-
 }
