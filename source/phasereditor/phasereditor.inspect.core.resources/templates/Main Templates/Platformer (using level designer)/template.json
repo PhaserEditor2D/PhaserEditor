@@ -4,6 +4,6 @@
 		"email": "contact@boniatillo.com",
 		"website": "phasereditor.boniatillo.com",
 	},
-	"mainFile": "js/Main.js",
-	"description": "Empty template with a Main class and an asset pack."
+	"mainFile": "assets/canvas/Scene1.canvas",
+	"description": "Demo of how to make a platformer with the scene visual builder."
 }

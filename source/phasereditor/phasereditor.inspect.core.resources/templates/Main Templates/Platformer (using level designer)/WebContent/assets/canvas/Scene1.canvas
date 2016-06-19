@@ -1,0 +1,578 @@
+{
+  "settings": {
+    "generateOnSave": true,
+    "sceneHeight": 2000,
+    "sceneWidth": 2000
+  },
+  "world": {
+    "id": "8289e48b-7714-40a1-bb9b-cbf8ce0834ed",
+    "type": "group",
+    "info": {
+      "editorName": "Scene1",
+      "children": [
+        {
+          "id": "359564e5-ce39-46ea-beef-3ba511fd4d75",
+          "type": "group",
+          "info": {
+            "editorName": "background",
+            "children": [
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "section": "section",
+                  "asset": "wall-empty"
+                },
+                "id": "228c2f92-5cc3-4f4d-be0d-5c2367f01ab6",
+                "type": "tileSprite",
+                "info": {
+                  "editorName": "wall_empty",
+                  "asset-ref": {
+                    "file": "/AmigoCuco/WebContent/assets/pack.json",
+                    "sprite": "wall-empty",
+                    "section": "section",
+                    "asset": "wall-empty"
+                  },
+                  "width": 2000,
+                  "tint": "0xffffff",
+                  "height": 2000
+                }
+              },
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "sprite": "wall-hole",
+                  "section": "section",
+                  "asset": "atlas1"
+                },
+                "id": "e63925f8-83e2-4db1-b162-9a4c01e00757",
+                "type": "atlas-sprite",
+                "info": {
+                  "editorName": "wall_hole",
+                  "x": 1295.3869585019918,
+                  "y": 1442.663590317955
+                }
+              },
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "sprite": "wall-hole",
+                  "section": "section",
+                  "asset": "atlas1"
+                },
+                "id": "643c99fd-8339-4829-b464-d864499f2fc0",
+                "type": "atlas-sprite",
+                "info": {
+                  "editorName": "wall_hole1",
+                  "x": 789.7284840059921,
+                  "y": 859.6084105419552
+                }
+              },
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "sprite": "wall-hole",
+                  "section": "section",
+                  "asset": "atlas1"
+                },
+                "id": "723b72c9-1dab-4aaa-93d0-2e0dac4909bb",
+                "type": "atlas-sprite",
+                "info": {
+                  "editorName": "wall_hole2",
+                  "x": 946.2418033560547,
+                  "y": 256.7740752573076
+                }
+              },
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "sprite": "Puerta",
+                  "section": "section",
+                  "asset": "atlas1"
+                },
+                "id": "737d28b4-677f-457e-8b43-f835669a4df1",
+                "type": "atlas-sprite",
+                "info": {
+                  "editorName": "Puerta",
+                  "x": 285.61633516749663,
+                  "y": 101.14316762555839
+                }
+              },
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "sprite": "musgo",
+                  "section": "section",
+                  "asset": "atlas1"
+                },
+                "id": "22d7fe65-2f3d-494e-ace7-30039ecfeddf",
+                "type": "atlas-sprite",
+                "info": {
+                  "editorName": "musgo",
+                  "x": 58.83635332804681,
+                  "y": 1103.0252181070744
+                }
+              },
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "sprite": "musgo",
+                  "section": "section",
+                  "asset": "atlas1"
+                },
+                "id": "ba46f777-32c9-4970-9e5d-0e1066ff4639",
+                "type": "atlas-sprite",
+                "info": {
+                  "editorName": "musgo1",
+                  "x": 1340.2759945519151,
+                  "y": 805.5000051223903
+                }
+              },
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "sprite": "musgo",
+                  "section": "section",
+                  "asset": "atlas1"
+                },
+                "id": "656681d0-8ea7-41c2-9f49-e1ea4e3f3274",
+                "type": "atlas-sprite",
+                "info": {
+                  "editorName": "musgo2",
+                  "x": 233.91109635664878,
+                  "y": 569.5048645535113
+                }
+              },
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "sprite": "musgo",
+                  "section": "section",
+                  "asset": "atlas1"
+                },
+                "id": "f3d159ef-cbf1-4b55-94a8-48084410a258",
+                "type": "atlas-sprite",
+                "info": {
+                  "editorName": "musgo3",
+                  "x": 1341.3268128226412,
+                  "y": 1667.6962245539603
+                }
+              },
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "sprite": "wall-hole",
+                  "section": "section",
+                  "asset": "atlas1"
+                },
+                "id": "67b882f5-85e0-4a22-8151-f63713ee7ac8",
+                "type": "atlas-sprite",
+                "info": {
+                  "editorName": "wall_hole3",
+                  "x": 1607.6742183374465,
+                  "y": 1135.3339706366457
+                }
+              },
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "sprite": "wall-hole",
+                  "section": "section",
+                  "asset": "atlas1"
+                },
+                "id": "03555512-7acb-4ffb-9bd0-357a0e018bc5",
+                "type": "atlas-sprite",
+                "info": {
+                  "editorName": "wall_hole11",
+                  "x": 317.16909753876337,
+                  "y": 1782.338534342979
+                }
+              },
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "section": "section",
+                  "asset": "window"
+                },
+                "id": "7db52be5-ccbd-43f1-9208-5ebd98894726",
+                "type": "image",
+                "info": {
+                  "editorName": "window",
+                  "x": 634.0224377623462,
+                  "y": 1339.7550504020946
+                }
+              }
+            ],
+            "editorClosed": false,
+            "physicsGroup": false
+          }
+        },
+        {
+          "id": "445d0402-a0e6-48ad-a437-d14c7eeb4282",
+          "type": "group",
+          "info": {
+            "editorName": "platforms",
+            "children": [
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "sprite": "platform2",
+                  "section": "section",
+                  "asset": "atlas1"
+                },
+                "id": "9573ee98-6247-4363-be49-51805f96cb80",
+                "type": "atlas-sprite",
+                "info": {
+                  "editorName": "platform_",
+                  "x": 54.12843875385249,
+                  "y": 1091.4671535921757
+                }
+              },
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "sprite": "platform2",
+                  "section": "section",
+                  "asset": "atlas1"
+                },
+                "id": "92ae353a-4707-44c0-b5c4-7bdd4a5ebb9b",
+                "type": "atlas-sprite",
+                "info": {
+                  "editorName": "platform_1",
+                  "x": 1349.2333071058517,
+                  "y": 1643.5636512561753
+                }
+              },
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "sprite": "platform2",
+                  "section": "section",
+                  "asset": "atlas1"
+                },
+                "id": "53743609-6802-4602-ad53-3a15ad0ec222",
+                "type": "atlas-sprite",
+                "info": {
+                  "editorName": "platform_2",
+                  "x": 1338.9137464018518,
+                  "y": 787.0401128241758
+                }
+              },
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "sprite": "platform2",
+                  "section": "section",
+                  "asset": "atlas1"
+                },
+                "id": "68368d84-277b-45ca-903c-d4f2997169ee",
+                "type": "atlas-sprite",
+                "info": {
+                  "editorName": "platform_3",
+                  "x": 234.7207510738524,
+                  "y": 549.690216632176
+                }
+              },
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "sprite": "maceta",
+                  "section": "section",
+                  "asset": "atlas1"
+                },
+                "id": "ea53af51-a908-4a09-9893-666e4e0b359b",
+                "type": "atlas-sprite",
+                "info": {
+                  "editorName": "maceta",
+                  "x": 1423.637816809809,
+                  "y": 305.50853155403615
+                }
+              },
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "sprite": "platform2",
+                  "section": "section",
+                  "asset": "atlas1"
+                },
+                "id": "ed1e3c8b-9ec2-4f2f-a67a-6f5bedc9132d",
+                "type": "tileSprite",
+                "info": {
+                  "editorName": "floor",
+                  "asset-ref": {
+                    "file": "/AmigoCuco/WebContent/assets/pack.json",
+                    "sprite": "platform2",
+                    "section": "section",
+                    "asset": "atlas1"
+                  },
+                  "width": 2000,
+                  "y": 1926,
+                  "height": 74
+                }
+              }
+            ],
+            "editorClosed": false,
+            "physicsGroup": true,
+            "editorPublic": true
+          }
+        },
+        {
+          "id": "fb2a9e55-fa08-4eaf-b6b3-ce88ab614a9f",
+          "type": "group",
+          "info": {
+            "editorName": "movingPlatforms",
+            "children": [
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "sprite": "platform1",
+                  "section": "section",
+                  "asset": "atlas1"
+                },
+                "id": "75a4a40f-9b57-40b4-b6d5-e8d13bf682fb",
+                "type": "atlas-sprite",
+                "info": {
+                  "editorName": "platform_5",
+                  "x": 428.17989600892,
+                  "y": 863.3057541647894
+                }
+              },
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "sprite": "platform1",
+                  "section": "section",
+                  "asset": "atlas1"
+                },
+                "id": "90a5fc5e-80b6-4c46-9cd3-6e27da413431",
+                "type": "atlas-sprite",
+                "info": {
+                  "editorName": "platform_4",
+                  "x": 574.1827892142888,
+                  "y": 1449.5639676686087
+                }
+              }
+            ],
+            "editorClosed": false,
+            "physicsGroup": true,
+            "editorPublic": true
+          }
+        },
+        {
+          "asset-ref": {
+            "file": "/AmigoCuco/WebContent/assets/pack.json",
+            "sprite": "3",
+            "section": "section",
+            "asset": "fufu"
+          },
+          "id": "589f4460-68a9-48a0-abee-8d20e4d02c39",
+          "type": "spritesheet",
+          "info": {
+            "editorName": "dino",
+            "anchor.x": 0.5,
+            "animations": [{
+              "frameRate": 4,
+              "frames": [
+                "0",
+                "1"
+              ],
+              "loop": true,
+              "name": "walk"
+            }],
+            "x": 175.7995597896978,
+            "y": 1854.9858036003618,
+            "anchor.y": 0.5,
+            "editorPublic": true
+          }
+        },
+        {
+          "id": "b67624bb-f8c8-4e1c-9c48-8943da79ddc3",
+          "type": "group",
+          "info": {
+            "editorName": "shadows",
+            "children": [
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "sprite": "shadow",
+                  "section": "section",
+                  "asset": "atlas1"
+                },
+                "id": "90a05297-f16a-4e5f-afdc-2d29b6789eaa",
+                "type": "atlas-sprite",
+                "info": {
+                  "editorName": "shadow3",
+                  "x": 220.15382587155182,
+                  "y": 610.5053988596691
+                }
+              },
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "sprite": "shadow",
+                  "section": "section",
+                  "asset": "atlas1"
+                },
+                "id": "ce36236f-dd65-4359-b1a8-bb62fe78639c",
+                "type": "atlas-sprite",
+                "info": {
+                  "editorName": "shadow2",
+                  "x": 1333.577416063936,
+                  "y": 1706.430723646155
+                }
+              },
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "sprite": "shadow",
+                  "section": "section",
+                  "asset": "atlas1"
+                },
+                "id": "537cd2c6-62af-40a5-bbe5-5a888c83ef23",
+                "type": "atlas-sprite",
+                "info": {
+                  "editorName": "shadow1",
+                  "x": 1326.4494544649185,
+                  "y": 848.1953316903813
+                }
+              },
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "sprite": "shadow",
+                  "section": "section",
+                  "asset": "atlas1"
+                },
+                "id": "df98ec64-1101-4447-8255-d5b2c84149f3",
+                "type": "atlas-sprite",
+                "info": {
+                  "editorName": "shadow",
+                  "x": 42.64114733027505,
+                  "y": 1147.7425188535265
+                }
+              }
+            ],
+            "editorClosed": false,
+            "physicsGroup": false
+          }
+        },
+        {
+          "id": "9dde3fbb-30dc-4d71-b873-80753627cc9d",
+          "type": "group",
+          "info": {
+            "editorName": "objects",
+            "children": [
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "sprite": "flor",
+                  "section": "section",
+                  "asset": "atlas1"
+                },
+                "id": "4f83a230-9a93-4634-afd0-55926c94cd0e",
+                "type": "atlas-sprite",
+                "info": {
+                  "editorName": "flor",
+                  "x": 1532.2671549533877,
+                  "y": 691.9825526870984
+                }
+              },
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "sprite": "guapen",
+                  "section": "section",
+                  "asset": "atlas1"
+                },
+                "id": "ed3d10a4-cb93-4cfe-87f3-dd2f877dc18a",
+                "type": "atlas-sprite",
+                "info": {
+                  "editorName": "guapen",
+                  "x": 274.0736075786064,
+                  "y": 507.00966207737395
+                }
+              },
+              {
+                "id": "7b2a5d4d-8c2f-4c0b-bb95-742c552a6f32",
+                "type": "group",
+                "info": {
+                  "editorName": "zombi",
+                  "scale.y": 0.6,
+                  "scale.x": 0.6,
+                  "pivot.y": 75,
+                  "pivot.x": 70,
+                  "children": [
+                    {
+                      "asset-ref": {
+                        "file": "/AmigoCuco/WebContent/assets/pack.json",
+                        "sprite": "zombi-head",
+                        "section": "section",
+                        "asset": "atlas1"
+                      },
+                      "id": "3befbf8c-7e1d-4c8c-b7bc-c2310e443761",
+                      "type": "atlas-sprite",
+                      "info": {"editorName": "zombi_head"}
+                    },
+                    {
+                      "asset-ref": {
+                        "file": "/AmigoCuco/WebContent/assets/pack.json",
+                        "sprite": "zombi-eye",
+                        "section": "section",
+                        "asset": "atlas1"
+                      },
+                      "id": "a975441f-7862-45b1-983e-c95bd770bb06",
+                      "type": "atlas-sprite",
+                      "info": {
+                        "editorName": "zombi_eye1",
+                        "x": 11.167472675726287,
+                        "y": 73.40350600018252
+                      }
+                    },
+                    {
+                      "asset-ref": {
+                        "file": "/AmigoCuco/WebContent/assets/pack.json",
+                        "sprite": "zombi-eye",
+                        "section": "section",
+                        "asset": "atlas1"
+                      },
+                      "id": "b9671c31-35a7-4b0a-b699-4692a9468205",
+                      "type": "atlas-sprite",
+                      "info": {
+                        "editorName": "zombi_eye",
+                        "x": 52.247946132258846,
+                        "y": 77.15637978201602
+                      }
+                    }
+                  ],
+                  "rotation": 0.17453292519943295,
+                  "x": 285.60541490723284,
+                  "editorClosed": true,
+                  "y": 1069.2171954740043,
+                  "physicsGroup": false
+                }
+              },
+              {
+                "asset-ref": {
+                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "sprite": "flor",
+                  "section": "section",
+                  "asset": "atlas1"
+                },
+                "id": "054afea9-5c67-4a96-9d53-e28995473caf",
+                "type": "atlas-sprite",
+                "info": {
+                  "editorName": "flor1",
+                  "x": 1627.05613057042,
+                  "y": 1543.7718472365236
+                }
+              }
+            ],
+            "editorClosed": false,
+            "physicsGroup": false
+          }
+        }
+      ],
+      "editorClosed": false,
+      "physicsGroup": false
+    }
+  }
+}
