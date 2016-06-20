@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core;
 
+import static java.lang.System.err;
+
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -44,7 +46,6 @@ import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.IResourceVisitor;
-import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.content.IContentDescription;
@@ -628,15 +629,20 @@ public class AssetPackCore {
 		return null;
 	}
 
-	public static Object findAssetElement(String ref) {
+	public static Object findAssetElement(IProject project, String ref) {
 		JSONObject obj = new JSONObject(ref);
-		return findAssetElement(obj);
+		return findAssetElement(project, obj);
 	}
 
-	public static Object findAssetElement(JSONObject ref) {
+	public static Object findAssetElement(IProject project, JSONObject ref) {
+		if (project == null) {
+			err.println("findAssetElement: missing project.");
+			err.println(ref.toString());
+			err.println();
+			return null;
+		}
 		String filename = ref.getString("file");
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IFile file = root.getFile(root.getProjectRelativePath().append(filename));
+		IFile file = project.getFile(filename);
 		if (file.exists()) {
 			try {
 				AssetPackModel pack = AssetPackCore.getAssetPackModel(file);
@@ -648,10 +654,10 @@ public class AssetPackCore {
 		return null;
 	}
 
-	public static Object findAssetElement(IMemento memento) {
+	public static Object findAssetElement(IProject project, IMemento memento) {
 		String ref = memento.getString(AssetPackModel.MEMENTO_KEY);
 		if (ref != null) {
-			return findAssetElement(ref);
+			return findAssetElement(project, ref);
 		}
 		return null;
 	}

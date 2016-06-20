@@ -26,6 +26,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.json.JSONObject;
 
 /**
@@ -37,17 +38,21 @@ public class WorldModel extends GroupModel {
 	public static final String PROP_DIRTY = "dirty";
 
 	private boolean _dirty;
-	private IFile file;
+	private IFile _file;
 
-	public WorldModel() {
+	public WorldModel(IFile file) {
 		super(null);
-		// setEditorName("world");
+		_file = file;
 		init();
 	}
 
 	public WorldModel(IFile file, JSONObject data) throws Exception {
 		this(data);
-		this.file = file;
+		this._file = file;
+	}
+	
+	public IProject getProject() {
+		return this._file.getProject();
 	}
 
 	private WorldModel(JSONObject data) {
@@ -61,20 +66,20 @@ public class WorldModel extends GroupModel {
 	}
 
 	public IFile getFile() {
-		return file;
+		return _file;
 	}
 
 	public void setFile(IFile file) {
-		this.file = file;
+		this._file = file;
 	}
 
 	public String getClassName() {
-		if (this.file == null) {
+		if (this._file == null) {
 			return "CanvasWorld";
 		}
 
-		String name = file.getName();
-		String ext = file.getFileExtension();
+		String name = _file.getName();
+		String ext = _file.getFileExtension();
 		int end = name.length() - ext.length() - 1;
 		return name.substring(0, end);
 	}

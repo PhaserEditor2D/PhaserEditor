@@ -122,7 +122,9 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 				String id = memento.getString(ELEM_FACTORY_KEY);
 				if (id != null) {
 					IElementFactory elemFactory = PlatformUI.getWorkbench().getElementFactory(id);
-					_initalElement = elemFactory.createElement(memento);
+					if (elemFactory != null) {
+						_initalElement = elemFactory.createElement(memento);
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -152,8 +154,9 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 				public void drop(DropTargetEvent event) {
 					if (event.data instanceof Object[]) {
 						selectionDropped((Object[]) event.data);
-					} if (event.data instanceof IStructuredSelection) {
-						selectionDropped( ((IStructuredSelection )event.data).toArray());
+					}
+					if (event.data instanceof IStructuredSelection) {
+						selectionDropped(((IStructuredSelection) event.data).toArray());
 					}
 				}
 			});

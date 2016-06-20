@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.IElementFactory;
 import org.eclipse.ui.IMemento;
@@ -31,7 +33,9 @@ public class AssetModelFactory implements IElementFactory {
 
 	@Override
 	public IAdaptable createElement(IMemento memento) {
-		Object elem = AssetPackCore.findAssetElement(memento);
+		String name = memento.getString(AssetPackModel.MEMENT_PROJECT_KEY);
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
+		Object elem = AssetPackCore.findAssetElement(project, memento);
 		return (IAdaptable) elem;
 	}
 

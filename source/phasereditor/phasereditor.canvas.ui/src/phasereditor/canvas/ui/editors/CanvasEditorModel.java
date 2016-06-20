@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
+import org.eclipse.core.resources.IFile;
 import org.json.JSONObject;
 
 import phasereditor.canvas.core.WorldModel;
@@ -33,9 +34,9 @@ public class CanvasEditorModel {
 	private SceneSettings _settings;
 	private WorldModel _world;
 
-	public CanvasEditorModel() {
+	public CanvasEditorModel(IFile file) {
 		_settings = new SceneSettings();
-		_world = new WorldModel();
+		_world = new WorldModel(file);
 	}
 
 	public void read(JSONObject data) {

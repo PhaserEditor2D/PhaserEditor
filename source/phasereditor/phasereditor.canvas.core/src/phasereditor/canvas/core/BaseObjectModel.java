@@ -94,9 +94,9 @@ public abstract class BaseObjectModel {
 		_id = id;
 	}
 
-	public static IAssetKey findAsset(JSONObject jsonModel) {
+	public IAssetKey findAsset(JSONObject jsonModel) {
 		JSONObject assetRef = jsonModel.getJSONObject("asset-ref");
-		IAssetKey key = (IAssetKey) AssetPackCore.findAssetElement(assetRef);
+		IAssetKey key = (IAssetKey) AssetPackCore.findAssetElement(getWorld().getProject(), assetRef);
 		return key;
 	}
 

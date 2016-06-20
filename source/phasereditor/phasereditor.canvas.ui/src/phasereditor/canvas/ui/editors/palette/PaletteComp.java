@@ -24,6 +24,7 @@ package phasereditor.canvas.ui.editors.palette;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -65,6 +66,7 @@ public class PaletteComp extends Composite {
 	TableViewer _viewer;
 	ArrayList<Object> _list;
 	private boolean _paletteVisible;
+	private IProject _project;
 
 	public PaletteComp(Composite parent, int style) {
 		super(parent, style);
@@ -74,6 +76,14 @@ public class PaletteComp extends Composite {
 
 		afterCreateWidgets();
 
+	}
+	
+	public IProject getProject() {
+		return _project;
+	}
+	
+	public void setProject(IProject project) {
+		_project = project;
 	}
 
 	private void afterCreateWidgets() {
@@ -234,7 +244,7 @@ public class PaletteComp extends Composite {
 		JSONArray list = data.getJSONArray("assets");
 		for (int i = 0; i < list.length(); i++) {
 			JSONObject assetRef = list.getJSONObject(i);
-			Object asset = AssetPackCore.findAssetElement(assetRef);
+			Object asset = AssetPackCore.findAssetElement(_project, assetRef);
 			if (asset != null) {
 				_list.add(asset);
 			}
@@ -270,7 +280,7 @@ public class PaletteComp extends Composite {
 		for (Object obj : _list) {
 			if (obj instanceof IAssetKey) {
 				JSONObject ref = AssetPackCore.getAssetJSONReference((IAssetKey) obj);
-				Object elem = AssetPackCore.findAssetElement(ref);
+				Object elem = AssetPackCore.findAssetElement(_project, ref);
 				if (elem != null) {
 					list2.add(elem);
 				}

@@ -126,7 +126,7 @@ public class CanvasNewFilePage extends WizardNewFileCreationPage {
 	@Override
 	protected InputStream getInitialContents() {
 		JSONObject json = new JSONObject();
-		WorldModel model = new WorldModel();
+		WorldModel model = new WorldModel(null);
 		String filename = getFileName();
 		model.setEditorName(filename);
 		model.write(json);

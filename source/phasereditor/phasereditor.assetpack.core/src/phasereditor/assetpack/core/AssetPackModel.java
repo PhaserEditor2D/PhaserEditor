@@ -54,6 +54,7 @@ import org.json.JSONTokener;
 import phasereditor.assetpack.core.AssetPackCore.PackDelta;
 
 public final class AssetPackModel {
+	public static final String MEMENT_PROJECT_KEY = "projectName";
 	static final String MEMENTO_KEY = "com.boniatillo.assetpack.ept.AssetPackModel";
 	public static final String PROP_DIRTY = "dirty";
 	public static final String PROP_FILE = "file";
@@ -494,6 +495,7 @@ public final class AssetPackModel {
 	}
 
 	public void saveState(IMemento memento, Object element) {
+		memento.putString(MEMENT_PROJECT_KEY, _file.getProject().getName());
 		memento.putString(MEMENTO_KEY, getStringReference(element));
 	}
 
@@ -504,7 +506,7 @@ public final class AssetPackModel {
 
 	public JSONObject getAssetJSONRefrence(Object element) {
 		JSONObject obj = new JSONObject();
-		obj.put("file", _file.getFullPath().toString());
+		obj.put("file", _file.getProjectRelativePath().toString());
 		AssetSectionModel section = null;
 		AssetGroupModel group = null;
 		AssetModel asset = null;
@@ -546,7 +548,7 @@ public final class AssetPackModel {
 		}
 	}
 
-	public Object getElementFromJSONReference(JSONObject obj) {
+	public Object getElementFromJSONReference( JSONObject obj) {
 		AssetSectionModel section = null;
 		AssetGroupModel group = null;
 		AssetModel asset = null;

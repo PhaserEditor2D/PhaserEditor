@@ -47,6 +47,7 @@ import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -63,6 +64,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IEditorInput;
@@ -177,8 +179,22 @@ public class CanvasEditor extends EditorPart
 		IFile file = fileInput.getFile();
 		try (InputStream contents = file.getContents();) {
 			JSONObject data = new JSONObject(new JSONTokener(contents));
-			_model = new CanvasEditorModel();
-			_model.read(data);
+			_model = new CanvasEditorModel(file);
+			try {
+				_model.read(data);
+			} catch (Exception e) {
+				e.printStackTrace();
+				_model = new CanvasEditorModel(file);
+				Display.getDefault().asyncExec(new Runnable() {
+
+					@Override
+					public void run() {
+						Shell shell = Display.getDefault().getActiveShell();
+						MessageDialog.openError(shell, "Error",
+								"The scene data cannot ve loaded.\n" + e.getMessage());
+					}
+				});
+			}
 			_model.getWorld().setFile(file);
 			_model.getWorld().addPropertyChangeListener(WorldModel.PROP_STRUCTURE, arg -> {
 				firePropertyChange(PROP_DIRTY);
@@ -222,7 +238,7 @@ public class CanvasEditor extends EditorPart
 		parent.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		_toolBar = new ToolBar(parent, SWT.FLAT | SWT.RIGHT);
 		_toolBar.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
-		
+
 		GridLayout gl_parent = new GridLayout(1, false);
 		gl_parent.verticalSpacing = 0;
 		gl_parent.horizontalSpacing = 0;
@@ -268,6 +284,8 @@ public class CanvasEditor extends EditorPart
 
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
 
+		initPalette();
+
 		initCanvas();
 
 		initMenus();
@@ -277,6 +295,10 @@ public class CanvasEditor extends EditorPart
 		restoreState();
 
 		initContexts();
+	}
+
+	private void initPalette() {
+		_paletteComp.setProject(getEditorInputFile().getProject());
 	}
 
 	private void initContexts() {

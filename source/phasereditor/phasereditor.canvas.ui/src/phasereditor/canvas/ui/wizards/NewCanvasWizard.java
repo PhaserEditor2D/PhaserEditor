@@ -83,7 +83,7 @@ public class NewCanvasWizard extends Wizard implements INewWizard {
 
 			{
 				// set default content
-				CanvasEditorModel model = new CanvasEditorModel();
+				CanvasEditorModel model = new CanvasEditorModel(null);
 				String name = _newCanvasPage.getFileName();
 				name = name.substring(0, name.length() - _newCanvasPage.getFileExtension().length() - 1);
 				model.getWorld().setEditorName(name);
