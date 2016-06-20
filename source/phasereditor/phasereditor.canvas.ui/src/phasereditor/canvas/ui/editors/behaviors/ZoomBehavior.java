@@ -92,11 +92,18 @@ public class ZoomBehavior {
 		}
 
 		scale = clamp(scale, 0.01d, 10d);
+		
+		double sceneX = e.getSceneX();
+		double sceneY = e.getSceneY();
+		
+		zoom(scale, sceneX, sceneY);
+	}
 
+	public void zoom(double scale, double sceneX, double sceneY) {
 		GroupNode world = getCanvas().getWorldNode();
 
 		Bounds now = world.getBoundsInParent();
-		Point2D local = world.sceneToLocal(e.getSceneX(), e.getSceneY());
+		Point2D local = world.sceneToLocal(sceneX, sceneY);
 		double fw = local.getX() / world.getBoundsInLocal().getWidth();
 		double fh = local.getY() / world.getBoundsInLocal().getHeight();
 
@@ -143,10 +150,10 @@ public class ZoomBehavior {
 		_canvas.getSelectionPane().getChildren().forEach(n -> {
 			((SelectionNode) n).updateFromZoomAndPanVariables();
 		});
-		
+
 		_canvas.getPaintBehavior().repaint();
 	}
-
+	
 	public double getScale() {
 		return _scale;
 	}

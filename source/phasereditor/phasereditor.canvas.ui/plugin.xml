@@ -307,6 +307,12 @@
             id="phasereditor.canvas.ui.morphToButton"
             name="Morph To Button">
       </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            defaultHandler="phasereditor.canvas.ui.handlers.ZoomRestoreHandler"
+            id="phasereditor.canvas.ui.zoomRestore"
+            name="Restore Zoom">
+      </command>
       
    </extension>
    <extension

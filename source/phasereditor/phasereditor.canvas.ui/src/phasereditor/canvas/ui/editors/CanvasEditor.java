@@ -455,6 +455,10 @@ public class CanvasEditor extends EditorPart
 				"align.middle", "shape_align_middle.png", };
 
 		defsCommands(defs);
+		{
+			_toolBarManager.add(new Separator());
+			_toolBarManager.add(simpleCommand("phasereditor.canvas.ui.zoomRestore", "zoom_default.png"));
+		}
 
 		{
 			_toolBarManager.add(new Separator());

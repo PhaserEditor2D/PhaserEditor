@@ -53,4 +53,5 @@ public interface IEditorSharedImages {
 	String IMG_APPLICATION_SIDE_TREE = "icons/application_side_tree.png";
 	String IMG_SETTINGS = "icons/settings.png";
 	String IMG_PREVIEW_PATTERN = "icons/preview-pattern.png";
+	String IMG_ZOOM_RESTORE = "icons/zoom_default.png";
 }
