@@ -376,20 +376,22 @@ Phaser.Keyboard.prototype = {
             return;
         }
 
+        var key = event.keyCode;
+
         //   The event is being captured but another hotkey may need it
-        if (this._capture[event.keyCode])
+        if (this._capture[key])
         {
             event.preventDefault();
         }
 
-        if (!this._keys[event.keyCode])
+        if (!this._keys[key])
         {
-            this._keys[event.keyCode] = new Phaser.Key(this.game, event.keyCode);
+            this._keys[key] = new Phaser.Key(this.game, key);
         }
 
-        this._keys[event.keyCode].processKeyDown(event);
+        this._keys[key].processKeyDown(event);
 
-        this._k = event.keyCode;
+        this._k = key;
 
         if (this.onDownCallback)
         {
@@ -437,17 +439,19 @@ Phaser.Keyboard.prototype = {
             return;
         }
 
-        if (this._capture[event.keyCode])
+        var key = event.keyCode;
+
+        if (this._capture[key])
         {
             event.preventDefault();
         }
 
-        if (!this._keys[event.keyCode])
+        if (!this._keys[key])
         {
-            this._keys[event.keyCode] = new Phaser.Key(this.game, event.keyCode);
+            this._keys[key] = new Phaser.Key(this.game, key);
         }
 
-        this._keys[event.keyCode].processKeyUp(event);
+        this._keys[key].processKeyUp(event);
 
         if (this.onUpCallback)
         {
@@ -600,518 +604,212 @@ Phaser.Keyboard.prototype.constructor = Phaser.Keyboard;
 * _Note_: Use `Phaser.KeyCode.KEY` instead of `Phaser.Keyboard.KEY` to refer to a key code;
 * the latter approach is supported for compatibility.
 *
-* @class Phaser.KeyCode
+* @namespace
 */
 Phaser.KeyCode = {
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     A: "A".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     B: "B".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     C: "C".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     D: "D".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     E: "E".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     F: "F".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     G: "G".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     H: "H".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     I: "I".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     J: "J".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     K: "K".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     L: "L".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     M: "M".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     N: "N".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     O: "O".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     P: "P".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     Q: "Q".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     R: "R".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     S: "S".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     T: "T".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     U: "U".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     V: "V".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     W: "W".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     X: "X".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     Y: "Y".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     Z: "Z".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     ZERO: "0".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     ONE: "1".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     TWO: "2".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     THREE: "3".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     FOUR: "4".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     FIVE: "5".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     SIX: "6".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     SEVEN: "7".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     EIGHT: "8".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     NINE: "9".charCodeAt(0),
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     NUMPAD_0: 96,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     NUMPAD_1: 97,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     NUMPAD_2: 98,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     NUMPAD_3: 99,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     NUMPAD_4: 100,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     NUMPAD_5: 101,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     NUMPAD_6: 102,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     NUMPAD_7: 103,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     NUMPAD_8: 104,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     NUMPAD_9: 105,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     NUMPAD_MULTIPLY: 106,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     NUMPAD_ADD: 107,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     NUMPAD_ENTER: 108,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     NUMPAD_SUBTRACT: 109,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     NUMPAD_DECIMAL: 110,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     NUMPAD_DIVIDE: 111,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     F1: 112,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     F2: 113,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     F3: 114,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     F4: 115,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     F5: 116,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     F6: 117,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     F7: 118,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     F8: 119,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     F9: 120,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     F10: 121,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     F11: 122,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     F12: 123,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     F13: 124,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     F14: 125,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     F15: 126,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     COLON: 186,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     EQUALS: 187,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     COMMA: 188,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     UNDERSCORE: 189,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     PERIOD: 190,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     QUESTION_MARK: 191,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     TILDE: 192,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     OPEN_BRACKET: 219,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     BACKWARD_SLASH: 220,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     CLOSED_BRACKET: 221,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     QUOTES: 222,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     BACKSPACE: 8,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     TAB: 9,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     CLEAR: 12,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     ENTER: 13,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     SHIFT: 16,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     CONTROL: 17,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     ALT: 18,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     CAPS_LOCK: 20,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     ESC: 27,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     SPACEBAR: 32,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     PAGE_UP: 33,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     PAGE_DOWN: 34,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     END: 35,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     HOME: 36,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     LEFT: 37,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     UP: 38,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     RIGHT: 39,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     DOWN: 40,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     PLUS: 43,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     MINUS: 44,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     INSERT: 45,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     DELETE: 46,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     HELP: 47,
-    /** 
-	@static 
-	@type {Number}
-	*/
+    /** @static */
     NUM_LOCK: 144
 };
 

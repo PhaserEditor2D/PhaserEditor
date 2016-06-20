@@ -122,7 +122,7 @@ Phaser.Game = function (width, height, renderer, parent, state, transparent, ant
     this.renderer = null;
 
     /**
-    * @property {number} renderType - The Renderer this game will use. Either Phaser.AUTO, Phaser.CANVAS or Phaser.WEBGL.
+    * @property {number} renderType - The Renderer this game will use. Either Phaser.AUTO, Phaser.CANVAS, Phaser.WEBGL, or Phaser.HEADLESS.
     * @readonly
     */
     this.renderType = Phaser.AUTO;
@@ -643,12 +643,12 @@ Phaser.Game.prototype = {
         if (this.device.chrome)
         {
             var args = [
-                '%c %c %c Phaser v' + v + ' | Pixi.js ' + PIXI.VERSION + ' | ' + r + ' | ' + a + '  %c %c ' + '%c http://phaser.io %c\u2665%c\u2665%c\u2665',
-                'background: #9854d8',
-                'background: #6c2ca7',
-                'color: #ffffff; background: #450f78;',
-                'background: #6c2ca7',
-                'background: #9854d8',
+                '%c %c %c Phaser v' + v + ' | Pixi.js | ' + r + ' | ' + a + '  %c %c ' + '%c http://phaser.io %c\u2665%c\u2665%c\u2665',
+                'background: #fb8cb3',
+                'background: #d44a52',
+                'color: #ffffff; background: #871905;',
+                'background: #d44a52',
+                'background: #fb8cb3',
                 'background: #ffffff'
             ];
 
@@ -789,9 +789,6 @@ Phaser.Game.prototype = {
         {
             this.updateLogic(this.time.desiredFpsMult);
 
-            //  Sync the scene graph after _every_ logic update to account for moved game objects                
-            this.stage.updateTransform();
-
             // call the game render update exactly once every frame
             this.updateRender(this.time.slowMotion * this.time.desiredFps);
 
@@ -846,9 +843,6 @@ Phaser.Game.prototype = {
 
                 this.updateLogic(this.time.desiredFpsMult);
 
-                //  Sync the scene graph after _every_ logic update to account for moved game objects
-                this.stage.updateTransform();
-
                 count++;
 
                 if (this.forceSingleUpdate && count === 1)
@@ -898,7 +892,7 @@ Phaser.Game.prototype = {
 
             this.scale.preUpdate();
             this.debug.preUpdate();
-            this.world.camera.preUpdate();
+            this.camera.preUpdate();
             this.physics.preUpdate();
             this.state.preUpdate(timeStep);
             this.plugins.preUpdate(timeStep);
@@ -923,6 +917,8 @@ Phaser.Game.prototype = {
             this.state.pauseUpdate();
             this.debug.preUpdate();
         }
+
+        this.stage.updateTransform();
 
     },
 
@@ -950,11 +946,14 @@ Phaser.Game.prototype = {
 
         this.state.preRender(elapsedTime);
 
-        this.renderer.render(this.stage);
+        if (this.renderType !== Phaser.HEADLESS)
+        {
+            this.renderer.render(this.stage);
 
-        this.plugins.render(elapsedTime);
+            this.plugins.render(elapsedTime);
 
-        this.state.render(elapsedTime);
+            this.state.render(elapsedTime);
+        }
 
         this.plugins.postRender(elapsedTime);
 
@@ -1002,6 +1001,11 @@ Phaser.Game.prototype = {
     /**
     * Nukes the entire game from orbit.
     *
+    * Calls destroy on Game.state, Game.sound, Game.scale, Game.stage, Game.input, Game.physics and Game.plugins.
+    *
+    * Then sets all of those local handlers to null, destroys the renderer, removes the canvas from the DOM
+    * and resets the PIXI default renderer.
+    *
     * @method Phaser.Game#destroy
     */
     destroy: function () {
@@ -1034,6 +1038,8 @@ Phaser.Game.prototype = {
         this.renderer.destroy(false);
 
         Phaser.Canvas.removeFromDOM(this.canvas);
+
+        PIXI.defaultRenderer = null;
 
         Phaser.GAMES[this.id] = null;
 
