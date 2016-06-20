@@ -18,7 +18,7 @@
             "children": [
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "section": "section",
                   "asset": "wall-empty"
                 },
@@ -27,7 +27,7 @@
                 "info": {
                   "editorName": "wall_empty",
                   "asset-ref": {
-                    "file": "/AmigoCuco/WebContent/assets/pack.json",
+                    "file": "WebContent/assets/pack.json",
                     "sprite": "wall-empty",
                     "section": "section",
                     "asset": "wall-empty"
@@ -39,7 +39,7 @@
               },
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "sprite": "wall-hole",
                   "section": "section",
                   "asset": "atlas1"
@@ -54,7 +54,7 @@
               },
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "sprite": "wall-hole",
                   "section": "section",
                   "asset": "atlas1"
@@ -69,7 +69,7 @@
               },
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "sprite": "wall-hole",
                   "section": "section",
                   "asset": "atlas1"
@@ -84,7 +84,7 @@
               },
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "sprite": "Puerta",
                   "section": "section",
                   "asset": "atlas1"
@@ -99,7 +99,7 @@
               },
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "sprite": "musgo",
                   "section": "section",
                   "asset": "atlas1"
@@ -114,7 +114,7 @@
               },
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "sprite": "musgo",
                   "section": "section",
                   "asset": "atlas1"
@@ -129,7 +129,7 @@
               },
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "sprite": "musgo",
                   "section": "section",
                   "asset": "atlas1"
@@ -144,7 +144,7 @@
               },
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "sprite": "musgo",
                   "section": "section",
                   "asset": "atlas1"
@@ -159,22 +159,7 @@
               },
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
-                  "sprite": "wall-hole",
-                  "section": "section",
-                  "asset": "atlas1"
-                },
-                "id": "67b882f5-85e0-4a22-8151-f63713ee7ac8",
-                "type": "atlas-sprite",
-                "info": {
-                  "editorName": "wall_hole3",
-                  "x": 1607.6742183374465,
-                  "y": 1135.3339706366457
-                }
-              },
-              {
-                "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "sprite": "wall-hole",
                   "section": "section",
                   "asset": "atlas1"
@@ -189,7 +174,7 @@
               },
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "section": "section",
                   "asset": "window"
                 },
@@ -214,7 +199,7 @@
             "children": [
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "sprite": "platform2",
                   "section": "section",
                   "asset": "atlas1"
@@ -229,7 +214,7 @@
               },
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "sprite": "platform2",
                   "section": "section",
                   "asset": "atlas1"
@@ -244,7 +229,7 @@
               },
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "sprite": "platform2",
                   "section": "section",
                   "asset": "atlas1"
@@ -259,7 +244,7 @@
               },
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "sprite": "platform2",
                   "section": "section",
                   "asset": "atlas1"
@@ -274,7 +259,7 @@
               },
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "sprite": "maceta",
                   "section": "section",
                   "asset": "atlas1"
@@ -289,7 +274,7 @@
               },
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "sprite": "platform2",
                   "section": "section",
                   "asset": "atlas1"
@@ -299,7 +284,7 @@
                 "info": {
                   "editorName": "floor",
                   "asset-ref": {
-                    "file": "/AmigoCuco/WebContent/assets/pack.json",
+                    "file": "WebContent/assets/pack.json",
                     "sprite": "platform2",
                     "section": "section",
                     "asset": "atlas1"
@@ -323,7 +308,7 @@
             "children": [
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "sprite": "platform1",
                   "section": "section",
                   "asset": "atlas1"
@@ -338,7 +323,7 @@
               },
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "sprite": "platform1",
                   "section": "section",
                   "asset": "atlas1"
@@ -359,7 +344,7 @@
         },
         {
           "asset-ref": {
-            "file": "/AmigoCuco/WebContent/assets/pack.json",
+            "file": "WebContent/assets/pack.json",
             "sprite": "3",
             "section": "section",
             "asset": "fufu"
@@ -392,7 +377,7 @@
             "children": [
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "sprite": "shadow",
                   "section": "section",
                   "asset": "atlas1"
@@ -407,7 +392,7 @@
               },
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "sprite": "shadow",
                   "section": "section",
                   "asset": "atlas1"
@@ -422,7 +407,7 @@
               },
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "sprite": "shadow",
                   "section": "section",
                   "asset": "atlas1"
@@ -437,7 +422,7 @@
               },
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "sprite": "shadow",
                   "section": "section",
                   "asset": "atlas1"
@@ -463,7 +448,7 @@
             "children": [
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "sprite": "flor",
                   "section": "section",
                   "asset": "atlas1"
@@ -478,7 +463,7 @@
               },
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "sprite": "guapen",
                   "section": "section",
                   "asset": "atlas1"
@@ -503,7 +488,7 @@
                   "children": [
                     {
                       "asset-ref": {
-                        "file": "/AmigoCuco/WebContent/assets/pack.json",
+                        "file": "WebContent/assets/pack.json",
                         "sprite": "zombi-head",
                         "section": "section",
                         "asset": "atlas1"
@@ -514,7 +499,7 @@
                     },
                     {
                       "asset-ref": {
-                        "file": "/AmigoCuco/WebContent/assets/pack.json",
+                        "file": "WebContent/assets/pack.json",
                         "sprite": "zombi-eye",
                         "section": "section",
                         "asset": "atlas1"
@@ -529,7 +514,7 @@
                     },
                     {
                       "asset-ref": {
-                        "file": "/AmigoCuco/WebContent/assets/pack.json",
+                        "file": "WebContent/assets/pack.json",
                         "sprite": "zombi-eye",
                         "section": "section",
                         "asset": "atlas1"
@@ -552,7 +537,7 @@
               },
               {
                 "asset-ref": {
-                  "file": "/AmigoCuco/WebContent/assets/pack.json",
+                  "file": "WebContent/assets/pack.json",
                   "sprite": "flor",
                   "section": "section",
                   "asset": "atlas1"
@@ -568,6 +553,21 @@
             ],
             "editorClosed": false,
             "physicsGroup": false
+          }
+        },
+        {
+          "asset-ref": {
+            "file": "WebContent/assets/pack.json",
+            "sprite": "wall-hole",
+            "section": "section",
+            "asset": "atlas1"
+          },
+          "id": "f51d6123-3111-45fe-99f6-9376b219c3ae",
+          "type": "atlas-sprite",
+          "info": {
+            "editorName": "wall_hole3",
+            "x": 1628.5142784983123,
+            "y": 1110.3453708520938
           }
         }
       ],
