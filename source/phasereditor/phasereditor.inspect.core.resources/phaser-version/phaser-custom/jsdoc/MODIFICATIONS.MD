@@ -13,3 +13,6 @@
 	
 - phaser-master\src\loader\Loader.js
 	- Fix jsdoc of audioSprite, it was using #audiosprite
+	
+- phaser-master\src\geom\Line.js
+	- Fix jsdoc of intersectsRectangle (set it to @method Phaser.Line.intersectsRectangle)

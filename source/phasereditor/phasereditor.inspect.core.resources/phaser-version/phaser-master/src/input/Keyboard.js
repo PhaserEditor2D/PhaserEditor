@@ -604,10 +604,10 @@ Phaser.Keyboard.prototype.constructor = Phaser.Keyboard;
 * _Note_: Use `Phaser.KeyCode.KEY` instead of `Phaser.Keyboard.KEY` to refer to a key code;
 * the latter approach is supported for compatibility.
 *
-* @namespace
+* @class
 */
 Phaser.KeyCode = {
-    /** @static */
+   /** @static */
     A: "A".charCodeAt(0),
     /** @static */
     B: "B".charCodeAt(0),
