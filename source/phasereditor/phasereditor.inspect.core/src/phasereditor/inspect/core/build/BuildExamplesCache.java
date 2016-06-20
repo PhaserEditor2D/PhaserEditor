@@ -34,9 +34,9 @@ class BuildExamplesCache {
 	public static void main(String[] args) throws IOException {
 		Path wsPath = Paths.get(".").toAbsolutePath().getParent().getParent();
 		Path projectPath = wsPath.resolve(InspectCore.RESOURCES_PLUGIN_ID);
-		ExamplesModel model = new ExamplesModel(projectPath);
+		ExamplesModel model = new ExamplesModel(projectPath.resolve("phaser-version"));
 		model.build(new NullProgressMonitor());
-		Path cache = projectPath.resolve("phaser-examples-cache.json");
+		Path cache = projectPath.resolve("phaser-version/phaser-custom/examples/examples-cache.json");
 		model.saveCache(cache);
 
 		// verify

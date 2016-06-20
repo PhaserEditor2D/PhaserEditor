@@ -17,6 +17,7 @@
      <p>If you need each Sprite to be able to play a video fully independently then you will need one Video object per Sprite. Please understand the obvious performance implications of doing this, and the memory required to hold videos in RAM.</p> 
      <p>On some mobile browsers such as iOS Safari, you cannot play a video until the user has explicitly touched the screen. This works in the same way as audio unlocking. Phaser will handle the touch unlocking for you, however unlike with audio it's worth noting that every single Video needs to be touch unlocked, not just the first one. You can use the <code>changeSource</code> method to try and work around this limitation, but see the method help for details.</p> 
      <p>Small screen devices, especially iPod and iPhone will launch the video in its own native video player, outside of the Safari browser. There is no way to avoid this, it's a device imposed limitation.</p> 
+     <p>Note: On iOS if you need to detect when the user presses the 'Done' button (before the video ends) then you need to add your own event listener</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -57,7 +58,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-35">line 35</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-38">line 38</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -75,7 +76,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1162">line 1162</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1167">line 1167</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -90,7 +91,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-72">line 72</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-75">line 75</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -105,7 +106,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1182">line 1182</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1187">line 1187</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -120,7 +121,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-43">line 43</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-46">line 46</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -135,7 +136,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-61">line 61</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-64">line 64</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -150,7 +151,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-137">line 137</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-140">line 140</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -173,7 +174,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-49">line 49</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-52">line 52</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -188,7 +189,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1355">line 1355</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1360">line 1360</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -203,7 +204,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1212">line 1212</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1217">line 1217</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -218,7 +219,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-98">line 98</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-101">line 101</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -233,7 +234,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-88">line 88</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-91">line 91</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -242,13 +243,13 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>This signal is dispatched when the Video completes playback, i.e. enters an 'ended' state. Videos set to loop will never dispatch this signal.</p> 
+     <p>This signal is dispatched when the Video completes playback, i.e. enters an 'ended' state. On iOS specifically it also fires if the user hits the 'Done' button at any point during playback. Videos set to loop will never dispatch this signal.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-93">line 93</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-96">line 96</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -263,7 +264,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-103">line 103</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-106">line 106</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -278,7 +279,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-83">line 83</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-86">line 86</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -293,7 +294,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-110">line 110</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-113">line 113</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -308,7 +309,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1252">line 1252</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1257">line 1257</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -323,7 +324,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1332">line 1332</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1337">line 1337</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -338,7 +339,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1386">line 1386</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1391">line 1391</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -353,7 +354,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1197">line 1197</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1202">line 1202</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -368,7 +369,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-152">line 152</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-155">line 155</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -391,7 +392,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-158">line 158</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-161">line 161</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -414,7 +415,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-146">line 146</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-149">line 149</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -429,7 +430,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-285">line 285</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-288">line 288</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -444,7 +445,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-260">line 260</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-263">line 263</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -459,7 +460,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-266">line 266</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-269">line 269</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -482,7 +483,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-116">line 116</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-119">line 119</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -497,7 +498,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-78">line 78</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-81">line 81</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -512,7 +513,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-67">line 67</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-70">line 70</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -527,7 +528,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-127">line 127</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-130">line 130</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -542,7 +543,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-132">line 132</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-135">line 135</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -557,7 +558,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1300">line 1300</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1305">line 1305</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -572,7 +573,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-55">line 55</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-58">line 58</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -616,7 +617,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-799">line 799</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-804">line 804</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -696,7 +697,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-828">line 828</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-833">line 833</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -751,7 +752,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-949">line 949</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-954">line 954</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -766,7 +767,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-620">line 620</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-623">line 623</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -812,7 +813,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-308">line 308</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-311">line 311</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -853,7 +854,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-504">line 504</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-507">line 507</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -905,7 +906,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-527">line 527</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-530">line 530</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -920,7 +921,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1136">line 1136</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1141">line 1141</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -981,7 +982,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1070">line 1070</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1075">line 1075</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1033,7 +1034,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-632">line 632</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-635">line 635</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1048,7 +1049,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1106">line 1106</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1111">line 1111</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1063,7 +1064,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-854">line 854</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-859">line 859</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1078,7 +1079,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1028">line 1028</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1033">line 1033</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1140,7 +1141,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-334">line 334</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-337">line 337</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1167,7 +1168,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-719">line 719</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-723">line 723</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1182,7 +1183,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1041">line 1041</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-1046">line 1046</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1228,7 +1229,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_Video.js.html">gameobjects/Video.js</a>, 
-      <a href="src_gameobjects_Video.js.html#sunlight-1-line-569">line 569</a> 
+      <a href="src_gameobjects_Video.js.html#sunlight-1-line-572">line 572</a> 
      </dt> 
     </dl> 
    </dd> 

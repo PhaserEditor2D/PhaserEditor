@@ -76,7 +76,7 @@ public class ExampleModel implements IPhaserTemplate {
 		_info.setWebsite("http://github.io/photonstorm/phaser");
 		_info.setMainFile(mainFile);
 		_info.setDescription("Official Phaser example.");
-		_mainFilePath = examples.getExamplesRepoPath().resolve("examples").resolve(category.getName().toLowerCase())
+		_mainFilePath = examples.getExamplesRepoPath().resolve(category.getName().toLowerCase())
 				.resolve(mainFile);
 	}
 

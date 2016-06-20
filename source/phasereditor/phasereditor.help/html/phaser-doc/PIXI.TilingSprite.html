@@ -189,6 +189,37 @@
     </dl> 
    </dd> 
    <dt> 
+    <h4 class="name " id="exists"><span class="type-signature"></span>exists<span class="type-signature"> :Boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Controls if this Sprite is processed by the core Phaser game loops and Group loops.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="inherited-from">
+      Inherited From:
+     </dt> 
+     <dd class="inherited-from">
+      <ul class="dummy">
+       <li> <a href="PIXI.Sprite.html#exists">PIXI.Sprite#exists</a> </li>
+      </ul>
+     </dd> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>true</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_display_Sprite.js.html">pixi/display/Sprite.js</a>, 
+      <a href="src_pixi_display_Sprite.js.html#sunlight-1-line-107">line 107</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
     <h4 class="name " id="filterArea"><span class="type-signature"></span>filterArea<span class="type-signature"> :Rectangle</span></h4> 
    </dt> 
    <dd> 
@@ -245,13 +276,13 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>The height of the tiling sprite</p> 
+     <p>The height of the TilingSprite, setting this will actually modify the scale to achieve the value set</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_extras_TilingSprite.js.html">pixi/extras/TilingSprite.js</a>, 
-      <a href="src_pixi_extras_TilingSprite.js.html#sunlight-1-line-27">line 27</a> 
+      <a href="src_pixi_extras_TilingSprite.js.html#sunlight-1-line-535">line 535</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -260,13 +291,13 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>The height of the TilingSprite, setting this will actually modify the scale to achieve the value set</p> 
+     <p>The height of the tiling sprite</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_extras_TilingSprite.js.html">pixi/extras/TilingSprite.js</a>, 
-      <a href="src_pixi_extras_TilingSprite.js.html#sunlight-1-line-535">line 535</a> 
+      <a href="src_pixi_extras_TilingSprite.js.html#sunlight-1-line-27">line 27</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -294,6 +325,31 @@
       Source - 
       <a href="src_pixi_display_DisplayObject.js.html">pixi/display/DisplayObject.js</a>, 
       <a href="src_pixi_display_DisplayObject.js.html#sunlight-1-line-62">line 62</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="ignoreChildInput"><span class="type-signature"></span>ignoreChildInput<span class="type-signature"> :Boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If <code>ignoreChildInput</code> is <code>false</code> it will allow this objects <em>children</em> to be considered as valid for Input events.</p> 
+     <p>If this property is <code>true</code> then the children will <em>not</em> be considered as valid for Input events.</p> 
+     <p>Note that this property isn't recursive: only immediate children are influenced, it doesn't scan further down.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="inherited-from">
+      Inherited From:
+     </dt> 
+     <dd class="inherited-from">
+      <ul class="dummy">
+       <li> <a href="PIXI.DisplayObjectContainer.html#ignoreChildInput">PIXI.DisplayObjectContainer#ignoreChildInput</a> </li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html">pixi/display/DisplayObjectContainer.js</a>, 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-26">line 26</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -889,7 +945,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_display_DisplayObject.js.html">pixi/display/DisplayObject.js</a>, 
-      <a href="src_pixi_display_DisplayObject.js.html#sunlight-1-line-723">line 723</a> 
+      <a href="src_pixi_display_DisplayObject.js.html#sunlight-1-line-722">line 722</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -912,7 +968,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_display_DisplayObject.js.html">pixi/display/DisplayObject.js</a>, 
-      <a href="src_pixi_display_DisplayObject.js.html#sunlight-1-line-741">line 741</a> 
+      <a href="src_pixi_display_DisplayObject.js.html#sunlight-1-line-740">line 740</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -964,7 +1020,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_display_DisplayObjectContainer.js.html">pixi/display/DisplayObjectContainer.js</a>, 
-      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-91">line 91</a> 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-102">line 102</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1018,7 +1074,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_display_DisplayObjectContainer.js.html">pixi/display/DisplayObjectContainer.js</a>, 
-      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-103">line 103</a> 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-114">line 114</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1046,7 +1102,7 @@
     </dl> 
    </dd> 
    <dt> 
-    <h4 class="name " id="generateTexture"><span class="type-signature"></span>generateTexture<span class="signature">(resolution, scaleMode, renderer)</span><span class="type-signature"> ? {<a href="PIXI.Texture.html">PIXI.Texture</a>}</span></h4> 
+    <h4 class="name " id="generateTexture"><span class="type-signature"></span>generateTexture<span class="signature">(resolution, scaleMode, renderer)</span><span class="type-signature"> ? {<a href="PIXI.RenderTexture.html">PIXI.RenderTexture</a>}</span></h4> 
    </dt> 
    <dd> 
     <div class="description"> 
@@ -1082,7 +1138,7 @@
     <h5>Returns:</h5> 
     <div class="returns"> 
      <div class="returns-type"> 
-      <span class="param-type"><a href="PIXI.Texture.html">PIXI.Texture</a></span> - 
+      <span class="param-type"><a href="PIXI.RenderTexture.html">PIXI.RenderTexture</a></span> - 
      </div> 
      <div class="returns-desc param-desc"> 
       <p>a texture of the graphics object</p> 
@@ -1100,7 +1156,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_display_DisplayObject.js.html">pixi/display/DisplayObject.js</a>, 
-      <a href="src_pixi_display_DisplayObject.js.html#sunlight-1-line-542">line 542</a> 
+      <a href="src_pixi_display_DisplayObject.js.html#sunlight-1-line-541">line 541</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1134,7 +1190,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_extras_TilingSprite.js.html">pixi/extras/TilingSprite.js</a>, 
-      <a href="src_pixi_extras_TilingSprite.js.html#sunlight-1-line-330">line 330</a> 
+      <a href="src_pixi_extras_TilingSprite.js.html#sunlight-1-line-332">line 332</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1207,7 +1263,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_display_DisplayObjectContainer.js.html">pixi/display/DisplayObjectContainer.js</a>, 
-      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-194">line 194</a> 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-205">line 205</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1256,7 +1312,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_display_DisplayObjectContainer.js.html">pixi/display/DisplayObjectContainer.js</a>, 
-      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-159">line 159</a> 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-170">line 170</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1288,7 +1344,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_display_DisplayObjectContainer.js.html">pixi/display/DisplayObjectContainer.js</a>, 
-      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-367">line 367</a> 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-381">line 381</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1311,7 +1367,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_display_DisplayObject.js.html">pixi/display/DisplayObject.js</a>, 
-      <a href="src_pixi_display_DisplayObject.js.html#sunlight-1-line-533">line 533</a> 
+      <a href="src_pixi_display_DisplayObject.js.html#sunlight-1-line-532">line 532</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1360,7 +1416,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_display_DisplayObjectContainer.js.html">pixi/display/DisplayObjectContainer.js</a>, 
-      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-211">line 211</a> 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-222">line 222</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1409,7 +1465,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_display_DisplayObjectContainer.js.html">pixi/display/DisplayObjectContainer.js</a>, 
-      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-226">line 226</a> 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-237">line 237</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1454,7 +1510,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_display_DisplayObjectContainer.js.html">pixi/display/DisplayObjectContainer.js</a>, 
-      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-244">line 244</a> 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-255">line 255</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1477,7 +1533,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_display_DisplayObjectContainer.js.html">pixi/display/DisplayObjectContainer.js</a>, 
-      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-407">line 407</a> 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-426">line 426</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1522,7 +1578,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_display_DisplayObjectContainer.js.html">pixi/display/DisplayObjectContainer.js</a>, 
-      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-176">line 176</a> 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-187">line 187</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1562,7 +1618,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_display_DisplayObjectContainer.js.html">pixi/display/DisplayObjectContainer.js</a>, 
-      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-391">line 391</a> 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-410">line 410</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1613,7 +1669,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_display_Sprite.js.html">pixi/display/Sprite.js</a>, 
-      <a href="src_pixi_display_Sprite.js.html#sunlight-1-line-158">line 158</a> 
+      <a href="src_pixi_display_Sprite.js.html#sunlight-1-line-167">line 167</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1658,7 +1714,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_display_DisplayObjectContainer.js.html">pixi/display/DisplayObjectContainer.js</a>, 
-      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-134">line 134</a> 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-145">line 145</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1707,7 +1763,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_display_DisplayObject.js.html">pixi/display/DisplayObject.js</a>, 
-      <a href="src_pixi_display_DisplayObject.js.html#sunlight-1-line-576">line 576</a> 
+      <a href="src_pixi_display_DisplayObject.js.html#sunlight-1-line-575">line 575</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1764,7 +1820,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_display_DisplayObject.js.html">pixi/display/DisplayObject.js</a>, 
-      <a href="src_pixi_display_DisplayObject.js.html#sunlight-1-line-590">line 590</a> 
+      <a href="src_pixi_display_DisplayObject.js.html#sunlight-1-line-589">line 589</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1787,7 +1843,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_display_DisplayObject.js.html">pixi/display/DisplayObject.js</a>, 
-      <a href="src_pixi_display_DisplayObject.js.html#sunlight-1-line-566">line 566</a> 
+      <a href="src_pixi_display_DisplayObject.js.html#sunlight-1-line-565">line 565</a> 
      </dt> 
     </dl> 
    </dd> 

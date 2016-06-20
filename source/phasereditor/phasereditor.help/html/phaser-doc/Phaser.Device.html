@@ -3,7 +3,7 @@
  <header> 
   <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a>.</span> Device </h2> 
   <div class="class-description">
-   <p>Detects device support capabilities and is responsible for device intialization - see <a href="Phaser.Device.html#.whenReady">whenReady</a>.</p> 
+   <p>Detects device support capabilities and is responsible for device initialization - see <a href="Phaser.Device.html#.whenReady">whenReady</a>.</p> 
    <p>This class represents a singleton object that can be accessed directly as <code>game.device</code> (or, as a fallback, <code>Phaser.Device</code> when a game instance is not available) without the need to instantiate it.</p> 
    <p>Unless otherwise noted the device capabilities are only guaranteed after initialization. Initialization occurs automatically and is guaranteed complete before <a href="Phaser.Game.html">Phaser.Game</a> begins its "boot" phase. Feature detection can be modified in the <a href="Phaser.Device.html#.onInitialized">onInitialized</a> signal.</p> 
    <p>When checking features using the exposed properties only the <em>truth-iness</em> of the value should be relied upon unless the documentation states otherwise: properties may return <code>false</code>, <code>''</code>, <code>null</code>, or even <code>undefined</code> when indicating the lack of a feature.</p> 

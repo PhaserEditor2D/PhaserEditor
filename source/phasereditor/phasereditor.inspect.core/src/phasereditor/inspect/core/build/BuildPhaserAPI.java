@@ -45,8 +45,8 @@ public class BuildPhaserAPI {
 	public static void main(String[] args) throws IOException {
 		Path wsPath = Paths.get(".").toAbsolutePath().getParent().getParent();
 		Path projectPath = wsPath.resolve(InspectCore.RESOURCES_PLUGIN_ID);
-		_phaserJSDoc = new PhaserJSDoc(projectPath.resolve("phaser-master/src"),
-				projectPath.resolve("phaser-custom/jsdoc/docs.json"));
+		_phaserJSDoc = new PhaserJSDoc(projectPath.resolve("phaser-version/phaser-master/src"),
+				projectPath.resolve("phaser-version/phaser-custom/jsdoc/docs.json"));
 
 		PhaserType[] types = _phaserJSDoc.getTypes().stream().toArray(PhaserType[]::new);
 
@@ -221,13 +221,15 @@ public class BuildPhaserAPI {
 		}
 		sb.append("\n");
 
-		Path phaserApiConcat = projectPath.resolve("phaser-custom/api/phaser-api-concat.js");
+		Path phaserApiConcat = projectPath.resolve("phaser-version/phaser-custom/api/phaser-api-concat.js");
 		sb.append(new String(Files.readAllBytes(phaserApiConcat)));
 
 		out.println((sb.length() / 1024) + "kb");
 
-		Path phaserApi = projectPath.resolve("phaser-custom/api/phaser-api.js");
+		Path phaserApi = projectPath.resolve("phaser-version/phaser-custom/api/phaser-api.js");
 		Files.write(phaserApi, sb.toString().getBytes());
+
+		// out.println(sb);
 
 	}
 
@@ -246,12 +248,13 @@ public class BuildPhaserAPI {
 		default:
 			break;
 		}
-		
-		// this is the case of the Array(DisplayObject), that is converted to [new DisplayObject()]
+
+		// this is the case of the Array(DisplayObject), that is converted to
+		// [new DisplayObject()]
 		if (varType.startsWith("[new")) {
 			return varType;
 		}
-		
+
 		return "new " + varType + "()";
 	}
 
@@ -338,13 +341,13 @@ public class BuildPhaserAPI {
 
 		if (name.startsWith("Array(") && name.endsWith(")")) {
 			String elemType = name.substring(6, name.length() - 1);
-			
-			// a patch to the rule because the worths it 
+
+			// a patch to the rule because the worths it
 			if (elemType.equals("DisplayObject")) {
 				elemType = "PIXI_DisplayObject";
 			}
 			return "[new " + elemType + "()]";
-			
+
 		}
 
 		if (name.toLowerCase().startsWith("array")) {

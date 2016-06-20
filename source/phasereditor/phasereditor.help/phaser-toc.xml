@@ -1,4 +1,4 @@
-<toc label='Phaser Documentation 2.4.7' link_to='toc.xml#phaser-doc'>
+<toc label='Phaser Documentation 2.5.0' link_to='toc.xml#phaser-doc'>
 <topic href='html/phaser-doc/Phaser.Animation.html' label='Phaser.Animation'>   <topic label='new Animation(game, parent, name, frameData, frames, frameRate, loop)' href='html/phaser-doc/Phaser.Animation.html#new Animation'></topic>
   <topic label='currentFrame :Phaser.Frame' href='html/phaser-doc/Phaser.Animation.html#currentFrame '></topic>
   <topic label='delay :number' href='html/phaser-doc/Phaser.Animation.html#delay '></topic>
@@ -9,6 +9,7 @@
   <topic label='isFinished :boolean' href='html/phaser-doc/Phaser.Animation.html#isFinished '></topic>
   <topic label='isPaused :boolean' href='html/phaser-doc/Phaser.Animation.html#isPaused '></topic>
   <topic label='isPlaying :boolean' href='html/phaser-doc/Phaser.Animation.html#isPlaying '></topic>
+  <topic label='isReversed :boolean' href='html/phaser-doc/Phaser.Animation.html#isReversed '></topic>
   <topic label='killOnComplete :boolean' href='html/phaser-doc/Phaser.Animation.html#killOnComplete '></topic>
   <topic label='loop :boolean' href='html/phaser-doc/Phaser.Animation.html#loop '></topic>
   <topic label='loopCount :number' href='html/phaser-doc/Phaser.Animation.html#loopCount '></topic>
@@ -18,6 +19,7 @@
   <topic label='onStart :Phaser.Signal' href='html/phaser-doc/Phaser.Animation.html#onStart '></topic>
   <topic label='onUpdate :Phaser.Signal|null' href='html/phaser-doc/Phaser.Animation.html#onUpdate '></topic>
   <topic label='paused :boolean' href='html/phaser-doc/Phaser.Animation.html#paused '></topic>
+  <topic label='reversed :boolean' href='html/phaser-doc/Phaser.Animation.html#reversed '></topic>
   <topic label='speed :number' href='html/phaser-doc/Phaser.Animation.html#speed '></topic>
   <topic label='&lt;static&gt; generateFrameNames(prefix, start, stop, suffix, zeroPad) &#8594; {Array.&lt;string&gt;}' href='html/phaser-doc/Phaser.Animation.html#generateFrameNames'></topic>
   <topic label='complete()' href='html/phaser-doc/Phaser.Animation.html#complete'></topic>
@@ -28,6 +30,8 @@
   <topic label='play(frameRate, loop, killOnComplete) &#8594; {Phaser.Animation}' href='html/phaser-doc/Phaser.Animation.html#play'></topic>
   <topic label='previous(quantity)' href='html/phaser-doc/Phaser.Animation.html#previous'></topic>
   <topic label='restart()' href='html/phaser-doc/Phaser.Animation.html#restart'></topic>
+  <topic label='reverse() &#8594; {Phaser.Animation}' href='html/phaser-doc/Phaser.Animation.html#reverse'></topic>
+  <topic label='reverseOnce() &#8594; {Phaser.Animation}' href='html/phaser-doc/Phaser.Animation.html#reverseOnce'></topic>
   <topic label='setFrame(frameId, useLocalFrameIndex)' href='html/phaser-doc/Phaser.Animation.html#setFrame'></topic>
   <topic label='stop(resetFrame, dispatchComplete)' href='html/phaser-doc/Phaser.Animation.html#stop'></topic>
   <topic label='update()' href='html/phaser-doc/Phaser.Animation.html#update'></topic>
@@ -116,6 +120,7 @@
   <topic label='imageData :ImageData' href='html/phaser-doc/Phaser.BitmapData.html#imageData '></topic>
   <topic label='key :string' href='html/phaser-doc/Phaser.BitmapData.html#key '></topic>
   <topic label='pixels :Uint32Array' href='html/phaser-doc/Phaser.BitmapData.html#pixels '></topic>
+  <topic label='smoothProperty :string' href='html/phaser-doc/Phaser.BitmapData.html#smoothProperty '></topic>
   <topic label='texture :PIXI.Texture' href='html/phaser-doc/Phaser.BitmapData.html#texture '></topic>
   <topic label='textureFrame :Phaser.Frame' href='html/phaser-doc/Phaser.BitmapData.html#textureFrame '></topic>
   <topic label='type :number' href='html/phaser-doc/Phaser.BitmapData.html#type '></topic>
@@ -155,6 +160,7 @@
   <topic label='cls()' href='html/phaser-doc/Phaser.BitmapData.html#cls'></topic>
   <topic label='copy(source, x, y, width, height, tx, ty, newWidth, newHeight, rotate, anchorX, anchorY, scaleX, scaleY, alpha, blendMode, roundPx) &#8594; {Phaser.BitmapData}' href='html/phaser-doc/Phaser.BitmapData.html#copy'></topic>
   <topic label='copyRect(source, area, x, y, alpha, blendMode, roundPx) &#8594; {Phaser.BitmapData}' href='html/phaser-doc/Phaser.BitmapData.html#copyRect'></topic>
+  <topic label='copyTransform(source, blendMode, roundPx) &#8594; {Phaser.BitmapData}' href='html/phaser-doc/Phaser.BitmapData.html#copyTransform'></topic>
   <topic label='destroy()' href='html/phaser-doc/Phaser.BitmapData.html#destroy'></topic>
   <topic label='draw(source, x, y, width, height, blendMode, roundPx) &#8594; {Phaser.BitmapData}' href='html/phaser-doc/Phaser.BitmapData.html#draw'></topic>
   <topic label='drawFull(parent, blendMode, roundPx) &#8594; {Phaser.BitmapData}' href='html/phaser-doc/Phaser.BitmapData.html#drawFull'></topic>
@@ -197,12 +203,15 @@
   <topic label='animations :Phaser.AnimationManager' href='html/phaser-doc/Phaser.BitmapText.html#animations '></topic>
   <topic label='autoCull :boolean' href='html/phaser-doc/Phaser.BitmapText.html#autoCull '></topic>
   <topic label='body :Phaser.Physics.Arcade.Body|Phaser.Physics.P2.Body|Phaser.Physics.Ninja.Body|null' href='html/phaser-doc/Phaser.BitmapText.html#body '></topic>
-  <topic label='&lt;readonly&gt; bottom :number' href='html/phaser-doc/Phaser.BitmapText.html#bottom'></topic>
+  <topic label='bottom :number' href='html/phaser-doc/Phaser.BitmapText.html#bottom '></topic>
   <topic label='cacheAsBitmap :Boolean' href='html/phaser-doc/Phaser.BitmapText.html#cacheAsBitmap '></topic>
   <topic label='cameraOffset :Phaser.Point' href='html/phaser-doc/Phaser.BitmapText.html#cameraOffset '></topic>
+  <topic label='centerX :number' href='html/phaser-doc/Phaser.BitmapText.html#centerX '></topic>
+  <topic label='centerY :number' href='html/phaser-doc/Phaser.BitmapText.html#centerY '></topic>
   <topic label='checkWorldBounds :boolean' href='html/phaser-doc/Phaser.BitmapText.html#checkWorldBounds '></topic>
   <topic label='&lt;readonly&gt; children :Array.&lt;DisplayObject&gt;' href='html/phaser-doc/Phaser.BitmapText.html#children'></topic>
   <topic label='&lt;internal&gt; components :object' href='html/phaser-doc/Phaser.BitmapText.html#components'></topic>
+  <topic label='data :Object' href='html/phaser-doc/Phaser.BitmapText.html#data '></topic>
   <topic label='debug :boolean' href='html/phaser-doc/Phaser.BitmapText.html#debug '></topic>
   <topic label='&lt;readonly&gt; destroyPhase :boolean' href='html/phaser-doc/Phaser.BitmapText.html#destroyPhase'></topic>
   <topic label='dirty :boolean' href='html/phaser-doc/Phaser.BitmapText.html#dirty '></topic>
@@ -217,12 +226,13 @@
   <topic label='game :Phaser.Game' href='html/phaser-doc/Phaser.BitmapText.html#game '></topic>
   <topic label='height :Number' href='html/phaser-doc/Phaser.BitmapText.html#height '></topic>
   <topic label='hitArea :Rectangle|Circle|Ellipse|Polygon' href='html/phaser-doc/Phaser.BitmapText.html#hitArea '></topic>
+  <topic label='ignoreChildInput :Boolean' href='html/phaser-doc/Phaser.BitmapText.html#ignoreChildInput '></topic>
   <topic label='&lt;readonly&gt; inCamera :boolean' href='html/phaser-doc/Phaser.BitmapText.html#inCamera'></topic>
   <topic label='input :Phaser.InputHandler|null' href='html/phaser-doc/Phaser.BitmapText.html#input '></topic>
   <topic label='inputEnabled :boolean' href='html/phaser-doc/Phaser.BitmapText.html#inputEnabled '></topic>
   <topic label='&lt;readonly&gt; inWorld :boolean' href='html/phaser-doc/Phaser.BitmapText.html#inWorld'></topic>
   <topic label='key :string|Phaser.RenderTexture|Phaser.BitmapData|Phaser.Video|PIXI.Texture' href='html/phaser-doc/Phaser.BitmapText.html#key '></topic>
-  <topic label='&lt;readonly&gt; left :number' href='html/phaser-doc/Phaser.BitmapText.html#left'></topic>
+  <topic label='left :number' href='html/phaser-doc/Phaser.BitmapText.html#left '></topic>
   <topic label='lifespan :number' href='html/phaser-doc/Phaser.BitmapText.html#lifespan '></topic>
   <topic label='mask :PIXI.Graphics' href='html/phaser-doc/Phaser.BitmapText.html#mask '></topic>
   <topic label='maxWidth :number' href='html/phaser-doc/Phaser.BitmapText.html#maxWidth '></topic>
@@ -240,7 +250,7 @@
   <topic label='&lt;readonly&gt; previousRotation :number' href='html/phaser-doc/Phaser.BitmapText.html#previousRotation'></topic>
   <topic label='renderable :Boolean' href='html/phaser-doc/Phaser.BitmapText.html#renderable '></topic>
   <topic label='&lt;readonly&gt; renderOrderID :number' href='html/phaser-doc/Phaser.BitmapText.html#renderOrderID'></topic>
-  <topic label='&lt;readonly&gt; right :number' href='html/phaser-doc/Phaser.BitmapText.html#right'></topic>
+  <topic label='right :number' href='html/phaser-doc/Phaser.BitmapText.html#right '></topic>
   <topic label='rotation :Number' href='html/phaser-doc/Phaser.BitmapText.html#rotation '></topic>
   <topic label='scale :Point' href='html/phaser-doc/Phaser.BitmapText.html#scale '></topic>
   <topic label='smoothed :boolean' href='html/phaser-doc/Phaser.BitmapText.html#smoothed '></topic>
@@ -249,7 +259,7 @@
   <topic label='&lt;readonly&gt; textHeight :number' href='html/phaser-doc/Phaser.BitmapText.html#textHeight'></topic>
   <topic label='&lt;readonly&gt; textWidth :number' href='html/phaser-doc/Phaser.BitmapText.html#textWidth'></topic>
   <topic label='tint :number' href='html/phaser-doc/Phaser.BitmapText.html#tint '></topic>
-  <topic label='&lt;readonly&gt; top :number' href='html/phaser-doc/Phaser.BitmapText.html#top'></topic>
+  <topic label='top :number' href='html/phaser-doc/Phaser.BitmapText.html#top '></topic>
   <topic label='&lt;readonly&gt; type :number' href='html/phaser-doc/Phaser.BitmapText.html#type'></topic>
   <topic label='visible :Boolean' href='html/phaser-doc/Phaser.BitmapText.html#visible '></topic>
   <topic label='width :Number' href='html/phaser-doc/Phaser.BitmapText.html#width '></topic>
@@ -264,9 +274,11 @@
   <topic label='&lt;readonly&gt; z :number' href='html/phaser-doc/Phaser.BitmapText.html#z'></topic>
   <topic label='addChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.BitmapText.html#addChild'></topic>
   <topic label='addChildAt(child, index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.BitmapText.html#addChildAt'></topic>
+  <topic label='alignIn(container, position, offsetX, offsetY) &#8594; {Object}' href='html/phaser-doc/Phaser.BitmapText.html#alignIn'></topic>
+  <topic label='alignTo(parent, position, offsetX, offsetY) &#8594; {Object}' href='html/phaser-doc/Phaser.BitmapText.html#alignTo'></topic>
   <topic label='cleanText(text, replace) &#8594; {string}' href='html/phaser-doc/Phaser.BitmapText.html#cleanText'></topic>
   <topic label='destroy()' href='html/phaser-doc/Phaser.BitmapText.html#destroy'></topic>
-  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.Texture}' href='html/phaser-doc/Phaser.BitmapText.html#generateTexture'></topic>
+  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.RenderTexture}' href='html/phaser-doc/Phaser.BitmapText.html#generateTexture'></topic>
   <topic label='getBounds() &#8594; {Rectangle}' href='html/phaser-doc/Phaser.BitmapText.html#getBounds'></topic>
   <topic label='getChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.BitmapText.html#getChildAt'></topic>
   <topic label='getChildIndex(child) &#8594; {Number}' href='html/phaser-doc/Phaser.BitmapText.html#getChildIndex'></topic>
@@ -290,6 +302,137 @@
   <topic label='update()' href='html/phaser-doc/Phaser.BitmapText.html#update'></topic>
   <topic label='updateCache()' href='html/phaser-doc/Phaser.BitmapText.html#updateCache'></topic>
 </topic>
+<topic href='html/phaser-doc/Phaser.Bullet.html' label='Phaser.Bullet'>   <topic label='new Bullet(game, x, y, key, frame)' href='html/phaser-doc/Phaser.Bullet.html#new Bullet'></topic>
+  <topic label='alive :boolean' href='html/phaser-doc/Phaser.Bullet.html#alive '></topic>
+  <topic label='alpha :Number' href='html/phaser-doc/Phaser.Bullet.html#alpha '></topic>
+  <topic label='anchor :Point' href='html/phaser-doc/Phaser.Bullet.html#anchor '></topic>
+  <topic label='angle :number' href='html/phaser-doc/Phaser.Bullet.html#angle '></topic>
+  <topic label='animations :Phaser.AnimationManager' href='html/phaser-doc/Phaser.Bullet.html#animations '></topic>
+  <topic label='autoCull :boolean' href='html/phaser-doc/Phaser.Bullet.html#autoCull '></topic>
+  <topic label='blendMode :Number' href='html/phaser-doc/Phaser.Bullet.html#blendMode '></topic>
+  <topic label='body :Phaser.Physics.Arcade.Body|Phaser.Physics.P2.Body|Phaser.Physics.Ninja.Body|null' href='html/phaser-doc/Phaser.Bullet.html#body '></topic>
+  <topic label='bottom :number' href='html/phaser-doc/Phaser.Bullet.html#bottom '></topic>
+  <topic label='cacheAsBitmap :Boolean' href='html/phaser-doc/Phaser.Bullet.html#cacheAsBitmap '></topic>
+  <topic label='cameraOffset :Phaser.Point' href='html/phaser-doc/Phaser.Bullet.html#cameraOffset '></topic>
+  <topic label='centerX :number' href='html/phaser-doc/Phaser.Bullet.html#centerX '></topic>
+  <topic label='centerY :number' href='html/phaser-doc/Phaser.Bullet.html#centerY '></topic>
+  <topic label='checkWorldBounds :boolean' href='html/phaser-doc/Phaser.Bullet.html#checkWorldBounds '></topic>
+  <topic label='&lt;readonly&gt; children :Array.&lt;DisplayObject&gt;' href='html/phaser-doc/Phaser.Bullet.html#children'></topic>
+  <topic label='&lt;internal&gt; components :object' href='html/phaser-doc/Phaser.Bullet.html#components'></topic>
+  <topic label='cropRect :Phaser.Rectangle' href='html/phaser-doc/Phaser.Bullet.html#cropRect '></topic>
+  <topic label='damage' href='html/phaser-doc/Phaser.Bullet.html#damage'></topic>
+  <topic label='data :Object' href='html/phaser-doc/Phaser.Bullet.html#data '></topic>
+  <topic label='debug :boolean' href='html/phaser-doc/Phaser.Bullet.html#debug '></topic>
+  <topic label='&lt;readonly&gt; deltaX :number' href='html/phaser-doc/Phaser.Bullet.html#deltaX'></topic>
+  <topic label='&lt;readonly&gt; deltaY :number' href='html/phaser-doc/Phaser.Bullet.html#deltaY'></topic>
+  <topic label='&lt;readonly&gt; deltaZ :number' href='html/phaser-doc/Phaser.Bullet.html#deltaZ'></topic>
+  <topic label='&lt;readonly&gt; destroyPhase :boolean' href='html/phaser-doc/Phaser.Bullet.html#destroyPhase'></topic>
+  <topic label='events :Phaser.Events' href='html/phaser-doc/Phaser.Bullet.html#events '></topic>
+  <topic label='exists :Boolean' href='html/phaser-doc/Phaser.Bullet.html#exists '></topic>
+  <topic label='filterArea :Rectangle' href='html/phaser-doc/Phaser.Bullet.html#filterArea '></topic>
+  <topic label='filters :Array.&lt;Filter&gt;' href='html/phaser-doc/Phaser.Bullet.html#filters '></topic>
+  <topic label='fixedToCamera :boolean' href='html/phaser-doc/Phaser.Bullet.html#fixedToCamera '></topic>
+  <topic label='frame :integer' href='html/phaser-doc/Phaser.Bullet.html#frame '></topic>
+  <topic label='frameName :string' href='html/phaser-doc/Phaser.Bullet.html#frameName '></topic>
+  <topic label='&lt;readonly&gt; fresh :boolean' href='html/phaser-doc/Phaser.Bullet.html#fresh'></topic>
+  <topic label='game :Phaser.Game' href='html/phaser-doc/Phaser.Bullet.html#game '></topic>
+  <topic label='heal' href='html/phaser-doc/Phaser.Bullet.html#heal'></topic>
+  <topic label='health :number' href='html/phaser-doc/Phaser.Bullet.html#health '></topic>
+  <topic label='height :Number' href='html/phaser-doc/Phaser.Bullet.html#height '></topic>
+  <topic label='hitArea :Rectangle|Circle|Ellipse|Polygon' href='html/phaser-doc/Phaser.Bullet.html#hitArea '></topic>
+  <topic label='ignoreChildInput :Boolean' href='html/phaser-doc/Phaser.Bullet.html#ignoreChildInput '></topic>
+  <topic label='&lt;readonly&gt; inCamera :boolean' href='html/phaser-doc/Phaser.Bullet.html#inCamera'></topic>
+  <topic label='input :Phaser.InputHandler|null' href='html/phaser-doc/Phaser.Bullet.html#input '></topic>
+  <topic label='inputEnabled :boolean' href='html/phaser-doc/Phaser.Bullet.html#inputEnabled '></topic>
+  <topic label='&lt;readonly&gt; inWorld :boolean' href='html/phaser-doc/Phaser.Bullet.html#inWorld'></topic>
+  <topic label='key :string|Phaser.RenderTexture|Phaser.BitmapData|Phaser.Video|PIXI.Texture' href='html/phaser-doc/Phaser.Bullet.html#key '></topic>
+  <topic label='left :number' href='html/phaser-doc/Phaser.Bullet.html#left '></topic>
+  <topic label='lifespan :number' href='html/phaser-doc/Phaser.Bullet.html#lifespan '></topic>
+  <topic label='mask :PIXI.Graphics' href='html/phaser-doc/Phaser.Bullet.html#mask '></topic>
+  <topic label='maxHealth :number' href='html/phaser-doc/Phaser.Bullet.html#maxHealth '></topic>
+  <topic label='name :string' href='html/phaser-doc/Phaser.Bullet.html#name '></topic>
+  <topic label='&lt;readonly&gt; offsetX :number' href='html/phaser-doc/Phaser.Bullet.html#offsetX'></topic>
+  <topic label='&lt;readonly&gt; offsetY :number' href='html/phaser-doc/Phaser.Bullet.html#offsetY'></topic>
+  <topic label='outOfBoundsKill :boolean' href='html/phaser-doc/Phaser.Bullet.html#outOfBoundsKill '></topic>
+  <topic label='outOfCameraBoundsKill :boolean' href='html/phaser-doc/Phaser.Bullet.html#outOfCameraBoundsKill '></topic>
+  <topic label='&lt;readonly&gt; parent :PIXI.DisplayObjectContainer' href='html/phaser-doc/Phaser.Bullet.html#parent'></topic>
+  <topic label='pendingDestroy :boolean' href='html/phaser-doc/Phaser.Bullet.html#pendingDestroy '></topic>
+  <topic label='&lt;readonly&gt; physicsType :number' href='html/phaser-doc/Phaser.Bullet.html#physicsType'></topic>
+  <topic label='pivot :Point' href='html/phaser-doc/Phaser.Bullet.html#pivot '></topic>
+  <topic label='position :Point' href='html/phaser-doc/Phaser.Bullet.html#position '></topic>
+  <topic label='&lt;readonly&gt; previousPosition :Phaser.Point' href='html/phaser-doc/Phaser.Bullet.html#previousPosition'></topic>
+  <topic label='&lt;readonly&gt; previousRotation :number' href='html/phaser-doc/Phaser.Bullet.html#previousRotation'></topic>
+  <topic label='renderable :Boolean' href='html/phaser-doc/Phaser.Bullet.html#renderable '></topic>
+  <topic label='&lt;readonly&gt; renderOrderID :number' href='html/phaser-doc/Phaser.Bullet.html#renderOrderID'></topic>
+  <topic label='right :number' href='html/phaser-doc/Phaser.Bullet.html#right '></topic>
+  <topic label='rotation :Number' href='html/phaser-doc/Phaser.Bullet.html#rotation '></topic>
+  <topic label='scale :Point' href='html/phaser-doc/Phaser.Bullet.html#scale '></topic>
+  <topic label='scaleMax :Phaser.Point' href='html/phaser-doc/Phaser.Bullet.html#scaleMax '></topic>
+  <topic label='scaleMin :Phaser.Point' href='html/phaser-doc/Phaser.Bullet.html#scaleMin '></topic>
+  <topic label='setHealth' href='html/phaser-doc/Phaser.Bullet.html#setHealth'></topic>
+  <topic label='shader :PIXI.AbstractFilter' href='html/phaser-doc/Phaser.Bullet.html#shader '></topic>
+  <topic label='smoothed :boolean' href='html/phaser-doc/Phaser.Bullet.html#smoothed '></topic>
+  <topic label='&lt;readonly&gt; stage :Stage' href='html/phaser-doc/Phaser.Bullet.html#stage'></topic>
+  <topic label='texture :PIXI.Texture' href='html/phaser-doc/Phaser.Bullet.html#texture '></topic>
+  <topic label='tint :Number' href='html/phaser-doc/Phaser.Bullet.html#tint '></topic>
+  <topic label='tintedTexture :Canvas' href='html/phaser-doc/Phaser.Bullet.html#tintedTexture '></topic>
+  <topic label='top :number' href='html/phaser-doc/Phaser.Bullet.html#top '></topic>
+  <topic label='transformCallback :function' href='html/phaser-doc/Phaser.Bullet.html#transformCallback '></topic>
+  <topic label='transformCallbackContext :object' href='html/phaser-doc/Phaser.Bullet.html#transformCallbackContext '></topic>
+  <topic label='&lt;readonly&gt; type :number' href='html/phaser-doc/Phaser.Bullet.html#type'></topic>
+  <topic label='visible :Boolean' href='html/phaser-doc/Phaser.Bullet.html#visible '></topic>
+  <topic label='width :Number' href='html/phaser-doc/Phaser.Bullet.html#width '></topic>
+  <topic label='world :Phaser.Point' href='html/phaser-doc/Phaser.Bullet.html#world '></topic>
+  <topic label='&lt;readonly&gt; worldAlpha :Number' href='html/phaser-doc/Phaser.Bullet.html#worldAlpha'></topic>
+  <topic label='&lt;readonly&gt; worldPosition :Point' href='html/phaser-doc/Phaser.Bullet.html#worldPosition'></topic>
+  <topic label='&lt;readonly&gt; worldRotation :Number' href='html/phaser-doc/Phaser.Bullet.html#worldRotation'></topic>
+  <topic label='&lt;readonly&gt; worldScale :Point' href='html/phaser-doc/Phaser.Bullet.html#worldScale'></topic>
+  <topic label='worldVisible :Boolean' href='html/phaser-doc/Phaser.Bullet.html#worldVisible '></topic>
+  <topic label='x :Number' href='html/phaser-doc/Phaser.Bullet.html#x '></topic>
+  <topic label='y :Number' href='html/phaser-doc/Phaser.Bullet.html#y '></topic>
+  <topic label='&lt;readonly&gt; z :number' href='html/phaser-doc/Phaser.Bullet.html#z'></topic>
+  <topic label='addChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Bullet.html#addChild'></topic>
+  <topic label='addChildAt(child, index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Bullet.html#addChildAt'></topic>
+  <topic label='alignIn(container, position, offsetX, offsetY) &#8594; {Object}' href='html/phaser-doc/Phaser.Bullet.html#alignIn'></topic>
+  <topic label='alignTo(parent, position, offsetX, offsetY) &#8594; {Object}' href='html/phaser-doc/Phaser.Bullet.html#alignTo'></topic>
+  <topic label='bringToTop() &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Bullet.html#bringToTop'></topic>
+  <topic label='crop(rect, copy)' href='html/phaser-doc/Phaser.Bullet.html#crop'></topic>
+  <topic label='destroy()' href='html/phaser-doc/Phaser.Bullet.html#destroy'></topic>
+  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.RenderTexture}' href='html/phaser-doc/Phaser.Bullet.html#generateTexture'></topic>
+  <topic label='getBounds(matrix) &#8594; {Rectangle}' href='html/phaser-doc/Phaser.Bullet.html#getBounds'></topic>
+  <topic label='getChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Bullet.html#getChildAt'></topic>
+  <topic label='getChildIndex(child) &#8594; {Number}' href='html/phaser-doc/Phaser.Bullet.html#getChildIndex'></topic>
+  <topic label='getLocalBounds() &#8594; {Rectangle}' href='html/phaser-doc/Phaser.Bullet.html#getLocalBounds'></topic>
+  <topic label='kill()' href='html/phaser-doc/Phaser.Bullet.html#kill'></topic>
+  <topic label='kill()' href='html/phaser-doc/Phaser.Bullet.html#kill'></topic>
+  <topic label='loadTexture(key, frame, stopAnimation)' href='html/phaser-doc/Phaser.Bullet.html#loadTexture'></topic>
+  <topic label='moveDown() &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Bullet.html#moveDown'></topic>
+  <topic label='moveUp() &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Bullet.html#moveUp'></topic>
+  <topic label='overlap(displayObject) &#8594; {boolean}' href='html/phaser-doc/Phaser.Bullet.html#overlap'></topic>
+  <topic label='play(name, frameRate, loop, killOnComplete) &#8594; {Phaser.Animation}' href='html/phaser-doc/Phaser.Bullet.html#play'></topic>
+  <topic label='&lt;internal&gt; postUpdate()' href='html/phaser-doc/Phaser.Bullet.html#postUpdate'></topic>
+  <topic label='preUpdate() &#8594; {boolean}' href='html/phaser-doc/Phaser.Bullet.html#preUpdate'></topic>
+  <topic label='removeChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Bullet.html#removeChild'></topic>
+  <topic label='removeChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Bullet.html#removeChildAt'></topic>
+  <topic label='removeChildren(beginIndex, endIndex)' href='html/phaser-doc/Phaser.Bullet.html#removeChildren'></topic>
+  <topic label='removeStageReference()' href='html/phaser-doc/Phaser.Bullet.html#removeStageReference'></topic>
+  <topic label='reset(x, y, health) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Bullet.html#reset'></topic>
+  <topic label='resetFrame()' href='html/phaser-doc/Phaser.Bullet.html#resetFrame'></topic>
+  <topic label='resizeFrame(parent, width, height)' href='html/phaser-doc/Phaser.Bullet.html#resizeFrame'></topic>
+  <topic label='revive(health) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Bullet.html#revive'></topic>
+  <topic label='sendToBack() &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Bullet.html#sendToBack'></topic>
+  <topic label='setChildIndex(child, index)' href='html/phaser-doc/Phaser.Bullet.html#setChildIndex'></topic>
+  <topic label='setFrame(frame)' href='html/phaser-doc/Phaser.Bullet.html#setFrame'></topic>
+  <topic label='setScaleMinMax(minX, minY, maxX, maxY)' href='html/phaser-doc/Phaser.Bullet.html#setScaleMinMax'></topic>
+  <topic label='setStageReference(stage)' href='html/phaser-doc/Phaser.Bullet.html#setStageReference'></topic>
+  <topic label='setTexture(texture, destroy)' href='html/phaser-doc/Phaser.Bullet.html#setTexture'></topic>
+  <topic label='swapChildren(child, child2)' href='html/phaser-doc/Phaser.Bullet.html#swapChildren'></topic>
+  <topic label='toGlobal(position) &#8594; {Point}' href='html/phaser-doc/Phaser.Bullet.html#toGlobal'></topic>
+  <topic label='toLocal(position, from) &#8594; {Point}' href='html/phaser-doc/Phaser.Bullet.html#toLocal'></topic>
+  <topic label='update()' href='html/phaser-doc/Phaser.Bullet.html#update'></topic>
+  <topic label='updateCache()' href='html/phaser-doc/Phaser.Bullet.html#updateCache'></topic>
+  <topic label='updateCrop()' href='html/phaser-doc/Phaser.Bullet.html#updateCrop'></topic>
+</topic>
 <topic href='html/phaser-doc/Phaser.Button.html' label='Phaser.Button'>   <topic label='new Button(game, x, y, key, callback, callbackContext, overFrame, outFrame, downFrame, upFrame)' href='html/phaser-doc/Phaser.Button.html#new Button'></topic>
   <topic label='alive :boolean' href='html/phaser-doc/Phaser.Button.html#alive '></topic>
   <topic label='alpha :Number' href='html/phaser-doc/Phaser.Button.html#alpha '></topic>
@@ -298,16 +441,19 @@
   <topic label='animations :Phaser.AnimationManager' href='html/phaser-doc/Phaser.Button.html#animations '></topic>
   <topic label='autoCull :boolean' href='html/phaser-doc/Phaser.Button.html#autoCull '></topic>
   <topic label='blendMode :Number' href='html/phaser-doc/Phaser.Button.html#blendMode '></topic>
-  <topic label='&lt;readonly&gt; bottom :number' href='html/phaser-doc/Phaser.Button.html#bottom'></topic>
+  <topic label='bottom :number' href='html/phaser-doc/Phaser.Button.html#bottom '></topic>
   <topic label='cacheAsBitmap :Boolean' href='html/phaser-doc/Phaser.Button.html#cacheAsBitmap '></topic>
   <topic label='cameraOffset :Phaser.Point' href='html/phaser-doc/Phaser.Button.html#cameraOffset '></topic>
+  <topic label='centerX :number' href='html/phaser-doc/Phaser.Button.html#centerX '></topic>
+  <topic label='centerY :number' href='html/phaser-doc/Phaser.Button.html#centerY '></topic>
   <topic label='&lt;readonly&gt; children :Array.&lt;DisplayObject&gt;' href='html/phaser-doc/Phaser.Button.html#children'></topic>
   <topic label='&lt;internal&gt; components :object' href='html/phaser-doc/Phaser.Button.html#components'></topic>
   <topic label='cropRect :Phaser.Rectangle' href='html/phaser-doc/Phaser.Button.html#cropRect '></topic>
+  <topic label='data :Object' href='html/phaser-doc/Phaser.Button.html#data '></topic>
   <topic label='debug :boolean' href='html/phaser-doc/Phaser.Button.html#debug '></topic>
   <topic label='&lt;readonly&gt; destroyPhase :boolean' href='html/phaser-doc/Phaser.Button.html#destroyPhase'></topic>
   <topic label='events :Phaser.Events' href='html/phaser-doc/Phaser.Button.html#events '></topic>
-  <topic label='exists :boolean' href='html/phaser-doc/Phaser.Button.html#exists '></topic>
+  <topic label='exists :Boolean' href='html/phaser-doc/Phaser.Button.html#exists '></topic>
   <topic label='filterArea :Rectangle' href='html/phaser-doc/Phaser.Button.html#filterArea '></topic>
   <topic label='filters :Array.&lt;Filter&gt;' href='html/phaser-doc/Phaser.Button.html#filters '></topic>
   <topic label='fixedToCamera :boolean' href='html/phaser-doc/Phaser.Button.html#fixedToCamera '></topic>
@@ -319,12 +465,13 @@
   <topic label='game :Phaser.Game' href='html/phaser-doc/Phaser.Button.html#game '></topic>
   <topic label='height :Number' href='html/phaser-doc/Phaser.Button.html#height '></topic>
   <topic label='hitArea :Rectangle|Circle|Ellipse|Polygon' href='html/phaser-doc/Phaser.Button.html#hitArea '></topic>
+  <topic label='ignoreChildInput :Boolean' href='html/phaser-doc/Phaser.Button.html#ignoreChildInput '></topic>
   <topic label='&lt;readonly&gt; inCamera :boolean' href='html/phaser-doc/Phaser.Button.html#inCamera'></topic>
   <topic label='input :Phaser.InputHandler|null' href='html/phaser-doc/Phaser.Button.html#input '></topic>
   <topic label='inputEnabled :boolean' href='html/phaser-doc/Phaser.Button.html#inputEnabled '></topic>
   <topic label='justReleasedPreventsOver :Phaser.PointerMode' href='html/phaser-doc/Phaser.Button.html#justReleasedPreventsOver '></topic>
   <topic label='key :string|Phaser.RenderTexture|Phaser.BitmapData|Phaser.Video|PIXI.Texture' href='html/phaser-doc/Phaser.Button.html#key '></topic>
-  <topic label='&lt;readonly&gt; left :number' href='html/phaser-doc/Phaser.Button.html#left'></topic>
+  <topic label='left :number' href='html/phaser-doc/Phaser.Button.html#left '></topic>
   <topic label='lifespan :number' href='html/phaser-doc/Phaser.Button.html#lifespan '></topic>
   <topic label='mask :PIXI.Graphics' href='html/phaser-doc/Phaser.Button.html#mask '></topic>
   <topic label='name :string' href='html/phaser-doc/Phaser.Button.html#name '></topic>
@@ -352,7 +499,7 @@
   <topic label='&lt;readonly&gt; previousRotation :number' href='html/phaser-doc/Phaser.Button.html#previousRotation'></topic>
   <topic label='renderable :Boolean' href='html/phaser-doc/Phaser.Button.html#renderable '></topic>
   <topic label='&lt;readonly&gt; renderOrderID :number' href='html/phaser-doc/Phaser.Button.html#renderOrderID'></topic>
-  <topic label='&lt;readonly&gt; right :number' href='html/phaser-doc/Phaser.Button.html#right'></topic>
+  <topic label='right :number' href='html/phaser-doc/Phaser.Button.html#right '></topic>
   <topic label='rotation :Number' href='html/phaser-doc/Phaser.Button.html#rotation '></topic>
   <topic label='scale :Point' href='html/phaser-doc/Phaser.Button.html#scale '></topic>
   <topic label='shader :PIXI.AbstractFilter' href='html/phaser-doc/Phaser.Button.html#shader '></topic>
@@ -361,7 +508,7 @@
   <topic label='texture :PIXI.Texture' href='html/phaser-doc/Phaser.Button.html#texture '></topic>
   <topic label='tint :Number' href='html/phaser-doc/Phaser.Button.html#tint '></topic>
   <topic label='tintedTexture :Canvas' href='html/phaser-doc/Phaser.Button.html#tintedTexture '></topic>
-  <topic label='&lt;readonly&gt; top :number' href='html/phaser-doc/Phaser.Button.html#top'></topic>
+  <topic label='top :number' href='html/phaser-doc/Phaser.Button.html#top '></topic>
   <topic label='&lt;readonly&gt; type :number' href='html/phaser-doc/Phaser.Button.html#type'></topic>
   <topic label='visible :Boolean' href='html/phaser-doc/Phaser.Button.html#visible '></topic>
   <topic label='width :Number' href='html/phaser-doc/Phaser.Button.html#width '></topic>
@@ -376,11 +523,13 @@
   <topic label='&lt;readonly&gt; z :number' href='html/phaser-doc/Phaser.Button.html#z'></topic>
   <topic label='addChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Button.html#addChild'></topic>
   <topic label='addChildAt(child, index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Button.html#addChildAt'></topic>
+  <topic label='alignIn(container, position, offsetX, offsetY) &#8594; {Object}' href='html/phaser-doc/Phaser.Button.html#alignIn'></topic>
+  <topic label='alignTo(parent, position, offsetX, offsetY) &#8594; {Object}' href='html/phaser-doc/Phaser.Button.html#alignTo'></topic>
   <topic label='bringToTop() &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Button.html#bringToTop'></topic>
   <topic label='clearFrames()' href='html/phaser-doc/Phaser.Button.html#clearFrames'></topic>
   <topic label='crop(rect, copy)' href='html/phaser-doc/Phaser.Button.html#crop'></topic>
   <topic label='destroy()' href='html/phaser-doc/Phaser.Button.html#destroy'></topic>
-  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.Texture}' href='html/phaser-doc/Phaser.Button.html#generateTexture'></topic>
+  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.RenderTexture}' href='html/phaser-doc/Phaser.Button.html#generateTexture'></topic>
   <topic label='getBounds(matrix) &#8594; {Rectangle}' href='html/phaser-doc/Phaser.Button.html#getBounds'></topic>
   <topic label='getChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Button.html#getChildAt'></topic>
   <topic label='getChildIndex(child) &#8594; {Number}' href='html/phaser-doc/Phaser.Button.html#getChildIndex'></topic>
@@ -556,6 +705,7 @@
   <topic label='position :Phaser.Point' href='html/phaser-doc/Phaser.Camera.html#position '></topic>
   <topic label='roundPx :boolean' href='html/phaser-doc/Phaser.Camera.html#roundPx '></topic>
   <topic label='scale :Phaser.Point' href='html/phaser-doc/Phaser.Camera.html#scale '></topic>
+  <topic label='shakeIntensity :number' href='html/phaser-doc/Phaser.Camera.html#shakeIntensity '></topic>
   <topic label='target :Phaser.Sprite' href='html/phaser-doc/Phaser.Camera.html#target '></topic>
   <topic label='&lt;readonly&gt; totalInView :number' href='html/phaser-doc/Phaser.Camera.html#totalInView'></topic>
   <topic label='view :Phaser.Rectangle' href='html/phaser-doc/Phaser.Camera.html#view '></topic>
@@ -695,12 +845,16 @@
   <topic label='&lt;readonly&gt; inCamera :boolean' href='html/phaser-doc/Phaser.Component.AutoCull.html#inCamera'></topic>
 </topic>
 <topic href='html/phaser-doc/Phaser.Component.Bounds.html' label='Phaser.Component.Bounds'>   <topic label='new Bounds()' href='html/phaser-doc/Phaser.Component.Bounds.html#new Bounds'></topic>
-  <topic label='&lt;readonly&gt; bottom :number' href='html/phaser-doc/Phaser.Component.Bounds.html#bottom'></topic>
-  <topic label='&lt;readonly&gt; left :number' href='html/phaser-doc/Phaser.Component.Bounds.html#left'></topic>
+  <topic label='bottom :number' href='html/phaser-doc/Phaser.Component.Bounds.html#bottom '></topic>
+  <topic label='centerX :number' href='html/phaser-doc/Phaser.Component.Bounds.html#centerX '></topic>
+  <topic label='centerY :number' href='html/phaser-doc/Phaser.Component.Bounds.html#centerY '></topic>
+  <topic label='left :number' href='html/phaser-doc/Phaser.Component.Bounds.html#left '></topic>
   <topic label='&lt;readonly&gt; offsetX :number' href='html/phaser-doc/Phaser.Component.Bounds.html#offsetX'></topic>
   <topic label='&lt;readonly&gt; offsetY :number' href='html/phaser-doc/Phaser.Component.Bounds.html#offsetY'></topic>
-  <topic label='&lt;readonly&gt; right :number' href='html/phaser-doc/Phaser.Component.Bounds.html#right'></topic>
-  <topic label='&lt;readonly&gt; top :number' href='html/phaser-doc/Phaser.Component.Bounds.html#top'></topic>
+  <topic label='right :number' href='html/phaser-doc/Phaser.Component.Bounds.html#right '></topic>
+  <topic label='top :number' href='html/phaser-doc/Phaser.Component.Bounds.html#top '></topic>
+  <topic label='alignIn(container, position, offsetX, offsetY) &#8594; {Object}' href='html/phaser-doc/Phaser.Component.Bounds.html#alignIn'></topic>
+  <topic label='alignTo(parent, position, offsetX, offsetY) &#8594; {Object}' href='html/phaser-doc/Phaser.Component.Bounds.html#alignTo'></topic>
 </topic>
 <topic href='html/phaser-doc/Phaser.Component.BringToTop.html' label='Phaser.Component.BringToTop'>   <topic label='new BringToTop()' href='html/phaser-doc/Phaser.Component.BringToTop.html#new BringToTop'></topic>
   <topic label='bringToTop() &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Component.BringToTop.html#bringToTop'></topic>
@@ -711,6 +865,7 @@
 <topic href='html/phaser-doc/Phaser.Component.Core.html' label='Phaser.Component.Core'>   <topic label='new Core()' href='html/phaser-doc/Phaser.Component.Core.html#new Core'></topic>
   <topic label='animations :Phaser.AnimationManager' href='html/phaser-doc/Phaser.Component.Core.html#animations '></topic>
   <topic label='&lt;internal&gt; components :object' href='html/phaser-doc/Phaser.Component.Core.html#components'></topic>
+  <topic label='data :Object' href='html/phaser-doc/Phaser.Component.Core.html#data '></topic>
   <topic label='debug :boolean' href='html/phaser-doc/Phaser.Component.Core.html#debug '></topic>
   <topic label='events :Phaser.Events' href='html/phaser-doc/Phaser.Component.Core.html#events '></topic>
   <topic label='exists :boolean' href='html/phaser-doc/Phaser.Component.Core.html#exists '></topic>
@@ -835,6 +990,7 @@
   <topic label='&lt;internal&gt; components :object' href='html/phaser-doc/Phaser.Creature.html#components'></topic>
   <topic label='&lt;internal&gt; creatureBoundsMax :Phaser.Point' href='html/phaser-doc/Phaser.Creature.html#creatureBoundsMax'></topic>
   <topic label='&lt;internal&gt; creatureBoundsMin :Phaser.Point' href='html/phaser-doc/Phaser.Creature.html#creatureBoundsMin'></topic>
+  <topic label='data :Object' href='html/phaser-doc/Phaser.Creature.html#data '></topic>
   <topic label='debug :boolean' href='html/phaser-doc/Phaser.Creature.html#debug '></topic>
   <topic label='&lt;readonly&gt; destroyPhase :boolean' href='html/phaser-doc/Phaser.Creature.html#destroyPhase'></topic>
   <topic label='events :Phaser.Events' href='html/phaser-doc/Phaser.Creature.html#events '></topic>
@@ -846,6 +1002,7 @@
   <topic label='game :Phaser.Game' href='html/phaser-doc/Phaser.Creature.html#game '></topic>
   <topic label='height :Number' href='html/phaser-doc/Phaser.Creature.html#height '></topic>
   <topic label='hitArea :Rectangle|Circle|Ellipse|Polygon' href='html/phaser-doc/Phaser.Creature.html#hitArea '></topic>
+  <topic label='ignoreChildInput :Boolean' href='html/phaser-doc/Phaser.Creature.html#ignoreChildInput '></topic>
   <topic label='&lt;readonly&gt; inCamera :boolean' href='html/phaser-doc/Phaser.Creature.html#inCamera'></topic>
   <topic label='&lt;internal&gt; indices :PIXI.Uint16Array' href='html/phaser-doc/Phaser.Creature.html#indices'></topic>
   <topic label='isPlaying :boolean' href='html/phaser-doc/Phaser.Creature.html#isPlaying '></topic>
@@ -886,7 +1043,7 @@
   <topic label='addChildAt(child, index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Creature.html#addChildAt'></topic>
   <topic label='bringToTop() &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Creature.html#bringToTop'></topic>
   <topic label='destroy()' href='html/phaser-doc/Phaser.Creature.html#destroy'></topic>
-  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.Texture}' href='html/phaser-doc/Phaser.Creature.html#generateTexture'></topic>
+  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.RenderTexture}' href='html/phaser-doc/Phaser.Creature.html#generateTexture'></topic>
   <topic label='getBounds() &#8594; {Rectangle}' href='html/phaser-doc/Phaser.Creature.html#getBounds'></topic>
   <topic label='getChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Creature.html#getChildAt'></topic>
   <topic label='getChildIndex(child) &#8594; {Number}' href='html/phaser-doc/Phaser.Creature.html#getChildIndex'></topic>
@@ -1194,11 +1351,17 @@
   <topic label='hash :array' href='html/phaser-doc/Phaser.FlexLayer.html#hash '></topic>
   <topic label='height :Number' href='html/phaser-doc/Phaser.FlexLayer.html#height '></topic>
   <topic label='hitArea :Rectangle|Circle|Ellipse|Polygon' href='html/phaser-doc/Phaser.FlexLayer.html#hitArea '></topic>
+  <topic label='ignoreChildInput :Boolean' href='html/phaser-doc/Phaser.FlexLayer.html#ignoreChildInput '></topic>
   <topic label='ignoreDestroy :boolean' href='html/phaser-doc/Phaser.FlexLayer.html#ignoreDestroy '></topic>
+  <topic label='inputEnableChildren :boolean' href='html/phaser-doc/Phaser.FlexLayer.html#inputEnableChildren '></topic>
   <topic label='&lt;readonly&gt; length :integer' href='html/phaser-doc/Phaser.FlexLayer.html#length'></topic>
   <topic label='manager' href='html/phaser-doc/Phaser.FlexLayer.html#manager'></topic>
   <topic label='mask :PIXI.Graphics' href='html/phaser-doc/Phaser.FlexLayer.html#mask '></topic>
   <topic label='name :string' href='html/phaser-doc/Phaser.FlexLayer.html#name '></topic>
+  <topic label='onChildInputDown :Phaser.Signal' href='html/phaser-doc/Phaser.FlexLayer.html#onChildInputDown '></topic>
+  <topic label='onChildInputOut :Phaser.Signal' href='html/phaser-doc/Phaser.FlexLayer.html#onChildInputOut '></topic>
+  <topic label='onChildInputOver :Phaser.Signal' href='html/phaser-doc/Phaser.FlexLayer.html#onChildInputOver '></topic>
+  <topic label='onChildInputUp :Phaser.Signal' href='html/phaser-doc/Phaser.FlexLayer.html#onChildInputUp '></topic>
   <topic label='onDestroy :Phaser.Signal' href='html/phaser-doc/Phaser.FlexLayer.html#onDestroy '></topic>
   <topic label='&lt;readonly&gt; parent :PIXI.DisplayObjectContainer' href='html/phaser-doc/Phaser.FlexLayer.html#parent'></topic>
   <topic label='pendingDestroy :boolean' href='html/phaser-doc/Phaser.FlexLayer.html#pendingDestroy '></topic>
@@ -1227,13 +1390,14 @@
   <topic label='x :number' href='html/phaser-doc/Phaser.FlexLayer.html#x '></topic>
   <topic label='y :number' href='html/phaser-doc/Phaser.FlexLayer.html#y '></topic>
   <topic label='&lt;readonly&gt; z :integer' href='html/phaser-doc/Phaser.FlexLayer.html#z'></topic>
-  <topic label='add(child, silent) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.FlexLayer.html#add'></topic>
+  <topic label='add(child, silent, index) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.FlexLayer.html#add'></topic>
   <topic label='addAll(property, amount, checkAlive, checkVisible)' href='html/phaser-doc/Phaser.FlexLayer.html#addAll'></topic>
   <topic label='addAt(child, index, silent) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.FlexLayer.html#addAt'></topic>
   <topic label='addChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.FlexLayer.html#addChild'></topic>
   <topic label='addChildAt(child, index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.FlexLayer.html#addChildAt'></topic>
   <topic label='addMultiple(children, silent) &#8594; {Array.&lt;DisplayObject&gt;|Phaser.Group}' href='html/phaser-doc/Phaser.FlexLayer.html#addMultiple'></topic>
   <topic label='addToHash(child) &#8594; {boolean}' href='html/phaser-doc/Phaser.FlexLayer.html#addToHash'></topic>
+  <topic label='align(rows, columns, cellWidth, cellHeight, position, offset)' href='html/phaser-doc/Phaser.FlexLayer.html#align'></topic>
   <topic label='&lt;internal&gt; ascendingSortHandler(a, b)' href='html/phaser-doc/Phaser.FlexLayer.html#ascendingSortHandler'></topic>
   <topic label='bringToTop(child) &#8594; {any}' href='html/phaser-doc/Phaser.FlexLayer.html#bringToTop'></topic>
   <topic label='callAll(method, context, args)' href='html/phaser-doc/Phaser.FlexLayer.html#callAll'></topic>
@@ -1243,8 +1407,8 @@
   <topic label='checkProperty(child, key, value, force) &#8594; {boolean}' href='html/phaser-doc/Phaser.FlexLayer.html#checkProperty'></topic>
   <topic label='countDead() &#8594; {integer}' href='html/phaser-doc/Phaser.FlexLayer.html#countDead'></topic>
   <topic label='countLiving() &#8594; {integer}' href='html/phaser-doc/Phaser.FlexLayer.html#countLiving'></topic>
-  <topic label='create(x, y, key, frame, exists) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.FlexLayer.html#create'></topic>
-  <topic label='createMultiple(quantity, key, frame, exists)' href='html/phaser-doc/Phaser.FlexLayer.html#createMultiple'></topic>
+  <topic label='create(x, y, key, frame, exists, index) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.FlexLayer.html#create'></topic>
+  <topic label='createMultiple(quantity, key, frame, exists) &#8594; {array}' href='html/phaser-doc/Phaser.FlexLayer.html#createMultiple'></topic>
   <topic label='customSort(sortHandler, context)' href='html/phaser-doc/Phaser.FlexLayer.html#customSort'></topic>
   <topic label='debug()' href='html/phaser-doc/Phaser.FlexLayer.html#debug'></topic>
   <topic label='&lt;internal&gt; descendingSortHandler(a, b)' href='html/phaser-doc/Phaser.FlexLayer.html#descendingSortHandler'></topic>
@@ -1255,16 +1419,18 @@
   <topic label='forEachAlive(callback, callbackContext, args)' href='html/phaser-doc/Phaser.FlexLayer.html#forEachAlive'></topic>
   <topic label='forEachDead(callback, callbackContext, args)' href='html/phaser-doc/Phaser.FlexLayer.html#forEachDead'></topic>
   <topic label='forEachExists(callback, callbackContext, args)' href='html/phaser-doc/Phaser.FlexLayer.html#forEachExists'></topic>
-  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.Texture}' href='html/phaser-doc/Phaser.FlexLayer.html#generateTexture'></topic>
+  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.RenderTexture}' href='html/phaser-doc/Phaser.FlexLayer.html#generateTexture'></topic>
   <topic label='getAt(index) &#8594; {DisplayObject|integer}' href='html/phaser-doc/Phaser.FlexLayer.html#getAt'></topic>
   <topic label='getBottom() &#8594; {any}' href='html/phaser-doc/Phaser.FlexLayer.html#getBottom'></topic>
   <topic label='getBounds() &#8594; {Rectangle}' href='html/phaser-doc/Phaser.FlexLayer.html#getBounds'></topic>
   <topic label='getByName(name) &#8594; {any}' href='html/phaser-doc/Phaser.FlexLayer.html#getByName'></topic>
   <topic label='getChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.FlexLayer.html#getChildAt'></topic>
   <topic label='getChildIndex(child) &#8594; {Number}' href='html/phaser-doc/Phaser.FlexLayer.html#getChildIndex'></topic>
+  <topic label='getClosestTo(object) &#8594; {any}' href='html/phaser-doc/Phaser.FlexLayer.html#getClosestTo'></topic>
   <topic label='getFirstAlive(createIfNull, x, y, key, frame) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.FlexLayer.html#getFirstAlive'></topic>
   <topic label='getFirstDead(createIfNull, x, y, key, frame) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.FlexLayer.html#getFirstDead'></topic>
   <topic label='getFirstExists(exists, createIfNull, x, y, key, frame) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.FlexLayer.html#getFirstExists'></topic>
+  <topic label='getFurthestFrom(object) &#8594; {any}' href='html/phaser-doc/Phaser.FlexLayer.html#getFurthestFrom'></topic>
   <topic label='getIndex(child) &#8594; {integer}' href='html/phaser-doc/Phaser.FlexLayer.html#getIndex'></topic>
   <topic label='getLocalBounds() &#8594; {Rectangle}' href='html/phaser-doc/Phaser.FlexLayer.html#getLocalBounds'></topic>
   <topic label='getRandom(startIndex, length) &#8594; {any}' href='html/phaser-doc/Phaser.FlexLayer.html#getRandom'></topic>
@@ -1280,7 +1446,7 @@
   <topic label='&lt;internal&gt; preUpdate()' href='html/phaser-doc/Phaser.FlexLayer.html#preUpdate'></topic>
   <topic label='previous() &#8594; {any}' href='html/phaser-doc/Phaser.FlexLayer.html#previous'></topic>
   <topic label='remove(child, destroy, silent) &#8594; {boolean}' href='html/phaser-doc/Phaser.FlexLayer.html#remove'></topic>
-  <topic label='removeAll(destroy, silent)' href='html/phaser-doc/Phaser.FlexLayer.html#removeAll'></topic>
+  <topic label='removeAll(destroy, silent, destroyTexture)' href='html/phaser-doc/Phaser.FlexLayer.html#removeAll'></topic>
   <topic label='removeBetween(startIndex, endIndex, destroy, silent)' href='html/phaser-doc/Phaser.FlexLayer.html#removeBetween'></topic>
   <topic label='removeChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.FlexLayer.html#removeChild'></topic>
   <topic label='removeChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.FlexLayer.html#removeChildAt'></topic>
@@ -1470,6 +1636,7 @@
   <topic label='tileSprite(x, y, width, height, key, frame, group) &#8594; {Phaser.TileSprite}' href='html/phaser-doc/Phaser.GameObjectFactory.html#tileSprite'></topic>
   <topic label='tween(object) &#8594; {Phaser.Tween}' href='html/phaser-doc/Phaser.GameObjectFactory.html#tween'></topic>
   <topic label='video(key, url) &#8594; {Phaser.Video}' href='html/phaser-doc/Phaser.GameObjectFactory.html#video'></topic>
+  <topic label='weapon(quantity, key, frame, group) &#8594; {Phaser.Weapon}' href='html/phaser-doc/Phaser.GameObjectFactory.html#weapon'></topic>
 </topic>
 <topic href='html/phaser-doc/Phaser.Gamepad.html' label='Phaser.Gamepad'>   <topic label='new Gamepad(game)' href='html/phaser-doc/Phaser.Gamepad.html#new Gamepad'></topic>
   <topic label='&lt;readonly&gt; active :boolean' href='html/phaser-doc/Phaser.Gamepad.html#active'></topic>
@@ -1507,12 +1674,15 @@
   <topic label='autoCull :boolean' href='html/phaser-doc/Phaser.Graphics.html#autoCull '></topic>
   <topic label='blendMode :Number' href='html/phaser-doc/Phaser.Graphics.html#blendMode '></topic>
   <topic label='body :Phaser.Physics.Arcade.Body|Phaser.Physics.P2.Body|Phaser.Physics.Ninja.Body|null' href='html/phaser-doc/Phaser.Graphics.html#body '></topic>
-  <topic label='&lt;readonly&gt; bottom :number' href='html/phaser-doc/Phaser.Graphics.html#bottom'></topic>
+  <topic label='bottom :number' href='html/phaser-doc/Phaser.Graphics.html#bottom '></topic>
   <topic label='boundsPadding :Number' href='html/phaser-doc/Phaser.Graphics.html#boundsPadding '></topic>
   <topic label='cameraOffset :Phaser.Point' href='html/phaser-doc/Phaser.Graphics.html#cameraOffset '></topic>
+  <topic label='centerX :number' href='html/phaser-doc/Phaser.Graphics.html#centerX '></topic>
+  <topic label='centerY :number' href='html/phaser-doc/Phaser.Graphics.html#centerY '></topic>
   <topic label='checkWorldBounds :boolean' href='html/phaser-doc/Phaser.Graphics.html#checkWorldBounds '></topic>
   <topic label='&lt;readonly&gt; children :Array.&lt;DisplayObject&gt;' href='html/phaser-doc/Phaser.Graphics.html#children'></topic>
   <topic label='&lt;internal&gt; components :object' href='html/phaser-doc/Phaser.Graphics.html#components'></topic>
+  <topic label='data :Object' href='html/phaser-doc/Phaser.Graphics.html#data '></topic>
   <topic label='debug :boolean' href='html/phaser-doc/Phaser.Graphics.html#debug '></topic>
   <topic label='&lt;readonly&gt; destroyPhase :boolean' href='html/phaser-doc/Phaser.Graphics.html#destroyPhase'></topic>
   <topic label='events :Phaser.Events' href='html/phaser-doc/Phaser.Graphics.html#events '></topic>
@@ -1525,13 +1695,14 @@
   <topic label='game :Phaser.Game' href='html/phaser-doc/Phaser.Graphics.html#game '></topic>
   <topic label='height :Number' href='html/phaser-doc/Phaser.Graphics.html#height '></topic>
   <topic label='hitArea :Rectangle|Circle|Ellipse|Polygon' href='html/phaser-doc/Phaser.Graphics.html#hitArea '></topic>
+  <topic label='ignoreChildInput :Boolean' href='html/phaser-doc/Phaser.Graphics.html#ignoreChildInput '></topic>
   <topic label='&lt;readonly&gt; inCamera :boolean' href='html/phaser-doc/Phaser.Graphics.html#inCamera'></topic>
   <topic label='input :Phaser.InputHandler|null' href='html/phaser-doc/Phaser.Graphics.html#input '></topic>
   <topic label='inputEnabled :boolean' href='html/phaser-doc/Phaser.Graphics.html#inputEnabled '></topic>
   <topic label='&lt;readonly&gt; inWorld :boolean' href='html/phaser-doc/Phaser.Graphics.html#inWorld'></topic>
   <topic label='isMask :Boolean' href='html/phaser-doc/Phaser.Graphics.html#isMask '></topic>
   <topic label='key :string|Phaser.RenderTexture|Phaser.BitmapData|Phaser.Video|PIXI.Texture' href='html/phaser-doc/Phaser.Graphics.html#key '></topic>
-  <topic label='&lt;readonly&gt; left :number' href='html/phaser-doc/Phaser.Graphics.html#left'></topic>
+  <topic label='left :number' href='html/phaser-doc/Phaser.Graphics.html#left '></topic>
   <topic label='lifespan :number' href='html/phaser-doc/Phaser.Graphics.html#lifespan '></topic>
   <topic label='lineColor :String' href='html/phaser-doc/Phaser.Graphics.html#lineColor '></topic>
   <topic label='lineWidth :Number' href='html/phaser-doc/Phaser.Graphics.html#lineWidth '></topic>
@@ -1550,12 +1721,12 @@
   <topic label='&lt;readonly&gt; previousRotation :number' href='html/phaser-doc/Phaser.Graphics.html#previousRotation'></topic>
   <topic label='renderable :Boolean' href='html/phaser-doc/Phaser.Graphics.html#renderable '></topic>
   <topic label='&lt;readonly&gt; renderOrderID :number' href='html/phaser-doc/Phaser.Graphics.html#renderOrderID'></topic>
-  <topic label='&lt;readonly&gt; right :number' href='html/phaser-doc/Phaser.Graphics.html#right'></topic>
+  <topic label='right :number' href='html/phaser-doc/Phaser.Graphics.html#right '></topic>
   <topic label='rotation :Number' href='html/phaser-doc/Phaser.Graphics.html#rotation '></topic>
   <topic label='scale :Point' href='html/phaser-doc/Phaser.Graphics.html#scale '></topic>
   <topic label='&lt;readonly&gt; stage :Stage' href='html/phaser-doc/Phaser.Graphics.html#stage'></topic>
   <topic label='tint :Number' href='html/phaser-doc/Phaser.Graphics.html#tint '></topic>
-  <topic label='&lt;readonly&gt; top :number' href='html/phaser-doc/Phaser.Graphics.html#top'></topic>
+  <topic label='top :number' href='html/phaser-doc/Phaser.Graphics.html#top '></topic>
   <topic label='type :number' href='html/phaser-doc/Phaser.Graphics.html#type '></topic>
   <topic label='visible :Boolean' href='html/phaser-doc/Phaser.Graphics.html#visible '></topic>
   <topic label='width :Number' href='html/phaser-doc/Phaser.Graphics.html#width '></topic>
@@ -1570,6 +1741,8 @@
   <topic label='&lt;readonly&gt; z :number' href='html/phaser-doc/Phaser.Graphics.html#z'></topic>
   <topic label='addChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Graphics.html#addChild'></topic>
   <topic label='addChildAt(child, index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Graphics.html#addChildAt'></topic>
+  <topic label='alignIn(container, position, offsetX, offsetY) &#8594; {Object}' href='html/phaser-doc/Phaser.Graphics.html#alignIn'></topic>
+  <topic label='alignTo(parent, position, offsetX, offsetY) &#8594; {Object}' href='html/phaser-doc/Phaser.Graphics.html#alignTo'></topic>
   <topic label='arc(cx, cy, radius, startAngle, endAngle, anticlockwise, segments) &#8594; {PIXI.Graphics}' href='html/phaser-doc/Phaser.Graphics.html#arc'></topic>
   <topic label='beginFill(color, alpha) &#8594; {PIXI.Graphics}' href='html/phaser-doc/Phaser.Graphics.html#beginFill'></topic>
   <topic label='bezierCurveTo(cpX, cpY, cpX2, cpY2, toX, toY) &#8594; {PIXI.Graphics}' href='html/phaser-doc/Phaser.Graphics.html#bezierCurveTo'></topic>
@@ -1635,10 +1808,16 @@
   <topic label='hash :array' href='html/phaser-doc/Phaser.Group.html#hash '></topic>
   <topic label='height :Number' href='html/phaser-doc/Phaser.Group.html#height '></topic>
   <topic label='hitArea :Rectangle|Circle|Ellipse|Polygon' href='html/phaser-doc/Phaser.Group.html#hitArea '></topic>
+  <topic label='ignoreChildInput :Boolean' href='html/phaser-doc/Phaser.Group.html#ignoreChildInput '></topic>
   <topic label='ignoreDestroy :boolean' href='html/phaser-doc/Phaser.Group.html#ignoreDestroy '></topic>
+  <topic label='inputEnableChildren :boolean' href='html/phaser-doc/Phaser.Group.html#inputEnableChildren '></topic>
   <topic label='&lt;readonly&gt; length :integer' href='html/phaser-doc/Phaser.Group.html#length'></topic>
   <topic label='mask :PIXI.Graphics' href='html/phaser-doc/Phaser.Group.html#mask '></topic>
   <topic label='name :string' href='html/phaser-doc/Phaser.Group.html#name '></topic>
+  <topic label='onChildInputDown :Phaser.Signal' href='html/phaser-doc/Phaser.Group.html#onChildInputDown '></topic>
+  <topic label='onChildInputOut :Phaser.Signal' href='html/phaser-doc/Phaser.Group.html#onChildInputOut '></topic>
+  <topic label='onChildInputOver :Phaser.Signal' href='html/phaser-doc/Phaser.Group.html#onChildInputOver '></topic>
+  <topic label='onChildInputUp :Phaser.Signal' href='html/phaser-doc/Phaser.Group.html#onChildInputUp '></topic>
   <topic label='onDestroy :Phaser.Signal' href='html/phaser-doc/Phaser.Group.html#onDestroy '></topic>
   <topic label='&lt;readonly&gt; parent :PIXI.DisplayObjectContainer' href='html/phaser-doc/Phaser.Group.html#parent'></topic>
   <topic label='pendingDestroy :boolean' href='html/phaser-doc/Phaser.Group.html#pendingDestroy '></topic>
@@ -1663,13 +1842,14 @@
   <topic label='x :number' href='html/phaser-doc/Phaser.Group.html#x '></topic>
   <topic label='y :number' href='html/phaser-doc/Phaser.Group.html#y '></topic>
   <topic label='&lt;readonly&gt; z :integer' href='html/phaser-doc/Phaser.Group.html#z'></topic>
-  <topic label='add(child, silent) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.Group.html#add'></topic>
+  <topic label='add(child, silent, index) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.Group.html#add'></topic>
   <topic label='addAll(property, amount, checkAlive, checkVisible)' href='html/phaser-doc/Phaser.Group.html#addAll'></topic>
   <topic label='addAt(child, index, silent) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.Group.html#addAt'></topic>
   <topic label='addChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Group.html#addChild'></topic>
   <topic label='addChildAt(child, index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Group.html#addChildAt'></topic>
   <topic label='addMultiple(children, silent) &#8594; {Array.&lt;DisplayObject&gt;|Phaser.Group}' href='html/phaser-doc/Phaser.Group.html#addMultiple'></topic>
   <topic label='addToHash(child) &#8594; {boolean}' href='html/phaser-doc/Phaser.Group.html#addToHash'></topic>
+  <topic label='align(rows, columns, cellWidth, cellHeight, position, offset)' href='html/phaser-doc/Phaser.Group.html#align'></topic>
   <topic label='&lt;internal&gt; ascendingSortHandler(a, b)' href='html/phaser-doc/Phaser.Group.html#ascendingSortHandler'></topic>
   <topic label='bringToTop(child) &#8594; {any}' href='html/phaser-doc/Phaser.Group.html#bringToTop'></topic>
   <topic label='callAll(method, context, args)' href='html/phaser-doc/Phaser.Group.html#callAll'></topic>
@@ -1679,8 +1859,8 @@
   <topic label='checkProperty(child, key, value, force) &#8594; {boolean}' href='html/phaser-doc/Phaser.Group.html#checkProperty'></topic>
   <topic label='countDead() &#8594; {integer}' href='html/phaser-doc/Phaser.Group.html#countDead'></topic>
   <topic label='countLiving() &#8594; {integer}' href='html/phaser-doc/Phaser.Group.html#countLiving'></topic>
-  <topic label='create(x, y, key, frame, exists) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.Group.html#create'></topic>
-  <topic label='createMultiple(quantity, key, frame, exists)' href='html/phaser-doc/Phaser.Group.html#createMultiple'></topic>
+  <topic label='create(x, y, key, frame, exists, index) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.Group.html#create'></topic>
+  <topic label='createMultiple(quantity, key, frame, exists) &#8594; {array}' href='html/phaser-doc/Phaser.Group.html#createMultiple'></topic>
   <topic label='customSort(sortHandler, context)' href='html/phaser-doc/Phaser.Group.html#customSort'></topic>
   <topic label='&lt;internal&gt; descendingSortHandler(a, b)' href='html/phaser-doc/Phaser.Group.html#descendingSortHandler'></topic>
   <topic label='destroy(destroyChildren, soft)' href='html/phaser-doc/Phaser.Group.html#destroy'></topic>
@@ -1690,16 +1870,18 @@
   <topic label='forEachAlive(callback, callbackContext, args)' href='html/phaser-doc/Phaser.Group.html#forEachAlive'></topic>
   <topic label='forEachDead(callback, callbackContext, args)' href='html/phaser-doc/Phaser.Group.html#forEachDead'></topic>
   <topic label='forEachExists(callback, callbackContext, args)' href='html/phaser-doc/Phaser.Group.html#forEachExists'></topic>
-  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.Texture}' href='html/phaser-doc/Phaser.Group.html#generateTexture'></topic>
+  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.RenderTexture}' href='html/phaser-doc/Phaser.Group.html#generateTexture'></topic>
   <topic label='getAt(index) &#8594; {DisplayObject|integer}' href='html/phaser-doc/Phaser.Group.html#getAt'></topic>
   <topic label='getBottom() &#8594; {any}' href='html/phaser-doc/Phaser.Group.html#getBottom'></topic>
   <topic label='getBounds() &#8594; {Rectangle}' href='html/phaser-doc/Phaser.Group.html#getBounds'></topic>
   <topic label='getByName(name) &#8594; {any}' href='html/phaser-doc/Phaser.Group.html#getByName'></topic>
   <topic label='getChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Group.html#getChildAt'></topic>
   <topic label='getChildIndex(child) &#8594; {Number}' href='html/phaser-doc/Phaser.Group.html#getChildIndex'></topic>
+  <topic label='getClosestTo(object) &#8594; {any}' href='html/phaser-doc/Phaser.Group.html#getClosestTo'></topic>
   <topic label='getFirstAlive(createIfNull, x, y, key, frame) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.Group.html#getFirstAlive'></topic>
   <topic label='getFirstDead(createIfNull, x, y, key, frame) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.Group.html#getFirstDead'></topic>
   <topic label='getFirstExists(exists, createIfNull, x, y, key, frame) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.Group.html#getFirstExists'></topic>
+  <topic label='getFurthestFrom(object) &#8594; {any}' href='html/phaser-doc/Phaser.Group.html#getFurthestFrom'></topic>
   <topic label='getIndex(child) &#8594; {integer}' href='html/phaser-doc/Phaser.Group.html#getIndex'></topic>
   <topic label='getLocalBounds() &#8594; {Rectangle}' href='html/phaser-doc/Phaser.Group.html#getLocalBounds'></topic>
   <topic label='getRandom(startIndex, length) &#8594; {any}' href='html/phaser-doc/Phaser.Group.html#getRandom'></topic>
@@ -1715,7 +1897,7 @@
   <topic label='&lt;internal&gt; preUpdate()' href='html/phaser-doc/Phaser.Group.html#preUpdate'></topic>
   <topic label='previous() &#8594; {any}' href='html/phaser-doc/Phaser.Group.html#previous'></topic>
   <topic label='remove(child, destroy, silent) &#8594; {boolean}' href='html/phaser-doc/Phaser.Group.html#remove'></topic>
-  <topic label='removeAll(destroy, silent)' href='html/phaser-doc/Phaser.Group.html#removeAll'></topic>
+  <topic label='removeAll(destroy, silent, destroyTexture)' href='html/phaser-doc/Phaser.Group.html#removeAll'></topic>
   <topic label='removeBetween(startIndex, endIndex, destroy, silent)' href='html/phaser-doc/Phaser.Group.html#removeBetween'></topic>
   <topic label='removeChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Group.html#removeChild'></topic>
   <topic label='removeChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Group.html#removeChildAt'></topic>
@@ -1754,16 +1936,19 @@
   <topic label='animations :Phaser.AnimationManager' href='html/phaser-doc/Phaser.Image.html#animations '></topic>
   <topic label='autoCull :boolean' href='html/phaser-doc/Phaser.Image.html#autoCull '></topic>
   <topic label='blendMode :Number' href='html/phaser-doc/Phaser.Image.html#blendMode '></topic>
-  <topic label='&lt;readonly&gt; bottom :number' href='html/phaser-doc/Phaser.Image.html#bottom'></topic>
+  <topic label='bottom :number' href='html/phaser-doc/Phaser.Image.html#bottom '></topic>
   <topic label='cacheAsBitmap :Boolean' href='html/phaser-doc/Phaser.Image.html#cacheAsBitmap '></topic>
   <topic label='cameraOffset :Phaser.Point' href='html/phaser-doc/Phaser.Image.html#cameraOffset '></topic>
+  <topic label='centerX :number' href='html/phaser-doc/Phaser.Image.html#centerX '></topic>
+  <topic label='centerY :number' href='html/phaser-doc/Phaser.Image.html#centerY '></topic>
   <topic label='&lt;readonly&gt; children :Array.&lt;DisplayObject&gt;' href='html/phaser-doc/Phaser.Image.html#children'></topic>
   <topic label='&lt;internal&gt; components :object' href='html/phaser-doc/Phaser.Image.html#components'></topic>
   <topic label='cropRect :Phaser.Rectangle' href='html/phaser-doc/Phaser.Image.html#cropRect '></topic>
+  <topic label='data :Object' href='html/phaser-doc/Phaser.Image.html#data '></topic>
   <topic label='debug :boolean' href='html/phaser-doc/Phaser.Image.html#debug '></topic>
   <topic label='&lt;readonly&gt; destroyPhase :boolean' href='html/phaser-doc/Phaser.Image.html#destroyPhase'></topic>
   <topic label='events :Phaser.Events' href='html/phaser-doc/Phaser.Image.html#events '></topic>
-  <topic label='exists :boolean' href='html/phaser-doc/Phaser.Image.html#exists '></topic>
+  <topic label='exists :Boolean' href='html/phaser-doc/Phaser.Image.html#exists '></topic>
   <topic label='filterArea :Rectangle' href='html/phaser-doc/Phaser.Image.html#filterArea '></topic>
   <topic label='filters :Array.&lt;Filter&gt;' href='html/phaser-doc/Phaser.Image.html#filters '></topic>
   <topic label='fixedToCamera :boolean' href='html/phaser-doc/Phaser.Image.html#fixedToCamera '></topic>
@@ -1773,11 +1958,12 @@
   <topic label='game :Phaser.Game' href='html/phaser-doc/Phaser.Image.html#game '></topic>
   <topic label='height :Number' href='html/phaser-doc/Phaser.Image.html#height '></topic>
   <topic label='hitArea :Rectangle|Circle|Ellipse|Polygon' href='html/phaser-doc/Phaser.Image.html#hitArea '></topic>
+  <topic label='ignoreChildInput :Boolean' href='html/phaser-doc/Phaser.Image.html#ignoreChildInput '></topic>
   <topic label='&lt;readonly&gt; inCamera :boolean' href='html/phaser-doc/Phaser.Image.html#inCamera'></topic>
   <topic label='input :Phaser.InputHandler|null' href='html/phaser-doc/Phaser.Image.html#input '></topic>
   <topic label='inputEnabled :boolean' href='html/phaser-doc/Phaser.Image.html#inputEnabled '></topic>
   <topic label='key :string|Phaser.RenderTexture|Phaser.BitmapData|Phaser.Video|PIXI.Texture' href='html/phaser-doc/Phaser.Image.html#key '></topic>
-  <topic label='&lt;readonly&gt; left :number' href='html/phaser-doc/Phaser.Image.html#left'></topic>
+  <topic label='left :number' href='html/phaser-doc/Phaser.Image.html#left '></topic>
   <topic label='lifespan :number' href='html/phaser-doc/Phaser.Image.html#lifespan '></topic>
   <topic label='mask :PIXI.Graphics' href='html/phaser-doc/Phaser.Image.html#mask '></topic>
   <topic label='name :string' href='html/phaser-doc/Phaser.Image.html#name '></topic>
@@ -1791,7 +1977,7 @@
   <topic label='&lt;readonly&gt; previousRotation :number' href='html/phaser-doc/Phaser.Image.html#previousRotation'></topic>
   <topic label='renderable :Boolean' href='html/phaser-doc/Phaser.Image.html#renderable '></topic>
   <topic label='&lt;readonly&gt; renderOrderID :number' href='html/phaser-doc/Phaser.Image.html#renderOrderID'></topic>
-  <topic label='&lt;readonly&gt; right :number' href='html/phaser-doc/Phaser.Image.html#right'></topic>
+  <topic label='right :number' href='html/phaser-doc/Phaser.Image.html#right '></topic>
   <topic label='rotation :Number' href='html/phaser-doc/Phaser.Image.html#rotation '></topic>
   <topic label='scale :Point' href='html/phaser-doc/Phaser.Image.html#scale '></topic>
   <topic label='shader :PIXI.AbstractFilter' href='html/phaser-doc/Phaser.Image.html#shader '></topic>
@@ -1800,7 +1986,7 @@
   <topic label='texture :PIXI.Texture' href='html/phaser-doc/Phaser.Image.html#texture '></topic>
   <topic label='tint :Number' href='html/phaser-doc/Phaser.Image.html#tint '></topic>
   <topic label='tintedTexture :Canvas' href='html/phaser-doc/Phaser.Image.html#tintedTexture '></topic>
-  <topic label='&lt;readonly&gt; top :number' href='html/phaser-doc/Phaser.Image.html#top'></topic>
+  <topic label='top :number' href='html/phaser-doc/Phaser.Image.html#top '></topic>
   <topic label='&lt;readonly&gt; type :number' href='html/phaser-doc/Phaser.Image.html#type'></topic>
   <topic label='visible :Boolean' href='html/phaser-doc/Phaser.Image.html#visible '></topic>
   <topic label='width :Number' href='html/phaser-doc/Phaser.Image.html#width '></topic>
@@ -1815,10 +2001,12 @@
   <topic label='&lt;readonly&gt; z :number' href='html/phaser-doc/Phaser.Image.html#z'></topic>
   <topic label='addChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Image.html#addChild'></topic>
   <topic label='addChildAt(child, index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Image.html#addChildAt'></topic>
+  <topic label='alignIn(container, position, offsetX, offsetY) &#8594; {Object}' href='html/phaser-doc/Phaser.Image.html#alignIn'></topic>
+  <topic label='alignTo(parent, position, offsetX, offsetY) &#8594; {Object}' href='html/phaser-doc/Phaser.Image.html#alignTo'></topic>
   <topic label='bringToTop() &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Image.html#bringToTop'></topic>
   <topic label='crop(rect, copy)' href='html/phaser-doc/Phaser.Image.html#crop'></topic>
   <topic label='destroy()' href='html/phaser-doc/Phaser.Image.html#destroy'></topic>
-  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.Texture}' href='html/phaser-doc/Phaser.Image.html#generateTexture'></topic>
+  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.RenderTexture}' href='html/phaser-doc/Phaser.Image.html#generateTexture'></topic>
   <topic label='getBounds(matrix) &#8594; {Rectangle}' href='html/phaser-doc/Phaser.Image.html#getBounds'></topic>
   <topic label='getChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Image.html#getChildAt'></topic>
   <topic label='getChildIndex(child) &#8594; {Number}' href='html/phaser-doc/Phaser.Image.html#getChildIndex'></topic>
@@ -1933,6 +2121,7 @@
   <topic label='hitTest(displayObject, pointer, localPoint)' href='html/phaser-doc/Phaser.Input.html#hitTest'></topic>
   <topic label='reset(hard)' href='html/phaser-doc/Phaser.Input.html#reset'></topic>
   <topic label='resetSpeed(x, y)' href='html/phaser-doc/Phaser.Input.html#resetSpeed'></topic>
+  <topic label='setInteractiveCandidateHandler(callback, context)' href='html/phaser-doc/Phaser.Input.html#setInteractiveCandidateHandler'></topic>
   <topic label='&lt;internal&gt; startPointer(event) &#8594; {Phaser.Pointer}' href='html/phaser-doc/Phaser.Input.html#startPointer'></topic>
   <topic label='&lt;internal&gt; stopPointer(event) &#8594; {Phaser.Pointer}' href='html/phaser-doc/Phaser.Input.html#stopPointer'></topic>
   <topic label='&lt;internal&gt; update()' href='html/phaser-doc/Phaser.Input.html#update'></topic>
@@ -1945,10 +2134,14 @@
   <topic label='boundsSprite :Phaser.Sprite' href='html/phaser-doc/Phaser.InputHandler.html#boundsSprite '></topic>
   <topic label='bringToTop :boolean' href='html/phaser-doc/Phaser.InputHandler.html#bringToTop '></topic>
   <topic label='&lt;internal&gt; checked :boolean' href='html/phaser-doc/Phaser.InputHandler.html#checked'></topic>
+  <topic label='downPoint :Phaser.Point' href='html/phaser-doc/Phaser.InputHandler.html#downPoint '></topic>
+  <topic label='dragDistanceThreshold :integer' href='html/phaser-doc/Phaser.InputHandler.html#dragDistanceThreshold '></topic>
   <topic label='dragFromCenter :boolean' href='html/phaser-doc/Phaser.InputHandler.html#dragFromCenter '></topic>
   <topic label='draggable :boolean' href='html/phaser-doc/Phaser.InputHandler.html#draggable '></topic>
   <topic label='dragOffset :Phaser.Point' href='html/phaser-doc/Phaser.InputHandler.html#dragOffset '></topic>
   <topic label='dragStartPoint :Phaser.Point' href='html/phaser-doc/Phaser.InputHandler.html#dragStartPoint '></topic>
+  <topic label='dragStopBlocksInputUp :boolean' href='html/phaser-doc/Phaser.InputHandler.html#dragStopBlocksInputUp '></topic>
+  <topic label='dragTimeThreshold :integer' href='html/phaser-doc/Phaser.InputHandler.html#dragTimeThreshold '></topic>
   <topic label='enabled :boolean' href='html/phaser-doc/Phaser.InputHandler.html#enabled '></topic>
   <topic label='game :Phaser.Game' href='html/phaser-doc/Phaser.InputHandler.html#game '></topic>
   <topic label='isDragged :boolean' href='html/phaser-doc/Phaser.InputHandler.html#isDragged '></topic>
@@ -2003,7 +2196,7 @@
   <topic label='startDrag(pointer)' href='html/phaser-doc/Phaser.InputHandler.html#startDrag'></topic>
   <topic label='stop()' href='html/phaser-doc/Phaser.InputHandler.html#stop'></topic>
   <topic label='stopDrag(pointer)' href='html/phaser-doc/Phaser.InputHandler.html#stopDrag'></topic>
-  <topic label='&lt;internal&gt; update(pointer)' href='html/phaser-doc/Phaser.InputHandler.html#update'></topic>
+  <topic label='&lt;internal&gt; update(pointer) &#8594; {boolean}' href='html/phaser-doc/Phaser.InputHandler.html#update'></topic>
   <topic label='updateDrag(pointer) &#8594; {boolean}' href='html/phaser-doc/Phaser.InputHandler.html#updateDrag'></topic>
   <topic label='&lt;internal&gt; validForInput(highestID, highestRenderID, includePixelPerfect) &#8594; {boolean}' href='html/phaser-doc/Phaser.InputHandler.html#validForInput'></topic>
 </topic>
@@ -2294,6 +2487,7 @@
   <topic label='angleBetweenY(x1, y1, x2, y2) &#8594; {number}' href='html/phaser-doc/Phaser.Math.html#angleBetweenY'></topic>
   <topic label='average() &#8594; {number}' href='html/phaser-doc/Phaser.Math.html#average'></topic>
   <topic label='&lt;internal&gt; bernstein(n, i) &#8594; {number}' href='html/phaser-doc/Phaser.Math.html#bernstein'></topic>
+  <topic label='between(min, max) &#8594; {number}' href='html/phaser-doc/Phaser.Math.html#between'></topic>
   <topic label='bezierInterpolation(v, k) &#8594; {number}' href='html/phaser-doc/Phaser.Math.html#bezierInterpolation'></topic>
   <topic label='&lt;internal&gt; catmullRom(p0, p1, p2, p3, t) &#8594; {number}' href='html/phaser-doc/Phaser.Math.html#catmullRom'></topic>
   <topic label='catmullRomInterpolation(v, k) &#8594; {number}' href='html/phaser-doc/Phaser.Math.html#catmullRomInterpolation'></topic>
@@ -2442,21 +2636,24 @@
   <topic label='&lt;internal&gt; autoScale :boolean' href='html/phaser-doc/Phaser.Particle.html#autoScale'></topic>
   <topic label='blendMode :Number' href='html/phaser-doc/Phaser.Particle.html#blendMode '></topic>
   <topic label='body :Phaser.Physics.Arcade.Body|Phaser.Physics.P2.Body|Phaser.Physics.Ninja.Body|null' href='html/phaser-doc/Phaser.Particle.html#body '></topic>
-  <topic label='&lt;readonly&gt; bottom :number' href='html/phaser-doc/Phaser.Particle.html#bottom'></topic>
+  <topic label='bottom :number' href='html/phaser-doc/Phaser.Particle.html#bottom '></topic>
   <topic label='cacheAsBitmap :Boolean' href='html/phaser-doc/Phaser.Particle.html#cacheAsBitmap '></topic>
   <topic label='cameraOffset :Phaser.Point' href='html/phaser-doc/Phaser.Particle.html#cameraOffset '></topic>
+  <topic label='centerX :number' href='html/phaser-doc/Phaser.Particle.html#centerX '></topic>
+  <topic label='centerY :number' href='html/phaser-doc/Phaser.Particle.html#centerY '></topic>
   <topic label='checkWorldBounds :boolean' href='html/phaser-doc/Phaser.Particle.html#checkWorldBounds '></topic>
   <topic label='&lt;readonly&gt; children :Array.&lt;DisplayObject&gt;' href='html/phaser-doc/Phaser.Particle.html#children'></topic>
   <topic label='&lt;internal&gt; components :object' href='html/phaser-doc/Phaser.Particle.html#components'></topic>
   <topic label='cropRect :Phaser.Rectangle' href='html/phaser-doc/Phaser.Particle.html#cropRect '></topic>
   <topic label='damage' href='html/phaser-doc/Phaser.Particle.html#damage'></topic>
+  <topic label='data :Object' href='html/phaser-doc/Phaser.Particle.html#data '></topic>
   <topic label='debug :boolean' href='html/phaser-doc/Phaser.Particle.html#debug '></topic>
   <topic label='&lt;readonly&gt; deltaX :number' href='html/phaser-doc/Phaser.Particle.html#deltaX'></topic>
   <topic label='&lt;readonly&gt; deltaY :number' href='html/phaser-doc/Phaser.Particle.html#deltaY'></topic>
   <topic label='&lt;readonly&gt; deltaZ :number' href='html/phaser-doc/Phaser.Particle.html#deltaZ'></topic>
   <topic label='&lt;readonly&gt; destroyPhase :boolean' href='html/phaser-doc/Phaser.Particle.html#destroyPhase'></topic>
   <topic label='events :Phaser.Events' href='html/phaser-doc/Phaser.Particle.html#events '></topic>
-  <topic label='exists :boolean' href='html/phaser-doc/Phaser.Particle.html#exists '></topic>
+  <topic label='exists :Boolean' href='html/phaser-doc/Phaser.Particle.html#exists '></topic>
   <topic label='filterArea :Rectangle' href='html/phaser-doc/Phaser.Particle.html#filterArea '></topic>
   <topic label='filters :Array.&lt;Filter&gt;' href='html/phaser-doc/Phaser.Particle.html#filters '></topic>
   <topic label='fixedToCamera :boolean' href='html/phaser-doc/Phaser.Particle.html#fixedToCamera '></topic>
@@ -2468,12 +2665,13 @@
   <topic label='health :number' href='html/phaser-doc/Phaser.Particle.html#health '></topic>
   <topic label='height :Number' href='html/phaser-doc/Phaser.Particle.html#height '></topic>
   <topic label='hitArea :Rectangle|Circle|Ellipse|Polygon' href='html/phaser-doc/Phaser.Particle.html#hitArea '></topic>
+  <topic label='ignoreChildInput :Boolean' href='html/phaser-doc/Phaser.Particle.html#ignoreChildInput '></topic>
   <topic label='&lt;readonly&gt; inCamera :boolean' href='html/phaser-doc/Phaser.Particle.html#inCamera'></topic>
   <topic label='input :Phaser.InputHandler|null' href='html/phaser-doc/Phaser.Particle.html#input '></topic>
   <topic label='inputEnabled :boolean' href='html/phaser-doc/Phaser.Particle.html#inputEnabled '></topic>
   <topic label='&lt;readonly&gt; inWorld :boolean' href='html/phaser-doc/Phaser.Particle.html#inWorld'></topic>
   <topic label='key :string|Phaser.RenderTexture|Phaser.BitmapData|Phaser.Video|PIXI.Texture' href='html/phaser-doc/Phaser.Particle.html#key '></topic>
-  <topic label='&lt;readonly&gt; left :number' href='html/phaser-doc/Phaser.Particle.html#left'></topic>
+  <topic label='left :number' href='html/phaser-doc/Phaser.Particle.html#left '></topic>
   <topic label='lifespan :number' href='html/phaser-doc/Phaser.Particle.html#lifespan '></topic>
   <topic label='mask :PIXI.Graphics' href='html/phaser-doc/Phaser.Particle.html#mask '></topic>
   <topic label='maxHealth :number' href='html/phaser-doc/Phaser.Particle.html#maxHealth '></topic>
@@ -2491,7 +2689,7 @@
   <topic label='&lt;readonly&gt; previousRotation :number' href='html/phaser-doc/Phaser.Particle.html#previousRotation'></topic>
   <topic label='renderable :Boolean' href='html/phaser-doc/Phaser.Particle.html#renderable '></topic>
   <topic label='&lt;readonly&gt; renderOrderID :number' href='html/phaser-doc/Phaser.Particle.html#renderOrderID'></topic>
-  <topic label='&lt;readonly&gt; right :number' href='html/phaser-doc/Phaser.Particle.html#right'></topic>
+  <topic label='right :number' href='html/phaser-doc/Phaser.Particle.html#right '></topic>
   <topic label='rotation :Number' href='html/phaser-doc/Phaser.Particle.html#rotation '></topic>
   <topic label='scale :Point' href='html/phaser-doc/Phaser.Particle.html#scale '></topic>
   <topic label='&lt;internal&gt; scaleData :array' href='html/phaser-doc/Phaser.Particle.html#scaleData'></topic>
@@ -2504,7 +2702,7 @@
   <topic label='texture :PIXI.Texture' href='html/phaser-doc/Phaser.Particle.html#texture '></topic>
   <topic label='tint :Number' href='html/phaser-doc/Phaser.Particle.html#tint '></topic>
   <topic label='tintedTexture :Canvas' href='html/phaser-doc/Phaser.Particle.html#tintedTexture '></topic>
-  <topic label='&lt;readonly&gt; top :number' href='html/phaser-doc/Phaser.Particle.html#top'></topic>
+  <topic label='top :number' href='html/phaser-doc/Phaser.Particle.html#top '></topic>
   <topic label='transformCallback :function' href='html/phaser-doc/Phaser.Particle.html#transformCallback '></topic>
   <topic label='transformCallbackContext :object' href='html/phaser-doc/Phaser.Particle.html#transformCallbackContext '></topic>
   <topic label='&lt;readonly&gt; type :number' href='html/phaser-doc/Phaser.Particle.html#type'></topic>
@@ -2521,10 +2719,12 @@
   <topic label='&lt;readonly&gt; z :number' href='html/phaser-doc/Phaser.Particle.html#z'></topic>
   <topic label='addChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Particle.html#addChild'></topic>
   <topic label='addChildAt(child, index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Particle.html#addChildAt'></topic>
+  <topic label='alignIn(container, position, offsetX, offsetY) &#8594; {Object}' href='html/phaser-doc/Phaser.Particle.html#alignIn'></topic>
+  <topic label='alignTo(parent, position, offsetX, offsetY) &#8594; {Object}' href='html/phaser-doc/Phaser.Particle.html#alignTo'></topic>
   <topic label='bringToTop() &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Particle.html#bringToTop'></topic>
   <topic label='crop(rect, copy)' href='html/phaser-doc/Phaser.Particle.html#crop'></topic>
   <topic label='destroy()' href='html/phaser-doc/Phaser.Particle.html#destroy'></topic>
-  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.Texture}' href='html/phaser-doc/Phaser.Particle.html#generateTexture'></topic>
+  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.RenderTexture}' href='html/phaser-doc/Phaser.Particle.html#generateTexture'></topic>
   <topic label='getBounds(matrix) &#8594; {Rectangle}' href='html/phaser-doc/Phaser.Particle.html#getBounds'></topic>
   <topic label='getChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Particle.html#getChildAt'></topic>
   <topic label='getChildIndex(child) &#8594; {Number}' href='html/phaser-doc/Phaser.Particle.html#getChildIndex'></topic>
@@ -2593,7 +2793,9 @@
   <topic label='hash :array' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#hash '></topic>
   <topic label='height :number' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#height '></topic>
   <topic label='hitArea :Rectangle|Circle|Ellipse|Polygon' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#hitArea '></topic>
+  <topic label='ignoreChildInput :Boolean' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#ignoreChildInput '></topic>
   <topic label='ignoreDestroy :boolean' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#ignoreDestroy '></topic>
+  <topic label='inputEnableChildren :boolean' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#inputEnableChildren '></topic>
   <topic label='&lt;readonly&gt; left :number' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#left'></topic>
   <topic label='&lt;readonly&gt; length :integer' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#length'></topic>
   <topic label='lifespan :number' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#lifespan '></topic>
@@ -2609,6 +2811,10 @@
   <topic label='minRotation :number' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#minRotation '></topic>
   <topic label='name :string' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#name '></topic>
   <topic label='on :boolean' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#on '></topic>
+  <topic label='onChildInputDown :Phaser.Signal' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#onChildInputDown '></topic>
+  <topic label='onChildInputOut :Phaser.Signal' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#onChildInputOut '></topic>
+  <topic label='onChildInputOver :Phaser.Signal' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#onChildInputOver '></topic>
+  <topic label='onChildInputUp :Phaser.Signal' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#onChildInputUp '></topic>
   <topic label='onDestroy :Phaser.Signal' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#onDestroy '></topic>
   <topic label='&lt;readonly&gt; parent :PIXI.DisplayObjectContainer' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#parent'></topic>
   <topic label='particleAnchor :Phaser.Point' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#particleAnchor '></topic>
@@ -2641,13 +2847,14 @@
   <topic label='x :number' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#x '></topic>
   <topic label='y :number' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#y '></topic>
   <topic label='&lt;readonly&gt; z :integer' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#z'></topic>
-  <topic label='add(child, silent) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#add'></topic>
+  <topic label='add(child, silent, index) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#add'></topic>
   <topic label='addAll(property, amount, checkAlive, checkVisible)' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#addAll'></topic>
   <topic label='addAt(child, index, silent) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#addAt'></topic>
   <topic label='addChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#addChild'></topic>
   <topic label='addChildAt(child, index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#addChildAt'></topic>
   <topic label='addMultiple(children, silent) &#8594; {Array.&lt;DisplayObject&gt;|Phaser.Group}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#addMultiple'></topic>
   <topic label='addToHash(child) &#8594; {boolean}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#addToHash'></topic>
+  <topic label='align(rows, columns, cellWidth, cellHeight, position, offset)' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#align'></topic>
   <topic label='&lt;internal&gt; ascendingSortHandler(a, b)' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#ascendingSortHandler'></topic>
   <topic label='at(object) &#8594; {Phaser.Particles.Arcade.Emitter}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#at'></topic>
   <topic label='bringToTop(child) &#8594; {any}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#bringToTop'></topic>
@@ -2658,8 +2865,8 @@
   <topic label='checkProperty(child, key, value, force) &#8594; {boolean}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#checkProperty'></topic>
   <topic label='countDead() &#8594; {integer}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#countDead'></topic>
   <topic label='countLiving() &#8594; {integer}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#countLiving'></topic>
-  <topic label='create(x, y, key, frame, exists) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#create'></topic>
-  <topic label='createMultiple(quantity, key, frame, exists)' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#createMultiple'></topic>
+  <topic label='create(x, y, key, frame, exists, index) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#create'></topic>
+  <topic label='createMultiple(quantity, key, frame, exists) &#8594; {array}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#createMultiple'></topic>
   <topic label='customSort(sortHandler, context)' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#customSort'></topic>
   <topic label='&lt;internal&gt; descendingSortHandler(a, b)' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#descendingSortHandler'></topic>
   <topic label='destroy()' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#destroy'></topic>
@@ -2672,16 +2879,18 @@
   <topic label='forEachAlive(callback, callbackContext, args)' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#forEachAlive'></topic>
   <topic label='forEachDead(callback, callbackContext, args)' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#forEachDead'></topic>
   <topic label='forEachExists(callback, callbackContext, args)' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#forEachExists'></topic>
-  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.Texture}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#generateTexture'></topic>
+  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.RenderTexture}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#generateTexture'></topic>
   <topic label='getAt(index) &#8594; {DisplayObject|integer}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#getAt'></topic>
   <topic label='getBottom() &#8594; {any}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#getBottom'></topic>
   <topic label='getBounds() &#8594; {Rectangle}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#getBounds'></topic>
   <topic label='getByName(name) &#8594; {any}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#getByName'></topic>
   <topic label='getChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#getChildAt'></topic>
   <topic label='getChildIndex(child) &#8594; {Number}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#getChildIndex'></topic>
+  <topic label='getClosestTo(object) &#8594; {any}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#getClosestTo'></topic>
   <topic label='getFirstAlive(createIfNull, x, y, key, frame) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#getFirstAlive'></topic>
   <topic label='getFirstDead(createIfNull, x, y, key, frame) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#getFirstDead'></topic>
   <topic label='getFirstExists(exists, createIfNull, x, y, key, frame) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#getFirstExists'></topic>
+  <topic label='getFurthestFrom(object) &#8594; {any}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#getFurthestFrom'></topic>
   <topic label='getIndex(child) &#8594; {integer}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#getIndex'></topic>
   <topic label='getLocalBounds() &#8594; {Rectangle}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#getLocalBounds'></topic>
   <topic label='getRandom(startIndex, length) &#8594; {any}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#getRandom'></topic>
@@ -2699,7 +2908,7 @@
   <topic label='&lt;internal&gt; preUpdate()' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#preUpdate'></topic>
   <topic label='previous() &#8594; {any}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#previous'></topic>
   <topic label='remove(child, destroy, silent) &#8594; {boolean}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#remove'></topic>
-  <topic label='removeAll(destroy, silent)' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#removeAll'></topic>
+  <topic label='removeAll(destroy, silent, destroyTexture)' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#removeAll'></topic>
   <topic label='removeBetween(startIndex, endIndex, destroy, silent)' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#removeBetween'></topic>
   <topic label='removeChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#removeChild'></topic>
   <topic label='removeChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Particles.Arcade.Emitter.html#removeChildAt'></topic>
@@ -2775,13 +2984,17 @@
   <topic label='&lt;readonly&gt; halfWidth :number' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#halfWidth'></topic>
   <topic label='&lt;readonly&gt; height :number' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#height'></topic>
   <topic label='immovable :boolean' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#immovable '></topic>
+  <topic label='isMoving :boolean' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#isMoving '></topic>
   <topic label='left :number' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#left '></topic>
   <topic label='mass :number' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#mass '></topic>
   <topic label='maxAngular :number' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#maxAngular '></topic>
   <topic label='maxVelocity :Phaser.Point' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#maxVelocity '></topic>
+  <topic label='movementCallback :function' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#movementCallback '></topic>
+  <topic label='movementCallbackContext :object' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#movementCallbackContext '></topic>
   <topic label='moves :boolean' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#moves '></topic>
   <topic label='&lt;readonly&gt; newVelocity :Phaser.Point' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#newVelocity'></topic>
   <topic label='offset :Phaser.Point' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#offset '></topic>
+  <topic label='onMoveComplete :Phaser.Signal' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#onMoveComplete '></topic>
   <topic label='overlapX :number' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#overlapX '></topic>
   <topic label='overlapY :number' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#overlapY '></topic>
   <topic label='&lt;readonly&gt; position :Phaser.Point' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#position'></topic>
@@ -2794,6 +3007,7 @@
   <topic label='&lt;readonly&gt; sourceWidth :number' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#sourceWidth'></topic>
   <topic label='&lt;readonly&gt; speed :number' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#speed'></topic>
   <topic label='sprite :Phaser.Sprite' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#sprite '></topic>
+  <topic label='stopVelocityOnCollide :boolean' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#stopVelocityOnCollide '></topic>
   <topic label='syncBounds :boolean' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#syncBounds '></topic>
   <topic label='tilePadding :Phaser.Point' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#tilePadding '></topic>
   <topic label='top :number' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#top '></topic>
@@ -2802,6 +3016,7 @@
   <topic label='velocity :Phaser.Point' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#velocity '></topic>
   <topic label='wasTouching :object' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#wasTouching '></topic>
   <topic label='&lt;readonly&gt; width :number' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#width'></topic>
+  <topic label='worldBounce :Phaser.Point' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#worldBounce '></topic>
   <topic label='x :number' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#x '></topic>
   <topic label='y :number' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#y '></topic>
   <topic label='&lt;internal&gt; checkWorldBounds()' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#checkWorldBounds'></topic>
@@ -2812,6 +3027,8 @@
   <topic label='deltaZ() &#8594; {number}' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#deltaZ'></topic>
   <topic label='destroy()' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#destroy'></topic>
   <topic label='hitTest(x, y) &#8594; {boolean}' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#hitTest'></topic>
+  <topic label='moveFrom(duration, speed, direction) &#8594; {boolean}' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#moveFrom'></topic>
+  <topic label='moveTo(duration, distance, direction) &#8594; {boolean}' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#moveTo'></topic>
   <topic label='onFloor() &#8594; {boolean}' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#onFloor'></topic>
   <topic label='onTop() &#8594; {boolean}' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#onTop'></topic>
   <topic label='onWall() &#8594; {boolean}' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#onWall'></topic>
@@ -2820,9 +3037,10 @@
   <topic label='render(context, body, color, filled)' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#render'></topic>
   <topic label='renderBodyInfo(body, x, y, color)' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#renderBodyInfo'></topic>
   <topic label='reset(x, y)' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#reset'></topic>
-  <topic label='setCircle(radius, offsetX, offsetY)' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#setCircle'></topic>
   <topic label='setSize(width, height, offsetX, offsetY)' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#setSize'></topic>
+  <topic label='stopMovement(stopVelocity)' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#stopMovement'></topic>
   <topic label='&lt;internal&gt; updateBounds()' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#updateBounds'></topic>
+  <topic label='&lt;internal&gt; updateMovement()' href='html/phaser-doc/Phaser.Physics.Arcade.Body.html#updateMovement'></topic>
 </topic>
 <topic href='html/phaser-doc/Phaser.Physics.Arcade.html' label='Phaser.Physics.Arcade'>   <topic label='new Arcade(game)' href='html/phaser-doc/Phaser.Physics.Arcade.html#new Arcade'></topic>
   <topic label='&lt;static, constant&gt; BOTTOM_TOP :number' href='html/phaser-doc/Phaser.Physics.Arcade.html#BOTTOM_TOP'></topic>
@@ -2846,20 +3064,20 @@
   <topic label='accelerateToPointer(displayObject, pointer, speed, xSpeedMax, ySpeedMax) &#8594; {number}' href='html/phaser-doc/Phaser.Physics.Arcade.html#accelerateToPointer'></topic>
   <topic label='accelerateToXY(displayObject, x, y, speed, xSpeedMax, ySpeedMax) &#8594; {number}' href='html/phaser-doc/Phaser.Physics.Arcade.html#accelerateToXY'></topic>
   <topic label='accelerationFromRotation(rotation, speed, point) &#8594; {Phaser.Point}' href='html/phaser-doc/Phaser.Physics.Arcade.html#accelerationFromRotation'></topic>
-  <topic label='angleBetween(source, target) &#8594; {number}' href='html/phaser-doc/Phaser.Physics.Arcade.html#angleBetween'></topic>
-  <topic label='angleToPointer(displayObject, pointer) &#8594; {number}' href='html/phaser-doc/Phaser.Physics.Arcade.html#angleToPointer'></topic>
-  <topic label='angleToXY(displayObject, x, y) &#8594; {number}' href='html/phaser-doc/Phaser.Physics.Arcade.html#angleToXY'></topic>
+  <topic label='angleBetween(source, target, world) &#8594; {number}' href='html/phaser-doc/Phaser.Physics.Arcade.html#angleBetween'></topic>
+  <topic label='angleToPointer(displayObject, pointer, world) &#8594; {number}' href='html/phaser-doc/Phaser.Physics.Arcade.html#angleToPointer'></topic>
+  <topic label='angleToXY(displayObject, x, y, world) &#8594; {number}' href='html/phaser-doc/Phaser.Physics.Arcade.html#angleToXY'></topic>
   <topic label='collide(object1, object2, collideCallback, processCallback, callbackContext) &#8594; {boolean}' href='html/phaser-doc/Phaser.Physics.Arcade.html#collide'></topic>
   <topic label='computeVelocity(axis, body, velocity, acceleration, drag, max) &#8594; {number}' href='html/phaser-doc/Phaser.Physics.Arcade.html#computeVelocity'></topic>
-  <topic label='distanceBetween(source, target) &#8594; {number}' href='html/phaser-doc/Phaser.Physics.Arcade.html#distanceBetween'></topic>
-  <topic label='distanceToPointer(displayObject, pointer) &#8594; {number}' href='html/phaser-doc/Phaser.Physics.Arcade.html#distanceToPointer'></topic>
-  <topic label='distanceToXY(displayObject, x, y) &#8594; {number}' href='html/phaser-doc/Phaser.Physics.Arcade.html#distanceToXY'></topic>
+  <topic label='distanceBetween(source, target, world) &#8594; {number}' href='html/phaser-doc/Phaser.Physics.Arcade.html#distanceBetween'></topic>
+  <topic label='distanceToPointer(displayObject, pointer, world) &#8594; {number}' href='html/phaser-doc/Phaser.Physics.Arcade.html#distanceToPointer'></topic>
+  <topic label='distanceToXY(displayObject, x, y, world) &#8594; {number}' href='html/phaser-doc/Phaser.Physics.Arcade.html#distanceToXY'></topic>
   <topic label='enable(object, children)' href='html/phaser-doc/Phaser.Physics.Arcade.html#enable'></topic>
   <topic label='enableBody(object)' href='html/phaser-doc/Phaser.Physics.Arcade.html#enableBody'></topic>
   <topic label='getObjectsAtLocation(x, y, group, callback, callbackContext, callbackArg) &#8594; {Array.&lt;PIXI.DisplayObject&gt;}' href='html/phaser-doc/Phaser.Physics.Arcade.html#getObjectsAtLocation'></topic>
   <topic label='getObjectsUnderPointer(pointer, group, callback, callbackContext) &#8594; {Array.&lt;PIXI.DisplayObject&gt;}' href='html/phaser-doc/Phaser.Physics.Arcade.html#getObjectsUnderPointer'></topic>
-  <topic label='getOverlapX(body1, body2) &#8594; {float}' href='html/phaser-doc/Phaser.Physics.Arcade.html#getOverlapX'></topic>
-  <topic label='getOverlapY(body1, body2) &#8594; {float}' href='html/phaser-doc/Phaser.Physics.Arcade.html#getOverlapY'></topic>
+  <topic label='getOverlapX(body1, body2, overlapOnly) &#8594; {float}' href='html/phaser-doc/Phaser.Physics.Arcade.html#getOverlapX'></topic>
+  <topic label='getOverlapY(body1, body2, overlapOnly) &#8594; {float}' href='html/phaser-doc/Phaser.Physics.Arcade.html#getOverlapY'></topic>
   <topic label='intersects(body1, body2) &#8594; {boolean}' href='html/phaser-doc/Phaser.Physics.Arcade.html#intersects'></topic>
   <topic label='moveToObject(displayObject, destination, speed, maxTime) &#8594; {number}' href='html/phaser-doc/Phaser.Physics.Arcade.html#moveToObject'></topic>
   <topic label='moveToPointer(displayObject, speed, pointer, maxTime) &#8594; {number}' href='html/phaser-doc/Phaser.Physics.Arcade.html#moveToPointer'></topic>
@@ -3170,10 +3388,16 @@
   <topic label='hash :array' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#hash '></topic>
   <topic label='height :Number' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#height '></topic>
   <topic label='hitArea :Rectangle|Circle|Ellipse|Polygon' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#hitArea '></topic>
+  <topic label='ignoreChildInput :Boolean' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#ignoreChildInput '></topic>
   <topic label='ignoreDestroy :boolean' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#ignoreDestroy '></topic>
+  <topic label='inputEnableChildren :boolean' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#inputEnableChildren '></topic>
   <topic label='&lt;readonly&gt; length :integer' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#length'></topic>
   <topic label='mask :PIXI.Graphics' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#mask '></topic>
   <topic label='name :string' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#name '></topic>
+  <topic label='onChildInputDown :Phaser.Signal' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#onChildInputDown '></topic>
+  <topic label='onChildInputOut :Phaser.Signal' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#onChildInputOut '></topic>
+  <topic label='onChildInputOver :Phaser.Signal' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#onChildInputOver '></topic>
+  <topic label='onChildInputUp :Phaser.Signal' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#onChildInputUp '></topic>
   <topic label='onDestroy :Phaser.Signal' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#onDestroy '></topic>
   <topic label='&lt;readonly&gt; parent :PIXI.DisplayObjectContainer' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#parent'></topic>
   <topic label='pendingDestroy :boolean' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#pendingDestroy '></topic>
@@ -3199,13 +3423,14 @@
   <topic label='x :number' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#x '></topic>
   <topic label='y :number' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#y '></topic>
   <topic label='&lt;readonly&gt; z :integer' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#z'></topic>
-  <topic label='add(child, silent) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#add'></topic>
+  <topic label='add(child, silent, index) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#add'></topic>
   <topic label='addAll(property, amount, checkAlive, checkVisible)' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#addAll'></topic>
   <topic label='addAt(child, index, silent) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#addAt'></topic>
   <topic label='addChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#addChild'></topic>
   <topic label='addChildAt(child, index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#addChildAt'></topic>
   <topic label='addMultiple(children, silent) &#8594; {Array.&lt;DisplayObject&gt;|Phaser.Group}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#addMultiple'></topic>
   <topic label='addToHash(child) &#8594; {boolean}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#addToHash'></topic>
+  <topic label='align(rows, columns, cellWidth, cellHeight, position, offset)' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#align'></topic>
   <topic label='&lt;internal&gt; ascendingSortHandler(a, b)' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#ascendingSortHandler'></topic>
   <topic label='bringToTop(child) &#8594; {any}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#bringToTop'></topic>
   <topic label='callAll(method, context, args)' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#callAll'></topic>
@@ -3215,8 +3440,8 @@
   <topic label='checkProperty(child, key, value, force) &#8594; {boolean}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#checkProperty'></topic>
   <topic label='countDead() &#8594; {integer}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#countDead'></topic>
   <topic label='countLiving() &#8594; {integer}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#countLiving'></topic>
-  <topic label='create(x, y, key, frame, exists) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#create'></topic>
-  <topic label='createMultiple(quantity, key, frame, exists)' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#createMultiple'></topic>
+  <topic label='create(x, y, key, frame, exists, index) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#create'></topic>
+  <topic label='createMultiple(quantity, key, frame, exists) &#8594; {array}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#createMultiple'></topic>
   <topic label='customSort(sortHandler, context)' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#customSort'></topic>
   <topic label='&lt;internal&gt; descendingSortHandler(a, b)' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#descendingSortHandler'></topic>
   <topic label='destroy(destroyChildren, soft)' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#destroy'></topic>
@@ -3227,16 +3452,18 @@
   <topic label='forEachAlive(callback, callbackContext, args)' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#forEachAlive'></topic>
   <topic label='forEachDead(callback, callbackContext, args)' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#forEachDead'></topic>
   <topic label='forEachExists(callback, callbackContext, args)' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#forEachExists'></topic>
-  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.Texture}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#generateTexture'></topic>
+  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.RenderTexture}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#generateTexture'></topic>
   <topic label='getAt(index) &#8594; {DisplayObject|integer}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#getAt'></topic>
   <topic label='getBottom() &#8594; {any}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#getBottom'></topic>
   <topic label='getBounds() &#8594; {Rectangle}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#getBounds'></topic>
   <topic label='getByName(name) &#8594; {any}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#getByName'></topic>
   <topic label='getChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#getChildAt'></topic>
   <topic label='getChildIndex(child) &#8594; {Number}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#getChildIndex'></topic>
+  <topic label='getClosestTo(object) &#8594; {any}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#getClosestTo'></topic>
   <topic label='getFirstAlive(createIfNull, x, y, key, frame) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#getFirstAlive'></topic>
   <topic label='getFirstDead(createIfNull, x, y, key, frame) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#getFirstDead'></topic>
   <topic label='getFirstExists(exists, createIfNull, x, y, key, frame) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#getFirstExists'></topic>
+  <topic label='getFurthestFrom(object) &#8594; {any}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#getFurthestFrom'></topic>
   <topic label='getIndex(child) &#8594; {integer}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#getIndex'></topic>
   <topic label='getLocalBounds() &#8594; {Rectangle}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#getLocalBounds'></topic>
   <topic label='getRandom(startIndex, length) &#8594; {any}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#getRandom'></topic>
@@ -3252,7 +3479,7 @@
   <topic label='&lt;internal&gt; preUpdate()' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#preUpdate'></topic>
   <topic label='previous() &#8594; {any}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#previous'></topic>
   <topic label='remove(child, destroy, silent) &#8594; {boolean}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#remove'></topic>
-  <topic label='removeAll(destroy, silent)' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#removeAll'></topic>
+  <topic label='removeAll(destroy, silent, destroyTexture)' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#removeAll'></topic>
   <topic label='removeBetween(startIndex, endIndex, destroy, silent)' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#removeBetween'></topic>
   <topic label='removeChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#removeChild'></topic>
   <topic label='removeChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Physics.P2.BodyDebug.html#removeChildAt'></topic>
@@ -3458,7 +3685,7 @@
   <topic label='postRender()' href='html/phaser-doc/Phaser.PluginManager.html#postRender'></topic>
   <topic label='postUpdate()' href='html/phaser-doc/Phaser.PluginManager.html#postUpdate'></topic>
   <topic label='preUpdate()' href='html/phaser-doc/Phaser.PluginManager.html#preUpdate'></topic>
-  <topic label='remove(plugin)' href='html/phaser-doc/Phaser.PluginManager.html#remove'></topic>
+  <topic label='remove(plugin, destroy)' href='html/phaser-doc/Phaser.PluginManager.html#remove'></topic>
   <topic label='removeAll()' href='html/phaser-doc/Phaser.PluginManager.html#removeAll'></topic>
   <topic label='render()' href='html/phaser-doc/Phaser.PluginManager.html#render'></topic>
   <topic label='update()' href='html/phaser-doc/Phaser.PluginManager.html#update'></topic>
@@ -3539,6 +3766,7 @@
   <topic label='game :Phaser.Game' href='html/phaser-doc/Phaser.Pointer.html#game '></topic>
   <topic label='id :number' href='html/phaser-doc/Phaser.Pointer.html#id '></topic>
   <topic label='identifier :number' href='html/phaser-doc/Phaser.Pointer.html#identifier '></topic>
+  <topic label='interactiveCandidates :array' href='html/phaser-doc/Phaser.Pointer.html#interactiveCandidates '></topic>
   <topic label='isDown :boolean' href='html/phaser-doc/Phaser.Pointer.html#isDown '></topic>
   <topic label='isMouse :boolean' href='html/phaser-doc/Phaser.Pointer.html#isMouse '></topic>
   <topic label='isUp :boolean' href='html/phaser-doc/Phaser.Pointer.html#isUp '></topic>
@@ -3567,8 +3795,8 @@
   <topic label='totalTouches :number' href='html/phaser-doc/Phaser.Pointer.html#totalTouches '></topic>
   <topic label='&lt;readonly&gt; type :number' href='html/phaser-doc/Phaser.Pointer.html#type'></topic>
   <topic label='withinGame :boolean' href='html/phaser-doc/Phaser.Pointer.html#withinGame '></topic>
-  <topic label='&lt;readonly&gt; worldX' href='html/phaser-doc/Phaser.Pointer.html#worldX'></topic>
-  <topic label='&lt;readonly&gt; worldY' href='html/phaser-doc/Phaser.Pointer.html#worldY'></topic>
+  <topic label='&lt;readonly&gt; worldX :number' href='html/phaser-doc/Phaser.Pointer.html#worldX'></topic>
+  <topic label='&lt;readonly&gt; worldY :number' href='html/phaser-doc/Phaser.Pointer.html#worldY'></topic>
   <topic label='x :number' href='html/phaser-doc/Phaser.Pointer.html#x '></topic>
   <topic label='y :number' href='html/phaser-doc/Phaser.Pointer.html#y '></topic>
   <topic label='&lt;internal&gt; addClickTrampoline(name, callback, callbackContext, callbackArgs)' href='html/phaser-doc/Phaser.Pointer.html#addClickTrampoline'></topic>
@@ -3582,6 +3810,7 @@
   <topic label='resetMovement()' href='html/phaser-doc/Phaser.Pointer.html#resetMovement'></topic>
   <topic label='start(event)' href='html/phaser-doc/Phaser.Pointer.html#start'></topic>
   <topic label='stop(event)' href='html/phaser-doc/Phaser.Pointer.html#stop'></topic>
+  <topic label='swapTarget(newTarget, silent)' href='html/phaser-doc/Phaser.Pointer.html#swapTarget'></topic>
   <topic label='update()' href='html/phaser-doc/Phaser.Pointer.html#update'></topic>
   <topic label='&lt;internal&gt; updateButtons(event)' href='html/phaser-doc/Phaser.Pointer.html#updateButtons'></topic>
 </topic>
@@ -3682,6 +3911,7 @@
   <topic label='equals(b) &#8594; {boolean}' href='html/phaser-doc/Phaser.Rectangle.html#equals'></topic>
   <topic label='floor()' href='html/phaser-doc/Phaser.Rectangle.html#floor'></topic>
   <topic label='floorAll()' href='html/phaser-doc/Phaser.Rectangle.html#floorAll'></topic>
+  <topic label='getPoint(position, out) &#8594; {Phaser.Point}' href='html/phaser-doc/Phaser.Rectangle.html#getPoint'></topic>
   <topic label='inflate(dx, dy) &#8594; {Phaser.Rectangle}' href='html/phaser-doc/Phaser.Rectangle.html#inflate'></topic>
   <topic label='intersection(b, out) &#8594; {Phaser.Rectangle}' href='html/phaser-doc/Phaser.Rectangle.html#intersection'></topic>
   <topic label='intersects(b) &#8594; {boolean}' href='html/phaser-doc/Phaser.Rectangle.html#intersects'></topic>
@@ -3810,14 +4040,17 @@
   <topic label='autoCull :boolean' href='html/phaser-doc/Phaser.Rope.html#autoCull '></topic>
   <topic label='blendMode :Number' href='html/phaser-doc/Phaser.Rope.html#blendMode '></topic>
   <topic label='body :Phaser.Physics.Arcade.Body|Phaser.Physics.P2.Body|Phaser.Physics.Ninja.Body|null' href='html/phaser-doc/Phaser.Rope.html#body '></topic>
-  <topic label='&lt;readonly&gt; bottom :number' href='html/phaser-doc/Phaser.Rope.html#bottom'></topic>
+  <topic label='bottom :number' href='html/phaser-doc/Phaser.Rope.html#bottom '></topic>
   <topic label='cacheAsBitmap :Boolean' href='html/phaser-doc/Phaser.Rope.html#cacheAsBitmap '></topic>
   <topic label='cameraOffset :Phaser.Point' href='html/phaser-doc/Phaser.Rope.html#cameraOffset '></topic>
   <topic label='canvasPadding :Number' href='html/phaser-doc/Phaser.Rope.html#canvasPadding '></topic>
+  <topic label='centerX :number' href='html/phaser-doc/Phaser.Rope.html#centerX '></topic>
+  <topic label='centerY :number' href='html/phaser-doc/Phaser.Rope.html#centerY '></topic>
   <topic label='checkWorldBounds :boolean' href='html/phaser-doc/Phaser.Rope.html#checkWorldBounds '></topic>
   <topic label='&lt;readonly&gt; children :Array.&lt;DisplayObject&gt;' href='html/phaser-doc/Phaser.Rope.html#children'></topic>
   <topic label='&lt;internal&gt; components :object' href='html/phaser-doc/Phaser.Rope.html#components'></topic>
   <topic label='cropRect :Phaser.Rectangle' href='html/phaser-doc/Phaser.Rope.html#cropRect '></topic>
+  <topic label='data :Object' href='html/phaser-doc/Phaser.Rope.html#data '></topic>
   <topic label='debug :boolean' href='html/phaser-doc/Phaser.Rope.html#debug '></topic>
   <topic label='&lt;readonly&gt; deltaX :number' href='html/phaser-doc/Phaser.Rope.html#deltaX'></topic>
   <topic label='&lt;readonly&gt; deltaY :number' href='html/phaser-doc/Phaser.Rope.html#deltaY'></topic>
@@ -3835,10 +4068,11 @@
   <topic label='game :Phaser.Game' href='html/phaser-doc/Phaser.Rope.html#game '></topic>
   <topic label='height :Number' href='html/phaser-doc/Phaser.Rope.html#height '></topic>
   <topic label='hitArea :Rectangle|Circle|Ellipse|Polygon' href='html/phaser-doc/Phaser.Rope.html#hitArea '></topic>
+  <topic label='ignoreChildInput :Boolean' href='html/phaser-doc/Phaser.Rope.html#ignoreChildInput '></topic>
   <topic label='&lt;readonly&gt; inCamera :boolean' href='html/phaser-doc/Phaser.Rope.html#inCamera'></topic>
   <topic label='&lt;readonly&gt; inWorld :boolean' href='html/phaser-doc/Phaser.Rope.html#inWorld'></topic>
   <topic label='key :string|Phaser.RenderTexture|Phaser.BitmapData|Phaser.Video|PIXI.Texture' href='html/phaser-doc/Phaser.Rope.html#key '></topic>
-  <topic label='&lt;readonly&gt; left :number' href='html/phaser-doc/Phaser.Rope.html#left'></topic>
+  <topic label='left :number' href='html/phaser-doc/Phaser.Rope.html#left '></topic>
   <topic label='lifespan :number' href='html/phaser-doc/Phaser.Rope.html#lifespan '></topic>
   <topic label='mask :PIXI.Graphics' href='html/phaser-doc/Phaser.Rope.html#mask '></topic>
   <topic label='name :string' href='html/phaser-doc/Phaser.Rope.html#name '></topic>
@@ -3854,7 +4088,7 @@
   <topic label='&lt;readonly&gt; previousRotation :number' href='html/phaser-doc/Phaser.Rope.html#previousRotation'></topic>
   <topic label='renderable :Boolean' href='html/phaser-doc/Phaser.Rope.html#renderable '></topic>
   <topic label='&lt;readonly&gt; renderOrderID :number' href='html/phaser-doc/Phaser.Rope.html#renderOrderID'></topic>
-  <topic label='&lt;readonly&gt; right :number' href='html/phaser-doc/Phaser.Rope.html#right'></topic>
+  <topic label='right :number' href='html/phaser-doc/Phaser.Rope.html#right '></topic>
   <topic label='rotation :Number' href='html/phaser-doc/Phaser.Rope.html#rotation '></topic>
   <topic label='scale :Point' href='html/phaser-doc/Phaser.Rope.html#scale '></topic>
   <topic label='scaleMax :Phaser.Point' href='html/phaser-doc/Phaser.Rope.html#scaleMax '></topic>
@@ -3863,7 +4097,7 @@
   <topic label='smoothed :boolean' href='html/phaser-doc/Phaser.Rope.html#smoothed '></topic>
   <topic label='&lt;readonly&gt; stage :Stage' href='html/phaser-doc/Phaser.Rope.html#stage'></topic>
   <topic label='texture :PIXI.Texture' href='html/phaser-doc/Phaser.Rope.html#texture '></topic>
-  <topic label='&lt;readonly&gt; top :number' href='html/phaser-doc/Phaser.Rope.html#top'></topic>
+  <topic label='top :number' href='html/phaser-doc/Phaser.Rope.html#top '></topic>
   <topic label='transformCallback :function' href='html/phaser-doc/Phaser.Rope.html#transformCallback '></topic>
   <topic label='transformCallbackContext :object' href='html/phaser-doc/Phaser.Rope.html#transformCallbackContext '></topic>
   <topic label='&lt;readonly&gt; type :number' href='html/phaser-doc/Phaser.Rope.html#type'></topic>
@@ -3881,10 +4115,12 @@
   <topic label='&lt;readonly&gt; z :number' href='html/phaser-doc/Phaser.Rope.html#z'></topic>
   <topic label='addChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Rope.html#addChild'></topic>
   <topic label='addChildAt(child, index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Rope.html#addChildAt'></topic>
+  <topic label='alignIn(container, position, offsetX, offsetY) &#8594; {Object}' href='html/phaser-doc/Phaser.Rope.html#alignIn'></topic>
+  <topic label='alignTo(parent, position, offsetX, offsetY) &#8594; {Object}' href='html/phaser-doc/Phaser.Rope.html#alignTo'></topic>
   <topic label='bringToTop() &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Rope.html#bringToTop'></topic>
   <topic label='crop(rect, copy)' href='html/phaser-doc/Phaser.Rope.html#crop'></topic>
   <topic label='destroy()' href='html/phaser-doc/Phaser.Rope.html#destroy'></topic>
-  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.Texture}' href='html/phaser-doc/Phaser.Rope.html#generateTexture'></topic>
+  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.RenderTexture}' href='html/phaser-doc/Phaser.Rope.html#generateTexture'></topic>
   <topic label='getBounds(matrix) &#8594; {Rectangle}' href='html/phaser-doc/Phaser.Rope.html#getBounds'></topic>
   <topic label='getChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Rope.html#getChildAt'></topic>
   <topic label='getChildIndex(child) &#8594; {Number}' href='html/phaser-doc/Phaser.Rope.html#getChildIndex'></topic>
@@ -4154,21 +4390,24 @@
   <topic label='autoCull :boolean' href='html/phaser-doc/Phaser.Sprite.html#autoCull '></topic>
   <topic label='blendMode :Number' href='html/phaser-doc/Phaser.Sprite.html#blendMode '></topic>
   <topic label='body :Phaser.Physics.Arcade.Body|Phaser.Physics.P2.Body|Phaser.Physics.Ninja.Body|null' href='html/phaser-doc/Phaser.Sprite.html#body '></topic>
-  <topic label='&lt;readonly&gt; bottom :number' href='html/phaser-doc/Phaser.Sprite.html#bottom'></topic>
+  <topic label='bottom :number' href='html/phaser-doc/Phaser.Sprite.html#bottom '></topic>
   <topic label='cacheAsBitmap :Boolean' href='html/phaser-doc/Phaser.Sprite.html#cacheAsBitmap '></topic>
   <topic label='cameraOffset :Phaser.Point' href='html/phaser-doc/Phaser.Sprite.html#cameraOffset '></topic>
+  <topic label='centerX :number' href='html/phaser-doc/Phaser.Sprite.html#centerX '></topic>
+  <topic label='centerY :number' href='html/phaser-doc/Phaser.Sprite.html#centerY '></topic>
   <topic label='checkWorldBounds :boolean' href='html/phaser-doc/Phaser.Sprite.html#checkWorldBounds '></topic>
   <topic label='&lt;readonly&gt; children :Array.&lt;DisplayObject&gt;' href='html/phaser-doc/Phaser.Sprite.html#children'></topic>
   <topic label='&lt;internal&gt; components :object' href='html/phaser-doc/Phaser.Sprite.html#components'></topic>
   <topic label='cropRect :Phaser.Rectangle' href='html/phaser-doc/Phaser.Sprite.html#cropRect '></topic>
   <topic label='damage' href='html/phaser-doc/Phaser.Sprite.html#damage'></topic>
+  <topic label='data :Object' href='html/phaser-doc/Phaser.Sprite.html#data '></topic>
   <topic label='debug :boolean' href='html/phaser-doc/Phaser.Sprite.html#debug '></topic>
   <topic label='&lt;readonly&gt; deltaX :number' href='html/phaser-doc/Phaser.Sprite.html#deltaX'></topic>
   <topic label='&lt;readonly&gt; deltaY :number' href='html/phaser-doc/Phaser.Sprite.html#deltaY'></topic>
   <topic label='&lt;readonly&gt; deltaZ :number' href='html/phaser-doc/Phaser.Sprite.html#deltaZ'></topic>
   <topic label='&lt;readonly&gt; destroyPhase :boolean' href='html/phaser-doc/Phaser.Sprite.html#destroyPhase'></topic>
   <topic label='events :Phaser.Events' href='html/phaser-doc/Phaser.Sprite.html#events '></topic>
-  <topic label='exists :boolean' href='html/phaser-doc/Phaser.Sprite.html#exists '></topic>
+  <topic label='exists :Boolean' href='html/phaser-doc/Phaser.Sprite.html#exists '></topic>
   <topic label='filterArea :Rectangle' href='html/phaser-doc/Phaser.Sprite.html#filterArea '></topic>
   <topic label='filters :Array.&lt;Filter&gt;' href='html/phaser-doc/Phaser.Sprite.html#filters '></topic>
   <topic label='fixedToCamera :boolean' href='html/phaser-doc/Phaser.Sprite.html#fixedToCamera '></topic>
@@ -4180,12 +4419,13 @@
   <topic label='health :number' href='html/phaser-doc/Phaser.Sprite.html#health '></topic>
   <topic label='height :Number' href='html/phaser-doc/Phaser.Sprite.html#height '></topic>
   <topic label='hitArea :Rectangle|Circle|Ellipse|Polygon' href='html/phaser-doc/Phaser.Sprite.html#hitArea '></topic>
+  <topic label='ignoreChildInput :Boolean' href='html/phaser-doc/Phaser.Sprite.html#ignoreChildInput '></topic>
   <topic label='&lt;readonly&gt; inCamera :boolean' href='html/phaser-doc/Phaser.Sprite.html#inCamera'></topic>
   <topic label='input :Phaser.InputHandler|null' href='html/phaser-doc/Phaser.Sprite.html#input '></topic>
   <topic label='inputEnabled :boolean' href='html/phaser-doc/Phaser.Sprite.html#inputEnabled '></topic>
   <topic label='&lt;readonly&gt; inWorld :boolean' href='html/phaser-doc/Phaser.Sprite.html#inWorld'></topic>
   <topic label='key :string|Phaser.RenderTexture|Phaser.BitmapData|Phaser.Video|PIXI.Texture' href='html/phaser-doc/Phaser.Sprite.html#key '></topic>
-  <topic label='&lt;readonly&gt; left :number' href='html/phaser-doc/Phaser.Sprite.html#left'></topic>
+  <topic label='left :number' href='html/phaser-doc/Phaser.Sprite.html#left '></topic>
   <topic label='lifespan :number' href='html/phaser-doc/Phaser.Sprite.html#lifespan '></topic>
   <topic label='mask :PIXI.Graphics' href='html/phaser-doc/Phaser.Sprite.html#mask '></topic>
   <topic label='maxHealth :number' href='html/phaser-doc/Phaser.Sprite.html#maxHealth '></topic>
@@ -4203,7 +4443,7 @@
   <topic label='&lt;readonly&gt; previousRotation :number' href='html/phaser-doc/Phaser.Sprite.html#previousRotation'></topic>
   <topic label='renderable :Boolean' href='html/phaser-doc/Phaser.Sprite.html#renderable '></topic>
   <topic label='&lt;readonly&gt; renderOrderID :number' href='html/phaser-doc/Phaser.Sprite.html#renderOrderID'></topic>
-  <topic label='&lt;readonly&gt; right :number' href='html/phaser-doc/Phaser.Sprite.html#right'></topic>
+  <topic label='right :number' href='html/phaser-doc/Phaser.Sprite.html#right '></topic>
   <topic label='rotation :Number' href='html/phaser-doc/Phaser.Sprite.html#rotation '></topic>
   <topic label='scale :Point' href='html/phaser-doc/Phaser.Sprite.html#scale '></topic>
   <topic label='scaleMax :Phaser.Point' href='html/phaser-doc/Phaser.Sprite.html#scaleMax '></topic>
@@ -4215,7 +4455,7 @@
   <topic label='texture :PIXI.Texture' href='html/phaser-doc/Phaser.Sprite.html#texture '></topic>
   <topic label='tint :Number' href='html/phaser-doc/Phaser.Sprite.html#tint '></topic>
   <topic label='tintedTexture :Canvas' href='html/phaser-doc/Phaser.Sprite.html#tintedTexture '></topic>
-  <topic label='&lt;readonly&gt; top :number' href='html/phaser-doc/Phaser.Sprite.html#top'></topic>
+  <topic label='top :number' href='html/phaser-doc/Phaser.Sprite.html#top '></topic>
   <topic label='transformCallback :function' href='html/phaser-doc/Phaser.Sprite.html#transformCallback '></topic>
   <topic label='transformCallbackContext :object' href='html/phaser-doc/Phaser.Sprite.html#transformCallbackContext '></topic>
   <topic label='&lt;readonly&gt; type :number' href='html/phaser-doc/Phaser.Sprite.html#type'></topic>
@@ -4232,10 +4472,12 @@
   <topic label='&lt;readonly&gt; z :number' href='html/phaser-doc/Phaser.Sprite.html#z'></topic>
   <topic label='addChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Sprite.html#addChild'></topic>
   <topic label='addChildAt(child, index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Sprite.html#addChildAt'></topic>
+  <topic label='alignIn(container, position, offsetX, offsetY) &#8594; {Object}' href='html/phaser-doc/Phaser.Sprite.html#alignIn'></topic>
+  <topic label='alignTo(parent, position, offsetX, offsetY) &#8594; {Object}' href='html/phaser-doc/Phaser.Sprite.html#alignTo'></topic>
   <topic label='bringToTop() &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Sprite.html#bringToTop'></topic>
   <topic label='crop(rect, copy)' href='html/phaser-doc/Phaser.Sprite.html#crop'></topic>
   <topic label='destroy()' href='html/phaser-doc/Phaser.Sprite.html#destroy'></topic>
-  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.Texture}' href='html/phaser-doc/Phaser.Sprite.html#generateTexture'></topic>
+  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.RenderTexture}' href='html/phaser-doc/Phaser.Sprite.html#generateTexture'></topic>
   <topic label='getBounds(matrix) &#8594; {Rectangle}' href='html/phaser-doc/Phaser.Sprite.html#getBounds'></topic>
   <topic label='getChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Sprite.html#getChildAt'></topic>
   <topic label='getChildIndex(child) &#8594; {Number}' href='html/phaser-doc/Phaser.Sprite.html#getChildIndex'></topic>
@@ -4289,10 +4531,16 @@
   <topic label='hash :array' href='html/phaser-doc/Phaser.SpriteBatch.html#hash '></topic>
   <topic label='height :Number' href='html/phaser-doc/Phaser.SpriteBatch.html#height '></topic>
   <topic label='hitArea :Rectangle|Circle|Ellipse|Polygon' href='html/phaser-doc/Phaser.SpriteBatch.html#hitArea '></topic>
+  <topic label='ignoreChildInput :Boolean' href='html/phaser-doc/Phaser.SpriteBatch.html#ignoreChildInput '></topic>
   <topic label='ignoreDestroy :boolean' href='html/phaser-doc/Phaser.SpriteBatch.html#ignoreDestroy '></topic>
+  <topic label='inputEnableChildren :boolean' href='html/phaser-doc/Phaser.SpriteBatch.html#inputEnableChildren '></topic>
   <topic label='&lt;readonly&gt; length :integer' href='html/phaser-doc/Phaser.SpriteBatch.html#length'></topic>
   <topic label='mask :PIXI.Graphics' href='html/phaser-doc/Phaser.SpriteBatch.html#mask '></topic>
   <topic label='name :string' href='html/phaser-doc/Phaser.SpriteBatch.html#name '></topic>
+  <topic label='onChildInputDown :Phaser.Signal' href='html/phaser-doc/Phaser.SpriteBatch.html#onChildInputDown '></topic>
+  <topic label='onChildInputOut :Phaser.Signal' href='html/phaser-doc/Phaser.SpriteBatch.html#onChildInputOut '></topic>
+  <topic label='onChildInputOver :Phaser.Signal' href='html/phaser-doc/Phaser.SpriteBatch.html#onChildInputOver '></topic>
+  <topic label='onChildInputUp :Phaser.Signal' href='html/phaser-doc/Phaser.SpriteBatch.html#onChildInputUp '></topic>
   <topic label='onDestroy :Phaser.Signal' href='html/phaser-doc/Phaser.SpriteBatch.html#onDestroy '></topic>
   <topic label='&lt;readonly&gt; parent :PIXI.DisplayObjectContainer' href='html/phaser-doc/Phaser.SpriteBatch.html#parent'></topic>
   <topic label='pendingDestroy :boolean' href='html/phaser-doc/Phaser.SpriteBatch.html#pendingDestroy '></topic>
@@ -4317,13 +4565,14 @@
   <topic label='x :number' href='html/phaser-doc/Phaser.SpriteBatch.html#x '></topic>
   <topic label='y :number' href='html/phaser-doc/Phaser.SpriteBatch.html#y '></topic>
   <topic label='&lt;readonly&gt; z :integer' href='html/phaser-doc/Phaser.SpriteBatch.html#z'></topic>
-  <topic label='add(child, silent) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.SpriteBatch.html#add'></topic>
+  <topic label='add(child, silent, index) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.SpriteBatch.html#add'></topic>
   <topic label='addAll(property, amount, checkAlive, checkVisible)' href='html/phaser-doc/Phaser.SpriteBatch.html#addAll'></topic>
   <topic label='addAt(child, index, silent) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.SpriteBatch.html#addAt'></topic>
   <topic label='addChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.SpriteBatch.html#addChild'></topic>
   <topic label='addChildAt(child, index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.SpriteBatch.html#addChildAt'></topic>
   <topic label='addMultiple(children, silent) &#8594; {Array.&lt;DisplayObject&gt;|Phaser.Group}' href='html/phaser-doc/Phaser.SpriteBatch.html#addMultiple'></topic>
   <topic label='addToHash(child) &#8594; {boolean}' href='html/phaser-doc/Phaser.SpriteBatch.html#addToHash'></topic>
+  <topic label='align(rows, columns, cellWidth, cellHeight, position, offset)' href='html/phaser-doc/Phaser.SpriteBatch.html#align'></topic>
   <topic label='&lt;internal&gt; ascendingSortHandler(a, b)' href='html/phaser-doc/Phaser.SpriteBatch.html#ascendingSortHandler'></topic>
   <topic label='bringToTop(child) &#8594; {any}' href='html/phaser-doc/Phaser.SpriteBatch.html#bringToTop'></topic>
   <topic label='callAll(method, context, args)' href='html/phaser-doc/Phaser.SpriteBatch.html#callAll'></topic>
@@ -4333,8 +4582,8 @@
   <topic label='checkProperty(child, key, value, force) &#8594; {boolean}' href='html/phaser-doc/Phaser.SpriteBatch.html#checkProperty'></topic>
   <topic label='countDead() &#8594; {integer}' href='html/phaser-doc/Phaser.SpriteBatch.html#countDead'></topic>
   <topic label='countLiving() &#8594; {integer}' href='html/phaser-doc/Phaser.SpriteBatch.html#countLiving'></topic>
-  <topic label='create(x, y, key, frame, exists) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.SpriteBatch.html#create'></topic>
-  <topic label='createMultiple(quantity, key, frame, exists)' href='html/phaser-doc/Phaser.SpriteBatch.html#createMultiple'></topic>
+  <topic label='create(x, y, key, frame, exists, index) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.SpriteBatch.html#create'></topic>
+  <topic label='createMultiple(quantity, key, frame, exists) &#8594; {array}' href='html/phaser-doc/Phaser.SpriteBatch.html#createMultiple'></topic>
   <topic label='customSort(sortHandler, context)' href='html/phaser-doc/Phaser.SpriteBatch.html#customSort'></topic>
   <topic label='&lt;internal&gt; descendingSortHandler(a, b)' href='html/phaser-doc/Phaser.SpriteBatch.html#descendingSortHandler'></topic>
   <topic label='destroy(destroyChildren, soft)' href='html/phaser-doc/Phaser.SpriteBatch.html#destroy'></topic>
@@ -4344,16 +4593,18 @@
   <topic label='forEachAlive(callback, callbackContext, args)' href='html/phaser-doc/Phaser.SpriteBatch.html#forEachAlive'></topic>
   <topic label='forEachDead(callback, callbackContext, args)' href='html/phaser-doc/Phaser.SpriteBatch.html#forEachDead'></topic>
   <topic label='forEachExists(callback, callbackContext, args)' href='html/phaser-doc/Phaser.SpriteBatch.html#forEachExists'></topic>
-  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.Texture}' href='html/phaser-doc/Phaser.SpriteBatch.html#generateTexture'></topic>
+  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.RenderTexture}' href='html/phaser-doc/Phaser.SpriteBatch.html#generateTexture'></topic>
   <topic label='getAt(index) &#8594; {DisplayObject|integer}' href='html/phaser-doc/Phaser.SpriteBatch.html#getAt'></topic>
   <topic label='getBottom() &#8594; {any}' href='html/phaser-doc/Phaser.SpriteBatch.html#getBottom'></topic>
   <topic label='getBounds() &#8594; {Rectangle}' href='html/phaser-doc/Phaser.SpriteBatch.html#getBounds'></topic>
   <topic label='getByName(name) &#8594; {any}' href='html/phaser-doc/Phaser.SpriteBatch.html#getByName'></topic>
   <topic label='getChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.SpriteBatch.html#getChildAt'></topic>
   <topic label='getChildIndex(child) &#8594; {Number}' href='html/phaser-doc/Phaser.SpriteBatch.html#getChildIndex'></topic>
+  <topic label='getClosestTo(object) &#8594; {any}' href='html/phaser-doc/Phaser.SpriteBatch.html#getClosestTo'></topic>
   <topic label='getFirstAlive(createIfNull, x, y, key, frame) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.SpriteBatch.html#getFirstAlive'></topic>
   <topic label='getFirstDead(createIfNull, x, y, key, frame) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.SpriteBatch.html#getFirstDead'></topic>
   <topic label='getFirstExists(exists, createIfNull, x, y, key, frame) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.SpriteBatch.html#getFirstExists'></topic>
+  <topic label='getFurthestFrom(object) &#8594; {any}' href='html/phaser-doc/Phaser.SpriteBatch.html#getFurthestFrom'></topic>
   <topic label='getIndex(child) &#8594; {integer}' href='html/phaser-doc/Phaser.SpriteBatch.html#getIndex'></topic>
   <topic label='getLocalBounds() &#8594; {Rectangle}' href='html/phaser-doc/Phaser.SpriteBatch.html#getLocalBounds'></topic>
   <topic label='getRandom(startIndex, length) &#8594; {any}' href='html/phaser-doc/Phaser.SpriteBatch.html#getRandom'></topic>
@@ -4369,7 +4620,7 @@
   <topic label='&lt;internal&gt; preUpdate()' href='html/phaser-doc/Phaser.SpriteBatch.html#preUpdate'></topic>
   <topic label='previous() &#8594; {any}' href='html/phaser-doc/Phaser.SpriteBatch.html#previous'></topic>
   <topic label='remove(child, destroy, silent) &#8594; {boolean}' href='html/phaser-doc/Phaser.SpriteBatch.html#remove'></topic>
-  <topic label='removeAll(destroy, silent)' href='html/phaser-doc/Phaser.SpriteBatch.html#removeAll'></topic>
+  <topic label='removeAll(destroy, silent, destroyTexture)' href='html/phaser-doc/Phaser.SpriteBatch.html#removeAll'></topic>
   <topic label='removeBetween(startIndex, endIndex, destroy, silent)' href='html/phaser-doc/Phaser.SpriteBatch.html#removeBetween'></topic>
   <topic label='removeChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.SpriteBatch.html#removeChild'></topic>
   <topic label='removeChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.SpriteBatch.html#removeChildAt'></topic>
@@ -4411,6 +4662,7 @@
   <topic label='game :Phaser.Game' href='html/phaser-doc/Phaser.Stage.html#game '></topic>
   <topic label='height :Number' href='html/phaser-doc/Phaser.Stage.html#height '></topic>
   <topic label='hitArea :Rectangle|Circle|Ellipse|Polygon' href='html/phaser-doc/Phaser.Stage.html#hitArea '></topic>
+  <topic label='ignoreChildInput :Boolean' href='html/phaser-doc/Phaser.Stage.html#ignoreChildInput '></topic>
   <topic label='mask :PIXI.Graphics' href='html/phaser-doc/Phaser.Stage.html#mask '></topic>
   <topic label='name :string' href='html/phaser-doc/Phaser.Stage.html#name '></topic>
   <topic label='&lt;readonly&gt; parent :PIXI.DisplayObjectContainer' href='html/phaser-doc/Phaser.Stage.html#parent'></topic>
@@ -4433,7 +4685,7 @@
   <topic label='addChildAt(child, index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Stage.html#addChildAt'></topic>
   <topic label='checkVisibility()' href='html/phaser-doc/Phaser.Stage.html#checkVisibility'></topic>
   <topic label='destroy()' href='html/phaser-doc/Phaser.Stage.html#destroy'></topic>
-  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.Texture}' href='html/phaser-doc/Phaser.Stage.html#generateTexture'></topic>
+  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.RenderTexture}' href='html/phaser-doc/Phaser.Stage.html#generateTexture'></topic>
   <topic label='getBounds() &#8594; {Rectangle}' href='html/phaser-doc/Phaser.Stage.html#getBounds'></topic>
   <topic label='getChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Stage.html#getChildAt'></topic>
   <topic label='getChildIndex(child) &#8594; {Number}' href='html/phaser-doc/Phaser.Stage.html#getChildIndex'></topic>
@@ -4472,6 +4724,7 @@
   <topic label='scale :Phaser.ScaleManager' href='html/phaser-doc/Phaser.State.html#scale '></topic>
   <topic label='sound :Phaser.SoundManager' href='html/phaser-doc/Phaser.State.html#sound '></topic>
   <topic label='stage :Phaser.Stage' href='html/phaser-doc/Phaser.State.html#stage '></topic>
+  <topic label='state' href='html/phaser-doc/Phaser.State.html#state'></topic>
   <topic label='time :Phaser.Time' href='html/phaser-doc/Phaser.State.html#time '></topic>
   <topic label='tweens :Phaser.TweenManager' href='html/phaser-doc/Phaser.State.html#tweens '></topic>
   <topic label='world :Phaser.World' href='html/phaser-doc/Phaser.State.html#world '></topic>
@@ -4539,12 +4792,14 @@
   <topic label='autoRound :boolean' href='html/phaser-doc/Phaser.Text.html#autoRound '></topic>
   <topic label='blendMode :Number' href='html/phaser-doc/Phaser.Text.html#blendMode '></topic>
   <topic label='body :Phaser.Physics.Arcade.Body|Phaser.Physics.P2.Body|Phaser.Physics.Ninja.Body|null' href='html/phaser-doc/Phaser.Text.html#body '></topic>
-  <topic label='&lt;readonly&gt; bottom :number' href='html/phaser-doc/Phaser.Text.html#bottom'></topic>
+  <topic label='bottom :number' href='html/phaser-doc/Phaser.Text.html#bottom '></topic>
   <topic label='boundsAlignH :string' href='html/phaser-doc/Phaser.Text.html#boundsAlignH '></topic>
   <topic label='boundsAlignV :string' href='html/phaser-doc/Phaser.Text.html#boundsAlignV '></topic>
   <topic label='cacheAsBitmap :Boolean' href='html/phaser-doc/Phaser.Text.html#cacheAsBitmap '></topic>
   <topic label='cameraOffset :Phaser.Point' href='html/phaser-doc/Phaser.Text.html#cameraOffset '></topic>
   <topic label='canvas :HTMLCanvasElement' href='html/phaser-doc/Phaser.Text.html#canvas '></topic>
+  <topic label='centerX :number' href='html/phaser-doc/Phaser.Text.html#centerX '></topic>
+  <topic label='centerY :number' href='html/phaser-doc/Phaser.Text.html#centerY '></topic>
   <topic label='checkWorldBounds :boolean' href='html/phaser-doc/Phaser.Text.html#checkWorldBounds '></topic>
   <topic label='&lt;readonly&gt; children :Array.&lt;DisplayObject&gt;' href='html/phaser-doc/Phaser.Text.html#children'></topic>
   <topic label='colors :array' href='html/phaser-doc/Phaser.Text.html#colors '></topic>
@@ -4553,13 +4808,14 @@
   <topic label='cropRect :Phaser.Rectangle' href='html/phaser-doc/Phaser.Text.html#cropRect '></topic>
   <topic label='cssFont :string' href='html/phaser-doc/Phaser.Text.html#cssFont '></topic>
   <topic label='damage' href='html/phaser-doc/Phaser.Text.html#damage'></topic>
+  <topic label='data :Object' href='html/phaser-doc/Phaser.Text.html#data '></topic>
   <topic label='debug :boolean' href='html/phaser-doc/Phaser.Text.html#debug '></topic>
   <topic label='&lt;readonly&gt; deltaX :number' href='html/phaser-doc/Phaser.Text.html#deltaX'></topic>
   <topic label='&lt;readonly&gt; deltaY :number' href='html/phaser-doc/Phaser.Text.html#deltaY'></topic>
   <topic label='&lt;readonly&gt; deltaZ :number' href='html/phaser-doc/Phaser.Text.html#deltaZ'></topic>
   <topic label='&lt;readonly&gt; destroyPhase :boolean' href='html/phaser-doc/Phaser.Text.html#destroyPhase'></topic>
   <topic label='events :Phaser.Events' href='html/phaser-doc/Phaser.Text.html#events '></topic>
-  <topic label='exists :boolean' href='html/phaser-doc/Phaser.Text.html#exists '></topic>
+  <topic label='exists :Boolean' href='html/phaser-doc/Phaser.Text.html#exists '></topic>
   <topic label='fill :object' href='html/phaser-doc/Phaser.Text.html#fill '></topic>
   <topic label='filterArea :Rectangle' href='html/phaser-doc/Phaser.Text.html#filterArea '></topic>
   <topic label='filters :Array.&lt;Filter&gt;' href='html/phaser-doc/Phaser.Text.html#filters '></topic>
@@ -4579,12 +4835,13 @@
   <topic label='health :number' href='html/phaser-doc/Phaser.Text.html#health '></topic>
   <topic label='height :number' href='html/phaser-doc/Phaser.Text.html#height '></topic>
   <topic label='hitArea :Rectangle|Circle|Ellipse|Polygon' href='html/phaser-doc/Phaser.Text.html#hitArea '></topic>
+  <topic label='ignoreChildInput :Boolean' href='html/phaser-doc/Phaser.Text.html#ignoreChildInput '></topic>
   <topic label='&lt;readonly&gt; inCamera :boolean' href='html/phaser-doc/Phaser.Text.html#inCamera'></topic>
   <topic label='input :Phaser.InputHandler|null' href='html/phaser-doc/Phaser.Text.html#input '></topic>
   <topic label='inputEnabled :boolean' href='html/phaser-doc/Phaser.Text.html#inputEnabled '></topic>
   <topic label='&lt;readonly&gt; inWorld :boolean' href='html/phaser-doc/Phaser.Text.html#inWorld'></topic>
   <topic label='key :string|Phaser.RenderTexture|Phaser.BitmapData|Phaser.Video|PIXI.Texture' href='html/phaser-doc/Phaser.Text.html#key '></topic>
-  <topic label='&lt;readonly&gt; left :number' href='html/phaser-doc/Phaser.Text.html#left'></topic>
+  <topic label='left :number' href='html/phaser-doc/Phaser.Text.html#left '></topic>
   <topic label='lifespan :number' href='html/phaser-doc/Phaser.Text.html#lifespan '></topic>
   <topic label='lineSpacing :number' href='html/phaser-doc/Phaser.Text.html#lineSpacing '></topic>
   <topic label='mask :PIXI.Graphics' href='html/phaser-doc/Phaser.Text.html#mask '></topic>
@@ -4605,7 +4862,7 @@
   <topic label='renderable :Boolean' href='html/phaser-doc/Phaser.Text.html#renderable '></topic>
   <topic label='&lt;readonly&gt; renderOrderID :number' href='html/phaser-doc/Phaser.Text.html#renderOrderID'></topic>
   <topic label='resolution :integer' href='html/phaser-doc/Phaser.Text.html#resolution '></topic>
-  <topic label='&lt;readonly&gt; right :number' href='html/phaser-doc/Phaser.Text.html#right'></topic>
+  <topic label='right :number' href='html/phaser-doc/Phaser.Text.html#right '></topic>
   <topic label='rotation :Number' href='html/phaser-doc/Phaser.Text.html#rotation '></topic>
   <topic label='scale :Point' href='html/phaser-doc/Phaser.Text.html#scale '></topic>
   <topic label='scaleMax :Phaser.Point' href='html/phaser-doc/Phaser.Text.html#scaleMax '></topic>
@@ -4629,7 +4886,7 @@
   <topic label='texture :PIXI.Texture' href='html/phaser-doc/Phaser.Text.html#texture '></topic>
   <topic label='tint :Number' href='html/phaser-doc/Phaser.Text.html#tint '></topic>
   <topic label='tintedTexture :Canvas' href='html/phaser-doc/Phaser.Text.html#tintedTexture '></topic>
-  <topic label='&lt;readonly&gt; top :number' href='html/phaser-doc/Phaser.Text.html#top'></topic>
+  <topic label='top :number' href='html/phaser-doc/Phaser.Text.html#top '></topic>
   <topic label='transformCallback :function' href='html/phaser-doc/Phaser.Text.html#transformCallback '></topic>
   <topic label='transformCallbackContext :object' href='html/phaser-doc/Phaser.Text.html#transformCallbackContext '></topic>
   <topic label='type :number' href='html/phaser-doc/Phaser.Text.html#type '></topic>
@@ -4653,12 +4910,14 @@
   <topic label='addFontStyle(style, position) &#8594; {Phaser.Text}' href='html/phaser-doc/Phaser.Text.html#addFontStyle'></topic>
   <topic label='addFontWeight(style, position) &#8594; {Phaser.Text}' href='html/phaser-doc/Phaser.Text.html#addFontWeight'></topic>
   <topic label='addStrokeColor(color, position) &#8594; {Phaser.Text}' href='html/phaser-doc/Phaser.Text.html#addStrokeColor'></topic>
+  <topic label='alignIn(container, position, offsetX, offsetY) &#8594; {Object}' href='html/phaser-doc/Phaser.Text.html#alignIn'></topic>
+  <topic label='alignTo(parent, position, offsetX, offsetY) &#8594; {Object}' href='html/phaser-doc/Phaser.Text.html#alignTo'></topic>
   <topic label='bringToTop() &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Text.html#bringToTop'></topic>
   <topic label='clearColors() &#8594; {Phaser.Text}' href='html/phaser-doc/Phaser.Text.html#clearColors'></topic>
   <topic label='clearFontValues() &#8594; {Phaser.Text}' href='html/phaser-doc/Phaser.Text.html#clearFontValues'></topic>
   <topic label='crop(rect, copy)' href='html/phaser-doc/Phaser.Text.html#crop'></topic>
   <topic label='destroy(destroyChildren)' href='html/phaser-doc/Phaser.Text.html#destroy'></topic>
-  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.Texture}' href='html/phaser-doc/Phaser.Text.html#generateTexture'></topic>
+  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.RenderTexture}' href='html/phaser-doc/Phaser.Text.html#generateTexture'></topic>
   <topic label='getBounds(matrix) &#8594; {Phaser.Rectangle}' href='html/phaser-doc/Phaser.Text.html#getBounds'></topic>
   <topic label='getChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.Text.html#getChildAt'></topic>
   <topic label='getChildIndex(child) &#8594; {Number}' href='html/phaser-doc/Phaser.Text.html#getChildIndex'></topic>
@@ -4687,7 +4946,7 @@
   <topic label='setScaleMinMax(minX, minY, maxX, maxY)' href='html/phaser-doc/Phaser.Text.html#setScaleMinMax'></topic>
   <topic label='setShadow(x, y, color, blur, shadowStroke, shadowFill) &#8594; {Phaser.Text}' href='html/phaser-doc/Phaser.Text.html#setShadow'></topic>
   <topic label='setStageReference(stage)' href='html/phaser-doc/Phaser.Text.html#setStageReference'></topic>
-  <topic label='setStyle(style) &#8594; {Phaser.Text}' href='html/phaser-doc/Phaser.Text.html#setStyle'></topic>
+  <topic label='setStyle(style, update) &#8594; {Phaser.Text}' href='html/phaser-doc/Phaser.Text.html#setStyle'></topic>
   <topic label='setText(text) &#8594; {Phaser.Text}' href='html/phaser-doc/Phaser.Text.html#setText'></topic>
   <topic label='setTextBounds(x, y, width, height) &#8594; {Phaser.Text}' href='html/phaser-doc/Phaser.Text.html#setTextBounds'></topic>
   <topic label='setTexture(texture, destroy)' href='html/phaser-doc/Phaser.Text.html#setTexture'></topic>
@@ -4777,7 +5036,7 @@
   <topic label='createBlankLayer(name, width, height, tileWidth, tileHeight, group) &#8594; {Phaser.TilemapLayer}' href='html/phaser-doc/Phaser.Tilemap.html#createBlankLayer'></topic>
   <topic label='createFromObjects(name, gid, key, frame, exists, autoCull, group, CustomClass, adjustY)' href='html/phaser-doc/Phaser.Tilemap.html#createFromObjects'></topic>
   <topic label='createFromTiles(tiles, replacements, key, layer, group, properties) &#8594; {integer}' href='html/phaser-doc/Phaser.Tilemap.html#createFromTiles'></topic>
-  <topic label='createLayer(layer, width, height, group) &#8594; {Phaser.TilemapLayer}' href='html/phaser-doc/Phaser.Tilemap.html#createLayer'></topic>
+  <topic label='createLayer(layer, width, height, group, pixiTest) &#8594; {Phaser.TilemapLayer}' href='html/phaser-doc/Phaser.Tilemap.html#createLayer'></topic>
   <topic label='destroy()' href='html/phaser-doc/Phaser.Tilemap.html#destroy'></topic>
   <topic label='dump()' href='html/phaser-doc/Phaser.Tilemap.html#dump'></topic>
   <topic label='fill(index, x, y, width, height, layer)' href='html/phaser-doc/Phaser.Tilemap.html#fill'></topic>
@@ -4824,15 +5083,18 @@
   <topic label='autoCull :boolean' href='html/phaser-doc/Phaser.TilemapLayer.html#autoCull '></topic>
   <topic label='blendMode :Number' href='html/phaser-doc/Phaser.TilemapLayer.html#blendMode '></topic>
   <topic label='body :Phaser.Physics.Arcade.Body|Phaser.Physics.P2.Body|Phaser.Physics.Ninja.Body|null' href='html/phaser-doc/Phaser.TilemapLayer.html#body '></topic>
-  <topic label='&lt;readonly&gt; bottom :number' href='html/phaser-doc/Phaser.TilemapLayer.html#bottom'></topic>
+  <topic label='bottom :number' href='html/phaser-doc/Phaser.TilemapLayer.html#bottom '></topic>
   <topic label='cacheAsBitmap :Boolean' href='html/phaser-doc/Phaser.TilemapLayer.html#cacheAsBitmap '></topic>
   <topic label='cameraOffset :Phaser.Point' href='html/phaser-doc/Phaser.TilemapLayer.html#cameraOffset '></topic>
   <topic label='&lt;internal&gt; canvas :HTMLCanvasElement' href='html/phaser-doc/Phaser.TilemapLayer.html#canvas'></topic>
+  <topic label='centerX :number' href='html/phaser-doc/Phaser.TilemapLayer.html#centerX '></topic>
+  <topic label='centerY :number' href='html/phaser-doc/Phaser.TilemapLayer.html#centerY '></topic>
   <topic label='checkWorldBounds :boolean' href='html/phaser-doc/Phaser.TilemapLayer.html#checkWorldBounds '></topic>
   <topic label='&lt;readonly&gt; children :Array.&lt;DisplayObject&gt;' href='html/phaser-doc/Phaser.TilemapLayer.html#children'></topic>
   <topic label='&lt;internal&gt; components :object' href='html/phaser-doc/Phaser.TilemapLayer.html#components'></topic>
   <topic label='cropRect :Phaser.Rectangle' href='html/phaser-doc/Phaser.TilemapLayer.html#cropRect '></topic>
   <topic label='damage' href='html/phaser-doc/Phaser.TilemapLayer.html#damage'></topic>
+  <topic label='data :Object' href='html/phaser-doc/Phaser.TilemapLayer.html#data '></topic>
   <topic label='debug :boolean' href='html/phaser-doc/Phaser.TilemapLayer.html#debug '></topic>
   <topic label='debugSettings' href='html/phaser-doc/Phaser.TilemapLayer.html#debugSettings'></topic>
   <topic label='&lt;readonly&gt; deltaX :number' href='html/phaser-doc/Phaser.TilemapLayer.html#deltaX'></topic>
@@ -4853,6 +5115,7 @@
   <topic label='health :number' href='html/phaser-doc/Phaser.TilemapLayer.html#health '></topic>
   <topic label='height :Number' href='html/phaser-doc/Phaser.TilemapLayer.html#height '></topic>
   <topic label='hitArea :Rectangle|Circle|Ellipse|Polygon' href='html/phaser-doc/Phaser.TilemapLayer.html#hitArea '></topic>
+  <topic label='ignoreChildInput :Boolean' href='html/phaser-doc/Phaser.TilemapLayer.html#ignoreChildInput '></topic>
   <topic label='&lt;readonly&gt; inCamera :boolean' href='html/phaser-doc/Phaser.TilemapLayer.html#inCamera'></topic>
   <topic label='&lt;internal, readonly&gt; index :number' href='html/phaser-doc/Phaser.TilemapLayer.html#index'></topic>
   <topic label='input :Phaser.InputHandler|null' href='html/phaser-doc/Phaser.TilemapLayer.html#input '></topic>
@@ -4860,7 +5123,7 @@
   <topic label='&lt;readonly&gt; inWorld :boolean' href='html/phaser-doc/Phaser.TilemapLayer.html#inWorld'></topic>
   <topic label='key :string|Phaser.RenderTexture|Phaser.BitmapData|Phaser.Video|PIXI.Texture' href='html/phaser-doc/Phaser.TilemapLayer.html#key '></topic>
   <topic label='&lt;internal, readonly&gt; layer :object' href='html/phaser-doc/Phaser.TilemapLayer.html#layer'></topic>
-  <topic label='&lt;readonly&gt; left :number' href='html/phaser-doc/Phaser.TilemapLayer.html#left'></topic>
+  <topic label='left :number' href='html/phaser-doc/Phaser.TilemapLayer.html#left '></topic>
   <topic label='lifespan :number' href='html/phaser-doc/Phaser.TilemapLayer.html#lifespan '></topic>
   <topic label='&lt;internal, readonly&gt; map :Phaser.Tilemap' href='html/phaser-doc/Phaser.TilemapLayer.html#map'></topic>
   <topic label='mask :PIXI.Graphics' href='html/phaser-doc/Phaser.TilemapLayer.html#mask '></topic>
@@ -4881,7 +5144,7 @@
   <topic label='renderable :Boolean' href='html/phaser-doc/Phaser.TilemapLayer.html#renderable '></topic>
   <topic label='&lt;readonly&gt; renderOrderID :number' href='html/phaser-doc/Phaser.TilemapLayer.html#renderOrderID'></topic>
   <topic label='renderSettings' href='html/phaser-doc/Phaser.TilemapLayer.html#renderSettings'></topic>
-  <topic label='&lt;readonly&gt; right :number' href='html/phaser-doc/Phaser.TilemapLayer.html#right'></topic>
+  <topic label='right :number' href='html/phaser-doc/Phaser.TilemapLayer.html#right '></topic>
   <topic label='rotation :Number' href='html/phaser-doc/Phaser.TilemapLayer.html#rotation '></topic>
   <topic label='scale :Point' href='html/phaser-doc/Phaser.TilemapLayer.html#scale '></topic>
   <topic label='scaleMax :Phaser.Point' href='html/phaser-doc/Phaser.TilemapLayer.html#scaleMax '></topic>
@@ -4895,7 +5158,7 @@
   <topic label='texture :PIXI.Texture' href='html/phaser-doc/Phaser.TilemapLayer.html#texture '></topic>
   <topic label='tint :Number' href='html/phaser-doc/Phaser.TilemapLayer.html#tint '></topic>
   <topic label='tintedTexture :Canvas' href='html/phaser-doc/Phaser.TilemapLayer.html#tintedTexture '></topic>
-  <topic label='&lt;readonly&gt; top :number' href='html/phaser-doc/Phaser.TilemapLayer.html#top'></topic>
+  <topic label='top :number' href='html/phaser-doc/Phaser.TilemapLayer.html#top '></topic>
   <topic label='transformCallback :function' href='html/phaser-doc/Phaser.TilemapLayer.html#transformCallback '></topic>
   <topic label='transformCallbackContext :object' href='html/phaser-doc/Phaser.TilemapLayer.html#transformCallbackContext '></topic>
   <topic label='&lt;internal, readonly&gt; type :number' href='html/phaser-doc/Phaser.TilemapLayer.html#type'></topic>
@@ -4912,11 +5175,13 @@
   <topic label='&lt;readonly&gt; z :number' href='html/phaser-doc/Phaser.TilemapLayer.html#z'></topic>
   <topic label='addChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.TilemapLayer.html#addChild'></topic>
   <topic label='addChildAt(child, index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.TilemapLayer.html#addChildAt'></topic>
+  <topic label='alignIn(container, position, offsetX, offsetY) &#8594; {Object}' href='html/phaser-doc/Phaser.TilemapLayer.html#alignIn'></topic>
+  <topic label='alignTo(parent, position, offsetX, offsetY) &#8594; {Object}' href='html/phaser-doc/Phaser.TilemapLayer.html#alignTo'></topic>
   <topic label='bringToTop() &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.TilemapLayer.html#bringToTop'></topic>
   <topic label='crop(rect, copy)' href='html/phaser-doc/Phaser.TilemapLayer.html#crop'></topic>
   <topic label='destroy()' href='html/phaser-doc/Phaser.TilemapLayer.html#destroy'></topic>
   <topic label='&lt;internal&gt; ensureSharedCopyCanvas()' href='html/phaser-doc/Phaser.TilemapLayer.html#ensureSharedCopyCanvas'></topic>
-  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.Texture}' href='html/phaser-doc/Phaser.TilemapLayer.html#generateTexture'></topic>
+  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.RenderTexture}' href='html/phaser-doc/Phaser.TilemapLayer.html#generateTexture'></topic>
   <topic label='getBounds(matrix) &#8594; {Rectangle}' href='html/phaser-doc/Phaser.TilemapLayer.html#getBounds'></topic>
   <topic label='getChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.TilemapLayer.html#getChildAt'></topic>
   <topic label='getChildIndex(child) &#8594; {Number}' href='html/phaser-doc/Phaser.TilemapLayer.html#getChildIndex'></topic>
@@ -4993,18 +5258,21 @@
   <topic label='autoCull :boolean' href='html/phaser-doc/Phaser.TileSprite.html#autoCull '></topic>
   <topic label='blendMode :Number' href='html/phaser-doc/Phaser.TileSprite.html#blendMode '></topic>
   <topic label='body :Phaser.Physics.Arcade.Body|Phaser.Physics.P2.Body|Phaser.Physics.Ninja.Body|null' href='html/phaser-doc/Phaser.TileSprite.html#body '></topic>
-  <topic label='&lt;readonly&gt; bottom :number' href='html/phaser-doc/Phaser.TileSprite.html#bottom'></topic>
+  <topic label='bottom :number' href='html/phaser-doc/Phaser.TileSprite.html#bottom '></topic>
   <topic label='cacheAsBitmap :Boolean' href='html/phaser-doc/Phaser.TileSprite.html#cacheAsBitmap '></topic>
   <topic label='cameraOffset :Phaser.Point' href='html/phaser-doc/Phaser.TileSprite.html#cameraOffset '></topic>
   <topic label='canvasBuffer :PIXICanvasBuffer' href='html/phaser-doc/Phaser.TileSprite.html#canvasBuffer '></topic>
+  <topic label='centerX :number' href='html/phaser-doc/Phaser.TileSprite.html#centerX '></topic>
+  <topic label='centerY :number' href='html/phaser-doc/Phaser.TileSprite.html#centerY '></topic>
   <topic label='checkWorldBounds :boolean' href='html/phaser-doc/Phaser.TileSprite.html#checkWorldBounds '></topic>
   <topic label='&lt;readonly&gt; children :Array.&lt;DisplayObject&gt;' href='html/phaser-doc/Phaser.TileSprite.html#children'></topic>
   <topic label='&lt;internal&gt; components :object' href='html/phaser-doc/Phaser.TileSprite.html#components'></topic>
   <topic label='damage' href='html/phaser-doc/Phaser.TileSprite.html#damage'></topic>
+  <topic label='data :Object' href='html/phaser-doc/Phaser.TileSprite.html#data '></topic>
   <topic label='debug :boolean' href='html/phaser-doc/Phaser.TileSprite.html#debug '></topic>
   <topic label='&lt;readonly&gt; destroyPhase :boolean' href='html/phaser-doc/Phaser.TileSprite.html#destroyPhase'></topic>
   <topic label='events :Phaser.Events' href='html/phaser-doc/Phaser.TileSprite.html#events '></topic>
-  <topic label='exists :boolean' href='html/phaser-doc/Phaser.TileSprite.html#exists '></topic>
+  <topic label='exists :Boolean' href='html/phaser-doc/Phaser.TileSprite.html#exists '></topic>
   <topic label='filterArea :Rectangle' href='html/phaser-doc/Phaser.TileSprite.html#filterArea '></topic>
   <topic label='filters :Array.&lt;Filter&gt;' href='html/phaser-doc/Phaser.TileSprite.html#filters '></topic>
   <topic label='fixedToCamera :boolean' href='html/phaser-doc/Phaser.TileSprite.html#fixedToCamera '></topic>
@@ -5016,12 +5284,13 @@
   <topic label='health :number' href='html/phaser-doc/Phaser.TileSprite.html#health '></topic>
   <topic label='height :Number' href='html/phaser-doc/Phaser.TileSprite.html#height '></topic>
   <topic label='hitArea :Rectangle|Circle|Ellipse|Polygon' href='html/phaser-doc/Phaser.TileSprite.html#hitArea '></topic>
+  <topic label='ignoreChildInput :Boolean' href='html/phaser-doc/Phaser.TileSprite.html#ignoreChildInput '></topic>
   <topic label='&lt;readonly&gt; inCamera :boolean' href='html/phaser-doc/Phaser.TileSprite.html#inCamera'></topic>
   <topic label='input :Phaser.InputHandler|null' href='html/phaser-doc/Phaser.TileSprite.html#input '></topic>
   <topic label='inputEnabled :boolean' href='html/phaser-doc/Phaser.TileSprite.html#inputEnabled '></topic>
   <topic label='&lt;readonly&gt; inWorld :boolean' href='html/phaser-doc/Phaser.TileSprite.html#inWorld'></topic>
   <topic label='key :string|Phaser.RenderTexture|Phaser.BitmapData|Phaser.Video|PIXI.Texture' href='html/phaser-doc/Phaser.TileSprite.html#key '></topic>
-  <topic label='&lt;readonly&gt; left :number' href='html/phaser-doc/Phaser.TileSprite.html#left'></topic>
+  <topic label='left :number' href='html/phaser-doc/Phaser.TileSprite.html#left '></topic>
   <topic label='lifespan :number' href='html/phaser-doc/Phaser.TileSprite.html#lifespan '></topic>
   <topic label='mask :PIXI.Graphics' href='html/phaser-doc/Phaser.TileSprite.html#mask '></topic>
   <topic label='maxHealth :number' href='html/phaser-doc/Phaser.TileSprite.html#maxHealth '></topic>
@@ -5040,7 +5309,7 @@
   <topic label='refreshTexture :Boolean' href='html/phaser-doc/Phaser.TileSprite.html#refreshTexture '></topic>
   <topic label='renderable :Boolean' href='html/phaser-doc/Phaser.TileSprite.html#renderable '></topic>
   <topic label='&lt;readonly&gt; renderOrderID :number' href='html/phaser-doc/Phaser.TileSprite.html#renderOrderID'></topic>
-  <topic label='&lt;readonly&gt; right :number' href='html/phaser-doc/Phaser.TileSprite.html#right'></topic>
+  <topic label='right :number' href='html/phaser-doc/Phaser.TileSprite.html#right '></topic>
   <topic label='rotation :Number' href='html/phaser-doc/Phaser.TileSprite.html#rotation '></topic>
   <topic label='scale :Point' href='html/phaser-doc/Phaser.TileSprite.html#scale '></topic>
   <topic label='setHealth' href='html/phaser-doc/Phaser.TileSprite.html#setHealth'></topic>
@@ -5056,7 +5325,7 @@
   <topic label='tilingTexture :PIXITexture' href='html/phaser-doc/Phaser.TileSprite.html#tilingTexture '></topic>
   <topic label='tint :Number' href='html/phaser-doc/Phaser.TileSprite.html#tint '></topic>
   <topic label='tintedTexture :Canvas' href='html/phaser-doc/Phaser.TileSprite.html#tintedTexture '></topic>
-  <topic label='&lt;readonly&gt; top :number' href='html/phaser-doc/Phaser.TileSprite.html#top'></topic>
+  <topic label='top :number' href='html/phaser-doc/Phaser.TileSprite.html#top '></topic>
   <topic label='&lt;readonly&gt; type :number' href='html/phaser-doc/Phaser.TileSprite.html#type'></topic>
   <topic label='visible :Boolean' href='html/phaser-doc/Phaser.TileSprite.html#visible '></topic>
   <topic label='width :Number' href='html/phaser-doc/Phaser.TileSprite.html#width '></topic>
@@ -5071,10 +5340,12 @@
   <topic label='&lt;readonly&gt; z :number' href='html/phaser-doc/Phaser.TileSprite.html#z'></topic>
   <topic label='addChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.TileSprite.html#addChild'></topic>
   <topic label='addChildAt(child, index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.TileSprite.html#addChildAt'></topic>
+  <topic label='alignIn(container, position, offsetX, offsetY) &#8594; {Object}' href='html/phaser-doc/Phaser.TileSprite.html#alignIn'></topic>
+  <topic label='alignTo(parent, position, offsetX, offsetY) &#8594; {Object}' href='html/phaser-doc/Phaser.TileSprite.html#alignTo'></topic>
   <topic label='autoScroll(x, y)' href='html/phaser-doc/Phaser.TileSprite.html#autoScroll'></topic>
   <topic label='bringToTop() &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.TileSprite.html#bringToTop'></topic>
   <topic label='destroy(destroyChildren)' href='html/phaser-doc/Phaser.TileSprite.html#destroy'></topic>
-  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.Texture}' href='html/phaser-doc/Phaser.TileSprite.html#generateTexture'></topic>
+  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.RenderTexture}' href='html/phaser-doc/Phaser.TileSprite.html#generateTexture'></topic>
   <topic label='generateTilingTexture(forcePowerOfTwo, renderSession)' href='html/phaser-doc/Phaser.TileSprite.html#generateTilingTexture'></topic>
   <topic label='getBounds() &#8594; {Rectangle}' href='html/phaser-doc/Phaser.TileSprite.html#getBounds'></topic>
   <topic label='getChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.TileSprite.html#getChildAt'></topic>
@@ -5408,6 +5679,72 @@
   <topic label='unlock()' href='html/phaser-doc/Phaser.Video.html#unlock'></topic>
   <topic label='updateTexture(event, width, height)' href='html/phaser-doc/Phaser.Video.html#updateTexture'></topic>
 </topic>
+<topic href='html/phaser-doc/Phaser.Weapon.html' label='Phaser.Weapon'>   <topic label='new Weapon(game, parent)' href='html/phaser-doc/Phaser.Weapon.html#new Weapon'></topic>
+  <topic label='&lt;static, constant&gt; KILL_CAMERA_BOUNDS :integer' href='html/phaser-doc/Phaser.Weapon.html#KILL_CAMERA_BOUNDS'></topic>
+  <topic label='&lt;static, constant&gt; KILL_DISTANCE :integer' href='html/phaser-doc/Phaser.Weapon.html#KILL_DISTANCE'></topic>
+  <topic label='&lt;static, constant&gt; KILL_LIFESPAN :integer' href='html/phaser-doc/Phaser.Weapon.html#KILL_LIFESPAN'></topic>
+  <topic label='&lt;static, constant&gt; KILL_NEVER :integer' href='html/phaser-doc/Phaser.Weapon.html#KILL_NEVER'></topic>
+  <topic label='&lt;static, constant&gt; KILL_STATIC_BOUNDS :integer' href='html/phaser-doc/Phaser.Weapon.html#KILL_STATIC_BOUNDS'></topic>
+  <topic label='&lt;static, constant&gt; KILL_WEAPON_BOUNDS :integer' href='html/phaser-doc/Phaser.Weapon.html#KILL_WEAPON_BOUNDS'></topic>
+  <topic label='&lt;static, constant&gt; KILL_WORLD_BOUNDS :integer' href='html/phaser-doc/Phaser.Weapon.html#KILL_WORLD_BOUNDS'></topic>
+  <topic label='autoExpandBulletsGroup :boolean' href='html/phaser-doc/Phaser.Weapon.html#autoExpandBulletsGroup '></topic>
+  <topic label='autofire :boolean' href='html/phaser-doc/Phaser.Weapon.html#autofire '></topic>
+  <topic label='bounds :Phaser.Rectangle' href='html/phaser-doc/Phaser.Weapon.html#bounds '></topic>
+  <topic label='bulletAngleOffset :number' href='html/phaser-doc/Phaser.Weapon.html#bulletAngleOffset '></topic>
+  <topic label='bulletAngleVariance :number' href='html/phaser-doc/Phaser.Weapon.html#bulletAngleVariance '></topic>
+  <topic label='bulletAnimation :string' href='html/phaser-doc/Phaser.Weapon.html#bulletAnimation '></topic>
+  <topic label='bulletClass :Object' href='html/phaser-doc/Phaser.Weapon.html#bulletClass '></topic>
+  <topic label='bulletCollideWorldBounds :boolean' href='html/phaser-doc/Phaser.Weapon.html#bulletCollideWorldBounds '></topic>
+  <topic label='bulletFrame :string|integer' href='html/phaser-doc/Phaser.Weapon.html#bulletFrame '></topic>
+  <topic label='bulletFrameCycle :boolean' href='html/phaser-doc/Phaser.Weapon.html#bulletFrameCycle '></topic>
+  <topic label='bulletFrameRandom :boolean' href='html/phaser-doc/Phaser.Weapon.html#bulletFrameRandom '></topic>
+  <topic label='&lt;internal&gt; bulletFrames :Array' href='html/phaser-doc/Phaser.Weapon.html#bulletFrames'></topic>
+  <topic label='bulletGravity :Phaser.Point' href='html/phaser-doc/Phaser.Weapon.html#bulletGravity '></topic>
+  <topic label='bulletInheritSpriteSpeed :boolean' href='html/phaser-doc/Phaser.Weapon.html#bulletInheritSpriteSpeed '></topic>
+  <topic label='bulletKey :string' href='html/phaser-doc/Phaser.Weapon.html#bulletKey '></topic>
+  <topic label='bulletKillDistance :number' href='html/phaser-doc/Phaser.Weapon.html#bulletKillDistance '></topic>
+  <topic label='bulletKillType :integer' href='html/phaser-doc/Phaser.Weapon.html#bulletKillType '></topic>
+  <topic label='bulletLifespan :number' href='html/phaser-doc/Phaser.Weapon.html#bulletLifespan '></topic>
+  <topic label='bulletRotateToVelocity :boolean' href='html/phaser-doc/Phaser.Weapon.html#bulletRotateToVelocity '></topic>
+  <topic label='bullets :Phaser.Group' href='html/phaser-doc/Phaser.Weapon.html#bullets '></topic>
+  <topic label='bulletSpeed :number' href='html/phaser-doc/Phaser.Weapon.html#bulletSpeed '></topic>
+  <topic label='bulletSpeedVariance :number' href='html/phaser-doc/Phaser.Weapon.html#bulletSpeedVariance '></topic>
+  <topic label='bulletWorldWrap :boolean' href='html/phaser-doc/Phaser.Weapon.html#bulletWorldWrap '></topic>
+  <topic label='bulletWorldWrapPadding :integer' href='html/phaser-doc/Phaser.Weapon.html#bulletWorldWrapPadding '></topic>
+  <topic label='fireAngle :integer' href='html/phaser-doc/Phaser.Weapon.html#fireAngle '></topic>
+  <topic label='fireFrom :Phaser.Rectangle' href='html/phaser-doc/Phaser.Weapon.html#fireFrom '></topic>
+  <topic label='fireLimit :number' href='html/phaser-doc/Phaser.Weapon.html#fireLimit '></topic>
+  <topic label='fireRate :number' href='html/phaser-doc/Phaser.Weapon.html#fireRate '></topic>
+  <topic label='fireRateVariance :number' href='html/phaser-doc/Phaser.Weapon.html#fireRateVariance '></topic>
+  <topic label='onFire :Phaser.Signal' href='html/phaser-doc/Phaser.Weapon.html#onFire '></topic>
+  <topic label='onFireLimit :Phaser.Signal' href='html/phaser-doc/Phaser.Weapon.html#onFireLimit '></topic>
+  <topic label='onKill :Phaser.Signal' href='html/phaser-doc/Phaser.Weapon.html#onKill '></topic>
+  <topic label='shots :number' href='html/phaser-doc/Phaser.Weapon.html#shots '></topic>
+  <topic label='trackedPointer :Phaser.Pointer' href='html/phaser-doc/Phaser.Weapon.html#trackedPointer '></topic>
+  <topic label='trackedSprite :Phaser.Sprite|Object' href='html/phaser-doc/Phaser.Weapon.html#trackedSprite '></topic>
+  <topic label='trackOffset :Phaser.Point' href='html/phaser-doc/Phaser.Weapon.html#trackOffset '></topic>
+  <topic label='trackRotation :boolean' href='html/phaser-doc/Phaser.Weapon.html#trackRotation '></topic>
+  <topic label='x :number' href='html/phaser-doc/Phaser.Weapon.html#x '></topic>
+  <topic label='y :number' href='html/phaser-doc/Phaser.Weapon.html#y '></topic>
+  <topic label='addBulletAnimation(name, frames, frameRate, loop, useNumericIndex) &#8594; {Phaser.Weapon}' href='html/phaser-doc/Phaser.Weapon.html#addBulletAnimation'></topic>
+  <topic label='createBullets(quantity, key, frame, group) &#8594; {Phaser.Weapon}' href='html/phaser-doc/Phaser.Weapon.html#createBullets'></topic>
+  <topic label='debug(x, y, debugBodies)' href='html/phaser-doc/Phaser.Weapon.html#debug'></topic>
+  <topic label='destroy()' href='html/phaser-doc/Phaser.Weapon.html#destroy'></topic>
+  <topic label='fire(from, x, y) &#8594; {boolean}' href='html/phaser-doc/Phaser.Weapon.html#fire'></topic>
+  <topic label='fireAtPointer(pointer) &#8594; {boolean}' href='html/phaser-doc/Phaser.Weapon.html#fireAtPointer'></topic>
+  <topic label='fireAtSprite(sprite) &#8594; {boolean}' href='html/phaser-doc/Phaser.Weapon.html#fireAtSprite'></topic>
+  <topic label='fireAtXY(x, y) &#8594; {boolean}' href='html/phaser-doc/Phaser.Weapon.html#fireAtXY'></topic>
+  <topic label='forEach(callback, callbackContext, args) &#8594; {Phaser.Weapon}' href='html/phaser-doc/Phaser.Weapon.html#forEach'></topic>
+  <topic label='killAll() &#8594; {Phaser.Weapon}' href='html/phaser-doc/Phaser.Weapon.html#killAll'></topic>
+  <topic label='pauseAll() &#8594; {Phaser.Weapon}' href='html/phaser-doc/Phaser.Weapon.html#pauseAll'></topic>
+  <topic label='resetShots(newLimit) &#8594; {Phaser.Weapon}' href='html/phaser-doc/Phaser.Weapon.html#resetShots'></topic>
+  <topic label='resumeAll() &#8594; {Phaser.Weapon}' href='html/phaser-doc/Phaser.Weapon.html#resumeAll'></topic>
+  <topic label='setBulletBodyOffset(width, height, offsetX, offsetY) &#8594; {Phaser.Weapon}' href='html/phaser-doc/Phaser.Weapon.html#setBulletBodyOffset'></topic>
+  <topic label='setBulletFrames(min, max, cycle, random) &#8594; {Phaser.Weapon}' href='html/phaser-doc/Phaser.Weapon.html#setBulletFrames'></topic>
+  <topic label='trackPointer(pointer, offsetX, offsetY) &#8594; {Phaser.Weapon}' href='html/phaser-doc/Phaser.Weapon.html#trackPointer'></topic>
+  <topic label='trackSprite(sprite, offsetX, offsetY, trackRotation) &#8594; {Phaser.Weapon}' href='html/phaser-doc/Phaser.Weapon.html#trackSprite'></topic>
+  <topic label='&lt;internal&gt; update()' href='html/phaser-doc/Phaser.Weapon.html#update'></topic>
+</topic>
 <topic href='html/phaser-doc/Phaser.World.html' label='Phaser.World'>   <topic label='new World(game)' href='html/phaser-doc/Phaser.World.html#new World'></topic>
   <topic label='&lt;readonly&gt; _definedSize :boolean' href='html/phaser-doc/Phaser.World.html#_definedSize'></topic>
   <topic label='_height' href='html/phaser-doc/Phaser.World.html#_height'></topic>
@@ -5435,10 +5772,16 @@
   <topic label='hash :array' href='html/phaser-doc/Phaser.World.html#hash '></topic>
   <topic label='height :number' href='html/phaser-doc/Phaser.World.html#height '></topic>
   <topic label='hitArea :Rectangle|Circle|Ellipse|Polygon' href='html/phaser-doc/Phaser.World.html#hitArea '></topic>
+  <topic label='ignoreChildInput :Boolean' href='html/phaser-doc/Phaser.World.html#ignoreChildInput '></topic>
   <topic label='ignoreDestroy :boolean' href='html/phaser-doc/Phaser.World.html#ignoreDestroy '></topic>
+  <topic label='inputEnableChildren :boolean' href='html/phaser-doc/Phaser.World.html#inputEnableChildren '></topic>
   <topic label='&lt;readonly&gt; length :integer' href='html/phaser-doc/Phaser.World.html#length'></topic>
   <topic label='mask :PIXI.Graphics' href='html/phaser-doc/Phaser.World.html#mask '></topic>
   <topic label='name :string' href='html/phaser-doc/Phaser.World.html#name '></topic>
+  <topic label='onChildInputDown :Phaser.Signal' href='html/phaser-doc/Phaser.World.html#onChildInputDown '></topic>
+  <topic label='onChildInputOut :Phaser.Signal' href='html/phaser-doc/Phaser.World.html#onChildInputOut '></topic>
+  <topic label='onChildInputOver :Phaser.Signal' href='html/phaser-doc/Phaser.World.html#onChildInputOver '></topic>
+  <topic label='onChildInputUp :Phaser.Signal' href='html/phaser-doc/Phaser.World.html#onChildInputUp '></topic>
   <topic label='onDestroy :Phaser.Signal' href='html/phaser-doc/Phaser.World.html#onDestroy '></topic>
   <topic label='&lt;readonly&gt; parent :PIXI.DisplayObjectContainer' href='html/phaser-doc/Phaser.World.html#parent'></topic>
   <topic label='pendingDestroy :boolean' href='html/phaser-doc/Phaser.World.html#pendingDestroy '></topic>
@@ -5465,13 +5808,14 @@
   <topic label='x :number' href='html/phaser-doc/Phaser.World.html#x '></topic>
   <topic label='y :number' href='html/phaser-doc/Phaser.World.html#y '></topic>
   <topic label='&lt;readonly&gt; z :integer' href='html/phaser-doc/Phaser.World.html#z'></topic>
-  <topic label='add(child, silent) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.World.html#add'></topic>
+  <topic label='add(child, silent, index) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.World.html#add'></topic>
   <topic label='addAll(property, amount, checkAlive, checkVisible)' href='html/phaser-doc/Phaser.World.html#addAll'></topic>
   <topic label='addAt(child, index, silent) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.World.html#addAt'></topic>
   <topic label='addChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.World.html#addChild'></topic>
   <topic label='addChildAt(child, index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.World.html#addChildAt'></topic>
   <topic label='addMultiple(children, silent) &#8594; {Array.&lt;DisplayObject&gt;|Phaser.Group}' href='html/phaser-doc/Phaser.World.html#addMultiple'></topic>
   <topic label='addToHash(child) &#8594; {boolean}' href='html/phaser-doc/Phaser.World.html#addToHash'></topic>
+  <topic label='align(rows, columns, cellWidth, cellHeight, position, offset)' href='html/phaser-doc/Phaser.World.html#align'></topic>
   <topic label='&lt;internal&gt; ascendingSortHandler(a, b)' href='html/phaser-doc/Phaser.World.html#ascendingSortHandler'></topic>
   <topic label='&lt;internal&gt; boot()' href='html/phaser-doc/Phaser.World.html#boot'></topic>
   <topic label='bringToTop(child) &#8594; {any}' href='html/phaser-doc/Phaser.World.html#bringToTop'></topic>
@@ -5482,8 +5826,8 @@
   <topic label='checkProperty(child, key, value, force) &#8594; {boolean}' href='html/phaser-doc/Phaser.World.html#checkProperty'></topic>
   <topic label='countDead() &#8594; {integer}' href='html/phaser-doc/Phaser.World.html#countDead'></topic>
   <topic label='countLiving() &#8594; {integer}' href='html/phaser-doc/Phaser.World.html#countLiving'></topic>
-  <topic label='create(x, y, key, frame, exists) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.World.html#create'></topic>
-  <topic label='createMultiple(quantity, key, frame, exists)' href='html/phaser-doc/Phaser.World.html#createMultiple'></topic>
+  <topic label='create(x, y, key, frame, exists, index) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.World.html#create'></topic>
+  <topic label='createMultiple(quantity, key, frame, exists) &#8594; {array}' href='html/phaser-doc/Phaser.World.html#createMultiple'></topic>
   <topic label='customSort(sortHandler, context)' href='html/phaser-doc/Phaser.World.html#customSort'></topic>
   <topic label='&lt;internal&gt; descendingSortHandler(a, b)' href='html/phaser-doc/Phaser.World.html#descendingSortHandler'></topic>
   <topic label='destroy(destroyChildren, soft)' href='html/phaser-doc/Phaser.World.html#destroy'></topic>
@@ -5493,16 +5837,18 @@
   <topic label='forEachAlive(callback, callbackContext, args)' href='html/phaser-doc/Phaser.World.html#forEachAlive'></topic>
   <topic label='forEachDead(callback, callbackContext, args)' href='html/phaser-doc/Phaser.World.html#forEachDead'></topic>
   <topic label='forEachExists(callback, callbackContext, args)' href='html/phaser-doc/Phaser.World.html#forEachExists'></topic>
-  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.Texture}' href='html/phaser-doc/Phaser.World.html#generateTexture'></topic>
+  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.RenderTexture}' href='html/phaser-doc/Phaser.World.html#generateTexture'></topic>
   <topic label='getAt(index) &#8594; {DisplayObject|integer}' href='html/phaser-doc/Phaser.World.html#getAt'></topic>
   <topic label='getBottom() &#8594; {any}' href='html/phaser-doc/Phaser.World.html#getBottom'></topic>
   <topic label='getBounds() &#8594; {Rectangle}' href='html/phaser-doc/Phaser.World.html#getBounds'></topic>
   <topic label='getByName(name) &#8594; {any}' href='html/phaser-doc/Phaser.World.html#getByName'></topic>
   <topic label='getChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.World.html#getChildAt'></topic>
   <topic label='getChildIndex(child) &#8594; {Number}' href='html/phaser-doc/Phaser.World.html#getChildIndex'></topic>
+  <topic label='getClosestTo(object) &#8594; {any}' href='html/phaser-doc/Phaser.World.html#getClosestTo'></topic>
   <topic label='getFirstAlive(createIfNull, x, y, key, frame) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.World.html#getFirstAlive'></topic>
   <topic label='getFirstDead(createIfNull, x, y, key, frame) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.World.html#getFirstDead'></topic>
   <topic label='getFirstExists(exists, createIfNull, x, y, key, frame) &#8594; {DisplayObject}' href='html/phaser-doc/Phaser.World.html#getFirstExists'></topic>
+  <topic label='getFurthestFrom(object) &#8594; {any}' href='html/phaser-doc/Phaser.World.html#getFurthestFrom'></topic>
   <topic label='getIndex(child) &#8594; {integer}' href='html/phaser-doc/Phaser.World.html#getIndex'></topic>
   <topic label='getLocalBounds() &#8594; {Rectangle}' href='html/phaser-doc/Phaser.World.html#getLocalBounds'></topic>
   <topic label='getRandom(startIndex, length) &#8594; {any}' href='html/phaser-doc/Phaser.World.html#getRandom'></topic>
@@ -5518,7 +5864,7 @@
   <topic label='&lt;internal&gt; preUpdate()' href='html/phaser-doc/Phaser.World.html#preUpdate'></topic>
   <topic label='previous() &#8594; {any}' href='html/phaser-doc/Phaser.World.html#previous'></topic>
   <topic label='remove(child, destroy, silent) &#8594; {boolean}' href='html/phaser-doc/Phaser.World.html#remove'></topic>
-  <topic label='removeAll(destroy, silent)' href='html/phaser-doc/Phaser.World.html#removeAll'></topic>
+  <topic label='removeAll(destroy, silent, destroyTexture)' href='html/phaser-doc/Phaser.World.html#removeAll'></topic>
   <topic label='removeBetween(startIndex, endIndex, destroy, silent)' href='html/phaser-doc/Phaser.World.html#removeBetween'></topic>
   <topic label='removeChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.World.html#removeChild'></topic>
   <topic label='removeChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/Phaser.World.html#removeChildAt'></topic>
@@ -5658,7 +6004,7 @@
   <topic label='x :Number' href='html/phaser-doc/PIXI.DisplayObject.html#x '></topic>
   <topic label='y :Number' href='html/phaser-doc/PIXI.DisplayObject.html#y '></topic>
   <topic label='destroy()' href='html/phaser-doc/PIXI.DisplayObject.html#destroy'></topic>
-  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.Texture}' href='html/phaser-doc/PIXI.DisplayObject.html#generateTexture'></topic>
+  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.RenderTexture}' href='html/phaser-doc/PIXI.DisplayObject.html#generateTexture'></topic>
   <topic label='getBounds(matrix) &#8594; {Rectangle}' href='html/phaser-doc/PIXI.DisplayObject.html#getBounds'></topic>
   <topic label='getLocalBounds() &#8594; {Rectangle}' href='html/phaser-doc/PIXI.DisplayObject.html#getLocalBounds'></topic>
   <topic label='preUpdate()' href='html/phaser-doc/PIXI.DisplayObject.html#preUpdate'></topic>
@@ -5675,6 +6021,7 @@
   <topic label='filters :Array.&lt;Filter&gt;' href='html/phaser-doc/PIXI.DisplayObjectContainer.html#filters '></topic>
   <topic label='height :Number' href='html/phaser-doc/PIXI.DisplayObjectContainer.html#height '></topic>
   <topic label='hitArea :Rectangle|Circle|Ellipse|Polygon' href='html/phaser-doc/PIXI.DisplayObjectContainer.html#hitArea '></topic>
+  <topic label='ignoreChildInput :Boolean' href='html/phaser-doc/PIXI.DisplayObjectContainer.html#ignoreChildInput '></topic>
   <topic label='mask :PIXI.Graphics' href='html/phaser-doc/PIXI.DisplayObjectContainer.html#mask '></topic>
   <topic label='&lt;readonly&gt; parent :PIXI.DisplayObjectContainer' href='html/phaser-doc/PIXI.DisplayObjectContainer.html#parent'></topic>
   <topic label='pivot :Point' href='html/phaser-doc/PIXI.DisplayObjectContainer.html#pivot '></topic>
@@ -5695,7 +6042,7 @@
   <topic label='addChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/PIXI.DisplayObjectContainer.html#addChild'></topic>
   <topic label='addChildAt(child, index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/PIXI.DisplayObjectContainer.html#addChildAt'></topic>
   <topic label='destroy()' href='html/phaser-doc/PIXI.DisplayObjectContainer.html#destroy'></topic>
-  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.Texture}' href='html/phaser-doc/PIXI.DisplayObjectContainer.html#generateTexture'></topic>
+  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.RenderTexture}' href='html/phaser-doc/PIXI.DisplayObjectContainer.html#generateTexture'></topic>
   <topic label='getBounds() &#8594; {Rectangle}' href='html/phaser-doc/PIXI.DisplayObjectContainer.html#getBounds'></topic>
   <topic label='getChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/PIXI.DisplayObjectContainer.html#getChildAt'></topic>
   <topic label='getChildIndex(child) &#8594; {Number}' href='html/phaser-doc/PIXI.DisplayObjectContainer.html#getChildIndex'></topic>
@@ -5750,6 +6097,7 @@
   <topic label='filters :Array.&lt;Filter&gt;' href='html/phaser-doc/PIXI.Graphics.html#filters '></topic>
   <topic label='height :Number' href='html/phaser-doc/PIXI.Graphics.html#height '></topic>
   <topic label='hitArea :Rectangle|Circle|Ellipse|Polygon' href='html/phaser-doc/PIXI.Graphics.html#hitArea '></topic>
+  <topic label='ignoreChildInput :Boolean' href='html/phaser-doc/PIXI.Graphics.html#ignoreChildInput '></topic>
   <topic label='isMask :Boolean' href='html/phaser-doc/PIXI.Graphics.html#isMask '></topic>
   <topic label='lineColor :String' href='html/phaser-doc/PIXI.Graphics.html#lineColor '></topic>
   <topic label='lineWidth :Number' href='html/phaser-doc/PIXI.Graphics.html#lineWidth '></topic>
@@ -5894,6 +6242,7 @@
   <topic label='filters :Array.&lt;Filter&gt;' href='html/phaser-doc/PIXI.Rope.html#filters '></topic>
   <topic label='height :Number' href='html/phaser-doc/PIXI.Rope.html#height '></topic>
   <topic label='hitArea :Rectangle|Circle|Ellipse|Polygon' href='html/phaser-doc/PIXI.Rope.html#hitArea '></topic>
+  <topic label='ignoreChildInput :Boolean' href='html/phaser-doc/PIXI.Rope.html#ignoreChildInput '></topic>
   <topic label='mask :PIXI.Graphics' href='html/phaser-doc/PIXI.Rope.html#mask '></topic>
   <topic label='&lt;readonly&gt; parent :PIXI.DisplayObjectContainer' href='html/phaser-doc/PIXI.Rope.html#parent'></topic>
   <topic label='pivot :Point' href='html/phaser-doc/PIXI.Rope.html#pivot '></topic>
@@ -5915,7 +6264,7 @@
   <topic label='addChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/PIXI.Rope.html#addChild'></topic>
   <topic label='addChildAt(child, index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/PIXI.Rope.html#addChildAt'></topic>
   <topic label='destroy()' href='html/phaser-doc/PIXI.Rope.html#destroy'></topic>
-  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.Texture}' href='html/phaser-doc/PIXI.Rope.html#generateTexture'></topic>
+  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.RenderTexture}' href='html/phaser-doc/PIXI.Rope.html#generateTexture'></topic>
   <topic label='getBounds(matrix) &#8594; {Rectangle}' href='html/phaser-doc/PIXI.Rope.html#getBounds'></topic>
   <topic label='getChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/PIXI.Rope.html#getChildAt'></topic>
   <topic label='getChildIndex(child) &#8594; {Number}' href='html/phaser-doc/PIXI.Rope.html#getChildIndex'></topic>
@@ -5938,10 +6287,12 @@
   <topic label='blendMode :Number' href='html/phaser-doc/PIXI.Sprite.html#blendMode '></topic>
   <topic label='cacheAsBitmap :Boolean' href='html/phaser-doc/PIXI.Sprite.html#cacheAsBitmap '></topic>
   <topic label='&lt;readonly&gt; children :Array.&lt;DisplayObject&gt;' href='html/phaser-doc/PIXI.Sprite.html#children'></topic>
+  <topic label='exists :Boolean' href='html/phaser-doc/PIXI.Sprite.html#exists '></topic>
   <topic label='filterArea :Rectangle' href='html/phaser-doc/PIXI.Sprite.html#filterArea '></topic>
   <topic label='filters :Array.&lt;Filter&gt;' href='html/phaser-doc/PIXI.Sprite.html#filters '></topic>
   <topic label='height :Number' href='html/phaser-doc/PIXI.Sprite.html#height '></topic>
   <topic label='hitArea :Rectangle|Circle|Ellipse|Polygon' href='html/phaser-doc/PIXI.Sprite.html#hitArea '></topic>
+  <topic label='ignoreChildInput :Boolean' href='html/phaser-doc/PIXI.Sprite.html#ignoreChildInput '></topic>
   <topic label='mask :PIXI.Graphics' href='html/phaser-doc/PIXI.Sprite.html#mask '></topic>
   <topic label='&lt;readonly&gt; parent :PIXI.DisplayObjectContainer' href='html/phaser-doc/PIXI.Sprite.html#parent'></topic>
   <topic label='pivot :Point' href='html/phaser-doc/PIXI.Sprite.html#pivot '></topic>
@@ -5968,7 +6319,7 @@
   <topic label='addChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/PIXI.Sprite.html#addChild'></topic>
   <topic label='addChildAt(child, index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/PIXI.Sprite.html#addChildAt'></topic>
   <topic label='destroy()' href='html/phaser-doc/PIXI.Sprite.html#destroy'></topic>
-  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.Texture}' href='html/phaser-doc/PIXI.Sprite.html#generateTexture'></topic>
+  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.RenderTexture}' href='html/phaser-doc/PIXI.Sprite.html#generateTexture'></topic>
   <topic label='getBounds(matrix) &#8594; {Rectangle}' href='html/phaser-doc/PIXI.Sprite.html#getBounds'></topic>
   <topic label='getChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/PIXI.Sprite.html#getChildAt'></topic>
   <topic label='getChildIndex(child) &#8594; {Number}' href='html/phaser-doc/PIXI.Sprite.html#getChildIndex'></topic>
@@ -5999,6 +6350,7 @@
   <topic label='filters :Array.&lt;Filter&gt;' href='html/phaser-doc/PIXI.Strip.html#filters '></topic>
   <topic label='height :Number' href='html/phaser-doc/PIXI.Strip.html#height '></topic>
   <topic label='hitArea :Rectangle|Circle|Ellipse|Polygon' href='html/phaser-doc/PIXI.Strip.html#hitArea '></topic>
+  <topic label='ignoreChildInput :Boolean' href='html/phaser-doc/PIXI.Strip.html#ignoreChildInput '></topic>
   <topic label='mask :PIXI.Graphics' href='html/phaser-doc/PIXI.Strip.html#mask '></topic>
   <topic label='&lt;readonly&gt; parent :PIXI.DisplayObjectContainer' href='html/phaser-doc/PIXI.Strip.html#parent'></topic>
   <topic label='pivot :Point' href='html/phaser-doc/PIXI.Strip.html#pivot '></topic>
@@ -6020,7 +6372,7 @@
   <topic label='addChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/PIXI.Strip.html#addChild'></topic>
   <topic label='addChildAt(child, index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/PIXI.Strip.html#addChildAt'></topic>
   <topic label='destroy()' href='html/phaser-doc/PIXI.Strip.html#destroy'></topic>
-  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.Texture}' href='html/phaser-doc/PIXI.Strip.html#generateTexture'></topic>
+  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.RenderTexture}' href='html/phaser-doc/PIXI.Strip.html#generateTexture'></topic>
   <topic label='getBounds(matrix) &#8594; {Rectangle}' href='html/phaser-doc/PIXI.Strip.html#getBounds'></topic>
   <topic label='getChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/PIXI.Strip.html#getChildAt'></topic>
   <topic label='getChildIndex(child) &#8594; {Number}' href='html/phaser-doc/PIXI.Strip.html#getChildIndex'></topic>
@@ -6072,11 +6424,13 @@
   <topic label='cacheAsBitmap :Boolean' href='html/phaser-doc/PIXI.TilingSprite.html#cacheAsBitmap '></topic>
   <topic label='canvasBuffer :PIXICanvasBuffer' href='html/phaser-doc/PIXI.TilingSprite.html#canvasBuffer '></topic>
   <topic label='&lt;readonly&gt; children :Array.&lt;DisplayObject&gt;' href='html/phaser-doc/PIXI.TilingSprite.html#children'></topic>
+  <topic label='exists :Boolean' href='html/phaser-doc/PIXI.TilingSprite.html#exists '></topic>
   <topic label='filterArea :Rectangle' href='html/phaser-doc/PIXI.TilingSprite.html#filterArea '></topic>
   <topic label='filters :Array.&lt;Filter&gt;' href='html/phaser-doc/PIXI.TilingSprite.html#filters '></topic>
   <topic label='height :Number' href='html/phaser-doc/PIXI.TilingSprite.html#height '></topic>
   <topic label='height :Number' href='html/phaser-doc/PIXI.TilingSprite.html#height '></topic>
   <topic label='hitArea :Rectangle|Circle|Ellipse|Polygon' href='html/phaser-doc/PIXI.TilingSprite.html#hitArea '></topic>
+  <topic label='ignoreChildInput :Boolean' href='html/phaser-doc/PIXI.TilingSprite.html#ignoreChildInput '></topic>
   <topic label='mask :PIXI.Graphics' href='html/phaser-doc/PIXI.TilingSprite.html#mask '></topic>
   <topic label='&lt;readonly&gt; parent :PIXI.DisplayObjectContainer' href='html/phaser-doc/PIXI.TilingSprite.html#parent'></topic>
   <topic label='pivot :Point' href='html/phaser-doc/PIXI.TilingSprite.html#pivot '></topic>
@@ -6109,7 +6463,7 @@
   <topic label='addChild(child) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/PIXI.TilingSprite.html#addChild'></topic>
   <topic label='addChildAt(child, index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/PIXI.TilingSprite.html#addChildAt'></topic>
   <topic label='destroy()' href='html/phaser-doc/PIXI.TilingSprite.html#destroy'></topic>
-  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.Texture}' href='html/phaser-doc/PIXI.TilingSprite.html#generateTexture'></topic>
+  <topic label='generateTexture(resolution, scaleMode, renderer) &#8594; {PIXI.RenderTexture}' href='html/phaser-doc/PIXI.TilingSprite.html#generateTexture'></topic>
   <topic label='generateTilingTexture(forcePowerOfTwo, renderSession)' href='html/phaser-doc/PIXI.TilingSprite.html#generateTilingTexture'></topic>
   <topic label='getBounds() &#8594; {Rectangle}' href='html/phaser-doc/PIXI.TilingSprite.html#getBounds'></topic>
   <topic label='getChildAt(index) &#8594; {PIXI.DisplayObject}' href='html/phaser-doc/PIXI.TilingSprite.html#getChildAt'></topic>

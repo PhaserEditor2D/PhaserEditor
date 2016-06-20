@@ -43,7 +43,7 @@ public class InspectCore {
 
 	public static final String RESOURCES_PLUGIN_ID = InspectCoreResources.PLUGIN_ID;
 
-	public static final String BUILTIN_PHASER_VERSION = "2.4.7";
+	public static final String BUILTIN_PHASER_VERSION;
 
 	public static final String PREF_BUILTIN_PHASER_VERSION = "phasereditor.inspect.core.builtInPhaserVersion";
 	public static final String PREF_USER_PHASER_VERSION_PATH = "phasereditor.inspect.core.userPhaserVersion";
@@ -51,10 +51,15 @@ public class InspectCore {
 	protected static ExamplesModel _examplesModel;
 	private static TemplatesModel _builtInTemplates;
 
+	static {
+		BUILTIN_PHASER_VERSION = readPhaserVersion(getBuiltInPhaserVersionFolder());
+		out.println("Built-in Phaser version: " + BUILTIN_PHASER_VERSION);
+	}
+
 	public static PhaserJSDoc getPhaserHelp() {
 		return PhaserJSDoc.getInstance();
 	}
-	
+
 	public static ExamplesModel getExamplesModel() {
 		if (_examplesModel == null) {
 			try {
@@ -107,17 +112,25 @@ public class InspectCore {
 	public static String getCurrentPhaserVersion() {
 		if (!isBuiltInPhaserVersion()) {
 			Path folder = getPhaserVersionFolder();
-			try {
-				byte[] bytes = Files.readAllBytes(folder.resolve("version-info.json"));
-				JSONObject info = new JSONObject(new String(bytes));
-				String version = info.getString("phaser-version");
-				return version;
-			} catch (IOException e) {
-				e.printStackTrace();
-				throw new RuntimeException(e);
-			}
+			return readPhaserVersion(folder);
 		}
 		return BUILTIN_PHASER_VERSION;
+	}
+
+	/**
+	 * @param folder
+	 * @return
+	 */
+	private static String readPhaserVersion(Path folder) {
+		try {
+			byte[] bytes = Files.readAllBytes(folder.resolve("version-info.json"));
+			JSONObject info = new JSONObject(new String(bytes));
+			String version = info.getString("phaser-version");
+			return version;
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 
 	public static Path getPhaserLibrariesFolder() {

@@ -380,7 +380,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_arcade_World.js.html">physics/arcade/World.js</a>, 
-      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1510">line 1510</a> 
+      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1517">line 1517</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -453,7 +453,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_arcade_World.js.html">physics/arcade/World.js</a>, 
-      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1539">line 1539</a> 
+      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1546">line 1546</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -533,7 +533,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_arcade_World.js.html">physics/arcade/World.js</a>, 
-      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1569">line 1569</a> 
+      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1576">line 1576</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -594,16 +594,17 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_arcade_World.js.html">physics/arcade/World.js</a>, 
-      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1491">line 1491</a> 
+      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1498">line 1498</a> 
      </dt> 
     </dl> 
    </dd> 
    <dt> 
-    <h4 class="name " id="angleBetween"><span class="type-signature"></span>angleBetween<span class="signature">(source, target)</span><span class="type-signature"> ? {number}</span></h4> 
+    <h4 class="name " id="angleBetween"><span class="type-signature"></span>angleBetween<span class="signature">(source, target, <span class="optional">world</span>)</span><span class="type-signature"> ? {number}</span></h4> 
    </dt> 
    <dd> 
     <div class="description"> 
      <p>Find the angle in radians between two display objects (like Sprites).</p> 
+     <p>The optional <code>world</code> argument allows you to return the result based on the Game Objects <code>world</code> property, instead of its <code>x</code> and <code>y</code> values. This is useful of the object has been nested inside an offset Group, or parent Game Object.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -611,6 +612,8 @@
       <tr> 
        <th>Name</th> 
        <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
        <th class="last">Description</th> 
       </tr> 
      </thead> 
@@ -618,12 +621,23 @@
       <tr> 
        <td class="name"><code>source</code></td> 
        <td class="type"> <span class="param-type">any</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
        <td class="description last"><p>The Display Object to test from.</p></td> 
       </tr> 
       <tr> 
        <td class="name"><code>target</code></td> 
        <td class="type"> <span class="param-type">any</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
        <td class="description last"><p>The Display Object to test to.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>world</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>Calculate the angle using World coordinates (true), or Object coordinates (false, the default)</p></td> 
       </tr> 
      </tbody> 
     </table> 
@@ -640,16 +654,17 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_arcade_World.js.html">physics/arcade/World.js</a>, 
-      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1658">line 1658</a> 
+      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1684">line 1684</a> 
      </dt> 
     </dl> 
    </dd> 
    <dt> 
-    <h4 class="name " id="angleToPointer"><span class="type-signature"></span>angleToPointer<span class="signature">(displayObject, <span class="optional">pointer</span>)</span><span class="type-signature"> ? {number}</span></h4> 
+    <h4 class="name " id="angleToPointer"><span class="type-signature"></span>angleToPointer<span class="signature">(displayObject, <span class="optional">pointer</span>, <span class="optional">world</span>)</span><span class="type-signature"> ? {number}</span></h4> 
    </dt> 
    <dd> 
     <div class="description"> 
      <p>Find the angle in radians between a display object (like a Sprite) and a Pointer, taking their x/y and center into account.</p> 
+     <p>The optional <code>world</code> argument allows you to return the result based on the Game Objects <code>world</code> property, instead of its <code>x</code> and <code>y</code> values. This is useful of the object has been nested inside an offset Group, or parent Game Object.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -658,6 +673,7 @@
        <th>Name</th> 
        <th>Type</th> 
        <th>Argument</th> 
+       <th>Default</th> 
        <th class="last">Description</th> 
       </tr> 
      </thead> 
@@ -666,13 +682,22 @@
        <td class="name"><code>displayObject</code></td> 
        <td class="type"> <span class="param-type">any</span> </td> 
        <td class="attributes"> </td> 
+       <td class="default"> </td> 
        <td class="description last"><p>The Display Object to test from.</p></td> 
       </tr> 
       <tr> 
        <td class="name"><code>pointer</code></td> 
        <td class="type"> <span class="param-type"><a href="Phaser.Pointer.html">Phaser.Pointer</a></span> </td> 
        <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
        <td class="description last"><p>The Phaser.Pointer to test to. If none is given then Input.activePointer is used.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>world</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>Calculate the angle using World coordinates (true), or Object coordinates (false, the default)</p></td> 
       </tr> 
      </tbody> 
     </table> 
@@ -689,16 +714,17 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_arcade_World.js.html">physics/arcade/World.js</a>, 
-      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1693">line 1693</a> 
+      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1741">line 1741</a> 
      </dt> 
     </dl> 
    </dd> 
    <dt> 
-    <h4 class="name " id="angleToXY"><span class="type-signature"></span>angleToXY<span class="signature">(displayObject, x, y)</span><span class="type-signature"> ? {number}</span></h4> 
+    <h4 class="name " id="angleToXY"><span class="type-signature"></span>angleToXY<span class="signature">(displayObject, x, y, <span class="optional">world</span>)</span><span class="type-signature"> ? {number}</span></h4> 
    </dt> 
    <dd> 
     <div class="description"> 
      <p>Find the angle in radians between a display object (like a Sprite) and the given x/y coordinate.</p> 
+     <p>The optional <code>world</code> argument allows you to return the result based on the Game Objects <code>world</code> property, instead of its <code>x</code> and <code>y</code> values. This is useful of the object has been nested inside an offset Group, or parent Game Object.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -706,6 +732,8 @@
       <tr> 
        <th>Name</th> 
        <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
        <th class="last">Description</th> 
       </tr> 
      </thead> 
@@ -713,17 +741,30 @@
       <tr> 
        <td class="name"><code>displayObject</code></td> 
        <td class="type"> <span class="param-type">any</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
        <td class="description last"><p>The Display Object to test from.</p></td> 
       </tr> 
       <tr> 
        <td class="name"><code>x</code></td> 
        <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
        <td class="description last"><p>The x coordinate to get the angle to.</p></td> 
       </tr> 
       <tr> 
        <td class="name"><code>y</code></td> 
        <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
        <td class="description last"><p>The y coordinate to get the angle to.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>world</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>Calculate the angle using World coordinates (true), or Object coordinates (false, the default)</p></td> 
       </tr> 
      </tbody> 
     </table> 
@@ -740,7 +781,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_arcade_World.js.html">physics/arcade/World.js</a>, 
-      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1675">line 1675</a> 
+      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1712">line 1712</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -898,11 +939,12 @@
     </dl> 
    </dd> 
    <dt> 
-    <h4 class="name " id="distanceBetween"><span class="type-signature"></span>distanceBetween<span class="signature">(source, target)</span><span class="type-signature"> ? {number}</span></h4> 
+    <h4 class="name " id="distanceBetween"><span class="type-signature"></span>distanceBetween<span class="signature">(source, target, <span class="optional">world</span>)</span><span class="type-signature"> ? {number}</span></h4> 
    </dt> 
    <dd> 
     <div class="description"> 
      <p>Find the distance between two display objects (like Sprites).</p> 
+     <p>The optional <code>world</code> argument allows you to return the result based on the Game Objects <code>world</code> property, instead of its <code>x</code> and <code>y</code> values. This is useful of the object has been nested inside an offset Group, or parent Game Object.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -910,6 +952,8 @@
       <tr> 
        <th>Name</th> 
        <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
        <th class="last">Description</th> 
       </tr> 
      </thead> 
@@ -917,12 +961,23 @@
       <tr> 
        <td class="name"><code>source</code></td> 
        <td class="type"> <span class="param-type">any</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
        <td class="description last"><p>The Display Object to test from.</p></td> 
       </tr> 
       <tr> 
        <td class="name"><code>target</code></td> 
        <td class="type"> <span class="param-type">any</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
        <td class="description last"><p>The Display Object to test to.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>world</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>Calculate the distance using World coordinates (true), or Object coordinates (false, the default)</p></td> 
       </tr> 
      </tbody> 
     </table> 
@@ -939,16 +994,17 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_arcade_World.js.html">physics/arcade/World.js</a>, 
-      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1599">line 1599</a> 
+      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1606">line 1606</a> 
      </dt> 
     </dl> 
    </dd> 
    <dt> 
-    <h4 class="name " id="distanceToPointer"><span class="type-signature"></span>distanceToPointer<span class="signature">(displayObject, <span class="optional">pointer</span>)</span><span class="type-signature"> ? {number}</span></h4> 
+    <h4 class="name " id="distanceToPointer"><span class="type-signature"></span>distanceToPointer<span class="signature">(displayObject, <span class="optional">pointer</span>, <span class="optional">world</span>)</span><span class="type-signature"> ? {number}</span></h4> 
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Find the distance between a display object (like a Sprite) and a Pointer. If no Pointer is given the Input.activePointer is used. The calculation is made from the display objects x/y coordinate. This may be the top-left if its anchor hasn't been changed. If you need to calculate from the center of a display object instead use the method distanceBetweenCenters() The distance to the Pointer is returned in screen space, not world space.</p> 
+     <p>Find the distance between a display object (like a Sprite) and a Pointer. If no Pointer is given the Input.activePointer is used. The calculation is made from the display objects x/y coordinate. This may be the top-left if its anchor hasn't been changed. If you need to calculate from the center of a display object instead use the method distanceBetweenCenters()</p> 
+     <p>The optional <code>world</code> argument allows you to return the result based on the Game Objects <code>world</code> property, instead of its <code>x</code> and <code>y</code> values. This is useful of the object has been nested inside an offset Group, or parent Game Object.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -957,6 +1013,7 @@
        <th>Name</th> 
        <th>Type</th> 
        <th>Argument</th> 
+       <th>Default</th> 
        <th class="last">Description</th> 
       </tr> 
      </thead> 
@@ -965,13 +1022,22 @@
        <td class="name"><code>displayObject</code></td> 
        <td class="type"> <span class="param-type">any</span> </td> 
        <td class="attributes"> </td> 
+       <td class="default"> </td> 
        <td class="description last"><p>The Display Object to test from.</p></td> 
       </tr> 
       <tr> 
        <td class="name"><code>pointer</code></td> 
        <td class="type"> <span class="param-type"><a href="Phaser.Pointer.html">Phaser.Pointer</a></span> </td> 
        <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
        <td class="description last"><p>The Phaser.Pointer to test to. If none is given then Input.activePointer is used.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>world</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>Calculate the distance using World coordinates (true), or Object coordinates (false, the default)</p></td> 
       </tr> 
      </tbody> 
     </table> 
@@ -988,16 +1054,17 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_arcade_World.js.html">physics/arcade/World.js</a>, 
-      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1636">line 1636</a> 
+      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1657">line 1657</a> 
      </dt> 
     </dl> 
    </dd> 
    <dt> 
-    <h4 class="name " id="distanceToXY"><span class="type-signature"></span>distanceToXY<span class="signature">(displayObject, x, y)</span><span class="type-signature"> ? {number}</span></h4> 
+    <h4 class="name " id="distanceToXY"><span class="type-signature"></span>distanceToXY<span class="signature">(displayObject, x, y, <span class="optional">world</span>)</span><span class="type-signature"> ? {number}</span></h4> 
    </dt> 
    <dd> 
     <div class="description"> 
      <p>Find the distance between a display object (like a Sprite) and the given x/y coordinates. The calculation is made from the display objects x/y coordinate. This may be the top-left if its anchor hasn't been changed. If you need to calculate from the center of a display object instead use the method distanceBetweenCenters()</p> 
+     <p>The optional <code>world</code> argument allows you to return the result based on the Game Objects <code>world</code> property, instead of its <code>x</code> and <code>y</code> values. This is useful of the object has been nested inside an offset Group, or parent Game Object.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -1005,6 +1072,8 @@
       <tr> 
        <th>Name</th> 
        <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
        <th class="last">Description</th> 
       </tr> 
      </thead> 
@@ -1012,17 +1081,30 @@
       <tr> 
        <td class="name"><code>displayObject</code></td> 
        <td class="type"> <span class="param-type">any</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
        <td class="description last"><p>The Display Object to test from.</p></td> 
       </tr> 
       <tr> 
        <td class="name"><code>x</code></td> 
        <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
        <td class="description last"><p>The x coordinate to move towards.</p></td> 
       </tr> 
       <tr> 
        <td class="name"><code>y</code></td> 
        <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
        <td class="description last"><p>The y coordinate to move towards.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>world</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>Calculate the distance using World coordinates (true), or Object coordinates (false, the default)</p></td> 
       </tr> 
      </tbody> 
     </table> 
@@ -1039,7 +1121,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_arcade_World.js.html">physics/arcade/World.js</a>, 
-      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1616">line 1616</a> 
+      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1630">line 1630</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1189,7 +1271,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_arcade_World.js.html">physics/arcade/World.js</a>, 
-      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1303">line 1303</a> 
+      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1310">line 1310</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1250,12 +1332,12 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_arcade_World.js.html">physics/arcade/World.js</a>, 
-      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1280">line 1280</a> 
+      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1287">line 1287</a> 
      </dt> 
     </dl> 
    </dd> 
    <dt> 
-    <h4 class="name " id="getOverlapX"><span class="type-signature"></span>getOverlapX<span class="signature">(body1, body2)</span><span class="type-signature"> ? {float}</span></h4> 
+    <h4 class="name " id="getOverlapX"><span class="type-signature"></span>getOverlapX<span class="signature">(body1, body2, overlapOnly)</span><span class="type-signature"> ? {float}</span></h4> 
    </dt> 
    <dd> 
     <div class="description"> 
@@ -1281,6 +1363,11 @@
        <td class="type"> <span class="param-type"><a href="Phaser.Physics.Arcade.Body.html">Phaser.Physics.Arcade.Body</a></span> </td> 
        <td class="description last"><p>The second Body to separate.</p></td> 
       </tr> 
+      <tr> 
+       <td class="name"><code>overlapOnly</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="description last"><p>Is this an overlap only check, or part of separation?</p></td> 
+      </tr> 
      </tbody> 
     </table> 
     <h5>Returns:</h5> 
@@ -1296,12 +1383,12 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_arcade_World.js.html">physics/arcade/World.js</a>, 
-      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1014">line 1014</a> 
+      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1019">line 1019</a> 
      </dt> 
     </dl> 
    </dd> 
    <dt> 
-    <h4 class="name " id="getOverlapY"><span class="type-signature"></span>getOverlapY<span class="signature">(body1, body2)</span><span class="type-signature"> ? {float}</span></h4> 
+    <h4 class="name " id="getOverlapY"><span class="type-signature"></span>getOverlapY<span class="signature">(body1, body2, overlapOnly)</span><span class="type-signature"> ? {float}</span></h4> 
    </dt> 
    <dd> 
     <div class="description"> 
@@ -1327,6 +1414,11 @@
        <td class="type"> <span class="param-type"><a href="Phaser.Physics.Arcade.Body.html">Phaser.Physics.Arcade.Body</a></span> </td> 
        <td class="description last"><p>The second Body to separate.</p></td> 
       </tr> 
+      <tr> 
+       <td class="name"><code>overlapOnly</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="description last"><p>Is this an overlap only check, or part of separation?</p></td> 
+      </tr> 
      </tbody> 
     </table> 
     <h5>Returns:</h5> 
@@ -1342,7 +1434,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_arcade_World.js.html">physics/arcade/World.js</a>, 
-      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1077">line 1077</a> 
+      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1083">line 1083</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1454,7 +1546,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_arcade_World.js.html">physics/arcade/World.js</a>, 
-      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1347">line 1347</a> 
+      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1354">line 1354</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1520,7 +1612,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_arcade_World.js.html">physics/arcade/World.js</a>, 
-      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1382">line 1382</a> 
+      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1389">line 1389</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1593,7 +1685,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_arcade_World.js.html">physics/arcade/World.js</a>, 
-      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1417">line 1417</a> 
+      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1424">line 1424</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2052,7 +2144,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_arcade_World.js.html">physics/arcade/World.js</a>, 
-      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1453">line 1453</a> 
+      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1460">line 1460</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2113,7 +2205,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_arcade_World.js.html">physics/arcade/World.js</a>, 
-      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1472">line 1472</a> 
+      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1479">line 1479</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2162,7 +2254,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_arcade_World.js.html">physics/arcade/World.js</a>, 
-      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1712">line 1712</a> 
+      <a href="src_physics_arcade_World.js.html#sunlight-1-line-1770">line 1770</a> 
      </dt> 
     </dl> 
    </dd> 

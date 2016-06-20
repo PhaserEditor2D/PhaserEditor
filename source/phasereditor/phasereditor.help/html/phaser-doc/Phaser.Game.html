@@ -592,7 +592,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_core_Game.js.html">core/Game.js</a>, 
-      <a href="src_core_Game.js.html#sunlight-1-line-1148">line 1148</a> 
+      <a href="src_core_Game.js.html#sunlight-1-line-1154">line 1154</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -726,7 +726,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>The Renderer this game will use. Either Phaser.AUTO, Phaser.CANVAS or Phaser.WEBGL.</p> 
+     <p>The Renderer this game will use. Either Phaser.AUTO, Phaser.CANVAS, Phaser.WEBGL, or Phaser.HEADLESS.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -1003,12 +1003,14 @@
    <dd> 
     <div class="description"> 
      <p>Nukes the entire game from orbit.</p> 
+     <p>Calls destroy on Game.state, Game.sound, Game.scale, Game.stage, Game.input, Game.physics and Game.plugins.</p> 
+     <p>Then sets all of those local handlers to null, destroys the renderer, removes the canvas from the DOM and resets the PIXI default renderer.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
       <a href="src_core_Game.js.html">core/Game.js</a>, 
-      <a href="src_core_Game.js.html#sunlight-1-line-1002">line 1002</a> 
+      <a href="src_core_Game.js.html#sunlight-1-line-1001">line 1001</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1023,7 +1025,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_core_Game.js.html">core/Game.js</a>, 
-      <a href="src_core_Game.js.html#sunlight-1-line-977">line 977</a> 
+      <a href="src_core_Game.js.html#sunlight-1-line-976">line 976</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1038,7 +1040,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_core_Game.js.html">core/Game.js</a>, 
-      <a href="src_core_Game.js.html#sunlight-1-line-963">line 963</a> 
+      <a href="src_core_Game.js.html#sunlight-1-line-962">line 962</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1078,7 +1080,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_core_Game.js.html">core/Game.js</a>, 
-      <a href="src_core_Game.js.html#sunlight-1-line-1126">line 1126</a> 
+      <a href="src_core_Game.js.html#sunlight-1-line-1132">line 1132</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1118,7 +1120,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_core_Game.js.html">core/Game.js</a>, 
-      <a href="src_core_Game.js.html#sunlight-1-line-1108">line 1108</a> 
+      <a href="src_core_Game.js.html#sunlight-1-line-1114">line 1114</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1158,7 +1160,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_core_Game.js.html">core/Game.js</a>, 
-      <a href="src_core_Game.js.html#sunlight-1-line-1042">line 1042</a> 
+      <a href="src_core_Game.js.html#sunlight-1-line-1048">line 1048</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1198,7 +1200,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_core_Game.js.html">core/Game.js</a>, 
-      <a href="src_core_Game.js.html#sunlight-1-line-1074">line 1074</a> 
+      <a href="src_core_Game.js.html#sunlight-1-line-1080">line 1080</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1282,7 +1284,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_core_Game.js.html">core/Game.js</a>, 
-      <a href="src_core_Game.js.html#sunlight-1-line-989">line 989</a> 
+      <a href="src_core_Game.js.html#sunlight-1-line-988">line 988</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1362,7 +1364,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_core_Game.js.html">core/Game.js</a>, 
-      <a href="src_core_Game.js.html#sunlight-1-line-883">line 883</a> 
+      <a href="src_core_Game.js.html#sunlight-1-line-877">line 877</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1402,7 +1404,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_core_Game.js.html">core/Game.js</a>, 
-      <a href="src_core_Game.js.html#sunlight-1-line-929">line 929</a> 
+      <a href="src_core_Game.js.html#sunlight-1-line-925">line 925</a> 
      </dt> 
     </dl> 
    </dd> 

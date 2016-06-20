@@ -393,8 +393,9 @@ public class PhaserJSDoc {
 
 		} else {
 			PhaserType type = typeMap.get(memberof);
-			if (!type.getMemberMap().containsKey(name)) {
-				type.getMemberMap().put(name, cons);
+			Map<String, PhaserMember> map = type.getMemberMap();
+			if (!map.containsKey(name)) {
+				map.put(name, cons);
 				cons.setDeclType(type);
 				buildMeta(cons, obj);
 			}

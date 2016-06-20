@@ -155,6 +155,36 @@
     </dl> 
    </dd> 
    <dt> 
+    <h4 class="name " id="downPoint"><span class="type-signature"></span>downPoint<span class="type-signature"> :<a href="Phaser.Point.html">Phaser.Point</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A Point object containing the coordinates of the Pointer when it was first pressed down onto this Sprite.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-207">line 207</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="dragDistanceThreshold"><span class="type-signature"></span>dragDistanceThreshold<span class="type-signature"> :integer</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The distance, in pixels, the pointer has to move while being held down, before the Sprite thinks it is being dragged.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-197">line 197</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
     <h4 class="name " id="dragFromCenter"><span class="type-signature"></span>dragFromCenter<span class="type-signature"> :boolean</span></h4> 
    </dt> 
    <dd> 
@@ -210,7 +240,37 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-192">line 192</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="dragStopBlocksInputUp"><span class="type-signature"></span>dragStopBlocksInputUp<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If enabled, when the Sprite stops being dragged, it will only dispatch the <code>onDragStop</code> event, and not the <code>onInputUp</code> event. If set to <code>false</code> it will dispatch both events.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
       <a href="src_input_InputHandler.js.html#sunlight-1-line-187">line 187</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="dragTimeThreshold"><span class="type-signature"></span>dragTimeThreshold<span class="type-signature"> :integer</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The amount of time, in ms, the pointer has to be held down over the Sprite before it thinks it is being dragged.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-202">line 202</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -428,7 +488,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-192">line 192</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-212">line 212</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -506,7 +566,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-1500">line 1500</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1657">line 1657</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -521,7 +581,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-1550">line 1550</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1707">line 1707</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -576,7 +636,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-746">line 746</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-801">line 801</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -628,7 +688,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-670">line 670</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-712">line 712</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -679,7 +739,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-708">line 708</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-757">line 757</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -694,7 +754,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-394">line 394</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-432">line 432</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -709,7 +769,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-1291">line 1291</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1443">line 1443</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -724,7 +784,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-1487">line 1487</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1644">line 1644</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -769,7 +829,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-1223">line 1223</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1365">line 1365</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -781,6 +841,10 @@
      <p>Allow this Sprite to be dragged by any valid pointer.</p> 
      <p>When the drag begins the Sprite.events.onDragStart event will be dispatched.</p> 
      <p>When the drag completes by way of the user letting go of the pointer that was dragging the sprite, the Sprite.events.onDragStop event is dispatched.</p> 
+     <p>You can control the thresholds over when a drag starts via the properties:</p> 
+     <p><code>Pointer.dragDistanceThreshold</code> the distance, in pixels, that the pointer has to move before the drag will start.</p> 
+     <p><code>Pointer.dragTimeThreshold</code> the time, in ms, that the pointer must be held down on the Sprite before the drag will start.</p> 
+     <p>You can set either (or both) of these properties after enabling a Sprite for drag.</p> 
      <p>For the duration of the drag the Sprite.events.onDragUpdate event is dispatched. This event is only dispatched when the pointer actually changes position and moves. The event sends 5 parameters: <code>sprite</code>, <code>pointer</code>, <code>dragX</code>, <code>dragY</code> and <code>snapPoint</code>.</p> 
     </div> 
     <h5>Parameters:</h5> 
@@ -843,7 +907,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-1243">line 1243</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1385">line 1385</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -914,7 +978,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-1459">line 1459</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1616">line 1616</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -946,7 +1010,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-1370">line 1370</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1526">line 1526</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -978,7 +1042,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-1388">line 1388</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1544">line 1544</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1002,7 +1066,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-455">line 455</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-497">line 497</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1053,7 +1117,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-1152">line 1152</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1294">line 1294</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1104,7 +1168,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-1135">line 1135</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1277">line 1277</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1155,7 +1219,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-1169">line 1169</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1311">line 1311</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1206,7 +1270,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-1186">line 1186</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1328">line 1328</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1251,7 +1315,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-1203">line 1203</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1345">line 1345</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1298,7 +1362,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-499">line 499</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-541">line 541</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1343,7 +1407,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-655">line 655</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-697">line 697</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1388,7 +1452,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-594">line 594</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-636">line 636</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1435,7 +1499,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-561">line 561</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-603">line 603</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1479,7 +1543,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-531">line 531</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-573">line 573</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1523,7 +1587,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-640">line 640</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-682">line 682</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1567,7 +1631,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-625">line 625</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-667">line 667</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1611,7 +1675,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-546">line 546</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-588">line 588</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1658,7 +1722,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-515">line 515</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-557">line 557</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1703,7 +1767,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-467">line 467</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-509">line 509</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1748,7 +1812,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-483">line 483</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-525">line 525</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1763,7 +1827,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-345">line 345</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-383">line 383</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1806,7 +1870,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-1442">line 1442</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1599">line 1599</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1852,7 +1916,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-246">line 246</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-284">line 284</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1884,7 +1948,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-1313">line 1313</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1466">line 1466</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1899,7 +1963,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-374">line 374</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-412">line 412</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1931,16 +1995,16 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-1406">line 1406</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1562">line 1562</a> 
      </dt> 
     </dl> 
    </dd> 
    <dt> 
-    <h4 class="name " id="update"><span class="type-signature">&lt;internal&gt; </span>update<span class="signature">(pointer)</span><span class="type-signature"></span></h4> 
+    <h4 class="name " id="update"><span class="type-signature">&lt;internal&gt; </span>update<span class="signature">(pointer)</span><span class="type-signature"> ? {boolean}</span></h4> 
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Update.</p> 
+     <p>Internal Update method. This is called automatically and handles the Pointer and drag update loops.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -1959,6 +2023,15 @@
       </tr> 
      </tbody> 
     </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>True if the pointer is still active, otherwise false.</p> 
+     </div> 
+    </div> 
     <dl class="details"> 
      <dt class="important tag-deprecated">
       Internal:
@@ -1971,7 +2044,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-815">line 815</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-870">line 870</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2011,7 +2084,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-1045">line 1045</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1187">line 1187</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2078,7 +2151,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
-      <a href="src_input_InputHandler.js.html#sunlight-1-line-420">line 420</a> 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-458">line 458</a> 
      </dt> 
     </dl> 
    </dd> 
