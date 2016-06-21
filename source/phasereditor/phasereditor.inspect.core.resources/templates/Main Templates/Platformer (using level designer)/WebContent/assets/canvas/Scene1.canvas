@@ -554,21 +554,6 @@
             "editorClosed": false,
             "physicsGroup": false
           }
-        },
-        {
-          "asset-ref": {
-            "file": "WebContent/assets/pack.json",
-            "sprite": "wall-hole",
-            "section": "section",
-            "asset": "atlas1"
-          },
-          "id": "f51d6123-3111-45fe-99f6-9376b219c3ae",
-          "type": "atlas-sprite",
-          "info": {
-            "editorName": "wall_hole3",
-            "x": 1628.5142784983123,
-            "y": 1110.3453708520938
-          }
         }
       ],
       "editorClosed": false,
