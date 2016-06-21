@@ -32,7 +32,6 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.GeneralOperation;
-import phasereditor.canvas.ui.editors.operations.TrimNodeOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
@@ -49,12 +48,11 @@ public class MakeGroupHandler extends AbstractHandler {
 
 		CompositeOperation operations = new CompositeOperation();
 		String groupId = editor.getCanvas().getCreateBehavior().makeGroup(operations, elems);
-		operations.add(new TrimNodeOperation(groupId));
 		operations.add(new GeneralOperation(groupId, new Consumer<IObjectNode>() {
 
 			@Override
 			public void accept(IObjectNode node) {
-				editor.getCanvas().getOutline().expandToLevel(node, 1);
+				editor.getCanvas().getOutline().expandToLevel(node, 100);
 			}
 		}));
 
