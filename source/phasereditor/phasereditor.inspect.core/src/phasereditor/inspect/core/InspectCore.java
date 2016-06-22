@@ -210,6 +210,11 @@ public class InspectCore {
 	}
 
 	private static void updatePhaserApiLibrary(Path replaceTo) {
+		if (!Files.exists(replaceTo.getParent())) {
+			out.println("JSDT libraries folder does not exist yet.");
+			return;
+		}
+		
 		Path newVersionFolder = getPhaserVersionFolder();
 		Path replaceFrom = newVersionFolder.resolve("phaser-custom/api/phaser-api.js");
 		try {
