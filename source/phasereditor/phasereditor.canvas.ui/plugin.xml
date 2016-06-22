@@ -20,7 +20,7 @@
             hasPages="true"
             icon="platform:/plugin/phasereditor.ui/icons/canvas.png"
             id="phasereditor.canvas.ui.newCanvasWizard"
-            name="Canvas">
+            name="Canvas File">
       </wizard>
    </extension>
    <extension
