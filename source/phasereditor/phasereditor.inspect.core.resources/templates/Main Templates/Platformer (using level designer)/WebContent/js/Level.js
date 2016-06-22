@@ -28,7 +28,7 @@ Level.prototype.preload = function() {
 
 Level.prototype.create = function() {
 	// create the scene
-	var scene = new Scene1(this.game, this.game.world);
+	var scene = new Scene1(this.game);
 
 	// get the player from the scene
 	this.player = scene.fDino;
