@@ -29,9 +29,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.wst.jsdt.core.IMember;
 import org.eclipse.wst.jsdt.core.IType;
+import org.eclipse.wst.jsdt.core.JavaScriptCore;
+import org.eclipse.wst.jsdt.core.compiler.libraries.SystemLibraryLocation;
 import org.json.JSONObject;
 
 import phasereditor.inspect.core.examples.ExamplesModel;
@@ -181,19 +185,36 @@ public class InspectCore {
 	}
 
 	static void updatePhaserLibrary() {
-		if (isBuiltInPhaserVersion()) {
-			return;
+		// if (isBuiltInPhaserVersion()) {
+		// return;
+		// }
+
+		{
+			// Update Phaser Editor internal lib
+
+			Path libFolder = InspectCore.getPhaserLibrariesFolder();
+			Path copyTo = libFolder.resolve("phaser-api.js");
+
+			updatePhaserApiLibrary(copyTo);
 		}
 
-		Path libFolder = InspectCore.getPhaserLibrariesFolder();
-		Path replaceTo = libFolder.resolve("phaser-api.js");
+		{
+			// Update JSDT lib cache.
+			IPath libraryRuntimePath = Platform.getStateLocation(Platform.getBundle(JavaScriptCore.PLUGIN_ID))
+					.append(new String(SystemLibraryLocation.LIBRARY_RUNTIME_DIRECTORY));
+			Path libFolder = libraryRuntimePath.makeAbsolute().toFile().toPath();
+			Path copyTo = libFolder.resolve("phaser-api.js");
+			updatePhaserApiLibrary(copyTo);
+		}
 
+	}
+
+	private static void updatePhaserApiLibrary(Path replaceTo) {
 		Path newVersionFolder = getPhaserVersionFolder();
 		Path replaceFrom = newVersionFolder.resolve("phaser-custom/api/phaser-api.js");
 		try {
-			out.println("Copying " + replaceFrom + " to " + replaceTo);
+			out.println("Copy " + replaceFrom + " to " + replaceTo);
 			Files.copy(replaceFrom, replaceTo, StandardCopyOption.REPLACE_EXISTING);
-			out.println("done");
 		} catch (IOException e) {
 			setBuiltInPhaserVersion(true);
 			throw new RuntimeException(e);
