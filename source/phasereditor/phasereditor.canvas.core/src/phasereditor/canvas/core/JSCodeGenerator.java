@@ -80,10 +80,9 @@ public class JSCodeGenerator implements ICodeGenerator {
 		sb.append("/**\n");
 		sb.append(" * " + classname + ".\n");
 		sb.append(" * @param {Phaser.Game} aGame The game.\n");
-		sb.append(" * @param {Phaser.Group} aParent The parent group.\n");
+		sb.append(" * @param {Phaser.Group} aParent The parent group. If not given the game world will be used instead.\n");
 		sb.append(" */\n");
 		sb.append("function " + classname + "(aGame, aParent) {\n");
-
 		sb.append(tabs1 + "Phaser.Group.call(this, aGame, aParent);\n\n");
 
 		sb.append(tabs1 + PRE_INIT_CODE_BEGIN);
@@ -370,3 +369,4 @@ public class JSCodeGenerator implements ICodeGenerator {
 		return Integer.toString((int) Math.round(x));
 	}
 }
+
