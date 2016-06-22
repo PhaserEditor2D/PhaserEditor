@@ -40,7 +40,7 @@ Please use the issues of this repo to report bugs or request features. In additi
 
 ![sep3](http://phasereditor.boniatillo.com/images/guapen.png)
 
-### Authorship
+### Author
 
 Phaser Editor is developed by [Arian Fornaris][pe_twitter].
 
