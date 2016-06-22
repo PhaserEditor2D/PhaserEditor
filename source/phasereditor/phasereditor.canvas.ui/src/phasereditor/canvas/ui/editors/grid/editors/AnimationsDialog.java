@@ -100,6 +100,12 @@ public class AnimationsDialog extends Dialog {
 		super(parentShell);
 	}
 
+	
+	@Override
+	protected void configureShell(Shell newShell) {
+		super.configureShell(newShell);
+		newShell.setText("Animations Editor");
+	}
 	/**
 	 * Create contents of the dialog.
 	 * 
