@@ -53,6 +53,7 @@
 <li><a href="#Align">Aligment</a></li>
 <li><a href="#Order">Depth order</a></li>
 </ul></li>
+<li><a href="#EditOperations">Common editing operations</a></li>
 <li><a href="#RemoveDistractions">Removing distractions. The Palette</a>
 
 <ul>
@@ -311,6 +312,20 @@ dino.animations.add('walk', [0, 1, 2], 4, true);
 <p>The "order" commands send an object back and forward, in the display list of its group.</p>
 
 <p><em>NOTE: In Phaser there are some aligment constants and methods, but they are more (we think) about to align an object in runtime. It is a great resource for those who set the game layout "by hand". We are exploring this new features and in future versions of Canvas we can take advantage of it or reuse some concepts, like align in a grid.</em></p>
+
+
+<h2><a name="EditOperations"></a>Common editing operations</h2>
+
+<p>Canvas support common editing operations like:</p>
+
+<ul>
+<li>Cut, Copy and Paste of the objects.</li>
+<li>Undo, Redo of all major operations on nodes.</li>
+<li>Zoom in/out/restore. Scroll the wheel of the mouse to zoom in/out, and the Zoom 1:1 button in the toolbar.</li>
+<li>Pan the scene, by hodling the middle mouse button and dragging in any direction.</li>
+<li>Object selection, by clicking it or dragging the mouse and create a selection box.</li>
+<li>Object moving, first you select the objects and then you drag them.</li>
+</ul>
 
 <h2><a name="RemoveDistractions"></a>Removing distractions. The Palette</h2>
 
