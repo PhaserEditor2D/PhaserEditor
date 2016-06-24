@@ -87,14 +87,12 @@ public class ImageResourceDialog extends Dialog {
 				1);
 		gd_composite.verticalIndent = 10;
 		composite.setLayoutData(gd_composite);
-		GridLayout gl_composite = new GridLayout(2, false);
+		GridLayout gl_composite = new GridLayout(2, true);
 		composite.setLayout(gl_composite);
 
 		_listViewer = new TableViewer(composite, SWT.BORDER | SWT.V_SCROLL);
 		Table list = _listViewer.getTable();
-		GridData gd_list = new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1);
-		gd_list.widthHint = 323;
-		list.setLayoutData(gd_list);
+		list.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
 
 		_imagePreviewCanvas = new ImagePreviewComposite(composite, SWT.BORDER);
 		_imagePreviewCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
@@ -189,7 +187,7 @@ public class ImageResourceDialog extends Dialog {
 
 	@Override
 	protected Point getInitialSize() {
-		return new Point(457, 481);
+		return new Point(544, 481);
 	}
 	
 	@Override
