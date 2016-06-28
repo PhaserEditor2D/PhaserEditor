@@ -11,6 +11,7 @@ Based on Eclipse, this IDE provides lot of functionalities made just to develop 
 * Load of Phaser [project templates][ProjectTemplates], including the official Phaser examples and tutorials.
 * Improved [JavaScript editor][JSEditor], with Phaser API auto-completion and inline preview of the assets.
 * [Assets management][AssetPack], with assisting editors and viewers.
+* Visual [game level editor][Canvas].
 * [Texture][Atlas] and audio packer.
 * [Previsualization][Preview] of spritesheets, atlas, images, videos, audio.
 * Advanced [Phaser documentation search][Chains] (Chains) and offline Phaser Documentation.
@@ -71,3 +72,4 @@ You can checkout the source code and modify it (MIT License).
 [Chains]: http://phasereditor.boniatillo.com/blog/quick-start/035-chains
 [HttpServer]: http://phasereditor.boniatillo.com/blog/quick-start/010-first-steps
 [OptiPNG]: http://phasereditor.boniatillo.com/blog/quick-start/060-optimize-png
+[Canvas]: http://phasereditor.boniatillo.com/blog/quick-start/080-canvas
