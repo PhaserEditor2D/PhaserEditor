@@ -8,14 +8,14 @@ A friendly IDE to develop HTML5 games based on the popular [Phaser][phaser] fram
 
 Based on Eclipse, this IDE provides lot of functionalities made just to develop Phaser games:
 
-* Load of Phaser project templates, including the official Phaser examples and tutorials.
-* Improved JavaScript editor, with Phaser API auto-completion and inline preview of the assets.
-* Assets management, with assisting editors and viewers.
-* Texture and audio packer.
-* Previsualization of spritesheets, atlas, images, videos, audio.
-* Advanced Phaser documentation search (Chains) and offline Phaser Documentation.
-* Built-in HTTP server.
-* PNG images optimization.
+* Load of Phaser [project templates][ProjectTemplates], including the official Phaser examples and tutorials.
+* Improved [JavaScript editor][JSEditor], with Phaser API auto-completion and inline preview of the assets.
+* [Assets management][AssetPack], with assisting editors and viewers.
+* [Texture][Atlas] and audio packer.
+* [Previsualization][Preview] of spritesheets, atlas, images, videos, audio.
+* Advanced [Phaser documentation search][Chains] (Chains) and offline Phaser Documentation.
+* Built-in [HTTP server][HttpServer].
+* [PNG images optimization][OptiPNG].
 * And all that great stuff that you can find in a Eclipse based IDE, like a super flexible layout, projects explorer, customizable key shortcuts, native look and feel and a huge community, just to mention some of them.
 
 [Read more...][pe_features]
@@ -63,3 +63,11 @@ You can checkout the source code and modify it (MIT License).
 [pe_twitter]: https://twitter.org/boniatillo_com
 [pe_facebook]: https://www.facebook.com/phasereditor/
 [pe_downloads]: http://phasereditor.boniatillo.com/blog/downloads
+[ProjectTemplates]: http://phasereditor.boniatillo.com/blog/quick-start/010-first-steps
+[JSEditor]: http://phasereditor.boniatillo.com/blog/quick-start/030-coding-js-editor
+[AssetPack]: http://phasereditor.boniatillo.com/blog/quick-start/020-asset-pack
+[Atlas]: http://phasereditor.boniatillo.com/blog/quick-start/050-texture-atlas
+[Preview]: http://phasereditor.boniatillo.com/blog/quick-start/040-preview-window
+[Chains]: http://phasereditor.boniatillo.com/blog/quick-start/035-chains
+[HttpServer]: http://phasereditor.boniatillo.com/blog/quick-start/010-first-steps
+[OptiPNG]: http://phasereditor.boniatillo.com/blog/quick-start/060-optimize-png
