@@ -12,7 +12,7 @@ Based on Eclipse, this IDE provides lot of functionalities made just to develop 
 * Improved [JavaScript editor][JSEditor], with Phaser API auto-completion and inline preview of the assets.
 * [Assets management][AssetPack], with assisting editors and viewers.
 * Visual [game level editor][Canvas].
-* [Texture][Atlas] and [audio packer][AudioSprites].
+* [Texture][Atlas] and [audio][AudioSprites] packer.
 * [Previsualization][Preview] of spritesheets, atlas, images, videos, audio.
 * Advanced [Phaser documentation search][Chains] (Chains) and offline Phaser Documentation.
 * Built-in [HTTP server][HttpServer].
