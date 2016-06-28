@@ -34,7 +34,11 @@ Links:
 
 ![sep2](http://phasereditor.boniatillo.com/images/cactus.png)
 
-### Report bugs or request features
+### Known issues and works around
+
+* [#1 Internal state of assets is not updated after an atlas texture change](https://github.com/boniatillo-com/PhaserEditor/issues/1)
+
+### Report issues and feature
 
 Please use the issues of this repo to report bugs or request features. In addition you can use any of our social channels or write an email to **developers at boniatillo.com**.
 
