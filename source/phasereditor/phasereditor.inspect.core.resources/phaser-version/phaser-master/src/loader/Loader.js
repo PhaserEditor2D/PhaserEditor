@@ -103,7 +103,19 @@ Phaser.Loader = function (game) {
     this.path = '';
 
     /**
-    * This event is dispatched when the loading process starts: before the first file has been requested,
+    * Used to map the application mime-types to to the Accept header in XHR requests.
+    * If you don't require these mappings, or they cause problems on your server, then
+    * remove them from the headers object and the XHR request will not try to use them.
+    * @property {object} headers
+    * @default
+    */
+    this.headers = {
+        json: "application/json",
+        xml: "application/xml"
+    };
+
+    /**
+     * This event is dispatched when the loading process starts: before the first file has been requested,
     * but after all the initial packs have been loaded.
     *
     * @property {Phaser.Signal} onLoadStart
@@ -1023,7 +1035,7 @@ Phaser.Loader.prototype = {
     *
     * The URL can be relative or absolute. If the URL is relative the `Loader.baseURL` and `Loader.path` values will be prepended to it.
     *
-    * @method Phaser.Loader#audioSprite
+    * @method Phaser.Loader#audiosprite
     * @param {string} key - Unique asset key of the audio file.
     * @param {Array|string} urls - An array containing the URLs of the audio files, i.e.: [ 'audiosprite.mp3', 'audiosprite.ogg', 'audiosprite.m4a' ] or a single string containing just one URL.
     * @param {string} [jsonURL=null] - The URL of the audiosprite configuration JSON object. If you wish to pass the data directly set this parameter to null.
@@ -2317,6 +2329,11 @@ Phaser.Loader.prototype = {
         var xhr = new XMLHttpRequest();
         xhr.open("GET", url, true);
         xhr.responseType = type;
+
+        if (this.headers[file.type])
+        {
+            xhr.setRequestHeader("Accept", this.headers[file.type]);
+        }
 
         onerror = onerror || this.fileError;
 
