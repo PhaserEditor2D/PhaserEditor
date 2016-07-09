@@ -393,6 +393,11 @@ public class PhaserJSDoc {
 
 		} else {
 			PhaserType type = typeMap.get(memberof);
+			
+			if (type.isStatic()) {
+				cons.setStatic(true);
+			}
+			
 			Map<String, PhaserMember> map = type.getMemberMap();
 			if (!map.containsKey(name)) {
 				map.put(name, cons);
@@ -463,6 +468,11 @@ public class PhaserJSDoc {
 
 			if (typeMap.containsKey(memberof)) {
 				PhaserType type = typeMap.get(memberof);
+				
+				if (type.isStatic()) {
+					property.setStatic(true);
+				}
+				
 				Map<String, PhaserMember> map = type.getMemberMap();
 
 				if (!map.containsKey(name)) {
@@ -521,6 +531,10 @@ public class PhaserJSDoc {
 			if (type == null) {
 				return;
 			}
+			
+			if (type.isStatic()) {
+				method.setStatic(true);
+			}
 
 			if (!type.getMemberMap().containsKey(name)) {
 				type.getMemberMap().put(name, method);
@@ -539,7 +553,7 @@ public class PhaserJSDoc {
 			if (name.equals("module:PIXI.PIXI")) {
 				return;
 			}
-
+			
 			// out.println("Parsing class: " + name);
 
 			List<String> extend = new ArrayList<>();
@@ -557,12 +571,16 @@ public class PhaserJSDoc {
 
 			String desc = obj.optString("description", "");
 
+			String scope = obj.optString("scope", null);
+			boolean static_ = scope.equals("static");
+			
 			PhaserType type = new PhaserType();
 			typeMap.put(name, type);
-
+			
 			type.setName(name);
 			type.setHelp(desc);
 			type.setExtends(extend);
+			type.setStatic(static_);
 			type.getConstructorArgs().addAll(args);
 
 			buildMeta(type, obj);
@@ -637,13 +655,13 @@ public class PhaserJSDoc {
 	public String getMethodArgHelp(String methodName, String argName) {
 		IPhaserMember member = _membersMap.get(methodName);
 		List<PhaserMethodArg> args = Collections.emptyList();
-		
+
 		if (member instanceof PhaserMethod) {
 			args = ((PhaserMethod) member).getArgs();
 		} else if (member instanceof PhaserType) {
 			args = ((PhaserType) member).getConstructorArgs();
 		}
-		
+
 		for (PhaserMethodArg arg : args) {
 			if (arg.getName().equals(argName)) {
 				return arg.getHelp();

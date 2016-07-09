@@ -116,7 +116,8 @@ public class BuildPhaserAPI {
 			for (PhaserVariable var : type.getProperties()) {
 				String varName = getValidName(var.getName());
 				String varType = getVariableTypeName(var.getTypes());
-				sb.append(typeName + ".prototype." + varName + " = " + getVarDeclExpression(varType) + ";\n");
+				String context = var.isStatic() ? typeName : typeName + ".prorotype";
+				sb.append(context + "." + varName + " = " + getVarDeclExpression(varType) + ";\n");
 			}
 
 			// methods
@@ -137,7 +138,9 @@ public class BuildPhaserAPI {
 					i++;
 				}
 
-				sb.append(typeName + ".prototype." + methodName + " = function (" + params + ") {");
+				String context = method.isStatic() ? typeName : typeName + ".prorotype";
+				sb.append(context + "." + methodName + " = function (" + params + ") {");
+				
 				if (!returnType.equals("void")) {
 					sb.append(" return new " + returnType + "(); ");
 				}
@@ -147,7 +150,7 @@ public class BuildPhaserAPI {
 			sb.append("\n");
 		}
 
-		// name spaces
+		// namespaces
 
 		Set<String> namespaces = new HashSet<>();
 
@@ -229,6 +232,7 @@ public class BuildPhaserAPI {
 		out.println((sb.length() / 1024) + "kb");
 
 		Path phaserApi = projectPath.resolve("phaser-version/phaser-custom/api/phaser-api.js");
+		out.println("Writing to " + phaserApi.toAbsolutePath());
 		Files.write(phaserApi, sb.toString().getBytes());
 
 		// out.println(sb);

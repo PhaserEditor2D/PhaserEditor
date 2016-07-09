@@ -47,6 +47,7 @@ public class PhaserType implements IPhaserMember {
 	private int _line;
 	private Path _file;
 	private int _offset;
+	private boolean _static;
 
 	public PhaserType() {
 		_properties = new ArrayList<>();
@@ -59,16 +60,16 @@ public class PhaserType implements IPhaserMember {
 		_help = null;
 		_extends = Collections.emptyList();
 		_constructor = false;
+		_static = false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see phasereditor.inspect.core.jsdoc.IPhaserMember#isStatic()
-	 */
+	public void setStatic(boolean static1) {
+		_static = static1;
+	}
+
 	@Override
 	public boolean isStatic() {
-		throw new UnsupportedOperationException();
+		return _static;
 	}
 
 	@Override
