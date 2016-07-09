@@ -59,6 +59,7 @@ public class Phaser_Member_Exists_Test {
 				"Phaser.Physics.Arcade.Body.onCeiling", //
 				"Phaser.Loader.audioSprite", //
 				"Phaser.Line.intersectsRectangle",//
+				"Phaser.Utils.reverseString",//
 
 				// TODO: check for PIXI.Graphics, method should be inherited
 				// from there.
@@ -83,7 +84,11 @@ public class Phaser_Member_Exists_Test {
 
 		String[][] memberTypeMap = {
 
-				{ "Phaser.Sprite.scale", "Phaser.Point" }
+				{ 
+					
+					//"Phaser.Sprite.scale", "Phaser.Point" (it looks like in 2.6.0 it delegates the scale prop to PIXI.DisplayObject) 
+					"Phaser.Sprite.scale", "PIXI.Point"
+				}
 
 		};
 		for (String[] tuple : memberTypeMap) {
@@ -94,7 +99,7 @@ public class Phaser_Member_Exists_Test {
 			} else {
 				result = ((PhaserVariable) member).getTypes()[0];
 			}
-			Assert.assertTrue(tuple[0] + " results " + result + "/" + tuple[1], tuple[1].equals(result));
+			Assert.assertTrue(tuple[0] + " results " + result + " but expected " + tuple[1], tuple[1].equals(result));
 		}
 	}
 
