@@ -45,6 +45,7 @@ public class SettingsBean extends Settings implements Cloneable {
 		pot = false;
 		limitMemory = false;
 		flattenPaths = false;
+		useIndexes = false;
 	}
 
 	public void update(SettingsBean settings) {
