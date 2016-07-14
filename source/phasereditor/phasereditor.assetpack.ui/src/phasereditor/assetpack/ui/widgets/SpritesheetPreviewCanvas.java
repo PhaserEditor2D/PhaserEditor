@@ -105,22 +105,39 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 			if (_rects.isEmpty()) {
 				PhaserEditorUI.paintPreviewMessage(gc, canvasBounds, "Cannot compute the grid.");
 			} else {
-				int i = 0;
 				for (FrameData fd : _rects) {
 					gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_RED));
 					Rectangle r = fd.dst;
 					gc.drawRectangle(r.x, r.y, r.width, r.height);
-					String label = Integer.toString(i);
-					Point labelRect = gc.stringExtent(Integer.toString(i));
-					int left = r.x + r.width / 2 - labelRect.x / 2;
-					int top = Math.min(r.y + r.height + 5, getBounds().height - labelRect.y - 5);
-					gc.setAlpha(200);
-					gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
-					gc.fillRectangle(left - 2, top, labelRect.x + 4, labelRect.y);
-					gc.setAlpha(255);
-					gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLACK));
-					gc.drawString(label, left, top, true);
-					i++;
+				}
+
+				{
+					boolean paintIndexLabels = true;
+					for (FrameData fd : _rects) {
+						Rectangle r = fd.dst;
+						if (r.width < 64 || r.height < 64) {
+							paintIndexLabels = false;
+							break;
+						}
+					}
+
+					if (paintIndexLabels) {
+						int i = 0;
+						for (FrameData fd : _rects) {
+							Rectangle r = fd.dst;
+							String label = Integer.toString(i);
+							Point labelRect = gc.stringExtent(Integer.toString(i));
+							int left = r.x + r.width / 2 - labelRect.x / 2;
+							int top = Math.min(r.y + r.height + 5, getBounds().height - labelRect.y - 5);
+							gc.setAlpha(200);
+							gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
+							gc.fillRectangle(left - 2, top, labelRect.x + 4, labelRect.y);
+							gc.setAlpha(255);
+							gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLACK));
+							gc.drawString(label, left, top, true);
+							i++;
+						}
+					}
 				}
 			}
 		}
