@@ -104,6 +104,10 @@ public class DragBehavior {
 			double x = start.getX() + dx / scale;
 			double y = start.getY() + dy / scale;
 
+			//TODO: round position to integer
+			x = Math.round(x);
+			y = Math.round(y);
+			
 			dragnode.setLayoutX(x);
 			dragnode.setLayoutY(y);
 		}

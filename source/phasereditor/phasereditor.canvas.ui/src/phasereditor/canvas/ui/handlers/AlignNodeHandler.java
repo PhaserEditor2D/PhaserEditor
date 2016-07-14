@@ -80,6 +80,9 @@ public class AlignNodeHandler extends AbstractHandler {
 		}
 
 		double avg = sum / elems.length;
+		//TODO: round position to integer
+		avg = Math.round(avg);
+		
 		align(place, elems, pivot, avg);
 
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);

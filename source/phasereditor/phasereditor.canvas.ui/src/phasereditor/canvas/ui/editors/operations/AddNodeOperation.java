@@ -53,8 +53,14 @@ public class AddNodeOperation extends AbstractNodeOperation {
 		super("CreateNodeOperation", null);
 		_data = data;
 		_index = index;
-		_x = x;
-		_y = y;
+		
+//		_x = x;
+//		_y = y;
+		
+		//TODO: round position to integer
+		_x = Math.round(x);
+		_y = Math.round(y);
+		
 		_parentId = parentId;
 	}
 
