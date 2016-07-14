@@ -23,6 +23,7 @@ package phasereditor.canvas.core;
 
 import static java.lang.String.format;
 
+import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
@@ -80,7 +81,8 @@ public class JSCodeGenerator implements ICodeGenerator {
 		sb.append("/**\n");
 		sb.append(" * " + classname + ".\n");
 		sb.append(" * @param {Phaser.Game} aGame The game.\n");
-		sb.append(" * @param {Phaser.Group} aParent The parent group. If not given the game world will be used instead.\n");
+		sb.append(
+				" * @param {Phaser.Group} aParent The parent group. If not given the game world will be used instead.\n");
 		sb.append(" */\n");
 		sb.append("function " + classname + "(aGame, aParent) {\n");
 		sb.append(tabs1 + "Phaser.Group.call(this, aGame, aParent);\n\n");
@@ -220,14 +222,24 @@ public class JSCodeGenerator implements ICodeGenerator {
 					+ ")");
 		} else if (model instanceof TileSpriteModel) {
 			TileSpriteModel tile = (TileSpriteModel) model;
-			boolean isImage = tile.getAssetKey().getAsset() instanceof ImageAssetModel;
+			IAssetKey assetKey = tile.getAssetKey();
+			String frame;
+			if (assetKey instanceof SpritesheetAssetModel.FrameModel) {
+				frame = assetKey.getKey();
+			} else if (assetKey instanceof AtlasAssetModel.Frame) {
+				frame = "'" + assetKey.getKey() + "'";
+			} else {
+				// like in case it is an image
+				frame = "null";
+			}
+
 			sb.append("tileSprite(" + // sprite
 					round(tile.getX())// x
 					+ ", " + round(tile.getY()) // y
 					+ ", " + round(tile.getWidth()) // width
 					+ ", " + round(tile.getHeight()) // height
 					+ ", '" + tile.getAssetKey().getAsset().getKey() + "'" // key
-					+ ", " + (isImage ? "null" : "'" + tile.getAssetKey().getKey() + "'")// frame
+					+ ", " + frame// frame
 					+ ", " + parVar // group
 					+ ")");
 		}
@@ -369,4 +381,3 @@ public class JSCodeGenerator implements ICodeGenerator {
 		return Integer.toString((int) Math.round(x));
 	}
 }
-
