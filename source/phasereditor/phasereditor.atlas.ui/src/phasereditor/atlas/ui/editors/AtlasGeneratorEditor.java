@@ -330,12 +330,29 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 	IFile findFile(AtlasFrame frame) {
 		String name = _frameRegionNameMap.get(frame);
 		String path = Paths.get(name).toString();
+
+		IFile found = null;
+
 		for (IFile file : _model.getImageFiles()) {
 			String path2 = eclipseFileToJavaPath(file).toString();
-			if (path2.toString().startsWith(path)) {
-				return file;
+			// to avoid cases like when the name is "fence" and it matches
+			// "fence_broken.png" but it should match "fence.png".
+			if (path2.toString().startsWith(path + ".")) {
+				found = file;
+				break;
 			}
 		}
+
+		if (found == null) {
+			for (IFile file : _model.getImageFiles()) {
+				String path2 = eclipseFileToJavaPath(file).toString();
+				if (path2.toString().startsWith(path)) {
+					found = file;
+					break;
+				}
+			}
+		}
+
 		return null;
 	}
 
