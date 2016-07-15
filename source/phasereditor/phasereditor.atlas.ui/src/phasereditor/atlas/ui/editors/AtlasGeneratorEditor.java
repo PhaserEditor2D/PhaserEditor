@@ -353,7 +353,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 			}
 		}
 
-		return null;
+		return found;
 	}
 
 	protected void frameSelectedInViewerSelected() {
