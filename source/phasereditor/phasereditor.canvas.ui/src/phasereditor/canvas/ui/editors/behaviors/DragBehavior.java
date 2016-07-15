@@ -28,6 +28,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.SceneSettings;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
@@ -104,10 +105,16 @@ public class DragBehavior {
 			double x = start.getX() + dx / scale;
 			double y = start.getY() + dy / scale;
 
-			//TODO: round position to integer
-			x = Math.round(x);
-			y = Math.round(y);
-			
+			SceneSettings settings = _canvas.getSettingsModel();
+			if (settings.isEnableStepping()) {
+				x = Math.round(x / settings.getStepWidth()) * settings.getStepWidth();
+				y = Math.round(y / settings.getStepHeight()) * settings.getStepHeight();
+			} else {
+				// TODO: round position to integer
+				x = Math.round(x);
+				y = Math.round(y);
+			}
+
 			dragnode.setLayoutX(x);
 			dragnode.setLayoutY(y);
 		}

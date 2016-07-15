@@ -84,16 +84,27 @@ public class GridPane extends Canvas {
 
 		Bounds proj;
 
-		proj = world.localToScene(new BoundingBox(0, 0, 10, 10));
+		double xStep = 10;
+		double yStep = 10;
+
+		{
+			SceneSettings settings = _canvas.getSettingsModel();
+			if (settings.isEnableStepping()) {
+				xStep = settings.getStepWidth();
+				yStep = settings.getStepHeight();
+			}
+		}
+
+		proj = world.localToScene(new BoundingBox(0, 0, xStep, yStep));
 		pass(g2, origin, proj);
 
-		proj = world.localToScene(new BoundingBox(0, 0, 100, 100));
+		proj = world.localToScene(new BoundingBox(0, 0, xStep * 10, yStep * 10));
 		pass(g2, origin, proj);
 
-		proj = world.localToScene(new BoundingBox(0, 0, 1_000, 1_000));
+		proj = world.localToScene(new BoundingBox(0, 0, xStep * 100, yStep * 100));
 		pass(g2, origin, proj);
 
-		proj = world.localToScene(new BoundingBox(0, 0, 10_000, 10_000));
+		proj = world.localToScene(new BoundingBox(0, 0, xStep * 1000, yStep * 1000));
 		pass(g2, origin, proj);
 	}
 

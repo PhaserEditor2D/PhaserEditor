@@ -248,9 +248,21 @@ public class ObjectCanvas extends FXCanvas {
 		double w = control.getTextureWidth() / 2;
 		double h = control.getTextureHeight() / 2;
 
+		x -= w;
+		y -= h;
+
+		{
+			// stepping
+			SceneSettings settings = getSettingsModel();
+			if (settings.isEnableStepping()) {
+				x = Math.round(x / settings.getStepWidth()) * settings.getStepWidth();
+				y = Math.round(y / settings.getStepHeight()) * settings.getStepHeight();
+			}
+		}
+
 		BaseObjectModel model = control.getModel();
 
-		operations.add(new AddNodeOperation(model.toJSON(), -1, x - w, y - h, worldNode.getModel().getId()));
+		operations.add(new AddNodeOperation(model.toJSON(), -1, x, y, worldNode.getModel().getId()));
 
 		// control.updateFromModel();
 		// worldNode.getControl().addChild(node);

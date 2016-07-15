@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Display;
 public class Test {
 
 	public static void main(String[] args) throws Exception {
-
+		
 		Display device = Display.getDefault();
 
 		try (AtlasBuilder_deprecated builder = new AtlasBuilder_deprecated()) {

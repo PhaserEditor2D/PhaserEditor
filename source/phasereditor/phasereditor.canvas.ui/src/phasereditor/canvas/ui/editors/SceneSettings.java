@@ -35,12 +35,18 @@ public class SceneSettings {
 	private double _sceneHeight;
 	private RGB _sceneColor;
 	private boolean _generateOnSave;
+	private boolean _enableStepping;
+	private int _stepWidth;
+	private int _stepHeight;
 
 	public SceneSettings() {
 		_sceneWidth = 640;
 		_sceneHeight = 360;
 		_sceneColor = null;
 		_generateOnSave = true;
+		_enableStepping = false;
+		_stepWidth = 32;
+		_stepHeight = 32;
 	}
 
 	public SceneSettings(JSONObject settingsData) {
@@ -79,6 +85,30 @@ public class SceneSettings {
 		_generateOnSave = generateOnScave;
 	}
 
+	public boolean isEnableStepping() {
+		return _enableStepping;
+	}
+
+	public void setEnableStepping(boolean enableStepping) {
+		_enableStepping = enableStepping;
+	}
+
+	public int getStepWidth() {
+		return _stepWidth;
+	}
+
+	public void setStepWidth(int stepWidth) {
+		_stepWidth = stepWidth;
+	}
+
+	public int getStepHeight() {
+		return _stepHeight;
+	}
+
+	public void setStepHeight(int stepHeight) {
+		_stepHeight = stepHeight;
+	}
+
 	@SuppressWarnings("boxing")
 	public void write(JSONObject obj) {
 		obj.put("sceneWidth", _sceneWidth);
@@ -89,6 +119,9 @@ public class SceneSettings {
 			obj.put("sceneColor", Arrays.asList(_sceneColor.red, _sceneColor.green, _sceneColor.blue));
 		}
 		obj.put("generateOnSave", _generateOnSave);
+		obj.put("enableStepping", _enableStepping);
+		obj.put("stepWidth", _stepWidth, 32);
+		obj.put("stepHeight", _stepHeight, 32);
 	}
 
 	public void read(JSONObject obj) {
@@ -99,5 +132,8 @@ public class SceneSettings {
 		_sceneWidth = obj.getDouble("sceneWidth");
 		_sceneHeight = obj.getDouble("sceneHeight");
 		_generateOnSave = obj.getBoolean("generateOnSave");
+		_enableStepping = obj.optBoolean("enableStepping", false);
+		_stepWidth = obj.optInt("stepWidth", 32);
+		_stepHeight = obj.optInt("stepHeight", 32);
 	}
 }

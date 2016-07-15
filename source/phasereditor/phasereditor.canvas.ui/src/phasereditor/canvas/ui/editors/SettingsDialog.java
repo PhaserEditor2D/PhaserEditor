@@ -57,6 +57,9 @@ public class SettingsDialog extends Dialog {
 	private Button _btnGenerateOnSave;
 	private Button _colorButton;
 	private ColorButtonSupport _colorSupport;
+	private Text _text_2;
+	private Text _text_3;
+	private Button _btnEnbaleStepping;
 
 	/**
 	 * Create the dialog.
@@ -72,15 +75,37 @@ public class SettingsDialog extends Dialog {
 	 * 
 	 * @param parent
 	 */
+	@SuppressWarnings("unused")
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite container = (Composite) super.createDialogArea(parent);
-		container.setLayout(new GridLayout(1, false));
+		container.setLayout(new GridLayout(2, true));
 
 		Group grpWorld = new Group(container, SWT.NONE);
 		grpWorld.setLayout(new GridLayout(3, false));
-		grpWorld.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		grpWorld.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		grpWorld.setText("Scene");
+		
+				Label lblColor = new Label(grpWorld, SWT.NONE);
+				lblColor.setText("Color");
+		
+				_colorButton = new Button(grpWorld, SWT.NONE);
+				GridData gd_colorButton = new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1);
+				gd_colorButton.widthHint = 80;
+				_colorButton.setLayoutData(gd_colorButton);
+				_colorButton.setAlignment(SWT.LEFT);
+		
+				Button btnClear = new Button(grpWorld, SWT.NONE);
+				btnClear.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+				btnClear.setImage(ResourceManager.getPluginImage("org.eclipse.ui", "/icons/full/etool16/clear.png"));
+				btnClear.addSelectionListener(new SelectionAdapter() {
+					@SuppressWarnings("synthetic-access")
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						_colorSupport.setColor(null);
+						_colorSupport.updateContent();
+					}
+				});
 
 		Label lblWidth = new Label(grpWorld, SWT.NONE);
 		lblWidth.setText("Width");
@@ -94,27 +119,27 @@ public class SettingsDialog extends Dialog {
 
 		_text_1 = new Text(grpWorld, SWT.BORDER);
 		_text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
-
-		Label lblColor = new Label(grpWorld, SWT.NONE);
-		lblColor.setText("Color");
-
-		_colorButton = new Button(grpWorld, SWT.NONE);
-		GridData gd_colorButton = new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1);
-		gd_colorButton.widthHint = 80;
-		_colorButton.setLayoutData(gd_colorButton);
-		_colorButton.setAlignment(SWT.LEFT);
-
-		Button btnClear = new Button(grpWorld, SWT.NONE);
-		btnClear.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		btnClear.setImage(ResourceManager.getPluginImage("org.eclipse.ui", "/icons/full/etool16/clear.png"));
-		btnClear.addSelectionListener(new SelectionAdapter() {
-			@SuppressWarnings("synthetic-access")
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				_colorSupport.setColor(null);
-				_colorSupport.updateContent();
-			}
-		});
+		
+		Group grpStepping = new Group(container, SWT.NONE);
+		grpStepping.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+		grpStepping.setText("Stepping");
+		grpStepping.setLayout(new GridLayout(2, false));
+		
+		_btnEnbaleStepping = new Button(grpStepping, SWT.CHECK);
+		_btnEnbaleStepping.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		_btnEnbaleStepping.setText("Enbale Stepping");
+		
+		Label lblStepWidth = new Label(grpStepping, SWT.NONE);
+		lblStepWidth.setText("Step Width");
+		
+		_text_2 = new Text(grpStepping, SWT.BORDER);
+		_text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Label lblStepHeight = new Label(grpStepping, SWT.NONE);
+		lblStepHeight.setText("Step Height");
+		
+		_text_3 = new Text(grpStepping, SWT.BORDER);
+		_text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
 		Group grpCodeGeneration = new Group(container, SWT.NONE);
 		grpCodeGeneration.setLayout(new GridLayout(1, false));
@@ -123,6 +148,7 @@ public class SettingsDialog extends Dialog {
 
 		_btnGenerateOnSave = new Button(grpCodeGeneration, SWT.CHECK);
 		_btnGenerateOnSave.setText("Generate on Save");
+		new Label(container, SWT.NONE);
 
 		afterCreateWidgets();
 
@@ -158,7 +184,7 @@ public class SettingsDialog extends Dialog {
 	 */
 	@Override
 	protected Point getInitialSize() {
-		return new Point(300, 300);
+		return new Point(363, 300);
 	}
 
 	public SceneSettings getModel() {
@@ -168,7 +194,6 @@ public class SettingsDialog extends Dialog {
 	public void setModel(SceneSettings model) {
 		_model = model;
 	}
-
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
@@ -180,12 +205,21 @@ public class SettingsDialog extends Dialog {
 		IObservableValue sceneHeightGetModelObserveValue = PojoProperties.value("sceneHeight").observe(getModel());
 		bindingContext.bindValue(observeText_text_1ObserveWidget, sceneHeightGetModelObserveValue, null, null);
 		//
-		IObservableValue observeSelection_btnGenerateOnSaveObserveWidget = WidgetProperties.selection()
-				.observe(_btnGenerateOnSave);
-		IObservableValue generateOnSaveGetModelObserveValue = PojoProperties.value("generateOnSave")
-				.observe(getModel());
-		bindingContext.bindValue(observeSelection_btnGenerateOnSaveObserveWidget, generateOnSaveGetModelObserveValue,
-				null, null);
+		IObservableValue observeSelection_btnGenerateOnSaveObserveWidget = WidgetProperties.selection().observe(_btnGenerateOnSave);
+		IObservableValue generateOnSaveGetModelObserveValue = PojoProperties.value("generateOnSave").observe(getModel());
+		bindingContext.bindValue(observeSelection_btnGenerateOnSaveObserveWidget, generateOnSaveGetModelObserveValue, null, null);
+		//
+		IObservableValue observeSelection_btnEnbaleSteppingObserveWidget = WidgetProperties.selection().observe(_btnEnbaleStepping);
+		IObservableValue enableStepping_modelObserveValue = PojoProperties.value("enableStepping").observe(_model);
+		bindingContext.bindValue(observeSelection_btnEnbaleSteppingObserveWidget, enableStepping_modelObserveValue, null, null);
+		//
+		IObservableValue observeText_text_2ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_2);
+		IObservableValue stepWidth_modelObserveValue = PojoProperties.value("stepWidth").observe(_model);
+		bindingContext.bindValue(observeText_text_2ObserveWidget, stepWidth_modelObserveValue, null, null);
+		//
+		IObservableValue observeText_text_3ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_3);
+		IObservableValue stepHeight_modelObserveValue = PojoProperties.value("stepHeight").observe(_model);
+		bindingContext.bindValue(observeText_text_3ObserveWidget, stepHeight_modelObserveValue, null, null);
 		//
 		return bindingContext;
 	}
