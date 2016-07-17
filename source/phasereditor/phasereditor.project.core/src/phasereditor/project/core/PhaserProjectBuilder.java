@@ -21,8 +21,11 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.core;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -91,7 +94,8 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 
 					if (deltaResource instanceof IFile) {
 						IFile deltaFile = (IFile) deltaResource;
-						if (delta.getKind() == IResourceDelta.REMOVED) {
+						int deltakind = delta.getKind();
+						if (deltakind == IResourceDelta.REMOVED) {
 							for (AssetPackModel pack : packs) {
 								if (deltaFile.equals(pack.getFile())) {
 									IPath movedTo = delta.getMovedToPath();
@@ -216,6 +220,14 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 //			} else {
 //				buildPacks = allPacks;
 //			}
+
+			for(AssetModel asset : packDelta.getAssets()) {
+				List<IStatus> problems = new ArrayList<>();
+				asset.build(problems);
+				for (IStatus problem : problems) {
+					createAssetPackMarker(asset.getPack().getFile(), problem);
+				}
+			}
 			
 			for (AssetPackModel pack : packDelta.getPacks()) {
 				List<IStatus> problems = pack.build();

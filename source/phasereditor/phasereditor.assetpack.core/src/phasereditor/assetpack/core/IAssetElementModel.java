@@ -40,4 +40,20 @@ public interface IAssetElementModel extends IAssetKey, IAdaptable {
 
 	@Override
 	public AssetModel getAsset();
+
+	public default IAssetElementModel findInWorkspaceVersion() {
+		AssetModel asset = getAsset().findInWorkspaceVersion();
+
+		if (asset == null) {
+			return null;
+		}
+		
+		for (IAssetElementModel elem : asset.getSubElements()) {
+			if (elem.getKey().equals(getKey())) {
+				return elem;
+			}
+		}
+		
+		return null;
+	}
 }

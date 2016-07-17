@@ -66,6 +66,26 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 		}
 	}
 
+	public AssetModel findInWorkspaceVersion() {
+		if (isOnWorkspace()) {
+			return this;
+		}
+		
+		AssetPackModel pack = getPack();
+		if (!pack.isOnWorkspace()) {
+			return null;
+		}
+		
+		AssetSectionModel section = pack.findSection(_section.getKey());
+		if (section == null) {
+			return null;
+		}
+		
+		AssetModel asset = section.findAsset(_key);
+		
+		return asset;
+	}
+	
 	@Override
 	public AssetModel getAsset() {
 		return this;

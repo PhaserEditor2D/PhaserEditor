@@ -103,11 +103,13 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 		@Override
 		public final void updateControl(Control preview, Object element) {
 			if (element instanceof IAssetElementModel) {
-				AssetModel asset = ((IAssetElementModel) element).getAsset();
+				IAssetElementModel assetElem = ((IAssetElementModel) element).findInWorkspaceVersion();
+				AssetModel asset = assetElem == null ? null : assetElem.getAsset();
 				updateControl2(preview, asset);
-				selectInControl(preview, element);
+				selectInControl(preview, assetElem);
 			} else {
-				updateControl2(preview, element);
+				AssetModel asset = ((AssetModel) element).findInWorkspaceVersion();
+				updateControl2(preview, asset);
 			}
 		}
 

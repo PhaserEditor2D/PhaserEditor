@@ -727,20 +727,9 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 	public void doSave(IProgressMonitor monitor) {
 		try {
 			refreshFolder(monitor);
-			{
-				// delete previous generates files
-				for (IFile file : _guessLastOutputFiles) {
-					out.println("delete " + file);
-					if (file.exists()) {
-						try {
-							file.delete(true, monitor);
-						} catch (CoreException e) {
-							throw new RuntimeException(e);
-						}
-					}
-				}
-			}
-
+			
+			List<IFile> toDelete = new ArrayList<>(_guessLastOutputFiles);
+			
 			{
 				// save editor model
 				JSONObject json = _model.toJSON();
@@ -748,22 +737,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 				IFile file = _model.getFile();
 				file.setContents(source, true, false, monitor);
 			}
-			{
-				// save atlas model
-				int i = 0;
-				JSONObject[] list = _model.toPhaserHashJSON();
-				for (JSONObject json : list) {
-					ByteArrayInputStream source = new ByteArrayInputStream(json.toString(2).getBytes());
-					String atlasJSONName = _model.getAtlasJSONName(i);
-					IFile file = _model.getFile().getParent().getFile(new Path(atlasJSONName));
-					if (file.exists()) {
-						file.setContents(source, true, false, monitor);
-					} else {
-						file.create(source, true, monitor);
-					}
-					i++;
-				}
-			}
+			
 			{
 				// save image
 				int i = 0;
@@ -780,7 +754,40 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 					} else {
 						file.create(source, true, monitor);
 					}
+					toDelete.remove(file);
 					i++;
+				}
+			}
+			
+			{
+				// save atlas model
+				int i = 0;
+				JSONObject[] list = _model.toPhaserHashJSON();
+				for (JSONObject json : list) {
+					ByteArrayInputStream source = new ByteArrayInputStream(json.toString(2).getBytes());
+					String atlasJSONName = _model.getAtlasJSONName(i);
+					IFile file = _model.getFile().getParent().getFile(new Path(atlasJSONName));
+					if (file.exists()) {
+						file.setContents(source, true, false, monitor);
+					} else {
+						file.create(source, true, monitor);
+					}
+					toDelete.remove(file);
+					i++;
+				}
+			}
+			
+			{
+				// delete previous generates files
+				for (IFile file : toDelete) {
+					out.println("delete " + file);
+					if (file.exists()) {
+						try {
+							file.delete(true, monitor);
+						} catch (CoreException e) {
+							throw new RuntimeException(e);
+						}
+					}
 				}
 			}
 
