@@ -48,7 +48,7 @@ import phasereditor.ui.ColorButtonSupport;
  * @author arian
  *
  */
-public class SettingsDialog extends Dialog {
+public class AtlasSettingsDialog extends Dialog {
 	@SuppressWarnings("unused")
 	private DataBindingContext m_bindingContext;
 	private Text _text;
@@ -66,7 +66,7 @@ public class SettingsDialog extends Dialog {
 	 * 
 	 * @param parentShell
 	 */
-	public SettingsDialog(Shell parentShell) {
+	public AtlasSettingsDialog(Shell parentShell) {
 		super(parentShell);
 	}
 

@@ -567,7 +567,11 @@ public final class AssetPackModel {
 				return null;
 			}
 			asset = section.findAsset(obj.getString("asset"));
-
+			
+			if (asset == null) {
+				return null;
+			}
+			
 			if (obj.has("sprite")) {
 				String spriteName = obj.getString("sprite");
 				for (IAssetElementModel elem : asset.getSubElements()) {

@@ -62,7 +62,7 @@ public class FrameNode extends Pane {
 		setMaxSize(frame.srcSize.x, frame.srcSize.y);
 		setMinSize(frame.srcSize.x, frame.srcSize.y);
 		setPrefSize(frame.srcSize.x, frame.srcSize.y);
-		
+
 		if (getParent() != null) {
 			getParent().layout();
 		}

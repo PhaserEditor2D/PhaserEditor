@@ -41,6 +41,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.atlas.core.SettingsBean;
+import org.eclipse.swt.widgets.Spinner;
 
 public class AtlasSettingsDialog extends Dialog {
 	private static final int DEFAULT_BTN = 1959;
@@ -51,10 +52,14 @@ public class AtlasSettingsDialog extends Dialog {
 	private Text _text_3;
 	private SettingsBean _settings;
 	private Combo _sizeConstraintsCombo;
-	private Text _text_4;
-	private Text _text_5;
+	private Spinner _text_4;
+	private Spinner _text_5;
 	private Button _btnStripWhitespaceX;
 	private Button _btnStripWhitespaceY;
+	private Button _btnAlias;
+	private Button _btnUseIndexes;
+	private Button _btnGrid;
+	private Button _btnDebug;
 
 	/**
 	 * Create the dialog.
@@ -76,92 +81,114 @@ public class AtlasSettingsDialog extends Dialog {
 	 * 
 	 * @param parent
 	 */
+	@SuppressWarnings("unused")
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite container = (Composite) super.createDialogArea(parent);
 		container.setLayout(new GridLayout(2, true));
-
-		Group grpMinSize = new Group(container, SWT.NONE);
-		grpMinSize.setLayout(new GridLayout(2, false));
-		grpMinSize.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		grpMinSize.setText("Min Size");
-
-		Label lblMinWidth = new Label(grpMinSize, SWT.NONE);
-		GridData gd_lblMinWidth = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_lblMinWidth.widthHint = 120;
-		lblMinWidth.setLayoutData(gd_lblMinWidth);
-		lblMinWidth.setText("Min Width");
-
-		_text_1 = new Text(grpMinSize, SWT.BORDER);
-		_text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		Label lblMinHeight = new Label(grpMinSize, SWT.NONE);
-		lblMinHeight.setText("Min Height");
-
-		_text_2 = new Text(grpMinSize, SWT.BORDER);
-		_text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-
-		Group grpMaxSize = new Group(container, SWT.NONE);
-		grpMaxSize.setLayout(new GridLayout(2, false));
-		grpMaxSize.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		grpMaxSize.setText("Max Size");
-
-		Label lblSizeMaxWidth = new Label(grpMaxSize, SWT.NONE);
-		GridData gd_lblSizeMaxWidth = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_lblSizeMaxWidth.widthHint = 120;
-		lblSizeMaxWidth.setLayoutData(gd_lblSizeMaxWidth);
-		lblSizeMaxWidth.setText("Max Width");
-
-		_text = new Text(grpMaxSize, SWT.BORDER);
-		_text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		Label lblSizeMaxHeight = new Label(grpMaxSize, SWT.NONE);
-		lblSizeMaxHeight.setText("Max Height");
-
-		_text_3 = new Text(grpMaxSize, SWT.BORDER);
-		_text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-
-		Group grpOther = new Group(container, SWT.NONE);
-		grpOther.setText("Size Constraints");
-		grpOther.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-		grpOther.setLayout(new GridLayout(1, false));
-
-		_sizeConstraintsCombo = new Combo(grpOther, SWT.READ_ONLY);
-		GridData gd_sizeConstraintsCombo = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
-		gd_sizeConstraintsCombo.widthHint = 220;
-		_sizeConstraintsCombo.setLayoutData(gd_sizeConstraintsCombo);
-		_sizeConstraintsCombo.setItems(new String[] { "Any Size", "POT (Power of 2)" });
-
-		Group grpPadding = new Group(container, SWT.NONE);
-		grpPadding.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		grpPadding.setText("Padding");
-		grpPadding.setLayout(new GridLayout(2, false));
-
-		Label lblPaddingX = new Label(grpPadding, SWT.NONE);
-		GridData gd_lblPaddingX = new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1);
-		gd_lblPaddingX.widthHint = 120;
-		lblPaddingX.setLayoutData(gd_lblPaddingX);
-		lblPaddingX.setText("Padding X");
-
-		_text_4 = new Text(grpPadding, SWT.BORDER);
-		_text_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		Label lblPaddingY = new Label(grpPadding, SWT.NONE);
-		lblPaddingY.setText("Padding Y");
-
-		_text_5 = new Text(grpPadding, SWT.BORDER);
-		_text_5.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		Group grpStrip = new Group(container, SWT.NONE);
-		grpStrip.setLayout(new GridLayout(1, false));
-		grpStrip.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
-		grpStrip.setText("Strip");
-
-		_btnStripWhitespaceX = new Button(grpStrip, SWT.CHECK);
-		_btnStripWhitespaceX.setText("Strip Whitespace X");
-
-		_btnStripWhitespaceY = new Button(grpStrip, SWT.CHECK);
-		_btnStripWhitespaceY.setText("Strip Whitespace Y");
+		
+		Label lblHoverTheMouse = new Label(container, SWT.NONE);
+		lblHoverTheMouse.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		lblHoverTheMouse.setText("Hover the mouse on the parameter's label to open the tool-tip.");
+		
+				Group grpMinSize = new Group(container, SWT.NONE);
+				grpMinSize.setLayout(new GridLayout(2, false));
+				grpMinSize.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+				grpMinSize.setText("Layout");
+				
+						Label lblMinWidth = new Label(grpMinSize, SWT.NONE);
+						lblMinWidth.setToolTipText("The minimum width of output pages.");
+						lblMinWidth.setText("Min W");
+						
+								_text_1 = new Text(grpMinSize, SWT.BORDER);
+								_text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+																
+																		Label lblMinHeight = new Label(grpMinSize, SWT.NONE);
+																		lblMinHeight.setToolTipText("The minimum height of output pages.");
+																		lblMinHeight.setText("Min H");
+																
+																		_text_2 = new Text(grpMinSize, SWT.BORDER);
+																		_text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+														
+																Label lblSizeMaxWidth = new Label(grpMinSize, SWT.NONE);
+																lblSizeMaxWidth.setToolTipText("The maximum width of output pages.\r\n1024 is safe for all devices.\r\nExtremely old devices may have degraded performance over 512.");
+																lblSizeMaxWidth.setText("Max W");
+														
+																_text = new Text(grpMinSize, SWT.BORDER);
+																_text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+																		
+																				Label lblSizeMaxHeight = new Label(grpMinSize, SWT.NONE);
+																				lblSizeMaxHeight.setToolTipText("The maximum height of output pages.\r\n1024 is safe for all devices.\r\nExtremely old devices may have degraded performance over 512.");
+																				lblSizeMaxHeight.setText("Max H");
+																		
+																				_text_3 = new Text(grpMinSize, SWT.BORDER);
+																				_text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+																		
+																		Label lblConstraints = new Label(grpMinSize, SWT.NONE);
+																		lblConstraints.setToolTipText("If POT, output pages will have power of two dimensions.");
+																		lblConstraints.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+																		lblConstraints.setText("Constraints:");
+																		
+																				_sizeConstraintsCombo = new Combo(grpMinSize, SWT.READ_ONLY);
+																				_sizeConstraintsCombo.setToolTipText("");
+																				_sizeConstraintsCombo.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+																				_sizeConstraintsCombo.setItems(new String[] { "Any Size", "POT (Power of 2)" });
+								
+										Group grpPadding = new Group(container, SWT.NONE);
+										grpPadding.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+										grpPadding.setText("Sprites");
+										grpPadding.setLayout(new GridLayout(2, false));
+										
+												Label lblPaddingX = new Label(grpPadding, SWT.NONE);
+												lblPaddingX.setToolTipText("The number of pixels between packed images on the x-axis.");
+												lblPaddingX.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+												lblPaddingX.setText("Padding X");
+												
+														_text_4 = new Spinner(grpPadding, SWT.BORDER);
+														GridData gd_text_4 = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
+														gd_text_4.widthHint = 40;
+														_text_4.setLayoutData(gd_text_4);
+																								
+																										Label lblPaddingY = new Label(grpPadding, SWT.NONE);
+																										lblPaddingY.setToolTipText("The number of pixels between packed images on the y-axis.");
+																										lblPaddingY.setText("Padding Y");
+																								
+																										_text_5 = new Spinner(grpPadding, SWT.BORDER);
+																										GridData gd_text_5 = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
+																										gd_text_5.widthHint = 40;
+																										_text_5.setLayoutData(gd_text_5);
+																						
+																								_btnStripWhitespaceX = new Button(grpPadding, SWT.CHECK);
+																								_btnStripWhitespaceX.setToolTipText("If true, blank pixels on the left and right edges of input images\r\nwill be removed. Applications must take special care to draw\r\nthese regions properly.");
+																								_btnStripWhitespaceX.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+																								_btnStripWhitespaceX.setText("Strip Whitespace X");
+																						
+																								_btnStripWhitespaceY = new Button(grpPadding, SWT.CHECK);
+																								_btnStripWhitespaceY.setToolTipText("If true, blank pixels on the top and bottom edges of input images\r\nwill be removed. Applications must take special care to draw\r\nthese regions properly.");
+																								_btnStripWhitespaceY.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+																								_btnStripWhitespaceY.setText("Strip Whitespace Y");
+		
+		Group grpFlags = new Group(container, SWT.NONE);
+		grpFlags.setLayout(new GridLayout(2, false));
+		grpFlags.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+		grpFlags.setText("Flags");
+		
+		_btnAlias = new Button(grpFlags, SWT.CHECK);
+		_btnAlias.setToolTipText("If true, two images that are pixel for pixel the same will only be packed once.");
+		_btnAlias.setText("Alias");
+		
+		_btnUseIndexes = new Button(grpFlags, SWT.CHECK);
+		_btnUseIndexes.setToolTipText("If true, images are sorted by parsing the sufix of the file names\r\n(eg. animation_01.png, animation_02.png, ...)");
+		_btnUseIndexes.setText("Use Indexes");
+		
+		_btnGrid = new Button(grpFlags, SWT.CHECK);
+		_btnGrid.setToolTipText("If true, images are packed in a uniform grid, in order.");
+		_btnGrid.setText("Grid");
+		
+		_btnDebug = new Button(grpFlags, SWT.CHECK);
+		_btnDebug.setToolTipText("If true, lines are drawn on the output pages\r\nto show the packed image bounds.");
+		_btnDebug.setText("Debug");
+		new Label(container, SWT.NONE);
 
 		afterCreateWidgets();
 
@@ -217,9 +244,8 @@ public class AtlasSettingsDialog extends Dialog {
 	 */
 	@Override
 	protected Point getInitialSize() {
-		return new Point(539, 401);
+		return new Point(415, 378);
 	}
-
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
@@ -239,27 +265,29 @@ public class AtlasSettingsDialog extends Dialog {
 		IObservableValue maxHeight_settingsObserveValue = PojoProperties.value("maxHeight").observe(_settings);
 		bindingContext.bindValue(observeText_text_3ObserveWidget, maxHeight_settingsObserveValue, null, null);
 		//
-		IObservableValue observeText_text_4ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_4);
-		IObservableValue paddingX_settingsObserveValue = PojoProperties.value("paddingX").observe(_settings);
-		bindingContext.bindValue(observeText_text_4ObserveWidget, paddingX_settingsObserveValue, null, null);
+		IObservableValue observeSelection_btnStripWhitespaceXObserveWidget = WidgetProperties.selection().observe(_btnStripWhitespaceX);
+		IObservableValue stripWhitespaceX_settingsObserveValue = PojoProperties.value("stripWhitespaceX").observe(_settings);
+		bindingContext.bindValue(observeSelection_btnStripWhitespaceXObserveWidget, stripWhitespaceX_settingsObserveValue, null, null);
 		//
-		IObservableValue observeText_text_5ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_5);
-		IObservableValue paddingY_settingsObserveValue = PojoProperties.value("paddingY").observe(_settings);
-		bindingContext.bindValue(observeText_text_5ObserveWidget, paddingY_settingsObserveValue, null, null);
+		IObservableValue observeSelection_btnStripWhitespaceYObserveWidget = WidgetProperties.selection().observe(_btnStripWhitespaceY);
+		IObservableValue stripWhitespaceY_settingsObserveValue = PojoProperties.value("stripWhitespaceY").observe(_settings);
+		bindingContext.bindValue(observeSelection_btnStripWhitespaceYObserveWidget, stripWhitespaceY_settingsObserveValue, null, null);
 		//
-		IObservableValue observeSelection_btnStripWhitespaceXObserveWidget = WidgetProperties.selection()
-				.observe(_btnStripWhitespaceX);
-		IObservableValue stripWhitespaceX_settingsObserveValue = PojoProperties.value("stripWhitespaceX")
-				.observe(_settings);
-		bindingContext.bindValue(observeSelection_btnStripWhitespaceXObserveWidget,
-				stripWhitespaceX_settingsObserveValue, null, null);
+		IObservableValue observeSelection_btnAliasObserveWidget = WidgetProperties.selection().observe(_btnAlias);
+		IObservableValue alias_settingsObserveValue = PojoProperties.value("alias").observe(_settings);
+		bindingContext.bindValue(observeSelection_btnAliasObserveWidget, alias_settingsObserveValue, null, null);
 		//
-		IObservableValue observeSelection_btnStripWhitespaceYObserveWidget = WidgetProperties.selection()
-				.observe(_btnStripWhitespaceY);
-		IObservableValue stripWhitespaceY_settingsObserveValue = PojoProperties.value("stripWhitespaceY")
-				.observe(_settings);
-		bindingContext.bindValue(observeSelection_btnStripWhitespaceYObserveWidget,
-				stripWhitespaceY_settingsObserveValue, null, null);
+		IObservableValue observeSelection_btnUseIndexesObserveWidget = WidgetProperties.selection().observe(_btnUseIndexes);
+		IObservableValue useIndexes_settingsObserveValue = PojoProperties.value("useIndexes").observe(_settings);
+		bindingContext.bindValue(observeSelection_btnUseIndexesObserveWidget, useIndexes_settingsObserveValue, null, null);
+		//
+		IObservableValue observeSelection_btnGridObserveWidget = WidgetProperties.selection().observe(_btnGrid);
+		IObservableValue grid_settingsObserveValue = PojoProperties.value("grid").observe(_settings);
+		bindingContext.bindValue(observeSelection_btnGridObserveWidget, grid_settingsObserveValue, null, null);
+		//
+		IObservableValue observeSelection_btnDebugObserveWidget = WidgetProperties.selection().observe(_btnDebug);
+		IObservableValue debug_settingsObserveValue = PojoProperties.value("debug").observe(_settings);
+		bindingContext.bindValue(observeSelection_btnDebugObserveWidget, debug_settingsObserveValue, null, null);
 		//
 		return bindingContext;
 	}

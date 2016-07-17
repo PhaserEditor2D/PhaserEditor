@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015 Arian Fornaris
+// Copyright (c) 2015, 2016 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.atlas.core;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,58 +28,41 @@ import java.util.Map;
 
 import org.eclipse.swt.graphics.Image;
 
-public interface IAtlasBuilder {
+public class ResultPage {
+	private List<AtlasFrame> _frames;
+	private Map<AtlasFrame, String> _frameFileMap;
+	private Map<AtlasFrame, Integer> _frameIndexMap;
+	private Image _image;
 
-	public class Result {
-		private List<ResultPage> _pages;
-
-		public Result() {
-			_pages = new ArrayList<>();
-		}
-
-		public List<ResultPage> getPages() {
-			return _pages;
-		}
-
-		public void dispose() {
-			for (ResultPage page : _pages) {
-				page.getImage().dispose();
-			}
-		}
+	public ResultPage() {
+		_frames = new ArrayList<>();
+		_frameFileMap = new HashMap<>();
+		_frameIndexMap = new HashMap<>();
 	}
 
-	public class ResultPage {
-		private List<AtlasFrame> _frames;
-		private Map<AtlasFrame, String> _frameFileMap;
-		private Image _image;
-
-		public ResultPage() {
-			_frames = new ArrayList<>();
-			_frameFileMap = new HashMap<>();
-		}
-
-		public void addFrame(AtlasFrame frame, String filepath) {
-			_frameFileMap.put(frame, filepath);
-			_frames.add(frame);
-		}
-
-		public List<AtlasFrame> getFrames() {
-			return _frames;
-		}
-
-		public Image getImage() {
-			return _image;
-		}
-
-		public void setImage(Image image) {
-			_image = image;
-		}
+	public void addFrame(AtlasFrame frame, String filepath, int index) {
+		_frameFileMap.put(frame, filepath);
+		_frameIndexMap.put(frame, Integer.valueOf(index));
+		_frames.add(frame);
 	}
 
-	public SettingsBean getSettings();
+	public void sortByIndexes() {
+		_frames.sort((a, b) -> {
+			int i1 = _frameIndexMap.get(a).intValue();
+			int i2 = _frameIndexMap.get(a).intValue();
+			return Integer.compare(i1 == -1 ? Integer.MAX_VALUE : i1, i2 == -1 ? Integer.MAX_VALUE : i2);
+		});
+	}
 
-	public void addSource(File source);
+	public List<AtlasFrame> getFrames() {
+		return _frames;
+	}
 
-	public Result build() throws AlgoException;
+	public Image getImage() {
+		return _image;
+	}
 
+	public void setImage(Image image) {
+		_image = image;
+	}
 }

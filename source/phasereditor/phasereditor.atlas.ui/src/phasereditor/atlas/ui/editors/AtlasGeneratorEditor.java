@@ -30,7 +30,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -118,8 +117,8 @@ import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.utils.Array;
 
 import phasereditor.atlas.core.AtlasFrame;
-import phasereditor.atlas.core.IAtlasBuilder.Result;
-import phasereditor.atlas.core.IAtlasBuilder.ResultPage;
+import phasereditor.atlas.core.Result;
+import phasereditor.atlas.core.ResultPage;
 import phasereditor.atlas.core.SettingsBean;
 import phasereditor.atlas.ui.AtlasCanvas;
 import phasereditor.atlas.ui.editors.AtlasGeneratorEditorModel.EditorPage;
@@ -329,31 +328,15 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 
 	IFile findFile(AtlasFrame frame) {
 		String name = _frameRegionNameMap.get(frame);
-		String path = Paths.get(name).toString();
-
-		IFile found = null;
 
 		for (IFile file : _model.getImageFiles()) {
-			String path2 = eclipseFileToJavaPath(file).toString();
-			// to avoid cases like when the name is "fence" and it matches
-			// "fence_broken.png" but it should match "fence.png".
-			if (path2.toString().startsWith(path + ".")) {
-				found = file;
-				break;
+			String location = file.getLocation().toPortableString();
+			if (location.startsWith(name + ".")) {
+				return file;
 			}
 		}
 
-		if (found == null) {
-			for (IFile file : _model.getImageFiles()) {
-				String path2 = eclipseFileToJavaPath(file).toString();
-				if (path2.toString().startsWith(path)) {
-					found = file;
-					break;
-				}
-			}
-		}
-
-		return found;
+		return null;
 	}
 
 	protected void frameSelectedInViewerSelected() {
@@ -548,12 +531,12 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 
 				List<IFile> missingFiles = new ArrayList<>();
 
-				for (IFile file : _model.getImageFiles()) {
-					File path = eclipseFileToJavaPath(file).toFile();
-					if (path.exists() && path.isFile()) {
-						packer.addImage(path);
+				for (IFile wsFile : _model.getImageFiles()) {
+					File file = eclipseFileToJavaPath(wsFile).toFile();
+					if (file.exists() && file.isFile()) {
+						packer.addImage(file);
 					} else {
-						missingFiles.add(file);
+						missingFiles.add(wsFile);
 					}
 				}
 
@@ -595,6 +578,8 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 
 					File libgdxAtlasFile = new File(tempDir, atlasName + ".atlas");
 
+					out.println("Temporal atlas file " + libgdxAtlasFile);
+
 					out.println(new String(Files.readAllBytes(libgdxAtlasFile.toPath())));
 
 					TextureAtlasData data = new TextureAtlasData(new FileHandle(libgdxAtlasFile),
@@ -624,25 +609,40 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 						for (Region region : regions) {
 							if (region.page == page) {
 								AtlasFrame frame = new AtlasFrame();
-								frame.setName(PhaserEditorUI.getNameFromFilename(region.name));
+
+								String regionName = region.name;
+								if (region.index != -1) {
+									regionName += "_" + region.index;
+								}
+								frame.setName(PhaserEditorUI.getNameFromFilename(regionName));
 								frame.setFrameX(region.left);
 								frame.setFrameY(region.top);
 								frame.setFrameW(region.width);
 								frame.setFrameH(region.height);
 
-								frame.setSpriteX((int) region.offsetX);
-								frame.setSpriteY((int) region.offsetY);
+								// todo: only if trimmed!
+								frame.setSpriteX((int) (region.offsetX));
+
+								// this happens when white spaces are stripped!
+								if (region.offsetY != 0) {
+									// LibGDX uses the OpenGL Y order (from
+									// bottom to top)
+									frame.setSpriteY((int) (region.originalHeight - region.offsetY - region.height));
+								}
+
 								frame.setSpriteW(region.width);
 								frame.setSpriteH(region.height);
 
 								frame.setSourceW(region.originalWidth);
 								frame.setSourceH(region.originalHeight);
 
-								resultPage.addFrame(frame, region.name);
-								_frameRegionNameMap.put(frame, region.name);
+								resultPage.addFrame(frame, regionName, region.index);
+								_frameRegionNameMap.put(frame, regionName);
 							}
 						}
-
+						if (settings.useIndexes) {
+							resultPage.sortByIndexes();
+						}
 						_result.getPages().add(resultPage);
 					}
 
