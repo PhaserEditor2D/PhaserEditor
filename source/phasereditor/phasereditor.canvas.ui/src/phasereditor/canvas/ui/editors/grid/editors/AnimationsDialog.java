@@ -74,6 +74,7 @@ import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.canvas.core.AnimationModel;
+import org.eclipse.swt.custom.SashForm;
 
 /**
  * @author arian
@@ -106,6 +107,15 @@ public class AnimationsDialog extends Dialog {
 		super.configureShell(newShell);
 		newShell.setText("Animations Editor");
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.window.Window#getShellStyle()
+	 */
+	@Override
+	protected int getShellStyle() {
+		return super.getShellStyle() | SWT.RESIZE;
+	}
+	
 	/**
 	 * Create contents of the dialog.
 	 * 
@@ -166,55 +176,68 @@ public class AnimationsDialog extends Dialog {
 		_loopButton = new Button(composite, SWT.CHECK);
 		_loopButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 4, 1));
 		_loopButton.setText("Loop");
-
-		Composite composite_1 = new Composite(container, SWT.NONE);
-		GridLayout gl_composite_1 = new GridLayout(2, false);
-		gl_composite_1.marginHeight = 0;
-		gl_composite_1.marginWidth = 0;
-		composite_1.setLayout(gl_composite_1);
-		composite_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-
-		_framesViewer = new TableViewer(composite_1, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);
-		_table = _framesViewer.getTable();
-		GridData gd_table = new GridData(SWT.LEFT, SWT.FILL, false, true, 1, 1);
-		gd_table.widthHint = 80;
-		_table.setLayoutData(gd_table);
-
-		_canvas = new AnimationCanvas(composite_1, SWT.BORDER);
-		_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-
-		_framesToolbar = new Composite(composite_1, SWT.NONE);
-		GridLayout gl_framesToolbar = new GridLayout(2, false);
-		gl_framesToolbar.marginWidth = 0;
-		gl_framesToolbar.marginHeight = 0;
-		_framesToolbar.setLayout(gl_framesToolbar);
-
-		Button btnAdd = new Button(_framesToolbar, SWT.NONE);
-		btnAdd.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				addFrame();
-			}
-		});
-		btnAdd.setImage(ResourceManager.getPluginImage("org.eclipse.ui", "/icons/full/obj16/add_obj.png"));
-
-		Button btnRemove = new Button(_framesToolbar, SWT.NONE);
-		btnRemove.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				deleteFrame();
-			}
-		});
-		btnRemove.setImage(ResourceManager.getPluginImage("org.eclipse.ui", "/icons/full/obj16/delete_obj.png"));
-
-		_playButton = new Button(composite_1, SWT.NONE);
-		_playButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				playAnimation();
-			}
-		});
-		_playButton.setImage(ResourceManager.getPluginImage("phasereditor.ui", "icons/control_play.png"));
+		
+		SashForm sashForm = new SashForm(container, SWT.NONE);
+		sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		
+		Composite composite_2 = new Composite(sashForm, SWT.NONE);
+		GridLayout gl_composite_2 = new GridLayout(1, false);
+		gl_composite_2.marginWidth = 0;
+		gl_composite_2.marginHeight = 0;
+		composite_2.setLayout(gl_composite_2);
+				
+						_framesViewer = new TableViewer(composite_2, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);
+						_table = _framesViewer.getTable();
+						_table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+												
+														_framesToolbar = new Composite(composite_2, SWT.NONE);
+														GridLayout gl_framesToolbar = new GridLayout(2, false);
+														gl_framesToolbar.marginWidth = 0;
+														gl_framesToolbar.marginHeight = 0;
+														_framesToolbar.setLayout(gl_framesToolbar);
+														
+																Button btnAdd = new Button(_framesToolbar, SWT.NONE);
+																btnAdd.addSelectionListener(new SelectionAdapter() {
+																	@Override
+																	public void widgetSelected(SelectionEvent e) {
+																		addFrame();
+																	}
+																});
+																btnAdd.setImage(ResourceManager.getPluginImage("org.eclipse.ui", "/icons/full/obj16/add_obj.png"));
+																
+																		Button btnRemove = new Button(_framesToolbar, SWT.NONE);
+																		btnRemove.addSelectionListener(new SelectionAdapter() {
+																			@Override
+																			public void widgetSelected(SelectionEvent e) {
+																				deleteFrame();
+																			}
+																		});
+																		btnRemove.setImage(ResourceManager.getPluginImage("org.eclipse.ui", "/icons/full/obj16/delete_obj.png"));
+																		
+																		Composite composite_3 = new Composite(sashForm, SWT.NONE);
+																		GridLayout gl_composite_3 = new GridLayout(1, false);
+																		gl_composite_3.marginHeight = 0;
+																		gl_composite_3.marginWidth = 0;
+																		composite_3.setLayout(gl_composite_3);
+																		
+																				_canvas = new AnimationCanvas(composite_3, SWT.BORDER);
+																				_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+																								
+																										Composite composite_1 = new Composite(composite_3, SWT.NONE);
+																										GridLayout gl_composite_1 = new GridLayout(1, false);
+																										gl_composite_1.marginHeight = 0;
+																										gl_composite_1.marginWidth = 0;
+																										composite_1.setLayout(gl_composite_1);
+																										
+																												_playButton = new Button(composite_1, SWT.NONE);
+																												_playButton.addSelectionListener(new SelectionAdapter() {
+																													@Override
+																													public void widgetSelected(SelectionEvent e) {
+																														playAnimation();
+																													}
+																												});
+																												_playButton.setImage(ResourceManager.getPluginImage("phasereditor.ui", "icons/control_play.png"));
+		sashForm.setWeights(new int[] {2, 3});
 
 		afterCreateWidgets();
 
