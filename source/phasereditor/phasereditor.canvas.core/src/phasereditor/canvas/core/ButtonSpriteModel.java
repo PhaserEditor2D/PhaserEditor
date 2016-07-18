@@ -153,12 +153,12 @@ public class ButtonSpriteModel extends AssetSpriteModel<IAssetKey> {
 	}
 
 	@Override
-	public void rebuild() {
-		super.rebuild();
+	public void build() {
+		super.build();
 
-		_overFrame = (IAssetFrameModel) rebuildAssetKey(_overFrame);
-		_downFrame = (IAssetFrameModel) rebuildAssetKey(_downFrame);
-		_upFrame = (IAssetFrameModel) rebuildAssetKey(_upFrame);
+		_overFrame = (IAssetFrameModel) buildAssetKey(_overFrame);
+		_downFrame = (IAssetFrameModel) buildAssetKey(_downFrame);
+		_upFrame = (IAssetFrameModel) buildAssetKey(_upFrame);
 	}
 
 }

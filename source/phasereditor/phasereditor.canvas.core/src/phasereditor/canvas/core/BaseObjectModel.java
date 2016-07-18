@@ -104,7 +104,7 @@ public abstract class BaseObjectModel {
 		_id = obj.getString("id");
 	}
 
-	public abstract void rebuild();
+	public abstract void build();
 
 	public String getLabel() {
 		return _editorName + "[" + _typeName + "]";

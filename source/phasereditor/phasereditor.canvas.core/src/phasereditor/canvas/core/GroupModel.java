@@ -162,9 +162,9 @@ public class GroupModel extends BaseObjectModel {
 	}
 
 	@Override
-	public void rebuild() {
+	public void build() {
 		for (BaseObjectModel model : _children) {
-			model.rebuild();
+			model.build();
 		}
 	}
 

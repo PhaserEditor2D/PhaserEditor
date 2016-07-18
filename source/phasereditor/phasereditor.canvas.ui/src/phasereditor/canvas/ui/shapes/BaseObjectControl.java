@@ -487,6 +487,6 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 	public void rebuild() {
 		T model = getModel();
-		model.rebuild();
+		model.build();
 	}
 }

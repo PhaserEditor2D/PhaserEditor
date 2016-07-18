@@ -27,10 +27,8 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetType;
-import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
@@ -113,8 +111,8 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 	}
 
 	@Override
-	public void rebuild() {
-		_assetKey = rebuildAssetKey(_assetKey);
+	public void build() {
+		_assetKey = buildAssetKey(_assetKey);
 		for (AnimationModel model : getAnimations()) {
 			model.rebuild(_assetKey);
 		}
@@ -122,31 +120,16 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 
 	/**
 	 * @param assetKey
-	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	protected T rebuildAssetKey(T assetKey) {
+	protected T buildAssetKey(T assetKey) {
 		if (assetKey == null) {
 			// nothing to do
 			return null;
 		}
 
-		AssetModel asset = assetKey.getAsset();
-		if (!asset.isFreshVersion()) {
-			// the asset was deleted! set the key to null.
-			return null;
-		}
+		T freshVersion = (T) assetKey.findFreshVersion();
 
-		// if the asset key is a sub-element then reconnect with it
-		if (assetKey instanceof IAssetElementModel) {
-			for (IAssetElementModel elem : asset.getSubElements()) {
-				if (elem.getKey().equals(assetKey.getKey())) {
-					return (T) elem;
-				}
-			}
-			return null;
-		}
-
-		return assetKey;
+		return freshVersion;
 	}
 }
