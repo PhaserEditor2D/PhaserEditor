@@ -313,6 +313,12 @@
             id="phasereditor.canvas.ui.zoomRestore"
             name="Restore Zoom">
       </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            description="Show a quick outline window."
+            id="phasereditor.canvas.ui.quickOutline"
+            name="Quick Outline">
+      </command>
       
    </extension>
    <extension
@@ -661,6 +667,18 @@
             </with>
          </activeWhen>
       </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.QuickOutlineHandler"
+            commandId="phasereditor.canvas.ui.quickOutline">
+         <activeWhen>
+            <with
+                  variable="activePartId">
+               <equals
+                     value="phasereditor.canvas.ui.editors.canvas">
+               </equals>
+            </with>
+         </activeWhen>
+      </handler>
       
    </extension>
    <extension
@@ -737,6 +755,12 @@
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M2+P">
       </key>
+      <key
+            commandId="phasereditor.canvas.ui.quickOutline"
+            contextId="phasereditor.canvas.ui.any"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+O">
+      </key>
    </extension>
    <extension
          point="org.eclipse.core.expressions.definitions">
@@ -780,6 +804,11 @@
             id="phasereditor.canvas.ui.palettecontext"
             name="In palette"
             parentId="org.eclipse.ui.contexts.window">
+      </context>
+      <context
+            id="phasereditor.canvas.ui.any"
+            name="In editor"
+            parentId="org.eclipse.debug.ui.BreakpointView">
       </context>
    </extension>
    <extension

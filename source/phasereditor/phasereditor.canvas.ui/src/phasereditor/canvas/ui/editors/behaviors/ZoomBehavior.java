@@ -187,5 +187,4 @@ public class ZoomBehavior {
 	public ObjectCanvas getCanvas() {
 		return _canvas;
 	}
-
 }

@@ -32,8 +32,9 @@ import org.eclipse.ui.dialogs.PatternFilter;
  */
 public class PatternFilter2 extends PatternFilter {
 	public PatternFilter2() {
+		setIncludeLeadingWildcard(true);
 	}
-
+	
 	@Override
 	public boolean isElementVisible(Viewer viewer, Object element) {
 		if (super.isElementVisible(viewer, element)) {

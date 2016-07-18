@@ -93,7 +93,9 @@ public class FrameDialog extends Dialog {
 	}
 
 	private void afterCreateWidgets() {
-		FilteredTree tree = new FilteredTree(_container, getTreeStyle(), new PatternFilter(), true);
+		PatternFilter filter = new PatternFilter();
+		filter.setIncludeLeadingWildcard(true);
+		FilteredTree tree = new FilteredTree(_container, getTreeStyle(), filter, true);
 		tree.setQuickSelectionMode(true);
 		_viewer = tree.getViewer();
 		_viewer.setContentProvider(new ITreeContentProvider() {

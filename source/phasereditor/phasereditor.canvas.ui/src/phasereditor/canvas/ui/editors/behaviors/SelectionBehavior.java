@@ -40,6 +40,7 @@ import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
@@ -282,6 +283,19 @@ public class SelectionBehavior implements ISelectionProvider {
 		setSelection_private(selection);
 		TreeViewer outline = _canvas.getOutline();
 		outline.setSelection(selection, true);
+	}
+
+	public void setSelectionAndReveal(IObjectNode elem) {
+		setSelection(new StructuredSelection(elem));
+		Node node = elem.getNode();
+		Bounds bounds = localToAncestor(node.getBoundsInLocal(), node, _canvas.getWorldNode());
+		ZoomBehavior zoom = _canvas.getZoomBehavior();
+		Scene scene = _canvas.getScene();
+		double x = bounds.getMinX() - scene.getWidth() / 2 + bounds.getWidth() / 2;
+		double y = bounds.getMinY() - scene.getHeight() / 2 + bounds.getHeight() / 2;
+		zoom.setTranslate(new Point2D(-x, -y));
+		zoom.setScale(1);
+		zoom.updateZoomAndPan();
 	}
 
 	private void setSelection_private(ISelection selection) {

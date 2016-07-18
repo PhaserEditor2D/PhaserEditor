@@ -76,7 +76,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.dialogs.FilteredTree;
-import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.menus.CommandContributionItem;
 import org.eclipse.ui.menus.CommandContributionItemParameter;
 import org.eclipse.ui.part.EditorPart;
@@ -95,6 +94,7 @@ import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.palette.PaletteComp;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
+import phasereditor.ui.PatternFilter2;
 
 /**
  * @author arian
@@ -107,6 +107,7 @@ public class CanvasEditor extends EditorPart
 	public final static String ID = "phasereditor.canvas.ui.editors.canvas";
 	public final static String NODES_CONTEXT_ID = "phasereditor.canvas.ui.nodescontext";
 	protected static final String SCENE_CONTEXT_ID = "phasereditor.canvas.ui.scenecontext";
+	protected static final String EDITOR_CONTEXT_ID = "phasereditor.canvas.ui.any";
 
 	public static final IUndoContext UNDO_CONTEXT = new IUndoContext() {
 
@@ -251,7 +252,7 @@ public class CanvasEditor extends EditorPart
 
 		_leftSashForm = new SashForm(_mainSashForm, SWT.VERTICAL);
 
-		_outlineTree = new FilteredTree(_leftSashForm, SWT.BORDER | SWT.MULTI, new PatternFilter(), true);
+		_outlineTree = new FilteredTree(_leftSashForm, SWT.BORDER | SWT.MULTI, new PatternFilter2(), true);
 		Tree tree = _outlineTree.getViewer().getTree();
 		_outlineTree.getViewer().setLabelProvider(new OutlineLabelProvider());
 		_outlineTree.getViewer().setContentProvider(new OutlineContentProvider());
@@ -302,6 +303,8 @@ public class CanvasEditor extends EditorPart
 	}
 
 	private void initContexts() {
+		getContextService().activateContext(EDITOR_CONTEXT_ID);
+		
 		_canvas.addFocusListener(new FocusListener() {
 
 			private IContextActivation _sceneContext;
@@ -480,6 +483,8 @@ public class CanvasEditor extends EditorPart
 			};
 			_showSidePaneAction.setChecked(true);
 			_toolBarManager.add(_showSidePaneAction);
+			
+			
 
 			_showPaletteAction = new Action("Toggle the palette.", SWT.TOGGLE) {
 				{
@@ -573,6 +578,7 @@ public class CanvasEditor extends EditorPart
 	public void setFocus() {
 		_canvas.setFocus();
 	}
+	
 
 	public PaletteComp getPalette() {
 		return _paletteComp;
