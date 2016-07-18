@@ -319,6 +319,11 @@
             id="phasereditor.canvas.ui.quickOutline"
             name="Quick Outline">
       </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.quickEdit"
+            name="Quick Object Edit">
+      </command>
       
    </extension>
    <extension
@@ -679,6 +684,15 @@
             </with>
          </activeWhen>
       </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.QuickObjectEditHandler"
+            commandId="phasereditor.canvas.ui.quickEdit">
+         <enabledWhen>
+            <reference
+                  definitionId="phasereditor.canvas.ui.nodesSelected">
+            </reference>
+         </enabledWhen>
+      </handler>
       
    </extension>
    <extension
@@ -760,6 +774,12 @@
             contextId="phasereditor.canvas.ui.any"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M1+O">
+      </key>
+      <key
+            commandId="phasereditor.canvas.ui.quickEdit"
+            contextId="phasereditor.canvas.ui.nodescontext"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+M">
       </key>
    </extension>
    <extension
