@@ -66,6 +66,7 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 		}
 	}
 
+	@Override
 	public AssetModel findInWorkspaceVersion() {
 		if (isOnWorkspace()) {
 			return this;

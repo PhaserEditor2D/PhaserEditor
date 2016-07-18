@@ -35,4 +35,6 @@ public interface IAssetKey {
 	public default List<? extends IAssetElementModel> getAllFrames() {
 		return getAsset().getSubElements();
 	}
+	
+	public IAssetKey findInWorkspaceVersion();
 }

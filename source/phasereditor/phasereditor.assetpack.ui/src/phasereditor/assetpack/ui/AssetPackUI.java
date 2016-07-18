@@ -78,6 +78,7 @@ import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.FrameData;
 import phasereditor.assetpack.core.IAssetElementModel;
+import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
@@ -460,15 +461,11 @@ public class AssetPackUI {
 								Object elem = view.getPreviewElement();
 
 								if (elem != null) {
-									if (elem instanceof AssetModel) {
-										AssetModel asset = (AssetModel) elem;
-										boolean alive = asset.isOnWorkspace();
-										if (alive) {
-											if (delta.contains(asset, asset.getPack())) {
-												view.preview(asset);
-											}
-										} else {
-											view.preview(null);
+									if (elem instanceof IAssetKey) {
+										IAssetKey key = (IAssetKey) elem;
+										if (delta.contains(key, key.getAsset())) {
+											key = key.findInWorkspaceVersion();
+											view.preview(key);
 										}
 									}
 								}
