@@ -128,7 +128,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	private void packsChanged(PackDelta packDelta) {
 		if (packDelta.contains(_model)) {
-			if (_model.isOnWorkspace()) {
+			if (_model.isFreshVersion()) {
 				IFile editorFile = getEditorInput().getFile();
 				IFile modelFile = _model.getFile();
 				if (!editorFile.equals(modelFile)) {

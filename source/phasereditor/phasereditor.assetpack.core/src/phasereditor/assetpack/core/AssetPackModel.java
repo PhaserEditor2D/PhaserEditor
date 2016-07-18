@@ -214,7 +214,7 @@ public final class AssetPackModel {
 		}
 	}
 
-	public boolean isOnWorkspace() {
+	public boolean isFreshVersion() {
 		return AssetPackCore.getAssetPackModels().contains(this);
 	}
 

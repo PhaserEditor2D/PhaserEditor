@@ -35,6 +35,18 @@ public interface IAssetKey {
 	public default List<? extends IAssetElementModel> getAllFrames() {
 		return getAsset().getSubElements();
 	}
-	
-	public IAssetKey findInWorkspaceVersion();
+
+	/**
+	 * An asset key is out-dated after a pack build. This method return if this
+	 * is the fresh instance.
+	 * 
+	 * @return
+	 */
+	public boolean isFreshVersion();
+
+	/**
+	 * Find the fresh (updated) version of this asset key.
+	 * @return
+	 */
+	public IAssetKey findFreshVersion();
 }

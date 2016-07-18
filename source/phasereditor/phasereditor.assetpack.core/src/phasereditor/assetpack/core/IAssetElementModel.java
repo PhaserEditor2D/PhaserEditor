@@ -42,19 +42,28 @@ public interface IAssetElementModel extends IAssetKey, IAdaptable {
 	public AssetModel getAsset();
 
 	@Override
-	public default IAssetElementModel findInWorkspaceVersion() {
-		AssetModel asset = getAsset().findInWorkspaceVersion();
+	public default boolean isFreshVersion() {
+		if (getAsset().isFreshVersion()) {
+			return getAsset().getSubElements().contains(this);
+		}
+
+		return false;
+	}
+
+	@Override
+	public default IAssetElementModel findFreshVersion() {
+		AssetModel asset = getAsset().findFreshVersion();
 
 		if (asset == null) {
 			return null;
 		}
-		
+
 		for (IAssetElementModel elem : asset.getSubElements()) {
 			if (elem.getKey().equals(getKey())) {
 				return elem;
 			}
 		}
-		
+
 		return null;
 	}
 }

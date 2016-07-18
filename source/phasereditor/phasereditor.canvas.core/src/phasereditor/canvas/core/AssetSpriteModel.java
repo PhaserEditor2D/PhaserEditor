@@ -132,7 +132,7 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 		}
 
 		AssetModel asset = assetKey.getAsset();
-		if (!asset.isOnWorkspace()) {
+		if (!asset.isFreshVersion()) {
 			// the asset was deleted! set the key to null.
 			return null;
 		}

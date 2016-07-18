@@ -67,13 +67,13 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 	}
 
 	@Override
-	public AssetModel findInWorkspaceVersion() {
-		if (isOnWorkspace()) {
+	public AssetModel findFreshVersion() {
+		if (isFreshVersion()) {
 			return this;
 		}
 		
 		AssetPackModel pack = getPack();
-		if (!pack.isOnWorkspace()) {
+		if (!pack.isFreshVersion()) {
 			return null;
 		}
 		
@@ -196,9 +196,10 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 		return _section.getPack();
 	}
 
-	public boolean isOnWorkspace() {
+	@Override
+	public boolean isFreshVersion() {
 		AssetPackModel pack = getPack();
-		return pack.isOnWorkspace() && pack.getSections().contains(_section) && _section.getAssets().contains(this);
+		return pack.isFreshVersion() && pack.getSections().contains(_section) && _section.getAssets().contains(this);
 	}
 
 	protected IContainer getUrlStartFolder() {

@@ -464,7 +464,7 @@ public class AssetPackUI {
 									if (elem instanceof IAssetKey) {
 										IAssetKey key = (IAssetKey) elem;
 										if (delta.contains(key, key.getAsset())) {
-											key = key.findInWorkspaceVersion();
+											key = key.findFreshVersion();
 											view.preview(key);
 										}
 									}
