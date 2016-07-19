@@ -24,7 +24,10 @@ package phasereditor.canvas.core;
 import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.FrameData;
+import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.core.ImageAssetModel;
 
 /**
  * @author arian
@@ -58,6 +61,19 @@ public class TileSpriteModel extends AssetSpriteModel<IAssetKey> {
 		_tileScaleY = DEF_TILE_SCALE;
 		_width = DEF_WIDTH;
 		_height = DEF_HEIGHT;
+
+		IAssetFrameModel frame = null;
+		if (assetKey instanceof IAssetFrameModel) {
+			frame = (IAssetFrameModel) assetKey;
+		} else if (assetKey instanceof ImageAssetModel) {
+			frame = ((ImageAssetModel) assetKey).getFrame();
+		}
+		
+		if (frame != null) {
+			FrameData data = frame.getFrameData();
+			_width = data.src.width;
+			_height = data.src.height;
+		}
 	}
 
 	public TileSpriteModel(GroupModel parent, JSONObject obj) {

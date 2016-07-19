@@ -54,4 +54,10 @@ public interface IEditorSharedImages {
 	String IMG_SETTINGS = "icons/settings.png";
 	String IMG_PREVIEW_PATTERN = "icons/preview-pattern.png";
 	String IMG_ZOOM_RESTORE = "icons/zoom_default.png";
+	String IMG_OUTLINE = "icons/outline_co.png";
+	String IMG_SHAPE_EDIT = "icons/shape_square_edit.png";
+	String IMG_TILES = "icons/tiles.png";
+	String IMG_CAR = "icons/car.png";
+	String IMG_BUTTON = "icons/button.png";
 }
+

@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.BiFunction;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.json.JSONObject;
@@ -65,6 +66,17 @@ public class CreateBehavior {
 	}
 
 	public void dropAssets(IStructuredSelection selection, DragEvent event) {
+		double sceneX = event.getSceneX();
+		double sceneY = event.getSceneY();
+		dropAssets(selection, sceneX, sceneY, CanvasModelFactory::createModel);
+	}
+
+	public void dropAssets(IStructuredSelection selection, BiFunction<GroupModel, IAssetKey, BaseSpriteModel> factory) {
+		dropAssets(selection, _canvas.getScene().getWidth() / 2, _canvas.getScene().getHeight() / 2, factory);
+	}
+
+	public void dropAssets(IStructuredSelection selection, double sceneX, double sceneY,
+			BiFunction<GroupModel, IAssetKey, BaseSpriteModel> factory) {
 		Object[] elems = selection.toArray();
 		int i = 0;
 		CompositeOperation operations = new CompositeOperation();
@@ -73,15 +85,15 @@ public class CreateBehavior {
 			if (elem instanceof IAssetKey) {
 				// TODO: for now get as parent the world
 				WorldModel worldModel = _canvas.getWorldModel();
-				BaseSpriteModel model = CanvasModelFactory.createModel(worldModel, (IAssetKey) elem);
+				BaseSpriteModel model = factory.apply(worldModel, (IAssetKey) elem);
 				if (model != null) {
 					String newname = worldModel.createName(model.getEditorName());
 					model.setEditorName(newname);
 					BaseObjectControl<?> control = CanvasObjectFactory.createObjectControl(_canvas, model);
 					if (control != null) {
 						selectionIds.add(control.getModel().getId());
-						double x = event.getSceneX() + i * 20;
-						double y = event.getSceneY() + i * 20;
+						double x = sceneX + i * 20;
+						double y = sceneY + i * 20;
 						_canvas.dropToWorld(operations, control, x, y);
 						i++;
 					}

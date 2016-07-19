@@ -315,14 +315,18 @@
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
-            description="Show a quick outline window."
             id="phasereditor.canvas.ui.quickOutline"
-            name="Quick Outline">
+            name="Quick outline">
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
             id="phasereditor.canvas.ui.quickEdit"
-            name="Quick Object Edit">
+            name="Quick object edit">
+      </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.addsprite"
+            name="Add Sprite">
       </command>
       
    </extension>
@@ -693,6 +697,18 @@
             </reference>
          </enabledWhen>
       </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.AddSpriteHandler"
+            commandId="phasereditor.canvas.ui.addsprite">
+         <activeWhen>
+            <with
+                  variable="activePartId">
+               <equals
+                     value="phasereditor.canvas.ui.editors.canvas">
+               </equals>
+            </with>
+         </activeWhen>
+      </handler>
       
    </extension>
    <extension
@@ -779,7 +795,13 @@
             commandId="phasereditor.canvas.ui.quickEdit"
             contextId="phasereditor.canvas.ui.nodescontext"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M1+M">
+            sequence="M1+M2+M">
+      </key>
+      <key
+            commandId="phasereditor.canvas.ui.addsprite"
+            contextId="phasereditor.canvas.ui.any"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+M2+A">
       </key>
    </extension>
    <extension

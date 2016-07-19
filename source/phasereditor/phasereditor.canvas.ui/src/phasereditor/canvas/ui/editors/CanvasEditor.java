@@ -191,8 +191,7 @@ public class CanvasEditor extends EditorPart
 					@Override
 					public void run() {
 						Shell shell = Display.getDefault().getActiveShell();
-						MessageDialog.openError(shell, "Error",
-								"The scene data cannot ve loaded.\n" + e.getMessage());
+						MessageDialog.openError(shell, "Error", "The scene data cannot ve loaded.\n" + e.getMessage());
 					}
 				});
 			}
@@ -304,7 +303,7 @@ public class CanvasEditor extends EditorPart
 
 	private void initContexts() {
 		getContextService().activateContext(EDITOR_CONTEXT_ID);
-		
+
 		_canvas.addFocusListener(new FocusListener() {
 
 			private IContextActivation _sceneContext;
@@ -431,40 +430,51 @@ public class CanvasEditor extends EditorPart
 	private void createToolbarManager() {
 		_toolBarManager = new ToolBarManager(_toolBar);
 
-		// depth commands
-
-		String[] defs = {
-
-				"riseToTop", "shape_move_front.png",
-
-				"rise", "shape_move_forwards.png",
-
-				"lower", "shape_move_backwards.png",
-
-				"lowerBottom", "shape_move_back.png",
-
-				"-", "-",
-
-				"align.left", "shape_align_left.png",
-
-				"align.right", "shape_align_right.png",
-
-				"align.top", "shape_align_top.png",
-
-				"align.bottom", "shape_align_bottom.png",
-
-				"align.center", "shape_align_center.png",
-
-				"align.middle", "shape_align_middle.png", };
-
-		defsCommands(defs);
 		{
-			_toolBarManager.add(new Separator());
 			_toolBarManager.add(simpleCommand("phasereditor.canvas.ui.zoomRestore", "zoom_default.png"));
 		}
 
 		{
+			// depth commands
+			
 			_toolBarManager.add(new Separator());
+
+			String[] defs = {
+
+					"riseToTop", "shape_move_front.png",
+
+					"rise", "shape_move_forwards.png",
+
+					"lower", "shape_move_backwards.png",
+
+					"lowerBottom", "shape_move_back.png",
+
+					"-", "-",
+
+					"align.left", "shape_align_left.png",
+
+					"align.right", "shape_align_right.png",
+
+					"align.top", "shape_align_top.png",
+
+					"align.bottom", "shape_align_bottom.png",
+
+					"align.center", "shape_align_center.png",
+
+					"align.middle", "shape_align_middle.png", };
+
+			defsCommands(defs);
+		}
+
+		{
+			_toolBarManager.add(new Separator());
+			_toolBarManager.add(simpleCommand("phasereditor.canvas.ui.quickEdit", "shape_square_edit.png"));
+		}
+
+		{
+			_toolBarManager.add(new Separator());
+			
+			_toolBarManager.add(simpleCommand("phasereditor.canvas.ui.quickOutline", "outline_co.png"));
 
 			_showSidePaneAction = new Action("Toggle the side pane.", SWT.TOGGLE) {
 				{
@@ -483,8 +493,6 @@ public class CanvasEditor extends EditorPart
 			};
 			_showSidePaneAction.setChecked(true);
 			_toolBarManager.add(_showSidePaneAction);
-			
-			
 
 			_showPaletteAction = new Action("Toggle the palette.", SWT.TOGGLE) {
 				{
@@ -578,7 +586,6 @@ public class CanvasEditor extends EditorPart
 	public void setFocus() {
 		_canvas.setFocus();
 	}
-	
 
 	public PaletteComp getPalette() {
 		return _paletteComp;
