@@ -74,6 +74,22 @@ public class MouseBehavior {
 				ex.printStackTrace();
 			}
 		});
+		
+		_canvas.getScene().addEventFilter(MouseEvent.MOUSE_MOVED, e -> {
+			try {
+				handleMouseMoved(e);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		});
+		
+		_canvas.getScene().addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
+			try {
+				handleMouseExited(e);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		});
 
 		_canvas.getScene().addEventFilter(ScrollEvent.ANY, e -> {
 			try {
@@ -88,6 +104,21 @@ public class MouseBehavior {
 		_zoomPan = _canvas.getZoomBehavior();
 	}
 
+	/**
+	 * @param e
+	 */
+	private void handleMouseMoved(MouseEvent e) {
+		if (_dragHandler != null) {
+			_dragHandler.handleMouseMoved(e);
+		}
+	}
+
+	private void handleMouseExited(MouseEvent e) {
+		if (_dragHandler != null) {
+			_dragHandler.handleMouseExited(e);
+		}
+	}
+	
 	private void handleScroll(ScrollEvent e) {
 		_zoomPan.handleScroll(e);
 	}
@@ -164,5 +195,4 @@ public class MouseBehavior {
 			_selection.handleMouseReleased(e);
 		}
 	}
-
 }

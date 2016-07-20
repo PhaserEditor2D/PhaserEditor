@@ -26,6 +26,7 @@ import java.util.List;
 
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -118,6 +119,14 @@ public class SelectionNode extends Pane {
 				super(selnode);
 				_width = width;
 				_height = height;
+				
+				if (_width && _height) {
+					setCursor(Cursor.SE_RESIZE);
+				} else if (_width) {
+					setCursor(Cursor.E_RESIZE);
+				} else {
+					setCursor(Cursor.S_RESIZE);
+				}
 			}
 
 			@Override
@@ -139,10 +148,8 @@ public class SelectionNode extends Pane {
 				double h = tilemodel.getHeight();
 				tilemodel.setWidth(_initWidth);
 				tilemodel.setHeight(_initHeight);
-				operations.add(new ChangePropertyOperation<Number>(tilemodel.getId(), "width",
-						Double.valueOf(w)));
-				operations.add(new ChangePropertyOperation<Number>(tilemodel.getId(), "height",
-						Double.valueOf(h)));
+				operations.add(new ChangePropertyOperation<Number>(tilemodel.getId(), "width", Double.valueOf(w)));
+				operations.add(new ChangePropertyOperation<Number>(tilemodel.getId(), "height", Double.valueOf(h)));
 				_canvas.getUpdateBehavior().executeOperations(operations);
 			}
 

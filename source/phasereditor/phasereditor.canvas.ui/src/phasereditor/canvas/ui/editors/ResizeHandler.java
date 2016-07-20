@@ -24,6 +24,7 @@ package phasereditor.canvas.ui.editors;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -49,6 +50,11 @@ public class ResizeHandler extends Rectangle {
 	
 	protected void handleDone() {
 		// nothing 
+	}
+	
+	@SuppressWarnings("unused")
+	public void handleMouseMoved(MouseEvent e) {
+		// nothing
 	}
 
 	public void handleMousePressed(MouseEvent e) {
@@ -83,5 +89,10 @@ public class ResizeHandler extends Rectangle {
 	@SuppressWarnings("unused")
 	public void handleMouseReleased(MouseEvent e) {
 		handleDone();
+	}
+
+	@SuppressWarnings("unused")
+	public void handleMouseExited(MouseEvent e) {
+		setCursor(Cursor.DEFAULT);
 	}
 }
