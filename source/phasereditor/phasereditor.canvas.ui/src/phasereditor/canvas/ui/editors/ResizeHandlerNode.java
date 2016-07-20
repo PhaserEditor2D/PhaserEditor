@@ -30,11 +30,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class ResizeHandler extends Rectangle {
+public class ResizeHandlerNode extends Rectangle {
 	private Point2D _start;
 	private SelectionNode _selnode;
 
-	public ResizeHandler(SelectionNode selnode) {
+	public ResizeHandlerNode(SelectionNode selnode) {
 		super(SelectionNode.HANDLE_SIZE, SelectionNode.HANDLE_SIZE);
 		_selnode = selnode;
 		setVisible(false);

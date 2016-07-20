@@ -157,11 +157,12 @@
          </separator>
          <command
                commandId="phasereditor.canvas.ui.resizeTile"
+               label="Resize Tile Sprite"
                style="push">
             <visibleWhen
                   checkEnabled="false">
                <reference
-                     definitionId="phasereditor.canvas.ui.tileSelected">
+                     definitionId="phasereditor.canvas.ui.oneSpriteSelected">
                </reference>
             </visibleWhen>
          </command>
@@ -733,7 +734,7 @@
             commandId="phasereditor.canvas.ui.resizeTile">
          <enabledWhen>
             <reference
-                  definitionId="phasereditor.canvas.ui.tileSelected">
+                  definitionId="phasereditor.canvas.ui.oneSpriteSelected">
             </reference></enabledWhen>
       </handler>
       
@@ -873,6 +874,51 @@
                      value="phasereditor.canvas.ui.shapes.TileSpriteNode">
                </instanceof>
             </iterate>
+         </with>
+      </definition>
+      <definition
+            id="phasereditor.canvas.ui.oneSpriteSelected">
+         <with
+               variable="selection">
+            <and>
+               <count
+                     value="1">
+               </count>
+               <iterate
+                     ifEmpty="false">
+                  <instanceof
+                        value="phasereditor.canvas.ui.shapes.ISpriteNode">
+                  </instanceof>
+               </iterate>
+            </and>
+         </with>
+         <with
+               variable="selection">
+            <and>
+               <count
+                     value="1">
+               </count>
+               <iterate
+                     ifEmpty="false">
+                  <instanceof
+                        value="phasereditor.canvas.ui.shapes.TileSpriteNode">
+                  </instanceof>
+               </iterate>
+            </and>
+         </with>
+         <with
+               variable="selection">
+            <iterate
+                  ifEmpty="false">
+               <instanceof
+                     value="phasereditor.canvas.ui.shapes.TileSpriteNode">
+               </instanceof>
+            </iterate>
+            <and>
+               <count
+                     value="1">
+               </count>
+            </and>
          </with>
       </definition>
    </extension>

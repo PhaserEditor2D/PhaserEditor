@@ -74,9 +74,9 @@ public class SelectionNode extends Pane {
 	protected Bounds _rect;
 	private ObjectCanvas _canvas;
 	private Label _label;
-	private ResizeHandler _resizeTopRightHandle;
-	private ResizeHandler _resizeBottomRightHandle;
-	private ResizeHandler _resizeBottomLeftHandle;
+	private ResizeHandlerNode _resizeTopRightHandle;
+	private ResizeHandlerNode _resizeBottomRightHandle;
+	private ResizeHandlerNode _resizeBottomLeftHandle;
 
 	public SelectionNode(ObjectCanvas canvas, IObjectNode inode, Bounds rect) {
 		_objectNode = inode;
@@ -108,7 +108,7 @@ public class SelectionNode extends Pane {
 
 		// tile
 
-		class TileResizeHandler extends ResizeHandler {
+		class TileResizeHandler extends ResizeHandlerNode {
 
 			protected double _initWidth;
 			protected double _initHeight;

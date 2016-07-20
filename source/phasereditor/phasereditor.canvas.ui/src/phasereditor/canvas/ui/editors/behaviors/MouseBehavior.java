@@ -26,7 +26,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
-import phasereditor.canvas.ui.editors.ResizeHandler;
+import phasereditor.canvas.ui.editors.ResizeHandlerNode;
 
 /**
  * @author arian
@@ -37,7 +37,7 @@ public class MouseBehavior {
 	private ZoomBehavior _zoomPan;
 	private DragBehavior _drag;
 	private SelectionBehavior _selection;
-	private ResizeHandler _dragHandler;
+	private ResizeHandlerNode _dragHandler;
 
 	public MouseBehavior(ObjectCanvas canvas) {
 		super();
@@ -126,8 +126,8 @@ public class MouseBehavior {
 	private void handleMousePressed(MouseEvent e) {
 
 		Node node = e.getPickResult().getIntersectedNode();
-		if (node instanceof ResizeHandler) {
-			_dragHandler = (ResizeHandler) node;
+		if (node instanceof ResizeHandlerNode) {
+			_dragHandler = (ResizeHandlerNode) node;
 			_dragHandler.handleMousePressed(e);
 			return;
 		}
