@@ -163,13 +163,13 @@ public class AddSpriteDialog extends Dialog implements IEditorSharedImages {
 
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		Button btn = createButton(parent, ADD_BUTTON, "", false);
+		Button btn = createButton(parent, ADD_BUTTON, "button", false);
 		btn.setImage(EditorSharedImages.getImage(IMG_BUTTON));
 		btn.setToolTipText("Add button");
-		btn = createButton(parent, ADD_TILE, "", false);
+		btn = createButton(parent, ADD_TILE, "tileSprite", false);
 		btn.setImage(EditorSharedImages.getImage(IMG_TILES));
 		btn.setToolTipText("Add tileSprite");
-		btn = createButton(parent, ADD_SPRITE, "", true);
+		btn = createButton(parent, ADD_SPRITE, "sprite", true);
 		btn.setImage(EditorSharedImages.getImage(IMG_CAR));
 		btn.setToolTipText("Add sprite");
 	}

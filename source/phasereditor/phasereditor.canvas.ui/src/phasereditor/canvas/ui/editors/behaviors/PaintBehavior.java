@@ -64,8 +64,8 @@ public class PaintBehavior {
 	}
 
 	public void repaint() {
-		_canvas.getGridPane().repaint();
-		_canvas.getWorldGlassPane().repaint();
+		_canvas.getBackGridPane().repaint();
+		_canvas.getFrontGridPane().repaint();
 	}
 
 }

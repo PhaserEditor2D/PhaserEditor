@@ -23,8 +23,10 @@ package phasereditor.canvas.ui.editors.behaviors;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.viewers.ISelection;
@@ -113,7 +115,7 @@ public class SelectionBehavior implements ISelectionProvider {
 
 	void handleMouseReleased(MouseEvent e) {
 		if (isSelectingBox()) {
-			_canvas.getSelectionGlassPane().getChildren().remove(_selectionBox);
+			_canvas.getSelectionFrontPane().getChildren().remove(_selectionBox);
 			selectBox(_selectionBox);
 			_selectionBox = null;
 			return;
@@ -145,12 +147,12 @@ public class SelectionBehavior implements ISelectionProvider {
 	}
 
 	void handleDragDetected(MouseEvent e) {
-		Pane glassPane = _canvas.getSelectionGlassPane();
-		Point2D point = glassPane.sceneToLocal(e.getSceneX(), e.getSceneY());
+		Pane frontPane = _canvas.getSelectionFrontPane();
+		Point2D point = frontPane.sceneToLocal(e.getSceneX(), e.getSceneY());
 		_boxStart = point;
 		_selectionBox = new SelectionBoxNode();
 		_selectionBox.setBox(point, point.add(0, 0));
-		glassPane.getChildren().add(_selectionBox);
+		frontPane.getChildren().add(_selectionBox);
 	}
 
 	public boolean isPointingToSelection(MouseEvent e) {
@@ -166,7 +168,7 @@ public class SelectionBehavior implements ISelectionProvider {
 
 	void handleMouseDragged(MouseEvent e) {
 		if (_selectionBox != null) {
-			Point2D point = _canvas.getSelectionGlassPane().sceneToLocal(e.getSceneX(), e.getSceneY());
+			Point2D point = _canvas.getSelectionFrontPane().sceneToLocal(e.getSceneX(), e.getSceneY());
 			_selectionBox.setBox(_boxStart, point);
 		}
 	}
@@ -321,6 +323,12 @@ public class SelectionBehavior implements ISelectionProvider {
 	public void updateSelectedNodes() {
 		Pane selpane = _canvas.getSelectionPane();
 
+		Map<IObjectNode, SelectionNode> map = new HashMap<>();
+		selpane.getChildren().forEach(n -> {
+			SelectionNode selnode = (SelectionNode) n;
+			map.put(selnode.getObjectNode(), selnode);
+		});
+
 		selpane.getChildren().clear();
 
 		for (Object obj : _selection.toArray()) {
@@ -334,14 +342,21 @@ public class SelectionBehavior implements ISelectionProvider {
 					continue;
 				}
 
-				selpane.getChildren().add(new SelectionNode(_canvas, inode, rect));
+				SelectionNode selnode;
+				if (map.containsKey(node)) {
+					selnode = map.get(node);
+					selnode.updateBounds(rect);
+				} else {
+					selnode = new SelectionNode(_canvas, inode, rect);
+				}
+				selpane.getChildren().add(selnode);
 			}
 		}
 
 		selpane.requestLayout();
 	}
 
-	private Bounds buildSelectionBounds(Node node) {
+	public Bounds buildSelectionBounds(Node node) {
 		List<Bounds> list = new ArrayList<>();
 
 		buildSelectionBounds(node, list);

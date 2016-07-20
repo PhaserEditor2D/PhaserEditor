@@ -37,11 +37,11 @@ import phasereditor.canvas.ui.shapes.GroupNode;
  * @author arian
  *
  */
-public class WorldGlassPane extends Canvas {
+public class FrontGridPane extends Canvas {
 	private static final double FONT_SIZE = 10;
 	private ObjectCanvas _canvas;
 
-	public WorldGlassPane(ObjectCanvas canvas) {
+	public FrontGridPane(ObjectCanvas canvas) {
 		super();
 		_canvas = canvas;
 

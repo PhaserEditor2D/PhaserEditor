@@ -28,6 +28,7 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
@@ -38,7 +39,9 @@ import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.shape.StrokeType;
 import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.ui.shapes.IObjectNode;
+import phasereditor.canvas.ui.shapes.TileSpriteNode;
 
 /**
  * @author arian
@@ -65,9 +68,12 @@ public class SelectionNode extends Pane {
 	}
 
 	private IObjectNode _objectNode;
-	private Bounds _rect;
+	protected Bounds _rect;
 	private ObjectCanvas _canvas;
 	private Label _label;
+	private ResizeHandler _resizeTopRightHandle;
+	private ResizeHandler _resizeBottomRightHandle;
+	private ResizeHandler _resizeBottomLeftHandle;
 
 	public SelectionNode(ObjectCanvas canvas, IObjectNode inode, Bounds rect) {
 		_objectNode = inode;
@@ -96,10 +102,94 @@ public class SelectionNode extends Pane {
 		_label.relocate(0, -_label.getMinHeight());
 		_label.setVisible(false);
 		getChildren().add(_label);
+
+		// tile
+
+		class TileResizeHandler extends ResizeHandler {
+
+			protected double _initWidth;
+			protected double _initHeight;
+			private boolean _height;
+			private boolean _width;
+
+			public TileResizeHandler(SelectionNode selnode, boolean width, boolean height) {
+				super(selnode);
+				_width = width;
+				_height = height;
+			}
+
+			@Override
+			public void handleMousePressed(MouseEvent e) {
+				super.handleMousePressed(e);
+				TileSpriteNode tile = (TileSpriteNode) getObjectNode();
+				TileSpriteModel tilemodel = tile.getModel();
+				_initWidth = tilemodel.getWidth();
+				_initHeight = tilemodel.getHeight();
+			}
+
+			@SuppressWarnings("synthetic-access")
+			@Override
+			protected void handleResize(double dx, double dy) {
+				TileSpriteNode tile = (TileSpriteNode) getObjectNode();
+				TileSpriteModel tilemodel = tile.getModel();
+
+				SceneSettings settings = _canvas.getSettingsModel();
+
+				boolean stepping = settings.isEnableStepping();
+				if (_width) {
+					double w = _initWidth + dx;
+					int sw = settings.getStepWidth();
+
+					if (stepping) {
+						w = Math.round(w / sw) * sw;
+					}
+
+					w = Math.max(w, stepping ? sw : 1);
+
+					tilemodel.setWidth(w);
+				}
+
+				if (_height) {
+					double h = _initHeight + dy;
+					int sh = settings.getStepHeight();
+
+					if (stepping) {
+						h = Math.round(h / sh) * sh;
+					}
+
+					h = Math.max(h, stepping ? sh : 1);
+
+					tilemodel.setHeight(h);
+				}
+
+				tile.updateFromModel();
+			}
+		}
+
+		_resizeTopRightHandle = new TileResizeHandler(this, true, false);
+		_resizeBottomRightHandle = new TileResizeHandler(this, true, true);
+		_resizeBottomLeftHandle = new TileResizeHandler(this, false, true);
+
+		getChildren().addAll(_resizeTopRightHandle, _resizeBottomRightHandle, _resizeBottomLeftHandle);
+
+		updateTileHandles();
 	}
-	
+
+	static final int HANDLE_SIZE = 10;
+
+	public void setEnableTileHandles(boolean enable) {
+		_resizeBottomLeftHandle.setVisible(enable);
+		_resizeBottomRightHandle.setVisible(enable);
+		_resizeTopRightHandle.setVisible(enable);
+	}
+
 	public ObjectCanvas getCanvas() {
 		return _canvas;
+	}
+
+	public void updateBounds(Bounds rect) {
+		_rect = rect;
+		updateFromZoomAndPanVariables();
 	}
 
 	public void updateFromZoomAndPanVariables() {
@@ -114,6 +204,20 @@ public class SelectionNode extends Pane {
 		relocate(x, y);
 		setMinSize(w, h);
 		setMaxSize(w, h);
+
+		if (_resizeBottomLeftHandle != null) {
+			updateTileHandles();
+		}
+	}
+
+	private void updateTileHandles() {
+		double w = getMinWidth();
+		double h = getMinHeight();
+
+		int hs = HANDLE_SIZE / 2;
+		_resizeTopRightHandle.relocate(w - hs, -HANDLE_SIZE / 2);
+		_resizeBottomRightHandle.relocate(w - hs, h - hs);
+		_resizeBottomLeftHandle.relocate(-HANDLE_SIZE / 2, h - hs);
 	}
 
 	public IObjectNode getObjectNode() {

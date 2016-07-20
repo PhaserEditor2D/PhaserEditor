@@ -232,9 +232,9 @@ public class UpdateBehavior {
 		world.setMaxSize(width, height);
 		_canvas.getSelectionPane().setMinSize(width, height);
 		_canvas.getSelectionPane().setMaxSize(width, height);
-		_canvas.getSelectionGlassPane().setMinSize(width, height);
-		_canvas.getSelectionGlassPane().setMaxSize(width, height);
-		_canvas.getWorldGlassPane().repaint();
-		_canvas.getGridPane().repaint();
+		_canvas.getSelectionFrontPane().setMinSize(width, height);
+		_canvas.getSelectionFrontPane().setMaxSize(width, height);
+		_canvas.getFrontGridPane().repaint();
+		_canvas.getBackGridPane().repaint();
 	}
 }

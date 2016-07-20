@@ -469,6 +469,7 @@ public class CanvasEditor extends EditorPart
 		{
 			_toolBarManager.add(new Separator());
 			_toolBarManager.add(simpleCommand("phasereditor.canvas.ui.quickEdit", "shape_square_edit.png"));
+			_toolBarManager.add(simpleCommand("phasereditor.canvas.ui.addsprite", "car_add.png"));
 		}
 
 		{

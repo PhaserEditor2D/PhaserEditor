@@ -34,7 +34,6 @@ import phasereditor.assetpack.core.FrameData;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
-import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.ui.ImageCache;
 
@@ -146,7 +145,7 @@ public class TileSpriteNode extends Pane implements ISpriteNode {
 	}
 
 	@Override
-	public BaseObjectModel getModel() {
+	public TileSpriteModel getModel() {
 		return _control.getModel();
 	}
 

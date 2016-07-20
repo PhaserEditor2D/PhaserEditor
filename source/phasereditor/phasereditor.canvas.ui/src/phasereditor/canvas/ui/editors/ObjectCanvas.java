@@ -67,10 +67,10 @@ public class ObjectCanvas extends FXCanvas {
 	private TreeViewer _outline;
 	private StackPane _root;
 	private ZoomBehavior _zoomBehavior;
-	private Pane _selectionGlassPane;
+	private Pane _selectionFrontPane;
 	private MouseBehavior _mouseBehavior;
-	private GridPane _gridPane;
-	private WorldGlassPane _worldGlassPane;
+	private GridPane _backGridPane;
+	private FrontGridPane _frontGridPane;
 	private PaintBehavior _paintBehavior;
 	private PaletteComp _palette;
 	private CanvasEditor _editor;
@@ -191,32 +191,33 @@ public class ObjectCanvas extends FXCanvas {
 		_root = new StackPane();
 		setScene(new Scene(_root));
 
-		_gridPane = new GridPane(this);
-		_gridPane.setId("__grid-pane__");
+		_backGridPane = new GridPane(this);
+		_backGridPane.setId("__grid-pane__");
 
 		_worldControl = new GroupControl(this, _worldModel);
 		GroupNode world = _worldControl.getNode();
 
-		_worldGlassPane = new WorldGlassPane(this);
-		_worldGlassPane.setId("__world-glass-pane__");
+		_frontGridPane = new FrontGridPane(this);
+		_frontGridPane.setId("__world-glass-pane__");
 
 		_selectionPane = new Pane();
 		_selectionPane.setId("__selection-pane__");
 
-		_selectionGlassPane = new Pane();
-		_selectionGlassPane.setId("__selection-glass-pane__");
+		_selectionFrontPane = new Pane();
+		_selectionFrontPane.setId("__selection-glass-pane__");
+		_selectionFrontPane.setMouseTransparent(true);
 
 		_root.setAlignment(Pos.TOP_LEFT);
 
-		_root.getChildren().setAll(_gridPane, world, _worldGlassPane, _selectionPane, _selectionGlassPane);
+		_root.getChildren().setAll(_backGridPane, world, _frontGridPane, _selectionPane, _selectionFrontPane);
 	}
 
-	public GridPane getGridPane() {
-		return _gridPane;
+	public GridPane getBackGridPane() {
+		return _backGridPane;
 	}
 
-	public WorldGlassPane getWorldGlassPane() {
-		return _worldGlassPane;
+	public FrontGridPane getFrontGridPane() {
+		return _frontGridPane;
 	}
 
 	public Pane getRootPane() {
@@ -231,10 +232,10 @@ public class ObjectCanvas extends FXCanvas {
 		return _selectionPane;
 	}
 
-	public Pane getSelectionGlassPane() {
-		return _selectionGlassPane;
+	public Pane getSelectionFrontPane() {
+		return _selectionFrontPane;
 	}
-
+	
 	public void dropToWorld(CompositeOperation operations, BaseObjectControl<?> control, double sceneX, double sceneY) {
 		// IObjectNode node = control.getIObjectNode();
 		GroupNode worldNode = getWorldNode();

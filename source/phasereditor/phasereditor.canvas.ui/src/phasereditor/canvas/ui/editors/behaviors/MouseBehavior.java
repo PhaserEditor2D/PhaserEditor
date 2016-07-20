@@ -21,10 +21,12 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.behaviors;
 
+import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.ResizeHandler;
 
 /**
  * @author arian
@@ -35,6 +37,7 @@ public class MouseBehavior {
 	private ZoomBehavior _zoomPan;
 	private DragBehavior _drag;
 	private SelectionBehavior _selection;
+	private ResizeHandler _dragHandler;
 
 	public MouseBehavior(ObjectCanvas canvas) {
 		super();
@@ -90,13 +93,28 @@ public class MouseBehavior {
 	}
 
 	private void handleMousePressed(MouseEvent e) {
+
+		Node node = e.getPickResult().getIntersectedNode();
+		if (node instanceof ResizeHandler) {
+			_dragHandler = (ResizeHandler) node;
+			_dragHandler.handleMousePressed(e);
+			return;
+		}
+
+		_dragHandler = null;
+
 		if (e.isMiddleButtonDown()) {
 			_zoomPan.handleMousePressed(e);
+			return;
 		}
 	}
 
 	private void handleDragDetected(MouseEvent e) {
 		if (e.isPrimaryButtonDown()) {
+			if (_dragHandler != null) {
+				return;
+			}
+			
 			if (_selection.isPointingToSelection(e)) {
 				_drag.handleDragDetected(e);
 			} else {
@@ -112,6 +130,12 @@ public class MouseBehavior {
 		}
 
 		if (e.isPrimaryButtonDown()) {
+
+			if (_dragHandler != null) {
+				_dragHandler.handleMouseDragged(e);
+				return;
+			}
+
 			if (_drag.isDragging()) {
 				_drag.handleMouseDragged(e);
 				return;
@@ -127,6 +151,12 @@ public class MouseBehavior {
 		}
 
 		if (e.getButton() == MouseButton.PRIMARY) {
+			if (_dragHandler != null) {
+				_dragHandler.handleMouseReleased(e);
+				_dragHandler = null;
+				return;
+			}
+
 			if (_drag.isDragging()) {
 				_drag.handleMouseReleased(e);
 				return;

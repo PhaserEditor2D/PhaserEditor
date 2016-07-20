@@ -152,6 +152,20 @@
                style="push">
          </command>
          <separator
+               name="phasereditor.canvas.ui.separator4"
+               visible="true">
+         </separator>
+         <command
+               commandId="phasereditor.canvas.ui.resizeTile"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="phasereditor.canvas.ui.tileSelected">
+               </reference>
+            </visibleWhen>
+         </command>
+         <separator
                name="phasereditor.canvas.ui.separator2"
                visible="true">
          </separator>
@@ -327,6 +341,11 @@
             categoryId="phasereditor.canvas.ui.editor.category"
             id="phasereditor.canvas.ui.addsprite"
             name="Add Sprite">
+      </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.resizeTile"
+            name="Resize Tile Sprite">
       </command>
       
    </extension>
@@ -709,6 +728,14 @@
             </with>
          </activeWhen>
       </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.ResizeTileHandler"
+            commandId="phasereditor.canvas.ui.resizeTile">
+         <enabledWhen>
+            <reference
+                  definitionId="phasereditor.canvas.ui.tileSelected">
+            </reference></enabledWhen>
+      </handler>
       
    </extension>
    <extension
@@ -803,6 +830,12 @@
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M1+M2+A">
       </key>
+      <key
+            commandId="phasereditor.canvas.ui.resizeTile"
+            contextId="phasereditor.canvas.ui.nodescontext"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="L">
+      </key>
    </extension>
    <extension
          point="org.eclipse.core.expressions.definitions">
@@ -826,6 +859,18 @@
                   ifEmpty="false">
                <instanceof
                      value="phasereditor.canvas.ui.shapes.GroupNode">
+               </instanceof>
+            </iterate>
+         </with>
+      </definition>
+      <definition
+            id="phasereditor.canvas.ui.tileSelected">
+         <with
+               variable="selection">
+            <iterate
+                  ifEmpty="false">
+               <instanceof
+                     value="phasereditor.canvas.ui.shapes.TileSpriteNode">
                </instanceof>
             </iterate>
          </with>
