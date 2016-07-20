@@ -24,6 +24,7 @@ package phasereditor.ui.views;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPersistableElement;
 
 @SuppressWarnings("unused")
@@ -48,4 +49,8 @@ public interface IPreviewFactory {
 	public default Image getIcon(Object element) {
 		return null;
 	}
+
+	public void savePreviewControl(Control previewControl, IMemento memento);
+	
+	public void initPreviewControl(Control previewControl, IMemento initialMemento);
 }

@@ -26,6 +26,7 @@ import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
@@ -56,6 +57,16 @@ public class FilePreviewAdapterFactory implements IAdapterFactory {
 
 	private static abstract class FilePreviewFactory implements IPreviewFactory {
 		public FilePreviewFactory() {
+		}
+
+		@Override
+		public void initPreviewControl(Control previewControl, IMemento initialMemento) {
+			// nothing
+		}
+		
+		@Override
+		public void savePreviewControl(Control previewControl, IMemento memento) {
+			//
 		}
 
 		@Override

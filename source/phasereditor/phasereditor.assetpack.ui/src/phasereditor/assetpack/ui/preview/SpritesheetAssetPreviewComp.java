@@ -68,6 +68,10 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
 import phasereditor.assetpack.ui.widgets.SpritesheetPreviewCanvas;
 import phasereditor.ui.Animation;
+import org.eclipse.wb.swt.ResourceManager;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.ui.IMemento;
 
 public class SpritesheetAssetPreviewComp extends Composite {
 	private DataBindingContext m_bindingContext;
@@ -117,7 +121,7 @@ public class SpritesheetAssetPreviewComp extends Composite {
 
 		_bottomPanel = new Composite(this, SWT.NONE);
 		_bottomPanel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		GridLayout gl_bottomPanel = new GridLayout(4, false);
+		GridLayout gl_bottomPanel = new GridLayout(5, false);
 		gl_bottomPanel.marginWidth = 0;
 		gl_bottomPanel.marginHeight = 0;
 		_bottomPanel.setLayout(gl_bottomPanel);
@@ -144,6 +148,17 @@ public class SpritesheetAssetPreviewComp extends Composite {
 		combo.setLayoutData(gd_combo);
 		_comboViewer.setLabelProvider(new LabelProvider());
 		_comboViewer.setContentProvider(new ArrayContentProvider());
+
+		_toolBar = new ToolBar(_bottomPanel, SWT.FLAT | SWT.RIGHT);
+
+		_toolItem = new ToolItem(_toolBar, SWT.NONE);
+		_toolItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				hideToolbar();
+			}
+		});
+		_toolItem.setImage(ResourceManager.getPluginImage("org.eclipse.ui", "/icons/full/elcl16/close_view.png"));
 		_gridButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -157,6 +172,16 @@ public class SpritesheetAssetPreviewComp extends Composite {
 
 		decorateControls();
 
+	}
+
+	protected void hideToolbar() {
+		GridData data = (GridData) _bottomPanel.getLayoutData();
+		data.heightHint = 0;
+		_bottomPanel.setVisible(false);
+		Composite parent = _bottomPanel.getParent();
+		GridLayout layout = (GridLayout) parent.getLayout();
+		layout.verticalSpacing = 0;
+		parent.layout();
 	}
 
 	private void afterCreateWidgets() {
@@ -208,7 +233,6 @@ public class SpritesheetAssetPreviewComp extends Composite {
 				}
 			}
 		});
-
 	}
 
 	private Label _label;
@@ -333,6 +357,8 @@ public class SpritesheetAssetPreviewComp extends Composite {
 	private ComboViewer _comboViewer;
 	private Composite _bottomPanel;
 	private Label _sizeLabel;
+	private ToolBar _toolBar;
+	private ToolItem _toolItem;
 
 	public void addPropertyChangeListener(PropertyChangeListener l) {
 		support.addPropertyChangeListener(l);
@@ -362,5 +388,17 @@ public class SpritesheetAssetPreviewComp extends Composite {
 		bindingContext.bindValue(observeSingleSelection_comboViewer, fps_selfObserveValue, null, null);
 		//
 		return bindingContext;
+	}
+
+	public void initState(IMemento memento) {
+		Boolean b = memento.getBoolean("SpritesheetAssetPreviewComp.showToolbar");
+		boolean showToolbar = b != null && b.booleanValue();
+		if (!showToolbar) {
+			hideToolbar();
+		}
+	}
+
+	public void saveState(IMemento memento) {
+		memento.putBoolean("SpritesheetAssetPreviewComp.showToolbar", _bottomPanel.isVisible());
 	}
 }

@@ -8,6 +8,7 @@
             name="Phaser">
       </category>
       <view
+            allowMultiple="true"
             category="phasereditor.ui.phaser"
             class="phasereditor.ui.views.PreviewView"
             icon="icons/eye.png"

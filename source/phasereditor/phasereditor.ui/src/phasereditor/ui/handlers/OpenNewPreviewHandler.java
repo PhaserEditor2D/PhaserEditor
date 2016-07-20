@@ -27,6 +27,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -37,16 +38,14 @@ public class OpenNewPreviewHandler extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
-			HandlerUtil
-					.getActiveWorkbenchWindow(event)
-					.getActivePage()
-					.showView(PreviewView.ID,
-							PreviewView.ID + "@" + currentTimeMillis(),
-							IWorkbenchPage.VIEW_CREATE);
+			IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
+			IWorkbenchPage page = window.getActivePage();
+			page.showView(PreviewView.ID, PreviewView.ID + "@" + currentTimeMillis(), IWorkbenchPage.VIEW_CREATE);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+
 		return null;
 	}
 

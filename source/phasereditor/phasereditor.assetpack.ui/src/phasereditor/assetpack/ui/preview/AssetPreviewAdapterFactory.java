@@ -170,6 +170,20 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 				}
 			};
 		}
+		
+		@Override
+		public void initPreviewControl(Control previewControl, IMemento memento) {
+			if (previewControl instanceof SpritesheetAssetPreviewComp) {
+				((SpritesheetAssetPreviewComp) previewControl).initState(memento);
+			}
+		}
+		
+		@Override
+		public void savePreviewControl(Control previewControl, IMemento memento) {
+			if (previewControl instanceof SpritesheetAssetPreviewComp) {
+				((SpritesheetAssetPreviewComp) previewControl).saveState(memento);
+			}
+		}
 	}
 
 	private static IPreviewFactory createPhysicsPreviewAdapter() {
@@ -371,6 +385,12 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 	private static IPreviewFactory createSpritesheetPreviewAdapter() {
 		return new AssetModelPreviewFactory() {
 
+			@Override
+			public void initPreviewControl(Control preview, IMemento initialMemento) {
+				SpritesheetAssetPreviewComp comp = (SpritesheetAssetPreviewComp) preview;
+				comp.initState(initialMemento);
+			}
+			
 			@Override
 			public void updateControl2(Control preview, Object element) {
 				SpritesheetAssetPreviewComp comp = (SpritesheetAssetPreviewComp) preview;

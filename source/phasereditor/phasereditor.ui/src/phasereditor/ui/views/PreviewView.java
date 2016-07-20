@@ -72,6 +72,7 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 	private IAdaptable _initalElement;
 	private Object _previewElement;
 	private Control _previewControl;
+	private IMemento _initialMemento;
 
 	public PreviewView() {
 	}
@@ -111,6 +112,10 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 				memento.putString(ELEM_FACTORY_KEY, id);
 				persistable.saveState(memento);
 			}
+
+			if (_previewControl != null) {
+				_previewFactory.savePreviewControl(_previewControl, memento);
+			}
 		}
 	}
 
@@ -124,6 +129,7 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 					IElementFactory elemFactory = PlatformUI.getWorkbench().getElementFactory(id);
 					if (elemFactory != null) {
 						_initalElement = elemFactory.createElement(memento);
+						_initialMemento = memento;
 					}
 				}
 			}
@@ -170,6 +176,9 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 
 		if (_initalElement != null) {
 			preview(_initalElement);
+			if (_previewFactory != null && _initialMemento != null) {
+				_previewFactory.initPreviewControl(_previewControl, _initialMemento);
+			}
 		}
 	}
 
