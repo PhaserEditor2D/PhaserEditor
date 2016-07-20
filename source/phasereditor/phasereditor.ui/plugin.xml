@@ -35,9 +35,19 @@
          point="org.eclipse.ui.menus">
       <menuContribution
             allPopups="false"
+            locationURI="toolbar:phasereditor.ui.preview?before=additions">
+         <command
+               commandId="phasereditor.ui.commands.openNewPreview"
+               icon="platform:/plugin/org.eclipse.ui.views/icons/full/elcl16/new.png"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
             locationURI="menu:phasereditor.ui.preview?before=additions">
          <command
                commandId="phasereditor.ui.commands.openNewPreview"
+               icon="platform:/plugin/org.eclipse.ui.views/icons/full/elcl16/new.png"
                style="push">
          </command>
          <command
