@@ -199,10 +199,21 @@ public class CreateBehavior {
 			}
 		}
 
-		double x = _canvas.getScene().getWidth() / 2 + 50 - Math.random() * 100;
-		double y = _canvas.getScene().getHeight() / 2 + 50 - Math.random() * 100;
+		double x;
+		double y;
+		MouseBehavior mouse = _canvas.getMouseBehavior();
 		{
-			Point2D p = _canvas.getWorldNode().sceneToLocal(x, y);
+			Point2D pos = mouse.getMousePosition();
+			if (pos == null) {
+				x = _canvas.getScene().getWidth() / 2;
+				y = _canvas.getScene().getHeight() / 2;
+			} else {
+				x = pos.getX();
+				y = pos.getY();
+			}
+		}
+		{
+			Point2D p = parent.getNode().sceneToLocal(x, y);
 			x = p.getX();
 			y = p.getY();
 		}
@@ -235,8 +246,8 @@ public class CreateBehavior {
 		int i = 0;
 		for (BaseObjectModel copy : copies) {
 			selection.add(copy.getId());
-			double x2 = x + copy.getX();
-			double y2 = x + copy.getY();
+			double x2 = mouse.stepX(x + copy.getX(), false);
+			double y2 = mouse.stepY(y + copy.getY(), false);
 			int index = indexes.get(i++).intValue();
 			AddNodeOperation op = new AddNodeOperation(copy.toJSON(), index, x2, y2, parent.getId());
 			operations.add(op);

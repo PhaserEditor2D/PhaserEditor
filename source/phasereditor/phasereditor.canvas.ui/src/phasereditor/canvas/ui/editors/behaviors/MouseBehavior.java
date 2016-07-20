@@ -21,12 +21,16 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.behaviors;
 
+import static java.lang.System.out;
+
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.ResizeHandlerNode;
+import phasereditor.canvas.ui.editors.SceneSettings;
 
 /**
  * @author arian
@@ -38,6 +42,7 @@ public class MouseBehavior {
 	private DragBehavior _drag;
 	private SelectionBehavior _selection;
 	private ResizeHandlerNode _dragHandler;
+	private Point2D _mousePosition;
 
 	public MouseBehavior(ObjectCanvas canvas) {
 		super();
@@ -74,7 +79,7 @@ public class MouseBehavior {
 				ex.printStackTrace();
 			}
 		});
-		
+
 		_canvas.getScene().addEventFilter(MouseEvent.MOUSE_MOVED, e -> {
 			try {
 				handleMouseMoved(e);
@@ -82,7 +87,7 @@ public class MouseBehavior {
 				ex.printStackTrace();
 			}
 		});
-		
+
 		_canvas.getScene().addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
 			try {
 				handleMouseExited(e);
@@ -104,21 +109,25 @@ public class MouseBehavior {
 		_zoomPan = _canvas.getZoomBehavior();
 	}
 
-	/**
-	 * @param e
-	 */
+	public Point2D getMousePosition() {
+		return _mousePosition;
+	}
+
 	private void handleMouseMoved(MouseEvent e) {
+		_mousePosition = new Point2D(e.getSceneX(), e.getSceneY());
+		out.println(_mousePosition);
 		if (_dragHandler != null) {
 			_dragHandler.handleMouseMoved(e);
 		}
 	}
 
 	private void handleMouseExited(MouseEvent e) {
+		_mousePosition = null;
 		if (_dragHandler != null) {
 			_dragHandler.handleMouseExited(e);
 		}
 	}
-	
+
 	private void handleScroll(ScrollEvent e) {
 		_zoomPan.handleScroll(e);
 	}
@@ -145,7 +154,7 @@ public class MouseBehavior {
 			if (_dragHandler != null) {
 				return;
 			}
-			
+
 			if (_selection.isPointingToSelection(e)) {
 				_drag.handleDragDetected(e);
 			} else {
@@ -194,5 +203,33 @@ public class MouseBehavior {
 			}
 			_selection.handleMouseReleased(e);
 		}
+	}
+
+	public double stepX(double x, boolean round) {
+		SceneSettings s = _canvas.getSettingsModel();
+		if (s.isEnableStepping()) {
+			double v = x / s.getStepWidth();
+			if (round) {
+				v = Math.round(v);
+			} else {
+				v = Math.floor(v);
+			}
+			return v * s.getStepWidth();
+		}
+		return x;
+	}
+
+	public double stepY(double y, boolean round) {
+		SceneSettings s = _canvas.getSettingsModel();
+		if (s.isEnableStepping()) {
+			double v = y / s.getStepHeight();
+			if (round) {
+				v = Math.round(v);
+			} else {
+				v = Math.floor(v);
+			}
+			return v * s.getStepHeight();
+		}
+		return y;
 	}
 }
