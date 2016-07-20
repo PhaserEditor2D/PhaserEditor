@@ -80,6 +80,7 @@ public class ResizeHandler extends Rectangle {
 		_selnode.updateBounds(_selnode.getCanvas().getSelectionBehavior().buildSelectionBounds(node));
 	}
 
+	@SuppressWarnings("unused")
 	public void handleMouseReleased(MouseEvent e) {
 		handleDone();
 	}

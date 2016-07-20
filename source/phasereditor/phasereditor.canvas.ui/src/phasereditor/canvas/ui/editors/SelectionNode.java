@@ -40,6 +40,8 @@ import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.shape.StrokeType;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.TileSpriteModel;
+import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
+import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.TileSpriteNode;
 
@@ -125,6 +127,23 @@ public class SelectionNode extends Pane {
 				TileSpriteModel tilemodel = tile.getModel();
 				_initWidth = tilemodel.getWidth();
 				_initHeight = tilemodel.getHeight();
+			}
+
+			@SuppressWarnings("synthetic-access")
+			@Override
+			protected void handleDone() {
+				CompositeOperation operations = new CompositeOperation();
+				TileSpriteNode tile = (TileSpriteNode) getObjectNode();
+				TileSpriteModel tilemodel = tile.getModel();
+				double w = tilemodel.getWidth();
+				double h = tilemodel.getHeight();
+				tilemodel.setWidth(_initWidth);
+				tilemodel.setHeight(_initHeight);
+				operations.add(new ChangePropertyOperation<Number>(tilemodel.getId(), "width",
+						Double.valueOf(w)));
+				operations.add(new ChangePropertyOperation<Number>(tilemodel.getId(), "height",
+						Double.valueOf(h)));
+				_canvas.getUpdateBehavior().executeOperations(operations);
 			}
 
 			@SuppressWarnings("synthetic-access")
