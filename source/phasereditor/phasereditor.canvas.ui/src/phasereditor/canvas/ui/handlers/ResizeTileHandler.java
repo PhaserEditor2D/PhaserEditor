@@ -44,11 +44,7 @@ public class ResizeTileHandler extends AbstractHandler {
 		return null;
 	}
 
-	/**
-	 * @param canvas
-	 * @return
-	 */
-	private SelectionNode getSelectedNode(ObjectCanvas canvas) {
+	private static SelectionNode getSelectedNode(ObjectCanvas canvas) {
 		return (SelectionNode) canvas.getSelectionPane().getChildren().get(0);
 	}
 }

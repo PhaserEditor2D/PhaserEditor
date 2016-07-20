@@ -892,34 +892,6 @@
                </iterate>
             </and>
          </with>
-         <with
-               variable="selection">
-            <and>
-               <count
-                     value="1">
-               </count>
-               <iterate
-                     ifEmpty="false">
-                  <instanceof
-                        value="phasereditor.canvas.ui.shapes.TileSpriteNode">
-                  </instanceof>
-               </iterate>
-            </and>
-         </with>
-         <with
-               variable="selection">
-            <iterate
-                  ifEmpty="false">
-               <instanceof
-                     value="phasereditor.canvas.ui.shapes.TileSpriteNode">
-               </instanceof>
-            </iterate>
-            <and>
-               <count
-                     value="1">
-               </count>
-            </and>
-         </with>
       </definition>
    </extension>
    <extension

@@ -45,7 +45,6 @@ import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.DeleteNodeOperation;
 import phasereditor.canvas.ui.editors.operations.SelectOperation;
-import phasereditor.canvas.ui.editors.palette.PaletteComp;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.CanvasObjectFactory;
 import phasereditor.canvas.ui.shapes.GroupControl;
@@ -58,11 +57,9 @@ import phasereditor.canvas.ui.shapes.IObjectNode;
  */
 public class CreateBehavior {
 	private ObjectCanvas _canvas;
-	private PaletteComp _palette;
 
-	public CreateBehavior(ObjectCanvas canvas, PaletteComp palette) {
+	public CreateBehavior(ObjectCanvas canvas) {
 		_canvas = canvas;
-		_palette = palette;
 	}
 
 	public void dropAssets(IStructuredSelection selection, DragEvent event) {
@@ -105,7 +102,8 @@ public class CreateBehavior {
 			_canvas.getUpdateBehavior().executeOperations(operations);
 		}
 
-		_palette.drop(elems);
+		// do not add it to palette.
+		// _palette.drop(elems);
 	}
 
 	public String makeGroup(CompositeOperation operations, Object... elems) {

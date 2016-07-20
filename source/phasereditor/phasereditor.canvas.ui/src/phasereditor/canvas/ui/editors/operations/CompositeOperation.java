@@ -45,11 +45,13 @@ import phasereditor.canvas.ui.editors.CanvasEditor;
 public class CompositeOperation extends AbstractOperation {
 
 	private List<IUndoableOperation> _operations;
+	private boolean _parent;
 
 	public CompositeOperation(IUndoableOperation... operations) {
 		super("CompositeChangePropertyOperation");
 		_operations = new ArrayList<>(Arrays.asList(operations));
 		addContext(CanvasEditor.UNDO_CONTEXT);
+		_parent = true;
 	}
 
 	public boolean isEmpty() {
@@ -57,18 +59,29 @@ public class CompositeOperation extends AbstractOperation {
 	}
 
 	public int getSize() {
-		return _operations.size();
+		int size = 1;
+		for (IUndoableOperation o : _operations) {
+			if (o instanceof CompositeOperation) {
+				size += ((CompositeOperation) o).getSize();
+			} else {
+				size++;
+			}
+		}
+		return size;
 	}
 
 	public void add(IUndoableOperation operation) {
 		_operations.add(operation);
+		if (operation instanceof CompositeOperation) {
+			((CompositeOperation) operation)._parent = false;
+		}
 	}
 
 	@Override
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		IStatus status = Status.OK_STATUS;
 
-		if (isLongOperation()) {
+		if (_parent && isLongOperation()) {
 			try {
 				new ProgressMonitorDialog(Display.getCurrent().getActiveShell()).run(false, false, monitor2 -> {
 					try {
@@ -100,7 +113,7 @@ public class CompositeOperation extends AbstractOperation {
 	}
 
 	private boolean isLongOperation() {
-		return getSize() > 3;
+		return getSize() > 10;
 	}
 
 	private static void fireWorldChanged(IAdaptable info) {

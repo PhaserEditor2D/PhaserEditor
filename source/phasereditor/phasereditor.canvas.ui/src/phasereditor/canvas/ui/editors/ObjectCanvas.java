@@ -93,7 +93,7 @@ public class ObjectCanvas extends FXCanvas {
 
 		initDrop();
 
-		_createBehavior = new CreateBehavior(this, palette);
+		_createBehavior = new CreateBehavior(this);
 		_selectionBehavior = new SelectionBehavior(this);
 		_dragBehavior = new DragBehavior(this);
 		_updateBehavior = new UpdateBehavior(this, _pgrid, outline);

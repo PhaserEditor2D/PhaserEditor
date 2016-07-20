@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.operations;
 
+import static java.lang.System.currentTimeMillis;
+import static java.lang.System.out;
+
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -54,6 +57,8 @@ public class DeleteNodeOperation extends AbstractNodeOperation {
 	@Override
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		BaseObjectControl<?> control = findControl(info);
+		long t = currentTimeMillis();
+		out.println("deleting " + control.getModel().getEditorName());
 		GroupNode group = control.getIObjectNode().getGroup();
 
 		_groupId = group.getControl().getId();
@@ -64,6 +69,8 @@ public class DeleteNodeOperation extends AbstractNodeOperation {
 
 		remove(control);
 
+		out.println("done " + (currentTimeMillis() - t) + "ms");
+		
 		return Status.OK_STATUS;
 	}
 

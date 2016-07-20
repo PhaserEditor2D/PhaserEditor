@@ -77,11 +77,11 @@ public class PaletteComp extends Composite {
 		afterCreateWidgets();
 
 	}
-	
+
 	public IProject getProject() {
 		return _project;
 	}
-	
+
 	public void setProject(IProject project) {
 		_project = project;
 	}
