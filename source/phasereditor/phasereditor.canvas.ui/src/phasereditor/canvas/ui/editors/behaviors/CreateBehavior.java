@@ -209,27 +209,37 @@ public class CreateBehavior {
 
 		CompositeOperation operations = new CompositeOperation();
 
-		int i = 0;
+		List<BaseObjectModel> copies = new ArrayList<>();
+		List<Integer> indexes = new ArrayList<>();
+		double minx = Double.MAX_VALUE;
+		double miny = Double.MAX_VALUE;
+		{
+			for (Object elem : data) {
+				if (elem instanceof IObjectNode) {
+					IObjectNode node = (IObjectNode) elem;
+					BaseObjectModel copy = node.getModel().copy(false);
+					copies.add(copy);
+					minx = Math.min(minx, copy.getX());
+					miny = Math.min(miny, copy.getY());
+					indexes.add(Integer.valueOf(parent.getNode().getChildren().indexOf(node)));
+				}
+			}
+
+			for (BaseObjectModel copy : copies) {
+				copy.setX(copy.getX() - minx);
+				copy.setY(copy.getY() - miny);
+			}
+		}
 
 		List<String> selection = new ArrayList<>();
-
-		for (Object elem : data) {
-			if (elem instanceof IObjectNode) {
-				IObjectNode node = (IObjectNode) elem;
-
-				BaseObjectModel copy = node.getModel().copy(false);
-				selection.add(copy.getId());
-
-				double x2 = x + i * 20;
-				double y2 = y + i * 20;
-
-				int index = parent.getNode().getChildren().indexOf(node);
-
-				AddNodeOperation op = new AddNodeOperation(copy.toJSON(), index, x2, y2, parent.getId());
-				operations.add(op);
-
-				i++;
-			}
+		int i = 0;
+		for (BaseObjectModel copy : copies) {
+			selection.add(copy.getId());
+			double x2 = x + copy.getX();
+			double y2 = x + copy.getY();
+			int index = indexes.get(i++).intValue();
+			AddNodeOperation op = new AddNodeOperation(copy.toJSON(), index, x2, y2, parent.getId());
+			operations.add(op);
 		}
 		operations.add(new SelectOperation(selection));
 		_canvas.getUpdateBehavior().executeOperations(operations);
