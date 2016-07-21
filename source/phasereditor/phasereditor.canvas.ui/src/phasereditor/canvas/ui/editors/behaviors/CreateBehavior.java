@@ -22,7 +22,6 @@
 package phasereditor.canvas.ui.editors.behaviors;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -131,9 +130,9 @@ public class CreateBehavior {
 			children.add((IObjectNode) node);
 		}
 
-		// reverse it because in selection it is reversed
+		// sort it by the display order
 
-		Collections.reverse(children);
+		children.sort(IObjectNode.DISPLAY_ORDER_COMPARATOR);
 
 		// remove selected nodes
 
@@ -185,15 +184,7 @@ public class CreateBehavior {
 			}
 		}
 
-		filtered.sort((a, b) -> {
-			BaseObjectModel i = a.getModel();
-			BaseObjectModel j = b.getModel();
-			int c = Integer.compare(i.getDepth(), j.getDepth());
-			if (c == 0) {
-				c = Integer.compare(i.getIndex(), j.getIndex());
-			}
-			return c;
-		});
+		filtered.sort(IObjectNode.DISPLAY_ORDER_COMPARATOR);
 
 		GroupControl worldControl = _canvas.getWorldNode().getControl();
 		GroupControl pasteIntoThis = worldControl;

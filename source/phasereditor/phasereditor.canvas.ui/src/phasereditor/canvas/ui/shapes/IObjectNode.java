@@ -22,6 +22,7 @@
 package phasereditor.canvas.ui.shapes;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import javafx.scene.Node;
@@ -56,4 +57,14 @@ public interface IObjectNode  {
 		}
 		return list;
 	}
+	
+	public static Comparator<IObjectNode> DISPLAY_ORDER_COMPARATOR = (a, b) -> {
+		BaseObjectModel i = a.getModel();
+		BaseObjectModel j = b.getModel();
+		int c = Integer.compare(i.getDepth(), j.getDepth());
+		if (c == 0) {
+			c = Integer.compare(i.getIndex(), j.getIndex());
+		}
+		return c;
+	};
 }
