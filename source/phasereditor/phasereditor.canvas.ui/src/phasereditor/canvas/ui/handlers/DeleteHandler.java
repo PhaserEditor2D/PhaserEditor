@@ -15,6 +15,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.DeleteNodeOperation;
+import phasereditor.canvas.ui.editors.operations.RemoveFromSelectionOperation;
 import phasereditor.canvas.ui.editors.operations.SelectOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
@@ -38,12 +39,18 @@ public class DeleteHandler extends AbstractHandler {
 		List<IObjectNode> nodes = filterSelection(sel);
 
 		CompositeOperation operations = new CompositeOperation();
+
 		SelectOperation select = new SelectOperation();
 		operations.add(select);
 
+		RemoveFromSelectionOperation clearSelection = new RemoveFromSelectionOperation();
+		operations.add(clearSelection);
+
 		for (IObjectNode node : nodes) {
 			select.add(node.getModel().getId());
-			operations.add(new DeleteNodeOperation(node.getControl().getId()));
+			String id = node.getControl().getId();
+			operations.add(new DeleteNodeOperation(id, false));
+			clearSelection.add(id);
 		}
 
 		editor.getCanvas().getUpdateBehavior().executeOperations(operations);

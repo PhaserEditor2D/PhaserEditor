@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.behaviors;
 
-import static java.lang.System.out;
-
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
@@ -115,7 +113,6 @@ public class MouseBehavior {
 
 	private void handleMouseMoved(MouseEvent e) {
 		_mousePosition = new Point2D(e.getSceneX(), e.getSceneY());
-		out.println(_mousePosition);
 		if (_dragHandler != null) {
 			_dragHandler.handleMouseMoved(e);
 		}

@@ -456,6 +456,17 @@ public class SelectionBehavior implements ISelectionProvider {
 		}
 	}
 
+	public void removeNodesFromSelection(List<Node> nodes) {
+		@SuppressWarnings("unchecked")
+		List<Object> list = new ArrayList<>(_selection.toList());
+		for (Node node : nodes) {
+			if (isSelected(node)) {
+				list.remove(node);
+			}
+		}
+		setSelection(new StructuredSelection(list));
+	}
+
 	public void abort() {
 		if (_selectedNodes.isEmpty()) {
 			return;

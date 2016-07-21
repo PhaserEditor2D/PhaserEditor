@@ -35,6 +35,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Tree;
 
 import phasereditor.canvas.ui.editors.CanvasEditor;
 
@@ -86,12 +87,18 @@ public class CompositeOperation extends AbstractOperation {
 				new ProgressMonitorDialog(Display.getCurrent().getActiveShell()).run(false, false, monitor2 -> {
 					try {
 						monitor2.beginTask("Executing operations", getSize());
-
+						
+						Tree outlineTree = info.getAdapter(CanvasEditor.class).getOutline().getTree();
+						
+						outlineTree.setRedraw(false);
+						
 						for (IUndoableOperation op : _operations) {
 							op.execute(monitor, info);
 							monitor2.worked(1);
 						}
 
+						outlineTree.setRedraw(true);
+						
 						fireWorldChanged(info);
 
 					} catch (ExecutionException e) {
@@ -113,7 +120,7 @@ public class CompositeOperation extends AbstractOperation {
 	}
 
 	private boolean isLongOperation() {
-		return getSize() > 10;
+		return getSize() > 50;
 	}
 
 	private static void fireWorldChanged(IAdaptable info) {

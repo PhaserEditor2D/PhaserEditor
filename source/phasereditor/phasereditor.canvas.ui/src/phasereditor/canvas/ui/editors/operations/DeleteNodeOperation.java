@@ -46,12 +46,18 @@ import phasereditor.canvas.ui.shapes.GroupNode;
  */
 public class DeleteNodeOperation extends AbstractNodeOperation {
 
+	private boolean _updateSelection;
 	private String _groupId;
 	private int _index;
 	private JSONObject _data;
 
-	public DeleteNodeOperation(String nodeId) {
+	public DeleteNodeOperation(String nodeId, boolean updateSelection) {
 		super("DeleteNodeOperation", nodeId);
+		_updateSelection = updateSelection;
+	}
+	
+	public DeleteNodeOperation(String nodeId) {
+		this(nodeId, true);
 	}
 
 	@Override
@@ -70,7 +76,7 @@ public class DeleteNodeOperation extends AbstractNodeOperation {
 		remove(control);
 
 		out.println("done " + (currentTimeMillis() - t) + "ms");
-		
+
 		return Status.OK_STATUS;
 	}
 
@@ -93,12 +99,14 @@ public class DeleteNodeOperation extends AbstractNodeOperation {
 		return Status.OK_STATUS;
 	}
 
-	private static void remove(BaseObjectControl<?> control) {
+	private void remove(BaseObjectControl<?> control) {
 		ObjectCanvas canvas = control.getCanvas();
 
 		control.removeme();
-
-		canvas.getSelectionBehavior().removeNodeFromSelection(control.getNode());
+		
+		if (_updateSelection) {
+			canvas.getSelectionBehavior().removeNodeFromSelection(control.getNode());
+		}
 	}
 
 }

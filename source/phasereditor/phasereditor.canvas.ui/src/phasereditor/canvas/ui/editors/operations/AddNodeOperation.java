@@ -83,8 +83,6 @@ public class AddNodeOperation extends AbstractNodeOperation {
 
 		canvas.getSelectionBehavior().removeNodeFromSelection(control.getNode());
 		
-		canvas.getUpdateBehavior().fireWorldChanged();
-		
 		return Status.OK_STATUS;
 	}
 
@@ -100,8 +98,6 @@ public class AddNodeOperation extends AbstractNodeOperation {
 		BaseObjectControl<?> control = CanvasObjectFactory.createObjectControl(canvas, model);
 		groupControl.addChild(_index, control.getIObjectNode());
 
-		canvas.getUpdateBehavior().fireWorldChanged();
-		
 		return Status.OK_STATUS;
 	}
 

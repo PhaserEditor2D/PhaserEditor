@@ -21,61 +21,57 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.operations;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.operations.AbstractOperation;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.json.JSONObject;
 
-import phasereditor.canvas.ui.editors.CanvasEditor;
+import javafx.scene.Node;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
-import phasereditor.canvas.ui.editors.SceneSettings;
-import phasereditor.canvas.ui.editors.behaviors.UpdateBehavior;
 
 /**
  * @author arian
  *
  */
-public class ChangeSettingsOperation extends AbstractOperation {
+public class RemoveFromSelectionOperation extends AbstractNodeOperation{
 
-	private JSONObject _settings;
-	private JSONObject _beforeSettings;
-
-	public ChangeSettingsOperation(JSONObject settings) {
-		super("ChangeSettingsOperation");
-		_settings = settings;
+	private List<String> _idList;
+	
+	/**
+	 * @param label
+	 * @param controlId
+	 */
+	public RemoveFromSelectionOperation() {
+		super("UpdateSelectionOperation", null);
+		_idList = new ArrayList<>();
 	}
 
+	public void add(String id) {
+		_idList.add(id);
+	}
+	
 	@Override
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		_beforeSettings = new JSONObject();
-		CanvasEditor editor = info.getAdapter(CanvasEditor.class);
-		ObjectCanvas canvas = editor.getCanvas();
-		SceneSettings model = canvas.getSettingsModel();
-		model.write(_beforeSettings);
-		model.read(_settings);
-		UpdateBehavior update = canvas.getUpdateBehavior();
-		update.updateFromSettings();
+		ObjectCanvas canvas = getCanvas(info);
+		List<Node> nodes = new ArrayList<>();
+		for(String id : _idList) {
+			nodes.add(findControl(info, id).getNode());
+		}
+		canvas.getSelectionBehavior().removeNodesFromSelection(nodes);
 		return Status.OK_STATUS;
 	}
 
 	@Override
 	public IStatus redo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		CanvasEditor editor = info.getAdapter(CanvasEditor.class);
-		SceneSettings model = editor.getCanvas().getSettingsModel();
-		model.read(_settings);
-		editor.getCanvas().getUpdateBehavior().updateFromSettings();
-		return Status.OK_STATUS;
+		return execute(monitor, info);
 	}
 
 	@Override
 	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		CanvasEditor editor = info.getAdapter(CanvasEditor.class);
-		SceneSettings model = editor.getCanvas().getSettingsModel();
-		model.read(_beforeSettings);
-		editor.getCanvas().getUpdateBehavior().updateFromSettings();
 		return Status.OK_STATUS;
 	}
 

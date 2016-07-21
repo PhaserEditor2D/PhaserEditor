@@ -46,7 +46,6 @@ public class ChangePropertyOperation<T> extends AbstractNodeOperation {
 		super("ChangePropertyOperation", controlId);
 		_propId = propId;
 		_value = value;
-		addContext(CanvasEditor.UNDO_CONTEXT);
 	}
 
 	private IStatus setValue(T value, IAdaptable info) {
