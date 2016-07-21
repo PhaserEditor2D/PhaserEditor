@@ -599,6 +599,10 @@ public class CanvasEditor extends EditorPart
 	public TreeViewer getOutline() {
 		return _outlineTree.getViewer();
 	}
+	
+	public PGrid getPropertyGrid() {
+		return _grid;
+	}
 
 	@Override
 	public void dispose() {

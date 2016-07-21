@@ -82,45 +82,49 @@ public class CompositeOperation extends AbstractOperation {
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		IStatus status = Status.OK_STATUS;
 
-		if (_parent && isLongOperation()) {
-			try {
-				new ProgressMonitorDialog(Display.getCurrent().getActiveShell()).run(false, false, monitor2 -> {
-					try {
-						monitor2.beginTask("Executing operations", getSize());
-						
-						Tree outlineTree = info.getAdapter(CanvasEditor.class).getOutline().getTree();
-						
-						outlineTree.setRedraw(false);
-						
-						for (IUndoableOperation op : _operations) {
-							op.execute(monitor, info);
-							monitor2.worked(1);
+		CanvasEditor editor = info.getAdapter(CanvasEditor.class);
+		Tree outlineTree = editor.getOutline().getTree();
+		Tree gridTree = editor.getPropertyGrid().getViewer().getTree();
+		outlineTree.setRedraw(false);
+		gridTree.setRedraw(false);
+
+		try {
+			if (isLongOperation()) {
+				try {
+					new ProgressMonitorDialog(Display.getCurrent().getActiveShell()).run(false, false, monitor2 -> {
+						try {
+							monitor2.beginTask("Executing operations", getSize());
+
+							for (IUndoableOperation op : _operations) {
+								op.execute(monitor, info);
+								monitor2.worked(1);
+							}
+							fireWorldChanged(info);
+
+						} catch (ExecutionException e) {
+							e.printStackTrace();
 						}
-
-						outlineTree.setRedraw(true);
-						
-						fireWorldChanged(info);
-
-					} catch (ExecutionException e) {
-						e.printStackTrace();
-					}
-					monitor2.done();
-				});
-			} catch (InvocationTargetException | InterruptedException e) {
-				e.printStackTrace();
+						monitor2.done();
+					});
+				} catch (InvocationTargetException | InterruptedException e) {
+					e.printStackTrace();
+				}
+			} else {
+				for (IUndoableOperation op : _operations) {
+					op.execute(monitor, info);
+				}
+				fireWorldChanged(info);
 			}
-		} else {
-			for (IUndoableOperation op : _operations) {
-				op.execute(monitor, info);
-			}
-			fireWorldChanged(info);
+		} finally {
+			outlineTree.setRedraw(true);
+			gridTree.setRedraw(true);
 		}
 
 		return status;
 	}
 
 	private boolean isLongOperation() {
-		return getSize() > 50;
+		return _parent && getSize() > 50;
 	}
 
 	private static void fireWorldChanged(IAdaptable info) {
@@ -132,30 +136,40 @@ public class CompositeOperation extends AbstractOperation {
 	@Override
 	public IStatus redo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		IStatus status = Status.OK_STATUS;
+		CanvasEditor editor = info.getAdapter(CanvasEditor.class);
+		Tree outlineTree = editor.getOutline().getTree();
+		Tree gridTree = editor.getPropertyGrid().getViewer().getTree();
+		outlineTree.setRedraw(false);
+		gridTree.setRedraw(false);
+		try {
+			if (isLongOperation()) {
+				try {
+					new ProgressMonitorDialog(Display.getCurrent().getActiveShell()).run(false, false, monitor2 -> {
+						try {
+							monitor2.beginTask("Redoing operations", getSize());
 
-		if (isLongOperation()) {
-			try {
-				new ProgressMonitorDialog(Display.getCurrent().getActiveShell()).run(false, false, monitor2 -> {
-					try {
-						monitor2.beginTask("Redoing operations", getSize());
-						for (IUndoableOperation op : _operations) {
-							op.redo(monitor, info);
-							monitor2.worked(1);
+							for (IUndoableOperation op : _operations) {
+								op.redo(monitor, info);
+								monitor2.worked(1);
+							}
+							fireWorldChanged(info);
+						} catch (ExecutionException e) {
+							e.printStackTrace();
 						}
-						fireWorldChanged(info);
-					} catch (ExecutionException e) {
-						e.printStackTrace();
-					}
-					monitor2.done();
-				});
-			} catch (InvocationTargetException | InterruptedException e) {
-				e.printStackTrace();
+						monitor2.done();
+					});
+				} catch (InvocationTargetException | InterruptedException e) {
+					e.printStackTrace();
+				}
+			} else {
+				for (IUndoableOperation op : _operations) {
+					status = op.redo(monitor, info);
+				}
+				fireWorldChanged(info);
 			}
-		} else {
-			for (IUndoableOperation op : _operations) {
-				status = op.redo(monitor, info);
-			}
-			fireWorldChanged(info);
+		} finally {
+			outlineTree.setRedraw(true);
+			gridTree.setRedraw(true);
 		}
 
 		return status;
@@ -164,32 +178,42 @@ public class CompositeOperation extends AbstractOperation {
 	@Override
 	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		IStatus status = Status.OK_STATUS;
-		if (isLongOperation()) {
-			try {
-				new ProgressMonitorDialog(Display.getCurrent().getActiveShell()).run(false, false, monitor2 -> {
-					try {
-						monitor2.beginTask("Undoing operations", getSize());
-						for (int i = _operations.size() - 1; i >= 0; i--) {
-							IUndoableOperation op = _operations.get(i);
-							op.undo(monitor2, info);
-							monitor2.worked(1);
-						}
+		CanvasEditor editor = info.getAdapter(CanvasEditor.class);
+		Tree outlineTree = editor.getOutline().getTree();
+		Tree gridTree = editor.getPropertyGrid().getViewer().getTree();
+		outlineTree.setRedraw(false);
+		gridTree.setRedraw(false);
+		try {
+			if (isLongOperation()) {
+				try {
+					new ProgressMonitorDialog(Display.getCurrent().getActiveShell()).run(false, false, monitor2 -> {
+						try {
+							monitor2.beginTask("Undoing operations", getSize());
+							for (int i = _operations.size() - 1; i >= 0; i--) {
+								IUndoableOperation op = _operations.get(i);
+								op.undo(monitor2, info);
+								monitor2.worked(1);
+							}
 
-						fireWorldChanged(info);
-					} catch (ExecutionException e) {
-						e.printStackTrace();
-					}
-					monitor2.done();
-				});
-			} catch (InvocationTargetException | InterruptedException e) {
-				e.printStackTrace();
+							fireWorldChanged(info);
+						} catch (ExecutionException e) {
+							e.printStackTrace();
+						}
+						monitor2.done();
+					});
+				} catch (InvocationTargetException | InterruptedException e) {
+					e.printStackTrace();
+				}
+			} else {
+				for (int i = _operations.size() - 1; i >= 0; i--) {
+					IUndoableOperation op = _operations.get(i);
+					status = op.undo(monitor, info);
+				}
+				fireWorldChanged(info);
 			}
-		} else {
-			for (int i = _operations.size() - 1; i >= 0; i--) {
-				IUndoableOperation op = _operations.get(i);
-				status = op.undo(monitor, info);
-			}
-			fireWorldChanged(info);
+		} finally {
+			outlineTree.setRedraw(true);
+			gridTree.setRedraw(true);
 		}
 
 		return status;

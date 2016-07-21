@@ -219,6 +219,10 @@ public class PGrid extends Composite {
 	public PGridModel getModel() {
 		return _model;
 	}
+	
+	public TreeViewer getViewer() {
+		return _treeViewer;
+	}
 
 	public void setModel(PGridModel model) {
 		if (model == null) {

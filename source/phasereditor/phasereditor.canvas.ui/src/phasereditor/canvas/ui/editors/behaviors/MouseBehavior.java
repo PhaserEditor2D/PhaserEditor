@@ -198,6 +198,7 @@ public class MouseBehavior {
 				_drag.handleMouseReleased(e);
 				return;
 			}
+			
 			_selection.handleMouseReleased(e);
 		}
 	}

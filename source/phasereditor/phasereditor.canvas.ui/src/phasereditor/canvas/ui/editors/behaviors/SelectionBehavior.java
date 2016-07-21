@@ -283,12 +283,14 @@ public class SelectionBehavior implements ISelectionProvider {
 
 	@Override
 	public void setSelection(ISelection selection) {
-		setSelection_private(selection);
 		TreeViewer outline = _canvas.getOutline();
+		_canvas.getPGrid().getViewer().getTree().setRedraw(false);
 		outline.setSelection(selection, true);
+		setSelection_private(selection);
+		_canvas.getPGrid().getViewer().getTree().setRedraw(true);
 	}
 
-	public void setSelectionAndReveal(IObjectNode elem) {
+	public void setSelectionAndRevealInScene(IObjectNode elem) {
 		setSelection(new StructuredSelection(elem));
 		Node node = elem.getNode();
 		Bounds bounds = localToAncestor(node.getBoundsInLocal(), node, _canvas.getWorldNode());
@@ -479,7 +481,7 @@ public class SelectionBehavior implements ISelectionProvider {
 	public void selectAll() {
 		_canvas.getSelectionBehavior().setSelection(new StructuredSelection(_canvas.getWorldNode().getChildren()));
 	}
-	
+
 	/**
 	 * If a node is in the selection but its parent is in the selection too,
 	 * then that node is filtered. This helps to do operations like delete,

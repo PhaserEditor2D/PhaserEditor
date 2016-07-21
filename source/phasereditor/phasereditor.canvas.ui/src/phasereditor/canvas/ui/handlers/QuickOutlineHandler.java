@@ -20,7 +20,7 @@ public class QuickOutlineHandler extends AbstractHandler {
 		dlg.setResultHandler(e -> {
 			if (e != null) {
 				SelectionBehavior selBehavior = editor.getCanvas().getSelectionBehavior();
-				selBehavior.setSelectionAndReveal((IObjectNode) e);
+				selBehavior.setSelectionAndRevealInScene((IObjectNode) e);
 			}
 		});
 		dlg.open();
