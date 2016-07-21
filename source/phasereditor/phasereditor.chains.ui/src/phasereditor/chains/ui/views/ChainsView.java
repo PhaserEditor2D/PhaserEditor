@@ -477,12 +477,12 @@ public class ChainsView extends ViewPart {
 	}
 
 	protected void queryTextModified() {
-		
+
 		// this method is executed async sowe should check this
 		if (_queryText.isDisposed()) {
 			return;
 		}
-		
+
 		String query = _queryText.getText();
 		int chainsSize = 0;
 		int examplesSize = 0;
@@ -527,28 +527,28 @@ public class ChainsView extends ViewPart {
 			}
 		}.schedule();
 
-		//TODO:
-//		_docBrowser.addLocationListener(new LocationListener() {
-//
-//			@Override
-//			public void changing(LocationEvent event) {
-//				String loc = event.location;
-//				int i = loc.indexOf("#member:");
-//				if (i >= 0) {
-//					String member = loc.substring(i + 8);
-//					if (_chainsModel.isPhaserType(member)) {
-//						member += ".";
-//					}
-//					_queryText.setText(member);
-//					_tabFolder.setSelection(0);
-//				}
-//			}
-//
-//			@Override
-//			public void changed(LocationEvent event) {
-//				// nothing
-//			}
-//		});
+		// TODO:
+		// _docBrowser.addLocationListener(new LocationListener() {
+		//
+		// @Override
+		// public void changing(LocationEvent event) {
+		// String loc = event.location;
+		// int i = loc.indexOf("#member:");
+		// if (i >= 0) {
+		// String member = loc.substring(i + 8);
+		// if (_chainsModel.isPhaserType(member)) {
+		// member += ".";
+		// }
+		// _queryText.setText(member);
+		// _tabFolder.setSelection(0);
+		// }
+		// }
+		//
+		// @Override
+		// public void changed(LocationEvent event) {
+		// // nothing
+		// }
+		// });
 		_docBrowser.setText(wrapBody("<b>Double click a chain to see the JSDoc here.</b>"));
 	}
 
@@ -610,7 +610,11 @@ public class ChainsView extends ViewPart {
 		return super.getAdapter(adapter);
 	}
 
+	private static RGB MATCH_BG_COLOR = new RGB(227, 227, 227);
+
 	static Color getMatchBgColor() {
-		return Display.getDefault().getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW);
+		// return
+		// Display.getDefault().getSystemColor(SWT.COLOR_INFO_BACKGROUND);
+		return SWTResourceManager.getColor(MATCH_BG_COLOR);
 	}
 }
