@@ -45,7 +45,7 @@ import phasereditor.canvas.ui.shapes.IObjectNode;
  * @author arian
  *
  */
-public class UngroupHandler extends AbstractHandler {
+public class BreakGroupHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -94,6 +94,7 @@ public class UngroupHandler extends AbstractHandler {
 				double y = groupy + model.getY();
 				operations.add(new AddNodeOperation(data, i, x, y, parentId));
 				childrenSelection.add(inode.getModel().getId());
+				i++;
 			}
 		}
 		operations.add(new SelectOperation(childrenSelection));

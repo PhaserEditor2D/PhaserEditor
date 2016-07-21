@@ -1,5 +1,7 @@
 package phasereditor.canvas.ui.handlers;
 
+import java.util.List;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -10,6 +12,7 @@ import javafx.geometry.Rectangle2D;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.behaviors.SelectionBehavior;
 import phasereditor.canvas.ui.editors.behaviors.UpdateBehavior;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.UpdateFromPropertyChange;
@@ -25,14 +28,14 @@ public class AlignNodeHandler extends AbstractHandler {
 		String[] split = event.getCommand().getId().split("\\.");
 		String place = split[split.length - 1];
 
-		Object[] elems = sel.toArray();
+		List<IObjectNode> elems = SelectionBehavior.filterSelection(sel);
 
-		IObjectNode first = (IObjectNode) elems[0];
+		IObjectNode first = elems.get(0);
 		Rectangle2D pivot = makeRect(first);
 
 		double sum = 0;
 
-		if (elems.length == 1) {
+		if (elems.size() == 1) {
 			// the rect of the parent starts in 0,0
 			pivot = makePivotRect(0, 0, first.getGroup());
 			switch (place) {
@@ -80,10 +83,10 @@ public class AlignNodeHandler extends AbstractHandler {
 			}
 		}
 
-		double avg = sum / elems.length;
-		//TODO: round position to integer
+		double avg = sum / elems.size();
+		// TODO: round position to integer
 		avg = Math.round(avg);
-		
+
 		align(place, elems, pivot, avg);
 
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
@@ -110,7 +113,7 @@ public class AlignNodeHandler extends AbstractHandler {
 		return makePivotRect(node.getControl().getTextureLeft(), node.getControl().getTextureTop(), node);
 	}
 
-	private static void align(String place, Object[] elems, Rectangle2D pivot, double avg) {
+	private static void align(String place, List<IObjectNode> elems, Rectangle2D pivot, double avg) {
 
 		CompositeOperation operations = new CompositeOperation();
 		UpdateFromPropertyChange updateFromPropChanges = new UpdateFromPropertyChange();

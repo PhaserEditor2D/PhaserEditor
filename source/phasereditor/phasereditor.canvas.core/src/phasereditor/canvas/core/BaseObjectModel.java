@@ -113,6 +113,18 @@ public abstract class BaseObjectModel {
 	public GroupModel getParent() {
 		return _parent;
 	}
+	
+	public int getIndex() {
+		if (getParent() == null) {
+			return 0;
+		}
+		
+		return getParent().getChildren().indexOf(this);
+	}
+	
+	public int getDepth() {
+		return getParent() == null? 0 : getParent().getDepth() + 1;
+	}
 
 	public String getEditorName() {
 		return _editorName;

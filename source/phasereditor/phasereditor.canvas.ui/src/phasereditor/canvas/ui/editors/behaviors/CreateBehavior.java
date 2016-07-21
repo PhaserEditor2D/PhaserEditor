@@ -177,8 +177,26 @@ public class CreateBehavior {
 	}
 
 	public void paste(Object[] data) {
+		List<IObjectNode> filtered = new ArrayList<>();
+
+		for (Object elem : data) {
+			if (elem instanceof IObjectNode) {
+				filtered.add((IObjectNode) elem);
+			}
+		}
+
+		filtered.sort((a, b) -> {
+			BaseObjectModel i = a.getModel();
+			BaseObjectModel j = b.getModel();
+			int c = Integer.compare(i.getDepth(), j.getDepth());
+			if (c == 0) {
+				c = Integer.compare(i.getIndex(), j.getIndex());
+			}
+			return c;
+		});
+
 		GroupControl worldControl = _canvas.getWorldNode().getControl();
-		GroupControl parent = worldControl;
+		GroupControl pasteIntoThis = worldControl;
 
 		{
 			List<IObjectNode> selnodes = _canvas.getSelectionBehavior().getSelectedNodes();
@@ -186,14 +204,14 @@ public class CreateBehavior {
 				IObjectNode node = selnodes.get(0);
 				if (node instanceof GroupNode) {
 					boolean ok = true;
-					for (Object obj : data) {
+					for (Object obj : filtered) {
 						if (obj == node) {
 							ok = false;
 							break;
 						}
 					}
 					if (ok) {
-						parent = (GroupControl) node.getControl();
+						pasteIntoThis = (GroupControl) node.getControl();
 					}
 				}
 			}
@@ -213,7 +231,7 @@ public class CreateBehavior {
 			}
 		}
 		{
-			Point2D p = parent.getNode().sceneToLocal(x, y);
+			Point2D p = pasteIntoThis.getNode().sceneToLocal(x, y);
 			x = p.getX();
 			y = p.getY();
 		}
@@ -221,36 +239,33 @@ public class CreateBehavior {
 		CompositeOperation operations = new CompositeOperation();
 
 		List<BaseObjectModel> copies = new ArrayList<>();
-		List<Integer> indexes = new ArrayList<>();
 		double minx = Double.MAX_VALUE;
 		double miny = Double.MAX_VALUE;
 		{
-			for (Object elem : data) {
-				if (elem instanceof IObjectNode) {
-					IObjectNode node = (IObjectNode) elem;
-					BaseObjectModel copy = node.getModel().copy(false);
-					copies.add(copy);
-					minx = Math.min(minx, copy.getX());
-					miny = Math.min(miny, copy.getY());
-					indexes.add(Integer.valueOf(parent.getNode().getChildren().indexOf(node)));
-				}
+
+			for (IObjectNode node : filtered) {
+				BaseObjectModel copy = node.getModel().copy(false);
+				copies.add(copy);
+				minx = Math.min(minx, copy.getX());
+				miny = Math.min(miny, copy.getY());
 			}
 
 			for (BaseObjectModel copy : copies) {
 				copy.setX(copy.getX() - minx);
 				copy.setY(copy.getY() - miny);
 			}
+
 		}
 
 		List<String> selection = new ArrayList<>();
-		int i = 0;
+		int i = pasteIntoThis.getNode().getChildren().size();
 		for (BaseObjectModel copy : copies) {
 			selection.add(copy.getId());
 			double x2 = mouse.stepX(x + copy.getX(), false);
 			double y2 = mouse.stepY(y + copy.getY(), false);
-			int index = indexes.get(i++).intValue();
-			AddNodeOperation op = new AddNodeOperation(copy.toJSON(), index, x2, y2, parent.getId());
+			AddNodeOperation op = new AddNodeOperation(copy.toJSON(), i, x2, y2, pasteIntoThis.getId());
 			operations.add(op);
+			i++;
 		}
 		operations.add(new SelectOperation(selection));
 		_canvas.getUpdateBehavior().executeOperations(operations);

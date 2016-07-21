@@ -534,7 +534,7 @@
          </enabledWhen>
       </handler>
       <handler
-            class="phasereditor.canvas.ui.handlers.UngroupHandler"
+            class="phasereditor.canvas.ui.handlers.BreakGroupHandler"
             commandId="phasereditor.canvas.ui.ungroup">
          <enabledWhen>
             <reference

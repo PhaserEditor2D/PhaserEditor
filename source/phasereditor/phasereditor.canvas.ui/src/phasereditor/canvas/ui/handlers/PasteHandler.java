@@ -11,6 +11,7 @@ import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.canvas.ui.editors.CanvasEditor;
+import phasereditor.canvas.ui.editors.behaviors.SelectionBehavior;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
 public class PasteHandler extends AbstractHandler {
@@ -25,7 +26,7 @@ public class PasteHandler extends AbstractHandler {
 			return null;
 		}
 
-		List<IObjectNode> nodes = DeleteHandler.filterSelection((IStructuredSelection) content);
+		List<IObjectNode> nodes = SelectionBehavior.filterSelection((IStructuredSelection) content);
 
 		cb.dispose();
 
