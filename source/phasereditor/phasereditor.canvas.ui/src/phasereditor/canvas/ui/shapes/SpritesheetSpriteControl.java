@@ -74,9 +74,11 @@ public class SpritesheetSpriteControl extends BaseSpriteControl<SpritesheetSprit
 			}
 
 			@Override
-			public void setValue(IAssetFrameModel value) {
+			public void setValue(IAssetFrameModel value, boolean notify) {
 				getModel().setAssetKey((FrameModel) value);
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override

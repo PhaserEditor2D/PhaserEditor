@@ -191,12 +191,12 @@ public class UpdateBehavior {
 	}
 
 	@SuppressWarnings("static-method")
-	public void addUpdateLocationOperation(CompositeOperation group, IObjectNode node, double x, double y) {
+	public void addUpdateLocationOperation(CompositeOperation group, IObjectNode node, double x, double y, boolean notify) {
 		BaseObjectControl<?> control = node.getControl();
 		ChangePropertyOperation<?> changeX = new ChangePropertyOperation<>(control.getId(),
-				control.getX_property().getName(), Double.valueOf(x));
+				control.getX_property().getName(), Double.valueOf(x), notify);
 		ChangePropertyOperation<?> changeY = new ChangePropertyOperation<>(control.getId(),
-				control.getY_property().getName(), Double.valueOf(y));
+				control.getY_property().getName(), Double.valueOf(y), notify);
 
 		group.add(changeX);
 		group.add(changeY);

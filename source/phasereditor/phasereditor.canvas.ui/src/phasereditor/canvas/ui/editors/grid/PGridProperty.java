@@ -51,8 +51,8 @@ public abstract class PGridProperty<T> {
 
 	public abstract T getValue();
 
-	public abstract void setValue(T value);
-
+	public abstract void setValue(T value, boolean notify);
+	
 	public abstract boolean isModified();
 
 	public String getTooltip() {

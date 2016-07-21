@@ -12,6 +12,7 @@ import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.behaviors.UpdateBehavior;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
+import phasereditor.canvas.ui.editors.operations.UpdateFromPropertyChange;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
@@ -112,6 +113,7 @@ public class AlignNodeHandler extends AbstractHandler {
 	private static void align(String place, Object[] elems, Rectangle2D pivot, double avg) {
 
 		CompositeOperation operations = new CompositeOperation();
+		UpdateFromPropertyChange updateFromPropChanges = new UpdateFromPropertyChange();
 		UpdateBehavior update = null;
 
 		for (Object elem : elems) {
@@ -155,11 +157,13 @@ public class AlignNodeHandler extends AbstractHandler {
 
 			if (x != ix || y != iy) {
 				update = control.getCanvas().getUpdateBehavior();
-				update.addUpdateLocationOperation(operations, inode, x, y);
+				update.addUpdateLocationOperation(operations, inode, x, y, false);
+				updateFromPropChanges.add(inode.getControl().getId());
 			}
 		}
 
 		if (update != null) {
+			operations.add(updateFromPropChanges);
 			update.executeOperations(operations);
 		}
 	}

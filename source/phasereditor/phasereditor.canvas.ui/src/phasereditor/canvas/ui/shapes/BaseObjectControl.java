@@ -172,9 +172,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			}
 
 			@Override
-			public void setValue(Double value) {
+			public void setValue(Double value, boolean notify) {
 				getModel().setX(value.doubleValue());
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override
@@ -190,9 +192,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			}
 
 			@Override
-			public void setValue(Double value) {
+			public void setValue(Double value, boolean notify) {
 				getModel().setY(value.doubleValue());
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override
@@ -208,9 +212,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			}
 
 			@Override
-			public void setValue(Double value) {
+			public void setValue(Double value, boolean notify) {
 				getModel().setAngle(value.doubleValue());
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override
@@ -226,9 +232,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			}
 
 			@Override
-			public void setValue(Double value) {
+			public void setValue(Double value, boolean notify) {
 				getModel().setScaleX(value.doubleValue());
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override
@@ -245,9 +253,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			}
 
 			@Override
-			public void setValue(Double value) {
+			public void setValue(Double value, boolean notify) {
 				getModel().setScaleY(value.doubleValue());
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override
@@ -264,9 +274,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			}
 
 			@Override
-			public void setValue(Double value) {
+			public void setValue(Double value, boolean notify) {
 				getModel().setPivotX(value.doubleValue());
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override
@@ -282,9 +294,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			}
 
 			@Override
-			public void setValue(Double value) {
+			public void setValue(Double value, boolean notify) {
 				getModel().setPivotY(value.doubleValue());
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override
@@ -314,10 +328,12 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			}
 
 			@Override
-			public void setValue(String value) {
+			public void setValue(String value, boolean notify) {
 				_model.setEditorName(value);
 				_canvas.getUpdateBehavior().update_Outline(_inode);
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override
@@ -334,9 +350,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			}
 
 			@Override
-			public void setValue(Boolean value) {
+			public void setValue(Boolean value, boolean notify) {
 				getModel().setEditorPublic(value.booleanValue());
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override
@@ -355,10 +373,13 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			}
 
 			@Override
-			public void setValue(Boolean value) {
+			public void setValue(Boolean value, boolean notify) {
 				_model.setEditorPick(value.booleanValue());
-				updateGridChange();
-				_canvas.getUpdateBehavior().update_Outline(getIObjectNode());
+
+				if (notify) {
+					updateFromPropertyChange();
+					_canvas.getUpdateBehavior().update_Outline(getIObjectNode());
+				}
 			}
 
 			@Override
@@ -377,9 +398,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			}
 
 			@Override
-			public void setValue(Boolean value) {
+			public void setValue(Boolean value, boolean notify) {
 				getModel().setEditorGenerate(value.booleanValue());
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override
@@ -397,9 +420,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			}
 
 			@Override
-			public void setValue(Boolean value) {
+			public void setValue(Boolean value, boolean notify) {
 				getModel().setEditorShow(value.booleanValue());
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override
@@ -409,7 +434,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		});
 	}
 
-	protected void updateGridChange() {
+	public void updateFromPropertyChange() {
 		UpdateBehavior update = getCanvas().getUpdateBehavior();
 		update.update_Canvas_from_GridChange(this);
 		update.fireWorldChanged();

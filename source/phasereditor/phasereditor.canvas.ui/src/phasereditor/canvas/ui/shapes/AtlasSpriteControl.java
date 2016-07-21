@@ -76,9 +76,11 @@ public class AtlasSpriteControl extends BaseSpriteControl<AtlasSpriteModel> {
 			}
 
 			@Override
-			public void setValue(IAssetFrameModel value) {
+			public void setValue(IAssetFrameModel value, boolean notify) {
 				getModel().setAssetKey((Frame) value);
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override

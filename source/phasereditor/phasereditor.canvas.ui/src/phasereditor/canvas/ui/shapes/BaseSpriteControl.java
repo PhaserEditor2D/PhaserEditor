@@ -129,9 +129,11 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 			}
 
 			@Override
-			public void setValue(Double value) {
+			public void setValue(Double value, boolean notify) {
 				getModel().setAnchorX(value.doubleValue());
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override
@@ -147,9 +149,11 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 			}
 
 			@Override
-			public void setValue(Double value) {
+			public void setValue(Double value, boolean notify) {
 				getModel().setAnchorY(value.doubleValue());
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override
@@ -161,7 +165,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 		_tint_property = new PGridColorProperty(getId(), "tint", help("Phaser.Sprite.tint")) {
 
 			@Override
-			public void setValue(RGB value) {
+			public void setValue(RGB value, boolean notify) {
 				String tint;
 				if (value == null) {
 					tint = null;
@@ -170,7 +174,9 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 				}
 
 				getModel().setTint(tint);
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override
@@ -198,9 +204,11 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 				help("Phaser.Sprite.animations")) {
 
 			@Override
-			public void setValue(List<AnimationModel> value) {
+			public void setValue(List<AnimationModel> value, boolean notify) {
 				getModel().setAnimations(value);
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override

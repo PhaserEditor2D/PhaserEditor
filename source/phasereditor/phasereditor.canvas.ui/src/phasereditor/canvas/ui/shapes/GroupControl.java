@@ -189,10 +189,12 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 			}
 
 			@Override
-			public void setValue(Boolean value) {
+			public void setValue(Boolean value, boolean notify) {
 				model.setEditorClosed(value.booleanValue());
 				getCanvas().getUpdateBehavior().update_Outline(getNode());
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override
@@ -211,9 +213,11 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 		section.add(new PGridBooleanProperty(getId(), "physicsGroup", help("Phaser.GameObjectFactory.physicsGroup")) {
 
 			@Override
-			public void setValue(Boolean value) {
+			public void setValue(Boolean value, boolean notify) {
 				getModel().setPhysicsGroup(value.booleanValue());
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override

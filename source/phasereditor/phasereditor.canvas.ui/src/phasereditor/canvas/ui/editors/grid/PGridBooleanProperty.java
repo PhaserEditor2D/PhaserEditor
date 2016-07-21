@@ -39,7 +39,7 @@ public abstract class PGridBooleanProperty extends PGridProperty<Boolean> {
 	}
 
 	@Override
-	public void setValue(Boolean value) {
+	public void setValue(Boolean value, boolean notify) {
 		_value = value.booleanValue();
 	}
 }

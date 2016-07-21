@@ -77,9 +77,11 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 				help("Phaser.Button", "callback")) {
 
 			@Override
-			public void setValue(String value) {
+			public void setValue(String value, boolean notify) {
 				getModel().setCallback(value);
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override
@@ -99,9 +101,11 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 				help("Phaser.Button", "callbackContext")) {
 
 			@Override
-			public void setValue(String value) {
+			public void setValue(String value, boolean notify) {
 				getModel().setCallbackContext(value);
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override
@@ -125,9 +129,11 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 					help("Phaser.Button", "overFrame")) {
 
 				@Override
-				public void setValue(IAssetFrameModel value) {
+				public void setValue(IAssetFrameModel value, boolean notify) {
 					getModel().setOverFrame(value);
-					updateGridChange();
+					if (notify) {
+						updateFromPropertyChange();
+					}
 				}
 
 				@Override
@@ -141,9 +147,11 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 					help("Phaser.Button", "outFrame")) {
 
 				@Override
-				public void setValue(IAssetFrameModel value) {
+				public void setValue(IAssetFrameModel value, boolean notify) {
 					getModel().setAssetKey(value);
-					updateGridChange();
+					if (notify) {
+						updateFromPropertyChange();
+					}
 				}
 
 				@Override
@@ -157,9 +165,11 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 					help("Phaser.Button", "downFrame")) {
 
 				@Override
-				public void setValue(IAssetFrameModel value) {
+				public void setValue(IAssetFrameModel value, boolean notify) {
 					getModel().setDownFrame(value);
-					updateGridChange();
+					if (notify) {
+						updateFromPropertyChange();
+					}
 				}
 
 				@Override
@@ -172,9 +182,11 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 			PGridFrameProperty upFrame_property = new ButtonFrameProperty("upFrame", help("Phaser.Button", "upFrame")) {
 
 				@Override
-				public void setValue(IAssetFrameModel value) {
+				public void setValue(IAssetFrameModel value, boolean notify) {
 					getModel().setUpFrame(value);
-					updateGridChange();
+					if (notify) {
+						updateFromPropertyChange();
+					}
 				}
 
 				@Override

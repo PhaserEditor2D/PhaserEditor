@@ -41,18 +41,24 @@ public class ChangePropertyOperation<T> extends AbstractNodeOperation {
 	private String _propId;
 	private T _value;
 	private T _undoValue;
+	private boolean _notify;
 
-	public ChangePropertyOperation(String controlId, String propId, T value) {
+	public ChangePropertyOperation(String controlId, String propId, T value, boolean notify) {
 		super("ChangePropertyOperation", controlId);
 		_propId = propId;
 		_value = value;
+		_notify = notify;
+	}
+	
+	public ChangePropertyOperation(String controlId, String propId, T value) {
+		this(controlId, propId, value, true);
 	}
 
 	private IStatus setValue(T value, IAdaptable info) {
 		try {
 			PGridProperty<T> prop = findProperty(info);
 			_undoValue = prop.getValue();
-			prop.setValue(value);
+			prop.setValue(value, _notify);
 			BaseObjectControl<?> control = findControl(info);
 			control.updateFromModel();
 

@@ -96,9 +96,11 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			}
 
 			@Override
-			public void setValue(Double value) {
+			public void setValue(Double value, boolean notify) {
 				getModel().setTilePositionX(value);
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override
@@ -116,9 +118,11 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			}
 
 			@Override
-			public void setValue(Double value) {
+			public void setValue(Double value, boolean notify) {
 				getModel().setTilePositionY(value);
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override
@@ -135,9 +139,11 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			}
 
 			@Override
-			public void setValue(Double value) {
+			public void setValue(Double value, boolean notify) {
 				getModel().setWidth(value);
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override
@@ -154,9 +160,11 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			}
 
 			@Override
-			public void setValue(Double value) {
+			public void setValue(Double value, boolean notify) {
 				getModel().setHeight(value);
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override
@@ -174,9 +182,11 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			}
 
 			@Override
-			public void setValue(Double value) {
+			public void setValue(Double value, boolean notify) {
 				getModel().setTileScaleX(value);
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override
@@ -193,9 +203,11 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			}
 
 			@Override
-			public void setValue(Double value) {
+			public void setValue(Double value, boolean notify) {
 				getModel().setTileScaleY(value);
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override
@@ -227,9 +239,11 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 		PGridFrameProperty frame_property = new PGridFrameProperty(getId(), name, help("Phaser.Sprite." + name)) {
 
 			@Override
-			public void setValue(IAssetFrameModel value) {
+			public void setValue(IAssetFrameModel value, boolean notify) {
 				getModel().setAssetKey(value);
-				updateGridChange();
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override

@@ -38,7 +38,7 @@ public abstract class PGridNumberProperty extends PGridProperty<Double> {
 	}
 
 	@Override
-	public void setValue(Double value) {
+	public void setValue(Double value, boolean notify) {
 		_value = value.doubleValue();
 	}
 }
