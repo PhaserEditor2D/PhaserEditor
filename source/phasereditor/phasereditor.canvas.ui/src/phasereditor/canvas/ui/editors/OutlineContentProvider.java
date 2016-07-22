@@ -39,6 +39,16 @@ public class OutlineContentProvider implements ITreeContentProvider {
 
 	private static final Object[] EMPTY = {};
 
+	private boolean _showRoot;
+
+	public OutlineContentProvider(boolean showRoot) {
+		_showRoot = showRoot;
+	}
+
+	public OutlineContentProvider() {
+		this(false);
+	}
+
 	@Override
 	public void dispose() {
 		// nothing
@@ -63,9 +73,15 @@ public class OutlineContentProvider implements ITreeContentProvider {
 
 	@Override
 	public Object[] getChildren(Object parent) {
-		
+
 		if (parent instanceof ObjectCanvas) {
-			return getChildren(((ObjectCanvas) parent).getWorldNode());
+			GroupNode worldNode = ((ObjectCanvas) parent).getWorldNode();
+			
+			if (_showRoot) {
+				return new Object[] { worldNode };
+			}
+
+			return getChildren(worldNode);
 		}
 
 		if (parent instanceof GroupNode) {
@@ -78,10 +94,10 @@ public class OutlineContentProvider implements ITreeContentProvider {
 			}
 
 			Collections.reverse(list);
-			
+
 			return list.toArray();
 		}
-		
+
 		return EMPTY;
 	}
 
@@ -92,7 +108,6 @@ public class OutlineContentProvider implements ITreeContentProvider {
 
 	@Override
 	public boolean hasChildren(Object element) {
-		// TODO Auto-generated method stub
 		return getChildren(element).length > 0;
 	}
 

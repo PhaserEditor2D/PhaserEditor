@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.operations;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -49,6 +50,15 @@ public class ExpandOutlineOperation extends AbstractNodeOperation {
 		_expandIds = new HashSet<>(expandIds);
 	}
 
+	public ExpandOutlineOperation() {
+		this(Collections.emptyList());
+	}
+	
+
+	public void add(String id) {
+		_expandIds.add(id);
+	}
+	
 	@Override
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		ObjectCanvas canvas = getCanvas(info);

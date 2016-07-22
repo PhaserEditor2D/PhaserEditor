@@ -83,6 +83,10 @@ public class OutlineDropAdapter extends ViewerDropAdapter {
 				return false;
 			}
 
+			if (target.getAncestors().contains(obj)) {
+				return false;
+			}
+
 			if (obj instanceof IObjectNode) {
 				nodes.add((IObjectNode) obj);
 			}
@@ -164,7 +168,7 @@ public class OutlineDropAdapter extends ViewerDropAdapter {
 
 		operations.add(new ExpandOutlineOperation(expandList));
 		operations.add(new SelectOperation(selection));
-		
+
 		_editor.getCanvas().getUpdateBehavior().executeOperations(operations);
 
 		return true;

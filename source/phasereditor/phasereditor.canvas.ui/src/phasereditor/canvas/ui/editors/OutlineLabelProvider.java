@@ -44,7 +44,6 @@ public class OutlineLabelProvider extends LabelProvider implements IEditorShared
 
 	@Override
 	public Image getImage(Object element) {
-
 		if (element instanceof GroupNode) {
 			return EditorSharedImages.getImage(IMG_SHAPE_GROUP_NODE);
 		}
@@ -71,6 +70,11 @@ public class OutlineLabelProvider extends LabelProvider implements IEditorShared
 	public String getText(Object element) {
 
 		if (element instanceof IObjectNode) {
+			
+			if (((IObjectNode) element).getGroup() == null) {
+				return "<world>";
+			}
+			
 			StringBuilder sb = new StringBuilder();
 
 			BaseObjectModel model = ((IObjectNode) element).getControl().getModel();

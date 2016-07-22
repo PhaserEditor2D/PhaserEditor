@@ -436,7 +436,7 @@ public class CanvasEditor extends EditorPart
 
 		{
 			// depth commands
-			
+
 			_toolBarManager.add(new Separator());
 
 			String[] defs = {
@@ -474,7 +474,7 @@ public class CanvasEditor extends EditorPart
 
 		{
 			_toolBarManager.add(new Separator());
-			
+
 			_toolBarManager.add(simpleCommand("phasereditor.canvas.ui.quickOutline", "outline_co.png"));
 
 			_showSidePaneAction = new Action("Toggle the side pane.", SWT.TOGGLE) {
@@ -599,7 +599,7 @@ public class CanvasEditor extends EditorPart
 	public TreeViewer getOutline() {
 		return _outlineTree.getViewer();
 	}
-	
+
 	public PGrid getPropertyGrid() {
 		return _grid;
 	}

@@ -44,10 +44,10 @@ public class DeleteHandler extends AbstractHandler {
 		operations.add(clearSelection);
 
 		for (IObjectNode node : nodes) {
-			select.add(node.getModel().getId());
 			String id = node.getControl().getId();
-			operations.add(new DeleteNodeOperation(id, false));
+			select.add(id);
 			clearSelection.add(id);
+			operations.add(new DeleteNodeOperation(id, false));
 		}
 
 		editor.getCanvas().getUpdateBehavior().executeOperations(operations);
