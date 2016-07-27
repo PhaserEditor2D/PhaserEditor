@@ -44,6 +44,7 @@ import phasereditor.canvas.ui.editors.grid.PGridColorProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
+import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
 import phasereditor.ui.ColorButtonSupport;
 
 /**
@@ -55,6 +56,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 	private PGridNumberProperty _anchor_x_property;
 	private PGridNumberProperty _anchor_y_property;
 	private PGridColorProperty _tint_property;
+
 	private PGridSection _spriteSection;
 
 	public BaseSpriteControl(ObjectCanvas canvas, T model) {
@@ -230,10 +232,36 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 			}
 		};
 
+		PGridStringProperty data_property = new PGridStringProperty(getId(), "data", help("Phaser.Sprite.data"), true) {
+
+			@Override
+			public boolean isModified() {
+				String data = getModel().getData();
+				if (data == null) {
+					return false;
+				}
+				return data.trim().length() == 0;
+			}
+
+			@Override
+			public String getValue() {
+				return getModel().getData();
+			}
+
+			@Override
+			public void setValue(String value, boolean notify) {
+				getModel().setData(value);
+				if (notify) {
+					updateFromPropertyChange();
+				}
+			}
+		};
+
 		_spriteSection.add(_anchor_x_property);
 		_spriteSection.add(_anchor_y_property);
 		_spriteSection.add(_tint_property);
 		_spriteSection.add(animations_properties);
+		_spriteSection.add(data_property);
 
 		propModel.getSections().add(_spriteSection);
 	}

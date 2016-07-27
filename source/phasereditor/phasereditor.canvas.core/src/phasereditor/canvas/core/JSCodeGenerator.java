@@ -284,6 +284,10 @@ public class JSCodeGenerator implements ICodeGenerator {
 			sb.append(tabs + varname + ".tint = " + model.getTint() + ";\n");
 		}
 
+		if (model.getData() != null && model.getData().trim().length() > 0) {
+			sb.append(tabs + varname + ".data = " + model.getData() + ";\n");
+		}
+
 		if (!model.getAnimations().isEmpty()) {
 			for (AnimationModel anim : model.getAnimations()) {
 				sb.append(tabs + varname + ".animations.add(");

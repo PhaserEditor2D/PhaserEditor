@@ -26,9 +26,12 @@ import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
+import org.eclipse.jface.viewers.DialogCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.PlatformUI;
 
 import phasereditor.canvas.ui.editors.CanvasEditor;
@@ -60,6 +63,23 @@ public class PGridEditingSupport extends EditingSupport {
 		if (element instanceof PGridNumberProperty) {
 			return new NumberCellEditor(parent);
 		} else if (element instanceof PGridStringProperty) {
+			PGridStringProperty longStrProp = (PGridStringProperty) element;
+			if (longStrProp.isLongText()) {
+				return new DialogCellEditor(parent) {
+					
+					@Override
+					protected Object openDialogBox(Control cellEditorWindow) {
+						TextDialog dlg = new TextDialog(cellEditorWindow.getShell());
+						dlg.setInitialText(longStrProp.getValue());
+						dlg.setTitle("data");
+						dlg.setMessage("Write a valid JSON string. It will be verbatim generated.");
+						if (dlg.open() == Window.OK) {
+							return dlg.getResult();
+						}
+						return null;
+					}
+				};
+			}
 			return new TextCellEditor(parent);
 		} else if (element instanceof PGridBooleanProperty) {
 			return new CheckboxCellEditor(parent);

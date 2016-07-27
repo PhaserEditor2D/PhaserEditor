@@ -26,7 +26,18 @@ package phasereditor.canvas.ui.editors.grid;
  *
  */
 public abstract class PGridStringProperty extends PGridProperty<String> {
-	public PGridStringProperty(String controlId, String name, String tooltip) {
+	private boolean _longText;
+
+	public PGridStringProperty(String controlId, String name, String tooltip, boolean longText) {
 		super(controlId, name, tooltip);
+		_longText = longText;
+	}
+
+	public PGridStringProperty(String controlId, String name, String tooltip) {
+		this(controlId, name, tooltip, false);
+	}
+
+	public boolean isLongText() {
+		return _longText;
 	}
 }

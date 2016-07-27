@@ -39,6 +39,7 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 	private double _anchorY;
 	private String _tint;
 	private List<AnimationModel> _animations;
+	private String _data;
 
 	public BaseSpriteModel(GroupModel parent, String typeName, JSONObject obj) {
 		this(parent, typeName);
@@ -89,6 +90,14 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 	public void setAnimations(List<AnimationModel> animations) {
 		_animations = animations;
 	}
+	
+	public String getData() {
+		return _data;
+	}
+	
+	public void setData(String data) {
+		_data = data;
+	}
 
 	@Override
 	protected void writeInfo(JSONObject jsonInfo) {
@@ -96,7 +105,9 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 		jsonInfo.put("anchor.x", _anchorX, DEF_ANCHOR_X);
 		jsonInfo.put("anchor.y", _anchorY, DEF_ANCHOR_Y);
 		jsonInfo.put("tint", _tint, DEF_TINT);
-
+		jsonInfo.put("data", _data, null);
+		
+		
 		if (!_animations.isEmpty()) {
 			JSONArray array = new JSONArray();
 			jsonInfo.put("animations", array);
@@ -114,6 +125,7 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 		_anchorX = jsonInfo.optDouble("anchor.x", DEF_ANCHOR_X);
 		_anchorY = jsonInfo.optDouble("anchor.y", DEF_ANCHOR_Y);
 		_tint = jsonInfo.optString("tint", DEF_TINT);
+		_data = jsonInfo.optString("data", null);
 
 		_animations = new ArrayList<>();
 		if (jsonInfo.has("animations")) {
