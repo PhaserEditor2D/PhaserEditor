@@ -150,11 +150,12 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	}
 
 	protected static String help(String member) {
-		return member + "\n\n" + InspectCore.getPhaserHelp().getMemberHelp(member);
+		return (member + "\n\n" + InspectCore.getPhaserHelp().getMemberHelp(member)).trim();
 	}
 
 	protected static String help(String member, String arg) {
-		return member + "(...," + arg + ",...)" + "\n\n" + InspectCore.getPhaserHelp().getMethodArgHelp(member, arg);
+		return (member + "(...," + arg + ",...)" + "\n\n" + InspectCore.getPhaserHelp().getMethodArgHelp(member, arg))
+				.trim();
 	}
 
 	protected void initPGridModel(PGridModel propModel) {
