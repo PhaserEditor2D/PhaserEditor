@@ -240,7 +240,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 				if (data == null) {
 					return false;
 				}
-				return data.trim().length() == 0;
+				return data.trim().length() > 0;
 			}
 
 			@Override
