@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid.editors;
 
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
@@ -45,6 +43,7 @@ import phasereditor.canvas.ui.editors.grid.PGridProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
 import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
+import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 
 /**
  * @author arian
@@ -66,7 +65,7 @@ public class PGridEditingSupport extends EditingSupport {
 			PGridStringProperty longStrProp = (PGridStringProperty) element;
 			if (longStrProp.isLongText()) {
 				return new DialogCellEditor(parent) {
-					
+
 					@Override
 					protected Object openDialogBox(Control cellEditorWindow) {
 						TextDialog dlg = new TextDialog(cellEditorWindow.getShell());
@@ -139,29 +138,10 @@ public class PGridEditingSupport extends EditingSupport {
 		if (changed) {
 			ChangePropertyOperation<? extends Object> op = new ChangePropertyOperation<>(prop.getNodeId(),
 					prop.getName(), value);
-			IOperationHistory history = PlatformUI.getWorkbench().getOperationSupport().getOperationHistory();
-			try {
-				CanvasEditor editor = (CanvasEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-						.getActivePage().getActiveEditor();
-				history.execute(op, null, editor);
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-				throw new RuntimeException(e);
-			}
+			CanvasEditor editor = (CanvasEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+					.getActiveEditor();
+			editor.getCanvas().getUpdateBehavior().executeOperations(new CompositeOperation(op));
 		}
-
-		// if (element instanceof PGridNumberProperty) {
-		// ((PGridNumberProperty) element).setUndoableValue((Double) value);
-		// } else if (element instanceof PGridStringProperty) {
-		// ((PGridStringProperty) element).setUndoableValue((String) value);
-		// } else if (element instanceof PGridBooleanProperty) {
-		// ((PGridBooleanProperty) element).setValue((Boolean) value);
-		// } else if (element instanceof PGridFrameProperty) {
-		// ((PGridFrameProperty) element).setUndoableValue((IAssetFrameModel)
-		// value);
-		// } else if (element instanceof PGridColorProperty) {
-		// ((PGridColorProperty) element).setUndoableValue((RGB) value);
-		// }
 
 		getViewer().refresh(element);
 	}

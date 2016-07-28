@@ -19,34 +19,48 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.shapes;
+package phasereditor.canvas.core;
 
-import phasereditor.canvas.core.BaseSpriteModel;
+import org.json.JSONObject;
 
 /**
  * @author arian
  *
  */
-public class ImageSpriteNode extends FrameNode implements ISpriteNode {
-	private ImageSpriteControl _control;
+public abstract class ArcadeBodyModel extends BodyModel {
+	private double _offsetX;
+	private double _offsetY;
 
-	ImageSpriteNode(ImageSpriteControl control) {
-		super(control.getModel().getAssetKey());
-		_control = control;
+	public ArcadeBodyModel() {
+		_offsetX = 0;
+		_offsetY = 0;
+	}
+
+	public double getOffsetX() {
+		return _offsetX;
+	}
+
+	public void setOffsetX(double offsetX) {
+		_offsetX = offsetX;
+	}
+
+	public double getOffsetY() {
+		return _offsetY;
+	}
+
+	public void setOffsetY(double offsetY) {
+		_offsetY = offsetY;
 	}
 
 	@Override
-	public ImageSpriteControl getControl() {
-		return _control;
+	protected void writeJSON(JSONObject data) {
+		data.put("offsetX", _offsetX, 0);
+		data.put("offsetY", _offsetY, 0);
 	}
 
 	@Override
-	public BaseSpriteModel getModel() {
-		return _control.getModel();
-	}
-
-	@Override
-	public ImageSpriteNode getNode() {
-		return this;
+	public void readJSON(JSONObject data) {
+		_offsetX = data.optDouble("offsetX", 0);
+		_offsetY = data.optDouble("offsetY", 0);
 	}
 }

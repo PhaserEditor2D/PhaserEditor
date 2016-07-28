@@ -30,10 +30,20 @@ import java.util.ArrayList;
 public class PGridSection extends ArrayList<PGridProperty<?>> {
 	private static final long serialVersionUID = 1L;
 	private String _name;
+	private boolean _active;
 
 	public PGridSection(String name) {
 		super();
 		_name = name;
+		_active = true;
+	}
+
+	public boolean isActive() {
+		return _active;
+	}
+
+	public void setActive(boolean active) {
+		_active = active;
 	}
 
 	public String getName() {

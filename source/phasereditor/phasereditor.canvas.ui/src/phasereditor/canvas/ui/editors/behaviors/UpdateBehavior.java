@@ -113,7 +113,7 @@ public class UpdateBehavior {
 		GroupControl control = _canvas.getWorldNode().getControl();
 		control.rebuild();
 		_canvas.getPalette().rebuild();
-		
+
 		Platform.runLater(new Runnable() {
 
 			@SuppressWarnings("synthetic-access")
@@ -150,6 +150,11 @@ public class UpdateBehavior {
 	public void update_Grid_from_PropertyChange(PGridProperty<?> prop) {
 		_canvas.dirty();
 		_grid.refresh(prop);
+	}
+
+	public void update_Grid() {
+		_canvas.dirty();
+		_grid.refresh();
 	}
 
 	public void update_Canvas_from_GridChange(BaseObjectControl<?> changedShape) {
@@ -191,7 +196,8 @@ public class UpdateBehavior {
 	}
 
 	@SuppressWarnings("static-method")
-	public void addUpdateLocationOperation(CompositeOperation group, IObjectNode node, double x, double y, boolean notify) {
+	public void addUpdateLocationOperation(CompositeOperation group, IObjectNode node, double x, double y,
+			boolean notify) {
 		BaseObjectControl<?> control = node.getControl();
 		ChangePropertyOperation<?> changeX = new ChangePropertyOperation<>(control.getId(),
 				control.getX_property().getName(), Double.valueOf(x), notify);
@@ -221,7 +227,7 @@ public class UpdateBehavior {
 	public void fireWorldChanged() {
 		_canvas.getWorldModel().firePropertyChange(WorldModel.PROP_STRUCTURE);
 	}
-	
+
 	public void updateFromSettings() {
 		double width = _canvas.getSettingsModel().getSceneWidth();
 		double height = _canvas.getSettingsModel().getSceneHeight();

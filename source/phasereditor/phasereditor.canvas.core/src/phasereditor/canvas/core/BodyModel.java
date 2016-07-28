@@ -19,34 +19,44 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.shapes;
+package phasereditor.canvas.core;
 
-import phasereditor.canvas.core.BaseSpriteModel;
+import org.json.JSONObject;
 
 /**
  * @author arian
  *
  */
-public class ImageSpriteNode extends FrameNode implements ISpriteNode {
-	private ImageSpriteControl _control;
+public abstract class BodyModel {
 
-	ImageSpriteNode(ImageSpriteControl control) {
-		super(control.getModel().getAssetKey());
-		_control = control;
+	public enum BodyType {
+		ARCADE_RECT {
+			@Override
+			public BodyModel createModel() {
+				return new RectArcadeBodyModel();
+			}
+		},
+		ARCADE_CIRCLE {
+			@Override
+			public BodyModel createModel() {
+				return new CircleArcadeBodyModel();
+			}
+		};
+
+		public abstract BodyModel createModel();
+
 	}
 
-	@Override
-	public ImageSpriteControl getControl() {
-		return _control;
+	public final JSONObject toJSON() {
+		JSONObject data = new JSONObject();
+		data.put("type", getBodyType().name());
+		writeJSON(data);
+		return data;
 	}
 
-	@Override
-	public BaseSpriteModel getModel() {
-		return _control.getModel();
-	}
+	protected abstract void writeJSON(JSONObject data);
 
-	@Override
-	public ImageSpriteNode getNode() {
-		return this;
-	}
+	public abstract BodyType getBodyType();
+
+	public abstract void readJSON(JSONObject data);
 }

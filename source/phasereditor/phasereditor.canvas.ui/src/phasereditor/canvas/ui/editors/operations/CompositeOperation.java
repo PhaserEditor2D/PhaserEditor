@@ -38,6 +38,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Tree;
 
 import phasereditor.canvas.ui.editors.CanvasEditor;
+import phasereditor.canvas.ui.editors.ObjectCanvas;
 
 /**
  * @author arian
@@ -129,8 +130,10 @@ public class CompositeOperation extends AbstractOperation {
 
 	private static void fireWorldChanged(IAdaptable info) {
 		CanvasEditor editor = info.getAdapter(CanvasEditor.class);
-		editor.getCanvas().getSelectionBehavior().updateSelectedNodes();
-		editor.getCanvas().getUpdateBehavior().fireWorldChanged();
+		ObjectCanvas canvas = editor.getCanvas();
+		canvas.getSelectionBehavior().updateSelectedNodes();
+		canvas.getUpdateBehavior().fireWorldChanged();
+		canvas.getUpdateBehavior().update_Grid();
 	}
 
 	@Override

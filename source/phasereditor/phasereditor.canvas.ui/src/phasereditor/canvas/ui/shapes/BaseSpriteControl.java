@@ -38,6 +38,8 @@ import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.canvas.core.AnimationModel;
 import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.BaseSpriteModel;
+import phasereditor.canvas.core.CircleArcadeBodyModel;
+import phasereditor.canvas.core.RectArcadeBodyModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridAnimationsProperty;
 import phasereditor.canvas.ui.editors.grid.PGridColorProperty;
@@ -58,6 +60,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 	private PGridColorProperty _tint_property;
 
 	private PGridSection _spriteSection;
+	private PGridSection _bodyArcadeSection;
 
 	public BaseSpriteControl(ObjectCanvas canvas, T model) {
 		super(canvas, model);
@@ -122,6 +125,14 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 	protected void initPGridModel(PGridModel propModel) {
 		super.initPGridModel(propModel);
 
+		createSpriteSection();
+		createBodySection();
+
+		propModel.getSections().add(_spriteSection);
+		propModel.getSections().add(_bodyArcadeSection);
+	}
+
+	private void createSpriteSection() {
 		_spriteSection = new PGridSection("Sprite");
 
 		_anchor_x_property = new PGridNumberProperty(getId(), "anchor.x", help("Phaser.Sprite.anchor")) {
@@ -262,12 +273,156 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 		_spriteSection.add(_tint_property);
 		_spriteSection.add(animations_properties);
 		_spriteSection.add(data_property);
+	}
 
-		propModel.getSections().add(_spriteSection);
+	private void createBodySection() {
+		_bodyArcadeSection = new PGridSection("Arcade") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isActive() {
+				return getModel().getArcadeBody() != null;
+			}
+		};
+
+		_bodyArcadeSection
+				.add(new PGridNumberProperty(getId(), "body.offsetX", help("Phaser.Physics.Arcade.Body.offset")) {
+
+					@Override
+					public void setValue(Double value, boolean notify) {
+						getModel().getArcadeBody().setOffsetX(value.doubleValue());
+						if (notify) {
+							updateFromPropertyChange();
+						}
+					}
+
+					@Override
+					public Double getValue() {
+						return Double.valueOf(getModel().getArcadeBody().getOffsetX());
+					}
+
+					@Override
+					public boolean isModified() {
+						return getModel().getArcadeBody().getOffsetX() != 0;
+					}
+				});
+
+		_bodyArcadeSection
+				.add(new PGridNumberProperty(getId(), "body.offsetY", help("Phaser.Physics.Arcade.Body.offset")) {
+
+					@Override
+					public void setValue(Double value, boolean notify) {
+						getModel().getArcadeBody().setOffsetY(value.doubleValue());
+						if (notify) {
+							updateFromPropertyChange();
+						}
+					}
+
+					@Override
+					public Double getValue() {
+						return Double.valueOf(getModel().getArcadeBody().getOffsetY());
+					}
+
+					@Override
+					public boolean isModified() {
+						return getValue().doubleValue() != 0;
+					}
+				});
+
+		// rect arcade
+
+		_bodyArcadeSection
+				.add(new PGridNumberProperty(getId(), "body.width", help("Phaser.Physics.Arcade.Body.setSize", "width")) {
+
+					@Override
+					public void setValue(Double value, boolean notify) {
+						((RectArcadeBodyModel) getModel().getArcadeBody()).setWidth(value.doubleValue());
+						if (notify) {
+							updateFromPropertyChange();
+						}
+					}
+
+					@Override
+					public Double getValue() {
+						return Double.valueOf(((RectArcadeBodyModel) getModel().getArcadeBody()).getWidth());
+					}
+
+					@Override
+					public boolean isModified() {
+						return getValue().doubleValue() != getTextureWidth();
+					}
+
+					@Override
+					public boolean isActive() {
+						return getModel().getBody() instanceof RectArcadeBodyModel;
+					}
+
+				});
+		_bodyArcadeSection
+				.add(new PGridNumberProperty(getId(), "body.height", help("Phaser.Physics.Arcade.Body.setSize", "height")) {
+
+					@Override
+					public void setValue(Double value, boolean notify) {
+						((RectArcadeBodyModel) getModel().getArcadeBody()).setHeight(value.doubleValue());
+						if (notify) {
+							updateFromPropertyChange();
+						}
+					}
+
+					@Override
+					public Double getValue() {
+						return Double.valueOf(((RectArcadeBodyModel) getModel().getArcadeBody()).getHeight());
+					}
+
+					@Override
+					public boolean isModified() {
+						return getValue().doubleValue() != getTextureHeight();
+					}
+
+					@Override
+					public boolean isActive() {
+						return getModel().getBody() instanceof RectArcadeBodyModel;
+					}
+
+				});
+
+		// circle arcade
+
+		_bodyArcadeSection
+				.add(new PGridNumberProperty(getId(), "body.radius", help("Phaser.Physics.Arcade.Body.setCircle", "radius")) {
+
+					@Override
+					public void setValue(Double value, boolean notify) {
+						((CircleArcadeBodyModel) getModel().getArcadeBody()).setRadius(value.doubleValue());
+						if (notify) {
+							updateFromPropertyChange();
+						}
+					}
+
+					@Override
+					public Double getValue() {
+						return Double.valueOf(((CircleArcadeBodyModel) getModel().getArcadeBody()).getRadius());
+					}
+
+					@Override
+					public boolean isModified() {
+						return getValue().doubleValue() != getTextureWidth() / 2;
+					}
+
+					@Override
+					public boolean isActive() {
+						return getModel().getBody() instanceof CircleArcadeBodyModel;
+					}
+
+				});
 	}
 
 	protected PGridSection getSpriteSection() {
 		return _spriteSection;
+	}
+
+	public PGridSection getBodyArcadeSection() {
+		return _bodyArcadeSection;
 	}
 
 	@Override

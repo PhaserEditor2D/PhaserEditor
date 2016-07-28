@@ -27,6 +27,8 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import phasereditor.canvas.core.BodyModel.BodyType;
+
 /**
  * @author arian
  *
@@ -40,6 +42,7 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 	private String _tint;
 	private List<AnimationModel> _animations;
 	private String _data;
+	private BodyModel _body;
 
 	public BaseSpriteModel(GroupModel parent, String typeName, JSONObject obj) {
 		this(parent, typeName);
@@ -90,13 +93,29 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 	public void setAnimations(List<AnimationModel> animations) {
 		_animations = animations;
 	}
-	
+
 	public String getData() {
 		return _data;
 	}
-	
+
 	public void setData(String data) {
 		_data = data;
+	}
+
+	public BodyModel getBody() {
+		return _body;
+	}
+
+	public void setBody(BodyModel body) {
+		_body = body;
+	}
+
+	public ArcadeBodyModel getArcadeBody() {
+		if (_body != null && _body instanceof ArcadeBodyModel) {
+			return (ArcadeBodyModel) _body;
+		}
+
+		return null;
 	}
 
 	@Override
@@ -106,8 +125,7 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 		jsonInfo.put("anchor.y", _anchorY, DEF_ANCHOR_Y);
 		jsonInfo.put("tint", _tint, DEF_TINT);
 		jsonInfo.put("data", _data, null);
-		
-		
+
 		if (!_animations.isEmpty()) {
 			JSONArray array = new JSONArray();
 			jsonInfo.put("animations", array);
@@ -116,6 +134,10 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 				model.write(obj);
 				array.put(obj);
 			}
+		}
+
+		if (_body != null) {
+			jsonInfo.put("body", _body.toJSON());
 		}
 	}
 
@@ -128,9 +150,22 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 		_data = jsonInfo.optString("data", null);
 
 		_animations = new ArrayList<>();
+
 		if (jsonInfo.has("animations")) {
 			JSONArray array = jsonInfo.getJSONArray("animations");
 			_animations = readAnimations(array);
+		}
+
+		{
+			JSONObject bodyData = jsonInfo.optJSONObject("body");
+			if (bodyData == null) {
+				_body = null;
+			} else {
+				String type = bodyData.getString("type");
+				BodyType bodyType = BodyType.valueOf(type);
+				_body = bodyType.createModel();
+				_body.readJSON(bodyData);
+			}
 		}
 	}
 

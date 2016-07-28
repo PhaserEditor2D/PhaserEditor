@@ -37,6 +37,11 @@ public abstract class PGridProperty<T> {
 		_tooltip = tooltip;
 	}
 	
+	@SuppressWarnings("static-method")
+	public boolean isActive() {
+		return true;
+	}
+	
 	public String getNodeId() {
 		return _nodeId;
 	}

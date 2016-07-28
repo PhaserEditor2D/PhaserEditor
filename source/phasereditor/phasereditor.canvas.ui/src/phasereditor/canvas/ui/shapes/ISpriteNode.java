@@ -25,6 +25,7 @@ import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import phasereditor.canvas.core.BaseSpriteModel;
 
 /**
  * @author arian
@@ -40,4 +41,10 @@ public interface ISpriteNode extends IObjectNode {
 		shape.getTransforms().add(node.getLocalToSceneTransform());
 		return shape;
 	}
+	
+	@Override
+	public BaseSpriteModel getModel();
+	
+	@Override
+	public BaseSpriteControl<?> getControl();
 }

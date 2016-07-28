@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid;
 
+import java.util.List;
+
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
@@ -50,12 +52,15 @@ public class PGridContentProvider implements ITreeContentProvider {
 	@Override
 	public Object[] getChildren(Object parent) {
 		if (parent instanceof PGridModel) {
-			return ((PGridModel) parent).getSections().toArray();
+			List<PGridSection> sections = ((PGridModel) parent).getSections();
+			return sections.stream().filter(s -> s.isActive()).toArray();
 		}
 
 		if (parent instanceof PGridSection) {
-			return ((PGridSection) parent).toArray();
+			PGridSection section = (PGridSection) parent;
+			return section.stream().filter(p -> p.isActive()).toArray();
 		}
+		
 		return EMPTY;
 	}
 

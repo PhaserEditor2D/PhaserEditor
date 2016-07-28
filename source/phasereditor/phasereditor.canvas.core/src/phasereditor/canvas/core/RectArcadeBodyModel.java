@@ -19,34 +19,49 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.shapes;
+package phasereditor.canvas.core;
 
-import phasereditor.canvas.core.BaseSpriteModel;
+import org.json.JSONObject;
 
 /**
  * @author arian
- *
  */
-public class ImageSpriteNode extends FrameNode implements ISpriteNode {
-	private ImageSpriteControl _control;
+public class RectArcadeBodyModel extends ArcadeBodyModel {
+	private double _width;
+	private double _height;
 
-	ImageSpriteNode(ImageSpriteControl control) {
-		super(control.getModel().getAssetKey());
-		_control = control;
+	public double getWidth() {
+		return _width;
+	}
+
+	public void setWidth(double width) {
+		_width = width;
+	}
+
+	public double getHeight() {
+		return _height;
+	}
+
+	public void setHeight(double height) {
+		_height = height;
 	}
 
 	@Override
-	public ImageSpriteControl getControl() {
-		return _control;
+	public BodyType getBodyType() {
+		return BodyType.ARCADE_RECT;
 	}
 
 	@Override
-	public BaseSpriteModel getModel() {
-		return _control.getModel();
+	public void readJSON(JSONObject data) {
+		super.readJSON(data);
+		_width = data.getDouble("width");
+		_height = data.getDouble("height");
 	}
 
 	@Override
-	public ImageSpriteNode getNode() {
-		return this;
+	protected void writeJSON(JSONObject data) {
+		super.writeJSON(data);
+		data.put("width", _width);
+		data.put("height", _height);
 	}
 }

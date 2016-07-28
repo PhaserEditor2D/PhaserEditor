@@ -150,7 +150,7 @@ public class TileSpriteNode extends Pane implements ISpriteNode {
 	}
 
 	@Override
-	public BaseObjectControl<?> getControl() {
+	public TileSpriteControl getControl() {
 		return _control;
 	}
 

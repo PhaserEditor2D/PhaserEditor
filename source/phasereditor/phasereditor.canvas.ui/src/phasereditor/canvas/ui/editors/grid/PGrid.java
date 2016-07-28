@@ -74,7 +74,7 @@ public class PGrid extends Composite {
 	 * @param parent
 	 * @param style
 	 */
-	public PGrid( Composite parent, int style) {
+	public PGrid(Composite parent, int style) {
 		super(parent, style);
 		setLayout(new FillLayout(SWT.HORIZONTAL));
 
@@ -219,7 +219,7 @@ public class PGrid extends Composite {
 	public PGridModel getModel() {
 		return _model;
 	}
-	
+
 	public TreeViewer getViewer() {
 		return _treeViewer;
 	}
@@ -290,5 +290,9 @@ public class PGrid extends Composite {
 
 	public void refresh(PGridProperty<?> prop) {
 		_treeViewer.refresh(prop);
+	}
+
+	public void refresh() {
+		_treeViewer.refresh();
 	}
 }

@@ -43,7 +43,7 @@ public class SpritesheetSpriteNode extends FrameNode implements ISpriteNode {
 	}
 
 	@Override
-	public BaseObjectControl<?> getControl() {
+	public SpritesheetSpriteControl getControl() {
 		return _control;
 	}
 
