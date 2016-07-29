@@ -74,10 +74,11 @@ public class SelectionNode extends Pane {
 	protected Bounds _rect;
 	private ObjectCanvas _canvas;
 	private Label _label;
-	private ResizeHandlerNode _resizeTopRightHandle;
-	private ResizeHandlerNode _resizeBottomRightHandle;
-	private ResizeHandlerNode _resizeBottomLeftHandle;
-
+	
+	private DragHandlerNode _resizeTopRightHandle;
+	private DragHandlerNode _resizeBottomRightHandle;
+	private DragHandlerNode _resizeBottomLeftHandle;
+	
 	public SelectionNode(ObjectCanvas canvas, IObjectNode inode, Bounds rect) {
 		_objectNode = inode;
 		_rect = rect;
@@ -108,7 +109,7 @@ public class SelectionNode extends Pane {
 
 		// tile
 
-		class TileResizeHandler extends ResizeHandlerNode {
+		class TileResizeHandler extends DragHandlerNode {
 
 			protected double _initWidth;
 			protected double _initHeight;
@@ -155,7 +156,7 @@ public class SelectionNode extends Pane {
 
 			@SuppressWarnings("synthetic-access")
 			@Override
-			protected void handleResize(double dx, double dy) {
+			protected void handleDrag(double dx, double dy) {
 				TileSpriteNode tile = (TileSpriteNode) getObjectNode();
 				TileSpriteModel tilemodel = tile.getModel();
 

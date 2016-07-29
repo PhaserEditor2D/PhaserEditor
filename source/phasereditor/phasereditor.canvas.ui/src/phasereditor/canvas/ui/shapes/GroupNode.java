@@ -25,7 +25,6 @@ import java.util.function.Consumer;
 
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Shape;
 import phasereditor.canvas.core.GroupModel;
 
 /**
@@ -54,22 +53,6 @@ public class GroupNode extends Pane implements IObjectNode {
 	@Override
 	public GroupNode getNode() {
 		return this;
-	}
-
-	@Override
-	public Shape computeShape() {
-		Shape result = null;
-
-		for (Node child : getChildren()) {
-			Shape shape = ((IObjectNode) child).computeShape();
-			if (result == null) {
-				result = shape;
-			} else {
-				result = Shape.union(result, shape);
-			}
-		}
-
-		return result;
 	}
 
 	public void walkTree(Consumer<IObjectNode> visitor, boolean enterClosedGroups) {

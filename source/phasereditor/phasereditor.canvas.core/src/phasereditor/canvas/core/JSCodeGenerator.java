@@ -306,6 +306,47 @@ public class JSCodeGenerator implements ICodeGenerator {
 				sb.append("], " + anim.getFrameRate() + ", " + anim.isLoop() + ");\n");
 			}
 		}
+
+		{
+			BodyModel body = model.getBody();
+			if (body != null) {
+				if (body instanceof ArcadeBodyModel) {
+
+					if (!model.getParent().isPhysicsGroup()) {
+						sb.append(tabs + "this.game.physics.arcade.enable(" + varname + ");\n");
+					}
+
+					ArcadeBodyModel arcade = (ArcadeBodyModel) body;
+					boolean hasOffset = arcade.getOffsetX() != 0 || arcade.getOffsetY() != 0;
+					switch (body.getBodyType()) {
+					case ARCADE_CIRCLE:
+						CircleArcadeBodyModel circle = (CircleArcadeBodyModel) body;
+						if (hasOffset) {
+							sb.append(tabs + varname + ".body.setCircle(" + circle.getRadius() + ", "
+									+ circle.getOffsetX() + ", " + circle.getOffsetY() + ");\n");
+						} else {
+							sb.append(tabs + varname + ".body.setCircle(" + circle.getRadius() + ");\n");
+						}
+						break;
+					case ARCADE_RECT:
+						RectArcadeBodyModel rect = (RectArcadeBodyModel) body;
+						if (rect.getWidth() != -1 && rect.getHeight() != -1) {
+							if (hasOffset) {
+								sb.append(tabs + varname + ".body.setSize(" + rect.getWidth() + ", " + rect.getHeight()
+										+ ", " + rect.getOffsetX() + ", " + rect.getOffsetY() + ");\n");
+							} else {
+								sb.append(tabs + varname + ".body.setSize(" + rect.getWidth() + ", " + rect.getHeight()
+										+ ");\n");
+							}
+						}
+						break;
+
+					default:
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	private static void generateTileProps(int indent, StringBuilder sb, TileSpriteModel model) {

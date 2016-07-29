@@ -30,10 +30,6 @@ import org.json.JSONObject;
 public class CircleArcadeBodyModel extends ArcadeBodyModel {
 	private double _radius;
 
-	public CircleArcadeBodyModel() {
-		_radius = 0;
-	}
-
 	public double getRadius() {
 		return _radius;
 	}
@@ -56,6 +52,6 @@ public class CircleArcadeBodyModel extends ArcadeBodyModel {
 	@Override
 	public void readJSON(JSONObject data) {
 		super.readJSON(data);
-		_radius = data.getDouble("radius");
+		_radius = data.optDouble("radius");
 	}
 }

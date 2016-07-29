@@ -21,10 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
-import javafx.geometry.Bounds;
-import javafx.scene.Node;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import phasereditor.canvas.core.BaseSpriteModel;
 
 /**
@@ -32,16 +28,6 @@ import phasereditor.canvas.core.BaseSpriteModel;
  *
  */
 public interface ISpriteNode extends IObjectNode {
-	@Override
-	public default Shape computeShape() {
-		Node node = getNode();
-		Bounds b = node.getBoundsInLocal();
-		b = node.localToScene(b);
-		Rectangle shape = new Rectangle(b.getMinX(), b.getMinY(), b.getWidth(), b.getHeight());
-		shape.getTransforms().add(node.getLocalToSceneTransform());
-		return shape;
-	}
-	
 	@Override
 	public BaseSpriteModel getModel();
 	

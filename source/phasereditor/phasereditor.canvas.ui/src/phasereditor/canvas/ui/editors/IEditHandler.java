@@ -19,49 +19,24 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.shapes;
+package phasereditor.canvas.ui.editors;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
-import javafx.scene.Node;
-import phasereditor.canvas.core.BaseObjectModel;
+import javafx.scene.input.MouseEvent;
 
 /**
  * @author arian
  *
  */
-public interface IObjectNode  {
-	public BaseObjectModel getModel();
+public interface IEditHandler {
 
-	public BaseObjectControl<?> getControl();
-	
-	public Node getNode();
-	
-	public default GroupNode getGroup() {
-		return getControl().getGroup();
-	}
-	
-	public default List<GroupNode> getAncestors() {
-		List<GroupNode> list = new ArrayList<>();
-		
-		GroupNode parent = getGroup();
-		
-		if (parent != null && parent != getControl().getCanvas().getWorldNode()) {
-			list.add(parent);
-			list.addAll(parent.getAncestors());
-		}
-		return list;
-	}
-	
-	public static Comparator<IObjectNode> DISPLAY_ORDER_COMPARATOR = (a, b) -> {
-		BaseObjectModel i = a.getModel();
-		BaseObjectModel j = b.getModel();
-		int c = Integer.compare(i.getDepth(), j.getDepth());
-		if (c == 0) {
-			c = Integer.compare(i.getIndex(), j.getIndex());
-		}
-		return c;
-	};
+	void handleMouseMoved(MouseEvent e);
+
+	void handleMousePressed(MouseEvent e);
+
+	void handleMouseDragged(MouseEvent e);
+
+	void handleMouseReleased(MouseEvent e);
+
+	void handleMouseExited(MouseEvent e);
+
 }

@@ -30,6 +30,11 @@ public class RectArcadeBodyModel extends ArcadeBodyModel {
 	private double _width;
 	private double _height;
 
+	public RectArcadeBodyModel() {
+		_width = -1;
+		_height = -1;
+	}
+
 	public double getWidth() {
 		return _width;
 	}
@@ -54,14 +59,14 @@ public class RectArcadeBodyModel extends ArcadeBodyModel {
 	@Override
 	public void readJSON(JSONObject data) {
 		super.readJSON(data);
-		_width = data.getDouble("width");
-		_height = data.getDouble("height");
+		_width = data.optDouble("width", -1);
+		_height = data.optDouble("height", -1);
 	}
 
 	@Override
 	protected void writeJSON(JSONObject data) {
 		super.writeJSON(data);
-		data.put("width", _width);
-		data.put("height", _height);
+		data.put("width", _width, -1);
+		data.put("height", _height, -1);
 	}
 }

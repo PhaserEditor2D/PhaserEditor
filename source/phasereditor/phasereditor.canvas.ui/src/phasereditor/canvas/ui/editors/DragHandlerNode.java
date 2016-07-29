@@ -30,11 +30,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class ResizeHandlerNode extends Rectangle {
+public class DragHandlerNode extends Rectangle implements IEditHandler {
 	private Point2D _start;
 	private SelectionNode _selnode;
 
-	public ResizeHandlerNode(SelectionNode selnode) {
+	public DragHandlerNode(SelectionNode selnode) {
 		super(SelectionNode.HANDLE_SIZE, SelectionNode.HANDLE_SIZE);
 		_selnode = selnode;
 		setVisible(false);
@@ -44,7 +44,7 @@ public class ResizeHandlerNode extends Rectangle {
 	}
 
 	@SuppressWarnings("unused")
-	protected void handleResize(double dx, double dy) {
+	protected void handleDrag(double dx, double dy) {
 		// nothing
 	}
 	
@@ -52,19 +52,22 @@ public class ResizeHandlerNode extends Rectangle {
 		// nothing 
 	}
 	
-	@SuppressWarnings("unused")
+	@Override
 	public void handleMouseMoved(MouseEvent e) {
 		// nothing
 	}
 
+	@Override
 	public void handleMousePressed(MouseEvent e) {
 		_start = new Point2D(e.getSceneX(), e.getSceneY());
 	}
 
+	@Override
 	public void handleMouseDragged(MouseEvent e) {
 		if (_start == null) {
 			return;
 		}
+		
 		Point2D p = new Point2D(e.getSceneX(), e.getSceneY());
 		Bounds sceneDelta = new BoundingBox(0, 0, p.getX() - _start.getX(), p.getY() - _start.getY());
 		Node node = _selnode.getObjectNode().getNode();
@@ -81,17 +84,17 @@ public class ResizeHandlerNode extends Rectangle {
 			h = -h;
 		}
 
-		handleResize(w, h);
+		handleDrag(w, h);
 
 		_selnode.updateBounds(_selnode.getCanvas().getSelectionBehavior().buildSelectionBounds(node));
 	}
 
-	@SuppressWarnings("unused")
+	@Override
 	public void handleMouseReleased(MouseEvent e) {
 		handleDone();
 	}
 
-	@SuppressWarnings("unused")
+	@Override
 	public void handleMouseExited(MouseEvent e) {
 		setCursor(Cursor.DEFAULT);
 	}

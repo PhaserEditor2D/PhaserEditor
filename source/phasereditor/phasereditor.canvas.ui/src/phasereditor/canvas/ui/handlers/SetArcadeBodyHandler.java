@@ -40,13 +40,10 @@ public class SetArcadeBodyHandler extends AbstractHandler {
 
 			if (event.getCommand().getId().contains("Circle")) {
 				CircleArcadeBodyModel circle = new CircleArcadeBodyModel();
-				circle.setRadius(control.getTextureWidth() / 2);
+				circle.setRadius(Math.min(control.getTextureWidth() / 2, control.getTextureHeight() / 2));
 				body = circle;
 			} else {
-				RectArcadeBodyModel rect = new RectArcadeBodyModel();
-				rect.setWidth(control.getTextureWidth());
-				rect.setHeight(control.getTextureHeight());
-				body = rect;
+				body = new RectArcadeBodyModel();
 			}
 
 			operations.add(new ChangeBodyOperation(id, body));
