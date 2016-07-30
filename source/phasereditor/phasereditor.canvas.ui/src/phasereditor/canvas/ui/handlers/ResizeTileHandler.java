@@ -25,7 +25,7 @@ public class ResizeTileHandler extends AbstractHandler {
 		IObjectNode sprite = selnode.getObjectNode();
 
 		if (sprite instanceof TileSpriteNode) {
-			selnode.setEnableTileHandles(true);
+			selnode.setEnableTileHandlers(true);
 		} else {
 			// maybe we want to morph it into a tile sprite
 			if (MessageDialog.openConfirm(HandlerUtil.getActiveShell(event), "Resize Tile Sprite",
@@ -37,7 +37,7 @@ public class ResizeTileHandler extends AbstractHandler {
 				morph.execute(event);
 
 				// find the new selection node and enable tile resize handlers.
-				getSelectedNode(canvas).setEnableTileHandles(true);
+				getSelectedNode(canvas).setEnableTileHandlers(true);
 			}
 		}
 

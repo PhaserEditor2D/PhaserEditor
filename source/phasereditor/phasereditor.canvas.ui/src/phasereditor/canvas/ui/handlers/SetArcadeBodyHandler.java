@@ -11,6 +11,7 @@ import phasereditor.canvas.core.CircleArcadeBodyModel;
 import phasereditor.canvas.core.RectArcadeBodyModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.SelectionNode;
 import phasereditor.canvas.ui.editors.operations.ChangeBodyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.SelectOperation;
@@ -54,6 +55,12 @@ public class SetArcadeBodyHandler extends AbstractHandler {
 		operations.add(select);
 
 		canvas.getUpdateBehavior().executeOperations(operations);
+
+		{
+			// TODO: move this to a separated command.
+			SelectionNode node = (SelectionNode) canvas.getSelectionPane().getChildren().get(0);
+			node.setEnableArcadeRectHandlers(true);
+		}
 
 		return null;
 	}

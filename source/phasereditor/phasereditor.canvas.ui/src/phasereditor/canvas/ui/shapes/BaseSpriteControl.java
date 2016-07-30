@@ -286,7 +286,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 		};
 
 		_bodyArcadeSection
-				.add(new PGridNumberProperty(getId(), "body.offsetX", help("Phaser.Physics.Arcade.Body.offset")) {
+				.add(new PGridNumberProperty(getId(), "body.offset.x", help("Phaser.Physics.Arcade.Body.offset")) {
 
 					@Override
 					public void setValue(Double value, boolean notify) {
@@ -308,7 +308,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 				});
 
 		_bodyArcadeSection
-				.add(new PGridNumberProperty(getId(), "body.offsetY", help("Phaser.Physics.Arcade.Body.offset")) {
+				.add(new PGridNumberProperty(getId(), "body.offset.y", help("Phaser.Physics.Arcade.Body.offset")) {
 
 					@Override
 					public void setValue(Double value, boolean notify) {
