@@ -244,10 +244,12 @@ public class SelectionNode extends Pane {
 
 		{
 			double scale = _canvas.getZoomBehavior().getScale();
-			bodyX *= scale;
-			bodyY *= scale;
-			bodyW *= scale;
-			bodyH *= scale;
+			double scaleX = sprite.getModel().getScaleX();
+			double scaleY = sprite.getModel().getScaleY();
+			bodyX *= scale * scaleX;
+			bodyY *= scale * scaleY;
+			bodyW *= scale * scaleX;
+			bodyH *= scale * scaleY;
 		}
 
 		double hs = HANDLE_SIZE / 2;
@@ -357,7 +359,7 @@ class ArcadeRectBodyResizeHandler extends DragHandlerNode {
 
 	private double _initWidth;
 	private double _initHeight;
-	
+
 	private boolean _height;
 	private boolean _width;
 
@@ -484,10 +486,10 @@ class ArcadeRectBodyMoveHandler extends DragHandlerNode {
 		body.setOffsetX(_initX);
 		body.setOffsetX(_initY);
 
-		operations
-				.add(new ChangePropertyOperation<Number>(sprite.getModel().getId(), "body.offset.x", Double.valueOf(x)));
-		operations
-				.add(new ChangePropertyOperation<Number>(sprite.getModel().getId(), "body.offset.y", Double.valueOf(y)));
+		operations.add(
+				new ChangePropertyOperation<Number>(sprite.getModel().getId(), "body.offset.x", Double.valueOf(x)));
+		operations.add(
+				new ChangePropertyOperation<Number>(sprite.getModel().getId(), "body.offset.y", Double.valueOf(y)));
 		getCanvas().getUpdateBehavior().executeOperations(operations);
 	}
 
@@ -527,12 +529,12 @@ class ArcadeRectBodyMoveHandler extends DragHandlerNode {
 		}
 		sprite.getControl().updateFromModel();
 	}
-	
+
 	@Override
 	public void handleMouseExited(MouseEvent e) {
 		super.handleMouseExited(e);
 	}
-	
+
 	@Override
 	public void handleMouseReleased(MouseEvent e) {
 		super.handleMouseReleased(e);

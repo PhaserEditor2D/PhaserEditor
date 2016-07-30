@@ -21,16 +21,29 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
+import org.eclipse.core.runtime.IAdaptable;
+
 import phasereditor.canvas.core.BaseSpriteModel;
+import phasereditor.canvas.core.BodyModel;
 
 /**
  * @author arian
  *
  */
-public interface ISpriteNode extends IObjectNode {
+public interface ISpriteNode extends IObjectNode, IAdaptable {
 	@Override
 	public BaseSpriteModel getModel();
-	
+
 	@Override
 	public BaseSpriteControl<?> getControl();
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	default Object getAdapter(Class adapter) {
+		if (adapter == BodyModel.class) {
+			return getModel().getBody();
+		}
+		return null;
+	}
+
 }

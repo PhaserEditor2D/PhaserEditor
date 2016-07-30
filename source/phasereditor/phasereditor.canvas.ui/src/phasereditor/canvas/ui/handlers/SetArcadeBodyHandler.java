@@ -6,7 +6,10 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import phasereditor.canvas.core.ArcadeBodyModel;
+import phasereditor.canvas.core.BodyModel;
 import phasereditor.canvas.core.CircleArcadeBodyModel;
 import phasereditor.canvas.core.RectArcadeBodyModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
@@ -56,10 +59,17 @@ public class SetArcadeBodyHandler extends AbstractHandler {
 
 		canvas.getUpdateBehavior().executeOperations(operations);
 
+		// if there is only one node selected, then edit the body
+
 		{
-			// TODO: move this to a separated command.
-			SelectionNode node = (SelectionNode) canvas.getSelectionPane().getChildren().get(0);
-			node.setEnableArcadeRectHandlers(true);
+			ObservableList<Node> list = canvas.getSelectionPane().getChildren();
+			if (list.size() == 1) {
+				SelectionNode node = (SelectionNode) list.get(0);
+				BodyModel body = ((ISpriteNode) node.getObjectNode()).getModel().getBody();
+				if (body instanceof RectArcadeBodyModel) {
+					node.setEnableArcadeRectHandlers(true);
+				}
+			}
 		}
 
 		return null;
