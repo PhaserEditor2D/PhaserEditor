@@ -68,6 +68,8 @@ public class SetArcadeBodyHandler extends AbstractHandler {
 				BodyModel body = ((ISpriteNode) node.getObjectNode()).getModel().getBody();
 				if (body instanceof RectArcadeBodyModel) {
 					node.setEnableArcadeRectHandlers(true);
+				} else if (body instanceof CircleArcadeBodyModel) {
+					node.setEnableArcadeCircleHandlers(true);
 				}
 			}
 		}

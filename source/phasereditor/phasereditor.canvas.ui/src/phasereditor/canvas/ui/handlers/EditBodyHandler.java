@@ -6,6 +6,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.canvas.core.BodyModel;
+import phasereditor.canvas.core.CircleArcadeBodyModel;
 import phasereditor.canvas.core.RectArcadeBodyModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
@@ -23,6 +24,8 @@ public class EditBodyHandler extends AbstractHandler {
 		BodyModel body = sprite.getModel().getBody();
 		if (body instanceof RectArcadeBodyModel) {
 			node.setEnableArcadeRectHandlers(true);
+		} else if (body instanceof CircleArcadeBodyModel) {
+			node.setEnableArcadeCircleHandlers(true);
 		}
 		return null;
 	}
