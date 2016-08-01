@@ -38,7 +38,7 @@ public class DragHandlerNode extends Rectangle implements IEditHandler {
 	public DragHandlerNode(SelectionNode selnode) {
 		super(SelectionNode.HANDLER_SIZE, SelectionNode.HANDLER_SIZE);
 		_selnode = selnode;
-		setVisible(false);
+		
 		setFill(Color.GREENYELLOW);
 		setStroke(Color.BLACK);
 		setStrokeWidth(1);

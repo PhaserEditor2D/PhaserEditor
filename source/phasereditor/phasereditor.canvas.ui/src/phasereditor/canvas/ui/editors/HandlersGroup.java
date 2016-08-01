@@ -19,31 +19,22 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.shapes;
+package phasereditor.canvas.ui.editors;
 
-import org.eclipse.core.runtime.IAdaptable;
-
-import phasereditor.canvas.core.BaseSpriteModel;
-import phasereditor.canvas.core.BodyModel;
+import javafx.scene.Group;
 
 /**
  * @author arian
  *
  */
-public interface ISpriteNode extends IObjectNode, IAdaptable {
-	@Override
-	public BaseSpriteModel getModel();
+public class HandlersGroup extends Group {
+	protected final SelectionNode _selnode;
 
-	@Override
-	public BaseSpriteControl<?> getControl();
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	default Object getAdapter(Class adapter) {
-		if (adapter.equals(BodyModel.class)) {
-			return getModel().getBody();
-		}
-		return null;
+	public HandlersGroup(SelectionNode selnode) {
+		_selnode = selnode;
+		setVisible(false);
 	}
+	
+	
 
 }

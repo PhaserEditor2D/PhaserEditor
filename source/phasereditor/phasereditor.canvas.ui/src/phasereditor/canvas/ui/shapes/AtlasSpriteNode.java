@@ -28,6 +28,7 @@ import phasereditor.canvas.core.AtlasSpriteModel;
  * @author arian
  *
  */
+@SuppressWarnings("unchecked")
 public class AtlasSpriteNode extends FrameNode implements ISpriteNode {
 
 	private AtlasSpriteControl _control;

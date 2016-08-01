@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
-import static java.lang.System.out;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,21 +36,16 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.shape.StrokeType;
 import phasereditor.canvas.core.ArcadeBodyModel;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.CircleArcadeBodyModel;
-import phasereditor.canvas.core.RectArcadeBodyModel;
-import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
-import phasereditor.canvas.ui.shapes.TileSpriteNode;
 
 /**
  * @author arian
@@ -83,17 +76,9 @@ public class SelectionNode extends Pane {
 	private ObjectCanvas _canvas;
 	private Label _label;
 
-	private DragHandlerNode _resizeTile_TopRight;
-	private DragHandlerNode _resizeTile_BottomRight;
-	private DragHandlerNode _resizeTile_BottomLeft;
-	private ArcadeRectBodyResizeHandler _resizeArcadeRectBody_TopRight;
-	private ArcadeRectBodyResizeHandler _resizeArcadeRectBody_BottomRight;
-	private ArcadeRectBodyResizeHandler _resizeArcadeRectBody_BottomLeft;
-	private ArcadeBodyMoveHandler _moveArcadeRectBody;
-	private Rectangle _resizeArcadeRectBody_area;
-	private Circle _resizeArcadeCircleBody_area;
-	private ArcadeCircleBodyResizeHandler _resizeArcadeCircleBody_Radius;
-	private ArcadeBodyMoveHandler _moveArcadeCircleBody;
+	private TileHandlerGroup _tileHandlers;
+	private ArcadeRectBodyHandlersGroup _arcadeRectHandlers;
+	private ArcadeCircleBodyHandlersGroup _arcadeCircleHandlers;
 
 	public SelectionNode(ObjectCanvas canvas, IObjectNode inode, Bounds rect) {
 		_objectNode = inode;
@@ -124,89 +109,40 @@ public class SelectionNode extends Pane {
 		getChildren().add(_label);
 
 		// tile
+		_tileHandlers = new TileHandlerGroup(this);
+		getChildren().add(_tileHandlers);
+		_tileHandlers.updateHandlers();
 
-		// tile handlers
+		// arcade rect
+		_arcadeRectHandlers = new ArcadeRectBodyHandlersGroup(this);
+		getChildren().add(_arcadeRectHandlers);
+		_arcadeRectHandlers.updateHandlers();
 
-		_resizeTile_TopRight = new TileResizeHandlerNode(this, true, false);
-		_resizeTile_BottomRight = new TileResizeHandlerNode(this, true, true);
-		_resizeTile_BottomLeft = new TileResizeHandlerNode(this, false, true);
-
-		getChildren().addAll(_resizeTile_TopRight, _resizeTile_BottomRight, _resizeTile_BottomLeft);
-
-		updateTileHandlers();
-
-		// rect body handlers
-
-		_resizeArcadeRectBody_TopRight = new ArcadeRectBodyResizeHandler(this, true, false);
-		_resizeArcadeRectBody_BottomRight = new ArcadeRectBodyResizeHandler(this, true, true);
-		_resizeArcadeRectBody_BottomLeft = new ArcadeRectBodyResizeHandler(this, false, true);
-		_moveArcadeRectBody = new ArcadeBodyMoveHandler(this);
-		_resizeArcadeRectBody_area = new Rectangle();
-		_resizeArcadeRectBody_area.setFill(Color.GREENYELLOW);
-		_resizeArcadeRectBody_area.setMouseTransparent(true);
-		_resizeArcadeRectBody_area.setOpacity(0.5);
-		_resizeArcadeRectBody_area.setVisible(false);
-
-		getChildren().addAll(_resizeArcadeRectBody_area, _resizeArcadeRectBody_TopRight,
-				_resizeArcadeRectBody_BottomRight, _resizeArcadeRectBody_BottomLeft, _moveArcadeRectBody);
-
-		// circle body handlers
-
-		_resizeArcadeCircleBody_Radius = new ArcadeCircleBodyResizeHandler(this);
-		_resizeArcadeCircleBody_area = new Circle();
-		_resizeArcadeCircleBody_area.setFill(Color.GREENYELLOW);
-		_resizeArcadeCircleBody_area.setMouseTransparent(true);
-		_resizeArcadeCircleBody_area.setOpacity(0.5);
-		_resizeArcadeCircleBody_area.setVisible(false);
-		_moveArcadeCircleBody = new ArcadeBodyMoveHandler(this);
-
-		getChildren().addAll(_resizeArcadeCircleBody_area, _moveArcadeCircleBody, _resizeArcadeCircleBody_Radius);
-
-		updateArcadeRectBodyHandlers();
+		// arcade circle
+		_arcadeCircleHandlers = new ArcadeCircleBodyHandlersGroup(this);
+		getChildren().add(_arcadeCircleHandlers);
+		_arcadeCircleHandlers.updateHandlers();
 	}
 
-	static final int HANDLER_SIZE = 10;
+	public static final int HANDLER_SIZE = 10;
 
 	public void setEnableTileHandlers(boolean enable) {
 		hideHandlers();
-
-		_resizeTile_BottomLeft.setVisible(enable);
-		_resizeTile_BottomRight.setVisible(enable);
-		_resizeTile_TopRight.setVisible(enable);
+		_tileHandlers.setVisible(enable);
 	}
 
 	public void setEnableArcadeRectHandlers(boolean enable) {
 		hideHandlers();
-
-		_resizeArcadeRectBody_TopRight.setVisible(enable);
-		_resizeArcadeRectBody_BottomRight.setVisible(enable);
-		_resizeArcadeRectBody_BottomLeft.setVisible(enable);
-		_resizeArcadeRectBody_area.setVisible(enable);
-		_moveArcadeRectBody.setVisible(enable);
+		_arcadeRectHandlers.setVisible(enable);
 	}
 
 	public void setEnableArcadeCircleHandlers(boolean enable) {
 		hideHandlers();
-
-		_resizeArcadeCircleBody_Radius.setVisible(enable);
-		_resizeArcadeCircleBody_area.setVisible(enable);
-		_moveArcadeCircleBody.setVisible(enable);
+		_arcadeCircleHandlers.setVisible(enable);
 	}
 
 	private void hideHandlers() {
-		_resizeTile_TopRight.setVisible(false);
-		_resizeTile_BottomRight.setVisible(false);
-		_resizeTile_BottomLeft.setVisible(false);
-
-		_resizeArcadeRectBody_TopRight.setVisible(false);
-		_resizeArcadeRectBody_BottomRight.setVisible(false);
-		_resizeArcadeRectBody_BottomLeft.setVisible(false);
-		_resizeArcadeRectBody_area.setVisible(false);
-		_moveArcadeRectBody.setVisible(false);
-
-		_resizeArcadeCircleBody_Radius.setVisible(false);
-		_resizeArcadeCircleBody_area.setVisible(false);
-		_moveArcadeCircleBody.setVisible(false);
+		getChildren().forEach(n -> n.setVisible(false));
 	}
 
 	public ObjectCanvas getCanvas() {
@@ -223,8 +159,6 @@ public class SelectionNode extends Pane {
 
 		Point2D translate = _canvas.getZoomBehavior().getTranslate();
 
-		out.println(_rect);
-
 		double x = translate.getX() + _rect.getMinX() * scale;
 		double y = translate.getY() + _rect.getMinY() * scale;
 
@@ -235,122 +169,17 @@ public class SelectionNode extends Pane {
 		setMinSize(w, h);
 		setMaxSize(w, h);
 
-		if (_resizeTile_BottomLeft != null) {
-			updateTileHandlers();
+		if (_tileHandlers != null) {
+			_tileHandlers.updateHandlers();
 		}
 
-		if (_resizeArcadeRectBody_BottomLeft != null) {
-			updateArcadeRectBodyHandlers();
+		if (_arcadeRectHandlers != null) {
+			_arcadeRectHandlers.updateHandlers();
 		}
 
-		if (_resizeArcadeCircleBody_Radius != null) {
-			updateArcadeCircleBodyHandlers();
+		if (_arcadeCircleHandlers != null) {
+			_arcadeCircleHandlers.updateHandlers();
 		}
-	}
-
-	private void updateTileHandlers() {
-		double w = getMinWidth();
-		double h = getMinHeight();
-
-		int hs = HANDLER_SIZE / 2;
-		_resizeTile_TopRight.relocate(w - hs, -HANDLER_SIZE / 2);
-		_resizeTile_BottomRight.relocate(w - hs, h - hs);
-		_resizeTile_BottomLeft.relocate(-HANDLER_SIZE / 2, h - hs);
-	}
-
-	private void updateArcadeRectBodyHandlers() {
-		if (!(getObjectNode() instanceof ISpriteNode)) {
-			return;
-		}
-
-		ISpriteNode sprite = (ISpriteNode) getObjectNode();
-
-		if (!(sprite.getModel().getBody() instanceof RectArcadeBodyModel)) {
-			return;
-		}
-
-		RectArcadeBodyModel body = (RectArcadeBodyModel) sprite.getModel().getBody();
-
-		if (body == null) {
-			return;
-		}
-
-		double bodyX = body.getOffsetX();
-		double bodyY = body.getOffsetY();
-		double bodyW = body.getWidth();
-		double bodyH = body.getHeight();
-
-		if (bodyW == -1) {
-			bodyW = sprite.getControl().getTextureWidth();
-		}
-
-		if (bodyH == -1) {
-			bodyH = sprite.getControl().getTextureHeight();
-		}
-
-		{
-			double scale = _canvas.getZoomBehavior().getScale();
-			double scaleX = sprite.getModel().getScaleX();
-			double scaleY = sprite.getModel().getScaleY();
-			bodyX *= scale * scaleX;
-			bodyY *= scale * scaleY;
-			bodyW *= scale * scaleX;
-			bodyH *= scale * scaleY;
-		}
-
-		double hs = HANDLER_SIZE / 2;
-
-		double left = bodyX;
-		double right = bodyX + bodyW;
-		double top = bodyY;
-		double bottom = bodyY + bodyH;
-
-		_resizeArcadeRectBody_TopRight.relocate(right - hs, top - hs);
-		_resizeArcadeRectBody_BottomRight.relocate(right - hs, bottom - hs);
-		_resizeArcadeRectBody_BottomLeft.relocate(left - hs, bottom - hs);
-		_resizeArcadeRectBody_area.relocate(left, top);
-		_resizeArcadeRectBody_area.setWidth(bodyW);
-		_resizeArcadeRectBody_area.setHeight(bodyH);
-		_moveArcadeRectBody.relocate(bodyX - hs, bodyY - hs);
-	}
-
-	private void updateArcadeCircleBodyHandlers() {
-		if (!(getObjectNode() instanceof ISpriteNode)) {
-			return;
-		}
-
-		ISpriteNode sprite = (ISpriteNode) getObjectNode();
-
-		if (!(sprite.getModel().getBody() instanceof CircleArcadeBodyModel)) {
-			return;
-		}
-
-		CircleArcadeBodyModel body = (CircleArcadeBodyModel) sprite.getModel().getBody();
-
-		if (body == null) {
-			return;
-		}
-
-		double bodyX = body.getOffsetX();
-		double bodyY = body.getOffsetY();
-		double bodyR = body.getRadius();
-
-		{
-			double scale = _canvas.getZoomBehavior().getScale();
-			double scaleX = sprite.getModel().getScaleX();
-			double scaleY = sprite.getModel().getScaleY();
-			bodyX *= scale * scaleX;
-			bodyY *= scale * scaleY;
-			bodyR *= scale * scaleX;
-		}
-
-		double hs = HANDLER_SIZE / 2;
-		_moveArcadeCircleBody.relocate(bodyX - hs, bodyY - hs);
-		_resizeArcadeCircleBody_Radius.relocate(bodyX + bodyR - hs, bodyY + bodyR - hs);
-		_resizeArcadeCircleBody_area.setCenterX(bodyX + bodyR);
-		_resizeArcadeCircleBody_area.setCenterY(bodyY + bodyR);
-		_resizeArcadeCircleBody_area.setRadius(bodyR);
-
 	}
 
 	public IObjectNode getObjectNode() {
@@ -358,182 +187,57 @@ public class SelectionNode extends Pane {
 	}
 }
 
-class TileResizeHandlerNode extends DragHandlerNode {
+class ArcadeCircleBodyResizeHandler extends DragHandlerNode {
 
-	protected double _initWidth;
-	protected double _initHeight;
-	private boolean _height;
-	private boolean _width;
+	private double _initRadius;
+	private double _initOffsetX;
+	private double _initOffsetY;
 
-	public TileResizeHandlerNode(SelectionNode selnode, boolean width, boolean height) {
+	public ArcadeCircleBodyResizeHandler(SelectionNode selnode) {
 		super(selnode);
-		_width = width;
-		_height = height;
-
-		if (_width && _height) {
-			setCursor(Cursor.SE_RESIZE);
-		} else if (_width) {
-			setCursor(Cursor.E_RESIZE);
-		} else {
-			setCursor(Cursor.S_RESIZE);
-		}
-	}
-
-	@Override
-	public void handleMousePressed(MouseEvent e) {
-		super.handleMousePressed(e);
-		TileSpriteNode tile = (TileSpriteNode) getObjectNode();
-		TileSpriteModel tilemodel = tile.getModel();
-		_initWidth = tilemodel.getWidth();
-		_initHeight = tilemodel.getHeight();
-	}
-
-	@Override
-	protected void handleDone() {
-		CompositeOperation operations = new CompositeOperation();
-		TileSpriteNode tile = (TileSpriteNode) getObjectNode();
-		TileSpriteModel tilemodel = tile.getModel();
-		double w = tilemodel.getWidth();
-		double h = tilemodel.getHeight();
-		tilemodel.setWidth(_initWidth);
-		tilemodel.setHeight(_initHeight);
-		operations.add(new ChangePropertyOperation<Number>(tilemodel.getId(), "width", Double.valueOf(w)));
-		operations.add(new ChangePropertyOperation<Number>(tilemodel.getId(), "height", Double.valueOf(h)));
-		getCanvas().getUpdateBehavior().executeOperations(operations);
-	}
-
-	@Override
-	protected void handleDrag(double dx, double dy) {
-		TileSpriteNode tile = (TileSpriteNode) getObjectNode();
-		TileSpriteModel tilemodel = tile.getModel();
-
-		SceneSettings settings = getCanvas().getSettingsModel();
-
-		boolean stepping = settings.isEnableStepping();
-		if (_width) {
-			double w = _initWidth + dx;
-			int sw = settings.getStepWidth();
-
-			if (stepping) {
-				w = Math.round(w / sw) * sw;
-			}
-
-			w = Math.max(w, stepping ? sw : 1);
-
-			tilemodel.setWidth(w);
-		}
-
-		if (_height) {
-			double h = _initHeight + dy;
-			int sh = settings.getStepHeight();
-
-			if (stepping) {
-				h = Math.round(h / sh) * sh;
-			}
-
-			h = Math.max(h, stepping ? sh : 1);
-
-			tilemodel.setHeight(h);
-		}
-
-		tile.updateFromModel();
-	}
-}
-
-class ArcadeRectBodyResizeHandler extends DragHandlerNode {
-
-	private double _initWidth;
-	private double _initHeight;
-
-	private boolean _height;
-	private boolean _width;
-
-	public ArcadeRectBodyResizeHandler(SelectionNode selnode, boolean width, boolean height) {
-		super(selnode);
-		_width = width;
-		_height = height;
-
-		if (_width && _height) {
-			setCursor(Cursor.SE_RESIZE);
-		} else if (_width) {
-			setCursor(Cursor.E_RESIZE);
-		} else {
-			setCursor(Cursor.S_RESIZE);
-		}
+		setCursor(Cursor.E_RESIZE);
 	}
 
 	@Override
 	public void handleMousePressed(MouseEvent e) {
 		super.handleMousePressed(e);
 		ISpriteNode sprite = (ISpriteNode) getObjectNode();
-		RectArcadeBodyModel body = (RectArcadeBodyModel) sprite.getModel().getBody();
-		_initWidth = body.getWidth();
-		_initHeight = body.getHeight();
+		CircleArcadeBodyModel body = (CircleArcadeBodyModel) sprite.getModel().getBody();
+		_initRadius = body.getRadius();
+		_initOffsetX = body.getOffsetX();
+		_initOffsetY = body.getOffsetY();
 	}
 
 	@Override
 	protected void handleDone() {
 		CompositeOperation operations = new CompositeOperation();
 		ISpriteNode sprite = (ISpriteNode) getObjectNode();
-		RectArcadeBodyModel body = (RectArcadeBodyModel) sprite.getModel().getBody();
-		double w = body.getWidth();
-		double h = body.getHeight();
-		body.setWidth(_initWidth);
-		body.setHeight(_initHeight);
+		CircleArcadeBodyModel body = (CircleArcadeBodyModel) sprite.getModel().getBody();
 
-		operations.add(new ChangePropertyOperation<Number>(sprite.getModel().getId(), "body.width", Double.valueOf(w)));
-		operations
-				.add(new ChangePropertyOperation<Number>(sprite.getModel().getId(), "body.height", Double.valueOf(h)));
+		double r = body.getRadius();
+		double x = body.getOffsetX();
+		double y = body.getOffsetY();
+
+		body.setRadius(_initRadius);
+		body.setOffsetX(_initOffsetX);
+		body.setOffsetY(_initOffsetY);
+
+		String id = sprite.getModel().getId();
+		operations.add(new ChangePropertyOperation<Number>(id, "body.radius", Double.valueOf(r)));
+		operations.add(new ChangePropertyOperation<Number>(id, "body.offset.x", Double.valueOf(x)));
+		operations.add(new ChangePropertyOperation<Number>(id, "body.offset.y", Double.valueOf(y)));
+
 		getCanvas().getUpdateBehavior().executeOperations(operations);
 	}
 
 	@Override
 	protected void handleDrag(double dx, double dy) {
 		ISpriteNode sprite = (ISpriteNode) getObjectNode();
-		RectArcadeBodyModel body = (RectArcadeBodyModel) sprite.getModel().getBody();
+		CircleArcadeBodyModel body = (CircleArcadeBodyModel) sprite.getModel().getBody();
 
-		SceneSettings settings = getCanvas().getSettingsModel();
-
-		boolean stepping = settings.isEnableStepping();
-		if (_width) {
-			double w;
-			if (_initWidth == -1) {
-				w = sprite.getControl().getTextureWidth();
-			} else {
-				w = _initWidth;
-			}
-
-			w += dx;
-			int sw = settings.getStepWidth();
-
-			if (stepping) {
-				w = Math.round(w / sw) * sw;
-			}
-
-			w = Math.max(w, stepping ? sw : 1);
-
-			body.setWidth(w);
-		}
-
-		if (_height) {
-			double h;
-			if (_initHeight == -1) {
-				h = sprite.getControl().getTextureHeight();
-			} else {
-				h = _initHeight;
-			}
-
-			h += dy;
-			int sh = settings.getStepHeight();
-
-			if (stepping) {
-				h = Math.round(h / sh) * sh;
-			}
-
-			h = Math.max(h, stepping ? sh : 1);
-
-			body.setHeight(h);
-		}
+		body.setRadius(_initRadius + dx / 2);
+		body.setOffsetX(_initOffsetX - dx / 2);
+		body.setOffsetY(_initOffsetY - dx / 2);
 
 		sprite.getControl().updateFromModel();
 	}
@@ -595,8 +299,6 @@ class ArcadeBodyMoveHandler extends DragHandlerNode {
 				x = Math.round(x / sw) * sw;
 			}
 
-			x = Math.max(x, stepping ? sw : 1);
-
 			body.setOffsetX(x);
 		}
 		{
@@ -607,8 +309,6 @@ class ArcadeBodyMoveHandler extends DragHandlerNode {
 			if (stepping) {
 				y = Math.round(y / sh) * sh;
 			}
-
-			y = Math.max(y, stepping ? sh : 1);
 
 			body.setOffsetY(y);
 		}
@@ -623,50 +323,5 @@ class ArcadeBodyMoveHandler extends DragHandlerNode {
 	@Override
 	public void handleMouseReleased(MouseEvent e) {
 		super.handleMouseReleased(e);
-	}
-}
-
-class ArcadeCircleBodyResizeHandler extends DragHandlerNode {
-
-	private double _initRadius;
-
-	public ArcadeCircleBodyResizeHandler(SelectionNode selnode) {
-		super(selnode);
-		setCursor(Cursor.SE_RESIZE);
-	}
-
-	@Override
-	public void handleMousePressed(MouseEvent e) {
-		super.handleMousePressed(e);
-		ISpriteNode sprite = (ISpriteNode) getObjectNode();
-		CircleArcadeBodyModel body = (CircleArcadeBodyModel) sprite.getModel().getBody();
-		_initRadius = body.getRadius();
-	}
-
-	@Override
-	protected void handleDone() {
-		CompositeOperation operations = new CompositeOperation();
-		ISpriteNode sprite = (ISpriteNode) getObjectNode();
-		CircleArcadeBodyModel body = (CircleArcadeBodyModel) sprite.getModel().getBody();
-		double r = body.getRadius();
-		body.setRadius(_initRadius);
-
-		operations
-				.add(new ChangePropertyOperation<Number>(sprite.getModel().getId(), "body.radius", Double.valueOf(r)));
-		getCanvas().getUpdateBehavior().executeOperations(operations);
-	}
-
-	@Override
-	protected void handleDrag(double dx, double dy) {
-		ISpriteNode sprite = (ISpriteNode) getObjectNode();
-		CircleArcadeBodyModel body = (CircleArcadeBodyModel) sprite.getModel().getBody();
-
-		double r = _initRadius;
-
-		r += Math.max(dx, dy);
-
-		body.setRadius(r);
-
-		sprite.getControl().updateFromModel();
 	}
 }
