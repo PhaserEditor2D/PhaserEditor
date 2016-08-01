@@ -144,6 +144,10 @@ public class MouseBehavior {
 			_zoomPan.handleMousePressed(e);
 			return;
 		}
+		
+		if (e.isSecondaryButtonDown()) {
+			_selection.handleMouseReleased(e);
+		}
 	}
 
 	private void handleDragDetected(MouseEvent e) {
