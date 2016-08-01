@@ -27,6 +27,7 @@ import phasereditor.canvas.core.BaseSpriteModel;
  * @author arian
  *
  */
+@SuppressWarnings("unchecked")
 public class ImageSpriteNode extends FrameNode implements ISpriteNode {
 	private ImageSpriteControl _control;
 

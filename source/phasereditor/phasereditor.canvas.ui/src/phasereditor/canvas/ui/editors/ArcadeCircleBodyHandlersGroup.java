@@ -21,9 +21,13 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
+import javafx.scene.Cursor;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import phasereditor.canvas.core.CircleArcadeBodyModel;
+import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
+import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
 
@@ -91,3 +95,62 @@ public class ArcadeCircleBodyHandlersGroup extends HandlersGroup {
 	}
 
 }
+
+class ArcadeCircleBodyResizeHandler extends DragHandlerNode {
+
+	private double _initRadius;
+	private double _initOffsetX;
+	private double _initOffsetY;
+
+	public ArcadeCircleBodyResizeHandler(SelectionNode selnode) {
+		super(selnode);
+		setCursor(Cursor.E_RESIZE);
+	}
+
+	@Override
+	public void handleMousePressed(MouseEvent e) {
+		super.handleMousePressed(e);
+		ISpriteNode sprite = (ISpriteNode) getObjectNode();
+		CircleArcadeBodyModel body = (CircleArcadeBodyModel) sprite.getModel().getBody();
+		_initRadius = body.getRadius();
+		_initOffsetX = body.getOffsetX();
+		_initOffsetY = body.getOffsetY();
+	}
+
+	@Override
+	protected void handleDone() {
+		CompositeOperation operations = new CompositeOperation();
+		ISpriteNode sprite = (ISpriteNode) getObjectNode();
+		CircleArcadeBodyModel body = (CircleArcadeBodyModel) sprite.getModel().getBody();
+
+		double r = body.getRadius();
+		double x = body.getOffsetX();
+		double y = body.getOffsetY();
+
+		body.setRadius(_initRadius);
+		body.setOffsetX(_initOffsetX);
+		body.setOffsetY(_initOffsetY);
+
+		String id = sprite.getModel().getId();
+		operations.add(new ChangePropertyOperation<Number>(id, "body.radius", Double.valueOf(r)));
+		operations.add(new ChangePropertyOperation<Number>(id, "body.offset.x", Double.valueOf(x)));
+		operations.add(new ChangePropertyOperation<Number>(id, "body.offset.y", Double.valueOf(y)));
+
+		getCanvas().getUpdateBehavior().executeOperations(operations);
+	}
+
+	@Override
+	protected void handleDrag(double dx, double dy) {
+		ISpriteNode sprite = (ISpriteNode) getObjectNode();
+		CircleArcadeBodyModel body = (CircleArcadeBodyModel) sprite.getModel().getBody();
+
+		body.setRadius(_initRadius + dx);
+		body.setOffsetX(_initOffsetX - dx);
+		body.setOffsetY(_initOffsetY - dx);
+
+		sprite.getControl().updateFromModel();
+	}
+}
+
+
+

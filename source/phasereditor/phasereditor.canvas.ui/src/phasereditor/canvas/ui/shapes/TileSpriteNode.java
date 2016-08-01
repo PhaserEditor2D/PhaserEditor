@@ -41,6 +41,7 @@ import phasereditor.ui.ImageCache;
  * @author arian
  *
  */
+@SuppressWarnings("unchecked")
 public class TileSpriteNode extends Pane implements ISpriteNode {
 
 	private FrameData _frame;
