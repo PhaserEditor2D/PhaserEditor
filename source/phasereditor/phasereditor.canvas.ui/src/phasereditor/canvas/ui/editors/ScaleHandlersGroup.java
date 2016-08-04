@@ -22,6 +22,7 @@
 package phasereditor.canvas.ui.editors;
 
 import javafx.geometry.Bounds;
+import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
@@ -58,6 +59,27 @@ public class ScaleHandlersGroup extends HandlersGroup {
 		public ScaleHandlerNode(SelectionNode selnode, ScaleAxis corner) {
 			super(selnode);
 			_corner = corner;
+			updateCursor();
+		}
+
+		void updateCursor() {
+			switch (_corner) {
+			case X:
+				setCursor(Cursor.H_RESIZE);
+				break;
+			case Y:
+				setCursor(Cursor.V_RESIZE);
+				break;
+			case XY:
+				boolean E = getModel().getScaleX() >= 0;
+				boolean S = getModel().getScaleY() >= 0;
+				String name = (S ? "S" : "N") + (E ? "E" : "W") + "_RESIZE";
+				setCursor(Cursor.cursor(name));
+				break;
+
+			default:
+				break;
+			}
 		}
 
 		@Override
@@ -77,17 +99,18 @@ public class ScaleHandlersGroup extends HandlersGroup {
 
 		@Override
 		protected void handleDrag(double dx, double dy) {
-			super.handleDrag(dx, dy);
-
 			BaseObjectModel model = getObjectNode().getModel();
-
+			
+			double dx2 = model.getScaleX() < 0? -dx : dx;
+			double dy2 = model.getScaleY() < 0? -dy : dy;
+			
 			if (_corner.x) {
-				double x = (_scaledInitWidth + dx * model.getScaleX()) / _initWidth;
+				double x = (_scaledInitWidth + dx2 * model.getScaleX()) / _initWidth;
 				model.setScaleX(x);
 			}
 
 			if (_corner.y) {
-				double y = (_scaledInitHeight + dy * model.getScaleY()) / _initHeight;
+				double y = (_scaledInitHeight + dy2 * model.getScaleY()) / _initHeight;
 				model.setScaleY(y);
 			}
 
@@ -136,9 +159,24 @@ public class ScaleHandlersGroup extends HandlersGroup {
 		double h = _selnode.getMinHeight();
 
 		int hs = SelectionNode.HANDLER_SIZE / 2;
-		_handler_X.relocate(w - hs, -hs);
-		_handler_XY.relocate(w - hs, h - hs);
-		_handler_Y.relocate(-hs, h - hs);
+
+		BaseObjectModel model = getModel();
+
+		double right = w - hs;
+		double top = -hs;
+		double left = -hs;
+		double bot = h - hs;
+
+		boolean x = model.getScaleX() >= 0;
+		boolean y = model.getScaleY() >= 0;
+
+		_handler_X.relocate(x ? right : left, y ? top : bot);
+		_handler_XY.relocate(x ? right : left, y ? bot : top);
+		_handler_Y.relocate(x ? left : right, y ? bot : top);
+
+		_handler_X.updateCursor();
+		_handler_XY.updateCursor();
+		_handler_Y.updateCursor();
 	}
 
 }

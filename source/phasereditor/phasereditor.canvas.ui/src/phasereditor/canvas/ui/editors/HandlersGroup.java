@@ -22,6 +22,8 @@
 package phasereditor.canvas.ui.editors;
 
 import javafx.scene.Group;
+import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.BaseSpriteModel;
 
 /**
  * @author arian
@@ -33,6 +35,14 @@ public abstract class HandlersGroup extends Group {
 	public HandlersGroup(SelectionNode selnode) {
 		_selnode = selnode;
 		setVisible(false);
+	}
+	
+	public BaseObjectModel getModel() {
+		return _selnode. getObjectNode().getModel();
+	}
+	
+	public BaseSpriteModel getSpriteModel() {
+		return (BaseSpriteModel) getModel();
 	}
 	
 	public abstract void updateHandlers();

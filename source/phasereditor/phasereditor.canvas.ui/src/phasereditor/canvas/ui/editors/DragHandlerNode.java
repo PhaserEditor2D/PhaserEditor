@@ -29,9 +29,11 @@ import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
-public class DragHandlerNode extends Rectangle implements IEditHandler {
+public abstract class DragHandlerNode extends Rectangle implements IEditHandler {
 	private Point2D _start;
 	private SelectionNode _selnode;
 
@@ -44,14 +46,9 @@ public class DragHandlerNode extends Rectangle implements IEditHandler {
 		setStrokeWidth(1);
 	}
 
-	@SuppressWarnings("unused")
-	protected void handleDrag(double dx, double dy) {
-		// nothing
-	}
+	protected abstract void handleDrag(double dx, double dy);
 	
-	protected void handleDone() {
-		// nothing 
-	}
+	protected abstract void handleDone();
 	
 	@Override
 	public void handleMouseMoved(MouseEvent e) {
@@ -110,5 +107,13 @@ public class DragHandlerNode extends Rectangle implements IEditHandler {
 	
 	public ObjectCanvas getCanvas() {
 		return _selnode.getCanvas();
+	}
+	
+	public BaseObjectModel getModel() {
+		return getObjectNode().getModel();
+	}
+	
+	public BaseSpriteModel getSpriteModel() {
+		return (BaseSpriteModel) getObjectNode().getModel();
 	}
 }
