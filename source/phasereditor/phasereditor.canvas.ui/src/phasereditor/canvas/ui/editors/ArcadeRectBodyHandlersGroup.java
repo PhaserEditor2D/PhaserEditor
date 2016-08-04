@@ -115,7 +115,23 @@ public class ArcadeRectBodyHandlersGroup extends HandlersGroup {
 class ArcadeRectBodyResizeHandler extends DragHandlerNode {
 
 	enum Corner {
-		TOP_LEFT(1, 1, -1, -1), TOP_RIGHT(0, 1, 1, -1), BOTTOM_RIGHT(0, 0, 1, 1), BOTTOM_LEFT(1, 0, -1, 1);
+		TOP_LEFT(1, 1, -1, -1),
+
+		TOP_RIGHT(0, 1, 1, -1),
+
+		BOTTOM_RIGHT(0, 0, 1, 1),
+
+		BOTTOM_LEFT(1, 0, -1, 1),
+
+		TOP(0, 1, 0, -1),
+
+		RIGHT(0, 0, 1, 0),
+
+		BOT(0, 0, 0, 1),
+
+		LEFT(1, 0, -1, 0),
+
+		;
 
 		public double x;
 		public double y;
@@ -128,7 +144,6 @@ class ArcadeRectBodyResizeHandler extends DragHandlerNode {
 			this.w = w;
 			this.h = h;
 		}
-
 	}
 
 	protected double _initX;
@@ -141,25 +156,6 @@ class ArcadeRectBodyResizeHandler extends DragHandlerNode {
 	public ArcadeRectBodyResizeHandler(SelectionNode selnode, Corner corner) {
 		super(selnode);
 		_corner = corner;
-		Cursor cursor;
-		switch (corner) {
-		case TOP_LEFT:
-			cursor = Cursor.NW_RESIZE;
-			break;
-		case TOP_RIGHT:
-			cursor = Cursor.NE_RESIZE;
-			break;
-		case BOTTOM_RIGHT:
-			cursor = Cursor.SE_RESIZE;
-			break;
-		case BOTTOM_LEFT:
-			cursor = Cursor.SW_RESIZE;
-			break;
-		default:
-			cursor = null;
-			break;
-		}
-		setCursor(cursor);
 	}
 
 	@Override
@@ -309,20 +305,42 @@ class ArcadeRectBodyResizeHandler extends DragHandlerNode {
 		double left = bodyX;
 		double right = bodyX + bodyW;
 		double top = bodyY;
-		double bottom = bodyY + bodyH;
+		double bot = bodyY + bodyH;
+		double hor = bodyX + bodyW / 2;
+		double ver = bodyY + bodyH / 2;
 
 		switch (_corner) {
 		case TOP_LEFT:
 			relocate(left - hs, top - hs);
+			setCursor(Cursor.NW_RESIZE);
 			break;
 		case TOP_RIGHT:
 			relocate(right - hs, top - hs);
+			setCursor(Cursor.NE_RESIZE);
 			break;
 		case BOTTOM_RIGHT:
-			relocate(right - hs, bottom - hs);
+			relocate(right - hs, bot - hs);
+			setCursor(Cursor.SE_RESIZE);
 			break;
 		case BOTTOM_LEFT:
-			relocate(left - hs, bottom - hs);
+			relocate(left - hs, bot - hs);
+			setCursor(Cursor.SW_RESIZE);
+			break;
+		case TOP:
+			relocate(hor - hs, top - hs);
+			setCursor(Cursor.N_RESIZE);
+			break;
+		case RIGHT:
+			relocate(right - hs, ver - hs);
+			setCursor(Cursor.E_RESIZE);
+			break;
+		case BOT:
+			relocate(hor - hs, bot - hs);
+			setCursor(Cursor.S_RESIZE);
+			break;
+		case LEFT:
+			relocate(left - hs, ver - hs);
+			setCursor(Cursor.W_RESIZE);
 			break;
 		default:
 			break;
