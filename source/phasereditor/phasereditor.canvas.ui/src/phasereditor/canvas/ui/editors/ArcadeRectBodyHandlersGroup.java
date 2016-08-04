@@ -37,20 +37,11 @@ import phasereditor.canvas.ui.shapes.ISpriteNode;
  */
 public class ArcadeRectBodyHandlersGroup extends HandlersGroup {
 
-	private ArcadeRectBodyResizeHandler _resizeArcadeRectBody_TopRight;
-	private ArcadeRectBodyResizeHandler _resizeArcadeRectBody_BottomRight;
-	private ArcadeRectBodyResizeHandler _resizeArcadeRectBody_BottomLeft;
-	private ArcadeRectBodyResizeHandler _resizeArcadeRectBody_TopLeft;
 	private Rectangle _resizeArcadeRectBody_area;
 	private ArcadeBodyMoveHandler _moveArcadeRectBody_Center;
 
 	public ArcadeRectBodyHandlersGroup(SelectionNode selnode) {
 		super(selnode);
-
-		_resizeArcadeRectBody_TopLeft = new ArcadeRectBodyResizeHandler(selnode, Corner.TOP_LEFT);
-		_resizeArcadeRectBody_TopRight = new ArcadeRectBodyResizeHandler(selnode, Corner.TOP_RIGHT);
-		_resizeArcadeRectBody_BottomRight = new ArcadeRectBodyResizeHandler(selnode, Corner.BOTTOM_RIGHT);
-		_resizeArcadeRectBody_BottomLeft = new ArcadeRectBodyResizeHandler(selnode, Corner.BOTTOM_LEFT);
 
 		_moveArcadeRectBody_Center = new ArcadeBodyMoveHandler(selnode);
 		_resizeArcadeRectBody_area = new Rectangle();
@@ -58,8 +49,11 @@ public class ArcadeRectBodyHandlersGroup extends HandlersGroup {
 		_resizeArcadeRectBody_area.setMouseTransparent(true);
 		_resizeArcadeRectBody_area.setOpacity(0.5);
 
-		getChildren().setAll(_resizeArcadeRectBody_area, _moveArcadeRectBody_Center, _resizeArcadeRectBody_TopRight,
-				_resizeArcadeRectBody_BottomRight, _resizeArcadeRectBody_BottomLeft, _resizeArcadeRectBody_TopLeft);
+		getChildren().setAll(_resizeArcadeRectBody_area, _moveArcadeRectBody_Center);
+
+		for (Corner corner : Corner.values()) {
+			getChildren().addAll(new ArcadeRectBodyResizeHandler(selnode, corner));
+		}
 	}
 
 	@Override
@@ -79,6 +73,8 @@ public class ArcadeRectBodyHandlersGroup extends HandlersGroup {
 		if (body == null) {
 			return;
 		}
+
+		super.updateHandlers();
 
 		double bodyX = body.getOffsetX();
 		double bodyY = body.getOffsetY();
@@ -106,15 +102,9 @@ public class ArcadeRectBodyHandlersGroup extends HandlersGroup {
 		double hs = SelectionNode.HANDLER_SIZE / 2;
 
 		double left = bodyX;
-		double right = bodyX + bodyW;
 		double top = bodyY;
-		double bottom = bodyY + bodyH;
 
 		_moveArcadeRectBody_Center.relocate(bodyX + bodyW / 2 - hs, bodyY + bodyH / 2 - hs);
-		_resizeArcadeRectBody_TopLeft.relocate(left - hs, top - hs);
-		_resizeArcadeRectBody_TopRight.relocate(right - hs, top - hs);
-		_resizeArcadeRectBody_BottomRight.relocate(right - hs, bottom - hs);
-		_resizeArcadeRectBody_BottomLeft.relocate(left - hs, bottom - hs);
 		_resizeArcadeRectBody_area.relocate(left, top);
 		_resizeArcadeRectBody_area.setWidth(bodyW);
 		_resizeArcadeRectBody_area.setHeight(bodyH);
@@ -209,6 +199,10 @@ class ArcadeRectBodyResizeHandler extends DragHandlerNode {
 
 	@Override
 	protected void handleDrag(double dx, double dy) {
+
+		double dx2 = getModel().getScaleX() < 0 ? -dx : dx;
+		double dy2 = getModel().getScaleY() < 0 ? -dy : dy;
+
 		ISpriteNode sprite = (ISpriteNode) getObjectNode();
 		RectArcadeBodyModel body = (RectArcadeBodyModel) sprite.getModel().getBody();
 
@@ -218,7 +212,7 @@ class ArcadeRectBodyResizeHandler extends DragHandlerNode {
 
 		{
 			double x = _initX;
-			x += dx * _corner.x;
+			x += dx2 * _corner.x;
 			int sw = settings.getStepWidth();
 
 			if (stepping) {
@@ -230,7 +224,7 @@ class ArcadeRectBodyResizeHandler extends DragHandlerNode {
 
 		{
 			double y = _initY;
-			y += dy * _corner.y;
+			y += dy2 * _corner.y;
 			int sh = settings.getStepHeight();
 
 			if (stepping) {
@@ -248,7 +242,7 @@ class ArcadeRectBodyResizeHandler extends DragHandlerNode {
 				w = _initWidth;
 			}
 
-			w += dx * _corner.w;
+			w += dx2 * _corner.w;
 			int sw = settings.getStepWidth();
 
 			if (stepping) {
@@ -265,7 +259,7 @@ class ArcadeRectBodyResizeHandler extends DragHandlerNode {
 			h = _initHeight;
 		}
 
-		h += dy * _corner.h;
+		h += dy2 * _corner.h;
 		int sh = settings.getStepHeight();
 
 		if (stepping) {
@@ -275,5 +269,63 @@ class ArcadeRectBodyResizeHandler extends DragHandlerNode {
 		body.setHeight(h);
 
 		sprite.getControl().updateFromModel();
+	}
+
+	@Override
+	protected void updateHandler() {
+		ISpriteNode sprite = (ISpriteNode) _selnode.getObjectNode();
+
+		RectArcadeBodyModel body = (RectArcadeBodyModel) sprite.getModel().getBody();
+
+		if (body == null) {
+			return;
+		}
+
+		double bodyX = body.getOffsetX();
+		double bodyY = body.getOffsetY();
+		double bodyW = body.getWidth();
+		double bodyH = body.getHeight();
+
+		if (bodyW == -1) {
+			bodyW = sprite.getControl().getTextureWidth();
+		}
+
+		if (bodyH == -1) {
+			bodyH = sprite.getControl().getTextureHeight();
+		}
+
+		{
+			double scale = _selnode.getCanvas().getZoomBehavior().getScale();
+			double scaleX = sprite.getModel().getScaleX();
+			double scaleY = sprite.getModel().getScaleY();
+			bodyX *= scale * scaleX;
+			bodyY *= scale * scaleY;
+			bodyW *= scale * scaleX;
+			bodyH *= scale * scaleY;
+		}
+
+		double hs = SelectionNode.HANDLER_SIZE / 2;
+
+		double left = bodyX;
+		double right = bodyX + bodyW;
+		double top = bodyY;
+		double bottom = bodyY + bodyH;
+
+		switch (_corner) {
+		case TOP_LEFT:
+			relocate(left - hs, top - hs);
+			break;
+		case TOP_RIGHT:
+			relocate(right - hs, top - hs);
+			break;
+		case BOTTOM_RIGHT:
+			relocate(right - hs, bottom - hs);
+			break;
+		case BOTTOM_LEFT:
+			relocate(left - hs, bottom - hs);
+			break;
+		default:
+			break;
+		}
 	}
 }

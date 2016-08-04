@@ -36,15 +36,22 @@ public abstract class HandlersGroup extends Group {
 		_selnode = selnode;
 		setVisible(false);
 	}
-	
+
 	public BaseObjectModel getModel() {
-		return _selnode. getObjectNode().getModel();
+		return _selnode.getObjectNode().getModel();
 	}
-	
+
 	public BaseSpriteModel getSpriteModel() {
 		return (BaseSpriteModel) getModel();
 	}
-	
-	public abstract void updateHandlers();
+
+	public void updateHandlers() {
+		getChildren().forEach(n -> {
+			if (n instanceof DragHandlerNode) {
+				((DragHandlerNode) n).updateHandler();
+			}
+		});
+
+	}
 
 }

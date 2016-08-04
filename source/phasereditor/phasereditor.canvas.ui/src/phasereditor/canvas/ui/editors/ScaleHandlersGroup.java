@@ -59,7 +59,6 @@ public class ScaleHandlersGroup extends HandlersGroup {
 		public ScaleHandlerNode(SelectionNode selnode, ScaleAxis corner) {
 			super(selnode);
 			_corner = corner;
-			updateCursor();
 		}
 
 		void updateCursor() {
@@ -83,6 +82,42 @@ public class ScaleHandlersGroup extends HandlersGroup {
 		}
 
 		@Override
+		protected void updateHandler() {
+			double w = _selnode.getMinWidth();
+			double h = _selnode.getMinHeight();
+
+			int hs = SelectionNode.HANDLER_SIZE / 2;
+
+			BaseObjectModel model = getModel();
+
+			double right = w - hs;
+			double top = -hs;
+			double left = -hs;
+			double bot = h - hs;
+			double hor = w / 2 - hs;
+			double ver = h / 2 - hs;
+
+			boolean x = model.getScaleX() >= 0;
+			boolean y = model.getScaleY() >= 0;
+
+			switch (_corner) {
+			case X:
+				relocate(x ? right : left, ver);
+				break;
+			case XY:
+				relocate(x ? right : left, y ? bot : top);
+				break;
+			case Y:
+				relocate(hor, y ? bot : top);
+				break;
+			default:
+				break;
+			}
+
+			updateCursor();
+		}
+
+		@Override
 		public void handleMousePressed(MouseEvent e) {
 			super.handleMousePressed(e);
 
@@ -100,10 +135,10 @@ public class ScaleHandlersGroup extends HandlersGroup {
 		@Override
 		protected void handleDrag(double dx, double dy) {
 			BaseObjectModel model = getObjectNode().getModel();
-			
-			double dx2 = model.getScaleX() < 0? -dx : dx;
-			double dy2 = model.getScaleY() < 0? -dy : dy;
-			
+
+			double dx2 = model.getScaleX() < 0 ? -dx : dx;
+			double dy2 = model.getScaleY() < 0 ? -dy : dy;
+
 			if (_corner.x) {
 				double x = (_scaledInitWidth + dx2 * model.getScaleX()) / _initWidth;
 				model.setScaleX(x);
@@ -141,42 +176,11 @@ public class ScaleHandlersGroup extends HandlersGroup {
 		}
 	}
 
-	private ScaleHandlerNode _handler_X;
-	private ScaleHandlerNode _handler_XY;
-	private ScaleHandlerNode _handler_Y;
-
 	public ScaleHandlersGroup(SelectionNode selnode) {
 		super(selnode);
-		_handler_X = new ScaleHandlerNode(selnode, ScaleAxis.X);
-		_handler_XY = new ScaleHandlerNode(selnode, ScaleAxis.XY);
-		_handler_Y = new ScaleHandlerNode(selnode, ScaleAxis.Y);
-		getChildren().addAll(_handler_X, _handler_XY, _handler_Y);
+		
+		for (ScaleAxis axis : ScaleAxis.values()) {
+			getChildren().add(new ScaleHandlerNode(selnode, axis));
+		}
 	}
-
-	@Override
-	public void updateHandlers() {
-		double w = _selnode.getMinWidth();
-		double h = _selnode.getMinHeight();
-
-		int hs = SelectionNode.HANDLER_SIZE / 2;
-
-		BaseObjectModel model = getModel();
-
-		double right = w - hs;
-		double top = -hs;
-		double left = -hs;
-		double bot = h - hs;
-
-		boolean x = model.getScaleX() >= 0;
-		boolean y = model.getScaleY() >= 0;
-
-		_handler_X.relocate(x ? right : left, y ? top : bot);
-		_handler_XY.relocate(x ? right : left, y ? bot : top);
-		_handler_Y.relocate(x ? left : right, y ? bot : top);
-
-		_handler_X.updateCursor();
-		_handler_XY.updateCursor();
-		_handler_Y.updateCursor();
-	}
-
 }

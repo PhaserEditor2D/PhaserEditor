@@ -35,7 +35,7 @@ import phasereditor.canvas.ui.shapes.IObjectNode;
 
 public abstract class DragHandlerNode extends Rectangle implements IEditHandler {
 	private Point2D _start;
-	private SelectionNode _selnode;
+	protected final SelectionNode _selnode;
 
 	public DragHandlerNode(SelectionNode selnode) {
 		super(SelectionNode.HANDLER_SIZE, SelectionNode.HANDLER_SIZE);
@@ -49,6 +49,10 @@ public abstract class DragHandlerNode extends Rectangle implements IEditHandler 
 	protected abstract void handleDrag(double dx, double dy);
 	
 	protected abstract void handleDone();
+	
+	protected void updateHandler() {
+		// nothing
+	}
 	
 	@Override
 	public void handleMouseMoved(MouseEvent e) {
