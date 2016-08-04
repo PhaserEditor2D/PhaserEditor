@@ -27,7 +27,7 @@ import javafx.scene.Group;
  * @author arian
  *
  */
-public class HandlersGroup extends Group {
+public abstract class HandlersGroup extends Group {
 	protected final SelectionNode _selnode;
 
 	public HandlersGroup(SelectionNode selnode) {
@@ -35,6 +35,6 @@ public class HandlersGroup extends Group {
 		setVisible(false);
 	}
 	
-	
+	public abstract void updateHandlers();
 
 }

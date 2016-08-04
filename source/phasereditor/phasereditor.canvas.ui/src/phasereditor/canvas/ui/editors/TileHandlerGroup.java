@@ -45,6 +45,7 @@ public class TileHandlerGroup extends HandlersGroup {
 		getChildren().setAll(_resizeTile_TopRight, _resizeTile_BottomRight, _resizeTile_BottomLeft);
 	}
 
+	@Override
 	public void updateHandlers() {
 		double w = _selnode.getMinWidth();
 		double h = _selnode.getMinHeight();

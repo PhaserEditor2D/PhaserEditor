@@ -55,8 +55,7 @@ public class DisablePhysicsHandler extends AbstractHandler {
 
 		for (Node node : canvas.getSelectionPane().getChildren()) {
 			SelectionNode selnode = (SelectionNode) node;
-			selnode.setEnableArcadeCircleHandlers(false);
-			selnode.setEnableArcadeRectHandlers(false);
+			selnode.hideHandlers();
 		}
 
 		return null;

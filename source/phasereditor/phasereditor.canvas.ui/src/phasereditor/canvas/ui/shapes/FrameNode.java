@@ -38,14 +38,12 @@ import phasereditor.ui.ImageCache;
 public class FrameNode extends Pane {
 
 	private ImageView _imageView;
-	private IFile _lastFile;
-	private long _lastFileModStamp;
 
 	public FrameNode(IAssetFrameModel frameModel) {
 		IFile file = frameModel.getImageFile();
 		Image image = ImageCache.getFXImage(file);
 		_imageView = new ImageView(image);
-		
+
 		getChildren().add(_imageView);
 
 		updateContent(frameModel);
@@ -59,13 +57,8 @@ public class FrameNode extends Pane {
 		FrameData frame = frameModel.getFrameData();
 
 		IFile file = frameModel.getImageFile();
-		long modstamp = file.getModificationStamp();
 
-		if (_lastFile == null || !_lastFile.equals(file) || _lastFileModStamp != modstamp) {
-			_lastFile = file;
-			_lastFileModStamp = modstamp;
-			_imageView.setImage(ImageCache.getFXImage(file));
-		}
+		_imageView.setImage(ImageCache.getFXImage(file));
 
 		_imageView.relocate(frame.dst.x, frame.dst.y);
 		_imageView.setViewport(new Rectangle2D(frame.src.x, frame.src.y, frame.src.width, frame.src.height));
@@ -74,8 +67,8 @@ public class FrameNode extends Pane {
 		setMinSize(frame.srcSize.x, frame.srcSize.y);
 		setPrefSize(frame.srcSize.x, frame.srcSize.y);
 
-//		if (getParent() != null) {
-//			getParent().layout();
-//		}
+		// if (getParent() != null) {
+		// getParent().layout();
+		// }
 	}
 }

@@ -9,6 +9,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.SelectionNode;
+import phasereditor.canvas.ui.editors.TileHandlerGroup;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.TileSpriteNode;
 
@@ -25,7 +26,7 @@ public class ResizeTileHandler extends AbstractHandler {
 		IObjectNode sprite = selnode.getObjectNode();
 
 		if (sprite instanceof TileSpriteNode) {
-			selnode.setEnableTileHandlers(true);
+			selnode.showHandlers(TileHandlerGroup.class);
 		} else {
 			// maybe we want to morph it into a tile sprite
 			if (MessageDialog.openConfirm(HandlerUtil.getActiveShell(event), "Resize Tile Sprite",
@@ -37,7 +38,7 @@ public class ResizeTileHandler extends AbstractHandler {
 				morph.execute(event);
 
 				// find the new selection node and enable tile resize handlers.
-				getSelectedNode(canvas).setEnableTileHandlers(true);
+				getSelectedNode(canvas).showHandlers(TileHandlerGroup.class);
 			}
 		}
 

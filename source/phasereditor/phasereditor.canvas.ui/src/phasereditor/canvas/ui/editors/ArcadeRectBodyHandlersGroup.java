@@ -62,6 +62,7 @@ public class ArcadeRectBodyHandlersGroup extends HandlersGroup {
 				_resizeArcadeRectBody_BottomRight, _resizeArcadeRectBody_BottomLeft, _resizeArcadeRectBody_TopLeft);
 	}
 
+	@Override
 	public void updateHandlers() {
 		if (!(_selnode.getObjectNode() instanceof ISpriteNode)) {
 			return;

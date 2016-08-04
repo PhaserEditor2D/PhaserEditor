@@ -54,6 +54,7 @@ public class ArcadeCircleBodyHandlersGroup extends HandlersGroup {
 		getChildren().setAll(_resizeArcadeCircleBody_area, _moveArcadeCircleBody, _resizeArcadeCircleBody_Radius);
 	}
 
+	@Override
 	public void updateHandlers() {
 		IObjectNode node = _selnode.getObjectNode();
 
