@@ -19,41 +19,75 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors;
+package phasereditor.canvas.ui.editors.edithandlers;
 
-import javafx.geometry.BoundingBox;
-import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import phasereditor.canvas.core.BaseObjectModel;
-import phasereditor.canvas.core.BaseSpriteModel;
+import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
-public abstract class DragHandlerNode extends Rectangle implements IEditHandler {
-	private Point2D _start;
-	protected final SelectionNode _selnode;
+/**
+ * @author arian
+ *
+ */
+public abstract class PathHandlerNode extends Path implements IEditHandlerNode {
 
-	public DragHandlerNode(SelectionNode selnode) {
-		super(SelectionNode.HANDLER_SIZE, SelectionNode.HANDLER_SIZE);
-		_selnode = selnode;
-		
-		setFill(Color.GREENYELLOW);
+	private Point2D _start;
+	protected final IObjectNode _object;
+	protected final ObjectCanvas _canvas;
+	protected final Node _node;
+	protected final BaseObjectModel _model;
+	protected final BaseObjectControl<?> _control;
+
+	public PathHandlerNode(IObjectNode object) {
+		// super(10, 10);
+		_object = object;
+		_control = _object.getControl();
+		_node = _object.getControl().getNode();
+		_model = _object.getModel();
+		_canvas = _object.getControl().getCanvas();
+
 		setStroke(Color.BLACK);
 		setStrokeWidth(1);
+
+		getElements().setAll(
+
+		new MoveTo(0, 0),
+
+		new LineTo(10, 0),
+
+		new LineTo(10, 10),
+
+		new LineTo(0, 10),
+
+		new LineTo(0, 0));
 	}
 
-	protected abstract void handleDrag(double dx, double dy);
-	
-	protected abstract void handleDone();
-	
-	protected void updateHandler() {
-		// nothing
+	@Override
+	public IObjectNode getObject() {
+		return _object;
 	}
-	
+
+	/**
+	 * Handle a drag event. Values are transformed to the local dimensions.
+	 * 
+	 * @param dx
+	 *            Local delta X.
+	 * @param dy
+	 *            Local delta Y.
+	 */
+	protected abstract void handleDrag(double dx, double dy);
+
+	protected abstract void handleDone();
+
 	@Override
 	public void handleMouseMoved(MouseEvent e) {
 		// nothing
@@ -69,26 +103,22 @@ public abstract class DragHandlerNode extends Rectangle implements IEditHandler 
 		if (_start == null) {
 			return;
 		}
-		
-		Point2D p = new Point2D(e.getSceneX(), e.getSceneY());
-		Bounds sceneDelta = new BoundingBox(0, 0, p.getX() - _start.getX(), p.getY() - _start.getY());
-		Node node = _selnode.getObjectNode().getNode();
-		Bounds spriteDelta = node.sceneToLocal(new BoundingBox(0, 0, sceneDelta.getWidth(), sceneDelta.getHeight()));
 
-		double w = spriteDelta.getWidth();
-		double h = spriteDelta.getHeight();
+		double cursorX = e.getSceneX();
+		double cursorY = e.getSceneY();
+		double startX = _start.getX();
+		double startY = _start.getY();
 
-		if (p.getX() < _start.getX()) {
-			w = -w;
-		}
+		Point2D localCursor = _node.sceneToLocal(cursorX, cursorY);
+		Point2D localStart = _node.sceneToLocal(startX, startY);
 
-		if (p.getY() < _start.getY()) {
-			h = -h;
-		}
+		double localDX = localCursor.getX() - localStart.getX();
+		double localDY = localCursor.getY() - localStart.getY();
 
-		handleDrag(w, h);
+		handleDrag(localDX, localDY);
 
-		_selnode.updateBounds(_selnode.getCanvas().getSelectionBehavior().buildSelectionBounds(node));
+		_object.getControl().updateFromModel();
+		_canvas.getSelectionBehavior().updateSelectedNodes();
 	}
 
 	@Override
@@ -100,24 +130,5 @@ public abstract class DragHandlerNode extends Rectangle implements IEditHandler 
 	public void handleMouseExited(MouseEvent e) {
 		setCursor(Cursor.DEFAULT);
 	}
-	
-	public SelectionNode getSelectionNode() {
-		return _selnode;
-	}
-	
-	public IObjectNode getObjectNode() {
-		return _selnode.getObjectNode();
-	}
-	
-	public ObjectCanvas getCanvas() {
-		return _selnode.getCanvas();
-	}
-	
-	public BaseObjectModel getModel() {
-		return getObjectNode().getModel();
-	}
-	
-	public BaseSpriteModel getSpriteModel() {
-		return (BaseSpriteModel) getObjectNode().getModel();
-	}
+
 }

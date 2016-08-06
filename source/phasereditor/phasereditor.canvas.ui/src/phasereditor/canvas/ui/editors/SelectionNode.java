@@ -26,8 +26,6 @@ import java.util.List;
 
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
-import javafx.scene.Cursor;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
@@ -37,11 +35,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.shape.StrokeType;
-import phasereditor.canvas.core.ArcadeBodyModel;
-import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
-import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;
-import phasereditor.canvas.ui.shapes.ISpriteNode;
 
 /**
  * @author arian
@@ -78,34 +72,9 @@ public class SelectionNode extends Pane {
 		updateFromZoomAndPanVariables();
 
 		setBorder(_border);
-
-		getChildren().addAll(
-
-		new TileHandlerGroup(this),
-
-		new ArcadeRectBodyHandlersGroup(this),
-
-		new ArcadeCircleBodyHandlersGroup(this),
-
-		new ScaleHandlersGroup(this));
-
-		updateHandlers();
 	}
 
 	public static final int HANDLER_SIZE = 10;
-
-	public void showHandlers(Class<? extends HandlersGroup> handlerClass) {
-		hideHandlers();
-		getChildren().forEach(n -> {
-			if (n.getClass() == handlerClass) {
-				n.setVisible(true);
-			}
-		});
-	}
-
-	public void hideHandlers() {
-		getChildren().forEach(n -> n.setVisible(false));
-	}
 
 	public ObjectCanvas getCanvas() {
 		return _canvas;
@@ -131,102 +100,9 @@ public class SelectionNode extends Pane {
 		setMinSize(w, h);
 		setMaxSize(w, h);
 
-		updateHandlers();
-	}
-
-	private void updateHandlers() {
-		getChildren().forEach(n -> {
-			if (n instanceof HandlersGroup) {
-				((HandlersGroup) n).updateHandlers();
-			}
-		});
 	}
 
 	public IObjectNode getObjectNode() {
 		return _objectNode;
-	}
-}
-
-class ArcadeBodyMoveHandler extends DragHandlerNode {
-
-	protected double _initX;
-	protected double _initY;
-
-	public ArcadeBodyMoveHandler(SelectionNode selnode) {
-		super(selnode);
-		setCursor(Cursor.MOVE);
-		setFill(Color.ALICEBLUE);
-		setArcWidth(10);
-		setArcHeight(10);
-	}
-
-	@Override
-	public void handleMousePressed(MouseEvent e) {
-		super.handleMousePressed(e);
-		ISpriteNode sprite = (ISpriteNode) getObjectNode();
-		ArcadeBodyModel body = (ArcadeBodyModel) sprite.getModel().getBody();
-		_initX = body.getOffsetX();
-		_initY = body.getOffsetY();
-	}
-
-	@Override
-	protected void handleDone() {
-		CompositeOperation operations = new CompositeOperation();
-		ISpriteNode sprite = (ISpriteNode) getObjectNode();
-		ArcadeBodyModel body = (ArcadeBodyModel) sprite.getModel().getBody();
-		double x = body.getOffsetX();
-		double y = body.getOffsetY();
-		body.setOffsetX(_initX);
-		body.setOffsetX(_initY);
-
-		String id = sprite.getModel().getId();
-
-		operations.add(new ChangePropertyOperation<Number>(id, "body.offset.x", Double.valueOf(x)));
-		operations.add(new ChangePropertyOperation<Number>(id, "body.offset.y", Double.valueOf(y)));
-
-		getCanvas().getUpdateBehavior().executeOperations(operations);
-	}
-
-	@Override
-	protected void handleDrag(double dx, double dy) {
-		ISpriteNode sprite = (ISpriteNode) getObjectNode();
-		ArcadeBodyModel body = (ArcadeBodyModel) sprite.getModel().getBody();
-
-		SceneSettings settings = getCanvas().getSettingsModel();
-
-		boolean stepping = settings.isEnableStepping();
-		{
-			double x = _initX;
-			x += dx;
-			int sw = settings.getStepWidth();
-
-			if (stepping) {
-				x = Math.round(x / sw) * sw;
-			}
-
-			body.setOffsetX(x);
-		}
-		{
-			double y = _initY;
-			y += dy;
-			int sh = settings.getStepHeight();
-
-			if (stepping) {
-				y = Math.round(y / sh) * sh;
-			}
-
-			body.setOffsetY(y);
-		}
-		sprite.getControl().updateFromModel();
-	}
-
-	@Override
-	public void handleMouseExited(MouseEvent e) {
-		super.handleMouseExited(e);
-	}
-
-	@Override
-	public void handleMouseReleased(MouseEvent e) {
-		super.handleMouseReleased(e);
 	}
 }

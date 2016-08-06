@@ -6,10 +6,8 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import javafx.scene.Node;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
-import phasereditor.canvas.ui.editors.SelectionNode;
 import phasereditor.canvas.ui.editors.operations.ChangeBodyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.SelectOperation;
@@ -21,6 +19,7 @@ public class DisablePhysicsHandler extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
+
 		ObjectCanvas canvas = editor.getCanvas();
 
 		Object[] sel = ((IStructuredSelection) HandlerUtil.getCurrentSelection(event)).toArray();
@@ -51,12 +50,9 @@ public class DisablePhysicsHandler extends AbstractHandler {
 
 		operations.add(select);
 
-		canvas.getUpdateBehavior().executeOperations(operations);
+		canvas.getHandlerBehavior().clear();
 
-		for (Node node : canvas.getSelectionPane().getChildren()) {
-			SelectionNode selnode = (SelectionNode) node;
-			selnode.hideHandlers();
-		}
+		canvas.getUpdateBehavior().executeOperations(operations);
 
 		return null;
 	}

@@ -117,7 +117,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		updateTransforms(transforms);
 	}
 
-	protected void updateTransforms(ObservableList<Transform> transforms) {
+	public void updateTransforms(ObservableList<Transform> transforms) {
 		double px = _model.getPivotX();
 		double py = _model.getPivotY();
 

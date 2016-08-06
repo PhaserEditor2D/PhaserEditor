@@ -151,6 +151,7 @@ public class ZoomBehavior {
 			((SelectionNode) n).updateFromZoomAndPanVariables();
 		});
 
+		_canvas.getHandlerBehavior().update();
 		_canvas.getPaintBehavior().repaint();
 	}
 	

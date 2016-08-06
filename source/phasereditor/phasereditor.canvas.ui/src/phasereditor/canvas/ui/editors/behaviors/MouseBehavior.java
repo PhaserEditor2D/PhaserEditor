@@ -26,9 +26,9 @@ import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import phasereditor.canvas.ui.editors.IEditHandler;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.SceneSettings;
+import phasereditor.canvas.ui.editors.edithandlers.IEditHandlerNode;
 
 /**
  * @author arian
@@ -39,7 +39,7 @@ public class MouseBehavior {
 	private ZoomBehavior _zoomPan;
 	private DragBehavior _drag;
 	private SelectionBehavior _selection;
-	private IEditHandler _dragHandler;
+	private IEditHandlerNode _dragHandler;
 	private Point2D _mousePosition;
 
 	public MouseBehavior(ObjectCanvas canvas) {
@@ -132,8 +132,8 @@ public class MouseBehavior {
 	private void handleMousePressed(MouseEvent e) {
 
 		Node node = e.getPickResult().getIntersectedNode();
-		if (node instanceof IEditHandler) {
-			_dragHandler = (IEditHandler) node;
+		if (node instanceof IEditHandlerNode) {
+			_dragHandler = (IEditHandlerNode) node;
 			_dragHandler.handleMousePressed(e);
 			return;
 		}

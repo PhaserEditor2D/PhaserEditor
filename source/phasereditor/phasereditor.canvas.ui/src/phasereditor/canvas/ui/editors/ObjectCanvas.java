@@ -38,6 +38,7 @@ import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.behaviors.CreateBehavior;
 import phasereditor.canvas.ui.editors.behaviors.DragBehavior;
+import phasereditor.canvas.ui.editors.behaviors.HandlerBehavior;
 import phasereditor.canvas.ui.editors.behaviors.MouseBehavior;
 import phasereditor.canvas.ui.editors.behaviors.PaintBehavior;
 import phasereditor.canvas.ui.editors.behaviors.SelectionBehavior;
@@ -75,6 +76,8 @@ public class ObjectCanvas extends FXCanvas {
 	private PaletteComp _palette;
 	private CanvasEditor _editor;
 	private SceneSettings _settingsModel;
+	private Pane _handlerPane;
+	private HandlerBehavior _handlerBehavior;
 
 	public ObjectCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -100,6 +103,7 @@ public class ObjectCanvas extends FXCanvas {
 		_zoomBehavior = new ZoomBehavior(this);
 		_mouseBehavior = new MouseBehavior(this);
 		_paintBehavior = new PaintBehavior(this);
+		_handlerBehavior = new HandlerBehavior(this);
 
 		_updateBehavior.updateFromSettings();
 		_zoomBehavior.updateZoomAndPan();
@@ -160,6 +164,10 @@ public class ObjectCanvas extends FXCanvas {
 	public UpdateBehavior getUpdateBehavior() {
 		return _updateBehavior;
 	}
+	
+	public HandlerBehavior getHandlerBehavior() {
+		return _handlerBehavior;
+	}
 
 	private void initDrop() {
 		getScene().setOnDragOver(event -> {
@@ -203,13 +211,18 @@ public class ObjectCanvas extends FXCanvas {
 		_selectionPane = new Pane();
 		_selectionPane.setId("__selection-pane__");
 
+		
+		_handlerPane = new Pane();
+		_handlerPane.setId("__handler-pane__");
+		
+		
 		_selectionFrontPane = new Pane();
 		_selectionFrontPane.setId("__selection-glass-pane__");
 		_selectionFrontPane.setMouseTransparent(true);
 
 		_root.setAlignment(Pos.TOP_LEFT);
 
-		_root.getChildren().setAll(_backGridPane, world, _frontGridPane, _selectionPane, _selectionFrontPane);
+		_root.getChildren().setAll(_backGridPane, world, _frontGridPane, _selectionPane, _handlerPane, _selectionFrontPane);
 	}
 
 	public GridPane getBackGridPane() {
@@ -230,6 +243,10 @@ public class ObjectCanvas extends FXCanvas {
 
 	public Pane getSelectionPane() {
 		return _selectionPane;
+	}
+	
+	public Pane getHandlerPane() {
+		return _handlerPane;
 	}
 
 	public Pane getSelectionFrontPane() {

@@ -357,6 +357,9 @@ public class SelectionBehavior implements ISelectionProvider {
 		}
 
 		selpane.requestLayout();
+
+		_canvas.getHandlerBehavior().clearNotSelected();
+		_canvas.getHandlerBehavior().update();
 	}
 
 	public Bounds buildSelectionBounds(Node node) {

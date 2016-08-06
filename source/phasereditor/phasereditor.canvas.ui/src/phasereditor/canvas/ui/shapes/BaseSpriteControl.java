@@ -67,7 +67,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 	}
 
 	@Override
-	protected void updateTransforms(ObservableList<Transform> transforms) {
+	public void updateTransforms(ObservableList<Transform> transforms) {
 		super.updateTransforms(transforms);
 
 		{

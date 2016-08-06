@@ -19,24 +19,69 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors;
+package phasereditor.canvas.ui.editors.edithandlers;
 
-import javafx.scene.input.MouseEvent;
+import javafx.scene.Cursor;
+import phasereditor.canvas.ui.shapes.IObjectNode;
 
-/**
- * @author arian
- *
- */
-public interface IEditHandler {
+public enum Axis {
+	TOP_LEF(0, 0),
 
-	void handleMouseMoved(MouseEvent e);
+	TOP(0.5, 0),
 
-	void handleMousePressed(MouseEvent e);
+	TOP_RIG(1, 0),
 
-	void handleMouseDragged(MouseEvent e);
+	RIG(1, 0.5),
 
-	void handleMouseReleased(MouseEvent e);
+	BOT_RIG(1, 1),
 
-	void handleMouseExited(MouseEvent e);
+	BOT(0.5, 1),
 
+	BOT_LEF(0, 1),
+
+	LEF(0, 0.5),
+
+	CENTER(0.5, 0.5);
+
+	public double x;
+	public double y;
+
+	private Axis(double x, double y) {
+		this.x = x;
+		this.y = y;
+	}
+
+	public boolean changeW() {
+		return x != 0.5;
+	}
+
+	public boolean changeH() {
+		return y != 0.5;
+	}
+
+	public Cursor getResizeCursor(IObjectNode object) {
+		if (this == CENTER) {
+			return Cursor.MOVE;
+		}
+
+		boolean sx = object.getModel().getScaleX() >= 0;
+		boolean sy = object.getModel().getScaleY() >= 0;
+		String name = "";
+
+		if (y == 0) {
+			name += sy ? "N" : "S";
+		} else if (y == 1) {
+			name += sy ? "S" : "N";
+		}
+
+		if (x == 0) {
+			name += sx ? "W" : "E";
+		} else if (x == 1) {
+			name += sx ? "E" : "W";
+		}
+		
+		name += "_RESIZE";
+
+		return Cursor.cursor(name);
+	}
 }

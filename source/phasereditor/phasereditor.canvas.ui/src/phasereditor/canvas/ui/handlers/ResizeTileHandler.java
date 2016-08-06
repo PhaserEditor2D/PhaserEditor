@@ -4,12 +4,11 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
-import phasereditor.canvas.ui.editors.SelectionNode;
-import phasereditor.canvas.ui.editors.TileHandlerGroup;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.TileSpriteNode;
 
@@ -21,12 +20,10 @@ public class ResizeTileHandler extends AbstractHandler {
 
 		ObjectCanvas canvas = editor.getCanvas();
 
-		SelectionNode selnode = getSelectedNode(canvas);
-
-		IObjectNode sprite = selnode.getObjectNode();
+		IObjectNode sprite = (IObjectNode) getSelected(event);
 
 		if (sprite instanceof TileSpriteNode) {
-			selnode.showHandlers(TileHandlerGroup.class);
+			canvas.getHandlerBehavior().editTile(sprite);
 		} else {
 			// maybe we want to morph it into a tile sprite
 			if (MessageDialog.openConfirm(HandlerUtil.getActiveShell(event), "Resize Tile Sprite",
@@ -38,14 +35,14 @@ public class ResizeTileHandler extends AbstractHandler {
 				morph.execute(event);
 
 				// find the new selection node and enable tile resize handlers.
-				getSelectedNode(canvas).showHandlers(TileHandlerGroup.class);
+				canvas.getHandlerBehavior().editTile((IObjectNode) getSelected(event));
 			}
 		}
 
 		return null;
 	}
 
-	private static SelectionNode getSelectedNode(ObjectCanvas canvas) {
-		return (SelectionNode) canvas.getSelectionPane().getChildren().get(0);
+	private static Object getSelected(ExecutionEvent event) {
+		return ((IStructuredSelection) HandlerUtil.getCurrentSelection(event)).getFirstElement();
 	}
 }

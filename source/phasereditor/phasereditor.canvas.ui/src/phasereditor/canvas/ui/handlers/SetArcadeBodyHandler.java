@@ -6,17 +6,12 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import phasereditor.canvas.core.ArcadeBodyModel;
 import phasereditor.canvas.core.BodyModel;
 import phasereditor.canvas.core.CircleArcadeBodyModel;
 import phasereditor.canvas.core.RectArcadeBodyModel;
-import phasereditor.canvas.ui.editors.ArcadeCircleBodyHandlersGroup;
-import phasereditor.canvas.ui.editors.ArcadeRectBodyHandlersGroup;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
-import phasereditor.canvas.ui.editors.SelectionNode;
 import phasereditor.canvas.ui.editors.operations.ChangeBodyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.SelectOperation;
@@ -31,7 +26,7 @@ public class SetArcadeBodyHandler extends AbstractHandler {
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 		ObjectCanvas canvas = editor.getCanvas();
 
-		Object[] sel = ((IStructuredSelection) HandlerUtil.getCurrentSelection(event)).toArray();
+		Object[] sel = getSelection(event);
 
 		CompositeOperation operations = new CompositeOperation();
 
@@ -62,21 +57,22 @@ public class SetArcadeBodyHandler extends AbstractHandler {
 		canvas.getUpdateBehavior().executeOperations(operations);
 
 		// if there is only one node selected, then edit the body
-
-		{
-			ObservableList<Node> list = canvas.getSelectionPane().getChildren();
-			if (list.size() == 1) {
-				SelectionNode node = (SelectionNode) list.get(0);
-				BodyModel body = ((ISpriteNode) node.getObjectNode()).getModel().getBody();
-				if (body instanceof RectArcadeBodyModel) {
-					node.showHandlers(ArcadeRectBodyHandlersGroup.class);
-				} else if (body instanceof CircleArcadeBodyModel) {
-					node.showHandlers(ArcadeCircleBodyHandlersGroup.class);
-				}
+		sel = getSelection(event);
+		if (sel.length == 1) {
+			ISpriteNode sprite = (ISpriteNode) sel[0];
+			BodyModel body = sprite.getModel().getBody();
+			if (body instanceof RectArcadeBodyModel) {
+				canvas.getHandlerBehavior().editArcadeRectBody(sprite);
+			} else if (body instanceof CircleArcadeBodyModel) {
+				canvas.getHandlerBehavior().editArcadeCircleBody(sprite);
 			}
 		}
 
 		return null;
+	}
+
+	private static Object[] getSelection(ExecutionEvent event) {
+		return ((IStructuredSelection) HandlerUtil.getCurrentSelection(event)).toArray();
 	}
 
 }

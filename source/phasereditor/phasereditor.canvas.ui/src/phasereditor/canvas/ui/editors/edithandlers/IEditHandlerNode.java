@@ -19,39 +19,39 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors;
+package phasereditor.canvas.ui.editors.edithandlers;
 
-import javafx.scene.Group;
-import phasereditor.canvas.core.BaseObjectModel;
-import phasereditor.canvas.core.BaseSpriteModel;
+import javafx.geometry.Point2D;
+import javafx.scene.input.MouseEvent;
+import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
  * @author arian
  *
  */
-public abstract class HandlersGroup extends Group {
-	protected final SelectionNode _selnode;
+public interface IEditHandlerNode {
 
-	public HandlersGroup(SelectionNode selnode) {
-		_selnode = selnode;
-		setVisible(false);
+	void handleMouseMoved(MouseEvent e);
+
+	void handleMousePressed(MouseEvent e);
+
+	void handleMouseDragged(MouseEvent e);
+
+	void handleMouseReleased(MouseEvent e);
+
+	void handleMouseExited(MouseEvent e);
+	
+	IObjectNode getObject();
+
+	default void updateHandler() {
+		// nothing
 	}
-
-	public BaseObjectModel getModel() {
-		return _selnode.getObjectNode().getModel();
+	
+	/**
+	 * Transform an object local position into an scene position.
+	 */
+	default Point2D objectToScene(IObjectNode object, double x, double y) {
+		Point2D p = object.getNode().localToScene(new Point2D(x, y));
+		return p;
 	}
-
-	public BaseSpriteModel getSpriteModel() {
-		return (BaseSpriteModel) getModel();
-	}
-
-	public void updateHandlers() {
-		getChildren().forEach(n -> {
-			if (n instanceof DragHandlerNode) {
-				((DragHandlerNode) n).updateHandler();
-			}
-		});
-
-	}
-
 }
