@@ -118,4 +118,8 @@ public class HandlerBehavior {
 			}
 		});
 	}
+
+	public boolean isEditing() {
+		return !_pane.getChildren().isEmpty();
+	}
 }

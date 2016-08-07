@@ -972,7 +972,7 @@
             commandId="phasereditor.canvas.ui.quickEdit"
             contextId="phasereditor.canvas.ui.nodescontext"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M1+M2+M">
+            sequence="Q">
       </key>
       <key
             commandId="phasereditor.canvas.ui.addsprite"

@@ -19,6 +19,8 @@ public class AbortOperationHandler extends AbstractHandler {
 
 		if (canvas.getDragBehavior().isDragging()) {
 			canvas.getDragBehavior().abort();
+		} else if (canvas.getHandlerBehavior().isEditing()) {
+			canvas.getHandlerBehavior().clear();
 		} else {
 			canvas.getSelectionBehavior().abort();
 		}
