@@ -25,13 +25,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.ArcTo;
-import javafx.scene.shape.MoveTo;
-import phasereditor.canvas.core.ArcadeBodyModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CircleArcadeBodyModel;
-import phasereditor.canvas.core.RectArcadeBodyModel;
-import phasereditor.canvas.ui.editors.SceneSettings;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;
@@ -41,88 +36,54 @@ import phasereditor.canvas.ui.shapes.ISpriteNode;
  * @author arian
  *
  */
-public class ArcadeMoveBodyHandlerNode extends PathHandlerNode {
-	private double _initX;
-	private double _initY;
+public class ArcadeResizeCircleBodyHandlerNode extends PathHandlerNode {
 
-	public ArcadeMoveBodyHandlerNode(IObjectNode object) {
+	private double _initRadius;
+	private double _initOffsetX;
+	private double _initOffsetY;
+
+	public ArcadeResizeCircleBodyHandlerNode(IObjectNode object) {
 		super(object);
-		setFill(Color.ALICEBLUE);
-
-		getElements().setAll(
-
-		new MoveTo(5, 0),
-
-		new ArcTo(5, 5, 0, 0, 5, false, false),
-
-		new ArcTo(5, 5, 0, 5, 10, false, false),
-
-		new ArcTo(5, 5, 0, 10, 5, false, false),
-
-		new ArcTo(5, 5, 0, 5, 0, false, false)
-
-		);
-
-		setCursor(Cursor.MOVE);
+		setCursor(Cursor.H_RESIZE);
+		setFill(Color.GREENYELLOW);
 	}
 
 	@Override
 	public void handleMousePressed(MouseEvent e) {
 		super.handleMousePressed(e);
 		ISpriteNode sprite = (ISpriteNode) _object;
-		ArcadeBodyModel body = (ArcadeBodyModel) sprite.getModel().getBody();
-		_initX = body.getOffsetX();
-		_initY = body.getOffsetY();
+		CircleArcadeBodyModel body = (CircleArcadeBodyModel) sprite.getModel().getBody();
+		_initRadius = body.getRadius();
+		_initOffsetX = body.getOffsetX();
+		_initOffsetY = body.getOffsetY();
 	}
 
 	@Override
 	protected void handleDrag(double dx, double dy) {
 		ISpriteNode sprite = (ISpriteNode) _object;
-		ArcadeBodyModel body = (ArcadeBodyModel) sprite.getModel().getBody();
+		CircleArcadeBodyModel body = (CircleArcadeBodyModel) sprite.getModel().getBody();
 
-		SceneSettings settings = _canvas.getSettingsModel();
-
-		boolean stepping = settings.isEnableStepping();
-		{
-			double x = _initX;
-			x += dx;
-			int sw = settings.getStepWidth();
-
-			if (stepping) {
-				x = Math.round(x / sw) * sw;
-			}
-
-			body.setOffsetX(x);
-		}
-
-		{
-			double y = _initY;
-			y += dy;
-			int sh = settings.getStepHeight();
-
-			if (stepping) {
-				y = Math.round(y / sh) * sh;
-			}
-
-			body.setOffsetY(y);
-		}
+		body.setRadius(_initRadius + dx);
+		body.setOffsetX(_initOffsetX - dx);
+		body.setOffsetY(_initOffsetY - dx);
 	}
 
 	@Override
 	protected void handleDone() {
 		CompositeOperation operations = new CompositeOperation();
 		ISpriteNode sprite = (ISpriteNode) _object;
+		CircleArcadeBodyModel body = (CircleArcadeBodyModel) sprite.getModel().getBody();
 
-		ArcadeBodyModel body = (ArcadeBodyModel) sprite.getModel().getBody();
-
+		double r = body.getRadius();
 		double x = body.getOffsetX();
 		double y = body.getOffsetY();
 
-		body.setOffsetX(_initX);
-		body.setOffsetX(_initY);
+		body.setRadius(_initRadius);
+		body.setOffsetX(_initOffsetX);
+		body.setOffsetY(_initOffsetY);
 
 		String id = sprite.getModel().getId();
-
+		operations.add(new ChangePropertyOperation<Number>(id, "body.radius", Double.valueOf(r)));
 		operations.add(new ChangePropertyOperation<Number>(id, "body.offset.x", Double.valueOf(x)));
 		operations.add(new ChangePropertyOperation<Number>(id, "body.offset.y", Double.valueOf(y)));
 
@@ -131,34 +92,15 @@ public class ArcadeMoveBodyHandlerNode extends PathHandlerNode {
 
 	@Override
 	public void updateHandler() {
-		ArcadeBodyModel body = (ArcadeBodyModel) ((BaseSpriteModel) _model).getBody();
+		CircleArcadeBodyModel body = (CircleArcadeBodyModel) ((BaseSpriteModel) _model).getBody();
 
-		double w;
-		double h;
+		double r = body.getRadius();
 
-		if (body instanceof RectArcadeBodyModel) {
-			RectArcadeBodyModel rect = (RectArcadeBodyModel) body;
-			w = rect.getWidth();
-			h = rect.getHeight();
-
-			if (w == -1) {
-				w = _control.getTextureWidth();
-			}
-
-			if (h == -1) {
-				h = _control.getTextureHeight();
-			}
-		} else {
-			double r = ((CircleArcadeBodyModel) body).getRadius();
-			w = r * 2;
-			h = r * 2;
-		}
-
-		double x = body.getOffsetX() + 0.5 * w;
-		double y = body.getOffsetY() + 0.5 * h;
+		double x = body.getOffsetX() + r * 2;
+		double y = body.getOffsetY() + r;
 
 		Point2D p = objectToScene(_object, x, y);
-
 		relocate(p.getX() - 5, p.getY() - 5);
 	}
+
 }

@@ -26,6 +26,8 @@ public class SetArcadeBodyHandler extends AbstractHandler {
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 		ObjectCanvas canvas = editor.getCanvas();
 
+		canvas.getHandlerBehavior().clear();
+		
 		Object[] sel = getSelection(event);
 
 		CompositeOperation operations = new CompositeOperation();
@@ -59,6 +61,7 @@ public class SetArcadeBodyHandler extends AbstractHandler {
 		// if there is only one node selected, then edit the body
 		sel = getSelection(event);
 		if (sel.length == 1) {
+			
 			ISpriteNode sprite = (ISpriteNode) sel[0];
 			BodyModel body = sprite.getModel().getBody();
 			if (body instanceof RectArcadeBodyModel) {

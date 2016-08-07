@@ -28,8 +28,10 @@ import java.util.Set;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.edithandlers.ArcadeHighlightCircleBodyHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.ArcadeHighlightRectBodyHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.ArcadeMoveBodyHandlerNode;
+import phasereditor.canvas.ui.editors.edithandlers.ArcadeResizeCircleBodyHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.ArcadeResizeRectBodyHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.Axis;
 import phasereditor.canvas.ui.editors.edithandlers.IEditHandlerNode;
@@ -91,7 +93,13 @@ public class HandlerBehavior {
 	}
 
 	public void editArcadeCircleBody(ISpriteNode sprite) {
-		// TODO Auto-generated method stub
+		clear();
+		
+		add(new ArcadeHighlightCircleBodyHandlerNode(sprite));
+		add(new ArcadeMoveBodyHandlerNode(sprite));
+		add(new ArcadeResizeCircleBodyHandlerNode(sprite));
+		
+		update();
 	}
 
 	private void add(Node node) {
