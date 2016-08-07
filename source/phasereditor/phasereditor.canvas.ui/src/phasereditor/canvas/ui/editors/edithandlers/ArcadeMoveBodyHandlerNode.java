@@ -25,6 +25,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.ArcTo;
+import javafx.scene.shape.MoveTo;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.RectArcadeBodyModel;
 import phasereditor.canvas.ui.editors.SceneSettings;
@@ -45,7 +47,19 @@ public class ArcadeMoveBodyHandlerNode extends PathHandlerNode {
 		super(object);
 		setFill(Color.ALICEBLUE);
 
-		//TODO: draw a circle
+		getElements().setAll(
+
+		new MoveTo(5, 0),
+
+		new ArcTo(5, 5, 0, 0, 5, false, false),
+		
+		new ArcTo(5, 5, 0, 5, 10, false, false),
+		
+		new ArcTo(5, 5, 0, 10, 5, false, false),
+		
+		new ArcTo(5, 5, 0, 5, 0, false, false)
+
+		);
 
 		setCursor(Cursor.MOVE);
 	}
