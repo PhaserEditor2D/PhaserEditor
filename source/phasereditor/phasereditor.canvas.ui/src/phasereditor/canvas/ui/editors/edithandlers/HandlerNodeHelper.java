@@ -22,51 +22,53 @@
 package phasereditor.canvas.ui.editors.edithandlers;
 
 import javafx.geometry.Point2D;
-import javafx.scene.paint.Color;
-import phasereditor.canvas.core.BaseSpriteModel;
-import phasereditor.canvas.core.CircleArcadeBodyModel;
+import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
  * @author arian
  *
  */
-public class ArcadeHighlightCircleBodyHandlerNode extends CircleHandlerNode {
+public class HandlerNodeHelper {
 
-	public ArcadeHighlightCircleBodyHandlerNode(IObjectNode object) {
-		super(object);
-		setOpacity(0.5);
-		setFill(Color.GREENYELLOW);
-		setStrokeWidth(0);
+	private IEditHandlerNode _node;
+	private Point2D _start;
+
+	public HandlerNodeHelper(IEditHandlerNode node) {
+		_node = node;
 	}
 
-	@Override
-	public void handleDrag(double dx, double dy) {
-		// nothing
+	public void handleMousePressed(MouseEvent e) {
+		_start = new Point2D(e.getSceneX(), e.getSceneY());
 	}
 
-	@Override
-	public void handleDone() {
-		// nothing
+	public void handleMouseDragged(MouseEvent e) {
+		if (_start == null) {
+			return;
+		}
+
+		double cursorX = e.getSceneX();
+		double cursorY = e.getSceneY();
+		double startX = _start.getX();
+		double startY = _start.getY();
+
+		IObjectNode obj = _node.getObject();
+		Node node = obj.getNode();
+
+		Point2D localCursor = node.sceneToLocal(cursorX, cursorY);
+		Point2D localStart = node.sceneToLocal(startX, startY);
+
+		double localDX = localCursor.getX() - localStart.getX();
+		double localDY = localCursor.getY() - localStart.getY();
+
+		_node.handleDrag(localDX, localDY);
+
+		obj.getControl().updateFromModel();
+		obj.getControl().getCanvas().getSelectionBehavior().updateSelectedNodes();
 	}
 
-	@Override
-	public void updateHandler() {
-		CircleArcadeBodyModel body = (CircleArcadeBodyModel) ((BaseSpriteModel) _model).getBody();
-
-		double r = body.getRadius();
-
-		double x = body.getOffsetX();
-		double y = body.getOffsetY();
-
-		Point2D p1 = objectToScene(_object, x + r, y + r);
-		Point2D p2 = objectToScene(_object, x + r * 2, y + r);
-
-		double r2 = p1.distance(p2);
-
-		setCenterX(p1.getX());
-		setCenterY(p1.getY());
-		setRadius(r2);
+	public void handleMouseReleased(@SuppressWarnings("unused") MouseEvent e) {
+		_node.handleDone();
 	}
-
 }

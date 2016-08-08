@@ -62,7 +62,7 @@ public class ArcadeResizeRectBodyHandlerNode extends PathHandlerNode {
 	}
 
 	@Override
-	protected void handleDrag(double dx, double dy) {
+	public void handleDrag(double dx, double dy) {
 		ISpriteNode sprite = (ISpriteNode) _object;
 		RectArcadeBodyModel body = (RectArcadeBodyModel) sprite.getModel().getBody();
 
@@ -134,7 +134,7 @@ public class ArcadeResizeRectBodyHandlerNode extends PathHandlerNode {
 	}
 
 	@Override
-	protected void handleDone() {
+	public void handleDone() {
 		CompositeOperation operations = new CompositeOperation();
 		ISpriteNode sprite = (ISpriteNode) _object;
 		RectArcadeBodyModel body = (RectArcadeBodyModel) sprite.getModel().getBody();

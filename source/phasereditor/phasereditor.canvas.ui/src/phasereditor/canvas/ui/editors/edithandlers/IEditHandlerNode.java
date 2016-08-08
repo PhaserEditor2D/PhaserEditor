@@ -43,9 +43,19 @@ public interface IEditHandlerNode {
 	
 	IObjectNode getObject();
 
-	default void updateHandler() {
-		// nothing
-	}
+	void updateHandler();
+	
+	/**
+	 * Handle a drag event. Values are transformed to the local dimensions.
+	 * 
+	 * @param dx
+	 *            Local delta X.
+	 * @param dy
+	 *            Local delta Y.
+	 */
+	void handleDrag(double localDX, double localDY);
+	
+	void handleDone();
 	
 	/**
 	 * Transform an object local position into an scene position.

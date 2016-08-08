@@ -25,9 +25,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
+import javafx.scene.shape.Circle;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
@@ -37,7 +35,7 @@ import phasereditor.canvas.ui.shapes.IObjectNode;
  * @author arian
  *
  */
-public abstract class PathHandlerNode extends Path implements IEditHandlerNode {
+public abstract class CircleHandlerNode extends Circle implements IEditHandlerNode {
 
 	protected final IObjectNode _object;
 	protected final ObjectCanvas _canvas;
@@ -46,7 +44,7 @@ public abstract class PathHandlerNode extends Path implements IEditHandlerNode {
 	protected final BaseObjectControl<?> _control;
 	private HandlerNodeHelper _helper;
 
-	public PathHandlerNode(IObjectNode object) {
+	public CircleHandlerNode(IObjectNode object) {
 		// super(10, 10);
 		_object = object;
 		_control = _object.getControl();
@@ -57,17 +55,7 @@ public abstract class PathHandlerNode extends Path implements IEditHandlerNode {
 		setStroke(Color.BLACK);
 		setStrokeWidth(1);
 
-		getElements().setAll(
-
-		new MoveTo(0, 0),
-
-		new LineTo(10, 0),
-
-		new LineTo(10, 10),
-
-		new LineTo(0, 10),
-
-		new LineTo(0, 0));
+		setRadius(5);
 
 		_helper = new HandlerNodeHelper(this);
 	}

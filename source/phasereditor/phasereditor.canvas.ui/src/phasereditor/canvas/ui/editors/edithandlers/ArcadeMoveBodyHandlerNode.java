@@ -25,8 +25,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.ArcTo;
-import javafx.scene.shape.MoveTo;
 import phasereditor.canvas.core.ArcadeBodyModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CircleArcadeBodyModel;
@@ -41,28 +39,14 @@ import phasereditor.canvas.ui.shapes.ISpriteNode;
  * @author arian
  *
  */
-public class ArcadeMoveBodyHandlerNode extends PathHandlerNode {
+public class ArcadeMoveBodyHandlerNode extends CircleHandlerNode {
 	private double _initX;
 	private double _initY;
 
 	public ArcadeMoveBodyHandlerNode(IObjectNode object) {
 		super(object);
 		setFill(Color.ALICEBLUE);
-
-		getElements().setAll(
-
-		new MoveTo(5, 0),
-
-		new ArcTo(5, 5, 0, 0, 5, false, false),
-
-		new ArcTo(5, 5, 0, 5, 10, false, false),
-
-		new ArcTo(5, 5, 0, 10, 5, false, false),
-
-		new ArcTo(5, 5, 0, 5, 0, false, false)
-
-		);
-
+		setRadius(5);
 		setCursor(Cursor.MOVE);
 	}
 
@@ -76,7 +60,7 @@ public class ArcadeMoveBodyHandlerNode extends PathHandlerNode {
 	}
 
 	@Override
-	protected void handleDrag(double dx, double dy) {
+	public void handleDrag(double dx, double dy) {
 		ISpriteNode sprite = (ISpriteNode) _object;
 		ArcadeBodyModel body = (ArcadeBodyModel) sprite.getModel().getBody();
 
@@ -109,7 +93,7 @@ public class ArcadeMoveBodyHandlerNode extends PathHandlerNode {
 	}
 
 	@Override
-	protected void handleDone() {
+	public void handleDone() {
 		CompositeOperation operations = new CompositeOperation();
 		ISpriteNode sprite = (ISpriteNode) _object;
 
@@ -159,6 +143,7 @@ public class ArcadeMoveBodyHandlerNode extends PathHandlerNode {
 
 		Point2D p = objectToScene(_object, x, y);
 
-		relocate(p.getX() - 5, p.getY() - 5);
+		setCenterX(p.getX());
+		setCenterY(p.getY());
 	}
 }

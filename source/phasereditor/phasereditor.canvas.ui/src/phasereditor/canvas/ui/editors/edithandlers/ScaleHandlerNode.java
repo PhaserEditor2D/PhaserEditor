@@ -64,7 +64,7 @@ public class ScaleHandlerNode extends PathHandlerNode {
 	}
 
 	@Override
-	protected void handleDrag(double dx, double dy) {
+	public void handleDrag(double dx, double dy) {
 		if (_axis.changeW()) {
 			double x = (_scaledInitWidth + dx * _model.getScaleX()) / _initWidth;
 			_model.setScaleX(x);
@@ -77,7 +77,7 @@ public class ScaleHandlerNode extends PathHandlerNode {
 	}
 
 	@Override
-	protected void handleDone() {
+	public void handleDone() {
 		double x = _model.getScaleX();
 		double y = _model.getScaleY();
 

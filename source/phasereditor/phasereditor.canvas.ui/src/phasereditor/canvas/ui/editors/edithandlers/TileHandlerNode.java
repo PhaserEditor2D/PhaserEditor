@@ -57,7 +57,7 @@ public class TileHandlerNode extends PathHandlerNode{
 	}
 
 	@Override
-	protected void handleDrag(double dx, double dy) {
+	public void handleDrag(double dx, double dy) {
 		TileSpriteNode tile = (TileSpriteNode) _object;
 		TileSpriteModel tilemodel = tile.getModel();
 
@@ -93,7 +93,7 @@ public class TileHandlerNode extends PathHandlerNode{
 	}
 
 	@Override
-	protected void handleDone() {
+	public void handleDone() {
 		CompositeOperation operations = new CompositeOperation();
 		TileSpriteNode tile = (TileSpriteNode) _object;
 		TileSpriteModel tilemodel = tile.getModel();

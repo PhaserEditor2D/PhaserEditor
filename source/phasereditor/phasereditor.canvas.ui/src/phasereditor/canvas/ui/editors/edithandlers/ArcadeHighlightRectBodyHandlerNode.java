@@ -44,12 +44,12 @@ public class ArcadeHighlightRectBodyHandlerNode extends PathHandlerNode {
 	}
 
 	@Override
-	protected void handleDrag(double dx, double dy) {
+	public void handleDrag(double dx, double dy) {
 		// nothing
 	}
 
 	@Override
-	protected void handleDone() {
+	public void handleDone() {
 		// nothing
 	}
 
