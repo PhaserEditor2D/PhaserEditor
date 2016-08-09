@@ -21,9 +21,11 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.edithandlers;
 
-import javafx.geometry.Bounds;
+import static java.lang.System.out;
+
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
+import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;
@@ -32,54 +34,72 @@ import phasereditor.canvas.ui.shapes.IObjectNode;
  * @author arian
  *
  */
-public class ScaleHandlerNode extends PathHandlerNode {
+public class AngleHandlerNode extends PathHandlerNode {
 
 	private Axis _axis;
-	private double _initScaleX;
-	private double _initScaleY;
-	private double _initWidth;
-	private double _initHeight;
-	private double _scaledInitWidth;
-	private double _scaledInitHeight;
+	private double _initAngle;
+	private double _initX;
+	private double _initY;
+	private double _centerX;
+	private double _centerY;
 
-	public ScaleHandlerNode(IObjectNode object, Axis axis) {
+	public AngleHandlerNode(IObjectNode object, Axis axis) {
 		super(object);
 		_axis = axis;
-		setFill(Color.AQUAMARINE);
+		setFill(Color.BLUEVIOLET);
+	}
+
+	public static double angleBetweenTwoPointsWithFixedPoint(double point1X, double point1Y, double point2X,
+			double point2Y, double fixedX, double fixedY) {
+
+		double angle1 = Math.atan2(point1Y - fixedY, point1X - fixedX);
+		double angle2 = Math.atan2(point2Y - fixedY, point2X - fixedX);
+
+		return angle1 - angle2;
 	}
 
 	@Override
-	public void handleLocalStart(double localX, double localY) {
-		Bounds bounds = _node.getBoundsInLocal();
+	public void handleSceneStart(double x, double y) {
+		_initAngle = _object.getModel().getAngle();
+		_initX = x;
+		_initY = y;
 
-		_initScaleX = _model.getScaleX();
-		_initScaleY = _model.getScaleY();
-		_initWidth = bounds.getWidth();
-		_initHeight = bounds.getHeight();
-		_scaledInitWidth = _initWidth * _model.getScaleX();
-		_scaledInitHeight = _initHeight * _model.getScaleY();
+		_centerX = 0;
+		_centerY = 0;
+
+		if (_model instanceof BaseSpriteModel) {
+			BaseSpriteModel spriteModel = (BaseSpriteModel) _model;
+			_centerX = spriteModel.getAnchorX() * _control.getTextureWidth();
+			_centerY = spriteModel.getAnchorY() * _control.getTextureHeight();
+		}
+
+		Point2D p = _node.localToScene(_centerX, _centerY);
+		_centerX = p.getX();
+		_centerY = p.getY();
 	}
 
+	@SuppressWarnings("boxing")
 	@Override
-	public void handleLocalDrag(double dx, double dy) {
-		if (_axis.changeW()) {
-			double x = (_scaledInitWidth + dx * _model.getScaleX()) / _initWidth;
-			_model.setScaleX(x);
+	public void handleSceneDrag(double dx, double dy) {
+		if (Math.abs(dx) < 1 || Math.abs(dy) < 1) {
+			return;
 		}
 
-		if (_axis.changeH()) {
-			double y = (_scaledInitHeight + dy * _model.getScaleY()) / _initHeight;
-			_model.setScaleY(y);
-		}
+		double x = _initX + dx;
+		double y = _initY + dy;
+
+		double a = angleBetweenTwoPointsWithFixedPoint(x, y, _initX, _initY, _centerX, _centerY);
+
+		double d = Math.toDegrees(a);
+
+		_model.setAngle(_initAngle + d);
 	}
 
 	@Override
 	public void handleDone() {
-		double x = _model.getScaleX();
-		double y = _model.getScaleY();
+		double a = _model.getAngle();
 
-		_model.setScaleX(_initScaleX);
-		_model.setScaleY(_initScaleY);
+		_model.setAngle(_initAngle);
 
 		String id = _model.getId();
 
@@ -87,9 +107,7 @@ public class ScaleHandlerNode extends PathHandlerNode {
 
 		new CompositeOperation(
 
-		new ChangePropertyOperation<Number>(id, "scale.x", Double.valueOf(x)),
-
-		new ChangePropertyOperation<Number>(id, "scale.y", Double.valueOf(y))
+		new ChangePropertyOperation<Number>(id, "angle", Double.valueOf(a))
 
 		));
 	}
@@ -101,8 +119,5 @@ public class ScaleHandlerNode extends PathHandlerNode {
 
 		Point2D p = objectToScene(x, y);
 		relocate(p.getX() - 5, p.getY() - 5);
-
-		setCursor(_axis.getResizeCursor(_object));
 	}
-
 }

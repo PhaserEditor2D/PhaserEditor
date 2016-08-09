@@ -101,5 +101,4 @@ public abstract class PathHandlerNode extends Path implements IEditHandlerNode {
 	public void handleMouseExited(MouseEvent e) {
 		setCursor(Cursor.DEFAULT);
 	}
-
 }

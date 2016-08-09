@@ -23,7 +23,6 @@ package phasereditor.canvas.ui.editors.edithandlers;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CircleArcadeBodyModel;
@@ -49,8 +48,7 @@ public class ArcadeResizeCircleBodyHandlerNode extends PathHandlerNode {
 	}
 
 	@Override
-	public void handleMousePressed(MouseEvent e) {
-		super.handleMousePressed(e);
+	public void handleLocalStart(double localX, double localY) {
 		ISpriteNode sprite = (ISpriteNode) _object;
 		CircleArcadeBodyModel body = (CircleArcadeBodyModel) sprite.getModel().getBody();
 		_initRadius = body.getRadius();
@@ -59,7 +57,7 @@ public class ArcadeResizeCircleBodyHandlerNode extends PathHandlerNode {
 	}
 
 	@Override
-	public void handleDrag(double dx, double dy) {
+	public void handleLocalDrag(double dx, double dy) {
 		ISpriteNode sprite = (ISpriteNode) _object;
 		CircleArcadeBodyModel body = (CircleArcadeBodyModel) sprite.getModel().getBody();
 
@@ -99,7 +97,7 @@ public class ArcadeResizeCircleBodyHandlerNode extends PathHandlerNode {
 		double x = body.getOffsetX() + r * 2;
 		double y = body.getOffsetY() + r;
 
-		Point2D p = objectToScene(_object, x, y);
+		Point2D p = objectToScene(x, y);
 		relocate(p.getX() - 5, p.getY() - 5);
 	}
 

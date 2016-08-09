@@ -44,7 +44,12 @@ public class ArcadeHighlightRectBodyHandlerNode extends PathHandlerNode {
 	}
 
 	@Override
-	public void handleDrag(double dx, double dy) {
+	public void handleLocalStart(double localX, double localY) {
+		// nothing
+	}
+
+	@Override
+	public void handleLocalDrag(double dx, double dy) {
 		// nothing
 	}
 
@@ -71,10 +76,10 @@ public class ArcadeHighlightRectBodyHandlerNode extends PathHandlerNode {
 		double x = body.getOffsetX();
 		double y = body.getOffsetY();
 
-		Point2D p1 = objectToScene(_object, x, y);
-		Point2D p2 = objectToScene(_object, x + w, y);
-		Point2D p3 = objectToScene(_object, x + w, y + h);
-		Point2D p4 = objectToScene(_object, x, y + h);
+		Point2D p1 = objectToScene(x, y);
+		Point2D p2 = objectToScene(x + w, y);
+		Point2D p3 = objectToScene(x + w, y + h);
+		Point2D p4 = objectToScene(x, y + h);
 
 		x = p1.getX();
 		y = p1.getY();

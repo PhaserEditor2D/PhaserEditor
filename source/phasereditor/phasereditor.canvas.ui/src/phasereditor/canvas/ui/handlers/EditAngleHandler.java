@@ -9,13 +9,13 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
-public class ScaleHandler extends AbstractHandler {
+public class EditAngleHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 		IStructuredSelection sel = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
-		editor.getCanvas().getHandlerBehavior().editScale((IObjectNode) sel.getFirstElement());
+		editor.getCanvas().getHandlerBehavior().editAngle((IObjectNode) sel.getFirstElement());
 		return null;
 	}
 

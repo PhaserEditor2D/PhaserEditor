@@ -41,16 +41,6 @@ public class ArcadeHighlightCircleBodyHandlerNode extends CircleHandlerNode {
 	}
 
 	@Override
-	public void handleDrag(double dx, double dy) {
-		// nothing
-	}
-
-	@Override
-	public void handleDone() {
-		// nothing
-	}
-
-	@Override
 	public void updateHandler() {
 		CircleArcadeBodyModel body = (CircleArcadeBodyModel) ((BaseSpriteModel) _model).getBody();
 
@@ -59,8 +49,8 @@ public class ArcadeHighlightCircleBodyHandlerNode extends CircleHandlerNode {
 		double x = body.getOffsetX();
 		double y = body.getOffsetY();
 
-		Point2D p1 = objectToScene(_object, x + r, y + r);
-		Point2D p2 = objectToScene(_object, x + r * 2, y + r);
+		Point2D p1 = objectToScene(x + r, y + r);
+		Point2D p2 = objectToScene(x + r * 2, y + r);
 
 		double r2 = p1.distance(p2);
 
@@ -68,5 +58,4 @@ public class ArcadeHighlightCircleBodyHandlerNode extends CircleHandlerNode {
 		setCenterY(p1.getY());
 		setRadius(r2);
 	}
-
 }

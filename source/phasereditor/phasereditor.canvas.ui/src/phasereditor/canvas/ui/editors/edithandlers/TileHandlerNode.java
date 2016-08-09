@@ -22,7 +22,6 @@
 package phasereditor.canvas.ui.editors.edithandlers;
 
 import javafx.geometry.Point2D;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.ui.editors.SceneSettings;
@@ -35,21 +34,20 @@ import phasereditor.canvas.ui.shapes.TileSpriteNode;
  * @author arian
  *
  */
-public class TileHandlerNode extends PathHandlerNode{
+public class TileHandlerNode extends PathHandlerNode {
 
 	protected double _initWidth;
 	protected double _initHeight;
 	private Axis _axis;
-	
+
 	public TileHandlerNode(IObjectNode object, Axis axis) {
 		super(object);
 		_axis = axis;
 		setFill(Color.DARKSEAGREEN);
 	}
-	
+
 	@Override
-	public void handleMousePressed(MouseEvent e) {
-		super.handleMousePressed(e);
+	public void handleLocalStart(double localX, double localY) {
 		TileSpriteNode tile = (TileSpriteNode) _object;
 		TileSpriteModel tilemodel = tile.getModel();
 		_initWidth = tilemodel.getWidth();
@@ -57,14 +55,14 @@ public class TileHandlerNode extends PathHandlerNode{
 	}
 
 	@Override
-	public void handleDrag(double dx, double dy) {
+	public void handleLocalDrag(double dx, double dy) {
 		TileSpriteNode tile = (TileSpriteNode) _object;
 		TileSpriteModel tilemodel = tile.getModel();
 
 		SceneSettings settings = _canvas.getSettingsModel();
 
 		boolean stepping = settings.isEnableStepping();
-		
+
 		if (_axis.changeW()) {
 			double w = _initWidth + dx;
 			int sw = settings.getStepWidth();
@@ -105,13 +103,13 @@ public class TileHandlerNode extends PathHandlerNode{
 		operations.add(new ChangePropertyOperation<Number>(tilemodel.getId(), "height", Double.valueOf(h)));
 		_canvas.getUpdateBehavior().executeOperations(operations);
 	}
-	
+
 	@Override
 	public void updateHandler() {
 		double x = _axis.x * _control.getTextureWidth();
 		double y = _axis.y * _control.getTextureHeight();
 
-		Point2D p = objectToScene(_object, x, y);
+		Point2D p = objectToScene(x, y);
 		relocate(p.getX() - 5, p.getY() - 5);
 
 		setCursor(_axis.getResizeCursor(_object));

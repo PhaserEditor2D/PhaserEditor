@@ -40,28 +40,45 @@ public interface IEditHandlerNode {
 	void handleMouseReleased(MouseEvent e);
 
 	void handleMouseExited(MouseEvent e);
-	
+
 	IObjectNode getObject();
 
 	void updateHandler();
-	
-	/**
-	 * Handle a drag event. Values are transformed to the local dimensions.
-	 * 
-	 * @param dx
-	 *            Local delta X.
-	 * @param dy
-	 *            Local delta Y.
-	 */
-	void handleDrag(double localDX, double localDY);
-	
-	void handleDone();
-	
+
+	@SuppressWarnings("unused")
+	default void handleSceneStart(double x, double y) {
+		// nothing
+	}
+
+	@SuppressWarnings("unused")
+	default void handleLocalStart(double x, double y) {
+		// nothing
+	}
+
+	@SuppressWarnings("unused")
+	default void handleSceneDrag(double dx, double dy) {
+		// nothing
+	}
+
+	@SuppressWarnings("unused")
+	default void handleLocalDrag(double dx, double dy) {
+		// nothing
+	}
+
+	default void handleDone() {
+		// nothing
+	}
+
 	/**
 	 * Transform an object local position into an scene position.
 	 */
-	default Point2D objectToScene(IObjectNode object, double x, double y) {
-		Point2D p = object.getNode().localToScene(new Point2D(x, y));
+	default Point2D objectToScene(double x, double y) {
+		Point2D p = getObject().getNode().localToScene(new Point2D(x, y));
+		return p;
+	}
+
+	default Point2D sceneToObject(double x, double y) {
+		Point2D p = getObject().getNode().sceneToLocal(new Point2D(x, y));
 		return p;
 	}
 }

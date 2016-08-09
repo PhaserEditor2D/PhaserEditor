@@ -28,6 +28,7 @@ import java.util.Set;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.edithandlers.AngleHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.ArcadeHighlightCircleBodyHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.ArcadeHighlightRectBodyHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.ArcadeMoveBodyHandlerNode;
@@ -94,11 +95,22 @@ public class HandlerBehavior {
 
 	public void editArcadeCircleBody(ISpriteNode sprite) {
 		clear();
-		
+
 		add(new ArcadeHighlightCircleBodyHandlerNode(sprite));
 		add(new ArcadeMoveBodyHandlerNode(sprite));
 		add(new ArcadeResizeCircleBodyHandlerNode(sprite));
-		
+
+		update();
+	}
+
+	public void editAngle(IObjectNode object) {
+		clear();
+
+		add(new AngleHandlerNode(object, Axis.TOP_LEF));
+		add(new AngleHandlerNode(object, Axis.TOP_RIG));
+		add(new AngleHandlerNode(object, Axis.BOT_LEF));
+		add(new AngleHandlerNode(object, Axis.BOT_RIG));
+
 		update();
 	}
 
