@@ -21,9 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.edithandlers;
 
-import static java.lang.System.out;
-
 import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
 import javafx.scene.paint.Color;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
@@ -47,6 +46,7 @@ public class AngleHandlerNode extends PathHandlerNode {
 		super(object);
 		_axis = axis;
 		setFill(Color.BLUEVIOLET);
+		setCursor(Cursor.MOVE);
 	}
 
 	public static double angleBetweenTwoPointsWithFixedPoint(double point1X, double point1Y, double point2X,
@@ -78,7 +78,6 @@ public class AngleHandlerNode extends PathHandlerNode {
 		_centerY = p.getY();
 	}
 
-	@SuppressWarnings("boxing")
 	@Override
 	public void handleSceneDrag(double dx, double dy) {
 		if (Math.abs(dx) < 1 || Math.abs(dy) < 1) {

@@ -84,4 +84,30 @@ public enum Axis {
 
 		return Cursor.cursor(name);
 	}
+	
+	public Cursor getRotateCursor(IObjectNode object) {
+		if (this == CENTER) {
+			return Cursor.MOVE;
+		}
+
+		boolean sx = object.getModel().getScaleX() >= 0;
+		boolean sy = object.getModel().getScaleY() >= 0;
+		String name = "";
+
+		if (y == 0) {
+			name += sy ? "N" : "S";
+		} else if (y == 1) {
+			name += sy ? "S" : "N";
+		}
+
+		if (x == 0) {
+			name += sx ? "E" : "W";
+		} else if (x == 1) {
+			name += sx ? "W" : "E";
+		}
+		
+		name += "_RESIZE";
+
+		return Cursor.cursor(name);
+	}
 }

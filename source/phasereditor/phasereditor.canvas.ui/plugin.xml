@@ -236,7 +236,7 @@
             </command>
             <command
                   commandId="phasereditor.canvas.ui.editangle"
-                  label="Angle"
+                  label="Rotate"
                   style="push">
             </command>
          </menu>
@@ -437,7 +437,7 @@
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
             id="phasereditor.canvas.ui.editangle"
-            name="Angle">
+            name="Rotate">
       </command>
       
    </extension>

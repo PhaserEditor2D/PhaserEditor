@@ -28,6 +28,7 @@ import java.util.Set;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.edithandlers.AnchorHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.AngleHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.ArcadeHighlightCircleBodyHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.ArcadeHighlightRectBodyHandlerNode;
@@ -110,6 +111,10 @@ public class HandlerBehavior {
 		add(new AngleHandlerNode(object, Axis.TOP_RIG));
 		add(new AngleHandlerNode(object, Axis.BOT_LEF));
 		add(new AngleHandlerNode(object, Axis.BOT_RIG));
+
+		if (object instanceof ISpriteNode) {
+			add(new AnchorHandlerNode((ISpriteNode) object));
+		}
 
 		update();
 	}
