@@ -118,9 +118,6 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	}
 
 	public void updateTransforms(ObservableList<Transform> transforms) {
-		double px = _model.getPivotX();
-		double py = _model.getPivotY();
-
 		{
 			// rotation
 			double a = _model.getAngle();
@@ -130,6 +127,8 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 		{
 			// pivot
+			double px = _model.getPivotX();
+			double py = _model.getPivotY();
 			Translate pivot = Transform.translate(-px * _model.getScaleX(), -py * _model.getScaleY());
 			transforms.add(pivot);
 		}

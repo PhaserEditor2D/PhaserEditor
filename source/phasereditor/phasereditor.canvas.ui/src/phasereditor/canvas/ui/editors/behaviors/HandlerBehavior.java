@@ -113,7 +113,9 @@ public class HandlerBehavior {
 		add(new AngleHandlerNode(object, Axis.BOT_RIG));
 
 		if (object instanceof ISpriteNode) {
-			add(new AnchorHandlerNode((ISpriteNode) object));
+			ISpriteNode sprite = (ISpriteNode) object;
+			add(new AnchorHandlerNode(sprite));
+			// add(new PivotHandlerNode(sprite));
 		}
 
 		update();
