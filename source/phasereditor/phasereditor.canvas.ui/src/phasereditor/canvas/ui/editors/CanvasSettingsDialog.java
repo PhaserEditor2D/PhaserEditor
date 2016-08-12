@@ -48,7 +48,7 @@ import phasereditor.ui.ColorButtonSupport;
  * @author arian
  *
  */
-public class AtlasSettingsDialog extends Dialog {
+public class CanvasSettingsDialog extends Dialog {
 	@SuppressWarnings("unused")
 	private DataBindingContext m_bindingContext;
 	private Text _text;
@@ -66,7 +66,7 @@ public class AtlasSettingsDialog extends Dialog {
 	 * 
 	 * @param parentShell
 	 */
-	public AtlasSettingsDialog(Shell parentShell) {
+	public CanvasSettingsDialog(Shell parentShell) {
 		super(parentShell);
 	}
 
@@ -122,12 +122,12 @@ public class AtlasSettingsDialog extends Dialog {
 		
 		Group grpStepping = new Group(container, SWT.NONE);
 		grpStepping.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
-		grpStepping.setText("Stepping");
+		grpStepping.setText("Snapping");
 		grpStepping.setLayout(new GridLayout(2, false));
 		
 		_btnEnbaleStepping = new Button(grpStepping, SWT.CHECK);
 		_btnEnbaleStepping.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-		_btnEnbaleStepping.setText("Enbale Stepping");
+		_btnEnbaleStepping.setText("Enbale Snapping");
 		
 		Label lblStepWidth = new Label(grpStepping, SWT.NONE);
 		lblStepWidth.setText("Step Width");

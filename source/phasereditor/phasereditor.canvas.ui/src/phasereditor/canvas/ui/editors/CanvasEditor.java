@@ -742,7 +742,7 @@ public class CanvasEditor extends EditorPart
 	}
 
 	void openDialogSettings() {
-		AtlasSettingsDialog dlg = new AtlasSettingsDialog(getSite().getShell());
+		CanvasSettingsDialog dlg = new CanvasSettingsDialog(getSite().getShell());
 		JSONObject data = new JSONObject();
 		_model.getSettings().write(data);
 		SceneSettings settings = new SceneSettings(data);

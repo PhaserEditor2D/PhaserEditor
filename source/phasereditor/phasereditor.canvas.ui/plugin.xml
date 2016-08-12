@@ -162,6 +162,10 @@
                   style="push">
             </command>
          </menu>
+         <command
+               commandId="phasereditor.canvas.ui.togglesnapping"
+               style="push">
+         </command>
          <separator
                name="phasereditor.canvas.ui.separator4"
                visible="true">
@@ -438,6 +442,10 @@
             categoryId="phasereditor.canvas.ui.editor.category"
             id="phasereditor.canvas.ui.editangle"
             name="Rotate">
+      </command>
+      <command
+            id="phasereditor.canvas.ui.togglesnapping"
+            name="Toggle Snapping">
       </command>
       
    </extension>
@@ -905,6 +913,10 @@
             </reference>
          </activeWhen>
       </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.ToggleSnappingHandler"
+            commandId="phasereditor.canvas.ui.togglesnapping">
+      </handler>
       
    </extension>
    <extension
@@ -983,7 +995,7 @@
       </key>
       <key
             commandId="phasereditor.canvas.ui.quickOutline"
-            contextId="phasereditor.canvas.ui.any"
+            contextId="phasereditor.canvas.ui.nodescontext"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M1+O">
       </key>
@@ -995,7 +1007,7 @@
       </key>
       <key
             commandId="phasereditor.canvas.ui.addsprite"
-            contextId="phasereditor.canvas.ui.any"
+            contextId="phasereditor.canvas.ui.nodescontext"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M1+M2+A">
       </key>
@@ -1023,6 +1035,12 @@
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="N">
       </key>
+       <key
+             commandId="phasereditor.canvas.ui.togglesnapping"
+             contextId="phasereditor.canvas.ui.nodescontext"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="E">
+       </key>
    </extension>
    <extension
          point="org.eclipse.core.expressions.definitions">
@@ -1140,7 +1158,7 @@
       <context
             id="phasereditor.canvas.ui.any"
             name="In editor"
-            parentId="org.eclipse.debug.ui.BreakpointView">
+            parentId="org.eclipse.ui.contexts.window">
       </context>
    </extension>
    <extension
