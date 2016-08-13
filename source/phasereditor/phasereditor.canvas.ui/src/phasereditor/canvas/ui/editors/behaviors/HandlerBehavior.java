@@ -121,6 +121,14 @@ public class HandlerBehavior {
 		update();
 	}
 
+	public void editAnchor(ISpriteNode object) {
+		clear();
+
+		add(new AnchorHandlerNode(object));
+
+		update();
+	}
+
 	private void add(Node node) {
 		_pane.getChildren().add(node);
 	}
