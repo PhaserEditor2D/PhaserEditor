@@ -39,6 +39,8 @@ public class TileHandlerNode extends PathHandlerNode {
 	protected double _initWidth;
 	protected double _initHeight;
 	private Axis _axis;
+	private double _initX;
+	private double _initY;
 
 	public TileHandlerNode(IObjectNode object, Axis axis) {
 		super(object);
@@ -50,6 +52,9 @@ public class TileHandlerNode extends PathHandlerNode {
 	public void handleLocalStart(double localX, double localY) {
 		TileSpriteNode tile = (TileSpriteNode) _object;
 		TileSpriteModel tilemodel = tile.getModel();
+
+		_initX = _model.getX();
+		_initY = _model.getY();
 		_initWidth = tilemodel.getWidth();
 		_initHeight = tilemodel.getHeight();
 	}
@@ -63,8 +68,26 @@ public class TileHandlerNode extends PathHandlerNode {
 
 		boolean stepping = settings.isEnableStepping();
 
+		if (_axis.x == 0) {
+			double x = _initX + dx;
+			int sw = settings.getStepWidth();
+
+			if (stepping) {
+				x = Math.round(x / sw) * sw;
+			}
+
+			_model.setX(x);
+		}
+
 		if (_axis.changeW()) {
-			double w = _initWidth + dx;
+			double dx2 = dx;
+
+			if (_axis.x == 0) {
+				dx2 = -dx;
+			}
+
+			double w = _initWidth + dx2;
+
 			int sw = settings.getStepWidth();
 
 			if (stepping) {
@@ -76,8 +99,25 @@ public class TileHandlerNode extends PathHandlerNode {
 			tilemodel.setWidth(w);
 		}
 
+		if (_axis.y == 0) {
+			double y = _initY + dy;
+			int sh = settings.getStepHeight();
+
+			if (stepping) {
+				y = Math.round(y / sh) * sh;
+			}
+
+			_model.setY(y);
+		}
+
 		if (_axis.changeH()) {
-			double h = _initHeight + dy;
+			double dy2 = dy;
+
+			if (_axis.y == 0) {
+				dy2 = -dy;
+			}
+
+			double h = _initHeight + dy2;
 			int sh = settings.getStepHeight();
 
 			if (stepping) {
@@ -94,13 +134,19 @@ public class TileHandlerNode extends PathHandlerNode {
 	public void handleDone() {
 		CompositeOperation operations = new CompositeOperation();
 		TileSpriteNode tile = (TileSpriteNode) _object;
-		TileSpriteModel tilemodel = tile.getModel();
-		double w = tilemodel.getWidth();
-		double h = tilemodel.getHeight();
-		tilemodel.setWidth(_initWidth);
-		tilemodel.setHeight(_initHeight);
-		operations.add(new ChangePropertyOperation<Number>(tilemodel.getId(), "width", Double.valueOf(w)));
-		operations.add(new ChangePropertyOperation<Number>(tilemodel.getId(), "height", Double.valueOf(h)));
+		TileSpriteModel model = tile.getModel();
+		double x = model.getX();
+		double y = model.getY();
+		double w = model.getWidth();
+		double h = model.getHeight();
+		model.setX(_initX);
+		model.setY(_initX);
+		model.setWidth(_initWidth);
+		model.setHeight(_initHeight);
+		operations.add(new ChangePropertyOperation<Number>(model.getId(), "x", Double.valueOf(x)));
+		operations.add(new ChangePropertyOperation<Number>(model.getId(), "y", Double.valueOf(y)));
+		operations.add(new ChangePropertyOperation<Number>(model.getId(), "width", Double.valueOf(w)));
+		operations.add(new ChangePropertyOperation<Number>(model.getId(), "height", Double.valueOf(h)));
 		_canvas.getUpdateBehavior().executeOperations(operations);
 	}
 

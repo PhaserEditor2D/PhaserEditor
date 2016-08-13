@@ -69,7 +69,10 @@ public class HandlerBehavior {
 	public void editTile(IObjectNode object) {
 		clear();
 
-		for (Axis axis : new Axis[] { Axis.RIG, Axis.BOT, Axis.BOT_RIG }) {
+		for (Axis axis : Axis.values()) {
+			if (axis == Axis.CENTER) {
+				continue;
+			}
 			add(new TileHandlerNode(object, axis));
 		}
 
