@@ -41,7 +41,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.atlas.core.SettingsBean;
-import org.eclipse.swt.widgets.Spinner;
 
 public class AtlasSettingsDialog extends Dialog {
 	private static final int DEFAULT_BTN = 1959;
@@ -52,8 +51,8 @@ public class AtlasSettingsDialog extends Dialog {
 	private Text _text_3;
 	private SettingsBean _settings;
 	private Combo _sizeConstraintsCombo;
-	private Spinner _text_4;
-	private Spinner _text_5;
+	private Text _text_4;
+	private Text _text_5;
 	private Button _btnStripWhitespaceX;
 	private Button _btnStripWhitespaceY;
 	private Button _btnAlias;
@@ -144,16 +143,14 @@ public class AtlasSettingsDialog extends Dialog {
 												lblPaddingX.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 												lblPaddingX.setText("Padding X");
 												
-														_text_4 = new Spinner(grpPadding, SWT.BORDER);
-														GridData gd_text_4 = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
-														gd_text_4.widthHint = 40;
-														_text_4.setLayoutData(gd_text_4);
+														_text_4 = new Text(grpPadding, SWT.BORDER);
+														_text_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 																								
 																										Label lblPaddingY = new Label(grpPadding, SWT.NONE);
 																										lblPaddingY.setToolTipText("The number of pixels between packed images on the y-axis.");
 																										lblPaddingY.setText("Padding Y");
 																								
-																										_text_5 = new Spinner(grpPadding, SWT.BORDER);
+																										_text_5 = new Text(grpPadding, SWT.BORDER);
 																										GridData gd_text_5 = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 																										gd_text_5.widthHint = 40;
 																										_text_5.setLayoutData(gd_text_5);
@@ -288,6 +285,14 @@ public class AtlasSettingsDialog extends Dialog {
 		IObservableValue observeSelection_btnDebugObserveWidget = WidgetProperties.selection().observe(_btnDebug);
 		IObservableValue debug_settingsObserveValue = PojoProperties.value("debug").observe(_settings);
 		bindingContext.bindValue(observeSelection_btnDebugObserveWidget, debug_settingsObserveValue, null, null);
+		//
+		IObservableValue observeText_text_4ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_4);
+		IObservableValue paddingX_settingsObserveValue = PojoProperties.value("paddingX").observe(_settings);
+		bindingContext.bindValue(observeText_text_4ObserveWidget, paddingX_settingsObserveValue, null, null);
+		//
+		IObservableValue observeText_text_5ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_5);
+		IObservableValue paddingY_settingsObserveValue = PojoProperties.value("paddingY").observe(_settings);
+		bindingContext.bindValue(observeText_text_5ObserveWidget, paddingY_settingsObserveValue, null, null);
 		//
 		return bindingContext;
 	}
