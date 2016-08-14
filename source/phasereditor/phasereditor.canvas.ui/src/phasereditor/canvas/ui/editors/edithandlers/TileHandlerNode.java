@@ -140,7 +140,7 @@ public class TileHandlerNode extends PathHandlerNode {
 		double w = model.getWidth();
 		double h = model.getHeight();
 		model.setX(_initX);
-		model.setY(_initX);
+		model.setY(_initY);
 		model.setWidth(_initWidth);
 		model.setHeight(_initHeight);
 		operations.add(new ChangePropertyOperation<Number>(model.getId(), "x", Double.valueOf(x)));
