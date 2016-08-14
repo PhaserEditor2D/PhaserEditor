@@ -39,6 +39,7 @@ public class GroupModel extends BaseObjectModel {
 	private boolean _editorClosed;
 	private boolean _physicsGroup;
 	private PhysicsBodyType _physicsBodyType;
+	private PhysicsSortDirection _physicsSortDirection;
 
 	public GroupModel(GroupModel parent, JSONObject data) {
 		super(parent, TYPE_NAME, data);
@@ -48,6 +49,7 @@ public class GroupModel extends BaseObjectModel {
 		super(parent, "group");
 		_children = new ArrayList<>();
 		_physicsBodyType = PhysicsBodyType.ARCADE;
+		_physicsSortDirection = PhysicsSortDirection.NULL;
 	}
 
 	@Override
@@ -85,6 +87,14 @@ public class GroupModel extends BaseObjectModel {
 
 	public void setPhysicsBodyType(PhysicsBodyType physicsBodyType) {
 		_physicsBodyType = physicsBodyType;
+	}
+
+	public PhysicsSortDirection getPhysicsSortDirection() {
+		return _physicsSortDirection;
+	}
+
+	public void setPhysicsSortDirection(PhysicsSortDirection physicsSortDirection) {
+		_physicsSortDirection = physicsSortDirection;
 	}
 
 	@Override
@@ -125,7 +135,10 @@ public class GroupModel extends BaseObjectModel {
 			String name = jsonInfo.optString("physicsBodyType", PhysicsBodyType.ARCADE.name());
 			_physicsBodyType = PhysicsBodyType.valueOf(name);
 		}
-
+		{
+			String name = jsonInfo.optString("physicsSortDirection", PhysicsSortDirection.NULL.name());
+			_physicsSortDirection = PhysicsSortDirection.valueOf(name);
+		}
 		_children = new ArrayList<>();
 
 		try {
@@ -150,7 +163,8 @@ public class GroupModel extends BaseObjectModel {
 		jsonInfo.put("editorClosed", _editorClosed);
 
 		jsonInfo.put("physicsGroup", _physicsGroup);
-		jsonInfo.put("physicsBodyType", _physicsBodyType.name(), PhysicsBodyType.ARCADE.name());
+		jsonInfo.put("physicsBodyType", _physicsBodyType, PhysicsBodyType.ARCADE);
+		jsonInfo.put("physicsSortDirection", _physicsSortDirection, PhysicsSortDirection.NULL);
 
 		JSONArray childrenData = new JSONArray();
 

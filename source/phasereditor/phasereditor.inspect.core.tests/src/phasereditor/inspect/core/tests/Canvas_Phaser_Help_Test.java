@@ -61,7 +61,9 @@ public class Canvas_Phaser_Help_Test {
 				"Phaser.TileSprite.tilePosition", //
 				"Phaser.TileSprite.tileScale", //
 				"Phaser.TileSprite.width", //
-				"Phaser.TileSprite.height"//
+				"Phaser.TileSprite.height",//
+				"Phaser.Group.physicsBodyType",
+				"Phaser.Group.physicsSortDirection"//
 		};
 
 		for (String name : memberNames) {

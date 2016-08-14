@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid;
 
-import static java.lang.String.valueOf;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +32,7 @@ import org.eclipse.swt.graphics.RGB;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.canvas.core.AnimationModel;
 import phasereditor.canvas.core.PhysicsBodyType;
+import phasereditor.canvas.core.PhysicsSortDirection;
 import phasereditor.ui.ColorButtonSupport;
 import phasereditor.ui.PhaserEditorUI;
 
@@ -82,6 +81,10 @@ public class PGridValueLabelProvider extends PGridLabelProvider {
 			Object value = ((PGridEnumProperty<?>) element).getValue();
 			if (value instanceof PhysicsBodyType) {
 				return ((PhysicsBodyType) value).getPhaserName();
+			}
+			
+			if (value instanceof PhysicsSortDirection) {
+				return ((PhysicsSortDirection) value).getPhaserName();
 			}
 		}
 

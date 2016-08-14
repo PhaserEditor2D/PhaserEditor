@@ -284,10 +284,6 @@ public class JSCodeGenerator implements ICodeGenerator {
 			sb.append(tabs + varname + ".tint = " + model.getTint() + ";\n");
 		}
 
-		if (model.getData() != null && model.getData().trim().length() > 0) {
-			sb.append(tabs + varname + ".data = " + model.getData() + ";\n");
-		}
-
 		if (!model.getAnimations().isEmpty()) {
 			for (AnimationModel anim : model.getAnimations()) {
 				sb.append(tabs + varname + ".animations.add(");
@@ -348,6 +344,13 @@ public class JSCodeGenerator implements ICodeGenerator {
 				}
 			}
 		}
+
+		// always generate data at the end, because it can use previous
+		// properties.
+
+		if (model.getData() != null && model.getData().trim().length() > 0) {
+			sb.append(tabs + varname + ".data = " + model.getData() + ";\n");
+		}
 	}
 
 	private static void generateTileProps(int indent, StringBuilder sb, TileSpriteModel model) {
@@ -383,6 +386,7 @@ public class JSCodeGenerator implements ICodeGenerator {
 		}
 
 		generateDisplayProps(indent, sb, group);
+		generateGroupProps(indent, sb, group);
 
 		if (!group.getChildren().isEmpty()) {
 			sb.append("\n");
@@ -396,6 +400,16 @@ public class JSCodeGenerator implements ICodeGenerator {
 				}
 				i++;
 			}
+		}
+	}
+
+	private static void generateGroupProps(int indent, StringBuilder sb, GroupModel model) {
+		String tabs = tabs(indent);
+		String varname = model.getEditorName();
+
+		if (model.getPhysicsSortDirection() != PhysicsSortDirection.NULL) {
+			sb.append(tabs + varname + ".physicsSortDirection = " + model.getPhysicsSortDirection().getPhaserName()
+					+ ";\n");
 		}
 	}
 

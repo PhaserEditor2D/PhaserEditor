@@ -111,6 +111,28 @@ public class JSONObject {
 	 *             If the key is null or if the number is invalid.
 	 * @author arian
 	 */
+	public JSONObject put(String key, Enum<?> value, Enum<?> def) throws JSONException {
+		if (value == def) {
+			return this;
+		}
+		return this.put(key, value == null? null : value.name());
+	}
+	
+	/**
+	 * Put a key/value pair in the JSONObject. If the value is equals to the
+	 * given default then it does not put the value.
+	 *
+	 * @param key
+	 *            A key string.
+	 * @param value
+	 *            The value.
+	 * @param def
+	 *            The default value for the key.
+	 * @return this.
+	 * @throws JSONException
+	 *             If the key is null or if the number is invalid.
+	 * @author arian
+	 */
 	public JSONObject put(String key, boolean value, boolean def) throws JSONException {
 		if (value == def) {
 			return this;

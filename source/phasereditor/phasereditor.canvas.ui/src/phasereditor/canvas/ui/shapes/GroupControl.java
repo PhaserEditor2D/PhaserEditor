@@ -29,6 +29,7 @@ import javafx.scene.Node;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.PhysicsBodyType;
+import phasereditor.canvas.core.PhysicsSortDirection;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
@@ -233,6 +234,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 			}
 
 		});
+
 		section.add(new PGridEnumProperty<PhysicsBodyType>(getId(), "physicsBodyType",
 				help("Phaser.Group.physicsBodyType"), PhysicsBodyType.values()) {
 
@@ -254,6 +256,29 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 				return getModel().getPhysicsBodyType() != PhysicsBodyType.ARCADE;
 			}
 		});
+
+		section.add(new PGridEnumProperty<PhysicsSortDirection>(getId(), "physicsSortDirection",
+				help("Phaser.Group.physicsSortDirection"), PhysicsSortDirection.values()) {
+
+			@Override
+			public PhysicsSortDirection getValue() {
+				return getModel().getPhysicsSortDirection();
+			}
+
+			@Override
+			public void setValue(PhysicsSortDirection value, boolean notify) {
+				getModel().setPhysicsSortDirection(value);
+				if (notify) {
+					updateFromPropertyChange();
+				}
+			}
+
+			@Override
+			public boolean isModified() {
+				return getModel().getPhysicsSortDirection() != PhysicsSortDirection.NULL;
+			}
+		});
+
 		propModel.getSections().add(section);
 	}
 
