@@ -21,22 +21,28 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid.editors;
 
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
+import org.eclipse.jface.viewers.ComboBoxViewerCellEditor;
 import org.eclipse.jface.viewers.DialogCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.PlatformUI;
 
+import phasereditor.canvas.core.PhysicsBodyType;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.grid.NumberCellEditor;
 import phasereditor.canvas.ui.editors.grid.PGridAnimationsProperty;
 import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
 import phasereditor.canvas.ui.editors.grid.PGridColorProperty;
+import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
 import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridProperty;
@@ -89,6 +95,20 @@ public class PGridEditingSupport extends EditingSupport {
 			return new RGBCellEditor(parent, ((PGridColorProperty) element).getDefaultRGB());
 		} else if (element instanceof PGridAnimationsProperty) {
 			return new AnimationsCellEditor(parent, (PGridAnimationsProperty) element);
+		} else if (element instanceof PGridEnumProperty) {
+			ComboBoxViewerCellEditor editor = new ComboBoxViewerCellEditor(parent, SWT.READ_ONLY);
+			editor.setContentProvider(new ArrayContentProvider());
+			editor.setInput(((PGridEnumProperty<?>) element).getValues());
+			editor.setLabelProvider(new LabelProvider() {
+				@Override
+				public String getText(Object obj) {
+					if (obj instanceof PhysicsBodyType) {
+						return ((PhysicsBodyType) obj).getPhaserName();
+					}
+					return super.getText(obj);
+				}
+			});
+			return editor;
 		}
 
 		return null;

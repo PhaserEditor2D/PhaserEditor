@@ -28,9 +28,11 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.GroupModel;
+import phasereditor.canvas.core.PhysicsBodyType;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
+import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
 
@@ -230,6 +232,27 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 				return getModel().isPhysicsGroup();
 			}
 
+		});
+		section.add(new PGridEnumProperty<PhysicsBodyType>(getId(), "physicsBodyType",
+				help("Phaser.Group.physicsBodyType"), PhysicsBodyType.values()) {
+
+			@Override
+			public PhysicsBodyType getValue() {
+				return getModel().getPhysicsBodyType();
+			}
+
+			@Override
+			public void setValue(PhysicsBodyType value, boolean notify) {
+				getModel().setPhysicsBodyType(value);
+				if (notify) {
+					updateFromPropertyChange();
+				}
+			}
+
+			@Override
+			public boolean isModified() {
+				return getModel().getPhysicsBodyType() != PhysicsBodyType.ARCADE;
+			}
 		});
 		propModel.getSections().add(section);
 	}

@@ -312,7 +312,8 @@ public class JSCodeGenerator implements ICodeGenerator {
 			if (body != null) {
 				if (body instanceof ArcadeBodyModel) {
 
-					if (!model.getParent().isPhysicsGroup()) {
+					if (!model.getParent().isPhysicsGroup()
+							|| model.getParent().getPhysicsBodyType() != PhysicsBodyType.ARCADE) {
 						sb.append(tabs + "this.game.physics.arcade.enable(" + varname + ");\n");
 					}
 
@@ -372,7 +373,7 @@ public class JSCodeGenerator implements ICodeGenerator {
 			sb.append(tabs);
 			sb.append("var " + group.getEditorName() + " = ");
 			if (group.isPhysicsGroup()) {
-				sb.append("this.game.add.physicsGroup(Phaser.Physics.ARCADE, "
+				sb.append("this.game.add.physicsGroup(" + group.getPhysicsBodyType().getPhaserName() + ", "
 						+ (group.getParent().isWorldModel() ? "this" : group.getParent().getEditorName()) + ");\n");
 			} else {
 				sb.append(format("this.game.add.group(%s);\n",

@@ -38,6 +38,7 @@ public class GroupModel extends BaseObjectModel {
 	private List<BaseObjectModel> _children;
 	private boolean _editorClosed;
 	private boolean _physicsGroup;
+	private PhysicsBodyType _physicsBodyType;
 
 	public GroupModel(GroupModel parent, JSONObject data) {
 		super(parent, TYPE_NAME, data);
@@ -46,6 +47,7 @@ public class GroupModel extends BaseObjectModel {
 	public GroupModel(GroupModel parent) {
 		super(parent, "group");
 		_children = new ArrayList<>();
+		_physicsBodyType = PhysicsBodyType.ARCADE;
 	}
 
 	@Override
@@ -75,6 +77,14 @@ public class GroupModel extends BaseObjectModel {
 
 	public void setPhysicsGroup(boolean physicsGroup) {
 		_physicsGroup = physicsGroup;
+	}
+
+	public PhysicsBodyType getPhysicsBodyType() {
+		return _physicsBodyType;
+	}
+
+	public void setPhysicsBodyType(PhysicsBodyType physicsBodyType) {
+		_physicsBodyType = physicsBodyType;
 	}
 
 	@Override
@@ -111,6 +121,10 @@ public class GroupModel extends BaseObjectModel {
 		_editorClosed = jsonInfo.optBoolean("editorClosed", false);
 
 		_physicsGroup = jsonInfo.optBoolean("physicsGroup", false);
+		{
+			String name = jsonInfo.optString("physicsBodyType", PhysicsBodyType.ARCADE.name());
+			_physicsBodyType = PhysicsBodyType.valueOf(name);
+		}
 
 		_children = new ArrayList<>();
 
@@ -136,16 +150,17 @@ public class GroupModel extends BaseObjectModel {
 		jsonInfo.put("editorClosed", _editorClosed);
 
 		jsonInfo.put("physicsGroup", _physicsGroup);
+		jsonInfo.put("physicsBodyType", _physicsBodyType.name(), PhysicsBodyType.ARCADE.name());
 
-		JSONArray shapesArray = new JSONArray();
+		JSONArray childrenData = new JSONArray();
 
 		for (BaseObjectModel model : _children) {
-			JSONObject jsonShape = new JSONObject();
-			shapesArray.put(jsonShape);
-			model.write(jsonShape);
+			JSONObject data = new JSONObject();
+			childrenData.put(data);
+			model.write(data);
 		}
 
-		jsonInfo.put("children", shapesArray);
+		jsonInfo.put("children", childrenData);
 	}
 
 	public void addChild(BaseObjectModel model) {
