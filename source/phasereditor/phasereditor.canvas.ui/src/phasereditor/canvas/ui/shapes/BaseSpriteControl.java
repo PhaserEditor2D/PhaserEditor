@@ -22,6 +22,8 @@
 package phasereditor.canvas.ui.shapes;
 
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 import org.eclipse.swt.graphics.RGB;
 
@@ -36,12 +38,14 @@ import javafx.scene.transform.Translate;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.canvas.core.AnimationModel;
+import phasereditor.canvas.core.ArcadeBodyModel;
 import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CircleArcadeBodyModel;
 import phasereditor.canvas.core.RectArcadeBodyModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridAnimationsProperty;
+import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
 import phasereditor.canvas.ui.editors.grid.PGridColorProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
@@ -417,6 +421,164 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 			}
 
 		});
+
+		// private double _mass = 1;
+		createNumberArcadeBodyProp("mass", ArcadeBodyModel::setMass, ArcadeBodyModel::getMass, 1d);
+		// private boolean _moves = true;
+		createBoolArcadeBodyProp("moves", ArcadeBodyModel::setMoves, ArcadeBodyModel::isMoves, true);
+		// private boolean _immovable = false;
+		createBoolArcadeBodyProp("immovable", ArcadeBodyModel::setImmovable, ArcadeBodyModel::isImmovable, false);
+		// private boolean _collideWorldBounds = false;
+		createBoolArcadeBodyProp("collideWorldBounds", ArcadeBodyModel::setCollideWorldBounds,
+				ArcadeBodyModel::isCollideWorldBounds, false);
+		// private boolean _allowRotation = true;
+		createBoolArcadeBodyProp("allowRotation", ArcadeBodyModel::setAllowRotation, ArcadeBodyModel::isAllowRotation,
+				true);
+		// private boolean _allowGravity = true;
+		createBoolArcadeBodyProp("allowGravity", ArcadeBodyModel::setAllowGravity, ArcadeBodyModel::isAllowGravity,
+				true);
+		// private double _bounceX = 0;
+		createNumberArcadeBodyProp("bounce.x", ArcadeBodyModel::setBounceX, ArcadeBodyModel::getBounceX, 0d);
+		// private double _bounceY = 0;
+		createNumberArcadeBodyProp("bounce.y", ArcadeBodyModel::setBounceY, ArcadeBodyModel::getBounceY, 0d);
+		// private double _velocityX = 0;
+		createNumberArcadeBodyProp("velocity.x", ArcadeBodyModel::setVelocityX, ArcadeBodyModel::getVelocityX, 0d);
+		// private double _velocityY = 0;
+		createNumberArcadeBodyProp("velocity.y", ArcadeBodyModel::setVelocityY, ArcadeBodyModel::getVelocityY, 0d);
+		// private double _maxVelocityX = 10_000;
+		createNumberArcadeBodyProp("maxVelocity.x", ArcadeBodyModel::setMaxVelocityX, ArcadeBodyModel::getMaxVelocityX,
+				10_000d);
+		// private double _maxVelocityY = 10_000;
+		createNumberArcadeBodyProp("maxVelocity.y", ArcadeBodyModel::setMaxVelocityY, ArcadeBodyModel::getMaxVelocityY,
+				10_000d);
+		// private double _accelerationX = 0;
+		createNumberArcadeBodyProp("acceleration.x", ArcadeBodyModel::setAccelerationX,
+				ArcadeBodyModel::getAccelerationX, 0d);
+		// private double _accelerationY = 0;
+		createNumberArcadeBodyProp("acceleration.y", ArcadeBodyModel::setAccelerationY,
+				ArcadeBodyModel::getAccelerationY, 0d);
+		// private double _dragX = 0;
+		createNumberArcadeBodyProp("drag.x", ArcadeBodyModel::setDragX, ArcadeBodyModel::getDragX, 0d);
+		// private double _dragY = 0;
+		createNumberArcadeBodyProp("drag.y", ArcadeBodyModel::setDragY, ArcadeBodyModel::getDragY, 0d);
+		// private double _gravityX = 0;
+		createNumberArcadeBodyProp("gravity.x", ArcadeBodyModel::setGravityX, ArcadeBodyModel::getGravityX, 0d);
+		// private double _gravityY = 0;
+		createNumberArcadeBodyProp("gravity.y", ArcadeBodyModel::setGravityY, ArcadeBodyModel::getGravityY, 0d);
+		// private double _frictionX = 1;
+		createNumberArcadeBodyProp("friction.x", ArcadeBodyModel::setFrictionX, ArcadeBodyModel::getFrictionX, 1d);
+		// private double _frictionY = 0;
+		createNumberArcadeBodyProp("friction.y", ArcadeBodyModel::setFrictionY, ArcadeBodyModel::getFrictionY, 0d);
+		// private double _angularVelocity = 0;
+		createNumberArcadeBodyProp("angularVelocity", ArcadeBodyModel::setAngularVelocity,
+				ArcadeBodyModel::getAngularVelocity, 0d);
+		// private double _maxAngular = 1_000;
+		createNumberArcadeBodyProp("maxAngular", ArcadeBodyModel::setMaxAngular, ArcadeBodyModel::getMaxAngular,
+				1_000d);
+		// private double _angularAcceleration = 0;
+		createNumberArcadeBodyProp("angularAcceleration", ArcadeBodyModel::setAngularAcceleration,
+				ArcadeBodyModel::getAngularAcceleration, 0d);
+		// private double _angularDrag = 0;
+		createNumberArcadeBodyProp("angularDrag", ArcadeBodyModel::setAngularDrag, ArcadeBodyModel::getAngularDrag, 0d);
+		// private boolean _checkCollisionNone = false;
+		createBoolArcadeBodyProp("checkCollision.none", ArcadeBodyModel::setCheckCollisionNone,
+				ArcadeBodyModel::isCheckCollisionNone, false);
+		// private boolean _checkCollisionUp = true;
+		createBoolArcadeBodyProp("checkCollision.up", ArcadeBodyModel::setCheckCollisionUp,
+				ArcadeBodyModel::isCheckCollisionUp, true);
+		// private boolean _checkCollisionDown = true;
+		createBoolArcadeBodyProp("checkCollision.down", ArcadeBodyModel::setCheckCollisionDown,
+				ArcadeBodyModel::isCheckCollisionDown, true);
+		// private boolean _checkCollisionLeft = true;
+		createBoolArcadeBodyProp("checkCollision.left", ArcadeBodyModel::setCheckCollisionLeft,
+				ArcadeBodyModel::isCheckCollisionLeft, true);
+		// private boolean _checkCollisionRight = true;
+		createBoolArcadeBodyProp("checkCollision.right", ArcadeBodyModel::setCheckCollisionRight,
+				ArcadeBodyModel::isCheckCollisionRight, true);
+		// private boolean _skipQuadTree = false;
+		createBoolArcadeBodyProp("skipQuadTree", ArcadeBodyModel::setSkipQuadTree, ArcadeBodyModel::isSkipQuadTree,
+				false);
+	}
+
+	private PGridNumberProperty createNumberArcadeBodyProp(String name, BiConsumer<ArcadeBodyModel, Double> setValue,
+			Function<ArcadeBodyModel, Double> getValue, double defValue) {
+		String helpkey = name;
+
+		if (helpkey.endsWith(".x") || helpkey.endsWith(".y")) {
+			helpkey = helpkey.substring(0, helpkey.length() - 2);
+		}
+
+		PGridNumberProperty p = new PGridNumberProperty(getId(), "body." + name,
+				help("Phaser.Physics.Arcade.Body." + helpkey)) {
+
+			@Override
+			public void setValue(Double value, boolean notify) {
+				setValue.accept(getModel().getArcadeBody(), value);
+				if (notify) {
+					updateFromPropertyChange();
+				}
+			}
+
+			@Override
+			public Double getValue() {
+				return getValue.apply(getModel().getArcadeBody());
+			}
+
+			@Override
+			public boolean isModified() {
+				return getValue().doubleValue() != defValue;
+			}
+
+			@Override
+			public boolean isActive() {
+				return getModel().getBody() instanceof ArcadeBodyModel;
+			}
+
+		};
+		_bodyArcadeSection.add(p);
+		return p;
+	}
+
+	private PGridBooleanProperty createBoolArcadeBodyProp(String name, BiConsumer<ArcadeBodyModel, Boolean> setValue,
+			Function<ArcadeBodyModel, Boolean> getValue, boolean defValue) {
+
+		String helpkey = name;
+		{
+			int i = helpkey.indexOf(".");
+			if (i > 0) {
+				helpkey = helpkey.substring(0, i);
+			}
+		}
+
+		PGridBooleanProperty p = new PGridBooleanProperty(getId(), "body." + name,
+				help("Phaser.Physics.Arcade.Body." + helpkey)) {
+
+			@Override
+			public void setValue(Boolean value, boolean notify) {
+				setValue.accept(getModel().getArcadeBody(), value);
+				if (notify) {
+					updateFromPropertyChange();
+				}
+			}
+
+			@Override
+			public Boolean getValue() {
+				return getValue.apply(getModel().getArcadeBody());
+			}
+
+			@Override
+			public boolean isModified() {
+				return getValue().booleanValue() != defValue;
+			}
+
+			@Override
+			public boolean isActive() {
+				return getModel().getBody() instanceof ArcadeBodyModel;
+			}
+
+		};
+		_bodyArcadeSection.add(p);
+		return p;
 	}
 
 	protected PGridSection getSpriteSection() {

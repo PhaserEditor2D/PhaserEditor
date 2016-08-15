@@ -280,6 +280,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 		});
 
 		propModel.getSections().add(section);
+		
 	}
 
 	public void removeChild(IObjectNode inode) {

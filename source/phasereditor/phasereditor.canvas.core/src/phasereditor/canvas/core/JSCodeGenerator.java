@@ -23,6 +23,8 @@ package phasereditor.canvas.core;
 
 import static java.lang.String.format;
 
+import java.util.function.Function;
+
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
@@ -303,47 +305,7 @@ public class JSCodeGenerator implements ICodeGenerator {
 			}
 		}
 
-		{
-			BodyModel body = model.getBody();
-			if (body != null) {
-				if (body instanceof ArcadeBodyModel) {
-
-					if (!model.getParent().isPhysicsGroup()
-							|| model.getParent().getPhysicsBodyType() != PhysicsBodyType.ARCADE) {
-						sb.append(tabs + "this.game.physics.arcade.enable(" + varname + ");\n");
-					}
-
-					ArcadeBodyModel arcade = (ArcadeBodyModel) body;
-					boolean hasOffset = arcade.getOffsetX() != 0 || arcade.getOffsetY() != 0;
-					switch (body.getBodyType()) {
-					case ARCADE_CIRCLE:
-						CircleArcadeBodyModel circle = (CircleArcadeBodyModel) body;
-						if (hasOffset) {
-							sb.append(tabs + varname + ".body.setCircle(" + circle.getRadius() + ", "
-									+ circle.getOffsetX() + ", " + circle.getOffsetY() + ");\n");
-						} else {
-							sb.append(tabs + varname + ".body.setCircle(" + circle.getRadius() + ");\n");
-						}
-						break;
-					case ARCADE_RECT:
-						RectArcadeBodyModel rect = (RectArcadeBodyModel) body;
-						if (rect.getWidth() != -1 && rect.getHeight() != -1) {
-							if (hasOffset) {
-								sb.append(tabs + varname + ".body.setSize(" + rect.getWidth() + ", " + rect.getHeight()
-										+ ", " + rect.getOffsetX() + ", " + rect.getOffsetY() + ");\n");
-							} else {
-								sb.append(tabs + varname + ".body.setSize(" + rect.getWidth() + ", " + rect.getHeight()
-										+ ");\n");
-							}
-						}
-						break;
-
-					default:
-						break;
-					}
-				}
-			}
-		}
+		generateBodyProps(indent, sb, model);
 
 		// always generate data at the end, because it can use previous
 		// properties.
@@ -351,6 +313,149 @@ public class JSCodeGenerator implements ICodeGenerator {
 		if (model.getData() != null && model.getData().trim().length() > 0) {
 			sb.append(tabs + varname + ".data = " + model.getData() + ";\n");
 		}
+	}
+
+	private static void generateBodyProps(int indent, StringBuilder sb, BaseSpriteModel model) {
+		BodyModel body = model.getBody();
+		if (body != null) {
+			if (body instanceof ArcadeBodyModel) {
+				generateArcadeBodyProps(indent, sb, model);
+			}
+		}
+	}
+
+	private static void generateArcadeBodyProps(int indent, StringBuilder sb, BaseSpriteModel model) {
+		String tabs = tabs(indent);
+		String varname = model.getEditorName();
+
+		if (!model.getParent().isPhysicsGroup() || model.getParent().getPhysicsBodyType() != PhysicsBodyType.ARCADE) {
+			sb.append(tabs + "this.game.physics.arcade.enable(" + varname + ");\n");
+		}
+
+		ArcadeBodyModel body = model.getArcadeBody();
+		boolean hasOffset = body.getOffsetX() != 0 || body.getOffsetY() != 0;
+		switch (body.getBodyType()) {
+		case ARCADE_CIRCLE:
+			CircleArcadeBodyModel circle = (CircleArcadeBodyModel) body;
+			if (hasOffset) {
+				sb.append(tabs + varname + ".body.setCircle(" + circle.getRadius() + ", " + circle.getOffsetX() + ", "
+						+ circle.getOffsetY() + ");\n");
+			} else {
+				sb.append(tabs + varname + ".body.setCircle(" + circle.getRadius() + ");\n");
+			}
+			break;
+		case ARCADE_RECT:
+			RectArcadeBodyModel rect = (RectArcadeBodyModel) body;
+			if (rect.getWidth() != -1 && rect.getHeight() != -1) {
+				if (hasOffset) {
+					sb.append(tabs + varname + ".body.setSize(" + rect.getWidth() + ", " + rect.getHeight() + ", "
+							+ rect.getOffsetX() + ", " + rect.getOffsetY() + ");\n");
+				} else {
+					sb.append(tabs + varname + ".body.setSize(" + rect.getWidth() + ", " + rect.getHeight() + ");\n");
+				}
+			}
+			break;
+		default:
+			break;
+		}
+
+		generateCommonArcadeProps(indent, sb, model);
+	}
+
+	@SuppressWarnings("boxing")
+	private static void generateCommonArcadeProps(int indent, StringBuilder sb, BaseSpriteModel model) {
+		String tabs = tabs(indent);
+		String varname = model.getEditorName();
+		ArcadeBodyModel body = model.getArcadeBody();
+
+		class Prop {
+			private String name;
+			private Object def;
+			private Function<ArcadeBodyModel, Object> get;
+
+			public Prop(String name, Function<ArcadeBodyModel, Object> get, Object def) {
+				super();
+				this.name = name;
+				this.def = def;
+				this.get = get;
+			}
+
+			public void gen() {
+				Object v = get.apply(body);
+				if (!v.equals(def)) {
+					sb.append(tabs + varname + ".body." + name + " = " + v + ";\n");
+				}
+			}
+		}
+
+		Prop[] props = {
+
+				new Prop("mass", ArcadeBodyModel::getMass, 1d),
+
+				new Prop("moves", ArcadeBodyModel::isMoves, true),
+
+				new Prop("immovable", ArcadeBodyModel::isImmovable, false),
+				
+				new Prop("collideWorldBounds", ArcadeBodyModel::isCollideWorldBounds, false),
+				
+				new Prop("allowRotation", ArcadeBodyModel::isAllowRotation, true),
+				
+				new Prop("allowGravity", ArcadeBodyModel::isAllowGravity, true),
+				
+				new Prop("bounce.x", ArcadeBodyModel::getBounceX, 0d),
+				
+				new Prop("bounce.y", ArcadeBodyModel::getBounceY, 0d),
+				
+				new Prop("velocity.x", ArcadeBodyModel::getVelocityX, 0d),
+				
+				new Prop("velocity.y", ArcadeBodyModel::getVelocityY, 0d),
+				
+				new Prop("maxVelocity.x", ArcadeBodyModel::getMaxVelocityX, 10_000d),
+				
+				new Prop("maxVelocity.y", ArcadeBodyModel::getMaxVelocityY, 10_000d),
+				
+				new Prop("acceleration.x", ArcadeBodyModel::getAccelerationX, 0d),
+				
+				new Prop("acceleration.y", ArcadeBodyModel::getAccelerationY, 0d),
+				
+				new Prop("drag.x", ArcadeBodyModel::getDragX, 0d),
+				
+				new Prop("drag.y", ArcadeBodyModel::getDragY, 0d),
+				
+				new Prop("gravity.x", ArcadeBodyModel::getGravityX, 0d),
+				
+				new Prop("gravity.y", ArcadeBodyModel::getGravityY, 0d),
+				
+				new Prop("friction.x", ArcadeBodyModel::getFrictionX, 1d),
+				
+				new Prop("friction.y", ArcadeBodyModel::getFrictionY, 0d),
+				
+				new Prop("angularVelocity", ArcadeBodyModel::getAngularVelocity, 0d),
+				
+				new Prop("maxAngular", ArcadeBodyModel::getMaxAngular, 1000d),
+				
+				new Prop("angularAcceleration", ArcadeBodyModel::getAngularAcceleration, 0d),
+				
+				new Prop("angularDrag", ArcadeBodyModel::getAngularDrag, 0d),
+				
+				new Prop("checkCollision.none", ArcadeBodyModel::isCheckCollisionNone, false),
+				
+				new Prop("checkCollision.up", ArcadeBodyModel::isCheckCollisionUp, true),
+				
+				new Prop("checkCollision.down", ArcadeBodyModel::isCheckCollisionDown, true),
+				
+				new Prop("checkCollision.left", ArcadeBodyModel::isCheckCollisionLeft, true),
+				
+				new Prop("checkCollision.right", ArcadeBodyModel::isCheckCollisionRight, true),
+				
+				new Prop("skipQuadTree", ArcadeBodyModel::isSkipQuadTree, false),
+
+		};
+
+		for (Prop prop : props) {
+			prop.gen();
+		}
+
 	}
 
 	private static void generateTileProps(int indent, StringBuilder sb, TileSpriteModel model) {
