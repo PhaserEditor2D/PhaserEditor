@@ -41,6 +41,7 @@ public class AnimationModel implements Cloneable {
 	private int _frameRate;
 	private boolean _loop;
 
+	
 	public AnimationModel(String name) {
 		_name = name;
 		_frames = new ArrayList<>();
