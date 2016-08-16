@@ -527,17 +527,23 @@ public class CanvasEditor extends EditorPart
 					generateCode();
 				}
 			});
+			_toolBarManager.add(simpleCommand("phasereditor.canvas.ui.showcode", "jcu_obj.gif"));
 		}
 
 		_toolBarManager.update(true);
+	}
+
+	public IFile getFileToGenerate() {
+		WorldModel model = getCanvas().getWorldModel();
+		String fname = model.getClassName() + ".js";
+		return getEditorInputFile().getParent().getFile(new Path(fname));
 	}
 
 	void generateCode() {
 		JSCodeGenerator generator = new JSCodeGenerator();
 		try {
 			WorldModel model = getCanvas().getWorldModel();
-			String fname = model.getClassName() + ".js";
-			IFile file = getEditorInputFile().getParent().getFile(new Path(fname));
+			IFile file = getFileToGenerate();
 			String replace = null;
 
 			if (file.exists()) {

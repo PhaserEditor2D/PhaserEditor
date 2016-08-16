@@ -456,6 +456,12 @@
             id="phasereditor.canvas.ui.editanchors"
             name="Edit Anchors">
       </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            defaultHandler="phasereditor.canvas.ui.handlers.ShowCodeHandler"
+            id="phasereditor.canvas.ui.showcode"
+            name="Show Code">
+      </command>
       
    </extension>
    <extension
