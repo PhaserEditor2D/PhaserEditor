@@ -38,7 +38,6 @@ import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -48,6 +47,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.ViewerDropAdapter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
@@ -67,6 +67,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ResourceManager;
 
@@ -74,13 +75,12 @@ import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.canvas.core.AnimationModel;
-import org.eclipse.swt.custom.SashForm;
 
 /**
  * @author arian
  *
  */
-@SuppressWarnings("synthetic-access")
+@SuppressWarnings({ "synthetic-access" })
 public class AnimationsDialog extends Dialog {
 	private DataBindingContext m_bindingContext;
 	private Text _frameRateText;
@@ -101,21 +101,22 @@ public class AnimationsDialog extends Dialog {
 		super(parentShell);
 	}
 
-	
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
 		newShell.setText("Animations Editor");
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.window.Window#getShellStyle()
 	 */
 	@Override
 	protected int getShellStyle() {
 		return super.getShellStyle() | SWT.RESIZE;
 	}
-	
+
 	/**
 	 * Create contents of the dialog.
 	 * 
@@ -176,68 +177,68 @@ public class AnimationsDialog extends Dialog {
 		_loopButton = new Button(composite, SWT.CHECK);
 		_loopButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 4, 1));
 		_loopButton.setText("Loop");
-		
+
 		SashForm sashForm = new SashForm(container, SWT.NONE);
 		sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		
+
 		Composite composite_2 = new Composite(sashForm, SWT.NONE);
 		GridLayout gl_composite_2 = new GridLayout(1, false);
 		gl_composite_2.marginWidth = 0;
 		gl_composite_2.marginHeight = 0;
 		composite_2.setLayout(gl_composite_2);
-				
-						_framesViewer = new TableViewer(composite_2, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);
-						_table = _framesViewer.getTable();
-						_table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-												
-														_framesToolbar = new Composite(composite_2, SWT.NONE);
-														GridLayout gl_framesToolbar = new GridLayout(2, false);
-														gl_framesToolbar.marginWidth = 0;
-														gl_framesToolbar.marginHeight = 0;
-														_framesToolbar.setLayout(gl_framesToolbar);
-														
-																Button btnAdd = new Button(_framesToolbar, SWT.NONE);
-																btnAdd.addSelectionListener(new SelectionAdapter() {
-																	@Override
-																	public void widgetSelected(SelectionEvent e) {
-																		addFrame();
-																	}
-																});
-																btnAdd.setImage(ResourceManager.getPluginImage("org.eclipse.ui", "/icons/full/obj16/add_obj.png"));
-																
-																		Button btnRemove = new Button(_framesToolbar, SWT.NONE);
-																		btnRemove.addSelectionListener(new SelectionAdapter() {
-																			@Override
-																			public void widgetSelected(SelectionEvent e) {
-																				deleteFrame();
-																			}
-																		});
-																		btnRemove.setImage(ResourceManager.getPluginImage("org.eclipse.ui", "/icons/full/obj16/delete_obj.png"));
-																		
-																		Composite composite_3 = new Composite(sashForm, SWT.NONE);
-																		GridLayout gl_composite_3 = new GridLayout(1, false);
-																		gl_composite_3.marginHeight = 0;
-																		gl_composite_3.marginWidth = 0;
-																		composite_3.setLayout(gl_composite_3);
-																		
-																				_canvas = new AnimationCanvas(composite_3, SWT.BORDER);
-																				_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-																								
-																										Composite composite_1 = new Composite(composite_3, SWT.NONE);
-																										GridLayout gl_composite_1 = new GridLayout(1, false);
-																										gl_composite_1.marginHeight = 0;
-																										gl_composite_1.marginWidth = 0;
-																										composite_1.setLayout(gl_composite_1);
-																										
-																												_playButton = new Button(composite_1, SWT.NONE);
-																												_playButton.addSelectionListener(new SelectionAdapter() {
-																													@Override
-																													public void widgetSelected(SelectionEvent e) {
-																														playAnimation();
-																													}
-																												});
-																												_playButton.setImage(ResourceManager.getPluginImage("phasereditor.ui", "icons/control_play.png"));
-		sashForm.setWeights(new int[] {2, 3});
+
+		_framesViewer = new TableViewer(composite_2, SWT.BORDER | SWT.FULL_SELECTION | SWT.SINGLE);
+		_table = _framesViewer.getTable();
+		_table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+
+		_framesToolbar = new Composite(composite_2, SWT.NONE);
+		GridLayout gl_framesToolbar = new GridLayout(2, false);
+		gl_framesToolbar.marginWidth = 0;
+		gl_framesToolbar.marginHeight = 0;
+		_framesToolbar.setLayout(gl_framesToolbar);
+
+		Button btnAdd = new Button(_framesToolbar, SWT.NONE);
+		btnAdd.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				addFrame();
+			}
+		});
+		btnAdd.setImage(ResourceManager.getPluginImage("org.eclipse.ui", "/icons/full/obj16/add_obj.png"));
+
+		Button btnRemove = new Button(_framesToolbar, SWT.NONE);
+		btnRemove.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				deleteFrame();
+			}
+		});
+		btnRemove.setImage(ResourceManager.getPluginImage("org.eclipse.ui", "/icons/full/obj16/delete_obj.png"));
+
+		Composite composite_3 = new Composite(sashForm, SWT.NONE);
+		GridLayout gl_composite_3 = new GridLayout(1, false);
+		gl_composite_3.marginHeight = 0;
+		gl_composite_3.marginWidth = 0;
+		composite_3.setLayout(gl_composite_3);
+
+		_canvas = new AnimationCanvas(composite_3, SWT.BORDER);
+		_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+
+		Composite composite_1 = new Composite(composite_3, SWT.NONE);
+		GridLayout gl_composite_1 = new GridLayout(1, false);
+		gl_composite_1.marginHeight = 0;
+		gl_composite_1.marginWidth = 0;
+		composite_1.setLayout(gl_composite_1);
+
+		_playButton = new Button(composite_1, SWT.NONE);
+		_playButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				playAnimation();
+			}
+		});
+		_playButton.setImage(ResourceManager.getPluginImage("phasereditor.ui", "icons/control_play.png"));
+		sashForm.setWeights(new int[] { 2, 3 });
 
 		afterCreateWidgets();
 
@@ -333,17 +334,17 @@ public class AnimationsDialog extends Dialog {
 		Transfer[] transfers = new Transfer[] { LocalSelectionTransfer.getTransfer() };
 		_framesViewer.addDragSupport(operations, transfers, new DragSourceListener() {
 
-			private ISelection _data;
+			private int _data;
 
 			@Override
 			public void dragStart(DragSourceEvent event) {
-				_data = _framesViewer.getSelection();
+				_data = _framesViewer.getTable().getSelectionIndex();
 			}
 
 			@Override
 			public void dragSetData(DragSourceEvent event) {
 				event.data = _data;
-				LocalSelectionTransfer.getTransfer().setSelection(_data);
+				LocalSelectionTransfer.getTransfer().setSelection(new StructuredSelection(_data));
 			}
 
 			@Override
@@ -355,39 +356,49 @@ public class AnimationsDialog extends Dialog {
 		_framesViewer.addDropSupport(operations, transfers, new ViewerDropAdapter(_framesViewer) {
 
 			private int _location;
-			private Object _target;
+			private int _target;
 
 			@Override
 			public boolean validateDrop(Object target, int operation, TransferData transferType) {
 				return true;
 			}
 
+			@SuppressWarnings("boxing")
 			@Override
 			public boolean performDrop(Object data) {
+				if (_target == -1) {
+					return false;
+				}
+				
 				List<IAssetFrameModel> frames = _anim.getFrames();
-				IAssetFrameModel target = (IAssetFrameModel) _target;
 
 				Object[] elems = ((IStructuredSelection) data).toArray();
+				int target = _target;
 
-				for (Object elem : elems) {
-					List<Object> temp = new ArrayList<>(frames);
-					temp.remove(elem);
-					int index = temp.indexOf(target);
+				int i = (int) elems[0];
 
-					IAssetFrameModel frame = (IAssetFrameModel) elem;
-					switch (_location) {
-					case LOCATION_ON:
-					case LOCATION_BEFORE:
-						frames.remove(frame);
-						frames.add(index, frame);
-						break;
-					case LOCATION_AFTER:
-						frames.remove(frame);
-						frames.add(index + 1, frame);
-						break;
-					default:
-						break;
-					}
+				if (i == _target) {
+					return false;
+				}
+
+				IAssetFrameModel toMove = frames.get(i);
+
+				if (i < _target) {
+					target--;
+				}
+
+				frames.remove(i);
+
+				switch (_location) {
+				case LOCATION_ON:
+				case LOCATION_BEFORE:
+					frames.add(target, toMove);
+					break;
+				case LOCATION_AFTER:
+					frames.add(target + 1, toMove);
+					break;
+				default:
+					break;
 				}
 
 				_framesViewer.refresh();
@@ -398,7 +409,13 @@ public class AnimationsDialog extends Dialog {
 			@Override
 			public void dragOver(DropTargetEvent event) {
 				_location = determineLocation(event);
-				_target = determineTarget(event);
+				// _target = (int) determineTarget(event);
+				TableItem item = (TableItem) event.item;
+				if (item == null) {
+					_target = -1;
+				} else {
+					_target = _framesViewer.getTable().indexOf(item);
+				}
 				super.dragOver(event);
 			}
 		});

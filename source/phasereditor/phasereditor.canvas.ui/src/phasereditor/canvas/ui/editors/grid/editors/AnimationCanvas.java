@@ -87,6 +87,7 @@ public class AnimationCanvas extends FXCanvas {
 
 		Image image = ImageCache.getFXImage(frames.get(0).getImageFile());
 		_imgView.setImage(image);
+		showFrame(0);
 
 		int size = model.getFrames().size();
 		_anim = new IndexTransition(Duration.seconds(size / (double) model.getFrameRate()), size);
