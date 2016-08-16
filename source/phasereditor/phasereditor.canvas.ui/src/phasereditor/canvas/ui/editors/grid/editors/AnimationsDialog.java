@@ -341,6 +341,7 @@ public class AnimationsDialog extends Dialog {
 				_data = _framesViewer.getTable().getSelectionIndex();
 			}
 
+			@SuppressWarnings("boxing")
 			@Override
 			public void dragSetData(DragSourceEvent event) {
 				event.data = _data;

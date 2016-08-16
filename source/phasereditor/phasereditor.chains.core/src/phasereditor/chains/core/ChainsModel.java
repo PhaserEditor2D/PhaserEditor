@@ -141,6 +141,7 @@ public class ChainsModel {
 
 	public List<Match> searchChains(String aQuery, int limit) {
 		String query = aQuery.toLowerCase();
+		boolean showall = query.trim().length() == 0;
 
 		if (query.startsWith("this.")) {
 			query = "state." + query.substring(5);
@@ -152,13 +153,18 @@ public class ChainsModel {
 
 		for (ChainItem item : _chains) {
 			Matcher matcher = pattern.matcher(item.getDisplay());
-			if (matcher.matches()) {
+			if (showall || matcher.matches()) {
 				Match match = new Match();
 				match.item = item;
-				match.start = matcher.start(1);
-				match.length = matcher.end(1) - match.start;
+				if (showall) {
+					match.start = 0;
+					match.length = 0;
+				} else {
+					match.start = matcher.start(1);
+					match.length = matcher.end(1) - match.start;
+				}
 				matches.add(match);
-				if (matches.size() == limit) {
+				if (matches.size() >= limit) {
 					break;
 				}
 			}
@@ -178,8 +184,9 @@ public class ChainsModel {
 
 	public List<Match> searchExamples(String aQuery, int limit) {
 		String query = aQuery.toLowerCase();
+		boolean showall = query.trim().length() == 0;
 		List<Match> matches = new ArrayList<>();
-		if (query.length() > 2) {
+		if (query.length() > 2 || showall) {
 			query = quote(query);
 			Pattern pattern = Pattern.compile(query, Pattern.CASE_INSENSITIVE);
 
@@ -187,13 +194,18 @@ public class ChainsModel {
 
 			for (String filename : _examplesFiles) {
 				Matcher matcher = pattern.matcher(filename);
-				if (matcher.matches()) {
+				if (showall || matcher.matches()) {
 					Match match = new Match();
 					match.item = filename;
-					match.start = matcher.start(1);
-					match.length = matcher.end(1) - match.start;
+					if (showall) {
+						match.start = 0;
+						match.length = 0;
+					} else {
+						match.start = matcher.start(1);
+						match.length = matcher.end(1) - match.start;
+					}
 					matches.add(match);
-					if (matches.size() == limit) {
+					if (matches.size() >= limit) {
 						break;
 					}
 				}
@@ -202,16 +214,21 @@ public class ChainsModel {
 			// search on lines
 
 			for (Line line : _examplesLines) {
+				if (matches.size() >= limit) {
+					break;
+				}
 				Matcher matcher = pattern.matcher(line.text);
-				if (matcher.matches()) {
+				if (showall || matcher.matches()) {
 					Match match = new Match();
 					match.item = line;
-					match.start = matcher.start(1);
-					match.length = matcher.end(1) - match.start;
-					matches.add(match);
-					if (matches.size() == limit) {
-						break;
+					if (showall) {
+						match.start = 0;
+						match.length = 0;
+					} else {
+						match.start = matcher.start(1);
+						match.length = matcher.end(1) - match.start;
 					}
+					matches.add(match);
 				}
 			}
 		}
