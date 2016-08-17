@@ -29,6 +29,7 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.jetty.util.URIUtil;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -60,6 +61,7 @@ public class WebRunUI {
 		IContainer webContent = ProjectCore.getWebContentFolder(project);
 		String path = webContent.getFullPath().toPortableString();
 		String url = ("http://localhost:" + WebRunCore.getServerPort() + "/" + path).replace("//", "/");
+		url = URIUtil.encodePath(url);
 		return url;
 	}
 
