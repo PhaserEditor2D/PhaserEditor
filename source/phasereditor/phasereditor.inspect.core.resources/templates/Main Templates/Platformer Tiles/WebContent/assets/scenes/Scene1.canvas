@@ -1,0 +1,2089 @@
+{
+  "settings": {
+    "sceneWidth": 3290,
+    "sceneHeight": 2275,
+    "generateOnSave": true,
+    "enableStepping": true,
+    "stepWidth": 35,
+    "stepHeight": 35
+  },
+  "world": {
+    "type": "group",
+    "id": "92e1c056-125a-47d9-9b2d-4bcf4b8b4aac",
+    "info": {
+      "editorName": "Scene1",
+      "editorClosed": false,
+      "physicsGroup": false,
+      "children": [
+        {
+          "type": "image",
+          "id": "283ffef7-50c4-420b-9531-cbd5f0137a3c",
+          "asset-ref": {
+            "file": "WebContent/assets/pack.json",
+            "section": "preload",
+            "asset": "background"
+          },
+          "info": {
+            "editorName": "background",
+            "editorPublic": true
+          }
+        },
+        {
+          "type": "group",
+          "id": "71972d10-c883-40b9-a003-ca777860ef27",
+          "info": {
+            "editorName": "ground",
+            "editorPublic": true,
+            "editorClosed": false,
+            "physicsGroup": true,
+            "physicsSortDirection": "LEFT_RIGHT",
+            "children": [
+              {
+                "type": "tileSprite",
+                "id": "217dac2a-9c56-4ea0-b41b-6f8b71ef82dd",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "block"
+                },
+                "info": {
+                  "editorName": "block11",
+                  "y": -35,
+                  "width": 140,
+                  "height": 2310,
+                  "asset-ref": {
+                    "file": "WebContent/assets/pack.json",
+                    "section": "preload",
+                    "asset": "objects",
+                    "sprite": "block"
+                  }
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "ffc8f3f3-20a2-4831-b590-31ddaf7ba757",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "block"
+                },
+                "info": {
+                  "editorName": "ground_rock",
+                  "x": 140,
+                  "y": 1855,
+                  "width": 2170,
+                  "height": 420,
+                  "asset-ref": {
+                    "file": "WebContent/assets/pack.json",
+                    "section": "preload",
+                    "asset": "objects",
+                    "sprite": "block"
+                  }
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "aff82ad6-cae6-4d28-b641-3bae54d2a0c4",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "block"
+                },
+                "info": {
+                  "editorName": "block1",
+                  "x": 3150,
+                  "y": -35,
+                  "width": 140,
+                  "height": 2310,
+                  "asset-ref": {
+                    "file": "WebContent/assets/pack.json",
+                    "section": "preload",
+                    "asset": "objects",
+                    "sprite": "block"
+                  }
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "daddb287-9cf9-40d9-8023-7295eaf4cd29",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "hill_long"
+                },
+                "info": {
+                  "editorName": "hill_long",
+                  "x": 910,
+                  "y": 1155,
+                  "body": {
+                    "type": "ARCADE_RECT",
+                    "offsetY": 16.87890625,
+                    "width": 48,
+                    "height": 129.12109375
+                  }
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "632b6bb5-c82b-410f-9205-91fe190898ad",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "hill_short"
+                },
+                "info": {
+                  "editorName": "hill_short",
+                  "x": 835,
+                  "y": 1199,
+                  "body": {
+                    "type": "ARCADE_RECT",
+                    "offsetY": 17.2806396484375,
+                    "width": 48,
+                    "height": 84.7193603515625
+                  }
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "f3f6c4c5-032e-4e7b-b11d-9d9a342d4962",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "ground"
+                },
+                "info": {
+                  "editorName": "ground1",
+                  "x": 1120,
+                  "y": 875,
+                  "width": 350,
+                  "height": 70,
+                  "asset-ref": {
+                    "file": "WebContent/assets/pack.json",
+                    "section": "preload",
+                    "asset": "objects",
+                    "sprite": "ground"
+                  }
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "1fa179a5-04d1-498e-ac9f-f5d9cd3e5b82",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "ground_dirt"
+                },
+                "info": {
+                  "editorName": "ground_dirt",
+                  "x": 1190,
+                  "y": 945,
+                  "width": 210,
+                  "height": 70,
+                  "asset-ref": {
+                    "file": "WebContent/assets/pack.json",
+                    "section": "preload",
+                    "asset": "objects",
+                    "sprite": "ground_dirt"
+                  }
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "953638a6-2c57-4f7d-8593-c4b4d1ad543d",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "ground_dirt"
+                },
+                "info": {
+                  "editorName": "ground_dirt1",
+                  "x": 1260,
+                  "y": 1015
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "f371b7fc-ba9e-4d80-92d9-f2787fc749a2",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "ground_dirt"
+                },
+                "info": {
+                  "editorName": "ground_dirt2",
+                  "x": 1960,
+                  "y": 595,
+                  "width": 210,
+                  "height": 70,
+                  "asset-ref": {
+                    "file": "WebContent/assets/pack.json",
+                    "section": "preload",
+                    "asset": "objects",
+                    "sprite": "ground_dirt"
+                  }
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "96f78537-8692-4015-9c60-ed6d2b4faead",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "hill_short"
+                },
+                "info": {
+                  "editorName": "hill_short1",
+                  "x": 1392,
+                  "y": 1758,
+                  "body": {
+                    "type": "ARCADE_RECT",
+                    "offsetY": 16.87890625,
+                    "width": 48,
+                    "height": 85.12109375
+                  }
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "77defc67-b9ef-4638-83f0-a700e455da64",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "hill_long"
+                },
+                "info": {
+                  "editorName": "hill_long1",
+                  "x": 1330,
+                  "y": 1715,
+                  "body": {
+                    "type": "ARCADE_RECT",
+                    "offsetY": 14.467529296875,
+                    "width": 48,
+                    "height": 131.532470703125
+                  }
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "431adbe5-e226-4e1a-84b5-ed136306bb41",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "ground"
+                },
+                "info": {
+                  "editorName": "ground11",
+                  "x": 1890,
+                  "y": 525,
+                  "width": 350,
+                  "height": 70,
+                  "asset-ref": {
+                    "file": "WebContent/assets/pack.json",
+                    "section": "preload",
+                    "asset": "objects",
+                    "sprite": "ground"
+                  }
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "56433bad-1ba4-4d52-b565-52fdeb165f5d",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "ground_dirt"
+                },
+                "info": {
+                  "editorName": "ground_dirt3",
+                  "x": 2030,
+                  "y": 665
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "763d8515-a1db-48b6-8f21-9f0e786fb8ac",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "block"
+                },
+                "info": {
+                  "editorName": "ground_rock1",
+                  "x": 2310,
+                  "y": 1995,
+                  "width": 840,
+                  "height": 280,
+                  "asset-ref": {
+                    "file": "WebContent/assets/pack.json",
+                    "section": "preload",
+                    "asset": "objects",
+                    "sprite": "block"
+                  }
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "6183dd19-fed9-4da8-a5f3-9ca873e664e6",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "ground"
+                },
+                "info": {
+                  "editorName": "ground2",
+                  "x": 140,
+                  "y": 1295,
+                  "width": 2240,
+                  "height": 70,
+                  "asset-ref": {
+                    "file": "WebContent/assets/pack.json",
+                    "section": "preload",
+                    "asset": "objects",
+                    "sprite": "ground"
+                  }
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "65158d02-fc17-4ec5-8d80-8a417f5f1154",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "bridge"
+                },
+                "info": {
+                  "editorName": "bridge2",
+                  "x": 1785,
+                  "y": 1750,
+                  "width": 284,
+                  "height": 24,
+                  "asset-ref": {
+                    "file": "WebContent/assets/pack.json",
+                    "section": "preload",
+                    "asset": "objects",
+                    "sprite": "bridge"
+                  }
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "a0259100-0963-4676-b13b-f63e4cd6b121",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "crate"
+                },
+                "info": {
+                  "editorName": "crate",
+                  "x": 140,
+                  "y": 1715,
+                  "width": 70,
+                  "height": 140,
+                  "asset-ref": {
+                    "file": "WebContent/assets/pack.json",
+                    "section": "preload",
+                    "asset": "objects",
+                    "sprite": "crate"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "tileSprite",
+          "id": "929193f7-14d0-455d-b1db-8e7dede87c4d",
+          "asset-ref": {
+            "file": "WebContent/assets/pack.json",
+            "section": "preload",
+            "asset": "objects",
+            "sprite": "block"
+          },
+          "info": {
+            "editorName": "block",
+            "x": 140,
+            "y": 1365,
+            "width": 2170,
+            "height": 140,
+            "asset-ref": {
+              "file": "WebContent/assets/pack.json",
+              "section": "preload",
+              "asset": "objects",
+              "sprite": "block"
+            }
+          }
+        },
+        {
+          "type": "tileSprite",
+          "id": "c312f7c3-bc70-497f-bd05-1912869a9b37",
+          "asset-ref": {
+            "file": "WebContent/assets/pack.json",
+            "section": "preload",
+            "asset": "objects",
+            "sprite": "bush"
+          },
+          "info": {
+            "editorName": "bush",
+            "x": 1889,
+            "y": 501,
+            "width": 350.03564453125,
+            "height": 26,
+            "asset-ref": {
+              "file": "WebContent/assets/pack.json",
+              "section": "preload",
+              "asset": "objects",
+              "sprite": "bush"
+            }
+          }
+        },
+        {
+          "type": "tileSprite",
+          "id": "55eacb0b-45df-4c58-9085-63700d0582c1",
+          "asset-ref": {
+            "file": "WebContent/assets/pack.json",
+            "section": "preload",
+            "asset": "objects",
+            "sprite": "grass"
+          },
+          "info": {
+            "editorName": "grass",
+            "x": 1155,
+            "y": 840,
+            "width": 280.0250244140625,
+            "height": 40,
+            "asset-ref": {
+              "file": "WebContent/assets/pack.json",
+              "section": "preload",
+              "asset": "objects",
+              "sprite": "grass"
+            }
+          }
+        },
+        {
+          "type": "atlas-sprite",
+          "id": "2ccb58de-aee5-4295-8687-906a8effc355",
+          "asset-ref": {
+            "file": "WebContent/assets/pack.json",
+            "section": "preload",
+            "asset": "objects",
+            "sprite": "shroom"
+          },
+          "info": {
+            "editorName": "shroom1",
+            "x": 2099,
+            "y": 493
+          }
+        },
+        {
+          "type": "tileSprite",
+          "id": "188cf779-d81b-42d7-9501-0c01753510ff",
+          "asset-ref": {
+            "file": "WebContent/assets/pack.json",
+            "section": "preload",
+            "asset": "objects",
+            "sprite": "ground"
+          },
+          "info": {
+            "editorName": "ground_cave",
+            "x": 140,
+            "y": 1855,
+            "width": 2170,
+            "height": 70,
+            "asset-ref": {
+              "file": "WebContent/assets/pack.json",
+              "section": "preload",
+              "asset": "objects",
+              "sprite": "ground"
+            }
+          }
+        },
+        {
+          "type": "atlas-sprite",
+          "id": "59dbe12f-ed07-46f6-989b-0802f1e12b39",
+          "asset-ref": {
+            "file": "WebContent/assets/pack.json",
+            "section": "preload",
+            "asset": "objects",
+            "sprite": "lock_yellow"
+          },
+          "info": {
+            "editorName": "lockYellow",
+            "editorPublic": true,
+            "x": 140,
+            "y": 1505,
+            "body": {
+              "type": "ARCADE_RECT",
+              "immovable": true,
+              "allowGravity": false
+            }
+          }
+        },
+        {
+          "type": "atlas-sprite",
+          "id": "2e93a9b6-9c73-46c9-859e-2df20b090431",
+          "asset-ref": {
+            "file": "WebContent/assets/pack.json",
+            "section": "preload",
+            "asset": "objects",
+            "sprite": "grass"
+          },
+          "info": {
+            "editorName": "grass1",
+            "x": 455,
+            "y": 1820
+          }
+        },
+        {
+          "type": "atlas-sprite",
+          "id": "52b0efbf-9a1e-435b-8ff2-a9a0b0e52ff8",
+          "asset-ref": {
+            "file": "WebContent/assets/pack.json",
+            "section": "preload",
+            "asset": "objects",
+            "sprite": "grass"
+          },
+          "info": {
+            "editorName": "grass2",
+            "x": 805,
+            "y": 1820
+          }
+        },
+        {
+          "type": "atlas-sprite",
+          "id": "b45b233d-7ec9-4e24-b3dd-e656bea8638b",
+          "asset-ref": {
+            "file": "WebContent/assets/pack.json",
+            "section": "preload",
+            "asset": "objects",
+            "sprite": "grass"
+          },
+          "info": {
+            "editorName": "grass3",
+            "x": 1575,
+            "y": 1820
+          }
+        },
+        {
+          "type": "atlas-sprite",
+          "id": "0351c7ba-1c80-4b8b-bb05-46efd0af8314",
+          "asset-ref": {
+            "file": "WebContent/assets/pack.json",
+            "section": "preload",
+            "asset": "objects",
+            "sprite": "grass"
+          },
+          "info": {
+            "editorName": "grass4",
+            "x": 1995,
+            "y": 1260
+          }
+        },
+        {
+          "type": "group",
+          "id": "0636da8d-476f-4a65-8c70-42fa0e0e3240",
+          "info": {
+            "editorName": "coins",
+            "editorPublic": true,
+            "editorClosed": false,
+            "physicsGroup": true,
+            "children": [
+              {
+                "type": "atlas-sprite",
+                "id": "d67a6c66-8058-42be-ac28-0cab7944c30e",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold",
+                  "x": 350,
+                  "y": 1225
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "def8f352-ff53-47cd-bc9a-f5f4a24449ae",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold1",
+                  "x": 420,
+                  "y": 1225
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "054c3623-efc9-4aff-bf48-d8bebd68c647",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold2",
+                  "x": 490,
+                  "y": 1225
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "0f70747d-3422-4bd7-96bc-38e5e4be9864",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold3",
+                  "x": 560,
+                  "y": 1225
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "a9b07c5e-733a-47fa-bc26-428dc6695598",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold4",
+                  "x": 910,
+                  "y": 980
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "562c2672-1d54-4b22-9b46-e41e8537a4ae",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold5",
+                  "x": 840,
+                  "y": 1050
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "0d82651a-62c5-49a1-b706-038a5f3b7ba0",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold6",
+                  "x": 1890,
+                  "y": 420
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "e0d95499-e89d-4a02-914a-45161a676fcb",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold7",
+                  "x": 2030,
+                  "y": 420
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "abf3b378-9456-4a70-b02b-0075a4a128e3",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold8",
+                  "x": 2170,
+                  "y": 420
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "7d76ac4b-6d2b-42a6-98c2-8429c327e50b",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold9",
+                  "x": 525,
+                  "y": 1715
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "617cf90a-7970-4bff-9b4e-424e217a0306",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold91",
+                  "x": 595,
+                  "y": 1715
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "2bbe0a83-526e-4284-bd56-7eabb44d2513",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold92",
+                  "x": 665,
+                  "y": 1715
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "7a4bac86-c118-4f94-8de3-e42300305b25",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold93",
+                  "x": 735,
+                  "y": 1715
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "8967c569-4444-4041-a918-6d720ea6ecde",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold94",
+                  "x": 805,
+                  "y": 1715
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "7a300796-a977-482f-b546-1419d0e4e60c",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold61",
+                  "x": 1960,
+                  "y": 420
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "780d5111-84ce-46f3-a564-b767d0466d2f",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold62",
+                  "x": 2100,
+                  "y": 420
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "e0b5f7bb-99fd-4666-989d-40d1d61af104",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold63",
+                  "x": 1138,
+                  "y": 761
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "bc2312e6-e472-47a7-81c0-f76736581c91",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold71",
+                  "x": 1270,
+                  "y": 699
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "f426ed31-0535-4b0b-8f76-e9cc1aab9c60",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold611",
+                  "x": 1207,
+                  "y": 740
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "f341d344-a19c-45b4-89ac-24ae3b065b52",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold621",
+                  "x": 1321,
+                  "y": 642
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "3b4bd809-9b64-49c3-8d6c-d4959fc7c495",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold631",
+                  "x": 1134,
+                  "y": 691
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "d00bb977-7bf4-47f2-b5e1-4ef6578e5fda",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold711",
+                  "x": 1253,
+                  "y": 625
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "ea5d28cd-eb18-4542-8012-8240e777dd22",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold6111",
+                  "x": 1199,
+                  "y": 667
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "bc6f49ed-edbd-4ff4-9459-28a568c5c147",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold6211",
+                  "x": 1296,
+                  "y": 565
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "89fa5538-4ecd-4ada-9849-81cc5e67bdb4",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold10",
+                  "x": 1594,
+                  "y": 1120
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "e2e1f5d7-1cd7-4cac-b9e9-65f6e94765d4",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold11",
+                  "x": 1664,
+                  "y": 1120
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "d5f000e5-4797-459e-b689-595af7790b56",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold21",
+                  "x": 1734,
+                  "y": 1120
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "3ef1f620-4a4d-47d6-88a0-ea62840907ed",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold31",
+                  "x": 1804,
+                  "y": 1120
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "40ebfd0c-e7a4-492c-94d3-017482757d0b",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold41",
+                  "x": 1874,
+                  "y": 1120
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "9c8e9c04-aeef-40ba-90c6-b1113f02e68b",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold51",
+                  "x": 1944,
+                  "y": 1120
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "026ef6e6-992f-40ce-a245-7af51d367b78",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold101",
+                  "x": 1855,
+                  "y": 1610
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "d793a44f-0baf-4f1b-88b4-f9f80239f845",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold111",
+                  "x": 1855,
+                  "y": 1540
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "85924fab-7f4c-4866-9ca5-31cb45e2ecd5",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold211",
+                  "x": 1855,
+                  "y": 1680
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "0276ecbf-a337-4057-91d9-960e599d70df",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold311",
+                  "x": 1960,
+                  "y": 1540
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "013bb7a1-29cf-490b-943c-c20c6fa35785",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold411",
+                  "x": 1960,
+                  "y": 1610
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "b71f3323-fb83-4a04-b25c-34642443a49d",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold511",
+                  "x": 1960,
+                  "y": 1680
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "9da80968-e18b-4290-8de0-d3dc4f801c99",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold12",
+                  "x": 315,
+                  "y": 805
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "124ec135-0e9d-43cf-bcbf-8a5de47d2611",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold121",
+                  "x": 315,
+                  "y": 875
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "ac560d3e-1fdc-49df-b205-3beecc7654d6",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold122",
+                  "x": 315,
+                  "y": 945
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "5da9db19-605f-4d43-89c2-d24c9c15ef43",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold123",
+                  "x": 315,
+                  "y": 1015
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "02731f9d-d945-4024-aa3a-6a21b46bc8e0",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold512",
+                  "x": 2014,
+                  "y": 1120
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "fe954116-98a1-4468-8e7c-9d6d69eb4603",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold513",
+                  "x": 2084,
+                  "y": 1120
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "01a7f39a-7910-4dbf-a8d1-aff3470b6062",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold102",
+                  "x": 1524,
+                  "y": 1120
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "7187ecfb-a2dc-4b15-9608-fd20d741de2e",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold5121",
+                  "x": 2014,
+                  "y": 1190
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "79c8b617-7dcb-496d-8a4c-0a0537b39815",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold5131",
+                  "x": 2084,
+                  "y": 1190
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "2083f2dd-f305-4550-b899-d1c4be83d86d",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold1021",
+                  "x": 1524,
+                  "y": 1190
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "795c2f79-b62a-4e3e-a378-401ef5abca9d",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold103",
+                  "x": 1594,
+                  "y": 1190
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "df01a21e-9ae3-4b56-b54c-7d9760993035",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold112",
+                  "x": 1664,
+                  "y": 1190
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "b98c5919-2c31-41e5-ac47-a068c73eaa7a",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold212",
+                  "x": 1734,
+                  "y": 1190
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "079a69a9-c3c3-4fba-8b6d-e32e2b1050a4",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold312",
+                  "x": 1804,
+                  "y": 1190
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "54c5c11c-9d28-465d-b6dc-d7ebb4f2ad52",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold412",
+                  "x": 1874,
+                  "y": 1190
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "3564214d-2491-472c-8fdb-2c5a14c655ca",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "coin_gold"
+                },
+                "info": {
+                  "editorName": "coin_gold514",
+                  "x": 1944,
+                  "y": 1190
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "group",
+          "id": "2b45f80d-b6e0-489d-8748-86c57892332f",
+          "info": {
+            "editorName": "movingPlatforms",
+            "editorPublic": true,
+            "editorClosed": false,
+            "physicsGroup": true,
+            "children": [
+              {
+                "type": "atlas-sprite",
+                "id": "f891b20f-3512-4869-9902-eb9b1041af54",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "cloud_2"
+                },
+                "info": {
+                  "editorName": "bridge",
+                  "x": 1016,
+                  "y": 1200,
+                  "data": "{\r\n top : 900,\r\n bottom : 1200,\r\n velocity_y : -100\r\n}",
+                  "body": {
+                    "type": "ARCADE_RECT",
+                    "offsetX": 1.92901611328125,
+                    "offsetY": 34.5177001953125,
+                    "checkCollisionDown": false,
+                    "width": 122.63885498046875,
+                    "height": 26.8017578125
+                  }
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "5aff35a6-418a-4eeb-b034-fae83b19f0f4",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "cloud_1"
+                },
+                "info": {
+                  "editorName": "cloud2",
+                  "x": 1500,
+                  "y": 737,
+                  "data": "{\r\n left : cloud2.x,\r\n top : cloud2.y - 300,\r\n right : cloud2.x + 300,\r\n bottom: cloud2.y, \r\n velocity_y : -100,\r\n velocity_x : 100\r\n}",
+                  "body": {
+                    "type": "ARCADE_RECT",
+                    "offsetX": 2.4112548828125,
+                    "offsetY": 36,
+                    "checkCollisionDown": false,
+                    "width": 122.7308349609375,
+                    "height": 27
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "atlas-sprite",
+          "id": "1add6999-c7cd-42bd-b78d-94cb6b0e952d",
+          "asset-ref": {
+            "file": "WebContent/assets/pack.json",
+            "section": "preload",
+            "asset": "objects",
+            "sprite": "shroom"
+          },
+          "info": {
+            "editorName": "shroom",
+            "x": 1241,
+            "y": 842
+          }
+        },
+        {
+          "type": "atlas-sprite",
+          "id": "d792634b-266b-4a60-acca-547f5c34e8bb",
+          "asset-ref": {
+            "file": "WebContent/assets/pack.json",
+            "section": "preload",
+            "asset": "objects",
+            "sprite": "key_yellow"
+          },
+          "info": {
+            "editorName": "keyYellow",
+            "editorPublic": true,
+            "x": 2170,
+            "y": 315,
+            "body": {
+              "type": "ARCADE_RECT",
+              "immovable": true,
+              "allowGravity": false
+            }
+          }
+        },
+        {
+          "type": "atlas-sprite",
+          "id": "6d631dcc-9c04-4b2f-9f47-4e44efbbb142",
+          "asset-ref": {
+            "file": "WebContent/assets/pack.json",
+            "section": "preload",
+            "asset": "character",
+            "sprite": "walk_10"
+          },
+          "info": {
+            "editorName": "player",
+            "editorPublic": true,
+            "x": 332,
+            "y": 665,
+            "anchor.x": 0.5,
+            "animations": [
+              {
+                "name": "walk",
+                "frameRate": 20,
+                "loop": true,
+                "frames": [
+                  "walk_01",
+                  "walk_02",
+                  "walk_03",
+                  "walk_04",
+                  "walk_05",
+                  "walk_06",
+                  "walk_07",
+                  "walk_08",
+                  "walk_09",
+                  "walk_10",
+                  "walk_11"
+                ]
+              },
+              {
+                "name": "jump",
+                "frameRate": 60,
+                "loop": false,
+                "frames": ["jump"]
+              },
+              {
+                "name": "die",
+                "frameRate": 60,
+                "loop": false,
+                "frames": ["jump"]
+              },
+              {
+                "name": "stay",
+                "frameRate": 60,
+                "loop": false,
+                "frames": ["side"]
+              }
+            ],
+            "body": {
+              "type": "ARCADE_RECT",
+              "collideWorldBounds": true,
+              "width": 70,
+              "height": 92.6739501953125
+            }
+          }
+        },
+        {
+          "type": "atlas-sprite",
+          "id": "e7453a68-b31c-4ed5-8a85-dbcfb7966669",
+          "asset-ref": {
+            "file": "WebContent/assets/pack.json",
+            "section": "preload",
+            "asset": "objects",
+            "sprite": "fence_broken"
+          },
+          "info": {
+            "editorName": "fence_broken",
+            "x": 651,
+            "y": 1235
+          }
+        },
+        {
+          "type": "atlas-sprite",
+          "id": "30495ac1-658c-458f-bc12-1c41a52710ff",
+          "asset-ref": {
+            "file": "WebContent/assets/pack.json",
+            "section": "preload",
+            "asset": "objects",
+            "sprite": "fence"
+          },
+          "info": {
+            "editorName": "fence",
+            "x": 722,
+            "y": 1235
+          }
+        },
+        {
+          "type": "group",
+          "id": "0b1b4c75-8d09-497b-abb1-418cf0957daa",
+          "info": {
+            "editorName": "water",
+            "editorPublic": true,
+            "editorClosed": false,
+            "physicsGroup": false,
+            "children": [
+              {
+                "type": "tileSprite",
+                "id": "5efc5a19-d909-44b1-b506-e8aec8fe86cb",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "water"
+                },
+                "info": {
+                  "editorName": "water0",
+                  "x": 2380,
+                  "y": 1364,
+                  "rotation": 1.5707963267948966,
+                  "width": 493.20849609375,
+                  "height": 44.837890625,
+                  "asset-ref": {
+                    "file": "WebContent/assets/pack.json",
+                    "section": "preload",
+                    "asset": "objects",
+                    "sprite": "water"
+                  }
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "5680dfb6-7d54-4a92-947f-57f589d9c0e0",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "water"
+                },
+                "info": {
+                  "editorName": "water02",
+                  "x": 2325,
+                  "y": 1365,
+                  "rotation": 1.5707963267948966,
+                  "scale.y": -1,
+                  "anchor.y": 0.5,
+                  "width": 492.9439697265625,
+                  "height": 40,
+                  "asset-ref": {
+                    "file": "WebContent/assets/pack.json",
+                    "section": "preload",
+                    "asset": "objects",
+                    "sprite": "water"
+                  }
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "d49a8a6b-83dd-4610-88cb-3f006302558f",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "water"
+                },
+                "info": {
+                  "editorName": "water2",
+                  "x": 2309.75341796875,
+                  "y": 1850,
+                  "width": 840.24658203125,
+                  "height": 45,
+                  "tileScale.x": 2,
+                  "asset-ref": {
+                    "file": "WebContent/assets/pack.json",
+                    "section": "preload",
+                    "asset": "objects",
+                    "sprite": "water"
+                  }
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "8f182f32-630d-4067-8417-b17afa0549b5",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "water"
+                },
+                "info": {
+                  "editorName": "water21",
+                  "x": 2309.753662109375,
+                  "y": 1880,
+                  "width": 840.246337890625,
+                  "height": 45,
+                  "tileScale.x": 2,
+                  "asset-ref": {
+                    "file": "WebContent/assets/pack.json",
+                    "section": "preload",
+                    "asset": "objects",
+                    "sprite": "water"
+                  }
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "74c32f0c-db5f-4e47-93ff-a177e58517f4",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "water"
+                },
+                "info": {
+                  "editorName": "water212",
+                  "x": 2309.889892578125,
+                  "y": 1910,
+                  "width": 840.110107421875,
+                  "height": 45,
+                  "tileScale.x": 2,
+                  "asset-ref": {
+                    "file": "WebContent/assets/pack.json",
+                    "section": "preload",
+                    "asset": "objects",
+                    "sprite": "water"
+                  }
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "2fb9328a-349c-45d3-82a6-43fd93441f8f",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "water"
+                },
+                "info": {
+                  "editorName": "water213",
+                  "x": 2309.889892578125,
+                  "y": 1940,
+                  "width": 840.110107421875,
+                  "height": 45,
+                  "tileScale.x": 2,
+                  "asset-ref": {
+                    "file": "WebContent/assets/pack.json",
+                    "section": "preload",
+                    "asset": "objects",
+                    "sprite": "water"
+                  }
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "4e85e813-403a-4bdb-93aa-03324c3a845c",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "water"
+                },
+                "info": {
+                  "editorName": "water211",
+                  "x": 2309.889892578125,
+                  "y": 1970,
+                  "width": 840.110107421875,
+                  "height": 45,
+                  "tileScale.x": 2,
+                  "asset-ref": {
+                    "file": "WebContent/assets/pack.json",
+                    "section": "preload",
+                    "asset": "objects",
+                    "sprite": "water"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "tileSprite",
+          "id": "0624d5a6-902a-4bd3-9cad-6340bdc8c08f",
+          "asset-ref": {
+            "file": "WebContent/assets/pack.json",
+            "section": "preload",
+            "asset": "objects",
+            "sprite": "ground_sand"
+          },
+          "info": {
+            "editorName": "ground_sand",
+            "x": 2310,
+            "y": 1996,
+            "width": 840.105712890625,
+            "height": 70,
+            "asset-ref": {
+              "file": "WebContent/assets/pack.json",
+              "section": "preload",
+              "asset": "objects",
+              "sprite": "ground_sand"
+            }
+          }
+        },
+        {
+          "type": "group",
+          "id": "d1378cae-d35c-488b-9bfa-c85762ae53f3",
+          "info": {
+            "editorName": "flyEnemies",
+            "editorPublic": true,
+            "editorClosed": false,
+            "physicsGroup": true,
+            "children": [
+              {
+                "type": "atlas-sprite",
+                "id": "fd33fc69-07c7-4ec5-9bf1-6471e8564d87",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "enemies",
+                  "sprite": "fly_normal"
+                },
+                "info": {
+                  "editorName": "fly1",
+                  "x": 1913,
+                  "y": 344,
+                  "anchor.x": 0.5,
+                  "data": "{\r\n left: $$.x,\r\n right : $$.x + 300,\r\n velocity_x : -150,\r\n face_x : -1\r\n}",
+                  "animations": [{
+                    "name": "fly",
+                    "frameRate": 6,
+                    "loop": true,
+                    "frames": [
+                      "fly_normal",
+                      "fly_fly"
+                    ]
+                  }],
+                  "body": {
+                    "type": "ARCADE_RECT",
+                    "immovable": true,
+                    "allowGravity": false
+                  }
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "c26c0768-5988-4f21-8cff-9553e5e5c5e8",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "enemies",
+                  "sprite": "fly_normal"
+                },
+                "info": {
+                  "editorName": "fly3",
+                  "x": 2170,
+                  "y": 455,
+                  "anchor.x": 0.5,
+                  "tint": "0x00ffff",
+                  "data": "{\r\n left: $$.x - 300,\r\n right : $$.x,\r\n velocity_x : -50,\r\n face_x : -1\r\n}",
+                  "animations": [{
+                    "name": "fly",
+                    "frameRate": 6,
+                    "loop": true,
+                    "frames": [
+                      "fly_normal",
+                      "fly_fly"
+                    ]
+                  }],
+                  "body": {
+                    "type": "ARCADE_RECT",
+                    "immovable": true,
+                    "allowGravity": false
+                  }
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "5f856027-c139-45e0-963d-9e572ef7071a",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "enemies",
+                  "sprite": "fly_normal"
+                },
+                "info": {
+                  "editorName": "fly21",
+                  "x": 665,
+                  "y": 1645,
+                  "anchor.x": 0.5,
+                  "data": "{\r\n left: $$.x,\r\n right : $$.x + 300,\r\n velocity_x : -150,\r\n face_x : -1\r\n}",
+                  "animations": [{
+                    "name": "fly",
+                    "frameRate": 5,
+                    "loop": true,
+                    "frames": [
+                      "fly_fly",
+                      "fly_normal"
+                    ]
+                  }],
+                  "body": {
+                    "type": "ARCADE_RECT",
+                    "immovable": true,
+                    "allowGravity": false
+                  }
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "a2e2d28a-b55a-410a-8b40-559d708bf0fc",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "enemies",
+                  "sprite": "fly_normal"
+                },
+                "info": {
+                  "editorName": "fly22",
+                  "x": 1015,
+                  "y": 1715,
+                  "anchor.x": 0.5,
+                  "data": "{\r\n left: $$.x,\r\n right : $$.x + 300,\r\n velocity_x : 150,\r\n face_x : -1\r\n}",
+                  "animations": [{
+                    "name": "fly",
+                    "frameRate": 5,
+                    "loop": true,
+                    "frames": [
+                      "fly_fly",
+                      "fly_normal"
+                    ]
+                  }],
+                  "body": {
+                    "type": "ARCADE_RECT",
+                    "immovable": true,
+                    "allowGravity": false
+                  }
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "654fbf57-a166-4f6f-9fe9-537d6f8e3ded",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "enemies",
+                  "sprite": "fly_normal"
+                },
+                "info": {
+                  "editorName": "fly23",
+                  "x": 1645,
+                  "y": 1610,
+                  "anchor.x": 0.5,
+                  "data": "{\r\n left: $$.x,\r\n right : $$.x + 500,\r\n velocity_x : -250,\r\n face_x : -1\r\n}",
+                  "animations": [{
+                    "name": "fly",
+                    "frameRate": 5,
+                    "loop": true,
+                    "frames": [
+                      "fly_fly",
+                      "fly_normal"
+                    ]
+                  }],
+                  "body": {
+                    "type": "ARCADE_RECT",
+                    "immovable": true,
+                    "allowGravity": false
+                  }
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "cb14fada-7142-4488-bc62-f9df55e04bfb",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "enemies",
+                  "sprite": "fly_normal"
+                },
+                "info": {
+                  "editorName": "fly2",
+                  "x": 315,
+                  "y": 1785,
+                  "anchor.x": 0.5,
+                  "tint": "0xff80c0",
+                  "data": "{\r\n left: $$.x,\r\n right : $$.x + 300,\r\n velocity_x : -50,\r\n face_x : -1\r\n}",
+                  "animations": [{
+                    "name": "fly",
+                    "frameRate": 5,
+                    "loop": true,
+                    "frames": [
+                      "fly_fly",
+                      "fly_normal"
+                    ]
+                  }],
+                  "body": {
+                    "type": "ARCADE_RECT",
+                    "immovable": true,
+                    "allowGravity": false
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "group",
+          "id": "d9ed6781-c8f2-4a8b-805d-da487f15c59f",
+          "info": {
+            "editorName": "spikes",
+            "editorPublic": true,
+            "editorClosed": false,
+            "physicsGroup": true,
+            "children": [
+              {
+                "type": "tileSprite",
+                "id": "f2825775-8f19-451b-ad2b-1491af5084de",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "spikes"
+                },
+                "info": {
+                  "editorName": "spikes2",
+                  "x": 875,
+                  "y": 1820,
+                  "width": 70,
+                  "height": 35,
+                  "asset-ref": {
+                    "file": "WebContent/assets/pack.json",
+                    "section": "preload",
+                    "asset": "objects",
+                    "sprite": "spikes"
+                  }
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "c14f7579-e1cf-4540-9df2-9b1785a342ad",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "spikes"
+                },
+                "info": {
+                  "editorName": "spikes3",
+                  "x": 1505,
+                  "y": 1260,
+                  "width": 630,
+                  "height": 35,
+                  "asset-ref": {
+                    "file": "WebContent/assets/pack.json",
+                    "section": "preload",
+                    "asset": "objects",
+                    "sprite": "spikes"
+                  }
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "7def0a55-6961-4233-a1b9-cf1d00ec780a",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "spikes"
+                },
+                "info": {
+                  "editorName": "spikes21",
+                  "x": 490,
+                  "y": 1820,
+                  "width": 70,
+                  "height": 35,
+                  "asset-ref": {
+                    "file": "WebContent/assets/pack.json",
+                    "section": "preload",
+                    "asset": "objects",
+                    "sprite": "spikes"
+                  }
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "9a293dce-a0a5-42c9-96d5-ad6658878d4d",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preload",
+                  "asset": "objects",
+                  "sprite": "spikes"
+                },
+                "info": {
+                  "editorName": "spikes1",
+                  "x": 1785,
+                  "y": 1820,
+                  "width": 280,
+                  "height": 35,
+                  "asset-ref": {
+                    "file": "WebContent/assets/pack.json",
+                    "section": "preload",
+                    "asset": "objects",
+                    "sprite": "spikes"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -4,6 +4,6 @@
 		"email": "developers@boniatillo.com",
 		"website": "phasereditor.boniatillo.com",
 	},
-	"mainFile": "assets/canvas/Scene1.canvas",
-	"description": "Demo of how to make a platformer with the scene visual builder."
+	"mainFile": "assets/scenes/Scene1.canvas",
+	"description": "Tile based platformer made with the scene builder."
 }
