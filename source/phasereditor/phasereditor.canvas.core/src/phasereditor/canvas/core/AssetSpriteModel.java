@@ -46,6 +46,11 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 
 	public AssetSpriteModel(GroupModel parent, T assetKey, String typeName) {
 		super(parent, typeName);
+		
+		if (assetKey == null) {
+			throw new IllegalArgumentException("Cannot create a sprite model with a null asset.");
+		}
+		
 		_assetKey = assetKey;
 
 		String name = assetKey.getKey();

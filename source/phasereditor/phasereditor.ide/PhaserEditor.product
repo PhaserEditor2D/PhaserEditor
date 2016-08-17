@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Phaser Editor" uid="phasereditor.boniatillo.com" id="phasereditor.ide.product" application="phasereditor.ide.application" version="1.2.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="Phaser Editor" uid="phasereditor.boniatillo.com" id="phasereditor.ide.product" application="phasereditor.ide.application" version="1.2.1.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="icons/icon128.png"/>
       <text>
-         Phaser Editor v1.2.0
+         Phaser Editor v1.2.1
 
-Supports Phaser v2.5.0 (built-in)
+Supports Phaser v2.6.0 (built-in)
 
 Powered by:
 
-PhaserJS (http://phaser.io)
-Eclipse (http://eclipse.org)
-Libgdx (http://libgdx.badlogicgames.com)
-FFMpeg (http://ffmpeg.org)
-OptiPNG (http://optipng.sourceforge.net)
-Java 8 (http://java.com)
-Game Mechanics Explorer (http://gamemechanicexplorer.com)
-How To Draw Funny Cartoons (http://how-to-draw-funny-cartoons.com)
-Fam Fam Fam slick icons (http://famfamfam.com)
+PhaserJS - http://phaser.io
+Eclipse - http://eclipse.org
+Libgdx - http://libgdx.badlogicgames.com
+FFMpeg - http://ffmpeg.org
+OptiPNG - http://optipng.sourceforge.net
+Java 8 - http://java.com
+Game Mechanics Explorer - http://gamemechanicexplorer.com
+How To Draw Funny Cartoons - http://how-to-draw-funny-cartoons.com
+Fam Fam Fam slick icons - http://famfamfam.com
 
 Developed by:
 
@@ -30,10 +30,10 @@ Thanks:
 
 Richard Davey (@photonstorm)
 Angelo Zerr (@angelozerr)
-Sam Riggs (http://samsstuffsoftware.blogspot.com)
-Grethel Naranjo, Ernesto Gutierrez (http://rvirtual.uci.cu)
-Vertex Group (University of Informatic Sciences - UCI)
-Havana Games  (http://globalgamejam.org/2016/games/life-cuco)
+Sam Riggs - http://samsstuffsoftware.blogspot.com
+Grethel Naranjo, Ernesto Gutierrez - http://rvirtual.uci.cu
+Vertex Group - University of Informatic Sciences - UCI
+Havana Games  - http://globalgamejam.org/2016/games/life-cuco
 
 
 Keep in touch with the Phaser Editor community: http://phasereditor.boniatillo.com
