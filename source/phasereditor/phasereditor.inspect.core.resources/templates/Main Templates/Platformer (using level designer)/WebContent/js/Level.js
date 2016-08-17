@@ -31,17 +31,19 @@ Level.prototype.create = function() {
 	var scene = new Scene1(this.game);
 
 	// get the player from the scene
+
 	this.player = scene.fDino;
-	// init the player physics
-	this.physics.arcade.enable(this.player);
-	this.player.body.collideWorldBounds = true;
-	this.player.body.setSize(80, 120, 0, 0);
+	this.playerWalk = this.player.animations.getAnimation("walk");
+	this.playerJump = this.player.animations.getAnimation("jump");
+	this.playerStay = this.player.animations.getAnimation("stay");
 
 	// get the platform groups from the scene
+
 	this.platforms = scene.fPlatforms;
 	this.movingPlatforms = scene.fMovingPlatforms;
 
 	// init the platforms physics
+
 	this.platforms.setAll("body.allowGravity", false);
 	this.platforms.setAll("body.immovable", true);
 	this.movingPlatforms.setAll("body.allowGravity", false);
@@ -49,11 +51,14 @@ Level.prototype.create = function() {
 	this.movingPlatforms.setAll("body.velocity.x", -100);
 
 	// init the camera and cursors
+
 	this.camera.follow(this.player, Phaser.Camera.FOLLOW_PLATFORMER);
+
 	this.cursors = this.input.keyboard.createCursorKeys();
 };
 
 Level.prototype.update = function() {
+
 	// player and platforms collision
 
 	this.physics.arcade.collide(this.player, this.platforms);
@@ -68,9 +73,10 @@ Level.prototype.update = function() {
 	var standing = this.player.body.blocked.down
 			|| this.player.body.touching.down;
 
-	// update the player velocity and animation
+	// update player velocity
 
 	var velocity = this.player.body.velocity;
+
 	velocity.x = 0;
 
 	if (this.cursors.left.isDown) {
@@ -81,29 +87,28 @@ Level.prototype.update = function() {
 		this.player.scale.x = 1;
 	}
 
+	// update player animation
+	
 	if (standing) {
 		if (this.cursors.up.isDown) {
 			velocity.y = -800;
-			this.player.animations.stop();
 		} else {
-			var walking = this.player.frame < 2;
 			var moving = velocity.x !== 0;
+			var walking = this.playerWalk.isPlaying;
 
 			if (moving) {
 				if (!walking) {
-					this.player.play("walk");
+					this.player.play(this.playerWalk.name);
 				}
 			} else {
 				if (walking) {
 					this.player.animations.stop();
 				}
-				// set the not moving frame
-				this.player.frame = 3;
+				this.player.play(this.playerStay.name);
 			}
 		}
 	} else {
-		// set the flying frame
-		this.player.frame = 2;
+		this.player.play(this.playerJump.name);
 	}
 };
 
@@ -123,7 +128,3 @@ Level.prototype.updatePlatform = function(platform) {
 		platform.x = right;
 	}
 };
-
-//Level.prototype.render = function() {
-//	 this.game.debug.body(this.player);
-//};
