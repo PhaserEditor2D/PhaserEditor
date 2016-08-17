@@ -310,8 +310,11 @@ public class JSCodeGenerator implements ICodeGenerator {
 		// always generate data at the end, because it can use previous
 		// properties.
 
-		if (model.getData() != null && model.getData().trim().length() > 0) {
-			sb.append(tabs + varname + ".data = " + model.getData() + ";\n");
+		String data = model.getData();
+		if (data != null && data.trim().length() > 0) {
+			data = data.replace("$$", varname);
+			data = data.replace("\n", "\n" + tabs + "\t");
+			sb.append(tabs + varname + ".data = " + data + ";\n");
 		}
 	}
 
@@ -395,59 +398,59 @@ public class JSCodeGenerator implements ICodeGenerator {
 				new Prop("moves", ArcadeBodyModel::isMoves, true),
 
 				new Prop("immovable", ArcadeBodyModel::isImmovable, false),
-				
+
 				new Prop("collideWorldBounds", ArcadeBodyModel::isCollideWorldBounds, false),
-				
+
 				new Prop("allowRotation", ArcadeBodyModel::isAllowRotation, true),
-				
+
 				new Prop("allowGravity", ArcadeBodyModel::isAllowGravity, true),
-				
+
 				new Prop("bounce.x", ArcadeBodyModel::getBounceX, 0d),
-				
+
 				new Prop("bounce.y", ArcadeBodyModel::getBounceY, 0d),
-				
+
 				new Prop("velocity.x", ArcadeBodyModel::getVelocityX, 0d),
-				
+
 				new Prop("velocity.y", ArcadeBodyModel::getVelocityY, 0d),
-				
+
 				new Prop("maxVelocity.x", ArcadeBodyModel::getMaxVelocityX, 10_000d),
-				
+
 				new Prop("maxVelocity.y", ArcadeBodyModel::getMaxVelocityY, 10_000d),
-				
+
 				new Prop("acceleration.x", ArcadeBodyModel::getAccelerationX, 0d),
-				
+
 				new Prop("acceleration.y", ArcadeBodyModel::getAccelerationY, 0d),
-				
+
 				new Prop("drag.x", ArcadeBodyModel::getDragX, 0d),
-				
+
 				new Prop("drag.y", ArcadeBodyModel::getDragY, 0d),
-				
+
 				new Prop("gravity.x", ArcadeBodyModel::getGravityX, 0d),
-				
+
 				new Prop("gravity.y", ArcadeBodyModel::getGravityY, 0d),
-				
+
 				new Prop("friction.x", ArcadeBodyModel::getFrictionX, 1d),
-				
+
 				new Prop("friction.y", ArcadeBodyModel::getFrictionY, 0d),
-				
+
 				new Prop("angularVelocity", ArcadeBodyModel::getAngularVelocity, 0d),
-				
+
 				new Prop("maxAngular", ArcadeBodyModel::getMaxAngular, 1000d),
-				
+
 				new Prop("angularAcceleration", ArcadeBodyModel::getAngularAcceleration, 0d),
-				
+
 				new Prop("angularDrag", ArcadeBodyModel::getAngularDrag, 0d),
-				
+
 				new Prop("checkCollision.none", ArcadeBodyModel::isCheckCollisionNone, false),
-				
+
 				new Prop("checkCollision.up", ArcadeBodyModel::isCheckCollisionUp, true),
-				
+
 				new Prop("checkCollision.down", ArcadeBodyModel::isCheckCollisionDown, true),
-				
+
 				new Prop("checkCollision.left", ArcadeBodyModel::isCheckCollisionLeft, true),
-				
+
 				new Prop("checkCollision.right", ArcadeBodyModel::isCheckCollisionRight, true),
-				
+
 				new Prop("skipQuadTree", ArcadeBodyModel::isSkipQuadTree, false),
 
 		};
