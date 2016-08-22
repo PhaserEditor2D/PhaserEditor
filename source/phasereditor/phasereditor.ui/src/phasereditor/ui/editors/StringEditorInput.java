@@ -31,11 +31,13 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.IStorageEditorInput;
 
+@SuppressWarnings("synthetic-access")
 public class StringEditorInput implements IStorageEditorInput {
 
 	private final String _inputString;
 	private String _title;
 	private String _tooltip;
+	private ImageDescriptor _imageDescriptor;
 
 	public StringEditorInput(String title, String inputString) {
 		_title = title;
@@ -57,8 +59,11 @@ public class StringEditorInput implements IStorageEditorInput {
 
 	@Override
 	public ImageDescriptor getImageDescriptor() {
-		return null;
+		return _imageDescriptor;
+	}
 
+	public void setImageDescriptor(ImageDescriptor imageDescriptor) {
+		_imageDescriptor = imageDescriptor;
 	}
 
 	@Override
@@ -90,7 +95,6 @@ public class StringEditorInput implements IStorageEditorInput {
 
 		return new IStorage() {
 
-			@SuppressWarnings("synthetic-access")
 			@Override
 			public InputStream getContents() throws CoreException {
 				return new ByteArrayInputStream(_inputString.getBytes());
@@ -108,7 +112,7 @@ public class StringEditorInput implements IStorageEditorInput {
 
 			@Override
 			public boolean isReadOnly() {
-				return false;
+				return true;
 			}
 
 			@SuppressWarnings("unchecked")

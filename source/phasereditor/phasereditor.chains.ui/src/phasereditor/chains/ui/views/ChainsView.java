@@ -21,11 +21,11 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.chains.ui.views;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -72,7 +72,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.wst.jsdt.internal.ui.javaeditor.CompilationUnitEditor;
@@ -91,10 +90,10 @@ import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.WebkitBrowser;
+import phasereditor.ui.editors.StringEditorInput;
 
 @SuppressWarnings("restriction")
 public class ChainsView extends ViewPart {
-
 	protected Text _queryText;
 	private TableViewer _chainsViewer;
 	protected ChainsModel _chainsModel;
@@ -171,6 +170,7 @@ public class ChainsView extends ViewPart {
 	}
 
 	class ExamplesLineLabelProvider extends StyledCellLabelProvider {
+
 		private Font _font;
 		private Font _italic;
 
@@ -418,12 +418,17 @@ public class ChainsView extends ViewPart {
 
 			String editorId = "org.eclipse.wst.jsdt.ui.CompilationUnitEditor";
 
-			IFileStore store = EFS.getStore(filePath.toUri());
-			FileStoreEditorInput input = new FileStoreEditorInput(store);
+			byte[] bytes = Files.readAllBytes(filePath);
 
 			IWorkbenchPage activePage = getViewSite().getWorkbenchWindow().getActivePage();
 
+			StringEditorInput input = new StringEditorInput(filePath.getFileName().toString(), new String(bytes));
 			CompilationUnitEditor editor = (CompilationUnitEditor) activePage.openEditor(input, editorId);
+			try {
+				editor.updatedTitleImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_JCU_OBJ));
+			} catch (Exception e) {
+				// ignore it
+			}
 			ISourceViewer viewer = editor.getViewer();
 			StyledText textWidget = viewer.getTextWidget();
 			textWidget.setEditable(false);
@@ -440,7 +445,7 @@ public class ChainsView extends ViewPart {
 				e.printStackTrace();
 			}
 
-		} catch (CoreException e) {
+		} catch (CoreException | IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
