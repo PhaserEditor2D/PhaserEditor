@@ -393,11 +393,11 @@ public class PhaserJSDoc {
 
 		} else {
 			PhaserType type = typeMap.get(memberof);
-			
+
 			if (type.isStatic()) {
 				cons.setStatic(true);
 			}
-			
+
 			Map<String, PhaserMember> map = type.getMemberMap();
 			if (!map.containsKey(name)) {
 				map.put(name, cons);
@@ -468,11 +468,12 @@ public class PhaserJSDoc {
 
 			if (typeMap.containsKey(memberof)) {
 				PhaserType type = typeMap.get(memberof);
-				
-				if (type.isStatic()) {
-					property.setStatic(true);
-				}
-				
+
+				// TODO: I don't know why I did this!
+				// if (type.isStatic()) {
+				// property.setStatic(true);
+				// }
+
 				Map<String, PhaserMember> map = type.getMemberMap();
 
 				if (!map.containsKey(name)) {
@@ -531,7 +532,7 @@ public class PhaserJSDoc {
 			if (type == null) {
 				return;
 			}
-			
+
 			if (type.isStatic()) {
 				method.setStatic(true);
 			}
@@ -553,7 +554,7 @@ public class PhaserJSDoc {
 			if (name.equals("module:PIXI.PIXI")) {
 				return;
 			}
-			
+
 			// out.println("Parsing class: " + name);
 
 			List<String> extend = new ArrayList<>();
@@ -571,16 +572,12 @@ public class PhaserJSDoc {
 
 			String desc = obj.optString("description", "");
 
-			String scope = obj.optString("scope", null);
-			boolean static_ = scope.equals("static");
-			
 			PhaserType type = new PhaserType();
 			typeMap.put(name, type);
-			
+
 			type.setName(name);
 			type.setHelp(desc);
 			type.setExtends(extend);
-			type.setStatic(static_);
 			type.getConstructorArgs().addAll(args);
 
 			buildMeta(type, obj);

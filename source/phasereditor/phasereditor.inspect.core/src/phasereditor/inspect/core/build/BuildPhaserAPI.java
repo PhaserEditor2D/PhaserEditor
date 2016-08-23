@@ -116,7 +116,7 @@ public class BuildPhaserAPI {
 			for (PhaserVariable var : type.getProperties()) {
 				String varName = getValidName(var.getName());
 				String varType = getVariableTypeName(var.getTypes());
-				String context = var.isStatic() ? typeName : typeName + ".prorotype";
+				String context = var.isStatic() ? typeName : typeName + ".prototype";
 				sb.append(context + "." + varName + " = " + getVarDeclExpression(varType) + ";\n");
 			}
 

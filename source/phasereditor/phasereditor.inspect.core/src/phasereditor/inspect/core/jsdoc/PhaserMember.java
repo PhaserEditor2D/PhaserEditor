@@ -32,6 +32,7 @@ public abstract class PhaserMember implements IPhaserMember {
 	private boolean _static;
 
 	public PhaserMember() {
+		_static = false;
 	}
 
 	/**
