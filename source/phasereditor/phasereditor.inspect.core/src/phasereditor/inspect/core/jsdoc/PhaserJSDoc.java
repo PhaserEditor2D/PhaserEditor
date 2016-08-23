@@ -365,6 +365,9 @@ public class PhaserJSDoc {
 			// FIXME: this is the case of blendModes and scaleModes
 			types = new String[] { "Object" };
 		}
+
+		replacePixiPointByPhaserPoint(types);
+
 		PhaserConstant cons = new PhaserConstant();
 		{
 			// static flag
@@ -450,6 +453,8 @@ public class PhaserJSDoc {
 				}
 			}
 
+			replacePixiPointByPhaserPoint(types);
+
 			PhaserProperty property = new PhaserProperty();
 			{
 				// static flag
@@ -485,6 +490,16 @@ public class PhaserJSDoc {
 		}
 	}
 
+	private static void replacePixiPointByPhaserPoint(String[] types) {
+		// In Phaser this substitution is done explicitly
+		for (int i = 0; i < types.length; i++) {
+			String t = types[i];
+			if (t.equals("PIXI.Point")) {
+				types[i] = "Phaser.Point";
+			}
+		}
+	}
+
 	private static void buildMethod(JSONObject obj, Map<String, PhaserType> typeMap) {
 		String kind = obj.getString("kind");
 
@@ -514,6 +529,9 @@ public class PhaserJSDoc {
 					JSONArray names = type.getJSONArray("names");
 					types = getStringArray(names);
 				}
+
+				replacePixiPointByPhaserPoint(types);
+
 				method.setReturnTypes(types);
 				method.setReturnHelp(jsonReturnObj.optString("description", ""));
 			}

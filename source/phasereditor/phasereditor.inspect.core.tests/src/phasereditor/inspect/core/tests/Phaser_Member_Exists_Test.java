@@ -83,11 +83,8 @@ public class Phaser_Member_Exists_Test {
 		// test the type of the members
 
 		String[][] memberTypeMap = {
-
 				{ 
-					
-					//"Phaser.Sprite.scale", "Phaser.Point" (it looks like in 2.6.0 it delegates the scale prop to PIXI.DisplayObject) 
-					"Phaser.Sprite.scale", "PIXI.Point"
+					"Phaser.Sprite.scale", "Phaser.Point" 
 				}
 
 		};
