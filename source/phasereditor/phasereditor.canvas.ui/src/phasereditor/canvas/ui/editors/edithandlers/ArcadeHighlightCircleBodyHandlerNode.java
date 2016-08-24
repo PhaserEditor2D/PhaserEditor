@@ -39,6 +39,11 @@ public class ArcadeHighlightCircleBodyHandlerNode extends CircleHandlerNode {
 		setFill(Color.GREENYELLOW);
 		setStrokeWidth(0);
 	}
+	
+	@Override
+	public boolean isValid() {
+		return isCircleArcadeValid();
+	}
 
 	@Override
 	public void updateHandler() {

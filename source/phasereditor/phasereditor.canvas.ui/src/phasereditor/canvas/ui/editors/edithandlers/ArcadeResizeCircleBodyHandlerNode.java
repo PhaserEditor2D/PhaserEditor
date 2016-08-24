@@ -46,6 +46,11 @@ public class ArcadeResizeCircleBodyHandlerNode extends PathHandlerNode {
 		setCursor(Cursor.H_RESIZE);
 		setFill(Color.GREENYELLOW);
 	}
+	
+	@Override
+	public boolean isValid() {
+		return super.isCircleArcadeValid();
+	}
 
 	@Override
 	public void handleLocalStart(double localX, double localY) {

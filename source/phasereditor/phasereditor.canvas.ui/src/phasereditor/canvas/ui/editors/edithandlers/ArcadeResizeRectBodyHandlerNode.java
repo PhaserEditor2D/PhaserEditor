@@ -50,6 +50,11 @@ public class ArcadeResizeRectBodyHandlerNode extends PathHandlerNode {
 	}
 
 	@Override
+	public boolean isValid() {
+		return super.isRectArcadeValid();
+	}
+
+	@Override
 	public void handleLocalStart(double localX, double localY) {
 		ISpriteNode sprite = (ISpriteNode) _object;
 		RectArcadeBodyModel body = (RectArcadeBodyModel) sprite.getModel().getBody();

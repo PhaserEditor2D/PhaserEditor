@@ -47,18 +47,16 @@ public class PGridLabelProvider extends ColumnLabelProvider {
 	public Viewer getViewer() {
 		return _viewer;
 	}
-	
+
 	@Override
 	public String getToolTipText(Object element) {
 		if (element instanceof PGridProperty) {
 			PGridProperty<?> prop = (PGridProperty<?>) element;
 			String tooltip = prop.getTooltip();
-			
-			
+
 			// needed in windows, else the tooltip window is messed
 			tooltip = tooltip.replace("\r", "\n");
-			
-			
+
 			return tooltip;
 		}
 		return super.getToolTipText(element);
@@ -126,7 +124,7 @@ public class PGridLabelProvider extends ColumnLabelProvider {
 	public static boolean isModified(Object element) {
 		if (element instanceof PGridProperty) {
 			PGridProperty<?> prop = (PGridProperty<?>) element;
-			if (prop.isModified()) {
+			if (prop.getSection().isActive() && prop.isModified()) {
 				return true;
 			}
 		}

@@ -59,6 +59,11 @@ public abstract class CircleHandlerNode extends Circle implements IEditHandlerNo
 
 		_helper = new HandlerNodeHelper(this);
 	}
+	
+	@Override
+	public boolean isValid() {
+		return true;
+	}
 
 	@Override
 	public IObjectNode getObject() {

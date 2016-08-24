@@ -48,7 +48,12 @@ public class AnchorHandlerNode extends PathHandlerNode {
 		setFill(Color.BLUE);
 		setCursor(Cursor.MOVE);
 	}
-
+	
+	@Override
+	public boolean isValid() {
+		return _object instanceof ISpriteNode;
+	}
+	
 	@Override
 	public void handleLocalStart(double localX, double localY) {
 		ISpriteNode sprite = (ISpriteNode) _object;

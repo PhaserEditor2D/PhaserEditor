@@ -23,8 +23,10 @@ package phasereditor.canvas.ui.editors.behaviors;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
@@ -141,6 +143,17 @@ public class HandlerBehavior {
 	}
 
 	public void update() {
+
+		List<Node> del = new ArrayList<>();
+
+		_pane.getChildren().forEach(n -> {
+			if (!((IEditHandlerNode) n).isValid()) {
+				del.add(n);
+			}
+		});
+
+		_pane.getChildren().removeAll(del);
+
 		_pane.getChildren().forEach(n -> {
 			((IEditHandlerNode) n).updateHandler();
 		});

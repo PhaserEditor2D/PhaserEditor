@@ -29,12 +29,21 @@ public abstract class PGridProperty<T> {
 	private String _name;
 	private String _tooltip;
 	private String _nodeId;
+	private PGridSection _section;
 
 	public PGridProperty(String nodeId, String name, String tooltip) {
 		super();
 		_name = name;
 		_nodeId = nodeId;
 		_tooltip = tooltip;
+	}
+	
+	public PGridSection getSection() {
+		return _section;
+	}
+	
+	public void setSection(PGridSection section) {
+		_section = section;
 	}
 	
 	@SuppressWarnings("static-method")

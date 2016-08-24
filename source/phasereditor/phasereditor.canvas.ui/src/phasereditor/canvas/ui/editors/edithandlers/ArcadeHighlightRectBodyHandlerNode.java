@@ -42,6 +42,11 @@ public class ArcadeHighlightRectBodyHandlerNode extends PathHandlerNode {
 		setMouseTransparent(true);
 		setStrokeWidth(0);
 	}
+	
+	@Override
+	public boolean isValid() {
+		return isRectArcadeValid();
+	}
 
 	@Override
 	public void handleLocalStart(double localX, double localY) {

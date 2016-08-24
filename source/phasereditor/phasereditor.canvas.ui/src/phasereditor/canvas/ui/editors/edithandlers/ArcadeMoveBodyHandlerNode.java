@@ -48,6 +48,11 @@ public class ArcadeMoveBodyHandlerNode extends CircleHandlerNode {
 		setRadius(5);
 		setCursor(Cursor.MOVE);
 	}
+	
+	@Override
+	public boolean isValid() {
+		return isArcadeValid();
+	}
 
 	@Override
 	public void handleLocalStart(double localX, double localY) {

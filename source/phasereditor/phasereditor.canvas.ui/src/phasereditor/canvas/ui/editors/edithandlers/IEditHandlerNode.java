@@ -23,6 +23,12 @@ package phasereditor.canvas.ui.editors.edithandlers;
 
 import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
+import phasereditor.canvas.core.ArcadeBodyModel;
+import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.BaseSpriteModel;
+import phasereditor.canvas.core.BodyModel;
+import phasereditor.canvas.core.CircleArcadeBodyModel;
+import phasereditor.canvas.core.RectArcadeBodyModel;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
@@ -81,4 +87,48 @@ public interface IEditHandlerNode {
 		Point2D p = getObject().getNode().sceneToLocal(new Point2D(x, y));
 		return p;
 	}
+
+	public default boolean isCircleArcadeValid() {
+		BaseObjectModel model = getObject().getModel();
+
+		if (model instanceof BaseSpriteModel) {
+			BodyModel body = ((BaseSpriteModel) model).getBody();
+
+			if (body != null) {
+				return body instanceof CircleArcadeBodyModel;
+			}
+		}
+
+		return false;
+	}
+
+	public default boolean isRectArcadeValid() {
+		BaseObjectModel model = getObject().getModel();
+
+		if (model instanceof BaseSpriteModel) {
+			BodyModel body = ((BaseSpriteModel) model).getBody();
+
+			if (body != null) {
+				return body instanceof RectArcadeBodyModel;
+			}
+		}
+
+		return false;
+	}
+
+	public default boolean isArcadeValid() {
+		BaseObjectModel model = getObject().getModel();
+
+		if (model instanceof BaseSpriteModel) {
+			BodyModel body = ((BaseSpriteModel) model).getBody();
+
+			if (body != null) {
+				return body instanceof ArcadeBodyModel;
+			}
+		}
+
+		return false;
+	}
+
+	boolean isValid();
 }

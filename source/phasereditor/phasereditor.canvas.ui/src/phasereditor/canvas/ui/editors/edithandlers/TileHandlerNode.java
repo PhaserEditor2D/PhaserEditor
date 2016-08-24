@@ -47,6 +47,11 @@ public class TileHandlerNode extends PathHandlerNode {
 		_axis = axis;
 		setFill(Color.DARKSEAGREEN);
 	}
+	
+	@Override
+	public boolean isValid() {
+		return _object instanceof TileSpriteNode;
+	}
 
 	@Override
 	public void handleLocalStart(double localX, double localY) {

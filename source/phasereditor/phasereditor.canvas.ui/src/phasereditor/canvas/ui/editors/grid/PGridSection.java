@@ -22,6 +22,7 @@
 package phasereditor.canvas.ui.editors.grid;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * @author arian
@@ -36,6 +37,26 @@ public class PGridSection extends ArrayList<PGridProperty<?>> {
 		super();
 		_name = name;
 		_active = true;
+	}
+	
+	@Override
+	public boolean add(PGridProperty<?> e) {
+		e.setSection(this);
+		return super.add(e);
+	}
+	
+	@Override
+	public void add(int index, PGridProperty<?> element) {
+		element.setSection(this);
+		super.add(index, element);
+	}
+	
+	@Override
+	public boolean addAll(Collection<? extends PGridProperty<?>> c) {
+		for(PGridProperty<?> e : c) {
+			e.setSection(this);
+		}
+		return super.addAll(c);
 	}
 
 	public boolean isActive() {
