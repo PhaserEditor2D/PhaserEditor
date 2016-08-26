@@ -5,11 +5,11 @@
 </head>
 
 <body>
-                <h2 class="title" itemprop="headline">Scene Editor</h2>
-                <div class="desc text-left" itemprop="articleBody">
-                    
+                
 
-<p>Canvas is a visual (WYSWYG) game level/object editor  for Phaser. With this tool you can create a scene, add sprites to it and edit the sprite's properties. The scenes are compiled to Phaser JavaScript code,  to a "class" that extends the <code>Phaser.Group</code> prototype, so it is added to the game in the same way you add any other custom group:</p>
+                <h2 class="title" itemprop="headline"><a href="http://phasereditor.boniatillo.com/blog/quick-start/080-canvas">Scene Editor</a></h2>
+                <div class="desc text-left" itemprop="articleBody">
+                    <p>Canvas is a visual (WYSWYG) game level/object editor  for Phaser. With this tool you can create a scene, add sprites to it and edit the sprite's properties. The scenes are compiled to Phaser JavaScript code,  to a "class" that extends the <code>Phaser.Group</code> prototype, so it is added to the game in the same way you add any other custom group:</p>
 
 <pre><code class="javascript">function create() {
  var scene = new MyScene(game);
@@ -17,11 +17,13 @@
 }
 </code></pre>
 
+<p><a href="https://youtu.be/4pA-NJf_gEE">Watch the video</a></p>
+
 <p><strong>This feature is in its PREVIEW stage, but yet it is pretty usable and useful for many cases</strong></p>
 
 <p><img src="./Scene Editor - Phaser Editor Blog_files/20160622074750-canvas-life-of-cuco.png" alt="Canvas"></p>
 
-<p>Many of the art used in this document is part of the game  <a href="globalgamejam.org/2016/games/life-cuco">The Life of Cuco</a>.</p>
+<p>Many of the art used in this document is part of the game <a href="http://file///C:/Users/arian/Documents/Source/PhaserEditor/Public/source/phasereditor/phasereditor.help/html/quick-start/globalgamejam.org/2016/games/life-cuco">The Life of Cuco</a>.</p>
 
 <h2>Index</h2>
 
@@ -31,6 +33,7 @@
 <li><a href="#AddObjects">Add objects to scene</a></li>
 <li><a href="#Outline">Outline window</a></li>
 <li><a href="#EditProperties">Edit the objects properties</a></li>
+<li><a href="#Arcade">Arcade physics support</a></li>
 <li><a href="#EditorProperties">Editor-specific, non Phaser properties</a></li>
 <li><a href="#CreateGroup">Create a group</a></li>
 <li><a href="#CreateDiffTypes">Create different types of objects</a>
@@ -46,6 +49,7 @@
 <li><a href="#TintEditor">Tint property editor</a></li>
 <li><a href="#FrameEditor">Frame editor</a></li>
 <li><a href="#AnimationsEditor">Animations editor</a></li>
+<li><a href="#DataEditor">Data editor</a></li>
 </ul></li>
 <li><a href="#AlignAndOrder">Objects aligment and depth order</a>
 
@@ -78,7 +82,7 @@
 
 <p>To create a new scene go to <code>File &gt; New &gt; Canvas</code>. It opens the New Canvas wizard, select the containing folder and the name of the file. Choose a JavaScript prototype valid name, because that name will be used in the generated code. If your scene name is <code>Scene1.canvas</code> then it generates a <code>Scene1.js</code> file with a <code>Scene1</code> class in it.</p>
 
-<p>The Canvas file can be created in any folder under the <code>WebContent</code>, because later you need to include the generated file <code>Scene1.js</code> in your game by adding it to the <code>index.html</code> file or to the <a href="/help/topic/phasereditor.help/html/quick-start/Asset%20Manager%20(the%20pack%20file)%20-%20Phaser%20Editor%20Blog.htm?cp=4_2_1">asset pack file</a>.</p>
+<p>The Canvas file can be created in any folder under the <code>WebContent</code>, because later you need to include the generated file <code>Scene1.js</code> in your game by adding it to the <code>index.html</code> file or to the <a href="http://phasereditor.boniatillo.com/blog/quick-start/020-asset-pack">asset pack file</a>.</p>
 
 <p><img src="./Scene Editor - Phaser Editor Blog_files/20160622085629-NewCanvasFile.png" alt="New canvas file"></p>
 
@@ -90,27 +94,33 @@
 
 <p>This file is included in some project templates (check the Main Templates section of the New Phaser Project wirzad) but also can be added manually at any moment by the user.</p>
 
-<p>We recommend you to read the <a href="/help/topic/phasereditor.help/html/quick-start/Asset%20Manager%20(the%20pack%20file)%20-%20Phaser%20Editor%20Blog.htm?cp=4_2_1">Asset Manager</a> tutorial to get familiar with the asset pack file.</p>
+<p>We recommend you to read the <a href="http://phasereditor.boniatillo.com/blog/quick-start/020-asset-pack">Asset Manager</a> tutorial to get familiar with the asset pack file.</p>
 
 <p>Let's go step by step:</p>
 
 <ol>
-<li>Create (if you don't have yet) an <a href="/help/topic/phasereditor.help/html/quick-start/Asset%20Manager%20(the%20pack%20file)%20-%20Phaser%20Editor%20Blog.htm?cp=4_2_1">asset pack file</a> in your project.</li>
+<li>Create (if you don't have yet) an <a href="http://phasereditor.boniatillo.com/blog/quick-start/020-asset-pack">asset pack file</a> in your project.</li>
 <li>Add some assets to the pack file.</li>
-<li>If the <a href="/help/topic/phasereditor.help/html/quick-start/Asset%20Manager%20(the%20pack%20file)%20-%20Phaser%20Editor%20Blog.htm?cp=4_2_1#AssetsView">Assets</a> window is not open (it is by default) then open it (press <code>Ctrl+3</code> and type <code>assets</code>, the select "View - Assets").</li>
+<li>If the <a href="http://phasereditor.boniatillo.com/blog/quick-start/020-asset-pack#AssetsView">Assets</a> window is not open (it is by default) then open it (press <code>Ctrl+3</code> and type <code>assets</code>, the select "View - Assets").</li>
 <li>Open the Canvas file in the scene editor (this is opened when the file is created, or just double click on the <code>Scene1.canvas</code> file of the Project Explorer).</li>
 <li>Drag an asset (eg. an image or atlas frame) from the Assets view into the scene area.</li>
 </ol>
 
 <p><img src="./Scene Editor - Phaser Editor Blog_files/20160622103251-DropAssetFromAssetsView.png" alt="Drop asset from Assets view"></p>
 
-<p>By the way, you can drag assets also from the <a href="/help/topic/phasereditor.help/html/quick-start/The%20Preview%20window%20-%20Phaser%20Editor%20Blog.htm?cp=4_2_4">Preview</a> window and drop them into the scene, it cause the same effect than if you drag it from the Assets view. If you have open a texture atlas or a spritesheet in the Preview window, then you can select a frame and drop it into the Canvas.</p>
+<p>By the way, you can drag assets also from the <a href="http://phasereditor.boniatillo.com/blog/quick-start/040-preview-window">Preview</a> window and drop them into the scene, it cause the same effect than if you drag it from the Assets view. If you have open a texture atlas or a spritesheet in the Preview window, then you can select a frame and drop it into the Canvas.</p>
+
+<p>The objects created by dropping an asset in the scene are simple sprites. In the next sections we explain how to add specialized sprites like buttons and tiles.</p>
 
 <h2><a name="Outline"></a>Outline window</h2>
 
 <p>In the top/left corner of the editor there is the Outline window. It shows the objects of the scene in a tree viewer, so there you can filter, select, delete, group and move the objects of the scene. This is very useful when the scene is huge or you can move objects from one group to other.</p>
 
 <p><img src="./Scene Editor - Phaser Editor Blog_files/20160622112535-Outline.png" alt="The Outline shows the scene objects tree"></p>
+
+<p>In addition there is the Quick Outline window. It is opened by the user with a key sequence (<code>Ctrl+O</code>). The object selected by the user is focused in the scene, so it can be used as a search tool too.</p>
+
+<p><img src="./Scene Editor - Phaser Editor Blog_files/20160823150134-QuickOutline.png" alt="Quick outline window"></p>
 
 <h3><a name="EditProperties"></a>Edit the objects properties</h3>
 
@@ -119,7 +129,7 @@
 <ol>
 <li>Select the object in the scene (or in the Outline).</li>
 <li>The objects properties are shown in the Property Grid small window at the left/bottom of the editor.</li>
-<li>Click on the value of a property and change it. Then press ENTER to apply that change.</li>
+<li>Click on the value of a property and change it. Then press ENTER to apply that change. In case of numeric properties, you can write a math expression like <code>15*30</code>, then it is evaluated and the result is set as value.</li>
 </ol>
 
 <p><img src="./Scene Editor - Phaser Editor Blog_files/20160622110152-EditSpriteProperty.png" alt="Edit sprite property"></p>
@@ -128,15 +138,31 @@
 
 <p>A nice feature is that you can hover the mouse over a property and it displays the help of that property. This help is the same of the Phaser API, actually, that help is taken from the Phaser metadata generated by Phaser Editor, by parsing the Phaser sources.</p>
 
-<p><img src="./Scene Editor - Phaser Editor Blog_files/20160622111151-PropertyHelp.png" alt="Property help"></p>
+<p>As alternative to the Property Grid, you can open the Quick Edit dialog (by pressing <code>Q</code> or clicking in the button of the toolbar). It is actually the same thing of the Property Grid but is whown in a popup dialog.</p>
 
-<p><em>NOTE: In future versions we will add visual handlers to change properties like scale, anchors and pivot. For now you should change them by setting their numeric values.</em></p>
+<p><img src="./Scene Editor - Phaser Editor Blog_files/20160622111151-PropertyHelp.png" alt="Property help"></p>
 
 <p>When you change a property it is highlighted with a bold font, and generated in the code in this way:</p>
 
 <pre><code class="javascript">var sprite = this.add.sprite(10, 20, "wall");
 sprite.tint = 0xfcfcfc; // modified property
 </code></pre>
+
+<p>There are some properties that can be edited with visual tools, like Arcade physics body size, tile sprite size, object scale, pivot, and anchors.</p>
+
+<p>To edit the transformations of an object, select it and open the context menu, it shows the <code>Transform</code> menu, inside there are the options <code>Scale</code>, <code>Rotate</code> and <code>Anchor</code>.</p>
+
+<p><img src="./Scene Editor - Phaser Editor Blog_files/20160824152852-Rotate.png" alt="Object transformations"></p>
+
+<h2><a name="Arcade"></a>Arcade physics support</h2>
+
+<p>To enable Arcade physics on a sprite you have two options:
+1. Set <code>true</code> the <code>physicsGroup</code> property of the parent group. Physics bodies are automatically enabled in objects added to a physics group.
+2. Select the object and open the context menu, in the <code>Arcade</code> menu there are two commands: <code>Set Arcade Body - Rectangular</code> and <code>- Circular</code>, both commands enable a physic body (rectangular or circular) in the selected object. Note that when you add a body to a sprite, in the properties editor is shown and can be edited many properties related to the Arcade physics.</p>
+
+<p>If a sprite has a physics body, then the body size can be visually edited by executing the <code>Edit Body</code> command of the contxt menu.</p>
+
+<p><img src="./Scene Editor - Phaser Editor Blog_files/20160824150120-SetArcadeBody.png" alt="Edit physics properties"></p>
 
 <h2><a name="EditorProperties"></a>Editor-specific, non Phaser properties</h2>
 
@@ -171,7 +197,7 @@ sprite.tint = 0xfcfcfc; // modified property
 <li>To trim a group select it and press <code>T</code> or select the Trim Group option in the context menu. Trim a group means remove the blank space at the left/top of the group. It changes the local group and children positions but keep the same global position. Use it when you like to use a group as a transformation unity and not as a layer or object pool.</li>
 <li>To close a group select it and press <code>C</code> or select <code>Close Group</code> in the context menu. As we explained before, you may close a group when you want to manipulate the group and the children as a single object. This is not a Phaser concept, else a feature to be used only in design time. To open the group press <code>Shift+T</code>.</li>
 <li>A group contains the Display properties: position, scale, rotation and pivot.</li>
-<li>To create a physics group, first create it and then set to true the <code>physicsGroup</code> property. A physics group is a regular group but it will automatically set a physics body to all its children.</li>
+<li>To create a physics group, first create it and then set to true the <code>physicsGroup</code> property. A physics group is a regular group but it will automatically set a physics body to all its children.  In addition you can select the <code>physicsBodyType</code> and the <code>physicsSortDirection</code>.</li>
 </ul>
 
 <p>A group is generated in the following way:</p>
@@ -196,6 +222,10 @@ sprite.tint = 0xfcfcfc; // modified property
 </ul>
 
 <p>Groups was covered in the previous section so here we will focus on the rest of the types.</p>
+
+<p>The simple way to add different type of sprites is by opening the Add Sprite dialog. To open this dialog you can press <code>Ctrl+Shift+A</code> or click in the toolbar button. As you can see in the picture, you will be able to select the asset  (from the list) and the type of the sprite (from the buttons):</p>
+
+<p><img src="./Scene Editor - Phaser Editor Blog_files/20160824110145-AddSpriteDialog.png" alt="Add Sprite dialog"></p>
 
 <h3><a name="CreateSprite"></a>Sprite</h3>
 
@@ -293,6 +323,12 @@ dino.animations.add('walk', [0, 1, 2], 4, true);
 
 <p><img src="./Scene Editor - Phaser Editor Blog_files/20160622160306-AnimationsDialog.png" alt="Animations editor"></p>
 
+<h3><a name="DataEditor"></a>Data editor</h3>
+
+<p>The <code>data</code> property of the sprites can be used to set custom attributes to the object. To edit that property it opens a dialog where you can write a JSON literal with arbitrary values. In the JSON values you can use the special var <code>$$</code>, it will be replaced by the name of the sprite. It is very useful to set relative values.</p>
+
+<p><img src="./Scene Editor - Phaser Editor Blog_files/20160825152525-DataPropEditor.png" alt="Data property editor"></p>
+
 <h2><a name="AlignAndOrder"></a>Objects aligment and depth order</h2>
 
 <p>Position commands are always a powerful resource to build the layout of scenes. In Canvas we support some basic commands for alignment (left, right, top, bottom, center and middle) and for depth order (rise, rise to top, lower and lower to bottom).</p>
@@ -312,7 +348,6 @@ dino.animations.add('walk', [0, 1, 2], 4, true);
 <p>The "order" commands send an object back and forward, in the display list of its group.</p>
 
 <p><em>NOTE: In Phaser there are some aligment constants and methods, but they are more (we think) about to align an object in runtime. It is a great resource for those who set the game layout "by hand". We are exploring this new features and in future versions of Canvas we can take advantage of it or reuse some concepts, like align in a grid.</em></p>
-
 
 <h2><a name="EditOperations"></a>Common editing operations</h2>
 
@@ -365,6 +400,7 @@ dino.animations.add('walk', [0, 1, 2], 4, true);
 <ul>
 <li><p><strong>Scene width and height</strong>. These values has not impact on the generated code, it is used only for show the "world frame" in the editor. The generated code is just a custom group so the developer is should to set the game size and world bounds in the game code.</p></li>
 <li><p><strong>Scene color</strong>. It sets the canvas "world" background color. This value is not included in the generated code.</p></li>
+<li><p><strong>Snapping</strong>. You can enable snapping and set the X and Y steps of the snapping. This is very useful to create levels with fixed size sprites, because the snapping guarantee that objects are placed in the right positions. The snapping can be toggle with a key sequence: <code>E</code>.</p></li>
 <li><p><strong>Generate on Save</strong>. If set to true, the code is generated when the user saves the scene.</p></li>
 </ul>
 
@@ -423,7 +459,7 @@ Scene1.prototype.constructor = Phaser.Group;
 
 <p>Note that with Canvas we do not pretend to deal with all the aspects of a game, the developer should write the code to create the game, the states, other objects of the world, etc... Canvas is just an object (group) visual editor.</p>
 
-<p>As you do with any other JavaScript file of your game, you should load the <code>Scene1.js</code> by including it in the <code>index.html</code> file or by using any other javascript files loading. We prefer to load it as a <code>script</code> asset of the <a href="/help/topic/phasereditor.help/html/quick-start/Asset%20Manager%20(the%20pack%20file)%20-%20Phaser%20Editor%20Blog.htm?cp=4_2_1">pack file</a>.</p>
+<p>As you do with any other JavaScript file of your game, you should load the <code>Scene1.js</code> by including it in the <code>index.html</code> file or by using any other javascript files loading. We prefer to load it as a <code>script</code> asset of the <a href="http://phasereditor.boniatillo.com/blog/quick-start/020-asset-pack">pack file</a>.</p>
 
 <h3><a name="PublicObj"></a>Access the objects of the scene</h3>
 
@@ -469,7 +505,7 @@ Secne1.prototype.render = function () {
 
 <p>In future versions we can add some customizable settings and TypeScript code generators. As many other elements of Phaser Editor, this scene editor can be used as a complement of the text editor of your choice, as you can see, the generated code is very easy to understand and can be included in any project.</p>
                 </div><!--//desc-->
-            			
-			
+            				
+				
 </body>
 </html>

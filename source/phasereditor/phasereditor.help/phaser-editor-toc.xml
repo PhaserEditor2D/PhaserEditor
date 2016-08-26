@@ -2,13 +2,15 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="Phaser Editor Guide">
-   <topic href="html/whats-new/What&apos;s new in v1.1.3.html" label="What&apos;s new in Phaser Editor v1.1.3">
+   <topic label="Quick Start">
+      <anchor id="quick-start"/>
    </topic>
-   <topic href="html/whats-new/Whats new - Phaser Editor Blog.htm" label="What&apos;s new in Phaser Editor v1.1.2">
+   <topic href="html/whats-new/What&apos;s new in v1.2.1.html" label="What&apos;s new in Phaser Editor v1.2.1">
    </topic>
    <topic href="html/whats-new/What&apos;s new in v1.2.0.html" label="What&apos;s new in Phaser Editor v1.2.0">
    </topic>
-   <topic label="Quick Start">
-      <anchor id="quick-start"/>
+   <topic href="html/whats-new/What&apos;s new in v1.1.3.html" label="What&apos;s new in Phaser Editor v1.1.3">
+   </topic>
+   <topic href="html/whats-new/Whats new - Phaser Editor Blog.htm" label="What&apos;s new in Phaser Editor v1.1.2">
    </topic>
 </toc>
