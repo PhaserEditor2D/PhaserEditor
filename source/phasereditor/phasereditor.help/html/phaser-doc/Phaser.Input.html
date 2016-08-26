@@ -10,7 +10,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Phaser.Input is the Input Manager for all types of Input across Phaser, including mouse, keyboard, touch and MSPointer. The Input manager is updated automatically by the core game loop.</p> 
+     <p>Phaser.Input is the Input Manager for all types of Input across Phaser, including mouse, keyboard, touch and MSPointer.<br>The Input manager is updated automatically by the core game loop.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -112,7 +112,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>A Circle object centered on the x/y screen coordinates of the Input. Default size of 44px (Apples recommended "finger tip" size) but can be changed to anything.</p> 
+     <p>A Circle object centered on the x/y screen coordinates of the Input.<br>Default size of 44px (Apples recommended "finger tip" size) but can be changed to anything.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -356,7 +356,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>You can tell all Pointers to ignore any Game Object with a <code>priorityID</code> lower than this value. This is useful when stacking UI layers. Set to zero to disable.</p> 
+     <p>You can tell all Pointers to ignore any Game Object with a <code>priorityID</code> lower than this value.<br>This is useful when stacking UI layers. Set to zero to disable.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -372,7 +372,7 @@
    <dd> 
     <div class="description"> 
      <p>The Mouse Input manager.</p> 
-     <p>You should not usually access this manager directly, but instead use Input.mousePointer or Input.activePointer which normalizes all the input values for you, regardless of browser.</p> 
+     <p>You should not usually access this manager directly, but instead use Input.mousePointer or Input.activePointer<br>which normalizes all the input values for you, regardless of browser.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -402,7 +402,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>An array of callbacks that will be fired every time the activePointer receives a move event from the DOM. To add a callback to this array please use <code>Input.addMoveCallback</code>.</p> 
+     <p>An array of callbacks that will be fired every time the activePointer receives a move event from the DOM.<br>To add a callback to this array please use <code>Input.addMoveCallback</code>.</p> 
     </div> 
     <dl class="details"> 
      <dt class="important tag-deprecated">
@@ -426,7 +426,7 @@
    <dd> 
     <div class="description"> 
      <p>The MSPointer Input manager.</p> 
-     <p>You should not usually access this manager directly, but instead use Input.activePointer which normalizes all the input values for you, regardless of browser.</p> 
+     <p>You should not usually access this manager directly, but instead use Input.activePointer<br>which normalizes all the input values for you, regardless of browser.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -666,7 +666,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>An array of non-mouse pointers that have been added to the game. The properties <code>pointer1..N</code> are aliases for <code>pointers[0..N-1]</code>.</p> 
+     <p>An array of non-mouse pointers that have been added to the game.<br>The properties <code>pointer1..N</code> are aliases for <code>pointers[0..N-1]</code>.</p> 
     </div> 
     <h5>Type:</h5> 
     <ul> 
@@ -730,7 +730,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>The total number of entries that can be recorded into the Pointer objects tracking history. If the Pointer is tracking one event every 100ms; then a trackLimit of 100 would store the last 10 seconds worth of history.</p> 
+     <p>The total number of entries that can be recorded into the Pointer objects tracking history.<br>If the Pointer is tracking one event every 100ms; then a trackLimit of 100 would store the last 10 seconds worth of history.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-default">
@@ -753,7 +753,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Sets if the Pointer objects should record a history of x/y coordinates they have passed through. The history is cleared each time the Pointer is pressed down. The history is updated at the rate specified in Input.pollRate</p> 
+     <p>Sets if the Pointer objects should record a history of x/y coordinates they have passed through.<br>The history is cleared each time the Pointer is pressed down.<br>The history is updated at the rate specified in Input.pollRate</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -791,7 +791,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>If the Input Manager has been reset locked then all calls made to InputManager.reset, such as from a State change, are ignored.</p> 
+     <p>If the Input Manager has been reset locked then all calls made to InputManager.reset,<br>such as from a State change, are ignored.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -890,7 +890,7 @@
    <dd> 
     <div class="description"> 
      <p>The Touch Input manager.</p> 
-     <p>You should not usually access this manager directly, but instead use Input.activePointer which normalizes all the input values for you, regardless of browser.</p> 
+     <p>You should not usually access this manager directly, but instead use Input.activePointer<br>which normalizes all the input values for you, regardless of browser.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -935,7 +935,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>The X coordinate of the most recently active pointer. This value takes game scaling into account automatically. See Pointer.screenX/clientX for source values.</p> 
+     <p>The X coordinate of the most recently active pointer.<br>This value takes game scaling into account automatically. See Pointer.screenX/clientX for source values.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -950,7 +950,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>The Y coordinate of the most recently active pointer. This value takes game scaling into account automatically. See Pointer.screenY/clientY for source values.</p> 
+     <p>The Y coordinate of the most recently active pointer.<br>This value takes game scaling into account automatically. See Pointer.screenY/clientY for source values.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -970,8 +970,8 @@
     <div class="description"> 
      <p>Adds a callback that is fired every time the activePointer receives a DOM move event such as a mousemove or touchmove.</p> 
      <p>The callback will be sent 4 parameters:</p> 
-     <p>A reference to the Phaser.Pointer object that moved, The x position of the pointer, The y position, A boolean indicating if the movement was the result of a 'click' event (such as a mouse click or touch down).</p> 
-     <p>It will be called every time the activePointer moves, which in a multi-touch game can be a lot of times, so this is best to only use if you've limited input to a single pointer (i.e. mouse or touch).</p> 
+     <p>A reference to the Phaser.Pointer object that moved,<br>The x position of the pointer,<br>The y position,<br>A boolean indicating if the movement was the result of a 'click' event (such as a mouse click or touch down).</p> 
+     <p>It will be called every time the activePointer moves, which in a multi-touch game can be a lot of times, so this is best<br>to only use if you've limited input to a single pointer (i.e. mouse or touch).</p> 
      <p>The callback is added to the Phaser.Input.moveCallbacks array and should be removed with Phaser.Input.deleteMoveCallback.</p> 
     </div> 
     <h5>Parameters:</h5> 
@@ -1009,7 +1009,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Add a new Pointer object to the Input Manager. By default Input creates 3 pointer objects: <code>mousePointer</code> (not include in part of general pointer pool), <code>pointer1</code> and <code>pointer2</code>. This method adds an additional pointer, up to a maximum of Phaser.Input.MAX_POINTERS (default of 10).</p> 
+     <p>Add a new Pointer object to the Input Manager.<br>By default Input creates 3 pointer objects: <code>mousePointer</code> (not include in part of general pointer pool), <code>pointer1</code> and <code>pointer2</code>.<br>This method adds an additional pointer, up to a maximum of Phaser.Input.MAX_POINTERS (default of 10).</p> 
     </div> 
     <h5>Returns:</h5> 
     <div class="returns"> 
@@ -1201,7 +1201,7 @@
    <dd> 
     <div class="description"> 
      <p>Get the Pointer object whos <code>pointerId</code> property matches the given value.</p> 
-     <p>The pointerId property is not set until the Pointer has been used at least once, as its populated by the DOM event. Also it can change every time you press the pointer down if the browser recycles it.</p> 
+     <p>The pointerId property is not set until the Pointer has been used at least once, as its populated by the DOM event.<br>Also it can change every time you press the pointer down if the browser recycles it.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -1243,7 +1243,7 @@
    <dd> 
     <div class="description"> 
      <p>Get the Pointer object whos <code>identifier</code> property matches the given identifier value.</p> 
-     <p>The identifier property is not set until the Pointer has been used at least once, as its populated by the DOM event. Also it can change every time you press the pointer down, and is not fixed once set. Note: Not all browsers set the identifier property and it's not part of the W3C spec, so you may need getPointerFromId instead.</p> 
+     <p>The identifier property is not set until the Pointer has been used at least once, as its populated by the DOM event.<br>Also it can change every time you press the pointer down, and is not fixed once set.<br>Note: Not all browsers set the identifier property and it's not part of the W3C spec, so you may need getPointerFromId instead.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -1327,7 +1327,7 @@
    <dd> 
     <div class="description"> 
      <p>Reset all of the Pointers and Input states.</p> 
-     <p>The optional <code>hard</code> parameter will reset any events or callbacks that may be bound. Input.reset is called automatically during a State change or if a game loses focus / visibility. To control control the reset manually set Phaser.InputManager.resetLocked to <code>true</code>.</p> 
+     <p>The optional <code>hard</code> parameter will reset any events or callbacks that may be bound.<br>Input.reset is called automatically during a State change or if a game loses focus / visibility.<br>To control control the reset manually set Phaser.InputManager.resetLocked to <code>true</code>.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -1400,10 +1400,10 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Adds a callback that is fired every time <code>Pointer.processInteractiveObjects</code> is called. The purpose of <code>processInteractiveObjects</code> is to work out which Game Object the Pointer is going to interact with. It works by polling all of the valid game objects, and then slowly discounting those that don't meet the criteria (i.e. they aren't under the Pointer, are disabled, invisible, etc).</p> 
-     <p>Eventually a short-list of 'candidates' is created. These are all of the Game Objects which are valid for input and overlap with the Pointer. If you need fine-grained control over which of the items is selected then you can use this callback to do so.</p> 
+     <p>Adds a callback that is fired every time <code>Pointer.processInteractiveObjects</code> is called.<br>The purpose of <code>processInteractiveObjects</code> is to work out which Game Object the Pointer is going to<br>interact with. It works by polling all of the valid game objects, and then slowly discounting those<br>that don't meet the criteria (i.e. they aren't under the Pointer, are disabled, invisible, etc).</p> 
+     <p>Eventually a short-list of 'candidates' is created. These are all of the Game Objects which are valid<br>for input and overlap with the Pointer. If you need fine-grained control over which of the items is<br>selected then you can use this callback to do so.</p> 
      <p>The callback will be sent 3 parameters:</p> 
-     <p>1) A reference to the Phaser.Pointer object that is processing the Items. 2) An array containing all potential interactive candidates. This is an array of <code>InputHandler</code> objects, not Sprites. 3) The current 'favorite' candidate, based on its priorityID and position in the display list.</p> 
+     <p>1) A reference to the Phaser.Pointer object that is processing the Items.<br>2) An array containing all potential interactive candidates. This is an array of <code>InputHandler</code> objects, not Sprites.<br>3) The current 'favorite' candidate, based on its priorityID and position in the display list.</p> 
      <p>Your callback MUST return one of the candidates sent to it.</p> 
     </div> 
     <h5>Parameters:</h5> 
@@ -1441,7 +1441,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Find the first free Pointer object and start it, passing in the event data. This is called automatically by Phaser.Touch and Phaser.MSPointer.</p> 
+     <p>Find the first free Pointer object and start it, passing in the event data.<br>This is called automatically by Phaser.Touch and Phaser.MSPointer.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -1562,7 +1562,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Updates the matching Pointer object, passing in the event data. This is called automatically and should not normally need to be invoked.</p> 
+     <p>Updates the matching Pointer object, passing in the event data.<br>This is called automatically and should not normally need to be invoked.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 

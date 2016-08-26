@@ -10,7 +10,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>The CanvasRenderer draws the Stage and all its content onto a 2d canvas. This renderer should be used for browsers that do not support webGL. Don't forget to add the CanvasRenderer.view to your DOM or you will not see anything :)</p> 
+     <p>The CanvasRenderer draws the Stage and all its content onto a 2d canvas. This renderer should be used for browsers that do not support webGL.<br>Don't forget to add the CanvasRenderer.view to your DOM or you will not see anything :)</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -75,7 +75,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>This sets if the CanvasRenderer will clear the canvas or not before the new render pass. If the Stage is NOT transparent Pixi will use a canvas sized fillRect operation every frame to set the canvas background color. If the Stage is transparent Pixi will use clearRect to clear the canvas every frame. Disable this by setting this to false. For example if your game has a canvas filling background image you often don't need this set.</p> 
+     <p>This sets if the CanvasRenderer will clear the canvas or not before the new render pass.<br>If the Stage is NOT transparent Pixi will use a canvas sized fillRect operation every frame to set the canvas background color.<br>If the Stage is transparent Pixi will use clearRect to clear the canvas every frame.<br>Disable this by setting this to false. For example if your game has a canvas filling background image you often don't need this set.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -298,16 +298,16 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_renderers_canvas_CanvasRenderer.js.html">pixi/renderers/canvas/CanvasRenderer.js</a>, 
-      <a href="src_pixi_renderers_canvas_CanvasRenderer.js.html#sunlight-1-line-193">line 193</a> 
+      <a href="src_pixi_renderers_canvas_CanvasRenderer.js.html#sunlight-1-line-194">line 194</a> 
      </dt> 
     </dl> 
    </dd> 
    <dt> 
-    <h4 class="name " id="render"><span class="type-signature"></span>render<span class="signature">(stage)</span><span class="type-signature"></span></h4> 
+    <h4 class="name " id="render"><span class="type-signature"></span>render<span class="signature">(root)</span><span class="type-signature"></span></h4> 
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Renders the Stage to this canvas view</p> 
+     <p>Renders the DisplayObjectContainer, usually the Phaser.Stage, to this canvas view.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -320,9 +320,9 @@
      </thead> 
      <tbody> 
       <tr> 
-       <td class="name"><code>stage</code></td> 
-       <td class="type"> <span class="param-type">Stage</span> </td> 
-       <td class="description last"><p>the Stage element to be rendered</p></td> 
+       <td class="name"><code>root</code></td> 
+       <td class="type"> <span class="param-type">PhaserStage</span> | <span class="param-type">PIXIDisplayObjectContainer</span> </td> 
+       <td class="description last"><p>The root element to be rendered.</p></td> 
       </tr> 
      </tbody> 
     </table> 
@@ -367,7 +367,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_renderers_canvas_CanvasRenderer.js.html">pixi/renderers/canvas/CanvasRenderer.js</a>, 
-      <a href="src_pixi_renderers_canvas_CanvasRenderer.js.html#sunlight-1-line-215">line 215</a> 
+      <a href="src_pixi_renderers_canvas_CanvasRenderer.js.html#sunlight-1-line-216">line 216</a> 
      </dt> 
     </dl> 
    </dd> 

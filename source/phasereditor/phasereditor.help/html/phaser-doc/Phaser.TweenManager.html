@@ -10,8 +10,8 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Phaser.Game has a single instance of the TweenManager through which all Tween objects are created and updated. Tweens are hooked into the game clock and pause system, adjusting based on the game state.</p> 
-     <p>TweenManager is based heavily on tween.js by http://soledadpenades.com. The difference being that tweens belong to a games instance of TweenManager, rather than to a global TWEEN object. It also has callbacks swapped for Signals and a few issues patched with regard to properties and completion errors. Please see https://github.com/sole/tween.js for a full list of contributors.</p> 
+     <p>Phaser.Game has a single instance of the TweenManager through which all Tween objects are created and updated.<br>Tweens are hooked into the game clock and pause system, adjusting based on the game state.</p> 
+     <p>TweenManager is based heavily on tween.js by http://soledadpenades.com.<br>The difference being that tweens belong to a games instance of TweenManager, rather than to a global TWEEN object.<br>It also has callbacks swapped for Signals and a few issues patched with regard to properties and completion errors.<br>Please see https://github.com/sole/tween.js for a full list of contributors.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -46,8 +46,8 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Are all newly created Tweens frame or time based? A frame based tween will use the physics elapsed timer when updating. This means it will retain the same consistent frame rate, regardless of the speed of the device. The duration value given should be given in frames.</p> 
-     <p>If the Tween uses a time based update (which is the default) then the duration is given in milliseconds. In this situation a 2000ms tween will last exactly 2 seconds, regardless of the device and how many visual updates the tween has actually been through. For very short tweens you may wish to experiment with a frame based update instead.</p> 
+     <p>Are all newly created Tweens frame or time based? A frame based tween will use the physics elapsed timer when updating. This means<br>it will retain the same consistent frame rate, regardless of the speed of the device. The duration value given should<br>be given in frames.</p> 
+     <p>If the Tween uses a time based update (which is the default) then the duration is given in milliseconds.<br>In this situation a 2000ms tween will last exactly 2 seconds, regardless of the device and how many visual updates the tween<br>has actually been through. For very short tweens you may wish to experiment with a frame based update instead.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">

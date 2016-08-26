@@ -10,7 +10,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>The InWorld component checks if a Game Object is within the Game World Bounds. An object is considered as being "in bounds" so long as its own bounds intersects at any point with the World bounds. If the AutoCull component is enabled on the Game Object then it will check the Game Object against the Camera bounds as well.</p> 
+     <p>The InWorld component checks if a Game Object is within the Game World Bounds.<br>An object is considered as being "in bounds" so long as its own bounds intersects at any point with the World bounds.<br>If the AutoCull component is enabled on the Game Object then it will check the Game Object against the Camera bounds as well.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -33,7 +33,7 @@
      <p>If it was <em>previously</em> out of bounds but is now intersecting the world bounds again it dispatches the <code>onEnterBounds</code> event.</p> 
      <p>It also optionally kills the Game Object if <code>outOfBoundsKill</code> is <code>true</code>.</p> 
      <p>When <code>checkWorldBounds</code> is enabled it forces the Game Object to calculate its full bounds every frame.</p> 
-     <p>This is a relatively expensive operation, especially if enabled on hundreds of Game Objects. So enable it only if you know it's required, or you have tested performance and find it acceptable.</p> 
+     <p>This is a relatively expensive operation, especially if enabled on hundreds of Game Objects. So enable it only if you know it's required,<br>or you have tested performance and find it acceptable.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -78,7 +78,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>If this and the <code>autoCull</code> property are both set to <code>true</code>, then the <code>kill</code> method is called as soon as the Game Object leaves the camera bounds.</p> 
+     <p>If this and the <code>autoCull</code> property are both set to <code>true</code>, then the <code>kill</code> method<br>is called as soon as the Game Object leaves the camera bounds.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -96,7 +96,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>The InWorld component preUpdate handler. Called automatically by the Game Object.</p> 
+     <p>The InWorld component preUpdate handler.<br>Called automatically by the Game Object.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">

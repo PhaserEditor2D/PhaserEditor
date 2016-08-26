@@ -10,8 +10,8 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>This is where the magic happens. The Game object is the heart of your game, providing quick access to common functions and handling the boot process.</p> 
-     <p>"Hell, there are no rules here - we're trying to accomplish something." Thomas A. Edison</p> 
+     <p>This is where the magic happens. The Game object is the heart of your game,<br>providing quick access to common functions and handling the boot process.</p> 
+     <p>"Hell, there are no rules here - we're trying to accomplish something."<br> Thomas A. Edison</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -182,7 +182,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Clear the Canvas each frame before rendering the display list. You can set this to <code>false</code> to gain some performance if your game always contains a background that completely fills the display.</p> 
+     <p>Clear the Canvas each frame before rendering the display list.<br>You can set this to <code>false</code> to gain some performance if your game always contains a background that completely fills the display.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-default">
@@ -250,7 +250,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>The ID of the current/last logic update applied this render frame, starting from 0. The first update is <code>currentUpdateID === 0</code> and the last update is <code>currentUpdateID === updatesThisFrame.</code></p> 
+     <p>The ID of the current/last logic update applied this render frame, starting from 0.<br>The first update is <code>currentUpdateID === 0</code> and the last update is <code>currentUpdateID === updatesThisFrame.</code></p> 
     </div> 
     <dl class="details"> 
      <dt class="important tag-deprecated">
@@ -318,7 +318,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>If the game is struggling to maintain the desired FPS, this signal will be dispatched. The desired/chosen FPS should probably be closer to the <a href="Phaser.Time.html#suggestedFps">Phaser.Time#suggestedFps</a> value.</p> 
+     <p>If the game is struggling to maintain the desired FPS, this signal will be dispatched.<br>The desired/chosen FPS should probably be closer to the <a href="Phaser.Time.html#suggestedFps">Phaser.Time#suggestedFps</a> value.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -432,7 +432,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>If <code>false</code> Phaser will automatically render the display list every update. If <code>true</code> the render loop will be skipped. You can toggle this value at run-time to gain exact control over when Phaser renders. This can be useful in certain types of game or application. Please note that if you don't render the display list then none of the game object transforms will be updated, so use this value carefully.</p> 
+     <p>If <code>false</code> Phaser will automatically render the display list every update. If <code>true</code> the render loop will be skipped.<br>You can toggle this value at run-time to gain exact control over when Phaser renders. This can be useful in certain types of game or application.<br>Please note that if you don't render the display list then none of the game object transforms will be updated, so use this value carefully.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -586,7 +586,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>The paused state of the Game. A paused game doesn't update any of its subsystems. When a game is paused the onPause event is dispatched. When it is resumed the onResume event is dispatched. Gets and sets the paused state of the Game.</p> 
+     <p>The paused state of the Game. A paused game doesn't update any of its subsystems.<br>When a game is paused the onPause event is dispatched. When it is resumed the onResume event is dispatched. Gets and sets the paused state of the Game.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -1004,7 +1004,7 @@
     <div class="description"> 
      <p>Nukes the entire game from orbit.</p> 
      <p>Calls destroy on Game.state, Game.sound, Game.scale, Game.stage, Game.input, Game.physics and Game.plugins.</p> 
-     <p>Then sets all of those local handlers to null, destroys the renderer, removes the canvas from the DOM and resets the PIXI default renderer.</p> 
+     <p>Then sets all of those local handlers to null, destroys the renderer, removes the canvas from the DOM<br>and resets the PIXI default renderer.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -1034,7 +1034,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Enable core game loop stepping. When enabled you must call game.step() directly (perhaps via a DOM button?) Calling step will advance the game loop by one frame. This is extremely useful for hard to track down errors!</p> 
+     <p>Enable core game loop stepping. When enabled you must call game.step() directly (perhaps via a DOM button?)<br>Calling step will advance the game loop by one frame. This is extremely useful for hard to track down errors!</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -1278,7 +1278,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>When stepping is enabled you must call this function directly (perhaps via a DOM button?) to advance the game loop by one frame. This is extremely useful to hard to track down errors! Use the internal stepCount property to monitor progress.</p> 
+     <p>When stepping is enabled you must call this function directly (perhaps via a DOM button?) to advance the game loop by one frame.<br>This is extremely useful to hard to track down errors! Use the internal stepCount property to monitor progress.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -1373,7 +1373,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Runs the Render cycle. It starts by calling State.preRender. In here you can do any last minute adjustments of display objects as required. It then calls the renderer, which renders the entire display list, starting from the Stage object and working down. It then calls plugin.render on any loaded plugins, in the order in which they were enabled. After this State.render is called. Any rendering that happens here will take place on-top of the display list. Finally plugin.postRender is called on any loaded plugins, in the order in which they were enabled. This method is called automatically by Game.update, you don't need to call it directly. Should you wish to have fine-grained control over when Phaser renders then use the <code>Game.lockRender</code> boolean. Phaser will only render when this boolean is <code>false</code>.</p> 
+     <p>Runs the Render cycle.<br>It starts by calling State.preRender. In here you can do any last minute adjustments of display objects as required.<br>It then calls the renderer, which renders the entire display list, starting from the Stage object and working down.<br>It then calls plugin.render on any loaded plugins, in the order in which they were enabled.<br>After this State.render is called. Any rendering that happens here will take place on-top of the display list.<br>Finally plugin.postRender is called on any loaded plugins, in the order in which they were enabled.<br>This method is called automatically by Game.update, you don't need to call it directly.<br>Should you wish to have fine-grained control over when Phaser renders then use the <code>Game.lockRender</code> boolean.<br>Phaser will only render when this boolean is <code>false</code>.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 

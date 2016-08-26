@@ -11,12 +11,12 @@
    <dd> 
     <div class="description"> 
      <p>DeviceButtons belong to both <code>Phaser.Pointer</code> and <code>Phaser.SinglePad</code> (Gamepad) instances.</p> 
-     <p>For Pointers they represent the various buttons that can exist on mice and pens, such as the left button, right button, middle button and advanced buttons like back and forward.</p> 
+     <p>For Pointers they represent the various buttons that can exist on mice and pens, such as the left button, right button,<br>middle button and advanced buttons like back and forward.</p> 
      <p>Access them via <code>Pointer.leftbutton</code>, <code>Pointer.rightButton</code> and so on.</p> 
      <p>On Gamepads they represent all buttons on the pad: from shoulder buttons to action buttons.</p> 
      <p>At the time of writing this there are device limitations you should be aware of:</p> 
      <ul> 
-      <li>On Windows, if you install a mouse driver, and its utility software allows you to customize button actions (e.g., IntelliPoint and SetPoint), the middle (wheel) button, the 4th button, and the 5th button might not be set, even when they are pressed.</li> 
+      <li>On Windows, if you install a mouse driver, and its utility software allows you to customize button actions<br>(e.g., IntelliPoint and SetPoint), the middle (wheel) button, the 4th button, and the 5th button might not be set,<br>even when they are pressed.</li> 
       <li>On Linux (GTK), the 4th button and the 5th button are not supported.</li> 
       <li>On Mac OS X 10.5 there is no platform API for implementing any advanced buttons.</li> 
      </ul> 
@@ -59,7 +59,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>True if the alt key was held down when this button was last pressed or released. Not supported on Gamepads.</p> 
+     <p>True if the alt key was held down when this button was last pressed or released.<br>Not supported on Gamepads.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -89,7 +89,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>True if the control key was held down when this button was last pressed or released. Not supported on Gamepads.</p> 
+     <p>True if the control key was held down when this button was last pressed or released.<br>Not supported on Gamepads.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -104,7 +104,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>How long the button has been held down for in milliseconds. If not currently down it returns -1.</p> 
+     <p>How long the button has been held down for in milliseconds.<br>If not currently down it returns -1.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -187,7 +187,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>This Signal is dispatched every time this DeviceButton is pressed down. It is only dispatched once (until the button is released again). When dispatched it sends 2 arguments: A reference to this DeviceButton and the value of the button.</p> 
+     <p>This Signal is dispatched every time this DeviceButton is pressed down.<br>It is only dispatched once (until the button is released again).<br>When dispatched it sends 2 arguments: A reference to this DeviceButton and the value of the button.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -202,7 +202,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Gamepad only. This Signal is dispatched every time this DeviceButton changes floating value (between, but not exactly, 0 and 1). When dispatched it sends 2 arguments: A reference to this DeviceButton and the value of the button.</p> 
+     <p>Gamepad only.<br>This Signal is dispatched every time this DeviceButton changes floating value (between, but not exactly, 0 and 1).<br>When dispatched it sends 2 arguments: A reference to this DeviceButton and the value of the button.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -217,7 +217,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>This Signal is dispatched every time this DeviceButton is released from a down state. It is only dispatched once (until the button is pressed again). When dispatched it sends 2 arguments: A reference to this DeviceButton and the value of the button.</p> 
+     <p>This Signal is dispatched every time this DeviceButton is released from a down state.<br>It is only dispatched once (until the button is pressed again).<br>When dispatched it sends 2 arguments: A reference to this DeviceButton and the value of the button.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -251,7 +251,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Gamepad only. If a button is held down this holds down the number of times the button has 'repeated'.</p> 
+     <p>Gamepad only.<br>If a button is held down this holds down the number of times the button has 'repeated'.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -266,7 +266,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>True if the shift key was held down when this button was last pressed or released. Not supported on Gamepads.</p> 
+     <p>True if the shift key was held down when this button was last pressed or released.<br>Not supported on Gamepads.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -329,7 +329,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Destroys this DeviceButton, this disposes of the onDown, onUp and onFloat signals and clears the parent and game references.</p> 
+     <p>Destroys this DeviceButton, this disposes of the onDown, onUp and onFloat signals<br>and clears the parent and game references.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -344,7 +344,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Returns the "just pressed" state of this button. Just pressed is considered true if the button was pressed down within the duration given (default 250ms).</p> 
+     <p>Returns the "just pressed" state of this button.<br>Just pressed is considered true if the button was pressed down within the duration given (default 250ms).</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -389,7 +389,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Returns the "just released" state of this button. Just released is considered as being true if the button was released within the duration given (default 250ms).</p> 
+     <p>Returns the "just released" state of this button.<br>Just released is considered as being true if the button was released within the duration given (default 250ms).</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -489,7 +489,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Called automatically by Phaser.Pointer and Phaser.SinglePad. Handles the button down state.</p> 
+     <p>Called automatically by Phaser.Pointer and Phaser.SinglePad.<br>Handles the button down state.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -537,7 +537,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Called automatically by Phaser.Pointer and Phaser.SinglePad. Handles the button up state.</p> 
+     <p>Called automatically by Phaser.Pointer and Phaser.SinglePad.<br>Handles the button up state.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 

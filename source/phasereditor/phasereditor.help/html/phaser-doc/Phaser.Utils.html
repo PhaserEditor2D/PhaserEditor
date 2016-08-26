@@ -70,7 +70,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_utils_Utils.js.html">utils/Utils.js</a>, 
-      <a href="src_utils_Utils.js.html#sunlight-1-line-225">line 225</a> 
+      <a href="src_utils_Utils.js.html#sunlight-1-line-258">line 258</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -116,7 +116,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_utils_Utils.js.html">utils/Utils.js</a>, 
-      <a href="src_utils_Utils.js.html#sunlight-1-line-13">line 13</a> 
+      <a href="src_utils_Utils.js.html#sunlight-1-line-27">line 27</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -125,7 +125,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>This is a slightly modified version of jQuery.isPlainObject. A plain object is an object whose internal class property is [object Object].</p> 
+     <p>This is a slightly modified version of jQuery.isPlainObject.<br>A plain object is an object whose internal class property is [object Object].</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -159,7 +159,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_utils_Utils.js.html">utils/Utils.js</a>, 
-      <a href="src_utils_Utils.js.html#sunlight-1-line-189">line 189</a> 
+      <a href="src_utils_Utils.js.html#sunlight-1-line-222">line 222</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -168,7 +168,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Mixes the source object into the destination object, returning the newly modified destination object. Based on original code by @mudcube</p> 
+     <p>Mixes the source object into the destination object, returning the newly modified destination object.<br>Based on original code by @mudcube</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -205,7 +205,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_utils_Utils.js.html">utils/Utils.js</a>, 
-      <a href="src_utils_Utils.js.html#sunlight-1-line-357">line 357</a> 
+      <a href="src_utils_Utils.js.html#sunlight-1-line-390">line 390</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -215,7 +215,7 @@
    <dd> 
     <div class="description"> 
      <p>Mixes in an existing mixin object with the target.</p> 
-     <p>Values in the mixin that have either <code>get</code> or <code>set</code> functions are created as properties via <code>defineProperty</code> <em>except</em> if they also define a <code>clone</code> method - if a clone method is defined that is called instead and the result is assigned directly.</p> 
+     <p>Values in the mixin that have either <code>get</code> or <code>set</code> functions are created as properties via <code>defineProperty</code><br><em>except</em> if they also define a <code>clone</code> method - if a clone method is defined that is called instead and<br>the result is assigned directly.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -256,7 +256,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_utils_Utils.js.html">utils/Utils.js</a>, 
-      <a href="src_utils_Utils.js.html#sunlight-1-line-305">line 305</a> 
+      <a href="src_utils_Utils.js.html#sunlight-1-line-338">line 338</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -265,7 +265,15 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>JavaScript string pad http://www.webtoolkit.info/.</p> 
+     <p>Takes the given string and pads it out, to the length required, using the character<br>specified. For example if you need a string to be 6 characters long, you can call:</p> 
+     <p><code>pad('bob', 6, '-', 2)</code></p> 
+     <p>This would return: <code>bob---</code> as it has padded it out to 6 characters, using the <code>-</code> on the right.</p> 
+     <p>You can also use it to pad numbers (they are always returned as strings):</p> 
+     <p><code>pad(512, 6, '0', 1)</code></p> 
+     <p>Would return: <code>000512</code> with the string padded to the left.</p> 
+     <p>If you don't specify a direction it'll pad to both sides:</p> 
+     <p><code>pad('c64', 7, '*')</code></p> 
+     <p>Would return: <code>**c64**</code></p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -284,7 +292,7 @@
        <td class="type"> <span class="param-type">string</span> </td> 
        <td class="attributes"> </td> 
        <td class="default"> </td> 
-       <td class="description last"><p>The target string.</p></td> 
+       <td class="description last"><p>The target string. <code>toString()</code> will be called on the string, which means you can also pass in common data types like numbers.</p></td> 
       </tr> 
       <tr> 
        <td class="name"><code>len</code></td> 
@@ -315,14 +323,14 @@
       <span class="param-type">string</span> - 
      </div> 
      <div class="returns-desc param-desc"> 
-      <p>The padded string</p> 
+      <p>The padded string.</p> 
      </div> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
       <a href="src_utils_Utils.js.html">utils/Utils.js</a>, 
-      <a href="src_utils_Utils.js.html#sunlight-1-line-147">line 147</a> 
+      <a href="src_utils_Utils.js.html#sunlight-1-line-161">line 161</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -368,7 +376,48 @@
      <dt class="tag-source">
       Source - 
       <a href="src_utils_Utils.js.html">utils/Utils.js</a>, 
-      <a href="src_utils_Utils.js.html#sunlight-1-line-104">line 104</a> 
+      <a href="src_utils_Utils.js.html#sunlight-1-line-118">line 118</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id=".reverseString"><span class="type-signature">&lt;static&gt; </span>reverseString<span class="signature">(string)</span><span class="type-signature"> ? {string}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Takes the given string and reverses it, returning the reversed string.<br>For example if given the string <code>Atari 520ST</code> it would return <code>TS025 iratA</code>.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>string</code></td> 
+       <td class="type"> <span class="param-type">string</span> </td> 
+       <td class="description last"><p>The string to be reversed.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">string</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The reversed string.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_Utils.js.html">utils/Utils.js</a>, 
+      <a href="src_utils_Utils.js.html#sunlight-1-line-13">line 13</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -414,7 +463,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_utils_Utils.js.html">utils/Utils.js</a>, 
-      <a href="src_utils_Utils.js.html#sunlight-1-line-46">line 46</a> 
+      <a href="src_utils_Utils.js.html#sunlight-1-line-60">line 60</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -424,7 +473,7 @@
    <dd> 
     <div class="description"> 
      <p>Generate a random bool result based on the chance value.</p> 
-     <p>Returns true or false based on the chance value (default 50%). For example if you wanted a player to have a 30% chance of getting a bonus, call chanceRoll(30) - true means the chance passed, false means it failed.</p> 
+     <p>Returns true or false based on the chance value (default 50%). For example if you wanted a player to have a 30% chance<br>of getting a bonus, call chanceRoll(30) - true means the chance passed, false means it failed.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -456,7 +505,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_utils_Utils.js.html">utils/Utils.js</a>, 
-      <a href="src_utils_Utils.js.html#sunlight-1-line-77">line 77</a> 
+      <a href="src_utils_Utils.js.html#sunlight-1-line-91">line 91</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -502,7 +551,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_utils_Utils.js.html">utils/Utils.js</a>, 
-      <a href="src_utils_Utils.js.html#sunlight-1-line-92">line 92</a> 
+      <a href="src_utils_Utils.js.html#sunlight-1-line-106">line 106</a> 
      </dt> 
     </dl> 
    </dd> 

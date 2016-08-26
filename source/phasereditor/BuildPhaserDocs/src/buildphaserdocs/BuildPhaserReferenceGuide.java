@@ -48,12 +48,14 @@ public class BuildPhaserReferenceGuide {
 			if (!Files.isDirectory(p) && (name.startsWith("Phaser.") || name.startsWith("PIXI."))) {
 				try {
 
-					out.println("Processing " + p);
-					toc.append("<topic href='html/phaser-doc/" + name + "' label='"
-							+ name.substring(0, name.length() - 5) + "'> ");
+					//out.println("Processing " + p);
+					String topic = "<topic href='html/phaser-doc/" + name + "' label='"
+							+ name.substring(0, name.length() - 5) + "'> ";
+					toc.append(topic);
 					String s = getJSDoc(p, toc);
 					toc.append("</topic>\n");
 
+					
 					Files.write(Paths.get("output-docs").resolve(name), s.getBytes(), StandardOpenOption.CREATE);
 
 				} catch (Exception e) {
@@ -61,9 +63,12 @@ public class BuildPhaserReferenceGuide {
 				}
 			}
 		});
+
 		toc.append("</toc>\n");
 
-		Files.write(Paths.get("phaser-toc.xml"), toc.toString().getBytes(), StandardOpenOption.CREATE);
+		String str = toc.toString();
+		Files.write(Paths.get("phaser-toc.xml"), str.getBytes(), StandardOpenOption.CREATE);
+		out.println(str);
 	}
 
 	public static String getJSDoc(Path file, StringBuilder topics) throws IOException {

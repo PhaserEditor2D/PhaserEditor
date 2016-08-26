@@ -343,7 +343,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Checks for intersection between two lines. If asSegment is true it will check for segment intersection. If asSegment is false it will check for line intersection. Returns the intersection segment of AB and EF as a Point, or null if there is no intersection. Adapted from code by Keith Hair</p> 
+     <p>Checks for intersection between two lines.<br>If asSegment is true it will check for segment intersection.<br>If asSegment is false it will check for line intersection.<br>Returns the intersection segment of AB and EF as a Point, or null if there is no intersection.<br>Adapted from code by Keith Hair</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -409,7 +409,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Checks for intersection between two lines as defined by the given start and end points. If asSegment is true it will check for line segment intersection. If asSegment is false it will check for line intersection. Returns the intersection segment of AB and EF as a Point, or null if there is no intersection. Adapted from code by Keith Hair</p> 
+     <p>Checks for intersection between two lines as defined by the given start and end points.<br>If asSegment is true it will check for line segment intersection. If asSegment is false it will check for line intersection.<br>Returns the intersection segment of AB and EF as a Point, or null if there is no intersection.<br>Adapted from code by Keith Hair</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -485,11 +485,60 @@
     </dl> 
    </dd> 
    <dt> 
+    <h4 class="name " id=".intersectsRectangle"><span class="type-signature">&lt;static&gt; </span>intersectsRectangle<span class="signature">(line, rect)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Checks for intersection between the Line and a Rectangle shape, or a rectangle-like<br>object, with public <code>x</code>, <code>y</code>, <code>right</code> and <code>bottom</code> properties, such as a Sprite or Body.</p> 
+     <p>An intersection is considered valid if:</p> 
+     <p>The line starts within, or ends within, the Rectangle.<br>The line segment intersects one of the 4 rectangle edges.</p> 
+     <p>The for the purposes of this function rectangles are considered 'solid'.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>line</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Line.html">Phaser.Line</a></span> </td> 
+       <td class="description last"><p>The line to check for intersection with.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>rect</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Rectangle.html">Phaser.Rectangle</a></span> | <span class="param-type">object</span> </td> 
+       <td class="description last"><p>The rectangle, or rectangle-like object, to check for intersection with.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>True if the line intersects with the rectangle edges, or starts or ends within the rectangle.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_geom_Line.js.html">geom/Line.js</a>, 
+      <a href="src_geom_Line.js.html#sunlight-1-line-630">line 630</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
     <h4 class="name " id=".reflect"><span class="type-signature">&lt;static&gt; </span>reflect<span class="signature">(a, b)</span><span class="type-signature"> ? {number}</span></h4> 
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Returns the reflected angle between two lines. This is the outgoing angle based on the angle of Line 1 and the normalAngle of Line 2.</p> 
+     <p>Returns the reflected angle between two lines.<br>This is the outgoing angle based on the angle of Line 1 and the normalAngle of Line 2.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -536,7 +585,7 @@
    <dd> 
     <div class="description"> 
      <p>Centers this Line on the given coordinates.</p> 
-     <p>The line is centered by positioning the start and end points so that the lines midpoint matches the coordinates given.</p> 
+     <p>The line is centered by positioning the start and end points so that the lines midpoint matches<br>the coordinates given.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -623,7 +672,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Using Bresenham's line algorithm this will return an array of all coordinates on this line. The start and end points are rounded before this runs as the algorithm works on integers.</p> 
+     <p>Using Bresenham's line algorithm this will return an array of all coordinates on this line.<br>The start and end points are rounded before this runs as the algorithm works on integers.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -731,7 +780,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Sets the line to match the x/y coordinates of the two given sprites. Can optionally be calculated from their center coordinates.</p> 
+     <p>Sets the line to match the x/y coordinates of the two given sprites.<br>Can optionally be calculated from their center coordinates.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -790,7 +839,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Checks for intersection between this line and another Line. If asSegment is true it will check for segment intersection. If asSegment is false it will check for line intersection. Returns the intersection segment of AB and EF as a Point, or null if there is no intersection.</p> 
+     <p>Checks for intersection between this line and another Line.<br>If asSegment is true it will check for segment intersection. If asSegment is false it will check for line intersection.<br>Returns the intersection segment of AB and EF as a Point, or null if there is no intersection.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -1001,7 +1050,7 @@
        <td class="name"><code>out</code></td> 
        <td class="type"> <span class="param-type"><a href="Phaser.Point.html">Phaser.Point</a></span> | <span class="param-type">object</span> </td> 
        <td class="attributes"> &lt;optional&gt;<br> </td> 
-       <td class="description last"><p>A Phaser.Point, or any object with public x/y properties, that the values will be set in. If no object is provided a new Phaser.Point object will be created. In high performance areas avoid this by re-using an object.</p></td> 
+       <td class="description last"><p>A Phaser.Point, or any object with public x/y properties, that the values will be set in.<br> If no object is provided a new Phaser.Point object will be created. In high performance areas avoid this by re-using an object.</p></td> 
       </tr> 
      </tbody> 
     </table> 
@@ -1027,7 +1076,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Returns the reflected angle between two lines. This is the outgoing angle based on the angle of this line and the normalAngle of the given line.</p> 
+     <p>Returns the reflected angle between two lines.<br>This is the outgoing angle based on the angle of this line and the normalAngle of the given line.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -1069,7 +1118,7 @@
    <dd> 
     <div class="description"> 
      <p>Rotates the line by the amount specified in <code>angle</code>.</p> 
-     <p>Rotation takes place from the center of the line. If you wish to rotate around a different point see Line.rotateAround.</p> 
+     <p>Rotation takes place from the center of the line.<br>If you wish to rotate around a different point see Line.rotateAround.</p> 
      <p>If you wish to rotate the ends of the Line then see Line.start.rotate or Line.end.rotate.</p> 
     </div> 
     <h5>Parameters:</h5> 

@@ -11,8 +11,8 @@
    <dd> 
     <div class="description"> 
      <p>The Mouse class is responsible for handling all aspects of mouse interaction with the browser.</p> 
-     <p>It captures and processes mouse events that happen on the game canvas object. It also adds a single <code>mouseup</code> listener to <code>window</code> which is used to capture the mouse being released when not over the game.</p> 
-     <p>You should not normally access this class directly, but instead use a Phaser.Pointer object which normalises all game input for you, including accurate button handling.</p> 
+     <p>It captures and processes mouse events that happen on the game canvas object.<br>It also adds a single <code>mouseup</code> listener to <code>window</code> which is used to capture the mouse being released<br>when not over the game.</p> 
+     <p>You should not normally access this class directly, but instead use a Phaser.Pointer object<br>which normalises all game input for you, including accurate button handling.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -143,7 +143,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>This property was removed in Phaser 2.4 and should no longer be used. Instead please see the Pointer button properties such as <code>Pointer.leftButton</code>, <code>Pointer.rightButton</code> and so on. Or Pointer.button holds the DOM event button value if you require that.</p> 
+     <p>This property was removed in Phaser 2.4 and should no longer be used.<br>Instead please see the Pointer button properties such as <code>Pointer.leftButton</code>, <code>Pointer.rightButton</code> and so on.<br>Or Pointer.button holds the DOM event button value if you require that.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -211,7 +211,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>The browser mouse DOM event. Will be null if no mouse event has ever been received. Access this property only inside a Mouse event handler and do not keep references to it.</p> 
+     <p>The browser mouse DOM event. Will be null if no mouse event has ever been received.<br>Access this property only inside a Mouse event handler and do not keep references to it.</p> 
     </div> 
     <h5>Type:</h5> 
     <ul> 
@@ -676,7 +676,7 @@
      <tbody> 
       <tr> 
        <td class="name"><code>event</code></td> 
-       <td class="type"> <span class="param-type">Event</span> </td> 
+       <td class="type"> <span class="param-type"><a href="Event.html">Event</a></span> </td> 
        <td class="description last"><p>The native event from the browser. This gets stored in Mouse.event.</p></td> 
       </tr> 
      </tbody> 
@@ -709,7 +709,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>If the browser supports it you can request that the pointer be locked to the browser window. This is classically known as 'FPS controls', where the pointer can't leave the browser until the user presses an exit key. If the browser successfully enters a locked state the event Phaser.Mouse.pointerLock will be dispatched and the first parameter will be 'true'.</p> 
+     <p>If the browser supports it you can request that the pointer be locked to the browser window.<br>This is classically known as 'FPS controls', where the pointer can't leave the browser until the user presses an exit key.<br>If the browser successfully enters a locked state the event Phaser.Mouse.pointerLock will be dispatched and the first parameter will be 'true'.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">

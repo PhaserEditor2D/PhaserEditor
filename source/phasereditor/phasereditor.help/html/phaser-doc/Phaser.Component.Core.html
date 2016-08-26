@@ -28,7 +28,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>If the Game Object is enabled for animation (such as a Phaser.Sprite) this is a reference to its AnimationManager instance. Through it you can create, play, pause and stop animations.</p> 
+     <p>If the Game Object is enabled for animation (such as a Phaser.Sprite) this is a reference to its AnimationManager instance.<br>Through it you can create, play, pause and stop animations.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -74,7 +74,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>An empty Object that belongs to this Game Object. This value isn't ever used internally by Phaser, but may be used by your own code, or by Phaser Plugins, to store data that needs to be associated with the Game Object, without polluting the Game Object directly.</p> 
+     <p>An empty Object that belongs to this Game Object.<br>This value isn't ever used internally by Phaser, but may be used by your own code, or<br>by Phaser Plugins, to store data that needs to be associated with the Game Object,<br>without polluting the Game Object directly.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-default">
@@ -112,7 +112,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>All Phaser Game Objects have an Events class which contains all of the events that are dispatched when certain things happen to this Game Object, or any of its components.</p> 
+     <p>All Phaser Game Objects have an Events class which contains all of the events that are dispatched when certain things happen to this<br>Game Object, or any of its components.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -135,8 +135,8 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Controls if this Game Object is processed by the core game loop. If this Game Object has a physics body it also controls if its physics body is updated or not. When <code>exists</code> is set to <code>false</code> it will remove its physics body from the physics world if it has one. It also toggles the <code>visible</code> property to false as well.</p> 
-     <p>Setting <code>exists</code> to true will add its physics body back in to the physics world, if it has one. It will also set the <code>visible</code> property to <code>true</code>.</p> 
+     <p>Controls if this Game Object is processed by the core game loop.<br>If this Game Object has a physics body it also controls if its physics body is updated or not.<br>When <code>exists</code> is set to <code>false</code> it will remove its physics body from the physics world if it has one.<br>It also toggles the <code>visible</code> property to false as well.</p> 
+     <p>Setting <code>exists</code> to true will add its physics body back in to the physics world, if it has one.<br>It will also set the <code>visible</code> property to <code>true</code>.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -151,7 +151,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>A Game Object is considered <code>fresh</code> if it has just been created or reset and is yet to receive a renderer transform update. This property is mostly used internally by the physics systems, but is exposed for the use of plugins.</p> 
+     <p>A Game Object is considered <code>fresh</code> if it has just been created or reset and is yet to receive a renderer transform update.<br>This property is mostly used internally by the physics systems, but is exposed for the use of plugins.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -181,7 +181,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>The key of the image or texture used by this Game Object during rendering. If it is a string it's the string used to retrieve the texture from the Phaser Image Cache. It can also be an instance of a RenderTexture, BitmapData, Video or PIXI.Texture. If a Game Object is created without a key it is automatically assigned the key <code>__default</code> which is a 32x32 transparent PNG stored within the Cache. If a Game Object is given a key which doesn't exist in the Image Cache it is re-assigned the key <code>__missing</code> which is a 32x32 PNG of a green box with a line through it.</p> 
+     <p>The key of the image or texture used by this Game Object during rendering.<br>If it is a string it's the string used to retrieve the texture from the Phaser Image Cache.<br>It can also be an instance of a RenderTexture, BitmapData, Video or PIXI.Texture.<br>If a Game Object is created without a key it is automatically assigned the key <code>__default</code> which is a 32x32 transparent PNG stored within the Cache.<br>If a Game Object is given a key which doesn't exist in the Image Cache it is re-assigned the key <code>__missing</code> which is a 32x32 PNG of a green box with a line through it.</p> 
     </div> 
     <h5>Type:</h5> 
     <ul> 
@@ -200,7 +200,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>A user defined name given to this Game Object. This value isn't ever used internally by Phaser, it is meant as a game level property.</p> 
+     <p>A user defined name given to this Game Object.<br>This value isn't ever used internally by Phaser, it is meant as a game level property.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -215,8 +215,8 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>A Game Object is that is pendingDestroy is flagged to have its destroy method called on the next logic update. You can set it directly to allow you to flag an object to be destroyed on its next update.</p> 
-     <p>This is extremely useful if you wish to destroy an object from within one of its own callbacks such as with Buttons or other Input events.</p> 
+     <p>A Game Object is that is pendingDestroy is flagged to have its destroy method called on the next logic update.<br>You can set it directly to allow you to flag an object to be destroyed on its next update.</p> 
+     <p>This is extremely useful if you wish to destroy an object from within one of its own callbacks<br>such as with Buttons or other Input events.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -261,7 +261,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>The render order ID is used internally by the renderer and Input Manager and should not be modified. This property is mostly used internally by the renderers, but is exposed for the use of plugins.</p> 
+     <p>The render order ID is used internally by the renderer and Input Manager and should not be modified.<br>This property is mostly used internally by the renderers, but is exposed for the use of plugins.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -276,7 +276,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>The world coordinates of this Game Object in pixels. Depending on where in the display list this Game Object is placed this value can differ from <code>position</code>, which contains the x/y coordinates relative to the Game Objects parent.</p> 
+     <p>The world coordinates of this Game Object in pixels.<br>Depending on where in the display list this Game Object is placed this value can differ from <code>position</code>,<br>which contains the x/y coordinates relative to the Game Objects parent.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -291,7 +291,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>The z depth of this Game Object within its parent Group. No two objects in a Group can have the same z value. This value is adjusted automatically whenever the Group hierarchy changes. If you wish to re-order the layering of a Game Object then see methods like Group.moveUp or Group.bringToTop.</p> 
+     <p>The z depth of this Game Object within its parent Group.<br>No two objects in a Group can have the same z value.<br>This value is adjusted automatically whenever the Group hierarchy changes.<br>If you wish to re-order the layering of a Game Object then see methods like Group.moveUp or Group.bringToTop.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -380,7 +380,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Override this method in your own custom objects to handle any update requirements. It is called immediately after <code>preUpdate</code> and before <code>postUpdate</code>. Remember if this Game Object has any children you should call update on those too.</p> 
+     <p>Override this method in your own custom objects to handle any update requirements.<br>It is called immediately after <code>preUpdate</code> and before <code>postUpdate</code>.<br>Remember if this Game Object has any children you should call update on those too.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">

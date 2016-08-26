@@ -82,7 +82,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Add a new Plugin into the PluginManager. The Plugin must have 2 properties: game and parent. Plugin.game is set to the game reference the PluginManager uses, and parent is set to the PluginManager.</p> 
+     <p>Add a new Plugin into the PluginManager.<br>The Plugin must have 2 properties: game and parent. Plugin.game is set to the game reference the PluginManager uses, and parent is set to the PluginManager.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -146,7 +146,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Post-render is called after the Game Renderer and State.render have run. It only calls plugins who have visible=true.</p> 
+     <p>Post-render is called after the Game Renderer and State.render have run.<br>It only calls plugins who have visible=true.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -161,7 +161,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>PostUpdate is the last thing to be called before the world render. In particular, it is called after the world postUpdate, which means the camera has been adjusted. It only calls plugins who have active=true.</p> 
+     <p>PostUpdate is the last thing to be called before the world render.<br>In particular, it is called after the world postUpdate, which means the camera has been adjusted.<br>It only calls plugins who have active=true.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -176,7 +176,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Pre-update is called at the very start of the update cycle, before any other subsystems have been updated (including Physics). It only calls plugins who have active=true.</p> 
+     <p>Pre-update is called at the very start of the update cycle, before any other subsystems have been updated (including Physics).<br>It only calls plugins who have active=true.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -249,7 +249,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Render is called right after the Game Renderer completes, but before the State.render. It only calls plugins who have visible=true.</p> 
+     <p>Render is called right after the Game Renderer completes, but before the State.render.<br>It only calls plugins who have visible=true.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -264,7 +264,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Update is called after all the core subsystems (Input, Tweens, Sound, etc) and the State have updated, but before the render. It only calls plugins who have active=true.</p> 
+     <p>Update is called after all the core subsystems (Input, Tweens, Sound, etc) and the State have updated, but before the render.<br>It only calls plugins who have active=true.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">

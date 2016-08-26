@@ -10,7 +10,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>This is a base State class which can be extended if you are creating your own game. It provides quick access to common functions such as the camera, cache, input, match, sound and more.</p> 
+     <p>This is a base State class which can be extended if you are creating your own game.<br>It provides quick access to common functions such as the camera, cache, input, match, sound and more.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -332,7 +332,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>create is called once preload has completed, this includes the loading of any assets from the Loader. If you don't have a preload method then create is the first method called in your State.</p> 
+     <p>create is called once preload has completed, this includes the loading of any assets from the Loader.<br>If you don't have a preload method then create is the first method called in your State.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -347,7 +347,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>init is the very first function called when your State starts up. It's called before preload, create or anything else. If you need to route the game away to another State you could do so here, or if you need to prepare a set of variables or objects before the preloading starts.</p> 
+     <p>init is the very first function called when your State starts up. It's called before preload, create or anything else.<br>If you need to route the game away to another State you could do so here, or if you need to prepare a set of variables<br>or objects before the preloading starts.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -362,7 +362,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>loadRender is called during the Loader process. This only happens if you've set one or more assets to load in the preload method. The difference between loadRender and render is that any objects you render in this method you must be sure their assets exist.</p> 
+     <p>loadRender is called during the Loader process. This only happens if you've set one or more assets to load in the preload method.<br>The difference between loadRender and render is that any objects you render in this method you must be sure their assets exist.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -422,7 +422,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>preload is called first. Normally you'd use this to load your game assets (or those needed for the current State) You shouldn't create any objects in this method that require assets that you're also loading in this method, as they won't yet be available.</p> 
+     <p>preload is called first. Normally you'd use this to load your game assets (or those needed for the current State)<br>You shouldn't create any objects in this method that require assets that you're also loading in this method, as<br>they won't yet be available.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -452,7 +452,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Nearly all display objects in Phaser render automatically, you don't need to tell them to render. However the render method is called AFTER the game renderer and plugins have rendered, so you're able to do any final post-processing style effects here. Note that this happens before plugins postRender takes place.</p> 
+     <p>Nearly all display objects in Phaser render automatically, you don't need to tell them to render.<br>However the render method is called AFTER the game renderer and plugins have rendered, so you're able to do any<br>final post-processing style effects here. Note that this happens before plugins postRender takes place.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -512,7 +512,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>The update method is left empty for your own use. It is called during the core game loop AFTER debug, physics, plugins and the Stage have had their preUpdate methods called. It is called BEFORE Stage, Tweens, Sounds, Input, Physics, Particles and Plugins have had their postUpdate methods called.</p> 
+     <p>The update method is left empty for your own use.<br>It is called during the core game loop AFTER debug, physics, plugins and the Stage have had their preUpdate methods called.<br>It is called BEFORE Stage, Tweens, Sounds, Input, Physics, Particles and Plugins have had their postUpdate methods called.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">

@@ -10,9 +10,9 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>A Timer is a way to create and manage <a href="Phaser.TimerEvent.html">timer events</a> that wait for a specific duration and then run a callback. Many different timer events, with individual delays, can be added to the same Timer.</p> 
+     <p>A Timer is a way to create and manage <a href="Phaser.TimerEvent.html">timer events</a> that wait for a specific duration and then run a callback.<br>Many different timer events, with individual delays, can be added to the same Timer.</p> 
      <p>All Timer delays are in milliseconds (there are 1000 ms in 1 second); so a delay value of 250 represents a quarter of a second.</p> 
-     <p>Timers are based on real life time, adjusted for game pause durations. That is, <em>timer events are based on elapsed <a href="Phaser.Time.html">game time</a></em> and do <em>not</em> take physics time or slow motion into account.</p> 
+     <p>Timers are based on real life time, adjusted for game pause durations.<br>That is, <em>timer events are based on elapsed <a href="Phaser.Time.html">game time</a></em> and do <em>not</em> take physics time or slow motion into account.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -377,7 +377,7 @@
    <dd> 
     <div class="description"> 
      <p>Adds a new Event to this Timer.</p> 
-     <p>The event will fire after the given amount of <code>delay</code> in milliseconds has passed, once the Timer has started running. The delay is in relation to when the Timer starts, not the time it was added. If the Timer is already running the delay will be calculated based on the timers current time.</p> 
+     <p>The event will fire after the given amount of <code>delay</code> in milliseconds has passed, once the Timer has started running.<br>The delay is in relation to when the Timer starts, not the time it was added. If the Timer is already running the delay will be calculated based on the timers current time.</p> 
      <p>Make sure to call <a href="Phaser.Timer.html#start">start</a> after adding all of the Events you require for this Timer.</p> 
     </div> 
     <h5>Parameters:</h5> 
@@ -485,7 +485,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Destroys this Timer. Any pending Events are not dispatched. The onComplete callbacks won't be called.</p> 
+     <p>Destroys this Timer. Any pending Events are not dispatched.<br>The onComplete callbacks won't be called.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -501,7 +501,7 @@
    <dd> 
     <div class="description"> 
      <p>Adds a new looped Event to this Timer that will repeat forever or until the Timer is stopped.</p> 
-     <p>The event will fire after the given amount of <code>delay</code> in milliseconds has passed, once the Timer has started running. The delay is in relation to when the Timer starts, not the time it was added. If the Timer is already running the delay will be calculated based on the timers current time.</p> 
+     <p>The event will fire after the given amount of <code>delay</code> in milliseconds has passed, once the Timer has started running.<br>The delay is in relation to when the Timer starts, not the time it was added. If the Timer is already running the delay will be calculated based on the timers current time.</p> 
      <p>Make sure to call <a href="Phaser.Timer.html#start">start</a> after adding all of the Events you require for this Timer.</p> 
     </div> 
     <h5>Parameters:</h5> 
@@ -563,7 +563,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Orders the events on this Timer so they are in tick order. This is called automatically when new events are created.</p> 
+     <p>Orders the events on this Timer so they are in tick order.<br>This is called automatically when new events are created.</p> 
     </div> 
     <dl class="details"> 
      <dt class="important tag-deprecated">
@@ -649,7 +649,7 @@
    <dd> 
     <div class="description"> 
      <p>Adds a new TimerEvent that will always play through once and then repeat for the given number of iterations.</p> 
-     <p>The event will fire after the given amount of <code>delay</code> in milliseconds has passed, once the Timer has started running. The delay is in relation to when the Timer starts, not the time it was added. If the Timer is already running the delay will be calculated based on the timers current time.</p> 
+     <p>The event will fire after the given amount of <code>delay</code> in milliseconds has passed, once the Timer has started running.<br>The delay is in relation to when the Timer starts, not the time it was added.<br>If the Timer is already running the delay will be calculated based on the timers current time.</p> 
      <p>Make sure to call <a href="Phaser.Timer.html#start">start</a> after adding all of the Events you require for this Timer.</p> 
     </div> 
     <h5>Parameters:</h5> 

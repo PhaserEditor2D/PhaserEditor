@@ -128,7 +128,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_animation_Animation.js.html">animation/Animation.js</a>, 
-      <a href="src_animation_Animation.js.html#sunlight-1-line-792">line 792</a> 
+      <a href="src_animation_Animation.js.html#sunlight-1-line-800">line 800</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -143,7 +143,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_animation_Animation.js.html">animation/Animation.js</a>, 
-      <a href="src_animation_Animation.js.html#sunlight-1-line-731">line 731</a> 
+      <a href="src_animation_Animation.js.html#sunlight-1-line-739">line 739</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -158,7 +158,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_animation_Animation.js.html">animation/Animation.js</a>, 
-      <a href="src_animation_Animation.js.html#sunlight-1-line-718">line 718</a> 
+      <a href="src_animation_Animation.js.html#sunlight-1-line-726">line 726</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -347,7 +347,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>This event is dispatched when the Animation changes frame. By default this event is disabled due to its intensive nature. Enable it with: <code>Animation.enableUpdate = true</code>. Note that the event is only dispatched with the current frame. In a low-FPS environment Animations will automatically frame-skip to try and claw back time, so do not base your code on expecting to receive a perfectly sequential set of frames from this event.</p> 
+     <p>This event is dispatched when the Animation changes frame.<br>By default this event is disabled due to its intensive nature. Enable it with: <code>Animation.enableUpdate = true</code>.<br>Note that the event is only dispatched with the current frame. In a low-FPS environment Animations<br>will automatically frame-skip to try and claw back time, so do not base your code on expecting to<br>receive a perfectly sequential set of frames from this event.</p> 
     </div> 
     <h5>Type:</h5> 
     <ul> 
@@ -372,7 +372,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_animation_Animation.js.html">animation/Animation.js</a>, 
-      <a href="src_animation_Animation.js.html#sunlight-1-line-664">line 664</a> 
+      <a href="src_animation_Animation.js.html#sunlight-1-line-672">line 672</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -387,7 +387,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_animation_Animation.js.html">animation/Animation.js</a>, 
-      <a href="src_animation_Animation.js.html#sunlight-1-line-698">line 698</a> 
+      <a href="src_animation_Animation.js.html#sunlight-1-line-706">line 706</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -396,13 +396,13 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Gets or sets the current speed of the animation in frames per second. Changing this in a playing animation will take effect from the next frame. Minimum value is 1.</p> 
+     <p>Gets or sets the current speed of the animation in frames per second. Changing this in a playing animation will take effect from the next frame. Value must be greater than 0.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
       <a href="src_animation_Animation.js.html">animation/Animation.js</a>, 
-      <a href="src_animation_Animation.js.html#sunlight-1-line-769">line 769</a> 
+      <a href="src_animation_Animation.js.html#sunlight-1-line-777">line 777</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -414,7 +414,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Really handy function for when you are creating arrays of animation data but it's using frame names and not numbers. For example imagine you've got 30 frames named: 'explosion_0001-large' to 'explosion<em>0030-large' You could use this function to generate those by doing: Phaser.Animation.generateFrameNames('explosion</em>', 1, 30, '-large', 4);</p> 
+     <p>Really handy function for when you are creating arrays of animation data but it's using frame names and not numbers.<br>For example imagine you've got 30 frames named: 'explosion_0001-large' to 'explosion<em>0030-large'<br>You could use this function to generate those by doing: Phaser.Animation.generateFrameNames('explosion</em>', 1, 30, '-large', 4);</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -478,7 +478,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_animation_Animation.js.html">animation/Animation.js</a>, 
-      <a href="src_animation_Animation.js.html#sunlight-1-line-820">line 820</a> 
+      <a href="src_animation_Animation.js.html#sunlight-1-line-828">line 828</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -487,13 +487,13 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Called internally when the animation finishes playback. Sets the isPlaying and isFinished states and dispatches the onAnimationComplete event if it exists on the parent and local onComplete event.</p> 
+     <p>Called internally when the animation finishes playback.<br>Sets the isPlaying and isFinished states and dispatches the onAnimationComplete event if it exists on the parent and local onComplete event.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
       <a href="src_animation_Animation.js.html">animation/Animation.js</a>, 
-      <a href="src_animation_Animation.js.html#sunlight-1-line-634">line 634</a> 
+      <a href="src_animation_Animation.js.html#sunlight-1-line-642">line 642</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -508,7 +508,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_animation_Animation.js.html">animation/Animation.js</a>, 
-      <a href="src_animation_Animation.js.html#sunlight-1-line-600">line 600</a> 
+      <a href="src_animation_Animation.js.html#sunlight-1-line-608">line 608</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -544,7 +544,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_animation_Animation.js.html">animation/Animation.js</a>, 
-      <a href="src_animation_Animation.js.html#sunlight-1-line-523">line 523</a> 
+      <a href="src_animation_Animation.js.html#sunlight-1-line-531">line 531</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -559,7 +559,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_animation_Animation.js.html">animation/Animation.js</a>, 
-      <a href="src_animation_Animation.js.html#sunlight-1-line-361">line 361</a> 
+      <a href="src_animation_Animation.js.html#sunlight-1-line-365">line 365</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -574,7 +574,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_animation_Animation.js.html">animation/Animation.js</a>, 
-      <a href="src_animation_Animation.js.html#sunlight-1-line-375">line 375</a> 
+      <a href="src_animation_Animation.js.html#sunlight-1-line-379">line 379</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -671,7 +671,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_animation_Animation.js.html">animation/Animation.js</a>, 
-      <a href="src_animation_Animation.js.html#sunlight-1-line-555">line 555</a> 
+      <a href="src_animation_Animation.js.html#sunlight-1-line-563">line 563</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -695,7 +695,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Reverses the animation direction</p> 
+     <p>Reverses the animation direction.</p> 
     </div> 
     <h5>Returns:</h5> 
     <div class="returns"> 
@@ -719,7 +719,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Reverses the animation direction for the current/next animation only Once the onComplete event is called this method will be called again and revert the reversed state.</p> 
+     <p>Reverses the animation direction for the current/next animation only<br>Once the onComplete event is called this method will be called again and revert<br>the reversed state.</p> 
     </div> 
     <h5>Returns:</h5> 
     <div class="returns"> 
@@ -734,7 +734,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_animation_Animation.js.html">animation/Animation.js</a>, 
-      <a href="src_animation_Animation.js.html#sunlight-1-line-258">line 258</a> 
+      <a href="src_animation_Animation.js.html#sunlight-1-line-260">line 260</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -777,7 +777,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_animation_Animation.js.html">animation/Animation.js</a>, 
-      <a href="src_animation_Animation.js.html#sunlight-1-line-272">line 272</a> 
+      <a href="src_animation_Animation.js.html#sunlight-1-line-276">line 276</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -786,7 +786,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Stops playback of this animation and set it to a finished state. If a resetFrame is provided it will stop playback and set frame to the first in the animation. If <code>dispatchComplete</code> is true it will dispatch the complete events, otherwise they'll be ignored.</p> 
+     <p>Stops playback of this animation and set it to a finished state. If a resetFrame is provided it will stop playback and set frame to the first in the animation.<br>If <code>dispatchComplete</code> is true it will dispatch the complete events, otherwise they'll be ignored.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -820,7 +820,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_animation_Animation.js.html">animation/Animation.js</a>, 
-      <a href="src_animation_Animation.js.html#sunlight-1-line-330">line 330</a> 
+      <a href="src_animation_Animation.js.html#sunlight-1-line-334">line 334</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -835,7 +835,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_animation_Animation.js.html">animation/Animation.js</a>, 
-      <a href="src_animation_Animation.js.html#sunlight-1-line-389">line 389</a> 
+      <a href="src_animation_Animation.js.html#sunlight-1-line-393">line 393</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -867,7 +867,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_animation_Animation.js.html">animation/Animation.js</a>, 
-      <a href="src_animation_Animation.js.html#sunlight-1-line-587">line 587</a> 
+      <a href="src_animation_Animation.js.html#sunlight-1-line-595">line 595</a> 
      </dt> 
     </dl> 
    </dd> 

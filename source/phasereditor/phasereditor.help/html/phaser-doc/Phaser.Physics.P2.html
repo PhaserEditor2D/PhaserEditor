@@ -10,7 +10,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>This is your main access to the P2 Physics World. From here you can create materials, listen for events and add bodies into the physics simulation.</p> 
+     <p>This is your main access to the P2 Physics World.<br>From here you can create materials, listen for events and add bodies into the physics simulation.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -137,7 +137,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1916">line 1916</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1919">line 1919</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -152,7 +152,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1936">line 1936</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1939">line 1939</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -167,7 +167,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1896">line 1896</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1899">line 1899</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -265,7 +265,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1876">line 1876</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1879">line 1879</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -280,7 +280,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1991">line 1991</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1994">line 1994</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -325,7 +325,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1836">line 1836</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1839">line 1839</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -408,7 +408,7 @@
     <div class="description"> 
      <p>This Signal is dispatched when a first contact is created between two bodies. This happens <em>before</em> the step has been done.</p> 
      <p>It sends 5 arguments: <code>bodyA</code>, <code>bodyB</code>, <code>shapeA</code>, <code>shapeB</code> and <code>contactEquations</code>.</p> 
-     <p>It is possible that in certain situations the <code>bodyA</code> or <code>bodyB</code> values are <code>null</code>. You should check for this in your own code to avoid processing potentially null physics bodies.</p> 
+     <p>It is possible that in certain situations the <code>bodyA</code> or <code>bodyB</code> values are <code>null</code>. You should check for this<br>in your own code to avoid processing potentially null physics bodies.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -521,7 +521,7 @@
     <div class="description"> 
      <p>This Signal is dispatched when final contact occurs between two bodies. This happens <em>before</em> the step has been done.</p> 
      <p>It sends 4 arguments: <code>bodyA</code>, <code>bodyB</code>, <code>shapeA</code> and <code>shapeB</code>.</p> 
-     <p>It is possible that in certain situations the <code>bodyA</code> or <code>bodyB</code> values are <code>null</code>. You should check for this in your own code to avoid processing potentially null physics bodies.</p> 
+     <p>It is possible that in certain situations the <code>bodyA</code> or <code>bodyB</code> values are <code>null</code>. You should check for this<br>in your own code to avoid processing potentially null physics bodies.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -604,7 +604,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1856">line 1856</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1859">line 1859</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -613,13 +613,13 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>How to deactivate bodies during simulation. Possible modes are: World.NO_SLEEPING, World.BODY_SLEEPING and World.ISLAND_SLEEPING. If sleeping is enabled, you might need to wake up the bodies if they fall asleep when they shouldn't. If you want to enable sleeping in the world, but want to disable it for a particular body, see Body.allowSleep.</p> 
+     <p>How to deactivate bodies during simulation. Possible modes are: World.NO_SLEEPING, World.BODY_SLEEPING and World.ISLAND_SLEEPING.<br>If sleeping is enabled, you might need to wake up the bodies if they fall asleep when they shouldn't. If you want to enable sleeping in the world, but want to disable it for a particular body, see Body.allowSleep.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-2011">line 2011</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-2014">line 2014</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -634,7 +634,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1956">line 1956</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1959">line 1959</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -649,7 +649,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1976">line 1976</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1979">line 1979</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -664,7 +664,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-2033">line 2033</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-2036">line 2036</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -761,7 +761,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-884">line 884</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-887">line 887</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -802,7 +802,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1116">line 1116</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1119">line 1119</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -843,7 +843,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1150">line 1150</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1153">line 1153</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -884,7 +884,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-928">line 928</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-931">line 931</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -980,7 +980,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1663">line 1663</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1666">line 1666</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -989,7 +989,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Converts all of the polylines objects inside a Tiled ObjectGroup into physics bodies that are added to the world. Note that the polylines must be created in such a way that they can withstand polygon decomposition.</p> 
+     <p>Converts all of the polylines objects inside a Tiled ObjectGroup into physics bodies that are added to the world.<br>Note that the polylines must be created in such a way that they can withstand polygon decomposition.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -1039,7 +1039,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1622">line 1622</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1625">line 1625</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1048,7 +1048,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Goes through all tiles in the given Tilemap and TilemapLayer and converts those set to collide into physics bodies. Only call this <em>after</em> you have specified all of the tiles you wish to collide with calls like Tilemap.setCollisionBetween, etc. Every time you call this method it will destroy any previously created bodies and remove them from the world. Therefore understand it's a very expensive operation and not to be done in a core game update loop.</p> 
+     <p>Goes through all tiles in the given Tilemap and TilemapLayer and converts those set to collide into physics bodies.<br>Only call this <em>after</em> you have specified all of the tiles you wish to collide with calls like Tilemap.setCollisionBetween, etc.<br>Every time you call this method it will destroy any previously created bodies and remove them from the world.<br>Therefore understand it's a very expensive operation and not to be done in a core game update loop.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -1105,7 +1105,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1685">line 1685</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1688">line 1688</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1202,7 +1202,7 @@
        <td class="type"> <span class="param-type">Array.&lt;number&gt;</span> | <span class="param-type">number</span> </td> 
        <td class="attributes"> </td> 
        <td class="default"> </td> 
-       <td class="description last"><p>An array of 2d vectors that form the convex or concave polygon. Either [[0,0], [0,1],...] or a flat array of numbers that will be interpreted as [x,y, x,y, ...], or the arguments passed can be flat x,y values e.g. <code>setPolygon(options, x,y, x,y, x,y, ...)</code> where <code>x</code> and <code>y</code> are numbers.</p></td> 
+       <td class="description last"><p>An array of 2d vectors that form the convex or concave polygon.<br> Either [[0,0], [0,1],...] or a flat array of numbers that will be interpreted as [x,y, x,y, ...],<br> or the arguments passed can be flat x,y values e.g. <code>setPolygon(options, x,y, x,y, x,y, ...)</code> where <code>x</code> and <code>y</code> are numbers.</p></td> 
       </tr> 
      </tbody> 
     </table> 
@@ -1219,7 +1219,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1539">line 1539</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1542">line 1542</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1228,7 +1228,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Creates a new Collision Group and optionally applies it to the given object. Collision Groups are handled using bitmasks, therefore you have a fixed limit you can create before you need to re-use older groups.</p> 
+     <p>Creates a new Collision Group and optionally applies it to the given object.<br>Collision Groups are handled using bitmasks, therefore you have a fixed limit you can create before you need to re-use older groups.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -1253,7 +1253,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1408">line 1408</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1411">line 1411</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1308,7 +1308,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1243">line 1243</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1246">line 1246</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1381,7 +1381,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-976">line 976</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-979">line 979</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1447,7 +1447,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1004">line 1004</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1007">line 1007</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1520,7 +1520,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1059">line 1059</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1062">line 1062</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1529,7 +1529,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Creates a Material. Materials are applied to Shapes owned by a Body and can be set with Body.setMaterial(). Materials are a way to control what happens when Shapes collide. Combine unique Materials together to create Contact Materials. Contact Materials have properties such as friction and restitution that allow for fine-grained collision control between different Materials.</p> 
+     <p>Creates a Material. Materials are applied to Shapes owned by a Body and can be set with Body.setMaterial().<br>Materials are a way to control what happens when Shapes collide. Combine unique Materials together to create Contact Materials.<br>Contact Materials have properties such as friction and restitution that allow for fine-grained collision control between different Materials.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -1569,7 +1569,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1216">line 1216</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1219">line 1219</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1666,7 +1666,7 @@
        <td class="type"> <span class="param-type">Array.&lt;number&gt;</span> | <span class="param-type">number</span> </td> 
        <td class="attributes"> </td> 
        <td class="default"> </td> 
-       <td class="description last"><p>An array of 2d vectors that form the convex or concave polygon. Either [[0,0], [0,1],...] or a flat array of numbers that will be interpreted as [x,y, x,y, ...], or the arguments passed can be flat x,y values e.g. <code>setPolygon(options, x,y, x,y, x,y, ...)</code> where <code>x</code> and <code>y</code> are numbers.</p></td> 
+       <td class="description last"><p>An array of 2d vectors that form the convex or concave polygon.<br> Either [[0,0], [0,1],...] or a flat array of numbers that will be interpreted as [x,y, x,y, ...],<br> or the arguments passed can be flat x,y values e.g. <code>setPolygon(options, x,y, x,y, x,y, ...)</code> where <code>x</code> and <code>y</code> are numbers.</p></td> 
       </tr> 
      </tbody> 
     </table> 
@@ -1674,7 +1674,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1581">line 1581</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1584">line 1584</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1683,7 +1683,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Constraint that only allows bodies to move along a line, relative to each other. See http://www.iforce2d.net/b2dtut/joints-prismatic</p> 
+     <p>Constraint that only allows bodies to move along a line, relative to each other.<br>See http://www.iforce2d.net/b2dtut/joints-prismatic</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -1761,7 +1761,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1086">line 1086</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1089">line 1089</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1770,7 +1770,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Connects two bodies at given offset points, letting them rotate relative to each other around this point. The pivot points are given in world (pixel) coordinates.</p> 
+     <p>Connects two bodies at given offset points, letting them rotate relative to each other around this point.<br>The pivot points are given in world (pixel) coordinates.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -1841,7 +1841,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1030">line 1030</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1033">line 1033</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1914,7 +1914,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1512">line 1512</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1515">line 1515</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2015,7 +2015,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1481">line 1481</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1484">line 1484</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2030,7 +2030,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-871">line 871</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-874">line 874</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2039,7 +2039,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>This will create a P2 Physics body on the given game object or array of game objects. A game object can only have 1 physics body active at any one time, and it can't be changed until the object is destroyed. Note: When the game object is enabled for P2 physics it has its anchor x/y set to 0.5 so it becomes centered.</p> 
+     <p>This will create a P2 Physics body on the given game object or array of game objects.<br>A game object can only have 1 physics body active at any one time, and it can't be changed until the object is destroyed.<br>Note: When the game object is enabled for P2 physics it has its anchor x/y set to 0.5 so it becomes centered.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -2089,7 +2089,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Creates a P2 Physics body on the given game object. A game object can only have 1 physics body active at any one time, and it can't be changed until the body is nulled.</p> 
+     <p>Creates a P2 Physics body on the given game object.<br>A game object can only have 1 physics body active at any one time, and it can't be changed until the body is nulled.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -2173,7 +2173,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1263">line 1263</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1266">line 1266</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2214,7 +2214,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1283">line 1283</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1286">line 1286</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2223,7 +2223,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Populates and returns an array of all current Constraints in the world. You will get an array of p2 constraints back. This can be of mixed types, for example the array may contain PrismaticConstraints, RevoluteConstraints or any other valid p2 constraint type.</p> 
+     <p>Populates and returns an array of all current Constraints in the world.<br>You will get an array of p2 constraints back. This can be of mixed types, for example the array may contain<br>PrismaticConstraints, RevoluteConstraints or any other valid p2 constraint type.</p> 
     </div> 
     <h5>Returns:</h5> 
     <div class="returns"> 
@@ -2238,7 +2238,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1332">line 1332</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1335">line 1335</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2285,7 +2285,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1184">line 1184</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1187">line 1187</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2309,7 +2309,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1312">line 1312</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1315">line 1315</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2318,7 +2318,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Test if a world point overlaps bodies. You will get an array of actual P2 bodies back. You can find out which Sprite a Body belongs to (if any) by checking the Body.parent.sprite property. Body.parent is a Phaser.Physics.P2.Body property.</p> 
+     <p>Test if a world point overlaps bodies. You will get an array of actual P2 bodies back. You can find out which Sprite a Body belongs to<br>(if any) by checking the Body.parent.sprite property. Body.parent is a Phaser.Physics.P2.Body property.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -2375,7 +2375,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1354">line 1354</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1357">line 1357</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2384,7 +2384,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Convert p2 physics value (meters) to pixel scale. By default Phaser uses a scale of 20px per meter. If you need to modify this you can over-ride these functions via the Physics Configuration object.</p> 
+     <p>Convert p2 physics value (meters) to pixel scale.<br>By default Phaser uses a scale of 20px per meter.<br>If you need to modify this you can over-ride these functions via the Physics Configuration object.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -2416,7 +2416,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1774">line 1774</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1777">line 1777</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2425,7 +2425,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Convert p2 physics value (meters) to pixel scale and inverses it. By default Phaser uses a scale of 20px per meter. If you need to modify this you can over-ride these functions via the Physics Configuration object.</p> 
+     <p>Convert p2 physics value (meters) to pixel scale and inverses it.<br>By default Phaser uses a scale of 20px per meter.<br>If you need to modify this you can over-ride these functions via the Physics Configuration object.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -2457,7 +2457,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1804">line 1804</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1807">line 1807</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2496,7 +2496,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Convert pixel value to p2 physics scale (meters). By default Phaser uses a scale of 20px per meter. If you need to modify this you can over-ride these functions via the Physics Configuration object.</p> 
+     <p>Convert pixel value to p2 physics scale (meters).<br>By default Phaser uses a scale of 20px per meter.<br>If you need to modify this you can over-ride these functions via the Physics Configuration object.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -2528,7 +2528,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1789">line 1789</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1792">line 1792</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2537,7 +2537,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Convert pixel value to p2 physics scale (meters) and inverses it. By default Phaser uses a scale of 20px per meter. If you need to modify this you can over-ride these functions via the Physics Configuration object.</p> 
+     <p>Convert pixel value to p2 physics scale (meters) and inverses it.<br>By default Phaser uses a scale of 20px per meter.<br>If you need to modify this you can over-ride these functions via the Physics Configuration object.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -2569,7 +2569,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1819">line 1819</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1822">line 1822</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2610,7 +2610,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-908">line 908</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-911">line 911</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2683,7 +2683,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1133">line 1133</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1136">line 1136</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2724,7 +2724,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1167">line 1167</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1170">line 1170</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2765,7 +2765,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-952">line 952</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-955">line 955</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2774,7 +2774,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Called by Phaser.Physics when a State swap occurs. Starts the begin and end Contact listeners again.</p> 
+     <p>Called by Phaser.Physics when a State swap occurs.<br>Starts the begin and end Contact listeners again.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -2804,7 +2804,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Sets the bounds of the Physics world to match the given world pixel dimensions. You can optionally set which 'walls' to create: left, right, top or bottom. If none of the walls are given it will default to use the walls settings it had previously. I.e. if you previously told it to not have the left or right walls, and you then adjust the world size the newly created bounds will also not have the left and right walls. Explicitly state them in the parameters to override this.</p> 
+     <p>Sets the bounds of the Physics world to match the given world pixel dimensions.<br>You can optionally set which 'walls' to create: left, right, top or bottom.<br>If none of the walls are given it will default to use the walls settings it had previously.<br>I.e. if you previously told it to not have the left or right walls, and you then adjust the world size<br>the newly created bounds will also not have the left and right walls.<br>Explicitly state them in the parameters to override this.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -2896,7 +2896,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Impact event handling is disabled by default. Enable it before any impact events will be dispatched. In a busy world hundreds of impact events can be generated every step, so only enable this if you cannot do what you need via beginContact or collision masks.</p> 
+     <p>Impact event handling is disabled by default. Enable it before any impact events will be dispatched.<br>In a busy world hundreds of impact events can be generated every step, so only enable this if you cannot do what you need via beginContact or collision masks.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -2956,7 +2956,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1198">line 1198</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1201">line 1201</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2965,7 +2965,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Sets a callback to be fired after the Broadphase has collected collision pairs in the world. Just because a pair exists it doesn't mean they <em>will</em> collide, just that they potentially could do. If your calback returns <code>false</code> the pair will be removed from the narrowphase. This will stop them testing for collision this step. Returning <code>true</code> from the callback will ensure they are checked in the narrowphase.</p> 
+     <p>Sets a callback to be fired after the Broadphase has collected collision pairs in the world.<br>Just because a pair exists it doesn't mean they <em>will</em> collide, just that they potentially could do.<br>If your calback returns <code>false</code> the pair will be removed from the narrowphase. This will stop them testing for collision this step.<br>Returning <code>true</code> from the callback will ensure they are checked in the narrowphase.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -3017,7 +3017,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_physics_p2_World.js.html">physics/p2/World.js</a>, 
-      <a href="src_physics_p2_World.js.html#sunlight-1-line-1396">line 1396</a> 
+      <a href="src_physics_p2_World.js.html#sunlight-1-line-1399">line 1399</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -3041,7 +3041,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>By default the World will be set to collide everything with everything. The bounds of the world is a Body with 4 shapes, one for each face. If you start to use your own collision groups then your objects will no longer collide with the bounds. To fix this you need to adjust the bounds to use its own collision group first BEFORE changing your Sprites collision group.</p> 
+     <p>By default the World will be set to collide everything with everything. The bounds of the world is a Body with 4 shapes, one for each face.<br>If you start to use your own collision groups then your objects will no longer collide with the bounds.<br>To fix this you need to adjust the bounds to use its own collision group first BEFORE changing your Sprites collision group.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 

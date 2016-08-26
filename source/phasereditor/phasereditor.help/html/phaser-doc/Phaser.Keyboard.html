@@ -11,8 +11,8 @@
    <dd> 
     <div class="description"> 
      <p>The Keyboard class monitors keyboard input and dispatches keyboard events.</p> 
-     <p><em>Note</em>: many keyboards are unable to process certain combinations of keys due to hardware limitations known as ghosting. See http://www.html5gamedevs.com/topic/4876-impossible-to-use-more-than-2-keyboard-input-buttons-at-the-same-time/ for more details.</p> 
-     <p>Also please be aware that certain browser extensions can disable or override Phaser keyboard handling. For example the Chrome extension vimium is known to disable Phaser from using the D key. And there are others. So please check your extensions before opening Phaser issues.</p> 
+     <p><em>Note</em>: many keyboards are unable to process certain combinations of keys due to hardware limitations known as ghosting.<br>See http://www.html5gamedevs.com/topic/4876-impossible-to-use-more-than-2-keyboard-input-buttons-at-the-same-time/ for more details.</p> 
+     <p>Also please be aware that certain browser extensions can disable or override Phaser keyboard handling.<br>For example the Chrome extension vimium is known to disable Phaser from using the D key. And there are others.<br>So please check your extensions before opening Phaser issues.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -265,7 +265,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>If you need more fine-grained control over a Key you can create a new Phaser.Key object via this method. The Key object can then be polled, have events attached to it, etc.</p> 
+     <p>If you need more fine-grained control over a Key you can create a new Phaser.Key object via this method.<br>The Key object can then be polled, have events attached to it, etc.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -306,8 +306,8 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>By default when a key is pressed Phaser will not stop the event from propagating up to the browser. There are some keys this can be annoying for, like the arrow keys or space bar, which make the browser window scroll.</p> 
-     <p>The <code>addKeyCapture</code> method enables consuming keyboard event for specific keys so it doesn't bubble up to the the browser and cause the default browser behavior.</p> 
+     <p>By default when a key is pressed Phaser will not stop the event from propagating up to the browser.<br>There are some keys this can be annoying for, like the arrow keys or space bar, which make the browser window scroll.</p> 
+     <p>The <code>addKeyCapture</code> method enables consuming keyboard event for specific keys so it doesn't bubble up to the the browser<br>and cause the default browser behavior.</p> 
      <p>Pass in either a single keycode or an array/hash of keycodes.</p> 
     </div> 
     <h5>Parameters:</h5> 
@@ -423,7 +423,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Stops the Keyboard event listeners from running (keydown and keyup). They are removed from the window. Also clears all key captures and currently created Key objects.</p> 
+     <p>Stops the Keyboard event listeners from running (keydown and keyup). They are removed from the window.<br>Also clears all key captures and currently created Key objects.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -438,7 +438,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Returns <code>true</code> if the Key was pressed down within the <code>duration</code> value given, or <code>false</code> if it either isn't down, or was pressed down longer ago than then given duration.</p> 
+     <p>Returns <code>true</code> if the Key was pressed down within the <code>duration</code> value given, or <code>false</code> if it either isn't down,<br>or was pressed down longer ago than then given duration.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -751,7 +751,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Starts the Keyboard event listeners running (keydown and keyup). They are attached to the window. This is called automatically by Phaser.Input and should not normally be invoked directly.</p> 
+     <p>Starts the Keyboard event listeners running (keydown and keyup). They are attached to the window.<br>This is called automatically by Phaser.Input and should not normally be invoked directly.</p> 
     </div> 
     <dl class="details"> 
      <dt class="important tag-deprecated">
@@ -804,7 +804,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Returns <code>true</code> if the Key was pressed down within the <code>duration</code> value given, or <code>false</code> if it either isn't down, or was pressed down longer ago than then given duration.</p> 
+     <p>Returns <code>true</code> if the Key was pressed down within the <code>duration</code> value given, or <code>false</code> if it either isn't down,<br>or was pressed down longer ago than then given duration.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 

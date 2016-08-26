@@ -49,16 +49,17 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>By default a Game Object won't process any input events. By setting <code>inputEnabled</code> to true a Phaser.InputHandler is created for this Game Object and it will then start to process click / touch events and more.</p> 
+     <p>By default a Game Object won't process any input events. By setting <code>inputEnabled</code> to true a Phaser.InputHandler is created<br>for this Game Object and it will then start to process click / touch events and more.</p> 
      <p>You can then access the Input Handler via <code>this.input</code>.</p> 
      <p>Note that Input related events are dispatched from <code>this.events</code>, i.e.: <code>events.onInputDown</code>.</p> 
      <p>If you set this property to false it will stop the Input Handler from processing any more input events.</p> 
+     <p>If you want to <em>temporarily</em> disable input for a Game Object, then it's better to set<br><code>input.enabled = false</code>, as it won't reset any of the Input Handlers internal properties.<br>You can then toggle this back on as needed.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
       <a href="src_gameobjects_components_InputEnabled.js.html">gameobjects/components/InputEnabled.js</a>, 
-      <a href="src_gameobjects_components_InputEnabled.js.html#sunlight-1-line-38">line 38</a> 
+      <a href="src_gameobjects_components_InputEnabled.js.html#sunlight-1-line-42">line 42</a> 
      </dt> 
     </dl> 
    </dd> 

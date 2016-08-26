@@ -13,9 +13,9 @@
      <p>A RenderTexture is a special texture that allows any Pixi display object to be rendered to it.</p> 
      <p><strong>Hint</strong>: All DisplayObjects (i.e. Sprites) that render to a RenderTexture should be preloaded otherwise black rectangles will be drawn instead.</p> 
      <p>A RenderTexture takes a snapshot of any Display Object given to its render method. The position and rotation of the given Display Objects is ignored. For example:</p> 
-     <p> var renderTexture = new PIXI.RenderTexture(800, 600); var sprite = PIXI.Sprite.fromImage("spinObj_01.png"); sprite.position.x = 800/2; sprite.position.y = 600/2; sprite.anchor.x = 0.5; sprite.anchor.y = 0.5; renderTexture.render(sprite);</p> 
+     <p> var renderTexture = new PIXI.RenderTexture(800, 600);<br> var sprite = PIXI.Sprite.fromImage("spinObj_01.png");<br> sprite.position.x = 800/2;<br> sprite.position.y = 600/2;<br> sprite.anchor.x = 0.5;<br> sprite.anchor.y = 0.5;<br> renderTexture.render(sprite);</p> 
      <p>The Sprite in this case will be rendered to a position of 0,0. To render this sprite at its actual position a DisplayObjectContainer should be used:</p> 
-     <p> var doc = new PIXI.DisplayObjectContainer(); doc.addChild(sprite); renderTexture.render(doc); // Renders to center of renderTexture</p> 
+     <p> var doc = new PIXI.DisplayObjectContainer();<br> doc.addChild(sprite);<br> renderTexture.render(doc); // Renders to center of renderTexture</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -89,7 +89,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>This is the area of the BaseTexture image to actually copy to the Canvas / WebGL when rendering, irrespective of the actual frame size or placement (which can be influenced by trimmed texture atlases)</p> 
+     <p>This is the area of the BaseTexture image to actually copy to the Canvas / WebGL when rendering,<br>irrespective of the actual frame size or placement (which can be influenced by trimmed texture atlases)</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -148,7 +148,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
-      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-84">line 84</a> 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-79">line 79</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -171,7 +171,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
-      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-33">line 33</a> 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-28">line 28</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -213,7 +213,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
-      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-100">line 100</a> 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-95">line 95</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -236,7 +236,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
-      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-92">line 92</a> 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-87">line 87</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -274,7 +274,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
-      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-68">line 68</a> 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-63">line 63</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -359,7 +359,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
-      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-170">line 170</a> 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-165">line 165</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -512,7 +512,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_pixi_textures_Texture.js.html">pixi/textures/Texture.js</a>, 
-      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-183">line 183</a> 
+      <a href="src_pixi_textures_Texture.js.html#sunlight-1-line-178">line 178</a> 
      </dt> 
     </dl> 
    </dd> 

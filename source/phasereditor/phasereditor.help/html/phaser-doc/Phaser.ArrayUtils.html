@@ -28,7 +28,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Snaps a value to the nearest value in an array. The result will always be in the range <code>[first_value, last_value]</code>.</p> 
+     <p>Snaps a value to the nearest value in an array.<br>The result will always be in the range <code>[first_value, last_value]</code>.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -75,7 +75,7 @@
    <dd> 
     <div class="description"> 
      <p>Fetch a random entry from the given array.</p> 
-     <p>Will return null if there are no array items that fall within the specified range or if there is no item for the randomly chosen index.</p> 
+     <p>Will return null if there are no array items that fall within the specified range<br>or if there is no item for the randomly chosen index.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -127,7 +127,7 @@
    <dd> 
     <div class="description"> 
      <p>Removes a random object from the given array and returns it.</p> 
-     <p>Will return null if there are no array items that fall within the specified range or if there is no item for the randomly chosen index.</p> 
+     <p>Will return null if there are no array items that fall within the specified range<br>or if there is no item for the randomly chosen index.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -174,11 +174,68 @@
     </dl> 
    </dd> 
    <dt> 
-    <h4 class="name " id=".rotate"><span class="type-signature">&lt;static&gt; </span>rotate<span class="signature">(array)</span><span class="type-signature"> ? {any}</span></h4> 
+    <h4 class="name toc-deprecated" id=".rotate"><span class="type-signature">&lt;static&gt; </span>rotate<span class="signature">(array)</span><span class="type-signature"> ? {any}</span></h4> 
+   </dt> 
+   <dd> 
+   </dd>
+   <dt class="important deprecated-notice">
+     This method is 
+    <em>deprecated</em> and should not be used. It may be removed in the future. 
+   </dt> 
+   <div class="description"> 
+    <p>Moves the element from the start of the array to the end, shifting all items in the process.<br>The "rotation" happens to the left.</p> 
+    <p>Before: <code>[ A, B, C, D, E, F ]</code><br>After: <code>[ B, C, D, E, F, A ]</code></p> 
+    <p>See also Phaser.ArrayUtils.rotateRight</p> 
+   </div> 
+   <h5>Parameters:</h5> 
+   <table class="params table table-striped"> 
+    <thead> 
+     <tr> 
+      <th>Name</th> 
+      <th>Type</th> 
+      <th class="last">Description</th> 
+     </tr> 
+    </thead> 
+    <tbody> 
+     <tr> 
+      <td class="name"><code>array</code></td> 
+      <td class="type"> <span class="param-type">Array.&lt;any&gt;</span> </td> 
+      <td class="description last"><p>The array to rotate. The array is modified.</p></td> 
+     </tr> 
+    </tbody> 
+   </table> 
+   <h5>Returns:</h5> 
+   <div class="returns"> 
+    <div class="returns-type"> 
+     <span class="param-type">any</span> - 
+    </div> 
+    <div class="returns-desc param-desc"> 
+     <p>The rotated value.</p> 
+    </div> 
+   </div> 
+   <dl class="details"> 
+    <dt class="important tag-deprecated">
+     Deprecated:
+    </dt> 
+    <dd class="tag-deprecated">
+     <ul> 
+      <li>Please use Phaser.ArrayUtils.rotate instead.</li> 
+     </ul>
+    </dd> 
+    <dt class="tag-source">
+     Source - 
+     <a href="src_utils_ArrayUtils.js.html">utils/ArrayUtils.js</a>, 
+     <a href="src_utils_ArrayUtils.js.html#sunlight-1-line-239">line 239</a> 
+    </dt> 
+   </dl>  
+   <dt> 
+    <h4 class="name " id=".rotateLeft"><span class="type-signature">&lt;static&gt; </span>rotateLeft<span class="signature">(array)</span><span class="type-signature"> ? {any}</span></h4> 
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Moves the element from the start of the array to the end, shifting all items in the process. The "rotation" happens to the left.</p> 
+     <p>Moves the element from the start of the array to the end, shifting all items in the process.<br>The "rotation" happens to the left.</p> 
+     <p>Before: <code>[ A, B, C, D, E, F ]</code><br>After: <code>[ B, C, D, E, F, A ]</code></p> 
+     <p>See also Phaser.ArrayUtils.rotateRight</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -193,7 +250,7 @@
       <tr> 
        <td class="name"><code>array</code></td> 
        <td class="type"> <span class="param-type">Array.&lt;any&gt;</span> </td> 
-       <td class="description last"><p>The array to shift/rotate. The array is modified.</p></td> 
+       <td class="description last"><p>The array to rotate. The array is modified.</p></td> 
       </tr> 
      </tbody> 
     </table> 
@@ -203,14 +260,14 @@
       <span class="param-type">any</span> - 
      </div> 
      <div class="returns-desc param-desc"> 
-      <p>The shifted value.</p> 
+      <p>The rotated value.</p> 
      </div> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
       <a href="src_utils_ArrayUtils.js.html">utils/ArrayUtils.js</a>, 
-      <a href="src_utils_ArrayUtils.js.html#sunlight-1-line-195">line 195</a> 
+      <a href="src_utils_ArrayUtils.js.html#sunlight-1-line-217">line 217</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -258,6 +315,49 @@
       Source - 
       <a href="src_utils_ArrayUtils.js.html">utils/ArrayUtils.js</a>, 
       <a href="src_utils_ArrayUtils.js.html#sunlight-1-line-132">line 132</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id=".rotateRight"><span class="type-signature">&lt;static&gt; </span>rotateRight<span class="signature">(array)</span><span class="type-signature"> ? {any}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Moves the element from the end of the array to the start, shifting all items in the process.<br>The "rotation" happens to the right.</p> 
+     <p>Before: <code>[ A, B, C, D, E, F ]</code><br>After: <code>[ F, A, B, C, D, E ]</code></p> 
+     <p>See also Phaser.ArrayUtils.rotateLeft.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>array</code></td> 
+       <td class="type"> <span class="param-type">Array.&lt;any&gt;</span> </td> 
+       <td class="description last"><p>The array to rotate. The array is modified.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">any</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The shifted value.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArrayUtils.js.html">utils/ArrayUtils.js</a>, 
+      <a href="src_utils_ArrayUtils.js.html#sunlight-1-line-195">line 195</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -348,7 +448,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Create an array representing the inclusive range of numbers (usually integers) in <code>[start, end]</code>. This is equivalent to <code>numberArrayStep(start, end, 1)</code>.</p> 
+     <p>Create an array representing the inclusive range of numbers (usually integers) in <code>[start, end]</code>.<br>This is equivalent to <code>numberArrayStep(start, end, 1)</code>.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -385,7 +485,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_utils_ArrayUtils.js.html">utils/ArrayUtils.js</a>, 
-      <a href="src_utils_ArrayUtils.js.html#sunlight-1-line-212">line 212</a> 
+      <a href="src_utils_ArrayUtils.js.html#sunlight-1-line-262">line 262</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -394,9 +494,9 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Create an array of numbers (positive and/or negative) progressing from <code>start</code> up to but not including <code>end</code> by advancing by <code>step</code>.</p> 
+     <p>Create an array of numbers (positive and/or negative) progressing from <code>start</code><br>up to but not including <code>end</code> by advancing by <code>step</code>.</p> 
      <p>If <code>start</code> is less than <code>end</code> a zero-length range is created unless a negative <code>step</code> is specified.</p> 
-     <p>Certain values for <code>start</code> and <code>end</code> (eg. NaN/undefined/null) are currently coerced to 0; for forward compatibility make sure to pass in actual numbers.</p> 
+     <p>Certain values for <code>start</code> and <code>end</code> (eg. NaN/undefined/null) are currently coerced to 0;<br>for forward compatibility make sure to pass in actual numbers.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -446,7 +546,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_utils_ArrayUtils.js.html">utils/ArrayUtils.js</a>, 
-      <a href="src_utils_ArrayUtils.js.html#sunlight-1-line-234">line 234</a> 
+      <a href="src_utils_ArrayUtils.js.html#sunlight-1-line-284">line 284</a> 
      </dt> 
     </dl> 
     <h5>Example</h5> 

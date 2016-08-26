@@ -4,9 +4,9 @@
   <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a>.</span> Device </h2> 
   <div class="class-description">
    <p>Detects device support capabilities and is responsible for device initialization - see <a href="Phaser.Device.html#.whenReady">whenReady</a>.</p> 
-   <p>This class represents a singleton object that can be accessed directly as <code>game.device</code> (or, as a fallback, <code>Phaser.Device</code> when a game instance is not available) without the need to instantiate it.</p> 
-   <p>Unless otherwise noted the device capabilities are only guaranteed after initialization. Initialization occurs automatically and is guaranteed complete before <a href="Phaser.Game.html">Phaser.Game</a> begins its "boot" phase. Feature detection can be modified in the <a href="Phaser.Device.html#.onInitialized">onInitialized</a> signal.</p> 
-   <p>When checking features using the exposed properties only the <em>truth-iness</em> of the value should be relied upon unless the documentation states otherwise: properties may return <code>false</code>, <code>''</code>, <code>null</code>, or even <code>undefined</code> when indicating the lack of a feature.</p> 
+   <p>This class represents a singleton object that can be accessed directly as <code>game.device</code><br>(or, as a fallback, <code>Phaser.Device</code> when a game instance is not available) without the need to instantiate it.</p> 
+   <p>Unless otherwise noted the device capabilities are only guaranteed after initialization. Initialization<br>occurs automatically and is guaranteed complete before <a href="Phaser.Game.html">Phaser.Game</a> begins its "boot" phase.<br>Feature detection can be modified in the <a href="Phaser.Device.html#.onInitialized">onInitialized</a> signal.</p> 
+   <p>When checking features using the exposed properties only the <em>truth-iness</em> of the value should be relied upon<br>unless the documentation states otherwise: properties may return <code>false</code>, <code>''</code>, <code>null</code>, or even <code>undefined</code><br>when indicating the lack of a feature.</p> 
    <p>Uses elements from System.js by MrDoob and Modernizr</p>
   </div> 
  </header> 
@@ -30,8 +30,8 @@
      </dd> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-30">line 30</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-30">line 30</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -43,15 +43,15 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>This signal is dispatched after device initialization occurs but before any of the ready callbacks (see <a href="Phaser.Device.html#.whenReady">whenReady</a>) have been invoked.</p> 
+     <p>This signal is dispatched after device initialization occurs but before any of the ready<br>callbacks (see <a href="Phaser.Device.html#.whenReady">whenReady</a>) have been invoked.</p> 
      <p>Local "patching" for a particular device can/should be done in this event.</p> 
-     <p><em>Note</em>: This signal is removed after the device has been readied; if a handler has not been added <em>before</em> <code>new Phaser.Game(..)</code> it is probably too late.</p> 
+     <p><em>Note</em>: This signal is removed after the device has been readied; if a handler has not been<br>added <em>before</em> <code>new Phaser.Game(..)</code> it is probably too late.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-544">line 544</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-544">line 544</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -65,8 +65,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-118">line 118</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-118">line 118</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -80,8 +80,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-257">line 257</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-257">line 257</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -95,8 +95,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-367">line 367</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-367">line 367</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -110,8 +110,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-518">line 518</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-518">line 518</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -125,8 +125,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-156">line 156</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-156">line 156</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -140,8 +140,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-162">line 162</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-162">line 162</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -155,8 +155,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-263">line 263</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-263">line 263</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -170,8 +170,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-124">line 124</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-124">line 124</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -185,8 +185,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-269">line 269</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-269">line 269</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -200,8 +200,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-70">line 70</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-70">line 70</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -215,8 +215,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-76">line 76</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-76">line 76</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -230,8 +230,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-82">line 82</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-82">line 82</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -245,8 +245,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-112">line 112</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-112">line 112</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -260,8 +260,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-198">line 198</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-198">line 198</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -275,8 +275,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-52">line 52</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-52">line 52</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -298,8 +298,8 @@
      </dd> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-37">line 37</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-37">line 37</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -313,8 +313,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-416">line 416</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-416">line 416</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -328,8 +328,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-317">line 317</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-317">line 317</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -343,8 +343,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-106">line 106</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-106">line 106</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -358,8 +358,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-100">line 100</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-100">line 100</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -373,8 +373,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-275">line 275</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-275">line 275</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -388,8 +388,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-174">line 174</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-174">line 174</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -403,8 +403,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-180">line 180</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-180">line 180</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -418,8 +418,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-281">line 281</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-281">line 281</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -433,8 +433,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-287">line 287</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-287">line 287</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -448,8 +448,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-506">line 506</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-506">line 506</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -463,8 +463,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-524">line 524</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-524">line 524</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -486,8 +486,8 @@
      </dd> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-222">line 222</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-222">line 222</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -501,8 +501,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-430">line 430</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-430">line 430</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -516,8 +516,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-454">line 454</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-454">line 454</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -531,8 +531,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-293">line 293</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-293">line 293</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -546,8 +546,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-299">line 299</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-299">line 299</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -569,8 +569,8 @@
      </dd> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-44">line 44</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-44">line 44</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -584,8 +584,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-58">line 58</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-58">line 58</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -599,8 +599,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-64">line 64</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-64">line 64</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -614,8 +614,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-474">line 474</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-474">line 474</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -629,8 +629,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-462">line 462</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-462">line 462</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -644,8 +644,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-468">line 468</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-468">line 468</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -659,8 +659,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-130">line 130</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-130">line 130</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -674,8 +674,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-494">line 494</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-494">line 494</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -689,8 +689,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-488">line 488</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-488">line 488</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -704,8 +704,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-186">line 186</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-186">line 186</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -719,8 +719,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-404">line 404</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-404">line 404</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -734,8 +734,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-136">line 136</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-136">line 136</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -749,8 +749,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-329">line 329</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-329">line 329</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -764,8 +764,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-323">line 323</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-323">line 323</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -779,8 +779,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-391">line 391</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-391">line 391</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -794,8 +794,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-436">line 436</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-436">line 436</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -809,8 +809,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-242">line 242</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-242">line 242</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -824,8 +824,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-88">line 88</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-88">line 88</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -839,8 +839,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-94">line 94</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-94">line 94</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -854,8 +854,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-379">line 379</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-379">line 379</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -869,8 +869,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-424">line 424</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-424">line 424</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -884,8 +884,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-335">line 335</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-335">line 335</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -899,8 +899,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-385">line 385</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-385">line 385</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -914,8 +914,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-482">line 482</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-482">line 482</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -929,8 +929,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-204">line 204</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-204">line 204</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -944,8 +944,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-228">line 228</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-228">line 228</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -959,8 +959,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-512">line 512</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-512">line 512</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -974,8 +974,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-341">line 341</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-341">line 341</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -989,8 +989,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-347">line 347</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-347">line 347</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1004,8 +1004,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-359">line 359</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-359">line 359</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1019,8 +1019,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-500">line 500</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-500">line 500</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1034,8 +1034,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-236">line 236</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-236">line 236</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1049,8 +1049,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-305">line 305</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-305">line 305</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1064,8 +1064,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-311">line 311</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-311">line 311</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1079,8 +1079,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-210">line 210</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-210">line 210</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1094,8 +1094,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-216">line 216</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-216">line 216</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1109,8 +1109,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-448">line 448</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-448">line 448</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1124,8 +1124,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-397">line 397</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-397">line 397</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1139,8 +1139,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-353">line 353</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-353">line 353</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1154,8 +1154,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-373">line 373</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-373">line 373</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1169,8 +1169,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-168">line 168</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-168">line 168</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1184,8 +1184,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-410">line 410</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-410">line 410</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1199,8 +1199,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-442">line 442</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-442">line 442</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1240,8 +1240,8 @@
      </dd> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-249">line 249</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-249">line 249</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1255,8 +1255,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-142">line 142</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-142">line 142</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1270,8 +1270,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-148">line 148</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-148">line 148</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1285,8 +1285,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-192">line 192</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-192">line 192</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1299,8 +1299,8 @@
    <dd> 
     <div class="description"> 
      <p>Add a device-ready handler and ensure the device ready sequence is started.</p> 
-     <p>Phaser.Device will <em>not</em> activate or initialize until at least one <code>whenReady</code> handler is added, which is normally done automatically be calling <code>new Phaser.Game(..)</code>.</p> 
-     <p>The handler is invoked when the device is considered "ready", which may be immediately if the device is already "ready". See <a href="Phaser.Device.html#deviceReadyAt">deviceReadyAt</a>.</p> 
+     <p>Phaser.Device will <em>not</em> activate or initialize until at least one <code>whenReady</code> handler is added,<br>which is normally done automatically be calling <code>new Phaser.Game(..)</code>.</p> 
+     <p>The handler is invoked when the device is considered "ready", which may be immediately<br>if the device is already "ready". See <a href="Phaser.Device.html#deviceReadyAt">deviceReadyAt</a>.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -1340,8 +1340,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-560">line 560</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-560">line 560</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1381,8 +1381,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-1250">line 1250</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-1250">line 1250</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1422,8 +1422,8 @@
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-1293">line 1293</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-1293">line 1293</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1432,14 +1432,14 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Detect if the host is a an Android Stock browser. This is available before the device "ready" event.</p> 
+     <p>Detect if the host is a an Android Stock browser.<br>This is available before the device "ready" event.</p> 
      <p>Authors might want to scale down on effects and switch to the CANVAS rendering method on those devices.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-1359">line 1359</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-1359">line 1359</a> 
      </dt> 
     </dl> 
     <h5>Example</h5> 
@@ -1450,13 +1450,13 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Check whether the console is open. Note that this only works in Firefox with Firebug and earlier versions of Chrome. It used to work in Chrome, but then they removed the ability: <a href="http://src.chromium.org/viewvc/blink?view=revision&amp;revision=151136">http://src.chromium.org/viewvc/blink?view=revision&amp;revision=151136</a></p> 
+     <p>Check whether the console is open.<br>Note that this only works in Firefox with Firebug and earlier versions of Chrome.<br>It used to work in Chrome, but then they removed the ability: <a href="http://src.chromium.org/viewvc/blink?view=revision&amp;revision=151136">http://src.chromium.org/viewvc/blink?view=revision&amp;revision=151136</a></p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
-      <a href="src_system_Device.js.html">system/Device.js</a>, 
-      <a href="src_system_Device.js.html#sunlight-1-line-1324">line 1324</a> 
+      <a href="src_utils_Device.js.html">utils/Device.js</a>, 
+      <a href="src_utils_Device.js.html#sunlight-1-line-1324">line 1324</a> 
      </dt> 
     </dl> 
    </dd> 

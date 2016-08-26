@@ -12,8 +12,8 @@
     <div class="description"> 
      <p>The Loader handles loading all external content such as Images, Sounds, Texture Atlases and data files.</p> 
      <p>The loader uses a combination of tag loading (eg. Image elements) and XHR and provides progress and completion callbacks.</p> 
-     <p>Parallel loading (see <a href="Phaser.Loader.html#enableParallel">enableParallel</a>) is supported and enabled by default. Load-before behavior of parallel resources is controlled by synchronization points as discussed in withSyncPoint.</p> 
-     <p>Texture Atlases can be created with tools such as <a href="https://www.codeandweb.com/texturepacker/phaser">Texture Packer</a> and <a href="http://renderhjs.net/shoebox/">Shoebox</a></p> 
+     <p>Parallel loading (see <a href="Phaser.Loader.html#enableParallel">enableParallel</a>) is supported and enabled by default.<br>Load-before behavior of parallel resources is controlled by synchronization points as discussed in withSyncPoint.</p> 
+     <p>Texture Atlases can be created with tools such as <a href="https://www.codeandweb.com/texturepacker/phaser">Texture Packer</a> and<br><a href="http://renderhjs.net/shoebox/">Shoebox</a></p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -51,7 +51,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-299">line 299</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-322">line 322</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -63,7 +63,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-305">line 305</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-328">line 328</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -75,7 +75,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-281">line 281</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-304">line 304</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -87,7 +87,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-287">line 287</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-310">line 310</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -99,7 +99,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-311">line 311</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-334">line 334</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -111,7 +111,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-293">line 293</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-316">line 316</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -145,7 +145,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-204">line 204</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-227">line 227</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -154,7 +154,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>If you want to append a URL before the path of any asset you can set this here. Useful if allowing the asset base url to be configured outside of the game code. The string <em>must</em> end with a "/".</p> 
+     <p>If you want to append a URL before the path of any asset you can set this here.<br>Useful if allowing the asset base url to be configured outside of the game code.<br>The string <em>must</em> end with a "/".</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -218,7 +218,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-188">line 188</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-211">line 211</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -261,6 +261,33 @@
     </dl> 
    </dd> 
    <dt> 
+    <h4 class="name " id="headers"><span class="type-signature"></span>headers<span class="type-signature"> :object</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Used to map the application mime-types to to the Accept header in XHR requests.<br>If you don't require these mappings, or they cause problems on your server, then<br>remove them from the headers object and the XHR request will not try to use them.</p> 
+     <p>This object can also be used to set the <code>X-Requested-With</code> header to<br><code>XMLHttpRequest</code> (or any other value you need). To enable this do:</p> 
+     <p><code>this.load.headers.requestedWith = 'XMLHttpRequest'</code></p> 
+     <p>before adding anything to the Loader. The XHR loader will then call:</p> 
+     <p><code>setRequestHeader('X-Requested-With', this.headers['requestedWith'])</code></p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>{"undefined":"application/xml"}</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-122">line 122</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
     <h4 class="name " id="isLoading"><span class="type-signature"></span>isLoading<span class="type-signature"> :boolean</span></h4> 
    </dt> 
    <dd> 
@@ -295,7 +322,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-198">line 198</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-221">line 221</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -313,7 +340,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-152">line 152</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-175">line 175</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -330,7 +357,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-163">line 163</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-186">line 186</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -339,14 +366,14 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>This event is dispatched immediately before a file starts loading. It's possible the file may fail (eg. download error, invalid format) after this event is sent.</p> 
+     <p>This event is dispatched immediately before a file starts loading.<br>It's possible the file may fail (eg. download error, invalid format) after this event is sent.</p> 
      <p>Params: <code>(progress, file key, file url)</code></p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-139">line 139</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-162">line 162</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -361,7 +388,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-118">line 118</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-141">line 141</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -370,13 +397,13 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>This event is dispatched when the loading process starts: before the first file has been requested, but after all the initial packs have been loaded.</p> 
+     <p>This event is dispatched when the loading process starts: before the first file has been requested,<br>but after all the initial packs have been loaded.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-111">line 111</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-134">line 134</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -393,7 +420,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-129">line 129</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-152">line 152</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -404,7 +431,7 @@
     <div class="description"> 
      <p>The value of <code>path</code>, if set, is placed before any <em>relative</em> file path given. For example:</p> 
      <p><code>load.path = "images/sprites/"; load.image("ball", "ball.png"); load.image("tree", "level1/oaktree.png"); load.image("boom", "http://server.com/explode.png");</code></p> 
-     <p>Would load the <code>ball</code> file from <code>images/sprites/ball.png</code> and the tree from <code>images/sprites/level1/oaktree.png</code> but the file <code>boom</code> would load from the URL given as it's an absolute URL.</p> 
+     <p>Would load the <code>ball</code> file from <code>images/sprites/ball.png</code> and the tree from<br><code>images/sprites/level1/oaktree.png</code> but the file <code>boom</code> would load from the URL<br>given as it's an absolute URL.</p> 
      <p>Please note that the path is added before the filename but <em>after</em> the baseURL (if set.)</p> 
      <p>The string <em>must</em> end with a "/".</p> 
     </div> 
@@ -468,7 +495,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-3023">line 3023</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-3060">line 3060</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -478,7 +505,7 @@
    <dd> 
     <div class="description"> 
      <p>The non-rounded load progress value (from 0.0 to 100.0).</p> 
-     <p>A general indicator of the progress. It is possible for the progress to decrease, after <code>onLoadStart</code>, if more files are dynamically added.</p> 
+     <p>A general indicator of the progress.<br>It is possible for the progress to decrease, after <code>onLoadStart</code>, if more files are dynamically added.</p> 
     </div> 
     <dl class="details"> 
      <h5 class="subsection-title">Properties:</h5> 
@@ -501,7 +528,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-3005">line 3005</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-3042">line 3042</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -545,7 +572,7 @@
     <dt class="tag-source">
      Source - 
      <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-     <a href="src_loader_Loader.js.html#sunlight-1-line-173">line 173</a> 
+     <a href="src_loader_Loader.js.html#sunlight-1-line-196">line 196</a> 
     </dt> 
    </dl>  
   </dl> 
@@ -594,7 +621,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-1648">line 1648</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-1675">line 1675</a> 
      </dt> 
      <dt class="tag-see">
       See:
@@ -690,7 +717,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-492">line 492</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-515">line 515</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -701,14 +728,14 @@
     <div class="description"> 
      <p>Adds a Texture Atlas file to the current load queue.</p> 
      <p>To create the Texture Atlas you can use tools such as:</p> 
-     <p><a href="https://www.codeandweb.com/texturepacker/phaser">Texture Packer</a> <a href="http://renderhjs.net/shoebox/">Shoebox</a></p> 
-     <p>If using Texture Packer we recommend you enable "Trim sprite names". If your atlas software has an option to "rotate" the resulting frames, you must disable it.</p> 
-     <p>You can choose to either load the data externally, by providing a URL to a json file. Or you can pass in a JSON object or String via the <code>atlasData</code> parameter. If you pass a String the data is automatically run through <code>JSON.parse</code> and then immediately added to the Phaser.Cache.</p> 
+     <p><a href="https://www.codeandweb.com/texturepacker/phaser">Texture Packer</a><br><a href="http://renderhjs.net/shoebox/">Shoebox</a></p> 
+     <p>If using Texture Packer we recommend you enable "Trim sprite names".<br>If your atlas software has an option to "rotate" the resulting frames, you must disable it.</p> 
+     <p>You can choose to either load the data externally, by providing a URL to a json file.<br>Or you can pass in a JSON object or String via the <code>atlasData</code> parameter.<br>If you pass a String the data is automatically run through <code>JSON.parse</code> and then immediately added to the Phaser.Cache.</p> 
      <p>If URLs are provided the files are <strong>not</strong> loaded immediately after calling this method, but are added to the load queue.</p> 
      <p>The key must be a unique String. It is used to add the file to the Phaser.Cache upon successful load.</p> 
-     <p>Retrieve the file via <code>Cache.getImage(key)</code>. JSON files are automatically parsed upon load. If you need to control when the JSON is parsed then use <code>Loader.text</code> instead and parse the JSON file as needed.</p> 
+     <p>Retrieve the file via <code>Cache.getImage(key)</code>. JSON files are automatically parsed upon load.<br>If you need to control when the JSON is parsed then use <code>Loader.text</code> instead and parse the JSON file as needed.</p> 
      <p>The URLs can be relative or absolute. If the URL is relative the <code>Loader.baseURL</code> and <code>Loader.path</code> values will be prepended to it.</p> 
-     <p>If the textureURL isn't specified then the Loader will take the key and create a filename from that. For example if the key is "player" and textureURL is null then the Loader will set the URL to be "player.png". The same is true for the atlasURL. If atlasURL isn't specified and no atlasData has been provided then the Loader will set the atlasURL to be the key. For example if the key is "player" the atlasURL will be set to "player.json".</p> 
+     <p>If the textureURL isn't specified then the Loader will take the key and create a filename from that.<br>For example if the key is "player" and textureURL is null then the Loader will set the URL to be "player.png".<br>The same is true for the atlasURL. If atlasURL isn't specified and no atlasData has been provided then the Loader will<br>set the atlasURL to be the key. For example if the key is "player" the atlasURL will be set to "player.json".</p> 
      <p>If you do not desire this action then provide URLs and / or a data object.</p> 
     </div> 
     <h5>Parameters:</h5> 
@@ -767,7 +794,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-1517">line 1517</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-1544">line 1544</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -779,14 +806,14 @@
      <p>Adds a Texture Atlas file to the current load queue.</p> 
      <p>Unlike <code>Loader.atlasJSONHash</code> this call expects the atlas data to be in a JSON Array format.</p> 
      <p>To create the Texture Atlas you can use tools such as:</p> 
-     <p><a href="https://www.codeandweb.com/texturepacker/phaser">Texture Packer</a> <a href="http://renderhjs.net/shoebox/">Shoebox</a></p> 
-     <p>If using Texture Packer we recommend you enable "Trim sprite names". If your atlas software has an option to "rotate" the resulting frames, you must disable it.</p> 
-     <p>You can choose to either load the data externally, by providing a URL to a json file. Or you can pass in a JSON object or String via the <code>atlasData</code> parameter. If you pass a String the data is automatically run through <code>JSON.parse</code> and then immediately added to the Phaser.Cache.</p> 
+     <p><a href="https://www.codeandweb.com/texturepacker/phaser">Texture Packer</a><br><a href="http://renderhjs.net/shoebox/">Shoebox</a></p> 
+     <p>If using Texture Packer we recommend you enable "Trim sprite names".<br>If your atlas software has an option to "rotate" the resulting frames, you must disable it.</p> 
+     <p>You can choose to either load the data externally, by providing a URL to a json file.<br>Or you can pass in a JSON object or String via the <code>atlasData</code> parameter.<br>If you pass a String the data is automatically run through <code>JSON.parse</code> and then immediately added to the Phaser.Cache.</p> 
      <p>If URLs are provided the files are <strong>not</strong> loaded immediately after calling this method, but are added to the load queue.</p> 
      <p>The key must be a unique String. It is used to add the file to the Phaser.Cache upon successful load.</p> 
-     <p>Retrieve the file via <code>Cache.getImage(key)</code>. JSON files are automatically parsed upon load. If you need to control when the JSON is parsed then use <code>Loader.text</code> instead and parse the JSON file as needed.</p> 
+     <p>Retrieve the file via <code>Cache.getImage(key)</code>. JSON files are automatically parsed upon load.<br>If you need to control when the JSON is parsed then use <code>Loader.text</code> instead and parse the JSON file as needed.</p> 
      <p>The URLs can be relative or absolute. If the URL is relative the <code>Loader.baseURL</code> and <code>Loader.path</code> values will be prepended to it.</p> 
-     <p>If the textureURL isn't specified then the Loader will take the key and create a filename from that. For example if the key is "player" and textureURL is null then the Loader will set the URL to be "player.png". The same is true for the atlasURL. If atlasURL isn't specified and no atlasData has been provided then the Loader will set the atlasURL to be the key. For example if the key is "player" the atlasURL will be set to "player.json".</p> 
+     <p>If the textureURL isn't specified then the Loader will take the key and create a filename from that.<br>For example if the key is "player" and textureURL is null then the Loader will set the URL to be "player.png".<br>The same is true for the atlasURL. If atlasURL isn't specified and no atlasData has been provided then the Loader will<br>set the atlasURL to be the key. For example if the key is "player" the atlasURL will be set to "player.json".</p> 
      <p>If you do not desire this action then provide URLs and / or a data object.</p> 
     </div> 
     <h5>Parameters:</h5> 
@@ -839,7 +866,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-1371">line 1371</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-1398">line 1398</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -851,14 +878,14 @@
      <p>Adds a Texture Atlas file to the current load queue.</p> 
      <p>Unlike <code>Loader.atlas</code> this call expects the atlas data to be in a JSON Hash format.</p> 
      <p>To create the Texture Atlas you can use tools such as:</p> 
-     <p><a href="https://www.codeandweb.com/texturepacker/phaser">Texture Packer</a> <a href="http://renderhjs.net/shoebox/">Shoebox</a></p> 
-     <p>If using Texture Packer we recommend you enable "Trim sprite names". If your atlas software has an option to "rotate" the resulting frames, you must disable it.</p> 
-     <p>You can choose to either load the data externally, by providing a URL to a json file. Or you can pass in a JSON object or String via the <code>atlasData</code> parameter. If you pass a String the data is automatically run through <code>JSON.parse</code> and then immediately added to the Phaser.Cache.</p> 
+     <p><a href="https://www.codeandweb.com/texturepacker/phaser">Texture Packer</a><br><a href="http://renderhjs.net/shoebox/">Shoebox</a></p> 
+     <p>If using Texture Packer we recommend you enable "Trim sprite names".<br>If your atlas software has an option to "rotate" the resulting frames, you must disable it.</p> 
+     <p>You can choose to either load the data externally, by providing a URL to a json file.<br>Or you can pass in a JSON object or String via the <code>atlasData</code> parameter.<br>If you pass a String the data is automatically run through <code>JSON.parse</code> and then immediately added to the Phaser.Cache.</p> 
      <p>If URLs are provided the files are <strong>not</strong> loaded immediately after calling this method, but are added to the load queue.</p> 
      <p>The key must be a unique String. It is used to add the file to the Phaser.Cache upon successful load.</p> 
-     <p>Retrieve the file via <code>Cache.getImage(key)</code>. JSON files are automatically parsed upon load. If you need to control when the JSON is parsed then use <code>Loader.text</code> instead and parse the JSON file as needed.</p> 
+     <p>Retrieve the file via <code>Cache.getImage(key)</code>. JSON files are automatically parsed upon load.<br>If you need to control when the JSON is parsed then use <code>Loader.text</code> instead and parse the JSON file as needed.</p> 
      <p>The URLs can be relative or absolute. If the URL is relative the <code>Loader.baseURL</code> and <code>Loader.path</code> values will be prepended to it.</p> 
-     <p>If the textureURL isn't specified then the Loader will take the key and create a filename from that. For example if the key is "player" and textureURL is null then the Loader will set the URL to be "player.png". The same is true for the atlasURL. If atlasURL isn't specified and no atlasData has been provided then the Loader will set the atlasURL to be the key. For example if the key is "player" the atlasURL will be set to "player.json".</p> 
+     <p>If the textureURL isn't specified then the Loader will take the key and create a filename from that.<br>For example if the key is "player" and textureURL is null then the Loader will set the URL to be "player.png".<br>The same is true for the atlasURL. If atlasURL isn't specified and no atlasData has been provided then the Loader will<br>set the atlasURL to be the key. For example if the key is "player" the atlasURL will be set to "player.json".</p> 
      <p>If you do not desire this action then provide URLs and / or a data object.</p> 
     </div> 
     <h5>Parameters:</h5> 
@@ -911,7 +938,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-1417">line 1417</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-1444">line 1444</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -923,14 +950,14 @@
      <p>Adds a Texture Atlas file to the current load queue.</p> 
      <p>This call expects the atlas data to be in the Starling XML data format.</p> 
      <p>To create the Texture Atlas you can use tools such as:</p> 
-     <p><a href="https://www.codeandweb.com/texturepacker/phaser">Texture Packer</a> <a href="http://renderhjs.net/shoebox/">Shoebox</a></p> 
-     <p>If using Texture Packer we recommend you enable "Trim sprite names". If your atlas software has an option to "rotate" the resulting frames, you must disable it.</p> 
-     <p>You can choose to either load the data externally, by providing a URL to an xml file. Or you can pass in an XML object or String via the <code>atlasData</code> parameter. If you pass a String the data is automatically run through <code>Loader.parseXML</code> and then immediately added to the Phaser.Cache.</p> 
+     <p><a href="https://www.codeandweb.com/texturepacker/phaser">Texture Packer</a><br><a href="http://renderhjs.net/shoebox/">Shoebox</a></p> 
+     <p>If using Texture Packer we recommend you enable "Trim sprite names".<br>If your atlas software has an option to "rotate" the resulting frames, you must disable it.</p> 
+     <p>You can choose to either load the data externally, by providing a URL to an xml file.<br>Or you can pass in an XML object or String via the <code>atlasData</code> parameter.<br>If you pass a String the data is automatically run through <code>Loader.parseXML</code> and then immediately added to the Phaser.Cache.</p> 
      <p>If URLs are provided the files are <strong>not</strong> loaded immediately after calling this method, but are added to the load queue.</p> 
      <p>The key must be a unique String. It is used to add the file to the Phaser.Cache upon successful load.</p> 
-     <p>Retrieve the file via <code>Cache.getImage(key)</code>. XML files are automatically parsed upon load. If you need to control when the XML is parsed then use <code>Loader.text</code> instead and parse the XML file as needed.</p> 
+     <p>Retrieve the file via <code>Cache.getImage(key)</code>. XML files are automatically parsed upon load.<br>If you need to control when the XML is parsed then use <code>Loader.text</code> instead and parse the XML file as needed.</p> 
      <p>The URLs can be relative or absolute. If the URL is relative the <code>Loader.baseURL</code> and <code>Loader.path</code> values will be prepended to it.</p> 
-     <p>If the textureURL isn't specified then the Loader will take the key and create a filename from that. For example if the key is "player" and textureURL is null then the Loader will set the URL to be "player.png". The same is true for the atlasURL. If atlasURL isn't specified and no atlasData has been provided then the Loader will set the atlasURL to be the key. For example if the key is "player" the atlasURL will be set to "player.xml".</p> 
+     <p>If the textureURL isn't specified then the Loader will take the key and create a filename from that.<br>For example if the key is "player" and textureURL is null then the Loader will set the URL to be "player.png".<br>The same is true for the atlasURL. If atlasURL isn't specified and no atlasData has been provided then the Loader will<br>set the atlasURL to be the key. For example if the key is "player" the atlasURL will be set to "player.xml".</p> 
      <p>If you do not desire this action then provide URLs and / or a data object.</p> 
     </div> 
     <h5>Parameters:</h5> 
@@ -983,7 +1010,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-1463">line 1463</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-1490">line 1490</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -997,7 +1024,7 @@
      <p>The key must be a unique String. It is used to add the file to the Phaser.Cache upon successful load.</p> 
      <p>Retrieve the file via <code>Cache.getSound(key)</code>.</p> 
      <p>The URL can be relative or absolute. If the URL is relative the <code>Loader.baseURL</code> and <code>Loader.path</code> values will be prepended to it.</p> 
-     <p>Mobile warning: There are some mobile devices (certain iPad 2 and iPad Mini revisions) that cannot play 48000 Hz audio. When they try to play the audio becomes extremely distorted and buzzes, eventually crashing the sound system. The solution is to use a lower encoding rate such as 44100 Hz.</p> 
+     <p>Mobile warning: There are some mobile devices (certain iPad 2 and iPad Mini revisions) that cannot play 48000 Hz audio.<br>When they try to play the audio becomes extremely distorted and buzzes, eventually crashing the sound system.<br>The solution is to use a lower encoding rate such as 44100 Hz.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -1023,14 +1050,14 @@
        <td class="type"> <span class="param-type">string</span> | <span class="param-type">Array.&lt;string&gt;</span> | <span class="param-type">Array.&lt;object&gt;</span> </td> 
        <td class="attributes"> </td> 
        <td class="default"> </td> 
-       <td class="description last"><p>Either a single string or an array of URIs or pairs of <code>{uri: .., type: ..}</code>. If an array is specified then the first URI (or URI + mime pair) that is device-compatible will be selected. For example: <code>"jump.mp3"</code>, <code>['jump.mp3', 'jump.ogg', 'jump.m4a']</code>, or <code>[{uri: "data:&lt;opus_resource&gt;", type: 'opus'}, 'fallback.mp3']</code>. BLOB and DATA URIs can be used but only support automatic detection when used in the pair form; otherwise the format must be manually checked before adding the resource.</p></td> 
+       <td class="description last"><p>Either a single string or an array of URIs or pairs of <code>{uri: .., type: ..}</code>.<br> If an array is specified then the first URI (or URI + mime pair) that is device-compatible will be selected.<br> For example: <code>"jump.mp3"</code>, <code>['jump.mp3', 'jump.ogg', 'jump.m4a']</code>, or <code>[{uri: "data:&lt;opus_resource&gt;", type: 'opus'}, 'fallback.mp3']</code>.<br> BLOB and DATA URIs can be used but only support automatic detection when used in the pair form; otherwise the format must be manually checked before adding the resource.</p></td> 
       </tr> 
       <tr> 
        <td class="name"><code>autoDecode</code></td> 
        <td class="type"> <span class="param-type">boolean</span> </td> 
        <td class="attributes"> &lt;optional&gt;<br> </td> 
        <td class="default"> true </td> 
-       <td class="description last"><p>When using Web Audio the audio files can either be decoded at load time or run-time. Audio files can't be played until they are decoded and, if specified, this enables immediate decoding. Decoding is a non-blocking async process, however it consumes huge amounts of CPU time on mobiles especially.</p></td> 
+       <td class="description last"><p>When using Web Audio the audio files can either be decoded at load time or run-time.<br> Audio files can't be played until they are decoded and, if specified, this enables immediate decoding. Decoding is a non-blocking async process, however it consumes huge amounts of CPU time on mobiles especially.</p></td> 
       </tr> 
      </tbody> 
     </table> 
@@ -1047,12 +1074,12 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-968">line 968</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-991">line 991</a> 
      </dt> 
     </dl> 
    </dd> 
    <dt> 
-    <h4 class="name " id="audiosprite"><span class="type-signature"></span>audiosprite<span class="signature">(key, urls, <span class="optional">jsonURL</span>, <span class="optional">jsonData</span>, <span class="optional">autoDecode</span>)</span><span class="type-signature"> ? {<a href="Phaser.Loader.html">Phaser.Loader</a>}</span></h4> 
+    <h4 class="name " id="audioSprite"><span class="type-signature"></span>audioSprite<span class="signature">(key, urls, <span class="optional">jsonURL</span>, <span class="optional">jsonData</span>, <span class="optional">autoDecode</span>)</span><span class="type-signature"> ? {<a href="Phaser.Loader.html">Phaser.Loader</a>}</span></h4> 
    </dt> 
    <dd> 
     <div class="description"> 
@@ -1109,7 +1136,7 @@
        <td class="type"> <span class="param-type">boolean</span> </td> 
        <td class="attributes"> &lt;optional&gt;<br> </td> 
        <td class="default"> true </td> 
-       <td class="description last"><p>When using Web Audio the audio files can either be decoded at load time or run-time. Audio files can't be played until they are decoded and, if specified, this enables immediate decoding. Decoding is a non-blocking async process, however it consumes huge amounts of CPU time on mobiles especially.</p></td> 
+       <td class="description last"><p>When using Web Audio the audio files can either be decoded at load time or run-time.<br> Audio files can't be played until they are decoded and, if specified, this enables immediate decoding. Decoding is a non-blocking async process, however it consumes huge amounts of CPU time on mobiles especially.</p></td> 
       </tr> 
      </tbody> 
     </table> 
@@ -1126,7 +1153,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-1011">line 1011</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-1034">line 1034</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1182,7 +1209,7 @@
        <td class="type"> <span class="param-type">boolean</span> </td> 
        <td class="attributes"> &lt;optional&gt;<br> </td> 
        <td class="default"> true </td> 
-       <td class="description last"><p>When using Web Audio the audio files can either be decoded at load time or run-time. Audio files can't be played until they are decoded and, if specified, this enables immediate decoding. Decoding is a non-blocking async process, however it consumes huge amounts of CPU time on mobiles especially.</p></td> 
+       <td class="description last"><p>When using Web Audio the audio files can either be decoded at load time or run-time.<br> Audio files can't be played until they are decoded and, if specified, this enables immediate decoding. Decoding is a non-blocking async process, however it consumes huge amounts of CPU time on mobiles especially.</p></td> 
       </tr> 
      </tbody> 
     </table> 
@@ -1199,7 +1226,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-1070">line 1070</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-1093">line 1093</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1213,8 +1240,8 @@
      <p>The key must be a unique String. It is used to add the file to the Phaser.Cache upon successful load.</p> 
      <p>Retrieve the file via <code>Cache.getBinary(key)</code>.</p> 
      <p>The URL can be relative or absolute. If the URL is relative the <code>Loader.baseURL</code> and <code>Loader.path</code> values will be prepended to it.</p> 
-     <p>If the URL isn't specified the Loader will take the key and create a filename from that. For example if the key is "alien" and no URL is given then the Loader will set the URL to be "alien.bin". It will always add <code>.bin</code> as the extension. If you do not desire this action then provide a URL.</p> 
-     <p>It will be loaded via xhr with a responseType of "arraybuffer". You can specify an optional callback to process the file after load. When the callback is called it will be passed 2 parameters: the key of the file and the file data.</p> 
+     <p>If the URL isn't specified the Loader will take the key and create a filename from that. For example if the key is "alien"<br>and no URL is given then the Loader will set the URL to be "alien.bin". It will always add <code>.bin</code> as the extension.<br>If you do not desire this action then provide a URL.</p> 
+     <p>It will be loaded via xhr with a responseType of "arraybuffer". You can specify an optional callback to process the file after load.<br>When the callback is called it will be passed 2 parameters: the key of the file and the file data.</p> 
      <p>WARNING: If a callback is specified the data will be set to whatever it returns. Always return the data object, even if you didn't modify it.</p> 
     </div> 
     <h5>Parameters:</h5> 
@@ -1272,7 +1299,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-888">line 888</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-911">line 911</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1283,13 +1310,13 @@
     <div class="description"> 
      <p>Adds Bitmap Font files to the current load queue.</p> 
      <p>To create the Bitmap Font files you can use:</p> 
-     <p>BMFont (Windows, free): http://www.angelcode.com/products/bmfont/ Glyph Designer (OS X, commercial): http://www.71squared.com/en/glyphdesigner Littera (Web-based, free): http://kvazars.com/littera/</p> 
-     <p>You can choose to either load the data externally, by providing a URL to an xml file. Or you can pass in an XML object or String via the <code>xmlData</code> parameter. If you pass a String the data is automatically run through <code>Loader.parseXML</code> and then immediately added to the Phaser.Cache.</p> 
+     <p>BMFont (Windows, free): http://www.angelcode.com/products/bmfont/<br>Glyph Designer (OS X, commercial): http://www.71squared.com/en/glyphdesigner<br>Littera (Web-based, free): http://kvazars.com/littera/</p> 
+     <p>You can choose to either load the data externally, by providing a URL to an xml file.<br>Or you can pass in an XML object or String via the <code>xmlData</code> parameter.<br>If you pass a String the data is automatically run through <code>Loader.parseXML</code> and then immediately added to the Phaser.Cache.</p> 
      <p>If URLs are provided the files are <strong>not</strong> loaded immediately after calling this method, but are added to the load queue.</p> 
      <p>The key must be a unique String. It is used to add the file to the Phaser.Cache upon successful load.</p> 
-     <p>Retrieve the file via <code>Cache.getBitmapFont(key)</code>. XML files are automatically parsed upon load. If you need to control when the XML is parsed then use <code>Loader.text</code> instead and parse the XML file as needed.</p> 
+     <p>Retrieve the file via <code>Cache.getBitmapFont(key)</code>. XML files are automatically parsed upon load.<br>If you need to control when the XML is parsed then use <code>Loader.text</code> instead and parse the XML file as needed.</p> 
      <p>The URLs can be relative or absolute. If the URL is relative the <code>Loader.baseURL</code> and <code>Loader.path</code> values will be prepended to it.</p> 
-     <p>If the textureURL isn't specified then the Loader will take the key and create a filename from that. For example if the key is "megaFont" and textureURL is null then the Loader will set the URL to be "megaFont.png". The same is true for the atlasURL. If atlasURL isn't specified and no atlasData has been provided then the Loader will set the atlasURL to be the key. For example if the key is "megaFont" the atlasURL will be set to "megaFont.xml".</p> 
+     <p>If the textureURL isn't specified then the Loader will take the key and create a filename from that.<br>For example if the key is "megaFont" and textureURL is null then the Loader will set the URL to be "megaFont.png".<br>The same is true for the atlasURL. If atlasURL isn't specified and no atlasData has been provided then the Loader will<br>set the atlasURL to be the key. For example if the key is "megaFont" the atlasURL will be set to "megaFont.xml".</p> 
      <p>If you do not desire this action then provide URLs and / or a data object.</p> 
     </div> 
     <h5>Parameters:</h5> 
@@ -1361,7 +1388,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-1280">line 1280</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-1307">line 1307</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1408,7 +1435,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-367">line 367</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-390">line 390</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1448,14 +1475,14 @@
       <span class="param-type">any</span> - 
      </div> 
      <div class="returns-desc param-desc"> 
-      <p>Returns an object if found that has 2 properties: <code>index</code> and <code>file</code>; otherwise a non-true value is returned. The index may change and should only be used immediately following this call.</p> 
+      <p>Returns an object if found that has 2 properties: <code>index</code> and <code>file</code>; otherwise a non-true value is returned.<br> The index may change and should only be used immediately following this call.</p> 
      </div> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-418">line 418</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-441">line 441</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1495,14 +1522,14 @@
       <span class="param-type">number</span> - 
      </div> 
      <div class="returns-desc param-desc"> 
-      <p>The index of this key in the filelist, or -1 if not found. The index may change and should only be used immediately following this call</p> 
+      <p>The index of this key in the filelist, or -1 if not found.<br> The index may change and should only be used immediately following this call</p> 
      </div> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-383">line 383</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-406">line 406</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1517,7 +1544,7 @@
      <p>The key must be a unique String. It is used to add the file to the Phaser.Cache upon successful load.</p> 
      <p>Retrieve the image via <code>Cache.getImage(key)</code></p> 
      <p>The URL can be relative or absolute. If the URL is relative the <code>Loader.baseURL</code> and <code>Loader.path</code> values will be prepended to it.</p> 
-     <p>If the URL isn't specified the Loader will take the key and create a filename from that. For example if the key is "alien" and no URL is given then the Loader will set the URL to be "alien.png". It will always add <code>.png</code> as the extension. If you do not desire this action then provide a URL.</p> 
+     <p>If the URL isn't specified the Loader will take the key and create a filename from that. For example if the key is "alien"<br>and no URL is given then the Loader will set the URL to be "alien.png". It will always add <code>.png</code> as the extension.<br>If you do not desire this action then provide a URL.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -1567,7 +1594,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-670">line 670</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-693">line 693</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1583,7 +1610,7 @@
      <p>The keys must be unique Strings. They are used to add the files to the Phaser.Cache upon successful load.</p> 
      <p>Retrieve the images via <code>Cache.getImage(key)</code></p> 
      <p>The URL can be relative or absolute. If the URL is relative the <code>Loader.baseURL</code> and <code>Loader.path</code> values will be prepended to it.</p> 
-     <p>If the URL isn't specified the Loader will take the key and create a filename from that. For example if the key is "alien" and no URL is given then the Loader will set the URL to be "alien.png". It will always add <code>.png</code> as the extension. If you do not desire this action then provide a URL.</p> 
+     <p>If the URL isn't specified the Loader will take the key and create a filename from that. For example if the key is "alien"<br>and no URL is given then the Loader will set the URL to be "alien.png". It will always add <code>.png</code> as the extension.<br>If you do not desire this action then provide a URL.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -1623,7 +1650,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-699">line 699</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-722">line 722</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1635,9 +1662,9 @@
      <p>Adds a JSON file to the current load queue.</p> 
      <p>The file is <strong>not</strong> loaded immediately after calling this method. The file is added to the queue ready to be loaded when the loader starts.</p> 
      <p>The key must be a unique String. It is used to add the file to the Phaser.Cache upon successful load.</p> 
-     <p>Retrieve the file via <code>Cache.getJSON(key)</code>. JSON files are automatically parsed upon load. If you need to control when the JSON is parsed then use <code>Loader.text</code> instead and parse the text file as needed.</p> 
+     <p>Retrieve the file via <code>Cache.getJSON(key)</code>. JSON files are automatically parsed upon load.<br>If you need to control when the JSON is parsed then use <code>Loader.text</code> instead and parse the text file as needed.</p> 
      <p>The URL can be relative or absolute. If the URL is relative the <code>Loader.baseURL</code> and <code>Loader.path</code> values will be prepended to it.</p> 
-     <p>If the URL isn't specified the Loader will take the key and create a filename from that. For example if the key is "alien" and no URL is given then the Loader will set the URL to be "alien.json". It will always add <code>.json</code> as the extension. If you do not desire this action then provide a URL.</p> 
+     <p>If the URL isn't specified the Loader will take the key and create a filename from that. For example if the key is "alien"<br>and no URL is given then the Loader will set the URL to be "alien.json". It will always add <code>.json</code> as the extension.<br>If you do not desire this action then provide a URL.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -1687,7 +1714,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-771">line 771</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-794">line 794</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1697,9 +1724,9 @@
    <dd> 
     <div class="description"> 
      <p>Add a JSON resource pack ('packfile') to the Loader.</p> 
-     <p>A packfile is a JSON file that contains a list of assets to the be loaded. Please see the example 'loader/asset pack' in the Phaser Examples repository.</p> 
+     <p>A packfile is a JSON file that contains a list of assets to the be loaded.<br>Please see the example 'loader/asset pack' in the Phaser Examples repository.</p> 
      <p>Packs are always put before the first non-pack file that is not loaded / loading.</p> 
-     <p>This means that all packs added before any loading has started are added to the front of the file queue, in the order added.</p> 
+     <p>This means that all packs added before any loading has started are added to the front<br>of the file queue, in the order added.</p> 
      <p>The key must be a unique String. It is used to add the file to the Phaser.Cache upon successful load.</p> 
      <p>The URL of the packfile can be relative or absolute. If the URL is relative the <code>Loader.baseURL</code> and <code>Loader.path</code> values will be prepended to it.</p> 
     </div> 
@@ -1758,7 +1785,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-590">line 590</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-613">line 613</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1769,12 +1796,12 @@
     <div class="description"> 
      <p>Adds a physics data file to the current load queue.</p> 
      <p>The data must be in <code>Lime + Corona</code> JSON format. <a href="https://www.codeandweb.com">Physics Editor</a> by code'n'web exports in this format natively.</p> 
-     <p>You can choose to either load the data externally, by providing a URL to a json file. Or you can pass in a JSON object or String via the <code>data</code> parameter. If you pass a String the data is automatically run through <code>JSON.parse</code> and then immediately added to the Phaser.Cache.</p> 
+     <p>You can choose to either load the data externally, by providing a URL to a json file.<br>Or you can pass in a JSON object or String via the <code>data</code> parameter.<br>If you pass a String the data is automatically run through <code>JSON.parse</code> and then immediately added to the Phaser.Cache.</p> 
      <p>If a URL is provided the file is <strong>not</strong> loaded immediately after calling this method, but is added to the load queue.</p> 
      <p>The key must be a unique String. It is used to add the file to the Phaser.Cache upon successful load.</p> 
-     <p>Retrieve the file via <code>Cache.getJSON(key)</code>. JSON files are automatically parsed upon load. If you need to control when the JSON is parsed then use <code>Loader.text</code> instead and parse the text file as needed.</p> 
+     <p>Retrieve the file via <code>Cache.getJSON(key)</code>. JSON files are automatically parsed upon load.<br>If you need to control when the JSON is parsed then use <code>Loader.text</code> instead and parse the text file as needed.</p> 
      <p>The URL can be relative or absolute. If the URL is relative the <code>Loader.baseURL</code> and <code>Loader.path</code> values will be prepended to it.</p> 
-     <p>If the URL isn't specified and no data is given then the Loader will take the key and create a filename from that. For example if the key is "alien" and no URL or data is given then the Loader will set the URL to be "alien.json". It will always use <code>.json</code> as the extension.</p> 
+     <p>If the URL isn't specified and no data is given then the Loader will take the key and create a filename from that.<br>For example if the key is "alien" and no URL or data is given then the Loader will set the URL to be "alien.json".<br>It will always use <code>.json</code> as the extension.</p> 
      <p>If you do not desire this action then provide a URL or data object.</p> 
     </div> 
     <h5>Parameters:</h5> 
@@ -1832,7 +1859,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-1219">line 1219</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-1246">line 1246</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1855,7 +1882,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-1695">line 1695</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-1722">line 1722</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1901,7 +1928,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-1671">line 1671</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-1698">line 1698</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -1956,7 +1983,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-574">line 574</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-597">line 597</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2009,7 +2036,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-442">line 442</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-465">line 465</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2033,7 +2060,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-350">line 350</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-373">line 373</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2046,9 +2073,9 @@
      <p>The file is <strong>not</strong> loaded immediately after calling this method. The file is added to the queue ready to be loaded when the loader starts.</p> 
      <p>The key must be a unique String.</p> 
      <p>The URL can be relative or absolute. If the URL is relative the <code>Loader.baseURL</code> and <code>Loader.path</code> values will be prepended to it.</p> 
-     <p>If the URL isn't specified the Loader will take the key and create a filename from that. For example if the key is "alien" and no URL is given then the Loader will set the URL to be "alien.js". It will always add <code>.js</code> as the extension. If you do not desire this action then provide a URL.</p> 
+     <p>If the URL isn't specified the Loader will take the key and create a filename from that. For example if the key is "alien"<br>and no URL is given then the Loader will set the URL to be "alien.js". It will always add <code>.js</code> as the extension.<br>If you do not desire this action then provide a URL.</p> 
      <p>Upon successful load the JavaScript is automatically turned into a script tag and executed, so be careful what you load!</p> 
-     <p>A callback, which will be invoked as the script tag has been created, can also be specified. The callback must return relevant <code>data</code>.</p> 
+     <p>A callback, which will be invoked as the script tag has been created, can also be specified.<br>The callback must return relevant <code>data</code>.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -2105,7 +2132,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-853">line 853</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-876">line 876</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2115,7 +2142,7 @@
    <dd> 
     <div class="description"> 
      <p>Set a Sprite to be a "preload" sprite by passing it to this method.</p> 
-     <p>A "preload" sprite will have its width or height crop adjusted based on the percentage of the loader in real-time. This allows you to easily make loading bars for games.</p> 
+     <p>A "preload" sprite will have its width or height crop adjusted based on the percentage of the loader in real-time.<br>This allows you to easily make loading bars for games.</p> 
      <p>The sprite will automatically be made visible when calling this.</p> 
     </div> 
     <h5>Parameters:</h5> 
@@ -2150,7 +2177,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-315">line 315</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-338">line 338</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2164,7 +2191,7 @@
      <p>The key must be a unique String. It is used to add the file to the Phaser.Cache upon successful load.</p> 
      <p>Retrieve the file via <code>Cache.getShader(key)</code>.</p> 
      <p>The URL can be relative or absolute. If the URL is relative the <code>Loader.baseURL</code> and <code>Loader.path</code> values will be prepended to it.</p> 
-     <p>If the URL isn't specified the Loader will take the key and create a filename from that. For example if the key is "blur" and no URL is given then the Loader will set the URL to be "blur.frag". It will always add <code>.frag</code> as the extension. If you do not desire this action then provide a URL.</p> 
+     <p>If the URL isn't specified the Loader will take the key and create a filename from that. For example if the key is "blur"<br>and no URL is given then the Loader will set the URL to be "blur.frag". It will always add <code>.frag</code> as the extension.<br>If you do not desire this action then provide a URL.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -2214,7 +2241,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-799">line 799</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-822">line 822</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2225,11 +2252,11 @@
     <div class="description"> 
      <p>Adds a Sprite Sheet to the current load queue.</p> 
      <p>The file is <strong>not</strong> loaded immediately after calling this method. The file is added to the queue ready to be loaded when the loader starts.</p> 
-     <p>To clarify the terminology that Phaser uses: A Sprite Sheet is an image containing frames, usually of an animation, that are all equal dimensions and often in sequence. For example if the frame size is 32x32 then every frame in the sprite sheet will be that size. Sometimes (outside of Phaser) the term "sprite sheet" is used to refer to a texture atlas. A Texture Atlas works by packing together images as best it can, using whatever frame sizes it likes, often with cropping and trimming the frames in the process. Software such as Texture Packer, Flash CC or Shoebox all generate texture atlases, not sprite sheets. If you've got an atlas then use <code>Loader.atlas</code> instead.</p> 
+     <p>To clarify the terminology that Phaser uses: A Sprite Sheet is an image containing frames, usually of an animation, that are all equal<br>dimensions and often in sequence. For example if the frame size is 32x32 then every frame in the sprite sheet will be that size.<br>Sometimes (outside of Phaser) the term "sprite sheet" is used to refer to a texture atlas.<br>A Texture Atlas works by packing together images as best it can, using whatever frame sizes it likes, often with cropping and trimming<br>the frames in the process. Software such as Texture Packer, Flash CC or Shoebox all generate texture atlases, not sprite sheets.<br>If you've got an atlas then use <code>Loader.atlas</code> instead.</p> 
      <p>The key must be a unique String. It is used to add the image to the Phaser.Cache upon successful load.</p> 
      <p>Retrieve the file via <code>Cache.getImage(key)</code>. Sprite sheets, being image based, live in the same Cache as all other Images.</p> 
      <p>The URL can be relative or absolute. If the URL is relative the <code>Loader.baseURL</code> and <code>Loader.path</code> values will be prepended to it.</p> 
-     <p>If the URL isn't specified the Loader will take the key and create a filename from that. For example if the key is "alien" and no URL is given then the Loader will set the URL to be "alien.png". It will always add <code>.png</code> as the extension. If you do not desire this action then provide a URL.</p> 
+     <p>If the URL isn't specified the Loader will take the key and create a filename from that. For example if the key is "alien"<br>and no URL is given then the Loader will set the URL to be "alien.png". It will always add <code>.png</code> as the extension.<br>If you do not desire this action then provide a URL.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -2307,7 +2334,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-926">line 926</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-949">line 949</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2322,7 +2349,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-1708">line 1708</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-1735">line 1735</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2336,7 +2363,7 @@
      <p>The key must be a unique String. It is used to add the file to the Phaser.Cache upon successful load.</p> 
      <p>Retrieve the file via <code>Cache.getText(key)</code></p> 
      <p>The URL can be relative or absolute. If the URL is relative the <code>Loader.baseURL</code> and <code>Loader.path</code> values will be prepended to it.</p> 
-     <p>If the URL isn't specified the Loader will take the key and create a filename from that. For example if the key is "alien" and no URL is given then the Loader will set the URL to be "alien.txt". It will always add <code>.txt</code> as the extension. If you do not desire this action then provide a URL.</p> 
+     <p>If the URL isn't specified the Loader will take the key and create a filename from that. For example if the key is "alien"<br>and no URL is given then the Loader will set the URL to be "alien.txt". It will always add <code>.txt</code> as the extension.<br>If you do not desire this action then provide a URL.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -2386,7 +2413,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-744">line 744</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-767">line 767</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2396,12 +2423,14 @@
    <dd> 
     <div class="description"> 
      <p>Adds a Tile Map data file to the current load queue.</p> 
-     <p>You can choose to either load the data externally, by providing a URL to a json file. Or you can pass in a JSON object or String via the <code>data</code> parameter. If you pass a String the data is automatically run through <code>JSON.parse</code> and then immediately added to the Phaser.Cache.</p> 
+     <p>Phaser can load data in two different formats: CSV and Tiled JSON.</p> 
+     <p>Tiled is a free software package, specifically for creating tilemaps, and is available from http://www.mapeditor.org</p> 
+     <p>You can choose to either load the data externally, by providing a URL to a json file.<br>Or you can pass in a JSON object or String via the <code>data</code> parameter.<br>If you pass a String the data is automatically run through <code>JSON.parse</code> and then immediately added to the Phaser.Cache.</p> 
      <p>If a URL is provided the file is <strong>not</strong> loaded immediately after calling this method, but is added to the load queue.</p> 
      <p>The key must be a unique String. It is used to add the file to the Phaser.Cache upon successful load.</p> 
-     <p>Retrieve the file via <code>Cache.getTilemapData(key)</code>. JSON files are automatically parsed upon load. If you need to control when the JSON is parsed then use <code>Loader.text</code> instead and parse the text file as needed.</p> 
+     <p>Retrieve the file via <code>Cache.getTilemapData(key)</code>. JSON files are automatically parsed upon load.<br>If you need to control when the JSON is parsed then use <code>Loader.text</code> instead and parse the text file as needed.</p> 
      <p>The URL can be relative or absolute. If the URL is relative the <code>Loader.baseURL</code> and <code>Loader.path</code> values will be prepended to it.</p> 
-     <p>If the URL isn't specified and no data is given then the Loader will take the key and create a filename from that. For example if the key is "level1" and no URL or data is given then the Loader will set the URL to be "level1.json". If you set the format to be Tilemap.CSV it will set the URL to be "level1.csv" instead.</p> 
+     <p>If the URL isn't specified and no data is given then the Loader will take the key and create a filename from that.<br>For example if the key is "level1" and no URL or data is given then the Loader will set the URL to be "level1.json".<br>If you set the format to be Tilemap.CSV it will set the URL to be "level1.csv" instead.</p> 
      <p>If you do not desire this action then provide a URL or data object.</p> 
     </div> 
     <h5>Parameters:</h5> 
@@ -2459,7 +2488,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-1142">line 1142</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-1165">line 1165</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2491,7 +2520,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-2951">line 2951</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-2988">line 2988</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2523,7 +2552,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-2977">line 2977</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-3014">line 3014</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2555,7 +2584,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-2964">line 2964</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-3001">line 3001</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2587,7 +2616,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-2990">line 2990</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-3027">line 3027</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2642,7 +2671,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-2036">line 2036</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-2063">line 2063</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2682,21 +2711,21 @@
        <td class="type"> <span class="param-type">string</span> | <span class="param-type">Array.&lt;string&gt;</span> | <span class="param-type">Array.&lt;object&gt;</span> </td> 
        <td class="attributes"> </td> 
        <td class="default"> </td> 
-       <td class="description last"><p>Either a single string or an array of URIs or pairs of <code>{uri: .., type: ..}</code>. If an array is specified then the first URI (or URI + mime pair) that is device-compatible will be selected. For example: <code>"boom.mp4"</code>, <code>['boom.mp4', 'boom.ogg', 'boom.webm']</code>, or <code>[{uri: "data:&lt;opus_resource&gt;", type: 'opus'}, 'fallback.mp4']</code>. BLOB and DATA URIs can be used but only support automatic detection when used in the pair form; otherwise the format must be manually checked before adding the resource.</p></td> 
+       <td class="description last"><p>Either a single string or an array of URIs or pairs of <code>{uri: .., type: ..}</code>.<br> If an array is specified then the first URI (or URI + mime pair) that is device-compatible will be selected.<br> For example: <code>"boom.mp4"</code>, <code>['boom.mp4', 'boom.ogg', 'boom.webm']</code>, or <code>[{uri: "data:&lt;opus_resource&gt;", type: 'opus'}, 'fallback.mp4']</code>.<br> BLOB and DATA URIs can be used but only support automatic detection when used in the pair form; otherwise the format must be manually checked before adding the resource.</p></td> 
       </tr> 
       <tr> 
        <td class="name"><code>loadEvent</code></td> 
        <td class="type"> <span class="param-type">string</span> </td> 
        <td class="attributes"> &lt;optional&gt;<br> </td> 
        <td class="default"> 'canplaythrough' </td> 
-       <td class="description last"><p>This sets the Video source event to listen for before the load is considered complete. 'canplaythrough' implies the video has downloaded enough, and bandwidth is high enough that it can be played to completion. 'canplay' implies the video has downloaded enough to start playing, but not necessarily to finish. 'loadeddata' just makes sure that the video meta data and first frame have downloaded. Phaser uses this value automatically if the browser is detected as being Firefox and no <code>loadEvent</code> is given, otherwise it defaults to <code>canplaythrough</code>.</p></td> 
+       <td class="description last"><p>This sets the Video source event to listen for before the load is considered complete.<br> 'canplaythrough' implies the video has downloaded enough, and bandwidth is high enough that it can be played to completion.<br> 'canplay' implies the video has downloaded enough to start playing, but not necessarily to finish.<br> 'loadeddata' just makes sure that the video meta data and first frame have downloaded. Phaser uses this value automatically if the<br> browser is detected as being Firefox and no <code>loadEvent</code> is given, otherwise it defaults to <code>canplaythrough</code>.</p></td> 
       </tr> 
       <tr> 
        <td class="name"><code>asBlob</code></td> 
        <td class="type"> <span class="param-type">boolean</span> </td> 
        <td class="attributes"> &lt;optional&gt;<br> </td> 
        <td class="default"> false </td> 
-       <td class="description last"><p>Video files can either be loaded via the creation of a video element which has its src property set. Or they can be loaded via xhr, stored as binary data in memory and then converted to a Blob. This isn't supported in IE9 or Android 2. If you need to have the same video playing at different times across multiple Sprites then you need to load it as a Blob.</p></td> 
+       <td class="description last"><p>Video files can either be loaded via the creation of a video element which has its src property set.<br> Or they can be loaded via xhr, stored as binary data in memory and then converted to a Blob. This isn't supported in IE9 or Android 2.<br> If you need to have the same video playing at different times across multiple Sprites then you need to load it as a Blob.</p></td> 
       </tr> 
      </tbody> 
     </table> 
@@ -2713,7 +2742,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-1088">line 1088</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-1111">line 1111</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2723,7 +2752,7 @@
    <dd> 
     <div class="description"> 
      <p>Add a synchronization point to the assets/files added within the supplied callback.</p> 
-     <p>A synchronization point denotes that an asset <em>must</em> be completely loaded before subsequent assets can be loaded. An asset marked as a sync-point does not need to wait for previous assets to load (unless they are sync-points). Resources, such as packs, may still be downloaded around sync-points, as long as they do not finalize loading.</p> 
+     <p>A synchronization point denotes that an asset <em>must</em> be completely loaded before<br>subsequent assets can be loaded. An asset marked as a sync-point does not need to wait<br>for previous assets to load (unless they are sync-points). Resources, such as packs, may still<br>be downloaded around sync-points, as long as they do not finalize loading.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -2766,7 +2795,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-1622">line 1622</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-1649">line 1649</a> 
      </dt> 
     </dl> 
    </dd> 
@@ -2780,7 +2809,7 @@
      <p>The key must be a unique String. It is used to add the file to the Phaser.Cache upon successful load.</p> 
      <p>Retrieve the file via <code>Cache.getXML(key)</code>.</p> 
      <p>The URL can be relative or absolute. If the URL is relative the <code>Loader.baseURL</code> and <code>Loader.path</code> values will be prepended to it.</p> 
-     <p>If the URL isn't specified the Loader will take the key and create a filename from that. For example if the key is "alien" and no URL is given then the Loader will set the URL to be "alien.xml". It will always add <code>.xml</code> as the extension. If you do not desire this action then provide a URL.</p> 
+     <p>If the URL isn't specified the Loader will take the key and create a filename from that. For example if the key is "alien"<br>and no URL is given then the Loader will set the URL to be "alien.xml". It will always add <code>.xml</code> as the extension.<br>If you do not desire this action then provide a URL.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -2830,7 +2859,7 @@
      <dt class="tag-source">
       Source - 
       <a href="src_loader_Loader.js.html">loader/Loader.js</a>, 
-      <a href="src_loader_Loader.js.html#sunlight-1-line-826">line 826</a> 
+      <a href="src_loader_Loader.js.html#sunlight-1-line-849">line 849</a> 
      </dt> 
     </dl> 
    </dd> 

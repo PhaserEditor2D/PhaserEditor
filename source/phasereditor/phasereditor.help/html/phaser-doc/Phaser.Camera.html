@@ -10,7 +10,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>A Camera is your view into the game world. It has a position and size and renders only those objects within its field of view. The game automatically creates a single Stage sized camera on boot. Move the camera around the world with Phaser.Camera.x/y</p> 
+     <p>A Camera is your view into the game world. It has a position and size and renders only those objects within its field of view.<br>The game automatically creates a single Stage sized camera on boot. Move the camera around the world with Phaser.Camera.x/y</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -181,7 +181,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>The Camera is bound to this Rectangle and cannot move outside of it. By default it is enabled and set to the size of the World. The Rectangle can be located anywhere in the world and updated as often as you like. If you don't wish the Camera to be bound at all then set this to null. The values can be anything and are in World coordinates, with 0,0 being the top-left of the world. The Rectangle in which the Camera is bounded. Set to null to allow for movement anywhere.</p> 
+     <p>The Camera is bound to this Rectangle and cannot move outside of it. By default it is enabled and set to the size of the World.<br>The Rectangle can be located anywhere in the world and updated as often as you like. If you don't wish the Camera to be bound<br>at all then set this to null. The values can be anything and are in World coordinates, with 0,0 being the top-left of the world. The Rectangle in which the Camera is bounded. Set to null to allow for movement anywhere.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -207,7 +207,7 @@
     </dl> 
    </dd> 
    <dt> 
-    <h4 class="name " id="displayObject"><span class="type-signature"></span>displayObject<span class="type-signature"> :<a href="PIXI.DisplayObject.html">PIXI.DisplayObject</a></span></h4> 
+    <h4 class="name " id="displayObject"><span class="type-signature"></span>displayObject<span class="type-signature"> :PIXI.DisplayObject</span></h4> 
    </dt> 
    <dd> 
     <div class="description"> 
@@ -294,7 +294,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>The linear interpolation value to use when following a target. The default values of 1 means the camera will instantly snap to the target coordinates. A lower value, such as 0.1 means the camera will more slowly track the target, giving a smooth transition. You can set the horizontal and vertical values independently, and also adjust this value in real-time during your game.</p> 
+     <p>The linear interpolation value to use when following a target.<br>The default values of 1 means the camera will instantly snap to the target coordinates.<br>A lower value, such as 0.1 means the camera will more slowly track the target, giving<br>a smooth transition. You can set the horizontal and vertical values independently, and also<br>adjust this value in real-time during your game.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -309,7 +309,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>This signal is dispatched when the camera fade effect completes. When the fade effect completes you will be left with the screen black (or whatever color you faded to). In order to reset this call <code>Camera.resetFX</code>. This is called automatically when you change State.</p> 
+     <p>This signal is dispatched when the camera fade effect completes.<br>When the fade effect completes you will be left with the screen black (or whatever<br>color you faded to). In order to reset this call <code>Camera.resetFX</code>. This is called<br>automatically when you change State.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -452,7 +452,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Camera view. The view into the world we wish to render (by default the game dimensions). The x/y values are in world coordinates, not screen coordinates, the width/height is how many pixels to render. Sprites outside of this view are not rendered if Sprite.autoCull is set to <code>true</code>. Otherwise they are always rendered.</p> 
+     <p>Camera view.<br>The view into the world we wish to render (by default the game dimensions).<br>The x/y values are in world coordinates, not screen coordinates, the width/height is how many pixels to render.<br>Sprites outside of this view are not rendered if Sprite.autoCull is set to <code>true</code>. Otherwise they are always rendered.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -553,7 +553,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Method called to ensure the camera doesn't venture outside of the game world. Called automatically by Camera.update.</p> 
+     <p>Method called to ensure the camera doesn't venture outside of the game world.<br>Called automatically by Camera.update.</p> 
     </div> 
     <dl class="details"> 
      <dt class="important tag-deprecated">
@@ -576,9 +576,9 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>This creates a camera fade effect. It works by filling the game with the color specified, over the duration given, ending with a solid fill.</p> 
+     <p>This creates a camera fade effect. It works by filling the game with the<br>color specified, over the duration given, ending with a solid fill.</p> 
      <p>You can use this for things such as transitioning to a new scene.</p> 
-     <p>The game will be left 'filled' at the end of this effect, likely obscuring everything. In order to reset it you can call <code>Camera.resetFX</code> and it will clear the fade. Or you can call <code>Camera.flash</code> with the same color as the fade, and it will reverse the process, bringing the game back into view again.</p> 
+     <p>The game will be left 'filled' at the end of this effect, likely obscuring<br>everything. In order to reset it you can call <code>Camera.resetFX</code> and it will clear the<br>fade. Or you can call <code>Camera.flash</code> with the same color as the fade, and it will<br>reverse the process, bringing the game back into view again.</p> 
      <p>When the effect ends the signal Camera.onFadeComplete is dispatched.</p> 
     </div> 
     <h5>Parameters:</h5> 
@@ -638,7 +638,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>This creates a camera flash effect. It works by filling the game with the solid fill color specified, and then fading it away to alpha 0 over the duration given.</p> 
+     <p>This creates a camera flash effect. It works by filling the game with the solid fill<br>color specified, and then fading it away to alpha 0 over the duration given.</p> 
      <p>You can use this for things such as hit feedback effects.</p> 
      <p>When the effect ends the signal Camera.onFlashComplete is dispatched.</p> 
     </div> 
@@ -769,8 +769,8 @@
    <dd> 
     <div class="description"> 
      <p>Tell the camera which sprite to follow.</p> 
-     <p>You can set the follow type and a linear interpolation value. Use low lerp values (such as 0.1) to automatically smooth the camera motion.</p> 
-     <p>If you find you're getting a slight "jitter" effect when following a Sprite it's probably to do with sub-pixel rendering of the Sprite position. This can be disabled by setting <code>game.renderer.renderSession.roundPixels = true</code> to force full pixel rendering.</p> 
+     <p>You can set the follow type and a linear interpolation value.<br>Use low lerp values (such as 0.1) to automatically smooth the camera motion.</p> 
+     <p>If you find you're getting a slight "jitter" effect when following a Sprite it's probably to do with sub-pixel rendering of the Sprite position.<br>This can be disabled by setting <code>game.renderer.renderSession.roundPixels = true</code> to force full pixel rendering.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -842,7 +842,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Resets the camera back to 0,0 and un-follows any object it may have been tracking. Also immediately resets any camera effects that may have been running such as shake, flash or fade.</p> 
+     <p>Resets the camera back to 0,0 and un-follows any object it may have been tracking.<br>Also immediately resets any camera effects that may have been running such as<br>shake, flash or fade.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -857,7 +857,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Resets any active FX, such as a fade or flash and immediately clears it. Useful to calling after a fade in order to remove the fade from the Stage.</p> 
+     <p>Resets any active FX, such as a fade or flash and immediately clears it.<br>Useful to calling after a fade in order to remove the fade from the Stage.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -887,7 +887,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>A helper function to set both the X and Y properties of the camera at once without having to use game.camera.x and game.camera.y.</p> 
+     <p>A helper function to set both the X and Y properties of the camera at once<br>without having to use game.camera.x and game.camera.y.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -961,7 +961,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>This creates a camera shake effect. It works by applying a random amount of additional spacing on the x and y axis each frame. You can control the intensity and duration of the effect, and if it should effect both axis or just one.</p> 
+     <p>This creates a camera shake effect. It works by applying a random amount of additional<br>spacing on the x and y axis each frame. You can control the intensity and duration<br>of the effect, and if it should effect both axis or just one.</p> 
      <p>When the shake effect ends the signal Camera.onShakeComplete is dispatched.</p> 
     </div> 
     <h5>Parameters:</h5> 

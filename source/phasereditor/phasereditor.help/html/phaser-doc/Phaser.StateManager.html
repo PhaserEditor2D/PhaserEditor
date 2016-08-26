@@ -282,8 +282,8 @@
    <dd> 
     <div class="description"> 
      <p>onStateChange is a Phaser.Signal that is dispatched whenever the game changes state.</p> 
-     <p>It is dispatched only when the new state is started, which isn't usually at the same time as StateManager.start is called because state swapping is done in sync with the game loop. It is dispatched <em>before</em> any of the new states methods (such as preload and create) are called, and <em>after</em> the previous states shutdown method has been run.</p> 
-     <p>The callback you specify is sent two parameters: the string based key of the new state, and the second parameter is the string based key of the old / previous state.</p> 
+     <p>It is dispatched only when the new state is started, which isn't usually at the same time as StateManager.start<br>is called because state swapping is done in sync with the game loop. It is dispatched <em>before</em> any of the new states<br>methods (such as preload and create) are called, and <em>after</em> the previous states shutdown method has been run.</p> 
+     <p>The callback you specify is sent two parameters: the string based key of the new state,<br>and the second parameter is the string based key of the old / previous state.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -331,7 +331,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Adds a new State into the StateManager. You must give each State a unique key by which you'll identify it. The State can be either a Phaser.State object (or an object that extends it), a plain JavaScript object or a function. If a function is given a new state object will be created by calling it.</p> 
+     <p>Adds a new State into the StateManager. You must give each State a unique key by which you'll identify it.<br>The State can be either a Phaser.State object (or an object that extends it), a plain JavaScript object or a function.<br>If a function is given a new state object will be created by calling it.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -422,7 +422,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>This method clears the current State, calling its shutdown callback. The process also removes any active tweens, resets the camera, resets input, clears physics, removes timers and if set clears the world and cache too.</p> 
+     <p>This method clears the current State, calling its shutdown callback. The process also removes any active tweens,<br>resets the camera, resets input, clears physics, removes timers and if set clears the world and cache too.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
@@ -437,7 +437,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Removes all StateManager callback references to the State object, nulls the game reference and clears the States object. You don't recover from this without rebuilding the Phaser instance again.</p> 
+     <p>Removes all StateManager callback references to the State object, nulls the game reference and clears the States object.<br>You don't recover from this without rebuilding the Phaser instance again.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">

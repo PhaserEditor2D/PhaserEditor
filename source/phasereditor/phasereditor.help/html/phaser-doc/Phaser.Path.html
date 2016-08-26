@@ -1,0 +1,962 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: Path</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a>.</span> Path </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="Path"><span class="type-signature"></span>new Path<span class="signature">(game, <span class="optional">type</span>, <span class="optional">loops</span>)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A Phaser.Path contains all the functions need to create and manipulate a single Path object.<br>A Path is a list of PathPoint objects connected by Hermite curves.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>game</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Game.html">Phaser.Game</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>A reference to the Phaser.Game instance.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>type</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> Phaser.Path.CoordinateSystems.WORLD </td> 
+       <td class="description last"><p>The coordinate system used by the Path.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>loops</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>Should this Path loop or not when a PathFollower reaches the end of it?</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_plugins_path_Path.js.html">plugins/path/Path.js</a>, 
+      <a href="src_plugins_path_Path.js.html#sunlight-1-line-18">line 18</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="cacheKey"><span class="type-signature"></span>cacheKey<span class="type-signature"> :string</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The key of the JSON file in the cache used to define this path.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_plugins_path_Path.js.html">plugins/path/Path.js</a>, 
+      <a href="src_plugins_path_Path.js.html#sunlight-1-line-41">line 41</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="coordinateSystem"><span class="type-signature"></span>coordinateSystem<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The coordinate system used by the Path.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_plugins_path_Path.js.html">plugins/path/Path.js</a>, 
+      <a href="src_plugins_path_Path.js.html#sunlight-1-line-31">line 31</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="game"><span class="type-signature"></span>game<span class="type-signature"> :<a href="Phaser.Game.html">Phaser.Game</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A reference to the currently running game.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_plugins_path_Path.js.html">plugins/path/Path.js</a>, 
+      <a href="src_plugins_path_Path.js.html#sunlight-1-line-26">line 26</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="key"><span class="type-signature"></span>key<span class="type-signature"> :string</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The key of the object within the JSON data. Used if there are multiple paths per JSON file.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_plugins_path_Path.js.html">plugins/path/Path.js</a>, 
+      <a href="src_plugins_path_Path.js.html#sunlight-1-line-46">line 46</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="loops"><span class="type-signature"></span>loops<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Should this Path loop or not when a PathFollower reaches the end of it?</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_plugins_path_Path.js.html">plugins/path/Path.js</a>, 
+      <a href="src_plugins_path_Path.js.html#sunlight-1-line-36">line 36</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+  <h3 class="subsection-title">Methods</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="addPathPoint"><span class="type-signature"></span>addPathPoint<span class="signature">(<span class="optional">x</span>, <span class="optional">y</span>, <span class="optional">vx</span>, <span class="optional">vy</span>, <span class="optional">speed</span>, <span class="optional">data</span>, <span class="optional">index</span>)</span><span class="type-signature"> ? {<a href="Phaser.PathPoint.html">Phaser.PathPoint</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Creates a new PathPoint object, relative to the path origin, and adds it to this path.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>x</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>The x position of the PathPoint.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>y</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>The y position of the PathPoint.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>vx</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>The vx tangent vector value of the PathPoint.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>vy</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>The vy tangent vector value of the PathPoint.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>speed</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 1 </td> 
+       <td class="description last"><p>The speed value of the PathPoint.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>data</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> {} </td> 
+       <td class="description last"><p>The data object</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>index</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> null </td> 
+       <td class="description last"><p>The index of the new path point. If not given, will add point to end of point list.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.PathPoint.html">Phaser.PathPoint</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The PathPoint object that was created.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_plugins_path_Path.js.html">plugins/path/Path.js</a>, 
+      <a href="src_plugins_path_Path.js.html#sunlight-1-line-205">line 205</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="atEnd"><span class="type-signature"></span>atEnd<span class="signature">(index)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Is the given PathPoint index the end of this path?</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>index</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The index of the PathPoint to test.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>true if index is the last point in this path.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_plugins_path_Path.js.html">plugins/path/Path.js</a>, 
+      <a href="src_plugins_path_Path.js.html#sunlight-1-line-516">line 516</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="clone"><span class="type-signature"></span>clone<span class="signature">()</span><span class="type-signature"> ? {<a href="Phaser.Path.html">Phaser.Path</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Clone this Path object. It clones the origin and points data.</p> 
+    </div> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Path.html">Phaser.Path</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The cloned Path.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_plugins_path_Path.js.html">plugins/path/Path.js</a>, 
+      <a href="src_plugins_path_Path.js.html#sunlight-1-line-185">line 185</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="create"><span class="type-signature"></span>create<span class="signature">(coordinateSystem, <span class="optional">loops</span>)</span><span class="type-signature"> ? {<a href="Phaser.Path.html">Phaser.Path</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Initialize a Path based on the given coordinate system.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>coordinateSystem</code></td> 
+       <td class="type"> <span class="param-type">number</span> | <span class="param-type">string</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The Phaser.Path.CoordinateSystems type to use.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>loops</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>Should this Path loop or not when a PathFollower reaches the end of it?</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Path.html">Phaser.Path</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This Path object.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_plugins_path_Path.js.html">plugins/path/Path.js</a>, 
+      <a href="src_plugins_path_Path.js.html#sunlight-1-line-148">line 148</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="debug"><span class="type-signature"></span>debug<span class="signature">(ctx, <span class="optional">active</span>)</span><span class="type-signature"> ? {<a href="Phaser.Path.html">Phaser.Path</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Draw the path on given canvas context. Used for debugging.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>ctx</code></td> 
+       <td class="type"> <span class="param-type">CanvasContext2D</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The canvas context to draw the path on.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>active</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>Whether or not to highlight the active segments of this Path or not.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Path.html">Phaser.Path</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This Path object.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_plugins_path_Path.js.html">plugins/path/Path.js</a>, 
+      <a href="src_plugins_path_Path.js.html#sunlight-1-line-693">line 693</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="getControlPointsOnThisCurve"><span class="type-signature"></span>getControlPointsOnThisCurve<span class="signature">(curve)</span><span class="type-signature"> ? {array}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Gets the points on the curve representing the end points of the line segments that make up the curve.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>curve</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Hermite.html">Phaser.Hermite</a></span> </td> 
+       <td class="description last"><p>A Phaser.Hermite curve.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">array</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>An array of points representing the end points of 10 line segments that make up the curve.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_plugins_path_Path.js.html">plugins/path/Path.js</a>, 
+      <a href="src_plugins_path_Path.js.html#sunlight-1-line-343">line 343</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="getCurve"><span class="type-signature"></span>getCurve<span class="signature">(<span class="optional">index</span>)</span><span class="type-signature"> ? {<a href="Phaser.Hermite.html">Phaser.Hermite</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Get the curve from the given point index to the next.</p> 
+     <p>If the curve has been created previously, use that definition again, otherwise calculate it now.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>index</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>The index of the point in this path to get the curve from.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Hermite.html">Phaser.Hermite</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>A new Hermite object representing the curve starting at the 'index' path point.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_plugins_path_Path.js.html">plugins/path/Path.js</a>, 
+      <a href="src_plugins_path_Path.js.html#sunlight-1-line-429">line 429</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="getPathPoint"><span class="type-signature"></span>getPathPoint<span class="signature">(index, point)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Get a PathPoint from this path. Automatically handles path looping.</p> 
+     <p>The values from the PathPoint are copied into the given PathPoint object, which must<br>be a reference to a pre-existing PathPoint, as it's not returned by this method.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>index</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The index of the point in this path to get.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>point</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.PathPoint.html">Phaser.PathPoint</a></span> </td> 
+       <td class="description last"><p>A PathPoint object into which the found point object is cloned.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>false if the index is past the end of the path and it doesn't loop, otherwise true.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_plugins_path_Path.js.html">plugins/path/Path.js</a>, 
+      <a href="src_plugins_path_Path.js.html#sunlight-1-line-360">line 360</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="getPathPointReference"><span class="type-signature"></span>getPathPointReference<span class="signature">(index)</span><span class="type-signature"> ? {<a href="Phaser.PathPoint.html">Phaser.PathPoint</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Get a reference to a PathPoint from this Path, handle path looping.</p> 
+     <p>NOTE: because this is a PathPoint reference, it does not take into account the coordinateSystem selected, it will be WORLD, or OFFSET unmodified</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>index</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The index of the point in this path to get.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.PathPoint.html">Phaser.PathPoint</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>A reference to the PathPoint object in this Path, or null if index is out of range.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_plugins_path_Path.js.html">plugins/path/Path.js</a>, 
+      <a href="src_plugins_path_Path.js.html#sunlight-1-line-405">line 405</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="getPointOnThisCurve"><span class="type-signature"></span>getPointOnThisCurve<span class="signature">(curve, <span class="optional">t</span>)</span><span class="type-signature"> ? {<a href="Phaser.Point.html">Phaser.Point</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Get a point on the the current Path curve.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>curve</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Hermite.html">Phaser.Hermite</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>A Phaser.Hermite curve object.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>t</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 .. 1.0 </td> 
+       <td class="description last"><p>The distance on the curve to get the point from. Where 0 is the start of the curve, and 1 is the end.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Point.html">Phaser.Point</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>A point containing the x and y values at the specified distance (t) value in the curve.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_plugins_path_Path.js.html">plugins/path/Path.js</a>, 
+      <a href="src_plugins_path_Path.js.html#sunlight-1-line-319">line 319</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="pointIndex"><span class="type-signature"></span>pointIndex<span class="signature">(pathPoint)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Find the first matching PathPoint in this path.<br>It works by taking the given PathPoint object, and then iterating through all points<br>in this Path until it finds one with the same values, then returns the index to it.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>pathPoint</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.PathPoint.html">Phaser.PathPoint</a></span> </td> 
+       <td class="description last"><p>The PathPoint object that will have its values compared to all the points in this Path.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The index of the PathPoint in this Path if an equal match is found, or -1 if no match is found.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_plugins_path_Path.js.html">plugins/path/Path.js</a>, 
+      <a href="src_plugins_path_Path.js.html#sunlight-1-line-481">line 481</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="processData"><span class="type-signature"></span>processData<span class="signature">(follower, pathPointIndex, reversing)</span><span class="type-signature"> ? {<a href="Phaser.PathPoint.html">Phaser.PathPoint</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Process the data associated with a point on this Path.<br>Used by Phaser.PathFollower objects as they pass each control point.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>follower</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.PathFollower.html">Phaser.PathFollower</a></span> </td> 
+       <td class="description last"><p>The PathFollower that is processing the data.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>pathPointIndex</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The index of the path point to process.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>reversing</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="description last"><p>Whether or not the follower is traversing the path in reverse.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.PathPoint.html">Phaser.PathPoint</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The PathPoint that has been processed.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_plugins_path_Path.js.html">plugins/path/Path.js</a>, 
+      <a href="src_plugins_path_Path.js.html#sunlight-1-line-552">line 552</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="removePathPoint"><span class="type-signature"></span>removePathPoint<span class="signature">(<span class="optional">index</span>)</span><span class="type-signature"> ? {<a href="Phaser.PathPoint.html">Phaser.PathPoint</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Remove a PathPoint from this paths point list.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>index</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>The index of the PathPoint to remove.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.PathPoint.html">Phaser.PathPoint</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The removed PathPoint object.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_plugins_path_Path.js.html">plugins/path/Path.js</a>, 
+      <a href="src_plugins_path_Path.js.html#sunlight-1-line-240">line 240</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="setOffset"><span class="type-signature"></span>setOffset<span class="signature">(x, y)</span><span class="type-signature"> ? {<a href="Phaser.Path.html">Phaser.Path</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Set the Path level offset which will affect all of this paths PathFollowers.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>x</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The x offset.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>y</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The y offset.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Path.html">Phaser.Path</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This Path object.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_plugins_path_Path.js.html">plugins/path/Path.js</a>, 
+      <a href="src_plugins_path_Path.js.html#sunlight-1-line-302">line 302</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="setPathPoint"><span class="type-signature"></span>setPathPoint<span class="signature">(index, x, y, <span class="optional">vx</span>, <span class="optional">vy</span>)</span><span class="type-signature"> ? {<a href="Phaser.PathPoint.html">Phaser.PathPoint</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Set a PathPoint objects position and tangent vector.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>index</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>The index of the PathPoint in this paths point list.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>x</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>The x coordinate of the PathPoint.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>y</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>The y coordinate of the PathPoint.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>vx</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>The x coordinate of the tangent vector to create the curve from.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>vy</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>The y coordinate of the tangent vector to create the curve from.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.PathPoint.html">Phaser.PathPoint</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>A reference to the PathPoint object that was updated.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_plugins_path_Path.js.html">plugins/path/Path.js</a>, 
+      <a href="src_plugins_path_Path.js.html#sunlight-1-line-260">line 260</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="smooth"><span class="type-signature"></span>smooth<span class="signature">()</span><span class="type-signature"> ? {<a href="Phaser.Path.html">Phaser.Path</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If your Path has 3 points or more, this will walk through it and auto-smooth them out.<br>Note: It ignores branches.</p> 
+    </div> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Path.html">Phaser.Path</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This Path object.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_plugins_path_Path.js.html">plugins/path/Path.js</a>, 
+      <a href="src_plugins_path_Path.js.html#sunlight-1-line-628">line 628</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="toJSON"><span class="type-signature"></span>toJSON<span class="signature">()</span><span class="type-signature"> ? {Object}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Serializes this Path into a JSON object and returns it.</p> 
+    </div> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">Object</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>A JSON object representing this Path.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_plugins_path_Path.js.html">plugins/path/Path.js</a>, 
+      <a href="src_plugins_path_Path.js.html#sunlight-1-line-799">line 799</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="translatePoints"><span class="type-signature"></span>translatePoints<span class="signature">(point)</span><span class="type-signature"> ? {<a href="Phaser.Path.html">Phaser.Path</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Translate all points in a path by the given point.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>point</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Point.html">Phaser.Point</a></span> | <span class="param-type">object</span> </td> 
+       <td class="description last"><p>A Phaser.Point, or a Point-like Object with public <code>x</code> and <code>y</code> properties, that will be used to modify all points in this paths point list.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Path.html">Phaser.Path</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This Path object.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_plugins_path_Path.js.html">plugins/path/Path.js</a>, 
+      <a href="src_plugins_path_Path.js.html#sunlight-1-line-284">line 284</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

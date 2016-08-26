@@ -12,7 +12,7 @@
     <div class="description"> 
      <p>The Gamepad class handles gamepad input and dispatches gamepad events.</p> 
      <p>Remember to call <code>gamepad.start()</code>.</p> 
-     <p>HTML5 GAMEPAD API SUPPORT IS AT AN EXPERIMENTAL STAGE! At moment of writing this (end of 2013) only Chrome supports parts of it out of the box. Firefox supports it via prefs flags (about:config, search gamepad). The browsers map the same controllers differently. This class has constants for Windows 7 Chrome mapping of XBOX 360 controller.</p> 
+     <p>HTML5 GAMEPAD API SUPPORT IS AT AN EXPERIMENTAL STAGE!<br>At moment of writing this (end of 2013) only Chrome supports parts of it out of the box. Firefox supports it<br>via prefs flags (about:config, search gamepad). The browsers map the same controllers differently.<br>This class has constants for Windows 7 Chrome mapping of XBOX 360 controller.</p> 
     </div> 
     <h5>Parameters:</h5> 
     <table class="params table table-striped"> 
@@ -318,7 +318,7 @@
       <tr> 
        <td class="name"><code>callbacks</code></td> 
        <td class="type"> <span class="param-type">object</span> </td> 
-       <td class="description last"><p>Object that takes six different callback methods: onConnectCallback, onDisconnectCallback, onDownCallback, onUpCallback, onAxisCallback, onFloatCallback</p></td> 
+       <td class="description last"><p>Object that takes six different callback methods:<br>onConnectCallback, onDisconnectCallback, onDownCallback, onUpCallback, onAxisCallback, onFloatCallback</p></td> 
       </tr> 
      </tbody> 
     </table> 
@@ -391,58 +391,6 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Returns the "just pressed" state of a button from ANY gamepad connected. Just pressed is considered true if the button was pressed down within the duration given (default 250ms).</p> 
-    </div> 
-    <h5>Parameters:</h5> 
-    <table class="params table table-striped"> 
-     <thead> 
-      <tr> 
-       <th>Name</th> 
-       <th>Type</th> 
-       <th>Argument</th> 
-       <th>Default</th> 
-       <th class="last">Description</th> 
-      </tr> 
-     </thead> 
-     <tbody> 
-      <tr> 
-       <td class="name"><code>buttonCode</code></td> 
-       <td class="type"> <span class="param-type">number</span> </td> 
-       <td class="attributes"> </td> 
-       <td class="default"> </td> 
-       <td class="description last"><p>The buttonCode of the button to check for.</p></td> 
-      </tr> 
-      <tr> 
-       <td class="name"><code>duration</code></td> 
-       <td class="type"> <span class="param-type">number</span> </td> 
-       <td class="attributes"> &lt;optional&gt;<br> </td> 
-       <td class="default"> 250 </td> 
-       <td class="description last"><p>The duration below which the button is considered as being just pressed.</p></td> 
-      </tr> 
-     </tbody> 
-    </table> 
-    <h5>Returns:</h5> 
-    <div class="returns"> 
-     <div class="returns-type"> 
-      <span class="param-type">boolean</span> - 
-     </div> 
-     <div class="returns-desc param-desc"> 
-      <p>True if the button is just pressed otherwise false.</p> 
-     </div> 
-    </div> 
-    <dl class="details"> 
-     <dt class="tag-source">
-      Source - 
-      <a href="src_input_Gamepad.js.html">input/Gamepad.js</a>, 
-      <a href="src_input_Gamepad.js.html#sunlight-1-line-415">line 415</a> 
-     </dt> 
-    </dl> 
-   </dd> 
-   <dt> 
-    <h4 class="name " id="justPressed"><span class="type-signature"></span>justPressed<span class="signature">(buttonCode, <span class="optional">duration</span>)</span><span class="type-signature"> ? {boolean}</span></h4> 
-   </dt> 
-   <dd> 
-    <div class="description"> 
      <p>Returns the "just released" state of a button from ANY gamepad connected. Just released is considered as being true if the button was released within the duration given (default 250ms).</p> 
     </div> 
     <h5>Parameters:</h5> 
@@ -491,6 +439,58 @@
     </dl> 
    </dd> 
    <dt> 
+    <h4 class="name " id="justPressed"><span class="type-signature"></span>justPressed<span class="signature">(buttonCode, <span class="optional">duration</span>)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Returns the "just pressed" state of a button from ANY gamepad connected. Just pressed is considered true if the button was pressed down within the duration given (default 250ms).</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>buttonCode</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The buttonCode of the button to check for.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>duration</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 250 </td> 
+       <td class="description last"><p>The duration below which the button is considered as being just pressed.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>True if the button is just pressed otherwise false.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_Gamepad.js.html">input/Gamepad.js</a>, 
+      <a href="src_input_Gamepad.js.html#sunlight-1-line-415">line 415</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
     <h4 class="name " id="reset"><span class="type-signature"></span>reset<span class="signature">()</span><span class="type-signature"></span></h4> 
    </dt> 
    <dd> 
@@ -525,7 +525,7 @@
    </dt> 
    <dd> 
     <div class="description"> 
-     <p>Starts the Gamepad event handling. This MUST be called manually before Phaser will start polling the Gamepad API.</p> 
+     <p>Starts the Gamepad event handling.<br>This MUST be called manually before Phaser will start polling the Gamepad API.</p> 
     </div> 
     <dl class="details"> 
      <dt class="tag-source">
