@@ -947,7 +947,12 @@ Phaser.Physics.Arcade.prototype = {
     */
     separate: function (body1, body2, processCallback, callbackContext, overlapOnly) {
 
-        if (!body1.enable || !body2.enable || !this.intersects(body1, body2))
+        if (
+            !body1.enable ||
+            !body2.enable ||
+            body1.checkCollision.none ||
+            body2.checkCollision.none ||
+            !this.intersects(body1, body2))
         {
             return false;
         }
@@ -1153,7 +1158,10 @@ Phaser.Physics.Arcade.prototype = {
         this.getOverlapX(body1, body2);
         this.getOverlapY(body1, body2);
 
-        var angleCollision = this.angleBetweenCenters(body1, body2);
+        var dx = body2.center.x - body1.center.x;
+        var dy = body2.center.y - body1.center.y;
+
+        var angleCollision = Math.atan2(dy, dx);
 
         var overlap = 0;
 
@@ -2023,8 +2031,8 @@ Phaser.Physics.Arcade.prototype = {
     */
     angleBetweenCenters: function (source, target) {
 
-        var dx = target.center.x - source.center.x;
-        var dy = target.center.y - source.center.y;
+        var dx = target.centerX - source.centerX;
+        var dy = target.centerY - source.centerY;
 
         return Math.atan2(dy, dx);
 

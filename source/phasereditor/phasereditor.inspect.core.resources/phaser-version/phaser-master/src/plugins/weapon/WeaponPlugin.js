@@ -367,6 +367,14 @@ Phaser.Weapon = function (game, parent) {
      */
     this._nextFire = 0;
 
+    /**
+     * Internal firing rotation tracking point.
+     *
+     * @type {Phaser.Point}
+     * @private
+     */
+    this._rotatedPoint = new Phaser.Point();
+
 };
 
 Phaser.Weapon.prototype = Object.create(Phaser.Plugin.prototype);
@@ -608,7 +616,7 @@ Phaser.Weapon.prototype.update = function () {
         }
     }
 
-    if (this.autofire && this.game.time.now < this._nextFire)
+    if (this.autofire)
     {
         this.fire();
     }
@@ -699,7 +707,7 @@ Phaser.Weapon.prototype.trackPointer = function (pointer, offsetX, offsetY) {
 * @param {Phaser.Sprite|Phaser.Point|Object} [from] - Optionally fires the bullet **from** the `x` and `y` properties of this object. If set this overrides `Weapon.trackedSprite` or `trackedPointer`. Pass `null` to ignore it.
 * @param {number} [x] - The x coordinate, in world space, to fire the bullet **towards**. If left as `undefined` the bullet direction is based on its angle.
 * @param {number} [y] - The y coordinate, in world space, to fire the bullet **towards**. If left as `undefined` the bullet direction is based on its angle.
-* @return {boolean} True if a bullet was successfully fired, otherwise false.
+* @return {Phaser.Bullet} The fired bullet if successful, null otherwise.
 */
 Phaser.Weapon.prototype.fire = function (from, x, y) {
 
@@ -730,14 +738,32 @@ Phaser.Weapon.prototype.fire = function (from, x, y) {
     }
     else if (this.trackedSprite)
     {
-        if (this.fireFrom.width > 1)
+        if (this.trackRotation)
         {
-            this.fireFrom.centerOn(this.trackedSprite.world.x + this.trackOffset.x, this.trackedSprite.world.y + this.trackOffset.y);
+            this._rotatedPoint.set(this.trackedSprite.world.x + this.trackOffset.x, this.trackedSprite.world.y + this.trackOffset.y);
+            this._rotatedPoint.rotate(this.trackedSprite.world.x, this.trackedSprite.world.y, this.trackedSprite.rotation);
+
+            if (this.fireFrom.width > 1)
+            {
+                this.fireFrom.centerOn(this._rotatedPoint.x, this._rotatedPoint.y);
+            }
+            else
+            {
+                this.fireFrom.x = this._rotatedPoint.x;
+                this.fireFrom.y = this._rotatedPoint.y;
+            }
         }
         else
         {
-            this.fireFrom.x = this.trackedSprite.world.x + this.trackOffset.x;
-            this.fireFrom.y = this.trackedSprite.world.y + this.trackOffset.y;
+            if (this.fireFrom.width > 1)
+            {
+                this.fireFrom.centerOn(this.trackedSprite.world.x + this.trackOffset.x, this.trackedSprite.world.y + this.trackOffset.y);
+            }
+            else
+            {
+                this.fireFrom.x = this.trackedSprite.world.x + this.trackOffset.x;
+                this.fireFrom.y = this.trackedSprite.world.y + this.trackOffset.y;
+            }
         }
 
         if (this.bulletInheritSpriteSpeed)
@@ -869,7 +895,23 @@ Phaser.Weapon.prototype.fire = function (from, x, y) {
         bullet.body.velocity.set(moveX, moveY);
         bullet.body.gravity.set(this.bulletGravity.x, this.bulletGravity.y);
 
-        this._nextFire = this.game.time.now + this.fireRate;
+        if (this.bulletSpeedVariance !== 0)
+        {
+            var rate = this.fireRate;
+
+            rate += Phaser.Math.between(-this.fireRateVariance, this.fireRateVariance);
+
+            if (rate < 0)
+            {
+                rate = 0;
+            }
+
+            this._nextFire = this.game.time.now + rate;
+        }
+        else
+        {
+            this._nextFire = this.game.time.now + this.fireRate;
+        }
 
         this.shots++;
 
@@ -879,9 +921,8 @@ Phaser.Weapon.prototype.fire = function (from, x, y) {
         {
             this.onFireLimit.dispatch(this, this.fireLimit);
         }
-
     }
-
+    return bullet;
 };
 
 /**
@@ -890,7 +931,7 @@ Phaser.Weapon.prototype.fire = function (from, x, y) {
 *
 * @method Phaser.Weapon#fireAtPointer
 * @param {Phaser.Pointer} [pointer] - The Pointer to fire the bullet towards.
-* @return {boolean} True if a bullet was successfully fired, otherwise false.
+* @return {Phaser.Bullet} The fired bullet if successful, null otherwise.
 */
 Phaser.Weapon.prototype.fireAtPointer = function (pointer) {
 
@@ -906,7 +947,7 @@ Phaser.Weapon.prototype.fireAtPointer = function (pointer) {
 *
 * @method Phaser.Weapon#fireAtSprite
 * @param {Phaser.Sprite} [sprite] - The Sprite to fire the bullet towards.
-* @return {boolean} True if a bullet was successfully fired, otherwise false.
+* @return {Phaser.Bullet} The fired bullet if successful, null otherwise.
 */
 Phaser.Weapon.prototype.fireAtSprite = function (sprite) {
 
@@ -921,7 +962,7 @@ Phaser.Weapon.prototype.fireAtSprite = function (sprite) {
 * @method Phaser.Weapon#fireAtXY
 * @param {number} [x] - The x coordinate, in world space, to fire the bullet towards.
 * @param {number} [y] - The y coordinate, in world space, to fire the bullet towards.
-* @return {boolean} True if a bullet was successfully fired, otherwise false.
+* @return {Phaser.Bullet} The fired bullet if successful, null otherwise.
 */
 Phaser.Weapon.prototype.fireAtXY = function (x, y) {
 
