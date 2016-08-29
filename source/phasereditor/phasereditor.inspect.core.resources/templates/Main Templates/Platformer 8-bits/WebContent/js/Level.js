@@ -14,8 +14,10 @@ Level.prototype.init = function() {
 	this.load.pack("level", "assets/pack.json");
 	this.scale.pageAlignVertically = true;
 	this.scale.pageAlignHorizontally = true;
-	// this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+	this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 	this.world.setBounds(0, 0, 1232, 272);
+	// needed for smooth scrolling
+	this.game.renderer.renderSession.roundPixels = true;
 };
 
 Level.prototype.preload = function() {
