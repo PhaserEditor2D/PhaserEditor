@@ -613,7 +613,9 @@ public class CanvasEditor extends EditorPart
 	@Override
 	public void dispose() {
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
-		_canvas.getUpdateBehavior().dispose();
+		if (_canvas != null) {
+			_canvas.getUpdateBehavior().dispose();
+		}
 		super.dispose();
 	}
 
