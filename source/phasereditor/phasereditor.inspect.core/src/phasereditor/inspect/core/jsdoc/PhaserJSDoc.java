@@ -195,7 +195,9 @@ public class PhaserJSDoc {
 			for (int i = 0; i < jsdocElements.length(); i++) {
 				JSONObject jsdocElement = jsdocElements.getJSONObject(i);
 
-				if (jsdocElement.getString("longname").contains("~")) {
+				String longname = jsdocElement.getString("longname");
+
+				if (longname.contains("~")) {
 					continue;
 				}
 
@@ -274,6 +276,18 @@ public class PhaserJSDoc {
 						}
 					}
 				}
+			}
+
+			{
+				// Duplicate Phaser.KeyCode values in Phaser.Keyboard for
+				// compatibility
+				PhaserType keyboard = typeMap.get("Phaser.Keyboard");
+				PhaserType keycode = typeMap.get("Phaser.KeyCode");
+				Map<String, PhaserMember> keys = keycode.getMemberMap();
+				for (PhaserMember m : keys.values()) {
+					((PhaserConstant) m).setTypes(new String[] { "Number" });
+				}
+				keyboard.getMemberMap().putAll(keys);
 			}
 
 			{
@@ -397,8 +411,10 @@ public class PhaserJSDoc {
 		} else {
 			PhaserType type = typeMap.get(memberof);
 
-			if (type.isStatic()) {
-				cons.setStatic(true);
+			// here
+			if (type == null) {
+				out.println(memberof);
+				return false;
 			}
 
 			Map<String, PhaserMember> map = type.getMemberMap();

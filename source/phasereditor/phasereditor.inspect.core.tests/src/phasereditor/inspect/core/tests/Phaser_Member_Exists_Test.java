@@ -55,6 +55,7 @@ public class Phaser_Member_Exists_Test {
 				"Phaser.Group.scale", //
 				"Phaser.Sprite.rotation", //
 				"Phaser.KeyCode.SPACEBAR", //
+				"Phaser.Keyboard.SPACEBAR", //
 				"Phaser.PENDING_ATLAS", //
 				"Phaser.Physics.Arcade.Body.onCeiling", //
 				"Phaser.Loader.audioSprite", //
