@@ -1,47 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="phasereditor.ide.feature"
-      label="Phaser Editor Feature"
-      version="1.1.3.qualifier"
-      provider-name="Arian Fornaris">
+      id="phasereditor.eclipse.features"
+      label="Phaser Editor Eclipse Features"
+      version="1.0.0.qualifier">
 
-   <description url="http://phasereditor.boniatillo.com">
-      Phaser Editor features.
+   <description url="http://www.example.com/description">
+      [Enter Feature Description here.]
    </description>
 
-   <copyright url="http://phasereditor.boniatillo.com/blog/about">
-      Arian Fornaris (c) 2016 Copyright
-
-Third-party components have the owner&apos;s copyright.
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
    </copyright>
 
-   <license url="https://opensource.org/licenses/MIT">
-      The MIT License (MIT)
-
-Copyright (c) 2015 Arian Fornaris
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this software and associated documentation files (the
-&quot;Software&quot;), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to permit
-persons to whom the Software is furnished to do so, subject to the
-following conditions: The above copyright notice and this permission
-notice shall be included in all copies or substantial portions of the
-Software.
-
-THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS
-OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-USE OR OTHER DEALINGS IN THE SOFTWARE.
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
    </license>
-
-   <url>
-      <discovery label="Phaser Editor Updates" url="http://phasereditor.boniatillo.com/updates"/>
-   </url>
 
    <plugin
          id="javax.xml"
@@ -52,13 +25,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
 
    <plugin
          id="org.eclipse.equinox.simpleconfigurator"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.common.emf"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -79,13 +45,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.wst.jsdt.manipulation"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.core.runtime.compatibility.registry"
          download-size="0"
          install-size="0"
@@ -100,28 +59,7 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.wst.html.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.ui.workbench.texteditor"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="phasereditor.audiosprite.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="phasereditor.project.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -149,44 +87,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          unpack="false"/>
 
    <plugin
-         id="phasereditor.audiosprite.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.common.environment"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.common.project.facet.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.jsdt.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="phasereditor.optipng.core.win32"
-         os="win32"
-         ws="win32"
-         arch="x86_64"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"/>
-
-   <plugin
          id="org.eclipse.ui"
          download-size="0"
          install-size="0"
@@ -202,20 +102,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
 
    <plugin
          id="org.eclipse.gef"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="phasereditor.ide"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.dtdeditor.doc.user"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -268,13 +154,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.wst.validation.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.jetty.continuation"
          download-size="0"
          install-size="0"
@@ -304,13 +183,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
 
    <plugin
          id="org.eclipse.equinox.security"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.sse.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -351,13 +223,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          version="0.0.0"/>
 
    <plugin
-         id="phasereditor.assetpack.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.ui.intro"
          download-size="0"
          install-size="0"
@@ -396,12 +261,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          fragment="true"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.wst.dtd.ui.infopop"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
    <plugin
          id="org.eclipse.fx.core"
@@ -426,13 +285,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
 
    <plugin
          id="org.w3c.dom.smil"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="phasereditor.optipng.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -482,20 +334,7 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          fragment="true"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.wst.common.project.facet.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="phasereditor.chains.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
+   
    <plugin
          id="org.eclipse.emf.ecore.xmi"
          download-size="0"
@@ -518,26 +357,13 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.wst.dtd.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.jsch.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.wst.html.ui.infopop"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
+   
    <plugin
          id="org.w3c.css.sac"
          download-size="0"
@@ -552,12 +378,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.wst.css.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
    <plugin
          id="org.eclipse.draw2d"
@@ -609,21 +429,7 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.wst.validation"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.core.jobs"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.standard.schemas"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -652,27 +458,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
 
    <plugin
          id="org.eclipse.equinox.event"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="phasereditor.optipng.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.sse.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.common.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -733,19 +518,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.wst.common.emfworkbench.integration"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.css.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
    <plugin
          id="org.eclipse.e4.ui.workbench.renderers.swt"
@@ -783,13 +555,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.wst.jsdt.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.e4.emf.xpath"
          download-size="0"
          install-size="0"
@@ -803,12 +568,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.wst.validation.infopop"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
    <plugin
          id="org.eclipse.help"
@@ -895,12 +654,7 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.wst.doc.user"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+
 
    <plugin
          id="org.eclipse.platform"
@@ -909,35 +663,16 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          version="0.0.0"/>
 
    <plugin
-         id="phasereditor.canvas.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.jetty.server"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.wst.xml.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+
 
    <plugin
          id="org.eclipse.e4.ui.workbench.swt"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.xsd.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -971,33 +706,7 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="phasereditor.webrun.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.jsdt.web.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.jsdt.doc"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.sse.doc.user"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   
 
    <plugin
          id="org.eclipse.help.webapp"
@@ -1029,13 +738,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
 
    <plugin
          id="org.eclipse.jetty.security"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.jsdt.web.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -1105,20 +807,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.wst.common.modulecore"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="phasereditor.assetpack.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.apache.commons.io"
          download-size="0"
          install-size="0"
@@ -1147,13 +835,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          unpack="false"/>
 
    <plugin
-         id="phasereditor.canvas.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.apache.lucene.analysis"
          download-size="0"
          install-size="0"
@@ -1169,13 +850,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          install-size="0"
          version="0.0.0"
          fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.common.modulecore.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
          unpack="false"/>
 
    <plugin
@@ -1211,28 +885,7 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.wst.web.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="phasereditor.webrun.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.jface"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.sse.ui.infopop"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -1288,56 +941,14 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          unpack="false"/>
 
    <plugin
-         id="phasereditor.audio.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.common.frameworks.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="phasereditor.chains.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.e4.ui.model.workbench"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.dtd.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.common.snippets"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
+         
    <plugin
          id="org.apache.xerces"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.common.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -1358,21 +969,7 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          unpack="false"/>
 
    <plugin
-         id="phasereditor.inspect.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.ui.editors"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="phasereditor.project.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -1387,13 +984,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
 
    <plugin
          id="org.apache.log4j"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.json"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -1423,13 +1013,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
 
    <plugin
          id="org.eclipse.core.variables"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="phasereditor.atlas.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -1474,19 +1057,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.eclipse.wst.web.ui.infopop"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="phasereditor.atlas.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
    <plugin
          id="javax.servlet"
@@ -1510,13 +1080,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          unpack="false"/>
 
    <plugin
-         id="phasereditor.lic"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="javax.servlet.jsp"
          download-size="0"
          install-size="0"
@@ -1532,13 +1095,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
 
    <plugin
          id="org.eclipse.e4.ui.css.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.common.uriresolver"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -1587,13 +1143,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.wst.xmleditor.doc.user"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.emf.ecore"
          download-size="0"
          install-size="0"
@@ -1615,35 +1164,7 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.wst.common.frameworks"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.common.infopop"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.equinox.common"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.html.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="phasereditor.text.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -1665,26 +1186,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
 
    <plugin
          id="org.eclipse.update.configurator"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="phasereditor.inspect.core.resources"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.wst.xml.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="phasereditor.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -1714,16 +1215,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
-   <plugin
-         id="phasereditor.libgdx.win32"
-         os="win32"
-         ws="win32"
-         arch="x86_64"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"/>
 
    <plugin
          id="org.eclipse.equinox.http.jetty"
@@ -1761,31 +1252,7 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          unpack="false"/>
 
    <plugin
-         id="phasereditor.libgdx"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.text"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="phasereditor.audio.core.win32"
-         os="win32"
-         ws="win32"
-         arch="x86_64"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"/>
-
-   <plugin
-         id="org.eclipse.wst.web"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -1853,49 +1320,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          install-size="0"
          version="0.0.0"
          fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="phasereditor.audio.core.linux"
-         os="linux"
-         ws="gtk"
-         arch="x86_64"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"/>
-
-   <plugin
-         id="phasereditor.libgdx.linux"
-         os="linux"
-         ws="gtk"
-         arch="x86_64"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"/>
-
-   <plugin
-         id="phasereditor.optipng.core.linux"
-         os="linux"
-         ws="gtk"
-         arch="x86_64"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"/>
-
-   <plugin
-         id="phasereditor.help"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="phasereditor.inspect.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
          unpack="false"/>
 
    <plugin
