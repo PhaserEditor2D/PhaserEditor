@@ -31,14 +31,8 @@
          unpack="false"/>
 
    <plugin
-         id="phasereditor.libgdx.linux"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"/>
-
-   <plugin
          id="phasereditor.libgdx.win32"
+         os="win32"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -58,20 +52,6 @@
          unpack="false"/>
 
    <plugin
-         id="phasereditor.audio.core.linux"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"/>
-
-   <plugin
-         id="phasereditor.audio.core.win32"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"/>
-
-   <plugin
          id="phasereditor.optipng.core"
          download-size="0"
          install-size="0"
@@ -80,6 +60,7 @@
 
    <plugin
          id="phasereditor.optipng.core.linux"
+         os="linux"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -87,6 +68,7 @@
 
    <plugin
          id="phasereditor.optipng.core.win32"
+         os="win32"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -98,5 +80,13 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+
+   <plugin
+         id="phasereditor.libgdx.linux"
+         os="linux"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"/>
 
 </feature>

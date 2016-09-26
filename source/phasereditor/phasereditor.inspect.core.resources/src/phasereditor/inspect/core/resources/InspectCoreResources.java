@@ -21,13 +21,86 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.core.resources;
 
+import static java.lang.System.out;
+
+import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 public class InspectCoreResources {
 
+	private static final String PROP_PHASEREDITOR_RESOURCES = "phasereditor.resources";
 	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
+	private static Path _resourcesPath;
 
+	@Deprecated
 	public static Path getBundleFolder() {
 		return Activator.getDefault().getBundleFolder();
+	}
+
+	/**
+	 * The resources path. Resources is a folder in the root directory of the
+	 * editor "install". In this folder are stored the external tools (ffmpeg,
+	 * optipng, etc...), the templates, the phaser files, etc...
+	 */
+	public static Path getResourcesPath() {
+		if (_resourcesPath == null) {
+			String path = System.getProperty(PROP_PHASEREDITOR_RESOURCES);
+			if (path == null) {
+				try {
+					_resourcesPath = Paths.get(Platform.getInstallLocation().getURL().toURI()).resolve("resources");
+				} catch (URISyntaxException e) {
+					e.printStackTrace();
+					throw new RuntimeException(e);
+				}
+			} else {
+				_resourcesPath = Paths.get(path);
+			}
+
+			out.println("Resources path: " + _resourcesPath);
+
+			if (!Files.exists(_resourcesPath)) {
+				Display.getDefault().asyncExec(() -> {
+					out.println("Resources path does not exist.");
+					Shell shell = Display.getDefault().getActiveShell();
+					MessageDialog.openError(shell, "Error", "The resources path '" + _resourcesPath
+							+ "' does not exist. Please check your configuration. We are closing...");
+					PlatformUI.getWorkbench().close();
+				});
+			}
+		}
+
+		return _resourcesPath;
+	}
+
+	/**
+	 * Create a process taken as root the
+	 * <code>[install]/resources/[os]/bin</code> folder.
+	 */
+	public static ProcessBuilder createProcessBuilder(String exePath, String... args) {
+		List<String> list = new ArrayList<>();
+
+		boolean windows = Platform.getOS().toLowerCase().contains("win");
+		Path path;
+		if (windows) {
+			path = getResourcesPath().resolve("bin/win").resolve(exePath + ".exe");
+		} else {
+			path = getResourcesPath().resolve("bin/linux").resolve(exePath);
+		}
+
+		list.add(path.toAbsolutePath().toString());
+		list.addAll(Arrays.asList(args));
+		ProcessBuilder pb = new ProcessBuilder(list);
+		return pb;
 	}
 }

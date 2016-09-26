@@ -36,7 +36,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.jface.preference.IPreferenceStore;
 
-import phasereditor.ui.FileUtils;
+import phasereditor.inspect.core.resources.InspectCoreResources;
 
 public class OptiPNGCore {
 	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
@@ -63,7 +63,7 @@ public class OptiPNGCore {
 			List<String> params = new ArrayList<>(Arrays.asList(level, "-quiet", ospath));
 			params.addAll(Arrays.asList(extra.split(" ")));
 
-			ProcessBuilder procBuilder = FileUtils.createProcessBuilder(PLUGIN_ID, "optipng",
+			ProcessBuilder procBuilder = InspectCoreResources.createProcessBuilder("optipng/optipng",
 					params.toArray(new String[params.size()]));
 
 			Process proc = procBuilder.start();
