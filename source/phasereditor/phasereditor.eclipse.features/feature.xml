@@ -45,13 +45,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.core.runtime.compatibility.registry"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"/>
-
-   <plugin
          id="com.ibm.icu"
          download-size="0"
          install-size="0"
@@ -261,7 +254,6 @@
          fragment="true"
          unpack="false"/>
 
-
    <plugin
          id="org.eclipse.fx.core"
          download-size="0"
@@ -327,15 +319,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.core.filesystem.java7"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   
-   <plugin
          id="org.eclipse.emf.ecore.xmi"
          download-size="0"
          install-size="0"
@@ -363,7 +346,6 @@
          version="0.0.0"
          unpack="false"/>
 
-   
    <plugin
          id="org.w3c.css.sac"
          download-size="0"
@@ -377,7 +359,6 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
 
    <plugin
          id="org.eclipse.draw2d"
@@ -518,7 +499,6 @@
          version="0.0.0"
          unpack="false"/>
 
-
    <plugin
          id="org.eclipse.e4.ui.workbench.renderers.swt"
          download-size="0"
@@ -567,7 +547,6 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
 
    <plugin
          id="org.eclipse.help"
@@ -654,8 +633,6 @@
          version="0.0.0"
          unpack="false"/>
 
-
-
    <plugin
          id="org.eclipse.platform"
          download-size="0"
@@ -668,8 +645,6 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
-
 
    <plugin
          id="org.eclipse.e4.ui.workbench.swt"
@@ -705,8 +680,6 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
-   
 
    <plugin
          id="org.eclipse.help.webapp"
@@ -815,13 +788,6 @@
 
    <plugin
          id="org.eclipse.e4.ui.services"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.core.runtime.compatibility"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -946,7 +912,7 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-         
+
    <plugin
          id="org.apache.xerces"
          download-size="0"
@@ -1056,7 +1022,6 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
 
    <plugin
          id="javax.servlet"

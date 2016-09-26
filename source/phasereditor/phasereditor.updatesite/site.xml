@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/phasereditor.base.features_1.0.0.qualifier.jar" id="phasereditor.base.features" version="1.0.0.qualifier"/>
-   <feature url="features/phasereditor.eclipse.features_1.0.0.qualifier.jar" id="phasereditor.eclipse.features" version="1.0.0.qualifier"/>
-   <feature url="features/phasereditor.features_1.0.0.qualifier.jar" id="phasereditor.features" version="1.0.0.qualifier"/>
-   <feature url="features/phasereditor.webtools.features_1.0.0.qualifier.jar" id="phasereditor.webtools.features" version="1.0.0.qualifier"/>
+   <description name="Phaser Editor Upates" url="http://phasereditor.boniatillo.com/update/patches">
+      Phaser Editor regular updates
+   </description>
+   <feature url="features/phasereditor.features_1.0.0.201609261425.jar" id="phasereditor.features" version="1.0.0.201609261425"/>
 </site>
