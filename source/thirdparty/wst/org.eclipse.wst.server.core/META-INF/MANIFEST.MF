@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Phaser Editor - Fake WST Server Core
+Bundle-SymbolicName: org.eclipse.wst.server.core
+Bundle-Version: 1.9.9.qualifier
+Bundle-Vendor: Arian Fornaris
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
