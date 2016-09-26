@@ -45,7 +45,8 @@ public class InspectCoreResources {
 
 	@Deprecated
 	public static Path getBundleFolder() {
-		return Activator.getDefault().getBundleFolder();
+		//return Activator.getDefault().getBundleFolder();
+		return getResourcesPath_AnyOS().resolve("built-in");
 	}
 
 	/**
