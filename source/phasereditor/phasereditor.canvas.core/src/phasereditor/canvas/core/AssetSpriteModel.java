@@ -118,6 +118,7 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 	@Override
 	public void build() {
 		_assetKey = buildAssetKey(_assetKey);
+		
 		for (AnimationModel model : getAnimations()) {
 			model.rebuild(_assetKey);
 		}

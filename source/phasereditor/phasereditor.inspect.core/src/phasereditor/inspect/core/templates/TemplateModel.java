@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.core.templates;
 
+import static java.lang.System.out;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -50,10 +52,22 @@ public class TemplateModel implements IPhaserTemplate {
 		_parent = parent;
 		_category = category;
 		_templateFolder = templateFolder;
-		loadManifest();
 	}
 
-	private void loadManifest() {
+	public boolean load() {
+		Path designFolder = _templateFolder.resolve("Design");
+		Path webContentFolder = _templateFolder.resolve("WebContent");
+
+		if (!Files.exists(designFolder)) {
+			out.println("Missing " + designFolder);
+			return false;
+		}
+
+		if (!Files.exists(webContentFolder)) {
+			out.println("Missing " + webContentFolder);
+			return false;
+		}
+
 		Path path = _templateFolder.resolve("template.json");
 		if (Files.exists(path)) {
 			try (InputStream input = Files.newInputStream(path)) {
@@ -65,6 +79,8 @@ public class TemplateModel implements IPhaserTemplate {
 		} else {
 			_info = new TemplateInfo();
 		}
+
+		return true;
 	}
 
 	@Override

@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.core.templates;
 
+import static java.lang.System.out;
+
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +62,13 @@ public class TemplateCategoryModel implements IPhaserCategory {
 	}
 
 	public void addTemplate(Path template) {
-		addTemplate(new TemplateModel(_parent, this, template));
+		TemplateModel templ = new TemplateModel(_parent, this, template);
+
+		if (templ.load()) {
+			addTemplate(templ);
+		} else {
+			out.println("The template " + template + " was ignored.");
+		}
 	}
 
 	@Override
