@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
+import static java.lang.System.err;
+import static java.lang.System.out;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,11 +49,11 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 
 	public AssetSpriteModel(GroupModel parent, T assetKey, String typeName) {
 		super(parent, typeName);
-		
+
 		if (assetKey == null) {
 			throw new IllegalArgumentException("Cannot create a sprite model with a null asset.");
 		}
-		
+
 		_assetKey = assetKey;
 
 		String name = assetKey.getKey();
@@ -118,7 +121,12 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 	@Override
 	public void build() {
 		_assetKey = buildAssetKey(_assetKey);
-		
+
+		if (_assetKey == null) {
+			//TODO: why is this happening?
+			err.println("WARNING: " + getEditorName() + ": null asset key");
+		}
+
 		for (AnimationModel model : getAnimations()) {
 			model.rebuild(_assetKey);
 		}
