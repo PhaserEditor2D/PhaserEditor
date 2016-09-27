@@ -41,7 +41,6 @@ import phasereditor.ui.ImageCache;
  * @author arian
  *
  */
-@SuppressWarnings("unchecked")
 public class TileSpriteNode extends Pane implements ISpriteNode {
 
 	private FrameData _frame;
@@ -126,8 +125,8 @@ public class TileSpriteNode extends Pane implements ISpriteNode {
 			y1 = yoffs - (_frame.srcSize.y + _frame.dst.y) * model.getTileScaleY();
 		}
 
-		double w1 = _frame.dst.width * model.getTileScaleX();
-		double h1 = _frame.dst.height * model.getTileScaleY();
+		double w1 = _frame.srcSize.x * model.getTileScaleX();
+		double h1 = _frame.srcSize.y * model.getTileScaleY();
 
 		getChildren().clear();
 

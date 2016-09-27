@@ -59,4 +59,10 @@ public class ImageCache {
 		}
 	}
 
+	public static void unloadFile(IFile file) {
+		synchronized (_fxcache) {
+			_fxcache.remove(file);
+		}
+	}
+
 }

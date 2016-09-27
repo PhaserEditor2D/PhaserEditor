@@ -63,12 +63,11 @@ public class FrameNode extends Pane {
 		_imageView.relocate(frame.dst.x, frame.dst.y);
 		_imageView.setViewport(new Rectangle2D(frame.src.x, frame.src.y, frame.src.width, frame.src.height));
 
+		setPrefSize(frame.srcSize.x, frame.srcSize.y);
 		setMaxSize(frame.srcSize.x, frame.srcSize.y);
 		setMinSize(frame.srcSize.x, frame.srcSize.y);
 		setPrefSize(frame.srcSize.x, frame.srcSize.y);
-
-		// if (getParent() != null) {
-		// getParent().layout();
-		// }
+		setWidth(frame.srcSize.x);
+		setHeight(frame.srcSize.y);
 	}
 }
