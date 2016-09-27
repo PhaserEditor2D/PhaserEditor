@@ -55,6 +55,7 @@ import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.FilteredTree2;
 import phasereditor.ui.PatternFilter2;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 public class AssetExplorer extends ViewPart {
 	public static final String ID = "phasereditor.assetpack.views.assetExplorer";
@@ -85,9 +86,13 @@ public class AssetExplorer extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		GridLayout gl_parent = new GridLayout(1, false);
+		gl_parent.marginWidth = 0;
+		gl_parent.marginHeight = 0;
 		parent.setLayout(gl_parent);
 
 		_filteredTree = new FilteredTree2(parent, SWT.MULTI, new PatternFilter2(), 4);
+		_filteredTree.setBackground(SWTResourceManager.getColor(SWT.COLOR_LIST_BACKGROUND));
+		GridLayout gridLayout = (GridLayout) _filteredTree.getLayout();
 		_viewer = _filteredTree.getViewer();
 		_viewer.addDoubleClickListener(new IDoubleClickListener() {
 			@Override
