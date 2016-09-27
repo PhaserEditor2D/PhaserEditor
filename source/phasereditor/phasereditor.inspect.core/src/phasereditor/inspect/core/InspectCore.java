@@ -23,19 +23,12 @@ package phasereditor.inspect.core;
 
 import static java.lang.System.out;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -151,7 +144,15 @@ public class InspectCore {
 	}
 
 	public static Path getBuiltInPhaserVersionFolder() {
-		return InspectCoreResources.getResourcesPath_AnyOS().resolve("built-in/phaser-version");
+		Path path = InspectCoreResources.getResourcesPath_AnyOS().resolve("built-in/phaser-version");
+		if (!Files.exists(path)) {
+			Display.getDefault().syncExec(() -> {
+				MessageDialog.openError(Display.getDefault().getActiveShell(), "Fatal Error",
+						"Cannot find the built-in Phaser support at '" + path + "'.\n\nGood bye!");
+				System.exit(-1);
+			});
+		}
+		return path;
 	}
 
 	public static Path getPhaserVersionFolder() {
@@ -163,10 +164,14 @@ public class InspectCore {
 		Path folder = Paths.get(path);
 
 		if (!Files.exists(folder)) {
-			MessageDialog.openWarning(Display.getDefault().getActiveShell(), "Phaser Support",
-					"Cannot find Phaser support at '" + path + "'. We will continue with the built-it.");
-			getPreferenceStore().setValue(PREF_BUILTIN_PHASER_VERSION, true);
 			
+			Display.getDefault().syncExec(() -> {
+				MessageDialog.openWarning(Display.getDefault().getActiveShell(), "Phaser Support",
+						"Cannot find Phaser support at '" + path + "'. We will continue with the built-in.");
+			});
+			
+			getPreferenceStore().setValue(PREF_BUILTIN_PHASER_VERSION, true);
+
 			return getBuiltInPhaserVersionFolder();
 		}
 
