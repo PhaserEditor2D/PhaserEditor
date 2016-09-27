@@ -166,6 +166,10 @@
                commandId="phasereditor.canvas.ui.togglesnapping"
                style="push">
          </command>
+         <command
+               commandId="phasereditor.canvas.ui.setSnappingWithSelection"
+               style="push">
+         </command>
          <separator
                name="phasereditor.canvas.ui.separator4"
                visible="true">
@@ -350,7 +354,7 @@
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
-            description="break up a group."
+            description="Break up a group."
             id="phasereditor.canvas.ui.ungroup"
             name="Canvas: Break Group">
       </command>
@@ -362,7 +366,7 @@
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
-            description="close a group for selection."
+            description="Close a group for selection."
             id="phasereditor.canvas.ui.closeGroup"
             name="Canvas: Close Group">
       </command>
@@ -453,6 +457,10 @@
             name="Toggle Snapping">
       </command>
       <command
+            id="phasereditor.canvas.ui.setSnappingWithSelection"
+            name="Enable Snapping (Selection Size)">
+      </command>
+      <command
             id="phasereditor.canvas.ui.editanchors"
             name="Edit Anchors">
       </command>
@@ -461,6 +469,10 @@
             defaultHandler="phasereditor.canvas.ui.handlers.ShowCodeHandler"
             id="phasereditor.canvas.ui.showcode"
             name="Show Code">
+      </command>
+      <command
+            id="phasereditor.canvas.ui.command1"
+            name="name">
       </command>
       
    </extension>
@@ -932,6 +944,17 @@
             class="phasereditor.canvas.ui.handlers.ToggleSnappingHandler"
             commandId="phasereditor.canvas.ui.togglesnapping">
       </handler>
+      
+      <handler
+            class="phasereditor.canvas.ui.handlers.SetSnappingSelectionHandler"
+            commandId="phasereditor.canvas.ui.setSnappingWithSelection">
+         <activeWhen>
+            <reference
+                  definitionId="phasereditor.canvas.ui.spritesSelected">
+            </reference>
+         </activeWhen>
+      </handler>
+      
       <handler
             class="phasereditor.canvas.ui.handlers.EditAnchorHandler"
             commandId="phasereditor.canvas.ui.editanchors">
@@ -1064,6 +1087,12 @@
              contextId="phasereditor.canvas.ui.nodescontext"
              schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
              sequence="E">
+       </key>
+       <key
+             commandId="phasereditor.canvas.ui.setSnappingWithSelection"
+             contextId="phasereditor.canvas.ui.nodescontext"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="W">
        </key>
    </extension>
    <extension
