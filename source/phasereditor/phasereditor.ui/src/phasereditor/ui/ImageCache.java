@@ -47,13 +47,14 @@ public class ImageCache {
 				Container<Image> c = _fxcache.get(file);
 				if (t != c.token) {
 					c.token = t;
-					c.value = new Image("file:" + file.getLocation().makeAbsolute().toOSString());
+					c.value = new Image("file:" + file.getLocation().makeAbsolute().toOSString(), true);
 				}
 				return c.value;
 			}
 			Container<Image> c = new Container<>();
 			c.token = t;
-			c.value = new Image("file:" + file.getLocation().makeAbsolute().toOSString());
+			c.value = new Image("file:" + file.getLocation().makeAbsolute().toOSString(), true);
+			_fxcache.put(file, c);
 			return c.value;
 		}
 	}
