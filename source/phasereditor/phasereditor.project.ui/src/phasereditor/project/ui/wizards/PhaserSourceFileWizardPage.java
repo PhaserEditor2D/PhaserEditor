@@ -39,11 +39,9 @@ import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import phasereditor.inspect.core.resources.InspectCoreResources;
 import phasereditor.project.core.ProjectCore;
 
-public abstract class PhaserSourceFileWizardPage extends
-		WizardNewFileCreationPage {
+public abstract class PhaserSourceFileWizardPage extends WizardNewFileCreationPage {
 
-	public PhaserSourceFileWizardPage(IStructuredSelection selection,
-			String title, String description) {
+	public PhaserSourceFileWizardPage(IStructuredSelection selection, String title, String description) {
 		super("newfile", selection);
 		setTitle(title);
 		setDescription(description);
@@ -69,8 +67,7 @@ public abstract class PhaserSourceFileWizardPage extends
 
 		String fileName = getFileName();
 		IPath fullPath = getContainerFullPath();
-		if ((fullPath != null) && (fullPath.isEmpty() == false)
-				&& (fileName != null)) {
+		if ((fullPath != null) && (fullPath.isEmpty() == false) && (fileName != null)) {
 
 			// check that filename does not contain invalid extension
 			if (fileName.contains(".") && !fileName.endsWith(".js")) {
@@ -84,16 +81,15 @@ public abstract class PhaserSourceFileWizardPage extends
 				IPath resourcePath = fullPath.append(newFileName);
 
 				IWorkspace workspace = ResourcesPlugin.getWorkspace();
-				IStatus result = workspace.validatePath(
-						resourcePath.toString(), IResource.FOLDER);
+				IStatus result = workspace.validatePath(resourcePath.toString(), IResource.FOLDER);
 				if (!result.isOK()) {
 					// path invalid
 					setErrorMessage(result.getMessage());
 					return false;
 				}
 
-				if ((workspace.getRoot().getFolder(resourcePath).exists() || workspace
-						.getRoot().getFile(resourcePath).exists())) {
+				if ((workspace.getRoot().getFolder(resourcePath).exists()
+						|| workspace.getRoot().getFile(resourcePath).exists())) {
 					setErrorMessage("File name exists.");
 					return false;
 				}
@@ -106,9 +102,7 @@ public abstract class PhaserSourceFileWizardPage extends
 				// check that the path is inside the webContent folder
 				IPath sourcePath = ProjectCore.getWebContentPath(project);
 				if (!sourcePath.isPrefixOf(fullPath)) {
-					setMessage(
-							"The file must be inside the WebContent folder.",
-							WARNING);
+					setMessage("The file must be inside the WebContent folder.", WARNING);
 				}
 			}
 		}
@@ -129,8 +123,7 @@ public abstract class PhaserSourceFileWizardPage extends
 		IProject project = null;
 
 		if (path != null) {
-			if (workspace.validatePath(path.toString(), IResource.PROJECT)
-					.isOK()) {
+			if (workspace.validatePath(path.toString(), IResource.PROJECT).isOK()) {
 				project = workspace.getRoot().getProject(path.toString());
 			} else {
 				project = workspace.getRoot().getFile(path).getProject();
@@ -142,7 +135,7 @@ public abstract class PhaserSourceFileWizardPage extends
 
 	@Override
 	protected InputStream getInitialContents() {
-		Path bundle = InspectCoreResources.getBundleFolder();
+		Path bundle = InspectCoreResources.getResourcesPath_AnyOS().resolve("built-in");
 		Path file = bundle.resolve("templates_newfile/" + getTemplatePath());
 		try {
 			String content = new String(Files.readAllBytes(file));
@@ -156,7 +149,6 @@ public abstract class PhaserSourceFileWizardPage extends
 	protected abstract String getTemplatePath();
 
 	protected String processContent(String content) {
-		return content
-				.replace("{class-name}", getFileName().replace(".js", ""));
+		return content.replace("{class-name}", getFileName().replace(".js", ""));
 	}
 }

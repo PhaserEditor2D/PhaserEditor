@@ -32,13 +32,13 @@ public class LibraryDocumentationIndex {
 
 			LibraryDocumentationIndex index = new LibraryDocumentationIndex();
 
-			Path bundleFolder = InspectCoreResources.getBundleFolder();
+			Path resourcesFolder = InspectCoreResources.getResourcesPath_AnyOS().resolve("built-in");
 			try {
-				Path indexFile = bundleFolder.resolve("thirdparty-libraries/browser.doc.json").toAbsolutePath()
+				Path indexFile = resourcesFolder.resolve("thirdparty-libraries/browser.doc.json").toAbsolutePath()
 						.normalize();
 				index.addIndexFile(indexFile);
 
-				indexFile = bundleFolder.resolve("thirdparty-libraries/ecma5.doc.json").toAbsolutePath().normalize();
+				indexFile = resourcesFolder.resolve("thirdparty-libraries/ecma5.doc.json").toAbsolutePath().normalize();
 				index.addIndexFile(indexFile);
 
 				_instance = index;

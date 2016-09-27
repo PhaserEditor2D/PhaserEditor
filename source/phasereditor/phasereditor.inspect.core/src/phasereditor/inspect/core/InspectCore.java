@@ -38,7 +38,9 @@ import java.util.List;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.wst.jsdt.core.IMember;
 import org.eclipse.wst.jsdt.core.IType;
 import org.eclipse.wst.jsdt.core.JavaScriptCore;
@@ -93,9 +95,9 @@ public class InspectCore {
 	public static TemplatesModel getGeneralTemplates() {
 		if (_builtInTemplates == null) {
 			try {
-				Path bundlePath = InspectCoreResources.getBundleFolder();
+				Path resourcesPath = InspectCoreResources.getResourcesPath_AnyOS().resolve("built-in");
 				String rel = "templates";
-				Path templatesPath = bundlePath.resolve(rel);
+				Path templatesPath = resourcesPath.resolve(rel);
 				_builtInTemplates = new TemplatesModel(templatesPath);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -145,11 +147,11 @@ public class InspectCore {
 	}
 
 	public static Path getPhaserLibrariesFolder() {
-		return InspectCoreResources.getBundleFolder().resolve("phaser-libraries");
+		return InspectCoreResources.getResourcesPath_AnyOS().resolve("built-in/phaser-libraries");
 	}
 
 	public static Path getBuiltInPhaserVersionFolder() {
-		return InspectCoreResources.getBundleFolder().resolve("phaser-version");
+		return InspectCoreResources.getResourcesPath_AnyOS().resolve("built-in/phaser-version");
 	}
 
 	public static Path getPhaserVersionFolder() {
@@ -159,6 +161,14 @@ public class InspectCore {
 
 		String path = getPreferenceStore().getString(PREF_USER_PHASER_VERSION_PATH);
 		Path folder = Paths.get(path);
+
+		if (!Files.exists(folder)) {
+			MessageDialog.openWarning(Display.getDefault().getActiveShell(), "Phaser Support",
+					"Cannot find Phaser support at '" + path + "'. We will continue with the built-it.");
+			getPreferenceStore().setValue(PREF_BUILTIN_PHASER_VERSION, true);
+			
+			return getBuiltInPhaserVersionFolder();
+		}
 
 		return folder;
 	}

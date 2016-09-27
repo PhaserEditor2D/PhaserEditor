@@ -146,8 +146,8 @@ public class AssetPackWizardPage extends WizardNewFileCreationPage {
 
 	@Override
 	protected InputStream getInitialContents() {
-		Path bundle = InspectCoreResources.getBundleFolder();
-		Path file = bundle.resolve("templates_newfile/empty-asset-pack.json");
+		Path resourcesPath = InspectCoreResources.getResourcesPath_AnyOS();
+		Path file = resourcesPath.resolve("built-in/templates_newfile/empty-asset-pack.json");
 		try (InputStream input = Files.newInputStream(file);) {
 			JSONObject obj = new JSONObject(new JSONTokener(input));
 			obj.getJSONObject("meta").put("generated", Long.toString(currentTimeMillis()));

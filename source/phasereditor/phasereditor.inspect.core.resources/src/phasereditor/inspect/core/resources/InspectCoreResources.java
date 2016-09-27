@@ -43,12 +43,6 @@ public class InspectCoreResources {
 	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
 	private static Path _resourcesPath;
 
-	@Deprecated
-	public static Path getBundleFolder() {
-		//return Activator.getDefault().getBundleFolder();
-		return getResourcesPath_AnyOS().resolve("built-in");
-	}
-
 	/**
 	 * The resources path. Resources is a folder in the root directory of the
 	 * editor "install". In this folder are stored the external tools (ffmpeg,
