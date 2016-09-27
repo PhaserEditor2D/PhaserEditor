@@ -9,7 +9,10 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.jetty.server;bundle-version="8.1.16",
  org.eclipse.jetty.util;bundle-version="8.1.16",
- org.eclipse.core.resources;bundle-version="3.9.1"
+ org.eclipse.core.resources;bundle-version="3.9.1",
+ org.eclipse.jetty.http;bundle-version="9.3.9",
+ org.eclipse.jetty.servlet;bundle-version="9.3.9",
+ javax.servlet;bundle-version="3.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.webrun.core

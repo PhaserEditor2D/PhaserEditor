@@ -77,7 +77,7 @@ public class WebRunCore {
 		_server.setAttribute("useFileMappedBuffer", "false");
 
 		// resources
-		ResourceHandler resourceHandler = new ResourceHandler();
+		ResourceHandler resourceHandler = new WorkspaceResourcesHandler();
 		resourceHandler.setMinMemoryMappedContentLength(-1);
 		resourceHandler.setDirectoriesListed(true);
 		resourceHandler.setWelcomeFiles(new String[] { "index.html" });
