@@ -43,6 +43,7 @@ public class BuildPhaserAPI {
 	private static PhaserJSDoc _phaserJSDoc;
 
 	public static void main(String[] args) throws IOException {
+		// TODO: get the json file from the new path -Dphasereditor.resources
 		Path wsPath = Paths.get(".").toAbsolutePath().getParent().getParent();
 		Path projectPath = wsPath.resolve(InspectCore.RESOURCES_PLUGIN_ID);
 		_phaserJSDoc = new PhaserJSDoc(projectPath.resolve("phaser-version/phaser-master/src"),

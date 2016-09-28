@@ -78,7 +78,7 @@ public class PhaserJSDoc {
 		_srcFolder = srcFolder;
 		_globalConstants = new ArrayList<>();
 		_membersMap = new HashMap<>();
-
+		
 		_typesMap = buildPhaserJSDoc(docsJsonFile);
 
 		for (PhaserType type : _typesMap.values()) {
@@ -413,7 +413,6 @@ public class PhaserJSDoc {
 
 			// here
 			if (type == null) {
-				out.println(memberof);
 				return false;
 			}
 
