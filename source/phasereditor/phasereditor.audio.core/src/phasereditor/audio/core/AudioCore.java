@@ -434,6 +434,7 @@ public class AudioCore {
 	}
 
 	private static void makeSoundWaves(IFile file, Path path) throws IOException {
+		out.println("Make waves " + file);
 		Files.createDirectories(path.getParent());
 
 		String soundPath = eclipseFileToJavaPath(file).toString();
@@ -556,7 +557,7 @@ public class AudioCore {
 		Files.createDirectories(path.getParent());
 
 		String videoPath = eclipseFileToJavaPath(file).toString();
-		out.println("make screenshot of " + file + " to " + path);
+		out.println("Make video screenshot " + file);
 		ProcessBuilder pb = createFFMpegProcessBuilder("-hide_banner", "-loglevel", "0", "-ss", "00:00:01", "-i",
 				videoPath, "-vframes", "1", "-vf", "scale=128:-1", path.toAbsolutePath().toString());
 		Process proc = pb.start();
@@ -567,7 +568,7 @@ public class AudioCore {
 		}
 	}
 
-	public static void makeMediaSnapshots(IProject project) {
+	public static void makeMediaSnapshots(IProject project, boolean clean) {
 		try {
 			project.accept(new IResourceVisitor() {
 
@@ -577,10 +578,14 @@ public class AudioCore {
 						IFile file = (IFile) resource;
 						if (resource.exists()) {
 							if (isSupportedVideo(file)) {
-								removeVideoProperties(file);
+								if (clean) {
+									removeVideoProperties(file);
+								}
 								getVideoSnapshotFile(file);
 							} else if (isSupportedAudio(file)) {
-								removeSoundProperties(file);
+								if (clean) {
+									removeSoundProperties(file);
+								}
 								getSoundWavesFile(file);
 								getSoundDuration(file);
 							}

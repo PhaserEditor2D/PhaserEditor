@@ -55,17 +55,17 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 	protected void startupOnInitialize() {
 		super.startupOnInitialize();
 
-		fullBuild();
+		fullBuild(false);
 	}
 
 	@Override
 	protected void clean(IProgressMonitor monitor) throws CoreException {
-		fullBuild();
+		fullBuild(true);
 	}
 
-	private void fullBuild() {
+	private void fullBuild(boolean clean) {
 		buildPacks(null, new PackDelta());
-		AudioCore.makeMediaSnapshots(getProject());
+		AudioCore.makeMediaSnapshots(getProject(), clean);
 	}
 
 	@Override
@@ -122,7 +122,7 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 		}
 
 		if (mainDelta == null) {
-			AudioCore.makeMediaSnapshots(getProject());
+			AudioCore.makeMediaSnapshots(getProject(), false);
 		} else {
 			AudioCore.makeSoundWavesAndMetadata(mainDelta);
 			AudioCore.makeVideoSnapshot(mainDelta);
