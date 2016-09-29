@@ -50,6 +50,8 @@ public class CanvasEditorModel {
 		} else {
 			StatusManager.getManager().handle(status, StatusManager.BLOCK | StatusManager.LOG);
 		}
+
+		_world.getAssetTable().reset();
 	}
 
 	public void write(JSONObject data) {

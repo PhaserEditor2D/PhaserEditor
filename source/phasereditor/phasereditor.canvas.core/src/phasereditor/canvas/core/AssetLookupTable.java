@@ -118,4 +118,9 @@ public class AssetLookupTable {
 	public IAssetKey lookup(String id) {
 		return _map.get(id);
 	}
+	
+	public void reset() {
+		_entries = new ArrayList<>();
+		_map = new HashMap<>();
+	}
 }

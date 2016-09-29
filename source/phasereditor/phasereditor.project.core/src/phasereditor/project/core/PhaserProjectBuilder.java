@@ -212,21 +212,21 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 
 		// build and validate all the affected packs
 		{
-//			Collection<AssetPackModel> buildPacks;
-//			if (buildDelta == null) {
-//				buildPacks = packDelta.getPacks();
-//			} else {
-//				buildPacks = allPacks;
-//			}
+			// Collection<AssetPackModel> buildPacks;
+			// if (buildDelta == null) {
+			// buildPacks = packDelta.getPacks();
+			// } else {
+			// buildPacks = allPacks;
+			// }
 
-			for(AssetModel asset : packDelta.getAssets()) {
+			for (AssetModel asset : packDelta.getAssets()) {
 				List<IStatus> problems = new ArrayList<>();
 				asset.build(problems);
 				for (IStatus problem : problems) {
 					createAssetPackMarker(asset.getPack().getFile(), problem);
 				}
 			}
-			
+
 			for (AssetPackModel pack : packDelta.getPacks()) {
 				List<IStatus> problems = pack.build();
 				for (IStatus problem : problems) {
@@ -245,9 +245,25 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 			return;
 		}
 
+		IMarker marker = createErrorMarker(problem, resource);
+
+		try {
+			if (problem instanceof AssetStatus) {
+				AssetModel asset = ((AssetStatus) problem).getAsset();
+				String ref = asset.getPack().getStringReference(asset);
+				
+				marker.setAttribute(IDE.EDITOR_ID_ATTR, AssetPackCore.ASSET_EDITOR_ID);
+				marker.setAttribute(AssetPackCore.ASSET_EDITOR_GOTO_MARKER_ATTR, ref);
+			}
+		} catch (CoreException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static IMarker createErrorMarker(IStatus status, IResource resource) {
 		try {
 			int severity;
-			switch (problem.getSeverity()) {
+			switch (status.getSeverity()) {
 			case IStatus.ERROR:
 				severity = IMarker.SEVERITY_ERROR;
 				break;
@@ -258,16 +274,11 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 
 			IMarker marker = resource.createMarker(ProjectCore.PHASER_PROBLEM_MARKER_ID);
 			marker.setAttribute(IMarker.SEVERITY, severity);
-			marker.setAttribute(IMarker.MESSAGE, problem.getMessage());
+			marker.setAttribute(IMarker.MESSAGE, status.getMessage());
 			marker.setAttribute(IMarker.LOCATION, resource.getProject().getName());
 			marker.setAttribute(IMarker.TRANSIENT, true);
-			marker.setAttribute(IDE.EDITOR_ID_ATTR, AssetPackCore.ASSET_EDITOR_ID);
 
-			if (problem instanceof AssetStatus) {
-				AssetModel asset = ((AssetStatus) problem).getAsset();
-				String ref = asset.getPack().getStringReference(asset);
-				marker.setAttribute(AssetPackCore.ASSET_EDITOR_GOTO_MARKER_ATTR, ref);
-			}
+			return marker;
 
 		} catch (CoreException e) {
 			throw new RuntimeException(e);

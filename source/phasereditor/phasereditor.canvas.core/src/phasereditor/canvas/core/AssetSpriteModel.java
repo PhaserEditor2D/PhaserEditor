@@ -26,6 +26,8 @@ import static java.lang.System.err;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -33,6 +35,7 @@ import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
+import phasereditor.project.core.PhaserProjectBuilder;
 
 /**
  * @author arian
@@ -125,7 +128,14 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 		_assetKey = buildAssetKey(_assetKey);
 
 		if (_assetKey == null) {
-			// TODO: why is this happening?
+			// create an error marker
+			Status error = new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID,
+					"The asset for the sprite '" + getEditorName() + "' is not found.");
+			PhaserProjectBuilder.createErrorMarker(error, getWorld().getFile());
+
+			// TODO: maybe we need to set a fallback image asset, with an error
+			// message in it.
+
 			err.println("WARNING: " + getEditorName() + ": null asset key");
 		}
 
@@ -140,7 +150,6 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 	@SuppressWarnings("unchecked")
 	protected T buildAssetKey(T assetKey) {
 		if (assetKey == null) {
-			// nothing to do
 			return null;
 		}
 

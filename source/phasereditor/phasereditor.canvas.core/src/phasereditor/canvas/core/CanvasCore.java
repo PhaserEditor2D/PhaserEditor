@@ -43,4 +43,5 @@ public class CanvasCore {
 		}
 		return sb.toString();
 	}
+	
 }
