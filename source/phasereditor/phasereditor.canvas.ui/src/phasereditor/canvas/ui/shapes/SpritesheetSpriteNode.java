@@ -28,7 +28,6 @@ import phasereditor.canvas.core.SpritesheetSpriteModel;
  * @author arian
  *
  */
-@SuppressWarnings("unchecked")
 public class SpritesheetSpriteNode extends FrameNode implements ISpriteNode {
 
 	private SpritesheetSpriteControl _control;

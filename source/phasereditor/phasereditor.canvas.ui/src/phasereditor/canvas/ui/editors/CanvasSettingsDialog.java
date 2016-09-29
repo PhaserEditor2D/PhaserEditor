@@ -194,31 +194,32 @@ public class CanvasSettingsDialog extends Dialog {
 	public void setModel(SceneSettings model) {
 		_model = model;
 	}
+	@SuppressWarnings("unchecked")
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
-		IObservableValue observeText_textObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text);
-		IObservableValue sceneWidth_modelObserveValue = PojoProperties.value("sceneWidth").observe(_model);
+		IObservableValue<?> observeText_textObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text);
+		IObservableValue<?> sceneWidth_modelObserveValue = PojoProperties.value("sceneWidth").observe(_model);
 		bindingContext.bindValue(observeText_textObserveWidget, sceneWidth_modelObserveValue, null, null);
 		//
-		IObservableValue observeText_text_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_1);
-		IObservableValue sceneHeightGetModelObserveValue = PojoProperties.value("sceneHeight").observe(getModel());
+		IObservableValue<?> observeText_text_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_1);
+		IObservableValue<?> sceneHeightGetModelObserveValue = PojoProperties.value("sceneHeight").observe(getModel());
 		bindingContext.bindValue(observeText_text_1ObserveWidget, sceneHeightGetModelObserveValue, null, null);
 		//
-		IObservableValue observeSelection_btnGenerateOnSaveObserveWidget = WidgetProperties.selection().observe(_btnGenerateOnSave);
-		IObservableValue generateOnSaveGetModelObserveValue = PojoProperties.value("generateOnSave").observe(getModel());
+		IObservableValue<?> observeSelection_btnGenerateOnSaveObserveWidget = WidgetProperties.selection().observe(_btnGenerateOnSave);
+		IObservableValue<?> generateOnSaveGetModelObserveValue = PojoProperties.value("generateOnSave").observe(getModel());
 		bindingContext.bindValue(observeSelection_btnGenerateOnSaveObserveWidget, generateOnSaveGetModelObserveValue, null, null);
 		//
-		IObservableValue observeSelection_btnEnbaleSteppingObserveWidget = WidgetProperties.selection().observe(_btnEnbaleStepping);
-		IObservableValue enableStepping_modelObserveValue = PojoProperties.value("enableStepping").observe(_model);
+		IObservableValue<?> observeSelection_btnEnbaleSteppingObserveWidget = WidgetProperties.selection().observe(_btnEnbaleStepping);
+		IObservableValue<?> enableStepping_modelObserveValue = PojoProperties.value("enableStepping").observe(_model);
 		bindingContext.bindValue(observeSelection_btnEnbaleSteppingObserveWidget, enableStepping_modelObserveValue, null, null);
 		//
-		IObservableValue observeText_text_2ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_2);
-		IObservableValue stepWidth_modelObserveValue = PojoProperties.value("stepWidth").observe(_model);
+		IObservableValue<?> observeText_text_2ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_2);
+		IObservableValue<?> stepWidth_modelObserveValue = PojoProperties.value("stepWidth").observe(_model);
 		bindingContext.bindValue(observeText_text_2ObserveWidget, stepWidth_modelObserveValue, null, null);
 		//
-		IObservableValue observeText_text_3ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_3);
-		IObservableValue stepHeight_modelObserveValue = PojoProperties.value("stepHeight").observe(_model);
+		IObservableValue<?> observeText_text_3ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_3);
+		IObservableValue<?> stepHeight_modelObserveValue = PojoProperties.value("stepHeight").observe(_model);
 		bindingContext.bindValue(observeText_text_3ObserveWidget, stepHeight_modelObserveValue, null, null);
 		//
 		return bindingContext;

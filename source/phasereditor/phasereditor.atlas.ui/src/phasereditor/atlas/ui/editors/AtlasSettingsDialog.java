@@ -243,55 +243,56 @@ public class AtlasSettingsDialog extends Dialog {
 	protected Point getInitialSize() {
 		return new Point(415, 378);
 	}
+	@SuppressWarnings("unchecked")
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
-		IObservableValue observeText_text_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_1);
-		IObservableValue minWidth_settingsObserveValue = PojoProperties.value("minWidth").observe(_settings);
+		IObservableValue<?> observeText_text_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_1);
+		IObservableValue<?> minWidth_settingsObserveValue = PojoProperties.value("minWidth").observe(_settings);
 		bindingContext.bindValue(observeText_text_1ObserveWidget, minWidth_settingsObserveValue, null, null);
 		//
-		IObservableValue observeText_text_2ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_2);
-		IObservableValue minHeight_settingsObserveValue = PojoProperties.value("minHeight").observe(_settings);
+		IObservableValue<?> observeText_text_2ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_2);
+		IObservableValue<?> minHeight_settingsObserveValue = PojoProperties.value("minHeight").observe(_settings);
 		bindingContext.bindValue(observeText_text_2ObserveWidget, minHeight_settingsObserveValue, null, null);
 		//
-		IObservableValue observeText_textObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text);
-		IObservableValue maxWidth_settingsObserveValue = PojoProperties.value("maxWidth").observe(_settings);
+		IObservableValue<?> observeText_textObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text);
+		IObservableValue<?> maxWidth_settingsObserveValue = PojoProperties.value("maxWidth").observe(_settings);
 		bindingContext.bindValue(observeText_textObserveWidget, maxWidth_settingsObserveValue, null, null);
 		//
-		IObservableValue observeText_text_3ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_3);
-		IObservableValue maxHeight_settingsObserveValue = PojoProperties.value("maxHeight").observe(_settings);
+		IObservableValue<?> observeText_text_3ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_3);
+		IObservableValue<?> maxHeight_settingsObserveValue = PojoProperties.value("maxHeight").observe(_settings);
 		bindingContext.bindValue(observeText_text_3ObserveWidget, maxHeight_settingsObserveValue, null, null);
 		//
-		IObservableValue observeSelection_btnStripWhitespaceXObserveWidget = WidgetProperties.selection().observe(_btnStripWhitespaceX);
-		IObservableValue stripWhitespaceX_settingsObserveValue = PojoProperties.value("stripWhitespaceX").observe(_settings);
+		IObservableValue<?> observeSelection_btnStripWhitespaceXObserveWidget = WidgetProperties.selection().observe(_btnStripWhitespaceX);
+		IObservableValue<?> stripWhitespaceX_settingsObserveValue = PojoProperties.value("stripWhitespaceX").observe(_settings);
 		bindingContext.bindValue(observeSelection_btnStripWhitespaceXObserveWidget, stripWhitespaceX_settingsObserveValue, null, null);
 		//
-		IObservableValue observeSelection_btnStripWhitespaceYObserveWidget = WidgetProperties.selection().observe(_btnStripWhitespaceY);
-		IObservableValue stripWhitespaceY_settingsObserveValue = PojoProperties.value("stripWhitespaceY").observe(_settings);
+		IObservableValue<?> observeSelection_btnStripWhitespaceYObserveWidget = WidgetProperties.selection().observe(_btnStripWhitespaceY);
+		IObservableValue<?> stripWhitespaceY_settingsObserveValue = PojoProperties.value("stripWhitespaceY").observe(_settings);
 		bindingContext.bindValue(observeSelection_btnStripWhitespaceYObserveWidget, stripWhitespaceY_settingsObserveValue, null, null);
 		//
-		IObservableValue observeSelection_btnAliasObserveWidget = WidgetProperties.selection().observe(_btnAlias);
-		IObservableValue alias_settingsObserveValue = PojoProperties.value("alias").observe(_settings);
+		IObservableValue<?> observeSelection_btnAliasObserveWidget = WidgetProperties.selection().observe(_btnAlias);
+		IObservableValue<?> alias_settingsObserveValue = PojoProperties.value("alias").observe(_settings);
 		bindingContext.bindValue(observeSelection_btnAliasObserveWidget, alias_settingsObserveValue, null, null);
 		//
-		IObservableValue observeSelection_btnUseIndexesObserveWidget = WidgetProperties.selection().observe(_btnUseIndexes);
-		IObservableValue useIndexes_settingsObserveValue = PojoProperties.value("useIndexes").observe(_settings);
+		IObservableValue<?> observeSelection_btnUseIndexesObserveWidget = WidgetProperties.selection().observe(_btnUseIndexes);
+		IObservableValue<?> useIndexes_settingsObserveValue = PojoProperties.value("useIndexes").observe(_settings);
 		bindingContext.bindValue(observeSelection_btnUseIndexesObserveWidget, useIndexes_settingsObserveValue, null, null);
 		//
-		IObservableValue observeSelection_btnGridObserveWidget = WidgetProperties.selection().observe(_btnGrid);
-		IObservableValue grid_settingsObserveValue = PojoProperties.value("grid").observe(_settings);
+		IObservableValue<?> observeSelection_btnGridObserveWidget = WidgetProperties.selection().observe(_btnGrid);
+		IObservableValue<?> grid_settingsObserveValue = PojoProperties.value("grid").observe(_settings);
 		bindingContext.bindValue(observeSelection_btnGridObserveWidget, grid_settingsObserveValue, null, null);
 		//
-		IObservableValue observeSelection_btnDebugObserveWidget = WidgetProperties.selection().observe(_btnDebug);
-		IObservableValue debug_settingsObserveValue = PojoProperties.value("debug").observe(_settings);
+		IObservableValue<?> observeSelection_btnDebugObserveWidget = WidgetProperties.selection().observe(_btnDebug);
+		IObservableValue<?> debug_settingsObserveValue = PojoProperties.value("debug").observe(_settings);
 		bindingContext.bindValue(observeSelection_btnDebugObserveWidget, debug_settingsObserveValue, null, null);
 		//
-		IObservableValue observeText_text_4ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_4);
-		IObservableValue paddingX_settingsObserveValue = PojoProperties.value("paddingX").observe(_settings);
+		IObservableValue<?> observeText_text_4ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_4);
+		IObservableValue<?> paddingX_settingsObserveValue = PojoProperties.value("paddingX").observe(_settings);
 		bindingContext.bindValue(observeText_text_4ObserveWidget, paddingX_settingsObserveValue, null, null);
 		//
-		IObservableValue observeText_text_5ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_5);
-		IObservableValue paddingY_settingsObserveValue = PojoProperties.value("paddingY").observe(_settings);
+		IObservableValue<?> observeText_text_5ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_5);
+		IObservableValue<?> paddingY_settingsObserveValue = PojoProperties.value("paddingY").observe(_settings);
 		bindingContext.bindValue(observeText_text_5ObserveWidget, paddingY_settingsObserveValue, null, null);
 		//
 		return bindingContext;

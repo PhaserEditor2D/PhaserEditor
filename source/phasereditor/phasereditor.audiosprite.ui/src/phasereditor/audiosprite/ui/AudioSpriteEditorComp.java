@@ -50,7 +50,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.dnd.DND;
@@ -76,7 +76,7 @@ import phasereditor.audiosprite.core.AudioSpritesModel;
 public class AudioSpriteEditorComp extends Composite {
 	public static final String PROP_DIRTY = "dirty";
 
-	private static class Sorter extends ViewerSorter {
+	private static class Sorter extends ViewerComparator {
 		public Sorter() {
 		}
 
@@ -146,7 +146,7 @@ public class AudioSpriteEditorComp extends Composite {
 		composite_2.setLayout(gl_composite_2);
 
 		_spritesViewer = new TableViewer(composite_2, SWT.BORDER | SWT.FULL_SELECTION);
-		_spritesViewer.setSorter(new Sorter());
+		_spritesViewer.setComparator(new Sorter());
 		_spritesViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {

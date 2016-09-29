@@ -165,7 +165,7 @@ public class TilemapAssetEditorComp extends Composite {
 	}
 
 	private void decorateControls() {
-		IObservableList bindings = m_bindingContext.getBindings();
+		IObservableList<?> bindings = m_bindingContext.getBindings();
 		for (int i = 0; i < bindings.size(); i++) {
 			Binding b = (Binding) bindings.get(i);
 			ControlDecorationSupport.create(b, SWT.TOP | SWT.LEFT);
@@ -173,7 +173,7 @@ public class TilemapAssetEditorComp extends Composite {
 	}
 
 	private void validateModelToTarget() {
-		IObservableList bindings = m_bindingContext.getBindings();
+		IObservableList<?> bindings = m_bindingContext.getBindings();
 		for (int i = 0; i < bindings.size(); i++) {
 			Binding b = (Binding) bindings.get(i);
 			b.validateTargetToModel();
@@ -241,23 +241,24 @@ public class TilemapAssetEditorComp extends Composite {
 		support.firePropertyChange(property, true, false);
 	}
 
+	@SuppressWarnings("unchecked")
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
-		IObservableValue observeText_textObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text);
-		IObservableValue modelkey_selfObserveValue = BeanProperties.value("model.key").observe(_self);
+		IObservableValue<?> observeText_textObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text);
+		IObservableValue<?> modelkey_selfObserveValue = BeanProperties.value("model.key").observe(_self);
 		bindingContext.bindValue(observeText_textObserveWidget, modelkey_selfObserveValue, null, null);
 		//
-		IObservableValue observeText_text_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_1);
-		IObservableValue modelurl_selfObserveValue = BeanProperties.value("model.url").observe(_self);
+		IObservableValue<?> observeText_text_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_1);
+		IObservableValue<?> modelurl_selfObserveValue = BeanProperties.value("model.url").observe(_self);
 		bindingContext.bindValue(observeText_text_1ObserveWidget, modelurl_selfObserveValue, null, null);
 		//
-		IObservableValue observeText_text_2ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_2);
-		IObservableValue modeldata_selfObserveValue = BeanProperties.value("model.data").observe(_self);
+		IObservableValue<?> observeText_text_2ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_2);
+		IObservableValue<?> modeldata_selfObserveValue = BeanProperties.value("model.data").observe(_self);
 		bindingContext.bindValue(observeText_text_2ObserveWidget, modeldata_selfObserveValue, null, null);
 		//
-		IObservableValue observeSingleSelection_comboViewer = ViewerProperties.singleSelection().observe(_formatViewer);
-		IObservableValue modelformat_selfObserveValue = BeanProperties.value("model.format").observe(_self);
+		IObservableValue<?> observeSingleSelection_comboViewer = ViewerProperties.singleSelection().observe(_formatViewer);
+		IObservableValue<?> modelformat_selfObserveValue = BeanProperties.value("model.format").observe(_self);
 		bindingContext.bindValue(observeSingleSelection_comboViewer, modelformat_selfObserveValue, null, null);
 		//
 		return bindingContext;

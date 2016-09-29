@@ -275,7 +275,7 @@ public class SpritesheetAssetPreviewComp extends Composite {
 	}
 
 	private void decorateControls() {
-		IObservableList bindings = m_bindingContext.getBindings();
+		IObservableList<?> bindings = m_bindingContext.getBindings();
 		for (int i = 0; i < bindings.size(); i++) {
 			Binding b = (Binding) bindings.get(i);
 			ControlDecorationSupport.create(b, SWT.TOP | SWT.LEFT);
@@ -380,11 +380,12 @@ public class SpritesheetAssetPreviewComp extends Composite {
 		support.firePropertyChange(property, true, false);
 	}
 
+	@SuppressWarnings("unchecked")
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
-		IObservableValue observeSingleSelection_comboViewer = ViewerProperties.singleSelection().observe(_comboViewer);
-		IObservableValue fps_selfObserveValue = BeanProperties.value("fps").observe(_self);
+		IObservableValue<?> observeSingleSelection_comboViewer = ViewerProperties.singleSelection().observe(_comboViewer);
+		IObservableValue<?> fps_selfObserveValue = BeanProperties.value("fps").observe(_self);
 		bindingContext.bindValue(observeSingleSelection_comboViewer, fps_selfObserveValue, null, null);
 		//
 		return bindingContext;

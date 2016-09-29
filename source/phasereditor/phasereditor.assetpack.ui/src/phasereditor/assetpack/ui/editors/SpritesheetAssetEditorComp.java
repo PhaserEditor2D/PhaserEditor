@@ -172,7 +172,7 @@ public class SpritesheetAssetEditorComp extends Composite {
 	}
 
 	private void decorateControls() {
-		IObservableList bindings = m_bindingContext.getBindings();
+		IObservableList<?> bindings = m_bindingContext.getBindings();
 		for (int i = 0; i < bindings.size(); i++) {
 			Binding b = (Binding) bindings.get(i);
 			ControlDecorationSupport.create(b, SWT.TOP | SWT.LEFT);
@@ -180,7 +180,7 @@ public class SpritesheetAssetEditorComp extends Composite {
 	}
 
 	private void validateModelToTarget() {
-		IObservableList bindings = m_bindingContext.getBindings();
+		IObservableList<?> bindings = m_bindingContext.getBindings();
 		for (int i = 0; i < bindings.size(); i++) {
 			Binding b = (Binding) bindings.get(i);
 			b.validateTargetToModel();
@@ -279,39 +279,40 @@ public class SpritesheetAssetEditorComp extends Composite {
 		_support.firePropertyChange(property, true, false);
 	}
 
+	@SuppressWarnings("unchecked")
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
-		IObservableValue observeText_textObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text);
-		IObservableValue modelkey_selfObserveValue = BeanProperties.value("model.key").observe(_self);
+		IObservableValue<?> observeText_textObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text);
+		IObservableValue<?> modelkey_selfObserveValue = BeanProperties.value("model.key").observe(_self);
 		UpdateValueStrategy strategy = new UpdateValueStrategy();
 		strategy.setBeforeSetValidator(new RequiredValidator());
 		bindingContext.bindValue(observeText_textObserveWidget, modelkey_selfObserveValue, strategy, null);
 		//
-		IObservableValue observeText_text_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_1);
-		IObservableValue modelurl_selfObserveValue = BeanProperties.value("model.url").observe(_self);
+		IObservableValue<?> observeText_text_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_1);
+		IObservableValue<?> modelurl_selfObserveValue = BeanProperties.value("model.url").observe(_self);
 		UpdateValueStrategy strategy_1 = new UpdateValueStrategy();
 		strategy_1.setBeforeSetValidator(new RequiredValidator());
 		bindingContext.bindValue(observeText_text_1ObserveWidget, modelurl_selfObserveValue, strategy_1, null);
 		//
-		IObservableValue observeText_text_2ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_2);
-		IObservableValue modelframeWidth_selfObserveValue = BeanProperties.value("model.frameWidth").observe(_self);
+		IObservableValue<?> observeText_text_2ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_2);
+		IObservableValue<?> modelframeWidth_selfObserveValue = BeanProperties.value("model.frameWidth").observe(_self);
 		bindingContext.bindValue(observeText_text_2ObserveWidget, modelframeWidth_selfObserveValue, null, null);
 		//
-		IObservableValue observeText_text_3ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_3);
-		IObservableValue modelframeHeight_selfObserveValue = BeanProperties.value("model.frameHeight").observe(_self);
+		IObservableValue<?> observeText_text_3ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_3);
+		IObservableValue<?> modelframeHeight_selfObserveValue = BeanProperties.value("model.frameHeight").observe(_self);
 		bindingContext.bindValue(observeText_text_3ObserveWidget, modelframeHeight_selfObserveValue, null, null);
 		//
-		IObservableValue observeText_text_4ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_4);
-		IObservableValue modelframeMax_selfObserveValue = BeanProperties.value("model.frameMax").observe(_self);
+		IObservableValue<?> observeText_text_4ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_4);
+		IObservableValue<?> modelframeMax_selfObserveValue = BeanProperties.value("model.frameMax").observe(_self);
 		bindingContext.bindValue(observeText_text_4ObserveWidget, modelframeMax_selfObserveValue, null, null);
 		//
-		IObservableValue observeText_text_5ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_5);
-		IObservableValue modelmargin_selfObserveValue = BeanProperties.value("model.margin").observe(_self);
+		IObservableValue<?> observeText_text_5ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_5);
+		IObservableValue<?> modelmargin_selfObserveValue = BeanProperties.value("model.margin").observe(_self);
 		bindingContext.bindValue(observeText_text_5ObserveWidget, modelmargin_selfObserveValue, null, null);
 		//
-		IObservableValue observeText_text_6ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_6);
-		IObservableValue modelspacing_selfObserveValue = BeanProperties.value("model.spacing").observe(_self);
+		IObservableValue<?> observeText_text_6ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_6);
+		IObservableValue<?> modelspacing_selfObserveValue = BeanProperties.value("model.spacing").observe(_self);
 		bindingContext.bindValue(observeText_text_6ObserveWidget, modelspacing_selfObserveValue, null, null);
 		//
 		return bindingContext;

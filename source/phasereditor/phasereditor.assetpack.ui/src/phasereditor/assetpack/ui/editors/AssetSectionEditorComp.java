@@ -96,7 +96,7 @@ public class AssetSectionEditorComp extends Composite {
 	private boolean _firstTime = true;
 
 	private void decorateControls() {
-		IObservableList bindings = m_bindingContext.getBindings();
+		IObservableList<?> bindings = m_bindingContext.getBindings();
 		for (int i = 0; i < bindings.size(); i++) {
 			Binding b = (Binding) bindings.get(i);
 			ControlDecorationSupport.create(b, SWT.TOP | SWT.LEFT);
@@ -104,7 +104,7 @@ public class AssetSectionEditorComp extends Composite {
 	}
 
 	private void validateModelToTarget() {
-		IObservableList bindings = m_bindingContext.getBindings();
+		IObservableList<?> bindings = m_bindingContext.getBindings();
 		for (int i = 0; i < bindings.size(); i++) {
 			Binding b = (Binding) bindings.get(i);
 			b.validateTargetToModel();
@@ -149,11 +149,12 @@ public class AssetSectionEditorComp extends Composite {
 		support.firePropertyChange(property, true, false);
 	}
 
+	@SuppressWarnings("unchecked")
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
-		IObservableValue observeText_textObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text);
-		IObservableValue modelkey_selfObserveValue = BeanProperties.value("model.key").observe(_self);
+		IObservableValue<?> observeText_textObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text);
+		IObservableValue<?> modelkey_selfObserveValue = BeanProperties.value("model.key").observe(_self);
 		UpdateValueStrategy strategy = new UpdateValueStrategy();
 		strategy.setBeforeSetValidator(new RequiredValidator());
 		bindingContext.bindValue(observeText_textObserveWidget, modelkey_selfObserveValue, strategy, null);

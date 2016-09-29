@@ -28,7 +28,6 @@ import phasereditor.canvas.core.ButtonSpriteModel;
  * @author arian
  *
  */
-@SuppressWarnings("unchecked")
 public class ButtonSpriteNode extends FrameNode implements ISpriteNode {
 
 	private ButtonSpriteControl _control;

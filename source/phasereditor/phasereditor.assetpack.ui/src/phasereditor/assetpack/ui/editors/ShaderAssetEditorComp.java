@@ -136,7 +136,7 @@ public class ShaderAssetEditorComp extends Composite {
 	}
 
 	private void decorateControls() {
-		IObservableList bindings = m_bindingContext.getBindings();
+		IObservableList<?> bindings = m_bindingContext.getBindings();
 		for (int i = 0; i < bindings.size(); i++) {
 			Binding b = (Binding) bindings.get(i);
 			ControlDecorationSupport.create(b, SWT.TOP | SWT.LEFT);
@@ -144,7 +144,7 @@ public class ShaderAssetEditorComp extends Composite {
 	}
 
 	private void validateModelToTarget() {
-		IObservableList bindings = m_bindingContext.getBindings();
+		IObservableList<?> bindings = m_bindingContext.getBindings();
 		for (int i = 0; i < bindings.size(); i++) {
 			Binding b = (Binding) bindings.get(i);
 			b.validateTargetToModel();
@@ -234,24 +234,25 @@ public class ShaderAssetEditorComp extends Composite {
 		_support.firePropertyChange(property, true, false);
 	}
 
+	@SuppressWarnings("unchecked")
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
-		IObservableValue observeText_textObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text);
-		IObservableValue modelkey_selfObserveValue = BeanProperties.value("model.key").observe(_self);
+		IObservableValue<?> observeText_textObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text);
+		IObservableValue<?> modelkey_selfObserveValue = BeanProperties.value("model.key").observe(_self);
 		UpdateValueStrategy strategy = new UpdateValueStrategy();
 		strategy.setBeforeSetValidator(new RequiredValidator());
 		bindingContext.bindValue(observeText_textObserveWidget, modelkey_selfObserveValue, strategy, null);
 		//
-		IObservableValue observeText_text_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_1);
-		IObservableValue modelurl_selfObserveValue = BeanProperties.value("model.url").observe(_self);
+		IObservableValue<?> observeText_text_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_1);
+		IObservableValue<?> modelurl_selfObserveValue = BeanProperties.value("model.url").observe(_self);
 		UpdateValueStrategy strategy_1 = new UpdateValueStrategy();
 		strategy_1.setBeforeSetValidator(new RequiredValidator());
 		bindingContext.bindValue(observeText_text_1ObserveWidget, modelurl_selfObserveValue, strategy_1, null);
 		//
-		IObservableValue observeSelection_btnOverwriteObserveWidget = WidgetProperties.selection()
+		IObservableValue<?> observeSelection_btnOverwriteObserveWidget = WidgetProperties.selection()
 				.observe(_overwriteButton);
-		IObservableValue modeloverwrite_selfObserveValue = BeanProperties.value("model.overwrite").observe(_self);
+		IObservableValue<?> modeloverwrite_selfObserveValue = BeanProperties.value("model.overwrite").observe(_self);
 		bindingContext.bindValue(observeSelection_btnOverwriteObserveWidget, modeloverwrite_selfObserveValue, null,
 				null);
 		//

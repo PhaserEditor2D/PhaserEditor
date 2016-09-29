@@ -49,7 +49,6 @@ import javafx.scene.layout.Pane;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.SelectionBoxNode;
 import phasereditor.canvas.ui.editors.SelectionNode;
-import phasereditor.canvas.ui.shapes.FrameNode;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
@@ -60,7 +59,7 @@ import phasereditor.canvas.ui.shapes.ISpriteNode;
  */
 public class SelectionBehavior implements ISelectionProvider {
 	private ObjectCanvas _canvas;
-	private ListenerList _listenerList;
+	private ListenerList<ISelectionChangedListener> _listenerList;
 	private IStructuredSelection _selection;
 	private List<IObjectNode> _selectedNodes;
 	private SelectionBoxNode _selectionBox;
@@ -71,7 +70,7 @@ public class SelectionBehavior implements ISelectionProvider {
 		_canvas = canvas;
 		_selection = StructuredSelection.EMPTY;
 		_selectedNodes = new ArrayList<>();
-		_listenerList = new ListenerList(ListenerList.IDENTITY);
+		_listenerList = new ListenerList<>(ListenerList.IDENTITY);
 
 		_canvas.getOutline().addSelectionChangedListener(new ISelectionChangedListener() {
 

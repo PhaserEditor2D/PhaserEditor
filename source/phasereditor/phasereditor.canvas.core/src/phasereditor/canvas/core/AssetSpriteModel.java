@@ -22,7 +22,6 @@
 package phasereditor.canvas.core;
 
 import static java.lang.System.err;
-import static java.lang.System.out;
 
 import java.util.ArrayList;
 import java.util.List;

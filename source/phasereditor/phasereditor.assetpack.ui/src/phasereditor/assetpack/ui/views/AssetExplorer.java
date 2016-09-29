@@ -83,6 +83,7 @@ public class AssetExplorer extends ViewPart {
 		super();
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public void createPartControl(Composite parent) {
 		GridLayout gl_parent = new GridLayout(1, false);

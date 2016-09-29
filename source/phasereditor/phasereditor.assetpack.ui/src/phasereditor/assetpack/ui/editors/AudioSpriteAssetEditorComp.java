@@ -229,7 +229,7 @@ public class AudioSpriteAssetEditorComp extends Composite {
 	}
 
 	private void decorateControls() {
-		IObservableList bindings = m_bindingContext.getBindings();
+		IObservableList<?> bindings = m_bindingContext.getBindings();
 		for (int i = 0; i < bindings.size(); i++) {
 			Binding b = (Binding) bindings.get(i);
 			ControlDecorationSupport.create(b, SWT.TOP | SWT.LEFT);
@@ -237,7 +237,7 @@ public class AudioSpriteAssetEditorComp extends Composite {
 	}
 
 	private void validateModelToTarget() {
-		IObservableList bindings = m_bindingContext.getBindings();
+		IObservableList<?> bindings = m_bindingContext.getBindings();
 		for (int i = 0; i < bindings.size(); i++) {
 			Binding b = (Binding) bindings.get(i);
 			b.validateTargetToModel();
@@ -310,36 +310,37 @@ public class AudioSpriteAssetEditorComp extends Composite {
 		_support.firePropertyChange(property, true, false);
 	}
 
+	@SuppressWarnings("unchecked")
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
-		IObservableValue observeText_textObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text);
-		IObservableValue modelkey_selfObserveValue = BeanProperties.value("model.key").observe(_self);
+		IObservableValue<?> observeText_textObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text);
+		IObservableValue<?> modelkey_selfObserveValue = BeanProperties.value("model.key").observe(_self);
 		UpdateValueStrategy strategy = new UpdateValueStrategy();
 		strategy.setBeforeSetValidator(new RequiredValidator());
 		bindingContext.bindValue(observeText_textObserveWidget, modelkey_selfObserveValue, strategy, null);
 		//
-		IObservableValue observeText_text_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_1);
-		IObservableValue modelurlsJSONString_selfObserveValue = BeanProperties.value("model.urlsJSONString")
+		IObservableValue<?> observeText_text_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_1);
+		IObservableValue<?> modelurlsJSONString_selfObserveValue = BeanProperties.value("model.urlsJSONString")
 				.observe(_self);
 		UpdateValueStrategy strategy_1 = new UpdateValueStrategy();
 		strategy_1.setBeforeSetValidator(new UrlsValidator());
 		_urlsBinding = bindingContext.bindValue(observeText_text_1ObserveWidget, modelurlsJSONString_selfObserveValue,
 				strategy_1, null);
 		//
-		IObservableValue observeSelection_autoDecodeButtonObserveWidget = WidgetProperties.selection()
+		IObservableValue<?> observeSelection_autoDecodeButtonObserveWidget = WidgetProperties.selection()
 				.observe(_autoDecodeButton);
-		IObservableValue modelautoDecode_selfObserveValue = BeanProperties.value("model.autoDecode").observe(_self);
+		IObservableValue<?> modelautoDecode_selfObserveValue = BeanProperties.value("model.autoDecode").observe(_self);
 		bindingContext.bindValue(observeSelection_autoDecodeButtonObserveWidget, modelautoDecode_selfObserveValue, null,
 				null);
 		//
-		IObservableValue observeText_jsonURLTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(_jsonURLText);
-		IObservableValue modeljsonURL_selfObserveValue = BeanProperties.value("model.jsonURL").observe(_self);
+		IObservableValue<?> observeText_jsonURLTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(_jsonURLText);
+		IObservableValue<?> modeljsonURL_selfObserveValue = BeanProperties.value("model.jsonURL").observe(_self);
 		bindingContext.bindValue(observeText_jsonURLTextObserveWidget, modeljsonURL_selfObserveValue, null, null);
 		//
-		IObservableValue observeText_jsonDataTextObserveWidget = WidgetProperties.text(SWT.Modify)
+		IObservableValue<?> observeText_jsonDataTextObserveWidget = WidgetProperties.text(SWT.Modify)
 				.observe(_jsonDataText);
-		IObservableValue modeljsonData_selfObserveValue = BeanProperties.value("model.jsonData").observe(_self);
+		IObservableValue<?> modeljsonData_selfObserveValue = BeanProperties.value("model.jsonData").observe(_self);
 		UpdateValueStrategy strategy_2 = new UpdateValueStrategy();
 		strategy_2.setBeforeSetValidator(new AudioSpriteJSONValidator());
 		bindingContext.bindValue(observeText_jsonDataTextObserveWidget, modeljsonData_selfObserveValue, strategy_2,

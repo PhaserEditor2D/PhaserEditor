@@ -80,7 +80,7 @@ import phasereditor.canvas.core.AnimationModel;
  * @author arian
  *
  */
-@SuppressWarnings({ "synthetic-access" })
+@SuppressWarnings({ "synthetic-access", "unchecked" })
 public class AnimationsDialog extends Dialog {
 	private DataBindingContext m_bindingContext;
 	private Text _frameRateText;
@@ -590,13 +590,13 @@ public class AnimationsDialog extends Dialog {
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
-		IObservableValue observeText_frameRateTextObserveWidget = WidgetProperties.text(SWT.Modify)
+		IObservableValue<?> observeText_frameRateTextObserveWidget = WidgetProperties.text(SWT.Modify)
 				.observe(_frameRateText);
-		IObservableValue frameRate_selfObserveValue = BeanProperties.value("frameRate").observe(_self);
+		IObservableValue<?> frameRate_selfObserveValue = BeanProperties.value("frameRate").observe(_self);
 		bindingContext.bindValue(observeText_frameRateTextObserveWidget, frameRate_selfObserveValue, null, null);
 		//
-		IObservableValue observeSelection_loopButtonObserveWidget = WidgetProperties.selection().observe(_loopButton);
-		IObservableValue loop_selfObserveValue = BeanProperties.value("loop").observe(_self);
+		IObservableValue<?> observeSelection_loopButtonObserveWidget = WidgetProperties.selection().observe(_loopButton);
+		IObservableValue<?> loop_selfObserveValue = BeanProperties.value("loop").observe(_self);
 		bindingContext.bindValue(observeSelection_loopButtonObserveWidget, loop_selfObserveValue, null, null);
 		//
 		return bindingContext;
