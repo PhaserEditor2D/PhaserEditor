@@ -21,13 +21,12 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
-import static java.lang.System.err;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.ui.statushandlers.StatusManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -125,22 +124,19 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 
 	@Override
 	public void build() {
-		_assetKey = buildAssetKey(_assetKey);
+		T newKey = buildAssetKey(_assetKey);
 
-		if (_assetKey == null) {
-			// create an error marker
+		if (newKey == null) {
 			Status error = new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID,
 					"The asset for the sprite '" + getEditorName() + "' is not found.");
 			PhaserProjectBuilder.createErrorMarker(error, getWorld().getFile());
-
-			// TODO: maybe we need to set a fallback image asset, with an error
-			// message in it.
-
-			err.println("WARNING: " + getEditorName() + ": null asset key");
-		}
-
-		for (AnimationModel model : getAnimations()) {
-			model.rebuild(_assetKey);
+			StatusManager.getManager().handle(error);
+		} else {
+			_assetKey = newKey;
+			
+			for (AnimationModel model : getAnimations()) {
+				model.rebuild(_assetKey);
+			}
 		}
 	}
 
