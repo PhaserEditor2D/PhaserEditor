@@ -41,6 +41,7 @@ public class CanvasEditorModel {
 
 	public void read(JSONObject data) {
 		_settings.read(data.getJSONObject("settings"));
+		_world.getAssetTable().read(data.optJSONObject("asset-table"));
 		_world.read(data.getJSONObject("world"));
 	}
 
@@ -55,6 +56,10 @@ public class CanvasEditorModel {
 			JSONObject data2 = new JSONObject();
 			data.put("world", data2);
 			_world.write(data2);
+		}
+		
+		{
+			data.put("asset-table", _world.getAssetTable().toJSON());
 		}
 	}
 

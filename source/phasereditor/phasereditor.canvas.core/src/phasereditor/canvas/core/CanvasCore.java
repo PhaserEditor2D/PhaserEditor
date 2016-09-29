@@ -26,6 +26,8 @@ package phasereditor.canvas.core;
  *
  */
 public class CanvasCore {
+	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
+
 	public static String getValidJavaScriptName(String name) {
 		StringBuilder sb = new StringBuilder();
 		int i = 0;

@@ -29,7 +29,6 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
@@ -76,7 +75,7 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 	}
 
 	@Override
-	protected void writeMetadata(JSONObject obj) {
+	protected final void writeMetadata(JSONObject obj) {
 		super.writeMetadata(obj);
 		// TODO: change it to use the UUID of asset packs!
 		IAssetKey key = _assetKey;
@@ -87,7 +86,11 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 			key = key.getAsset();
 		}
 
-		obj.put("asset-ref", AssetPackCore.getAssetJSONReference(key));
+		// TODO: deprecated
+		// obj.put("asset-ref", AssetPackCore.getAssetJSONReference(key));
+
+		AssetLookupTable table = getWorld().getAssetTable();
+		obj.put("asset", table.registerAsset(key));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -122,7 +125,7 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 		_assetKey = buildAssetKey(_assetKey);
 
 		if (_assetKey == null) {
-			//TODO: why is this happening?
+			// TODO: why is this happening?
 			err.println("WARNING: " + getEditorName() + ": null asset key");
 		}
 

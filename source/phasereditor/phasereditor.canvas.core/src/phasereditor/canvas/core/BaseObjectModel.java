@@ -95,8 +95,15 @@ public abstract class BaseObjectModel {
 	}
 
 	public IAssetKey findAsset(JSONObject jsonModel) {
+		if (jsonModel.has("asset")) {
+			String id = jsonModel.getString("asset");
+			IAssetKey key = getWorld().getAssetTable().lookup(id);
+			return key;
+		}
+
 		JSONObject assetRef = jsonModel.getJSONObject("asset-ref");
 		IAssetKey key = (IAssetKey) AssetPackCore.findAssetElement(getWorld().getProject(), assetRef);
+
 		return key;
 	}
 
@@ -113,17 +120,17 @@ public abstract class BaseObjectModel {
 	public GroupModel getParent() {
 		return _parent;
 	}
-	
+
 	public int getIndex() {
 		if (getParent() == null) {
 			return 0;
 		}
-		
+
 		return getParent().getChildren().indexOf(this);
 	}
-	
+
 	public int getDepth() {
-		return getParent() == null? 0 : getParent().getDepth() + 1;
+		return getParent() == null ? 0 : getParent().getDepth() + 1;
 	}
 
 	public String getEditorName() {
