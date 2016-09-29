@@ -23,6 +23,7 @@ package phasereditor.canvas.ui.shapes;
 
 import org.eclipse.core.resources.IFile;
 
+import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -51,6 +52,16 @@ public class FrameNode extends Pane {
 
 	public ImageView getImageView() {
 		return _imageView;
+	}
+
+	@Override
+	public boolean contains(double localX, double localY) {
+		return _imageView.contains(localX, localY);
+	}
+
+	@Override
+	public boolean contains(Point2D localPoint) {
+		return _imageView.contains(localPoint);
 	}
 
 	protected void updateContent(IAssetFrameModel frameModel) {

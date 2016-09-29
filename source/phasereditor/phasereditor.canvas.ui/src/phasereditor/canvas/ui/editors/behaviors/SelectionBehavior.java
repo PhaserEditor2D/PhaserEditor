@@ -49,6 +49,7 @@ import javafx.scene.layout.Pane;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.SelectionBoxNode;
 import phasereditor.canvas.ui.editors.SelectionNode;
+import phasereditor.canvas.ui.shapes.FrameNode;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
@@ -107,6 +108,7 @@ public class SelectionBehavior implements ISelectionProvider {
 		}
 
 		Point2D p = test.sceneToLocal(sceneX, sceneY);
+
 		if (test.contains(p)) {
 			return test;
 		}
@@ -193,7 +195,7 @@ public class SelectionBehavior implements ISelectionProvider {
 			if (selBounds.contains(b)) {
 				list.add(inode);
 			}
-		} , false);
+		}, false);
 
 		setSelection(new StructuredSelection(list));
 	}

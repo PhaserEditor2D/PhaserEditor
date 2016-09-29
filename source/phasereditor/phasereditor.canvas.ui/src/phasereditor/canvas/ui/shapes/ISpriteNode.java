@@ -45,5 +45,4 @@ public interface ISpriteNode extends IObjectNode, IAdaptable {
 		}
 		return null;
 	}
-
 }

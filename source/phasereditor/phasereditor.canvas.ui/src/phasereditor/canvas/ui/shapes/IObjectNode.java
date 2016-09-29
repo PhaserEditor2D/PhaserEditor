@@ -32,29 +32,29 @@ import phasereditor.canvas.core.BaseObjectModel;
  * @author arian
  *
  */
-public interface IObjectNode  {
+public interface IObjectNode {
 	public BaseObjectModel getModel();
 
 	public BaseObjectControl<?> getControl();
-	
+
 	public Node getNode();
-	
+
 	public default GroupNode getGroup() {
 		return getControl().getGroup();
 	}
-	
+
 	public default List<GroupNode> getAncestors() {
 		List<GroupNode> list = new ArrayList<>();
-		
+
 		GroupNode parent = getGroup();
-		
+
 		if (parent != null && parent != getControl().getCanvas().getWorldNode()) {
 			list.add(parent);
 			list.addAll(parent.getAncestors());
 		}
 		return list;
 	}
-	
+
 	public static Comparator<IObjectNode> DISPLAY_ORDER_COMPARATOR = (a, b) -> {
 		BaseObjectModel i = a.getModel();
 		BaseObjectModel j = b.getModel();
