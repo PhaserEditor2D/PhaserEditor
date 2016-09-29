@@ -27,10 +27,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.log.core.LogStatus;
 
 /**
  * @author arian
@@ -83,16 +86,16 @@ public class AssetLookupTable {
 		return obj;
 	}
 
-	public boolean read(JSONObject obj) {
+	public IStatus read(JSONObject obj) {
 		if (obj == null) {
 			out.println("Cannot load the asset table, probably it is an older version of the canvas file.");
-			return false;
+			return Status.OK_STATUS;
 		}
 
 		_entries = new ArrayList<>();
 		_map = new HashMap<>();
 
-		boolean errors = false;
+		LogStatus status = new LogStatus(CanvasCore.PLUGIN_ID, "Failed to load the assets.");
 
 		for (String id : obj.keySet()) {
 			JSONObject refObj = obj.getJSONObject(id);
@@ -103,11 +106,13 @@ public class AssetLookupTable {
 				_map.put(id, assetKey);
 			} else {
 				out.println("Cannot find " + refObj.toString());
-				errors = true;
+				String msg = "section=" + refObj.optString("section") + ", key=" + refObj.optString("asset")
+						+ ", frame=" + refObj.optString("sprite", "");
+				status.add(new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID, "Not found: " + msg));
 			}
 		}
 
-		return errors;
+		return status;
 	}
 
 	public IAssetKey lookup(String id) {

@@ -19,63 +19,50 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors;
+package phasereditor.log.core;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.ui.statushandlers.StatusManager;
-import org.json.JSONObject;
-
-import phasereditor.canvas.core.WorldModel;
+import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.Status;
 
 /**
  * @author arian
  *
  */
-public class CanvasEditorModel {
-	private SceneSettings _settings;
-	private WorldModel _world;
+public class LogStatus extends MultiStatus {
 
-	public CanvasEditorModel(IFile file) {
-		_settings = new SceneSettings();
-		_world = new WorldModel(file);
+	public LogStatus(String pluginId, String message, Throwable exception) {
+		super(pluginId, 0, message, exception);
 	}
 
-	public void read(JSONObject data) {
-		_settings.read(data.getJSONObject("settings"));
-		IStatus status = _world.getAssetTable().read(data.optJSONObject("asset-table"));
-
-		if (status.isOK()) {
-			_world.read(data.getJSONObject("world"));
-		} else {
-			StatusManager.getManager().handle(status, StatusManager.BLOCK | StatusManager.LOG);
-		}
+	public LogStatus(String pluginId, Throwable exception) {
+		super(pluginId, 0, exception.getMessage(), exception);
 	}
 
-	public void write(JSONObject data) {
-		{
-			JSONObject data2 = new JSONObject();
-			data.put("settings", data2);
-			_settings.write(data2);
-		}
-
-		{
-			JSONObject data2 = new JSONObject();
-			data.put("world", data2);
-			_world.write(data2);
-		}
-
-		{
-			data.put("asset-table", _world.getAssetTable().toJSON());
-		}
+	public LogStatus(String pluginId, String message) {
+		super(pluginId, 0, message, null);
 	}
 
-	public SceneSettings getSettings() {
-		return _settings;
+	public void info(String msg) {
+		add(new Status(IStatus.INFO, getPlugin(), msg));
 	}
 
-	public WorldModel getWorld() {
-		return _world;
+	public void warning(String msg) {
+		add(new Status(IStatus.WARNING, getPlugin(), msg));
+	}
+
+	public void error(String msg) {
+		add(new Status(IStatus.ERROR, getPlugin(), msg));
+	}
+
+	@Override
+	public boolean isOK() {
+		for (IStatus status : getChildren()) {
+			if (!status.isOK()) {
+				return false;
+			}
+		}
+		return super.isOK();
 	}
 
 }
