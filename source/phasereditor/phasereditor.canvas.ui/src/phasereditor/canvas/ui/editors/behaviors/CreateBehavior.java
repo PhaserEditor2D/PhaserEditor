@@ -30,7 +30,6 @@ import java.util.function.BiFunction;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.handlers.HandlerUtil;
 import org.json.JSONObject;
 
 import javafx.geometry.Point2D;
@@ -42,7 +41,6 @@ import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.WorldModel;
-import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;

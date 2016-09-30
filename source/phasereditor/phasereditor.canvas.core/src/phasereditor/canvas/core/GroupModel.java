@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
+import static java.lang.System.out;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -145,10 +147,18 @@ public class GroupModel extends BaseObjectModel {
 			JSONArray modelList = jsonInfo.getJSONArray("children");
 			for (int i = 0; i < modelList.length(); i++) {
 				JSONObject jsonModel = modelList.getJSONObject(i);
-				BaseObjectModel model = CanvasModelFactory.createModel(this, jsonModel);
 
-				if (model != null) {
-					_children.add(model);
+				try {
+					BaseObjectModel model = CanvasModelFactory.createModel(this, jsonModel);
+
+					if (model != null) {
+						_children.add(model);
+					}
+				} catch (MissingAssetException e) {
+					out.println("Cannot open " + e.getData().toString(2));
+					MissingAssetSpriteModel missingModel = new MissingAssetSpriteModel(this, e.getData());
+					missingModel.readInfo(jsonModel.getJSONObject("info"));
+					_children.add(missingModel);
 				}
 			}
 		} catch (Exception e) {

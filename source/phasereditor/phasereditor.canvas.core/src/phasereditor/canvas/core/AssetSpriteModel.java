@@ -104,12 +104,29 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 
 		IAssetKey asset = findAsset(obj);
 
+		if (asset == null) {
+			collectInformationForMissingAssetAndAbort(obj);
+		}
+
 		// what we really need is to get the frame of the image.
 		if (asset instanceof ImageAssetModel) {
 			_assetKey = (T) ((ImageAssetModel) asset).getFrame();
 		} else {
 			_assetKey = (T) asset;
 		}
+	}
+
+	private void collectInformationForMissingAssetAndAbort(JSONObject obj) {
+
+		if (obj.has("asset")) {
+			// replace the id-based reference to a name-based reference.
+			String id = obj.getString("asset");
+			JSONObject assetRef = getWorld().getAssetTable().getJSONRef(id);
+			obj.remove("asset");
+			obj.put("asset-ref", assetRef);
+		}
+
+		throw new MissingAssetException(obj);
 	}
 
 	@Override

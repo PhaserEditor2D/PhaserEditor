@@ -26,6 +26,7 @@ import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.ButtonSpriteModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.ImageSpriteModel;
+import phasereditor.canvas.core.MissingAssetSpriteModel;
 import phasereditor.canvas.core.SpritesheetSpriteModel;
 import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
@@ -49,6 +50,8 @@ public class CanvasObjectFactory {
 			return new TileSpriteControl(canvas, (TileSpriteModel) model);
 		} else if (model instanceof ButtonSpriteModel) {
 			return new ButtonSpriteControl(canvas, (ButtonSpriteModel) model);
+		} else if (model instanceof MissingAssetSpriteModel) {
+			return new MissingAssetControl(canvas, (MissingAssetSpriteModel) model);
 		}
 		return null;
 	}

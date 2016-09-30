@@ -289,7 +289,7 @@ public abstract class BaseObjectModel {
 		_id = UUID.randomUUID().toString();
 	}
 
-	public final void write(JSONObject obj, boolean useTable) {
+	public void write(JSONObject obj, boolean useTable) {
 		writeMetadata(obj, useTable);
 
 		JSONObject jsonInfo = new JSONObject();

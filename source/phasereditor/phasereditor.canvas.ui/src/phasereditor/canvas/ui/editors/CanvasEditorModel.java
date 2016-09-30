@@ -45,11 +45,18 @@ public class CanvasEditorModel {
 		_settings.read(data.getJSONObject("settings"));
 		IStatus status = _world.getAssetTable().read(data.optJSONObject("asset-table"));
 
-		if (status.isOK()) {
-			_world.read(data.getJSONObject("world"));
-		} else {
+		if (!status.isOK()) {
 			StatusManager.getManager().handle(status, StatusManager.BLOCK | StatusManager.LOG);
 		}
+
+		_world.read(data.getJSONObject("world"));
+
+		// if (status.isOK()) {
+		// _world.read(data.getJSONObject("world"));
+		// } else {
+		// StatusManager.getManager().handle(status, StatusManager.BLOCK |
+		// StatusManager.LOG);
+		// }
 	}
 
 	public void write(JSONObject data) {

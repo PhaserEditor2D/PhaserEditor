@@ -26,6 +26,7 @@ import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -40,10 +41,11 @@ import phasereditor.log.core.LogStatus;
  *
  */
 public class AssetTable {
-	private List<Entry> _entries;
-	private WorldModel _worldModel;
+	private final List<Entry> _entries;
+	private final WorldModel _worldModel;
 	private int _counter;
-	private HashMap<String, IAssetKey> _map;
+	private final Map<String, IAssetKey> _map;
+	private final Map<String, JSONObject> _refMap;
 
 	private static class Entry {
 
@@ -60,6 +62,7 @@ public class AssetTable {
 		_worldModel = worldModel;
 		_entries = new ArrayList<>();
 		_map = new HashMap<>();
+		_refMap = new HashMap<>();
 	}
 
 	public String postAsset(IAssetKey key) {
@@ -88,18 +91,17 @@ public class AssetTable {
 	}
 
 	public IStatus read(JSONObject obj) {
+
 		if (obj == null) {
 			out.println("Cannot load the asset table, probably it is an older version of the canvas file.");
 			return Status.OK_STATUS;
 		}
 
-		_entries = new ArrayList<>();
-		_map = new HashMap<>();
-
 		LogStatus status = new LogStatus(CanvasCore.PLUGIN_ID, "Failed to load the assets.");
 
 		for (String id : obj.keySet()) {
 			JSONObject refObj = obj.getJSONObject(id);
+			_refMap.put(id, refObj);
 			Object asset = AssetPackCore.findAssetElement(_worldModel.getProject(), refObj);
 			if (asset instanceof IAssetKey) {
 				IAssetKey assetKey = (IAssetKey) asset;
@@ -120,24 +122,7 @@ public class AssetTable {
 		return _map.get(id);
 	}
 
-	public void build() {
-
-		// find the not existent assets
-
-		List<Entry> list = new ArrayList<>();
-		for (Entry entry : _entries) {
-			IAssetKey fresh = entry.asset.findFreshVersion();
-			if (fresh != null) {
-				list.add(new Entry(entry.id, fresh));
-			}
-		}
-
-		// update
-
-		_entries = list;
-		_map = new HashMap<>();
-		for (Entry entry : list) {
-			_map.put(entry.id, entry.asset);
-		}
+	public JSONObject getJSONRef(String id) {
+		return _refMap.get(id);
 	}
 }

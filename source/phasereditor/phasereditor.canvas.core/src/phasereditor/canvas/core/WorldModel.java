@@ -204,10 +204,4 @@ public class WorldModel extends GroupModel {
 		}
 		return name;
 	}
-
-	@Override
-	public void build() {
-		_assetTable.build();
-		super.build();
-	}
 }
