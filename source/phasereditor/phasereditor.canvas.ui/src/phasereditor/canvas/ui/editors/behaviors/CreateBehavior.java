@@ -27,7 +27,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.BiFunction;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.ui.handlers.HandlerUtil;
 import org.json.JSONObject;
 
 import javafx.geometry.Point2D;
@@ -39,6 +42,7 @@ import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.WorldModel;
+import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
@@ -73,10 +77,28 @@ public class CreateBehavior {
 
 	public void dropAssets(IStructuredSelection selection, double sceneX, double sceneY,
 			BiFunction<GroupModel, IAssetKey, BaseSpriteModel> factory) {
+
 		Object[] elems = selection.toArray();
+
+		// check the elements come from the same project
+
+		IProject dstProject = _canvas.getEditor().getEditorInputFile().getProject();
+		for (Object elem : elems) {
+			if (elem instanceof IAssetKey) {
+				IProject srcProject = ((IAssetKey) elem).getAsset().getPack().getFile().getProject();
+				if (!srcProject.equals(dstProject)) {
+					MessageDialog.openInformation(_canvas.getShell(), "Canvas",
+							"Cannot paste assets from other projects.");
+					return;
+				}
+			}
+		}
+
 		int i = 0;
 		CompositeOperation operations = new CompositeOperation();
+
 		List<String> selectionIds = new ArrayList<>();
+
 		for (Object elem : elems) {
 			if (elem instanceof IAssetKey) {
 				// TODO: for now get as parent the world
@@ -96,6 +118,7 @@ public class CreateBehavior {
 				}
 			}
 		}
+
 		if (!operations.isEmpty()) {
 			operations.add(new SelectOperation(selectionIds));
 			_canvas.getUpdateBehavior().executeOperations(operations);
