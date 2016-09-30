@@ -95,11 +95,15 @@ public abstract class BaseObjectModel {
 	}
 
 	public IAssetKey findAsset(JSONObject jsonModel) {
+
 		if (jsonModel.has("asset")) {
+			// read the compact mode
 			String id = jsonModel.getString("asset");
 			IAssetKey key = getWorld().getAssetTable().lookup(id);
 			return key;
 		}
+
+		// read in the expanded mode
 
 		JSONObject assetRef = jsonModel.getJSONObject("asset-ref");
 		IAssetKey key = (IAssetKey) AssetPackCore.findAssetElement(getWorld().getProject(), assetRef);
@@ -263,9 +267,11 @@ public abstract class BaseObjectModel {
 		_pivotY = jsonInfo.optDouble("pivot.y", DEF_PIVOT_Y);
 	}
 
-	public BaseObjectModel copy(boolean keepId) {
+	public BaseObjectModel copy(boolean keepId, boolean useTable) {
 		JSONObject obj = new JSONObject();
-		write(obj);
+		
+		write(obj, useTable);
+		
 		BaseObjectModel copy = CanvasModelFactory.createModel(_parent, obj);
 		if (!keepId) {
 			copy.resetId();
@@ -273,9 +279,9 @@ public abstract class BaseObjectModel {
 		return copy;
 	}
 
-	public JSONObject toJSON() {
+	public JSONObject toJSON(boolean useTable) {
 		JSONObject obj = new JSONObject();
-		write(obj);
+		write(obj, useTable);
 		return obj;
 	}
 
@@ -283,20 +289,22 @@ public abstract class BaseObjectModel {
 		_id = UUID.randomUUID().toString();
 	}
 
-	public final void write(JSONObject obj) {
-		writeMetadata(obj);
+	public final void write(JSONObject obj, boolean useTable) {
+		writeMetadata(obj, useTable);
 
 		JSONObject jsonInfo = new JSONObject();
 		obj.put("info", jsonInfo);
-		writeInfo(jsonInfo);
+		writeInfo(jsonInfo, useTable);
 	}
 
-	protected void writeMetadata(JSONObject obj) {
+	@SuppressWarnings("unused")
+	protected void writeMetadata(JSONObject obj, boolean useTable) {
 		obj.put("type", _typeName);
 		obj.put("id", _id);
 	}
 
-	protected void writeInfo(JSONObject jsonInfo) {
+	@SuppressWarnings("unused")
+	protected void writeInfo(JSONObject jsonInfo, boolean useTable) {
 		jsonInfo.put("editorName", _editorName);
 		jsonInfo.put("editorPick", _editorPick, DEF_EDITOR_PICK);
 		jsonInfo.put("editorGenerate", _editorGenerate, DEF_EDITOR_GENERATE);
@@ -321,7 +329,7 @@ public abstract class BaseObjectModel {
 
 	public void updateWith(BaseObjectModel model) {
 		JSONObject obj = new JSONObject();
-		model.writeInfo(obj);
+		model.writeInfo(obj, true);
 		readInfo(obj);
 	}
 }

@@ -65,7 +65,7 @@ public class MoveToOtherGroupHandler extends AbstractHandler {
 			// make the copies
 			List<BaseObjectModel> copies = new ArrayList<>();
 			for (IObjectNode node : nodes) {
-				BaseObjectModel copy = node.getModel().copy(true);
+				BaseObjectModel copy = node.getModel().copy(true, true);
 				copies.add(copy);
 
 				// relocate the copy to the scene location
@@ -101,7 +101,7 @@ public class MoveToOtherGroupHandler extends AbstractHandler {
 				Point2D p = target.sceneToLocal(copy.getX(), copy.getY());
 
 				// add the node to the new parent
-				operations.add(new AddNodeOperation(copy.toJSON(), i, p.getX(), p.getY(), targetId));
+				operations.add(new AddNodeOperation(copy.toJSON(true), i, p.getX(), p.getY(), targetId));
 				i++;
 			}
 

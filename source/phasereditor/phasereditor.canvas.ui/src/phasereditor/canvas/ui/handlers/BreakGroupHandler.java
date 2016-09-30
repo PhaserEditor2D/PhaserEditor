@@ -89,7 +89,7 @@ public class BreakGroupHandler extends AbstractHandler {
 				IObjectNode inode = (IObjectNode) node;
 				JSONObject data = new JSONObject();
 				BaseObjectModel model = inode.getModel();
-				model.write(data);
+				model.write(data, true);
 				double x = groupx + model.getX();
 				double y = groupy + model.getY();
 				operations.add(new AddNodeOperation(data, i, x, y, parentId));

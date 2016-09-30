@@ -155,7 +155,7 @@ public class CreateBehavior {
 			GroupModel model = new GroupModel(null);
 			model.setEditorName(_canvas.getWorldModel().createName("group"));
 			newGroupId = model.getId();
-			model.write(groupData);
+			model.write(groupData, true);
 		}
 		// add new group
 		operations.add(new AddNodeOperation(groupData, -1, 0, 0, parentModel.getId()));
@@ -166,7 +166,7 @@ public class CreateBehavior {
 		for (IObjectNode node : children) {
 			JSONObject data = new JSONObject();
 			BaseObjectModel model = node.getModel();
-			model.write(data);
+			model.write(data, true);
 			operations.add(new AddNodeOperation(data, i, model.getX(), model.getY(), newGroupId));
 			i++;
 		}
@@ -186,6 +186,10 @@ public class CreateBehavior {
 
 		filtered.sort(IObjectNode.DISPLAY_ORDER_COMPARATOR);
 
+		// we use the table only if the pasting nodes comes from the same
+		// canvas.
+		boolean useTable = filtered.size() > 0 && filtered.get(0).getNode().getScene() == _canvas.getScene();
+
 		GroupControl worldControl = _canvas.getWorldNode().getControl();
 		GroupControl pasteIntoThis = worldControl;
 
@@ -193,6 +197,7 @@ public class CreateBehavior {
 			List<IObjectNode> selnodes = _canvas.getSelectionBehavior().getSelectedNodes();
 			if (selnodes.size() == 1) {
 				IObjectNode node = selnodes.get(0);
+
 				if (node instanceof GroupNode) {
 					boolean ok = true;
 					for (Object obj : filtered) {
@@ -233,9 +238,8 @@ public class CreateBehavior {
 		double minx = Double.MAX_VALUE;
 		double miny = Double.MAX_VALUE;
 		{
-
 			for (IObjectNode node : filtered) {
-				BaseObjectModel copy = node.getModel().copy(false);
+				BaseObjectModel copy = node.getModel().copy(false, useTable);
 				copies.add(copy);
 				minx = Math.min(minx, copy.getX());
 				miny = Math.min(miny, copy.getY());
@@ -254,7 +258,7 @@ public class CreateBehavior {
 			selection.add(copy.getId());
 			double x2 = mouse.stepX(x + copy.getX(), false);
 			double y2 = mouse.stepY(y + copy.getY(), false);
-			AddNodeOperation op = new AddNodeOperation(copy.toJSON(), i, x2, y2, pasteIntoThis.getId());
+			AddNodeOperation op = new AddNodeOperation(copy.toJSON(useTable), i, x2, y2, pasteIntoThis.getId());
 			operations.add(op);
 			i++;
 		}

@@ -39,7 +39,7 @@ public class WorldModel extends GroupModel {
 
 	private boolean _dirty;
 	private IFile _file;
-	private AssetLookupTable _assetTable;
+	private AssetTable _assetTable;
 
 	public WorldModel(IFile file) {
 		super(null);
@@ -52,7 +52,7 @@ public class WorldModel extends GroupModel {
 		this._file = file;
 	}
 
-	public AssetLookupTable getAssetTable() {
+	public AssetTable getAssetTable() {
 		return _assetTable;
 	}
 
@@ -103,7 +103,7 @@ public class WorldModel extends GroupModel {
 			}
 		});
 
-		_assetTable = new AssetLookupTable(this);
+		_assetTable = new AssetTable(this);
 	}
 
 	public boolean isDirty() {
@@ -203,5 +203,11 @@ public class WorldModel extends GroupModel {
 			i++;
 		}
 		return name;
+	}
+
+	@Override
+	public void build() {
+		_assetTable.build();
+		super.build();
 	}
 }

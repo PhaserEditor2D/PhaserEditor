@@ -68,7 +68,7 @@ public class TileSpriteModel extends AssetSpriteModel<IAssetKey> {
 		} else if (assetKey instanceof ImageAssetModel) {
 			frame = ((ImageAssetModel) assetKey).getFrame();
 		}
-		
+
 		if (frame != null) {
 			FrameData data = frame.getFrameData();
 			_width = data.src.width;
@@ -94,8 +94,8 @@ public class TileSpriteModel extends AssetSpriteModel<IAssetKey> {
 	}
 
 	@Override
-	protected void writeInfo(JSONObject jsonInfo) {
-		super.writeInfo(jsonInfo);
+	protected void writeInfo(JSONObject jsonInfo, boolean useTable) {
+		super.writeInfo(jsonInfo, useTable);
 
 		jsonInfo.put("width", _width, DEF_WIDTH);
 		jsonInfo.put("height", _height, DEF_HEIGHT);

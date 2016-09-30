@@ -39,7 +39,7 @@ import phasereditor.log.core.LogStatus;
  * @author arian
  *
  */
-public class AssetLookupTable {
+public class AssetTable {
 	private List<Entry> _entries;
 	private WorldModel _worldModel;
 	private int _counter;
@@ -56,16 +56,17 @@ public class AssetLookupTable {
 		public IAssetKey asset;
 	}
 
-	public AssetLookupTable(WorldModel worldModel) {
+	public AssetTable(WorldModel worldModel) {
 		_worldModel = worldModel;
 		_entries = new ArrayList<>();
 		_map = new HashMap<>();
 	}
 
-	public String registerAsset(IAssetKey key) {
+	public String postAsset(IAssetKey key) {
 		IAssetKey key1 = key.findFreshVersion();
 		for (Entry entry : _entries) {
 			IAssetKey key2 = entry.asset.findFreshVersion();
+
 			if (key1.equals(key2)) {
 				return entry.id;
 			}
@@ -118,9 +119,25 @@ public class AssetLookupTable {
 	public IAssetKey lookup(String id) {
 		return _map.get(id);
 	}
-	
-	public void reset() {
-		_entries = new ArrayList<>();
+
+	public void build() {
+
+		// find the not existent assets
+
+		List<Entry> list = new ArrayList<>();
+		for (Entry entry : _entries) {
+			IAssetKey fresh = entry.asset.findFreshVersion();
+			if (fresh != null) {
+				list.add(new Entry(entry.id, fresh));
+			}
+		}
+
+		// update
+
+		_entries = list;
 		_map = new HashMap<>();
+		for (Entry entry : list) {
+			_map.put(entry.id, entry.asset);
+		}
 	}
 }

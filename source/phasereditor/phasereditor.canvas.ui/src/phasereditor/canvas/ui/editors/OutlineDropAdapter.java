@@ -132,7 +132,7 @@ public class OutlineDropAdapter extends ViewerDropAdapter {
 			}
 
 			JSONObject jsonData = new JSONObject();
-			node.getModel().write(jsonData);
+			node.getModel().write(jsonData, true);
 
 			selection.add(node.getModel().getId());
 

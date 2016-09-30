@@ -157,8 +157,8 @@ public class GroupModel extends BaseObjectModel {
 	}
 
 	@Override
-	protected void writeInfo(JSONObject jsonInfo) {
-		super.writeInfo(jsonInfo);
+	protected void writeInfo(JSONObject jsonInfo, boolean useTable) {
+		super.writeInfo(jsonInfo, useTable);
 
 		jsonInfo.put("editorClosed", _editorClosed);
 
@@ -171,7 +171,7 @@ public class GroupModel extends BaseObjectModel {
 		for (BaseObjectModel model : _children) {
 			JSONObject data = new JSONObject();
 			childrenData.put(data);
-			model.write(data);
+			model.write(data, true);
 		}
 
 		jsonInfo.put("children", childrenData);

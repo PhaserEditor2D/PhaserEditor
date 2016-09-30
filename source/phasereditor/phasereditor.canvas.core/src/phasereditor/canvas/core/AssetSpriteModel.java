@@ -30,6 +30,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
@@ -77,8 +78,8 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 	}
 
 	@Override
-	protected final void writeMetadata(JSONObject obj) {
-		super.writeMetadata(obj);
+	protected final void writeMetadata(JSONObject obj, boolean useTable) {
+		super.writeMetadata(obj, useTable);
 		// TODO: change it to use the UUID of asset packs!
 		IAssetKey key = _assetKey;
 
@@ -88,11 +89,12 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 			key = key.getAsset();
 		}
 
-		// TODO: deprecated
-		// obj.put("asset-ref", AssetPackCore.getAssetJSONReference(key));
-
-		AssetLookupTable table = getWorld().getAssetTable();
-		obj.put("asset", table.registerAsset(key));
+		if (useTable) {
+			AssetTable table = getWorld().getAssetTable();
+			obj.put("asset", table.postAsset(key));
+		} else {
+			obj.put("asset-ref", AssetPackCore.getAssetJSONReference(key));
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -133,7 +135,7 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 			StatusManager.getManager().handle(error);
 		} else {
 			_assetKey = newKey;
-			
+
 			for (AnimationModel model : getAnimations()) {
 				model.rebuild(_assetKey);
 			}

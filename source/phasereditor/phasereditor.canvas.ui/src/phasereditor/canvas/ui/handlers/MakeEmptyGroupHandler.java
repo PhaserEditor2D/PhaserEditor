@@ -60,7 +60,7 @@ public class MakeEmptyGroupHandler extends AbstractHandler {
 		CompositeOperation operations = new CompositeOperation();
 		JSONObject data = new JSONObject();
 		GroupModel model = new GroupModel(null);
-		model.write(data);
+		model.write(data, true);
 		operations.add(new AddNodeOperation(data, parent.getChildren().size(), 0, 0, parent.getModel().getId()));
 		operations.add(new SelectOperation(model.getId()));
 		canvas.getUpdateBehavior().executeOperations(operations);

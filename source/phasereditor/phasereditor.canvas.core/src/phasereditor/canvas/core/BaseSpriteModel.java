@@ -119,8 +119,8 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 	}
 
 	@Override
-	protected void writeInfo(JSONObject jsonInfo) {
-		super.writeInfo(jsonInfo);
+	protected void writeInfo(JSONObject jsonInfo, boolean useTable) {
+		super.writeInfo(jsonInfo, useTable);
 		jsonInfo.put("anchor.x", _anchorX, DEF_ANCHOR_X);
 		jsonInfo.put("anchor.y", _anchorY, DEF_ANCHOR_Y);
 		jsonInfo.put("tint", _tint, DEF_TINT);

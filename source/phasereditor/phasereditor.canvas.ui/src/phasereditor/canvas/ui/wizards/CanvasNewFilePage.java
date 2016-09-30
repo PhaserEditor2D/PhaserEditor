@@ -129,7 +129,7 @@ public class CanvasNewFilePage extends WizardNewFileCreationPage {
 		WorldModel model = new WorldModel(null);
 		String filename = getFileName();
 		model.setEditorName(filename);
-		model.write(json);
+		model.write(json, false);
 		String content = json.toString(4);
 		return new ByteArrayInputStream(content.getBytes());
 	}

@@ -50,8 +50,6 @@ public class CanvasEditorModel {
 		} else {
 			StatusManager.getManager().handle(status, StatusManager.BLOCK | StatusManager.LOG);
 		}
-
-		_world.getAssetTable().reset();
 	}
 
 	public void write(JSONObject data) {
@@ -64,7 +62,7 @@ public class CanvasEditorModel {
 		{
 			JSONObject data2 = new JSONObject();
 			data.put("world", data2);
-			_world.write(data2);
+			_world.write(data2, true);
 		}
 
 		{
