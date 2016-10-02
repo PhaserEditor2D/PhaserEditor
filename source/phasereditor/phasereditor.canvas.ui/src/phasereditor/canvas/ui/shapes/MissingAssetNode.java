@@ -57,11 +57,10 @@ public class MissingAssetNode extends Label implements IObjectNode {
 			JSONObject refObj = data.getJSONObject("asset-ref");
 
 			StringBuilder sb = new StringBuilder();
-			sb.append("Missing (" + refObj.getString("section") + "/" + refObj.getString("asset"));
+			sb.append("MISSING ASSET\nsection=" + refObj.getString("section") + "\nkey=" + refObj.getString("asset"));
 			if (refObj.has("sprite")) {
-				sb.append("/" + refObj.getString("sprite"));
+				sb.append("\nframe=" + refObj.getString("sprite"));
 			}
-			sb.append(")");
 
 			setText(sb.toString());
 		} catch (Exception e) {

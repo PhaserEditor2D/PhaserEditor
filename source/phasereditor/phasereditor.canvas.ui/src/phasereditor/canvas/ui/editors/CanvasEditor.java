@@ -155,6 +155,16 @@ public class CanvasEditor extends EditorPart
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
+
+		boolean hasErrors = _model.getWorld().hasErrors();
+
+		if (hasErrors) {
+			if (!MessageDialog.openQuestion(getSite().getShell(), "Canvas",
+					"The scene has errors, do you want to save?")) {
+				return;
+			}
+		}
+
 		try {
 			IFileEditorInput input = (IFileEditorInput) getEditorInput();
 			JSONObject data = new JSONObject();
@@ -540,6 +550,13 @@ public class CanvasEditor extends EditorPart
 	}
 
 	void generateCode() {
+
+		if (_model.getWorld().hasErrors()) {
+			MessageDialog.openWarning(getSite().getShell(), "Canvas",
+					"The scene has errors, the JavaScript code generation is aborted.");
+			return;
+		}
+
 		JSCodeGenerator generator = new JSCodeGenerator();
 		try {
 			WorldModel model = getCanvas().getWorldModel();

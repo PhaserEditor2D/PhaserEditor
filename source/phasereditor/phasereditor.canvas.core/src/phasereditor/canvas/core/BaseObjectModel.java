@@ -269,9 +269,9 @@ public abstract class BaseObjectModel {
 
 	public BaseObjectModel copy(boolean keepId, boolean useTable) {
 		JSONObject obj = new JSONObject();
-		
+
 		write(obj, useTable);
-		
+
 		BaseObjectModel copy = CanvasModelFactory.createModel(_parent, obj);
 		if (!keepId) {
 			copy.resetId();
@@ -331,5 +331,10 @@ public abstract class BaseObjectModel {
 		JSONObject obj = new JSONObject();
 		model.writeInfo(obj, true);
 		readInfo(obj);
+	}
+
+	@SuppressWarnings("static-method")
+	public boolean hasErrors() {
+		return false;
 	}
 }

@@ -217,4 +217,15 @@ public class GroupModel extends BaseObjectModel {
 			}
 		}
 	}
+
+	@Override
+	public boolean hasErrors() {
+		for (BaseObjectModel child : _children) {
+			if (child.hasErrors()) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }

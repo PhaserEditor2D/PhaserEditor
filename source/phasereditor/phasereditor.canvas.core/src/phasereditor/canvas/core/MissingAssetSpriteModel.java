@@ -60,4 +60,9 @@ public class MissingAssetSpriteModel extends BaseSpriteModel {
 			obj.put(k, _srcData.get(k));
 		}
 	}
+	
+	@Override
+	public boolean hasErrors() {
+		return true;
+	}
 }
