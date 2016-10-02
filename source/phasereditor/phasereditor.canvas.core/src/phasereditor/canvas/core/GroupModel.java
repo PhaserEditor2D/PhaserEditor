@@ -157,7 +157,6 @@ public class GroupModel extends BaseObjectModel {
 				} catch (MissingAssetException e) {
 					out.println("Cannot open " + e.getData().toString(2));
 					MissingAssetSpriteModel missingModel = new MissingAssetSpriteModel(this, e.getData());
-					missingModel.readInfo(jsonModel.getJSONObject("info"));
 					_children.add(missingModel);
 				}
 			}
@@ -170,9 +169,8 @@ public class GroupModel extends BaseObjectModel {
 	protected void writeInfo(JSONObject jsonInfo, boolean useTable) {
 		super.writeInfo(jsonInfo, useTable);
 
-		jsonInfo.put("editorClosed", _editorClosed);
-
-		jsonInfo.put("physicsGroup", _physicsGroup);
+		jsonInfo.put("editorClosed", _editorClosed, false);
+		jsonInfo.put("physicsGroup", _physicsGroup, false);
 		jsonInfo.put("physicsBodyType", _physicsBodyType, PhysicsBodyType.ARCADE);
 		jsonInfo.put("physicsSortDirection", _physicsSortDirection, PhysicsSortDirection.NULL);
 
@@ -202,9 +200,7 @@ public class GroupModel extends BaseObjectModel {
 
 	@Override
 	public void build() {
-		for (BaseObjectModel model : _children) {
-			model.build();
-		}
+		throw new UnsupportedOperationException("GroupModel.build()");
 	}
 
 	public void walk(Consumer<BaseObjectModel> visitor) {
@@ -225,7 +221,7 @@ public class GroupModel extends BaseObjectModel {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 }

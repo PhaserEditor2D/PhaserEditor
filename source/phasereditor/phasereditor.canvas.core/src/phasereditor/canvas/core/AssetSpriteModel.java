@@ -150,13 +150,20 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 					"The asset for the sprite '" + getEditorName() + "' is not found.");
 			PhaserProjectBuilder.createErrorMarker(error, getWorld().getFile());
 			StatusManager.getManager().handle(error);
-		} else {
-			_assetKey = newKey;
 
-			for (AnimationModel model : getAnimations()) {
-				model.rebuild(_assetKey);
-			}
+			JSONObject data = toJSON(false);
+			throw new MissingAssetException(data);
+
 		}
+
+		// the asset exists
+
+		_assetKey = newKey;
+
+		for (AnimationModel model : getAnimations()) {
+			model.rebuild(_assetKey);
+		}
+
 	}
 
 	/**

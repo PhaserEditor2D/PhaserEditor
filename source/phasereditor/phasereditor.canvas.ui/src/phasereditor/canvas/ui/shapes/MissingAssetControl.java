@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
+import javafx.scene.control.Label;
 import phasereditor.canvas.core.MissingAssetSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 
@@ -33,7 +34,7 @@ public class MissingAssetControl extends BaseObjectControl<MissingAssetSpriteMod
 	public MissingAssetControl(ObjectCanvas canvas, MissingAssetSpriteModel model) {
 		super(canvas, model);
 	}
-	
+
 	@Override
 	protected IObjectNode createNode() {
 		return new MissingAssetNode(this);
@@ -41,12 +42,11 @@ public class MissingAssetControl extends BaseObjectControl<MissingAssetSpriteMod
 
 	@Override
 	public double getTextureWidth() {
-		return 50;
+		return ((Label) getNode()).getWidth();
 	}
 
 	@Override
 	public double getTextureHeight() {
-		return 50;
+		return ((Label) getNode()).getHeight();
 	}
-
 }

@@ -38,6 +38,7 @@ public class MissingAssetSpriteModel extends BaseSpriteModel {
 	public MissingAssetSpriteModel(GroupModel parent, JSONObject obj) {
 		super(parent, "<missing-asset>");
 		_srcData = obj;
+		readInfo(obj.getJSONObject("info"));
 	}
 
 	public JSONObject getSrcData() {

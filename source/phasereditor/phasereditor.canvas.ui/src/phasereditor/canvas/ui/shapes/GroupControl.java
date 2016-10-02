@@ -24,10 +24,14 @@ package phasereditor.canvas.ui.shapes;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.GroupModel;
+import phasereditor.canvas.core.MissingAssetException;
+import phasereditor.canvas.core.MissingAssetSpriteModel;
 import phasereditor.canvas.core.PhysicsBodyType;
 import phasereditor.canvas.core.PhysicsSortDirection;
 import phasereditor.canvas.core.WorldModel;
@@ -280,7 +284,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 		});
 
 		propModel.getSections().add(section);
-		
+
 	}
 
 	public void removeChild(IObjectNode inode) {
@@ -304,9 +308,40 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 
 	@Override
 	public void rebuild() {
+		class MissingRecord {
+			int index;
+			JSONObject data;
+			IObjectNode node;
+
+			public MissingRecord(int index, JSONObject data, IObjectNode node) {
+				this.index = index;
+				this.data = data;
+				this.node = node;
+			}
+		}
+
+		List<MissingRecord> missing = new ArrayList<>();
+
+		int i = 0;
 		for (Node node : getNode().getChildren()) {
 			IObjectNode inode = (IObjectNode) node;
-			inode.getControl().rebuild();
+			try {
+				inode.getControl().rebuild();
+			} catch (MissingAssetException e) {
+				missing.add(new MissingRecord(i, e.getData(), inode));
+			}
+			i++;
+		}
+
+		if (!missing.isEmpty()) {
+			getCanvas().getDisplay().syncExec(() -> {
+				for (MissingRecord r : missing) {
+					removeChild(r.node);
+					MissingAssetSpriteModel newModel = new MissingAssetSpriteModel(this.getModel(), r.data);
+					MissingAssetControl newControl = new MissingAssetControl(getCanvas(), newModel);
+					addChild(r.index, newControl.getIObjectNode());
+				}
+			});
 		}
 	}
 

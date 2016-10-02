@@ -85,5 +85,4 @@ public class MissingAssetNode extends Label implements IObjectNode {
 	public Node getNode() {
 		return this;
 	}
-
 }
