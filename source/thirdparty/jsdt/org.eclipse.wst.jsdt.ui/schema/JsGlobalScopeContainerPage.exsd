@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.wst.jsdt.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.wst.jsdt.ui" id="JsGlobalScopeContainerPage" name="Includepath Container Entry Page"/>
+      </appInfo>
+      <documentation>
+         This extension point allows to add a wizard page to create or
+edit a includepath container entry.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="JsGlobalScopeContainerPage" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a fully qualified identifier of the target extension point
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  an optional identifier of the extension instance
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  an optional name of the extension instance
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="JsGlobalScopeContainerPage">
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  identifies the includepath containers for which this page will be used. The id corresponds to the first segment of the path of a container includepath entry and matches the id referenced in &lt;samp&gt;org.eclipse.wst.jsdt.core.JsGlobalScopeContainerInitializer&lt;/samp&gt;
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the name of the includepath container used when selecting a new container.  This attribute should be a translated string.
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the name of the class that implements this container page.  The
+class must be public and implement
+&lt;samp&gt;org.eclipse.wst.jsdt.ui.wizards.IJsGlobalScopeContainerPage&lt;/samp&gt;
+with a public 0-argument constructor.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.jface.wizard.WizardPage:org.eclipse.wst.jsdt.ui.wizards.IJsGlobalScopeContainerPage"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         The following is an example of a classpath entry container page:
+
+&lt;p&gt;
+&lt;pre&gt;
+ &lt;extension point=&quot;org.eclipse.wst.jsdt.ui.JsGlobalScopeContainerPage&quot;&gt;
+  &lt;JsGlobalScopeContainerPage
+   id=&quot;com.example.myplugin.myContainerId&quot;
+   name=&quot;JRE System Libraries&quot;
+   class=&quot;com.example.NewJDKEntryPage&quot;&gt;
+  &lt;/JsGlobalScopeContainerPage&gt;
+ &lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2007 IBM Corporation and others.&lt;br&gt;
+All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at &lt;a href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
+
+</schema>

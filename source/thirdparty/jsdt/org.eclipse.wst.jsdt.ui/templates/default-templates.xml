@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+/*******************************************************************************
+ * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
+-->
+
+<templates>
+
+<template name="for" description="%Templates.for_array" id="org.eclipse.wst.jsdt.ui.templates.for_array" context="javaScript" enabled="true" autoinsert="false">for (var ${index} = 0; ${index} &lt; ${array}.length; ${index}++) {
+	${line_selection}${cursor}
+}</template>
+
+<template name="for" description="%Templates.for_temp" id="org.eclipse.wst.jsdt.ui.templates.for_temp" context="javaScript" enabled="true" autoinsert="false">for (var ${index} = 0; ${index} &lt; ${array}.length; ${index}++) {
+	var ${array_element} = ${array}[${index}];
+	${cursor}
+}</template>
+
+<!--
+<template name="for" description="%Templates.for_collection" id="org.eclipse.wst.jsdt.ui.templates.for_collection" context="javaScript" enabled="true" autoinsert="false">for (Iterator ${iterator} = ${collection}.iterator(); ${iterator}.hasNext(); ) {
+	${type:elem(collection)} ${name:name(type)} = (${type}) ${iterator}.next();
+	${cursor}
+}</template>
+-->
+
+<template name="forin" description="%Templates.for_iterable" id="org.eclipse.wst.jsdt.ui.templates.for_iterable" context="javaScript" enabled="true" autoinsert="false">for (var ${iterable_element} in ${iterable}) {
+	${cursor}
+}</template>
+
+<!--
+<template name="while" description="%Templates.while" id="org.eclipse.wst.jsdt.ui.templates.while_enumeration" context="javaScript" enabled="true" autoinsert="false">while (${condition:var(boolean)}) {
+	${cursor}
+}</template>
+
+<template name="while" description="%Templates.while_iterator" id="org.eclipse.wst.jsdt.ui.templates.while_iterator" context="javaScript" enabled="true" autoinsert="false">while (${it:var(java.util.Iterator)}.hasNext()) {
+	${type:arg(it)} ${elem:name(type)} = (${type}) ${it}.next();
+	${cursor}
+}</template>
+-->
+
+<template name="do" description="%Templates.do" id="org.eclipse.wst.jsdt.ui.templates.do" context="javaScript" enabled="true" autoinsert="false">do {
+	${line_selection}${cursor}
+} while (${condition});</template>
+
+<template name="switch" description="%Templates.switch" id="org.eclipse.wst.jsdt.ui.templates.switch" context="javaScript" enabled="true" autoinsert="false">switch (${key}) {
+	case ${value}:
+		${cursor}
+		break;
+
+	default:
+		break;
+}</template>
+
+<template name="if" description="%Templates.if" id="org.eclipse.wst.jsdt.ui.templates.if" context="javaScript" enabled="true" autoinsert="false">if (${condition}) {
+	${line_selection}${cursor}
+}</template>
+
+<template name="ifelse" description="%Templates.ifelse" id="org.eclipse.wst.jsdt.ui.templates.ifelse" context="javaScript" enabled="true" autoinsert="false">if (${condition}) {
+	${cursor}
+} else {
+	
+}</template>
+
+<template name="elseif" description="%Templates.elseif" id="org.eclipse.wst.jsdt.ui.templates.elseif" context="javaScript" enabled="true" autoinsert="false">else if (${condition}) {
+	${cursor}
+}</template>
+
+<template name="else" description="%Templates.else" id="org.eclipse.wst.jsdt.ui.templates.else" context="javaScript" enabled="true" autoinsert="false">else {
+	${cursor}
+}</template>
+
+<template name="try" description="%Templates.try" id="org.eclipse.wst.jsdt.ui.templates.try" context="javaScript" enabled="true" autoinsert="false">try {
+	${line_selection}${cursor}
+} catch (e) {
+	// ${todo}: handle exception
+}</template>
+
+<template name="catch" description="%Templates.catch" id="org.eclipse.wst.jsdt.ui.templates.catch" context="javaScript" enabled="true" autoinsert="false">catch (e) {
+	${cursor}// ${todo}: handle exception
+}</template>
+
+<!--
+<template name="main" description="%Templates.main" id="org.eclipse.wst.jsdt.ui.templates.main" context="javaScript" enabled="true" autoinsert="false">public static void main(String[] args) {
+	${cursor}
+}</template>
+-->
+
+<template name="function" description="%Templates.public_method" id="org.eclipse.wst.jsdt.ui.templates.public_method" context="javaScript" enabled="true" autoinsert="false">function ${name}(${}) {
+	${cursor}
+}</template>
+
+<template name="function" description="%Templates.anonymous_public_method" id="org.eclipse.wst.jsdt.ui.templates.anonymous_public_method" context="javaScript" enabled="true" autoinsert="false">function (${}) {
+	${cursor}
+}</template>
+
+<!--
+<template name="protected_method" description="%Templates.protected_method" id="org.eclipse.wst.jsdt.ui.templates.protected_method" context="javaScript" enabled="true" autoinsert="false">protected ${return_type} ${name}(${}) {
+	${cursor}
+}</template>
+
+<template name="private_method" description="%Templates.private_method" id="org.eclipse.wst.jsdt.ui.templates.private_method" context="javaScript" enabled="true" autoinsert="false">private ${return_type} ${name}(${}) {
+	${cursor}
+}</template>
+
+<template name="private_static_method" description="%Templates.private_static_method" id="org.eclipse.wst.jsdt.ui.templates.private_static_method" context="javaScript" enabled="true" autoinsert="false">private static ${return_type} ${name}(${}) {
+	${cursor}
+}</template>
+
+<template name="instanceof" description="%Templates.instanceof" id="org.eclipse.wst.jsdt.ui.templates.instanceof" context="javaScript" enabled="true" autoinsert="false">if (${name:var} instanceof ${type}) {
+	${type} ${new_name} = (${type})${name};
+	${cursor}
+}</template>
+
+<template name="cast" description="%Templates.cast" id="org.eclipse.wst.jsdt.ui.templates.cast" context="javaScript" enabled="true" autoinsert="false">${type} ${new_name} = (${type}) ${name};</template>
+-->
+
+<template name="new" description="%Templates.new" id="org.eclipse.wst.jsdt.ui.templates.new" context="javaScript" enabled="true" autoinsert="false">var ${name} = new ${type}(${arguments});</template>
+
+<template name="lazy" description="%Templates.lazy" id="org.eclipse.wst.jsdt.ui.templates.lazy" context="javaScript" enabled="true" autoinsert="false">if (${name:var} == null) {
+	${name} = new ${type}(${arguments});
+	${cursor}
+}
+
+return ${name};</template>
+
+<!--
+<template name="toarray" description="%Templates.toarray" id="org.eclipse.wst.jsdt.ui.templates.toarray" context="javaScript" enabled="true" autoinsert="false">(${type:elem(collection)}[]) ${collection}.toArray(new ${type}[${collection}.size()])</template>
+
+<template name="sysout" description="%Templates.sysout" id="org.eclipse.wst.jsdt.ui.templates.sysout" context="javaScript" enabled="true" autoinsert="true">System.out.println(${word_selection}${});${cursor}</template>
+
+<template name="syserr" description="%Templates.syserr" id="org.eclipse.wst.jsdt.ui.templates.syserr" context="javaScript" enabled="true" autoinsert="true">System.err.println(${word_selection}${});${cursor}</template>
+
+<template name="systrace" description="%Templates.systrace" id="org.eclipse.wst.jsdt.ui.templates.systrace" context="javaScript" enabled="true" autoinsert="true">System.out.println(&quot;${enclosing_type}.${enclosing_method}()&quot;);</template>
+-->
+
+<template name="&lt;code&gt;" description="%Templates.code_tag" id="org.eclipse.wst.jsdt.ui.templates.code_tag" context="jsdoc" enabled="true" autoinsert="true">&lt;code&gt;${word_selection}${}&lt;/code&gt;${cursor}</template>
+
+<template name="null" description="%Templates.code_tag_null" id="org.eclipse.wst.jsdt.ui.templates.code_tag_null" context="jsdoc" enabled="true" autoinsert="true">&lt;code&gt;null&lt;/code&gt;</template>
+
+<template name="true" description="%Templates.code_tag_true" id="org.eclipse.wst.jsdt.ui.templates.code_tag_true" context="jsdoc" enabled="true" autoinsert="true">&lt;code&gt;true&lt;/code&gt;</template>
+
+<template name="false" description="%Templates.code_tag_false" id="org.eclipse.wst.jsdt.ui.templates.code_tag_false" context="jsdoc" enabled="true" autoinsert="true">&lt;code&gt;false&lt;/code&gt;</template>
+
+<template name="&lt;pre&gt;" description="%Templates.pre_tag" id="org.eclipse.wst.jsdt.ui.templates.pre_tag" context="jsdoc" enabled="true" autoinsert="true">&lt;pre&gt;${word_selection}${}&lt;/pre&gt;${cursor}</template>
+
+<template name="&lt;b&gt;" description="%Templates.b_tag" id="org.eclipse.wst.jsdt.ui.templates.b_tag" context="jsdoc" enabled="true" autoinsert="true">&lt;b&gt;${word_selection}${}&lt;/b&gt;${cursor}</template>
+
+<template name="&lt;i&gt;" description="%Templates.i_tag" id="org.eclipse.wst.jsdt.ui.templates.i_tag" context="jsdoc" enabled="true" autoinsert="true">&lt;i&gt;${word_selection}${}&lt;/i&gt;${cursor}</template>
+
+<template name="@author" description="%Templates.author" id="org.eclipse.wst.jsdt.ui.templates.author" context="jsdoc" enabled="true" autoinsert="true">@author ${user}</template>
+
+<template name="while" description="%Templates.while_condition" id="org.eclipse.wst.jsdt.ui.templates.while_condition" context="javaScript" enabled="true" autoinsert="false">while (${condition}) {
+	${line_selection}${cursor}
+}</template>
+
+<!--
+<template name="test" description="%Templates.test" id="org.eclipse.wst.jsdt.ui.templates.test" context="javaScript" enabled="true" autoinsert="false">public void test${name}() throws Exception {
+	${cursor} 
+}</template>
+
+<template name="Test" description="%Templates.test_junit4" id="org.eclipse.wst.jsdt.ui.templates.test_junit4" context="javaScript" enabled="true" autoinsert="false">@Test
+public void ${testname}() throws Exception {
+	${cursor} 
+}</template>
+
+<template name="nls" description="%Templates.non-nls" id="org.eclipse.wst.jsdt.ui.templates.non-nls" context="javaScript" enabled="true" autoinsert="false">//$$NON-NLS-${N}$$</template>
+
+<template name="synchronized" description="%Templates.synchronized" id="org.eclipse.wst.jsdt.ui.templates.synchronized" context="javaScript" enabled="true" autoinsert="false">synchronized (${mutex:var}) {
+	${line_selection}
+}</template>
+
+<template name="runnable" description="%Templates.runnable" id="org.eclipse.wst.jsdt.ui.templates.runnable" context="javaScript" enabled="true" autoinsert="false">new Runnable() {
+	public void run() {
+		${line_selection}
+	}
+}</template>
+-->
+
+</templates>

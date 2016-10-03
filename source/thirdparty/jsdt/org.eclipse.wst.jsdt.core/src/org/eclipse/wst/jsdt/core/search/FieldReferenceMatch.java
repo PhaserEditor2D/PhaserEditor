@@ -1,0 +1,74 @@
+/*******************************************************************************
+ * Copyright (c) 2000, 2009 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.wst.jsdt.core.search;
+
+import org.eclipse.core.resources.IResource;
+import org.eclipse.wst.jsdt.core.IJavaScriptElement;
+
+/**
+ * A JavaScript search match that represents a field reference.
+ * The element is the inner-most enclosing member that references this field.
+ * <p>
+ * This class is intended to be instantiated and subclassed by clients.
+ * </p>
+ * 
+ * Provisional API: This class/interface is part of an interim API that is still under development and expected to 
+ * change significantly before reaching stability. It is being made available at this early stage to solicit feedback 
+ * from pioneering adopters on the understanding that any code that uses this API will almost certainly be broken 
+ * (repeatedly) as the API evolves.
+ */
+public class FieldReferenceMatch extends SearchMatch {
+
+	private boolean isReadAccess;
+	private boolean isWriteAccess;
+
+	/**
+	 * Creates a new field reference match.
+	 *
+	 * @param enclosingElement the inner-most enclosing member that references this field
+	 * @param accuracy one of {@link #A_ACCURATE} or {@link #A_INACCURATE}
+	 * @param offset the offset the match starts at, or -1 if unknown
+	 * @param length the length of the match, or -1 if unknown
+	 * @param isReadAccess whether the match represents a read access
+	 * @param isWriteAccess whether the match represents a write access
+	 * @param insideDocComment <code>true</code> if this search match is inside a doc
+	 * comment, and <code>false</code> otherwise
+	 * @param participant the search participant that created the match
+	 * @param resource the resource of the element
+	 */
+	public FieldReferenceMatch(IJavaScriptElement enclosingElement, int accuracy, int offset, int length, boolean isReadAccess, boolean isWriteAccess, boolean insideDocComment, SearchParticipant participant, IResource resource) {
+		super(enclosingElement, accuracy, offset, length, participant, resource);
+		this.isReadAccess = isReadAccess;
+		this.isWriteAccess = isWriteAccess;
+		setInsideDocComment(insideDocComment);
+	}
+
+	/**
+	 * Returns whether the field reference is a read access to the field.
+	 * Note that a field reference can be read and written at once in case of compound assignments (e.g. i += 0;)
+	 *
+	 * @return whether the field reference is a read access to the field.
+	 */
+	public final boolean isReadAccess() {
+		return this.isReadAccess;
+	}
+
+	/**
+	 * Returns whether the field reference is a write access to the field.
+	 * Note that a field reference can be read and written at once in case of compound assignments (e.g. i += 0;)
+	 *
+	 * @return whether the field reference is a write access to the field.
+	 */
+	public final boolean isWriteAccess() {
+		return this.isWriteAccess;
+	}
+
+}

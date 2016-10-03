@@ -1,0 +1,209 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.wst.jsdt.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.wst.jsdt.ui" id="javaCompletionProposalComputer" name="JavaScript Completion Proposal Computer"/>
+      </appInfo>
+      <documentation>
+         This extension point allows to contribute JavaScript completion proposal computers to participate in the content assist process of the JavaScript editor.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="name"/>
+         </appInfo>
+      </annotation>
+      <complexType>
+         <choice>
+            <element ref="javaCompletionProposalComputer"/>
+            <element ref="proposalCategory"/>
+         </choice>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a fully qualified identifier of the target extension point
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  an optional identifier of the extension instance
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  an optional name of the extension instance
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="javaCompletionProposalComputer">
+      <annotation>
+         <documentation>
+            A proposal computer contribution. If no partition types are specified, the computer is added to all partition types.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence minOccurs="0" maxOccurs="6">
+            <element ref="partition"/>
+         </sequence>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the name of the class that implements the contributed computer. The
+class must be public and implement
+&lt;code&gt;org.eclipse.wst.jsdt.ui.text.java.IJavaCompletionProposalComputer&lt;/code&gt;
+and must have a public 0-argument constructor.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="activate" type="boolean" use="default" value="false">
+            <annotation>
+               <documentation>
+                  if the attribute is set to &quot;true&quot; it will force this plug-in to be loaded on content assist invocation
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="categoryId" type="string" use="default" value="org.eclipse.wst.jsdt.ui.defaultProposalCategory">
+            <annotation>
+               <documentation>
+                  the id of a &lt;tt&gt;proposalCategory&lt;/tt&gt;
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="partition">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="type"/>
+         </appInfo>
+      </annotation>
+      <complexType>
+         <attribute name="type" use="required">
+            <annotation>
+               <documentation>
+                  a JavaScript partition type for which the specified computer can provide completion proposals. See &lt;code&gt;IDocument.DEFAULT_CONTENT_TYPE&lt;/code&gt; and &lt;code&gt;IJavaPartitions&lt;/code&gt; for valid values.
+               </documentation>
+            </annotation>
+            <simpleType>
+               <restriction base="string">
+                  <enumeration value="__dftl_partition_content_type">
+                  </enumeration>
+                  <enumeration value="__java_singleline_comment">
+                  </enumeration>
+                  <enumeration value="__java_multiline_comment">
+                  </enumeration>
+                  <enumeration value="__java_javadoc">
+                  </enumeration>
+                  <enumeration value="__java_string">
+                  </enumeration>
+                  <enumeration value="__java_character">
+                  </enumeration>
+               </restriction>
+            </simpleType>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="proposalCategory">
+      <annotation>
+         <documentation>
+            A proposal category contribution defines categories of proposals used to group them in the UI.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="icon" type="string">
+            <annotation>
+               <documentation>
+                  an optional icon of the category, which can be displayed in the user preferences
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="resource"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         3.2
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         The following is an example of a JavaScript completion proposal computer contribution:
+
+&lt;p&gt;
+&lt;pre&gt;
+ &lt;extension point=&quot;org.eclipse.wst.jsdt.ui.javaCompletionProposalComputer&quot;
+   id=&quot;textual_proposals&quot;
+   name=&quot;Text Proposals&quot;&gt;
+   &lt;proposalCategory icon=&quot;icons/wordcompletions.png&quot;/&gt;
+ &lt;/extension&gt;
+ &lt;extension point=&quot;org.eclipse.wst.jsdt.ui.javaCompletionProposalComputer&quot;
+   id=&quot;WordCompletionProposalComputer&quot;
+   name=&quot;Word Completion Proposal Computer&quot;&gt;
+   &lt;javaCompletionProposalComputer
+      class=&quot;org.eclipse.wst.jsdt.internal.ui.text.java.HippieProposalComputer&quot;
+      categoryId=&quot;org.eclipse.ui.texteditor.textual_proposals&quot;&gt;
+      &lt;partition type=&quot;__java_javadoc&quot;/&gt;
+   &lt;/javaCompletionProposalComputer&gt;
+ &lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         The contributed class must extend &lt;code&gt;org.eclipse.wst.jsdt.ui.text.java.IJavaCompletionProposalComputer&lt;/code&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         see &lt;code&gt;org.eclipse.wst.jsdt.internal.ui.text.java.HippieProposalComputer&lt;/code&gt; for an example.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2007 IBM Corporation and others.&lt;br&gt;
+All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at &lt;a href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
+
+</schema>

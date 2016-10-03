@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.wst.jsdt.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.wst.jsdt.ui" id="javadocCompletionProcessor" name="Jsdoc Completion Processor"/>
+      </appInfo>
+      <documentation>
+         This extension point allows to add a JSdoc completion processor to e.g. offer new JSdoc tags.
+&lt;p&gt;
+Deprecated as of 3.2. Extenders should rather contribute to the &lt;tt&gt;org.eclipse.wst.jsdt.ui.javaCompletionProposalComputer&lt;/tt&gt; extension point, which allows to provide additional proposals not only for jsdoc, but any part of a JavaScript editor.
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element deprecated="true" replacement="org.eclipse.wst.jsdt.ui.javaCompletionProposalComputer" />
+         </appInfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="javadocCompletionProcessor" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a fully qualified identifier of the target extension point
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  an optional identifier of the extension instance
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  an optional name of the extension instance
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="javadocCompletionProcessor">
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a unique identifier for the Jsdoc completion processor
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  a localized name of the Jsdoc completion processor
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string">
+            <annotation>
+               <documentation>
+                  the name of the class that implements this Jsdoc completion processor. The
+class must be public and implement
+&lt;code&gt;org.eclipse.wst.jsdt.ui.text.java.IJavadocCompletionProcessor&lt;/code&gt;
+with a public 0-argument constructor.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.wst.jsdt.ui.text.java.IJavadocCompletionProcessor"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         The following is an example of a Jsdoc completion processor contribution:
+
+&lt;p&gt;
+&lt;pre&gt;
+ &lt;extension point=&quot;org.eclipse.wst.jsdt.ui.javadocCompletionProcessor&quot;&gt;
+  &lt;javadocCompletionProcessor
+   id=&quot;XDocletJavadocProcessor&quot;
+   name=&quot;XDoclet Javadoc Processor&quot;
+   class=&quot;com.example.XDocletJavadocProcessor&quot;&gt;
+  &lt;/javadocCompletionProcessor&gt;
+ &lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2007 IBM Corporation and others.&lt;br&gt;
+All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at &lt;a href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
+
+</schema>
