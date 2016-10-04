@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.wst.jsdt.core.infer;
 
-import static java.lang.System.out;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -648,7 +646,17 @@ public class InferEngine extends ASTVisitor implements IInferEngine {
 
 			handleFunctionExpressionAssignment(assignment);
 		}
-		else if(this.inferOptions.useAssignments) {
+		else if(this.inferOptions.useAssignments
+					
+					// arian
+					
+					// just allow those assigments in the JSDT defined libraries files, like phaser-api.js.
+					
+					&& new String(getScriptFileDeclaration().getFileName()).contains("org.eclipse.wst.jsdt.core")
+					
+					//
+					
+					) {
 			
  			IExpression lhs = assignment.getLeftHandSide();
 			
