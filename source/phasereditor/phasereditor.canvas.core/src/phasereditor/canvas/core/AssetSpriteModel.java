@@ -24,6 +24,7 @@ package phasereditor.canvas.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -141,19 +142,21 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 		return list;
 	}
 
+	@SuppressWarnings("null")
 	@Override
 	public void build() {
 		T newKey = buildAssetKey(_assetKey);
 
 		if (newKey == null) {
-			Status error = new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID,
-					"The asset for the sprite '" + getEditorName() + "' is not found.");
-			PhaserProjectBuilder.createErrorMarker(error, getWorld().getFile());
-			StatusManager.getManager().handle(error);
+			postBuildError("The asset for the sprite '" + getEditorName() + "' is not found.");
+		}
 
-			JSONObject data = toJSON(false);
-			throw new MissingAssetException(data);
-
+		{
+			for (IFile file : newKey.getAsset().getUsedFiles()) {
+				if (file == null || !file.exists()) {
+					postBuildError("The asset for the sprite '" + getEditorName() + "' has missing files.");
+				}
+			}
 		}
 
 		// the asset exists
@@ -164,6 +167,15 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 			model.rebuild(_assetKey);
 		}
 
+	}
+
+	private void postBuildError(String msg) {
+		Status error = new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID, msg);
+		PhaserProjectBuilder.createErrorMarker(error, getWorld().getFile());
+		StatusManager.getManager().handle(error);
+
+		JSONObject data = toJSON(false);
+		throw new MissingAssetException(data);
 	}
 
 	/**

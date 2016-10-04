@@ -307,7 +307,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 	}
 
 	@Override
-	public void rebuild() {
+	public boolean rebuild() {
 		class MissingRecord {
 			int index;
 			JSONObject data;
@@ -322,11 +322,13 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 
 		List<MissingRecord> missing = new ArrayList<>();
 
+		boolean changed = false;
 		int i = 0;
-		for (Node node : getNode().getChildren()) {
+		ArrayList<Node> childrenCopy = new ArrayList<>(getNode().getChildren());
+		for (Node node : childrenCopy) {
 			IObjectNode inode = (IObjectNode) node;
 			try {
-				inode.getControl().rebuild();
+				changed = inode.getControl().rebuild() || changed;
 			} catch (MissingAssetException e) {
 				missing.add(new MissingRecord(i, e.getData(), inode));
 			}
@@ -334,6 +336,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 		}
 
 		if (!missing.isEmpty()) {
+			changed = true;
 			getCanvas().getDisplay().syncExec(() -> {
 				for (MissingRecord r : missing) {
 					removeChild(r.node);
@@ -343,6 +346,8 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 				}
 			});
 		}
+		
+		return changed;
 	}
 
 	public void updateAllFromModel() {

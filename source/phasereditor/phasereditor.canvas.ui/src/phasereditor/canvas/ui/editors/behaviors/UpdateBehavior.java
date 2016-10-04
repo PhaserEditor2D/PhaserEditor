@@ -111,7 +111,11 @@ public class UpdateBehavior {
 		out.println("Rebuild canvas " + _canvas.getWorldModel().getFile().getLocation());
 
 		GroupControl control = _canvas.getWorldNode().getControl();
-		control.rebuild();
+		if (control.rebuild()) {
+			getCanvas().getDisplay().syncExec( ()->{
+				_outline.setInput(getCanvas());
+			} );
+		}
 		_canvas.getPalette().rebuild();
 
 		Platform.runLater(new Runnable() {
