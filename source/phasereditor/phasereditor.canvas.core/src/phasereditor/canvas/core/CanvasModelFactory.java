@@ -48,35 +48,31 @@ public class CanvasModelFactory {
 		return null;
 	}
 
-	public static BaseObjectModel createModel(GroupModel parent, JSONObject data) {
-		try {
-			BaseObjectModel model = null;
-			String type = data.getString("type");
-			switch (type) {
-			case ImageSpriteModel.TYPE_NAME:
-				model = new ImageSpriteModel(parent, data);
-				break;
-			case SpritesheetSpriteModel.TYPE_NAME:
-				model = new SpritesheetSpriteModel(parent, data);
-				break;
-			case AtlasSpriteModel.TYPE_NAME:
-				model = new AtlasSpriteModel(parent, data);
-				break;
-			case TileSpriteModel.TYPE_NAME:
-				model = new TileSpriteModel(parent, data);
-				break;
-			case ButtonSpriteModel.TYPE_NAME:
-				model = new ButtonSpriteModel(parent, data);
-				break;
-			case GroupModel.TYPE_NAME:
-				model = new GroupModel(parent, data);
-				break;
-			default:
-				break;
-			}
-			return model;
-		} catch (MissingAssetException e) {
-			return new MissingAssetSpriteModel(parent, data);
+	public static BaseObjectModel createModel(GroupModel parent, JSONObject jsonModel) {
+		BaseObjectModel model = null;
+		String type = jsonModel.getString("type");
+		switch (type) {
+		case ImageSpriteModel.TYPE_NAME:
+			model = new ImageSpriteModel(parent, jsonModel);
+			break;
+		case SpritesheetSpriteModel.TYPE_NAME:
+			model = new SpritesheetSpriteModel(parent, jsonModel);
+			break;
+		case AtlasSpriteModel.TYPE_NAME:
+			model = new AtlasSpriteModel(parent, jsonModel);
+			break;
+		case TileSpriteModel.TYPE_NAME:
+			model = new TileSpriteModel(parent, jsonModel);
+			break;
+		case ButtonSpriteModel.TYPE_NAME:
+			model = new ButtonSpriteModel(parent, jsonModel);
+			break;
+		case GroupModel.TYPE_NAME:
+			model = new GroupModel(parent, jsonModel);
+			break;
+		default:
+			break;
 		}
+		return model;
 	}
 }

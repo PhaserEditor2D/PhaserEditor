@@ -21,13 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
-import org.json.JSONObject;
-
 import javafx.scene.control.Label;
-import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.assetpack.core.IAssetKey;
-import phasereditor.canvas.core.BaseObjectModel;
-import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.MissingAssetSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 
@@ -54,31 +48,5 @@ public class MissingAssetControl extends BaseObjectControl<MissingAssetSpriteMod
 	@Override
 	public double getTextureHeight() {
 		return ((Label) getNode()).getHeight();
-	}
-
-	@Override
-	public boolean rebuild() {
-		JSONObject data = getModel().getSrcData();
-		JSONObject ref = data.getJSONObject("asset-ref");
-		Object asset = AssetPackCore.findAssetElement(getModel().getWorld().getProject(), ref);
-		// TODO: missing to check if the key has the right type.
-		// maybe the user is trying to recover an atlas frame with a spritesheet
-		// frame.
-		if (asset != null && asset instanceof IAssetKey) {
-			getCanvas().getDisplay().syncExec(() -> {
-				int i = getModel().getIndex();
-
-				JSONObject srcData = getModel().getSrcData();
-				BaseObjectModel newModel = CanvasModelFactory.createModel(getModel().getParent(), srcData);
-				BaseObjectControl<?> newControl = CanvasObjectFactory.createObjectControl(getCanvas(), newModel);
-				GroupControl parentControl = getGroup().getControl();
-
-				removeme();
-				parentControl.addChild(i, newControl.getIObjectNode());
-			});
-			return true;
-		}
-
-		return false;
 	}
 }

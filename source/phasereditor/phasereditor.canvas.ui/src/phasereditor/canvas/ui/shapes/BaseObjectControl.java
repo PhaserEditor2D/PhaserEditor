@@ -510,15 +510,8 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		op.perform(parent.getModel().getChildren(), getIObjectNode().getModel());
 	}
 
-	/**
-	 * Rebuild the model and nodes.
-	 * 
-	 * @return If the structure changed. Needed for example t refresh the
-	 *         outline view.
-	 */
-	public boolean rebuild() {
+	public void rebuild() {
 		T model = getModel();
 		model.build();
-		return false;
 	}
 }
