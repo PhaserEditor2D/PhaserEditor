@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.core.build;
 
+import static java.lang.System.getProperty;
 import static java.lang.System.out;
 
 import java.io.IOException;
@@ -32,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.jsdoc.PhaserConstant;
 import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
 import phasereditor.inspect.core.jsdoc.PhaserMethod;
@@ -44,8 +44,7 @@ public class BuildPhaserAPI {
 
 	public static void main(String[] args) throws IOException {
 		// TODO: get the json file from the new path -Dphasereditor.resources
-		Path wsPath = Paths.get(".").toAbsolutePath().getParent().getParent();
-		Path projectPath = wsPath.resolve(InspectCore.RESOURCES_PLUGIN_ID);
+		Path projectPath = Paths.get(getProperty("phasereditor.resources")).resolve("all").resolve("built-in");
 		_phaserJSDoc = new PhaserJSDoc(projectPath.resolve("phaser-version/phaser-master/src"),
 				projectPath.resolve("phaser-version/phaser-custom/jsdoc/docs.json"));
 
@@ -141,7 +140,7 @@ public class BuildPhaserAPI {
 
 				String context = method.isStatic() ? typeName : typeName + ".prototype";
 				sb.append(context + "." + methodName + " = function (" + params + ") {");
-				
+
 				if (!returnType.equals("void")) {
 					sb.append(" return new " + returnType + "(); ");
 				}
@@ -164,6 +163,7 @@ public class BuildPhaserAPI {
 			String name = type.getName();
 
 			String[] elems = name.split("\\.");
+
 			String namespace = "";
 			for (int i = 0; i < elems.length - 1; i++) {
 				if (namespace.length() > 0) {
@@ -203,7 +203,11 @@ public class BuildPhaserAPI {
 
 		for (PhaserType type : types) {
 			String name = type.getName();
-			sb.append(name + " = " + getTypeName(type) + ";\n");
+			if (name.contains(".")) {
+				sb.append(name + " = " + getTypeName(type) + ";\n");
+			} else {
+				out.println("Ignore alias for " + name);
+			}
 		}
 
 		// global constants
@@ -234,7 +238,7 @@ public class BuildPhaserAPI {
 
 		Path phaserApi = projectPath.resolve("phaser-version/phaser-custom/api/phaser-api.js");
 		out.println("Writing to " + phaserApi.toAbsolutePath());
-		
+
 		Files.write(phaserApi, sb.toString().getBytes());
 
 		// out.println(sb);
