@@ -27,7 +27,6 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.ui.statushandlers.StatusManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -172,7 +171,6 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 	private void postBuildError(String msg) {
 		Status error = new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID, msg);
 		PhaserProjectBuilder.createErrorMarker(error, getWorld().getFile());
-		StatusManager.getManager().handle(error);
 
 		JSONObject data = toJSON(false);
 		throw new MissingAssetException(data);

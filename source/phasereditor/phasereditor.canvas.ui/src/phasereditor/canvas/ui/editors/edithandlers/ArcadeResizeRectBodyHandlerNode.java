@@ -25,7 +25,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.RectArcadeBodyModel;
-import phasereditor.canvas.ui.editors.SceneSettings;
+import phasereditor.canvas.core.SceneSettings;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;

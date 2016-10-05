@@ -35,6 +35,8 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.CanvasEditorModel;
+import phasereditor.canvas.core.SceneSettings;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.behaviors.CreateBehavior;
 import phasereditor.canvas.ui.editors.behaviors.DragBehavior;

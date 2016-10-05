@@ -679,7 +679,7 @@ public class AssetPackCore {
 			_packs = new HashSet<>();
 			_assets = new HashSet<>();
 		}
-
+		
 		public Set<AssetModel> getAssets() {
 			return _assets;
 		}

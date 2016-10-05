@@ -22,9 +22,9 @@ import phasereditor.assetpack.core.IAssetConsumer;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.CanvasCore;
+import phasereditor.canvas.core.CanvasEditorModel;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
-import phasereditor.canvas.ui.editors.CanvasEditorModel;
 import phasereditor.project.core.ProjectCore;
 
 public class CanvasAssetConsumer implements IAssetConsumer {

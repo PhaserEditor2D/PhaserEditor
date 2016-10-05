@@ -26,8 +26,8 @@ import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import phasereditor.canvas.core.SceneSettings;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
-import phasereditor.canvas.ui.editors.SceneSettings;
 import phasereditor.canvas.ui.editors.edithandlers.IEditHandlerNode;
 
 /**

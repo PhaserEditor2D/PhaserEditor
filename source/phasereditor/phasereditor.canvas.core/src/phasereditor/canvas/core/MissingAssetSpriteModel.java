@@ -24,8 +24,12 @@ package phasereditor.canvas.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import phasereditor.project.core.PhaserProjectBuilder;
 
 /**
  * @author arian
@@ -44,7 +48,7 @@ public class MissingAssetSpriteModel extends BaseSpriteModel {
 	public JSONObject getSrcData() {
 		return _srcData;
 	}
-	
+
 	@Override
 	protected List<AnimationModel> readAnimations(JSONArray array) {
 		return new ArrayList<>();
@@ -52,7 +56,9 @@ public class MissingAssetSpriteModel extends BaseSpriteModel {
 
 	@Override
 	public void build() {
-		// TODO: in the build it should try to recover the asset model.
+		Status error = new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID,
+				"The asset for the sprite '" + getEditorName() + "' is not found.");
+		PhaserProjectBuilder.createErrorMarker(error, getWorld().getFile());
 	}
 
 	@Override
@@ -61,7 +67,7 @@ public class MissingAssetSpriteModel extends BaseSpriteModel {
 			obj.put(k, _srcData.get(k));
 		}
 	}
-	
+
 	@Override
 	public boolean hasErrors() {
 		return true;

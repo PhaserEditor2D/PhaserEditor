@@ -201,7 +201,9 @@ public class GroupModel extends BaseObjectModel {
 
 	@Override
 	public void build() {
-		throw new UnsupportedOperationException("GroupModel.build()");
+		for(BaseObjectModel child : _children) {
+			child.build();
+		}
 	}
 
 	public void walk(Consumer<BaseObjectModel> visitor) {

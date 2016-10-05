@@ -34,10 +34,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IWorkbench;
 
-import javafx.application.Platform;
 import phasereditor.assetpack.core.AssetModel;
-import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.assetpack.core.AssetPackCore.IPacksChangeListener;
 import phasereditor.assetpack.core.AssetPackCore.PackDelta;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.canvas.core.WorldModel;
@@ -60,7 +57,6 @@ public class UpdateBehavior {
 	private ObjectCanvas _canvas;
 	private PGrid _grid;
 	private TreeViewer _outline;
-	private IPacksChangeListener _packListener;
 
 	public UpdateBehavior(ObjectCanvas canvas, PGrid grid, TreeViewer outline) {
 		super();
@@ -72,31 +68,6 @@ public class UpdateBehavior {
 		_canvas.getSelectionBehavior().addSelectionChangedListener(this::update_Grid_from_Selection);
 		_canvas.getWorldModel().addPropertyChangeListener(WorldModel.PROP_STRUCTURE, this::modelStructuredChanged);
 
-		_packListener = new IPacksChangeListener() {
-
-			@Override
-			public void packsChanged(PackDelta delta) {
-				IProject project = canvas.getWorldModel().getFile().getProject();
-				for (AssetPackModel pack : delta.getPacks()) {
-					if (pack.getFile().getProject().equals(project)) {
-						rebuild();
-						return;
-					}
-				}
-
-				// TODO: this can be improved and update only the affected
-				// nodes!
-				for (AssetModel asset : delta.getAssets()) {
-					AssetPackModel pack = asset.getPack();
-					if (pack.getFile().getProject().equals(project)) {
-						rebuild();
-						return;
-					}
-				}
-			}
-
-		};
-		AssetPackCore.addPacksChangedListener(_packListener);
 	}
 
 	public ObjectCanvas getCanvas() {
@@ -104,30 +75,23 @@ public class UpdateBehavior {
 	}
 
 	public void dispose() {
-		AssetPackCore.removePacksChangedListener(_packListener);
+		// nothing
 	}
 
 	public void rebuild() {
-		out.println("Rebuild canvas " + _canvas.getWorldModel().getFile().getLocation());
+		out.println("Rebuild canvas (in editor) " + _canvas.getWorldModel().getFile().getLocation());
 
 		GroupControl control = _canvas.getWorldNode().getControl();
+
 		if (control.rebuild()) {
-			getCanvas().getDisplay().syncExec( ()->{
-				_outline.setInput(getCanvas());
-			} );
+			_outline.setInput(getCanvas());
 		}
+
 		_canvas.getPalette().rebuild();
 
-		Platform.runLater(new Runnable() {
-
-			@SuppressWarnings("synthetic-access")
-			@Override
-			public void run() {
-				control.updateAllFromModel();
-				_canvas.getZoomBehavior().updateZoomAndPan();
-				_canvas.getSelectionBehavior().updateSelectedNodes();
-			}
-		});
+		control.updateAllFromModel();
+		_canvas.getZoomBehavior().updateZoomAndPan();
+		_canvas.getSelectionBehavior().updateSelectedNodes();
 	}
 
 	@SuppressWarnings("unused")
@@ -246,5 +210,25 @@ public class UpdateBehavior {
 		_canvas.getSelectionFrontPane().setMaxSize(width, height);
 		_canvas.getFrontGridPane().repaint();
 		_canvas.getBackGridPane().repaint();
+	}
+
+	public void rebuild(PackDelta delta) {
+		IProject project = _canvas.getWorldModel().getFile().getProject();
+		for (AssetPackModel pack : delta.getPacks()) {
+			if (pack.getFile().getProject().equals(project)) {
+				rebuild();
+				return;
+			}
+		}
+
+		// TODO: this can be improved and update only the affected
+		// nodes!
+		for (AssetModel asset : delta.getAssets()) {
+			AssetPackModel pack = asset.getPack();
+			if (pack.getFile().getProject().equals(project)) {
+				rebuild();
+				return;
+			}
+		}
 	}
 }

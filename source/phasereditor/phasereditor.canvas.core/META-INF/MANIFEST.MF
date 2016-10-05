@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Core
-Bundle-SymbolicName: phasereditor.canvas.core
+Bundle-SymbolicName: phasereditor.canvas.core;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: phasereditor.canvas.core.Activator
 Require-Bundle: org.eclipse.ui,

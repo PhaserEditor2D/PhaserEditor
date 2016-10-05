@@ -42,6 +42,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ResourceManager;
 
+import phasereditor.canvas.core.SceneSettings;
 import phasereditor.ui.ColorButtonSupport;
 
 /**

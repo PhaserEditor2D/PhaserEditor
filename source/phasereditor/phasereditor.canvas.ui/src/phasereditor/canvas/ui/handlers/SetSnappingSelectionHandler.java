@@ -5,8 +5,8 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import phasereditor.canvas.core.SceneSettings;
 import phasereditor.canvas.ui.editors.CanvasEditor;
-import phasereditor.canvas.ui.editors.SceneSettings;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
 
 public class SetSnappingSelectionHandler extends AbstractHandler {

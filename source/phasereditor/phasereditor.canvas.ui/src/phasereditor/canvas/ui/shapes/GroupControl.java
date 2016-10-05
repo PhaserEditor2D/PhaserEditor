@@ -306,20 +306,20 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 		}
 	}
 
+	private static class MissingRecord {
+		int index;
+		JSONObject data;
+		IObjectNode node;
+
+		public MissingRecord(int index, JSONObject data, IObjectNode node) {
+			this.index = index;
+			this.data = data;
+			this.node = node;
+		}
+	}
+
 	@Override
 	public boolean rebuild() {
-		class MissingRecord {
-			int index;
-			JSONObject data;
-			IObjectNode node;
-
-			public MissingRecord(int index, JSONObject data, IObjectNode node) {
-				this.index = index;
-				this.data = data;
-				this.node = node;
-			}
-		}
-
 		List<MissingRecord> missing = new ArrayList<>();
 
 		boolean changed = false;
@@ -337,16 +337,14 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 
 		if (!missing.isEmpty()) {
 			changed = true;
-			getCanvas().getDisplay().syncExec(() -> {
-				for (MissingRecord r : missing) {
-					removeChild(r.node);
-					MissingAssetSpriteModel newModel = new MissingAssetSpriteModel(this.getModel(), r.data);
-					MissingAssetControl newControl = new MissingAssetControl(getCanvas(), newModel);
-					addChild(r.index, newControl.getIObjectNode());
-				}
-			});
+			for (MissingRecord r : missing) {
+				removeChild(r.node);
+				MissingAssetSpriteModel newModel = new MissingAssetSpriteModel(this.getModel(), r.data);
+				MissingAssetControl newControl = new MissingAssetControl(getCanvas(), newModel);
+				addChild(r.index, newControl.getIObjectNode());
+			}
 		}
-		
+
 		return changed;
 	}
 

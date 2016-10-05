@@ -31,6 +31,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import phasereditor.canvas.core.SceneSettings;
 import phasereditor.canvas.ui.shapes.GroupNode;
 
 /**

@@ -29,9 +29,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.json.JSONObject;
 
+import phasereditor.canvas.core.SceneSettings;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
-import phasereditor.canvas.ui.editors.SceneSettings;
 import phasereditor.canvas.ui.editors.behaviors.UpdateBehavior;
 
 /**

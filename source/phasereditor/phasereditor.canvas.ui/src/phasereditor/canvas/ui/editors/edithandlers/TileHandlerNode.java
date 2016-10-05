@@ -23,8 +23,8 @@ package phasereditor.canvas.ui.editors.edithandlers;
 
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
+import phasereditor.canvas.core.SceneSettings;
 import phasereditor.canvas.core.TileSpriteModel;
-import phasereditor.canvas.ui.editors.SceneSettings;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;

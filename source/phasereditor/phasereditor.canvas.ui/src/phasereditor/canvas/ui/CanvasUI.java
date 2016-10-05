@@ -19,10 +19,8 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.core;
+package phasereditor.canvas.ui;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -31,36 +29,10 @@ import org.eclipse.ui.statushandlers.StatusManager;
  * @author arian
  *
  */
-public class CanvasCore {
-	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
+public class CanvasUI {
+	public static final String PLUGIN_ID = "phasereditor.canvas.ui";
 
 	public static void handleError(Exception e) {
-		StatusManager.getManager().handle(new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID, e.getMessage(), e));
+		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
 	}
-	
-	public static String getValidJavaScriptName(String name) {
-		StringBuilder sb = new StringBuilder();
-		int i = 0;
-		for (char c : name.toCharArray()) {
-			if (i == 0 && !Character.isJavaIdentifierStart(c)) {
-				sb.append("_");
-			} else if (Character.isJavaIdentifierPart(c)) {
-				sb.append(c);
-			} else {
-				sb.append("_");
-			}
-			i++;
-		}
-		return sb.toString();
-	}
-
-	public static boolean isCanvasFile(IFile file) {
-		if (!file.exists() || !file.isSynchronized(IResource.DEPTH_ONE)) {
-			return false;
-		}
-
-		// TODO: missing to define content type
-		return file.getFileExtension().equals("canvas");
-	}
-
 }

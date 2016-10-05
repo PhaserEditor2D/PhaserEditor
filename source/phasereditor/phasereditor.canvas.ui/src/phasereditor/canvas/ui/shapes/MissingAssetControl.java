@@ -65,17 +65,16 @@ public class MissingAssetControl extends BaseObjectControl<MissingAssetSpriteMod
 		// maybe the user is trying to recover an atlas frame with a spritesheet
 		// frame.
 		if (asset != null && asset instanceof IAssetKey) {
-			getCanvas().getDisplay().syncExec(() -> {
-				int i = getModel().getIndex();
+			int i = getModel().getIndex();
 
-				JSONObject srcData = getModel().getSrcData();
-				BaseObjectModel newModel = CanvasModelFactory.createModel(getModel().getParent(), srcData);
-				BaseObjectControl<?> newControl = CanvasObjectFactory.createObjectControl(getCanvas(), newModel);
-				GroupControl parentControl = getGroup().getControl();
+			JSONObject srcData = getModel().getSrcData();
+			BaseObjectModel newModel = CanvasModelFactory.createModel(getModel().getParent(), srcData);
+			BaseObjectControl<?> newControl = CanvasObjectFactory.createObjectControl(getCanvas(), newModel);
+			GroupControl parentControl = getGroup().getControl();
 
-				removeme();
-				parentControl.addChild(i, newControl.getIObjectNode());
-			});
+			removeme();
+			parentControl.addChild(i, newControl.getIObjectNode());
+
 			return true;
 		}
 

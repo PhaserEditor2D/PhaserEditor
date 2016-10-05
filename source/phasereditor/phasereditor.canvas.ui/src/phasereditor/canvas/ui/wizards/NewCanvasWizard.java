@@ -36,7 +36,7 @@ import org.eclipse.ui.ide.IDE;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import phasereditor.canvas.ui.editors.CanvasEditorModel;
+import phasereditor.canvas.core.CanvasEditorModel;
 
 /**
  * @author arian
