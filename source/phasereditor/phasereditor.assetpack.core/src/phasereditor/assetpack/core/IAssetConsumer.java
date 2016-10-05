@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015 Arian Fornaris
+// Copyright (c) 2015, 2016 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -21,53 +21,13 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
-import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.resources.IFile;
 
-public class AssetGroupModel implements Comparable<AssetGroupModel>, IAdaptable {
-	private AssetType _type;
-	private AssetSectionModel _section;
-
-	AssetGroupModel(AssetType type, AssetSectionModel section) {
-		super();
-		_type = type;
-		_section = section;
-	}
-
-	public AssetType getType() {
-		return _type;
-	}
-
-	public AssetSectionModel getSection() {
-		return _section;
-	}
-
-	@Override
-	public int compareTo(AssetGroupModel o) {
-		return Integer.compare(_type.ordinal(), o._type.ordinal());
-	}
-
-	public void remove(AssetModel asset) {
-		if (asset.getType() == _type) {
-			_section.removeAsset(asset);
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
-		return null;
-	}
-	
-	public List<AssetModel> getAssets() {
-		List<AssetModel> list = new ArrayList<>();
-		for(AssetModel asset : _section.getAssets()) {
-			if (asset.getType() == getType()) {
-				list.add(asset);
-			}
-		}
-		return list;
-	}
+/**
+ * @author arian
+ */
+public interface IAssetConsumer {
+	public Collection<IFile> getFilesUsingAsset(AssetModel asset);
 }

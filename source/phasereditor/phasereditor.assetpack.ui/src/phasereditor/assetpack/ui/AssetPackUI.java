@@ -110,6 +110,7 @@ import phasereditor.ui.views.PreviewView;
 
 public class AssetPackUI {
 
+	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
 	private static List<ICustomInformationControlCreator> _informationControlCreators;
 
 	/**

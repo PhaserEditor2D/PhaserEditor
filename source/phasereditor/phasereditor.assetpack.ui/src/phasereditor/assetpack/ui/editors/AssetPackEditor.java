@@ -24,7 +24,9 @@ package phasereditor.assetpack.ui.editors;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -37,6 +39,7 @@ import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelection;
@@ -95,6 +98,7 @@ import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.BinaryAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
+import phasereditor.assetpack.core.IAssetConsumer;
 import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.PhysicsAssetModel;
@@ -446,7 +450,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		_atlasAssetEditorComp = new AtlasAssetEditorComp(_editorsContainer, SWT.NONE);
 
 		_textAssetEditorComp = new TextAssetEditorComp(_editorsContainer, SWT.NONE);
-		
+
 		_shaderAssetEditorComp = new ShaderAssetEditorComp(_editorsContainer, SWT.NONE);
 
 		_binaryAssetEditorComp = new BinaryAssetEditorComp(_editorsContainer, SWT.NONE);
@@ -572,19 +576,57 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		for (Object element : ((StructuredSelection) _allAssetsViewer.getSelection()).toArray()) {
 			if (element instanceof AssetSectionModel) {
 				AssetSectionModel section = (AssetSectionModel) element;
-				section.getPack().removeSection(section);
+				if (canRemove(section.getAssets())) {
+					section.getPack().removeSection(section);
+				} else {
+					return;
+				}
 			} else if (element instanceof AssetGroupModel) {
 				AssetGroupModel group = (AssetGroupModel) element;
-				group.getSection().removeGroup(group);
+				if (canRemove(group.getAssets())) {
+					group.getSection().removeGroup(group);
+				} else {
+					return;
+				}
 			} else if (element instanceof AssetModel) {
 				AssetModel asset = (AssetModel) element;
-				asset.getGroup().remove(asset);
+				if (canRemove(Arrays.asList(asset))) {
+					asset.getGroup().remove(asset);
+				} else {
+					return;
+				}
 			}
 		}
 
 		refresh();
 
 		_allAssetsViewer.setSelection(StructuredSelection.EMPTY);
+	}
+
+	private boolean canRemove(Iterable<AssetModel> assets) {
+		List<IFile> files = new ArrayList<>();
+
+		List<IAssetConsumer> list = AssetPackCore.getAssetConsumers();
+
+		for (IAssetConsumer consumer : list) {
+			for (AssetModel asset : assets) {
+				files.addAll(consumer.getFilesUsingAsset(asset));
+			}
+		}
+
+		if (files.isEmpty()) {
+			return true;
+		}
+
+		String msg = files.stream().map(f -> f.getProjectRelativePath().toPortableString())
+				.collect(Collectors.joining(","));
+		if (MessageDialog.openConfirm(getSite().getShell(), "Asset Pack Editor",
+				"You are about to delete assets used in other files:\n\n" + msg + ""
+						+ "\n\nDo you confirm the deletion?")) {
+			return true;
+		}
+
+		return false;
 	}
 
 	protected void openNewSectionDialog() {

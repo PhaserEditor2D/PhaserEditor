@@ -152,7 +152,7 @@ public final class AssetPackModel {
 
 	public List<IStatus> build() {
 		out.println("Build asset pack " + getFile().getLocation());
-		
+
 		List<IStatus> problems = new ArrayList<>();
 		for (AssetSectionModel section : _sections) {
 			for (AssetModel model : section.getAssets()) {
@@ -548,7 +548,7 @@ public final class AssetPackModel {
 		}
 	}
 
-	public Object getElementFromJSONReference( JSONObject obj) {
+	public Object getElementFromJSONReference(JSONObject obj) {
 		AssetSectionModel section = null;
 		AssetGroupModel group = null;
 		AssetModel asset = null;
@@ -567,11 +567,11 @@ public final class AssetPackModel {
 				return null;
 			}
 			asset = section.findAsset(obj.getString("asset"));
-			
+
 			if (asset == null) {
 				return null;
 			}
-			
+
 			if (obj.has("sprite")) {
 				String spriteName = obj.getString("sprite");
 				for (IAssetElementModel elem : asset.getSubElements()) {

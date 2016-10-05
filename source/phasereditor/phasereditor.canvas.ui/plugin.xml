@@ -1243,5 +1243,12 @@
          <enablement></enablement>
       </commonWizard>
    </extension>
+   <extension
+         point="phasereditor.assetpack.core.assetConsumers">
+      <consumer
+            handler="phasereditor.canvas.ui.CanvasAssetConsumer"
+            id="phasereditor.canvas.ui.consumer1">
+      </consumer>
+   </extension>
 
 </plugin>

@@ -48,9 +48,16 @@ import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.ui.IMemento;
+import org.eclipse.ui.statushandlers.StatusManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -73,6 +80,7 @@ public class AssetPackCore {
 	private static final Set<String> _shaderExtensions;
 	private static final Set<String> _audioExtensions;
 	private static final Set<String> _videoExtensions;
+	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
 
 	static {
 		_imageExtensions = new HashSet<>();
@@ -727,6 +735,24 @@ public class AssetPackCore {
 
 	public static void removePacksChangedListener(IPacksChangeListener listener) {
 		_packsChanged.remove(listener);
+	}
+
+	public static List<IAssetConsumer> getAssetConsumers() {
+		List<IAssetConsumer> consumers = new ArrayList<>();
+
+		IExtensionPoint point = Platform.getExtensionRegistry()
+				.getExtensionPoint("phasereditor.assetpack.core.assetConsumers");
+		for (IExtension ext : point.getExtensions()) {
+			for (IConfigurationElement elem : ext.getConfigurationElements()) {
+				try {
+					IAssetConsumer consumer = (IAssetConsumer) elem.createExecutableExtension("handler");
+					consumers.add(consumer);
+				} catch (Exception e) {
+					StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage()));
+				}
+			}
+		}
+		return consumers;
 	}
 
 }
