@@ -619,7 +619,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		}
 
 		String msg = files.stream().map(f -> f.getProjectRelativePath().toPortableString())
-				.collect(Collectors.joining(","));
+				.collect(Collectors.joining("\n"));
 		if (MessageDialog.openConfirm(getSite().getShell(), "Asset Pack Editor",
 				"You are about to delete assets used in other files:\n\n" + msg + ""
 						+ "\n\nDo you confirm the deletion?")) {

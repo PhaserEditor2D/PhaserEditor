@@ -26,6 +26,7 @@ import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -212,6 +213,31 @@ public class GroupModel extends BaseObjectModel {
 				visitor.accept(child);
 			}
 		}
+	}
+
+	public void walk(Function<BaseObjectModel, Boolean> visitor) {
+		walk2(visitor);
+	}
+
+	private boolean walk2(Function<BaseObjectModel, Boolean> visitor) {
+		Boolean b = visitor.apply(this);
+		if (b == null || !b.booleanValue()) {
+			return false;
+		}
+		
+		for (BaseObjectModel child : getChildren()) {
+			if (child instanceof GroupModel) {
+				if (!((GroupModel) child).walk2(visitor)) {
+					return false;
+				}
+			} else {
+				b = visitor.apply(child);
+				if (b == null || !b.booleanValue()) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	@Override

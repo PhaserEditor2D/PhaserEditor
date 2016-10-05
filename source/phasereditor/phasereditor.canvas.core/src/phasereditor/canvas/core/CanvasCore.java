@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+
 /**
  * @author arian
  *
@@ -43,5 +46,14 @@ public class CanvasCore {
 		}
 		return sb.toString();
 	}
-	
+
+	public static boolean isCanvasFile(IFile file) {
+		if (!file.exists() || !file.isSynchronized(IResource.DEPTH_ONE)) {
+			return false;
+		}
+
+		// TODO: missing to define content type
+		return file.getFileExtension().equals("canvas");
+	}
+
 }

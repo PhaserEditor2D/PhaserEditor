@@ -41,12 +41,13 @@ public class CanvasEditorModel {
 		_world = new WorldModel(file);
 	}
 
-	public void read(JSONObject data) {
+	public void read(JSONObject data, boolean validate) {
 		_settings.read(data.getJSONObject("settings"));
 		IStatus status = _world.getAssetTable().read(data.optJSONObject("asset-table"));
-
-		if (!status.isOK()) {
-			StatusManager.getManager().handle(status, StatusManager.BLOCK | StatusManager.LOG);
+		if (validate) {
+			if (!status.isOK()) {
+				StatusManager.getManager().handle(status, StatusManager.BLOCK | StatusManager.LOG);
+			}
 		}
 
 		_world.read(data.getJSONObject("world"));
