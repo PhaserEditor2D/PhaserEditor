@@ -22,9 +22,9 @@ import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.project.core.IProjectBuildParticipant;
 import phasereditor.project.core.ProjectCore;
 
-public class CanvasParticipant implements IProjectBuildParticipant {
+public class CanvasFilesBuildParticipant implements IProjectBuildParticipant {
 
-	public CanvasParticipant() {
+	public CanvasFilesBuildParticipant() {
 	}
 
 	@Override

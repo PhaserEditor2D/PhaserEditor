@@ -4,7 +4,7 @@
    <extension
          point="phasereditor.project.core.buildParticipant">
       <participant
-            handler="phasereditor.canvas.core.CanvasParticipant"
+            handler="phasereditor.canvas.core.CanvasFilesBuildParticipant"
             id="phasereditor.canvas.core.participant1"
             order="20">
       </participant>
