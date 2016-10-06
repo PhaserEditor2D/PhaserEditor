@@ -2,10 +2,12 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.eclipse.ui.startup">
-      <startup
-            class="phasereditor.canvas.core.Startup1">
-      </startup>
+         point="phasereditor.project.core.buildParticipant">
+      <participant
+            handler="phasereditor.canvas.core.CanvasParticipant"
+            id="phasereditor.canvas.core.participant1"
+            order="20">
+      </participant>
    </extension>
 
 </plugin>

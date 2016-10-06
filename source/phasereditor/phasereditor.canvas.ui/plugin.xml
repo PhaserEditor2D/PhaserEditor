@@ -1250,5 +1250,12 @@
             id="phasereditor.canvas.ui.consumer1">
       </consumer>
    </extension>
+   <extension
+         point="phasereditor.project.core.buildParticipant">
+      <participant
+            handler="phasereditor.canvas.ui.CanvasEditorBuildParticipant"
+            id="phasereditor.canvas.ui.participant2">
+      </participant>
+   </extension>
 
 </plugin>

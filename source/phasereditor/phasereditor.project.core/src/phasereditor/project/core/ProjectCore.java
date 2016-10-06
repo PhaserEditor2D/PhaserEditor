@@ -52,6 +52,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.ide.IDE;
+import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.wst.jsdt.ui.project.JsNature;
 
 import phasereditor.inspect.core.IPhaserTemplate;
@@ -257,6 +258,19 @@ public class ProjectCore {
 		}
 
 		return project;
+	}
+
+	public static void logError(Exception e) {
+		e.printStackTrace();
+		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
+	}
+
+	/**
+	 * Test if the file is part of the web content tree.
+	 */
+	public static boolean isWebContentFile(IFile file) {
+		IContainer webContentFolder = getWebContentFolder(file.getProject());
+		return webContentFolder.getFullPath().isPrefixOf(file.getFullPath());
 	}
 
 }

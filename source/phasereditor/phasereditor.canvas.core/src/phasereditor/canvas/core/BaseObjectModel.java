@@ -115,6 +115,9 @@ public abstract class BaseObjectModel {
 		_id = obj.getString("id");
 	}
 
+	/**
+	 * This method is used by the Canvas Build Participant.
+	 */
 	public abstract void build();
 
 	public String getLabel() {

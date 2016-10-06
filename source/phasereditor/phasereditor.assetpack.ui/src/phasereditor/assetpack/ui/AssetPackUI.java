@@ -153,6 +153,10 @@ public class AssetPackUI {
 		return true;
 	}
 
+	/**
+	 * @deprecated We should use a build participant exception.
+	 */
+	@Deprecated
 	public static void setAssetViewerUpdater(Composite comp, Runnable refresh, Supplier<AssetModel> getAsset) {
 		IPacksChangeListener listener = new IPacksChangeListener() {
 
@@ -438,6 +442,10 @@ public class AssetPackUI {
 		return list;
 	}
 
+	/**
+	 * @deprecated We should use a build participant extension.
+	 */
+	@Deprecated
 	static void registerPreviewUpdater() {
 		// global listeners
 		AssetPackCore.addPacksChangedListener(new IPacksChangeListener() {

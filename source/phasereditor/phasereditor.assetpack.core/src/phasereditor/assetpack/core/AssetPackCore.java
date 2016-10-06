@@ -679,7 +679,7 @@ public class AssetPackCore {
 			_packs = new HashSet<>();
 			_assets = new HashSet<>();
 		}
-		
+
 		public Set<AssetModel> getAssets() {
 			return _assets;
 		}
@@ -715,6 +715,11 @@ public class AssetPackCore {
 		}
 	}
 
+	/**
+	 * @deprecated We should use a build participant extension.
+	 * @author arian
+	 */
+	@Deprecated
 	public interface IPacksChangeListener {
 		public void packsChanged(PackDelta delta);
 	}

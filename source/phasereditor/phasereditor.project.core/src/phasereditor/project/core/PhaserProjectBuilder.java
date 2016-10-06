@@ -36,9 +36,12 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.ide.IDE;
 
@@ -48,6 +51,7 @@ import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackCore.PackDelta;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.audio.core.AudioCore;
+import phasereditor.project.core.IProjectBuildParticipant.BuildArgs;
 
 public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 
@@ -121,6 +125,8 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 			});
 		}
 
+		
+		// TODO: move this to a build participant
 		if (mainDelta == null) {
 			AudioCore.makeMediaSnapshots(getProject(), false);
 		} else {
@@ -131,6 +137,20 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 		// Any change on the project implies to rebuild all the packs of that
 		// project.
 		buildPacks(mainDelta, packDelta);
+
+		// call all build participant!!!
+
+		IExtensionPoint point = Platform.getExtensionRegistry()
+				.getExtensionPoint("phasereditor.project.core.buildParticipant");
+		for (IConfigurationElement element : point.getConfigurationElements()) {
+			try {
+				IProjectBuildParticipant participant = (IProjectBuildParticipant) element
+						.createExecutableExtension("handler");
+				participant.build(new BuildArgs(this, getProject(), mainDelta, packDelta));
+			} catch (Exception e) {
+				ProjectCore.logError(e);
+			}
+		}
 
 		return null;
 	}
@@ -251,7 +271,7 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 			if (problem instanceof AssetStatus) {
 				AssetModel asset = ((AssetStatus) problem).getAsset();
 				String ref = asset.getPack().getStringReference(asset);
-				
+
 				marker.setAttribute(IDE.EDITOR_ID_ATTR, AssetPackCore.ASSET_EDITOR_ID);
 				marker.setAttribute(AssetPackCore.ASSET_EDITOR_GOTO_MARKER_ATTR, ref);
 			}
