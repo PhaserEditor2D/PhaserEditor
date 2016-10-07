@@ -194,7 +194,7 @@ public class CanvasEditor extends EditorPart
 			JSONObject data = new JSONObject(new JSONTokener(contents));
 			_model = new CanvasEditorModel(file);
 			try {
-				_model.read(data, true);
+				_model.read(data);
 			} catch (Exception e) {
 				e.printStackTrace();
 				_model = new CanvasEditorModel(file);

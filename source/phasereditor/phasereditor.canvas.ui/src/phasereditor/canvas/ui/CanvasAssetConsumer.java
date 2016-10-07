@@ -60,7 +60,7 @@ public class CanvasAssetConsumer implements IAssetConsumer {
 						try (InputStream contents = file.getContents();) {
 							JSONObject data = new JSONObject(new JSONTokener(contents));
 							CanvasEditorModel model = new CanvasEditorModel(file);
-							model.read(data, false);
+							model.read(data);
 							addUsedInModel(asset, files, model.getWorld());
 						} catch (Exception e) {
 							StatusManager.getManager()

@@ -4,6 +4,7 @@ import static java.lang.System.out;
 
 import java.io.InputStream;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.resources.IContainer;
@@ -13,6 +14,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -20,6 +22,7 @@ import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore.PackDelta;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.project.core.IProjectBuildParticipant;
+import phasereditor.project.core.PhaserProjectBuilder;
 import phasereditor.project.core.ProjectCore;
 
 public class CanvasFilesBuildParticipant implements IProjectBuildParticipant {
@@ -75,7 +78,7 @@ public class CanvasFilesBuildParticipant implements IProjectBuildParticipant {
 
 			}
 		} catch (Exception e) {
-			CanvasCore.handleError(e);
+			CanvasCore.logError(e);
 		}
 	}
 
@@ -114,14 +117,24 @@ public class CanvasFilesBuildParticipant implements IProjectBuildParticipant {
 	}
 
 	private static void validateCanvasFile(IFile file) {
-		try (InputStream contents = file.getContents();) {
-			JSONObject data = new JSONObject(new JSONTokener(contents));
-			CanvasEditorModel model = new CanvasEditorModel(file);
-			model.read(data, false);
-			// TODO: just make a validation
-			model.getWorld().build();
+		// try (InputStream contents = file.getContents();) {
+		// JSONObject data = new JSONObject(new JSONTokener(contents));
+		// CanvasEditorModel model = new CanvasEditorModel(file);
+		// model.read(data, false);
+		// // TODO: just make a validation
+		// model.getWorld().build();
+		// } catch (Exception e) {
+		// CanvasCore.logError(e);
+		// }
+
+		try {
+			CanvasFileValidation validation = new CanvasFileValidation(file);
+			List<IStatus> problems = validation.validate();
+			for (IStatus problem : problems) {
+				PhaserProjectBuilder.createErrorMarker(problem, file);
+			}
 		} catch (Exception e) {
-			CanvasCore.handleError(e);
+			CanvasCore.logError(e);
 		}
 	}
 
