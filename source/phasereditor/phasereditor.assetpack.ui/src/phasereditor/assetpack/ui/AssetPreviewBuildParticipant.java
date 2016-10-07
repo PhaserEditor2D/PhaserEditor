@@ -1,5 +1,9 @@
 package phasereditor.assetpack.ui;
 
+import static java.lang.System.out;
+
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewReference;
@@ -40,8 +44,32 @@ public class AssetPreviewBuildParticipant implements IProjectBuildParticipant {
 						if (elem != null) {
 							if (elem instanceof IAssetKey) {
 								updatePreview(args, view, elem);
+								continue;
 							}
 						}
+
+						try {
+							args.getResourceDelta().accept(r -> {
+								IResource resource = r.getResource();
+
+								if (resource.equals(elem)) {
+
+									if (r.getKind() == IResourceDelta.REMOVED) {
+										view.preview(null);
+										return false;
+									}
+
+									view.preview(elem);
+
+									return false;
+								}
+
+								return true;
+							});
+						} catch (CoreException e) {
+							e.printStackTrace();
+						}
+
 					}
 				}
 			}
