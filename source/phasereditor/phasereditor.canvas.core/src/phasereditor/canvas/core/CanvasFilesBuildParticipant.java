@@ -2,7 +2,6 @@ package phasereditor.canvas.core;
 
 import static java.lang.System.out;
 
-import java.io.InputStream;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,8 +14,12 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
-import org.json.JSONObject;
-import org.json.JSONTokener;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore.PackDelta;
@@ -64,11 +67,25 @@ public class CanvasFilesBuildParticipant implements IProjectBuildParticipant {
 			if (project != null) {
 				IContainer webContent = ProjectCore.getWebContentFolder(project);
 
+				Set<IFile> filesOpenInCanvasEditors = new HashSet<>();
+
+				for (IWorkbenchWindow win : PlatformUI.getWorkbench().getWorkbenchWindows()) {
+					for (IWorkbenchPage page : win.getPages()) {
+						for (IEditorReference editorRef : page.getEditorReferences()) {
+							if (editorRef.getId().equals("phasereditor.canvas.ui.editors.canvas")) {
+								IEditorPart editor = editorRef.getEditor(false);
+								IFileEditorInput input = (IFileEditorInput) editor.getEditorInput();
+								filesOpenInCanvasEditors.add(input.getFile());
+							}
+						}
+					}
+				}
+
 				webContent.accept(r -> {
 					if (r instanceof IFile && !used.contains(r)) {
 						IFile file = (IFile) r;
-						if (CanvasCore.isCanvasFile(file)) {
-							out.println("Building canvas " + file);
+						if (!filesOpenInCanvasEditors.contains(file) && CanvasCore.isCanvasFile(file)) {
+							out.println("Building canvas editor " + file);
 							validateCanvasFile(file);
 							validatedFiles.add(file);
 						}
@@ -117,16 +134,6 @@ public class CanvasFilesBuildParticipant implements IProjectBuildParticipant {
 	}
 
 	private static void validateCanvasFile(IFile file) {
-		// try (InputStream contents = file.getContents();) {
-		// JSONObject data = new JSONObject(new JSONTokener(contents));
-		// CanvasEditorModel model = new CanvasEditorModel(file);
-		// model.read(data, false);
-		// // TODO: just make a validation
-		// model.getWorld().build();
-		// } catch (Exception e) {
-		// CanvasCore.logError(e);
-		// }
-
 		try {
 			CanvasFileValidation validation = new CanvasFileValidation(file);
 			List<IStatus> problems = validation.validate();

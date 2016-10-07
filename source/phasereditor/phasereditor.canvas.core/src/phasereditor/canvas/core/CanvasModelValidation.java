@@ -24,46 +24,34 @@ package phasereditor.canvas.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+
+import phasereditor.project.core.PhaserProjectBuilder;
 
 /**
  * @author arian
  *
  */
-public class MissingAssetSpriteModel extends BaseSpriteModel {
+public class CanvasModelValidation {
+	private WorldModel _world;
 
-	private JSONObject _srcData;
-
-	public MissingAssetSpriteModel(GroupModel parent, JSONObject obj) {
-		super(parent, "<missing-asset>");
-		_srcData = obj;
-		readInfo(obj.getJSONObject("info"));
+	public CanvasModelValidation(WorldModel world) {
+		_world = world;
 	}
 
-	public JSONObject getSrcData() {
-		return _srcData;
-	}
+	public List<IStatus> validate() {
+		List<IStatus> problems = new ArrayList<>();
 
-	@Override
-	protected List<AnimationModel> readAnimations(JSONArray array) {
-		return new ArrayList<>();
-	}
-	
-	@Override
-	public void build() {
-		// nothing
-	}
+		_world.walk(model -> {
+			if (model instanceof MissingAssetSpriteModel) {
+				MissingAssetSpriteModel missing = (MissingAssetSpriteModel) model;
+				Status error = new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID,
+						"The asset for the sprite '" + missing.getEditorName() + "' is not found.");
+				PhaserProjectBuilder.createErrorMarker(error, _world.getFile());
+			}
+		});
 
-	@Override
-	public void write(JSONObject obj, boolean useTable) {
-		for (String k : _srcData.keySet()) {
-			obj.put(k, _srcData.get(k));
-		}
-	}
-
-	@Override
-	public boolean hasErrors() {
-		return true;
+		return problems;
 	}
 }

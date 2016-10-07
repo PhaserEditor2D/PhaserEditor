@@ -28,15 +28,11 @@ import java.security.InvalidParameterException;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.IOperationHistory;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IWorkbench;
 
-import phasereditor.assetpack.core.AssetModel;
-import phasereditor.assetpack.core.AssetPackCore.PackDelta;
-import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
@@ -210,25 +206,5 @@ public class UpdateBehavior {
 		_canvas.getSelectionFrontPane().setMaxSize(width, height);
 		_canvas.getFrontGridPane().repaint();
 		_canvas.getBackGridPane().repaint();
-	}
-
-	public void rebuild(PackDelta delta) {
-		IProject project = _canvas.getWorldModel().getFile().getProject();
-		for (AssetPackModel pack : delta.getPacks()) {
-			if (pack.getFile().getProject().equals(project)) {
-				rebuild();
-				return;
-			}
-		}
-
-		// TODO: this can be improved and update only the affected
-		// nodes!
-		for (AssetModel asset : delta.getAssets()) {
-			AssetPackModel pack = asset.getPack();
-			if (pack.getFile().getProject().equals(project)) {
-				rebuild();
-				return;
-			}
-		}
 	}
 }

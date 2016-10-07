@@ -121,7 +121,7 @@ public class AnimationModel implements Cloneable {
 		return model;
 	}
 
-	public void rebuild(IAssetKey key) {
+	public void build(IAssetKey key) {
 		List<? extends IAssetElementModel> allframes = key.getAllFrames();
 		List<IAssetFrameModel> list = new ArrayList<>();
 		for (IAssetFrameModel frame : _frames) {

@@ -25,8 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -35,7 +33,6 @@ import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
-import phasereditor.project.core.PhaserProjectBuilder;
 
 /**
  * @author arian
@@ -147,13 +144,13 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 		T newKey = buildAssetKey(_assetKey);
 
 		if (newKey == null) {
-			postBuildError("The asset for the sprite '" + getEditorName() + "' is not found.");
+			handleAssetNotFound();
 		}
 
 		{
 			for (IFile file : newKey.getAsset().getUsedFiles()) {
 				if (file == null || !file.exists()) {
-					postBuildError("The asset for the sprite '" + getEditorName() + "' has missing files.");
+					handleAssetNotFound();
 				}
 			}
 		}
@@ -163,15 +160,12 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 		_assetKey = newKey;
 
 		for (AnimationModel model : getAnimations()) {
-			model.rebuild(_assetKey);
+			model.build(_assetKey);
 		}
 
 	}
 
-	private void postBuildError(String msg) {
-		Status error = new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID, msg);
-		PhaserProjectBuilder.createErrorMarker(error, getWorld().getFile());
-
+	private void handleAssetNotFound() {
 		JSONObject data = toJSON(false);
 		throw new MissingAssetException(data);
 	}

@@ -680,6 +680,23 @@ public class AssetPackCore {
 			_assets = new HashSet<>();
 		}
 
+		public boolean inProject(IProject project) {
+			for (AssetPackModel pack : getPacks()) {
+				if (pack.getFile().getProject().equals(project)) {
+					return true;
+				}
+			}
+
+			for (AssetModel asset : getAssets()) {
+				AssetPackModel pack = asset.getPack();
+				if (pack.getFile().getProject().equals(project)) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+
 		public Set<AssetModel> getAssets() {
 			return _assets;
 		}
