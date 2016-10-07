@@ -105,13 +105,21 @@ public class CanvasAssetConsumer implements IAssetConsumer {
 		model.walk(m -> {
 			if (m instanceof AssetSpriteModel) {
 				IAssetKey key = ((AssetSpriteModel<?>) m).getAssetKey();
-				if (key != null) {
-					key = key.findFreshVersion();
-					AssetModel objAsset = key.getAsset();
-					if (objAsset == asset) {
-						files.add(model.getFile());
-						return Boolean.FALSE;
-					}
+
+				if (key == null) {
+					return Boolean.TRUE;
+				}
+
+				key = key.findFreshVersion();
+
+				if (key == null) {
+					return Boolean.TRUE;
+				}
+
+				AssetModel objAsset = key.getAsset();
+				if (objAsset == asset) {
+					files.add(model.getFile());
+					return Boolean.FALSE;
 				}
 			}
 			return Boolean.TRUE;

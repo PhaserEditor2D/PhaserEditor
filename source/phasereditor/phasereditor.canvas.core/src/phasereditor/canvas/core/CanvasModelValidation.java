@@ -22,10 +22,13 @@
 package phasereditor.canvas.core;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.json.JSONObject;
 
 import phasereditor.project.core.PhaserProjectBuilder;
 
@@ -43,9 +46,20 @@ public class CanvasModelValidation {
 	public List<IStatus> validate() {
 		List<IStatus> problems = new ArrayList<>();
 
+		Set<String> used = new HashSet<>();
+
 		_world.walk(model -> {
 			if (model instanceof MissingAssetSpriteModel) {
 				MissingAssetSpriteModel missing = (MissingAssetSpriteModel) model;
+
+				// add the assets not found
+				String msg = getMissingRefMessage(missing.getSrcData());
+				if (!used.contains(msg)) {
+					problems.add(0, new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID, "Asset not found: " + msg));
+					used.add(msg);
+				}
+
+				// add the sprite missing asset error
 				Status error = new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID,
 						"The asset for the sprite '" + missing.getEditorName() + "' is not found.");
 				PhaserProjectBuilder.createErrorMarker(error, _world.getFile());
@@ -53,5 +67,15 @@ public class CanvasModelValidation {
 		});
 
 		return problems;
+	}
+
+	private static String getMissingRefMessage(JSONObject srcData) {
+		JSONObject ref = srcData.getJSONObject("asset-ref");
+		String msg = "section=" + ref.optString("section") + ", key=" + ref.optString("asset");
+
+		if (ref.has("frame")) {
+			msg += ", frame=" + ref.optString("sprite", "");
+		}
+		return msg;
 	}
 }
