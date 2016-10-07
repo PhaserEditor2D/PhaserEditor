@@ -26,10 +26,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IFontProvider;
@@ -37,12 +38,9 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.Window;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IPartListener;
@@ -57,6 +55,7 @@ import org.eclipse.ui.dialogs.ListDialog;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.ui.part.FileEditorInput;
+import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.json.JSONArray;
 
@@ -68,8 +67,6 @@ import com.subshell.snippets.jface.tooltip.tooltipsupport.TreeViewerInformationP
 import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.assetpack.core.AssetPackCore.IPacksChangeListener;
-import phasereditor.assetpack.core.AssetPackCore.PackDelta;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AtlasAssetModel;
@@ -78,7 +75,6 @@ import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.FrameData;
 import phasereditor.assetpack.core.IAssetElementModel;
-import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
@@ -105,8 +101,6 @@ import phasereditor.assetpack.ui.widgets.AudioResourceDialog;
 import phasereditor.assetpack.ui.widgets.ImageResourceDialog;
 import phasereditor.assetpack.ui.widgets.VideoResourceDialog;
 import phasereditor.audio.core.AudioCore;
-import phasereditor.ui.PhaserEditorUI;
-import phasereditor.ui.views.PreviewView;
 
 public class AssetPackUI {
 
@@ -151,39 +145,6 @@ public class AssetPackUI {
 		}
 
 		return true;
-	}
-
-	/**
-	 * @deprecated We should use a build participant exception.
-	 */
-	@Deprecated
-	public static void setAssetViewerUpdater(Composite comp, Runnable refresh, Supplier<AssetModel> getAsset) {
-		IPacksChangeListener listener = new IPacksChangeListener() {
-
-			@Override
-			public void packsChanged(PackDelta packDelta) {
-				AssetModel asset = getAsset.get();
-				if (asset != null) {
-					if (packDelta.contains(asset)) {
-						PhaserEditorUI.swtRun(comp, (c) -> {
-							if (c.isVisible()) {
-								refresh.run();
-							}
-						});
-					}
-				}
-			}
-		};
-
-		AssetPackCore.addPacksChangedListener(listener);
-
-		comp.addDisposeListener(new DisposeListener() {
-
-			@Override
-			public void widgetDisposed(DisposeEvent e) {
-				AssetPackCore.removePacksChangedListener(listener);
-			}
-		});
 	}
 
 	public static String browseAssetFile(AssetPackModel packModel, String objectName, IFile curFile, List<IFile> files,
@@ -440,50 +401,6 @@ public class AssetPackUI {
 			i++;
 		}
 		return list;
-	}
-
-	/**
-	 * @deprecated We should use a build participant extension.
-	 */
-	@Deprecated
-	static void registerPreviewUpdater() {
-		// global listeners
-		AssetPackCore.addPacksChangedListener(new IPacksChangeListener() {
-
-			@Override
-			public void packsChanged(PackDelta delta) {
-				Display.getDefault().asyncExec(new Runnable() {
-
-					@Override
-					public void run() {
-						if (PlatformUI.getWorkbench().isClosing()) {
-							return;
-						}
-
-						IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-						IWorkbenchPage page = window.getActivePage();
-						IViewReference[] refs = page.getViewReferences();
-
-						for (IViewReference ref : refs) {
-							if (ref.getId().equals(PreviewView.ID)) {
-								PreviewView view = (PreviewView) ref.getView(true);
-								Object elem = view.getPreviewElement();
-
-								if (elem != null) {
-									if (elem instanceof IAssetKey) {
-										IAssetKey key = (IAssetKey) elem;
-										if (delta.contains(key, key.getAsset())) {
-											key = key.getSharedVersion();
-											view.preview(key);
-										}
-									}
-								}
-							}
-						}
-					}
-				});
-			}
-		});
 	}
 
 	static void registerProjectExplorerTooltips() {
@@ -820,5 +737,10 @@ public class AssetPackUI {
 
 		}
 		return _informationControlCreators;
+	}
+
+	public static void logError(Exception e) {
+		e.printStackTrace();
+		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
 	}
 }

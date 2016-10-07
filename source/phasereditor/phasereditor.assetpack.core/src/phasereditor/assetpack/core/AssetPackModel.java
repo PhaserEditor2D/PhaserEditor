@@ -62,7 +62,6 @@ public final class AssetPackModel {
 	protected List<AssetSectionModel> _sections;
 	private IFile _file;
 	private boolean _dirty;
-	private List<AssetModel> _lastBuiltAssets;
 
 	public AssetPackModel(IFile file) throws Exception {
 		this(readJSON(file));
@@ -71,7 +70,6 @@ public final class AssetPackModel {
 
 	public AssetPackModel(JSONObject jsonDoc) throws Exception {
 		build(jsonDoc);
-		_lastBuiltAssets = new ArrayList<>();
 	}
 
 	private void build(JSONObject jsonRoot) throws Exception {
@@ -98,10 +96,7 @@ public final class AssetPackModel {
 			return delta;
 		}
 
-		Set<AssetModel> deletedAssets = new HashSet<>(_lastBuiltAssets);
 		Set<AssetModel> currentAssets = new HashSet<>(getAssets());
-		deletedAssets.removeIf(a -> currentAssets.contains(a));
-		delta.getAssets().addAll(deletedAssets);
 
 		IPath packPath = getFile().getFullPath();
 
@@ -139,8 +134,6 @@ public final class AssetPackModel {
 				model.build(problems);
 			}
 		}
-
-		_lastBuiltAssets = getAssets();
 
 		return problems;
 	}

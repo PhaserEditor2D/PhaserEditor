@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -147,6 +148,7 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 			try {
 				IProjectBuildParticipant participant = (IProjectBuildParticipant) element
 						.createExecutableExtension("handler");
+				
 				participant.build(new BuildArgs(this, getProject(), mainDelta, packDelta));
 			} catch (Exception e) {
 				ProjectCore.logError(e);

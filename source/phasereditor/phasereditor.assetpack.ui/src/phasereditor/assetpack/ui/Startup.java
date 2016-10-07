@@ -27,7 +27,6 @@ public class Startup implements IStartup {
 
 	@Override
 	public void earlyStartup() {
-		AssetPackUI.registerPreviewUpdater();
 		AssetPackUI.registerProjectExplorerTooltips();
 	}
 

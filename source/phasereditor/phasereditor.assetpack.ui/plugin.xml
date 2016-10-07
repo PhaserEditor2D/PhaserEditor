@@ -264,5 +264,12 @@
             class="phasereditor.assetpack.ui.Startup">
       </startup>
    </extension>
+   <extension
+         point="phasereditor.project.core.buildParticipant">
+      <participant
+            handler="phasereditor.assetpack.ui.AssetPreviewBuildParticipant"
+            id="phasereditor.assetpack.ui.participant3">
+      </participant>
+   </extension>
    
 </plugin>
