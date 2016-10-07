@@ -66,9 +66,9 @@ public class AssetTable {
 	}
 
 	public String postAsset(IAssetKey key) {
-		IAssetKey key1 = key.findFreshVersion();
+		IAssetKey key1 = key.getSharedVersion();
 		for (Entry entry : _entries) {
-			IAssetKey key2 = entry.asset.findFreshVersion();
+			IAssetKey key2 = entry.asset.getSharedVersion();
 
 			if (key1.equals(key2)) {
 				return entry.id;

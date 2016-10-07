@@ -179,7 +179,7 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 			return null;
 		}
 
-		T freshVersion = (T) assetKey.findFreshVersion();
+		T freshVersion = (T) assetKey.getSharedVersion();
 
 		return freshVersion;
 	}

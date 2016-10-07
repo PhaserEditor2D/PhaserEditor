@@ -67,26 +67,31 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 	}
 
 	@Override
-	public AssetModel findFreshVersion() {
-		if (isFreshVersion()) {
+	public final AssetModel getSharedVersion() {
+		if (isSharedVersion()) {
 			return this;
 		}
-		
-		AssetPackModel pack = getPack();
-		if (!pack.isFreshVersion()) {
-			return null;
+
+		try {
+			 AssetPackModel pack = getPack().getSharedVersion();
+
+			if (pack == null) {
+				return null;
+			}
+
+			AssetSectionModel section = pack.findSection(_section.getKey());
+			if (section == null) {
+				return null;
+			}
+
+			AssetModel asset = section.findAsset(_key);
+
+			return asset;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		
-		AssetSectionModel section = pack.findSection(_section.getKey());
-		if (section == null) {
-			return null;
-		}
-		
-		AssetModel asset = section.findAsset(_key);
-		
-		return asset;
 	}
-	
+
 	@Override
 	public AssetModel getAsset() {
 		return this;
@@ -197,9 +202,9 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 	}
 
 	@Override
-	public boolean isFreshVersion() {
+	public boolean isSharedVersion() {
 		AssetPackModel pack = getPack();
-		return pack.isFreshVersion() && pack.getSections().contains(_section) && _section.getAssets().contains(this);
+		return pack.isSharedVersion() && pack.getSections().contains(_section) && _section.getAssets().contains(this);
 	}
 
 	protected IContainer getUrlStartFolder() {

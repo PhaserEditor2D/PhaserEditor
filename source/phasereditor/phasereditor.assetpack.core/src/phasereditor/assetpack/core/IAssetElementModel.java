@@ -42,8 +42,8 @@ public interface IAssetElementModel extends IAssetKey, IAdaptable {
 	public AssetModel getAsset();
 
 	@Override
-	public default boolean isFreshVersion() {
-		if (getAsset().isFreshVersion()) {
+	public default boolean isSharedVersion() {
+		if (getAsset().isSharedVersion()) {
 			return getAsset().getSubElements().contains(this);
 		}
 
@@ -51,8 +51,8 @@ public interface IAssetElementModel extends IAssetKey, IAdaptable {
 	}
 
 	@Override
-	public default IAssetElementModel findFreshVersion() {
-		AssetModel asset = getAsset().findFreshVersion();
+	public default IAssetElementModel getSharedVersion() {
+		AssetModel asset = getAsset().getSharedVersion();
 
 		if (asset == null) {
 			return null;

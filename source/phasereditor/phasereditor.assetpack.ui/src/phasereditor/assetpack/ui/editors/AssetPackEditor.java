@@ -24,8 +24,9 @@ package phasereditor.assetpack.ui.editors;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IFile;
@@ -75,7 +76,6 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListDialog;
 import org.eclipse.ui.ide.IGotoMarker;
 import org.eclipse.ui.part.EditorPart;
@@ -118,6 +118,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	public static final String ID = AssetPackCore.ASSET_EDITOR_ID;
 
 	private AssetPackModel _model;
+	@Deprecated
 	private IPacksChangeListener _packsListener;
 
 	public AssetPackEditor() {
@@ -132,7 +133,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	private void packsChanged(PackDelta packDelta) {
 		if (packDelta.contains(_model)) {
-			if (_model.isFreshVersion()) {
+			if (_model.isSharedVersion()) {
 				IFile editorFile = getEditorInput().getFile();
 				IFile modelFile = _model.getFile();
 				if (!editorFile.equals(modelFile)) {
@@ -182,16 +183,14 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		FileEditorInput fileInput = getEditorInput();
 		IFile file = fileInput.getFile();
 
-		if (_model == null) {
-			try {
-				_model = AssetPackCore.getAssetPackModel(file);
-				_model.makeBackup();
-			} catch (Exception e) {
-				e.printStackTrace();
-				throw new RuntimeException(e);
-			}
-			_model.addPropertyChangeListener(this::propertyChange);
+		try {
+			// we create a model copy detached from the AssetCore registry.
+			_model = new AssetPackModel(file);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
+		_model.addPropertyChangeListener(this::propertyChange);
 
 		setPartName(_model.getName());
 	}
@@ -202,12 +201,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 		if (_model != null && _model.getFile().exists()) {
 			saveEditingPoint();
-
-			if (!PlatformUI.getWorkbench().isClosing()) {
-				if (isDirty()) {
-					_model.recoverBackup();
-				}
-			}
 		}
 
 		super.dispose();
@@ -573,28 +566,32 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	}
 
 	void removeAssetElement() {
+		List<AssetModel> list = new ArrayList<>();
+
+		for (Object element : ((StructuredSelection) _allAssetsViewer.getSelection()).toArray()) {
+			if (element instanceof AssetSectionModel) {
+				list.addAll(((AssetSectionModel) element).getAssets());
+			} else if (element instanceof AssetGroupModel) {
+				list.addAll(((AssetGroupModel) element).getAssets());
+			} else if (element instanceof AssetModel) {
+				list.add((AssetModel) element);
+			}
+		}
+
+		if (!canRemove(list)) {
+			return;
+		}
+
 		for (Object element : ((StructuredSelection) _allAssetsViewer.getSelection()).toArray()) {
 			if (element instanceof AssetSectionModel) {
 				AssetSectionModel section = (AssetSectionModel) element;
-				if (canRemove(section.getAssets())) {
-					section.getPack().removeSection(section);
-				} else {
-					return;
-				}
+				section.getPack().removeSection(section);
 			} else if (element instanceof AssetGroupModel) {
 				AssetGroupModel group = (AssetGroupModel) element;
-				if (canRemove(group.getAssets())) {
-					group.getSection().removeGroup(group);
-				} else {
-					return;
-				}
+				group.getSection().removeGroup(group);
 			} else if (element instanceof AssetModel) {
 				AssetModel asset = (AssetModel) element;
-				if (canRemove(Arrays.asList(asset))) {
-					asset.getGroup().remove(asset);
-				} else {
-					return;
-				}
+				asset.getGroup().remove(asset);
 			}
 		}
 
@@ -604,13 +601,16 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	}
 
 	private boolean canRemove(Iterable<AssetModel> assets) {
-		List<IFile> files = new ArrayList<>();
+		Set<IFile> files = new HashSet<>();
 
 		List<IAssetConsumer> list = AssetPackCore.getAssetConsumers();
 
 		for (IAssetConsumer consumer : list) {
 			for (AssetModel asset : assets) {
-				files.addAll(consumer.getFilesUsingAsset(asset));
+				AssetModel shared = asset.getSharedVersion();
+				if (shared != null) {
+					files.addAll(consumer.getFilesUsingAsset(shared));
+				}
 			}
 		}
 

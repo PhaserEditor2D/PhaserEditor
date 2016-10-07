@@ -24,7 +24,9 @@ package phasereditor.project.core;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
@@ -68,7 +70,7 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 	}
 
 	private void fullBuild(boolean clean) {
-		buildPacks(null, new PackDelta());
+		buildPacks(Optional.empty(), new PackDelta());
 		AudioCore.makeMediaSnapshots(getProject(), clean);
 	}
 
@@ -125,7 +127,6 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 			});
 		}
 
-		
 		// TODO: move this to a build participant
 		if (mainDelta == null) {
 			AudioCore.makeMediaSnapshots(getProject(), false);
@@ -136,7 +137,7 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 
 		// Any change on the project implies to rebuild all the packs of that
 		// project.
-		buildPacks(mainDelta, packDelta);
+		buildPacks(Optional.ofNullable(mainDelta), packDelta);
 
 		// call all build participant!!!
 
@@ -164,15 +165,50 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 		}
 	}
 
-	private void buildPacks(IResourceDelta buildDelta, PackDelta packDelta) {
+	private void buildPacks(Optional<IResourceDelta> resourceDelta, PackDelta packDelta) {
 		IProject project = getProject();
 
 		cleanProblemMarkers();
 
-		// ensure all models was created
-
 		try {
-			project.accept(new IResourceVisitor() {
+
+			if (resourceDelta.isPresent()) {
+				// reset modified models
+
+				resourceDelta.get().accept(new IResourceDeltaVisitor() {
+
+					@Override
+					public boolean visit(IResourceDelta delta) throws CoreException {
+						try {
+							IResource resource = delta.getResource();
+
+							if (!(resource instanceof IFile)) {
+								return true;
+							}
+
+							IFile file = (IFile) resource;
+
+							if (!AssetPackCore.isAssetPackFile(file)) {
+								return true;
+							}
+
+							if (delta.getKind() == IResourceDelta.CHANGED
+									|| delta.getKind() == IResourceDelta.REMOVED) {
+								AssetPackCore.resetAssetPackModel(file);
+							}
+
+						} catch (Exception e) {
+							AssetPackCore.logError(e);
+						}
+						return true;
+					}
+				});
+			}
+
+			// ensure all models was created
+
+			IContainer webFolder = ProjectCore.getWebContentFolder(project);
+			webFolder.accept(new IResourceVisitor() {
 
 				@Override
 				public boolean visit(IResource resource) throws CoreException {
@@ -199,18 +235,21 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 
 		List<AssetPackModel> allPacks = AssetPackCore.getAssetPackModels(project);
 
-		if (buildDelta == null) {
-			// if there is not delta, then let's say all the project's packs are
-			// affected.
-			packDelta.getPacks().addAll(allPacks);
-		} else {
+		if (resourceDelta.isPresent()) {
+
+			// TODO: probably this is not going to work.
+			// delta packs can be computed by comparing the old model with the
+			// new model.
+
 			try {
-				buildDelta.accept(new IResourceDeltaVisitor() {
+				resourceDelta.get().accept(new IResourceDeltaVisitor() {
 
 					@Override
 					public boolean visit(IResourceDelta delta) throws CoreException {
 						IResource resource = delta.getResource();
 						if (resource instanceof IFile) {
+
+							// TODO: let's compute delta pack in a better way?
 
 							IPath movedPath = delta.getMovedToPath();
 							IPath deltaPath = resource.getFullPath();
@@ -228,17 +267,14 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 			} catch (CoreException e) {
 				throw new RuntimeException(e);
 			}
+		} else {
+			// if there is not delta, then let's say all the project's packs are
+			// affected.
+			packDelta.getPacks().addAll(allPacks);
 		}
 
 		// build and validate all the affected packs
 		{
-			// Collection<AssetPackModel> buildPacks;
-			// if (buildDelta == null) {
-			// buildPacks = packDelta.getPacks();
-			// } else {
-			// buildPacks = allPacks;
-			// }
-
 			for (AssetModel asset : packDelta.getAssets()) {
 				List<IStatus> problems = new ArrayList<>();
 				asset.build(problems);

@@ -42,11 +42,11 @@ public interface IAssetKey {
 	 * 
 	 * @return
 	 */
-	public boolean isFreshVersion();
+	public boolean isSharedVersion();
 
 	/**
 	 * Find the fresh (updated) version of this asset key.
 	 * @return
 	 */
-	public IAssetKey findFreshVersion();
+	public IAssetKey getSharedVersion();
 }

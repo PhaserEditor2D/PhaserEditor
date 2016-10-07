@@ -63,7 +63,6 @@ public final class AssetPackModel {
 	private IFile _file;
 	private boolean _dirty;
 	private List<AssetModel> _lastBuiltAssets;
-	private String _backup;
 
 	public AssetPackModel(IFile file) throws Exception {
 		this(readJSON(file));
@@ -73,25 +72,6 @@ public final class AssetPackModel {
 	public AssetPackModel(JSONObject jsonDoc) throws Exception {
 		build(jsonDoc);
 		_lastBuiltAssets = new ArrayList<>();
-	}
-
-	public void makeBackup() {
-		_backup = toJSON();
-	}
-
-	public void recoverBackup() {
-		if (_backup != null) {
-			JSONObject obj = new JSONObject(_backup);
-			try {
-				build(obj);
-				setDirty(false);
-				PackDelta delta = new PackDelta();
-				delta.add(this);
-				AssetPackCore.firePacksChanged(delta);
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-		}
 	}
 
 	private void build(JSONObject jsonRoot) throws Exception {
@@ -199,7 +179,6 @@ public final class AssetPackModel {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-		makeBackup();
 		setDirty(false);
 	}
 
@@ -214,8 +193,8 @@ public final class AssetPackModel {
 		}
 	}
 
-	public boolean isFreshVersion() {
-		return AssetPackCore.getAssetPackModels().contains(this);
+	public boolean isSharedVersion() {
+		return AssetPackCore.getAssetPackModel(_file, false) == this;
 	}
 
 	/**
@@ -606,5 +585,14 @@ public final class AssetPackModel {
 
 	public void firePropertyChange(String property) {
 		support.firePropertyChange(property, true, false);
+	}
+
+	public AssetPackModel getSharedVersion() {
+		try {
+			return AssetPackCore.getAssetPackModel(getFile(), false);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 }

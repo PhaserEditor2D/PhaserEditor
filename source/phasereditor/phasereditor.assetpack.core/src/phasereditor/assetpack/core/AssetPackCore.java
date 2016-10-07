@@ -589,16 +589,45 @@ public class AssetPackCore {
 	}
 
 	public static AssetPackModel getAssetPackModel(IFile file) throws Exception {
+		return getAssetPackModel(file, true);
+	}
+
+	public static AssetPackModel getAssetPackModel(IFile file, boolean forceCreate) {
 		synchronized (_filePackMap) {
 
 			if (_filePackMap.containsKey(file)) {
 				return _filePackMap.get(file);
 			}
 
-			AssetPackModel model = new AssetPackModel(file);
-			_filePackMap.put(file, model);
+			if (forceCreate) {
+				AssetPackModel model;
+				try {
+					model = new AssetPackModel(file);
+					_filePackMap.put(file, model);
 
-			return model;
+					return model;
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new RuntimeException(e);
+				}
+			}
+
+			return null;
+		}
+	}
+
+	public static AssetPackModel resetAssetPackModel(IFile file) throws Exception {
+		synchronized (_filePackMap) {
+
+			if (file.exists()) {
+				AssetPackModel model = new AssetPackModel(file);
+				_filePackMap.put(file, model);
+				return model;
+			}
+
+			_filePackMap.remove(file);
+
+			return null;
 		}
 	}
 
@@ -743,6 +772,7 @@ public class AssetPackCore {
 
 	private static List<IPacksChangeListener> _packsChanged = new CopyOnWriteArrayList<>();
 
+	@Deprecated
 	public static void firePacksChanged(PackDelta delta) {
 		if (!delta.isEmpty()) {
 			for (IPacksChangeListener listener : _packsChanged) {
@@ -770,11 +800,16 @@ public class AssetPackCore {
 					IAssetConsumer consumer = (IAssetConsumer) elem.createExecutableExtension("handler");
 					consumers.add(consumer);
 				} catch (Exception e) {
-					StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage()));
+					logError(e);
 				}
 			}
 		}
 		return consumers;
+	}
+
+	public static void logError(Exception e) {
+		e.printStackTrace();
+		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
 	}
 
 }

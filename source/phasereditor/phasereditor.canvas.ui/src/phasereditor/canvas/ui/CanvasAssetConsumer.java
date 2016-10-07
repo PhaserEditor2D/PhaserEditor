@@ -110,7 +110,7 @@ public class CanvasAssetConsumer implements IAssetConsumer {
 					return Boolean.TRUE;
 				}
 
-				key = key.findFreshVersion();
+				key = key.getSharedVersion();
 
 				if (key == null) {
 					return Boolean.TRUE;
