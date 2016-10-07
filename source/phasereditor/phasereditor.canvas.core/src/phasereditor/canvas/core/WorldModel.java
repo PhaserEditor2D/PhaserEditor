@@ -55,6 +55,10 @@ public class WorldModel extends GroupModel {
 	public AssetTable getAssetTable() {
 		return _assetTable;
 	}
+	
+	public void setAssetTable(AssetTable assetTable) {
+		_assetTable = assetTable;
+	}
 
 	public IProject getProject() {
 		return this._file.getProject();

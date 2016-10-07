@@ -85,6 +85,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import javafx.geometry.Point2D;
+import phasereditor.canvas.core.AssetTable;
 import phasereditor.canvas.core.CanvasEditorModel;
 import phasereditor.canvas.core.JSCodeGenerator;
 import phasereditor.canvas.core.SceneSettings;
@@ -170,6 +171,7 @@ public class CanvasEditor extends EditorPart
 		try {
 			IFileEditorInput input = (IFileEditorInput) getEditorInput();
 			JSONObject data = new JSONObject();
+			_model.getWorld().setAssetTable(new AssetTable(_model.getWorld()));
 			_model.write(data);
 			input.getFile().setContents(new ByteArrayInputStream(data.toString(2).getBytes()), true, false, monitor);
 
