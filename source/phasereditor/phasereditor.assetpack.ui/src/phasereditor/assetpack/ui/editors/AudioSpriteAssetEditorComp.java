@@ -244,7 +244,7 @@ public class AudioSpriteAssetEditorComp extends Composite {
 		}
 	}
 
-	private AudioSpriteAssetModel _model;
+	private AudioSpriteAssetModel _model = new AudioSpriteAssetModel("", null);
 	private boolean _firstTime = true;
 
 	public AudioSpriteAssetModel getModel() {

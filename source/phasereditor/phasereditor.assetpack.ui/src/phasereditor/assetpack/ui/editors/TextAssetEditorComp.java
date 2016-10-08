@@ -59,7 +59,7 @@ public class TextAssetEditorComp extends Composite {
 
 	private Text _text;
 	private Text _text_1;
-	private TextAssetModel _model;
+	private TextAssetModel _model = new TextAssetModel("", null);
 	private TextAssetEditorComp _self = this;
 
 	private boolean _firstTime = true;

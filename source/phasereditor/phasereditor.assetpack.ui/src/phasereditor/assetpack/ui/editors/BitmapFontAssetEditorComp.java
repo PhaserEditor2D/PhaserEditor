@@ -245,7 +245,7 @@ public class BitmapFontAssetEditorComp extends Composite {
 	}
 
 	private BitmapFontAssetEditorComp _self = this;
-	private BitmapFontAssetModel _model;
+	private BitmapFontAssetModel _model = new BitmapFontAssetModel("", null);
 	private boolean _firstTime = true;
 
 	public BitmapFontAssetModel getModel() {

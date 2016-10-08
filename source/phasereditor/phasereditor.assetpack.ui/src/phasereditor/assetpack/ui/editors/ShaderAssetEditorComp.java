@@ -59,7 +59,7 @@ public class ShaderAssetEditorComp extends Composite {
 
 	private Text _text;
 	private Text _text_1;
-	private ShaderAssetModel _model;
+	private ShaderAssetModel _model = new ShaderAssetModel("", null);
 	private ShaderAssetEditorComp _self = this;
 
 	private boolean _firstTime = true;

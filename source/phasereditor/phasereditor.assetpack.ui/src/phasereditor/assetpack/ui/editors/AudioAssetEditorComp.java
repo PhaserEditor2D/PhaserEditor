@@ -188,7 +188,7 @@ public class AudioAssetEditorComp extends Composite {
 		}
 	}
 
-	private AudioAssetModel _model;
+	private AudioAssetModel _model = new AudioAssetModel("", null);
 	private boolean _firstTime = true;
 
 	public AudioAssetModel getModel() {

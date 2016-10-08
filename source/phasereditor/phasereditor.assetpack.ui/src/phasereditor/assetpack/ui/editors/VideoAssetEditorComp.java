@@ -188,7 +188,7 @@ public class VideoAssetEditorComp extends Composite {
 		}
 	}
 
-	private VideoAssetModel _model;
+	private VideoAssetModel _model = new VideoAssetModel("", null);
 	private boolean _firstTime = true;
 
 	public VideoAssetModel getModel() {

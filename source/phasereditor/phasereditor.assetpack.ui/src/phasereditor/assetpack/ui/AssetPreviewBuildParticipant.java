@@ -1,7 +1,5 @@
 package phasereditor.assetpack.ui;
 
-import static java.lang.System.out;
-
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.runtime.CoreException;

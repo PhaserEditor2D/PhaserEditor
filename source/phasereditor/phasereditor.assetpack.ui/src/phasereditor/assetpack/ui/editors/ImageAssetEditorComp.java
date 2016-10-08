@@ -57,7 +57,7 @@ public class ImageAssetEditorComp extends Composite {
 
 	private Text _text;
 	private Text _text_1;
-	private ImageAssetModel _model;
+	private ImageAssetModel _model = new ImageAssetModel("", null);
 	private ImageAssetEditorComp _self = this;
 
 	private boolean _firstTime = true;

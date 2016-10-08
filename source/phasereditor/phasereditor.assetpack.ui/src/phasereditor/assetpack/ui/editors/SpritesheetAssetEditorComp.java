@@ -57,7 +57,7 @@ public class SpritesheetAssetEditorComp extends Composite {
 
 	private Text _text;
 	private Text _text_1;
-	private SpritesheetAssetModel _model;
+	private SpritesheetAssetModel _model = new SpritesheetAssetModel("", null);
 	private SpritesheetAssetEditorComp _self = this;
 
 	private boolean _firstTime = true;
