@@ -23,7 +23,9 @@ package phasereditor.project.core;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -37,9 +39,12 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
@@ -67,6 +72,40 @@ public class ProjectCore {
 	public static final String ECMA5_SCOPE_INITIALIZER_ID = PLUGIN_ID + ".ecma5scope";
 	public static final String PHASER_BUILDER_ID = PLUGIN_ID + ".builder";
 	public static final String PHASER_PROBLEM_MARKER_ID = PLUGIN_ID + ".problem";
+
+	public static List<IProjectBuildParticipant> getBuildParticipants() {
+		List<IProjectBuildParticipant> list = new ArrayList<>();
+		IExtensionPoint point = Platform.getExtensionRegistry()
+				.getExtensionPoint("phasereditor.project.core.buildParticipant");
+
+		Map<IProjectBuildParticipant, String> orderMap = new HashMap<>();
+
+		for (IConfigurationElement element : point.getConfigurationElements()) {
+			try {
+				IProjectBuildParticipant participant = (IProjectBuildParticipant) element
+						.createExecutableExtension("handler");
+				list.add(participant);
+				String order = element.getAttribute("order");
+				orderMap.put(participant, order);
+			} catch (Exception e) {
+				ProjectCore.logError(e);
+			}
+		}
+
+		list.sort((a, b) -> {
+
+			try {
+				String order1 = orderMap.get(a);
+				String order2 = orderMap.get(b);
+				int c = new Double(Double.parseDouble(order1)).compareTo(new Double(Double.parseDouble(order2)));
+				return c;
+			} catch (Exception e) {
+				return 0;
+			}
+		});
+
+		return list;
+	}
 
 	public static IPath getDesignPath(IProject project) {
 		IPath path = project.getFullPath();
@@ -281,7 +320,7 @@ public class ProjectCore {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public static IMarker createErrorMarker(String type, IStatus status, IResource resource) {
 		try {
 			int severity;

@@ -1,5 +1,8 @@
 package phasereditor.assetpack.ui;
 
+import java.util.Map;
+
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.runtime.CoreException;
@@ -20,7 +23,7 @@ public class AssetPreviewBuildParticipant implements IProjectBuildParticipant {
 	}
 
 	@Override
-	public void build(BuildArgs args) throws CoreException {
+	public void build(IProject project, IResourceDelta delta, Map<String, Object> env) {
 		Display.getDefault().asyncExec(new Runnable() {
 
 			@SuppressWarnings("synthetic-access")
@@ -41,13 +44,13 @@ public class AssetPreviewBuildParticipant implements IProjectBuildParticipant {
 
 						if (elem != null) {
 							if (elem instanceof IAssetKey) {
-								updatePreview(args, view, elem);
+								updatePreview(delta, view, elem);
 								continue;
 							}
 						}
 
 						try {
-							args.getResourceDelta().accept(r -> {
+							delta.accept(r -> {
 								IResource resource = r.getResource();
 
 								if (resource.equals(elem)) {
@@ -75,7 +78,7 @@ public class AssetPreviewBuildParticipant implements IProjectBuildParticipant {
 
 	}
 
-	private static void updatePreview(BuildArgs args, PreviewView view, Object elem) {
+	private static void updatePreview(IResourceDelta resourceDelta, PreviewView view, Object elem) {
 		IAssetKey key = (IAssetKey) elem;
 		IAssetKey shared = key.getSharedVersion();
 
@@ -84,7 +87,7 @@ public class AssetPreviewBuildParticipant implements IProjectBuildParticipant {
 			return;
 		}
 
-		if (shared.touched(args.getResourceDelta())) {
+		if (shared.touched(resourceDelta)) {
 			view.preview(elem);
 		}
 	}

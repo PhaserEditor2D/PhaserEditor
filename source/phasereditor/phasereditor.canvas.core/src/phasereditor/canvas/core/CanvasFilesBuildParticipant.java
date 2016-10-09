@@ -4,6 +4,7 @@ import static java.lang.System.out;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.IContainer;
@@ -16,6 +17,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 
 import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.AssetPackBuildParticipant;
 import phasereditor.assetpack.core.AssetPackCore.PackDelta;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.project.core.IProjectBuildParticipant;
@@ -27,18 +29,23 @@ public class CanvasFilesBuildParticipant implements IProjectBuildParticipant {
 	}
 
 	@Override
-	public void build(BuildArgs args) throws CoreException {
-		ProjectCore.deleteProjectMarkers(args.getProject(), CanvasCore.CANVAS_FILE_PROBLEM_MARKER_ID);
+	public void build(IProject project, IResourceDelta delta, Map<String, Object> env) {
+		PackDelta packDelta = AssetPackBuildParticipant.getData(env);
+		ProjectCore.deleteProjectMarkers(project, CanvasCore.CANVAS_FILE_PROBLEM_MARKER_ID);
 
-		if (args.getResourceDelta() == null) {
+		if (delta == null) {
 			return;
 		}
 
 		Set<IFile> validatedFiles = new HashSet<>();
 
-		validateModifiedCanvasFiles(args.getResourceDelta(), validatedFiles);
+		try {
+			validateModifiedCanvasFiles(delta, validatedFiles);
+		} catch (CoreException e) {
+			CanvasCore.logError(e);
+		}
 
-		validateCanvasFilesUsingModifiedAssets(args.getAssetDelta(), validatedFiles);
+		validateCanvasFilesUsingModifiedAssets(packDelta, validatedFiles);
 	}
 
 	private static void validateCanvasFilesUsingModifiedAssets(PackDelta delta, Set<IFile> validatedFiles) {

@@ -6,7 +6,7 @@
       <participant
             handler="phasereditor.canvas.core.CanvasFilesBuildParticipant"
             id="phasereditor.canvas.core.participant1"
-            order="20">
+            order="2">
       </participant>
    </extension>
    <extension

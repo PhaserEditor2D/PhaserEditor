@@ -1254,7 +1254,8 @@
          point="phasereditor.project.core.buildParticipant">
       <participant
             handler="phasereditor.canvas.ui.CanvasEditorBuildParticipant"
-            id="phasereditor.canvas.ui.participant2">
+            id="phasereditor.canvas.ui.participant2"
+            order="2">
       </participant>
    </extension>
 

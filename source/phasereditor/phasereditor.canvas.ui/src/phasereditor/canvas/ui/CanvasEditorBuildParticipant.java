@@ -1,10 +1,15 @@
 package phasereditor.canvas.ui;
 
-import org.eclipse.core.runtime.CoreException;
+import java.util.Map;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.PlatformUI;
 
+import phasereditor.assetpack.core.AssetPackBuildParticipant;
+import phasereditor.assetpack.core.AssetPackCore.PackDelta;
 import phasereditor.canvas.core.CanvasFilesBuildParticipant;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.behaviors.UpdateBehavior;
@@ -24,8 +29,8 @@ public class CanvasEditorBuildParticipant implements IProjectBuildParticipant {
 	}
 
 	@Override
-	public void build(BuildArgs args) throws CoreException {
-
+	public void build(IProject project, IResourceDelta delta, Map<String, Object> env) {
+		PackDelta packDelta = AssetPackBuildParticipant.getData(env);
 		try {
 			Display.getDefault().asyncExec(new Runnable() {
 
@@ -44,7 +49,7 @@ public class CanvasEditorBuildParticipant implements IProjectBuildParticipant {
 						if (editor != null) {
 							UpdateBehavior updateBehavior = editor.getCanvas().getUpdateBehavior();
 
-							if (args.getAssetDelta().inProject(editor.getEditorInputFile().getProject())) {
+							if (packDelta.inProject(editor.getEditorInputFile().getProject())) {
 								updateBehavior.rebuild();
 							}
 						}

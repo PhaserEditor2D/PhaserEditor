@@ -21,39 +21,17 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.core;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
-import org.eclipse.core.resources.IResourceDeltaVisitor;
-import org.eclipse.core.resources.IResourceVisitor;
-import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.ui.ide.IDE;
 
-import phasereditor.assetpack.core.AssetModel;
-import phasereditor.assetpack.core.AssetModel.AssetStatus;
-import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.assetpack.core.AssetPackCore.PackDelta;
-import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.audio.core.AudioCore;
-import phasereditor.project.core.IProjectBuildParticipant.BuildArgs;
 
 public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 
@@ -61,16 +39,40 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 	protected void startupOnInitialize() {
 		super.startupOnInitialize();
 
+		IProject project = getProject();
+
+		Map<String, Object> env = new HashMap<>();
+
+		List<IProjectBuildParticipant> list = ProjectCore.getBuildParticipants();
+
+		for (IProjectBuildParticipant participant : list) {
+			try {
+				participant.startupOnInitialize(project, env);
+			} catch (Exception e) {
+				ProjectCore.logError(e);
+			}
+		}
+
 		fullBuild(false);
 	}
 
 	@Override
 	protected void clean(IProgressMonitor monitor) throws CoreException {
+		IProject project = getProject();
+		Map<String, Object> env = new HashMap<>();
+		List<IProjectBuildParticipant> list = ProjectCore.getBuildParticipants();
+		for (IProjectBuildParticipant participant : list) {
+			try {
+				participant.clean(project, env);
+			} catch (Exception e) {
+				ProjectCore.logError(e);
+			}
+		}
+
 		fullBuild(true);
 	}
 
 	private void fullBuild(boolean clean) {
-		buildPacks(Optional.empty(), new PackDelta());
 		AudioCore.makeMediaSnapshots(getProject(), clean);
 	}
 
@@ -78,53 +80,6 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 	protected IProject[] build(int kind, Map<String, String> args, IProgressMonitor monitor) throws CoreException {
 		// detect a delete (rename or move should be covered by refactorings)
 		IResourceDelta mainDelta = getDelta(getProject());
-
-		PackDelta packDelta = new PackDelta();
-
-		if (mainDelta != null) {
-			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-			mainDelta.accept(new IResourceDeltaVisitor() {
-
-				@Override
-				public boolean visit(IResourceDelta delta) throws CoreException {
-					// this only check for the packs to delete
-
-					IResource deltaResource = delta.getResource();
-
-					IProject project = getProject();
-
-					List<AssetPackModel> packs = AssetPackCore.getAssetPackModels(project);
-
-					if (deltaResource instanceof IFile) {
-						IFile deltaFile = (IFile) deltaResource;
-						int deltakind = delta.getKind();
-						if (deltakind == IResourceDelta.REMOVED) {
-							for (AssetPackModel pack : packs) {
-								if (deltaFile.equals(pack.getFile())) {
-									IPath movedTo = delta.getMovedToPath();
-									if (movedTo == null) {
-										// removed: delete pack from map
-										AssetPackCore.removeAssetPackModel(pack);
-									} else {
-										// moved: update the pack
-										if (movedTo.getFileExtension().equals("json")) {
-											AssetPackCore.moveAssetPackModel(root.getFile(movedTo), pack);
-										} else {
-											AssetPackCore.removeAssetPackModel(pack);
-										}
-									}
-
-									// add the pack and all assets to the delta
-									packDelta.add(pack);
-									packDelta.getAssets().addAll(pack.getAssets());
-								}
-							}
-						}
-					}
-					return true;
-				}
-			});
-		}
 
 		// TODO: move this to a build participant
 		if (mainDelta == null) {
@@ -134,20 +89,13 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 			AudioCore.makeVideoSnapshot(mainDelta);
 		}
 
-		// Any change on the project implies to rebuild all the packs of that
-		// project.
-		buildPacks(Optional.ofNullable(mainDelta), packDelta);
-
 		// call all build participant!!!
 
-		IExtensionPoint point = Platform.getExtensionRegistry()
-				.getExtensionPoint("phasereditor.project.core.buildParticipant");
-		for (IConfigurationElement element : point.getConfigurationElements()) {
+		Map<String, Object> env = new HashMap<>();
+		List<IProjectBuildParticipant> list = ProjectCore.getBuildParticipants();
+		for (IProjectBuildParticipant participant : list) {
 			try {
-				IProjectBuildParticipant participant = (IProjectBuildParticipant) element
-						.createExecutableExtension("handler");
-				
-				participant.build(new BuildArgs(this, getProject(), mainDelta, packDelta));
+				participant.build(getProject(), getDelta(getProject()), env);
 			} catch (Exception e) {
 				ProjectCore.logError(e);
 			}
@@ -155,190 +103,4 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 
 		return null;
 	}
-
-	@Deprecated
-	private void cleanProblemMarkers() {
-		IProject project = getProject();
-		try {
-			project.deleteMarkers(ProjectCore.PHASER_PROBLEM_MARKER_ID, true, IResource.DEPTH_INFINITE);
-		} catch (CoreException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private void buildPacks(Optional<IResourceDelta> resourceDelta, PackDelta packDelta) {
-		IProject project = getProject();
-
-		try {
-
-			if (resourceDelta.isPresent()) {
-				// reset modified models
-
-				resourceDelta.get().accept(new IResourceDeltaVisitor() {
-
-					@Override
-					public boolean visit(IResourceDelta delta) throws CoreException {
-						try {
-							IResource resource = delta.getResource();
-
-							if (!(resource instanceof IFile)) {
-								return true;
-							}
-
-							IFile file = (IFile) resource;
-
-							if (!AssetPackCore.isAssetPackFile(file)) {
-								return true;
-							}
-
-							if (delta.getKind() == IResourceDelta.CHANGED
-									|| delta.getKind() == IResourceDelta.REMOVED) {
-								AssetPackCore.resetAssetPackModel(file);
-							}
-
-						} catch (Exception e) {
-							AssetPackCore.logError(e);
-						}
-						return true;
-					}
-				});
-			}
-
-			// ensure all models was created
-
-			IContainer webFolder = ProjectCore.getWebContentFolder(project);
-			webFolder.accept(new IResourceVisitor() {
-
-				@Override
-				public boolean visit(IResource resource) throws CoreException {
-					if (resource instanceof IFile) {
-						IFile file = (IFile) resource;
-						try {
-							if (AssetPackCore.isAssetPackFile(file)) {
-								AssetPackCore.getAssetPackModel(file);
-							}
-						} catch (Exception e) {
-							e.printStackTrace();
-							createAssetPackMarker(file,
-									new Status(IStatus.WARNING, ProjectCore.PLUGIN_ID, e.getMessage()));
-						}
-					}
-					return true;
-				}
-			});
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
-
-		// compute delta packs affected by the change
-
-		List<AssetPackModel> allPacks = AssetPackCore.getAssetPackModels(project);
-
-		if (resourceDelta.isPresent()) {
-
-			// TODO: probably this is not going to work.
-			// delta packs can be computed by comparing the old model with the
-			// new model.
-
-			try {
-				resourceDelta.get().accept(new IResourceDeltaVisitor() {
-
-					@Override
-					public boolean visit(IResourceDelta delta) throws CoreException {
-						IResource resource = delta.getResource();
-						if (resource instanceof IFile) {
-
-							// TODO: let's compute delta pack in a better way?
-
-							IPath movedPath = delta.getMovedToPath();
-							IPath deltaPath = resource.getFullPath();
-
-							for (AssetPackModel pack : allPacks) {
-								PackDelta delta1 = pack.computeDelta(movedPath);
-								PackDelta delta2 = pack.computeDelta(deltaPath);
-								packDelta.add(delta1);
-								packDelta.add(delta2);
-							}
-						}
-						return true;
-					}
-				});
-			} catch (CoreException e) {
-				throw new RuntimeException(e);
-			}
-		} else {
-			// if there is not delta, then let's say all the project's packs are
-			// affected.
-			packDelta.getPacks().addAll(allPacks);
-		}
-
-		// build and validate all the affected packs
-		{
-			for (AssetModel asset : packDelta.getAssets()) {
-				List<IStatus> problems = new ArrayList<>();
-				asset.build(problems);
-				for (IStatus problem : problems) {
-					createAssetPackMarker(asset.getPack().getFile(), problem);
-				}
-			}
-
-			for (AssetPackModel pack : packDelta.getPacks()) {
-				List<IStatus> problems = pack.build();
-				for (IStatus problem : problems) {
-					createAssetPackMarker(pack.getFile(), problem);
-				}
-			}
-		}
-
-		// always call this to refresh asset viewers.
-
-		AssetPackCore.firePacksChanged(packDelta);
-	}
-
-	protected static void createAssetPackMarker(IResource resource, IStatus problem) {
-		if (!resource.exists()) {
-			return;
-		}
-		
-		try {
-			IMarker marker = createErrorMarker(problem, resource);
-			marker.setAttribute(IMarker.TRANSIENT, true);
-			if (problem instanceof AssetStatus) {
-				AssetModel asset = ((AssetStatus) problem).getAsset();
-				String ref = asset.getPack().getStringReference(asset);
-
-				marker.setAttribute(IDE.EDITOR_ID_ATTR, AssetPackCore.ASSET_EDITOR_ID);
-				marker.setAttribute(AssetPackCore.ASSET_EDITOR_GOTO_MARKER_ATTR, ref);
-			}
-		} catch (CoreException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	@Deprecated
-	public static IMarker createErrorMarker(IStatus status, IResource resource) {
-		try {
-			int severity;
-			switch (status.getSeverity()) {
-			case IStatus.ERROR:
-				severity = IMarker.SEVERITY_ERROR;
-				break;
-			default:
-				severity = IMarker.SEVERITY_WARNING;
-				break;
-			}
-
-			IMarker marker = resource.createMarker(ProjectCore.PHASER_PROBLEM_MARKER_ID);
-			marker.setAttribute(IMarker.SEVERITY, severity);
-			marker.setAttribute(IMarker.MESSAGE, status.getMessage());
-			marker.setAttribute(IMarker.LOCATION, resource.getProject().getName());
-			marker.setAttribute(IMarker.TRANSIENT, false);
-
-			return marker;
-
-		} catch (CoreException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
 }

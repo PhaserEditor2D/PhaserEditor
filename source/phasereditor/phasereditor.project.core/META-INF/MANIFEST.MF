@@ -11,7 +11,6 @@ Require-Bundle: org.eclipse.ui,
  phasereditor.inspect.core;bundle-version="1.1.1",
  org.eclipse.core.resources;bundle-version="3.9.1",
  org.eclipse.ui.ide;bundle-version="3.10.2",
- phasereditor.assetpack.core;bundle-version="1.1.1",
  org.eclipse.wst.jsdt.ui;bundle-version="1.1.500",
  phasereditor.inspect.core.resources;bundle-version="1.1.1",
  phasereditor.audio.core;bundle-version="1.1.1"

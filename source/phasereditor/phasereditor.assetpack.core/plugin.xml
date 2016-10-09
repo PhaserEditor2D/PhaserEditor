@@ -19,4 +19,12 @@
             name="Phaser Tilemap">
       </content-type>
    </extension>
+  <extension
+        point="phasereditor.project.core.buildParticipant">
+     <participant
+           handler="phasereditor.assetpack.core.AssetPackBuildParticipant"
+           id="phasereditor.assetpack.core.participant1"
+           order="1">
+     </participant>
+  </extension>
 </plugin>

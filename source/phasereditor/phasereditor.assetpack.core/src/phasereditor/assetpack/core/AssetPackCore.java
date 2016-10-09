@@ -81,6 +81,7 @@ public class AssetPackCore {
 	private static final Set<String> _audioExtensions;
 	private static final Set<String> _videoExtensions;
 	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
+	public static final String ASSET_PACK_PROBLEM_ID = "phasereditor.assetpack.core.problem";
 
 	static {
 		_imageExtensions = new HashSet<>();

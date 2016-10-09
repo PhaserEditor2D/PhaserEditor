@@ -21,48 +21,25 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.core;
 
+import java.util.Map;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceDelta;
-import org.eclipse.core.runtime.CoreException;
-
-import phasereditor.assetpack.core.AssetPackCore.PackDelta;
 
 /**
  * @author arian
  */
 public interface IProjectBuildParticipant {
 
-	public static class BuildArgs {
-		private PhaserProjectBuilder _builder;
-		private IProject _project;
-		private IResourceDelta _resourceDelta;
-		private PackDelta _assetDelta;
-
-		BuildArgs(PhaserProjectBuilder builder, IProject project, IResourceDelta resourceDelta, PackDelta assetDelta) {
-			super();
-			_builder = builder;
-			_project = project;
-			_resourceDelta = resourceDelta;
-			_assetDelta = assetDelta;
-		}
-
-		public PhaserProjectBuilder getBuilder() {
-			return _builder;
-		}
-
-		public IProject getProject() {
-			return _project;
-		}
-
-		public IResourceDelta getResourceDelta() {
-			return _resourceDelta;
-		}
-
-		public PackDelta getAssetDelta() {
-			return _assetDelta;
-		}
-
+	@SuppressWarnings("unused")
+	public default void startupOnInitialize(IProject project, Map<String, Object> env) {
+		// nothing
 	}
 
-	public void build(BuildArgs args) throws CoreException;
+	@SuppressWarnings("unused")
+	public default void clean(IProject project, Map<String, Object> env) {
+		// nothing
+	}
+
+	public void build(IProject project, IResourceDelta delta, Map<String, Object> env);
 }

@@ -69,10 +69,10 @@
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="order" type="string">
+         <attribute name="order" type="string" use="required">
             <annotation>
                <documentation>
-                  The excecution order (put a number or keep it empty). In the list of participants those with a lower order are excecuted first.
+                  The excecution order (float number, required). In the list of participants those with a lower order are excecuted first.
                </documentation>
             </annotation>
          </attribute>

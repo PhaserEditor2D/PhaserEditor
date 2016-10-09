@@ -268,7 +268,8 @@
          point="phasereditor.project.core.buildParticipant">
       <participant
             handler="phasereditor.assetpack.ui.AssetPreviewBuildParticipant"
-            id="phasereditor.assetpack.ui.participant3">
+            id="phasereditor.assetpack.ui.participant3"
+            order="2">
       </participant>
    </extension>
    
