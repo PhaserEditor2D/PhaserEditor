@@ -23,8 +23,10 @@ package phasereditor.canvas.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -51,12 +53,14 @@ public class CanvasFileValidation {
 	private List<IStatus> _problems;
 	private Map<String, IAssetKey> _table;
 	private JSONObject _data;
+	private Set<String> _used;
 
 	public CanvasFileValidation(IFile file) throws Exception {
 		super();
 		_file = file;
 		_problems = new ArrayList<>();
 		_data = new JSONObject(new JSONTokener(file.getContents()));
+		_used = new HashSet<>();
 	}
 
 	public List<IStatus> validate() {
@@ -85,7 +89,7 @@ public class CanvasFileValidation {
 				// a null reference is added when it is not found, but that
 				// error is reported in the table validation.
 				if (ref != null) {
-					validateRef(ref);
+					validateRef(info.optString("editorName", "?"), ref);
 				}
 			} else if (obj.has("asset")) {
 				String id = obj.getString("asset");
@@ -98,11 +102,17 @@ public class CanvasFileValidation {
 		}
 	}
 
-	private void validateRef(JSONObject ref) {
+	private void validateRef(String spriteId, JSONObject ref) {
 		Object asset = AssetPackCore.findAssetElement(_file.getProject(), ref);
 		if (asset == null || (!(asset instanceof IAssetKey))) {
 			postMissingRefError(ref);
+			postMissingSpriteAsset(spriteId);
 		}
+	}
+
+	private void postMissingSpriteAsset(String spriteId) {
+		String msg = "Missing asset of sprite '" + spriteId + "'.";
+		_problems.add(new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID, msg));
 	}
 
 	private void postMissingRefError(JSONObject ref) {
@@ -111,8 +121,13 @@ public class CanvasFileValidation {
 		if (ref.has("frame")) {
 			msg += ", frame=" + ref.optString("sprite", "");
 		}
-		
-		_problems.add(new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID, "Asset not found: " + msg));
+
+		msg = "Asset not found: " + msg;
+
+		if (!_used.contains(msg)) {
+			_problems.add(new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID, msg));
+			_used.add(msg);
+		}
 	}
 
 	private void validateTable() {

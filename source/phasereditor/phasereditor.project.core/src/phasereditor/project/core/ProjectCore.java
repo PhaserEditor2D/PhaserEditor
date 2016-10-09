@@ -28,6 +28,7 @@ import java.util.List;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
@@ -273,4 +274,35 @@ public class ProjectCore {
 		return webContentFolder.getFullPath().isPrefixOf(file.getFullPath());
 	}
 
+	public static void deleteProjectMarkers(IProject project, String type) {
+		try {
+			project.deleteMarkers(type, true, IResource.DEPTH_INFINITE);
+		} catch (CoreException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public static IMarker createErrorMarker(String type, IStatus status, IResource resource) {
+		try {
+			int severity;
+			switch (status.getSeverity()) {
+			case IStatus.ERROR:
+				severity = IMarker.SEVERITY_ERROR;
+				break;
+			default:
+				severity = IMarker.SEVERITY_WARNING;
+				break;
+			}
+
+			IMarker marker = resource.createMarker(type);
+			marker.setAttribute(IMarker.SEVERITY, severity);
+			marker.setAttribute(IMarker.MESSAGE, status.getMessage());
+			marker.setAttribute(IMarker.LOCATION, resource.getProject().getName());
+
+			return marker;
+
+		} catch (CoreException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }

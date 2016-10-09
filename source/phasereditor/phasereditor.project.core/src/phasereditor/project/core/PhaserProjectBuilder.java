@@ -70,15 +70,12 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 	}
 
 	private void fullBuild(boolean clean) {
-		cleanProblemMarkers();
 		buildPacks(Optional.empty(), new PackDelta());
 		AudioCore.makeMediaSnapshots(getProject(), clean);
 	}
 
 	@Override
 	protected IProject[] build(int kind, Map<String, String> args, IProgressMonitor monitor) throws CoreException {
-		cleanProblemMarkers();
-		
 		// detect a delete (rename or move should be covered by refactorings)
 		IResourceDelta mainDelta = getDelta(getProject());
 
@@ -159,6 +156,7 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 		return null;
 	}
 
+	@Deprecated
 	private void cleanProblemMarkers() {
 		IProject project = getProject();
 		try {
@@ -317,6 +315,7 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 		}
 	}
 
+	@Deprecated
 	public static IMarker createErrorMarker(IStatus status, IResource resource) {
 		try {
 			int severity;

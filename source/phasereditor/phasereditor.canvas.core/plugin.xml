@@ -9,5 +9,16 @@
             order="20">
       </participant>
    </extension>
+   <extension
+         id="phasereditor.canvas.core.problem"
+         name="Canvas Problem"
+         point="org.eclipse.core.resources.markers">
+      <persistent
+            value="true">
+      </persistent>
+      <super
+            type="phasereditor.project.core.problem">
+      </super>
+   </extension>
 
 </plugin>

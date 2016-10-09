@@ -14,18 +14,11 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IEditorReference;
-import org.eclipse.ui.IFileEditorInput;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore.PackDelta;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.project.core.IProjectBuildParticipant;
-import phasereditor.project.core.PhaserProjectBuilder;
 import phasereditor.project.core.ProjectCore;
 
 public class CanvasFilesBuildParticipant implements IProjectBuildParticipant {
@@ -35,6 +28,8 @@ public class CanvasFilesBuildParticipant implements IProjectBuildParticipant {
 
 	@Override
 	public void build(BuildArgs args) throws CoreException {
+		ProjectCore.deleteProjectMarkers(args.getProject(), CanvasCore.CANVAS_FILE_PROBLEM_MARKER_ID);
+
 		if (args.getResourceDelta() == null) {
 			return;
 		}
@@ -47,9 +42,15 @@ public class CanvasFilesBuildParticipant implements IProjectBuildParticipant {
 	}
 
 	private static void validateCanvasFilesUsingModifiedAssets(PackDelta delta, Set<IFile> validatedFiles) {
-		try {
-			Set<IFile> used = new HashSet<>();
 
+		// This method validate all the canvas files of the project containing
+		// the asset changes.
+		//
+		// The question is that to know if a canvas file is affected, it should
+		// be inspected, and that inspection is as expensive as validate it, so
+		// at the end we just validate everybody.
+
+		try {
 			IProject project = null;
 			for (AssetPackModel pack : delta.getPacks()) {
 				project = pack.getFile().getProject();
@@ -67,25 +68,11 @@ public class CanvasFilesBuildParticipant implements IProjectBuildParticipant {
 			if (project != null) {
 				IContainer webContent = ProjectCore.getWebContentFolder(project);
 
-				Set<IFile> filesOpenInCanvasEditors = new HashSet<>();
-
-				for (IWorkbenchWindow win : PlatformUI.getWorkbench().getWorkbenchWindows()) {
-					for (IWorkbenchPage page : win.getPages()) {
-						for (IEditorReference editorRef : page.getEditorReferences()) {
-							if (editorRef.getId().equals("phasereditor.canvas.ui.editors.canvas")) {
-								IEditorPart editor = editorRef.getEditor(false);
-								IFileEditorInput input = (IFileEditorInput) editor.getEditorInput();
-								filesOpenInCanvasEditors.add(input.getFile());
-							}
-						}
-					}
-				}
-
 				webContent.accept(r -> {
-					if (r instanceof IFile && !used.contains(r)) {
+					if (r instanceof IFile) {
 						IFile file = (IFile) r;
-						if (!filesOpenInCanvasEditors.contains(file) && CanvasCore.isCanvasFile(file)) {
-							out.println("Building canvas editor " + file);
+						if (CanvasCore.isCanvasFile(file)) {
+							out.println("Building canvas " + file);
 							validateCanvasFile(file);
 							validatedFiles.add(file);
 						}
@@ -101,6 +88,7 @@ public class CanvasFilesBuildParticipant implements IProjectBuildParticipant {
 
 	private static void validateModifiedCanvasFiles(IResourceDelta delta, Set<IFile> validatedFiles)
 			throws CoreException {
+
 		delta.accept(new IResourceDeltaVisitor() {
 
 			@SuppressWarnings("synthetic-access")
@@ -138,7 +126,7 @@ public class CanvasFilesBuildParticipant implements IProjectBuildParticipant {
 			CanvasFileValidation validation = new CanvasFileValidation(file);
 			List<IStatus> problems = validation.validate();
 			for (IStatus problem : problems) {
-				PhaserProjectBuilder.createErrorMarker(problem, file);
+				ProjectCore.createErrorMarker(CanvasCore.CANVAS_FILE_PROBLEM_MARKER_ID, problem, file);
 			}
 		} catch (Exception e) {
 			CanvasCore.logError(e);

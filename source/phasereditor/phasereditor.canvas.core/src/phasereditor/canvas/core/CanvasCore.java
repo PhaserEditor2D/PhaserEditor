@@ -33,12 +33,13 @@ import org.eclipse.ui.statushandlers.StatusManager;
  */
 public class CanvasCore {
 	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
+	public static final String CANVAS_FILE_PROBLEM_MARKER_ID = "phasereditor.canvas.core.problem";
 
 	public static void logError(Exception e) {
 		e.printStackTrace();
 		StatusManager.getManager().handle(new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID, e.getMessage(), e));
 	}
-	
+
 	public static String getValidJavaScriptName(String name) {
 		StringBuilder sb = new StringBuilder();
 		int i = 0;
@@ -63,5 +64,4 @@ public class CanvasCore {
 		// TODO: missing to define content type
 		return file.getFileExtension().equals("canvas");
 	}
-
 }

@@ -38,8 +38,7 @@ public interface IProjectBuildParticipant {
 		private IResourceDelta _resourceDelta;
 		private PackDelta _assetDelta;
 
-		BuildArgs(PhaserProjectBuilder builder, IProject project, IResourceDelta resourceDelta,
-				PackDelta assetDelta) {
+		BuildArgs(PhaserProjectBuilder builder, IProject project, IResourceDelta resourceDelta, PackDelta assetDelta) {
 			super();
 			_builder = builder;
 			_project = project;
