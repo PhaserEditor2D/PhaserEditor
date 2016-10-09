@@ -168,4 +168,20 @@
          </enabledWhen>
       </handler>
    </extension>
+   <extension
+         point="org.eclipse.ui.decorators">
+      <decorator
+            class="phasereditor.project.ui.PhaserProblemLabelDecorator"
+            icon="platform:/plugin/org.eclipse.wst.jsdt.ui/icons/full/obj16/error_obj.gif"
+            id="phasereditor.project.ui.decorator2"
+            label="Phaser Problems Decorator"
+            lightweight="true"
+            location="BOTTOM_LEFT">
+         <enablement>
+            <objectClass
+                  name="org.eclipse.core.resources.IFile">
+            </objectClass>
+         </enablement>
+      </decorator>
+   </extension>
 </plugin>

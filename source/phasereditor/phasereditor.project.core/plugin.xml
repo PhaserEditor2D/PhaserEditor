@@ -47,10 +47,10 @@
          name="Phaser Problem"
          point="org.eclipse.core.resources.markers">
       <persistent
-            value="false">
+            value="true">
       </persistent>
       <super
-            type="org.eclipse.core.resources.problemmarker">
+            type="org.eclipse.wst.jsdt.core.problem">
       </super>
    </extension>
 </plugin>

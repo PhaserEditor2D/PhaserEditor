@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -71,13 +70,15 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 	}
 
 	private void fullBuild(boolean clean) {
+		cleanProblemMarkers();
 		buildPacks(Optional.empty(), new PackDelta());
 		AudioCore.makeMediaSnapshots(getProject(), clean);
 	}
 
 	@Override
 	protected IProject[] build(int kind, Map<String, String> args, IProgressMonitor monitor) throws CoreException {
-
+		cleanProblemMarkers();
+		
 		// detect a delete (rename or move should be covered by refactorings)
 		IResourceDelta mainDelta = getDelta(getProject());
 
@@ -169,8 +170,6 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 
 	private void buildPacks(Optional<IResourceDelta> resourceDelta, PackDelta packDelta) {
 		IProject project = getProject();
-
-		cleanProblemMarkers();
 
 		try {
 
@@ -302,10 +301,10 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 		if (!resource.exists()) {
 			return;
 		}
-
-		IMarker marker = createErrorMarker(problem, resource);
-
+		
 		try {
+			IMarker marker = createErrorMarker(problem, resource);
+			marker.setAttribute(IMarker.TRANSIENT, true);
 			if (problem instanceof AssetStatus) {
 				AssetModel asset = ((AssetStatus) problem).getAsset();
 				String ref = asset.getPack().getStringReference(asset);
@@ -334,7 +333,7 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 			marker.setAttribute(IMarker.SEVERITY, severity);
 			marker.setAttribute(IMarker.MESSAGE, status.getMessage());
 			marker.setAttribute(IMarker.LOCATION, resource.getProject().getName());
-			marker.setAttribute(IMarker.TRANSIENT, true);
+			marker.setAttribute(IMarker.TRANSIENT, false);
 
 			return marker;
 
