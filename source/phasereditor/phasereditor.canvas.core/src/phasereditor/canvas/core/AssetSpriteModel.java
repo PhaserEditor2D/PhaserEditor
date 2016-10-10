@@ -101,7 +101,21 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 
 		IAssetKey asset = findAsset(obj);
 
+		boolean missingAsset = false;
+
 		if (asset == null) {
+			missingAsset = true;
+		} else {
+			IFile[] files = asset.getAsset().getUsedFiles();
+			for (IFile file : files) {
+				if (file == null || !file.exists()) {
+					missingAsset = true;
+					break;
+				}
+			}
+		}
+
+		if (missingAsset) {
 			collectInformationForMissingAssetAndAbort(obj);
 		}
 

@@ -93,13 +93,20 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 
 		Map<String, Object> env = new HashMap<>();
 		List<IProjectBuildParticipant> list = ProjectCore.getBuildParticipants();
+
+		monitor.beginTask("Building Phaser elements", list.size());
+
 		for (IProjectBuildParticipant participant : list) {
 			try {
+				monitor.subTask("Building " + participant.getClass().getSimpleName());
 				participant.build(getProject(), getDelta(getProject()), env);
+				monitor.worked(1);
 			} catch (Exception e) {
 				ProjectCore.logError(e);
 			}
 		}
+
+		monitor.done();
 
 		return null;
 	}

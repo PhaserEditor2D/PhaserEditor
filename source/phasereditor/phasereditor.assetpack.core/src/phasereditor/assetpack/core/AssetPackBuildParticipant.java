@@ -61,7 +61,8 @@ public class AssetPackBuildParticipant implements IProjectBuildParticipant {
 		fullBuild(true, project);
 	}
 
-	private void fullBuild(boolean clean, IProject project) {
+	@SuppressWarnings("unused")
+	private static void fullBuild(boolean clean, IProject project) {
 		buildPacks(Optional.empty(), new PackDelta(), project);
 	}
 
