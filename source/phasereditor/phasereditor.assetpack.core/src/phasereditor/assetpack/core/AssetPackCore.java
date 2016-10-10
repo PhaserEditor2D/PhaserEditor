@@ -552,7 +552,7 @@ public class AssetPackCore {
 	 * 
 	 * @return A list with the asset pack models.
 	 */
-	public static List<AssetPackModel> getAssetPackModels() {
+	static List<AssetPackModel> discoverAssetPackModels() {
 		if (_filePackMap.isEmpty()) {
 			IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 			for (IProject project : projects) {
@@ -571,7 +571,7 @@ public class AssetPackCore {
 									try {
 										getAssetPackModel(file);
 									} catch (Exception e) {
-										throw new RuntimeException(e);
+										logError(e);
 									}
 								}
 							}
@@ -579,7 +579,7 @@ public class AssetPackCore {
 						}
 					});
 				} catch (CoreException e) {
-					throw new RuntimeException(e);
+					logError(e);
 				}
 			}
 		}

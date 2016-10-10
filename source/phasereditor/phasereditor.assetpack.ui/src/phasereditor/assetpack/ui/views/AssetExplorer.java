@@ -126,8 +126,6 @@ public class AssetExplorer extends ViewPart {
 
 		// change listener
 
-		AssetPackCore.getAssetPackModels();
-
 		_changeListener = new AssetPackCore.IPacksChangeListener() {
 
 			@Override
