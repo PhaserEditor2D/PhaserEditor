@@ -27,4 +27,15 @@
            order="1">
      </participant>
   </extension>
+  <extension
+        id="phasereditor.assetpack.core.problem"
+        name="Asset Pack Problem"
+        point="org.eclipse.core.resources.markers">
+     <persistent
+           value="true">
+     </persistent>
+     <super
+           type="phasereditor.project.core.problem">
+     </super>
+  </extension>
 </plugin>

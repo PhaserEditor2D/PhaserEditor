@@ -22,8 +22,11 @@
 package phasereditor.assetpack.core;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -55,7 +58,24 @@ public class AssetPackBuildParticipant implements IProjectBuildParticipant {
 
 	@Override
 	public void clean(IProject project, Map<String, Object> env) {
-		//
+		ProjectCore.deleteResourceMarkers(project, AssetPackCore.ASSET_PACK_PROBLEM_ID);
+		AssetPackCore.removeAssetPackModels(project);
+	}
+
+	@Override
+	public void fullBuild(IProject project, Map<String, Object> env) {
+		ProjectCore.deleteResourceMarkers(project, AssetPackCore.ASSET_PACK_PROBLEM_ID);
+
+		AssetPackCore.discoverAssetPackModels(project);
+
+		List<AssetPackModel> list = AssetPackCore.getAssetPackModels(project);
+
+		for (AssetPackModel pack : list) {
+			List<IStatus> problems = pack.build();
+			for (IStatus problem : problems) {
+				createAssetPackMarker(pack.getFile(), problem);
+			}
+		}
 	}
 
 	@Override
@@ -148,18 +168,40 @@ public class AssetPackBuildParticipant implements IProjectBuildParticipant {
 
 			// build and validate all the affected packs
 			{
+
+				// delete all affected files markers
+
+				Set<IFile> toCleanMarks = new HashSet<>();
+
+				for (AssetPackModel pack : packDelta.getPacks()) {
+					toCleanMarks.add(pack.getFile());
+				}
+
 				for (AssetModel asset : packDelta.getAssets()) {
+					toCleanMarks.add(asset.getPack().getFile());
+				}
+
+				for (IFile file : toCleanMarks) {
+					ProjectCore.deleteResourceMarkers(file, AssetPackCore.ASSET_PACK_PROBLEM_ID);
+				}
+
+				// build all affected assets
+
+				Set<AssetModel> toBuild = new LinkedHashSet<>();
+
+				for (AssetModel asset : packDelta.getAssets()) {
+					toBuild.add(asset);
+				}
+
+				for (AssetPackModel pack : packDelta.getPacks()) {
+					toBuild.addAll(pack.getAssets());
+				}
+
+				for (AssetModel asset : toBuild) {
 					List<IStatus> problems = new ArrayList<>();
 					asset.build(problems);
 					for (IStatus problem : problems) {
 						createAssetPackMarker(asset.getPack().getFile(), problem);
-					}
-				}
-
-				for (AssetPackModel pack : packDelta.getPacks()) {
-					List<IStatus> problems = pack.build();
-					for (IStatus problem : problems) {
-						createAssetPackMarker(pack.getFile(), problem);
 					}
 				}
 			}

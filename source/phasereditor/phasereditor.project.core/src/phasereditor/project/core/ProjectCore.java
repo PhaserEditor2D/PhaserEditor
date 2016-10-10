@@ -313,12 +313,22 @@ public class ProjectCore {
 		return webContentFolder.getFullPath().isPrefixOf(file.getFullPath());
 	}
 
-	public static void deleteProjectMarkers(IProject project, String type) {
+	public static void deleteResourceMarkers(IResource resource, String type) {
 		try {
-			project.deleteMarkers(type, true, IResource.DEPTH_INFINITE);
+			resource.deleteMarkers(type, true, IResource.DEPTH_INFINITE);
 		} catch (CoreException e) {
-			throw new RuntimeException(e);
+			logError(e);
 		}
+	}
+
+	public static boolean hasProblems(IFile file) {
+		try {
+			IMarker[] markers = file.findMarkers(PHASER_PROBLEM_MARKER_ID, true, IResource.DEPTH_INFINITE);
+			return markers.length > 0;
+		} catch (CoreException e) {
+			logError(e);
+		}
+		return false;
 	}
 
 	public static IMarker createErrorMarker(String type, IStatus status, IResource resource) {

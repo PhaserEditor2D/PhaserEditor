@@ -38,6 +38,7 @@ import org.json.JSONTokener;
 
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.project.core.ProjectCore;
 
 /**
  * 
@@ -104,7 +105,21 @@ public class CanvasFileValidation {
 
 	private void validateRef(String spriteId, JSONObject ref) {
 		Object asset = AssetPackCore.findAssetElement(_file.getProject(), ref);
-		if (asset == null || (!(asset instanceof IAssetKey))) {
+
+		boolean problem = false;
+
+		if (asset == null) {
+			problem = true;
+		} else {
+			if (asset instanceof IAssetKey) {
+				IFile file = ((IAssetKey) asset).getAsset().getPack().getFile();
+				problem = ProjectCore.hasProblems(file);
+			} else {
+				problem = true;
+			}
+		}
+
+		if (problem) {
 			postMissingRefError(ref);
 			postMissingSpriteAsset(spriteId);
 		}
@@ -116,11 +131,7 @@ public class CanvasFileValidation {
 	}
 
 	private void postMissingRefError(JSONObject ref) {
-		String msg = "section=" + ref.optString("section") + ", key=" + ref.optString("asset");
-
-		if (ref.has("frame")) {
-			msg += ", frame=" + ref.optString("sprite", "");
-		}
+		String msg = getAssetRefLabel(ref);
 
 		msg = "Asset not found: " + msg;
 
@@ -128,6 +139,15 @@ public class CanvasFileValidation {
 			_problems.add(new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID, msg));
 			_used.add(msg);
 		}
+	}
+
+	private static String getAssetRefLabel(JSONObject ref) {
+		String msg = "section=" + ref.optString("section") + ", key=" + ref.optString("asset");
+
+		if (ref.has("frame")) {
+			msg += ", frame=" + ref.optString("sprite", "");
+		}
+		return msg;
 	}
 
 	private void validateTable() {

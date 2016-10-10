@@ -42,4 +42,9 @@ public interface IProjectBuildParticipant {
 	}
 
 	public void build(IProject project, IResourceDelta delta, Map<String, Object> env);
+
+	@SuppressWarnings("unused")
+	public default void fullBuild(IProject project, Map<String, Object> env) {
+		// nothing
+	}
 }

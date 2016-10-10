@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.core;
 
+import static java.lang.System.out;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,10 +45,13 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 
 		Map<String, Object> env = new HashMap<>();
 
+		out.println("PhaserProjectBuilder.startupOnInitialize (start)");
+
 		List<IProjectBuildParticipant> list = ProjectCore.getBuildParticipants();
 
 		for (IProjectBuildParticipant participant : list) {
 			try {
+				out.println("\t" + participant + " (building)");
 				participant.startupOnInitialize(project, env);
 			} catch (Exception e) {
 				ProjectCore.logError(e);
@@ -54,15 +59,20 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 		}
 
 		fullBuild(false);
+
+		out.println("PhaserProjectBuilder.startupOnInitialize (done)");
 	}
 
 	@Override
 	protected void clean(IProgressMonitor monitor) throws CoreException {
+		out.println("PhaserProjectBuilder.clean (start)");
+
 		IProject project = getProject();
 		Map<String, Object> env = new HashMap<>();
 		List<IProjectBuildParticipant> list = ProjectCore.getBuildParticipants();
 		for (IProjectBuildParticipant participant : list) {
 			try {
+				out.println("\t" + participant + " (building)");
 				participant.clean(project, env);
 			} catch (Exception e) {
 				ProjectCore.logError(e);
@@ -70,6 +80,8 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 		}
 
 		fullBuild(true);
+
+		out.println("PhaserProjectBuilder.clean (done)");
 	}
 
 	private void fullBuild(boolean clean) {
@@ -78,6 +90,8 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 
 	@Override
 	protected IProject[] build(int kind, Map<String, String> args, IProgressMonitor monitor) throws CoreException {
+		out.println("PhaserProjectBuilder.build (start)");
+
 		// detect a delete (rename or move should be covered by refactorings)
 		IResourceDelta mainDelta = getDelta(getProject());
 
@@ -99,7 +113,12 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 		for (IProjectBuildParticipant participant : list) {
 			try {
 				monitor.subTask("Building " + participant.getClass().getSimpleName());
-				participant.build(getProject(), getDelta(getProject()), env);
+				out.println("\t" + participant + " (building)");
+				if (kind == FULL_BUILD) {
+					participant.fullBuild(getProject(), env);
+				} else {
+					participant.build(getProject(), getDelta(getProject()), env);
+				}
 				monitor.worked(1);
 			} catch (Exception e) {
 				ProjectCore.logError(e);
@@ -107,6 +126,8 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 		}
 
 		monitor.done();
+
+		out.println("PhaserProjectBuilder.build (done)");
 
 		return null;
 	}

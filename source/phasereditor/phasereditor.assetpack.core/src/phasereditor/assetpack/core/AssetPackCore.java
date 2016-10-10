@@ -508,36 +508,40 @@ public class AssetPackCore {
 		if (_filePackMap.isEmpty()) {
 			IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 			for (IProject project : projects) {
-				if (!project.isAccessible()) {
-					continue;
-				}
-
-				try {
-					project.accept(new IResourceVisitor() {
-
-						@Override
-						public boolean visit(IResource resource) throws CoreException {
-							if (resource instanceof IFile) {
-								IFile file = (IFile) resource;
-								if (isAssetPackFile(file)) {
-									try {
-										getAssetPackModel(file);
-									} catch (Exception e) {
-										logError(e);
-									}
-								}
-							}
-							return true;
-						}
-					});
-				} catch (CoreException e) {
-					logError(e);
-				}
+				discoverAssetPackModels(project);
 			}
 		}
 
 		synchronized (_filePackMap) {
 			return new ArrayList<>(_filePackMap.values());
+		}
+	}
+
+	public static void discoverAssetPackModels(IProject project) {
+		if (!project.isAccessible()) {
+			return;
+		}
+
+		try {
+			project.accept(new IResourceVisitor() {
+
+				@Override
+				public boolean visit(IResource resource) throws CoreException {
+					if (resource instanceof IFile) {
+						IFile file = (IFile) resource;
+						if (isAssetPackFile(file)) {
+							try {
+								getAssetPackModel(file);
+							} catch (Exception e) {
+								logError(e);
+							}
+						}
+					}
+					return true;
+				}
+			});
+		} catch (CoreException e) {
+			logError(e);
 		}
 	}
 
@@ -587,6 +591,13 @@ public class AssetPackCore {
 	public static void removeAssetPackModel(AssetPackModel pack) {
 		// when the newFile=null, then the pack is removed from the record.
 		moveAssetPackModel(null, pack);
+	}
+
+	public static void removeAssetPackModels(IProject project) {
+		List<AssetPackModel> list = getAssetPackModels(project);
+		for(AssetPackModel pack : list) {
+			removeAssetPackModel(pack);
+		}
 	}
 
 	public static void moveAssetPackModel(IFile newFile, AssetPackModel model) {
@@ -736,5 +747,4 @@ public class AssetPackCore {
 		e.printStackTrace();
 		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
 	}
-
 }

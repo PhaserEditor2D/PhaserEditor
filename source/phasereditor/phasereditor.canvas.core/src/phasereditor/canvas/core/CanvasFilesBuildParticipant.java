@@ -31,7 +31,7 @@ public class CanvasFilesBuildParticipant implements IProjectBuildParticipant {
 	@Override
 	public void build(IProject project, IResourceDelta delta, Map<String, Object> env) {
 		PackDelta packDelta = AssetPackBuildParticipant.getData(env);
-		ProjectCore.deleteProjectMarkers(project, CanvasCore.CANVAS_FILE_PROBLEM_MARKER_ID);
+		ProjectCore.deleteResourceMarkers(project, CanvasCore.CANVAS_FILE_PROBLEM_MARKER_ID);
 
 		if (delta == null) {
 			return;
