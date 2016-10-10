@@ -132,7 +132,10 @@ public class CanvasFileValidation {
 
 	private void validateTable() {
 		_table = new HashMap<>();
-		JSONObject tableData = _data.getJSONObject("asset-table");
+		JSONObject tableData = _data.optJSONObject("asset-table");
+		if (tableData == null) {
+			return;
+		}
 
 		IProject project = _file.getProject();
 
