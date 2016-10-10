@@ -40,27 +40,23 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.wb.swt.SWTResourceManager;
 import org.json.JSONArray;
 
 import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.assetpack.core.AssetPackCore.IPacksChangeListener;
-import phasereditor.assetpack.core.AssetPackCore.PackDelta;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.FilteredTree2;
 import phasereditor.ui.PatternFilter2;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 public class AssetExplorer extends ViewPart {
 	public static final String ID = "phasereditor.assetpack.views.assetExplorer";
 	TreeViewer _viewer;
-	private IPacksChangeListener _changeListener;
 	private FilteredTree _filteredTree;
 	// private AssetExplorerLabelProvider _treeLabelProvider;
 	// private AssetExplorerContentProvider _treeContentProvider;
@@ -124,31 +120,6 @@ public class AssetExplorer extends ViewPart {
 		// _viewer.setLabelProvider(_treeLabelProvider);
 		// _viewer.setContentProvider(_treeContentProvider);
 
-		// change listener
-
-		_changeListener = new AssetPackCore.IPacksChangeListener() {
-
-			@Override
-			public void packsChanged(PackDelta packDelta) {
-				Display.getDefault().asyncExec(new Runnable() {
-
-					@Override
-					public void run() {
-						if (_viewer.getControl().isDisposed()) {
-							return;
-						}
-
-						if (PlatformUI.getWorkbench().isClosing()) {
-							return;
-						}
-
-						_viewer.refresh();
-					}
-				});
-			}
-		};
-		AssetPackCore.addPacksChangedListener(_changeListener);
-
 		// content
 
 		_viewer.setInput(ROOT);
@@ -201,12 +172,6 @@ public class AssetExplorer extends ViewPart {
 	}
 
 	@Override
-	public void dispose() {
-		AssetPackCore.removePacksChangedListener(_changeListener);
-		super.dispose();
-	}
-
-	@Override
 	public void setFocus() {
 		_viewer.getTree().setFocus();
 	}
@@ -243,6 +208,18 @@ public class AssetExplorer extends ViewPart {
 
 	public void showTree() {
 		// changeViewMode(_treeLabelProvider, _treeContentProvider);
+	}
+
+	public void refreshContent() {
+		if (_viewer.getControl().isDisposed()) {
+			return;
+		}
+
+		if (PlatformUI.getWorkbench().isClosing()) {
+			return;
+		}
+
+		_viewer.refresh();
 	}
 
 	// private void changeViewMode(ILabelProvider labelProvider,

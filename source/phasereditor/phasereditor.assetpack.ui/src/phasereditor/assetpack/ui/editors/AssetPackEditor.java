@@ -88,8 +88,6 @@ import phasereditor.assetpack.core.AssetFactory;
 import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.assetpack.core.AssetPackCore.IPacksChangeListener;
-import phasereditor.assetpack.core.AssetPackCore.PackDelta;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AssetType;
@@ -118,12 +116,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	public static final String ID = AssetPackCore.ASSET_EDITOR_ID;
 
 	private AssetPackModel _model;
-	@Deprecated
-	private IPacksChangeListener _packsListener;
 
 	public AssetPackEditor() {
-		_packsListener = this::packsChanged;
-		AssetPackCore.addPacksChangedListener(_packsListener);
 	}
 
 	@Override
@@ -131,25 +125,12 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		return new ShowInContext(getEditorInput(), getSelection());
 	}
 
-	private void packsChanged(PackDelta packDelta) {
-		if (packDelta.contains(_model)) {
-			if (_model.isSharedVersion()) {
-				IFile editorFile = getEditorInput().getFile();
-				IFile modelFile = _model.getFile();
-				if (!editorFile.equals(modelFile)) {
-					swtRun(new Runnable() {
-
-						@Override
-						public void run() {
-							setInput(new FileEditorInput(modelFile));
-						}
-					});
-				}
-			} else {
-				// TODO: what to do here?
-				// close(false);
-			}
-		}
+	public void handleFileRename(IFile file) {
+		_model.setFile(file);
+		swtRun(() -> {
+			super.setInput(new FileEditorInput(file));
+			setPartName(_model.getName());
+		});
 	}
 
 	@Override
@@ -197,12 +178,9 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	@Override
 	public void dispose() {
-		AssetPackCore.removePacksChangedListener(_packsListener);
-
 		if (_model != null && _model.getFile().exists()) {
 			saveEditingPoint();
 		}
-
 		super.dispose();
 	}
 

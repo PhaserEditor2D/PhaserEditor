@@ -164,9 +164,6 @@ public class AssetPackBuildParticipant implements IProjectBuildParticipant {
 				}
 			}
 
-			// always call this to refresh asset viewers.
-
-			AssetPackCore.firePacksChanged(packDelta);
 		} catch (CoreException e) {
 			throw new RuntimeException(e);
 		}

@@ -33,7 +33,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 
 import org.eclipse.core.resources.IContainer;
@@ -41,10 +40,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IResourceChangeEvent;
-import org.eclipse.core.resources.IResourceChangeListener;
-import org.eclipse.core.resources.IResourceDelta;
-import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -97,8 +92,6 @@ public class AssetPackCore {
 
 		_shaderExtensions = new HashSet<>();
 		_shaderExtensions.addAll(Arrays.asList("vert", "frag", "tesc", "tese", "geom", "comp"));
-
-		initWorkspaceListener();
 	}
 
 	/**
@@ -114,47 +107,6 @@ public class AssetPackCore {
 
 	public static boolean isShader(IResource resource) {
 		return resource instanceof IFile && _shaderExtensions.contains(resource.getFullPath().getFileExtension());
-	}
-
-	private static void initWorkspaceListener() {
-		// listen for project deletions
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(new IResourceChangeListener() {
-
-			@Override
-			public void resourceChanged(IResourceChangeEvent event) {
-				try {
-					IResourceDelta mainDelta = event.getDelta();
-					if (mainDelta != null) {
-
-						PackDelta packDelta = new PackDelta();
-
-						IResourceDeltaVisitor removeVisitor = new IResourceDeltaVisitor() {
-
-							@Override
-							public boolean visit(IResourceDelta delta) throws CoreException {
-								if (delta.getKind() == IResourceDelta.REMOVED
-										&& delta.getResource() instanceof IProject) {
-									IProject project = (IProject) delta.getResource();
-									List<AssetPackModel> packs = getAssetPackModels(project);
-									for (AssetPackModel pack : packs) {
-										removeAssetPackModel(pack);
-									}
-									packDelta.getPacks().addAll(packs);
-								}
-								return true;
-							}
-						};
-
-						mainDelta.accept(removeVisitor);
-
-						firePacksChanged(packDelta);
-					}
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
-
-			}
-		});
 	}
 
 	/**
@@ -760,34 +712,6 @@ public class AssetPackCore {
 			_packs.addAll(delta.getPacks());
 			_assets.addAll(delta.getAssets());
 		}
-	}
-
-	/**
-	 * @deprecated We should use a build participant extension.
-	 * @author arian
-	 */
-	@Deprecated
-	public interface IPacksChangeListener {
-		public void packsChanged(PackDelta delta);
-	}
-
-	private static List<IPacksChangeListener> _packsChanged = new CopyOnWriteArrayList<>();
-
-	@Deprecated
-	public static void firePacksChanged(PackDelta delta) {
-		if (!delta.isEmpty()) {
-			for (IPacksChangeListener listener : _packsChanged) {
-				listener.packsChanged(delta);
-			}
-		}
-	}
-
-	public static void addPacksChangedListener(IPacksChangeListener listener) {
-		_packsChanged.add(listener);
-	}
-
-	public static void removePacksChangedListener(IPacksChangeListener listener) {
-		_packsChanged.remove(listener);
 	}
 
 	public static List<IAssetConsumer> getAssetConsumers() {
