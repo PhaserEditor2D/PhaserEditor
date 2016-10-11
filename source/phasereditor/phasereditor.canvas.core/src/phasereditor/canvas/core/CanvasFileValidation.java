@@ -94,7 +94,7 @@ public class CanvasFileValidation {
 				}
 			} else if (obj.has("asset")) {
 				String id = obj.getString("asset");
-				if (!_table.containsKey(id)) {
+				if (_table.getOrDefault(id, null) == null) {
 					String spriteId = info.optString("editorName", "?");
 					_problems.add(new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID,
 							"Wrong asset-table reference in sprite '" + spriteId + "'"));
