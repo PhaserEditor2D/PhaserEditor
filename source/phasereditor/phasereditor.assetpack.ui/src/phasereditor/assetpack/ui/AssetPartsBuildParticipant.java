@@ -8,6 +8,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.swt.widgets.Display;
@@ -25,23 +26,23 @@ import phasereditor.assetpack.ui.views.AssetExplorer;
 import phasereditor.project.core.IProjectBuildParticipant;
 import phasereditor.ui.views.PreviewView;
 
-public class AssetViewsBuildParticipant implements IProjectBuildParticipant {
+public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 
-	public AssetViewsBuildParticipant() {
+	public AssetPartsBuildParticipant() {
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void clean(IProject project, Map<String, Object> env) {
-		refreshViews();
+		refreshParts();
 	}
 
 	@Override
 	public void fullBuild(IProject project, Map<String, Object> env) {
-		refreshViews();
+		refreshParts();
 	}
 
-	private static void refreshViews() {
+	private static void refreshParts() {
 		Display.getDefault().asyncExec(new Runnable() {
 
 			@Override
@@ -110,13 +111,13 @@ public class AssetViewsBuildParticipant implements IProjectBuildParticipant {
 				PackDelta packDelta = AssetPackBuildParticipant.getData(env);
 				buildAssetsViews(packDelta, refs);
 
-				buildAssetPackEditors(delta, project, page);
+				buildAssetPackEditors(delta, page);
 			}
 
 		});
 	}
 
-	private static void buildAssetPackEditors(IResourceDelta delta, IProject project, IWorkbenchPage page) {
+	private static void buildAssetPackEditors(IResourceDelta delta, IWorkbenchPage page) {
 
 		// all of this is shit, we should check only for resource delta and
 		// renamed pack files.
@@ -134,7 +135,7 @@ public class AssetViewsBuildParticipant implements IProjectBuildParticipant {
 								if (movedTo == null) {
 									out.println("a delete?");
 								} else {
-									IFile newFile = project.getFile(movedTo);
+									IFile newFile = ResourcesPlugin.getWorkspace().getRoot().getFile(movedTo);
 									editor.handleFileRename(newFile);
 								}
 							}

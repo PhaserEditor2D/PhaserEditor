@@ -267,7 +267,7 @@
    <extension
          point="phasereditor.project.core.buildParticipant">
       <participant
-            handler="phasereditor.assetpack.ui.AssetViewsBuildParticipant"
+            handler="phasereditor.assetpack.ui.AssetPartsBuildParticipant"
             id="phasereditor.assetpack.ui.participant3"
             order="2">
       </participant>
