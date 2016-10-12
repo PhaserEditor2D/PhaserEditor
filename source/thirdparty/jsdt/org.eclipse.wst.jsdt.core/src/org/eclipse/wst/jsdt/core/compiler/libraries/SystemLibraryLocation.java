@@ -30,24 +30,27 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.jsdt.core.JavaScriptCore;
 import org.eclipse.wst.jsdt.internal.core.util.Util;
+
 /**
- *  
- * Provisional API: This class/interface is part of an interim API that is still under development and expected to 
- * change significantly before reaching stability. It is being made available at this early stage to solicit feedback 
- * from pioneering adopters on the understanding that any code that uses this API will almost certainly be broken 
- * (repeatedly) as the API evolves.
+ * 
+ * Provisional API: This class/interface is part of an interim API that is
+ * still under development and expected to change significantly before
+ * reaching stability. It is being made available at this early stage to
+ * solicit feedback from pioneering adopters on the understanding that any
+ * code that uses this API will almost certainly be broken (repeatedly) as the
+ * API evolves.
  */
 public class SystemLibraryLocation implements LibraryLocation {
 
-	public static final char[] SYSTEM_LIBARAY_NAME= {'s','y','s','t','e','m','.','j','s'};
-	public static final char[] LIBRARY_RUNTIME_DIRECTORY={'l','i','b','r','a','r','i','e','s'};
-	public static final char[] LIBRARY_PLUGIN_DIRECTORY={'l','i','b','r','a','r','i','e','s'};
-	private static final boolean AUTO_UPDATE_LIBS=true;
+	public static final char[] SYSTEM_LIBARAY_NAME = {'s', 'y', 's', 't', 'e', 'm', '.', 'j', 's'};
+	public static final char[] LIBRARY_RUNTIME_DIRECTORY = {'l', 'i', 'b', 'r', 'a', 'r', 'i', 'e', 's'};
+	public static final char[] LIBRARY_PLUGIN_DIRECTORY = {'l', 'i', 'b', 'r', 'a', 'r', 'i', 'e', 's'};
+	private static final boolean AUTO_UPDATE_LIBS = true;
 
 	private static SystemLibraryLocation fInstance;
 
 	public static LibraryLocation getInstance() {
-		if(fInstance==null)
+		if (fInstance == null)
 			fInstance = new SystemLibraryLocation();
 		return fInstance;
 	}
@@ -57,20 +60,20 @@ public class SystemLibraryLocation implements LibraryLocation {
 	}
 
 	public char[][] getLibraryFileNames() {
-		return new char[][] {SYSTEM_LIBARAY_NAME};
+		return new char[][]{SYSTEM_LIBARAY_NAME};
 	}
 
 	protected String getPluginId() {
 		return JavaScriptCore.PLUGIN_ID;
 	}
-	
-	public char[][] getAllFilesInPluginDirectory(String directory){
+
+	public char[][] getAllFilesInPluginDirectory(String directory) {
 		Enumeration entries = (Platform.getBundle(getPluginId()).getEntryPaths(directory));
 		List allEntries = new ArrayList();
 		while (entries.hasMoreElements()) {
 			Path value = new Path((String) entries.nextElement());
 			char[] filename = value.lastSegment().toCharArray();
-			if (Util.isJavaLikeFileName(filename)) { //$NON-NLS-1$
+			if (Util.isJavaLikeFileName(filename)) { // $NON-NLS-1$
 				allEntries.add(filename);
 			}
 		}
@@ -83,6 +86,7 @@ public class SystemLibraryLocation implements LibraryLocation {
 		return fileNames;
 	}
 
+	@SuppressWarnings("resource")
 	public SystemLibraryLocation() {
 		super();
 
@@ -97,19 +101,27 @@ public class SystemLibraryLocation implements LibraryLocation {
 		}
 
 		char[][] libFiles = getLibraryFileNames();
-		
+
 		for (int i = 0; i < libFiles.length; i++) {
 			IPath workingLibLocation = libraryRuntimePath.addTrailingSeparator().append(new String(libFiles[i]));
 			File library = workingLibLocation.toFile();
 
 			if (!library.exists()) {
 				InputStream is = null;
+
 				try {
-					is = FileLocator.openStream(Platform.getBundle(getPluginId()), getLibraryPathInPlugin().append(new String(libFiles[i])), false);
-				}
-				catch (IOException e) {
+					// Modified by arian
+					if (isExternalLibrary()) {
+						is = createExternalLibraryStream();
+					} else {
+						is = FileLocator.openStream(Platform.getBundle(getPluginId()), getLibraryPathInPlugin().append(new String(libFiles[i])), false);
+					}
+					// is = FileLocator.openStream(Platform.getBundle(getPluginId()), getLibraryPathInPlugin().append(new String(libFiles[i])), false);
+					// -----
+				} catch (IOException e) {
 					Platform.getLog(Platform.getBundle(getPluginId())).log(new Status(IStatus.ERROR, getPluginId(), "Could not read " + getPluginId() + ":" + getLibraryPathInPlugin().append(new String(libFiles[i])), e));//$NON-NLS-1$ //$NON-NLS-2$
 				}
+				
 				if (is != null) {
 					try {
 						copyFile(is, library);
@@ -141,7 +153,16 @@ public class SystemLibraryLocation implements LibraryLocation {
 					if (lastModNew > lastModold) {
 						InputStream is = null;
 						try {
-							is = FileLocator.openStream(Platform.getBundle(getPluginId()), getLibraryPathInPlugin().append(new String(libFiles[i])), false);
+							
+							// Modified by arian
+							if (isExternalLibrary()) {
+								is = createExternalLibraryStream();
+							} else {
+								is = FileLocator.openStream(Platform.getBundle(getPluginId()), getLibraryPathInPlugin().append(new String(libFiles[i])), false);
+							}
+							//is = FileLocator.openStream(Platform.getBundle(getPluginId()), getLibraryPathInPlugin().append(new String(libFiles[i])), false);
+							
+							//
 						}
 						catch (IOException e) {
 							Platform.getLog(Platform.getBundle(getPluginId())).log(new Status(IStatus.ERROR, getPluginId(), "Could not read " + getPluginId() + ":" + getLibraryPathInPlugin().append(new String(libFiles[i])), e));//$NON-NLS-1$ //$NON-NLS-2$
@@ -164,22 +185,50 @@ public class SystemLibraryLocation implements LibraryLocation {
 		}
 	}
 
+	// Modified by arian
+
+	/**
+	 * External libraries gets the content from an external file, not from a
+	 * plugin resource.
+	 * 
+	 * @return
+	 */
+	public boolean isExternalLibrary() {
+		return false;
+	}
+
+	/**
+	 * Get the content of the external library. This method is called if
+	 * {@link #isExternalLibrary()} returns true.
+	 * 
+	 * @return
+	 */
+	public InputStream createExternalLibraryStream() {
+		return null;
+	}
+
+	// ---
+
 
 	public IPath getWorkingLibPath() {
 		return new Path(getLibraryPath("")); //$NON-NLS-1$
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.wst.jsdt.core.compiler.libraries.LibraryLocation#getLibraryPath(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.wst.jsdt.core.compiler.libraries.LibraryLocation#
+	 * getLibraryPath(java.lang.String)
 	 */
-	public String getLibraryPath(String name){
-		return JavaScriptCore.getPlugin().getStateLocation().append( new String(LIBRARY_RUNTIME_DIRECTORY) ).addTrailingSeparator().append(name).toString();
+	public String getLibraryPath(String name) {
+		return JavaScriptCore.getPlugin().getStateLocation().append(new String(LIBRARY_RUNTIME_DIRECTORY)).addTrailingSeparator().append(name).toString();
 	}
-	
-	public String getLibraryPath(char[] name){
+
+	public String getLibraryPath(char[] name) {
 		return getLibraryPath(new String(name));
 
 	}
+
 	protected static void copyFile(InputStream src, File dst) throws IOException {
 		InputStream in = null;
 		OutputStream out = null;

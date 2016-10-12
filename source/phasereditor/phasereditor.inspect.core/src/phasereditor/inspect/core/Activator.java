@@ -49,8 +49,6 @@ public class Activator extends AbstractUIPlugin {
 		InspectCore.getPreferenceStore().setDefault(InspectCore.PREF_BUILTIN_PHASER_VERSION, true);
 		InspectCore.getPreferenceStore().setDefault(InspectCore.PREF_USER_PHASER_VERSION_PATH,
 				"/path/to/phaser-update/");
-		
-		InspectCore.updatePhaserLibrary();
 	}
 
 	@Override

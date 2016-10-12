@@ -27,17 +27,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.wst.jsdt.core.IMember;
 import org.eclipse.wst.jsdt.core.IType;
-import org.eclipse.wst.jsdt.core.JavaScriptCore;
-import org.eclipse.wst.jsdt.core.compiler.libraries.SystemLibraryLocation;
 import org.json.JSONObject;
 
 import phasereditor.inspect.core.examples.ExamplesModel;
@@ -139,10 +134,6 @@ public class InspectCore {
 		}
 	}
 
-	public static Path getPhaserLibrariesFolder() {
-		return InspectCoreResources.getResourcesPath_AnyOS().resolve("built-in/phaser-libraries");
-	}
-
 	public static Path getBuiltInPhaserVersionFolder() {
 		Path path = InspectCoreResources.getResourcesPath_AnyOS().resolve("built-in/phaser-version");
 		if (!Files.exists(path)) {
@@ -204,47 +195,5 @@ public class InspectCore {
 
 	public static IPreferenceStore getPreferenceStore() {
 		return Activator.getDefault().getPreferenceStore();
-	}
-
-	static void updatePhaserLibrary() {
-		// if (isBuiltInPhaserVersion()) {
-		// return;
-		// }
-
-		{
-			// Update Phaser Editor internal lib
-
-			Path libFolder = InspectCore.getPhaserLibrariesFolder();
-			Path copyTo = libFolder.resolve("phaser-api.js");
-
-			updatePhaserApiLibrary(copyTo);
-		}
-
-		{
-			// Update JSDT lib cache.
-			IPath libraryRuntimePath = Platform.getStateLocation(Platform.getBundle(JavaScriptCore.PLUGIN_ID))
-					.append(new String(SystemLibraryLocation.LIBRARY_RUNTIME_DIRECTORY));
-			Path libFolder = libraryRuntimePath.makeAbsolute().toFile().toPath();
-			Path copyTo = libFolder.resolve("phaser-api.js");
-			updatePhaserApiLibrary(copyTo);
-		}
-
-	}
-
-	private static void updatePhaserApiLibrary(Path replaceTo) {
-		if (!Files.exists(replaceTo.getParent())) {
-			out.println("JSDT libraries folder does not exist yet.");
-			return;
-		}
-
-		Path newVersionFolder = getPhaserVersionFolder();
-		Path replaceFrom = newVersionFolder.resolve("phaser-custom/api/phaser-api.js");
-		try {
-			out.println("Copy " + replaceFrom + " to " + replaceTo);
-			Files.copy(replaceFrom, replaceTo, StandardCopyOption.REPLACE_EXISTING);
-		} catch (IOException e) {
-			setBuiltInPhaserVersion(true);
-			throw new RuntimeException(e);
-		}
 	}
 }

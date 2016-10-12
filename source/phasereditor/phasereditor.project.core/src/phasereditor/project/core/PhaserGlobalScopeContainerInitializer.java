@@ -21,53 +21,27 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.core;
 
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
+import java.nio.file.Path;
+
 import org.eclipse.wst.jsdt.core.IIncludePathAttribute;
 import org.eclipse.wst.jsdt.core.IIncludePathEntry;
 import org.eclipse.wst.jsdt.core.JavaScriptCore;
-import org.eclipse.wst.jsdt.core.JsGlobalScopeContainerInitializer;
-import org.eclipse.wst.jsdt.core.compiler.libraries.LibraryLocation;
-import org.eclipse.wst.jsdt.core.compiler.libraries.SystemLibraryLocation;
 
 import phasereditor.inspect.core.InspectCore;
 
-public class PhaserGlobalScopeContainerInitializer extends JsGlobalScopeContainerInitializer {
+public class PhaserGlobalScopeContainerInitializer extends ExternalGlobalScopeContainerInitializer {
 
-	static class PhaserLibraryLocation extends SystemLibraryLocation {
-		@Override
-		public char[][] getLibraryFileNames() {
-			return new char[][] { "phaser-api.js".toCharArray() };
-		}
-
-		@Override
-		protected String getPluginId() {
-			return InspectCore.RESOURCES_PLUGIN_ID;
-		}
-
-		@Override
-		public IPath getLibraryPathInPlugin() {
-			if (InspectCore.isBuiltInPhaserVersion()) {
-				return new Path("phaser-version/phaser-custom/api/");
-			}
-			return new Path("phaser-libraries/");
-		}
-
-	}
-
-	private LibraryLocation _libLocation;
-
-	@Override
-	public LibraryLocation getLibraryLocation() {
-		if (_libLocation == null) {
-			_libLocation = new PhaserLibraryLocation();
-		}
-		return _libLocation;
+	/**
+	 * 
+	 */
+	public PhaserGlobalScopeContainerInitializer() {
+		super("phaser-api.js", "Phaser API " + InspectCore.getCurrentPhaserVersion() + " Library");
 	}
 
 	@Override
-	public String getDescription() {
-		return "Phaser API " + InspectCore.getCurrentPhaserVersion() + " Library";
+	public Path getLibFolderPath() {
+		java.nio.file.Path folder = InspectCore.getPhaserVersionFolder().resolve("phaser-custom/api");
+		return folder;
 	}
 
 	@Override
@@ -77,21 +51,11 @@ public class PhaserGlobalScopeContainerInitializer extends JsGlobalScopeContaine
 
 	@Override
 	public IIncludePathEntry[] getIncludepathEntries() {
-		// attach JSDoc to the phaser lib.
-
 		IIncludePathEntry[] entries = super.getIncludepathEntries();
-
-		// java.nio.file.Path phaserVersionFolder =
-		// InspectCoreResources.getPhaserVersionFolder();
-		// String jsdocKey =
-		// IIncludePathAttribute.JSDOC_LOCATION_ATTRIBUTE_NAME;
-		// String jsdocValue =
-		// phaserVersionFolder.resolve("phaser-master/docs").toFile().getAbsoluteFile()
-		// .getCanonicalPath();
 
 		IIncludePathAttribute[] extraAttrs = {};
 
-		// i am sure there is only one entry.
+		// I am sure there is only one entry.
 
 		IIncludePathEntry oldEntry = entries[0];
 

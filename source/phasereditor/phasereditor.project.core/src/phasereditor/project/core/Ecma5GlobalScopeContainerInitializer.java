@@ -21,50 +21,19 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.core;
 
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.wst.jsdt.core.JsGlobalScopeContainerInitializer;
-import org.eclipse.wst.jsdt.core.compiler.libraries.LibraryLocation;
-import org.eclipse.wst.jsdt.core.compiler.libraries.SystemLibraryLocation;
+import java.nio.file.Path;
 
-import phasereditor.inspect.core.InspectCore;
+import phasereditor.inspect.core.resources.InspectCoreResources;
 
-public class Ecma5GlobalScopeContainerInitializer extends JsGlobalScopeContainerInitializer {
+public class Ecma5GlobalScopeContainerInitializer extends ExternalGlobalScopeContainerInitializer {
 
-	static class Ecma5LibraryLocation extends SystemLibraryLocation {
-		@Override
-		public char[][] getLibraryFileNames() {
-			return new char[][] { "ecma5.js".toCharArray() };
-		}
-
-		@Override
-		protected String getPluginId() {
-			return InspectCore.RESOURCES_PLUGIN_ID;
-		}
-
-		@Override
-		public IPath getLibraryPathInPlugin() {
-			return new Path("thirdparty-libraries/");
-		}
-	}
-
-	private LibraryLocation _libLocation;
-
-	@Override
-	public LibraryLocation getLibraryLocation() {
-		if (_libLocation == null) {
-			_libLocation = new Ecma5LibraryLocation();
-		}
-		return _libLocation;
+	public Ecma5GlobalScopeContainerInitializer() {
+		super("ecma5.js", "ECMA5 API Library");
 	}
 
 	@Override
-	public String getDescription() {
-		return "ECMA5 API Library";
+	public Path getLibFolderPath() {
+		return InspectCoreResources.getResourcesPath_AnyOS().resolve("built-in/thirdparty-libraries");
 	}
 
-	@Override
-	public boolean allowAttachJsDoc() {
-		return false;
-	}
 }
