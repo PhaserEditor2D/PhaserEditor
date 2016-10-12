@@ -27,7 +27,7 @@ public class CanvasFilesBuildParticipant implements IProjectBuildParticipant {
 
 	public CanvasFilesBuildParticipant() {
 	}
-	
+
 	@Override
 	public void startupOnInitialize(IProject project, Map<String, Object> env) {
 		// nothing

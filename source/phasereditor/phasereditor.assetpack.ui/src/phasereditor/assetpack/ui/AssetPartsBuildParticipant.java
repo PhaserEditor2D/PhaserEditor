@@ -134,6 +134,7 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 								IPath movedTo = d.getMovedToPath();
 								if (movedTo == null) {
 									out.println("a delete?");
+									//page.closeEditor(editor, true);
 								} else {
 									IFile newFile = ResourcesPlugin.getWorkspace().getRoot().getFile(movedTo);
 									editor.handleFileRename(newFile);

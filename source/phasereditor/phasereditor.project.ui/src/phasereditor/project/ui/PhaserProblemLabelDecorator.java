@@ -46,11 +46,13 @@ public class PhaserProblemLabelDecorator implements ILightweightLabelDecorator {
 		if (element instanceof IFile) {
 			IFile file = (IFile) element;
 			try {
-				int severity = file.findMaxProblemSeverity(ProjectCore.PHASER_PROBLEM_MARKER_ID, true,
-						IResource.DEPTH_ONE);
-				if (severity != -1) {
-					ImageDescriptor img = JavaPluginImages.DESC_OVR_ERROR;
-					decoration.addOverlay(img);
+				if (file.exists()) {
+					int severity = file.findMaxProblemSeverity(ProjectCore.PHASER_PROBLEM_MARKER_ID, true,
+							IResource.DEPTH_ONE);
+					if (severity != -1) {
+						ImageDescriptor img = JavaPluginImages.DESC_OVR_ERROR;
+						decoration.addOverlay(img);
+					}
 				}
 			} catch (CoreException e) {
 				ProjectUI.logError(e);

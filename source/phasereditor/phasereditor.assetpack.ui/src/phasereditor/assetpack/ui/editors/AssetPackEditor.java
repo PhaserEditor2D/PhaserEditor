@@ -215,22 +215,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		return (FileEditorInput) super.getEditorInput();
 	}
 
-	// @Override
-	// public void fileMoved() {
-	// FileEditorInput input = new FileEditorInput(getModel().getFile());
-	//
-	// super.setInput(input);
-	//
-	// swtRun(new Runnable() {
-	//
-	// @SuppressWarnings("synthetic-access")
-	// @Override
-	// public void run() {
-	// setPartName(getModel().getName());
-	// }
-	// });
-	// }
-
 	@Override
 	public void gotoMarker(IMarker marker) {
 		try {

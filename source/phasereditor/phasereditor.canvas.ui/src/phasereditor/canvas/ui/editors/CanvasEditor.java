@@ -32,14 +32,7 @@ import java.util.Arrays;
 import org.eclipse.core.commands.operations.IUndoContext;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IResourceChangeEvent;
-import org.eclipse.core.resources.IResourceChangeListener;
-import org.eclipse.core.resources.IResourceDelta;
-import org.eclipse.core.resources.IResourceDeltaVisitor;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.Action;
@@ -104,7 +97,7 @@ import phasereditor.ui.PatternFilter2;
  *
  */
 public class CanvasEditor extends EditorPart
-		implements IResourceChangeListener, IPersistableEditor, IEditorSharedImages {
+		implements  IPersistableEditor, IEditorSharedImages {
 
 	private static final String PALETTE_CONTEXT_ID = "phasereditor.canvas.ui.palettecontext";
 	public final static String ID = "phasereditor.canvas.ui.editors.canvas";
@@ -296,7 +289,7 @@ public class CanvasEditor extends EditorPart
 	private void afterCreateWidgets() {
 		// name
 
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
+		// ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
 
 		initPalette();
 
@@ -633,63 +626,10 @@ public class CanvasEditor extends EditorPart
 
 	@Override
 	public void dispose() {
-		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
 		if (_canvas != null) {
 			_canvas.getUpdateBehavior().dispose();
 		}
 		super.dispose();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.core.resources.IResourceChangeListener#resourceChanged(org.
-	 * eclipse.core.resources.IResourceChangeEvent)
-	 */
-	@Override
-	public void resourceChanged(IResourceChangeEvent event) {
-		try {
-			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-			if (event.getDelta() == null) {
-				return;
-			}
-			event.getDelta().accept(new IResourceDeltaVisitor() {
-
-				@SuppressWarnings("synthetic-access")
-				@Override
-				public boolean visit(IResourceDelta delta) throws CoreException {
-					IFile thisFile = getEditorInputFile();
-					IResource deltaFile = delta.getResource();
-					if (deltaFile.equals(thisFile)) {
-						if (delta.getKind() == IResourceDelta.REMOVED) {
-							IPath movedTo = delta.getMovedToPath();
-							if (movedTo == null) {
-								// delete
-								Display display = Display.getDefault();
-								display.asyncExec(new Runnable() {
-
-									@Override
-									public void run() {
-										getSite().getPage().closeEditor(CanvasEditor.this, false);
-									}
-								});
-
-							} else {
-								// rename
-								IFile file = root.getFile(movedTo);
-								CanvasEditor.super.setInput(new FileEditorInput(file));
-								getModel().getWorld().setFile(file);
-								swtRun(CanvasEditor.this::updateTitle);
-							}
-						}
-					}
-					return true;
-				}
-			});
-		} catch (CoreException e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 	public IFile getEditorInputFile() {
@@ -781,5 +721,11 @@ public class CanvasEditor extends EditorPart
 			getCanvas().getUpdateBehavior()
 					.executeOperations(new CompositeOperation(new ChangeSettingsOperation(data)));
 		}
+	}
+
+	public void handleFileRename(IFile newFile) {
+		super.setInput(new FileEditorInput(newFile));
+		_model.getWorld().setFile(newFile);
+		updateTitle();
 	}
 }

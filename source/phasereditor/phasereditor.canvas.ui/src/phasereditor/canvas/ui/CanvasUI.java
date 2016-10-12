@@ -32,7 +32,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 public class CanvasUI {
 	public static final String PLUGIN_ID = "phasereditor.canvas.ui";
 
-	public static void handleError(Exception e) {
+	public static void logError(Exception e) {
 		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
 	}
 }
