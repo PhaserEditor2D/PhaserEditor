@@ -33,7 +33,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
  */
 public class CanvasCore {
 	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
-	public static final String CANVAS_FILE_PROBLEM_MARKER_ID = "phasereditor.canvas.core.problem";
+	public static final String CANVAS_PROBLEM_MARKER_ID = "phasereditor.canvas.core.problem";
 
 	public static void logError(Exception e) {
 		e.printStackTrace();

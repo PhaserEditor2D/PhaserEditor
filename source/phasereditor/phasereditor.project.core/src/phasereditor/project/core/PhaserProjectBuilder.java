@@ -90,7 +90,12 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 
 	@Override
 	protected IProject[] build(int kind, Map<String, String> args, IProgressMonitor monitor) throws CoreException {
-		out.println("PhaserProjectBuilder.build (start)");
+		boolean fullBuild = kind == FULL_BUILD;
+		if (fullBuild) {
+			out.println("PhaserProjectBuilder.fullBuild (start)");
+		} else {
+			out.println("PhaserProjectBuilder.build (start)");
+		}
 
 		// detect a delete (rename or move should be covered by refactorings)
 		IResourceDelta mainDelta = getDelta(getProject());
@@ -114,7 +119,7 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 			try {
 				monitor.subTask("Building " + participant.getClass().getSimpleName());
 				out.println("\t" + participant + " (building)");
-				if (kind == FULL_BUILD) {
+				if (fullBuild) {
 					participant.fullBuild(getProject(), env);
 				} else {
 					participant.build(getProject(), getDelta(getProject()), env);
@@ -127,7 +132,11 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 
 		monitor.done();
 
-		out.println("PhaserProjectBuilder.build (done)");
+		if (fullBuild) {
+			out.println("PhaserProjectBuilder.fullBuild (done)");
+		} else {
+			out.println("PhaserProjectBuilder.build (done)");
+		}
 
 		return null;
 	}

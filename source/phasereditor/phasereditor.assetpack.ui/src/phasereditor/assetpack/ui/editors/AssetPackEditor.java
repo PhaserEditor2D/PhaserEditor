@@ -486,7 +486,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 			@Override
 			public void dragStart(DragSourceEvent event) {
-				LocalSelectionTransfer.getTransfer().setSelection(_allAssetsViewer.getSelection());
+				IStructuredSelection selection = (IStructuredSelection) _allAssetsViewer.getSelection();
+				LocalSelectionTransfer.getTransfer().setSelection(selection);
 			}
 		});
 

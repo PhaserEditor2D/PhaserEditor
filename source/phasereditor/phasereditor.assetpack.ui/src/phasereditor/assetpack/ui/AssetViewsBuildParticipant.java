@@ -32,6 +32,65 @@ public class AssetViewsBuildParticipant implements IProjectBuildParticipant {
 	}
 
 	@Override
+	public void clean(IProject project, Map<String, Object> env) {
+		refreshViews();
+	}
+
+	@Override
+	public void fullBuild(IProject project, Map<String, Object> env) {
+		refreshViews();
+	}
+
+	private static void refreshViews() {
+		Display.getDefault().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				if (PlatformUI.getWorkbench().isClosing()) {
+					return;
+				}
+
+				// explorer
+
+				IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+				IWorkbenchPage page = window.getActivePage();
+				IViewReference[] refs = page.getViewReferences();
+				for (IViewReference ref : refs) {
+					if (ref.getId().equals(AssetExplorer.ID)) {
+						AssetExplorer view = (AssetExplorer) ref.getView(false);
+						if (view != null) {
+							view.refreshContent();
+						}
+					}
+				}
+
+				// preview windows
+
+				for (IViewReference ref : refs) {
+					if (ref.getId().equals(PreviewView.ID)) {
+						PreviewView view = (PreviewView) ref.getView(false);
+						Object elem = view.getPreviewElement();
+
+						if (elem != null) {
+							if (elem instanceof IAssetKey) {
+								view.preview(((IAssetKey) elem).getSharedVersion());
+							} else if (elem instanceof IFile) {
+								if (!((IFile) elem).exists()) {
+									elem = null;
+								}
+								view.preview(elem);
+							}
+						}
+					}
+				}
+
+			}
+
+		});
+
+	}
+
+	@Override
 	public void build(IProject project, IResourceDelta delta, Map<String, Object> env) {
 		Display.getDefault().asyncExec(new Runnable() {
 
@@ -93,7 +152,7 @@ public class AssetViewsBuildParticipant implements IProjectBuildParticipant {
 		for (IViewReference ref : refs) {
 			if (ref.getId().equals(AssetExplorer.ID)) {
 				AssetExplorer view = (AssetExplorer) ref.getView(false);
-				if (!packDelta.isEmpty()) {
+				if (view != null && !packDelta.isEmpty()) {
 					view.refreshContent();
 				}
 			}

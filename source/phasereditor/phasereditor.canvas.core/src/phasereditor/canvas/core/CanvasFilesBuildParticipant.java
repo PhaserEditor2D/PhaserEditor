@@ -27,15 +27,36 @@ public class CanvasFilesBuildParticipant implements IProjectBuildParticipant {
 
 	public CanvasFilesBuildParticipant() {
 	}
+	
+	@Override
+	public void startupOnInitialize(IProject project, Map<String, Object> env) {
+		// nothing
+	}
+
+	@Override
+	public void clean(IProject project, Map<String, Object> env) {
+		ProjectCore.deleteResourceMarkers(project, CanvasCore.CANVAS_PROBLEM_MARKER_ID);
+	}
+
+	@Override
+	public void fullBuild(IProject project, Map<String, Object> env) {
+		ProjectCore.deleteResourceMarkers(project, CanvasCore.CANVAS_PROBLEM_MARKER_ID);
+		IContainer webFolder = ProjectCore.getWebContentFolder(project);
+		try {
+			webFolder.accept(r -> {
+				if (r instanceof IFile && CanvasCore.isCanvasFile((IFile) r)) {
+					validateCanvasFile((IFile) r);
+				}
+				return true;
+			});
+		} catch (CoreException e) {
+			CanvasCore.logError(e);
+		}
+	}
 
 	@Override
 	public void build(IProject project, IResourceDelta delta, Map<String, Object> env) {
 		PackDelta packDelta = AssetPackBuildParticipant.getData(env);
-		ProjectCore.deleteResourceMarkers(project, CanvasCore.CANVAS_FILE_PROBLEM_MARKER_ID);
-
-		if (delta == null) {
-			return;
-		}
 
 		Set<IFile> validatedFiles = new HashSet<>();
 
@@ -130,10 +151,11 @@ public class CanvasFilesBuildParticipant implements IProjectBuildParticipant {
 
 	private static void validateCanvasFile(IFile file) {
 		try {
+			ProjectCore.deleteResourceMarkers(file, CanvasCore.CANVAS_PROBLEM_MARKER_ID);
 			CanvasFileValidation validation = new CanvasFileValidation(file);
 			List<IStatus> problems = validation.validate();
 			for (IStatus problem : problems) {
-				ProjectCore.createErrorMarker(CanvasCore.CANVAS_FILE_PROBLEM_MARKER_ID, problem, file);
+				ProjectCore.createErrorMarker(CanvasCore.CANVAS_PROBLEM_MARKER_ID, problem, file);
 			}
 		} catch (Exception e) {
 			CanvasCore.logError(e);
