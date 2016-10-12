@@ -27,10 +27,24 @@ public class CanvasEditorBuildParticipant implements IProjectBuildParticipant {
 
 	public CanvasEditorBuildParticipant() {
 	}
+	
+	@Override
+	public void clean(IProject project, Map<String, Object> env) {
+		// nothing
+	}
+	
+	@Override
+	public void fullBuild(IProject project, Map<String, Object> env) {
+		build(null, true);
+	}
 
 	@Override
 	public void build(IProject project, IResourceDelta delta, Map<String, Object> env) {
 		PackDelta packDelta = AssetPackBuildParticipant.getData(env);
+		build(packDelta, false);
+	}
+
+	private static void build(PackDelta packDelta, boolean fullBuild) {
 		try {
 			Display.getDefault().asyncExec(new Runnable() {
 
@@ -49,7 +63,7 @@ public class CanvasEditorBuildParticipant implements IProjectBuildParticipant {
 						if (editor != null) {
 							UpdateBehavior updateBehavior = editor.getCanvas().getUpdateBehavior();
 
-							if (packDelta.inProject(editor.getEditorInputFile().getProject())) {
+							if (fullBuild || packDelta.inProject(editor.getEditorInputFile().getProject())) {
 								updateBehavior.rebuild();
 							}
 						}
