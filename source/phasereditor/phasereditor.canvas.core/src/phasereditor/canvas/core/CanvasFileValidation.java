@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -60,7 +61,9 @@ public class CanvasFileValidation {
 		super();
 		_file = file;
 		_problems = new ArrayList<>();
-		_data = new JSONObject(new JSONTokener(file.getContents()));
+		try (InputStream contents = file.getContents()) {
+			_data = new JSONObject(new JSONTokener(contents));
+		}
 		_used = new HashSet<>();
 	}
 
