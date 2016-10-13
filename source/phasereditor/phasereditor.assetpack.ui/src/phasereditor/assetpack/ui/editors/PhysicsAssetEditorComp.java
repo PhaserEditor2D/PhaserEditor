@@ -158,7 +158,7 @@ public class PhysicsAssetEditorComp extends Composite {
 		try {
 			AssetPackModel pack = _model.getPack();
 			IFile urlFile = _model.getFileFromUrl(_model.getUrl());
-			List<IFile> files = AssetPackCore.discoverFiles(pack.getAssetsFolder(),
+			List<IFile> files = AssetPackCore.discoverFiles(pack.getWebContentFolder(),
 					AssetPackCore.createFileExtFilter("json"));
 			AssetPackUI.browseAssetFile(pack, "physics JSON", urlFile, files, getShell(), new Consumer<String>() {
 

@@ -254,7 +254,7 @@ public abstract class AssetFactory {
 			public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
 				AssetPackModel pack = section.getPack();
 				TextAssetModel asset = makeAsset(key, section);
-				List<IFile> files = AssetPackCore.discoverFiles(pack.getAssetsFolder(),
+				List<IFile> files = AssetPackCore.discoverFiles(pack.getWebContentFolder(),
 						AssetPackCore.createFileExtFilter(_exts));
 				IFile file = pack.pickFile(files);
 				if (file != null) {

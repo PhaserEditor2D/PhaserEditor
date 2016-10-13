@@ -40,7 +40,6 @@ import java.util.function.Function;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -52,6 +51,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import phasereditor.assetpack.core.AssetPackCore.PackDelta;
+import phasereditor.project.core.ProjectCore;
 
 public final class AssetPackModel {
 	public static final String MEMENT_PROJECT_KEY = "projectName";
@@ -211,35 +211,36 @@ public final class AssetPackModel {
 		return _file.getName();
 	}
 
-	public IContainer getAssetsFolder() {
+	public IContainer getWebContentFolder() {
 		if (_file == null) {
 			return null;
 		}
-		return _file.getParent();
+		
+		return ProjectCore.getWebContentFolder(_file.getProject());
 	}
 
 	public List<IFile> discoverImageFiles() throws CoreException {
-		return AssetPackCore.discoverImageFiles(getAssetsFolder());
+		return AssetPackCore.discoverImageFiles(getWebContentFolder());
 	}
 
 	public List<IFile> discoverTilemapFiles() throws CoreException {
-		return AssetPackCore.discoverTilemapFiles(getAssetsFolder());
+		return AssetPackCore.discoverTilemapFiles(getWebContentFolder());
 	}
 
 	public List<IFile> discoverAudioFiles() throws CoreException {
-		return AssetPackCore.discoverAudioFiles(getAssetsFolder());
+		return AssetPackCore.discoverAudioFiles(getWebContentFolder());
 	}
 
 	public List<IFile> discoverVideoFiles() throws CoreException {
-		return AssetPackCore.discoverVideoFiles(getAssetsFolder());
+		return AssetPackCore.discoverVideoFiles(getWebContentFolder());
 	}
 
 	public List<IFile> discoverAudioSpriteFiles() throws CoreException {
-		return AssetPackCore.discoverAudioSpriteFiles(getAssetsFolder());
+		return AssetPackCore.discoverAudioSpriteFiles(getWebContentFolder());
 	}
 
 	public List<IFile> discoverAtlasFiles() throws CoreException {
-		return AssetPackCore.discoverAtlasFiles(getAssetsFolder());
+		return AssetPackCore.discoverAtlasFiles(getWebContentFolder());
 	}
 
 	public void visitAssets(Consumer<AssetModel> visitor) {
@@ -272,9 +273,8 @@ public final class AssetPackModel {
 	}
 
 	public String getAssetUrl(IFile file) {
-		IContainer assetsFolder = getAssetsFolder();
-		IContainer parent = assetsFolder instanceof IProject ? assetsFolder : assetsFolder.getParent();
-		String relPath = file.getFullPath().makeRelativeTo(parent.getFullPath()).toPortableString();
+		IContainer assetsFolder = getWebContentFolder();
+		String relPath = file.getFullPath().makeRelativeTo(assetsFolder.getFullPath()).toPortableString();
 		return relPath;
 	}
 
@@ -308,7 +308,7 @@ public final class AssetPackModel {
 	}
 
 	public IFile pickFile(Function<IFile, Boolean> accept) throws CoreException {
-		List<IFile> files = AssetPackCore.discoverFiles(getAssetsFolder(), accept);
+		List<IFile> files = AssetPackCore.discoverFiles(getWebContentFolder(), accept);
 		return pickFile(files);
 	}
 

@@ -194,7 +194,7 @@ public class BitmapFontAssetEditorComp extends Composite {
 					return Boolean.FALSE;
 				}
 			};
-			List<IFile> xmlFiles = AssetPackCore.discoverFiles(pack.getAssetsFolder(), isFontFile);
+			List<IFile> xmlFiles = AssetPackCore.discoverFiles(pack.getWebContentFolder(), isFontFile);
 
 			AssetPackUI.browseAssetFile(pack, "bitmap font XML/FNT", urlFile, xmlFiles, getShell(),
 					new Consumer<String>() {

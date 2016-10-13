@@ -155,7 +155,7 @@ public class TextAssetEditorComp extends Composite {
 		try {
 			AssetPackModel pack = _model.getPack();
 			IFile urlFile = _model.getFileFromUrl(_model.getUrl());
-			List<IFile> files = AssetPackCore.discoverTextFiles(pack.getAssetsFolder());
+			List<IFile> files = AssetPackCore.discoverTextFiles(pack.getWebContentFolder());
 			AssetType type = getModel().getType();
 			String[] exts = type == AssetType.text ? new String[] { "txt", "text" } : new String[] { "json" };
 			AssetPackCore.sortFilesByExtension(files, exts);

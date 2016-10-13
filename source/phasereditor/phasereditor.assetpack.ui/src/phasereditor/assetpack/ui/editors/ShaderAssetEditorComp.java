@@ -155,7 +155,7 @@ public class ShaderAssetEditorComp extends Composite {
 		try {
 			AssetPackModel pack = _model.getPack();
 			IFile urlFile = _model.getFileFromUrl(_model.getUrl());
-			List<IFile> files = AssetPackCore.discoverShaderFiles(pack.getAssetsFolder());
+			List<IFile> files = AssetPackCore.discoverShaderFiles(pack.getWebContentFolder());
 			AssetType type = getModel().getType();
 			AssetPackUI.browseAssetFile(pack, type.name(), urlFile, files, getShell(), new Consumer<String>() {
 

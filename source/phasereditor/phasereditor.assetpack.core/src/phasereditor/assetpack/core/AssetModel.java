@@ -32,11 +32,10 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,7 +72,7 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 		}
 
 		try {
-			 AssetPackModel pack = getPack().getSharedVersion();
+			AssetPackModel pack = getPack().getSharedVersion();
 
 			if (pack == null) {
 				return null;
@@ -207,21 +206,13 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 		return pack.isSharedVersion() && pack.getSections().contains(_section) && _section.getAssets().contains(this);
 	}
 
-	protected IContainer getUrlStartFolder() {
-		return getPack().getAssetsFolder();
-	}
-
 	public IFile getFileFromUrl(String url) {
 		if (url == null || url.length() == 0) {
 			return null;
 		}
 
-		IContainer startFolder = getUrlStartFolder();
-		IContainer parent = startFolder instanceof IProject ? startFolder : startFolder.getParent();
-
-		IPath path = parent.getProjectRelativePath().append(url);
-
-		IFile file = parent.getProject().getFile(path);
+		IContainer webContentFolder = getPack().getWebContentFolder();
+		IFile file = webContentFolder.getFile(new Path(url));
 
 		if (!file.exists()) {
 			return null;

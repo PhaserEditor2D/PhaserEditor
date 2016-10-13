@@ -147,7 +147,7 @@ public class BinaryAssetEditorComp extends Composite {
 		try {
 			AssetPackModel pack = _model.getPack();
 			IFile urlFile = _model.getFileFromUrl(_model.getUrl());
-			List<IFile> files = AssetPackCore.discoverFiles(pack.getAssetsFolder(), null);
+			List<IFile> files = AssetPackCore.discoverFiles(pack.getWebContentFolder(), null);
 			AssetPackUI.browseAssetFile(pack, "binary", urlFile, files, getShell(), new Consumer<String>() {
 
 				@Override

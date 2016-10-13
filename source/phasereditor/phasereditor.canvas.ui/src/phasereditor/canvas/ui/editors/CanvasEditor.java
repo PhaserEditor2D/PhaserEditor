@@ -643,7 +643,7 @@ public class CanvasEditor extends EditorPart
 	protected void updateTitle() {
 		setPartName(getEditorInputFile().getName());
 		firePropertyChange(PROP_TITLE);
-	}
+		}
 
 	@Override
 	public void saveState(IMemento memento) {

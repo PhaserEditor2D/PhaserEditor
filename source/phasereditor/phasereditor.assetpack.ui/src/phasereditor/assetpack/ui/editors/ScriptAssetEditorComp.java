@@ -32,7 +32,6 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
@@ -148,8 +147,8 @@ public class ScriptAssetEditorComp extends Composite {
 		try {
 			AssetPackModel pack = _model.getPack();
 			IFile urlFile = _model.getFileFromUrl(_model.getUrl());
-			IContainer folder = pack.getAssetsFolder().getParent();
-			List<IFile> files = AssetPackCore.discoverFiles(folder, AssetPackCore.createFileExtFilter("js"));
+			List<IFile> files = AssetPackCore.discoverFiles(pack.getWebContentFolder(),
+					AssetPackCore.createFileExtFilter("js"));
 			AssetPackUI.browseAssetFile(pack, "script", urlFile, files, getShell(), new Consumer<String>() {
 
 				@Override
