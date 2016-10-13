@@ -21,6 +21,10 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.views;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.core.resources.IFile;
 import org.eclipse.help.HelpSystem;
 import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
@@ -47,8 +51,12 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
+import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.AssetPackModel;
+import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.FilteredTree2;
@@ -219,19 +227,45 @@ public class AssetExplorer extends ViewPart {
 			return;
 		}
 
+		Object[] expanded = _viewer.getVisibleExpandedElements();
+
+		_viewer.getTree().setRedraw(false);
 		_viewer.refresh();
+
+		List<Object> toExpand = new ArrayList<>();
+
+		for (Object obj : expanded) {
+			if (obj instanceof IAssetKey) {
+				IAssetKey key = ((IAssetKey) obj).getSharedVersion();
+				toExpand.add(key);
+			} else if (obj instanceof AssetGroupModel) {
+				AssetPackModel oldPack = ((AssetGroupModel) obj).getSection().getPack();
+				JSONObject ref = oldPack.getAssetJSONRefrence(obj);
+				IFile file = oldPack.getFile();
+				AssetPackModel newPack = AssetPackCore.getAssetPackModel(file, false);
+				if (newPack != null) {
+					Object obj2 = newPack.getElementFromJSONReference(ref);
+					if (obj2 != null) {
+						toExpand.add(obj2);
+					}
+				}
+			} else if (obj instanceof AssetSectionModel) {
+				AssetPackModel oldPack = ((AssetSectionModel) obj).getPack();
+				JSONObject ref = oldPack.getAssetJSONRefrence(obj);
+				IFile file = oldPack.getFile();
+				AssetPackModel newPack = AssetPackCore.getAssetPackModel(file, false);
+				if (newPack != null) {
+					Object obj2 = newPack.getElementFromJSONReference(ref);
+					toExpand.add(obj2);
+				}
+			} else if (obj instanceof AssetPackModel) {
+				AssetPackModel newPack = AssetPackCore.getAssetPackModel(((AssetPackModel) obj).getFile(), false);
+				toExpand.add(newPack);
+			}
+		}
+		toExpand.remove(null);
+		_viewer.setExpandedElements(toExpand.toArray());
+		_viewer.getTree().setRedraw(true);
 	}
 
-	// private void changeViewMode(ILabelProvider labelProvider,
-	// ITreeContentProvider contentProvider) {
-	// Object provider = _viewer.getLabelProvider();
-	// if (provider != labelProvider) {
-	// _viewer.getTree().clearAll(true);
-	// _viewer.setLabelProvider(labelProvider);
-	// _viewer.setContentProvider(contentProvider);
-	// _viewer.setInput(ROOT);
-	// _viewer.getTree().setRedraw(true);
-	// _viewer.expandToLevel(3);
-	// }
-	// }
 }

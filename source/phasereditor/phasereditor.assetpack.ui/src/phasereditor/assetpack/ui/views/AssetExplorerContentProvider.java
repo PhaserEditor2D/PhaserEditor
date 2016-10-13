@@ -165,7 +165,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 		return super.getChildren(parent);
 	}
 
-	private static IProject getActiveProject() {
+	public static IProject getActiveProject() {
 		IProject activeProjet = null;
 		IEditorPart editor = getActivePage().getActiveEditor();
 		if (editor != null) {
