@@ -58,13 +58,13 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import com.subshell.snippets.jface.tooltip.tooltipsupport.ICustomInformationControlCreator;
 import com.subshell.snippets.jface.tooltip.tooltipsupport.TableViewerInformationProvider;
 import com.subshell.snippets.jface.tooltip.tooltipsupport.Tooltips;
 import com.subshell.snippets.jface.tooltip.tooltipsupport.TreeViewerInformationProvider;
 
-import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
@@ -75,6 +75,7 @@ import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.FrameData;
 import phasereditor.assetpack.core.IAssetElementModel;
+import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
@@ -125,10 +126,8 @@ public class AssetPackUI {
 			pack = ((AssetSectionModel) elem).getPack();
 		} else if (elem instanceof AssetPackModel) {
 			pack = (AssetPackModel) elem;
-		} else if (elem instanceof AssetGroupModel) {
-			pack = ((AssetGroupModel) elem).getSection().getPack();
 		} else if (elem instanceof IAssetElementModel) {
-			pack = ((IAssetElementModel) elem).getAsset().getPack();
+			pack = ((IAssetKey) elem).getAsset().getPack();
 		} else {
 			return false;
 		}
@@ -138,7 +137,11 @@ public class AssetPackUI {
 			AssetPackEditor editor = (AssetPackEditor) page.openEditor(new FileEditorInput(pack.getFile()),
 					AssetPackEditor.ID);
 			if (editor != null) {
-				editor.revealElement(elem);
+				JSONObject ref = pack.getAssetJSONRefrence(elem);
+				Object elem2 = editor.getModel().getElementFromJSONReference(ref);
+				if (elem2 != null) {
+					editor.revealElement(elem2);
+				}
 			}
 		} catch (PartInitException e) {
 			throw new RuntimeException(e);
