@@ -164,13 +164,6 @@
          unpack="false"/>
 
    <plugin
-         id="phasereditor.log.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="phasereditor.audio.core"
          download-size="0"
          install-size="0"

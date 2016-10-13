@@ -28,13 +28,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.IAssetKey;
-import phasereditor.log.core.LogStatus;
 
 /**
  * @author arian
@@ -90,14 +87,13 @@ public class AssetTable {
 		return obj;
 	}
 
-	public IStatus read(JSONObject obj) {
+	public void read(JSONObject obj) {
 
 		if (obj == null) {
 			out.println("Cannot load the asset table, probably it is an older version of the canvas file.");
-			return Status.OK_STATUS;
+			return;
 		}
 
-		LogStatus status = new LogStatus(CanvasCore.PLUGIN_ID, "Failed to load the assets.");
 
 		for (String id : obj.keySet()) {
 			JSONObject refObj = obj.getJSONObject(id);
@@ -111,11 +107,9 @@ public class AssetTable {
 				out.println("Cannot find " + refObj.toString());
 				String msg = "section=" + refObj.optString("section") + ", key=" + refObj.optString("asset")
 						+ ", frame=" + refObj.optString("sprite", "");
-				status.add(new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID, "Not found: " + msg));
+				AssetPackCore.logError("Not found: " + msg);
 			}
 		}
-
-		return status;
 	}
 
 	public IAssetKey lookup(String id) {

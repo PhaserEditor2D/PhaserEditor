@@ -22,8 +22,6 @@
 package phasereditor.canvas.core;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.ui.statushandlers.StatusManager;
 import org.json.JSONObject;
 
 /**
@@ -41,13 +39,7 @@ public class CanvasEditorModel {
 
 	public void read(JSONObject data) {
 		_settings.read(data.getJSONObject("settings"));
-
-		IStatus status = _world.getAssetTable().read(data.optJSONObject("asset-table"));
-
-		if (!status.isOK()) {
-			StatusManager.getManager().handle(status, StatusManager.LOG);
-		}
-
+		_world.getAssetTable().read(data.optJSONObject("asset-table"));
 		_world.read(data.getJSONObject("world"));
 	}
 

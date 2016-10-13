@@ -747,4 +747,8 @@ public class AssetPackCore {
 		e.printStackTrace();
 		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
 	}
+	
+	public static void logError(String msg) {
+		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, msg, null));
+	}
 }
