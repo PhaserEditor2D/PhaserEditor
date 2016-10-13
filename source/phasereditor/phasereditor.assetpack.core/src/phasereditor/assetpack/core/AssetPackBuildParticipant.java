@@ -101,7 +101,8 @@ public class AssetPackBuildParticipant implements IProjectBuildParticipant {
 
 						int kind = delta.getKind();
 
-						if (kind == IResourceDelta.REMOVED) {
+						switch (kind) {
+						case IResourceDelta.REMOVED:
 							for (AssetPackModel pack : packs) {
 								if (deltaFile.equals(pack.getFile())) {
 									IPath movedTo = delta.getMovedToPath();
@@ -123,12 +124,25 @@ public class AssetPackBuildParticipant implements IProjectBuildParticipant {
 									packDelta.getAssets().addAll(pack.getAssets());
 								}
 							}
-						} else if (kind == IResourceDelta.CHANGED && AssetPackCore.isAssetPackFile(deltaFile)) {
-							try {
-								AssetPackCore.resetAssetPackModel(deltaFile);
-							} catch (Exception e) {
-								AssetPackCore.logError(e);
+							break;
+						case IResourceDelta.CHANGED:
+							if (AssetPackCore.isAssetPackFile(deltaFile)) {
+								try {
+									AssetPackCore.resetAssetPackModel(deltaFile);
+								} catch (Exception e) {
+									AssetPackCore.logError(e);
+								}
 							}
+							break;
+						case IResourceDelta.ADDED:
+							// just added:
+							IPath movedFrom = delta.getMovedFromPath();
+							if (movedFrom == null && AssetPackCore.isAssetPackFile(deltaFile)) {
+								AssetPackCore.getAssetPackModel(deltaFile, true);
+							}
+							break;
+						default:
+							break;
 						}
 					}
 					return true;

@@ -1,7 +1,5 @@
 package phasereditor.assetpack.ui;
 
-import static java.lang.System.out;
-
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
@@ -36,7 +34,7 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 	public void startupOnInitialize(IProject project, Map<String, Object> env) {
 		// nothing
 	}
-	
+
 	@Override
 	public void clean(IProject project, Map<String, Object> env) {
 		refreshParts();
@@ -135,11 +133,11 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 					IFile curFile = editor.getEditorInput().getFile();
 					try {
 						delta.accept(d -> {
-							if (d.getKind() == IResourceDelta.REMOVED && d.getResource().equals(curFile)) {
+							int kind = d.getKind();
+							if (kind == IResourceDelta.REMOVED && d.getResource().equals(curFile)) {
 								IPath movedTo = d.getMovedToPath();
 								if (movedTo == null) {
-									out.println("a delete?");
-									//page.closeEditor(editor, true);
+									page.closeEditor(editor, true);
 								} else {
 									IFile newFile = ResourcesPlugin.getWorkspace().getRoot().getFile(movedTo);
 									editor.handleFileRename(newFile);
