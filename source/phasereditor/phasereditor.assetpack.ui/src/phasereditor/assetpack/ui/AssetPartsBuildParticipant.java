@@ -212,7 +212,7 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 			return;
 		}
 
-		if (shared.touched(resourceDelta)) {
+		if (shared.getAsset().touched(resourceDelta)) {
 			view.preview(elem);
 		}
 	}

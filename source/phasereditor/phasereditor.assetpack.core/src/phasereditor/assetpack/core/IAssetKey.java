@@ -22,11 +22,6 @@
 package phasereditor.assetpack.core;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResourceDelta;
-import org.eclipse.core.runtime.CoreException;
 
 /**
  * @author arian
@@ -56,25 +51,4 @@ public interface IAssetKey {
 	 */
 	public IAssetKey getSharedVersion();
 
-	public default boolean touched(IResourceDelta resourceDelta) {
-		AtomicBoolean touched = new AtomicBoolean(false);
-		IFile[] list = getAsset().getUsedFiles();
-		for (IFile used : list) {
-			try {
-				resourceDelta.accept(r -> {
-					if (used.equals(r.getResource())) {
-						touched.set(true);
-						return false;
-					}
-					return true;
-				});
-			} catch (CoreException e) {
-				e.printStackTrace();
-			}
-			if (touched.get()) {
-				return true;
-			}
-		}
-		return touched.get();
-	}
 }

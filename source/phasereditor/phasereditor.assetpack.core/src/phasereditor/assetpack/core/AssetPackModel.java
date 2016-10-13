@@ -40,6 +40,7 @@ import java.util.function.Function;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -89,32 +90,30 @@ public final class AssetPackModel {
 		}
 	}
 
-	public PackDelta computeDelta(IPath filePath) {
+	public PackDelta computeDelta(IPath deltaFilePath) {
 		PackDelta delta = new PackDelta();
 
-		if (filePath == null) {
+		if (deltaFilePath == null) {
 			return delta;
 		}
 
-		Set<AssetModel> currentAssets = new HashSet<>(getAssets());
-
 		IPath packPath = getFile().getFullPath();
 
-		if (packPath.equals(filePath)) {
+		if (packPath.equals(deltaFilePath)) {
 			delta.add(this);
 			return delta;
 		}
 
-		for (AssetModel asset : currentAssets) {
+		for (AssetModel asset : getAssets()) {
 			IFile[] lastUsedFiles = asset.getLastUsedFiles();
 			IFile[] usedFiles = asset.getUsedFiles();
 			IFile[][] allfiles = { lastUsedFiles, usedFiles };
 
 			for (IFile[] files : allfiles) {
-				for (IFile used : files) {
-					if (used != null) {
-						IPath usedPath = used.getFullPath();
-						if (usedPath.equals(filePath)) {
+				for (IFile file : files) {
+					if (file != null) {
+						IPath path = file.getFullPath();
+						if (path.equals(deltaFilePath)) {
 							delta.add(asset);
 						}
 					}
@@ -215,7 +214,7 @@ public final class AssetPackModel {
 		if (_file == null) {
 			return null;
 		}
-		
+
 		return ProjectCore.getWebContentFolder(_file.getProject());
 	}
 
@@ -587,5 +586,14 @@ public final class AssetPackModel {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+	}
+
+	public boolean touched(IResourceDelta delta) {
+		for (AssetModel asset : getAssets()) {
+			if (asset.touched(delta)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

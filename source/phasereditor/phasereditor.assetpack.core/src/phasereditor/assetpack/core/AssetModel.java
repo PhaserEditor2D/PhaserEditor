@@ -29,11 +29,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
@@ -392,5 +397,56 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 	@Override
 	public Object getAdapter(Class adapter) {
 		return null;
+	}
+
+	public boolean touched(IResourceDelta delta) {
+		AtomicBoolean touched = new AtomicBoolean(false);
+		List<IFile> list = new ArrayList<>();
+
+		AssetModel asset = getAsset();
+		list.add(asset.getPack().getFile());
+		list.addAll(Arrays.asList(asset.getUsedFiles()));
+		list.addAll(Arrays.asList(asset.getLastUsedFiles()));
+
+		for (IFile used : list) {
+			if (used == null) {
+				continue;
+			}
+			try {
+				delta.accept(d -> {
+					IResource resource = d.getResource();
+
+					if (used.equals(resource)) {
+						touched.set(true);
+						return false;
+					}
+
+					IPath movedTo = d.getMovedToPath();
+					IPath movedFrom = d.getMovedFromPath();
+
+					if (movedTo != null) {
+						if (used.getFullPath().equals(movedTo)) {
+							touched.set(true);
+							return false;
+						}
+					}
+
+					if (movedFrom != null) {
+						if (used.getFullPath().equals(movedFrom)) {
+							touched.set(true);
+							return false;
+						}
+					}
+
+					return true;
+				});
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
+			if (touched.get()) {
+				return true;
+			}
+		}
+		return touched.get();
 	}
 }

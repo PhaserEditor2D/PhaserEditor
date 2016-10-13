@@ -164,16 +164,22 @@ public class AssetPackBuildParticipant implements IProjectBuildParticipant {
 					IResource resource = delta.getResource();
 					if (resource instanceof IFile) {
 
-						// TODO: let's compute delta pack in a better way?
-
-						IPath movedPath = delta.getMovedToPath();
+						IPath movedTo = delta.getMovedToPath();
+						IPath movedFrom = delta.getMovedFromPath();
 						IPath deltaPath = resource.getFullPath();
 
 						for (AssetPackModel pack : allPacks) {
-							PackDelta delta1 = pack.computeDelta(movedPath);
-							PackDelta delta2 = pack.computeDelta(deltaPath);
-							packDelta.add(delta1);
-							packDelta.add(delta2);
+							if (movedTo != null) {
+								packDelta.add(pack.computeDelta(movedTo));
+							}
+
+							if (movedFrom != null) {
+								packDelta.add(pack.computeDelta(movedFrom));
+							}
+
+							if (deltaPath != null) {
+								packDelta.add(pack.computeDelta(deltaPath));
+							}
 						}
 					}
 					return true;
