@@ -275,8 +275,8 @@ public class AudioSpriteAssetModel extends AudioAssetModel {
 	}
 
 	@Override
-	public IFile[] getUsedFiles() {
-		IFile[] superFiles = super.getUsedFiles();
+	public IFile[] computeUsedFiles() {
+		IFile[] superFiles = super.computeUsedFiles();
 		List<IFile> list = new ArrayList<>(Arrays.asList(superFiles));
 		list.addAll(getFilesFromUrls(_jsonURL));
 		return list.toArray(new IFile[list.size()]);

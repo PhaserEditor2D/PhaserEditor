@@ -129,7 +129,7 @@ public class AudioAssetModel extends AssetModel {
 	}
 
 	@Override
-	public IFile[] getUsedFiles() {
+	public IFile[] computeUsedFiles() {
 		List<IFile> files = getFilesFromUrls(_urls);
 		return files.toArray(new IFile[files.size()]);
 	}

@@ -106,7 +106,7 @@ public final class AssetPackModel {
 
 		for (AssetModel asset : getAssets()) {
 			IFile[] lastUsedFiles = asset.getLastUsedFiles();
-			IFile[] usedFiles = asset.getUsedFiles();
+			IFile[] usedFiles = asset.computeUsedFiles();
 			IFile[][] allfiles = { lastUsedFiles, usedFiles };
 
 			for (IFile[] files : allfiles) {
@@ -283,7 +283,7 @@ public final class AssetPackModel {
 
 			@Override
 			public void accept(AssetModel t) {
-				IFile[] list = t.getUsedFiles();
+				IFile[] list = t.computeUsedFiles();
 				for (IFile f : list) {
 					if (f != null) {
 						usedFiles.add(f);

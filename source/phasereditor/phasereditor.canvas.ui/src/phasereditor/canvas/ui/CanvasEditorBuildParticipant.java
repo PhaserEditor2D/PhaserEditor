@@ -1,5 +1,7 @@
 package phasereditor.canvas.ui;
 
+import static phasereditor.ui.PhaserEditorUI.swtRun;
+
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
@@ -8,7 +10,6 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
@@ -57,7 +58,7 @@ public class CanvasEditorBuildParticipant implements IProjectBuildParticipant {
 
 	private static void build(IResourceDelta delta, PackDelta packDelta, boolean fullBuild) {
 		try {
-			Display.getDefault().asyncExec(new Runnable() {
+			swtRun(new Runnable() {
 
 				@Override
 				public void run() {

@@ -64,7 +64,7 @@ public class UrlAssetModel extends AssetModel {
 	}
 
 	@Override
-	public IFile[] getUsedFiles() {
+	public IFile[] computeUsedFiles() {
 		return new IFile[] { getFileFromUrl(_url) };
 	}
 

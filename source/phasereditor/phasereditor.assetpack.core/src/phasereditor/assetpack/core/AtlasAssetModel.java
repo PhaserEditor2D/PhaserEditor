@@ -101,7 +101,7 @@ public class AtlasAssetModel extends AssetModel {
 	}
 
 	@Override
-	public IFile[] getUsedFiles() {
+	public IFile[] computeUsedFiles() {
 		return new IFile[] { getFileFromUrl(_textureURL), getFileFromUrl(_atlasURL) };
 	}
 

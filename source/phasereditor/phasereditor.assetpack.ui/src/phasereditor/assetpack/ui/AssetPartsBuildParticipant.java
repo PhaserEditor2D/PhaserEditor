@@ -1,5 +1,7 @@
 package phasereditor.assetpack.ui;
 
+import static phasereditor.ui.PhaserEditorUI.swtRun;
+
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
@@ -9,15 +11,16 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
+import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackBuildParticipant;
 import phasereditor.assetpack.core.AssetPackCore.PackDelta;
+import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.ui.editors.AssetPackEditor;
 import phasereditor.assetpack.ui.views.AssetExplorer;
@@ -46,7 +49,7 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 	}
 
 	private static void refreshParts() {
-		Display.getDefault().asyncExec(new Runnable() {
+		swtRun(new Runnable() {
 
 			@Override
 			public void run() {
@@ -96,7 +99,7 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 
 	@Override
 	public void build(IProject project, IResourceDelta delta, Map<String, Object> env) {
-		Display.getDefault().asyncExec(new Runnable() {
+		swtRun(new Runnable() {
 
 			@SuppressWarnings("synthetic-access")
 			@Override
@@ -114,13 +117,13 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 				PackDelta packDelta = AssetPackBuildParticipant.getData(env);
 				buildAssetsViews(packDelta, refs);
 
-				buildAssetPackEditors(delta, page);
+				buildAssetPackEditors(delta, packDelta, page);
 			}
 
 		});
 	}
 
-	private static void buildAssetPackEditors(IResourceDelta delta, IWorkbenchPage page) {
+	private static void buildAssetPackEditors(IResourceDelta delta, PackDelta packDelta, IWorkbenchPage page) {
 
 		// all of this is shit, we should check only for resource delta and
 		// renamed pack files.
@@ -132,6 +135,9 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 				if (editor != null) {
 					IFile curFile = editor.getEditorInput().getFile();
 					try {
+
+						// handle a rename or deletion
+
 						delta.accept(d -> {
 							int kind = d.getKind();
 							if (kind == IResourceDelta.REMOVED && d.getResource().equals(curFile)) {
@@ -145,6 +151,22 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 							}
 							return true;
 						});
+
+						// update content
+
+						boolean refresh = false;
+						AssetPackModel pack = editor.getModel();
+						for (AssetModel asset : packDelta.getAssets()) {
+							if (asset.getPack().getFile().equals(pack.getFile())) {
+								refresh = true;
+								break;
+							}
+						}
+
+						if (refresh) {
+							editor.refresh();
+						}
+
 					} catch (CoreException e) {
 						AssetPackUI.logError(e);
 					}

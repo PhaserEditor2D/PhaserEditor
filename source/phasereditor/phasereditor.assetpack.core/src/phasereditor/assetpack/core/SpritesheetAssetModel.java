@@ -91,7 +91,7 @@ public class SpritesheetAssetModel extends AssetModel {
 	}
 
 	@Override
-	public IFile[] getUsedFiles() {
+	public IFile[] computeUsedFiles() {
 		return new IFile[] { getUrlFile() };
 	}
 

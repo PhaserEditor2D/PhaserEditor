@@ -21,14 +21,18 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core;
 
+import static java.lang.System.out;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.resources.IContainer;
@@ -250,7 +254,7 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 	}
 
 	@SuppressWarnings("static-method")
-	public IFile[] getUsedFiles() {
+	public IFile[] computeUsedFiles() {
 		return new IFile[0];
 	}
 
@@ -310,8 +314,10 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 	 *            Validation problems.
 	 */
 	public final void build(List<IStatus> problems) {
-		_lastUsedFiles = getUsedFiles();
+		_lastUsedFiles = computeUsedFiles();
+
 		internalBuild(problems);
+
 	}
 
 	protected abstract void internalBuild(List<IStatus> problems);
@@ -401,20 +407,25 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 
 	public boolean touched(IResourceDelta delta) {
 		AtomicBoolean touched = new AtomicBoolean(false);
-		List<IFile> list = new ArrayList<>();
+		Set<IFile> list = new HashSet<>();
 
 		AssetModel asset = getAsset();
 		list.add(asset.getPack().getFile());
-		list.addAll(Arrays.asList(asset.getUsedFiles()));
+		list.addAll(Arrays.asList(asset.computeUsedFiles()));
 		list.addAll(Arrays.asList(asset.getLastUsedFiles()));
 
 		for (IFile used : list) {
 			if (used == null) {
 				continue;
 			}
+
+			out.println("testing " + used);
+
 			try {
 				delta.accept(d -> {
 					IResource resource = d.getResource();
+
+					out.println("res " + resource);
 
 					if (used.equals(resource)) {
 						touched.set(true);

@@ -243,7 +243,7 @@ public class TilemapAssetModel extends AssetModel {
 	}
 
 	@Override
-	public IFile[] getUsedFiles() {
+	public IFile[] computeUsedFiles() {
 		return new IFile[] { getUrlFile() };
 	}
 

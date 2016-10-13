@@ -106,7 +106,7 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 		if (asset == null) {
 			missingAsset = true;
 		} else {
-			IFile[] files = asset.getAsset().getUsedFiles();
+			IFile[] files = asset.getAsset().computeUsedFiles();
 			for (IFile file : files) {
 				if (file == null || !file.exists()) {
 					missingAsset = true;
@@ -162,7 +162,7 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 		}
 
 		{
-			for (IFile file : newKey.getAsset().getUsedFiles()) {
+			for (IFile file : newKey.getAsset().computeUsedFiles()) {
 				if (file == null || !file.exists()) {
 					handleAssetNotFound();
 				}

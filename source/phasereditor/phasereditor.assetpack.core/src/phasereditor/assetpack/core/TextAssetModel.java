@@ -51,7 +51,7 @@ public class TextAssetModel extends AssetModel {
 	}
 
 	@Override
-	public IFile[] getUsedFiles() {
+	public IFile[] computeUsedFiles() {
 		return new IFile[] { getFileFromUrl(_url) };
 	}
 
