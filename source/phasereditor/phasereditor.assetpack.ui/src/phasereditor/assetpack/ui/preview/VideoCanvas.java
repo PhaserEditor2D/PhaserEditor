@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
-import java.net.MalformedURLException;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -37,6 +36,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.media.MediaView;
 import phasereditor.assetpack.core.VideoAssetModel;
+import phasereditor.assetpack.ui.AssetPackUI;
 
 /**
  * @author arian
@@ -73,6 +73,15 @@ public class VideoCanvas extends Composite {
 		_mediaView.setPreserveRatio(true);
 		_mediaView.fitWidthProperty().bind(scene.widthProperty());
 		_mediaView.fitHeightProperty().bind(scene.heightProperty());
+
+		addDisposeListener(e -> {
+			if (_mediaView != null) {
+				MediaPlayer player = _mediaView.getMediaPlayer();
+				if (player != null) {
+					player.dispose();
+				}
+			}
+		});
 	}
 
 	public void setAutoPlay(boolean autoPlay) {
@@ -108,9 +117,8 @@ public class VideoCanvas extends Composite {
 			player.setAutoPlay(_autoPlay);
 			player.setCycleCount(MediaPlayer.INDEFINITE);
 			_mediaView.setMediaPlayer(player);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
+		} catch (Exception e) {
+			AssetPackUI.showError(e);
 		}
 	}
 

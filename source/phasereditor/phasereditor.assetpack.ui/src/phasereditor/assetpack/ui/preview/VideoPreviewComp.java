@@ -38,6 +38,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.wb.swt.ResourceManager;
 
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
 import phasereditor.assetpack.core.VideoAssetModel;
 
@@ -70,10 +71,16 @@ public class VideoPreviewComp extends Composite {
 		_controlButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (_videoCanvas.getMediaView().getMediaPlayer().getStatus() == Status.PLAYING) {
-					_videoCanvas.getMediaView().getMediaPlayer().stop();
+				MediaPlayer player = _videoCanvas.getMediaView().getMediaPlayer();
+
+				if (player == null) {
+					return;
+				}
+
+				if (player.getStatus() == Status.PLAYING) {
+					player.stop();
 				} else {
-					_videoCanvas.getMediaView().getMediaPlayer().play();
+					player.play();
 				}
 			}
 		});

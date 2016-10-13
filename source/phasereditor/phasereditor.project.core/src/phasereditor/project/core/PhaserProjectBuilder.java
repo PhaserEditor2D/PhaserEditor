@@ -28,12 +28,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-
-import phasereditor.audio.core.AudioCore;
 
 public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 
@@ -58,8 +55,6 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 			}
 		}
 
-		fullBuild(false);
-
 		out.println("PhaserProjectBuilder.startupOnInitialize (done)");
 	}
 
@@ -79,13 +74,7 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 			}
 		}
 
-		fullBuild(true);
-
 		out.println("PhaserProjectBuilder.clean (done)");
-	}
-
-	private void fullBuild(boolean clean) {
-		AudioCore.makeMediaSnapshots(getProject(), clean);
 	}
 
 	@Override
@@ -95,17 +84,6 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 			out.println("PhaserProjectBuilder.fullBuild (start)");
 		} else {
 			out.println("PhaserProjectBuilder.build (start)");
-		}
-
-		// detect a delete (rename or move should be covered by refactorings)
-		IResourceDelta mainDelta = getDelta(getProject());
-
-		// TODO: move this to a build participant
-		if (mainDelta == null) {
-			AudioCore.makeMediaSnapshots(getProject(), false);
-		} else {
-			AudioCore.makeSoundWavesAndMetadata(mainDelta);
-			AudioCore.makeVideoSnapshot(mainDelta);
 		}
 
 		// call all build participant!!!

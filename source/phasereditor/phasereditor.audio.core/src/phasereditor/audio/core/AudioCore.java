@@ -42,14 +42,15 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
-import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.ui.statushandlers.StatusManager;
 import org.json.JSONObject;
 import org.lwjgl.openal.AL;
 
@@ -488,30 +489,6 @@ public class AudioCore {
 		}
 	}
 
-	public static void makeVideoSnapshot(IResourceDelta projectDelta) {
-		try {
-			projectDelta.accept(new IResourceDeltaVisitor() {
-
-				@Override
-				public boolean visit(IResourceDelta delta) throws CoreException {
-					IResource resource = delta.getResource();
-					if (resource instanceof IFile) {
-						IFile file = (IFile) resource;
-						if (resource.exists() && isSupportedVideo(file)) {
-							if (delta.getKind() == IResourceDelta.CHANGED) {
-								removeVideoProperties(file);
-							}
-							getVideoSnapshotFile(file);
-						}
-					}
-					return true;
-				}
-			});
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
-	}
-
 	protected static void removeVideoProperties(IFile file) {
 		try {
 			file.setPersistentProperty(SNAPSHOT_FILENAME_KEY, null);
@@ -568,37 +545,9 @@ public class AudioCore {
 		}
 	}
 
-	public static void makeMediaSnapshots(IProject project, boolean clean) {
-		try {
-			project.accept(new IResourceVisitor() {
-
-				@Override
-				public boolean visit(IResource resource) throws CoreException {
-					if (resource instanceof IFile) {
-						IFile file = (IFile) resource;
-						if (resource.exists()) {
-							if (isSupportedVideo(file)) {
-								if (clean) {
-									removeVideoProperties(file);
-								}
-								getVideoSnapshotFile(file);
-							} else if (isSupportedAudio(file)) {
-								if (clean) {
-									removeSoundProperties(file);
-								}
-								getSoundWavesFile(file);
-								getSoundDuration(file);
-							}
-						}
-					}
-					return true;
-				}
-			});
-		} catch (CoreException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
-
+	public static void logError(Exception e) {
+		e.printStackTrace();
+		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
 	}
 
 }

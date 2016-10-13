@@ -269,7 +269,7 @@
       <participant
             handler="phasereditor.assetpack.ui.AssetPartsBuildParticipant"
             id="phasereditor.assetpack.ui.participant3"
-            order="2">
+            order="4">
       </participant>
    </extension>
    

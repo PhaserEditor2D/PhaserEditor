@@ -35,6 +35,11 @@ public class CanvasEditorBuildParticipant implements IProjectBuildParticipant {
 	}
 
 	@Override
+	public void startupOnInitialize(IProject project, Map<String, Object> env) {
+		// nothing
+	}
+	
+	@Override
 	public void clean(IProject project, Map<String, Object> env) {
 		// nothing
 	}

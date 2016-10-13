@@ -31,20 +31,11 @@ import org.eclipse.core.resources.IResourceDelta;
  */
 public interface IProjectBuildParticipant {
 
-	@SuppressWarnings("unused")
-	public default void startupOnInitialize(IProject project, Map<String, Object> env) {
-		// nothing
-	}
+	public void startupOnInitialize(IProject project, Map<String, Object> env);
 
-	@SuppressWarnings("unused")
-	public default void clean(IProject project, Map<String, Object> env) {
-		// nothing
-	}
+	public  void clean(IProject project, Map<String, Object> env);
 
 	public void build(IProject project, IResourceDelta delta, Map<String, Object> env);
 
-	@SuppressWarnings("unused")
-	public default void fullBuild(IProject project, Map<String, Object> env) {
-		// nothing
-	}
+	public void fullBuild(IProject project, Map<String, Object> env);
 }
