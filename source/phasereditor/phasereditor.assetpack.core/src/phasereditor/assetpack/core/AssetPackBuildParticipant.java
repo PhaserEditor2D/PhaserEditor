@@ -171,18 +171,22 @@ public class AssetPackBuildParticipant implements IProjectBuildParticipant {
 
 				// delete all affected files markers
 
-				Set<IFile> toCleanMarks = new HashSet<>();
+				{
+					Set<IFile> toCleanMarks = new HashSet<>();
 
-				for (AssetPackModel pack : packDelta.getPacks()) {
-					toCleanMarks.add(pack.getFile());
-				}
+					for (AssetPackModel pack : packDelta.getPacks()) {
+						toCleanMarks.add(pack.getFile());
+					}
 
-				for (AssetModel asset : packDelta.getAssets()) {
-					toCleanMarks.add(asset.getPack().getFile());
-				}
+					for (AssetModel asset : packDelta.getAssets()) {
+						toCleanMarks.add(asset.getPack().getFile());
+					}
 
-				for (IFile file : toCleanMarks) {
-					ProjectCore.deleteResourceMarkers(file, AssetPackCore.ASSET_PACK_PROBLEM_ID);
+					for (IFile file : toCleanMarks) {
+						if (file.exists()) {
+							ProjectCore.deleteResourceMarkers(file, AssetPackCore.ASSET_PACK_PROBLEM_ID);
+						}
+					}
 				}
 
 				// build all affected assets
@@ -198,10 +202,14 @@ public class AssetPackBuildParticipant implements IProjectBuildParticipant {
 				}
 
 				for (AssetModel asset : toBuild) {
+					IFile file = asset.getPack().getFile();
+					if (!file.exists()) {
+						continue;
+					}
 					List<IStatus> problems = new ArrayList<>();
 					asset.build(problems);
 					for (IStatus problem : problems) {
-						createAssetPackMarker(asset.getPack().getFile(), problem);
+						createAssetPackMarker(file, problem);
 					}
 				}
 			}
