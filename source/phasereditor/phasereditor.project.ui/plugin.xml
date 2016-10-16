@@ -173,10 +173,11 @@
       <decorator
             class="phasereditor.project.ui.PhaserProblemLabelDecorator"
             icon="platform:/plugin/org.eclipse.wst.jsdt.ui/icons/full/obj16/error_obj.gif"
-            id="phasereditor.project.ui.decorator2"
+            id="phasereditor.project.ui.problemsDecorator"
             label="Phaser Problems Decorator"
             lightweight="true"
-            location="BOTTOM_LEFT">
+            location="BOTTOM_LEFT"
+            state="true">
          <enablement>
             <objectClass
                   name="org.eclipse.core.resources.IFile">
