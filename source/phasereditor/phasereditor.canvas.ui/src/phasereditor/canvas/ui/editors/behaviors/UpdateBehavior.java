@@ -30,7 +30,6 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IWorkbench;
 
@@ -88,7 +87,7 @@ public class UpdateBehavior {
 
 		control.updateAllFromModel();
 		_canvas.getZoomBehavior().updateZoomAndPan();
-		_canvas.getSelectionBehavior().setSelection(StructuredSelection.EMPTY);
+		_canvas.getSelectionBehavior().updateSelectedNodes();
 	}
 
 	@SuppressWarnings("unused")
