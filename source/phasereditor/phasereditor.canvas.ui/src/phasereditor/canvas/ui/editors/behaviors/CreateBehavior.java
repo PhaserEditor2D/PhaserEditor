@@ -209,7 +209,11 @@ public class CreateBehavior {
 
 		// we use the table only if the pasting nodes comes from the same
 		// canvas.
-		boolean useTable = filtered.size() > 0 && filtered.get(0).getNode().getScene() == _canvas.getScene();
+		// boolean useTable = filtered.size() > 0 &&
+		// filtered.get(0).getNode().getScene() == _canvas.getScene();
+
+		// is better to do not use the table, it was introducing bugs
+		boolean useTable = false;
 
 		GroupControl worldControl = _canvas.getWorldNode().getControl();
 		GroupControl pasteIntoThis = worldControl;

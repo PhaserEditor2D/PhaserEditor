@@ -282,7 +282,7 @@ public class ObjectCanvas extends FXCanvas {
 
 		BaseObjectModel model = control.getModel();
 
-		operations.add(new AddNodeOperation(model.toJSON(true), -1, x, y, worldNode.getModel().getId()));
+		operations.add(new AddNodeOperation(model.toJSON(false), -1, x, y, worldNode.getModel().getId()));
 
 		// control.updateFromModel();
 		// worldNode.getControl().addChild(node);

@@ -87,7 +87,7 @@ public abstract class AbstractMorphHandler extends AbstractHandler {
 		BaseObjectModel dstModel = createMorphModel(srcNode, assetKey, parent);
 
 		int i = parent.getNode().getChildren().indexOf(srcNode);
-		operations.add(new AddNodeOperation(dstModel.toJSON(true), i, dstModel.getX(), dstModel.getY(),
+		operations.add(new AddNodeOperation(dstModel.toJSON(false), i, dstModel.getX(), dstModel.getY(),
 				parent.getModel().getId()));
 		return dstModel.getId();
 	}
