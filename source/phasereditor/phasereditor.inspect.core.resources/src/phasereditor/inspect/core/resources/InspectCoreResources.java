@@ -23,7 +23,7 @@ package phasereditor.inspect.core.resources;
 
 import static java.lang.System.out;
 
-import java.net.URISyntaxException;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -33,6 +33,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
@@ -52,12 +53,11 @@ public class InspectCoreResources {
 		if (_resourcesPath == null) {
 			String path = System.getProperty(PROP_PHASEREDITOR_RESOURCES);
 			if (path == null) {
-				try {
-					_resourcesPath = Paths.get(Platform.getInstallLocation().getURL().toURI()).resolve("resources");
-				} catch (URISyntaxException e) {
-					e.printStackTrace();
-					throw new RuntimeException(e);
-				}
+				Location installLoc = Platform.getInstallLocation();
+				String installPath = installLoc.getURL().getPath();
+				File installFile = new File(installPath);
+				out.println("Install location file: " + installFile);
+				_resourcesPath = installFile.toPath().resolve("resources");
 			} else {
 				_resourcesPath = Paths.get(path);
 			}
