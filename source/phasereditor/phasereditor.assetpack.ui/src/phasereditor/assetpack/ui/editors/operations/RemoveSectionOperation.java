@@ -26,8 +26,6 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.TreeViewer;
 
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
@@ -37,18 +35,18 @@ import phasereditor.assetpack.ui.editors.AssetPackEditor;
  * @author arian
  *
  */
-public class AddSectionOperation extends AssetPackOperation {
+public class RemoveSectionOperation extends AssetPackOperation {
 
-	private String _sectionName;
-	private ISelection _prevSelection;
-	private AssetSectionModel _addedSection;
+	private AssetSectionModel _section;
+	private int _sectionIndex;
 
 	/**
 	 * @param label
 	 */
-	public AddSectionOperation(String sectionName) {
-		super("AddSection");
-		_sectionName = sectionName;
+	public RemoveSectionOperation(AssetSectionModel section) {
+		super("RemoveSection");
+		_sectionIndex = -1;
+		_section = section;
 	}
 
 	@Override
@@ -56,19 +54,9 @@ public class AddSectionOperation extends AssetPackOperation {
 		AssetPackEditor editor = getEditor(info);
 		AssetPackModel model = editor.getModel();
 
-		_addedSection = new AssetSectionModel(_sectionName, model);
-
-		TreeViewer viewer = editor.getViewer();
-
-		viewer.getTree().setRedraw(false);
-		
-		model.addSection(_addedSection, true);
-		
-		_prevSelection = viewer.getSelection();
+		_sectionIndex = model.getSections().indexOf(_section);
+		model.removeSection(_section);
 		editor.refresh();
-		editor.revealElement(_addedSection);
-
-		viewer.getTree().setRedraw(true);
 
 		return Status.OK_STATUS;
 	}
@@ -83,14 +71,7 @@ public class AddSectionOperation extends AssetPackOperation {
 		AssetPackEditor editor = getEditor(info);
 		AssetPackModel model = editor.getModel();
 
-		TreeViewer viewer = editor.getViewer();
-		viewer.getTree().setRedraw(false);
-
-		model.removeSection(_addedSection);
-		viewer.refresh();
-		viewer.setSelection(_prevSelection);
-
-		viewer.getTree().setRedraw(true);
+		model.addSection(_sectionIndex, _section, true);
 
 		return Status.OK_STATUS;
 	}

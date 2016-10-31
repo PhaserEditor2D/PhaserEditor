@@ -391,8 +391,12 @@ public final class AssetPackModel {
 	}
 
 	public void addSection(AssetSectionModel section, boolean notify) {
+		addSection(_sections.size(), section, notify);
+	}
+	
+	public void addSection(int index, AssetSectionModel section, boolean notify) {
 		section.setPack(this);
-		_sections.add(section);
+		_sections.add(index, section);
 		if (notify) {
 			setDirty(true);
 		}

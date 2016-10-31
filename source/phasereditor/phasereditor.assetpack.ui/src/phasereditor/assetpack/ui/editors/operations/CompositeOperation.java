@@ -21,76 +21,87 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editors.operations;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeViewer;
-
-import phasereditor.assetpack.core.AssetPackModel;
-import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor;
+import org.eclipse.swt.widgets.Tree;
 
 /**
  * @author arian
  *
  */
-public class AddSectionOperation extends AssetPackOperation {
+public class CompositeOperation extends AssetPackOperation {
 
-	private String _sectionName;
-	private ISelection _prevSelection;
-	private AssetSectionModel _addedSection;
+	private List<AssetPackOperation> _operations;
 
 	/**
 	 * @param label
 	 */
-	public AddSectionOperation(String sectionName) {
-		super("AddSection");
-		_sectionName = sectionName;
+	public CompositeOperation() {
+		super("CompositeOperation");
+		_operations = new ArrayList<>();
+	}
+
+	public void add(AssetPackOperation op) {
+		_operations.add(op);
+	}
+
+	public boolean isEmpty() {
+		return _operations.isEmpty();
 	}
 
 	@Override
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		AssetPackEditor editor = getEditor(info);
-		AssetPackModel model = editor.getModel();
+		TreeViewer viewer = getEditor(info).getViewer();
+		Tree tree = viewer.getTree();
+		tree.setRedraw(false);
 
-		_addedSection = new AssetSectionModel(_sectionName, model);
+		for (AssetPackOperation op : _operations) {
+			op.execute(monitor, info);
+		}
 
-		TreeViewer viewer = editor.getViewer();
-
-		viewer.getTree().setRedraw(false);
-		
-		model.addSection(_addedSection, true);
-		
-		_prevSelection = viewer.getSelection();
-		editor.refresh();
-		editor.revealElement(_addedSection);
-
-		viewer.getTree().setRedraw(true);
+		viewer.refresh();
+		tree.setRedraw(true);
 
 		return Status.OK_STATUS;
 	}
 
 	@Override
 	public IStatus redo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		return execute(monitor, info);
+
+		TreeViewer viewer = getEditor(info).getViewer();
+		Tree tree = viewer.getTree();
+		tree.setRedraw(false);
+
+		for (AssetPackOperation op : _operations) {
+			op.redo(monitor, info);
+		}
+
+		viewer.refresh();
+		tree.setRedraw(true);
+
+		return Status.OK_STATUS;
 	}
 
 	@Override
 	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		AssetPackEditor editor = getEditor(info);
-		AssetPackModel model = editor.getModel();
+		TreeViewer viewer = getEditor(info).getViewer();
+		Tree tree = viewer.getTree();
+		tree.setRedraw(false);
 
-		TreeViewer viewer = editor.getViewer();
-		viewer.getTree().setRedraw(false);
+		for (int i = _operations.size() - 1; i >= 0; i--) {
+			AssetPackOperation op = _operations.get(i);
+			op.undo(monitor, info);
+		}
 
-		model.removeSection(_addedSection);
 		viewer.refresh();
-		viewer.setSelection(_prevSelection);
-
-		viewer.getTree().setRedraw(true);
+		tree.setRedraw(true);
 
 		return Status.OK_STATUS;
 	}
