@@ -215,6 +215,30 @@
             </with>
          </activeWhen>
       </handler>
+      <handler
+            class="phasereditor.assetpack.ui.handlers.UndoHandler"
+            commandId="org.eclipse.ui.edit.undo">
+         <activeWhen>
+            <with
+                  variable="activeEditorId">
+               <equals
+                     value="phasereditor.assetpack.editor">
+               </equals>
+            </with>
+         </activeWhen>
+      </handler>
+      <handler
+            class="phasereditor.assetpack.ui.handlers.RedoHandler"
+            commandId="org.eclipse.ui.edit.redo">
+         <activeWhen>
+            <with
+                  variable="activeEditorId">
+               <equals
+                     value="phasereditor.assetpack.editor">
+               </equals>
+            </with>
+         </activeWhen>
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">

@@ -29,6 +29,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.operations.IOperationHistory;
+import org.eclipse.core.commands.operations.IUndoContext;
+import org.eclipse.core.commands.operations.IUndoableOperation;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
@@ -109,11 +113,24 @@ import phasereditor.assetpack.core.VideoAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetsContentProvider;
+import phasereditor.assetpack.ui.editors.operations.AddSectionOperation;
 import phasereditor.ui.PhaserEditorUI;
 
 public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInSource {
 
 	public static final String ID = AssetPackCore.ASSET_EDITOR_ID;
+	public static final IUndoContext UNDO_CONTEXT = new IUndoContext() {
+
+		@Override
+		public boolean matches(IUndoContext context) {
+			return context == this;
+		}
+
+		@Override
+		public String getLabel() {
+			return "ASSET_PACK_EDITOR_CONTEXT";
+		}
+	};
 
 	private AssetPackModel _model;
 
@@ -603,11 +620,24 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 					}
 				});
 		if (dlg.open() == Window.OK) {
-			String result = dlg.getValue();
-			AssetSectionModel section = new AssetSectionModel(result, model);
-			model.addSection(section, true);
-			refresh();
-			revealElement(section);
+			// String result = dlg.getValue();
+			// AssetSectionModel section = new AssetSectionModel(result, model);
+			// model.addSection(section, true);
+			// refresh();
+			// revealElement(section);
+
+			String sectionName = dlg.getValue();
+			executeOperation(new AddSectionOperation(sectionName));
+		}
+	}
+
+	private void executeOperation(IUndoableOperation op) {
+		IOperationHistory history = getEditorSite().getWorkbenchWindow().getWorkbench().getOperationSupport()
+				.getOperationHistory();
+		try {
+			history.execute(op, null, this);
+		} catch (ExecutionException e) {
+			AssetPackUI.showError(e);
 		}
 	}
 
@@ -840,5 +870,9 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	@Override
 	public void setFocus() {
 		_allAssetsViewer.getControl().setFocus();
+	}
+
+	public TreeViewer getViewer() {
+		return _allAssetsViewer;
 	}
 }
