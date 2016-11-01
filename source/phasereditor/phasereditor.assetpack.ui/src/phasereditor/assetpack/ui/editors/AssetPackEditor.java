@@ -113,6 +113,7 @@ import phasereditor.assetpack.core.VideoAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetsContentProvider;
+import phasereditor.assetpack.ui.editors.operations.AddAssetOperation;
 import phasereditor.assetpack.ui.editors.operations.AddSectionOperation;
 import phasereditor.assetpack.ui.editors.operations.CompositeOperation;
 import phasereditor.assetpack.ui.editors.operations.RemoveAssetOperation;
@@ -687,9 +688,10 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				AssetPackModel pack = getModel();
 				String key = pack.createKey(type.name());
 				AssetModel asset = factory.createAsset(key, section);
-				section.addAsset(asset, true);
-				refresh();
-				revealElement(asset);
+//				section.addAsset(asset, true);
+//				refresh();
+//				revealElement(asset);
+				executeOperation(new AddAssetOperation(section, asset));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

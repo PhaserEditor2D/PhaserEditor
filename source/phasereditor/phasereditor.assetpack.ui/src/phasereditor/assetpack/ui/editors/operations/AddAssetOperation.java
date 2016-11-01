@@ -21,38 +21,40 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editors.operations;
 
-import java.util.List;
-
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
-import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.AssetSectionModel;
+import phasereditor.assetpack.ui.editors.AssetPackEditor;
 
 /**
  * @author arian
  *
  */
-public class RemoveGroupOperation extends AssetPackOperation {
+public class AddAssetOperation extends AssetPackOperation {
 
-	private AssetGroupModel _group;
-	private List<AssetModel> _assets;
+	private AssetModel _asset;
+	private AssetSectionModel _section;
 
 	/**
 	 * @param label
 	 */
-	public RemoveGroupOperation(AssetGroupModel group) {
-		super("RemoveGroup");
-		_group = group;
-		_assets = group.getAssets();
+	public AddAssetOperation(AssetSectionModel section, AssetModel asset) {
+		super("AddAssetOperation");
+		_section = section;
+		_asset = asset;
 	}
 
 	@Override
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		_group.getSection().removeGroup(_group);
+		AssetPackEditor editor = getEditor(info);
+		_section.addAsset(_asset, true);
+		editor.getViewer().refresh();
+		editor.revealElement(_asset);
 		return Status.OK_STATUS;
 	}
 
@@ -63,9 +65,9 @@ public class RemoveGroupOperation extends AssetPackOperation {
 
 	@Override
 	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		for (AssetModel asset : _assets) {
-			_group.getSection().addAsset(asset, false);
-		}
+		AssetPackEditor editor = getEditor(info);
+		_section.removeAsset(_asset);
+		editor.getViewer().refresh();
 		return Status.OK_STATUS;
 	}
 
