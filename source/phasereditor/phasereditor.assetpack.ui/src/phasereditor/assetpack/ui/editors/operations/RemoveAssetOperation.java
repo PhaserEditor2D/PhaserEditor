@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editors.operations;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -28,6 +31,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.ui.editors.AssetPackEditor;
 
 /**
  * @author arian
@@ -37,6 +41,7 @@ public class RemoveAssetOperation extends AssetPackOperation {
 
 	private AssetModel _asset;
 	private int _index;
+	private boolean _reveal;
 
 	/**
 	 * @param label
@@ -49,6 +54,8 @@ public class RemoveAssetOperation extends AssetPackOperation {
 	@Override
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		_index = _asset.getSection().getAssets().indexOf(_asset);
+		List<Object> expanded = Arrays.asList(getEditor(info).getViewer().getExpandedElements());
+		_reveal = expanded.contains(_asset.getGroup());
 		_asset.getSection().removeAsset(_asset);
 		return Status.OK_STATUS;
 	}
@@ -61,6 +68,11 @@ public class RemoveAssetOperation extends AssetPackOperation {
 	@Override
 	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		_asset.getSection().addAsset(_index, _asset, false);
+		if (_reveal) {
+			AssetPackEditor editor = getEditor(info);
+			editor.refresh();
+			editor.revealElement(_asset);
+		}
 		return Status.OK_STATUS;
 	}
 
