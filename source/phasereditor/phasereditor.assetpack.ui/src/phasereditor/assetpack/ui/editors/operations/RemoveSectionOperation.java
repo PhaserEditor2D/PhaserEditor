@@ -55,8 +55,7 @@ public class RemoveSectionOperation extends AssetPackOperation {
 		AssetPackModel model = editor.getModel();
 
 		_sectionIndex = model.getSections().indexOf(_section);
-		model.removeSection(_section);
-		editor.refresh();
+		model.removeSection(_section, false);
 
 		return Status.OK_STATUS;
 	}
@@ -71,7 +70,7 @@ public class RemoveSectionOperation extends AssetPackOperation {
 		AssetPackEditor editor = getEditor(info);
 		AssetPackModel model = editor.getModel();
 
-		model.addSection(_sectionIndex, _section, true);
+		model.addSection(_sectionIndex, _section, false);
 
 		return Status.OK_STATUS;
 	}

@@ -68,12 +68,16 @@ public class AssetSectionModel implements IAdaptable {
 		_pack = pack;
 	}
 
-	public void addAsset(AssetModel asset, boolean notify) {
+	public void addAsset(int index, AssetModel asset, boolean notify) {
 		asset.setSection(this);
-		_assets.add(asset);
+		_assets.add(index, asset);
 		if (notify) {
 			getPack().setDirty(true);
 		}
+	}
+	
+	public void addAsset(AssetModel asset, boolean notify) {
+		this.addAsset(_assets.size(), asset, notify);
 	}
 
 	public String getKey() {

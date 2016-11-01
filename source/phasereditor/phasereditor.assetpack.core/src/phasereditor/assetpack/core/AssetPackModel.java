@@ -393,7 +393,7 @@ public final class AssetPackModel {
 	public void addSection(AssetSectionModel section, boolean notify) {
 		addSection(_sections.size(), section, notify);
 	}
-	
+
 	public void addSection(int index, AssetSectionModel section, boolean notify) {
 		section.setPack(this);
 		_sections.add(index, section);
@@ -402,9 +402,11 @@ public final class AssetPackModel {
 		}
 	}
 
-	public void removeSection(AssetSectionModel section) {
+	public void removeSection(AssetSectionModel section, boolean notify) {
 		_sections.remove(section);
-		setDirty(true);
+		if (notify) {
+			setDirty(true);
+		}
 	}
 
 	public List<AssetSectionModel> getSections() {

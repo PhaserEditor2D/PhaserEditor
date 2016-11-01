@@ -86,7 +86,7 @@ public class AddSectionOperation extends AssetPackOperation {
 		TreeViewer viewer = editor.getViewer();
 		viewer.getTree().setRedraw(false);
 
-		model.removeSection(_addedSection);
+		model.removeSection(_addedSection, false);
 		viewer.refresh();
 		viewer.setSelection(_prevSelection);
 
