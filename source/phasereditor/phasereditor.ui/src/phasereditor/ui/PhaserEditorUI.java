@@ -379,6 +379,11 @@ public class PhaserEditorUI {
 
 	public static void swtRun(Runnable run) {
 		try {
+			
+			if (PlatformUI.getWorkbench().isClosing()) {
+				return;
+			}
+			
 			Display display = Display.getDefault();
 			display.asyncExec(new Runnable() {
 

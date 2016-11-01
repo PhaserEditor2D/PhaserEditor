@@ -24,6 +24,7 @@ package phasereditor.assetpack.ui.editors;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -553,7 +554,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	void removeAssetElement() {
 		List<AssetModel> list = new ArrayList<>();
 
-		for (Object element : ((StructuredSelection) _allAssetsViewer.getSelection()).toArray()) {
+		Object[] selection = ((StructuredSelection) _allAssetsViewer.getSelection()).toArray();
+		for (Object element : selection) {
 			if (element instanceof AssetSectionModel) {
 				list.addAll(((AssetSectionModel) element).getAssets());
 			} else if (element instanceof AssetGroupModel) {
@@ -567,9 +569,35 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			return;
 		}
 
+		// remove all sub-elements from the selection
+
+		Set<Object> original = new HashSet<>(Arrays.asList(selection));
+		List<Object> filtered = new ArrayList<>();
+
+		for (Object element : selection) {
+			if (element instanceof AssetModel) {
+				AssetModel asset = (AssetModel) element;
+				if (original.contains(asset.getGroup())) {
+					continue;
+				}
+
+				if (original.contains(asset.getSection())) {
+					continue;
+				}
+			} else if (element instanceof AssetGroupModel) {
+				if (original.contains(((AssetGroupModel) element).getSection())) {
+					continue;
+				}
+			}
+
+			filtered.add(element);
+		}
+
+		// execute operations
+
 		CompositeOperation operations = new CompositeOperation();
 
-		for (Object element : ((StructuredSelection) _allAssetsViewer.getSelection()).toArray()) {
+		for (Object element : filtered) {
 			if (element instanceof AssetSectionModel) {
 				AssetSectionModel section = (AssetSectionModel) element;
 				operations.add(new RemoveSectionOperation(section));
@@ -688,9 +716,9 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				AssetPackModel pack = getModel();
 				String key = pack.createKey(type.name());
 				AssetModel asset = factory.createAsset(key, section);
-//				section.addAsset(asset, true);
-//				refresh();
-//				revealElement(asset);
+				// section.addAsset(asset, true);
+				// refresh();
+				// revealElement(asset);
 				executeOperation(new AddAssetOperation(section, asset));
 			}
 		} catch (Exception e) {
