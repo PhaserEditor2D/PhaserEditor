@@ -116,6 +116,7 @@ import phasereditor.assetpack.ui.AssetsContentProvider;
 import phasereditor.assetpack.ui.editors.operations.AddSectionOperation;
 import phasereditor.assetpack.ui.editors.operations.CompositeOperation;
 import phasereditor.assetpack.ui.editors.operations.RemoveAssetOperation;
+import phasereditor.assetpack.ui.editors.operations.RemoveGroupOperation;
 import phasereditor.assetpack.ui.editors.operations.RemoveSectionOperation;
 import phasereditor.ui.PhaserEditorUI;
 
@@ -572,8 +573,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				AssetSectionModel section = (AssetSectionModel) element;
 				operations.add(new RemoveSectionOperation(section));
 			} else if (element instanceof AssetGroupModel) {
-				AssetGroupModel group = (AssetGroupModel) element;
-				group.getSection().removeGroup(group);
+				operations.add(new RemoveGroupOperation((AssetGroupModel) element));
 			} else if (element instanceof AssetModel) {
 				operations.add(new RemoveAssetOperation((AssetModel) element));
 			}
