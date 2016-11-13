@@ -46,7 +46,8 @@ Level.prototype.create = function() {
 		group.setAll("body.allowGravity", false);
 		group.setAll("body.immovable", true);
 	}
-
+	scene1.fGround.setAll("renderable", false);
+	
 	this.ground = scene1.fGround;
 	this.coins = scene1.fCoins;
 	this.keyYellow = scene1.fKeyYellow;

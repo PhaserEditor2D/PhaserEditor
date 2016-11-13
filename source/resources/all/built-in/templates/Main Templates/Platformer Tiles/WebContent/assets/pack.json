@@ -49,10 +49,16 @@
             "key": "background",
             "url": "assets/images/bck3.png",
             "overwrite": false
+        },
+        {
+            "type": "image",
+            "key": "p",
+            "url": "assets/images/physics.png",
+            "overwrite": false
         }
     ],
     "meta": {
-        "generated": "1471462742092",
+        "generated": "1479045476836",
         "app": "Phaser Editor",
         "url": "http://phasereditor.boniatillo.com",
         "version": "1.0",

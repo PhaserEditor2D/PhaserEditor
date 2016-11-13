@@ -15,46 +15,39 @@ function Scene1(aGame, aParent) {
 
 	var background = this.game.add.sprite(0, 0, 'background', null, this);
 
-	var ground = this.game.add.physicsGroup(Phaser.Physics.ARCADE, this);
-	ground.physicsSortDirection = Phaser.Physics.Arcade.LEFT_RIGHT;
+	this.game.add.tileSprite(0, -35, 140, 2310, 'objects', 'block', this);
 
-	this.game.add.tileSprite(0, -35, 140, 2310, 'objects', 'block', ground);
+	this.game.add.tileSprite(140, 1855, 2170, 420, 'objects', 'block', this);
 
-	this.game.add.tileSprite(140, 1855, 2170, 420, 'objects', 'block', ground);
+	this.game.add.tileSprite(3150, -35, 140, 2310, 'objects', 'block', this);
 
-	this.game.add.tileSprite(3150, -35, 140, 2310, 'objects', 'block', ground);
+	this.game.add.sprite(910, 1155, 'objects', 'hill_long', this);
 
-	var hill_long = this.game.add.sprite(910, 1155, 'objects', 'hill_long', ground);
-	hill_long.body.setSize(48.0, 129.12109375, 0.0, 16.87890625);
+	this.game.add.sprite(835, 1199, 'objects', 'hill_short', this);
 
-	var hill_short = this.game.add.sprite(835, 1199, 'objects', 'hill_short', ground);
-	hill_short.body.setSize(48.0, 84.7193603515625, 0.0, 17.2806396484375);
+	this.game.add.tileSprite(1120, 875, 350, 70, 'objects', 'ground', this);
 
-	this.game.add.tileSprite(1120, 875, 350, 70, 'objects', 'ground', ground);
+	this.game.add.tileSprite(1190, 945, 210, 70, 'objects', 'ground_dirt', this);
 
-	this.game.add.tileSprite(1190, 945, 210, 70, 'objects', 'ground_dirt', ground);
+	this.game.add.sprite(1260, 1015, 'objects', 'ground_dirt', this);
 
-	this.game.add.sprite(1260, 1015, 'objects', 'ground_dirt', ground);
+	this.game.add.tileSprite(1960, 595, 210, 70, 'objects', 'ground_dirt', this);
 
-	this.game.add.tileSprite(1960, 595, 210, 70, 'objects', 'ground_dirt', ground);
+	this.game.add.sprite(1392, 1758, 'objects', 'hill_short', this);
 
-	var hill_short1 = this.game.add.sprite(1392, 1758, 'objects', 'hill_short', ground);
-	hill_short1.body.setSize(48.0, 85.12109375, 0.0, 16.87890625);
+	this.game.add.sprite(1330, 1715, 'objects', 'hill_long', this);
 
-	var hill_long1 = this.game.add.sprite(1330, 1715, 'objects', 'hill_long', ground);
-	hill_long1.body.setSize(48.0, 131.532470703125, 0.0, 14.467529296875);
+	this.game.add.tileSprite(1890, 525, 350, 70, 'objects', 'ground', this);
 
-	this.game.add.tileSprite(1890, 525, 350, 70, 'objects', 'ground', ground);
+	this.game.add.sprite(2030, 665, 'objects', 'ground_dirt', this);
 
-	this.game.add.sprite(2030, 665, 'objects', 'ground_dirt', ground);
+	this.game.add.tileSprite(2310, 1995, 840, 280, 'objects', 'block', this);
 
-	this.game.add.tileSprite(2310, 1995, 840, 280, 'objects', 'block', ground);
+	this.game.add.tileSprite(140, 1295, 2240, 70, 'objects', 'ground', this);
 
-	this.game.add.tileSprite(140, 1295, 2240, 70, 'objects', 'ground', ground);
+	this.game.add.tileSprite(1785, 1750, 284, 24, 'objects', 'bridge', this);
 
-	this.game.add.tileSprite(1785, 1750, 284, 24, 'objects', 'bridge', ground);
-
-	this.game.add.tileSprite(140, 1715, 70, 140, 'objects', 'crate', ground);
+	this.game.add.tileSprite(140, 1715, 70, 140, 'objects', 'crate', this);
 
 	this.game.add.tileSprite(140, 1365, 2170, 140, 'objects', 'block', this);
 
@@ -342,10 +335,39 @@ function Scene1(aGame, aParent) {
 
 	this.game.add.tileSprite(1785, 1820, 280, 35, 'objects', 'spikes', spikes);
 
+	var ground = this.game.add.physicsGroup(Phaser.Physics.ARCADE, this);
+
+	this.game.add.tileSprite(140, 1855, 2170, 70, 'p', null, ground);
+
+	this.game.add.tileSprite(2310, 1995, 840, 70, 'p', null, ground);
+
+	this.game.add.tileSprite(140, 1715, 70, 140, 'p', null, ground);
+
+	this.game.add.tileSprite(70, 1505, 70, 210, 'p', null, ground);
+
+	this.game.add.tileSprite(140, 1295, 2240, 70, 'p', null, ground);
+
+	this.game.add.tileSprite(1785, 1750, 285, 24, 'p', null, ground);
+
+	this.game.add.tileSprite(1120, 875, 350, 70, 'p', null, ground);
+
+	this.game.add.tileSprite(1890, 525, 350, 70, 'p', null, ground);
+
+	this.game.add.tileSprite(3150, -35, 70, 2030, 'p', null, ground);
+
+	this.game.add.tileSprite(70, -35, 70, 1330, 'p', null, ground);
+
+	this.game.add.tileSprite(835, 1218, 48, 76, 'p', null, ground);
+
+	this.game.add.tileSprite(910, 1174, 48, 121, 'p', null, ground);
+
+	this.game.add.tileSprite(1392, 1779, 48, 76, 'p', null, ground);
+
+	this.game.add.tileSprite(1330, 1734, 48, 121, 'p', null, ground);
+
 	 // public fields
 
 	this.fBackground = background;
-	this.fGround = ground;
 	this.fLockYellow = lockYellow;
 	this.fCoins = coins;
 	this.fMovingPlatforms = movingPlatforms;
@@ -354,6 +376,7 @@ function Scene1(aGame, aParent) {
 	this.fWater = water;
 	this.fFlyEnemies = flyEnemies;
 	this.fSpikes = spikes;
+	this.fGround = ground;
 
 	/* --- post-init-begin --- */
 
