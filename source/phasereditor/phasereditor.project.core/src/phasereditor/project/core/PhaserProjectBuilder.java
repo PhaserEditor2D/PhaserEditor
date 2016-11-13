@@ -34,6 +34,12 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 
+	private static HashMap<IProject, Runnable> _actions = new HashMap<>();
+
+	public static void setActionOnStartup(IProject project, Runnable runnable) {
+		_actions.put(project, runnable);
+	}
+
 	@Override
 	protected void startupOnInitialize() {
 		super.startupOnInitialize();
@@ -56,6 +62,12 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 		}
 
 		out.println("PhaserProjectBuilder.startupOnInitialize (done)");
+		
+		Runnable action = _actions.get(project);
+		if (action != null) {
+			_actions.remove(project);
+			action.run();
+		}
 	}
 
 	@Override

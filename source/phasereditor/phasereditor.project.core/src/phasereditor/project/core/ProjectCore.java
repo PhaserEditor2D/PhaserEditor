@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.core;
 
+import static java.lang.System.out;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,9 +48,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPage;
@@ -208,9 +207,6 @@ public class ProjectCore {
 
 			@Override
 			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-				JsNature.addJsNature(project, monitor);
-				PhaserProjectNature.addPhaserNature(project, monitor);
-
 				IFolder webContentFolder = project.getFolder("WebContent");
 				webContentFolder.create(true, true, monitor);
 
@@ -219,62 +215,17 @@ public class ProjectCore {
 
 				template.copyInto(webContentFolder, monitor);
 
+				JsNature.addJsNature(project, monitor);
+				PhaserProjectNature.addPhaserNature(project, monitor);
+
+				PhaserProjectBuilder.setActionOnStartup(project, () -> openTemplateMainFileInEditor(project, template));
+
 				return Status.OK_STATUS;
 			}
 
 		};
 
 		copyJob.schedule();
-
-		copyJob.addJobChangeListener(new JobChangeAdapter() {
-			@Override
-			public void done(IJobChangeEvent event) {
-				IFolder webContentFolder = project.getFolder("WebContent");
-				IFile file = template.getOpenFile(webContentFolder);
-				if (file != null) {
-					Job job = new Job("Opening " + file.getName()) {
-
-						@Override
-						protected IStatus run(IProgressMonitor monitor2) {
-							Display.getDefault().syncExec(new Runnable() {
-
-								@Override
-								public void run() {
-									IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-									IWorkbenchPage page = window.getActivePage();
-									try {
-										IDE.openEditor(page, file);
-									} catch (PartInitException e) {
-										e.printStackTrace();
-										throw new RuntimeException(e);
-									}
-
-									String url = template.getInfo().getUrl();
-									if (url != null) {
-										if (MessageDialog.openQuestion(window.getShell(), "Open URL",
-												"Do you want to open the template url?")) {
-											try {
-												IWorkbenchBrowserSupport support = PlatformUI.getWorkbench()
-														.getBrowserSupport();
-												IWebBrowser browser = support.getExternalBrowser();
-												browser.openURL(new URL(url));
-											} catch (Exception e) {
-												e.printStackTrace();
-												throw new RuntimeException(e);
-											}
-										}
-									}
-								}
-							});
-
-							return Status.OK_STATUS;
-						}
-					};
-					job.setUser(true);
-					job.schedule();
-				}
-			}
-		});
 	}
 
 	/**
@@ -352,6 +303,43 @@ public class ProjectCore {
 
 		} catch (CoreException e) {
 			throw new RuntimeException(e);
+		}
+	}
+
+	static void openTemplateMainFileInEditor(IProject project, IPhaserTemplate template) {
+		IFolder webContentFolder = project.getFolder("WebContent");
+		IFile file = template.getOpenFile(webContentFolder);
+		if (file != null) {
+			out.println("Opening project main file: " + file);
+			Display.getDefault().asyncExec(new Runnable() {
+
+				@Override
+				public void run() {
+					IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+					IWorkbenchPage page = window.getActivePage();
+					try {
+						IDE.openEditor(page, file);
+					} catch (PartInitException e) {
+						e.printStackTrace();
+						throw new RuntimeException(e);
+					}
+
+					String url = template.getInfo().getUrl();
+					if (url != null) {
+						if (MessageDialog.openQuestion(window.getShell(), "Open URL",
+								"Do you want to open the template url?")) {
+							try {
+								IWorkbenchBrowserSupport support = PlatformUI.getWorkbench().getBrowserSupport();
+								IWebBrowser browser = support.getExternalBrowser();
+								browser.openURL(new URL(url));
+							} catch (Exception e) {
+								e.printStackTrace();
+								throw new RuntimeException(e);
+							}
+						}
+					}
+				}
+			});
 		}
 	}
 }
