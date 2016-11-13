@@ -21,12 +21,12 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.core;
 
+import static java.lang.System.out;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
@@ -43,7 +43,6 @@ import org.eclipse.wst.jsdt.core.IIncludePathEntry;
 import org.eclipse.wst.jsdt.core.IJavaScriptProject;
 import org.eclipse.wst.jsdt.core.JavaScriptCore;
 import org.eclipse.wst.jsdt.core.JavaScriptModelException;
-import org.eclipse.wst.jsdt.launching.JavaRuntime;
 
 public class PhaserProjectNature implements IProjectNature {
 
@@ -75,54 +74,27 @@ public class PhaserProjectNature implements IProjectNature {
 
 	public static void resetProjectLibraries(IProject project, IProgressMonitor monitor)
 			throws JavaScriptModelException {
-		// add phaser.js library
-
 		IJavaScriptProject jsProject = JavaScriptCore.create(project);
 
-		// TODO: I comment this to discard the default entries, but maybe there
-		// is a better way toignore just the default ecma and browser libraries.
-
-		IIncludePathEntry[] prevIncludeEntries = jsProject.getRawIncludepath();
+		// add libs
 
 		List<IIncludePathEntry> list = new ArrayList<>();
-		Set<String> ignore = new HashSet<>();
-		ignore.add(JavaRuntime.JRE_CONTAINER);
-		ignore.add(JavaRuntime.BASE_BROWSER_LIB);
-
-		for (IIncludePathEntry entry : prevIncludeEntries) {
-			String id = entry.getPath().toPortableString();
-			if (!ignore.contains(id)) {
-				list.add(entry);
-			}
-			ignore.add(id);
-		}
-
 		for (String id : new String[] { ProjectCore.ECMA5_SCOPE_INITIALIZER_ID,
 				ProjectCore.BROWSER_SCOPE_INITIALIZER_ID, ProjectCore.GLOBAL_SCOPE_INITIALIZER_ID }) {
-			if (!ignore.contains(id)) {
-				list.add(JavaScriptCore.newContainerEntry(new Path(id)));
-			}
+			list.add(JavaScriptCore.newContainerEntry(new Path(id)));
 		}
+
+		// add source
+
+		IPath[] exclude = { new Path("**/lib"), new Path("**/phaser.js"), new Path("**/*.min.js"),
+				new Path("**/node_modules") };
+		IIncludePathEntry srcEntry = JavaScriptCore.newSourceEntry(project.getFullPath(), exclude);
+		list.add(srcEntry);
 
 		IIncludePathEntry[] newIncludeEntries = new IIncludePathEntry[list.size()];
 		list.toArray(newIncludeEntries);
 
-		// modify source entry, to exclude phaser.js files.
-
-		int i = 0;
-		for (IIncludePathEntry entry : newIncludeEntries) {
-			if (entry.getEntryKind() == IIncludePathEntry.CPE_SOURCE) {
-				break;
-			}
-			i++;
-		}
-
-		if (i < newIncludeEntries.length) {
-			IIncludePathEntry entry = newIncludeEntries[i];
-			IPath[] exclude = { new Path("**/phaser.js"), new Path("**/*.min.js"), new Path("**/node_modules") };
-			IIncludePathEntry newEntry = JavaScriptCore.newSourceEntry(entry.getPath(), exclude);
-			newIncludeEntries[i] = newEntry;
-		}
+		out.println("Include entries: " + Arrays.toString(newIncludeEntries));
 
 		jsProject.setRawIncludepath(newIncludeEntries, monitor);
 	}
