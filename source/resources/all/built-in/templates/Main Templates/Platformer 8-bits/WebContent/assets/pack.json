@@ -54,10 +54,16 @@
             "type": "script",
             "key": "scene",
             "url": "assets/scenes/Scene1.js"
+        },
+        {
+            "type": "image",
+            "key": "p",
+            "url": "assets/sprites/physics.png",
+            "overwrite": false
         }
     ],
     "meta": {
-        "generated": "1471533398859",
+        "generated": "1478969138204",
         "app": "Phaser Editor",
         "url": "http://phasereditor.boniatillo.com",
         "version": "1.0",

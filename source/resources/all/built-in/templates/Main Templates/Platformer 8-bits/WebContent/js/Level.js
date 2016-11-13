@@ -56,7 +56,7 @@ Level.prototype.create = function() {
 	});
 
 	// init physics
-
+	
 	var immovables = [ this.ground, this.lava, this.enemies ];
 
 	for (var i = 0; i < immovables.length; i++) {
@@ -64,6 +64,8 @@ Level.prototype.create = function() {
 		g.setAll("body.immovable", true);
 		g.setAll("body.allowGravity", false);
 	}
+	
+	this.ground.setAll("renderable", false);
 
 	// cursors
 
@@ -85,15 +87,13 @@ Level.prototype.update = function() {
 
 	if (this.cursors.left.isDown) {
 		vel = -100;
+		this.player.scale.x = -1;
 	} else if (this.cursors.right.isDown) {
 		vel = 100;
+		this.player.scale.x = 1;
 	}
 
 	this.player.body.velocity.x = vel;
-
-	if (vel != 0) {
-		this.player.scale.x = this.math.sign(vel);
-	}
 
 	// update player animation
 
@@ -131,6 +131,10 @@ Level.prototype.update = function() {
 
 };
 
+/**
+ * 
+ * @param {Phaser.Sprite} sprite The enemy to move.
+ */
 Level.prototype.moveEnemy = function(sprite) {
 
 	// use the data set in the scene to move the enemies
