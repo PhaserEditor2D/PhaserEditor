@@ -33,9 +33,9 @@ Level.prototype.create = function() {
 	// get the player from the scene
 
 	this.player = scene.fDino;
-	this.playerWalk = this.player.animations.getAnimation("walk");
-	this.playerJump = this.player.animations.getAnimation("jump");
-	this.playerStay = this.player.animations.getAnimation("stay");
+	this.playerWalk = scene.fDino_walk;
+	this.playerJump = scene.fDino_jump;
+	this.playerStay = scene.fDino_stay;
 
 	// get the platform groups from the scene
 

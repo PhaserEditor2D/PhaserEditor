@@ -61,11 +61,11 @@ function Scene1(aGame, aParent) {
 
 	var dino = this.game.add.sprite(197, 1690, 'fufu', 3, this);
 	dino.anchor.setTo(0.5, 0.0);
-	dino.animations.add('walk', [0, 1], 4, true);
-	dino.animations.add('jump', [2], 60, false);
-	dino.animations.add('stay', [3], 60, false);
+	var dino_walk = dino.animations.add('walk', [0, 1], 4, true);
+	var dino_jump = dino.animations.add('jump', [2], 60, false);
+	var dino_stay = dino.animations.add('stay', [3], 60, false);
 	this.game.physics.arcade.enable(dino);
-	dino.body.setSize(83.66667246818542, 95.03124809265137, 49.99999928474426, 43.33337593078613);
+	dino.body.setSize(84.0, 95.0, 50.0, 43.0);
 	dino.body.collideWorldBounds = true;
 
 	var shadows = this.game.add.group(this);
@@ -103,6 +103,9 @@ function Scene1(aGame, aParent) {
 	this.fPlatforms = platforms;
 	this.fMovingPlatforms = movingPlatforms;
 	this.fDino = dino;
+	this.fDino_walk = dino_walk;
+	this.fDino_jump = dino_jump;
+	this.fDino_stay = dino_stay;
 
 	/* --- post-init-begin --- */
 
