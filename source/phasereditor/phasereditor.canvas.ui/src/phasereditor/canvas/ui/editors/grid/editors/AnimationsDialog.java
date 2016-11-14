@@ -75,6 +75,8 @@ import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.canvas.core.AnimationModel;
+import phasereditor.inspect.core.InspectCore;
+import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
 
 /**
  * @author arian
@@ -134,8 +136,8 @@ public class AnimationsDialog extends Dialog {
 		gl_composite.marginHeight = 0;
 		composite.setLayout(gl_composite);
 
-		Label lblName = new Label(composite, SWT.NONE);
-		lblName.setText("Name");
+		_lblName = new Label(composite, SWT.NONE);
+		_lblName.setText("Name");
 
 		_animationsViewer = new ComboViewer(composite, SWT.READ_ONLY);
 		_animationsViewer.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -168,25 +170,25 @@ public class AnimationsDialog extends Dialog {
 		_deleteAnimButton
 				.setImage(ResourceManager.getPluginImage("org.eclipse.ui", "/icons/full/obj16/delete_obj.png"));
 
-		Label lblFrameRate = new Label(composite, SWT.NONE);
-		lblFrameRate.setText("Frame Rate");
+		_lblFrameRate = new Label(composite, SWT.NONE);
+		_lblFrameRate.setText("Frame Rate");
 
 		_frameRateText = new Text(composite, SWT.BORDER);
 		_frameRateText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-		
+
 		Composite composite_4 = new Composite(composite, SWT.NONE);
 		composite_4.setLayout(new GridLayout(6, false));
 		composite_4.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 4, 1));
-		
-				_loopButton = new Button(composite_4, SWT.CHECK);
-				_loopButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 4, 1));
-				_loopButton.setText("Loop");
-				
-				_btnKilloncomplete = new Button(composite_4, SWT.CHECK);
-				_btnKilloncomplete.setText("Kill On Complete");
-				
-				_btnPublic = new Button(composite_4, SWT.CHECK);
-				_btnPublic.setText("Public");
+
+		_loopButton = new Button(composite_4, SWT.CHECK);
+		_loopButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 4, 1));
+		_loopButton.setText("Loop");
+
+		_btnKilloncomplete = new Button(composite_4, SWT.CHECK);
+		_btnKilloncomplete.setText("Kill On Complete");
+
+		_btnPublic = new Button(composite_4, SWT.CHECK);
+		_btnPublic.setText("Public");
 
 		SashForm sashForm = new SashForm(container, SWT.NONE);
 		sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -334,6 +336,13 @@ public class AnimationsDialog extends Dialog {
 			setAnimation(_animList.get(0));
 		}
 
+		PhaserJSDoc help = InspectCore.getPhaserHelp();
+		_lblName.setToolTipText(help.getMethodArgHelp("Phaser.AnimationManager.add", "name"));
+		_lblFrameRate.setToolTipText(help.getMethodArgHelp("Phaser.AnimationManager.add", "frameRate"));
+		_loopButton.setToolTipText(help.getMemberHelp("Phaser.Animation.loop"));
+		_btnKilloncomplete.setToolTipText(help.getMemberHelp("Phaser.Animation.killOnComplete"));
+		_btnPublic.setToolTipText("If generate a public field to reference this animation (Phaser Editor).");
+
 		initFramesDrop();
 
 		updateFromAnimation();
@@ -380,7 +389,7 @@ public class AnimationsDialog extends Dialog {
 				if (_target == -1) {
 					return false;
 				}
-				
+
 				List<IAssetFrameModel> frames = _anim.getFrames();
 
 				Object[] elems = ((IStructuredSelection) data).toArray();
@@ -571,7 +580,7 @@ public class AnimationsDialog extends Dialog {
 		_anim.setLoop(loop);
 		playAnimation();
 	}
-	
+
 	public void setKillOnComplete(boolean killOnComplete) {
 		if (_anim == null) {
 			return;
@@ -580,7 +589,7 @@ public class AnimationsDialog extends Dialog {
 		_anim.setKillOnComplete(killOnComplete);
 		firePropertyChange("killOnComplete");
 	}
-	
+
 	public boolean getKillOnComplete() {
 		if (_anim == null) {
 			return false;
@@ -588,7 +597,7 @@ public class AnimationsDialog extends Dialog {
 
 		return _anim.isKillOnComplete();
 	}
-	
+
 	public void setPublic(boolean aPublic) {
 		if (_anim == null) {
 			return;
@@ -597,7 +606,7 @@ public class AnimationsDialog extends Dialog {
 		_anim.setPublic(aPublic);
 		firePropertyChange("public");
 	}
-	
+
 	public boolean getPublic() {
 		if (_anim == null) {
 			return false;
@@ -612,6 +621,8 @@ public class AnimationsDialog extends Dialog {
 	private Button _playButton;
 	private Button _btnKilloncomplete;
 	private Button _btnPublic;
+	private Label _lblFrameRate;
+	private Label _lblName;
 
 	public void addPropertyChangeListener(PropertyChangeListener l) {
 		support.addPropertyChangeListener(l);
@@ -632,11 +643,13 @@ public class AnimationsDialog extends Dialog {
 	public void firePropertyChange(String property) {
 		support.firePropertyChange(property, true, false);
 	}
+
 	@SuppressWarnings("rawtypes")
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
-		IObservableValue observeText_frameRateTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(_frameRateText);
+		IObservableValue observeText_frameRateTextObserveWidget = WidgetProperties.text(SWT.Modify)
+				.observe(_frameRateText);
 		IObservableValue frameRate_selfObserveValue = BeanProperties.value("frameRate").observe(_self);
 		bindingContext.bindValue(observeText_frameRateTextObserveWidget, frameRate_selfObserveValue, null, null);
 		//
@@ -644,9 +657,11 @@ public class AnimationsDialog extends Dialog {
 		IObservableValue loop_selfObserveValue = BeanProperties.value("loop").observe(_self);
 		bindingContext.bindValue(observeSelection_loopButtonObserveWidget, loop_selfObserveValue, null, null);
 		//
-		IObservableValue observeSelection_btnKilloncompleteObserveWidget = WidgetProperties.selection().observe(_btnKilloncomplete);
+		IObservableValue observeSelection_btnKilloncompleteObserveWidget = WidgetProperties.selection()
+				.observe(_btnKilloncomplete);
 		IObservableValue killOnComplete_selfObserveValue = BeanProperties.value("killOnComplete").observe(_self);
-		bindingContext.bindValue(observeSelection_btnKilloncompleteObserveWidget, killOnComplete_selfObserveValue, null, null);
+		bindingContext.bindValue(observeSelection_btnKilloncompleteObserveWidget, killOnComplete_selfObserveValue, null,
+				null);
 		//
 		IObservableValue observeSelection_btnPublicObserveWidget = WidgetProperties.selection().observe(_btnPublic);
 		IObservableValue public_selfObserveValue = BeanProperties.value("public").observe(_self);

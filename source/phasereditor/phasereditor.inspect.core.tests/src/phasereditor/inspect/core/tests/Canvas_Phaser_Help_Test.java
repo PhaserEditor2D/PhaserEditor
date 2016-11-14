@@ -44,42 +44,48 @@ public class Canvas_Phaser_Help_Test {
 		PhaserJSDoc jsDoc = new PhaserJSDoc(projectPath.resolve("phaser-master/src"),
 				projectPath.resolve("phaser-version/phaser-custom/jsdoc/docs.json"));
 
+		// @formatter:off
 		String[] memberNames = {
-				//
-				"Phaser.Sprite.frameName", //
-				"Phaser.Sprite.x", //
-				"Phaser.Sprite.y", //
-				"Phaser.Sprite.angle", //
-				"Phaser.Sprite.scale", //
-				"Phaser.Sprite.pivot", //
-				"Phaser.Sprite.anchor", //
-				"Phaser.Sprite.anchor", //
-				"Phaser.Sprite.tint", //
-				"Phaser.Sprite.animations", //
-				"Phaser.GameObjectFactory.physicsGroup", //
-				"Phaser.Sprite.frame", //
-				"Phaser.TileSprite.tilePosition", //
-				"Phaser.TileSprite.tileScale", //
-				"Phaser.TileSprite.width", //
-				"Phaser.TileSprite.height",//
+				"Phaser.Sprite.frameName", 
+				"Phaser.Sprite.x", 
+				"Phaser.Sprite.y", 
+				"Phaser.Sprite.angle", 
+				"Phaser.Sprite.scale", 
+				"Phaser.Sprite.pivot",
+				"Phaser.Sprite.anchor",
+				"Phaser.Sprite.anchor", 
+				"Phaser.Sprite.tint",
+				"Phaser.Sprite.animations",
+				"Phaser.GameObjectFactory.physicsGroup",
+				"Phaser.Sprite.frame",
+				"Phaser.TileSprite.tilePosition",
+				"Phaser.TileSprite.tileScale",
+				"Phaser.TileSprite.width",
+				"Phaser.TileSprite.height",
 				"Phaser.Group.physicsBodyType",
-				"Phaser.Group.physicsSortDirection"//
+				"Phaser.Group.physicsSortDirection",
+				"Phaser.Animation.loop",
+				"Phaser.Animation.killOnComplete",
 		};
+		// @formatter:on
 
 		for (String name : memberNames) {
 			String doc = jsDoc.getMemberHelp(name);
 			Assert.assertTrue(name, !doc.equals("<No help available>"));
 		}
 
+		// @formatter:off
 		String[][] memeber_arg_tuples = {
-				//
-				{ "Phaser.Button", "callback" }, //
-				{ "Phaser.Button", "callbackContext" }, //
-				{ "Phaser.Button", "overFrame" }, //
-				{ "Phaser.Button", "outFrame" }, //
-				{ "Phaser.Button", "downFrame" }, //
-				{ "Phaser.Button", "upFrame" },//
+				{ "Phaser.Button", "callback" },
+				{ "Phaser.Button", "callbackContext" },
+				{ "Phaser.Button", "overFrame" },
+				{ "Phaser.Button", "outFrame" },
+				{ "Phaser.Button", "downFrame" },
+				{ "Phaser.Button", "upFrame" },
+				{ "Phaser.AnimationManager.add", "name" },
+				{ "Phaser.AnimationManager.add", "frameRate" }
 		};
+		//@formatter:on
 
 		for (String[] tuple : memeber_arg_tuples) {
 			String doc = jsDoc.getMethodArgHelp(tuple[0], tuple[1]);
