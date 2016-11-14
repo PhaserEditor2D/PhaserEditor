@@ -22,6 +22,7 @@
 package phasereditor.webrun.core;
 
 import java.io.File;
+import java.net.URI;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -38,13 +39,23 @@ import org.eclipse.jetty.util.resource.Resource;
 public class WorkspaceResourcesHandler extends ResourceHandler {
 	@Override
 	public Resource getResource(String path) {
+		if (path.equals("/favicon.ico")) {
+			try {
+				return Resource.newResource(new URI("platform:/plugin/phasereditor.webrun.core/icons/favicon.png"));
+			} catch (Exception e) {
+				return super.getResource(path);
+			}
+		}
+
 		Path wsPath = new Path(path);
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IResource member = root.findMember(wsPath);
-		IPath location = member.getLocation();
-		if (location != null) {
-			File file = location.toFile();
-			return Resource.newResource(file);
+		if (member != null) {
+			IPath location = member.getLocation();
+			if (location != null) {
+				File file = location.toFile();
+				return Resource.newResource(file);
+			}
 		}
 
 		return super.getResource(path);
