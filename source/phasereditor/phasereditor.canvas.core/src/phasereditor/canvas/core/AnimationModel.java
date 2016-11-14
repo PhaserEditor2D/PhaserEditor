@@ -40,13 +40,16 @@ public class AnimationModel implements Cloneable {
 	private List<IAssetFrameModel> _frames;
 	private int _frameRate;
 	private boolean _loop;
+	private boolean _killOnComplete;
+	private boolean _public;
 
-	
 	public AnimationModel(String name) {
 		_name = name;
 		_frames = new ArrayList<>();
 		_frameRate = 60;
 		_loop = false;
+		_killOnComplete = false;
+		_public = false;
 	}
 
 	public String getName() {
@@ -55,6 +58,22 @@ public class AnimationModel implements Cloneable {
 
 	public void setName(String name) {
 		_name = name;
+	}
+
+	public boolean isKillOnComplete() {
+		return _killOnComplete;
+	}
+
+	public void setKillOnComplete(boolean killOnComplete) {
+		_killOnComplete = killOnComplete;
+	}
+
+	public boolean isPublic() {
+		return _public;
+	}
+
+	public void setPublic(boolean public1) {
+		_public = public1;
 	}
 
 	public List<IAssetFrameModel> getFrames() {
@@ -84,7 +103,9 @@ public class AnimationModel implements Cloneable {
 	public void write(JSONObject obj) {
 		obj.put("name", _name);
 		obj.put("frameRate", _frameRate);
-		obj.put("loop", _loop);
+		obj.put("loop", _loop, false);
+		obj.put("killOnComplete", _killOnComplete, false);
+		obj.put("public", _public, false);
 		{
 			JSONArray array = new JSONArray();
 			for (IAssetFrameModel frame : _frames) {
@@ -97,7 +118,9 @@ public class AnimationModel implements Cloneable {
 	public void read(IAssetKey key, JSONObject obj) {
 		_name = obj.getString("name");
 		_frameRate = obj.getInt("frameRate");
-		_loop = obj.getBoolean("loop");
+		_loop = obj.optBoolean("loop", false);
+		_killOnComplete = obj.optBoolean("killOnComplete", false);
+		_public = obj.optBoolean("public", false);
 		_frames = new ArrayList<>();
 		{
 			JSONArray array = obj.getJSONArray("frames");
@@ -118,6 +141,8 @@ public class AnimationModel implements Cloneable {
 		model._frameRate = _frameRate;
 		model._loop = _loop;
 		model._frames = new ArrayList<>(_frames);
+		model._killOnComplete = _killOnComplete;
+		model._public = _public;
 		return model;
 	}
 

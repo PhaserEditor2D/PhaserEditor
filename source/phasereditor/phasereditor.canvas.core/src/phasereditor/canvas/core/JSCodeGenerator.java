@@ -23,6 +23,7 @@ package phasereditor.canvas.core;
 
 import static java.lang.String.format;
 
+import java.util.List;
 import java.util.function.Function;
 
 import phasereditor.assetpack.core.AtlasAssetModel;
@@ -111,10 +112,23 @@ public class JSCodeGenerator implements ICodeGenerator {
 		// public fields
 		StringBuilder pubs = new StringBuilder();
 		model.walk(obj -> {
-			if (!(obj instanceof WorldModel) && obj.isEditorPublic() && obj.isEditorGenerate()) {
-				String name = obj.getEditorName();
-				String camel = "f" + name.substring(0, 1).toUpperCase() + name.substring(1);
-				pubs.append(tabs1 + "this." + camel + " = " + name + ";\n");
+			if (!(obj instanceof WorldModel) && obj.isEditorGenerate()) {
+				if (obj.isEditorPublic()) {
+					String name = obj.getEditorName();
+					String camel = getPublicFieldName(name);
+					pubs.append(tabs1 + "this." + camel + " = " + name + ";\n");
+				}
+				
+				if (obj instanceof BaseSpriteModel) {
+					List<AnimationModel> anims = ((BaseSpriteModel) obj).getAnimations();
+					for(AnimationModel anim : anims) {
+						if (anim.isPublic()) {
+							String animvar = getAnimationVarName(obj, anim);
+							String name = getPublicFieldName(animvar);
+							pubs.append(tabs1 + "this." + name + " = " + animvar + ";\n");
+						}
+					}
+				}
 			}
 		});
 
@@ -141,6 +155,10 @@ public class JSCodeGenerator implements ICodeGenerator {
 		sb.append(postGen);
 
 		return sb.toString();
+	}
+
+	private static String getPublicFieldName(String name) {
+		return "f" + name.substring(0, 1).toUpperCase() + name.substring(1);
 	}
 
 	private static void generate(int indent, StringBuilder sb, BaseObjectModel model) {
@@ -288,7 +306,15 @@ public class JSCodeGenerator implements ICodeGenerator {
 
 		if (!model.getAnimations().isEmpty()) {
 			for (AnimationModel anim : model.getAnimations()) {
-				sb.append(tabs + varname + ".animations.add(");
+				sb.append(tabs);
+				String animvar = null;
+				if (anim.isPublic() || anim.isKillOnComplete()) {
+					animvar = getAnimationVarName(model, anim);
+					sb.append("var " + animvar + " = ");
+				}
+
+				sb.append(varname + ".animations.add(");
+
 				sb.append("'" + anim.getName() + "', [");
 				int i = 0;
 				for (IAssetFrameModel frame : anim.getFrames()) {
@@ -302,6 +328,10 @@ public class JSCodeGenerator implements ICodeGenerator {
 					}
 				}
 				sb.append("], " + anim.getFrameRate() + ", " + anim.isLoop() + ");\n");
+
+				if (anim.isKillOnComplete()) {
+					sb.append(tabs + animvar + ".killOnComplete = true;\n");
+				}
 			}
 		}
 
@@ -316,6 +346,10 @@ public class JSCodeGenerator implements ICodeGenerator {
 			data = data.replace("\n", "\n" + tabs + "\t");
 			sb.append(tabs + varname + ".data = " + data + ";\n");
 		}
+	}
+
+	private static String getAnimationVarName(BaseObjectModel obj, AnimationModel anim) {
+		return obj.getEditorName() + "_" + anim.getName();
 	}
 
 	private static void generateBodyProps(int indent, StringBuilder sb, BaseSpriteModel model) {

@@ -173,10 +173,20 @@ public class AnimationsDialog extends Dialog {
 
 		_frameRateText = new Text(composite, SWT.BORDER);
 		_frameRateText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-
-		_loopButton = new Button(composite, SWT.CHECK);
-		_loopButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 4, 1));
-		_loopButton.setText("Loop");
+		
+		Composite composite_4 = new Composite(composite, SWT.NONE);
+		composite_4.setLayout(new GridLayout(6, false));
+		composite_4.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 4, 1));
+		
+				_loopButton = new Button(composite_4, SWT.CHECK);
+				_loopButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 4, 1));
+				_loopButton.setText("Loop");
+				
+				_btnKilloncomplete = new Button(composite_4, SWT.CHECK);
+				_btnKilloncomplete.setText("Kill On Complete");
+				
+				_btnPublic = new Button(composite_4, SWT.CHECK);
+				_btnPublic.setText("Public");
 
 		SashForm sashForm = new SashForm(container, SWT.NONE);
 		sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -561,11 +571,47 @@ public class AnimationsDialog extends Dialog {
 		_anim.setLoop(loop);
 		playAnimation();
 	}
+	
+	public void setKillOnComplete(boolean killOnComplete) {
+		if (_anim == null) {
+			return;
+		}
+
+		_anim.setKillOnComplete(killOnComplete);
+		firePropertyChange("killOnComplete");
+	}
+	
+	public boolean getKillOnComplete() {
+		if (_anim == null) {
+			return false;
+		}
+
+		return _anim.isKillOnComplete();
+	}
+	
+	public void setPublic(boolean aPublic) {
+		if (_anim == null) {
+			return;
+		}
+
+		_anim.setPublic(aPublic);
+		firePropertyChange("public");
+	}
+	
+	public boolean getPublic() {
+		if (_anim == null) {
+			return false;
+		}
+
+		return _anim.isPublic();
+	}
 
 	private transient final PropertyChangeSupport support = new PropertyChangeSupport(this);
 	private Composite _framesToolbar;
 	private Button _deleteAnimButton;
 	private Button _playButton;
+	private Button _btnKilloncomplete;
+	private Button _btnPublic;
 
 	public void addPropertyChangeListener(PropertyChangeListener l) {
 		support.addPropertyChangeListener(l);
@@ -586,18 +632,25 @@ public class AnimationsDialog extends Dialog {
 	public void firePropertyChange(String property) {
 		support.firePropertyChange(property, true, false);
 	}
-
+	@SuppressWarnings("rawtypes")
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
-		IObservableValue<?> observeText_frameRateTextObserveWidget = WidgetProperties.text(SWT.Modify)
-				.observe(_frameRateText);
-		IObservableValue<?> frameRate_selfObserveValue = BeanProperties.value("frameRate").observe(_self);
+		IObservableValue observeText_frameRateTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(_frameRateText);
+		IObservableValue frameRate_selfObserveValue = BeanProperties.value("frameRate").observe(_self);
 		bindingContext.bindValue(observeText_frameRateTextObserveWidget, frameRate_selfObserveValue, null, null);
 		//
-		IObservableValue<?> observeSelection_loopButtonObserveWidget = WidgetProperties.selection().observe(_loopButton);
-		IObservableValue<?> loop_selfObserveValue = BeanProperties.value("loop").observe(_self);
+		IObservableValue observeSelection_loopButtonObserveWidget = WidgetProperties.selection().observe(_loopButton);
+		IObservableValue loop_selfObserveValue = BeanProperties.value("loop").observe(_self);
 		bindingContext.bindValue(observeSelection_loopButtonObserveWidget, loop_selfObserveValue, null, null);
+		//
+		IObservableValue observeSelection_btnKilloncompleteObserveWidget = WidgetProperties.selection().observe(_btnKilloncomplete);
+		IObservableValue killOnComplete_selfObserveValue = BeanProperties.value("killOnComplete").observe(_self);
+		bindingContext.bindValue(observeSelection_btnKilloncompleteObserveWidget, killOnComplete_selfObserveValue, null, null);
+		//
+		IObservableValue observeSelection_btnPublicObserveWidget = WidgetProperties.selection().observe(_btnPublic);
+		IObservableValue public_selfObserveValue = BeanProperties.value("public").observe(_self);
+		bindingContext.bindValue(observeSelection_btnPublicObserveWidget, public_selfObserveValue, null, null);
 		//
 		return bindingContext;
 	}
