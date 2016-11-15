@@ -140,7 +140,7 @@ public class MouseBehavior {
 
 		_dragHandler = null;
 
-		if (e.isMiddleButtonDown()) {
+		if (isPanGesture(e)) {
 			_zoomPan.handleMousePressed(e);
 			return;
 		}
@@ -165,7 +165,7 @@ public class MouseBehavior {
 	}
 
 	private void handleMouseDragged(MouseEvent e) {
-		if (e.isMiddleButtonDown()) {
+		if (isPanGesture(e)) {
 			_zoomPan.handleMouseDragged(e);
 			return;
 		}
@@ -185,8 +185,12 @@ public class MouseBehavior {
 		}
 	}
 
+	private static boolean isPanGesture(MouseEvent e) {
+		return e.isMiddleButtonDown() || e.isPrimaryButtonDown() && e.isAltDown();
+	}
+
 	private void handleMouseReleased(MouseEvent e) {
-		if (e.isMiddleButtonDown()) {
+		if (isPanGesture(e)) {
 			_zoomPan.handleMouseReleased(e);
 			return;
 		}
