@@ -285,6 +285,7 @@
             </separator>
             <command
                   commandId="phasereditor.canvas.ui.riseToTop"
+                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/shape_move_front.png"
                   icon="platform:/plugin/phasereditor.ui/icons/shape_move_front.png"
                   style="push">
                <visibleWhen
@@ -296,6 +297,7 @@
             </command>
             <command
                   commandId="phasereditor.canvas.ui.rise"
+                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/shape_move_forwards.png"
                   icon="platform:/plugin/phasereditor.ui/icons/shape_move_forwards.png"
                   style="push">
                <visibleWhen
@@ -307,6 +309,7 @@
             </command>
             <command
                   commandId="phasereditor.canvas.ui.lower"
+                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/shape_move_backwards.png"
                   icon="platform:/plugin/phasereditor.ui/icons/shape_move_backwards.png"
                   style="push">
                <visibleWhen
@@ -318,6 +321,7 @@
             </command>
             <command
                   commandId="phasereditor.canvas.ui.lowerBottom"
+                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/shape_move_back.png"
                   icon="platform:/plugin/phasereditor.ui/icons/shape_move_back.png"
                   style="push">
                <visibleWhen
@@ -333,6 +337,7 @@
             </separator>
             <command
                   commandId="phasereditor.canvas.ui.align.left"
+                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/shape_align_left.png"
                   icon="platform:/plugin/phasereditor.ui/icons/shape_align_left.png"
                   style="push">
                <visibleWhen
@@ -344,6 +349,7 @@
             </command>
             <command
                   commandId="phasereditor.canvas.ui.align.right"
+                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/shape_align_right.png"
                   icon="platform:/plugin/phasereditor.ui/icons/shape_align_right.png"
                   style="push">
                <visibleWhen
@@ -355,6 +361,7 @@
             </command>
             <command
                   commandId="phasereditor.canvas.ui.align.top"
+                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/shape_align_top.png"
                   icon="platform:/plugin/phasereditor.ui/icons/shape_align_top.png"
                   style="push">
                <visibleWhen
@@ -366,6 +373,7 @@
             </command>
             <command
                   commandId="phasereditor.canvas.ui.align.bottom"
+                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/shape_align_bottom.png"
                   icon="platform:/plugin/phasereditor.ui/icons/shape_align_bottom.png"
                   style="push">
                <visibleWhen
@@ -377,6 +385,7 @@
             </command>
             <command
                   commandId="phasereditor.canvas.ui.align.center"
+                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/shape_align_center.png"
                   icon="platform:/plugin/phasereditor.ui/icons/shape_align_center.png"
                   style="push">
                <visibleWhen
@@ -388,6 +397,7 @@
             </command>
             <command
                   commandId="phasereditor.canvas.ui.align.middle"
+                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/shape_align_middle.png"
                   icon="platform:/plugin/phasereditor.ui/icons/shape_align_middle.png"
                   style="push">
                <visibleWhen
@@ -403,6 +413,7 @@
             </separator>
             <command
                   commandId="phasereditor.canvas.ui.quickEdit"
+                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/shape_square_edit.png"
                   icon="platform:/plugin/phasereditor.ui/icons/shape_square_edit.png"
                   style="push">
                <visibleWhen
