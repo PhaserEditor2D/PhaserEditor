@@ -69,6 +69,7 @@ public class AddAssetToPackDialog extends TitleAreaDialog {
 	 */
 	public AddAssetToPackDialog(Shell parentShell) {
 		super(parentShell);
+		setShellStyle(SWT.SHELL_TRIM);
 	}
 
 	/**
