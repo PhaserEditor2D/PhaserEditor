@@ -35,11 +35,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
@@ -58,7 +55,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -69,8 +65,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.dialogs.FilteredTree;
-import org.eclipse.ui.menus.CommandContributionItem;
-import org.eclipse.ui.menus.CommandContributionItemParameter;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.json.JSONException;
@@ -88,7 +82,6 @@ import phasereditor.canvas.ui.editors.grid.PGrid;
 import phasereditor.canvas.ui.editors.operations.ChangeSettingsOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.palette.PaletteComp;
-import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.PatternFilter2;
 
@@ -124,13 +117,9 @@ public class CanvasEditor extends EditorPart
 	private SashForm _leftSashForm;
 	private FilteredTree _outlineTree;
 
-	private ToolBarManager _toolBarManager;
-
 	private SashForm _mainSashForm;
 	private PaletteComp _paletteComp;
 	protected IContextActivation _paletteContext;
-	private Action _showPaletteAction;
-	private Action _showSidePaneAction;
 
 	public CanvasEditor() {
 	}
@@ -238,22 +227,11 @@ public class CanvasEditor extends EditorPart
 	@Override
 	public void createPartControl(Composite parent1) {
 		GridLayout gl_parent1 = new GridLayout(1, false);
-		gl_parent1.marginWidth = 0;
-		gl_parent1.marginHeight = 0;
+		gl_parent1.marginWidth = 2;
+		gl_parent1.marginHeight = 2;
 		parent1.setLayout(gl_parent1);
-		Composite parent = new Composite(parent1, SWT.NONE);
-		parent.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		_toolBar = new ToolBar(parent, SWT.FLAT | SWT.RIGHT);
-		_toolBar.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
 
-		GridLayout gl_parent = new GridLayout(1, false);
-		gl_parent.verticalSpacing = 0;
-		gl_parent.horizontalSpacing = 0;
-		gl_parent.marginWidth = 3;
-		gl_parent.marginHeight = 3;
-		parent.setLayout(gl_parent);
-
-		_mainSashForm = new SashForm(parent, SWT.NONE);
+		_mainSashForm = new SashForm(parent1, SWT.NONE);
 		_mainSashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		_leftSashForm = new SashForm(_mainSashForm, SWT.VERTICAL);
@@ -361,7 +339,6 @@ public class CanvasEditor extends EditorPart
 
 	private void initMenus() {
 		createMenuManager();
-		createToolbarManager();
 	}
 
 	private void initCanvas() {
@@ -377,13 +354,13 @@ public class CanvasEditor extends EditorPart
 
 			if (_state.paletteData != null) {
 				_paletteComp.updateFromJSON(new JSONObject(_state.paletteData));
-				_showPaletteAction.setChecked(_paletteComp.isPaletteVisible());
+//				_showPaletteAction.setChecked(_paletteComp.isPaletteVisible());
 			}
 
 			if (!_state.showSidePane) {
-				_showSidePaneAction.run();
+//				_showSidePaneAction.run();
 			}
-			_showSidePaneAction.setChecked(_state.showSidePane);
+//			_showSidePaneAction.setChecked(_state.showSidePane);
 		}
 	}
 
@@ -434,119 +411,13 @@ public class CanvasEditor extends EditorPart
 		_outlineTree.getViewer().getControl().setMenu(manager.createContextMenu(_outlineTree));
 	}
 
-	private void createToolbarManager() {
-		_toolBarManager = new ToolBarManager(_toolBar);
-
-		{
-			_toolBarManager.add(simpleCommand("phasereditor.canvas.ui.zoomRestore", "zoom_default.png"));
-		}
-
-		{
-			// depth commands
-
-			_toolBarManager.add(new Separator());
-
-			String[] defs = {
-
-					"riseToTop", "shape_move_front.png",
-
-					"rise", "shape_move_forwards.png",
-
-					"lower", "shape_move_backwards.png",
-
-					"lowerBottom", "shape_move_back.png",
-
-					"-", "-",
-
-					"align.left", "shape_align_left.png",
-
-					"align.right", "shape_align_right.png",
-
-					"align.top", "shape_align_top.png",
-
-					"align.bottom", "shape_align_bottom.png",
-
-					"align.center", "shape_align_center.png",
-
-					"align.middle", "shape_align_middle.png", };
-
-			defsCommands(defs);
-		}
-
-		{
-			_toolBarManager.add(new Separator());
-			_toolBarManager.add(simpleCommand("phasereditor.canvas.ui.quickEdit", "shape_square_edit.png"));
-			_toolBarManager.add(simpleCommand("phasereditor.canvas.ui.addsprite", "car_add.png"));
-		}
-
-		{
-			_toolBarManager.add(new Separator());
-
-			_toolBarManager.add(simpleCommand("phasereditor.canvas.ui.quickOutline", "outline_co.png"));
-
-			_showSidePaneAction = new Action("Toggle the side pane.", SWT.TOGGLE) {
-				{
-					setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_APPLICATION_SIDE_TREE));
-				}
-
-				@SuppressWarnings("synthetic-access")
-				@Override
-				public void run() {
-					if (_mainSashForm.getMaximizedControl() == _centerComposite) {
-						_mainSashForm.setMaximizedControl(null);
-					} else {
-						_mainSashForm.setMaximizedControl(_centerComposite);
-					}
-				}
-			};
-			_showSidePaneAction.setChecked(true);
-			_toolBarManager.add(_showSidePaneAction);
-
-			_showPaletteAction = new Action("Toggle the palette.", SWT.TOGGLE) {
-				{
-					setChecked(false);
-					setImageDescriptor(EditorSharedImages.getImageDescriptor(IMG_PALETTE));
-				}
-
-				@Override
-				public void run() {
-					boolean visible = getPalette().isPaletteVisible();
-					getPalette().setPaletteVisble(!visible);
-				}
-			};
-			getPalette().setPaletteVisble(_showPaletteAction.isChecked());
-			_toolBarManager.add(_showPaletteAction);
-		}
-
-		{
-			_toolBarManager.add(new Separator());
-			_toolBarManager.add(new Action("Settings", EditorSharedImages.getImageDescriptor(IMG_SETTINGS)) {
-				@Override
-				public void run() {
-					openDialogSettings();
-				}
-			});
-		}
-		{
-			_toolBarManager.add(new Action("Generate code", EditorSharedImages.getImageDescriptor(IMG_BUILD)) {
-				@Override
-				public void run() {
-					generateCode();
-				}
-			});
-			_toolBarManager.add(simpleCommand("phasereditor.canvas.ui.showcode", "jcu_obj.gif"));
-		}
-
-		_toolBarManager.update(true);
-	}
-
 	public IFile getFileToGenerate() {
 		WorldModel model = getCanvas().getWorldModel();
 		String fname = model.getClassName() + ".js";
 		return getEditorInputFile().getParent().getFile(new Path(fname));
 	}
 
-	void generateCode() {
+	public void generateCode() {
 
 		if (_model.getWorld().hasErrors()) {
 			MessageDialog.openWarning(getSite().getShell(), "Canvas",
@@ -578,23 +449,6 @@ public class CanvasEditor extends EditorPart
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-	}
-
-	private void defsCommands(String[] defs) {
-		for (int i = 0; i < defs.length; i += 2) {
-			if (defs[i].equals("-")) {
-				_toolBarManager.add(new Separator());
-				continue;
-			}
-
-			_toolBarManager.add(simpleCommand("phasereditor.canvas.ui." + defs[i], defs[i + 1]));
-		}
-	}
-
-	private CommandContributionItem simpleCommand(String cmd, String imgname) {
-		CommandContributionItemParameter p = new CommandContributionItemParameter(getSite(), null, cmd, SWT.PUSH);
-		p.icon = EditorSharedImages.getImageDescriptor("icons/" + imgname);
-		return new CommandContributionItem(p);
 	}
 
 	private static MenuManager createContextMenu() {
@@ -666,7 +520,6 @@ public class CanvasEditor extends EditorPart
 	}
 
 	private State _state;
-	private ToolBar _toolBar;
 	private Composite _centerComposite;
 
 	@Override
@@ -710,7 +563,7 @@ public class CanvasEditor extends EditorPart
 		}
 	}
 
-	void openDialogSettings() {
+	public void openDialogSettings() {
 		CanvasSettingsDialog dlg = new CanvasSettingsDialog(getSite().getShell());
 		JSONObject data = new JSONObject();
 		_model.getSettings().write(data);
@@ -727,5 +580,18 @@ public class CanvasEditor extends EditorPart
 		super.setInput(new FileEditorInput(newFile));
 		_model.getWorld().setFile(newFile);
 		updateTitle();
+	}
+
+	public void toggleSidePanel() {
+		if (_mainSashForm.getMaximizedControl() == _centerComposite) {
+			_mainSashForm.setMaximizedControl(null);
+		} else {
+			_mainSashForm.setMaximizedControl(_centerComposite);
+		}
+	}
+
+	public void togglePalette() {
+		boolean visible = getPalette().isPaletteVisible();
+		getPalette().setPaletteVisble(!visible);
 	}
 }
