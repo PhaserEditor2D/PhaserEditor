@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Core
+Bundle-Name: Phaser Editor - Canvas Core
 Bundle-SymbolicName: phasereditor.canvas.core;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.3.0.qualifier
 Bundle-Activator: phasereditor.canvas.core.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -17,3 +17,4 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.canvas.core
+Bundle-Vendor: Arian Fornaris

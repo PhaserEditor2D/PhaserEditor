@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Phaser Editor - Canvas
+Bundle-Name: Phaser Editor - Canvas UI
 Bundle-SymbolicName: phasereditor.canvas.ui;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.3.0.qualifier
 Bundle-Activator: phasereditor.canvas.ui.Activator
 Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,

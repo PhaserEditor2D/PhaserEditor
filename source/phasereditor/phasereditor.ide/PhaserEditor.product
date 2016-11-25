@@ -201,15 +201,10 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
    </plugins>
 
    <features>
-      <feature id="phasereditor.base.features" version="1.0.0.qualifier"/>
-      <feature id="phasereditor.eclipse.features" version="1.0.0.qualifier"/>
-      <feature id="phasereditor.features" version="1.0.0.qualifier"/>
-      <feature id="phasereditor.webtools.features" version="1.0.0.qualifier"/>
-      <feature id="org.eclipse.equinox.p2.core.feature" version="1.3.200.v20160815-1406"/>
-      <feature id="org.eclipse.equinox.p2.discovery.feature" version="1.0.401.v20160901-1335"/>
-      <feature id="org.eclipse.equinox.p2.extras.feature" version="1.2.200.v20160815-1406"/>
-      <feature id="org.eclipse.equinox.p2.rcp.feature" version="1.2.200.v20160815-1406"/>
-      <feature id="org.eclipse.equinox.p2.user.ui" version="2.2.200.v20160815-1406"/>
+      <feature id="phasereditor.base" version="1.3.0.qualifier"/>
+      <feature id="phasereditor.eclipse" version="1.3.0.qualifier"/>
+      <feature id="phasereditor.tools" version="1.3.0.qualifier"/>
+      <feature id="phasereditor.webtools" version="1.3.0.qualifier"/>
    </features>
 
    <configurations>

@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="phasereditor.webtools.features"
-      label="Phaser Editor WebTools Features"
-      version="1.0.0.qualifier">
+      id="phasereditor.webtools"
+      label="Phaser Editor - Web Tools"
+      version="1.3.0.qualifier"
+      provider-name="Arian Fornaris"
+      license-feature="org.eclipse.e4.rcp"
+      license-feature-version="1.5.1.v20160907-0248">
 
-   <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
+   <description url="http://phasereditor.boniatillo.com">
+      Eclipse Web Tools plugins used/modified by Phaser Editor.
    </description>
 
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
+   <copyright url="http://eclipse.org">
+      Eclipse.org Copyright
    </copyright>
 
    <license url="http://www.example.com/license">
