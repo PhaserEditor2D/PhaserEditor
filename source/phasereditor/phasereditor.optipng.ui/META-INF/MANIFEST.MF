@@ -8,8 +8,8 @@ Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources;bundle-version="3.9.1",
- phasereditor.optipng.core;bundle-version="1.1.1",
  org.eclipse.ui.navigator;bundle-version="3.5.401",
- phasereditor.ui;bundle-version="1.1.1"
+ phasereditor.optipng.core,
+ phasereditor.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy

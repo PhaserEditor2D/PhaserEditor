@@ -8,9 +8,9 @@ Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources;bundle-version="3.9.1",
- org.json;bundle-version="1.0.0",
- phasereditor.ui;bundle-version="1.1.1",
- phasereditor.libgdx;bundle-version="1.1.1"
+ org.json,
+ phasereditor.ui,
+ phasereditor.libgdx
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.atlas.core

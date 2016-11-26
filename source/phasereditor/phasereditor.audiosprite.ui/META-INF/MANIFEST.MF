@@ -8,17 +8,17 @@ Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.editors;bundle-version="3.8.200",
- phasereditor.audio.core;bundle-version="1.1.1",
  org.eclipse.core.resources;bundle-version="3.9.1",
- phasereditor.audiosprite.core;bundle-version="1.1.1",
- phasereditor.ui;bundle-version="1.1.1",
- org.eclipse.ui.navigator;bundle-version="3.5.401",
  org.eclipse.ui.ide;bundle-version="3.10.2",
- phasereditor.project.core;bundle-version="1.1.1",
- org.json;bundle-version="1.0.0",
+ org.eclipse.ui.navigator;bundle-version="3.5.401",
  org.eclipse.ui.forms;bundle-version="3.6.100",
- phasereditor.libgdx;bundle-version="1.1.1",
- org.eclipse.help;bundle-version="3.6.0"
+ org.eclipse.help;bundle-version="3.6.0",
+ phasereditor.audio.core,
+ phasereditor.audiosprite.core,
+ phasereditor.ui,
+ phasereditor.project.core,
+ phasereditor.libgdx,
+ org.json
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.audiosprite.ui,

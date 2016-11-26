@@ -3,7 +3,7 @@
    <description name="Phaser Editor Updates" url="http://phasereditor.boniatillo.com/updates/1.3.0">
       Phaser Editor bug fixes updates.
    </description>
-   <feature url="features/phasereditor.tools_1.3.0.qualifier.jar" id="phasereditor.tools" version="1.3.0.qualifier">
+   <feature url="features/phasereditor.tools_1.3.0.201611251735.jar" id="phasereditor.tools" version="1.3.0.201611251735">
       <category name="phasereditor.tools"/>
    </feature>
    <category-def name="phasereditor.tools" label="Phaser Editor Tools">
