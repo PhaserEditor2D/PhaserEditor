@@ -73,22 +73,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
          unpack="false"/>
 
    <plugin
-         id="phasereditor.optipng.core.linux"
-         os="linux"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"/>
-
-   <plugin
-         id="phasereditor.optipng.core.win32"
-         os="win32"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"/>
-
-   <plugin
          id="phasereditor.optipng.ui"
          download-size="0"
          install-size="0"
