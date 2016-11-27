@@ -12,11 +12,6 @@
       <toc
             file="quick-start.xml">
       </toc>
-      <toc
-            category="com.boniatillo.phasereditor"
-            file="phaser-toc.xml"
-            primary="true">
-      </toc>
    </extension>
    <extension
          point="org.eclipse.help.contexts">
