@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - LibGDX
 Bundle-SymbolicName: phasereditor.libgdx
-Bundle-Version: 1.3.0.qualifier
+Bundle-Version: 1.3.0.20161126
 Bundle-Vendor: Arian Fornaris
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: com.badlogic.gdx,

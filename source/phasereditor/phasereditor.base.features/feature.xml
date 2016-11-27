@@ -2,7 +2,7 @@
 <feature
       id="phasereditor.base"
       label="Phaser Editor - Base"
-      version="1.3.0.qualifier"
+      version="1.3.0.20161126"
       provider-name="Arian Fornaris">
 
    <description url="http://phasereditor.boniatillo.com">

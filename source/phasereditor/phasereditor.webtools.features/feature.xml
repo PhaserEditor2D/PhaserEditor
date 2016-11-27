@@ -2,7 +2,7 @@
 <feature
       id="phasereditor.webtools"
       label="Phaser Editor - Web Tools"
-      version="1.3.0.qualifier"
+      version="1.3.0.20161126"
       provider-name="Arian Fornaris"
       license-feature="org.eclipse.e4.rcp"
       license-feature-version="1.5.1.v20160907-0248">
