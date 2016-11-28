@@ -52,10 +52,10 @@ public class PhaserJSDoc {
 	public synchronized static PhaserJSDoc getInstance() {
 		if (_instance == null) {
 			long t = currentTimeMillis();
-			Path phaserVersionFolder = InspectCore.getPhaserVersionFolder();
-			Path docsJsonFile = phaserVersionFolder.resolve("phaser-custom/jsdoc/docs.json").toAbsolutePath()
-					.normalize();
-			Path srcFolder = phaserVersionFolder.resolve("phaser-master/src");
+			Path docsJsonFile = InspectCore
+					.getBundleFile(InspectCore.RESOURCES_METADATA_PLUGIN, "phaser-custom/jsdoc/docs.json")
+					.toAbsolutePath().normalize();
+			Path srcFolder = InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN, "phaser-master/src");
 
 			try {
 				_instance = new PhaserJSDoc(srcFolder, docsJsonFile);
@@ -78,7 +78,7 @@ public class PhaserJSDoc {
 		_srcFolder = srcFolder;
 		_globalConstants = new ArrayList<>();
 		_membersMap = new HashMap<>();
-		
+
 		_typesMap = buildPhaserJSDoc(docsJsonFile);
 
 		for (PhaserType type : _typesMap.values()) {

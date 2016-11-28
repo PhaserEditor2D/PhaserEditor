@@ -208,7 +208,6 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
       <feature id="phasereditor.canvas" version="1.3.0.20161126"/>
       <feature id="phasereditor.chains" version="1.3.0.20161126"/>
       <feature id="phasereditor.core" version="1.3.0.20161126"/>
-      <feature id="phasereditor.executables" version="1.3.0.20161126"/>
       <feature id="phasereditor.help.guide" version="1.3.0.qualifier"/>
       <feature id="phasereditor.help.phaserdoc" version="1.3.0.20161126"/>
       <feature id="phasereditor.launcher" version="1.3.0.20161126"/>

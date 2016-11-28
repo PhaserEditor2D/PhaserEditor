@@ -14,7 +14,6 @@ Require-Bundle: org.eclipse.core.filesystem;bundle-version="1.4.100",
  org.eclipse.wst.jsdt.ui;bundle-version="1.1.500",
  phasereditor.chains.core,
  phasereditor.inspect.core,
- phasereditor.inspect.core.resources,
  phasereditor.ui,
  org.json
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

@@ -46,10 +46,8 @@ import phasereditor.inspect.core.examples.ExampleModel.Mapping;
 public class ExamplesModel {
 	private Path _examplesFolderPath;
 	private List<ExampleCategoryModel> _examplesCategories;
-	private Path _reposFolder;
 
 	public ExamplesModel(Path reposDir) {
-		_reposFolder = reposDir;
 		_examplesFolderPath = reposDir.resolve("phaser-examples-master/examples");
 		_examplesCategories = new ArrayList<>();
 	}
@@ -173,10 +171,6 @@ public class ExamplesModel {
 
 	public Path getExamplesRepoPath() {
 		return _examplesFolderPath;
-	}
-
-	public Path getReposFolder() {
-		return _reposFolder;
 	}
 
 	public void loadCache(Path cache) throws IOException {

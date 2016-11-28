@@ -1,0 +1,9 @@
+{
+	"author": {
+		"name": "Arian Fornaris",
+		"email": "developers@boniatillo.com",
+		"website": "phasereditor.boniatillo.com",
+	},
+	"mainFile": "assets/scenes/Scene1.canvas",
+	"description": "Tile based platformer made with the scene builder."
+}

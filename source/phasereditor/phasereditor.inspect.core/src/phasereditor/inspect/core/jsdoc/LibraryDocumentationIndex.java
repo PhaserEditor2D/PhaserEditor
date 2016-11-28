@@ -16,7 +16,7 @@ import java.util.Map;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import phasereditor.inspect.core.resources.InspectCoreResources;
+import phasereditor.inspect.core.InspectCore;
 
 /**
  * @author arian
@@ -32,13 +32,13 @@ public class LibraryDocumentationIndex {
 
 			LibraryDocumentationIndex index = new LibraryDocumentationIndex();
 
-			Path resourcesFolder = InspectCoreResources.getResourcesPath_AnyOS().resolve("built-in");
 			try {
-				Path indexFile = resourcesFolder.resolve("thirdparty-libraries/browser.doc.json").toAbsolutePath()
+				Path libsFolder = InspectCore.getBundleFile(InspectCore.RESOURCES_JSLIBS_PLUGIN, "");
+				Path indexFile = libsFolder.resolve("thirdparty-libraries/browser.doc.json").toAbsolutePath()
 						.normalize();
 				index.addIndexFile(indexFile);
 
-				indexFile = resourcesFolder.resolve("thirdparty-libraries/ecma5.doc.json").toAbsolutePath().normalize();
+				indexFile = libsFolder.resolve("thirdparty-libraries/ecma5.doc.json").toAbsolutePath().normalize();
 				index.addIndexFile(indexFile);
 
 				_instance = index;

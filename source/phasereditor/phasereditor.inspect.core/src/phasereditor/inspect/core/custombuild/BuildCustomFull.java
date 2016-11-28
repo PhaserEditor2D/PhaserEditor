@@ -35,7 +35,7 @@ public class BuildCustomFull {
 
 	public static void main(String[] args) throws JSONException, IOException {
 		Path wsPath = Paths.get(".").toAbsolutePath().getParent().getParent();
-		Path projectPath = wsPath.resolve(InspectCore.RESOURCES_PLUGIN_ID);
+		Path projectPath = wsPath.resolve(InspectCore.RESOURCES_METADATA_PLUGIN);
 		// Path srcPath = projectPath.resolve("phaser-master/src");
 		Path modulesPath = projectPath.resolve("phaser-custom/build/modules.json");
 		// read modules

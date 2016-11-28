@@ -36,7 +36,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
-import phasereditor.inspect.core.resources.InspectCoreResources;
+import phasereditor.inspect.core.InspectCore;
 import phasereditor.project.core.ProjectCore;
 
 public abstract class PhaserSourceFileWizardPage extends WizardNewFileCreationPage {
@@ -135,8 +135,8 @@ public abstract class PhaserSourceFileWizardPage extends WizardNewFileCreationPa
 
 	@Override
 	protected InputStream getInitialContents() {
-		Path bundle = InspectCoreResources.getResourcesPath_AnyOS().resolve("built-in");
-		Path file = bundle.resolve("templates_newfile/" + getTemplatePath());
+		Path file = InspectCore.getBundleFile(InspectCore.RESOURCES_TEMPLATES_PLUGIN,
+				"templates_newfile/" + getTemplatePath());
 		try {
 			String content = new String(Files.readAllBytes(file));
 			content = processContent(content);

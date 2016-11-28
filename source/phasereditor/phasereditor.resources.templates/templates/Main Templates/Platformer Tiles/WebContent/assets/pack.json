@@ -1,0 +1,67 @@
+{
+    "boot": [
+        {
+            "type": "image",
+            "key": "loading",
+            "url": "assets/images/loading.png",
+            "overwrite": false
+        },
+        {
+            "type": "script",
+            "key": "preload",
+            "url": "js/Preload.js"
+        }
+    ],
+    "preload": [
+        {
+            "type": "script",
+            "key": "level1",
+            "url": "js/Level.js"
+        },
+        {
+            "type": "atlas",
+            "key": "enemies",
+            "textureURL": "assets/atlas/enemies.png",
+            "atlasURL": "assets/atlas/enemies.json",
+            "format": "TEXTURE_ATLAS_JSON_HASH"
+        },
+        {
+            "type": "atlas",
+            "key": "objects",
+            "textureURL": "assets/atlas/objects.png",
+            "atlasURL": "assets/atlas/objects.json",
+            "format": "TEXTURE_ATLAS_JSON_HASH"
+        },
+        {
+            "type": "atlas",
+            "key": "character",
+            "textureURL": "assets/atlas/character.png",
+            "atlasURL": "assets/atlas/character.json",
+            "format": "TEXTURE_ATLAS_JSON_HASH"
+        },
+        {
+            "type": "script",
+            "key": "scene1",
+            "url": "assets/scenes/Scene1.js"
+        },
+        {
+            "type": "image",
+            "key": "background",
+            "url": "assets/images/bck3.png",
+            "overwrite": false
+        },
+        {
+            "type": "image",
+            "key": "p",
+            "url": "assets/images/physics.png",
+            "overwrite": false
+        }
+    ],
+    "meta": {
+        "generated": "1479045476836",
+        "app": "Phaser Editor",
+        "url": "http://phasereditor.boniatillo.com",
+        "version": "1.0",
+        "copyright": "Arian Fornaris (c) 2015,2016"
+    }
+}

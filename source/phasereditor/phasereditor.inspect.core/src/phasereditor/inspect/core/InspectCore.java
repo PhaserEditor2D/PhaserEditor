@@ -24,37 +24,51 @@ package phasereditor.inspect.core;
 import static java.lang.System.out;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.wst.jsdt.core.IMember;
 import org.eclipse.wst.jsdt.core.IType;
 import org.json.JSONObject;
 
 import phasereditor.inspect.core.examples.ExamplesModel;
 import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
-import phasereditor.inspect.core.resources.InspectCoreResources;
 import phasereditor.inspect.core.templates.TemplatesModel;
 
 public class InspectCore {
 
-	public static final String RESOURCES_PLUGIN_ID = InspectCoreResources.PLUGIN_ID;
+	public static final String RESOURCES_EXAMPLES_PLUGIN = "phasereditor.resources.phaser.examples";
+	public static final String RESOURCES_METADATA_PLUGIN = "phasereditor.resources.phaser.metadata";
+	public static final String RESOURCES_PHASER_CODE_PLUGIN = "phasereditor.resources.phaser.code";
+	public static final String RESOURCES_EXECUTABLES_PLUGIN = "phasereditor.resources.executables";
+	public static final String RESOURCES_TEMPLATES_PLUGIN = "phasereditor.resources.templates";
+	public static final String RESOURCES_JSLIBS_PLUGIN = "phasereditor.resources.jslibs";
 
-	public static final String BUILTIN_PHASER_VERSION;
+	public static final String PHASER_VERSION;
 
 	public static final String PREF_BUILTIN_PHASER_VERSION = "phasereditor.inspect.core.builtInPhaserVersion";
 	public static final String PREF_USER_PHASER_VERSION_PATH = "phasereditor.inspect.core.userPhaserVersion";
+	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
 
 	protected static ExamplesModel _examplesModel;
 	private static TemplatesModel _builtInTemplates;
 
 	static {
-		BUILTIN_PHASER_VERSION = readPhaserVersion(getBuiltInPhaserVersionFolder());
-		out.println("Built-in Phaser version: " + BUILTIN_PHASER_VERSION);
+		PHASER_VERSION = readPhaserVersion(InspectCore.getBundleFile(RESOURCES_METADATA_PLUGIN, "phaser-custom"));
+		out.println("Built-in Phaser version: " + PHASER_VERSION);
 	}
 
 	public static PhaserJSDoc getPhaserHelp() {
@@ -64,13 +78,16 @@ public class InspectCore {
 	public static ExamplesModel getExamplesModel() {
 		if (_examplesModel == null) {
 			try {
-				Path phaserVersionPath = InspectCore.getPhaserVersionFolder();
-				_examplesModel = new ExamplesModel(phaserVersionPath);
-				Path cache = phaserVersionPath.resolve("phaser-custom/examples/examples-cache.json");
-				if (Files.exists(cache)) {
-					_examplesModel.loadCache(cache);
+				// Path phaserVersionPath =
+				// InspectCore.getPhaserVersionFolder();
+				Path examplesPath = getBundleFile(RESOURCES_EXAMPLES_PLUGIN, "");
+				_examplesModel = new ExamplesModel(examplesPath);
+				Path cachePath = getBundleFile(RESOURCES_METADATA_PLUGIN, "phaser-custom/examples/examples-cache.json");
+				if (Files.exists(cachePath)) {
+					_examplesModel.loadCache(cachePath);
 				} else {
-					out.println("Cannot find the example cache " + cache);
+					StatusManager.getManager().handle(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+							"Cannot find the example cache " + cachePath), StatusManager.SHOW);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -83,9 +100,7 @@ public class InspectCore {
 	public static TemplatesModel getGeneralTemplates() {
 		if (_builtInTemplates == null) {
 			try {
-				Path resourcesPath = InspectCoreResources.getResourcesPath_AnyOS().resolve("built-in");
-				String rel = "templates";
-				Path templatesPath = resourcesPath.resolve(rel);
+				Path templatesPath = InspectCore.getBundleFile(InspectCore.RESOURCES_TEMPLATES_PLUGIN, "templates");
 				_builtInTemplates = new TemplatesModel(templatesPath);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -110,14 +125,6 @@ public class InspectCore {
 		return name;
 	}
 
-	public static String getCurrentPhaserVersion() {
-		if (!isBuiltInPhaserVersion()) {
-			Path folder = getPhaserVersionFolder();
-			return readPhaserVersion(folder);
-		}
-		return BUILTIN_PHASER_VERSION;
-	}
-
 	/**
 	 * @param folder
 	 * @return
@@ -132,41 +139,6 @@ public class InspectCore {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-	}
-
-	public static Path getBuiltInPhaserVersionFolder() {
-		Path path = InspectCoreResources.getResourcesPath_AnyOS().resolve("built-in/phaser-version");
-		if (!Files.exists(path)) {
-			Display.getDefault().syncExec(() -> {
-				MessageDialog.openError(Display.getDefault().getActiveShell(), "Fatal Error",
-						"Cannot find the built-in Phaser support at '" + path + "'.\n\nGood bye!");
-				System.exit(-1);
-			});
-		}
-		return path;
-	}
-
-	public static Path getPhaserVersionFolder() {
-		if (isBuiltInPhaserVersion()) {
-			return getBuiltInPhaserVersionFolder();
-		}
-
-		String path = getPreferenceStore().getString(PREF_USER_PHASER_VERSION_PATH);
-		Path folder = Paths.get(path);
-
-		if (!Files.exists(folder)) {
-			
-			Display.getDefault().syncExec(() -> {
-				MessageDialog.openWarning(Display.getDefault().getActiveShell(), "Phaser Support",
-						"Cannot find Phaser support at '" + path + "'. We will continue with the built-in.");
-			});
-			
-			getPreferenceStore().setValue(PREF_BUILTIN_PHASER_VERSION, true);
-
-			return getBuiltInPhaserVersionFolder();
-		}
-
-		return folder;
 	}
 
 	public static boolean isBuiltInPhaserVersion() {
@@ -195,5 +167,42 @@ public class InspectCore {
 
 	public static IPreferenceStore getPreferenceStore() {
 		return Activator.getDefault().getPreferenceStore();
+	}
+
+	public static Path getBundleFile(String bundleName, String filePath) {
+		try {
+			String spec = "platform:/plugin/" + bundleName + "/" + filePath;
+			URL url = FileLocator.toFileURL(new URL(spec));
+			Path path = Paths.get(new URI("file://" + url.getPath().replace(" ", "%20")));
+			return path;
+		} catch (IOException | URISyntaxException e) {
+			logError(e);
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void logError(Exception e) {
+		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
+	}
+
+	/**
+	 * Create a process taken as root the <code>[install]/resources/[os]</code>
+	 * folder.
+	 */
+	public static ProcessBuilder createProcessBuilder(String exePath, String... args) {
+		Path path = getBundleFile(RESOURCES_EXECUTABLES_PLUGIN, getExecutableName(exePath));
+		List<String> list = new ArrayList<>();
+		list.add(path.toAbsolutePath().toString());
+		list.addAll(Arrays.asList(args));
+		ProcessBuilder pb = new ProcessBuilder(list);
+		return pb;
+	}
+
+	public static String getExecutableName(String name) {
+		return isWindowsOS() ? name + ".exe" : name;
+	}
+
+	public static boolean isWindowsOS() {
+		return Platform.getOS().toLowerCase().contains("win");
 	}
 }

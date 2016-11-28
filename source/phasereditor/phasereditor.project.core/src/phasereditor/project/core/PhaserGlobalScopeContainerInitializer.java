@@ -35,12 +35,13 @@ public class PhaserGlobalScopeContainerInitializer extends ExternalGlobalScopeCo
 	 * 
 	 */
 	public PhaserGlobalScopeContainerInitializer() {
-		super("phaser-api.js", "Phaser API " + InspectCore.getCurrentPhaserVersion() + " Library");
+		super("phaser-api.js", "Phaser API " + InspectCore.PHASER_VERSION + " Library");
 	}
 
 	@Override
 	public Path getLibFolderPath() {
-		java.nio.file.Path folder = InspectCore.getPhaserVersionFolder().resolve("phaser-custom/api");
+		java.nio.file.Path folder = InspectCore.getBundleFile(InspectCore.RESOURCES_METADATA_PLUGIN,
+				"phaser-custom/api");
 		return folder;
 	}
 

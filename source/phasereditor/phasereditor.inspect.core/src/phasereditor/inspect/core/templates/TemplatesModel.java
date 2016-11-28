@@ -37,8 +37,8 @@ public class TemplatesModel {
 	public TemplatesModel(Path templatesFolder) throws IOException {
 		_categories = new ArrayList<>();
 		_templatesFolder = templatesFolder;
-		Path bundleFolder = InspectCore.getPhaserVersionFolder();
-		_phaserJs = bundleFolder.resolve("phaser-master/build/phaser.js");
+		_phaserJs = InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN,
+				"phaser-master/build/phaser.js");
 		load();
 	}
 

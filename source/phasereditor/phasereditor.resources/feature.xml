@@ -17,4 +17,55 @@
       [Enter License Description here.]
    </license>
 
+   <plugin
+         id="phasereditor.resources.phaser.code"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="phasereditor.resources.phaser.examples"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="phasereditor.resources.phaser.metadata"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="phasereditor.resources.templates"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="phasereditor.resources.executables"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="phasereditor.resources.executables.linux"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"/>
+
+   <plugin
+         id="phasereditor.resources.executables.win32"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"/>
+
+   <plugin
+         id="phasereditor.resources.jslibs"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
 </feature>

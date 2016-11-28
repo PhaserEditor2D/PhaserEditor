@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Phaser Editor - Using additive blending</title>
+<script src="lib/phaser.js"></script>
+<script src='ex-lighting-04.js'></script>
+</head>
+<body>
+
+<p>
+<p>Move the pointer or tap to move the light.</p><p>This version uses a different lighting technique. Rather than draw a bitmap that is overlayed on the scene with the <code>MULTIPLY</code> blend mode, each torch object creates a child <code>glow</code> object. The <code>glow</code> object is drawn on top of each torch with the <code>ADD</code> blend mode. This creates a similar but different effect than the other examples. The <code>ADD</code> blend mode brightens the colors of everything beneath it. Note the differences where two lights overlap.</p>
+</p>
+
+	 <div id="game"></div>
+
+<p>
+Game Mechanic Explorer Assets
+</p>
+<p>
+Copyright &copy; 2014 John Watson<br>
+Licensed under the terms of the Creative Commons Attribution license (CC BY 3.0)<br>
+<a href="http://creativecommons.org/licenses/by/3.0/us/">http://creativecommons.org/licenses/by/3.0/us/</a><br>
+</p>
+Provide credit like this
+<br>
+"Game Mechanic Explorer Assets" by John Watson is licensed under CC BY 3.0
+<br>
+with a link to
+<br><br>
+<a href="http://gamemechanicexplorer.com">http://gamemechanicexplorer.com</a>
+<br><br>
+Thank you!
+</body>
+</html>

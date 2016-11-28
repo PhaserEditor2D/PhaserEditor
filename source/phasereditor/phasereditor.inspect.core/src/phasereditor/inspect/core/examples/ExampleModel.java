@@ -36,6 +36,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import phasereditor.inspect.core.IPhaserTemplate;
+import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.TemplateInfo;
 
 public class ExampleModel implements IPhaserTemplate {
@@ -60,14 +61,14 @@ public class ExampleModel implements IPhaserTemplate {
 
 	private String _name;
 	private List<Mapping> _filesMapping;
-	private ExamplesModel _examples;
 	private TemplateInfo _info;
 	private ExampleCategoryModel _category;
 	private Path _mainFilePath;
+	private Path _phaserBuildFolder;
+	private Path _phaserCustomFolder;
 
 	public ExampleModel(ExamplesModel examples, ExampleCategoryModel category, String name, String mainFile) {
 		_name = name;
-		_examples = examples;
 		_category = category;
 		_filesMapping = new ArrayList<>();
 		_info = new TemplateInfo();
@@ -78,6 +79,8 @@ public class ExampleModel implements IPhaserTemplate {
 		_info.setDescription("Official Phaser example.");
 		_mainFilePath = examples.getExamplesRepoPath().resolve(category.getName().toLowerCase())
 				.resolve(mainFile);
+		_phaserBuildFolder = InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN, "phaser-master/build/");
+		_phaserCustomFolder = InspectCore.getBundleFile(InspectCore.RESOURCES_METADATA_PLUGIN, "phaser-custom/");
 	}
 
 	@Override
@@ -109,9 +112,7 @@ public class ExampleModel implements IPhaserTemplate {
 
 			// copy phaser.js
 
-			Path root = _examples.getReposFolder();
-			Path build = root.resolve("phaser-master/build/");
-			copy(build.resolve("phaser.js"), folder.getFile("lib/phaser.js"), monitor);
+			copy(_phaserBuildFolder.resolve("phaser.js"), folder.getFile("lib/phaser.js"), monitor);
 
 			// copy index.html
 
@@ -123,8 +124,7 @@ public class ExampleModel implements IPhaserTemplate {
 				}
 			}
 
-			Path custom = root.resolve("phaser-custom");
-			Path indexhtml = custom.resolve("examples/examples-index.html");
+			Path indexhtml = _phaserCustomFolder.resolve("examples/examples-index.html");
 			String content = new String(Files.readAllBytes(indexhtml));
 
 			content = content.replace("{{title}}", folder.getProject().getName());

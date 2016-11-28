@@ -1,0 +1,46 @@
+{
+    "meta": {
+        "app": "Phaser Editor",
+        "copyright": "Arian Fornaris (c) 2015,2016",
+        "generated": "1461604778273",
+        "version": "1.0",
+        "url": "http://phasereditor.boniatillo.com"
+    },
+    "boot": [
+        {
+            "type": "image",
+            "overwrite": false,
+            "key": "loading",
+            "url": "assets/images/loading.png"
+        },
+        {
+            "type": "script",
+            "key": "preload-js",
+            "url": "js/Preload.js"
+        }
+    ],
+    "preload": [
+        {
+            "type": "image",
+            "overwrite": false,
+            "key": "tap-to-start",
+            "url": "assets/images/tap-to-start.png"
+        },
+        {
+            "type": "image",
+            "overwrite": false,
+            "key": "mono",
+            "url": "assets/images/mono.png"
+        },
+        {
+            "type": "script",
+            "key": "menu-js",
+            "url": "js/Menu.js"
+        },
+        {
+            "type": "script",
+            "key": "level-js",
+            "url": "js/Level.js"
+        }
+    ]
+}

@@ -1,0 +1,10 @@
+{
+	"author": {
+		"name": "Richard Davey",
+		"email": "Phaser.io (rich@photonstorm.com)",
+		"website": "http://phaser.io",
+	},
+	"mainFile": "clouds.js",
+	"url": "http://phaser.io/tutorials/coding-tips-004",
+	"description": "This week we're creating platforms you can ride: commonly known as 'cloud platforms'."
+}

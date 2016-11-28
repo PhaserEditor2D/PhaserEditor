@@ -23,7 +23,7 @@ package phasereditor.project.core;
 
 import java.nio.file.Path;
 
-import phasereditor.inspect.core.resources.InspectCoreResources;
+import phasereditor.inspect.core.InspectCore;
 
 public class Ecma5GlobalScopeContainerInitializer extends ExternalGlobalScopeContainerInitializer {
 
@@ -33,7 +33,7 @@ public class Ecma5GlobalScopeContainerInitializer extends ExternalGlobalScopeCon
 
 	@Override
 	public Path getLibFolderPath() {
-		return InspectCoreResources.getResourcesPath_AnyOS().resolve("built-in/thirdparty-libraries");
+		return InspectCore.getBundleFile(InspectCore.RESOURCES_JSLIBS_PLUGIN, "thirdparty-libraries");
 	}
 
 }

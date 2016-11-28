@@ -1,0 +1,9 @@
+{
+    "author": {
+        "website": "http://gamemechanicexplorer.com",
+        "name": "John Watson",
+        "email": "john@watson-net.com"
+    },
+    "description": "<p>Use the left and right arrow keys or tap near the edges to rotate the ship. Press the up arrow key or tap the center to turn on the engine.<\/p><p>This is an example of Asteroids-style motion. The ship moves in straight lines until the engine is turned on and accelerates. When the ship reaches any of the stage boundaries it is repositioned to the opposite side. The ship rotates at <code>ROTATION_SPEED<\/code> degrees/second.<\/p>",
+    "mainFile": "ex-thrust-01.js"
+}

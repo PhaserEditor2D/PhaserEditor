@@ -41,9 +41,10 @@ public class Phaser_Member_Exists_Test {
 	@Test
 	public void test() throws IOException {
 		Path wsPath = Paths.get(".").toAbsolutePath().getParent().getParent();
-		Path projectPath = wsPath.resolve(InspectCore.RESOURCES_PLUGIN_ID);
-		PhaserJSDoc jsDoc = new PhaserJSDoc(projectPath.resolve("phaser-master/src"),
-				projectPath.resolve("phaser-version/phaser-custom/jsdoc/docs.json"));
+		Path sourceProjectPath = wsPath.resolve(InspectCore.RESOURCES_PHASER_CODE_PLUGIN);
+		Path metadataProjectPath = wsPath.resolve(InspectCore.RESOURCES_METADATA_PLUGIN);
+		PhaserJSDoc jsDoc = new PhaserJSDoc(sourceProjectPath.resolve("phaser-master/src"),
+				metadataProjectPath.resolve("phaser-custom/jsdoc/docs.json"));
 
 		// test the members exist
 

@@ -61,7 +61,7 @@ import com.badlogic.gdx.backends.lwjgl.audio.OpenALMusic;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxNativesLoader;
 
-import phasereditor.inspect.core.resources.InspectCoreResources;
+import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.FileUtils;
 
 /**
@@ -384,15 +384,15 @@ public class AudioCore {
 	}
 
 	public static ProcessBuilder createFFMpegProcessBuilder(String... args) {
-		return InspectCoreResources.createProcessBuilder("ffmpeg/ffmpeg", args);
+		return InspectCore.createProcessBuilder("ffmpeg/ffmpeg", args);
 	}
 
 	public static ProcessBuilder createFFPlayProcessBuilder(String... args) {
-		return InspectCoreResources.createProcessBuilder("ffmpeg/ffplay", args);
+		return InspectCore.createProcessBuilder("ffmpeg/ffplay", args);
 	}
 
 	public static ProcessBuilder createFFProbeProcessBuilder(String... args) {
-		return InspectCoreResources.createProcessBuilder("ffmpeg/ffprobe", args);
+		return InspectCore.createProcessBuilder("ffmpeg/ffprobe", args);
 	}
 
 	public static void removeSoundProperties(IFile file) {

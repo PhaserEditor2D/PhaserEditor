@@ -1,0 +1,9 @@
+{
+	"author": {
+		"name": "Arian Fornaris",
+		"email": "developers@boniatillo.com",
+		"website": "phasereditor.boniatillo.com",
+	},
+	"mainFile": "js/Level.js",
+	"description": "Basic template with a Boot, Preload, Menu and Level states. The assets are loaded from an asset pack."
+}

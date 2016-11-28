@@ -40,7 +40,7 @@ import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import phasereditor.inspect.core.resources.InspectCoreResources;
+import phasereditor.inspect.core.InspectCore;
 import phasereditor.project.core.ProjectCore;
 
 public class AssetPackWizardPage extends WizardNewFileCreationPage {
@@ -146,8 +146,7 @@ public class AssetPackWizardPage extends WizardNewFileCreationPage {
 
 	@Override
 	protected InputStream getInitialContents() {
-		Path resourcesPath = InspectCoreResources.getResourcesPath_AnyOS();
-		Path file = resourcesPath.resolve("built-in/templates_newfile/empty-asset-pack.json");
+		Path file = InspectCore.getBundleFile(InspectCore.RESOURCES_TEMPLATES_PLUGIN, "templates_newfile/empty-asset-pack.json");
 		try (InputStream input = Files.newInputStream(file);) {
 			JSONObject obj = new JSONObject(new JSONTokener(input));
 			obj.getJSONObject("meta").put("generated", Long.toString(currentTimeMillis()));

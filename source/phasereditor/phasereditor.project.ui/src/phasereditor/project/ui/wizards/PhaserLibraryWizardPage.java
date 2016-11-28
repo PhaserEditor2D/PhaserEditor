@@ -46,10 +46,10 @@ public class PhaserLibraryWizardPage extends NewElementWizardPage
 
 	@Override
 	public void createControl(Composite parent) {
-		setTitle("Phaser API " + InspectCore.BUILTIN_PHASER_VERSION + " Library");
+		setTitle("Phaser API " + InspectCore.PHASER_VERSION + " Library");
 		setDescription("Phaser Library Support (phaser.js)");
 		Label label = new Label(parent, SWT.NONE);
-		label.setText("Phaser " + InspectCore.BUILTIN_PHASER_VERSION
+		label.setText("Phaser " + InspectCore.PHASER_VERSION
 				+ " library added to the Project.\n\n- This library supports the JavaScript elements provided by phaser.js file.");
 
 		setControl(label);

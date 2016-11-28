@@ -1,0 +1,9 @@
+{
+    "author": {
+        "website": "http://gamemechanicexplorer.com",
+        "name": "John Watson",
+        "email": "john@watson-net.com"
+    },
+    "description": "<p>Use the left and right arrow keys or tap near the edges to rotate the ship. Press the up arrow key or tap the center to turn on the engine.<\/p><p>The world now has gravity and a ground you can land on. The ship's <code>ACCELERATION<\/code> must be stronger than <code>GRAVITY<\/code> or it will never be able to move up.<\/p>",
+    "mainFile": "ex-thrust-03.js"
+}

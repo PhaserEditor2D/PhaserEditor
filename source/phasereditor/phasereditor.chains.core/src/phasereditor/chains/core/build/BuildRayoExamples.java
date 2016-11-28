@@ -47,7 +47,7 @@ import phasereditor.inspect.core.examples.ExamplesModel;
 public class BuildRayoExamples {
 	public static void main(String[] args) throws IOException {
 		Path wsPath = Paths.get(".").toAbsolutePath().getParent().getParent();
-		Path projectPath = wsPath.resolve(InspectCore.RESOURCES_PLUGIN_ID);
+		Path projectPath = wsPath.resolve(InspectCore.RESOURCES_EXAMPLES_PLUGIN);
 
 		List<Line> lines = new ArrayList<>();
 		List<String> files = new ArrayList<>();

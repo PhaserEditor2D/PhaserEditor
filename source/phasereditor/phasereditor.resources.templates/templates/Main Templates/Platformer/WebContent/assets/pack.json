@@ -1,0 +1,45 @@
+{
+    "meta": {
+        "app": "Phaser Editor",
+        "copyright": "Arian Fornaris (c) 2015,2016",
+        "generated": "1466220912322",
+        "version": "1.0",
+        "url": "http://phasereditor.boniatillo.com"
+    },
+    "section": [
+        {
+            "textureURL": "assets/atlas/atlas1.png",
+            "atlasURL": "assets/atlas/atlas1.json",
+            "format": "TEXTURE_ATLAS_JSON_HASH",
+            "type": "atlas",
+            "key": "atlas1"
+        },
+        {
+            "type": "image",
+            "overwrite": false,
+            "key": "wall-empty",
+            "url": "assets/images/wall-empty.jpg"
+        },
+        {
+            "type": "image",
+            "overwrite": false,
+            "key": "window",
+            "url": "assets/images/window.png"
+        },
+        {
+            "frameHeight": 140,
+            "margin": 0,
+            "frameWidth": 207,
+            "spacing": 0,
+            "frameMax": -1,
+            "type": "spritesheet",
+            "key": "fufu",
+            "url": "assets/images/fufu.png"
+        },
+        {
+            "type": "script",
+            "key": "scene",
+            "url": "assets/canvas/Scene1.js"
+        }
+    ]
+}

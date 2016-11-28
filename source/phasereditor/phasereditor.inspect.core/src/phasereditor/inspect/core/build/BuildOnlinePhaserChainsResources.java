@@ -49,7 +49,7 @@ public class BuildOnlinePhaserChainsResources {
 		docGenOputput = docGenOputput.toAbsolutePath().normalize();
 
 		Path wsPath = Paths.get(".").toAbsolutePath().getParent().getParent();
-		Path projectPath = wsPath.resolve(InspectCore.RESOURCES_PLUGIN_ID);
+		Path projectPath = wsPath.resolve(InspectCore.RESOURCES_PHASER_CODE_PLUGIN);
 		PhaserJSDoc jsDoc = new PhaserJSDoc(projectPath.resolve("phaser-master/src"),
 				projectPath.resolve("phaser-custom/jsdoc/docs.json"));
 

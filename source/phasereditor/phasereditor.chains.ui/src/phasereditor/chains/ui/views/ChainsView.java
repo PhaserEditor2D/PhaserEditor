@@ -406,8 +406,7 @@ public class ChainsView extends ViewPart {
 			file = "examples/" + file;
 		}
 
-		Path phaserVersionFolder = InspectCore.getPhaserVersionFolder();
-		Path filePath = phaserVersionFolder.resolve("phaser-examples-master/" + file);
+		Path filePath = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN, "phaser-examples-master/" + file);
 
 		openJSEditor(linenum, -1, filePath);
 	}

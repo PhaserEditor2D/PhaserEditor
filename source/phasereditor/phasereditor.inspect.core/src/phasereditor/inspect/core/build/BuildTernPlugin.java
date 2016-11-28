@@ -51,9 +51,10 @@ public class BuildTernPlugin {
 		// this generates a Phaser Tern plugin
 
 		Path wsPath = Paths.get(".").toAbsolutePath().getParent().getParent();
-		Path projectPath = wsPath.resolve(InspectCore.RESOURCES_PLUGIN_ID);
-		_phaserJSDoc = new PhaserJSDoc(projectPath.resolve("phaser-master/src"),
-				projectPath.resolve("phaser-custom/jsdoc/docs.json"));
+		Path sourceProjectPath = wsPath.resolve(InspectCore.RESOURCES_PHASER_CODE_PLUGIN);
+		Path metadataProjectPath = wsPath.resolve(InspectCore.RESOURCES_METADATA_PLUGIN);
+		_phaserJSDoc = new PhaserJSDoc(sourceProjectPath.resolve("phaser-master/src"),
+				metadataProjectPath.resolve("phaser-custom/jsdoc/docs.json"));
 
 		PhaserType[] types = _phaserJSDoc.getTypes().stream().toArray(PhaserType[]::new);
 

@@ -1,0 +1,9 @@
+{
+	"author": {
+		"name": "Arian Fornaris",
+		"email": "developers@boniatillo.com",
+		"website": "phasereditor.boniatillo.com",
+	},
+	"mainFile": "js/Main.js",
+	"description": "Empty template with a Main class and an asset pack."
+}

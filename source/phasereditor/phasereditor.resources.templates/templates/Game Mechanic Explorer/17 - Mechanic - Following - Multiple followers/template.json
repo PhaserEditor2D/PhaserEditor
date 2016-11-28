@@ -1,0 +1,9 @@
+{
+    "author": {
+        "website": "http://gamemechanicexplorer.com",
+        "name": "John Watson",
+        "email": "john@watson-net.com"
+    },
+    "description": "<p>The object will follow wherever you point or tap.<\/p><p>This example uses the same Follower as the last example. The only difference is that each Follower (except the first one) targets the Follower in front of it. The first follower still targets the pointer position.<\/p>",
+    "mainFile": "ex-follow-02.js"
+}
