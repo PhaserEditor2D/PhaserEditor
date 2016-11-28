@@ -49,7 +49,7 @@ Please use the issues of this repo to report bugs or request features. In additi
 
 Phaser Editor is developed by [Arian Fornaris][pe_twitter].
 
-You can checkout the source code and modify it (MIT License).
+You can checkout the source code and modify it (EPL License).
 
 
 
