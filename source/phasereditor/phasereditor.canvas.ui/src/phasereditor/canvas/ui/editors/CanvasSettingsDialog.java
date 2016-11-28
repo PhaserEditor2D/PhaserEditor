@@ -161,13 +161,24 @@ public class CanvasSettingsDialog extends Dialog {
 		_colorSupport.setColor(_model.getSceneColor());
 		_colorSupport.updateContent();
 	}
-
+	
 	@Override
 	protected void okPressed() {
 		_model.setSceneColor(_colorSupport.getColor());
 		super.okPressed();
 	}
+	
+	@Override
+	protected void configureShell(Shell newShell) {
+		super.configureShell(newShell);
+		newShell.setText("Settings");
+	}
 
+	@Override
+	protected int getShellStyle() {
+		return super.getShellStyle() | SWT.RESIZE;
+	}
+	
 	/**
 	 * Create contents of the button bar.
 	 * 
