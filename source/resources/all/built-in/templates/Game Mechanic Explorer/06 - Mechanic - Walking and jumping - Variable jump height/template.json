@@ -1,9 +1,0 @@
-{
-    "author": {
-        "website": "http://gamemechanicexplorer.com",
-        "name": "John Watson",
-        "email": "john@watson-net.com"
-    },
-    "description": "<p>Use the arrow keys or tap to move the player left and right. Press the up arrow or tap the center to jump and double jump (while in the air).<\/p><p>You can control the height of the jump by how long you hold down the jump button.<\/p>",
-    "mainFile": "ex-walking-06.js"
-}

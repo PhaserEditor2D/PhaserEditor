@@ -1,9 +1,0 @@
-{
-	"author": {
-		"name": "Arian Fornaris",
-		"email": "developers@boniatillo.com",
-		"website": "phasereditor.boniatillo.com",
-	},
-	"mainFile": "js/Level.js",
-	"description": "Minimal template to load the game states (scripts) using the <code>Phaser.Loader</code> and not by including them in the \"index.html\" file."
-}

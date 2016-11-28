@@ -1,9 +1,0 @@
-{
-    "author": {
-        "website": "http://gamemechanicexplorer.com",
-        "name": "John Watson",
-        "email": "john@watson-net.com"
-    },
-    "description": "<p>Use the left and right arrow keys or tap near the edges to rotate the ship. Press the up arrow key or tap the center to turn on the engine.<\/p><p>The ship now has a <code>DRAG<\/code> component. <code>DRAG<\/code> works by applying a velocity in the opposite direction of the ship movement whenever the ship is not accelerating. This causes the ship to slow down gradually when the engine is off.<\/p>",
-    "mainFile": "ex-thrust-02.js"
-}

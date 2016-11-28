@@ -2,7 +2,7 @@
 <feature
       id="phasereditor.assets"
       label="Phaser Editor - Assets"
-      version="1.6.0.20161126"
+      version="1.3.0.20161126"
       provider-name="Arian Fornaris">
 
    <description url="http://www.example.com/description">

@@ -1,9 +1,0 @@
-{
-    "author": {
-        "website": "http://gamemechanicexplorer.com",
-        "name": "John Watson",
-        "email": "john@watson-net.com"
-    },
-    "description": "<p>Move the pointer or tap to move the light source. Click or tap to show or hide the rays.<\/p><p>Unlike the last example which cast hundreds of rays in every direction, this example achieves the same result with many fewer rays by only casting rays towards the corners of walls. The code is more complicated but significantly less CPU time is spent in the update loop. On my machine it's about 10 times faster.<\/p><p>Of course this could be optimized further. For example, you could check walls starting with the closest first. Then only check corners of other walls if they aren't already in shadow.<\/p>",
-    "mainFile": "ex-raycast-03.js"
-}
