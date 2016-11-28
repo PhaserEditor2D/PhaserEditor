@@ -3,14 +3,16 @@
       id="phasereditor.help.guide"
       label="Phaser Editor - Documentation"
       version="1.3.0.20161126"
-      provider-name="Arian Fornaris">
+      provider-name="Arian Fornaris"
+	license-feature="org.eclipse.platform"
+      license-feature-version="4.6.1.v20160907-1200">
 
-   <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
+   <description url="http://phasereditor.boniatillo.com">
+     Phaser Editor User Guide.
    </description>
 
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
+   <copyright url="http://phasereditor.boniatillo.com/blog/about">
+      Arian Fornaris Copyright - 2015, 2016
    </copyright>
 
    <license url="http://www.example.com/license">
