@@ -23,7 +23,6 @@ package phasereditor.canvas.core;
 
 import org.json.JSONObject;
 
-import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.FrameData;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
@@ -104,7 +103,6 @@ public class TileSpriteModel extends AssetSpriteModel<IAssetKey> {
 		jsonInfo.put("tilePosition.y", _tilePositionY, DEF_TILE_POSITION);
 		jsonInfo.put("tileScale.x", _tileScaleX, DEF_TILE_SCALE);
 		jsonInfo.put("tileScale.y", _tileScaleY, DEF_TILE_SCALE);
-		jsonInfo.put("asset-ref", AssetPackCore.getAssetJSONReference(getAssetKey()));
 	}
 
 	public double getWidth() {
