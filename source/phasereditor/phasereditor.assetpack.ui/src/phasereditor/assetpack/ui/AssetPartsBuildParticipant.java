@@ -190,6 +190,11 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 		for (IViewReference ref : refs) {
 			if (ref.getId().equals(PreviewView.ID)) {
 				PreviewView view = (PreviewView) ref.getView(false);
+				
+				if (view == null) {
+					continue;
+				}
+				
 				Object elem = view.getPreviewElement();
 
 				if (elem != null) {
