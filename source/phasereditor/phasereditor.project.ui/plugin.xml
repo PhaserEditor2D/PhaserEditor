@@ -138,6 +138,19 @@
             id="phasereditor.project.ui.resetlibraries"
             name="Reset Project Libraries">
       </command>
+      <command
+            categoryId="phasereditor.ui.phaserCategory"
+            defaultHandler="phasereditor.project.ui.handlers.AddPhaserNatureHandler"
+            description="Enable Phaser tooling in the project ."
+            id="phasereditor.project.ui.addnature"
+            name="Add Phaser Nature">
+      </command>
+      <command
+            defaultHandler="phasereditor.project.ui.handlers.RemovePhaserNatureHandler"
+            description="Disable Phaser tooling in the project."
+            id="phasereditor.project.ui.removeNature"
+            name="Remove Phaser Nature">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -147,6 +160,40 @@
          <command
                commandId="phasereditor.project.ui.resetlibraries"
                style="push">
+         </command>
+         <command
+               commandId="phasereditor.project.ui.addnature"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate>
+                     <not>
+                        <test
+                              property="org.eclipse.core.resources.projectNature"
+                              value="phasereditor.project.core.nature">
+                        </test>
+                     </not>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="phasereditor.project.ui.removeNature"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate>
+                     <test
+                           property="org.eclipse.core.resources.projectNature"
+                           value="phasereditor.project.core.nature">
+                     </test>
+                  </iterate>
+               </with>
+            </visibleWhen>
          </command>
       </menuContribution>
    </extension>

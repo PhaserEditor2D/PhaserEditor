@@ -22,6 +22,7 @@
 package phasereditor.assetpack.core;
 
 import static java.lang.System.err;
+import static java.lang.System.out;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -59,6 +60,7 @@ import org.json.JSONTokener;
 
 import phasereditor.atlas.core.AtlasCore;
 import phasereditor.audiosprite.core.AudioSpriteCore;
+import phasereditor.project.core.PhaserProjectNature;
 
 /**
  * Utilities related to the assets and resources.
@@ -289,7 +291,7 @@ public class AssetPackCore {
 					return true;
 				}
 
-				if (resource instanceof IFolder) {
+				if (resource instanceof IContainer) {
 					return true;
 				}
 
@@ -550,6 +552,13 @@ public class AssetPackCore {
 	}
 
 	public static AssetPackModel getAssetPackModel(IFile file, boolean forceCreate) {
+		
+		out.println("getAssetPackModel(" + file + ", " + forceCreate + ")");
+		
+		if (!PhaserProjectNature.hasNature(file.getProject())) {
+			return null;
+		}
+		
 		synchronized (_filePackMap) {
 
 			if (_filePackMap.containsKey(file)) {
@@ -613,7 +622,7 @@ public class AssetPackCore {
 			}
 		}
 	}
-
+	
 	public static String getAssetStringReference(IAssetKey key) {
 		JSONObject ref = getAssetJSONReference(key);
 		if (ref == null) {

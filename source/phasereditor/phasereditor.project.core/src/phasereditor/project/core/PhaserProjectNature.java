@@ -99,7 +99,7 @@ public class PhaserProjectNature implements IProjectNature {
 		jsProject.setRawIncludepath(newIncludeEntries, monitor);
 	}
 
-	public static void removeJsNature(IProject project, IProgressMonitor monitor) throws CoreException {
+	public static void removePhaserNature(IProject project, IProgressMonitor monitor) throws CoreException {
 		if (monitor != null && monitor.isCanceled()) {
 			throw new OperationCanceledException();
 		}
@@ -193,12 +193,12 @@ public class PhaserProjectNature implements IProjectNature {
 		// JavaProject javaProv = (JavaProject) JavaScriptCore.create(_project);
 		// javaProv.configure();
 
-		_project.refreshLocal(IResource.DEPTH_INFINITE, null);
+		_project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 	}
 
 	@Override
 	public void deconfigure() throws CoreException {
-		removeJsNature(getProject(), _monitor);
+		removePhaserNature(getProject(), _monitor);
 	}
 
 	@Override
