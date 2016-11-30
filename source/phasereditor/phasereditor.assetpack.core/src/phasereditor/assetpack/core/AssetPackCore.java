@@ -550,7 +550,7 @@ public class AssetPackCore {
 	}
 
 	public static AssetPackModel getAssetPackModel(IFile file, boolean forceCreate) {
-		
+
 		synchronized (_filePackMap) {
 
 			if (_filePackMap.containsKey(file)) {
