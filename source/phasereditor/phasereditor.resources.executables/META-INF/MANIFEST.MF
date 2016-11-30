@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - Executables Resources
 Bundle-SymbolicName: phasereditor.resources.executables
-Bundle-Version: 1.3.0.20161126
+Bundle-Version: 1.3.0.20161130
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: Arian Fornaris
 Eclipse-BundleShape: dir

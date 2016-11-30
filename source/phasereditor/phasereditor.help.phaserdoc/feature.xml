@@ -2,7 +2,7 @@
 <feature
       id="phasereditor.help.phaserdoc"
       label="Phaser Editor - Phaser Documentation"
-      version="1.3.0.20161126"
+      version="1.3.0.20161130"
       provider-name="Arian Fornaris"
       license-feature="org.eclipse.platform"
       license-feature-version="4.6.1.v20160907-1200">
