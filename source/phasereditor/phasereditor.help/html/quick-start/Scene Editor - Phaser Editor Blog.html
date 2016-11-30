@@ -319,9 +319,11 @@ sprite.tint = 0xfcfcfc; // modified property
 dino.animations.add('walk', [0, 1, 2], 4, true);
 </code></pre>
 
-<p>We provide an Animations editor where you create animations and set the name, fps, loop and frames:</p>
+<p>We provide an Animations editor where you create animations and set the name, fps, kill-on-complete, loop and frames:</p>
 
 <p><img src="./Scene Editor - Phaser Editor Blog_files/20160622160306-AnimationsDialog.png" alt="Animations editor"></p>
+
+<p>In addition you can mark an animation as "public". For each public animation the editor generates a public field with a references to it. For example, if the <strong>player</strong> sprite has a public <strong>walk</strong> animation, the editor generates a <code>fPlayer_walk</code> field that can be used like this: <code>scene1.fPlayer_walk.play()</code>.</p>
 
 <h3><a name="DataEditor"></a>Data editor</h3>
 
@@ -400,7 +402,7 @@ dino.animations.add('walk', [0, 1, 2], 4, true);
 <ul>
 <li><p><strong>Scene width and height</strong>. These values has not impact on the generated code, it is used only for show the "world frame" in the editor. The generated code is just a custom group so the developer is should to set the game size and world bounds in the game code.</p></li>
 <li><p><strong>Scene color</strong>. It sets the canvas "world" background color. This value is not included in the generated code.</p></li>
-<li><p><strong>Snapping</strong>. You can enable snapping and set the X and Y steps of the snapping. This is very useful to create levels with fixed size sprites, because the snapping guarantee that objects are placed in the right positions. The snapping can be toggle with a key sequence: <code>E</code>.</p></li>
+<li><p><strong>Snapping</strong>. You can enable snapping and set the X and Y steps of the snapping. This is very useful to create levels with fixed size sprites, because the snapping guarantee that objects are placed in the right positions. The snapping can be toggle with a key sequence: <code>E</code>. With the <code>W</code> key you can enable the snapping and set the width and height of the selected object.</p></li>
 <li><p><strong>Generate on Save</strong>. If set to true, the code is generated when the user saves the scene.</p></li>
 </ul>
 
