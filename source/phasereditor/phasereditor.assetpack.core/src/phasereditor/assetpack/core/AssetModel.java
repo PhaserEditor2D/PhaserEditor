@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core;
 
-import static java.lang.System.out;
-
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
@@ -419,13 +417,9 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 				continue;
 			}
 
-			out.println("testing " + used);
-
 			try {
 				delta.accept(d -> {
 					IResource resource = d.getResource();
-
-					out.println("res " + resource);
 
 					if (used.equals(resource)) {
 						touched.set(true);
