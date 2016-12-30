@@ -147,6 +147,10 @@ public class ImageAssetModel extends AssetModel {
 
 	@Override
 	public List<? extends IAssetElementModel> getSubElements() {
+		if (_elements == null) {
+			buildFrame();
+		}
+		
 		return _elements;
 	}
 
