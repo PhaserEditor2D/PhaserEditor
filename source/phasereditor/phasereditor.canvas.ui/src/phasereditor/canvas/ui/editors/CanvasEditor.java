@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
+import static java.lang.System.out;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.beans.PropertyChangeEvent;
@@ -38,6 +39,9 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.text.ITextListener;
+import org.eclipse.jface.text.TextEvent;
+import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -53,6 +57,7 @@ import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
@@ -65,8 +70,10 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.dialogs.FilteredTree;
-import org.eclipse.ui.part.EditorPart;
+import org.eclipse.ui.operations.UndoRedoActionGroup;
 import org.eclipse.ui.part.FileEditorInput;
+import org.eclipse.ui.part.MultiPageEditorPart;
+import org.eclipse.wst.jsdt.internal.ui.javaeditor.CompilationUnitEditor;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -89,8 +96,8 @@ import phasereditor.ui.PatternFilter2;
  * @author arian
  *
  */
-public class CanvasEditor extends EditorPart
-		implements  IPersistableEditor, IEditorSharedImages {
+@SuppressWarnings("restriction")
+public class CanvasEditor extends MultiPageEditorPart implements IPersistableEditor, IEditorSharedImages {
 
 	private static final String PALETTE_CONTEXT_ID = "phasereditor.canvas.ui.palettecontext";
 	public final static String ID = "phasereditor.canvas.ui.editors.canvas";
@@ -120,6 +127,8 @@ public class CanvasEditor extends EditorPart
 	private SashForm _mainSashForm;
 	private PaletteComp _paletteComp;
 	protected IContextActivation _paletteContext;
+	private ITextListener _sourceListener;
+	private boolean _saving;
 
 	public CanvasEditor() {
 	}
@@ -140,7 +149,41 @@ public class CanvasEditor extends EditorPart
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
+		int page = getActivePage();
+		_saving = true;
+		try {
+			if (page == 0) {
+				saveCanvas(monitor);
+			} else {
+				saveSourceEditor(monitor);
+			}
+		} finally {
+			_saving = false;
+		}
+	}
 
+	/**
+	 * @param monitor
+	 * 
+	 */
+	private void saveSourceEditor(IProgressMonitor monitor) {
+		CompilationUnitEditor editor = getSourceEditor();
+		editor.doSave(monitor);
+		setSavedState();
+	}
+
+	/**
+	 * 
+	 */
+	private void setSavedState() {
+		_model.getWorld().setDirty(false);
+		firePropertyChange(PROP_DIRTY);
+	}
+
+	/**
+	 * @param monitor
+	 */
+	private void saveCanvas(IProgressMonitor monitor) {
 		boolean hasErrors = _model.getWorld().hasErrors();
 
 		if (hasErrors) {
@@ -149,6 +192,8 @@ public class CanvasEditor extends EditorPart
 				return;
 			}
 		}
+
+		// save canvas
 
 		try {
 			IFileEditorInput input = (IFileEditorInput) getEditorInput();
@@ -161,12 +206,18 @@ public class CanvasEditor extends EditorPart
 				generateCode();
 			}
 
-			_model.getWorld().setDirty(false);
-			firePropertyChange(PROP_DIRTY);
+			setSavedState();
 		} catch (JSONException | CoreException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+	}
+
+	/**
+	 * @return
+	 */
+	private CompilationUnitEditor getSourceEditor() {
+		return (CompilationUnitEditor) getEditor(1);
 	}
 
 	@Override
@@ -223,9 +274,67 @@ public class CanvasEditor extends EditorPart
 		return false;
 	}
 
-	@SuppressWarnings("unused")
 	@Override
-	public void createPartControl(Composite parent1) {
+	protected void createPages() {
+		createDesignPage();
+
+		// only create the page when the source file exists!
+		if (getFileToGenerate().exists()) {
+			createSourcePage();
+		}
+
+		registerUndoRedoActions();
+	}
+
+	private void createDesignPage() {
+		addPage(createCanvasPartControl(getContainer()));
+		setPageText(0, "Design");
+	}
+
+	private void registerUndoRedoActions() {
+		IEditorSite site = getEditorSite();
+		UndoRedoActionGroup group = new UndoRedoActionGroup(site, UNDO_CONTEXT, true);
+		group.fillActionBars(site.getActionBars());
+	}
+
+	/**
+	 * 
+	 */
+	private void createSourcePage() {
+		try {
+			CompilationUnitEditor editor = new CompilationUnitEditor();
+			FileEditorInput srcInput = new FileEditorInput(getFileToGenerate());
+			addPage(editor, srcInput);
+			setPageText(1, "Source");
+
+			SourceViewer viewer = (SourceViewer) editor.getViewer();
+			if (_sourceListener == null) {
+				_sourceListener = new ITextListener() {
+
+					@SuppressWarnings("synthetic-access")
+					@Override
+					public void textChanged(TextEvent event) {
+						if (_saving) {
+							return;
+						}
+						getModel().getWorld().setDirty(true);
+						firePropertyChange(PROP_DIRTY);
+					}
+				};
+			}
+			viewer.addTextListener(_sourceListener);
+
+		} catch (PartInitException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * @param parent1
+	 * @return
+	 */
+	@SuppressWarnings("unused")
+	private Control createCanvasPartControl(Composite parent1) {
 		GridLayout gl_parent1 = new GridLayout(1, false);
 		gl_parent1.marginWidth = 2;
 		gl_parent1.marginHeight = 2;
@@ -262,6 +371,8 @@ public class CanvasEditor extends EditorPart
 		_mainSashForm.setWeights(new int[] { 1, 4 });
 
 		afterCreateWidgets();
+
+		return _mainSashForm;
 	}
 
 	private void afterCreateWidgets() {
@@ -310,11 +421,13 @@ public class CanvasEditor extends EditorPart
 
 			@Override
 			public void focusLost(FocusEvent e) {
+				out.println("de-activate " + NODES_CONTEXT_ID);
 				getContextService().deactivateContext(_nodesContext);
 			}
 
 			@Override
 			public void focusGained(FocusEvent e) {
+				out.println("activate " + NODES_CONTEXT_ID);
 				_nodesContext = getContextService().activateContext(NODES_CONTEXT_ID);
 			}
 		};
@@ -354,13 +467,13 @@ public class CanvasEditor extends EditorPart
 
 			if (_state.paletteData != null) {
 				_paletteComp.updateFromJSON(new JSONObject(_state.paletteData));
-//				_showPaletteAction.setChecked(_paletteComp.isPaletteVisible());
+				// _showPaletteAction.setChecked(_paletteComp.isPaletteVisible());
 			}
 
 			if (!_state.showSidePane) {
-//				_showSidePaneAction.run();
+				// _showSidePaneAction.run();
 			}
-//			_showSidePaneAction.setChecked(_state.showSidePane);
+			// _showSidePaneAction.setChecked(_state.showSidePane);
 		}
 	}
 
@@ -445,6 +558,12 @@ public class CanvasEditor extends EditorPart
 				file.create(stream, false, null);
 			}
 			file.refreshLocal(1, null);
+
+			// if the source page is not created yet do it right now!
+			if (getPageCount() == 1) {
+				createSourcePage();
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -497,7 +616,7 @@ public class CanvasEditor extends EditorPart
 	protected void updateTitle() {
 		setPartName(getEditorInputFile().getName());
 		firePropertyChange(PROP_TITLE);
-		}
+	}
 
 	@Override
 	public void saveState(IMemento memento) {
