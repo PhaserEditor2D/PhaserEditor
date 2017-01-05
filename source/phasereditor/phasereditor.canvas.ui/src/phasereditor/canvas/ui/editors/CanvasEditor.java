@@ -29,6 +29,8 @@ import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.eclipse.core.commands.operations.IUndoContext;
 import org.eclipse.core.resources.IFile;
@@ -132,6 +134,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 	private PaletteComp _paletteComp;
 	protected IContextActivation _paletteContext;
 	private AbstractTextEditor _sourceEditor;
+	private ExecutorService _threadPool = Executors.newFixedThreadPool(1);
 
 	public CanvasEditor() {
 	}
@@ -169,6 +172,18 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 	private void saveSourceEditor(IProgressMonitor monitor) {
 		AbstractTextEditor editor = getSourceEditor();
 		editor.doSave(monitor);
+
+		_threadPool.execute(() -> {
+			// wait a second to give the time to build the file
+			try {
+				Thread.sleep(1_000);
+			} catch (InterruptedException e) {
+				//
+			}
+			getEditorSite().getShell().getDisplay().asyncExec(() -> {
+				setPageImage(1, getSourceEditor().getTitleImage());
+			});
+		});
 	}
 
 	/**
