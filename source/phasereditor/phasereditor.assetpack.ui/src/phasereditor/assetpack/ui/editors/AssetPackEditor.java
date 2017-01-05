@@ -83,6 +83,7 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.dialogs.ListDialog;
 import org.eclipse.ui.ide.IGotoMarker;
+import org.eclipse.ui.operations.UndoRedoActionGroup;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IShowInSource;
@@ -178,6 +179,14 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		setSite(site);
 		setInput(input);
+
+		registerUndoRedoActions();
+	}
+
+	private void registerUndoRedoActions() {
+		IEditorSite site = getEditorSite();
+		UndoRedoActionGroup group = new UndoRedoActionGroup(site, UNDO_CONTEXT, true);
+		group.fillActionBars(site.getActionBars());
 	}
 
 	@Override
