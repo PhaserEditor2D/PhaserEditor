@@ -61,6 +61,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
@@ -294,7 +295,10 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 	private void registerUndoRedoActions() {
 		IEditorSite site = getEditorSite();
 		UndoRedoActionGroup group = new UndoRedoActionGroup(site, UNDO_CONTEXT, true);
-		group.fillActionBars(site.getActionBars());
+		IActionBars actionBars = site.getActionBars();
+		actionBars.clearGlobalActionHandlers();
+		group.fillActionBars(actionBars);
+		actionBars.updateActionBars();
 	}
 
 	/**
@@ -324,6 +328,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 			}
 			viewer.addTextListener(_sourceListener);
 
+			registerUndoRedoActions();
 		} catch (PartInitException e) {
 			throw new RuntimeException(e);
 		}
