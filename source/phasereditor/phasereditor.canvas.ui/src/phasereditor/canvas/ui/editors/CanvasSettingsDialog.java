@@ -86,27 +86,27 @@ public class CanvasSettingsDialog extends Dialog {
 		grpWorld.setLayout(new GridLayout(3, false));
 		grpWorld.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		grpWorld.setText("Scene");
-		
-				Label lblColor = new Label(grpWorld, SWT.NONE);
-				lblColor.setText("Color");
-		
-				_colorButton = new Button(grpWorld, SWT.NONE);
-				GridData gd_colorButton = new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1);
-				gd_colorButton.widthHint = 80;
-				_colorButton.setLayoutData(gd_colorButton);
-				_colorButton.setAlignment(SWT.LEFT);
-		
-				Button btnClear = new Button(grpWorld, SWT.NONE);
-				btnClear.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-				btnClear.setImage(ResourceManager.getPluginImage("org.eclipse.ui", "/icons/full/etool16/clear.png"));
-				btnClear.addSelectionListener(new SelectionAdapter() {
-					@SuppressWarnings("synthetic-access")
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						_colorSupport.setColor(null);
-						_colorSupport.updateContent();
-					}
-				});
+
+		Label lblColor = new Label(grpWorld, SWT.NONE);
+		lblColor.setText("Color");
+
+		_colorButton = new Button(grpWorld, SWT.NONE);
+		GridData gd_colorButton = new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1);
+		gd_colorButton.widthHint = 80;
+		_colorButton.setLayoutData(gd_colorButton);
+		_colorButton.setAlignment(SWT.LEFT);
+
+		Button btnClear = new Button(grpWorld, SWT.NONE);
+		btnClear.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		btnClear.setImage(ResourceManager.getPluginImage("org.eclipse.ui", "/icons/full/etool16/clear.png"));
+		btnClear.addSelectionListener(new SelectionAdapter() {
+			@SuppressWarnings("synthetic-access")
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				_colorSupport.setColor(null);
+				_colorSupport.updateContent();
+			}
+		});
 
 		Label lblWidth = new Label(grpWorld, SWT.NONE);
 		lblWidth.setText("Width");
@@ -120,25 +120,25 @@ public class CanvasSettingsDialog extends Dialog {
 
 		_text_1 = new Text(grpWorld, SWT.BORDER);
 		_text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
-		
+
 		Group grpStepping = new Group(container, SWT.NONE);
 		grpStepping.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
 		grpStepping.setText("Snapping");
 		grpStepping.setLayout(new GridLayout(2, false));
-		
+
 		_btnEnbaleStepping = new Button(grpStepping, SWT.CHECK);
 		_btnEnbaleStepping.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		_btnEnbaleStepping.setText("Enbale Snapping");
-		
+
 		Label lblStepWidth = new Label(grpStepping, SWT.NONE);
 		lblStepWidth.setText("Step Width");
-		
+
 		_text_2 = new Text(grpStepping, SWT.BORDER);
 		_text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
+
 		Label lblStepHeight = new Label(grpStepping, SWT.NONE);
 		lblStepHeight.setText("Step Height");
-		
+
 		_text_3 = new Text(grpStepping, SWT.BORDER);
 		_text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
@@ -157,17 +157,19 @@ public class CanvasSettingsDialog extends Dialog {
 	}
 
 	private void afterCreateWidgets() {
-		_colorSupport = ColorButtonSupport.createDefault(_colorButton);
+		_colorSupport = ColorButtonSupport.createDefault(_colorButton, (c) -> {
+			//
+		});
 		_colorSupport.setColor(_model.getSceneColor());
 		_colorSupport.updateContent();
 	}
-	
+
 	@Override
 	protected void okPressed() {
 		_model.setSceneColor(_colorSupport.getColor());
 		super.okPressed();
 	}
-	
+
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
@@ -178,7 +180,7 @@ public class CanvasSettingsDialog extends Dialog {
 	protected int getShellStyle() {
 		return super.getShellStyle() | SWT.RESIZE;
 	}
-	
+
 	/**
 	 * Create contents of the button bar.
 	 * 
@@ -206,6 +208,7 @@ public class CanvasSettingsDialog extends Dialog {
 	public void setModel(SceneSettings model) {
 		_model = model;
 	}
+
 	@SuppressWarnings("unchecked")
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
@@ -218,13 +221,18 @@ public class CanvasSettingsDialog extends Dialog {
 		IObservableValue<?> sceneHeightGetModelObserveValue = PojoProperties.value("sceneHeight").observe(getModel());
 		bindingContext.bindValue(observeText_text_1ObserveWidget, sceneHeightGetModelObserveValue, null, null);
 		//
-		IObservableValue<?> observeSelection_btnGenerateOnSaveObserveWidget = WidgetProperties.selection().observe(_btnGenerateOnSave);
-		IObservableValue<?> generateOnSaveGetModelObserveValue = PojoProperties.value("generateOnSave").observe(getModel());
-		bindingContext.bindValue(observeSelection_btnGenerateOnSaveObserveWidget, generateOnSaveGetModelObserveValue, null, null);
+		IObservableValue<?> observeSelection_btnGenerateOnSaveObserveWidget = WidgetProperties.selection()
+				.observe(_btnGenerateOnSave);
+		IObservableValue<?> generateOnSaveGetModelObserveValue = PojoProperties.value("generateOnSave")
+				.observe(getModel());
+		bindingContext.bindValue(observeSelection_btnGenerateOnSaveObserveWidget, generateOnSaveGetModelObserveValue,
+				null, null);
 		//
-		IObservableValue<?> observeSelection_btnEnbaleSteppingObserveWidget = WidgetProperties.selection().observe(_btnEnbaleStepping);
+		IObservableValue<?> observeSelection_btnEnbaleSteppingObserveWidget = WidgetProperties.selection()
+				.observe(_btnEnbaleStepping);
 		IObservableValue<?> enableStepping_modelObserveValue = PojoProperties.value("enableStepping").observe(_model);
-		bindingContext.bindValue(observeSelection_btnEnbaleSteppingObserveWidget, enableStepping_modelObserveValue, null, null);
+		bindingContext.bindValue(observeSelection_btnEnbaleSteppingObserveWidget, enableStepping_modelObserveValue,
+				null, null);
 		//
 		IObservableValue<?> observeText_text_2ObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text_2);
 		IObservableValue<?> stepWidth_modelObserveValue = PojoProperties.value("stepWidth").observe(_model);

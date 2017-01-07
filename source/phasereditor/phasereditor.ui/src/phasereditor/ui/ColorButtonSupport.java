@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
+import java.util.function.Consumer;
+
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -44,8 +46,8 @@ public abstract class ColorButtonSupport {
 	private Button _button;
 	Image _image;
 
-	public static ColorButtonSupport createDefault(Button btn) {
-		return new ColorButtonSupport(btn) {
+	public static ColorButtonSupport createDefault(Button btn, Consumer<RGB> callback) {
+		return new ColorButtonSupport(btn, callback) {
 			private RGB _color;
 
 			@Override
@@ -60,7 +62,7 @@ public abstract class ColorButtonSupport {
 		};
 	}
 
-	public ColorButtonSupport(Button button) {
+	public ColorButtonSupport(Button button, Consumer<RGB> callback) {
 		super();
 		_button = button;
 
@@ -82,6 +84,7 @@ public abstract class ColorButtonSupport {
 				RGB rgb = dlg.open();
 				if (rgb != null) {
 					setColor(rgb);
+					callback.accept(rgb);
 				}
 				updateContent();
 			}
@@ -148,7 +151,7 @@ public abstract class ColorButtonSupport {
 	public static String getHexString(RGB rgb) {
 		return "#" + toHexString(rgb.red) + toHexString(rgb.green) + toHexString(rgb.blue);
 	}
-	
+
 	public static String getHexString2(RGB rgb) {
 		return "0x" + toHexString(rgb.red) + toHexString(rgb.green) + toHexString(rgb.blue);
 	}

@@ -21,12 +21,12 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
+import static java.lang.System.out;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.beans.PropertyChangeEvent;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
@@ -96,6 +96,7 @@ import phasereditor.canvas.ui.editors.grid.PGrid;
 import phasereditor.canvas.ui.editors.operations.ChangeSettingsOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.palette.PaletteComp;
+import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.PatternFilter2;
 
@@ -135,6 +136,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 	protected IContextActivation _paletteContext;
 	private AbstractTextEditor _sourceEditor;
 	private ExecutorService _threadPool = Executors.newFixedThreadPool(1);
+	private CanvasSettingsComp _settingsPage;
 
 	public CanvasEditor() {
 	}
@@ -297,33 +299,39 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 			createSourcePage();
 		}
 
+		createSettingsPage();
+
 		registerUndoRedoActions();
 
-		try {
-			Method safelySanityCheckState = AbstractTextEditor.class.getDeclaredMethod("safelySanityCheckState",
-					IEditorInput.class);
-			safelySanityCheckState.setAccessible(true);
+		addPageChangedListener(new IPageChangedListener() {
 
-			addPageChangedListener(new IPageChangedListener() {
+			int _lastPage = 0;
 
-				@SuppressWarnings("synthetic-access")
-				@Override
-				public void pageChanged(PageChangedEvent event) {
-					AbstractTextEditor editor = getSourceEditor();
-					if (editor != null && getActiveEditor() == editor) {
-						try {
-							// editor.safelySanityCheckState(editor.getEditorInput());
-							safelySanityCheckState.invoke(editor, editor.getEditorInput());
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-					updateTitle();
+			@SuppressWarnings("synthetic-access")
+			@Override
+			public void pageChanged(PageChangedEvent event) {
+				if (_lastPage == getPageCount() - 1) {
+					out.println("Update from settings page");
+					updateFromSettingsPage();
 				}
-			});
-		} catch (NoSuchMethodException | SecurityException e1) {
-			e1.printStackTrace();
-		}
+				_lastPage = getActivePage();
+			}
+		});
+	}
+
+	private void createSettingsPage() {
+		_settingsPage = new CanvasSettingsComp(getContainer(), SWT.NONE);
+		updateSettingsTabWithModel();
+		int i = addPage(_settingsPage);
+		setPageText(i, "Settings");
+		setPageImage(i, EditorSharedImages.getImage("icons/settings.png"));
+	}
+
+	private void updateSettingsTabWithModel() {
+		JSONObject data = new JSONObject();
+		_model.getSettings().write(data);
+		SceneSettings settings = new SceneSettings(data);
+		_settingsPage.setModel(settings);
 	}
 
 	private void createDesignPage() {
@@ -369,9 +377,9 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 				return;
 			}
 
-			int i = addPage(_sourceEditor, srcInput);
-			setPageText(i, "Source");
-			setPageImage(i, _sourceEditor.getTitleImage());
+			addPage(1, _sourceEditor, srcInput);
+			setPageText(1, "Source");
+			setPageImage(1, _sourceEditor.getTitleImage());
 
 			registerUndoRedoActions();
 		} catch (Exception e) {
@@ -775,5 +783,12 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 	public void togglePalette() {
 		boolean visible = getPalette().isPaletteVisible();
 		getPalette().setPaletteVisble(!visible);
+	}
+
+	private void updateFromSettingsPage() {
+		SceneSettings settings = _settingsPage.getModel();
+		JSONObject data = new JSONObject();
+		settings.write(data);
+		getCanvas().getUpdateBehavior().executeOperations(new CompositeOperation(new ChangeSettingsOperation(data)));
 	}
 }
