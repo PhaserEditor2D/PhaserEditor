@@ -45,6 +45,7 @@ public abstract class ColorButtonSupport {
 	private static final int DEFAULT_EXTENT = 16;
 	private Button _button;
 	Image _image;
+	private Consumer<RGB> _callback;
 
 	public static ColorButtonSupport createDefault(Button btn, Consumer<RGB> callback) {
 		return new ColorButtonSupport(btn, callback) {
@@ -59,12 +60,14 @@ public abstract class ColorButtonSupport {
 			public void setColor(RGB color) {
 				_color = color;
 			}
+
 		};
 	}
 
 	public ColorButtonSupport(Button button, Consumer<RGB> callback) {
 		super();
 		_button = button;
+		_callback = callback;
 
 		_button.addDisposeListener(new DisposeListener() {
 
@@ -163,6 +166,11 @@ public abstract class ColorButtonSupport {
 
 	public static String getRGBString(RGB rgb) {
 		return "rgb(" + rgb.red + "," + rgb.green + "," + rgb.blue + ")";
+	}
+
+	public void clearColor() {
+		setColor(null);
+		_callback.accept(null);
 	}
 
 	public abstract RGB getColor();

@@ -94,7 +94,7 @@ public class GeneralEditorSettingsComp extends Composite {
 			@SuppressWarnings("synthetic-access")
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				_colorSupport.setColor(null);
+				_colorSupport.clearColor();
 				_colorSupport.updateContent();
 			}
 		});

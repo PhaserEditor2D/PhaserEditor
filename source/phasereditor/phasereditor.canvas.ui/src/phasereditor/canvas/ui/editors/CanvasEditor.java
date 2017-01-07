@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
-import static java.lang.System.out;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.beans.PropertyChangeEvent;
@@ -137,6 +136,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 	private AbstractTextEditor _sourceEditor;
 	private ExecutorService _threadPool = Executors.newFixedThreadPool(1);
 	private CanvasSettingsComp _settingsPage;
+	private Control _designPage;
 
 	public CanvasEditor() {
 	}
@@ -233,6 +233,14 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 		return _sourceEditor;
 	}
 
+	public CanvasSettingsComp getSettingsPage() {
+		return _settingsPage;
+	}
+
+	public Control getDesignPage() {
+		return _designPage;
+	}
+
 	@Override
 	protected void setInput(IEditorInput input) {
 		super.setInput(input);
@@ -305,16 +313,15 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 
 		addPageChangedListener(new IPageChangedListener() {
 
-			int _lastPage = 0;
+			Object _lastPage = null;
 
 			@SuppressWarnings("synthetic-access")
 			@Override
 			public void pageChanged(PageChangedEvent event) {
-				if (_lastPage == getPageCount() - 1) {
-					out.println("Update from settings page");
+				if (_lastPage == getSettingsPage()) {
 					updateFromSettingsPage();
 				}
-				_lastPage = getActivePage();
+				_lastPage = getSelectedPage();
 			}
 		});
 	}
@@ -335,7 +342,8 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 	}
 
 	private void createDesignPage() {
-		int i = addPage(createCanvasPartControl(getContainer()));
+		_designPage = createCanvasPartControl(getContainer());
+		int i = addPage(_designPage);
 		setPageText(i, "Design");
 		setPageImage(i, getTitleImage());
 	}
@@ -618,7 +626,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 			file.refreshLocal(1, null);
 
 			// if the source page is not created yet do it right now!
-			if (getPageCount() == 1) {
+			if (getSourceEditor() == null) {
 				createSourcePage();
 			}
 
@@ -790,5 +798,17 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 		JSONObject data = new JSONObject();
 		settings.write(data);
 		getCanvas().getUpdateBehavior().executeOperations(new CompositeOperation(new ChangeSettingsOperation(data)));
+	}
+
+	public boolean isDesignPageActive() {
+		return getSelectedPage() == _designPage;
+	}
+
+	public boolean isSourcePageActive() {
+		return getSelectedPage() == _sourceEditor;
+	}
+
+	public boolean isSettingsPageActive() {
+		return getSelectedPage() == _designPage;
 	}
 }
