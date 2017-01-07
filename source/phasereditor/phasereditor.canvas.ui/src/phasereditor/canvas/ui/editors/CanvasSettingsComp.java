@@ -24,10 +24,9 @@ package phasereditor.canvas.ui.editors;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-import phasereditor.canvas.core.SceneSettings;
+import phasereditor.canvas.core.CanvasMainSettings;
 
 /**
  * @author arian
@@ -36,7 +35,7 @@ import phasereditor.canvas.core.SceneSettings;
 public class CanvasSettingsComp extends Composite implements ISettingsPage {
 
 	private GeneralEditorSettingsComp _generalEditorSettingsComp;
-	private SceneSettings _model;
+	private CanvasMainSettings _model;
 
 	/**
 	 * Create the composite.
@@ -59,12 +58,12 @@ public class CanvasSettingsComp extends Composite implements ISettingsPage {
 	}
 
 	@Override
-	public void setModel(SceneSettings model) {
+	public void setModel(CanvasMainSettings model) {
 		_model = model;
 		_generalEditorSettingsComp.setModel(model);
 	}
 
-	public SceneSettings getModel() {
+	public CanvasMainSettings getModel() {
 		return _model;
 	}
 

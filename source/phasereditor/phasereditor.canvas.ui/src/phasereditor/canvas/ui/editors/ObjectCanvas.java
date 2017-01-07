@@ -36,7 +36,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.CanvasEditorModel;
-import phasereditor.canvas.core.SceneSettings;
+import phasereditor.canvas.core.CanvasMainSettings;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.behaviors.CreateBehavior;
 import phasereditor.canvas.ui.editors.behaviors.DragBehavior;
@@ -77,7 +77,7 @@ public class ObjectCanvas extends FXCanvas {
 	private PaintBehavior _paintBehavior;
 	private PaletteComp _palette;
 	private CanvasEditor _editor;
-	private SceneSettings _settingsModel;
+	private CanvasMainSettings _settingsModel;
 	private Pane _handlerPane;
 	private HandlerBehavior _handlerBehavior;
 
@@ -135,7 +135,7 @@ public class ObjectCanvas extends FXCanvas {
 		return _pgrid;
 	}
 
-	public SceneSettings getSettingsModel() {
+	public CanvasMainSettings getSettingsModel() {
 		return _settingsModel;
 	}
 
@@ -273,7 +273,7 @@ public class ObjectCanvas extends FXCanvas {
 
 		{
 			// stepping
-			SceneSettings settings = getSettingsModel();
+			CanvasMainSettings settings = getSettingsModel();
 			if (settings.isEnableStepping()) {
 				x = Math.round(x / settings.getStepWidth()) * settings.getStepWidth();
 				y = Math.round(y / settings.getStepHeight()) * settings.getStepHeight();

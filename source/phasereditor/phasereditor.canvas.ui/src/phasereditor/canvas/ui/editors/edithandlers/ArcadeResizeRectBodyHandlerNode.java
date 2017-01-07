@@ -25,7 +25,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.RectArcadeBodyModel;
-import phasereditor.canvas.core.SceneSettings;
+import phasereditor.canvas.core.CanvasMainSettings;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;
@@ -69,7 +69,7 @@ public class ArcadeResizeRectBodyHandlerNode extends PathHandlerNode {
 		ISpriteNode sprite = (ISpriteNode) _object;
 		RectArcadeBodyModel body = (RectArcadeBodyModel) sprite.getModel().getBody();
 
-		SceneSettings settings = _canvas.getSettingsModel();
+		CanvasMainSettings settings = _canvas.getSettingsModel();
 
 		boolean stepping = settings.isEnableStepping();
 		double ax = _axis.x;

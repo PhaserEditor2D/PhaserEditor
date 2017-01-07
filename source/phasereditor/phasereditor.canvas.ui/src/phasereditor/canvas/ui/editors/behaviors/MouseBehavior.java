@@ -26,7 +26,7 @@ import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import phasereditor.canvas.core.SceneSettings;
+import phasereditor.canvas.core.CanvasMainSettings;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.edithandlers.IEditHandlerNode;
 
@@ -212,7 +212,7 @@ public class MouseBehavior {
 	}
 
 	public double stepX(double x, boolean round) {
-		SceneSettings s = _canvas.getSettingsModel();
+		CanvasMainSettings s = _canvas.getSettingsModel();
 		if (s.isEnableStepping()) {
 			double v = x / s.getStepWidth();
 			if (round) {
@@ -226,7 +226,7 @@ public class MouseBehavior {
 	}
 
 	public double stepY(double y, boolean round) {
-		SceneSettings s = _canvas.getSettingsModel();
+		CanvasMainSettings s = _canvas.getSettingsModel();
 		if (s.isEnableStepping()) {
 			double v = y / s.getStepHeight();
 			if (round) {

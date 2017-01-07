@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2016 Arian Fornaris
+// Copyright (c) 2015, 2017 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -21,52 +21,10 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
-import org.eclipse.core.resources.IFile;
-import org.json.JSONObject;
-
 /**
  * @author arian
  *
  */
-public class CanvasEditorModel {
-	private CanvasMainSettings _settings;
-	private WorldModel _world;
-
-	public CanvasEditorModel(IFile file) {
-		_settings = new CanvasMainSettings();
-		_world = new WorldModel(file);
-	}
-
-	public void read(JSONObject data) {
-		_settings.read(data.getJSONObject("settings"));
-		_world.getAssetTable().read(data.optJSONObject("asset-table"));
-		_world.read(data.getJSONObject("world"));
-	}
-
-	public void write(JSONObject data) {
-		{
-			JSONObject data2 = new JSONObject();
-			data.put("settings", data2);
-			_settings.write(data2);
-		}
-
-		{
-			JSONObject data2 = new JSONObject();
-			data.put("world", data2);
-			_world.write(data2, true);
-		}
-
-		{
-			data.put("asset-table", _world.getAssetTable().toJSON());
-		}
-	}
-
-	public CanvasMainSettings getSettings() {
-		return _settings;
-	}
-
-	public WorldModel getWorld() {
-		return _world;
-	}
-
+public enum SourceLang {
+	JAVA_SCRIPT, TYPE_SCRIPT
 }

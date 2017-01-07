@@ -42,7 +42,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ResourceManager;
 
-import phasereditor.canvas.core.SceneSettings;
+import phasereditor.canvas.core.CanvasMainSettings;
 import phasereditor.ui.ColorButtonSupport;
 
 /**
@@ -54,7 +54,7 @@ public class CanvasSettingsDialog extends Dialog {
 	private DataBindingContext m_bindingContext;
 	private Text _text;
 	private Text _text_1;
-	private SceneSettings _model;
+	private CanvasMainSettings _model;
 	private Button _btnGenerateOnSave;
 	private Button _colorButton;
 	private ColorButtonSupport _colorSupport;
@@ -201,11 +201,11 @@ public class CanvasSettingsDialog extends Dialog {
 		return new Point(363, 300);
 	}
 
-	public SceneSettings getModel() {
+	public CanvasMainSettings getModel() {
 		return _model;
 	}
 
-	public void setModel(SceneSettings model) {
+	public void setModel(CanvasMainSettings model) {
 		_model = model;
 	}
 

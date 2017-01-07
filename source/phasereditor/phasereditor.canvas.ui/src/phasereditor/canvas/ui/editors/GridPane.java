@@ -30,7 +30,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import phasereditor.canvas.core.SceneSettings;
+import phasereditor.canvas.core.CanvasMainSettings;
 import phasereditor.canvas.ui.shapes.GroupNode;
 
 /**
@@ -70,7 +70,7 @@ public class GridPane extends Canvas {
 
 		RGB rgb = _canvas.getSettingsModel().getSceneColor();
 		if (rgb != null) {
-			SceneSettings settings = _canvas.getSettingsModel();
+			CanvasMainSettings settings = _canvas.getSettingsModel();
 			Bounds b = world.localToScene(new BoundingBox(0, 0, settings.getSceneWidth(), settings.getSceneHeight()));
 			g2.setFill(Color.rgb(rgb.red, rgb.green, rgb.blue));
 			g2.fillRect(b.getMinX(), b.getMinY(), b.getWidth(), b.getHeight());
@@ -89,7 +89,7 @@ public class GridPane extends Canvas {
 		double yStep = 10;
 
 		{
-			SceneSettings settings = _canvas.getSettingsModel();
+			CanvasMainSettings settings = _canvas.getSettingsModel();
 			if (settings.isEnableStepping()) {
 				xStep = settings.getStepWidth();
 				yStep = settings.getStepHeight();

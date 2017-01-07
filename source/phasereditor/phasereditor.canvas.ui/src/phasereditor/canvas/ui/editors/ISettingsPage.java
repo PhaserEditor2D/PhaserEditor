@@ -21,12 +21,12 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
-import phasereditor.canvas.core.SceneSettings;
+import phasereditor.canvas.core.CanvasMainSettings;
 
 /**
  * @author arian
  *
  */
 public interface ISettingsPage {
-	public void setModel(SceneSettings model);
+	public void setModel(CanvasMainSettings model);
 }

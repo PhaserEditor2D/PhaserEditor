@@ -5,7 +5,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import phasereditor.canvas.core.SceneSettings;
+import phasereditor.canvas.core.CanvasMainSettings;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
 
@@ -15,7 +15,7 @@ public class SetSnappingSelectionHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
-		SceneSettings settings = editor.getCanvas().getSettingsModel();
+		CanvasMainSettings settings = editor.getCanvas().getSettingsModel();
 
 		Object node = HandlerUtil.getCurrentStructuredSelection(event).getFirstElement();
 

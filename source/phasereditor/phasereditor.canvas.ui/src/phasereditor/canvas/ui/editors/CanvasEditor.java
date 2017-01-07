@@ -88,7 +88,7 @@ import javafx.geometry.Point2D;
 import phasereditor.canvas.core.AssetTable;
 import phasereditor.canvas.core.CanvasEditorModel;
 import phasereditor.canvas.core.JSCodeGenerator;
-import phasereditor.canvas.core.SceneSettings;
+import phasereditor.canvas.core.CanvasMainSettings;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.behaviors.ZoomBehavior;
 import phasereditor.canvas.ui.editors.grid.PGrid;
@@ -337,7 +337,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 	private void updateSettingsTabWithModel() {
 		JSONObject data = new JSONObject();
 		_model.getSettings().write(data);
-		SceneSettings settings = new SceneSettings(data);
+		CanvasMainSettings settings = new CanvasMainSettings(data);
 		_settingsPage.setModel(settings);
 	}
 
@@ -765,7 +765,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 		CanvasSettingsDialog dlg = new CanvasSettingsDialog(getSite().getShell());
 		JSONObject data = new JSONObject();
 		_model.getSettings().write(data);
-		SceneSettings settings = new SceneSettings(data);
+		CanvasMainSettings settings = new CanvasMainSettings(data);
 		dlg.setModel(settings);
 		if (dlg.open() == Window.OK) {
 			settings.write(data);
@@ -794,7 +794,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 	}
 
 	private void updateFromSettingsPage() {
-		SceneSettings settings = _settingsPage.getModel();
+		CanvasMainSettings settings = _settingsPage.getModel();
 		JSONObject data = new JSONObject();
 		settings.write(data);
 		getCanvas().getUpdateBehavior().executeOperations(new CompositeOperation(new ChangeSettingsOperation(data)));

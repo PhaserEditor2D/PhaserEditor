@@ -29,7 +29,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.json.JSONObject;
 
-import phasereditor.canvas.core.SceneSettings;
+import phasereditor.canvas.core.CanvasMainSettings;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.behaviors.UpdateBehavior;
@@ -53,7 +53,7 @@ public class ChangeSettingsOperation extends AbstractOperation {
 		_beforeSettings = new JSONObject();
 		CanvasEditor editor = info.getAdapter(CanvasEditor.class);
 		ObjectCanvas canvas = editor.getCanvas();
-		SceneSettings model = canvas.getSettingsModel();
+		CanvasMainSettings model = canvas.getSettingsModel();
 		model.write(_beforeSettings);
 		model.read(_settings);
 		UpdateBehavior update = canvas.getUpdateBehavior();
@@ -64,7 +64,7 @@ public class ChangeSettingsOperation extends AbstractOperation {
 	@Override
 	public IStatus redo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		CanvasEditor editor = info.getAdapter(CanvasEditor.class);
-		SceneSettings model = editor.getCanvas().getSettingsModel();
+		CanvasMainSettings model = editor.getCanvas().getSettingsModel();
 		model.read(_settings);
 		editor.getCanvas().getUpdateBehavior().updateFromSettings();
 		return Status.OK_STATUS;
@@ -73,7 +73,7 @@ public class ChangeSettingsOperation extends AbstractOperation {
 	@Override
 	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		CanvasEditor editor = info.getAdapter(CanvasEditor.class);
-		SceneSettings model = editor.getCanvas().getSettingsModel();
+		CanvasMainSettings model = editor.getCanvas().getSettingsModel();
 		model.read(_beforeSettings);
 		editor.getCanvas().getUpdateBehavior().updateFromSettings();
 		return Status.OK_STATUS;

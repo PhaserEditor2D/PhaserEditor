@@ -21,26 +21,35 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
+import static java.lang.System.out;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeanProperties;
+import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.viewers.ViewerProperties;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import phasereditor.canvas.core.SceneSettings;
+import phasereditor.canvas.core.CanvasMainSettings;
+import phasereditor.canvas.core.SourceLang;
 import phasereditor.ui.ColorButtonSupport;
 
 /**
@@ -48,13 +57,38 @@ import phasereditor.ui.ColorButtonSupport;
  *
  */
 public class GeneralEditorSettingsComp extends Composite {
+	private static class LangLabelProvider extends LabelProvider {
+
+		/**
+		 * 
+		 */
+		public LangLabelProvider() {
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		public String getText(Object element) {
+			SourceLang value = (SourceLang) element;
+
+			switch (value) {
+			case JAVA_SCRIPT:
+				return "Java Script";
+			case TYPE_SCRIPT:
+				return "Type Script";
+			default:
+				break;
+			}
+			return super.getText(element);
+		}
+	}
+
 	private GeneralEditorSettingsComp _self = this;
 
 	@SuppressWarnings("unused")
 	private DataBindingContext m_bindingContext;
 	private Text _text;
 	private Text _text_1;
-	private SceneSettings _model = new SceneSettings();
+	private CanvasMainSettings _model = new CanvasMainSettings();
 	private Button _btnGenerateOnSave;
 	private Button _colorButton;
 	private ColorButtonSupport _colorSupport;
@@ -88,7 +122,6 @@ public class GeneralEditorSettingsComp extends Composite {
 		_colorButton.setAlignment(SWT.LEFT);
 
 		Button btnClear = new Button(this, SWT.NONE);
-		btnClear.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		btnClear.setImage(ResourceManager.getPluginImage("org.eclipse.ui", "/icons/full/etool16/clear.png"));
 		btnClear.addSelectionListener(new SelectionAdapter() {
 			@SuppressWarnings("synthetic-access")
@@ -146,19 +179,29 @@ public class GeneralEditorSettingsComp extends Composite {
 		new Label(this, SWT.NONE);
 
 		_btnGenerateOnSave = new Button(this, SWT.CHECK);
-		_btnGenerateOnSave.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-		_btnGenerateOnSave.setText("Generate on Save");
-		new Label(this, SWT.NONE);
-
-		m_bindingContext = initDataBindings();
+		_btnGenerateOnSave.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
+		_btnGenerateOnSave.setText("Generate source file on Save action");
+				
+				Label lblCodeLanguage = new Label(this, SWT.NONE);
+				lblCodeLanguage.setText("Code Format");
+				
+						_langComboViewer = new ComboViewer(this, SWT.READ_ONLY);
+						_langCombo = _langComboViewer.getCombo();
+						_langCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+						_langComboViewer.setLabelProvider(new LangLabelProvider());
+						_langComboViewer.setContentProvider(new ArrayContentProvider());
 
 		afterCreateWidgets();
+		
+		m_bindingContext = initDataBindings();
+
 	}
 
 	private void afterCreateWidgets() {
 		_colorSupport = ColorButtonSupport.createDefault(_colorButton, (color) -> {
 			getModel().setSceneColor(color);
 		});
+		_langComboViewer.setInput(SourceLang.values());
 		updateColorsButtons();
 	}
 
@@ -167,17 +210,29 @@ public class GeneralEditorSettingsComp extends Composite {
 		_colorSupport.updateContent();
 	}
 
-	public SceneSettings getModel() {
+	public CanvasMainSettings getModel() {
 		return _model;
 	}
 
-	public void setModel(SceneSettings model) {
+	public void setModel(CanvasMainSettings model) {
 		_model = model;
 		updateColorsButtons();
 		firePropertyChange("model");
 	}
 
+	public boolean isJavaScript() {
+		return _model.getLang() == SourceLang.JAVA_SCRIPT;
+	}
+
+	public void setJavaScript(boolean javaScript) {
+		_model.setLang(javaScript ? SourceLang.JAVA_SCRIPT : SourceLang.TYPE_SCRIPT);
+		out.println("set " + _model.getLang());
+		firePropertyChange("javaScript");
+	}
+
 	private transient final PropertyChangeSupport support = new PropertyChangeSupport(this);
+	private Combo _langCombo;
+	private ComboViewer _langComboViewer;
 
 	public void addPropertyChangeListener(PropertyChangeListener l) {
 		support.addPropertyChangeListener(l);
@@ -199,7 +254,27 @@ public class GeneralEditorSettingsComp extends Composite {
 		support.firePropertyChange(property, true, false);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static class NotBooleanConverter implements IConverter {
+
+		@Override
+		public Object getFromType() {
+			return boolean.class;
+		}
+
+		@Override
+		public Object getToType() {
+			return boolean.class;
+		}
+
+		@SuppressWarnings("boxing")
+		@Override
+		public Object convert(Object fromObject) {
+			return !((Boolean) fromObject).booleanValue();
+		}
+
+	}
+
+	@SuppressWarnings("all")
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
@@ -232,6 +307,11 @@ public class GeneralEditorSettingsComp extends Composite {
 				.observe(_self);
 		bindingContext.bindValue(observeSelection_btnGenerateOnSaveObserveWidget, modelgenerateOnSave_selfObserveValue,
 				null, null);
+		//
+		IObservableValue observeSingleSelection_langComboViewer = ViewerProperties.singleSelection()
+				.observe(_langComboViewer);
+		IObservableValue modellang_selfObserveValue = BeanProperties.value("model.lang").observe(_self);
+		bindingContext.bindValue(observeSingleSelection_langComboViewer, modellang_selfObserveValue, null, null);
 		//
 		return bindingContext;
 	}

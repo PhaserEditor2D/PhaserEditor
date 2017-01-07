@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Arrays;
 
 import org.eclipse.swt.graphics.RGB;
@@ -30,7 +32,7 @@ import org.json.JSONObject;
 /**
  * @author arian
  */
-public class SceneSettings {
+public class CanvasMainSettings {
 	private double _sceneWidth;
 	private double _sceneHeight;
 	private RGB _sceneColor;
@@ -38,8 +40,9 @@ public class SceneSettings {
 	private boolean _enableStepping;
 	private int _stepWidth;
 	private int _stepHeight;
+	private SourceLang _lang;
 
-	public SceneSettings() {
+	public CanvasMainSettings() {
 		_sceneWidth = 640;
 		_sceneHeight = 360;
 		_sceneColor = null;
@@ -47,10 +50,20 @@ public class SceneSettings {
 		_enableStepping = false;
 		_stepWidth = 32;
 		_stepHeight = 32;
+		_lang = SourceLang.JAVA_SCRIPT;
 	}
 
-	public SceneSettings(JSONObject settingsData) {
+	public CanvasMainSettings(JSONObject settingsData) {
 		read(settingsData);
+	}
+
+	public SourceLang getLang() {
+		return _lang;
+	}
+
+	public void setLang(SourceLang lang) {
+		_lang = lang;
+		firePropertyChange("lang");
 	}
 
 	public double getSceneWidth() {
@@ -59,6 +72,7 @@ public class SceneSettings {
 
 	public void setSceneWidth(double sceneWidth) {
 		_sceneWidth = sceneWidth;
+		firePropertyChange("sceneWidth");
 	}
 
 	public double getSceneHeight() {
@@ -67,6 +81,7 @@ public class SceneSettings {
 
 	public void setSceneHeight(double sceneHeight) {
 		_sceneHeight = sceneHeight;
+		firePropertyChange("sceneHeight");
 	}
 
 	public RGB getSceneColor() {
@@ -75,6 +90,7 @@ public class SceneSettings {
 
 	public void setSceneColor(RGB sceneColor) {
 		_sceneColor = sceneColor;
+		firePropertyChange("sceneColor");
 	}
 
 	public boolean isGenerateOnSave() {
@@ -83,6 +99,7 @@ public class SceneSettings {
 
 	public void setGenerateOnSave(boolean generateOnScave) {
 		_generateOnSave = generateOnScave;
+		firePropertyChange("generateOnScave");
 	}
 
 	public boolean isEnableStepping() {
@@ -91,6 +108,7 @@ public class SceneSettings {
 
 	public void setEnableStepping(boolean enableStepping) {
 		_enableStepping = enableStepping;
+		firePropertyChange("enableStepping");
 	}
 
 	public int getStepWidth() {
@@ -99,6 +117,7 @@ public class SceneSettings {
 
 	public void setStepWidth(int stepWidth) {
 		_stepWidth = stepWidth;
+		firePropertyChange("stepWidth");
 	}
 
 	public int getStepHeight() {
@@ -107,6 +126,7 @@ public class SceneSettings {
 
 	public void setStepHeight(int stepHeight) {
 		_stepHeight = stepHeight;
+		firePropertyChange("stepHeight");
 	}
 
 	@SuppressWarnings("boxing")
@@ -122,6 +142,7 @@ public class SceneSettings {
 		obj.put("enableStepping", _enableStepping);
 		obj.put("stepWidth", _stepWidth, 32);
 		obj.put("stepHeight", _stepHeight, 32);
+		obj.put("lang", _lang);
 	}
 
 	public void read(JSONObject obj) {
@@ -135,5 +156,28 @@ public class SceneSettings {
 		_enableStepping = obj.optBoolean("enableStepping", false);
 		_stepWidth = obj.optInt("stepWidth", 32);
 		_stepHeight = obj.optInt("stepHeight", 32);
+		_lang = SourceLang.valueOf(obj.optString("lang", SourceLang.JAVA_SCRIPT.name()));
+	}
+
+	private transient final PropertyChangeSupport support = new PropertyChangeSupport(this);
+
+	public void addPropertyChangeListener(PropertyChangeListener l) {
+		support.addPropertyChangeListener(l);
+	}
+
+	public void removePropertyChangeListener(PropertyChangeListener l) {
+		support.removePropertyChangeListener(l);
+	}
+
+	public void addPropertyChangeListener(String property, PropertyChangeListener l) {
+		support.addPropertyChangeListener(property, l);
+	}
+
+	public void removePropertyChangeListener(String property, PropertyChangeListener l) {
+		support.removePropertyChangeListener(property, l);
+	}
+
+	public void firePropertyChange(String property) {
+		support.firePropertyChange(property, true, false);
 	}
 }

@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Text;
 
-import phasereditor.canvas.core.SceneSettings;
+import phasereditor.canvas.core.CanvasMainSettings;
 
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -50,7 +50,7 @@ public class GeneralSettingsComposite extends Composite {
 	private Text _text;
 	private Text _text_1;
 
-	private SceneSettings _model = new SceneSettings();
+	private CanvasMainSettings _model = new CanvasMainSettings();
 
 	/**
 	 * Create the composite.
@@ -89,7 +89,7 @@ public class GeneralSettingsComposite extends Composite {
 	/**
 	 * @return the model
 	 */
-	public SceneSettings getModel() {
+	public CanvasMainSettings getModel() {
 		return _model;
 	}
 
@@ -97,7 +97,7 @@ public class GeneralSettingsComposite extends Composite {
 	 * @param model
 	 *            the model to set
 	 */
-	public void setModel(SceneSettings model) {
+	public void setModel(CanvasMainSettings model) {
 		_model = model;
 	}
 
