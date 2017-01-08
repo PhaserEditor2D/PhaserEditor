@@ -16,5 +16,6 @@ Require-Bundle: org.eclipse.ui,
  phasereditor.project.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Export-Package: phasereditor.canvas.core
+Export-Package: phasereditor.canvas.core,
+ phasereditor.canvas.core.codegen
 Bundle-Vendor: Arian Fornaris

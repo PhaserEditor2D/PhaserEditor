@@ -66,12 +66,12 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPersistableEditor;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.dialogs.FilteredTree;
@@ -87,9 +87,9 @@ import org.json.JSONTokener;
 import javafx.geometry.Point2D;
 import phasereditor.canvas.core.AssetTable;
 import phasereditor.canvas.core.CanvasEditorModel;
-import phasereditor.canvas.core.JSCodeGenerator;
 import phasereditor.canvas.core.CanvasMainSettings;
 import phasereditor.canvas.core.WorldModel;
+import phasereditor.canvas.core.codegen.ICodeGenerator;
 import phasereditor.canvas.ui.editors.behaviors.ZoomBehavior;
 import phasereditor.canvas.ui.editors.grid.PGrid;
 import phasereditor.canvas.ui.editors.operations.ChangeSettingsOperation;
@@ -157,8 +157,17 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		IEditorPart editor = getActiveEditor();
-		if (editor == null) {
+		if (PlatformUI.getWorkbench().isClosing()) {
+			saveAll(monitor);
+		} else {
+			saveSelectedPage(monitor);
+		}
+	}
+
+	private void saveSelectedPage(IProgressMonitor monitor) {
+		if (isSourcePageActive()) {
+			saveSourceEditor(monitor);
+		} else {
 			if (_sourceEditor != null && _sourceEditor.isDirty()) {
 				MessageDialog.openInformation(getEditorSite().getShell(), "Unsaved Changes",
 						"Cannot save the design, the source editor has unsaved changes.\nPlease save the source editor first.");
@@ -166,9 +175,17 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 			}
 
 			saveCanvas(monitor);
-		} else {
-			saveSourceEditor(monitor);
 		}
+	}
+
+	/**
+	 * @param monitor
+	 */
+	private void saveAll(IProgressMonitor monitor) {
+		if (_sourceEditor != null) {
+			_sourceEditor.doSave(monitor);
+		}
+		saveCanvas(monitor);
 	}
 
 	private void saveSourceEditor(IProgressMonitor monitor) {
@@ -592,7 +609,9 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 
 	public IFile getFileToGenerate() {
 		WorldModel model = getCanvas().getWorldModel();
-		String fname = model.getClassName() + ".js";
+		CanvasMainSettings settings = getCanvas().getSettingsModel();
+		String ext = settings.getLang().getExtension();
+		String fname = model.getClassName() + "." + ext;
 		return getEditorInputFile().getParent().getFile(new Path(fname));
 	}
 
@@ -604,7 +623,9 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 			return;
 		}
 
-		JSCodeGenerator generator = new JSCodeGenerator();
+		CanvasMainSettings settings = getCanvas().getSettingsModel();
+		ICodeGenerator generator = settings.getLang().getCodeGenerator();
+
 		try {
 			WorldModel model = getCanvas().getWorldModel();
 			IFile file = getFileToGenerate();
