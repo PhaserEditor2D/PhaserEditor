@@ -48,12 +48,18 @@ public class CompositeOperation extends AbstractOperation {
 
 	private List<IUndoableOperation> _operations;
 	private boolean _parent;
+	private boolean _fireWorldChanged;
 
-	public CompositeOperation(IUndoableOperation... operations) {
+	public CompositeOperation(boolean fireWorldChanged, IUndoableOperation... operations) {
 		super("CompositeChangePropertyOperation");
+		_fireWorldChanged = fireWorldChanged;
 		_operations = new ArrayList<>(Arrays.asList(operations));
 		addContext(CanvasEditor.UNDO_CONTEXT);
 		_parent = true;
+	}
+
+	public CompositeOperation(IUndoableOperation... operations) {
+		this(true, operations);
 	}
 
 	public boolean isEmpty() {
@@ -128,7 +134,11 @@ public class CompositeOperation extends AbstractOperation {
 		return _parent && getSize() > 50;
 	}
 
-	private static void fireWorldChanged(IAdaptable info) {
+	private void fireWorldChanged(IAdaptable info) {
+		if (!_fireWorldChanged) {
+			return;
+		}
+
 		CanvasEditor editor = info.getAdapter(CanvasEditor.class);
 		ObjectCanvas canvas = editor.getCanvas();
 		canvas.getSelectionBehavior().updateSelectedNodes();

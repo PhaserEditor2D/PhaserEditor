@@ -56,6 +56,7 @@ import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -76,6 +77,7 @@ import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.ide.IDE;
+import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.operations.UndoRedoActionGroup;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.MultiPageEditorPart;
@@ -200,16 +202,13 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 				//
 			}
 			getEditorSite().getShell().getDisplay().asyncExec(() -> {
-				setPageImage(1, getSourceEditor().getTitleImage());
+				setPageImage(1, getFileImage(getFileToGenerate()));
 			});
 		});
 	}
 
-	/**
-	 * 
-	 */
-	private void setSavedState() {
-		_model.getWorld().setDirty(false);
+	private void setDirty(boolean dirty) {
+		_model.getWorld().setDirty(dirty);
 		firePropertyChange(PROP_DIRTY);
 	}
 
@@ -239,7 +238,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 				generateCode();
 			}
 
-			setSavedState();
+			setDirty(false);
 		} catch (JSONException | CoreException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -376,7 +375,8 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 
 	private void createSourcePage() {
 		try {
-			FileEditorInput srcInput = new FileEditorInput(getFileToGenerate());
+			IFile srcFile = getFileToGenerate();
+			FileEditorInput srcInput = new FileEditorInput(srcFile);
 
 			// Create editor from editor ID. this is open the door to other
 			// editor implementations
@@ -404,12 +404,16 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 
 			addPage(1, _sourceEditor, srcInput);
 			setPageText(1, "Source");
-			setPageImage(1, _sourceEditor.getTitleImage());
+			setPageImage(1, getFileImage(srcFile));
 
 			registerUndoRedoActions();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private static Image getFileImage(IFile srcFile) {
+		return WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider().getImage(srcFile);
 	}
 
 	/**
@@ -815,10 +819,18 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 	}
 
 	private void updateFromSettingsPage() {
-		CanvasMainSettings settings = _settingsPage.getModel();
-		JSONObject data = new JSONObject();
-		settings.write(data);
-		getCanvas().getUpdateBehavior().executeOperations(new CompositeOperation(new ChangeSettingsOperation(data)));
+		JSONObject oldData = new JSONObject();
+		_canvas.getSettingsModel().write(oldData);
+
+		JSONObject newData = new JSONObject();
+		_settingsPage.getModel().write(newData);
+
+		getCanvas().getUpdateBehavior()
+				.executeOperations(new CompositeOperation(false, new ChangeSettingsOperation(newData)));
+
+		if (!oldData.toString().equals(newData.toString())) {
+			setDirty(true);
+		}
 	}
 
 	public boolean isDesignPageActive() {
