@@ -29,12 +29,12 @@ import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -44,13 +44,13 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import phasereditor.canvas.core.CanvasMainSettings;
 import phasereditor.canvas.core.SourceLang;
 import phasereditor.canvas.ui.editors.LangLabelProvider;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 
 /**
  * @author arian
  *
  */
 public class NewPage_GroupSettings extends WizardPage {
+	@SuppressWarnings("unused")
 	private DataBindingContext m_bindingContext;
 	private ComboViewer _langComboViewer;
 	private Text _text;
@@ -68,6 +68,7 @@ public class NewPage_GroupSettings extends WizardPage {
 	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.
 	 * widgets.Composite)
 	 */
+	@SuppressWarnings("all")
 	@Override
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NULL);
@@ -113,8 +114,7 @@ public class NewPage_GroupSettings extends WizardPage {
 		_langComboViewer.setInput(SourceLang.values());
 	}
 
-	NewPage_GroupSettings _self = this;
-	private boolean _createVisualEditorFile = true;
+	private NewPage_GroupSettings _self = this;
 
 	/**
 	 * @return the settings

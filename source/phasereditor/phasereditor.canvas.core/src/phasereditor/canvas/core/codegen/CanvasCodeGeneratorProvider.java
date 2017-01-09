@@ -19,27 +19,44 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.wizards;
+package phasereditor.canvas.core.codegen;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasType;
+import phasereditor.canvas.core.SourceLang;
 
 /**
  * @author arian
  *
  */
-public class NewWizard_Group extends NewWizard_Base {
+public class CanvasCodeGeneratorProvider {
+	private static Map<String, ICodeGenerator> _map;
 
-	public NewWizard_Group() {
-		super(CanvasType.GROUP);
+	static {
+		_map = new HashMap<>();
+
+		_map.put(key(CanvasType.STATE, SourceLang.JAVA_SCRIPT), new JSGroupCodeGenerator());
+		_map.put(key(CanvasType.STATE, SourceLang.TYPE_SCRIPT), new TSGroupCodeGenerator());
+
+		_map.put(key(CanvasType.GROUP, SourceLang.JAVA_SCRIPT), new JSGroupCodeGenerator());
+		_map.put(key(CanvasType.GROUP, SourceLang.TYPE_SCRIPT), new TSGroupCodeGenerator());
+
+		_map.put(key(CanvasType.SPRITE, SourceLang.JAVA_SCRIPT), new JSGroupCodeGenerator());
+		_map.put(key(CanvasType.SPRITE, SourceLang.TYPE_SCRIPT), new TSGroupCodeGenerator());
+
 	}
 
-	private NewPage_GroupSettings _settingsPage;
+	@SuppressWarnings("static-method")
+	public ICodeGenerator getCodeGenerator(CanvasModel model) {
+		CanvasType type = model.getType();
+		SourceLang lang = model.getSettings().getLang();
+		return _map.get(key(type, lang));
+	}
 
-	@Override
-	public void addPages() {
-		super.addPages();
-		_settingsPage = new NewPage_GroupSettings();
-		_settingsPage.setSettings(getModel().getSettings());
-		addPage(_settingsPage);
+	private static String key(CanvasType type, SourceLang lang) {
+		return type.name() + "$" + lang.name();
 	}
 }

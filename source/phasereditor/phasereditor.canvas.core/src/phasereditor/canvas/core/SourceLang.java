@@ -21,28 +21,13 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
-import phasereditor.canvas.core.codegen.ICodeGenerator;
-import phasereditor.canvas.core.codegen.JSCodeGenerator;
-import phasereditor.canvas.core.codegen.TSCodeGenerator;
-
 /**
  * @author arian
  *
  */
 public enum SourceLang {
-	JAVA_SCRIPT("js") {
-		@Override
-		public ICodeGenerator getCodeGenerator() {
-			return new JSCodeGenerator();
-		}
-	},
-
-	TYPE_SCRIPT("ts") {
-		@Override
-		public ICodeGenerator getCodeGenerator() {
-			return new TSCodeGenerator();
-		}
-	};
+	JAVA_SCRIPT("js"),
+	TYPE_SCRIPT("ts");
 
 	private String _ext;
 
@@ -53,6 +38,4 @@ public enum SourceLang {
 	public String getExtension() {
 		return _ext;
 	}
-
-	public abstract ICodeGenerator getCodeGenerator();
 }

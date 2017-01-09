@@ -32,11 +32,23 @@ public class CanvasModel {
 	private CanvasMainSettings _settings;
 	private WorldModel _world;
 	private IFile _file;
+	private CanvasType _type;
 
 	public CanvasModel(IFile file) {
 		_file = file;
 		_settings = new CanvasMainSettings();
 		_world = new WorldModel(file);
+
+		// set Group just for backward compatibility
+		_type = CanvasType.GROUP;
+	}
+
+	public CanvasType getType() {
+		return _type;
+	}
+
+	public void setType(CanvasType type) {
+		_type = type;
 	}
 
 	public String getClassName() {
@@ -54,6 +66,11 @@ public class CanvasModel {
 		_settings.read(data.getJSONObject("settings"));
 		_world.getAssetTable().read(data.optJSONObject("asset-table"));
 		_world.read(data.getJSONObject("world"));
+
+		{
+			String name = data.optString("type", CanvasType.GROUP.name());
+			_type = CanvasType.valueOf(name);
+		}
 	}
 
 	public void write(JSONObject data) {
@@ -67,6 +84,10 @@ public class CanvasModel {
 			JSONObject data2 = new JSONObject();
 			data.put("world", data2);
 			_world.write(data2, true);
+		}
+
+		{
+			data.put("type", _type.name());
 		}
 
 		{

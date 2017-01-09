@@ -19,27 +19,12 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.wizards;
-
-import phasereditor.canvas.core.CanvasType;
+package phasereditor.canvas.core;
 
 /**
  * @author arian
  *
  */
-public class NewWizard_Group extends NewWizard_Base {
-
-	public NewWizard_Group() {
-		super(CanvasType.GROUP);
-	}
-
-	private NewPage_GroupSettings _settingsPage;
-
-	@Override
-	public void addPages() {
-		super.addPages();
-		_settingsPage = new NewPage_GroupSettings();
-		_settingsPage.setSettings(getModel().getSettings());
-		addPage(_settingsPage);
-	}
+public enum CanvasType {
+	STATE, GROUP, SPRITE
 }

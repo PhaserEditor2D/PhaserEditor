@@ -91,6 +91,7 @@ import phasereditor.canvas.core.AssetTable;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasMainSettings;
 import phasereditor.canvas.core.WorldModel;
+import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
 import phasereditor.canvas.core.codegen.ICodeGenerator;
 import phasereditor.canvas.ui.editors.behaviors.ZoomBehavior;
 import phasereditor.canvas.ui.editors.grid.PGrid;
@@ -627,8 +628,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 			return;
 		}
 
-		CanvasMainSettings settings = getCanvas().getSettingsModel();
-		ICodeGenerator generator = settings.getLang().getCodeGenerator();
+		ICodeGenerator generator = new CanvasCodeGeneratorProvider().getCodeGenerator(_model);
 
 		try {
 			WorldModel model = getCanvas().getWorldModel();

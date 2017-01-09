@@ -25,7 +25,7 @@ package phasereditor.canvas.core.codegen;
  * @author arian
  *
  */
-public class JSCodeGenerator extends JSLikeCodeGenerator {
+public class JSGroupCodeGenerator extends JSLikeCodeGenerator {
 
 	@Override
 	protected void generateHeader(StringBuilder sb, String preInitUserCode, String classname) {

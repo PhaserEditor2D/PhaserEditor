@@ -37,12 +37,12 @@ import org.json.JSONObject;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.project.core.ProjectCore;
 
-public class NewPage_GroupFile extends WizardNewFileCreationPage {
+public class NewPage_File extends WizardNewFileCreationPage {
 
-	public NewPage_GroupFile(IStructuredSelection selection) {
+	public NewPage_File(IStructuredSelection selection, String title, String desc) {
 		super("newfile", selection);
-		setTitle("New Canvas File");
-		setDescription("Create a new Canvas file.");
+		setTitle(title);
+		setDescription(desc);
 	}
 
 	@Override

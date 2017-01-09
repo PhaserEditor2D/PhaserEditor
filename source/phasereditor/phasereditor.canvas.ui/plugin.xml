@@ -16,11 +16,11 @@
          point="org.eclipse.ui.newWizards">
       <wizard
             category="phasereditor.ui.wizardCategory"
-            class="phasereditor.canvas.ui.wizards.NewCanvasWizard"
+            class="phasereditor.canvas.ui.wizards.NewWizard_State"
             hasPages="true"
             icon="platform:/plugin/phasereditor.ui/icons/canvas.png"
-            id="phasereditor.canvas.ui.newCanvasWizard"
-            name="Canvas File">
+            id="phasereditor.canvas.ui.newStateWizard"
+            name="State File">
       </wizard>
       <wizard
             category="phasereditor.ui.wizardCategory"
@@ -1474,10 +1474,10 @@
       <perspectiveExtension
             targetID="*">
          <newWizardShortcut
-               id="phasereditor.canvas.ui.newCanvasWizard">
+               id="phasereditor.canvas.ui.newGroupWizard">
          </newWizardShortcut>
          <newWizardShortcut
-               id="phasereditor.canvas.ui.newGroupWizard">
+               id="phasereditor.canvas.ui.newStateWizard">
          </newWizardShortcut>
       </perspectiveExtension>
    </extension>
@@ -1497,8 +1497,8 @@
       <commonWizard
             menuGroupId="phaser.new.other"
             type="new"
-            wizardId="phasereditor.canvas.ui.newCanvasWizard">
-         <enablement></enablement>
+            wizardId="phasereditor.canvas.ui.newStateWizard">
+      <enablement></enablement>
       </commonWizard>
       <commonWizard
             menuGroupId="phaser.new.other"

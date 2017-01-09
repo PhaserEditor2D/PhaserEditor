@@ -27,13 +27,13 @@ import phasereditor.canvas.core.CanvasType;
  * @author arian
  *
  */
-public class NewWizard_Group extends NewWizard_Base {
-
-	public NewWizard_Group() {
-		super(CanvasType.GROUP);
-	}
+public class NewWizard_State extends NewWizard_Base {
 
 	private NewPage_GroupSettings _settingsPage;
+
+	public NewWizard_State() {
+		super(CanvasType.STATE);
+	}
 
 	@Override
 	public void addPages() {
@@ -42,4 +42,5 @@ public class NewWizard_Group extends NewWizard_Base {
 		_settingsPage.setSettings(getModel().getSettings());
 		addPage(_settingsPage);
 	}
+
 }

@@ -27,7 +27,7 @@ import phasereditor.canvas.core.BaseObjectModel;
  * @author arian
  *
  */
-public class TSCodeGenerator extends JSLikeCodeGenerator {
+public class TSGroupCodeGenerator extends JSLikeCodeGenerator {
 	@Override
 	protected void generateHeader(StringBuilder sb, String preInitUserCode, String classname) {
 		String tabs1 = tabs(1);
