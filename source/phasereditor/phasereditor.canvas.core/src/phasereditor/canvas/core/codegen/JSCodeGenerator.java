@@ -47,8 +47,6 @@ public class JSCodeGenerator extends JSLikeCodeGenerator {
 
 	@Override
 	protected void generateFooter(StringBuilder sb, String postInitUserCode, String postGenUserCode, String classname) {
-		String tabs1 = tabs(1);
-
 		sb.append(POST_INIT_CODE_BEGIN);
 		sb.append(postInitUserCode);
 		sb.append(POST_INIT_CODE_END);
@@ -58,7 +56,7 @@ public class JSCodeGenerator extends JSLikeCodeGenerator {
 		sb.append("/** @type Phaser.Group */\n");
 		sb.append("var " + classname + "_proto = Object.create(Phaser.Group.prototype);\n");
 		sb.append(classname + ".prototype = " + classname + "_proto;\n");
-		sb.append(classname + ".prototype.constructor = Phaser.Group;\n");
+		sb.append(classname + ".prototype.constructor = " + classname + ";\n");
 		sb.append("\n");
 
 		sb.append(END_GENERATED_CODE);
