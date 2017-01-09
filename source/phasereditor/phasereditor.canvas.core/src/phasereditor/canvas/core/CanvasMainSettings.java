@@ -41,6 +41,7 @@ public class CanvasMainSettings {
 	private int _stepWidth;
 	private int _stepHeight;
 	private SourceLang _lang;
+	private String _baseClass;
 
 	public CanvasMainSettings() {
 		_sceneWidth = 640;
@@ -51,10 +52,21 @@ public class CanvasMainSettings {
 		_stepWidth = 32;
 		_stepHeight = 32;
 		_lang = SourceLang.JAVA_SCRIPT;
+		// for backward compatibility
+		_baseClass = "Phaser.Group";
 	}
 
 	public CanvasMainSettings(JSONObject settingsData) {
 		read(settingsData);
+	}
+	
+	public String getBaseClass() {
+		return _baseClass;
+	}
+	
+	public void setBaseClass(String baseClass) {
+		_baseClass = baseClass;
+		firePropertyChange("baseClass");
 	}
 
 	public SourceLang getLang() {
@@ -143,6 +155,7 @@ public class CanvasMainSettings {
 		obj.put("stepWidth", _stepWidth, 32);
 		obj.put("stepHeight", _stepHeight, 32);
 		obj.put("lang", _lang);
+		obj.put("baseClass", _baseClass);
 	}
 
 	public void read(JSONObject obj) {
@@ -157,6 +170,8 @@ public class CanvasMainSettings {
 		_stepWidth = obj.optInt("stepWidth", 32);
 		_stepHeight = obj.optInt("stepHeight", 32);
 		_lang = SourceLang.valueOf(obj.optString("lang", SourceLang.JAVA_SCRIPT.name()));
+		// use Phaser.Group for backward compatibility
+		_baseClass = obj.optString("baseClass", "Phaser.Group");
 	}
 
 	private transient final PropertyChangeSupport support = new PropertyChangeSupport(this);

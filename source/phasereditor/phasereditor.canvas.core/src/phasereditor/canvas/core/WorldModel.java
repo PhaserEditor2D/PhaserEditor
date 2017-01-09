@@ -52,10 +52,22 @@ public class WorldModel extends GroupModel {
 		this._file = file;
 	}
 
+	public String getClassName() {
+
+		if (_file == null) {
+			return "Canvas";
+		}
+
+		String name = _file.getName();
+		String ext = _file.getFileExtension();
+		int end = name.length() - ext.length() - 1;
+		return name.substring(0, end);
+	}
+
 	public AssetTable getAssetTable() {
 		return _assetTable;
 	}
-	
+
 	public void setAssetTable(AssetTable assetTable) {
 		_assetTable = assetTable;
 	}
@@ -80,17 +92,6 @@ public class WorldModel extends GroupModel {
 
 	public void setFile(IFile file) {
 		this._file = file;
-	}
-
-	public String getClassName() {
-		if (this._file == null) {
-			return "CanvasWorld";
-		}
-
-		String name = _file.getName();
-		String ext = _file.getFileExtension();
-		int end = name.length() - ext.length() - 1;
-		return name.substring(0, end);
 	}
 
 	@Override

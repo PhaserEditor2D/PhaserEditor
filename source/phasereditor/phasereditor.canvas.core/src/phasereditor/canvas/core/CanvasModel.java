@@ -28,13 +28,26 @@ import org.json.JSONObject;
  * @author arian
  *
  */
-public class CanvasEditorModel {
+public class CanvasModel {
 	private CanvasMainSettings _settings;
 	private WorldModel _world;
+	private IFile _file;
 
-	public CanvasEditorModel(IFile file) {
+	public CanvasModel(IFile file) {
+		_file = file;
 		_settings = new CanvasMainSettings();
 		_world = new WorldModel(file);
+	}
+
+	public String getClassName() {
+		if (_file == null) {
+			return "Canvas";
+		}
+
+		String name = _file.getName();
+		String ext = _file.getFileExtension();
+		int end = name.length() - ext.length() - 1;
+		return name.substring(0, end);
 	}
 
 	public void read(JSONObject data) {
@@ -68,5 +81,4 @@ public class CanvasEditorModel {
 	public WorldModel getWorld() {
 		return _world;
 	}
-
 }

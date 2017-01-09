@@ -88,7 +88,7 @@ import org.json.JSONTokener;
 
 import javafx.geometry.Point2D;
 import phasereditor.canvas.core.AssetTable;
-import phasereditor.canvas.core.CanvasEditorModel;
+import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasMainSettings;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.core.codegen.ICodeGenerator;
@@ -127,7 +127,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 	};
 
 	private ObjectCanvas _canvas;
-	private CanvasEditorModel _model;
+	private CanvasModel _model;
 	private PGrid _grid;
 	private SashForm _leftSashForm;
 	private FilteredTree _outlineTree;
@@ -264,12 +264,12 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 		IFile file = fileInput.getFile();
 		try (InputStream contents = file.getContents();) {
 			JSONObject data = new JSONObject(new JSONTokener(contents));
-			_model = new CanvasEditorModel(file);
+			_model = new CanvasModel(file);
 			try {
 				_model.read(data);
 			} catch (Exception e) {
 				e.printStackTrace();
-				_model = new CanvasEditorModel(file);
+				_model = new CanvasModel(file);
 				Display.getDefault().asyncExec(new Runnable() {
 
 					@Override
@@ -700,12 +700,12 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 		return ((IFileEditorInput) getEditorInput()).getFile();
 	}
 
-	public CanvasEditorModel getModel() {
+	public CanvasModel getModel() {
 		return _model;
 	}
 
 	protected void updateTitle() {
-		if (getActiveEditor() == getSourceEditor()) {
+		if (isSourcePageActive()) {
 			setPartName(getSourceEditor().getTitle());
 		} else {
 			setPartName(getEditorInputFile().getName());

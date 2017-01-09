@@ -11,13 +11,6 @@
             id="phasereditor.canvas.ui.editors.canvas"
             name="Canvas">
       </editor>
-      <editor
-            class="phasereditor.canvas.ui.editors.DemoEditor"
-            default="false"
-            extensions="canvas"
-            id="phasereditor.canvas.ui.demo"
-            name="Demo Editor">
-      </editor>
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">
@@ -28,6 +21,14 @@
             icon="platform:/plugin/phasereditor.ui/icons/canvas.png"
             id="phasereditor.canvas.ui.newCanvasWizard"
             name="Canvas File">
+      </wizard>
+      <wizard
+            category="phasereditor.ui.wizardCategory"
+            class="phasereditor.canvas.ui.wizards.NewWizard_Group"
+            hasPages="true"
+            icon="platform:/plugin/phasereditor.ui/icons/canvas.png"
+            id="phasereditor.canvas.ui.newGroupWizard"
+            name="Group File">
       </wizard>
    </extension>
    <extension
@@ -1475,6 +1476,9 @@
          <newWizardShortcut
                id="phasereditor.canvas.ui.newCanvasWizard">
          </newWizardShortcut>
+         <newWizardShortcut
+               id="phasereditor.canvas.ui.newGroupWizard">
+         </newWizardShortcut>
       </perspectiveExtension>
    </extension>
    <extension
@@ -1494,6 +1498,12 @@
             menuGroupId="phaser.new.other"
             type="new"
             wizardId="phasereditor.canvas.ui.newCanvasWizard">
+         <enablement></enablement>
+      </commonWizard>
+      <commonWizard
+            menuGroupId="phaser.new.other"
+            type="new"
+            wizardId="phasereditor.canvas.ui.newGroupWizard">
          <enablement></enablement>
       </commonWizard>
    </extension>

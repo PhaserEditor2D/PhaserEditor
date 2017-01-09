@@ -35,7 +35,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import phasereditor.canvas.core.BaseObjectModel;
-import phasereditor.canvas.core.CanvasEditorModel;
+import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasMainSettings;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.behaviors.CreateBehavior;
@@ -85,7 +85,7 @@ public class ObjectCanvas extends FXCanvas {
 		super(parent, style);
 	}
 
-	public void init(CanvasEditor editor, CanvasEditorModel model, PGrid grid, TreeViewer outline,
+	public void init(CanvasEditor editor, CanvasModel model, PGrid grid, TreeViewer outline,
 			PaletteComp palette) {
 		_editor = editor;
 		_settingsModel = model.getSettings();

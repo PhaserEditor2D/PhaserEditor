@@ -34,7 +34,6 @@ import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -57,31 +56,6 @@ import phasereditor.ui.ColorButtonSupport;
  *
  */
 public class GeneralEditorSettingsComp extends Composite {
-	private static class LangLabelProvider extends LabelProvider {
-
-		/**
-		 * 
-		 */
-		public LangLabelProvider() {
-			// TODO Auto-generated constructor stub
-		}
-
-		@Override
-		public String getText(Object element) {
-			SourceLang value = (SourceLang) element;
-
-			switch (value) {
-			case JAVA_SCRIPT:
-				return "Java Script";
-			case TYPE_SCRIPT:
-				return "Type Script";
-			default:
-				break;
-			}
-			return super.getText(element);
-		}
-	}
-
 	private GeneralEditorSettingsComp _self = this;
 
 	@SuppressWarnings("unused")

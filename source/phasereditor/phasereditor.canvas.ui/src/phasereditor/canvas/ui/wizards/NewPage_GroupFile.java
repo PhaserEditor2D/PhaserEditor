@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2016 Arian Fornaris
+// Copyright (c) 2016, 2017 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -34,13 +34,12 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.json.JSONObject;
 
-import phasereditor.canvas.core.WorldModel;
+import phasereditor.canvas.core.CanvasModel;
 import phasereditor.project.core.ProjectCore;
 
-@Deprecated
-public class CanvasNewFilePage extends WizardNewFileCreationPage {
+public class NewPage_GroupFile extends WizardNewFileCreationPage {
 
-	public CanvasNewFilePage(IStructuredSelection selection) {
+	public NewPage_GroupFile(IStructuredSelection selection) {
 		super("newfile", selection);
 		setTitle("New Canvas File");
 		setDescription("Create a new Canvas file.");
@@ -115,7 +114,7 @@ public class CanvasNewFilePage extends WizardNewFileCreationPage {
 
 				if ((workspace.getRoot().getFolder(resourcePath).exists()
 						|| workspace.getRoot().getFile(resourcePath).exists())) {
-					setErrorMessage("Canvas name exists.");
+					setErrorMessage("The name exists.");
 					return false;
 				}
 			}
@@ -123,15 +122,25 @@ public class CanvasNewFilePage extends WizardNewFileCreationPage {
 
 		return true;
 	}
+	
 
 	@Override
 	protected InputStream getInitialContents() {
 		JSONObject json = new JSONObject();
-		WorldModel model = new WorldModel(null);
 		String filename = getFileName();
-		model.setEditorName(filename);
-		model.write(json, false);
+		_model.getWorld().setEditorName(filename);
+		_model.write(json);
 		String content = json.toString(4);
 		return new ByteArrayInputStream(content.getBytes());
+	}
+
+	private CanvasModel _model;
+
+	public CanvasModel getModel() {
+		return _model;
+	}
+
+	public void setModel(CanvasModel model) {
+		_model = model;
 	}
 }

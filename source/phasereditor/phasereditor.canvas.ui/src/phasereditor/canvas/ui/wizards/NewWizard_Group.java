@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2016 Arian Fornaris
+// Copyright (c) 2015, 2017 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -22,10 +22,13 @@
 package phasereditor.canvas.ui.wizards;
 
 import java.io.ByteArrayInputStream;
+import java.nio.file.Files;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
@@ -36,21 +39,21 @@ import org.eclipse.ui.ide.IDE;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import phasereditor.canvas.core.CanvasMainSettings;
 import phasereditor.canvas.core.CanvasModel;
+import phasereditor.canvas.core.codegen.ICodeGenerator;
 
 /**
  * @author arian
  *
  */
-public class NewCanvasWizard extends Wizard implements INewWizard {
+public class NewWizard_Group extends Wizard implements INewWizard {
 
 	private IStructuredSelection _selection;
-	private CanvasNewFilePage _newCanvasPage;
+	private CanvasModel _model;
+	private NewPage_GroupFile _filePage;
+	private NewPage_GroupSettings _settingsPage;
 	private IWorkbenchPage _windowPage;
-
-	public NewCanvasWizard() {
-		setWindowTitle("New Canvas File");
-	}
 
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
@@ -60,8 +63,16 @@ public class NewCanvasWizard extends Wizard implements INewWizard {
 
 	@Override
 	public void addPages() {
-		_newCanvasPage = new CanvasNewFilePage(_selection);
-		addPage(_newCanvasPage);
+		_model = new CanvasModel(null);
+
+		_filePage = new NewPage_GroupFile(_selection);
+		_settingsPage = new NewPage_GroupSettings();
+
+		_filePage.setModel(_model);
+		_settingsPage.setSettings(_model.getSettings());
+
+		addPage(_filePage);
+		addPage(_settingsPage);
 	}
 
 	@Override
@@ -69,26 +80,25 @@ public class NewCanvasWizard extends Wizard implements INewWizard {
 		boolean performedOK = false;
 
 		// no file extension specified so add default extension
-		String fileName = _newCanvasPage.getFileName();
+		String fileName = _filePage.getFileName();
 		if (fileName.lastIndexOf('.') == -1) {
 			String newFileName = fileName + ".canvas";
-			_newCanvasPage.setFileName(newFileName);
+			_filePage.setFileName(newFileName);
 		}
 
 		// create a new empty file
-		IFile file = _newCanvasPage.createNewFile();
+		IFile file = _filePage.createNewFile();
 		// if there was problem with creating file, it will be null, so make
 		// sure to check
 		if (file != null) {
 
 			{
 				// set default content
-				CanvasModel model = new CanvasModel(null);
-				String name = _newCanvasPage.getFileName();
-				name = name.substring(0, name.length() - _newCanvasPage.getFileExtension().length() - 1);
-				model.getWorld().setEditorName(name);
+				String name = _filePage.getFileName();
+				name = name.substring(0, name.length() - _filePage.getFileExtension().length() - 1);
+				_model.getWorld().setEditorName(name);
 				JSONObject obj = new JSONObject();
-				model.write(obj);
+				_model.write(obj);
 				try {
 					file.setContents(new ByteArrayInputStream(obj.toString(2).getBytes()), false, false,
 							new NullProgressMonitor());
@@ -96,6 +106,11 @@ public class NewCanvasWizard extends Wizard implements INewWizard {
 					e.printStackTrace();
 					throw new RuntimeException(e);
 				}
+			}
+
+			{
+				// generate source code
+				createSourceFile(file);
 			}
 
 			// open the file in editor
@@ -110,6 +125,43 @@ public class NewCanvasWizard extends Wizard implements INewWizard {
 		}
 
 		return performedOK;
+	}
+
+	private void createSourceFile(IFile canvasFile) {
+		try {
+
+			CanvasMainSettings settings = _model.getSettings();
+
+			String canvasFilenamePart;
+			{
+				canvasFilenamePart = canvasFile.getName();
+				String ext = canvasFile.getFileExtension();
+				int end = canvasFilenamePart.length() - ext.length() - 1;
+				canvasFilenamePart = canvasFilenamePart.substring(0, end);
+			}
+
+			String fname = canvasFilenamePart + "." + settings.getLang().getExtension();
+			IFile srcFile = canvasFile.getParent().getFile(new Path(fname));
+			String replace = null;
+
+			if (srcFile.exists()) {
+				byte[] bytes = Files.readAllBytes(srcFile.getLocation().makeAbsolute().toFile().toPath());
+				replace = new String(bytes);
+			}
+
+			ICodeGenerator generator = settings.getLang().getCodeGenerator();
+			String content = generator.generate(_model.getWorld(), replace);
+
+			ByteArrayInputStream stream = new ByteArrayInputStream(content.getBytes());
+			if (srcFile.exists()) {
+				srcFile.setContents(stream, IResource.NONE, null);
+			} else {
+				srcFile.create(stream, false, null);
+			}
+			srcFile.refreshLocal(1, null);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }
