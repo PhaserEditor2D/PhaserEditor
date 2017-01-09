@@ -21,42 +21,48 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core.codegen;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import phasereditor.canvas.core.CanvasModel;
-import phasereditor.canvas.core.CanvasType;
-import phasereditor.canvas.core.SourceLang;
+import phasereditor.canvas.core.BaseObjectModel;
 
 /**
  * @author arian
  *
  */
-public class CanvasCodeGeneratorProvider {
-	private static Map<String, ICodeGenerator> _map;
+public class TSStateCodeGenerator extends JSLikeCodeGenerator {
+	@Override
+	protected void generateHeader(StringBuilder sb, String preInitUserCode, String classname) {
+		String tabs1 = tabs(1);
+		String tabs2 = tabs(2);
+		sb.append("/**\n");
+		sb.append(" * " + classname + ".\n");
+		sb.append(" */\n");
+		sb.append("class " + classname + " extends Phaser.State {\n");
+		sb.append(tabs1 + "constructor() {\n");
+		sb.append(tabs2 + "super();\n");
+		sb.append(tabs1 + "}\n\n");
 
-	static {
-		_map = new HashMap<>();
+		sb.append(tabs1 + "update() {\n");
 
-		_map.put(key(CanvasType.STATE, SourceLang.JAVA_SCRIPT), new JSStateCodeGenerator());
-		_map.put(key(CanvasType.STATE, SourceLang.TYPE_SCRIPT), new TSStateCodeGenerator());
-
-		_map.put(key(CanvasType.GROUP, SourceLang.JAVA_SCRIPT), new JSGroupCodeGenerator());
-		_map.put(key(CanvasType.GROUP, SourceLang.TYPE_SCRIPT), new TSGroupCodeGenerator());
-
-		_map.put(key(CanvasType.SPRITE, SourceLang.JAVA_SCRIPT), new JSGroupCodeGenerator());
-		_map.put(key(CanvasType.SPRITE, SourceLang.TYPE_SCRIPT), new TSGroupCodeGenerator());
-
+		sb.append(PRE_INIT_CODE_BEGIN);
+		sb.append(preInitUserCode);
+		sb.append(PRE_INIT_CODE_END + "\n");
+		sb.append("\n");
 	}
 
-	@SuppressWarnings("static-method")
-	public ICodeGenerator getCodeGenerator(CanvasModel model) {
-		CanvasType type = model.getType();
-		SourceLang lang = model.getSettings().getLang();
-		return _map.get(key(type, lang));
+	@Override
+	protected void generateObjectCreate(int indent, StringBuilder sb, BaseObjectModel model) {
+		super.generateObjectCreate(indent + 1, sb, model);
 	}
 
-	private static String key(CanvasType type, SourceLang lang) {
-		return type.name() + "$" + lang.name();
+	@Override
+	protected void generateFooter(StringBuilder sb, String postInit, String postGen, String classname) {
+		sb.append(POST_INIT_CODE_BEGIN);
+		sb.append(postInit);
+		sb.append(POST_INIT_CODE_END + "\n");
+		
+		sb.append(tabs(1) + "}\n\n");
+		sb.append("}\n\n");
+
+		sb.append(END_GENERATED_CODE);
+		sb.append(postGen);
 	}
 }
