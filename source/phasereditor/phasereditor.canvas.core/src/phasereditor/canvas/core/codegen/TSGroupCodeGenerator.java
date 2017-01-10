@@ -21,46 +21,46 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core.codegen;
 
-import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.CanvasModel;
 
 /**
  * @author arian
  *
  */
 public class TSGroupCodeGenerator extends JSLikeCodeGenerator {
-	@Override
-	protected void generateHeader(StringBuilder sb, String preInitUserCode, String classname) {
-		String tabs1 = tabs(1);
-		String tabs2 = tabs(2);
-		sb.append("/**\n");
-		sb.append(" * " + classname + ".\n");
-		sb.append(" * @param aGame The game.\n");
-		sb.append(" * @param aParent The parent group. If not given the game world will be used instead.\n");
-		sb.append(" */\n");
-		sb.append("class " + classname + " extends Phaser.Group {\n");
-		sb.append(tabs1 + "constructor(aGame : Phaser.Game, aParent : Phaser.Group) {\n");
-		sb.append(tabs2 + "super(aGame, aParent);\n\n");
 
-		sb.append(PRE_INIT_CODE_BEGIN);
-		sb.append(preInitUserCode);
-		sb.append(PRE_INIT_CODE_END + "\n");
-		sb.append("\n");
+	/**
+	 * @param model
+	 */
+	public TSGroupCodeGenerator(CanvasModel model) {
+		super(model);
 	}
 
 	@Override
-	protected void generateObjectCreate(int indent, StringBuilder sb, BaseObjectModel model) {
-		super.generateObjectCreate(indent + 1, sb, model);
+	protected void generateHeader() {
+		String classname = _world.getClassName();
+
+		line("/**");
+
+		line(" * " + classname + ".");
+		line(" * @param aGame The game.");
+		line(" * @param aParent The parent group. If not given the game world will be used instead.");
+		line(" */");
+		line("class " + classname + " extends Phaser.Group {");
+		openIndent("constructor(aGame : Phaser.Game, aParent : Phaser.Group) {");
+		line("super(aGame, aParent);");
+
+		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
+
+		line("");
 	}
-
+	
 	@Override
-	protected void generateFooter(StringBuilder sb, String postInit, String postGen, String classname) {
-		sb.append(POST_INIT_CODE_BEGIN);
-		sb.append(postInit);
-		sb.append(POST_INIT_CODE_END + "\n\n");
-
-		sb.append("}\n\n");
-
-		sb.append(END_GENERATED_CODE );
-		sb.append(postGen);
+	protected void generateFooter() {
+		section(POST_INIT_CODE_BEGIN, POST_INIT_CODE_END, getYouCanInsertCodeHere());
+		closeIndent();
+		line("}");
+		closeIndent();
+		section(END_GENERATED_CODE, getYouCanInsertCodeHere());
 	}
 }

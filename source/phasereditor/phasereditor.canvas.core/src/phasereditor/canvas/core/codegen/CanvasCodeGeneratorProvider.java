@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core.codegen;
 
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,19 +34,19 @@ import phasereditor.canvas.core.SourceLang;
  *
  */
 public class CanvasCodeGeneratorProvider {
-	private static Map<String, ICodeGenerator> _map;
+	private static Map<String, Class<? extends ICodeGenerator>> _map;
 
 	static {
 		_map = new HashMap<>();
 
-		_map.put(key(CanvasType.STATE, SourceLang.JAVA_SCRIPT), new JSStateCodeGenerator());
-		_map.put(key(CanvasType.STATE, SourceLang.TYPE_SCRIPT), new TSStateCodeGenerator());
+		_map.put(key(CanvasType.STATE, SourceLang.JAVA_SCRIPT), JSStateCodeGenerator.class);
+		_map.put(key(CanvasType.STATE, SourceLang.TYPE_SCRIPT), TSStateCodeGenerator.class);
 
-		_map.put(key(CanvasType.GROUP, SourceLang.JAVA_SCRIPT), new JSGroupCodeGenerator());
-		_map.put(key(CanvasType.GROUP, SourceLang.TYPE_SCRIPT), new TSGroupCodeGenerator());
+		_map.put(key(CanvasType.GROUP, SourceLang.JAVA_SCRIPT), JSGroupCodeGenerator.class);
+		_map.put(key(CanvasType.GROUP, SourceLang.TYPE_SCRIPT), TSGroupCodeGenerator.class);
 
-		_map.put(key(CanvasType.SPRITE, SourceLang.JAVA_SCRIPT), new JSGroupCodeGenerator());
-		_map.put(key(CanvasType.SPRITE, SourceLang.TYPE_SCRIPT), new TSGroupCodeGenerator());
+		_map.put(key(CanvasType.SPRITE, SourceLang.JAVA_SCRIPT), JSGroupCodeGenerator.class);
+		_map.put(key(CanvasType.SPRITE, SourceLang.TYPE_SCRIPT), TSGroupCodeGenerator.class);
 
 	}
 
@@ -53,7 +54,16 @@ public class CanvasCodeGeneratorProvider {
 	public ICodeGenerator getCodeGenerator(CanvasModel model) {
 		CanvasType type = model.getType();
 		SourceLang lang = model.getSettings().getLang();
-		return _map.get(key(type, lang));
+		Class<? extends ICodeGenerator> cls = _map.get(key(type, lang));
+		Constructor<? extends ICodeGenerator> ctr;
+		try {
+			ctr = cls.getConstructor(CanvasModel.class);
+			ICodeGenerator generator = ctr.newInstance(model);
+			return generator;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 
 	private static String key(CanvasType type, SourceLang lang) {

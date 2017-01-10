@@ -21,45 +21,55 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core.codegen;
 
+import phasereditor.canvas.core.CanvasModel;
+
 /**
  * @author arian
  *
  */
 public class JSStateCodeGenerator extends JSLikeCodeGenerator {
 
+	public JSStateCodeGenerator(CanvasModel model) {
+		super(model);
+	}
+	
 	@Override
-	protected void generateHeader(StringBuilder sb, String preInitUserCode, String classname) {
-		String tabs1 = tabs(1);
-		sb.append("/**\n");
-		sb.append(" * " + classname + ".\n");
-		sb.append(" */\n");
-		sb.append("function " + classname + "() {\n");
-		sb.append(tabs1 + "Phaser.State.call(this);\n");
-		sb.append("}\n\n");
+	protected void generateHeader() {
+		String classname = _world.getClassName();
+
+		line("/**");
+		line(" * " + classname + ".");
+		line(" */");
+		openIndent("function " + classname + "() {");
+		line("Phaser.State.call(this);");
+		line();
 		
-		sb.append("/** @type Phaser.State */\n");
-		sb.append("var " + classname + "_proto = Object.create(Phaser.State.prototype);\n");
-		sb.append(classname + ".prototype = " + classname + "_proto;\n");
-		sb.append(classname + ".prototype.constructor = " + classname + ";\n");
-		sb.append("\n");
+		section("/* constructor-begin */", "/* constructor-end */", getYouCanInsertCodeHere());
 		
-		sb.append(classname + ".prototype.create = function () {\n");
+		closeIndent("}");
+		line();
 		
-		sb.append(PRE_INIT_CODE_BEGIN);
-		sb.append(preInitUserCode);
-		sb.append(PRE_INIT_CODE_END + "\n\n");
+		line("/** @type Phaser.State */");
+		line("var " + classname + "_proto = Object.create(Phaser.State.prototype);");
+		line(classname + ".prototype = " + classname + "_proto;");
+		line(classname + ".prototype.constructor = " + classname + ";");
+		line();
+
+		openIndent(classname + ".prototype.create = function () {");
+		
+		line();
+		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
+		line();
+		line();
 	}
 
 	@Override
-	protected void generateFooter(StringBuilder sb, String postInitUserCode, String postGenUserCode, String classname) {
-		sb.append(POST_INIT_CODE_BEGIN);
-		sb.append(postInitUserCode);
-		sb.append(POST_INIT_CODE_END);
-
-		sb.append("\n\n};\n\n");
-
-		sb.append(END_GENERATED_CODE);
-		sb.append(postGenUserCode);
+	protected void generateFooter() {
+		section(POST_INIT_CODE_BEGIN, POST_INIT_CODE_END, getYouCanInsertCodeHere());
+		line();
+		closeIndent("};");
+		line();
+		section(END_GENERATED_CODE, getYouCanInsertCodeHere());
 	}
 
 }

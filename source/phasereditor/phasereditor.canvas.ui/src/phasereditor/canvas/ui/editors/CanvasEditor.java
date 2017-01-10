@@ -631,7 +631,6 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 		ICodeGenerator generator = new CanvasCodeGeneratorProvider().getCodeGenerator(_model);
 
 		try {
-			WorldModel model = getCanvas().getWorldModel();
 			IFile file = getFileToGenerate();
 			String replace = null;
 
@@ -640,7 +639,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 				replace = new String(bytes);
 			}
 
-			String content = generator.generate(model, replace);
+			String content = generator.generate(replace);
 
 			ByteArrayInputStream stream = new ByteArrayInputStream(content.getBytes());
 			if (file.exists()) {

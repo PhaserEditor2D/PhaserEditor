@@ -170,7 +170,7 @@ public class NewWizard_Base extends Wizard implements INewWizard {
 			}
 
 			ICodeGenerator generator = new CanvasCodeGeneratorProvider().getCodeGenerator(_model);
-			String content = generator.generate(_model.getWorld(), replace);
+			String content = generator.generate(replace);
 
 			ByteArrayInputStream stream = new ByteArrayInputStream(content.getBytes());
 			if (srcFile.exists()) {

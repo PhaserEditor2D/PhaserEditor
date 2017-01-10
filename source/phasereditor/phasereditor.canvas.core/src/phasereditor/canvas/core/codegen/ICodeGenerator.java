@@ -21,12 +21,10 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core.codegen;
 
-import phasereditor.canvas.core.WorldModel;
-
 /**
  * @author arian
  *
  */
 public interface ICodeGenerator {
-	public String generate(WorldModel model, String replace);
+	public String generate(String replace);
 }

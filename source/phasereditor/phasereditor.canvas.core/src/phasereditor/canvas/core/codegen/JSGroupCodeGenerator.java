@@ -21,46 +21,53 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core.codegen;
 
+import phasereditor.canvas.core.CanvasModel;
+
 /**
  * @author arian
  *
  */
 public class JSGroupCodeGenerator extends JSLikeCodeGenerator {
 
-	@Override
-	protected void generateHeader(StringBuilder sb, String preInitUserCode, String classname) {
-		String tabs1 = tabs(1);
-		sb.append("/**\n");
-		sb.append(" * " + classname + ".\n");
-		sb.append(" * @param {Phaser.Game} aGame The game.\n");
-		sb.append(
-				" * @param {Phaser.Group} aParent The parent group. If not given the game world will be used instead.\n");
-		sb.append(" */\n");
-		sb.append("function " + classname + "(aGame, aParent) {\n");
-		sb.append(tabs1 + "Phaser.Group.call(this, aGame, aParent);\n\n");
-
-		sb.append(PRE_INIT_CODE_BEGIN);
-		sb.append(preInitUserCode);
-		sb.append(PRE_INIT_CODE_END + "\n");
-		sb.append("\n");
+	public JSGroupCodeGenerator(CanvasModel model) {
+		super(model);
 	}
 
 	@Override
-	protected void generateFooter(StringBuilder sb, String postInitUserCode, String postGenUserCode, String classname) {
-		sb.append(POST_INIT_CODE_BEGIN);
-		sb.append(postInitUserCode);
-		sb.append(POST_INIT_CODE_END);
+	protected void generateHeader() {
+		String classname = _world.getClassName();
+		line("/**");
+		line(" * " + classname + ".");
+		line(" * @param {Phaser.Game} aGame The game.");
+		line(" * @param {Phaser.Group} aParent The parent group. If not given the game world will be used instead.");
+		line(" */");
+		openIndent("function " + classname + "(aGame, aParent) {");
 
-		sb.append("\n\n}\n\n");
+		line("Phaser.Group.call(this, aGame, aParent);");
+		line();
 
-		sb.append("/** @type Phaser.Group */\n");
-		sb.append("var " + classname + "_proto = Object.create(Phaser.Group.prototype);\n");
-		sb.append(classname + ".prototype = " + classname + "_proto;\n");
-		sb.append(classname + ".prototype.constructor = " + classname + ";\n");
-		sb.append("\n");
-
-		sb.append(END_GENERATED_CODE);
-		sb.append(postGenUserCode);
+		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
+		
+		line();
+		line();
 	}
 
+	@Override
+	protected void generateFooter() {
+		String classname = _world.getClassName();
+
+		section(POST_INIT_CODE_BEGIN, POST_INIT_CODE_END, getYouCanInsertCodeHere());
+
+		line();
+		closeIndent("}");
+		line();
+
+		line("/** @type Phaser.Group */");
+		line("var " + classname + "_proto = Object.create(Phaser.Group.prototype);");
+		line(classname + ".prototype = " + classname + "_proto;");
+		line(classname + ".prototype.constructor = " + classname + ";");
+		line();
+
+		section(END_GENERATED_CODE, getYouCanInsertCodeHere());
+	}
 }

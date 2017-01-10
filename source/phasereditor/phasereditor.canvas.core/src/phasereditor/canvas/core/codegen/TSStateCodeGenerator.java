@@ -21,48 +21,49 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core.codegen;
 
-import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.CanvasModel;
 
 /**
  * @author arian
  *
  */
 public class TSStateCodeGenerator extends JSLikeCodeGenerator {
-	@Override
-	protected void generateHeader(StringBuilder sb, String preInitUserCode, String classname) {
-		String tabs1 = tabs(1);
-		String tabs2 = tabs(2);
-		sb.append("/**\n");
-		sb.append(" * " + classname + ".\n");
-		sb.append(" */\n");
-		sb.append("class " + classname + " extends Phaser.State {\n");
-		sb.append(tabs1 + "constructor() {\n");
-		sb.append(tabs2 + "super();\n");
-		sb.append(tabs1 + "}\n\n");
 
-		sb.append(tabs1 + "update() {\n");
-
-		sb.append(PRE_INIT_CODE_BEGIN);
-		sb.append(preInitUserCode);
-		sb.append(PRE_INIT_CODE_END + "\n");
-		sb.append("\n");
+	public TSStateCodeGenerator(CanvasModel model) {
+		super(model);
 	}
 
 	@Override
-	protected void generateObjectCreate(int indent, StringBuilder sb, BaseObjectModel model) {
-		super.generateObjectCreate(indent + 1, sb, model);
-	}
-
-	@Override
-	protected void generateFooter(StringBuilder sb, String postInit, String postGen, String classname) {
-		sb.append(POST_INIT_CODE_BEGIN);
-		sb.append(postInit);
-		sb.append(POST_INIT_CODE_END + "\n");
+	protected void generateHeader() {
+		String classname = _world.getClassName();
+		line("/**");
+		line(" * " + classname + ".");
+		line(" */");
+		openIndent("class " + classname + " extends Phaser.State {");
+		openIndent("constructor() {");
+		section("/* constructor-begin */", "/* constructor-end */", getYouCanInsertCodeHere());
+		closeIndent("}");
 		
-		sb.append(tabs(1) + "}\n\n");
-		sb.append("}\n\n");
+		line();
+		openIndent("create() {");
 
-		sb.append(END_GENERATED_CODE);
-		sb.append(postGen);
+		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
+		line();
+		line();
+	}
+
+	@Override
+	protected void generateFooter() {
+		section(POST_INIT_CODE_BEGIN, POST_INIT_CODE_END, getYouCanInsertCodeHere());
+
+		closeIndent("}");
+		
+		line();
+		
+		section("/* state-methods-begin */", "/* state-methods-end */", getYouCanInsertCodeHere());
+		
+		closeIndent("}");
+
+		section(END_GENERATED_CODE, getYouCanInsertCodeHere());
 	}
 }
