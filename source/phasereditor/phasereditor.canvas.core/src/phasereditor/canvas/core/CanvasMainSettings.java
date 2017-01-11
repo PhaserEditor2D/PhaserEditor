@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.Arrays;
 
 import org.eclipse.swt.graphics.RGB;
@@ -33,20 +31,25 @@ import org.json.JSONObject;
  * @author arian
  */
 public class CanvasMainSettings {
+	public static final RGB DEFAULT_BACKGROUND_COLOR = new RGB(180, 180, 180);
+	public static final RGB DEFAULT_GRID_COLOR = new RGB(200, 200, 200);
+
 	private double _sceneWidth;
 	private double _sceneHeight;
-	private RGB _sceneColor;
+	private RGB _backgroundColor;
+	private boolean _showGrid;
 	private boolean _generateOnSave;
 	private boolean _enableStepping;
 	private int _stepWidth;
 	private int _stepHeight;
 	private SourceLang _lang;
 	private String _baseClass;
+	private RGB _gridColor;
 
 	public CanvasMainSettings() {
 		_sceneWidth = 640;
 		_sceneHeight = 360;
-		_sceneColor = null;
+		_backgroundColor = DEFAULT_BACKGROUND_COLOR;
 		_generateOnSave = true;
 		_enableStepping = false;
 		_stepWidth = 32;
@@ -54,19 +57,37 @@ public class CanvasMainSettings {
 		_lang = SourceLang.JAVA_SCRIPT;
 		// for backward compatibility
 		_baseClass = "Phaser.Group";
+		_backgroundColor = DEFAULT_BACKGROUND_COLOR;
+		_gridColor = DEFAULT_GRID_COLOR;
+		_showGrid = true;
 	}
 
 	public CanvasMainSettings(JSONObject settingsData) {
 		read(settingsData);
 	}
-	
+
+	public boolean isShowGrid() {
+		return _showGrid;
+	}
+
+	public void setShowGrid(boolean showGrid) {
+		_showGrid = showGrid;
+	}
+
+	public RGB getGridColor() {
+		return _gridColor;
+	}
+
+	public void setGridColor(RGB gridColor) {
+		_gridColor = gridColor;
+	}
+
 	public String getBaseClass() {
 		return _baseClass;
 	}
-	
+
 	public void setBaseClass(String baseClass) {
 		_baseClass = baseClass;
-		firePropertyChange("baseClass");
 	}
 
 	public SourceLang getLang() {
@@ -75,7 +96,6 @@ public class CanvasMainSettings {
 
 	public void setLang(SourceLang lang) {
 		_lang = lang;
-		firePropertyChange("lang");
 	}
 
 	public double getSceneWidth() {
@@ -84,7 +104,6 @@ public class CanvasMainSettings {
 
 	public void setSceneWidth(double sceneWidth) {
 		_sceneWidth = sceneWidth;
-		firePropertyChange("sceneWidth");
 	}
 
 	public double getSceneHeight() {
@@ -93,16 +112,14 @@ public class CanvasMainSettings {
 
 	public void setSceneHeight(double sceneHeight) {
 		_sceneHeight = sceneHeight;
-		firePropertyChange("sceneHeight");
 	}
 
-	public RGB getSceneColor() {
-		return _sceneColor;
+	public RGB getBackgroundColor() {
+		return _backgroundColor;
 	}
 
-	public void setSceneColor(RGB sceneColor) {
-		_sceneColor = sceneColor;
-		firePropertyChange("sceneColor");
+	public void setBackgroundColor(RGB sceneColor) {
+		_backgroundColor = sceneColor;
 	}
 
 	public boolean isGenerateOnSave() {
@@ -111,7 +128,6 @@ public class CanvasMainSettings {
 
 	public void setGenerateOnSave(boolean generateOnScave) {
 		_generateOnSave = generateOnScave;
-		firePropertyChange("generateOnScave");
 	}
 
 	public boolean isEnableStepping() {
@@ -120,7 +136,6 @@ public class CanvasMainSettings {
 
 	public void setEnableStepping(boolean enableStepping) {
 		_enableStepping = enableStepping;
-		firePropertyChange("enableStepping");
 	}
 
 	public int getStepWidth() {
@@ -129,7 +144,6 @@ public class CanvasMainSettings {
 
 	public void setStepWidth(int stepWidth) {
 		_stepWidth = stepWidth;
-		firePropertyChange("stepWidth");
 	}
 
 	public int getStepHeight() {
@@ -138,31 +152,35 @@ public class CanvasMainSettings {
 
 	public void setStepHeight(int stepHeight) {
 		_stepHeight = stepHeight;
-		firePropertyChange("stepHeight");
 	}
 
-	@SuppressWarnings("boxing")
 	public void write(JSONObject obj) {
 		obj.put("sceneWidth", _sceneWidth);
 		obj.put("sceneHeight", _sceneHeight);
-		if (_sceneColor == null) {
-			obj.put("sceneColor", (Object) null);
-		} else {
-			obj.put("sceneColor", Arrays.asList(_sceneColor.red, _sceneColor.green, _sceneColor.blue));
-		}
 		obj.put("generateOnSave", _generateOnSave);
 		obj.put("enableStepping", _enableStepping);
 		obj.put("stepWidth", _stepWidth, 32);
 		obj.put("stepHeight", _stepHeight, 32);
 		obj.put("lang", _lang);
 		obj.put("baseClass", _baseClass);
+		writeColor(obj, "backgroundColor", _backgroundColor);
+		writeColor(obj, "gridColor", _gridColor);
+		obj.put("showGrid", _showGrid);
+	}
+
+	private static RGB readColor(JSONObject obj, String key, RGB def) {
+		JSONArray array = obj.optJSONArray(key);
+		return array == null ? def : new RGB(array.getInt(0), array.getInt(1), array.getInt(2));
+	}
+
+	@SuppressWarnings("boxing")
+	private static void writeColor(JSONObject obj, String key, RGB color) {
+		if (color != null) {
+			obj.put(key, Arrays.asList(color.red, color.green, color.blue));
+		}
 	}
 
 	public void read(JSONObject obj) {
-		{
-			JSONArray array = obj.optJSONArray("sceneColor");
-			_sceneColor = array == null ? null : new RGB(array.getInt(0), array.getInt(1), array.getInt(2));
-		}
 		_sceneWidth = obj.getDouble("sceneWidth");
 		_sceneHeight = obj.getDouble("sceneHeight");
 		_generateOnSave = obj.getBoolean("generateOnSave");
@@ -172,27 +190,9 @@ public class CanvasMainSettings {
 		_lang = SourceLang.valueOf(obj.optString("lang", SourceLang.JAVA_SCRIPT.name()));
 		// use Phaser.Group for backward compatibility
 		_baseClass = obj.optString("baseClass", "Phaser.Group");
-	}
 
-	private transient final PropertyChangeSupport support = new PropertyChangeSupport(this);
-
-	public void addPropertyChangeListener(PropertyChangeListener l) {
-		support.addPropertyChangeListener(l);
-	}
-
-	public void removePropertyChangeListener(PropertyChangeListener l) {
-		support.removePropertyChangeListener(l);
-	}
-
-	public void addPropertyChangeListener(String property, PropertyChangeListener l) {
-		support.addPropertyChangeListener(property, l);
-	}
-
-	public void removePropertyChangeListener(String property, PropertyChangeListener l) {
-		support.removePropertyChangeListener(property, l);
-	}
-
-	public void firePropertyChange(String property) {
-		support.firePropertyChange(property, true, false);
+		_backgroundColor = readColor(obj, "backgroundColor", DEFAULT_BACKGROUND_COLOR);
+		_gridColor = readColor(obj, "gridColor", DEFAULT_GRID_COLOR);
+		_showGrid = obj.optBoolean("showGrid", true);
 	}
 }

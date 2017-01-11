@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2016 Arian Fornaris
+// Copyright (c) 2015, 2017 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -19,26 +19,22 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors.grid;
+package phasereditor.canvas.ui.editors.config;
+
+import org.eclipse.jface.viewers.LabelProvider;
 
 /**
  * @author arian
  *
  */
-public abstract class PGridNumberProperty extends PGridProperty<Double> {
-	private double _value;
-	
-	public PGridNumberProperty(String controlId, String name, String tootlip) {
-		super(controlId, name, tootlip);
-	}
-
+public class ConfigurationLabelProvider extends LabelProvider {
 	@Override
-	public Double getValue() {
-		return Double.valueOf(_value);
-	}
+	public String getText(Object element) {
 
-	@Override
-	public void setValue(Double value, boolean notify) {
-		_value = value.doubleValue();
+		if (element instanceof ConfigItem) {
+			return ((ConfigItem) element).getName();
+		}
+
+		return super.getText(element);
 	}
 }

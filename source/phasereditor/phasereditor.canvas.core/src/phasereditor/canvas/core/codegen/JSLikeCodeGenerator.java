@@ -155,7 +155,7 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 	protected final String getSystemsContainerChain() {
 		switch (_model.getType()) {
 		case STATE:
-			return "this.";
+			return "this";
 		case GROUP:
 		case SPRITE:
 		default:
@@ -186,7 +186,7 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 			append("var " + model.getEditorName() + " = ");
 		}
 
-		append(getSystemsContainerChain() + ".");
+		append(getSystemsContainerChain() + ".add.");
 
 		if (model instanceof ImageSpriteModel) {
 			ImageSpriteModel image = (ImageSpriteModel) model;
@@ -501,10 +501,10 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 		{
 			append("var " + group.getEditorName() + " = ");
 			if (group.isPhysicsGroup()) {
-				line(getSystemsContainerChain() + ".physicsGroup(" + group.getPhysicsBodyType().getPhaserName() + ", "
+				line(getSystemsContainerChain() + ".add.physicsGroup(" + group.getPhysicsBodyType().getPhaserName() + ", "
 						+ (group.getParent().isWorldModel() ? "this" : group.getParent().getEditorName()) + ");");
 			} else {
-				line(String.format(getSystemsContainerChain() + ".group(%s);",
+				line(String.format(getSystemsContainerChain() + ".add.group(%s);",
 						group.getParent().isWorldModel() ? "this" : group.getParent().getEditorName()));
 
 			}

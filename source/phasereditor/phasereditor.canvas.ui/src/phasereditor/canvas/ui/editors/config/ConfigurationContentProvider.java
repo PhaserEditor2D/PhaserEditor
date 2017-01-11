@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2016 Arian Fornaris
+// Copyright (c) 2015, 2017 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -19,26 +19,53 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors.grid;
+package phasereditor.canvas.ui.editors.config;
+
+import org.eclipse.jface.viewers.ITreeContentProvider;
+
+import phasereditor.canvas.core.CanvasMainSettings;
 
 /**
  * @author arian
  *
  */
-public abstract class PGridNumberProperty extends PGridProperty<Double> {
-	private double _value;
-	
-	public PGridNumberProperty(String controlId, String name, String tootlip) {
-		super(controlId, name, tootlip);
+public class ConfigurationContentProvider implements ITreeContentProvider {
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jface.viewers.ITreeContentProvider#getElements(java.lang.
+	 * Object)
+	 */
+	@Override
+	public Object[] getElements(Object inputElement) {
+		return getChildren(inputElement);
 	}
 
 	@Override
-	public Double getValue() {
-		return Double.valueOf(_value);
+	public Object[] getChildren(Object parentElement) {
+
+		if (parentElement instanceof CanvasMainSettings) {
+			CanvasMainSettings settings = (CanvasMainSettings) parentElement;
+
+			return new Object[] {
+
+					new MainEditorConfig(settings)
+
+			};
+		}
+
+		return new Object[] {};
 	}
 
 	@Override
-	public void setValue(Double value, boolean notify) {
-		_value = value.doubleValue();
+	public Object getParent(Object element) {
+		return null;
+	}
+
+	@Override
+	public boolean hasChildren(Object element) {
+		return getChildren(element).length > 0;
 	}
 }

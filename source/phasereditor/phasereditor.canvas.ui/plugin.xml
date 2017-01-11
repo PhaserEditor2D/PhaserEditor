@@ -484,17 +484,6 @@
                   visible="true">
             </separator>
             <command
-                  commandId="phasereditor.canvas.ui.opensettings"
-                  icon="platform:/plugin/phasereditor.ui/icons/settings.png"
-                  style="push">
-               <visibleWhen
-                     checkEnabled="false">
-                  <reference
-                        definitionId="phasereditor.canvas.ui.activeEditor">
-                  </reference>
-               </visibleWhen>
-            </command>
-            <command
                   commandId="phasereditor.canvas.ui.gencode"
                   icon="platform:/plugin/phasereditor.ui/icons/cog.png"
                   style="push">
@@ -741,11 +730,6 @@
             defaultHandler="phasereditor.canvas.ui.handlers.TogglePaletteHandler"
             id="phasereditor.canvas.ui.togglePalette"
             name="Toggle Palette">
-      </command>
-      <command
-            defaultHandler="phasereditor.canvas.ui.handlers.SettingsHandler"
-            id="phasereditor.canvas.ui.opensettings"
-            name="Settings">
       </command>
       <command
             defaultHandler="phasereditor.canvas.ui.handlers.GenerateCodeHandler"

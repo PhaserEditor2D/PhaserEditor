@@ -32,31 +32,32 @@ public class JSStateCodeGenerator extends JSLikeCodeGenerator {
 	public JSStateCodeGenerator(CanvasModel model) {
 		super(model);
 	}
-	
+
 	@Override
 	protected void generateHeader() {
 		String classname = _world.getClassName();
+		String baseclass = _settings.getBaseClass();
 
 		line("/**");
 		line(" * " + classname + ".");
 		line(" */");
 		openIndent("function " + classname + "() {");
-		line("Phaser.State.call(this);");
+		line(baseclass + ".call(this);");
 		line();
-		
+
 		section("/* constructor-begin */", "/* constructor-end */", getYouCanInsertCodeHere());
-		
+
 		closeIndent("}");
 		line();
-		
-		line("/** @type Phaser.State */");
-		line("var " + classname + "_proto = Object.create(Phaser.State.prototype);");
+
+		line("/** @type " + baseclass + " */");
+		line("var " + classname + "_proto = Object.create(" + baseclass + ".prototype);");
 		line(classname + ".prototype = " + classname + "_proto;");
 		line(classname + ".prototype.constructor = " + classname + ";");
 		line();
 
 		openIndent(classname + ".prototype.create = function () {");
-		
+
 		line();
 		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
 		line();

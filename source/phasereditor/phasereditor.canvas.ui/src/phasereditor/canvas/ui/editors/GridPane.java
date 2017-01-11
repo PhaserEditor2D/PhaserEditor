@@ -42,14 +42,10 @@ public class GridPane extends Canvas {
 	private final static double MAX_WIDTH = 100;
 
 	private ObjectCanvas _canvas;
-	private Color _bgColor;
-	private Color _gridColor;
 
 	public GridPane(ObjectCanvas canvas) {
 		super();
 		_canvas = canvas;
-		_bgColor = Color.gray(180d / 256d);
-		_gridColor = Color.gray(200d / 256d);
 
 		Scene scene = canvas.getScene();
 		widthProperty().bind(scene.widthProperty());
@@ -58,55 +54,63 @@ public class GridPane extends Canvas {
 
 	public void repaint() {
 		GroupNode world = _canvas.getWorldNode();
+		CanvasMainSettings settings = _canvas.getSettingsModel();
 
 		GraphicsContext g2 = getGraphicsContext2D();
 
 		// background
 
-		g2.setFill(_bgColor);
-		g2.fillRect(0, 0, getScene().getWidth(), getScene().getHeight());
+		{
+			RGB rgb = settings.getBackgroundColor();
+			g2.setFill(Color.rgb(rgb.red, rgb.green, rgb.blue));
+			g2.fillRect(0, 0, getScene().getWidth(), getScene().getHeight());
+		}
 
 		// scene color
 
-		RGB rgb = _canvas.getSettingsModel().getSceneColor();
-		if (rgb != null) {
-			CanvasMainSettings settings = _canvas.getSettingsModel();
-			Bounds b = world.localToScene(new BoundingBox(0, 0, settings.getSceneWidth(), settings.getSceneHeight()));
-			g2.setFill(Color.rgb(rgb.red, rgb.green, rgb.blue));
-			g2.fillRect(b.getMinX(), b.getMinY(), b.getWidth(), b.getHeight());
-		}
+		// this will be used to paint the game.stage.backgroundColor
+
+		// CanvasMainSettings settings = _canvas.getSettingsModel();
+		// RGB rgb = settings.getSceneColor();
+		// if (rgb != null && !settings.isTransparent()) {
+		// Bounds b = world.localToScene(new BoundingBox(0, 0,
+		// settings.getSceneWidth(), settings.getSceneHeight()));
+		// g2.setFill(Color.rgb(rgb.red, rgb.green, rgb.blue));
+		// g2.fillRect(b.getMinX(), b.getMinY(), b.getWidth(), b.getHeight());
+		// }
 
 		// grid
+		if (settings.isShowGrid()) {
+			RGB rgb = settings.getGridColor();
+			g2.setStroke(Color.rgb(rgb.red, rgb.green, rgb.blue));
+			g2.setLineWidth(1);
 
-		g2.setStroke(_gridColor);
-		g2.setLineWidth(1);
+			Point2D origin = world.localToScene(0, 0);
 
-		Point2D origin = world.localToScene(0, 0);
+			Bounds proj;
 
-		Bounds proj;
+			double xStep = 10;
+			double yStep = 10;
 
-		double xStep = 10;
-		double yStep = 10;
-
-		{
-			CanvasMainSettings settings = _canvas.getSettingsModel();
-			if (settings.isEnableStepping()) {
-				xStep = settings.getStepWidth();
-				yStep = settings.getStepHeight();
+			{
+				if (settings.isEnableStepping()) {
+					xStep = settings.getStepWidth();
+					yStep = settings.getStepHeight();
+				}
 			}
+
+			proj = world.localToScene(new BoundingBox(0, 0, xStep, yStep));
+			pass(g2, origin, proj);
+
+			proj = world.localToScene(new BoundingBox(0, 0, xStep * 10, yStep * 10));
+			pass(g2, origin, proj);
+
+			proj = world.localToScene(new BoundingBox(0, 0, xStep * 100, yStep * 100));
+			pass(g2, origin, proj);
+
+			proj = world.localToScene(new BoundingBox(0, 0, xStep * 1000, yStep * 1000));
+			pass(g2, origin, proj);
 		}
-
-		proj = world.localToScene(new BoundingBox(0, 0, xStep, yStep));
-		pass(g2, origin, proj);
-
-		proj = world.localToScene(new BoundingBox(0, 0, xStep * 10, yStep * 10));
-		pass(g2, origin, proj);
-
-		proj = world.localToScene(new BoundingBox(0, 0, xStep * 100, yStep * 100));
-		pass(g2, origin, proj);
-
-		proj = world.localToScene(new BoundingBox(0, 0, xStep * 1000, yStep * 1000));
-		pass(g2, origin, proj);
 	}
 
 	private void pass(GraphicsContext g2, Point2D origin, Bounds proj) {

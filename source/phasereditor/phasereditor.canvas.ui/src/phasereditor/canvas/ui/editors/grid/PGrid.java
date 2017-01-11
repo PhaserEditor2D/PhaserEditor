@@ -68,14 +68,13 @@ public class PGrid extends Composite {
 	protected boolean _resizing;
 	private FilteredTree _filteredTree;
 
-	/**
-	 * Create the composite.
-	 * 
-	 * @param parent
-	 * @param style
-	 */
 	public PGrid(Composite parent, int style) {
+		this(parent, style, true);
+	}
+	
+	public PGrid(Composite parent, int style, boolean supportUndoRedo) {
 		super(parent, style);
+
 		setLayout(new FillLayout(SWT.HORIZONTAL));
 
 		_filteredTree = new FilteredTree(this, SWT.FULL_SELECTION | SWT.BORDER, createPatternFilter(), true);
@@ -102,7 +101,7 @@ public class PGrid extends Composite {
 		trclmnProperty.setText("property");
 
 		_colValue = new TreeViewerColumn(_treeViewer, SWT.NONE);
-		_colValue.setEditingSupport(new PGridEditingSupport(_treeViewer));
+		_colValue.setEditingSupport(createEdittingSupport(_treeViewer, supportUndoRedo));
 		_colValue.setLabelProvider(new PGridValueLabelProvider(_treeViewer));
 		TreeColumn trclmnValue = _colValue.getColumn();
 		trclmnValue.setWidth(100);
@@ -111,6 +110,10 @@ public class PGrid extends Composite {
 
 		afterCreateWidgets();
 
+	}
+
+	protected PGridEditingSupport createEdittingSupport(TreeViewer treeViewer, boolean supportUndoRedo) {
+		return new PGridEditingSupport(_treeViewer, supportUndoRedo);
 	}
 
 	private PatternFilter createPatternFilter() {

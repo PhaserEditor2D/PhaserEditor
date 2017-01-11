@@ -39,6 +39,7 @@ public class TSGroupCodeGenerator extends JSLikeCodeGenerator {
 	@Override
 	protected void generateHeader() {
 		String classname = _world.getClassName();
+		String baseclass = _settings.getBaseClass();
 
 		line("/**");
 
@@ -46,7 +47,7 @@ public class TSGroupCodeGenerator extends JSLikeCodeGenerator {
 		line(" * @param aGame The game.");
 		line(" * @param aParent The parent group. If not given the game world will be used instead.");
 		line(" */");
-		line("class " + classname + " extends Phaser.Group {");
+		line("class " + classname + " extends " + baseclass + " {");
 		openIndent("constructor(aGame : Phaser.Game, aParent : Phaser.Group) {");
 		line("super(aGame, aParent);");
 

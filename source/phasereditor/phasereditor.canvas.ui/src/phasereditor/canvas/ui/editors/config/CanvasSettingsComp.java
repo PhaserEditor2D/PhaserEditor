@@ -19,14 +19,20 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors;
+package phasereditor.canvas.ui.editors.config;
 
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.dialogs.FilteredTree;
+import org.json.JSONObject;
 
 import phasereditor.canvas.core.CanvasMainSettings;
+import phasereditor.canvas.ui.editors.ISettingsPage;
+import phasereditor.canvas.ui.editors.grid.PGrid;
+import phasereditor.ui.PatternFilter2;
 
 /**
  * @author arian
@@ -34,8 +40,10 @@ import phasereditor.canvas.core.CanvasMainSettings;
  */
 public class CanvasSettingsComp extends Composite implements ISettingsPage {
 
-	private GeneralEditorSettingsComp _generalEditorSettingsComp;
-	private CanvasMainSettings _model;
+	// private GeneralEditorSettingsComp _generalEditorSettingsComp;
+	private CanvasMainSettings _model = new CanvasMainSettings();
+	private FilteredTree _outlineTree;
+	private PGrid _pGrid;
 
 	/**
 	 * Create the composite.
@@ -45,22 +53,39 @@ public class CanvasSettingsComp extends Composite implements ISettingsPage {
 	 */
 	public CanvasSettingsComp(Composite parent, int style) {
 		super(parent, style);
-		setLayout(new GridLayout(1, false));
 
-		_generalEditorSettingsComp = new GeneralEditorSettingsComp(this, SWT.NONE);
-		_generalEditorSettingsComp.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		setLayout(new FillLayout());
+
+		SashForm sashForm = new SashForm(this, SWT.NONE);
+
+		_outlineTree = new FilteredTree(sashForm, SWT.NONE, new PatternFilter2(), true);
+		_pGrid = new PGrid(sashForm, SWT.NONE, false);
+		sashForm.setWeights(new int[] { 1, 2 });
 
 		afterCreateWidgets();
 	}
 
 	private void afterCreateWidgets() {
-		//
+		_outlineTree.getViewer().setLabelProvider(new ConfigurationLabelProvider());
+		_outlineTree.getViewer().setContentProvider(new ConfigurationContentProvider());
+		_outlineTree.getViewer().addSelectionChangedListener(e -> {
+			IStructuredSelection sel = (IStructuredSelection) e.getSelection();
+
+			if (sel.isEmpty()) {
+				_pGrid.setModel(null);
+				return;
+			}
+
+			ConfigItem item = (ConfigItem) sel.getFirstElement();
+			_pGrid.setModel(item.getGridModel());
+		});
 	}
 
 	@Override
 	public void setModel(CanvasMainSettings model) {
 		_model = model;
-		_generalEditorSettingsComp.setModel(model);
+		// _generalEditorSettingsComp.setModel(model);
+		_outlineTree.getViewer().setInput(model);
 	}
 
 	public CanvasMainSettings getModel() {

@@ -36,18 +36,20 @@ public class JSGroupCodeGenerator extends JSLikeCodeGenerator {
 	@Override
 	protected void generateHeader() {
 		String classname = _world.getClassName();
+		String baseclass = _settings.getBaseClass();
+		
 		line("/**");
 		line(" * " + classname + ".");
 		line(" * @param {Phaser.Game} aGame The game.");
 		line(" * @param {Phaser.Group} aParent The parent group. If not given the game world will be used instead.");
 		line(" */");
 		openIndent("function " + classname + "(aGame, aParent) {");
-
-		line("Phaser.Group.call(this, aGame, aParent);");
+		
+		line(baseclass + ".call(this, aGame, aParent);");
 		line();
 
 		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
-		
+
 		line();
 		line();
 	}
@@ -55,15 +57,16 @@ public class JSGroupCodeGenerator extends JSLikeCodeGenerator {
 	@Override
 	protected void generateFooter() {
 		String classname = _world.getClassName();
-
+		String baseclass = _settings.getBaseClass();
+		
 		section(POST_INIT_CODE_BEGIN, POST_INIT_CODE_END, getYouCanInsertCodeHere());
 
 		line();
 		closeIndent("}");
 		line();
-
-		line("/** @type Phaser.Group */");
-		line("var " + classname + "_proto = Object.create(Phaser.Group.prototype);");
+		
+		line("/** @type " + baseclass + " */");
+		line("var " + classname + "_proto = Object.create(" + baseclass + ".prototype);");
 		line(classname + ".prototype = " + classname + "_proto;");
 		line(classname + ".prototype.constructor = " + classname + ";");
 		line();

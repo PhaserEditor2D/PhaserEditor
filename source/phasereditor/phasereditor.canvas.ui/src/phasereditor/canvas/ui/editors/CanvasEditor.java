@@ -47,7 +47,6 @@ import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.dnd.DND;
@@ -88,12 +87,13 @@ import org.json.JSONTokener;
 
 import javafx.geometry.Point2D;
 import phasereditor.canvas.core.AssetTable;
-import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasMainSettings;
+import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
 import phasereditor.canvas.core.codegen.ICodeGenerator;
 import phasereditor.canvas.ui.editors.behaviors.ZoomBehavior;
+import phasereditor.canvas.ui.editors.config.CanvasSettingsComp;
 import phasereditor.canvas.ui.editors.grid.PGrid;
 import phasereditor.canvas.ui.editors.operations.ChangeSettingsOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
@@ -352,10 +352,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 	}
 
 	private void updateSettingsTabWithModel() {
-		JSONObject data = new JSONObject();
-		_model.getSettings().write(data);
-		CanvasMainSettings settings = new CanvasMainSettings(data);
-		_settingsPage.setModel(settings);
+		_settingsPage.setModel(_model.getSettings());
 	}
 
 	private void createDesignPage() {
@@ -782,19 +779,6 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 
 		if (getSourceEditor() != null) {
 			getSourceEditor().restoreState(memento);
-		}
-	}
-
-	public void openDialogSettings() {
-		CanvasSettingsDialog dlg = new CanvasSettingsDialog(getSite().getShell());
-		JSONObject data = new JSONObject();
-		_model.getSettings().write(data);
-		CanvasMainSettings settings = new CanvasMainSettings(data);
-		dlg.setModel(settings);
-		if (dlg.open() == Window.OK) {
-			settings.write(data);
-			getCanvas().getUpdateBehavior()
-					.executeOperations(new CompositeOperation(new ChangeSettingsOperation(data)));
 		}
 	}
 

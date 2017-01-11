@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2016 Arian Fornaris
+// Copyright (c) 2015, 2017 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -19,26 +19,47 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors.grid;
+package phasereditor.canvas.ui.editors.config;
+
+import java.util.UUID;
+
+import phasereditor.canvas.core.CanvasMainSettings;
+import phasereditor.canvas.ui.editors.grid.PGridModel;
 
 /**
  * @author arian
  *
  */
-public abstract class PGridNumberProperty extends PGridProperty<Double> {
-	private double _value;
+public abstract class ConfigItem {
+	private String _name;
+	private PGridModel _gridModel;
+	private String _id;
+	private CanvasMainSettings _settings;
+
+	public ConfigItem(CanvasMainSettings settings, String name) {
+		super();
+		_name = name;
+		_settings = settings;
+		_gridModel = new PGridModel();
+		_id = UUID.randomUUID().toString();
+		buildProperties();
+	}
 	
-	public PGridNumberProperty(String controlId, String name, String tootlip) {
-		super(controlId, name, tootlip);
+	public String getId() {
+		return _id;
+	}
+	
+	public CanvasMainSettings getSettings() {
+		return _settings;
+	}
+	
+	public PGridModel getGridModel() {
+		return _gridModel;
 	}
 
-	@Override
-	public Double getValue() {
-		return Double.valueOf(_value);
+	public String getName() {
+		return _name;
 	}
-
-	@Override
-	public void setValue(Double value, boolean notify) {
-		_value = value.doubleValue();
-	}
+	
+	public abstract void buildProperties();
 }

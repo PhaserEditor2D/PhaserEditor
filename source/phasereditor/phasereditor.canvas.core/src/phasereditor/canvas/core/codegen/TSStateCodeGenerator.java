@@ -36,14 +36,16 @@ public class TSStateCodeGenerator extends JSLikeCodeGenerator {
 	@Override
 	protected void generateHeader() {
 		String classname = _world.getClassName();
+		String baseclass = _settings.getBaseClass();
+
 		line("/**");
 		line(" * " + classname + ".");
 		line(" */");
-		openIndent("class " + classname + " extends Phaser.State {");
+		openIndent("class " + classname + " extends " + baseclass + " {");
 		openIndent("constructor() {");
 		section("/* constructor-begin */", "/* constructor-end */", getYouCanInsertCodeHere());
 		closeIndent("}");
-		
+
 		line();
 		openIndent("create() {");
 
@@ -57,11 +59,11 @@ public class TSStateCodeGenerator extends JSLikeCodeGenerator {
 		section(POST_INIT_CODE_BEGIN, POST_INIT_CODE_END, getYouCanInsertCodeHere());
 
 		closeIndent("}");
-		
+
 		line();
-		
+
 		section("/* state-methods-begin */", "/* state-methods-end */", getYouCanInsertCodeHere());
-		
+
 		closeIndent("}");
 
 		section(END_GENERATED_CODE, getYouCanInsertCodeHere());

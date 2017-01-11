@@ -58,8 +58,11 @@ import phasereditor.canvas.ui.editors.operations.CompositeOperation;
  */
 public class PGridEditingSupport extends EditingSupport {
 
-	public PGridEditingSupport(ColumnViewer viewer) {
+	private boolean _supportUndoRedo;
+
+	public PGridEditingSupport(ColumnViewer viewer, boolean supportUndoRedo) {
 		super(viewer);
+		_supportUndoRedo = supportUndoRedo;
 	}
 
 	@Override
@@ -106,7 +109,7 @@ public class PGridEditingSupport extends EditingSupport {
 					if (obj instanceof PhysicsBodyType) {
 						return ((PhysicsBodyType) obj).getPhaserName();
 					}
-					
+
 					if (obj instanceof PhysicsSortDirection) {
 						return ((PhysicsSortDirection) obj).getPhaserName();
 					}
@@ -135,10 +138,10 @@ public class PGridEditingSupport extends EditingSupport {
 		return null;
 	}
 
-	@SuppressWarnings("null")
+	@SuppressWarnings({ "null", "rawtypes", "unchecked" })
 	@Override
 	protected void setValue(Object element, Object value) {
-		PGridProperty<?> prop = (PGridProperty<?>) element;
+		PGridProperty prop = (PGridProperty) element;
 
 		Object old = prop.getValue();
 
@@ -161,11 +164,17 @@ public class PGridEditingSupport extends EditingSupport {
 		}
 
 		if (changed) {
-			ChangePropertyOperation<? extends Object> op = new ChangePropertyOperation<>(prop.getNodeId(),
-					prop.getName(), value);
-			CanvasEditor editor = (CanvasEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-					.getActiveEditor();
-			editor.getCanvas().getUpdateBehavior().executeOperations(new CompositeOperation(op));
+			if (_supportUndoRedo) {
+
+				ChangePropertyOperation<? extends Object> op = new ChangePropertyOperation<>(prop.getNodeId(),
+						prop.getName(), value);
+				CanvasEditor editor = (CanvasEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+						.getActivePage().getActiveEditor();
+				editor.getCanvas().getUpdateBehavior().executeOperations(new CompositeOperation(op));
+
+			} else {
+				prop.setValue(value, true);
+			}
 		}
 
 		getViewer().refresh(element);
