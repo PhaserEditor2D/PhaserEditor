@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.config;
 
-import java.util.UUID;
-
 import phasereditor.canvas.core.CanvasMainSettings;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 
@@ -33,7 +31,6 @@ import phasereditor.canvas.ui.editors.grid.PGridModel;
 public abstract class ConfigItem {
 	private String _name;
 	private PGridModel _gridModel;
-	private String _id;
 	private CanvasMainSettings _settings;
 
 	public ConfigItem(CanvasMainSettings settings, String name) {
@@ -41,12 +38,7 @@ public abstract class ConfigItem {
 		_name = name;
 		_settings = settings;
 		_gridModel = new PGridModel();
-		_id = UUID.randomUUID().toString();
 		buildProperties();
-	}
-	
-	public String getId() {
-		return _id;
 	}
 	
 	public CanvasMainSettings getSettings() {

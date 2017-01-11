@@ -67,11 +67,12 @@ public class PGrid extends Composite {
 	protected boolean _mouseDown;
 	protected boolean _resizing;
 	private FilteredTree _filteredTree;
+	private PGridEditingSupport _editSupport;
 
 	public PGrid(Composite parent, int style) {
 		this(parent, style, true);
 	}
-	
+
 	public PGrid(Composite parent, int style, boolean supportUndoRedo) {
 		super(parent, style);
 
@@ -101,7 +102,8 @@ public class PGrid extends Composite {
 		trclmnProperty.setText("property");
 
 		_colValue = new TreeViewerColumn(_treeViewer, SWT.NONE);
-		_colValue.setEditingSupport(createEdittingSupport(_treeViewer, supportUndoRedo));
+		_editSupport = new PGridEditingSupport(_treeViewer, supportUndoRedo);
+		_colValue.setEditingSupport(_editSupport);
 		_colValue.setLabelProvider(new PGridValueLabelProvider(_treeViewer));
 		TreeColumn trclmnValue = _colValue.getColumn();
 		trclmnValue.setWidth(100);
@@ -111,10 +113,11 @@ public class PGrid extends Composite {
 		afterCreateWidgets();
 
 	}
-
-	protected PGridEditingSupport createEdittingSupport(TreeViewer treeViewer, boolean supportUndoRedo) {
-		return new PGridEditingSupport(_treeViewer, supportUndoRedo);
+	
+	public void setOnChanged(Runnable onChanged){
+		_editSupport.setOnChanged(onChanged);
 	}
+			
 
 	private PatternFilter createPatternFilter() {
 		PatternFilter filter = new PatternFilter() {

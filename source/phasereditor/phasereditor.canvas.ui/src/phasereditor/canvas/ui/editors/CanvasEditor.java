@@ -345,14 +345,13 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 
 	private void createSettingsPage() {
 		_settingsPage = new CanvasSettingsComp(getContainer(), SWT.NONE);
-		updateSettingsTabWithModel();
-		int i = addPage(_settingsPage);
-		setPageText(i, "Settings");
-		setPageImage(i, EditorSharedImages.getImage("icons/settings.png"));
-	}
-
-	private void updateSettingsTabWithModel() {
 		_settingsPage.setModel(_model.getSettings());
+		_settingsPage.setOnChanged(() -> {
+			setDirty(true);
+		});
+		int i = addPage(_settingsPage);
+		setPageText(i, "Configuration");
+		setPageImage(i, EditorSharedImages.getImage("icons/settings.png"));
 	}
 
 	private void createDesignPage() {

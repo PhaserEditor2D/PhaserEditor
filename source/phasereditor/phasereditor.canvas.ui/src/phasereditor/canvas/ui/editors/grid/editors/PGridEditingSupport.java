@@ -59,10 +59,19 @@ import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 public class PGridEditingSupport extends EditingSupport {
 
 	private boolean _supportUndoRedo;
+	private Runnable _onChanged;
 
 	public PGridEditingSupport(ColumnViewer viewer, boolean supportUndoRedo) {
 		super(viewer);
 		_supportUndoRedo = supportUndoRedo;
+	}
+
+	public void setOnChanged(Runnable onChanged) {
+		_onChanged = onChanged;
+	}
+
+	public Runnable getOnChanged() {
+		return _onChanged;
 	}
 
 	@Override
@@ -174,6 +183,9 @@ public class PGridEditingSupport extends EditingSupport {
 
 			} else {
 				prop.setValue(value, true);
+				if (_onChanged != null) {
+					_onChanged.run();
+				}
 			}
 		}
 

@@ -27,10 +27,8 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.dialogs.FilteredTree;
-import org.json.JSONObject;
 
 import phasereditor.canvas.core.CanvasMainSettings;
-import phasereditor.canvas.ui.editors.ISettingsPage;
 import phasereditor.canvas.ui.editors.grid.PGrid;
 import phasereditor.ui.PatternFilter2;
 
@@ -38,7 +36,7 @@ import phasereditor.ui.PatternFilter2;
  * @author arian
  *
  */
-public class CanvasSettingsComp extends Composite implements ISettingsPage {
+public class CanvasSettingsComp extends Composite {
 
 	// private GeneralEditorSettingsComp _generalEditorSettingsComp;
 	private CanvasMainSettings _model = new CanvasMainSettings();
@@ -81,11 +79,14 @@ public class CanvasSettingsComp extends Composite implements ISettingsPage {
 		});
 	}
 
-	@Override
 	public void setModel(CanvasMainSettings model) {
 		_model = model;
 		// _generalEditorSettingsComp.setModel(model);
 		_outlineTree.getViewer().setInput(model);
+	}
+
+	public void setOnChanged(Runnable onChanged) {
+		_pGrid.setOnChanged(onChanged);
 	}
 
 	public CanvasMainSettings getModel() {

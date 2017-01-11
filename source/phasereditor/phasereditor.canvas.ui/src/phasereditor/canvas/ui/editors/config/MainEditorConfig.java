@@ -46,7 +46,7 @@ public class MainEditorConfig extends ConfigItem {
 
 		PGridSection section = new PGridSection("Scene");
 
-		section.add(new PGridNumberProperty(getId(), "width", "The width of the canvas.") {
+		section.add(new PGridNumberProperty(null, "width", "The width of the canvas.") {
 
 			@Override
 			public Double getValue() {
@@ -64,7 +64,7 @@ public class MainEditorConfig extends ConfigItem {
 			}
 		});
 
-		section.add(new PGridNumberProperty(getId(), "height", "The height of the canvas.") {
+		section.add(new PGridNumberProperty(null, "height", "The height of the canvas.") {
 
 			@Override
 			public Double getValue() {
@@ -82,7 +82,7 @@ public class MainEditorConfig extends ConfigItem {
 			}
 		});
 
-		section.add(new PGridColorProperty(getId(), "backgroundColor", "The canvas background color.") {
+		section.add(new PGridColorProperty(null, "backgroundColor", "The canvas background color.") {
 
 			@Override
 			public void setValue(RGB value, boolean notify) {
@@ -100,7 +100,7 @@ public class MainEditorConfig extends ConfigItem {
 			}
 		});
 
-		section.add(new PGridColorProperty(getId(), "gridColor", "The canvas grid color.") {
+		section.add(new PGridColorProperty(null, "gridColor", "The canvas grid color.") {
 
 			@Override
 			public void setValue(RGB value, boolean notify) {
@@ -118,7 +118,7 @@ public class MainEditorConfig extends ConfigItem {
 			}
 		});
 
-		section.add(new PGridBooleanProperty(getId(), "showGrid", "Show the grid.") {
+		section.add(new PGridBooleanProperty(null, "showGrid", "Show the grid.") {
 
 			@Override
 			public Boolean getValue() {
