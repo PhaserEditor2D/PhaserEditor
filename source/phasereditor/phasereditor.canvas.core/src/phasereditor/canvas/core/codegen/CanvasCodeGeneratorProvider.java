@@ -47,7 +47,18 @@ public class CanvasCodeGeneratorProvider {
 
 		_map.put(key(CanvasType.SPRITE, SourceLang.JAVA_SCRIPT), JSGroupCodeGenerator.class);
 		_map.put(key(CanvasType.SPRITE, SourceLang.TYPE_SCRIPT), TSGroupCodeGenerator.class);
+	}
 
+	public static String getDefaultBaseClassFor(CanvasType type) {
+		switch (type) {
+		case SPRITE:
+			return "Phaser.Sprite";
+		case STATE:
+			return "Phaser.State";
+		case GROUP:
+		default:
+			return "Phaser.Group";
+		}
 	}
 
 	@SuppressWarnings("static-method")

@@ -22,6 +22,7 @@
 package phasereditor.canvas.ui.editors.config;
 
 import phasereditor.canvas.core.CanvasMainSettings;
+import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 
 /**
@@ -32,13 +33,19 @@ public abstract class ConfigItem {
 	private String _name;
 	private PGridModel _gridModel;
 	private CanvasMainSettings _settings;
+	private CanvasModel _model;
 
-	public ConfigItem(CanvasMainSettings settings, String name) {
+	public ConfigItem(CanvasModel model, String name) {
 		super();
 		_name = name;
-		_settings = settings;
+		_model = model;
+		_settings = model.getSettings();
 		_gridModel = new PGridModel();
 		buildProperties();
+	}
+	
+	public CanvasModel getModel() {
+		return _model;
 	}
 	
 	public CanvasMainSettings getSettings() {

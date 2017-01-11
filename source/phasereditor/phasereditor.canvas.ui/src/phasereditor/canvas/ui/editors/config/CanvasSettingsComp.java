@@ -22,13 +22,14 @@
 package phasereditor.canvas.ui.editors.config;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.dialogs.FilteredTree;
 
-import phasereditor.canvas.core.CanvasMainSettings;
+import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.ui.editors.grid.PGrid;
 import phasereditor.ui.PatternFilter2;
 
@@ -39,9 +40,9 @@ import phasereditor.ui.PatternFilter2;
 public class CanvasSettingsComp extends Composite {
 
 	// private GeneralEditorSettingsComp _generalEditorSettingsComp;
-	private CanvasMainSettings _model = new CanvasMainSettings();
 	private FilteredTree _outlineTree;
 	private PGrid _pGrid;
+	private CanvasModel _model;
 
 	/**
 	 * Create the composite.
@@ -79,18 +80,21 @@ public class CanvasSettingsComp extends Composite {
 		});
 	}
 
-	public void setModel(CanvasMainSettings model) {
+	public void setModel(CanvasModel model) {
 		_model = model;
-		// _generalEditorSettingsComp.setModel(model);
 		_outlineTree.getViewer().setInput(model);
+
+		Object data = _outlineTree.getViewer().getTree().getItems()[0].getData();
+		_outlineTree.getViewer().setSelection(new StructuredSelection(data));
+
+	}
+
+	public CanvasModel getModel() {
+		return _model;
 	}
 
 	public void setOnChanged(Runnable onChanged) {
 		_pGrid.setOnChanged(onChanged);
-	}
-
-	public CanvasMainSettings getModel() {
-		return _model;
 	}
 
 	@Override

@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Arrays;
 
 import org.eclipse.swt.graphics.RGB;
@@ -72,6 +74,7 @@ public class CanvasMainSettings {
 
 	public void setShowGrid(boolean showGrid) {
 		_showGrid = showGrid;
+		firePropertyChange("showGrid");
 	}
 
 	public RGB getGridColor() {
@@ -80,6 +83,7 @@ public class CanvasMainSettings {
 
 	public void setGridColor(RGB gridColor) {
 		_gridColor = gridColor;
+		firePropertyChange("gridColor");
 	}
 
 	public String getBaseClass() {
@@ -88,6 +92,7 @@ public class CanvasMainSettings {
 
 	public void setBaseClass(String baseClass) {
 		_baseClass = baseClass;
+		firePropertyChange("baseClass");
 	}
 
 	public SourceLang getLang() {
@@ -96,6 +101,7 @@ public class CanvasMainSettings {
 
 	public void setLang(SourceLang lang) {
 		_lang = lang;
+		firePropertyChange("lang");
 	}
 
 	public double getSceneWidth() {
@@ -104,6 +110,7 @@ public class CanvasMainSettings {
 
 	public void setSceneWidth(double sceneWidth) {
 		_sceneWidth = sceneWidth;
+		firePropertyChange("sceneWidth");
 	}
 
 	public double getSceneHeight() {
@@ -112,6 +119,7 @@ public class CanvasMainSettings {
 
 	public void setSceneHeight(double sceneHeight) {
 		_sceneHeight = sceneHeight;
+		firePropertyChange("sceneHeight");
 	}
 
 	public RGB getBackgroundColor() {
@@ -120,6 +128,7 @@ public class CanvasMainSettings {
 
 	public void setBackgroundColor(RGB sceneColor) {
 		_backgroundColor = sceneColor;
+		firePropertyChange("sceneColor");
 	}
 
 	public boolean isGenerateOnSave() {
@@ -128,6 +137,7 @@ public class CanvasMainSettings {
 
 	public void setGenerateOnSave(boolean generateOnScave) {
 		_generateOnSave = generateOnScave;
+		firePropertyChange("generateOnScave");
 	}
 
 	public boolean isEnableStepping() {
@@ -136,6 +146,7 @@ public class CanvasMainSettings {
 
 	public void setEnableStepping(boolean enableStepping) {
 		_enableStepping = enableStepping;
+		firePropertyChange("enableStepping");
 	}
 
 	public int getStepWidth() {
@@ -144,6 +155,7 @@ public class CanvasMainSettings {
 
 	public void setStepWidth(int stepWidth) {
 		_stepWidth = stepWidth;
+		firePropertyChange("stepWidth");
 	}
 
 	public int getStepHeight() {
@@ -152,6 +164,7 @@ public class CanvasMainSettings {
 
 	public void setStepHeight(int stepHeight) {
 		_stepHeight = stepHeight;
+		firePropertyChange("stepHeight");
 	}
 
 	public void write(JSONObject obj) {
@@ -194,5 +207,27 @@ public class CanvasMainSettings {
 		_backgroundColor = readColor(obj, "backgroundColor", DEFAULT_BACKGROUND_COLOR);
 		_gridColor = readColor(obj, "gridColor", DEFAULT_GRID_COLOR);
 		_showGrid = obj.optBoolean("showGrid", true);
+	}
+
+	private transient final PropertyChangeSupport support = new PropertyChangeSupport(this);
+
+	public void addPropertyChangeListener(PropertyChangeListener l) {
+		support.addPropertyChangeListener(l);
+	}
+
+	public void removePropertyChangeListener(PropertyChangeListener l) {
+		support.removePropertyChangeListener(l);
+	}
+
+	public void addPropertyChangeListener(String property, PropertyChangeListener l) {
+		support.addPropertyChangeListener(property, l);
+	}
+
+	public void removePropertyChangeListener(String property, PropertyChangeListener l) {
+		support.removePropertyChangeListener(property, l);
+	}
+
+	public void firePropertyChange(String property) {
+		support.firePropertyChange(property, true, false);
 	}
 }

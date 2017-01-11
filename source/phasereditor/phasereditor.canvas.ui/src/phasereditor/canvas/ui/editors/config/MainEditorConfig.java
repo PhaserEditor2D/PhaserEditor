@@ -24,10 +24,13 @@ package phasereditor.canvas.ui.editors.config;
 import org.eclipse.swt.graphics.RGB;
 
 import phasereditor.canvas.core.CanvasMainSettings;
+import phasereditor.canvas.core.CanvasModel;
+import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
 import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
 import phasereditor.canvas.ui.editors.grid.PGridColorProperty;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
+import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
 
 /**
  * @author arian
@@ -35,7 +38,7 @@ import phasereditor.canvas.ui.editors.grid.PGridSection;
  */
 public class MainEditorConfig extends ConfigItem {
 
-	public MainEditorConfig(CanvasMainSettings canvasModel) {
+	public MainEditorConfig(CanvasModel canvasModel) {
 		super(canvasModel, "Editor");
 	}
 
@@ -44,99 +47,145 @@ public class MainEditorConfig extends ConfigItem {
 	public void buildProperties() {
 		CanvasMainSettings settings = getSettings();
 
-		PGridSection section = new PGridSection("Scene");
+		{
+			PGridSection section = new PGridSection("Scene");
 
-		section.add(new PGridNumberProperty(null, "width", "The width of the canvas.") {
+			section.add(new PGridNumberProperty(null, "width", "The width of the canvas.") {
 
-			@Override
-			public Double getValue() {
-				return settings.getSceneWidth();
-			}
+				@Override
+				public Double getValue() {
+					return settings.getSceneWidth();
+				}
 
-			@Override
-			public void setValue(Double value, boolean notify) {
-				settings.setSceneWidth(value.doubleValue());
-			}
+				@Override
+				public void setValue(Double value, boolean notify) {
+					settings.setSceneWidth(value.doubleValue());
+				}
 
-			@Override
-			public boolean isModified() {
-				return true;
-			}
-		});
+				@Override
+				public boolean isModified() {
+					return true;
+				}
+			});
 
-		section.add(new PGridNumberProperty(null, "height", "The height of the canvas.") {
+			section.add(new PGridNumberProperty(null, "height", "The height of the canvas.") {
 
-			@Override
-			public Double getValue() {
-				return settings.getSceneHeight();
-			}
+				@Override
+				public Double getValue() {
+					return settings.getSceneHeight();
+				}
 
-			@Override
-			public void setValue(Double value, boolean notify) {
-				settings.setSceneHeight(value.doubleValue());
-			}
+				@Override
+				public void setValue(Double value, boolean notify) {
+					settings.setSceneHeight(value.doubleValue());
+				}
 
-			@Override
-			public boolean isModified() {
-				return true;
-			}
-		});
+				@Override
+				public boolean isModified() {
+					return true;
+				}
+			});
 
-		section.add(new PGridColorProperty(null, "backgroundColor", "The canvas background color.") {
+			section.add(new PGridColorProperty(null, "backgroundColor", "The canvas background color.") {
 
-			@Override
-			public void setValue(RGB value, boolean notify) {
-				settings.setBackgroundColor(value);
-			}
+				@Override
+				public void setValue(RGB value, boolean notify) {
+					settings.setBackgroundColor(value);
+				}
 
-			@Override
-			public RGB getValue() {
-				return settings.getBackgroundColor();
-			}
+				@Override
+				public RGB getValue() {
+					return settings.getBackgroundColor();
+				}
 
-			@Override
-			public boolean isModified() {
-				return !getValue().equals(CanvasMainSettings.DEFAULT_BACKGROUND_COLOR);
-			}
-		});
+				@Override
+				public boolean isModified() {
+					return !getValue().equals(CanvasMainSettings.DEFAULT_BACKGROUND_COLOR);
+				}
+			});
 
-		section.add(new PGridColorProperty(null, "gridColor", "The canvas grid color.") {
+			section.add(new PGridColorProperty(null, "gridColor", "The canvas grid color.") {
 
-			@Override
-			public void setValue(RGB value, boolean notify) {
-				settings.setGridColor(value);
-			}
+				@Override
+				public void setValue(RGB value, boolean notify) {
+					settings.setGridColor(value);
+				}
 
-			@Override
-			public RGB getValue() {
-				return settings.getGridColor();
-			}
+				@Override
+				public RGB getValue() {
+					return settings.getGridColor();
+				}
 
-			@Override
-			public boolean isModified() {
-				return !getValue().equals(CanvasMainSettings.DEFAULT_GRID_COLOR);
-			}
-		});
+				@Override
+				public boolean isModified() {
+					return !getValue().equals(CanvasMainSettings.DEFAULT_GRID_COLOR);
+				}
+			});
 
-		section.add(new PGridBooleanProperty(null, "showGrid", "Show the grid.") {
+			section.add(new PGridBooleanProperty(null, "showGrid", "Show the grid.") {
 
-			@Override
-			public Boolean getValue() {
-				return settings.isShowGrid();
-			}
+				@Override
+				public Boolean getValue() {
+					return settings.isShowGrid();
+				}
 
-			@Override
-			public void setValue(Boolean value, boolean notify) {
-				settings.setShowGrid(value);
-			}
+				@Override
+				public void setValue(Boolean value, boolean notify) {
+					settings.setShowGrid(value);
+				}
 
-			@Override
-			public boolean isModified() {
-				return !settings.isShowGrid();
-			}
-		});
+				@Override
+				public boolean isModified() {
+					return !settings.isShowGrid();
+				}
+			});
 
-		getGridModel().getSections().add(section);
+			getGridModel().getSections().add(section);
+		}
+
+		{
+			PGridSection section = new PGridSection("Source");
+
+			section.add(new PGridStringProperty(null, "baseClass", "The base class for the generated class.") {
+
+				@Override
+				public void setValue(String value, boolean notify) {
+					settings.setBaseClass(value);
+				}
+
+				@Override
+				public String getValue() {
+					return settings.getBaseClass();
+				}
+
+				@Override
+				public boolean isModified() {
+					return !settings.getBaseClass()
+							.equals(CanvasCodeGeneratorProvider.getDefaultBaseClassFor(getModel().getType()));
+				}
+			});
+
+			section.add(new PGridBooleanProperty(null, "generateOnSave",
+					"Generate the source code when the editor is saved.") {
+
+				@Override
+				public Boolean getValue() {
+					return settings.isGenerateOnSave();
+				}
+
+				@Override
+				public void setValue(Boolean value, boolean notify) {
+					settings.setGenerateOnSave(value);
+				}
+
+				@Override
+				public boolean isModified() {
+					return !settings.isGenerateOnSave();
+				}
+			});
+
+			getGridModel().getSections().add(section);
+		}
 	}
 
 }

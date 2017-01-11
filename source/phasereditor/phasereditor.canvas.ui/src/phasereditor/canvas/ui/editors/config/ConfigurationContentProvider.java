@@ -23,7 +23,7 @@ package phasereditor.canvas.ui.editors.config;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 
-import phasereditor.canvas.core.CanvasMainSettings;
+import phasereditor.canvas.core.CanvasModel;
 
 /**
  * @author arian
@@ -46,12 +46,12 @@ public class ConfigurationContentProvider implements ITreeContentProvider {
 	@Override
 	public Object[] getChildren(Object parentElement) {
 
-		if (parentElement instanceof CanvasMainSettings) {
-			CanvasMainSettings settings = (CanvasMainSettings) parentElement;
+		if (parentElement instanceof CanvasModel) {
+			CanvasModel model = (CanvasModel) parentElement;
 
 			return new Object[] {
 
-					new MainEditorConfig(settings)
+					new MainEditorConfig(model)
 
 			};
 		}

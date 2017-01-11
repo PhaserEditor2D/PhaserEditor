@@ -41,9 +41,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.dialogs.IPageChangedListener;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -95,8 +93,6 @@ import phasereditor.canvas.core.codegen.ICodeGenerator;
 import phasereditor.canvas.ui.editors.behaviors.ZoomBehavior;
 import phasereditor.canvas.ui.editors.config.CanvasSettingsComp;
 import phasereditor.canvas.ui.editors.grid.PGrid;
-import phasereditor.canvas.ui.editors.operations.ChangeSettingsOperation;
-import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.palette.PaletteComp;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
@@ -327,25 +323,11 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 		createSettingsPage();
 
 		registerUndoRedoActions();
-
-		addPageChangedListener(new IPageChangedListener() {
-
-			Object _lastPage = null;
-
-			@SuppressWarnings("synthetic-access")
-			@Override
-			public void pageChanged(PageChangedEvent event) {
-				if (_lastPage == getSettingsPage()) {
-					updateFromSettingsPage();
-				}
-				_lastPage = getSelectedPage();
-			}
-		});
 	}
 
 	private void createSettingsPage() {
 		_settingsPage = new CanvasSettingsComp(getContainer(), SWT.NONE);
-		_settingsPage.setModel(_model.getSettings());
+		_settingsPage.setModel(_model);
 		_settingsPage.setOnChanged(() -> {
 			setDirty(true);
 		});
@@ -798,21 +780,6 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 	public void togglePalette() {
 		boolean visible = getPalette().isPaletteVisible();
 		getPalette().setPaletteVisble(!visible);
-	}
-
-	private void updateFromSettingsPage() {
-		JSONObject oldData = new JSONObject();
-		_canvas.getSettingsModel().write(oldData);
-
-		JSONObject newData = new JSONObject();
-		_settingsPage.getModel().write(newData);
-
-		getCanvas().getUpdateBehavior()
-				.executeOperations(new CompositeOperation(false, new ChangeSettingsOperation(newData)));
-
-		if (!oldData.toString().equals(newData.toString())) {
-			setDirty(true);
-		}
 	}
 
 	public boolean isDesignPageActive() {
