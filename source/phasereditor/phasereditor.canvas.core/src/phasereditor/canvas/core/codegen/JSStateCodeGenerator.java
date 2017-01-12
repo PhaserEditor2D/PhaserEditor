@@ -21,6 +21,14 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core.codegen;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.AssetPackModel;
+import phasereditor.assetpack.core.AssetSectionModel;
+import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.CanvasModel;
 
 /**
@@ -33,6 +41,7 @@ public class JSStateCodeGenerator extends JSLikeCodeGenerator {
 		super(model);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	protected void generateHeader() {
 		String classname = _world.getClassName();
@@ -55,6 +64,28 @@ public class JSStateCodeGenerator extends JSLikeCodeGenerator {
 		line(classname + ".prototype = " + classname + "_proto;");
 		line(classname + ".prototype.constructor = " + classname + ";");
 		line();
+
+		openIndent(classname + ".prototype.preload = function () {");
+		section("/* before-preload-begin */", "/* before-preload-end */", getYouCanInsertCodeHere());
+		line();
+		line();
+		Set<AssetSectionModel> sections = new HashSet<>();
+		_world.walk(obj -> {
+			if (obj instanceof AssetSpriteModel) {
+				AssetModel asset = ((AssetSpriteModel) obj).getAssetKey().getAsset();
+				sections.add(asset.getSection());
+			}
+		});
+		for (AssetSectionModel section : sections) {
+			AssetPackModel pack = section.getPack();
+			String packUrl = pack.getAssetUrl(pack.getFile());
+			line("this.load.pack('" + packUrl + "', '" + section.getKey() + "');");
+		}
+		line();
+		line();
+		section("/* after-preload-begin */", "/* after-preload-end */", getYouCanInsertCodeHere());
+		line();
+		closeIndent("}");
 
 		openIndent(classname + ".prototype.create = function () {");
 

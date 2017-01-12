@@ -48,17 +48,17 @@ import phasereditor.canvas.ui.editors.LangLabelProvider;
  * @author arian
  *
  */
-public class NewPage_GroupSettings extends WizardPage {
+public class NewPage_StateSettings extends WizardPage {
 	@SuppressWarnings("unused")
 	private DataBindingContext m_bindingContext;
 	private ComboViewer _langComboViewer;
 	private Text _text;
 	private CanvasMainSettings _settings;
 
-	public NewPage_GroupSettings() {
+	public NewPage_StateSettings() {
 		super("group.settings.page");
-		setMessage("Customize the new Phaser Group.");
-		setTitle("Group Customization");
+		setMessage("Customize the new Phaser State.");
+		setTitle("State Customization");
 	}
 
 	/*
@@ -78,7 +78,7 @@ public class NewPage_GroupSettings extends WizardPage {
 		lblBaseClassName.setText("Base Class Name");
 
 		_text = new Text(container, SWT.BORDER);
-		_text.setText("Phaser.Group");
+		_text.setText("Phaser.State");
 		_text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		Label lblCodeFormat = new Label(container, SWT.NONE);
@@ -99,7 +99,7 @@ public class NewPage_GroupSettings extends WizardPage {
 		_langComboViewer.setInput(SourceLang.values());
 	}
 
-	private NewPage_GroupSettings _self = this;
+	private NewPage_StateSettings _self = this;
 
 	/**
 	 * @return the settings

@@ -90,13 +90,21 @@ public class NewWizard_Base extends Wizard implements INewWizard {
 
 	@Override
 	public void addPages() {
-		_model = new CanvasModel(null);
+		_model = createModel();
 		_model.setType(_canvasType);
 
 		_filePage = createNewFilePage();
 		_filePage.setModel(_model);
-		
+
 		addPage(_filePage);
+	}
+
+	@SuppressWarnings("static-method")
+	protected CanvasModel createModel() {
+		CanvasModel model = new CanvasModel(null);
+		model.setType(CanvasType.STATE);
+		model.getSettings().setBaseClass(CanvasCodeGeneratorProvider.getDefaultBaseClassFor(model.getType()));
+		return model;
 	}
 
 	protected NewPage_File createNewFilePage() {

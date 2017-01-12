@@ -46,6 +46,7 @@ import org.eclipse.core.databinding.beans.PojoProperties;
  *
  */
 public class GeneralSettingsComposite extends Composite {
+	@SuppressWarnings("unused")
 	private DataBindingContext m_bindingContext;
 	private Text _text;
 	private Text _text_1;
@@ -128,12 +129,16 @@ public class GeneralSettingsComposite extends Composite {
 	public void firePropertyChange(String property) {
 		support.firePropertyChange(property, true, false);
 	}
+
+	@SuppressWarnings("all")
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
-		IObservableValue observeSelection_btnEnableSnappingObserveWidget = WidgetProperties.selection().observe(_btnEnableSnapping);
+		IObservableValue observeSelection_btnEnableSnappingObserveWidget = WidgetProperties.selection()
+				.observe(_btnEnableSnapping);
 		IObservableValue enableStepping_modelObserveValue = PojoProperties.value("enableStepping").observe(_model);
-		bindingContext.bindValue(observeSelection_btnEnableSnappingObserveWidget, enableStepping_modelObserveValue, null, null);
+		bindingContext.bindValue(observeSelection_btnEnableSnappingObserveWidget, enableStepping_modelObserveValue,
+				null, null);
 		//
 		IObservableValue observeText_textObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text);
 		IObservableValue stepWidth_modelObserveValue = PojoProperties.value("stepWidth").observe(_model);

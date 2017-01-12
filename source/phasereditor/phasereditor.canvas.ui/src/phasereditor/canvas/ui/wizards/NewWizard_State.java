@@ -42,5 +42,5 @@ public class NewWizard_State extends NewWizard_Base {
 		_settingsPage.setSettings(getModel().getSettings());
 		addPage(_settingsPage);
 	}
-
+	
 }
