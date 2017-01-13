@@ -24,6 +24,7 @@ package phasereditor.canvas.ui.wizards;
 import java.io.ByteArrayInputStream;
 import java.nio.file.Files;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -108,7 +109,12 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 	}
 
 	protected NewPage_File createNewFilePage() {
-		return new NewPage_File(_selection, "Create New File", "Create a new file.");
+		return new NewPage_File(_selection, "Create New File", "Create a new file.") {
+			@Override
+			public String getFileExtension() {
+				return isCanvasFileDesired() ? "canvas" : "js";
+			}
+		};
 	}
 
 	@SuppressWarnings("static-method")
@@ -123,32 +129,27 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 		// no file extension specified so add default extension
 		String fileName = _filePage.getFileName();
 		if (fileName.lastIndexOf('.') == -1) {
-			String newFileName = fileName + ".canvas";
+			String newFileName = fileName + "." + _filePage.getFileExtension();
 			_filePage.setFileName(newFileName);
 		}
 
 		// create a new empty file
-		IFile canvasFile = _filePage.createNewFile();
+		IFile mainFile = _filePage.createNewFile();
 		// if there was problem with creating file, it will be null, so make
 		// sure to check
-		if (canvasFile != null) {
-			createCanvasFile(canvasFile);
+		if (mainFile != null) {
 
-			// this is a bit ugly but we have to delete the created canvas file
-			// if the user select to do not use it.
-			if (!isCanvasFileDesired()) {
-				try {
-					canvasFile.delete(false, null);
-				} catch (CoreException e) {
-					e.printStackTrace();
-				}
+			if (isCanvasFileDesired()) {
+				createCanvasFile(mainFile);
+			} else {
+				createModel(mainFile);
 			}
 
-			IFile srcFile = createSourceFile(canvasFile);
+			createSourceFile(mainFile.getParent());
 
 			// open the file in editor
 			try {
-				IDE.openEditor(_windowPage, isCanvasFileDesired() ? canvasFile : srcFile);
+				IDE.openEditor(_windowPage, mainFile);
 			} catch (PartInitException e) {
 				throw new RuntimeException(e);
 			}
@@ -160,37 +161,35 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 		return performedOK;
 	}
 
-	/**
-	 * @param file
-	 */
 	private void createCanvasFile(IFile file) {
-		{
-			// set default content
-			String name = _filePage.getFileName();
-			name = name.substring(0, name.length() - _filePage.getFileExtension().length() - 1);
-			_model.getWorld().setFile(file);
-			_model.getWorld().setEditorName(name);
-			JSONObject obj = new JSONObject();
-			_model.write(obj);
+		JSONObject obj = createModel(file);
 
-			if (isCanvasFileDesired()) {
-				try {
-					file.setContents(new ByteArrayInputStream(obj.toString(2).getBytes()), false, false,
-							new NullProgressMonitor());
-				} catch (JSONException | CoreException e) {
-					e.printStackTrace();
-					throw new RuntimeException(e);
-				}
-			}
+		try {
+			file.setContents(new ByteArrayInputStream(obj.toString(2).getBytes()), false, false,
+					new NullProgressMonitor());
+		} catch (JSONException | CoreException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 
-	private IFile createSourceFile(IFile canvasFile) {
+	private JSONObject createModel(IFile file) {
+		// set default content
+		String name = _filePage.getFileName();
+		name = name.substring(0, name.length() - _filePage.getFileExtension().length() - 1);
+		_model.getWorld().setFile(file);
+		_model.getWorld().setEditorName(name);
+		JSONObject obj = new JSONObject();
+		_model.write(obj);
+		return obj;
+	}
+
+	private void createSourceFile(IContainer parent) {
 		try {
 
 			EditorSettings settings = _model.getSettings();
 			String fname = _model.getWorld().getClassName() + "." + settings.getLang().getExtension();
-			IFile srcFile = canvasFile.getParent().getFile(new Path(fname));
+			IFile srcFile = parent.getFile(new Path(fname));
 			String replace = null;
 
 			if (srcFile.exists()) {
@@ -208,7 +207,6 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 				srcFile.create(stream, false, null);
 			}
 			srcFile.refreshLocal(1, null);
-			return srcFile;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
