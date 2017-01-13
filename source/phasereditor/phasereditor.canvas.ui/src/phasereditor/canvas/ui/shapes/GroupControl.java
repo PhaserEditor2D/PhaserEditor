@@ -32,8 +32,8 @@ import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.MissingAssetException;
 import phasereditor.canvas.core.MissingAssetSpriteModel;
-import phasereditor.canvas.core.PhysicsBodyType;
 import phasereditor.canvas.core.PhysicsSortDirection;
+import phasereditor.canvas.core.PhysicsType;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
@@ -239,16 +239,16 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 
 		});
 
-		section.add(new PGridEnumProperty<PhysicsBodyType>(getId(), "physicsBodyType",
-				help("Phaser.Group.physicsBodyType"), PhysicsBodyType.values()) {
+		section.add(new PGridEnumProperty<PhysicsType>(getId(), "physicsBodyType",
+				help("Phaser.Group.physicsBodyType"), PhysicsType.VALUES_WITHOUT_NONE) {
 
 			@Override
-			public PhysicsBodyType getValue() {
+			public PhysicsType getValue() {
 				return getModel().getPhysicsBodyType();
 			}
 
 			@Override
-			public void setValue(PhysicsBodyType value, boolean notify) {
+			public void setValue(PhysicsType value, boolean notify) {
 				getModel().setPhysicsBodyType(value);
 				if (notify) {
 					updateFromPropertyChange();
@@ -257,7 +257,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 
 			@Override
 			public boolean isModified() {
-				return getModel().getPhysicsBodyType() != PhysicsBodyType.ARCADE;
+				return getModel().getPhysicsBodyType() != PhysicsType.ARCADE;
 			}
 		});
 

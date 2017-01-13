@@ -32,7 +32,7 @@ import org.json.JSONObject;
 /**
  * @author arian
  */
-public class CanvasMainSettings {
+public class EditorSettings {
 	public static final RGB DEFAULT_BACKGROUND_COLOR = new RGB(180, 180, 180);
 	public static final RGB DEFAULT_GRID_COLOR = new RGB(200, 200, 200);
 
@@ -48,7 +48,7 @@ public class CanvasMainSettings {
 	private String _baseClass;
 	private RGB _gridColor;
 
-	public CanvasMainSettings() {
+	public EditorSettings() {
 		_sceneWidth = 640;
 		_sceneHeight = 360;
 		_backgroundColor = DEFAULT_BACKGROUND_COLOR;
@@ -64,7 +64,7 @@ public class CanvasMainSettings {
 		_showGrid = true;
 	}
 
-	public CanvasMainSettings(JSONObject settingsData) {
+	public EditorSettings(JSONObject settingsData) {
 		read(settingsData);
 	}
 

@@ -39,7 +39,7 @@ import org.eclipse.ui.ide.IDE;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import phasereditor.canvas.core.CanvasMainSettings;
+import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
@@ -167,7 +167,7 @@ public class NewWizard_Base extends Wizard implements INewWizard {
 	private void createSourceFile(IFile canvasFile) {
 		try {
 
-			CanvasMainSettings settings = _model.getSettings();
+			EditorSettings settings = _model.getSettings();
 			String fname = _model.getWorld().getClassName() + "." + settings.getLang().getExtension();
 			IFile srcFile = canvasFile.getParent().getFile(new Path(fname));
 			String replace = null;

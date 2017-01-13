@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import phasereditor.canvas.core.CanvasMainSettings;
+import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.SourceLang;
 import phasereditor.canvas.ui.editors.LangLabelProvider;
 
@@ -53,7 +53,7 @@ public class NewPage_GroupSettings extends WizardPage {
 	private DataBindingContext m_bindingContext;
 	private ComboViewer _langComboViewer;
 	private Text _text;
-	private CanvasMainSettings _settings;
+	private EditorSettings _settings;
 
 	public NewPage_GroupSettings() {
 		super("group.settings.page");
@@ -104,7 +104,7 @@ public class NewPage_GroupSettings extends WizardPage {
 	/**
 	 * @return the settings
 	 */
-	public CanvasMainSettings getSettings() {
+	public EditorSettings getSettings() {
 		return _settings;
 	}
 
@@ -112,7 +112,7 @@ public class NewPage_GroupSettings extends WizardPage {
 	 * @param settings
 	 *            the settings to set
 	 */
-	public void setSettings(CanvasMainSettings settings) {
+	public void setSettings(EditorSettings settings) {
 		_settings = settings;
 		firePropertyChange("settings");
 	}

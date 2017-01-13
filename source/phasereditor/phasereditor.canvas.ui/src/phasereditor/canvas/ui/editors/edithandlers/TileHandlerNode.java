@@ -23,7 +23,7 @@ package phasereditor.canvas.ui.editors.edithandlers;
 
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
-import phasereditor.canvas.core.CanvasMainSettings;
+import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
@@ -69,7 +69,7 @@ public class TileHandlerNode extends PathHandlerNode {
 		TileSpriteNode tile = (TileSpriteNode) _object;
 		TileSpriteModel tilemodel = tile.getModel();
 
-		CanvasMainSettings settings = _canvas.getSettingsModel();
+		EditorSettings settings = _canvas.getSettingsModel();
 
 		boolean stepping = settings.isEnableStepping();
 

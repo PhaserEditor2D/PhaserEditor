@@ -23,7 +23,7 @@ package phasereditor.canvas.ui.editors.config;
 
 import org.eclipse.swt.graphics.RGB;
 
-import phasereditor.canvas.core.CanvasMainSettings;
+import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
 import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
@@ -45,7 +45,7 @@ public class MainEditorConfig extends ConfigItem {
 	@SuppressWarnings("boxing")
 	@Override
 	public void buildProperties() {
-		CanvasMainSettings settings = getSettings();
+		EditorSettings settings = getSettings();
 
 		{
 			PGridSection section = new PGridSection("Scene");
@@ -100,7 +100,7 @@ public class MainEditorConfig extends ConfigItem {
 
 				@Override
 				public boolean isModified() {
-					return !getValue().equals(CanvasMainSettings.DEFAULT_BACKGROUND_COLOR);
+					return !getValue().equals(EditorSettings.DEFAULT_BACKGROUND_COLOR);
 				}
 			});
 
@@ -118,7 +118,7 @@ public class MainEditorConfig extends ConfigItem {
 
 				@Override
 				public boolean isModified() {
-					return !getValue().equals(CanvasMainSettings.DEFAULT_GRID_COLOR);
+					return !getValue().equals(EditorSettings.DEFAULT_GRID_COLOR);
 				}
 			});
 

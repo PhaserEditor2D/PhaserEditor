@@ -85,7 +85,7 @@ import org.json.JSONTokener;
 
 import javafx.geometry.Point2D;
 import phasereditor.canvas.core.AssetTable;
-import phasereditor.canvas.core.CanvasMainSettings;
+import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
@@ -592,7 +592,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 
 	public IFile getFileToGenerate() {
 		WorldModel model = getCanvas().getWorldModel();
-		CanvasMainSettings settings = getCanvas().getSettingsModel();
+		EditorSettings settings = getCanvas().getSettingsModel();
 		String ext = settings.getLang().getExtension();
 		String fname = model.getClassName() + "." + ext;
 		return getEditorInputFile().getParent().getFile(new Path(fname));

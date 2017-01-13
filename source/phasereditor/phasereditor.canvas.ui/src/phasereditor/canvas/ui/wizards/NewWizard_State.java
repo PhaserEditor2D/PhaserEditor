@@ -29,7 +29,7 @@ import phasereditor.canvas.core.CanvasType;
  */
 public class NewWizard_State extends NewWizard_Base {
 
-	private NewPage_GroupSettings _settingsPage;
+	private NewPage_StateSettings _settingsPage;
 
 	public NewWizard_State() {
 		super(CanvasType.STATE);
@@ -38,8 +38,9 @@ public class NewWizard_State extends NewWizard_Base {
 	@Override
 	public void addPages() {
 		super.addPages();
-		_settingsPage = new NewPage_GroupSettings();
+		_settingsPage = new NewPage_StateSettings();
 		_settingsPage.setSettings(getModel().getSettings());
+		_settingsPage.setStateSettings(getModel().getStateSettings());
 		addPage(_settingsPage);
 	}
 	

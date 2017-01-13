@@ -28,7 +28,7 @@ import phasereditor.canvas.core.ArcadeBodyModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CircleArcadeBodyModel;
 import phasereditor.canvas.core.RectArcadeBodyModel;
-import phasereditor.canvas.core.CanvasMainSettings;
+import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;
@@ -67,7 +67,7 @@ public class ArcadeMoveBodyHandlerNode extends CircleHandlerNode {
 		ISpriteNode sprite = (ISpriteNode) _object;
 		ArcadeBodyModel body = (ArcadeBodyModel) sprite.getModel().getBody();
 
-		CanvasMainSettings settings = _canvas.getSettingsModel();
+		EditorSettings settings = _canvas.getSettingsModel();
 
 		boolean stepping = settings.isEnableStepping();
 		{

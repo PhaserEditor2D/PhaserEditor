@@ -27,7 +27,7 @@ import java.util.List;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
-import phasereditor.canvas.core.CanvasMainSettings;
+import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.UpdateFromPropertyChange;
@@ -108,7 +108,7 @@ public class DragBehavior {
 			double x = start.getX() + dx / scale;
 			double y = start.getY() + dy / scale;
 
-			CanvasMainSettings settings = _canvas.getSettingsModel();
+			EditorSettings settings = _canvas.getSettingsModel();
 			if (settings.isEnableStepping()) {
 				x = Math.round(x / settings.getStepWidth()) * settings.getStepWidth();
 				y = Math.round(y / settings.getStepHeight()) * settings.getStepHeight();

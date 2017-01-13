@@ -21,7 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core.codegen;
 
-import phasereditor.canvas.core.CanvasMainSettings;
+import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.WorldModel;
 
@@ -35,7 +35,7 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 	private int _indent;
 	protected final WorldModel _world;
 	protected final CanvasModel _model;
-	protected final CanvasMainSettings _settings;
+	protected final EditorSettings _settings;
 
 	public BaseCodeGenerator(CanvasModel model) {
 		_sb = new StringBuilder();

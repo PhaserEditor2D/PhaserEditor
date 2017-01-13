@@ -41,7 +41,7 @@ import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CircleArcadeBodyModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.ImageSpriteModel;
-import phasereditor.canvas.core.PhysicsBodyType;
+import phasereditor.canvas.core.PhysicsType;
 import phasereditor.canvas.core.PhysicsSortDirection;
 import phasereditor.canvas.core.RectArcadeBodyModel;
 import phasereditor.canvas.core.SpritesheetSpriteModel;
@@ -353,7 +353,7 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 	private void generateArcadeBodyProps(BaseSpriteModel model) {
 		String varname = model.getEditorName();
 
-		if (!model.getParent().isPhysicsGroup() || model.getParent().getPhysicsBodyType() != PhysicsBodyType.ARCADE) {
+		if (!model.getParent().isPhysicsGroup() || model.getParent().getPhysicsBodyType() != PhysicsType.ARCADE) {
 			line("this.game.physics.arcade.enable(" + varname + ");");
 		}
 

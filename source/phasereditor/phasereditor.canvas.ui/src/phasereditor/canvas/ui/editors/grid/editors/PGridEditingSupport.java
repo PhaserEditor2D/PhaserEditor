@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.PlatformUI;
 
-import phasereditor.canvas.core.PhysicsBodyType;
+import phasereditor.canvas.core.PhysicsType;
 import phasereditor.canvas.core.PhysicsSortDirection;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.grid.NumberCellEditor;
@@ -115,8 +115,8 @@ public class PGridEditingSupport extends EditingSupport {
 			editor.setLabelProvider(new LabelProvider() {
 				@Override
 				public String getText(Object obj) {
-					if (obj instanceof PhysicsBodyType) {
-						return ((PhysicsBodyType) obj).getPhaserName();
+					if (obj instanceof PhysicsType) {
+						return ((PhysicsType) obj).getPhaserName();
 					}
 
 					if (obj instanceof PhysicsSortDirection) {

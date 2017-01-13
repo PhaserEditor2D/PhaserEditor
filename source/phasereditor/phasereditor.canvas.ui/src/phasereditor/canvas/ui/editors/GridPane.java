@@ -30,7 +30,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import phasereditor.canvas.core.CanvasMainSettings;
+import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.ui.shapes.GroupNode;
 
 /**
@@ -54,7 +54,7 @@ public class GridPane extends Canvas {
 
 	public void repaint() {
 		GroupNode world = _canvas.getWorldNode();
-		CanvasMainSettings settings = _canvas.getSettingsModel();
+		EditorSettings settings = _canvas.getSettingsModel();
 
 		GraphicsContext g2 = getGraphicsContext2D();
 

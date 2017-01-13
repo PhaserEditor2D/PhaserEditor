@@ -31,7 +31,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import phasereditor.canvas.core.CanvasMainSettings;
+import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.ui.shapes.GroupNode;
 
 /**
@@ -105,7 +105,7 @@ public class FrontGridPane extends Canvas {
 
 	private void paintWorldBounds() {
 		GroupNode node = _canvas.getWorldNode();
-		CanvasMainSettings settings = _canvas.getSettingsModel();
+		EditorSettings settings = _canvas.getSettingsModel();
 
 		Bounds b = node.localToScene(new BoundingBox(0, 0, settings.getSceneWidth(), settings.getSceneHeight()));
 

@@ -21,7 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.config;
 
-import phasereditor.canvas.core.CanvasMainSettings;
+import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 
@@ -32,7 +32,7 @@ import phasereditor.canvas.ui.editors.grid.PGridModel;
 public abstract class ConfigItem {
 	private String _name;
 	private PGridModel _gridModel;
-	private CanvasMainSettings _settings;
+	private EditorSettings _settings;
 	private CanvasModel _model;
 
 	public ConfigItem(CanvasModel model, String name) {
@@ -48,7 +48,7 @@ public abstract class ConfigItem {
 		return _model;
 	}
 	
-	public CanvasMainSettings getSettings() {
+	public EditorSettings getSettings() {
 		return _settings;
 	}
 	

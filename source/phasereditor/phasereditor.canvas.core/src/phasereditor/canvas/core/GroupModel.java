@@ -41,7 +41,7 @@ public class GroupModel extends BaseObjectModel {
 	private List<BaseObjectModel> _children;
 	private boolean _editorClosed;
 	private boolean _physicsGroup;
-	private PhysicsBodyType _physicsBodyType;
+	private PhysicsType _physicsBodyType;
 	private PhysicsSortDirection _physicsSortDirection;
 
 	public GroupModel(GroupModel parent, JSONObject data) {
@@ -51,7 +51,7 @@ public class GroupModel extends BaseObjectModel {
 	public GroupModel(GroupModel parent) {
 		super(parent, "group");
 		_children = new ArrayList<>();
-		_physicsBodyType = PhysicsBodyType.ARCADE;
+		_physicsBodyType = PhysicsType.ARCADE;
 		_physicsSortDirection = PhysicsSortDirection.NULL;
 	}
 
@@ -84,11 +84,11 @@ public class GroupModel extends BaseObjectModel {
 		_physicsGroup = physicsGroup;
 	}
 
-	public PhysicsBodyType getPhysicsBodyType() {
+	public PhysicsType getPhysicsBodyType() {
 		return _physicsBodyType;
 	}
 
-	public void setPhysicsBodyType(PhysicsBodyType physicsBodyType) {
+	public void setPhysicsBodyType(PhysicsType physicsBodyType) {
 		_physicsBodyType = physicsBodyType;
 	}
 
@@ -135,8 +135,8 @@ public class GroupModel extends BaseObjectModel {
 
 		_physicsGroup = jsonInfo.optBoolean("physicsGroup", false);
 		{
-			String name = jsonInfo.optString("physicsBodyType", PhysicsBodyType.ARCADE.name());
-			_physicsBodyType = PhysicsBodyType.valueOf(name);
+			String name = jsonInfo.optString("physicsBodyType", PhysicsType.ARCADE.name());
+			_physicsBodyType = PhysicsType.valueOf(name);
 		}
 		{
 			String name = jsonInfo.optString("physicsSortDirection", PhysicsSortDirection.NULL.name());
@@ -172,7 +172,7 @@ public class GroupModel extends BaseObjectModel {
 
 		jsonInfo.put("editorClosed", _editorClosed, false);
 		jsonInfo.put("physicsGroup", _physicsGroup, false);
-		jsonInfo.put("physicsBodyType", _physicsBodyType, PhysicsBodyType.ARCADE);
+		jsonInfo.put("physicsBodyType", _physicsBodyType, PhysicsType.ARCADE);
 		jsonInfo.put("physicsSortDirection", _physicsSortDirection, PhysicsSortDirection.NULL);
 
 		JSONArray childrenData = new JSONArray();

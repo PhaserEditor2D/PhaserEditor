@@ -29,14 +29,16 @@ import org.json.JSONObject;
  *
  */
 public class CanvasModel {
-	private CanvasMainSettings _settings;
+	private EditorSettings _settings;
+	private StateSettings _stateSettings;
 	private WorldModel _world;
 	private IFile _file;
 	private CanvasType _type;
 
 	public CanvasModel(IFile file) {
 		_file = file;
-		_settings = new CanvasMainSettings();
+		_settings = new EditorSettings();
+		_stateSettings = new StateSettings();
 		_world = new WorldModel(file);
 
 		// set Group just for backward compatibility
@@ -64,6 +66,13 @@ public class CanvasModel {
 
 	public void read(JSONObject data) {
 		_settings.read(data.getJSONObject("settings"));
+		{
+			JSONObject data2 = data.optJSONObject("stateSettings");
+			if (data2 == null) {
+				data2 = new JSONObject();
+			}
+			_stateSettings.read(data2);
+		}
 		_world.getAssetTable().read(data.optJSONObject("asset-table"));
 		_world.read(data.getJSONObject("world"));
 
@@ -82,6 +91,12 @@ public class CanvasModel {
 
 		{
 			JSONObject data2 = new JSONObject();
+			data.put("stateSettings", data2);
+			_stateSettings.write(data2);
+		}
+
+		{
+			JSONObject data2 = new JSONObject();
 			data.put("world", data2);
 			_world.write(data2, true);
 		}
@@ -95,8 +110,16 @@ public class CanvasModel {
 		}
 	}
 
-	public CanvasMainSettings getSettings() {
+	public EditorSettings getSettings() {
 		return _settings;
+	}
+
+	public StateSettings getStateSettings() {
+		return _stateSettings;
+	}
+
+	public void setStateSettings(StateSettings stateSettings) {
+		_stateSettings = stateSettings;
 	}
 
 	public WorldModel getWorld() {

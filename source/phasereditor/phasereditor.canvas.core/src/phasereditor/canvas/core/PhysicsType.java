@@ -25,15 +25,18 @@ package phasereditor.canvas.core;
  * @author arian
  *
  */
-public enum PhysicsBodyType {
-	ARCADE("Phaser.Physics.ARCADE"), P2JS("Phaser.Physics.P2JS"), NINJA("Phaser.Physics.NINJA");
+public enum PhysicsType {
+
+	ARCADE("Phaser.Physics.ARCADE"), P2JS("Phaser.Physics.P2JS"), NINJA("Phaser.Physics.NINJA"), NONE("NONE");
+
+	public static final PhysicsType[] VALUES_WITHOUT_NONE = { ARCADE, PhysicsType.P2JS, PhysicsType.NINJA };
 
 	private String _phaserName;
 
 	/**
 	 * @param name
 	 */
-	private PhysicsBodyType(String name) {
+	private PhysicsType(String name) {
 		_phaserName = name;
 	}
 
