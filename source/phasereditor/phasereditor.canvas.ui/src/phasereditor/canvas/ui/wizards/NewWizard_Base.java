@@ -49,7 +49,7 @@ import phasereditor.canvas.core.codegen.ICodeGenerator;
  * @author arian
  *
  */
-public class NewWizard_Base extends Wizard implements INewWizard {
+public abstract class NewWizard_Base extends Wizard implements INewWizard {
 
 	private IStructuredSelection _selection;
 	private CanvasModel _model;
@@ -111,6 +111,11 @@ public class NewWizard_Base extends Wizard implements INewWizard {
 		return new NewPage_File(_selection, "Create New File", "Create a new file.");
 	}
 
+	@SuppressWarnings("static-method")
+	protected boolean isCanvasFileDesired() {
+		return true;
+	}
+
 	@Override
 	public boolean performFinish() {
 		boolean performedOK = false;
@@ -123,36 +128,27 @@ public class NewWizard_Base extends Wizard implements INewWizard {
 		}
 
 		// create a new empty file
-		IFile file = _filePage.createNewFile();
+		IFile canvasFile = _filePage.createNewFile();
 		// if there was problem with creating file, it will be null, so make
 		// sure to check
-		if (file != null) {
+		if (canvasFile != null) {
+			createCanvasFile(canvasFile);
 
-			{
-				// set default content
-				String name = _filePage.getFileName();
-				name = name.substring(0, name.length() - _filePage.getFileExtension().length() - 1);
-				_model.getWorld().setFile(file);
-				_model.getWorld().setEditorName(name);
-				JSONObject obj = new JSONObject();
-				_model.write(obj);
+			// this is a bit ugly but we have to delete the created canvas file
+			// if the user select to do not use it.
+			if (!isCanvasFileDesired()) {
 				try {
-					file.setContents(new ByteArrayInputStream(obj.toString(2).getBytes()), false, false,
-							new NullProgressMonitor());
-				} catch (JSONException | CoreException e) {
+					canvasFile.delete(false, null);
+				} catch (CoreException e) {
 					e.printStackTrace();
-					throw new RuntimeException(e);
 				}
 			}
 
-			{
-				// generate source code
-				createSourceFile(file);
-			}
+			IFile srcFile = createSourceFile(canvasFile);
 
 			// open the file in editor
 			try {
-				IDE.openEditor(_windowPage, file);
+				IDE.openEditor(_windowPage, isCanvasFileDesired() ? canvasFile : srcFile);
 			} catch (PartInitException e) {
 				throw new RuntimeException(e);
 			}
@@ -164,7 +160,32 @@ public class NewWizard_Base extends Wizard implements INewWizard {
 		return performedOK;
 	}
 
-	private void createSourceFile(IFile canvasFile) {
+	/**
+	 * @param file
+	 */
+	private void createCanvasFile(IFile file) {
+		{
+			// set default content
+			String name = _filePage.getFileName();
+			name = name.substring(0, name.length() - _filePage.getFileExtension().length() - 1);
+			_model.getWorld().setFile(file);
+			_model.getWorld().setEditorName(name);
+			JSONObject obj = new JSONObject();
+			_model.write(obj);
+
+			if (isCanvasFileDesired()) {
+				try {
+					file.setContents(new ByteArrayInputStream(obj.toString(2).getBytes()), false, false,
+							new NullProgressMonitor());
+				} catch (JSONException | CoreException e) {
+					e.printStackTrace();
+					throw new RuntimeException(e);
+				}
+			}
+		}
+	}
+
+	private IFile createSourceFile(IFile canvasFile) {
 		try {
 
 			EditorSettings settings = _model.getSettings();
@@ -187,6 +208,7 @@ public class NewWizard_Base extends Wizard implements INewWizard {
 				srcFile.create(stream, false, null);
 			}
 			srcFile.refreshLocal(1, null);
+			return srcFile;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

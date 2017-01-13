@@ -155,6 +155,29 @@ public class StateConfigItem extends ConfigItem {
 			});
 			getGridModel().getSections().add(section);
 		}
+
+		{
+			PGridSection section = new PGridSection("Renderer");
+			section.add(new PGridBooleanProperty(null, "roundPixels",
+					"If you find you're getting a slight \"jitter\" effect when following a Sprite it's probably to do with sub-pixel rendering of the Sprite position.\nThis can be disabled by setting game.renderer.renderSession.roundPixels = true to force full pixel rendering. (Comment taken from Phaser.Camera.follow())") {
+
+				@Override
+				public Boolean getValue() {
+					return state.isRendererRoundPixels();
+				}
+
+				@Override
+				public void setValue(Boolean value, boolean notify) {
+					state.setRendererRoundPixels(value);
+				}
+
+				@Override
+				public boolean isModified() {
+					return state.isRendererRoundPixels();
+				}
+			});
+			getGridModel().getSections().add(section);
+		}
 	}
 
 }

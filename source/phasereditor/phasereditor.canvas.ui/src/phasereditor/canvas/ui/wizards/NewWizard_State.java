@@ -34,6 +34,11 @@ public class NewWizard_State extends NewWizard_Base {
 	public NewWizard_State() {
 		super(CanvasType.STATE);
 	}
+	
+	@Override
+	protected boolean isCanvasFileDesired() {
+		return _settingsPage.isGenerateCanvasFile();
+	}
 
 	@Override
 	public void addPages() {
