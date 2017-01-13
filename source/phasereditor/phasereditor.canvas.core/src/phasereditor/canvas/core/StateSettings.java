@@ -32,7 +32,7 @@ import org.json.JSONObject;
  *
  */
 public class StateSettings {
-	private static final String SCALE_MODE_NO_SCALE = "NO_SCALE";
+	public static final String SCALE_MODE_NO_SCALE = "NO_SCALE";
 
 	public static String[] SCALE_MODES = { SCALE_MODE_NO_SCALE, "SHOW_ALL", "RESIZE", "USER_SCALE" };
 
@@ -42,6 +42,27 @@ public class StateSettings {
 	private RGB _stageBackgroundColor = new RGB(0, 0, 0);
 	private PhysicsType _physicsSystem = PhysicsType.NONE;
 	private boolean _rendererRoundPixels;
+
+	public void write(JSONObject data) {
+		data.put("scaleMode", _scaleMode, SCALE_MODE_NO_SCALE);
+		data.put("pageAlignHorizontally", _pageAlignHorizontally, false);
+		data.put("pageAlignHorizontally", _pageAlignHorizontally, false);
+		EditorSettings.writeColor(data, "stageBackgroundColor", new RGB(0, 0, 0));
+		data.put("physicsSystem", _physicsSystem.name(), PhysicsType.NONE.name());
+		data.put("rendererRoundPixels", _rendererRoundPixels, false);
+	}
+
+	public void read(JSONObject data) {
+		_scaleMode = data.optString("scaleMode", SCALE_MODE_NO_SCALE);
+		_pageAlignHorizontally = data.optBoolean("pageAlignHorizontally", false);
+		_pageAlignVertically = data.optBoolean("pageAlignVertically", false);
+		_stageBackgroundColor = EditorSettings.readColor(data, "stageBackgroundColor", new RGB(0, 0, 0));
+		{
+			String name = data.optString("physicsSystem", PhysicsType.NONE.name());
+			_physicsSystem = PhysicsType.valueOf(name);
+		}
+		_rendererRoundPixels = data.optBoolean("rendererRoundPixels", false);
+	}
 
 	public boolean isRendererRoundPixels() {
 		return _rendererRoundPixels;
@@ -118,18 +139,4 @@ public class StateSettings {
 	public void firePropertyChange(String property) {
 		support.firePropertyChange(property, true, false);
 	}
-
-	/**
-	 * @param data2
-	 */
-	public void write(JSONObject data) {
-
-	}
-
-	/**
-	 * @param optJSONObject
-	 */
-	public void read(JSONObject data) {
-	}
-
 }

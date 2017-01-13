@@ -129,7 +129,11 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 	}
 
 	protected String getYouCanInsertCodeHere() {
-		return "\n\n" + getIndentTabs() + "// You can insert code here\n\n" + getIndentTabs();
+		return getYouCanInsertCodeHere("user code");
+	}
+
+	protected String getYouCanInsertCodeHere(String msg) {
+		return "\n" + getIndentTabs() + "// -- " + msg + " --\n" + getIndentTabs();
 	}
 
 	protected abstract void generateFooter();
@@ -501,8 +505,9 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 		{
 			append("var " + group.getEditorName() + " = ");
 			if (group.isPhysicsGroup()) {
-				line(getSystemsContainerChain() + ".add.physicsGroup(" + group.getPhysicsBodyType().getPhaserName() + ", "
-						+ (group.getParent().isWorldModel() ? "this" : group.getParent().getEditorName()) + ");");
+				line(getSystemsContainerChain() + ".add.physicsGroup(" + group.getPhysicsBodyType().getPhaserName()
+						+ ", " + (group.getParent().isWorldModel() ? "this" : group.getParent().getEditorName())
+						+ ");");
 			} else {
 				line(String.format(getSystemsContainerChain() + ".add.group(%s);",
 						group.getParent().isWorldModel() ? "this" : group.getParent().getEditorName()));

@@ -24,11 +24,15 @@ package phasereditor.canvas.core.codegen;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.swt.graphics.RGB;
+
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.CanvasModel;
+import phasereditor.canvas.core.PhysicsType;
+import phasereditor.canvas.core.StateSettings;
 
 /**
  * @author arian
@@ -45,6 +49,8 @@ public class JSStateCodeGenerator extends JSLikeCodeGenerator {
 	protected void generateHeader() {
 		String classname = _world.getClassName();
 		String baseclass = _settings.getBaseClass();
+
+		// CLASS
 
 		line("/**");
 		line(" * " + classname + ".");
@@ -63,6 +69,46 @@ public class JSStateCodeGenerator extends JSLikeCodeGenerator {
 		line(classname + ".prototype = " + classname + "_proto;");
 		line(classname + ".prototype.constructor = " + classname + ";");
 		line();
+
+		// INIT
+
+		line(classname + ".prototype.init = function (");
+		section("/* init-args-begin */", "/* init-args-end*/", getYouCanInsertCodeHere("user args code"));
+		openIndent(") {");
+		line();
+		section("/* before-init-begin */", "/* before-init-end */",
+				getYouCanInsertCodeHere("You can insert init code here"));
+		line();
+
+		{
+			line();
+			StateSettings state = _model.getStateSettings();
+			if (!StateSettings.SCALE_MODE_NO_SCALE.equals(state.getScaleMode())) {
+				line("this.scale.scaleMode = Phaser.ScaleManager." + state.getScaleMode() + ";");
+			}
+			if (state.isPageAlignHorizontally()) {
+				line("this.scale.pageAlignHorizontally = true;");
+			}
+			if (state.isPageAlignVertically()) {
+				line("this.scale.pageAlignVertically = true;");
+			}
+			if (state.isRendererRoundPixels()) {
+				line("this.game.renderer.renderSession.roundPixels = true;");
+			}
+			if (state.getPhysicsSystem() != PhysicsType.NONE) {
+				line("this.physics.startSystem(Phaser.Physics." + state.getPhysicsSystem().name() + ");");
+			}
+			if (!state.getStageBackgroundColor().equals(new RGB(0, 0, 0))) {
+				line("this.stage.backgroundColor = " + getHexString2(state.getStageBackgroundColor()) + ";");
+			}
+			line();
+		}
+
+		section("/* after-init-begin */", "/* after-init-end */", getYouCanInsertCodeHere());
+		line();
+		closeIndent("};");
+
+		// PRELOAD
 
 		openIndent(classname + ".prototype.preload = function () {");
 		section("/* before-preload-begin */", "/* before-preload-end */", getYouCanInsertCodeHere());
@@ -84,7 +130,7 @@ public class JSStateCodeGenerator extends JSLikeCodeGenerator {
 		line();
 		section("/* after-preload-begin */", "/* after-preload-end */", getYouCanInsertCodeHere());
 		line();
-		closeIndent("}");
+		closeIndent("};");
 
 		openIndent(classname + ".prototype.create = function () {");
 

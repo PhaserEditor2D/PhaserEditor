@@ -181,13 +181,13 @@ public class EditorSettings {
 		obj.put("showGrid", _showGrid);
 	}
 
-	private static RGB readColor(JSONObject obj, String key, RGB def) {
+	public static RGB readColor(JSONObject obj, String key, RGB def) {
 		JSONArray array = obj.optJSONArray(key);
 		return array == null ? def : new RGB(array.getInt(0), array.getInt(1), array.getInt(2));
 	}
 
 	@SuppressWarnings("boxing")
-	private static void writeColor(JSONObject obj, String key, RGB color) {
+	public static void writeColor(JSONObject obj, String key, RGB color) {
 		if (color != null) {
 			obj.put(key, Arrays.asList(color.red, color.green, color.blue));
 		}

@@ -22,6 +22,9 @@
 package phasereditor.canvas.core.codegen;
 
 import phasereditor.canvas.core.EditorSettings;
+
+import org.eclipse.swt.graphics.RGB;
+
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.WorldModel;
 
@@ -138,4 +141,22 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 	protected static String round(double x) {
 		return Integer.toString((int) Math.round(x));
 	}
+	
+	public static String getHexString(RGB rgb) {
+		return "#" + toHexString(rgb.red) + toHexString(rgb.green) + toHexString(rgb.blue);
+	}
+
+	public static String getHexString2(RGB rgb) {
+		return "0x" + toHexString(rgb.red) + toHexString(rgb.green) + toHexString(rgb.blue);
+	}
+
+	public static String toHexString(int n) {
+		String s = Integer.toHexString(n);
+		return (s.length() == 1 ? "0" : "") + s;
+	}
+
+	public static String getRGBString(RGB rgb) {
+		return "rgb(" + rgb.red + "," + rgb.green + "," + rgb.blue + ")";
+	}
+
 }
