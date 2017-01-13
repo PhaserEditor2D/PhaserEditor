@@ -36,9 +36,9 @@ import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
  * @author arian
  *
  */
-public class MainEditorConfig extends ConfigItem {
+public class EditorConfigItem extends ConfigItem {
 
-	public MainEditorConfig(CanvasModel canvasModel) {
+	public EditorConfigItem(CanvasModel canvasModel) {
 		super(canvasModel, "Editor");
 	}
 

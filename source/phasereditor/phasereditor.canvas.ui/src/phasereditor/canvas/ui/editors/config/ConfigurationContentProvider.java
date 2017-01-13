@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jface.viewers.ITreeContentProvider;
 
 import phasereditor.canvas.core.CanvasModel;
@@ -49,11 +52,18 @@ public class ConfigurationContentProvider implements ITreeContentProvider {
 		if (parentElement instanceof CanvasModel) {
 			CanvasModel model = (CanvasModel) parentElement;
 
-			return new Object[] {
+			List<Object> list = new ArrayList<>();
+			list.add(new EditorConfigItem(model));
 
-					new MainEditorConfig(model)
+			switch (model.getType()) {
+			case STATE:
+				list.add(new StateConfigItem(model));
+				break;
+			default:
+				break;
+			}
 
-			};
+			return list.toArray();
 		}
 
 		return new Object[] {};

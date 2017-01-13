@@ -34,12 +34,14 @@ import org.json.JSONObject;
 public class StateSettings {
 	public static final String SCALE_MODE_NO_SCALE = "NO_SCALE";
 
+	public static final RGB DEFAULT_STAGE_BG_COLOR = new RGB(0, 0, 0);
+
 	public static String[] SCALE_MODES = { SCALE_MODE_NO_SCALE, "SHOW_ALL", "RESIZE", "USER_SCALE" };
 
 	private String _scaleMode = SCALE_MODE_NO_SCALE;
 	private boolean _pageAlignHorizontally;
 	private boolean _pageAlignVertically;
-	private RGB _stageBackgroundColor = new RGB(0, 0, 0);
+	private RGB _stageBackgroundColor = DEFAULT_STAGE_BG_COLOR;
 	private PhysicsType _physicsSystem = PhysicsType.NONE;
 	private boolean _rendererRoundPixels;
 
@@ -47,7 +49,7 @@ public class StateSettings {
 		data.put("scaleMode", _scaleMode, SCALE_MODE_NO_SCALE);
 		data.put("pageAlignHorizontally", _pageAlignHorizontally, false);
 		data.put("pageAlignHorizontally", _pageAlignHorizontally, false);
-		EditorSettings.writeColor(data, "stageBackgroundColor", new RGB(0, 0, 0));
+		EditorSettings.writeColor(data, "stageBackgroundColor", DEFAULT_STAGE_BG_COLOR);
 		data.put("physicsSystem", _physicsSystem.name(), PhysicsType.NONE.name());
 		data.put("rendererRoundPixels", _rendererRoundPixels, false);
 	}
@@ -56,7 +58,7 @@ public class StateSettings {
 		_scaleMode = data.optString("scaleMode", SCALE_MODE_NO_SCALE);
 		_pageAlignHorizontally = data.optBoolean("pageAlignHorizontally", false);
 		_pageAlignVertically = data.optBoolean("pageAlignVertically", false);
-		_stageBackgroundColor = EditorSettings.readColor(data, "stageBackgroundColor", new RGB(0, 0, 0));
+		_stageBackgroundColor = EditorSettings.readColor(data, "stageBackgroundColor", DEFAULT_STAGE_BG_COLOR);
 		{
 			String name = data.optString("physicsSystem", PhysicsType.NONE.name());
 			_physicsSystem = PhysicsType.valueOf(name);

@@ -99,7 +99,7 @@ public class JSStateCodeGenerator extends JSLikeCodeGenerator {
 				line("this.physics.startSystem(Phaser.Physics." + state.getPhysicsSystem().name() + ");");
 			}
 			if (!state.getStageBackgroundColor().equals(new RGB(0, 0, 0))) {
-				line("this.stage.backgroundColor = " + getHexString2(state.getStageBackgroundColor()) + ";");
+				line("this.stage.backgroundColor = '" + getHexString(state.getStageBackgroundColor()) + "';");
 			}
 			line();
 		}
@@ -124,7 +124,7 @@ public class JSStateCodeGenerator extends JSLikeCodeGenerator {
 		for (AssetSectionModel section : sections) {
 			AssetPackModel pack = section.getPack();
 			String packUrl = pack.getAssetUrl(pack.getFile());
-			line("this.load.pack('" + packUrl + "', '" + section.getKey() + "');");
+			line("this.load.pack('" + section.getKey() + "', '" + packUrl + "');");
 		}
 		line();
 		line();

@@ -38,6 +38,7 @@ import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.BodyModel;
 import phasereditor.canvas.core.ButtonSpriteModel;
 import phasereditor.canvas.core.CanvasModel;
+import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.CircleArcadeBodyModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.ImageSpriteModel;
@@ -129,7 +130,7 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 	}
 
 	protected String getYouCanInsertCodeHere() {
-		return getYouCanInsertCodeHere("user code");
+		return getYouCanInsertCodeHere("user code here");
 	}
 
 	protected String getYouCanInsertCodeHere(String msg) {
@@ -186,11 +187,14 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 		// create method
 
 		String parVar = model.getParent().isWorldModel() ? "this" : model.getParent().getEditorName();
+
 		if (mark1 < mark2 || model.isEditorPublic()) {
 			append("var " + model.getEditorName() + " = ");
 		}
 
 		append(getSystemsContainerChain() + ".add.");
+
+		boolean isState = _model.getType() == CanvasType.STATE;
 
 		if (model instanceof ImageSpriteModel) {
 			ImageSpriteModel image = (ImageSpriteModel) model;
@@ -198,8 +202,8 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 					round(image.getX())// x
 					+ ", " + round(image.getY()) // y
 					+ ", '" + image.getAssetKey().getKey() + "'" // key
-					+ ", null" // frame
-					+ ", " + parVar // group
+					+ (isState ? "" : ", null") // frame
+					+ (isState ? "" : ", " + parVar) // group
 					+ ")");
 		} else if (model instanceof SpritesheetSpriteModel || model instanceof AtlasSpriteModel) {
 			AssetSpriteModel<?> sprite = (AssetSpriteModel<?>) model;
@@ -211,8 +215,8 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 					round(sprite.getX())// x
 					+ ", " + round(sprite.getY()) // y
 					+ ", '" + sprite.getAssetKey().getAsset().getKey() + "'" // key
-					+ ", " + frameValue // frame
-					+ ", " + parVar // group
+					+ (isState ? "" : ", " + frameValue) // frame
+					+ (isState ? "" : ", " + parVar) // group
 					+ ")");
 		} else if (model instanceof ButtonSpriteModel) {
 			ButtonSpriteModel button = (ButtonSpriteModel) model;
@@ -234,7 +238,7 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 					+ ", " + outFrameKey// outFrame
 					+ ", " + frameKey(button.getDownFrame())// downFrame
 					+ ", " + frameKey(button.getUpFrame())// upFrame
-					+ ", " + parVar // group
+					+ (isState ? "" : ", " + parVar) // group
 					+ ")");
 		} else if (model instanceof TileSpriteModel) {
 			TileSpriteModel tile = (TileSpriteModel) model;
@@ -255,8 +259,8 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 					+ ", " + round(tile.getWidth()) // width
 					+ ", " + round(tile.getHeight()) // height
 					+ ", '" + tile.getAssetKey().getAsset().getKey() + "'" // key
-					+ ", " + frame// frame
-					+ ", " + parVar // group
+					+ (isState ? "" : ", " + frame) // frame
+					+ (isState ? "" : ", " + parVar) // group
 					+ ")");
 		}
 		line(";");

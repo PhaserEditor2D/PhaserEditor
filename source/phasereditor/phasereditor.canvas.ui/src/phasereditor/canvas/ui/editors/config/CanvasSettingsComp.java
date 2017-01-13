@@ -77,6 +77,7 @@ public class CanvasSettingsComp extends Composite {
 
 			ConfigItem item = (ConfigItem) sel.getFirstElement();
 			_pGrid.setModel(item.getGridModel());
+			_pGrid.getViewer().expandAll();
 		});
 	}
 
