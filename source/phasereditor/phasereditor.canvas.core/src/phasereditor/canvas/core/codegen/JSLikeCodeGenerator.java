@@ -215,7 +215,7 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 					round(sprite.getX())// x
 					+ ", " + round(sprite.getY()) // y
 					+ ", '" + sprite.getAssetKey().getAsset().getKey() + "'" // key
-					+ (isState ? "" : ", " + frameValue) // frame
+					+ ", " + frameValue // frame
 					+ (isState ? "" : ", " + parVar) // group
 					+ ")");
 		} else if (model instanceof ButtonSpriteModel) {
@@ -259,7 +259,7 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 					+ ", " + round(tile.getWidth()) // width
 					+ ", " + round(tile.getHeight()) // height
 					+ ", '" + tile.getAssetKey().getAsset().getKey() + "'" // key
-					+ (isState ? "" : ", " + frame) // frame
+					+ (isState && frame.equals("null") ? "" : ", " + frame) // frame
 					+ (isState ? "" : ", " + parVar) // group
 					+ ")");
 		}
