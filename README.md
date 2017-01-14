@@ -37,9 +37,7 @@ Links:
 
 ### Known issues
 
-* [Crash at startup when missing phaser bundle](https://github.com/boniatillo-com/PhaserEditor/issues/7)
-
-* [Wrong sprites based on textures with the stripped whitespace](https://github.com/boniatillo-com/PhaserEditor/issues/8)
+* [Linux - After a second run it stops loading](https://github.com/boniatillo-com/PhaserEditor/issues/10)
 
 Please use the issues of this repo to report bugs or request features. In addition you can use any of our social channels or write an email to **developers at boniatillo.com**.
 
