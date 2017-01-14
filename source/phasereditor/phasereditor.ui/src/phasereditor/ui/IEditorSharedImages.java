@@ -59,5 +59,6 @@ public interface IEditorSharedImages {
 	String IMG_TILES = "icons/tiles.png";
 	String IMG_CAR = "icons/car.png";
 	String IMG_BUTTON = "icons/button.png";
+	String IMG_BRICKS = "icons/bricks.png";
 }
 

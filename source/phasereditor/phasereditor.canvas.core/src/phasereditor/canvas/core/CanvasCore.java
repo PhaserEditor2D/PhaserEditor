@@ -21,11 +21,22 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.statushandlers.StatusManager;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import phasereditor.project.core.ProjectCore;
 
 /**
  * @author arian
@@ -63,5 +74,52 @@ public class CanvasCore {
 
 		// TODO: missing to define content type
 		return file.getFileExtension().equals("canvas");
+	}
+
+	/**
+	 * This method is used to quickly know the type of a canvas file. If it is
+	 * not a canvas file then it returns <code>null</code>.
+	 * 
+	 * @param file
+	 *            The file to test.
+	 * @return The canvas type or <code>null</code> if it is not a canvas file.
+	 */
+	public static CanvasType getCanvasType(IFile file) {
+		try (InputStream contents = file.getContents()) {
+			JSONObject data = new JSONObject(new JSONTokener(contents));
+			String name = data.getString("type");
+			CanvasType type = CanvasType.valueOf(name);
+			return type;
+		} catch (Exception e) {
+			// something went wrong so it is not a valid canvas file.
+		}
+		return null;
+	}
+
+	public static List<PrefabReference> getPrefabs(IProject project) {
+		// TODO: maybe we should do some sort of caching, but for now we go with
+		// the brute-force solution!
+		List<PrefabReference> list = new ArrayList<>();
+
+		try {
+			IContainer webContent = ProjectCore.getWebContentFolder(project);
+
+			webContent.accept(r -> {
+				if (r instanceof IFile) {
+					IFile file = (IFile) r;
+					if (isCanvasFile(file)) {
+						CanvasType type = getCanvasType(file);
+						if (type == CanvasType.GROUP || type == CanvasType.SPRITE) {
+							list.add(new PrefabReference(file));
+						}
+					}
+				}
+				return true;
+			});
+		} catch (CoreException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		return list;
 	}
 }

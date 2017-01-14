@@ -46,8 +46,10 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.FilteredTree;
+import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.json.JSONArray;
@@ -59,6 +61,7 @@ import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.ui.AssetPackUI;
+import phasereditor.canvas.core.PrefabReference;
 import phasereditor.ui.FilteredTree2;
 import phasereditor.ui.PatternFilter2;
 
@@ -71,6 +74,7 @@ public class AssetExplorer extends ViewPart {
 	// private AssetExplorerListLabelProvider _listLabelProvider;
 	// private AssetExplorerListContentProvider _listContentProvider;
 	static String ROOT = "root";
+	static String PREFABS_ROOT = "Prefabs";
 
 	static class Container {
 		public Object[] children;
@@ -116,6 +120,15 @@ public class AssetExplorer extends ViewPart {
 
 	protected void showSelectionInEditor() {
 		Object elem = ((IStructuredSelection) _viewer.getSelection()).getFirstElement();
+
+		if (elem instanceof PrefabReference) {
+			try {
+				IDE.openEditor(getSite().getPage(), ((PrefabReference) elem).getFile());
+			} catch (PartInitException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
 		AssetPackUI.openElementInEditor(elem);
 	}
 

@@ -50,6 +50,8 @@ import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel.Tilemap;
 import phasereditor.assetpack.ui.AssetsContentProvider;
 import phasereditor.assetpack.ui.views.AssetExplorer.Container;
+import phasereditor.canvas.core.CanvasCore;
+import phasereditor.canvas.core.PrefabReference;
 
 class AssetExplorerContentProvider extends AssetsContentProvider {
 
@@ -115,14 +117,29 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 			IWorkspace workspace = ResourcesPlugin.getWorkspace();
 			List<Object> list = new ArrayList<>();
 
+			if (activeProjet != null) {
+				list.add(AssetExplorer.PREFABS_ROOT);
+			}
+
 			for (IProject project : workspace.getRoot().getProjects()) {
 				if (activeProjet != null && activeProjet != project) {
 					continue;
 				}
-				List<AssetPackModel> packs = AssetPackCore.getAssetPackModels(project);
-				list.addAll(packs);
+
+				{
+					List<AssetPackModel> packs = AssetPackCore.getAssetPackModels(project);
+					list.addAll(packs);
+				}
+
 			}
 			return list.toArray();
+		}
+
+		if (parent == AssetExplorer.PREFABS_ROOT) {
+			if (activeProjet != null) {
+				List<PrefabReference> prefabs = CanvasCore.getPrefabs(activeProjet);
+				return prefabs.toArray();
+			}
 		}
 
 		if (parent instanceof IProject) {
