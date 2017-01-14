@@ -67,6 +67,11 @@ public class Canvas_Phaser_Help_Test {
 				"Phaser.Group.physicsSortDirection",
 				"Phaser.Animation.loop",
 				"Phaser.Animation.killOnComplete",
+				"Phaser.ScaleManager.scaleMode",
+				"Phaser.ScaleManager.pageAlignHorizontally",
+				"Phaser.ScaleManager.pageAlignVertically",
+				"Phaser.Physics.startSystem",
+				"Phaser.Stage.backgroundColor"
 		};
 		// @formatter:on
 
@@ -84,7 +89,10 @@ public class Canvas_Phaser_Help_Test {
 				{ "Phaser.Button", "downFrame" },
 				{ "Phaser.Button", "upFrame" },
 				{ "Phaser.AnimationManager.add", "name" },
-				{ "Phaser.AnimationManager.add", "frameRate" }
+				{ "Phaser.AnimationManager.add", "frameRate" },
+				{"Phaser.Sprite", "game"},
+				{ "Phaser.Sprite", "x"},
+				{ "Phaser.Sprite", "y"},
 		};
 		//@formatter:on
 

@@ -21,47 +21,64 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core.codegen;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import phasereditor.canvas.core.AnimationModel;
+import phasereditor.canvas.core.AssetSpriteModel;
+import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CanvasModel;
 
 /**
  * @author arian
  *
  */
-public class TSGroupCodeGenerator extends JSLikeCodeGenerator {
+public abstract class JSLikeBaseSpriteCodeGenerator extends JSLikeCodeGenerator{
 
-	/**
-	 * @param model
-	 */
-	public TSGroupCodeGenerator(CanvasModel model) {
+	public JSLikeBaseSpriteCodeGenerator(CanvasModel model) {
 		super(model);
 	}
 
+	
 	@Override
-	protected void generateHeader() {
-		String classname = _world.getClassName();
-		String baseclass = _settings.getBaseClass();
-		
-
-		line("/**");
-		line(" * " + classname + ".");
-		line(" * @param aGame The game.");
-		line(" * @param aParent The parent group. If not given the game world will be used instead.");
-		line(" */");
-		line("class " + classname + " extends " + baseclass + " {");
-		openIndent("constructor(aGame : Phaser.Game, aParent : Phaser.Group) {");
-		line("super(aGame, aParent);");
-
-		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
-
-		line("");
+	protected void generatePublicFields() {
+		BaseSpriteModel sprite = findSprite();
+		if (sprite == null) {
+			return;
+		}
+		generatePublicField(sprite);
 	}
 
 	@Override
-	protected void generateFooter() {
-		section(POST_INIT_CODE_BEGIN, POST_INIT_CODE_END, getYouCanInsertCodeHere());
-		closeIndent();
-		line("}");
-		closeIndent();
-		section(END_GENERATED_CODE, getYouCanInsertCodeHere());
+	protected void generateObjectCreation() {
+		BaseSpriteModel sprite = findSprite();
+		if (sprite == null) {
+			return;
+		}
+
+		generateProperties(sprite);
+	}
+
+	@Override
+	protected String getVarName(BaseObjectModel model) {
+		return "this";
+	}
+
+	@Override
+	protected String getAnimationVarName(BaseObjectModel obj, AnimationModel anim) {
+		return "anim_" + anim.getName();
+	}
+
+	protected AssetSpriteModel<?> findSprite() {
+		List<BaseObjectModel> list = new ArrayList<>(_world.getChildren());
+		Collections.reverse(list);
+		for (BaseObjectModel obj : list) {
+			if (obj instanceof AssetSpriteModel<?>) {
+				return (AssetSpriteModel<?>) obj;
+			}
+		}
+		return null;
 	}
 }

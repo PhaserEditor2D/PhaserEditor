@@ -45,8 +45,8 @@ public class CanvasCodeGeneratorProvider {
 		_map.put(key(CanvasType.GROUP, SourceLang.JAVA_SCRIPT), JSGroupCodeGenerator.class);
 		_map.put(key(CanvasType.GROUP, SourceLang.TYPE_SCRIPT), TSGroupCodeGenerator.class);
 
-		_map.put(key(CanvasType.SPRITE, SourceLang.JAVA_SCRIPT), JSGroupCodeGenerator.class);
-		_map.put(key(CanvasType.SPRITE, SourceLang.TYPE_SCRIPT), TSGroupCodeGenerator.class);
+		_map.put(key(CanvasType.SPRITE, SourceLang.JAVA_SCRIPT), JSSpriteCodeGenerator.class);
+		_map.put(key(CanvasType.SPRITE, SourceLang.TYPE_SCRIPT), TSSpriteCodeGenerator.class);
 	}
 
 	public static String getDefaultBaseClassFor(CanvasType type) {

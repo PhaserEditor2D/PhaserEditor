@@ -21,10 +21,33 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core.codegen;
 
+import phasereditor.assetpack.core.AtlasAssetModel;
+import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel;
+
 /**
  * @author arian
  *
  */
 public interface ICodeGenerator {
 	public String generate(String replace);
+
+	public static class TextureArgs {
+		public String key;
+		public String frame = "null";
+	}
+
+	public static TextureArgs getTextureArgs(IAssetKey assetKey) {
+		TextureArgs info = new TextureArgs();
+		info.key = "'" + assetKey.getAsset().getKey() + "'";
+		if (assetKey.getAsset() instanceof ImageAssetModel) {
+			info.frame = "null";
+		} else if (assetKey instanceof SpritesheetAssetModel.FrameModel) {
+			info.frame = assetKey.getKey();
+		} else if (assetKey instanceof AtlasAssetModel.Frame) {
+			info.frame = "'" + assetKey.getKey() + "'";
+		}
+		return info;
+	}
 }

@@ -24,10 +24,12 @@ package phasereditor.canvas.ui.editors.config;
 import org.eclipse.swt.graphics.RGB;
 
 import phasereditor.canvas.core.EditorSettings;
+import phasereditor.canvas.core.SourceLang;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
 import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
 import phasereditor.canvas.ui.editors.grid.PGridColorProperty;
+import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
 import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
@@ -162,6 +164,25 @@ public class EditorConfigItem extends ConfigItem {
 				public boolean isModified() {
 					return !settings.getBaseClass()
 							.equals(CanvasCodeGeneratorProvider.getDefaultBaseClassFor(getModel().getType()));
+				}
+			});
+
+			section.add(new PGridEnumProperty<SourceLang>(null, "lang", "The language of the generated code.",
+					SourceLang.values()) {
+
+				@Override
+				public SourceLang getValue() {
+					return settings.getLang();
+				}
+
+				@Override
+				public void setValue(SourceLang value, boolean notify) {
+					settings.setLang(value);
+				}
+
+				@Override
+				public boolean isModified() {
+					return settings.getLang() != SourceLang.JAVA_SCRIPT;
 				}
 			});
 

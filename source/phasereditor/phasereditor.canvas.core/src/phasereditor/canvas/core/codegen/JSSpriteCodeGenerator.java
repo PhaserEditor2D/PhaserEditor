@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2017 Arian Fornaris
+// Copyright (c) 2015, 2016 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -21,18 +21,18 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core.codegen;
 
+import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.CanvasModel;
+import phasereditor.inspect.core.InspectCore;
+import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
 
 /**
  * @author arian
  *
  */
-public class TSGroupCodeGenerator extends JSLikeCodeGenerator {
+public class JSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 
-	/**
-	 * @param model
-	 */
-	public TSGroupCodeGenerator(CanvasModel model) {
+	public JSSpriteCodeGenerator(CanvasModel model) {
 		super(model);
 	}
 
@@ -40,28 +40,51 @@ public class TSGroupCodeGenerator extends JSLikeCodeGenerator {
 	protected void generateHeader() {
 		String classname = _world.getClassName();
 		String baseclass = _settings.getBaseClass();
-		
+
+		PhaserJSDoc help = InspectCore.getPhaserHelp();
 
 		line("/**");
 		line(" * " + classname + ".");
-		line(" * @param aGame The game.");
-		line(" * @param aParent The parent group. If not given the game world will be used instead.");
+		line(" * @param {Phaser.Game} aGame " + help.getMethodArgHelp("Phaser.Sprite", "game"));
+		line(" * @param {number} aX " + help.getMethodArgHelp("Phaser.Sprite", "x"));
+		line(" * @param {number} aY " + help.getMethodArgHelp("Phaser.Sprite", "y"));
 		line(" */");
-		line("class " + classname + " extends " + baseclass + " {");
-		openIndent("constructor(aGame : Phaser.Game, aParent : Phaser.Group) {");
-		line("super(aGame, aParent);");
+		openIndent("function " + classname + "(aGame, aX, aY) {");
+		AssetSpriteModel<?> sprite = findSprite();
+		String key = "null";
+		String frame = "null";
+		if (sprite != null) {
+			TextureArgs info = ICodeGenerator.getTextureArgs(sprite.getAssetKey());
+			key = info.key;
+			frame = info.frame;
+		}
+		line(baseclass + ".call(this, aGame, aX, aY, " + key + ", " + frame + ");");
+
+		line();
 
 		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
 
-		line("");
+		line();
+		line();
 	}
 
 	@Override
 	protected void generateFooter() {
+		String classname = _world.getClassName();
+		String baseclass = _settings.getBaseClass();
+
 		section(POST_INIT_CODE_BEGIN, POST_INIT_CODE_END, getYouCanInsertCodeHere());
-		closeIndent();
-		line("}");
-		closeIndent();
+
+		line();
+		closeIndent("}");
+		line();
+
+		line("/** @type " + baseclass + " */");
+		line("var " + classname + "_proto = Object.create(" + baseclass + ".prototype);");
+		line(classname + ".prototype = " + classname + "_proto;");
+		line(classname + ".prototype.constructor = " + classname + ";");
+		line();
+
 		section(END_GENERATED_CODE, getYouCanInsertCodeHere());
 	}
 }

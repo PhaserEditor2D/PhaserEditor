@@ -21,18 +21,21 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core.codegen;
 
+import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.CanvasModel;
+import phasereditor.inspect.core.InspectCore;
+import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
 
 /**
  * @author arian
  *
  */
-public class TSGroupCodeGenerator extends JSLikeCodeGenerator {
+public class TSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 
 	/**
 	 * @param model
 	 */
-	public TSGroupCodeGenerator(CanvasModel model) {
+	public TSSpriteCodeGenerator(CanvasModel model) {
 		super(model);
 	}
 
@@ -40,19 +43,29 @@ public class TSGroupCodeGenerator extends JSLikeCodeGenerator {
 	protected void generateHeader() {
 		String classname = _world.getClassName();
 		String baseclass = _settings.getBaseClass();
-		
+		PhaserJSDoc help = InspectCore.getPhaserHelp();
 
 		line("/**");
 		line(" * " + classname + ".");
-		line(" * @param aGame The game.");
-		line(" * @param aParent The parent group. If not given the game world will be used instead.");
+		line(" * @param {Phaser.Game} aGame " + help.getMethodArgHelp("Phaser.Sprite", "game"));
+		line(" * @param {number} aX " + help.getMethodArgHelp("Phaser.Sprite", "x"));
+		line(" * @param {number} aY " + help.getMethodArgHelp("Phaser.Sprite", "y"));
 		line(" */");
-		line("class " + classname + " extends " + baseclass + " {");
-		openIndent("constructor(aGame : Phaser.Game, aParent : Phaser.Group) {");
-		line("super(aGame, aParent);");
+		openIndent("class " + classname + " extends " + baseclass + " {");
+		openIndent("constructor(aGame : Phaser.Game, aX : number, aY : number) {");
+		AssetSpriteModel<?> sprite = findSprite();
+		String key = "null";
+		String frame = "null";
+		if (sprite != null) {
+			TextureArgs info = ICodeGenerator.getTextureArgs(sprite.getAssetKey());
+			key = info.key;
+			frame = info.frame;
+		}
+		line("super(aGame, aX, aY, " + key + ", " + frame + ");");
 
 		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
 
+		line("");
 		line("");
 	}
 
@@ -64,4 +77,5 @@ public class TSGroupCodeGenerator extends JSLikeCodeGenerator {
 		closeIndent();
 		section(END_GENERATED_CODE, getYouCanInsertCodeHere());
 	}
+
 }

@@ -19,49 +19,33 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.core.codegen;
+package phasereditor.canvas.ui.wizards;
 
-import phasereditor.canvas.core.CanvasModel;
+import phasereditor.canvas.core.CanvasType;
 
 /**
  * @author arian
  *
  */
-public class TSGroupCodeGenerator extends JSLikeCodeGenerator {
+public class NewWizard_Sprite extends NewWizard_Base {
 
-	/**
-	 * @param model
-	 */
-	public TSGroupCodeGenerator(CanvasModel model) {
-		super(model);
+	private NewPage_SpriteSettings _settingsPage;
+
+	public NewWizard_Sprite() {
+		super(CanvasType.SPRITE);
 	}
 
 	@Override
-	protected void generateHeader() {
-		String classname = _world.getClassName();
-		String baseclass = _settings.getBaseClass();
-		
-
-		line("/**");
-		line(" * " + classname + ".");
-		line(" * @param aGame The game.");
-		line(" * @param aParent The parent group. If not given the game world will be used instead.");
-		line(" */");
-		line("class " + classname + " extends " + baseclass + " {");
-		openIndent("constructor(aGame : Phaser.Game, aParent : Phaser.Group) {");
-		line("super(aGame, aParent);");
-
-		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
-
-		line("");
+	protected boolean isCanvasFileDesired() {
+		return _settingsPage.isGenerateCanvasFile();
 	}
 
 	@Override
-	protected void generateFooter() {
-		section(POST_INIT_CODE_BEGIN, POST_INIT_CODE_END, getYouCanInsertCodeHere());
-		closeIndent();
-		line("}");
-		closeIndent();
-		section(END_GENERATED_CODE, getYouCanInsertCodeHere());
+	public void addPages() {
+		super.addPages();
+		_settingsPage = new NewPage_SpriteSettings();
+		_settingsPage.setSettings(getModel().getSettings());
+		addPage(_settingsPage);
 	}
+
 }

@@ -13,7 +13,8 @@ Require-Bundle: org.eclipse.ui,
  phasereditor.atlas.core,
  phasereditor.atlas.ui,
  phasereditor.lic,
- phasereditor.project.core
+ phasereditor.project.core,
+ phasereditor.inspect.core;bundle-version="1.3.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.canvas.core,
