@@ -32,30 +32,6 @@
             name="Phaser Project"
             project="true">
       </wizard>
-      <wizard
-            category="phasereditor.ui.wizardCategory"
-            class="phasereditor.project.ui.wizards.NewGameStateWizard"
-            finalPerspective="phasereditor.ide.ui.perspective"
-            icon="platform:/plugin/phasereditor.ui/icons/newjscript_wiz.gif"
-            id="phasereditor.project.ui.newGameState"
-            name="State Source File">
-      </wizard>
-      <wizard
-            category="phasereditor.ui.wizardCategory"
-            class="phasereditor.project.ui.wizards.NewSpriteWizard"
-            finalPerspective="phasereditor.ide.ui.perspective"
-            icon="platform:/plugin/phasereditor.ui/icons/newjscript_wiz.gif"
-            id="phasereditor.project.ui.newSprite"
-            name="Sprite Source File">
-      </wizard>
-      <wizard
-            category="phasereditor.ui.wizardCategory"
-            class="phasereditor.project.ui.wizards.NewGroupWizard"
-            finalPerspective="phasereditor.ide.ui.perspective"
-            icon="platform:/plugin/phasereditor.ui/icons/newjscript_wiz.gif"
-            id="phasereditor.project.ui.newGroup"
-            name="Group Source File">
-      </wizard>
       <!--
       <primaryWizard
             id="phasereditor.project.ui.newproject">
@@ -74,15 +50,6 @@
             targetID="*">
          <newWizardShortcut
                id="phasereditor.project.ui.newproject">
-         </newWizardShortcut>
-         <newWizardShortcut
-               id="phasereditor.project.ui.newGameState">
-         </newWizardShortcut>
-         <newWizardShortcut
-               id="phasereditor.project.ui.newSprite">
-         </newWizardShortcut>
-         <newWizardShortcut
-               id="phasereditor.project.ui.newGroup">
          </newWizardShortcut>
       </perspectiveExtension>
    </extension>
@@ -111,24 +78,6 @@
             menuGroupId="phaser.new.project"
             type="new"
             wizardId="phasereditor.project.ui.newproject">
-         <enablement></enablement>
-      </commonWizard>
-      <commonWizard
-            menuGroupId="phaser.new.source"
-            type="new"
-            wizardId="phasereditor.project.ui.newGameState">
-         <enablement></enablement>
-      </commonWizard>
-      <commonWizard
-            menuGroupId="phaser.new.source"
-            type="new"
-            wizardId="phasereditor.project.ui.newSprite">
-         <enablement></enablement>
-      </commonWizard>
-      <commonWizard
-            menuGroupId="phaser.new.source"
-            type="new"
-            wizardId="phasereditor.project.ui.newGroup">
          <enablement></enablement>
       </commonWizard>
    </extension>
