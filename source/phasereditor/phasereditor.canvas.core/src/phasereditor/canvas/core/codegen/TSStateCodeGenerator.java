@@ -27,7 +27,7 @@ import phasereditor.canvas.core.CanvasModel;
  * @author arian
  *
  */
-public class TSStateCodeGenerator extends JSLikeCodeGenerator {
+public class TSStateCodeGenerator extends BaseStateGenerator {
 
 	public TSStateCodeGenerator(CanvasModel model) {
 		super(model);
@@ -43,15 +43,29 @@ public class TSStateCodeGenerator extends JSLikeCodeGenerator {
 		line(" */");
 		openIndent("class " + classname + " extends " + baseclass + " {");
 		openIndent("constructor() {");
+		line("super();");
+		line();
 		section("/* constructor-begin */", "/* constructor-end */", getYouCanInsertCodeHere());
 		closeIndent("}");
 
 		line();
+		generateInitMethod();
+		line();
+
 		openIndent("create() {");
 
 		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
 		line();
 		line();
+	}
+
+	private void generateInitMethod() {
+		// INIT
+		line("init(");
+		section("/* init-args-begin */", "/* init-args-end*/", getYouCanInsertCodeHere("user args code"));
+		openIndent(") {");
+		generateinitMethodBody();
+		closeIndent("}");
 	}
 
 	@Override

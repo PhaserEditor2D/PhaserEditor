@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - IDE
 Bundle-SymbolicName: phasereditor.ide;singleton:=true
-Bundle-Version: 1.3.0.20161130
+Bundle-Version: 1.3.1.20161130
 Bundle-Activator: phasereditor.ide.IDEPlugin
 Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,

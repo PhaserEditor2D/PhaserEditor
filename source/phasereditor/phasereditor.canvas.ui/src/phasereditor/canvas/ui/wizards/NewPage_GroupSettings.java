@@ -35,6 +35,7 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -54,6 +55,7 @@ public class NewPage_GroupSettings extends WizardPage {
 	private ComboViewer _langComboViewer;
 	private Text _text;
 	private EditorSettings _settings;
+	private Button _btnGenerateTheCorrspondant;
 
 	public NewPage_GroupSettings() {
 		super("group.settings.page");
@@ -87,12 +89,21 @@ public class NewPage_GroupSettings extends WizardPage {
 		_langComboViewer = new ComboViewer(container, SWT.READ_ONLY);
 		Combo combo = _langComboViewer.getCombo();
 		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		_btnGenerateTheCorrspondant = new Button(container, SWT.CHECK);
+		_btnGenerateTheCorrspondant.setSelection(true);
+		_btnGenerateTheCorrspondant.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, true, 2, 1));
+		_btnGenerateTheCorrspondant.setText("Edit this state with the visual editor.");
 		_langComboViewer.setContentProvider(new ArrayContentProvider());
 		_langComboViewer.setLabelProvider(new LangLabelProvider());
 
 		afterCreateWidgets();
 
 		m_bindingContext = initDataBindings();
+	}
+
+	public boolean isGenerateCanvasFile() {
+		return _btnGenerateTheCorrspondant.getSelection();
 	}
 
 	private void afterCreateWidgets() {

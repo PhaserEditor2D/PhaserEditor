@@ -24,27 +24,22 @@ package phasereditor.canvas.core.codegen;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.swt.graphics.RGB;
-
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.CanvasModel;
-import phasereditor.canvas.core.PhysicsType;
-import phasereditor.canvas.core.StateSettings;
 
 /**
  * @author arian
  *
  */
-public class JSStateCodeGenerator extends JSLikeCodeGenerator {
+public class JSStateCodeGenerator extends BaseStateGenerator {
 
 	public JSStateCodeGenerator(CanvasModel model) {
 		super(model);
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	protected void generateHeader() {
 		String classname = _world.getClassName();
@@ -70,46 +65,20 @@ public class JSStateCodeGenerator extends JSLikeCodeGenerator {
 		line(classname + ".prototype.constructor = " + classname + ";");
 		line();
 
-		// INIT
+		generateInitMethod(classname);
 
-		line(classname + ".prototype.init = function (");
-		section("/* init-args-begin */", "/* init-args-end*/", getYouCanInsertCodeHere("user args code"));
-		openIndent(") {");
+		generatePreloadMethod(classname);
+
+		openIndent(classname + ".prototype.create = function () {");
+
 		line();
-		section("/* before-init-begin */", "/* before-init-end */",
-				getYouCanInsertCodeHere("You can insert init code here"));
+		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
 		line();
-
-		{
-			line();
-			StateSettings state = _model.getStateSettings();
-			if (!StateSettings.SCALE_MODE_NO_SCALE.equals(state.getScaleMode())) {
-				line("this.scale.scaleMode = Phaser.ScaleManager." + state.getScaleMode() + ";");
-			}
-			if (state.isPageAlignHorizontally()) {
-				line("this.scale.pageAlignHorizontally = true;");
-			}
-			if (state.isPageAlignVertically()) {
-				line("this.scale.pageAlignVertically = true;");
-			}
-			if (state.isRendererRoundPixels()) {
-				line("this.game.renderer.renderSession.roundPixels = true;");
-			}
-			if (state.getPhysicsSystem() != PhysicsType.NONE) {
-				line("this.physics.startSystem(Phaser.Physics." + state.getPhysicsSystem().name() + ");");
-			}
-			if (!state.getStageBackgroundColor().equals(new RGB(0, 0, 0))) {
-				line("this.stage.backgroundColor = '" + getHexString(state.getStageBackgroundColor()) + "';");
-			}
-			line();
-		}
-
-		section("/* after-init-begin */", "/* after-init-end */", getYouCanInsertCodeHere());
 		line();
-		closeIndent("};");
+	}
 
-		// PRELOAD
-
+	@SuppressWarnings("rawtypes")
+	private void generatePreloadMethod(String classname) {
 		openIndent(classname + ".prototype.preload = function () {");
 		section("/* before-preload-begin */", "/* before-preload-end */", getYouCanInsertCodeHere());
 		line();
@@ -131,14 +100,19 @@ public class JSStateCodeGenerator extends JSLikeCodeGenerator {
 		section("/* after-preload-begin */", "/* after-preload-end */", getYouCanInsertCodeHere());
 		line();
 		closeIndent("};");
-
-		openIndent(classname + ".prototype.create = function () {");
-
-		line();
-		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
-		line();
-		line();
 	}
+
+	private void generateInitMethod(String classname) {
+		// INIT
+
+		line(classname + ".prototype.init = function (");
+		section("/* init-args-begin */", "/* init-args-end*/", getYouCanInsertCodeHere("user args code"));
+		openIndent(") {");
+		generateinitMethodBody();
+		closeIndent("};");
+	}
+
+	
 
 	@Override
 	protected void generateFooter() {

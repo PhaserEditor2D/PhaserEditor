@@ -50,7 +50,7 @@ public class TSGroupCodeGenerator extends JSLikeCodeGenerator {
 		line("class " + classname + " extends " + baseclass + " {");
 		openIndent("constructor(aGame : Phaser.Game, aParent : Phaser.Group) {");
 		line("super(aGame, aParent);");
-
+		
 		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
 
 		line("");

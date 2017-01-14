@@ -36,6 +36,11 @@ public class NewWizard_Group extends NewWizard_Base {
 	private NewPage_GroupSettings _settingsPage;
 
 	@Override
+	protected boolean isCanvasFileDesired() {
+		return _settingsPage.isGenerateCanvasFile();
+	}
+
+	@Override
 	public void addPages() {
 		super.addPages();
 		_settingsPage = new NewPage_GroupSettings();

@@ -40,9 +40,9 @@ import org.eclipse.ui.ide.IDE;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasType;
+import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
 import phasereditor.canvas.core.codegen.ICodeGenerator;
 
@@ -100,10 +100,9 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 		addPage(_filePage);
 	}
 
-	@SuppressWarnings("static-method")
 	protected CanvasModel createModel() {
 		CanvasModel model = new CanvasModel(null);
-		model.setType(CanvasType.STATE);
+		model.setType(getCanvasType());
 		model.getSettings().setBaseClass(CanvasCodeGeneratorProvider.getDefaultBaseClassFor(model.getType()));
 		return model;
 	}
@@ -112,7 +111,7 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 		return new NewPage_File(_selection, "Create New File", "Create a new file.") {
 			@Override
 			public String getFileExtension() {
-				return isCanvasFileDesired() ? "canvas" : "js";
+				return isCanvasFileDesired() ? "canvas" : (getModel().getSettings().getLang().getExtension());
 			}
 		};
 	}
