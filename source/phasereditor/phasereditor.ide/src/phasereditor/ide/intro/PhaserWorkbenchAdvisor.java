@@ -21,18 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ide.intro;
 
-import static java.lang.System.currentTimeMillis;
-import static java.lang.System.out;
-
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.internal.ide.application.DelayedEventsProcessor;
 import org.eclipse.ui.internal.ide.application.IDEWorkbenchAdvisor;
-
-import phasereditor.ui.editors.StringEditorInput;
 
 @SuppressWarnings("restriction")
 public class PhaserWorkbenchAdvisor extends IDEWorkbenchAdvisor {
@@ -50,28 +40,33 @@ public class PhaserWorkbenchAdvisor extends IDEWorkbenchAdvisor {
 		return "phasereditor.ide.ui.perspective";
 	}
 
-	@Override
-	public void postStartup() {
-		super.postStartup();
-
-		// an ugly work around to ensure all the JS stuff is loaded at the
-		// startup
-
-		IEditorPart editor;
-
-		long t = currentTimeMillis();
-
-		try {
-			IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-			editor = IDE.openEditor(page, new StringEditorInput("closing", ""),
-					"org.eclipse.wst.jsdt.ui.CompilationUnitEditor");
-
-			out.println("Loaded " + editor + " " + (currentTimeMillis() - t));
-
-			page.closeEditor(editor, false);
-
-		} catch (PartInitException e) {
-			e.printStackTrace();
-		}
-	}
+//@formatter:off
+// XXX: just do not load the JS editor at startup, it creates a strange
+// behavior!
+	
+//	@Override
+//	public void postStartup() {
+//		super.postStartup();
+//
+//		// an ugly work around to ensure all the JS stuff is loaded at the
+//		// startup
+//
+//		IEditorPart editor;
+//
+//		long t = currentTimeMillis();
+//
+//		try {
+//			IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+//			editor = IDE.openEditor(page, new StringEditorInput("closing", ""),
+//					"org.eclipse.wst.jsdt.ui.CompilationUnitEditor");
+//
+//			out.println("Loaded " + editor + " " + (currentTimeMillis() - t));
+//
+//			page.closeEditor(editor, false);
+//
+//		} catch (PartInitException e) {
+//			e.printStackTrace();
+//		}
+//	}
+//@formatter:on
 }
