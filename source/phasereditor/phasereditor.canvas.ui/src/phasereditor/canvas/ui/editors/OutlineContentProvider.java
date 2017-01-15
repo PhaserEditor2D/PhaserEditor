@@ -85,7 +85,12 @@ public class OutlineContentProvider implements ITreeContentProvider {
 		}
 
 		if (parent instanceof GroupNode) {
-			Object[] array = ((GroupNode) parent).getChildren().toArray();
+			GroupNode group = (GroupNode) parent;
+			if (group.getModel().isPrefabInstance()) {
+				return EMPTY;
+			}
+			
+			Object[] array = group.getChildren().toArray();
 			List<Object> list = new ArrayList<>();
 			for (Object elem : array) {
 				if (elem instanceof IObjectNode) {

@@ -44,6 +44,13 @@ public class OutlineLabelProvider extends LabelProvider implements IEditorShared
 
 	@Override
 	public Image getImage(Object element) {
+		if (element instanceof IObjectNode) {
+			BaseObjectModel model = ((IObjectNode) element).getModel();
+			if (model.isPrefabInstance()) {
+				return EditorSharedImages.getImage(IMG_BRICKS);
+			}
+		}
+		
 		if (element instanceof GroupNode) {
 			return EditorSharedImages.getImage(IMG_SHAPE_GROUP_NODE);
 		}
