@@ -80,6 +80,22 @@ public class CanvasModelFactory {
 				Prefab prefab = new Prefab(file);
 				JSONObject jsonInfo = data.optJSONObject("info");
 				JSONObject newData = prefab.newInstance(jsonInfo);
+				// TODO: this is a temporal solution to keep the asset, but the
+				// real solution is to keep the texture in the info and make it
+				// easy to change.
+				if (data.has("asset-ref")) {
+					JSONObject assetRef = data.getJSONObject("asset-ref");
+					JSONObject newAssetRef = newData.getJSONObject("asset-ref");
+					if (
+					// @formatter:off
+							newAssetRef.getString("file").equals(assetRef.getString("file"))
+							&& newAssetRef.getString("section").equals(assetRef.getString("section"))
+							&& newAssetRef.getString("asset").equals(assetRef.getString("asset")))
+					// @formatter:on
+					{
+						newData.put("asset-ref", assetRef);
+					}
+				}
 				model = createModel(parent, newData);
 				model.setId(data.getString("id"));
 				model.setPrefab(prefab);
