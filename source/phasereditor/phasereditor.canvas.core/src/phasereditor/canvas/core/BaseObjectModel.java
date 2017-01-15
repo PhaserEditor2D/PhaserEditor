@@ -113,7 +113,17 @@ public abstract class BaseObjectModel {
 	}
 
 	public boolean isPrefabInstanceComponent() {
-		return isPrefabInstance() || getParent() != null && getParent().isPrefabInstance();
+		GroupModel parent = getParent();
+
+		if (parent == null) {
+			return false;
+		}
+
+		if (parent.isPrefabInstance()) {
+			return false;
+		}
+
+		return parent.isPrefabInstanceComponent();
 	}
 
 	public IAssetKey findAsset(JSONObject jsonModel) {

@@ -46,6 +46,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.SelectionBoxNode;
 import phasereditor.canvas.ui.editors.SelectionNode;
@@ -90,7 +91,8 @@ public class SelectionBehavior implements ISelectionProvider {
 
 	private Node pickNode(Node test, double sceneX, double sceneY) {
 		if (test instanceof IObjectNode) {
-			if (!((IObjectNode) test).getModel().isEditorPick()) {
+			BaseObjectModel model = ((IObjectNode) test).getModel();
+			if (!model.isEditorPick()) {
 				return null;
 			}
 		}

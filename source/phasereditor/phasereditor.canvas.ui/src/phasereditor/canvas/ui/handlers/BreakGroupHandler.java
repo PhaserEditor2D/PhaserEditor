@@ -60,14 +60,24 @@ public class BreakGroupHandler extends AbstractHandler {
 
 		for (Object obj : sel.toArray()) {
 			GroupNode group = (GroupNode) obj;
+			if (group.getModel().isPrefabInstance()) {
+				continue;
+			}
 			parentSelection.add(group.getModel().getId());
 		}
+
+		if (parentSelection.isEmpty()) {
+			// all the selected groups are prefabs so its better to stop
+			// here
+			return null;
+		}
+
 		operations.add(new SelectOperation(parentSelection));
 
 		List<String> childrenSelection = new ArrayList<>();
 
 		// un-group
-		
+
 		for (Object obj : sel.toArray()) {
 			GroupNode group = (GroupNode) obj;
 

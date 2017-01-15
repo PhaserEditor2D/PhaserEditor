@@ -69,6 +69,11 @@ public class GroupModel extends BaseObjectModel {
 	}
 
 	public boolean isEditorClosed() {
+		
+		if (isPrefabInstance()) {
+			return true;
+		}
+		
 		return _editorClosed;
 	}
 

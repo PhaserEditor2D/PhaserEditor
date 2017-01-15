@@ -209,7 +209,11 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 				return model.isEditorClosed();
 			}
 		};
-		section.add(_closed_property);
+		
+		// all prefabs are closed
+		if (!model.isPrefabInstance()) {
+			section.add(_closed_property);
+		}
 	}
 
 	@Override
@@ -239,8 +243,8 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 
 		});
 
-		section.add(new PGridEnumProperty<PhysicsType>(getId(), "physicsBodyType",
-				help("Phaser.Group.physicsBodyType"), PhysicsType.VALUES_WITHOUT_NONE) {
+		section.add(new PGridEnumProperty<PhysicsType>(getId(), "physicsBodyType", help("Phaser.Group.physicsBodyType"),
+				PhysicsType.VALUES_WITHOUT_NONE) {
 
 			@Override
 			public PhysicsType getValue() {

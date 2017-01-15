@@ -58,8 +58,10 @@ public class GroupNode extends Pane implements IObjectNode {
 	public void walkTree(Consumer<IObjectNode> visitor, boolean enterClosedGroups) {
 		visitor.accept(this);
 
-		if (getModel().isEditorClosed()) {
-			return;
+		if (!enterClosedGroups) {
+			if (getModel().isEditorClosed()) {
+				return;
+			}
 		}
 
 		for (Node n : getChildren()) {
@@ -71,7 +73,5 @@ public class GroupNode extends Pane implements IObjectNode {
 			}
 		}
 	}
-
-
 
 }

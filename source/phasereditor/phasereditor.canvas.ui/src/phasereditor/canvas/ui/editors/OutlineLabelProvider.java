@@ -50,7 +50,7 @@ public class OutlineLabelProvider extends LabelProvider implements IEditorShared
 				return EditorSharedImages.getImage(IMG_BRICKS);
 			}
 		}
-		
+
 		if (element instanceof GroupNode) {
 			return EditorSharedImages.getImage(IMG_SHAPE_GROUP_NODE);
 		}
@@ -77,11 +77,11 @@ public class OutlineLabelProvider extends LabelProvider implements IEditorShared
 	public String getText(Object element) {
 
 		if (element instanceof IObjectNode) {
-			
+
 			if (((IObjectNode) element).getGroup() == null) {
 				return "<world>";
 			}
-			
+
 			StringBuilder sb = new StringBuilder();
 
 			BaseObjectModel model = ((IObjectNode) element).getControl().getModel();
@@ -89,7 +89,8 @@ public class OutlineLabelProvider extends LabelProvider implements IEditorShared
 			sb.append(model.getEditorName() + " ");
 
 			if (element instanceof GroupNode) {
-				if (((GroupModel) model).isEditorClosed()) {
+				GroupModel group = (GroupModel) model;
+				if (group.isEditorClosed() && !group.isPrefabInstance()) {
 					sb.append("[c]");
 				}
 			}

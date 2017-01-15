@@ -54,9 +54,17 @@ public class CloseOpenGroupHandler extends AbstractHandler {
 
 		for (Object obj : sel.toArray()) {
 			GroupNode group = (GroupNode) obj;
+			if (group.getModel().isPrefabInstance()) {
+				continue;
+			}
 			group.getModel().setEditorClosed(cmd);
 			operations.add(new ChangePropertyOperation<>(group.getModel().getId(),
 					group.getControl().getClosed_property().getName(), Boolean.valueOf(cmd)));
+		}
+		
+		if (operations.isEmpty()) {
+			// all groups are prefabs, stop here
+			return null;
 		}
 
 		update.executeOperations(operations);

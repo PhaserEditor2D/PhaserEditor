@@ -45,7 +45,15 @@ public class TrimGroupHandler extends AbstractHandler {
 
 		for (Object obj : sel.toArray()) {
 			GroupNode group = (GroupNode) obj;
+			if (group.getModel().isPrefabInstance()) {
+				continue;
+			}
 			operations.add(new TrimNodeOperation(group.getModel().getId()));
+		}
+
+		if (operations.isEmpty()) {
+			// all groups are prefabs, stop here
+			return null;
 		}
 
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
