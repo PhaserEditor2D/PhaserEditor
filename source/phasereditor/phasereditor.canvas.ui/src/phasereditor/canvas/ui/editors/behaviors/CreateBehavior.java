@@ -40,6 +40,7 @@ import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.GroupModel;
+import phasereditor.canvas.core.Prefab;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
@@ -97,23 +98,32 @@ public class CreateBehavior {
 
 		List<String> selectionIds = new ArrayList<>();
 
+		WorldModel worldModel = _canvas.getWorldModel();
+
 		for (Object elem : elems) {
+			BaseObjectControl<?> control = null;
+			BaseObjectModel model = null;
+
 			if (elem instanceof IAssetKey) {
 				// TODO: for now get as parent the world
-				WorldModel worldModel = _canvas.getWorldModel();
-				BaseSpriteModel model = factory.apply(worldModel, (IAssetKey) elem);
-				if (model != null) {
-					String newname = worldModel.createName(model.getEditorName());
-					model.setEditorName(newname);
-					BaseObjectControl<?> control = CanvasObjectFactory.createObjectControl(_canvas, model);
-					if (control != null) {
-						selectionIds.add(control.getModel().getId());
-						double x = sceneX + i * 20;
-						double y = sceneY + i * 20;
-						_canvas.dropToWorld(operations, control, x, y);
-						i++;
-					}
-				}
+				model = factory.apply(worldModel, (IAssetKey) elem);
+			} else if (elem instanceof Prefab) {
+				Prefab prefab = (Prefab) elem;
+				model = CanvasModelFactory.createModel(worldModel, prefab);
+			}
+
+			if (model != null) {
+				String newname = worldModel.createName(model.getEditorName());
+				model.setEditorName(newname);
+				control = CanvasObjectFactory.createObjectControl(_canvas, model);
+			}
+
+			if (control != null) {
+				selectionIds.add(control.getModel().getId());
+				double x = sceneX + i * 20;
+				double y = sceneY + i * 20;
+				_canvas.dropToWorld(operations, control, x, y);
+				i++;
 			}
 		}
 
@@ -209,11 +219,11 @@ public class CreateBehavior {
 
 		// we use the table only if the pasting nodes comes from the same
 		// canvas.
-		// boolean useTable = filtered.size() > 0 &&
+		// boolean saving = filtered.size() > 0 &&
 		// filtered.get(0).getNode().getScene() == _canvas.getScene();
 
 		// is better to do not use the table, it was introducing bugs
-		boolean useTable = false;
+		boolean saving = false;
 
 		GroupControl worldControl = _canvas.getWorldNode().getControl();
 		GroupControl pasteIntoThis = worldControl;
@@ -264,7 +274,7 @@ public class CreateBehavior {
 		double miny = Double.MAX_VALUE;
 		{
 			for (IObjectNode node : filtered) {
-				BaseObjectModel copy = node.getModel().copy(false, useTable);
+				BaseObjectModel copy = node.getModel().copy(false);
 				copies.add(copy);
 				minx = Math.min(minx, copy.getX());
 				miny = Math.min(miny, copy.getY());
@@ -283,7 +293,7 @@ public class CreateBehavior {
 			selection.add(copy.getId());
 			double x2 = mouse.stepX(x + copy.getX(), false);
 			double y2 = mouse.stepY(y + copy.getY(), false);
-			AddNodeOperation op = new AddNodeOperation(copy.toJSON(useTable), i, x2, y2, pasteIntoThis.getId());
+			AddNodeOperation op = new AddNodeOperation(copy.toJSON(saving), i, x2, y2, pasteIntoThis.getId());
 			operations.add(op);
 			i++;
 		}

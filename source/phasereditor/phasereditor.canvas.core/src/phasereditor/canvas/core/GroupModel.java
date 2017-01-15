@@ -145,20 +145,22 @@ public class GroupModel extends BaseObjectModel {
 		_children = new ArrayList<>();
 
 		try {
-			JSONArray modelList = jsonInfo.getJSONArray("children");
-			for (int i = 0; i < modelList.length(); i++) {
-				JSONObject jsonModel = modelList.getJSONObject(i);
+			JSONArray modelList = jsonInfo.optJSONArray("children");
+			if (modelList != null) {
+				for (int i = 0; i < modelList.length(); i++) {
+					JSONObject jsonModel = modelList.getJSONObject(i);
 
-				try {
-					BaseObjectModel model = CanvasModelFactory.createModel(this, jsonModel);
+					try {
+						BaseObjectModel model = CanvasModelFactory.createModel(this, jsonModel);
 
-					if (model != null) {
-						_children.add(model);
+						if (model != null) {
+							_children.add(model);
+						}
+					} catch (MissingAssetException e) {
+						out.println("Cannot open " + e.getData().toString(2));
+						MissingAssetSpriteModel missingModel = new MissingAssetSpriteModel(this, e.getData());
+						_children.add(missingModel);
 					}
-				} catch (MissingAssetException e) {
-					out.println("Cannot open " + e.getData().toString(2));
-					MissingAssetSpriteModel missingModel = new MissingAssetSpriteModel(this, e.getData());
-					_children.add(missingModel);
 				}
 			}
 		} catch (Exception e) {
@@ -167,23 +169,28 @@ public class GroupModel extends BaseObjectModel {
 	}
 
 	@Override
-	protected void writeInfo(JSONObject jsonInfo, boolean useTable) {
-		super.writeInfo(jsonInfo, useTable);
+	protected void writeInfo(JSONObject jsonInfo, boolean saving) {
+		super.writeInfo(jsonInfo, saving);
 
 		jsonInfo.put("editorClosed", _editorClosed, false);
 		jsonInfo.put("physicsGroup", _physicsGroup, false);
 		jsonInfo.put("physicsBodyType", _physicsBodyType, PhysicsType.ARCADE);
 		jsonInfo.put("physicsSortDirection", _physicsSortDirection, PhysicsSortDirection.NULL);
 
-		JSONArray childrenData = new JSONArray();
-
-		for (BaseObjectModel model : _children) {
-			JSONObject data = new JSONObject();
-			childrenData.put(data);
-			model.write(data, true);
+		if (isPrefabInstance() && saving) {
+			// we are not going to save the children of prefabs cause we are not
+			// allowing to change them in the editor. Only properties can be
+			// edited in prefabs.
+			//
+		} else {
+			JSONArray childrenData = new JSONArray();
+			for (BaseObjectModel model : _children) {
+				JSONObject data = new JSONObject();
+				childrenData.put(data);
+				model.write(data, saving);
+			}
+			jsonInfo.put("children", childrenData);
 		}
-
-		jsonInfo.put("children", childrenData);
 	}
 
 	public void addChild(BaseObjectModel model) {
@@ -201,7 +208,7 @@ public class GroupModel extends BaseObjectModel {
 
 	@Override
 	public void build() {
-		for(BaseObjectModel child : _children) {
+		for (BaseObjectModel child : _children) {
 			child.build();
 		}
 	}
@@ -226,7 +233,7 @@ public class GroupModel extends BaseObjectModel {
 		if (b == null || !b.booleanValue()) {
 			return false;
 		}
-		
+
 		for (BaseObjectModel child : getChildren()) {
 			if (child instanceof GroupModel) {
 				if (!((GroupModel) child).walk2(visitor)) {

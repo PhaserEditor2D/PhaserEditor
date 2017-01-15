@@ -65,7 +65,7 @@ public class MoveToOtherGroupHandler extends AbstractHandler {
 			// make the copies
 			List<BaseObjectModel> copies = new ArrayList<>();
 			for (IObjectNode node : nodes) {
-				BaseObjectModel copy = node.getModel().copy(true, false);
+				BaseObjectModel copy = node.getModel().copy(true);
 				copies.add(copy);
 
 				// relocate the copy to the scene location

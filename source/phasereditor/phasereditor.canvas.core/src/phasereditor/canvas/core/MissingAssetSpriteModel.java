@@ -56,7 +56,7 @@ public class MissingAssetSpriteModel extends BaseSpriteModel {
 	}
 
 	@Override
-	public void write(JSONObject obj, boolean useTable) {
+	public void write(JSONObject obj, boolean saving) {
 		for (String k : _srcData.keySet()) {
 			obj.put(k, _srcData.get(k));
 		}

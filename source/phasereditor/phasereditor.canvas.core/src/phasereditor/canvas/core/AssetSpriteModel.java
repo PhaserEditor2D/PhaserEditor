@@ -75,8 +75,18 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 	}
 
 	@Override
-	protected final void writeMetadata(JSONObject obj, boolean useTable) {
-		super.writeMetadata(obj, useTable);
+	protected final void writeMetadata(JSONObject obj, boolean saving) {
+		super.writeMetadata(obj, saving);
+		writeAssetKeyMetadata(obj, saving);
+	}
+
+	@Override
+	protected void writePrefabMetadata(JSONObject obj) {
+		super.writePrefabMetadata(obj);
+		writeAssetKeyMetadata(obj, false);
+	}
+
+	private void writeAssetKeyMetadata(JSONObject obj, boolean saving) {
 		// TODO: change it to use the UUID of asset packs!
 		IAssetKey key = _assetKey;
 
@@ -86,7 +96,7 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 			key = key.getAsset();
 		}
 
-		if (useTable) {
+		if (saving) {
 			AssetTable table = getWorld().getAssetTable();
 			obj.put("asset", table.postAsset(key));
 		} else {

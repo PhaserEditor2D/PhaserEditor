@@ -21,12 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core.codegen;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import phasereditor.canvas.core.AnimationModel;
-import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CanvasModel;
@@ -44,7 +39,7 @@ public abstract class JSLikeBaseSpriteCodeGenerator extends JSLikeCodeGenerator{
 	
 	@Override
 	protected void generatePublicFields() {
-		BaseSpriteModel sprite = findSprite();
+		BaseSpriteModel sprite = _model.getWorld().findFirstSprite();
 		if (sprite == null) {
 			return;
 		}
@@ -53,7 +48,7 @@ public abstract class JSLikeBaseSpriteCodeGenerator extends JSLikeCodeGenerator{
 
 	@Override
 	protected void generateObjectCreation() {
-		BaseSpriteModel sprite = findSprite();
+		BaseSpriteModel sprite = _model.getWorld().findFirstSprite();
 		if (sprite == null) {
 			return;
 		}
@@ -69,16 +64,5 @@ public abstract class JSLikeBaseSpriteCodeGenerator extends JSLikeCodeGenerator{
 	@Override
 	protected String getAnimationVarName(BaseObjectModel obj, AnimationModel anim) {
 		return "anim_" + anim.getName();
-	}
-
-	protected AssetSpriteModel<?> findSprite() {
-		List<BaseObjectModel> list = new ArrayList<>(_world.getChildren());
-		Collections.reverse(list);
-		for (BaseObjectModel obj : list) {
-			if (obj instanceof AssetSpriteModel<?>) {
-				return (AssetSpriteModel<?>) obj;
-			}
-		}
-		return null;
 	}
 }

@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AtlasAssetModel;
@@ -71,6 +73,17 @@ public class CanvasModelFactory {
 			case GroupModel.TYPE_NAME:
 				model = new GroupModel(parent, data);
 				break;
+			case Prefab.TYPE_NAME:
+				String filePath = data.getString("prefabFile");
+				IProject project = parent.getWorld().getFile().getProject();
+				IFile file = project.getFile(filePath);
+				Prefab prefab = new Prefab(file);
+				JSONObject jsonInfo = data.optJSONObject("info");
+				JSONObject newData = prefab.newInstance(jsonInfo);
+				model = createModel(parent, newData);
+				model.setId(data.getString("id"));
+				model.setPrefab(prefab);
+				break;
 			default:
 				break;
 			}
@@ -78,5 +91,12 @@ public class CanvasModelFactory {
 		} catch (MissingAssetException e) {
 			return new MissingAssetSpriteModel(parent, data);
 		}
+	}
+
+	public static BaseObjectModel createModel(GroupModel parent, Prefab prefab) {
+		JSONObject data = prefab.newInstance();
+		BaseObjectModel model = CanvasModelFactory.createModel(parent, data);
+		model.setPrefab(prefab);
+		return model;
 	}
 }

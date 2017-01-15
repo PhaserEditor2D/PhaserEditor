@@ -51,7 +51,7 @@ import phasereditor.assetpack.core.TilemapAssetModel.Tilemap;
 import phasereditor.assetpack.ui.AssetsContentProvider;
 import phasereditor.assetpack.ui.views.AssetExplorer.Container;
 import phasereditor.canvas.core.CanvasCore;
-import phasereditor.canvas.core.PrefabReference;
+import phasereditor.canvas.core.Prefab;
 
 class AssetExplorerContentProvider extends AssetsContentProvider {
 
@@ -137,7 +137,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 
 		if (parent == AssetExplorer.PREFABS_ROOT) {
 			if (activeProjet != null) {
-				List<PrefabReference> prefabs = CanvasCore.getPrefabs(activeProjet);
+				List<Prefab> prefabs = CanvasCore.getPrefabs(activeProjet);
 				return prefabs.toArray();
 			}
 		}

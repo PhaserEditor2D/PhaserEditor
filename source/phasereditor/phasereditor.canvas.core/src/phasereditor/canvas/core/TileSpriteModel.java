@@ -93,8 +93,8 @@ public class TileSpriteModel extends AssetSpriteModel<IAssetKey> {
 	}
 
 	@Override
-	protected void writeInfo(JSONObject jsonInfo, boolean useTable) {
-		super.writeInfo(jsonInfo, useTable);
+	protected void writeInfo(JSONObject jsonInfo, boolean saving) {
+		super.writeInfo(jsonInfo, saving);
 
 		jsonInfo.put("width", _width, DEF_WIDTH);
 		jsonInfo.put("height", _height, DEF_HEIGHT);

@@ -34,6 +34,10 @@ import phasereditor.canvas.core.BodyModel.BodyType;
  *
  */
 public abstract class BaseSpriteModel extends BaseObjectModel {
+	/**
+	 * 
+	 */
+	private static final String TINT_0X000000 = "0x000000";
 	public static final double DEF_ANCHOR_X = 0;
 	public static final double DEF_ANCHOR_Y = 0;
 	public static final String DEF_TINT = null;
@@ -83,7 +87,11 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 	}
 
 	public void setTint(String tint) {
-		_tint = tint;
+		if (tint.equals(TINT_0X000000)) {
+			_tint = null;
+		} else {
+			_tint = tint;
+		}
 	}
 
 	public List<AnimationModel> getAnimations() {
@@ -119,8 +127,8 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 	}
 
 	@Override
-	protected void writeInfo(JSONObject jsonInfo, boolean useTable) {
-		super.writeInfo(jsonInfo, useTable);
+	protected void writeInfo(JSONObject jsonInfo, boolean saving) {
+		super.writeInfo(jsonInfo, saving);
 		jsonInfo.put("anchor.x", _anchorX, DEF_ANCHOR_X);
 		jsonInfo.put("anchor.y", _anchorY, DEF_ANCHOR_Y);
 		jsonInfo.put("tint", _tint, DEF_TINT);

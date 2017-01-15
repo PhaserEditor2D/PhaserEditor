@@ -26,7 +26,7 @@ import org.eclipse.swt.graphics.Image;
 
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.views.AssetExplorer.Container;
-import phasereditor.canvas.core.PrefabReference;
+import phasereditor.canvas.core.Prefab;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 
@@ -41,8 +41,8 @@ class AssetExplorerLabelProvider extends LabelProvider {
 			return ((Container) element).name;
 		}
 
-		if (element instanceof PrefabReference) {
-			return ((PrefabReference) element).getFile().getName();
+		if (element instanceof Prefab) {
+			return ((Prefab) element).getFile().getName();
 		}
 
 		return AssetLabelProvider.GLOBAL_16.getText(element);
@@ -54,8 +54,8 @@ class AssetExplorerLabelProvider extends LabelProvider {
 			return EditorSharedImages.getImage(IEditorSharedImages.IMG_BRICKS);
 		}
 
-		if (element instanceof PrefabReference) {
-			return AssetLabelProvider.GLOBAL_16.getImage(((PrefabReference) element).getFile());
+		if (element instanceof Prefab) {
+			return AssetLabelProvider.GLOBAL_16.getImage(((Prefab) element).getFile());
 		}
 
 		return AssetLabelProvider.GLOBAL_16.getImage(element);

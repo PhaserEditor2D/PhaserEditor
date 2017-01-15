@@ -203,9 +203,18 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 
 		boolean isState = _model.getType() == CanvasType.STATE;
 
+		String prefabName = model.isPrefabInstance() ? model.getPrefab().getClassName() : null;
+
 		if (model instanceof ImageSpriteModel) {
 			ImageSpriteModel image = (ImageSpriteModel) model;
-			append("sprite(" + // sprite
+
+			if (prefabName == null) {
+				append("sprite");
+			} else {
+				append("new " + prefabName);
+			}
+
+			append("(" + // sprite
 					round(image.getX())// x
 					+ ", " + round(image.getY()) // y
 					+ ", '" + image.getAssetKey().getKey() + "'" // key
@@ -218,7 +227,14 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 			String frameValue = frame instanceof SpritesheetAssetModel.FrameModel
 					? Integer.toString(((SpritesheetAssetModel.FrameModel) frame).getIndex())
 					: "'" + frame.getKey() + "'";
-			append("sprite(" + // sprite
+
+			if (prefabName == null) {
+				append("sprite");
+			} else {
+				append("new " + prefabName);
+			}
+
+			append("(" + // sprite
 					round(sprite.getX())// x
 					+ ", " + round(sprite.getY()) // y
 					+ ", '" + sprite.getAssetKey().getAsset().getKey() + "'" // key

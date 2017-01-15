@@ -96,10 +96,10 @@ public class CanvasCore {
 		return null;
 	}
 
-	public static List<PrefabReference> getPrefabs(IProject project) {
+	public static List<Prefab> getPrefabs(IProject project) {
 		// TODO: maybe we should do some sort of caching, but for now we go with
 		// the brute-force solution!
-		List<PrefabReference> list = new ArrayList<>();
+		List<Prefab> list = new ArrayList<>();
 
 		try {
 			IContainer webContent = ProjectCore.getWebContentFolder(project);
@@ -110,7 +110,7 @@ public class CanvasCore {
 					if (isCanvasFile(file)) {
 						CanvasType type = getCanvasType(file);
 						if (type == CanvasType.GROUP || type == CanvasType.SPRITE) {
-							list.add(new PrefabReference(file));
+							list.add(new Prefab(file));
 						}
 					}
 				}

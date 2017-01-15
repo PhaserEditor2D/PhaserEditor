@@ -23,6 +23,8 @@ package phasereditor.canvas.core;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -208,5 +210,16 @@ public class WorldModel extends GroupModel {
 			i++;
 		}
 		return name;
+	}
+	
+	public AssetSpriteModel<?> findFirstSprite() {
+		List<BaseObjectModel> list = new ArrayList<>(getChildren());
+		Collections.reverse(list);
+		for (BaseObjectModel obj : list) {
+			if (obj instanceof AssetSpriteModel<?>) {
+				return (AssetSpriteModel<?>) obj;
+			}
+		}
+		return null;
 	}
 }
