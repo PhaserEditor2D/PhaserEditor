@@ -336,9 +336,12 @@ public abstract class BaseObjectModel {
 		writeInfo(jsonInfo, saving);
 
 		if (saving && isPrefabInstance()) {
-			JSONObject prefabData = getPrefab().newInstance();
-			JSONObject prefabJsonInfo = prefabData.getJSONObject("info");
-			removeDefaultKeys(jsonInfo, prefabJsonInfo, "editorName", "x", "y");
+			Prefab prefab = getPrefab();
+			if (prefab.getFile().exists()) {
+				JSONObject prefabData = prefab.newInstance();
+				JSONObject prefabJsonInfo = prefabData.getJSONObject("info");
+				removeDefaultKeys(jsonInfo, prefabJsonInfo, "editorName", "x", "y");
+			}
 		}
 	}
 

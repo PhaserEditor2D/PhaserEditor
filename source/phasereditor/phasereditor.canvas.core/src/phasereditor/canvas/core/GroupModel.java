@@ -162,8 +162,12 @@ public class GroupModel extends BaseObjectModel {
 							_children.add(model);
 						}
 					} catch (MissingAssetException e) {
-						out.println("Cannot open " + e.getData().toString(2));
+						out.println("Cannot open asset " + e.getData().toString(2));
 						MissingAssetSpriteModel missingModel = new MissingAssetSpriteModel(this, e.getData());
+						_children.add(missingModel);
+					} catch (MissingPrefabException e) {
+						out.println("Cannot open prefab " + e.getData().toString(2));
+						MissingPrefabModel missingModel = new MissingPrefabModel(this, e.getData());
 						_children.add(missingModel);
 					}
 				}

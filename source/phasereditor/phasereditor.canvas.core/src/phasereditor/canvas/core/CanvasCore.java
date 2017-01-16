@@ -73,6 +73,10 @@ public class CanvasCore {
 		}
 
 		// TODO: missing to define content type
+		return isCanvasFileExtension(file);
+	}
+
+	public static boolean isCanvasFileExtension(IFile file) {
 		return file.getFileExtension().equals("canvas");
 	}
 

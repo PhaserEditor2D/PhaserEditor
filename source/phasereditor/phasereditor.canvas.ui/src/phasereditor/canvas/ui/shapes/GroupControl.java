@@ -32,6 +32,8 @@ import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.MissingAssetException;
 import phasereditor.canvas.core.MissingAssetSpriteModel;
+import phasereditor.canvas.core.MissingPrefabException;
+import phasereditor.canvas.core.MissingPrefabModel;
 import phasereditor.canvas.core.PhysicsSortDirection;
 import phasereditor.canvas.core.PhysicsType;
 import phasereditor.canvas.core.WorldModel;
@@ -321,11 +323,13 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 		int index;
 		JSONObject data;
 		IObjectNode node;
+		boolean missingPrefab;
 
-		public MissingRecord(int index, JSONObject data, IObjectNode node) {
+		public MissingRecord(int index, JSONObject data, IObjectNode node, boolean missingPrefab) {
 			this.index = index;
 			this.data = data;
 			this.node = node;
+			this.missingPrefab = missingPrefab;
 		}
 	}
 
@@ -343,7 +347,9 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 			try {
 				changed = inode.getControl().rebuild() || changed;
 			} catch (MissingAssetException e) {
-				missing.add(new MissingRecord(i, e.getData(), inode));
+				missing.add(new MissingRecord(i, e.getData(), inode, false));
+			} catch (MissingPrefabException e) {
+				missing.add(new MissingRecord(i, e.getData(), inode, true));
 			}
 			i++;
 		}
@@ -352,8 +358,14 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 			changed = true;
 			for (MissingRecord r : missing) {
 				removeChild(r.node);
-				MissingAssetSpriteModel newModel = new MissingAssetSpriteModel(this.getModel(), r.data);
-				MissingAssetControl newControl = new MissingAssetControl(getCanvas(), newModel);
+				BaseObjectControl<?> newControl;
+				if (r.missingPrefab) {
+					MissingPrefabModel newModel = new MissingPrefabModel(getModel(), r.data);
+					newControl = new MissingPrefabControl(getCanvas(), newModel);
+				} else {
+					MissingAssetSpriteModel newModel = new MissingAssetSpriteModel(getModel(), r.data);
+					newControl = new MissingAssetControl(getCanvas(), newModel);
+				}
 				addChild(r.index, newControl.getIObjectNode());
 			}
 		}

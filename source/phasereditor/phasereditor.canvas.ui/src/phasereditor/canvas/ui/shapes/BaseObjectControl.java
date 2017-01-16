@@ -31,7 +31,7 @@ import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.CanvasModelFactory;
-import phasereditor.canvas.core.MissingAssetException;
+import phasereditor.canvas.core.MissingPrefabException;
 import phasereditor.canvas.core.Prefab;
 import phasereditor.canvas.core.WorldModel.ZOperation;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
@@ -540,16 +540,16 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 			JSONObject data = model.toJSON(true);
 
-			if (!prefab.getFile().exists()) {
-				// TODO: throw a missing prefab exception
-				throw new MissingAssetException(data);
+			if (prefab.getFile().exists()) {
+				BaseObjectModel newModel = CanvasModelFactory.createModel(model.getParent(), data);
+				BaseObjectControl<?> newControl = CanvasObjectFactory.createObjectControl(_canvas, newModel);
+				GroupControl parentControl = getGroup().getControl();
+				int i = parentControl.removeChild(getIObjectNode());
+				parentControl.addChild(i, newControl.getIObjectNode());
+			} else {
+				throw new MissingPrefabException(data);
 			}
 
-			BaseObjectModel newModel = CanvasModelFactory.createModel(model.getParent(), data);
-			BaseObjectControl<?> newControl = CanvasObjectFactory.createObjectControl(_canvas, newModel);
-			GroupControl parentControl = getGroup().getControl();
-			int i = parentControl.removeChild(getIObjectNode());
-			parentControl.addChild(i, newControl.getIObjectNode());
 		}
 
 	}

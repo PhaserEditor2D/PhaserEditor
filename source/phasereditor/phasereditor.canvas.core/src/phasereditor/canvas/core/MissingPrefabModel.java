@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2016 Arian Fornaris
+// Copyright (c) 2015, 2017 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -21,21 +21,16 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
  * @author arian
  *
  */
-public class MissingAssetSpriteModel extends BaseSpriteModel {
-
+public class MissingPrefabModel extends BaseObjectModel{
 	private JSONObject _srcData;
 
-	public MissingAssetSpriteModel(GroupModel parent, JSONObject obj) {
+	public MissingPrefabModel(GroupModel parent, JSONObject obj) {
 		super(parent, "<missing-asset>");
 		_srcData = obj;
 		readInfo(_srcData.getJSONObject("info"));
@@ -43,11 +38,6 @@ public class MissingAssetSpriteModel extends BaseSpriteModel {
 
 	public JSONObject getSrcData() {
 		return _srcData;
-	}
-
-	@Override
-	protected List<AnimationModel> readAnimations(JSONArray array) {
-		return new ArrayList<>();
 	}
 
 	@Override

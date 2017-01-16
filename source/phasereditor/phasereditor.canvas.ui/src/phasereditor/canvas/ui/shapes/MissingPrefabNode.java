@@ -19,51 +19,55 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.core;
+package phasereditor.canvas.ui.shapes;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
+
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.MissingPrefabModel;
 
 /**
  * @author arian
  *
  */
-public class MissingAssetSpriteModel extends BaseSpriteModel {
+public class MissingPrefabNode extends Label implements IObjectNode {
 
-	private JSONObject _srcData;
+	private MissingPrefabControl _control;
 
-	public MissingAssetSpriteModel(GroupModel parent, JSONObject obj) {
-		super(parent, "<missing-asset>");
-		_srcData = obj;
-		readInfo(_srcData.getJSONObject("info"));
-	}
+	public MissingPrefabNode(MissingPrefabControl control) {
+		super();
+		_control = control;
 
-	public JSONObject getSrcData() {
-		return _srcData;
-	}
+		setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, new Insets(0))));
+		setTextFill(Color.WHITE);
 
-	@Override
-	protected List<AnimationModel> readAnimations(JSONArray array) {
-		return new ArrayList<>();
-	}
+		MissingPrefabModel model = (MissingPrefabModel) getModel();
+		JSONObject data = model.getSrcData();
+		setText("Missing prefab " + data.optString("prefabFile", "?"));
 
-	@Override
-	public void build() {
-		// nothing
+		setFont(Font.font(getFont().getFamily(), 20));
 	}
 
 	@Override
-	public void write(JSONObject obj, boolean saving) {
-		for (String k : _srcData.keySet()) {
-			obj.put(k, _srcData.get(k));
-		}
+	public BaseObjectModel getModel() {
+		return _control.getModel();
 	}
 
 	@Override
-	public boolean hasErrors() {
-		return true;
+	public BaseObjectControl<?> getControl() {
+		return _control;
+	}
+
+	@Override
+	public Node getNode() {
+		return this;
 	}
 }

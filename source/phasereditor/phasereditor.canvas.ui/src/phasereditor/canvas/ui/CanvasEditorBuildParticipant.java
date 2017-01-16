@@ -2,24 +2,30 @@ package phasereditor.canvas.ui;
 
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.IResourceDeltaVisitor;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
+import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AssetPackBuildParticipant;
 import phasereditor.assetpack.core.AssetPackCore.PackDelta;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.core.CanvasFilesBuildParticipant;
+import phasereditor.canvas.core.MissingPrefabModel;
 import phasereditor.canvas.core.Prefab;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.behaviors.UpdateBehavior;
@@ -69,6 +75,8 @@ public class CanvasEditorBuildParticipant implements IProjectBuildParticipant {
 					IEditorReference[] editors = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 							.getEditorReferences();
 
+					IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+
 					for (IEditorReference ref : editors) {
 						if (!ref.getId().equals(CanvasEditor.ID)) {
 							continue;
@@ -85,7 +93,7 @@ public class CanvasEditorBuildParticipant implements IProjectBuildParticipant {
 									delta.accept(d -> {
 										if (d.getKind() == IResourceDelta.REMOVED && d.getResource().equals(curFile)) {
 											IPath movedTo = d.getMovedToPath();
-											IFile newFile = ResourcesPlugin.getWorkspace().getRoot().getFile(movedTo);
+											IFile newFile = root.getFile(movedTo);
 											editor.handleFileRename(newFile);
 										}
 										return true;
@@ -100,31 +108,77 @@ public class CanvasEditorBuildParticipant implements IProjectBuildParticipant {
 							if (fullBuild) {
 								rebuild = true;
 							} else if (packDelta.inProject(editor.getEditorInputFile().getProject())) {
+								// rebuild if the asset pack delta affects the
+								// project
 								rebuild = true;
 							} else {
+								// rebuild if a prefab file was modified
 								boolean[] value = { false };
 								try {
-									delta.accept(d -> {
-										IResource resource = d.getResource();
-										if (resource instanceof IFile && resource.exists()) {
-											IFile file = (IFile) resource;
-											if (file.equals(curFile)) {
-												return true;
-											}
-											if (CanvasCore.isCanvasFile(file)) {
-												editor.getModel().getWorld().walk(obj -> {
-													if (obj.isPrefabInstance()) {
-														Prefab prefab = obj.getPrefab();
-														if (prefab.getFile().equals(file)) {
-															value[0] = true;
-															return false;
-														}
-													}
+									delta.accept(new IResourceDeltaVisitor() {
+
+										@Override
+										public boolean visit(IResourceDelta d) throws CoreException {
+											IResource resource = d.getResource();
+											if (resource instanceof IFile) {
+
+												if (!CanvasCore.isCanvasFileExtension((IFile) resource)) {
 													return true;
-												});
+												}
+
+												// the list of all the files
+												// affected by the operation
+												Set<IFile> files = new HashSet<>();
+
+												// add the main file
+												files.add((IFile) resource);
+
+												// add the file from a move
+												{
+													IPath path = d.getMovedFromPath();
+													if (path != null) {
+														files.add(root.getFile(path));
+													}
+												}
+
+												// add the files from a move
+												{
+													IPath path = d.getMovedToPath();
+													if (path != null) {
+														files.add(root.getFile(path));
+													}
+												}
+
+												for (IFile file : files) {
+													// abort the search if the
+													// file
+													// is the same editor file
+													if (file.equals(curFile)) {
+														return true;
+													}
+
+													editor.getModel().getWorld().walk(obj -> {
+														if (obj.isPrefabInstance()) {
+															Prefab prefab = obj.getPrefab();
+															if (prefab.getFile().equals(file)) {
+																value[0] = true;
+																return false;
+															}
+														} else if (obj instanceof MissingPrefabModel) {
+															JSONObject data = ((MissingPrefabModel) obj).getSrcData();
+															String filepath = data.getString("prefabFile");
+															IFile prefabFile = curFile.getProject().getFile(filepath);
+															if (prefabFile.equals(file)) {
+																value[0] = true;
+																return false;
+															}
+														}
+														return true;
+													});
+												}
 											}
+											return true;
 										}
-										return true;
 									});
 									rebuild = value[0];
 								} catch (CoreException e) {
@@ -132,6 +186,7 @@ public class CanvasEditorBuildParticipant implements IProjectBuildParticipant {
 								}
 							}
 
+							// rebuild the editor if it is the case
 							if (rebuild) {
 								UpdateBehavior updateBehavior = editor.getCanvas().getUpdateBehavior();
 								updateBehavior.rebuild();
