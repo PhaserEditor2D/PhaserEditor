@@ -86,13 +86,14 @@ public class Prefab {
 				group.getChildren().addAll(children);
 				objModel = group;
 			}
-
+			
 			if (initInfo != null) {
 				applyInfo(objModel, initInfo);
 			}
 
 			JSONObject newData = new JSONObject();
 			objModel.setId(UUID.randomUUID().toString());
+			objModel.setEditorName(model.getClassName());
 			objModel.write(newData, false);
 			
 			return newData;
