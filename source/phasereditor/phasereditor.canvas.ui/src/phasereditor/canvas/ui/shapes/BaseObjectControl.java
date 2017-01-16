@@ -23,12 +23,16 @@ package phasereditor.canvas.ui.shapes;
 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
+import org.json.JSONObject;
 
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.CanvasModelFactory;
+import phasereditor.canvas.core.MissingAssetException;
+import phasereditor.canvas.core.Prefab;
 import phasereditor.canvas.core.WorldModel.ZOperation;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.behaviors.UpdateBehavior;
@@ -517,8 +521,36 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	 *         outline view.
 	 */
 	public boolean rebuild() {
-		T model = getModel();
-		model.build();
+		rebuildFromPrefab();
+
+		getModel().build();
+
 		return false;
+	}
+
+	protected void rebuildFromPrefab() {
+		T model = getModel();
+
+		if (!model.isPrefabInstance()) {
+			return;
+		}
+
+		if (model.isPrefabInstance()) {
+			Prefab prefab = model.getPrefab();
+
+			JSONObject data = model.toJSON(true);
+
+			if (!prefab.getFile().exists()) {
+				// TODO: throw a missing prefab exception
+				throw new MissingAssetException(data);
+			}
+
+			BaseObjectModel newModel = CanvasModelFactory.createModel(model.getParent(), data);
+			BaseObjectControl<?> newControl = CanvasObjectFactory.createObjectControl(_canvas, newModel);
+			GroupControl parentControl = getGroup().getControl();
+			int i = parentControl.removeChild(getIObjectNode());
+			parentControl.addChild(i, newControl.getIObjectNode());
+		}
+
 	}
 }

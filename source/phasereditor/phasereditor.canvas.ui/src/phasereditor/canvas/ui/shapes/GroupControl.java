@@ -209,7 +209,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 				return model.isEditorClosed();
 			}
 		};
-		
+
 		// all prefabs are closed
 		if (!model.isPrefabInstance()) {
 			section.add(_closed_property);
@@ -291,9 +291,16 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 
 	}
 
-	public void removeChild(IObjectNode inode) {
-		getModel().removeChild(inode.getModel());
-		getNode().getChildren().remove(inode.getNode());
+	public int removeChild(IObjectNode childNode) {
+		GroupModel groupModel = getModel();
+		BaseObjectModel childModel = childNode.getModel();
+
+		int i = groupModel.getChildren().indexOf(childModel);
+
+		groupModel.removeChild(childModel);
+		getNode().getChildren().remove(childNode.getNode());
+
+		return i;
 	}
 
 	public void addChild(IObjectNode inode) {
@@ -324,6 +331,8 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 
 	@Override
 	public boolean rebuild() {
+		rebuildFromPrefab();
+
 		List<MissingRecord> missing = new ArrayList<>();
 
 		boolean changed = false;
