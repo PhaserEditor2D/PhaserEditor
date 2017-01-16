@@ -53,7 +53,7 @@ public class TSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 		line(" */");
 		openIndent("class " + classname + " extends " + baseclass + " {");
 		openIndent("constructor(aGame : Phaser.Game, aX : number, aY : number) {");
-		AssetSpriteModel<?> sprite = _model.getWorld().findFirstSprite();
+		AssetSpriteModel<?> sprite = (AssetSpriteModel<?>) _model.getWorld().findFirstSprite();
 		String key = "null";
 		String frame = "null";
 		if (sprite != null) {

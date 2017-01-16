@@ -22,6 +22,7 @@
 package phasereditor.canvas.core;
 
 import java.io.InputStream;
+import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,7 +56,8 @@ public class Prefab {
 	}
 
 	/**
-	 * The same as {@link #newInstance(JSONObject)} but it takes no instance info.
+	 * The same as {@link #newInstance(JSONObject)} but it takes no instance
+	 * info.
 	 * 
 	 * @return
 	 */
@@ -79,6 +81,9 @@ public class Prefab {
 			BaseObjectModel objModel;
 			if (model.getType() == CanvasType.SPRITE) {
 				objModel = model.getWorld().findFirstSprite();
+				if (objModel == null) {
+					throw new InvalidParameterException("The prefab has an invalid state.");
+				}
 			} else {
 				// lets package the world in a sub group
 				List<BaseObjectModel> children = model.getWorld().getChildren();
@@ -86,7 +91,7 @@ public class Prefab {
 				group.getChildren().addAll(children);
 				objModel = group;
 			}
-			
+
 			if (initInfo != null) {
 				applyInfo(objModel, initInfo);
 			}
@@ -95,9 +100,10 @@ public class Prefab {
 			objModel.setId(UUID.randomUUID().toString());
 			objModel.setEditorName(model.getClassName());
 			objModel.write(newData, false);
-			
+
 			return newData;
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 	}

@@ -56,6 +56,11 @@ public class CanvasFilesBuildParticipant implements IProjectBuildParticipant {
 
 	@Override
 	public void build(IProject project, IResourceDelta delta, Map<String, Object> env) {
+		if (isModifiedAPrefab(delta)) {
+			fullBuild(project, env);
+			return;
+		}
+
 		PackDelta packDelta = AssetPackBuildParticipant.getData(env);
 
 		Set<IFile> validatedFiles = new HashSet<>();
@@ -67,6 +72,27 @@ public class CanvasFilesBuildParticipant implements IProjectBuildParticipant {
 		}
 
 		validateCanvasFilesUsingModifiedAssets(packDelta, validatedFiles);
+
+	}
+
+	private static boolean isModifiedAPrefab(IResourceDelta delta) {
+		try {
+			boolean[] value = { false };
+			delta.accept(d -> {
+				if (d.getResource() instanceof IFile) {
+					IFile file = (IFile) d.getResource();
+					if (CanvasCore.isCanvasFileExtension(file)) {
+						value[0] = true;
+						return false;
+					}
+				}
+				return true;
+			});
+			return value[0];
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	private static void validateCanvasFilesUsingModifiedAssets(PackDelta delta, Set<IFile> validatedFiles) {
@@ -97,6 +123,10 @@ public class CanvasFilesBuildParticipant implements IProjectBuildParticipant {
 				IContainer webContent = ProjectCore.getWebContentFolder(project);
 
 				webContent.accept(r -> {
+					if (validatedFiles.contains(r)) {
+						return true;
+					}
+
 					if (r instanceof IFile) {
 						IFile file = (IFile) r;
 						if (CanvasCore.isCanvasFile(file)) {
@@ -123,6 +153,10 @@ public class CanvasFilesBuildParticipant implements IProjectBuildParticipant {
 			@Override
 			public boolean visit(IResourceDelta delta2) throws CoreException {
 				IResource resource = delta2.getResource();
+
+				if (validatedFiles.contains(resource)) {
+					return true;
+				}
 
 				if (resource == null) {
 					return true;

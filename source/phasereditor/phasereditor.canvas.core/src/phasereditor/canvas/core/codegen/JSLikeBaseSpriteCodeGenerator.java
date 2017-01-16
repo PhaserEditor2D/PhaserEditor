@@ -39,7 +39,7 @@ public abstract class JSLikeBaseSpriteCodeGenerator extends JSLikeCodeGenerator{
 	
 	@Override
 	protected void generatePublicFields() {
-		BaseSpriteModel sprite = _model.getWorld().findFirstSprite();
+		BaseSpriteModel sprite = (BaseSpriteModel) _model.getWorld().findFirstSprite();
 		if (sprite == null) {
 			return;
 		}
@@ -48,7 +48,7 @@ public abstract class JSLikeBaseSpriteCodeGenerator extends JSLikeCodeGenerator{
 
 	@Override
 	protected void generateObjectCreation() {
-		BaseSpriteModel sprite = _model.getWorld().findFirstSprite();
+		BaseSpriteModel sprite = (BaseSpriteModel) _model.getWorld().findFirstSprite();
 		if (sprite == null) {
 			return;
 		}

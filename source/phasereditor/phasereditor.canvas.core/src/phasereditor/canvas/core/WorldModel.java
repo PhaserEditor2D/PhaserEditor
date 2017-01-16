@@ -211,13 +211,17 @@ public class WorldModel extends GroupModel {
 		}
 		return name;
 	}
-	
-	public AssetSpriteModel<?> findFirstSprite() {
+
+	public BaseObjectModel findFirstSprite() {
 		List<BaseObjectModel> list = new ArrayList<>(getChildren());
 		Collections.reverse(list);
 		for (BaseObjectModel obj : list) {
 			if (obj instanceof AssetSpriteModel<?>) {
-				return (AssetSpriteModel<?>) obj;
+				return obj;
+			} else if (obj instanceof MissingAssetSpriteModel) {
+				return obj;
+			} else if (obj instanceof MissingPrefabModel) {
+				return obj;
 			}
 		}
 		return null;

@@ -50,7 +50,7 @@ public class JSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 		line(" * @param {number} aY " + help.getMethodArgHelp("Phaser.Sprite", "y"));
 		line(" */");
 		openIndent("function " + classname + "(aGame, aX, aY) {");
-		AssetSpriteModel<?> sprite = _model.getWorld().findFirstSprite();
+		AssetSpriteModel<?> sprite = (AssetSpriteModel<?>) _model.getWorld().findFirstSprite();
 		String key = "null";
 		String frame = "null";
 		if (sprite != null) {

@@ -87,7 +87,10 @@ public class CanvasFileValidation {
 				JSONObject child = list.getJSONObject(i);
 				validateObject(child);
 			}
+		} else if (type.equals("prefab")) {
+			validatePrefab(obj);
 		} else {
+
 			if (obj.has("asset-ref")) {
 				JSONObject ref = obj.getJSONObject("asset-ref");
 				// a null reference is added when it is not found, but that
@@ -103,6 +106,17 @@ public class CanvasFileValidation {
 							"Wrong asset-table reference in sprite '" + spriteId + "'"));
 				}
 			}
+		}
+	}
+
+	private void validatePrefab(JSONObject obj) {
+		String filename = obj.getString("prefabFile");
+		IFile file = _file.getProject().getFile(filename);
+		if (!file.exists()) {
+			JSONObject info = obj.getJSONObject("info");
+			String name = info.optString("editorName", "?");
+			_problems.add(new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID,
+					"Missing prefab of '" + name + "'. File not found '" + filename + "'."));
 		}
 	}
 
