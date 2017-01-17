@@ -37,20 +37,24 @@ public abstract class PGridProperty<T> {
 		_nodeId = nodeId;
 		_tooltip = tooltip;
 	}
-	
+
 	public PGridSection getSection() {
 		return _section;
 	}
-	
+
 	public void setSection(PGridSection section) {
 		_section = section;
 	}
-	
+
 	@SuppressWarnings("static-method")
 	public boolean isActive() {
 		return true;
 	}
-	
+
+	public boolean isReadOnly() {
+		return getSection().isReadOnly();
+	}
+
 	public String getNodeId() {
 		return _nodeId;
 	}
@@ -66,7 +70,7 @@ public abstract class PGridProperty<T> {
 	public abstract T getValue();
 
 	public abstract void setValue(T value, boolean notify);
-	
+
 	public abstract boolean isModified();
 
 	public String getTooltip() {

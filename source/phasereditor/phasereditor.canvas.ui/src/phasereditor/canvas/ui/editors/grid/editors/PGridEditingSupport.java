@@ -21,6 +21,10 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid.editors;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
@@ -35,9 +39,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.ListSelectionDialog;
 
-import phasereditor.canvas.core.PhysicsType;
 import phasereditor.canvas.core.PhysicsSortDirection;
+import phasereditor.canvas.core.PhysicsType;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.grid.NumberCellEditor;
 import phasereditor.canvas.ui.editors.grid.PGridAnimationsProperty;
@@ -46,6 +51,7 @@ import phasereditor.canvas.ui.editors.grid.PGridColorProperty;
 import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
 import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
+import phasereditor.canvas.ui.editors.grid.PGridOverrideProperty;
 import phasereditor.canvas.ui.editors.grid.PGridProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
 import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
@@ -126,6 +132,27 @@ public class PGridEditingSupport extends EditingSupport {
 				}
 			});
 			return editor;
+		} else if (element instanceof PGridOverrideProperty) {
+			PGridOverrideProperty prop = (PGridOverrideProperty) element;
+			return new DialogCellEditor(parent) {
+
+				@Override
+				protected Object openDialogBox(Control cellEditorWindow) {
+
+					ListSelectionDialog dlg = new ListSelectionDialog(cellEditorWindow.getShell(),
+							prop.getValidProperties(), new ArrayContentProvider(), new LabelProvider(),
+							"Select the properties to override in this prefab instance:");
+					List<String> initialValue = prop.getValue();
+					dlg.setInitialSelections(initialValue.toArray());
+					dlg.setTitle("Prefab Override");
+					if (dlg.open() == Window.OK) {
+						Object[] result = dlg.getResult();
+						return new ArrayList<>(Arrays.asList(result));
+					}
+
+					return initialValue;
+				}
+			};
 		}
 
 		return null;
@@ -135,6 +162,8 @@ public class PGridEditingSupport extends EditingSupport {
 	protected boolean canEdit(Object element) {
 		if (element instanceof PGridSection) {
 			return false;
+		} else if (element instanceof PGridProperty) {
+			return !((PGridProperty<?>) element).isReadOnly();
 		}
 		return true;
 	}

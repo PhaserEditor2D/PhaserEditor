@@ -140,6 +140,11 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 				public IAssetFrameModel getValue() {
 					return getModel().getOverFrame();
 				}
+
+				@Override
+				public boolean isReadOnly() {
+					return getModel().isPrefabReadOnly("texture");
+				}
 			};
 
 			// the outFrame is connected to the main assetKey!
@@ -157,6 +162,11 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 				@Override
 				public IAssetFrameModel getValue() {
 					return (IAssetFrameModel) getModel().getAssetKey();
+				}
+
+				@Override
+				public boolean isReadOnly() {
+					return getModel().isPrefabReadOnly("texture");
 				}
 
 			};
@@ -177,6 +187,11 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 					return getModel().getDownFrame();
 				}
 
+				@Override
+				public boolean isReadOnly() {
+					return getModel().isPrefabReadOnly("texture");
+				}
+
 			};
 
 			PGridFrameProperty upFrame_property = new ButtonFrameProperty("upFrame", help("Phaser.Button", "upFrame")) {
@@ -192,6 +207,11 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 				@Override
 				public IAssetFrameModel getValue() {
 					return getModel().getUpFrame();
+				}
+
+				@Override
+				public boolean isReadOnly() {
+					return getModel().isPrefabReadOnly("texture");
 				}
 
 			};

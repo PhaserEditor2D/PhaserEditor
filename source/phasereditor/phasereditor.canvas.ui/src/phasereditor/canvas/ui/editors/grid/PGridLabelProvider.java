@@ -23,6 +23,8 @@ package phasereditor.canvas.ui.editors.grid;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
@@ -46,6 +48,16 @@ public class PGridLabelProvider extends ColumnLabelProvider {
 
 	public Viewer getViewer() {
 		return _viewer;
+	}
+
+	@Override
+	public Color getForeground(Object element) {
+		if (element instanceof PGridProperty) {
+			if (((PGridProperty<?>) element).isReadOnly()) {
+				return _viewer.getControl().getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY);
+			}
+		}
+		return super.getForeground(element);
 	}
 
 	@Override

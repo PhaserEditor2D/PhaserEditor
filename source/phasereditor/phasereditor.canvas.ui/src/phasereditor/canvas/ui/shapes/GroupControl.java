@@ -242,6 +242,11 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 			public boolean isModified() {
 				return getModel().isPhysicsGroup();
 			}
+			
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly("physics");
+			}
 
 		});
 
@@ -265,6 +270,11 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 			public boolean isModified() {
 				return getModel().getPhysicsBodyType() != PhysicsType.ARCADE;
 			}
+			
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly("physics");
+			}
 		});
 
 		section.add(new PGridEnumProperty<PhysicsSortDirection>(getId(), "physicsSortDirection",
@@ -287,10 +297,21 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 			public boolean isModified() {
 				return getModel().getPhysicsSortDirection() != PhysicsSortDirection.NULL;
 			}
+			
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly("physics");
+			}
 		});
 
 		propModel.getSections().add(section);
 
+	}
+	
+	@Override
+	protected void initPrefabPGridModel(List<String> validProperties) {
+		super.initPrefabPGridModel(validProperties);
+		validProperties.add("physics");
 	}
 
 	public int removeChild(IObjectNode childNode) {

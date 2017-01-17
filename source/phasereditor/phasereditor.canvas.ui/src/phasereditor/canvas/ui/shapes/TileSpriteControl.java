@@ -77,12 +77,26 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 	protected IObjectNode createNode() {
 		return new TileSpriteNode(this);
 	}
+	
 
+	@Override
+	protected void initPrefabPGridModel(List<String> validProperties) {
+		super.initPrefabPGridModel(validProperties);
+		validProperties.add("tile");
+	}
+	
 	@SuppressWarnings("boxing")
 	@Override
 	protected void initPGridModel(PGridModel propModel) {
 		super.initPGridModel(propModel);
-		PGridSection section = new PGridSection("Sprite Tile");
+		PGridSection section = new PGridSection("Sprite Tile"){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly("tile");
+			}
+		};
 		propModel.getSections().add(section);
 
 		initFrameProperty();

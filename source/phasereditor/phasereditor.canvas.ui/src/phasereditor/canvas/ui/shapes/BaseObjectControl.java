@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.json.JSONObject;
@@ -39,6 +42,7 @@ import phasereditor.canvas.ui.editors.behaviors.UpdateBehavior;
 import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
+import phasereditor.canvas.ui.editors.grid.PGridOverrideProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
 import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
 import phasereditor.inspect.core.InspectCore;
@@ -71,6 +75,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		_propModel = new PGridModel();
 
 		initPGridModel(_propModel);
+
 		updateFromModel();
 	}
 
@@ -165,6 +170,31 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		PGridSection editorSection = new PGridSection("Editor");
 		initEditorPGridModel(propModel, editorSection);
 
+		if (_model.isPrefabInstance()) {
+			PGridSection section = new PGridSection("Prefab Instance");
+			PGridOverrideProperty prop = new PGridOverrideProperty(_model);
+			initPrefabPGridModel(prop.getValidProperties());
+			section.add(prop);
+			propModel.getSections().add(section);
+		}
+
+		initDisplayPGridModel(propModel);
+	}
+
+	@SuppressWarnings("static-method")
+	protected void initPrefabPGridModel(List<String> validProperties) {
+		validProperties.addAll(Arrays.asList(
+				//@formatter:off
+				"x", 
+				"y", 
+				"angle", 
+				"scale", 
+				"pivot"
+				//@formatter:on
+		));
+	}
+
+	private void initDisplayPGridModel(PGridModel propModel) {
 		PGridSection displaySection = new PGridSection("Display");
 
 		propModel.getSections().add(displaySection);
@@ -187,6 +217,12 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			public boolean isModified() {
 				return getModel().getX() != 0;
 			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly("x");
+			}
+
 		};
 
 		_y_property = new PGridNumberProperty(getId(), "y", help("Phaser.Sprite.y")) {
@@ -206,6 +242,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			@Override
 			public boolean isModified() {
 				return getModel().getY() != 0;
+			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly("y");
 			}
 		};
 
@@ -227,6 +268,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			public boolean isModified() {
 				return getModel().getAngle() != 0;
 			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly("angle");
+			}
 		};
 
 		_scale_x_property = new PGridNumberProperty(getId(), "scale.x", help("Phaser.Sprite.scale")) {
@@ -246,6 +292,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			@Override
 			public boolean isModified() {
 				return getModel().getScaleX() != 1;
+			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly("scale");
 			}
 
 		};
@@ -269,6 +320,10 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 				return getModel().getScaleY() != 1;
 			}
 
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly("scale");
+			}
 		};
 
 		_pivot_x_property = new PGridNumberProperty(getId(), "pivot.x", help("Phaser.Sprite.pivot")) {
@@ -288,6 +343,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			@Override
 			public boolean isModified() {
 				return getModel().getPivotX() != 0;
+			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly("pivot");
 			}
 		};
 
@@ -309,6 +369,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			public boolean isModified() {
 				return getModel().getPivotY() != 0;
 			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly("pivot");
+			}
 		};
 
 		displaySection.add(_x_property);
@@ -318,7 +383,6 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		displaySection.add(_scale_y_property);
 		displaySection.add(_pivot_x_property);
 		displaySection.add(_pivot_y_property);
-
 	}
 
 	protected void initEditorPGridModel(PGridModel propModel, PGridSection section) {

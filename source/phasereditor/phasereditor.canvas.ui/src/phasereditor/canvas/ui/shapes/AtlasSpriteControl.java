@@ -92,9 +92,14 @@ public class AtlasSpriteControl extends BaseSpriteControl<AtlasSpriteModel> {
 			public List<?> getFrames() {
 				return getModel().getAssetKey().getAsset().getSubElements();
 			}
+			
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly("texture");
+			}
 
 		};
 
 		getSpriteSection().add(frame_property);
-	}
+	}	
 }

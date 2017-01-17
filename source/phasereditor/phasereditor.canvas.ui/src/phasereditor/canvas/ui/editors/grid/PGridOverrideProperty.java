@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2016 Arian Fornaris
+// Copyright (c) 2015, 2017 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -22,68 +22,46 @@
 package phasereditor.canvas.ui.editors.grid;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+
+import phasereditor.canvas.core.BaseObjectModel;
 
 /**
  * @author arian
  *
  */
-public class PGridSection extends ArrayList<PGridProperty<?>> {
-	private static final long serialVersionUID = 1L;
-	private String _name;
-	private boolean _active;
-	private Map<String, PGridProperty<?>> _map;
+public final class PGridOverrideProperty extends PGridProperty<List<String>> {
 
-	public PGridSection(String name) {
-		super();
-		_name = name;
-		_active = true;
-		_map = new HashMap<>();
+	private BaseObjectModel _model;
+	private List<String> _validProperties;
+
+	public PGridOverrideProperty(BaseObjectModel model) {
+		super(model.getId(), "override", "The properties to override in this prefab instance.");
+		_model = model;
+		_validProperties = new ArrayList<>();
 	}
-	
-	@Override
-	public boolean add(PGridProperty<?> e) {
-		e.setSection(this);
-		_map.put(e.getName(), e);
-		return super.add(e);
+
+	public List<String> getValidProperties() {
+		return _validProperties;
 	}
-	
+
 	@Override
-	public void add(int index, PGridProperty<?> e) {
-		e.setSection(this);
-		_map.put(e.getName(), e);
-		super.add(index, e);
+	public void setValue(List<String> value, boolean notify) {
+		_model.setPrefabOverride(value);
 	}
-	
+
 	@Override
-	public boolean addAll(Collection<? extends PGridProperty<?>> c) {
-		for(PGridProperty<?> e : c) {
-			e.setSection(this);
-			_map.put(e.getName(), e);
+	public List<String> getValue() {
+		return _model.getPrefabOverride();
+	}
+
+	@Override
+	public boolean isModified() {
+		List<String> override = _model.getPrefabOverride();
+		if (override.size() != 2 || !override.contains("x") || !override.contains("y")) {
+			return true;
 		}
-		return super.addAll(c);
-	}
-
-	public boolean isActive() {
-		return _active;
-	}
-
-	public void setActive(boolean active) {
-		_active = active;
-	}
-
-	public String getName() {
-		return _name;
-	}
-
-	public void setName(String name) {
-		_name = name;
-	}
-
-	@SuppressWarnings("static-method")
-	public boolean isReadOnly() {
 		return false;
 	}
+
 }

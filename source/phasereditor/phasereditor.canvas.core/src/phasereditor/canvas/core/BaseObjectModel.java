@@ -50,6 +50,10 @@ public abstract class BaseObjectModel {
 	private static final double DEF_PIVOT_Y = 0;
 	private static final boolean DEF_EDITOR_GENERATE = true;
 	public static final boolean DEF_EDITOR_PUBLIC = false;
+
+	private Prefab _prefab;
+	private List<String> _prefabOverride;
+
 	private GroupModel _parent;
 	private String _typeName;
 	private String _editorName;
@@ -57,7 +61,6 @@ public abstract class BaseObjectModel {
 	private boolean _editorGenerate;
 	private boolean _editorPublic;
 	private boolean _editorShow;
-	private Prefab _prefab;
 
 	private String _id;
 	private double _x;
@@ -78,6 +81,11 @@ public abstract class BaseObjectModel {
 
 		_parent = parent;
 		_typeName = typeName;
+
+		_prefabOverride = new ArrayList<>();
+		// by default all instances override the X and Y properties
+		_prefabOverride.add("x");
+		_prefabOverride.add("y");
 
 		_editorName = typeName;
 		_editorPick = DEF_EDITOR_PICK;
@@ -106,6 +114,18 @@ public abstract class BaseObjectModel {
 
 	public void setPrefab(Prefab prefabReference) {
 		_prefab = prefabReference;
+	}
+
+	public List<String> getPrefabOverride() {
+		return _prefabOverride;
+	}
+
+	public void setPrefabOverride(List<String> prefabOverride) {
+		_prefabOverride = prefabOverride;
+	}
+
+	public boolean isPrefabReadOnly(String pattern) {
+		return !_prefabOverride.contains(pattern);
 	}
 
 	public boolean isPrefabInstance() {

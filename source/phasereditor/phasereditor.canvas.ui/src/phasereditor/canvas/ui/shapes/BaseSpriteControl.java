@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -136,6 +137,20 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 		propModel.getSections().add(_bodyArcadeSection);
 	}
 
+	@Override
+	protected void initPrefabPGridModel(List<String> validProperties) {
+		super.initPrefabPGridModel(validProperties);
+		validProperties.addAll(Arrays.asList(
+				//@formatter:off
+				"texture",
+				"anchor",
+				"tint",
+				"animations",
+				"data"
+				//@formatter:on
+		));
+	}
+
 	private void createSpriteSection() {
 		_spriteSection = new PGridSection("Sprite");
 
@@ -157,6 +172,11 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 			public boolean isModified() {
 				return getModel().getAnchorX() != 0;
 			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly("anchor");
+			}
 		};
 
 		_anchor_y_property = new PGridNumberProperty(getId(), "anchor.y", help("Phaser.Sprite.anchor")) {
@@ -176,6 +196,11 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 			@Override
 			public boolean isModified() {
 				return getModel().getAnchorY() != 0;
+			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly("anchor");
 			}
 		};
 
@@ -213,6 +238,11 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 				Color c = Color.valueOf(tint);
 				return new RGB((int) (c.getRed() * 255), (int) (c.getGreen() * 255), (int) (c.getBlue() * 255));
 			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly("tint");
+			}
 		};
 
 		_tint_property.setDefaultRGB(new RGB(255, 255, 255));
@@ -245,6 +275,11 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 				}
 				return null;
 			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly("animations");
+			}
 		};
 
 		PGridStringProperty data_property = new PGridStringProperty(getId(), "data", help("Phaser.Sprite.data"), true) {
@@ -270,6 +305,11 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 					updateFromPropertyChange();
 				}
 			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly("data");
+			}
 		};
 
 		_spriteSection.add(_anchor_x_property);
@@ -286,6 +326,11 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 			@Override
 			public boolean isActive() {
 				return getModel().getArcadeBody() != null;
+			}
+			
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly("physics");
 			}
 		};
 
@@ -309,6 +354,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 					public boolean isModified() {
 						return getModel().getArcadeBody().getOffsetX() != 0;
 					}
+
 				});
 
 		_bodyArcadeSection
@@ -331,6 +377,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 					public boolean isModified() {
 						return getValue().doubleValue() != 0;
 					}
+
 				});
 
 		// rect arcade
@@ -360,7 +407,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 
 			@Override
 			public boolean isActive() {
-				return getModel().getBody() instanceof RectArcadeBodyModel;
+				return super.isActive() && getModel().getBody() instanceof RectArcadeBodyModel;
 			}
 
 		});
@@ -387,9 +434,8 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 
 			@Override
 			public boolean isActive() {
-				return getModel().getBody() instanceof RectArcadeBodyModel;
+				return super.isActive() && getModel().getBody() instanceof RectArcadeBodyModel;
 			}
-
 		});
 
 		// circle arcade
@@ -417,9 +463,8 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 
 			@Override
 			public boolean isActive() {
-				return getModel().getBody() instanceof CircleArcadeBodyModel;
+				return super.isActive() && getModel().getBody() instanceof CircleArcadeBodyModel;
 			}
-
 		});
 
 		// private double _mass = 1;
@@ -531,9 +576,8 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 
 			@Override
 			public boolean isActive() {
-				return getModel().getBody() instanceof ArcadeBodyModel;
+				return super.isActive() && getModel().getBody() instanceof ArcadeBodyModel;
 			}
-
 		};
 		_bodyArcadeSection.add(p);
 		return p;
@@ -573,9 +617,8 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 
 			@Override
 			public boolean isActive() {
-				return getModel().getBody() instanceof ArcadeBodyModel;
+				return super.isActive() && getModel().getBody() instanceof ArcadeBodyModel;
 			}
-
 		};
 		_bodyArcadeSection.add(p);
 		return p;

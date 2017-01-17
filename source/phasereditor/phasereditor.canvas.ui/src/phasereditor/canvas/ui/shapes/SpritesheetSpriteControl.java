@@ -90,6 +90,11 @@ public class SpritesheetSpriteControl extends BaseSpriteControl<SpritesheetSprit
 			public List<?> getFrames() {
 				return getModel().getFrames();
 			}
+			
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly("texture");
+			}
 
 		};
 		getSpriteSection().add(frame_property);
