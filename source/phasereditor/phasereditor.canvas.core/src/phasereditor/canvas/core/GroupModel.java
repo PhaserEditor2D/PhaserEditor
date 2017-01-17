@@ -69,11 +69,11 @@ public class GroupModel extends BaseObjectModel {
 	}
 
 	public boolean isEditorClosed() {
-		
+
 		if (isPrefabInstance()) {
 			return true;
 		}
-		
+
 		return _editorClosed;
 	}
 
@@ -182,9 +182,12 @@ public class GroupModel extends BaseObjectModel {
 		super.writeInfo(jsonInfo, saving);
 
 		jsonInfo.put("editorClosed", _editorClosed, false);
-		jsonInfo.put("physicsGroup", _physicsGroup, false);
-		jsonInfo.put("physicsBodyType", _physicsBodyType, PhysicsType.ARCADE);
-		jsonInfo.put("physicsSortDirection", _physicsSortDirection, PhysicsSortDirection.NULL);
+		
+		if (canSaveInfo("physics")) {
+			jsonInfo.put("physicsGroup", _physicsGroup, false);
+			jsonInfo.put("physicsBodyType", _physicsBodyType, PhysicsType.ARCADE);
+			jsonInfo.put("physicsSortDirection", _physicsSortDirection, PhysicsSortDirection.NULL);
+		}
 
 		if (isPrefabInstance() && saving) {
 			// we are not going to save the children of prefabs cause we are not

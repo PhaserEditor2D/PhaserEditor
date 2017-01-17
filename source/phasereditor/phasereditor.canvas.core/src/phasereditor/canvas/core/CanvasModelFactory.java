@@ -23,6 +23,7 @@ package phasereditor.canvas.core;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AtlasAssetModel;
@@ -89,7 +90,20 @@ public class CanvasModelFactory {
 				// TODO: this is a temporal solution to keep the asset, but the
 				// real solution is to keep the texture in the info and make it
 				// easy to change.
-				if (data.has("asset-ref")) {
+
+				boolean overrideTexture = false;
+
+			{
+				JSONArray array = jsonInfo.optJSONArray("prefabOverride");
+				for (int i = 0; array != null && i < array.length(); i++) {
+					if (array.getString(i).equals("texture")) {
+						overrideTexture = true;
+						break;
+					}
+				}
+			}
+
+				if (overrideTexture && data.has("asset-ref")) {
 					JSONObject assetRef = data.getJSONObject("asset-ref");
 					JSONObject newAssetRef = newData.getJSONObject("asset-ref");
 					if (

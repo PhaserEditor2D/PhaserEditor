@@ -172,7 +172,13 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 		if (_model.isPrefabInstance()) {
 			PGridSection section = new PGridSection("Prefab Instance");
-			PGridOverrideProperty prop = new PGridOverrideProperty(_model);
+			PGridOverrideProperty prop = new PGridOverrideProperty(_model) {
+				@Override
+				public void setValue(List<String> value, boolean notify) {
+					super.setValue(value, notify);
+					rebuildFromPrefab();
+				}
+			};
 			initPrefabPGridModel(prop.getValidProperties());
 			section.add(prop);
 			propModel.getSections().add(section);
@@ -185,8 +191,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	protected void initPrefabPGridModel(List<String> validProperties) {
 		validProperties.addAll(Arrays.asList(
 				//@formatter:off
-				"x", 
-				"y", 
+				"position", 
 				"angle", 
 				"scale", 
 				"pivot"
@@ -220,7 +225,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 			@Override
 			public boolean isReadOnly() {
-				return getModel().isPrefabReadOnly("x");
+				return getModel().isPrefabReadOnly("position");
 			}
 
 		};
@@ -246,7 +251,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 			@Override
 			public boolean isReadOnly() {
-				return getModel().isPrefabReadOnly("y");
+				return getModel().isPrefabReadOnly("position");
 			}
 		};
 

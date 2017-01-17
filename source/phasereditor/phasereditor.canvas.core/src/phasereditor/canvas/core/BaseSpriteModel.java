@@ -129,23 +129,36 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 	@Override
 	protected void writeInfo(JSONObject jsonInfo, boolean saving) {
 		super.writeInfo(jsonInfo, saving);
-		jsonInfo.put("anchor.x", _anchorX, DEF_ANCHOR_X);
-		jsonInfo.put("anchor.y", _anchorY, DEF_ANCHOR_Y);
-		jsonInfo.put("tint", _tint, DEF_TINT);
-		jsonInfo.put("data", _data, null);
 
-		if (!_animations.isEmpty()) {
-			JSONArray array = new JSONArray();
-			jsonInfo.put("animations", array);
-			for (AnimationModel model : _animations) {
-				JSONObject obj = new JSONObject();
-				model.write(obj);
-				array.put(obj);
+		if (canSaveInfo("anchor")) {
+			jsonInfo.put("anchor.x", _anchorX, DEF_ANCHOR_X);
+			jsonInfo.put("anchor.y", _anchorY, DEF_ANCHOR_Y);
+		}
+
+		if (canSaveInfo("tint")) {
+			jsonInfo.put("tint", _tint, DEF_TINT);
+		}
+
+		if (canSaveInfo("data")) {
+			jsonInfo.put("data", _data, null);
+		}
+
+		if (canSaveInfo("animations")) {
+			if (!_animations.isEmpty()) {
+				JSONArray array = new JSONArray();
+				jsonInfo.put("animations", array);
+				for (AnimationModel model : _animations) {
+					JSONObject obj = new JSONObject();
+					model.write(obj);
+					array.put(obj);
+				}
 			}
 		}
 
-		if (_body != null) {
-			jsonInfo.put("body", _body.toJSON());
+		if (canSaveInfo("physics")) {
+			if (_body != null) {
+				jsonInfo.put("body", _body.toJSON());
+			}
 		}
 	}
 

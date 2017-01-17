@@ -96,13 +96,14 @@ public class TileSpriteModel extends AssetSpriteModel<IAssetKey> {
 	protected void writeInfo(JSONObject jsonInfo, boolean saving) {
 		super.writeInfo(jsonInfo, saving);
 
-		jsonInfo.put("width", _width, DEF_WIDTH);
-		jsonInfo.put("height", _height, DEF_HEIGHT);
-
-		jsonInfo.put("tilePosition.x", _tilePositionX, DEF_TILE_POSITION);
-		jsonInfo.put("tilePosition.y", _tilePositionY, DEF_TILE_POSITION);
-		jsonInfo.put("tileScale.x", _tileScaleX, DEF_TILE_SCALE);
-		jsonInfo.put("tileScale.y", _tileScaleY, DEF_TILE_SCALE);
+		if (canSaveInfo("tile")) {
+			jsonInfo.put("width", _width, DEF_WIDTH);
+			jsonInfo.put("height", _height, DEF_HEIGHT);
+			jsonInfo.put("tilePosition.x", _tilePositionX, DEF_TILE_POSITION);
+			jsonInfo.put("tilePosition.y", _tilePositionY, DEF_TILE_POSITION);
+			jsonInfo.put("tileScale.x", _tileScaleX, DEF_TILE_SCALE);
+			jsonInfo.put("tileScale.y", _tileScaleY, DEF_TILE_SCALE);
+		}
 	}
 
 	public double getWidth() {

@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AssetPackCore;
@@ -84,8 +85,7 @@ public abstract class BaseObjectModel {
 
 		_prefabOverride = new ArrayList<>();
 		// by default all instances override the X and Y properties
-		_prefabOverride.add("x");
-		_prefabOverride.add("y");
+		_prefabOverride.add("position");
 
 		_editorName = typeName;
 		_editorPick = DEF_EDITOR_PICK;
@@ -125,7 +125,7 @@ public abstract class BaseObjectModel {
 	}
 
 	public boolean isPrefabReadOnly(String pattern) {
-		return !_prefabOverride.contains(pattern);
+		return isPrefabInstance() && !_prefabOverride.contains(pattern);
 	}
 
 	public boolean isPrefabInstance() {
@@ -313,6 +313,17 @@ public abstract class BaseObjectModel {
 		_editorPublic = jsonInfo.optBoolean("editorPublic", DEF_EDITOR_PUBLIC);
 		_editorShow = jsonInfo.optBoolean("editorShow", true);
 
+		{
+			_prefabOverride = new ArrayList<>();
+			JSONArray array = jsonInfo.optJSONArray("prefabOverride");
+			if (array == null) {
+				_prefabOverride.add("position");
+			} else
+				for (int i = 0; i < array.length(); i++) {
+					_prefabOverride.add(array.getString(i));
+				}
+		}
+
 		_x = jsonInfo.optDouble("x", DEF_X);
 		_y = jsonInfo.optDouble("y", DEF_Y);
 		_rotation = jsonInfo.optDouble("rotation", DEF_ROTATION);
@@ -408,6 +419,10 @@ public abstract class BaseObjectModel {
 		obj.put("id", _id);
 	}
 
+	protected final boolean canSaveInfo(String overrideTag) {
+		return !isPrefabInstance() || _prefabOverride.contains(overrideTag);
+	}
+
 	@SuppressWarnings("unused")
 	protected void writeInfo(JSONObject jsonInfo, boolean saving) {
 		jsonInfo.put("editorName", _editorName);
@@ -416,13 +431,32 @@ public abstract class BaseObjectModel {
 		jsonInfo.put("editorPublic", _editorPublic, DEF_EDITOR_PUBLIC);
 		jsonInfo.put("editorShow", _editorShow, true);
 
-		jsonInfo.put("x", _x, DEF_X);
-		jsonInfo.put("y", _y, DEF_Y);
-		jsonInfo.put("rotation", _rotation, DEF_ROTATION);
-		jsonInfo.put("scale.x", _scaleX, DEF_SCALE_X);
-		jsonInfo.put("scale.y", _scaleY, DEF_SCALE_Y);
-		jsonInfo.put("pivot.x", _pivotX, DEF_PIVOT_X);
-		jsonInfo.put("pivot.y", _pivotY, DEF_PIVOT_Y);
+		{
+			JSONArray array = new JSONArray();
+			for (String tag : _prefabOverride) {
+				array.put(tag);
+			}
+			jsonInfo.put("prefabOverride", array);
+		}
+
+		if (canSaveInfo("position")) {
+			jsonInfo.put("x", _x, DEF_X);
+			jsonInfo.put("y", _y, DEF_Y);
+		}
+
+		if (canSaveInfo("angle")) {
+			jsonInfo.put("rotation", _rotation, DEF_ROTATION);
+		}
+
+		if (canSaveInfo("scale")) {
+			jsonInfo.put("scale.x", _scaleX, DEF_SCALE_X);
+			jsonInfo.put("scale.y", _scaleY, DEF_SCALE_Y);
+		}
+
+		if (canSaveInfo("pivot")) {
+			jsonInfo.put("pivot.x", _pivotX, DEF_PIVOT_X);
+			jsonInfo.put("pivot.y", _pivotY, DEF_PIVOT_Y);
+		}
 	}
 
 	public WorldModel getWorld() {
