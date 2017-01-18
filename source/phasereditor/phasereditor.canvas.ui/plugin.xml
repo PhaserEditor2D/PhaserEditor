@@ -23,25 +23,30 @@
             name="State File">
       </wizard>
       <wizard
-            category="phasereditor.canvas.ui.wizardCategory"
+            category="phasereditor.canvas.ui.prefabsWizardCategory"
             class="phasereditor.canvas.ui.wizards.NewWizard_Group"
             hasPages="true"
             icon="platform:/plugin/phasereditor.ui/icons/canvas.png"
             id="phasereditor.canvas.ui.newGroupWizard"
-            name="Group File">
+            name="Prefab Group File">
       </wizard>
       <wizard
-            category="phasereditor.canvas.ui.wizardCategory"
+            category="phasereditor.canvas.ui.prefabsWizardCategory"
             class="phasereditor.canvas.ui.wizards.NewWizard_Sprite"
             hasPages="true"
             icon="platform:/plugin/phasereditor.ui/icons/canvas.png"
             id="phasereditor.canvas.ui.newSpriteWizard"
-            name="Sprite File">
+            name="Prefab Sprite File">
       </wizard>
       <category
             id="phasereditor.canvas.ui.wizardCategory"
             name="Canvas"
             parentCategory="phasereditor.ui.wizardCategory">
+      </category>
+      <category
+            id="phasereditor.canvas.ui.prefabsWizardCategory"
+            name="Prefabs"
+            parentCategory="phasereditor.canvas.ui.wizardCategory">
       </category>
    </extension>
    <extension
@@ -1471,13 +1476,13 @@
       <perspectiveExtension
             targetID="*">
          <newWizardShortcut
+               id="phasereditor.canvas.ui.newSpriteWizard">
+         </newWizardShortcut>
+         <newWizardShortcut
                id="phasereditor.canvas.ui.newGroupWizard">
          </newWizardShortcut>
          <newWizardShortcut
                id="phasereditor.canvas.ui.newStateWizard">
-         </newWizardShortcut>
-         <newWizardShortcut
-               id="phasereditor.canvas.ui.newSpriteWizard">
          </newWizardShortcut>
       </perspectiveExtension>
    </extension>
@@ -1495,22 +1500,22 @@
    <extension
          point="org.eclipse.ui.navigator.navigatorContent">
       <commonWizard
-            menuGroupId="phaser.new.other"
+            menuGroupId="phaser.new.canvas"
             type="new"
-            wizardId="phasereditor.canvas.ui.newStateWizard">
-      <enablement></enablement>
+            wizardId="phasereditor.canvas.ui.newSpriteWizard">
+         <enablement></enablement>
       </commonWizard>
       <commonWizard
-            menuGroupId="phaser.new.other"
+            menuGroupId="phaser.new.canvas"
             type="new"
             wizardId="phasereditor.canvas.ui.newGroupWizard">
          <enablement></enablement>
       </commonWizard>
       <commonWizard
-            menuGroupId="phaser.new.other"
+            menuGroupId="phaser.new.canvas"
             type="new"
-            wizardId="phasereditor.canvas.ui.newSpriteWizard">
-         <enablement></enablement>
+            wizardId="phasereditor.canvas.ui.newStateWizard">
+      <enablement></enablement>
       </commonWizard>
    </extension>
    <extension
