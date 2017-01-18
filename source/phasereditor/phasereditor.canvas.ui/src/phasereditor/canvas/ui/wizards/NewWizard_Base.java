@@ -91,7 +91,7 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 
 	@Override
 	public void addPages() {
-		_model = createModel();
+		_model = createInitialModel();
 		_model.setType(_canvasType);
 
 		_filePage = createNewFilePage();
@@ -100,7 +100,7 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 		addPage(_filePage);
 	}
 
-	protected CanvasModel createModel() {
+	protected CanvasModel createInitialModel() {
 		CanvasModel model = new CanvasModel(null);
 		model.setType(getCanvasType());
 		model.getSettings().setBaseClass(CanvasCodeGeneratorProvider.getDefaultBaseClassFor(model.getType()));
@@ -141,7 +141,7 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 			if (isCanvasFileDesired()) {
 				createCanvasFile(mainFile);
 			} else {
-				createModel(mainFile);
+				createFinalModelJSON(mainFile);
 			}
 
 			createSourceFile(mainFile.getParent());
@@ -161,7 +161,7 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 	}
 
 	private void createCanvasFile(IFile file) {
-		JSONObject obj = createModel(file);
+		JSONObject obj = createFinalModelJSON(file);
 
 		try {
 			file.setContents(new ByteArrayInputStream(obj.toString(2).getBytes()), false, false,
@@ -172,7 +172,7 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 		}
 	}
 
-	private JSONObject createModel(IFile file) {
+	protected JSONObject createFinalModelJSON(IFile file) {
 		// set default content
 		String name = _filePage.getFileName();
 		name = name.substring(0, name.length() - _filePage.getFileExtension().length() - 1);

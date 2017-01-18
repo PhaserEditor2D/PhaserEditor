@@ -21,7 +21,17 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.wizards;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IPath;
+import org.json.JSONObject;
+
+import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.canvas.core.BaseSpriteModel;
+import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.CanvasType;
+import phasereditor.canvas.core.WorldModel;
 
 /**
  * @author arian
@@ -45,7 +55,31 @@ public class NewWizard_Sprite extends NewWizard_Base {
 		super.addPages();
 		_settingsPage = new NewPage_SpriteSettings();
 		_settingsPage.setSettings(getModel().getSettings());
+		_settingsPage.setProjectProvider(() -> {
+			IPath path = getFilePage().getContainerFullPath();
+			path = path.append(getFilePage().getFileName());
+			if (path == null) {
+				return null;
+			}
+			try {
+				IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+				return root.getFile(path).getProject();
+			} catch (Exception e) {
+				return null;
+			}
+		});
 		addPage(_settingsPage);
+	}
+
+	@Override
+	protected JSONObject createFinalModelJSON(IFile file) {
+		WorldModel world = getModel().getWorld();
+		if (_settingsPage.isGenerateCanvasFile()) {
+			BaseSpriteModel spriteModel = CanvasModelFactory.createModel(world,
+					(IAssetKey) _settingsPage.getSelectedAsset());
+			world.addChild(spriteModel);
+		}
+		return super.createFinalModelJSON(file);
 	}
 
 }

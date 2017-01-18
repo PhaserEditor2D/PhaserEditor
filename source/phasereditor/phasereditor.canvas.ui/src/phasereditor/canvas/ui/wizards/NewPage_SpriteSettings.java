@@ -23,16 +23,23 @@ package phasereditor.canvas.ui.wizards;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.List;
+import java.util.function.Supplier;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -40,10 +47,25 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tree;
 
+import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.AssetPackModel;
+import phasereditor.assetpack.core.AssetSectionModel;
+import phasereditor.assetpack.core.AssetType;
+import phasereditor.assetpack.core.AtlasAssetModel;
+import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.AtlasAssetModel.Frame;
+import phasereditor.assetpack.ui.AssetLabelProvider;
+import phasereditor.assetpack.ui.AssetPackUI;
+import phasereditor.assetpack.ui.AssetsContentProvider;
 import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.SourceLang;
 import phasereditor.canvas.ui.editors.LangLabelProvider;
+import phasereditor.ui.FilteredTree2;
+import phasereditor.ui.PatternFilter2;
 
 /**
  * @author arian
@@ -56,11 +78,13 @@ public class NewPage_SpriteSettings extends WizardPage {
 	private Text _text;
 	private EditorSettings _settings;
 	private Button _btnGenerateTheCorrspondant;
+	private FilteredTree2 _filteredTree;
+	private Object _selectedAsset;
 
 	public NewPage_SpriteSettings() {
 		super("group.settings.page");
-		setMessage("Customize the new Phaser Group.");
-		setTitle("Group Customization");
+		setMessage("Customize the new Phaser Sprite.");
+		setTitle("Sprite Customization");
 	}
 
 	/*
@@ -90,9 +114,19 @@ public class NewPage_SpriteSettings extends WizardPage {
 		Combo combo = _langComboViewer.getCombo();
 		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
+		Label lblSelectTheAsset = new Label(container, SWT.NONE);
+		lblSelectTheAsset.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		lblSelectTheAsset.setText("Select the asset for the sprite:");
+
+		_filteredTree = new FilteredTree2(container, SWT.SINGLE | SWT.BORDER, new PatternFilter2(), 4);
+		_filteredTree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 2, 1));
+		_assetsViewer = _filteredTree.getViewer();
+		_tree = _assetsViewer.getTree();
+		_tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+
 		_btnGenerateTheCorrspondant = new Button(container, SWT.CHECK);
 		_btnGenerateTheCorrspondant.setSelection(true);
-		_btnGenerateTheCorrspondant.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, true, 2, 1));
+		_btnGenerateTheCorrspondant.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 2, 1));
 		_btnGenerateTheCorrspondant.setText("Edit this state with the visual editor.");
 		_langComboViewer.setContentProvider(new ArrayContentProvider());
 		_langComboViewer.setLabelProvider(new LangLabelProvider());
@@ -108,9 +142,101 @@ public class NewPage_SpriteSettings extends WizardPage {
 
 	private void afterCreateWidgets() {
 		_langComboViewer.setInput(SourceLang.values());
+		_assetsViewer.setLabelProvider(AssetLabelProvider.GLOBAL_16);
+		_assetsViewer.setContentProvider(new NewSpriteAssetContentProvider());
+		AssetPackUI.installAssetTooltips(_assetsViewer);
+		_assetsViewer.addSelectionChangedListener(e -> {
+			validateErrors();
+		});
+		_btnGenerateTheCorrspondant.addSelectionListener(new SelectionListener() {
+
+			@SuppressWarnings("synthetic-access")
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				validateErrors();
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				//
+			}
+		});
+	}
+
+	private void validateErrors() {
+		setErrorMessage(null);
+
+		if (_btnGenerateTheCorrspondant.getSelection()) {
+			IStructuredSelection sel = _assetsViewer.getStructuredSelection();
+			Object elem = sel.getFirstElement();
+			if (elem instanceof IAssetFrameModel || elem instanceof ImageAssetModel) {
+				_selectedAsset = elem;
+			} else {
+				setErrorMessage("Please select a valid asset/frame.");
+			}
+		}
+
+		setPageComplete(getErrorMessage() == null);
+	}
+	
+	public Object getSelectedAsset() {
+		return _selectedAsset;
+	}
+	
+
+	static class NewSpriteAssetContentProvider extends AssetsContentProvider {
+		@Override
+		public Object[] getChildren(Object parent) {
+
+			if (parent instanceof IProject) {
+				List<AssetPackModel> packs = AssetPackCore.getAssetPackModels((IProject) parent);
+				return packs.toArray();
+			}
+
+			if (parent instanceof AssetSectionModel) {
+				AssetSectionModel section = (AssetSectionModel) parent;
+				return new Object[] { section.getGroup(AssetType.image), section.getGroup(AssetType.spritesheet),
+						section.getGroup(AssetType.atlas) };
+			}
+
+			if (parent instanceof AssetModel) {
+				AssetModel asset = (AssetModel) parent;
+
+				switch (asset.getType()) {
+				case atlas:
+					List<Frame> frames = ((AtlasAssetModel) asset).getAtlasFrames();
+					return frames.toArray();
+				case spritesheet:
+					return asset.getSubElements().toArray();
+				default:
+					break;
+				}
+			}
+
+			return super.getChildren(parent);
+		}
+	}
+
+	@Override
+	public void setVisible(boolean visible) {
+		super.setVisible(visible);
+		IProject project = null;
+		if (_projectSupplier != null) {
+			project = _projectSupplier.get();
+		}
+
+		Object lastProject = _assetsViewer.getInput();
+
+		if (lastProject == null || lastProject != project) {
+			_assetsViewer.setInput(project);
+			_assetsViewer.expandToLevel(4);
+		}
+
+		validateErrors();
 	}
 
 	private NewPage_SpriteSettings _self = this;
+	private Supplier<IProject> _projectSupplier;
 
 	/**
 	 * @return the settings
@@ -128,7 +254,13 @@ public class NewPage_SpriteSettings extends WizardPage {
 		firePropertyChange("settings");
 	}
 
+	public void setProjectProvider(Supplier<IProject> projectSupplier) {
+		_projectSupplier = projectSupplier;
+	}
+
 	private transient final PropertyChangeSupport support = new PropertyChangeSupport(this);
+	private Tree _tree;
+	private TreeViewer _assetsViewer;
 
 	public void addPropertyChangeListener(PropertyChangeListener l) {
 		support.addPropertyChangeListener(l);

@@ -95,7 +95,7 @@ public class AssetsContentProvider implements ITreeContentProvider {
 
 		return EMPTY;
 	}
-
+	
 	@Override
 	public Object getParent(Object element) {
 		if (element instanceof AssetSectionModel) {

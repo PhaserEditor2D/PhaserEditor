@@ -51,7 +51,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.wb.swt.SWTResourceManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -100,7 +99,6 @@ public class AssetExplorer extends ViewPart {
 		parent.setLayout(gl_parent);
 
 		_filteredTree = new FilteredTree2(parent, SWT.MULTI, new PatternFilter2(), 4);
-		_filteredTree.setBackground(SWTResourceManager.getColor(SWT.COLOR_LIST_BACKGROUND));
 		GridLayout gridLayout = (GridLayout) _filteredTree.getLayout();
 		_viewer = _filteredTree.getViewer();
 		_viewer.addDoubleClickListener(new IDoubleClickListener() {
