@@ -3,6 +3,7 @@ package phasereditor.canvas.ui.handlers;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -22,13 +23,21 @@ public class SetArcadeBodyHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 		ObjectCanvas canvas = editor.getCanvas();
 
 		canvas.getHandlerBehavior().clear();
-		
+
 		Object[] sel = getSelection(event);
+
+		for (Object obj : sel) {
+			ISpriteNode node = (ISpriteNode) obj;
+			if (!node.getModel().isOverriding("physics")) {
+				MessageDialog.openWarning(HandlerUtil.getActiveShell(event), "Physics",
+						"Cannot change the physics of this prefab instance.");
+				return null;
+			}
+		}
 
 		CompositeOperation operations = new CompositeOperation();
 
@@ -61,7 +70,7 @@ public class SetArcadeBodyHandler extends AbstractHandler {
 		// if there is only one node selected, then edit the body
 		sel = getSelection(event);
 		if (sel.length == 1) {
-			
+
 			ISpriteNode sprite = (ISpriteNode) sel[0];
 			BodyModel body = sprite.getModel().getBody();
 			if (body instanceof RectArcadeBodyModel) {

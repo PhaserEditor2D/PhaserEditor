@@ -24,6 +24,7 @@ package phasereditor.canvas.ui.handlers;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -44,6 +45,15 @@ public class CloseOpenGroupHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IStructuredSelection sel = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
 
+		for (Object obj : sel.toArray()) {
+			GroupNode group = (GroupNode) obj;
+			if (group.getModel().isPrefabInstance()) {
+				MessageDialog.openWarning(HandlerUtil.getActiveShell(event), "Open/Close Group",
+						"Cannot open/close prefab groups.");
+				return null;
+			}
+		}
+
 		boolean cmd = event.getCommand().getId().endsWith("closeGroup");
 
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
@@ -61,7 +71,7 @@ public class CloseOpenGroupHandler extends AbstractHandler {
 			operations.add(new ChangePropertyOperation<>(group.getModel().getId(),
 					group.getControl().getClosed_property().getName(), Boolean.valueOf(cmd)));
 		}
-		
+
 		if (operations.isEmpty()) {
 			// all groups are prefabs, stop here
 			return null;

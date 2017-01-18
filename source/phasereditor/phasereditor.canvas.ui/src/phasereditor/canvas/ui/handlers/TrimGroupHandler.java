@@ -24,6 +24,7 @@ package phasereditor.canvas.ui.handlers;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -46,8 +47,13 @@ public class TrimGroupHandler extends AbstractHandler {
 		for (Object obj : sel.toArray()) {
 			GroupNode group = (GroupNode) obj;
 			if (group.getModel().isPrefabInstance()) {
-				continue;
+				MessageDialog.openWarning(HandlerUtil.getActiveShell(event), "Trim Group", "Cannot trim prefab groups.");
+				return null;
 			}
+		}
+		
+		for (Object obj : sel.toArray()) {
+			GroupNode group = (GroupNode) obj;
 			operations.add(new TrimNodeOperation(group.getModel().getId()));
 		}
 

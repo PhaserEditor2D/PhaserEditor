@@ -146,6 +146,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 				"anchor",
 				"tint",
 				"animations",
+				"physics",
 				"data"
 				//@formatter:on
 		));

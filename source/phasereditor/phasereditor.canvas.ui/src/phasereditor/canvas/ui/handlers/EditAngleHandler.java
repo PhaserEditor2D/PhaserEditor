@@ -3,6 +3,7 @@ package phasereditor.canvas.ui.handlers;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -15,7 +16,14 @@ public class EditAngleHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 		IStructuredSelection sel = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
-		editor.getCanvas().getHandlerBehavior().editAngle((IObjectNode) sel.getFirstElement());
+
+		IObjectNode elem = (IObjectNode) sel.getFirstElement();
+		if (!elem.getModel().isOverriding("angle")) {
+			MessageDialog.openWarning(HandlerUtil.getActiveShell(event), "Angle", "Cannot rotate this prefab instance.");
+			return null;
+		}
+
+		editor.getCanvas().getHandlerBehavior().editAngle(elem);
 		return null;
 	}
 

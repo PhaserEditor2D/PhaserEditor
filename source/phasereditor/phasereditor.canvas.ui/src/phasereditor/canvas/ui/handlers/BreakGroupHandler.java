@@ -27,6 +27,7 @@ import java.util.List;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.json.JSONObject;
@@ -50,14 +51,21 @@ public class BreakGroupHandler extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IStructuredSelection sel = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
-		// List<Object> newselection = new ArrayList<>();
-
+		
+		for (Object obj : sel.toArray()) {
+			GroupNode group = (GroupNode) obj;
+			if (group.getModel().isPrefabInstance()) {
+				MessageDialog.openWarning(HandlerUtil.getActiveShell(event), "Break Group", "Cannot break prefab groups.");
+				return null;
+			}
+		}
+		
 		CompositeOperation operations = new CompositeOperation();
 
 		List<String> parentSelection = new ArrayList<>();
 
 		// select the group
-
+		
 		for (Object obj : sel.toArray()) {
 			GroupNode group = (GroupNode) obj;
 			if (group.getModel().isPrefabInstance()) {
