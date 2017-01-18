@@ -22,6 +22,8 @@
 package phasereditor.canvas.core.codegen;
 
 import phasereditor.canvas.core.CanvasModel;
+import phasereditor.inspect.core.InspectCore;
+import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
 
 /**
  * @author arian
@@ -38,14 +40,20 @@ public class JSGroupCodeGenerator extends JSLikeCodeGenerator {
 		String classname = _world.getClassName();
 		String baseclass = _settings.getBaseClass();
 		
+		PhaserJSDoc help = InspectCore.getPhaserHelp();
+		
 		line("/**");
 		line(" * " + classname + ".");
-		line(" * @param {Phaser.Game} aGame The game.");
-		line(" * @param {Phaser.Group} aParent The parent group. If not given the game world will be used instead.");
+		line(" * @param {Phaser.Game} aGame " + help.getMethodArgHelp("Phaser.Group", "game"));
+		line(" * @param {Phaser.Group} aParent " + help.getMethodArgHelp("Phaser.Group", "parent"));
+		line(" * @param {string} aName " + help.getMethodArgHelp("Phaser.Group", "name"));
+		line(" * @param {boolean} aAddToStage " + help.getMethodArgHelp("Phaser.Group", "addToStage"));
+		line(" * @param {boolean} aEnableBody " + help.getMethodArgHelp("Phaser.Group", "enableBody"));
+		line(" * @param {number} aPhysicsBodyType " + help.getMethodArgHelp("Phaser.Group", "physicsBodyType"));
 		line(" */");
-		openIndent("function " + classname + "(aGame, aParent) {");
+		openIndent("function " + classname + "(aGame, aParent, aName, aAddToStage, aEnableBody, aPhysicsBodyType) {");
 		
-		line(baseclass + ".call(this, aGame, aParent);");
+		line(baseclass + ".call(this, aGame, aParent, aName, aAddToStage, aEnableBody, aPhysicsBodyType);");
 		line();
 
 		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
