@@ -176,7 +176,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 				@Override
 				public void setValue(List<String> value, boolean notify) {
 					super.setValue(value, notify);
-					rebuildFromPrefab();
+					getCanvas().getUpdateBehavior().singleRebuildFromPrefab(BaseObjectControl.this);
 				}
 			};
 			initPrefabPGridModel(prop.getValidProperties());
@@ -597,11 +597,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		return false;
 	}
 
-	protected void rebuildFromPrefab() {
+	public BaseObjectControl<?> rebuildFromPrefab() {
 		T model = getModel();
 
 		if (!model.isPrefabInstance()) {
-			return;
+			return this;
 		}
 
 		if (model.isPrefabInstance()) {
@@ -615,11 +615,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 				GroupControl parentControl = getGroup().getControl();
 				int i = parentControl.removeChild(getIObjectNode());
 				parentControl.addChild(i, newControl.getIObjectNode());
-			} else {
-				throw new MissingPrefabException(data);
+				return newControl;
 			}
 
+			throw new MissingPrefabException(data);
 		}
-
+		return this;
 	}
 }

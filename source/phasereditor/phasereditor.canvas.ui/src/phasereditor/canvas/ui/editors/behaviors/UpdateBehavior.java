@@ -25,11 +25,13 @@ import static java.lang.System.out;
 
 import java.beans.PropertyChangeEvent;
 import java.security.InvalidParameterException;
+import java.util.List;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IWorkbench;
 
@@ -88,6 +90,21 @@ public class UpdateBehavior {
 		control.updateAllFromModel();
 		_canvas.getZoomBehavior().updateZoomAndPan();
 		_canvas.getSelectionBehavior().updateSelectedNodes();
+	}
+
+	public void singleRebuildFromPrefab(BaseObjectControl<?> control) {
+		List<IObjectNode> sel = _canvas.getSelectionBehavior().getSelectedNodes();
+		boolean selected = sel.contains(control.getIObjectNode());
+
+		BaseObjectControl<?> newControl = control.rebuildFromPrefab();
+
+		_canvas.getZoomBehavior().updateZoomAndPan();
+
+		if (selected) {
+			_canvas.getSelectionBehavior().setSelection(new StructuredSelection(newControl.getNode()));
+		} else {
+			_canvas.getSelectionBehavior().updateSelectedNodes();
+		}
 	}
 
 	@SuppressWarnings("unused")

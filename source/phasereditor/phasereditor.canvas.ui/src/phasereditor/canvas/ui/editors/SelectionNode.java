@@ -80,6 +80,10 @@ public class SelectionNode extends Pane {
 		return _canvas;
 	}
 
+	public void setObjectNode(IObjectNode objectNode) {
+		_objectNode = objectNode;
+	}
+	
 	public void updateBounds(Bounds rect) {
 		_rect = rect;
 		updateFromZoomAndPanVariables();
