@@ -67,8 +67,12 @@ public class JSStateCodeGenerator extends BaseStateGenerator {
 
 		generateInitMethod(classname);
 
+		line();
+		
 		generatePreloadMethod(classname);
 
+		line();
+		
 		openIndent(classname + ".prototype.create = function () {");
 
 		line();
@@ -108,7 +112,7 @@ public class JSStateCodeGenerator extends BaseStateGenerator {
 		line(classname + ".prototype.init = function (");
 		section("/* init-args-begin */", "/* init-args-end*/", getYouCanInsertCodeHere("user args code"));
 		openIndent(") {");
-		generateinitMethodBody();
+		generateInitMethodBody();
 		closeIndent("};");
 	}
 

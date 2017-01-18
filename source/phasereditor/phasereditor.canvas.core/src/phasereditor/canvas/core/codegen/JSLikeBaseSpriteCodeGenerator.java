@@ -30,13 +30,15 @@ import phasereditor.canvas.core.CanvasModel;
  * @author arian
  *
  */
-public abstract class JSLikeBaseSpriteCodeGenerator extends JSLikeCodeGenerator{
+public abstract class JSLikeBaseSpriteCodeGenerator extends JSLikeCodeGenerator {
+
+	private BaseSpriteModel _selfSprite;
 
 	public JSLikeBaseSpriteCodeGenerator(CanvasModel model) {
 		super(model);
+		_selfSprite = (BaseSpriteModel) _model.getWorld().findFirstSprite();
 	}
 
-	
 	@Override
 	protected void generatePublicFields() {
 		BaseSpriteModel sprite = (BaseSpriteModel) _model.getWorld().findFirstSprite();
@@ -48,21 +50,38 @@ public abstract class JSLikeBaseSpriteCodeGenerator extends JSLikeCodeGenerator{
 
 	@Override
 	protected void generateObjectCreation() {
-		BaseSpriteModel sprite = (BaseSpriteModel) _model.getWorld().findFirstSprite();
-		if (sprite == null) {
+
+		if (_selfSprite == null) {
 			return;
 		}
 
-		generateProperties(sprite);
+		generateProperties(_selfSprite);
 	}
 
 	@Override
-	protected String getVarName(BaseObjectModel model) {
-		return "this";
+	protected String getLocalVarName(BaseObjectModel model) {
+		if (model == _selfSprite) {
+			return "this";
+		}
+
+		return super.getLocalVarName(model);
 	}
 
+	@Override
+	protected String getLocalAnimationVarName(BaseObjectModel obj, AnimationModel anim) {
+		if (obj == _selfSprite) {
+			return "_anim_" + anim.getName();
+		}
+
+		return super.getLocalAnimationVarName(obj, anim);
+	}
+	
 	@Override
 	protected String getAnimationVarName(BaseObjectModel obj, AnimationModel anim) {
-		return "anim_" + anim.getName();
+		if (obj == _selfSprite) {
+			return "anim_" + anim.getName();
+		}
+		
+		return super.getAnimationVarName(obj, anim);
 	}
 }

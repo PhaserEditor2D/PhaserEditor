@@ -50,9 +50,11 @@ public class TSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 		line(" * @param {Phaser.Game} aGame " + help.getMethodArgHelp("Phaser.Sprite", "game"));
 		line(" * @param {number} aX " + help.getMethodArgHelp("Phaser.Sprite", "x"));
 		line(" * @param {number} aY " + help.getMethodArgHelp("Phaser.Sprite", "y"));
+		line(" * @param {any} aKey " + help.getMethodArgHelp("Phaser.Sprite", "key"));
+		line(" * @param {any} aFrame " + help.getMethodArgHelp("Phaser.Sprite", "frame"));
 		line(" */");
 		openIndent("class " + classname + " extends " + baseclass + " {");
-		openIndent("constructor(aGame : Phaser.Game, aX : number, aY : number) {");
+		openIndent("constructor(aGame : Phaser.Game, aX : number, aY : number, aKey? : any, aFrame? : any) {");
 		AssetSpriteModel<?> sprite = (AssetSpriteModel<?>) _model.getWorld().findFirstSprite();
 		String key = "null";
 		String frame = "null";
@@ -61,7 +63,7 @@ public class TSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 			key = info.key;
 			frame = info.frame;
 		}
-		line("super(aGame, aX, aY, " + key + ", " + frame + ");");
+		line("super(aGame, aX, aY, aKey === undefined? " + key + " : aKey, aFrame === undefined? " + frame + " : aFrame);");
 
 		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
 

@@ -48,8 +48,10 @@ public class JSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 		line(" * @param {Phaser.Game} aGame " + help.getMethodArgHelp("Phaser.Sprite", "game"));
 		line(" * @param {number} aX " + help.getMethodArgHelp("Phaser.Sprite", "x"));
 		line(" * @param {number} aY " + help.getMethodArgHelp("Phaser.Sprite", "y"));
+		line(" * @param {any} aKey " + help.getMethodArgHelp("Phaser.Sprite", "key"));
+		line(" * @param {any} aFrame " + help.getMethodArgHelp("Phaser.Sprite", "frame"));
 		line(" */");
-		openIndent("function " + classname + "(aGame, aX, aY) {");
+		openIndent("function " + classname + "(aGame, aX, aY, aKey, aFrame) {");
 		AssetSpriteModel<?> sprite = (AssetSpriteModel<?>) _model.getWorld().findFirstSprite();
 		String key = "null";
 		String frame = "null";
@@ -58,7 +60,11 @@ public class JSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 			key = info.key;
 			frame = info.frame;
 		}
-		line(baseclass + ".call(this, aGame, aX, aY, " + key + ", " + frame + ");");
+		line();
+		line("var pKey = aKey === undefined? " + key + " : aKey;");
+		line("var pFrame = aFrame === undefined? " + frame + " : aFrame;");
+		line();
+		line(baseclass + ".call(this, aGame, aX, aY, pKey, pFrame);");
 
 		line();
 
@@ -67,6 +73,7 @@ public class JSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 		line();
 		line();
 	}
+	
 
 	@Override
 	protected void generateFooter() {

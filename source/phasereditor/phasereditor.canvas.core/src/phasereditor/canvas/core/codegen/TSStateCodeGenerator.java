@@ -64,7 +64,7 @@ public class TSStateCodeGenerator extends BaseStateGenerator {
 		line("init(");
 		section("/* init-args-begin */", "/* init-args-end*/", getYouCanInsertCodeHere("user args code"));
 		openIndent(") {");
-		generateinitMethodBody();
+		generateInitMethodBody();
 		closeIndent("}");
 	}
 

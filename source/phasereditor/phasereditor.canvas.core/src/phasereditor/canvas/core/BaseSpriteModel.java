@@ -130,20 +130,20 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 	protected void writeInfo(JSONObject jsonInfo, boolean saving) {
 		super.writeInfo(jsonInfo, saving);
 
-		if (canSaveInfo("anchor")) {
+		if (isOverriding("anchor")) {
 			jsonInfo.put("anchor.x", _anchorX, DEF_ANCHOR_X);
 			jsonInfo.put("anchor.y", _anchorY, DEF_ANCHOR_Y);
 		}
 
-		if (canSaveInfo("tint")) {
+		if (isOverriding("tint")) {
 			jsonInfo.put("tint", _tint, DEF_TINT);
 		}
 
-		if (canSaveInfo("data")) {
+		if (isOverriding("data")) {
 			jsonInfo.put("data", _data, null);
 		}
 
-		if (canSaveInfo("animations")) {
+		if (isOverriding("animations")) {
 			if (!_animations.isEmpty()) {
 				JSONArray array = new JSONArray();
 				jsonInfo.put("animations", array);
@@ -155,7 +155,7 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 			}
 		}
 
-		if (canSaveInfo("physics")) {
+		if (isOverriding("physics")) {
 			if (_body != null) {
 				jsonInfo.put("body", _body.toJSON());
 			}

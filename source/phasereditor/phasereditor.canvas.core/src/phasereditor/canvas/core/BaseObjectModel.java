@@ -419,7 +419,7 @@ public abstract class BaseObjectModel {
 		obj.put("id", _id);
 	}
 
-	protected final boolean canSaveInfo(String overrideTag) {
+	public final boolean isOverriding(String overrideTag) {
 		return !isPrefabInstance() || _prefabOverride.contains(overrideTag);
 	}
 
@@ -439,21 +439,21 @@ public abstract class BaseObjectModel {
 			jsonInfo.put("prefabOverride", array);
 		}
 
-		if (canSaveInfo("position")) {
+		if (isOverriding("position")) {
 			jsonInfo.put("x", _x, DEF_X);
 			jsonInfo.put("y", _y, DEF_Y);
 		}
 
-		if (canSaveInfo("angle")) {
+		if (isOverriding("angle")) {
 			jsonInfo.put("rotation", _rotation, DEF_ROTATION);
 		}
 
-		if (canSaveInfo("scale")) {
+		if (isOverriding("scale")) {
 			jsonInfo.put("scale.x", _scaleX, DEF_SCALE_X);
 			jsonInfo.put("scale.y", _scaleY, DEF_SCALE_Y);
 		}
 
-		if (canSaveInfo("pivot")) {
+		if (isOverriding("pivot")) {
 			jsonInfo.put("pivot.x", _pivotX, DEF_PIVOT_X);
 			jsonInfo.put("pivot.y", _pivotY, DEF_PIVOT_Y);
 		}

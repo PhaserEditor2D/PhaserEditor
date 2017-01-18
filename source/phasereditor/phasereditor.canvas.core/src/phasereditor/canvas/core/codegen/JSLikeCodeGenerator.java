@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core.codegen;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
@@ -42,8 +44,8 @@ import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.CircleArcadeBodyModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.ImageSpriteModel;
-import phasereditor.canvas.core.PhysicsType;
 import phasereditor.canvas.core.PhysicsSortDirection;
+import phasereditor.canvas.core.PhysicsType;
 import phasereditor.canvas.core.RectArcadeBodyModel;
 import phasereditor.canvas.core.SpritesheetSpriteModel;
 import phasereditor.canvas.core.TileSpriteModel;
@@ -111,17 +113,18 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 		if (!(obj instanceof WorldModel) && obj.isEditorGenerate()) {
 			if (obj.isEditorPublic()) {
 				String name = getVarName(obj);
+				String localName = getLocalVarName(obj);
 				String camel = getPublicFieldName(name);
-				line("this." + camel + " = " + name + ";");
+				line("this." + camel + " = " + localName + ";");
 			}
 
 			if (obj instanceof BaseSpriteModel) {
 				List<AnimationModel> anims = ((BaseSpriteModel) obj).getAnimations();
 				for (AnimationModel anim : anims) {
 					if (anim.isPublic()) {
-						String animvar = getAnimationVarName(obj, anim);
-						String name = getPublicFieldName(animvar);
-						line("this." + name + " = " + animvar + ";");
+						String localAnimVar = getLocalAnimationVarName(obj, anim);
+						String name = getPublicFieldName(getAnimationVarName(obj, anim));
+						line("this." + name + " = " + localAnimVar + ";");
 					}
 				}
 			}
@@ -193,103 +196,183 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 
 		// create method
 
-		String parVar = model.getParent().isWorldModel() ? "this" : model.getParent().getEditorName();
-
-		if (mark1 < mark2 || model.isEditorPublic()) {
-			append("var " + getVarName(model) + " = ");
+		String parVar;
+		if (_model.getType() == CanvasType.STATE) {
+			if (model.getParent().isWorldModel()) {
+				parVar = null;
+			} else {
+				parVar = getLocalVarName(model.getParent());
+			}
+		} else {
+			parVar = "this";
 		}
 
-		append(getSystemsContainerChain() + ".add.");
+		if (mark1 < mark2 || model.isEditorPublic()) {
+			append("var " + getLocalVarName(model) + " = ");
+		}
 
-		boolean isState = _model.getType() == CanvasType.STATE;
+		if (model.isPrefabInstance()) {
+			String prefabName = model.isPrefabInstance() ? model.getPrefab().getClassName() : null;
+			boolean writeTexture = model.isOverriding("texture");
+			Call call = new Call("new " + prefabName);
+			// a prefab instance only supports images, sprite atlas and sprite
+			// sheet for now.
 
-		String prefabName = model.isPrefabInstance() ? model.getPrefab().getClassName() : null;
+			if (model instanceof ImageSpriteModel) {
 
-		if (model instanceof ImageSpriteModel) {
-			ImageSpriteModel image = (ImageSpriteModel) model;
+				ImageSpriteModel image = (ImageSpriteModel) model;
+				// TODO: missing to check it is the way to add to the world o
+				// parent group.
+				call.value("this.game", round(image.getX()), round(image.getY()));
+				call.valueOrUndefined(writeTexture, "'" + image.getAssetKey().getKey() + "'", "null");
+				call.valueOrUndefined(parVar != null, parVar);
 
-			if (prefabName == null) {
+			} else if (model instanceof SpritesheetSpriteModel || model instanceof AtlasSpriteModel) {
+
+				AssetSpriteModel<?> sprite = (AssetSpriteModel<?>) model;
+				IAssetKey frame = sprite.getAssetKey();
+				String frameValue = frame instanceof SpritesheetAssetModel.FrameModel
+						? Integer.toString(((SpritesheetAssetModel.FrameModel) frame).getIndex())
+						: "'" + frame.getKey() + "'";
+
+				call.value("this.game", round(sprite.getX()), round(sprite.getY()));
+				call.valueOrUndefined(writeTexture, "'" + sprite.getAssetKey().getAsset().getKey() + "'", frameValue);
+				call.valueOrUndefined(parVar != null, parVar);
+			}
+
+			call.append();
+
+		} else {
+
+			append(getSystemsContainerChain() + ".add.");
+
+			if (model instanceof ImageSpriteModel) {
+				ImageSpriteModel image = (ImageSpriteModel) model;
+
+				Call call = new Call("sprite");
+				call.value(round(image.getX()));
+				call.value(round(image.getY()));
+				call.value("'" + image.getAssetKey().getKey() + "'");
+				call.value("null");
+				call.valueOrUndefined(parVar != null, parVar);
+
+				call.append();
+
+			} else if (model instanceof SpritesheetSpriteModel || model instanceof AtlasSpriteModel) {
+				AssetSpriteModel<?> sprite = (AssetSpriteModel<?>) model;
+				IAssetKey frame = sprite.getAssetKey();
+				String frameValue = frame instanceof SpritesheetAssetModel.FrameModel
+						? Integer.toString(((SpritesheetAssetModel.FrameModel) frame).getIndex())
+						: "'" + frame.getKey() + "'";
+
 				append("sprite");
-			} else {
-				append("new " + prefabName);
+
+				append("(" + // sprite
+						round(sprite.getX())// x
+						+ ", " + round(sprite.getY()) // y
+						+ ", '" + sprite.getAssetKey().getAsset().getKey() + "'" // key
+						+ ", " + frameValue // frame
+						+ (parVar == null ? "" : ", " + parVar) // group
+						+ ")");
+			} else if (model instanceof ButtonSpriteModel) {
+				ButtonSpriteModel button = (ButtonSpriteModel) model;
+				String outFrameKey;
+				if (button.getAssetKey().getAsset() instanceof ImageAssetModel) {
+					// buttons based on image do not have outFrames
+					outFrameKey = "null";
+				} else {
+					outFrameKey = frameKey((IAssetFrameModel) button.getAssetKey());
+				}
+
+				append("button(" + // sprite
+						round(button.getX())// x
+						+ ", " + round(button.getY()) // y
+						+ ", '" + button.getAssetKey().getAsset().getKey() + "'" // key
+						+ ", " + emptyStringToNull(button.getCallback()) // callback
+						+ ", " + emptyStringToNull(button.getCallbackContext()) // context
+						+ ", " + frameKey(button.getOverFrame())// overFrame
+						+ ", " + outFrameKey// outFrame
+						+ ", " + frameKey(button.getDownFrame())// downFrame
+						+ ", " + frameKey(button.getUpFrame())// upFrame
+						+ (parVar == null ? "" : ", " + parVar) // group
+						+ ")");
+			} else if (model instanceof TileSpriteModel) {
+				TileSpriteModel tile = (TileSpriteModel) model;
+				IAssetKey assetKey = tile.getAssetKey();
+				String frame;
+				if (assetKey instanceof SpritesheetAssetModel.FrameModel) {
+					frame = assetKey.getKey();
+				} else if (assetKey instanceof AtlasAssetModel.Frame) {
+					frame = "'" + assetKey.getKey() + "'";
+				} else {
+					// like in case it is an image
+					frame = "null";
+				}
+
+				append("tileSprite(" + // sprite
+						round(tile.getX())// x
+						+ ", " + round(tile.getY()) // y
+						+ ", " + round(tile.getWidth()) // width
+						+ ", " + round(tile.getHeight()) // height
+						+ ", '" + tile.getAssetKey().getAsset().getKey() + "'" // key
+						+ ", " + frame // frame
+						+ (parVar == null ? "" : ", " + parVar) // group
+						+ ")");
 			}
-
-			append("(" + // sprite
-					round(image.getX())// x
-					+ ", " + round(image.getY()) // y
-					+ ", '" + image.getAssetKey().getKey() + "'" // key
-					+ (isState ? "" : ", null") // frame
-					+ (isState ? "" : ", " + parVar) // group
-					+ ")");
-		} else if (model instanceof SpritesheetSpriteModel || model instanceof AtlasSpriteModel) {
-			AssetSpriteModel<?> sprite = (AssetSpriteModel<?>) model;
-			IAssetKey frame = sprite.getAssetKey();
-			String frameValue = frame instanceof SpritesheetAssetModel.FrameModel
-					? Integer.toString(((SpritesheetAssetModel.FrameModel) frame).getIndex())
-					: "'" + frame.getKey() + "'";
-
-			if (prefabName == null) {
-				append("sprite");
-			} else {
-				append("new " + prefabName);
-			}
-
-			append("(" + // sprite
-					round(sprite.getX())// x
-					+ ", " + round(sprite.getY()) // y
-					+ ", '" + sprite.getAssetKey().getAsset().getKey() + "'" // key
-					+ ", " + frameValue // frame
-					+ (isState ? "" : ", " + parVar) // group
-					+ ")");
-		} else if (model instanceof ButtonSpriteModel) {
-			ButtonSpriteModel button = (ButtonSpriteModel) model;
-			String outFrameKey;
-			if (button.getAssetKey().getAsset() instanceof ImageAssetModel) {
-				// buttons based on image do not have outFrames
-				outFrameKey = "null";
-			} else {
-				outFrameKey = frameKey((IAssetFrameModel) button.getAssetKey());
-			}
-
-			append("button(" + // sprite
-					round(button.getX())// x
-					+ ", " + round(button.getY()) // y
-					+ ", '" + button.getAssetKey().getAsset().getKey() + "'" // key
-					+ ", " + emptyStringToNull(button.getCallback()) // callback
-					+ ", " + emptyStringToNull(button.getCallbackContext()) // context
-					+ ", " + frameKey(button.getOverFrame())// overFrame
-					+ ", " + outFrameKey// outFrame
-					+ ", " + frameKey(button.getDownFrame())// downFrame
-					+ ", " + frameKey(button.getUpFrame())// upFrame
-					+ (isState ? "" : ", " + parVar) // group
-					+ ")");
-		} else if (model instanceof TileSpriteModel) {
-			TileSpriteModel tile = (TileSpriteModel) model;
-			IAssetKey assetKey = tile.getAssetKey();
-			String frame;
-			if (assetKey instanceof SpritesheetAssetModel.FrameModel) {
-				frame = assetKey.getKey();
-			} else if (assetKey instanceof AtlasAssetModel.Frame) {
-				frame = "'" + assetKey.getKey() + "'";
-			} else {
-				// like in case it is an image
-				frame = "null";
-			}
-
-			append("tileSprite(" + // sprite
-					round(tile.getX())// x
-					+ ", " + round(tile.getY()) // y
-					+ ", " + round(tile.getWidth()) // width
-					+ ", " + round(tile.getHeight()) // height
-					+ ", '" + tile.getAssetKey().getAsset().getKey() + "'" // key
-					+ (isState && frame.equals("null") ? "" : ", " + frame) // frame
-					+ (isState ? "" : ", " + parVar) // group
-					+ ")");
 		}
 		line(";");
 
 		String props = cut(mark1, mark2);
 		append(props);
+	}
+
+	protected class Call {
+		private List<String> _values = new ArrayList<>();
+		private String _method;
+
+		public Call(String method) {
+			_method = method;
+		}
+
+		public Call valueOrUndefined(boolean cond, String... values) {
+			for (String v : values) {
+				value(cond ? v : "undefined");
+			}
+			return this;
+		}
+
+		public Call string(String... values) {
+			for(String value : values) {
+				value("'" + value + "'");
+			}
+			return this;
+		}
+		
+		public Call value(String... values) {
+			_values.addAll(Arrays.asList(values));
+			return this;
+
+		}
+
+		public void append() {
+			List<String> list = new ArrayList<>();
+			for (int i = _values.size() - 1; i >= 0; i--) {
+				String value = _values.get(i);
+				if (value.equals("undefined") || value.equals("null")) {
+					if (list.isEmpty()) {
+						continue;
+					}
+				}
+
+				list.add(0, value);
+			}
+			JSLikeCodeGenerator.this.append(_method + "(");
+			for (int i = 0; i < list.size(); i++) {
+				String sep = i > 0 ? ", " : "";
+				JSLikeCodeGenerator.this.append(sep + list.get(i));
+			}
+			JSLikeCodeGenerator.this.append(")");
+		}
 	}
 
 	protected void generateProperties(BaseSpriteModel model) {
@@ -303,24 +386,32 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 	}
 
 	private void generateDisplayProps(BaseObjectModel model) {
-		String varname = getVarName(model);
+		String varname = getLocalVarName(model);
 
-		if (model instanceof GroupModel) {
-			if (model.getX() != 0 || model.getY() != 0) {
-				line(varname + ".position.setTo(" + round(model.getX()) + ", " + round(model.getY()) + ");");
+		if (model.isOverriding("position")) {
+			if (model instanceof GroupModel) {
+				if (model.getX() != 0 || model.getY() != 0) {
+					line(varname + ".position.setTo(" + round(model.getX()) + ", " + round(model.getY()) + ");");
+				}
 			}
 		}
 
-		if (model.getAngle() != 0) {
-			line(varname + ".angle = " + model.getAngle() + ";");
+		if (model.isOverriding("angle")) {
+			if (model.getAngle() != 0) {
+				line(varname + ".angle = " + model.getAngle() + ";");
+			}
 		}
 
-		if (model.getScaleX() != 1 || model.getScaleY() != 1) {
-			line(varname + ".scale.setTo(" + model.getScaleX() + ", " + model.getScaleY() + ");");
+		if (model.isOverriding("scale")) {
+			if (model.getScaleX() != 1 || model.getScaleY() != 1) {
+				line(varname + ".scale.setTo(" + model.getScaleX() + ", " + model.getScaleY() + ");");
+			}
 		}
 
-		if (model.getPivotX() != 0 || model.getPivotY() != 0) {
-			line(varname + ".pivot.setTo(" + model.getPivotX() + ", " + model.getPivotY() + ");");
+		if (model.isOverriding("pivot")) {
+			if (model.getPivotX() != 0 || model.getPivotY() != 0) {
+				line(varname + ".pivot.setTo(" + model.getPivotX() + ", " + model.getPivotY() + ");");
+			}
 		}
 	}
 
@@ -329,43 +420,54 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 		return model.getEditorName();
 	}
 
+	@SuppressWarnings("static-method")
+	protected String getLocalVarName(BaseObjectModel model) {
+		return "_" + model.getEditorName();
+	}
+
 	private void generateSpriteProps(BaseSpriteModel model) {
-		String varname = getVarName(model);
+		String varname = getLocalVarName(model);
 
-		if (model.getAnchorX() != 0 || model.getAnchorY() != 0) {
-			line(varname + ".anchor.setTo(" + model.getAnchorX() + ", " + model.getAnchorY() + ");");
+		if (model.isOverriding("anchor")) {
+			if (model.getAnchorX() != 0 || model.getAnchorY() != 0) {
+				line(varname + ".anchor.setTo(" + model.getAnchorX() + ", " + model.getAnchorY() + ");");
+			}
 		}
 
-		if (model.getTint() != null && !model.getTint().equals("0xffffff")) {
-			line(varname + ".tint = " + model.getTint() + ";");
+		if (model.isOverriding("tint")) {
+			if (model.getTint() != null && !model.getTint().equals("0xffffff")) {
+				line(varname + ".tint = " + model.getTint() + ";");
+			}
 		}
 
-		if (!model.getAnimations().isEmpty()) {
-			for (AnimationModel anim : model.getAnimations()) {
-				String animvar = null;
-				if (anim.isPublic() || anim.isKillOnComplete()) {
-					animvar = getAnimationVarName(model, anim);
-					append("var " + animvar + " = ");
-				}
-
-				append(varname + ".animations.add(");
-
-				append("'" + anim.getName() + "', [");
-				int i = 0;
-				for (IAssetFrameModel frame : anim.getFrames()) {
-					if (i++ > 0) {
-						append(", ");
+		if (model.isOverriding("animations")) {
+			if (!model.getAnimations().isEmpty()) {
+				for (AnimationModel anim : model.getAnimations()) {
+					String animvar = null;
+					if (anim.isPublic() || anim.isKillOnComplete()) {
+						animvar = getLocalAnimationVarName(model, anim);
+						append("var " + animvar + " = ");
 					}
-					if (frame instanceof SpritesheetAssetModel.FrameModel) {
-						append(frame.getKey());
-					} else {
-						append("'" + frame.getKey() + "'");
-					}
-				}
-				line("], " + anim.getFrameRate() + ", " + anim.isLoop() + ");");
 
-				if (anim.isKillOnComplete()) {
-					line(animvar + ".killOnComplete = true;");
+					append(varname + ".animations.add(");
+
+					append("'" + anim.getName() + "', [");
+					int i = 0;
+					for (IAssetFrameModel frame : anim.getFrames()) {
+						if (i++ > 0) {
+							append(", ");
+						}
+						if (frame instanceof SpritesheetAssetModel.FrameModel) {
+							append(frame.getKey());
+						} else {
+							append("'" + frame.getKey() + "'");
+						}
+					}
+					line("], " + anim.getFrameRate() + ", " + anim.isLoop() + ");");
+
+					if (anim.isKillOnComplete()) {
+						line(animvar + ".killOnComplete = true;");
+					}
 				}
 			}
 		}
@@ -387,17 +489,23 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 		return getVarName(obj) + "_" + anim.getName();
 	}
 
+	protected String getLocalAnimationVarName(BaseObjectModel obj, AnimationModel anim) {
+		return getLocalVarName(obj) + "_" + anim.getName();
+	}
+
 	private void generateBodyProps(BaseSpriteModel model) {
-		BodyModel body = model.getBody();
-		if (body != null) {
-			if (body instanceof ArcadeBodyModel) {
-				generateArcadeBodyProps(model);
+		if (model.isOverriding("physics")) {
+			BodyModel body = model.getBody();
+			if (body != null) {
+				if (body instanceof ArcadeBodyModel) {
+					generateArcadeBodyProps(model);
+				}
 			}
 		}
 	}
 
 	private void generateArcadeBodyProps(BaseSpriteModel model) {
-		String varname = getVarName(model);
+		String varname = getLocalVarName(model);
 
 		if (!model.getParent().isPhysicsGroup() || model.getParent().getPhysicsBodyType() != PhysicsType.ARCADE) {
 			line("this.game.physics.arcade.enable(" + varname + ");");
@@ -435,7 +543,7 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 
 	@SuppressWarnings("boxing")
 	private void generateCommonArcadeProps(BaseSpriteModel model) {
-		String varname = getVarName(model);
+		String varname = getLocalVarName(model);
 		ArcadeBodyModel body = model.getArcadeBody();
 
 		class Prop {
@@ -529,7 +637,7 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 	}
 
 	private void generateTileProps(TileSpriteModel model) {
-		String varname = getVarName(model);
+		String varname = getLocalVarName(model);
 
 		if (model.getTilePositionX() != 0 || model.getTilePositionY() != 0) {
 			line(varname + ".tilePosition.setTo(" + round(model.getTilePositionX()) + ", "
@@ -545,22 +653,50 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 	private void generateGroup(GroupModel group) {
 
 		{
-			append("var " + group.getEditorName() + " = ");
-			if (group.isPhysicsGroup()) {
-				line(getSystemsContainerChain() + ".add.physicsGroup(" + group.getPhysicsBodyType().getPhaserName()
-						+ ", " + (group.getParent().isWorldModel() ? "this" : group.getParent().getEditorName())
-						+ ");");
+			String varname = getLocalVarName(group);
+			String parVarname;
+			if (group.getParent().isWorldModel()) {
+				if (_model.getType() == CanvasType.STATE) {
+					parVarname = "undefined";
+				} else {
+					parVarname = "this";
+				}
 			} else {
-				line(String.format(getSystemsContainerChain() + ".add.group(%s);",
-						group.getParent().isWorldModel() ? "this" : group.getParent().getEditorName()));
-
+				parVarname = getLocalVarName(group.getParent());
 			}
+
+			append("var " + varname + " = ");
+
+			Call call;
+			if (group.isPrefabInstance()) {
+				call = new Call("new " + group.getPrefab().getClassName());
+				call.value("this.game");
+				call.value(parVarname);
+				if (group.isPhysicsGroup()) {
+					call.string(group.getEditorName()); // name
+					call.value("undefined"); // addToStage
+					call.value("true");
+					call.value(group.getPhysicsBodyType().getPhaserName());
+				}
+			} else {
+				if (group.isPhysicsGroup()) {
+					call = new Call(getSystemsContainerChain() + ".add.physicsGroup");
+					call.value(group.getPhysicsBodyType().getPhaserName());
+					call.value(parVarname);
+				} else {
+					call = new Call(getSystemsContainerChain() + ".add.group");
+					call.value(parVarname);
+				}
+			}
+
+			call.append();
+			line(";");
 		}
 
 		generateDisplayProps(group);
 		generateGroupProps(group);
 
-		if (!group.getChildren().isEmpty()) {
+		if (!group.isPrefabInstance() && !group.getChildren().isEmpty()) {
 			line();
 			int i = 0;
 			int last = group.getChildren().size() - 1;
@@ -576,10 +712,12 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 	}
 
 	private void generateGroupProps(GroupModel model) {
-		String varname = getVarName(model);
+		String varname = getLocalVarName(model);
 
-		if (model.getPhysicsSortDirection() != PhysicsSortDirection.NULL) {
-			line(varname + ".physicsSortDirection = " + model.getPhysicsSortDirection().getPhaserName() + ";");
+		if (model.isOverriding("physics")) {
+			if (model.getPhysicsSortDirection() != PhysicsSortDirection.NULL) {
+				line(varname + ".physicsSortDirection = " + model.getPhysicsSortDirection().getPhaserName() + ";");
+			}
 		}
 	}
 

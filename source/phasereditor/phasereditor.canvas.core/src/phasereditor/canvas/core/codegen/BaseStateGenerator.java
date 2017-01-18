@@ -37,7 +37,7 @@ public abstract class BaseStateGenerator extends JSLikeCodeGenerator{
 		super(model);
 	}
 	
-	protected void generateinitMethodBody() {
+	protected void generateInitMethodBody() {
 		line();
 		section("/* before-init-begin */", "/* before-init-end */",
 				getYouCanInsertCodeHere("You can insert init code here"));
