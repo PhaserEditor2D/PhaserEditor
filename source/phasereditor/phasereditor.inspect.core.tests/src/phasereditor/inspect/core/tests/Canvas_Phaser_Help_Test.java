@@ -93,6 +93,14 @@ public class Canvas_Phaser_Help_Test {
 				{"Phaser.Sprite", "game"},
 				{ "Phaser.Sprite", "x"},
 				{ "Phaser.Sprite", "y"},
+				{ "Phaser.Sprite", "key"},
+				{ "Phaser.Sprite", "frame"},
+				{ "Phaser.Group", "game"},
+				{ "Phaser.Group", "parent"},
+				{ "Phaser.Group", "name"},
+				{ "Phaser.Group", "addToStage"},
+				{ "Phaser.Group", "enableBody"},
+				{ "Phaser.Group", "physicsBodyType"},
 		};
 		//@formatter:on
 
