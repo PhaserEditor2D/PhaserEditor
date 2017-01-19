@@ -50,6 +50,7 @@ import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.SelectionBoxNode;
 import phasereditor.canvas.ui.editors.SelectionNode;
+import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
@@ -329,10 +330,10 @@ public class SelectionBehavior implements ISelectionProvider {
 	public void updateSelectedNodes() {
 		Pane selpane = _canvas.getSelectionPane();
 
-		Map<IObjectNode, SelectionNode> map = new HashMap<>();
+		Map<String, SelectionNode> map = new HashMap<>();
 		selpane.getChildren().forEach(n -> {
 			SelectionNode selnode = (SelectionNode) n;
-			map.put(selnode.getObjectNode(), selnode);
+			map.put(selnode.getObjectNode().getModel().getId(), selnode);
 		});
 
 		selpane.getChildren().clear();
@@ -340,7 +341,18 @@ public class SelectionBehavior implements ISelectionProvider {
 		for (Object obj : _selection.toArray()) {
 			if (obj instanceof IObjectNode) {
 				IObjectNode inode = (IObjectNode) obj;
+				
+				if (inode.getNode().getParent() == null) {
+					// is possible the node was detached because a rebuild or morphings, etc...
+					BaseObjectControl<?> control = _canvas.getWorldNode().getControl().findById(inode.getModel().getId());
+					if (control == null) {
+						continue;
+					}
+					inode = control.getIObjectNode();
+				}
+				
 				Node node = inode.getNode();
+				
 
 				Bounds rect = buildSelectionBounds(node);
 
