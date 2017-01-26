@@ -75,6 +75,11 @@ public class CanvasCore {
 		CanvasType type = getCanvasType(file);
 		return type != null;
 	}
+	
+	public static boolean isPrefabFile(IFile file) {
+		CanvasType type = getCanvasType(file);
+		return type == CanvasType.GROUP || type == CanvasType.SPRITE;
+	}
 
 	public static boolean isCanvasFileExtension(IFile file) {
 		return file.getFileExtension().equals("canvas");

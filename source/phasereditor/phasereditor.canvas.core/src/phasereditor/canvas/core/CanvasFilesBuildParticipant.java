@@ -81,7 +81,7 @@ public class CanvasFilesBuildParticipant implements IProjectBuildParticipant {
 			delta.accept(d -> {
 				if (d.getResource() instanceof IFile) {
 					IFile file = (IFile) d.getResource();
-					if (CanvasCore.isCanvasFileExtension(file)) {
+					if (CanvasCore.isPrefabFile(file)) {
 						value[0] = true;
 						return false;
 					}

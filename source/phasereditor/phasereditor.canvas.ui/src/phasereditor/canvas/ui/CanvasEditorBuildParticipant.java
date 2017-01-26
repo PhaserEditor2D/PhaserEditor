@@ -122,7 +122,7 @@ public class CanvasEditorBuildParticipant implements IProjectBuildParticipant {
 											IResource resource = d.getResource();
 											if (resource instanceof IFile) {
 
-												if (!CanvasCore.isCanvasFileExtension((IFile) resource)) {
+												if (!CanvasCore.isPrefabFile((IFile) resource)) {
 													return true;
 												}
 
