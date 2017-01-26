@@ -5,9 +5,12 @@ import java.util.List;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import phasereditor.canvas.core.CanvasModel;
+import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.behaviors.SelectionBehavior;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
@@ -34,6 +37,15 @@ public class DeleteHandler extends AbstractHandler {
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 
 		List<IObjectNode> nodes = SelectionBehavior.filterSelection(sel);
+
+		{
+			CanvasModel model = editor.getModel();
+			if (model.getWorld().getChildren().size() <= 1 && model.getType() == CanvasType.SPRITE) {
+				MessageDialog.openInformation(HandlerUtil.getActiveShell(event), "Delete",
+						"Cannot delete the only one object of this prefab");
+				return;
+			}
+		}
 
 		CompositeOperation operations = new CompositeOperation();
 

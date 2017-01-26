@@ -284,9 +284,6 @@ public class ObjectCanvas extends FXCanvas {
 
 		operations.add(new AddNodeOperation(model.toJSON(false), -1, x, y, worldNode.getModel().getId()));
 
-		// control.updateFromModel();
-		// worldNode.getControl().addChild(node);
-		// _updateBehavior.fireWorldChanged();
 	}
 
 	public void dirty() {
