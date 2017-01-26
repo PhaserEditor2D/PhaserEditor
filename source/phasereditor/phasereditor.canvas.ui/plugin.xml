@@ -6,10 +6,12 @@
       <editor
             class="phasereditor.canvas.ui.editors.CanvasEditor"
             default="false"
-            extensions="canvas"
             icon="platform:/plugin/phasereditor.ui/icons/canvas.png"
             id="phasereditor.canvas.ui.editors.canvas"
             name="Canvas">
+         <contentTypeBinding
+               contentTypeId="phasereditor.canvas.core.canvasContentType">
+         </contentTypeBinding>
       </editor>
    </extension>
    <extension

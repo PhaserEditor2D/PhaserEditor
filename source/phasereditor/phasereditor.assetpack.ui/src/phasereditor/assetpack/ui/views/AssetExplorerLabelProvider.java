@@ -53,7 +53,7 @@ class AssetExplorerLabelProvider extends LabelProvider {
 		if (element == AssetExplorer.PREFABS_ROOT) {
 			return EditorSharedImages.getImage(IEditorSharedImages.IMG_BRICKS);
 		}
-
+		
 		if (element instanceof Prefab) {
 			return AssetLabelProvider.GLOBAL_16.getImage(((Prefab) element).getFile());
 		}

@@ -50,7 +50,7 @@ public class Prefab {
 			_className = name.substring(0, name.length() - _file.getFileExtension().length() - 1);
 		}
 	}
-
+	
 	public IFile getFile() {
 		return _file;
 	}

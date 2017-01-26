@@ -28,10 +28,11 @@ import java.util.List;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.content.IContentDescription;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -45,6 +46,9 @@ import phasereditor.project.core.ProjectCore;
 public class CanvasCore {
 	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
 	public static final String CANVAS_PROBLEM_MARKER_ID = "phasereditor.canvas.core.problem";
+	public static final String SPRITE_CONTENT_TYPE_ID = "phasereditor.canvas.core.spriteContentType";
+	public static final String GROUP_CONTENT_TYPE_ID = "phasereditor.canvas.core.groupContentType";
+	public static final String STATE_CONTENT_TYPE_ID = "phasereditor.canvas.core.stateContentType";
 
 	public static void logError(Exception e) {
 		e.printStackTrace();
@@ -68,12 +72,8 @@ public class CanvasCore {
 	}
 
 	public static boolean isCanvasFile(IFile file) {
-		if (!file.exists() || !file.isSynchronized(IResource.DEPTH_ONE)) {
-			return false;
-		}
-
-		// TODO: missing to define content type
-		return isCanvasFileExtension(file);
+		CanvasType type = getCanvasType(file);
+		return type != null;
 	}
 
 	public static boolean isCanvasFileExtension(IFile file) {
@@ -89,13 +89,45 @@ public class CanvasCore {
 	 * @return The canvas type or <code>null</code> if it is not a canvas file.
 	 */
 	public static CanvasType getCanvasType(IFile file) {
-		try (InputStream contents = file.getContents()) {
-			JSONObject data = new JSONObject(new JSONTokener(contents));
-			String name = data.getString("type");
+		IContentDescription desc;
+		try {
+			desc = file.getContentDescription();
+
+			if (desc == null) {
+				return null;
+			}
+
+			IContentType contentType = desc.getContentType();
+
+			if (contentType == null) {
+				return null;
+			}
+
+			String id = contentType.getId();
+
+			switch (id) {
+			case SPRITE_CONTENT_TYPE_ID:
+				return CanvasType.SPRITE;
+			case GROUP_CONTENT_TYPE_ID:
+				return CanvasType.GROUP;
+			case STATE_CONTENT_TYPE_ID:
+				return CanvasType.STATE;
+			default:
+				return null;
+			}
+		} catch (CoreException e) {
+			// e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static CanvasType getCanvasType(InputStream contents) {
+		JSONObject data = new JSONObject(new JSONTokener(contents));
+		if (data.has("settings") && data.has("world")) {
+			// use the GROUP type as default, for backward compatibility with v1.3.0 and bellow
+			String name = data.optString("type", CanvasType.GROUP.name());
 			CanvasType type = CanvasType.valueOf(name);
 			return type;
-		} catch (Exception e) {
-			// something went wrong so it is not a valid canvas file.
 		}
 		return null;
 	}
@@ -111,11 +143,9 @@ public class CanvasCore {
 			webContent.accept(r -> {
 				if (r instanceof IFile) {
 					IFile file = (IFile) r;
-					if (isCanvasFile(file)) {
-						CanvasType type = getCanvasType(file);
-						if (type == CanvasType.GROUP || type == CanvasType.SPRITE) {
-							list.add(new Prefab(file));
-						}
+					CanvasType type = getCanvasType(file);
+					if (type == CanvasType.GROUP || type == CanvasType.SPRITE) {
+						list.add(new Prefab(file));
 					}
 				}
 				return true;
