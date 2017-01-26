@@ -51,13 +51,6 @@
    </extension>
    <extension
          point="org.eclipse.ui.views">
-      <view
-            category="phasereditor.ui.phaser"
-            class="phasereditor.assetpack.ui.views.AssetExplorer"
-            icon="platform:/plugin/phasereditor.ui/icons/box_search.png"
-            id="phasereditor.assetpack.views.assetExplorer"
-            name="Assets">
-      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -66,98 +59,9 @@
             id="phasereditor.assetpack.shownInEditor"
             name="Edit In Asset Pack Editor">
       </command>
-      <command
-            categoryId="phasereditor.ui.phaserCategory"
-            defaultHandler="phasereditor.assetpack.ui.handlers.AssetExplorerShowListHandler"
-            id="phasereditor.assetpack.ui.explorer.showlist"
-            name="Only Sprites">
-      </command>
-      <command
-            categoryId="phasereditor.ui.phaserCategory"
-            defaultHandler="phasereditor.assetpack.ui.handlers.AssetExplorerShowTreeHandler"
-            id="phasereditor.assetpack.ui.explorer.showtree"
-            name="All Assets">
-      </command>
-      <command
-            categoryId="phasereditor.ui.phaserCategory"
-            defaultHandler="phasereditor.assetpack.ui.handlers.NewAssetExplorerHandler"
-            id="phasereditor.assetpack.ui.explorer.newview"
-            name="Open New Window">
-      </command>
+      
    </extension>
-   <extension
-         point="org.eclipse.ui.menus">
-      <menuContribution
-            allPopups="false"
-            locationURI="toolbar:phasereditor.assetpack.views.assetExplorer?before=additions">
-         <command
-               commandId="phasereditor.ui.commands.showInPreview"
-               icon="platform:/plugin/phasereditor.ui/icons/eye.png"
-               style="push"
-               tooltip="Show the selection in the Preview window.">
-         </command>
-         <command
-               commandId="phasereditor.assetpack.shownInEditor"
-               icon="platform:/plugin/org.eclipse.ui/icons/full/etool16/editor_area.png"
-               style="push"
-               tooltip="Edit selected object.">
-         </command>
-         <command
-               commandId="phasereditor.assetpack.ui.explorer.newview"
-               icon="platform:/plugin/phasereditor.ui/icons/new.png"
-               style="push">
-         </command>
-         <!--
-         <separator
-               name="phasereditor.assetpack.ui.separator1"
-               visible="true">
-         </separator>
-         <command
-               commandId="phasereditor.assetpack.ui.explorer.showlist"
-               icon="platform:/plugin/phasereditor.ui/icons/application_view_icons.png"
-               style="push">
-         </command>
-         <command
-               commandId="phasereditor.assetpack.ui.explorer.showtree"
-               icon="platform:/plugin/phasereditor.ui/icons/application_view_list.png"
-               style="push">
-         </command>
-         -->
-      </menuContribution>
-      <menuContribution
-            allPopups="false"
-            locationURI="popup:phasereditor.assetpack.views.assetExplorer?after=additions">
-         <command
-               commandId="phasereditor.assetpack.shownInEditor"
-               icon="platform:/plugin/org.eclipse.ui/icons/full/etool16/editor_area.png"
-               style="push"
-               tooltip="Edit selected object.">
-         </command>
-         <command
-               commandId="phasereditor.ui.commands.showInPreview"
-               icon="platform:/plugin/phasereditor.ui/icons/eye.png"
-               style="push"
-               tooltip="Show the selection in the Preview window.">
-         </command>
-         <command
-               commandId="phasereditor.assetpack.ui.explorer.newview"
-               icon="platform:/plugin/phasereditor.ui/icons/new.png"
-               style="push">
-         </command>
-         <!--
-         <command
-               commandId="phasereditor.assetpack.ui.explorer.showlist"
-               icon="platform:/plugin/phasereditor.ui/icons/application_view_icons.png"
-               style="push">
-         </command>
-         <command
-               commandId="phasereditor.assetpack.ui.explorer.showtree"
-               icon="platform:/plugin/phasereditor.ui/icons/application_view_list.png"
-               style="push">
-         </command>
-         -->
-      </menuContribution>
-   </extension>
+   
    <extension
          point="org.eclipse.ui.handlers">
       <handler

@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.views;
+package phasereditor.assetexplorer.ui.views;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +38,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 
+import phasereditor.assetexplorer.ui.views.AssetExplorer.Container;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
@@ -49,7 +50,6 @@ import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel.Tilemap;
 import phasereditor.assetpack.ui.AssetsContentProvider;
-import phasereditor.assetpack.ui.views.AssetExplorer.Container;
 import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.core.Prefab;
 

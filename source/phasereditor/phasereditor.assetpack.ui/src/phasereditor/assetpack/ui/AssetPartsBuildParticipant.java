@@ -23,7 +23,6 @@ import phasereditor.assetpack.core.AssetPackCore.PackDelta;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.ui.editors.AssetPackEditor;
-import phasereditor.assetpack.ui.views.AssetExplorer;
 import phasereditor.project.core.IProjectBuildParticipant;
 import phasereditor.ui.views.PreviewView;
 
@@ -62,14 +61,6 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 				IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 				IWorkbenchPage page = window.getActivePage();
 				IViewReference[] refs = page.getViewReferences();
-				for (IViewReference ref : refs) {
-					if (ref.getId().equals(AssetExplorer.ID)) {
-						AssetExplorer view = (AssetExplorer) ref.getView(false);
-						if (view != null) {
-							view.refreshContent();
-						}
-					}
-				}
 
 				// preview windows
 
@@ -115,8 +106,7 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 				buildPreviewViews(delta, refs);
 
 				PackDelta packDelta = AssetPackBuildParticipant.getData(env);
-				buildAssetsViews(packDelta, refs);
-
+				
 				buildAssetPackEditors(delta, packDelta, page);
 			}
 
@@ -175,26 +165,15 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 		}
 	}
 
-	private static void buildAssetsViews(PackDelta packDelta, IViewReference[] refs) {
-		for (IViewReference ref : refs) {
-			if (ref.getId().equals(AssetExplorer.ID)) {
-				AssetExplorer view = (AssetExplorer) ref.getView(false);
-				if (view != null && !packDelta.isEmpty()) {
-					view.refreshContent();
-				}
-			}
-		}
-	}
-
 	private static void buildPreviewViews(IResourceDelta delta, IViewReference[] refs) {
 		for (IViewReference ref : refs) {
 			if (ref.getId().equals(PreviewView.ID)) {
 				PreviewView view = (PreviewView) ref.getView(false);
-				
+
 				if (view == null) {
 					continue;
 				}
-				
+
 				Object elem = view.getPreviewElement();
 
 				if (elem != null) {

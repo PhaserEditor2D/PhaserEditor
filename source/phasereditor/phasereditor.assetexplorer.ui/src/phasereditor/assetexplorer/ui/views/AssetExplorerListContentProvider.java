@@ -19,39 +19,47 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.handlers;
+package phasereditor.assetexplorer.ui.views;
 
-import static java.lang.System.currentTimeMillis;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.eclipse.core.commands.AbstractHandler;
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.handlers.HandlerUtil;
-
-import phasereditor.assetpack.ui.views.AssetExplorer;
+import phasereditor.assetpack.core.AtlasAssetModel;
+import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel;
 
 /**
  * @author arian
  *
  */
-public class NewAssetExplorerHandler extends AbstractHandler {
+public class AssetExplorerListContentProvider extends AssetExplorerContentProvider {
 
 	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
-		try {
-			String id2 = Long.toString(currentTimeMillis());
-			IWorkbenchPage page = window.getActivePage();
-			page.showView(AssetExplorer.ID, id2,
-					IWorkbenchPage.VIEW_CREATE);
-		} catch (PartInitException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
+	public Object[] getChildren(Object parent) {
+
+		if (parent == AssetExplorer.ROOT) {
+			List<Object> list = new ArrayList<>();
+			fillList(parent, list);
+			return list.toArray();
 		}
-		return null;
+
+		return super.getChildren(parent);
 	}
 
+	private void fillList(Object elem, List<Object> list) {
+		boolean add = false;
+		add = add || elem instanceof ImageAssetModel;
+		add = add || elem instanceof SpritesheetAssetModel.FrameModel;
+		add = add || elem instanceof AtlasAssetModel.Frame;
+
+		if (add) {
+			list.add(elem);
+		}
+
+		Object[] children = super.getChildren(elem);
+
+		for (Object child : children) {
+			fillList(child, list);
+		}
+	}
 }

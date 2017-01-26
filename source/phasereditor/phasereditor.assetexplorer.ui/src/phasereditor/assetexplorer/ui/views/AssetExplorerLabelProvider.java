@@ -19,14 +19,14 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.views;
+package phasereditor.assetexplorer.ui.views;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
+import phasereditor.assetexplorer.ui.views.AssetExplorer.Container;
 import phasereditor.assetpack.ui.AssetLabelProvider;
-import phasereditor.assetpack.ui.views.AssetExplorer.Container;
 import phasereditor.canvas.core.Prefab;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
