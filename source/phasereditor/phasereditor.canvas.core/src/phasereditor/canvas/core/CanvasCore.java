@@ -75,7 +75,7 @@ public class CanvasCore {
 		CanvasType type = getCanvasType(file);
 		return type != null;
 	}
-	
+
 	public static boolean isPrefabFile(IFile file) {
 		CanvasType type = getCanvasType(file);
 		return type == CanvasType.GROUP || type == CanvasType.SPRITE;
@@ -129,7 +129,8 @@ public class CanvasCore {
 	public static CanvasType getCanvasType(InputStream contents) {
 		JSONObject data = new JSONObject(new JSONTokener(contents));
 		if (data.has("settings") && data.has("world")) {
-			// use the GROUP type as default, for backward compatibility with v1.3.0 and bellow
+			// use the GROUP type as default, for backward compatibility with
+			// v1.3.0 and bellow
 			String name = data.optString("type", CanvasType.GROUP.name());
 			CanvasType type = CanvasType.valueOf(name);
 			return type;

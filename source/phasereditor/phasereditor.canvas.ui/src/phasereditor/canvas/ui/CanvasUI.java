@@ -21,9 +21,29 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui;
 
+import static java.lang.System.out;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.statushandlers.StatusManager;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import javafx.scene.SnapshotParameters;
+import javafx.scene.image.WritableImage;
+import phasereditor.canvas.core.CanvasModel;
+import phasereditor.canvas.ui.shapes.GroupControl;
+import phasereditor.canvas.ui.shapes.GroupNode;
 
 /**
  * @author arian
@@ -34,5 +54,54 @@ public class CanvasUI {
 
 	public static void logError(Exception e) {
 		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
+	}
+
+	private static final QualifiedName SNAPSHOT_FILENAME_KEY = new QualifiedName("phasereditor.canvas.core",
+			"snapshot-file");
+
+	public synchronized static Path getCanvasScreenshotFile(IFile file, boolean forceMake) {
+		if (file == null) {
+			return null;
+		}
+
+		try {
+			String filename = file.getPersistentProperty(SNAPSHOT_FILENAME_KEY);
+			String home = System.getProperty("user.home");
+			Path dir = Paths.get(home).resolve(".phasereditor/snapshots");
+			Path writeTo;
+			if (filename == null) {
+				filename = UUID.randomUUID().toString() + ".jpg";
+			}
+			writeTo = dir.resolve(filename);
+
+			if (forceMake) {
+				if (!Files.exists(writeTo)) {
+					makeCanvasScreenshot(file, writeTo);
+				}
+			}
+
+			file.setPersistentProperty(SNAPSHOT_FILENAME_KEY, filename);
+
+			return writeTo;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private static void makeCanvasScreenshot(IFile file, @SuppressWarnings("unused") Path writeTo) {
+		CanvasModel model = new CanvasModel(file);
+		try (InputStream contents = file.getContents()) {
+			model.read(new JSONObject(new JSONTokener(contents)));
+			GroupControl worldControl = new GroupControl(null, model.getWorld());
+			GroupNode node = worldControl.getNode();
+			WritableImage image = new WritableImage(1000, 1000);
+			SnapshotParameters params = new SnapshotParameters();
+			// TODO: set the transform to scale the image.
+			// params.setTransform(null);
+			node.snapshot(params, image);
+			out.println(image);
+		} catch (IOException | CoreException e) {
+			e.printStackTrace();
+		}
 	}
 }
