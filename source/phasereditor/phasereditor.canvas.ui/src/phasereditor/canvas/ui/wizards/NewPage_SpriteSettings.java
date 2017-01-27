@@ -38,6 +38,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -55,9 +56,9 @@ import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AtlasAssetModel;
+import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetsContentProvider;
@@ -66,6 +67,7 @@ import phasereditor.canvas.core.SourceLang;
 import phasereditor.canvas.ui.editors.LangLabelProvider;
 import phasereditor.ui.FilteredTree2;
 import phasereditor.ui.PatternFilter2;
+import phasereditor.ui.views.PreviewComp;
 
 /**
  * @author arian
@@ -80,6 +82,7 @@ public class NewPage_SpriteSettings extends WizardPage {
 	private Button _btnGenerateTheCorrspondant;
 	private FilteredTree2 _filteredTree;
 	private Object _selectedAsset;
+	private PreviewComp _previewComp;
 
 	public NewPage_SpriteSettings() {
 		super("group.settings.page");
@@ -118,11 +121,16 @@ public class NewPage_SpriteSettings extends WizardPage {
 		lblSelectTheAsset.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		lblSelectTheAsset.setText("Select the asset for the sprite:");
 
-		_filteredTree = new FilteredTree2(container, SWT.SINGLE | SWT.BORDER, new PatternFilter2(), 4);
-		_filteredTree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 2, 1));
+		SashForm sashForm = new SashForm(container, SWT.NONE);
+		sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 2, 1));
+
+		_filteredTree = new FilteredTree2(sashForm, SWT.SINGLE | SWT.BORDER, new PatternFilter2(), 4);
 		_assetsViewer = _filteredTree.getViewer();
 		_tree = _assetsViewer.getTree();
 		_tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+
+		_previewComp = new PreviewComp(sashForm, SWT.BORDER);
+		sashForm.setWeights(new int[] { 4, 3 });
 
 		_btnGenerateTheCorrspondant = new Button(container, SWT.CHECK);
 		_btnGenerateTheCorrspondant.setSelection(true);
@@ -147,6 +155,7 @@ public class NewPage_SpriteSettings extends WizardPage {
 		AssetPackUI.installAssetTooltips(_assetsViewer);
 		_assetsViewer.addSelectionChangedListener(e -> {
 			validateErrors();
+			previewSelection();
 		});
 		_btnGenerateTheCorrspondant.addSelectionListener(new SelectionListener() {
 
@@ -161,6 +170,17 @@ public class NewPage_SpriteSettings extends WizardPage {
 				//
 			}
 		});
+		_previewComp.preview(null);
+		_previewComp.setNoPreviewMessage("Select an asset");
+	}
+
+	private void previewSelection() {
+		IStructuredSelection sel = _assetsViewer.getStructuredSelection();
+		Object elem = sel.getFirstElement();
+		if (!(elem instanceof IAssetFrameModel || elem instanceof ImageAssetModel)) {
+			elem = null;
+		}
+		_previewComp.preview(elem);
 	}
 
 	private void validateErrors() {
@@ -178,11 +198,10 @@ public class NewPage_SpriteSettings extends WizardPage {
 
 		setPageComplete(getErrorMessage() == null);
 	}
-	
+
 	public Object getSelectedAsset() {
 		return _selectedAsset;
 	}
-	
 
 	static class NewSpriteAssetContentProvider extends AssetsContentProvider {
 		@Override
