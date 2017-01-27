@@ -178,6 +178,13 @@
             </command>
          </menu>
          <menu
+               label="Prefab">
+            <command
+                  commandId="phasereditor.canvas.ui.openPrefab"
+                  style="push">
+            </command>
+         </menu>
+         <menu
                label="Pick">
             <command
                   commandId="phasereditor.canvas.ui.pick"
@@ -756,6 +763,10 @@
             id="phasereditor.canvas.ui.gencode"
             name="Generate Code">
       </command>
+      <command
+            id="phasereditor.canvas.ui.openPrefab"
+            name="Open Prefab">
+      </command>
       
    </extension>
    <extension
@@ -1214,6 +1225,15 @@
             </reference>
          </activeWhen>
       </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.OpenPrefabHandler"
+            commandId="phasereditor.canvas.ui.openPrefab">
+         <activeWhen>
+            <reference
+                  definitionId="phasereditor.canvas.ui.isPrefabInstance">
+            </reference>
+         </activeWhen>
+      </handler>
       
    </extension>
    <extension
@@ -1450,6 +1470,22 @@
             </equals>
          </with>
       </definition>
+      <definition
+            id="phasereditor.canvas.ui.isPrefabInstance">
+         <with
+               variable="selection">
+            <iterate
+                  ifEmpty="false">
+               <adapt
+                     type="phasereditor.canvas.ui.shapes.IObjectNode">
+                  <test
+                        property="phasereditor.canvas.ui.isPrefabInstance"
+                        value="true">
+                  </test>
+               </adapt>
+            </iterate>
+         </with>
+      </definition>
    </extension>
    <extension
          point="org.eclipse.ui.contexts">
@@ -1539,6 +1575,16 @@
             id="phasereditor.canvas.ui.canvasEditorBuild"
             order="4">
       </participant>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="phasereditor.canvas.ui.CanvasPropertyTester"
+            id="phasereditor.canvas.ui.propertyTester"
+            namespace="phasereditor.canvas.ui"
+            properties="isPrefabInstance"
+            type="phasereditor.canvas.ui.shapes.IObjectNode">
+      </propertyTester>
    </extension>
 
 </plugin>
