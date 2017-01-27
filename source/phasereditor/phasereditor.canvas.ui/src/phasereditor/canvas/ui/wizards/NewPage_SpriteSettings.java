@@ -135,7 +135,7 @@ public class NewPage_SpriteSettings extends WizardPage {
 		_btnGenerateTheCorrspondant = new Button(container, SWT.CHECK);
 		_btnGenerateTheCorrspondant.setSelection(true);
 		_btnGenerateTheCorrspondant.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 2, 1));
-		_btnGenerateTheCorrspondant.setText("Edit this state with the visual editor.");
+		_btnGenerateTheCorrspondant.setText("Edit this sprite with the visual editor.");
 		_langComboViewer.setContentProvider(new ArrayContentProvider());
 		_langComboViewer.setLabelProvider(new LangLabelProvider());
 
