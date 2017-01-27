@@ -376,16 +376,30 @@ public class SelectionBehavior implements ISelectionProvider {
 		_canvas.getHandlerBehavior().clearNotSelected();
 		_canvas.getHandlerBehavior().update();
 	}
-
-	public Bounds buildSelectionBounds(Node node) {
+	
+	public static Bounds buildSelectionBounds(List<Node> nodes, GroupNode world) {
+		List<Bounds> list = new ArrayList<>();
+		
+		for(Node node : nodes) {
+			buildSelectionBounds(node, list, world);
+		}
+		
+		return mergeBounds(list);
+	}
+	
+	public static Bounds buildSelectionBounds(Node node, GroupNode world) {
 		List<Bounds> list = new ArrayList<>();
 
-		buildSelectionBounds(node, list);
+		buildSelectionBounds(node, list, world);
 
 		if (list.isEmpty()) {
 			return null;
 		}
 
+		return mergeBounds(list);
+	}
+
+	private static Bounds mergeBounds(List<Bounds> list) {
 		Bounds first = list.get(0);
 
 		double x0 = first.getMinX();
@@ -419,14 +433,17 @@ public class SelectionBehavior implements ISelectionProvider {
 		return new BoundingBox(x0, y0, x1 - x0, y1 - y0);
 	}
 
-	private void buildSelectionBounds(Node node, List<Bounds> list) {
-		GroupNode world = _canvas.getWorldNode();
+	public Bounds buildSelectionBounds(Node node) {
+		return buildSelectionBounds(node, _canvas.getWorldNode());
+	}
+
+	private static void buildSelectionBounds(Node node, List<Bounds> list, GroupNode world) {
 		Bounds b = localToAncestor(node.getBoundsInLocal(), node, world);
 
 		if (node instanceof GroupNode) {
 			// add the children bounds
 			for (Node child : ((GroupNode) node).getChildren()) {
-				buildSelectionBounds(child, list);
+				buildSelectionBounds(child, list, world);
 			}
 			// add the left corner of the group
 			list.add(new BoundingBox(b.getMinX(), b.getMinY(), 1, 1));

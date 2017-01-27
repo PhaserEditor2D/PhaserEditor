@@ -146,7 +146,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 
 			if (file != null && file.exists()) {
 				try {
-					return _cache.getIcon(file, _iconSize, null);
+					return getIcon(file);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -187,7 +187,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 					Rectangle b = PhaserEditorUI.getImageBounds(file);
 					List<FrameData> frames = AssetPackUI.generateSpriteSheetRects(asset, b, b);
 					if (frames.isEmpty()) {
-						return _cache.getIcon(file, _iconSize, null);
+						return getIcon(file);
 					}
 					FrameData fd = frames.get(0);
 					return _cache.getIcon(file, fd.src, _iconSize, null);
@@ -253,6 +253,14 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 		}
 
 		return getFolderImage();
+	}
+
+	public Image getIcon(IFile file) {
+		return _cache.getIcon(file, _iconSize, null);
+	}
+	
+	public Image getIcon(String filename) {
+		return _cache.getIcon(filename, _iconSize, null);
 	}
 
 	@Override

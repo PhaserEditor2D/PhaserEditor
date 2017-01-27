@@ -21,14 +21,19 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui;
 
+import static java.lang.System.currentTimeMillis;
 import static java.lang.System.out;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
+
+import javax.imageio.ImageIO;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -39,9 +44,22 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Bounds;
+import javafx.geometry.Insets;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
+import javafx.scene.transform.Scale;
 import phasereditor.canvas.core.CanvasModel;
+import phasereditor.canvas.ui.editors.behaviors.SelectionBehavior;
 import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
 
@@ -59,7 +77,31 @@ public class CanvasUI {
 	private static final QualifiedName SNAPSHOT_FILENAME_KEY = new QualifiedName("phasereditor.canvas.core",
 			"snapshot-file");
 
-	public synchronized static Path getCanvasScreenshotFile(IFile file, boolean forceMake) {
+	public static void clearCanvasScreenshot(IFile file) {
+		try {
+			if (!file.exists()) {
+				return;
+			}
+
+			String fname = file.getPersistentProperty(SNAPSHOT_FILENAME_KEY);
+			if (fname == null) {
+				return;
+			}
+
+			String home = System.getProperty("user.home");
+			Path dir = Paths.get(home).resolve(".phasereditor/snapshots");
+			Path snapshot = dir.resolve(fname);
+			if (Files.exists(snapshot)) {
+				out.println("Removing snapshot from " + file);
+				Files.delete(snapshot);
+			}
+			file.setPersistentProperty(SNAPSHOT_FILENAME_KEY, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static Path getCanvasScreenshotFile(IFile file, boolean forceMake) {
 		if (file == null) {
 			return null;
 		}
@@ -70,7 +112,7 @@ public class CanvasUI {
 			Path dir = Paths.get(home).resolve(".phasereditor/snapshots");
 			Path writeTo;
 			if (filename == null) {
-				filename = UUID.randomUUID().toString() + ".jpg";
+				filename = file.getName() + "_" + UUID.randomUUID().toString() + ".png";
 			}
 			writeTo = dir.resolve(filename);
 
@@ -88,18 +130,68 @@ public class CanvasUI {
 		}
 	}
 
-	private static void makeCanvasScreenshot(IFile file, @SuppressWarnings("unused") Path writeTo) {
+	private static void makeCanvasScreenshot(IFile file, Path writeTo) {
 		CanvasModel model = new CanvasModel(file);
 		try (InputStream contents = file.getContents()) {
 			model.read(new JSONObject(new JSONTokener(contents)));
 			GroupControl worldControl = new GroupControl(null, model.getWorld());
 			GroupNode node = worldControl.getNode();
-			WritableImage image = new WritableImage(1000, 1000);
-			SnapshotParameters params = new SnapshotParameters();
-			// TODO: set the transform to scale the image.
-			// params.setTransform(null);
-			node.snapshot(params, image);
-			out.println(image);
+
+			Scene scene = new Scene(node);
+
+			Platform.runLater(new Runnable() {
+
+				@Override
+				public void run() {
+					long t = currentTimeMillis();
+
+					try {
+						Method m = Scene.class.getDeclaredMethod("doCSSLayoutSyncForSnapshot", Node.class);
+						m.setAccessible(true);
+						m.invoke(scene, node);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+
+					SnapshotParameters params = new SnapshotParameters();
+					node.setBackground(
+							new Background(new BackgroundFill(Color.TRANSPARENT, new CornerRadii(0), new Insets(0))));
+					// node.setBackground(null);
+
+					Bounds b = SelectionBehavior.buildSelectionBounds(node.getChildren(), node);
+
+					if (b != null) {
+						// out.println("Bounds: " + b);
+						double f = 1;
+						double x = b.getMinX();
+						double y = b.getMinY();
+						double w = b.getWidth();
+						double h = b.getHeight();
+
+						double max = Math.max(w, h);
+						if (max > 128) {
+							f = 128 / max;
+						}
+
+						params.setTransform(new Scale(f, f, x, y));
+						params.setViewport(new Rectangle2D(x, y, w * f, h * f));
+					}
+
+					WritableImage image = node.snapshot(params, null);
+
+					BufferedImage buff = SwingFXUtils.fromFXImage(image, null);
+
+					try {
+						ImageIO.write(buff, "png", writeTo.toFile());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
+					out.println("Ready canvas snapshot src:" + file + " --> dst:" + writeTo + " "
+							+ (currentTimeMillis() - t) + "ms");
+				}
+			});
+
 		} catch (IOException | CoreException e) {
 			e.printStackTrace();
 		}

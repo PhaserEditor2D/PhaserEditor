@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetexplorer.ui.views;
 
+import java.nio.file.Path;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
@@ -28,6 +30,7 @@ import org.eclipse.swt.graphics.Image;
 import phasereditor.assetexplorer.ui.views.AssetExplorer.Container;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.canvas.core.Prefab;
+import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 
@@ -64,7 +67,9 @@ class AssetExplorerLabelProvider extends LabelProvider {
 			Prefab prefab = (Prefab) element;
 			IFile file = prefab.getFile();
 
-			return AssetLabelProvider.GLOBAL_16.getImage(file);
+			Path imgfile = CanvasUI.getCanvasScreenshotFile(file, false);
+
+			return AssetLabelProvider.GLOBAL_16.getIcon(imgfile.toAbsolutePath().toString());
 		}
 
 		return AssetLabelProvider.GLOBAL_16.getImage(element);
