@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.widgets;
 
+import java.io.File;
 import java.nio.file.Path;
 
 import org.eclipse.core.resources.IFile;
@@ -54,23 +55,41 @@ public class ImagePreviewComposite extends Composite {
 		_resolutionLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 	}
 
+	public void destroyResolutionLabel() {
+		_resolutionLabel.dispose();
+		_resolutionLabel = null;
+	}
+
 	public void setImageFile(IFile file) {
-		if (file == null) {
+		setImageFile(file == null ? null : file.getLocation().toFile().getAbsolutePath());
+	}
+
+	public void setImageFile(String filepath) {
+		if (filepath == null) {
 			_imagePreviewCanvas.setImage(null);
-			_resolutionLabel.setText("<No image>");
+			if (_resolutionLabel != null) {
+				_resolutionLabel.setText("<No image>");
+			}
 		} else {
-			_imagePreviewCanvas.setImageFile(file);
-			_resolutionLabel.setText(file.getName() + " (" + _imagePreviewCanvas.getResolution() + ")");
+			_imagePreviewCanvas.setImageFile(filepath);
+			if (_resolutionLabel != null) {
+				_resolutionLabel
+						.setText(new File(filepath).getName() + " (" + _imagePreviewCanvas.getResolution() + ")");
+			}
 		}
 	}
 
 	public void loadImage(Path path, String label) {
 		if (path == null) {
 			_imagePreviewCanvas.setImage(null);
-			_resolutionLabel.setText("<No image>");
+			if (_resolutionLabel != null) {
+				_resolutionLabel.setText("<No image>");
+			}
 		} else {
 			_imagePreviewCanvas.loadImage(path.toAbsolutePath().toString());
-			_resolutionLabel.setText(label + " (" + _imagePreviewCanvas.getResolution() + ")");
+			if (_resolutionLabel != null) {
+				_resolutionLabel.setText(label + " (" + _imagePreviewCanvas.getResolution() + ")");
+			}
 		}
 	}
 }

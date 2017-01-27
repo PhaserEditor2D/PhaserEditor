@@ -61,6 +61,7 @@ import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.canvas.core.Prefab;
+import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.ui.FilteredTree2;
 import phasereditor.ui.PatternFilter2;
 
@@ -187,6 +188,7 @@ public class AssetExplorer extends ViewPart {
 
 		// tooltips
 		AssetPackUI.installAssetTooltips(_viewer);
+		CanvasUI.installCanvasTooltips(_viewer);
 
 	}
 

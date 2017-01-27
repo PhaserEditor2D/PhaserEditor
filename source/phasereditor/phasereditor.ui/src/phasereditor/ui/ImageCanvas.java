@@ -22,7 +22,6 @@
 package phasereditor.ui;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -35,7 +34,6 @@ import org.eclipse.swt.widgets.Composite;
 
 public class ImageCanvas extends Canvas implements PaintListener {
 
-	private IResource _imageFile;
 	protected Image _image;
 	private Point _preferredSize;
 	private boolean _paintBorder;
@@ -56,20 +54,16 @@ public class ImageCanvas extends Canvas implements PaintListener {
 		_noImageMessage = noImageMessage;
 	}
 
-	public IResource getImageFile() {
-		return _imageFile;
+	public void setImageFile(IFile file) {
+		setImageFile(file == null ? null : file.getLocation().toFile().getAbsolutePath());
 	}
 
-	public void setImageFile(IFile file) {
-		if (file == null) {
-			_imageFile = null;
+	public void setImageFile(String filepath) {
+		if (filepath == null) {
 			setImage(null);
 			return;
 		}
 
-		_imageFile = file;
-		
-		String filepath = file.getLocation().toFile().getAbsolutePath();
 		loadImage(filepath);
 	}
 

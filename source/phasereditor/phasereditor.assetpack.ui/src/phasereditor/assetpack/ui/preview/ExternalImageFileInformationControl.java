@@ -21,7 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
-import org.eclipse.core.resources.IFile;
+import java.io.File;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -30,26 +31,26 @@ import org.eclipse.swt.widgets.Shell;
 import phasereditor.assetpack.ui.widgets.ImagePreviewComposite;
 import phasereditor.ui.info.BaseInformationControl;
 
-public class ImageFileInformationControl extends BaseInformationControl {
+public class ExternalImageFileInformationControl extends BaseInformationControl {
 
-	public ImageFileInformationControl(Shell parentShell) {
+	public ExternalImageFileInformationControl(Shell parentShell) {
 		super(parentShell);
 	}
 
 	@Override
-	protected Control createContent2(Composite parentComp) {
+	protected ImagePreviewComposite createContent2(Composite parentComp) {
 		return new ImagePreviewComposite(parentComp, SWT.NONE);
 	}
 
 	@Override
 	protected void updateContent(Control control, Object model) {
 		ImagePreviewComposite comp = (ImagePreviewComposite) control;
-		comp.setImageFile(getFileToDisplay(model));
+		comp.setImageFile(getFileToDisplay(model).getAbsolutePath());
 	}
 
 	@SuppressWarnings("static-method")
-	public IFile getFileToDisplay(Object model) {
-		return (IFile) model;
+	public File getFileToDisplay(Object model) {
+		return (File) model;
 	}
 
 }

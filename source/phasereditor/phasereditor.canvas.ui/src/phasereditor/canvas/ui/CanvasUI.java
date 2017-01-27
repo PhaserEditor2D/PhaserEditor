@@ -25,12 +25,15 @@ import static java.lang.System.currentTimeMillis;
 import static java.lang.System.out;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
@@ -40,9 +43,17 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.text.IInformationControl;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+
+import com.subshell.snippets.jface.tooltip.tooltipsupport.ICustomInformationControlCreator;
+import com.subshell.snippets.jface.tooltip.tooltipsupport.Tooltips;
+import com.subshell.snippets.jface.tooltip.tooltipsupport.TreeViewerInformationProvider;
 
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
@@ -58,7 +69,10 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
+import phasereditor.assetpack.ui.preview.ExternalImageFileInformationControl;
+import phasereditor.assetpack.ui.widgets.ImagePreviewComposite;
 import phasereditor.canvas.core.CanvasModel;
+import phasereditor.canvas.core.Prefab;
 import phasereditor.canvas.ui.editors.behaviors.SelectionBehavior;
 import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
@@ -195,5 +209,47 @@ public class CanvasUI {
 		} catch (IOException | CoreException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static void installCanvasTooltips(TreeViewer viewer) {
+		List<ICustomInformationControlCreator> creators = new ArrayList<>();
+
+		creators.add(new ICustomInformationControlCreator() {
+
+			@Override
+			public IInformationControl createInformationControl(Shell parent) {
+				ExternalImageFileInformationControl control = new ExternalImageFileInformationControl(parent) {
+
+					@Override
+					protected ImagePreviewComposite createContent2(Composite parentComp) {
+						ImagePreviewComposite preview = super.createContent2(parentComp);
+						preview.destroyResolutionLabel();
+						return preview;
+					}
+
+					@Override
+					public File getFileToDisplay(Object model) {
+						if (model instanceof Prefab) {
+							IFile file = ((Prefab) model).getFile();
+							Path path = CanvasUI.getCanvasScreenshotFile(file, false);
+							return path.toFile();
+						}
+						return super.getFileToDisplay(model);
+					}
+				};
+				return control;
+			}
+
+			@Override
+			public boolean isSupported(Object info) {
+				if (info instanceof Prefab) {
+					return true;
+				}
+				return false;
+			}
+		});
+
+		Tooltips.install(viewer.getControl(), new TreeViewerInformationProvider(viewer), creators, false);
+
 	}
 }
