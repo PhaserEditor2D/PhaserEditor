@@ -1530,8 +1530,13 @@
    <extension
          point="phasereditor.project.core.buildParticipant">
       <participant
+            handler="phasereditor.canvas.ui.PrefabsIconProjectBuildParticipant"
+            id="phasereditor.canvas.ui.prefabsIconBuild"
+            order="999">
+      </participant>
+      <participant
             handler="phasereditor.canvas.ui.CanvasEditorBuildParticipant"
-            id="phasereditor.canvas.ui.participant2"
+            id="phasereditor.canvas.ui.canvasEditorBuild"
             order="4">
       </participant>
    </extension>

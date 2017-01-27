@@ -46,6 +46,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.json.JSONObject;
@@ -55,7 +56,6 @@ import com.subshell.snippets.jface.tooltip.tooltipsupport.ICustomInformationCont
 import com.subshell.snippets.jface.tooltip.tooltipsupport.Tooltips;
 import com.subshell.snippets.jface.tooltip.tooltipsupport.TreeViewerInformationProvider;
 
-import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
@@ -153,7 +153,7 @@ public class CanvasUI {
 
 			Scene scene = new Scene(node);
 
-			Platform.runLater(new Runnable() {
+			Display.getDefault().syncExec(new Runnable() {
 
 				@Override
 				public void run() {
