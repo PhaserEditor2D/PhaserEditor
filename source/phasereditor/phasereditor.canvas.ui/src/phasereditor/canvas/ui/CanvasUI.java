@@ -168,9 +168,9 @@ public class CanvasUI {
 					}
 
 					SnapshotParameters params = new SnapshotParameters();
+					params.setFill(Color.TRANSPARENT);
 					node.setBackground(
 							new Background(new BackgroundFill(Color.TRANSPARENT, new CornerRadii(0), new Insets(0))));
-					// node.setBackground(null);
 
 					Bounds b = SelectionBehavior.buildSelectionBounds(node.getChildren(), node);
 
