@@ -272,6 +272,8 @@ public class AssetExplorer extends ViewPart {
 			} else if (obj instanceof AssetPackModel) {
 				AssetPackModel newPack = AssetPackCore.getAssetPackModel(((AssetPackModel) obj).getFile(), false);
 				toExpand.add(newPack);
+			} else if (obj == PREFABS_ROOT) {
+				toExpand.add(obj);
 			}
 		}
 		toExpand.remove(null);
