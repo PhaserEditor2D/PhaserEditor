@@ -24,7 +24,9 @@ package phasereditor.canvas.ui.editors.palette;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -57,6 +59,8 @@ import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
+import phasereditor.canvas.core.Prefab;
+import phasereditor.canvas.ui.CanvasUI;
 
 /**
  * @author arian
@@ -127,6 +131,9 @@ public class PaletteComp extends Composite {
 
 			@Override
 			public Image getImage(Object element) {
+				if (element instanceof Prefab) {
+					return CanvasUI.getPregabIcon((Prefab) element, AssetLabelProvider.GLOBAL_48);
+				}
 				return AssetLabelProvider.GLOBAL_48.getImage(element);
 			}
 
@@ -210,7 +217,7 @@ public class PaletteComp extends Composite {
 	private Object processDrop(int index, Object[] data) {
 		Object reveal = null;
 		for (Object elem : data) {
-			if (elem instanceof IAssetFrameModel || elem instanceof ImageAssetModel) {
+			if (elem instanceof IAssetFrameModel || elem instanceof ImageAssetModel || elem instanceof Prefab) {
 				if (!_list.contains(elem)) {
 					_list.add(index, elem);
 					reveal = elem;
@@ -228,22 +235,42 @@ public class PaletteComp extends Composite {
 	public JSONObject toJSON() {
 		JSONObject data = new JSONObject();
 		JSONArray items = new JSONArray();
+		JSONArray prefabs = new JSONArray();
+
 		for (Object obj : _list) {
-			JSONObject item = AssetPackCore.getAssetJSONReference((IAssetKey) obj);
-			if (item != null) {
-				items.put(item);
+			if (obj instanceof IAssetKey) {
+				JSONObject item = AssetPackCore.getAssetJSONReference((IAssetKey) obj);
+				if (item != null) {
+					items.put(item);
+				}
+			} else if (obj instanceof Prefab) {
+				prefabs.put(((Prefab) obj).getFile().getProjectRelativePath().toPortableString());
 			}
 		}
 		data.put("assets", items);
+		data.put("prefabs", prefabs);
 		data.put("visible", isPaletteVisible());
 		return data;
 	}
 
-	public void updateFromJSON(JSONObject data) {
+	public void updateFromJSON(JSONObject data, IProject project) {
 		_list.clear();
-		JSONArray list = data.getJSONArray("assets");
-		for (int i = 0; i < list.length(); i++) {
-			JSONObject assetRef = list.getJSONObject(i);
+
+		JSONArray prefabsArray = data.optJSONArray("prefabs");
+		if (prefabsArray != null) {
+			for (int i = 0; i < prefabsArray.length(); i++) {
+				String fname = prefabsArray.getString(i);
+				IFile file = project.getFile(new Path(fname));
+				if (file.exists()) {
+					Object prefab = new Prefab(file);
+					_list.add(prefab);
+				}
+			}
+		}
+
+		JSONArray assetsArray = data.getJSONArray("assets");
+		for (int i = 0; i < assetsArray.length(); i++) {
+			JSONObject assetRef = assetsArray.getJSONObject(i);
 			Object asset = AssetPackCore.findAssetElement(_project, assetRef);
 			if (asset != null) {
 				_list.add(asset);
@@ -283,6 +310,10 @@ public class PaletteComp extends Composite {
 				Object elem = AssetPackCore.findAssetElement(_project, ref);
 				if (elem != null) {
 					list2.add(elem);
+				}
+			} else if (obj instanceof Prefab) {
+				if (((Prefab) obj).getFile().exists()) {
+					list2.add(obj);
 				}
 			}
 		}

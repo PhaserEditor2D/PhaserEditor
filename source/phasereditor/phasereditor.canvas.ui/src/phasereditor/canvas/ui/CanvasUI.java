@@ -45,6 +45,7 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -69,6 +70,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
+import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.preview.ExternalImageFileInformationControl;
 import phasereditor.assetpack.ui.widgets.ImagePreviewComposite;
 import phasereditor.canvas.core.CanvasModel;
@@ -251,5 +253,11 @@ public class CanvasUI {
 
 		Tooltips.install(viewer.getControl(), new TreeViewerInformationProvider(viewer), creators, false);
 
+	}
+
+	public static Image getPregabIcon(Prefab prefab, AssetLabelProvider labelProvider) {
+		IFile file = prefab.getFile();
+		Path imgfile = CanvasUI.getCanvasScreenshotFile(file, false);
+		return labelProvider.getIcon(imgfile.toAbsolutePath().toString());
 	}
 }

@@ -21,9 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetexplorer.ui.views;
 
-import java.nio.file.Path;
-
-import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
@@ -59,17 +56,7 @@ class AssetExplorerLabelProvider extends LabelProvider {
 		}
 
 		if (element instanceof Prefab) {
-
-			// this is a temporal solution for sprite prefabs. a real solution
-			// should provide icons for all kind of prefabs and show the real
-			// content.
-
-			Prefab prefab = (Prefab) element;
-			IFile file = prefab.getFile();
-
-			Path imgfile = CanvasUI.getCanvasScreenshotFile(file, false);
-
-			return AssetLabelProvider.GLOBAL_16.getIcon(imgfile.toAbsolutePath().toString());
+			return CanvasUI.getPregabIcon((Prefab) element, AssetLabelProvider.GLOBAL_16);
 		}
 
 		return AssetLabelProvider.GLOBAL_16.getImage(element);

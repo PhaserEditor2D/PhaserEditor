@@ -532,7 +532,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 			_mainSashForm.setWeights(_state.sashWights);
 
 			if (_state.paletteData != null) {
-				_paletteComp.updateFromJSON(new JSONObject(_state.paletteData));
+				_paletteComp.updateFromJSON(new JSONObject(_state.paletteData), getEditorInputFile().getProject());
 				// _showPaletteAction.setChecked(_paletteComp.isPaletteVisible());
 			}
 
