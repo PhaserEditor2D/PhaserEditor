@@ -183,6 +183,10 @@
                   commandId="phasereditor.canvas.ui.openPrefab"
                   style="push">
             </command>
+            <command
+                  commandId="phasereditor.canvas.ui.createPrefabWithSelection"
+                  style="push">
+            </command>
          </menu>
          <menu
                label="Pick">
@@ -767,6 +771,10 @@
             id="phasereditor.canvas.ui.openPrefab"
             name="Open Prefab">
       </command>
+      <command
+            id="phasereditor.canvas.ui.createPrefabWithSelection"
+            name="Create Prefab With Selection">
+      </command>
       
    </extension>
    <extension
@@ -1231,6 +1239,15 @@
          <activeWhen>
             <reference
                   definitionId="phasereditor.canvas.ui.isPrefabInstance">
+            </reference>
+         </activeWhen>
+      </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.CreatePrefabHandler"
+            commandId="phasereditor.canvas.ui.createPrefabWithSelection">
+         <activeWhen>
+            <reference
+                  definitionId="phasereditor.canvas.ui.oneObjectSelected">
             </reference>
          </activeWhen>
       </handler>

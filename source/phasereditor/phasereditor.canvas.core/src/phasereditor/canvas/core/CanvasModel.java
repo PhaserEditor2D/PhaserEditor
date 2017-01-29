@@ -113,6 +113,10 @@ public class CanvasModel {
 	public EditorSettings getSettings() {
 		return _settings;
 	}
+	
+	public void setSettings(EditorSettings settings) {
+		_settings = settings;
+	}
 
 	public StateSettings getStateSettings() {
 		return _stateSettings;
