@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 
+import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.ui.FilteredTree2;
 
@@ -47,6 +48,7 @@ public class SelectGroupDialog extends Dialog {
 	private FilteredTree _filteredTree;
 	private ObjectCanvas _canvas;
 	private Object _result;
+	private TreeViewer _viewer;
 
 	/**
 	 * Create the dialog.
@@ -75,22 +77,34 @@ public class SelectGroupDialog extends Dialog {
 
 		_filteredTree = new FilteredTree2(container, SWT.BORDER | SWT.SINGLE, filter, 3);
 
-		TreeViewer viewer = _filteredTree.getViewer();
-		viewer.setLabelProvider(new OutlineLabelProvider());
-		viewer.setContentProvider(new OutlineContentProvider(true) {
+		_viewer = _filteredTree.getViewer();
+		_viewer.setLabelProvider(new OutlineLabelProvider());
+		_viewer.setContentProvider(new OutlineContentProvider(true) {
 			@Override
 			public Object[] getChildren(@SuppressWarnings("hiding") Object parent) {
 				Object[] children = super.getChildren(parent);
-				return Arrays.stream(children).filter(e -> e instanceof GroupNode).toArray();
+				return Arrays.stream(children).filter(e -> {
+					return e instanceof GroupNode;
+				}).toArray();
 			}
 		});
-		viewer.setInput(_canvas);
-		viewer.expandToLevel(3);
-		viewer.addDoubleClickListener(e -> {
+		_viewer.setInput(_canvas);
+		_viewer.expandToLevel(3);
+		_viewer.addDoubleClickListener(e -> {
 			okPressed();
 		});
 
+		afterCreateWidgets();
+
 		return container;
+	}
+
+	private void afterCreateWidgets() {
+		if (_canvas.getEditor().getModel().getType() == CanvasType.GROUP) {
+			OutlineContentProvider provider = (OutlineContentProvider) _viewer.getContentProvider();
+			provider.setShowRoot(false);
+			_viewer.refresh();
+		}
 	}
 
 	/*

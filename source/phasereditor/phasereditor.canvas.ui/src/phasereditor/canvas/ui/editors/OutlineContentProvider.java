@@ -44,9 +44,17 @@ public class OutlineContentProvider implements ITreeContentProvider {
 	public OutlineContentProvider(boolean showRoot) {
 		_showRoot = showRoot;
 	}
-
+	
 	public OutlineContentProvider() {
 		this(false);
+	}
+	
+	public boolean isShowRoot() {
+		return _showRoot;
+	}
+	
+	public void setShowRoot(boolean showRoot) {
+		_showRoot = showRoot;
 	}
 
 	@Override
