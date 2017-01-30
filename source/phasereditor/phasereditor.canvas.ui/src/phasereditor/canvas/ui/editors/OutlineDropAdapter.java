@@ -32,6 +32,7 @@ import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.TransferData;
 import org.json.JSONObject;
 
+import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.DeleteNodeOperation;
@@ -57,6 +58,24 @@ public class OutlineDropAdapter extends ViewerDropAdapter {
 	@Override
 	public boolean validateDrop(Object target, int operation, TransferData transferType) {
 
+		if (target instanceof IObjectNode) {
+			IObjectNode node = (IObjectNode) target;
+
+			// do not allow to drop in the world node if this is a group prefab
+			if (node.getControl().getCanvas().getEditor().getModel().getType() == CanvasType.GROUP) {
+				if (node.getModel() == node.getModel().getWorld().findGroupPrefabRoot()) {
+					switch (_location) {
+					case LOCATION_BEFORE:
+						return false;
+					case LOCATION_AFTER:
+						return false;
+					case LOCATION_ON:
+					default:
+						return true;
+					}
+				}
+			}
+		}
 		return true;
 	}
 

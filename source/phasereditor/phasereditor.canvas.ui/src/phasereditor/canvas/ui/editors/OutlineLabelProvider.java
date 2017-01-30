@@ -28,6 +28,7 @@ import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.AtlasSpriteModel;
 import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
@@ -45,9 +46,18 @@ public class OutlineLabelProvider extends LabelProvider implements IEditorShared
 	@Override
 	public Image getImage(Object element) {
 		if (element instanceof IObjectNode) {
-			BaseObjectModel model = ((IObjectNode) element).getModel();
+			IObjectNode node = (IObjectNode) element;
+			BaseObjectModel model = node.getModel();
+
 			if (model.isPrefabInstance()) {
 				return EditorSharedImages.getImage(IMG_BRICKS);
+			}
+
+			CanvasType type = node.getControl().getCanvas().getEditor().getModel().getType();
+			if (type == CanvasType.GROUP) {
+				if (model == model.getWorld().findGroupPrefabRoot()) {
+					return EditorSharedImages.getImage(IMG_BRICKS);
+				}
 			}
 		}
 
@@ -84,9 +94,19 @@ public class OutlineLabelProvider extends LabelProvider implements IEditorShared
 
 			StringBuilder sb = new StringBuilder();
 
-			BaseObjectModel model = ((IObjectNode) element).getControl().getModel();
+			IObjectNode node = (IObjectNode) element;
+			BaseObjectModel model = node.getModel();
 
-			sb.append(model.getEditorName() + " ");
+			CanvasType type = node.getControl().getCanvas().getEditor().getModel().getType();
+			if (type == CanvasType.GROUP) {
+				if (model == model.getWorld().findGroupPrefabRoot()) {
+					sb.append("[prefab] ");
+				}
+			}
+
+			if (sb.length() == 0) {
+				sb.append(model.getEditorName() + " ");
+			}
 
 			if (element instanceof GroupNode) {
 				GroupModel group = (GroupModel) model;
