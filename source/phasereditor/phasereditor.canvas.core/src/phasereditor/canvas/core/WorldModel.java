@@ -226,4 +226,18 @@ public class WorldModel extends GroupModel {
 		}
 		return null;
 	}
+
+	public GroupModel findGroupPrefabRoot() {
+		if (getChildren().isEmpty()) {
+			return null;
+		}
+
+		BaseObjectModel obj = getChildren().get(0);
+
+		if (obj instanceof GroupModel) {
+			return (GroupModel) obj;
+		}
+
+		return null;
+	}
 }

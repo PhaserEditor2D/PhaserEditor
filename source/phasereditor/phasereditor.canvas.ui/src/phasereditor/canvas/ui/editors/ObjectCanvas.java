@@ -255,9 +255,8 @@ public class ObjectCanvas extends FXCanvas {
 		return _selectionFrontPane;
 	}
 	
-	public void dropToWorld(CompositeOperation operations, BaseObjectControl<?> control, double sceneX, double sceneY) {
+	public void dropToCanvas(CompositeOperation operations, GroupNode parentNode,  BaseObjectControl<?> control, double sceneX, double sceneY) {
 		// IObjectNode node = control.getIObjectNode();
-		GroupNode worldNode = getWorldNode();
 
 		double invScale = 1 / _zoomBehavior.getScale();
 		Point2D translate = _zoomBehavior.getTranslate();
@@ -282,7 +281,7 @@ public class ObjectCanvas extends FXCanvas {
 
 		BaseObjectModel model = control.getModel();
 
-		operations.add(new AddNodeOperation(model.toJSON(false), -1, x, y, worldNode.getModel().getId()));
+		operations.add(new AddNodeOperation(model.toJSON(false), -1, x, y, parentNode.getModel().getId()));
 
 	}
 

@@ -21,7 +21,11 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.wizards;
 
+import org.eclipse.core.resources.IFile;
+import org.json.JSONObject;
+
 import phasereditor.canvas.core.CanvasType;
+import phasereditor.canvas.core.GroupModel;
 
 /**
  * @author arian
@@ -38,6 +42,13 @@ public class NewWizard_Group extends NewWizard_Base {
 	@Override
 	protected boolean isCanvasFileDesired() {
 		return _settingsPage.isGenerateCanvasFile();
+	}
+
+	@Override
+	protected JSONObject createFinalModelJSON(IFile file) {
+		GroupModel model = new GroupModel(getModel().getWorld());
+		getModel().getWorld().addChild(model);
+		return super.createFinalModelJSON(file);
 	}
 
 	@Override

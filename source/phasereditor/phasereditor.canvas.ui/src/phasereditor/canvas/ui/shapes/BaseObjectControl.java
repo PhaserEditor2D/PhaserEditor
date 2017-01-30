@@ -75,7 +75,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		_propModel = new PGridModel();
 
 		initPGridModel(_propModel);
-
+		
 		updateFromModel();
 	}
 

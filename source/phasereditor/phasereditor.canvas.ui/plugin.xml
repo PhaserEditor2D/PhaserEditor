@@ -801,6 +801,9 @@
             	<reference
                   definitionId="phasereditor.canvas.ui.nodesSelected">
             	</reference>
+             <reference
+                   definitionId="phasereditor.canvas.ui.noPrefabRootSelected">
+             </reference>
              <with
                    variable="activeContexts">
                 <iterate
@@ -855,9 +858,14 @@
             class="phasereditor.canvas.ui.handlers.MakeGroupHandler"
             commandId="phasereditor.canvas.ui.makegroup">
          <enabledWhen>
-            <reference
-                  definitionId="phasereditor.canvas.ui.nodesSelected">
-            </reference>
+            <and>
+               <reference
+                     definitionId="phasereditor.canvas.ui.nodesSelected">
+               </reference>
+               <reference
+                     definitionId="phasereditor.canvas.ui.noPrefabRootSelected">
+               </reference>
+            </and>
          </enabledWhen>
       </handler>
       <handler
@@ -964,9 +972,14 @@
             class="phasereditor.canvas.ui.handlers.BreakGroupHandler"
             commandId="phasereditor.canvas.ui.ungroup">
          <enabledWhen>
-            <reference
-                  definitionId="phasereditor.canvas.ui.groupsSelected">
-            </reference>
+            <and>
+               <reference
+                     definitionId="phasereditor.canvas.ui.groupsSelected">
+               </reference>
+               <reference
+                     definitionId="phasereditor.canvas.ui.noPrefabRootSelected">
+               </reference>
+            </and>
          </enabledWhen>
       </handler>
       <handler
@@ -991,18 +1004,28 @@
             class="phasereditor.canvas.ui.handlers.PickHandler"
             commandId="phasereditor.canvas.ui.pick">
          <enabledWhen>
-            <reference
-                  definitionId="phasereditor.canvas.ui.nodesSelected">
-            </reference>
+         	<and>
+	            <reference
+	                  definitionId="phasereditor.canvas.ui.nodesSelected">
+	            </reference>
+	             <reference
+                     definitionId="phasereditor.canvas.ui.noPrefabRootSelected">
+               </reference>
+            </and>
          </enabledWhen>
       </handler>
       <handler
             class="phasereditor.canvas.ui.handlers.PickHandler"
             commandId="phasereditor.canvas.ui.nopick">
          <enabledWhen>
-            <reference
-                  definitionId="phasereditor.canvas.ui.nodesSelected">
-            </reference>
+            <and>
+	            <reference
+	                  definitionId="phasereditor.canvas.ui.nodesSelected">
+	            </reference>
+	             <reference
+                     definitionId="phasereditor.canvas.ui.noPrefabRootSelected">
+               </reference>
+            </and>
          </enabledWhen>
       </handler>
       <handler
@@ -1067,9 +1090,14 @@
             class="phasereditor.canvas.ui.handlers.CutHandler"
             commandId="org.eclipse.ui.edit.cut">
          <activeWhen>
-            <reference
-                  definitionId="phasereditor.canvas.ui.nodesSelected">
-            </reference>
+            <and>
+	            <reference
+	                  definitionId="phasereditor.canvas.ui.nodesSelected">
+	            </reference>
+	             <reference
+                     definitionId="phasereditor.canvas.ui.noPrefabRootSelected">
+               </reference>
+            </and>
          </activeWhen>
       </handler>
       
@@ -1136,9 +1164,14 @@
             class="phasereditor.canvas.ui.handlers.MoveToOtherGroupHandler"
             commandId="phasereditor.canvas.ui.moveToGroup">
          <activeWhen>
-            <reference
-                  definitionId="phasereditor.canvas.ui.nodesSelected">
-            </reference>
+            <and>
+	            <reference
+	                  definitionId="phasereditor.canvas.ui.nodesSelected">
+	            </reference>
+	             <reference
+                     definitionId="phasereditor.canvas.ui.noPrefabRootSelected">
+               </reference>
+            </and>
          </activeWhen>
       </handler>
       <handler
@@ -1503,6 +1536,25 @@
             </iterate>
          </with>
       </definition>
+      <definition
+            id="phasereditor.canvas.ui.noPrefabRootSelected">
+         <with
+               variable="selection">
+            <iterate
+                  ifEmpty="true"
+                  operator="and">
+               <not>
+                  <adapt
+                        type="phasereditor.canvas.ui.shapes.IObjectNode">
+                     <test
+                           property="phasereditor.canvas.ui.isGroupPrefabRoot"
+                           value="true">
+                     </test>
+                  </adapt>
+               </not>
+            </iterate>
+         </with>
+      </definition>
    </extension>
    <extension
          point="org.eclipse.ui.contexts">
@@ -1599,7 +1651,7 @@
             class="phasereditor.canvas.ui.CanvasPropertyTester"
             id="phasereditor.canvas.ui.propertyTester"
             namespace="phasereditor.canvas.ui"
-            properties="isPrefabInstance"
+            properties="isPrefabInstance,isGroupPrefabRoot"
             type="phasereditor.canvas.ui.shapes.IObjectNode">
       </propertyTester>
    </extension>

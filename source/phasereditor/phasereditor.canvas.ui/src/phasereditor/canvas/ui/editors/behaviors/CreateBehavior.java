@@ -39,9 +39,9 @@ import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CanvasModelFactory;
+import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.Prefab;
-import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
@@ -98,7 +98,13 @@ public class CreateBehavior {
 
 		List<String> selectionIds = new ArrayList<>();
 
-		WorldModel worldModel = _canvas.getWorldModel();
+		GroupNode parentNode;
+
+		if (_canvas.getEditor().getModel().getType() == CanvasType.GROUP) {
+			parentNode = (GroupNode) _canvas.getWorldNode().getChildren().get(0);
+		} else {
+			parentNode = _canvas.getWorldNode();
+		}
 
 		for (Object elem : elems) {
 			BaseObjectControl<?> control = null;
@@ -106,14 +112,14 @@ public class CreateBehavior {
 
 			if (elem instanceof IAssetKey) {
 				// TODO: for now get as parent the world
-				model = factory.apply(worldModel, (IAssetKey) elem);
+				model = factory.apply(parentNode.getModel(), (IAssetKey) elem);
 			} else if (elem instanceof Prefab) {
 				Prefab prefab = (Prefab) elem;
-				model = CanvasModelFactory.createModel(worldModel, prefab);
+				model = CanvasModelFactory.createModel(parentNode.getModel(), prefab);
 			}
 
 			if (model != null) {
-				String newname = worldModel.createName(model.getEditorName());
+				String newname = _canvas.getWorldModel().createName(model.getEditorName());
 				model.setEditorName(newname);
 				control = CanvasObjectFactory.createObjectControl(_canvas, model);
 			}
@@ -122,7 +128,7 @@ public class CreateBehavior {
 				selectionIds.add(control.getModel().getId());
 				double x = sceneX + i * 20;
 				double y = sceneY + i * 20;
-				_canvas.dropToWorld(operations, control, x, y);
+				_canvas.dropToCanvas(operations, parentNode, control, x, y);
 				i++;
 			}
 		}

@@ -74,11 +74,13 @@ public class NewWizard_Sprite extends NewWizard_Base {
 	@Override
 	protected JSONObject createFinalModelJSON(IFile file) {
 		WorldModel world = getModel().getWorld();
+		
 		if (_settingsPage.isGenerateCanvasFile()) {
 			BaseSpriteModel spriteModel = CanvasModelFactory.createModel(world,
 					(IAssetKey) _settingsPage.getSelectedAsset());
 			world.addChild(spriteModel);
 		}
+		
 		return super.createFinalModelJSON(file);
 	}
 

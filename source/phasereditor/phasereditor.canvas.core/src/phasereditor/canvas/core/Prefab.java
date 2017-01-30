@@ -23,7 +23,6 @@ package phasereditor.canvas.core;
 
 import java.io.InputStream;
 import java.security.InvalidParameterException;
-import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.core.resources.IFile;
@@ -50,7 +49,7 @@ public class Prefab {
 			_className = name.substring(0, name.length() - _file.getFileExtension().length() - 1);
 		}
 	}
-	
+
 	public IFile getFile() {
 		return _file;
 	}
@@ -85,11 +84,8 @@ public class Prefab {
 					throw new InvalidParameterException("The prefab has an invalid state.");
 				}
 			} else {
-				// lets package the world in a sub group
-				List<BaseObjectModel> children = model.getWorld().getChildren();
-				GroupModel group = new GroupModel(model.getWorld());
-				group.getChildren().addAll(children);
-				objModel = group;
+				// get the prefab root
+				objModel = model.getWorld().findGroupPrefabRoot();
 			}
 
 			if (initInfo != null) {
@@ -146,6 +142,5 @@ public class Prefab {
 			return false;
 		return true;
 	}
-	
-	
+
 }
