@@ -57,7 +57,7 @@ public class CanvasSettingsComp extends Composite {
 
 		SashForm sashForm = new SashForm(this, SWT.NONE);
 
-		_outlineTree = new FilteredTree(sashForm, SWT.NONE, new PatternFilter2(), true);
+		_outlineTree = new FilteredTree(sashForm, SWT.BORDER, new PatternFilter2(), true);
 		_pGrid = new PGrid(sashForm, SWT.NONE, false);
 		sashForm.setWeights(new int[] { 1, 2 });
 

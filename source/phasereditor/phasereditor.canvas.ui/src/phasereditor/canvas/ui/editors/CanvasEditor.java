@@ -327,7 +327,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 	}
 
 	private void createSettingsPage() {
-		_settingsPage = new CanvasSettingsComp(getContainer(), SWT.NONE);
+		_settingsPage = new CanvasSettingsComp(getContainer(), SWT.BORDER);
 		_settingsPage.setModel(_model);
 		_settingsPage.setOnChanged(() -> {
 			setDirty(true);
