@@ -129,7 +129,7 @@ public class NewPage_File extends WizardNewFileCreationPage {
 		JSONObject json = new JSONObject();
 		String filename = getFileName();
 		_model.getWorld().setEditorName(filename);
-		_model.write(json);
+		_model.write(json, true);
 		String content = json.toString(4);
 		return new ByteArrayInputStream(content.getBytes());
 	}

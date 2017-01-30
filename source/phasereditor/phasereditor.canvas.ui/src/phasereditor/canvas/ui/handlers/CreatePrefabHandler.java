@@ -116,13 +116,11 @@ public class CreatePrefabHandler extends AbstractHandler {
 
 			if (type == CanvasType.GROUP) {
 				GroupModel groupModel = (GroupModel) selModel;
-				// JSONObject json = groupModel.toJSON(false);
-				// world.read(json);
-				for (BaseObjectModel c : groupModel.getChildren()) {
-					JSONObject json = c.toJSON(false);
-					BaseObjectModel cModel = CanvasModelFactory.createModel(world, json);
-					world.getChildren().add(cModel);
-				}
+				groupModel = (GroupModel) CanvasModelFactory.createModel(world, groupModel.toJSON(false));
+				groupModel.setEditorName("group");
+				groupModel.setX(0);
+				groupModel.setY(0);
+				world.addChild(groupModel);
 			} else {
 				JSONObject json = selModel.toJSON(false);
 				BaseObjectModel cModel = CanvasModelFactory.createModel(world, json);
@@ -135,7 +133,7 @@ public class CreatePrefabHandler extends AbstractHandler {
 			world.walk(m -> m.setId(UUID.randomUUID().toString()));
 
 			JSONObject obj = new JSONObject();
-			newModel.write(obj);
+			newModel.write(obj, false);
 
 			WorkspaceJob job = new WorkspaceJob("Create Prefab") {
 

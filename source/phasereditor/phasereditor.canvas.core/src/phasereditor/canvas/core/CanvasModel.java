@@ -82,7 +82,7 @@ public class CanvasModel {
 		}
 	}
 
-	public void write(JSONObject data) {
+	public void write(JSONObject data, boolean saving) {
 		{
 			JSONObject data2 = new JSONObject();
 			data.put("settings", data2);
@@ -98,7 +98,7 @@ public class CanvasModel {
 		{
 			JSONObject data2 = new JSONObject();
 			data.put("world", data2);
-			_world.write(data2, true);
+			_world.write(data2, saving);
 		}
 
 		{

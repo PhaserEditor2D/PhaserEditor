@@ -228,7 +228,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 			IFileEditorInput input = (IFileEditorInput) getEditorInput();
 			JSONObject data = new JSONObject();
 			_model.getWorld().setAssetTable(new AssetTable(_model.getWorld()));
-			_model.write(data);
+			_model.write(data, true);
 			input.getFile().setContents(new ByteArrayInputStream(data.toString(2).getBytes()), true, false, monitor);
 
 			if (getCanvas().getSettingsModel().isGenerateOnSave()) {

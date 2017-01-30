@@ -179,7 +179,7 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 		_model.getWorld().setFile(file);
 		_model.getWorld().setEditorName(name);
 		JSONObject obj = new JSONObject();
-		_model.write(obj);
+		_model.write(obj, true);
 		return obj;
 	}
 
