@@ -154,7 +154,8 @@ public class CreatePrefabHandler extends AbstractHandler {
 				public void done(IJobChangeEvent e) {
 					HandlerUtil.getActiveShell(event).getDisplay().asyncExec(() -> {
 						try {
-							IDE.openEditor(HandlerUtil.getActiveWorkbenchWindow(event).getActivePage(), file);
+							CanvasEditor editor2 = (CanvasEditor) IDE.openEditor(HandlerUtil.getActiveWorkbenchWindow(event).getActivePage(), file);
+							editor2.generateCode();
 						} catch (PartInitException e1) {
 							CanvasUI.logError(e1);
 						}
