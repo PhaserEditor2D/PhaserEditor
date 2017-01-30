@@ -202,15 +202,26 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 
 		// create method
 
-		String parVar;
-		if (_model.getType() == CanvasType.STATE) {
+		String parVar = getLocalVarName(model.getParent());
+
+		switch (_model.getType()) {
+		case STATE:
 			if (model.getParent().isWorldModel()) {
 				parVar = null;
-			} else {
-				parVar = getLocalVarName(model.getParent());
 			}
-		} else {
-			parVar = "this";
+			break;
+		case GROUP:
+			if (model.getParent() == model.getWorld().findGroupPrefabRoot()) {
+				parVar = "this";
+			}
+			break;
+		case SPRITE:
+			// I hope we don't need this on sprite prefabs cause we do not allow
+			// groups inside this kind of canvas
+			parVar = "this.parent";
+			break;
+		default:
+			break;
 		}
 
 		if (mark1 < mark2 || model.isEditorPublic() || model.isPrefabInstance()) {
@@ -227,11 +238,8 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 			if (model instanceof ImageSpriteModel) {
 
 				ImageSpriteModel image = (ImageSpriteModel) model;
-				// TODO: missing to check it is the way to add to the world o
-				// parent group.
 				call.value("this.game", round(image.getX()), round(image.getY()));
 				call.valueOrUndefined(writeTexture, "'" + image.getAssetKey().getKey() + "'", "null");
-				call.valueOrUndefined(parVar != null, parVar);
 
 			} else if (model instanceof SpritesheetSpriteModel || model instanceof AtlasSpriteModel) {
 
@@ -243,7 +251,6 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 
 				call.value("this.game", round(sprite.getX()), round(sprite.getY()));
 				call.valueOrUndefined(writeTexture, "'" + sprite.getAssetKey().getAsset().getKey() + "'", frameValue);
-				call.valueOrUndefined(parVar != null, parVar);
 			}
 
 			call.append();
