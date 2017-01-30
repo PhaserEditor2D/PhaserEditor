@@ -29,7 +29,7 @@ import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
  * @author arian
  *
  */
-public class JSGroupCodeGenerator extends JSLikeCodeGenerator {
+public class JSGroupCodeGenerator extends JSLikeGroupCodeGenerator {
 
 	public JSGroupCodeGenerator(CanvasModel model) {
 		super(model);

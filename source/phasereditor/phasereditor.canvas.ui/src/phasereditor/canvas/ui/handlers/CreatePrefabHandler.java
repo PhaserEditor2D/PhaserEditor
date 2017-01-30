@@ -107,6 +107,7 @@ public class CreatePrefabHandler extends AbstractHandler {
 			CanvasType type = selModel instanceof GroupModel ? CanvasType.GROUP : CanvasType.SPRITE;
 			newModel.setType(type);
 			newModel.getSettings().setBaseClass(CanvasCodeGeneratorProvider.getDefaultBaseClassFor(type));
+			newModel.getSettings().setLang(node.getControl().getCanvas().getEditor().getModel().getSettings().getLang());
 
 			String name = file.getFullPath().removeFileExtension().lastSegment();
 

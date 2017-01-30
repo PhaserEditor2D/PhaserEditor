@@ -105,7 +105,7 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 	}
 
 	protected void generatePublicFields() {
-		_world.walk(obj -> {
+		getRootObjectsContainer().walk(obj -> {
 			generatePublicField(obj);
 		});
 	}
@@ -135,8 +135,9 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 	protected void generateObjectCreation() {
 		{
 			int i = 0;
-			int last = _world.getChildren().size() - 1;
-			for (BaseObjectModel child : _world.getChildren()) {
+			GroupModel root = getRootObjectsContainer();
+			int last = root.getChildren().size() - 1;
+			for (BaseObjectModel child : root.getChildren()) {
 				generateObjectCreate(child);
 				if (i < last) {
 					line();
@@ -144,6 +145,10 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 				i++;
 			}
 		}
+	}
+
+	protected GroupModel getRootObjectsContainer() {
+		return _world;
 	}
 
 	protected String getYouCanInsertCodeHere() {
@@ -394,7 +399,7 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 		}
 	}
 
-	private void generateDisplayProps(BaseObjectModel model) {
+	protected void generateDisplayProps(BaseObjectModel model) {
 		String varname = getLocalVarName(model);
 
 		if (model.isOverriding("position")) {
@@ -721,7 +726,7 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 		}
 	}
 
-	private void generateGroupProps(GroupModel model) {
+	protected void generateGroupProps(GroupModel model) {
 		String varname = getLocalVarName(model);
 
 		if (model.isOverriding("physics")) {
