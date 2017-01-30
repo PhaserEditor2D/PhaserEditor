@@ -87,6 +87,7 @@ import javafx.geometry.Point2D;
 import phasereditor.canvas.core.AssetTable;
 import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.CanvasModel;
+import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
 import phasereditor.canvas.core.codegen.ICodeGenerator;
@@ -544,6 +545,11 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 	}
 
 	private void initOutline() {
+		if (getModel().getType() == CanvasType.SPRITE) {
+			_outlineTree.setVisible(false);
+		}
+		
+		
 		TreeViewer viewer = _outlineTree.getViewer();
 
 		viewer.setInput(_canvas);
