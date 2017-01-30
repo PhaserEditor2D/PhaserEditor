@@ -15,6 +15,8 @@ Require-Bundle: org.eclipse.ui,
  phasereditor.assetpack.ui,
  phasereditor.chains.ui,
  phasereditor.ui,
- phasereditor.lic
+ phasereditor.lic,
+ org.eclipse.e4.ui.css.swt.theme;bundle-version="0.10.100",
+ org.eclipse.e4.ui.workbench.renderers.swt;bundle-version="0.14.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy

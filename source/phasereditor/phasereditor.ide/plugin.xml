@@ -149,5 +149,14 @@
          </showInPart>
       </perspectiveExtension>
    </extension>
+                  <extension
+                        point="org.eclipse.e4.ui.css.swt.theme">
+                     <theme
+                           basestylesheeturi="css/phasereditor_win.css"
+                           id="phasereditor.ide.theme"
+                           label="Phaser Edtitor Windows"
+                           os="win32">
+                     </theme>
+                  </extension>
 
 </plugin>

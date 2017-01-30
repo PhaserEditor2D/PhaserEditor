@@ -1,0 +1,15 @@
+@import url("platform:/plugin/org.eclipse.ui.themes/css/e4_default_mac.css");
+
+
+.MPartStack {	
+	swt-outer-keyline-color: #B6BCCC;
+	swt-inner-keyline-color: #B6BCCC;
+	swt-corner-radius: 6;
+ 
+}
+
+#org-eclipse-ui-editorss .MPartStack.active {
+	swt-selected-tab-fill: '#org-eclipse-ui-workbench-ACTIVE_TAB_BG_START' #D6D6D6 100% 50%;	
+}
+
+ 
