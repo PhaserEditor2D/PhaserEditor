@@ -44,8 +44,8 @@ public class AtlasFrame {
 		fi.setFrameY(Integer.parseInt(node.getAttribute("y")));
 		fi.setFrameW(Integer.parseInt(node.getAttribute("width")));
 		fi.setFrameH(Integer.parseInt(node.getAttribute("height")));
-		fi.setSpriteX(fi.getFrameX());
-		fi.setSpriteY(fi.getFrameY());
+		fi.setSpriteX(0);
+		fi.setSpriteY(0);
 		fi.setSpriteW(fi.getFrameW());
 		fi.setSpriteH(fi.getFrameH());
 		fi.setSourceW(fi.getFrameW());

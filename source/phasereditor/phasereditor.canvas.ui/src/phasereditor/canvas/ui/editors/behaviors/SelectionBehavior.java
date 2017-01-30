@@ -378,6 +378,10 @@ public class SelectionBehavior implements ISelectionProvider {
 	}
 	
 	public static Bounds buildSelectionBounds(List<Node> nodes, GroupNode world) {
+		if (nodes.isEmpty()) {
+			return null;
+		}
+		
 		List<Bounds> list = new ArrayList<>();
 		
 		for(Node node : nodes) {
