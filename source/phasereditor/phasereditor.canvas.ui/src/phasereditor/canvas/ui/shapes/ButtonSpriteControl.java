@@ -23,9 +23,11 @@ package phasereditor.canvas.ui.shapes;
 
 import java.util.List;
 
+import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.FrameData;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.ButtonSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
@@ -255,5 +257,33 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 	@Override
 	public ButtonSpriteNode getNode() {
 		return (ButtonSpriteNode) super.getNode();
+	}
+
+	@Override
+	protected BaseSpriteModel createModelWithTexture(IAssetFrameModel textureKey) {
+		AssetModel old = getModel().getAssetKey().getAsset().getSharedVersion();
+		ButtonSpriteModel model = new ButtonSpriteModel(getGroup().getModel(), textureKey);
+		
+		if (old == textureKey.getAsset().getSharedVersion()) {
+			if (model.getDownFrame() != null) {
+				model.setDownFrame((IAssetFrameModel) model.getDownFrame().getSharedVersion());
+			}
+
+			if (model.getUpFrame() != null) {
+				model.setUpFrame((IAssetFrameModel) model.getUpFrame().getSharedVersion());
+			}
+
+			if (model.getOverFrame() != null) {
+				model.setOverFrame((IAssetFrameModel) model.getOverFrame().getSharedVersion());
+			}
+
+			// the out frame is the same of the main asset key
+		} else {
+			model.setUpFrame(null);
+			model.setDownFrame(null);
+			model.setOverFrame(null);
+		}
+		
+		return model;
 	}
 }

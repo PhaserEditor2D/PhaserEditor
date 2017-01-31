@@ -539,8 +539,8 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		return (IObjectNode) _node;
 	}
 
-	public void removeme() {
-		getGroup().getControl().removeChild(this._inode);
+	public int removeme() {
+		return getGroup().getControl().removeChild(this._inode);
 	}
 
 	protected static Display getDisplay() {

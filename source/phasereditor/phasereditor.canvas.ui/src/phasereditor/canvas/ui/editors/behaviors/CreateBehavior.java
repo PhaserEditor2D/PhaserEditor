@@ -30,12 +30,16 @@ import java.util.function.BiFunction;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.json.JSONObject;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.DragEvent;
+import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CanvasModelFactory;
@@ -48,6 +52,7 @@ import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.DeleteNodeOperation;
 import phasereditor.canvas.ui.editors.operations.SelectOperation;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
+import phasereditor.canvas.ui.shapes.BaseSpriteControl;
 import phasereditor.canvas.ui.shapes.CanvasObjectFactory;
 import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
@@ -74,6 +79,7 @@ public class CreateBehavior {
 		dropAssets(selection, _canvas.getScene().getWidth() / 2, _canvas.getScene().getHeight() / 2, factory);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void dropAssets(IStructuredSelection selection, double sceneX, double sceneY,
 			BiFunction<GroupModel, IAssetKey, BaseSpriteModel> factory) {
 
@@ -91,6 +97,34 @@ public class CreateBehavior {
 					return;
 				}
 			}
+		}
+
+		if (_canvas.getEditor().getModel().getType() == CanvasType.SPRITE) {
+			Object first = selection.getFirstElement();
+
+			if (first instanceof ImageAssetModel) {
+				first = ((ImageAssetModel) first).getFrame();
+			} else if (first instanceof SpritesheetAssetModel) {
+				first = ((SpritesheetAssetModel) first).getAllFrames().get(0);
+			}
+
+			if (!(first instanceof IAssetFrameModel)) {
+				return;
+			}
+
+			// TODO: just remember we need to do this with the undo/redo
+			// framework.
+			IObjectNode node = (IObjectNode) _canvas.getWorldNode().getChildren().get(0);
+			BaseObjectControl<?> control = node.getControl();
+			if (control instanceof BaseSpriteControl) {
+				IAssetFrameModel newTexture = (IAssetFrameModel) first;
+				BaseSpriteControl newControl = ((BaseSpriteControl) control).changeTexture(newTexture);
+				_canvas.getHandlerBehavior().clear();
+				_canvas.getSelectionBehavior().setSelection(new StructuredSelection(newControl.getNode()));
+				_canvas.getUpdateBehavior().fireWorldChanged();
+			}
+
+			return;
 		}
 
 		int i = 0;

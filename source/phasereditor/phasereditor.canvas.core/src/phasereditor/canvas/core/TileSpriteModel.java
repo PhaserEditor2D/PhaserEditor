@@ -80,7 +80,7 @@ public class TileSpriteModel extends AssetSpriteModel<IAssetKey> {
 	}
 
 	@Override
-	protected void readInfo(JSONObject jsonInfo) {
+	public void readInfo(JSONObject jsonInfo) {
 		super.readInfo(jsonInfo);
 
 		_width = jsonInfo.optDouble("width", DEF_WIDTH);

@@ -27,6 +27,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import org.eclipse.swt.graphics.RGB;
+import org.json.JSONObject;
 
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -42,6 +43,7 @@ import phasereditor.canvas.core.AnimationModel;
 import phasereditor.canvas.core.ArcadeBodyModel;
 import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.BaseSpriteModel;
+import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.CircleArcadeBodyModel;
 import phasereditor.canvas.core.RectArcadeBodyModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
@@ -328,7 +330,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 			public boolean isActive() {
 				return getModel().getArcadeBody() != null;
 			}
-			
+
 			@Override
 			public boolean isReadOnly() {
 				return getModel().isPrefabReadOnly("physics");
@@ -659,6 +661,26 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 	@Override
 	public double getTextureBottom() {
 		return getTextureTop() + getTextureHeight();
+	}
+
+	public BaseSpriteControl<?> changeTexture(IAssetFrameModel textureKey) {
+		BaseSpriteControl<?> newControl = createControlWithTexture(textureKey);
+		GroupControl parent = getGroup().getControl();
+		int i = removeme();
+		parent.addChild(i, newControl.getIObjectNode());
+		return newControl;
+	}
+
+	protected BaseSpriteControl<?> createControlWithTexture(IAssetFrameModel textureKey) {
+		JSONObject data = getModel().toJSON(false);
+		BaseSpriteModel model = createModelWithTexture(textureKey);
+		model.readInfo(data.getJSONObject("info"));
+		BaseObjectControl<?> control = CanvasObjectFactory.createObjectControl(getCanvas(), model);
+		return (BaseSpriteControl<?>) control;
+	}
+
+	protected BaseSpriteModel createModelWithTexture(IAssetFrameModel textureKey) {
+		return CanvasModelFactory.createModel(getGroup().getModel(), textureKey);
 	}
 
 }

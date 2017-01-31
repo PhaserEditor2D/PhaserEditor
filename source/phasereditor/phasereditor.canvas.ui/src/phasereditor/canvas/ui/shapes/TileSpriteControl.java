@@ -27,6 +27,7 @@ import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
+import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
@@ -77,19 +78,18 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 	protected IObjectNode createNode() {
 		return new TileSpriteNode(this);
 	}
-	
 
 	@Override
 	protected void initPrefabPGridModel(List<String> validProperties) {
 		super.initPrefabPGridModel(validProperties);
 		validProperties.add("tile");
 	}
-	
+
 	@SuppressWarnings("boxing")
 	@Override
 	protected void initPGridModel(PGridModel propModel) {
 		super.initPGridModel(propModel);
-		PGridSection section = new PGridSection("Sprite Tile"){
+		PGridSection section = new PGridSection("Sprite Tile") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -279,6 +279,11 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 
 		getSpriteSection().add(frame_property);
 
+	}
+
+	@Override
+	protected BaseSpriteModel createModelWithTexture(IAssetFrameModel textureKey) {
+		return new TileSpriteModel(getGroup().getModel(), textureKey);
 	}
 
 }

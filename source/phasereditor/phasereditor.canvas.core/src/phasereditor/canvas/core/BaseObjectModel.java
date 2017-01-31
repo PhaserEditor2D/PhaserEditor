@@ -306,7 +306,7 @@ public abstract class BaseObjectModel {
 		readInfo(jsonInfo);
 	}
 
-	protected void readInfo(JSONObject jsonInfo) {
+	public void readInfo(JSONObject jsonInfo) {
 		_editorName = jsonInfo.optString("editorName");
 		_editorPick = jsonInfo.optBoolean("editorPick", DEF_EDITOR_PICK);
 		_editorGenerate = jsonInfo.optBoolean("editorGenerate", DEF_EDITOR_GENERATE);

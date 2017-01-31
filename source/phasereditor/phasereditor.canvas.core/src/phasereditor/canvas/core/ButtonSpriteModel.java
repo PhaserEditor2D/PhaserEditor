@@ -74,7 +74,7 @@ public class ButtonSpriteModel extends AssetSpriteModel<IAssetKey> {
 	}
 
 	@Override
-	protected void readInfo(JSONObject jsonInfo) {
+	public void readInfo(JSONObject jsonInfo) {
 		super.readInfo(jsonInfo);
 
 		_callback = jsonInfo.optString("callback", null);

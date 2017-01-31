@@ -133,7 +133,7 @@ public class GroupModel extends BaseObjectModel {
 	}
 
 	@Override
-	protected void readInfo(JSONObject jsonInfo) {
+	public void readInfo(JSONObject jsonInfo) {
 		super.readInfo(jsonInfo);
 
 		_editorClosed = jsonInfo.optBoolean("editorClosed", false);

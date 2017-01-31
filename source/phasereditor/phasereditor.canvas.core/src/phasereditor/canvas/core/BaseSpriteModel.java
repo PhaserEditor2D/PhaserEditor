@@ -163,7 +163,7 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 	}
 
 	@Override
-	protected void readInfo(JSONObject jsonInfo) {
+	public void readInfo(JSONObject jsonInfo) {
 		super.readInfo(jsonInfo);
 		_anchorX = jsonInfo.optDouble("anchor.x", DEF_ANCHOR_X);
 		_anchorY = jsonInfo.optDouble("anchor.y", DEF_ANCHOR_Y);
