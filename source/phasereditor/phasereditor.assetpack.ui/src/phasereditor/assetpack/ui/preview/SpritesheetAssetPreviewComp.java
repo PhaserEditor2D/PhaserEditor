@@ -114,6 +114,8 @@ public class SpritesheetAssetPreviewComp extends Composite {
 			}
 		});
 		GridLayout gridLayout = new GridLayout(1, false);
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
 		setLayout(gridLayout);
 
 		_canvas = new SpritesheetPreviewCanvas(this, SWT.NONE);

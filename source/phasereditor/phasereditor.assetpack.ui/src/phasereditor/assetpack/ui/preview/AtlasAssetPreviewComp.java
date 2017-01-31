@@ -98,7 +98,10 @@ public class AtlasAssetPreviewComp extends Composite {
 
 		setData("org.eclipse.e4.ui.css.CssClassName", "DarkComposite");
 
-		setLayout(new GridLayout(1, false));
+		GridLayout gridLayout = new GridLayout(1, false);
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
+		setLayout(gridLayout);
 
 		_spritesViewer = new ComboViewer(this, SWT.READ_ONLY);
 		_spritesViewer.addSelectionChangedListener(new ISelectionChangedListener() {

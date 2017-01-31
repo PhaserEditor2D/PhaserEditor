@@ -45,6 +45,8 @@ public class BitmapFontAssetPreviewComp extends Composite {
 		super(parent, style);
 
 		GridLayout gridLayout = new GridLayout(1, false);
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
 		setLayout(gridLayout);
 
 		_imageCanvas = new ImageCanvas(this, SWT.NONE);

@@ -85,7 +85,10 @@ public class AudioSpriteAssetPreviewComp extends Composite {
 	public AudioSpriteAssetPreviewComp(Composite parent, int style) {
 		super(parent, style);
 
-		setLayout(new GridLayout(1, false));
+		GridLayout gridLayout_1 = new GridLayout(1, false);
+		gridLayout_1.marginWidth = 0;
+		gridLayout_1.marginHeight = 0;
+		setLayout(gridLayout_1);
 
 		_spritesViewer = new ComboViewer(this, SWT.READ_ONLY);
 		Combo combo = _spritesViewer.getCombo();

@@ -44,6 +44,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.IInformationControl;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -54,6 +55,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import com.subshell.snippets.jface.tooltip.tooltipsupport.ICustomInformationControlCreator;
+import com.subshell.snippets.jface.tooltip.tooltipsupport.TableViewerInformationProvider;
 import com.subshell.snippets.jface.tooltip.tooltipsupport.Tooltips;
 import com.subshell.snippets.jface.tooltip.tooltipsupport.TreeViewerInformationProvider;
 
@@ -214,6 +216,19 @@ public class CanvasUI {
 	}
 
 	public static void installCanvasTooltips(TreeViewer viewer) {
+		Tooltips.install(viewer.getControl(), new TreeViewerInformationProvider(viewer), getPrefabTooltipsCreators(),
+				false);
+	}
+
+	public static void installCanvasTooltips(TableViewer viewer) {
+		Tooltips.install(viewer.getControl(), new TableViewerInformationProvider(viewer), getPrefabTooltipsCreators(),
+				false);
+	}
+
+	/**
+	 * @return
+	 */
+	private static List<ICustomInformationControlCreator> getPrefabTooltipsCreators() {
 		List<ICustomInformationControlCreator> creators = new ArrayList<>();
 
 		creators.add(new ICustomInformationControlCreator() {
@@ -250,9 +265,7 @@ public class CanvasUI {
 				return false;
 			}
 		});
-
-		Tooltips.install(viewer.getControl(), new TreeViewerInformationProvider(viewer), creators, false);
-
+		return creators;
 	}
 
 	public static Image getPregabIcon(Prefab prefab, AssetLabelProvider labelProvider) {

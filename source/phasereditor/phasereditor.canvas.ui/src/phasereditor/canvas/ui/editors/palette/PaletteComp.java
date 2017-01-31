@@ -162,6 +162,7 @@ public class PaletteComp extends Composite {
 		}
 
 		AssetPackUI.installAssetTooltips(_viewer);
+		CanvasUI.installCanvasTooltips(_viewer);
 	}
 
 	void drop(int index, Object[] data) {

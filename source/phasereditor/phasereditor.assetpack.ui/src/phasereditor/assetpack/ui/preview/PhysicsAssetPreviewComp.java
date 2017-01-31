@@ -47,7 +47,10 @@ public class PhysicsAssetPreviewComp extends Composite {
 	public PhysicsAssetPreviewComp(Composite parent, int style) {
 		super(parent, style);
 
-		setLayout(new GridLayout(1, false));
+		GridLayout gridLayout = new GridLayout(1, false);
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
+		setLayout(gridLayout);
 
 		Label lblSprites = new Label(this, SWT.NONE);
 		lblSprites.setText("sprites");

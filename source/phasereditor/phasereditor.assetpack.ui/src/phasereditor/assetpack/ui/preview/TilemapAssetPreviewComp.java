@@ -75,7 +75,10 @@ public class TilemapAssetPreviewComp extends Composite {
 	public TilemapAssetPreviewComp(Composite parent, int style) {
 		super(parent, style);
 
-		setLayout(new GridLayout(1, false));
+		GridLayout gridLayout = new GridLayout(1, false);
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
+		setLayout(gridLayout);
 
 		_composite = new Composite(this, SWT.NONE);
 		GridData gd_composite = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
