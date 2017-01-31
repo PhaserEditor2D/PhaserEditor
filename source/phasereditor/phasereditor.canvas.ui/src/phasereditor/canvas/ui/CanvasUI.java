@@ -273,4 +273,5 @@ public class CanvasUI {
 		Path imgfile = CanvasUI.getCanvasScreenshotFile(file, false);
 		return labelProvider.getIcon(imgfile.toAbsolutePath().toString());
 	}
+
 }

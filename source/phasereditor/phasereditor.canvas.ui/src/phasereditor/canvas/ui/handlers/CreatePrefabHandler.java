@@ -36,6 +36,7 @@ import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.GroupModel;
+import phasereditor.canvas.core.SourceLang;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
 import phasereditor.canvas.ui.CanvasUI;
@@ -107,7 +108,8 @@ public class CreatePrefabHandler extends AbstractHandler {
 			CanvasType type = selModel instanceof GroupModel ? CanvasType.GROUP : CanvasType.SPRITE;
 			newModel.setType(type);
 			newModel.getSettings().setBaseClass(CanvasCodeGeneratorProvider.getDefaultBaseClassFor(type));
-			newModel.getSettings().setLang(node.getControl().getCanvas().getEditor().getModel().getSettings().getLang());
+			SourceLang lang = node.getControl().getCanvas().getEditor().getModel().getSettings().getLang();
+			newModel.getSettings().setLang(lang);
 
 			String name = file.getFullPath().removeFileExtension().lastSegment();
 
@@ -121,6 +123,7 @@ public class CreatePrefabHandler extends AbstractHandler {
 				groupModel.setEditorName("group");
 				groupModel.setX(0);
 				groupModel.setY(0);
+				groupModel.trim();
 				world.addChild(groupModel);
 			} else {
 				JSONObject json = selModel.toJSON(false);
@@ -149,12 +152,14 @@ public class CreatePrefabHandler extends AbstractHandler {
 					return Status.OK_STATUS;
 				}
 			};
+
 			job.addJobChangeListener(new JobChangeAdapter() {
 				@Override
 				public void done(IJobChangeEvent e) {
 					HandlerUtil.getActiveShell(event).getDisplay().asyncExec(() -> {
 						try {
-							CanvasEditor editor2 = (CanvasEditor) IDE.openEditor(HandlerUtil.getActiveWorkbenchWindow(event).getActivePage(), file);
+							CanvasEditor editor2 = (CanvasEditor) IDE
+									.openEditor(HandlerUtil.getActiveWorkbenchWindow(event).getActivePage(), file);
 							editor2.generateCode();
 						} catch (PartInitException e1) {
 							CanvasUI.logError(e1);

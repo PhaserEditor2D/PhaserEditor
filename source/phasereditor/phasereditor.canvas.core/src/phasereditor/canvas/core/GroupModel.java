@@ -182,7 +182,7 @@ public class GroupModel extends BaseObjectModel {
 		super.writeInfo(jsonInfo, saving);
 
 		jsonInfo.put("editorClosed", _editorClosed, false);
-		
+
 		if (isOverriding("physics")) {
 			jsonInfo.put("physicsGroup", _physicsGroup, false);
 			jsonInfo.put("physicsBodyType", _physicsBodyType, PhysicsType.ARCADE);
@@ -270,5 +270,23 @@ public class GroupModel extends BaseObjectModel {
 		}
 
 		return false;
+	}
+
+	/**
+	 * 
+	 */
+	public void trim() {
+		// remove the empty space from the left and top.
+		double minx = Double.MAX_VALUE;
+		double miny = Double.MAX_VALUE;
+		for (BaseObjectModel model : _children) {
+			minx = Math.min(model.getX(), minx);
+			miny = Math.min(model.getY(), miny);
+		}
+
+		for (BaseObjectModel model : _children) {
+			model.setX(model.getX() - minx);
+			model.setY(model.getY() - miny);
+		}
 	}
 }

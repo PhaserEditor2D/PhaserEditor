@@ -195,6 +195,7 @@ public class UpdateBehavior {
 		}
 
 		CanvasEditor editor = _canvas.getEditor();
+		group.addContext(editor.undoContext);
 		IWorkbench workbench = editor.getSite().getWorkbenchWindow().getWorkbench();
 		try {
 			IOperationHistory history = workbench.getOperationSupport().getOperationHistory();

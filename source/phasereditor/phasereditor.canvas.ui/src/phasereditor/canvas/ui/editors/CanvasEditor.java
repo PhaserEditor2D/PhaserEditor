@@ -67,7 +67,9 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IPersistableEditor;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.contexts.IContextActivation;
@@ -85,9 +87,9 @@ import org.json.JSONTokener;
 
 import javafx.geometry.Point2D;
 import phasereditor.canvas.core.AssetTable;
-import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasType;
+import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
 import phasereditor.canvas.core.codegen.ICodeGenerator;
@@ -111,7 +113,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 	protected static final String SCENE_CONTEXT_ID = "phasereditor.canvas.ui.scenecontext";
 	protected static final String EDITOR_CONTEXT_ID = "phasereditor.canvas.ui.any";
 
-	public static final IUndoContext UNDO_CONTEXT = new IUndoContext() {
+	public final IUndoContext undoContext = new IUndoContext() {
 
 		@Override
 		public boolean matches(IUndoContext context) {
@@ -137,6 +139,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 	private ExecutorService _threadPool = Executors.newFixedThreadPool(1);
 	private CanvasSettingsComp _settingsPage;
 	private Control _designPage;
+	private UndoRedoActionGroup _undoRedoGroup;
 
 	public CanvasEditor() {
 	}
@@ -326,6 +329,48 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 		registerUndoRedoActions();
 	}
 
+	private IPartListener _partListener;
+	
+	@SuppressWarnings("synthetic-access")
+	private void addEditorActivationListeners() {
+		_partListener = new IPartListener() {
+			
+			
+			@Override
+			public void partOpened(IWorkbenchPart part) {
+				if (part == CanvasEditor.this) {
+					registerUndoRedoActions();
+				}
+			}
+			
+			@Override
+			public void partDeactivated(IWorkbenchPart part) {
+				//
+			}
+			
+			@Override
+			public void partClosed(IWorkbenchPart part) {
+				//
+			}
+			
+			@Override
+			public void partBroughtToTop(IWorkbenchPart part) {
+				if (part == CanvasEditor.this) {
+					registerUndoRedoActions();
+				}
+			}
+			
+			@Override
+			public void partActivated(IWorkbenchPart part) {
+				if (part == CanvasEditor.this) {
+					registerUndoRedoActions();
+				}
+			}
+		};
+		getSite().getWorkbenchWindow().getActivePage().addPartListener(_partListener);
+	}
+	
+
 	private void createSettingsPage() {
 		_settingsPage = new CanvasSettingsComp(getContainer(), SWT.BORDER);
 		_settingsPage.setModel(_model);
@@ -346,10 +391,13 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 
 	private void registerUndoRedoActions() {
 		IEditorSite site = getEditorSite();
-		UndoRedoActionGroup group = new UndoRedoActionGroup(site, UNDO_CONTEXT, true);
+
+		if (_undoRedoGroup == null) {
+			_undoRedoGroup = new UndoRedoActionGroup(site, undoContext, true);
+		}
+
 		IActionBars actionBars = site.getActionBars();
-		actionBars.clearGlobalActionHandlers();
-		group.fillActionBars(actionBars);
+		_undoRedoGroup.fillActionBars(actionBars);
 		actionBars.updateActionBars();
 	}
 
@@ -458,6 +506,8 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 		restoreState();
 
 		initContexts();
+		
+		addEditorActivationListeners();
 	}
 
 	private void initPalette() {
@@ -548,8 +598,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 		if (getModel().getType() == CanvasType.SPRITE) {
 			_outlineTree.setVisible(false);
 		}
-		
-		
+
 		TreeViewer viewer = _outlineTree.getViewer();
 
 		viewer.setInput(_canvas);

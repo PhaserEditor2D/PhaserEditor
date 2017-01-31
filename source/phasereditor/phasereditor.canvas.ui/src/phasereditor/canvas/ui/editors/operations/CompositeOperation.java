@@ -54,7 +54,6 @@ public class CompositeOperation extends AbstractOperation {
 		super("CompositeChangePropertyOperation");
 		_fireWorldChanged = fireWorldChanged;
 		_operations = new ArrayList<>(Arrays.asList(operations));
-		addContext(CanvasEditor.UNDO_CONTEXT);
 		_parent = true;
 	}
 
