@@ -24,6 +24,7 @@ package phasereditor.canvas.ui.editors;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
 
@@ -109,6 +110,9 @@ public class ObjectCanvas extends FXCanvas {
 
 		_updateBehavior.updateFromSettings();
 		_zoomBehavior.updateZoomAndPan();
+		
+		// just to force to select the default stuff in the property grid
+		_selectionBehavior.setSelection(StructuredSelection.EMPTY);
 	}
 
 	public CanvasEditor getEditor() {

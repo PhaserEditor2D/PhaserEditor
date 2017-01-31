@@ -35,6 +35,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IWorkbench;
 
+import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
@@ -118,6 +119,13 @@ public class UpdateBehavior {
 		Object[] elements = sel.toArray();
 
 		if (elements.length != 1) {
+
+			if (_canvas.getEditor().getModel().getType() == CanvasType.SPRITE) {
+				IObjectNode sprite = (IObjectNode) _canvas.getWorldNode().getChildren().get(0);
+				_grid.setModel(sprite.getControl().getPropertyModel());
+				return;
+			}
+
 			_grid.setModel(null);
 			return;
 		}
