@@ -663,15 +663,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 		return getTextureTop() + getTextureHeight();
 	}
 
-	public BaseSpriteControl<?> changeTexture(IAssetFrameModel textureKey) {
-		BaseSpriteControl<?> newControl = createControlWithTexture(textureKey);
-		GroupControl parent = getGroup().getControl();
-		int i = removeme();
-		parent.addChild(i, newControl.getIObjectNode());
-		return newControl;
-	}
-
-	protected BaseSpriteControl<?> createControlWithTexture(IAssetFrameModel textureKey) {
+	public BaseSpriteControl<?> createControlWithTexture(IAssetFrameModel textureKey) {
 		JSONObject data = getModel().toJSON(false);
 		BaseSpriteModel model = createModelWithTexture(textureKey);
 		model.readInfo(data.getJSONObject("info"));

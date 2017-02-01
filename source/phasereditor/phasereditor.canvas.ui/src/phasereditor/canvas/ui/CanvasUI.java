@@ -72,14 +72,17 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
+import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.preview.ExternalImageFileInformationControl;
 import phasereditor.assetpack.ui.widgets.ImagePreviewComposite;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.Prefab;
 import phasereditor.canvas.ui.editors.behaviors.SelectionBehavior;
+import phasereditor.canvas.ui.shapes.BaseSpriteControl;
 import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
+import phasereditor.canvas.ui.shapes.ISpriteNode;
 
 /**
  * @author arian
@@ -94,6 +97,14 @@ public class CanvasUI {
 
 	private static final QualifiedName SNAPSHOT_FILENAME_KEY = new QualifiedName("phasereditor.canvas.core",
 			"snapshot-file");
+
+	public static BaseSpriteControl<?> changeSpriteTexture(ISpriteNode sprite, IAssetFrameModel textureModel) {
+		BaseSpriteControl<?> newControl = sprite.getControl().createControlWithTexture(textureModel);
+		GroupControl parent = sprite.getGroup().getControl();
+		int i = sprite.getControl().removeme();
+		parent.addChild(i, newControl.getIObjectNode());
+		return newControl;
+	}
 
 	public static void clearCanvasScreenshot(IFile file) {
 		try {

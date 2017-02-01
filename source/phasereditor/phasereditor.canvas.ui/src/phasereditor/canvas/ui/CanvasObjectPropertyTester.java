@@ -8,9 +8,9 @@ import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
-public class CanvasPropertyTester extends PropertyTester {
+public class CanvasObjectPropertyTester extends PropertyTester {
 
-	public CanvasPropertyTester() {
+	public CanvasObjectPropertyTester() {
 	}
 
 	@SuppressWarnings("boxing")

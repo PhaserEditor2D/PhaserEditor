@@ -865,6 +865,11 @@
                <reference
                      definitionId="phasereditor.canvas.ui.noPrefabRootSelected">
                </reference>
+               <not>
+                  <reference
+                        definitionId="phasereditor.canvas.ui.spritePrefabEditorActive">
+                  </reference>
+               </not>
             </and>
          </enabledWhen>
       </handler>
@@ -872,6 +877,7 @@
             class="phasereditor.canvas.ui.handlers.MakeEmptyGroupHandler"
             commandId="phasereditor.canvas.ui.emptygroup">
          <activeWhen>
+         	<and>
             <or>
             	<and>
                		<reference
@@ -890,7 +896,13 @@
                        	value="!">
            			</count>
                	</with>
-             </or>  		
+             </or>
+            <not>
+               <reference
+                     definitionId="phasereditor.canvas.ui.spritePrefabEditorActive">
+               </reference>
+            </not>
+             </and>  		
          </activeWhen>
       </handler>
       <handler
@@ -1171,6 +1183,11 @@
 	             <reference
                      definitionId="phasereditor.canvas.ui.noPrefabRootSelected">
                </reference>
+              <not>
+                 <reference
+                       definitionId="phasereditor.canvas.ui.spritePrefabEditorActive">
+                 </reference>
+              </not>
             </and>
          </activeWhen>
       </handler>
@@ -1555,6 +1572,19 @@
             </iterate>
          </with>
       </definition>
+      <definition
+            id="phasereditor.canvas.ui.spritePrefabEditorActive">
+         	<with
+               	variable="activeEditor">
+               	<adapt
+                        type="phasereditor.canvas.ui.editors.CanvasEditor">
+                     <test
+                           property="phasereditor.canvas.ui.canvasType"
+                           value="sprite">
+                     </test>
+                  </adapt>
+         	</with>         	
+      </definition>
    </extension>
    <extension
          point="org.eclipse.ui.contexts">
@@ -1648,11 +1678,18 @@
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
-            class="phasereditor.canvas.ui.CanvasPropertyTester"
-            id="phasereditor.canvas.ui.propertyTester"
+            class="phasereditor.canvas.ui.CanvasObjectPropertyTester"
+            id="phasereditor.canvas.ui.objectPropertyTester"
             namespace="phasereditor.canvas.ui"
             properties="isPrefabInstance,isGroupPrefabRoot"
             type="phasereditor.canvas.ui.shapes.IObjectNode">
+      </propertyTester>
+      <propertyTester
+            class="phasereditor.canvas.ui.CanvasEditorPropertyTester"
+            id="phasereditor.canvas.ui.editorPropertyTester"
+            namespace="phasereditor.canvas.ui"
+            properties="canvasType"
+            type="phasereditor.canvas.ui.editors.CanvasEditor">
       </propertyTester>
    </extension>
 

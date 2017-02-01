@@ -46,6 +46,7 @@ import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.Prefab;
+import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
@@ -57,6 +58,7 @@ import phasereditor.canvas.ui.shapes.CanvasObjectFactory;
 import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
+import phasereditor.canvas.ui.shapes.ISpriteNode;
 
 /**
  * @author arian
@@ -115,10 +117,9 @@ public class CreateBehavior {
 			// TODO: just remember we need to do this with the undo/redo
 			// framework.
 			IObjectNode node = (IObjectNode) _canvas.getWorldNode().getChildren().get(0);
-			BaseObjectControl<?> control = node.getControl();
-			if (control instanceof BaseSpriteControl) {
+			if (node instanceof ISpriteNode) {
 				IAssetFrameModel newTexture = (IAssetFrameModel) first;
-				BaseSpriteControl newControl = ((BaseSpriteControl) control).changeTexture(newTexture);
+				BaseSpriteControl newControl = CanvasUI.changeSpriteTexture((ISpriteNode) node, newTexture);
 				_canvas.getHandlerBehavior().clear();
 				_canvas.getSelectionBehavior().setSelection(new StructuredSelection(newControl.getNode()));
 				_canvas.getUpdateBehavior().fireWorldChanged();

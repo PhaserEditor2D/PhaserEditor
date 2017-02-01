@@ -48,6 +48,7 @@ public class MakeEmptyGroupHandler extends AbstractHandler {
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
 		Object[] elems = selection.toArray();
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
+
 		ObjectCanvas canvas = editor.getCanvas();
 		GroupNode parent;
 
