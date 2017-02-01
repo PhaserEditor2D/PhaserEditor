@@ -201,6 +201,10 @@
                   style="push">
             </command>
          </menu>
+         <separator
+               name="phasereditor.canvas.ui.separator8"
+               visible="true">
+         </separator>
          <command
                commandId="phasereditor.canvas.ui.togglesnapping"
                style="push">
@@ -243,6 +247,11 @@
                   style="push">
             </command>
          </menu>
+         <command
+               commandId="phasereditor.canvas.ui.changeTexture"
+               label="Change Sprite Texture"
+               style="push">
+         </command>
          <separator
                name="phasereditor.canvas.ui.separator3"
                visible="true">
@@ -293,8 +302,7 @@
             </command>
          </menu>
          <separator
-               name="phasereditor.canvas.ui.separator5"
-               visible="true">
+               name="phasereditor.canvas.ui.separator7">
          </separator>
          <command
                commandId="org.eclipse.ui.edit.delete"
@@ -726,6 +734,7 @@
             name="Edit Physical Body">
       </command>
       <command
+            categoryId="phasereditor.canvas.ui.editor.category"
             id="phasereditor.canvas.ui.scale"
             name="Edit Scale">
       </command>
@@ -735,14 +744,17 @@
             name="Edit Rotation">
       </command>
       <command
+            categoryId="phasereditor.canvas.ui.editor.category"
             id="phasereditor.canvas.ui.togglesnapping"
             name="Toggle Snapping">
       </command>
       <command
+            categoryId="phasereditor.canvas.ui.editor.category"
             id="phasereditor.canvas.ui.setSnappingWithSelection"
             name="Enable Snapping (Selection Size)">
       </command>
       <command
+            categoryId="phasereditor.canvas.ui.editor.category"
             id="phasereditor.canvas.ui.editanchors"
             name="Edit Anchors">
       </command>
@@ -753,27 +765,37 @@
             name="Show Code">
       </command>
       <command
+            categoryId="phasereditor.canvas.ui.editor.category"
             defaultHandler="phasereditor.canvas.ui.handlers.ToggleSidePanelHandler"
             id="phasereditor.canvas.ui.toggleSidePanel"
             name="Toggle Side Panel">
       </command>
       <command
+            categoryId="phasereditor.canvas.ui.editor.category"
             defaultHandler="phasereditor.canvas.ui.handlers.TogglePaletteHandler"
             id="phasereditor.canvas.ui.togglePalette"
             name="Toggle Palette">
       </command>
       <command
+            categoryId="phasereditor.canvas.ui.editor.category"
             defaultHandler="phasereditor.canvas.ui.handlers.GenerateCodeHandler"
             id="phasereditor.canvas.ui.gencode"
             name="Generate Code">
       </command>
       <command
+            categoryId="phasereditor.canvas.ui.editor.category"
             id="phasereditor.canvas.ui.openPrefab"
             name="Open Prefab">
       </command>
       <command
+            categoryId="phasereditor.canvas.ui.editor.category"
             id="phasereditor.canvas.ui.createPrefabWithSelection"
             name="Create Prefab With Selection">
+      </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.changeTexture"
+            name="Change Texture">
       </command>
       
    </extension>
@@ -1301,6 +1323,15 @@
             </reference>
          </activeWhen>
       </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.ChangeTextureHandler"
+            commandId="phasereditor.canvas.ui.changeTexture">
+         <activeWhen>
+            <reference
+                  definitionId="phasereditor.canvas.ui.oneSpriteSelected">
+            </reference>
+         </activeWhen>
+      </handler>
       
    </extension>
    <extension
@@ -1430,6 +1461,12 @@
              contextId="phasereditor.canvas.ui.nodescontext"
              schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
              sequence="W">
+       </key>
+       <key
+             commandId="phasereditor.canvas.ui.changeTexture"
+             contextId="phasereditor.canvas.ui.nodescontext"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M1+T">
        </key>
    </extension>
    <extension

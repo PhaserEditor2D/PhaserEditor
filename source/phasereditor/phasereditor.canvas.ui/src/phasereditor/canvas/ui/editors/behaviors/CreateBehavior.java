@@ -38,7 +38,6 @@ import javafx.scene.input.DragEvent;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
-import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CanvasModelFactory;
@@ -101,24 +100,16 @@ public class CreateBehavior {
 		if (_canvas.getEditor().getModel().getType() == CanvasType.SPRITE) {
 			Object first = selection.getFirstElement();
 
-			if (first instanceof ImageAssetModel) {
-				first = ((ImageAssetModel) first).getFrame();
-			} else if (first instanceof SpritesheetAssetModel) {
-				first = ((SpritesheetAssetModel) first).getAllFrames().get(0);
-			}
-
-			if (!(first instanceof IAssetFrameModel)) {
+			if (!(first instanceof IAssetFrameModel || first instanceof ImageAssetModel)) {
 				return;
 			}
 
-			// TODO: just remember we need to do this with the undo/redo
-			// framework.
 			IObjectNode node = (IObjectNode) _canvas.getWorldNode().getChildren().get(0);
 			if (node instanceof ISpriteNode) {
 				_canvas.getHandlerBehavior().clear();
 
 				CompositeOperation operations = new CompositeOperation();
-				CanvasUI.changeSpriteTexture((ISpriteNode) node, (IAssetFrameModel) first, operations);
+				CanvasUI.changeSpriteTexture((ISpriteNode) node, first, operations);
 				operations.add(new SelectOperation(node.getModel().getId()));
 				_canvas.getUpdateBehavior().executeOperations(operations);
 			}

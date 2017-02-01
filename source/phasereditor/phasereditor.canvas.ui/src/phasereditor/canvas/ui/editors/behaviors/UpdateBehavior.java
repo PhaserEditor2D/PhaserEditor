@@ -35,6 +35,8 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IWorkbench;
 
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
@@ -121,8 +123,11 @@ public class UpdateBehavior {
 		if (elements.length != 1) {
 
 			if (_canvas.getEditor().getModel().getType() == CanvasType.SPRITE) {
-				IObjectNode sprite = (IObjectNode) _canvas.getWorldNode().getChildren().get(0);
-				_grid.setModel(sprite.getControl().getPropertyModel());
+				ObservableList<Node> children = _canvas.getWorldNode().getChildren();
+				if (!children.isEmpty()) {
+					IObjectNode sprite = (IObjectNode) children.get(0);
+					_grid.setModel(sprite.getControl().getPropertyModel());
+				}
 				return;
 			}
 

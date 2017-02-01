@@ -73,6 +73,8 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
 import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.preview.ExternalImageFileInformationControl;
 import phasereditor.assetpack.ui.widgets.ImagePreviewComposite;
@@ -101,13 +103,28 @@ public class CanvasUI {
 	private static final QualifiedName SNAPSHOT_FILENAME_KEY = new QualifiedName("phasereditor.canvas.core",
 			"snapshot-file");
 
-	public static void changeSpriteTexture(ISpriteNode sprite, IAssetFrameModel textureModel,
+	public static void changeSpriteTexture(ISpriteNode sprite, Object texture,
 			CompositeOperation operations) {
+
+		Object frame;
+
+		if (texture instanceof ImageAssetModel) {
+			frame = ((ImageAssetModel) texture).getFrame();
+		} else if (texture instanceof SpritesheetAssetModel) {
+			frame = ((SpritesheetAssetModel) texture).getAllFrames().get(0);
+		} else {
+			frame = texture;
+		}
 
 		BaseSpriteModel oldModel = sprite.getModel();
 		JSONObject oldData = oldModel.toJSON(false);
 
-		BaseSpriteModel newModel = sprite.getControl().createModelWithTexture(textureModel);
+		BaseSpriteModel newModel = sprite.getControl().createModelWithTexture((IAssetFrameModel) frame);
+
+		if (oldModel.isPrefabInstance()) {
+			newModel.setPrefab(oldModel.getPrefab());
+		}
+
 		newModel.setId(oldModel.getId());
 		newModel.readInfo(oldData.getJSONObject("info"));
 		JSONObject newData = newModel.toJSON(false);
