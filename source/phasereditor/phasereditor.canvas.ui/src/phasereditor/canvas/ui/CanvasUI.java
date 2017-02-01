@@ -76,10 +76,13 @@ import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.preview.ExternalImageFileInformationControl;
 import phasereditor.assetpack.ui.widgets.ImagePreviewComposite;
+import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.Prefab;
 import phasereditor.canvas.ui.editors.behaviors.SelectionBehavior;
-import phasereditor.canvas.ui.shapes.BaseSpriteControl;
+import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
+import phasereditor.canvas.ui.editors.operations.CompositeOperation;
+import phasereditor.canvas.ui.editors.operations.DeleteNodeOperation;
 import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
@@ -98,12 +101,20 @@ public class CanvasUI {
 	private static final QualifiedName SNAPSHOT_FILENAME_KEY = new QualifiedName("phasereditor.canvas.core",
 			"snapshot-file");
 
-	public static BaseSpriteControl<?> changeSpriteTexture(ISpriteNode sprite, IAssetFrameModel textureModel) {
-		BaseSpriteControl<?> newControl = sprite.getControl().createControlWithTexture(textureModel);
-		GroupControl parent = sprite.getGroup().getControl();
-		int i = sprite.getControl().removeme();
-		parent.addChild(i, newControl.getIObjectNode());
-		return newControl;
+	public static void changeSpriteTexture(ISpriteNode sprite, IAssetFrameModel textureModel,
+			CompositeOperation operations) {
+
+		BaseSpriteModel oldModel = sprite.getModel();
+		JSONObject oldData = oldModel.toJSON(false);
+
+		BaseSpriteModel newModel = sprite.getControl().createModelWithTexture(textureModel);
+		newModel.setId(oldModel.getId());
+		newModel.readInfo(oldData.getJSONObject("info"));
+		JSONObject newData = newModel.toJSON(false);
+
+		operations.add(new DeleteNodeOperation(oldModel.getId()));
+		operations.add(new AddNodeOperation(newData, oldModel.getIndex(), oldModel.getX(), oldModel.getY(),
+				oldModel.getParent().getId()));
 	}
 
 	public static void clearCanvasScreenshot(IFile file) {

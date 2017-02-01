@@ -260,7 +260,7 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 	}
 
 	@Override
-	protected BaseSpriteModel createModelWithTexture(IAssetFrameModel textureKey) {
+	public BaseSpriteModel createModelWithTexture(IAssetFrameModel textureKey) {
 		AssetModel old = getModel().getAssetKey().getAsset().getSharedVersion();
 		ButtonSpriteModel model = new ButtonSpriteModel(getGroup().getModel(), textureKey);
 		

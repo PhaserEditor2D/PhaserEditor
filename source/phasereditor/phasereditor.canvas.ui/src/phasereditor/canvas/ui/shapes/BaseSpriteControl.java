@@ -27,7 +27,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import org.eclipse.swt.graphics.RGB;
-import org.json.JSONObject;
 
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -663,15 +662,9 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 		return getTextureTop() + getTextureHeight();
 	}
 
-	public BaseSpriteControl<?> createControlWithTexture(IAssetFrameModel textureKey) {
-		JSONObject data = getModel().toJSON(false);
-		BaseSpriteModel model = createModelWithTexture(textureKey);
-		model.readInfo(data.getJSONObject("info"));
-		BaseObjectControl<?> control = CanvasObjectFactory.createObjectControl(getCanvas(), model);
-		return (BaseSpriteControl<?>) control;
-	}
+	
 
-	protected BaseSpriteModel createModelWithTexture(IAssetFrameModel textureKey) {
+	public BaseSpriteModel createModelWithTexture(IAssetFrameModel textureKey) {
 		return CanvasModelFactory.createModel(getGroup().getModel(), textureKey);
 	}
 

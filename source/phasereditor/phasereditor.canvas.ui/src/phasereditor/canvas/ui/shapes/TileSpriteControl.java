@@ -282,7 +282,7 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 	}
 
 	@Override
-	protected BaseSpriteModel createModelWithTexture(IAssetFrameModel textureKey) {
+	public BaseSpriteModel createModelWithTexture(IAssetFrameModel textureKey) {
 		return new TileSpriteModel(getGroup().getModel(), textureKey);
 	}
 
