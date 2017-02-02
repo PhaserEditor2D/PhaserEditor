@@ -230,7 +230,7 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 
 		if (model.isPrefabInstance()) {
 			String prefabName = model.isPrefabInstance() ? model.getPrefab().getClassName() : null;
-			boolean writeTexture = model.isOverriding("texture");
+			boolean writeTexture = model.isOverriding(BaseSpriteModel.PROPSET_TEXTURE);
 			Call call = new Call("new " + prefabName);
 			// a prefab instance only supports images, sprite atlas and sprite
 			// sheet for now.
@@ -409,7 +409,7 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 	protected void generateDisplayProps(BaseObjectModel model) {
 		String varname = getLocalVarName(model);
 
-		if (model.isOverriding("position")) {
+		if (model.isOverriding(BaseObjectModel.PROPSET_POSITION)) {
 			if (model instanceof GroupModel) {
 				if (model.getX() != 0 || model.getY() != 0) {
 					line(varname + ".position.setTo(" + round(model.getX()) + ", " + round(model.getY()) + ");");
@@ -417,19 +417,19 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 			}
 		}
 
-		if (model.isOverriding("angle")) {
+		if (model.isOverriding(BaseObjectModel.PROPSET_ANGLE)) {
 			if (model.getAngle() != 0) {
 				line(varname + ".angle = " + model.getAngle() + ";");
 			}
 		}
 
-		if (model.isOverriding("scale")) {
+		if (model.isOverriding(BaseObjectModel.PROPSET_SCALE)) {
 			if (model.getScaleX() != 1 || model.getScaleY() != 1) {
 				line(varname + ".scale.setTo(" + model.getScaleX() + ", " + model.getScaleY() + ");");
 			}
 		}
 
-		if (model.isOverriding("pivot")) {
+		if (model.isOverriding(BaseObjectModel.PROPSET_PIVOT)) {
 			if (model.getPivotX() != 0 || model.getPivotY() != 0) {
 				line(varname + ".pivot.setTo(" + model.getPivotX() + ", " + model.getPivotY() + ");");
 			}
@@ -449,19 +449,19 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 	private void generateSpriteProps(BaseSpriteModel model) {
 		String varname = getLocalVarName(model);
 
-		if (model.isOverriding("anchor")) {
+		if (model.isOverriding(BaseSpriteModel.PROPSET_ANCHOR)) {
 			if (model.getAnchorX() != 0 || model.getAnchorY() != 0) {
 				line(varname + ".anchor.setTo(" + model.getAnchorX() + ", " + model.getAnchorY() + ");");
 			}
 		}
 
-		if (model.isOverriding("tint")) {
+		if (model.isOverriding(BaseSpriteModel.PROPSET_TINT)) {
 			if (model.getTint() != null && !model.getTint().equals("0xffffff")) {
 				line(varname + ".tint = " + model.getTint() + ";");
 			}
 		}
 
-		if (model.isOverriding("animations")) {
+		if (model.isOverriding(BaseSpriteModel.PROPSET_ANIMATIONS)) {
 			if (!model.getAnimations().isEmpty()) {
 				for (AnimationModel anim : model.getAnimations()) {
 					String animvar = null;
@@ -515,7 +515,7 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 	}
 
 	private void generateBodyProps(BaseSpriteModel model) {
-		if (model.isOverriding("physics")) {
+		if (model.isOverriding(BaseSpriteModel.PROPSET_PHYSICS)) {
 			BodyModel body = model.getBody();
 			if (body != null) {
 				if (body instanceof ArcadeBodyModel) {
@@ -736,7 +736,7 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 	protected void generateGroupProps(GroupModel model) {
 		String varname = getLocalVarName(model);
 
-		if (model.isOverriding("physics")) {
+		if (model.isOverriding(BaseSpriteModel.PROPSET_PHYSICS)) {
 			if (model.getPhysicsSortDirection() != PhysicsSortDirection.NULL) {
 				line(varname + ".physicsSortDirection = " + model.getPhysicsSortDirection().getPhaserName() + ";");
 			}

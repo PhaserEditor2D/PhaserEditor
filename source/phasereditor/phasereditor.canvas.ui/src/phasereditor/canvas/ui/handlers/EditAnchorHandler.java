@@ -7,6 +7,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
@@ -19,7 +20,7 @@ public class EditAnchorHandler extends AbstractHandler {
 		IStructuredSelection sel = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
 
 		IObjectNode elem = (IObjectNode) sel.getFirstElement();
-		if (!elem.getModel().isOverriding("anchor")) {
+		if (!elem.getModel().isOverriding(BaseSpriteModel.PROPSET_ANCHOR)) {
 			MessageDialog.openWarning(HandlerUtil.getActiveShell(event), "Anchor",
 					"Cannot change the anchor of this prefab instance.");
 			return null;

@@ -34,13 +34,19 @@ import phasereditor.canvas.core.BodyModel.BodyType;
  *
  */
 public abstract class BaseSpriteModel extends BaseObjectModel {
-	/**
-	 * 
-	 */
 	private static final String TINT_0X000000 = "0x000000";
 	public static final double DEF_ANCHOR_X = 0;
 	public static final double DEF_ANCHOR_Y = 0;
 	public static final String DEF_TINT = null;
+	
+	public static final String PROPSET_TEXTURE = "texture";
+	public static final String PROPSET_ANCHOR = "anchor";
+	public static final String PROPSET_TINT = "tint";
+	public static final String PROPSET_ANIMATIONS = "animations";
+	public static final String PROPSET_PHYSICS = "physics";
+	public static final String PROPSET_DATA = "data";
+	
+	
 	private double _anchorX;
 	private double _anchorY;
 	private String _tint;
@@ -130,20 +136,20 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 	protected void writeInfo(JSONObject jsonInfo, boolean saving) {
 		super.writeInfo(jsonInfo, saving);
 
-		if (isOverriding("anchor")) {
+		if (isOverriding(PROPSET_ANCHOR)) {
 			jsonInfo.put("anchor.x", _anchorX, DEF_ANCHOR_X);
 			jsonInfo.put("anchor.y", _anchorY, DEF_ANCHOR_Y);
 		}
 
-		if (isOverriding("tint")) {
+		if (isOverriding(PROPSET_TINT)) {
 			jsonInfo.put("tint", _tint, DEF_TINT);
 		}
 
-		if (isOverriding("data")) {
+		if (isOverriding(PROPSET_DATA)) {
 			jsonInfo.put("data", _data, null);
 		}
 
-		if (isOverriding("animations")) {
+		if (isOverriding(PROPSET_ANIMATIONS)) {
 			if (!_animations.isEmpty()) {
 				JSONArray array = new JSONArray();
 				jsonInfo.put("animations", array);
@@ -155,7 +161,7 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 			}
 		}
 
-		if (isOverriding("physics")) {
+		if (isOverriding(PROPSET_PHYSICS)) {
 			if (_body != null) {
 				jsonInfo.put("body", _body.toJSON());
 			}

@@ -7,6 +7,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.BodyModel;
 import phasereditor.canvas.core.CircleArcadeBodyModel;
 import phasereditor.canvas.core.RectArcadeBodyModel;
@@ -21,7 +22,7 @@ public class EditBodyHandler extends AbstractHandler {
 		ISpriteNode sprite = (ISpriteNode) ((IStructuredSelection) HandlerUtil.getCurrentSelection(event))
 				.getFirstElement();
 
-		if (!sprite.getModel().isOverriding("physics")) {
+		if (!sprite.getModel().isOverriding(BaseSpriteModel.PROPSET_PHYSICS)) {
 			MessageDialog.openWarning(HandlerUtil.getActiveShell(event), "Physics",
 					"Cannot change the physics of this prefab instance.");
 			return null;

@@ -143,12 +143,12 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 		super.initPrefabPGridModel(validProperties);
 		validProperties.addAll(Arrays.asList(
 				//@formatter:off
-				"texture",
-				"anchor",
-				"tint",
-				"animations",
-				"physics",
-				"data"
+				BaseSpriteModel.PROPSET_TEXTURE,
+				BaseSpriteModel.PROPSET_ANCHOR,
+				BaseSpriteModel.PROPSET_TINT,
+				BaseSpriteModel.PROPSET_ANIMATIONS,
+				BaseSpriteModel.PROPSET_PHYSICS,
+				BaseSpriteModel.PROPSET_DATA
 				//@formatter:on
 		));
 	}
@@ -661,8 +661,6 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 	public double getTextureBottom() {
 		return getTextureTop() + getTextureHeight();
 	}
-
-	
 
 	public BaseSpriteModel createModelWithTexture(IAssetFrameModel textureKey) {
 		return CanvasModelFactory.createModel(getGroup().getModel(), textureKey);

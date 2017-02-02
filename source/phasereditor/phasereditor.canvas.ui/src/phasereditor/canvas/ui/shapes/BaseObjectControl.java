@@ -75,7 +75,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		_propModel = new PGridModel();
 
 		initPGridModel(_propModel);
-		
+
 		updateFromModel();
 	}
 
@@ -191,10 +191,10 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	protected void initPrefabPGridModel(List<String> validProperties) {
 		validProperties.addAll(Arrays.asList(
 				//@formatter:off
-				"position", 
-				"angle", 
-				"scale", 
-				"pivot"
+				BaseObjectModel.PROPSET_POSITION, 
+				BaseObjectModel.PROPSET_ANGLE, 
+				BaseObjectModel.PROPSET_SCALE, 
+				BaseObjectModel.PROPSET_PIVOT
 				//@formatter:on
 		));
 	}

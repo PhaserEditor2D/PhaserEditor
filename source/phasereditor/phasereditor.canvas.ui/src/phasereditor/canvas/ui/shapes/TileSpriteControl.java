@@ -82,7 +82,7 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 	@Override
 	protected void initPrefabPGridModel(List<String> validProperties) {
 		super.initPrefabPGridModel(validProperties);
-		validProperties.add("tile");
+		validProperties.add(TileSpriteModel.PROPSET_TILE);
 	}
 
 	@SuppressWarnings("boxing")

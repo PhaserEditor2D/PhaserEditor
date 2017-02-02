@@ -31,7 +31,7 @@ public class ChangeTextureHandler extends AbstractHandler {
 		ISpriteNode sprite = (ISpriteNode) sel;
 		BaseSpriteModel model = sprite.getModel();
 
-		if (model.isPrefabInstance() && model.isPrefabReadOnly("texture")) {
+		if (model.isPrefabInstance() && model.isPrefabReadOnly(BaseSpriteModel.PROPSET_TEXTURE)) {
 			MessageDialog.openInformation(HandlerUtil.getActiveShell(event), "Change Texture",
 					"The texture of this prefab instance is read-only.");
 			return null;

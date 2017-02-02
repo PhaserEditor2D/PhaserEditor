@@ -65,7 +65,7 @@ public class ButtonSpriteModel extends AssetSpriteModel<IAssetKey> {
 		jsonInfo.put("callback", _callback, null);
 		jsonInfo.put("callbackContext", _callbackContext, "this");
 		
-		if (isOverriding("texture")) {
+		if (isOverriding(PROPSET_TEXTURE)) {
 			jsonInfo.put("overFrame", _overFrame == null ? null : _overFrame.getKey(), DEF_FRAME);
 			jsonInfo.put("downFrame", _downFrame == null ? null : _downFrame.getKey(), DEF_FRAME);
 			jsonInfo.put("upFrame", _upFrame == null ? null : _upFrame.getKey(), DEF_FRAME);

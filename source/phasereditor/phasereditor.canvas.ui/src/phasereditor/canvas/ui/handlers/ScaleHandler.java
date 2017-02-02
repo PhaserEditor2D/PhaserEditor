@@ -7,6 +7,8 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
@@ -18,7 +20,7 @@ public class ScaleHandler extends AbstractHandler {
 		IStructuredSelection sel = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
 		
 		IObjectNode elem = (IObjectNode) sel.getFirstElement();
-		if (!elem.getModel().isOverriding("scale")) {
+		if (!elem.getModel().isOverriding(BaseObjectModel.PROPSET_SCALE)) {
 			MessageDialog.openWarning(HandlerUtil.getActiveShell(event), "Scale", "Cannot scale this prefab instance.");
 			return null;
 		}

@@ -51,6 +51,11 @@ public abstract class BaseObjectModel {
 	private static final double DEF_PIVOT_Y = 0;
 	private static final boolean DEF_EDITOR_GENERATE = true;
 	public static final boolean DEF_EDITOR_PUBLIC = false;
+	
+	public static final String PROPSET_POSITION = "position";
+	public static final String PROPSET_ANGLE = "angle";
+	public static final String PROPSET_SCALE = "scale";
+	public static final String PROPSET_PIVOT = "pivot";
 
 	private Prefab _prefab;
 	private List<String> _prefabOverride;
@@ -439,7 +444,7 @@ public abstract class BaseObjectModel {
 			jsonInfo.put("prefabOverride", array);
 		}
 
-		if (isOverriding("position")) {
+		if (isOverriding(PROPSET_POSITION)) {
 			jsonInfo.put("x", _x, DEF_X);
 			jsonInfo.put("y", _y, DEF_Y);
 		}

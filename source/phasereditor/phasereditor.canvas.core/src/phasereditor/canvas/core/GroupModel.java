@@ -183,7 +183,7 @@ public class GroupModel extends BaseObjectModel {
 
 		jsonInfo.put("editorClosed", _editorClosed, false);
 
-		if (isOverriding("physics")) {
+		if (isOverriding(BaseSpriteModel.PROPSET_PHYSICS)) {
 			jsonInfo.put("physicsGroup", _physicsGroup, false);
 			jsonInfo.put("physicsBodyType", _physicsBodyType, PhysicsType.ARCADE);
 			jsonInfo.put("physicsSortDirection", _physicsSortDirection, PhysicsSortDirection.NULL);

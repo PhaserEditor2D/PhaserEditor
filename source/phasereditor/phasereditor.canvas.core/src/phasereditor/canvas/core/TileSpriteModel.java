@@ -44,6 +44,8 @@ public class TileSpriteModel extends AssetSpriteModel<IAssetKey> {
 
 	private static final double DEF_HEIGHT = 0;
 
+	public static final String PROPSET_TILE = "tile";
+
 	private double _width;
 	private double _height;
 	private double _tilePositionX;
@@ -96,7 +98,7 @@ public class TileSpriteModel extends AssetSpriteModel<IAssetKey> {
 	protected void writeInfo(JSONObject jsonInfo, boolean saving) {
 		super.writeInfo(jsonInfo, saving);
 
-		if (isOverriding("tile")) {
+		if (isOverriding(PROPSET_TILE)) {
 			jsonInfo.put("width", _width, DEF_WIDTH);
 			jsonInfo.put("height", _height, DEF_HEIGHT);
 			jsonInfo.put("tilePosition.x", _tilePositionX, DEF_TILE_POSITION);

@@ -29,6 +29,7 @@ import org.json.JSONObject;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.MissingAssetException;
 import phasereditor.canvas.core.MissingAssetSpriteModel;
@@ -311,7 +312,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 	@Override
 	protected void initPrefabPGridModel(List<String> validProperties) {
 		super.initPrefabPGridModel(validProperties);
-		validProperties.add("physics");
+		validProperties.add(BaseSpriteModel.PROPSET_PHYSICS);
 	}
 
 	public int removeChild(IObjectNode childNode) {
