@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -161,6 +162,84 @@ public class CanvasCore {
 			throw new RuntimeException(e);
 		}
 		return list;
+	}
+
+	public static class PrefabReference {
+		private IFile _file;
+		private String _objectName;
+		private String _objectId;
+
+		public PrefabReference(IFile file, String objectName, String objectId) {
+			super();
+			_file = file;
+			_objectName = objectName;
+			_objectId = objectId;
+		}
+
+		public String getObjectId() {
+			return _objectId;
+		}
+
+		public String getObjectName() {
+			return _objectName;
+		}
+
+		public IFile getFile() {
+			return _file;
+		}
+	}
+
+	public static List<PrefabReference> findPrefabReferencesInFileContent(Prefab prefab, IFile file) {
+		CanvasModel canvasModel = new CanvasModel(file);
+		try (InputStream contents = file.getContents()) {
+			canvasModel.read(new JSONObject(new JSONTokener(contents)));
+			return findPrefabReferenceInModelContent(prefab, canvasModel.getWorld());
+		} catch (Exception e) {
+			logError(e);
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static List<PrefabReference> findPrefabReferenceInModelContent(Prefab prefab, WorldModel world) {
+		List<PrefabReference> list = new ArrayList<>();
+
+		world.getWorld().walk(model -> {
+			Prefab modelPrefab = model.getPrefab();
+			if (prefab.equals(modelPrefab)) {
+				list.add(new PrefabReference(world.getFile(), model.getEditorName(), model.getId()));
+			}
+		});
+
+		return list;
+	}
+
+	public static void deletePrefab(Prefab prefab) {
+		IFile canvasFile = prefab.getFile();
+		if (canvasFile.exists()) {
+			CanvasModel model = new CanvasModel(canvasFile);
+			SourceLang lang;
+			try (InputStream contents = canvasFile.getContents()) {
+				model.read(new JSONObject(new JSONTokener(contents)));
+				lang = model.getSettings().getLang();
+			} catch (IOException | CoreException e) {
+				logError(e);
+				throw new RuntimeException(e);
+			}
+
+			try {
+				// delete the code file
+				IFile srcFile = canvasFile.getWorkspace().getRoot()
+						.getFile(canvasFile.getFullPath().removeFileExtension().addFileExtension(lang.getExtension()));
+				if (srcFile.exists()) {
+					srcFile.delete(false, null);
+				}
+
+				// delete the canvas file
+				canvasFile.delete(false, null);
+			} catch (CoreException e) {
+				logError(e);
+			}
+		}
 	}
 
 }

@@ -19,7 +19,7 @@ import phasereditor.canvas.ui.editors.operations.RemoveFromSelectionOperation;
 import phasereditor.canvas.ui.editors.operations.SelectOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
-public class DeleteHandler extends AbstractHandler {
+public class DeleteObjectHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {

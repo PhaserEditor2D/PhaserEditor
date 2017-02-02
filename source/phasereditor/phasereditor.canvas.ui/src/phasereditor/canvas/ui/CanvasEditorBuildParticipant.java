@@ -93,8 +93,12 @@ public class CanvasEditorBuildParticipant implements IProjectBuildParticipant {
 									delta.accept(d -> {
 										if (d.getKind() == IResourceDelta.REMOVED && d.getResource().equals(curFile)) {
 											IPath movedTo = d.getMovedToPath();
-											IFile newFile = root.getFile(movedTo);
-											editor.handleFileRename(newFile);
+											if (movedTo == null) {
+												editor.handleFileDelete();
+											} else {
+												IFile newFile = root.getFile(movedTo);
+												editor.handleFileRename(newFile);
+											}
 										}
 										return true;
 									});

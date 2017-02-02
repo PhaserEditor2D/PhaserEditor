@@ -330,36 +330,35 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 	}
 
 	private IPartListener _partListener;
-	
+
 	@SuppressWarnings("synthetic-access")
 	private void addEditorActivationListeners() {
 		_partListener = new IPartListener() {
-			
-			
+
 			@Override
 			public void partOpened(IWorkbenchPart part) {
 				if (part == CanvasEditor.this) {
 					registerUndoRedoActions();
 				}
 			}
-			
+
 			@Override
 			public void partDeactivated(IWorkbenchPart part) {
 				//
 			}
-			
+
 			@Override
 			public void partClosed(IWorkbenchPart part) {
 				//
 			}
-			
+
 			@Override
 			public void partBroughtToTop(IWorkbenchPart part) {
 				if (part == CanvasEditor.this) {
 					registerUndoRedoActions();
 				}
 			}
-			
+
 			@Override
 			public void partActivated(IWorkbenchPart part) {
 				if (part == CanvasEditor.this) {
@@ -369,7 +368,6 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 		};
 		getSite().getWorkbenchWindow().getActivePage().addPartListener(_partListener);
 	}
-	
 
 	private void createSettingsPage() {
 		_settingsPage = new CanvasSettingsComp(getContainer(), SWT.BORDER);
@@ -506,7 +504,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 		restoreState();
 
 		initContexts();
-		
+
 		addEditorActivationListeners();
 	}
 
@@ -822,6 +820,10 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 		super.setInput(new FileEditorInput(newFile));
 		_model.getWorld().setFile(newFile);
 		updateTitle();
+	}
+
+	public void handleFileDelete() {
+		getEditorSite().getWorkbenchWindow().getActivePage().closeEditor(this, false);
 	}
 
 	public void toggleSidePanel() {

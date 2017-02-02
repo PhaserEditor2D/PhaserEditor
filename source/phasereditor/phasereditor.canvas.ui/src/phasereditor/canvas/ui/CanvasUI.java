@@ -33,12 +33,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.QualifiedName;
@@ -50,6 +54,11 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -79,8 +88,11 @@ import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.preview.ExternalImageFileInformationControl;
 import phasereditor.assetpack.ui.widgets.ImagePreviewComposite;
 import phasereditor.canvas.core.BaseSpriteModel;
+import phasereditor.canvas.core.CanvasCore;
+import phasereditor.canvas.core.CanvasCore.PrefabReference;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.Prefab;
+import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.behaviors.SelectionBehavior;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
@@ -88,6 +100,7 @@ import phasereditor.canvas.ui.editors.operations.DeleteNodeOperation;
 import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
+import phasereditor.project.core.ProjectCore;
 
 /**
  * @author arian
@@ -103,8 +116,57 @@ public class CanvasUI {
 	private static final QualifiedName SNAPSHOT_FILENAME_KEY = new QualifiedName("phasereditor.canvas.core",
 			"snapshot-file");
 
-	public static void changeSpriteTexture(ISpriteNode sprite, Object texture,
-			CompositeOperation operations) {
+	public static List<PrefabReference> findPrefabReferences(Prefab prefab) {
+
+		IProject project = prefab.getFile().getProject();
+		IContainer webFolder = ProjectCore.getWebContentFolder(project);
+
+		List<PrefabReference> refs = findPrefabReferencesInEditorsContent(prefab);
+
+		Set<IFile> used = new HashSet<>();
+
+		for (PrefabReference editor : refs) {
+			used.add(editor.getFile());
+		}
+
+		try {
+			webFolder.accept(r -> {
+				if (r instanceof IFile && r.exists()) {
+					IFile file = (IFile) r;
+					if (!used.contains(file) && CanvasCore.isCanvasFile(file)) {
+						List<PrefabReference> thisRefs = CanvasCore.findPrefabReferencesInFileContent(prefab, file);
+						refs.addAll(thisRefs);
+					}
+				}
+				return true;
+			});
+		} catch (CoreException e) {
+			throw new RuntimeException(e);
+		}
+
+		return refs;
+	}
+
+	public static List<PrefabReference> findPrefabReferencesInEditorsContent(Prefab prefab) {
+		List<PrefabReference> result = new ArrayList<>();
+		for (IWorkbenchWindow window : PlatformUI.getWorkbench().getWorkbenchWindows()) {
+			for (IWorkbenchPage page : window.getPages()) {
+				for (IEditorReference editorRef : page.getEditorReferences()) {
+					IEditorPart editor = editorRef.getEditor(false);
+					if (editor != null && editor instanceof CanvasEditor) {
+						CanvasEditor canvasEditor = (CanvasEditor) editor;
+						List<PrefabReference> refs = CanvasCore.findPrefabReferenceInModelContent(prefab,
+								canvasEditor.getModel().getWorld());
+						result.addAll(refs);
+					}
+				}
+			}
+		}
+
+		return result;
+	}
+
+	public static void changeSpriteTexture(ISpriteNode sprite, Object texture, CompositeOperation operations) {
 
 		Object frame;
 

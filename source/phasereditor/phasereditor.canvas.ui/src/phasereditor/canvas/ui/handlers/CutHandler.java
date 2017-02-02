@@ -9,7 +9,7 @@ public class CutHandler extends CopyHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		super.execute(event);
 
-		DeleteHandler.executeDelete(event);
+		DeleteObjectHandler.executeDelete(event);
 
 		return null;
 	}
