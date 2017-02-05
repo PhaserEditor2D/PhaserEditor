@@ -12,9 +12,9 @@ import phasereditor.canvas.core.CanvasCore;
 import phasereditor.project.core.IProjectBuildParticipant;
 import phasereditor.project.core.ProjectCore;
 
-public class PrefabsIconProjectBuildParticipant implements IProjectBuildParticipant {
+public class CanvasScreenshotProjectBuildParticipant implements IProjectBuildParticipant {
 
-	public PrefabsIconProjectBuildParticipant() {
+	public CanvasScreenshotProjectBuildParticipant() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -51,7 +51,7 @@ public class PrefabsIconProjectBuildParticipant implements IProjectBuildParticip
 				if (d.getResource() instanceof IFile) {
 					IFile f = (IFile) d.getResource();
 					CanvasUI.clearCanvasScreenshot(f);
-					if (changed && CanvasCore.isPrefabFile(f)) {
+					if (changed && CanvasCore.isCanvasFile(f)) {
 						CanvasUI.getCanvasScreenshotFile(f, true);
 					}
 				}

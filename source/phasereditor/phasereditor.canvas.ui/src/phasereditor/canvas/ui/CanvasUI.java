@@ -107,6 +107,7 @@ import phasereditor.project.core.ProjectCore;
  *
  */
 public class CanvasUI {
+	private static final int CANVAS_SCREENSHOT_SIZE = 340;
 	public static final String PLUGIN_ID = "phasereditor.canvas.ui";
 
 	public static void logError(Exception e) {
@@ -288,8 +289,8 @@ public class CanvasUI {
 						double h = b.getHeight();
 
 						double max = Math.max(w, h);
-						if (max > 128) {
-							f = 128 / max;
+						if (max > CANVAS_SCREENSHOT_SIZE) {
+							f = CANVAS_SCREENSHOT_SIZE / max;
 						}
 
 						params.setTransform(new Scale(f, f, x, y));

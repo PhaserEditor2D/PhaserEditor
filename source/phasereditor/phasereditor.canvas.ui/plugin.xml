@@ -1720,7 +1720,7 @@
    <extension
          point="phasereditor.project.core.buildParticipant">
       <participant
-            handler="phasereditor.canvas.ui.PrefabsIconProjectBuildParticipant"
+            handler="phasereditor.canvas.ui.CanvasScreenshotProjectBuildParticipant"
             id="phasereditor.canvas.ui.prefabsIconBuild"
             order="999">
       </participant>
@@ -1746,6 +1746,36 @@
             properties="canvasType"
             type="phasereditor.canvas.ui.editors.CanvasEditor">
       </propertyTester>
+   </extension>
+   <extension
+         point="org.eclipse.ltk.core.refactoring.deleteParticipants">
+      <deleteParticipant
+            class="phasereditor.canvas.ui.refactoring.CanvasFileDeleteParticipant"
+            id="phasereditor.canvas.ui.canvasFileDeleteParticipant"
+            name="Delete Canvas">
+         <enablement>
+            <with
+                  variable="element">
+               <instanceof
+                     value="org.eclipse.core.resources.IFile">
+               </instanceof>
+            </with>
+         </enablement>
+      </deleteParticipant>
+   </extension>
+   <extension
+         point="org.eclipse.ltk.ui.refactoring.statusContextViewers">
+      <statusContextViewer
+            class="phasereditor.canvas.ui.refactoring.UsingPrefabStatusContextViewer"
+            id="phasereditor.canvas.ui.usingPrefabContextViewer">
+         <enablement>
+            <with
+                  variable="context">
+               <instanceof
+                     value="phasereditor.canvas.ui.refactoring.UsingPrefabRefactoringStatusContext">
+               </instanceof>
+            </with></enablement>
+      </statusContextViewer>
    </extension>
 
 </plugin>

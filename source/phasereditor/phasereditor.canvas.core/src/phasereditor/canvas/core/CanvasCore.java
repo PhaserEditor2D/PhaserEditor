@@ -213,33 +213,30 @@ public class CanvasCore {
 		return list;
 	}
 
-	public static void deletePrefab(Prefab prefab) {
-		IFile canvasFile = prefab.getFile();
-		if (canvasFile.exists()) {
-			CanvasModel model = new CanvasModel(canvasFile);
-			SourceLang lang;
-			try (InputStream contents = canvasFile.getContents()) {
-				model.read(new JSONObject(new JSONTokener(contents)));
-				lang = model.getSettings().getLang();
-			} catch (IOException | CoreException e) {
-				logError(e);
-				throw new RuntimeException(e);
-			}
+	public static List<IFile> getCanvasRelatedFiles(IFile canvasFile) {
+		List<IFile> result = new ArrayList<>();
 
-			try {
-				// delete the code file
-				IFile srcFile = canvasFile.getWorkspace().getRoot()
-						.getFile(canvasFile.getFullPath().removeFileExtension().addFileExtension(lang.getExtension()));
-				if (srcFile.exists()) {
-					srcFile.delete(false, null);
-				}
-
-				// delete the canvas file
-				canvasFile.delete(false, null);
-			} catch (CoreException e) {
-				logError(e);
-			}
+		CanvasModel model = new CanvasModel(canvasFile);
+		SourceLang lang;
+		try (InputStream contents = canvasFile.getContents()) {
+			model.read(new JSONObject(new JSONTokener(contents)));
+			lang = model.getSettings().getLang();
+		} catch (IOException | CoreException e) {
+			logError(e);
+			throw new RuntimeException(e);
 		}
+
+		// add the code file
+		IFile srcFile = canvasFile.getWorkspace().getRoot()
+				.getFile(canvasFile.getFullPath().removeFileExtension().addFileExtension(lang.getExtension()));
+		if (srcFile.exists()) {
+			result.add(srcFile);
+		}
+
+		// add the canvas file
+		result.add(canvasFile);
+
+		return result;
 	}
 
 }
