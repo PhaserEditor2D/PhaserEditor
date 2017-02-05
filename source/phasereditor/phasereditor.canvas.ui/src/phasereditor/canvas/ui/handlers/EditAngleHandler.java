@@ -8,7 +8,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.canvas.core.BaseObjectModel;
-import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
