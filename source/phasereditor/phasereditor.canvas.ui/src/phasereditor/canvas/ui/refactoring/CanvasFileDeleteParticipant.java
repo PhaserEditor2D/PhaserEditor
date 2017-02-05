@@ -73,7 +73,7 @@ public class CanvasFileDeleteParticipant extends DeleteParticipant {
 			status.addWarning("The canvas file '" + filepath + "' has " + refs.size() + " prefab '" + _file.getName()
 					+ "' instances.", new UsingPrefabRefactoringStatusContext(file, refs));
 		}
-
+		
 		return status;
 	}
 

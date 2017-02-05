@@ -75,10 +75,22 @@
             allPopups="false"
             locationURI="popup:phasereditor.assetpack.views.assetExplorer?after=additions">
          <command
+               commandId="phasereditor.assetpack.ui.explorer.newview"
+               icon="platform:/plugin/phasereditor.ui/icons/new.png"
+               style="push">
+         </command>
+         <separator
+               name="phasereditor.assetexplorer.ui.separator2"
+               visible="true">
+         </separator>
+         <command
                commandId="phasereditor.assetpack.shownInEditor"
                icon="platform:/plugin/org.eclipse.ui/icons/full/etool16/editor_area.png"
                style="push"
                tooltip="Edit selected object.">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
          </command>
          <command
                commandId="phasereditor.ui.commands.showInPreview"
@@ -86,10 +98,16 @@
                style="push"
                tooltip="Show the selection in the Preview window.">
          </command>
+         <separator
+               name="phasereditor.assetexplorer.ui.separator1"
+               visible="true">
+         </separator>
          <command
-               commandId="phasereditor.assetpack.ui.explorer.newview"
-               icon="platform:/plugin/phasereditor.ui/icons/new.png"
+               commandId="org.eclipse.ui.edit.delete"
                style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
          </command>
          <!--
          <command
