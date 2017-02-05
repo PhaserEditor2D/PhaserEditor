@@ -23,6 +23,7 @@ import phasereditor.canvas.ui.CanvasUI;
 public class CanvasFileDeleteParticipant extends DeleteParticipant {
 
 	private IFile _file;
+	private boolean _isPrefab;
 
 	public CanvasFileDeleteParticipant() {
 	}
@@ -35,11 +36,13 @@ public class CanvasFileDeleteParticipant extends DeleteParticipant {
 
 		IFile file = (IFile) element;
 
-		if (!CanvasCore.isPrefabFile(file)) {
+		if (!CanvasCore.isCanvasFile(file)) {
 			return false;
 		}
 
 		_file = file;
+
+		_isPrefab = CanvasCore.isPrefabFile(file);
 
 		return true;
 	}
@@ -52,9 +55,14 @@ public class CanvasFileDeleteParticipant extends DeleteParticipant {
 	@Override
 	public RefactoringStatus checkConditions(IProgressMonitor pm, CheckConditionsContext context)
 			throws OperationCanceledException {
-		Map<IFile, List<PrefabReference>> refMap = CanvasUI.findPrefabReferences(new Prefab(_file));
 
 		RefactoringStatus status = new RefactoringStatus();
+
+		if (!_isPrefab) {
+			return status;
+		}
+
+		Map<IFile, List<PrefabReference>> refMap = CanvasUI.findPrefabReferences(new Prefab(_file));
 
 		for (Entry<IFile, List<PrefabReference>> entry : refMap.entrySet()) {
 			IFile file = entry.getKey();
