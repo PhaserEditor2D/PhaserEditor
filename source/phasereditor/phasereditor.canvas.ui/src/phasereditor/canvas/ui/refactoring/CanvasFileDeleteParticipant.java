@@ -9,10 +9,11 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.ltk.core.refactoring.Change;
-import org.eclipse.ltk.core.refactoring.NullChange;
+import org.eclipse.ltk.core.refactoring.CompositeChange;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.core.refactoring.participants.CheckConditionsContext;
 import org.eclipse.ltk.core.refactoring.participants.DeleteParticipant;
+import org.eclipse.ltk.core.refactoring.resource.DeleteResourceChange;
 
 import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.core.CanvasCore.PrefabReference;
@@ -70,9 +71,25 @@ public class CanvasFileDeleteParticipant extends DeleteParticipant {
 
 	@Override
 	public Change createChange(IProgressMonitor pm) throws CoreException, OperationCanceledException {
-		// here we should add a delete-resource-change of the derived JS file.
-		// return new DeleteResourceChange(_file.getFullPath(), false);
-		return new NullChange();
+
+		List<IFile> files = CanvasCore.getCanvasDereivedFiles(_file);
+
+		if (files.isEmpty()) {
+			return null;
+		}
+
+		if (files.size() == 1) {
+			return new DeleteResourceChange(files.get(0).getFullPath(), true);
+		}
+
+		CompositeChange change = new CompositeChange(
+				"Delete " + files.size() + " files derived from " + _file.getFullPath().toPortableString());
+
+		for (IFile file : files) {
+			change.add(new DeleteResourceChange(file.getFullPath(), true));
+		}
+
+		return change;
 	}
 
 }

@@ -213,7 +213,7 @@ public class CanvasCore {
 		return list;
 	}
 
-	public static List<IFile> getCanvasRelatedFiles(IFile canvasFile) {
+	public static List<IFile> getCanvasDereivedFiles(IFile canvasFile) {
 		List<IFile> result = new ArrayList<>();
 
 		CanvasModel model = new CanvasModel(canvasFile);
@@ -232,9 +232,6 @@ public class CanvasCore {
 		if (srcFile.exists()) {
 			result.add(srcFile);
 		}
-
-		// add the canvas file
-		result.add(canvasFile);
 
 		return result;
 	}
