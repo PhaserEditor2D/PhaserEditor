@@ -34,7 +34,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -107,7 +109,7 @@ import phasereditor.project.core.ProjectCore;
  *
  */
 public class CanvasUI {
-	private static final int CANVAS_SCREENSHOT_SIZE = 340;
+	private static final int CANVAS_SCREENSHOT_SIZE = 256;
 	public static final String PLUGIN_ID = "phasereditor.canvas.ui";
 
 	public static void logError(Exception e) {
@@ -117,7 +119,7 @@ public class CanvasUI {
 	private static final QualifiedName SNAPSHOT_FILENAME_KEY = new QualifiedName("phasereditor.canvas.core",
 			"snapshot-file");
 
-	public static List<PrefabReference> findPrefabReferences(Prefab prefab) {
+	public static Map<IFile, List<PrefabReference>> findPrefabReferences(Prefab prefab) {
 
 		IProject project = prefab.getFile().getProject();
 		IContainer webFolder = ProjectCore.getWebContentFolder(project);
@@ -145,7 +147,15 @@ public class CanvasUI {
 			throw new RuntimeException(e);
 		}
 
-		return refs;
+		Map<IFile, List<PrefabReference>> map = new LinkedHashMap<>();
+
+		for (PrefabReference ref : refs) {
+			IFile file = ref.getFile();
+			map.putIfAbsent(file, new ArrayList<>());
+			map.get(file).add(ref);
+		}
+
+		return map;
 	}
 
 	public static List<PrefabReference> findPrefabReferencesInEditorsContent(Prefab prefab) {
@@ -250,9 +260,11 @@ public class CanvasUI {
 		}
 	}
 
-	private static void makeCanvasScreenshot(IFile file, Path writeTo) {
-		CanvasModel model = new CanvasModel(file);
+	public static javafx.scene.image.Image makeCanvasScreenshot_FXImage(IFile file, int maxSize) {
+		javafx.scene.image.Image[] result = new javafx.scene.image.Image[1];
+
 		try (InputStream contents = file.getContents()) {
+			CanvasModel model = new CanvasModel(file);
 			model.read(new JSONObject(new JSONTokener(contents)));
 			GroupControl worldControl = new GroupControl(null, model.getWorld());
 			GroupNode node = worldControl.getNode();
@@ -263,7 +275,6 @@ public class CanvasUI {
 
 				@Override
 				public void run() {
-					long t = currentTimeMillis();
 
 					try {
 						Method m = Scene.class.getDeclaredMethod("doCSSLayoutSyncForSnapshot", Node.class);
@@ -289,8 +300,8 @@ public class CanvasUI {
 						double h = b.getHeight();
 
 						double max = Math.max(w, h);
-						if (max > CANVAS_SCREENSHOT_SIZE) {
-							f = CANVAS_SCREENSHOT_SIZE / max;
+						if (max > maxSize) {
+							f = maxSize / max;
 						}
 
 						params.setTransform(new Scale(f, f, x, y));
@@ -298,23 +309,31 @@ public class CanvasUI {
 					}
 
 					WritableImage image = node.snapshot(params, null);
-
-					BufferedImage buff = SwingFXUtils.fromFXImage(image, null);
-
-					try {
-						ImageIO.write(buff, "png", writeTo.toFile());
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-
-					out.println("Ready canvas snapshot src:" + file + " --> dst:" + writeTo + " "
-							+ (currentTimeMillis() - t) + "ms");
+					result[0] = image;
 				}
 			});
-
 		} catch (IOException | CoreException e) {
 			e.printStackTrace();
 		}
+
+		return result[0];
+	}
+
+	public static void makeCanvasScreenshot(IFile file, Path writeTo) {
+		long t = currentTimeMillis();
+
+		javafx.scene.image.Image fxImage = makeCanvasScreenshot_FXImage(file, CANVAS_SCREENSHOT_SIZE);
+
+		BufferedImage buff = SwingFXUtils.fromFXImage(fxImage, null);
+
+		try {
+			ImageIO.write(buff, "png", writeTo.toFile());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		out.println(
+				"Ready canvas snapshot src:" + file + " --> dst:" + writeTo + " " + (currentTimeMillis() - t) + "ms");
 	}
 
 	public static void installCanvasTooltips(TreeViewer viewer) {

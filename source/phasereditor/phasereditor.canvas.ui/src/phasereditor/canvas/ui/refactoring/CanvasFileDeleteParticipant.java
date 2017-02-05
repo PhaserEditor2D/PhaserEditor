@@ -1,6 +1,8 @@
 package phasereditor.canvas.ui.refactoring;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -49,14 +51,18 @@ public class CanvasFileDeleteParticipant extends DeleteParticipant {
 	@Override
 	public RefactoringStatus checkConditions(IProgressMonitor pm, CheckConditionsContext context)
 			throws OperationCanceledException {
-		List<PrefabReference> refs = CanvasUI.findPrefabReferences(new Prefab(_file));
+		Map<IFile, List<PrefabReference>> refMap = CanvasUI.findPrefabReferences(new Prefab(_file));
 
 		RefactoringStatus status = new RefactoringStatus();
 
-		for (PrefabReference ref : refs) {
-			status.addWarning("The canvas file '" + ref.getFile().getProjectRelativePath().toString()
-					+ "' is using the prefab '" + _file.getName() + "'",
-					new UsingPrefabRefactoringStatusContext(ref));
+		for (Entry<IFile, List<PrefabReference>> entry : refMap.entrySet()) {
+			IFile file = entry.getKey();
+			List<PrefabReference> refs = entry.getValue();
+
+			String filepath = file.getProjectRelativePath().toString();
+
+			status.addWarning("The canvas file '" + filepath + "' has " + refs.size() + " prefab '" + _file.getName()
+					+ "' instances.", new UsingPrefabRefactoringStatusContext(file, refs));
 		}
 
 		return status;

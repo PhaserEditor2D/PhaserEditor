@@ -29,7 +29,7 @@ public class UsingPrefabStatusContextViewer implements IStatusContextViewer {
 	@Override
 	public void setInput(RefactoringStatusContext input) {
 		UsingPrefabRefactoringStatusContext context = (UsingPrefabRefactoringStatusContext) input;
-		IFile clientFile = context.getCorrespondingElement().getFile();
+		IFile clientFile = context.getCorrespondingElement();
 		Path screenshot = CanvasUI.getCanvasScreenshotFile(clientFile, true);
 		_control.setImageFile(screenshot.toFile().getAbsolutePath());
 	}

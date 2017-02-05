@@ -70,7 +70,7 @@ public class CanvasScreenshotProjectBuildParticipant implements IProjectBuildPar
 			webFolder.accept(r -> {
 				if (r instanceof IFile) {
 					IFile f = (IFile) r;
-					if (CanvasCore.isPrefabFile(f)) {
+					if (CanvasCore.isCanvasFile(f)) {
 						CanvasUI.clearCanvasScreenshot(f);
 						CanvasUI.getCanvasScreenshotFile(f, true);
 					}

@@ -21,21 +21,29 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.refactoring;
 
+import java.util.List;
+
+import org.eclipse.core.resources.IFile;
 import org.eclipse.ltk.core.refactoring.RefactoringStatusContext;
 
 import phasereditor.canvas.core.CanvasCore.PrefabReference;
 
 class UsingPrefabRefactoringStatusContext extends RefactoringStatusContext {
 
-	private PrefabReference _prefabRef;
+	private IFile _file;
+	private List<PrefabReference> _refs;
 
-	public UsingPrefabRefactoringStatusContext(PrefabReference prefabRef) {
-		super();
-		_prefabRef = prefabRef;
+	public UsingPrefabRefactoringStatusContext(IFile file, List<PrefabReference> refs) {
+		_file = file;
+		_refs = refs;
 	}
 
 	@Override
-	public PrefabReference getCorrespondingElement() {
-		return _prefabRef;
+	public IFile getCorrespondingElement() {
+		return _file;
+	}
+
+	public List<PrefabReference> getReferences() {
+		return _refs;
 	}
 }

@@ -188,7 +188,7 @@ public class CanvasCore {
 			return _file;
 		}
 	}
-
+	
 	public static List<PrefabReference> findPrefabReferencesInFileContent(Prefab prefab, IFile file) {
 		CanvasModel canvasModel = new CanvasModel(file);
 		try (InputStream contents = file.getContents()) {
