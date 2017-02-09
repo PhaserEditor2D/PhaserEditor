@@ -92,6 +92,7 @@ import phasereditor.assetpack.ui.widgets.ImagePreviewComposite;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.core.CanvasCore.PrefabReference;
+import phasereditor.canvas.core.CanvasFile;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.Prefab;
 import phasereditor.canvas.ui.editors.CanvasEditor;
@@ -337,19 +338,19 @@ public class CanvasUI {
 	}
 
 	public static void installCanvasTooltips(TreeViewer viewer) {
-		Tooltips.install(viewer.getControl(), new TreeViewerInformationProvider(viewer), getPrefabTooltipsCreators(),
+		Tooltips.install(viewer.getControl(), new TreeViewerInformationProvider(viewer), getCanvasTooltipsCreators(),
 				false);
 	}
 
 	public static void installCanvasTooltips(TableViewer viewer) {
-		Tooltips.install(viewer.getControl(), new TableViewerInformationProvider(viewer), getPrefabTooltipsCreators(),
+		Tooltips.install(viewer.getControl(), new TableViewerInformationProvider(viewer), getCanvasTooltipsCreators(),
 				false);
 	}
 
 	/**
 	 * @return
 	 */
-	private static List<ICustomInformationControlCreator> getPrefabTooltipsCreators() {
+	private static List<ICustomInformationControlCreator> getCanvasTooltipsCreators() {
 		List<ICustomInformationControlCreator> creators = new ArrayList<>();
 
 		creators.add(new ICustomInformationControlCreator() {
@@ -367,8 +368,8 @@ public class CanvasUI {
 
 					@Override
 					public File getFileToDisplay(Object model) {
-						if (model instanceof Prefab) {
-							IFile file = ((Prefab) model).getFile();
+						if (model instanceof CanvasFile) {
+							IFile file = ((CanvasFile) model).getFile();
 							Path path = CanvasUI.getCanvasScreenshotFile(file, false);
 							return path.toFile();
 						}
@@ -380,7 +381,7 @@ public class CanvasUI {
 
 			@Override
 			public boolean isSupported(Object info) {
-				if (info instanceof Prefab) {
+				if (info instanceof CanvasFile) {
 					return true;
 				}
 				return false;
@@ -389,8 +390,8 @@ public class CanvasUI {
 		return creators;
 	}
 
-	public static Image getPregabIcon(Prefab prefab, AssetLabelProvider labelProvider) {
-		IFile file = prefab.getFile();
+	public static Image getCanvasFileIcon(CanvasFile canvasFile, AssetLabelProvider labelProvider) {
+		IFile file = canvasFile.getFile();
 		Path imgfile = CanvasUI.getCanvasScreenshotFile(file, false);
 		return labelProvider.getIcon(imgfile.toAbsolutePath().toString());
 	}

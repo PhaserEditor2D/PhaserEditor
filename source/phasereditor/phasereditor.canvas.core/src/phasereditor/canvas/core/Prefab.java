@@ -33,25 +33,12 @@ import org.json.JSONTokener;
  * @author arian
  *
  */
-public class Prefab {
+public class Prefab extends CanvasFile{
 
 	public static final String TYPE_NAME = "prefab";
 
-	private IFile _file;
-	private String _className;
-
 	public Prefab(IFile file) {
-		super();
-		_file = file;
-
-		{
-			String name = _file.getName();
-			_className = name.substring(0, name.length() - _file.getFileExtension().length() - 1);
-		}
-	}
-
-	public IFile getFile() {
-		return _file;
+		super(file);
 	}
 
 	/**
@@ -72,8 +59,9 @@ public class Prefab {
 	 * @return
 	 */
 	public JSONObject newInstance(JSONObject initInfo) {
-		CanvasModel model = new CanvasModel(_file);
-		try (InputStream contents = _file.getContents()) {
+		IFile file = getFile();
+		CanvasModel model = new CanvasModel(file);
+		try (InputStream contents = file.getContents()) {
 			JSONObject data = new JSONObject(new JSONTokener(contents));
 
 			model.read(data);
@@ -113,39 +101,4 @@ public class Prefab {
 		}
 		objModel.readInfo(prefabInfo);
 	}
-
-	public String getClassName() {
-		return _className;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((_file == null) ? 0 : _file.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Prefab other = (Prefab) obj;
-		if (_file == null) {
-			if (other._file != null)
-				return false;
-		} else if (!_file.equals(other._file))
-			return false;
-		return true;
-	}
-	
-	@Override
-	public String toString() {
-		return "Prefab:" + _file + "@" + hashCode();
-	}
-
 }

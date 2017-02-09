@@ -51,7 +51,8 @@ import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel.Tilemap;
 import phasereditor.assetpack.ui.AssetsContentProvider;
 import phasereditor.canvas.core.CanvasCore;
-import phasereditor.canvas.core.Prefab;
+import phasereditor.canvas.core.CanvasFile;
+import phasereditor.canvas.core.CanvasType;
 
 class AssetExplorerContentProvider extends AssetsContentProvider {
 
@@ -118,7 +119,9 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 			List<Object> list = new ArrayList<>();
 
 			if (activeProjet != null) {
-				list.add(AssetExplorer.PREFABS_ROOT);
+				list.add(CanvasType.SPRITE);
+				list.add(CanvasType.GROUP);
+				list.add(CanvasType.STATE);
 			}
 
 			for (IProject project : workspace.getRoot().getProjects()) {
@@ -135,23 +138,20 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 			return list.toArray();
 		}
 
-		if (parent == AssetExplorer.PREFABS_ROOT) {
-			if (activeProjet != null) {
-				List<Prefab> prefabs = CanvasCore.getPrefabs(activeProjet);
-
-				// sort by last modified go first
-				// prefabs.sort( (a, b) -> {
-				// long a1 = a.getFile().getLocation().toFile().lastModified();
-				// long b1 = b.getFile().getLocation().toFile().lastModified();
-				// return -Long.compare(a1, b1);
-				// });
-
-				// sort by name
-				prefabs.sort((a, b) -> {
-					return a.getFile().getName().compareTo(b.getFile().getName());
+		if (activeProjet != null) {
+			if (parent instanceof CanvasType) {
+				List<CanvasFile> list = new ArrayList<>();
+				CanvasCore.discoverCanvasFiles(activeProjet, (canvas, type) -> {
+					if (type == parent) {
+						list.add(canvas);
+					}
 				});
 
-				return prefabs.toArray();
+				list.sort((a, b) -> {
+					return a.getFile().getName().compareTo(b.getFile().getName());
+				});
+				
+				return list.toArray();
 			}
 		}
 

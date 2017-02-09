@@ -26,7 +26,8 @@ import org.eclipse.swt.graphics.Image;
 
 import phasereditor.assetexplorer.ui.views.AssetExplorer.Container;
 import phasereditor.assetpack.ui.AssetLabelProvider;
-import phasereditor.canvas.core.Prefab;
+import phasereditor.canvas.core.CanvasFile;
+import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
@@ -42,8 +43,22 @@ class AssetExplorerLabelProvider extends LabelProvider {
 			return ((Container) element).name;
 		}
 
-		if (element instanceof Prefab) {
-			return ((Prefab) element).getFile().getName();
+		if (element instanceof CanvasFile) {
+			return ((CanvasFile) element).getFile().getName();
+		}
+
+		if (element instanceof CanvasType) {
+			switch ((CanvasType) element) {
+			case SPRITE:
+				return "Sprites";
+			case GROUP:
+				return "Groups";
+			case STATE:
+				return "States";
+
+			default:
+				break;
+			}
 		}
 
 		return AssetLabelProvider.GLOBAL_16.getText(element);
@@ -51,12 +66,12 @@ class AssetExplorerLabelProvider extends LabelProvider {
 
 	@Override
 	public Image getImage(Object element) {
-		if (element == AssetExplorer.PREFABS_ROOT) {
-			return EditorSharedImages.getImage(IEditorSharedImages.IMG_BRICKS);
+		if (element instanceof CanvasType) {
+			return EditorSharedImages.getImage(IEditorSharedImages.IMG_CANVAS);
 		}
 
-		if (element instanceof Prefab) {
-			return CanvasUI.getPregabIcon((Prefab) element, AssetLabelProvider.GLOBAL_16);
+		if (element instanceof CanvasFile) {
+			return CanvasUI.getCanvasFileIcon((CanvasFile) element, AssetLabelProvider.GLOBAL_16);
 		}
 
 		return AssetLabelProvider.GLOBAL_16.getImage(element);

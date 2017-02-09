@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -164,6 +165,35 @@ public class CanvasCore {
 		return list;
 	}
 
+	public static void discoverCanvasFiles(IProject project, BiConsumer<CanvasFile, CanvasType> visitor) {
+		// TODO: maybe we should do some sort of caching, but for now we go with
+		// the brute-force solution!
+
+		try {
+			IContainer webContent = ProjectCore.getWebContentFolder(project);
+
+			webContent.accept(r -> {
+				if (r instanceof IFile) {
+					IFile file = (IFile) r;
+					CanvasType type = getCanvasType(file);
+					if (type != null) {
+						CanvasFile cfile;
+						if (type == CanvasType.SPRITE || type == CanvasType.GROUP) {
+							cfile = new Prefab(file);
+						} else {
+							cfile = new CanvasFile(file);
+						}
+						visitor.accept(cfile, type);
+					}
+				}
+				return true;
+			});
+		} catch (CoreException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static class PrefabReference {
 		private IFile _file;
 		private String _objectName;
@@ -188,7 +218,7 @@ public class CanvasCore {
 			return _file;
 		}
 	}
-	
+
 	public static List<PrefabReference> findPrefabReferencesInFileContent(Prefab prefab, IFile file) {
 		CanvasModel canvasModel = new CanvasModel(file);
 		try (InputStream contents = file.getContents()) {

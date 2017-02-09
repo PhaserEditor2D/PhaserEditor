@@ -60,6 +60,7 @@ import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.ui.AssetPackUI;
+import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.Prefab;
 import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.ui.FilteredTree2;
@@ -74,7 +75,6 @@ public class AssetExplorer extends ViewPart {
 	// private AssetExplorerListLabelProvider _listLabelProvider;
 	// private AssetExplorerListContentProvider _listContentProvider;
 	static String ROOT = "root";
-	static String PREFABS_ROOT = "Prefabs";
 
 	static class Container {
 		public Object[] children;
@@ -274,7 +274,7 @@ public class AssetExplorer extends ViewPart {
 			} else if (obj instanceof AssetPackModel) {
 				AssetPackModel newPack = AssetPackCore.getAssetPackModel(((AssetPackModel) obj).getFile(), false);
 				toExpand.add(newPack);
-			} else if (obj == PREFABS_ROOT) {
+			} else if (obj instanceof CanvasType) {
 				toExpand.add(obj);
 			}
 		}

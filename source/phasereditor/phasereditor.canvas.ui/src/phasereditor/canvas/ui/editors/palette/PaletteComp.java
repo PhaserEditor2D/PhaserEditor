@@ -132,7 +132,7 @@ public class PaletteComp extends Composite {
 			@Override
 			public Image getImage(Object element) {
 				if (element instanceof Prefab) {
-					return CanvasUI.getPregabIcon((Prefab) element, AssetLabelProvider.GLOBAL_48);
+					return CanvasUI.getCanvasFileIcon((Prefab) element, AssetLabelProvider.GLOBAL_48);
 				}
 				return AssetLabelProvider.GLOBAL_48.getImage(element);
 			}
