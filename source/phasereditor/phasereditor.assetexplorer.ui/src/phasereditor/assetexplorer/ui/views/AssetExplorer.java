@@ -60,8 +60,8 @@ import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.ui.AssetPackUI;
+import phasereditor.canvas.core.CanvasFile;
 import phasereditor.canvas.core.CanvasType;
-import phasereditor.canvas.core.Prefab;
 import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.ui.FilteredTree2;
 import phasereditor.ui.PatternFilter2;
@@ -120,9 +120,9 @@ public class AssetExplorer extends ViewPart {
 	protected void showSelectionInEditor() {
 		Object elem = ((IStructuredSelection) _viewer.getSelection()).getFirstElement();
 
-		if (elem instanceof Prefab) {
+		if (elem instanceof CanvasFile) {
 			try {
-				IDE.openEditor(getSite().getPage(), ((Prefab) elem).getFile());
+				IDE.openEditor(getSite().getPage(), ((CanvasFile) elem).getFile());
 			} catch (PartInitException e) {
 				throw new RuntimeException(e);
 			}

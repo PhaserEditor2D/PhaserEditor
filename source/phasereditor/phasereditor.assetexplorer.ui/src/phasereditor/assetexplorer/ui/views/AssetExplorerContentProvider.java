@@ -150,7 +150,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 				list.sort((a, b) -> {
 					return a.getFile().getName().compareTo(b.getFile().getName());
 				});
-				
+
 				return list.toArray();
 			}
 		}

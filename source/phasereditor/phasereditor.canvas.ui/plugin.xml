@@ -803,7 +803,7 @@
          point="org.eclipse.ui.handlers">
          
       <handler
-            class="phasereditor.canvas.ui.handlers.DeletePrefabHandler"
+            class="phasereditor.canvas.ui.handlers.DeleteCanvasHandler"
             commandId="org.eclipse.ui.edit.delete">
          <activeWhen>
             <with
@@ -812,7 +812,7 @@
                      ifEmpty="false"
                      operator="and">
                   <instanceof
-                        value="phasereditor.canvas.core.Prefab">
+                        value="phasereditor.canvas.core.CanvasFile">
                   </instanceof>
                </iterate>
             </with>

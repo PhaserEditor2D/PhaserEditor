@@ -12,10 +12,10 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.internal.ide.actions.LTKLauncher;
 
-import phasereditor.canvas.core.Prefab;
+import phasereditor.canvas.core.CanvasFile;
 
 @SuppressWarnings("restriction")
-public class DeletePrefabHandler extends AbstractHandler {
+public class DeleteCanvasHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -29,8 +29,8 @@ public class DeletePrefabHandler extends AbstractHandler {
 		// refactoring participant.
 		
 		for (Object obj : array) {
-			Prefab prefab = (Prefab) obj;
-			toDelete.add(prefab.getFile());
+			CanvasFile cfile = (CanvasFile) obj;
+			toDelete.add(cfile.getFile());
 		}
 
 		LTKLauncher.openDeleteWizard(new StructuredSelection(toDelete));
