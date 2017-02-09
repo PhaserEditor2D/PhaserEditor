@@ -138,6 +138,19 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 		if (parent == AssetExplorer.PREFABS_ROOT) {
 			if (activeProjet != null) {
 				List<Prefab> prefabs = CanvasCore.getPrefabs(activeProjet);
+
+				// sort by last modified go first
+				// prefabs.sort( (a, b) -> {
+				// long a1 = a.getFile().getLocation().toFile().lastModified();
+				// long b1 = b.getFile().getLocation().toFile().lastModified();
+				// return -Long.compare(a1, b1);
+				// });
+
+				// sort by name
+				prefabs.sort((a, b) -> {
+					return a.getFile().getName().compareTo(b.getFile().getName());
+				});
+
 				return prefabs.toArray();
 			}
 		}

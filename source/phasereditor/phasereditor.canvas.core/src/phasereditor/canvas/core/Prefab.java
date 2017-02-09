@@ -142,5 +142,10 @@ public class Prefab {
 			return false;
 		return true;
 	}
+	
+	@Override
+	public String toString() {
+		return "Prefab:" + _file + "@" + hashCode();
+	}
 
 }
