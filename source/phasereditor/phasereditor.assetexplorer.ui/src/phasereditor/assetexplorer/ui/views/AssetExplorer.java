@@ -24,6 +24,7 @@ package phasereditor.assetexplorer.ui.views;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.commands.operations.IUndoContext;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.help.HelpSystem;
 import org.eclipse.help.IContext;
@@ -46,10 +47,15 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.ide.IDE;
+import org.eclipse.ui.ide.undo.WorkspaceUndoUtil;
+import org.eclipse.ui.operations.RedoActionHandler;
+import org.eclipse.ui.operations.UndoActionHandler;
 import org.eclipse.ui.part.ViewPart;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -187,9 +193,17 @@ public class AssetExplorer extends ViewPart {
 		}
 
 		// tooltips
+
 		AssetPackUI.installAssetTooltips(_viewer);
 		CanvasUI.installCanvasTooltips(_viewer);
 
+		// undo context
+
+		IUndoContext undoContext = WorkspaceUndoUtil.getWorkspaceUndoContext();
+
+		IActionBars actionBars = getViewSite().getActionBars();
+		actionBars.setGlobalActionHandler(ActionFactory.UNDO.getId(), new UndoActionHandler(getSite(), undoContext));
+		actionBars.setGlobalActionHandler(ActionFactory.REDO.getId(), new RedoActionHandler(getSite(), undoContext));
 	}
 
 	@Override
