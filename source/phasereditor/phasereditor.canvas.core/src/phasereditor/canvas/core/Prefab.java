@@ -37,8 +37,12 @@ public class Prefab extends CanvasFile{
 
 	public static final String TYPE_NAME = "prefab";
 
+	public Prefab(IFile file, CanvasType type) {
+		super(file, type);
+	}
+
 	public Prefab(IFile file) {
-		super(file);
+		super(file, null);
 	}
 
 	/**

@@ -21,15 +21,28 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
+import org.eclipse.core.resources.IFile;
+
+import phasereditor.project.core.FileDataCache;
+
 /**
  * @author arian
- *
  */
-public enum CanvasType {
-	STATE, GROUP, SPRITE;
-	
-	public boolean isPrefab() {
-		return this != STATE;
+public class CanvasFileDataCache extends FileDataCache<CanvasFile> {
+
+	@Override
+	public CanvasFile createData(IFile file) {
+		CanvasType type = CanvasCore.getCanvasType(file);
+
+		if (type == null) {
+			return null;
+		}
+
+		if (type.isPrefab()) {
+			return new Prefab(file, type);
+		}
+
+		return new CanvasFile(file, type);
 	}
-	
+
 }

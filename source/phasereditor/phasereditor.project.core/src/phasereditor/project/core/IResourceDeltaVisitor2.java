@@ -19,69 +19,55 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.core;
+package phasereditor.project.core;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.IResourceDeltaVisitor;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 
 /**
  * @author arian
  *
  */
-public class CanvasFile {
-	private IFile _file;
-	private String _className;
-	private CanvasType _type;
+public interface IResourceDeltaVisitor2 extends IResourceDeltaVisitor {
 
-	public CanvasFile(IFile file, CanvasType type) {
-		super();
-		_file = file;
-		_type = type;
+	@Override
+	default boolean visit(IResourceDelta delta) throws CoreException {
+		IResource resource = delta.getResource();
 
-		{
-			String name = _file.getName();
-			_className = name.substring(0, name.length() - _file.getFileExtension().length() - 1);
+		if (resource instanceof IFile) {
+			IFile file = (IFile) resource;
+			int kind = delta.getKind();
+
+			switch (kind) {
+			case IResourceDelta.ADDED:
+				fileAdded(file);
+				break;
+			case IResourceDelta.MOVED_TO:
+				fileMovedTo(file, delta.getMovedFromPath(), delta.getMovedToPath());
+				break;
+			case IResourceDelta.REMOVED:
+				fileRemoved(file);
+				break;
+			case IResourceDelta.CHANGED:
+				fileChanged(file);
+				break;
+			default:
+				break;
+			}
 		}
-	}
 
-	public IFile getFile() {
-		return _file;
-	}
-
-	public String getClassName() {
-		return _className;
-	}
-	
-	public CanvasType getType() {
-		return _type;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((_file == null) ? 0 : _file.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		CanvasFile other = (CanvasFile) obj;
-		if (_file == null) {
-			if (other._file != null)
-				return false;
-		} else if (!_file.equals(other._file))
-			return false;
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return getClass().getSimpleName() + ":" + _file + "@" + hashCode();
-	}
+	public void fileAdded(IFile file);
+
+	public void fileRemoved(IFile file);
+
+	public void fileMovedTo(IFile file, IPath movedFromPath, IPath movedToPath);
+
+	public void fileChanged(IFile file);
 }

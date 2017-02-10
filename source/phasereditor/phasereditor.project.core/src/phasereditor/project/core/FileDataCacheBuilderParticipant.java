@@ -19,17 +19,47 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.core;
+package phasereditor.project.core;
+
+import java.util.Map;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.runtime.CoreException;
 
 /**
  * @author arian
  *
  */
-public enum CanvasType {
-	STATE, GROUP, SPRITE;
-	
-	public boolean isPrefab() {
-		return this != STATE;
+public abstract class FileDataCacheBuilderParticipant<TData> implements IProjectBuildParticipant {
+
+	public abstract FileDataCache<TData> getFileDataCache();
+
+	@Override
+	public void startupOnInitialize(IProject project, Map<String, Object> env) {
+		fullBuild(project, env);
 	}
-	
+
+	@Override
+	public void fullBuild(IProject project, Map<String, Object> env) {
+		try {
+			getFileDataCache().buildProject(project);
+		} catch (CoreException e) {
+			ProjectCore.logError(e);
+		}
+	}
+
+	@Override
+	public void clean(IProject project, Map<String, Object> env) {
+		getFileDataCache().clean(project);
+	}
+
+	@Override
+	public void build(IProject project, IResourceDelta delta, Map<String, Object> env) {
+		try {
+			getFileDataCache().buildDelta(project, delta);
+		} catch (CoreException e) {
+			ProjectCore.logError(e);
+		}
+	}
 }

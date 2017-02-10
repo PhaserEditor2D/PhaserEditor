@@ -21,15 +21,17 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
+import phasereditor.project.core.FileDataCache;
+import phasereditor.project.core.FileDataCacheBuilderParticipant;
+
 /**
  * @author arian
  *
  */
-public enum CanvasType {
-	STATE, GROUP, SPRITE;
-	
-	public boolean isPrefab() {
-		return this != STATE;
+public class CanvasCacheBuilderParticipant extends FileDataCacheBuilderParticipant<CanvasFile> {
+
+	@Override
+	public FileDataCache<CanvasFile> getFileDataCache() {
+		return CanvasCore.getCanvasFileCache();
 	}
-	
 }

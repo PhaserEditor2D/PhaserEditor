@@ -17,13 +17,14 @@ import org.eclipse.ltk.core.refactoring.resource.DeleteResourceChange;
 
 import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.core.CanvasCore.PrefabReference;
+import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.Prefab;
 import phasereditor.canvas.ui.CanvasUI;
 
 public class CanvasFileDeleteParticipant extends DeleteParticipant {
 
 	private IFile _file;
-	private boolean _isPrefab;
+	private CanvasType _canvasType;
 
 	public CanvasFileDeleteParticipant() {
 	}
@@ -42,7 +43,7 @@ public class CanvasFileDeleteParticipant extends DeleteParticipant {
 
 		_file = file;
 
-		_isPrefab = CanvasCore.isPrefabFile(file);
+		_canvasType = CanvasCore.getCanvasType(file);
 
 		return true;
 	}
@@ -58,11 +59,11 @@ public class CanvasFileDeleteParticipant extends DeleteParticipant {
 
 		RefactoringStatus status = new RefactoringStatus();
 
-		if (!_isPrefab) {
+		if (!_canvasType.isPrefab()) {
 			return status;
 		}
 
-		Map<IFile, List<PrefabReference>> refMap = CanvasUI.findPrefabReferences(new Prefab(_file));
+		Map<IFile, List<PrefabReference>> refMap = CanvasUI.findPrefabReferences(new Prefab(_file, _canvasType));
 
 		for (Entry<IFile, List<PrefabReference>> entry : refMap.entrySet()) {
 			IFile file = entry.getKey();

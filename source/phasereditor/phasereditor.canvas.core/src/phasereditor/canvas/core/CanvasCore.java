@@ -51,6 +51,7 @@ public class CanvasCore {
 	public static final String SPRITE_CONTENT_TYPE_ID = "phasereditor.canvas.core.spriteContentType";
 	public static final String GROUP_CONTENT_TYPE_ID = "phasereditor.canvas.core.groupContentType";
 	public static final String STATE_CONTENT_TYPE_ID = "phasereditor.canvas.core.stateContentType";
+	private static final CanvasFileDataCache _fileDataCache = new CanvasFileDataCache();
 
 	public static void logError(Exception e) {
 		e.printStackTrace();
@@ -153,7 +154,7 @@ public class CanvasCore {
 					IFile file = (IFile) r;
 					CanvasType type = getCanvasType(file);
 					if (type == CanvasType.GROUP || type == CanvasType.SPRITE) {
-						list.add(new Prefab(file));
+						list.add(new Prefab(file, type));
 					}
 				}
 				return true;
@@ -179,9 +180,9 @@ public class CanvasCore {
 					if (type != null) {
 						CanvasFile cfile;
 						if (type == CanvasType.SPRITE || type == CanvasType.GROUP) {
-							cfile = new Prefab(file);
+							cfile = new Prefab(file, type);
 						} else {
-							cfile = new CanvasFile(file);
+							cfile = new CanvasFile(file, type);
 						}
 						visitor.accept(cfile, type);
 					}
@@ -264,6 +265,10 @@ public class CanvasCore {
 		}
 
 		return result;
+	}
+
+	public static CanvasFileDataCache getCanvasFileCache() {
+		return _fileDataCache;
 	}
 
 }
