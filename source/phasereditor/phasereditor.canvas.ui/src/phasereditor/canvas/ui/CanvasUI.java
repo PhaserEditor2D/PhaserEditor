@@ -336,9 +336,6 @@ public class CanvasUI {
 				false);
 	}
 
-	/**
-	 * @return
-	 */
 	private static List<ICustomInformationControlCreator> getCanvasTooltipsCreators() {
 		List<ICustomInformationControlCreator> creators = new ArrayList<>();
 
@@ -357,11 +354,19 @@ public class CanvasUI {
 
 					@Override
 					public File getFileToDisplay(Object model) {
+						IFile file = null;
 						if (model instanceof CanvasFile) {
-							IFile file = ((CanvasFile) model).getFile();
+							file = ((CanvasFile) model).getFile();
+						} else if (model instanceof IFile) {
+							CanvasFile data = CanvasCore.getCanvasFileCache().getFileData((IFile) model);
+							file = data.getFile();
+						}
+
+						if (file != null) {
 							Path path = CanvasUI.getCanvasScreenshotFile(file, false);
 							return path.toFile();
 						}
+
 						return super.getFileToDisplay(model);
 					}
 				};
@@ -372,6 +377,13 @@ public class CanvasUI {
 			public boolean isSupported(Object info) {
 				if (info instanceof CanvasFile) {
 					return true;
+				}
+
+				if (info instanceof IFile) {
+					CanvasFile data = CanvasCore.getCanvasFileCache().getFileData((IFile) info);
+					if (data != null) {
+						return true;
+					}
 				}
 				return false;
 			}

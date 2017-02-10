@@ -143,7 +143,7 @@ public abstract class FileDataCache<TData> {
 			return null;
 		}
 
-		TData data = map.get(file);
+		TData data = map.get(file.getFullPath());
 
 		return data;
 	}

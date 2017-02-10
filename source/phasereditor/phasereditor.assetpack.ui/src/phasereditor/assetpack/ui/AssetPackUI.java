@@ -41,19 +41,12 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IPartListener;
-import org.eclipse.ui.IViewReference;
-import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListDialog;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
-import org.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.wb.swt.SWTResourceManager;
@@ -404,72 +397,6 @@ public class AssetPackUI {
 			i++;
 		}
 		return list;
-	}
-
-	static void registerProjectExplorerTooltips() {
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					Thread.sleep(1_000);
-				} catch (InterruptedException e) {
-					//
-				}
-				Display.getDefault().asyncExec(new Runnable() {
-
-					@Override
-					public void run() {
-						registerProjectExplorerTooltips2();
-					}
-				});
-
-			}
-		}).start();
-	}
-
-	static void registerProjectExplorerTooltips2() {
-		IWorkbench workbench = PlatformUI.getWorkbench();
-		IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
-		IWorkbenchPage page = window.getActivePage();
-
-		for (IViewReference ref : page.getViewReferences()) {
-			if (ref.getId().endsWith(ProjectExplorer.VIEW_ID)) {
-				IWorkbenchPart part = ref.getPart(false);
-				if (part != null) {
-					installAssetTooltips(((ProjectExplorer) part).getCommonViewer());
-				}
-			}
-		}
-		page.addPartListener(new IPartListener() {
-
-			@Override
-			public void partOpened(IWorkbenchPart part) {
-				if (part instanceof ProjectExplorer) {
-					installAssetTooltips(((ProjectExplorer) part).getCommonViewer());
-				}
-			}
-
-			@Override
-			public void partDeactivated(IWorkbenchPart part) {
-				// nothing
-			}
-
-			@Override
-			public void partClosed(IWorkbenchPart part) {
-				// nothing
-			}
-
-			@Override
-			public void partBroughtToTop(IWorkbenchPart part) {
-				// nothing
-			}
-
-			@Override
-			public void partActivated(IWorkbenchPart part) {
-				// nothing
-			}
-		});
 	}
 
 	public static void installAssetTooltips(TreeViewer viewer) {

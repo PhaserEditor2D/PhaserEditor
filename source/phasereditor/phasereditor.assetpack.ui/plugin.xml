@@ -163,12 +163,6 @@
       </commonWizard>
    </extension>
    <extension
-         point="org.eclipse.ui.startup">
-      <startup
-            class="phasereditor.assetpack.ui.Startup">
-      </startup>
-   </extension>
-   <extension
          point="phasereditor.project.core.buildParticipant">
       <participant
             handler="phasereditor.assetpack.ui.AssetPartsBuildParticipant"
