@@ -24,7 +24,7 @@ import phasereditor.assetpack.core.AssetPackBuildParticipant;
 import phasereditor.assetpack.core.AssetPackCore.PackDelta;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.canvas.core.CanvasCore;
-import phasereditor.canvas.core.CanvasFilesBuildParticipant;
+import phasereditor.canvas.core.CanvasFilesValidationBuildParticipant;
 import phasereditor.canvas.core.MissingPrefabModel;
 import phasereditor.canvas.core.Prefab;
 import phasereditor.canvas.ui.editors.CanvasEditor;
@@ -33,7 +33,7 @@ import phasereditor.project.core.IProjectBuildParticipant;
 
 /**
  * Build participant to rebuild the Canvas editors. It does not emit problems.
- * Problems are created in the {@link CanvasFilesBuildParticipant}, when the
+ * Problems are created in the {@link CanvasFilesValidationBuildParticipant}, when the
  * editor is saved.
  * 
  * @author arian

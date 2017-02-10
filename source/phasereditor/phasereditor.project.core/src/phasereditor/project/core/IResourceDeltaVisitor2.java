@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.core;
 
+import static java.lang.System.out;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
@@ -40,21 +42,38 @@ public interface IResourceDeltaVisitor2 extends IResourceDeltaVisitor {
 
 		if (resource instanceof IFile) {
 			IFile file = (IFile) resource;
+
+			int flags = delta.getFlags();
+
 			int kind = delta.getKind();
 
 			switch (kind) {
 			case IResourceDelta.ADDED:
+				if ((flags & IResourceDelta.MOVED_FROM) == IResourceDelta.MOVED_FROM) {
+					// this is actually a move inside the same project
+					out.println("FileDataCache : fileMovedTo(" + file + "," + delta.getMovedFromPath() + "," + file.getFullPath() + ")");
+					fileMovedTo(file, delta.getMovedFromPath(), file.getFullPath());
+					fileVisited(file);
+					break;
+				}
+				out.println("FileDataCache : fileAdded(" + file + ")");
 				fileAdded(file);
-				break;
-			case IResourceDelta.MOVED_TO:
-				fileMovedTo(file, delta.getMovedFromPath(), delta.getMovedToPath());
-				break;
+				return fileVisited(file);
 			case IResourceDelta.REMOVED:
+				if ((flags & IResourceDelta.MOVED_TO) == IResourceDelta.MOVED_TO) {
+					// this is a move inside the same project, just wait for the
+					// ADDED event to update the cache
+					break;
+				}
+
+				out.println("FileDataCache : fileRemoved(" + file + ")");
 				fileRemoved(file);
-				break;
+
+				return fileVisited(file);
 			case IResourceDelta.CHANGED:
+				out.println("FileDataCache : fileChanged(" + file + ")");
 				fileChanged(file);
-				break;
+				return fileVisited(file);
 			default:
 				break;
 			}
@@ -63,11 +82,28 @@ public interface IResourceDeltaVisitor2 extends IResourceDeltaVisitor {
 		return true;
 	}
 
-	public void fileAdded(IFile file);
+	@SuppressWarnings("unused")
+	default public void fileAdded(IFile file) {
+		//
+	}
 
-	public void fileRemoved(IFile file);
+	@SuppressWarnings("unused")
+	default public void fileRemoved(IFile file) {
+		//
+	}
 
-	public void fileMovedTo(IFile file, IPath movedFromPath, IPath movedToPath);
+	@SuppressWarnings("unused")
+	default public void fileMovedTo(IFile file, IPath movedFromPath, IPath movedToPath) {
+		//
+	}
 
-	public void fileChanged(IFile file);
+	@SuppressWarnings("unused")
+	default public void fileChanged(IFile file) {
+		//
+	}
+
+	@SuppressWarnings("unused")
+	default public boolean fileVisited(IFile file) {
+		return true;
+	}
 }

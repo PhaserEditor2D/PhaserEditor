@@ -81,7 +81,7 @@ public class AssetPackBuildParticipant implements IProjectBuildParticipant {
 	@Override
 	public void build(IProject project, IResourceDelta mainDelta, Map<String, Object> env) {
 		try {
-			PackDelta packDelta = new PackDelta();
+			PackDelta packDelta = new PackDelta(project);
 			setData(env, packDelta);
 
 			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();

@@ -91,7 +91,7 @@ public final class AssetPackModel {
 	}
 
 	public PackDelta computeDelta(IPath deltaFilePath) {
-		PackDelta delta = new PackDelta();
+		PackDelta delta = new PackDelta(_file.getProject());
 
 		if (deltaFilePath == null) {
 			return delta;

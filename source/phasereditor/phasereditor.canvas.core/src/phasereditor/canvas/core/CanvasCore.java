@@ -25,11 +25,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
 
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -38,8 +35,6 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-
-import phasereditor.project.core.ProjectCore;
 
 /**
  * @author arian
@@ -139,60 +134,6 @@ public class CanvasCore {
 			return type;
 		}
 		return null;
-	}
-
-	public static List<Prefab> getPrefabs(IProject project) {
-		// TODO: maybe we should do some sort of caching, but for now we go with
-		// the brute-force solution!
-		List<Prefab> list = new ArrayList<>();
-
-		try {
-			IContainer webContent = ProjectCore.getWebContentFolder(project);
-
-			webContent.accept(r -> {
-				if (r instanceof IFile) {
-					IFile file = (IFile) r;
-					CanvasType type = getCanvasType(file);
-					if (type == CanvasType.GROUP || type == CanvasType.SPRITE) {
-						list.add(new Prefab(file, type));
-					}
-				}
-				return true;
-			});
-		} catch (CoreException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
-		return list;
-	}
-
-	public static void discoverCanvasFiles(IProject project, BiConsumer<CanvasFile, CanvasType> visitor) {
-		// TODO: maybe we should do some sort of caching, but for now we go with
-		// the brute-force solution!
-
-		try {
-			IContainer webContent = ProjectCore.getWebContentFolder(project);
-
-			webContent.accept(r -> {
-				if (r instanceof IFile) {
-					IFile file = (IFile) r;
-					CanvasType type = getCanvasType(file);
-					if (type != null) {
-						CanvasFile cfile;
-						if (type == CanvasType.SPRITE || type == CanvasType.GROUP) {
-							cfile = new Prefab(file, type);
-						} else {
-							cfile = new CanvasFile(file, type);
-						}
-						visitor.accept(cfile, type);
-					}
-				}
-				return true;
-			});
-		} catch (CoreException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
 	}
 
 	public static class PrefabReference {

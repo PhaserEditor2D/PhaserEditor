@@ -42,7 +42,6 @@ import java.util.UUID;
 
 import javax.imageio.ImageIO;
 
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -103,7 +102,6 @@ import phasereditor.canvas.ui.editors.operations.DeleteNodeOperation;
 import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
-import phasereditor.project.core.ProjectCore;
 
 /**
  * @author arian
@@ -123,7 +121,6 @@ public class CanvasUI {
 	public static Map<IFile, List<PrefabReference>> findPrefabReferences(Prefab prefab) {
 
 		IProject project = prefab.getFile().getProject();
-		IContainer webFolder = ProjectCore.getWebContentFolder(project);
 
 		List<PrefabReference> refs = findPrefabReferencesInEditorsContent(prefab);
 
@@ -133,19 +130,11 @@ public class CanvasUI {
 			used.add(editor.getFile());
 		}
 
-		try {
-			webFolder.accept(r -> {
-				if (r instanceof IFile && r.exists()) {
-					IFile file = (IFile) r;
-					if (!used.contains(file) && CanvasCore.isCanvasFile(file)) {
-						List<PrefabReference> thisRefs = CanvasCore.findPrefabReferencesInFileContent(prefab, file);
-						refs.addAll(thisRefs);
-					}
-				}
-				return true;
-			});
-		} catch (CoreException e) {
-			throw new RuntimeException(e);
+		for (CanvasFile cfile : CanvasCore.getCanvasFileCache().getProjectData(project)) {
+			if (!used.contains(cfile.getFile())) {
+				List<PrefabReference> thisRefs = CanvasCore.findPrefabReferencesInFileContent(prefab, cfile.getFile());
+				refs.addAll(thisRefs);
+			}
 		}
 
 		Map<IFile, List<PrefabReference>> map = new LinkedHashMap<>();

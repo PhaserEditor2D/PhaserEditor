@@ -22,6 +22,7 @@
 package phasereditor.canvas.core;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IPath;
 
 import phasereditor.project.core.FileDataCache;
 
@@ -43,6 +44,11 @@ public class CanvasFileDataCache extends FileDataCache<CanvasFile> {
 		}
 
 		return new CanvasFile(file, type);
+	}
+
+	@Override
+	protected void updateDataWithMove(CanvasFile data, IFile file, IPath movedFromPath, IPath movedToPath) {
+		data.setFile(file);
 	}
 
 }

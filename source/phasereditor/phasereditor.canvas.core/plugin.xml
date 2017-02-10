@@ -9,7 +9,7 @@
             order="3">
       </participant>
       <participant
-            handler="phasereditor.canvas.core.CanvasFilesBuildParticipant"
+            handler="phasereditor.canvas.core.CanvasFilesValidationBuildParticipant"
             id="phasereditor.canvas.core.canvasValidator"
             order="4">
       </participant>

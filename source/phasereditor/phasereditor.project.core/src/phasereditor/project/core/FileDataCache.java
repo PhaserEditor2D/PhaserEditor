@@ -74,7 +74,10 @@ public abstract class FileDataCache<TData> {
 
 			@Override
 			public void fileAdded(IFile file) {
-				map.put(file.getFullPath(), createData(file));
+				TData data = createData(file);
+				if (data != null) {
+					map.put(file.getFullPath(), data);
+				}
 			}
 
 			@Override
@@ -85,16 +88,39 @@ public abstract class FileDataCache<TData> {
 			@Override
 			public void fileMovedTo(IFile file, IPath movedFromPath, IPath movedToPath) {
 				TData data = map.remove(movedFromPath);
+
+				if (!ProjectCore.isWebContentFile(file)) {
+					// the file is going out of the web content so we are not
+					// interested on it, so just keep it deleted!!!
+					return;
+				}
+
+				if (data == null) {
+					// maybe moved from outside the WebContent folder
+					data = createData(file);
+					if (data == null) {
+						// this is not the kind of file we are interested on
+						return;
+					}
+				} else {
+					updateDataWithMove(data, file, movedFromPath, movedToPath);
+				}
+
 				map.put(movedToPath, data);
 			}
 
 			@Override
 			public void fileChanged(IFile file) {
-				map.put(file.getFullPath(), createData(file));
+				TData data = createData(file);
+				if (data != null) {
+					map.put(file.getFullPath(), data);
+				}
 			}
 
 		});
 	}
+
+	protected abstract void updateDataWithMove(TData data, IFile file, IPath movedFromPath, IPath movedToPath);
 
 	public synchronized void clean(IProject project) {
 		_cache.remove(project);
@@ -102,7 +128,7 @@ public abstract class FileDataCache<TData> {
 
 	public synchronized List<TData> getProjectData(IProject project) {
 		Map<IPath, TData> map = _cache.get(project);
-		
+
 		if (map == null) {
 			return Collections.emptyList();
 		}
@@ -120,6 +146,11 @@ public abstract class FileDataCache<TData> {
 		TData data = map.get(file);
 
 		return data;
+	}
+
+	public boolean isCachedFile(IFile file) {
+		TData data = getFileData(file);
+		return data != null;
 	}
 
 	private Map<IPath, TData> getProjectMap(IProject project) {

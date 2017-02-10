@@ -667,28 +667,21 @@ public class AssetPackCore {
 	public static class PackDelta {
 		private Set<AssetPackModel> _packs;
 		private Set<AssetModel> _assets;
+		private IProject _project;
 
-		public PackDelta() {
+		public PackDelta(IProject project) {
 			super();
+			_project = project;
 			_packs = new HashSet<>();
 			_assets = new HashSet<>();
 		}
+		
+		public IProject getProject() {
+			return _project;
+		}
 
 		public boolean inProject(IProject project) {
-			for (AssetPackModel pack : getPacks()) {
-				if (pack.getFile().getProject().equals(project)) {
-					return true;
-				}
-			}
-
-			for (AssetModel asset : getAssets()) {
-				AssetPackModel pack = asset.getPack();
-				if (pack.getFile().getProject().equals(project)) {
-					return true;
-				}
-			}
-
-			return false;
+			return _project.equals(project);
 		}
 
 		public Set<AssetModel> getAssets() {

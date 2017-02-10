@@ -25,9 +25,6 @@ public class DeleteCanvasHandler extends AbstractHandler {
 
 		Object[] array = sel.toArray();
 
-		// TODO: ok, but the better way is to delete the source file in the
-		// refactoring participant.
-		
 		for (Object obj : array) {
 			CanvasFile cfile = (CanvasFile) obj;
 			toDelete.add(cfile.getFile());

@@ -142,11 +142,19 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 			if (parent instanceof CanvasType) {
 				List<CanvasFile> cfiles = CanvasCore.getCanvasFileCache().getProjectData(activeProjet);
 
-				CanvasFile[] array = cfiles.stream().filter(cfile -> cfile.getType() == parent).sorted((a, b) -> {
-					return a.getFile().getName().compareTo(b.getFile().getName());
-				}).toArray(CanvasFile[]::new);
+				List<CanvasFile> list = new ArrayList<>();
 
-				return array;
+				for (CanvasFile cfile : cfiles) {
+					if (cfile.getType() == parent) {
+						list.add(cfile);
+					}
+				}
+
+				list.sort((a, b) -> {
+					return a.getFile().getName().compareTo(b.getFile().getName());
+				});
+
+				return list.toArray();
 			}
 		}
 
