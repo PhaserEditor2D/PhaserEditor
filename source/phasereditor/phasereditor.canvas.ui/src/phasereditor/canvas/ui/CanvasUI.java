@@ -221,7 +221,7 @@ public class CanvasUI {
 		}
 	}
 
-	public static Path getCanvasScreenshotFile(IFile file, boolean forceMake) {
+	public static Path getCanvasScreenshotFile(IFile file, boolean makeIfNotExist) {
 		if (file == null) {
 			return null;
 		}
@@ -236,7 +236,7 @@ public class CanvasUI {
 			}
 			writeTo = dir.resolve(filename);
 
-			if (forceMake) {
+			if (makeIfNotExist) {
 				if (!Files.exists(writeTo)) {
 					makeCanvasScreenshot(file, writeTo);
 				}
