@@ -53,6 +53,11 @@ public class CanvasEditorBuildParticipant implements IProjectBuildParticipant {
 	public void clean(IProject project, Map<String, Object> env) {
 		// nothing
 	}
+	
+	@Override
+	public void projectDeleted(IProject project, Map<String, Object> env) {
+		// nothing
+	}
 
 	@Override
 	public void fullBuild(IProject project, Map<String, Object> env) {

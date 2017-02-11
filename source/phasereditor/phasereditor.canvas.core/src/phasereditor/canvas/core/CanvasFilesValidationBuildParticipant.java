@@ -33,6 +33,11 @@ public class CanvasFilesValidationBuildParticipant implements IProjectBuildParti
 	public void clean(IProject project, Map<String, Object> env) {
 		ProjectCore.deleteResourceMarkers(project, CanvasCore.CANVAS_PROBLEM_MARKER_ID);
 	}
+	
+	@Override
+	public void projectDeleted(IProject project, Map<String, Object> env) {
+		// nothing
+	}
 
 	@Override
 	public void fullBuild(IProject project, Map<String, Object> env) {

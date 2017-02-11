@@ -1764,6 +1764,27 @@
       </deleteParticipant>
    </extension>
    <extension
+         point="org.eclipse.ltk.core.refactoring.moveParticipants">
+      <moveParticipant
+            class="phasereditor.canvas.ui.refactoring.MoveCanvasFileParticipant"
+            id="phasereditor.canvas.ui.moveParticipant1"
+            name="Move Canvas">
+         <enablement>
+            <with
+                  variable="element">
+               <instanceof
+                     value="org.eclipse.core.resources.IFile">
+               </instanceof>
+            </with>
+            <with
+                  variable="element">
+               <instanceof
+                     value="org.eclipse.core.resources.IFile">
+               </instanceof>
+            </with></enablement>
+      </moveParticipant>
+   </extension>
+   <extension
          point="org.eclipse.ltk.ui.refactoring.statusContextViewers">
       <statusContextViewer
             class="phasereditor.canvas.ui.refactoring.UsingPrefabStatusContextViewer"

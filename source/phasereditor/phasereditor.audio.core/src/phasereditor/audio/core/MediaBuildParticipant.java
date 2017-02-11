@@ -89,9 +89,13 @@ public class MediaBuildParticipant implements IProjectBuildParticipant {
 				}
 			});
 		} catch (CoreException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
+			AudioCore.logError(e);
 		}
+	}
+	
+	@Override
+	public void projectDeleted(IProject project, Map<String, Object> env) {
+		clean(project, env);
 	}
 
 	@Override

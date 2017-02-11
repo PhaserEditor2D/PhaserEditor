@@ -46,6 +46,11 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 	public void fullBuild(IProject project, Map<String, Object> env) {
 		refreshParts();
 	}
+	
+	@Override
+	public void projectDeleted(IProject project, Map<String, Object> env) {
+		refreshParts();
+	}
 
 	private static void refreshParts() {
 		swtRun(new Runnable() {

@@ -53,6 +53,11 @@ public abstract class FileDataCacheBuilderParticipant<TData> implements IProject
 	public void clean(IProject project, Map<String, Object> env) {
 		getFileDataCache().clean(project);
 	}
+	
+	@Override
+	public void projectDeleted(IProject project, Map<String, Object> env) {
+		getFileDataCache().clean(project);
+	}
 
 	@Override
 	public void build(IProject project, IResourceDelta delta, Map<String, Object> env) {

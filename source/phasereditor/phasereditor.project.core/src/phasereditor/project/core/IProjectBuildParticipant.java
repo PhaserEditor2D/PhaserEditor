@@ -38,4 +38,6 @@ public interface IProjectBuildParticipant {
 	public void build(IProject project, IResourceDelta delta, Map<String, Object> env);
 
 	public void fullBuild(IProject project, Map<String, Object> env);
+
+	public void projectDeleted(IProject project, Map<String, Object> env);
 }

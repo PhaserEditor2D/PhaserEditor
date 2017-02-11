@@ -28,13 +28,31 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 
 	private static HashMap<IProject, Runnable> _actions = new HashMap<>();
+	private static boolean _registeredProjectDeleteListener = false;
+
+	public PhaserProjectBuilder() {
+		if (!_registeredProjectDeleteListener) {
+			ResourcesPlugin.getWorkspace().addResourceChangeListener(new IResourceChangeListener() {
+
+				@Override
+				public void resourceChanged(IResourceChangeEvent event) {
+					IProject project = (IProject) event.getResource();
+					projectDeleted(project);
+				}
+			}, IResourceChangeEvent.PRE_DELETE);
+			_registeredProjectDeleteListener = true;
+		}
+	}
 
 	public static void setActionOnStartup(IProject project, Runnable runnable) {
 		_actions.put(project, runnable);
@@ -62,7 +80,7 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 		}
 
 		out.println("PhaserProjectBuilder.startupOnInitialize (done)");
-		
+
 		Runnable action = _actions.get(project);
 		if (action != null) {
 			_actions.remove(project);
@@ -87,6 +105,25 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 		}
 
 		out.println("PhaserProjectBuilder.clean (done)");
+	}
+
+	protected static void projectDeleted(IProject project) {
+		Map<String, Object> env = new HashMap<>();
+
+		out.println("PhaserProjectBuilder.projectDeleted (start)");
+
+		List<IProjectBuildParticipant> list = ProjectCore.getBuildParticipants();
+
+		for (IProjectBuildParticipant participant : list) {
+			try {
+				out.println("\t" + participant + " (building)");
+				participant.projectDeleted(project, env);
+			} catch (Exception e) {
+				ProjectCore.logError(e);
+			}
+		}
+
+		out.println("PhaserProjectBuilder.projectDeleted (done)");
 	}
 
 	@Override

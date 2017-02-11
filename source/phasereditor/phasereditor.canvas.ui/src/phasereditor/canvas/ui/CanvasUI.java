@@ -393,6 +393,11 @@ public class CanvasUI {
 
 	public static Image getCanvasFileIcon(CanvasFile canvasFile, AssetLabelProvider labelProvider) {
 		IFile file = canvasFile.getFile();
+		
+		if (!file.exists()) {
+			return null;
+		}
+		
 		Path imgfile = CanvasUI.getCanvasScreenshotFile(file, false);
 		return labelProvider.getIcon(imgfile.toAbsolutePath().toString());
 	}

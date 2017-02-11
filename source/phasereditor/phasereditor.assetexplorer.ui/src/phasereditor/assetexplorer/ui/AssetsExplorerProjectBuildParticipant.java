@@ -30,6 +30,11 @@ public class AssetsExplorerProjectBuildParticipant implements IProjectBuildParti
 	}
 
 	@Override
+	public void projectDeleted(IProject project, Map<String, Object> env) {
+		swtRun(AssetsExplorerProjectBuildParticipant::refreshExplorer);
+	}
+
+	@Override
 	public void build(IProject project, IResourceDelta delta, Map<String, Object> env) {
 		swtRun(AssetsExplorerProjectBuildParticipant::refreshExplorer);
 	}

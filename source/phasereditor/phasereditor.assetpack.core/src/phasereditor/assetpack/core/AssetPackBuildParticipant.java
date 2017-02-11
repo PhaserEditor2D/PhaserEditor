@@ -61,6 +61,11 @@ public class AssetPackBuildParticipant implements IProjectBuildParticipant {
 		ProjectCore.deleteResourceMarkers(project, AssetPackCore.ASSET_PACK_PROBLEM_ID);
 		AssetPackCore.removeAssetPackModels(project);
 	}
+	
+	@Override
+	public void projectDeleted(IProject project, Map<String, Object> env) {
+		AssetPackCore.removeAssetPackModels(project);
+	}
 
 	@Override
 	public void fullBuild(IProject project, Map<String, Object> env) {
