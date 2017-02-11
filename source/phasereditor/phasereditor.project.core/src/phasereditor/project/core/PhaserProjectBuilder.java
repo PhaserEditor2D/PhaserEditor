@@ -54,10 +54,6 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 		}
 	}
 
-	public static void setActionOnStartup(IProject project, Runnable runnable) {
-		_actions.put(project, runnable);
-	}
-
 	@Override
 	protected void startupOnInitialize() {
 		super.startupOnInitialize();
@@ -81,12 +77,8 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 
 		out.println("PhaserProjectBuilder.startupOnInitialize (done)");
 
-		Runnable action = _actions.get(project);
-		if (action != null) {
-			_actions.remove(project);
-			action.run();
-		}
 	}
+
 
 	@Override
 	protected void clean(IProgressMonitor monitor) throws CoreException {
@@ -142,14 +134,17 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 
 		monitor.beginTask("Building Phaser elements", list.size());
 
+		IProject project = getProject();
+		
 		for (IProjectBuildParticipant participant : list) {
 			try {
 				monitor.subTask("Building " + participant.getClass().getSimpleName());
 				out.println("\t" + participant + " (building)");
+				
 				if (fullBuild) {
-					participant.fullBuild(getProject(), env);
+					participant.fullBuild(project, env);
 				} else {
-					participant.build(getProject(), getDelta(getProject()), env);
+					participant.build(project, getDelta(project), env);
 				}
 				monitor.worked(1);
 			} catch (Exception e) {
@@ -164,7 +159,21 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 		} else {
 			out.println("PhaserProjectBuilder.build (done)");
 		}
+		
+		runAfterBuildActions(project);
 
 		return null;
+	}
+	
+	public static void setActionAfterFirstBuild(IProject project, Runnable runnable) {
+		_actions.put(project, runnable);
+	}
+	
+	private static void runAfterBuildActions(IProject project) {
+		Runnable action = _actions.get(project);
+		if (action != null) {
+			_actions.remove(project);
+			action.run();
+		}
 	}
 }

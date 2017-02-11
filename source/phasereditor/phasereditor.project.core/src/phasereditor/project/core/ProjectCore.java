@@ -203,6 +203,8 @@ public class ProjectCore {
 	}
 
 	public static void configureNewPhaserProject(IProject project, IPhaserTemplate template) {
+		PhaserProjectBuilder.setActionAfterFirstBuild(project, () -> openTemplateMainFileInEditor(project, template));
+
 		WorkspaceJob copyJob = new WorkspaceJob("Copying template content") {
 
 			@Override
@@ -218,13 +220,10 @@ public class ProjectCore {
 				JsNature.addJsNature(project, monitor);
 				PhaserProjectNature.addPhaserNature(project, monitor);
 
-				PhaserProjectBuilder.setActionOnStartup(project, () -> openTemplateMainFileInEditor(project, template));
-
 				return Status.OK_STATUS;
 			}
 
 		};
-
 		copyJob.schedule();
 	}
 
