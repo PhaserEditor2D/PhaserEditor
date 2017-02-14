@@ -1,6 +1,7 @@
 package phasereditor.project.ui;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ListenerList;
@@ -49,8 +50,22 @@ public class PhaserProblemLabelDecorator implements ILightweightLabelDecorator {
 				if (file.exists()) {
 					int severity = file.findMaxProblemSeverity(ProjectCore.PHASER_PROBLEM_MARKER_ID, true,
 							IResource.DEPTH_ONE);
-					if (severity != -1) {
-						ImageDescriptor img = JavaPluginImages.DESC_OVR_ERROR;
+
+					ImageDescriptor img;
+
+					switch (severity) {
+					case IMarker.SEVERITY_ERROR:
+						img = JavaPluginImages.DESC_OVR_ERROR;
+						break;
+					case IMarker.SEVERITY_WARNING:
+						img = JavaPluginImages.DESC_OVR_WARNING;
+						break;
+					default:
+						img = null;
+						break;
+					}
+
+					if (img != null) {
 						decoration.addOverlay(img);
 					}
 				}

@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
-import static java.lang.System.out;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -76,7 +74,6 @@ public class PrefabTable {
 
 	public void read(JSONObject data) {
 		if (data == null) {
-			out.println("Cannot load the prefab table, probably it is an older version of the canvas file.");
 			return;
 		}
 

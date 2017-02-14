@@ -88,9 +88,7 @@ public class AssetTable {
 	}
 
 	public void read(JSONObject obj) {
-
 		if (obj == null) {
-			out.println("Cannot load the asset table, probably it is an older version of the canvas file.");
 			return;
 		}
 

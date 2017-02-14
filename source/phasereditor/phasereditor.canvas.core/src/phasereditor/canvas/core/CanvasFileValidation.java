@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
+import static java.lang.System.out;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,6 +71,10 @@ public class CanvasFileValidation {
 	}
 
 	public List<IStatus> validate() {
+		
+		out.println("Validating " + _file.getProjectRelativePath());
+		
+		
 		validateVersion();
 		validateAssetTable();
 		validatePrefabTable();
@@ -98,7 +104,7 @@ public class CanvasFileValidation {
 				validateObject(child);
 			}
 		} else if (type.equals("prefab")) {
-			validatePrefab(obj);
+			validatePrefabInstance(obj);
 		} else {
 
 			if (obj.has("asset-ref")) {
@@ -119,7 +125,7 @@ public class CanvasFileValidation {
 		}
 	}
 
-	private void validatePrefab(JSONObject obj) {
+	private void validatePrefabInstance(JSONObject obj) {
 		IFile file = _prefabTable.get(obj.getString("prefab"));
 		if (file == null) {
 			JSONObject info = obj.getJSONObject("info");

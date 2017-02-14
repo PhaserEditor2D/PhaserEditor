@@ -81,8 +81,8 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 	}
 
 	@Override
-	protected void writePrefabMetadata(JSONObject obj) {
-		super.writePrefabMetadata(obj);
+	protected void writePrefabMetadata(JSONObject obj, boolean saving) {
+		super.writePrefabMetadata(obj, saving);
 		writeAssetKeyMetadata(obj, false);
 	}
 
