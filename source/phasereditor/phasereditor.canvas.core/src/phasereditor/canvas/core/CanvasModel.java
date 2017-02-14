@@ -29,11 +29,14 @@ import org.json.JSONObject;
  *
  */
 public class CanvasModel {
+	public static final int CURRENT_VERSION = 2;
+
 	private EditorSettings _settings;
 	private StateSettings _stateSettings;
 	private WorldModel _world;
 	private IFile _file;
 	private CanvasType _type;
+	private int _version;
 
 	public CanvasModel(IFile file) {
 		_file = file;
@@ -43,6 +46,7 @@ public class CanvasModel {
 
 		// set Group just for backward compatibility
 		_type = CanvasType.GROUP;
+		_version = CURRENT_VERSION;
 	}
 
 	public CanvasType getType() {
@@ -65,6 +69,9 @@ public class CanvasModel {
 	}
 
 	public void read(JSONObject data) {
+		// version 1 did not write it explicitly
+		_version = data.optInt("canvas-version", 1);
+
 		_settings.read(data.getJSONObject("settings"));
 		{
 			JSONObject data2 = data.optJSONObject("stateSettings");
@@ -73,11 +80,10 @@ public class CanvasModel {
 			}
 			_stateSettings.read(data2);
 		}
-		
+
 		_world.getAssetTable().read(data.optJSONObject("asset-table"));
 		_world.getPrefabTable().read(data.optJSONObject("prefab-table"));
 		_world.read(data.getJSONObject("world"));
-			
 
 		{
 			String name = data.optString("type", CanvasType.GROUP.name());
@@ -86,6 +92,10 @@ public class CanvasModel {
 	}
 
 	public void write(JSONObject data, boolean saving) {
+		{
+			// always write the current version
+			data.put("canvas-version", CURRENT_VERSION);
+		}
 		{
 			JSONObject data2 = new JSONObject();
 			data.put("settings", data2);
@@ -115,6 +125,10 @@ public class CanvasModel {
 		{
 			data.put("prefab-table", _world.getPrefabTable().toJSON());
 		}
+	}
+	
+	public int getVersion() {
+		return _version;
 	}
 
 	public EditorSettings getSettings() {

@@ -27,7 +27,7 @@ import org.json.JSONObject;
  * @author arian
  *
  */
-public class MissingPrefabModel extends BaseObjectModel{
+public class MissingPrefabModel extends BaseObjectModel {
 	private JSONObject _srcData;
 
 	public MissingPrefabModel(GroupModel parent, JSONObject obj) {

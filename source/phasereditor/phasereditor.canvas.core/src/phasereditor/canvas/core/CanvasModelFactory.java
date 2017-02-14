@@ -78,20 +78,31 @@ public class CanvasModelFactory {
 				break;
 			case Prefab.TYPE_NAME:
 				Prefab prefab;
-				
-				if (data.has("prefab-ref")) {
-					String tableId = data.optString("prefab-ref");
+
+				if (data.has("prefab")) {
+					String tableId = data.optString("prefab");
 					prefab = parent.getWorld().getPrefabTable().lookup(tableId);
+
+					if (!prefab.getFile().exists()) {
+						// use a data with no prefab table reference for
+						// missing-nodes
+						JSONObject data2 = new JSONObject(data.toString());
+
+						data2.remove("prefab");
+						data2.put("prefabFile", prefab.getFile().getProjectRelativePath().toPortableString());
+
+						throw new MissingPrefabException(data2);
+					}
 				} else {
 					String filePath = data.getString("prefabFile");
 					IProject project = parent.getWorld().getFile().getProject();
 					IFile file = project.getFile(filePath);
+
+					if (!file.exists()) {
+						throw new MissingPrefabException(data);
+					}
+
 					prefab = new Prefab(file);
-				}
-
-				if (prefab == null || !prefab.getFile().exists()) {
-					throw new MissingPrefabException(data);
-
 				}
 
 				JSONObject jsonInfo = data.optJSONObject("info");

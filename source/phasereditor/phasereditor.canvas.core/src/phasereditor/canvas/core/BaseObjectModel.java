@@ -421,7 +421,7 @@ public abstract class BaseObjectModel {
 		obj.put("type", "prefab");
 		if (saving) {
 			String tableId = getWorld().getPrefabTable().postPrefab(_prefab);
-			obj.put("prefab-ref", tableId);
+			obj.put("prefab", tableId);
 		} else {
 			String filePath = _prefab.getFile().getProjectRelativePath().toPortableString();
 			obj.put("prefabFile", filePath);

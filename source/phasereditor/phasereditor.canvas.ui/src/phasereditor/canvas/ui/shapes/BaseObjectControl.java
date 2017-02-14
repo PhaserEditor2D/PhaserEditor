@@ -607,7 +607,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		if (model.isPrefabInstance()) {
 			Prefab prefab = model.getPrefab();
 
-			JSONObject data = model.toJSON(true);
+			JSONObject data = model.toJSON(false);
 
 			if (prefab.getFile().exists()) {
 				BaseObjectModel newModel = CanvasModelFactory.createModel(model.getParent(), data);

@@ -53,7 +53,8 @@ public class CanvasFileValidation {
 
 	private IFile _file;
 	private List<IStatus> _problems;
-	private Map<String, IAssetKey> _table;
+	private Map<String, IAssetKey> _assetTable;
+	private HashMap<String, IFile> _prefabTable;
 	private JSONObject _data;
 	private Set<String> _used;
 
@@ -68,9 +69,18 @@ public class CanvasFileValidation {
 	}
 
 	public List<IStatus> validate() {
-		validateTable();
+		validateVersion();
+		validateAssetTable();
+		validatePrefabTable();
 		validateWorld();
 		return _problems;
+	}
+
+	private void validateVersion() {
+		if (_data.optInt("canvas-version", 1) != CanvasModel.CURRENT_VERSION) {
+			_problems.add(
+					new Status(IStatus.WARNING, CanvasCore.PLUGIN_ID, "This canvas file has an old syntax version."));
+		}
 	}
 
 	private void validateWorld() {
@@ -100,7 +110,7 @@ public class CanvasFileValidation {
 				}
 			} else if (obj.has("asset")) {
 				String id = obj.getString("asset");
-				if (_table.getOrDefault(id, null) == null) {
+				if (_assetTable.getOrDefault(id, null) == null) {
 					String spriteId = info.optString("editorName", "?");
 					_problems.add(new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID,
 							"Wrong asset-table reference in sprite '" + spriteId + "'"));
@@ -110,13 +120,11 @@ public class CanvasFileValidation {
 	}
 
 	private void validatePrefab(JSONObject obj) {
-		String filename = obj.getString("prefabFile");
-		IFile file = _file.getProject().getFile(filename);
-		if (!file.exists()) {
+		IFile file = _prefabTable.get(obj.getString("prefab"));
+		if (file == null) {
 			JSONObject info = obj.getJSONObject("info");
 			String name = info.optString("editorName", "?");
-			_problems.add(new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID,
-					"Missing prefab of '" + name + "'. File not found '" + filename + "'."));
+			_problems.add(new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID, "Missing prefab of '" + name + "'."));
 		}
 	}
 
@@ -167,8 +175,8 @@ public class CanvasFileValidation {
 		return msg;
 	}
 
-	private void validateTable() {
-		_table = new HashMap<>();
+	private void validateAssetTable() {
+		_assetTable = new HashMap<>();
 		JSONObject tableData = _data.optJSONObject("asset-table");
 		if (tableData == null) {
 			return;
@@ -181,11 +189,35 @@ public class CanvasFileValidation {
 			Object asset = AssetPackCore.findAssetElement(project, refObj);
 			if (asset != null && asset instanceof IAssetKey) {
 				IAssetKey assetKey = (IAssetKey) asset;
-				_table.put(id, assetKey);
+				_assetTable.put(id, assetKey);
 			} else {
-				_table.put(id, null);
+				_assetTable.put(id, null);
 				postMissingRefError(refObj);
 			}
+		}
+	}
+
+	private void validatePrefabTable() {
+		_prefabTable = new HashMap<>();
+		JSONObject tableData = _data.optJSONObject("prefab-table");
+		if (tableData == null) {
+			return;
+		}
+
+		IProject project = _file.getProject();
+
+		for (String id : tableData.keySet()) {
+			String filepath = tableData.getString(id);
+			IFile file = project.getFile(filepath);
+
+			if (!file.exists()) {
+				_assetTable.put(id, null);
+				_problems.add(
+						new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID, "Prefab file not found '" + filepath + "'."));
+				continue;
+			}
+
+			_prefabTable.put(id, file);
 		}
 	}
 }
