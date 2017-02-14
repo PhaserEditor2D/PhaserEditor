@@ -42,6 +42,7 @@ public class WorldModel extends GroupModel {
 	private boolean _dirty;
 	private IFile _file;
 	private AssetTable _assetTable;
+	private PrefabTable _prefabTable;
 
 	public WorldModel(IFile file) {
 		super(null);
@@ -72,6 +73,14 @@ public class WorldModel extends GroupModel {
 
 	public void setAssetTable(AssetTable assetTable) {
 		_assetTable = assetTable;
+	}
+
+	public PrefabTable getPrefabTable() {
+		return _prefabTable;
+	}
+
+	public void setPrefabTable(PrefabTable prefabTable) {
+		_prefabTable = prefabTable;
 	}
 
 	public IProject getProject() {
@@ -111,6 +120,7 @@ public class WorldModel extends GroupModel {
 		});
 
 		_assetTable = new AssetTable(this);
+		_prefabTable = new PrefabTable(this);
 	}
 
 	public boolean isDirty() {

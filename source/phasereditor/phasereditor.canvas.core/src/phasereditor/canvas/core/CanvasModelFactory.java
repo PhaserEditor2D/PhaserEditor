@@ -77,16 +77,23 @@ public class CanvasModelFactory {
 				model = new GroupModel(parent, data);
 				break;
 			case Prefab.TYPE_NAME:
-				String filePath = data.getString("prefabFile");
-				IProject project = parent.getWorld().getFile().getProject();
-				IFile file = project.getFile(filePath);
+				Prefab prefab;
+				
+				if (data.has("prefab-ref")) {
+					String tableId = data.optString("prefab-ref");
+					prefab = parent.getWorld().getPrefabTable().lookup(tableId);
+				} else {
+					String filePath = data.getString("prefabFile");
+					IProject project = parent.getWorld().getFile().getProject();
+					IFile file = project.getFile(filePath);
+					prefab = new Prefab(file);
+				}
 
-				if (!file.exists()) {
+				if (prefab == null || !prefab.getFile().exists()) {
 					throw new MissingPrefabException(data);
 
 				}
 
-				Prefab prefab = new Prefab(file);
 				JSONObject jsonInfo = data.optJSONObject("info");
 				JSONObject newData = prefab.newInstance(jsonInfo);
 				// TODO: this is a temporal solution to keep the asset, but the

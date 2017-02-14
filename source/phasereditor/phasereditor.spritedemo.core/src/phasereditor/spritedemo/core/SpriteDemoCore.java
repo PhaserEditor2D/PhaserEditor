@@ -27,5 +27,6 @@ package phasereditor.spritedemo.core;
  */
 public class SpriteDemoCore {
 	public static void main(String[] args) {
+		//
 	}
 }

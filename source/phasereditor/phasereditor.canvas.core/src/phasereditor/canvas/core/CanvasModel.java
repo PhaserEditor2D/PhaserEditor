@@ -73,8 +73,11 @@ public class CanvasModel {
 			}
 			_stateSettings.read(data2);
 		}
+		
 		_world.getAssetTable().read(data.optJSONObject("asset-table"));
+		_world.getPrefabTable().read(data.optJSONObject("prefab-table"));
 		_world.read(data.getJSONObject("world"));
+			
 
 		{
 			String name = data.optString("type", CanvasType.GROUP.name());
@@ -108,12 +111,16 @@ public class CanvasModel {
 		{
 			data.put("asset-table", _world.getAssetTable().toJSON());
 		}
+
+		{
+			data.put("prefab-table", _world.getPrefabTable().toJSON());
+		}
 	}
 
 	public EditorSettings getSettings() {
 		return _settings;
 	}
-	
+
 	public void setSettings(EditorSettings settings) {
 		_settings = settings;
 	}

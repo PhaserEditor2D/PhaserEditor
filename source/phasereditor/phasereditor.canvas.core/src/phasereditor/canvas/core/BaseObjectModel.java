@@ -51,7 +51,7 @@ public abstract class BaseObjectModel {
 	private static final double DEF_PIVOT_Y = 0;
 	private static final boolean DEF_EDITOR_GENERATE = true;
 	public static final boolean DEF_EDITOR_PUBLIC = false;
-	
+
 	public static final String PROPSET_POSITION = "position";
 	public static final String PROPSET_ANGLE = "angle";
 	public static final String PROPSET_SCALE = "scale";
@@ -362,7 +362,7 @@ public abstract class BaseObjectModel {
 
 	public void write(JSONObject obj, boolean saving) {
 		if (isPrefabInstance()) {
-			writePrefabMetadata(obj);
+			writePrefabMetadata(obj, saving);
 		} else {
 			writeMetadata(obj, saving);
 		}
@@ -417,10 +417,15 @@ public abstract class BaseObjectModel {
 		obj.put("id", _id);
 	}
 
-	protected void writePrefabMetadata(JSONObject obj) {
+	protected void writePrefabMetadata(JSONObject obj, boolean saving) {
 		obj.put("type", "prefab");
-		String filePath = _prefab.getFile().getProjectRelativePath().toPortableString();
-		obj.put("prefabFile", filePath);
+		if (saving) {
+			String tableId = getWorld().getPrefabTable().postPrefab(_prefab);
+			obj.put("prefab-ref", tableId);
+		} else {
+			String filePath = _prefab.getFile().getProjectRelativePath().toPortableString();
+			obj.put("prefabFile", filePath);
+		}
 		obj.put("id", _id);
 	}
 

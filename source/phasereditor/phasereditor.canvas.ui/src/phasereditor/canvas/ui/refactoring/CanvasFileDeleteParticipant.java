@@ -72,7 +72,7 @@ public class CanvasFileDeleteParticipant extends DeleteParticipant {
 			String filepath = file.getProjectRelativePath().toString();
 
 			status.addWarning("The canvas file '" + filepath + "' has " + refs.size() + " prefab '" + _file.getName()
-					+ "' instances.", new UsingPrefabRefactoringStatusContext(file, refs));
+					+ "' instances.", new CanvasFileRefactoringStatusContext(file));
 		}
 		
 		return status;
@@ -80,7 +80,6 @@ public class CanvasFileDeleteParticipant extends DeleteParticipant {
 
 	@Override
 	public Change createChange(IProgressMonitor pm) throws CoreException, OperationCanceledException {
-
 		List<IFile> files = CanvasCore.getCanvasDereivedFiles(_file);
 
 		if (files.isEmpty()) {

@@ -1766,7 +1766,7 @@
    <extension
          point="org.eclipse.ltk.core.refactoring.moveParticipants">
       <moveParticipant
-            class="phasereditor.canvas.ui.refactoring.MoveCanvasFileParticipant"
+            class="phasereditor.canvas.ui.refactoring.CanvasFileMoveParticipant"
             id="phasereditor.canvas.ui.moveParticipant1"
             name="Move Canvas">
          <enablement>
@@ -1793,7 +1793,7 @@
             <with
                   variable="context">
                <instanceof
-                     value="phasereditor.canvas.ui.refactoring.UsingPrefabRefactoringStatusContext">
+                     value="phasereditor.canvas.ui.refactoring.CanvasFileRefactoringStatusContext">
                </instanceof>
             </with></enablement>
       </statusContextViewer>

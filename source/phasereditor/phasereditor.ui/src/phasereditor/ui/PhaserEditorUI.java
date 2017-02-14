@@ -72,8 +72,13 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.ui.views.PreviewView;
@@ -84,6 +89,42 @@ public class PhaserEditorUI {
 	private static Set<Object> _supportedImageExts = new HashSet<>(Arrays.asList("png", "bmp", "jpg", "gif", "ico"));
 
 	private PhaserEditorUI() {
+	}
+
+	public static void forEachEditor(Consumer<IEditorReference> visitor) {
+		for (IWorkbenchWindow window : PlatformUI.getWorkbench().getWorkbenchWindows()) {
+			for (IWorkbenchPage page : window.getPages()) {
+				for (IEditorReference editorRef : page.getEditorReferences()) {
+					visitor.accept(editorRef);
+				}
+			}
+		}
+	}
+
+	public static boolean forEachOpenFileEditor(IFile file, Consumer<IEditorPart> visitor) {
+		boolean found = false;
+		for (IWorkbenchWindow window : PlatformUI.getWorkbench().getWorkbenchWindows()) {
+			for (IWorkbenchPage page : window.getPages()) {
+				for (IEditorReference editorRef : page.getEditorReferences()) {
+					IEditorPart editor = editorRef.getEditor(false);
+					
+					if (editor == null) {
+						continue;
+					}
+					
+					IEditorInput input = editor.getEditorInput();
+					
+					if (input instanceof FileEditorInput) {
+						IFile editorFile = ((FileEditorInput) input).getFile();						
+						if (editorFile.equals(file)) {
+							found = true;
+							visitor.accept(editor);
+						}
+					}
+				}
+			}
+		}
+		return found;
 	}
 
 	public static boolean isEditorSupportedImage(IFile file) {
@@ -379,11 +420,11 @@ public class PhaserEditorUI {
 
 	public static void swtRun(Runnable run) {
 		try {
-			
+
 			if (PlatformUI.getWorkbench().isClosing()) {
 				return;
 			}
-			
+
 			Display display = Display.getDefault();
 			display.asyncExec(new Runnable() {
 
