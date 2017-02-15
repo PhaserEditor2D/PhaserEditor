@@ -114,7 +114,7 @@ public class CreatePrefabHandler extends AbstractHandler {
 			String name = file.getFullPath().removeFileExtension().lastSegment();
 
 			WorldModel world = newModel.getWorld();
-			world.setFile(file);
+			newModel.setFile(file);
 			world.setEditorName(name);
 
 			if (type == CanvasType.GROUP) {

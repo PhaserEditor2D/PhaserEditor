@@ -41,7 +41,7 @@ public class TSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 
 	@Override
 	protected void generateHeader() {
-		String classname = _world.getClassName();
+		String classname = _settings.getClassName();
 		String baseclass = _settings.getBaseClass();
 		PhaserJSDoc help = InspectCore.getPhaserHelp();
 

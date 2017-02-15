@@ -86,7 +86,7 @@ public class Prefab extends CanvasFile{
 
 			JSONObject newData = new JSONObject();
 			objModel.setId(UUID.randomUUID().toString());
-			objModel.setEditorName(model.getClassName());
+			objModel.setEditorName(model.getSettings().getClassName());
 			objModel.write(newData, false);
 
 			return newData;

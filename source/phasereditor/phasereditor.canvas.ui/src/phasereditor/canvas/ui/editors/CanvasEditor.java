@@ -89,7 +89,6 @@ import javafx.geometry.Point2D;
 import phasereditor.canvas.core.AssetTable;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasType;
-import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.PrefabTable;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
@@ -232,11 +231,11 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 		try {
 			IFileEditorInput input = (IFileEditorInput) getEditorInput();
 			JSONObject data = new JSONObject();
-			
+
 			_model.getWorld().setAssetTable(new AssetTable(_model.getWorld()));
 			_model.getWorld().setPrefabTable(new PrefabTable(_model.getWorld()));
 			_model.write(data, true);
-			
+
 			input.getFile().setContents(new ByteArrayInputStream(data.toString(2).getBytes()), true, false, monitor);
 
 			if (getCanvas().getSettingsModel().isGenerateOnSave()) {
@@ -284,7 +283,6 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 					}
 				});
 			}
-			_model.getWorld().setFile(file);
 			_model.getWorld().addPropertyChangeListener(WorldModel.PROP_STRUCTURE, arg -> {
 				firePropertyChange(PROP_DIRTY);
 			});
@@ -648,11 +646,12 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 	}
 
 	public IFile getFileToGenerate() {
-		WorldModel model = getCanvas().getWorldModel();
-		EditorSettings settings = getCanvas().getSettingsModel();
-		String ext = settings.getLang().getExtension();
-		String fname = model.getClassName() + "." + ext;
-		return getEditorInputFile().getParent().getFile(new Path(fname));
+		IFile canvasFile = getEditorInputFile();
+
+		String fname = canvasFile.getFullPath().removeFileExtension()
+				.addFileExtension(getCanvas().getSettingsModel().getLang().getExtension()).lastSegment();
+
+		return canvasFile.getParent().getFile(new Path(fname));
 	}
 
 	public void generateCode() {
@@ -822,7 +821,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 
 	public void handleFileRename(IFile newFile) {
 		super.setInput(new FileEditorInput(newFile));
-		_model.getWorld().setFile(newFile);
+		_model.setFile(newFile);
 		updateTitle();
 	}
 

@@ -40,31 +40,14 @@ public class WorldModel extends GroupModel {
 	public static final String PROP_DIRTY = "dirty";
 
 	private boolean _dirty;
-	private IFile _file;
 	private AssetTable _assetTable;
 	private PrefabTable _prefabTable;
+	private CanvasModel _canvasModel;
 
-	public WorldModel(IFile file) {
+	public WorldModel(CanvasModel canvasModel) {
 		super(null);
-		_file = file;
+		_canvasModel = canvasModel;
 		init();
-	}
-
-	public WorldModel(IFile file, JSONObject data) throws Exception {
-		this(data);
-		this._file = file;
-	}
-
-	public String getClassName() {
-
-		if (_file == null) {
-			return "Canvas";
-		}
-
-		String name = _file.getName();
-		String ext = _file.getFileExtension();
-		int end = name.length() - ext.length() - 1;
-		return name.substring(0, end);
 	}
 
 	public AssetTable getAssetTable() {
@@ -84,7 +67,7 @@ public class WorldModel extends GroupModel {
 	}
 
 	public IProject getProject() {
-		return this._file.getProject();
+		return getFile().getProject();
 	}
 
 	private WorldModel(JSONObject data) {
@@ -98,11 +81,11 @@ public class WorldModel extends GroupModel {
 	}
 
 	public IFile getFile() {
-		return _file;
+		return _canvasModel.getFile();
 	}
-
-	public void setFile(IFile file) {
-		this._file = file;
+	
+	public CanvasModel getCanvasModel() {
+		return _canvasModel;
 	}
 
 	@Override

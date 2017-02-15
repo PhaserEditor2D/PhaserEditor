@@ -148,6 +148,24 @@ public class EditorConfigItem extends ConfigItem {
 		{
 			PGridSection section = new PGridSection("Source");
 
+			section.add(new PGridStringProperty(null, "className", "The generated class name.") {
+
+				@Override
+				public void setValue(String value, boolean notify) {
+					settings.setClassName(value);
+				}
+
+				@Override
+				public String getValue() {
+					return settings.getClassName();
+				}
+
+				@Override
+				public boolean isModified() {
+					return true;
+				}
+			});
+
 			section.add(new PGridStringProperty(null, "baseClass", "The base class for the generated class.") {
 
 				@Override

@@ -36,6 +36,7 @@ public class EditorSettings {
 	public static final RGB DEFAULT_BACKGROUND_COLOR = new RGB(180, 180, 180);
 	public static final RGB DEFAULT_GRID_COLOR = new RGB(200, 200, 200);
 
+	private String _className;
 	private double _sceneWidth;
 	private double _sceneHeight;
 	private RGB _backgroundColor;
@@ -47,8 +48,10 @@ public class EditorSettings {
 	private SourceLang _lang;
 	private String _baseClass;
 	private RGB _gridColor;
+	private CanvasModel _canvasModel;
 
-	public EditorSettings() {
+	public EditorSettings(CanvasModel canvasModel) {
+		_canvasModel = canvasModel;
 		_sceneWidth = 640;
 		_sceneHeight = 360;
 		_backgroundColor = DEFAULT_BACKGROUND_COLOR;
@@ -66,6 +69,18 @@ public class EditorSettings {
 
 	public EditorSettings(JSONObject settingsData) {
 		read(settingsData);
+	}
+
+	public CanvasModel getCanvasModel() {
+		return _canvasModel;
+	}
+	
+	public String getClassName() {
+		return _className;
+	}
+
+	public void setClassName(String className) {
+		_className = className;
 	}
 
 	public boolean isShowGrid() {
@@ -168,6 +183,7 @@ public class EditorSettings {
 	}
 
 	public void write(JSONObject obj) {
+		obj.put("classNAme", _className);
 		obj.put("sceneWidth", _sceneWidth);
 		obj.put("sceneHeight", _sceneHeight);
 		obj.put("generateOnSave", _generateOnSave);
@@ -194,6 +210,7 @@ public class EditorSettings {
 	}
 
 	public void read(JSONObject obj) {
+		_className = obj.optString("className", CanvasCore.getDefaultClassName(getCanvasModel().getFile()));
 		_sceneWidth = obj.getDouble("sceneWidth");
 		_sceneHeight = obj.getDouble("sceneHeight");
 		_generateOnSave = obj.getBoolean("generateOnSave");

@@ -42,7 +42,7 @@ public class JSStateCodeGenerator extends BaseStateGenerator {
 
 	@Override
 	protected void generateHeader() {
-		String classname = _world.getClassName();
+		String classname = _settings.getClassName();
 		String baseclass = _settings.getBaseClass();
 
 		// CLASS

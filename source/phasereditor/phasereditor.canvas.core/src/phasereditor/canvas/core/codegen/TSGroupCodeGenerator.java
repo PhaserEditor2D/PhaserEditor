@@ -41,7 +41,7 @@ public class TSGroupCodeGenerator extends JSLikeGroupCodeGenerator {
 
 	@Override
 	protected void generateHeader() {
-		String classname = _world.getClassName();
+		String classname = _settings.getClassName();
 		String baseclass = _settings.getBaseClass();
 
 		PhaserJSDoc help = InspectCore.getPhaserHelp();

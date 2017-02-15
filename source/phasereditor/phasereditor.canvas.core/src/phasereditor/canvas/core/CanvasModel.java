@@ -40,13 +40,22 @@ public class CanvasModel {
 
 	public CanvasModel(IFile file) {
 		_file = file;
-		_settings = new EditorSettings();
+		_settings = new EditorSettings(this);
+		_settings.setClassName(CanvasCore.getDefaultClassName(file));
 		_stateSettings = new StateSettings();
-		_world = new WorldModel(file);
+		_world = new WorldModel(this);
 
 		// set Group just for backward compatibility
 		_type = CanvasType.GROUP;
 		_version = CURRENT_VERSION;
+	}
+
+	public IFile getFile() {
+		return _file;
+	}
+
+	public void setFile(IFile file) {
+		_file = file;
 	}
 
 	public CanvasType getType() {
@@ -55,17 +64,6 @@ public class CanvasModel {
 
 	public void setType(CanvasType type) {
 		_type = type;
-	}
-
-	public String getClassName() {
-		if (_file == null) {
-			return "Canvas";
-		}
-
-		String name = _file.getName();
-		String ext = _file.getFileExtension();
-		int end = name.length() - ext.length() - 1;
-		return name.substring(0, end);
 	}
 
 	public void read(JSONObject data) {
@@ -79,6 +77,11 @@ public class CanvasModel {
 				data2 = new JSONObject();
 			}
 			_stateSettings.read(data2);
+
+			// just for compatibility with version 1
+			if (_settings.getClassName() == null) {
+				_settings.setClassName(CanvasCore.getDefaultClassName(_file));
+			}
 		}
 
 		_world.getAssetTable().read(data.optJSONObject("asset-table"));
@@ -126,7 +129,7 @@ public class CanvasModel {
 			data.put("prefab-table", _world.getPrefabTable().toJSON());
 		}
 	}
-	
+
 	public int getVersion() {
 		return _version;
 	}

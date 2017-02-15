@@ -37,7 +37,7 @@ public class JSGroupCodeGenerator extends JSLikeGroupCodeGenerator {
 
 	@Override
 	protected void generateHeader() {
-		String classname = _world.getClassName();
+		String classname = _settings.getClassName();
 		String baseclass = _settings.getBaseClass();
 		
 		PhaserJSDoc help = InspectCore.getPhaserHelp();
@@ -64,7 +64,7 @@ public class JSGroupCodeGenerator extends JSLikeGroupCodeGenerator {
 
 	@Override
 	protected void generateFooter() {
-		String classname = _world.getClassName();
+		String classname = _settings.getClassName();
 		String baseclass = _settings.getBaseClass();
 		
 		section(POST_INIT_CODE_BEGIN, POST_INIT_CODE_END, getYouCanInsertCodeHere());

@@ -212,4 +212,12 @@ public class CanvasCore {
 		return _fileDataCache;
 	}
 
+	public static String getDefaultClassName(IFile file) {
+		if (file == null) {
+			return "CanvasClass";
+		}
+		
+		return file.getFullPath().removeFileExtension().lastSegment();
+	}
+
 }

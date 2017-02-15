@@ -40,6 +40,7 @@ import org.eclipse.ui.ide.IDE;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.EditorSettings;
@@ -174,10 +175,9 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 
 	protected JSONObject createFinalModelJSON(IFile file) {
 		// set default content
-		String name = _filePage.getFileName();
-		name = name.substring(0, name.length() - _filePage.getFileExtension().length() - 1);
-		_model.getWorld().setFile(file);
-		_model.getWorld().setEditorName(name);
+		_model.setFile(file);
+		_model.getSettings().setClassName(CanvasCore.getDefaultClassName(file));
+		_model.getWorld().setEditorName(_model.getSettings().getClassName());
 		JSONObject obj = new JSONObject();
 		_model.write(obj, true);
 		return obj;
@@ -187,7 +187,7 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 		try {
 
 			EditorSettings settings = _model.getSettings();
-			String fname = _model.getWorld().getClassName() + "." + settings.getLang().getExtension();
+			String fname = settings.getClassName() + "." + settings.getLang().getExtension();
 			IFile srcFile = parent.getFile(new Path(fname));
 			String replace = null;
 
