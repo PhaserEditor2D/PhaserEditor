@@ -60,24 +60,20 @@ public class UpdatePrefabReferencesChange extends Change {
 
 	private IPath _srcPath;
 	private IPath _dstPath;
-	private String _name;
 	private IProject _project;
 	private List<CanvasEditor> _affectedEditors;
 	private List<CanvasFile> _affectedFiles;
-	private IFile _movingFile;
 
-	public UpdatePrefabReferencesChange(String name, IFile file, IPath srcPath, IPath dstPath) {
+	public UpdatePrefabReferencesChange(IProject project, IPath srcPath, IPath dstPath) {
 		super();
 		_srcPath = srcPath;
 		_dstPath = dstPath;
-		_name = name;
-		_project = file.getProject();
-		_movingFile = file;
+		_project = project;
 	}
 
 	@Override
 	public String getName() {
-		return _name;
+		return "Update prefab '" + _srcPath.lastSegment() + "' references.";
 	}
 
 	@Override
@@ -86,19 +82,20 @@ public class UpdatePrefabReferencesChange extends Change {
 		_affectedFiles = new ArrayList<>();
 
 		List<CanvasFile> cfiles = CanvasCore.getCanvasFileCache().getProjectData(_project);
-		Set<CanvasFile> used = new HashSet<>();
+		Set<Object> skip = new HashSet<>();
+		skip.add(_srcPath);
+		skip.add(_dstPath);
 
 		for (CanvasFile cfile : cfiles) {
 			IFile file = cfile.getFile();
 
-			if (file.equals(_movingFile)) {
+			if (skip.contains(file.getProjectRelativePath())) {
 				continue;
 			}
 
 			PhaserEditorUI.forEachOpenFileEditor(file, editor -> {
 				if (editor instanceof CanvasEditor) {
 					_affectedEditors.add((CanvasEditor) editor);
-					used.add(cfile);
 				}
 			});
 		}
@@ -106,7 +103,7 @@ public class UpdatePrefabReferencesChange extends Change {
 		for (CanvasFile cfile : cfiles) {
 			IFile file = cfile.getFile();
 
-			if (file.equals(_movingFile)) {
+			if (skip.contains(file.getProjectRelativePath())) {
 				continue;
 			}
 
@@ -173,12 +170,12 @@ public class UpdatePrefabReferencesChange extends Change {
 			}
 		}
 
-		return new UpdatePrefabReferencesChange(_name, _movingFile, _dstPath, _srcPath);
+		return new UpdatePrefabReferencesChange(_project, _dstPath, _srcPath);
 	}
 
 	@Override
 	public Object getModifiedElement() {
-		return _movingFile;
+		return null;
 	}
 
 	protected static void walkTree(IObjectNode node, Consumer<IObjectNode> visitor) {

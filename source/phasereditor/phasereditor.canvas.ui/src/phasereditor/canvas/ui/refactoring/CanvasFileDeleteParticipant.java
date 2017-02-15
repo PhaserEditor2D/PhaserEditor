@@ -74,7 +74,7 @@ public class CanvasFileDeleteParticipant extends DeleteParticipant {
 			status.addWarning("The canvas file '" + filepath + "' has " + refs.size() + " prefab '" + _file.getName()
 					+ "' instances.", new CanvasFileRefactoringStatusContext(file));
 		}
-		
+
 		return status;
 	}
 
@@ -82,16 +82,7 @@ public class CanvasFileDeleteParticipant extends DeleteParticipant {
 	public Change createChange(IProgressMonitor pm) throws CoreException, OperationCanceledException {
 		List<IFile> files = CanvasCore.getCanvasDereivedFiles(_file);
 
-		if (files.isEmpty()) {
-			return null;
-		}
-
-		if (files.size() == 1) {
-			return new DeleteResourceChange(files.get(0).getFullPath(), true);
-		}
-
-		CompositeChange change = new CompositeChange(
-				"Delete " + files.size() + " files derived from " + _file.getFullPath().toPortableString());
+		CompositeChange change = new CompositeChange("Delete " + _file.getName());
 
 		for (IFile file : files) {
 			change.add(new DeleteResourceChange(file.getFullPath(), true));

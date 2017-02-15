@@ -1775,14 +1775,24 @@
                <instanceof
                      value="org.eclipse.core.resources.IFile">
                </instanceof>
-            </with>
+            </with></enablement>
+      </moveParticipant>
+   </extension>
+   <extension
+         point="org.eclipse.ltk.core.refactoring.renameParticipants">
+      <renameParticipant
+            class="phasereditor.canvas.ui.refactoring.CanvasFileRenameParticipant"
+            id="phasereditor.canvas.ui.renameParticipant1"
+            name="Rename Canvas">
+         <enablement>
             <with
                   variable="element">
                <instanceof
                      value="org.eclipse.core.resources.IFile">
                </instanceof>
-            </with></enablement>
-      </moveParticipant>
+            </with>
+         </enablement>
+      </renameParticipant>
    </extension>
    <extension
          point="org.eclipse.ltk.ui.refactoring.statusContextViewers">

@@ -1,22 +1,43 @@
+// The MIT License (MIT)
+//
+// Copyright (c) 2015, 2017 Arian Fornaris
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions: The above copyright notice and this permission
+// notice shall be included in all copies or substantial portions of the
+// Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.refactoring;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.core.refactoring.participants.CheckConditionsContext;
-import org.eclipse.ltk.core.refactoring.participants.MoveArguments;
-import org.eclipse.ltk.core.refactoring.participants.MoveParticipant;
-import org.eclipse.ltk.core.refactoring.resource.MoveResourceChange;
+import org.eclipse.ltk.core.refactoring.participants.RenameArguments;
+import org.eclipse.ltk.core.refactoring.participants.RenameParticipant;
+import org.eclipse.ltk.core.refactoring.resource.RenameResourceChange;
 
 import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.core.CanvasCore.PrefabReference;
@@ -24,13 +45,14 @@ import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.Prefab;
 import phasereditor.canvas.ui.CanvasUI;
 
-public class CanvasFileMoveParticipant extends MoveParticipant {
+/**
+ * @author arian
+ *
+ */
+public class CanvasFileRenameParticipant extends RenameParticipant {
 
-	private CanvasType _canvasType;
 	private IFile _file;
-
-	public CanvasFileMoveParticipant() {
-	}
+	private CanvasType _canvasType;
 
 	@Override
 	protected boolean initialize(Object element) {
@@ -53,7 +75,7 @@ public class CanvasFileMoveParticipant extends MoveParticipant {
 
 	@Override
 	public String getName() {
-		return "Move Canvas";
+		return "Rename Canvas";
 	}
 
 	@Override
@@ -85,22 +107,24 @@ public class CanvasFileMoveParticipant extends MoveParticipant {
 	public Change createChange(IProgressMonitor pm) throws CoreException, OperationCanceledException {
 		List<IFile> files = CanvasCore.getCanvasDereivedFiles(_file);
 
-		MoveArguments args = getArguments();
+		RenameArguments args = getArguments();
 
-		IContainer dst = (IContainer) args.getDestination();
+		CompositeChange changes = new CompositeChange("Rename " + _file.getName());
 
-		CompositeChange changes = new CompositeChange("Move " + _file.getName());
+		String newName = args.getNewName();
 
 		for (IFile file : files) {
-			changes.add(new MoveResourceChange(file, dst));
+			IPath path = file.getFullPath();
+			String ext = path.getFileExtension();
+			String derivedNewName = new Path(newName).removeFileExtension().addFileExtension(ext).toPortableString();
+			changes.add(new RenameResourceChange(path, derivedNewName));
 		}
 
 		if (_canvasType.isPrefab()) {
 			IPath srcPath = _file.getProjectRelativePath();
-			IPath dstPath = dst.getProjectRelativePath().append(_file.getName());
+			IPath dstPath = srcPath.removeLastSegments(1).append(newName);
 
-			changes.add(new UpdatePrefabReferencesChange(
-					_file.getProject(), srcPath, dstPath));
+			changes.add(new UpdatePrefabReferencesChange(_file.getProject(), srcPath, dstPath));
 		}
 
 		return changes;
