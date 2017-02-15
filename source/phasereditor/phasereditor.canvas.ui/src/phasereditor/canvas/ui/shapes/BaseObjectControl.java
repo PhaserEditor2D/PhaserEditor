@@ -609,17 +609,19 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 			JSONObject data = model.toJSON(false);
 
-			if (prefab.getFile().exists()) {
-				BaseObjectModel newModel = CanvasModelFactory.createModel(model.getParent(), data);
-				BaseObjectControl<?> newControl = CanvasObjectFactory.createObjectControl(_canvas, newModel);
-				GroupControl parentControl = getGroup().getControl();
-				int i = parentControl.removeChild(getIObjectNode());
-				parentControl.addChild(i, newControl.getIObjectNode());
-				return newControl;
+			if (!prefab.getFile().exists()) {
+				throw new MissingPrefabException(data);
 			}
 
-			throw new MissingPrefabException(data);
+			BaseObjectModel newModel = CanvasModelFactory.createModel(model.getParent(), data);
+			BaseObjectControl<?> newControl = CanvasObjectFactory.createObjectControl(_canvas, newModel);
+			GroupControl parentControl = getGroup().getControl();
+			int i = parentControl.removeChild(getIObjectNode());
+			parentControl.addChild(i, newControl.getIObjectNode());
+			return newControl;
+
 		}
+		
 		return this;
 	}
 }

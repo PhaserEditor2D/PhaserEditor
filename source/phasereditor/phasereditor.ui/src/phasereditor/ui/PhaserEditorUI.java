@@ -100,6 +100,14 @@ public class PhaserEditorUI {
 			}
 		}
 	}
+	
+	public static List<IEditorPart> findOpenFileEditors(IFile file) {
+		List<IEditorPart> list = new ArrayList<>();
+		forEachOpenFileEditor(file, e -> {
+			list.add(e);
+		});
+		return list ;
+	}
 
 	public static boolean forEachOpenFileEditor(IFile file, Consumer<IEditorPart> visitor) {
 		boolean found = false;
