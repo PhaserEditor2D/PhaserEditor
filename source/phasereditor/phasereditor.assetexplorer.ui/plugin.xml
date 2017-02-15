@@ -103,6 +103,20 @@
                visible="true">
          </separator>
          <command
+               commandId="org.eclipse.ui.edit.rename"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.eclipse.ui.edit.move"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+         <command
                commandId="org.eclipse.ui.edit.delete"
                style="push">
             <visibleWhen

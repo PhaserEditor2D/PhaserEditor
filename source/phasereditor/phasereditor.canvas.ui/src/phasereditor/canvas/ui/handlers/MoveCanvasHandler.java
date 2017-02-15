@@ -15,22 +15,22 @@ import org.eclipse.ui.internal.ide.actions.LTKLauncher;
 import phasereditor.canvas.core.CanvasFile;
 
 @SuppressWarnings("restriction")
-public class DeleteCanvasHandler extends AbstractHandler {
+public class MoveCanvasHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IStructuredSelection sel = HandlerUtil.getCurrentStructuredSelection(event);
 
-		List<IFile> toMove = new ArrayList<>();
+		List<IFile> toDelete = new ArrayList<>();
 
 		Object[] array = sel.toArray();
 
 		for (Object obj : array) {
 			CanvasFile cfile = (CanvasFile) obj;
-			toMove.add(cfile.getFile());
+			toDelete.add(cfile.getFile());
 		}
 
-		LTKLauncher.openDeleteWizard(new StructuredSelection(toMove));
+		LTKLauncher.openMoveWizard(new StructuredSelection(toDelete));
 
 		return null;
 	}

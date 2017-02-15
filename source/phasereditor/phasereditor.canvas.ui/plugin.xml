@@ -801,6 +801,39 @@
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
+      <handler
+            class="phasereditor.canvas.ui.handlers.RenameCanvasHandler"
+            commandId="org.eclipse.ui.edit.rename">
+         <activeWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <instanceof
+                        value="phasereditor.canvas.core.CanvasFile">
+                  </instanceof>
+               </iterate>
+            </with>
+         </activeWhen>
+      </handler>
+      
+      <handler
+            class="phasereditor.canvas.ui.handlers.MoveCanvasHandler"
+            commandId="org.eclipse.ui.edit.move">
+         <activeWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <instanceof
+                        value="phasereditor.canvas.core.CanvasFile">
+                  </instanceof>
+               </iterate>
+            </with>
+         </activeWhen>
+      </handler>
          
       <handler
             class="phasereditor.canvas.ui.handlers.DeleteCanvasHandler"

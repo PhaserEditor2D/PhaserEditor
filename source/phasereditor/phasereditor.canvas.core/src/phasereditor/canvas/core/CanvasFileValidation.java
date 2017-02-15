@@ -71,10 +71,9 @@ public class CanvasFileValidation {
 	}
 
 	public List<IStatus> validate() {
-		
+
 		out.println("Validating " + _file.getProjectRelativePath());
-		
-		
+
 		validateVersion();
 		validateAssetTable();
 		validatePrefabTable();
@@ -126,8 +125,13 @@ public class CanvasFileValidation {
 	}
 
 	private void validatePrefabInstance(JSONObject obj) {
-		IFile file = _prefabTable.get(obj.getString("prefab"));
-		if (file == null) {
+		IFile file;
+		if (obj.has("prefabFile")) {
+			file = _file.getProject().getFile(obj.getString("prefabFile"));
+		} else {
+			file = _prefabTable.get(obj.getString("prefab"));
+		}
+		if (file == null || !file.exists()) {
 			JSONObject info = obj.getJSONObject("info");
 			String name = info.optString("editorName", "?");
 			_problems.add(new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID, "Missing prefab of '" + name + "'."));

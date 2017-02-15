@@ -46,11 +46,10 @@ public class CanvasFile {
 	public IFile getFile() {
 		return _file;
 	}
-	
+
 	public void setFile(IFile file) {
 		_file = file;
 	}
-
 
 	public String getClassName() {
 		return _className;
@@ -89,4 +88,5 @@ public class CanvasFile {
 	public String toString() {
 		return getClass().getSimpleName() + ":" + _file + "@" + hashCode();
 	}
+
 }
