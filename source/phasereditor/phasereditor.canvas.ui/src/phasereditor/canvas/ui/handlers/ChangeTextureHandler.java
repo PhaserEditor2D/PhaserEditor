@@ -27,9 +27,7 @@ public class ChangeTextureHandler extends AbstractHandler {
 
 		Object textureModel;
 
-		if (dlg.open() == Window.OK) {
-			textureModel = dlg.getResult();
-		} else {
+		if (dlg.open() != Window.OK || (textureModel = dlg.getResult()) == null) {
 			return null;
 		}
 

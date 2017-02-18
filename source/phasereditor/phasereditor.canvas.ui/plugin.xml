@@ -56,124 +56,174 @@
       <menuContribution
             allPopups="false"
             locationURI="popup:phasereditor.canvas.ui.editors.canvas?after=object">
-        
-	         <menu
-                icon="platform:/plugin/phasereditor.ui/icons/shape_move_front.png"
-                label="Rise And Lower">
-	               
-	                <command
-	               commandId="phasereditor.canvas.ui.riseToTop"
-	               icon="platform:/plugin/phasereditor.ui/icons/shape_move_front.png"
-	               label="Rise To Top"
-	               style="push">
-	         </command>
-	         <command
-	               commandId="phasereditor.canvas.ui.rise"
-	               icon="platform:/plugin/phasereditor.ui/icons/shape_move_forwards.png"
-	               label="Rise"
-	               style="push">
-	         </command>
-	         <command
-	               commandId="phasereditor.canvas.ui.lower"
-	               icon="platform:/plugin/phasereditor.ui/icons/shape_move_backwards.png"
-	               label="Lower"
-	               style="push">
-	         </command>
-	         <command
-	               commandId="phasereditor.canvas.ui.lowerBottom"
-	               icon="platform:/plugin/phasereditor.ui/icons/shape_move_back.png"
-	               label="Lower To Bottom"
-	               style="push">
-	         </command>
-	         
-         </menu>
          <menu
-               icon="platform:/plugin/phasereditor.ui/icons/shape_align_center.png"
-               label="Align">
-            
-            
-            
-            <command
-                  commandId="phasereditor.canvas.ui.align.left"
-                  icon="platform:/plugin/phasereditor.ui/icons/shape_align_left.png"
-                  label="Align Left"
-                  style="push">
-            </command>
-            <command
-                  commandId="phasereditor.canvas.ui.align.right"
-                  icon="platform:/plugin/phasereditor.ui/icons/shape_align_right.png"
-                  label="Align Right"
-                  style="push">
-            </command>
-            <command
-                  commandId="phasereditor.canvas.ui.align.top"
-                  icon="platform:/plugin/phasereditor.ui/icons/shape_align_top.png"
-                  label="Align Top"
-                  style="push">
-            </command>
-            <command
-                  commandId="phasereditor.canvas.ui.align.bottom"
-                  icon="platform:/plugin/phasereditor.ui/icons/shape_align_bottom.png"
-                  label="Align Bottom"
-                  style="push">
-            </command>
-            <command
-                  commandId="phasereditor.canvas.ui.align.center"
+               label="Object">
+            <menu
+                  label="Transform">
+               <command
+                     commandId="phasereditor.canvas.ui.scale"
+                     label="Scale"
+                     style="push">
+               </command>
+               <command
+                     commandId="phasereditor.canvas.ui.editangle"
+                     label="Rotate"
+                     style="push">
+               </command>
+               <command
+                     commandId="phasereditor.canvas.ui.editanchors"
+                     label="Anchor"
+                     style="push">
+               </command>
+            </menu>
+            <separator
+                  name="phasereditor.canvas.ui.object.separator1"
+                  visible="true">
+            </separator>
+            <menu
+                  icon="platform:/plugin/phasereditor.ui/icons/shape_move_front.png"
+                  label="Rise And Lower">
+               <command
+                     commandId="phasereditor.canvas.ui.riseToTop"
+                     icon="platform:/plugin/phasereditor.ui/icons/shape_move_front.png"
+                     label="Rise To Top"
+                     style="push">
+               </command>
+               <command
+                     commandId="phasereditor.canvas.ui.rise"
+                     icon="platform:/plugin/phasereditor.ui/icons/shape_move_forwards.png"
+                     label="Rise"
+                     style="push">
+               </command>
+               <command
+                     commandId="phasereditor.canvas.ui.lower"
+                     icon="platform:/plugin/phasereditor.ui/icons/shape_move_backwards.png"
+                     label="Lower"
+                     style="push">
+               </command>
+               <command
+                     commandId="phasereditor.canvas.ui.lowerBottom"
+                     icon="platform:/plugin/phasereditor.ui/icons/shape_move_back.png"
+                     label="Lower To Bottom"
+                     style="push">
+               </command>
+            </menu>
+            <menu
                   icon="platform:/plugin/phasereditor.ui/icons/shape_align_center.png"
-                  label="Align Center"
-                  style="push">
-            </command>
-            <command
-                  commandId="phasereditor.canvas.ui.align.middle"
-                  icon="platform:/plugin/phasereditor.ui/icons/shape_align_middle.png"
-                  label="Align Middle"
-                  style="push">
-            </command>
-            
-            
-            
-         </menu>
-         <separator
-               name="phasereditor.canvas.ui.separator1"
-               visible="true">
-         </separator>
-         <menu
-               label="Group">
-            <command
-                  commandId="phasereditor.canvas.ui.makegroup"
-                  icon="platform:/plugin/phasereditor.ui/icons/shape_group.png"
-                  label="Group Selection"
-                  style="push">
-            </command>
+                  label="Align">
+               <command
+                     commandId="phasereditor.canvas.ui.align.left"
+                     icon="platform:/plugin/phasereditor.ui/icons/shape_align_left.png"
+                     label="Align Left"
+                     style="push">
+               </command>
+               <command
+                     commandId="phasereditor.canvas.ui.align.right"
+                     icon="platform:/plugin/phasereditor.ui/icons/shape_align_right.png"
+                     label="Align Right"
+                     style="push">
+               </command>
+               <command
+                     commandId="phasereditor.canvas.ui.align.top"
+                     icon="platform:/plugin/phasereditor.ui/icons/shape_align_top.png"
+                     label="Align Top"
+                     style="push">
+               </command>
+               <command
+                     commandId="phasereditor.canvas.ui.align.bottom"
+                     icon="platform:/plugin/phasereditor.ui/icons/shape_align_bottom.png"
+                     label="Align Bottom"
+                     style="push">
+               </command>
+               <command
+                     commandId="phasereditor.canvas.ui.align.center"
+                     icon="platform:/plugin/phasereditor.ui/icons/shape_align_center.png"
+                     label="Align Center"
+                     style="push">
+               </command>
+               <command
+                     commandId="phasereditor.canvas.ui.align.middle"
+                     icon="platform:/plugin/phasereditor.ui/icons/shape_align_middle.png"
+                     label="Align Middle"
+                     style="push">
+               </command>
+            </menu>
+            <separator
+                  name="phasereditor.canvas.ui.separator.object.2"
+                  visible="true">
+            </separator>
             <command
                   commandId="phasereditor.canvas.ui.moveToGroup"
                   label="Move To Group..."
                   style="push">
             </command>
+         </menu>
+         <menu
+               label="Sprite">
+            <menu
+                  label="Morph To">
+               <command
+                     commandId="phasereditor.canvas.ui.morphToTilesprite"
+                     label="Tile Sprite"
+                     style="push">
+               </command>
+               <command
+                     commandId="phasereditor.canvas.ui.morphToButton"
+                     label="Button"
+                     style="push">
+               </command>
+            </menu>
             <command
-                  commandId="phasereditor.canvas.ui.emptygroup"
-                  icon="platform:/plugin/phasereditor.ui/icons/shape_square_group.png"
-                  label="Create Empty Group"
+                  commandId="phasereditor.canvas.ui.changeTexture"
+                  label="Change Sprite Texture"
                   style="push">
             </command>
             <command
-                  commandId="phasereditor.canvas.ui.ungroup"
-                  label="Break Group"
+                  commandId="phasereditor.canvas.ui.resizeTile"
+                  label="Resize Tile Sprite"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <reference
+                        definitionId="phasereditor.canvas.ui.oneSpriteSelected">
+                  </reference>
+               </visibleWhen>
+            </command>
+            <separator
+                  name="phasereditor.canvas.ui.sprite.1"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="phasereditor.canvas.ui.editbody"
+                  label="Edit Body"
                   style="push">
             </command>
             <command
-                  commandId="phasereditor.canvas.ui.trimGroup"
-                  label="Trim Group"
+                  commandId="phasereditor.canvas.ui.disablePhysics"
+                  label="Remove Body"
                   style="push">
             </command>
+            <menu
+                  label="Arcade">
+               <command
+                     commandId="phasereditor.canvas.ui.arcadeRectBody"
+                     label="Set Arcade Body - Rectangular"
+                     style="push">
+               </command>
+               <command
+                     commandId="phasereditor.canvas.ui.arcadeCircleBody"
+                     label="Set Arcade Body - Circular"
+                     style="push">
+               </command>
+            </menu>
+            <separator
+                  name="phasereditor.canvas.ui.sprite.2"
+                  visible="true">
+            </separator>
             <command
-                  commandId="phasereditor.canvas.ui.closeGroup"
-                  label="Close Group"
-                  style="push">
-            </command>
-            <command
-                  commandId="phasereditor.canvas.ui.openGroup"
-                  label="Open Group"
+                  commandId="phasereditor.canvas.ui.addsprite"
+                  icon="platform:/plugin/phasereditor.ui/icons/car_add.png"
+                  label="Add Sprite..."
                   style="push">
             </command>
          </menu>
@@ -189,15 +239,27 @@
             </command>
          </menu>
          <menu
-               label="Pick">
+               label="Group">
             <command
-                  commandId="phasereditor.canvas.ui.pick"
-                  label="Allow Pick Object"
+                  commandId="phasereditor.canvas.ui.makegroup"
+                  icon="platform:/plugin/phasereditor.ui/icons/shape_group.png"
+                  label="Create Group - With Selection"
                   style="push">
             </command>
             <command
-                  commandId="phasereditor.canvas.ui.nopick"
-                  label="Deny Pick Object"
+                  commandId="phasereditor.canvas.ui.emptygroup"
+                  icon="platform:/plugin/phasereditor.ui/icons/shape_square_group.png"
+                  label="Create Group - Empty"
+                  style="push">
+            </command>
+            <command
+                  commandId="phasereditor.canvas.ui.ungroup"
+                  label="Break Group"
+                  style="push">
+            </command>
+            <command
+                  commandId="phasereditor.canvas.ui.trimGroup"
+                  label="Trim Group"
                   style="push">
             </command>
          </menu>
@@ -205,6 +267,39 @@
                name="phasereditor.canvas.ui.separator8"
                visible="true">
          </separator>
+        
+         <command
+               commandId="phasereditor.canvas.ui.nopick"
+               label="Deny Pick Object"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+         <command
+               commandId="phasereditor.canvas.ui.pick"
+               label="Allow Pick Object"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+         <command
+               commandId="phasereditor.canvas.ui.closeGroup"
+               label="Close Group"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+         <command
+               commandId="phasereditor.canvas.ui.openGroup"
+               label="Open Group"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
          <command
                commandId="phasereditor.canvas.ui.togglesnapping"
                style="push">
@@ -213,97 +308,6 @@
                commandId="phasereditor.canvas.ui.setSnappingWithSelection"
                style="push">
          </command>
-         <separator
-               name="phasereditor.canvas.ui.separator4"
-               visible="true">
-         </separator>
-         <command
-               commandId="phasereditor.canvas.ui.addsprite"
-               icon="platform:/plugin/phasereditor.ui/icons/car_add.png"
-               label="Add Sprite..."
-               style="push">
-         </command>
-         <command
-               commandId="phasereditor.canvas.ui.resizeTile"
-               label="Resize Tile Sprite"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="phasereditor.canvas.ui.oneSpriteSelected">
-               </reference>
-            </visibleWhen>
-         </command>
-         <menu
-               label="Morph To">
-            <command
-                  commandId="phasereditor.canvas.ui.morphToTilesprite"
-                  label="Tile Sprite"
-                  style="push">
-            </command>
-            <command
-                  commandId="phasereditor.canvas.ui.morphToButton"
-                  label="Button"
-                  style="push">
-            </command>
-         </menu>
-         <command
-               commandId="phasereditor.canvas.ui.changeTexture"
-               label="Change Sprite Texture"
-               style="push">
-         </command>
-         <separator
-               name="phasereditor.canvas.ui.separator3"
-               visible="true">
-         </separator>
-         <menu
-               label="Arcade">
-            <command
-                  commandId="phasereditor.canvas.ui.arcadeRectBody"
-                  label="Set Arcade Body - Rectangular"
-                  style="push">
-            </command>
-            <command
-                  commandId="phasereditor.canvas.ui.arcadeCircleBody"
-                  label="Set Arcade Body - Circular"
-                  style="push">
-            </command>
-         </menu>
-         <command
-               commandId="phasereditor.canvas.ui.editbody"
-               label="Edit Body"
-               style="push">
-         </command>
-         <command
-               commandId="phasereditor.canvas.ui.disablePhysics"
-               label="Remove Body"
-               style="push">
-         </command>
-         <separator
-               name="phasereditor.canvas.ui.separator6"
-               visible="true">
-         </separator>
-         <menu
-               label="Transform">
-            <command
-                  commandId="phasereditor.canvas.ui.scale"
-                  label="Scale"
-                  style="push">
-            </command>
-            <command
-                  commandId="phasereditor.canvas.ui.editangle"
-                  label="Rotate"
-                  style="push">
-            </command>
-            <command
-                  commandId="phasereditor.canvas.ui.editanchors"
-                  label="Anchor"
-                  style="push">
-            </command>
-         </menu>
-         <separator
-               name="phasereditor.canvas.ui.separator7">
-         </separator>
          <command
                commandId="org.eclipse.ui.edit.delete"
                style="push">
@@ -1071,18 +1075,46 @@
             class="phasereditor.canvas.ui.handlers.CloseOpenGroupHandler"
             commandId="phasereditor.canvas.ui.openGroup">
          <enabledWhen>
-            <reference
-                  definitionId="phasereditor.canvas.ui.groupsSelected">
-            </reference>
+         	<and>
+	            <reference
+	                  definitionId="phasereditor.canvas.ui.groupsSelected">
+	            </reference>
+	            <with
+	                    variable="selection">
+	                 <iterate>
+	                    <adapt
+	                        type="phasereditor.canvas.ui.shapes.GroupNode">
+	                     <test
+	                           property="phasereditor.canvas.ui.isClosedGroup"
+	                           value="true">
+	                     </test>
+	                  </adapt>
+	                 </iterate>
+	              </with>
+            </and>
          </enabledWhen>
       </handler>
       <handler
             class="phasereditor.canvas.ui.handlers.CloseOpenGroupHandler"
             commandId="phasereditor.canvas.ui.closeGroup">
          <enabledWhen>
-            <reference
-                  definitionId="phasereditor.canvas.ui.groupsSelected">
-            </reference>
+            <and>
+	            <reference
+	                  definitionId="phasereditor.canvas.ui.groupsSelected">
+	            </reference>
+	             <with
+                    variable="selection">
+                 <iterate>
+                    <adapt
+                        type="phasereditor.canvas.ui.shapes.GroupNode">
+                     <test
+                           property="phasereditor.canvas.ui.isClosedGroup"
+                           value="false">
+                     </test>
+                  </adapt>
+                 </iterate>
+              </with>
+            </and>
          </enabledWhen>
       </handler>
       <handler
@@ -1096,6 +1128,20 @@
 	             <reference
                      definitionId="phasereditor.canvas.ui.noPrefabRootSelected">
                </reference>
+              <with
+                    variable="selection">
+                 <iterate
+                       operator="and">
+                    <adapt
+                        type="phasereditor.canvas.ui.shapes.IObjectNode">
+                     <test
+                           property="phasereditor.canvas.ui.allowPick"
+                           value="false">
+                     </test>
+                  </adapt>
+                 </iterate>
+              </with>
+               
             </and>
          </enabledWhen>
       </handler>
@@ -1110,6 +1156,18 @@
 	             <reference
                      definitionId="phasereditor.canvas.ui.noPrefabRootSelected">
                </reference>
+               <with
+                    variable="selection">
+                 <iterate>
+                    <adapt
+                        type="phasereditor.canvas.ui.shapes.IObjectNode">
+                     <test
+                           property="phasereditor.canvas.ui.allowPick"
+                           value="true">
+                     </test>
+                  </adapt>
+                 </iterate>
+              </with>
             </and>
          </enabledWhen>
       </handler>
@@ -1622,9 +1680,16 @@
                </count>
                <iterate
                      ifEmpty="false">
+                     <and>
                   <instanceof
                         value="phasereditor.canvas.ui.shapes.IObjectNode">
                   </instanceof>
+                  <not>
+                     <instanceof
+                           value="phasereditor.canvas.ui.shapes.MissingAssetNode">
+                     </instanceof>
+                  </not>
+                  </and>
                </iterate>
             </and>
          </with>
@@ -1782,7 +1847,7 @@
             class="phasereditor.canvas.ui.CanvasObjectPropertyTester"
             id="phasereditor.canvas.ui.objectPropertyTester"
             namespace="phasereditor.canvas.ui"
-            properties="isPrefabInstance,isGroupPrefabRoot"
+            properties="isPrefabInstance,isGroupPrefabRoot,allowPick,isClosedGroup"
             type="phasereditor.canvas.ui.shapes.IObjectNode">
       </propertyTester>
       <propertyTester

@@ -36,6 +36,17 @@ public class CanvasObjectPropertyTester extends PropertyTester {
 				}
 			}
 			break;
+		case "allowPick":
+			if (receiver instanceof IObjectNode) {
+				boolean editorPick = ((IObjectNode) receiver).getModel().isEditorPick();
+				return editorPick == (boolean) expectedValue;
+			}
+			break;
+		case "isClosedGroup":
+			if (receiver instanceof GroupNode) {
+				return ((GroupNode) receiver).getModel().isEditorClosed() == (boolean) expectedValue;
+			}
+			break;
 		default:
 			break;
 		}

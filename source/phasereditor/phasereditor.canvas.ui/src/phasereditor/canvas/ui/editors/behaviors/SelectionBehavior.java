@@ -54,6 +54,7 @@ import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
+import phasereditor.canvas.ui.shapes.MissingAssetNode;
 
 /**
  * @author arian
@@ -217,7 +218,7 @@ public class SelectionBehavior implements ISelectionProvider {
 			return closed;
 		}
 
-		if (picked instanceof ISpriteNode) {
+		if (picked instanceof ISpriteNode || picked instanceof MissingAssetNode) {
 			return picked;
 		}
 
@@ -341,18 +342,19 @@ public class SelectionBehavior implements ISelectionProvider {
 		for (Object obj : _selection.toArray()) {
 			if (obj instanceof IObjectNode) {
 				IObjectNode inode = (IObjectNode) obj;
-				
+
 				if (inode.getNode().getParent() == null) {
-					// is possible the node was detached because a rebuild or morphings, etc...
-					BaseObjectControl<?> control = _canvas.getWorldNode().getControl().findById(inode.getModel().getId());
+					// is possible the node was detached because a rebuild or
+					// morphings, etc...
+					BaseObjectControl<?> control = _canvas.getWorldNode().getControl()
+							.findById(inode.getModel().getId());
 					if (control == null) {
 						continue;
 					}
 					inode = control.getIObjectNode();
 				}
-				
+
 				Node node = inode.getNode();
-				
 
 				Bounds rect = buildSelectionBounds(node);
 
@@ -376,21 +378,21 @@ public class SelectionBehavior implements ISelectionProvider {
 		_canvas.getHandlerBehavior().clearNotSelected();
 		_canvas.getHandlerBehavior().update();
 	}
-	
+
 	public static Bounds buildSelectionBounds(List<Node> nodes, GroupNode world) {
 		if (nodes.isEmpty()) {
 			return null;
 		}
-		
+
 		List<Bounds> list = new ArrayList<>();
-		
-		for(Node node : nodes) {
+
+		for (Node node : nodes) {
 			buildSelectionBounds(node, list, world);
 		}
-		
+
 		return mergeBounds(list);
 	}
-	
+
 	public static Bounds buildSelectionBounds(Node node, GroupNode world) {
 		List<Bounds> list = new ArrayList<>();
 
