@@ -1378,9 +1378,22 @@
             class="phasereditor.canvas.ui.handlers.ChangeTextureHandler"
             commandId="phasereditor.canvas.ui.changeTexture">
          <activeWhen>
-            <reference
-                  definitionId="phasereditor.canvas.ui.oneSpriteSelected">
-            </reference>
+            <with
+               variable="selection">
+            <and>               
+               <iterate
+                     ifEmpty="false">
+                  <or>
+                     <instanceof
+                           value="phasereditor.canvas.ui.shapes.ISpriteNode">
+                     </instanceof>
+                     <instanceof
+                           value="phasereditor.canvas.ui.shapes.MissingAssetNode">
+                     </instanceof>
+                  </or>
+               </iterate>
+            </and>
+         </with>
          </activeWhen>
       </handler>
       

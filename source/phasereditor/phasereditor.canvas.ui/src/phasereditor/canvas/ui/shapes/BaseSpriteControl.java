@@ -59,7 +59,8 @@ import phasereditor.ui.ColorButtonSupport;
  * @author arian
  *
  */
-public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseObjectControl<T> {
+public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseObjectControl<T>
+		implements ITextureChangeableControl {
 
 	private PGridNumberProperty _anchor_x_property;
 	private PGridNumberProperty _anchor_y_property;
@@ -662,6 +663,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 		return getTextureTop() + getTextureHeight();
 	}
 
+	@Override
 	public BaseSpriteModel createModelWithTexture(IAssetFrameModel textureKey) {
 		return CanvasModelFactory.createModel(getGroup().getModel(), textureKey);
 	}

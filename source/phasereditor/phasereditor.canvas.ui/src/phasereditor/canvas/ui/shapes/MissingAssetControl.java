@@ -25,8 +25,10 @@ import org.json.JSONObject;
 
 import javafx.scene.control.Label;
 import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.MissingAssetSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
@@ -35,7 +37,8 @@ import phasereditor.canvas.ui.editors.ObjectCanvas;
  * @author arian
  *
  */
-public class MissingAssetControl extends BaseObjectControl<MissingAssetSpriteModel> {
+public class MissingAssetControl extends BaseObjectControl<MissingAssetSpriteModel>
+		implements ITextureChangeableControl {
 
 	public MissingAssetControl(ObjectCanvas canvas, MissingAssetSpriteModel model) {
 		super(canvas, model);
@@ -79,5 +82,14 @@ public class MissingAssetControl extends BaseObjectControl<MissingAssetSpriteMod
 		}
 
 		return false;
+	}
+
+	@Override
+	public BaseSpriteModel createModelWithTexture(IAssetFrameModel textureKey) {
+		JSONObject data = new JSONObject(getModel().getSrcData().toString());
+
+		CanvasModelFactory.changeTextureToObjectData(data, textureKey);
+
+		return (BaseSpriteModel) CanvasModelFactory.createModel(getGroup().getModel(), data);
 	}
 }

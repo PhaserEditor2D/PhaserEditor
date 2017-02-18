@@ -101,7 +101,8 @@ import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.DeleteNodeOperation;
 import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
-import phasereditor.canvas.ui.shapes.ISpriteNode;
+import phasereditor.canvas.ui.shapes.IObjectNode;
+import phasereditor.canvas.ui.shapes.ITextureChangeableControl;
 
 /**
  * @author arian
@@ -167,7 +168,7 @@ public class CanvasUI {
 		return result;
 	}
 
-	public static void changeSpriteTexture(ISpriteNode sprite, Object texture, CompositeOperation operations) {
+	public static void changeSpriteTexture(IObjectNode sprite, Object texture, CompositeOperation operations) {
 
 		Object frame;
 
@@ -179,10 +180,11 @@ public class CanvasUI {
 			frame = texture;
 		}
 
-		BaseSpriteModel oldModel = sprite.getModel();
+		BaseSpriteModel oldModel = (BaseSpriteModel) sprite.getModel();
 		JSONObject oldData = oldModel.toJSON(false);
 
-		BaseSpriteModel newModel = sprite.getControl().createModelWithTexture((IAssetFrameModel) frame);
+		BaseSpriteModel newModel = ((ITextureChangeableControl) sprite.getControl())
+				.createModelWithTexture((IAssetFrameModel) frame);
 
 		if (oldModel.isPrefabInstance()) {
 			newModel.setPrefab(oldModel.getPrefab());
@@ -393,11 +395,11 @@ public class CanvasUI {
 
 	public static Image getCanvasFileIcon(CanvasFile canvasFile, AssetLabelProvider labelProvider) {
 		IFile file = canvasFile.getFile();
-		
+
 		if (!file.exists()) {
 			return null;
 		}
-		
+
 		Path imgfile = CanvasUI.getCanvasScreenshotFile(file, false);
 		return labelProvider.getIcon(imgfile.toAbsolutePath().toString());
 	}

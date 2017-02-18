@@ -26,6 +26,8 @@ import org.eclipse.core.resources.IProject;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.core.IAssetKey;
@@ -51,6 +53,38 @@ public class CanvasModelFactory {
 			return new AtlasSpriteModel(parent, (Frame) obj);
 		}
 		return null;
+	}
+
+	public static void changeTextureToObjectData(JSONObject data, IAssetKey textureKey) {
+		String type = data.getString("type");
+
+		//@formatter:off
+		
+		// A simple sprite has a strong dependence on the asset, so we need
+		// to know for the new asset what is the new sprite type
+		
+		if (type.equals(AtlasSpriteModel.TYPE_NAME) 
+		|| type.equals(SpritesheetSpriteModel.TYPE_NAME)
+		|| type.equals(ImageSpriteModel.TYPE_NAME)) {
+		
+		//@formatter:on
+
+			String newType = type;
+
+			AssetModel asset = textureKey.getAsset();
+
+			if (asset instanceof AtlasAssetModel) {
+				newType = AtlasSpriteModel.TYPE_NAME;
+			} else if (asset instanceof ImageAssetModel) {
+				newType = ImageSpriteModel.TYPE_NAME;
+			} else if (asset instanceof SpritesheetAssetModel) {
+				newType = SpritesheetSpriteModel.TYPE_NAME;
+			}
+
+			data.put("type", newType);
+		}
+
+		data.put("asset-ref", AssetPackCore.getAssetJSONReference(textureKey));
 	}
 
 	public static BaseObjectModel createModel(GroupModel parent, JSONObject data) {

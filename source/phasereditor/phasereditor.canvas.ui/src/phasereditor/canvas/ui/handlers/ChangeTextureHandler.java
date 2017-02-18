@@ -14,7 +14,7 @@ import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.grid.editors.TextureDialog;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.SelectOperation;
-import phasereditor.canvas.ui.shapes.ISpriteNode;
+import phasereditor.canvas.ui.shapes.IObjectNode;
 
 public class ChangeTextureHandler extends AbstractHandler {
 
@@ -28,8 +28,9 @@ public class ChangeTextureHandler extends AbstractHandler {
 
 		dlg.setProject(editor.getEditorInputFile().getProject());
 
-		ISpriteNode sprite = (ISpriteNode) sel;
-		BaseSpriteModel model = sprite.getModel();
+		IObjectNode sprite = (IObjectNode) sel;
+
+		BaseSpriteModel model = (BaseSpriteModel) sprite.getModel();
 
 		if (model.isPrefabInstance() && model.isPrefabReadOnly(BaseSpriteModel.PROPSET_TEXTURE)) {
 			MessageDialog.openInformation(HandlerUtil.getActiveShell(event), "Change Texture",
@@ -45,7 +46,7 @@ public class ChangeTextureHandler extends AbstractHandler {
 			Object textureModel = dlg.getResult();
 
 			editor.getCanvas().getHandlerBehavior().clear();
-			
+
 			CompositeOperation operations = new CompositeOperation();
 
 			operations.add(new SelectOperation(model.getId()));
