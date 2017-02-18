@@ -27,6 +27,7 @@ import javafx.scene.control.Label;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CanvasModelFactory;
@@ -64,14 +65,15 @@ public class MissingAssetControl extends BaseObjectControl<MissingAssetSpriteMod
 		JSONObject data = getModel().getSrcData();
 		JSONObject ref = data.getJSONObject("asset-ref");
 		Object asset = AssetPackCore.findAssetElement(getModel().getWorld().getProject(), ref);
-		// TODO: missing to check if the key has the right type.
-		// maybe the user is trying to recover an atlas frame with a spritesheet
-		// frame.
+		
 		if (asset != null && asset instanceof IAssetKey) {
 			int i = getModel().getIndex();
+			
+			if (asset instanceof ImageAssetModel) {
+				asset = ((ImageAssetModel) asset).getFrame();
+			}
 
-			JSONObject srcData = getModel().getSrcData();
-			BaseObjectModel newModel = CanvasModelFactory.createModel(getModel().getParent(), srcData);
+			BaseObjectModel newModel = createModelWithTexture((IAssetFrameModel) asset);
 			BaseObjectControl<?> newControl = CanvasObjectFactory.createObjectControl(getCanvas(), newModel);
 			GroupControl parentControl = getGroup().getControl();
 
