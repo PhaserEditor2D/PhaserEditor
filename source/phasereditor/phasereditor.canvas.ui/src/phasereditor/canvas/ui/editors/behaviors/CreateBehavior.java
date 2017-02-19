@@ -109,7 +109,7 @@ public class CreateBehavior {
 				_canvas.getHandlerBehavior().clear();
 
 				CompositeOperation operations = new CompositeOperation();
-				CanvasUI.changeSpriteTexture((ISpriteNode) node, first, operations);
+				CanvasUI.changeSpriteTexture(node, first, operations);
 				operations.add(new SelectOperation(node.getModel().getId()));
 				_canvas.getUpdateBehavior().executeOperations(operations);
 			}

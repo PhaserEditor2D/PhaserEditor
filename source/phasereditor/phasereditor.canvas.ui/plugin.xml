@@ -174,13 +174,8 @@
                </command>
             </menu>
             <command
-                  commandId="phasereditor.canvas.ui.changeTexture"
-                  label="Change Sprite Texture"
-                  style="push">
-            </command>
-            <command
                   commandId="phasereditor.canvas.ui.resizeTile"
-                  label="Resize Tile Sprite"
+                  label="Convert To/Resize Tile Sprite"
                   style="push">
                <visibleWhen
                      checkEnabled="false">
@@ -188,6 +183,16 @@
                         definitionId="phasereditor.canvas.ui.oneSpriteSelected">
                   </reference>
                </visibleWhen>
+            </command>
+            <command
+                  commandId="phasereditor.canvas.ui.changeTexture"
+                  label="Change Sprite Texture"
+                  style="push">
+            </command>
+            <command
+                  commandId="phasereditor.canvas.ui.selectSameTexture"
+                  label="Select All Sprites With Same Texture"
+                  style="push">
             </command>
             <separator
                   name="phasereditor.canvas.ui.sprite.1"
@@ -800,6 +805,11 @@
             categoryId="phasereditor.canvas.ui.editor.category"
             id="phasereditor.canvas.ui.changeTexture"
             name="Change Texture">
+      </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.selectSameTexture"
+            name="Select All Sprites With Same Texture">
       </command>
       
    </extension>
@@ -1452,6 +1462,31 @@
                </iterate>
             </and>
          </with>
+         </activeWhen>
+      </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.SelectAllSpriteWithSameTexture"
+            commandId="phasereditor.canvas.ui.selectSameTexture">
+         <activeWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <or>
+                     <instanceof
+                           value="phasereditor.canvas.ui.shapes.ISpriteNode">
+                     </instanceof>
+                     <instanceof
+                           value="phasereditor.canvas.ui.shapes.MissingAssetNode">
+                     </instanceof>
+                  </or>
+               </iterate>
+               <and>
+                  <count
+                        value="1">
+                  </count>
+               </and>
+            </with>
          </activeWhen>
       </handler>
       
