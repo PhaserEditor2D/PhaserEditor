@@ -163,6 +163,11 @@
             <menu
                   label="Morph To">
                <command
+                     commandId="phasereditor.canvas.ui.morphToSprite"
+                     label="Sprite"
+                     style="push">
+               </command>
+               <command
                      commandId="phasereditor.canvas.ui.morphToTilesprite"
                      label="Tile Sprite"
                      style="push">
@@ -683,6 +688,11 @@
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.morphToSprite"
+            name="Morph To Sprite">
+      </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
             id="phasereditor.canvas.ui.morphToTilesprite"
             name="Morph To Tile Sprite">
       </command>
@@ -1182,6 +1192,39 @@
          </enabledWhen>
       </handler>
       <handler
+            class="phasereditor.canvas.ui.handlers.MorphToSpriteHandler"
+            commandId="phasereditor.canvas.ui.morphToSprite">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <and>
+                     <instanceof
+                           value="phasereditor.canvas.ui.shapes.ISpriteNode">
+                     </instanceof>
+                     <not>
+	                     <instanceof
+	                           value="phasereditor.canvas.ui.shapes.ImageSpriteNode">
+	                     </instanceof>
+                     </not>
+                     <not>
+	                     <instanceof
+	                           value="phasereditor.canvas.ui.shapes.SpritesheetSpriteNode">
+	                     </instanceof>
+                     </not>
+                     <not>
+	                     <instanceof
+	                           value="phasereditor.canvas.ui.shapes.AtlasSpriteNode">
+	                     </instanceof>
+                     </not>
+                  </and>
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
             class="phasereditor.canvas.ui.handlers.MorphToTileSpriteHandler"
             commandId="phasereditor.canvas.ui.morphToTilesprite">
          <enabledWhen>
@@ -1190,17 +1233,16 @@
                <iterate
                      ifEmpty="false"
                      operator="and">
-                  <or>
+                  <and>
                      <instanceof
-                           value="phasereditor.canvas.ui.shapes.ImageSpriteNode">
+                           value="phasereditor.canvas.ui.shapes.ISpriteNode">
                      </instanceof>
-                     <instanceof
-                           value="phasereditor.canvas.ui.shapes.AtlasSpriteNode">
-                     </instanceof>
-                     <instanceof
-                           value="phasereditor.canvas.ui.shapes.SpritesheetSpriteNode">
-                     </instanceof>
-                  </or>
+                     <not>
+	                     <instanceof
+	                           value="phasereditor.canvas.ui.shapes.TileSpriteNode">
+	                     </instanceof>
+                     </not>
+                  </and>
                </iterate>
             </with>
          </enabledWhen>
@@ -1214,17 +1256,16 @@
                <iterate
                      ifEmpty="false"
                      operator="and">
-                  <or>
+                  <and>
                      <instanceof
-                           value="phasereditor.canvas.ui.shapes.ImageSpriteNode">
+                           value="phasereditor.canvas.ui.shapes.ISpriteNode">
                      </instanceof>
-                     <instanceof
-                           value="phasereditor.canvas.ui.shapes.AtlasSpriteNode">
-                     </instanceof>
-                     <instanceof
-                           value="phasereditor.canvas.ui.shapes.SpritesheetSpriteNode">
-                     </instanceof>
-                  </or>
+                     <not>
+	                     <instanceof
+	                           value="phasereditor.canvas.ui.shapes.ButtonSpriteNode">
+	                     </instanceof>
+                     </not>                     
+                  </and>
                </iterate>
             </with>
          </enabledWhen>

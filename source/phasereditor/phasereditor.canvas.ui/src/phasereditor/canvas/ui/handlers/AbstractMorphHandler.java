@@ -10,19 +10,17 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.DeleteNodeOperation;
 import phasereditor.canvas.ui.editors.operations.SelectOperation;
-import phasereditor.canvas.ui.shapes.AtlasSpriteControl;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
-import phasereditor.canvas.ui.shapes.ImageSpriteControl;
-import phasereditor.canvas.ui.shapes.SpritesheetSpriteControl;
 
 /**
  * 
@@ -51,17 +49,22 @@ public abstract class AbstractMorphHandler extends AbstractHandler {
 
 			for (Object elem : sel) {
 				BaseObjectControl<?> control = ((IObjectNode) elem).getControl();
-				IAssetKey source;
+				BaseObjectModel model = control.getModel();
+				IAssetKey source = null;
 
-				if (control instanceof ImageSpriteControl) {
-					source = ((ImageSpriteControl) control).getModel().getAssetKey();
-				} else if (control instanceof AtlasSpriteControl) {
-					source = ((AtlasSpriteControl) control).getModel().getAssetKey();
-				} else if (control instanceof SpritesheetSpriteControl) {
-					source = ((SpritesheetSpriteControl) control).getModel().getAssetKey();
-				} else {
-					source = null;
+				if (model instanceof AssetSpriteModel<?>) {
+					source = ((AssetSpriteModel<?>) model).getAssetKey();
 				}
+				
+//				if (control instanceof ImageSpriteControl) {
+//					source = ((ImageSpriteControl) control).getModel().getAssetKey();
+//				} else if (control instanceof AtlasSpriteControl) {
+//					source = ((AtlasSpriteControl) control).getModel().getAssetKey();
+//				} else if (control instanceof SpritesheetSpriteControl) {
+//					source = ((SpritesheetSpriteControl) control).getModel().getAssetKey();
+//				} else {
+//					source = null;
+//				}
 
 				if (source != null) {
 					String id = addMorph(operations, (ISpriteNode) elem, source);
