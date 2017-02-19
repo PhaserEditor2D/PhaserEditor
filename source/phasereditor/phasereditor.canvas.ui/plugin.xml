@@ -1219,6 +1219,13 @@
 	                           value="phasereditor.canvas.ui.shapes.AtlasSpriteNode">
 	                     </instanceof>
                      </not>
+                     <adapt
+		                  	type="phasereditor.canvas.ui.shapes.IObjectNode">
+		                  <test
+		                        property="phasereditor.canvas.ui.isPrefabInstance"
+		                        value="false">
+		                  </test>
+		              </adapt>
                   </and>
                </iterate>
             </with>
@@ -1242,6 +1249,13 @@
 	                           value="phasereditor.canvas.ui.shapes.TileSpriteNode">
 	                     </instanceof>
                      </not>
+                     <adapt
+		                  	type="phasereditor.canvas.ui.shapes.IObjectNode">
+		                  <test
+		                        property="phasereditor.canvas.ui.isPrefabInstance"
+		                        value="false">
+		                  </test>
+		              </adapt>
                   </and>
                </iterate>
             </with>
@@ -1264,7 +1278,14 @@
 	                     <instanceof
 	                           value="phasereditor.canvas.ui.shapes.ButtonSpriteNode">
 	                     </instanceof>
-                     </not>                     
+                     </not>
+                     <adapt
+		                  	type="phasereditor.canvas.ui.shapes.IObjectNode">
+		                  <test
+		                        property="phasereditor.canvas.ui.isPrefabInstance"
+		                        value="false">
+		                  </test>
+		              </adapt>                     
                   </and>
                </iterate>
             </with>
