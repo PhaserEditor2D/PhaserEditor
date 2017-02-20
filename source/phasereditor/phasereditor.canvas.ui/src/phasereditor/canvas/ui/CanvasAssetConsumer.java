@@ -3,12 +3,11 @@ package phasereditor.canvas.ui;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IEditorReference;
@@ -22,10 +21,10 @@ import phasereditor.assetpack.core.IAssetConsumer;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.CanvasCore;
+import phasereditor.canvas.core.CanvasFile;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
-import phasereditor.project.core.ProjectCore;
 
 public class CanvasAssetConsumer implements IAssetConsumer {
 
@@ -36,8 +35,6 @@ public class CanvasAssetConsumer implements IAssetConsumer {
 	public Collection<IFile> getFilesUsingAsset(AssetModel asset) {
 		Set<IFile> files = new HashSet<>();
 		addUsedInEditors(asset, files);
-		// TODO: we should keep all models in memory and build them, in the
-		// project builder
 		addUsedInFiles(asset, files);
 
 		return files;
@@ -46,33 +43,23 @@ public class CanvasAssetConsumer implements IAssetConsumer {
 	private static void addUsedInFiles(AssetModel asset, Set<IFile> files) {
 		IProject assetProject = asset.getPack().getFile().getProject();
 
-		try {
+		List<CanvasFile> cfiles = CanvasCore.getCanvasFileCache().getProjectData(assetProject);
 
-			IContainer webContent = ProjectCore.getWebContentFolder(assetProject);
-			webContent.accept(r -> {
-				if (files.contains(r)) {
-					return true;
-				}
+		for (CanvasFile cfile : cfiles) {
+			IFile file = cfile.getFile();
 
-				if (r instanceof IFile) {
-					IFile file = (IFile) r;
-					if (CanvasCore.isCanvasFile(file)) {
-						try (InputStream contents = file.getContents();) {
-							JSONObject data = new JSONObject(new JSONTokener(contents));
-							CanvasModel model = new CanvasModel(file);
-							model.read(data);
-							addUsedInModel(asset, files, model.getWorld());
-						} catch (Exception e) {
-							StatusManager.getManager()
-									.handle(new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID, e.getMessage(), e));
-						}
-					}
-				}
+			if (files.contains(file)) {
+				continue;
+			}
 
-				return true;
-			});
-		} catch (CoreException e) {
-			e.printStackTrace();
+			try (InputStream contents = file.getContents();) {
+				JSONObject data = new JSONObject(new JSONTokener(contents));
+				CanvasModel model = new CanvasModel(file);
+				model.read(data);
+				addUsedInModel(asset, files, model.getWorld());
+			} catch (Exception e) {
+				StatusManager.getManager().handle(new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID, e.getMessage(), e));
+			}
 		}
 
 	}

@@ -65,7 +65,9 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	private PGridNumberProperty _scale_y_property;
 	private PGridNumberProperty _pivot_x_property;
 	private PGridNumberProperty _pivot_y_property;
+	private PGridNumberProperty _alpha_property;
 	private PGridBooleanProperty _editorPick_property;
+	private PGridOverrideProperty _overrideProperty;
 
 	public BaseObjectControl(ObjectCanvas canvas, T model) {
 		_canvas = canvas;
@@ -115,6 +117,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		_node.setId(_model.getEditorName());
 		_node.setLayoutX(_model.getX());
 		_node.setLayoutY(_model.getY());
+		_node.setOpacity(_model.getAlpha());
 
 		if (_model.isEditorShow() != _node.isVisible()) {
 			_node.setVisible(_model.isEditorShow());
@@ -172,15 +175,15 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 		if (_model.isPrefabInstance()) {
 			PGridSection section = new PGridSection("Prefab Instance");
-			PGridOverrideProperty prop = new PGridOverrideProperty(_model) {
+			_overrideProperty = new PGridOverrideProperty(_model) {
 				@Override
 				public void setValue(List<String> value, boolean notify) {
 					super.setValue(value, notify);
 					getCanvas().getUpdateBehavior().singleRebuildFromPrefab(BaseObjectControl.this);
 				}
 			};
-			initPrefabPGridModel(prop.getValidProperties());
-			section.add(prop);
+			initPrefabPGridModel(_overrideProperty.getValidProperties());
+			section.add(_overrideProperty);
 			propModel.getSections().add(section);
 		}
 
@@ -194,7 +197,8 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 				BaseObjectModel.PROPSET_POSITION, 
 				BaseObjectModel.PROPSET_ANGLE, 
 				BaseObjectModel.PROPSET_SCALE, 
-				BaseObjectModel.PROPSET_PIVOT
+				BaseObjectModel.PROPSET_PIVOT,
+				BaseObjectModel.PROPSET_ALPHA
 				//@formatter:on
 		));
 	}
@@ -225,7 +229,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 			@Override
 			public boolean isReadOnly() {
-				return getModel().isPrefabReadOnly("position");
+				return getModel().isPrefabReadOnly(BaseObjectModel.PROPSET_POSITION);
 			}
 
 		};
@@ -276,7 +280,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 			@Override
 			public boolean isReadOnly() {
-				return getModel().isPrefabReadOnly("angle");
+				return getModel().isPrefabReadOnly(BaseObjectModel.PROPSET_ANGLE);
 			}
 		};
 
@@ -301,7 +305,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 			@Override
 			public boolean isReadOnly() {
-				return getModel().isPrefabReadOnly("scale");
+				return getModel().isPrefabReadOnly(BaseObjectModel.PROPSET_SCALE);
 			}
 
 		};
@@ -327,7 +331,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 			@Override
 			public boolean isReadOnly() {
-				return getModel().isPrefabReadOnly("scale");
+				return getModel().isPrefabReadOnly(BaseObjectModel.PROPSET_SCALE);
 			}
 		};
 
@@ -352,7 +356,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 			@Override
 			public boolean isReadOnly() {
-				return getModel().isPrefabReadOnly("pivot");
+				return getModel().isPrefabReadOnly(BaseObjectModel.PROPSET_PIVOT);
 			}
 		};
 
@@ -377,7 +381,32 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 			@Override
 			public boolean isReadOnly() {
-				return getModel().isPrefabReadOnly("pivot");
+				return getModel().isPrefabReadOnly(BaseObjectModel.PROPSET_PIVOT);
+			}
+		};
+
+		_alpha_property = new PGridNumberProperty(getId(), "alpha", help("PIXI.DisplayObject.alpha")) {
+			@Override
+			public Double getValue() {
+				return Double.valueOf(getModel().getAlpha());
+			}
+
+			@Override
+			public void setValue(Double value, boolean notify) {
+				getModel().setAlpha(value.doubleValue());
+				if (notify) {
+					updateFromPropertyChange();
+				}
+			}
+
+			@Override
+			public boolean isModified() {
+				return getModel().getAlpha() != 1;
+			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly(BaseObjectModel.PROPSET_ALPHA);
 			}
 		};
 
@@ -388,6 +417,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		displaySection.add(_scale_y_property);
 		displaySection.add(_pivot_x_property);
 		displaySection.add(_pivot_y_property);
+		displaySection.add(_alpha_property);
 	}
 
 	protected void initEditorPGridModel(PGridModel propModel, PGridSection section) {
@@ -618,10 +648,13 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			GroupControl parentControl = getGroup().getControl();
 			int i = parentControl.removeChild(getIObjectNode());
 			parentControl.addChild(i, newControl.getIObjectNode());
+			
+			_overrideProperty.setModel(newModel);
+			
 			return newControl;
 
 		}
-		
+
 		return this;
 	}
 }

@@ -434,6 +434,12 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 				line(varname + ".pivot.setTo(" + model.getPivotX() + ", " + model.getPivotY() + ");");
 			}
 		}
+		
+		if (model.isOverriding(BaseObjectModel.PROPSET_ALPHA)) {
+			if (model.getAlpha() != 1) {
+				line(varname + ".alpha = " + model.getAlpha() + ";");
+			}
+		}
 	}
 
 	@SuppressWarnings("static-method")

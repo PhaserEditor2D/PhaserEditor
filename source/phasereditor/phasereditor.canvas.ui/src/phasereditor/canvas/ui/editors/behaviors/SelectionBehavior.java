@@ -282,6 +282,25 @@ public class SelectionBehavior implements ISelectionProvider {
 		return _selectedNodes;
 	}
 
+	public List<String> getSelectionNodeIds() {
+		List<String> list = new ArrayList<>();
+
+		for (IObjectNode node : _selectedNodes) {
+			list.add(node.getModel().getId());
+		}
+
+		return list;
+	}
+
+	public void setSelection(List<String> nodeIds) {
+		List<Object> selection = new ArrayList<>();
+		for (String id : nodeIds) {
+			BaseObjectControl<?> control = _canvas.getWorldNode().getControl().findById(id);
+			selection.add(control.getNode());
+		}
+		setSelection(new StructuredSelection(selection));
+	}
+
 	public boolean containsInSelection(Node node) {
 		return _selection != null && _selection.toList().contains(node);
 	}

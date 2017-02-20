@@ -32,8 +32,8 @@ import phasereditor.canvas.core.BaseObjectModel;
  */
 public class PGridOverrideProperty extends PGridProperty<List<String>> {
 
-	private BaseObjectModel _model;
 	private List<String> _validProperties;
+	private BaseObjectModel _model;
 
 	public PGridOverrideProperty(BaseObjectModel model) {
 		super(model.getId(), "override", "The properties to override in this prefab instance.");
@@ -54,6 +54,14 @@ public class PGridOverrideProperty extends PGridProperty<List<String>> {
 	public List<String> getValue() {
 		return _model.getPrefabOverride();
 	}
+	
+	public BaseObjectModel getModel() {
+		return _model;
+	}
+	
+	public void setModel(BaseObjectModel model) {
+		_model = model;
+	}
 
 	@Override
 	public boolean isModified() {
@@ -63,5 +71,4 @@ public class PGridOverrideProperty extends PGridProperty<List<String>> {
 		}
 		return false;
 	}
-
 }

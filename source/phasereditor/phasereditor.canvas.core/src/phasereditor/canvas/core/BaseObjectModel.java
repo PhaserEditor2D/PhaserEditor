@@ -49,6 +49,7 @@ public abstract class BaseObjectModel {
 	private static final double DEF_SCALE_Y = 1;
 	private static final double DEF_PIVOT_X = 0;
 	private static final double DEF_PIVOT_Y = 0;
+	private static final double DEF_ALPHA = 1;
 	private static final boolean DEF_EDITOR_GENERATE = true;
 	public static final boolean DEF_EDITOR_PUBLIC = false;
 
@@ -56,6 +57,7 @@ public abstract class BaseObjectModel {
 	public static final String PROPSET_ANGLE = "angle";
 	public static final String PROPSET_SCALE = "scale";
 	public static final String PROPSET_PIVOT = "pivot";
+	public static final String PROPSET_ALPHA = "alpha";
 
 	private Prefab _prefab;
 	private List<String> _prefabOverride;
@@ -76,6 +78,7 @@ public abstract class BaseObjectModel {
 	private double _scaleY;
 	private double _pivotX;
 	private double _pivotY;
+	private double _alpha;
 
 	public BaseObjectModel(GroupModel parent, String typeName, JSONObject obj) {
 		this(parent, typeName);
@@ -98,11 +101,13 @@ public abstract class BaseObjectModel {
 		_editorPublic = DEF_EDITOR_PUBLIC;
 		_editorShow = true;
 
-		_scaleX = 1;
-		_scaleY = 1;
-		_rotation = 0;
-		_pivotX = 0;
-		_pivotY = 0;
+		_scaleX = DEF_SCALE_X;
+		_scaleY = DEF_SCALE_Y;
+		_rotation = DEF_ROTATION;
+		_pivotX = DEF_PIVOT_X;
+		_pivotY = DEF_PIVOT_Y;
+
+		_alpha = DEF_ALPHA;
 	}
 
 	public String getId() {
@@ -305,6 +310,14 @@ public abstract class BaseObjectModel {
 		_pivotY = pivotY;
 	}
 
+	public double getAlpha() {
+		return _alpha;
+	}
+
+	public void setAlpha(double alpha) {
+		_alpha = alpha;
+	}
+
 	public void read(JSONObject obj) {
 		readMetadata(obj);
 		JSONObject jsonInfo = obj.getJSONObject("info");
@@ -336,6 +349,7 @@ public abstract class BaseObjectModel {
 		_scaleY = jsonInfo.optDouble("scale.y", DEF_SCALE_Y);
 		_pivotX = jsonInfo.optDouble("pivot.x", DEF_PIVOT_X);
 		_pivotY = jsonInfo.optDouble("pivot.y", DEF_PIVOT_Y);
+		_alpha = jsonInfo.optDouble("alpha", DEF_ALPHA);
 	}
 
 	public BaseObjectModel copy(boolean keepId) {
@@ -449,23 +463,52 @@ public abstract class BaseObjectModel {
 			jsonInfo.put("prefabOverride", array);
 		}
 
+		boolean prefabInstance = isPrefabInstance();
+
 		if (isOverriding(PROPSET_POSITION)) {
-			jsonInfo.put("x", _x, DEF_X);
-			jsonInfo.put("y", _y, DEF_Y);
+			if (prefabInstance) {
+				jsonInfo.put("x", _x);
+				jsonInfo.put("y", _y);
+			} else {
+				jsonInfo.put("x", _x, DEF_X);
+				jsonInfo.put("y", _y, DEF_Y);
+			}
 		}
 
-		if (isOverriding("angle")) {
-			jsonInfo.put("rotation", _rotation, DEF_ROTATION);
+		if (isOverriding(PROPSET_ANGLE)) {
+			if (prefabInstance) {
+				jsonInfo.put("rotation", _rotation);
+			} else {
+				jsonInfo.put("rotation", _rotation, DEF_ROTATION);
+			}
 		}
 
-		if (isOverriding("scale")) {
-			jsonInfo.put("scale.x", _scaleX, DEF_SCALE_X);
-			jsonInfo.put("scale.y", _scaleY, DEF_SCALE_Y);
+		if (isOverriding(PROPSET_SCALE)) {
+			if (prefabInstance) {
+				jsonInfo.put("scale.x", _scaleX);
+				jsonInfo.put("scale.y", _scaleY);
+			} else {
+				jsonInfo.put("scale.x", _scaleX, DEF_SCALE_X);
+				jsonInfo.put("scale.y", _scaleY, DEF_SCALE_Y);
+			}
 		}
 
-		if (isOverriding("pivot")) {
-			jsonInfo.put("pivot.x", _pivotX, DEF_PIVOT_X);
-			jsonInfo.put("pivot.y", _pivotY, DEF_PIVOT_Y);
+		if (isOverriding(PROPSET_PIVOT)) {
+			if (prefabInstance) {
+				jsonInfo.put("pivot.x", _pivotX);
+				jsonInfo.put("pivot.y", _pivotY);
+			} else {
+				jsonInfo.put("pivot.x", _pivotX, DEF_PIVOT_X);
+				jsonInfo.put("pivot.y", _pivotY, DEF_PIVOT_Y);
+			}
+		}
+
+		if (isOverriding(PROPSET_ALPHA)) {
+			if (prefabInstance) {
+				jsonInfo.put("alpha", _alpha);
+			} else {
+				jsonInfo.put("alpha", _alpha, DEF_ALPHA);
+			}
 		}
 	}
 

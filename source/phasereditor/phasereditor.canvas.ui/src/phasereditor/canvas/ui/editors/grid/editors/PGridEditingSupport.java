@@ -138,7 +138,6 @@ public class PGridEditingSupport extends EditingSupport {
 
 				@Override
 				protected Object openDialogBox(Control cellEditorWindow) {
-
 					ListSelectionDialog dlg = new ListSelectionDialog(cellEditorWindow.getShell(),
 							prop.getValidProperties(), new ArrayContentProvider(), new LabelProvider(),
 							"Select the properties to override in this prefab instance:");

@@ -38,15 +38,14 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 	public static final double DEF_ANCHOR_X = 0;
 	public static final double DEF_ANCHOR_Y = 0;
 	public static final String DEF_TINT = null;
-	
+
 	public static final String PROPSET_TEXTURE = "texture";
 	public static final String PROPSET_ANCHOR = "anchor";
 	public static final String PROPSET_TINT = "tint";
 	public static final String PROPSET_ANIMATIONS = "animations";
 	public static final String PROPSET_PHYSICS = "physics";
 	public static final String PROPSET_DATA = "data";
-	
-	
+
 	private double _anchorX;
 	private double _anchorY;
 	private String _tint;
@@ -136,21 +135,36 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 	protected void writeInfo(JSONObject jsonInfo, boolean saving) {
 		super.writeInfo(jsonInfo, saving);
 
+		boolean prefabInstance = isPrefabInstance();
+
 		if (isOverriding(PROPSET_ANCHOR)) {
-			jsonInfo.put("anchor.x", _anchorX, DEF_ANCHOR_X);
-			jsonInfo.put("anchor.y", _anchorY, DEF_ANCHOR_Y);
+			if (prefabInstance) {
+				jsonInfo.put("anchor.x", _anchorX);
+				jsonInfo.put("anchor.y", _anchorY);
+			} else {
+				jsonInfo.put("anchor.x", _anchorX, DEF_ANCHOR_X);
+				jsonInfo.put("anchor.y", _anchorY, DEF_ANCHOR_Y);
+			}
 		}
 
 		if (isOverriding(PROPSET_TINT)) {
-			jsonInfo.put("tint", _tint, DEF_TINT);
+			if (prefabInstance) {
+				jsonInfo.put("tint", _tint);
+			} else {
+				jsonInfo.put("tint", _tint, DEF_TINT);
+			}
 		}
 
 		if (isOverriding(PROPSET_DATA)) {
-			jsonInfo.put("data", _data, null);
+			if (prefabInstance) {
+				jsonInfo.put("data", _data);
+			} else {
+				jsonInfo.put("data", _data, null);
+			}
 		}
 
 		if (isOverriding(PROPSET_ANIMATIONS)) {
-			if (!_animations.isEmpty()) {
+			if (!_animations.isEmpty() || prefabInstance) {
 				JSONArray array = new JSONArray();
 				jsonInfo.put("animations", array);
 				for (AnimationModel model : _animations) {
@@ -162,8 +176,8 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 		}
 
 		if (isOverriding(PROPSET_PHYSICS)) {
-			if (_body != null) {
-				jsonInfo.put("body", _body.toJSON());
+			if (_body != null || prefabInstance) {
+				jsonInfo.put("body", _body == null ? null : _body.toJSON());
 			}
 		}
 	}

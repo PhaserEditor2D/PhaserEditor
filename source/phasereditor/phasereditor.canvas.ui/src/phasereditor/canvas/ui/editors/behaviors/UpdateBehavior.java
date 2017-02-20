@@ -82,6 +82,8 @@ public class UpdateBehavior {
 	public void rebuild() {
 		out.println("Rebuild canvas (in editor) " + _canvas.getWorldModel().getFile().getLocation());
 
+		List<String> selection = _canvas.getSelectionBehavior().getSelectionNodeIds();
+
 		GroupControl control = _canvas.getWorldNode().getControl();
 
 		if (control.rebuild()) {
@@ -92,7 +94,7 @@ public class UpdateBehavior {
 
 		control.updateAllFromModel();
 		_canvas.getZoomBehavior().updateZoomAndPan();
-		_canvas.getSelectionBehavior().updateSelectedNodes();
+		_canvas.getSelectionBehavior().setSelection(selection);
 	}
 
 	public void singleRebuildFromPrefab(BaseObjectControl<?> control) {
