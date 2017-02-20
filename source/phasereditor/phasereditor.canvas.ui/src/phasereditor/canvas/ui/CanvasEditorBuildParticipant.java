@@ -1,5 +1,6 @@
 package phasereditor.canvas.ui;
 
+import static java.lang.System.out;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.util.HashSet;
@@ -116,7 +117,7 @@ public class CanvasEditorBuildParticipant implements IProjectBuildParticipant {
 
 							if (fullBuild) {
 								rebuild = true;
-							} else if (packDelta.inProject(editor.getEditorInputFile().getProject())) {
+							} else if (!packDelta.isEmpty() && packDelta.inProject(editor.getEditorInputFile().getProject())) {
 								// rebuild if the asset pack delta affects the
 								// project
 								rebuild = true;
@@ -197,6 +198,7 @@ public class CanvasEditorBuildParticipant implements IProjectBuildParticipant {
 
 							// rebuild the editor if it is the case
 							if (rebuild) {
+								out.println("Rebuild canvas editor: " + curFile.getFullPath());
 								UpdateBehavior updateBehavior = editor.getCanvas().getUpdateBehavior();
 								updateBehavior.rebuild();
 							}
