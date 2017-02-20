@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.core;
 
-import static java.lang.System.out;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
@@ -51,12 +49,12 @@ public interface IResourceDeltaVisitor2 extends IResourceDeltaVisitor {
 			case IResourceDelta.ADDED:
 				if ((flags & IResourceDelta.MOVED_FROM) == IResourceDelta.MOVED_FROM) {
 					// this is actually a move inside the same project
-					out.println("FileDataCache : fileMovedTo(" + file + "," + delta.getMovedFromPath() + "," + file.getFullPath() + ")");
+//					out.println("FileDataCache : fileMovedTo(" + file + "," + delta.getMovedFromPath() + "," + file.getFullPath() + ")");
 					fileMovedTo(file, delta.getMovedFromPath(), file.getFullPath());
 					fileVisited(file);
 					break;
 				}
-				out.println("FileDataCache : fileAdded(" + file + ")");
+//				out.println("FileDataCache : fileAdded(" + file + ")");
 				fileAdded(file);
 				return fileVisited(file);
 			case IResourceDelta.REMOVED:
@@ -66,12 +64,12 @@ public interface IResourceDeltaVisitor2 extends IResourceDeltaVisitor {
 					break;
 				}
 
-				out.println("FileDataCache : fileRemoved(" + file + ")");
+//				out.println("FileDataCache : fileRemoved(" + file + ")");
 				fileRemoved(file);
 
 				return fileVisited(file);
 			case IResourceDelta.CHANGED:
-				out.println("FileDataCache : fileChanged(" + file + ")");
+//				out.println("FileDataCache : fileChanged(" + file + ")");
 				fileChanged(file);
 				return fileVisited(file);
 			default:
