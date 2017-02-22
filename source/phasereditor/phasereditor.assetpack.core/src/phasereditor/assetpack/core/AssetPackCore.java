@@ -505,13 +505,11 @@ public class AssetPackCore {
 	 * @return A list with the asset pack models.
 	 */
 	static List<AssetPackModel> discoverAssetPackModels() {
-		if (_filePackMap.isEmpty()) {
 			IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 			for (IProject project : projects) {
 				discoverAssetPackModels(project);
 			}
-		}
-
+			
 		synchronized (_filePackMap) {
 			return new ArrayList<>(_filePackMap.values());
 		}
