@@ -56,6 +56,8 @@ public class Canvas_Phaser_Help_Test {
 				"Phaser.Sprite.anchor",
 				"Phaser.Sprite.anchor", 
 				"Phaser.Sprite.tint",
+				"Phaser.Sprite.alpha",
+				"Phaser.Sprite.name",
 				"Phaser.Sprite.animations",
 				"Phaser.GameObjectFactory.physicsGroup",
 				"Phaser.Sprite.frame",

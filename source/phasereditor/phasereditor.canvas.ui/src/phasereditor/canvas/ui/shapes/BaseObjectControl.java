@@ -34,6 +34,7 @@ import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.CanvasModelFactory;
+import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.MissingPrefabException;
 import phasereditor.canvas.core.Prefab;
 import phasereditor.canvas.core.WorldModel.ZOperation;
@@ -68,6 +69,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	private PGridNumberProperty _alpha_property;
 	private PGridBooleanProperty _editorPick_property;
 	private PGridOverrideProperty _overrideProperty;
+	private PGridStringProperty _name_property;
 
 	public BaseObjectControl(ObjectCanvas canvas, T model) {
 		_canvas = canvas;
@@ -187,7 +189,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			propModel.getSections().add(section);
 		}
 
-		initDisplayPGridModel(propModel);
+		initObjectPGridModel(propModel);
 	}
 
 	@SuppressWarnings("static-method")
@@ -203,10 +205,43 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		));
 	}
 
-	private void initDisplayPGridModel(PGridModel propModel) {
-		PGridSection displaySection = new PGridSection("Display");
+	private void initObjectPGridModel(PGridModel propModel) {
+		PGridSection displaySection = new PGridSection("Object");
 
 		propModel.getSections().add(displaySection);
+
+		_name_property = new PGridStringProperty(getId(), "name",
+				help(getModel() instanceof GroupModel ? "Phaser.Group.name" : "Phaser.Sprite.name")) {
+
+			@Override
+			public void setValue(String value, boolean notify) {
+				if (value != null && value.trim().length() == 0) {
+					getModel().setName(null);
+				} else {
+					getModel().setName(value);
+				}
+
+				if (notify) {
+					updateFromPropertyChange();
+				}
+			}
+
+			@Override
+			public boolean isModified() {
+				return getModel().getName() != null;
+			}
+
+			@Override
+			public String getValue() {
+				String name = getModel().getName();
+				
+				if (name == null) {
+					return "";
+				}
+				
+				return name;
+			}
+		};
 
 		_x_property = new PGridNumberProperty(getId(), "x", help("Phaser.Sprite.x")) {
 			@Override
@@ -410,6 +445,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			}
 		};
 
+		displaySection.add(_name_property);
 		displaySection.add(_x_property);
 		displaySection.add(_y_property);
 		displaySection.add(_angle_property);
@@ -423,27 +459,28 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	protected void initEditorPGridModel(PGridModel propModel, PGridSection section) {
 		propModel.getSections().add(section);
 
-		section.add(new PGridStringProperty(getId(), "name", "The name of the object. Used to generate the var name.") {
+		section.add(
+				new PGridStringProperty(getId(), "varName", "The name of the object. Used to generate the var name.") {
 
-			@Override
-			public String getValue() {
-				return _model.getEditorName();
-			}
+					@Override
+					public String getValue() {
+						return _model.getEditorName();
+					}
 
-			@Override
-			public void setValue(String value, boolean notify) {
-				_model.setEditorName(value);
-				_canvas.getUpdateBehavior().update_Outline(_inode);
-				if (notify) {
-					updateFromPropertyChange();
-				}
-			}
+					@Override
+					public void setValue(String value, boolean notify) {
+						_model.setEditorName(value);
+						_canvas.getUpdateBehavior().update_Outline(_inode);
+						if (notify) {
+							updateFromPropertyChange();
+						}
+					}
 
-			@Override
-			public boolean isModified() {
-				return true;
-			}
-		});
+					@Override
+					public boolean isModified() {
+						return true;
+					}
+				});
 
 		PGridBooleanProperty editorPublic_property = new PGridBooleanProperty(getId(), "public",
 				"If true the object is set 'public' in the generated code.") {
@@ -648,9 +685,9 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			GroupControl parentControl = getGroup().getControl();
 			int i = parentControl.removeChild(getIObjectNode());
 			parentControl.addChild(i, newControl.getIObjectNode());
-			
+
 			_overrideProperty.setModel(newModel);
-			
+
 			return newControl;
 
 		}

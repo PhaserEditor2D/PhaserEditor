@@ -41,7 +41,7 @@ public abstract class JSLikeGroupCodeGenerator extends JSLikeCodeGenerator {
 	
 		GroupModel group = getRootObjectsContainer();
 		
-		generateDisplayProps(group);
+		generateObjectProps(group);
 		generateGroupProps(group);
 	}
 	

@@ -58,6 +58,7 @@ public abstract class BaseObjectModel {
 	public static final String PROPSET_SCALE = "scale";
 	public static final String PROPSET_PIVOT = "pivot";
 	public static final String PROPSET_ALPHA = "alpha";
+	public static final String DEF_NAME = null;
 
 	private Prefab _prefab;
 	private List<String> _prefabOverride;
@@ -71,6 +72,7 @@ public abstract class BaseObjectModel {
 	private boolean _editorShow;
 
 	private String _id;
+	private String _name;
 	private double _x;
 	private double _y;
 	private double _rotation;
@@ -100,6 +102,8 @@ public abstract class BaseObjectModel {
 		_editorGenerate = DEF_EDITOR_GENERATE;
 		_editorPublic = DEF_EDITOR_PUBLIC;
 		_editorShow = true;
+
+		_name = DEF_NAME;
 
 		_scaleX = DEF_SCALE_X;
 		_scaleY = DEF_SCALE_Y;
@@ -246,6 +250,15 @@ public abstract class BaseObjectModel {
 		return _typeName;
 	}
 
+	public String getName() {
+		return _name;
+	}
+
+	public void setName(String name) {
+		_name = name;
+		
+	}
+
 	public double getX() {
 		return _x;
 	}
@@ -342,6 +355,7 @@ public abstract class BaseObjectModel {
 				}
 		}
 
+		_name = jsonInfo.optString("name", null);
 		_x = jsonInfo.optDouble("x", DEF_X);
 		_y = jsonInfo.optDouble("y", DEF_Y);
 		_rotation = jsonInfo.optDouble("rotation", DEF_ROTATION);
@@ -465,6 +479,8 @@ public abstract class BaseObjectModel {
 
 		boolean prefabInstance = isPrefabInstance();
 
+		jsonInfo.put("name", _name, DEF_NAME);
+		
 		if (isOverriding(PROPSET_POSITION)) {
 			if (prefabInstance) {
 				jsonInfo.put("x", _x);

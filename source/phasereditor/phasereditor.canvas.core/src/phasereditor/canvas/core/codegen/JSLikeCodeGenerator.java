@@ -397,7 +397,7 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 	}
 
 	protected void generateProperties(BaseSpriteModel model) {
-		generateDisplayProps(model);
+		generateObjectProps(model);
 
 		generateSpriteProps(model);
 
@@ -406,9 +406,13 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 		}
 	}
 
-	protected void generateDisplayProps(BaseObjectModel model) {
+	protected void generateObjectProps(BaseObjectModel model) {
 		String varname = getLocalVarName(model);
 
+		if (model.getName() != null) {
+			line(varname + ".name = '" + model.getName() + "';");
+		}
+		
 		if (model.isOverriding(BaseObjectModel.PROPSET_POSITION)) {
 			if (model instanceof GroupModel) {
 				if (model.getX() != 0 || model.getY() != 0) {
@@ -721,7 +725,7 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 			line(";");
 		}
 
-		generateDisplayProps(group);
+		generateObjectProps(group);
 		generateGroupProps(group);
 
 		if (!group.isPrefabInstance() && !group.getChildren().isEmpty()) {
