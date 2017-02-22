@@ -85,7 +85,7 @@ import phasereditor.ui.views.PreviewView;
 
 public class PhaserEditorUI {
 	public static Color PREVIEW_BG_DARK = SWTResourceManager.getColor(180, 180, 180);
-	public static Color PREVIEW_BG_LIGHT = SWTResourceManager.getColor(200, 200, 200);
+	public static Color PREVIEW_BG_LIGHT = SWTResourceManager.getColor(250, 250, 250);//SWTResourceManager.getColor(200, 200, 200);
 	private static Set<Object> _supportedImageExts = new HashSet<>(Arrays.asList("png", "bmp", "jpg", "gif", "ico"));
 
 	private PhaserEditorUI() {
@@ -385,22 +385,30 @@ public class PhaserEditorUI {
 	}
 
 	public static void paintPreviewBackground(GC gc, Rectangle canvasBounds) {
-		paintPreviewBackground(gc, canvasBounds, 10);
+		paintPreviewBackground(gc, canvasBounds, 25);
 	}
 
 	public static void paintPreviewBackground(GC gc, Rectangle canvasBounds, int space) {
+		Color darkColor = PREVIEW_BG_DARK;
+		Color lightColor = PREVIEW_BG_LIGHT;
+		
+		paintPreviewBackground(gc, canvasBounds, space, darkColor, lightColor);
+	}
+
+	public static void paintPreviewBackground(GC gc, Rectangle bounds, int space, Color darkColor,
+			Color lightColor) {
 		Rectangle oldClip = gc.getClipping();
-		gc.setClipping(canvasBounds);
-		int nx = canvasBounds.width / space + 2;
-		int ny = canvasBounds.height / space + 2;
+		gc.setClipping(bounds);
+		int nx = bounds.width / space + 2;
+		int ny = bounds.height / space + 2;
 		for (int x = -1; x < nx; x++) {
 			for (int y = 0; y < ny; y++) {
-				int fx = canvasBounds.x / space * space + x * space;
-				int fy = canvasBounds.y / space * space + y * space;
+				int fx = bounds.x / space * space + x * space;
+				int fy = bounds.y / space * space + y * space;
 				if ((fx / space + fy / space) % 2 == 0) {
-					gc.setBackground(PREVIEW_BG_DARK);
+					gc.setBackground(darkColor);
 				} else {
-					gc.setBackground(PREVIEW_BG_LIGHT);
+					gc.setBackground(lightColor);
 				}
 				gc.fillRectangle(fx, fy, space, space);
 			}

@@ -55,22 +55,20 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 
 	@Override
 	protected void drawImage(GC gc, int srcX, int srcY, int srcW, int srcH, int dstW, int dstH, int dstX, int dstY) {
-		if (!_singleFrame) {
-			super.drawImage(gc, srcX, srcY, srcW, srcH, dstW, dstH, dstX, dstY);
+		if (_singleFrame) {
+			return;
 		}
+		
+		super.drawImage(gc, srcX, srcY, srcW, srcH, dstW, dstH, dstX, dstY);
 	}
 
 	@Override
-	protected void drawBorder(GC gc, Rectangle rect) {
+	protected void drawImageBackground(GC gc, Rectangle b) {
 		if (_singleFrame) {
-			Rectangle r = new Rectangle(0, 0, _spritesheet.getFrameWidth(), _spritesheet.getFrameHeight());
-			r = PhaserEditorUI.computeImageZoom(r, getBounds());
-			super.drawBorder(gc, r);
+			return;
 		}
-		// do not draw border when it shows the whole tape
-		// else {
-		// super.drawBorder(gc, rect);
-		// }
+
+		super.drawImageBackground(gc, b);
 	}
 
 	@Override
@@ -82,6 +80,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 		SpritesheetAssetModel spritesheet = _spritesheet;
 		Rectangle canvasBounds = getBounds();
 		Rectangle imgBounds = _image.getBounds();
+
 		if (_singleFrame) {
 			Rectangle dst = PhaserEditorUI.computeImageZoom(imgBounds, canvasBounds);
 			_rects = AssetPackUI.generateSpriteSheetRects(spritesheet, imgBounds, dst);
@@ -94,6 +93,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 				r = PhaserEditorUI.computeImageZoom(r, getBounds());
 
 				try {
+					PhaserEditorUI.paintPreviewBackground(gc, r);
 					gc.drawImage(_image, fd.src.x, fd.src.y, fd.src.width, fd.src.height, r.x, r.y, r.width, r.height);
 				} catch (IllegalArgumentException e) {
 					// wrong parameters

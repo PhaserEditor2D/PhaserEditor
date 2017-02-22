@@ -28,8 +28,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -50,6 +53,32 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 					projectDeleted(project);
 				}
 			}, IResourceChangeEvent.PRE_DELETE);
+
+			ResourcesPlugin.getWorkspace().addResourceChangeListener(new IResourceChangeListener() {
+
+				@Override
+				public void resourceChanged(IResourceChangeEvent event) {
+					try {
+						event.getDelta().accept(new IResourceDeltaVisitor() {
+
+							@Override
+							public boolean visit(IResourceDelta delta) throws CoreException {
+
+								IResource resource = delta.getResource();
+								if (resource instanceof IProject) {
+									if ((delta.getFlags() & IResourceDelta.OPEN) == IResourceDelta.OPEN) {
+										out.println("Oepened project " + resource.getName());
+									}
+								}
+								return true;
+							}
+						});
+					} catch (CoreException e) {
+						ProjectCore.logError(e);
+					}
+				}
+			}, IResourceChangeEvent.POST_CHANGE);
+
 			_registeredProjectDeleteListener = true;
 		}
 	}
@@ -78,7 +107,6 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 		out.println("PhaserProjectBuilder.startupOnInitialize (done)");
 
 	}
-
 
 	@Override
 	protected void clean(IProgressMonitor monitor) throws CoreException {
@@ -135,12 +163,12 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 		monitor.beginTask("Building Phaser elements", list.size());
 
 		IProject project = getProject();
-		
+
 		for (IProjectBuildParticipant participant : list) {
 			try {
 				monitor.subTask("Building " + participant.getClass().getSimpleName());
 				out.println("\t" + participant + " (building)");
-				
+
 				if (fullBuild) {
 					participant.fullBuild(project, env);
 				} else {
@@ -159,16 +187,16 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 		} else {
 			out.println("PhaserProjectBuilder.build (done)");
 		}
-		
+
 		runAfterBuildActions(project);
 
 		return null;
 	}
-	
+
 	public static void setActionAfterFirstBuild(IProject project, Runnable runnable) {
 		_actions.put(project, runnable);
 	}
-	
+
 	private static void runAfterBuildActions(IProject project) {
 		Runnable action = _actions.get(project);
 		if (action != null) {

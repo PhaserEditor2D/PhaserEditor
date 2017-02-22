@@ -36,14 +36,14 @@ public class ImageCanvas extends Canvas implements PaintListener {
 
 	protected Image _image;
 	private Point _preferredSize;
-	private boolean _paintBorder;
 	private String _noImageMessage = "(no image)";
 
 	public ImageCanvas(Composite parent, int style) {
 		super(parent, style | SWT.DOUBLE_BUFFERED);
 		addPaintListener(this);
 		_preferredSize = new Point(0, 0);
-		_paintBorder = true;
+		// setBackground(getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
+		setBackground((getDisplay().getSystemColor(SWT.COLOR_WIDGET_DARK_SHADOW)));
 	}
 
 	public String getNoImageMessage() {
@@ -103,7 +103,6 @@ public class ImageCanvas extends Canvas implements PaintListener {
 		GC gc = e.gc;
 
 		Rectangle dst = getBounds();
-		PhaserEditorUI.paintPreviewBackground(gc, new Rectangle(0, 0, dst.width, dst.height));
 
 		if (_image == null) {
 			PhaserEditorUI.paintPreviewMessage(gc, dst, _noImageMessage);
@@ -111,20 +110,16 @@ public class ImageCanvas extends Canvas implements PaintListener {
 			Rectangle src = _image.getBounds();
 			Rectangle b = PhaserEditorUI.computeImageZoom(src, dst);
 
+			drawImageBackground(gc, b);
 			drawImage(gc, src.x, src.y, src.width, src.height, b.width, b.height, b.x, b.y);
-
-			if (_paintBorder) {
-				drawBorder(gc, b);
-			}
 
 			drawMore(gc, src.width, src.height, b.width, b.height, b.x, b.y);
 		}
 	}
 
-	protected void drawBorder(GC gc, Rectangle rect) {
-		gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLACK));
-		gc.drawRectangle(rect.x, rect.y, rect.width - 1, rect.height - 1);
-		gc.setLineWidth(1);
+	@SuppressWarnings("static-method")
+	protected void drawImageBackground(GC gc, Rectangle b) {
+		PhaserEditorUI.paintPreviewBackground(gc, b);
 	}
 
 	@SuppressWarnings("unused")
@@ -157,14 +152,6 @@ public class ImageCanvas extends Canvas implements PaintListener {
 
 	public void setPreferredSize(Point preferredSize) {
 		_preferredSize = preferredSize;
-	}
-
-	public boolean isPaintBorder() {
-		return _paintBorder;
-	}
-
-	public void setPaintBorder(boolean paintBorder) {
-		_paintBorder = paintBorder;
 	}
 
 	@Override

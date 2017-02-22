@@ -39,15 +39,12 @@ import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IElementFactory;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPersistableElement;
@@ -57,17 +54,18 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.IShowInTarget;
 import org.eclipse.ui.part.ShowInContext;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
-import phasereditor.ui.PhaserEditorUI;
 
 public class PreviewView extends ViewPart implements IShowInTarget {
 
 	private static final String ELEM_FACTORY_KEY = "phasereditor.ui.preview.elemenFactoryId";
 	public static final String ID = "phasereditor.ui.preview"; //$NON-NLS-1$
 	private Composite _previewContainer;
-	private Canvas _noPreviewComp;
+	//private Canvas _noPreviewComp;
+	private Composite _noPreviewComp;
 	private IPreviewFactory _previewFactory;
 	private IAdaptable _initalElement;
 	private Object _previewElement;
@@ -88,14 +86,20 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 		StackLayout sl_previewContainer = new StackLayout();
 		_previewContainer.setLayout(sl_previewContainer);
 
-		_noPreviewComp = new Canvas(_previewContainer, SWT.NO_BACKGROUND | SWT.DOUBLE_BUFFERED);
-		_noPreviewComp.addPaintListener(new PaintListener() {
-			@Override
-			public void paintControl(PaintEvent e) {
-				paintNoPreviewComp(e);
-			}
-		});
+		_noPreviewComp = new Composite(_previewContainer, SWT.NONE);
+		_noPreviewComp.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_DARK_SHADOW));
+		//_noPreviewComp = new Canvas(_previewContainer, SWT.NO_BACKGROUND | SWT.DOUBLE_BUFFERED);
+//		_noPreviewComp.addPaintListener(new PaintListener() {
+//			@Override
+//			public void paintControl(PaintEvent e) {
+//				paintNoPreviewComp(e);
+//			}
+//		});
 		_noPreviewComp.setLayout(new GridLayout(1, false));
+		Label lblDropItHere = new Label(_noPreviewComp, SWT.NONE);
+		lblDropItHere.setForeground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW));
+		lblDropItHere.setText("Drop it here");
+		lblDropItHere.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true, 1, 1));
 
 		createActions();
 		initializeToolBar();
@@ -140,14 +144,14 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 		}
 	}
 
-	protected void paintNoPreviewComp(PaintEvent e) {
-		GC gc = e.gc;
-		Rectangle b = _noPreviewComp.getBounds();
-		{
-			PhaserEditorUI.paintPreviewBackground(gc, b);
-			PhaserEditorUI.paintPreviewMessage(gc, b, "Drop it here");
-		}
-	}
+//	protected void paintNoPreviewComp(PaintEvent e) {
+//		GC gc = e.gc;
+//		Rectangle b = _noPreviewComp.getBounds();
+//		{
+//			PhaserEditorUI.paintPreviewBackground(gc, b);
+//			PhaserEditorUI.paintPreviewMessage(gc, b, "Drop it here");
+//		}
+//	}
 
 	private void afterCreateWidgets() {
 		{

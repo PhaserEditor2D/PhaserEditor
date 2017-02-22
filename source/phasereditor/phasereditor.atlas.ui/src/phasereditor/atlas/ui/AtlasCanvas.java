@@ -56,6 +56,7 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 	@Override
 	protected void drawImage(GC gc, int srcX, int srcY, int srcW, int srcH, int dstW, int dstH, int dstX, int dstY) {
 		if (_frame != null) {
+			PhaserEditorUI.paintPreviewBackground(gc, new Rectangle(dstX, dstY, dstW, dstH));
 			gc.setAlpha(100);
 			super.drawImage(gc, srcX, srcY, srcW, srcH, dstW, dstH, dstX, dstY);
 			gc.setAlpha(255);
@@ -103,7 +104,6 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 		GC gc = e.gc;
 
 		Rectangle dst = getBounds();
-		PhaserEditorUI.paintPreviewBackground(gc, new Rectangle(0, 0, dst.width, dst.height));
 
 		if (_image == null) {
 			PhaserEditorUI.paintPreviewMessage(gc, dst, getNoImageMessage());
@@ -111,9 +111,8 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 			Rectangle src = new Rectangle(_frame.getFrameX(), _frame.getFrameY(), _frame.getFrameW(),
 					_frame.getFrameH());
 			Rectangle z = PhaserEditorUI.computeImageZoom(src, dst);
+			PhaserEditorUI.paintPreviewBackground(gc, z);
 			gc.drawImage(_image, src.x, src.y, src.width, src.height, z.x, z.y, z.width, z.height);
-			gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLACK));
-			gc.drawRectangle(z.x, z.y, z.width - 1, z.height - 1);
 		}
 	}
 

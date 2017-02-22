@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.audiosprite.ui;
 
-import static phasereditor.ui.PhaserEditorUI.paintPreviewBackground;
 import static phasereditor.ui.PhaserEditorUI.paintPreviewMessage;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
@@ -95,6 +94,7 @@ public class GdxMusicControl extends Composite implements DisposeListener, Mouse
 		setLayout(gridLayout);
 
 		_canvas = new Canvas(this, SWT.DOUBLE_BUFFERED);
+		_canvas.setBackground(getDisplay().getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
 		_canvas.addPaintListener(new PaintListener() {
 			@Override
 			public void paintControl(PaintEvent e) {
@@ -141,8 +141,11 @@ public class GdxMusicControl extends Composite implements DisposeListener, Mouse
 		canvasRect.x = 0;
 		canvasRect.y = 0;
 		GC gc = e.gc;
+		
+		gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_WIDGET_DARK_SHADOW));
+		gc.fillRectangle(canvasRect);
 
-		paintPreviewBackground(gc, canvasRect);
+		//paintPreviewBackground(gc, canvasRect);
 
 		if (_music == null) {
 			String msg = _errorMessage == null ? "(no audio)" : _errorMessage;
