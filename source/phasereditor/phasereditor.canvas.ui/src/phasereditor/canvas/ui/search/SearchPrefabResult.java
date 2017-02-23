@@ -21,18 +21,13 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.search;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.search.ui.ISearchQuery;
 import org.eclipse.search.ui.ISearchResult;
 import org.eclipse.search.ui.ISearchResultListener;
 
-import phasereditor.canvas.core.CanvasCore.PrefabReference;
+import phasereditor.canvas.ui.CanvasUI.FindPrefabReferencesResult;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 
@@ -44,19 +39,19 @@ public class SearchPrefabResult implements ISearchResult {
 
 	private ListenerList<ISearchResultListener> _listeners;
 	private SearchPrefabQuery _query;
-	private Map<IFile, List<PrefabReference>> _references;
+	private FindPrefabReferencesResult _references;
 
 	public SearchPrefabResult(SearchPrefabQuery query) {
 		_listeners = new ListenerList<>();
 		_query = query;
-		_references = new HashMap<>();
+		_references = new FindPrefabReferencesResult();
 	}
 
-	public Map<IFile, List<PrefabReference>> getReferences() {
+	public FindPrefabReferencesResult getReferences() {
 		return _references;
 	}
 
-	public void setReferences(Map<IFile, List<PrefabReference>> references) {
+	public void setReferences(FindPrefabReferencesResult references) {
 		_references = references;
 
 		SearchPrefabResultEvent e = new SearchPrefabResultEvent(this);
@@ -78,7 +73,8 @@ public class SearchPrefabResult implements ISearchResult {
 
 	@Override
 	public String getLabel() {
-		return "Prefab references.";
+		return "'" + _query.getPrefab().getFile().getName() + "' - found " + _references.getTotalReferences() + " instances in "
+				+ _references.getTotalFiles() + " files.";
 	}
 
 	@Override

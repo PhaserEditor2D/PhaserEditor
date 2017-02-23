@@ -1,8 +1,5 @@
 package phasereditor.canvas.ui.search;
 
-import java.util.List;
-import java.util.Map;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -28,6 +25,7 @@ import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.core.CanvasCore.PrefabReference;
 import phasereditor.canvas.ui.CanvasUI;
+import phasereditor.canvas.ui.CanvasUI.FindPrefabReferencesResult;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 
@@ -36,6 +34,7 @@ public class SearchPrefabResultPage extends Page implements ISearchResultPage, I
 	private String _id;
 	private TreeViewer _viewer;
 	private ISearchResultViewPart _searchView;
+	private SearchPrefabResult _result;
 
 	public SearchPrefabResultPage() {
 	}
@@ -81,7 +80,11 @@ public class SearchPrefabResultPage extends Page implements ISearchResultPage, I
 
 	@Override
 	public String getLabel() {
-		return "Prefab references";
+		if (_result == null) {
+			return "Prefab references";
+		}
+
+		return _result.getLabel();
 	}
 
 	@Override
@@ -126,7 +129,7 @@ public class SearchPrefabResultPage extends Page implements ISearchResultPage, I
 
 		_viewer.setContentProvider(new ITreeContentProvider() {
 
-			private Map<IFile, List<PrefabReference>> _references;
+			private FindPrefabReferencesResult _references;
 
 			@Override
 			public boolean hasChildren(Object element) {
@@ -143,21 +146,20 @@ public class SearchPrefabResultPage extends Page implements ISearchResultPage, I
 				return getChildren(inputElement);
 			}
 
-			@SuppressWarnings("unchecked")
 			@Override
 			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-				_references = (Map<IFile, List<PrefabReference>>) newInput;
+				_references = (FindPrefabReferencesResult) newInput;
 			}
 
 			@Override
 			public Object[] getChildren(Object parentElement) {
 
-				if (parentElement instanceof Map<?, ?>) {
-					return ((Map<?, ?>) parentElement).keySet().toArray();
+				if (parentElement instanceof FindPrefabReferencesResult) {
+					return ((FindPrefabReferencesResult) parentElement).getFiles().toArray();
 				}
 
 				if (parentElement instanceof IFile) {
-					return _references.get(parentElement).toArray();
+					return _references.getReferencesOf((IFile) parentElement).toArray();
 				}
 
 				return new Object[0];
@@ -192,10 +194,10 @@ public class SearchPrefabResultPage extends Page implements ISearchResultPage, I
 
 	@Override
 	public void searchResultChanged(SearchResultEvent e) {
-		SearchPrefabResult result = (SearchPrefabResult) e.getSearchResult();
+		_result = (SearchPrefabResult) e.getSearchResult();
 		Display.getDefault().asyncExec(() -> {
-			_viewer.setInput(result.getReferences());
+			_viewer.setInput(_result.getReferences());
+			_searchView.updateLabel();
 		});
-
 	}
 }

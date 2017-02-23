@@ -21,10 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.search;
 
-import java.util.List;
-import java.util.Map;
-
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
@@ -32,9 +28,9 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.search.ui.ISearchQuery;
 import org.eclipse.search.ui.ISearchResult;
 
-import phasereditor.canvas.core.CanvasCore.PrefabReference;
 import phasereditor.canvas.core.Prefab;
 import phasereditor.canvas.ui.CanvasUI;
+import phasereditor.canvas.ui.CanvasUI.FindPrefabReferencesResult;
 
 /**
  * @author arian
@@ -53,21 +49,23 @@ public class SearchPrefabQuery implements ISearchQuery {
 
 	@Override
 	public IStatus run(IProgressMonitor monitor) throws OperationCanceledException {
-		Map<IFile, List<PrefabReference>> refs = CanvasUI.findPrefabReferences(_prefab, monitor);
-
+		FindPrefabReferencesResult refs = CanvasUI.findAllPrefabReferences(_prefab, monitor);
 		_result.setReferences(refs);
-
 		return Status.OK_STATUS;
+	}
+	
+	public Prefab getPrefab() {
+		return _prefab;
 	}
 
 	@Override
 	public String getLabel() {
-		return "Prefab references";
+		return "'" + _prefab.getFile().getName() +  "' references.";
 	}
 
 	@Override
 	public boolean canRerun() {
-		return false;
+		return true;
 	}
 
 	@Override

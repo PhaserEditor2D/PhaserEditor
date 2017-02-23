@@ -1,8 +1,6 @@
 package phasereditor.canvas.ui.refactoring;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -23,6 +21,7 @@ import phasereditor.canvas.core.CanvasCore.PrefabReference;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.Prefab;
 import phasereditor.canvas.ui.CanvasUI;
+import phasereditor.canvas.ui.CanvasUI.FindPrefabReferencesResult;
 
 public class CanvasFileMoveParticipant extends MoveParticipant {
 
@@ -66,11 +65,10 @@ public class CanvasFileMoveParticipant extends MoveParticipant {
 			return status;
 		}
 
-		Map<IFile, List<PrefabReference>> refMap = CanvasUI.findPrefabReferences(new Prefab(_file, _canvasType), pm);
+		FindPrefabReferencesResult result = CanvasUI.findAllPrefabReferences(new Prefab(_file, _canvasType), pm);
 
-		for (Entry<IFile, List<PrefabReference>> entry : refMap.entrySet()) {
-			IFile file = entry.getKey();
-			List<PrefabReference> refs = entry.getValue();
+		for (IFile file : result.getFiles()) {
+			List<PrefabReference> refs = result.getReferencesOf(file);
 
 			String filepath = file.getProjectRelativePath().toString();
 
@@ -99,8 +97,7 @@ public class CanvasFileMoveParticipant extends MoveParticipant {
 			IPath srcPath = _file.getProjectRelativePath();
 			IPath dstPath = dst.getProjectRelativePath().append(_file.getName());
 
-			changes.add(new UpdatePrefabReferencesChange(
-					_file.getProject(), srcPath, dstPath));
+			changes.add(new UpdatePrefabReferencesChange(_file.getProject(), srcPath, dstPath));
 		}
 
 		return changes;

@@ -22,8 +22,6 @@
 package phasereditor.canvas.ui.refactoring;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -44,6 +42,7 @@ import phasereditor.canvas.core.CanvasCore.PrefabReference;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.Prefab;
 import phasereditor.canvas.ui.CanvasUI;
+import phasereditor.canvas.ui.CanvasUI.FindPrefabReferencesResult;
 
 /**
  * @author arian
@@ -88,11 +87,10 @@ public class CanvasFileRenameParticipant extends RenameParticipant {
 			return status;
 		}
 
-		Map<IFile, List<PrefabReference>> refMap = CanvasUI.findPrefabReferences(new Prefab(_file, _canvasType), pm);
+		FindPrefabReferencesResult result = CanvasUI.findAllPrefabReferences(new Prefab(_file, _canvasType), pm);
 
-		for (Entry<IFile, List<PrefabReference>> entry : refMap.entrySet()) {
-			IFile file = entry.getKey();
-			List<PrefabReference> refs = entry.getValue();
+		for (IFile file : result.getFiles()) {
+			List<PrefabReference> refs = result.getReferencesOf(file);
 
 			String filepath = file.getProjectRelativePath().toString();
 

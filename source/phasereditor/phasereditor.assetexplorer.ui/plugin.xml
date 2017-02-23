@@ -103,14 +103,21 @@
                visible="true">
          </separator>
          <menu
-               label="Refactor">
+               label="References">
             <command
                   commandId="phasereditor.canvas.ui.findPrefabsReferences"
-                  label="Find Prefab References"
+                  label="Project"
                   style="push">
+               <visibleWhen
+                     checkEnabled="true">
+               </visibleWhen>
             </command>
+         </menu>
+         <menu
+               label="Refactor">
             <command
                   commandId="org.eclipse.ui.edit.rename"
+                  label="Rename..."
                   style="push">
                <visibleWhen
                      checkEnabled="true">
@@ -118,6 +125,7 @@
             </command>
             <command
                   commandId="org.eclipse.ui.edit.move"
+                  label="Move..."
                   style="push">
                <visibleWhen
                      checkEnabled="true">
@@ -125,6 +133,7 @@
             </command>
             <command
                   commandId="org.eclipse.ui.edit.delete"
+                  label="Delete..."
                   style="push">
                <visibleWhen
                      checkEnabled="true">

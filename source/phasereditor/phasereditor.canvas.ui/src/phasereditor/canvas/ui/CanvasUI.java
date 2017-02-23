@@ -33,8 +33,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -120,13 +120,55 @@ public class CanvasUI {
 	private static final QualifiedName SNAPSHOT_FILENAME_KEY = new QualifiedName("phasereditor.canvas.core",
 			"snapshot-file");
 
-	public static Map<IFile, List<PrefabReference>> findPrefabReferences(Prefab prefab, IProgressMonitor monitor) {
+	public static class FindPrefabReferencesResult {
+
+		private Map<IFile, List<PrefabReference>> _map;
+		private int _total;
+
+		public FindPrefabReferencesResult() {
+			_map = new HashMap<>();
+			_total = 0;
+		}
+
+		public void add(PrefabReference ref) {
+			IFile file = ref.getFile();
+			_map.putIfAbsent(file, new ArrayList<>());
+			_map.get(file).add(ref);
+			_total++;
+		}
+
+		public int getTotalReferences() {
+			return _total;
+		}
+
+		public int getTotalFiles() {
+			return _map.size();
+		}
+
+		public List<PrefabReference> getReferencesOf(IFile file) {
+			return _map.get(file);
+		}
+
+		public Set<IFile> getFiles() {
+			return _map.keySet();
+		}
+
+		public void addAll(List<PrefabReference> refs) {
+			for (PrefabReference ref : refs) {
+				add(ref);
+			}
+		}
+	}
+
+	public static FindPrefabReferencesResult findAllPrefabReferences(Prefab prefab, IProgressMonitor monitor) {
+		FindPrefabReferencesResult result = new FindPrefabReferencesResult();
 
 		monitor.beginTask("Finding prefab references", CANVAS_SCREENSHOT_SIZE);
 
 		IProject project = prefab.getFile().getProject();
 
 		List<PrefabReference> refs = findPrefabReferencesInEditorsContent(prefab, monitor);
+		result.addAll(refs);
 
 		Set<IFile> used = new HashSet<>();
 
@@ -140,21 +182,13 @@ public class CanvasUI {
 
 		for (CanvasFile cfile : cfiles) {
 			if (!used.contains(cfile.getFile())) {
-				List<PrefabReference> thisRefs = CanvasCore.findPrefabReferencesInFileContent(prefab, cfile.getFile());
-				refs.addAll(thisRefs);
+				List<PrefabReference> fileRefs = CanvasCore.findPrefabReferencesInFileContent(prefab, cfile.getFile());
+				result.addAll(fileRefs);
 			}
 			monitor.worked(1);
 		}
 
-		Map<IFile, List<PrefabReference>> map = new LinkedHashMap<>();
-
-		for (PrefabReference ref : refs) {
-			IFile file = ref.getFile();
-			map.putIfAbsent(file, new ArrayList<>());
-			map.get(file).add(ref);
-		}
-
-		return map;
+		return result;
 	}
 
 	public static List<PrefabReference> findPrefabReferencesInEditorsContent(Prefab prefab, IProgressMonitor monitor) {

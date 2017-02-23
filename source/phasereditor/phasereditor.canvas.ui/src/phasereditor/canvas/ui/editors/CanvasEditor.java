@@ -837,7 +837,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 			throw new RuntimeException(e);
 		}
 	}
-
+	
 	public void handleFileRename(IFile newFile) {
 		super.setInput(new FileEditorInput(newFile));
 		_model.setFile(newFile);
