@@ -43,7 +43,7 @@ public class ImageCanvas extends Canvas implements PaintListener {
 		addPaintListener(this);
 		_preferredSize = new Point(0, 0);
 		// setBackground(getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
-		setBackground((getDisplay().getSystemColor(SWT.COLOR_WIDGET_DARK_SHADOW)));
+		setBackground((getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND)));
 	}
 
 	public String getNoImageMessage() {
