@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2016 Arian Fornaris
+// Copyright (c) 2015, 2017 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -21,18 +21,56 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IProgressMonitor;
 
-/**
- * @author arian
- */
-public interface IAssetConsumer {
-	
-	@Deprecated
-	public Collection<IFile> getFilesUsingAsset(AssetModel asset);
+public class FindAssetReferencesResult {
 
-	public FindAssetReferencesResult getAssetReferences(IAssetKey assetKey, IProgressMonitor monitor);
+	private Map<IFile, List<IAssetReference>> _map;
+	private int _total;
+
+	public FindAssetReferencesResult() {
+		_map = new HashMap<>();
+		_total = 0;
+	}
+
+	public void add(IAssetReference ref) {
+		IFile file = ref.getFile();
+		_map.putIfAbsent(file, new ArrayList<>());
+		_map.get(file).add(ref);
+		_total++;
+	}
+
+	public int getTotalReferences() {
+		return _total;
+	}
+
+	public int getTotalFiles() {
+		return _map.size();
+	}
+
+	public List<IAssetReference> getReferencesOf(IFile file) {
+		return _map.get(file);
+	}
+
+	public Set<IFile> getFiles() {
+		return _map.keySet();
+	}
+
+	public void addAll(List<IAssetReference> refs) {
+		for (IAssetReference ref : refs) {
+			add(ref);
+		}
+	}
+
+	public void merge(FindAssetReferencesResult result) {
+		for (List<IAssetReference> refs : result._map.values()) {
+			addAll(refs);
+		}
+	}
 }

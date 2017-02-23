@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2016 Arian Fornaris
+// Copyright (c) 2015, 2017 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -19,20 +19,20 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.core;
+package phasereditor.assetpack.ui.search;
 
-import java.util.Collection;
-
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.search.ui.SearchResultEvent;
 
 /**
  * @author arian
+ *
  */
-public interface IAssetConsumer {
-	
-	@Deprecated
-	public Collection<IFile> getFilesUsingAsset(AssetModel asset);
+public class SearchAssetResultEvent extends SearchResultEvent{
 
-	public FindAssetReferencesResult getAssetReferences(IAssetKey assetKey, IProgressMonitor monitor);
+	public SearchAssetResultEvent(SearchAssetResult searchResult) {
+		super(searchResult);
+	}
+
+	private static final long serialVersionUID = 1L;
+
 }

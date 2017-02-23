@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IEditorReference;
@@ -17,6 +18,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.FindAssetReferencesResult;
 import phasereditor.assetpack.core.IAssetConsumer;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.canvas.core.AssetSpriteModel;
@@ -29,6 +31,11 @@ import phasereditor.canvas.ui.editors.CanvasEditor;
 public class CanvasAssetConsumer implements IAssetConsumer {
 
 	public CanvasAssetConsumer() {
+	}
+	
+	@Override
+	public FindAssetReferencesResult getAssetReferences(IAssetKey assetKey, IProgressMonitor monitor) {
+		return CanvasUI.findAllAssetReferences(assetKey, monitor);
 	}
 
 	@Override

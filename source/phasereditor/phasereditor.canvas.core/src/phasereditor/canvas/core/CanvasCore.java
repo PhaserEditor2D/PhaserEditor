@@ -33,9 +33,16 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+
+import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.core.IAssetReference;
+import phasereditor.assetpack.core.ImageAssetModel;
 
 /**
  * @author arian
@@ -163,7 +170,7 @@ public class CanvasCore {
 			return _file;
 		}
 	}
-	
+
 	public static List<PrefabReference> findPrefabReferencesInFileContent(Prefab prefab, IFile file) {
 		CanvasModel canvasModel = new CanvasModel(file);
 		try (InputStream contents = file.getContents()) {
@@ -182,6 +189,95 @@ public class CanvasCore {
 			Prefab modelPrefab = model.getPrefab();
 			if (prefab.equals(modelPrefab)) {
 				list.add(new PrefabReference(world.getFile(), model.getEditorName(), model.getId()));
+			}
+		});
+
+		return list;
+	}
+
+	public static class AssetReference implements IAssetReference {
+
+		private String _objectId;
+		private String _objectName;
+		private IFile _file;
+		private IAssetKey _assetKey;
+
+		public AssetReference(String objectId, String objectName, IFile file, IAssetKey assetKey) {
+			_objectId = objectId;
+			_objectName = objectName;
+			_file = file;
+			_assetKey = assetKey;
+		}
+
+		@Override
+		public IAssetKey getAssetKey() {
+			return _assetKey;
+		}
+
+		@Override
+		public String getLabel() {
+			return _objectName;
+		}
+
+		@Override
+		public IFile getFile() {
+			return _file;
+		}
+
+		@Override
+		public void reveal(IWorkbenchPage workbenchPage) {
+			IMarker marker = CanvasCore.createNodeMarker(_file, _objectId);
+			try {
+				IDE.openEditor(workbenchPage, marker);
+			} catch (PartInitException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+		public String getObjectId() {
+			return _objectId;
+		}
+
+		public String getObjectName() {
+			return _objectName;
+		}
+	}
+
+	public static List<IAssetReference> findAssetReferencesInFileContent(IAssetKey assetKey, IFile file) {
+		CanvasModel canvasModel = new CanvasModel(file);
+		try (InputStream contents = file.getContents()) {
+			canvasModel.read(new JSONObject(new JSONTokener(contents)));
+			return findAssetReferenceInModelContent(assetKey, canvasModel.getWorld());
+		} catch (Exception e) {
+			logError(e);
+			throw new RuntimeException(e);
+		}
+	}
+
+	@SuppressWarnings("rawtypes")
+	public static List<IAssetReference> findAssetReferenceInModelContent(IAssetKey assetKey, WorldModel world) {
+		IAssetKey assetKey2 = assetKey instanceof ImageAssetModel.Frame ? assetKey.getAsset() : assetKey;
+
+		List<IAssetReference> list = new ArrayList<>();
+
+		world.getWorld().walk(model -> {
+
+			if (model instanceof AssetSpriteModel) {
+
+				if (model.isPrefabInstance() && !model.isOverriding(BaseSpriteModel.PROPSET_TEXTURE)) {
+					// skip prefab instance that cannot change its texture
+					return;
+				}
+
+				IAssetKey key = ((AssetSpriteModel) model).getAssetKey();
+
+				if (key instanceof ImageAssetModel.Frame) {
+					key = key.getAsset();
+				}
+
+				if (key.getSharedVersion().equals(assetKey2.getSharedVersion())) {
+					list.add(new AssetReference(model.getId(), model.getEditorName(), world.getFile(), key));
+				}
 			}
 		});
 

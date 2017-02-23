@@ -83,7 +83,10 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
+import phasereditor.assetpack.core.FindAssetReferencesResult;
 import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.core.IAssetReference;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
@@ -160,6 +163,66 @@ public class CanvasUI {
 		}
 	}
 
+	public static FindAssetReferencesResult findAllAssetReferences(IAssetKey assetKey, IProgressMonitor monitor) {
+		FindAssetReferencesResult result = new FindAssetReferencesResult();
+
+		monitor.beginTask("Finding prefab references", CANVAS_SCREENSHOT_SIZE);
+
+		IProject project = assetKey.getAsset().getPack().getFile().getProject();
+
+		List<IAssetReference> refs = findAssetReferencesInEditorsContent(assetKey, monitor);
+		result.addAll(refs);
+
+		Set<IFile> used = new HashSet<>();
+
+		for (IAssetReference ref : refs) {
+			used.add(ref.getFile());
+		}
+
+		List<CanvasFile> cfiles = CanvasCore.getCanvasFileCache().getProjectData(project);
+
+		monitor.beginTask("Find prefab references in files", cfiles.size());
+
+		for (CanvasFile cfile : cfiles) {
+			if (!used.contains(cfile.getFile())) {
+				List<IAssetReference> fileRefs = CanvasCore.findAssetReferencesInFileContent(assetKey, cfile.getFile());
+				result.addAll(fileRefs);
+			}
+			monitor.worked(1);
+		}
+
+		return result;
+	}
+
+	public static List<PrefabReference> findPrefabReferencesInEditorsContent(Prefab prefab, IProgressMonitor monitor) {
+		List<IEditorReference> editors = new ArrayList<>();
+
+		for (IWorkbenchWindow window : PlatformUI.getWorkbench().getWorkbenchWindows()) {
+			for (IWorkbenchPage page : window.getPages()) {
+				for (IEditorReference editorRef : page.getEditorReferences()) {
+					editors.add(editorRef);
+				}
+			}
+		}
+
+		monitor.beginTask("Find prefab refrencesin editors", editors.size());
+
+		List<PrefabReference> result = new ArrayList<>();
+
+		for (IEditorReference editorRef : editors) {
+			IEditorPart editor = editorRef.getEditor(false);
+			if (editor != null && editor instanceof CanvasEditor) {
+				CanvasEditor canvasEditor = (CanvasEditor) editor;
+				List<PrefabReference> refs = CanvasCore.findPrefabReferenceInModelContent(prefab,
+						canvasEditor.getModel().getWorld());
+				result.addAll(refs);
+			}
+			monitor.worked(1);
+		}
+
+		return result;
+	}
+
 	public static FindPrefabReferencesResult findAllPrefabReferences(Prefab prefab, IProgressMonitor monitor) {
 		FindPrefabReferencesResult result = new FindPrefabReferencesResult();
 
@@ -191,7 +254,8 @@ public class CanvasUI {
 		return result;
 	}
 
-	public static List<PrefabReference> findPrefabReferencesInEditorsContent(Prefab prefab, IProgressMonitor monitor) {
+	
+	public static List<IAssetReference> findAssetReferencesInEditorsContent(IAssetKey assetKey, IProgressMonitor monitor) {
 		List<IEditorReference> editors = new ArrayList<>();
 
 		for (IWorkbenchWindow window : PlatformUI.getWorkbench().getWorkbenchWindows()) {
@@ -202,15 +266,15 @@ public class CanvasUI {
 			}
 		}
 
-		monitor.beginTask("Find prefab refrencesin editors", editors.size());
+		monitor.beginTask("Find asset refrences in editors", editors.size());
 
-		List<PrefabReference> result = new ArrayList<>();
+		List<IAssetReference> result = new ArrayList<>();
 
 		for (IEditorReference editorRef : editors) {
 			IEditorPart editor = editorRef.getEditor(false);
 			if (editor != null && editor instanceof CanvasEditor) {
 				CanvasEditor canvasEditor = (CanvasEditor) editor;
-				List<PrefabReference> refs = CanvasCore.findPrefabReferenceInModelContent(prefab,
+				List<IAssetReference> refs = CanvasCore.findAssetReferenceInModelContent(assetKey,
 						canvasEditor.getModel().getWorld());
 				result.addAll(refs);
 			}

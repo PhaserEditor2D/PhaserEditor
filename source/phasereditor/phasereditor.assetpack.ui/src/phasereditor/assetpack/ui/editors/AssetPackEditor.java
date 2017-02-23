@@ -627,7 +627,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	private boolean canRemove(Iterable<AssetModel> assets) {
 		Set<IFile> files = new HashSet<>();
 
-		List<IAssetConsumer> list = AssetPackCore.getAssetConsumers();
+		List<IAssetConsumer> list = AssetPackCore.requestAssetConsumers();
 
 		for (IAssetConsumer consumer : list) {
 			for (AssetModel asset : assets) {

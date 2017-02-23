@@ -112,6 +112,14 @@
                      checkEnabled="true">
                </visibleWhen>
             </command>
+            <command
+                  commandId="phasereditor.assetpack.ui.findAssetReferences"
+                  label="Project"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="true">
+               </visibleWhen>
+            </command>
          </menu>
          <menu
                label="Refactor">

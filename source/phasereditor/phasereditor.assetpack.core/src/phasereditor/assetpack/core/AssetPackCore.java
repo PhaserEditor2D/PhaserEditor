@@ -717,7 +717,7 @@ public class AssetPackCore {
 		}
 	}
 
-	public static List<IAssetConsumer> getAssetConsumers() {
+	public static List<IAssetConsumer> requestAssetConsumers() {
 		List<IAssetConsumer> consumers = new ArrayList<>();
 
 		IExtensionPoint point = Platform.getExtensionRegistry()

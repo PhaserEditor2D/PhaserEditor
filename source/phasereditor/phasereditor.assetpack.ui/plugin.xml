@@ -59,6 +59,10 @@
             id="phasereditor.assetpack.shownInEditor"
             name="Edit In Asset Pack Editor">
       </command>
+      <command
+            id="phasereditor.assetpack.ui.findAssetReferences"
+            name="Find Asset References">
+      </command>
       
    </extension>
    
@@ -119,6 +123,30 @@
             </with>
          </activeWhen>
       </handler>
+      <handler
+            class="phasereditor.assetpack.ui.handlers.FindAssetReferencesHandler"
+            commandId="phasereditor.assetpack.ui.findAssetReferences">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <and>
+                  <count
+                        value="1">
+                  </count>
+                  <iterate>
+                     <or>
+                        <instanceof
+                              value="phasereditor.assetpack.core.ImageAssetModel">
+                        </instanceof>
+                        <instanceof
+                              value="phasereditor.assetpack.core.IAssetFrameModel">
+                        </instanceof>
+                     </or>
+                  </iterate>
+               </and>
+            </with>
+         </enabledWhen>
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">
@@ -169,6 +197,16 @@
             id="phasereditor.assetpack.ui.participant3"
             order="4">
       </participant>
+   </extension>
+   <extension
+         point="org.eclipse.search.searchResultViewPages">
+      <viewPage
+            class="phasereditor.assetpack.ui.search.SearchAssetResultPage"
+            icon="platform:/plugin/phasereditor.ui/icons/brick.png"
+            id="phasereditor.assetpack.ui.search.resultPage"
+            label="Asset References"
+            searchResultClass="phasereditor.assetpack.ui.search.SearchAssetResult">
+      </viewPage>
    </extension>
    
 </plugin>

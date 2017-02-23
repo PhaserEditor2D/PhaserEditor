@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2016 Arian Fornaris
+// Copyright (c) 2015, 2017 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -21,18 +21,19 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core;
 
-import java.util.Collection;
-
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.ui.IWorkbenchPage;
 
 /**
  * @author arian
+ *
  */
-public interface IAssetConsumer {
-	
-	@Deprecated
-	public Collection<IFile> getFilesUsingAsset(AssetModel asset);
+public interface IAssetReference {
+	public String getLabel();
 
-	public FindAssetReferencesResult getAssetReferences(IAssetKey assetKey, IProgressMonitor monitor);
+	public IFile getFile();
+
+	public IAssetKey getAssetKey();
+	
+	public void reveal(IWorkbenchPage workbenchPage);
 }
