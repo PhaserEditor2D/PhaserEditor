@@ -45,6 +45,7 @@ import javax.imageio.ImageIO;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
@@ -119,11 +120,13 @@ public class CanvasUI {
 	private static final QualifiedName SNAPSHOT_FILENAME_KEY = new QualifiedName("phasereditor.canvas.core",
 			"snapshot-file");
 
-	public static Map<IFile, List<PrefabReference>> findPrefabReferences(Prefab prefab) {
+	public static Map<IFile, List<PrefabReference>> findPrefabReferences(Prefab prefab, IProgressMonitor monitor) {
+
+		monitor.beginTask("Finding prefab references", CANVAS_SCREENSHOT_SIZE);
 
 		IProject project = prefab.getFile().getProject();
 
-		List<PrefabReference> refs = findPrefabReferencesInEditorsContent(prefab);
+		List<PrefabReference> refs = findPrefabReferencesInEditorsContent(prefab, monitor);
 
 		Set<IFile> used = new HashSet<>();
 
@@ -131,11 +134,16 @@ public class CanvasUI {
 			used.add(editor.getFile());
 		}
 
-		for (CanvasFile cfile : CanvasCore.getCanvasFileCache().getProjectData(project)) {
+		List<CanvasFile> cfiles = CanvasCore.getCanvasFileCache().getProjectData(project);
+
+		monitor.beginTask("Find prefab references in files", cfiles.size());
+
+		for (CanvasFile cfile : cfiles) {
 			if (!used.contains(cfile.getFile())) {
 				List<PrefabReference> thisRefs = CanvasCore.findPrefabReferencesInFileContent(prefab, cfile.getFile());
 				refs.addAll(thisRefs);
 			}
+			monitor.worked(1);
 		}
 
 		Map<IFile, List<PrefabReference>> map = new LinkedHashMap<>();
@@ -149,20 +157,30 @@ public class CanvasUI {
 		return map;
 	}
 
-	public static List<PrefabReference> findPrefabReferencesInEditorsContent(Prefab prefab) {
-		List<PrefabReference> result = new ArrayList<>();
+	public static List<PrefabReference> findPrefabReferencesInEditorsContent(Prefab prefab, IProgressMonitor monitor) {
+		List<IEditorReference> editors = new ArrayList<>();
+
 		for (IWorkbenchWindow window : PlatformUI.getWorkbench().getWorkbenchWindows()) {
 			for (IWorkbenchPage page : window.getPages()) {
 				for (IEditorReference editorRef : page.getEditorReferences()) {
-					IEditorPart editor = editorRef.getEditor(false);
-					if (editor != null && editor instanceof CanvasEditor) {
-						CanvasEditor canvasEditor = (CanvasEditor) editor;
-						List<PrefabReference> refs = CanvasCore.findPrefabReferenceInModelContent(prefab,
-								canvasEditor.getModel().getWorld());
-						result.addAll(refs);
-					}
+					editors.add(editorRef);
 				}
 			}
+		}
+
+		monitor.beginTask("Find prefab refrencesin editors", editors.size());
+
+		List<PrefabReference> result = new ArrayList<>();
+
+		for (IEditorReference editorRef : editors) {
+			IEditorPart editor = editorRef.getEditor(false);
+			if (editor != null && editor instanceof CanvasEditor) {
+				CanvasEditor canvasEditor = (CanvasEditor) editor;
+				List<PrefabReference> refs = CanvasCore.findPrefabReferenceInModelContent(prefab,
+						canvasEditor.getModel().getWorld());
+				result.addAll(refs);
+			}
+			monitor.worked(1);
 		}
 
 		return result;
@@ -396,11 +414,16 @@ public class CanvasUI {
 	public static Image getCanvasFileIcon(CanvasFile canvasFile, AssetLabelProvider labelProvider) {
 		IFile file = canvasFile.getFile();
 
+		return getCanvasFileIcon(file, labelProvider);
+	}
+
+	public static Image getCanvasFileIcon(IFile file, AssetLabelProvider labelProvider) {
 		if (!file.exists()) {
 			return null;
 		}
 
 		Path imgfile = CanvasUI.getCanvasScreenshotFile(file, false);
+
 		return labelProvider.getIcon(imgfile.toAbsolutePath().toString());
 	}
 

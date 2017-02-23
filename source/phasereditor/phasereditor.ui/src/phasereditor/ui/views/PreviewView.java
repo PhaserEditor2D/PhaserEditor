@@ -87,7 +87,7 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 		_previewContainer.setLayout(sl_previewContainer);
 
 		_noPreviewComp = new Composite(_previewContainer, SWT.NONE);
-		_noPreviewComp.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_DARK_SHADOW));
+		_noPreviewComp.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		//_noPreviewComp = new Canvas(_previewContainer, SWT.NO_BACKGROUND | SWT.DOUBLE_BUFFERED);
 //		_noPreviewComp.addPaintListener(new PaintListener() {
 //			@Override
@@ -97,7 +97,6 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 //		});
 		_noPreviewComp.setLayout(new GridLayout(1, false));
 		Label lblDropItHere = new Label(_noPreviewComp, SWT.NONE);
-		lblDropItHere.setForeground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW));
 		lblDropItHere.setText("Drop it here");
 		lblDropItHere.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true, 1, 1));
 

@@ -26,6 +26,17 @@
       </super>
    </extension>
    <extension
+         id="phasereditor.canvas.core.objectref"
+         name="Canvas Object Reference"
+         point="org.eclipse.core.resources.markers">
+      <persistent
+            value="false">
+      </persistent>
+      <attribute
+            name="EDITOR_ID_ATTR">
+      </attribute>
+   </extension>
+   <extension
          point="org.eclipse.core.contenttype.contentTypes">
       <content-type
             base-type="org.eclipse.wst.jsdt.core.jsonSource"

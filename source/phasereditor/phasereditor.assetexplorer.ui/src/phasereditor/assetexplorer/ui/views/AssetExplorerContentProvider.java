@@ -64,27 +64,37 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 
 			@Override
 			public void partOpened(IWorkbenchPart part) {
-				refreshViewer();
+				if (part instanceof IEditorPart) {
+					refreshViewer();
+				}
 			}
 
 			@Override
 			public void partDeactivated(IWorkbenchPart part) {
-				refreshViewer();
+				if (part instanceof IEditorPart) {
+					refreshViewer();
+				}
 			}
 
 			@Override
 			public void partClosed(IWorkbenchPart part) {
-				refreshViewer();
+				if (part instanceof IEditorPart) {
+					refreshViewer();
+				}
 			}
 
 			@Override
 			public void partBroughtToTop(IWorkbenchPart part) {
-				refreshViewer();
+				if (part instanceof IEditorPart) {
+					refreshViewer();
+				}
 			}
 
 			@Override
 			public void partActivated(IWorkbenchPart part) {
-				refreshViewer();
+				if (part instanceof IEditorPart) {
+					refreshViewer();
+				}
 			}
 		};
 		getActivePage().addPartListener(_partListener);

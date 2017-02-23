@@ -821,6 +821,11 @@
             id="phasereditor.canvas.ui.selectSameTexture"
             name="Select All Sprites With Same Texture">
       </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.findPrefabsReferences"
+            name="Find Prefab References">
+      </command>
       
    </extension>
    <extension
@@ -1551,6 +1556,26 @@
             </with>
          </activeWhen>
       </handler>
+      <handler
+            class="phasereditor.canvas.ui.search.FindPrefabReferencesHandler"
+            commandId="phasereditor.canvas.ui.findPrefabsReferences">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <and>
+                  <count
+                        value="1">
+                  </count>
+                  <iterate
+                        ifEmpty="false">
+                     <instanceof
+                           value="phasereditor.canvas.core.Prefab">
+                     </instanceof>
+                  </iterate>
+               </and>
+            </with>
+         </enabledWhen>
+      </handler>
       
    </extension>
    <extension
@@ -2015,6 +2040,16 @@
                </instanceof>
             </with></enablement>
       </statusContextViewer>
+   </extension>
+   <extension
+         point="org.eclipse.search.searchResultViewPages">
+      <viewPage
+            class="phasereditor.canvas.ui.search.SearchPrefabResultPage"
+            icon="platform:/plugin/phasereditor.ui/icons/canvas.png"
+            id="phasereditor.canvas.ui.prefabSearchPage"
+            label="Prefab Instances"
+            searchResultClass="phasereditor.canvas.ui.search.SearchPrefabResult">
+      </viewPage>
    </extension>
 
 </plugin>

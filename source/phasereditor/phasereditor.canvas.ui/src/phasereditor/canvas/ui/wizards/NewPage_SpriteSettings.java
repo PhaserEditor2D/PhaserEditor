@@ -23,6 +23,7 @@ package phasereditor.canvas.ui.wizards;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -50,6 +51,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 
+import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
@@ -171,7 +173,6 @@ public class NewPage_SpriteSettings extends WizardPage {
 			}
 		});
 		_previewComp.preview(null);
-		_previewComp.setNoPreviewMessage("Select an asset");
 	}
 
 	private void previewSelection() {
@@ -214,8 +215,19 @@ public class NewPage_SpriteSettings extends WizardPage {
 
 			if (parent instanceof AssetSectionModel) {
 				AssetSectionModel section = (AssetSectionModel) parent;
-				return new Object[] { section.getGroup(AssetType.image), section.getGroup(AssetType.spritesheet),
-						section.getGroup(AssetType.atlas) };
+
+				List<Object> list = new ArrayList<>();
+
+				AssetType[] types = { AssetType.image, AssetType.spritesheet, AssetType.atlas };
+
+				for (AssetType type : types) {
+					AssetGroupModel group = section.getGroup(type);
+					if (hasChildren(group)) {
+						list.add(group);
+					}
+				}
+
+				return list.toArray();
 			}
 
 			if (parent instanceof AssetModel) {

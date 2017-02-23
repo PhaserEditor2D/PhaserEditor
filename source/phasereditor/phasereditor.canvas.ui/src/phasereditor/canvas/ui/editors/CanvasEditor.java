@@ -33,6 +33,7 @@ import java.util.concurrent.Executors;
 
 import org.eclipse.core.commands.operations.IUndoContext;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -76,6 +77,7 @@ import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.ide.IDE;
+import org.eclipse.ui.ide.IGotoMarker;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.operations.UndoRedoActionGroup;
 import org.eclipse.ui.part.FileEditorInput;
@@ -87,6 +89,7 @@ import org.json.JSONTokener;
 
 import javafx.geometry.Point2D;
 import phasereditor.canvas.core.AssetTable;
+import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.PrefabTable;
@@ -97,6 +100,7 @@ import phasereditor.canvas.ui.editors.behaviors.ZoomBehavior;
 import phasereditor.canvas.ui.editors.config.CanvasSettingsComp;
 import phasereditor.canvas.ui.editors.grid.PGrid;
 import phasereditor.canvas.ui.editors.palette.PaletteComp;
+import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.PatternFilter2;
@@ -105,7 +109,7 @@ import phasereditor.ui.PatternFilter2;
  * @author arian
  *
  */
-public class CanvasEditor extends MultiPageEditorPart implements IPersistableEditor, IEditorSharedImages {
+public class CanvasEditor extends MultiPageEditorPart implements IPersistableEditor, IEditorSharedImages, IGotoMarker {
 
 	private static final String PALETTE_CONTEXT_ID = "phasereditor.canvas.ui.palettecontext";
 	public final static String ID = "phasereditor.canvas.ui.editors.canvas";
@@ -816,6 +820,21 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 
 		if (getSourceEditor() != null) {
 			getSourceEditor().restoreState(memento);
+		}
+	}
+
+	@Override
+	public void gotoMarker(IMarker marker) {
+		try {
+			String id = (String) marker.getAttribute(CanvasCore.GOTO_MARKER_OBJECT_ID_ATTR);
+			if (id != null) {
+				BaseObjectControl<?> control = _canvas.getWorldNode().getControl().findById(id);
+				if (control != null) {
+					_canvas.getSelectionBehavior().setSelectionAndRevealInScene(control.getIObjectNode());
+				}
+			}
+		} catch (CoreException e) {
+			throw new RuntimeException(e);
 		}
 	}
 

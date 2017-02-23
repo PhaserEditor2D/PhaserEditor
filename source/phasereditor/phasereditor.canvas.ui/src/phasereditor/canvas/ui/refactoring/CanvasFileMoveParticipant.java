@@ -66,7 +66,7 @@ public class CanvasFileMoveParticipant extends MoveParticipant {
 			return status;
 		}
 
-		Map<IFile, List<PrefabReference>> refMap = CanvasUI.findPrefabReferences(new Prefab(_file, _canvasType));
+		Map<IFile, List<PrefabReference>> refMap = CanvasUI.findPrefabReferences(new Prefab(_file, _canvasType), pm);
 
 		for (Entry<IFile, List<PrefabReference>> entry : refMap.entrySet()) {
 			IFile file = entry.getKey();

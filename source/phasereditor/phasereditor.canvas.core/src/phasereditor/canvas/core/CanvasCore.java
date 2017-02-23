@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -47,6 +48,8 @@ public class CanvasCore {
 	public static final String GROUP_CONTENT_TYPE_ID = "phasereditor.canvas.core.groupContentType";
 	public static final String STATE_CONTENT_TYPE_ID = "phasereditor.canvas.core.stateContentType";
 	private static final CanvasFileDataCache _fileDataCache = new CanvasFileDataCache();
+	public static final String GOTO_MARKER_OBJECT_ID_ATTR = "phasereditor.canvas.core.marker.objectId";
+	public static final String CANVAS_OBJECT_REF_MARKER_ID = "phasereditor.canvas.core.objectref";
 
 	public static void logError(Exception e) {
 		e.printStackTrace();
@@ -216,8 +219,19 @@ public class CanvasCore {
 		if (file == null) {
 			return "CanvasClass";
 		}
-		
+
 		return file.getFullPath().removeFileExtension().lastSegment();
+	}
+
+	public static IMarker createNodeMarker(IFile file, String objectId) {
+		try {
+			IMarker marker = file.createMarker(CanvasCore.CANVAS_OBJECT_REF_MARKER_ID);
+			marker.setAttribute("EDITOR_ID_ATTR", "phasereditor.canvas.ui.editors.canvas");
+			marker.setAttribute(GOTO_MARKER_OBJECT_ID_ATTR, objectId);
+			return marker;
+		} catch (CoreException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }

@@ -25,16 +25,10 @@ import org.eclipse.core.runtime.IAdapterManager;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-
-import phasereditor.ui.PhaserEditorUI;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 /**
  * @author arian
@@ -42,10 +36,9 @@ import phasereditor.ui.PhaserEditorUI;
  */
 public class PreviewComp extends Composite {
 
-	private Canvas _noPreviewComp;
+	private Composite _noPreviewComp;
 	private IPreviewFactory _previewFactory;
 	private Control _previewControl;
-	private String _noPreviewMessage = "";
 
 	public PreviewComp(Composite parent, int style) {
 		super(parent, style);
@@ -53,33 +46,11 @@ public class PreviewComp extends Composite {
 		StackLayout sl_previewContainer = new StackLayout();
 		this.setLayout(sl_previewContainer);
 
-		_noPreviewComp = new Canvas(this, SWT.NO_BACKGROUND | SWT.DOUBLE_BUFFERED);
-		_noPreviewComp.addPaintListener(new PaintListener() {
-			@Override
-			public void paintControl(PaintEvent e) {
-				paintNoPreviewComp(e);
-			}
-		});
+		_noPreviewComp = new Composite(this, SWT.NONE);
+		_noPreviewComp.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		_noPreviewComp.setLayout(new GridLayout(1, false));
 	}
 
-	protected void paintNoPreviewComp(PaintEvent e) {
-		GC gc = e.gc;
-		Rectangle b = _noPreviewComp.getBounds();
-		{
-			PhaserEditorUI.paintPreviewBackground(gc, b);
-			PhaserEditorUI.paintPreviewMessage(gc, b, _noPreviewMessage);
-		}
-	}
-
-	public String getNoPreviewMessage() {
-		return _noPreviewMessage;
-	}
-	
-	public void setNoPreviewMessage(String noPreviewMessage) {
-		_noPreviewMessage = noPreviewMessage;
-	}
-	
 	public boolean preview(Object elem) {
 		if (_previewFactory != null && _previewControl != null) {
 			_previewFactory.hiddenControl(_previewControl);
