@@ -158,7 +158,7 @@
                      <theme
                            basestylesheeturi="css/phasereditor_win.css"
                            id="phasereditor.ide.theme.win"
-                           label="Phaser Edtitor Windows"
+                           label="Phaser Editor"
                            os="win32">
                      </theme>
                   </extension>
