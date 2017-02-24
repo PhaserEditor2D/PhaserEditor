@@ -92,6 +92,8 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.preview.ExternalImageFileInformationControl;
 import phasereditor.assetpack.ui.widgets.ImagePreviewComposite;
+import phasereditor.canvas.core.AssetSpriteModel;
+import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.core.CanvasCore.PrefabReference;
@@ -99,10 +101,12 @@ import phasereditor.canvas.core.CanvasFile;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.Prefab;
 import phasereditor.canvas.ui.editors.CanvasEditor;
+import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.behaviors.SelectionBehavior;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.DeleteNodeOperation;
+import phasereditor.canvas.ui.shapes.BaseSpriteControl;
 import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
@@ -160,6 +164,21 @@ public class CanvasUI {
 			for (PrefabReference ref : refs) {
 				add(ref);
 			}
+		}
+	}
+
+	public static class AssetInCanvasEditorReference extends CanvasCore.AssetInCanvasFileReference {
+
+		private BaseSpriteControl<?> _control;
+
+		public AssetInCanvasEditorReference(BaseSpriteControl<?> control) {
+			super(control.getId(), control.getModel().getEditorName(), control.getModel().getWorld().getFile(),
+					((AssetSpriteModel<?>) control.getModel()).getAssetKey());
+			_control = control;
+		}
+
+		public BaseSpriteControl<?> getControl() {
+			return _control;
 		}
 	}
 
@@ -254,8 +273,8 @@ public class CanvasUI {
 		return result;
 	}
 
-	
-	public static List<IAssetReference> findAssetReferencesInEditorsContent(IAssetKey assetKey, IProgressMonitor monitor) {
+	public static List<IAssetReference> findAssetReferencesInEditorsContent(IAssetKey assetKey,
+			IProgressMonitor monitor) {
 		List<IEditorReference> editors = new ArrayList<>();
 
 		for (IWorkbenchWindow window : PlatformUI.getWorkbench().getWorkbenchWindows()) {
@@ -274,14 +293,45 @@ public class CanvasUI {
 			IEditorPart editor = editorRef.getEditor(false);
 			if (editor != null && editor instanceof CanvasEditor) {
 				CanvasEditor canvasEditor = (CanvasEditor) editor;
-				List<IAssetReference> refs = CanvasCore.findAssetReferenceInModelContent(assetKey,
-						canvasEditor.getModel().getWorld());
+				List<IAssetReference> refs = findAssetReferenceInCanvas(assetKey, canvasEditor.getCanvas());
 				result.addAll(refs);
 			}
 			monitor.worked(1);
 		}
 
 		return result;
+	}
+
+	@SuppressWarnings("rawtypes")
+	public static List<IAssetReference> findAssetReferenceInCanvas(IAssetKey assetKey, ObjectCanvas canvas) {
+		IAssetKey assetKey2 = assetKey instanceof ImageAssetModel.Frame ? assetKey.getAsset() : assetKey;
+
+		List<IAssetReference> list = new ArrayList<>();
+
+		canvas.getWorldNode().walkTree(node -> {
+			BaseObjectModel model = node.getModel();
+
+			if (model instanceof AssetSpriteModel) {
+
+				if (model.isPrefabInstance() && !model.isOverriding(BaseSpriteModel.PROPSET_TEXTURE)) {
+					// skip prefab instance that cannot change its texture
+					return;
+				}
+
+				IAssetKey key = ((AssetSpriteModel) model).getAssetKey();
+
+				if (key instanceof ImageAssetModel.Frame) {
+					key = key.getAsset();
+				}
+
+				if (key.getSharedVersion().equals(assetKey2.getSharedVersion())) {
+					list.add(new AssetInCanvasEditorReference((BaseSpriteControl<?>) node.getControl()));
+				}
+			}
+
+		}, true);
+
+		return list;
 	}
 
 	public static void changeSpriteTexture(IObjectNode sprite, Object texture, CompositeOperation operations) {

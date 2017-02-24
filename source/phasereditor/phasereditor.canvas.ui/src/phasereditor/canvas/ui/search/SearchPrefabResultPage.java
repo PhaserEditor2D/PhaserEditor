@@ -89,6 +89,13 @@ public class SearchPrefabResultPage extends Page implements ISearchResultPage, I
 
 	@Override
 	public void createControl(Composite parent) {
+		createViewer(parent);
+	}
+
+	/**
+	 * @param parent
+	 */
+	private void createViewer(Composite parent) {
 		_viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 
 		_viewer.setLabelProvider(new LabelProvider() {
@@ -180,6 +187,8 @@ public class SearchPrefabResultPage extends Page implements ISearchResultPage, I
 				throw new RuntimeException(e1);
 			}
 		});
+
+		CanvasUI.installCanvasTooltips(_viewer);
 	}
 
 	@Override

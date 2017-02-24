@@ -1,10 +1,24 @@
 package phasereditor.assetpack.ui.search;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.WorkspaceJob;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.window.Window;
 import org.eclipse.search.ui.ISearchResult;
 import org.eclipse.search.ui.ISearchResultListener;
 import org.eclipse.search.ui.ISearchResultPage;
@@ -15,14 +29,21 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.Page;
+import org.eclipse.ui.progress.WorkbenchJob;
 
+import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.FindAssetReferencesResult;
+import phasereditor.assetpack.core.IAssetConsumer;
+import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.IAssetReference;
+import phasereditor.assetpack.core.IAssetReplacer;
 import phasereditor.assetpack.ui.AssetLabelProvider;
+import phasereditor.assetpack.ui.TextureDialog;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 
@@ -32,6 +53,7 @@ public class SearchAssetResultPage extends Page implements ISearchResultPage, IS
 	private TreeViewer _viewer;
 	private ISearchResultViewPart _searchView;
 	private SearchAssetResult _result;
+	private MenuManager _menu;
 
 	public SearchAssetResultPage() {
 	}
@@ -86,6 +108,93 @@ public class SearchAssetResultPage extends Page implements ISearchResultPage, IS
 
 	@Override
 	public void createControl(Composite parent) {
+		createViewer(parent);
+		createMenu();
+	}
+
+	private void createMenu() {
+		_menu = new MenuManager("#SearchAssetPopUp"); //$NON-NLS-1$
+		_menu.setRemoveAllWhenShown(true);
+		_menu.setParent(getSite().getActionBars().getMenuManager());
+		_menu.addMenuListener(new IMenuListener() {
+			@Override
+			public void menuAboutToShow(IMenuManager mgr) {
+				// SearchView.createContextMenuGroups(mgr);
+				fillContextMenu(mgr);
+				// _searchView.fillContextMenu(mgr);
+			}
+		});
+
+		Menu menu = _menu.createContextMenu(_viewer.getControl());
+		_viewer.getControl().setMenu(menu);
+
+		getSite().setSelectionProvider(_viewer);
+		// getSite().registerContextMenu(_searchView.getViewSite().getId(),
+		// _menu, _viewer);
+	}
+
+	class ReplaceAction extends Action {
+		private boolean _replaceAll;
+
+		public ReplaceAction(boolean replaceAll) {
+			super("Replace " + (replaceAll ? "All" : "Selected") + "...");
+			_replaceAll = replaceAll;
+		}
+
+		@SuppressWarnings("synthetic-access")
+		@Override
+		public void run() {
+			TextureDialog dlg = new TextureDialog(getSite().getShell());
+			dlg.setAllowNull(false);
+			FindAssetReferencesResult findResult = _result.getReferences();
+			dlg.setProject(findResult.getFirstReference().getFile().getProject());
+			int r = dlg.open();
+			if (r == Window.OK) {
+				IAssetKey key = (IAssetKey) dlg.getResult();
+
+				List<IAssetReplacer> replacers = new ArrayList<>();
+
+				for (IAssetConsumer c : AssetPackCore.requestAssetConsumers()) {
+					replacers.add(c.getAssetReplacer());
+				}
+
+				new WorkbenchJob("Replacing assets in editors.") {
+
+					@Override
+					public IStatus runInUIThread(IProgressMonitor monitor) {
+						for (IAssetReplacer replacer : replacers) {
+							replacer.replace_SWTThread(findResult, key, monitor);
+						}
+						return Status.OK_STATUS;
+					}
+				}.schedule();
+
+				new WorkspaceJob("Replacing asset in files.") {
+
+					@Override
+					public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+
+						for (IAssetReplacer replacer : replacers) {
+							replacer.replace_ResourceThread(findResult, key, monitor);
+						}
+
+						return Status.OK_STATUS;
+					}
+				}.schedule();
+
+			}
+		}
+	}
+
+	protected void fillContextMenu(IMenuManager manager) {
+		manager.add(new ReplaceAction(true));
+		manager.add(new ReplaceAction(false));
+	}
+
+	/**
+	 * @param parent
+	 */
+	private void createViewer(Composite parent) {
 		_viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 
 		_viewer.setLabelProvider(new LabelProvider() {
@@ -176,6 +285,14 @@ public class SearchAssetResultPage extends Page implements ISearchResultPage, IS
 				throw new RuntimeException(e1);
 			}
 		});
+
+		// tooltips
+
+		List<IAssetConsumer> consumers = AssetPackCore.requestAssetConsumers();
+
+		for (IAssetConsumer c : consumers) {
+			c.installTooltips(_viewer);
+		}
 	}
 
 	@Override
@@ -192,8 +309,21 @@ public class SearchAssetResultPage extends Page implements ISearchResultPage, IS
 	public void searchResultChanged(SearchResultEvent e) {
 		_result = (SearchAssetResult) e.getSearchResult();
 		Display.getDefault().asyncExec(() -> {
-			_viewer.setInput(_result.getReferences());
+			FindAssetReferencesResult refs = _result.getReferences();
+			IAssetReference ref = refs.getFirstReference();
+
+			_viewer.getControl().setRedraw(false);
+
+			_viewer.setInput(refs);
+
+			if (ref != null) {
+				_viewer.expandToLevel(ref.getFile(), 1);
+				_viewer.setSelection(new StructuredSelection(ref), true);
+				_viewer.getControl().setRedraw(true);
+			}
+
 			_searchView.updateLabel();
 		});
 	}
+
 }

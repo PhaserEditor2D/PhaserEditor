@@ -47,6 +47,7 @@ import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
+import phasereditor.assetpack.ui.FlatAssetLabelProvider;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.PatternFilter2;
@@ -123,7 +124,7 @@ public class AddSpriteDialog extends Dialog implements IEditorSharedImages {
 
 		_filteredTree = new FilteredTree(container, SWT.BORDER, new PatternFilter2(), true);
 		_viewer = _filteredTree.getViewer();
-		_viewer.setLabelProvider(AssetLabelProvider.GLOBAL_48);
+		_viewer.setLabelProvider(new FlatAssetLabelProvider(AssetLabelProvider.GLOBAL_48));
 		_viewer.setContentProvider(new TreeArrayProvider());
 		List<AssetPackModel> packs = AssetPackCore.getAssetPackModels(_project);
 		List<Object> keys = new ArrayList<>();

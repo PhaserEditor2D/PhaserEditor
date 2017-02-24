@@ -664,8 +664,8 @@ public class AssetPackUI {
 					return info instanceof AssetModel;
 				}
 			});
-
 		}
+		
 		return _informationControlCreators;
 	}
 

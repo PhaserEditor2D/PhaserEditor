@@ -7,10 +7,11 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import phasereditor.assetpack.ui.TextureDialog;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.canvas.ui.editors.CanvasEditor;
-import phasereditor.canvas.ui.editors.grid.editors.TextureDialog;
+import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.SelectOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;
@@ -21,7 +22,13 @@ public class ChangeTextureHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 
-		TextureDialog dlg = new TextureDialog(HandlerUtil.getActiveShell(event));
+		TextureDialog dlg = new TextureDialog(HandlerUtil.getActiveShell(event)) {
+
+			@Override
+			protected Object getNoTextureValue() {
+				return PGridFrameProperty.NULL_FRAME;
+			}
+		};
 
 		dlg.setProject(editor.getEditorInputFile().getProject());
 

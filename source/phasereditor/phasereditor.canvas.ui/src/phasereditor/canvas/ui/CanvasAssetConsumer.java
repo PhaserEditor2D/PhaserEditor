@@ -11,6 +11,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -21,6 +22,7 @@ import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.FindAssetReferencesResult;
 import phasereditor.assetpack.core.IAssetConsumer;
 import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.core.IAssetReplacer;
 import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.core.CanvasFile;
@@ -31,6 +33,11 @@ import phasereditor.canvas.ui.editors.CanvasEditor;
 public class CanvasAssetConsumer implements IAssetConsumer {
 
 	public CanvasAssetConsumer() {
+	}
+	
+	@Override
+	public void installTooltips(TreeViewer viewer) {
+		CanvasUI.installCanvasTooltips(viewer);
 	}
 	
 	@Override
@@ -118,6 +125,14 @@ public class CanvasAssetConsumer implements IAssetConsumer {
 			}
 			return Boolean.TRUE;
 		});
+	}
+
+	/* (non-Javadoc)
+	 * @see phasereditor.assetpack.core.IAssetConsumer#getAssetReplacer()
+	 */
+	@Override
+	public IAssetReplacer getAssetReplacer() {
+		return new CanvasAssetReplacer();
 	}
 
 }

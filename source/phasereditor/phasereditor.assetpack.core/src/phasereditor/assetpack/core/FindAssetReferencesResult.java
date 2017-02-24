@@ -33,6 +33,7 @@ public class FindAssetReferencesResult {
 
 	private Map<IFile, List<IAssetReference>> _map;
 	private int _total;
+	private IAssetReference _first;
 
 	public FindAssetReferencesResult() {
 		_map = new HashMap<>();
@@ -40,6 +41,7 @@ public class FindAssetReferencesResult {
 	}
 
 	public void add(IAssetReference ref) {
+		_first = ref;
 		IFile file = ref.getFile();
 		_map.putIfAbsent(file, new ArrayList<>());
 		_map.get(file).add(ref);
@@ -72,5 +74,9 @@ public class FindAssetReferencesResult {
 		for (List<IAssetReference> refs : result._map.values()) {
 			addAll(refs);
 		}
+	}
+
+	public IAssetReference getFirstReference() {
+		return _first;
 	}
 }

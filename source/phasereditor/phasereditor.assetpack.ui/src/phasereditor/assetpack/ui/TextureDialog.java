@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors.grid.editors;
+package phasereditor.assetpack.ui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +28,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -47,9 +49,6 @@ import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
-import phasereditor.assetpack.ui.AssetLabelProvider;
-import phasereditor.assetpack.ui.AssetsContentProvider;
-import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
 
 /**
  * @author arian
@@ -59,11 +58,13 @@ public class TextureDialog extends Dialog {
 
 	private Composite _container;
 	private TreeViewer _viewer;
-	private Object _result;
+	protected Object _result;
 	private Object _selection;
 	private boolean _allowNull;
 	private List<?> _multipleResult;
 	private IProject _project;
+	private ITreeContentProvider _contentProvider;
+	private IBaseLabelProvider _labelProvider;
 
 	/**
 	 * Create the dialog.
@@ -72,6 +73,9 @@ public class TextureDialog extends Dialog {
 	 */
 	public TextureDialog(Shell parentShell) {
 		super(parentShell);
+
+		_contentProvider = new TextureListContentProvider();
+		_labelProvider = new FlatAssetLabelProvider(AssetLabelProvider.GLOBAL_48);
 	}
 
 	/**
@@ -98,7 +102,7 @@ public class TextureDialog extends Dialog {
 		newShell.setText("Texture Selector");
 	}
 
-	static class TextureContentProvider extends AssetsContentProvider {
+	static class TextureListContentProvider extends AssetsContentProvider {
 
 		@Override
 		public Object[] getChildren(Object parent) {
@@ -130,8 +134,8 @@ public class TextureDialog extends Dialog {
 		FilteredTree tree = new FilteredTree(_container, SWT.SINGLE | SWT.BORDER, filter, true);
 		tree.setQuickSelectionMode(true);
 		_viewer = tree.getViewer();
-		_viewer.setContentProvider(new TextureContentProvider());
-		_viewer.setLabelProvider(AssetLabelProvider.GLOBAL_48);
+		_viewer.setContentProvider(_contentProvider);
+		_viewer.setLabelProvider(_labelProvider);
 		_viewer.setInput(_project);
 		_viewer.setSelection(_selection == null ? StructuredSelection.EMPTY : new StructuredSelection(_selection),
 				true);
@@ -142,6 +146,22 @@ public class TextureDialog extends Dialog {
 				okPressed();
 			}
 		});
+	}
+
+	public IBaseLabelProvider getLabelProvider() {
+		return _labelProvider;
+	}
+
+	public void setLabelProvider(IBaseLabelProvider labelProvider) {
+		_labelProvider = labelProvider;
+	}
+
+	public ITreeContentProvider getContentProvider() {
+		return _contentProvider;
+	}
+
+	public void setContentProvider(ITreeContentProvider contentProvider) {
+		_contentProvider = contentProvider;
 	}
 
 	public IProject getProject() {
@@ -155,11 +175,16 @@ public class TextureDialog extends Dialog {
 	@Override
 	protected void buttonPressed(int buttonId) {
 		if (buttonId == IDialogConstants.CLIENT_ID) {
-			_result = PGridFrameProperty.NULL_FRAME;
+			_result = getNoTextureValue();
 			setReturnCode(OK);
 			close();
 		}
 		super.buttonPressed(buttonId);
+	}
+
+	@SuppressWarnings("static-method")
+	protected Object getNoTextureValue() {
+		return null;
 	}
 
 	/*

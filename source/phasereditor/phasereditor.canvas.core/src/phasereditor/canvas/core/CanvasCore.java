@@ -195,14 +195,14 @@ public class CanvasCore {
 		return list;
 	}
 
-	public static class AssetReference implements IAssetReference {
+	public static class AssetInCanvasFileReference implements IAssetReference {
 
 		private String _objectId;
 		private String _objectName;
 		private IFile _file;
 		private IAssetKey _assetKey;
 
-		public AssetReference(String objectId, String objectName, IFile file, IAssetKey assetKey) {
+		public AssetInCanvasFileReference(String objectId, String objectName, IFile file, IAssetKey assetKey) {
 			_objectId = objectId;
 			_objectName = objectName;
 			_file = file;
@@ -276,7 +276,7 @@ public class CanvasCore {
 				}
 
 				if (key.getSharedVersion().equals(assetKey2.getSharedVersion())) {
-					list.add(new AssetReference(model.getId(), model.getEditorName(), world.getFile(), key));
+					list.add(new AssetInCanvasFileReference(model.getId(), model.getEditorName(), world.getFile(), key));
 				}
 			}
 		});
