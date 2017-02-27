@@ -119,7 +119,7 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 				line("this." + camel + " = " + localName + ";");
 			}
 
-			if (obj instanceof BaseSpriteModel) {
+			if (obj instanceof BaseSpriteModel && obj.isOverriding(BaseSpriteModel.PROPSET_ANIMATIONS)) {
 				List<AnimationModel> anims = ((BaseSpriteModel) obj).getAnimations();
 				for (AnimationModel anim : anims) {
 					if (anim.isPublic()) {

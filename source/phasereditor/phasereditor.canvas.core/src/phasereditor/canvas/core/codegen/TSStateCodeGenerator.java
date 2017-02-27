@@ -21,13 +21,20 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core.codegen;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.AssetPackModel;
+import phasereditor.assetpack.core.AssetSectionModel;
+import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.CanvasModel;
 
 /**
  * @author arian
  *
  */
-public class TSStateCodeGenerator extends BaseStateGenerator {
+public class TSStateCodeGenerator extends BaseStateGenerator implements ITSCodeGeneratorUtils {
 
 	public TSStateCodeGenerator(CanvasModel model) {
 		super(model);
@@ -49,7 +56,13 @@ public class TSStateCodeGenerator extends BaseStateGenerator {
 		closeIndent("}");
 
 		line();
+
 		generateInitMethod();
+
+		line();
+
+		generatePreloadMethod();
+
 		line();
 
 		openIndent("create() {");
@@ -57,6 +70,31 @@ public class TSStateCodeGenerator extends BaseStateGenerator {
 		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
 		line();
 		line();
+	}
+
+	@SuppressWarnings("rawtypes")
+	private void generatePreloadMethod() {
+		openIndent("preload () {");
+		section("/* before-preload-begin */", "/* before-preload-end */", getYouCanInsertCodeHere());
+		line();
+		line();
+		Set<AssetSectionModel> sections = new HashSet<>();
+		_world.walk(obj -> {
+			if (obj instanceof AssetSpriteModel) {
+				AssetModel asset = ((AssetSpriteModel) obj).getAssetKey().getAsset();
+				sections.add(asset.getSection());
+			}
+		});
+		for (AssetSectionModel section : sections) {
+			AssetPackModel pack = section.getPack();
+			String packUrl = pack.getAssetUrl(pack.getFile());
+			line("this.load.pack('" + section.getKey() + "', '" + packUrl + "');");
+		}
+		line();
+		line();
+		section("/* after-preload-begin */", "/* after-preload-end */", getYouCanInsertCodeHere());
+		line();
+		closeIndent("};");
 	}
 
 	private void generateInitMethod() {
@@ -75,6 +113,11 @@ public class TSStateCodeGenerator extends BaseStateGenerator {
 		closeIndent("}");
 
 		line();
+		
+		generatePublicFieldDeclarations(this, _model.getWorld());
+		
+		line();
+		
 
 		section("/* state-methods-begin */", "/* state-methods-end */", getYouCanInsertCodeHere());
 

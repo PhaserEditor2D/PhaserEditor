@@ -48,7 +48,7 @@ public class StateSettings {
 	public void write(JSONObject data) {
 		data.put("scaleMode", _scaleMode, SCALE_MODE_NO_SCALE);
 		data.put("pageAlignHorizontally", _pageAlignHorizontally, false);
-		data.put("pageAlignHorizontally", _pageAlignHorizontally, false);
+		data.put("pageAlignVertically", _pageAlignVertically, false);
 		EditorSettings.writeColor(data, "stageBackgroundColor", DEFAULT_STAGE_BG_COLOR);
 		data.put("physicsSystem", _physicsSystem.name(), PhysicsType.NONE.name());
 		data.put("rendererRoundPixels", _rendererRoundPixels, false);

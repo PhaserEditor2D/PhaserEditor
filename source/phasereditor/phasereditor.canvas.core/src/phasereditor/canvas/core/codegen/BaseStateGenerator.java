@@ -31,7 +31,7 @@ import phasereditor.canvas.core.StateSettings;
  * @author arian
  *
  */
-public abstract class BaseStateGenerator extends JSLikeCodeGenerator{
+public abstract class BaseStateGenerator extends JSLikeCodeGenerator {
 
 	public BaseStateGenerator(CanvasModel model) {
 		super(model);

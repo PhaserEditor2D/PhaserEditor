@@ -30,7 +30,7 @@ import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
  * @author arian
  *
  */
-public class TSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
+public class TSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator implements ITSCodeGeneratorUtils {
 
 	/**
 	 * @param model
@@ -63,7 +63,8 @@ public class TSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 			key = info.key;
 			frame = info.frame;
 		}
-		line("super(aGame, aX, aY, aKey === undefined? " + key + " : aKey, aFrame === undefined? " + frame + " : aFrame);");
+		line("super(aGame, aX, aY, aKey === undefined? " + key + " : aKey, aFrame === undefined? " + frame
+				+ " : aFrame);");
 
 		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
 
@@ -74,9 +75,17 @@ public class TSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 	@Override
 	protected void generateFooter() {
 		section(POST_INIT_CODE_BEGIN, POST_INIT_CODE_END, getYouCanInsertCodeHere());
-		closeIndent();
-		line("}");
-		closeIndent();
+		closeIndent("}");
+
+		line();
+
+		generatePublicFieldDeclarations(this, _model.getWorld());
+
+		line();
+		
+		section("/* sprite-methods-begin */", "/* sprite-methods-end */", getYouCanInsertCodeHere());
+
+		closeIndent("}");
 		section(END_GENERATED_CODE, getYouCanInsertCodeHere());
 	}
 

@@ -30,7 +30,7 @@ import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
  * @author arian
  *
  */
-public class TSGroupCodeGenerator extends JSLikeGroupCodeGenerator {
+public class TSGroupCodeGenerator extends JSLikeGroupCodeGenerator implements ITSCodeGeneratorUtils {
 
 	/**
 	 * @param model
@@ -67,9 +67,15 @@ public class TSGroupCodeGenerator extends JSLikeGroupCodeGenerator {
 	@Override
 	protected void generateFooter() {
 		section(POST_INIT_CODE_BEGIN, POST_INIT_CODE_END, getYouCanInsertCodeHere());
-		closeIndent();
-		line("}");
-		closeIndent();
+		closeIndent("}");
+
+		line();
+
+		generatePublicFieldDeclarations(this, _model.getWorld());
+
+		line();
+
+		closeIndent("}");
 		section(END_GENERATED_CODE, getYouCanInsertCodeHere());
 	}
 
