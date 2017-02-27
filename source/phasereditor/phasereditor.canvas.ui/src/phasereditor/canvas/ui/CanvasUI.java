@@ -35,6 +35,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -96,9 +97,12 @@ import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CanvasCore;
+import phasereditor.canvas.core.CanvasCore.AssetInCanvasReference;
 import phasereditor.canvas.core.CanvasCore.PrefabReference;
 import phasereditor.canvas.core.CanvasFile;
 import phasereditor.canvas.core.CanvasModel;
+import phasereditor.canvas.core.CanvasModelFactory;
+import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.Prefab;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
@@ -106,7 +110,6 @@ import phasereditor.canvas.ui.editors.behaviors.SelectionBehavior;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.DeleteNodeOperation;
-import phasereditor.canvas.ui.shapes.BaseSpriteControl;
 import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
@@ -129,19 +132,32 @@ public class CanvasUI {
 
 	public static class FindPrefabReferencesResult {
 
-		private Map<IFile, List<PrefabReference>> _map;
+		private Map<IFile, List<PrefabReference>> _mapFileList;
+		private Map<IFile, Set<String>> _mapFileSet;
 		private int _total;
 
 		public FindPrefabReferencesResult() {
-			_map = new HashMap<>();
+			_mapFileList = new LinkedHashMap<>();
+			_mapFileSet = new HashMap<>();
 			_total = 0;
 		}
 
 		public void add(PrefabReference ref) {
 			IFile file = ref.getFile();
-			_map.putIfAbsent(file, new ArrayList<>());
-			_map.get(file).add(ref);
-			_total++;
+
+			_mapFileList.putIfAbsent(file, new ArrayList<>());
+			_mapFileSet.putIfAbsent(file, new HashSet<>());
+
+			Set<String> set = _mapFileSet.get(file);
+
+			String id = ref.getFile().getFullPath().toPortableString() + "@" + ref.getObjectId();
+
+			if (!set.contains(id)) {
+				set.add(id);
+				List<PrefabReference> list = _mapFileList.get(file);
+				list.add(ref);
+				_total++;
+			}
 		}
 
 		public int getTotalReferences() {
@@ -149,15 +165,15 @@ public class CanvasUI {
 		}
 
 		public int getTotalFiles() {
-			return _map.size();
+			return _mapFileList.size();
 		}
 
 		public List<PrefabReference> getReferencesOf(IFile file) {
-			return _map.get(file);
+			return _mapFileList.get(file);
 		}
 
 		public Set<IFile> getFiles() {
-			return _map.keySet();
+			return _mapFileList.keySet();
 		}
 
 		public void addAll(List<PrefabReference> refs) {
@@ -165,20 +181,21 @@ public class CanvasUI {
 				add(ref);
 			}
 		}
-	}
 
-	public static class AssetInCanvasEditorReference extends CanvasCore.AssetInCanvasFileReference {
-
-		private BaseSpriteControl<?> _control;
-
-		public AssetInCanvasEditorReference(BaseSpriteControl<?> control) {
-			super(control.getId(), control.getModel().getEditorName(), control.getModel().getWorld().getFile(),
-					((AssetSpriteModel<?>) control.getModel()).getAssetKey());
-			_control = control;
+		public void merge(FindPrefabReferencesResult result) {
+			for (List<PrefabReference> refs : result._mapFileList.values()) {
+				addAll(refs);
+			}
 		}
 
-		public BaseSpriteControl<?> getControl() {
-			return _control;
+		public PrefabReference getFirstReference() {
+			for (IFile file : _mapFileList.keySet()) {
+				List<PrefabReference> list = _mapFileList.get(file);
+				if (!list.isEmpty()) {
+					return list.get(0);
+				}
+			}
+			return null;
 		}
 	}
 
@@ -192,21 +209,13 @@ public class CanvasUI {
 		List<IAssetReference> refs = findAssetReferencesInEditorsContent(assetKey, monitor);
 		result.addAll(refs);
 
-		Set<IFile> used = new HashSet<>();
-
-		for (IAssetReference ref : refs) {
-			used.add(ref.getFile());
-		}
-
 		List<CanvasFile> cfiles = CanvasCore.getCanvasFileCache().getProjectData(project);
 
 		monitor.beginTask("Find prefab references in files", cfiles.size());
 
 		for (CanvasFile cfile : cfiles) {
-			if (!used.contains(cfile.getFile())) {
-				List<IAssetReference> fileRefs = CanvasCore.findAssetReferencesInFileContent(assetKey, cfile.getFile());
-				result.addAll(fileRefs);
-			}
+			List<IAssetReference> fileRefs = CanvasCore.findAssetReferencesInFileContent(assetKey, cfile.getFile());
+			result.addAll(fileRefs);
 			monitor.worked(1);
 		}
 
@@ -252,21 +261,13 @@ public class CanvasUI {
 		List<PrefabReference> refs = findPrefabReferencesInEditorsContent(prefab, monitor);
 		result.addAll(refs);
 
-		Set<IFile> used = new HashSet<>();
-
-		for (PrefabReference editor : refs) {
-			used.add(editor.getFile());
-		}
-
 		List<CanvasFile> cfiles = CanvasCore.getCanvasFileCache().getProjectData(project);
 
 		monitor.beginTask("Find prefab references in files", cfiles.size());
 
 		for (CanvasFile cfile : cfiles) {
-			if (!used.contains(cfile.getFile())) {
-				List<PrefabReference> fileRefs = CanvasCore.findPrefabReferencesInFileContent(prefab, cfile.getFile());
-				result.addAll(fileRefs);
-			}
+			List<PrefabReference> fileRefs = CanvasCore.findPrefabReferencesInFileContent(prefab, cfile.getFile());
+			result.addAll(fileRefs);
 			monitor.worked(1);
 		}
 
@@ -325,13 +326,30 @@ public class CanvasUI {
 				}
 
 				if (key.getSharedVersion().equals(assetKey2.getSharedVersion())) {
-					list.add(new AssetInCanvasEditorReference((BaseSpriteControl<?>) node.getControl()));
+					list.add(new AssetInCanvasReference(model.getId(), model.getEditorName(),
+							model.getWorld().getFile(), key));
 				}
 			}
 
 		}, true);
 
 		return list;
+	}
+
+	public static void changeSpriteTexture(BaseObjectModel model, IAssetKey texture) {
+		JSONObject data = model.toJSON(false);
+
+		CanvasModelFactory.changeTextureToObjectData(data, texture);
+
+		GroupModel parent = model.getParent();
+
+		BaseObjectModel newModel = CanvasModelFactory.createModel(parent, data);
+
+		int i = model.getIndex();
+
+		parent.removeChild(model);
+
+		parent.addChild(i, newModel);
 	}
 
 	public static void changeSpriteTexture(IObjectNode sprite, Object texture, CompositeOperation operations) {
@@ -574,5 +592,4 @@ public class CanvasUI {
 
 		return labelProvider.getIcon(imgfile.toAbsolutePath().toString());
 	}
-
 }

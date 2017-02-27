@@ -256,7 +256,7 @@ public abstract class BaseObjectModel {
 
 	public void setName(String name) {
 		_name = name;
-		
+
 	}
 
 	public double getX() {
@@ -480,7 +480,7 @@ public abstract class BaseObjectModel {
 		boolean prefabInstance = isPrefabInstance();
 
 		jsonInfo.put("name", _name, DEF_NAME);
-		
+
 		if (isOverriding(PROPSET_POSITION)) {
 			if (prefabInstance) {
 				jsonInfo.put("x", _x);
@@ -545,4 +545,12 @@ public abstract class BaseObjectModel {
 	public boolean hasErrors() {
 		return false;
 	}
+
+	public BaseObjectModel findById(String id) {
+		if (getId().equals(id)) {
+			return this;
+		}
+		return null;
+	}
+
 }

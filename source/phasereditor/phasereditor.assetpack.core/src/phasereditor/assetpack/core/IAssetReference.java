@@ -29,6 +29,9 @@ import org.eclipse.ui.IWorkbenchPage;
  *
  */
 public interface IAssetReference {
+	
+	public String getId();
+	
 	public String getLabel();
 
 	public IFile getFile();

@@ -23,6 +23,8 @@ package phasereditor.assetpack.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,21 +33,30 @@ import org.eclipse.core.resources.IFile;
 
 public class FindAssetReferencesResult {
 
-	private Map<IFile, List<IAssetReference>> _map;
+	private Map<IFile, List<IAssetReference>> _mapFileList;
+	private Map<IFile, Set<String>> _mapFileSet;
 	private int _total;
-	private IAssetReference _first;
 
 	public FindAssetReferencesResult() {
-		_map = new HashMap<>();
+		_mapFileList = new LinkedHashMap<>();
+		_mapFileSet = new HashMap<>();
 		_total = 0;
 	}
 
 	public void add(IAssetReference ref) {
-		_first = ref;
 		IFile file = ref.getFile();
-		_map.putIfAbsent(file, new ArrayList<>());
-		_map.get(file).add(ref);
-		_total++;
+
+		_mapFileList.putIfAbsent(file, new ArrayList<>());
+		_mapFileSet.putIfAbsent(file, new HashSet<>());
+
+		Set<String> set = _mapFileSet.get(file);
+
+		if (!set.contains(ref.getId())) {
+			set.add(ref.getId());
+			List<IAssetReference> list = _mapFileList.get(file);
+			list.add(ref);
+			_total++;
+		}
 	}
 
 	public int getTotalReferences() {
@@ -53,15 +64,15 @@ public class FindAssetReferencesResult {
 	}
 
 	public int getTotalFiles() {
-		return _map.size();
+		return _mapFileList.size();
 	}
 
 	public List<IAssetReference> getReferencesOf(IFile file) {
-		return _map.get(file);
+		return _mapFileList.get(file);
 	}
 
 	public Set<IFile> getFiles() {
-		return _map.keySet();
+		return _mapFileList.keySet();
 	}
 
 	public void addAll(List<IAssetReference> refs) {
@@ -71,12 +82,18 @@ public class FindAssetReferencesResult {
 	}
 
 	public void merge(FindAssetReferencesResult result) {
-		for (List<IAssetReference> refs : result._map.values()) {
+		for (List<IAssetReference> refs : result._mapFileList.values()) {
 			addAll(refs);
 		}
 	}
 
 	public IAssetReference getFirstReference() {
-		return _first;
+		for (IFile file : _mapFileList.keySet()) {
+			List<IAssetReference> list = _mapFileList.get(file);
+			if (!list.isEmpty()) {
+				return list.get(0);
+			}
+		}
+		return null;
 	}
 }

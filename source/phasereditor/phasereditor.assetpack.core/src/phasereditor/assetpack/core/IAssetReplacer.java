@@ -30,6 +30,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 public interface IAssetReplacer {
 	public void replace_SWTThread(FindAssetReferencesResult result, IAssetKey key, IProgressMonitor monitor);
 
-	public void replace_ResourceThread(FindAssetReferencesResult result, IAssetKey key, IProgressMonitor monitor);
+	public void replace_ResourceThread(FindAssetReferencesResult result, IAssetKey key, IProgressMonitor monitor) throws Exception;
 
 }

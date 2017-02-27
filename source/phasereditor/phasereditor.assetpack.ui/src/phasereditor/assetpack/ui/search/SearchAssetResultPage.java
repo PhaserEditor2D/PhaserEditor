@@ -175,7 +175,11 @@ public class SearchAssetResultPage extends Page implements ISearchResultPage, IS
 					public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 
 						for (IAssetReplacer replacer : replacers) {
-							replacer.replace_ResourceThread(findResult, key, monitor);
+							try {
+								replacer.replace_ResourceThread(findResult, key, monitor);
+							} catch (Exception e) {
+								throw new RuntimeException(e);
+							}
 						}
 
 						return Status.OK_STATUS;
@@ -319,9 +323,10 @@ public class SearchAssetResultPage extends Page implements ISearchResultPage, IS
 			if (ref != null) {
 				_viewer.expandToLevel(ref.getFile(), 1);
 				_viewer.setSelection(new StructuredSelection(ref), true);
-				_viewer.getControl().setRedraw(true);
 			}
-
+			
+			_viewer.getControl().setRedraw(true);
+			
 			_searchView.updateLabel();
 		});
 	}

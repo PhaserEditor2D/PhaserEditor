@@ -114,6 +114,22 @@ public class GroupModel extends BaseObjectModel {
 		return _children;
 	}
 
+	@Override
+	public BaseObjectModel findById(String id) {
+		if (getId().equals(id)) {
+			return this;
+		} 
+		
+		for(BaseObjectModel c : getChildren()) {
+			BaseObjectModel found = c.findById(id);
+			if (found != null) {
+				return found;
+			}
+		}
+		
+		return null;
+	}
+
 	public BaseObjectModel findByName(String name) {
 		if (getEditorName().equals(name)) {
 			return this;

@@ -1,9 +1,12 @@
 package phasereditor.canvas.ui.search;
 
+import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.search.ui.ISearchResult;
@@ -166,7 +169,8 @@ public class SearchPrefabResultPage extends Page implements ISearchResultPage, I
 				}
 
 				if (parentElement instanceof IFile) {
-					return _references.getReferencesOf((IFile) parentElement).toArray();
+					List<PrefabReference> list = _references.getReferencesOf((IFile) parentElement);
+					return list.toArray();
 				}
 
 				return new Object[0];
@@ -205,7 +209,16 @@ public class SearchPrefabResultPage extends Page implements ISearchResultPage, I
 	public void searchResultChanged(SearchResultEvent e) {
 		_result = (SearchPrefabResult) e.getSearchResult();
 		Display.getDefault().asyncExec(() -> {
-			_viewer.setInput(_result.getReferences());
+			FindPrefabReferencesResult refs = _result.getReferences();
+			PrefabReference ref = refs.getFirstReference();
+
+			_viewer.setInput(refs);
+
+			if (ref != null) {
+				_viewer.expandToLevel(ref.getFile(), 1);
+				_viewer.setSelection(new StructuredSelection(ref));
+			}
+
 			_searchView.updateLabel();
 		});
 	}
