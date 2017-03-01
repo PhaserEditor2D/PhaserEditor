@@ -54,7 +54,6 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.events.FocusAdapter;
@@ -423,8 +422,8 @@ public class PhaserEditorUI {
 			x = 5;
 		}
 		int y = canvasBounds.height / 2 - msgSize.y / 2;
-		gc.setBackground(PREVIEW_BG_DARK);
-		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+//		gc.setBackground(PREVIEW_BG_DARK);
+//		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		gc.drawText(msg, x, y);
 	}
 
