@@ -118,15 +118,15 @@ public class GroupModel extends BaseObjectModel {
 	public BaseObjectModel findById(String id) {
 		if (getId().equals(id)) {
 			return this;
-		} 
-		
-		for(BaseObjectModel c : getChildren()) {
+		}
+
+		for (BaseObjectModel c : getChildren()) {
 			BaseObjectModel found = c.findById(id);
 			if (found != null) {
 				return found;
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -163,33 +163,47 @@ public class GroupModel extends BaseObjectModel {
 			String name = jsonInfo.optString("physicsSortDirection", PhysicsSortDirection.NULL.name());
 			_physicsSortDirection = PhysicsSortDirection.valueOf(name);
 		}
+
 		_children = new ArrayList<>();
 
-		try {
-			JSONArray modelList = jsonInfo.optJSONArray("children");
-			if (modelList != null) {
-				for (int i = 0; i < modelList.length(); i++) {
-					JSONObject jsonModel = modelList.getJSONObject(i);
+		// v1 -> v2 migration
+		if (isWorldModel() && getWorld().getCanvasModel().getVersion() == 1) {
+			// In v1 all canvas files represent groups so we have to convert
+			// them
+			// to group prefabs.
+			// In v2 a group prefab has a root element that is not present the
+			// v1, so we have to add that root group here:
+			GroupModel prefabRoot = new GroupModel(this);
+			addChild(prefabRoot);
+			prefabRoot.readInfo(jsonInfo);
+		} else {
 
-					try {
-						BaseObjectModel model = CanvasModelFactory.createModel(this, jsonModel);
+			try {
+				JSONArray modelList = jsonInfo.optJSONArray("children");
+				if (modelList != null) {
+					for (int i = 0; i < modelList.length(); i++) {
+						JSONObject jsonModel = modelList.getJSONObject(i);
 
-						if (model != null) {
-							_children.add(model);
+						try {
+							BaseObjectModel model = CanvasModelFactory.createModel(this, jsonModel);
+
+							if (model != null) {
+								_children.add(model);
+							}
+						} catch (MissingAssetException e) {
+							out.println("Cannot open asset " + e.getData().toString(2));
+							MissingAssetSpriteModel missingModel = new MissingAssetSpriteModel(this, e.getData());
+							_children.add(missingModel);
+						} catch (MissingPrefabException e) {
+							out.println("Cannot open prefab " + e.getData().toString(2));
+							MissingPrefabModel missingModel = new MissingPrefabModel(this, e.getData());
+							_children.add(missingModel);
 						}
-					} catch (MissingAssetException e) {
-						out.println("Cannot open asset " + e.getData().toString(2));
-						MissingAssetSpriteModel missingModel = new MissingAssetSpriteModel(this, e.getData());
-						_children.add(missingModel);
-					} catch (MissingPrefabException e) {
-						out.println("Cannot open prefab " + e.getData().toString(2));
-						MissingPrefabModel missingModel = new MissingPrefabModel(this, e.getData());
-						_children.add(missingModel);
 					}
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
