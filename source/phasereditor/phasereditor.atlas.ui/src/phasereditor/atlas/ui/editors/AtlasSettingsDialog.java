@@ -67,6 +67,7 @@ public class AtlasSettingsDialog extends Dialog {
 	 */
 	public AtlasSettingsDialog(Shell parentShell) {
 		super(parentShell);
+		setShellStyle(SWT.CLOSE | SWT.MAX | SWT.RESIZE | SWT.TITLE);
 	}
 
 	@Override
@@ -241,7 +242,7 @@ public class AtlasSettingsDialog extends Dialog {
 	 */
 	@Override
 	protected Point getInitialSize() {
-		return new Point(415, 378);
+		return new Point(531, 440);
 	}
 	@SuppressWarnings("unchecked")
 	protected DataBindingContext initDataBindings() {
