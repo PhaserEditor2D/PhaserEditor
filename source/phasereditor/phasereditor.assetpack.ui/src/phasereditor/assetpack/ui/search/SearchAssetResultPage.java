@@ -146,8 +146,26 @@ public class SearchAssetResultPage extends Page implements ISearchResultPage, IS
 		public void run() {
 			TextureDialog dlg = new TextureDialog(getSite().getShell());
 			dlg.setAllowNull(false);
+
 			FindAssetReferencesResult findResult = _result.getReferences();
+
+			if (!_replaceAll && !_viewer.getSelection().isEmpty()) {
+				Object[] sel = _viewer.getStructuredSelection().toArray();
+
+				FindAssetReferencesResult result2 = new FindAssetReferencesResult();
+				for (Object elem : sel) {
+					if (elem instanceof IFile) {
+						result2.addAll(findResult.getReferencesOf((IFile) elem));
+					} else {
+						result2.add((IAssetReference) elem);
+					}
+				}
+
+				findResult = result2;
+			}
+
 			dlg.setProject(findResult.getFirstReference().getFile().getProject());
+
 			int r = dlg.open();
 			if (r == Window.OK) {
 				IAssetKey key = (IAssetKey) dlg.getResult();
@@ -158,12 +176,14 @@ public class SearchAssetResultPage extends Page implements ISearchResultPage, IS
 					replacers.add(c.getAssetReplacer());
 				}
 
+				FindAssetReferencesResult finalResult = findResult;
+				
 				new WorkbenchJob("Replacing assets in editors.") {
 
 					@Override
 					public IStatus runInUIThread(IProgressMonitor monitor) {
 						for (IAssetReplacer replacer : replacers) {
-							replacer.replace_SWTThread(findResult, key, monitor);
+							replacer.replace_SWTThread(finalResult, key, monitor);
 						}
 						return Status.OK_STATUS;
 					}
@@ -176,7 +196,7 @@ public class SearchAssetResultPage extends Page implements ISearchResultPage, IS
 
 						for (IAssetReplacer replacer : replacers) {
 							try {
-								replacer.replace_ResourceThread(findResult, key, monitor);
+								replacer.replace_ResourceThread(finalResult, key, monitor);
 							} catch (Exception e) {
 								throw new RuntimeException(e);
 							}
@@ -324,9 +344,9 @@ public class SearchAssetResultPage extends Page implements ISearchResultPage, IS
 				_viewer.expandToLevel(ref.getFile(), 1);
 				_viewer.setSelection(new StructuredSelection(ref), true);
 			}
-			
+
 			_viewer.getControl().setRedraw(true);
-			
+
 			_searchView.updateLabel();
 		});
 	}
