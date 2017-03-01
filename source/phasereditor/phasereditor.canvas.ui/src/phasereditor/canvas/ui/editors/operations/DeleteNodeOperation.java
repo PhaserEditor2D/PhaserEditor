@@ -66,7 +66,7 @@ public class DeleteNodeOperation extends AbstractNodeOperation {
 		_index = group.getChildren().indexOf(control.getNode());
 		_data = new JSONObject();
 
-		control.getModel().write(_data, true);
+		control.getModel().write(_data, false);
 
 		remove(control);
 
