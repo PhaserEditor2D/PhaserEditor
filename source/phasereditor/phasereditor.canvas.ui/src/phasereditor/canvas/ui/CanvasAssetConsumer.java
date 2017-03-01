@@ -103,7 +103,7 @@ public class CanvasAssetConsumer implements IAssetConsumer {
 	}
 
 	private static void addUsedInModel(AssetModel asset, Set<IFile> files, WorldModel model) {
-		model.walk(m -> {
+		model.walk_stopIfFalse(m -> {
 			if (m instanceof AssetSpriteModel) {
 				IAssetKey key = ((AssetSpriteModel<?>) m).getAssetKey();
 

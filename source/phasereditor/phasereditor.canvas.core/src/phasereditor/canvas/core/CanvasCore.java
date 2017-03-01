@@ -265,13 +265,13 @@ public class CanvasCore {
 
 		List<IAssetReference> list = new ArrayList<>();
 
-		world.getWorld().walk(model -> {
+		world.getWorld().walk_skipGroupIfFalse(model -> {
 
 			if (model instanceof AssetSpriteModel) {
 
 				if (model.isPrefabInstance() && !model.isOverriding(BaseSpriteModel.PROPSET_TEXTURE)) {
 					// skip prefab instance that cannot change its texture
-					return;
+					return false;
 				}
 
 				IAssetKey key = ((AssetSpriteModel) model).getAssetKey();
@@ -283,7 +283,15 @@ public class CanvasCore {
 				if (key.getSharedVersion().equals(assetKey2.getSharedVersion())) {
 					list.add(new AssetInCanvasReference(model.getId(), model.getEditorName(), world.getFile(), key));
 				}
+			} else if (model instanceof GroupModel) {
+
+				// just avoid to loop into group prefabs
+				if (model.isPrefabInstance()) {
+					return false;
+				}
+
 			}
+			return true;
 		});
 
 		return list;

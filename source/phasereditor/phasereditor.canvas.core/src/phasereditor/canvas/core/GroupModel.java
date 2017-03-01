@@ -26,7 +26,7 @@ import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -266,29 +266,44 @@ public class GroupModel extends BaseObjectModel {
 		}
 	}
 
-	public void walk(Function<BaseObjectModel, Boolean> visitor) {
-		walk2(visitor);
+	public void walk_stopIfFalse(Predicate<BaseObjectModel> visitor) {
+		walk_stopIfFalse2(visitor);
 	}
 
-	private boolean walk2(Function<BaseObjectModel, Boolean> visitor) {
-		Boolean b = visitor.apply(this);
-		if (b == null || !b.booleanValue()) {
-			return false;
-		}
-
-		for (BaseObjectModel child : getChildren()) {
-			if (child instanceof GroupModel) {
-				if (!((GroupModel) child).walk2(visitor)) {
-					return false;
-				}
-			} else {
-				b = visitor.apply(child);
-				if (b == null || !b.booleanValue()) {
-					return false;
+	private boolean walk_stopIfFalse2(Predicate<BaseObjectModel> visitor) {
+		if (visitor.test(this)) {
+			for (BaseObjectModel child : getChildren()) {
+				if (child instanceof GroupModel) {
+					if (!((GroupModel) child).walk_stopIfFalse2(visitor)) {
+						return false;
+					}
+				} else {
+					if (!visitor.test(child)) {
+						return false;
+					}
 				}
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Walk the object tree. To avoid enter in a sub tree the visitor function
+	 * has to return false.
+	 * 
+	 * @param visitor
+	 *            The visitor, return false if want to skip a sub-tree walk.
+	 */
+	public void walk_skipGroupIfFalse(Predicate<BaseObjectModel> visitor) {
+		if (visitor.test(this)) {
+			for (BaseObjectModel child : getChildren()) {
+				if (child instanceof GroupModel) {
+					((GroupModel) child).walk_skipGroupIfFalse(visitor);
+				} else {
+					visitor.test(child);
+				}
+			}
+		}
 	}
 
 	@Override

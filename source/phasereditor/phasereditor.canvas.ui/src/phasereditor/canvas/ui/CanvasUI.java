@@ -93,11 +93,9 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.preview.ExternalImageFileInformationControl;
 import phasereditor.assetpack.ui.widgets.ImagePreviewComposite;
-import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CanvasCore;
-import phasereditor.canvas.core.CanvasCore.AssetInCanvasReference;
 import phasereditor.canvas.core.CanvasCore.PrefabReference;
 import phasereditor.canvas.core.CanvasFile;
 import phasereditor.canvas.core.CanvasModel;
@@ -105,7 +103,6 @@ import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.Prefab;
 import phasereditor.canvas.ui.editors.CanvasEditor;
-import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.behaviors.SelectionBehavior;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
@@ -294,46 +291,13 @@ public class CanvasUI {
 			IEditorPart editor = editorRef.getEditor(false);
 			if (editor != null && editor instanceof CanvasEditor) {
 				CanvasEditor canvasEditor = (CanvasEditor) editor;
-				List<IAssetReference> refs = findAssetReferenceInCanvas(assetKey, canvasEditor.getCanvas());
+				List<IAssetReference> refs = CanvasCore.findAssetReferenceInModelContent(assetKey, canvasEditor.getCanvas().getWorldModel());
 				result.addAll(refs);
 			}
 			monitor.worked(1);
 		}
 
 		return result;
-	}
-
-	@SuppressWarnings("rawtypes")
-	public static List<IAssetReference> findAssetReferenceInCanvas(IAssetKey assetKey, ObjectCanvas canvas) {
-		IAssetKey assetKey2 = assetKey instanceof ImageAssetModel.Frame ? assetKey.getAsset() : assetKey;
-
-		List<IAssetReference> list = new ArrayList<>();
-
-		canvas.getWorldNode().walkTree(node -> {
-			BaseObjectModel model = node.getModel();
-
-			if (model instanceof AssetSpriteModel) {
-
-				if (model.isPrefabInstance() && !model.isOverriding(BaseSpriteModel.PROPSET_TEXTURE)) {
-					// skip prefab instance that cannot change its texture
-					return;
-				}
-
-				IAssetKey key = ((AssetSpriteModel) model).getAssetKey();
-
-				if (key instanceof ImageAssetModel.Frame) {
-					key = key.getAsset();
-				}
-
-				if (key.getSharedVersion().equals(assetKey2.getSharedVersion())) {
-					list.add(new AssetInCanvasReference(model.getId(), model.getEditorName(),
-							model.getWorld().getFile(), key));
-				}
-			}
-
-		}, true);
-
-		return list;
 	}
 
 	public static void changeSpriteTexture(BaseObjectModel model, IAssetKey texture) {

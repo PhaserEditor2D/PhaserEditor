@@ -167,7 +167,7 @@ public class CanvasEditorBuildParticipant implements IProjectBuildParticipant {
 														return true;
 													}
 
-													editor.getModel().getWorld().walk(obj -> {
+													editor.getModel().getWorld().walk_stopIfFalse(obj -> {
 														if (obj.isPrefabInstance()) {
 															Prefab prefab = obj.getPrefab();
 															if (prefab.getFile().equals(file)) {
