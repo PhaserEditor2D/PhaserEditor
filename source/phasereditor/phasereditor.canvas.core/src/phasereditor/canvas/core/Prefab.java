@@ -101,6 +101,12 @@ public class Prefab extends CanvasFile{
 		objModel.write(prefabData, false);
 		JSONObject prefabInfo = prefabData.getJSONObject("info");
 		for (String k : info.keySet()) {
+			
+			// never override children
+			if (k.equals("children")) {
+				continue;
+			}
+			
 			prefabInfo.put(k, info.get(k));
 		}
 		objModel.readInfo(prefabInfo);
