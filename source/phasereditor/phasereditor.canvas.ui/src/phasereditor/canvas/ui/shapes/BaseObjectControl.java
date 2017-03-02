@@ -33,8 +33,10 @@ import javafx.scene.Node;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.GroupModel;
+import phasereditor.canvas.core.MissingAssetSpriteModel;
 import phasereditor.canvas.core.MissingPrefabException;
 import phasereditor.canvas.core.Prefab;
 import phasereditor.canvas.core.WorldModel.ZOperation;
@@ -234,11 +236,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			@Override
 			public String getValue() {
 				String name = getModel().getName();
-				
+
 				if (name == null) {
 					return "";
 				}
-				
+
 				return name;
 			}
 		};
@@ -671,27 +673,30 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			return this;
 		}
 
-		if (model.isPrefabInstance()) {
-			Prefab prefab = model.getPrefab();
+		Prefab prefab = model.getPrefab();
 
-			JSONObject data = model.toJSON(false);
+		JSONObject data = model.toJSON(false);
 
-			if (!prefab.getFile().exists()) {
-				throw new MissingPrefabException(data);
-			}
-
-			BaseObjectModel newModel = CanvasModelFactory.createModel(model.getParent(), data);
-			BaseObjectControl<?> newControl = CanvasObjectFactory.createObjectControl(_canvas, newModel);
-			GroupControl parentControl = getGroup().getControl();
-			int i = parentControl.removeChild(getIObjectNode());
-			parentControl.addChild(i, newControl.getIObjectNode());
-
-			_overrideProperty.setModel(newModel);
-
-			return newControl;
-
+		if (!prefab.getFile().exists()) {
+			throw new MissingPrefabException(data);
 		}
 
-		return this;
+		BaseObjectModel newModel = CanvasModelFactory.createModel(model.getParent(), data);
+
+		// a missing asset could happen because the prefab's asset is missing.
+		if (newModel instanceof MissingAssetSpriteModel) {
+			if (!model.isOverriding(BaseSpriteModel.PROPSET_TEXTURE)) {
+				throw new MissingPrefabException(data);
+			}
+		}
+
+		BaseObjectControl<?> newControl = CanvasObjectFactory.createObjectControl(_canvas, newModel);
+		GroupControl parentControl = getGroup().getControl();
+		int i = parentControl.removeChild(getIObjectNode());
+		parentControl.addChild(i, newControl.getIObjectNode());
+
+		_overrideProperty.setModel(newModel);
+
+		return newControl;
 	}
 }

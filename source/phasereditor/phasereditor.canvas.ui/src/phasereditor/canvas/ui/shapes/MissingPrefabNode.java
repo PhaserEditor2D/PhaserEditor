@@ -51,7 +51,7 @@ public class MissingPrefabNode extends Label implements IObjectNode {
 
 		MissingPrefabModel model = (MissingPrefabModel) getModel();
 		JSONObject data = model.getSrcData();
-		setText("Missing prefab " + data.optString("prefabFile", "?"));
+		setText("Missing/corrupted prefab\n" + data.optString("prefabFile", "?"));
 
 		setFont(Font.font(getFont().getFamily(), 20));
 	}
