@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
@@ -42,13 +41,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
-
-import phasereditor.assetpack.core.AssetModel;
-import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.assetpack.core.AssetPackModel;
-import phasereditor.assetpack.core.IAssetElementModel;
-import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.assetpack.core.ImageAssetModel;
 
 /**
  * @author arian
@@ -100,32 +92,6 @@ public class TextureDialog extends Dialog {
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
 		newShell.setText("Texture Selector");
-	}
-
-	static class TextureListContentProvider extends AssetsContentProvider {
-
-		@Override
-		public Object[] getChildren(Object parent) {
-			if (parent instanceof IProject) {
-				List<Object> list = new ArrayList<>();
-				List<AssetPackModel> packs = AssetPackCore.getAssetPackModels((IProject) parent);
-				for (AssetPackModel pack : packs) {
-					for (AssetModel asset : pack.getAssets()) {
-						if (asset instanceof ImageAssetModel) {
-							list.add(asset);
-						} else {
-							for (IAssetElementModel elem : asset.getSubElements()) {
-								if (elem instanceof IAssetFrameModel) {
-									list.add(elem);
-								}
-							}
-						}
-					}
-				}
-				return list.toArray();
-			}
-			return super.getChildren(parent);
-		}
 	}
 
 	private void afterCreateWidgets() {

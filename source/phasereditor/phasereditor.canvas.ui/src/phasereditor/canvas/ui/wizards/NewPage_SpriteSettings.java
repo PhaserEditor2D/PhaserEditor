@@ -53,7 +53,8 @@ import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
-import phasereditor.assetpack.ui.TextureTreeContentProvider;
+import phasereditor.assetpack.ui.FlatAssetLabelProvider;
+import phasereditor.assetpack.ui.TextureListContentProvider;
 import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.SourceLang;
 import phasereditor.canvas.ui.editors.LangLabelProvider;
@@ -142,8 +143,8 @@ public class NewPage_SpriteSettings extends WizardPage {
 
 	private void afterCreateWidgets() {
 		_langComboViewer.setInput(SourceLang.values());
-		_assetsViewer.setLabelProvider(AssetLabelProvider.GLOBAL_16);
-		_assetsViewer.setContentProvider(new TextureTreeContentProvider());
+		_assetsViewer.setLabelProvider(new FlatAssetLabelProvider(AssetLabelProvider.GLOBAL_48));
+		_assetsViewer.setContentProvider(new TextureListContentProvider());
 		AssetPackUI.installAssetTooltips(_assetsViewer);
 		_assetsViewer.addSelectionChangedListener(e -> {
 			validateErrors();
