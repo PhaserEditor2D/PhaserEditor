@@ -73,6 +73,7 @@ import org.eclipse.ui.IPersistableEditor;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.dialogs.FilteredTree;
@@ -83,6 +84,7 @@ import org.eclipse.ui.operations.UndoRedoActionGroup;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
+import org.eclipse.ui.texteditor.ITextEditorActionConstants;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -332,7 +334,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 
 		createSettingsPage();
 
-		registerUndoRedoActions();
+		registerGlobalActions();
 	}
 
 	private IPartListener _partListener;
@@ -344,7 +346,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 			@Override
 			public void partOpened(IWorkbenchPart part) {
 				if (part == CanvasEditor.this) {
-					registerUndoRedoActions();
+					registerGlobalActions();
 				}
 			}
 
@@ -361,14 +363,14 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 			@Override
 			public void partBroughtToTop(IWorkbenchPart part) {
 				if (part == CanvasEditor.this) {
-					registerUndoRedoActions();
+					registerGlobalActions();
 				}
 			}
 
 			@Override
 			public void partActivated(IWorkbenchPart part) {
 				if (part == CanvasEditor.this) {
-					registerUndoRedoActions();
+					registerGlobalActions();
 				}
 			}
 		};
@@ -393,7 +395,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 		setPageImage(i, getTitleImage());
 	}
 
-	private void registerUndoRedoActions() {
+	private void registerGlobalActions() {
 		IEditorSite site = getEditorSite();
 
 		if (_undoRedoGroup == null) {
@@ -402,7 +404,28 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 
 		IActionBars actionBars = site.getActionBars();
 		_undoRedoGroup.fillActionBars(actionBars);
+
 		actionBars.updateActionBars();
+	}
+
+	@Override
+	protected void setActivePage(int pageIndex) {
+		super.setActivePage(pageIndex);
+
+		if (isSourcePageActive()) {
+			IActionBars actionBars = getEditorSite().getActionBars();
+			
+			actionBars.setGlobalActionHandler(ActionFactory.COPY.getId(),
+					getSourceEditor().getAction(ITextEditorActionConstants.COPY));
+			
+			actionBars.setGlobalActionHandler(ActionFactory.PASTE.getId(),
+					getSourceEditor().getAction(ITextEditorActionConstants.PASTE));
+			
+			actionBars.setGlobalActionHandler(ActionFactory.CUT.getId(),
+					getSourceEditor().getAction(ITextEditorActionConstants.CUT));
+			
+			actionBars.updateActionBars();
+		}
 	}
 
 	private void createSourcePage() {
@@ -438,7 +461,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 			setPageText(1, "Source");
 			setPageImage(1, getFileImage(srcFile));
 
-			registerUndoRedoActions();
+			registerGlobalActions();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -837,7 +860,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public void handleFileRename(IFile newFile) {
 		super.setInput(new FileEditorInput(newFile));
 		_model.setFile(newFile);
