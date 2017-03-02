@@ -1,7 +1,5 @@
 package phasereditor.canvas.ui.refactoring;
 
-import static java.lang.System.out;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;

@@ -1,6 +1,9 @@
 package phasereditor.canvas.ui.refactoring;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -81,6 +84,8 @@ public class CanvasFileMoveParticipant extends MoveParticipant {
 
 	@Override
 	public Change createChange(IProgressMonitor pm) throws CoreException, OperationCanceledException {
+		Set<Object> elements = new HashSet<>(Arrays.asList(getProcessor().getElements()));
+
 		List<IFile> files = CanvasCore.getCanvasDereivedFiles(_file);
 
 		MoveArguments args = getArguments();
@@ -90,7 +95,9 @@ public class CanvasFileMoveParticipant extends MoveParticipant {
 		CompositeChange changes = new CompositeChange("Move " + _file.getName());
 
 		for (IFile file : files) {
-			changes.add(new MoveResourceChange(file, dst));
+			if (!elements.contains(file)) {
+				changes.add(new MoveResourceChange(file, dst));
+			}
 		}
 
 		if (_canvasType.isPrefab()) {
