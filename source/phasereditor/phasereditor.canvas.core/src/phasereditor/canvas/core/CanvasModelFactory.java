@@ -158,16 +158,13 @@ public class CanvasModelFactory {
 			}
 
 				if (overrideTexture && data.has("asset-ref")) {
-					JSONObject assetRef = data.getJSONObject("asset-ref");
+					JSONObject currentAssetRef = data.getJSONObject("asset-ref");
 					JSONObject newAssetRef = newData.getJSONObject("asset-ref");
-					if (
-					// @formatter:off
-							newAssetRef.getString("file").equals(assetRef.getString("file"))
-							&& newAssetRef.getString("section").equals(assetRef.getString("section"))
-							&& newAssetRef.getString("asset").equals(assetRef.getString("asset")))
-					// @formatter:on
-					{
-						newData.put("asset-ref", assetRef);
+					if (!newAssetRef.toString().equals(currentAssetRef.toString())) {
+						Object asset = AssetPackCore.findAssetElement(parent.getWorld().getProject(), currentAssetRef);
+						if (asset != null) {
+							changeTextureToObjectData(newData, (IAssetKey) asset);
+						}
 					}
 				}
 				model = createModel(parent, newData);
