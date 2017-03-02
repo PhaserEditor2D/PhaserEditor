@@ -1,6 +1,11 @@
 package phasereditor.canvas.ui.refactoring;
 
+import static java.lang.System.out;
+
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -78,12 +83,16 @@ public class CanvasFileDeleteParticipant extends DeleteParticipant {
 
 	@Override
 	public Change createChange(IProgressMonitor pm) throws CoreException, OperationCanceledException {
+		Set<Object> elements = new HashSet<>(Arrays.asList(getProcessor().getElements()));
+
 		List<IFile> files = CanvasCore.getCanvasDereivedFiles(_file);
 
 		CompositeChange change = new CompositeChange("Delete " + _file.getName());
 
 		for (IFile file : files) {
-			change.add(new DeleteResourceChange(file.getFullPath(), true));
+			if (!elements.contains(file)) {
+				change.add(new DeleteResourceChange(file.getFullPath(), true));
+			}
 		}
 
 		return change;
