@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2016 Arian Fornaris
+// Copyright (c) 2015, 2017 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -27,6 +27,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.window.Window;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
@@ -52,26 +53,31 @@ public class AddSpriteHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 
-		AddSpriteDialog dlg = new AddSpriteDialog(HandlerUtil.getActiveShell(event));
-		dlg.setProject(editor.getEditorInputFile().getProject());
-
 		ObjectCanvas canvas = editor.getCanvas();
 		CreateBehavior create = canvas.getCreateBehavior();
 		BiFunction<GroupModel, IAssetKey, BaseSpriteModel> factory = null;
 
-		int id = dlg.open();
+		AddSpriteDialog dlg = new AddSpriteDialog(HandlerUtil.getActiveShell(event));
+		dlg.setProject(editor.getEditorInputFile().getProject());
+		
+		if (dlg.open() != Window.OK) {
+			return null;
+		}
+		
+		String id = event.getParameter("phasereditor.canvas.ui.spriteType");
+		
 		IStructuredSelection result = dlg.getSelection();
 
 		switch (id) {
-		case AddSpriteDialog.ADD_SPRITE:
+		case "sprite":
 			factory = CanvasModelFactory::createModel;
 			break;
-		case AddSpriteDialog.ADD_BUTTON:
+		case "button":
 			factory = (group, key) -> {
 				return new ButtonSpriteModel(group, getAssetFrame(key));
 			};
 			break;
-		case AddSpriteDialog.ADD_TILE:
+		case "tileSprite":
 			factory = (group, key) -> {
 				return new TileSpriteModel(group, getAssetFrame(key));
 			};

@@ -21,46 +21,34 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.FilteredTree;
 
-import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.assetpack.core.AssetPackModel;
-import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.FlatAssetLabelProvider;
-import phasereditor.ui.EditorSharedImages;
+import phasereditor.assetpack.ui.TextureListContentProvider;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.PatternFilter2;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.DoubleClickEvent;
 
 /**
  * @author arian
  *
  */
 public class AddSpriteDialog extends Dialog implements IEditorSharedImages {
-
-	public static final int ADD_SPRITE = IDialogConstants.CLIENT_ID + 3;
-	public static final int ADD_TILE = IDialogConstants.CLIENT_ID + 2;
-	public static final int ADD_BUTTON = IDialogConstants.CLIENT_ID + 1;
 
 	private IProject _project;
 	private FilteredTree _filteredTree;
@@ -74,39 +62,6 @@ public class AddSpriteDialog extends Dialog implements IEditorSharedImages {
 	 */
 	public AddSpriteDialog(Shell parentShell) {
 		super(parentShell);
-	}
-
-	static class TreeArrayProvider implements ITreeContentProvider {
-
-		@Override
-		public void dispose() {
-			// nothing
-		}
-
-		@Override
-		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-			//
-		}
-
-		@Override
-		public Object[] getElements(Object inputElement) {
-			return ((List<?>) inputElement).toArray();
-		}
-
-		@Override
-		public Object[] getChildren(Object parentElement) {
-			return null;
-		}
-
-		@Override
-		public Object getParent(Object element) {
-			return null;
-		}
-
-		@Override
-		public boolean hasChildren(Object element) {
-			return false;
-		}
 	}
 
 	@Override
@@ -123,25 +78,17 @@ public class AddSpriteDialog extends Dialog implements IEditorSharedImages {
 		gridLayout.marginHeight = 5;
 
 		_filteredTree = new FilteredTree(container, SWT.BORDER, new PatternFilter2(), true);
+		_filteredTree.getViewer().addDoubleClickListener(new IDoubleClickListener() {
+			@SuppressWarnings("synthetic-access")
+			@Override
+			public void doubleClick(DoubleClickEvent event) {
+				okPressed();
+			}
+		});
 		_viewer = _filteredTree.getViewer();
 		_viewer.setLabelProvider(new FlatAssetLabelProvider(AssetLabelProvider.GLOBAL_48));
-		_viewer.setContentProvider(new TreeArrayProvider());
-		List<AssetPackModel> packs = AssetPackCore.getAssetPackModels(_project);
-		List<Object> keys = new ArrayList<>();
-		packs.forEach(pack -> {
-			pack.getSections().forEach(section -> {
-				section.getAssets().forEach(asset -> {
-					if (asset instanceof ImageAssetModel) {
-						keys.add(asset);
-					} else {
-						asset.getSubElements().forEach(elem -> {
-							keys.add(elem);
-						});
-					}
-				});
-			});
-		});
-		_viewer.setInput(keys);
+		_viewer.setContentProvider(new TextureListContentProvider());
+		_viewer.setInput(_project);
 		_viewer.addSelectionChangedListener(e -> {
 			_selected = ((IStructuredSelection) e.getSelection()).getFirstElement();
 		});
@@ -164,28 +111,8 @@ public class AddSpriteDialog extends Dialog implements IEditorSharedImages {
 
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		Button btn = createButton(parent, ADD_BUTTON, "button", false);
-		btn.setImage(EditorSharedImages.getImage(IMG_BUTTON));
-		btn.setToolTipText("Add button");
-		btn = createButton(parent, ADD_TILE, "tileSprite", false);
-		btn.setImage(EditorSharedImages.getImage(IMG_TILES));
-		btn.setToolTipText("Add tileSprite");
-		btn = createButton(parent, ADD_SPRITE, "sprite", true);
-		btn.setImage(EditorSharedImages.getImage(IMG_CAR));
-		btn.setToolTipText("Add sprite");
-	}
-
-	@Override
-	protected Button createButton(Composite parent, int id, String label, boolean defaultButton) {
-		Button btn = super.createButton(parent, id, label, defaultButton);
-		return btn;
-	}
-
-	@Override
-	protected void setButtonLayoutData(Button button) {
-		super.setButtonLayoutData(button);
-		GridData data = (GridData) button.getLayoutData();
-		data.widthHint = -1;
+		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
+		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
 	}
 
 	/**
@@ -193,7 +120,7 @@ public class AddSpriteDialog extends Dialog implements IEditorSharedImages {
 	 */
 	@Override
 	protected Point getInitialSize() {
-		return new Point(400, 300);
+		return new Point(462, 471);
 	}
 
 	public void setProject(IProject project) {
@@ -201,7 +128,7 @@ public class AddSpriteDialog extends Dialog implements IEditorSharedImages {
 	}
 
 	public IStructuredSelection getSelection() {
-		return new StructuredSelection(new Object[]{_selected});
+		return new StructuredSelection(new Object[] { _selected });
 	}
 
 }

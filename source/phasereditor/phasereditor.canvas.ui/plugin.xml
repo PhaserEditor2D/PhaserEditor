@@ -230,12 +230,36 @@
                   name="phasereditor.canvas.ui.sprite.2"
                   visible="true">
             </separator>
-            <command
-                  commandId="phasereditor.canvas.ui.addsprite"
-                  icon="platform:/plugin/phasereditor.ui/icons/car_add.png"
-                  label="Add Sprite..."
-                  style="push">
-            </command>
+            <menu
+                  label="Add...">
+               <command
+                     commandId="phasereditor.canvas.ui.addsprite"
+                     label="Sprite"
+                     style="push">
+                  <parameter
+                        name="phasereditor.canvas.ui.spriteType"
+                        value="sprite">
+                  </parameter>
+               </command>
+               <command
+                     commandId="phasereditor.canvas.ui.addsprite"
+                     label="Tile Sprite"
+                     style="push">
+                  <parameter
+                        name="phasereditor.canvas.ui.spriteType"
+                        value="tileSprite">
+                  </parameter>
+               </command>
+               <command
+                     commandId="phasereditor.canvas.ui.addsprite"
+                     label="Button"
+                     style="push">
+                  <parameter
+                        name="phasereditor.canvas.ui.spriteType"
+                        value="button">
+                  </parameter>
+               </command>
+            </menu>
          </menu>
          <menu
                label="Prefab">
@@ -484,17 +508,6 @@
                   </reference>
                </visibleWhen>
             </command>
-            <command
-                  commandId="phasereditor.canvas.ui.addsprite"
-                  icon="platform:/plugin/phasereditor.ui/icons/car_add.png"
-                  style="push">
-               <visibleWhen
-                     checkEnabled="false">
-                  <reference
-                        definitionId="phasereditor.canvas.ui.activeEditor">
-                  </reference>
-               </visibleWhen>
-            </command>
             <separator
                   name="phasereditor.canvas.ui.separator4"
                   visible="true">
@@ -719,7 +732,7 @@
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
-            id="phasereditor.canvas.ui.addsprite"
+            id="phasereditor.canvas.ui.addobject"
             name="Add Sprite">
       </command>
       <command
@@ -825,6 +838,15 @@
             categoryId="phasereditor.canvas.ui.editor.category"
             id="phasereditor.canvas.ui.findPrefabsReferences"
             name="Find Prefab References">
+      </command>
+      <command
+            id="phasereditor.canvas.ui.addsprite"
+            name="Add Sprite">
+         <commandParameter
+               id="phasereditor.canvas.ui.spriteType"
+               name="Sprite Type"
+               optional="false">
+         </commandParameter>
       </command>
       
    </extension>
@@ -1361,18 +1383,6 @@
          </enabledWhen>
       </handler>
       <handler
-            class="phasereditor.canvas.ui.handlers.AddSpriteHandler"
-            commandId="phasereditor.canvas.ui.addsprite">
-         <activeWhen>
-            <with
-                  variable="activePartId">
-               <equals
-                     value="phasereditor.canvas.ui.editors.canvas">
-               </equals>
-            </with>
-         </activeWhen>
-      </handler>
-      <handler
             class="phasereditor.canvas.ui.handlers.ResizeTileHandler"
             commandId="phasereditor.canvas.ui.resizeTile">
          <enabledWhen>
@@ -1576,6 +1586,10 @@
             </with>
          </enabledWhen>
       </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.AddSpriteHandler"
+            commandId="phasereditor.canvas.ui.addsprite">
+      </handler>
       
    </extension>
    <extension
@@ -1665,7 +1679,7 @@
             sequence="Q">
       </key>
       <key
-            commandId="phasereditor.canvas.ui.addsprite"
+            commandId="phasereditor.canvas.ui.addobject"
             contextId="phasereditor.canvas.ui.nodescontext"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M1+M2+A">
