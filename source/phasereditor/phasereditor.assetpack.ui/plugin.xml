@@ -63,6 +63,10 @@
             id="phasereditor.assetpack.ui.findAssetReferences"
             name="Find Asset References">
       </command>
+      <command
+            id="phasereditor.assetpack.ui.replaceAssetsReferences"
+            name="Replace Assets References">
+      </command>
       
    </extension>
    
@@ -126,6 +130,30 @@
       <handler
             class="phasereditor.assetpack.ui.handlers.FindAssetReferencesHandler"
             commandId="phasereditor.assetpack.ui.findAssetReferences">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <and>
+                  <count
+                        value="1">
+                  </count>
+                  <iterate>
+                     <or>
+                        <instanceof
+                              value="phasereditor.assetpack.core.ImageAssetModel">
+                        </instanceof>
+                        <instanceof
+                              value="phasereditor.assetpack.core.IAssetFrameModel">
+                        </instanceof>
+                     </or>
+                  </iterate>
+               </and>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="phasereditor.assetpack.ui.handlers.ReplaceAssetsReferencesHandler"
+            commandId="phasereditor.assetpack.ui.replaceAssetsReferences">
          <enabledWhen>
             <with
                   variable="selection">

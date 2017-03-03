@@ -38,6 +38,7 @@ public class FindAssetReferencesHandler extends AbstractHandler {
 						@Override
 						public void run() {
 							NewSearchUI.runQueryInForeground(dlg, new SearchAssetQuery((IAssetKey) sel));
+							searchFinished();
 						}
 					});
 				}
@@ -46,6 +47,10 @@ public class FindAssetReferencesHandler extends AbstractHandler {
 			throw new RuntimeException(e);
 		}
 		return null;
+	}
+	
+	protected void searchFinished() {
+		// to be implemented by replacer handler
 	}
 
 }

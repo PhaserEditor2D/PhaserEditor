@@ -106,7 +106,7 @@
                label="References">
             <command
                   commandId="phasereditor.canvas.ui.findPrefabsReferences"
-                  label="Project"
+                  label="Find"
                   style="push">
                <visibleWhen
                      checkEnabled="true">
@@ -114,7 +114,15 @@
             </command>
             <command
                   commandId="phasereditor.assetpack.ui.findAssetReferences"
-                  label="Project"
+                  label="Find"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="true">
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="phasereditor.assetpack.ui.replaceAssetsReferences"
+                  label="Replace"
                   style="push">
                <visibleWhen
                      checkEnabled="true">

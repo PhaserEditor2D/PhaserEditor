@@ -54,6 +54,7 @@ public class SearchAssetResultPage extends Page implements ISearchResultPage, IS
 	private ISearchResultViewPart _searchView;
 	private SearchAssetResult _result;
 	private MenuManager _menu;
+	private ReplaceAction _replaceAllAction;
 
 	public SearchAssetResultPage() {
 	}
@@ -108,8 +109,13 @@ public class SearchAssetResultPage extends Page implements ISearchResultPage, IS
 
 	@Override
 	public void createControl(Composite parent) {
+		createActions();
 		createViewer(parent);
 		createMenu();
+	}
+
+	private void createActions() {
+		_replaceAllAction = new ReplaceAction(true);
 	}
 
 	private void createMenu() {
@@ -133,7 +139,7 @@ public class SearchAssetResultPage extends Page implements ISearchResultPage, IS
 		// _menu, _viewer);
 	}
 
-	class ReplaceAction extends Action {
+	public class ReplaceAction extends Action {
 		private boolean _replaceAll;
 
 		public ReplaceAction(boolean replaceAll) {
@@ -177,7 +183,7 @@ public class SearchAssetResultPage extends Page implements ISearchResultPage, IS
 				}
 
 				FindAssetReferencesResult finalResult = findResult;
-				
+
 				new WorkbenchJob("Replacing assets in editors.") {
 
 					@Override
@@ -211,8 +217,12 @@ public class SearchAssetResultPage extends Page implements ISearchResultPage, IS
 	}
 
 	protected void fillContextMenu(IMenuManager manager) {
-		manager.add(new ReplaceAction(true));
+		manager.add(_replaceAllAction);
 		manager.add(new ReplaceAction(false));
+	}
+
+	public ReplaceAction getReplaceAllAction() {
+		return _replaceAllAction;
 	}
 
 	/**
