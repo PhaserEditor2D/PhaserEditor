@@ -93,6 +93,33 @@ public class AssetPackCore {
 		_shaderExtensions = new HashSet<>();
 		_shaderExtensions.addAll(Arrays.asList("vert", "frag", "tesc", "tese", "geom", "comp"));
 	}
+	
+	public static List<AssetModel> findAssetResourceReferencesInProject(IFile assetFile) {
+		List<AssetModel> list = new ArrayList<>();
+
+		List<AssetPackModel> packs = getAssetPackModels(assetFile.getProject());
+
+		for (AssetPackModel pack : packs) {
+			list.addAll(findAssetResourceReferencesInPack(assetFile, pack));
+		}
+
+		return list;
+	}
+
+	public static List<AssetModel> findAssetResourceReferencesInPack(IFile assetFile, AssetPackModel pack) {
+		List<AssetModel> list = new ArrayList<>();
+
+		for (AssetModel asset : pack.getAssets()) {
+			IFile[] usedFiles = asset.computeUsedFiles();
+			for (IFile file : usedFiles) {
+				if (assetFile.equals(file)) {
+					list.add(asset);
+				}
+			}
+		}
+
+		return list;
+	}
 
 	/**
 	 * If the given resource is an image.
@@ -505,11 +532,11 @@ public class AssetPackCore {
 	 * @return A list with the asset pack models.
 	 */
 	static List<AssetPackModel> discoverAssetPackModels() {
-			IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
-			for (IProject project : projects) {
-				discoverAssetPackModels(project);
-			}
-			
+		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+		for (IProject project : projects) {
+			discoverAssetPackModels(project);
+		}
+
 		synchronized (_filePackMap) {
 			return new ArrayList<>(_filePackMap.values());
 		}
@@ -594,7 +621,7 @@ public class AssetPackCore {
 
 	public static void removeAssetPackModels(IProject project) {
 		List<AssetPackModel> list = getAssetPackModels(project);
-		for(AssetPackModel pack : list) {
+		for (AssetPackModel pack : list) {
 			removeAssetPackModel(pack);
 		}
 	}
@@ -612,7 +639,7 @@ public class AssetPackCore {
 			}
 		}
 	}
-	
+
 	public static String getAssetStringReference(IAssetKey key) {
 		JSONObject ref = getAssetJSONReference(key);
 		if (ref == null) {
@@ -673,7 +700,7 @@ public class AssetPackCore {
 			_packs = new HashSet<>();
 			_assets = new HashSet<>();
 		}
-		
+
 		public IProject getProject() {
 			return _project;
 		}
@@ -739,7 +766,7 @@ public class AssetPackCore {
 		e.printStackTrace();
 		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
 	}
-	
+
 	public static void logError(String msg) {
 		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, msg, null));
 	}

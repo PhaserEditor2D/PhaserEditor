@@ -239,16 +239,13 @@
    <extension
          point="org.eclipse.ltk.core.refactoring.deleteParticipants">
       <deleteParticipant
-            class="phasereditor.assetpack.ui.refactorings.AssetModelDeleteParticipant"
-            id="phasereditor.assetpack.ui.assetModelDeleteParticipant"
-            name="Asset Delete Participant">
+            class="phasereditor.assetpack.ui.refactorings.AssetFileDeleteParticipant"
+            id="phasereditor.assetpack.ui.assetFileDeleteParticipant"
+            name="Asset File Delete Participant">
          <enablement>
-            <with
-                  variable="element">
-               <instanceof
-                     value="phasereditor.assetpack.core.AssetModel">
-               </instanceof>
-            </with></enablement>
+            <instanceof
+                  value="org.eclipse.core.resources.IFile">
+            </instanceof></enablement>
       </deleteParticipant>
    </extension>
    

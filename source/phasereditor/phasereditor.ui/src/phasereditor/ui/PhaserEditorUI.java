@@ -84,28 +84,36 @@ import phasereditor.ui.views.PreviewView;
 
 public class PhaserEditorUI {
 	public static Color PREVIEW_BG_DARK = SWTResourceManager.getColor(180, 180, 180);
-	public static Color PREVIEW_BG_LIGHT = SWTResourceManager.getColor(250, 250, 250);//SWTResourceManager.getColor(200, 200, 200);
+	public static Color PREVIEW_BG_LIGHT = SWTResourceManager.getColor(250, 250, 250);// SWTResourceManager.getColor(200,
+																						// 200,
+																						// 200);
 	private static Set<Object> _supportedImageExts = new HashSet<>(Arrays.asList("png", "bmp", "jpg", "gif", "ico"));
 
 	private PhaserEditorUI() {
 	}
 
-	public static void forEachEditor(Consumer<IEditorReference> visitor) {
+	public static void forEachEditor(Consumer<IEditorPart> visitor) {
 		for (IWorkbenchWindow window : PlatformUI.getWorkbench().getWorkbenchWindows()) {
 			for (IWorkbenchPage page : window.getPages()) {
 				for (IEditorReference editorRef : page.getEditorReferences()) {
-					visitor.accept(editorRef);
+					IEditorPart editor = editorRef.getEditor(false);
+
+					if (editor == null) {
+						continue;
+					}
+					
+					visitor.accept(editor);
 				}
 			}
 		}
 	}
-	
+
 	public static List<IEditorPart> findOpenFileEditors(IFile file) {
 		List<IEditorPart> list = new ArrayList<>();
 		forEachOpenFileEditor(file, e -> {
 			list.add(e);
 		});
-		return list ;
+		return list;
 	}
 
 	public static boolean forEachOpenFileEditor(IFile file, Consumer<IEditorPart> visitor) {
@@ -114,15 +122,15 @@ public class PhaserEditorUI {
 			for (IWorkbenchPage page : window.getPages()) {
 				for (IEditorReference editorRef : page.getEditorReferences()) {
 					IEditorPart editor = editorRef.getEditor(false);
-					
+
 					if (editor == null) {
 						continue;
 					}
-					
+
 					IEditorInput input = editor.getEditorInput();
-					
+
 					if (input instanceof FileEditorInput) {
-						IFile editorFile = ((FileEditorInput) input).getFile();						
+						IFile editorFile = ((FileEditorInput) input).getFile();
 						if (editorFile.equals(file)) {
 							found = true;
 							visitor.accept(editor);
@@ -390,12 +398,11 @@ public class PhaserEditorUI {
 	public static void paintPreviewBackground(GC gc, Rectangle canvasBounds, int space) {
 		Color darkColor = PREVIEW_BG_DARK;
 		Color lightColor = PREVIEW_BG_LIGHT;
-		
+
 		paintPreviewBackground(gc, canvasBounds, space, darkColor, lightColor);
 	}
 
-	public static void paintPreviewBackground(GC gc, Rectangle bounds, int space, Color darkColor,
-			Color lightColor) {
+	public static void paintPreviewBackground(GC gc, Rectangle bounds, int space, Color darkColor, Color lightColor) {
 		Rectangle oldClip = gc.getClipping();
 		gc.setClipping(bounds);
 		int nx = bounds.width / space + 2;
@@ -422,8 +429,8 @@ public class PhaserEditorUI {
 			x = 5;
 		}
 		int y = canvasBounds.height / 2 - msgSize.y / 2;
-//		gc.setBackground(PREVIEW_BG_DARK);
-//		gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		// gc.setBackground(PREVIEW_BG_DARK);
+		// gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		gc.drawText(msg, x, y);
 	}
 

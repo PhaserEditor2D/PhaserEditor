@@ -42,7 +42,7 @@ public class CanvasFileDeleteParticipant extends DeleteParticipant {
 		if (!CanvasCore.isCanvasFile(file)) {
 			return false;
 		}
-
+		
 		_file = file;
 
 		_canvasType = CanvasCore.getCanvasType(file);
