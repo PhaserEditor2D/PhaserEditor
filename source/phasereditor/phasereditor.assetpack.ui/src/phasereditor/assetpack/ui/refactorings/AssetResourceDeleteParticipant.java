@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2016 Arian Fornaris
+// Copyright (c) 2015, 2017 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -19,19 +19,12 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.core;
-
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.viewers.TreeViewer;
+package phasereditor.assetpack.ui.refactorings;
 
 /**
  * @author arian
+ *
  */
-public interface IAssetConsumer {
+public class AssetResourceDeleteParticipant {
 
-	public FindAssetReferencesResult getAssetReferences(IAssetKey assetKey, IProgressMonitor monitor);
-
-	public void installTooltips(TreeViewer viewer);
-
-	public IAssetReplacer getAssetReplacer();
 }

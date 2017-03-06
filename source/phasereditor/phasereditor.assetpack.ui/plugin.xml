@@ -236,5 +236,20 @@
             searchResultClass="phasereditor.assetpack.ui.search.SearchAssetResult">
       </viewPage>
    </extension>
+   <extension
+         point="org.eclipse.ltk.core.refactoring.deleteParticipants">
+      <deleteParticipant
+            class="phasereditor.assetpack.ui.refactorings.AssetModelDeleteParticipant"
+            id="phasereditor.assetpack.ui.assetModelDeleteParticipant"
+            name="Asset Delete Participant">
+         <enablement>
+            <with
+                  variable="element">
+               <instanceof
+                     value="phasereditor.assetpack.core.AssetModel">
+               </instanceof>
+            </with></enablement>
+      </deleteParticipant>
+   </extension>
    
 </plugin>

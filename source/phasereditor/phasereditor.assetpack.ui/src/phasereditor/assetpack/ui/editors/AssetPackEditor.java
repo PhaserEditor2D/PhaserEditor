@@ -39,7 +39,10 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.help.HelpSystem;
 import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
@@ -102,6 +105,7 @@ import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.BinaryAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
+import phasereditor.assetpack.core.FindAssetReferencesResult;
 import phasereditor.assetpack.core.IAssetConsumer;
 import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.ImageAssetModel;
@@ -446,7 +450,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		_removeButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				removeAssetElement();
+				onRemoveAssetPressed();
 			}
 		});
 
@@ -462,7 +466,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	protected void delPressed() {
 		if (_removeButton.isEnabled()) {
-			removeAssetElement();
+			onRemoveAssetPressed();
 		}
 	}
 
@@ -560,7 +564,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		}
 	}
 
-	void removeAssetElement() {
+	void onRemoveAssetPressed() {
 		List<AssetModel> list = new ArrayList<>();
 
 		Object[] selection = ((StructuredSelection) _allAssetsViewer.getSelection()).toArray();
@@ -574,11 +578,16 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			}
 		}
 
-		if (!canRemove(list)) {
-			return;
-		}
+		askToRemove(list, new Runnable() {
 
-		// remove all sub-elements from the selection
+			@Override
+			public void run() {
+				removeSelection(selection);
+			}
+		});
+	}
+
+	void removeSelection(Object[] selection) {
 
 		Set<Object> original = new HashSet<>(Arrays.asList(selection));
 		List<Object> filtered = new ArrayList<>();
@@ -624,33 +633,49 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		_allAssetsViewer.setSelection(StructuredSelection.EMPTY);
 	}
 
-	private boolean canRemove(Iterable<AssetModel> assets) {
+	private void askToRemove(Iterable<AssetModel> assets, Runnable removeAction) {
 		Set<IFile> files = new HashSet<>();
 
-		List<IAssetConsumer> list = AssetPackCore.requestAssetConsumers();
+		Job job = new Job("Checking delete conditions") {
 
-		for (IAssetConsumer consumer : list) {
-			for (AssetModel asset : assets) {
-				AssetModel shared = asset.getSharedVersion();
-				if (shared != null) {
-					files.addAll(consumer.getFilesUsingAsset(shared));
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+
+				List<IAssetConsumer> list = AssetPackCore.requestAssetConsumers();
+
+				for (IAssetConsumer consumer : list) {
+					for (AssetModel asset : assets) {
+						AssetModel shared = asset.getSharedVersion();
+						if (shared != null) {
+							FindAssetReferencesResult result = consumer.getAssetReferences(shared, monitor);
+							files.addAll(result.getFiles());
+						}
+					}
 				}
+
+				if (files.isEmpty()) {
+					return Status.OK_STATUS;
+				}
+
+				String msg = files.stream().map(f -> f.getProjectRelativePath().toPortableString())
+						.collect(Collectors.joining("\n"));
+
+				getEditorSite().getShell().getDisplay().asyncExec(new Runnable() {
+
+					@Override
+					public void run() {
+						if (MessageDialog.openConfirm(getSite().getShell(), "Asset Pack Editor",
+								"You are about to delete assets used in other files:\n\n" + msg + ""
+										+ "\n\nDo you confirm the deletion?")) {
+							removeAction.run();
+						}
+					}
+				});
+
+				return Status.OK_STATUS;
 			}
-		}
-
-		if (files.isEmpty()) {
-			return true;
-		}
-
-		String msg = files.stream().map(f -> f.getProjectRelativePath().toPortableString())
-				.collect(Collectors.joining("\n"));
-		if (MessageDialog.openConfirm(getSite().getShell(), "Asset Pack Editor",
-				"You are about to delete assets used in other files:\n\n" + msg + ""
-						+ "\n\nDo you confirm the deletion?")) {
-			return true;
-		}
-
-		return false;
+		};
+		job.schedule();
 	}
 
 	protected void openNewSectionDialog() {
