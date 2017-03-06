@@ -21,7 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.refactorings;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -34,6 +36,9 @@ import org.eclipse.ltk.core.refactoring.participants.CheckConditionsContext;
 import org.eclipse.ltk.core.refactoring.participants.DeleteParticipant;
 
 import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.FindAssetReferencesResult;
+import phasereditor.assetpack.core.IAssetConsumer;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.project.core.ProjectCore;
 
@@ -84,7 +89,19 @@ public class AssetFileDeleteParticipant extends DeleteParticipant {
 					+ relpath + "'");
 		}
 
-		// TODO: compute the affected canvas by the delete
+		Set<IFile> files = new LinkedHashSet<>();
+		for (AssetModel asset : _result) {
+			for (IAssetConsumer consumer : AssetPackCore.requestAssetConsumers()) {
+				FindAssetReferencesResult refs = consumer.getAssetReferences(asset, pm);
+				for (IFile file : refs.getFiles()) {
+					if (!files.contains(file)) {
+						files.add(file);
+						status.addWarning("The file '" + file.getName() + "' indirectly uses the file '"
+								+ _file.getProjectRelativePath().toPortableString() + "'.");
+					}
+				}
+			}
+		}
 
 		return status;
 	}
