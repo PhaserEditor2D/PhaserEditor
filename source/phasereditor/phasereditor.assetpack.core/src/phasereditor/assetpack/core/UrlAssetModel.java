@@ -72,4 +72,12 @@ public class UrlAssetModel extends AssetModel {
 	public void internalBuild(List<IStatus> problems) {
 		validateUrl(problems, "url", _url);
 	}
+
+	@Override
+	public void fileChanged(IFile file, IFile newFile) {
+		String url = getUrlFromFile(file);
+		if (url.equals(_url)) {
+			_url = getUrlFromFile(newFile);
+		}
+	}
 }

@@ -266,4 +266,12 @@ public class SpritesheetAssetModel extends AssetModel {
 			_frames = list;
 		}
 	}
+
+	@Override
+	public void fileChanged(IFile file, IFile newFile) {
+		String url = getUrlFromFile(file);
+		if (url.equals(_url)) {
+			_url = getUrlFromFile(newFile);
+		}
+	}
 }

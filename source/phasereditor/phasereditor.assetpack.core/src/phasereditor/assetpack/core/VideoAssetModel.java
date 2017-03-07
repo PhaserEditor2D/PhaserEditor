@@ -124,4 +124,16 @@ public class VideoAssetModel extends AssetModel {
 		}
 		return files.get(0);
 	}
+
+	@Override
+	public void fileChanged(IFile file, IFile newFile) {
+		String url = getUrlFromFile(file);
+		String newUrl = getUrlFromFile(newFile);
+		for (int i = 0; i < _urls.size(); i++) {
+			String url2 = _urls.get(i);
+			if (url.equals(url2)) {
+				_urls.set(i, newUrl);
+			}
+		}
+	}
 }

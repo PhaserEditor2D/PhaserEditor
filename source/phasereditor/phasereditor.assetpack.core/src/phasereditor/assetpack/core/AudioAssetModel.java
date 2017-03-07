@@ -44,21 +44,18 @@ public class AudioAssetModel extends AssetModel {
 		_autoDecode = true;
 	}
 
-	public AudioAssetModel(JSONObject definition, AssetSectionModel section)
-			throws JSONException {
+	public AudioAssetModel(JSONObject definition, AssetSectionModel section) throws JSONException {
 		super(definition, section);
 		JSONArray urls = definition.getJSONArray("urls");
 		_urls = JSONUtils.toList(urls);
 		_autoDecode = definition.optBoolean("autoDecode", true);
 	}
 
-	public AudioAssetModel(String key, AssetSectionModel section)
-			throws JSONException {
+	public AudioAssetModel(String key, AssetSectionModel section) throws JSONException {
 		this(key, AssetType.audio, section);
 	}
 
-	protected AudioAssetModel(String key, AssetType type,
-			AssetSectionModel section) throws JSONException {
+	protected AudioAssetModel(String key, AssetType type, AssetSectionModel section) throws JSONException {
 		super(key, type, section);
 	}
 
@@ -91,16 +88,14 @@ public class AudioAssetModel extends AssetModel {
 		firePropertyChange("urlsJSONString");
 	}
 
-	public static JSONArray parseUrlsJSONArray(String json)
-			throws JSONException {
+	public static JSONArray parseUrlsJSONArray(String json) throws JSONException {
 		try {
-			JSONArray array = new JSONArray(new JSONTokener(new StringReader(
-					json)));
+			JSONArray array = new JSONArray(new JSONTokener(new StringReader(json)));
 			return array;
 		} catch (JSONException e) {
 			// ok, if we cannot parse it maybe it is a single url
-			if (json.contains(",") || json.contains("\"") || json.contains("'")
-					|| json.contains("[") || json.contains("]")) {
+			if (json.contains(",") || json.contains("\"") || json.contains("'") || json.contains("[")
+					|| json.contains("]")) {
 				// hum! with those chars we are sure it is a bad format, so
 				// re-send the error.
 				throw e;
@@ -137,5 +132,17 @@ public class AudioAssetModel extends AssetModel {
 	@Override
 	public void internalBuild(List<IStatus> problems) {
 		validateUrlList(problems, "url", _urls);
+	}
+
+	@Override
+	public void fileChanged(IFile file, IFile newFile) {
+		String url = getUrlFromFile(file);
+		String newUrl = getUrlFromFile(newFile);
+		for (int i = 0; i < _urls.size(); i++) {
+			String url2 = _urls.get(i);
+			if (url.equals(url2)) {
+				_urls.set(i, newUrl);
+			}
+		}
 	}
 }

@@ -170,7 +170,7 @@ public class AtlasAssetModel extends AssetModel {
 			data.srcSize = new Point(getSourceW(), getSourceH());
 			return data;
 		}
-		
+
 		@Override
 		public IFile getImageFile() {
 			return _asset.getTextureFile();
@@ -261,4 +261,19 @@ public class AtlasAssetModel extends AssetModel {
 
 		buildFrames();
 	}
+
+	@Override
+	public void fileChanged(IFile file, IFile newFile) {
+		String url = getUrlFromFile(file);
+		String newUrl = getUrlFromFile(newFile);
+
+		if (url.equals(_textureURL)) {
+			_textureURL = newUrl;
+		}
+
+		if (url.equals(getFileFromUrl(_atlasURL))) {
+			_atlasURL = newUrl;
+		}
+	}
+
 }

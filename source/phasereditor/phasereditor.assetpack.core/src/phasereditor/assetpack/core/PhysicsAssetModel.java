@@ -171,4 +171,12 @@ public class PhysicsAssetModel extends AssetModel {
 		validateUrlAndData(problems, "url", _url, "data", _data);
 		buildSprites();
 	}
+
+	@Override
+	public void fileChanged(IFile file, IFile newFile) {
+		String url = getUrlFromFile(file);
+		if (url.equals(_url)) {
+			_url = getUrlFromFile(newFile);
+		}
+	}
 }

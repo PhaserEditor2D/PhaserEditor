@@ -653,14 +653,19 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 					}
 				}
 
+				Display display = getEditorSite().getShell().getDisplay();
+
 				if (files.isEmpty()) {
+
+					display.asyncExec(removeAction);
+
 					return Status.OK_STATUS;
 				}
 
 				String msg = files.stream().map(f -> f.getProjectRelativePath().toPortableString())
 						.collect(Collectors.joining("\n"));
 
-				getEditorSite().getShell().getDisplay().asyncExec(new Runnable() {
+				display.asyncExec(new Runnable() {
 
 					@Override
 					public void run() {
@@ -944,5 +949,9 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	public TreeViewer getViewer() {
 		return _allAssetsViewer;
+	}
+
+	public void updateAssetEditor() {
+		updateEditor(_editingElement);
 	}
 }

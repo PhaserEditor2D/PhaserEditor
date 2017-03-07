@@ -75,7 +75,6 @@ public class CanvasEditorBuildParticipant implements IProjectBuildParticipant {
 		try {
 			swtRun(new Runnable() {
 
-				@SuppressWarnings("boxing")
 				@Override
 				public void run() {
 					IEditorReference[] editors = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()

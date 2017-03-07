@@ -287,7 +287,7 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 		}
 		return urls;
 	}
-
+	
 	@SuppressWarnings("static-method")
 	public List<? extends IAssetElementModel> getSubElements() {
 		return Collections.emptyList();
@@ -454,4 +454,6 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 		}
 		return touched.get();
 	}
+
+	public abstract void fileChanged(IFile file, IFile newFile);
 }

@@ -118,4 +118,18 @@ public class BitmapFontAssetModel extends AssetModel {
 		validateUrl(problems, "textureURL", _textureURL);
 		validateUrlAndData(problems, "atlasURL", _atlasURL, "atlasData", _atlasData);
 	}
+
+	@Override
+	public void fileChanged(IFile file, IFile newFile) {
+		String url = getUrlFromFile(file);
+		String newUrl = getUrlFromFile(newFile);
+
+		if (url.equals(_textureURL)) {
+			_textureURL = newUrl;
+		}
+
+		if (url.equals(getFileFromUrl(_atlasURL))) {
+			_atlasURL = newUrl;
+		}
+	}
 }

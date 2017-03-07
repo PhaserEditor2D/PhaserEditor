@@ -248,5 +248,18 @@
             </instanceof></enablement>
       </deleteParticipant>
    </extension>
+   <extension
+         point="org.eclipse.ltk.core.refactoring.renameParticipants">
+      <renameParticipant
+            class="phasereditor.assetpack.ui.refactorings.AssetFileRenameParticipant"
+            id="phasereditor.assetpack.ui.assetFileRenameParticipant"
+            name="Asset File Rename Participant">
+         <enablement>
+            <instanceof
+                  value="org.eclipse.core.resources.IFile">
+            </instanceof>
+         </enablement>
+      </renameParticipant>
+   </extension>
    
 </plugin>

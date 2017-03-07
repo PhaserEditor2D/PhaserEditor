@@ -240,6 +240,7 @@ public class BitmapFontAssetEditorComp extends Composite {
 		IObservableList<?> bindings = m_bindingContext.getBindings();
 		for (int i = 0; i < bindings.size(); i++) {
 			Binding b = (Binding) bindings.get(i);
+			b.updateModelToTarget();
 			b.validateTargetToModel();
 		}
 	}
@@ -261,7 +262,7 @@ public class BitmapFontAssetEditorComp extends Composite {
 			setHelpMessages(model);
 			decorateControls();
 		}
-
+		
 		validateModelToTarget();
 	}
 

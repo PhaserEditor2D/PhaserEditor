@@ -150,7 +150,7 @@ public class ImageAssetModel extends AssetModel {
 		if (_elements == null) {
 			buildFrame();
 		}
-		
+
 		return _elements;
 	}
 
@@ -158,5 +158,13 @@ public class ImageAssetModel extends AssetModel {
 		_frame = new Frame();
 		_elements = new ArrayList<>();
 		_elements.add(_frame);
+	}
+
+	@Override
+	public void fileChanged(IFile file, IFile newFile) {
+		String url = getUrlFromFile(file);
+		if (url.equals(_url)) {
+			_url = getUrlFromFile(newFile);
+		}
 	}
 }
