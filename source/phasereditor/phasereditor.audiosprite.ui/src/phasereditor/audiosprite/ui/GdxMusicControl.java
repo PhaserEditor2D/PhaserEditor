@@ -94,7 +94,6 @@ public class GdxMusicControl extends Composite implements DisposeListener, Mouse
 		setLayout(gridLayout);
 
 		_canvas = new Canvas(this, SWT.DOUBLE_BUFFERED);
-		_canvas.setBackground(getDisplay().getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
 		_canvas.addPaintListener(new PaintListener() {
 			@Override
 			public void paintControl(PaintEvent e) {
@@ -145,7 +144,6 @@ public class GdxMusicControl extends Composite implements DisposeListener, Mouse
 		gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_WIDGET_DARK_SHADOW));
 		gc.fillRectangle(canvasRect);
 
-		//paintPreviewBackground(gc, canvasRect);
 
 		if (_music == null) {
 			String msg = _errorMessage == null ? "(no audio)" : _errorMessage;
@@ -159,7 +157,6 @@ public class GdxMusicControl extends Composite implements DisposeListener, Mouse
 				paintPreviewMessage(gc, canvasRect, "waves image not found");
 			} else {
 				Rectangle imgRect = img.getBounds();
-				gc.setAlpha(240);
 				gc.drawImage(img, 0, 0, imgRect.width, imgRect.height, 0, 0, canvasRect.width, canvasRect.height);
 			}
 
@@ -169,9 +166,8 @@ public class GdxMusicControl extends Composite implements DisposeListener, Mouse
 				Color c1 = grayColor;
 				Color c2 = display.getSystemColor(SWT.COLOR_DARK_BLUE);
 				int i = 0;
+				gc.setAlpha(90);
 				for (double[] tuple : _partition) {
-					gc.setAlpha(90);
-
 					double start = tuple[0];
 					double end = tuple[1];
 					int x1 = (int) (start / _duration * canvasRect.width);
@@ -185,6 +181,8 @@ public class GdxMusicControl extends Composite implements DisposeListener, Mouse
 
 			if (_duration > 0) {
 
+				gc.setForeground(display.getSystemColor(SWT.COLOR_RED));
+				
 				// play-line
 
 				if (_playing) {
