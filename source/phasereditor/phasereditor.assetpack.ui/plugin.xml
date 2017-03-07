@@ -261,5 +261,18 @@
          </enablement>
       </renameParticipant>
    </extension>
+   <extension
+         point="org.eclipse.ltk.core.refactoring.moveParticipants">
+      <moveParticipant
+            class="phasereditor.assetpack.ui.refactorings.AssetFileMoveParticipant"
+            id="phasereditor.assetpack.ui.assetFileMoveParticipant"
+            name="Asset File Move Participant">
+         <enablement>
+            <instanceof
+                  value="org.eclipse.core.resources.IFile">
+            </instanceof>
+         </enablement>
+      </moveParticipant>
+   </extension>
    
 </plugin>
