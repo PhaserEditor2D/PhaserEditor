@@ -1999,7 +1999,7 @@
       <deleteParticipant
             class="phasereditor.canvas.ui.refactoring.CanvasFileDeleteParticipant"
             id="phasereditor.canvas.ui.canvasFileDeleteParticipant"
-            name="Delete Canvas">
+            name="Delete Canvas File">
          <enablement>
             <with
                   variable="element">
@@ -2009,13 +2009,22 @@
             </with>
          </enablement>
       </deleteParticipant>
+      <deleteParticipant
+            class="phasereditor.canvas.ui.refactoring.AssetFileUsedInCanvasDeleteParticipant"
+            id="phasereditor.canvas.ui.deleteAssetFileParticipant"
+            name="Delete Asset File">
+         <enablement>
+            <instanceof
+                  value="org.eclipse.core.resources.IFile">
+            </instanceof></enablement>
+      </deleteParticipant>
    </extension>
    <extension
          point="org.eclipse.ltk.core.refactoring.moveParticipants">
       <moveParticipant
             class="phasereditor.canvas.ui.refactoring.CanvasFileMoveParticipant"
             id="phasereditor.canvas.ui.moveParticipant1"
-            name="Move Canvas">
+            name="Move Canvas File">
          <enablement>
             <with
                   variable="element">
@@ -2029,8 +2038,8 @@
          point="org.eclipse.ltk.core.refactoring.renameParticipants">
       <renameParticipant
             class="phasereditor.canvas.ui.refactoring.CanvasFileRenameParticipant"
-            id="phasereditor.canvas.ui.renameParticipant1"
-            name="Rename Canvas">
+            id="phasereditor.canvas.ui.renameCanvasFile"
+            name="Rename Canvas File">
          <enablement>
             <with
                   variable="element">

@@ -19,9 +19,10 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.refactorings;
+package phasereditor.canvas.ui.refactoring;
 
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -31,44 +32,18 @@ import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.NullChange;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.core.refactoring.participants.CheckConditionsContext;
-import org.eclipse.ltk.core.refactoring.participants.DeleteParticipant;
 
 import phasereditor.assetpack.core.AssetModel;
-import phasereditor.assetpack.ui.AssetPackUI;
-import phasereditor.project.core.ProjectCore;
+import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.FindAssetReferencesResult;
+import phasereditor.assetpack.core.IAssetConsumer;
+import phasereditor.assetpack.ui.refactorings.AssetFileDeleteParticipant;
 
 /**
  * @author arian
  *
  */
-public class AssetFileDeleteParticipant extends DeleteParticipant {
-
-	protected IFile _file;
-	protected List<AssetModel> _result;
-
-	@Override
-	protected boolean initialize(Object element) {
-		if (!(element instanceof IFile)) {
-			return false;
-		}
-
-		IFile file = (IFile) element;
-
-		if (!ProjectCore.isWebContentFile(file)) {
-			return false;
-		}
-
-		_file = file;
-
-		_result = AssetPackUI.findAssetResourceReferences(file);
-
-		return !_result.isEmpty();
-	}
-
-	@Override
-	public String getName() {
-		return "Delete asset resource.";
-	}
+public class AssetFileUsedInCanvasDeleteParticipant extends AssetFileDeleteParticipant {
 
 	@Override
 	public RefactoringStatus checkConditions(IProgressMonitor pm, CheckConditionsContext context)
@@ -78,10 +53,20 @@ public class AssetFileDeleteParticipant extends DeleteParticipant {
 
 		String relpath = _file.getProjectRelativePath().toPortableString();
 
+		Set<IFile> files = new LinkedHashSet<>();
 		for (AssetModel asset : _result) {
-			String packname = asset.getPack().getFile().getName();
-			status.addWarning("The asset pack entry '" + asset.getKey() + "' in '" + packname + "' requires the file '"
-					+ relpath + "'");
+			for (IAssetConsumer consumer : AssetPackCore.requestAssetConsumers()) {
+				FindAssetReferencesResult refs = consumer.getAssetReferences(asset, pm);
+				for (IFile file : refs.getFiles()) {
+					if (!files.contains(file)) {
+						files.add(file);
+
+						status.addWarning(
+								"The file '" + file.getName() + "' indirectly uses the file '" + relpath + "'.",
+								new CanvasFileRefactoringStatusContext(file));
+					}
+				}
+			}
 		}
 
 		return status;
@@ -89,6 +74,10 @@ public class AssetFileDeleteParticipant extends DeleteParticipant {
 
 	@Override
 	public Change createChange(IProgressMonitor pm) throws CoreException, OperationCanceledException {
+
+		// TODO: in a future we could ask if you want to delete the objects
+		// using the asset.
+
 		return new NullChange();
 	}
 
