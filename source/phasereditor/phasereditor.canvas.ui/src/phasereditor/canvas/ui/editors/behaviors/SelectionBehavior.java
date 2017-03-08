@@ -296,7 +296,9 @@ public class SelectionBehavior implements ISelectionProvider {
 		List<Object> selection = new ArrayList<>();
 		for (String id : nodeIds) {
 			BaseObjectControl<?> control = _canvas.getWorldNode().getControl().findById(id);
-			selection.add(control.getNode());
+			if (control != null) {
+				selection.add(control.getNode());
+			}
 		}
 		setSelection(new StructuredSelection(selection));
 	}

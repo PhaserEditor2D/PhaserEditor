@@ -86,7 +86,7 @@ public class AssetDeleteInCanvasParticipant extends DeleteParticipant {
 
 	@Override
 	public Change createChange(IProgressMonitor pm) throws CoreException, OperationCanceledException {
-		return new NullChange();
+		return new NullChange("Keep the canvas file as it is.");
 	}
 
 }

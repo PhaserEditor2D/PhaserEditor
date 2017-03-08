@@ -50,7 +50,6 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.Window;
-import org.eclipse.ltk.ui.refactoring.RefactoringWizardOpenOperation;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.StackLayout;
@@ -116,15 +115,12 @@ import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetsContentProvider;
 import phasereditor.assetpack.ui.editors.operations.AddAssetOperation;
 import phasereditor.assetpack.ui.editors.operations.AddSectionOperation;
-import phasereditor.assetpack.ui.refactorings.AssetDeleteProcessor;
-import phasereditor.assetpack.ui.refactorings.AssetDeleteRefactoring;
-import phasereditor.assetpack.ui.refactorings.AssetDeleteWizard;
 import phasereditor.ui.PhaserEditorUI;
 
 public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInSource {
 
 	public static final String ID = AssetPackCore.ASSET_EDITOR_ID;
-	
+
 	@Deprecated
 	public static final IUndoContext UNDO_CONTEXT = new IUndoContext() {
 
@@ -184,11 +180,13 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	}
 
 	private void registerUndoRedoActions() {
-//		IEditorSite site = getEditorSite();
-//		UndoRedoActionGroup group = new UndoRedoActionGroup(site, UNDO_CONTEXT, true);
-//		UndoRedoActionGroup group = new UndoRedoActionGroup(site, RefactoringCore.getUndoManager()., true);
-//		group.fillActionBars(site.getActionBars());
-		
+		// IEditorSite site = getEditorSite();
+		// UndoRedoActionGroup group = new UndoRedoActionGroup(site,
+		// UNDO_CONTEXT, true);
+		// UndoRedoActionGroup group = new UndoRedoActionGroup(site,
+		// RefactoringCore.getUndoManager()., true);
+		// group.fillActionBars(site.getActionBars());
+
 		IUndoContext undoContext = WorkspaceUndoUtil.getWorkspaceUndoContext();
 
 		IActionBars actionBars = getEditorSite().getActionBars();
@@ -572,28 +570,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	void onRemoveAssetPressed() {
 		Object[] selection = ((StructuredSelection) _allAssetsViewer.getSelection()).toArray();
-
-		AssetDeleteWizard wizard = new AssetDeleteWizard(
-				new AssetDeleteRefactoring(new AssetDeleteProcessor(selection, this)));
-		
-		RefactoringWizardOpenOperation op = new RefactoringWizardOpenOperation(wizard);
-		try {
-			op.run(getEditorSite().getShell(), "Delete Asset");
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
-
-		List<AssetModel> list = new ArrayList<>();
-
-		for (Object element : selection) {
-			if (element instanceof AssetSectionModel) {
-				list.addAll(((AssetSectionModel) element).getAssets());
-			} else if (element instanceof AssetGroupModel) {
-				list.addAll(((AssetGroupModel) element).getAssets());
-			} else if (element instanceof AssetModel) {
-				list.add((AssetModel) element);
-			}
-		}
+		AssetPackUI.launchDeleteWizard(selection);
 	}
 
 	protected void openNewSectionDialog() {

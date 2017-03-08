@@ -127,7 +127,11 @@ public class AssetDeleteProcessor extends DeleteProcessor {
 		CompositeChange change = new CompositeChange("Delete assets");
 
 		for (Object elem : _elements) {
-			change.add(new DeleteAssetInEditorChange((AssetModel) elem, _editor));
+			if (_editor == null) {
+				change.add(new DeleteAssetChange((AssetModel) elem));
+			} else {
+				change.add(new DeleteAssetInEditorChange((AssetModel) elem, _editor));
+			}
 		}
 
 		return change;

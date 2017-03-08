@@ -194,9 +194,15 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 	}
 
 	public void setSection(AssetSectionModel section) {
+		setSection(section, true);
+	}
+	
+	public void setSection(AssetSectionModel section, boolean notify) {
 		Assert.isNotNull(section);
 		_section = section;
-		firePropertyChange("section");
+		if (notify) {
+			firePropertyChange("section");
+		}
 	}
 
 	public AssetGroupModel getGroup() {
@@ -287,7 +293,7 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 		}
 		return urls;
 	}
-	
+
 	@SuppressWarnings("static-method")
 	public List<? extends IAssetElementModel> getSubElements() {
 		return Collections.emptyList();
@@ -456,4 +462,17 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 	}
 
 	public abstract void fileChanged(IFile file, IFile newFile);
+
+	public AssetModel copy(AssetSectionModel section) {
+		try {
+			JSONObject jsonAsset = toJSON();
+			AssetType type = AssetModel.readAssetType(jsonAsset);
+			AssetFactory factory = AssetFactory.getFactory(type);
+			AssetModel asset;
+			asset = factory.createAsset(jsonAsset, section);
+			return asset;
+		} catch (Exception e) {
+			throw new RuntimeException();
+		}
+	}
 }

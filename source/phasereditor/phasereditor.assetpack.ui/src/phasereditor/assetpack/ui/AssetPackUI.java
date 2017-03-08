@@ -39,11 +39,13 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.Window;
+import org.eclipse.ltk.ui.refactoring.RefactoringWizardOpenOperation;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListDialog;
@@ -59,6 +61,7 @@ import com.subshell.snippets.jface.tooltip.tooltipsupport.TableViewerInformation
 import com.subshell.snippets.jface.tooltip.tooltipsupport.Tooltips;
 import com.subshell.snippets.jface.tooltip.tooltipsupport.TreeViewerInformationProvider;
 
+import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
@@ -92,6 +95,9 @@ import phasereditor.assetpack.ui.preview.TilemapAssetInformationControl;
 import phasereditor.assetpack.ui.preview.TilemapTilesetInformationControl;
 import phasereditor.assetpack.ui.preview.VideoAssetInformationControl;
 import phasereditor.assetpack.ui.preview.VideoFileInformationControl;
+import phasereditor.assetpack.ui.refactorings.AssetDeleteProcessor;
+import phasereditor.assetpack.ui.refactorings.AssetDeleteRefactoring;
+import phasereditor.assetpack.ui.refactorings.AssetDeleteWizard;
 import phasereditor.assetpack.ui.widgets.AudioResourceDialog;
 import phasereditor.assetpack.ui.widgets.ImageResourceDialog;
 import phasereditor.assetpack.ui.widgets.VideoResourceDialog;
@@ -102,6 +108,36 @@ public class AssetPackUI {
 
 	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
 	private static List<ICustomInformationControlCreator> _informationControlCreators;
+
+	public static void launchDeleteWizard(Object[] selection) {
+
+		IWorkbenchPart activePart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+				.getActivePart();
+
+		AssetPackEditor editor = activePart instanceof AssetPackEditor ? (AssetPackEditor) activePart : null;
+
+		AssetDeleteWizard wizard = new AssetDeleteWizard(
+				new AssetDeleteRefactoring(new AssetDeleteProcessor(selection, editor)));
+
+		RefactoringWizardOpenOperation op = new RefactoringWizardOpenOperation(wizard);
+		try {
+			op.run(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Delete Asset");
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+
+		List<AssetModel> list = new ArrayList<>();
+
+		for (Object element : selection) {
+			if (element instanceof AssetSectionModel) {
+				list.addAll(((AssetSectionModel) element).getAssets());
+			} else if (element instanceof AssetGroupModel) {
+				list.addAll(((AssetGroupModel) element).getAssets());
+			} else if (element instanceof AssetModel) {
+				list.add((AssetModel) element);
+			}
+		}
+	}
 
 	public static List<AssetModel> findAssetResourceReferencesInEditors(IFile assetFile) {
 		List<AssetModel> list = new ArrayList<>();

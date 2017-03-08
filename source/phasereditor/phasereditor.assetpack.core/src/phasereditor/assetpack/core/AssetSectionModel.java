@@ -69,13 +69,13 @@ public class AssetSectionModel implements IAdaptable {
 	}
 
 	public void addAsset(int index, AssetModel asset, boolean notify) {
-		asset.setSection(this);
+		asset.setSection(this, notify);
 		_assets.add(index, asset);
 		if (notify) {
 			getPack().setDirty(true);
 		}
 	}
-	
+
 	public void addAsset(AssetModel asset, boolean notify) {
 		this.addAsset(_assets.size(), asset, notify);
 	}
@@ -116,8 +116,14 @@ public class AssetSectionModel implements IAdaptable {
 	}
 
 	public void removeAsset(AssetModel asset) {
+		removeAsset(asset, true);
+	}
+	
+	public void removeAsset(AssetModel asset, boolean notify) {
 		_assets.remove(asset);
-		getPack().setDirty(true);
+		if (notify) {
+			getPack().setDirty(true);
+		}
 	}
 
 	public void removeGroup(AssetGroupModel group) {

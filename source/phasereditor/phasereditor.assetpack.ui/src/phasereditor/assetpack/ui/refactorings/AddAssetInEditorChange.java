@@ -26,6 +26,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
+import org.eclipse.swt.widgets.Display;
 
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.ui.editors.AssetPackEditor;
@@ -78,7 +79,7 @@ public class AddAssetInEditorChange extends Change {
 		_asset.getSection().addAsset(_index, _asset, false);
 
 		if (_reveal) {
-			_editor.getEditorSite().getShell().getDisplay().syncExec(() -> {
+			Display.getDefault().syncExec(() -> {
 				_editor.refresh();
 				_editor.revealElement(_asset);
 			});

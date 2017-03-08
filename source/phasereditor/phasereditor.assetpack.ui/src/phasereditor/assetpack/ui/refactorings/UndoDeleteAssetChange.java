@@ -21,38 +21,41 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.refactorings;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IEditorPart;
 
 import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.ui.editors.AssetPackEditor;
+import phasereditor.ui.PhaserEditorUI;
 
 /**
  * @author arian
  *
  */
-public class DeleteAssetInEditorChange extends Change {
+public class UndoDeleteAssetChange extends Change {
 
 	private AssetModel _asset;
 	private int _index;
-	private AssetPackEditor _editor;
 
-	public DeleteAssetInEditorChange(AssetModel asset, AssetPackEditor editor) {
+	public UndoDeleteAssetChange(AssetModel asset, int index) {
 		_asset = asset;
-		_editor = editor;
+		_index = index;
 	}
 
 	@Override
 	public String getName() {
-		return "Delete asset pack entry '" + _asset.getKey() + "'.";
+		return "Undo delete asset '" + _asset.getKey() + "'.";
 	}
 
 	@Override
@@ -62,34 +65,32 @@ public class DeleteAssetInEditorChange extends Change {
 
 	@Override
 	public RefactoringStatus isValid(IProgressMonitor pm) throws CoreException, OperationCanceledException {
-		RefactoringStatus status = new RefactoringStatus();
-		if (_editor != null) {
-			
-			boolean visible = _editor.getEditorSite().getWorkbenchWindow().getActivePage().isPartVisible(_editor);
-			
-			if (!visible) {
-				status.addFatalError("The editor is not open.");
-			}
-		}
-
-		return status;
+		return RefactoringStatus.create(Status.OK_STATUS);
 	}
 
 	@Override
 	public Change perform(IProgressMonitor pm) throws CoreException {
-		_index = _asset.getSection().getAssets().indexOf(_asset);
+		_asset.getSection().addAsset(_index, _asset, false);
+		_asset.getPack().save(pm);
 
-		boolean[] reveal = { false };
-
-		Display.getDefault().syncExec(() -> {
-			List<Object> expanded = Arrays.asList(_editor.getViewer().getExpandedElements());
-			reveal[0] = expanded.contains(_asset.getGroup());
-			_asset.getSection().removeAsset(_asset);
-			_editor.getViewer().refresh();
-			_editor.getViewer().setSelection(StructuredSelection.EMPTY);
+		Display.getDefault().asyncExec(() -> {
+			List<IEditorPart> editors = PhaserEditorUI.findOpenFileEditors(_asset.getPack().getFile());
+			for (IEditorPart editor : editors) {
+				if (editor instanceof AssetPackEditor) {
+					AssetPackEditor packEditor = (AssetPackEditor) editor;
+					AssetSectionModel section = packEditor.getModel().findSection(_asset.getSection().getKey());
+					if (section != null) {
+						AssetModel copy = _asset.copy(section);
+						section.addAsset(_index, copy, false);
+						TreeViewer viewer = packEditor.getViewer();
+						viewer.refresh();
+						viewer.setSelection(StructuredSelection.EMPTY);
+					}
+				}
+			}
 		});
 
-		return new AddAssetInEditorChange(_asset, reveal[0], _index, _editor);
+		return new DeleteAssetChange(_asset);
 	}
 
 	@Override
