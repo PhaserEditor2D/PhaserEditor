@@ -46,7 +46,7 @@ import org.eclipse.wst.jsdt.core.JavaScriptModelException;
 
 public class PhaserProjectNature implements IProjectNature {
 
-	private static final String NATURE_IDS[] = { ProjectCore.PHASER_PROJECT_NATURE };
+	public static final String NATURE_IDS[] = { ProjectCore.PHASER_PROJECT_NATURE };
 
 	public static void addPhaserNature(IProject project, IProgressMonitor monitor) throws CoreException {
 		if (monitor != null && monitor.isCanceled()) {

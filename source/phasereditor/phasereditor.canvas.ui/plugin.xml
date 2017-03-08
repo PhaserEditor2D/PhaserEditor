@@ -2018,6 +2018,12 @@
                   value="org.eclipse.core.resources.IFile">
             </instanceof></enablement>
       </deleteParticipant>
+      <deleteParticipant
+            class="phasereditor.canvas.ui.refactoring.AssetDeleteInCanvasParticipant"
+            id="phasereditor.canvas.ui.deleteAssetInCanvasParticipant"
+            name="Delete Asset In Canvas">
+         <enablement></enablement>
+      </deleteParticipant>
    </extension>
    <extension
          point="org.eclipse.ltk.core.refactoring.moveParticipants">

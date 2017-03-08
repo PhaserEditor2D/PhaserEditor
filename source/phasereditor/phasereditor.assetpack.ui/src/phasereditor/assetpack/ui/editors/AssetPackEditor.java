@@ -24,11 +24,7 @@ package phasereditor.assetpack.ui.editors;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.IOperationHistory;
@@ -39,16 +35,12 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.QualifiedName;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.help.HelpSystem;
 import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelection;
@@ -58,6 +50,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.Window;
+import org.eclipse.ltk.ui.refactoring.RefactoringWizardOpenOperation;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.StackLayout;
@@ -81,12 +74,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.dialogs.ListDialog;
 import org.eclipse.ui.ide.IGotoMarker;
-import org.eclipse.ui.operations.UndoRedoActionGroup;
+import org.eclipse.ui.ide.undo.WorkspaceUndoUtil;
+import org.eclipse.ui.operations.RedoActionHandler;
+import org.eclipse.ui.operations.UndoActionHandler;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IShowInSource;
@@ -105,8 +102,6 @@ import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.BinaryAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
-import phasereditor.assetpack.core.FindAssetReferencesResult;
-import phasereditor.assetpack.core.IAssetConsumer;
 import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.PhysicsAssetModel;
@@ -121,15 +116,16 @@ import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetsContentProvider;
 import phasereditor.assetpack.ui.editors.operations.AddAssetOperation;
 import phasereditor.assetpack.ui.editors.operations.AddSectionOperation;
-import phasereditor.assetpack.ui.editors.operations.CompositeOperation;
-import phasereditor.assetpack.ui.editors.operations.RemoveAssetOperation;
-import phasereditor.assetpack.ui.editors.operations.RemoveGroupOperation;
-import phasereditor.assetpack.ui.editors.operations.RemoveSectionOperation;
+import phasereditor.assetpack.ui.refactorings.AssetDeleteProcessor;
+import phasereditor.assetpack.ui.refactorings.AssetDeleteRefactoring;
+import phasereditor.assetpack.ui.refactorings.AssetDeleteWizard;
 import phasereditor.ui.PhaserEditorUI;
 
 public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInSource {
 
 	public static final String ID = AssetPackCore.ASSET_EDITOR_ID;
+	
+	@Deprecated
 	public static final IUndoContext UNDO_CONTEXT = new IUndoContext() {
 
 		@Override
@@ -188,9 +184,17 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	}
 
 	private void registerUndoRedoActions() {
-		IEditorSite site = getEditorSite();
-		UndoRedoActionGroup group = new UndoRedoActionGroup(site, UNDO_CONTEXT, true);
-		group.fillActionBars(site.getActionBars());
+//		IEditorSite site = getEditorSite();
+//		UndoRedoActionGroup group = new UndoRedoActionGroup(site, UNDO_CONTEXT, true);
+//		UndoRedoActionGroup group = new UndoRedoActionGroup(site, RefactoringCore.getUndoManager()., true);
+//		group.fillActionBars(site.getActionBars());
+		
+		IUndoContext undoContext = WorkspaceUndoUtil.getWorkspaceUndoContext();
+
+		IActionBars actionBars = getEditorSite().getActionBars();
+		actionBars.setGlobalActionHandler(ActionFactory.UNDO.getId(), new UndoActionHandler(getSite(), undoContext));
+		actionBars.setGlobalActionHandler(ActionFactory.REDO.getId(), new RedoActionHandler(getSite(), undoContext));
+
 	}
 
 	@Override
@@ -230,7 +234,9 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	}
 
 	private void propertyChange(@SuppressWarnings("unused") PropertyChangeEvent evt) {
-		firePropertyChange(PROP_DIRTY);
+		getEditorSite().getShell().getDisplay().asyncExec(() -> {
+			firePropertyChange(PROP_DIRTY);
+		});
 	}
 
 	@Override
@@ -565,9 +571,20 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	}
 
 	void onRemoveAssetPressed() {
+		Object[] selection = ((StructuredSelection) _allAssetsViewer.getSelection()).toArray();
+
+		AssetDeleteWizard wizard = new AssetDeleteWizard(
+				new AssetDeleteRefactoring(new AssetDeleteProcessor(selection, this)));
+		
+		RefactoringWizardOpenOperation op = new RefactoringWizardOpenOperation(wizard);
+		try {
+			op.run(getEditorSite().getShell(), "Delete Asset");
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+
 		List<AssetModel> list = new ArrayList<>();
 
-		Object[] selection = ((StructuredSelection) _allAssetsViewer.getSelection()).toArray();
 		for (Object element : selection) {
 			if (element instanceof AssetSectionModel) {
 				list.addAll(((AssetSectionModel) element).getAssets());
@@ -577,110 +594,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				list.add((AssetModel) element);
 			}
 		}
-
-		askToRemove(list, new Runnable() {
-
-			@Override
-			public void run() {
-				removeSelection(selection);
-			}
-		});
-	}
-
-	void removeSelection(Object[] selection) {
-
-		Set<Object> original = new HashSet<>(Arrays.asList(selection));
-		List<Object> filtered = new ArrayList<>();
-
-		for (Object element : selection) {
-			if (element instanceof AssetModel) {
-				AssetModel asset = (AssetModel) element;
-				if (original.contains(asset.getGroup())) {
-					continue;
-				}
-
-				if (original.contains(asset.getSection())) {
-					continue;
-				}
-			} else if (element instanceof AssetGroupModel) {
-				if (original.contains(((AssetGroupModel) element).getSection())) {
-					continue;
-				}
-			}
-
-			filtered.add(element);
-		}
-
-		// execute operations
-
-		CompositeOperation operations = new CompositeOperation();
-
-		for (Object element : filtered) {
-			if (element instanceof AssetSectionModel) {
-				AssetSectionModel section = (AssetSectionModel) element;
-				operations.add(new RemoveSectionOperation(section));
-			} else if (element instanceof AssetGroupModel) {
-				operations.add(new RemoveGroupOperation((AssetGroupModel) element));
-			} else if (element instanceof AssetModel) {
-				operations.add(new RemoveAssetOperation((AssetModel) element));
-			}
-		}
-
-		if (!operations.isEmpty()) {
-			executeOperation(operations);
-		}
-
-		_allAssetsViewer.setSelection(StructuredSelection.EMPTY);
-	}
-
-	private void askToRemove(Iterable<AssetModel> assets, Runnable removeAction) {
-		Set<IFile> files = new HashSet<>();
-
-		Job job = new Job("Checking delete conditions") {
-
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-
-				List<IAssetConsumer> list = AssetPackCore.requestAssetConsumers();
-
-				for (IAssetConsumer consumer : list) {
-					for (AssetModel asset : assets) {
-						AssetModel shared = asset.getSharedVersion();
-						if (shared != null) {
-							FindAssetReferencesResult result = consumer.getAssetReferences(shared, monitor);
-							files.addAll(result.getFiles());
-						}
-					}
-				}
-
-				Display display = getEditorSite().getShell().getDisplay();
-
-				if (files.isEmpty()) {
-
-					display.asyncExec(removeAction);
-
-					return Status.OK_STATUS;
-				}
-
-				String msg = files.stream().map(f -> f.getProjectRelativePath().toPortableString())
-						.collect(Collectors.joining("\n"));
-
-				display.asyncExec(new Runnable() {
-
-					@Override
-					public void run() {
-						if (MessageDialog.openConfirm(getSite().getShell(), "Asset Pack Editor",
-								"You are about to delete assets used in other files:\n\n" + msg + ""
-										+ "\n\nDo you confirm the deletion?")) {
-							removeAction.run();
-						}
-					}
-				});
-
-				return Status.OK_STATUS;
-			}
-		};
-		job.schedule();
 	}
 
 	protected void openNewSectionDialog() {
