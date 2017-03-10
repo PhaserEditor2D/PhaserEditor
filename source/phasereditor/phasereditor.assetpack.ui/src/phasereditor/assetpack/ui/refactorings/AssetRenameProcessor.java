@@ -29,7 +29,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ltk.core.refactoring.Change;
-import org.eclipse.ltk.core.refactoring.NullChange;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.core.refactoring.participants.CheckConditionsContext;
 import org.eclipse.ltk.core.refactoring.participants.ParticipantManager;
@@ -115,11 +114,8 @@ public class AssetRenameProcessor extends RenameProcessor {
 		if (_editor == null) {
 			return new RenameAssetChange(_element, _newName);
 		}
-		
-		// change.add(new DeleteAssetInEditorChange((AssetModel) elem,
-		// _editor));
 
-		return new NullChange();
+		return new RenameAssetInEditorChange(_element, _newName, _editor);
 	}
 
 	@Override
