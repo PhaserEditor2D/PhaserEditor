@@ -310,10 +310,10 @@ public class SelectionBehavior implements ISelectionProvider {
 	@Override
 	public void setSelection(ISelection selection) {
 		TreeViewer outline = _canvas.getOutline();
-//		_canvas.getPGrid().getViewer().getTree().setRedraw(false);
+		_canvas.getPGrid().getViewer().getTree().setRedraw(false);
 		outline.setSelection(selection, true);
 		setSelection_private(selection);
-//		_canvas.getPGrid().getViewer().getTree().setRedraw(true);
+		_canvas.getPGrid().getViewer().getTree().setRedraw(true);
 	}
 
 	public void setSelectionAndRevealInScene(IObjectNode elem) {

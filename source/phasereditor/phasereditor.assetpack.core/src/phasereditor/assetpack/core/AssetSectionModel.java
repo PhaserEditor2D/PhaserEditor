@@ -85,9 +85,14 @@ public class AssetSectionModel implements IAdaptable {
 	}
 
 	public void setKey(String key) {
+		setKey(key, true);
+	}
+	public void setKey(String key, boolean notify) {
 		_key = key;
-		firePropertyChange("key");
-		getPack().firePropertyChange(AssetPackModel.PROP_ASSET_KEY);
+		if (notify) {
+			firePropertyChange("key");
+			getPack().firePropertyChange(AssetPackModel.PROP_ASSET_KEY);
+		}
 	}
 
 	public JSONArray getDefinition() {
@@ -118,7 +123,7 @@ public class AssetSectionModel implements IAdaptable {
 	public void removeAsset(AssetModel asset) {
 		removeAsset(asset, true);
 	}
-	
+
 	public void removeAsset(AssetModel asset, boolean notify) {
 		_assets.remove(asset);
 		if (notify) {

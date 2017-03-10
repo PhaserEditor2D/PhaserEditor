@@ -173,11 +173,17 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 	}
 
 	public void setKey(String key) {
+		setKey(key, true);
+	}
+
+	public void setKey(String key, boolean notify) {
 		_key = key;
-		firePropertyChange("key");
-		AssetPackModel model = getPack();
-		if (model != null) {
-			model.firePropertyChange(AssetPackModel.PROP_ASSET_KEY);
+		if (notify) {
+			firePropertyChange("key");
+			AssetPackModel model = getPack();
+			if (model != null) {
+				model.firePropertyChange(AssetPackModel.PROP_ASSET_KEY);
+			}
 		}
 	}
 
@@ -196,7 +202,7 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 	public void setSection(AssetSectionModel section) {
 		setSection(section, true);
 	}
-	
+
 	public void setSection(AssetSectionModel section, boolean notify) {
 		Assert.isNotNull(section);
 		_section = section;

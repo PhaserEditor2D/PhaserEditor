@@ -232,12 +232,17 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 			return;
 		}
 
-		_viewer.refresh();
+		_viewer.getTree().setRedraw(false);
+		try {
+			_viewer.refresh();
 
-		IProject project = getActiveProject();
-		if (project != _lastToken) {
-			_viewer.expandToLevel(4);
-			_lastToken = project;
+			IProject project = getActiveProject();
+			if (project != _lastToken) {
+				_viewer.expandToLevel(4);
+				_lastToken = project;
+			}
+		} finally {
+			_viewer.getTree().setRedraw(true);
 		}
 	}
 }

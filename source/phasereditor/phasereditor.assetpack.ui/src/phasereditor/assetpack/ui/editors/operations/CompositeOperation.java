@@ -63,14 +63,14 @@ public class CompositeOperation extends AssetPackOperation {
 		AssetPackEditor editor = getEditor(info);
 		TreeViewer viewer = editor.getViewer();
 		Tree tree = viewer.getTree();
-//		tree.setRedraw(false);
+		tree.setRedraw(false);
 
 		for (AssetPackOperation op : _operations) {
 			op.execute(monitor, info);
 		}
 
 		viewer.refresh();
-//		tree.setRedraw(true);
+		tree.setRedraw(true);
 
 		editor.getModel().setDirty(true);
 
@@ -83,14 +83,14 @@ public class CompositeOperation extends AssetPackOperation {
 		AssetPackEditor editor = getEditor(info);
 		TreeViewer viewer = editor.getViewer();
 		Tree tree = viewer.getTree();
-//		tree.setRedraw(false);
+		tree.setRedraw(false);
 
 		for (AssetPackOperation op : _operations) {
 			op.redo(monitor, info);
 		}
 
 		viewer.refresh();
-//		tree.setRedraw(true);
+		tree.setRedraw(true);
 
 		editor.getModel().setDirty(true);
 
@@ -102,7 +102,7 @@ public class CompositeOperation extends AssetPackOperation {
 		AssetPackEditor editor = getEditor(info);
 		TreeViewer viewer = editor.getViewer();
 		Tree tree = viewer.getTree();
-//		tree.setRedraw(false);
+		tree.setRedraw(false);
 
 		for (int i = _operations.size() - 1; i >= 0; i--) {
 			AssetPackOperation op = _operations.get(i);
@@ -110,7 +110,7 @@ public class CompositeOperation extends AssetPackOperation {
 		}
 
 		viewer.refresh();
-//		tree.setRedraw(true);
+		tree.setRedraw(true);
 
 		editor.getModel().setDirty(true);
 

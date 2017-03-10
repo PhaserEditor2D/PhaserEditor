@@ -61,7 +61,6 @@ import com.subshell.snippets.jface.tooltip.tooltipsupport.TableViewerInformation
 import com.subshell.snippets.jface.tooltip.tooltipsupport.Tooltips;
 import com.subshell.snippets.jface.tooltip.tooltipsupport.TreeViewerInformationProvider;
 
-import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
@@ -98,6 +97,9 @@ import phasereditor.assetpack.ui.preview.VideoFileInformationControl;
 import phasereditor.assetpack.ui.refactorings.AssetDeleteProcessor;
 import phasereditor.assetpack.ui.refactorings.AssetDeleteRefactoring;
 import phasereditor.assetpack.ui.refactorings.AssetDeleteWizard;
+import phasereditor.assetpack.ui.refactorings.AssetRenameProcessor;
+import phasereditor.assetpack.ui.refactorings.AssetRenameRefactoring;
+import phasereditor.assetpack.ui.refactorings.AssetRenameWizard;
 import phasereditor.assetpack.ui.widgets.AudioResourceDialog;
 import phasereditor.assetpack.ui.widgets.ImageResourceDialog;
 import phasereditor.assetpack.ui.widgets.VideoResourceDialog;
@@ -109,6 +111,24 @@ public class AssetPackUI {
 	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
 	private static List<ICustomInformationControlCreator> _informationControlCreators;
 
+	public static void launchRenameWizard(Object element) {
+		IWorkbenchPart activePart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+				.getActivePart();
+
+		AssetPackEditor editor = activePart instanceof AssetPackEditor ? (AssetPackEditor) activePart : null;
+
+		AssetRenameWizard wizard = new AssetRenameWizard(
+				new AssetRenameRefactoring(new AssetRenameProcessor(element, editor)));
+
+		RefactoringWizardOpenOperation op = new RefactoringWizardOpenOperation(wizard);
+		try {
+			op.run(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Rename Asset");
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+
+	}
+	
 	public static void launchDeleteWizard(Object[] selection) {
 
 		IWorkbenchPart activePart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
@@ -124,18 +144,6 @@ public class AssetPackUI {
 			op.run(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Delete Asset");
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
-		}
-
-		List<AssetModel> list = new ArrayList<>();
-
-		for (Object element : selection) {
-			if (element instanceof AssetSectionModel) {
-				list.addAll(((AssetSectionModel) element).getAssets());
-			} else if (element instanceof AssetGroupModel) {
-				list.addAll(((AssetGroupModel) element).getAssets());
-			} else if (element instanceof AssetModel) {
-				list.add((AssetModel) element);
-			}
 		}
 	}
 

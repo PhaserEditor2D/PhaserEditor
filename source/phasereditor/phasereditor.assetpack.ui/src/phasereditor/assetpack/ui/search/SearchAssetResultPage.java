@@ -346,7 +346,7 @@ public class SearchAssetResultPage extends Page implements ISearchResultPage, IS
 			FindAssetReferencesResult refs = _result.getReferences();
 			IAssetReference ref = refs.getFirstReference();
 
-//			_viewer.getControl().setRedraw(false);
+			_viewer.getControl().setRedraw(false);
 
 			_viewer.setInput(refs);
 
@@ -355,7 +355,7 @@ public class SearchAssetResultPage extends Page implements ISearchResultPage, IS
 				_viewer.setSelection(new StructuredSelection(ref), true);
 			}
 
-//			_viewer.getControl().setRedraw(true);
+			_viewer.getControl().setRedraw(true);
 
 			_searchView.updateLabel();
 		});

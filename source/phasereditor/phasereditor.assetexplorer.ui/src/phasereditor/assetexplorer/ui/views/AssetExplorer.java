@@ -257,7 +257,7 @@ public class AssetExplorer extends ViewPart {
 
 		Object[] expanded = _viewer.getVisibleExpandedElements();
 
-//		_viewer.getTree().setRedraw(false);
+		_viewer.getTree().setRedraw(false);
 		_viewer.refresh();
 
 		List<Object> toExpand = new ArrayList<>();
@@ -295,7 +295,7 @@ public class AssetExplorer extends ViewPart {
 		}
 		toExpand.remove(null);
 		_viewer.setExpandedElements(toExpand.toArray());
-//		_viewer.getTree().setRedraw(true);
+		_viewer.getTree().setRedraw(true);
 	}
 
 }
