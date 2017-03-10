@@ -60,15 +60,11 @@ public class AddSectionOperation extends AssetPackOperation {
 
 		TreeViewer viewer = editor.getViewer();
 
-		viewer.getTree().setRedraw(false);
-		
 		model.addSection(_addedSection, true);
 		
 		_prevSelection = viewer.getSelection();
 		editor.refresh();
 		editor.revealElement(_addedSection);
-
-		viewer.getTree().setRedraw(true);
 
 		return Status.OK_STATUS;
 	}
@@ -84,13 +80,13 @@ public class AddSectionOperation extends AssetPackOperation {
 		AssetPackModel model = editor.getModel();
 
 		TreeViewer viewer = editor.getViewer();
-		viewer.getTree().setRedraw(false);
+//		viewer.getTree().setRedraw(false);
 
 		model.removeSection(_addedSection, false);
 		viewer.refresh();
 		viewer.setSelection(_prevSelection);
 
-		viewer.getTree().setRedraw(true);
+//		viewer.getTree().setRedraw(true);
 
 		return Status.OK_STATUS;
 	}

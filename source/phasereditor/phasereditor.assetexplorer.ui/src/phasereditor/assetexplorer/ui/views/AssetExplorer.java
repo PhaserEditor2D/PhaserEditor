@@ -97,6 +97,7 @@ public class AssetExplorer extends ViewPart {
 		super();
 	}
 
+	
 	@SuppressWarnings("unused")
 	@Override
 	public void createPartControl(Composite parent) {
@@ -130,7 +131,7 @@ public class AssetExplorer extends ViewPart {
 			try {
 				IDE.openEditor(getSite().getPage(), ((CanvasFile) elem).getFile());
 			} catch (PartInitException e) {
-				throw new RuntimeException(e);
+				throw new RuntimeException(e); //NOSONAR
 			}
 		}
 
@@ -256,7 +257,7 @@ public class AssetExplorer extends ViewPart {
 
 		Object[] expanded = _viewer.getVisibleExpandedElements();
 
-		_viewer.getTree().setRedraw(false);
+//		_viewer.getTree().setRedraw(false);
 		_viewer.refresh();
 
 		List<Object> toExpand = new ArrayList<>();
@@ -294,7 +295,7 @@ public class AssetExplorer extends ViewPart {
 		}
 		toExpand.remove(null);
 		_viewer.setExpandedElements(toExpand.toArray());
-		_viewer.getTree().setRedraw(true);
+//		_viewer.getTree().setRedraw(true);
 	}
 
 }
