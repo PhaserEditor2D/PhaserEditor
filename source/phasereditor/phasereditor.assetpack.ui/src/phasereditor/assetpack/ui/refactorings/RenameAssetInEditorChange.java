@@ -24,7 +24,6 @@ package phasereditor.assetpack.ui.refactorings;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
@@ -76,7 +75,17 @@ public class RenameAssetInEditorChange extends Change {
 
 	@Override
 	public RefactoringStatus isValid(IProgressMonitor pm) throws CoreException, OperationCanceledException {
-		return RefactoringStatus.create(Status.OK_STATUS);
+		RefactoringStatus status = new RefactoringStatus();
+		if (_editor != null) {
+			
+			boolean visible = _editor.getEditorSite().getWorkbenchWindow().getActivePage().isPartVisible(_editor);
+			
+			if (!visible) {
+				status.addFatalError("The editor is not open.");
+			}
+		}
+
+		return status;
 	}
 
 	@Override
