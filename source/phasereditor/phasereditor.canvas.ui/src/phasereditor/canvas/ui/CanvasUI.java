@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.BiFunction;
 
 import javax.imageio.ImageIO;
 
@@ -84,6 +85,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
+import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.FindAssetReferencesResult;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
@@ -102,6 +104,7 @@ import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.Prefab;
+import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.behaviors.SelectionBehavior;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
@@ -196,14 +199,34 @@ public class CanvasUI {
 		}
 	}
 
-	public static FindAssetReferencesResult findAllAssetReferences(IAssetKey assetKey, IProgressMonitor monitor) {
+	public static FindAssetReferencesResult findAllKeyAssetReferences(IAssetKey assetKey, IProgressMonitor monitor) {
+		return findAllAssetElementReferences(assetKey, CanvasUI::findAssetKeyReferencesInEditorsContent,
+				CanvasCore::findAssetKeyReferencesInFileContent, monitor);
+	}
+
+	public static FindAssetReferencesResult findAllAssetReferences(AssetModel asset, IProgressMonitor monitor) {
+		return findAllAssetElementReferences(asset,
+				(key, pm) -> CanvasUI.findAssetReferencesInEditorsContent((AssetModel) key, pm),
+				(key, file) -> CanvasCore.findAssetReferencesInFileContent(asset, file), monitor);
+	}
+
+	private static FindAssetReferencesResult findAllAssetElementReferences(
+
+			IAssetKey assetKey,
+
+			BiFunction<IAssetKey, IProgressMonitor, List<IAssetReference>> findInEditorMethod,
+
+			BiFunction<IAssetKey, IFile, List<IAssetReference>> findInFileMethod,
+
+			IProgressMonitor monitor) {
 		FindAssetReferencesResult result = new FindAssetReferencesResult();
 
 		monitor.beginTask("Finding prefab references", CANVAS_SCREENSHOT_SIZE);
 
 		IProject project = assetKey.getAsset().getPack().getFile().getProject();
 
-		List<IAssetReference> refs = findAssetReferencesInEditorsContent(assetKey, monitor);
+		List<IAssetReference> refs = findInEditorMethod.apply(assetKey, monitor); // findAssetKeyReferencesInEditorsContent(assetKey,
+																					// monitor);
 		result.addAll(refs);
 
 		List<CanvasFile> cfiles = CanvasCore.getCanvasFileCache().getProjectData(project);
@@ -211,7 +234,8 @@ public class CanvasUI {
 		monitor.beginTask("Find prefab references in files", cfiles.size());
 
 		for (CanvasFile cfile : cfiles) {
-			List<IAssetReference> fileRefs = CanvasCore.findAssetReferencesInFileContent(assetKey, cfile.getFile());
+			List<IAssetReference> fileRefs = findInFileMethod.apply(assetKey, cfile.getFile()); // CanvasCore.findAssetKeyReferencesInFileContent(assetKey,
+																								// cfile.getFile());
 			result.addAll(fileRefs);
 			monitor.worked(1);
 		}
@@ -271,8 +295,21 @@ public class CanvasUI {
 		return result;
 	}
 
-	public static List<IAssetReference> findAssetReferencesInEditorsContent(IAssetKey assetKey,
+	public static List<IAssetReference> findAssetKeyReferencesInEditorsContent(IAssetKey assetKey,
 			IProgressMonitor monitor) {
+		return findAssetElementReferencesInEditorsContent(assetKey, CanvasCore::findAssetKeyReferenceInModelContent,
+				monitor);
+	}
+
+	public static List<IAssetReference> findAssetReferencesInEditorsContent(AssetModel asset,
+			IProgressMonitor monitor) {
+		return findAssetElementReferencesInEditorsContent(asset, (assetKey, model) -> {
+			return CanvasCore.findAssetReferenceInModelContent((AssetModel) assetKey, model);
+		}, monitor);
+	}
+
+	private static <T extends IAssetKey> List<IAssetReference> findAssetElementReferencesInEditorsContent(T assetKey,
+			BiFunction<IAssetKey, WorldModel, List<IAssetReference>> findInModelMethod, IProgressMonitor monitor) {
 		List<IEditorReference> editors = new ArrayList<>();
 
 		for (IWorkbenchWindow window : PlatformUI.getWorkbench().getWorkbenchWindows()) {
@@ -291,7 +328,7 @@ public class CanvasUI {
 			IEditorPart editor = editorRef.getEditor(false);
 			if (editor != null && editor instanceof CanvasEditor) {
 				CanvasEditor canvasEditor = (CanvasEditor) editor;
-				List<IAssetReference> refs = CanvasCore.findAssetReferenceInModelContent(assetKey, canvasEditor.getCanvas().getWorldModel());
+				List<IAssetReference> refs = findInModelMethod.apply(assetKey, canvasEditor.getModel().getWorld());
 				result.addAll(refs);
 			}
 			monitor.worked(1);

@@ -23,8 +23,10 @@ package phasereditor.assetpack.ui.refactorings;
 
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -34,6 +36,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
 
 import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.ui.editors.AssetPackEditor;
@@ -43,35 +46,23 @@ import phasereditor.ui.PhaserEditorUI;
  * @author arian
  *
  */
-public class RenameAssetChange extends Change {
+public class RenameAssetInFileChange extends Change {
 
-	private AssetModel _asset;
-	private AssetSectionModel _section;
-	private final String _oldName;
+	private final String _initialName;
 	private final String _newName;
-	private final AssetPackModel _pack;
-	private Object _element;
+	private final String _sectionKey;
+	private final IFile _file;
 
-	public RenameAssetChange(Object element, String newName) {
-		_element = element;
-		if (element instanceof AssetModel) {
-			_asset = (AssetModel) element;
-			_oldName = _asset.getKey();
-			_pack = _asset.getPack();
-		} else {
-			_section = (AssetSectionModel) element;
-			_oldName = _section.getKey();
-			_pack = _section.getPack();
-		}
+	public RenameAssetInFileChange(IFile file, String sectionKey, String initialName, String newName) {
+		_file = file;
+		_sectionKey = sectionKey;
+		_initialName = initialName;
 		_newName = newName;
 	}
 
 	@Override
 	public String getName() {
-		if (_asset != null) {
-			return "Rename asset entry '" + _asset.getKey() + "'";
-		}
-		return "Rename section '" + _section.getKey() + "'";
+		return "Rename asset entry '" + _initialName + "'";
 	}
 
 	@Override
@@ -86,58 +77,42 @@ public class RenameAssetChange extends Change {
 
 	@Override
 	public Change perform(IProgressMonitor pm) throws CoreException {
-		if (_asset != null) {
-			_asset.setKey(_newName);
-		} else {
-			_section.setKey(_newName);
+		try {
+			AssetPackModel pack = new AssetPackModel(_file);
+			AssetModel asset = pack.findAsset(_sectionKey, _initialName);
+			asset.setKey(_newName, false);
+			pack.save(pm);
+		} catch (Exception e) {
+			throw new CoreException(new Status(IStatus.ERROR, AssetPackCore.PLUGIN_ID, e.getMessage(), e));
 		}
 
-		_pack.save(pm);
-
 		Display.getDefault().syncExec(() -> {
-			List<IEditorPart> editors = PhaserEditorUI.findOpenFileEditors(_pack.getFile());
+			List<IEditorPart> editors = PhaserEditorUI.findOpenFileEditors(_file);
 			for (IEditorPart editor : editors) {
 				if (editor instanceof AssetPackEditor) {
 					AssetPackEditor packEditor = (AssetPackEditor) editor;
-
-					if (_asset == null) {
-						renameSection(packEditor);
-					} else {
-						renameAsset(packEditor);
-					}
+					renameAsset(packEditor);
 				}
 			}
 		});
 
-		return new RenameAssetChange(_element, _oldName);
+		return new RenameAssetInFileChange(_file, _sectionKey, _newName, _initialName);
 	}
 
-	private void renameSection(AssetPackEditor editor) {
-		AssetSectionModel section = editor.getModel().findSection(_oldName);
+	private void renameAsset(AssetPackEditor editor) {
+		AssetSectionModel section = editor.getModel().findSection(_sectionKey);
 		if (section != null) {
-			section.setKey(_newName, false);
+			AssetModel asset = section.findAsset(_initialName);
+			asset.setKey(_newName, false);
 			TreeViewer viewer = editor.getViewer();
 			viewer.refresh();
 			editor.updateAssetEditor();
 		}
 	}
 
-	private void renameAsset(AssetPackEditor editor) {
-		AssetSectionModel section = editor.getModel().findSection(_asset.getSection().getKey());
-		if (section != null) {
-			AssetModel asset = section.findAsset(_oldName);
-			if (asset != null) {
-				asset.setKey(_newName, false);
-				TreeViewer viewer = editor.getViewer();
-				viewer.refresh();
-				editor.updateAssetEditor();
-			}
-		}
-	}
-
 	@Override
 	public Object getModifiedElement() {
-		return _element;
+		return _file;
 	}
 
 }

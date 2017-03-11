@@ -21,7 +21,12 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
+import java.io.ByteArrayInputStream;
+
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -152,5 +157,16 @@ public class CanvasModel {
 
 	public WorldModel getWorld() {
 		return _world;
+	}
+
+	public void save(IFile file, IProgressMonitor monitor) throws JSONException, CoreException {
+		JSONObject data = new JSONObject();
+
+		_world.setAssetTable(new AssetTable(_world));
+		_world.setPrefabTable(new PrefabTable(_world));
+		
+		write(data, true);
+
+		file.setContents(new ByteArrayInputStream(data.toString(2).getBytes()), true, false, monitor);
 	}
 }

@@ -20,7 +20,7 @@ public class CanvasAssetConsumer implements IAssetConsumer {
 	
 	@Override
 	public FindAssetReferencesResult getAssetReferences(IAssetKey assetKey, IProgressMonitor monitor) {
-		return CanvasUI.findAllAssetReferences(assetKey, monitor);
+		return CanvasUI.findAllKeyAssetReferences(assetKey, monitor);
 	}
 
 	@Override

@@ -436,6 +436,16 @@ public final class AssetPackModel {
 		return null;
 	}
 
+	public AssetModel findAsset(String sectionKey, String assetKey) {
+		AssetSectionModel section = findSection(sectionKey);
+
+		if (section == null) {
+			return null;
+		}
+
+		return section.findAsset(assetKey);
+	}
+
 	public String createKey(String prefix) {
 		for (int i = 0; i < 200; i++) {
 			String key = prefix + (i == 0 ? "" : new Integer(i));

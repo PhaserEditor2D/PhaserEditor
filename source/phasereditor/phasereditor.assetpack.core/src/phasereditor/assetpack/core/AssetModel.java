@@ -73,6 +73,12 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 	}
 
 	@Override
+	public boolean isSharedVersion() {
+		AssetPackModel pack = getPack();
+		return pack.isSharedVersion() && pack.getSections().contains(_section) && _section.getAssets().contains(this);
+	}
+	
+	@Override
 	public final AssetModel getSharedVersion() {
 		if (isSharedVersion()) {
 			return this;
@@ -217,12 +223,6 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 
 	public AssetPackModel getPack() {
 		return _section.getPack();
-	}
-
-	@Override
-	public boolean isSharedVersion() {
-		AssetPackModel pack = getPack();
-		return pack.isSharedVersion() && pack.getSections().contains(_section) && _section.getAssets().contains(this);
 	}
 
 	public IFile getFileFromUrl(String url) {

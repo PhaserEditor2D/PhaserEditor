@@ -63,9 +63,10 @@ public class AssetTable {
 	}
 
 	public String postAsset(IAssetKey key) {
-		IAssetKey key1 = key.getSharedVersion();
+		String key1 = AssetPackCore.getAssetStringReference(key);
+		
 		for (Entry entry : _entries) {
-			IAssetKey key2 = entry.asset.getSharedVersion();
+			String key2 = AssetPackCore.getAssetStringReference(entry.asset);
 
 			if (key1.equals(key2)) {
 				return entry.id;
@@ -73,8 +74,8 @@ public class AssetTable {
 		}
 
 		String id = Integer.toString(_counter++);
-		_entries.add(new Entry(id, key1));
-		_map.put(id, key1);
+		_entries.add(new Entry(id, key));
+		_map.put(id, key);
 
 		return id;
 	}

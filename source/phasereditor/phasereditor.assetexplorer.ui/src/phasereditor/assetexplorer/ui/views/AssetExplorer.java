@@ -97,7 +97,6 @@ public class AssetExplorer extends ViewPart {
 		super();
 	}
 
-	
 	@SuppressWarnings("unused")
 	@Override
 	public void createPartControl(Composite parent) {
@@ -131,7 +130,7 @@ public class AssetExplorer extends ViewPart {
 			try {
 				IDE.openEditor(getSite().getPage(), ((CanvasFile) elem).getFile());
 			} catch (PartInitException e) {
-				throw new RuntimeException(e); //NOSONAR
+				throw new RuntimeException(e); // NOSONAR
 			}
 		}
 
@@ -294,7 +293,10 @@ public class AssetExplorer extends ViewPart {
 			}
 		}
 		toExpand.remove(null);
-		_viewer.setExpandedElements(toExpand.toArray());
+		Object[] array = toExpand.toArray();
+		if (array != null) {
+			_viewer.setExpandedElements(array);
+		}
 		_viewer.getTree().setRedraw(true);
 	}
 

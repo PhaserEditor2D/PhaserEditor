@@ -22,6 +22,8 @@
 package phasereditor.canvas.core;
 
 import org.eclipse.core.resources.IFile;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 /**
  * @author arian
@@ -87,6 +89,12 @@ public class CanvasFile {
 	@Override
 	public String toString() {
 		return getClass().getSimpleName() + ":" + _file + "@" + hashCode();
+	}
+
+	public CanvasModel newModel() throws Exception {
+		CanvasModel model = new CanvasModel(_file);
+		model.read(new JSONObject(new JSONTokener(_file.getContents())));
+		return model;
 	}
 
 }

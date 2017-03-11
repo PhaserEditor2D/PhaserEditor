@@ -2022,7 +2022,10 @@
             class="phasereditor.canvas.ui.refactoring.AssetDeleteInCanvasParticipant"
             id="phasereditor.canvas.ui.deleteAssetInCanvasParticipant"
             name="Delete Asset In Canvas">
-         <enablement></enablement>
+         <enablement>
+            <instanceof
+                  value="phasereditor.assetpack.core.AssetModel">
+            </instanceof></enablement>
       </deleteParticipant>
    </extension>
    <extension
@@ -2051,6 +2054,19 @@
                   variable="element">
                <instanceof
                      value="org.eclipse.core.resources.IFile">
+               </instanceof>
+            </with>
+         </enablement>
+      </renameParticipant>
+      <renameParticipant
+            class="phasereditor.canvas.ui.refactoring.AssetRenameInCanvasParticpant"
+            id="phasereditor.canvas.ui.renameAssetParticipant"
+            name="Rename Asset In Canvas File">
+         <enablement>
+            <with
+                  variable="element">
+               <instanceof
+                     value="phasereditor.assetpack.core.AssetModel">
                </instanceof>
             </with>
          </enablement>

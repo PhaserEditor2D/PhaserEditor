@@ -87,6 +87,7 @@ public class AssetSectionModel implements IAdaptable {
 	public void setKey(String key) {
 		setKey(key, true);
 	}
+
 	public void setKey(String key, boolean notify) {
 		_key = key;
 		if (notify) {
@@ -175,5 +176,34 @@ public class AssetSectionModel implements IAdaptable {
 	@Override
 	public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
 		return null;
+	}
+
+	public AssetSectionModel copy() {
+		return new AssetSectionModel(_key, _pack);
+	}
+
+	public boolean isSharedVersion() {
+		AssetPackModel pack = getPack();
+		return pack.isSharedVersion() && pack.getSections().contains(this);
+	}
+
+	public final AssetSectionModel getSharedVersion() {
+		if (isSharedVersion()) {
+			return this;
+		}
+
+		try {
+			AssetPackModel pack = getPack().getSharedVersion();
+
+			if (pack == null) {
+				return null;
+			}
+
+			AssetSectionModel section = pack.findSection(_key);
+
+			return section;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

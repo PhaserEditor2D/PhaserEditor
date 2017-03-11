@@ -90,11 +90,9 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import javafx.geometry.Point2D;
-import phasereditor.canvas.core.AssetTable;
 import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasType;
-import phasereditor.canvas.core.PrefabTable;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
 import phasereditor.canvas.core.codegen.ICodeGenerator;
@@ -236,13 +234,9 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 
 		try {
 			IFileEditorInput input = (IFileEditorInput) getEditorInput();
-			JSONObject data = new JSONObject();
-
-			_model.getWorld().setAssetTable(new AssetTable(_model.getWorld()));
-			_model.getWorld().setPrefabTable(new PrefabTable(_model.getWorld()));
-			_model.write(data, true);
-
-			input.getFile().setContents(new ByteArrayInputStream(data.toString(2).getBytes()), true, false, monitor);
+			IFile file = input.getFile();
+			
+			_model.save(file, monitor);
 
 			if (getCanvas().getSettingsModel().isGenerateOnSave()) {
 				generateCode();

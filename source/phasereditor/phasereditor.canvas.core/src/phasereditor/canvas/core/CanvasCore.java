@@ -40,6 +40,8 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.IAssetReference;
 import phasereditor.assetpack.core.ImageAssetModel;
@@ -201,12 +203,18 @@ public class CanvasCore {
 		private String _objectName;
 		private IFile _file;
 		private IAssetKey _assetKey;
+		private AssetSpriteModel<IAssetKey> _model;
 
-		public AssetInCanvasReference(String objectId, String objectName, IFile file, IAssetKey assetKey) {
-			_objectId = objectId;
-			_objectName = objectName;
-			_file = file;
+		public AssetInCanvasReference(AssetSpriteModel<IAssetKey> model, IAssetKey assetKey) {
+			_objectId = model.getId();
+			_objectName = model.getEditorName();
+			_file = model.getWorld().getFile();
 			_assetKey = assetKey;
+			_model = model;
+		}
+
+		public AssetSpriteModel<IAssetKey> getModel() {
+			return _model;
 		}
 
 		@Override
@@ -248,19 +256,19 @@ public class CanvasCore {
 		}
 	}
 
-	public static List<IAssetReference> findAssetReferencesInFileContent(IAssetKey assetKey, IFile file) {
+	public static List<IAssetReference> findAssetKeyReferencesInFileContent(IAssetKey assetKey, IFile file) {
 		CanvasModel canvasModel = new CanvasModel(file);
 		try (InputStream contents = file.getContents()) {
 			canvasModel.read(new JSONObject(new JSONTokener(contents)));
-			return findAssetReferenceInModelContent(assetKey, canvasModel.getWorld());
+			return findAssetKeyReferenceInModelContent(assetKey, canvasModel.getWorld());
 		} catch (Exception e) {
 			logError(e);
 			throw new RuntimeException(e);
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
-	public static List<IAssetReference> findAssetReferenceInModelContent(IAssetKey assetKey, WorldModel world) {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static List<IAssetReference> findAssetKeyReferenceInModelContent(IAssetKey assetKey, WorldModel world) {
 		IAssetKey assetKey2 = assetKey instanceof ImageAssetModel.Frame ? assetKey.getAsset() : assetKey;
 
 		List<IAssetReference> list = new ArrayList<>();
@@ -274,14 +282,58 @@ public class CanvasCore {
 					return false;
 				}
 
-				IAssetKey key = ((AssetSpriteModel) model).getAssetKey();
+				AssetSpriteModel spriteModel = (AssetSpriteModel) model;
+				IAssetKey key = spriteModel.getAssetKey();
 
 				if (key instanceof ImageAssetModel.Frame) {
 					key = key.getAsset();
 				}
 
 				if (key.getSharedVersion().equals(assetKey2.getSharedVersion())) {
-					list.add(new AssetInCanvasReference(model.getId(), model.getEditorName(), world.getFile(), key));
+					list.add(new AssetInCanvasReference(spriteModel, key));
+				}
+			} else if (model instanceof GroupModel) {
+
+				// just avoid to loop into group prefabs
+				if (model.isPrefabInstance()) {
+					return false;
+				}
+
+			}
+			return true;
+		});
+
+		return list;
+	}
+
+	public static List<IAssetReference> findAssetReferencesInFileContent(AssetModel asset, IFile file) {
+		CanvasModel canvasModel = new CanvasModel(file);
+		try (InputStream contents = file.getContents()) {
+			canvasModel.read(new JSONObject(new JSONTokener(contents)));
+			return findAssetReferenceInModelContent(asset, canvasModel.getWorld());
+		} catch (Exception e) {
+			logError(e);
+			throw new RuntimeException(e);
+		}
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static List<IAssetReference> findAssetReferenceInModelContent(AssetModel asset, WorldModel world) {
+		List<IAssetReference> list = new ArrayList<>();
+
+		world.getWorld().walk_skipGroupIfFalse(model -> {
+
+			if (model instanceof AssetSpriteModel) {
+
+				if (model.isPrefabInstance() && !model.isOverriding(BaseSpriteModel.PROPSET_TEXTURE)) {
+					// skip prefab instance that cannot change its texture
+					return false;
+				}
+
+				AssetSpriteModel spriteModel = (AssetSpriteModel) model;
+				AssetModel spriteAsset = spriteModel.getAssetKey().getAsset();
+				if (AssetPackCore.equalsAssetKeys(spriteAsset, asset)) {
+					list.add(new AssetInCanvasReference(spriteModel, spriteAsset));
 				}
 			} else if (model instanceof GroupModel) {
 

@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Function;
 
 import org.eclipse.core.resources.IContainer;
@@ -93,7 +94,7 @@ public class AssetPackCore {
 		_shaderExtensions = new HashSet<>();
 		_shaderExtensions.addAll(Arrays.asList("vert", "frag", "tesc", "tese", "geom", "comp"));
 	}
-	
+
 	public static List<AssetModel> findAssetResourceReferencesInProject(IFile assetFile) {
 		List<AssetModel> list = new ArrayList<>();
 
@@ -769,5 +770,23 @@ public class AssetPackCore {
 
 	public static void logError(String msg) {
 		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, msg, null));
+	}
+
+	public static boolean equalsAssetKeys(IAssetKey a, IAssetKey b) {
+		String k1 = uniqueKey(a);
+		String k2 = uniqueKey(b);
+
+		return k1.equals(k2);
+	}
+
+	public static String uniqueKey(IAssetKey assetKey) {
+		if (assetKey == null) {
+			return UUID.randomUUID().toString();
+		}
+
+		AssetModel asset = assetKey.getAsset();
+
+		return assetKey.getKey() + "$" + asset.getKey() + "$" + asset.getSection().getKey() + "$"
+				+ asset.getPack().getFile().getFullPath().toPortableString();
 	}
 }

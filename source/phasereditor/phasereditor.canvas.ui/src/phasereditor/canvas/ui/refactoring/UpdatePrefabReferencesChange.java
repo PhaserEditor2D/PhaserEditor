@@ -162,7 +162,7 @@ public class UpdatePrefabReferencesChange extends Change {
 
 				if (modified) {
 					String content = data.toString(2);
-					file.setContents(new ByteArrayInputStream(content.getBytes()), true, false, pm);
+					file.setContents(new ByteArrayInputStream(content.getBytes()), false, false, pm);
 				}
 
 			} catch (IOException e) {

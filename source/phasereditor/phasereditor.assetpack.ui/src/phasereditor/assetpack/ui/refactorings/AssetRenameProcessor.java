@@ -39,6 +39,7 @@ import org.eclipse.ltk.core.refactoring.participants.RenameProcessor;
 import org.eclipse.ltk.core.refactoring.participants.SharableParticipants;
 
 import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.ui.editors.AssetPackEditor;
 import phasereditor.project.core.PhaserProjectNature;
@@ -60,9 +61,13 @@ public class AssetRenameProcessor extends RenameProcessor {
 		_editor = editor;
 		_element = element;
 		if (element instanceof AssetModel) {
-			_initialName = ((AssetModel) element).getKey();
+			AssetModel asset = (AssetModel) element;
+			_element = asset;
+			_initialName = asset.getKey();
 		} else {
-			_initialName = ((AssetSectionModel) _element).getKey();
+			AssetSectionModel section = (AssetSectionModel) _element;
+			_element = section;
+			_initialName = section.getKey();
 		}
 		_newName = _initialName;
 	}
@@ -112,7 +117,17 @@ public class AssetRenameProcessor extends RenameProcessor {
 	@Override
 	public Change createChange(IProgressMonitor pm) throws CoreException, OperationCanceledException {
 		if (_editor == null) {
-			return new RenameAssetChange(_element, _newName);
+			if (_element instanceof AssetModel) {
+
+				AssetModel asset = (AssetModel) _element;
+				AssetSectionModel section = asset.getSection();
+				AssetPackModel pack = asset.getPack();
+
+				return new RenameAssetInFileChange(pack.getFile(), section.getKey(), _initialName, _newName);
+			}
+
+			throw new RuntimeException("Not implemented yet.");
+
 		}
 
 		return new RenameAssetInEditorChange(_element, _newName, _editor);
