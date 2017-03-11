@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -37,6 +38,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.statushandlers.StatusManager;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -392,6 +394,40 @@ public class CanvasCore {
 			return marker;
 		} catch (CoreException e) {
 			throw new RuntimeException(e);
+		}
+	}
+
+	public static void forEachJSONReference(JSONObject canvasFileData, Consumer<JSONObject> visitor) {
+		JSONObject tableData = canvasFileData.optJSONObject("asset-table");
+
+		if (tableData != null) {
+			for (String k : tableData.keySet()) {
+				JSONObject assetRef = tableData.getJSONObject(k);
+				visitor.accept(assetRef);
+			}
+		}
+
+		JSONObject worldData = canvasFileData.getJSONObject("world");
+		forEachJSONReference_object(worldData, visitor);
+	}
+
+	private static void forEachJSONReference_object(JSONObject objData, Consumer<JSONObject> visitor) {
+		String type = objData.getString("type");
+		switch (type) {
+		case GroupModel.TYPE_NAME:
+			JSONObject info = objData.getJSONObject("info");
+			JSONArray children = info.getJSONArray("children");
+			for (int i = 0; i < children.length(); i++) {
+				JSONObject childData = children.getJSONObject(i);
+				forEachJSONReference_object(childData, visitor);
+			}
+			break;
+		default:
+			JSONObject assetRef = objData.optJSONObject("asset-ref");
+			if (assetRef != null) {
+				visitor.accept(assetRef);
+			}
+			break;
 		}
 	}
 

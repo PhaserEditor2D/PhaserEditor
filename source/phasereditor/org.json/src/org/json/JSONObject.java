@@ -25,6 +25,7 @@ package org.json;
  */
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Field;
@@ -94,6 +95,11 @@ import java.util.Set;
 public class JSONObject {
 
 	// --- start Arian modifications ---
+	
+	public static JSONObject read(InputStream input) {
+		return new JSONObject(new JSONTokener(input));
+	}
+	
 	// Methods to ignore to put defaults
 
 	/**

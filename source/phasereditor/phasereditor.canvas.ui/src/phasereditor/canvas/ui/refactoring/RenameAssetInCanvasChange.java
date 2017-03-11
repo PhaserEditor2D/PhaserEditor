@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.refactoring;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -31,6 +33,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
+import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
@@ -92,12 +95,7 @@ public class RenameAssetInCanvasChange extends Change {
 
 		for (CanvasFile cfile : cfiles) {
 			try {
-				CanvasModel canvasModel = cfile.newModel();
-
-				renameInContent(canvasModel);
-
-				canvasModel.save(cfile.getFile(), pm);
-
+				renameInFile(cfile.getFile(), pm);
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
@@ -108,7 +106,7 @@ public class RenameAssetInCanvasChange extends Change {
 		PhaserEditorUI.forEachEditor(editor -> {
 			if (editor instanceof CanvasEditor) {
 				try {
-					renameInContent(((CanvasEditor) editor).getModel());
+					renameInModel(((CanvasEditor) editor).getModel());
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
@@ -118,7 +116,26 @@ public class RenameAssetInCanvasChange extends Change {
 		return new RenameAssetInCanvasChange(_file, _sectionKey, _newName, _initialName);
 	}
 
-	private void renameInContent(CanvasModel canvasModel) throws Exception {
+	private void renameInFile(IFile file, IProgressMonitor monitor) throws Exception {
+		JSONObject data;
+
+		try (InputStream contents = file.getContents()) {
+			data = JSONObject.read(contents);
+		}
+
+		CanvasCore.forEachJSONReference(data, ref -> {
+			String name = ref.getString("asset");
+			if (_initialName.equals(name)) {
+				ref.put("asset", _newName);
+			}
+		});
+
+		try (ByteArrayInputStream source = new ByteArrayInputStream(data.toString(2).getBytes())) {
+			file.setContents(source, false, false, monitor);
+		}
+	}
+
+	private void renameInModel(CanvasModel canvasModel) throws Exception {
 		WorldModel world = canvasModel.getWorld();
 
 		AssetPackModel pack = AssetPackCore.getAssetPackModel(_file);
