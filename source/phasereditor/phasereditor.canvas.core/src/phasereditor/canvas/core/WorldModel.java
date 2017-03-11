@@ -26,10 +26,14 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.BiFunction;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.json.JSONObject;
+
+import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.IAssetKey;
 
 /**
  * @author arian
@@ -83,7 +87,7 @@ public class WorldModel extends GroupModel {
 	public IFile getFile() {
 		return _canvasModel.getFile();
 	}
-	
+
 	public CanvasModel getCanvasModel() {
 		return _canvasModel;
 	}
@@ -232,5 +236,27 @@ public class WorldModel extends GroupModel {
 		}
 
 		return null;
+	}
+
+	private BiFunction<IProject, JSONObject, Object> _findAssetFunction = (project,
+			assetRef) -> (IAssetKey) AssetPackCore.findAssetElement(getProject(), assetRef);
+
+	public BiFunction<IProject, JSONObject, Object> getFindAssetFunction() {
+		return _findAssetFunction;
+	}
+
+	/**
+	 * This function is used for open the asset registry. It means, it can look
+	 * for assets in the shared model or any other model provided by the user.
+	 * 
+	 * @param assetRef
+	 * @return
+	 */
+	public void setFindAssetFunction(BiFunction<IProject, JSONObject, Object> findAssetFunction_project_assetRef) {
+		_findAssetFunction = findAssetFunction_project_assetRef;
+	}
+
+	Object findAssetElement(JSONObject assetRef) {
+		return _findAssetFunction.apply(getProject(), assetRef);
 	}
 }

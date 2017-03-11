@@ -72,6 +72,10 @@ public class AssetRenameProcessor extends RenameProcessor {
 		_newName = _initialName;
 	}
 
+	public boolean isInDirtyEditor() {
+		return _editor != null && _editor.isDirty();
+	}
+
 	public String getNewName() {
 		return _newName;
 	}
@@ -116,21 +120,21 @@ public class AssetRenameProcessor extends RenameProcessor {
 
 	@Override
 	public Change createChange(IProgressMonitor pm) throws CoreException, OperationCanceledException {
-		if (_editor == null) {
-			if (_element instanceof AssetModel) {
-
-				AssetModel asset = (AssetModel) _element;
-				AssetSectionModel section = asset.getSection();
-				AssetPackModel pack = asset.getPack();
-
-				return new RenameAssetInFileChange(pack.getFile(), section.getKey(), _initialName, _newName);
-			}
-
-			throw new RuntimeException("Not implemented yet.");
-
+		if (isInDirtyEditor()) {
+			return new RenameAssetInEditorChange(_element, _newName, _editor);
 		}
 
-		return new RenameAssetInEditorChange(_element, _newName, _editor);
+		if (_element instanceof AssetModel) {
+
+			AssetModel asset = (AssetModel) _element;
+			AssetSectionModel section = asset.getSection();
+			AssetPackModel pack = asset.getPack();
+
+			return new RenameAssetInFileChange(pack.getFile(), section.getKey(), _initialName, _newName);
+		}
+
+		throw new RuntimeException("Not implemented yet.");
+
 	}
 
 	@Override
@@ -143,7 +147,7 @@ public class AssetRenameProcessor extends RenameProcessor {
 			return new RefactoringParticipant[0];
 		}
 
-		RenameArguments args = new RenameArguments(_newName, true);
+		RenameArguments args = new RenameAssetArguments(_newName, true, isInDirtyEditor());
 
 		result.addAll(Arrays.asList(ParticipantManager.loadRenameParticipants(status, this, _element, args,
 				PhaserProjectNature.NATURE_IDS, sharedParticipants)));

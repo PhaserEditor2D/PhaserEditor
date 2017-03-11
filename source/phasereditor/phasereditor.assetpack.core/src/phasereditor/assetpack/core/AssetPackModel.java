@@ -65,11 +65,11 @@ public final class AssetPackModel {
 	private boolean _dirty;
 
 	public AssetPackModel(IFile file) throws Exception {
-		this(readJSON(file));
-		_file = file;
+		this(readJSON(file), file);
 	}
 
-	public AssetPackModel(JSONObject jsonDoc) throws Exception {
+	public AssetPackModel(JSONObject jsonDoc, IFile file) throws Exception {
+		_file = file;
 		build(jsonDoc);
 	}
 
@@ -144,13 +144,13 @@ public final class AssetPackModel {
 		}
 	}
 
-	public String toJSON() {
-		JSONObject pack = new JSONObject();
+	public JSONObject toJSON() {
+		JSONObject data = new JSONObject();
 		for (AssetSectionModel section : _sections) {
-			section.writeSection(pack);
+			section.writeSection(data);
 		}
-		writeMeta(pack);
-		return pack.toString(4);
+		writeMeta(data);
+		return data;
 	}
 
 	private static void writeMeta(JSONObject pack) {
@@ -164,8 +164,8 @@ public final class AssetPackModel {
 	}
 
 	public void save(IProgressMonitor monitor) {
-		String json = toJSON();
-		try (ByteArrayInputStream source = new ByteArrayInputStream(json.getBytes())) {
+		JSONObject json = toJSON();
+		try (ByteArrayInputStream source = new ByteArrayInputStream(json.toString(2).getBytes())) {
 			_file.setContents(source, false, false, monitor);
 		} catch (IOException | CoreException e) {
 			e.printStackTrace();

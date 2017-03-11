@@ -33,6 +33,7 @@ import org.eclipse.ltk.core.refactoring.participants.RenameParticipant;
 
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.FindAssetReferencesResult;
+import phasereditor.assetpack.ui.refactorings.RenameAssetArguments;
 import phasereditor.canvas.ui.CanvasUI;
 
 /**
@@ -78,6 +79,12 @@ public class AssetRenameInCanvasParticpant extends RenameParticipant {
 		for (IFile file : _refs.getFiles()) {
 			status.addWarning("The canvas '" + file.getName() + "' uses the asset pack entry '" + key + "'.",
 					new CanvasFileRefactoringStatusContext(file));
+		}
+
+		RenameAssetArguments args = (RenameAssetArguments) getArguments();
+		
+		if (args.isInDirtyEditor()) {
+			status.addFatalError("The asset is open in a dirty editor. Save before to rename.");
 		}
 
 		return status;

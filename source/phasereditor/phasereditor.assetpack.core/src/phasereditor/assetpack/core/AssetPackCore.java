@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.eclipse.core.resources.IContainer;
@@ -788,5 +789,21 @@ public class AssetPackCore {
 
 		return assetKey.getKey() + "$" + asset.getKey() + "$" + asset.getSection().getKey() + "$"
 				+ asset.getPack().getFile().getFullPath().toPortableString();
+	}
+
+	public static BiFunction<IProject, JSONObject, Object> createCustomFindAssetFunction(final AssetPackModel pack) {
+		return new BiFunction<IProject, JSONObject, Object>() {
+
+			@Override
+			public Object apply(IProject project, JSONObject assetRef) {
+				Object elem = pack.getElementFromJSONReference(assetRef);
+				
+				if (elem != null) {
+					return elem;
+				}
+				
+				return findAssetElement(project, assetRef);
+			}
+		};
 	}
 }

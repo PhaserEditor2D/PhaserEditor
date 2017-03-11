@@ -31,7 +31,6 @@ import java.util.UUID;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.IAssetKey;
 
 /**
@@ -161,7 +160,7 @@ public abstract class BaseObjectModel {
 	}
 
 	public IAssetKey findAsset(JSONObject jsonModel) {
-
+		
 		if (jsonModel.has("asset")) {
 			// read the compact mode
 			String id = jsonModel.getString("asset");
@@ -172,8 +171,8 @@ public abstract class BaseObjectModel {
 		// read in the expanded mode
 
 		JSONObject assetRef = jsonModel.getJSONObject("asset-ref");
-		IAssetKey key = (IAssetKey) AssetPackCore.findAssetElement(getWorld().getProject(), assetRef);
-
+		//IAssetKey key = (IAssetKey) AssetPackCore.findAssetElement(getWorld().getProject(), assetRef);
+		IAssetKey key = (IAssetKey) getWorld().findAssetElement(assetRef);
 		return key;
 	}
 
