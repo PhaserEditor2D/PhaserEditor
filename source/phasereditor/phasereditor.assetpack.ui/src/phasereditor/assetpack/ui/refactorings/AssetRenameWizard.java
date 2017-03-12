@@ -36,7 +36,7 @@ public class AssetRenameWizard extends RefactoringWizard {
 
 	@Override
 	protected void addUserInputPages() {
-		AssetRenameProcessor processor = getRefactoring().getAdapter(AssetRenameProcessor.class);
+		BaseAssetRenameProcessor processor = getRefactoring().getAdapter(BaseAssetRenameProcessor.class);
 		addPage(new AssetRenameWizardPage(processor));
 	}
 

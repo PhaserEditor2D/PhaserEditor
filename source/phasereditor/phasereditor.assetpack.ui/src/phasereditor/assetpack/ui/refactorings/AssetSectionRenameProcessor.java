@@ -26,7 +26,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.ltk.core.refactoring.Change;
 
-import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.ui.editors.AssetPackEditor;
@@ -35,18 +34,18 @@ import phasereditor.assetpack.ui.editors.AssetPackEditor;
  * @author arian
  *
  */
-public class AssetRenameProcessor extends BaseAssetRenameProcessor {
+public class AssetSectionRenameProcessor extends BaseAssetRenameProcessor {
 
-	private AssetModel _asset;
+	private AssetSectionModel _section;
 
-	public AssetRenameProcessor(AssetModel asset, AssetPackEditor editor) {
-		super(asset, asset.getKey(), editor);
-		_asset = asset;
+	public AssetSectionRenameProcessor(AssetSectionModel section, AssetPackEditor editor) {
+		super(section, section.getKey(), editor);
+		_section = section;
 	}
 
 	@Override
 	public String getProcessorName() {
-		return "Delete Asset Processor";
+		return "Rename Asset Section";
 	}
 
 	@Override
@@ -57,12 +56,12 @@ public class AssetRenameProcessor extends BaseAssetRenameProcessor {
 	@Override
 	public Change createChange(IProgressMonitor pm) throws CoreException, OperationCanceledException {
 		if (isInDirtyEditor()) {
-			return new RenameAssetInEditorChange(_asset, _initialName, _newName, _editor);
+			return new RenameAssetSectionInEditorChange(_section, _initialName, _newName, _editor);
 		}
 
-		AssetSectionModel section = _asset.getSection();
-		AssetPackModel pack = _asset.getPack();
+		AssetPackModel pack = _section.getPack();
 
-		return new RenameAssetInFileChange(pack.getFile(), section.getKey(), _initialName, _newName);
+		return new RenameAssetSectionInFileChange(pack.getFile(), _section.getKey(), _newName);
 	}
+
 }

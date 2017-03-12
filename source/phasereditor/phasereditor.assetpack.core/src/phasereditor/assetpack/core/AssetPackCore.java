@@ -773,7 +773,7 @@ public class AssetPackCore {
 		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, msg, null));
 	}
 
-	public static boolean equalsAssetKeys(IAssetKey a, IAssetKey b) {
+	public static boolean equals(IAssetKey a, IAssetKey b) {
 		String k1 = uniqueKey(a);
 		String k2 = uniqueKey(b);
 

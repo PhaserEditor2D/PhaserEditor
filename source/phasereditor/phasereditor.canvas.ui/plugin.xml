@@ -2071,6 +2071,19 @@
             </with>
          </enablement>
       </renameParticipant>
+      <renameParticipant
+            class="phasereditor.canvas.ui.refactoring.AssetSectionRenameInCanvasParticipant"
+            id="phasereditor.canvas.ui.renameAssetSectionInCanvas"
+            name="Rename Asset Section In Canvas File">
+         <enablement>
+            <with
+                  variable="element">
+               <instanceof
+                     value="phasereditor.assetpack.core.AssetSectionModel">
+               </instanceof>
+            </with>
+         </enablement>
+      </renameParticipant>
    </extension>
    <extension
          point="org.eclipse.ltk.ui.refactoring.statusContextViewers">

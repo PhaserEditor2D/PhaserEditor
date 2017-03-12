@@ -23,11 +23,10 @@ package phasereditor.assetpack.ui.refactorings;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ltk.core.refactoring.Change;
+import org.eclipse.swt.widgets.Display;
 
-import phasereditor.assetpack.core.AssetModel;
-import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.ui.editors.AssetPackEditor;
 
@@ -35,34 +34,36 @@ import phasereditor.assetpack.ui.editors.AssetPackEditor;
  * @author arian
  *
  */
-public class AssetRenameProcessor extends BaseAssetRenameProcessor {
+public class RenameAssetSectionInEditorChange extends BaseRenameAssetInEditorChange {
 
-	private AssetModel _asset;
+	private AssetSectionModel _section;
 
-	public AssetRenameProcessor(AssetModel asset, AssetPackEditor editor) {
-		super(asset, asset.getKey(), editor);
-		_asset = asset;
+	public RenameAssetSectionInEditorChange(AssetSectionModel section, String initialName, String newName,
+			AssetPackEditor editor) {
+		super(section, initialName, newName, editor);
+		_section = section;
 	}
 
 	@Override
-	public String getProcessorName() {
-		return "Delete Asset Processor";
+	public String getName() {
+		return "Rename asset section '" + _initialName + "'.";
 	}
 
 	@Override
-	public boolean isApplicable() throws CoreException {
-		return true;
+	public Change perform(IProgressMonitor pm) throws CoreException {
+		Display.getDefault().syncExec(() -> {
+
+			AssetSectionModel section = _editor.getModel().findSection(_initialName);
+			if (section != null) {
+				section.setKey(_newName, true);
+				TreeViewer viewer = _editor.getViewer();
+				viewer.refresh();
+				_editor.updateAssetEditor();
+			}
+
+		});
+		return new RenameAssetSectionInEditorChange(_section, _newName, _initialName, _editor);
+
 	}
 
-	@Override
-	public Change createChange(IProgressMonitor pm) throws CoreException, OperationCanceledException {
-		if (isInDirtyEditor()) {
-			return new RenameAssetInEditorChange(_asset, _initialName, _newName, _editor);
-		}
-
-		AssetSectionModel section = _asset.getSection();
-		AssetPackModel pack = _asset.getPack();
-
-		return new RenameAssetInFileChange(pack.getFile(), section.getKey(), _initialName, _newName);
-	}
 }

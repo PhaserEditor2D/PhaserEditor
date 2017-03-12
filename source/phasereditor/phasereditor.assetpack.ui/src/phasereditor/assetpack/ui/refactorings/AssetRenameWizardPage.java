@@ -39,9 +39,9 @@ import org.eclipse.swt.widgets.Text;
 public class AssetRenameWizardPage extends UserInputWizardPage {
 
 	private Text fNameField;
-	private AssetRenameProcessor fRefactoringProcessor;
+	private BaseAssetRenameProcessor fRefactoringProcessor;
 
-	public AssetRenameWizardPage(AssetRenameProcessor processor) {
+	public AssetRenameWizardPage(BaseAssetRenameProcessor processor) {
 		super("Rename Asset");
 		setTitle("Remove Asset");
 		fRefactoringProcessor = processor;

@@ -25,44 +25,51 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.ltk.core.refactoring.Change;
+import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 
-import phasereditor.assetpack.core.AssetModel;
-import phasereditor.assetpack.core.AssetPackModel;
-import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.ui.editors.AssetPackEditor;
 
 /**
  * @author arian
  *
  */
-public class AssetRenameProcessor extends BaseAssetRenameProcessor {
+public abstract class BaseRenameAssetInEditorChange extends Change {
 
-	private AssetModel _asset;
+	protected final String _initialName;
+	protected final String _newName;
+	protected final Object _element;
+	protected final AssetPackEditor _editor;
 
-	public AssetRenameProcessor(AssetModel asset, AssetPackEditor editor) {
-		super(asset, asset.getKey(), editor);
-		_asset = asset;
+	public BaseRenameAssetInEditorChange(Object element, String initialName, String newName, AssetPackEditor editor) {
+		_element = element;
+		_newName = newName;
+		_editor = editor;
+		_initialName = initialName;
 	}
 
 	@Override
-	public String getProcessorName() {
-		return "Delete Asset Processor";
+	public void initializeValidationData(IProgressMonitor pm) {
+		// nothing
 	}
 
 	@Override
-	public boolean isApplicable() throws CoreException {
-		return true;
-	}
-
-	@Override
-	public Change createChange(IProgressMonitor pm) throws CoreException, OperationCanceledException {
-		if (isInDirtyEditor()) {
-			return new RenameAssetInEditorChange(_asset, _initialName, _newName, _editor);
+	public RefactoringStatus isValid(IProgressMonitor pm) throws CoreException, OperationCanceledException {
+		RefactoringStatus status = new RefactoringStatus();
+		if (_editor != null) {
+			
+			boolean visible = _editor.getEditorSite().getWorkbenchWindow().getActivePage().isPartVisible(_editor);
+			
+			if (!visible) {
+				status.addFatalError("The editor is not open.");
+			}
 		}
 
-		AssetSectionModel section = _asset.getSection();
-		AssetPackModel pack = _asset.getPack();
-
-		return new RenameAssetInFileChange(pack.getFile(), section.getKey(), _initialName, _newName);
+		return status;
 	}
+
+	@Override
+	public Object getModifiedElement() {
+		return _element;
+	}
+
 }

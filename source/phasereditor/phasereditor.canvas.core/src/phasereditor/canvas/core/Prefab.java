@@ -51,6 +51,7 @@ public class Prefab extends CanvasFile{
 	 * 
 	 * @return
 	 */
+	@Override
 	public JSONObject newInstance() {
 		return newInstance(null);
 	}

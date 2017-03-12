@@ -29,7 +29,7 @@ import org.eclipse.ltk.core.refactoring.participants.RenameRefactoring;
  */
 public class AssetRenameRefactoring extends RenameRefactoring {
 
-	public AssetRenameRefactoring(AssetRenameProcessor processor) {
+	public AssetRenameRefactoring(BaseAssetRenameProcessor processor) {
 		super(processor);
 	}
 

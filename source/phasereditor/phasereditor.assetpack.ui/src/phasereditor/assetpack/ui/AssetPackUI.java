@@ -100,6 +100,8 @@ import phasereditor.assetpack.ui.refactorings.AssetDeleteWizard;
 import phasereditor.assetpack.ui.refactorings.AssetRenameProcessor;
 import phasereditor.assetpack.ui.refactorings.AssetRenameRefactoring;
 import phasereditor.assetpack.ui.refactorings.AssetRenameWizard;
+import phasereditor.assetpack.ui.refactorings.AssetSectionRenameProcessor;
+import phasereditor.assetpack.ui.refactorings.BaseAssetRenameProcessor;
 import phasereditor.assetpack.ui.widgets.AudioResourceDialog;
 import phasereditor.assetpack.ui.widgets.ImageResourceDialog;
 import phasereditor.assetpack.ui.widgets.VideoResourceDialog;
@@ -117,8 +119,14 @@ public class AssetPackUI {
 
 		AssetPackEditor editor = activePart instanceof AssetPackEditor ? (AssetPackEditor) activePart : null;
 
-		AssetRenameWizard wizard = new AssetRenameWizard(
-				new AssetRenameRefactoring(new AssetRenameProcessor(element, editor)));
+		BaseAssetRenameProcessor processor;
+		if (element instanceof AssetModel) {
+			processor = new AssetRenameProcessor((AssetModel) element, editor);
+		} else {
+			processor = new AssetSectionRenameProcessor((AssetSectionModel) element, editor);
+		}
+
+		AssetRenameWizard wizard = new AssetRenameWizard(new AssetRenameRefactoring(processor));
 
 		RefactoringWizardOpenOperation op = new RefactoringWizardOpenOperation(wizard);
 		try {
@@ -128,7 +136,7 @@ public class AssetPackUI {
 		}
 
 	}
-	
+
 	public static void launchDeleteWizard(Object[] selection) {
 
 		IWorkbenchPart activePart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()

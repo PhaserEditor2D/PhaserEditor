@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import org.eclipse.core.resources.IFile;
@@ -270,11 +271,8 @@ public class CanvasCore {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static List<IAssetReference> findAssetKeyReferenceInModelContent(IAssetKey assetKey, WorldModel world) {
-		IAssetKey assetKey2 = assetKey instanceof ImageAssetModel.Frame ? assetKey.getAsset() : assetKey;
-
-		List<IAssetReference> list = new ArrayList<>();
-
+	public static void forEachAssetKeyInModelContent(WorldModel world,
+			BiConsumer<IAssetKey, AssetSpriteModel<IAssetKey>> visitor) {
 		world.getWorld().walk_skipGroupIfFalse(model -> {
 
 			if (model instanceof AssetSpriteModel) {
@@ -291,9 +289,7 @@ public class CanvasCore {
 					key = key.getAsset();
 				}
 
-				if (key.getSharedVersion().equals(assetKey2.getSharedVersion())) {
-					list.add(new AssetInCanvasReference(spriteModel, key));
-				}
+				visitor.accept(key, spriteModel);
 			} else if (model instanceof GroupModel) {
 
 				// just avoid to loop into group prefabs
@@ -303,6 +299,18 @@ public class CanvasCore {
 
 			}
 			return true;
+		});
+	}
+
+	public static List<IAssetReference> findAssetKeyReferenceInModelContent(IAssetKey assetKey, WorldModel world) {
+		IAssetKey assetKey2 = assetKey instanceof ImageAssetModel.Frame ? assetKey.getAsset() : assetKey;
+
+		List<IAssetReference> list = new ArrayList<>();
+
+		forEachAssetKeyInModelContent(world, (key, spriteModel) -> {
+			if (AssetPackCore.equals(key, assetKey2)) {
+				list.add(new AssetInCanvasReference(spriteModel, key));
+			}
 		});
 
 		return list;
@@ -334,7 +342,7 @@ public class CanvasCore {
 
 				AssetSpriteModel spriteModel = (AssetSpriteModel) model;
 				AssetModel spriteAsset = spriteModel.getAssetKey().getAsset();
-				if (AssetPackCore.equalsAssetKeys(spriteAsset, asset)) {
+				if (AssetPackCore.equals(spriteAsset, asset)) {
 					list.add(new AssetInCanvasReference(spriteModel, spriteAsset));
 				}
 			} else if (model instanceof GroupModel) {

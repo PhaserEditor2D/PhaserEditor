@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
+import java.io.InputStream;
+
 import org.eclipse.core.resources.IFile;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -93,8 +95,16 @@ public class CanvasFile {
 
 	public CanvasModel newModel() throws Exception {
 		CanvasModel model = new CanvasModel(_file);
-		model.read(new JSONObject(new JSONTokener(_file.getContents())));
-		return model;
+		try (InputStream contents = _file.getContents()) {
+			model.read(newInstance());
+			return model;
+		}
+	}
+
+	public JSONObject newInstance() throws Exception {
+		try (InputStream contents = _file.getContents()) {
+			return new JSONObject(new JSONTokener(contents));
+		}
 	}
 
 }
