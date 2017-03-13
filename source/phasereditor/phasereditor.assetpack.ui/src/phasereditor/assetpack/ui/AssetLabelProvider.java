@@ -113,6 +113,10 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 	public static Image getKeyImage() {
 		return EditorSharedImages.getImage(IMG_ASSET_KEY);
 	}
+	
+	public static Image getGroupImage() {
+		return EditorSharedImages.getImage(IMG_ASSET_GROUP);
+	}
 
 	@Override
 	public Image getImage(Object element) {
@@ -237,7 +241,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 		}
 
 		if (element instanceof AssetGroupModel) {
-			return EditorSharedImages.getImage(IMG_ASSET_FOLDER);
+			return getGroupImage();
 		}
 
 		if (element instanceof AssetModel) {

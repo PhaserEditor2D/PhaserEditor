@@ -37,6 +37,7 @@ public interface IEditorSharedImages {
 	String IMG_ASSET_KEY = "icons/brick.png";
 	String IMG_ASSET_ELEM_KEY = IMG_GENERIC_ELEMENT;
 	String IMG_ASSET_IMG_KEY = "icons/img_key.png";
+	String IMG_ASSET_GROUP = "icons/bullet_blue.png";
 	String IMG_LINK = "icons/link.png";
 	String IMG_METHPUB_OBJ = "icons/methpub_obj.png";
 	String IMG_PACKAGE_ADD = "icons/package_add.png";
