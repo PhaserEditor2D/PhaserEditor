@@ -113,11 +113,10 @@ public class PGrid extends Composite {
 		afterCreateWidgets();
 
 	}
-	
-	public void setOnChanged(Runnable onChanged){
+
+	public void setOnChanged(Runnable onChanged) {
 		_editSupport.setOnChanged(onChanged);
 	}
-			
 
 	private PatternFilter createPatternFilter() {
 		PatternFilter filter = new PatternFilter() {
@@ -244,36 +243,39 @@ public class PGrid extends Composite {
 			Object[] selected = ((IStructuredSelection) _treeViewer.getSelection()).toArray();
 
 			_treeViewer.getTree().setRedraw(false);
-			_treeViewer.setInput(model);
+			try {
+				_treeViewer.setInput(model);
 
-			List<Object> toexpand = new ArrayList<>();
-			List<Object> toselect = new ArrayList<>();
-			for (PGridSection section : model.getSections()) {
+				List<Object> toexpand = new ArrayList<>();
+				List<Object> toselect = new ArrayList<>();
+				for (PGridSection section : model.getSections()) {
 
-				for (Object obj : expanded) {
-					if (obj instanceof PGridSection) {
-						if (((PGridSection) obj).getName().equals(section.getName())) {
-							toexpand.add(section);
+					for (Object obj : expanded) {
+						if (obj instanceof PGridSection) {
+							if (((PGridSection) obj).getName().equals(section.getName())) {
+								toexpand.add(section);
+							}
 						}
 					}
-				}
 
-				for (PGridProperty<?> prop : section) {
-					for (Object sel : selected) {
-						if (sel instanceof PGridProperty) {
-							String name = ((PGridProperty<?>) sel).getName();
-							if (name.equals(prop.getName())) {
-								toselect.add(prop);
+					for (PGridProperty<?> prop : section) {
+						for (Object sel : selected) {
+							if (sel instanceof PGridProperty) {
+								String name = ((PGridProperty<?>) sel).getName();
+								if (name.equals(prop.getName())) {
+									toselect.add(prop);
+								}
 							}
 						}
 					}
 				}
-			}
 
-			_treeViewer.setExpandedElements(toexpand.toArray());
-			_treeViewer.setSelection(new StructuredSelection(toselect.toArray()));
-			_tree.showSelection();
-			_treeViewer.getTree().setRedraw(true);
+				_treeViewer.setExpandedElements(toexpand.toArray());
+				_treeViewer.setSelection(new StructuredSelection(toselect.toArray()));
+				_tree.showSelection();
+			} finally {
+				_treeViewer.getTree().setRedraw(true);
+			}
 		}
 
 		// expand it first time

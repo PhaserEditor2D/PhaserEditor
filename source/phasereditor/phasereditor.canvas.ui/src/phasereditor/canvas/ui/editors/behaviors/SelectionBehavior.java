@@ -311,9 +311,12 @@ public class SelectionBehavior implements ISelectionProvider {
 	public void setSelection(ISelection selection) {
 		TreeViewer outline = _canvas.getOutline();
 		_canvas.getPGrid().getViewer().getTree().setRedraw(false);
-		outline.setSelection(selection, true);
-		setSelection_private(selection);
-		_canvas.getPGrid().getViewer().getTree().setRedraw(true);
+		try {
+			outline.setSelection(selection, true);
+			setSelection_private(selection);
+		} finally {
+			_canvas.getPGrid().getViewer().getTree().setRedraw(true);
+		}
 	}
 
 	public void setSelectionAndRevealInScene(IObjectNode elem) {

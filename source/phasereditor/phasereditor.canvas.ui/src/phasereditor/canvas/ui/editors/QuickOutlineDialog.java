@@ -182,9 +182,12 @@ public class QuickOutlineDialog extends PopupDialog {
 	private void textChanged() {
 		_patternFilter.setPattern(_filterText.getText());
 		_viewer.getControl().setRedraw(false);
-		_viewer.refresh(true);
-		_viewer.expandAll();
-		_viewer.getControl().setRedraw(true);
+		try {
+			_viewer.refresh(true);
+			_viewer.expandAll();
+		} finally {
+			_viewer.getControl().setRedraw(true);
+		}
 	}
 
 	public void setCanvas(ObjectCanvas canvas) {

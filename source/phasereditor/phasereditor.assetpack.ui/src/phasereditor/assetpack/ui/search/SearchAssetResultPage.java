@@ -347,15 +347,16 @@ public class SearchAssetResultPage extends Page implements ISearchResultPage, IS
 			IAssetReference ref = refs.getFirstReference();
 
 			_viewer.getControl().setRedraw(false);
+			try {
+				_viewer.setInput(refs);
 
-			_viewer.setInput(refs);
-
-			if (ref != null) {
-				_viewer.expandToLevel(ref.getFile(), 1);
-				_viewer.setSelection(new StructuredSelection(ref), true);
+				if (ref != null) {
+					_viewer.expandToLevel(ref.getFile(), 1);
+					_viewer.setSelection(new StructuredSelection(ref), true);
+				}
+			} finally {
+				_viewer.getControl().setRedraw(true);
 			}
-
-			_viewer.getControl().setRedraw(true);
 
 			_searchView.updateLabel();
 		});

@@ -91,9 +91,10 @@ public class CompositeOperation extends AbstractOperation {
 		CanvasEditor editor = info.getAdapter(CanvasEditor.class);
 		Tree outlineTree = editor.getOutline().getTree();
 		Tree gridTree = editor.getPropertyGrid().getViewer().getTree();
+		
 		outlineTree.setRedraw(false);
 		gridTree.setRedraw(false);
-
+		
 		try {
 			if (isLongOperation()) {
 				try {

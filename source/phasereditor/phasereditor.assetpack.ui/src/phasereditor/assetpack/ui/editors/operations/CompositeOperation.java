@@ -64,13 +64,15 @@ public class CompositeOperation extends AssetPackOperation {
 		TreeViewer viewer = editor.getViewer();
 		Tree tree = viewer.getTree();
 		tree.setRedraw(false);
+		try {
+			for (AssetPackOperation op : _operations) {
+				op.execute(monitor, info);
+			}
 
-		for (AssetPackOperation op : _operations) {
-			op.execute(monitor, info);
+			viewer.refresh();
+		} finally {
+			tree.setRedraw(true);
 		}
-
-		viewer.refresh();
-		tree.setRedraw(true);
 
 		editor.getModel().setDirty(true);
 
@@ -83,14 +85,17 @@ public class CompositeOperation extends AssetPackOperation {
 		AssetPackEditor editor = getEditor(info);
 		TreeViewer viewer = editor.getViewer();
 		Tree tree = viewer.getTree();
-		tree.setRedraw(false);
+		try {
+			tree.setRedraw(false);
 
-		for (AssetPackOperation op : _operations) {
-			op.redo(monitor, info);
+			for (AssetPackOperation op : _operations) {
+				op.redo(monitor, info);
+			}
+
+			viewer.refresh();
+		} finally {
+			tree.setRedraw(true);
 		}
-
-		viewer.refresh();
-		tree.setRedraw(true);
 
 		editor.getModel().setDirty(true);
 
@@ -103,14 +108,16 @@ public class CompositeOperation extends AssetPackOperation {
 		TreeViewer viewer = editor.getViewer();
 		Tree tree = viewer.getTree();
 		tree.setRedraw(false);
+		try {
+			for (int i = _operations.size() - 1; i >= 0; i--) {
+				AssetPackOperation op = _operations.get(i);
+				op.undo(monitor, info);
+			}
 
-		for (int i = _operations.size() - 1; i >= 0; i--) {
-			AssetPackOperation op = _operations.get(i);
-			op.undo(monitor, info);
+			viewer.refresh();
+		} finally {
+			tree.setRedraw(true);
 		}
-
-		viewer.refresh();
-		tree.setRedraw(true);
 
 		editor.getModel().setDirty(true);
 
