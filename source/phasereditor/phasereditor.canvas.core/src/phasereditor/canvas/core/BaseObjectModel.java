@@ -160,7 +160,7 @@ public abstract class BaseObjectModel {
 	}
 
 	public IAssetKey findAsset(JSONObject jsonModel) {
-		
+
 		if (jsonModel.has("asset")) {
 			// read the compact mode
 			String id = jsonModel.getString("asset");
@@ -171,7 +171,8 @@ public abstract class BaseObjectModel {
 		// read in the expanded mode
 
 		JSONObject assetRef = jsonModel.getJSONObject("asset-ref");
-		//IAssetKey key = (IAssetKey) AssetPackCore.findAssetElement(getWorld().getProject(), assetRef);
+		// IAssetKey key = (IAssetKey)
+		// AssetPackCore.findAssetElement(getWorld().getProject(), assetRef);
 		IAssetKey key = (IAssetKey) getWorld().findAssetElement(assetRef);
 		return key;
 	}
@@ -468,15 +469,15 @@ public abstract class BaseObjectModel {
 		jsonInfo.put("editorPublic", _editorPublic, DEF_EDITOR_PUBLIC);
 		jsonInfo.put("editorShow", _editorShow, true);
 
-		{
+		boolean prefabInstance = isPrefabInstance();
+
+		if (prefabInstance) {
 			JSONArray array = new JSONArray();
 			for (String tag : _prefabOverride) {
 				array.put(tag);
 			}
 			jsonInfo.put("prefabOverride", array);
 		}
-
-		boolean prefabInstance = isPrefabInstance();
 
 		jsonInfo.put("name", _name, DEF_NAME);
 

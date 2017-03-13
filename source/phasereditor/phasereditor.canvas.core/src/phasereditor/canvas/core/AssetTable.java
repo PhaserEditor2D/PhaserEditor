@@ -63,10 +63,10 @@ public class AssetTable {
 	}
 
 	public String postAsset(IAssetKey key) {
-		String key1 = AssetPackCore.getAssetStringReference(key);
+		String key1 = AssetPackCore.uniqueKey(key);
 		
 		for (Entry entry : _entries) {
-			String key2 = AssetPackCore.getAssetStringReference(entry.asset);
+			String key2 = AssetPackCore.uniqueKey(entry.asset);
 
 			if (key1.equals(key2)) {
 				return entry.id;
