@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.refactorings;
 
+import org.eclipse.ltk.core.refactoring.participants.RenameRefactoring;
 import org.eclipse.ltk.ui.refactoring.RefactoringWizard;
 
 /**
@@ -29,7 +30,7 @@ import org.eclipse.ltk.ui.refactoring.RefactoringWizard;
  */
 public class AssetRenameWizard extends RefactoringWizard {
 
-	public AssetRenameWizard(AssetRenameRefactoring refactoring) {
+	public AssetRenameWizard(RenameRefactoring refactoring) {
 		super(refactoring, DIALOG_BASED_USER_INTERFACE);
 		setDefaultPageTitle("Remove Asset");
 	}

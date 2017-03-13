@@ -224,6 +224,21 @@
             </with>
          </enabledWhen>
       </handler>
+      <handler
+            class="phasereditor.assetpack.ui.handlers.MoveAssetHandler"
+            commandId="org.eclipse.ui.edit.move">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <instanceof
+                        value="phasereditor.assetpack.core.AssetModel">
+                  </instanceof>
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">

@@ -21,16 +21,62 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.refactorings;
 
-import org.eclipse.ltk.core.refactoring.participants.RenameRefactoring;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.core.resources.IFile;
+
+import phasereditor.assetpack.core.AssetModel;
 
 /**
  * @author arian
  *
  */
-public class AssetRenameRefactoring extends RenameRefactoring {
+public class AssetMoveList {
+	private List<String[]> _assets;
+	private IFile _packFile;
 
-	public AssetRenameRefactoring(BaseAssetRenameProcessor processor) {
-		super(processor);
+	private AssetMoveList() {
 	}
 
+	public AssetMoveList(AssetModel[] assets, String dstSection) {
+		_packFile = assets[0].getPack().getFile();
+		_assets = new ArrayList<>();
+
+		for (AssetModel asset : assets) {
+			_assets.add(new String[] { asset.getKey(), asset.getSection().getKey(), dstSection });
+		}
+	}
+
+	public AssetMoveList reverse() {
+		AssetMoveList list = new AssetMoveList();
+		list._assets = new ArrayList<>();
+		list._packFile = _packFile;
+
+		for (String[] tuple : _assets) {
+			list._assets.add(new String[] { tuple[0], tuple[2], tuple[1] });
+		}
+
+		return list;
+	}
+
+	public int size() {
+		return _assets.size();
+	}
+
+	public String getAssetName(int i) {
+		return _assets.get(i)[0];
+	}
+
+	public String getInitialSectionName(int i) {
+		return _assets.get(i)[1];
+	}
+
+	public String getDestinySectionName(int i) {
+		return _assets.get(i)[2];
+	}
+
+	public IFile getPackFile() {
+		return _packFile;
+	}
 }

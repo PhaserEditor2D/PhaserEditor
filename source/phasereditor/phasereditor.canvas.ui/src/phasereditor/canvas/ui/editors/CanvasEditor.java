@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
+import static java.lang.System.currentTimeMillis;
+import static java.lang.System.out;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.beans.PropertyChangeEvent;
@@ -437,7 +439,9 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 				String elemId = elem.getAttribute("id");
 				if (elemId.equals(editorId)) {
 					try {
+						long t = currentTimeMillis();
 						_sourceEditor = (AbstractTextEditor) elem.createExecutableExtension("class");
+						out.println("Create source editor delay: " + (currentTimeMillis() - t) + "ms");
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

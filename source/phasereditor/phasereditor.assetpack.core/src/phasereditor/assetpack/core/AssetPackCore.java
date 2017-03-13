@@ -779,6 +779,13 @@ public class AssetPackCore {
 
 		return k1.equals(k2);
 	}
+	
+	public static boolean equals(AssetSectionModel a, AssetSectionModel b) {
+		String k1 = uniqueKey(a);
+		String k2 = uniqueKey(b);
+
+		return k1.equals(k2);
+	}
 
 	public static String uniqueKey(IAssetKey assetKey) {
 		if (assetKey == null) {
@@ -787,8 +794,15 @@ public class AssetPackCore {
 
 		AssetModel asset = assetKey.getAsset();
 
-		return assetKey.getKey() + "$" + asset.getKey() + "$" + asset.getSection().getKey() + "$"
-				+ asset.getPack().getFile().getFullPath().toPortableString();
+		return assetKey.getKey() + "$" + asset.getKey() + "$" + uniqueKey(asset.getSection());
+	}
+
+	public static String uniqueKey(AssetSectionModel section) {
+		if (section == null) {
+			return UUID.randomUUID().toString();
+		}
+
+		return section.getKey() + "$" + section.getPack().getFile().getFullPath().toPortableString();
 	}
 
 	public static BiFunction<IProject, JSONObject, Object> createCustomFindAssetFunction(final AssetPackModel pack) {
@@ -797,11 +811,11 @@ public class AssetPackCore {
 			@Override
 			public Object apply(IProject project, JSONObject assetRef) {
 				Object elem = pack.getElementFromJSONReference(assetRef);
-				
+
 				if (elem != null) {
 					return elem;
 				}
-				
+
 				return findAssetElement(project, assetRef);
 			}
 		};

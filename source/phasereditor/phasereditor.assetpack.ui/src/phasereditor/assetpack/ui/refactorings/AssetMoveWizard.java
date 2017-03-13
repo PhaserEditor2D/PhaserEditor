@@ -21,16 +21,25 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.refactorings;
 
-import org.eclipse.ltk.core.refactoring.participants.DeleteRefactoring;
+import org.eclipse.ltk.core.refactoring.participants.MoveRefactoring;
+import org.eclipse.ltk.ui.refactoring.RefactoringWizard;
 
 /**
  * @author arian
  *
  */
-public class AssetDeleteRefactoring extends DeleteRefactoring {
+public class AssetMoveWizard extends RefactoringWizard{
 
-	public AssetDeleteRefactoring(AssetDeleteProcessor processor) {
-		super(processor);
+
+	public AssetMoveWizard(MoveRefactoring refactoring) {
+		super(refactoring, DIALOG_BASED_USER_INTERFACE);
+		setDefaultPageTitle("Move Asset");
+	}
+
+	@Override
+	protected void addUserInputPages() {
+		AssetMoveProcessor processor = getRefactoring().getAdapter(AssetMoveProcessor.class);
+		addPage(new AssetMoveWizardPage(processor));
 	}
 
 }

@@ -23,6 +23,7 @@ package phasereditor.assetpack.ui.refactorings;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.LayoutConstants;
+import org.eclipse.ltk.core.refactoring.participants.DeleteRefactoring;
 import org.eclipse.ltk.ui.refactoring.UserInputWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -51,7 +52,7 @@ public class AssetDeleteWizardPage extends UserInputWizardPage {
 
 		sb.append("Are you sure do you want to delete ");
 
-		Object[] assets = ((AssetDeleteRefactoring) getRefactoring()).getProcessor().getElements();
+		Object[] assets = ((DeleteRefactoring) getRefactoring()).getProcessor().getElements();
 
 		if (assets.length == 1) {
 			AssetModel asset = (AssetModel) assets[0];

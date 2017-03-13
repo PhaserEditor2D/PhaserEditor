@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui;
 
+import static java.lang.System.arraycopy;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -35,10 +37,14 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IFontProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.Window;
+import org.eclipse.ltk.core.refactoring.participants.DeleteRefactoring;
+import org.eclipse.ltk.core.refactoring.participants.MoveRefactoring;
+import org.eclipse.ltk.core.refactoring.participants.RenameRefactoring;
 import org.eclipse.ltk.ui.refactoring.RefactoringWizardOpenOperation;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
@@ -95,10 +101,10 @@ import phasereditor.assetpack.ui.preview.TilemapTilesetInformationControl;
 import phasereditor.assetpack.ui.preview.VideoAssetInformationControl;
 import phasereditor.assetpack.ui.preview.VideoFileInformationControl;
 import phasereditor.assetpack.ui.refactorings.AssetDeleteProcessor;
-import phasereditor.assetpack.ui.refactorings.AssetDeleteRefactoring;
 import phasereditor.assetpack.ui.refactorings.AssetDeleteWizard;
+import phasereditor.assetpack.ui.refactorings.AssetMoveProcessor;
+import phasereditor.assetpack.ui.refactorings.AssetMoveWizard;
 import phasereditor.assetpack.ui.refactorings.AssetRenameProcessor;
-import phasereditor.assetpack.ui.refactorings.AssetRenameRefactoring;
 import phasereditor.assetpack.ui.refactorings.AssetRenameWizard;
 import phasereditor.assetpack.ui.refactorings.AssetSectionRenameProcessor;
 import phasereditor.assetpack.ui.refactorings.BaseAssetRenameProcessor;
@@ -113,6 +119,29 @@ public class AssetPackUI {
 	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
 	private static List<ICustomInformationControlCreator> _informationControlCreators;
 
+	public static void launchMoveWizard(IStructuredSelection selection) {
+		Object[] selarray = selection.toArray();
+
+		AssetModel[] assets = new AssetModel[selarray.length];
+
+		arraycopy(selarray, 0, assets, 0, selarray.length);
+
+
+		IWorkbenchPart activePart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+				.getActivePart();
+
+		AssetPackEditor editor = activePart instanceof AssetPackEditor ? (AssetPackEditor) activePart : null;
+
+		AssetMoveWizard wizard = new AssetMoveWizard(new MoveRefactoring(new AssetMoveProcessor(assets, editor)));
+
+		RefactoringWizardOpenOperation op = new RefactoringWizardOpenOperation(wizard);
+		try {
+			op.run(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Delete Asset");
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static void launchRenameWizard(Object element) {
 		IWorkbenchPart activePart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 				.getActivePart();
@@ -126,7 +155,7 @@ public class AssetPackUI {
 			processor = new AssetSectionRenameProcessor((AssetSectionModel) element, editor);
 		}
 
-		AssetRenameWizard wizard = new AssetRenameWizard(new AssetRenameRefactoring(processor));
+		AssetRenameWizard wizard = new AssetRenameWizard(new RenameRefactoring(processor));
 
 		RefactoringWizardOpenOperation op = new RefactoringWizardOpenOperation(wizard);
 		try {
@@ -145,7 +174,7 @@ public class AssetPackUI {
 		AssetPackEditor editor = activePart instanceof AssetPackEditor ? (AssetPackEditor) activePart : null;
 
 		AssetDeleteWizard wizard = new AssetDeleteWizard(
-				new AssetDeleteRefactoring(new AssetDeleteProcessor(selection, editor)));
+				new DeleteRefactoring(new AssetDeleteProcessor(selection, editor)));
 
 		RefactoringWizardOpenOperation op = new RefactoringWizardOpenOperation(wizard);
 		try {
