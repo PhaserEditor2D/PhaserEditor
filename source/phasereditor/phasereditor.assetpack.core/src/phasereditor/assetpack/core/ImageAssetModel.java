@@ -90,7 +90,7 @@ public class ImageAssetModel extends AssetModel {
 
 	public ImageAssetModel(JSONObject definition, AssetSectionModel section) throws JSONException {
 		super(definition, section);
-		_url = definition.getString("url");
+		_url = definition.optString("url");
 		_overwrite = definition.getBoolean("overwrite");
 	}
 
