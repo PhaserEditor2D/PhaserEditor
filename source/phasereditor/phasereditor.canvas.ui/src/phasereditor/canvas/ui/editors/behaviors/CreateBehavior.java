@@ -237,6 +237,15 @@ public class CreateBehavior {
 	}
 
 	public void paste(Object[] data) {
+
+		CanvasType canvasType = _canvas.getEditor().getModel().getType();
+
+		if (canvasType == CanvasType.SPRITE) {
+			MessageDialog.openInformation(_canvas.getShell(), "Paste",
+					"Cannot paste on a Sprite prefab. Only one object is allowed.");
+			return;
+		}
+
 		List<IObjectNode> filtered = new ArrayList<>();
 
 		for (Object elem : data) {
@@ -247,34 +256,44 @@ public class CreateBehavior {
 
 		filtered.sort(IObjectNode.DISPLAY_ORDER_COMPARATOR);
 
-		// we use the table only if the pasting nodes comes from the same
-		// canvas.
-		// boolean saving = filtered.size() > 0 &&
-		// filtered.get(0).getNode().getScene() == _canvas.getScene();
+		GroupControl pasteIntoThis;
 
-		// is better to do not use the table, it was introducing bugs
-		boolean saving = false;
-
-		GroupControl worldControl = _canvas.getWorldNode().getControl();
-		GroupControl pasteIntoThis = worldControl;
+		if (canvasType == CanvasType.GROUP) {
+			pasteIntoThis = (GroupControl) ((IObjectNode) _canvas.getWorldNode().getChildren().get(0)).getControl();
+		} else {
+			pasteIntoThis = _canvas.getWorldNode().getControl();
+		}
 
 		{
 			List<IObjectNode> selnodes = _canvas.getSelectionBehavior().getSelectedNodes();
-			if (selnodes.size() == 1) {
-				IObjectNode node = selnodes.get(0);
 
-				if (node instanceof GroupNode) {
-					boolean ok = true;
-					for (Object obj : filtered) {
-						if (obj == node) {
-							ok = false;
-							break;
-						}
-					}
-					if (ok) {
-						pasteIntoThis = (GroupControl) node.getControl();
-					}
+			IObjectNode node = pasteIntoThis.getIObjectNode();
+			
+			if (selnodes.isEmpty()) {
+				GroupNode group = filtered.get(0).getGroup();
+				if (group != null && group.getControl().getCanvas() == _canvas) {
+					node = group;
 				}
+			} else {
+				node = selnodes.get(0);
+
+				// if not a group then select the parent
+				if (!(node instanceof GroupNode)) {
+					node = node.getGroup();
+				}
+			}
+			
+			boolean ok = true;
+			
+			for (Object obj : filtered) {
+				if (obj == node) {
+					ok = false;
+					break;
+				}
+			}
+			
+			if (ok) {
+				pasteIntoThis = (GroupControl) node.getControl();
 			}
 		}
 
@@ -323,7 +342,7 @@ public class CreateBehavior {
 			selection.add(copy.getId());
 			double x2 = mouse.stepX(x + copy.getX(), false);
 			double y2 = mouse.stepY(y + copy.getY(), false);
-			AddNodeOperation op = new AddNodeOperation(copy.toJSON(saving), i, x2, y2, pasteIntoThis.getId());
+			AddNodeOperation op = new AddNodeOperation(copy.toJSON(false), i, x2, y2, pasteIntoThis.getId());
 			operations.add(op);
 			i++;
 		}
