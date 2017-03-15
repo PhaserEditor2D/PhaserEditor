@@ -23,8 +23,6 @@ package phasereditor.assetpack.ui.editors;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.IOperationHistory;
@@ -42,7 +40,6 @@ import org.eclipse.help.IContextProvider;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -78,7 +75,6 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.dialogs.ListDialog;
 import org.eclipse.ui.ide.IGotoMarker;
 import org.eclipse.ui.ide.undo.WorkspaceUndoUtil;
 import org.eclipse.ui.operations.RedoActionHandler;
@@ -526,46 +522,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	}
 
 	protected void moveAssetElement() {
-		ListDialog dlg = new ListDialog(getSite().getShell());
-		dlg.setContentProvider(new ArrayContentProvider());
-		dlg.setLabelProvider(AssetLabelProvider.GLOBAL_16);
-		AssetPackModel model = getModel();
-		dlg.setInput(model.getSections());
-		dlg.setTitle("Move Assets");
-		dlg.setMessage("Move the selected assets to other section");
-		dlg.setInitialSelections(new Object[] { model.getSections().get(0) });
-		if (dlg.open() == Window.OK) {
-			Object elemToMove = ((IStructuredSelection) _allAssetsViewer.getSelection()).getFirstElement();
-			AssetSectionModel moveToSection = (AssetSectionModel) dlg.getResult()[0];
-			Object reveal = null;
-			if (elemToMove instanceof AssetGroupModel) {
-				AssetGroupModel groupToMove = (AssetGroupModel) elemToMove;
-				if (moveToSection != groupToMove.getSection()) {
-					List<AssetModel> assetsToMove = new ArrayList<>();
-					for (AssetModel asset : groupToMove.getSection().getAssets()) {
-						if (asset.getGroup() == groupToMove) {
-							assetsToMove.add(asset);
-						}
-					}
-					groupToMove.getSection().removeGroup(groupToMove);
-					for (AssetModel asset : assetsToMove) {
-						moveToSection.addAsset(asset, true);
-					}
-				}
-				reveal = moveToSection.getGroup(groupToMove.getType());
-			} else if (elemToMove instanceof AssetModel) {
-				AssetModel asset = (AssetModel) elemToMove;
-				if (asset.getSection() != moveToSection) {
-					asset.getSection().removeAsset(asset);
-					moveToSection.addAsset(asset, true);
-					reveal = asset;
-				}
-			}
-			if (reveal != null) {
-				refresh();
-				revealElement(reveal);
-			}
-		}
+		AssetPackUI.launchMoveWizard(_allAssetsViewer.getStructuredSelection());
 	}
 
 	void onRemoveAssetPressed() {

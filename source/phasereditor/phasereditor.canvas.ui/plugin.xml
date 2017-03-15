@@ -2042,6 +2042,12 @@
                </instanceof>
             </with></enablement>
       </moveParticipant>
+      <moveParticipant
+            class="phasereditor.canvas.ui.refactoring.AssetMoveInCanvasParticipant"
+            id="phasereditor.canvas.ui.moveAssetParticipant"
+            name="Move Asset In Canvas">
+         <enablement></enablement>
+      </moveParticipant>
    </extension>
    <extension
          point="org.eclipse.ltk.core.refactoring.renameParticipants">

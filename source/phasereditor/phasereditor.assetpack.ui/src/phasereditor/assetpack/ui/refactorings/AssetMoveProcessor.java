@@ -81,7 +81,7 @@ public class AssetMoveProcessor extends MoveProcessor {
 	public Object[] getElements() {
 		return _assets;
 	}
-
+	
 	@Override
 	public RefactoringStatus checkInitialConditions(IProgressMonitor pm)
 			throws CoreException, OperationCanceledException {
@@ -106,12 +106,11 @@ public class AssetMoveProcessor extends MoveProcessor {
 			return new RefactoringParticipant[0];
 		}
 
-		MoveArguments args = new MoveArguments(_dstSection, true);
+		MoveArguments args = new MoveAssetsArguments(_dstSection, isInDirtyEditor());
 
-		for (AssetModel asset : _assets) {
-			result.addAll(Arrays.asList(ParticipantManager.loadMoveParticipants(status, this, asset, args,
-					PhaserProjectNature.NATURE_IDS, sharedParticipants)));
-		}
+		result.addAll(Arrays.asList(
+				ParticipantManager.loadMoveParticipants(status, this, new AssetMoveList(_assets, _dstSection.getKey()),
+						args, PhaserProjectNature.NATURE_IDS, sharedParticipants)));
 
 		return result.toArray(new RefactoringParticipant[result.size()]);
 
@@ -139,6 +138,12 @@ public class AssetMoveProcessor extends MoveProcessor {
 
 	@Override
 	public Change createChange(IProgressMonitor pm) throws CoreException, OperationCanceledException {
-		return new MoveAssetInFileChange(new AssetMoveList(_assets, _dstSection.getKey()));
+		AssetMoveList movelist = new AssetMoveList(_assets, _dstSection.getKey());
+
+		if (isInDirtyEditor()) {
+			return new MoveAssetInEditorChange(movelist, _editor);
+		}
+
+		return new MoveAssetInFileChange(movelist);
 	}
 }

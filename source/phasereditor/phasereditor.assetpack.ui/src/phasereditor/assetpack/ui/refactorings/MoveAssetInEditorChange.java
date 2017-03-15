@@ -21,34 +21,31 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.refactorings;
 
-import java.util.List;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IEditorPart;
 
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.editors.AssetPackEditor;
-import phasereditor.ui.PhaserEditorUI;
 
 /**
  * @author arian
  *
  */
-public class MoveAssetInFileChange extends Change {
-	private AssetMoveList _list;
+public class MoveAssetInEditorChange extends Change {
 
-	public MoveAssetInFileChange(AssetMoveList list) {
+	private AssetMoveList _list;
+	private AssetPackEditor _editor;
+
+	public MoveAssetInEditorChange(AssetMoveList list, AssetPackEditor editor) {
 		_list = list;
+		_editor = editor;
 	}
 
 	@Override
@@ -69,56 +66,30 @@ public class MoveAssetInFileChange extends Change {
 	@Override
 	public Change perform(IProgressMonitor pm) throws CoreException {
 
-		try {
-			AssetPackModel pack = new AssetPackModel(_list.getPackFile());
+		Display.getDefault().syncExec(() -> {
+
+			AssetPackModel pack = _editor.getModel();
+			AssetModel asset = null;
 
 			for (int i = 0; i < _list.size(); i++) {
-				String sectionName = _list.getInitialSectionName(i);
-				String assetName = _list.getAssetName(i);
-				
-				AssetSectionModel srcSection = pack.findSection(sectionName);
-				AssetModel asset = srcSection.findAsset(assetName);
-				srcSection.removeAsset(asset);
-				
+				AssetSectionModel srcSection = pack.findSection(_list.getInitialSectionName(i));
 				AssetSectionModel dstSection = pack.findSection(_list.getDestinySectionName(i));
+				asset = srcSection.findAsset(_list.getAssetName(i));
+				srcSection.removeAsset(asset, false);
 				dstSection.addAsset(asset, false);
 			}
 
-			pack.save(pm);
-		} catch (Exception e) {
-			throw new CoreException(new Status(IStatus.ERROR, AssetPackUI.PLUGIN_ID, e.getMessage(), e));
-		}
-		
-		Display.getDefault().syncExec(() -> {
-			List<IEditorPart> editors = PhaserEditorUI.findOpenFileEditors(_list.getPackFile());
-			for (IEditorPart editor : editors) {
-				if (editor instanceof AssetPackEditor) {
-					AssetPackEditor packEditor = (AssetPackEditor) editor;
-					moveAsset(packEditor);
-				}
-			}
+			_editor.getViewer().refresh();
+			_editor.updateAssetEditor();
+			_editor.revealElement(asset);
 		});
 
-		return new MoveAssetInFileChange(_list.reverse());
-	}
-	
-	private void moveAsset(AssetPackEditor editor) {
-		AssetPackModel pack = editor.getModel();
-		
-		for(int i = 0; i < _list.size(); i++) {
-			AssetSectionModel srcSection = pack.findSection(_list.getInitialSectionName(i));
-			AssetSectionModel dstSection = pack.findSection(_list.getDestinySectionName(i));
-			AssetModel asset = srcSection.findAsset(_list.getAssetName(i));
-			srcSection.removeAsset(asset, false);
-			dstSection.addAsset(asset, false);
-		}
-		
-		editor.getViewer().refresh();
-		editor.updateAssetEditor();
+		return new MoveAssetInEditorChange(_list.reverse(), _editor);
 	}
 
 	@Override
 	public Object getModifiedElement() {
 		return _list.getPackFile();
 	}
+
 }
