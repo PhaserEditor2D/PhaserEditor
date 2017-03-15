@@ -21,9 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.refactorings;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
@@ -32,7 +29,7 @@ import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.swt.widgets.Display;
 
-import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.ui.editors.AssetPackEditor;
 
@@ -40,20 +37,30 @@ import phasereditor.assetpack.ui.editors.AssetPackEditor;
  * @author arian
  *
  */
-public class DeleteAssetInEditorChange extends Change {
+public class DeleteAssetSectionInEditorChange extends Change {
 
-	private AssetModel _asset;
 	private int _index;
 	private AssetPackEditor _editor;
+	private boolean _delete;
+	private String _sectionName;
 
-	public DeleteAssetInEditorChange(AssetModel asset, AssetPackEditor editor) {
-		_asset = asset;
+	public DeleteAssetSectionInEditorChange(String sectionName, AssetPackEditor editor) {
+		this(sectionName, editor, true, 0);
+	}
+
+	private DeleteAssetSectionInEditorChange(String sectionName, AssetPackEditor editor, boolean delete, int index) {
+		_sectionName = sectionName;
 		_editor = editor;
+		_delete = delete;
+		_index = index;
 	}
 
 	@Override
 	public String getName() {
-		return "Delete asset pack entry '" + _asset.getKey() + "'.";
+		if (_delete) {
+			return "Delete section '" + _sectionName + "'.";
+		}
+		return "Add section '" + _sectionName + "'.";
 	}
 
 	@Override
@@ -65,9 +72,9 @@ public class DeleteAssetInEditorChange extends Change {
 	public RefactoringStatus isValid(IProgressMonitor pm) throws CoreException, OperationCanceledException {
 		RefactoringStatus status = new RefactoringStatus();
 		if (_editor != null) {
-			
+
 			boolean visible = _editor.getEditorSite().getWorkbenchWindow().getActivePage().isPartVisible(_editor);
-			
+
 			if (!visible) {
 				status.addFatalError("The editor is not open.");
 			}
@@ -78,25 +85,28 @@ public class DeleteAssetInEditorChange extends Change {
 
 	@Override
 	public Change perform(IProgressMonitor pm) throws CoreException {
-		AssetSectionModel section = _asset.getPack().findSection(_asset.getSection().getKey());
-		_index = section.getAssets().indexOf(_asset);
+		AssetPackModel pack = _editor.getModel();
 
-		boolean[] reveal = { false };
+		int[] index = { 0 };
 
 		Display.getDefault().syncExec(() -> {
-			List<Object> expanded = Arrays.asList(_editor.getViewer().getExpandedElements());
-			reveal[0] = expanded.contains(_asset.getGroup());
-			section.removeAsset(_asset);
+			if (_delete) {
+				AssetSectionModel section = pack.findSection(_sectionName);
+				index[0] = pack.getSections().indexOf(section);
+				pack.removeSection(section, true);
+			} else {
+				pack.addSection(_index, new AssetSectionModel(_sectionName, pack), true);
+			}
 			_editor.getViewer().refresh();
 			_editor.getViewer().setSelection(StructuredSelection.EMPTY);
 		});
 
-		return new AddAssetInEditorChange(_asset, reveal[0], _index, _editor);
+		return new DeleteAssetSectionInEditorChange(_sectionName, _editor, !_delete, index[0]);
 	}
 
 	@Override
 	public Object getModifiedElement() {
-		return _asset;
+		return _editor;
 	}
 
 }

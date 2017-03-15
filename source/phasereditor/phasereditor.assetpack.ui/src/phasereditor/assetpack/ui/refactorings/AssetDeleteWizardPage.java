@@ -33,7 +33,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.ui.AssetLabelProvider;
 
 /**
  * @author arian
@@ -55,10 +55,9 @@ public class AssetDeleteWizardPage extends UserInputWizardPage {
 		Object[] assets = ((DeleteRefactoring) getRefactoring()).getProcessor().getElements();
 
 		if (assets.length == 1) {
-			AssetModel asset = (AssetModel) assets[0];
-			sb.append("'" + asset.getKey() + "'");
+			sb.append("'" + AssetLabelProvider.GLOBAL_16.getText(assets[0]) + "'");
 		} else {
-			sb.append(assets.length + " elements?");
+			sb.append(assets.length + " elements");
 		}
 
 		sb.append("?");

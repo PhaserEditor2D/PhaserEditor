@@ -29,6 +29,7 @@ import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.swt.widgets.Display;
 
 import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.ui.editors.AssetPackEditor;
 
 /**
@@ -63,9 +64,9 @@ public class AddAssetInEditorChange extends Change {
 	public RefactoringStatus isValid(IProgressMonitor pm) throws CoreException, OperationCanceledException {
 		RefactoringStatus status = new RefactoringStatus();
 		if (_editor != null) {
-			
+
 			boolean visible = _editor.getEditorSite().getWorkbenchWindow().getActivePage().isPartVisible(_editor);
-			
+
 			if (!visible) {
 				status.addFatalError("The editor is not open.");
 			}
@@ -76,14 +77,15 @@ public class AddAssetInEditorChange extends Change {
 
 	@Override
 	public Change perform(IProgressMonitor pm) throws CoreException {
-		_asset.getSection().addAsset(_index, _asset, false);
+		AssetSectionModel section = _asset.getPack().findSection(_asset.getSection().getKey());
+		section.addAsset(_index, _asset, false);
 
-		if (_reveal) {
-			Display.getDefault().syncExec(() -> {
-				_editor.refresh();
+		Display.getDefault().syncExec(() -> {
+			_editor.refresh();
+			if (_reveal) {
 				_editor.revealElement(_asset);
-			});
-		}
+			}
+		});
 
 		return new DeleteAssetInEditorChange(_asset, _editor);
 	}

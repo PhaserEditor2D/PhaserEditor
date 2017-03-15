@@ -21,39 +21,52 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.refactorings;
 
-import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IEditorPart;
 
-import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.ui.editors.AssetPackEditor;
+import phasereditor.ui.PhaserEditorUI;
 
 /**
  * @author arian
  *
  */
-public class DeleteAssetInEditorChange extends Change {
+public class DeleteAssetSectionChange extends Change {
 
-	private AssetModel _asset;
-	private int _index;
-	private AssetPackEditor _editor;
+	private IFile _file;
+	private String _sectionName;
+	private boolean _doDelete;
 
-	public DeleteAssetInEditorChange(AssetModel asset, AssetPackEditor editor) {
-		_asset = asset;
-		_editor = editor;
+	public DeleteAssetSectionChange(IFile file, String sectionName) {
+		this(file, sectionName, true);
+	}
+
+	private DeleteAssetSectionChange(IFile file, String sectionName, boolean delete) {
+		super();
+		_file = file;
+		_sectionName = sectionName;
+		_doDelete = delete;
 	}
 
 	@Override
 	public String getName() {
-		return "Delete asset pack entry '" + _asset.getKey() + "'.";
+		if (_doDelete) {
+			return "Delete section '" + _sectionName + "'.";
+		}
+		return "Add section '" + _sectionName + "'.";
 	}
 
 	@Override
@@ -63,40 +76,59 @@ public class DeleteAssetInEditorChange extends Change {
 
 	@Override
 	public RefactoringStatus isValid(IProgressMonitor pm) throws CoreException, OperationCanceledException {
-		RefactoringStatus status = new RefactoringStatus();
-		if (_editor != null) {
-			
-			boolean visible = _editor.getEditorSite().getWorkbenchWindow().getActivePage().isPartVisible(_editor);
-			
-			if (!visible) {
-				status.addFatalError("The editor is not open.");
-			}
-		}
-
-		return status;
+		return RefactoringStatus.create(Status.OK_STATUS);
 	}
 
 	@Override
 	public Change perform(IProgressMonitor pm) throws CoreException {
-		AssetSectionModel section = _asset.getPack().findSection(_asset.getSection().getKey());
-		_index = section.getAssets().indexOf(_asset);
+		deleteInFile(pm);
 
-		boolean[] reveal = { false };
+		deleteInEditors();
 
-		Display.getDefault().syncExec(() -> {
-			List<Object> expanded = Arrays.asList(_editor.getViewer().getExpandedElements());
-			reveal[0] = expanded.contains(_asset.getGroup());
-			section.removeAsset(_asset);
-			_editor.getViewer().refresh();
-			_editor.getViewer().setSelection(StructuredSelection.EMPTY);
+		return new DeleteAssetSectionChange(_file, _sectionName, !_doDelete);
+	}
+
+	private void deleteInEditors() {
+		Display.getDefault().asyncExec(() -> {
+			List<IEditorPart> editors = PhaserEditorUI.findOpenFileEditors(_file);
+			for (IEditorPart editor : editors) {
+				if (editor instanceof AssetPackEditor) {
+					AssetPackEditor packEditor = (AssetPackEditor) editor;
+					AssetPackModel pack = packEditor.getModel();
+					if (_doDelete) {
+						AssetSectionModel section = pack.findSection(_sectionName);
+						pack.removeSection(section, false);
+					} else {
+						pack.addSection(new AssetSectionModel(_sectionName, pack), false);
+					}
+					TreeViewer viewer = packEditor.getViewer();
+					viewer.refresh();
+					viewer.setSelection(StructuredSelection.EMPTY);
+				}
+			}
 		});
+	}
 
-		return new AddAssetInEditorChange(_asset, reveal[0], _index, _editor);
+	private void deleteInFile(IProgressMonitor pm) {
+		try {
+			AssetPackModel pack = new AssetPackModel(_file);
+
+			if (_doDelete) {
+				AssetSectionModel section = pack.findSection(_sectionName);
+				pack.removeSection(section, false);
+			} else {
+				pack.addSection(new AssetSectionModel(_sectionName, pack), false);
+			}
+
+			pack.save(pm);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
 	public Object getModifiedElement() {
-		return _asset;
+		return _file;
 	}
 
 }

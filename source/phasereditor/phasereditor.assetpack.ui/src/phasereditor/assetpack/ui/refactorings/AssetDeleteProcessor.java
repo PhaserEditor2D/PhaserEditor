@@ -61,17 +61,23 @@ public class AssetDeleteProcessor extends DeleteProcessor {
 
 		_editor = editor;
 
-		List<AssetModel> list = new ArrayList<>();
+		List<Object> list = new ArrayList<>();
 
 		for (Object elem : elements) {
 			if (elem instanceof AssetModel) {
-				list.add((AssetModel) elem);
+				list.add(elem);
 			} else if (elem instanceof AssetPackModel) {
 				list.addAll(((AssetPackModel) elem).getAssets());
 			} else if (elem instanceof AssetSectionModel) {
 				list.addAll(((AssetSectionModel) elem).getAssets());
 			} else if (elem instanceof AssetGroupModel) {
 				list.addAll(((AssetGroupModel) elem).getAssets());
+			}
+		}
+
+		for (Object elem : elements) {
+			if (elem instanceof AssetSectionModel) {
+				list.add(elem);
 			}
 		}
 
@@ -95,12 +101,6 @@ public class AssetDeleteProcessor extends DeleteProcessor {
 
 	@Override
 	public boolean isApplicable() throws CoreException {
-		for (Object elem : _elements) {
-			if (!(elem instanceof AssetModel)) {
-				return false;
-			}
-		}
-
 		return true;
 	}
 
@@ -128,18 +128,19 @@ public class AssetDeleteProcessor extends DeleteProcessor {
 
 		for (Object elem : _elements) {
 
-			Change change2;
-
 			if (_editor == null) {
-				change2 = new DeleteAssetChange((AssetModel) elem);
-				change.add(change2);
+				if (elem instanceof AssetModel) {
+					change.add(new DeleteAssetChange((AssetModel) elem));
+				} else {
+					AssetSectionModel section = (AssetSectionModel) elem;
+					change.add(new DeleteAssetSectionChange(section.getPack().getFile(), section.getKey()));
+				}
 			} else {
-				change2 = new DeleteAssetInEditorChange((AssetModel) elem, _editor);
-				change.add(change2);
-			}
-
-			if (_elements.length == 1) {
-				return change;
+				if (elem instanceof AssetModel) {
+					change.add(new DeleteAssetInEditorChange((AssetModel) elem, _editor));
+				} else {
+					change.add(new DeleteAssetSectionInEditorChange(((AssetSectionModel) elem).getKey(), _editor));
+				}
 			}
 
 		}
@@ -160,8 +161,10 @@ public class AssetDeleteProcessor extends DeleteProcessor {
 		final DeleteArguments deleteArguments = new DeleteArguments();
 
 		for (Object elem : _elements) {
-			result.addAll(Arrays.asList(ParticipantManager.loadDeleteParticipants(status, this, elem, deleteArguments,
-					PhaserProjectNature.NATURE_IDS, sharedParticipants)));
+			if (elem instanceof AssetModel) {
+				result.addAll(Arrays.asList(ParticipantManager.loadDeleteParticipants(status, this, elem,
+						deleteArguments, PhaserProjectNature.NATURE_IDS, sharedParticipants)));
+			}
 		}
 
 		return result.toArray(new RefactoringParticipant[result.size()]);
