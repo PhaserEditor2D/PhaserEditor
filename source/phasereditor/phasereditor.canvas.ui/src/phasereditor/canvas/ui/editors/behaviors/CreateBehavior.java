@@ -129,6 +129,17 @@ public class CreateBehavior {
 		} else {
 			parentNode = _canvas.getWorldNode();
 		}
+		
+		List<IObjectNode> selnodes = _canvas.getSelectionBehavior().getSelectedNodes();
+		
+		if (!selnodes.isEmpty()) {
+			IObjectNode node = selnodes.get(0);
+			if (node instanceof GroupNode) {
+				parentNode = (GroupNode) node;
+			} else {
+				parentNode = node.getGroup();
+			}
+		}
 
 		for (Object elem : elems) {
 			BaseObjectControl<?> control = null;
