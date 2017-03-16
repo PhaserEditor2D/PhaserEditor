@@ -271,6 +271,11 @@
                   commandId="phasereditor.canvas.ui.createPrefabWithSelection"
                   style="push">
             </command>
+            <command
+                  commandId="phasereditor.canvas.ui.addprefab"
+                  label="Add..."
+                  style="push">
+            </command>
          </menu>
          <menu
                label="Group">
@@ -847,6 +852,12 @@
                name="Sprite Type"
                optional="false">
          </commandParameter>
+      </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            defaultHandler="phasereditor.canvas.ui.handlers.AddPrefabHandler"
+            id="phasereditor.canvas.ui.addprefab"
+            name="Add Prefab">
       </command>
       
    </extension>

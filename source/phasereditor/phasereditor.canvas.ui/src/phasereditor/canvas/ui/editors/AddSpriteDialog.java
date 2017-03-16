@@ -43,6 +43,8 @@ import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.PatternFilter2;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IBaseLabelProvider;
+import org.eclipse.jface.viewers.IContentProvider;
 
 /**
  * @author arian
@@ -54,14 +56,18 @@ public class AddSpriteDialog extends Dialog implements IEditorSharedImages {
 	private FilteredTree _filteredTree;
 	private TreeViewer _viewer;
 	private Object _selected;
+	private IBaseLabelProvider _labelProvider = new FlatAssetLabelProvider(AssetLabelProvider.GLOBAL_48);
+	private IContentProvider _contentProvider = new TextureListContentProvider();
+	private String _title;
 
 	/**
 	 * Create the dialog.
 	 * 
 	 * @param parentShell
 	 */
-	public AddSpriteDialog(Shell parentShell) {
+	public AddSpriteDialog(Shell parentShell, String title) {
 		super(parentShell);
+		_title = title;
 	}
 
 	@Override
@@ -86,8 +92,8 @@ public class AddSpriteDialog extends Dialog implements IEditorSharedImages {
 			}
 		});
 		_viewer = _filteredTree.getViewer();
-		_viewer.setLabelProvider(new FlatAssetLabelProvider(AssetLabelProvider.GLOBAL_48));
-		_viewer.setContentProvider(new TextureListContentProvider());
+		_viewer.setLabelProvider(_labelProvider);
+		_viewer.setContentProvider(_contentProvider);
 		_viewer.setInput(_project);
 		_viewer.addSelectionChangedListener(e -> {
 			_selected = ((IStructuredSelection) e.getSelection()).getFirstElement();
@@ -98,6 +104,22 @@ public class AddSpriteDialog extends Dialog implements IEditorSharedImages {
 		return container;
 	}
 
+	public IBaseLabelProvider getLabelProvider() {
+		return _labelProvider;
+	}
+
+	public void setLabelProvider(IBaseLabelProvider labelProvider) {
+		_labelProvider = labelProvider;
+	}
+
+	public IContentProvider getContentProvider() {
+		return _contentProvider;
+	}
+
+	public void setContentProvider(IContentProvider contentProvider) {
+		_contentProvider = contentProvider;
+	}
+
 	@Override
 	protected int getShellStyle() {
 		return super.getShellStyle() | SWT.RESIZE;
@@ -106,7 +128,7 @@ public class AddSpriteDialog extends Dialog implements IEditorSharedImages {
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText("Add Sprite");
+		newShell.setText(_title);
 	}
 
 	@Override

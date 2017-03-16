@@ -21,89 +21,73 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.handlers;
 
-import java.util.function.BiFunction;
+import java.util.List;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.assetpack.core.IAssetKey;
-import phasereditor.assetpack.core.ImageAssetModel;
-import phasereditor.canvas.core.BaseSpriteModel;
-import phasereditor.canvas.core.ButtonSpriteModel;
+import phasereditor.assetpack.ui.AssetLabelProvider;
+import phasereditor.assetpack.ui.AssetsContentProvider;
+import phasereditor.canvas.core.CanvasCore;
+import phasereditor.canvas.core.CanvasFile;
 import phasereditor.canvas.core.CanvasModelFactory;
-import phasereditor.canvas.core.GroupModel;
-import phasereditor.canvas.core.TileSpriteModel;
+import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.canvas.ui.editors.AddSpriteDialog;
 import phasereditor.canvas.ui.editors.CanvasEditor;
-import phasereditor.canvas.ui.editors.ObjectCanvas;
-import phasereditor.canvas.ui.editors.behaviors.CreateBehavior;
 
 /**
  * @author arian
  *
  */
-public class AddSpriteHandler extends AbstractHandler {
+public class AddPrefabHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
+
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 
-		ObjectCanvas canvas = editor.getCanvas();
-		CreateBehavior create = canvas.getCreateBehavior();
-		BiFunction<GroupModel, IAssetKey, BaseSpriteModel> factory = null;
+		AddSpriteDialog dlg = new AddSpriteDialog(HandlerUtil.getActiveShell(event), "Add Prefab");
+		dlg.setLabelProvider(new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((CanvasFile) element).getFile().getName();
+			}
 
-		AddSpriteDialog dlg = new AddSpriteDialog(HandlerUtil.getActiveShell(event), "Add Sprite");
+			@Override
+			public Image getImage(Object element) {
+				return CanvasUI.getCanvasFileIcon((CanvasFile) element, AssetLabelProvider.GLOBAL_48);
+			}
+		});
+		dlg.setContentProvider(new AssetsContentProvider() {
+			@Override
+			public Object[] getChildren(Object parentElement) {
+
+				if (parentElement instanceof IProject) {
+					List<CanvasFile> list = CanvasCore.getCanvasFileCache().getProjectData((IProject) parentElement);
+					return list.stream().filter(cfile -> cfile.getType().isPrefab()).toArray();
+				}
+
+				return super.getChildren(parentElement);
+			}
+		});
 		dlg.setProject(editor.getEditorInputFile().getProject());
-		
+
 		if (dlg.open() != Window.OK) {
 			return null;
 		}
-		
-		String id = event.getParameter("phasereditor.canvas.ui.spriteType");
-		
+
 		IStructuredSelection result = dlg.getSelection();
 
-		switch (id) {
-		case "sprite":
-			factory = CanvasModelFactory::createModel;
-			break;
-		case "button":
-			factory = (group, key) -> {
-				return new ButtonSpriteModel(group, getAssetFrame(key));
-			};
-			break;
-		case "tileSprite":
-			factory = (group, key) -> {
-				return new TileSpriteModel(group, getAssetFrame(key));
-			};
-			break;
-		default:
-			break;
-		}
-
-		if (factory != null) {
-			create.dropAssets(result, factory);
-		}
+		editor.getCanvas().getCreateBehavior().dropAssets(result, CanvasModelFactory::createModel);
 
 		return null;
-	}
-
-	private static IAssetFrameModel getAssetFrame(IAssetKey key) {
-		IAssetFrameModel frame;
-
-		if (key instanceof IAssetFrameModel) {
-			frame = (IAssetFrameModel) key;
-		} else if (key instanceof ImageAssetModel) {
-			frame = ((ImageAssetModel) key).getFrame();
-		} else {
-			throw new RuntimeException("Cannot get a frame with " + key.getKey());
-		}
-		return frame;
 	}
 
 }
