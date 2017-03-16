@@ -144,6 +144,65 @@ public class EditorConfigItem extends ConfigItem {
 
 			getGridModel().getSections().add(section);
 		}
+		
+		{
+			PGridSection section = new PGridSection("Snapping");
+			
+			section.add(new PGridBooleanProperty(null, "enable", "Enable snapping.") {
+
+				@Override
+				public Boolean getValue() {
+					return settings.isEnableStepping();
+				}
+
+				@Override
+				public void setValue(Boolean value, boolean notify) {
+					settings.setEnableStepping(value);
+				}
+
+				@Override
+				public boolean isModified() {
+					return settings.isEnableStepping();
+				}
+			});
+
+			section.add(new PGridNumberProperty(null, "stepWidth", "Snapping step width.") {
+
+				@Override
+				public Double getValue() {
+					return (double) settings.getStepWidth();
+				}
+
+				@Override
+				public void setValue(Double value, boolean notify) {
+					settings.setStepWidth(value.intValue());
+				}
+
+				@Override
+				public boolean isModified() {
+					return settings.getStepWidth() != 32;
+				}
+			});
+
+			section.add(new PGridNumberProperty(null, "stepHeight", "Snapping step height.") {
+
+				@Override
+				public Double getValue() {
+					return (double) settings.getStepHeight();
+				}
+
+				@Override
+				public void setValue(Double value, boolean notify) {
+					settings.setStepHeight(value.intValue());
+				}
+
+				@Override
+				public boolean isModified() {
+					return settings.getStepHeight() != 32;
+				}
+			});
+			getGridModel().getSections().add(section);
+		}
 
 		{
 			PGridSection section = new PGridSection("Source");
