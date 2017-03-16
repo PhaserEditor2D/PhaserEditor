@@ -129,15 +129,20 @@ public class CreateBehavior {
 		} else {
 			parentNode = _canvas.getWorldNode();
 		}
-		
+
 		List<IObjectNode> selnodes = _canvas.getSelectionBehavior().getSelectedNodes();
-		
+
 		if (!selnodes.isEmpty()) {
 			IObjectNode node = selnodes.get(0);
+			GroupNode parentNode2 = null;
 			if (node instanceof GroupNode) {
-				parentNode = (GroupNode) node;
+				parentNode2 = (GroupNode) node;
 			} else {
-				parentNode = node.getGroup();
+				parentNode2 = node.getGroup();
+			}
+
+			if (!parentNode2.getModel().isPrefabInstance()) {
+				parentNode = parentNode2;
 			}
 		}
 
@@ -279,30 +284,34 @@ public class CreateBehavior {
 			List<IObjectNode> selnodes = _canvas.getSelectionBehavior().getSelectedNodes();
 
 			IObjectNode node = pasteIntoThis.getIObjectNode();
-			
+
 			if (selnodes.isEmpty()) {
 				GroupNode group = filtered.get(0).getGroup();
 				if (group != null && group.getControl().getCanvas() == _canvas) {
 					node = group;
 				}
 			} else {
-				node = selnodes.get(0);
+				IObjectNode node2 = selnodes.get(0);
 
 				// if not a group then select the parent
-				if (!(node instanceof GroupNode)) {
-					node = node.getGroup();
+				if (!(node2 instanceof GroupNode)) {
+					node2 = node2.getGroup();
+				}
+
+				if (!node2.getModel().isPrefabInstance()) {
+					node = node2;
 				}
 			}
-			
+
 			boolean ok = true;
-			
+
 			for (Object obj : filtered) {
 				if (obj == node) {
 					ok = false;
 					break;
 				}
 			}
-			
+
 			if (ok) {
 				pasteIntoThis = (GroupControl) node.getControl();
 			}
