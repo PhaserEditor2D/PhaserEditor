@@ -111,7 +111,7 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 	}
 
 	protected void generatePublicField(BaseObjectModel obj) {
-		if (!(obj instanceof WorldModel) && obj.isEditorGenerate()) {
+		if (!(obj instanceof WorldModel) && obj.isEditorGenerate() && !obj.getParent().isPrefabInstance()) {
 			if (obj.isEditorPublic()) {
 				String name = getVarName(obj);
 				String localName = getLocalVarName(obj);
