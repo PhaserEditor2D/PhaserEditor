@@ -42,6 +42,7 @@ import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.behaviors.CreateBehavior;
 import phasereditor.canvas.ui.editors.behaviors.DragBehavior;
 import phasereditor.canvas.ui.editors.behaviors.HandlerBehavior;
+import phasereditor.canvas.ui.editors.behaviors.KeyboardBehavior;
 import phasereditor.canvas.ui.editors.behaviors.MouseBehavior;
 import phasereditor.canvas.ui.editors.behaviors.PaintBehavior;
 import phasereditor.canvas.ui.editors.behaviors.SelectionBehavior;
@@ -81,6 +82,7 @@ public class ObjectCanvas extends FXCanvas {
 	private EditorSettings _settingsModel;
 	private Pane _handlerPane;
 	private HandlerBehavior _handlerBehavior;
+	private KeyboardBehavior _keyboardBehavior;
 
 	public ObjectCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -105,6 +107,7 @@ public class ObjectCanvas extends FXCanvas {
 		_updateBehavior = new UpdateBehavior(this, _pgrid, outline);
 		_zoomBehavior = new ZoomBehavior(this);
 		_mouseBehavior = new MouseBehavior(this);
+		_keyboardBehavior = new KeyboardBehavior(this);
 		_paintBehavior = new PaintBehavior(this);
 		_handlerBehavior = new HandlerBehavior(this);
 
@@ -149,6 +152,10 @@ public class ObjectCanvas extends FXCanvas {
 
 	public MouseBehavior getMouseBehavior() {
 		return _mouseBehavior;
+	}
+	
+	public KeyboardBehavior getKeyboardBehavior() {
+		return _keyboardBehavior;
 	}
 
 	public CreateBehavior getCreateBehavior() {
