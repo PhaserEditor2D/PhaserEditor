@@ -43,6 +43,8 @@ public class DragBehavior {
 	private List<DragInfo> _dragInfoList;
 	private SelectionBehavior _selbehavior;
 	private boolean _dragging;
+	private boolean _fixedAxisX;
+	private boolean _fixedAxisY;
 
 	static class DragInfo {
 		private Node _node;
@@ -94,6 +96,30 @@ public class DragBehavior {
 	void handleMouseDragged(MouseEvent event) {
 		double dx = event.getSceneX() - _startScenePoint.getX();
 		double dy = event.getSceneY() - _startScenePoint.getY();
+
+		if (event.isShiftDown()) {
+			if (!_fixedAxisX && !_fixedAxisY) {
+				if (Math.abs(dx) > Math.abs(dy)) {
+					_fixedAxisX = true;
+					_fixedAxisY = false;
+				} else {
+					_fixedAxisX = false;
+					_fixedAxisY = true;
+				}
+			}
+
+			if (_fixedAxisX) {
+				dy = 0;
+			}
+
+			if (_fixedAxisY) {
+				dx = 0;
+			}
+		} else {
+			_fixedAxisX = false;
+			_fixedAxisY = false;
+		}
+
 		Point2D delta = new Point2D(dx, dy);
 
 		double scale = _canvas.getZoomBehavior().getScale();
@@ -126,6 +152,8 @@ public class DragBehavior {
 
 	void handleDragDetected(MouseEvent event) {
 		_dragging = true;
+		_fixedAxisX = false;
+		_fixedAxisY = false;
 
 		for (IObjectNode selnode : _selbehavior.getSelectedNodes()) {
 			Node dragnode = selnode.getNode();
