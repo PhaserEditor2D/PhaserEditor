@@ -135,6 +135,10 @@ public class GroupModel extends BaseObjectModel {
 			return this;
 		}
 
+		if (isPrefabInstance()) {
+			return null;
+		}
+		
 		for (BaseObjectModel model : _children) {
 			if (model instanceof GroupModel) {
 				BaseObjectModel found = ((GroupModel) model).findByName(name);

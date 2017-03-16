@@ -197,14 +197,25 @@ public class WorldModel extends GroupModel {
 	 * @return
 	 */
 	public String createName(String basename) {
-		int i = 1;
-		String name = basename;
+		int count = 1;
+		String basename2 = basename;
+		
+		// remove trailing numbers
+		for(int i = basename.length() - 1; i > 0 ; i--) {
+			if (!Character.isDigit(basename.charAt(i))) {
+				basename2 = basename.substring(0, i + 1);
+				break;
+			}
+		}
+		
+		String name = basename2;
+		
 		while (true) {
 			if (findByName(name) == null) {
 				break;
 			}
-			name = basename + i;
-			i++;
+			name = basename2 + count;
+			count++;
 		}
 		return name;
 	}
