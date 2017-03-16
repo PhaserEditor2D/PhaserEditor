@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.ListenerList;
+import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -89,6 +90,11 @@ public class SelectionBehavior implements ISelectionProvider {
 				}
 			}
 		});
+	}
+
+	private void message(String msg) {
+		IStatusLineManager status = _canvas.getEditor().getEditorSite().getActionBars().getStatusLineManager();
+		status.setMessage(msg);
 	}
 
 	private Node pickNode(Node test, double sceneX, double sceneY) {
@@ -350,6 +356,22 @@ public class SelectionBehavior implements ISelectionProvider {
 		}
 
 		updateSelectedNodes();
+
+		updateStatusLine();
+	}
+
+	private void updateStatusLine() {
+		if (_selectedNodes.size() != 1) {
+			return;
+		}
+
+		BaseObjectModel model = _selectedNodes.get(0).getModel();
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("Selected " + model.getTypeName() + " '" + model.getEditorName() + "'"
+				+ (model.isPrefabInstance() ? " (Prefab)" : ""));
+
+		message(sb.toString());
 	}
 
 	public void updateSelectedNodes() {
