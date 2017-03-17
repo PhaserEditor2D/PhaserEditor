@@ -52,9 +52,11 @@ public class JSStateCodeGenerator extends BaseStateGenerator {
 		line(" */");
 		openIndent("function " + classname + "() {");
 		line(baseclass + ".call(this);");
+		
 		line();
-
-		section("/* constructor-begin */", "/* constructor-end */", getYouCanInsertCodeHere());
+		
+		userCode(_settings.getUserCode().getState_constructor_before());
+		userCode(_settings.getUserCode().getState_constructor_after());
 
 		closeIndent("}");
 		line();
@@ -68,15 +70,17 @@ public class JSStateCodeGenerator extends BaseStateGenerator {
 		generateInitMethod(classname);
 
 		line();
-		
+
 		generatePreloadMethod(classname);
 
 		line();
-		
+
 		openIndent(classname + ".prototype.create = function () {");
 
 		line();
-		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
+
+		userCode(_settings.getUserCode().getCreate_before());
+
 		line();
 		line();
 	}
@@ -84,9 +88,11 @@ public class JSStateCodeGenerator extends BaseStateGenerator {
 	@SuppressWarnings("rawtypes")
 	private void generatePreloadMethod(String classname) {
 		openIndent(classname + ".prototype.preload = function () {");
-		section("/* before-preload-begin */", "/* before-preload-end */", getYouCanInsertCodeHere());
+
 		line();
+		userCode(_settings.getUserCode().getState_preload_before());
 		line();
+
 		Set<AssetSectionModel> sections = new HashSet<>();
 		_world.walk(obj -> {
 			if (obj instanceof AssetSpriteModel) {
@@ -99,29 +105,24 @@ public class JSStateCodeGenerator extends BaseStateGenerator {
 			String packUrl = pack.getAssetUrl(pack.getFile());
 			line("this.load.pack('" + section.getKey() + "', '" + packUrl + "');");
 		}
+
 		line();
-		line();
-		section("/* after-preload-begin */", "/* after-preload-end */", getYouCanInsertCodeHere());
-		line();
+		userCode(_settings.getUserCode().getState_preload_after());
+
 		closeIndent("};");
 	}
 
 	private void generateInitMethod(String classname) {
 		// INIT
 
-		line(classname + ".prototype.init = function (");
-		section("/* init-args-begin */", "/* init-args-end*/", getYouCanInsertCodeHere("user args code"));
-		openIndent(") {");
+		openIndent(classname + ".prototype.init = function () {");
 		generateInitMethodBody();
 		closeIndent("};");
 	}
 
-	
-
 	@Override
 	protected void generateFooter() {
-		section(POST_INIT_CODE_BEGIN, POST_INIT_CODE_END, getYouCanInsertCodeHere());
-		line();
+		userCode(_settings.getUserCode().getCreate_after());
 		closeIndent("};");
 		line();
 		section(END_GENERATED_CODE, getYouCanInsertCodeHere());

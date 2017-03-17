@@ -67,10 +67,10 @@ public class JSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 		line(baseclass + ".call(this, aGame, aX, aY, pKey, pFrame);");
 
 		line();
-
+		
+		userCode(_settings.getUserCode().getCreate_before());
 		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
-
-		line();
+		
 		line();
 	}
 	
@@ -81,8 +81,9 @@ public class JSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 		String baseclass = _settings.getBaseClass();
 
 		section(POST_INIT_CODE_BEGIN, POST_INIT_CODE_END, getYouCanInsertCodeHere());
+		
+		userCode(_settings.getUserCode().getCreate_after());
 
-		line();
 		closeIndent("}");
 		line();
 

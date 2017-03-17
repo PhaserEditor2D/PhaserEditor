@@ -54,11 +54,12 @@ public class JSGroupCodeGenerator extends JSLikeGroupCodeGenerator {
 		openIndent("function " + classname + "(aGame, aParent, aName, aAddToStage, aEnableBody, aPhysicsBodyType) {");
 		
 		line(baseclass + ".call(this, aGame, aParent, aName, aAddToStage, aEnableBody, aPhysicsBodyType);");
-		line();
 
+		line();
+		
+		userCode(_settings.getUserCode().getCreate_before());
 		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
-
-		line();
+		
 		line();
 	}
 
@@ -68,8 +69,9 @@ public class JSGroupCodeGenerator extends JSLikeGroupCodeGenerator {
 		String baseclass = _settings.getBaseClass();
 		
 		section(POST_INIT_CODE_BEGIN, POST_INIT_CODE_END, getYouCanInsertCodeHere());
+		
+		userCode(_settings.getUserCode().getCreate_after());
 
-		line();
 		closeIndent("}");
 		line();
 		

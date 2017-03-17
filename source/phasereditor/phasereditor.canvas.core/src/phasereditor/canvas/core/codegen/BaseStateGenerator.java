@@ -39,10 +39,8 @@ public abstract class BaseStateGenerator extends JSLikeCodeGenerator {
 	
 	protected void generateInitMethodBody() {
 		line();
-		section("/* before-init-begin */", "/* before-init-end */",
-				getYouCanInsertCodeHere("You can insert init code here"));
-		line();
-
+		userCode(_settings.getUserCode().getState_init_before());
+		
 		{
 			line();
 			StateSettings state = _model.getStateSettings();
@@ -67,7 +65,7 @@ public abstract class BaseStateGenerator extends JSLikeCodeGenerator {
 			line();
 		}
 
-		section("/* after-init-begin */", "/* after-init-end */", getYouCanInsertCodeHere());
+		userCode(_settings.getUserCode().getState_init_after());
 		line();
 	}
 

@@ -24,6 +24,7 @@ package phasereditor.canvas.ui.editors.config;
 import org.eclipse.swt.graphics.RGB;
 
 import phasereditor.canvas.core.EditorSettings;
+import phasereditor.canvas.core.EditorSettings_UserCode;
 import phasereditor.canvas.core.SourceLang;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
@@ -33,6 +34,7 @@ import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
 import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
+import phasereditor.canvas.ui.editors.grid.PGridUserCodeProperty;
 
 /**
  * @author arian
@@ -139,6 +141,24 @@ public class EditorConfigItem extends ConfigItem {
 				@Override
 				public boolean isModified() {
 					return !settings.isShowGrid();
+				}
+			});
+			
+			section.add(new PGridUserCodeProperty(null, "userCode", "Code inserted into the generated source.") {
+				
+				@Override
+				public void setValue(EditorSettings_UserCode value, boolean notify) {
+					settings.setUserCode(value);
+				}
+				
+				@Override
+				public EditorSettings_UserCode getValue() {
+					return settings.getUserCode();
+				}
+				
+				@Override
+				public boolean isModified() {
+					return true;
 				}
 			});
 

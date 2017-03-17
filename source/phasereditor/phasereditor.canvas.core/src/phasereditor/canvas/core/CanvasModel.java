@@ -75,6 +75,11 @@ public class CanvasModel {
 		// version 1 did not write it explicitly
 		_version = data.optInt("canvas-version", 1);
 
+		{
+			String name = data.optString("type", CanvasType.GROUP.name());
+			_type = CanvasType.valueOf(name);
+		}
+		
 		_settings.read(data.getJSONObject("settings"));
 		{
 			JSONObject data2 = data.optJSONObject("stateSettings");
@@ -92,11 +97,6 @@ public class CanvasModel {
 		_world.getAssetTable().read(data.optJSONObject("asset-table"));
 		_world.getPrefabTable().read(data.optJSONObject("prefab-table"));
 		_world.read(data.getJSONObject("world"));
-
-		{
-			String name = data.optString("type", CanvasType.GROUP.name());
-			_type = CanvasType.valueOf(name);
-		}
 	}
 
 	public void write(JSONObject data, boolean saving) {

@@ -47,6 +47,7 @@ public class EditorSettings {
 	private int _stepHeight;
 	private SourceLang _lang;
 	private String _baseClass;
+	private EditorSettings_UserCode _userCode;
 	private RGB _gridColor;
 	private CanvasModel _canvasModel;
 
@@ -60,6 +61,7 @@ public class EditorSettings {
 		_stepWidth = 32;
 		_stepHeight = 32;
 		_lang = SourceLang.JAVA_SCRIPT;
+		_userCode = new EditorSettings_UserCode(canvasModel);
 		// for backward compatibility
 		_baseClass = "Phaser.Group";
 		_backgroundColor = DEFAULT_BACKGROUND_COLOR;
@@ -74,13 +76,22 @@ public class EditorSettings {
 	public CanvasModel getCanvasModel() {
 		return _canvasModel;
 	}
-	
+
 	public String getClassName() {
 		return _className;
 	}
 
 	public void setClassName(String className) {
 		_className = className;
+	}
+
+	public EditorSettings_UserCode getUserCode() {
+		return _userCode;
+	}
+
+	public void setUserCode(EditorSettings_UserCode userCode) {
+		_userCode = userCode;
+		firePropertyChange("userCode");
 	}
 
 	public boolean isShowGrid() {
@@ -195,6 +206,7 @@ public class EditorSettings {
 		writeColor(obj, "backgroundColor", _backgroundColor);
 		writeColor(obj, "gridColor", _gridColor);
 		obj.put("showGrid", _showGrid);
+		_userCode.write(obj);
 	}
 
 	public static RGB readColor(JSONObject obj, String key, RGB def) {
@@ -218,6 +230,8 @@ public class EditorSettings {
 		_stepWidth = obj.optInt("stepWidth", 32);
 		_stepHeight = obj.optInt("stepHeight", 32);
 		_lang = SourceLang.valueOf(obj.optString("lang", SourceLang.JAVA_SCRIPT.name()));
+		_userCode.read(obj);
+
 		// use Phaser.Group for backward compatibility
 		_baseClass = obj.optString("baseClass", "Phaser.Group");
 

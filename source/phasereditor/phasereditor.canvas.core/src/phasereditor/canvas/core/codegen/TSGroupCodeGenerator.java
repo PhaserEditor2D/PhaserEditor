@@ -55,18 +55,22 @@ public class TSGroupCodeGenerator extends JSLikeGroupCodeGenerator implements IT
 		line(" * @param aEnableBody " + help.getMethodArgHelp("Phaser.Group", "enableBody"));
 		line(" * @param aPhysicsBodyType " + help.getMethodArgHelp("Phaser.Group", "physicsBodyType"));
 		line(" */");
-		line("class " + classname + " extends " + baseclass + " {");
+		openIndent("class " + classname + " extends " + baseclass + " {");
 		openIndent(
 				"constructor(aGame : Phaser.Game, aParent : Phaser.Group, aName : string, aAddToStage : boolean, aEnableBody : boolean, aPhysicsBodyType : number) {");
 		line("super(aGame, aParent, aName, aAddToStage, aEnableBody, aPhysicsBodyType);");
+		line();
+		userCode(_settings.getUserCode().getCreate_before());
+		line();
 		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
-
-		line("");
 	}
 
 	@Override
 	protected void generateFooter() {
+		
 		section(POST_INIT_CODE_BEGIN, POST_INIT_CODE_END, getYouCanInsertCodeHere());
+		userCode(_settings.getUserCode().getCreate_after());
+		
 		closeIndent("}");
 
 		line();
@@ -74,6 +78,8 @@ public class TSGroupCodeGenerator extends JSLikeGroupCodeGenerator implements IT
 		generatePublicFieldDeclarations(this, _model.getWorld());
 
 		line();
+		
+		section("/* group-methods-begin */", "/* group-methods-end */", getYouCanInsertCodeHere());
 
 		closeIndent("}");
 		section(END_GENERATED_CODE, getYouCanInsertCodeHere());

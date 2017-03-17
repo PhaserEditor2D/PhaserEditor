@@ -55,6 +55,7 @@ import phasereditor.canvas.ui.editors.grid.PGridOverrideProperty;
 import phasereditor.canvas.ui.editors.grid.PGridProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
 import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
+import phasereditor.canvas.ui.editors.grid.PGridUserCodeProperty;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 
@@ -152,6 +153,9 @@ public class PGridEditingSupport extends EditingSupport {
 					return initialValue;
 				}
 			};
+		} else if (element instanceof PGridUserCodeProperty) {
+			PGridUserCodeProperty prop = (PGridUserCodeProperty) element;
+			return new UserCodeCellEditor(parent, prop.getValue());
 		}
 
 		return null;

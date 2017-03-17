@@ -66,15 +66,16 @@ public class TSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator impleme
 		line("super(aGame, aX, aY, aKey === undefined? " + key + " : aKey, aFrame === undefined? " + frame
 				+ " : aFrame);");
 
+		userCode(_settings.getUserCode().getCreate_before());
+		
 		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
-
-		line("");
-		line("");
 	}
 
 	@Override
 	protected void generateFooter() {
 		section(POST_INIT_CODE_BEGIN, POST_INIT_CODE_END, getYouCanInsertCodeHere());
+		userCode(_settings.getUserCode().getCreate_after());
+		
 		closeIndent("}");
 
 		line();

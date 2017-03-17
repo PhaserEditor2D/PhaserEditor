@@ -76,14 +76,30 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 		return defaultContent;
 	}
 
+	protected void userCode(String text) {
+		String[] lines = text.split("\n");
+		for (String line : lines) {
+			line(line);
+		}
+	}
+
 	protected void section(String openTag, String defaultContent) {
 		append(openTag);
 		append(getSectionContent(openTag, "papa(--o^^o--)pig", defaultContent));
 	}
 
 	protected void section(String openTag, String closeTag, String defaultContent) {
+		String content = getSectionContent(openTag, closeTag, defaultContent);
+
+		if (openTag.equals("/* --- pre-init-begin --- */") || openTag.equals("/* --- post-init-begin --- */")) {
+			String content2 = content.trim();
+			if (content2.length() == 0 || (content2.startsWith("//") && !content2.contains("\n"))) {
+				return;
+			}
+		}
+		
 		append(openTag);
-		append(getSectionContent(openTag, closeTag, defaultContent));
+		append(content);
 		append(closeTag);
 	}
 
@@ -121,7 +137,7 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 		line();
 		line(str);
 	}
-	
+
 	protected void closeIndent() {
 		closeIndent("");
 	}
@@ -141,7 +157,7 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 	protected static String round(double x) {
 		return Integer.toString((int) Math.round(x));
 	}
-	
+
 	public static String getHexString(RGB rgb) {
 		return "#" + toHexString(rgb.red) + toHexString(rgb.green) + toHexString(rgb.blue);
 	}

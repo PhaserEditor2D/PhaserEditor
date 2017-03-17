@@ -51,8 +51,12 @@ public class TSStateCodeGenerator extends BaseStateGenerator implements ITSCodeG
 		openIndent("class " + classname + " extends " + baseclass + " {");
 		openIndent("constructor() {");
 		line("super();");
+		
 		line();
-		section("/* constructor-begin */", "/* constructor-end */", getYouCanInsertCodeHere());
+		
+		userCode(_settings.getUserCode().getState_constructor_before());
+		userCode(_settings.getUserCode().getState_constructor_after());
+		
 		closeIndent("}");
 
 		line();
@@ -67,17 +71,21 @@ public class TSStateCodeGenerator extends BaseStateGenerator implements ITSCodeG
 
 		openIndent("create() {");
 
-		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
 		line();
+		userCode(_settings.getUserCode().getCreate_before());
 		line();
 	}
 
 	@SuppressWarnings("rawtypes")
 	private void generatePreloadMethod() {
 		openIndent("preload () {");
-		section("/* before-preload-begin */", "/* before-preload-end */", getYouCanInsertCodeHere());
+		
 		line();
+		
+		userCode(_settings.getUserCode().getState_preload_before());
+		
 		line();
+		
 		Set<AssetSectionModel> sections = new HashSet<>();
 		_world.walk(obj -> {
 			if (obj instanceof AssetSpriteModel) {
@@ -90,26 +98,27 @@ public class TSStateCodeGenerator extends BaseStateGenerator implements ITSCodeG
 			String packUrl = pack.getAssetUrl(pack.getFile());
 			line("this.load.pack('" + section.getKey() + "', '" + packUrl + "');");
 		}
+		
 		line();
 		line();
-		section("/* after-preload-begin */", "/* after-preload-end */", getYouCanInsertCodeHere());
+		
+		userCode(_settings.getUserCode().getState_preload_after());
+		
 		line();
 		closeIndent("};");
 	}
 
 	private void generateInitMethod() {
 		// INIT
-		line("init(");
-		section("/* init-args-begin */", "/* init-args-end*/", getYouCanInsertCodeHere("user args code"));
-		openIndent(") {");
+		line("init() {");
 		generateInitMethodBody();
 		closeIndent("}");
 	}
 
 	@Override
 	protected void generateFooter() {
-		section(POST_INIT_CODE_BEGIN, POST_INIT_CODE_END, getYouCanInsertCodeHere());
-
+		userCode(_settings.getUserCode().getCreate_after());
+		
 		closeIndent("}");
 
 		line();
@@ -118,9 +127,8 @@ public class TSStateCodeGenerator extends BaseStateGenerator implements ITSCodeG
 		
 		line();
 		
-
 		section("/* state-methods-begin */", "/* state-methods-end */", getYouCanInsertCodeHere());
-
+		line();
 		closeIndent("}");
 
 		section(END_GENERATED_CODE, getYouCanInsertCodeHere());
