@@ -31,7 +31,9 @@ import org.eclipse.swt.graphics.RGB;
 
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.canvas.core.AnimationModel;
+import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.PhysicsType;
+import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.core.PhysicsSortDirection;
 import phasereditor.ui.ColorButtonSupport;
 import phasereditor.ui.PhaserEditorUI;
@@ -41,9 +43,18 @@ import phasereditor.ui.PhaserEditorUI;
  *
  */
 public class PGridValueLabelProvider extends PGridLabelProvider {
+	private ObjectCanvas _canvas;
 
 	public PGridValueLabelProvider(ColumnViewer viewer) {
 		super(viewer);
+	}
+
+	public void setCanvas(ObjectCanvas canvas) {
+		_canvas = canvas;
+	}
+
+	public ObjectCanvas getCanvas() {
+		return _canvas;
 	}
 
 	@Override
@@ -82,10 +93,22 @@ public class PGridValueLabelProvider extends PGridLabelProvider {
 			if (value instanceof PhysicsType) {
 				return ((PhysicsType) value).getPhaserName();
 			}
-			
+
 			if (value instanceof PhysicsSortDirection) {
 				return ((PhysicsSortDirection) value).getPhaserName();
 			}
+		}
+
+		if (element instanceof PGridSpriteProperty) {
+			PGridSpriteProperty prop = (PGridSpriteProperty) element;
+			String id = prop.getValue();
+			BaseObjectModel model = _canvas.getWorldModel().findById(id);
+			
+			if (model == null) {
+				return id;
+			}
+			
+			return model.getEditorName();
 		}
 
 		if (element instanceof PGridProperty) {

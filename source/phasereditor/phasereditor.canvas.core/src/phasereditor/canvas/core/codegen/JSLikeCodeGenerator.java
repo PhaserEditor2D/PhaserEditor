@@ -48,6 +48,7 @@ import phasereditor.canvas.core.PhysicsSortDirection;
 import phasereditor.canvas.core.PhysicsType;
 import phasereditor.canvas.core.RectArcadeBodyModel;
 import phasereditor.canvas.core.SpritesheetSpriteModel;
+import phasereditor.canvas.core.StateSettings;
 import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.inspect.core.InspectCore;
@@ -224,7 +225,22 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 			break;
 		}
 
-		if (mark1 < mark2 || model.isEditorPublic() || model.isPrefabInstance()) {
+		boolean isPreloadSprite = false;
+		{
+			StateSettings state = _model.getStateSettings();
+			//@formatter:off
+			if (
+					_model.getType() == CanvasType.STATE 
+					&& state.isPreloader()
+					&& model.getId().equals(state.getPreloadSpriteId())
+				) 
+			//@formatter:on
+			{
+				isPreloadSprite = true;
+			}
+		}
+
+		if (mark1 < mark2 || model.isEditorPublic() || model.isPrefabInstance() || isPreloadSprite) {
 			append("var " + getLocalVarName(model) + " = ");
 		}
 
@@ -412,7 +428,7 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 		if (model.getName() != null) {
 			line(varname + ".name = '" + model.getName() + "';");
 		}
-		
+
 		if (model.isOverriding(BaseObjectModel.PROPSET_POSITION)) {
 			if (model instanceof GroupModel) {
 				if (model.getX() != 0 || model.getY() != 0) {
@@ -438,7 +454,7 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 				line(varname + ".pivot.setTo(" + model.getPivotX() + ", " + model.getPivotY() + ");");
 			}
 		}
-		
+
 		if (model.isOverriding(BaseObjectModel.PROPSET_ALPHA)) {
 			if (model.getAlpha() != 1) {
 				line(varname + ".alpha = " + model.getAlpha() + ";");

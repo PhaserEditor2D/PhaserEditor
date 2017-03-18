@@ -143,31 +143,13 @@ public class EditorConfigItem extends ConfigItem {
 					return !settings.isShowGrid();
 				}
 			});
-			
-			section.add(new PGridUserCodeProperty(null, "userCode", "Code inserted into the generated source.") {
-				
-				@Override
-				public void setValue(EditorSettings_UserCode value, boolean notify) {
-					settings.setUserCode(value);
-				}
-				
-				@Override
-				public EditorSettings_UserCode getValue() {
-					return settings.getUserCode();
-				}
-				
-				@Override
-				public boolean isModified() {
-					return true;
-				}
-			});
 
 			getGridModel().getSections().add(section);
 		}
-		
+
 		{
 			PGridSection section = new PGridSection("Snapping");
-			
+
 			section.add(new PGridBooleanProperty(null, "enable", "Enable snapping.") {
 
 				@Override
@@ -261,6 +243,24 @@ public class EditorConfigItem extends ConfigItem {
 				public boolean isModified() {
 					return !settings.getBaseClass()
 							.equals(CanvasCodeGeneratorProvider.getDefaultBaseClassFor(getModel().getType()));
+				}
+			});
+
+			section.add(new PGridUserCodeProperty(null, "userCode", "Code inserted into the generated source.") {
+
+				@Override
+				public void setValue(EditorSettings_UserCode value, boolean notify) {
+					settings.setUserCode(value);
+				}
+
+				@Override
+				public EditorSettings_UserCode getValue() {
+					return settings.getUserCode();
+				}
+
+				@Override
+				public boolean isModified() {
+					return true;
 				}
 			});
 

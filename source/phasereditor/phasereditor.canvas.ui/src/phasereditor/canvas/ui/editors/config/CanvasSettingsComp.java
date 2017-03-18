@@ -23,6 +23,7 @@ package phasereditor.canvas.ui.editors.config;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.FillLayout;
@@ -30,6 +31,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.dialogs.FilteredTree;
 
 import phasereditor.canvas.core.CanvasModel;
+import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGrid;
 import phasereditor.ui.PatternFilter2;
 
@@ -65,9 +67,10 @@ public class CanvasSettingsComp extends Composite {
 	}
 
 	private void afterCreateWidgets() {
-		_outlineTree.getViewer().setLabelProvider(new ConfigurationLabelProvider());
-		_outlineTree.getViewer().setContentProvider(new ConfigurationContentProvider());
-		_outlineTree.getViewer().addSelectionChangedListener(e -> {
+		TreeViewer viewer = _outlineTree.getViewer();
+		viewer.setLabelProvider(new ConfigurationLabelProvider());
+		viewer.setContentProvider(new ConfigurationContentProvider(_pGrid.getViewer()));
+		viewer.addSelectionChangedListener(e -> {
 			IStructuredSelection sel = (IStructuredSelection) e.getSelection();
 
 			if (sel.isEmpty()) {
@@ -101,5 +104,9 @@ public class CanvasSettingsComp extends Composite {
 	@Override
 	protected void checkSubclass() {
 		//
+	}
+
+	public void setCanvas(ObjectCanvas canvas) {
+		_pGrid.setCanvas(canvas);
 	}
 }

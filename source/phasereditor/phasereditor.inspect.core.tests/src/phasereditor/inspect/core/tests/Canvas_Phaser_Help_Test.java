@@ -73,7 +73,8 @@ public class Canvas_Phaser_Help_Test {
 				"Phaser.ScaleManager.pageAlignHorizontally",
 				"Phaser.ScaleManager.pageAlignVertically",
 				"Phaser.Physics.startSystem",
-				"Phaser.Stage.backgroundColor"
+				"Phaser.Stage.backgroundColor",
+				"Phaser.Loader.setPreloadSprite"
 		};
 		// @formatter:on
 
@@ -103,6 +104,7 @@ public class Canvas_Phaser_Help_Test {
 				{ "Phaser.Group", "addToStage"},
 				{ "Phaser.Group", "enableBody"},
 				{ "Phaser.Group", "physicsBodyType"},
+				{ "Phaser.Loader.setPreloadSprite", "direction" }
 		};
 		//@formatter:on
 

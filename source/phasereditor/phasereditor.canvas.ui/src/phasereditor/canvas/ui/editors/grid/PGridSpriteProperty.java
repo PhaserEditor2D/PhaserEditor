@@ -19,63 +19,16 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors.config;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.TreeViewer;
-
-import phasereditor.canvas.core.CanvasModel;
+package phasereditor.canvas.ui.editors.grid;
 
 /**
  * @author arian
  *
  */
-public class ConfigurationContentProvider implements ITreeContentProvider {
+public abstract class PGridSpriteProperty extends PGridStringProperty{
 
-	private TreeViewer _viewer;
-
-	public ConfigurationContentProvider(TreeViewer viewer) {
-		_viewer = viewer;
+	public PGridSpriteProperty(String controlId, String name, String tooltip) {
+		super(controlId, name, tooltip);
 	}
 
-	@Override
-	public Object[] getElements(Object inputElement) {
-		return getChildren(inputElement);
-	}
-
-	@Override
-	public Object[] getChildren(Object parentElement) {
-
-		if (parentElement instanceof CanvasModel) {
-			CanvasModel model = (CanvasModel) parentElement;
-
-			List<Object> list = new ArrayList<>();
-			list.add(new EditorConfigItem(model));
-
-			switch (model.getType()) {
-			case STATE:
-				list.add(new StateConfigItem(model, _viewer));
-				break;
-			default:
-				break;
-			}
-
-			return list.toArray();
-		}
-
-		return new Object[] {};
-	}
-
-	@Override
-	public Object getParent(Object element) {
-		return null;
-	}
-
-	@Override
-	public boolean hasChildren(Object element) {
-		return getChildren(element).length > 0;
-	}
 }

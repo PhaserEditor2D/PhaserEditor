@@ -52,6 +52,7 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.editors.PGridEditingSupport;
 
 /**
@@ -68,6 +69,7 @@ public class PGrid extends Composite {
 	protected boolean _resizing;
 	private FilteredTree _filteredTree;
 	private PGridEditingSupport _editSupport;
+	private PGridValueLabelProvider _labelProvider;
 
 	public PGrid(Composite parent, int style) {
 		this(parent, style, true);
@@ -104,7 +106,8 @@ public class PGrid extends Composite {
 		_colValue = new TreeViewerColumn(_treeViewer, SWT.NONE);
 		_editSupport = new PGridEditingSupport(_treeViewer, supportUndoRedo);
 		_colValue.setEditingSupport(_editSupport);
-		_colValue.setLabelProvider(new PGridValueLabelProvider(_treeViewer));
+		_labelProvider = new PGridValueLabelProvider(_treeViewer);
+		_colValue.setLabelProvider(_labelProvider);
 		TreeColumn trclmnValue = _colValue.getColumn();
 		trclmnValue.setWidth(100);
 		trclmnValue.setText("value");
@@ -112,6 +115,11 @@ public class PGrid extends Composite {
 
 		afterCreateWidgets();
 
+	}
+	
+	public void setCanvas(ObjectCanvas canvas) {
+		_editSupport.setCanvas(canvas);
+		_labelProvider.setCanvas(canvas);
 	}
 
 	public void setOnChanged(Runnable onChanged) {

@@ -21,15 +21,18 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.config;
 
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.graphics.RGB;
 
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.PhysicsType;
 import phasereditor.canvas.core.StateSettings;
+import phasereditor.canvas.core.StateSettings.PreloadSpriteDirection;
 import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
 import phasereditor.canvas.ui.editors.grid.PGridColorProperty;
 import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
+import phasereditor.canvas.ui.editors.grid.PGridSpriteProperty;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
 
@@ -39,8 +42,11 @@ import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
  */
 public class StateConfigItem extends ConfigItem {
 
-	public StateConfigItem(CanvasModel model) {
+	private TreeViewer _viewer;
+
+	public StateConfigItem(CanvasModel model, TreeViewer viewer) {
 		super(model, "State");
+		_viewer = viewer;
 	}
 
 	@SuppressWarnings("boxing")
@@ -176,6 +182,82 @@ public class StateConfigItem extends ConfigItem {
 					return state.isRendererRoundPixels();
 				}
 			});
+			getGridModel().getSections().add(section);
+		}
+
+		{
+			PGridSection section = new PGridSection("Preload");
+			section.add(new PGridBooleanProperty(null, "isPreloader",
+					"Check this for states used as preloader of the assets.\nThe objects creation code is placed in the 'preload' method instead of the 'create' one.") {
+
+				@Override
+				public Boolean getValue() {
+					return state.isPreloader();
+				}
+
+				@SuppressWarnings("synthetic-access")
+				@Override
+				public void setValue(Boolean value, boolean notify) {
+					state.setPreloader(value);
+					_viewer.refresh();
+				}
+
+				@Override
+				public boolean isModified() {
+					return state.isPreloader();
+				}
+			});
+
+			section.add(new PGridSpriteProperty(null, "preloadSprite",
+					help.getMemberHelp("Phaser.Loader.setPreloadSprite")) {
+
+				@Override
+				public String getValue() {
+					return state.getPreloadSpriteId();
+				}
+
+				@Override
+				public void setValue(String value, boolean notify) {
+					state.setPreloadSpriteId(value);
+				}
+
+				@Override
+				public boolean isModified() {
+					return true;
+				}
+
+				@Override
+				public boolean isActive() {
+					return state.isPreloader();
+				}
+			});
+
+			section.add(new PGridEnumProperty<PreloadSpriteDirection>(null, "preloadSprite.direction",
+					help.getMethodArgHelp("Phaser.Loader.setPreloadSprite", "direction"),
+					PreloadSpriteDirection.values()) {
+
+				@Override
+				public PreloadSpriteDirection getValue() {
+					return state.getPreloadSprite_direction();
+				}
+
+				@Override
+				public void setValue(PreloadSpriteDirection value, boolean notify) {
+					state.setPreloadSprite_direction(value);
+				}
+
+				@Override
+				public boolean isModified() {
+					return state.getPreloadSprite_direction() != PreloadSpriteDirection.HORIZONTAL;
+				}
+
+				@Override
+				public boolean isActive() {
+					return state.isPreloader();
+				}
+
+			});
+
 			getGridModel().getSections().add(section);
 		}
 	}

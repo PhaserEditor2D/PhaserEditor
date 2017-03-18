@@ -44,6 +44,13 @@ public class StateSettings {
 	private RGB _stageBackgroundColor = DEFAULT_STAGE_BG_COLOR;
 	private PhysicsType _physicsSystem = PhysicsType.NONE;
 	private boolean _rendererRoundPixels;
+	private boolean _isPreloader = false;
+	private String _preloadSpriteId = null;
+	private PreloadSpriteDirection _preloadSprite_direction = PreloadSpriteDirection.HORIZONTAL;
+
+	public enum PreloadSpriteDirection {
+		HORIZONTAL, VERTICAL
+	}
 
 	public void write(JSONObject data) {
 		data.put("scaleMode", _scaleMode, SCALE_MODE_NO_SCALE);
@@ -52,6 +59,9 @@ public class StateSettings {
 		EditorSettings.writeColor(data, "stageBackgroundColor", DEFAULT_STAGE_BG_COLOR);
 		data.put("physicsSystem", _physicsSystem.name(), PhysicsType.NONE.name());
 		data.put("rendererRoundPixels", _rendererRoundPixels, false);
+		data.put("isPreloader", _isPreloader, false);
+		data.put("preloadSpriteId", _preloadSpriteId);
+		data.put("preloadSprite_direction", _preloadSprite_direction.ordinal());
 	}
 
 	public void read(JSONObject data) {
@@ -64,6 +74,35 @@ public class StateSettings {
 			_physicsSystem = PhysicsType.valueOf(name);
 		}
 		_rendererRoundPixels = data.optBoolean("rendererRoundPixels", false);
+		_isPreloader = data.optBoolean("isPreloader");
+		_preloadSpriteId = data.optString("preloadSpriteId");
+		{
+			_preloadSprite_direction = PreloadSpriteDirection.values()[data.optInt("preloadSprite_direction", 0)];
+		}
+	}
+
+	public boolean isPreloader() {
+		return _isPreloader;
+	}
+
+	public void setPreloader(boolean isPreloader) {
+		_isPreloader = isPreloader;
+	}
+
+	public String getPreloadSpriteId() {
+		return _preloadSpriteId;
+	}
+
+	public void setPreloadSpriteId(String preloadSpriteId) {
+		_preloadSpriteId = preloadSpriteId;
+	}
+
+	public PreloadSpriteDirection getPreloadSprite_direction() {
+		return _preloadSprite_direction;
+	}
+
+	public void setPreloadSprite_direction(PreloadSpriteDirection preloadSprite_direction) {
+		_preloadSprite_direction = preloadSprite_direction;
 	}
 
 	public boolean isRendererRoundPixels() {

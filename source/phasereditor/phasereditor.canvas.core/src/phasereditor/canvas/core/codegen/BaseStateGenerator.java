@@ -23,6 +23,7 @@ package phasereditor.canvas.core.codegen;
 
 import org.eclipse.swt.graphics.RGB;
 
+import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.PhysicsType;
 import phasereditor.canvas.core.StateSettings;
@@ -33,8 +34,52 @@ import phasereditor.canvas.core.StateSettings;
  */
 public abstract class BaseStateGenerator extends JSLikeCodeGenerator {
 
+	protected StateSettings _state;
+
 	public BaseStateGenerator(CanvasModel model) {
 		super(model);
+		_state = model.getStateSettings();
+	}
+	
+	protected void generatePreloaderStateCode() {
+		if (_state.isPreloader()) {
+			line();
+			
+			super.generateObjectCreation();
+			
+			line();
+			
+			super.generatePublicFields();
+			
+			line();
+			
+			String id = _state.getPreloadSpriteId();
+			if (id != null) {
+				BaseObjectModel obj = _model.getWorld().findById(id);
+				if (obj != null) {
+					line();
+					line("this.load.setPreloadSprite(" + getLocalVarName(obj) + ", " + _state.getPreloadSprite_direction().ordinal() + ");");
+				}
+			}
+		}
+	}
+	
+	@Override
+	protected void generateObjectCreation() {
+		if (_state.isPreloader()) {
+			return;
+		}
+		
+		super.generateObjectCreation();
+	}
+	
+	@Override
+	protected void generatePublicFields() {
+		if (_state.isPreloader()) {
+			return;
+		}
+		
+		super.generatePublicFields();
 	}
 	
 	protected void generateInitMethodBody() {

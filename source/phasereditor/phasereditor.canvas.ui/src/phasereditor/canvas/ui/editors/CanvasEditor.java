@@ -379,6 +379,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 		_settingsPage.setOnChanged(() -> {
 			setDirty(true);
 		});
+		_settingsPage.setCanvas(_canvas);
 		int i = addPage(_settingsPage);
 		setPageText(i, "Configuration");
 		setPageImage(i, EditorSharedImages.getImage("icons/settings.png"));

@@ -44,6 +44,7 @@ import org.eclipse.ui.dialogs.ListSelectionDialog;
 import phasereditor.canvas.core.PhysicsSortDirection;
 import phasereditor.canvas.core.PhysicsType;
 import phasereditor.canvas.ui.editors.CanvasEditor;
+import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.NumberCellEditor;
 import phasereditor.canvas.ui.editors.grid.PGridAnimationsProperty;
 import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
@@ -54,6 +55,7 @@ import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridOverrideProperty;
 import phasereditor.canvas.ui.editors.grid.PGridProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
+import phasereditor.canvas.ui.editors.grid.PGridSpriteProperty;
 import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
 import phasereditor.canvas.ui.editors.grid.PGridUserCodeProperty;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
@@ -67,10 +69,19 @@ public class PGridEditingSupport extends EditingSupport {
 
 	private boolean _supportUndoRedo;
 	private Runnable _onChanged;
+	private ObjectCanvas _canvas;
 
 	public PGridEditingSupport(ColumnViewer viewer, boolean supportUndoRedo) {
 		super(viewer);
 		_supportUndoRedo = supportUndoRedo;
+	}
+	
+	public void setCanvas(ObjectCanvas canvas) {
+		_canvas = canvas;
+	}
+	
+	public ObjectCanvas getCanvas() {
+		return _canvas;
 	}
 
 	public void setOnChanged(Runnable onChanged) {
@@ -87,6 +98,8 @@ public class PGridEditingSupport extends EditingSupport {
 
 		if (element instanceof PGridNumberProperty) {
 			return new NumberCellEditor(parent);
+		} else if (element instanceof PGridSpriteProperty) {
+			return new SpriteCellEditor(parent, _canvas, ((PGridSpriteProperty)element).getValue());
 		} else if (element instanceof PGridStringProperty) {
 			PGridStringProperty longStrProp = (PGridStringProperty) element;
 			if (longStrProp.isLongText()) {

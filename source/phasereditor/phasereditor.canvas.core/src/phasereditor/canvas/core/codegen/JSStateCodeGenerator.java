@@ -106,6 +106,9 @@ public class JSStateCodeGenerator extends BaseStateGenerator {
 			line("this.load.pack('" + section.getKey() + "', '" + packUrl + "');");
 		}
 
+		
+		generatePreloaderStateCode();
+		
 		line();
 		userCode(_settings.getUserCode().getState_preload_after());
 

@@ -100,6 +100,9 @@ public class TSStateCodeGenerator extends BaseStateGenerator implements ITSCodeG
 		}
 		
 		line();
+		
+		generatePreloaderStateCode();
+		
 		line();
 		
 		userCode(_settings.getUserCode().getState_preload_after());
@@ -107,10 +110,10 @@ public class TSStateCodeGenerator extends BaseStateGenerator implements ITSCodeG
 		line();
 		closeIndent("};");
 	}
-
+	
 	private void generateInitMethod() {
 		// INIT
-		line("init() {");
+		openIndent("init() {");
 		generateInitMethodBody();
 		closeIndent("}");
 	}
