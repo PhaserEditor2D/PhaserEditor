@@ -58,18 +58,24 @@ public class TSGroupCodeGenerator extends JSLikeGroupCodeGenerator implements IT
 		openIndent("class " + classname + " extends " + baseclass + " {");
 		openIndent(
 				"constructor(aGame : Phaser.Game, aParent : Phaser.Group, aName : string, aAddToStage : boolean, aEnableBody : boolean, aPhysicsBodyType : number) {");
+		line();
 		line("super(aGame, aParent, aName, aAddToStage, aEnableBody, aPhysicsBodyType);");
 		line();
-		userCode(_settings.getUserCode().getCreate_before());
-		line();
-		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
+		
+		trim( ()->{
+			userCode(_settings.getUserCode().getCreate_before());
+			line();
+			section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());			
+		} );
 	}
 
 	@Override
 	protected void generateFooter() {
-		
-		section(POST_INIT_CODE_BEGIN, POST_INIT_CODE_END, getYouCanInsertCodeHere());
-		userCode(_settings.getUserCode().getCreate_after());
+		trim( ()->{
+			section(POST_INIT_CODE_BEGIN, POST_INIT_CODE_END, getYouCanInsertCodeHere());
+			line();
+			userCode(_settings.getUserCode().getCreate_after());			
+		} );
 		
 		closeIndent("}");
 

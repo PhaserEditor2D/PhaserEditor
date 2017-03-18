@@ -39,9 +39,9 @@ public class JSGroupCodeGenerator extends JSLikeGroupCodeGenerator {
 	protected void generateHeader() {
 		String classname = _settings.getClassName();
 		String baseclass = _settings.getBaseClass();
-		
+
 		PhaserJSDoc help = InspectCore.getPhaserHelp();
-		
+
 		line("/**");
 		line(" * " + classname + ".");
 		line(" * @param {Phaser.Game} aGame " + help.getMethodArgHelp("Phaser.Group", "game"));
@@ -52,29 +52,34 @@ public class JSGroupCodeGenerator extends JSLikeGroupCodeGenerator {
 		line(" * @param {number} aPhysicsBodyType " + help.getMethodArgHelp("Phaser.Group", "physicsBodyType"));
 		line(" */");
 		openIndent("function " + classname + "(aGame, aParent, aName, aAddToStage, aEnableBody, aPhysicsBodyType) {");
-		
+		line();
 		line(baseclass + ".call(this, aGame, aParent, aName, aAddToStage, aEnableBody, aPhysicsBodyType);");
 
-		line();
-		
-		userCode(_settings.getUserCode().getCreate_before());
-		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
-		
-		line();
+		trim(() -> {
+			line();
+			userCode(_settings.getUserCode().getCreate_before());
+		});
+
+		trim(() -> {
+			line();
+			section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
+		});
 	}
 
 	@Override
 	protected void generateFooter() {
 		String classname = _settings.getClassName();
 		String baseclass = _settings.getBaseClass();
-		
-		section(POST_INIT_CODE_BEGIN, POST_INIT_CODE_END, getYouCanInsertCodeHere());
-		
-		userCode(_settings.getUserCode().getCreate_after());
+
+		trim(() -> {
+			section(POST_INIT_CODE_BEGIN, POST_INIT_CODE_END, getYouCanInsertCodeHere());
+			line();
+			userCode(_settings.getUserCode().getCreate_after());
+		});
 
 		closeIndent("}");
 		line();
-		
+
 		line("/** @type " + baseclass + " */");
 		line("var " + classname + "_proto = Object.create(" + baseclass + ".prototype);");
 		line(classname + ".prototype = " + classname + "_proto;");

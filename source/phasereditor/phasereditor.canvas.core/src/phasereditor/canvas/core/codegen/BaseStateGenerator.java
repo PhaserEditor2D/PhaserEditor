@@ -40,53 +40,59 @@ public abstract class BaseStateGenerator extends JSLikeCodeGenerator {
 		super(model);
 		_state = model.getStateSettings();
 	}
-	
+
 	protected void generatePreloaderStateCode() {
 		if (_state.isPreloader()) {
-			line();
-			
-			super.generateObjectCreation();
-			
-			line();
-			
-			super.generatePublicFields();
-			
-			line();
-			
-			String id = _state.getPreloadSpriteId();
-			if (id != null) {
-				BaseObjectModel obj = _model.getWorld().findById(id);
-				if (obj != null) {
-					line();
-					line("this.load.setPreloadSprite(" + getLocalVarName(obj) + ", " + _state.getPreloadSprite_direction().ordinal() + ");");
+			trim(() -> {
+				line();
+				super.generateObjectCreation();
+			});
+
+			trim(() -> {
+				line();
+				super.generatePublicFields();
+			});
+
+			trim(() -> {
+				String id = _state.getPreloadSpriteId();
+				if (id != null) {
+					BaseObjectModel obj = _model.getWorld().findById(id);
+					if (obj != null) {
+						line();
+						line("this.load.setPreloadSprite(" + getLocalVarName(obj) + ", "
+								+ _state.getPreloadSprite_direction().ordinal() + ");");
+					}
 				}
-			}
+
+			});
 		}
 	}
-	
+
 	@Override
 	protected void generateObjectCreation() {
 		if (_state.isPreloader()) {
 			return;
 		}
-		
+
 		super.generateObjectCreation();
 	}
-	
+
 	@Override
 	protected void generatePublicFields() {
 		if (_state.isPreloader()) {
 			return;
 		}
-		
+
 		super.generatePublicFields();
 	}
-	
+
 	protected void generateInitMethodBody() {
-		line();
-		userCode(_settings.getUserCode().getState_init_before());
-		
-		{
+		trim(() -> {
+			line();
+			userCode(_settings.getUserCode().getState_init_before());
+		});
+
+		trim(() -> {
 			line();
 			StateSettings state = _model.getStateSettings();
 			if (!StateSettings.SCALE_MODE_NO_SCALE.equals(state.getScaleMode())) {
@@ -107,11 +113,12 @@ public abstract class BaseStateGenerator extends JSLikeCodeGenerator {
 			if (!state.getStageBackgroundColor().equals(new RGB(0, 0, 0))) {
 				line("this.stage.backgroundColor = '" + getHexString(state.getStageBackgroundColor()) + "';");
 			}
-			line();
-		}
+		});
 
-		userCode(_settings.getUserCode().getState_init_after());
-		line();
+		trim(() -> {
+			line();
+			userCode(_settings.getUserCode().getState_init_after());
+		});
 	}
 
 }

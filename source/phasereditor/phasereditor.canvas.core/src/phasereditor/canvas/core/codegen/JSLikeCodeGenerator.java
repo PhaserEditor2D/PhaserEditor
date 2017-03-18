@@ -86,21 +86,22 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 
 		generateObjectCreation();
 
-		line();
-
-		int mark1 = length();
-
-		generatePublicFields();
-
-		int mark2 = length();
-
-		if (mark1 < mark2) {
-			line("// public fields");
+		trim(() -> {
 			line();
-			append(cut(mark1, mark2));
-		}
 
-		line();
+			int mark1 = length();
+
+			generatePublicFields();
+
+			int mark2 = length();
+
+			if (mark1 < mark2) {
+				line("// public fields");
+				line();
+				append(cut(mark1, mark2));
+			}
+
+		});
 
 		generateFooter();
 	}
@@ -134,7 +135,7 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 	}
 
 	protected void generateObjectCreation() {
-		{
+		trim(() -> {
 			int i = 0;
 			GroupModel root = getRootObjectsContainer();
 			int last = root.getChildren().size() - 1;
@@ -145,7 +146,7 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 				}
 				i++;
 			}
-		}
+		});
 	}
 
 	protected GroupModel getRootObjectsContainer() {

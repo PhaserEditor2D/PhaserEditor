@@ -66,12 +66,11 @@ public class JSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 		line();
 		line(baseclass + ".call(this, aGame, aX, aY, pKey, pFrame);");
 
-		line();
-		
-		userCode(_settings.getUserCode().getCreate_before());
-		section(PRE_INIT_CODE_BEGIN, PRE_INIT_CODE_END, getYouCanInsertCodeHere());
-		
-		line();
+		trim( ()->{
+			line();
+			userCode(_settings.getUserCode().getCreate_before());	
+		} );
+
 	}
 	
 
@@ -79,10 +78,6 @@ public class JSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 	protected void generateFooter() {
 		String classname = _settings.getClassName();
 		String baseclass = _settings.getBaseClass();
-
-		section(POST_INIT_CODE_BEGIN, POST_INIT_CODE_END, getYouCanInsertCodeHere());
-		
-		userCode(_settings.getUserCode().getCreate_after());
 
 		closeIndent("}");
 		line();

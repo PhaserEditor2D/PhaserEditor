@@ -49,14 +49,17 @@ public class TSStateCodeGenerator extends BaseStateGenerator implements ITSCodeG
 		line(" * " + classname + ".");
 		line(" */");
 		openIndent("class " + classname + " extends " + baseclass + " {");
-		openIndent("constructor() {");
-		line("super();");
-		
 		line();
-		
-		userCode(_settings.getUserCode().getState_constructor_before());
-		userCode(_settings.getUserCode().getState_constructor_after());
-		
+		openIndent("constructor() {");
+		line();
+		line("super();");
+
+		trim(() -> {
+			line();
+			userCode(_settings.getUserCode().getState_constructor_before());
+			userCode(_settings.getUserCode().getState_constructor_after());
+		});
+
 		closeIndent("}");
 
 		line();
@@ -71,21 +74,22 @@ public class TSStateCodeGenerator extends BaseStateGenerator implements ITSCodeG
 
 		openIndent("create() {");
 
-		line();
-		userCode(_settings.getUserCode().getCreate_before());
-		line();
+		trim(() -> {
+			line();
+			userCode(_settings.getUserCode().getCreate_before());
+			line();
+		});
 	}
 
 	@SuppressWarnings("rawtypes")
 	private void generatePreloadMethod() {
 		openIndent("preload () {");
-		
-		line();
-		
-		userCode(_settings.getUserCode().getState_preload_before());
-		
-		line();
-		
+
+		trim(() -> {
+			line();
+			userCode(_settings.getUserCode().getState_preload_before());
+		});
+
 		Set<AssetSectionModel> sections = new HashSet<>();
 		_world.walk(obj -> {
 			if (obj instanceof AssetSpriteModel) {
@@ -93,24 +97,29 @@ public class TSStateCodeGenerator extends BaseStateGenerator implements ITSCodeG
 				sections.add(asset.getSection());
 			}
 		});
-		for (AssetSectionModel section : sections) {
-			AssetPackModel pack = section.getPack();
-			String packUrl = pack.getAssetUrl(pack.getFile());
-			line("this.load.pack('" + section.getKey() + "', '" + packUrl + "');");
-		}
-		
-		line();
-		
-		generatePreloaderStateCode();
-		
-		line();
-		
-		userCode(_settings.getUserCode().getState_preload_after());
-		
-		line();
+
+		trim(() -> {
+			line();
+			for (AssetSectionModel section : sections) {
+				AssetPackModel pack = section.getPack();
+				String packUrl = pack.getAssetUrl(pack.getFile());
+				line("this.load.pack('" + section.getKey() + "', '" + packUrl + "');");
+			}
+		});
+
+		trim(() -> {
+			line();
+			generatePreloaderStateCode();
+		});
+
+		trim(() -> {
+			line();
+			userCode(_settings.getUserCode().getState_preload_after());
+		});
+
 		closeIndent("};");
 	}
-	
+
 	private void generateInitMethod() {
 		// INIT
 		openIndent("init() {");
@@ -121,15 +130,15 @@ public class TSStateCodeGenerator extends BaseStateGenerator implements ITSCodeG
 	@Override
 	protected void generateFooter() {
 		userCode(_settings.getUserCode().getCreate_after());
-		
+
 		closeIndent("}");
 
 		line();
-		
+
 		generatePublicFieldDeclarations(this, _model.getWorld());
-		
+
 		line();
-		
+
 		section("/* state-methods-begin */", "/* state-methods-end */", getYouCanInsertCodeHere());
 		line();
 		closeIndent("}");

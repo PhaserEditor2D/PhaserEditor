@@ -108,6 +108,18 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 		_sb.delete(start, end);
 		return str;
 	}
+	
+	protected void trim(Runnable run) {
+		int a = length();
+		run.run();
+		int b = length();
+		
+		String str = _sb.substring(a, b);
+		
+		if (str.trim().length() == 0) {
+			_sb.delete(a, b);
+		}
+	}
 
 	protected void append(String str) {
 		_sb.append(str);

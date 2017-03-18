@@ -51,12 +51,13 @@ public class JSStateCodeGenerator extends BaseStateGenerator {
 		line(" * " + classname + ".");
 		line(" */");
 		openIndent("function " + classname + "() {");
-		line(baseclass + ".call(this);");
-		
 		line();
-		
-		userCode(_settings.getUserCode().getState_constructor_before());
-		userCode(_settings.getUserCode().getState_constructor_after());
+		line(baseclass + ".call(this);");
+
+		trim(() -> {
+			userCode(_settings.getUserCode().getState_constructor_before());
+			userCode(_settings.getUserCode().getState_constructor_after());
+		});
 
 		closeIndent("}");
 		line();
@@ -67,50 +68,53 @@ public class JSStateCodeGenerator extends BaseStateGenerator {
 		line(classname + ".prototype.constructor = " + classname + ";");
 		line();
 
-		generateInitMethod(classname);
-
-		line();
-
-		generatePreloadMethod(classname);
-
-		line();
+		trim(() -> {
+			generateInitMethod(classname);
+			line();
+			generatePreloadMethod(classname);
+			line();
+		});
 
 		openIndent(classname + ".prototype.create = function () {");
 
-		line();
-
-		userCode(_settings.getUserCode().getCreate_before());
-
-		line();
-		line();
+		trim(() -> {
+			line();
+			userCode(_settings.getUserCode().getCreate_before());
+			line();
+		});
 	}
 
 	@SuppressWarnings("rawtypes")
 	private void generatePreloadMethod(String classname) {
 		openIndent(classname + ".prototype.preload = function () {");
 
-		line();
-		userCode(_settings.getUserCode().getState_preload_before());
-		line();
+		trim(() -> {
+			line();
+			userCode(_settings.getUserCode().getState_preload_before());
+		});
 
-		Set<AssetSectionModel> sections = new HashSet<>();
-		_world.walk(obj -> {
-			if (obj instanceof AssetSpriteModel) {
-				AssetModel asset = ((AssetSpriteModel) obj).getAssetKey().getAsset();
-				sections.add(asset.getSection());
+		trim(() -> {
+			line();
+			Set<AssetSectionModel> sections = new HashSet<>();
+			_world.walk(obj -> {
+				if (obj instanceof AssetSpriteModel) {
+					AssetModel asset = ((AssetSpriteModel) obj).getAssetKey().getAsset();
+					sections.add(asset.getSection());
+				}
+			});
+			for (AssetSectionModel section : sections) {
+				AssetPackModel pack = section.getPack();
+				String packUrl = pack.getAssetUrl(pack.getFile());
+				line("this.load.pack('" + section.getKey() + "', '" + packUrl + "');");
 			}
 		});
-		for (AssetSectionModel section : sections) {
-			AssetPackModel pack = section.getPack();
-			String packUrl = pack.getAssetUrl(pack.getFile());
-			line("this.load.pack('" + section.getKey() + "', '" + packUrl + "');");
-		}
 
-		
 		generatePreloaderStateCode();
-		
-		line();
-		userCode(_settings.getUserCode().getState_preload_after());
+
+		trim(() -> {
+			line();
+			userCode(_settings.getUserCode().getState_preload_after());
+		});
 
 		closeIndent("};");
 	}
@@ -125,7 +129,10 @@ public class JSStateCodeGenerator extends BaseStateGenerator {
 
 	@Override
 	protected void generateFooter() {
-		userCode(_settings.getUserCode().getCreate_after());
+		trim( ()->{
+			userCode(_settings.getUserCode().getCreate_after());
+		} );
+		
 		closeIndent("};");
 		line();
 		section(END_GENERATED_CODE, getYouCanInsertCodeHere());
