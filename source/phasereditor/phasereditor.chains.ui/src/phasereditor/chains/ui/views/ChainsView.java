@@ -422,6 +422,7 @@ public class ChainsView extends ViewPart {
 			IWorkbenchPage activePage = getViewSite().getWorkbenchWindow().getActivePage();
 
 			StringEditorInput input = new StringEditorInput(filePath.getFileName().toString(), new String(bytes));
+			input.setTooltip(input.getName());
 			CompilationUnitEditor editor = (CompilationUnitEditor) activePage.openEditor(input, editorId);
 			try {
 				editor.updatedTitleImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_JCU_OBJ));
