@@ -30,7 +30,7 @@ import phasereditor.canvas.core.CanvasModel;
  * @author arian
  *
  */
-public abstract class JSLikeBaseSpriteCodeGenerator extends JSLikeCodeGenerator {
+public abstract class JSLikeBaseSpriteCodeGenerator extends JSLikeCanvasCodeGenerator {
 
 	private BaseSpriteModel _selfSprite;
 

@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2016 Arian Fornaris
+// Copyright (c) 2015, 2017 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -19,35 +19,41 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.core.codegen;
-
-import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.IAssetKey;
-import phasereditor.assetpack.core.ImageAssetModel;
-import phasereditor.assetpack.core.SpritesheetAssetModel;
+package phasereditor.project.core.codegen;
 
 /**
  * @author arian
  *
  */
-public interface ICodeGenerator {
-	public String generate(String replace);
+public class JSClassGenerator extends BaseCodeGenerator {
 
-	public static class TextureArgs {
-		public String key;
-		public String frame = "null";
+	private String _clsname;
+	private String _baseClass;
+	private boolean _hasBaseClass;
+
+	public JSClassGenerator(String clsname, String baseClass) {
+		this._clsname = clsname;
+		this._baseClass = baseClass;
+		_hasBaseClass = baseClass != null && baseClass.trim().length() > 0;
 	}
 
-	public static TextureArgs getTextureArgs(IAssetKey assetKey) {
-		TextureArgs info = new TextureArgs();
-		info.key = "'" + assetKey.getAsset().getKey() + "'";
-		if (assetKey.getAsset() instanceof ImageAssetModel) {
-			info.frame = "null";
-		} else if (assetKey instanceof SpritesheetAssetModel.FrameModel) {
-			info.frame = assetKey.getKey();
-		} else if (assetKey instanceof AtlasAssetModel.Frame) {
-			info.frame = "'" + assetKey.getKey() + "'";
+	@Override
+	protected void internalGenerate() {
+		line("/**");
+		line(" *");
+		line(" */");
+		openIndent("function " + _clsname + " () {");
+		if (_hasBaseClass) {
+			line(_baseClass + ".call(this);");
 		}
-		return info;
+		closeIndent("}");
+		line();
+		if (_hasBaseClass) {
+			line("/** @type " + _baseClass + " */");
+			line("var " + _clsname + "_proto = Object.create(" + _baseClass + ".prototype);");
+			line(_clsname + ".prototype = " + _clsname + "_proto;");
+			line(_clsname + ".prototype.constructor = " + _clsname + ";");
+			line();
+		}
 	}
 }

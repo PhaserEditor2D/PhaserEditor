@@ -36,17 +36,17 @@ import phasereditor.canvas.core.WorldModel;
  */
 public interface ITSCodeGeneratorUtils {
 
-	public default void generatePublicFieldDeclarations(JSLikeCodeGenerator generator, WorldModel worldModel) {
+	public default void generatePublicFieldDeclarations(JSLikeCanvasCodeGenerator generator, WorldModel worldModel) {
 		worldModel.walk(model -> {
 			this.generatePublicFieldDeclaration(generator, model);
 		});
 	}
 
-	default public void generatePublicFieldDeclaration(JSLikeCodeGenerator generator, BaseObjectModel obj) {
+	default public void generatePublicFieldDeclaration(JSLikeCanvasCodeGenerator generator, BaseObjectModel obj) {
 		if (!(obj instanceof WorldModel) && obj.isEditorGenerate()) {
 			if (obj.isEditorPublic()) {
 				String name = generator.getVarName(obj);
-				String camel = JSLikeCodeGenerator.getPublicFieldName(name);
+				String camel = JSLikeCanvasCodeGenerator.getPublicFieldName(name);
 				generator.line("public " + camel + " : " + getObjectType(obj) + ";");
 			}
 
@@ -54,7 +54,7 @@ public interface ITSCodeGeneratorUtils {
 				List<AnimationModel> anims = ((BaseSpriteModel) obj).getAnimations();
 				for (AnimationModel anim : anims) {
 					if (anim.isPublic()) {
-						String name = JSLikeCodeGenerator.getPublicFieldName(generator.getAnimationVarName(obj, anim));
+						String name = JSLikeCanvasCodeGenerator.getPublicFieldName(generator.getAnimationVarName(obj, anim));
 						generator.line("public " + name + " : Phaser.Animation;");
 					}
 				}

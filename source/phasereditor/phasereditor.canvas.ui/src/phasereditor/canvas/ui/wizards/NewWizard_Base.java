@@ -45,7 +45,7 @@ import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
-import phasereditor.canvas.core.codegen.ICodeGenerator;
+import phasereditor.project.core.codegen.ICodeGenerator;
 
 /**
  * @author arian

@@ -42,6 +42,7 @@ import phasereditor.canvas.core.ButtonSpriteModel;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.CircleArcadeBodyModel;
+import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.ImageSpriteModel;
 import phasereditor.canvas.core.PhysicsSortDirection;
@@ -53,21 +54,45 @@ import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.lic.LicCore;
+import phasereditor.project.core.codegen.BaseCodeGenerator;
 
 /**
  * @author arian
  *
  */
-public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
+public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 
 	protected final String PRE_INIT_CODE_BEGIN = "/* --- pre-init-begin --- */";
 	protected final String PRE_INIT_CODE_END = "/* --- pre-init-end --- */";
 	protected final String POST_INIT_CODE_BEGIN = "/* --- post-init-begin --- */";
 	protected final String POST_INIT_CODE_END = "/* --- post-init-end --- */";
 	protected final String END_GENERATED_CODE = "/* --- end generated code --- */";
+	protected final WorldModel _world;
+	protected final CanvasModel _model;
+	protected final EditorSettings _settings;
+	
+	public JSLikeCanvasCodeGenerator(CanvasModel model) {
+		_world = model.getWorld();
+		_settings = model.getSettings();
+		_model = model;
+	}
+	
+	public static class TextureArgs {
+		public String key;
+		public String frame = "null";
+	}
 
-	public JSLikeCodeGenerator(CanvasModel model) {
-		super(model);
+	public static TextureArgs getTextureArgs(IAssetKey assetKey) {
+		TextureArgs info = new TextureArgs();
+		info.key = "'" + assetKey.getAsset().getKey() + "'";
+		if (assetKey.getAsset() instanceof ImageAssetModel) {
+			info.frame = "null";
+		} else if (assetKey instanceof SpritesheetAssetModel.FrameModel) {
+			info.frame = assetKey.getKey();
+		} else if (assetKey instanceof AtlasAssetModel.Frame) {
+			info.frame = "'" + assetKey.getKey() + "'";
+		}
+		return info;
 	}
 
 	/*
@@ -404,12 +429,12 @@ public abstract class JSLikeCodeGenerator extends BaseCodeGenerator {
 
 				list.add(0, value);
 			}
-			JSLikeCodeGenerator.this.append(_method + "(");
+			JSLikeCanvasCodeGenerator.this.append(_method + "(");
 			for (int i = 0; i < list.size(); i++) {
 				String sep = i > 0 ? ", " : "";
-				JSLikeCodeGenerator.this.append(sep + list.get(i));
+				JSLikeCanvasCodeGenerator.this.append(sep + list.get(i));
 			}
-			JSLikeCodeGenerator.this.append(")");
+			JSLikeCanvasCodeGenerator.this.append(")");
 		}
 	}
 

@@ -40,7 +40,7 @@ import phasereditor.project.core.ProjectCore;
  * @author arian
  *
  */
-public abstract class BaseStateGenerator extends JSLikeCodeGenerator {
+public abstract class BaseStateGenerator extends JSLikeCanvasCodeGenerator {
 
 	protected StateSettings _state;
 

@@ -14,4 +14,5 @@ Require-Bundle: org.eclipse.ui,
  phasereditor.inspect.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Export-Package: phasereditor.project.core
+Export-Package: phasereditor.project.core,
+ phasereditor.project.core.codegen

@@ -97,14 +97,14 @@ public class NewPage_SpriteSettings extends WizardPage {
 		container.setLayout(new GridLayout(2, false));
 
 		Label lblBaseClassName = new Label(container, SWT.NONE);
-		lblBaseClassName.setText("Base Class Name");
+		lblBaseClassName.setText("Superclass:");
 
 		_text = new Text(container, SWT.BORDER);
 		_text.setText("Phaser.Sprite");
 		_text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		Label lblCodeFormat = new Label(container, SWT.NONE);
-		lblCodeFormat.setText("Code Format");
+		lblCodeFormat.setText("Code Format:");
 
 		_langComboViewer = new ComboViewer(container, SWT.READ_ONLY);
 		Combo combo = _langComboViewer.getCombo();

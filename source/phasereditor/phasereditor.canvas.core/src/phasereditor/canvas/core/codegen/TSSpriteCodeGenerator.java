@@ -59,7 +59,7 @@ public class TSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator impleme
 		String key = "null";
 		String frame = "null";
 		if (sprite != null) {
-			TextureArgs info = ICodeGenerator.getTextureArgs(sprite.getAssetKey());
+			TextureArgs info = getTextureArgs(sprite.getAssetKey());
 			key = info.key;
 			frame = info.frame;
 		}

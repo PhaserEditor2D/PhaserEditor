@@ -19,14 +19,9 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.core.codegen;
-
-import phasereditor.canvas.core.EditorSettings;
+package phasereditor.project.core.codegen;
 
 import org.eclipse.swt.graphics.RGB;
-
-import phasereditor.canvas.core.CanvasModel;
-import phasereditor.canvas.core.WorldModel;
 
 /**
  * @author arian
@@ -36,15 +31,10 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 	private final StringBuilder _sb;
 	private String _replace;
 	private int _indent;
-	protected final WorldModel _world;
-	protected final CanvasModel _model;
-	protected final EditorSettings _settings;
+	
 
-	public BaseCodeGenerator(CanvasModel model) {
+	public BaseCodeGenerator() {
 		_sb = new StringBuilder();
-		_world = model.getWorld();
-		_settings = model.getSettings();
-		_model = model;
 	}
 
 	@Override
@@ -58,11 +48,11 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 
 	protected abstract void internalGenerate();
 
-	protected int length() {
+	public int length() {
 		return _sb.length();
 	}
 
-	protected String getSectionContent(String openTag, String closeTag, String defaultContent) {
+	public String getSectionContent(String openTag, String closeTag, String defaultContent) {
 		int i = _replace.indexOf(openTag);
 		int j = _replace.indexOf(closeTag);
 		if (j == -1) {
@@ -76,19 +66,19 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 		return defaultContent;
 	}
 
-	protected void userCode(String text) {
+	public void userCode(String text) {
 		String[] lines = text.split("\n");
 		for (String line : lines) {
 			line(line);
 		}
 	}
 
-	protected void section(String openTag, String defaultContent) {
+	public void section(String openTag, String defaultContent) {
 		append(openTag);
 		append(getSectionContent(openTag, "papa(--o^^o--)pig", defaultContent));
 	}
 
-	protected void section(String openTag, String closeTag, String defaultContent) {
+	public void section(String openTag, String closeTag, String defaultContent) {
 		String content = getSectionContent(openTag, closeTag, defaultContent);
 
 		if (openTag.equals("/* --- pre-init-begin --- */") || openTag.equals("/* --- post-init-begin --- */")) {
@@ -103,13 +93,13 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 		append(closeTag);
 	}
 
-	protected String cut(int start, int end) {
+	public String cut(int start, int end) {
 		String str = _sb.substring(start, end);
 		_sb.delete(start, end);
 		return str;
 	}
 	
-	protected void trim(Runnable run) {
+	public void trim(Runnable run) {
 		int a = length();
 		run.run();
 		int b = length();
@@ -121,40 +111,40 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 		}
 	}
 
-	protected void append(String str) {
+	public void append(String str) {
 		_sb.append(str);
 	}
 
-	protected void line() {
+	public void line() {
 		line("");
 	}
 
-	protected void line(String line) {
+	public void line(String line) {
 		append(line);
 		append("\n");
 		append(getIndentTabs());
 	}
 
-	protected void openIndent(String line) {
+	public void openIndent(String line) {
 		_indent++;
 		line(line);
 	}
 
-	protected void openIndent() {
+	public void openIndent() {
 		openIndent("");
 	}
 
-	protected void closeIndent(String str) {
+	public void closeIndent(String str) {
 		_indent--;
 		line();
 		line(str);
 	}
 
-	protected void closeIndent() {
+	public void closeIndent() {
 		closeIndent("");
 	}
 
-	protected String getIndentTabs() {
+	public String getIndentTabs() {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < _indent; i++) {
 			sb.append("\t");
@@ -162,11 +152,11 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 		return sb.toString();
 	}
 
-	protected static String emptyStringToNull(String str) {
+	public static String emptyStringToNull(String str) {
 		return str == null ? null : (str.trim().length() == 0 ? null : str);
 	}
 
-	protected static String round(double x) {
+	public static String round(double x) {
 		return Integer.toString((int) Math.round(x));
 	}
 

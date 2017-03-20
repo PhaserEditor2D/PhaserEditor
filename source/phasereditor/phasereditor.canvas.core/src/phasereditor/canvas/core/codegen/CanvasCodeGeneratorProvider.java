@@ -28,6 +28,7 @@ import java.util.Map;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.SourceLang;
+import phasereditor.project.core.codegen.ICodeGenerator;
 
 /**
  * @author arian

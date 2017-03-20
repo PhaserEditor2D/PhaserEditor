@@ -19,44 +19,12 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.core.codegen;
-
-import phasereditor.canvas.core.BaseObjectModel;
-import phasereditor.canvas.core.CanvasModel;
-import phasereditor.canvas.core.GroupModel;
+package phasereditor.project.core.codegen;
 
 /**
  * @author arian
  *
  */
-public abstract class JSLikeGroupCodeGenerator extends JSLikeCanvasCodeGenerator {
-
-	public JSLikeGroupCodeGenerator(CanvasModel model) {
-		super(model);
-	}
-
-	@Override
-	protected void generateObjectCreation() {
-		super.generateObjectCreation();
-	
-		GroupModel group = getRootObjectsContainer();
-		
-		generateObjectProps(group);
-		generateGroupProps(group);
-	}
-	
-	@Override
-	protected GroupModel getRootObjectsContainer() {
-		return _world.findGroupPrefabRoot();
-	}
-
-	@Override
-	protected String getLocalVarName(BaseObjectModel model) {
-		if (model == getRootObjectsContainer()) {
-			return "this";
-		}
-		
-		return super.getLocalVarName(model);
-	}
-	
+public interface ICodeGenerator {
+	public String generate(String replace);
 }

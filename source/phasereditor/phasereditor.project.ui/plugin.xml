@@ -32,6 +32,15 @@
             name="Phaser Project"
             project="true">
       </wizard>
+      <wizard
+            category="phasereditor.ui.wizardCategory"
+            class="phasereditor.project.ui.wizards.NewJSClassFileWizard"
+            finalPerspective="phasereditor.ide.ui.perspective"
+            hasPages="true"
+            icon="platform:/plugin/phasereditor.ui/icons/jcu_obj.gif"
+            id="phasereditor.project.ui.newclass"
+            name="JavaScript Class File">
+      </wizard>
       <!--
       <primaryWizard
             id="phasereditor.project.ui.newproject">
@@ -50,6 +59,9 @@
             targetID="*">
          <newWizardShortcut
                id="phasereditor.project.ui.newproject">
+         </newWizardShortcut>
+         <newWizardShortcut
+               id="phasereditor.project.ui.newclass">
          </newWizardShortcut>
       </perspectiveExtension>
    </extension>
@@ -78,6 +90,12 @@
             menuGroupId="phaser.new.project"
             type="new"
             wizardId="phasereditor.project.ui.newproject">
+         <enablement></enablement>
+      </commonWizard>
+      <commonWizard
+            menuGroupId="org.eclipse.wst.jsdt.ui.java"
+            type="new"
+            wizardId="phasereditor.project.ui.newclass">
          <enablement></enablement>
       </commonWizard>
    </extension>
