@@ -21,12 +21,20 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core.codegen;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import org.eclipse.core.resources.IProject;
 import org.eclipse.swt.graphics.RGB;
 
+import phasereditor.assetpack.core.AssetModel;
+import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.PhysicsType;
 import phasereditor.canvas.core.StateSettings;
+import phasereditor.canvas.core.StateSettings.LoadPack;
+import phasereditor.project.core.ProjectCore;
 
 /**
  * @author arian
@@ -41,6 +49,48 @@ public abstract class BaseStateGenerator extends JSLikeCodeGenerator {
 		_state = model.getStateSettings();
 	}
 
+	@SuppressWarnings("rawtypes")
+	protected void generatePreloadMethodBody() {
+		trim(() -> {
+			line();
+			userCode(_settings.getUserCode().getState_preload_before());
+		});
+
+		Set<LoadPack> loadPacks = new LinkedHashSet<>(_state.getLoadPack());
+
+		_world.walk(obj -> {
+			if (obj instanceof AssetSpriteModel) {
+				AssetModel asset = ((AssetSpriteModel) obj).getAssetKey().getAsset();
+				String relpath = asset.getPack().getRelativePath();
+				LoadPack loadpack = new LoadPack(relpath, asset.getSection().getKey());
+				loadPacks.add(loadpack);
+			}
+		});
+
+		IProject project = _world.getFile().getProject();
+		
+		trim(() -> {
+			line();
+
+			for (LoadPack loadpack : loadPacks) {
+				String filepath = loadpack.getFile();
+				String url = ProjectCore.getAssetUrl(project.getFile(filepath));
+				line("this.load.pack('" + loadpack.getSection() + "', '" + url + "');");
+			}
+		});
+
+		trim(() -> {
+			line();
+			generatePreloaderStateCode();
+		});
+
+		trim(() -> {
+			line();
+			userCode(_settings.getUserCode().getState_preload_after());
+		});
+	}
+
+	
 	protected void generatePreloaderStateCode() {
 		if (_state.isPreloader()) {
 			trim(() -> {

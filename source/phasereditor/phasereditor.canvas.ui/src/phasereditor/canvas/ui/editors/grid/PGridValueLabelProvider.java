@@ -24,6 +24,7 @@ package phasereditor.canvas.ui.editors.grid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.swt.graphics.Image;
@@ -33,6 +34,7 @@ import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.canvas.core.AnimationModel;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.PhysicsType;
+import phasereditor.canvas.core.StateSettings.LoadPack;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.core.PhysicsSortDirection;
 import phasereditor.ui.ColorButtonSupport;
@@ -63,6 +65,11 @@ public class PGridValueLabelProvider extends PGridLabelProvider {
 			return "(properties)";
 		}
 
+		if (element instanceof PGridLoadPackProperty) {
+			Set<LoadPack> value = ((PGridLoadPackProperty) element).getValue();
+			return LoadPack.toString(value);
+		}
+		
 		if (element instanceof PGridColorProperty) {
 			PGridColorProperty prop = (PGridColorProperty) element;
 			RGB rgb = prop.getValue();
@@ -103,11 +110,11 @@ public class PGridValueLabelProvider extends PGridLabelProvider {
 			PGridSpriteProperty prop = (PGridSpriteProperty) element;
 			String id = prop.getValue();
 			BaseObjectModel model = _canvas.getWorldModel().findById(id);
-			
+
 			if (model == null) {
 				return id;
 			}
-			
+
 			return model.getEditorName();
 		}
 

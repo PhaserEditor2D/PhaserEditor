@@ -52,6 +52,7 @@ import phasereditor.inspect.core.jsdoc.PhaserMember;
 import phasereditor.inspect.core.jsdoc.PhaserMethod;
 import phasereditor.inspect.core.jsdoc.PhaserType;
 import phasereditor.inspect.core.jsdoc.PhaserVariable;
+import phasereditor.project.core.ProjectCore;
 
 public abstract class AssetModel implements IAssetKey, IAdaptable {
 	private static Map<AssetType, PhaserMethod> _methodMap = new HashMap<>();
@@ -287,8 +288,9 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 		return files;
 	}
 
+	@SuppressWarnings("static-method")
 	public String getUrlFromFile(IFile file) {
-		return getPack().getAssetUrl(file);
+		return ProjectCore.getAssetUrl(file);
 	}
 
 	public List<String> getUrlsFromFiles(List<IFile> files) {

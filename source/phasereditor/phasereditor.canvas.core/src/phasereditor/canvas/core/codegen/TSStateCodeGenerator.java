@@ -21,13 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core.codegen;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import phasereditor.assetpack.core.AssetModel;
-import phasereditor.assetpack.core.AssetPackModel;
-import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.CanvasModel;
 
 /**
@@ -81,41 +74,10 @@ public class TSStateCodeGenerator extends BaseStateGenerator implements ITSCodeG
 		});
 	}
 
-	@SuppressWarnings("rawtypes")
 	private void generatePreloadMethod() {
 		openIndent("preload () {");
 
-		trim(() -> {
-			line();
-			userCode(_settings.getUserCode().getState_preload_before());
-		});
-
-		Set<AssetSectionModel> sections = new HashSet<>();
-		_world.walk(obj -> {
-			if (obj instanceof AssetSpriteModel) {
-				AssetModel asset = ((AssetSpriteModel) obj).getAssetKey().getAsset();
-				sections.add(asset.getSection());
-			}
-		});
-
-		trim(() -> {
-			line();
-			for (AssetSectionModel section : sections) {
-				AssetPackModel pack = section.getPack();
-				String packUrl = pack.getAssetUrl(pack.getFile());
-				line("this.load.pack('" + section.getKey() + "', '" + packUrl + "');");
-			}
-		});
-
-		trim(() -> {
-			line();
-			generatePreloaderStateCode();
-		});
-
-		trim(() -> {
-			line();
-			userCode(_settings.getUserCode().getState_preload_after());
-		});
+		generatePreloadMethodBody();
 
 		closeIndent("};");
 	}

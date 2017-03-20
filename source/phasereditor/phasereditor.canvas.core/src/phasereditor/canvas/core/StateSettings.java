@@ -23,8 +23,12 @@ package phasereditor.canvas.core;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.swt.graphics.RGB;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -47,6 +51,75 @@ public class StateSettings {
 	private boolean _isPreloader = false;
 	private String _preloadSpriteId = null;
 	private PreloadSpriteDirection _preloadSprite_direction = PreloadSpriteDirection.HORIZONTAL;
+	private Set<LoadPack> _loadPack = new LinkedHashSet<>();
+
+	public static class LoadPack {
+		private String _file;
+		private String _section;
+
+		public LoadPack(String file, String section) {
+			super();
+			_file = file;
+			_section = section;
+		}
+
+		public String getFile() {
+			return _file;
+		}
+
+		public void setFile(String file) {
+			_file = file;
+		}
+
+		public String getSection() {
+			return _section;
+		}
+
+		public void setSection(String section) {
+			_section = section;
+		}
+
+		public static String toString(Set<LoadPack> value) {
+			if (value == null) {
+				return "[]";
+			}
+
+			String join = value.stream().map(e -> e.getSection()).collect(Collectors.joining(","));
+			return "[" + join + "]";
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((_file == null) ? 0 : _file.hashCode());
+			result = prime * result + ((_section == null) ? 0 : _section.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			LoadPack other = (LoadPack) obj;
+			if (_file == null) {
+				if (other._file != null)
+					return false;
+			} else if (!_file.equals(other._file))
+				return false;
+			if (_section == null) {
+				if (other._section != null)
+					return false;
+			} else if (!_section.equals(other._section))
+				return false;
+			return true;
+		}
+
+	}
 
 	public enum PreloadSpriteDirection {
 		HORIZONTAL, VERTICAL
@@ -62,6 +135,16 @@ public class StateSettings {
 		data.put("isPreloader", _isPreloader, false);
 		data.put("preloadSpriteId", _preloadSpriteId);
 		data.put("preloadSprite_direction", _preloadSprite_direction.ordinal());
+		{
+			JSONArray list = new JSONArray();
+			for (LoadPack section : _loadPack) {
+				JSONObject obj = new JSONObject();
+				obj.put("file", section.getFile());
+				obj.put("section", section.getSection());
+				list.put(obj);
+			}
+			data.put("load.pack", list);
+		}
 	}
 
 	public void read(JSONObject data) {
@@ -79,6 +162,25 @@ public class StateSettings {
 		{
 			_preloadSprite_direction = PreloadSpriteDirection.values()[data.optInt("preloadSprite_direction", 0)];
 		}
+		{
+			JSONArray list = data.optJSONArray("load.pack");
+			LinkedHashSet<LoadPack> loadpack = new LinkedHashSet<>();
+			if (list != null) {
+				for (int i = 0; i < list.length(); i++) {
+					JSONObject obj = list.getJSONObject(i);
+					loadpack.add(new LoadPack(obj.getString("file"), obj.getString("section")));
+				}
+			}
+			_loadPack = loadpack;
+		}
+	}
+
+	public Set<LoadPack> getLoadPack() {
+		return _loadPack;
+	}
+
+	public void setLoadPack(Set<LoadPack> loadPack) {
+		_loadPack = loadPack;
 	}
 
 	public boolean isPreloader() {

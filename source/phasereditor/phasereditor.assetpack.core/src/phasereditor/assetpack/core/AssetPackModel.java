@@ -209,7 +209,11 @@ public final class AssetPackModel {
 		}
 		return _file.getName();
 	}
-
+	
+	public String getRelativePath() {
+		return _file.getProjectRelativePath().toPortableString();
+	}
+	
 	public IContainer getWebContentFolder() {
 		if (_file == null) {
 			return null;
@@ -269,12 +273,6 @@ public final class AssetPackModel {
 		Set<IFile> usedFiles = findUsedFiles();
 		sortFilesByNotUsed(files, usedFiles);
 		return usedFiles;
-	}
-
-	public String getAssetUrl(IFile file) {
-		IContainer assetsFolder = getWebContentFolder();
-		String relPath = file.getFullPath().makeRelativeTo(assetsFolder.getFullPath()).toPortableString();
-		return relPath;
 	}
 
 	public Set<IFile> findUsedFiles() {

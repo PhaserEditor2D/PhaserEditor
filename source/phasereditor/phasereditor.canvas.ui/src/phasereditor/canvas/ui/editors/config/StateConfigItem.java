@@ -21,16 +21,20 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.config;
 
+import java.util.Set;
+
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.graphics.RGB;
 
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.PhysicsType;
 import phasereditor.canvas.core.StateSettings;
+import phasereditor.canvas.core.StateSettings.LoadPack;
 import phasereditor.canvas.core.StateSettings.PreloadSpriteDirection;
 import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
 import phasereditor.canvas.ui.editors.grid.PGridColorProperty;
 import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
+import phasereditor.canvas.ui.editors.grid.PGridLoadPackProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
 import phasereditor.canvas.ui.editors.grid.PGridSpriteProperty;
 import phasereditor.inspect.core.InspectCore;
@@ -187,8 +191,27 @@ public class StateConfigItem extends ConfigItem {
 
 		{
 			PGridSection section = new PGridSection("Preload");
+
+			section.add(new PGridLoadPackProperty(null, "pack", help.getMemberHelp("Phaser.Loader.pack")) {
+
+				@Override
+				public void setValue(Set<LoadPack> value, boolean notify) {
+					state.setLoadPack(value);
+				}
+
+				@Override
+				public boolean isModified() {
+					return !state.getLoadPack().isEmpty();
+				}
+
+				@Override
+				public Set<LoadPack> getValue() {
+					return state.getLoadPack();
+				}
+			});
+
 			section.add(new PGridBooleanProperty(null, "isPreloader",
-					"Check this for states used as preloader of the assets.\nThe objects creation code is placed in the 'preload' method instead of the 'create' one.") {
+					"Phaser Editor: Check this for states used as preloader of the assets.\nThe objects creation code is placed in the 'preload' method instead of the 'create' one.") {
 
 				@Override
 				public Boolean getValue() {

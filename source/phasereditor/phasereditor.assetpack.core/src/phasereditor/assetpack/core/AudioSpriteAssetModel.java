@@ -39,6 +39,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import phasereditor.project.core.ProjectCore;
+
 public class AudioSpriteAssetModel extends AudioAssetModel {
 
 	private String _jsonURL;
@@ -85,7 +87,7 @@ public class AudioSpriteAssetModel extends AudioAssetModel {
 	}
 
 	public void setJsonURLFile(IFile file) {
-		setJsonURL(getPack().getAssetUrl(file));
+		setJsonURL(ProjectCore.getAssetUrl(file));
 	}
 
 	public String getJsonData() {
@@ -254,7 +256,6 @@ public class AudioSpriteAssetModel extends AudioAssetModel {
 				if (file != null) {
 					urls2.add(url);
 				} else {
-					AssetPackModel pack = getPack();
 					IFile jsonFile = getFileFromUrl(_jsonURL);
 					if (jsonFile != null) {
 						IPath path = jsonFile.getParent().getFullPath()
@@ -262,7 +263,7 @@ public class AudioSpriteAssetModel extends AudioAssetModel {
 						file = ResourcesPlugin.getWorkspace().getRoot()
 								.getFile(path);
 						if (file.exists()) {
-							urls2.add(pack.getAssetUrl(file));
+							urls2.add(ProjectCore.getAssetUrl(file));
 						}
 					}
 				}

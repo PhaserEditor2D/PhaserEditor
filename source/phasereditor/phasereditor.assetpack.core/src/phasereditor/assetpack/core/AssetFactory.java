@@ -30,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import phasereditor.atlas.core.AtlasCore;
+import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.PhaserEditorUI;
 
 public abstract class AssetFactory {
@@ -48,7 +49,7 @@ public abstract class AssetFactory {
 				IFile file = pack.pickImageFile();
 				if (file != null) {
 					asset.setKey(pack.createKey(file));
-					asset.setUrl(pack.getAssetUrl(file));
+					asset.setUrl(ProjectCore.getAssetUrl(file));
 				}
 				return asset;
 			}
@@ -72,7 +73,7 @@ public abstract class AssetFactory {
 				IFile file = pack.pickImageFile();
 				if (file != null) {
 					asset.setKey(pack.createKey(file));
-					asset.setUrl(pack.getAssetUrl(file));
+					asset.setUrl(ProjectCore.getAssetUrl(file));
 				}
 				return asset;
 			}
@@ -150,7 +151,7 @@ public abstract class AssetFactory {
 				IFile file = pack.pickTilemapFile();
 				if (file != null) {
 					asset.setKey(pack.createKey(file));
-					asset.setUrl(pack.getAssetUrl(file));
+					asset.setUrl(ProjectCore.getAssetUrl(file));
 					String ext = file.getFileExtension().toLowerCase();
 					if (ext.equals("csv")) {
 						asset.setFormat(TilemapAssetModel.TILEMAP_CSV);
@@ -176,7 +177,7 @@ public abstract class AssetFactory {
 				IFile file = pack.pickImageFile();
 				if (file != null) {
 					asset.setKey(pack.createKey(file));
-					asset.setTextureURL(pack.getAssetUrl(file));
+					asset.setTextureURL(ProjectCore.getAssetUrl(file));
 				}
 				return asset;
 			}
@@ -212,7 +213,7 @@ public abstract class AssetFactory {
 					file = pack.pickImageFile();
 					if (file != null) {
 						asset.setKey(pack.createKey(file));
-						asset.setTextureURL(pack.getAssetUrl(file));
+						asset.setTextureURL(ProjectCore.getAssetUrl(file));
 					}
 				} else {
 					asset.setKey(pack.createKey(file));
@@ -220,7 +221,7 @@ public abstract class AssetFactory {
 					if (format != null) {
 						asset.setFormat(format);
 					}
-					asset.setAtlasURL(pack.getAssetUrl(file));
+					asset.setAtlasURL(ProjectCore.getAssetUrl(file));
 					String name = PhaserEditorUI.getNameFromFilename(file.getName());
 					IFile imgFile = file.getParent().getFile(new Path(name + ".png"));
 					if (imgFile.exists()) {
@@ -259,7 +260,7 @@ public abstract class AssetFactory {
 				IFile file = pack.pickFile(files);
 				if (file != null) {
 					asset.setKey(pack.createKey(file));
-					asset.setUrl(pack.getAssetUrl(file));
+					asset.setUrl(ProjectCore.getAssetUrl(file));
 				}
 				return asset;
 			}

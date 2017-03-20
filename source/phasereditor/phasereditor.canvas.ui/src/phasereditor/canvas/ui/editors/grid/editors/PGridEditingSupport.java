@@ -51,6 +51,7 @@ import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
 import phasereditor.canvas.ui.editors.grid.PGridColorProperty;
 import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
 import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
+import phasereditor.canvas.ui.editors.grid.PGridLoadPackProperty;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridOverrideProperty;
 import phasereditor.canvas.ui.editors.grid.PGridProperty;
@@ -75,11 +76,11 @@ public class PGridEditingSupport extends EditingSupport {
 		super(viewer);
 		_supportUndoRedo = supportUndoRedo;
 	}
-	
+
 	public void setCanvas(ObjectCanvas canvas) {
 		_canvas = canvas;
 	}
-	
+
 	public ObjectCanvas getCanvas() {
 		return _canvas;
 	}
@@ -99,7 +100,7 @@ public class PGridEditingSupport extends EditingSupport {
 		if (element instanceof PGridNumberProperty) {
 			return new NumberCellEditor(parent);
 		} else if (element instanceof PGridSpriteProperty) {
-			return new SpriteCellEditor(parent, _canvas, ((PGridSpriteProperty)element).getValue());
+			return new SpriteCellEditor(parent, _canvas, ((PGridSpriteProperty) element).getValue());
 		} else if (element instanceof PGridStringProperty) {
 			PGridStringProperty longStrProp = (PGridStringProperty) element;
 			if (longStrProp.isLongText()) {
@@ -169,6 +170,9 @@ public class PGridEditingSupport extends EditingSupport {
 		} else if (element instanceof PGridUserCodeProperty) {
 			PGridUserCodeProperty prop = (PGridUserCodeProperty) element;
 			return new UserCodeCellEditor(parent, prop.getValue());
+		} else if (element instanceof PGridLoadPackProperty) {
+			return new LoadPackCellEditor(parent, _canvas.getWorldModel().getProject(),
+					((PGridLoadPackProperty) element).getValue());
 		}
 
 		return null;

@@ -175,6 +175,12 @@ public class ProjectCore {
 		IFolder folder = root.getFolder(path);
 		return folder;
 	}
+	
+	public static String getAssetUrl(IFile file) {
+		IContainer assetsFolder = ProjectCore.getWebContentFolder(file.getProject());
+		String relPath = file.getFullPath().makeRelativeTo(assetsFolder.getFullPath()).toPortableString();
+		return relPath;
+	}
 
 	public static IPath getAssetsPath(IProject project) {
 		IPath webpath = getWebContentPath(project);

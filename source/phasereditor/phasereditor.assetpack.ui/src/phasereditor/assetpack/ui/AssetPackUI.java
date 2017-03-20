@@ -112,6 +112,7 @@ import phasereditor.assetpack.ui.widgets.AudioResourceDialog;
 import phasereditor.assetpack.ui.widgets.ImageResourceDialog;
 import phasereditor.assetpack.ui.widgets.VideoResourceDialog;
 import phasereditor.audio.core.AudioCore;
+import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.PhaserEditorUI;
 
 public class AssetPackUI {
@@ -125,7 +126,6 @@ public class AssetPackUI {
 		AssetModel[] assets = new AssetModel[selarray.length];
 
 		arraycopy(selarray, 0, assets, 0, selarray.length);
-
 
 		IWorkbenchPart activePart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 				.getActivePart();
@@ -281,7 +281,7 @@ public class AssetPackUI {
 		ListDialog dlg = new ListDialog(shell);
 		dlg.setTitle(objectName);
 		dlg.setMessage("Select the " + objectName + " path. Those in bold are not used.");
-		dlg.setLabelProvider(createFilesLabelProvider(packModel, usedFiles, shell));
+		dlg.setLabelProvider(createFilesLabelProvider(usedFiles, shell));
 		dlg.setContentProvider(new ArrayContentProvider());
 		dlg.setInput(files);
 
@@ -292,7 +292,7 @@ public class AssetPackUI {
 		if (dlg.open() == Window.OK && dlg.getResult().length > 0) {
 			result = (IFile) dlg.getResult()[0];
 			if (result != null) {
-				String path = packModel.getAssetUrl(result);
+				String path = ProjectCore.getAssetUrl(result);
 				action.accept(path);
 				return path;
 			}
@@ -320,7 +320,7 @@ public class AssetPackUI {
 		}
 
 		ImageResourceDialog dlg = new ImageResourceDialog(shell);
-		dlg.setLabelProvider(createFilesLabelProvider(packModel, usedFiles, shell));
+		dlg.setLabelProvider(createFilesLabelProvider(usedFiles, shell));
 		dlg.setInput(imageFiles);
 		dlg.setObjectName(objectName);
 		if (initial != null) {
@@ -330,7 +330,7 @@ public class AssetPackUI {
 		if (dlg.open() == Window.OK) {
 			result = (IFile) dlg.getSelection();
 			if (result != null) {
-				String path = packModel.getAssetUrl(result);
+				String path = ProjectCore.getAssetUrl(result);
 				action.accept(path);
 				return path;
 			}
@@ -359,7 +359,7 @@ public class AssetPackUI {
 		}
 
 		AudioResourceDialog dlg = new AudioResourceDialog(shell);
-		dlg.setLabelProvider(createFilesLabelProvider(packModel, usedFiles, shell));
+		dlg.setLabelProvider(createFilesLabelProvider(usedFiles, shell));
 		dlg.setInput(audioFiles);
 
 		if (initialFiles != null) {
@@ -371,7 +371,7 @@ public class AssetPackUI {
 			if (selection != null) {
 				JSONArray array = new JSONArray();
 				for (IFile file : selection) {
-					String url = packModel.getAssetUrl(file);
+					String url = ProjectCore.getAssetUrl(file);
 					array.put(url);
 				}
 				String json = array.toString();
@@ -402,7 +402,7 @@ public class AssetPackUI {
 		}
 
 		VideoResourceDialog dlg = new VideoResourceDialog(shell);
-		dlg.setLabelProvider(createFilesLabelProvider(packModel, usedFiles, shell));
+		dlg.setLabelProvider(createFilesLabelProvider(usedFiles, shell));
 		dlg.setInput(videoFiles);
 
 		if (initialFiles != null) {
@@ -414,7 +414,7 @@ public class AssetPackUI {
 			if (selection != null) {
 				JSONArray array = new JSONArray();
 				for (IFile file : selection) {
-					String url = packModel.getAssetUrl(file);
+					String url = ProjectCore.getAssetUrl(file);
 					array.put(url);
 				}
 				String json = array.toString();
@@ -426,7 +426,7 @@ public class AssetPackUI {
 		return "";
 	}
 
-	private static LabelProvider createFilesLabelProvider(AssetPackModel packModel, Set<IFile> usedFiles, Shell shell) {
+	private static LabelProvider createFilesLabelProvider(Set<IFile> usedFiles, Shell shell) {
 		class FilesLabelProvider extends LabelProvider implements IFontProvider {
 
 			private WorkbenchLabelProvider _baseLabels = new WorkbenchLabelProvider();
@@ -454,7 +454,7 @@ public class AssetPackUI {
 
 			@Override
 			public String getText(Object element) {
-				return packModel.getAssetUrl((IFile) element);
+				return ProjectCore.getAssetUrl((IFile) element);
 			}
 		}
 		return new FilesLabelProvider();
