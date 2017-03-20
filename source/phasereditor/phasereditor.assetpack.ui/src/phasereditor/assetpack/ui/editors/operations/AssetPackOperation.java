@@ -30,7 +30,6 @@ import phasereditor.assetpack.ui.editors.AssetPackEditor;
  * @author arian
  *
  */
-@Deprecated
 public abstract class AssetPackOperation extends AbstractOperation {
 
 	public AssetPackOperation(String label) {

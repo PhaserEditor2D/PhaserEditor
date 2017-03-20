@@ -70,15 +70,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.ide.IGotoMarker;
 import org.eclipse.ui.ide.undo.WorkspaceUndoUtil;
-import org.eclipse.ui.operations.RedoActionHandler;
-import org.eclipse.ui.operations.UndoActionHandler;
+import org.eclipse.ui.operations.UndoRedoActionGroup;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IShowInSource;
@@ -117,12 +114,11 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	public static final String ID = AssetPackCore.ASSET_EDITOR_ID;
 
-	@Deprecated
 	public static final IUndoContext UNDO_CONTEXT = new IUndoContext() {
 
 		@Override
 		public boolean matches(IUndoContext context) {
-			return context == this;
+			return context == this || WorkspaceUndoUtil.getWorkspaceUndoContext().matches(context);
 		}
 
 		@Override
@@ -176,19 +172,9 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	}
 
 	private void registerUndoRedoActions() {
-		// IEditorSite site = getEditorSite();
-		// UndoRedoActionGroup group = new UndoRedoActionGroup(site,
-		// UNDO_CONTEXT, true);
-		// UndoRedoActionGroup group = new UndoRedoActionGroup(site,
-		// RefactoringCore.getUndoManager()., true);
-		// group.fillActionBars(site.getActionBars());
-
-		IUndoContext undoContext = WorkspaceUndoUtil.getWorkspaceUndoContext();
-
-		IActionBars actionBars = getEditorSite().getActionBars();
-		actionBars.setGlobalActionHandler(ActionFactory.UNDO.getId(), new UndoActionHandler(getSite(), undoContext));
-		actionBars.setGlobalActionHandler(ActionFactory.REDO.getId(), new RedoActionHandler(getSite(), undoContext));
-
+		IEditorSite site = getEditorSite();
+		UndoRedoActionGroup group = new UndoRedoActionGroup(site, UNDO_CONTEXT, true);
+		group.fillActionBars(site.getActionBars());
 	}
 
 	@Override
