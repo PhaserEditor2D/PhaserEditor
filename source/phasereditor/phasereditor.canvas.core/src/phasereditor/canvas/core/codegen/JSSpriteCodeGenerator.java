@@ -79,6 +79,11 @@ public class JSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 		String classname = _settings.getClassName();
 		String baseclass = _settings.getBaseClass();
 
+		trim( ()->{
+			line();
+			userCode(_settings.getUserCode().getCreate_after());	
+		} );
+		
 		closeIndent("}");
 		line();
 
