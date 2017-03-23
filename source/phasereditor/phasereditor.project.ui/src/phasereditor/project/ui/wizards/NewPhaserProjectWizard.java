@@ -117,6 +117,7 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 		}
 
 		boolean simplestProject = _settingsPage.getSimplestBtn().getSelection();
+		boolean hasAssets = _settingsPage.getIncludeAssets().getSelection();
 
 		try {
 			getContainer().run(true, false, new IRunnableWithProgress() {
@@ -159,12 +160,18 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 
 						values.put("game.extra", sb.toString());
 
+						String templId = "";
+						
 						if (simplestProject) {
-							template = InspectCore.getProjectTemplates().findById("phasereditor.project.simplest");
+							templId = "phasereditor.project.simplest";
 							sb.insert(0, ", '', this");
-						} else {
-							template = null;
 						}
+						
+						if (hasAssets) {
+							templId += ".assets";
+						}
+						
+						template = InspectCore.getProjectTemplates().findById(templId);
 
 						ProjectCore.configureNewPhaserProject(project, template, values);
 						monitor.worked(3);
