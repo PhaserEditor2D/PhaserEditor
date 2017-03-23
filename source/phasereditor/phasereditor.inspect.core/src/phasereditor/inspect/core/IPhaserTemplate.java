@@ -21,12 +21,18 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.core;
 
+import java.util.Map;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 public interface IPhaserTemplate {
-	public void copyInto(IFolder folder, IProgressMonitor monitor);
+	void copyInto(IFolder dstWebContentfolder, Map<String, String> values, IProgressMonitor monitor);
+	
+	public default void copyInto(IFolder folder, IProgressMonitor monitor) {
+		copyInto(folder, null, monitor);
+	}
 
 	public String getName();
 

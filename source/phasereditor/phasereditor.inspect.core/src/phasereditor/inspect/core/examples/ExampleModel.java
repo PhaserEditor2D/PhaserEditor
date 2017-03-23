@@ -28,6 +28,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -77,9 +78,9 @@ public class ExampleModel implements IPhaserTemplate {
 		_info.setWebsite("http://github.io/photonstorm/phaser");
 		_info.setMainFile(mainFile);
 		_info.setDescription("Official Phaser example.");
-		_mainFilePath = examples.getExamplesRepoPath().resolve(category.getName().toLowerCase())
-				.resolve(mainFile);
-		_phaserBuildFolder = InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN, "phaser-master/build/");
+		_mainFilePath = examples.getExamplesRepoPath().resolve(category.getName().toLowerCase()).resolve(mainFile);
+		_phaserBuildFolder = InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN,
+				"phaser-master/build/");
 		_phaserCustomFolder = InspectCore.getBundleFile(InspectCore.RESOURCES_METADATA_PLUGIN, "phaser-custom/");
 	}
 
@@ -97,7 +98,7 @@ public class ExampleModel implements IPhaserTemplate {
 	}
 
 	@Override
-	public void copyInto(IFolder folder, IProgressMonitor monitor) {
+	public void copyInto(IFolder folder, Map<String, String> values, IProgressMonitor monitor) {
 		try {
 
 			// copy mappings

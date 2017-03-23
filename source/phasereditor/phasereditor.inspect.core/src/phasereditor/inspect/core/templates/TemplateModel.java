@@ -23,10 +23,15 @@ package phasereditor.inspect.core.templates;
 
 import static java.lang.System.out;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -107,7 +112,7 @@ public class TemplateModel implements IPhaserTemplate {
 	}
 
 	@Override
-	public void copyInto(IFolder dstWebContentfolder, IProgressMonitor monitor) {
+	public void copyInto(IFolder dstWebContentfolder, Map<String, String> values, IProgressMonitor monitor) {
 		// copy template content
 		try {
 			Path designFolder = _templateFolder.resolve("Design");
@@ -126,6 +131,9 @@ public class TemplateModel implements IPhaserTemplate {
 			copyTree(designFolder, dstDesignFolder, monitor);
 			copyTree(webContentFolder, dstWebContentfolder, monitor);
 
+			if (values != null) {
+				evalParameters(dstWebContentfolder, values, monitor);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -134,6 +142,33 @@ public class TemplateModel implements IPhaserTemplate {
 		// copy phaser.js
 		Path phaserJs = getParent().getPhaserJs();
 		copyFile(phaserJs, "lib/phaser.js", dstWebContentfolder, monitor);
+	}
+
+	private void evalParameters(IFolder dstWebContentfolder, Map<String, String> values, IProgressMonitor monitor)
+			throws IOException, CoreException {
+		for (String filename : _info.getEval().keySet()) {
+			IFile file = dstWebContentfolder.getFile(new org.eclipse.core.runtime.Path(filename));
+
+			StringBuilder sb = new StringBuilder();
+			try (InputStream stream = file.getContents()) {
+				BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+				String line;
+				while ((line = reader.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+			}
+			
+			String content = sb.toString();
+			
+			List<String> params = _info.getEval().get(filename);
+			
+			for (String param : params) {
+				String value = values.get(param);
+				content = content.replace("{{" + param + "}}", value);
+			}
+
+			file.setContents(new ByteArrayInputStream(content.getBytes()), false, false, monitor);
+		}
 	}
 
 	private void copyTree(Path origFolder, IFolder dstFolder, IProgressMonitor monitor) {

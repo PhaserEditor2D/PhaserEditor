@@ -65,6 +65,7 @@ public class InspectCore {
 
 	protected static ExamplesModel _examplesModel;
 	private static TemplatesModel _builtInTemplates;
+	private static TemplatesModel _projectTemplates;
 
 	static {
 		PHASER_VERSION = readPhaserVersion(InspectCore.getBundleFile(RESOURCES_METADATA_PLUGIN, "phaser-custom"));
@@ -108,6 +109,19 @@ public class InspectCore {
 			}
 		}
 		return _builtInTemplates;
+	}
+	
+	public static TemplatesModel getProjectTemplates() {
+		if (_projectTemplates == null) {
+			try {
+				Path templatesPath = InspectCore.getBundleFile(InspectCore.RESOURCES_TEMPLATES_PLUGIN, "templates_newproject");
+				_projectTemplates = new TemplatesModel(templatesPath);
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
+		}
+		return _projectTemplates;
 	}
 
 	public static String getFullName(IMember member) {

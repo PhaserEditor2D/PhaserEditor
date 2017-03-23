@@ -84,4 +84,15 @@ public class TemplatesModel {
 					}
 				});
 	}
+	
+	public TemplateModel findById(String id) {
+		for(TemplateCategoryModel c : _categories) {
+			for( TemplateModel t : c.getTemplates()) {
+				if (id.equals(t.getInfo().getId())) {
+					return t;
+				}
+ 			}
+		}
+		return null;
+	}
 }

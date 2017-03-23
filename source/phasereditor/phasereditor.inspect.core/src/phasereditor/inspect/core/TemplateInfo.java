@@ -21,6 +21,12 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.core;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class TemplateInfo {
@@ -30,6 +36,8 @@ public class TemplateInfo {
 	private String _mainFile;
 	private String _description;
 	private String _url;
+	private Map<String, List<String>> _eval;
+	private String _id;
 
 	public TemplateInfo() {
 	}
@@ -43,6 +51,25 @@ public class TemplateInfo {
 		_email = jsonAuthor.optString("email", "");
 		_website = jsonAuthor.optString("website", "");
 		_url = jsonTemplManifest.optString("url", null);
+		{
+			_eval = new HashMap<>();
+			JSONObject data = jsonTemplManifest.optJSONObject("eval");
+			if (data != null) {
+				for(String k : data.keySet()) {
+					JSONArray array = data.getJSONArray(k);
+					List<String> list = new ArrayList<>();
+					for(int i = 0; i < array.length(); i++) {
+						list.add(array.getString(i));
+					}
+					_eval.put(k, list);
+				}
+			}
+		}
+		_id = jsonTemplManifest.optString("id");
+	}
+	
+	public Map<String, List<String>> getEval() {
+		return _eval;
 	}
 
 	public String getAuthor() {
@@ -87,5 +114,9 @@ public class TemplateInfo {
 
 	public String getUrl() {
 		return _url;
+	}
+
+	public String getId() {
+		return _id;
 	}
 }

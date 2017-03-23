@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2017 Arian Fornaris
+// Copyright (c) 2015 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -22,8 +22,6 @@
 package phasereditor.project.ui.wizards;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -37,21 +35,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
-import org.json.JSONObject;
 
-import phasereditor.inspect.core.InspectCore;
-import phasereditor.inspect.core.templates.TemplateModel;
 import phasereditor.project.core.ProjectCore;
 
-/**
- * @author arian
- *
- */
-public class NewPhaserProjectWizard extends Wizard implements INewWizard {
-	protected WizardNewProjectCreationPage _projectPage;
-	protected NewPhaserProjectSettingsWizardPage _settingsPage;
+public class NewPhaserExampleProjectWizard extends Wizard implements INewWizard {
 
-	public NewPhaserProjectWizard() {
+	protected WizardNewProjectCreationPage _projectPage;
+	protected PhaserTemplateWizardPage _templPage;
+
+	public NewPhaserExampleProjectWizard() {
 	}
 
 	@Override
@@ -74,50 +66,20 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 			_projectPage.setInitialProjectName("Game" + i);
 		}
 
-		_settingsPage = new NewPhaserProjectSettingsWizardPage();
+		_templPage = new PhaserTemplateWizardPage();
+		addPage(_templPage);
 		addPage(_projectPage);
-		addPage(_settingsPage);
 	}
 
 	@Override
 	public void createPageControls(Composite pageContainer) {
 		super.createPageControls(pageContainer);
-		_settingsPage.setFocus();
+		_templPage.setFocus();
 	}
 
 	@Override
 	public boolean performFinish() {
 		IProject project = _projectPage.getProjectHandle();
-
-		String width = _settingsPage.getWidthText().getText();
-		String height = _settingsPage.getHeightText().getText();
-		String renderer = _settingsPage.getRendererCombo().getText();
-		boolean transparent = _settingsPage.getTransparentBtn().getSelection();
-		boolean antialias = _settingsPage.getAntialiasBtn().getSelection();
-		JSONObject physicsConfig = new JSONObject();
-
-		if (_settingsPage.getArcadeBtn().getSelection()) {
-			physicsConfig.put("arcade", true);
-		}
-
-		if (_settingsPage.getBox2dBtn().getSelection()) {
-			physicsConfig.put("box2d", true);
-		}
-
-		if (_settingsPage.getMatterBtn().getSelection()) {
-			physicsConfig.put("matter", true);
-		}
-
-		if (_settingsPage.getP2Btn().getSelection()) {
-			physicsConfig.put("p2", true);
-		}
-
-		if (_settingsPage.getNinjaBtn().getSelection()) {
-			physicsConfig.put("ninja", true);
-		}
-
-		boolean simplestProject = _settingsPage.getSimplestBtn().getSelection();
-
 		try {
 			getContainer().run(true, false, new IRunnableWithProgress() {
 
@@ -131,42 +93,7 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 						project.open(monitor);
 						monitor.worked(2);
 
-						TemplateModel template;
-						Map<String, String> values = new HashMap<>();
-
-						values.put("title", project.getName());
-						values.put("game.width", width);
-						values.put("game.height", height);
-						values.put("game.renderer", renderer);
-
-						boolean hasExtraParams = transparent || !antialias || !physicsConfig.isEmpty();
-
-						StringBuilder sb = new StringBuilder();
-
-						if (hasExtraParams) {
-							String p1 = ", " + Boolean.toString(transparent);
-							String p2 = ", " + Boolean.toString(antialias);
-							String p3 = ", " + physicsConfig.toString();
-
-							if (!physicsConfig.isEmpty()) {
-								sb.append(p1 + p2 + p3);
-							} else if (!antialias) {
-								sb.append(p1 + p2);
-							} else if (transparent) {
-								sb.append(p1);
-							}
-						}
-
-						values.put("game.extra", sb.toString());
-
-						if (simplestProject) {
-							template = InspectCore.getProjectTemplates().findById("phasereditor.project.simplest");
-							sb.insert(0, ", '', this");
-						} else {
-							template = null;
-						}
-
-						ProjectCore.configureNewPhaserProject(project, template, values);
+						ProjectCore.configureNewPhaserProject(project, _templPage.getTemplate(), null);
 						monitor.worked(3);
 
 					} catch (CoreException e) {

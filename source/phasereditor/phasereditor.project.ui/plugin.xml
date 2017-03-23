@@ -34,6 +34,16 @@
       </wizard>
       <wizard
             category="phasereditor.ui.wizardCategory"
+            class="phasereditor.project.ui.wizards.NewPhaserExampleProjectWizard"
+            finalPerspective="phasereditor.ide.ui.perspective"
+            hasPages="true"
+            icon="platform:/plugin/phasereditor.ui/icons/newjprj_wiz.gif"
+            id="phasereditor.project.ui.newExampleProject"
+            name="Phaser Example Project"
+            project="true">
+      </wizard>
+      <wizard
+            category="phasereditor.ui.wizardCategory"
             class="phasereditor.project.ui.wizards.NewJSClassFileWizard"
             finalPerspective="phasereditor.ide.ui.perspective"
             hasPages="true"
@@ -41,17 +51,6 @@
             id="phasereditor.project.ui.newclass"
             name="JavaScript Class File">
       </wizard>
-      <!--
-      <primaryWizard
-            id="phasereditor.project.ui.newproject">
-      </primaryWizard>
-      <primaryWizard
-            id="phasereditor.project.ui.newGameState">
-      </primaryWizard>
-      <primaryWizard
-            id="phasereditor.project.ui.newSprite">
-      </primaryWizard>
-      -->
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -59,6 +58,9 @@
             targetID="*">
          <newWizardShortcut
                id="phasereditor.project.ui.newproject">
+         </newWizardShortcut>
+         <newWizardShortcut
+               id="phasereditor.project.ui.newExampleProject">
          </newWizardShortcut>
          <newWizardShortcut
                id="phasereditor.project.ui.newclass">
@@ -90,6 +92,12 @@
             menuGroupId="phaser.new.project"
             type="new"
             wizardId="phasereditor.project.ui.newproject">
+         <enablement></enablement>
+      </commonWizard>
+      <commonWizard
+            menuGroupId="phaser.new.project"
+            type="new"
+            wizardId="phasereditor.project.ui.newExampleProject">
          <enablement></enablement>
       </commonWizard>
       <commonWizard

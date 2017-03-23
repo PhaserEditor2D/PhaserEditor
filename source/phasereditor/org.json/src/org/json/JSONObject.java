@@ -100,6 +100,10 @@ public class JSONObject {
 		return new JSONObject(new JSONTokener(input));
 	}
 	
+	public boolean isEmpty() {
+		return this.map.isEmpty();
+	}
+	
 	// Methods to ignore to put defaults
 
 	/**

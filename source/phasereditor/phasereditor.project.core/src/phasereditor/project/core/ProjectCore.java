@@ -208,7 +208,7 @@ public class ProjectCore {
 		return list;
 	}
 
-	public static void configureNewPhaserProject(IProject project, IPhaserTemplate template) {
+	public static void configureNewPhaserProject(IProject project, IPhaserTemplate template, Map<String, String> paramValues) {
 		PhaserProjectBuilder.setActionAfterFirstBuild(project, () -> openTemplateMainFileInEditor(project, template));
 
 		WorkspaceJob copyJob = new WorkspaceJob("Copying template content") {
@@ -221,7 +221,7 @@ public class ProjectCore {
 				IFolder folder = project.getFolder("Design");
 				folder.create(true, true, monitor);
 
-				template.copyInto(webContentFolder, monitor);
+				template.copyInto(webContentFolder, paramValues, monitor);
 
 				JsNature.addJsNature(project, monitor);
 				PhaserProjectNature.addPhaserNature(project, monitor);
