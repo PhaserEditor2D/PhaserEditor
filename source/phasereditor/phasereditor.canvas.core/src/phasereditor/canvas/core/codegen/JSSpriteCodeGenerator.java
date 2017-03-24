@@ -46,8 +46,8 @@ public class JSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 		line("/**");
 		line(" * " + classname + ".");
 		line(" * @param {Phaser.Game} aGame " + help.getMethodArgHelp("Phaser.Sprite", "game"));
-		line(" * @param {number} aX " + help.getMethodArgHelp("Phaser.Sprite", "x"));
-		line(" * @param {number} aY " + help.getMethodArgHelp("Phaser.Sprite", "y"));
+		line(" * @param {Number} aX " + help.getMethodArgHelp("Phaser.Sprite", "x"));
+		line(" * @param {Number} aY " + help.getMethodArgHelp("Phaser.Sprite", "y"));
 		line(" * @param {any} aKey " + help.getMethodArgHelp("Phaser.Sprite", "key"));
 		line(" * @param {any} aFrame " + help.getMethodArgHelp("Phaser.Sprite", "frame"));
 		line(" */");

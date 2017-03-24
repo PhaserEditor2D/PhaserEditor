@@ -47,11 +47,11 @@ public class TSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator impleme
 
 		line("/**");
 		line(" * " + classname + ".");
-		line(" * @param {Phaser.Game} aGame " + help.getMethodArgHelp("Phaser.Sprite", "game"));
-		line(" * @param {number} aX " + help.getMethodArgHelp("Phaser.Sprite", "x"));
-		line(" * @param {number} aY " + help.getMethodArgHelp("Phaser.Sprite", "y"));
-		line(" * @param {any} aKey " + help.getMethodArgHelp("Phaser.Sprite", "key"));
-		line(" * @param {any} aFrame " + help.getMethodArgHelp("Phaser.Sprite", "frame"));
+		line(" * @param aGame " + help.getMethodArgHelp("Phaser.Sprite", "game"));
+		line(" * @param aX " + help.getMethodArgHelp("Phaser.Sprite", "x"));
+		line(" * @param aY " + help.getMethodArgHelp("Phaser.Sprite", "y"));
+		line(" * @param aKey " + help.getMethodArgHelp("Phaser.Sprite", "key"));
+		line(" * @param aFrame " + help.getMethodArgHelp("Phaser.Sprite", "frame"));
 		line(" */");
 		openIndent("class " + classname + " extends " + baseclass + " {");
 		openIndent("constructor(aGame : Phaser.Game, aX : number, aY : number, aKey? : any, aFrame? : any) {");
