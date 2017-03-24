@@ -517,7 +517,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 			if (!model.getAnimations().isEmpty()) {
 				for (AnimationModel anim : model.getAnimations()) {
 					String animvar = null;
-					if (anim.isPublic() || anim.isKillOnComplete()) {
+					if (anim.isPublic() || anim.isKillOnComplete() || anim.isAutoPlay()) {
 						animvar = getLocalAnimationVarName(model, anim);
 						append("var " + animvar + " = ");
 					}
@@ -540,6 +540,10 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 
 					if (anim.isKillOnComplete()) {
 						line(animvar + ".killOnComplete = true;");
+					}
+					
+					if (anim.isAutoPlay()) {
+						line(animvar + ".play();");
 					}
 				}
 			}

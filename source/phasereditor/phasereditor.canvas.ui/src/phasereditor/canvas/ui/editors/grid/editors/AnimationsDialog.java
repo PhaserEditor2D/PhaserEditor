@@ -177,7 +177,7 @@ public class AnimationsDialog extends Dialog {
 		_frameRateText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
 		Composite composite_4 = new Composite(composite, SWT.NONE);
-		composite_4.setLayout(new GridLayout(6, false));
+		composite_4.setLayout(new GridLayout(7, false));
 		composite_4.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 4, 1));
 
 		_loopButton = new Button(composite_4, SWT.CHECK);
@@ -186,6 +186,10 @@ public class AnimationsDialog extends Dialog {
 
 		_btnKilloncomplete = new Button(composite_4, SWT.CHECK);
 		_btnKilloncomplete.setText("Kill On Complete");
+
+		_button = new Button(composite_4, SWT.CHECK);
+		_button.setToolTipText("Phaser Editor: play this animation after created.");
+		_button.setText("Auto Play");
 
 		_btnPublic = new Button(composite_4, SWT.CHECK);
 		_btnPublic.setText("Public");
@@ -251,8 +255,6 @@ public class AnimationsDialog extends Dialog {
 		});
 		_playButton.setImage(ResourceManager.getPluginImage("phasereditor.ui", "icons/control_play.png"));
 		sashForm.setWeights(new int[] { 2, 3 });
-
-		afterCreateWidgets();
 
 		return container;
 	}
@@ -323,7 +325,8 @@ public class AnimationsDialog extends Dialog {
 		_animationsViewer.setLabelProvider(new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return ((AnimationModel) element).getName();
+				AnimationModel anim = (AnimationModel) element;
+				return anim.getName() + (anim.isAutoPlay()? " (auto)" : "");
 			}
 		});
 
@@ -480,6 +483,8 @@ public class AnimationsDialog extends Dialog {
 		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
 		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, true);
 		m_bindingContext = initDataBindings();
+		
+		afterCreateWidgets();
 	}
 
 	/**
@@ -598,6 +603,30 @@ public class AnimationsDialog extends Dialog {
 		return _anim.isKillOnComplete();
 	}
 
+	public void setAutoPlay(boolean autoPlay) {
+		if (_anim == null) {
+			return;
+		}
+
+		if (autoPlay) {
+			for (AnimationModel a : _animList) {
+				a.setAutoPlay(false);
+			}
+		}
+
+		_anim.setAutoPlay(autoPlay);
+		_animationsViewer.refresh();
+		firePropertyChange("autoPlay");
+	}
+
+	public boolean isAutoPlay() {
+		if (_anim == null) {
+			return false;
+		}
+
+		return _anim.isAutoPlay();
+	}
+
 	public void setPublic(boolean aPublic) {
 		if (_anim == null) {
 			return;
@@ -623,6 +652,7 @@ public class AnimationsDialog extends Dialog {
 	private Button _btnPublic;
 	private Label _lblFrameRate;
 	private Label _lblName;
+	private Button _button;
 
 	public void addPropertyChangeListener(PropertyChangeListener l) {
 		support.addPropertyChangeListener(l);
@@ -666,6 +696,10 @@ public class AnimationsDialog extends Dialog {
 		IObservableValue observeSelection_btnPublicObserveWidget = WidgetProperties.selection().observe(_btnPublic);
 		IObservableValue public_selfObserveValue = BeanProperties.value("public").observe(_self);
 		bindingContext.bindValue(observeSelection_btnPublicObserveWidget, public_selfObserveValue, null, null);
+		//
+		IObservableValue observeSelection_buttonObserveWidget = WidgetProperties.selection().observe(_button);
+		IObservableValue autoPlay_selfObserveValue = BeanProperties.value("autoPlay").observe(_self);
+		bindingContext.bindValue(observeSelection_buttonObserveWidget, autoPlay_selfObserveValue, null, null);
 		//
 		return bindingContext;
 	}
