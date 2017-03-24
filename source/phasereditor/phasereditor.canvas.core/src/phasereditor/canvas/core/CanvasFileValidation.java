@@ -58,16 +58,18 @@ public class CanvasFileValidation {
 	private Map<String, IAssetKey> _assetTable;
 	private HashMap<String, IFile> _prefabTable;
 	private JSONObject _data;
-	private Set<String> _used;
+	private Set<String> _usedRefError;
+	private Set<String> _usedNames;
 
 	public CanvasFileValidation(IFile file) throws Exception {
 		super();
 		_file = file;
 		_problems = new ArrayList<>();
+		_usedNames = new HashSet<>();
 		try (InputStream contents = file.getContents()) {
 			_data = new JSONObject(new JSONTokener(contents));
 		}
-		_used = new HashSet<>();
+		_usedRefError = new HashSet<>();
 	}
 
 	public List<IStatus> validate() {
@@ -78,6 +80,7 @@ public class CanvasFileValidation {
 		validateAssetTable();
 		validatePrefabTable();
 		validateWorld();
+
 		return _problems;
 	}
 
@@ -96,6 +99,7 @@ public class CanvasFileValidation {
 	private void validateObject(JSONObject obj) {
 		String type = obj.getString("type");
 		JSONObject info = obj.getJSONObject("info");
+
 		if (type.equals("group")) {
 			JSONArray list = info.getJSONArray("children");
 			for (int i = 0; i < list.length(); i++) {
@@ -120,6 +124,16 @@ public class CanvasFileValidation {
 					_problems.add(new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID,
 							"Wrong asset-table reference in sprite '" + spriteId + "'"));
 				}
+			}
+		}
+
+		{
+			String name = info.getString("editorName");
+			if (_usedNames.contains(name)) {
+				_problems.add(new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID,
+						"The name '" + name + "' is used by other object."));
+			} else {
+				_usedNames.add(name);
 			}
 		}
 	}
@@ -170,9 +184,9 @@ public class CanvasFileValidation {
 
 		msg = "Asset not found: " + msg;
 
-		if (!_used.contains(msg)) {
+		if (!_usedRefError.contains(msg)) {
 			_problems.add(new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID, msg));
-			_used.add(msg);
+			_usedRefError.add(msg);
 		}
 	}
 
