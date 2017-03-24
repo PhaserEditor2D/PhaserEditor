@@ -149,13 +149,20 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 
 						if (simplestProject) {
 							templId = "phasereditor.project.simplest";
-						} else if (singleState) {
-							templId = "phasereditor.project.singleState";
+						} else {
+							
 							if (hasExtraParams) {
 								gameParams.append(", '', null");
 							}
+							
+							if (singleState) {
+								templId = "phasereditor.project.singleState";
+							} else {
+								// multiple states
+								templId = "phasereditor.project.multipleStates";
+							}
 						}
-						
+
 						if (hasExtraParams) {
 							String p1 = ", " + Boolean.toString(transparent);
 							String p2 = ", " + Boolean.toString(antialias);

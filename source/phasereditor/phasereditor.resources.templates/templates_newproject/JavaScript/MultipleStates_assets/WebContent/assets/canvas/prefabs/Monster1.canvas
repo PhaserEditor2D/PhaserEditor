@@ -1,0 +1,66 @@
+{
+  "canvas-version": 2,
+  "settings": {
+    "classNAme": "Monster1",
+    "sceneWidth": 640,
+    "sceneHeight": 360,
+    "generateOnSave": true,
+    "enableStepping": false,
+    "lang": "JAVA_SCRIPT",
+    "baseClass": "Phaser.Sprite",
+    "backgroundColor": [
+      180,
+      180,
+      180
+    ],
+    "gridColor": [
+      200,
+      200,
+      200
+    ],
+    "showGrid": true
+  },
+  "stateSettings": {
+    "stageBackgroundColor": [
+      0,
+      0,
+      0
+    ],
+    "preloadSpriteId": "",
+    "preloadSprite_direction": 0,
+    "load.pack": []
+  },
+  "world": {
+    "type": "group",
+    "id": "ac93d24f-38fa-4ba7-b824-48743c683812",
+    "info": {
+      "editorName": "Monster1",
+      "children": [{
+        "type": "spritesheet",
+        "id": "ab22845f-0a7d-4f61-abc1-82ae096aaef7",
+        "asset": "0",
+        "info": {
+          "editorName": "monster_1",
+          "animations": [{
+            "name": "walk",
+            "frameRate": 3,
+            "loop": true,
+            "autoPlay": true,
+            "frames": [
+              "0",
+              "1"
+            ]
+          }]
+        }
+      }]
+    }
+  },
+  "type": "SPRITE",
+  "asset-table": {"0": {
+    "file": "WebContent/assets/pack.json",
+    "section": "preloader",
+    "asset": "monster-1",
+    "sprite": "0"
+  }},
+  "prefab-table": {}
+}

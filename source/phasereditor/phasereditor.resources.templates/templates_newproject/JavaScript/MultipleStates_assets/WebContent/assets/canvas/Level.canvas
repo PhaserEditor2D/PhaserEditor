@@ -1,0 +1,281 @@
+{
+  "canvas-version": 2,
+  "settings": {
+    "classNAme": "Level",
+    "sceneWidth": 800,
+    "sceneHeight": 600,
+    "generateOnSave": true,
+    "enableStepping": false,
+    "lang": "JAVA_SCRIPT",
+    "baseClass": "Phaser.State",
+    "backgroundColor": [
+      180,
+      180,
+      180
+    ],
+    "gridColor": [
+      200,
+      200,
+      200
+    ],
+    "showGrid": true,
+    "create_after": "this.initObjects();"
+  },
+  "stateSettings": {
+    "pageAlignHorizontally": true,
+    "pageAlignVertically": true,
+    "stageBackgroundColor": [
+      0,
+      0,
+      0
+    ],
+    "preloadSpriteId": "",
+    "preloadSprite_direction": 0,
+    "load.pack": []
+  },
+  "world": {
+    "type": "group",
+    "id": "8a0fc0bc-e3be-4656-9585-f855ac8ba0bb",
+    "info": {
+      "editorName": "Level",
+      "children": [
+        {
+          "type": "atlas-sprite",
+          "id": "3790afd7-9ad5-4723-9395-c56372cbc7e2",
+          "asset": "0",
+          "info": {
+            "editorName": "city",
+            "x": 80,
+            "y": -202
+          }
+        },
+        {
+          "type": "atlas-sprite",
+          "id": "1c2090b1-4d61-48fa-8159-c24a42623c85",
+          "asset": "1",
+          "info": {
+            "editorName": "ship",
+            "x": 174,
+            "y": 426
+          }
+        },
+        {
+          "type": "group",
+          "id": "c3efa78e-7830-4d9e-b3a0-f9f8b0dfd21e",
+          "info": {
+            "editorName": "monsters",
+            "children": [
+              {
+                "type": "prefab",
+                "prefab": "0",
+                "id": "c0fd84f7-89ce-4380-aff9-3a5913cc7337",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "monster-1",
+                  "sprite": "0"
+                },
+                "info": {
+                  "editorName": "monster_",
+                  "prefabOverride": ["position"],
+                  "x": 195,
+                  "y": -141
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "1",
+                "id": "03592e2d-0815-4652-a011-57ad5c7da8a1",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "monster-2",
+                  "sprite": "0"
+                },
+                "info": {
+                  "editorName": "monster_1",
+                  "prefabOverride": ["position"],
+                  "x": 227,
+                  "y": 62
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "2",
+                "id": "62a87358-b0f6-4121-bc17-85dda28c0212",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "monster-3",
+                  "sprite": "0"
+                },
+                "info": {
+                  "editorName": "monster_2",
+                  "prefabOverride": ["position"],
+                  "x": 647,
+                  "y": -48
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "0",
+                "id": "ff8c52e8-0679-47a1-a1bb-eab3e000555d",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "monster-1",
+                  "sprite": "0"
+                },
+                "info": {
+                  "editorName": "monster_3",
+                  "prefabOverride": ["position"],
+                  "x": 183,
+                  "y": 201
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "2",
+                "id": "5314a8b5-efad-4390-9e3c-f51d93b1179f",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "monster-3",
+                  "sprite": "0"
+                },
+                "info": {
+                  "editorName": "monster_4",
+                  "prefabOverride": ["position"],
+                  "x": 631,
+                  "y": 8
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "2",
+                "id": "24f1f01e-bf7a-466b-b053-b69faf5a579d",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "monster-3",
+                  "sprite": "0"
+                },
+                "info": {
+                  "editorName": "monster_5",
+                  "prefabOverride": ["position"],
+                  "x": 621,
+                  "y": 62
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "2",
+                "id": "dc3fa743-b6e1-452b-b22b-fa4e2d598fd4",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "monster-3",
+                  "sprite": "0"
+                },
+                "info": {
+                  "editorName": "monster_6",
+                  "prefabOverride": ["position"],
+                  "x": 609,
+                  "y": 123
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "2",
+                "id": "71f5c251-2209-4a1e-9578-7c4ce398f150",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "monster-3",
+                  "sprite": "0"
+                },
+                "info": {
+                  "editorName": "monster_7",
+                  "prefabOverride": ["position"],
+                  "x": 592,
+                  "y": 183
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "2",
+                "id": "76edce8a-74f1-4ec4-bca2-506544380ac0",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "monster-3",
+                  "sprite": "0"
+                },
+                "info": {
+                  "editorName": "monster_8",
+                  "prefabOverride": ["position"],
+                  "x": 577,
+                  "y": 238
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "1",
+                "id": "93b28989-37a7-4b64-806f-f1b8253137e6",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "monster-2",
+                  "sprite": "0"
+                },
+                "info": {
+                  "editorName": "monster_9",
+                  "prefabOverride": ["position"],
+                  "x": 368,
+                  "y": 135
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "1",
+                "id": "3da49b72-04c7-4680-aa03-9e1185d22928",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "monster-2",
+                  "sprite": "0"
+                },
+                "info": {
+                  "editorName": "monster_10",
+                  "prefabOverride": ["position"],
+                  "x": 523,
+                  "y": -219
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "type": "STATE",
+  "asset-table": {
+    "0": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "items",
+      "sprite": "city"
+    },
+    "1": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "items",
+      "sprite": "ship"
+    }
+  },
+  "prefab-table": {
+    "0": "WebContent/assets/canvas/prefabs/Monster1.canvas",
+    "1": "WebContent/assets/canvas/prefabs/Monster2.canvas",
+    "2": "WebContent/assets/canvas/prefabs/Monster3.canvas"
+  }
+}

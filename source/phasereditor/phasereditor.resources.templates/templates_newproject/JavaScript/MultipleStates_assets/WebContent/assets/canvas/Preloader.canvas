@@ -1,0 +1,99 @@
+{
+  "canvas-version": 2,
+  "settings": {
+    "classNAme": "Preloader",
+    "sceneWidth": 800,
+    "sceneHeight": 600,
+    "generateOnSave": true,
+    "enableStepping": false,
+    "lang": "JAVA_SCRIPT",
+    "baseClass": "Phaser.State",
+    "backgroundColor": [
+      180,
+      180,
+      180
+    ],
+    "gridColor": [
+      200,
+      200,
+      200
+    ],
+    "showGrid": true,
+    "create_before": "this.nextState();"
+  },
+  "stateSettings": {
+    "scaleMode": "SHOW_ALL",
+    "pageAlignHorizontally": true,
+    "pageAlignVertically": true,
+    "stageBackgroundColor": [
+      0,
+      0,
+      0
+    ],
+    "isPreloader": true,
+    "preloadSpriteId": "c2a81630-f877-4e6a-a541-0ab8bc53c7ef",
+    "preloadSprite_direction": 0,
+    "load.pack": [{
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader"
+    }]
+  },
+  "world": {
+    "type": "group",
+    "id": "16707e64-9031-498b-9e49-0be2635d79ae",
+    "info": {
+      "editorName": "Preload",
+      "children": [
+        {
+          "type": "image",
+          "id": "a6a51be0-caa4-4fda-b002-3e3cd34763f6",
+          "asset": "0",
+          "info": {
+            "editorName": "bg",
+            "x": 266,
+            "y": 265
+          }
+        },
+        {
+          "type": "image",
+          "id": "c2a81630-f877-4e6a-a541-0ab8bc53c7ef",
+          "asset": "1",
+          "info": {
+            "editorName": "progress",
+            "x": 267,
+            "y": 267
+          }
+        },
+        {
+          "type": "image",
+          "id": "866d80b0-73fc-4163-ae8f-946073fa22c1",
+          "asset": "2",
+          "info": {
+            "editorName": "border",
+            "x": 251,
+            "y": 254.5
+          }
+        }
+      ]
+    }
+  },
+  "type": "STATE",
+  "asset-table": {
+    "0": {
+      "file": "WebContent/assets/pack.json",
+      "section": "boot",
+      "asset": "progbar"
+    },
+    "1": {
+      "file": "WebContent/assets/pack.json",
+      "section": "boot",
+      "asset": "progbar-bg"
+    },
+    "2": {
+      "file": "WebContent/assets/pack.json",
+      "section": "boot",
+      "asset": "progbar-fg"
+    }
+  },
+  "prefab-table": {}
+}

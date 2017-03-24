@@ -1,0 +1,78 @@
+{
+  "boot": [
+    {
+      "type": "image",
+      "key": "progbar-fg",
+      "url": "assets/images/progbar-fg.png",
+      "overwrite": false
+    },
+    {
+      "type": "image",
+      "key": "progbar-bg",
+      "url": "assets/images/progbar-bg.png",
+      "overwrite": false
+    },
+    {
+      "type": "image",
+      "key": "progbar",
+      "url": "assets/images/progbar.png",
+      "overwrite": false
+    }
+  ],
+  "preloader": [
+    {
+      "type": "atlas",
+      "key": "items",
+      "textureURL": "assets/atlas/items.png",
+      "atlasURL": "assets/atlas/items.json",
+      "format": "TEXTURE_ATLAS_JSON_HASH"
+    },
+    {
+      "type": "spritesheet",
+      "key": "bullet-boom",
+      "url": "assets/sprites/bullet-boom.png",
+      "frameWidth": 50,
+      "frameHeight": 50,
+      "frameMax": -1,
+      "margin": 0,
+      "spacing": 0
+    },
+    {
+      "type": "spritesheet",
+      "key": "monster-1",
+      "url": "assets/sprites/monster-1.png",
+      "frameWidth": 50,
+      "frameHeight": 80,
+      "frameMax": -1,
+      "margin": 0,
+      "spacing": 0
+    },
+    {
+      "type": "spritesheet",
+      "key": "monster-2",
+      "url": "assets/sprites/monster-2.png",
+      "frameWidth": 70,
+      "frameHeight": 55,
+      "frameMax": -1,
+      "margin": 0,
+      "spacing": 0
+    },
+    {
+      "type": "spritesheet",
+      "key": "monster-3",
+      "url": "assets/sprites/monster-3.png",
+      "frameWidth": 30,
+      "frameHeight": 30,
+      "frameMax": -1,
+      "margin": 0,
+      "spacing": 0
+    }
+  ],
+  "meta": {
+    "generated": "1490382172770",
+    "app": "Phaser Editor",
+    "url": "http://phasereditor.boniatillo.com",
+    "version": "1.0",
+    "copyright": "Arian Fornaris (c) 2015,2016"
+  }
+}

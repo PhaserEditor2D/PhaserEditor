@@ -1,0 +1,48 @@
+{
+  "canvas-version": 2,
+  "settings": {
+    "classNAme": "Boot",
+    "sceneWidth": 640,
+    "sceneHeight": 360,
+    "generateOnSave": true,
+    "enableStepping": false,
+    "lang": "JAVA_SCRIPT",
+    "baseClass": "Phaser.State",
+    "backgroundColor": [
+      180,
+      180,
+      180
+    ],
+    "gridColor": [
+      200,
+      200,
+      200
+    ],
+    "showGrid": true,
+    "create_before": "// all the assets used in the splash are loaded\r\n// so jump to the Preloader state\r\nthis.game.state.start(\"Preloader\");"
+  },
+  "stateSettings": {
+    "stageBackgroundColor": [
+      0,
+      0,
+      0
+    ],
+    "preloadSpriteId": "",
+    "preloadSprite_direction": 0,
+    "load.pack": [{
+      "file": "WebContent/assets/pack.json",
+      "section": "boot"
+    }]
+  },
+  "world": {
+    "type": "group",
+    "id": "b59ec208-7f01-4a32-9a1d-4f88e6792cb1",
+    "info": {
+      "editorName": "Boot",
+      "children": []
+    }
+  },
+  "type": "STATE",
+  "asset-table": {},
+  "prefab-table": {}
+}

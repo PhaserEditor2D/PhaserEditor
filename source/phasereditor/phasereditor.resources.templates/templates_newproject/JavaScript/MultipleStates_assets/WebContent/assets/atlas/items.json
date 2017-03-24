@@ -1,0 +1,109 @@
+{
+  "frames": {
+    "bullet": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 792,
+        "y": 700,
+        "w": 20,
+        "h": 14
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 3,
+        "w": 20,
+        "h": 14
+      },
+      "sourceSize": {
+        "w": 20,
+        "h": 20
+      }
+    },
+    "city": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 2,
+        "y": 2,
+        "w": 640,
+        "h": 960
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 640,
+        "h": 960
+      },
+      "sourceSize": {
+        "w": 640,
+        "h": 960
+      }
+    },
+    "pause": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 644,
+        "y": 509,
+        "w": 112,
+        "h": 101
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 4,
+        "w": 112,
+        "h": 101
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 109
+      }
+    },
+    "play": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 644,
+        "y": 716,
+        "w": 350,
+        "h": 246
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 15,
+        "w": 350,
+        "h": 246
+      },
+      "sourceSize": {
+        "w": 350,
+        "h": 270
+      }
+    },
+    "ship": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 644,
+        "y": 612,
+        "w": 146,
+        "h": 102
+      },
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 24,
+        "w": 146,
+        "h": 102
+      },
+      "sourceSize": {
+        "w": 151,
+        "h": 150
+      }
+    }
+  },
+  "meta": {
+    "app": "Phaser Editor",
+    "version": "1",
+    "image": "items.png"
+  }
+}
