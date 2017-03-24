@@ -58,17 +58,22 @@ public abstract class BaseStateGenerator extends JSLikeCanvasCodeGenerator {
 
 		Set<LoadPack> loadPacks = new LinkedHashSet<>(_state.getLoadPack());
 
-		_world.walk(obj -> {
-			if (obj instanceof AssetSpriteModel) {
-				AssetModel asset = ((AssetSpriteModel) obj).getAssetKey().getAsset();
-				String relpath = asset.getPack().getRelativePath();
-				LoadPack loadpack = new LoadPack(relpath, asset.getSection().getKey());
-				loadPacks.add(loadpack);
-			}
-		});
+		if (!_state.isPreloader()) {
+			// when the state is a "preloader" we want to have full control of
+			// what's loading, so let's disable the automatic computation of the
+			// sections to load.
+			_world.walk(obj -> {
+				if (obj instanceof AssetSpriteModel) {
+					AssetModel asset = ((AssetSpriteModel) obj).getAssetKey().getAsset();
+					String relpath = asset.getPack().getRelativePath();
+					LoadPack loadpack = new LoadPack(relpath, asset.getSection().getKey());
+					loadPacks.add(loadpack);
+				}
+			});
+		}
 
 		IProject project = _world.getFile().getProject();
-		
+
 		trim(() -> {
 			line();
 
@@ -90,7 +95,6 @@ public abstract class BaseStateGenerator extends JSLikeCanvasCodeGenerator {
 		});
 	}
 
-	
 	protected void generatePreloaderStateCode() {
 		if (_state.isPreloader()) {
 			trim(() -> {
