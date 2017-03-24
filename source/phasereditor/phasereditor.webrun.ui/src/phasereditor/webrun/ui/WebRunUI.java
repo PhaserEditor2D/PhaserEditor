@@ -29,10 +29,12 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jetty.util.URIUtil;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -52,6 +54,19 @@ public class WebRunUI {
 	 * @param project
 	 */
 	public static void openBrowser(IProject project) {
+
+		try {
+			if (ProjectCore.hasErrors(project)) {
+				if (!MessageDialog.openConfirm(Display.getDefault().getActiveShell(), "Run",
+						"The project '" + project.getName() + "' has errors, do you want to run it?")) {
+					return;
+				}
+
+			}
+		} catch (CoreException e) {
+			throw new RuntimeException(e);
+		}
+
 		String url = getProjectBrowserURL(project);
 		openBrowser(url);
 

@@ -175,7 +175,7 @@ public class ProjectCore {
 		IFolder folder = root.getFolder(path);
 		return folder;
 	}
-	
+
 	public static String getAssetUrl(IFile file) {
 		IContainer assetsFolder = ProjectCore.getWebContentFolder(file.getProject());
 		String relPath = file.getFullPath().makeRelativeTo(assetsFolder.getFullPath()).toPortableString();
@@ -208,7 +208,8 @@ public class ProjectCore {
 		return list;
 	}
 
-	public static void configureNewPhaserProject(IProject project, IPhaserTemplate template, Map<String, String> paramValues) {
+	public static void configureNewPhaserProject(IProject project, IPhaserTemplate template,
+			Map<String, String> paramValues) {
 		PhaserProjectBuilder.setActionAfterFirstBuild(project, () -> openTemplateMainFileInEditor(project, template));
 
 		WorkspaceJob copyJob = new WorkspaceJob("Copying template content") {
@@ -346,5 +347,10 @@ public class ProjectCore {
 				}
 			});
 		}
+	}
+
+	public static boolean hasErrors(IProject project) throws CoreException {
+		int severity = project.findMaxProblemSeverity(ProjectCore.PHASER_PROBLEM_MARKER_ID, true, IResource.DEPTH_INFINITE);
+		return severity == IMarker.SEVERITY_ERROR;
 	}
 }
