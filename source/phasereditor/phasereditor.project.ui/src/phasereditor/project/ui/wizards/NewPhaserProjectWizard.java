@@ -117,6 +117,7 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 		}
 
 		boolean simplestProject = _settingsPage.getSimplestBtn().getSelection();
+		boolean singleState = _settingsPage.getSingleStateBtn().getSelection();
 		boolean hasAssets = _settingsPage.getIncludeAssets().getSelection();
 
 		try {
@@ -142,35 +143,39 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 
 						boolean hasExtraParams = transparent || !antialias || !physicsConfig.isEmpty();
 
-						StringBuilder sb = new StringBuilder();
+						StringBuilder gameParams = new StringBuilder();
 
+						String templId = "";
+
+						if (simplestProject) {
+							templId = "phasereditor.project.simplest";
+						} else if (singleState) {
+							templId = "phasereditor.project.singleState";
+							if (hasExtraParams) {
+								gameParams.append(", '', null");
+							}
+						}
+						
 						if (hasExtraParams) {
 							String p1 = ", " + Boolean.toString(transparent);
 							String p2 = ", " + Boolean.toString(antialias);
 							String p3 = ", " + physicsConfig.toString();
 
 							if (!physicsConfig.isEmpty()) {
-								sb.append(p1 + p2 + p3);
+								gameParams.append(p1 + p2 + p3);
 							} else if (!antialias) {
-								sb.append(p1 + p2);
+								gameParams.append(p1 + p2);
 							} else if (transparent) {
-								sb.append(p1);
+								gameParams.append(p1);
 							}
 						}
 
-						values.put("game.extra", sb.toString());
+						values.put("game.extra", gameParams.toString());
 
-						String templId = "";
-						
-						if (simplestProject) {
-							templId = "phasereditor.project.simplest";
-							sb.insert(0, ", '', this");
-						}
-						
 						if (hasAssets) {
 							templId += ".assets";
 						}
-						
+
 						template = InspectCore.getProjectTemplates().findById(templId);
 
 						ProjectCore.configureNewPhaserProject(project, template, values);

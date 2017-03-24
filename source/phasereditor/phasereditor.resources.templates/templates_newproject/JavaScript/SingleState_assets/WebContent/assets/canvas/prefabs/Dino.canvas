@@ -1,0 +1,80 @@
+{
+  "canvas-version": 2,
+  "settings": {
+    "classNAme": "Dino",
+    "sceneWidth": 640,
+    "sceneHeight": 360,
+    "generateOnSave": true,
+    "enableStepping": false,
+    "lang": "JAVA_SCRIPT",
+    "baseClass": "Phaser.Sprite",
+    "backgroundColor": [
+      180,
+      180,
+      180
+    ],
+    "gridColor": [
+      200,
+      200,
+      200
+    ],
+    "showGrid": true
+  },
+  "stateSettings": {
+    "stageBackgroundColor": [
+      0,
+      0,
+      0
+    ],
+    "preloadSpriteId": "",
+    "preloadSprite_direction": 0,
+    "load.pack": []
+  },
+  "world": {
+    "type": "group",
+    "id": "ce6a9901-47f1-4df5-bb12-cc3d9e5a680f",
+    "info": {
+      "editorName": "Dino",
+      "children": [{
+        "type": "spritesheet",
+        "id": "c6cff728-f674-4852-9012-f95eebb518a8",
+        "asset": "0",
+        "info": {
+          "editorName": "dino",
+          "animations": [
+            {
+              "name": "walk",
+              "frameRate": 4,
+              "loop": true,
+              "public": true,
+              "frames": [
+                "0",
+                "1"
+              ]
+            },
+            {
+              "name": "stay",
+              "frameRate": 60,
+              "public": true,
+              "frames": ["3"]
+            },
+            {
+              "name": "jump",
+              "frameRate": 60,
+              "public": true,
+              "frames": ["2"]
+            }
+          ]
+        }
+      }]
+    }
+  },
+  "type": "SPRITE",
+  "asset-table": {"0": {
+    "file": "WebContent/assets/pack.json",
+    "section": "level",
+    "asset": "dino",
+    "sprite": "3"
+  }},
+  "prefab-table": {}
+}
