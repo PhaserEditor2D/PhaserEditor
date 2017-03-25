@@ -194,7 +194,7 @@ public class EditorSettings {
 	}
 
 	public void write(JSONObject obj) {
-		obj.put("classNAme", _className);
+		obj.put("className", _className);
 		obj.put("sceneWidth", _sceneWidth);
 		obj.put("sceneHeight", _sceneHeight);
 		obj.put("generateOnSave", _generateOnSave);
