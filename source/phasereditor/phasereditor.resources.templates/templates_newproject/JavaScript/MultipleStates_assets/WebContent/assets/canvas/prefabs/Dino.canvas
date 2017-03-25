@@ -1,7 +1,7 @@
 {
   "canvas-version": 2,
   "settings": {
-    "classNAme": "Monster2",
+    "classNAme": "Dino",
     "sceneWidth": 640,
     "sceneHeight": 360,
     "generateOnSave": true,
@@ -32,25 +32,39 @@
   },
   "world": {
     "type": "group",
-    "id": "00350db4-1392-4c55-a196-9fd8c1ad7dd3",
+    "id": "ce6a9901-47f1-4df5-bb12-cc3d9e5a680f",
     "info": {
-      "editorName": "Monster2",
+      "editorName": "Dino",
       "children": [{
         "type": "spritesheet",
-        "id": "8bd68b19-5a94-4d6d-93b9-611d7a7b9312",
+        "id": "9099796f-8cd5-43de-8142-1188975f24ce",
         "asset": "0",
         "info": {
-          "editorName": "monster_2",
-          "animations": [{
-            "name": "walk",
-            "frameRate": 4,
-            "loop": true,
-            "autoPlay": true,
-            "frames": [
-              "0",
-              "1"
-            ]
-          }]
+          "editorName": "dino",
+          "animations": [
+            {
+              "name": "walk",
+              "frameRate": 4,
+              "loop": true,
+              "public": true,
+              "frames": [
+                "0",
+                "1"
+              ]
+            },
+            {
+              "name": "stay",
+              "frameRate": 60,
+              "public": true,
+              "frames": ["3"]
+            },
+            {
+              "name": "jump",
+              "frameRate": 60,
+              "public": true,
+              "frames": ["2"]
+            }
+          ]
         }
       }]
     }
@@ -59,8 +73,8 @@
   "asset-table": {"0": {
     "file": "WebContent/assets/pack.json",
     "section": "preloader",
-    "asset": "monster-2",
-    "sprite": "0"
+    "asset": "dino",
+    "sprite": "1"
   }},
   "prefab-table": {}
 }

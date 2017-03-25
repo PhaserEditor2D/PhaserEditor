@@ -1,10 +1,12 @@
 {
   "files": [
-    "/Game1/Design/images/city.png",
-    "/Game1/Design/images/play.png",
-    "/Game1/Design/images/ship.png",
-    "/Game1/Design/images/bullet.png",
-    "/Game1/Design/images/pause.png"
+    "/Game2/Design/collectable/star.png",
+    "/Game2/Design/environment/grass-1.png",
+    "/Game2/Design/environment/tree-1.png",
+    "/Game2/Design/platformer/bridge.png",
+    "/Game2/Design/platformer/ground-0.png",
+    "/Game2/Design/platformer/ground-1.png",
+    "/Game2/Design/platformer/ground-2.png"
   ],
   "settings": {
     "pot": false,

@@ -1,7 +1,7 @@
 {
   "canvas-version": 2,
   "settings": {
-    "classNAme": "Monster1",
+    "classNAme": "Coin",
     "sceneWidth": 640,
     "sceneHeight": 360,
     "generateOnSave": true,
@@ -18,7 +18,8 @@
       200,
       200
     ],
-    "showGrid": true
+    "showGrid": true,
+    "create_after": "// my code after objects creation\r\nthis.afterCreate();"
   },
   "stateSettings": {
     "stageBackgroundColor": [
@@ -32,23 +33,30 @@
   },
   "world": {
     "type": "group",
-    "id": "ac93d24f-38fa-4ba7-b824-48743c683812",
+    "id": "db5b05a0-fe72-44e3-9b24-cff33c8b0db5",
     "info": {
-      "editorName": "Monster1",
+      "editorName": "Coin",
       "children": [{
         "type": "spritesheet",
-        "id": "ab22845f-0a7d-4f61-abc1-82ae096aaef7",
+        "id": "45254453-a494-4f35-ae7f-9afc4838b041",
         "asset": "0",
         "info": {
-          "editorName": "monster_1",
+          "editorName": "coins",
+          "editorPublic": true,
+          "scale.x": 0.5,
+          "scale.y": 0.5,
           "animations": [{
-            "name": "walk",
-            "frameRate": 3,
+            "name": "rotate",
+            "frameRate": 5,
             "loop": true,
-            "autoPlay": true,
+            "public": true,
             "frames": [
               "0",
-              "1"
+              "1",
+              "2",
+              "3",
+              "4",
+              "5"
             ]
           }]
         }
@@ -59,7 +67,7 @@
   "asset-table": {"0": {
     "file": "WebContent/assets/pack.json",
     "section": "preloader",
-    "asset": "monster-1",
+    "asset": "coins",
     "sprite": "0"
   }},
   "prefab-table": {}

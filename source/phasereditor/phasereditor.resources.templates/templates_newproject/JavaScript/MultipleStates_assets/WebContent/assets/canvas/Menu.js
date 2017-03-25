@@ -26,7 +26,9 @@ Menu.prototype.preload = function () {
 };
 
 Menu.prototype.create = function () {
-	this.add.sprite(225, 165, 'items', 'play');
+	this.add.sprite(-172, -103, 'bg');
+	
+	this.add.sprite(285, 217, 'play');
 	// user code
 	this.initObjects();
 	

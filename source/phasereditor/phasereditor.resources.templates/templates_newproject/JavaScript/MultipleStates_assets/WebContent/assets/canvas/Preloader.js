@@ -28,13 +28,9 @@ Preloader.prototype.preload = function () {
 	this.load.pack('preloader', 'assets/pack.json');
 	
 	
-	this.add.sprite(266, 265, 'progbar');
+	var _logo = this.add.sprite(299, 231, 'logo');
 	
-	var _progress = this.add.sprite(267, 267, 'progbar-bg');
-	
-	this.add.sprite(251, 255, 'progbar-fg');
-	
-	this.load.setPreloadSprite(_progress, 0);
+	this.load.setPreloadSprite(_logo, 0);
 	
 };
 

@@ -17,6 +17,7 @@ Level.prototype.constructor = Level;
 
 Level.prototype.init = function () {
 	
+	this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 	this.scale.pageAlignHorizontally = true;
 	this.scale.pageAlignVertically = true;
 	
@@ -29,49 +30,43 @@ Level.prototype.preload = function () {
 };
 
 Level.prototype.create = function () {
-	this.add.sprite(80, -202, 'items', 'city');
+	this.add.sprite(-175, -85, 'bg');
 	
-	this.add.sprite(174, 426, 'items', 'ship');
+	this.add.sprite(38, 452, 'environ', 'ground-0');
 	
-	var _monsters = this.add.group();
+	this.add.sprite(166, 452, 'environ', 'ground-1');
 	
-	var _monster_ = new Monster1(this.game, 195, -141);
-	_monsters.add(_monster_);
+	this.add.sprite(294, 452, 'environ', 'ground-2');
 	
-	var _monster_1 = new Monster2(this.game, 227, 62);
-	_monsters.add(_monster_1);
+	this.add.sprite(265, 398, 'environ', 'grass-1');
 	
-	var _monster_2 = new Monster3(this.game, 647, -48);
-	_monsters.add(_monster_2);
+	var _tree_ = this.add.sprite(10, 127, 'environ', 'tree-1');
+	_tree_.scale.setTo(2.0687500039674838, 2.072000037051153);
 	
-	var _monster_3 = new Monster1(this.game, 183, 201);
-	_monsters.add(_monster_3);
+	var _dino = new Dino(this.game, 112, 323);
+	this.add.existing(_dino);
 	
-	var _monster_4 = new Monster3(this.game, 631, 8);
-	_monsters.add(_monster_4);
+	this.add.sprite(453, 306, 'environ', 'bridge');
 	
-	var _monster_5 = new Monster3(this.game, 621, 62);
-	_monsters.add(_monster_5);
+	var _coins = this.add.group();
 	
-	var _monster_6 = new Monster3(this.game, 609, 123);
-	_monsters.add(_monster_6);
+	var _coins0 = new Coin(this.game, 488, 170);
+	_coins.add(_coins0);
 	
-	var _monster_7 = new Monster3(this.game, 592, 183);
-	_monsters.add(_monster_7);
+	var _coins1 = new Coin(this.game, 424, 170);
+	_coins.add(_coins1);
 	
-	var _monster_8 = new Monster3(this.game, 577, 238);
-	_monsters.add(_monster_8);
+	var _coins2 = new Coin(this.game, 552, 170);
+	_coins.add(_coins2);
 	
-	var _monster_9 = new Monster2(this.game, 368, 135);
-	_monsters.add(_monster_9);
+	// public fields
 	
-	var _monster_10 = new Monster2(this.game, 523, -219);
-	_monsters.add(_monster_10);
-	this.initObjects();
+	this.fDino = _dino;
+	this.fCoins0 = _coins0;
+	this.fCoins1 = _coins1;
+	this.fCoins2 = _coins2;
 	
 };
 
 /* --- end generated code --- */
 
-Level.prototype.initObjects = function() {
-};
