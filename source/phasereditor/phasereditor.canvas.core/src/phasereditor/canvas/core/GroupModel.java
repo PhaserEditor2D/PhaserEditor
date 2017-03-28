@@ -180,6 +180,7 @@ public class GroupModel extends BaseObjectModel {
 			GroupModel prefabRoot = new GroupModel(this);
 			addChild(prefabRoot);
 			prefabRoot.readInfo(jsonInfo);
+			prefabRoot.setEditorName("prefabRoot_" + getEditorName());
 		} else {
 
 			try {
