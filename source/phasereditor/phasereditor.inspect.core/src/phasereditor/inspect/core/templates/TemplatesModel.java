@@ -33,12 +33,24 @@ public class TemplatesModel {
 	private List<TemplateCategoryModel> _categories;
 	private Path _templatesFolder;
 	private Path _phaserJs;
+	private Path[] _typings;
 
 	public TemplatesModel(Path templatesFolder) throws IOException {
 		_categories = new ArrayList<>();
 		_templatesFolder = templatesFolder;
 		_phaserJs = InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN,
 				"phaser-master/build/phaser.js");
+
+		_typings = new Path[] {
+
+				InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN,
+						"phaser-master/typescript/phaser.comments.d.ts"),
+				InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN,
+						"phaser-master/typescript/pixi.comments.d.ts"),
+				InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN, "phaser-master/typescript/p2.d.ts")
+
+		};
+
 		load();
 	}
 
@@ -52,6 +64,10 @@ public class TemplatesModel {
 
 	public Path getPhaserJs() {
 		return _phaserJs;
+	}
+	
+	public Path[] getTypings() {
+		return _typings;
 	}
 
 	private void load() throws IOException {
@@ -84,14 +100,14 @@ public class TemplatesModel {
 					}
 				});
 	}
-	
+
 	public TemplateModel findById(String id) {
-		for(TemplateCategoryModel c : _categories) {
-			for( TemplateModel t : c.getTemplates()) {
+		for (TemplateCategoryModel c : _categories) {
+			for (TemplateModel t : c.getTemplates()) {
 				if (id.equals(t.getInfo().getId())) {
 					return t;
 				}
- 			}
+			}
 		}
 		return null;
 	}

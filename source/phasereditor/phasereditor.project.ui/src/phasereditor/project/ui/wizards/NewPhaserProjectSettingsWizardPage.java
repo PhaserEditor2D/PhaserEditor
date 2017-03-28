@@ -51,6 +51,8 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 	private Button _singleStateBtn;
 	private Button _multipleStatesBtn;
 	private Button _includeAssets;
+	private Group _group;
+	private Button _typeScriptSupportBtn;
 
 	/**
 	 * Create the wizard.
@@ -66,6 +68,7 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 	 * 
 	 * @param parent
 	 */
+	@Override
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NULL);
 
@@ -154,6 +157,14 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 
 		_includeAssets = new Button(grpAssets, SWT.CHECK);
 		_includeAssets.setText("Include demo assets.");
+		
+		_group = new Group(container, SWT.NONE);
+		_group.setLayout(new GridLayout(1, false));
+		_group.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		_group.setText("TypeScript");
+		
+		_typeScriptSupportBtn = new Button(_group, SWT.CHECK);
+		_typeScriptSupportBtn.setText("Add TypeScript support.");
 	}
 
 	public void setFocus() {
@@ -167,7 +178,7 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 	public Text getHeightText() {
 		return _heightText;
 	}
-
+	
 	public Button getTransparentBtn() {
 		return _transparentBtn;
 	}
@@ -215,5 +226,11 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 	public Button getIncludeAssets() {
 		return _includeAssets;
 	}
-
+	
+	/**
+	 * @return the typeScriptSupportBtn
+	 */
+	public Button getTypeScriptSupportBtn() {
+		return _typeScriptSupportBtn;
+	}
 }

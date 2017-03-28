@@ -119,6 +119,7 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 		boolean simplestProject = _settingsPage.getSimplestBtn().getSelection();
 		boolean singleState = _settingsPage.getSingleStateBtn().getSelection();
 		boolean hasAssets = _settingsPage.getIncludeAssets().getSelection();
+		boolean isTypeScriptProject = _settingsPage.getTypeScriptSupportBtn().getSelection();
 
 		try {
 			getContainer().run(true, false, new IRunnableWithProgress() {
@@ -179,7 +180,11 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 
 						values.put("game.extra", gameParams.toString());
 
-						if (hasAssets) {
+						if (isTypeScriptProject) {
+							templId += ".typescript";
+						}
+						
+ 						if (hasAssets) {
 							templId += ".assets";
 						}
 

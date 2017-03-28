@@ -112,27 +112,27 @@ public class TemplateModel implements IPhaserTemplate {
 	}
 
 	@Override
-	public void copyInto(IFolder dstWebContentfolder, Map<String, String> values, IProgressMonitor monitor) {
+	public void copyInto(IFolder dstWebContentFolder, Map<String, String> values, IProgressMonitor monitor) {
 		// copy template content
 		try {
 			Path designFolder = _templateFolder.resolve("Design");
 			Path webContentFolder = _templateFolder.resolve("WebContent");
 
 			IContainer parent;
-			if (dstWebContentfolder instanceof IProject) {
-				parent = dstWebContentfolder;
+			if (dstWebContentFolder instanceof IProject) {
+				parent = dstWebContentFolder;
 			} else {
-				parent = dstWebContentfolder.getParent();
+				parent = dstWebContentFolder.getParent();
 			}
 
 			IFolder dstDesignFolder = parent.getFolder(new org.eclipse.core.runtime.Path("Design"));
 			mkdirs(dstDesignFolder, monitor);
 
 			copyTree(designFolder, dstDesignFolder, monitor);
-			copyTree(webContentFolder, dstWebContentfolder, monitor);
+			copyTree(webContentFolder, dstWebContentFolder, monitor);
 
 			if (values != null) {
-				evalParameters(dstWebContentfolder, values, monitor);
+				evalParameters(dstWebContentFolder, values, monitor);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -141,7 +141,14 @@ public class TemplateModel implements IPhaserTemplate {
 
 		// copy phaser.js
 		Path phaserJs = getParent().getPhaserJs();
-		copyFile(phaserJs, "lib/phaser.js", dstWebContentfolder, monitor);
+		copyFile(phaserJs, "lib/phaser.js", dstWebContentFolder, monitor);
+		
+		if (_info.isTypescript()) {
+			Path[] typings = getParent().getTypings();
+			for(Path typing : typings) {
+				copyFile(typing, "typings/" + typing.getFileName().toString(), dstWebContentFolder, monitor);
+			}
+		}
 	}
 
 	private void evalParameters(IFolder dstWebContentfolder, Map<String, String> values, IProgressMonitor monitor)

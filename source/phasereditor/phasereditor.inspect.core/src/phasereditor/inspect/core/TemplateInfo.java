@@ -38,6 +38,7 @@ public class TemplateInfo {
 	private String _url;
 	private Map<String, List<String>> _eval;
 	private String _id;
+	private boolean _typescript;
 
 	public TemplateInfo() {
 	}
@@ -55,10 +56,10 @@ public class TemplateInfo {
 			_eval = new HashMap<>();
 			JSONObject data = jsonTemplManifest.optJSONObject("eval");
 			if (data != null) {
-				for(String k : data.keySet()) {
+				for (String k : data.keySet()) {
 					JSONArray array = data.getJSONArray(k);
 					List<String> list = new ArrayList<>();
-					for(int i = 0; i < array.length(); i++) {
+					for (int i = 0; i < array.length(); i++) {
 						list.add(array.getString(i));
 					}
 					_eval.put(k, list);
@@ -66,8 +67,13 @@ public class TemplateInfo {
 			}
 		}
 		_id = jsonTemplManifest.optString("id");
+		_typescript = jsonTemplManifest.optBoolean("typescript", false);
 	}
-	
+
+	public boolean isTypescript() {
+		return _typescript;
+	}
+
 	public Map<String, List<String>> getEval() {
 		return _eval;
 	}
