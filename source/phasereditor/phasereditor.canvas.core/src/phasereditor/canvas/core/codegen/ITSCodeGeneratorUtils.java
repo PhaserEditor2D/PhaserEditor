@@ -37,8 +37,11 @@ import phasereditor.canvas.core.WorldModel;
 public interface ITSCodeGeneratorUtils {
 
 	public default void generatePublicFieldDeclarations(JSLikeCanvasCodeGenerator generator, WorldModel worldModel) {
-		worldModel.walk(model -> {
+		worldModel.walk_skipGroupIfFalse(model -> {
+			
 			this.generatePublicFieldDeclaration(generator, model);
+			
+			return !model.isPrefabInstance();
 		});
 	}
 

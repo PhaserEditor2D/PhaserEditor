@@ -132,13 +132,16 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 	}
 
 	protected void generatePublicFields() {
-		getRootObjectsContainer().walk(obj -> {
+		getRootObjectsContainer().walk_skipGroupIfFalse(obj -> {
+			
 			generatePublicField(obj);
+			
+			return !obj.isPrefabInstance();
 		});
 	}
 
 	protected void generatePublicField(BaseObjectModel obj) {
-		if (!(obj instanceof WorldModel) && obj.isEditorGenerate() && !obj.getParent().isPrefabInstance()) {
+		if (!(obj instanceof WorldModel) && obj.isEditorGenerate()) {
 			if (obj.isEditorPublic()) {
 				String name = getVarName(obj);
 				String localName = getLocalVarName(obj);
