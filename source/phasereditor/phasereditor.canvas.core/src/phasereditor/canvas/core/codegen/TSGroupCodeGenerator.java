@@ -57,7 +57,7 @@ public class TSGroupCodeGenerator extends JSLikeGroupCodeGenerator implements IT
 		line(" */");
 		openIndent("class " + classname + " extends " + baseclass + " {");
 		openIndent(
-				"constructor(aGame : Phaser.Game, aParent : Phaser.Group, aName : string, aAddToStage : boolean, aEnableBody : boolean, aPhysicsBodyType : number) {");
+				"constructor(aGame : Phaser.Game, aParent? : Phaser.Group, aName? : string, aAddToStage? : boolean, aEnableBody? : boolean, aPhysicsBodyType? : number) {");
 		line();
 		line("super(aGame, aParent, aName, aAddToStage, aEnableBody, aPhysicsBodyType);");
 		line();
