@@ -383,6 +383,10 @@
                style="push">
          </command>
          <command
+               commandId="phasereditor.canvas.ui.editusercode"
+               style="push">
+         </command>
+         <command
                commandId="org.eclipse.ui.edit.delete"
                style="push">
          </command>
@@ -893,6 +897,12 @@
             defaultHandler="phasereditor.canvas.ui.handlers.AddPrefabHandler"
             id="phasereditor.canvas.ui.addprefab"
             name="Add Prefab">
+      </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            description="Edit the code inserted into the generated code."
+            id="phasereditor.canvas.ui.editusercode"
+            name="Edit User Code">
       </command>
       
    </extension>
@@ -1636,6 +1646,10 @@
             class="phasereditor.canvas.ui.handlers.AddSpriteHandler"
             commandId="phasereditor.canvas.ui.addsprite">
       </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.EditUserCodeHandler"
+            commandId="phasereditor.canvas.ui.editusercode">
+      </handler>
       
    </extension>
    <extension
@@ -1771,6 +1785,12 @@
              contextId="phasereditor.canvas.ui.nodescontext"
              schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
              sequence="M1+T">
+       </key>
+       <key
+             commandId="phasereditor.canvas.ui.editusercode"
+             contextId="phasereditor.canvas.ui.scenecontext"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M1+M2+U">
        </key>
    </extension>
    <extension

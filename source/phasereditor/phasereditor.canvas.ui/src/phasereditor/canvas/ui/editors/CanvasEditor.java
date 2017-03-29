@@ -25,7 +25,6 @@ import static java.lang.System.currentTimeMillis;
 import static java.lang.System.out;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
-import java.beans.PropertyChangeEvent;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -159,11 +158,6 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 		return super.getAdapter(adapter);
 	}
 
-	@SuppressWarnings("unused")
-	public void modelDirtyChanged(PropertyChangeEvent event) {
-		firePropertyChange(PROP_DIRTY);
-	}
-
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 		if (PlatformUI.getWorkbench().isClosing()) {
@@ -214,7 +208,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 		});
 	}
 
-	private void setDirty(boolean dirty) {
+	public void setDirty(boolean dirty) {
 		_model.getWorld().setDirty(dirty);
 		firePropertyChange(PROP_DIRTY);
 	}
