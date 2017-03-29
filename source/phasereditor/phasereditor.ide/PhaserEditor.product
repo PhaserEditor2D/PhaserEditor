@@ -288,6 +288,8 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <feature id="phasereditor.help.guide" version="1.3.0.20161130"/>
       <feature id="phasereditor.assets" version="1.3.0.20161130"/>
       <feature id="phasereditor.canvas" version="1.3.0.20161130"/>
+      <feature id="org.eclipse.egit" version="4.4.1.201607150455-r"/>
+      <feature id="org.eclipse.jgit" version="4.4.1.201607150455-r"/>
    </features>
 
    <configurations>
