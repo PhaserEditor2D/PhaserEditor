@@ -1,7 +1,7 @@
 {
   "canvas-version": 2,
   "settings": {
-    "classNAme": "Level",
+    "className": "Level",
     "sceneWidth": 640,
     "sceneHeight": 360,
     "generateOnSave": true,
@@ -23,8 +23,8 @@
   },
   "stateSettings": {
     "stageBackgroundColor": [
-      0,
-      0,
+      255,
+      128,
       0
     ],
     "preloadSpriteId": "",

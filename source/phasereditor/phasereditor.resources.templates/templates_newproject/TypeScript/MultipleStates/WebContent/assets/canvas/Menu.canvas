@@ -6,7 +6,7 @@
     "sceneHeight": 360,
     "generateOnSave": true,
     "enableStepping": false,
-    "lang": "JAVA_SCRIPT",
+    "lang": "TYPE_SCRIPT",
     "baseClass": "Phaser.State",
     "backgroundColor": [
       180,

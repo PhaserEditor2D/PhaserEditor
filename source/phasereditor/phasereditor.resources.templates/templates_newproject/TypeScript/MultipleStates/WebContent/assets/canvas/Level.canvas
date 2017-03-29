@@ -1,12 +1,12 @@
 {
   "canvas-version": 2,
   "settings": {
-    "className": "Menu",
+    "className": "Level",
     "sceneWidth": 640,
     "sceneHeight": 360,
     "generateOnSave": true,
     "enableStepping": false,
-    "lang": "JAVA_SCRIPT",
+    "lang": "TYPE_SCRIPT",
     "baseClass": "Phaser.State",
     "backgroundColor": [
       180,
@@ -19,13 +19,13 @@
       200
     ],
     "showGrid": true,
-    "create_after": "// user code\r\nthis.initObjects();"
+    "create_after": "this.initObjects();"
   },
   "stateSettings": {
     "stageBackgroundColor": [
+      255,
       128,
-      128,
-      255
+      0
     ],
     "preloadSpriteId": "",
     "preloadSprite_direction": 0,
@@ -33,9 +33,9 @@
   },
   "world": {
     "type": "group",
-    "id": "af8eb0de-599e-428d-94f8-09d75318f8b7",
+    "id": "8a0fc0bc-e3be-4656-9585-f855ac8ba0bb",
     "info": {
-      "editorName": "Menu",
+      "editorName": "Level",
       "children": []
     }
   },

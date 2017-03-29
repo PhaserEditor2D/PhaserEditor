@@ -27,6 +27,8 @@ Preloader.prototype.preload = function () {
 	
 	this.load.pack('preloader', 'assets/pack.json');
 	
+	this.add.text(300, 300, "Loading...", { fill:"#fff" });
+	
 };
 
 Preloader.prototype.create = function () {
