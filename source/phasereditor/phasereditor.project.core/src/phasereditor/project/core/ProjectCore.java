@@ -46,6 +46,7 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -350,7 +351,26 @@ public class ProjectCore {
 	}
 
 	public static boolean hasErrors(IProject project) throws CoreException {
-		int severity = project.findMaxProblemSeverity(ProjectCore.PHASER_PROBLEM_MARKER_ID, true, IResource.DEPTH_INFINITE);
+		int severity = project.findMaxProblemSeverity(ProjectCore.PHASER_PROBLEM_MARKER_ID, true,
+				IResource.DEPTH_INFINITE);
 		return severity == IMarker.SEVERITY_ERROR;
+	}
+
+	/**
+	 * Let's say that a TypeScript project is that one with a
+	 * <code>tsconfig.json</code> file in the WebContent folder.
+	 * 
+	 * @param project
+	 *            The project to test.
+	 * @return If the project is a TypeScript one.
+	 */
+	public static boolean isTypeScriptProject(IProject project) {
+		IContainer folder = getWebContentFolder(project);
+
+		IFile tsconfig = folder.getFile(new Path("tsconfig.json"));
+
+		boolean exists = tsconfig.exists();
+
+		return exists;
 	}
 }

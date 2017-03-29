@@ -26,12 +26,20 @@ import java.nio.file.Files;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jface.dialogs.IPageChangedListener;
+import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
@@ -44,7 +52,9 @@ import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.EditorSettings;
+import phasereditor.canvas.core.SourceLang;
 import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
+import phasereditor.project.core.ProjectCore;
 import phasereditor.project.core.codegen.ICodeGenerator;
 
 /**
@@ -62,6 +72,23 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 	public NewWizard_Base(CanvasType canvasType) {
 		super();
 		_canvasType = canvasType;
+	}
+
+	@Override
+	public void setContainer(IWizardContainer container) {
+		super.setContainer(container);
+		if (container != null) {
+			WizardDialog dlg = (WizardDialog) container;
+			dlg.addPageChangedListener(new IPageChangedListener() {
+
+				@Override
+				public void pageChanged(PageChangedEvent event) {
+					if (event.getSelectedPage() != getFilePage()) {
+						setLangFromProjectType();
+					}
+				}
+			});
+		}
 	}
 
 	public CanvasType getCanvasType() {
@@ -135,9 +162,12 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 
 		// create a new empty file
 		IFile mainFile = _filePage.createNewFile();
+
 		// if there was problem with creating file, it will be null, so make
 		// sure to check
 		if (mainFile != null) {
+
+			setLangFromProjectType();
 
 			if (isCanvasFileDesired()) {
 				createCanvasFile(mainFile);
@@ -211,4 +241,28 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 		}
 	}
 
+	private boolean _setLangFromProjectType_set = false;
+
+	void setLangFromProjectType() {
+		if (_setLangFromProjectType_set) {
+			return;
+		}
+
+		_setLangFromProjectType_set = true;
+
+		IPath path = _filePage.getContainerFullPath();
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		IContainer folder;
+		if (path.segmentCount() == 1) {
+			folder = root.getProject(path.lastSegment());
+		} else {
+			folder = root.getFolder(path);
+		}
+
+		IProject project = folder.getProject();
+
+		if (ProjectCore.isTypeScriptProject(project)) {
+			_model.getSettings().setLang(SourceLang.TYPE_SCRIPT);
+		}
+	}
 }
