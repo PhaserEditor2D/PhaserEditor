@@ -79,10 +79,6 @@
                icon="platform:/plugin/phasereditor.ui/icons/new.png"
                style="push">
          </command>
-         <separator
-               name="phasereditor.assetexplorer.ui.separator2"
-               visible="true">
-         </separator>
          <command
                commandId="phasereditor.assetpack.shownInEditor"
                icon="platform:/plugin/org.eclipse.ui/icons/full/etool16/editor_area.png"
@@ -98,10 +94,13 @@
                style="push"
                tooltip="Show the selection in the Preview window.">
          </command>
-         <separator
-               name="phasereditor.assetexplorer.ui.separator1"
-               visible="true">
-         </separator>
+         <command
+               commandId="phasereditor.canvas.ui.compile"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
          <menu
                label="References">
             <command

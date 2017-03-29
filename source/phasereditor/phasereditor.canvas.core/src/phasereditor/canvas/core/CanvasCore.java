@@ -21,8 +21,10 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -30,8 +32,11 @@ import java.util.function.Consumer;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.core.runtime.content.IContentType;
@@ -48,6 +53,8 @@ import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.IAssetReference;
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
+import phasereditor.project.core.codegen.ICodeGenerator;
 
 /**
  * @author arian
@@ -436,6 +443,54 @@ public class CanvasCore {
 				visitor.accept(assetRef);
 			}
 			break;
+		}
+	}
+
+	public static void compile(CanvasFile canvasFile, IProgressMonitor monitor) {
+
+		try {
+
+			CanvasModel canvasModel = canvasFile.newModel();
+
+			if (canvasModel.getWorld().hasErrors()) {
+				return;
+			}
+
+			compile(canvasModel, monitor);
+
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void compile(CanvasModel canvasModel, IProgressMonitor monitor) {
+		try {
+			IFile inputFile = canvasModel.getFile();
+			String fname = inputFile.getFullPath().removeFileExtension()
+					.addFileExtension(canvasModel.getSettings().getLang().getExtension()).lastSegment();
+
+			IFile file = inputFile.getParent().getFile(new Path(fname));
+
+			String replace = null;
+
+			if (file.exists()) {
+				byte[] bytes = Files.readAllBytes(file.getLocation().makeAbsolute().toFile().toPath());
+				replace = new String(bytes);
+			}
+
+			ICodeGenerator generator = new CanvasCodeGeneratorProvider().getCodeGenerator(canvasModel);
+
+			String content = generator.generate(replace);
+
+			ByteArrayInputStream stream = new ByteArrayInputStream(content.getBytes());
+			if (file.exists()) {
+				file.setContents(stream, IResource.NONE, monitor);
+			} else {
+				file.create(stream, false, monitor);
+			}
+			file.refreshLocal(1, null);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 

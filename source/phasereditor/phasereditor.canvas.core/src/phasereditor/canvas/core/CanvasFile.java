@@ -96,9 +96,10 @@ public class CanvasFile {
 	public CanvasModel newModel() throws Exception {
 		CanvasModel model = new CanvasModel(_file);
 		try (InputStream contents = _file.getContents()) {
-			model.read(newInstance());
-			return model;
+			JSONObject data = new JSONObject(new JSONTokener(contents));
+			model.read(data);
 		}
+		return model;
 	}
 
 	public JSONObject newInstance() throws Exception {

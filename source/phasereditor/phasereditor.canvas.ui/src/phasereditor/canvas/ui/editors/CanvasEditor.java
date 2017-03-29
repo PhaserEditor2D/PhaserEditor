@@ -25,9 +25,7 @@ import static java.lang.System.currentTimeMillis;
 import static java.lang.System.out;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -35,7 +33,6 @@ import java.util.concurrent.Executors;
 import org.eclipse.core.commands.operations.IUndoContext;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -95,13 +92,11 @@ import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.WorldModel;
-import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
 import phasereditor.canvas.ui.editors.behaviors.ZoomBehavior;
 import phasereditor.canvas.ui.editors.config.CanvasSettingsComp;
 import phasereditor.canvas.ui.editors.grid.PGrid;
 import phasereditor.canvas.ui.editors.palette.PaletteComp;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
-import phasereditor.project.core.codegen.ICodeGenerator;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.PatternFilter2;
@@ -231,7 +226,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 		try {
 			IFileEditorInput input = (IFileEditorInput) getEditorInput();
 			IFile file = input.getFile();
-			
+
 			_model.save(file, monitor);
 
 			if (getCanvas().getSettingsModel().isGenerateOnSave()) {
@@ -405,16 +400,16 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 
 		if (isSourcePageActive()) {
 			IActionBars actionBars = getEditorSite().getActionBars();
-			
+
 			actionBars.setGlobalActionHandler(ActionFactory.COPY.getId(),
 					getSourceEditor().getAction(ITextEditorActionConstants.COPY));
-			
+
 			actionBars.setGlobalActionHandler(ActionFactory.PASTE.getId(),
 					getSourceEditor().getAction(ITextEditorActionConstants.PASTE));
-			
+
 			actionBars.setGlobalActionHandler(ActionFactory.CUT.getId(),
 					getSourceEditor().getAction(ITextEditorActionConstants.CUT));
-			
+
 			actionBars.updateActionBars();
 		}
 	}
@@ -682,35 +677,11 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 			return;
 		}
 
-		ICodeGenerator generator = new CanvasCodeGeneratorProvider().getCodeGenerator(_model);
+		CanvasCore.compile(_model, null);
 
-		try {
-			IFile file = getFileToGenerate();
-			String replace = null;
-
-			if (file.exists()) {
-				byte[] bytes = Files.readAllBytes(file.getLocation().makeAbsolute().toFile().toPath());
-				replace = new String(bytes);
-			}
-
-			String content = generator.generate(replace);
-
-			ByteArrayInputStream stream = new ByteArrayInputStream(content.getBytes());
-			if (file.exists()) {
-				file.setContents(stream, IResource.NONE, null);
-			} else {
-				file.create(stream, false, null);
-			}
-			file.refreshLocal(1, null);
-
-			// if the source page is not created yet do it right now!
-			if (getSourceEditor() == null) {
-				createSourcePage();
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
+		// if the source page is not created yet do it right now!
+		if (getSourceEditor() == null) {
+			createSourcePage();
 		}
 	}
 

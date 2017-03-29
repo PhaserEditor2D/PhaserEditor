@@ -904,6 +904,11 @@
             id="phasereditor.canvas.ui.editusercode"
             name="Edit User Code">
       </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.compile"
+            name="Compile Canvas Files">
+      </command>
       
    </extension>
    <extension
@@ -1649,6 +1654,18 @@
       <handler
             class="phasereditor.canvas.ui.handlers.EditUserCodeHandler"
             commandId="phasereditor.canvas.ui.editusercode">
+      </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.CompileCanvasFileHandler"
+            commandId="phasereditor.canvas.ui.compile">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <count
+                     value="+">
+               </count>
+            </with>
+         </enabledWhen>
       </handler>
       
    </extension>
