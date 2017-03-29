@@ -32,8 +32,6 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -51,6 +49,9 @@ public class AtlasGeneratorEditorModel {
 	private IFile _file;
 	private SettingsBean _settings;
 	private List<EditorPage> _pages;
+	private int _version;
+
+	public static int CURRENT_VERSION = 2;
 
 	public static class EditorPage extends ArrayList<AtlasFrame> {
 		private static final long serialVersionUID = 1L;
@@ -81,13 +82,23 @@ public class AtlasGeneratorEditorModel {
 		try (InputStream contents = file.getContents()) {
 			JSONObject obj = new JSONObject(new JSONTokener(contents));
 
-			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+			_version = obj.optInt("version", 1);
 
 			JSONArray jsonFiles = obj.getJSONArray("files");
 			for (int i = 0; i < jsonFiles.length(); i++) {
 				String pathStr = jsonFiles.getString(i);
 				IPath path = new Path(pathStr);
-				_imageFiles.add(root.getFile(path));
+
+				if (_version == 1) {
+					// in version 1 the path was relative to the workspace but
+					// in version 2 it is relative to the project, so we have to
+					// remove the project segment.
+					path = path.removeFirstSegments(1);
+				}
+				
+				IFile imgfile = file.getProject().getFile(path);
+
+				_imageFiles.add(imgfile);
 			}
 
 			JSONObject jsonSettings = obj.getJSONObject("settings");
@@ -127,10 +138,12 @@ public class AtlasGeneratorEditorModel {
 
 	public JSONObject toJSON() {
 		JSONObject obj = new JSONObject();
+		obj.put("version", CURRENT_VERSION);
+
 		JSONArray jsonFiles = new JSONArray();
 		if (_file != null) {
 			for (IFile file : _imageFiles) {
-				IPath path = file.getFullPath();
+				IPath path = file.getProjectRelativePath();
 				jsonFiles.put(path.toPortableString());
 			}
 		}
