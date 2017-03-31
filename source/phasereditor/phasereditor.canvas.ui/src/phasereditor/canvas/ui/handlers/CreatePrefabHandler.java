@@ -35,6 +35,7 @@ import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.CanvasType;
+import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.SourceLang;
 import phasereditor.canvas.core.WorldModel;
@@ -82,6 +83,7 @@ public class CreatePrefabHandler extends AbstractHandler {
 				return area;
 			}
 		};
+
 		if (dlg.open() == Window.OK) {
 			IPath newPath = dlg.getResult();
 
@@ -107,15 +109,18 @@ public class CreatePrefabHandler extends AbstractHandler {
 
 			CanvasType type = selModel instanceof GroupModel ? CanvasType.GROUP : CanvasType.SPRITE;
 			newModel.setType(type);
-			newModel.getSettings().setBaseClass(CanvasCodeGeneratorProvider.getDefaultBaseClassFor(type));
-			SourceLang lang = node.getControl().getCanvas().getEditor().getModel().getSettings().getLang();
-			newModel.getSettings().setLang(lang);
 
 			String name = file.getFullPath().removeFileExtension().lastSegment();
 
+			EditorSettings settings = newModel.getSettings();
+			settings.setBaseClass(CanvasCodeGeneratorProvider.getDefaultBaseClassFor(type));
+			SourceLang lang = node.getControl().getCanvas().getEditor().getModel().getSettings().getLang();
+			settings.setLang(lang);
+			settings.setClassName(name);
+			
 			WorldModel world = newModel.getWorld();
 			newModel.setFile(file);
-			world.setEditorName(name);
+			world.setEditorName("root");
 
 			if (type == CanvasType.GROUP) {
 				GroupModel groupModel = (GroupModel) selModel;
