@@ -1809,6 +1809,12 @@
              schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
              sequence="M1+M2+U">
        </key>
+       <key
+             commandId="phasereditor.canvas.ui.moveToGroup"
+             contextId="phasereditor.canvas.ui.nodescontext"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M1+M2+M">
+       </key>
    </extension>
    <extension
          point="org.eclipse.core.expressions.definitions">
