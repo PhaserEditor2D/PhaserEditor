@@ -461,7 +461,6 @@ public abstract class BaseObjectModel {
 		return !isPrefabInstance() || _prefabOverride.contains(overrideTag);
 	}
 
-	@SuppressWarnings("unused")
 	protected void writeInfo(JSONObject jsonInfo, boolean saving) {
 		jsonInfo.put("editorName", _editorName);
 		jsonInfo.put("editorPick", _editorPick, DEF_EDITOR_PICK);
@@ -470,8 +469,8 @@ public abstract class BaseObjectModel {
 		jsonInfo.put("editorShow", _editorShow, true);
 
 		boolean prefabInstance = isPrefabInstance();
-
-		if (prefabInstance) {
+		
+		if (prefabInstance || !saving) {
 			JSONArray array = new JSONArray();
 			for (String tag : _prefabOverride) {
 				array.put(tag);
