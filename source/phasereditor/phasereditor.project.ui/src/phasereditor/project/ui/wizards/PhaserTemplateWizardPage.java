@@ -138,13 +138,7 @@ public class PhaserTemplateWizardPage extends WizardPage {
 		super("Phaser");
 		setTitle("New Phaser Project");
 		setDescription("Select a project template.");
-		List<TemplateCategoryModel> categories = InspectCore.getGeneralTemplates().getCategories();
-		for (TemplateCategoryModel category : categories) {
-			if (category.getName().equals("Main Templates")) {
-				_template = category.getTemplates().get(0);
-				break;
-			}
-		}
+		_template = InspectCore.getGeneralTemplates().findById("phasereditor.demos.friend_of_cuco");
 	}
 
 	private class TemplatesLabelProvider extends LabelProvider {

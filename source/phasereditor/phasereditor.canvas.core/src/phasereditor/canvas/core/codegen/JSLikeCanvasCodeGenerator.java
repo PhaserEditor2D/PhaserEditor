@@ -161,7 +161,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 			}
 		}
 	}
-
+	
 	protected void generateObjectCreation() {
 		trim(() -> {
 			int i = 0;
