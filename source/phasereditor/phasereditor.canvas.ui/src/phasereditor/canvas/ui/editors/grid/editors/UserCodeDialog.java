@@ -42,10 +42,11 @@ import phasereditor.canvas.core.EditorSettings_UserCode;
 public class UserCodeDialog extends Dialog {
 
 	private EditorSettings_UserCode _code;
-	private UserCoreBeforeAfterCodeComp _codeComp_init;
-	private UserCoreBeforeAfterCodeComp _codeComp_ctor;
-	private UserCoreBeforeAfterCodeComp _codeComp_preload;
-	private UserCoreBeforeAfterCodeComp _codeComp_create;
+	private UserCodeBeforeAfterCodeComp _codeComp_init;
+	private UserCodeBeforeAfterCodeComp _codeComp_ctor;
+	private UserCodeBeforeAfterCodeComp _codeComp_preload;
+	private UserCodeBeforeAfterCodeComp _codeComp_create;
+	private TabFolder _tabFolder;
 
 	/**
 	 * Create the dialog.
@@ -68,44 +69,44 @@ public class UserCodeDialog extends Dialog {
 		Composite container = (Composite) super.createDialogArea(parent);
 		container.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-		TabFolder tabFolder = new TabFolder(container, SWT.NONE);
+		_tabFolder = new TabFolder(container, SWT.NONE);
 
 		if (_code.getCanvasModel().getType() == CanvasType.STATE) {
 			{
 				// constructor
 
-				TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
+				TabItem tabItem = new TabItem(_tabFolder, SWT.NONE);
 				tabItem.setText("Constructor");
 
-				_codeComp_ctor = new UserCoreBeforeAfterCodeComp(tabFolder, SWT.NONE);
+				_codeComp_ctor = new UserCodeBeforeAfterCodeComp(_tabFolder, SWT.NONE);
 				tabItem.setControl(_codeComp_ctor);
 			}
 
 			{
 				// init
-				TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
+				TabItem tabItem = new TabItem(_tabFolder, SWT.NONE);
 				tabItem.setText("Init");
 
-				_codeComp_init = new UserCoreBeforeAfterCodeComp(tabFolder, SWT.NONE);
+				_codeComp_init = new UserCodeBeforeAfterCodeComp(_tabFolder, SWT.NONE);
 				tabItem.setControl(_codeComp_init);
 			}
 
 			{
 				// preload
-				TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
+				TabItem tabItem = new TabItem(_tabFolder, SWT.NONE);
 				tabItem.setText("Preload");
 
-				_codeComp_preload = new UserCoreBeforeAfterCodeComp(tabFolder, SWT.NONE);
+				_codeComp_preload = new UserCodeBeforeAfterCodeComp(_tabFolder, SWT.NONE);
 				tabItem.setControl(_codeComp_preload);
 			}
 		}
 
 		{
 			// create
-			TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
+			TabItem tabItem = new TabItem(_tabFolder, SWT.NONE);
 			tabItem.setText("Create");
 
-			_codeComp_create = new UserCoreBeforeAfterCodeComp(tabFolder, SWT.NONE);
+			_codeComp_create = new UserCodeBeforeAfterCodeComp(_tabFolder, SWT.NONE);
 			tabItem.setControl(_codeComp_create);
 		}
 
@@ -128,6 +129,13 @@ public class UserCodeDialog extends Dialog {
 
 		_codeComp_create.setBeforeText(_code.getCreate_before());
 		_codeComp_create.setAfterText(_code.getCreate_after());
+		
+		for(TabItem item : _tabFolder.getItems()) {
+			UserCodeBeforeAfterCodeComp comp = (UserCodeBeforeAfterCodeComp) item.getControl();
+			if (comp.getBeforeText().trim().length() > 0 || comp.getAfterText().trim().length() > 0) {
+				item.setText(item.getText() + "*");
+			}
+		}
 	}
 
 	public void setUserCode(EditorSettings_UserCode code) {
