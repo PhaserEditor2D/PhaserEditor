@@ -1,17 +1,49 @@
 {
+  "canvas-version": 2,
   "settings": {
+    "className": "Level",
     "sceneWidth": 1232,
     "sceneHeight": 272,
     "generateOnSave": true,
     "enableStepping": true,
     "stepWidth": 16,
-    "stepHeight": 16
+    "stepHeight": 16,
+    "lang": "JAVA_SCRIPT",
+    "baseClass": "Phaser.State",
+    "backgroundColor": [
+      180,
+      180,
+      180
+    ],
+    "gridColor": [
+      200,
+      200,
+      200
+    ],
+    "showGrid": true,
+    "create_after": "// from the User Code dialog\r\nthis.myCreate();\r\n\r\n",
+    "state_init_after": "// from User Code dialog\r\nthis.myInit();"
+  },
+  "stateSettings": {
+    "scaleMode": "SHOW_ALL",
+    "pageAlignHorizontally": true,
+    "pageAlignVertically": true,
+    "stageBackgroundColor": [
+      0,
+      0,
+      0
+    ],
+    "physicsSystem": "ARCADE",
+    "rendererRoundPixels": true,
+    "preloadSpriteId": "",
+    "preloadSprite_direction": 0,
+    "load.pack": []
   },
   "world": {
     "type": "group",
-    "id": "c2af53ee-26e8-41f2-a033-0ab856052e75",
+    "id": "8a0fc0bc-e3be-4656-9585-f855ac8ba0bb",
     "info": {
-      "editorName": "level1",
+      "editorName": "Level",
       "children": [
         {
           "type": "tileSprite",
@@ -21,13 +53,7 @@
             "editorName": "background",
             "y": 32,
             "width": 1216,
-            "height": 176,
-            "asset-ref": {
-              "file": "WebContent/assets/pack.json",
-              "section": "level",
-              "asset": "tiles",
-              "sprite": "18"
-            }
+            "height": 176
           }
         },
         {
@@ -47,13 +73,7 @@
                   "x": 896,
                   "y": 176,
                   "width": 176,
-                  "height": 96,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "12"
-                  }
+                  "height": 96
                 }
               },
               {
@@ -65,13 +85,7 @@
                   "x": 464,
                   "y": 208,
                   "width": 96,
-                  "height": 64,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "12"
-                  }
+                  "height": 64
                 }
               }
             ]
@@ -81,7 +95,7 @@
           "type": "group",
           "id": "c19b667e-9a0a-4ca8-8cd9-65e4e6d6f0a7",
           "info": {
-            "editorName": "tiles",
+            "editorName": "bricks",
             "children": [
               {
                 "type": "tileSprite",
@@ -91,13 +105,7 @@
                   "editorName": "tiles632",
                   "x": 1104,
                   "width": 128,
-                  "height": 32,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "34"
-                  }
+                  "height": 32
                 }
               },
               {
@@ -108,13 +116,7 @@
                   "editorName": "tiles63",
                   "x": 448,
                   "width": 656,
-                  "height": 48,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "34"
-                  }
+                  "height": 48
                 }
               },
               {
@@ -126,13 +128,7 @@
                   "x": 16,
                   "y": 96,
                   "width": 416,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "1"
-                  }
+                  "height": 16
                 }
               },
               {
@@ -144,13 +140,7 @@
                   "x": 48,
                   "y": 192,
                   "width": 416,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "25"
-                  }
+                  "height": 16
                 }
               },
               {
@@ -182,13 +172,7 @@
                   "x": 64,
                   "y": 112,
                   "width": 96,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "8"
-                  }
+                  "height": 16
                 }
               },
               {
@@ -210,13 +194,7 @@
                   "x": 288,
                   "y": 112,
                   "width": 96,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "8"
-                  }
+                  "height": 16
                 }
               },
               {
@@ -238,13 +216,7 @@
                   "x": 448,
                   "y": 80,
                   "width": 80,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "1"
-                  }
+                  "height": 16
                 }
               },
               {
@@ -296,13 +268,7 @@
                   "x": 560,
                   "y": 160,
                   "width": 16,
-                  "height": 112,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "32"
-                  }
+                  "height": 112
                 }
               },
               {
@@ -314,13 +280,7 @@
                   "x": 576,
                   "y": 144,
                   "width": 304,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "25"
-                  }
+                  "height": 16
                 }
               },
               {
@@ -332,13 +292,7 @@
                   "x": 720,
                   "y": 64,
                   "width": 160,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "8"
-                  }
+                  "height": 16
                 }
               },
               {
@@ -360,13 +314,7 @@
                   "x": 560,
                   "y": 64,
                   "width": 112,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "2"
-                  }
+                  "height": 16
                 }
               },
               {
@@ -388,13 +336,7 @@
                   "x": 880,
                   "y": 160,
                   "width": 16,
-                  "height": 112,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "35"
-                  }
+                  "height": 112
                 }
               },
               {
@@ -416,13 +358,7 @@
                   "x": 928,
                   "y": 32,
                   "width": 160,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "2"
-                  }
+                  "height": 16
                 }
               },
               {
@@ -434,13 +370,7 @@
                   "x": 976,
                   "y": 48,
                   "width": 96,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "8"
-                  }
+                  "height": 16
                 }
               },
               {
@@ -462,13 +392,7 @@
                   "x": 1088,
                   "y": 144,
                   "width": 32,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "26"
-                  }
+                  "height": 16
                 }
               },
               {
@@ -550,13 +474,7 @@
                   "x": 1104,
                   "y": 16,
                   "width": 112,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "2"
-                  }
+                  "height": 16
                 }
               },
               {
@@ -568,13 +486,7 @@
                   "x": 1072,
                   "y": 160,
                   "width": 16,
-                  "height": 112,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "32"
-                  }
+                  "height": 112
                 }
               },
               {
@@ -605,14 +517,9 @@
                   "editorName": "tiles54",
                   "x": 576,
                   "y": 128,
+                  "data": "",
                   "width": 48,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "17"
-                  }
+                  "height": 16
                 }
               },
               {
@@ -664,13 +571,7 @@
                   "x": 688,
                   "y": 48,
                   "width": 224,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "2"
-                  }
+                  "height": 16
                 }
               },
               {
@@ -721,13 +622,7 @@
                   "editorName": "tiles62",
                   "x": 864,
                   "width": 32,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "33"
-                  }
+                  "height": 16
                 }
               },
               {
@@ -739,13 +634,7 @@
                   "x": 448,
                   "y": 48,
                   "width": 240,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "34"
-                  }
+                  "height": 16
                 }
               },
               {
@@ -757,13 +646,7 @@
                   "x": 448,
                   "y": 64,
                   "width": 96,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "34"
-                  }
+                  "height": 16
                 }
               },
               {
@@ -795,13 +678,7 @@
                   "x": 768,
                   "y": 16,
                   "width": 32,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "33"
-                  }
+                  "height": 16
                 }
               },
               {
@@ -832,13 +709,7 @@
                   "editorName": "tiles621",
                   "x": 1040,
                   "width": 16,
-                  "height": 32,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "33"
-                  }
+                  "height": 32
                 }
               },
               {
@@ -850,13 +721,7 @@
                   "x": 464,
                   "y": 192,
                   "width": 96,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "4"
-                  }
+                  "height": 16
                 }
               },
               {
@@ -888,13 +753,7 @@
                   "x": 896,
                   "y": 160,
                   "width": 176,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "4"
-                  }
+                  "height": 16
                 }
               },
               {
@@ -944,13 +803,7 @@
                 "info": {
                   "editorName": "tiles",
                   "width": 448,
-                  "height": 112,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "34"
-                  }
+                  "height": 112
                 }
               },
               {
@@ -962,13 +815,7 @@
                   "x": 1184,
                   "y": 96,
                   "width": 32,
-                  "height": 176,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "34"
-                  }
+                  "height": 176
                 }
               },
               {
@@ -979,13 +826,7 @@
                   "editorName": "tiles5",
                   "y": 192,
                   "width": 464,
-                  "height": 80,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "34"
-                  }
+                  "height": 80
                 }
               },
               {
@@ -996,13 +837,7 @@
                   "editorName": "tiles1",
                   "y": 112,
                   "width": 16,
-                  "height": 64,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "35"
-                  }
+                  "height": 64
                 }
               },
               {
@@ -1073,13 +908,7 @@
                   "x": 560,
                   "y": 144,
                   "width": 336,
-                  "height": 128,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "34"
-                  }
+                  "height": 128
                 }
               },
               {
@@ -1117,17 +946,11 @@
                 "id": "9986c870-a9d7-4446-ab2e-ad7d14f91c02",
                 "asset": "2",
                 "info": {
-                  "editorName": "tiles51111113",
+                  "editorName": "tiles94",
                   "x": 1216,
                   "y": 96,
                   "width": 16,
-                  "height": 176,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "34"
-                  }
+                  "height": 176
                 }
               },
               {
@@ -1135,17 +958,11 @@
                 "id": "e30e77e3-c839-4b48-9286-cf4f6c8650ae",
                 "asset": "2",
                 "info": {
-                  "editorName": "tiles51111111",
+                  "editorName": "tiles93",
                   "x": 1152,
                   "y": 112,
                   "width": 32,
-                  "height": 160,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "34"
-                  }
+                  "height": 160
                 }
               },
               {
@@ -1153,17 +970,11 @@
                 "id": "8e0ef979-c6bc-4cdd-91c7-f2fe890d0db0",
                 "asset": "2",
                 "info": {
-                  "editorName": "tiles5111111",
+                  "editorName": "tiles92",
                   "x": 1120,
                   "y": 128,
                   "width": 32,
-                  "height": 144,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "34"
-                  }
+                  "height": 144
                 }
               },
               {
@@ -1171,17 +982,11 @@
                 "id": "7f3a7e7a-4c06-412f-8fee-bd9932ab96c7",
                 "asset": "2",
                 "info": {
-                  "editorName": "tiles511111",
+                  "editorName": "tiles91",
                   "x": 1072,
                   "y": 144,
                   "width": 48,
-                  "height": 128,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "34"
-                  }
+                  "height": 128
                 }
               },
               {
@@ -1193,13 +998,7 @@
                   "x": 1216,
                   "y": 32,
                   "width": 16,
-                  "height": 64,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "tiles",
-                    "sprite": "32"
-                  }
+                  "height": 64
                 }
               },
               {
@@ -1216,50 +1015,6 @@
           }
         },
         {
-          "type": "spritesheet",
-          "id": "daa86772-9eb7-4d30-af75-d979787510e6",
-          "asset": "23",
-          "info": {
-            "editorName": "player",
-            "editorPublic": true,
-            "x": 32,
-            "y": 128,
-            "anchor.x": 0.5,
-            "animations": [
-              {
-                "name": "walk",
-                "frameRate": 4,
-                "loop": true,
-                "frames": [
-                  "0",
-                  "1",
-                  "2",
-                  "1"
-                ]
-              },
-              {
-                "name": "jump",
-                "frameRate": 60,
-                "loop": false,
-                "frames": ["4"]
-              },
-              {
-                "name": "stay",
-                "frameRate": 60,
-                "loop": false,
-                "frames": ["5"]
-              },
-              {
-                "name": "die",
-                "frameRate": 2,
-                "loop": false,
-                "frames": ["7"]
-              }
-            ],
-            "body": {"type": "ARCADE_RECT"}
-          }
-        },
-        {
           "type": "group",
           "id": "9e7b519e-189b-49da-8d5c-406d60a08ae3",
           "info": {
@@ -1267,55 +1022,45 @@
             "editorPublic": true,
             "children": [
               {
-                "type": "spritesheet",
-                "id": "55f96d18-2302-4af3-9c19-239aabda9db5",
-                "asset": "24",
+                "type": "prefab",
+                "prefab": "0",
+                "id": "cdc6dcaa-ce87-4391-a4a1-23b6767f7a4c",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "level",
+                  "asset": "enemies",
+                  "sprite": "4"
+                },
                 "info": {
-                  "editorName": "enemies2",
-                  "x": 224,
-                  "y": 176,
-                  "anchor.x": 0.5,
-                  "data": "{\r\n left: 80,\r\n right: 432\r\n}",
-                  "animations": [{
-                    "name": "walk",
-                    "frameRate": 7,
-                    "loop": true,
-                    "frames": [
-                      "0",
-                      "1",
-                      "2"
-                    ]
-                  }],
-                  "body": {
-                    "type": "ARCADE_RECT",
-                    "velocityX": -50
-                  }
+                  "editorName": "enemies1",
+                  "prefabOverride": [
+                    "position",
+                    "data"
+                  ],
+                  "x": 624,
+                  "y": 128,
+                  "data": "{\r\n\tleft: 570,\r\n\tright: 880\r\n}"
                 }
               },
               {
-                "type": "spritesheet",
-                "id": "d34281cd-1a89-42c3-b10b-2155006e6c49",
-                "asset": "24",
+                "type": "prefab",
+                "prefab": "1",
+                "id": "286514a5-ff72-4bb3-b3b2-116f3843be82",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "level",
+                  "asset": "enemies",
+                  "sprite": "0"
+                },
                 "info": {
-                  "editorName": "enemies1",
-                  "x": 576,
-                  "y": 128,
-                  "anchor.x": 0.5,
-                  "data": "{\r\n left: 570,\r\n right: 880\r\n}",
-                  "animations": [{
-                    "name": "walk",
-                    "frameRate": 7,
-                    "loop": true,
-                    "frames": [
-                      "0",
-                      "1",
-                      "2"
-                    ]
-                  }],
-                  "body": {
-                    "type": "ARCADE_RECT",
-                    "velocityX": 100
-                  }
+                  "editorName": "enemies2",
+                  "prefabOverride": [
+                    "position",
+                    "data"
+                  ],
+                  "x": 240,
+                  "y": 176,
+                  "data": "{\r\n\tleft: 80,\r\n\tright: 432\r\n}"
                 }
               }
             ]
@@ -1324,7 +1069,7 @@
         {
           "type": "spritesheet",
           "id": "6d190abd-7098-4975-a426-1fbfaa510611",
-          "asset": "25",
+          "asset": "23",
           "info": {
             "editorName": "items",
             "x": 1184,
@@ -1342,288 +1087,330 @@
               {
                 "type": "tileSprite",
                 "id": "31a39ce1-4d0d-4fbe-adac-29db64ee0859",
-                "asset": "26",
+                "asset": "24",
                 "info": {
                   "editorName": "p0",
                   "x": 48,
                   "y": 192,
                   "width": 416,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "p",
-                    "sprite": "p"
-                  }
+                  "height": 16
                 }
               },
               {
                 "type": "tileSprite",
                 "id": "ad655a6d-9ada-4839-8c00-f2962d233dd1",
-                "asset": "26",
+                "asset": "24",
                 "info": {
                   "editorName": "p1",
                   "x": 16,
                   "y": 176,
                   "width": 32,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "p",
-                    "sprite": "p"
-                  }
+                  "height": 16
                 }
               },
               {
                 "type": "tileSprite",
                 "id": "f5d03857-4afc-4190-bed2-49bc57901c7a",
-                "asset": "26",
+                "asset": "24",
                 "info": {
                   "editorName": "p3",
                   "y": 112,
                   "width": 16,
-                  "height": 64,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "p",
-                    "sprite": "p"
-                  }
+                  "height": 64
                 }
               },
               {
                 "type": "tileSprite",
                 "id": "6cb62521-9a5c-43ff-ab76-0086aff2973f",
-                "asset": "26",
+                "asset": "24",
                 "info": {
                   "editorName": "p",
                   "x": 496,
                   "y": 176,
                   "width": 16,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "p",
-                    "sprite": "p"
-                  }
+                  "height": 16
                 }
               },
               {
                 "type": "tileSprite",
                 "id": "02d64282-849e-4907-ba42-8f0a7694dcbe",
-                "asset": "26",
+                "asset": "24",
                 "info": {
                   "editorName": "p2",
                   "x": 528,
                   "y": 160,
                   "width": 16,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "p",
-                    "sprite": "p"
-                  }
+                  "height": 16
                 }
               },
               {
                 "type": "tileSprite",
                 "id": "716b4b2d-32f4-40ea-a839-0c1b8a0a5740",
-                "asset": "26",
+                "asset": "24",
                 "info": {
                   "editorName": "p4",
                   "x": 544,
                   "y": 176,
                   "width": 16,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "p",
-                    "sprite": "p"
-                  }
+                  "height": 16
                 }
               },
               {
                 "type": "tileSprite",
                 "id": "f17e350f-6e27-45a1-99a2-df8303defdbd",
-                "asset": "26",
+                "asset": "24",
                 "info": {
                   "editorName": "p5",
                   "x": 560,
                   "y": 144,
                   "width": 336,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "p",
-                    "sprite": "p"
-                  }
+                  "height": 16
                 }
               },
               {
                 "type": "tileSprite",
                 "id": "0a5fa033-2cfc-4694-804e-a216246189cc",
-                "asset": "26",
+                "asset": "24",
                 "info": {
                   "editorName": "p6",
                   "x": 560,
                   "y": 160,
                   "width": 16,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "p",
-                    "sprite": "p"
-                  }
+                  "height": 16
                 }
               },
               {
                 "type": "tileSprite",
                 "id": "aed92ffc-1f24-45a8-b217-e96701aca89c",
-                "asset": "26",
+                "asset": "24",
                 "info": {
                   "editorName": "p7",
                   "x": 928,
                   "y": 144,
                   "width": 16,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "p",
-                    "sprite": "p"
-                  }
+                  "height": 16
                 }
               },
               {
                 "type": "tileSprite",
                 "id": "cbc95eb1-7b77-402e-a34a-d22084a178e6",
-                "asset": "26",
+                "asset": "24",
                 "info": {
                   "editorName": "p8",
                   "x": 976,
                   "y": 144,
                   "width": 16,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "p",
-                    "sprite": "p"
-                  }
+                  "height": 16
                 }
               },
               {
                 "type": "tileSprite",
                 "id": "2437e564-68ca-4de2-bc8f-356759574423",
-                "asset": "26",
+                "asset": "24",
                 "info": {
                   "editorName": "p9",
                   "x": 1024,
                   "y": 144,
                   "width": 16,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "p",
-                    "sprite": "p"
-                  }
+                  "height": 16
                 }
               },
               {
                 "type": "tileSprite",
                 "id": "a018248c-4ce3-4372-84f0-d2b4a0bae15d",
-                "asset": "26",
+                "asset": "24",
                 "info": {
                   "editorName": "p10",
                   "x": 1072,
                   "y": 144,
                   "width": 48,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "p",
-                    "sprite": "p"
-                  }
+                  "height": 16
                 }
               },
               {
                 "type": "tileSprite",
                 "id": "6b8bb3cc-87fc-49e7-bab7-2eb3c28ea3c6",
-                "asset": "26",
+                "asset": "24",
                 "info": {
                   "editorName": "p11",
                   "x": 1120,
                   "y": 128,
                   "width": 32,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "p",
-                    "sprite": "p"
-                  }
+                  "height": 16
                 }
               },
               {
                 "type": "tileSprite",
                 "id": "b5e15622-90a5-460b-aeae-d79a8502e5bc",
-                "asset": "26",
+                "asset": "24",
                 "info": {
                   "editorName": "p12",
                   "x": 1152,
                   "y": 112,
                   "width": 32,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "p",
-                    "sprite": "p"
-                  }
+                  "height": 16
                 }
               },
               {
                 "type": "tileSprite",
                 "id": "a60b6fcd-98cd-4be7-8166-def868017ffc",
-                "asset": "26",
+                "asset": "24",
                 "info": {
                   "editorName": "p13",
                   "x": 1184,
                   "y": 96,
                   "width": 32,
-                  "height": 16,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "p",
-                    "sprite": "p"
-                  }
+                  "height": 16
                 }
               },
               {
                 "type": "tileSprite",
                 "id": "723d5e54-9c83-427c-aaee-2e6b69b00ce0",
-                "asset": "26",
+                "asset": "24",
                 "info": {
                   "editorName": "p14",
                   "x": 1216,
                   "y": 32,
                   "width": 16,
-                  "height": 64,
-                  "asset-ref": {
-                    "file": "WebContent/assets/pack.json",
-                    "section": "level",
-                    "asset": "p",
-                    "sprite": "p"
-                  }
+                  "height": 64
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "prefab",
+          "prefab": "2",
+          "id": "2fd0b59b-5628-4f2d-b831-9cab90075f0f",
+          "asset-ref": {
+            "file": "WebContent/assets/pack.json",
+            "section": "level",
+            "asset": "player",
+            "sprite": "5"
+          },
+          "info": {
+            "editorName": "player",
+            "editorPublic": true,
+            "x": 32,
+            "y": 128
+          }
+        },
+        {
+          "type": "group",
+          "id": "e976247a-64fe-42c6-8733-91ae044d9e88",
+          "info": {
+            "editorName": "daemons",
+            "children": [
+              {
+                "type": "prefab",
+                "prefab": "3",
+                "id": "bae96fef-0998-4a37-baa8-dd7193e0830a",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "level",
+                  "asset": "items",
+                  "sprite": "5"
+                },
+                "info": {
+                  "editorName": "items1",
+                  "x": 144,
+                  "y": 144
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "3",
+                "id": "66a988ee-a8da-4c4a-aba8-40ae00548977",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "level",
+                  "asset": "items",
+                  "sprite": "5"
+                },
+                "info": {
+                  "editorName": "items2",
+                  "x": 160,
+                  "y": 144
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "3",
+                "id": "f381d13d-2dd9-43d7-8cfe-7bc7c95ed2e1",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "level",
+                  "asset": "items",
+                  "sprite": "5"
+                },
+                "info": {
+                  "editorName": "items3",
+                  "x": 176,
+                  "y": 144
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "3",
+                "id": "de149a07-19a8-47f8-86bd-bc94928ea9c3",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "level",
+                  "asset": "items",
+                  "sprite": "5"
+                },
+                "info": {
+                  "editorName": "items4",
+                  "x": 192,
+                  "y": 144
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "3",
+                "id": "7e78058e-6738-42ee-9d8a-09be76717b1b",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "level",
+                  "asset": "items",
+                  "sprite": "5"
+                },
+                "info": {
+                  "editorName": "items5",
+                  "x": 928,
+                  "y": 128
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "3",
+                "id": "55d2964e-cb0b-429f-948b-f8e7af1fa29e",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "level",
+                  "asset": "items",
+                  "sprite": "5"
+                },
+                "info": {
+                  "editorName": "items6",
+                  "x": 976,
+                  "y": 128
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "3",
+                "id": "33e77cb3-934c-4b9c-9571-3963180ec6c4",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "level",
+                  "asset": "items",
+                  "sprite": "5"
+                },
+                "info": {
+                  "editorName": "items7",
+                  "x": 1024,
+                  "y": 128
                 }
               }
             ]
@@ -1632,6 +1419,7 @@
       ]
     }
   },
+  "type": "STATE",
   "asset-table": {
     "0": {
       "file": "WebContent/assets/pack.json",
@@ -1774,25 +1562,19 @@
     "23": {
       "file": "WebContent/assets/pack.json",
       "section": "level",
-      "asset": "player",
-      "sprite": "5"
+      "asset": "items",
+      "sprite": "13"
     },
     "24": {
       "file": "WebContent/assets/pack.json",
       "section": "level",
-      "asset": "enemies",
-      "sprite": "0"
-    },
-    "25": {
-      "file": "WebContent/assets/pack.json",
-      "section": "level",
-      "asset": "items",
-      "sprite": "13"
-    },
-    "26": {
-      "file": "WebContent/assets/pack.json",
-      "section": "level",
       "asset": "p"
     }
+  },
+  "prefab-table": {
+    "0": "WebContent/assets/canvas/prefabs/Enemy2.canvas",
+    "1": "WebContent/assets/canvas/prefabs/Enemy1.canvas",
+    "2": "WebContent/assets/canvas/prefabs/Player.canvas",
+    "3": "WebContent/assets/canvas/prefabs/Daemon.canvas"
   }
 }

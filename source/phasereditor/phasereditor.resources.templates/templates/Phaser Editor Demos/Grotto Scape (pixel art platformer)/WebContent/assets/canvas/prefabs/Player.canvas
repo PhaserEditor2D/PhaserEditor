@@ -1,0 +1,89 @@
+{
+  "canvas-version": 2,
+  "settings": {
+    "className": "Player",
+    "sceneWidth": 640,
+    "sceneHeight": 360,
+    "generateOnSave": true,
+    "enableStepping": true,
+    "stepWidth": 16,
+    "stepHeight": 16,
+    "lang": "JAVA_SCRIPT",
+    "baseClass": "Phaser.Sprite",
+    "backgroundColor": [
+      180,
+      180,
+      180
+    ],
+    "gridColor": [
+      200,
+      200,
+      200
+    ],
+    "showGrid": true
+  },
+  "stateSettings": {
+    "stageBackgroundColor": [
+      0,
+      0,
+      0
+    ],
+    "preloadSpriteId": "",
+    "preloadSprite_direction": 0,
+    "load.pack": []
+  },
+  "world": {
+    "type": "group",
+    "id": "a9144f9d-9238-486e-9a52-b049e34a7367",
+    "info": {
+      "editorName": "root",
+      "children": [{
+        "type": "spritesheet",
+        "id": "320ce7b3-f31d-4bfe-9cba-00714cf10436",
+        "asset": "0",
+        "info": {
+          "editorName": "player",
+          "x": 16,
+          "anchor.x": 0.5,
+          "animations": [
+            {
+              "name": "walk",
+              "frameRate": 4,
+              "loop": true,
+              "frames": [
+                "0",
+                "1",
+                "2",
+                "1"
+              ]
+            },
+            {
+              "name": "jump",
+              "frameRate": 60,
+              "frames": ["4"]
+            },
+            {
+              "name": "stay",
+              "frameRate": 60,
+              "frames": ["5"]
+            },
+            {
+              "name": "die",
+              "frameRate": 2,
+              "frames": ["7"]
+            }
+          ],
+          "body": {"type": "ARCADE_RECT"}
+        }
+      }]
+    }
+  },
+  "type": "SPRITE",
+  "asset-table": {"0": {
+    "file": "WebContent/assets/pack.json",
+    "section": "level",
+    "asset": "player",
+    "sprite": "5"
+  }},
+  "prefab-table": {}
+}
