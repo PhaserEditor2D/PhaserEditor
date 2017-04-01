@@ -1,9 +1,0 @@
-{
-	"author": {
-		"name": "Arian Fornaris",
-		"email": "developers@boniatillo.com",
-		"website": "phasereditor.boniatillo.com",
-	},
-	"mainFile": "assets/canvas/Scene1.canvas",
-	"description": "Demo of how to make a platformer with the scene visual builder."
-}

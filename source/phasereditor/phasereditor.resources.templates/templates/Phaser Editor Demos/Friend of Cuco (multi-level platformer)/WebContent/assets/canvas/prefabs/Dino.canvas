@@ -1,0 +1,89 @@
+{
+  "canvas-version": 2,
+  "settings": {
+    "className": "Dino",
+    "sceneWidth": 640,
+    "sceneHeight": 360,
+    "generateOnSave": true,
+    "enableStepping": false,
+    "lang": "JAVA_SCRIPT",
+    "baseClass": "Phaser.Sprite",
+    "backgroundColor": [
+      180,
+      180,
+      180
+    ],
+    "gridColor": [
+      200,
+      200,
+      200
+    ],
+    "showGrid": true
+  },
+  "stateSettings": {
+    "stageBackgroundColor": [
+      0,
+      0,
+      0
+    ],
+    "preloadSpriteId": "",
+    "preloadSprite_direction": 0,
+    "load.pack": []
+  },
+  "world": {
+    "type": "group",
+    "id": "e8d4c92f-0989-4f83-9228-53c470b33afb",
+    "info": {
+      "editorName": "Dino",
+      "children": [{
+        "type": "spritesheet",
+        "id": "39c256c1-0d85-4a1b-bd76-637f725898bd",
+        "asset": "0",
+        "info": {
+          "editorName": "dino",
+          "x": 172,
+          "y": 94,
+          "anchor.x": 0.5,
+          "anchor.y": 0.5,
+          "animations": [
+            {
+              "name": "walk",
+              "frameRate": 4,
+              "loop": true,
+              "frames": [
+                "0",
+                "1"
+              ]
+            },
+            {
+              "name": "jump",
+              "frameRate": 60,
+              "frames": ["2"]
+            },
+            {
+              "name": "stay",
+              "frameRate": 60,
+              "frames": ["3"]
+            }
+          ],
+          "body": {
+            "type": "ARCADE_RECT",
+            "offsetX": 42,
+            "offsetY": 42,
+            "collideWorldBounds": true,
+            "width": 86,
+            "height": 93
+          }
+        }
+      }]
+    }
+  },
+  "type": "SPRITE",
+  "asset-table": {"0": {
+    "file": "WebContent/assets/pack.json",
+    "section": "preloader",
+    "asset": "dino",
+    "sprite": "0"
+  }},
+  "prefab-table": {}
+}

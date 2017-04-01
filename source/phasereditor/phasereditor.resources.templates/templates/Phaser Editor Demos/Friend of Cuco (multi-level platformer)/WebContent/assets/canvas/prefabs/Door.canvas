@@ -1,0 +1,65 @@
+{
+  "canvas-version": 2,
+  "settings": {
+    "className": "Door",
+    "sceneWidth": 640,
+    "sceneHeight": 360,
+    "generateOnSave": true,
+    "enableStepping": false,
+    "lang": "JAVA_SCRIPT",
+    "baseClass": "Phaser.Sprite",
+    "backgroundColor": [
+      180,
+      180,
+      180
+    ],
+    "gridColor": [
+      200,
+      200,
+      200
+    ],
+    "showGrid": true
+  },
+  "stateSettings": {
+    "stageBackgroundColor": [
+      0,
+      0,
+      0
+    ],
+    "preloadSpriteId": "",
+    "preloadSprite_direction": 0,
+    "load.pack": []
+  },
+  "world": {
+    "type": "group",
+    "id": "a1671fe5-c756-4410-a492-fca68d41e001",
+    "info": {
+      "editorName": "root",
+      "children": [{
+        "type": "atlas-sprite",
+        "id": "47bc1c41-f6ca-405c-b168-4416fdb5facb",
+        "asset": "0",
+        "info": {
+          "editorName": "door",
+          "body": {
+            "type": "ARCADE_RECT",
+            "offsetX": 69,
+            "offsetY": 42,
+            "immovable": true,
+            "allowGravity": false,
+            "width": 181,
+            "height": 408
+          }
+        }
+      }]
+    }
+  },
+  "type": "SPRITE",
+  "asset-table": {"0": {
+    "file": "WebContent/assets/pack.json",
+    "section": "preloader",
+    "asset": "atlas1",
+    "sprite": "Puerta"
+  }},
+  "prefab-table": {}
+}

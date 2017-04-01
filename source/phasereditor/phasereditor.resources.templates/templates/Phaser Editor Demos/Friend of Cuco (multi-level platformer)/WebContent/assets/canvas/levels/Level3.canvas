@@ -1,0 +1,356 @@
+{
+  "canvas-version": 2,
+  "settings": {
+    "className": "Level3",
+    "sceneWidth": 1500,
+    "sceneHeight": 1900,
+    "generateOnSave": true,
+    "enableStepping": false,
+    "stepWidth": 1500,
+    "stepHeight": 654,
+    "lang": "JAVA_SCRIPT",
+    "baseClass": "Phaser.State",
+    "backgroundColor": [
+      180,
+      180,
+      180
+    ],
+    "gridColor": [
+      200,
+      200,
+      200
+    ],
+    "showGrid": true,
+    "create_after": "// from User Code dialog\r\nthis.myCreate();",
+    "state_init_after": "// from User Code dialog\r\nthis.myInit();"
+  },
+  "stateSettings": {
+    "stageBackgroundColor": [
+      0,
+      0,
+      0
+    ],
+    "preloadSpriteId": "",
+    "preloadSprite_direction": 0,
+    "load.pack": []
+  },
+  "world": {
+    "type": "group",
+    "id": "d47a8206-d2a4-455e-8c37-a03c6677dd4b",
+    "info": {
+      "editorName": "Level3",
+      "children": [
+        {
+          "type": "group",
+          "id": "fc33ca71-fbe5-4f8f-8f28-1fbcc8d943a2",
+          "info": {
+            "editorName": "background",
+            "children": [
+              {
+                "type": "tileSprite",
+                "id": "189676c1-a052-44b0-9d8a-db99202a8921",
+                "asset": "0",
+                "info": {
+                  "editorName": "wall_empty",
+                  "x": -3,
+                  "y": -54,
+                  "width": 1500,
+                  "height": 1962
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "27089802-fe02-44b1-9fd1-bace6a05baa0",
+                "asset": "1",
+                "info": {
+                  "editorName": "musgo2",
+                  "x": 921,
+                  "y": 1534
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "1990af9a-afa1-43df-9bec-ba41be430c31",
+                "asset": "2",
+                "info": {
+                  "editorName": "shadow1",
+                  "x": 907,
+                  "y": 1566
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "c3741878-cc2b-4639-85ba-d88ceab2f644",
+                "asset": "1",
+                "info": {
+                  "editorName": "musgo3",
+                  "x": 475,
+                  "y": 1104
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "24a038ce-57c0-4ce8-af02-8518f998b899",
+                "asset": "2",
+                "info": {
+                  "editorName": "shadow2",
+                  "x": 461,
+                  "y": 1136
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "85d0e973-89ec-4f31-8476-d7a136b6d891",
+                "asset": "1",
+                "info": {
+                  "editorName": "musgo4",
+                  "x": 83,
+                  "y": 695
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "6c1a59b2-3e3e-4302-8db9-8072afc623a1",
+                "asset": "2",
+                "info": {
+                  "editorName": "shadow3",
+                  "x": 69,
+                  "y": 727
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "179d2037-e40e-4d2e-9c50-47b69b2c48ea",
+                "asset": "1",
+                "info": {
+                  "editorName": "musgo5",
+                  "x": 818,
+                  "y": 378
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "e00ca94a-e337-4a2a-8651-7eb84d6d66e7",
+                "asset": "2",
+                "info": {
+                  "editorName": "shadow4",
+                  "x": 804,
+                  "y": 410
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "0",
+                "id": "05faaaa6-319e-482f-b023-b2e1fdddebf2",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas1",
+                  "sprite": "Puerta"
+                },
+                "info": {
+                  "editorName": "door",
+                  "editorPublic": true,
+                  "prefabOverride": ["position"],
+                  "x": 16,
+                  "y": 1384
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "a021995a-26e2-418c-9035-331382923b50",
+                "asset": "3",
+                "info": {
+                  "editorName": "wall_hole",
+                  "x": 417,
+                  "y": 1545
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "980d663a-aa02-4d84-b48c-2a57f529cde1",
+                "asset": "3",
+                "info": {
+                  "editorName": "wall_hole1",
+                  "x": 1101,
+                  "y": 780
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "5d1f55b0-41e0-41b8-9400-489c98fcb4d6",
+                "asset": "3",
+                "info": {
+                  "editorName": "wall_hole2",
+                  "x": 236,
+                  "y": 328
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "group",
+          "id": "ae351483-944b-43ca-b768-b90cbb583a7f",
+          "info": {
+            "editorName": "platforms",
+            "editorPublic": true,
+            "children": [
+              {
+                "type": "tileSprite",
+                "id": "d6912589-cccd-480f-a914-5ca3932e8a7f",
+                "asset": "4",
+                "info": {
+                  "editorName": "platform1",
+                  "y": 1833,
+                  "width": 1500,
+                  "height": 74
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "71cefa3c-49cf-4d06-9943-69fb12c35c6f",
+                "asset": "4",
+                "info": {
+                  "editorName": "platform",
+                  "x": 921,
+                  "y": 1506
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "f9c724b1-d1b6-4c8b-bf75-d859ecaef88b",
+                "asset": "4",
+                "info": {
+                  "editorName": "platform2",
+                  "x": 475,
+                  "y": 1076
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "06467ddc-2a59-4817-a885-394e53fecb1d",
+                "asset": "4",
+                "info": {
+                  "editorName": "platform3",
+                  "x": 83,
+                  "y": 667
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "b7590f58-3e21-4b72-b27d-62dc59b1f555",
+                "asset": "4",
+                "info": {
+                  "editorName": "platform4",
+                  "x": 818,
+                  "y": 350
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "prefab",
+          "prefab": "1",
+          "id": "2047a38a-5abc-481e-a2ba-a5b78ffd77a9",
+          "asset-ref": {
+            "file": "WebContent/assets/pack.json",
+            "section": "preloader",
+            "asset": "dino",
+            "sprite": "0"
+          },
+          "info": {
+            "editorName": "dino",
+            "editorPublic": true,
+            "prefabOverride": ["position"],
+            "x": 1110,
+            "y": 196
+          }
+        },
+        {
+          "type": "group",
+          "id": "d6770688-14ab-47e5-89ed-5c615c830e89",
+          "info": {
+            "editorName": "objects",
+            "children": [
+              {
+                "type": "atlas-sprite",
+                "id": "61db4d11-49a4-45ec-b860-713f29d7bdee",
+                "asset": "5",
+                "info": {
+                  "editorName": "zombi_head",
+                  "x": 693,
+                  "y": 1046,
+                  "rotation": 0.23110776287786122,
+                  "scale.x": 0.688249419675209,
+                  "scale.y": 0.6428571716864586,
+                  "anchor.x": 0.3790812509523021,
+                  "anchor.y": 0.5528988213766188
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "4afac5cb-3470-4754-b356-ddab96dc5743",
+                "asset": "6",
+                "info": {
+                  "editorName": "flor",
+                  "x": 1132,
+                  "y": 1397
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "type": "STATE",
+  "asset-table": {
+    "0": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "wall-empty"
+    },
+    "1": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "atlas1",
+      "sprite": "musgo"
+    },
+    "2": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "atlas1",
+      "sprite": "shadow"
+    },
+    "3": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "atlas1",
+      "sprite": "wall-hole"
+    },
+    "4": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "atlas1",
+      "sprite": "platform2"
+    },
+    "5": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "atlas1",
+      "sprite": "zombi-head"
+    },
+    "6": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "atlas1",
+      "sprite": "flor"
+    }
+  },
+  "prefab-table": {
+    "0": "WebContent/assets/canvas/prefabs/Door.canvas",
+    "1": "WebContent/assets/canvas/prefabs/Dino.canvas"
+  }
+}

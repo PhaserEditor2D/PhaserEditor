@@ -1,9 +1,0 @@
-{
-	"author": {
-		"name": "Arian Fornaris",
-		"email": "developers@boniatillo.com",
-		"website": "phasereditor.boniatillo.com",
-	},
-	"mainFile": "assets/scenes/Scene1.canvas",
-	"description": "Demo of how to make a retro platformer, with fixed size sprites (traditionally made with tools like Tiled)."
-}

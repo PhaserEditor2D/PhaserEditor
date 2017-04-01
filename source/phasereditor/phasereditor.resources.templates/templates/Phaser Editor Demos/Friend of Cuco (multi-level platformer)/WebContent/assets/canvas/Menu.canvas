@@ -1,0 +1,159 @@
+{
+  "canvas-version": 2,
+  "settings": {
+    "className": "Menu",
+    "sceneWidth": 800,
+    "sceneHeight": 600,
+    "generateOnSave": true,
+    "enableStepping": false,
+    "lang": "JAVA_SCRIPT",
+    "baseClass": "Phaser.State",
+    "backgroundColor": [
+      180,
+      180,
+      180
+    ],
+    "gridColor": [
+      200,
+      200,
+      200
+    ],
+    "showGrid": true,
+    "create_after": "// user code\r\nthis.initObjects();"
+  },
+  "stateSettings": {
+    "stageBackgroundColor": [
+      0,
+      0,
+      0
+    ],
+    "preloadSpriteId": "",
+    "preloadSprite_direction": 0,
+    "load.pack": []
+  },
+  "world": {
+    "type": "group",
+    "id": "af8eb0de-599e-428d-94f8-09d75318f8b7",
+    "info": {
+      "editorName": "Menu",
+      "children": [
+        {
+          "type": "image",
+          "id": "b784464a-cf6e-4607-8f26-25b250ce3c82",
+          "asset": "0",
+          "info": {
+            "editorName": "wall_empty",
+            "x": -320,
+            "y": -33
+          }
+        },
+        {
+          "type": "image",
+          "id": "1a8f08ec-1b6b-4ef3-acf4-ddb34dea5b04",
+          "asset": "1",
+          "info": {
+            "editorName": "window",
+            "x": 459,
+            "y": -37
+          }
+        },
+        {
+          "type": "image",
+          "id": "9b26c297-13f0-4593-b050-af19f3f669b4",
+          "asset": "2",
+          "info": {
+            "editorName": "playBtn",
+            "editorPublic": true,
+            "x": 285,
+            "y": 217
+          }
+        },
+        {
+          "type": "tileSprite",
+          "id": "a3edcf71-a2aa-4f5a-baf3-86dd09357091",
+          "asset": "3",
+          "info": {
+            "editorName": "platform",
+            "x": -315,
+            "y": 546,
+            "width": 1508.8432312011719,
+            "height": 74
+          }
+        },
+        {
+          "type": "atlas-sprite",
+          "id": "2fbe17a6-7de7-44de-88e9-7f226b56ea18",
+          "asset": "4",
+          "info": {
+            "editorName": "wall_hole",
+            "x": 42,
+            "y": 267
+          }
+        },
+        {
+          "type": "atlas-sprite",
+          "id": "ad4ef151-478f-459b-ae36-4462c71b9b3c",
+          "asset": "5",
+          "info": {
+            "editorName": "flor",
+            "x": 629,
+            "y": 439
+          }
+        },
+        {
+          "type": "spritesheet",
+          "id": "73bd54f1-5e05-4fd8-998e-f13a48791287",
+          "asset": "6",
+          "info": {
+            "editorName": "dino",
+            "x": 60,
+            "y": 405
+          }
+        }
+      ]
+    }
+  },
+  "type": "STATE",
+  "asset-table": {
+    "0": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "wall-empty"
+    },
+    "1": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "window"
+    },
+    "2": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "play"
+    },
+    "3": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "atlas1",
+      "sprite": "platform2"
+    },
+    "4": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "atlas1",
+      "sprite": "wall-hole"
+    },
+    "5": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "atlas1",
+      "sprite": "flor"
+    },
+    "6": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "dino",
+      "sprite": "3"
+    }
+  },
+  "prefab-table": {}
+}
