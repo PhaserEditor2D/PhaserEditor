@@ -47,7 +47,7 @@ import org.eclipse.wst.jsdt.ui.text.JavaScriptTextTools;
  *
  */
 @SuppressWarnings("restriction")
-public class UserCoreBeforeAfterCodeComp extends Composite {
+public class UserCodeBeforeAfterCodeComp extends Composite {
 
 	private SourceViewer _beforeTextViewer;
 	private SourceViewer _afterTextViewer;
@@ -58,7 +58,7 @@ public class UserCoreBeforeAfterCodeComp extends Composite {
 	 * @param parent
 	 * @param style
 	 */
-	public UserCoreBeforeAfterCodeComp(Composite parent, int style) {
+	public UserCodeBeforeAfterCodeComp(Composite parent, int style) {
 		super(parent, style);
 		setLayout(new FillLayout(SWT.HORIZONTAL));
 
