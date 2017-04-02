@@ -89,14 +89,14 @@ PlatformerBehavior.prototype.update = function() {
 
 		if (this._cursors.up.isDown) {
 			velocity.y = -800;
-			this._dino.animations.play("jump");
+			this._dino.play("jump");
 		} else if (moving) {
-			this._dino.animations.play("walk");
+			this._dino.play("walk");
 		} else {
-			this._dino.animations.play("stay");
+			this._dino.play("stay");
 		}
 	} else {
-		this._dino.animations.play("jump");
+		this._dino.play("jump");
 	}
 };
 
