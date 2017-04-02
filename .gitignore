@@ -18,4 +18,5 @@ hs_err_pid*
 *.dll
 *.exe
 *.zip
+*.dylib
 
