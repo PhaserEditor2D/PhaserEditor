@@ -21,26 +21,22 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
-import static java.lang.System.currentTimeMillis;
-import static java.lang.System.out;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import org.eclipse.core.commands.operations.IUndoContext;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.dialogs.IPageChangedListener;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -52,7 +48,6 @@ import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -61,7 +56,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
@@ -70,19 +64,14 @@ import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IPersistableEditor;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.dialogs.FilteredTree;
-import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.ide.IGotoMarker;
-import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.operations.UndoRedoActionGroup;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.MultiPageEditorPart;
-import org.eclipse.ui.texteditor.AbstractTextEditor;
-import org.eclipse.ui.texteditor.ITextEditorActionConstants;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -105,7 +94,8 @@ import phasereditor.ui.PatternFilter2;
  * @author arian
  *
  */
-public class CanvasEditor extends MultiPageEditorPart implements IPersistableEditor, IEditorSharedImages, IGotoMarker {
+public class CanvasEditor extends MultiPageEditorPart
+		implements IPersistableEditor, IEditorSharedImages, IGotoMarker, IPageChangedListener {
 
 	private static final String PALETTE_CONTEXT_ID = "phasereditor.canvas.ui.palettecontext";
 	public final static String ID = "phasereditor.canvas.ui.editors.canvas";
@@ -135,8 +125,6 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 	private SashForm _mainSashForm;
 	private PaletteComp _paletteComp;
 	protected IContextActivation _paletteContext;
-	private AbstractTextEditor _sourceEditor;
-	private ExecutorService _threadPool = Executors.newFixedThreadPool(1);
 	private CanvasSettingsComp _settingsPage;
 	private Control _designPage;
 	private UndoRedoActionGroup _undoRedoGroup;
@@ -155,52 +143,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		if (PlatformUI.getWorkbench().isClosing()) {
-			saveAll(monitor);
-		} else {
-			saveSelectedPage(monitor);
-		}
-	}
-
-	private void saveSelectedPage(IProgressMonitor monitor) {
-		if (isSourcePageActive()) {
-			saveSourceEditor(monitor);
-		} else {
-			if (_sourceEditor != null && _sourceEditor.isDirty()) {
-				MessageDialog.openInformation(getEditorSite().getShell(), "Unsaved Changes",
-						"Cannot save the design, the source editor has unsaved changes.\nPlease save the source editor first.");
-				return;
-			}
-
-			saveCanvas(monitor);
-		}
-	}
-
-	/**
-	 * @param monitor
-	 */
-	private void saveAll(IProgressMonitor monitor) {
-		if (_sourceEditor != null) {
-			_sourceEditor.doSave(monitor);
-		}
 		saveCanvas(monitor);
-	}
-
-	private void saveSourceEditor(IProgressMonitor monitor) {
-		AbstractTextEditor editor = getSourceEditor();
-		editor.doSave(monitor);
-
-		_threadPool.execute(() -> {
-			// wait a second to give the time to build the file
-			try {
-				Thread.sleep(1_000);
-			} catch (InterruptedException e) {
-				//
-			}
-			getEditorSite().getShell().getDisplay().asyncExec(() -> {
-				setPageImage(1, getFileImage(getFileToGenerate()));
-			});
-		});
 	}
 
 	public void setDirty(boolean dirty) {
@@ -238,10 +181,6 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-	}
-
-	public AbstractTextEditor getSourceEditor() {
-		return _sourceEditor;
 	}
 
 	public CanvasSettingsComp getSettingsPage() {
@@ -297,9 +236,6 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 
 	@Override
 	public boolean isDirty() {
-		if (_sourceEditor != null && _sourceEditor.isDirty()) {
-			return true;
-		}
 		return _model.getWorld().isDirty();
 	}
 
@@ -311,15 +247,10 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 	@Override
 	protected void createPages() {
 		createDesignPage();
-
-		// only create the page when the source file exists!
-		if (getFileToGenerate().exists()) {
-			createSourcePage();
-		}
-
 		createSettingsPage();
 
-		registerGlobalActions();
+		addEditorActivationListeners();
+		addPageChangedListener(this);
 	}
 
 	private IPartListener _partListener;
@@ -331,7 +262,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 			@Override
 			public void partOpened(IWorkbenchPart part) {
 				if (part == CanvasEditor.this) {
-					registerGlobalActions();
+					registerCanvasGlobalActions();
 				}
 			}
 
@@ -348,14 +279,14 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 			@Override
 			public void partBroughtToTop(IWorkbenchPart part) {
 				if (part == CanvasEditor.this) {
-					registerGlobalActions();
+					registerCanvasGlobalActions();
 				}
 			}
 
 			@Override
 			public void partActivated(IWorkbenchPart part) {
 				if (part == CanvasEditor.this) {
-					registerGlobalActions();
+					registerCanvasGlobalActions();
 				}
 			}
 		};
@@ -381,7 +312,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 		setPageImage(i, getTitleImage());
 	}
 
-	private void registerGlobalActions() {
+	private void registerCanvasGlobalActions() {
 		IEditorSite site = getEditorSite();
 
 		if (_undoRedoGroup == null) {
@@ -394,69 +325,14 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 		actionBars.updateActionBars();
 	}
 
-	@Override
-	protected void setActivePage(int pageIndex) {
-		super.setActivePage(pageIndex);
-
-		if (isSourcePageActive()) {
+	private void disposeCanvasGlobalActions() {
+		if (_undoRedoGroup != null) {
+			_undoRedoGroup.dispose();
 			IActionBars actionBars = getEditorSite().getActionBars();
-
-			actionBars.setGlobalActionHandler(ActionFactory.COPY.getId(),
-					getSourceEditor().getAction(ITextEditorActionConstants.COPY));
-
-			actionBars.setGlobalActionHandler(ActionFactory.PASTE.getId(),
-					getSourceEditor().getAction(ITextEditorActionConstants.PASTE));
-
-			actionBars.setGlobalActionHandler(ActionFactory.CUT.getId(),
-					getSourceEditor().getAction(ITextEditorActionConstants.CUT));
-
+			actionBars.setGlobalActionHandler(ActionFactory.UNDO.getId(), null);
+			actionBars.setGlobalActionHandler(ActionFactory.REDO.getId(), null);
 			actionBars.updateActionBars();
 		}
-	}
-
-	private void createSourcePage() {
-		try {
-			IFile srcFile = getFileToGenerate();
-			FileEditorInput srcInput = new FileEditorInput(srcFile);
-
-			// Create editor from editor ID. this is open the door to other
-			// editor implementations
-			IEditorDescriptor editorDescriptor = IDE.getEditorDescriptor(srcInput.getFile(), true, true);
-			String editorId = editorDescriptor.getId();
-			IExtensionRegistry registry = getEditorSite().getWorkbenchWindow().getService(IExtensionRegistry.class);
-			IConfigurationElement[] elems = registry.getConfigurationElementsFor("org.eclipse.ui.editors");
-			for (IConfigurationElement elem : elems) {
-				String elemId = elem.getAttribute("id");
-				if (elemId.equals(editorId)) {
-					try {
-						long t = currentTimeMillis();
-						_sourceEditor = (AbstractTextEditor) elem.createExecutableExtension("class");
-						out.println("Create source editor delay: " + (currentTimeMillis() - t) + "ms");
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					break;
-				}
-			}
-			// ---
-
-			// if no editor found then do not create the page
-			if (_sourceEditor == null) {
-				return;
-			}
-
-			addPage(1, _sourceEditor, srcInput);
-			setPageText(1, "Source");
-			setPageImage(1, getFileImage(srcFile));
-
-			registerGlobalActions();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private static Image getFileImage(IFile srcFile) {
-		return WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider().getImage(srcFile);
 	}
 
 	/**
@@ -522,7 +398,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 
 		initContexts();
 
-		addEditorActivationListeners();
+		// addEditorActivationListeners();
 	}
 
 	private void initPalette() {
@@ -678,11 +554,6 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 		}
 
 		CanvasCore.compile(_model, null);
-
-		// if the source page is not created yet do it right now!
-		if (getSourceEditor() == null) {
-			createSourcePage();
-		}
 	}
 
 	private static MenuManager createContextMenu() {
@@ -729,12 +600,7 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 	}
 
 	protected void updateTitle() {
-		if (isSourcePageActive()) {
-			setPartName(getSourceEditor().getTitle());
-		} else {
-			setPartName(getEditorInputFile().getName());
-		}
-
+		setPartName(getEditorInputFile().getName());
 		firePropertyChange(PROP_TITLE);
 	}
 
@@ -748,10 +614,6 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 		int[] weights = _mainSashForm.getWeights();
 		memento.putString("canvas.sash.weights", Arrays.toString(weights));
 		memento.putBoolean("canvas.sidepane.show", _mainSashForm.getMaximizedControl() == null);
-
-		if (getSourceEditor() != null) {
-			getSourceEditor().saveState(memento);
-		}
 	}
 
 	static class State {
@@ -804,10 +666,6 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		if (getSourceEditor() != null) {
-			getSourceEditor().restoreState(memento);
-		}
 	}
 
 	@Override
@@ -852,11 +710,16 @@ public class CanvasEditor extends MultiPageEditorPart implements IPersistableEdi
 		return getSelectedPage() == _designPage;
 	}
 
-	public boolean isSourcePageActive() {
-		return getSelectedPage() == _sourceEditor;
-	}
-
 	public boolean isSettingsPageActive() {
 		return getSelectedPage() == _designPage;
+	}
+
+	@Override
+	public void pageChanged(PageChangedEvent event) {
+		if (getActivePage() == 0) {
+			registerCanvasGlobalActions();
+		} else {
+			disposeCanvasGlobalActions();
+		}
 	}
 }

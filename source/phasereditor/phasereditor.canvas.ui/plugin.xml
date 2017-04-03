@@ -1820,6 +1820,7 @@
          point="org.eclipse.core.expressions.definitions">
       <definition
             id="phasereditor.canvas.ui.nodesSelected">
+            <and>
          <with
                variable="selection">
             <iterate
@@ -1829,6 +1830,10 @@
                </instanceof>
             </iterate>
          </with>
+         <reference
+               definitionId="phasereditor.canvas.ui.inNodesContext">
+         </reference>
+         </and>
       </definition>
       <definition
             id="phasereditor.canvas.ui.groupsSelected">
@@ -1975,6 +1980,19 @@
                      </test>
                   </adapt>
          	</with>         	
+      </definition>
+      <definition
+            id="phasereditor.canvas.ui.inNodesContext">
+         <with
+               variable="activeContexts">
+            <iterate
+                  ifEmpty="false"
+                  operator="or">
+               <equals
+                     value="phasereditor.canvas.ui.nodescontext">
+               </equals>
+            </iterate>
+         </with>
       </definition>
    </extension>
    <extension
