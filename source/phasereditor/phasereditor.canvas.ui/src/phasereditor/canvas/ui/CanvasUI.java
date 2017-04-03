@@ -31,7 +31,6 @@ import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -114,6 +113,7 @@ import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.ITextureChangeableControl;
+import phasereditor.project.core.ProjectCore;
 
 /**
  * @author arian
@@ -395,8 +395,7 @@ public class CanvasUI {
 				return;
 			}
 
-			String home = System.getProperty("user.home");
-			Path dir = Paths.get(home).resolve(".phasereditor/snapshots");
+			Path dir = ProjectCore.getUserCacheFolder().resolve("snapshots");
 			Path snapshot = dir.resolve(fname);
 			if (Files.exists(snapshot)) {
 				out.println("Removing snapshot from " + file);
@@ -415,8 +414,7 @@ public class CanvasUI {
 
 		try {
 			String filename = file.getPersistentProperty(SNAPSHOT_FILENAME_KEY);
-			String home = System.getProperty("user.home");
-			Path dir = Paths.get(home).resolve(".phasereditor/snapshots");
+			Path dir = ProjectCore.getUserCacheFolder().resolve("snapshots");
 			Path writeTo;
 			if (filename == null) {
 				filename = file.getName() + "_" + UUID.randomUUID().toString() + ".png";
@@ -504,6 +502,8 @@ public class CanvasUI {
 		BufferedImage buff = SwingFXUtils.fromFXImage(fxImage, null);
 
 		try {
+			Files.createDirectories(writeTo.getParent());
+			
 			ImageIO.write(buff, "png", writeTo.toFile());
 		} catch (IOException e) {
 			e.printStackTrace();

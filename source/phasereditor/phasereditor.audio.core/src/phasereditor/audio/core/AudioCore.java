@@ -33,7 +33,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,6 +61,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxNativesLoader;
 
 import phasereditor.inspect.core.InspectCore;
+import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.FileUtils;
 
 /**
@@ -411,8 +411,7 @@ public class AudioCore {
 	public synchronized static Path getSoundWavesFile(IFile file, boolean forceMake) {
 		try {
 			String filename = file.getPersistentProperty(WAVEFORM_FILENAME_KEY);
-			String home = System.getProperty("user.home");
-			Path dir = Paths.get(home).resolve(".phasereditor/waves");
+			Path dir = ProjectCore.getUserCacheFolder().resolve("waves");
 			Path path;
 			if (filename == null) {
 				filename = UUID.randomUUID().toString() + ".png";
@@ -508,8 +507,8 @@ public class AudioCore {
 
 		try {
 			String filename = file.getPersistentProperty(SNAPSHOT_FILENAME_KEY);
-			String home = System.getProperty("user.home");
-			Path dir = Paths.get(home).resolve(".phasereditor/snapshots");
+			
+			Path dir = ProjectCore.getUserCacheFolder().resolve("snapshots");
 			Path path;
 			if (filename == null) {
 				filename = UUID.randomUUID().toString() + ".jpg";

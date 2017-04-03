@@ -23,7 +23,10 @@ package phasereditor.project.core;
 
 import static java.lang.System.out;
 
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,6 +75,52 @@ public class ProjectCore {
 	public static final String ECMA5_SCOPE_INITIALIZER_ID = PLUGIN_ID + ".ecma5scope";
 	public static final String PHASER_BUILDER_ID = PLUGIN_ID + ".builder";
 	public static final String PHASER_PROBLEM_MARKER_ID = PLUGIN_ID + ".problem";
+
+	public enum OS {
+		WINDOWS, LINUX, MAC
+	}
+
+	private static OS _os;
+	private static java.nio.file.Path _userFolderPath;
+
+	public static OS getOS() {
+		if (_os == null) {
+			String osname = System.getProperty("os.name").toLowerCase();
+			if (osname.contains("windows")) {
+				_os = OS.WINDOWS;
+			} else if (osname.contains("mac")) {
+				_os = OS.MAC;
+			} else {
+				_os = OS.LINUX;
+			}
+		}
+		return _os;
+	}
+
+	public static java.nio.file.Path getUserCacheFolder() {
+		if (_userFolderPath == null) {
+			String home = System.getProperty("user.home");
+			java.nio.file.Path homePath = Paths.get(home);
+
+			java.nio.file.Path dir;
+			if (getOS() == OS.MAC) {
+				dir = homePath.resolve("Library/Cache/com.boniatillo.phasereditor");
+			} else {
+				dir = homePath.resolve(".phasereditor");
+			}
+			_userFolderPath = dir;
+		}
+
+		try {
+			
+			Files.createDirectories(_userFolderPath);
+			
+			return _userFolderPath;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
+	}
 
 	public static List<IProjectBuildParticipant> getBuildParticipants() {
 		List<IProjectBuildParticipant> list = new ArrayList<>();
