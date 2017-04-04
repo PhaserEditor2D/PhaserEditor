@@ -54,6 +54,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.editors.PGridEditingSupport;
+import phasereditor.ui.PhaserEditorUI;
 
 /**
  * @author arian
@@ -83,7 +84,11 @@ public class PGrid extends Composite {
 		_filteredTree = new FilteredTree(this, SWT.FULL_SELECTION | SWT.BORDER, createPatternFilter(), true);
 		_treeViewer = _filteredTree.getViewer();
 		_tree = _treeViewer.getTree();
-		_tree.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+
+		if (!PhaserEditorUI.isCocoaPlatform()) {
+			_tree.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+		}
+
 		_tree.addControlListener(new ControlAdapter() {
 			@Override
 			public void controlResized(ControlEvent e) {
@@ -116,7 +121,7 @@ public class PGrid extends Composite {
 		afterCreateWidgets();
 
 	}
-	
+
 	public void setCanvas(ObjectCanvas canvas) {
 		_editSupport.setCanvas(canvas);
 		_labelProvider.setCanvas(canvas);
@@ -206,25 +211,29 @@ public class PGrid extends Composite {
 				}
 			}
 		});
-		_tree.addListener(SWT.EraseItem, new Listener() {
 
-			@Override
-			public void handleEvent(Event event) {
-				GC gc = event.gc;
+		if (!PhaserEditorUI.isCocoaPlatform()) {
+			_tree.addListener(SWT.EraseItem, new Listener() {
 
-				TreeItem item = _tree.getItem(new Point(event.x, event.y));
-				if (item == null) {
-					return;
+				@Override
+				public void handleEvent(Event event) {
+					GC gc = event.gc;
+
+					TreeItem item = _tree.getItem(new Point(event.x, event.y));
+					if (item == null) {
+						return;
+					}
+
+					Object element = item.getData();
+					if (PGridLabelProvider.isModified(element)) {
+						RGB rgb = PGridLabelProvider
+								.brighter(PGridLabelProvider.brighter(_tree.getBackground().getRGB()));
+						gc.setBackground(SWTResourceManager.getColor(rgb));
+						gc.fillRectangle(0, event.y, _tree.getClientArea().width, event.height);
+					}
 				}
-
-				Object element = item.getData();
-				if (PGridLabelProvider.isModified(element)) {
-					RGB rgb = PGridLabelProvider.brighter(PGridLabelProvider.brighter(_tree.getBackground().getRGB()));
-					gc.setBackground(SWTResourceManager.getColor(rgb));
-					gc.fillRectangle(0, event.y, _tree.getClientArea().width, event.height);
-				}
-			}
-		});
+			});
+		}
 	}
 
 	private PGridModel _model;

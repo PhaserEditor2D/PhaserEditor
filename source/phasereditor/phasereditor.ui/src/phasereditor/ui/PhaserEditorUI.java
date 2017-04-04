@@ -54,6 +54,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.events.FocusAdapter;
@@ -88,8 +89,16 @@ public class PhaserEditorUI {
 																						// 200,
 																						// 200);
 	private static Set<Object> _supportedImageExts = new HashSet<>(Arrays.asList("png", "bmp", "jpg", "gif", "ico"));
+																						private static Boolean _isCocoaPlatform;
 
 	private PhaserEditorUI() {
+	}
+	
+	public static boolean isCocoaPlatform() {
+		if (_isCocoaPlatform == null) {
+			_isCocoaPlatform = Boolean.valueOf(SWT.getPlatform().equals("cocoa"));
+		}
+		return _isCocoaPlatform.booleanValue();
 	}
 
 	public static void forEachEditor(Consumer<IEditorPart> visitor) {
