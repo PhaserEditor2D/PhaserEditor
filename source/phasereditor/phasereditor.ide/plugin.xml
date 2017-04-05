@@ -50,7 +50,7 @@
          </property>
          <property
                name="aboutImage"
-               value="icons/icon128.png">
+               value="icons/about.png">
          </property>
          <property
                name="aboutText"
