@@ -6,7 +6,7 @@
    <aboutInfo>
       <image path="icons/icon128.png"/>
       <text>
-         Phaser Editor v1.3.1
+         Phaser Editor v1.4.0_rc (Release Candidate)
 
 Supports Phaser v2.6.2 (built-in)
 
@@ -28,8 +28,8 @@ Arian Fornaris (@boniatillo_com)
 
 Thanks:
 
-Richard Davey (@photonstorm)
-Angelo Zerr (@angelozerr)
+Richard Davey (@photonstorm) - https://twitter.com/photonstorm
+Angelo Zerr (@angelozerr) - https://twitter.com/angelozerr
 Sam Riggs - http://samsstuffsoftware.blogspot.com
 Grethel Naranjo, Ernesto Gutierrez - http://rvirtual.uci.cu
 Vertex Group - University of Informatic Sciences - UCI
@@ -38,7 +38,7 @@ Havana Games  - http://globalgamejam.org/2016/games/life-cuco
 
 Keep in touch with the Phaser Editor community: http://phasereditor.boniatillo.com
 
-Copyright (c) Arian Fornaris 2015, 2016
+Copyright (c) Arian Fornaris 2015-2017
       </text>
    </aboutInfo>
 
