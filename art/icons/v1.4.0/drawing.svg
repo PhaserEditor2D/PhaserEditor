@@ -33,18 +33,6 @@
     </linearGradient>
     <linearGradient
        inkscape:collect="always"
-       id="linearGradient5088">
-      <stop
-         style="stop-color:#729fcf;stop-opacity:1;"
-         offset="0"
-         id="stop5084" />
-      <stop
-         style="stop-color:#729fcf;stop-opacity:0;"
-         offset="1"
-         id="stop5086" />
-    </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
        id="linearGradient4860">
       <stop
          style="stop-color:#ffffff;stop-opacity:1;"
@@ -226,58 +214,6 @@
        r="50.007851" />
     <radialGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient15038"
-       id="radialGradient4838"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1,0,0,0.7627173,826.16517,-138.02719)"
-       cx="-752.49017"
-       cy="319.02969"
-       fx="-752.49017"
-       fy="319.02969"
-       r="13.912776" />
-    <radialGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient4964"
-       id="radialGradient4840"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.30460733,-0.13719537,0.08793281,0.1827181,-23.765871,535.89726)"
-       cx="-12.50785"
-       cy="-688.62878"
-       fx="-12.50785"
-       fy="-688.62878"
-       r="50.007851" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient4860"
-       id="linearGradient4862"
-       x1="-42.654392"
-       y1="371.97125"
-       x2="-102.52459"
-       y2="305.2319"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(-7.4083333,-41.804167)" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient4860"
-       id="linearGradient5082"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.95608108,0,0,0.95608108,-8.7687982,-0.06420344)"
-       x1="-42.654392"
-       y1="371.97125"
-       x2="-102.52459"
-       y2="305.2319" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient5088"
-       id="linearGradient5090"
-       x1="-66.54126"
-       y1="305.56769"
-       x2="-69.795486"
-       y2="472.50552"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.4665447,0,0,0.4665447,-54.692286,254.64674)" />
-    <radialGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient4964"
        id="radialGradient4840-3"
        gradientUnits="userSpaceOnUse"
@@ -330,6 +266,63 @@
        x2="309.43317"
        y2="545.62585"
        gradientTransform="translate(65.855212,-209.53931)" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4860"
+       id="radialGradient15040-9"
+       cx="-752.49017"
+       cy="319.02969"
+       fx="-752.49017"
+       fy="319.02969"
+       r="13.912776"
+       gradientTransform="matrix(1,0,0,0.7627173,826.16517,-138.02719)"
+       gradientUnits="userSpaceOnUse" />
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter15941-2"
+       x="-0.077711932"
+       width="1.1554239"
+       y="-0.10357879"
+       height="1.2071576">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.85606974"
+         id="feGaussianBlur15943-5" />
+    </filter>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4964"
+       id="radialGradient4970-3-2-5-0"
+       cx="-12.50785"
+       cy="-688.62878"
+       fx="-12.50785"
+       fy="-688.62878"
+       r="50.007851"
+       gradientTransform="matrix(0.80756784,-0.36372916,0.2331254,0.48441796,-584.12709,634.02695)"
+       gradientUnits="userSpaceOnUse" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4860"
+       id="radialGradient5114"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,0.7627173,826.16517,-138.02719)"
+       cx="-752.49017"
+       cy="319.02969"
+       fx="-752.49017"
+       fy="319.02969"
+       r="13.912776" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4964"
+       id="radialGradient5116"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.80756784,-0.36372916,0.2331254,0.48441796,-584.12709,634.02695)"
+       cx="-12.50785"
+       cy="-688.62878"
+       fx="-12.50785"
+       fy="-688.62878"
+       r="50.007851" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -338,9 +331,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="1203.6704"
-     inkscape:cy="-50.510797"
+     inkscape:zoom="0.1767767"
+     inkscape:cx="-211.94154"
+     inkscape:cy="-172.16804"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -367,7 +360,7 @@
      id="layer1">
     <g
        id="g6302"
-       transform="matrix(0.26531449,0,0,0.26531449,134.3132,180.71541)"
+       transform="matrix(0.26531449,0,0,0.26531449,31.040255,194.18579)"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96">
       <g
@@ -749,7 +742,7 @@
          y="146.52194" />
     </g>
     <g
-       transform="matrix(0.13265725,0,0,0.13265725,75.615257,156.49635)"
+       transform="matrix(0.13265725,0,0,0.13265725,-27.657688,169.96673)"
        id="g6832"
        inkscape:export-xdpi="95.999977"
        inkscape:export-ydpi="95.999977">
@@ -1133,7 +1126,7 @@
     </g>
     <g
        id="g6920"
-       transform="matrix(0.06632862,0,0,0.06632862,43.355868,141.34411)"
+       transform="matrix(0.06632862,0,0,0.06632862,-59.917077,154.81449)"
        inkscape:export-xdpi="96.000046"
        inkscape:export-ydpi="96.000046">
       <g
@@ -1515,7 +1508,7 @@
          y="146.52194" />
     </g>
     <g
-       transform="matrix(0.04974647,0,0,0.04974647,35.952481,120.49042)"
+       transform="matrix(0.04974647,0,0,0.04974647,-67.320464,133.9608)"
        id="g7008"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96">
@@ -1899,7 +1892,7 @@
     </g>
     <g
        id="g7096"
-       transform="matrix(0.03316431,0,0,0.03316431,27.490758,109.95548)"
+       transform="matrix(0.03316431,0,0,0.03316431,-75.782187,123.42586)"
        inkscape:export-xdpi="95.999817"
        inkscape:export-ydpi="95.999817">
       <g
@@ -2281,7 +2274,7 @@
          y="146.52194" />
     </g>
     <g
-       transform="matrix(0.01658216,0,0,0.01658216,18.235287,102.06638)"
+       transform="matrix(0.01658216,0,0,0.01658216,-85.037658,115.53676)"
        id="g7184"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96">
@@ -2663,418 +2656,6 @@
          id="rect7182"
          style="opacity:1;fill:none;fill-opacity:1;stroke:none;stroke-width:0.70548928;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     </g>
-    <rect
-       style="opacity:1;fill:url(#linearGradient5090);fill-opacity:1;stroke:none;stroke-width:0.1078797;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect4842"
-       width="33.866665"
-       height="80.302406"
-       x="-102.52459"
-       y="397.05106"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
-    <path
-       style="opacity:0.12600002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.43403739;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="path4844"
-       sodipodi:type="arc"
-       sodipodi:cx="-129.46353"
-       sodipodi:cy="305.74179"
-       sodipodi:rx="99.531174"
-       sodipodi:ry="84.189903"
-       sodipodi:start="0"
-       sodipodi:end="6.277129"
-       d="m -29.932358,305.74179 a 99.531174,84.189903 0 0 1 -99.380472,84.18981 99.531174,84.189903 0 0 1 -99.68142,-83.93487 99.531174,84.189903 0 0 1 99.07863,-84.44397 99.531174,84.189903 0 0 1 99.981437,83.67915"
-       sodipodi:open="true" />
-    <path
-       sodipodi:open="true"
-       d="M -9.6515808,312.95493 A 110.75649,115.24663 0 0 1 -120.24038,428.20142 110.75649,115.24663 0 0 1 -231.16406,313.30391 110.75649,115.24663 0 0 1 -120.91115,197.70949 110.75649,115.24663 0 0 1 -9.653612,312.25696"
-       sodipodi:end="6.277129"
-       sodipodi:start="0"
-       sodipodi:ry="115.24663"
-       sodipodi:rx="110.75649"
-       sodipodi:cy="312.95493"
-       sodipodi:cx="-120.40807"
-       sodipodi:type="arc"
-       id="path4846"
-       style="opacity:0.12600002;fill:url(#linearGradient4862);fill-opacity:1;stroke:none;stroke-width:0.53569335;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       id="path4754"
-       d="m -78.143849,404.75089 v 0.36303 l 0.03097,0.007 z m 0.03097,0.36975 v 0.007 l -0.470942,0.20459 c -1.600549,1.87245 -2.206168,5.3406 -4.038255,7.71913 l -0.04123,-0.0913 c -1.277421,-0.53933 -2.921431,-1.11598 -4.597641,-1.1163 -1.303712,0 -2.626668,0.34821 -3.812447,1.33463 -0.251043,0.29059 -2.008595,3.4869 -2.008595,3.4869 0,0 -0.0077,0.40138 -0.01362,0.67907 -0.0066,-0.0133 -0.04894,-0.098 -0.04894,-0.098 -1.158977,0.64393 -2.30896,1.29213 -3.389273,2.10681 -0.637841,-0.7817 -1.291362,-1.52877 -1.757498,-2.47016 0.906646,-1.48157 1.744715,-2.97874 2.385129,-4.64931 v -0.58104 c -0.107194,-1.55087 -0.369926,-1.49843 -1.156128,-2.81691 l 0.528497,2.5992 -0.815913,1.45278 c -0.78415,0.96816 -1.584364,1.8933 -2.510527,2.68785 0.03025,2.27662 -0.653238,4.60164 1.318117,5.73905 1.150297,0.82546 2.385605,1.34106 4.33059,1.08974 l 1.085216,-0.17953 1.620632,0.16718 -0.955244,2.66588 0.81448,0.3631 2.4249,0.10799 -0.0884,-1.58433 0.112384,-1.74914 c 0.594136,-0.0174 1.189306,-0.016 1.764326,0.0638 l 3.201013,-0.29068 c 0,0 0.377282,0.94687 0.219887,1.66482 l 0.132756,1.83192 2.806113,-0.0549 -0.572791,-2.59596 -0.251138,-1.41091 c 0.07982,-0.35084 1.320682,-1.75369 1.348503,-2.69947 0.366374,-2.6237 1.473969,-6.24846 3.21099,-8.99269 l 1.076394,1.14195 0.753035,1.1627 1.004449,1.23508 1.129573,0.14534 h 0.878743 l 0.502229,-0.21801 0.502223,-1.09004 0.50192,-1.81613 -0.690482,-1.01675 -2.196576,-2.17979 -2.259419,-1.52513 -1.425345,-0.30991 -0.01822,-0.34411 -0.522982,0.22655 -0.01109,-0.002 z"
-       style="opacity:0.03399999;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.15614839;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cccccccccccccccccccccccccccccccccccccccccccccccccccccccc" />
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       d="m -79.410291,425.86887 a 8.0887632,0.94738126 0 0 1 -8.076516,0.94738 8.0887632,0.94738126 0 0 1 -8.100973,-0.94452 8.0887632,0.94738126 0 0 1 8.051985,-0.95024 8.0887632,0.94738126 0 0 1 8.125356,0.94164"
-       sodipodi:open="true"
-       sodipodi:end="6.277129"
-       sodipodi:start="0"
-       sodipodi:ry="0.94738126"
-       sodipodi:rx="8.0887632"
-       sodipodi:cy="425.86887"
-       sodipodi:cx="-87.499054"
-       sodipodi:type="arc"
-       id="path4756"
-       style="opacity:1;fill:#000000;fill-opacity:0.27096779;stroke:none;stroke-width:0.85168386;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    <path
-       style="fill:#7d7b1d;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.15785769;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m -83.009813,419.18954 0.263084,1.92179 c 0.07802,1.10361 -0.05045,2.19685 -0.159462,3.29881 l -0.118517,1.22439 c -0.76669,0.20455 -1.44824,0.18709 -2.198156,0.0614 l -0.444652,-0.007 0.03338,-1.91734 0.1139,-2.35629 -0.725226,-2.18023 z"
-       id="path4758"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cccccccccc"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <path
-       inkscape:connector-curvature="0"
-       id="path4760"
-       d="m -83.178602,425.30476 -0.05097,-0.14374 -0.157693,-0.0374 -0.146478,0.0883 -0.07297,0.13897 -0.04779,0.116 z"
-       style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.12084078px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <path
-       inkscape:transform-center-y="-0.31619261"
-       inkscape:transform-center-x="-0.33822521"
-       style="fill:#babdb6;fill-rule:evenodd;stroke:none;stroke-width:0.1182725px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m -84.043396,425.59828 -0.01358,-0.15098 -0.138866,-0.0794 -0.158244,0.0433 -0.1014,0.112 -0.07237,0.0972 z"
-       id="path4762"
-       inkscape:connector-curvature="0"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <path
-       inkscape:connector-curvature="0"
-       id="path4764"
-       d="m -85.422976,425.57448 0.02603,-0.17268 0.16533,-0.0922 0.179181,0.0478 0.109016,0.12691 0.07659,0.11024 z"
-       style="fill:#babdb6;fill-rule:evenodd;stroke:none;stroke-width:0.13561758px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       inkscape:transform-center-x="0.094770871"
-       inkscape:transform-center-y="-0.63776325"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       style="fill:#7d7b1d;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.15868062;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m -88.551451,425.7658 -1.383396,0.0492 -1.239118,-0.7831 -0.0061,-1.66077 -0.07169,-0.95729 -0.302692,-2.0723 2.431406,-1.81881 0.450121,2.07047 0.304266,2.48749 z"
-       id="path4766"
-       inkscape:connector-curvature="0" />
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:connector-curvature="0"
-       id="path4768"
-       d="m -88.781386,425.47104 -0.008,-0.15547 -0.138788,-0.10194 -0.163335,0.0198 -0.107929,0.0983 -0.07766,0.0876 z"
-       style="fill:#babdb6;fill-rule:evenodd;stroke:none;stroke-width:0.12084078px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:transform-center-y="0.0015277219"
-       inkscape:transform-center-x="-0.45873053"
-       style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.1182725px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m -89.675766,425.47867 0.02942,-0.14629 -0.109227,-0.13301 -0.161895,-0.0271 -0.127309,0.0611 -0.09565,0.0596 z"
-       id="path4770"
-       inkscape:connector-curvature="0" />
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:connector-curvature="0"
-       id="path4772"
-       d="m -90.941902,424.81829 0.05606,-0.1591 0.176952,-0.0357 0.165398,0.10467 0.08317,0.15862 0.05462,0.1319 z"
-       style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.13561758px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       inkscape:transform-center-x="-0.047224296"
-       inkscape:transform-center-y="-0.51006857" />
-    <path
-       sodipodi:nodetypes="cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
-       inkscape:connector-curvature="0"
-       style="fill:#aeab28;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.15868062;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m -77.856448,405.13434 v 0.36266 l 0.03202,0.007 z m 0.03202,0.36937 v 0.007 l -0.48684,0.20438 c -1.65459,1.87051 -2.280659,5.33508 -4.174607,7.71115 l -0.04263,-0.0912 c -1.320557,-0.53879 -3.020082,-1.11483 -4.752886,-1.11515 -1.347738,0 -2.715357,0.34785 -3.941174,1.33325 -0.259523,0.29028 -2.076422,3.48329 -2.076422,3.48329 0,0 -0.008,0.40096 -0.01411,0.67836 -0.0068,-0.0133 -0.0506,-0.0979 -0.0506,-0.0979 -1.19811,0.64325 -2.386921,1.29078 -3.503715,2.10462 -0.659375,-0.7809 -1.334966,-1.52719 -1.816839,-2.4676 0.93726,-1.48004 1.80363,-2.97566 2.465664,-4.64451 v -0.58044 c -0.110811,-1.54926 -0.03101,-1.87611 -0.84375,-3.19322 l 0.194925,2.97574 -0.843456,1.45127 c -0.810632,0.96717 -1.637869,1.89135 -2.595302,2.68508 0.0313,2.27426 -0.67531,4.59688 1.362623,5.73311 1.189136,0.82461 2.466158,1.33968 4.476819,1.08861 l 1.121857,-0.17934 1.675358,0.16701 -0.987502,2.66312 0.841978,0.36272 2.506785,0.10788 -0.09139,-1.58269 0.116183,-1.74733 c 0.6142,-0.0174 1.229466,-0.016 1.8239,0.0637 l 3.309097,-0.29037 c 0,0 0.39002,0.94588 0.22731,1.6631 l 0.137242,1.83002 2.900859,-0.0548 -0.592134,-2.59327 -0.259612,-1.40945 c 0.08252,-0.35048 1.365276,-1.75187 1.39404,-2.69668 0.378739,-2.62098 1.523732,-6.242 3.319406,-8.98338 l 1.11274,1.14076 0.778466,1.1615 1.038358,1.2338 1.167719,0.14519 h 0.908411 l 0.519189,-0.21778 0.519181,-1.08891 0.518868,-1.81425 -0.713793,-1.0157 -2.27075,-2.17754 -2.335706,-1.52355 -1.473471,-0.30959 -0.01882,-0.34376 -0.540642,0.22632 -0.01147,-0.002 z"
-       id="path4774"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       sodipodi:nodetypes="cccccccccccccccccc"
-       inkscape:connector-curvature="0"
-       id="path4776"
-       d="m -89.28096,408.23297 -0.960181,0.78668 -0.01071,0.007 v 0.002 l -0.396602,0.32492 -0.987606,1.19528 -0.303763,1.49414 0.607714,1.86777 0.987622,0.59754 1.215435,0.82183 1.975216,0.2241 1.899293,-1.27003 0.835543,-1.34461 v -1.56891 l -0.379907,-1.27003 -0.759587,-1.19527 -2.127112,-0.6723 c -1.28661,-0.0521 0.172969,0.0547 -1.595326,0 z"
-       style="opacity:0.32300002;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.15324108;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       d="m 86.894073,105.30229 a 13.219124,9.9178963 0 0 1 -13.199109,9.91789 13.219124,9.9178963 0 0 1 -13.239078,-9.88786 13.219124,9.9178963 0 0 1 13.15902,-9.947822 13.219124,9.9178963 0 0 1 13.278925,9.857732"
-       sodipodi:open="true"
-       sodipodi:end="6.277129"
-       sodipodi:start="0"
-       sodipodi:ry="9.9178963"
-       sodipodi:rx="13.219124"
-       sodipodi:cy="105.30229"
-       sodipodi:cx="73.67495"
-       sodipodi:type="arc"
-       id="path4778"
-       style="opacity:0.12600002;fill:url(#radialGradient4838);fill-opacity:1;stroke:none;stroke-width:1.38723445;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter15941)"
-       transform="matrix(0.37719101,0,0,0.37719101,-114.942,377.75127)" />
-    <path
-       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.15868062;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m -73.509216,407.02116 c 0.985249,0.20416 0.823186,0.1837 1.362516,1.08858 l -0.583941,0.79831 c -0.656825,0.45436 -0.874064,0.19684 -1.622049,0 l -0.19465,-0.50801 c 0.206716,-1.15023 0.110219,-0.89986 1.038124,-1.37888 z"
-       id="path4780"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cccccc"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <path
-       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.15868062;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m -75.390803,407.81946 -0.06486,0.72572 c -1.068069,1.06447 -1.2162,1.07689 -2.14111,-0.0726 l 0.129776,-0.79828 c 1.09419,-0.72564 1.653689,-1.27268 2.076222,0.14514 z"
-       id="path4782"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccccc"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <path
-       style="fill:#eeeeec;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.15868062;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m -77.213292,410.1044 c -1.896501,1.19552 -1.750099,1.5382 -2.698531,3.65987 -0.566918,1.57851 -0.583925,2.43524 -0.583925,4.06404 l 0.129762,1.37888 c 0.544987,-3.71735 1.955746,-6.61145 3.342632,-9.11762"
-       id="path4784"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccccc"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <path
-       transform="scale(-1,1)"
-       d="m 76.425373,407.77829 a 0.26523226,0.23733474 0 0 1 -0.26483,0.23733 0.26523226,0.23733474 0 0 1 -0.265633,-0.23661 0.26523226,0.23733474 0 0 1 0.264026,-0.23805 0.26523226,0.23733474 0 0 1 0.266432,0.23589"
-       sodipodi:open="true"
-       sodipodi:end="6.277129"
-       sodipodi:start="0"
-       sodipodi:ry="0.23733474"
-       sodipodi:rx="0.26523226"
-       sodipodi:cy="407.77829"
-       sodipodi:cx="76.160141"
-       sodipodi:type="arc"
-       id="path4786"
-       style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.15868062;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.94186042"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <path
-       sodipodi:nodetypes="ccc"
-       inkscape:connector-curvature="0"
-       id="path4788"
-       d="m -72.62915,412.32291 c -1.205619,-0.21698 -1.065052,-0.0419 -1.649415,-0.5798 0.481843,1.47201 0.400072,1.40283 1.649415,0.5798 z"
-       style="fill:#000000;fill-rule:evenodd;stroke:#000000;stroke-width:0.15709728px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <path
-       inkscape:connector-curvature="0"
-       id="path4790"
-       d="m -81.243182,425.42275 -0.05212,-0.14585 -0.1569,-0.0406 -0.144411,0.0862 -0.07085,0.13868 -0.04612,0.11601 z"
-       style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.12084078px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <path
-       inkscape:transform-center-y="-0.50405597"
-       inkscape:transform-center-x="-0.1002394"
-       style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.1182725px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m -82.101141,425.6146 -0.01509,-0.15243 -0.138674,-0.0826 -0.156572,0.0406 -0.09941,0.11098 -0.0707,0.0965 z"
-       id="path4792"
-       inkscape:connector-curvature="0"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <path
-       inkscape:connector-curvature="0"
-       id="path4794"
-       d="m -83.478699,425.64577 0.0061,-0.17571 0.152329,-0.10705 0.182142,0.0323 0.122105,0.11793 0.08821,0.10402 z"
-       style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.13561758px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       inkscape:transform-center-x="0.43045635"
-       inkscape:transform-center-y="-0.26143955"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:connector-curvature="0"
-       id="path4796"
-       d="m -89.678625,425.39546 -0.05598,-0.14162 -0.160432,-0.0349 -0.145149,0.0893 -0.06934,0.13848 -0.0446,0.11544 z"
-       style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.12084078px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:transform-center-y="-0.23356766"
-       inkscape:transform-center-x="-0.37704492"
-       style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.1182725px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m -90.66888,425.48651 7.47e-4,-0.14969 -0.132402,-0.094 -0.163648,0.0242 -0.112904,0.0982 -0.0822,0.0869 z"
-       id="path4798"
-       inkscape:connector-curvature="0" />
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:connector-curvature="0"
-       id="path4800"
-       d="m -92.134504,425.21701 0.04567,-0.16509 0.177013,-0.0672 0.175167,0.0715 0.09553,0.13905 0.06471,0.11829 z"
-       style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.13561758px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       inkscape:transform-center-x="0.070791735"
-       inkscape:transform-center-y="-0.54725042" />
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.15868062;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.94186042"
-       id="path4802"
-       sodipodi:type="arc"
-       sodipodi:cx="73.238266"
-       sodipodi:cy="407.8963"
-       sodipodi:rx="0.26523226"
-       sodipodi:ry="0.23733474"
-       sodipodi:start="0"
-       sodipodi:end="6.277129"
-       sodipodi:open="true"
-       d="m 73.503498,407.8963 a 0.26523226,0.23733474 0 0 1 -0.26483,0.23734 0.26523226,0.23733474 0 0 1 -0.265633,-0.23662 0.26523226,0.23733474 0 0 1 0.264026,-0.23805 0.26523226,0.23733474 0 0 1 0.266432,0.23589"
-       transform="scale(-1,1)" />
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       sodipodi:nodetypes="ccccccccccccccccccccccccccc"
-       inkscape:connector-curvature="0"
-       id="path4804"
-       d="m -87.569664,406.25558 -0.537259,0.11667 -0.842192,0.11985 0.37831,0.42696 0.151255,0.73795 -0.08136,0.46959 h -0.750689 l -0.956964,0.70712 -4.15e-4,1.8e-4 -0.0095,0.005 v 0.002 l -0.394946,0.29177 -0.983495,1.07346 -0.302492,1.34145 0.605181,1.67715 0.983494,0.53655 1.210365,0.73794 1.966994,0.20123 1.891168,-1.1404 0.832246,-1.20737 v -1.40878 l -0.378296,-1.14041 -0.756428,-1.07328 -2.118234,-0.60369 h -0.327832 l 0.252213,-0.67081 z"
-       style="opacity:0.03999999;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.14490734;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       style="fill:#339900;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.14902899;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m -85.260547,414.09363 0.819365,-1.2971 v -1.51328 l -0.372443,-1.22503 -0.744872,-1.15297 -2.085659,-0.64855 h -1.564242 l -1.340782,1.08091 -0.968335,1.15297 -0.297951,1.44122 0.595901,1.80152 0.96834,0.5765 1.191803,0.79266 1.936676,0.21619 z"
-       id="path4806"
-       inkscape:connector-curvature="0" />
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:connector-curvature="0"
-       id="path4808"
-       d="m -85.260547,414.09363 0.819365,-1.2971 v -1.51328 l -0.372443,-1.22503 -0.744872,-1.15297 -2.085659,-0.64855 h -1.564242 l -1.340782,1.08091 -0.968335,1.15297 -0.297951,1.44122 0.595901,1.80152 0.96834,0.5765 1.191803,0.79266 1.936676,0.21619 z"
-       style="fill:url(#radialGradient4840);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.14902899;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:connector-curvature="0"
-       id="path4810"
-       d="m -88.538008,408.68906 0.148975,-0.93679 -0.148975,-0.79266 -0.372439,-0.28825 1.340782,-0.21618 -0.148975,1.08091 -0.446926,1.2971"
-       style="fill:#9933ff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.14902899;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:connector-curvature="0"
-       id="path4812"
-       d="m -89.133898,408.90525 c -0.07305,-0.0148 -0.747291,-0.0525 -0.747291,-0.0525 l -0.279114,0.16933 -0.003,0.24463"
-       style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.20070511px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:connector-curvature="0"
-       id="path4814"
-       d="m -89.379424,409.7622 c 0,0 -0.874951,-0.069 -0.903168,-0.0407 -0.02821,0.0282 -0.188166,0.5582 -0.188166,0.57703 0,0.0189 0.216383,0.42021 0.216383,0.42021 l 0.226632,0.27637 v 0"
-       style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.20070511px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:connector-curvature="0"
-       id="path4816"
-       d="m -88.165559,410.70676 0.253794,0.51368 -0.05014,0.51432 -0.352599,0.19706"
-       style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.20070511px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:connector-curvature="0"
-       id="path4818"
-       d="m -86.544463,410.81903 0.332403,0.39516 0.03142,0.68364 -0.508042,0.14426"
-       style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.20070511px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:connector-curvature="0"
-       id="path4820"
-       d="m -85.856448,409.76999 0.472299,0.45947 0.100352,0.4265"
-       style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.20070511px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:connector-curvature="0"
-       id="path4822"
-       d="m -84.813617,412.36414 -0.03112,0.57485 -0.490288,0.36196"
-       style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.20070511px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:connector-curvature="0"
-       id="path4824"
-       d="m -86.452334,413.37302 c 0,0 -0.123497,0.80782 -0.173678,0.858 -0.05014,0.0501 -0.79467,0.15087 -0.79467,0.15087 v 0"
-       style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.20070511px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:connector-curvature="0"
-       id="path4826"
-       d="m -89.580832,412.36417 c -0.156108,0.0105 -0.457167,0.73162 -0.457167,0.73162 l 0.08155,0.48923 0.52459,0.22038"
-       style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.20070511px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
-       inkscape:connector-curvature="0"
-       id="path4828"
-       d="m -91.145066,411.9318 c -0.153603,0.14792 -0.253955,0.63714 -0.253955,0.67477 0,0.0377 0.104972,0.69438 0.104972,0.69438"
-       style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.20070511px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    <rect
-       style="opacity:1;fill:none;fill-opacity:1;stroke:none;stroke-width:0.08732621;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect4834"
-       width="31.600626"
-       height="31.600626"
-       x="-101.23049"
-       y="399.98325" />
-    <path
-       style="opacity:0.06799999;fill:url(#linearGradient5082);fill-opacity:1;stroke:none;stroke-width:0.51216626;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="path5080"
-       sodipodi:type="arc"
-       sodipodi:cx="-116.8057"
-       sodipodi:cy="339.11429"
-       sodipodi:rx="105.89219"
-       sodipodi:ry="110.18512"
-       sodipodi:start="0"
-       sodipodi:end="6.277129"
-       d="M -10.913513,339.11429 A 105.89219,110.18512 0 0 1 -116.64537,449.29928 105.89219,110.18512 0 0 1 -222.69741,339.44795 105.89219,110.18512 0 0 1 -117.28669,228.93031 105.89219,110.18512 0 0 1 -10.915455,338.44698"
-       sodipodi:open="true" />
     <rect
        style="opacity:1;fill:url(#linearGradient5312);fill-opacity:1;stroke:none;stroke-width:0.1078797;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect4842-8"
@@ -3560,5 +3141,771 @@
        preserveAspectRatio="none"
        height="23.8125"
        width="24.175127" />
+    <g
+       id="g6302-6"
+       transform="matrix(0.53062899,0,0,0.53062899,154.26471,245.67983)"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
+      <g
+         transform="matrix(3.0472431,0,0,3.0472431,-573.19541,-33.085423)"
+         id="g6226-0">
+        <path
+           sodipodi:nodetypes="cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+           inkscape:connector-curvature="0"
+           style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.41397697;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 97.558408,71.580778 v 0.96245 l 0.0821,0.0181 z m 0.0821,0.98026 v 0.0181 l -1.24855,0.5424 c -4.243339,4.96422 -5.84894,14.15888 -10.706129,20.4648 l -0.10932,-0.24207 c -3.38667,-1.42989 -7.74523,-2.95868 -12.189161,-2.95952 -3.456369,0 -6.96376,0.92316 -10.107469,3.53835 -0.665561,0.77038 -5.325141,9.244372 -5.325141,9.244372 0,0 -0.0205,1.06412 -0.0361,1.80033 -0.0175,-0.0353 -0.129759,-0.25986 -0.129759,-0.25986 -3.072651,1.70717 -6.121459,3.42566 -8.985559,5.58552 -1.69103,-2.07244 -3.42363,-4.05303 -4.65944,-6.54882 2.40368,-3.927912 4.62555,-7.897162 6.3234,-12.326162 v -1.54043 c -0.28419,-4.11163 -0.98074,-3.97259 -3.0651,-7.46813 l 1.40114,6.89095 -2.16313,3.85156 c -2.07892,2.56678 -4.20043,5.01949 -6.65585,7.125962 0.0802,6.03574 -1.73187,12.19977 3.49456,15.21525 3.04964,2.18843 6.32466,3.55539 11.481158,2.88908 l 2.8771,-0.47596 4.296581,0.44324 -2.53252,7.0677 2.15933,0.96265 6.42884,0.2863 -0.234371,-4.20034 0.29795,-4.63728 c 1.57516,-0.0463 3.153061,-0.0424 4.67754,0.16912 l 8.486452,-0.77064 c 0,0 1.000239,2.51032 0.582959,4.41374 l 0.351959,4.85673 7.439501,-0.14555 -1.51857,-6.88235 -0.665811,-3.74056 c 0.21163,-0.93016 3.501361,-4.64934 3.575121,-7.15677 0.97132,-6.95589 3.907751,-16.565792 8.5129,-23.841212 l 2.853711,3.0275 1.99643,3.08254 2.66297,3.27441 2.9947,0.38531 h 2.3297 l 1.3315,-0.57797 1.33148,-2.88989 1.33068,-4.81488 -1.83059,-2.69558 -5.82351,-5.77902 -5.99012,-4.04338 -3.778842,-0.82164 -0.0483,-0.91229 -1.38652,0.60063 -0.0294,-0.006 z"
+           id="path15014-5"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <path
+           style="opacity:1;fill:#000000;fill-opacity:0.27096779;stroke:none;stroke-width:2.25796437;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="path5732-8-5-3-3"
+           sodipodi:type="arc"
+           sodipodi:cx="72.756111"
+           sodipodi:cy="127.56827"
+           sodipodi:rx="21.44474"
+           sodipodi:ry="2.5116751"
+           sodipodi:start="0"
+           sodipodi:end="6.277129"
+           sodipodi:open="true"
+           d="m 94.200851,127.56827 a 21.44474,2.5116751 0 0 1 -21.412271,2.51167 21.44474,2.5116751 0 0 1 -21.477111,-2.50407 21.44474,2.5116751 0 0 1 21.347236,-2.51925 21.44474,2.5116751 0 0 1 21.541753,2.49644"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           sodipodi:nodetypes="cccccccccc"
+           inkscape:connector-curvature="0"
+           id="path4724-1-6-7-1"
+           d="m 84.657878,109.86019 0.697481,5.09499 c 0.20686,2.92586 -0.133741,5.82424 -0.422761,8.74573 l -0.314209,3.24609 c -2.03263,0.54229 -3.839541,0.49599 -5.827699,0.16269 l -1.178851,-0.0181 0.0885,-5.0832 0.301969,-6.24696 -1.922701,-5.78017 z"
+           style="fill:#7d7b1d;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.41850862;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.32037026px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 84.210388,126.07271 -0.135138,-0.38109 -0.418071,-0.0991 -0.38834,0.23399 -0.193471,0.36843 -0.126698,0.30754 z"
+           id="path4739-2-1-0-2"
+           inkscape:connector-curvature="0" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:connector-curvature="0"
+           id="path4741-0-2-3-5"
+           d="m 81.917668,126.85087 -0.036,-0.40027 -0.36816,-0.21049 -0.419531,0.11484 -0.26883,0.29696 -0.19186,0.25758 z"
+           style="fill:#babdb6;fill-rule:evenodd;stroke:none;stroke-width:0.31356129px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           inkscape:transform-center-x="-0.72495905"
+           inkscape:transform-center-y="-0.67777199" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:transform-center-y="-1.3670678"
+           inkscape:transform-center-x="0.20314011"
+           style="fill:#babdb6;fill-rule:evenodd;stroke:none;stroke-width:0.35954618px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 78.260158,126.78778 0.069,-0.45781 0.43832,-0.24451 0.475041,0.1267 0.28902,0.33646 0.203039,0.29227 z"
+           id="path4743-1-4-9-9"
+           inkscape:connector-curvature="0" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path4716-4-7-4-3"
+           d="m 69.966018,127.29502 -3.66763,0.13032 -3.285119,-2.07613 -0.0161,-4.40299 -0.19005,-2.53795 -0.80249,-5.49404 6.446088,-4.82198 1.193351,5.48917 0.806661,6.59479 z"
+           style="fill:#7d7b1d;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.42069036;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <path
+           style="fill:#babdb6;fill-rule:evenodd;stroke:none;stroke-width:0.32037026px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 69.356418,126.51356 -0.0213,-0.41219 -0.367951,-0.27026 -0.43303,0.0525 -0.286139,0.26054 -0.205901,0.23233 z"
+           id="path4718-1-5-5-6"
+           inkscape:connector-curvature="0"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path4720-2-3-4-5"
+           d="m 66.985259,126.53379 0.078,-0.38786 -0.289578,-0.35262 -0.429213,-0.0718 -0.337518,0.16189 -0.253579,0.15808 z"
+           style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.31356129px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           inkscape:transform-center-x="-0.98325385"
+           inkscape:transform-center-y="0.003321914"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <path
+           inkscape:transform-center-y="-1.0933799"
+           inkscape:transform-center-x="-0.10121687"
+           style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.35954618px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 63.628508,124.78299 0.148621,-0.42181 0.46913,-0.0947 0.438499,0.27751 0.2205,0.42052 0.144802,0.34967 z"
+           id="path4722-3-8-0-2"
+           inkscape:connector-curvature="0"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           id="path4726-5-1-5-8"
+           d="m 98.320358,72.597378 v 0.96145 l 0.0849,0.0181 z m 0.0849,0.97924 v 0.0181 l -1.290699,0.54184 c -4.386609,4.95908 -6.04643,14.14424 -11.067621,20.44364 l -0.11302,-0.24182 c -3.50103,-1.42842 -8.00677,-2.95562 -12.600738,-2.95646 -3.573093,0 -7.198892,0.92221 -10.448751,3.53468 -0.688041,0.76959 -5.504961,9.234812 -5.504961,9.234812 0,0 -0.0211,1.06303 -0.0374,1.79847 -0.0181,-0.0352 -0.134141,-0.25958 -0.134141,-0.25958 -3.176399,1.7054 -6.328147,3.42212 -9.288967,5.57973 -1.74812,-2.07029 -3.53923,-4.04883 -4.81676,-6.54204 2.48484,-3.92385 4.78174,-7.889002 6.53691,-12.313412 v -1.53884 c -0.29378,-4.10738 -0.0822,-4.9739 -2.23693,-8.46582 l 0.51678,7.88924 -2.23615,3.84758 c -2.14913,2.56412 -4.34228,5.01429 -6.88061,7.118592 0.0829,6.02949 -1.79035,12.18715 3.61256,15.19951 3.15261,2.18617 6.53822,3.55171 11.868838,2.88609 l 2.97424,-0.47546 4.441671,0.44278 -2.618041,7.06039 2.23223,0.96165 6.645932,0.286 -0.242293,-4.19599 0.30802,-4.63248 c 1.628352,-0.0463 3.259532,-0.0424 4.83548,0.16893 l 8.773002,-0.76983 c 0,0 1.03401,2.50771 0.602639,4.40917 l 0.363852,4.85171 7.690689,-0.14541 -1.56985,-6.87522 -0.688279,-3.73669 c 0.218768,-0.92921 3.61959,-4.64453 3.695848,-7.14938 1.004102,-6.94869 4.039682,-16.548652 8.800332,-23.816542 l 2.95007,3.02436 2.06385,3.07936 2.75287,3.27102 3.09583,0.38491 h 2.40836 l 1.37646,-0.57737 1.37644,-2.8869 1.37561,-4.8099 -1.89239,-2.69279 -6.02016,-5.77304 -6.19237,-4.0392 -3.906431,-0.82079 -0.0499,-0.91135 -1.433338,0.60001 -0.0304,-0.006 z"
+           style="fill:#aeab28;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.42069036;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccccccccccccccccccccccccccccccccccccccccccccccccccccccc" />
+        <path
+           style="opacity:0.32300002;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.40626919;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 68.031959,80.812388 -2.545609,2.08561 -0.0284,0.0175 v 0.006 l -1.051461,0.86145 -2.618319,3.16889 -0.80533,3.96122 1.611159,4.95179 2.61836,1.58418 3.222331,2.17884 5.236649,0.594122 5.03536,-3.367092 2.215171,-3.56479 v -4.15945 l -1.0072,-3.36709 -2.013799,-3.16886 -5.639351,-1.78239 c -3.411029,-0.1381 0.458571,0.145 -4.229491,0 z"
+           id="path15210-4"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccccccccccccccccc"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <path
+           style="opacity:0.12600002;fill:url(#radialGradient15040-9);fill-opacity:1;stroke:none;stroke-width:1.38723445;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter15941-2)"
+           id="path15018-0"
+           sodipodi:type="arc"
+           sodipodi:cx="73.67495"
+           sodipodi:cy="105.30229"
+           sodipodi:rx="13.219124"
+           sodipodi:ry="9.9178963"
+           sodipodi:start="0"
+           sodipodi:end="6.277129"
+           sodipodi:open="true"
+           d="m 86.894073,105.30229 a 13.219124,9.9178963 0 0 1 -13.199109,9.91789 13.219124,9.9178963 0 0 1 -13.239078,-9.88786 13.219124,9.9178963 0 0 1 13.15902,-9.947822 13.219124,9.9178963 0 0 1 13.278925,9.857732"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           sodipodi:nodetypes="cccccc"
+           inkscape:connector-curvature="0"
+           id="path4728-5-3-7-5"
+           d="m 109.84564,77.599658 c 2.61207,0.54127 2.18241,0.48703 3.61227,2.88601 l -1.54813,2.11647 c -1.74136,1.20459 -2.3173,0.52186 -4.30034,0 l -0.51605,-1.34682 c 0.54804,-3.04948 0.29221,-2.38569 2.75225,-3.65566 z"
+           style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.42069036;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           sodipodi:nodetypes="ccccc"
+           inkscape:connector-curvature="0"
+           id="path4731-5-8-1-2"
+           d="m 104.85722,79.716078 -0.17195,1.92403 c -2.83164,2.8221 -3.22436,2.85502 -5.676461,-0.19247 l 0.344059,-2.1164 c 2.900892,-1.9238 4.384222,-3.37409 5.504432,0.3848 z"
+           style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.42069036;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           sodipodi:nodetypes="ccccc"
+           inkscape:connector-curvature="0"
+           id="path4733-1-3-8-4"
+           d="m 100.02548,85.773868 c -5.02796,3.16954 -4.639822,4.07804 -7.154282,9.70296 -1.503,4.18491 -1.54809,6.456272 -1.54809,10.774492 l 0.344022,3.65565 c 1.444858,-9.85534 5.185029,-17.528112 8.86191,-24.172432"
+           style="fill:#eeeeec;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.42069036;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.42069036;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.94186042"
+           id="path4737-3-1-2-8"
+           sodipodi:type="arc"
+           sodipodi:cx="-102.81757"
+           sodipodi:cy="79.606949"
+           sodipodi:rx="0.70317763"
+           sodipodi:ry="0.62921631"
+           sodipodi:start="0"
+           sodipodi:end="6.277129"
+           sodipodi:open="true"
+           d="m -102.1144,79.606949 a 0.70317763,0.62921631 0 0 1 -0.70211,0.629215 0.70317763,0.62921631 0 0 1 -0.70424,-0.62731 0.70317763,0.62921631 0 0 1 0.69998,-0.631115 0.70317763,0.62921631 0 0 1 0.70636,0.625399"
+           transform="scale(-1,1)" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           style="fill:#000000;fill-rule:evenodd;stroke:#000000;stroke-width:0.41649264px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 112.17885,91.655548 c -3.19631,-0.57526 -2.82364,-0.11121 -4.37289,-1.53717 1.27745,3.90255 1.06066,3.71916 4.37289,1.53717 z"
+           id="path4745-1-2-0-5"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ccc" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.32037026px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 89.34153,126.38552 -0.138171,-0.38666 -0.41597,-0.10779 -0.38286,0.22848 -0.18783,0.36767 -0.12228,0.30756 z"
+           id="path4747-5-2-1-4"
+           inkscape:connector-curvature="0" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:connector-curvature="0"
+           id="path4749-9-5-8-5"
+           d="m 87.066928,126.89416 -0.04,-0.40413 -0.367649,-0.21909 -0.4151,0.1078 -0.263551,0.29422 -0.187439,0.25598 z"
+           style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.31356126px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           inkscape:transform-center-x="-0.21485725"
+           inkscape:transform-center-y="-1.0803933" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:transform-center-y="-0.56038192"
+           inkscape:transform-center-x="0.92268598"
+           style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.35954618px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 83.414778,126.97678 0.01609,-0.46581 0.403849,-0.28383 0.482891,0.0857 0.323721,0.31265 0.233849,0.27578 z"
+           id="path4751-5-4-9-6"
+           inkscape:connector-curvature="0" />
+        <path
+           style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.32037026px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 66.977679,126.31318 -0.148421,-0.37546 -0.425331,-0.0927 -0.384818,0.23667 -0.183822,0.36711 -0.118247,0.30607 z"
+           id="path4755-2-5-8-1"
+           inkscape:connector-curvature="0"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path4757-0-7-6-1"
+           d="m 64.352339,126.55457 0.002,-0.39687 -0.35102,-0.24916 -0.43386,0.0642 -0.29933,0.26021 -0.21792,0.2305 z"
+           style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.31356129px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           inkscape:transform-center-x="-0.80816608"
+           inkscape:transform-center-y="-0.50061684"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <path
+           inkscape:transform-center-y="-1.1730549"
+           inkscape:transform-center-x="0.15174813"
+           style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.35954618px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 60.466709,125.84008 0.121069,-0.43769 0.469291,-0.17819 0.4644,0.18945 0.25326,0.36866 0.17155,0.31359 z"
+           id="path4759-5-5-2-0"
+           inkscape:connector-curvature="0"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <path
+           transform="scale(-1,1)"
+           d="m -109.86079,79.919815 a 0.70317763,0.62921631 0 0 1 -0.70212,0.629216 0.70317763,0.62921631 0 0 1 -0.70424,-0.627311 0.70317763,0.62921631 0 0 1 0.69998,-0.631115 0.70317763,0.62921631 0 0 1 0.70636,0.625399"
+           sodipodi:open="true"
+           sodipodi:end="6.277129"
+           sodipodi:start="0"
+           sodipodi:ry="0.62921631"
+           sodipodi:rx="0.70317763"
+           sodipodi:cy="79.919815"
+           sodipodi:cx="-110.56397"
+           sodipodi:type="arc"
+           id="path14773-3"
+           style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.42069036;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.94186042"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <path
+           style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.38417497;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 72.568909,75.569968 -1.424371,0.30933 -2.2328,0.31773 1.002969,1.13195 0.401003,1.95643 -0.215712,1.24496 h -1.990209 l -2.537079,1.87469 -0.0011,5e-4 -0.02519,0.014 v 0.005 l -1.04707,0.77354 -2.60742,2.84593 -0.80196,3.55642 1.60444,4.44642 2.607419,1.42247 3.20889,1.95644 5.21485,0.53349 5.01382,-3.02342 2.206432,-3.20095 v -3.73493 l -1.002929,-3.02342 -2.005428,-2.84544 -5.61581,-1.60049 h -0.869141 l 0.668661,-1.77845 z"
+           id="path15771-3"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ccccccccccccccccccccccccccc"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <g
+           id="g15032-3"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90"
+           transform="translate(825.85113,-214.75398)">
+          <path
+             inkscape:export-ydpi="90"
+             inkscape:export-xdpi="90"
+             inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+             style="fill:#339900;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.39510214;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             d="m -747.16034,311.104 2.17228,-3.43883 v -4.01197 l -0.98741,-3.24777 -1.97479,-3.05674 -5.52945,-1.71941 h -4.14708 l -3.55465,2.86568 -2.56723,3.05674 -0.78992,3.82092 1.57984,4.77615 2.56724,1.52838 3.15968,2.1015 5.13447,0.57315 z"
+             id="path4972-0-7-2-3"
+             inkscape:connector-curvature="0" />
+          <path
+             inkscape:export-ydpi="90"
+             inkscape:export-xdpi="90"
+             inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+             inkscape:connector-curvature="0"
+             id="path4942-6-3-1-0"
+             d="m -747.16034,311.104 2.17228,-3.43883 v -4.01197 l -0.98741,-3.24777 -1.97479,-3.05674 -5.52945,-1.71941 h -4.14708 l -3.55465,2.86568 -2.56723,3.05674 -0.78992,3.82092 1.57984,4.77615 2.56724,1.52838 3.15968,2.1015 5.13447,0.57315 z"
+             style="fill:url(#radialGradient4970-3-2-5-0);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.39510214;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+          <path
+             inkscape:export-ydpi="90"
+             inkscape:export-xdpi="90"
+             inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+             inkscape:connector-curvature="0"
+             id="path4944-4-1-1-6"
+             d="m -755.84947,296.77555 0.39496,-2.4836 -0.39496,-2.1015 -0.9874,-0.76418 3.55465,-0.57315 -0.39496,2.86569 -1.18488,3.43883"
+             style="fill:#9933ff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.39510214;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+          <path
+             inkscape:export-ydpi="90"
+             inkscape:export-xdpi="90"
+             inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+             inkscape:connector-curvature="0"
+             id="path14811-7"
+             d="m -757.42928,297.34869 c -0.19367,-0.0394 -1.9812,-0.13917 -1.9812,-0.13917 l -0.73998,0.44894 -0.008,0.64854"
+             style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.53210473px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <path
+             inkscape:export-ydpi="90"
+             inkscape:export-xdpi="90"
+             inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+             inkscape:connector-curvature="0"
+             id="path14813-4"
+             d="m -758.08021,299.62062 c 0,0 -2.31965,-0.18281 -2.39446,-0.108 -0.0748,0.0748 -0.49886,1.47989 -0.49886,1.52979 0,0.0501 0.57367,1.11407 0.57367,1.11407 l 0.60084,0.7327 v 0"
+             style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.53210473px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <path
+             inkscape:export-ydpi="90"
+             inkscape:export-xdpi="90"
+             inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+             inkscape:connector-curvature="0"
+             id="path14815-0"
+             d="m -754.86204,302.12482 0.67285,1.36186 -0.13293,1.36353 -0.9348,0.52247"
+             style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.53210473px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <path
+             inkscape:export-ydpi="90"
+             inkscape:export-xdpi="90"
+             inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+             inkscape:connector-curvature="0"
+             id="path14817-7"
+             d="m -750.56423,302.42247 0.88126,1.04762 0.0833,1.81245 -1.34691,0.38247"
+             style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.53210473px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <path
+             inkscape:export-ydpi="90"
+             inkscape:export-xdpi="90"
+             inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+             inkscape:connector-curvature="0"
+             id="path14819-4"
+             d="m -748.74018,299.64127 1.25215,1.21815 0.26605,1.13072"
+             style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.53210473px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <path
+             inkscape:export-ydpi="90"
+             inkscape:export-xdpi="90"
+             inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+             inkscape:connector-curvature="0"
+             id="path14821-7"
+             d="m -745.97545,306.51882 -0.0825,1.52402 -1.29984,0.95964"
+             style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.53210473px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <path
+             inkscape:export-ydpi="90"
+             inkscape:export-xdpi="90"
+             inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+             inkscape:connector-curvature="0"
+             id="path14823-6"
+             d="m -750.31998,309.19355 c 0,0 -0.32741,2.14167 -0.46045,2.2747 -0.13293,0.13294 -2.10681,0.39999 -2.10681,0.39999 v 0"
+             style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.53210473px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <path
+             inkscape:export-ydpi="90"
+             inkscape:export-xdpi="90"
+             inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+             inkscape:connector-curvature="0"
+             id="path14825-5"
+             d="m -758.61418,306.51889 c -0.41387,0.0278 -1.21203,1.93967 -1.21203,1.93967 l 0.21619,1.29702 1.39078,0.58428"
+             style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.53210473px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <path
+             inkscape:export-ydpi="90"
+             inkscape:export-xdpi="90"
+             inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+             inkscape:connector-curvature="0"
+             id="path14827-9"
+             d="m -762.76124,305.37262 c -0.40723,0.39216 -0.67328,1.68916 -0.67328,1.78893 0,0.0998 0.2783,1.84093 0.2783,1.84093"
+             style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.53210473px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        </g>
+      </g>
+      <rect
+         style="opacity:1;fill:none;fill-opacity:1;stroke:none;stroke-width:0.70548928;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect6230-1"
+         width="255.29451"
+         height="255.29451"
+         x="-462.4231"
+         y="146.52194" />
+    </g>
+    <g
+       inkscape:export-ydpi="96"
+       inkscape:export-xdpi="96"
+       transform="matrix(1.061258,0,0,1.061258,342.76485,337.79309)"
+       id="g5112">
+      <g
+         id="g5108"
+         transform="matrix(3.0472431,0,0,3.0472431,-573.19541,-33.085423)">
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           id="path5030"
+           d="m 97.558408,71.580778 v 0.96245 l 0.0821,0.0181 z m 0.0821,0.98026 v 0.0181 l -1.24855,0.5424 c -4.243339,4.96422 -5.84894,14.15888 -10.706129,20.4648 l -0.10932,-0.24207 c -3.38667,-1.42989 -7.74523,-2.95868 -12.189161,-2.95952 -3.456369,0 -6.96376,0.92316 -10.107469,3.53835 -0.665561,0.77038 -5.325141,9.244372 -5.325141,9.244372 0,0 -0.0205,1.06412 -0.0361,1.80033 -0.0175,-0.0353 -0.129759,-0.25986 -0.129759,-0.25986 -3.072651,1.70717 -6.121459,3.42566 -8.985559,5.58552 -1.69103,-2.07244 -3.42363,-4.05303 -4.65944,-6.54882 2.40368,-3.927912 4.62555,-7.897162 6.3234,-12.326162 v -1.54043 c -0.28419,-4.11163 -0.98074,-3.97259 -3.0651,-7.46813 l 1.40114,6.89095 -2.16313,3.85156 c -2.07892,2.56678 -4.20043,5.01949 -6.65585,7.125962 0.0802,6.03574 -1.73187,12.19977 3.49456,15.21525 3.04964,2.18843 6.32466,3.55539 11.481158,2.88908 l 2.8771,-0.47596 4.296581,0.44324 -2.53252,7.0677 2.15933,0.96265 6.42884,0.2863 -0.234371,-4.20034 0.29795,-4.63728 c 1.57516,-0.0463 3.153061,-0.0424 4.67754,0.16912 l 8.486452,-0.77064 c 0,0 1.000239,2.51032 0.582959,4.41374 l 0.351959,4.85673 7.439501,-0.14555 -1.51857,-6.88235 -0.665811,-3.74056 c 0.21163,-0.93016 3.501361,-4.64934 3.575121,-7.15677 0.97132,-6.95589 3.907751,-16.565792 8.5129,-23.841212 l 2.853711,3.0275 1.99643,3.08254 2.66297,3.27441 2.9947,0.38531 h 2.3297 l 1.3315,-0.57797 1.33148,-2.88989 1.33068,-4.81488 -1.83059,-2.69558 -5.82351,-5.77902 -5.99012,-4.04338 -3.778842,-0.82164 -0.0483,-0.91229 -1.38652,0.60063 -0.0294,-0.006 z"
+           style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.41397697;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccccccccccccccccccccccccccccccccccccccccccccccccccccccc" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           d="m 94.200851,127.56827 a 21.44474,2.5116751 0 0 1 -21.412271,2.51167 21.44474,2.5116751 0 0 1 -21.477111,-2.50407 21.44474,2.5116751 0 0 1 21.347236,-2.51925 21.44474,2.5116751 0 0 1 21.541753,2.49644"
+           sodipodi:open="true"
+           sodipodi:end="6.277129"
+           sodipodi:start="0"
+           sodipodi:ry="2.5116751"
+           sodipodi:rx="21.44474"
+           sodipodi:cy="127.56827"
+           sodipodi:cx="72.756111"
+           sodipodi:type="arc"
+           id="path5032"
+           style="opacity:1;fill:#000000;fill-opacity:0.27096779;stroke:none;stroke-width:2.25796437;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           style="fill:#7d7b1d;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.41850862;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 84.657878,109.86019 0.697481,5.09499 c 0.20686,2.92586 -0.133741,5.82424 -0.422761,8.74573 l -0.314209,3.24609 c -2.03263,0.54229 -3.839541,0.49599 -5.827699,0.16269 l -1.178851,-0.0181 0.0885,-5.0832 0.301969,-6.24696 -1.922701,-5.78017 z"
+           id="path5034"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccccccccc"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path5036"
+           d="m 84.210388,126.07271 -0.135138,-0.38109 -0.418071,-0.0991 -0.38834,0.23399 -0.193471,0.36843 -0.126698,0.30754 z"
+           style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.32037026px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <path
+           inkscape:transform-center-y="-0.67777199"
+           inkscape:transform-center-x="-0.72495905"
+           style="fill:#babdb6;fill-rule:evenodd;stroke:none;stroke-width:0.31356129px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 81.917668,126.85087 -0.036,-0.40027 -0.36816,-0.21049 -0.419531,0.11484 -0.26883,0.29696 -0.19186,0.25758 z"
+           id="path5038"
+           inkscape:connector-curvature="0"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path5040"
+           d="m 78.260158,126.78778 0.069,-0.45781 0.43832,-0.24451 0.475041,0.1267 0.28902,0.33646 0.203039,0.29227 z"
+           style="fill:#babdb6;fill-rule:evenodd;stroke:none;stroke-width:0.35954618px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           inkscape:transform-center-x="0.20314011"
+           inkscape:transform-center-y="-1.3670678"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           style="fill:#7d7b1d;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.42069036;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 69.966018,127.29502 -3.66763,0.13032 -3.285119,-2.07613 -0.0161,-4.40299 -0.19005,-2.53795 -0.80249,-5.49404 6.446088,-4.82198 1.193351,5.48917 0.806661,6.59479 z"
+           id="path5042"
+           inkscape:connector-curvature="0" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:connector-curvature="0"
+           id="path5044"
+           d="m 69.356418,126.51356 -0.0213,-0.41219 -0.367951,-0.27026 -0.43303,0.0525 -0.286139,0.26054 -0.205901,0.23233 z"
+           style="fill:#babdb6;fill-rule:evenodd;stroke:none;stroke-width:0.32037026px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:transform-center-y="0.003321914"
+           inkscape:transform-center-x="-0.98325385"
+           style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.31356129px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 66.985259,126.53379 0.078,-0.38786 -0.289578,-0.35262 -0.429213,-0.0718 -0.337518,0.16189 -0.253579,0.15808 z"
+           id="path5046"
+           inkscape:connector-curvature="0" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:connector-curvature="0"
+           id="path5048"
+           d="m 63.628508,124.78299 0.148621,-0.42181 0.46913,-0.0947 0.438499,0.27751 0.2205,0.42052 0.144802,0.34967 z"
+           style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.35954618px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           inkscape:transform-center-x="-0.10121687"
+           inkscape:transform-center-y="-1.0933799" />
+        <path
+           sodipodi:nodetypes="cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+           inkscape:connector-curvature="0"
+           style="fill:#aeab28;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.42069036;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 98.320358,72.597378 v 0.96145 l 0.0849,0.0181 z m 0.0849,0.97924 v 0.0181 l -1.290699,0.54184 c -4.386609,4.95908 -6.04643,14.14424 -11.067621,20.44364 l -0.11302,-0.24182 c -3.50103,-1.42842 -8.00677,-2.95562 -12.600738,-2.95646 -3.573093,0 -7.198892,0.92221 -10.448751,3.53468 -0.688041,0.76959 -5.504961,9.234812 -5.504961,9.234812 0,0 -0.0211,1.06303 -0.0374,1.79847 -0.0181,-0.0352 -0.134141,-0.25958 -0.134141,-0.25958 -3.176399,1.7054 -6.328147,3.42212 -9.288967,5.57973 -1.74812,-2.07029 -3.53923,-4.04883 -4.81676,-6.54204 2.48484,-3.92385 4.78174,-7.889002 6.53691,-12.313412 v -1.53884 c -0.29378,-4.10738 -0.0822,-4.9739 -2.23693,-8.46582 l 0.51678,7.88924 -2.23615,3.84758 c -2.14913,2.56412 -4.34228,5.01429 -6.88061,7.118592 0.0829,6.02949 -1.79035,12.18715 3.61256,15.19951 3.15261,2.18617 6.53822,3.55171 11.868838,2.88609 l 2.97424,-0.47546 4.441671,0.44278 -2.618041,7.06039 2.23223,0.96165 6.645932,0.286 -0.242293,-4.19599 0.30802,-4.63248 c 1.628352,-0.0463 3.259532,-0.0424 4.83548,0.16893 l 8.773002,-0.76983 c 0,0 1.03401,2.50771 0.602639,4.40917 l 0.363852,4.85171 7.690689,-0.14541 -1.56985,-6.87522 -0.688279,-3.73669 c 0.218768,-0.92921 3.61959,-4.64453 3.695848,-7.14938 1.004102,-6.94869 4.039682,-16.548652 8.800332,-23.816542 l 2.95007,3.02436 2.06385,3.07936 2.75287,3.27102 3.09583,0.38491 h 2.40836 l 1.37646,-0.57737 1.37644,-2.8869 1.37561,-4.8099 -1.89239,-2.69279 -6.02016,-5.77304 -6.19237,-4.0392 -3.906431,-0.82079 -0.0499,-0.91135 -1.433338,0.60001 -0.0304,-0.006 z"
+           id="path5050"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           sodipodi:nodetypes="cccccccccccccccccc"
+           inkscape:connector-curvature="0"
+           id="path5052"
+           d="m 68.031959,80.812388 -2.545609,2.08561 -0.0284,0.0175 v 0.006 l -1.051461,0.86145 -2.618319,3.16889 -0.80533,3.96122 1.611159,4.95179 2.61836,1.58418 3.222331,2.17884 5.236649,0.594122 5.03536,-3.367092 2.215171,-3.56479 v -4.15945 l -1.0072,-3.36709 -2.013799,-3.16886 -5.639351,-1.78239 c -3.411029,-0.1381 0.458571,0.145 -4.229491,0 z"
+           style="opacity:0.32300002;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.40626919;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           d="m 86.894073,105.30229 a 13.219124,9.9178963 0 0 1 -13.199109,9.91789 13.219124,9.9178963 0 0 1 -13.239078,-9.88786 13.219124,9.9178963 0 0 1 13.15902,-9.947822 13.219124,9.9178963 0 0 1 13.278925,9.857732"
+           sodipodi:open="true"
+           sodipodi:end="6.277129"
+           sodipodi:start="0"
+           sodipodi:ry="9.9178963"
+           sodipodi:rx="13.219124"
+           sodipodi:cy="105.30229"
+           sodipodi:cx="73.67495"
+           sodipodi:type="arc"
+           id="path5054"
+           style="opacity:0.12600002;fill:url(#radialGradient5114);fill-opacity:1;stroke:none;stroke-width:1.38723445;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter15941-2)" />
+        <path
+           style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.42069036;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 109.84564,77.599658 c 2.61207,0.54127 2.18241,0.48703 3.61227,2.88601 l -1.54813,2.11647 c -1.74136,1.20459 -2.3173,0.52186 -4.30034,0 l -0.51605,-1.34682 c 0.54804,-3.04948 0.29221,-2.38569 2.75225,-3.65566 z"
+           id="path5056"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccccc"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <path
+           style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.42069036;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 104.85722,79.716078 -0.17195,1.92403 c -2.83164,2.8221 -3.22436,2.85502 -5.676461,-0.19247 l 0.344059,-2.1164 c 2.900892,-1.9238 4.384222,-3.37409 5.504432,0.3848 z"
+           id="path5058"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ccccc"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <path
+           style="fill:#eeeeec;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.42069036;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 100.02548,85.773868 c -5.02796,3.16954 -4.639822,4.07804 -7.154282,9.70296 -1.503,4.18491 -1.54809,6.456272 -1.54809,10.774492 l 0.344022,3.65565 c 1.444858,-9.85534 5.185029,-17.528112 8.86191,-24.172432"
+           id="path5060"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ccccc"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <path
+           transform="scale(-1,1)"
+           d="m -102.1144,79.606949 a 0.70317763,0.62921631 0 0 1 -0.70211,0.629215 0.70317763,0.62921631 0 0 1 -0.70424,-0.62731 0.70317763,0.62921631 0 0 1 0.69998,-0.631115 0.70317763,0.62921631 0 0 1 0.70636,0.625399"
+           sodipodi:open="true"
+           sodipodi:end="6.277129"
+           sodipodi:start="0"
+           sodipodi:ry="0.62921631"
+           sodipodi:rx="0.70317763"
+           sodipodi:cy="79.606949"
+           sodipodi:cx="-102.81757"
+           sodipodi:type="arc"
+           id="path5062"
+           style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.42069036;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.94186042"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <path
+           sodipodi:nodetypes="ccc"
+           inkscape:connector-curvature="0"
+           id="path5064"
+           d="m 112.17885,91.655548 c -3.19631,-0.57526 -2.82364,-0.11121 -4.37289,-1.53717 1.27745,3.90255 1.06066,3.71916 4.37289,1.53717 z"
+           style="fill:#000000;fill-rule:evenodd;stroke:#000000;stroke-width:0.41649264px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path5066"
+           d="m 89.34153,126.38552 -0.138171,-0.38666 -0.41597,-0.10779 -0.38286,0.22848 -0.18783,0.36767 -0.12228,0.30756 z"
+           style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.32037026px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <path
+           inkscape:transform-center-y="-1.0803933"
+           inkscape:transform-center-x="-0.21485725"
+           style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.31356126px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 87.066928,126.89416 -0.04,-0.40413 -0.367649,-0.21909 -0.4151,0.1078 -0.263551,0.29422 -0.187439,0.25598 z"
+           id="path5068"
+           inkscape:connector-curvature="0"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path5070"
+           d="m 83.414778,126.97678 0.01609,-0.46581 0.403849,-0.28383 0.482891,0.0857 0.323721,0.31265 0.233849,0.27578 z"
+           style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.35954618px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           inkscape:transform-center-x="0.92268598"
+           inkscape:transform-center-y="-0.56038192"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:export-xdpi="90"
+           inkscape:export-ydpi="90" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:connector-curvature="0"
+           id="path5072"
+           d="m 66.977679,126.31318 -0.148421,-0.37546 -0.425331,-0.0927 -0.384818,0.23667 -0.183822,0.36711 -0.118247,0.30607 z"
+           style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.32037026px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:transform-center-y="-0.50061684"
+           inkscape:transform-center-x="-0.80816608"
+           style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.31356129px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 64.352339,126.55457 0.002,-0.39687 -0.35102,-0.24916 -0.43386,0.0642 -0.29933,0.26021 -0.21792,0.2305 z"
+           id="path5074"
+           inkscape:connector-curvature="0" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           inkscape:connector-curvature="0"
+           id="path5076"
+           d="m 60.466709,125.84008 0.121069,-0.43769 0.469291,-0.17819 0.4644,0.18945 0.25326,0.36866 0.17155,0.31359 z"
+           style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.35954618px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           inkscape:transform-center-x="0.15174813"
+           inkscape:transform-center-y="-1.1730549" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.42069036;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.94186042"
+           id="path5078"
+           sodipodi:type="arc"
+           sodipodi:cx="-110.56397"
+           sodipodi:cy="79.919815"
+           sodipodi:rx="0.70317763"
+           sodipodi:ry="0.62921631"
+           sodipodi:start="0"
+           sodipodi:end="6.277129"
+           sodipodi:open="true"
+           d="m -109.86079,79.919815 a 0.70317763,0.62921631 0 0 1 -0.70212,0.629216 0.70317763,0.62921631 0 0 1 -0.70424,-0.627311 0.70317763,0.62921631 0 0 1 0.69998,-0.631115 0.70317763,0.62921631 0 0 1 0.70636,0.625399"
+           transform="scale(-1,1)" />
+        <path
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           sodipodi:nodetypes="ccccccccccccccccccccccccccc"
+           inkscape:connector-curvature="0"
+           id="path5080"
+           d="m 72.568909,75.569968 -1.424371,0.30933 -2.2328,0.31773 1.002969,1.13195 0.401003,1.95643 -0.215712,1.24496 h -1.990209 l -2.537079,1.87469 -0.0011,5e-4 -0.02519,0.014 v 0.005 l -1.04707,0.77354 -2.60742,2.84593 -0.80196,3.55642 1.60444,4.44642 2.607419,1.42247 3.20889,1.95644 5.21485,0.53349 5.01382,-3.02342 2.206432,-3.20095 v -3.73493 l -1.002929,-3.02342 -2.005428,-2.84544 -5.61581,-1.60049 h -0.869141 l 0.668661,-1.77845 z"
+           style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.38417497;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <g
+           transform="translate(825.85113,-214.75398)"
+           inkscape:export-ydpi="90"
+           inkscape:export-xdpi="90"
+           inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+           id="g5106">
+          <path
+             inkscape:connector-curvature="0"
+             id="path5082"
+             d="m -747.16034,311.104 2.17228,-3.43883 v -4.01197 l -0.98741,-3.24777 -1.97479,-3.05674 -5.52945,-1.71941 h -4.14708 l -3.55465,2.86568 -2.56723,3.05674 -0.78992,3.82092 1.57984,4.77615 2.56724,1.52838 3.15968,2.1015 5.13447,0.57315 z"
+             style="fill:#339900;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.39510214;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+             inkscape:export-xdpi="90"
+             inkscape:export-ydpi="90" />
+          <path
+             style="fill:url(#radialGradient5116);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.39510214;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             d="m -747.16034,311.104 2.17228,-3.43883 v -4.01197 l -0.98741,-3.24777 -1.97479,-3.05674 -5.52945,-1.71941 h -4.14708 l -3.55465,2.86568 -2.56723,3.05674 -0.78992,3.82092 1.57984,4.77615 2.56724,1.52838 3.15968,2.1015 5.13447,0.57315 z"
+             id="path5084"
+             inkscape:connector-curvature="0"
+             inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+             inkscape:export-xdpi="90"
+             inkscape:export-ydpi="90" />
+          <path
+             style="fill:#9933ff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.39510214;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             d="m -755.84947,296.77555 0.39496,-2.4836 -0.39496,-2.1015 -0.9874,-0.76418 3.55465,-0.57315 -0.39496,2.86569 -1.18488,3.43883"
+             id="path5086"
+             inkscape:connector-curvature="0"
+             inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+             inkscape:export-xdpi="90"
+             inkscape:export-ydpi="90" />
+          <path
+             style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.53210473px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="m -757.42928,297.34869 c -0.19367,-0.0394 -1.9812,-0.13917 -1.9812,-0.13917 l -0.73998,0.44894 -0.008,0.64854"
+             id="path5088"
+             inkscape:connector-curvature="0"
+             inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+             inkscape:export-xdpi="90"
+             inkscape:export-ydpi="90" />
+          <path
+             style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.53210473px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="m -758.08021,299.62062 c 0,0 -2.31965,-0.18281 -2.39446,-0.108 -0.0748,0.0748 -0.49886,1.47989 -0.49886,1.52979 0,0.0501 0.57367,1.11407 0.57367,1.11407 l 0.60084,0.7327 v 0"
+             id="path5090"
+             inkscape:connector-curvature="0"
+             inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+             inkscape:export-xdpi="90"
+             inkscape:export-ydpi="90" />
+          <path
+             style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.53210473px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="m -754.86204,302.12482 0.67285,1.36186 -0.13293,1.36353 -0.9348,0.52247"
+             id="path5092"
+             inkscape:connector-curvature="0"
+             inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+             inkscape:export-xdpi="90"
+             inkscape:export-ydpi="90" />
+          <path
+             style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.53210473px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="m -750.56423,302.42247 0.88126,1.04762 0.0833,1.81245 -1.34691,0.38247"
+             id="path5094"
+             inkscape:connector-curvature="0"
+             inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+             inkscape:export-xdpi="90"
+             inkscape:export-ydpi="90" />
+          <path
+             style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.53210473px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="m -748.74018,299.64127 1.25215,1.21815 0.26605,1.13072"
+             id="path5096"
+             inkscape:connector-curvature="0"
+             inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+             inkscape:export-xdpi="90"
+             inkscape:export-ydpi="90" />
+          <path
+             style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.53210473px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="m -745.97545,306.51882 -0.0825,1.52402 -1.29984,0.95964"
+             id="path5098"
+             inkscape:connector-curvature="0"
+             inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+             inkscape:export-xdpi="90"
+             inkscape:export-ydpi="90" />
+          <path
+             style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.53210473px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="m -750.31998,309.19355 c 0,0 -0.32741,2.14167 -0.46045,2.2747 -0.13293,0.13294 -2.10681,0.39999 -2.10681,0.39999 v 0"
+             id="path5100"
+             inkscape:connector-curvature="0"
+             inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+             inkscape:export-xdpi="90"
+             inkscape:export-ydpi="90" />
+          <path
+             style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.53210473px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="m -758.61418,306.51889 c -0.41387,0.0278 -1.21203,1.93967 -1.21203,1.93967 l 0.21619,1.29702 1.39078,0.58428"
+             id="path5102"
+             inkscape:connector-curvature="0"
+             inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+             inkscape:export-xdpi="90"
+             inkscape:export-ydpi="90" />
+          <path
+             style="opacity:0.35400008;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.53210473px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="m -762.76124,305.37262 c -0.40723,0.39216 -0.67328,1.68916 -0.67328,1.78893 0,0.0998 0.2783,1.84093 0.2783,1.84093"
+             id="path5104"
+             inkscape:connector-curvature="0"
+             inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Private\website2\www\images\header\fufu.png"
+             inkscape:export-xdpi="90"
+             inkscape:export-ydpi="90" />
+        </g>
+      </g>
+      <rect
+         y="146.52194"
+         x="-462.4231"
+         height="255.29451"
+         width="255.29451"
+         id="rect5110"
+         style="opacity:1;fill:none;fill-opacity:1;stroke:none;stroke-width:0.70548928;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
   </g>
 </svg>
