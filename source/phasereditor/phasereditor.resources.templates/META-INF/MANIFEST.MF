@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor -  Templates Resources
 Bundle-SymbolicName: phasereditor.resources.templates;singleton:=true
-Bundle-Version: 1.3.0.20161130
+Bundle-Version: 1.4.0.20170412
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-BundleShape: dir
 Bundle-Vendor: Arian Fornaris
