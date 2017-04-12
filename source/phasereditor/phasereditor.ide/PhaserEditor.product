@@ -6,7 +6,7 @@
    <aboutInfo>
       <image path="icons/about.png"/>
       <text>
-         Phaser Editor v1.4.0_rc (Release Candidate)
+         Phaser Editor v1.4.0_preview
 
 Supports Phaser v2.6.2 (built-in)
 

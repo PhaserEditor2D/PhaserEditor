@@ -29,7 +29,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.wst.jsdt.ui;bundle-version="1.1.601",
  org.eclipse.jface.text;bundle-version="3.11.1",
  org.eclipse.ui.editors;bundle-version="3.10.0",
- phasereditor.project.ui;bundle-version="1.3.0",
+ phasereditor.project.ui;bundle-version="1.4.0",
  org.eclipse.ltk.ui.refactoring;bundle-version="3.8.0",
  org.eclipse.ltk.core.refactoring;bundle-version="3.7.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
