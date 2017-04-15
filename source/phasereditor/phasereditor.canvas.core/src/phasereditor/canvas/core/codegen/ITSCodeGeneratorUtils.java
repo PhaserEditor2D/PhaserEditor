@@ -27,6 +27,7 @@ import phasereditor.canvas.core.AnimationModel;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.ButtonSpriteModel;
+import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.core.WorldModel;
 
@@ -76,6 +77,10 @@ public interface ITSCodeGeneratorUtils {
 
 		if (obj instanceof TileSpriteModel) {
 			return "Phaser.TileSprite";
+		}
+		
+		if (obj instanceof GroupModel) {
+			return "Phaser.Group";
 		}
 
 		return "Phaser.Sprite";
