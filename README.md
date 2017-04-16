@@ -1,4 +1,4 @@
-![Phaser editor scheernshot](https://github.com/boniatillo-com/PhaserEditor/raw/master/screens/canvas-1.2.0.png "Screenshot")
+![Phaser editor scheernshot](https://github.com/boniatillo-com/PhaserEditor/raw/master/screens/header.png "Screenshot")
 
 # Phaser Editor
 
