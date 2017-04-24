@@ -261,7 +261,11 @@ public class AnimationsDialog extends Dialog {
 
 	protected void deleteAnimation() {
 		Object anim = _animationsViewer.getStructuredSelection().getFirstElement();
+		
 		_animList.remove(anim);
+		
+		_animationsViewer.refresh();
+		
 		if (_animList.isEmpty()) {
 			setAnimation(null);
 		} else {
