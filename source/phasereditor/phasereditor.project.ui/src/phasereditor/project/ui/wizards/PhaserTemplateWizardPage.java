@@ -37,18 +37,14 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wb.swt.ResourceManager;
 
 import phasereditor.inspect.core.IPhaserCategory;
 import phasereditor.inspect.core.IPhaserTemplate;
@@ -176,34 +172,6 @@ public class PhaserTemplateWizardPage extends WizardPage {
 		gl_container.marginWidth = 0;
 		gl_container.marginHeight = 0;
 		container.setLayout(gl_container);
-
-		Button btnNewButton = new Button(container, SWT.NONE);
-		GridData gd_btnNewButton = new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1);
-		gd_btnNewButton.heightHint = 20;
-		gd_btnNewButton.widthHint = 20;
-		btnNewButton.setLayoutData(gd_btnNewButton);
-		btnNewButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				_treeViewer.expandAll();
-			}
-		});
-		btnNewButton.setToolTipText("Expand All");
-		btnNewButton.setImage(ResourceManager.getPluginImage("org.eclipse.ui", "/icons/full/elcl16/expandall.png"));
-
-		Button btnCollapse = new Button(container, SWT.NONE);
-		GridData gd_btnCollapse = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_btnCollapse.widthHint = 20;
-		gd_btnCollapse.heightHint = 20;
-		btnCollapse.setLayoutData(gd_btnCollapse);
-		btnCollapse.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				_treeViewer.collapseAll();
-			}
-		});
-		btnCollapse.setToolTipText("Collapse All");
-		btnCollapse.setImage(ResourceManager.getPluginImage("org.eclipse.ui", "/icons/full/elcl16/collapseall.png"));
 
 		SashForm sashForm = new SashForm(container, SWT.VERTICAL);
 		sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
