@@ -65,6 +65,10 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 
 		return defaultContent;
 	}
+	
+	public String getReplaceContent() {
+		return _replace;
+	}
 
 	public void userCode(String text) {
 		String[] lines = text.split("\n");
