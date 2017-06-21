@@ -75,6 +75,8 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
+import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
@@ -97,8 +99,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.IEditorInput;
@@ -108,6 +108,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.wb.swt.ResourceManager;
+import org.eclipse.wb.swt.SWTResourceManager;
 import org.json.JSONObject;
 
 import com.badlogic.gdx.files.FileHandle;
@@ -125,7 +126,6 @@ import phasereditor.atlas.ui.editors.AtlasGeneratorEditorModel.EditorPage;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.IconCache;
 import phasereditor.ui.PhaserEditorUI;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedImages, IResourceChangeListener {
 	class FramesLabelProvider extends LabelProvider {
@@ -172,7 +172,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 	private Action _settingsAction;
 	private SashForm _sashForm;
 	private Action _layoutAction;
-	private TabFolder _tabsFolder;
+	private CTabFolder _tabsFolder;
 	private List<IFile> _guessLastOutputFiles;
 	private boolean _showFileList;
 	private MenuManager _popupManager;
@@ -221,7 +221,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		});
 		_framesViewer.setLabelProvider(new FramesLabelProvider());
 		_framesViewer.setContentProvider(new ArrayContentProvider());
-		_tabsFolder = new TabFolder(_sashForm, SWT.NONE);
+		_tabsFolder = new CTabFolder(_sashForm, SWT.NONE);
 		_tabsFolder.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 
 		_sashForm.setWeights(new int[] { 20, 100 });
@@ -729,9 +729,9 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 	public void doSave(IProgressMonitor monitor) {
 		try {
 			refreshFolder(monitor);
-			
+
 			List<IFile> toDelete = new ArrayList<>(_guessLastOutputFiles);
-			
+
 			{
 				// save editor model
 				JSONObject json = _model.toJSON();
@@ -739,7 +739,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 				IFile file = _model.getFile();
 				file.setContents(source, true, false, monitor);
 			}
-			
+
 			{
 				// save image
 				int i = 0;
@@ -760,7 +760,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 					i++;
 				}
 			}
-			
+
 			{
 				// save atlas model
 				int i = 0;
@@ -778,7 +778,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 					i++;
 				}
 			}
-			
+
 			{
 				// delete previous generates files
 				for (IFile file : toDelete) {
@@ -855,7 +855,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		for (ResultPage page : result.getPages()) {
 			AtlasCanvas canvas;
 			canvas = createAtlasCanvas();
-			TabItem item = createTabItem();
+			CTabItem item = createTabItem();
 			item.setText("page " + i);
 			item.setControl(canvas);
 			canvas.setImage(page.getImage());
@@ -962,7 +962,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 	}
 
 	private void addMainTab() {
-		TabItem item = createTabItem();
+		CTabItem item = createTabItem();
 		item.setText("page 1");
 		AtlasCanvas canvas = createAtlasCanvas();
 		canvas.setNoImageMessage("(drop image files here)");
@@ -974,8 +974,8 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 	/**
 	 * @return
 	 */
-	private TabItem createTabItem() {
-		return new TabItem(_tabsFolder, SWT.NONE);
+	private CTabItem createTabItem() {
+		return new CTabItem(_tabsFolder, SWT.NONE);
 	}
 
 	public IFile getEditorInputFile() {
