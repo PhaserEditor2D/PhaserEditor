@@ -112,7 +112,7 @@ public class NewPage_SpriteSettings extends WizardPage {
 
 		Label lblSelectTheAsset = new Label(container, SWT.NONE);
 		lblSelectTheAsset.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-		lblSelectTheAsset.setText("Select the asset for the sprite:");
+		lblSelectTheAsset.setText("Select the sprite texture:");
 
 		SashForm sashForm = new SashForm(container, SWT.NONE);
 		sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 2, 1));
