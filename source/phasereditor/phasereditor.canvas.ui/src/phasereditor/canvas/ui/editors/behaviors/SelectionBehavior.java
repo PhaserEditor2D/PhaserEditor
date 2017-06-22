@@ -143,13 +143,13 @@ public class SelectionBehavior implements ISelectionProvider {
 		}
 
 		if (isSelected(picked)) {
-			if (e.isControlDown()) {
+			if (e.isShortcutDown()) {
 				removeNodeFromSelection(picked);
 			}
 			return;
 		}
 
-		if (_selection != null && !_selection.isEmpty() && e.isControlDown()) {
+		if (_selection != null && !_selection.isEmpty() && e.isShortcutDown()) {
 			HashSet<Object> selection = new HashSet<>(Arrays.asList(_selection.toArray()));
 			selection.add(picked);
 			setSelection(new StructuredSelection(selection.toArray()));

@@ -169,7 +169,7 @@ public class MouseBehavior {
 			_zoomPan.handleMouseDragged(e);
 			return;
 		}
-
+		
 		if (e.isPrimaryButtonDown()) {
 
 			if (_dragHandler != null) {
