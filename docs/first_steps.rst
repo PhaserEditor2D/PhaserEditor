@@ -13,18 +13,18 @@ Download and install
 `Download the Phaser Editor ZIP file <http://phasereditor.boniatillo.com/blog/downloads>`_ of your OS (win64, linux64 or macosx) and uncompress it.
 
 Notes for Windows users 
-~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
 
 To execute the editor just double click on the ``PhaserEditor.exe`` file.
 
 Notes for MacOS users
-~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
 
 
 To execute the editor double click on the ``Phaser Editor`` application. It is a simple ``.app`` folder. By default the projects will be created in the ``~/Library/PhaserEditorProjects`` folder.
 
 Notes for Linux users
-~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
 
 Before to run the editor you should set execution permission to some programs bundled in Phaser Editor. To do this, run the ``SetPermissions.sh`` script:
 
@@ -50,7 +50,7 @@ Some users are getting issues at the editor startup. Please `check this issue to
 
 
 The first run
------------
+-------------
 
 The first time you run Phaser Editor a Workspace Launcher dialog is open. In this dialog you have to set the path to the folder where you want to create the workspace.
 
@@ -62,14 +62,14 @@ A project is a folder where you add the code of your game. So you can create man
 
 
 Update
----------
+------
 
 By default when the editor opens it checks for available updates. We recommend you to install them, important bug fixes are provided this way.
 
-`Learn more about the update process <Learn more about the update process>`_
+`Learn more about the update process <update.html>`_
 
 Create a project
---------------
+----------------
 
 In Phaser Editor there is two way of  create a Phaser project, by using the **Phaser Project** wizard or the **Phaser Example Project** wizard.
 
@@ -92,16 +92,18 @@ So, by pressing **Next** the wizard shows the settings page:
 
 This page contain some group of parameters that affect different aspects of a project:
 
-* **Game Parameters** are the same parameters of the ``Phaser.Game`` constructor.  Set these parameters to control how the game instance is created.
-* **Project Structure** contains a list of project layouts that you can select. You can select to create a project with a very simple structure or a complex, production ready structure. These layout are related with the number of Phaser states are going to be used in the game.
-* **Assets**. In this section you can set if you want to add some demo assets to the project. This could be good if you want to take a better idea of how a Phaser project is. In many of the layouts, when you select to add assets, some prefabs are created so it is a good way to know how prefabs work.
-* **TypeScript** is a parameter that if it is checked all the code of the project will be generated to TypeScript instead of JavaScript. At the time there is not a built-in TypeScript editor inside Phaser Editor but we included this option because developers can use any other external editor like `VSCode <http://  .visualstudio.net>`_. There are some third-party plugins for Eclipse that support TypeScript, `here we talk about one of them <http://phasereditor.boniatillo.com/blog/2017/04/welcome-typescript-ide>`_.
+=============================== ===================================================
+``Game Parameters``             Are the same parameters of the ``Phaser.Game`` constructor.  Set these parameters to control how the game instance is created.
+``Project Structure``           Contains a list of project layouts that you can select. You can select to create a project with a very simple structure or a complex, production ready structure. These layout are related with the number of Phaser states are going to be used in the game.
+``Assets``                      In this section you can set if you want to add some demo assets to the project. This could be good if you want to take a better idea of how a Phaser project is. In many of the layouts, when you select to add assets, some prefabs are created so it is a good way to know how prefabs work.
+``TypeScript``                  Is a parameter that if it is checked all the code of the project will be generated to TypeScript instead of JavaScript. At the time there is not a built-in TypeScript editor inside Phaser Editor but we included this option because developers can use any other external editor like `VSCode <http://  .visualstudio.net>`_. There are some third-party plugins for Eclipse that support TypeScript, `here we talk about one of them <http://phasereditor.boniatillo.com/blog/2017/04/welcome-typescript-ide>`_.
+=============================== ===================================================
 
 After set the parameters then press the **Finish** button to create the project and files.
 
 In dependence of your layout one file or other will be open to start editing the game. Usually what is opened is a visual scene file (canvas file) so you can start adding new objects to the game.
 
-`Learn more about the scene editor <http://phasereditor.boniatillo.com/blog/quick-start/080-canvas>`_
+`Learn more about the scene editor <canvas.html>`_
 
 Phaser Example Project wizard
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

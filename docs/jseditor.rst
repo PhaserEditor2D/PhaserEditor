@@ -81,7 +81,7 @@ In Phaser Editor if you annotate the prototype with the ``BaseClass`` then in th
 .. image:: images/TypeDecl_Prototype.png
 	:alt: Prototype type annotation.
 
-Note that we annotate an intermediate ``MyGroup_proto`` var with the ``Phaser.Group` type, then we assign this var to the new prototype declaration. 
+Note that we annotate an intermediate ``MyGroup_proto`` var with the ``Phaser.Group`` type, then we assign this var to the new prototype declaration. 
 
 .. code::
 

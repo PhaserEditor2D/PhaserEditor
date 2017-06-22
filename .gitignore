@@ -20,3 +20,5 @@ hs_err_pid*
 *.zip
 *.dylib
 *.DS_Store
+
+docs/_build/**
