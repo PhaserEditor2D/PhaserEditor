@@ -3,9 +3,6 @@ Assets Management
 
 In Phaser Editor we encourage to use the `Asset Pack JSON Format <http://www.html5gamedevs.com/topic/6807-new-phaser-asset-pack-feature-please-test>`_ to load the assets of your games, it allow a better organization and comprehension of the assets and we provide many features around this file, specially the scene maker.
 
-
-`Watch a demo video <https://www.youtube.com/watch?v=mMopa8gTpoQ&index=2&list=PLB8gI_5U0MvCJuhPv-LBdi_a9PQxYxFqK>`_
-
 The asset pack
 --------------
 
