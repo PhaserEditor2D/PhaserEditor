@@ -1,0 +1,109 @@
+{# TEMPLATE VAR SETTINGS #}
+{%- set url_root = pathto('', 1) %}
+{%- if url_root == '#' %}{% set url_root = '' %}{% endif %}
+{%- if not embedded and docstitle %}
+  {%- set titlesuffix = " &mdash; "|safe + docstitle|e %}
+{%- else %}
+  {%- set titlesuffix = "" %}
+{%- endif %}
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  {{ metatags }}
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% block htmltitle %}
+  <title>{{ title|striptags|e }}{{ titlesuffix }}</title>
+  {% endblock %}
+
+  {# FAVICON #}
+  {% if favicon %}
+    <link rel="shortcut icon" href="{{ pathto('_static/' + favicon, 1) }}"/>
+  {% endif %}
+  {# CANONICAL URL #}
+  {% if theme_canonical_url %}
+    <link rel="canonical" href="{{ theme_canonical_url }}{{ pagename }}.html"/>
+  {% endif %}
+
+  {# CSS #}
+
+  {# RTD hosts this file, so just load on non RTD builds #}
+  {% if not READTHEDOCS %}
+    <link rel="stylesheet" href="{{ pathto('_static/' + style, 1) }}" type="text/css" />
+  {% endif %}
+
+  {% for cssfile in css_files %}
+    <link rel="stylesheet" href="{{ pathto(cssfile, 1) }}" type="text/css" />
+  {% endfor %}
+
+  <link rel="stylesheet" href="{{ pathto('_static/pygments.css', 1) }}" type="text/css" />
+  
+
+  {% for cssfile in extra_css_files %}
+    <link rel="stylesheet" href="{{ pathto(cssfile, 1) }}" type="text/css" />
+  {% endfor %}
+
+  
+  {%- block extrahead %} {% endblock %}
+
+  {# Keep modernizr in head - http://modernizr.com/docs/#installing #}
+  <script src="{{ pathto('_static/js/modernizr.min.js', 1) }}"></script>
+
+</head>
+
+<body role="document" style="background:white;font-family: serif;color:black;">
+
+  {% block extrabody %} {% endblock %}
+ 
+    <section data-toggle="" class="">
+
+
+      {# PAGE CONTENT #}
+      <div class="" style="padding:1em">
+        <div class="rst-content">
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            {% block body %}{% endblock %}
+           </div>
+           <div class="articleComments">
+            {% block comments %}{% endblock %}
+           </div>
+          </div>
+          {% include "footer.html" %}
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  {% include "versions.html" %}
+
+  {% if not embedded %}
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'{{ url_root }}',
+            VERSION:'{{ release|e }}',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'{{ '' if no_search_suffix else file_suffix }}',
+            HAS_SOURCE:  {{ has_source|lower }},
+            SOURCELINK_SUFFIX: '{{ sourcelink_suffix }}'
+        };
+    </script>
+    {%- for scriptfile in script_files %}
+      <script type="text/javascript" src="{{ pathto(scriptfile, 1) }}"></script>
+    {%- endfor %}
+
+  {% endif %}
+
+  {# RTD hosts this file, so just load on non RTD builds #}
+  {% if not READTHEDOCS %}
+    <script type="text/javascript" src="{{ pathto('_static/js/theme.js', 1) }}"></script>
+  {% endif %}
+
+  {%- block footer %} {% endblock %}
+
+</body>
+</html>
