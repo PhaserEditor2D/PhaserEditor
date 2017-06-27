@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<toc label="Quick Start" link_to="phaser-editor-toc.xml#quick-start">
-   <topic href="html/quick-start/First steps - Phaser Editor Blog.htm" label="First steps">
+<toc label="Quick Start" link_to="phaser-editor-toc.xml#quick-start" topic="html/quick-start/index.html">
+   <topic href="html/quick-start/first_steps.html" label="First steps">
    </topic>
-   <topic href="html/quick-start/Asset Manager (the pack file) - Phaser Editor Blog.htm" label="Asset Manager (the pack file)">
+   <topic href="html/quick-start/assets_manager.html" label="Assets Management">
    </topic>
-   <topic href="html/quick-start/Coding the game  the Java Script editor - Phaser Editor Blog.htm" label="Coding the game: the Java Script editor">
+   <topic href="html/quick-start/canvas.html" label="Canvas, The Scene Editor">
    </topic>
-   <topic href="html/quick-start/Chains  search on the Phaser doc - Phaser Editor Blog.htm" label="Chains: search the Phaser doc">
+   <topic href="html/quick-start/jseditor.html" label="Coding the Game: The Java Script Editor">
    </topic>
-   <topic href="html/quick-start/The Preview window - Phaser Editor Blog.htm" label="The Preview window">
+   <topic href="html/quick-start/chains.html" label="Chains: Search on the Phaser Docs">
    </topic>
-   <topic href="html/quick-start/Texture Atlas editor - Phaser Editor Blog.htm" label="Texture Atlas editor">
+   <topic href="html/quick-start/preview_window.html" label="The Preview Window">
    </topic>
-   <topic href="html/quick-start/Optimize the PNG image files - Phaser Editor Blog.htm" label="Optimize the PNG image files">
+   <topic href="html/quick-start/texture_packer.html" label="Texture Packing Editor">
    </topic>
-   <topic href="html/quick-start/Audio Sprites editor - Phaser Editor Blog.htm" label="Audio Sprites editor">
+   <topic href="html/quick-start/optipng.html" label="Optimize the PNG Image Files">
    </topic>
-   <topic href="html/quick-start/Scene Editor - Phaser Editor Blog.html" label="Scene editor">
+   <topic href="html/quick-start/audio_sprites.html" label="Audio Sprites Editor">
+   </topic>
+   <topic href="html/quick-start/update.html" label="Update and Upgrade">
    </topic>
 </toc>

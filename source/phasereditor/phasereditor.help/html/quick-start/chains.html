@@ -1,0 +1,143 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Chains: Search on the Phaser Docs &mdash; Phaser Editor 1.4.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  
+
+   
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body role="document" style="background:white;font-family: serif;color:black;">
+
+   
+ 
+    <section data-toggle="" class="">
+
+
+      
+      <div class="" style="padding:1em">
+        <div class="rst-content">
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="chains-search-on-the-phaser-docs">
+<h1>Chains: Search on the Phaser Docs<a class="headerlink" href="#chains-search-on-the-phaser-docs" title="Permalink to this headline">¶</a></h1>
+<p>Phaser Chains is a tool we did to search the Phaser docs. It has an [original online version][1] and was integrated in some editors like Brackets, IntelliJ, Eclipse and the <a class="reference external" href="http://phaser.io/learn/chains">Phaser website</a>.</p>
+<p>In Phaser Editor we support a native and well integrated version of Chains. When you open Phaser Editor, by default it shows the Chains view in the bottom panel. It is the main source you have to access the Phaser documentation.</p>
+<p>However Chains is used by hundred of developers is possible some methods or properties are not listed there, it happens because to build the chains we parse the Phaser jsdocs and this is not always 100% accurate, so if you see there is a method or property is missing in Chains we recommend to checkout the official Phaser Documentation.</p>
+<div class="section" id="search-for-chains">
+<h2>Search for chains<a class="headerlink" href="#search-for-chains" title="Permalink to this headline">¶</a></h2>
+<p>The main difference of this tool with a common documentation view is that you search for a method chain like:</p>
+<div class="highlight-text"><div class="highlight"><pre><span></span>game.add.
+</pre></div>
+</div>
+<p>As you can see the Phaser API makes an extensive use of method/properties chains like <code class="docutils literal"><span class="pre">game.load.image()</span></code> or <code class="docutils literal"><span class="pre">sprite.animations.add</span></code>. So the Chains idea is that you type the chain you are interested to investigate and then it shows all the matching chains of the Phaser API.</p>
+<img alt="Query the Phaser API." src="_images/ChainsSearchAPI.png" />
+<p>In the screenshot you can see in the left panel it shows the matching chains. If you click it then it opens the documentation of the last element of the chain. This documentation is shown in the JSDoc tab that is next to the Search tab:</p>
+<img alt="The documentation of a method." src="_images/ChainsJSDocTab.png" />
+<p>In addition to the JSDoc you can see the source code of a chain. Just right click on a chain and select <code class="docutils literal"><span class="pre">Show</span> <span class="pre">Source</span> <span class="pre">Code</span></code>. It opens an editor with the source code of the chain.</p>
+</div>
+<div class="section" id="search-examples">
+<h2>Search examples<a class="headerlink" href="#search-examples" title="Permalink to this headline">¶</a></h2>
+<p>An important source to learn the Phaser stuff is browsing the examples are published in the Phaser website and included in the Phaser download. These examples are small but complete snippets of code that demonstrate and explain a particular question of Phaser.</p>
+<p>In Phaser Editor we provide these examples as project templates so you can study Phaser creating an example project. However, it is very useful to have the examples also available in Chains, they are a perfect complement for the  documentation. So when you search for a chain, in the right panel of Chains it shows the matching lines in the different examples. In this way you can discover how that API is used in Phaser.</p>
+<p>To see the complete example, as we said, you can create a project based in a particular example, but also in Chains you can click the row of the example and it opens the complete example’s file.</p>
+<p>The drawback of an example opened from the Chains is that you cannot run it, but the advantage is that you get a quick view of it.</p>
+</div>
+<div class="section" id="using-wildcards">
+<h2>Using wildcards<a class="headerlink" href="#using-wildcards" title="Permalink to this headline">¶</a></h2>
+<p>A powerful feature of Chains is that you can search using wildcards <code class="docutils literal"><span class="pre">*</span></code>. This allow to you to find chains that you are not sure how they are writing but you remember some parts of it. For example, if in your game you need to listen for an input down event you can write a search pattern like this:</p>
+<div class="highlight-text"><div class="highlight"><pre><span></span>game*down*add
+</pre></div>
+</div>
+<p>It matches with:</p>
+<img alt="Chains: matches down signal" src="_images/ChainsWildcard.png" />
+<p>If you want to know what classes are extending the <code class="docutils literal"><span class="pre">Phaser.Sprite</span></code> class then you can search for:</p>
+<div class="highlight-text"><div class="highlight"><pre><span></span>extends*Sprite
+</pre></div>
+</div>
+<img alt="Chains: matches Sprite inheritance." src="_images/ChainsExtends.png" />
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Arian Fornaris.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.4.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+   
+
+</body>
+</html>

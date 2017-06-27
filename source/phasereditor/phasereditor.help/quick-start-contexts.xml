@@ -2,28 +2,28 @@
 <contexts>
    <context id="preview" title="Preview window">
       <description>A window to pre-visualize Phaser related assets. Drop any asset on this view or select it and type CTRL+ALT+V.</description>
-      <topic href="html/quick-start/The Preview window - Phaser Editor Blog.htm" label="The Preview window"/>
+      <topic href="html/quick-start/preview_window.html" label="The Preview window"/>
    </context>
    <context id="assetexplorer" title="Asset Pack Explorer">
       <description>Explorer of the assets declared in the asset packs of the workspace. With a mouse hover you can preview the assets or click on them to open the asset pack editor.</description>
-      <topic href="html/quick-start/Asset Manager (the pack file) - Phaser Editor Blog.htm" label="Asset Manager (the pack file)"/>
+      <topic href="html/quick-start/assets_manager.html" label="Asset Manager (the pack file)"/>
    </context>
    <context id="javascripteditor" title="JavaScript editor">
       <description>The JavaScript editor allow to auto complete the Phaser API, the asset keys, the project files, the easing literals and others. With a mouse hover you can preview the asset keys or open them in the Preview window with CTRL+ALT+V.</description>
-      <topic href="html/quick-start/Coding the game  the Java Script editor - Phaser Editor Blog.htm" label="Coding the game (the JavaScript editor)"/>
-      <topic href="html/quick-start/The Preview window - Phaser Editor Blog.htm" label="The Preview window"/>
+      <topic href="html/quick-start/jseditor.html" label="Coding the game (the JavaScript editor)"/>
+      <topic href="html/quick-start/preview_window.html" label="The Preview window"/>
    </context>
    <context id="assetpackeditor" title="Asset Pack editor">
       <description>The Asset Pack editor brings a visual and assisted interface to build an Asset Pack JSON manifest, which is a Phaser standard to pack assets.
 
 We encourage to use this way to pack and load the game&apos;s assets, cause there are many other features based on this.</description>
-      <topic href="html/quick-start/Asset Manager (the pack file) - Phaser Editor Blog.htm" label="Asset Pack editor"/>
-      <topic href="html/quick-start/The Preview window - Phaser Editor Blog.htm" label="The Preview window"/>
+      <topic href="html/quick-start/assets_manager.html" label="Asset Pack editor"/>
+      <topic href="html/quick-start/preview_window.html" label="The Preview window"/>
       <topic href="html/phaser-doc/Phaser.Loader.html#pack" label="Phaser Documentation: Loader.pack()"/>
    </context>
    <context id="audiospriteseditor" title="Audio Sprites editor">
       <description>The Audio Sprites editor is a tool to join many audio files into one audio atlas. You can drag and drop the audio files into the editor to append them.</description>
-      <topic href="html/quick-start/Audio Sprites editor - Phaser Editor Blog.htm" label="Audio Sprites editor"/>
+      <topic href="html/quick-start/audio_sprites.html" label="Audio Sprites editor"/>
    </context>
    <context id="chains" title="Chains: search on the Phaser doc">
       <description>Chains is a tool to search on the Phaser API and Phaser official examples. You write an expression like &quot;game*down&quot; and it shows all matching API (method chains) and examples.
@@ -31,10 +31,10 @@ We encourage to use this way to pack and load the game&apos;s assets, cause ther
 You can see the JSDoc of the matchig methods or see the whole code of the matching examples.
 
 This is a great tool to discover and learn the Phaser API and concepts.</description>
-      <topic href="html/quick-start/Chains  search on the Phaser doc - Phaser Editor Blog.htm" label="Chains: search on the Phaser doc"/>
+      <topic href="html/quick-start/chains.html" label="Chains: search on the Phaser doc"/>
    </context>
    <context id="textureatlaseditor" title="Texture Atlas editor">
       <description>This is a tool to create texture atlases. Drag and drop images into the editor to add new sprites. You can tune the packing algorithm by opening the settings dialog.</description>
-      <topic href="html/quick-start/Texture Atlas editor - Phaser Editor Blog.htm" label="Texture Atlas editor"/>
+      <topic href="html/quick-start/texture_packer.html" label="Texture Atlas editor"/>
    </context>
 </contexts>
