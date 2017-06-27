@@ -3,7 +3,7 @@ Canvas, The Scene Editor
 
 Canvas is a visual (WYSWYG) game level/object editor for Phaser. With this tool you can create a level or the prefabs (reusable objects) of the game, layout sprites and edit object properties like transformation, physics body and animation. The scenes are compiled to Phaser code, in JavaScript or TypeScript.
 `
-There are three type of Canvas files: states (compiled to a ``Phaser.State` code), sprite prefabs (compiled to ``Phaser.Sprite`` code) and group prefabs (compiled to`Phaser.Group` code). These Phaser classes contain the code that create the objects of the game world. It is not like other tools like Tiled that uses a custom format to represent the objects layout and properties, else it compiles to a code that mimics what a developer can write with his "own hands". This method has the advantage that the user can read and understand what is behind the scene and like in other tools provided in Phaser Editor, the developer can learn Phaser or reuse his current Phaser learnings.
+There are three type of Canvas files: states (compiled to a ``Phaser.State`` code), sprite prefabs (compiled to ``Phaser.Sprite`` code) and group prefabs (compiled to`Phaser.Group` code). These Phaser classes contain the code that create the objects of the game world. It is not like other tools like Tiled that uses a custom format to represent the objects layout and properties, else it compiles to a code that mimics what a developer can write with his "own hands". This method has the advantage that the user can read and understand what is behind the scene and like in other tools provided in Phaser Editor, the developer can learn Phaser or reuse his current Phaser learnings.
 
 When you create a scene (let's say one named ``Level``) you get two files: ``Level.canvas`` and ``Level.js``. The ``Level.canvas`` file contains the objects of the scene and uses a custom Phaser Editor format. The ``Level.js`` file is compiled from the ``Level.canvas`` file and contains all the Phaser code that creates the real scene. Note that in a game distribution only the ``Level.js`` file is needed, since ``Level.canvas`` is only for design purpose.
 
@@ -428,7 +428,7 @@ In the top/left corner of the editor there is the Outline window. It shows the h
 
 
 The Quick Outline window
-~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 In addition there is the Quick Outline window. It is opened by the user with the key sequence ``Ctrl+O``. The object selected by the user is focused in the scene, so it can be used as a search tool too.
 
@@ -512,7 +512,7 @@ To reset the value of a property to the initial value in the prefab just deselec
 
 
 Sprite properties
-~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
 
 The ``Phaser.Sprite`` is the common class for all the game objects based on textures. In this section we show the properties supported by Phaser Editor and the some dedicated property editors.
 
@@ -754,7 +754,7 @@ The configuration of sprite and group scenes are pretty the same, it only contai
 ``backgroundColor``           Gets and sets the background color of the stage. Note that it does not change the color of the scene in design-time.
 **Preload**                   A section related to the Phaser loader API.
 ``pack``                      Like in ``Phaser.Loader.pack()`` this parameter accepts a list of sections of the pack files of the project. When you drop an asset to the scene it loads its pack section automatically, however it is possible that you create other sections with other kind of assets so in this parameter you can declare them to be loaded.
-``isPreloader``               Set to ``true`` if you like to use this state as a preloader state. More is explained in the ``Preloader state configuration`_ section.
+``isPreloader``               Set to ``true`` if you like to use this state as a preloader state. More is explained in the `Preloader state configuration`_ section.
 ``preloadSprite``             This parameter is shown onny if the ``isPreloader`` parameter is ``true``. When you edit this parameter it shows a dialog to select one of the scene sprites. This sprite will be used as the preload sprite as is explained in the ``Phaser.Loader.setPreloadSprite()`` method: Set a Sprite to be a "preload" sprite by passing it to this method. A "preload" sprite will have its width or height crop adjusted based on the percentage of the loader in real-time. This allows you to easily make loading bars for games. The sprite will automatically be made visible when calling this. 
 ``preloadSprite.direction``   The direction parameter of the ``Phaser.Loader.setPreloadSprite()`` method. It should be ``HORIZONTAL`` or ``VERTICAL``.
 ============================= ======================================================
