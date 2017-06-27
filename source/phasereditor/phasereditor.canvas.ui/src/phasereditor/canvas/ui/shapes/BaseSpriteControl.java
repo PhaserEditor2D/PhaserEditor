@@ -113,7 +113,9 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 
 		String tint = getModel().getTint();
 
-		if (tint != null) {
+		if (tint == null) {
+			node.setEffect(null);
+		} else {
 			Blend multiply = new Blend(BlendMode.MULTIPLY);
 
 			double width = getTextureWidth();
