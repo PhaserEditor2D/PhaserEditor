@@ -92,7 +92,7 @@ public abstract class BaseSpriteModel extends BaseObjectModel {
 	}
 
 	public void setTint(String tint) {
-		if (tint.equals(TINT_0X000000)) {
+		if (TINT_0X000000.equals(tint)) {
 			_tint = null;
 		} else {
 			_tint = tint;
