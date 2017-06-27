@@ -4,8 +4,6 @@ First Steps
 
 This is a small guide you can follow to start writing your games and perform common tasks related to the editor's features.
 
-`Watch a demo video <https://www.youtube.com/watch?v=jHDB4WwKTIY&index=1&list=PLB8gI_5U0MvCJuhPv-LBdi_a9PQxYxFqK>`_
-
 
 Download and install
 --------------------

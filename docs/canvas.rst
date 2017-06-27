@@ -7,8 +7,6 @@ There are three type of Canvas files: states (compiled to a ``Phaser.State` code
 
 When you create a scene (let's say one named ``Level``) you get two files: ``Level.canvas`` and ``Level.js``. The ``Level.canvas`` file contains the objects of the scene and uses a custom Phaser Editor format. The ``Level.js`` file is compiled from the ``Level.canvas`` file and contains all the Phaser code that creates the real scene. Note that in a game distribution only the ``Level.js`` file is needed, since ``Level.canvas`` is only for design purpose.
 
-`Watch the video <https://youtu.be/4pA-NJf_gEE>`_
-
 Read in Zenva GameDev Academy `Make a Mario-Style Platformer with the Phaser Editor <https://gamedevacademy.org/make-a-mario-style-platformer-with-the-phaser-editor/>`_
 
 .. image:: images/Canvas.png
