@@ -1,4 +1,4 @@
-Optimize the PNG image files
+Optimize The PNG Image Files
 ============================
 
 Phaser Editor provides a simple utility based on the well known `OptiPNG <http://optipng.sourceforge.net/>`_ tool to reduce the file size of the PNG images. It is very important that you keep the file size of your game as small as possible, it improves the game loading speed.

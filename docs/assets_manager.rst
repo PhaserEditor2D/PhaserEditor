@@ -159,9 +159,12 @@ Global replace texture
 This is a very useful operation and consists on replace certain texture (represented by an asset in the pack file) in all the objects of all the scenes of the project. These are the steps:
 
 * Select the texture you want to replace. For example a demo texture that you want to replace for the final terxture.
+
 .. image:: images/AssetReplaceMenu.png
   :alt: Asset replace menu
+
 * Select the texture replacement and confirm.
+
 .. image:: images/SelectNewTextureReplacement.png
   :alt: Select the new texture
 

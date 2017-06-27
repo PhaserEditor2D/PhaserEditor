@@ -1,4 +1,4 @@
-Coding the Game: The JavaScript Editor
+Coding The Game: The JavaScript Editor
 --------------------------------------
 
 

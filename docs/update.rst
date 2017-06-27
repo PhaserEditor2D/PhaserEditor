@@ -27,11 +27,15 @@ To upgrade from one version to other these are the steps:
 
 - Open the Available Software Sites ``Windows > Preferences > Install/Update > Available Software Sites``.
 - Press the Add button to add a new update site, the one with the version you are intersted in:
+
 .. image:: images/AddUpdateSite1.png
 	:alt: Add update site.
+	
 - Press ok, ensure the new site is checked and press OK to close the preferences dialog.
+
 .. image:: images/AddUpdateSite2.png
 	:alt: Confirm update sites.
+
 - Manually check for updates (``Help > Check for Updates``), it should prompt the new updates, install them as usually.
 
 
