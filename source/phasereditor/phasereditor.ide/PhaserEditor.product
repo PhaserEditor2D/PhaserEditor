@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Phaser Editor" uid="phasereditor.boniatillo.com" id="phasereditor.ide.product" application="phasereditor.ide.application" version="1.4.1.20170614" useFeatures="true" includeLaunchers="true">
+<product name="Phaser Editor" uid="phasereditor.boniatillo.com" id="phasereditor.ide.product" application="phasereditor.ide.application" version="1.4.1.20170628" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="icons/about.png"/>
       <text>
-         Phaser Editor v1.4.0-preview.2
+         Phaser Editor v1.4.1
 
 Supports Phaser v2.6.2 (built-in)
 
@@ -34,7 +34,6 @@ Sam Riggs - http://samsstuffsoftware.blogspot.com
 Grethel Naranjo, Ernesto Gutierrez - http://rvirtual.uci.cu
 Vertex Group - University of Informatic Sciences - UCI
 Havana Games  - http://globalgamejam.org/2016/games/life-cuco
-
 
 Keep in touch with the Phaser Editor community: http://phasereditor.boniatillo.com
 
