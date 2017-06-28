@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Phaser Editor" uid="phasereditor.boniatillo.com" id="phasereditor.ide.product" application="phasereditor.ide.application" version="1.4.0.20170424" useFeatures="true" includeLaunchers="true">
+<product name="Phaser Editor" uid="phasereditor.boniatillo.com" id="phasereditor.ide.product" application="phasereditor.ide.application" version="1.4.1.20170614" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="icons/about.png"/>
@@ -46,7 +46,7 @@ Copyright (c) Arian Fornaris 2015-2017
    </configIni>
 
    <launcherArgs>
-      <programArgsLin>--launcher.GTK_version 2
+      <programArgsLin>--launcher.GTK_version 2 -persistState false
       </programArgsLin>
       <vmArgs>-Dosgi.requiredJavaVersion=1.8 -Dosgi.framework.extensions=org.eclipse.fx.osgi -Declipse.p2.unsignedPolicy=allow
       </vmArgs>
