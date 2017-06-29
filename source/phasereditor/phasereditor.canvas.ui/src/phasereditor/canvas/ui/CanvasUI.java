@@ -72,6 +72,7 @@ import com.subshell.snippets.jface.tooltip.tooltipsupport.Tooltips;
 import com.subshell.snippets.jface.tooltip.tooltipsupport.TreeViewerInformationProvider;
 
 import javafx.embed.swing.SwingFXUtils;
+import javafx.embed.swt.FXCanvas;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
@@ -122,6 +123,7 @@ import phasereditor.project.core.ProjectCore;
 public class CanvasUI {
 	private static final int CANVAS_SCREENSHOT_SIZE = 256;
 	public static final String PLUGIN_ID = "phasereditor.canvas.ui";
+	private static boolean _fxStarted = false;
 
 	public static void logError(Exception e) {
 		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
@@ -436,6 +438,19 @@ public class CanvasUI {
 	}
 
 	public static javafx.scene.image.Image makeCanvasScreenshot_FXImage(IFile file, int maxSize) {
+		
+		if (!_fxStarted) {
+			Display.getDefault().syncExec(new Runnable() {
+				
+				@SuppressWarnings("unused")
+				@Override
+				public void run() {
+					new FXCanvas(new Shell(Display.getDefault()), 0);
+				}
+			});
+			_fxStarted = true;
+		}
+		
 		javafx.scene.image.Image[] result = new javafx.scene.image.Image[1];
 
 		try (InputStream contents = file.getContents()) {

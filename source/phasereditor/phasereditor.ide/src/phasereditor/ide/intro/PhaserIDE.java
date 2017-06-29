@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ide.intro;
 
-import static java.lang.System.out;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -60,7 +58,6 @@ import org.eclipse.ui.internal.ide.application.IDEApplication;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 
-import javafx.embed.swt.FXCanvas;
 import phasereditor.lic.LicCore;
 
 /**
@@ -135,16 +132,6 @@ public class PhaserIDE implements IApplication, IExecutableExtension {
 		LicCore.startEvaluationThread();
 
 		Display display = createDisplay();
-
-		{
-			// init javafx
-			out.print("Starting JavaFX runtime...");
-			Shell shell = new Shell(display);
-			FXCanvas canvas = new FXCanvas(shell, 0);
-			canvas.dispose();
-			shell.dispose();
-			out.println("done");
-		}
 
 		// processor must be created before we start event loop
 		DelayedEventsProcessor processor = new DelayedEventsProcessor(display);
