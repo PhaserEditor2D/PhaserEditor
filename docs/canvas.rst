@@ -100,7 +100,7 @@ Many of the parameters shown in that page come from the Phaser API, however ther
 
 All these settings can be changed later in the configuration tab of the editor.
 
-Sate scenes will be displayed in the `Assets </assets_manager.html#assets-explorer>`_ window under the **State** section.
+Sate scenes will be displayed in the `Assets <assets_manager.html#assets-explorer>`_ window under the **State** section.
 
 
 The sprite scene (prefab)

@@ -84,16 +84,17 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-import sphinx_rtd_theme
+#import sphinx_rtd_theme
 
-#html_theme = "phaser-editor"
-html_theme = "eclipse-help"
-html_show_sourcelink = False
+html_theme = "phaser-editor"
+
+# Uncomment for generate Eclipse Offline Help
+#html_theme = "eclipse-help"
+
 html_theme_path = ["_themes"]
+html_show_sourcelink = False
 html_show_sphinx = False
 
-#html_theme = "sphinx_rtd_theme"
-#html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 print(html_theme_path)
 
