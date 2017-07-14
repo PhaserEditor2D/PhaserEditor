@@ -15,10 +15,11 @@
 hs_err_pid*
 
 # others
-*.dll
-*.exe
-*.zip
-*.dylib
-*.DS_Store
+
+#*.dll
+#*.exe
+#*.zip
+#*.dylib
+#*.DS_Store
 
 docs/_build/**
