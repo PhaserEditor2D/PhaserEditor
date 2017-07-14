@@ -69,26 +69,26 @@ By default when the editor opens it checks for available updates. We recommend y
 Create a project
 ----------------
 
-In Phaser Editor there is two way of  create a Phaser project, by using the **Phaser Project** wizard or the **Phaser Example Project** wizard.
+In Phaser Editor there are two ways of creating a Phaser project: by using the **Phaser Project** wizard or the **Phaser Example Project** wizard.
 
-The common of the users may use the **Phaser Project** wizard, it allows to set some parameters like the language (JavaScript/TypeScript), the layout (single/multiple state based game) and many others.
+Most users may use the **Phaser Project** wizard, it allows to set some parameters like the language (JavaScript/TypeScript), the layout (single/multiple state based game) and many others.
 
-The **Phaser Example Project** wizard allow the user to create a project based on the official Phaser examples (and other examples, like the Phaser Editor demos). This way is great for users who start in Phaser and want to mess around with the examples.
+The **Phaser Example Project** wizard allows the user to create a project based on the official Phaser examples (and other examples, like the Phaser Editor demos). This way is great for users who start in Phaser and want to mess around with the examples.
 
 Phaser Project wizard
 ~~~~~~~~~~~~~~~~~~~~~
 
-To create the project go to ``File > New > Phaser Project``. It opens a dialog where, at the first page, ask for the name of the project:
+To create the project go to ``File > New > Phaser Project``. It opens a dialog where, at the first page, asks for the name of the project:
 
  .. image:: images/NewProject_SetName.png
 
-Write the name of your project and press the **Next** button if you want to change the project settings or press **Finish** to create the project with the default settings. We recommend you to press **Next** and adjust some of the settings.
+Write the name of your project and press the **Next** button if you want to change the project settings or press **Finish** to create the project with the default settings. We recommend you press **Next** and adjust some of the settings.
 
 So, by pressing **Next** the wizard shows the settings page:
 
 .. image:: images/NewProject_Settings.png
 
-This page contain some group of parameters that affect different aspects of a project:
+This page contains a group of parameters that affect different aspects of a project:
 
 =============================== ===================================================
 ``Game Parameters``             Are the same parameters of the ``Phaser.Game`` constructor.  Set these parameters to control how the game instance is created.
@@ -97,7 +97,7 @@ This page contain some group of parameters that affect different aspects of a pr
 ``TypeScript``                  Is a parameter that if it is checked all the code of the project will be generated to TypeScript instead of JavaScript. At the time there is not a built-in TypeScript editor inside Phaser Editor but we included this option because developers can use any other external editor like `VSCode <http://code.visualstudio.com>`_. There are some third-party plugins for Eclipse that support TypeScript, `here we talk about one of them <http://phasereditor.boniatillo.com/blog/2017/04/welcome-typescript-ide>`_.
 =============================== ===================================================
 
-After set the parameters then press the **Finish** button to create the project and files.
+After setting the parameters, press the **Finish** button to create the project and files.
 
 In dependence of your layout one file or other will be open to start editing the game. Usually what is opened is a visual scene file (canvas file) so you can start adding new objects to the game.
 
