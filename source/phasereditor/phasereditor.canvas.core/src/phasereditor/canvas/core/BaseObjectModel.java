@@ -57,7 +57,9 @@ public abstract class BaseObjectModel {
 	public static final String PROPSET_SCALE = "scale";
 	public static final String PROPSET_PIVOT = "pivot";
 	public static final String PROPSET_ALPHA = "alpha";
+	public static final String PROPSET_RENDERABLE = "renderable";
 	public static final String DEF_NAME = null;
+	private static final boolean DEF_RENDERABLE = true;
 
 	private Prefab _prefab;
 	private List<String> _prefabOverride;
@@ -80,6 +82,8 @@ public abstract class BaseObjectModel {
 	private double _pivotX;
 	private double _pivotY;
 	private double _alpha;
+
+	private boolean _renderable;
 
 	public BaseObjectModel(GroupModel parent, String typeName, JSONObject obj) {
 		this(parent, typeName);
@@ -111,6 +115,8 @@ public abstract class BaseObjectModel {
 		_pivotY = DEF_PIVOT_Y;
 
 		_alpha = DEF_ALPHA;
+
+		_renderable = DEF_RENDERABLE;
 	}
 
 	public String getId() {
@@ -330,6 +336,14 @@ public abstract class BaseObjectModel {
 	public void setAlpha(double alpha) {
 		_alpha = alpha;
 	}
+	
+	public boolean isRenderable() {
+		return _renderable;
+	}
+	
+	public void setRenderable(boolean renderable) {
+		_renderable = renderable;
+	}
 
 	public void read(JSONObject obj) {
 		readMetadata(obj);
@@ -364,6 +378,7 @@ public abstract class BaseObjectModel {
 		_pivotX = jsonInfo.optDouble("pivot.x", DEF_PIVOT_X);
 		_pivotY = jsonInfo.optDouble("pivot.y", DEF_PIVOT_Y);
 		_alpha = jsonInfo.optDouble("alpha", DEF_ALPHA);
+		_renderable = jsonInfo.optBoolean("renderable", DEF_RENDERABLE);
 	}
 
 	public BaseObjectModel copy(boolean keepId) {
@@ -469,7 +484,7 @@ public abstract class BaseObjectModel {
 		jsonInfo.put("editorShow", _editorShow, true);
 
 		boolean prefabInstance = isPrefabInstance();
-		
+
 		if (prefabInstance || !saving) {
 			JSONArray array = new JSONArray();
 			for (String tag : _prefabOverride) {
@@ -523,6 +538,14 @@ public abstract class BaseObjectModel {
 				jsonInfo.put("alpha", _alpha);
 			} else {
 				jsonInfo.put("alpha", _alpha, DEF_ALPHA);
+			}
+		}
+
+		if (isOverriding(PROPSET_RENDERABLE)) {
+			if (prefabInstance) {
+				jsonInfo.put("renderable", _renderable);
+			} else {
+				jsonInfo.put("renderable", _renderable, DEF_RENDERABLE);
 			}
 		}
 	}

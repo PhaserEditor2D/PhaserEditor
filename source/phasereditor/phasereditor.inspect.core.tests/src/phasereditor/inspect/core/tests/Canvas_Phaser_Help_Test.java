@@ -74,7 +74,8 @@ public class Canvas_Phaser_Help_Test {
 				"Phaser.ScaleManager.pageAlignVertically",
 				"Phaser.Physics.startSystem",
 				"Phaser.Stage.backgroundColor",
-				"Phaser.Loader.setPreloadSprite"
+				"Phaser.Loader.setPreloadSprite",
+				"PIXI.DisplayObject.renderable"
 		};
 		// @formatter:on
 

@@ -502,6 +502,12 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				line(varname + ".alpha = " + model.getAlpha() + ";");
 			}
 		}
+		
+		if (model.isOverriding(BaseObjectModel.PROPSET_RENDERABLE)) {
+			if (!model.isRenderable()) {
+				line(varname + ".renderable = " + model.isRenderable() + ";");
+			}
+		}
 	}
 
 	@SuppressWarnings("static-method")

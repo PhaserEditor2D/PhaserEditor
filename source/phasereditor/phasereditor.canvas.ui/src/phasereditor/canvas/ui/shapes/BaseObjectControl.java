@@ -72,6 +72,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	private PGridBooleanProperty _editorPick_property;
 	private PGridOverrideProperty _overrideProperty;
 	private PGridStringProperty _name_property;
+	private PGridBooleanProperty _renderable_property;
 
 	public BaseObjectControl(ObjectCanvas canvas, T model) {
 		_canvas = canvas;
@@ -202,7 +203,8 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 				BaseObjectModel.PROPSET_ANGLE, 
 				BaseObjectModel.PROPSET_SCALE, 
 				BaseObjectModel.PROPSET_PIVOT,
-				BaseObjectModel.PROPSET_ALPHA
+				BaseObjectModel.PROPSET_ALPHA,
+				BaseObjectModel.PROPSET_RENDERABLE
 				//@formatter:on
 		));
 	}
@@ -446,6 +448,32 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 				return getModel().isPrefabReadOnly(BaseObjectModel.PROPSET_ALPHA);
 			}
 		};
+		
+		_renderable_property = new PGridBooleanProperty(getId(), "renderable", help("PIXI.DisplayObject.renderable")) {
+			@Override
+			public Boolean getValue() {
+				return Boolean.valueOf(getModel().isRenderable());
+			}
+
+			@Override
+			public void setValue(Boolean value, boolean notify) {
+				getModel().setRenderable(value.booleanValue());
+				if (notify) {
+					updateFromPropertyChange();
+				}
+			}
+
+			@Override
+			public boolean isModified() {
+				return !getModel().isRenderable();
+			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly(BaseObjectModel.PROPSET_RENDERABLE);
+			}
+		};
+
 
 		displaySection.add(_name_property);
 		displaySection.add(_x_property);
@@ -456,6 +484,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		displaySection.add(_pivot_x_property);
 		displaySection.add(_pivot_y_property);
 		displaySection.add(_alpha_property);
+		displaySection.add(_renderable_property);
 	}
 
 	protected void initEditorPGridModel(PGridModel propModel, PGridSection section) {
