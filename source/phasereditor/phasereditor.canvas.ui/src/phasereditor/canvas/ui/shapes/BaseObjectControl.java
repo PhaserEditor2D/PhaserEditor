@@ -73,6 +73,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	private PGridOverrideProperty _overrideProperty;
 	private PGridStringProperty _name_property;
 	private PGridBooleanProperty _renderable_property;
+	private PGridBooleanProperty _fixedToCamera_property;
 
 	public BaseObjectControl(ObjectCanvas canvas, T model) {
 		_canvas = canvas;
@@ -204,6 +205,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 				BaseObjectModel.PROPSET_SCALE, 
 				BaseObjectModel.PROPSET_PIVOT,
 				BaseObjectModel.PROPSET_ALPHA,
+				BaseObjectModel.PROPSET_FIXED_TO_CAMERA,
 				BaseObjectModel.PROPSET_RENDERABLE
 				//@formatter:on
 		));
@@ -473,6 +475,31 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 				return getModel().isPrefabReadOnly(BaseObjectModel.PROPSET_RENDERABLE);
 			}
 		};
+		
+		_fixedToCamera_property = new PGridBooleanProperty(getId(), "fixedToCamera", help("Phaser.Sprite.fixedToCamera")) {
+			@Override
+			public Boolean getValue() {
+				return Boolean.valueOf(getModel().isFixedToCamera());
+			}
+
+			@Override
+			public void setValue(Boolean value, boolean notify) {
+				getModel().setFixedToCamera(value.booleanValue());
+				if (notify) {
+					updateFromPropertyChange();
+				}
+			}
+
+			@Override
+			public boolean isModified() {
+				return getModel().isFixedToCamera();
+			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly(BaseObjectModel.PROPSET_FIXED_TO_CAMERA);
+			}
+		};
 
 
 		displaySection.add(_name_property);
@@ -483,7 +510,8 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		displaySection.add(_scale_y_property);
 		displaySection.add(_pivot_x_property);
 		displaySection.add(_pivot_y_property);
-		displaySection.add(_alpha_property);
+		displaySection.add(_alpha_property);		
+		displaySection.add(_fixedToCamera_property);
 		displaySection.add(_renderable_property);
 	}
 

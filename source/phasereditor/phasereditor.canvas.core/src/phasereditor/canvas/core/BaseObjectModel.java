@@ -58,8 +58,10 @@ public abstract class BaseObjectModel {
 	public static final String PROPSET_PIVOT = "pivot";
 	public static final String PROPSET_ALPHA = "alpha";
 	public static final String PROPSET_RENDERABLE = "renderable";
+	public static final String PROPSET_FIXED_TO_CAMERA = "fixedToCamera";
 	public static final String DEF_NAME = null;
 	private static final boolean DEF_RENDERABLE = true;
+	private static final boolean DEF_FIXED_TO_CAMERA = false;
 
 	private Prefab _prefab;
 	private List<String> _prefabOverride;
@@ -84,6 +86,7 @@ public abstract class BaseObjectModel {
 	private double _alpha;
 
 	private boolean _renderable;
+	private boolean _fixedToCamera;
 
 	public BaseObjectModel(GroupModel parent, String typeName, JSONObject obj) {
 		this(parent, typeName);
@@ -117,6 +120,8 @@ public abstract class BaseObjectModel {
 		_alpha = DEF_ALPHA;
 
 		_renderable = DEF_RENDERABLE;
+		
+		_fixedToCamera = DEF_FIXED_TO_CAMERA;
 	}
 
 	public String getId() {
@@ -344,6 +349,14 @@ public abstract class BaseObjectModel {
 	public void setRenderable(boolean renderable) {
 		_renderable = renderable;
 	}
+	
+	public boolean isFixedToCamera() {
+		return _fixedToCamera;
+	}
+	
+	public void setFixedToCamera(boolean fixedToCamera) {
+		_fixedToCamera = fixedToCamera;
+	}
 
 	public void read(JSONObject obj) {
 		readMetadata(obj);
@@ -379,6 +392,7 @@ public abstract class BaseObjectModel {
 		_pivotY = jsonInfo.optDouble("pivot.y", DEF_PIVOT_Y);
 		_alpha = jsonInfo.optDouble("alpha", DEF_ALPHA);
 		_renderable = jsonInfo.optBoolean("renderable", DEF_RENDERABLE);
+		_fixedToCamera = jsonInfo.optBoolean("fixedToCamera", DEF_FIXED_TO_CAMERA);
 	}
 
 	public BaseObjectModel copy(boolean keepId) {
@@ -546,6 +560,14 @@ public abstract class BaseObjectModel {
 				jsonInfo.put("renderable", _renderable);
 			} else {
 				jsonInfo.put("renderable", _renderable, DEF_RENDERABLE);
+			}
+		}
+		
+		if (isOverriding(PROPSET_FIXED_TO_CAMERA)) {
+			if (prefabInstance) {
+				jsonInfo.put("fixedToCamera", _fixedToCamera);
+			} else {
+				jsonInfo.put("fixedToCamera", _fixedToCamera, DEF_FIXED_TO_CAMERA);
 			}
 		}
 	}

@@ -508,6 +508,12 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				line(varname + ".renderable = " + model.isRenderable() + ";");
 			}
 		}
+		
+		if (model.isOverriding(BaseObjectModel.PROPSET_FIXED_TO_CAMERA)) {
+			if (model.isFixedToCamera()) {
+				line(varname + ".fixedToCamera = " + model.isFixedToCamera() + ";");
+			}
+		}
 	}
 
 	@SuppressWarnings("static-method")
