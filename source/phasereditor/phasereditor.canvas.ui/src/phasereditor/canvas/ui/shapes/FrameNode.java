@@ -56,12 +56,12 @@ public class FrameNode extends Pane {
 
 	@Override
 	public boolean contains(double localX, double localY) {
-		return _imageView.contains(localX, localY);
+		return _imageView.contains(localX - _imageView.getLayoutX(), localY - _imageView.getLayoutY());
 	}
 
 	@Override
 	public boolean contains(Point2D localPoint) {
-		return _imageView.contains(localPoint);
+		return contains(localPoint.getX(), localPoint.getY());
 	}
 
 	protected void updateContent(IAssetFrameModel frameModel) {
