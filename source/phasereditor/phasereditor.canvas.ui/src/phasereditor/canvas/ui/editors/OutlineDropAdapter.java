@@ -86,6 +86,7 @@ public class OutlineDropAdapter extends ViewerDropAdapter {
 		super.dragOver(event);
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public boolean performDrop(Object data) {
 		if (_target == null) {
@@ -161,11 +162,11 @@ public class OutlineDropAdapter extends ViewerDropAdapter {
 			String groupId = group.getControl().getId();
 			switch (_location) {
 			case LOCATION_BEFORE:
-				operations.add(new AddNodeOperation(jsonData, i + 1, x, y, groupId));
+				operations.add(new AddNodeOperation(jsonData, i + 1, x, y, groupId, false));
 				expandList.add(groupId);
 				break;
 			case LOCATION_AFTER:
-				operations.add(new AddNodeOperation(jsonData, i, x, y, groupId));
+				operations.add(new AddNodeOperation(jsonData, i, x, y, groupId, false));
 				expandList.add(groupId);
 				break;
 			case LOCATION_ON:
@@ -174,10 +175,10 @@ public class OutlineDropAdapter extends ViewerDropAdapter {
 					// add to the end (-1 because the node will be removed)
 					int i2 = asGroup.getChildren().size() - 1;
 					String targetId = asGroup.getControl().getId();
-					operations.add(new AddNodeOperation(jsonData, i2, x, y, targetId));
+					operations.add(new AddNodeOperation(jsonData, i2, x, y, targetId, false));
 					expandList.add(targetId);
 				} else {
-					operations.add(new AddNodeOperation(jsonData, i, x, y, groupId));
+					operations.add(new AddNodeOperation(jsonData, i, x, y, groupId, false));
 				}
 				break;
 			default:

@@ -48,20 +48,27 @@ public class AddNodeOperation extends AbstractNodeOperation {
 	private double _y;
 	private String _parentId;
 	private int _index;
+	private boolean _createUniqueName;
 
 	public AddNodeOperation(JSONObject data, int index, double x, double y, String parentId) {
+		this(data, index, x, y, parentId, true);
+	}
+	
+	public AddNodeOperation(JSONObject data, int index, double x, double y, String parentId, boolean createUniqueName) {
 		super("CreateNodeOperation", null);
 		_data = data;
 		_index = index;
-		
-//		_x = x;
-//		_y = y;
-		
-		//TODO: round position to integer
+
+		// _x = x;
+		// _y = y;
+
+		// TODO: round position to integer
 		_x = Math.round(x);
 		_y = Math.round(y);
-		
+
 		_parentId = parentId;
+
+		_createUniqueName = createUniqueName;
 	}
 
 	@Override
@@ -82,7 +89,7 @@ public class AddNodeOperation extends AbstractNodeOperation {
 		control.removeme();
 
 		canvas.getSelectionBehavior().removeNodeFromSelection(control.getNode());
-		
+
 		return Status.OK_STATUS;
 	}
 
@@ -91,7 +98,10 @@ public class AddNodeOperation extends AbstractNodeOperation {
 		GroupControl groupControl = (GroupControl) findControl(info, _parentId);
 		BaseObjectModel model = CanvasModelFactory.createModel(groupControl.getModel(), _data);
 		_nodeId = model.getId();
-		changeName(canvas, model);
+
+		if (_createUniqueName) {
+			changeName(canvas, model);
+		}
 
 		model.setX(_x);
 		model.setY(_y);

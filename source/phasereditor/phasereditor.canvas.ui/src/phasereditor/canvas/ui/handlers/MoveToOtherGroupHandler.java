@@ -101,7 +101,7 @@ public class MoveToOtherGroupHandler extends AbstractHandler {
 				Point2D p = target.sceneToLocal(copy.getX(), copy.getY());
 
 				// add the node to the new parent
-				operations.add(new AddNodeOperation(copy.toJSON(false), i, p.getX(), p.getY(), targetId));
+				operations.add(new AddNodeOperation(copy.toJSON(false), i, p.getX(), p.getY(), targetId, false));
 				i++;
 			}
 
