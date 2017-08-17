@@ -43,6 +43,7 @@ import org.eclipse.ui.dialogs.ListSelectionDialog;
 
 import phasereditor.canvas.core.PhysicsSortDirection;
 import phasereditor.canvas.core.PhysicsType;
+import phasereditor.canvas.core.SourceLang;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.NumberCellEditor;
@@ -143,6 +144,11 @@ public class PGridEditingSupport extends EditingSupport {
 					if (obj instanceof PhysicsSortDirection) {
 						return ((PhysicsSortDirection) obj).getPhaserName();
 					}
+					
+					if (obj instanceof SourceLang) {
+						return ((SourceLang) obj).getDisplayName();
+					}
+					
 					return super.getText(obj);
 				}
 			});

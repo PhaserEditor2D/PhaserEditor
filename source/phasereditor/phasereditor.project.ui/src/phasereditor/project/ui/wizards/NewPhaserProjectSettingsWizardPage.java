@@ -52,7 +52,8 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 	private Button _multipleStatesBtn;
 	private Button _includeAssets;
 	private Group _group;
-	private Button _typeScriptSupportBtn;
+	private Label _label;
+	private Combo _comboLang;
 
 	/**
 	 * Create the wizard.
@@ -159,12 +160,18 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 		_includeAssets.setText("Include demo assets.");
 		
 		_group = new Group(container, SWT.NONE);
-		_group.setLayout(new GridLayout(1, false));
-		_group.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-		_group.setText("TypeScript");
+		_group.setLayout(new GridLayout(2, false));
+		_group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		_group.setText("Code");
 		
-		_typeScriptSupportBtn = new Button(_group, SWT.CHECK);
-		_typeScriptSupportBtn.setText("Add TypeScript support.");
+		_label = new Label(_group, SWT.NONE);
+		_label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		_label.setText("Language: ");
+		
+		_comboLang = new Combo(_group, SWT.READ_ONLY);
+		_comboLang.setItems(new String[] {"JavaScript 5", "JavaScript 6", "TypeScript"});
+		_comboLang.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		_comboLang.select(0);
 	}
 
 	public void setFocus() {
@@ -227,10 +234,15 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 		return _includeAssets;
 	}
 	
-	/**
-	 * @return the typeScriptSupportBtn
-	 */
-	public Button getTypeScriptSupportBtn() {
-		return _typeScriptSupportBtn;
+	public boolean isLang_JS5() {
+		return _comboLang.getSelectionIndex() == 0;
+	}
+	
+	public boolean isLang_JS6() {
+		return _comboLang.getSelectionIndex() == 1;
+	}
+	
+	public boolean isLang_TS() {
+		return _comboLang.getSelectionIndex() == 2;
 	}
 }

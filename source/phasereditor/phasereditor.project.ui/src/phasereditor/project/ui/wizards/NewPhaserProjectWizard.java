@@ -119,7 +119,8 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 		boolean simplestProject = _settingsPage.getSimplestBtn().getSelection();
 		boolean singleState = _settingsPage.getSingleStateBtn().getSelection();
 		boolean hasAssets = _settingsPage.getIncludeAssets().getSelection();
-		boolean isTypeScriptProject = _settingsPage.getTypeScriptSupportBtn().getSelection();
+		boolean lang_js6 = _settingsPage.isLang_JS6();
+		boolean lang_ts = _settingsPage.isLang_TS();
 
 		try {
 			getContainer().run(true, false, new IRunnableWithProgress() {
@@ -151,11 +152,11 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 						if (simplestProject) {
 							templId = "phasereditor.project.simplest";
 						} else {
-							
+
 							if (hasExtraParams) {
 								gameParams.append(", '', null");
 							}
-							
+
 							if (singleState) {
 								templId = "phasereditor.project.singleState";
 							} else {
@@ -180,11 +181,15 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 
 						values.put("game.extra", gameParams.toString());
 
-						if (isTypeScriptProject) {
+						if (lang_js6) {
+							templId += ".js6";
+						}
+
+						if (lang_ts) {
 							templId += ".typescript";
 						}
-						
- 						if (hasAssets) {
+
+						if (hasAssets) {
 							templId += ".assets";
 						}
 

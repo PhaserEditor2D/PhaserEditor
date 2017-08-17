@@ -51,7 +51,7 @@ public abstract class JSLikeGroupCodeGenerator extends JSLikeCanvasCodeGenerator
 	}
 
 	@Override
-	protected String getLocalVarName(BaseObjectModel model) {
+	public String getLocalVarName(BaseObjectModel model) {
 		if (model == getRootObjectsContainer()) {
 			return "this";
 		}

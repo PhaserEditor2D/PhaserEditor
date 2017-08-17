@@ -202,11 +202,11 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 		return "\n" + getIndentTabs() + "// -- " + msg + " --\n" + getIndentTabs();
 	}
 
-	protected abstract void generateFooter();
+	public abstract void generateFooter();
 
-	protected abstract void generateHeader();
+	public abstract void generateHeader();
 
-	protected static String getPublicFieldName(String name) {
+	public static String getPublicFieldName(String name) {
 		return "f" + name.substring(0, 1).toUpperCase() + name.substring(1);
 	}
 
@@ -517,12 +517,12 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 	}
 
 	@SuppressWarnings("static-method")
-	protected String getVarName(BaseObjectModel model) {
+	public String getVarName(BaseObjectModel model) {
 		return model.getEditorName();
 	}
 
 	@SuppressWarnings("static-method")
-	protected String getLocalVarName(BaseObjectModel model) {
+	public String getLocalVarName(BaseObjectModel model) {
 		return "_" + model.getEditorName();
 	}
 
@@ -590,7 +590,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 		}
 	}
 
-	protected String getAnimationVarName(BaseObjectModel obj, AnimationModel anim) {
+	public String getAnimationVarName(BaseObjectModel obj, AnimationModel anim) {
 		return getVarName(obj) + "_" + anim.getName();
 	}
 

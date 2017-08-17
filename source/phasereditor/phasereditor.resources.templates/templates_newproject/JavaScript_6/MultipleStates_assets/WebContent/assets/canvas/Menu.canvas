@@ -1,0 +1,77 @@
+{
+  "canvas-version": 2,
+  "settings": {
+    "className": "Menu",
+    "sceneWidth": 800,
+    "sceneHeight": 600,
+    "generateOnSave": true,
+    "enableStepping": false,
+    "lang": "JAVA_SCRIPT_6",
+    "baseClass": "Phaser.State",
+    "backgroundColor": [
+      180,
+      180,
+      180
+    ],
+    "gridColor": [
+      200,
+      200,
+      200
+    ],
+    "showGrid": true,
+    "create_after": "// user code\r\nthis.initObjects();"
+  },
+  "stateSettings": {
+    "stageBackgroundColor": [
+      0,
+      0,
+      0
+    ],
+    "preloadSpriteId": "",
+    "preloadSprite_direction": 0,
+    "load.pack": []
+  },
+  "world": {
+    "type": "group",
+    "id": "af8eb0de-599e-428d-94f8-09d75318f8b7",
+    "info": {
+      "editorName": "Menu",
+      "children": [
+        {
+          "type": "image",
+          "id": "77386009-c7c1-4e9b-b9e7-1885358c6126",
+          "asset": "0",
+          "info": {
+            "editorName": "bg",
+            "x": -172,
+            "y": -103
+          }
+        },
+        {
+          "type": "image",
+          "id": "9b26c297-13f0-4593-b050-af19f3f669b4",
+          "asset": "1",
+          "info": {
+            "editorName": "play",
+            "x": 285,
+            "y": 217
+          }
+        }
+      ]
+    }
+  },
+  "type": "STATE",
+  "asset-table": {
+    "0": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "bg"
+    },
+    "1": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "play"
+    }
+  },
+  "prefab-table": {}
+}

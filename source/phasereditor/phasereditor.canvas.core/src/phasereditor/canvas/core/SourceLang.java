@@ -26,16 +26,23 @@ package phasereditor.canvas.core;
  *
  */
 public enum SourceLang {
-	JAVA_SCRIPT("js"),
-	TYPE_SCRIPT("ts");
+	JAVA_SCRIPT("js", "JavaScript 5"),
+	JAVA_SCRIPT_6("js", "JavaScript 6"),
+	TYPE_SCRIPT("ts", "TypeScript");
 
 	private String _ext;
+	private String _displayName;
 
-	private SourceLang(String ext) {
+	private SourceLang(String ext, String displayName) {
 		_ext = ext;
+		_displayName = displayName;
 	}
 
 	public String getExtension() {
 		return _ext;
+	}
+	
+	public String getDisplayName() {
+		return _displayName;
 	}
 }

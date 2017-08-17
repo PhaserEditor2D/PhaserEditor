@@ -34,6 +34,7 @@ import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.canvas.core.AnimationModel;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.PhysicsType;
+import phasereditor.canvas.core.SourceLang;
 import phasereditor.canvas.core.StateSettings.LoadPack;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.core.PhysicsSortDirection;
@@ -97,8 +98,13 @@ public class PGridValueLabelProvider extends PGridLabelProvider {
 
 		if (element instanceof PGridEnumProperty) {
 			Object value = ((PGridEnumProperty<?>) element).getValue();
+			
 			if (value instanceof PhysicsType) {
 				return ((PhysicsType) value).getPhaserName();
+			}
+			
+			if (value instanceof SourceLang) {
+				return ((SourceLang) value).getDisplayName();
 			}
 
 			if (value instanceof PhysicsSortDirection) {

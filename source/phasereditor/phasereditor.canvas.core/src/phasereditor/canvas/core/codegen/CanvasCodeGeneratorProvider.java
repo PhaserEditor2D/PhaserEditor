@@ -28,6 +28,15 @@ import java.util.Map;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.SourceLang;
+import phasereditor.canvas.core.codegen.js5.JSGroupCodeGenerator;
+import phasereditor.canvas.core.codegen.js5.JSSpriteCodeGenerator;
+import phasereditor.canvas.core.codegen.js5.JSStateCodeGenerator;
+import phasereditor.canvas.core.codegen.js6.JS6GroupCodeGenerator;
+import phasereditor.canvas.core.codegen.js6.JS6SpriteCodeGenerator;
+import phasereditor.canvas.core.codegen.js6.JS6StateCodeGenerator;
+import phasereditor.canvas.core.codegen.ts.TSGroupCodeGenerator;
+import phasereditor.canvas.core.codegen.ts.TSSpriteCodeGenerator;
+import phasereditor.canvas.core.codegen.ts.TSStateCodeGenerator;
 import phasereditor.project.core.codegen.ICodeGenerator;
 
 /**
@@ -41,12 +50,15 @@ public class CanvasCodeGeneratorProvider {
 		_map = new HashMap<>();
 
 		_map.put(key(CanvasType.STATE, SourceLang.JAVA_SCRIPT), JSStateCodeGenerator.class);
+		_map.put(key(CanvasType.STATE, SourceLang.JAVA_SCRIPT_6), JS6StateCodeGenerator.class);
 		_map.put(key(CanvasType.STATE, SourceLang.TYPE_SCRIPT), TSStateCodeGenerator.class);
 
 		_map.put(key(CanvasType.GROUP, SourceLang.JAVA_SCRIPT), JSGroupCodeGenerator.class);
+		_map.put(key(CanvasType.GROUP, SourceLang.JAVA_SCRIPT_6), JS6GroupCodeGenerator.class);
 		_map.put(key(CanvasType.GROUP, SourceLang.TYPE_SCRIPT), TSGroupCodeGenerator.class);
 
 		_map.put(key(CanvasType.SPRITE, SourceLang.JAVA_SCRIPT), JSSpriteCodeGenerator.class);
+		_map.put(key(CanvasType.SPRITE, SourceLang.JAVA_SCRIPT_6), JS6SpriteCodeGenerator.class);
 		_map.put(key(CanvasType.SPRITE, SourceLang.TYPE_SCRIPT), TSSpriteCodeGenerator.class);
 	}
 

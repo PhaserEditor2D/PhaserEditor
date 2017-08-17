@@ -27,25 +27,11 @@ import phasereditor.canvas.core.SourceLang;
 
 public class LangLabelProvider extends LabelProvider {
 
-	/**
-	 * 
-	 */
 	public LangLabelProvider() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public String getText(Object element) {
-		SourceLang value = (SourceLang) element;
-
-		switch (value) {
-		case JAVA_SCRIPT:
-			return "Java Script";
-		case TYPE_SCRIPT:
-			return "Type Script";
-		default:
-			break;
-		}
-		return super.getText(element);
+		return ((SourceLang) element).getDisplayName();
 	}
 }

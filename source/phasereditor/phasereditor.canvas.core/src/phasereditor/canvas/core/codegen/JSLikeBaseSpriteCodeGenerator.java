@@ -59,7 +59,7 @@ public abstract class JSLikeBaseSpriteCodeGenerator extends JSLikeCanvasCodeGene
 	}
 
 	@Override
-	protected String getLocalVarName(BaseObjectModel model) {
+	public String getLocalVarName(BaseObjectModel model) {
 		if (model == _selfSprite) {
 			return "this";
 		}
@@ -77,7 +77,7 @@ public abstract class JSLikeBaseSpriteCodeGenerator extends JSLikeCanvasCodeGene
 	}
 	
 	@Override
-	protected String getAnimationVarName(BaseObjectModel obj, AnimationModel anim) {
+	public String getAnimationVarName(BaseObjectModel obj, AnimationModel anim) {
 		if (obj == _selfSprite) {
 			return "anim_" + anim.getName();
 		}

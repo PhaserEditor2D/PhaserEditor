@@ -1,0 +1,245 @@
+{
+  "canvas-version": 2,
+  "settings": {
+    "className": "Level",
+    "sceneWidth": 800,
+    "sceneHeight": 600,
+    "generateOnSave": true,
+    "enableStepping": false,
+    "stepWidth": 64,
+    "stepHeight": 64,
+    "lang": "JAVA_SCRIPT_6",
+    "baseClass": "Phaser.State",
+    "backgroundColor": [
+      180,
+      180,
+      180
+    ],
+    "gridColor": [
+      200,
+      200,
+      200
+    ],
+    "showGrid": true
+  },
+  "stateSettings": {
+    "scaleMode": "SHOW_ALL",
+    "pageAlignHorizontally": true,
+    "pageAlignVertically": true,
+    "stageBackgroundColor": [
+      0,
+      0,
+      0
+    ],
+    "preloadSpriteId": "",
+    "preloadSprite_direction": 0,
+    "load.pack": []
+  },
+  "world": {
+    "type": "group",
+    "id": "8a0fc0bc-e3be-4656-9585-f855ac8ba0bb",
+    "info": {
+      "editorName": "Level",
+      "children": [
+        {
+          "type": "image",
+          "id": "7826c345-792a-4b38-9b1c-04d8d9886f24",
+          "asset": "0",
+          "info": {
+            "editorName": "bg",
+            "x": -175,
+            "y": -85
+          }
+        },
+        {
+          "type": "atlas-sprite",
+          "id": "c2f5df54-9dad-456c-9994-fcdc466d5e74",
+          "asset": "1",
+          "info": {
+            "editorName": "ground_",
+            "x": 38,
+            "y": 452
+          }
+        },
+        {
+          "type": "atlas-sprite",
+          "id": "b1614918-8e13-44a0-8ddf-f69b746e276b",
+          "asset": "2",
+          "info": {
+            "editorName": "ground_1",
+            "x": 166,
+            "y": 452
+          }
+        },
+        {
+          "type": "atlas-sprite",
+          "id": "8ea28cc2-584d-4dc6-836d-08a99fb86b06",
+          "asset": "3",
+          "info": {
+            "editorName": "ground_2",
+            "x": 294,
+            "y": 452
+          }
+        },
+        {
+          "type": "atlas-sprite",
+          "id": "bf301b62-6225-4fb7-b9de-d8b97f05740e",
+          "asset": "4",
+          "info": {
+            "editorName": "grass_",
+            "x": 265,
+            "y": 398
+          }
+        },
+        {
+          "type": "atlas-sprite",
+          "id": "7ad782a5-a663-4cd3-8641-7f12ca0de52d",
+          "asset": "5",
+          "info": {
+            "editorName": "tree_",
+            "x": 10,
+            "y": 127,
+            "scale.x": 2.0687500039674838,
+            "scale.y": 2.072000037051153
+          }
+        },
+        {
+          "type": "prefab",
+          "prefab": "0",
+          "id": "57adc0e6-7bf1-4a84-a929-e77c3349c837",
+          "asset-ref": {
+            "file": "WebContent/assets/pack.json",
+            "section": "preloader",
+            "asset": "dino",
+            "sprite": "1"
+          },
+          "info": {
+            "editorName": "dino",
+            "editorPublic": true,
+            "prefabOverride": ["position"],
+            "x": 112,
+            "y": 323
+          }
+        },
+        {
+          "type": "atlas-sprite",
+          "id": "42e2ec38-8721-40f9-8e13-3e66d06c4943",
+          "asset": "6",
+          "info": {
+            "editorName": "bridge",
+            "x": 453,
+            "y": 306
+          }
+        },
+        {
+          "type": "group",
+          "id": "aa9cae21-811b-4be5-a6f5-698749c880bd",
+          "info": {
+            "editorName": "coins",
+            "children": [
+              {
+                "type": "prefab",
+                "prefab": "1",
+                "id": "a4a3d5d2-ba20-4cc9-9bf0-3c62ea8256ea",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "coins",
+                  "sprite": "0"
+                },
+                "info": {
+                  "editorName": "coins0",
+                  "prefabOverride": ["position"],
+                  "x": 488,
+                  "y": 170
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "1",
+                "id": "def17681-30a8-478e-aec4-4ddd76f0c077",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "coins",
+                  "sprite": "0"
+                },
+                "info": {
+                  "editorName": "coins1",
+                  "prefabOverride": ["position"],
+                  "x": 424,
+                  "y": 170
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "1",
+                "id": "cedf3d05-dbdc-4f4d-b127-1d172cfc303c",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "coins",
+                  "sprite": "0"
+                },
+                "info": {
+                  "editorName": "coins2",
+                  "prefabOverride": ["position"],
+                  "x": 552,
+                  "y": 170
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "type": "STATE",
+  "asset-table": {
+    "0": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "bg"
+    },
+    "1": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "environ",
+      "sprite": "ground-0"
+    },
+    "2": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "environ",
+      "sprite": "ground-1"
+    },
+    "3": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "environ",
+      "sprite": "ground-2"
+    },
+    "4": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "environ",
+      "sprite": "grass-1"
+    },
+    "5": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "environ",
+      "sprite": "tree-1"
+    },
+    "6": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "environ",
+      "sprite": "bridge"
+    }
+  },
+  "prefab-table": {
+    "0": "WebContent/assets/canvas/prefabs/Dino.canvas",
+    "1": "WebContent/assets/canvas/prefabs/Coin.canvas"
+  }
+}
