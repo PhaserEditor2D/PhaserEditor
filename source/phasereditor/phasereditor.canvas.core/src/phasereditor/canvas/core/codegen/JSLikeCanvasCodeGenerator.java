@@ -96,12 +96,6 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 		return info;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * phasereditor.canvas.core.codegen.BaseCodeGenerator#internalGenerate()
-	 */
 	@Override
 	protected void internalGenerate() {
 		{
@@ -187,7 +181,30 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				}
 				i++;
 			}
+
+			// generate post create init code, like setAll calls
+			line();
+			generatePostCreateInitCode(root);
+			line();
 		});
+	}
+
+	protected void generatePostCreateInitCode(BaseObjectModel model) {
+		String varname = getLocalVarName(model);
+		
+		if (model instanceof GroupModel) {
+			GroupModel group = (GroupModel) model;
+			if (group.isOverriding(GroupModel.PROPSET_SET_ALL)) {
+				for (String[] tuple : group.getSetAll()) {
+					line(varname + ".setAll(\"" + tuple[0] + "\"" + ", " + tuple[1] + ");");
+				}
+			}
+
+			for (BaseObjectModel child : group.getChildren()) {
+				generatePostCreateInitCode(child);
+			}
+		}
+
 	}
 
 	protected GroupModel getRootObjectsContainer() {
@@ -502,13 +519,13 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				line(varname + ".alpha = " + model.getAlpha() + ";");
 			}
 		}
-		
+
 		if (model.isOverriding(BaseObjectModel.PROPSET_RENDERABLE)) {
 			if (!model.isRenderable()) {
 				line(varname + ".renderable = " + model.isRenderable() + ";");
 			}
 		}
-		
+
 		if (model.isOverriding(BaseObjectModel.PROPSET_FIXED_TO_CAMERA)) {
 			if (model.isFixedToCamera()) {
 				line(varname + ".fixedToCamera = " + model.isFixedToCamera() + ";");

@@ -41,6 +41,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 
+import phasereditor.canvas.core.GroupModel.SetAllData;
 import phasereditor.canvas.core.PhysicsSortDirection;
 import phasereditor.canvas.core.PhysicsType;
 import phasereditor.canvas.ui.editors.CanvasEditor;
@@ -56,6 +57,7 @@ import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridOverrideProperty;
 import phasereditor.canvas.ui.editors.grid.PGridProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
+import phasereditor.canvas.ui.editors.grid.PGridSetAllProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSpriteProperty;
 import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
 import phasereditor.canvas.ui.editors.grid.PGridUserCodeProperty;
@@ -144,11 +146,11 @@ public class PGridEditingSupport extends EditingSupport {
 					if (obj instanceof PhysicsSortDirection) {
 						return ((PhysicsSortDirection) obj).getPhaserName();
 					}
-					
+
 					if (obj instanceof SourceLang) {
 						return ((SourceLang) obj).getDisplayName();
 					}
-					
+
 					return super.getText(obj);
 				}
 			});
@@ -179,6 +181,22 @@ public class PGridEditingSupport extends EditingSupport {
 		} else if (element instanceof PGridLoadPackProperty) {
 			return new LoadPackCellEditor(parent, _canvas.getWorldModel().getProject(),
 					((PGridLoadPackProperty) element).getValue());
+		} else if (element instanceof PGridSetAllProperty) {
+			PGridSetAllProperty prop = (PGridSetAllProperty) element;
+			return new DialogCellEditor(parent) {
+
+				@Override
+				protected Object openDialogBox(Control cellEditorWindow) {
+					SetAllData initialValue = prop.getValue();
+					SetAllDialog dlg = new SetAllDialog(cellEditorWindow.getShell());
+					dlg.setSetAllData(initialValue);
+					if (dlg.open() == Window.OK) {
+						return dlg.getResult();
+					}
+
+					return initialValue;
+				}
+			};
 		}
 
 		return null;

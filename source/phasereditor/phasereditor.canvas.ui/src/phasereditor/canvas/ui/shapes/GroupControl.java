@@ -22,6 +22,7 @@
 package phasereditor.canvas.ui.shapes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -31,6 +32,7 @@ import javafx.scene.Node;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.GroupModel;
+import phasereditor.canvas.core.GroupModel.SetAllData;
 import phasereditor.canvas.core.MissingAssetException;
 import phasereditor.canvas.core.MissingAssetSpriteModel;
 import phasereditor.canvas.core.MissingPrefabException;
@@ -43,6 +45,7 @@ import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
 import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
+import phasereditor.canvas.ui.editors.grid.PGridSetAllProperty;
 
 /**
  * @author arian
@@ -217,6 +220,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 		if (!model.isPrefabInstance()) {
 			section.add(_closed_property);
 		}
+
 	}
 
 	@Override
@@ -243,7 +247,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 			public boolean isModified() {
 				return getModel().isPhysicsGroup();
 			}
-			
+
 			@Override
 			public boolean isReadOnly() {
 				return getModel().isPrefabReadOnly("physics");
@@ -271,7 +275,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 			public boolean isModified() {
 				return getModel().getPhysicsBodyType() != PhysicsType.ARCADE;
 			}
-			
+
 			@Override
 			public boolean isReadOnly() {
 				return getModel().isPrefabReadOnly("physics");
@@ -298,21 +302,39 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 			public boolean isModified() {
 				return getModel().getPhysicsSortDirection() != PhysicsSortDirection.NULL;
 			}
-			
+
 			@Override
 			public boolean isReadOnly() {
-				return getModel().isPrefabReadOnly("physics");
+				return getModel().isPrefabReadOnly(BaseSpriteModel.PROPSET_PHYSICS);
 			}
+		});
+
+		section.add(new PGridSetAllProperty(getModel()) {
+
+			@Override
+			public void setValue(SetAllData value, boolean notify) {
+				super.setValue(value, notify);
+
+				if (notify) {
+					updateFromPropertyChange();
+				}
+			}
+			
 		});
 
 		propModel.getSections().add(section);
 
 	}
-	
+
 	@Override
 	protected void initPrefabPGridModel(List<String> validProperties) {
 		super.initPrefabPGridModel(validProperties);
-		validProperties.add(BaseSpriteModel.PROPSET_PHYSICS);
+		validProperties.addAll(Arrays.asList(
+		//@formatter:off
+				BaseSpriteModel.PROPSET_PHYSICS,
+				GroupModel.PROPSET_SET_ALL
+				//@formatter:on
+		));
 	}
 
 	public int removeChild(IObjectNode childNode) {

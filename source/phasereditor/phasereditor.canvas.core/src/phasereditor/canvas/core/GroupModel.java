@@ -38,11 +38,45 @@ import org.json.JSONObject;
 public class GroupModel extends BaseObjectModel {
 
 	public static final String TYPE_NAME = "group";
+	public static final String PROPSET_SET_ALL = "setAll";
 	private List<BaseObjectModel> _children;
 	private boolean _editorClosed;
 	private boolean _physicsGroup;
 	private PhysicsType _physicsBodyType;
 	private PhysicsSortDirection _physicsSortDirection;
+	private SetAllData _setAll;
+
+	public static class SetAllData extends ArrayList<String[]> {
+
+		private static final long serialVersionUID = 1L;
+
+		public void add(String key, String value) {
+			add(new String[] { key, value });
+		}
+
+		public SetAllData copy() {
+			SetAllData copy = new SetAllData();
+			for (String[] tuple : this) {
+				copy.add(new String[] { tuple[0], tuple[1] });
+			}
+			return copy;
+		}
+
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			sb.append("[");
+			for (String[] tuple : this) {
+				if (sb.length() > 1) {
+					sb.append(",");
+				}
+				sb.append(tuple[0] + "=" + tuple[1]);
+			}
+			sb.append("]");
+			return sb.toString();
+		}
+
+	}
 
 	public GroupModel(GroupModel parent, JSONObject data) {
 		super(parent, TYPE_NAME, data);
@@ -50,9 +84,11 @@ public class GroupModel extends BaseObjectModel {
 
 	public GroupModel(GroupModel parent) {
 		super(parent, "group");
+
 		_children = new ArrayList<>();
 		_physicsBodyType = PhysicsType.ARCADE;
 		_physicsSortDirection = PhysicsSortDirection.NULL;
+		_setAll = new SetAllData();
 	}
 
 	@Override
@@ -105,6 +141,14 @@ public class GroupModel extends BaseObjectModel {
 		_physicsSortDirection = physicsSortDirection;
 	}
 
+	public SetAllData getSetAll() {
+		return _setAll;
+	}
+
+	public void setSetAll(SetAllData setAll) {
+		_setAll = setAll;
+	}
+
 	@Override
 	public String getLabel() {
 		return "[grp] " + getEditorName();
@@ -138,7 +182,7 @@ public class GroupModel extends BaseObjectModel {
 		if (isPrefabInstance()) {
 			return null;
 		}
-		
+
 		for (BaseObjectModel model : _children) {
 			if (model instanceof GroupModel) {
 				BaseObjectModel found = ((GroupModel) model).findByName(name);
@@ -166,6 +210,21 @@ public class GroupModel extends BaseObjectModel {
 		{
 			String name = jsonInfo.optString("physicsSortDirection", PhysicsSortDirection.NULL.name());
 			_physicsSortDirection = PhysicsSortDirection.valueOf(name);
+		}
+		{
+			JSONArray array = jsonInfo.optJSONArray("setAll");
+			if (array == null) {
+				_setAll = new SetAllData();
+			} else {
+				SetAllData data = new SetAllData();
+				for (int i = 0; i < array.length(); i++) {
+					JSONObject tuple = array.getJSONObject(i);
+					String key = tuple.getString("key");
+					String value = tuple.getString("value");
+					data.add(key, value);
+				}
+				_setAll = data;
+			}
 		}
 
 		_children = new ArrayList<>();
@@ -222,6 +281,17 @@ public class GroupModel extends BaseObjectModel {
 			jsonInfo.put("physicsGroup", _physicsGroup, false);
 			jsonInfo.put("physicsBodyType", _physicsBodyType, PhysicsType.ARCADE);
 			jsonInfo.put("physicsSortDirection", _physicsSortDirection, PhysicsSortDirection.NULL);
+		}
+
+		if (isOverriding(PROPSET_SET_ALL)) {
+			JSONArray array = new JSONArray();
+			for (String[] tuple : _setAll) {
+				JSONObject obj = new JSONObject();
+				obj.put("key", tuple[0]);
+				obj.put("value", tuple[1]);
+				array.put(obj);
+			}
+			jsonInfo.put("setAll", array);
 		}
 
 		if (isPrefabInstance() && saving) {
