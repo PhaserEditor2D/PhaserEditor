@@ -43,7 +43,6 @@ import org.eclipse.ui.dialogs.ListSelectionDialog;
 
 import phasereditor.canvas.core.PhysicsSortDirection;
 import phasereditor.canvas.core.PhysicsType;
-import phasereditor.canvas.core.SourceLang;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.NumberCellEditor;
@@ -62,6 +61,7 @@ import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
 import phasereditor.canvas.ui.editors.grid.PGridUserCodeProperty;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
+import phasereditor.project.core.codegen.SourceLang;
 
 /**
  * @author arian

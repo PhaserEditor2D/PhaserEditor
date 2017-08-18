@@ -42,6 +42,7 @@ import org.json.JSONObject;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.templates.TemplateModel;
 import phasereditor.project.core.ProjectCore;
+import phasereditor.project.core.codegen.SourceLang;
 
 /**
  * @author arian
@@ -119,8 +120,7 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 		boolean simplestProject = _settingsPage.getSimplestBtn().getSelection();
 		boolean singleState = _settingsPage.getSingleStateBtn().getSelection();
 		boolean hasAssets = _settingsPage.getIncludeAssets().getSelection();
-		boolean lang_js6 = _settingsPage.isLang_JS6();
-		boolean lang_ts = _settingsPage.isLang_TS();
+		SourceLang lang = _settingsPage.getSourceLang();
 
 		try {
 			getContainer().run(true, false, new IRunnableWithProgress() {
@@ -181,11 +181,9 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 
 						values.put("game.extra", gameParams.toString());
 
-						if (lang_js6) {
+						if (lang == SourceLang.JAVA_SCRIPT_6) {
 							templId += ".js6";
-						}
-
-						if (lang_ts) {
+						} else if (lang == SourceLang.TYPE_SCRIPT) {
 							templId += ".typescript";
 						}
 
@@ -195,7 +193,7 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 
 						template = InspectCore.getProjectTemplates().findById(templId);
 
-						ProjectCore.configureNewPhaserProject(project, template, values);
+						ProjectCore.configureNewPhaserProject(project, template, values, lang);
 						monitor.worked(3);
 
 					} catch (CoreException e) {

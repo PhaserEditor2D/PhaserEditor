@@ -29,11 +29,13 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -56,8 +58,9 @@ import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.FlatAssetLabelProvider;
 import phasereditor.assetpack.ui.TextureListContentProvider;
 import phasereditor.canvas.core.EditorSettings;
-import phasereditor.canvas.core.SourceLang;
 import phasereditor.canvas.ui.editors.LangLabelProvider;
+import phasereditor.project.core.ProjectCore;
+import phasereditor.project.core.codegen.SourceLang;
 import phasereditor.ui.FilteredTree2;
 import phasereditor.ui.PatternFilter2;
 import phasereditor.ui.views.PreviewComp;
@@ -143,6 +146,7 @@ public class NewPage_SpriteSettings extends WizardPage {
 
 	private void afterCreateWidgets() {
 		_langComboViewer.setInput(SourceLang.values());
+
 		_assetsViewer.setLabelProvider(new FlatAssetLabelProvider(AssetLabelProvider.GLOBAL_48));
 		_assetsViewer.setContentProvider(new TextureListContentProvider());
 		AssetPackUI.installAssetTooltips(_assetsViewer);
@@ -208,8 +212,13 @@ public class NewPage_SpriteSettings extends WizardPage {
 		if (lastProject == null || lastProject != project) {
 			_assetsViewer.setInput(project);
 			_assetsViewer.expandToLevel(4);
+			
+			NewWizard_Base wizard = (NewWizard_Base) getWizard();
+			IPath path = wizard.getFilePage().getContainerFullPath();
+			SourceLang lang = ProjectCore.getProjectLanguage(path);
+			_langComboViewer.setSelection(new StructuredSelection(lang));
 		}
-
+		
 		validateErrors();
 	}
 

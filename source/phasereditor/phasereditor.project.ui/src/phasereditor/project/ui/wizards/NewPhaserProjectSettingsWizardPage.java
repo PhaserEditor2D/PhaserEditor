@@ -21,6 +21,10 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.ui.wizards;
 
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -32,11 +36,23 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import phasereditor.project.core.codegen.SourceLang;
+
 /**
  * @author arian
  *
  */
 public class NewPhaserProjectSettingsWizardPage extends WizardPage {
+	private static class ViewerLabelProvider extends LabelProvider {
+		public ViewerLabelProvider() {
+		}
+
+		@Override
+		public String getText(Object element) {
+			return ((SourceLang)element).getDisplayName();
+		}
+	}
+
 	private Text _widthText;
 	private Text _heightText;
 	private Button _transparentBtn;
@@ -53,7 +69,7 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 	private Button _includeAssets;
 	private Group _group;
 	private Label _label;
-	private Combo _comboLang;
+	private ComboViewer _comboLang;
 
 	/**
 	 * Create the wizard.
@@ -168,10 +184,18 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 		_label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		_label.setText("Language: ");
 		
-		_comboLang = new Combo(_group, SWT.READ_ONLY);
-		_comboLang.setItems(new String[] {"JavaScript 5", "JavaScript 6", "TypeScript"});
-		_comboLang.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		_comboLang.select(0);
+		_comboLang = new ComboViewer(_group, SWT.READ_ONLY);		
+		Combo combo = _comboLang.getCombo();
+		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		_comboLang.setContentProvider(new ArrayContentProvider());
+		_comboLang.setLabelProvider(new ViewerLabelProvider());
+		
+		afterCreateWidgets();
+	}
+
+	private void afterCreateWidgets() {
+		_comboLang.setInput(SourceLang.values());
+		_comboLang.setSelection(new StructuredSelection(SourceLang.JAVA_SCRIPT));
 	}
 
 	public void setFocus() {
@@ -234,15 +258,7 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 		return _includeAssets;
 	}
 	
-	public boolean isLang_JS5() {
-		return _comboLang.getSelectionIndex() == 0;
-	}
-	
-	public boolean isLang_JS6() {
-		return _comboLang.getSelectionIndex() == 1;
-	}
-	
-	public boolean isLang_TS() {
-		return _comboLang.getSelectionIndex() == 2;
+	public SourceLang getSourceLang() {
+		return (SourceLang) _comboLang.getStructuredSelection().getFirstElement();	
 	}
 }

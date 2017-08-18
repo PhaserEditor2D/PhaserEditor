@@ -32,7 +32,6 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
-import phasereditor.canvas.core.SourceLang;
 
 /**
  * @author arian

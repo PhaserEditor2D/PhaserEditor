@@ -27,7 +27,6 @@ import java.util.Map;
 
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasType;
-import phasereditor.canvas.core.SourceLang;
 import phasereditor.canvas.core.codegen.js5.JSGroupCodeGenerator;
 import phasereditor.canvas.core.codegen.js5.JSSpriteCodeGenerator;
 import phasereditor.canvas.core.codegen.js5.JSStateCodeGenerator;
@@ -38,6 +37,7 @@ import phasereditor.canvas.core.codegen.ts.TSGroupCodeGenerator;
 import phasereditor.canvas.core.codegen.ts.TSSpriteCodeGenerator;
 import phasereditor.canvas.core.codegen.ts.TSStateCodeGenerator;
 import phasereditor.project.core.codegen.ICodeGenerator;
+import phasereditor.project.core.codegen.SourceLang;
 
 /**
  * @author arian

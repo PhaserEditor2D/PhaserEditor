@@ -51,6 +51,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
@@ -65,6 +66,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.wst.jsdt.ui.project.JsNature;
 
 import phasereditor.inspect.core.IPhaserTemplate;
+import phasereditor.project.core.codegen.SourceLang;
 
 public class ProjectCore {
 
@@ -75,6 +77,7 @@ public class ProjectCore {
 	public static final String ECMA5_SCOPE_INITIALIZER_ID = PLUGIN_ID + ".ecma5scope";
 	public static final String PHASER_BUILDER_ID = PLUGIN_ID + ".builder";
 	public static final String PHASER_PROBLEM_MARKER_ID = PLUGIN_ID + ".problem";
+	private static final QualifiedName PROJECT_LANG = new QualifiedName("phasereditor.project.core", "lang");
 
 	public enum OS {
 		WINDOWS, LINUX, MAC
@@ -112,9 +115,9 @@ public class ProjectCore {
 		}
 
 		try {
-			
+
 			Files.createDirectories(_userFolderPath);
-			
+
 			return _userFolderPath;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -259,7 +262,7 @@ public class ProjectCore {
 	}
 
 	public static void configureNewPhaserProject(IProject project, IPhaserTemplate template,
-			Map<String, String> paramValues) {
+			Map<String, String> paramValues, SourceLang lang) {
 		PhaserProjectBuilder.setActionAfterFirstBuild(project, () -> openTemplateMainFileInEditor(project, template));
 
 		WorkspaceJob copyJob = new WorkspaceJob("Copying template content") {
@@ -276,6 +279,7 @@ public class ProjectCore {
 
 				JsNature.addJsNature(project, monitor);
 				PhaserProjectNature.addPhaserNature(project, monitor);
+				setProjectLanguage(project, lang);
 
 				return Status.OK_STATUS;
 			}
@@ -421,5 +425,35 @@ public class ProjectCore {
 		boolean exists = tsconfig.exists();
 
 		return exists;
+	}
+
+	public static void setProjectLanguage(IProject project, SourceLang lang) {
+		try {
+			project.setPersistentProperty(PROJECT_LANG, lang.name());
+		} catch (CoreException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static SourceLang getProjectLanguage(IPath path) {
+		IResource res = ResourcesPlugin.getWorkspace().getRoot().getFolder(path);
+
+		if (res == null) {
+			res = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+		}
+
+		if (res == null) {
+			return SourceLang.JAVA_SCRIPT;
+		}
+
+		IProject project = res.getProject();
+		try {
+			Map<QualifiedName, String> props = project.getPersistentProperties();
+			String name = props.getOrDefault(PROJECT_LANG, SourceLang.JAVA_SCRIPT.name());
+			SourceLang lang = SourceLang.valueOf(name);
+			return lang;
+		} catch (CoreException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

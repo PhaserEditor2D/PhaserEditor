@@ -37,13 +37,13 @@ import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.GroupModel;
-import phasereditor.canvas.core.SourceLang;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
 import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.project.core.ProjectCore;
+import phasereditor.project.core.codegen.SourceLang;
 
 public class CreatePrefabHandler extends AbstractHandler {
 

@@ -24,8 +24,6 @@ package phasereditor.canvas.core.codegen.ts;
 import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.codegen.JSLikeBaseSpriteCodeGenerator;
-import phasereditor.canvas.core.codegen.JSLikeCanvasCodeGenerator;
-import phasereditor.canvas.core.codegen.JSLikeCanvasCodeGenerator.TextureArgs;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
 

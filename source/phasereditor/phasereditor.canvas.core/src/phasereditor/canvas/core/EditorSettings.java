@@ -29,6 +29,8 @@ import org.eclipse.swt.graphics.RGB;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import phasereditor.project.core.codegen.SourceLang;
+
 /**
  * @author arian
  */

@@ -27,11 +27,13 @@ import java.beans.PropertyChangeSupport;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -44,9 +46,10 @@ import org.eclipse.swt.widgets.Text;
 
 import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.PhysicsType;
-import phasereditor.canvas.core.SourceLang;
 import phasereditor.canvas.core.StateSettings;
 import phasereditor.canvas.ui.editors.LangLabelProvider;
+import phasereditor.project.core.ProjectCore;
+import phasereditor.project.core.codegen.SourceLang;
 import phasereditor.ui.ColorButtonSupport;
 
 /**
@@ -61,6 +64,7 @@ public class NewPage_StateSettings extends WizardPage {
 	private EditorSettings _settings;
 	private StateSettings _stateSettings;
 	private ColorButtonSupport _bgColorSupport;
+	private boolean _firstTime = true;
 
 	public NewPage_StateSettings() {
 		super("group.settings.page");
@@ -165,6 +169,19 @@ public class NewPage_StateSettings extends WizardPage {
 		});
 		_bgColorSupport.setColor(_stateSettings.getStageBackgroundColor());
 		_bgColorSupport.updateContent();
+	}
+
+	@Override
+	public void setVisible(boolean visible) {
+		super.setVisible(visible);
+
+		if (visible && _firstTime) {
+			_firstTime = false;
+			NewWizard_Base wizard = (NewWizard_Base) getWizard();
+			IPath path = wizard.getFilePage().getContainerFullPath();
+			SourceLang lang = ProjectCore.getProjectLanguage(path);
+			_langComboViewer.setSelection(new StructuredSelection(lang));
+		}
 	}
 
 	private NewPage_StateSettings _self = this;

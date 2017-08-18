@@ -23,7 +23,7 @@ package phasereditor.canvas.ui.editors;
 
 import org.eclipse.jface.viewers.LabelProvider;
 
-import phasereditor.canvas.core.SourceLang;
+import phasereditor.project.core.codegen.SourceLang;
 
 public class LangLabelProvider extends LabelProvider {
 

@@ -37,6 +37,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 
 import phasereditor.project.core.ProjectCore;
+import phasereditor.project.core.codegen.SourceLang;
 
 public class NewPhaserExampleProjectWizard extends Wizard implements INewWizard {
 
@@ -93,7 +94,7 @@ public class NewPhaserExampleProjectWizard extends Wizard implements INewWizard 
 						project.open(monitor);
 						monitor.worked(2);
 
-						ProjectCore.configureNewPhaserProject(project, _templPage.getTemplate(), null);
+						ProjectCore.configureNewPhaserProject(project, _templPage.getTemplate(), null, SourceLang.JAVA_SCRIPT);
 						monitor.worked(3);
 
 					} catch (CoreException e) {
