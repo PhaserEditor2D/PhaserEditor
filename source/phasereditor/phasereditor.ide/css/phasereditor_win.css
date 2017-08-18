@@ -10,6 +10,10 @@
 	background-color: #F4F4F4;
 }
 
+CTabFolder {
+  swt-selected-tabs-background: #F4F4F4 100% 50%;
+}
+
 
 
  
