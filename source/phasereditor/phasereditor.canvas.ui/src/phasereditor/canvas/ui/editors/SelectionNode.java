@@ -35,19 +35,22 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.shape.StrokeType;
+import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
  * @author arian
  *
  */
+@SuppressWarnings("boxing")
 public class SelectionNode extends Pane {
 
-	private static Border _border;
+	private static Border _borderSprite;
+	private static Border _borderGroup;
 
 	static {
 		BorderWidths bw = new BorderWidths(1);
-		@SuppressWarnings("boxing")
+
 		List<Double> dashed = Arrays.asList(5d, 2d);
 		BorderStrokeStyle style1 = new BorderStrokeStyle(StrokeType.INSIDE, StrokeLineJoin.MITER, StrokeLineCap.BUTT,
 				10, 10, dashed);
@@ -56,8 +59,11 @@ public class SelectionNode extends Pane {
 
 		BorderStroke s1 = new BorderStroke(Color.WHITE, style1, null, bw);
 		BorderStroke s2 = new BorderStroke(Color.BLACK, style2, null, bw);
+		BorderStroke s3 = new BorderStroke(Color.BLACK, style2, null, new BorderWidths(2));
 
-		_border = new Border(s1, s2);
+		_borderSprite = new Border(s1, s2);
+
+		_borderGroup = new Border(s1, s3);
 	}
 
 	private IObjectNode _objectNode;
@@ -71,7 +77,7 @@ public class SelectionNode extends Pane {
 
 		updateFromZoomAndPanVariables();
 
-		setBorder(_border);
+		setBorder(inode.getModel() instanceof GroupModel ? _borderGroup : _borderSprite);
 	}
 
 	public static final int HANDLER_SIZE = 10;
@@ -83,7 +89,7 @@ public class SelectionNode extends Pane {
 	public void setObjectNode(IObjectNode objectNode) {
 		_objectNode = objectNode;
 	}
-	
+
 	public void updateBounds(Bounds rect) {
 		_rect = rect;
 		updateFromZoomAndPanVariables();
