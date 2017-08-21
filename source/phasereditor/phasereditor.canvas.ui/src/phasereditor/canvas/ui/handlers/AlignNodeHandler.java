@@ -1,5 +1,7 @@
 package phasereditor.canvas.ui.handlers;
 
+import static java.lang.System.out;
+
 import java.util.List;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -8,8 +10,12 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.behaviors.SelectionBehavior;
@@ -17,6 +23,7 @@ import phasereditor.canvas.ui.editors.behaviors.UpdateBehavior;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.UpdateFromPropertyChange;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
+import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
 public class AlignNodeHandler extends AbstractHandler {
@@ -31,19 +38,28 @@ public class AlignNodeHandler extends AbstractHandler {
 		List<IObjectNode> elems = SelectionBehavior.filterSelection(sel);
 
 		IObjectNode first = elems.get(0);
-		Rectangle2D pivot = makeRect(first);
-
+		
+		Rectangle2D pivotInWorld = null;
 		double sum = 0;
 
 		if (elems.size() == 1) {
-			// the rect of the parent starts in 0,0
-			pivot = makePivotRect(0, 0, first.getGroup());
+			pivotInWorld = makePivotRect(first);
+			BaseObjectControl<?> control = first.getControl();
+
+			ObjectCanvas canvas = control.getCanvas();
+			EditorSettings settings = canvas.getSettingsModel();
+
+			double w = settings.getSceneWidth();
+			double h = settings.getSceneHeight();
+
+			pivotInWorld = new Rectangle2D(0, 0, w, h);
+
 			switch (place) {
 			case "center":
-				sum = pivot.getMinX() + pivot.getWidth() / 2;
+				sum = pivotInWorld.getMinX() + pivotInWorld.getWidth() / 2;
 				break;
 			case "middle":
-				sum = pivot.getMinY() + pivot.getHeight() / 2;
+				sum = pivotInWorld.getMinY() + pivotInWorld.getHeight() / 2;
 				break;
 			default:
 				break;
@@ -53,41 +69,28 @@ public class AlignNodeHandler extends AbstractHandler {
 				IObjectNode inode = (IObjectNode) elem;
 				BaseObjectControl<?> control = inode.getControl();
 
-				boolean update = false;
 				switch (place) {
-				case "left":
-					update = control.getTextureLeft() < pivot.getMinX();
-					break;
-				case "top":
-					update = control.getTextureTop() < pivot.getMinY();
-					break;
-				case "right":
-					update = control.getTextureLeft() + control.getTextureWidth() > pivot.getMinX() + pivot.getWidth();
-					break;
-				case "bottom":
-					update = control.getTextureTop() + control.getTextureHeight() > pivot.getMinY() + pivot.getHeight();
-					break;
 				case "center":
-					sum += control.getTextureLeft() + control.getTextureWidth() / 2;
+					sum += inode.getModel().getX() + control.getTextureWidth() / 2;
 					break;
 				case "middle":
-					sum += control.getTextureTop() + control.getTextureHeight() / 2;
+					sum += inode.getModel().getY() + control.getTextureHeight() / 2;
 					break;
 				default:
 					break;
 				}
-
-				if (update) {
-					pivot = makeRect(inode);
+				
+				if (pivotInWorld == null) {
+					pivotInWorld = makePivotRect(inode);
 				}
 			}
 		}
 
 		double avg = sum / elems.size();
-		// TODO: round position to integer
+		// round position to integer
 		avg = Math.round(avg);
 
-		align(place, elems, pivot, avg);
+		align(place, elems, pivotInWorld, avg);
 
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 		ObjectCanvas canvas = editor.getCanvas();
@@ -98,22 +101,14 @@ public class AlignNodeHandler extends AbstractHandler {
 
 	private static Rectangle2D makePivotRect(double x, double y, IObjectNode node) {
 		BaseObjectControl<?> control = node.getControl();
-		BaseObjectModel model = control.getModel();
-
-		double xoffs = model.getX() - control.getTextureLeft();
-		double yoffs = model.getY() - control.getTextureTop();
-
-		double width = control.getTextureWidth();
-		double height = control.getTextureHeight();
-
-		return new Rectangle2D(x + xoffs, y + yoffs, width, height);
+		return new Rectangle2D(x, y, control.getTextureWidth(), control.getTextureHeight());
 	}
 
-	private static Rectangle2D makeRect(IObjectNode node) {
-		return makePivotRect(node.getControl().getTextureLeft(), node.getControl().getTextureTop(), node);
+	private static Rectangle2D makePivotRect(IObjectNode node) {
+		return makePivotRect(node.getModel().getX(), node.getModel().getY(), node);
 	}
 
-	private static void align(String place, List<IObjectNode> elems, Rectangle2D pivot, double avg) {
+	private static void align(String place, List<IObjectNode> elems, Rectangle2D pivotInWorld, double avgInWorld) {
 
 		CompositeOperation operations = new CompositeOperation();
 		UpdateFromPropertyChange updateFromPropChanges = new UpdateFromPropertyChange();
@@ -121,54 +116,68 @@ public class AlignNodeHandler extends AbstractHandler {
 
 		for (Object elem : elems) {
 			IObjectNode inode = (IObjectNode) elem;
+			Node node = inode.getNode();
+			GroupNode world = inode.getControl().getCanvas().getWorldNode();
+
+			out.println("scene to local:" + node.sceneToLocal(0, 0));
+			out.println("world to local:" + world.sceneToLocal(0, 0));
+
 			BaseObjectModel model = inode.getModel();
 			BaseObjectControl<?> control = inode.getControl();
 
-			double ix = model.getX();
-			double iy = model.getY();
-
-			double xoffs = ix - control.getTextureLeft();
-			double yoffs = iy - control.getTextureTop();
-
-			double x = ix;
-			double y = iy;
+			double localX = model.getX();
+			double localY = model.getY();
 
 			switch (place) {
 			case "left":
-				x = pivot.getMinX() + xoffs;
+				localX = worldToLocal(pivotInWorld.getMinX(), 0, node).getX();
 				break;
 			case "top":
-				y = pivot.getMinY() + yoffs;
+				localY = worldToLocal(0, pivotInWorld.getMinY(), node).getY();
 				break;
 			case "right":
 				double textureWidth = control.getTextureWidth();
-				x = pivot.getMinX() + pivot.getWidth() - textureWidth + xoffs;
+				localX = worldToLocal(pivotInWorld.getWidth(), 0, node).getX() - textureWidth;
 				break;
 			case "bottom":
 				double textureHeight = control.getTextureHeight();
-				y = pivot.getMinY() + pivot.getHeight() - textureHeight + yoffs;
+				localY = worldToLocal(0, pivotInWorld.getHeight(), node).getY() - textureHeight;
 				break;
 			case "center":
-				x = avg - control.getTextureWidth() / 2 + xoffs;
+				localX = worldToLocal(avgInWorld, 0, node).getX() - control.getTextureWidth() / 2;
 				break;
 			case "middle":
-				y = avg - control.getTextureHeight() / 2 + yoffs;
+				localY = worldToLocal(0, avgInWorld, node).getY() - control.getTextureHeight() / 2;
 				break;
 			default:
 				break;
 			}
 
-			if (x != ix || y != iy) {
-				update = control.getCanvas().getUpdateBehavior();
-				update.addUpdateLocationOperation(operations, inode, x, y, false);
-				updateFromPropChanges.add(inode.getControl().getId());
-			}
+			update = control.getCanvas().getUpdateBehavior();
+			update.addUpdateLocationOperation(operations, inode, localX, localY, false);
+			updateFromPropChanges.add(inode.getControl().getId());
 		}
 
 		if (update != null) {
 			operations.add(updateFromPropChanges);
 			update.executeOperations(operations);
 		}
+	}
+
+	public static Point2D localToWorld(double x, double y, Node local) {
+		ObjectCanvas canvas = ((IObjectNode) local).getControl().getCanvas();
+		Point2D p = local.localToScene(x, y);
+		Bounds bounds = canvas.getWorldNode().getBoundsInParent();
+		p = p.add(-bounds.getMinX(), bounds.getMinY());
+		return p;
+	}
+
+	public static Point2D worldToLocal(double worldX, double worldY, Node local) {
+		ObjectCanvas canvas = ((IObjectNode) local).getControl().getCanvas();
+		GroupNode world = canvas.getWorldNode();
+		Point2D scenePos = world.localToScene(worldX, worldY);
+		Point2D localPos = local.getParent().sceneToLocal(scenePos);
+		return localPos;
 	}
 
 }
