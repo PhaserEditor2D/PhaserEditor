@@ -94,8 +94,14 @@ This page contains a group of parameters that affect different aspects of a proj
 ``Game Parameters``             Are the same parameters of the ``Phaser.Game`` constructor.  Set these parameters to control how the game instance is created.
 ``Project Structure``           Contains a list of project layouts that you can select. You can select to create a project with a very simple structure or a complex, production ready structure. These layout are related with the number of Phaser states are going to be used in the game.
 ``Assets``                      In this section you can set if you want to add some demo assets to the project. This could be good if you want to take a better idea of how a Phaser project is. In many of the layouts, when you select to add assets, some prefabs are created so it is a good way to know how prefabs work.
-``TypeScript``                  Is a parameter that if it is checked all the code of the project will be generated to TypeScript instead of JavaScript. At the time there is not a built-in TypeScript editor inside Phaser Editor but we included this option because developers can use any other external editor like `VSCode <http://code.visualstudio.com>`_. There are some third-party plugins for Eclipse that support TypeScript, `here we talk about one of them <http://phasereditor.boniatillo.com/blog/2017/04/welcome-typescript-ide>`_.
+``Language``                    To select the language of your project (JavaScript 5, JavaScript 6 or TypeScript). At the time there is not a built-in JavaScript 6/TypeScript editor inside Phaser Editor but we included this option because developers can use any other external editor like `VSCode <http://code.visualstudio.com>`_. There are some third-party plugins for Eclipse that support TypeScript, `here we talk about one of them <http://phasereditor.boniatillo.com/blog/2017/04/welcome-typescript-ide>`_.
 =============================== ===================================================
+
+If you select JavaScript 6 as language and you want to use the built-in JavaScript editor we recommend to disable the JavaScript validator, so no syntax errors will be reported. Just go to the preferences page ``Window > Preferences > JavaScript > Validator``:
+
+.. image:: images/DisableJSValidation.png
+	:alt: Disable JavaScript validation.
+
 
 After setting the parameters, press the **Finish** button to create the project and files.
 

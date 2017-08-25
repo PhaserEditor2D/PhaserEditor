@@ -119,7 +119,7 @@ There are three type of Canvas files: states (compiled to a <code class="docutil
 <img alt="State wizard settings page." src="_images/SceneWizard_Settings.png" />
 <p>Many of the parameters shown in that page come from the Phaser API, however there are other parameters like the <strong>Base Class Name</strong> or <strong>Code Format</strong> that are used by the scene-to-code compiler.</p>
 <p>All these settings can be changed later in the configuration tab of the editor.</p>
-<p>Sate scenes will be displayed in the <a class="reference external" href="/assets_manager.html#assets-explorer">Assets</a> window under the <strong>State</strong> section.</p>
+<p>Sate scenes will be displayed in the <a class="reference external" href="assets_manager.html#assets-explorer">Assets</a> window under the <strong>State</strong> section.</p>
 </div>
 <div class="section" id="the-sprite-scene-prefab">
 <h3>The sprite scene (prefab)<a class="headerlink" href="#the-sprite-scene-prefab" title="Permalink to this headline">¶</a></h3>
@@ -221,7 +221,7 @@ There are three type of Canvas files: states (compiled to a <code class="docutil
 <span class="c1">// -- user code here --</span>
 </pre></div>
 </div>
-<p>To create a group prefab select in the main menu the <code class="docutils literal"><span class="pre">File</span> <span class="pre">&gt;</span> <span class="pre">New</span> <span class="pre">&gt;</span> <span class="pre">Group</span> <span class="pre">Prefab</span> <span class="pre">File</span></code> option. It opens a wizard that ask in the first page for the name of the file. You can press the <strong>Finish</strong> button to create the file or press <strong>Next</strong> to customize some options, like the base class name (other than <code class="docutils literal"><span class="pre">Phaser.Group</span></code>) or the code format (JavaScript or TypeScript).</p>
+<p>To create a group prefab select in the main menu the <code class="docutils literal"><span class="pre">File</span> <span class="pre">&gt;</span> <span class="pre">New</span> <span class="pre">&gt;</span> <span class="pre">Group</span> <span class="pre">Prefab</span> <span class="pre">File</span></code> option. It opens a wizard that ask in the first page for the name of the file. You can press the <strong>Finish</strong> button to create the file or press <strong>Next</strong> to customize some options, like the base class name (other than <code class="docutils literal"><span class="pre">Phaser.Group</span></code>) or the code format (JavaScript 5, JavaScript 6 or TypeScript).</p>
 </div>
 </div>
 <div class="section" id="objects-creation">
@@ -384,8 +384,8 @@ There are three type of Canvas files: states (compiled to a <code class="docutil
 <p>All the objects in the scene share a common set of properties:</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="26%" />
-<col width="74%" />
+<col width="15%" />
+<col width="85%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Property</th>
@@ -410,6 +410,12 @@ There are three type of Canvas files: states (compiled to a <code class="docutil
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">alpha</span></code></td>
 <td>The alpha value of the object. 0 is transparent, 1 is fully opaque.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">fixedToCamera</span></code></td>
+<td>If true the Game Object will appear to be ‘fixed’ to the camera, regardless of where in the game world the camera is viewing. Useful for backgrounds or UI elements in scrolling games.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">renderable</span></code></td>
+<td>Whether this object is renderable or not. Often used in Phaser Editor to create hidden layers with physics bodies.</td>
 </tr>
 </tbody>
 </table>
@@ -583,7 +589,7 @@ There are three type of Canvas files: states (compiled to a <code class="docutil
 <col width="68%" />
 </colgroup>
 <thead valign="bottom">
-<tr class="row-odd"><th class="head">Parameter</th>
+<tr class="row-odd"><th class="head">Property</th>
 <th class="head">Documentation</th>
 </tr>
 </thead>
@@ -614,7 +620,7 @@ There are three type of Canvas files: states (compiled to a <code class="docutil
 <col width="90%" />
 </colgroup>
 <thead valign="bottom">
-<tr class="row-odd"><th class="head">Parameter</th>
+<tr class="row-odd"><th class="head">Property</th>
 <th class="head">Documentation</th>
 </tr>
 </thead>
@@ -628,12 +634,29 @@ There are three type of Canvas files: states (compiled to a <code class="docutil
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">physicsSortDirection</span></code></td>
 <td>If this Group contains Arcade Physics Sprites you can set a custom sort direction via this property.</td>
 </tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">setAll</span></code></td>
+<td>A list of key/value pairs to generate a call to the <code class="docutils literal"><span class="pre">setAll</span></code> method.</td>
+</tr>
 </tbody>
 </table>
+<div class="section" id="physics-groups">
+<h4>Physics groups<a class="headerlink" href="#physics-groups" title="Permalink to this headline">¶</a></h4>
 <p>Physics groups are created with a different syntax:</p>
-<div class="code highlight-javascript"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">_ground</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">physicsGroup</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">P2JS</span><span class="p">);</span>
+<div class="code highlight-javascript"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">_ground</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">physicsGroup</span><span class="p">(</span><span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">ARCADE</span><span class="p">);</span>
 <span class="nx">_ground</span><span class="p">.</span><span class="nx">physicsSortDirection</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">Arcade</span><span class="p">.</span><span class="nx">LEFT_RIGHT</span><span class="p">;</span>
 </pre></div>
+</div>
+<p>And as mentioned in the previous section, the goal of these kind of groups is to automatically enable physics bodies on the children.</p>
+</div>
+<div class="section" id="the-setall-property">
+<h4>The <code class="docutils literal"><span class="pre">setAll</span></code> property<a class="headerlink" href="#the-setall-property" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal"><span class="pre">setAll</span></code> method is often used on the creation of scenes to initialize some values of the children objects. For example, if you are creating a platformer game you can group all the ground sprites on a group and set all the children to <code class="docutils literal"><span class="pre">body.immovable</span> <span class="pre">=</span> <span class="pre">true</span></code> in this way:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">groundSprites</span><span class="p">.</span><span class="nx">setAll</span><span class="p">(</span><span class="s2">&quot;body.immovable&quot;</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Now you don’t need to write it, you can click on the <code class="docutils literal"><span class="pre">groundSprites</span></code> group and edit the <code class="docutils literal"><span class="pre">setAll</span></code> property.</p>
+<p>The <code class="docutils literal"><span class="pre">setAll</span></code> property editor is very simple, it is a dialog with a key/value table. For each row of the table a new <code class="docutils literal"><span class="pre">setAll</span></code> method call will be generated, the first column will be generated as the property name and the second column as the property value. Note that the name is generated inside a string expression <code class="docutils literal"><span class="pre">&quot;...&quot;</span></code> but the value of the property is generated verbatim, so you can write any expression there, a string literal, a number, a boolean, a function call, the name of a variable, whatever you want.</p>
+<img alt="SetAll property dialog." src="_images/GroupSetAll.png" />
 </div>
 </div>
 <div class="section" id="design-time-object-properties">
@@ -741,7 +764,7 @@ the name of the file.</td>
 <td>A series of chunk of codes that the user can insert into the generated code. In the <a class="reference internal" href="#user-code">User code</a> section we explain this in details.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">lang</span></code></td>
-<td>The language or format of the code: JavaScript or TypeScript.</td>
+<td>The language or format of the code: JavaScript 5, JavaScript 6 or TypeScript.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">generateOnSave</span></code></td>
 <td>By setting it to <code class="docutils literal"><span class="pre">false</span></code> it disable the automatic code generation.</td>
@@ -880,7 +903,7 @@ A preloader state is just like any other Phaser state, but the sprites are creat
 </li>
 <li><p class="first">All the files have a <code class="docutils literal"><span class="pre">/*</span> <span class="pre">---</span> <span class="pre">end</span> <span class="pre">generated</span> <span class="pre">code</span> <span class="pre">---</span> <span class="pre">*/</span></code> line at the end of the file, you can write your code after that.</p>
 </li>
-<li><p class="first">In TypeScript generated files you can write your code between the comments:</p>
+<li><p class="first">In JavaScript 6 and TypeScript generated files you can write your code between the comments:</p>
 <blockquote>
 <div><ul class="simple">
 <li><code class="docutils literal"><span class="pre">/*</span> <span class="pre">sprite-methods-begin</span> <span class="pre">*/</span></code> and <code class="docutils literal"><span class="pre">/*</span> <span class="pre">sprite-methods-end</span> <span class="pre">*/</span></code></li>
@@ -921,7 +944,7 @@ A preloader state is just like any other Phaser state, but the sprites are creat
 </div>
 <div class="section" id="public-objects">
 <h3>Public objects<a class="headerlink" href="#public-objects" title="Permalink to this headline">¶</a></h3>
-<p>In the <a class="reference internal" href="#object-properties">Object properties</a> section we mentioned the <code class="docutils literal"><span class="pre">public</span></code> property of an object. It is a <a href="#id2"><span class="problematic" id="id3">`design time property`_</span></a> used to publish the objects beyond its context. To publish objects is needed to access a particular objects outside the <code class="docutils literal"><span class="pre">create</span></code> method. The concept is simple, for each public object is created an instance fild that reference it. These public fields follow the format <code class="docutils literal"><span class="pre">f&lt;ObjectName&gt;</span></code>, for example, if the object <code class="docutils literal"><span class="pre">star</span></code> is marked as public a field <code class="docutils literal"><span class="pre">fStar</span></code> is generated:</p>
+<p>In the <a class="reference internal" href="#object-properties">Object properties</a> section we mentioned the <code class="docutils literal"><span class="pre">public</span></code> property of an object. It is a <a class="reference external" href="#design-time-object-properties">design time property</a> used to publish the objects beyond its context. To publish objects is needed to access a particular objects outside the <code class="docutils literal"><span class="pre">create</span></code> method. The concept is simple, for each public object is created an instance fild that reference it. These public fields follow the format <code class="docutils literal"><span class="pre">f&lt;ObjectName&gt;</span></code>, for example, if the object <code class="docutils literal"><span class="pre">star</span></code> is marked as public a field <code class="docutils literal"><span class="pre">fStar</span></code> is generated:</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">Level</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">create</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">_star</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">67</span><span class="p">,</span> <span class="mi">197</span><span class="p">,</span> <span class="s1">&#39;environ&#39;</span><span class="p">,</span> <span class="s1">&#39;star&#39;</span><span class="p">);</span>
 

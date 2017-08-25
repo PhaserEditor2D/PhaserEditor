@@ -224,7 +224,7 @@ This group prefab...
 	// -- user code here --
 
 
-To create a group prefab select in the main menu the ``File > New > Group Prefab File`` option. It opens a wizard that ask in the first page for the name of the file. You can press the **Finish** button to create the file or press **Next** to customize some options, like the base class name (other than ``Phaser.Group``) or the code format (JavaScript or TypeScript).
+To create a group prefab select in the main menu the ``File > New > Group Prefab File`` option. It opens a wizard that ask in the first page for the name of the file. You can press the **Finish** button to create the file or press **Next** to customize some options, like the base class name (other than ``Phaser.Group``) or the code format (JavaScript 5, JavaScript 6 or TypeScript).
 
 
 
@@ -486,6 +486,8 @@ Property                          Documentation
 ``scale.x/y``                     The scale of the object. 
 ``pivot.x/y``                     The pivot point of this object that it rotates around.
 ``alpha``                         The alpha value of the object. 0 is transparent, 1 is fully opaque.
+``fixedToCamera``                 If true the Game Object will appear to be 'fixed' to the camera, regardless of where in the game world the camera is viewing. Useful for backgrounds or UI elements in scrolling games.
+``renderable``                    Whether this object is renderable or not. Often used in Phaser Editor to create hidden layers with physics bodies.
 ================================= =======================================
 
 Transformation tools
@@ -640,7 +642,7 @@ TileSprite properties
 These are the tile properties supported by Canvas:
 
 ========================== ======================================================
-Parameter                  Documentation
+Property                   Documentation
 ========================== ======================================================
 ``tilePosition.x/y``       The offset position of the image that is being tiled.
 ``width``                  The width of the tiling sprite.
@@ -659,20 +661,42 @@ Group properties
 Many time groups are used as proxy to apply properties or operations to all the children. Here we show the properties supported by the scene editor:
 
 ========================== ======================================================
-Parameter                  Documentation
+Property                   Documentation
 ========================== ======================================================
 ``physicsGroup``           Set to ``true`` if you want to create this group as a Physics Group. A Physics Group is the same as an ordinary Group except that is has enableBody turned on by default, so any Sprites it creates are automatically given a physics body.
 ``physicsBodyType``        If ``physicsGroup`` is ``true`` this is the type of physics body that is created on new Sprites.
 ``physicsSortDirection``   If this Group contains Arcade Physics Sprites you can set a custom sort direction via this property. 
+``setAll``                 A list of key/value pairs to generate a call to the ``setAll`` method.
 ========================== ======================================================
+
+Physics groups
+^^^^^^^^^^^^^^
 
 Physics groups are created with a different syntax:
 
 .. code::
 
-	var _ground = this.add.physicsGroup(Phaser.Physics.P2JS);
+	var _ground = this.add.physicsGroup(Phaser.Physics.ARCADE);
 	_ground.physicsSortDirection = Phaser.Physics.Arcade.LEFT_RIGHT;
 
+And as mentioned in the previous section, the goal of these kind of groups is to automatically enable physics bodies on the children.
+
+The ``setAll`` property
+^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``setAll`` method is often used on the creation of scenes to initialize some values of the children objects. For example, if you are creating a platformer game you can group all the ground sprites on a group and set all the children to ``body.immovable = true`` in this way:
+
+.. code::
+	
+	groundSprites.setAll("body.immovable", true);
+
+Now you don’t need to write it, you can click on the ``groundSprites`` group and edit the ``setAll`` property.
+
+The ``setAll`` property editor is very simple, it is a dialog with a key/value table. For each row of the table a new ``setAll`` method call will be generated, the first column will be generated as the property name and the second column as the property value. Note that the name is generated inside a string expression ``"..."`` but the value of the property is generated verbatim, so you can write any expression there, a string literal, a number, a boolean, a function call, the name of a variable, whatever you want.
+
+
+.. image:: images/GroupSetAll.png
+	:alt: SetAll property dialog.
 
 Design-time object properties
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -733,7 +757,7 @@ Parameter                  Documentation
                            the name of the file.
 ``baseClass``              The name of the extended class, for example a custom ``MySprite`` class that extends ``Phaser.Sprite``.
 ``userCode``               A series of chunk of codes that the user can insert into the generated code. In the `User code`_ section we explain this in details.
-``lang``                   The language or format of the code: JavaScript or TypeScript.
+``lang``                   The language or format of the code: JavaScript 5, JavaScript 6 or TypeScript.
 ``generateOnSave``         By setting it to ``false`` it disable the automatic code generation.
 ========================== ======================================================
 
@@ -858,7 +882,7 @@ You are always allowed to write in any part of the generated file, but if you do
 - As general rule just write your code in sections where it says ``// -- user code here --``.
 - All the files have a ``/* --- start generated code --- */`` line at the begining of the file, you can write your code before that.
 - All the files have a ``/* --- end generated code --- */`` line at the end of the file, you can write your code after that.
-- In TypeScript generated files you can write your code between the comments:
+- In JavaScript 6 and TypeScript generated files you can write your code between the comments:
 	
 	- ``/* sprite-methods-begin */`` and ``/* sprite-methods-end */``
 	- ``/* group-methods-begin */`` and ``/* group-methods-end */``
@@ -911,7 +935,7 @@ You can open the user code dialog directly from the scene, press ``Ctrl+Shift+U`
 Public objects
 ~~~~~~~~~~~~~~
 
-In the `Object properties`_ section we mentioned the ``public`` property of an object. It is a `design time property`_ used to publish the objects beyond its context. To publish objects is needed to access a particular objects outside the ``create`` method. The concept is simple, for each public object is created an instance fild that reference it. These public fields follow the format ``f<ObjectName>``, for example, if the object ``star`` is marked as public a field ``fStar`` is generated:
+In the `Object properties`_ section we mentioned the ``public`` property of an object. It is a `design time property <#design-time-object-properties>`_ used to publish the objects beyond its context. To publish objects is needed to access a particular objects outside the ``create`` method. The concept is simple, for each public object is created an instance fild that reference it. These public fields follow the format ``f<ObjectName>``, for example, if the object ``star`` is marked as public a field ``fStar`` is generated:
 
 .. code-block:: javascript
 	:emphasize-lines: 6,13
