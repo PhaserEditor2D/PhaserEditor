@@ -135,7 +135,7 @@ public class ChainsView extends ViewPart {
 
 			StyleRange[] ranges;
 			StyleRange selRange = new StyleRange(match.start, match.length, cell.getControl().getForeground(),
-					getMatchBgColor());
+					getMatchBgColor(cell.getControl().getDisplay()));
 			StyleRange allRange = new StyleRange(0, text.length(), null, null);
 			allRange.font = _font;
 			if (chain.getDepth() > 0) {
@@ -206,7 +206,7 @@ public class ChainsView extends ViewPart {
 			StyleRange allRange = new StyleRange(0, text.length(), null, null);
 			allRange.font = font;
 			StyleRange selRange = new StyleRange(match.start, match.length, cell.getControl().getForeground(),
-					getMatchBgColor());
+					getMatchBgColor(cell.getControl().getDisplay()));
 			StyleRange[] ranges = { allRange, selRange };
 			cell.setStyleRanges(ranges);
 			cell.setText(text);
@@ -406,7 +406,8 @@ public class ChainsView extends ViewPart {
 			file = "examples/" + file;
 		}
 
-		Path filePath = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN, "phaser-examples-master/" + file);
+		Path filePath = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN,
+				"phaser-examples-master/" + file);
 
 		openJSEditor(linenum, -1, filePath);
 	}
@@ -615,11 +616,10 @@ public class ChainsView extends ViewPart {
 		return super.getAdapter(adapter);
 	}
 
-	private static RGB MATCH_BG_COLOR = new RGB(227, 227, 227);
+	// private static RGB MATCH_BG_COLOR = new RGB(188,182,13);
 
-	static Color getMatchBgColor() {
-		// return
-		// Display.getDefault().getSystemColor(SWT.COLOR_INFO_BACKGROUND);
-		return SWTResourceManager.getColor(MATCH_BG_COLOR);
+	static Color getMatchBgColor(Display display) {
+		return display.getSystemColor(SWT.COLOR_LIST_SELECTION);
+		// return SWTResourceManager.getColor(MATCH_BG_COLOR);
 	}
 }
