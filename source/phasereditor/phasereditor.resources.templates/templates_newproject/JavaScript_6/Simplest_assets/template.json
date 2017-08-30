@@ -11,5 +11,5 @@
 	},
 	"description": "The simplest project structure (TypeScript)",
 	"id" : "phasereditor.project.simplest.js6.assets",
-	typescript: false
+	typescript: true
 }

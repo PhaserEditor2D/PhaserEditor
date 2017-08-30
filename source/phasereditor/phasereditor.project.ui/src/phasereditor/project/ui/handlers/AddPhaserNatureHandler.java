@@ -23,7 +23,7 @@ public class AddPhaserNatureHandler extends AbstractHandler {
 				try {
 					IProject project = (IProject) obj;
 					if (!PhaserProjectNature.hasNature(project)) {
-						SourceLang lang = ProjectCore.getProjectLanguage(project.getFullPath());
+						SourceLang lang = ProjectCore.getProjectLanguage(project);
 						PhaserProjectNature.addPhaserNature(project, lang, new NullProgressMonitor());
 					}
 				} catch (CoreException e) {

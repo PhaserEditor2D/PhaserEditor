@@ -11,5 +11,5 @@
 	},
 	"description": "A project with a single state (JavaScript)",
 	"id" : "phasereditor.project.singleState.js6",
-	typescript: false
+	typescript: true
 }

@@ -280,10 +280,9 @@ public class ProjectCore {
 				if (lang == SourceLang.JAVA_SCRIPT) {
 					JsNature.addJsNature(project, monitor);
 				}
-				
-				PhaserProjectNature.addPhaserNature(project, lang, monitor);
-				
+
 				setProjectLanguage(project, lang);
+				PhaserProjectNature.addPhaserNature(project, lang, monitor);
 
 				return Status.OK_STATUS;
 			}
@@ -439,6 +438,17 @@ public class ProjectCore {
 		}
 	}
 
+	public static SourceLang getProjectLanguage(IProject project) {
+		try {
+			Map<QualifiedName, String> props = project.getPersistentProperties();
+			String name = props.getOrDefault(PROJECT_LANG, SourceLang.JAVA_SCRIPT.name());
+			SourceLang lang = SourceLang.valueOf(name);
+			return lang;
+		} catch (CoreException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static SourceLang getProjectLanguage(IPath path) {
 		IResource res = ResourcesPlugin.getWorkspace().getRoot().getFolder(path);
 
@@ -451,13 +461,7 @@ public class ProjectCore {
 		}
 
 		IProject project = res.getProject();
-		try {
-			Map<QualifiedName, String> props = project.getPersistentProperties();
-			String name = props.getOrDefault(PROJECT_LANG, SourceLang.JAVA_SCRIPT.name());
-			SourceLang lang = SourceLang.valueOf(name);
-			return lang;
-		} catch (CoreException e) {
-			throw new RuntimeException(e);
-		}
+
+		return getProjectLanguage(project);
 	}
 }

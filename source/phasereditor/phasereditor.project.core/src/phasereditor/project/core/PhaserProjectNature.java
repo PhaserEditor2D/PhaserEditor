@@ -169,29 +169,45 @@ public class PhaserProjectNature implements IProjectNature {
 			}
 		}
 		if (!found) {
-			// add builder to project
-			ICommand command = desc.newCommand();
-			command.setBuilderName(builderId);
-			ICommand[] newCommands = new ICommand[commands.length + 1];
 
-			// Add it before other builders.
-			System.arraycopy(commands, 0, newCommands, 1, commands.length);
-			newCommands[0] = command;
+			SourceLang lang = ProjectCore.getProjectLanguage(_project);
 
-			// sort commands, move the javascript project to the end
-			Arrays.sort(newCommands, new Comparator<ICommand>() {
+			// Phaser builder command
+			ICommand phaserBuilderCommand = desc.newCommand();
+			phaserBuilderCommand.setBuilderName(builderId);
+			ICommand[] newCommands;
 
-				@Override
-				public int compare(ICommand o1, ICommand o2) {
-					String id1 = o1.getBuilderName();
-					String id2 = o2.getBuilderName();
+			if (lang == SourceLang.JAVA_SCRIPT) {
+				newCommands = new ICommand[commands.length + 1];
+				// Add it before other builders.
+				System.arraycopy(commands, 0, newCommands, 1, commands.length);
+				newCommands[0] = phaserBuilderCommand;
 
-					int v1 = (id1 == JavaScriptCore.BUILDER_ID ? 1 : 0);
-					int v2 = (id2 == JavaScriptCore.BUILDER_ID ? 1 : 0);
+				// sort commands, move the javascript project to the end
+				Arrays.sort(newCommands, new Comparator<ICommand>() {
 
-					return v1 - v2;
-				}
-			});
+					@Override
+					public int compare(ICommand o1, ICommand o2) {
+						String id1 = o1.getBuilderName();
+						String id2 = o2.getBuilderName();
+
+						int v1 = (id1 == JavaScriptCore.BUILDER_ID ? 1 : 0);
+						int v2 = (id2 == JavaScriptCore.BUILDER_ID ? 1 : 0);
+
+						return v1 - v2;
+					}
+				});
+			} else {
+				newCommands = new ICommand[commands.length + 2];
+				// Add it before other builders.
+				System.arraycopy(commands, 0, newCommands, 2, commands.length);
+
+				ICommand tsBuilderCommand = desc.newCommand();
+				tsBuilderCommand.setBuilderName("ts.eclipse.ide.core.typeScriptBuilder");
+
+				newCommands[0] = phaserBuilderCommand;
+				newCommands[1] = tsBuilderCommand;
+			}
 
 			desc.setBuildSpec(newCommands);
 			_project.setDescription(desc, null);

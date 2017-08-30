@@ -29,7 +29,7 @@ public class ResetProjectLibsHanler extends AbstractHandler {
 
 			@Override
 			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-				SourceLang lang = ProjectCore.getProjectLanguage(project.getFullPath());
+				SourceLang lang = ProjectCore.getProjectLanguage(project);
 				PhaserProjectNature.resetProjectLibraries(project, lang, monitor);
 				project.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 				return Status.OK_STATUS;

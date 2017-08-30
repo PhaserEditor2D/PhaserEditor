@@ -11,5 +11,5 @@
 	},
 	"description": "A project with a single state and demo assets (JavaScript)",
 	"id" : "phasereditor.project.singleState.js6.assets",
-	typescript: false
+	typescript: true
 }
