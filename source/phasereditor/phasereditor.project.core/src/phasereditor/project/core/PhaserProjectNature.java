@@ -44,11 +44,14 @@ import org.eclipse.wst.jsdt.core.IJavaScriptProject;
 import org.eclipse.wst.jsdt.core.JavaScriptCore;
 import org.eclipse.wst.jsdt.core.JavaScriptModelException;
 
+import phasereditor.project.core.codegen.SourceLang;
+
 public class PhaserProjectNature implements IProjectNature {
 
 	public static final String NATURE_IDS[] = { ProjectCore.PHASER_PROJECT_NATURE };
 
-	public static void addPhaserNature(IProject project, IProgressMonitor monitor) throws CoreException {
+	public static void addPhaserNature(IProject project, SourceLang lang, IProgressMonitor monitor)
+			throws CoreException {
 		if (monitor != null && monitor.isCanceled()) {
 			throw new OperationCanceledException();
 		}
@@ -63,7 +66,7 @@ public class PhaserProjectNature implements IProjectNature {
 			description.setNatureIds(newNatures);
 			project.setDescription(description, monitor);
 
-			resetProjectLibraries(project, monitor);
+			resetProjectLibraries(project, lang, monitor);
 
 		} else {
 			if (monitor != null) {
@@ -72,8 +75,13 @@ public class PhaserProjectNature implements IProjectNature {
 		}
 	}
 
-	public static void resetProjectLibraries(IProject project, IProgressMonitor monitor)
+	public static void resetProjectLibraries(IProject project, SourceLang lang, IProgressMonitor monitor)
 			throws JavaScriptModelException {
+
+		if (lang != SourceLang.JAVA_SCRIPT) {
+			return;
+		}
+
 		IJavaScriptProject jsProject = JavaScriptCore.create(project);
 
 		// add libs
@@ -208,7 +216,7 @@ public class PhaserProjectNature implements IProjectNature {
 
 	@Override
 	public void setProject(IProject project) {
-		_project = project; 
+		_project = project;
 	}
 
 }

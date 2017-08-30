@@ -15,6 +15,8 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.wst.jsdt.ui.ProjectLibraryRoot;
 
 import phasereditor.project.core.PhaserProjectNature;
+import phasereditor.project.core.ProjectCore;
+import phasereditor.project.core.codegen.SourceLang;
 
 public class ResetProjectLibsHanler extends AbstractHandler {
 
@@ -27,7 +29,8 @@ public class ResetProjectLibsHanler extends AbstractHandler {
 
 			@Override
 			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-				PhaserProjectNature.resetProjectLibraries(project, monitor);
+				SourceLang lang = ProjectCore.getProjectLanguage(project.getFullPath());
+				PhaserProjectNature.resetProjectLibraries(project, lang, monitor);
 				project.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 				return Status.OK_STATUS;
 			}

@@ -277,8 +277,12 @@ public class ProjectCore {
 
 				template.copyInto(webContentFolder, paramValues, monitor);
 
-				JsNature.addJsNature(project, monitor);
-				PhaserProjectNature.addPhaserNature(project, monitor);
+				if (lang == SourceLang.JAVA_SCRIPT) {
+					JsNature.addJsNature(project, monitor);
+				}
+				
+				PhaserProjectNature.addPhaserNature(project, lang, monitor);
+				
 				setProjectLanguage(project, lang);
 
 				return Status.OK_STATUS;

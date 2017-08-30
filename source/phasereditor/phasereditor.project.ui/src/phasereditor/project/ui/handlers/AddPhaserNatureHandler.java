@@ -10,6 +10,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.project.core.PhaserProjectNature;
+import phasereditor.project.core.ProjectCore;
+import phasereditor.project.core.codegen.SourceLang;
 
 public class AddPhaserNatureHandler extends AbstractHandler {
 
@@ -21,7 +23,8 @@ public class AddPhaserNatureHandler extends AbstractHandler {
 				try {
 					IProject project = (IProject) obj;
 					if (!PhaserProjectNature.hasNature(project)) {
-						PhaserProjectNature.addPhaserNature(project, new NullProgressMonitor());
+						SourceLang lang = ProjectCore.getProjectLanguage(project.getFullPath());
+						PhaserProjectNature.addPhaserNature(project, lang, new NullProgressMonitor());
 					}
 				} catch (CoreException e) {
 					throw new RuntimeException(e);
