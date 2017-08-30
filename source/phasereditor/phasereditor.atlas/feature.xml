@@ -5,7 +5,7 @@
       version="1.4.1.20170628"
       provider-name="Arian Fornaris"
       license-feature="org.eclipse.platform"
-      license-feature-version="4.6.1.v20160907-1200">
+      license-feature-version="4.7.0.v20170612-1255">
 
    <description url="http://phasereditor.boniatillo.com">
       Texture atlas tools.
