@@ -134,8 +134,11 @@ public class ChainsView extends ViewPart {
 			String text = match.toString();
 
 			StyleRange[] ranges;
-			StyleRange selRange = new StyleRange(match.start, match.length, cell.getControl().getForeground(),
-					getMatchBgColor(cell.getControl().getDisplay()));
+
+			Color fgColor = getMatchFgColor(cell.getControl().getDisplay());
+			Color bgColor = getMatchBgColor(cell.getControl().getDisplay());
+
+			StyleRange selRange = new StyleRange(match.start, match.length, fgColor, bgColor);
 			StyleRange allRange = new StyleRange(0, text.length(), null, null);
 			allRange.font = _font;
 			if (chain.getDepth() > 0) {
@@ -205,8 +208,9 @@ public class ChainsView extends ViewPart {
 			}
 			StyleRange allRange = new StyleRange(0, text.length(), null, null);
 			allRange.font = font;
-			StyleRange selRange = new StyleRange(match.start, match.length, cell.getControl().getForeground(),
-					getMatchBgColor(cell.getControl().getDisplay()));
+			Color fgcolor = getMatchFgColor(cell.getControl().getDisplay());
+			Color bgcolor = getMatchBgColor(cell.getControl().getDisplay());
+			StyleRange selRange = new StyleRange(match.start, match.length, fgcolor, bgcolor);
 			StyleRange[] ranges = { allRange, selRange };
 			cell.setStyleRanges(ranges);
 			cell.setText(text);
@@ -621,5 +625,9 @@ public class ChainsView extends ViewPart {
 	static Color getMatchBgColor(Display display) {
 		return display.getSystemColor(SWT.COLOR_LIST_SELECTION);
 		// return SWTResourceManager.getColor(MATCH_BG_COLOR);
+	}
+
+	static Color getMatchFgColor(Display display) {
+		return display.getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT);
 	}
 }
