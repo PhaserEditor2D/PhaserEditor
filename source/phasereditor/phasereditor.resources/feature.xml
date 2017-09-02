@@ -2,7 +2,7 @@
 <feature
       id="phasereditor.resources"
       label="Phaser Editor - Resources"
-      version="1.4.0.20170424"
+      version="1.4.2.20170831"
       provider-name="Arian Fornairs"
       license-feature="org.eclipse.platform"
       license-feature-version="4.7.0.v20170612-1255">
