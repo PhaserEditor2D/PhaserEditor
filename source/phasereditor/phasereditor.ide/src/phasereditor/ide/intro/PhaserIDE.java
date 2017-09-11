@@ -67,8 +67,10 @@ import phasereditor.lic.LicCore;
  * difference that it uses a {@link PhaserWorkbenchAdvisor} to start with the
  * Phaser perspective..
  * 
+ * @deprecated To be removed!!
  * @since 3.0
  */
+@Deprecated
 @SuppressWarnings("restriction")
 public class PhaserIDE implements IApplication, IExecutableExtension {
 

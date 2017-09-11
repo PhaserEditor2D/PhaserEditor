@@ -7,7 +7,7 @@
          point="org.eclipse.core.runtime.applications">
       <application>
          <run
-               class="phasereditor.ide.intro.PhaserIDE">
+               class="phasereditor.ide.intro.PhaserIDE2">
          </run>
       </application>
    </extension>
@@ -157,6 +157,12 @@
                            label="Phaser Editor"
                            os="win32">
                      </theme>
+                  </extension>
+                  <extension
+                        point="org.eclipse.ui.startup">
+                     <startup
+                           class="phasereditor.ide.intro.IDEStartup">
+                     </startup>
                   </extension>
 
 </plugin>

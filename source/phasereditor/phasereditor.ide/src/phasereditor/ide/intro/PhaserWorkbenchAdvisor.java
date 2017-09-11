@@ -44,6 +44,12 @@ import org.eclipse.ui.navigator.resources.ProjectExplorer;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.canvas.ui.CanvasUI;
 
+/*
+ * 
+ * To be removed!!!
+ * 
+ */
+@Deprecated
 @SuppressWarnings("restriction")
 public class PhaserWorkbenchAdvisor extends IDEWorkbenchAdvisor {
 
