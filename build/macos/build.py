@@ -1,10 +1,14 @@
-f = open("Info.plist-template")
-s = f.read()
-f.close()
-ver = input("Enter the product version (eg: 1.4.2): ");
-s = s.replace("${ver}", ver)
-print(s)
 
-f = open("v" + ver + "-Info.plist", "w")
-f.write(s)
-f.close()
+templates = ("app", "repository")
+
+ver = input("Enter the product version (eg: 1.0.0): ");	
+
+for name in templates:
+	f = open(name + "-Info.plist-template")
+	s = f.read()
+	f.close()
+	s = s.replace("${ver}", ver)
+	
+	f = open("v" + ver + "-" + name + "-Info.plist", "w")
+	f.write(s)
+	f.close()
