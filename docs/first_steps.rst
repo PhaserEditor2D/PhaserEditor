@@ -98,10 +98,7 @@ This page contains a group of parameters that affect different aspects of a proj
 ``Language``                    To select the language of your project (JavaScript 5, JavaScript 6 or TypeScript). At the time there is not a built-in JavaScript 6/TypeScript editor inside Phaser Editor but we included this option because developers can use any other external editor like `VSCode <http://code.visualstudio.com>`_. There are some third-party plugins for Eclipse that support TypeScript, `here we talk about one of them <http://phasereditor.boniatillo.com/blog/2017/04/welcome-typescript-ide>`_.
 =============================== ===================================================
 
-If you select JavaScript 6 as language and you want to use the built-in JavaScript editor we recommend to disable the JavaScript validator, so no syntax errors will be reported. Just go to the preferences page ``Window > Preferences > JavaScript > Validator``:
-
-.. image:: images/DisableJSValidation.png
-	:alt: Disable JavaScript validation.
+The current JavaScript editor does not support JavaScript 6, for that reason, if you select that language, a `TypeScript IDE <http://phasereditor.boniatillo.com/blog/2017/04/welcome-typescript-ide>`_ project is created. We are going to include TypeScript IDE by default in the editor in the near future.
 
 
 After setting the parameters, press the **Finish** button to create the project and files.
