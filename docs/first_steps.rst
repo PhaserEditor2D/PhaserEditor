@@ -24,12 +24,13 @@ To execute the editor double click on the ``Phaser Editor`` application. It is a
 Notes for Linux users
 ~~~~~~~~~~~~~~~~~~~~~
 
-Before to run the editor you should set execution permission to some programs bundled in Phaser Editor. To do this, run the ``SetPermissions.sh`` script:
+Before to run the editor you should set execution permission to some programs bundled in Phaser Editor. To do this, run the ``SetExecPermissions.sh`` script:
 
 .. code-block:: bash
 
   $ cd "Phaser Editor"
-  $ ./SetPermissions.sh
+  $ chmod +x SetExecPermissions.sh
+  $ ./SetExecPermissions.sh
 
 
 Then run the editor as any other Linux program:
