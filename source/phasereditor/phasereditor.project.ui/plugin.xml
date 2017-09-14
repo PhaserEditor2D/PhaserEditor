@@ -27,7 +27,7 @@
             class="phasereditor.project.ui.wizards.NewPhaserProjectWizard"
             finalPerspective="phasereditor.ide.ui.perspective"
             hasPages="true"
-            icon="platform:/plugin/phasereditor.ui/icons/newjprj_wiz.gif"
+            icon="platform:/plugin/phasereditor.ui/icons/new_phaser_project.png"
             id="phasereditor.project.ui.newproject"
             name="Phaser Project"
             project="true">
@@ -37,7 +37,7 @@
             class="phasereditor.project.ui.wizards.NewPhaserExampleProjectWizard"
             finalPerspective="phasereditor.ide.ui.perspective"
             hasPages="true"
-            icon="platform:/plugin/phasereditor.ui/icons/newjprj_wiz.gif"
+            icon="platform:/plugin/phasereditor.ui/icons/new_phaser_project.png"
             id="phasereditor.project.ui.newExampleProject"
             name="Phaser Example Project"
             project="true">
@@ -206,5 +206,13 @@
             </objectClass>
          </enablement>
       </decorator>
+   </extension>
+   <extension
+         point="org.eclipse.ui.ide.projectNatureImages">
+      <image
+            icon="platform:/plugin/phasereditor.ui/icons/phaser_project_decorator.png"
+            id="phasereditor.project.ui.natureimage"
+            natureId="phasereditor.project.core.nature">
+      </image>
    </extension>
 </plugin>

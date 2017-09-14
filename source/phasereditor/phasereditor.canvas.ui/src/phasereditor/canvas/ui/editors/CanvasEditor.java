@@ -302,7 +302,7 @@ public class CanvasEditor extends MultiPageEditorPart
 		_settingsPage.setCanvas(_canvas);
 		int i = addPage(_settingsPage);
 		setPageText(i, "Configuration");
-		setPageImage(i, EditorSharedImages.getImage("icons/settings.png"));
+		setPageImage(i, EditorSharedImages.getImage(IEditorSharedImages.IMG_SETTINGS));
 	}
 
 	private void createDesignPage() {

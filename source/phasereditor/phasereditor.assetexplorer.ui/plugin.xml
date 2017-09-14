@@ -51,7 +51,7 @@
          </command>
          <command
                commandId="phasereditor.assetpack.ui.explorer.newview" 
-               icon="platform:/plugin/phasereditor.ui/icons/new.png"
+               icon="platform:/plugin/org.eclipse.ui.views/icons/full/elcl16/new.png"
                style="push">
          </command>
          <!--
@@ -76,7 +76,7 @@
             locationURI="popup:phasereditor.assetpack.views.assetExplorer?after=additions">
          <command
                commandId="phasereditor.assetpack.ui.explorer.newview"
-               icon="platform:/plugin/phasereditor.ui/icons/new.png"
+               icon="platform:/plugin/org.eclipse.ui.views/icons/full/elcl16/new.png"
                style="push">
          </command>
          <command

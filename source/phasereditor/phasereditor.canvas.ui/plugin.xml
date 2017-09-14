@@ -281,7 +281,7 @@
                label="Group">
             <command
                   commandId="phasereditor.canvas.ui.makegroup"
-                  icon="platform:/plugin/phasereditor.ui/icons/shape_group.png"
+                  icon="platform:/plugin/phasereditor.ui/icons/shape_square_group.png"
                   label="Create Group - With Selection"
                   style="push">
             </command>
@@ -293,6 +293,7 @@
             </command>
             <command
                   commandId="phasereditor.canvas.ui.ungroup"
+                  icon="platform:/plugin/phasereditor.ui/icons/shape_ungroup.png"
                   label="Break Group"
                   style="push">
             </command>

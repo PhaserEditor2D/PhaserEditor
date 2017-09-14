@@ -273,7 +273,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 			}
 		};
 		_settingsAction
-				.setImageDescriptor(ResourceManager.getPluginImageDescriptor("phasereditor.ui", "icons/settings.png"));
+				.setImageDescriptor(ResourceManager.getPluginImageDescriptor("phasereditor.ui", "icons/wrench.png"));
 
 		_layoutAction = new Action("Show/hide the legft side panel.", IAction.AS_CHECK_BOX) {
 			@Override

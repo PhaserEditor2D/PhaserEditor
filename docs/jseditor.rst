@@ -146,7 +146,7 @@ But also you can write the easing name:
 
 In Phaser Editor you get easing names completions:
 
-.. image:: images/EasingLiteralAssist.gif
+.. image:: images/EasingLiteralAssist.png
 	:alt: Easing names proposals and preview.
 
 Look the ball is animated with the selected easing.

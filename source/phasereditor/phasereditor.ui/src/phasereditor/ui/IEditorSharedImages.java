@@ -23,8 +23,7 @@ package phasereditor.ui;
 
 public interface IEditorSharedImages {
 	String IMG_SHAPE = "icons/shape_square.png";
-	String IMG_SHAPE_GROUP_NODE = "icons/shape_square_group.png";
-	String IMG_SHAPE_KEY = "icons/shape_square_key.png";
+	String IMG_SHAPE_GROUP_NODE = "icons/shape_node_group.png";
 	String IMG_DELETE = "icons/delete.png";
 	String IMG_EASING_ICON = "icons/vector.png";
 	String IMG_CLASS_OBJ = "icons/class_obj.png";
@@ -36,7 +35,6 @@ public interface IEditorSharedImages {
 	String IMG_ASSET_FOLDER = "icons/folder_brick.png";
 	String IMG_ASSET_KEY = "icons/brick.png";
 	String IMG_ASSET_ELEM_KEY = IMG_GENERIC_ELEMENT;
-	String IMG_ASSET_IMG_KEY = "icons/img_key.png";
 	String IMG_ASSET_GROUP = "icons/bullet_blue.png";
 	String IMG_LINK = "icons/link.png";
 	String IMG_METHPUB_OBJ = "icons/methpub_obj.png";
@@ -44,20 +42,18 @@ public interface IEditorSharedImages {
 	String IMG_PACKAGE_SEARCH = "icons/package_search.png";
 	String IMG_PACKAGE = "icons/box.png";
 	String IMG_PHASER_SHIP = "icons/phaser-ship.png";
-	String IMG_TEMPLATE_OBJ = "icons/template_obj.gif";
+	String IMG_TEMPLATE_OBJ = "icons/template_obj.png";
 	String IMG_WORLD = "icons/world.png";
-	String IMG_NEWJSCRIPT_WIZ = "icons/newjscript_wiz.gif";
 	String IMG_COMPRESS = "icons/compress.png";
 	String IMG_BUILD = "icons/cog.png";
 	String IMG_EYE = "icons/eye.png";
 	String IMG_PALETTE = "icons/palette.png";
 	String IMG_APPLICATION_SIDE_TREE = "icons/application_side_tree.png";
-	String IMG_SETTINGS = "icons/settings.png";
+	String IMG_SETTINGS = "icons/wrench.png";
 	String IMG_PREVIEW_PATTERN = "icons/preview-pattern.png";
 	String IMG_ZOOM_RESTORE = "icons/zoom_default.png";
 	String IMG_OUTLINE = "icons/outline_co.png";
 	String IMG_SHAPE_EDIT = "icons/shape_square_edit.png";
-	String IMG_TILES = "icons/tiles.png";
 	String IMG_CAR = "icons/car.png";
 	String IMG_BUTTON = "icons/button.png";
 	String IMG_BRICKS = "icons/bricks.png";
