@@ -36,6 +36,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -81,6 +82,8 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import javafx.embed.swt.FXCanvas;
+import javafx.scene.input.InputEvent;
 import phasereditor.ui.views.PreviewView;
 
 public class PhaserEditorUI {
@@ -89,11 +92,11 @@ public class PhaserEditorUI {
 																						// 200,
 																						// 200);
 	private static Set<Object> _supportedImageExts = new HashSet<>(Arrays.asList("png", "bmp", "jpg", "gif", "ico"));
-																						private static Boolean _isCocoaPlatform;
+	private static Boolean _isCocoaPlatform;
 
 	private PhaserEditorUI() {
 	}
-	
+
 	public static boolean isCocoaPlatform() {
 		if (_isCocoaPlatform == null) {
 			_isCocoaPlatform = Boolean.valueOf(SWT.getPlatform().equals("cocoa"));
@@ -110,7 +113,7 @@ public class PhaserEditorUI {
 					if (editor == null) {
 						continue;
 					}
-					
+
 					visitor.accept(editor);
 				}
 			}
@@ -672,5 +675,29 @@ public class PhaserEditorUI {
 		Image img = new Image(Display.getCurrent(), data);
 
 		return img;
+	}
+
+	/**
+	 * When the internal browser is open (at least in windows) the FXCanvas is
+	 * not redrawn after any input event.
+	 * 
+	 * @param canvas
+	 */
+	public static void fixInternalBrowserBug(FXCanvas canvas) {
+		canvas.getScene().addEventFilter(InputEvent.ANY, (e) -> {
+			if (_countInternalBrowsers.get() > 0) {
+				canvas.redraw();
+			}
+		});
+	}
+
+	private static AtomicInteger _countInternalBrowsers = new AtomicInteger(0);
+
+	public static void openedInternalBrowser() {
+		_countInternalBrowsers.incrementAndGet();
+	}
+
+	public static void closedInternalBrowser() {
+		_countInternalBrowsers.decrementAndGet();
 	}
 }

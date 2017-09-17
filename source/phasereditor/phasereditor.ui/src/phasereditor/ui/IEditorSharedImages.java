@@ -44,6 +44,7 @@ public interface IEditorSharedImages {
 	String IMG_PHASER_SHIP = "icons/phaser-ship.png";
 	String IMG_TEMPLATE_OBJ = "icons/template_obj.png";
 	String IMG_WORLD = "icons/world.png";
+	String IMG_WORLD_PAGE_WHITE = "icons/page_white_world.png";
 	String IMG_COMPRESS = "icons/compress.png";
 	String IMG_BUILD = "icons/cog.png";
 	String IMG_EYE = "icons/eye.png";
@@ -58,5 +59,7 @@ public interface IEditorSharedImages {
 	String IMG_BUTTON = "icons/button.png";
 	String IMG_BRICKS = "icons/bricks.png";
 	String IMG_CANVAS = "icons/canvas.png";
+	String IMG_MONITOR_EDIT = "icons/monitor_edit.png";
+	String IMG_ROTATE = "icons/arrow_rotate_clockwise.png";
 }
 

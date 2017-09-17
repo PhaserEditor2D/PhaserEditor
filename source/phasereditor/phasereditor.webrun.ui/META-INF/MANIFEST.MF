@@ -12,6 +12,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.navigator;bundle-version="3.5.401",
  org.eclipse.jetty.util;bundle-version="9.2.9",
  phasereditor.project.core,
- phasereditor.webrun.core
+ phasereditor.webrun.core,
+ phasereditor.ui;bundle-version="1.4.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy

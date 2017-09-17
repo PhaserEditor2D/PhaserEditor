@@ -9,6 +9,12 @@
             id="phasereditor.webrun.ui.runlocal"
             name="Run Phaser Project">
       </command>
+      <command
+            categoryId="phasereditor.ui.phaserCategory"
+            description="Run the Phaser project in an internal browser."
+            id="phasereditor.webrun.ui.runinternal"
+            name="Run Phaser Project (Internal Browser - Experimental)">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -18,6 +24,11 @@
          <command
                commandId="phasereditor.webrun.ui.runlocal"
                icon="platform:/plugin/phasereditor.ui/icons/world.png"
+               style="push">
+         </command>
+         <command
+               commandId="phasereditor.webrun.ui.runinternal"
+               icon="platform:/plugin/phasereditor.ui/icons/page_white_world.png"
                style="push">
          </command>
       </menuContribution>
@@ -33,6 +44,11 @@
                icon="platform:/plugin/phasereditor.ui/icons/world.png"
                style="push">
          </command>
+         <command
+               commandId="phasereditor.webrun.ui.runinternal"
+               icon="platform:/plugin/phasereditor.ui/icons/page_white_world.png"
+               style="push">
+         </command>
       </menuContribution>
    </extension>
    <extension
@@ -41,6 +57,10 @@
             class="phasereditor.webrun.ui.handlers.RunLocalHandler"
             commandId="phasereditor.webrun.ui.runlocal">
       </handler>
+      <handler
+            class="phasereditor.webrun.ui.handlers.RunInternalHandler"
+            commandId="phasereditor.webrun.ui.runinternal">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
@@ -48,7 +68,31 @@
             commandId="phasereditor.webrun.ui.runlocal"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M3+F5">
+            sequence="M1+M3+F5">
       </key>
+      <key
+            commandId="phasereditor.webrun.ui.runinternal"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+M3+F6">
+      </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="phasereditor.webrun.ui.editors.GamePlayerEditor"
+            contributorClass="phasereditor.webrun.ui.editors.GamePlayerEditorContributor"
+            default="false"
+            icon="platform:/plugin/phasereditor.ui/icons/page_white_world.png"
+            id="phasereditor.webrun.ui.gameplayer"
+            name="Game Player">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.elementFactories">
+      <factory
+            class="phasereditor.webrun.ui.editors.GamePlayerInputFactory"
+            id="phasereditor.webrun.ui.gameplayerFactory">
+      </factory>
    </extension>
 </plugin>

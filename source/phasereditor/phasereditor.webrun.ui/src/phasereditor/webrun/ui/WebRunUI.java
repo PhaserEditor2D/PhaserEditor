@@ -46,6 +46,7 @@ import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 
 import phasereditor.project.core.ProjectCore;
 import phasereditor.webrun.core.WebRunCore;
+import phasereditor.webrun.ui.editors.GamePlayerEditor;
 
 public class WebRunUI {
 	/**
@@ -72,15 +73,51 @@ public class WebRunUI {
 
 	}
 
+	/**
+	 * Open a internal browser pointing to the WebContent folder of the given
+	 * project.
+	 * 
+	 * @param project
+	 */
+	public static void openInternalBrowser(IProject project) {
+
+		try {
+			if (ProjectCore.hasErrors(project)) {
+				if (!MessageDialog.openConfirm(Display.getDefault().getActiveShell(), "Run",
+						"The project '" + project.getName() + "' has errors, do you want to run it?")) {
+					return;
+				}
+
+			}
+		} catch (CoreException e) {
+			throw new RuntimeException(e);
+		}
+
+		String url = getProjectBrowserURL(project);
+		WebRunCore.startServerIfNotRunning();
+
+		out.println("Open " + url);
+		
+		try {
+
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+					.openEditor(new GamePlayerEditorInput(project), GamePlayerEditor.ID);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static String getProjectBrowserURL(IProject project) {
 		IContainer webContent = ProjectCore.getWebContentFolder(project);
 		String path = webContent.getFullPath().toPortableString();
-		String url = ("http://localhost:" + WebRunCore.getServerPort() + "/" + path).replace("//", "/");
+		String url = "http://localhost:" + (WebRunCore.getServerPort() + "/" + path).replace("//", "/");
 		url = URIUtil.encodePath(url);
 		return url;
 	}
 
-	public static void openBrowser(ISelection sel) {
+	public static IProject findProject(ISelection sel) {
 		IResource resource = null;
 
 		if (sel != null && sel instanceof IStructuredSelection) {
@@ -90,7 +127,6 @@ public class WebRunUI {
 			}
 		}
 		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		Shell shell = window.getShell();
 
 		if (resource == null) {
 			IEditorPart editor = window.getActivePage().getActiveEditor();
@@ -98,23 +134,47 @@ public class WebRunUI {
 				IEditorInput input = editor.getEditorInput();
 				if (input instanceof IFileEditorInput) {
 					resource = ((IFileEditorInput) input).getFile();
+				} else {
+					resource = input.getAdapter(IProject.class);
 				}
 			}
 		}
 
 		if (resource == null) {
 			IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
-			if (projects.length == 1) {
+			if (projects.length > 0) {
 				resource = projects[0];
 			}
+		} else {
+			resource = resource.getProject();
 		}
 
-		if (resource == null) {
+		return (IProject) resource;
+	}
+
+	public static void openBrowser(ISelection sel) {
+		IProject project = findProject(sel);
+
+		if (project == null) {
+			IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+			Shell shell = window.getShell();
 			MessageDialog.openInformation(shell, "Run Local",
 					"Project not found. Please on the Project Explorer select the projet to run.");
 		} else {
-			IProject project = resource.getProject();
 			openBrowser(project);
+		}
+	}
+
+	public static void openInternalBrowser(ISelection sel) {
+		IProject project = findProject(sel);
+
+		if (project == null) {
+			IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+			Shell shell = window.getShell();
+			MessageDialog.openInformation(shell, "Play Game",
+					"Project not found. Please on the Project Explorer select the projet to run.");
+		} else {
+			openInternalBrowser(project);
 		}
 	}
 

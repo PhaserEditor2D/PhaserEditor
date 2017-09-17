@@ -152,7 +152,7 @@ public class ZoomBehavior {
 		});
 
 		_canvas.getHandlerBehavior().update();
-		_canvas.getPaintBehavior().repaint();
+		_canvas.getPaintBehavior().repaint();				
 	}
 	
 	public double getScale() {

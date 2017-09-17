@@ -55,6 +55,7 @@ import phasereditor.canvas.ui.editors.palette.PaletteComp;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
+import phasereditor.ui.PhaserEditorUI;
 
 /**
  * @author arian
@@ -88,8 +89,7 @@ public class ObjectCanvas extends FXCanvas {
 		super(parent, style);
 	}
 
-	public void init(CanvasEditor editor, CanvasModel model, PGrid grid, TreeViewer outline,
-			PaletteComp palette) {
+	public void init(CanvasEditor editor, CanvasModel model, PGrid grid, TreeViewer outline, PaletteComp palette) {
 		_editor = editor;
 		_settingsModel = model.getSettings();
 		_worldModel = model.getWorld();
@@ -113,9 +113,11 @@ public class ObjectCanvas extends FXCanvas {
 
 		_updateBehavior.updateFromSettings();
 		_zoomBehavior.updateZoomAndPan();
-		
+
 		// just to force to select the default stuff in the property grid
 		_selectionBehavior.setSelection(StructuredSelection.EMPTY);
+
+		PhaserEditorUI.fixInternalBrowserBug(this);
 	}
 
 	public CanvasEditor getEditor() {
@@ -153,7 +155,7 @@ public class ObjectCanvas extends FXCanvas {
 	public MouseBehavior getMouseBehavior() {
 		return _mouseBehavior;
 	}
-	
+
 	public KeyboardBehavior getKeyboardBehavior() {
 		return _keyboardBehavior;
 	}
@@ -177,7 +179,7 @@ public class ObjectCanvas extends FXCanvas {
 	public UpdateBehavior getUpdateBehavior() {
 		return _updateBehavior;
 	}
-	
+
 	public HandlerBehavior getHandlerBehavior() {
 		return _handlerBehavior;
 	}
@@ -224,18 +226,17 @@ public class ObjectCanvas extends FXCanvas {
 		_selectionPane = new Pane();
 		_selectionPane.setId("__selection-pane__");
 
-		
 		_handlerPane = new Pane();
 		_handlerPane.setId("__handler-pane__");
-		
-		
+
 		_selectionFrontPane = new Pane();
 		_selectionFrontPane.setId("__selection-glass-pane__");
 		_selectionFrontPane.setMouseTransparent(true);
 
 		_root.setAlignment(Pos.TOP_LEFT);
 
-		_root.getChildren().setAll(_backGridPane, world, _frontGridPane, _selectionPane, _handlerPane, _selectionFrontPane);
+		_root.getChildren().setAll(_backGridPane, world, _frontGridPane, _selectionPane, _handlerPane,
+				_selectionFrontPane);
 	}
 
 	public GridPane getBackGridPane() {
@@ -257,7 +258,7 @@ public class ObjectCanvas extends FXCanvas {
 	public Pane getSelectionPane() {
 		return _selectionPane;
 	}
-	
+
 	public Pane getHandlerPane() {
 		return _handlerPane;
 	}
@@ -265,8 +266,9 @@ public class ObjectCanvas extends FXCanvas {
 	public Pane getSelectionFrontPane() {
 		return _selectionFrontPane;
 	}
-	
-	public void dropToCanvas(CompositeOperation operations, GroupNode parentNode,  BaseObjectControl<?> control, double sceneX, double sceneY) {
+
+	public void dropToCanvas(CompositeOperation operations, GroupNode parentNode, BaseObjectControl<?> control,
+			double sceneX, double sceneY) {
 		// IObjectNode node = control.getIObjectNode();
 
 		double invScale = 1 / _zoomBehavior.getScale();

@@ -216,6 +216,8 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 			if (input instanceof IFileEditorInput) {
 				IFile file = ((IFileEditorInput) input).getFile();
 				activeProjet = file.getProject();
+			} else {
+				activeProjet = input.getAdapter(IProject.class);
 			}
 		}
 		return activeProjet;
