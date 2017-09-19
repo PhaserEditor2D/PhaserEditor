@@ -33,15 +33,12 @@ Links:
 * [Older versions on Bitbucket][bitbucket]
 
 
-![sep2](http://phasereditor.boniatillo.com/images/cactus.png)
-
 ### Known issues
 
 * [Linux - After a second run it stops loading](https://github.com/boniatillo-com/PhaserEditor/issues/10)
 
 Please use the issues of this repo to report bugs or request features. In addition you can use any of our social channels or write an email to **developers at boniatillo.com**.
 
-![sep3](http://phasereditor.boniatillo.com/images/guapen.png)
 
 ### Author
 
