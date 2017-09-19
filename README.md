@@ -1,5 +1,3 @@
-![Phaser editor scheernshot](https://github.com/boniatillo-com/PhaserEditor/raw/master/screens/header.png "Screenshot")
-
 # Phaser Editor
 
 A friendly IDE to develop HTML5 games based on the popular [Phaser][phaser] framework.
@@ -20,6 +18,8 @@ Based on Eclipse, this IDE provides lot of functionalities made just to develop 
 * And all that great stuff that you can find in a Eclipse based IDE, like a super flexible layout, projects explorer, customizable key shortcuts, native look and feel and a huge community, just to mention some of them.
 
 [Read more...][pe_features]
+
+![Phaser editor scheernshot](https://github.com/boniatillo-com/PhaserEditor/raw/master/screens/header.png "Screenshot")
 
 Links:
 
@@ -50,7 +50,6 @@ Phaser Editor is developed by [Arian Fornaris][pe_twitter].
 You can checkout the source code and modify it (EPL License).
 
 
-
 [phaser]: https://phaser.io
 [bitbucket]: https://bitbucket.org/boniatillo/phasereditor
 [bitbucket]: https://bitbucket.org/boniatillo/phasereditor
@@ -72,3 +71,6 @@ You can checkout the source code and modify it (EPL License).
 [OptiPNG]: http://phasereditor.boniatillo.com/docs/optipng.html
 [Canvas]: http://phasereditor.boniatillo.com/docs/canvas.html
 [AudioSprites]: http://phasereditor.boniatillo.com/docs/audio_sprites.html
+
+
+![footer](https://github.com/boniatillo-com/PhaserEditor/blob/master/art/logo/banner.png)
