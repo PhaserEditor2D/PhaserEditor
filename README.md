@@ -4,7 +4,7 @@
 
 A friendly IDE to develop HTML5 games based on the popular [Phaser][phaser] framework.
 
-![sep1](http://phasereditor.boniatillo.com/images/logo.png)
+![sep1](https://github.com/boniatillo-com/PhaserEditor/blob/master/art/logo/logo.png)
 
 Based on Eclipse, this IDE provides lot of functionalities made just to develop Phaser games:
 
