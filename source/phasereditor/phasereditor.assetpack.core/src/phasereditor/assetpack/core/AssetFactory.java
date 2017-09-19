@@ -272,22 +272,32 @@ public abstract class AssetFactory {
 
 		cache(new TextAssetFactory());
 
-		class JsonAssetFactory extends TextAssetFactory {
-			public JsonAssetFactory() {
-				super(AssetType.json, "json");
-			}
+		cache(new TextAssetFactory(AssetType.json, "json") {
 
 			@Override
-			public AssetModel createAsset(JSONObject jsonDef, AssetSectionModel section) throws Exception {
-				return new JsonAssetModel(jsonDef, section);
+			public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
+				return new JsonAssetModel(jsonDoc, section);
 			}
 
 			@Override
 			protected TextAssetModel makeAsset(String key, AssetSectionModel section) {
 				return new JsonAssetModel(key, section);
 			}
-		}
-		cache(new JsonAssetFactory());
+		});
+
+		cache(new TextAssetFactory(AssetType.xml, "xml") {
+
+			@Override
+			public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
+				return new XmlAssetModel(jsonDoc, section);
+			}
+
+			@Override
+			protected TextAssetModel makeAsset(String key, AssetSectionModel section) {
+				return new XmlAssetModel(key, section);
+			}
+
+		});
 
 		class ShaderAssetFactory extends TextAssetFactory {
 			public ShaderAssetFactory() {

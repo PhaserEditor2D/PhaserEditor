@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015 Arian Fornaris
+// Copyright (c) 2015, 2017 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -21,10 +21,23 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core;
 
-public enum AssetType {
-	image, spritesheet, atlas, audio, audiosprite, video, tilemap, bitmapFont, physics, text, json, xml, script, shader, binary;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-	public String capitalName() {
-		return name().substring(0, 1).toUpperCase() + name().substring(1);
+/**
+ * @author arian
+ *
+ */
+public class XmlAssetModel extends TextAssetModel {
+
+	public XmlAssetModel(JSONObject jsonDef, AssetSectionModel section)
+			throws JSONException {
+		super(jsonDef, section);
 	}
+
+	public XmlAssetModel(String key, AssetSectionModel section)
+			throws JSONException {
+		super(key, AssetType.xml, section);
+	}
+
 }

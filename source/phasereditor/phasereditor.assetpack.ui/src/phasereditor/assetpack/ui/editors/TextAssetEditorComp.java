@@ -158,7 +158,21 @@ public class TextAssetEditorComp extends Composite {
 			IFile urlFile = _model.getFileFromUrl(_model.getUrl());
 			List<IFile> files = AssetPackCore.discoverTextFiles(pack.getWebContentFolder());
 			AssetType type = getModel().getType();
-			String[] exts = type == AssetType.text ? new String[] { "txt", "text" } : new String[] { "json" };
+			String[] exts = {};
+			switch (type) {
+			case text:
+				exts = new String[] { "txt", "text" };
+				break;
+			case json:
+				exts = new String[] { "json" };
+				break;
+			case xml:
+				exts = new String[] { "xml" };
+				break;
+			default:
+				break;
+			}
+
 			AssetPackCore.sortFilesByExtension(files, exts);
 			AssetPackUI.browseAssetFile(pack, type.name(), urlFile, files, getShell(), new Consumer<String>() {
 

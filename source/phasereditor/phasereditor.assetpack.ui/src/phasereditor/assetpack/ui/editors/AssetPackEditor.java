@@ -679,6 +679,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 					break;
 				case text:
 				case json:
+				case xml:
 					_textAssetEditorComp.setModel((TextAssetModel) asset);
 					editor = _textAssetEditorComp;
 					break;
