@@ -79,6 +79,7 @@ public class WebRunCore {
 		// resources
 		ResourceHandler resourceHandler = new WorkspaceResourcesHandler();
 		resourceHandler.setMinMemoryMappedContentLength(-1);
+		resourceHandler.setCacheControl("no-store,no-cache,must-revalidate");
 		resourceHandler.setDirectoriesListed(true);
 		resourceHandler.setWelcomeFiles(new String[] { "index.html" });
 		// set the folder to serve
