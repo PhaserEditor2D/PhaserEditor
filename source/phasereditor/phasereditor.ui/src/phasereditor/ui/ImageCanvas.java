@@ -42,8 +42,7 @@ public class ImageCanvas extends Canvas implements PaintListener {
 		super(parent, style | SWT.DOUBLE_BUFFERED);
 		addPaintListener(this);
 		_preferredSize = new Point(0, 0);
-		// setBackground(getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
-		setBackground((getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND)));
+		PhaserEditorUI.setTreeBackgroundColor(PhaserEditorUI.getMainWindowColor(), this);
 	}
 
 	public String getNoImageMessage() {

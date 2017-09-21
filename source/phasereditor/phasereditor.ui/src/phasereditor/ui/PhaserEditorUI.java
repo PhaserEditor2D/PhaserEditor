@@ -70,6 +70,7 @@ import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
@@ -699,5 +700,19 @@ public class PhaserEditorUI {
 
 	public static void closedInternalBrowser() {
 		_countInternalBrowsers.decrementAndGet();
+	}
+
+	public static void setTreeBackgroundColor(Color bgColor, Control control) {
+		control.setBackground(bgColor);
+		if (control instanceof Composite) {
+			Control[] list = ((Composite) control).getChildren();
+			for (Control c : list) {
+				setTreeBackgroundColor(bgColor, c);
+			}
+		}
+	}
+
+	public static Color getMainWindowColor() {
+		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getBackground();
 	}
 }
