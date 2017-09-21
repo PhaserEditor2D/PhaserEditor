@@ -94,6 +94,7 @@ public class PhaserEditorUI {
 																						// 200);
 	private static Set<Object> _supportedImageExts = new HashSet<>(Arrays.asList("png", "bmp", "jpg", "gif", "ico"));
 	private static Boolean _isCocoaPlatform;
+	private static Boolean _isWindowsPlatform;
 
 	private PhaserEditorUI() {
 	}
@@ -103,6 +104,13 @@ public class PhaserEditorUI {
 			_isCocoaPlatform = Boolean.valueOf(SWT.getPlatform().equals("cocoa"));
 		}
 		return _isCocoaPlatform.booleanValue();
+	}
+	
+	public static boolean isWindowsPlaform() {
+		if (_isWindowsPlatform == null) {
+			_isWindowsPlatform = Boolean.valueOf(SWT.getPlatform().equals("win32"));
+		}
+		return _isWindowsPlatform.booleanValue();
 	}
 
 	public static void forEachEditor(Consumer<IEditorPart> visitor) {

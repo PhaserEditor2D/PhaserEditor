@@ -51,7 +51,7 @@ public class IDEPlugin extends AbstractUIPlugin {
 	 */
 	@Override
 	public void start(BundleContext context) throws Exception {
-		super.start(context);
+		super.start(context);		
 		plugin = this;
 	}
 
