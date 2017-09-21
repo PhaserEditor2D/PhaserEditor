@@ -96,6 +96,7 @@ html_theme = "phaser-editor"
 html_theme_path = ["_themes"]
 html_show_sourcelink = False
 html_show_sphinx = False
+html_favicon = "logo.png"
 
 
 print(html_theme_path)
