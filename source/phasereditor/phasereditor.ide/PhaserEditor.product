@@ -55,7 +55,7 @@ Copyright (c) Arian Fornaris 2015-2017
       </vmArgsMac>
    </launcherArgs>
 
-   <windowImages i16="icons/icon16.png" i32="icons/icon32.png" i48="icons/icon48.png" i64="icons/icon64.png" i128="icons/icon128.png" i256="icons/icon256.png"/>
+   <windowImages i16="icons/16.png" i32="icons/32.png" i48="icons/48.png" i64="icons/64.png" i128="icons/128.png" i256="icons/256.png"/>
 
    <splash
       startupProgressRect="5,275,445,15"
@@ -64,7 +64,7 @@ Copyright (c) Arian Fornaris 2015-2017
    <launcher name="PhaserEditor">
       <macosx icon="/phasereditor.ide/icons/Eclipse.icns"/>
       <win useIco="true">
-         <ico path="icons/icon.ico"/>
+         <ico path="/phasereditor.ide/icons/win-icons.ico"/>
          <bmp/>
       </win>
    </launcher>
