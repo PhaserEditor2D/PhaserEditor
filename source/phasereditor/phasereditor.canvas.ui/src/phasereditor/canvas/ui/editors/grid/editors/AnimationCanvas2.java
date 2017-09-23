@@ -67,7 +67,7 @@ public class AnimationCanvas2 extends ImageCanvas implements ControlListener {
 
 		setImageFile(frames.get(0).getImageFile());
 		showFrame(0);
-		getDisplay().asyncExec(()->{
+		getDisplay().asyncExec(() -> {
 			fitWindow();
 			redraw();
 		});
@@ -126,7 +126,10 @@ public class AnimationCanvas2 extends ImageCanvas implements ControlListener {
 
 	@Override
 	public void controlResized(ControlEvent e) {
-		getDisplay().asyncExec(this::fitWindow);
+		getDisplay().asyncExec(() -> {
+			this.fitWindow();
+			redraw();
+		});
 	}
 
 }
