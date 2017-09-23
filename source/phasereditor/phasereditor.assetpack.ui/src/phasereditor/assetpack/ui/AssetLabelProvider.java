@@ -63,6 +63,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 
 	public final static AssetLabelProvider GLOBAL_16 = new AssetLabelProvider(16, true);
 	public final static AssetLabelProvider GLOBAL_48 = new AssetLabelProvider(48, true);
+	public final static AssetLabelProvider GLOBAL_64 = new AssetLabelProvider(64, true);
 
 	private final int _iconSize;
 	private WorkbenchLabelProvider _workbenchLabelProvider;

@@ -74,6 +74,7 @@ import org.eclipse.wb.swt.ResourceManager;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
+import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.canvas.core.AnimationModel;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
@@ -92,7 +93,7 @@ public class AnimationsDialog extends Dialog {
 	private List<AnimationModel> _animList;
 	private Button _loopButton;
 	private AnimationModel _anim;
-	private AnimationCanvas _canvas;
+	private AnimationCanvas2 _canvas;
 
 	/**
 	 * Create the dialog.
@@ -101,6 +102,7 @@ public class AnimationsDialog extends Dialog {
 	 */
 	public AnimationsDialog(Shell parentShell) {
 		super(parentShell);
+		setShellStyle(SWT.MAX | SWT.RESIZE | SWT.TITLE);
 	}
 
 	@Override
@@ -237,7 +239,7 @@ public class AnimationsDialog extends Dialog {
 		gl_composite_3.marginWidth = 0;
 		composite_3.setLayout(gl_composite_3);
 
-		_canvas = new AnimationCanvas(composite_3, SWT.BORDER);
+		_canvas = new AnimationCanvas2(composite_3, SWT.BORDER);
 		_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		Composite composite_1 = new Composite(composite_3, SWT.NONE);
@@ -312,7 +314,7 @@ public class AnimationsDialog extends Dialog {
 		_framesViewer.setLabelProvider(new LabelProvider() {
 			@Override
 			public Image getImage(Object element) {
-				return AssetLabelProvider.GLOBAL_48.getImage(element);
+				return AssetLabelProvider.GLOBAL_64.getImage(element);
 			}
 
 			@Override
@@ -322,7 +324,7 @@ public class AnimationsDialog extends Dialog {
 					return Integer.toString(index);
 				}
 
-				return AssetLabelProvider.GLOBAL_48.getText(element);
+				return AssetLabelProvider.GLOBAL_64.getText(element);
 			}
 		});
 		_framesViewer.setContentProvider(ArrayContentProvider.getInstance());
@@ -336,6 +338,8 @@ public class AnimationsDialog extends Dialog {
 
 		_animationsViewer.setContentProvider(ArrayContentProvider.getInstance());
 		_animationsViewer.setInput(_animList);
+		
+		AssetPackUI.installAssetTooltips(_framesViewer);
 
 		if (_animList.isEmpty()) {
 			setAnimation(null);

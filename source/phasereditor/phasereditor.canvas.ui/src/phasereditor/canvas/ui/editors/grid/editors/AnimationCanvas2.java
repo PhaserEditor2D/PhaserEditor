@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2016 Arian Fornaris
+// Copyright (c) 2015, 2017 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -23,54 +23,32 @@ package phasereditor.canvas.ui.editors.grid.editors;
 
 import java.util.List;
 
-import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.widgets.Composite;
 
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.Transition;
-import javafx.embed.swt.FXCanvas;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.ImagePattern;
 import javafx.util.Duration;
 import phasereditor.assetpack.core.FrameData;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.canvas.core.AnimationModel;
-import phasereditor.ui.EditorSharedImages;
-import phasereditor.ui.IEditorSharedImages;
-import phasereditor.ui.ImageCache;
+import phasereditor.ui.ImageCanvas;
 
 /**
  * @author arian
- * @deprecated Use {@link AnimationCanvas2}
  *
  */
-@Deprecated
-public class AnimationCanvas extends FXCanvas {
+public class AnimationCanvas2 extends ImageCanvas implements ControlListener {
 
 	private AnimationModel _model;
 	private IndexTransition _anim;
-	private ImageView _imgView;
-	private Pane _container;
 
-	public AnimationCanvas(Composite parent, int style) {
+	public AnimationCanvas2(Composite parent, int style) {
 		super(parent, style);
-		_imgView = new ImageView();
-		_container = new Pane(_imgView);
-		BorderPane root = new BorderPane(_container);
-		ImagePattern fill = new ImagePattern(EditorSharedImages.getFXImage(IEditorSharedImages.IMG_PREVIEW_PATTERN), 0,
-				0, 16, 16, false);
-		root.setBackground(new Background(new BackgroundFill(fill, null, null)));
-		Scene scene = new Scene(root);
-		// scene.setFill(fill);
-		setScene(scene);
+
+		addControlListener(this);
 	}
 
 	public void setModel(AnimationModel model) {
@@ -81,28 +59,29 @@ public class AnimationCanvas extends FXCanvas {
 		}
 
 		if (_model == null || _model.getFrames().isEmpty()) {
-			_imgView.setImage(null);
+			setImage(null);
 			return;
 		}
 
 		List<IAssetFrameModel> frames = _model.getFrames();
 
-		Image image = ImageCache.getFXImage(frames.get(0).getImageFile());
-		_imgView.setImage(image);
+		setImageFile(frames.get(0).getImageFile());
 		showFrame(0);
+		getDisplay().asyncExec(()->{
+			fitWindow();
+			redraw();
+		});
 
 		int size = model.getFrames().size();
 		_anim = new IndexTransition(Duration.seconds(size / (double) model.getFrameRate()), size);
+
 		if (model.isLoop()) {
 			_anim.setCycleCount(Animation.INDEFINITE);
 		}
 		_anim.play();
-		
-		// resize
-		
 	}
 
-	void showFrame(int index) {
+	public void showFrame(int index) {
 		List<IAssetFrameModel> frames = _model.getFrames();
 		if (index >= frames.size()) {
 			return;
@@ -110,11 +89,7 @@ public class AnimationCanvas extends FXCanvas {
 
 		IAssetFrameModel frame = frames.get(index);
 		FrameData fd = frame.getFrameData();
-		Rectangle src = fd.src;
-		_container.setMinSize(fd.srcSize.x, fd.srcSize.y);
-		_container.setMaxSize(fd.srcSize.x, fd.srcSize.y);
-		_imgView.relocate(fd.dst.x, fd.dst.y);
-		_imgView.setViewport(new Rectangle2D(src.x, src.y, src.width, src.height));
+		setImageViewport(fd.src);
 	}
 
 	class IndexTransition extends Transition {
@@ -135,9 +110,23 @@ public class AnimationCanvas extends FXCanvas {
 			int i = (int) (frac * _length);
 			if (i != _last) {
 				showFrame(i);
+				if (!isDisposed()) {
+					redraw();
+				}
 				_last = i;
 			}
 		}
 
 	}
+
+	@Override
+	public void controlMoved(ControlEvent e) {
+		//
+	}
+
+	@Override
+	public void controlResized(ControlEvent e) {
+		getDisplay().asyncExec(this::fitWindow);
+	}
+
 }

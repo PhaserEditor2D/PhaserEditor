@@ -44,6 +44,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 
+import phasereditor.ui.ImageCanvas.ZoomCalculator;
+
 /**
  * A cache for images read from files. If the file is modified the cache is
  * updated.
@@ -68,7 +70,12 @@ public class IconCache {
 			BufferedImage swingimg2 = new BufferedImage(newSize, newSize, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2 = swingimg2.createGraphics();
 			Rectangle src2 = src == null ? new Rectangle(0, 0, swingimg.getWidth(), swingimg.getHeight()) : src;
-			Rectangle z = PhaserEditorUI.computeImageZoom(src2, new Rectangle(0, 0, newSize, newSize));
+
+			ZoomCalculator calc = new ZoomCalculator(src2.width, src2.height);
+			calc.fit(newSize, newSize);
+			// Rectangle z = PhaserEditorUI.computeImageZoom(src2, new
+			// Rectangle(0, 0, newSize, newSize));
+			Rectangle z = calc.imageToScreen(0, 0, src2.width, src2.height);
 			g2.drawImage(swingimg, z.x, z.y, z.x + z.width, z.y + z.height, src2.x, src2.y, src2.x + src2.width,
 					src2.y + src2.height, null);
 			if (overlay != null) {
@@ -150,7 +157,7 @@ public class IconCache {
 	}
 
 	private static String computeKey(String filepath, Rectangle src, int newSize, BufferedImage overlay) {
-		return filepath + "#" + src + "#" + newSize + (overlay == null? "" : "#overlay-" + overlay.hashCode());
+		return filepath + "#" + src + "#" + newSize + (overlay == null ? "" : "#overlay-" + overlay.hashCode());
 	}
 
 	public void dispose() {

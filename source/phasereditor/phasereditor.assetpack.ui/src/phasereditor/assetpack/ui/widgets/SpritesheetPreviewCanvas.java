@@ -90,7 +90,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 			} else {
 				FrameData fd = _rects.get(_frame % _rects.size());
 
-				Calc calc = calc();
+				ZoomCalculator calc = calc();
 				calc.imgWidth = fd.src.width;
 				calc.imgHeight = fd.src.height;
 
@@ -110,7 +110,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 				PhaserEditorUI.paintPreviewMessage(gc, canvasBounds, "Cannot compute the grid.");
 			} else {
 
-				Calc calc = calc();
+				ZoomCalculator calc = calc();
 
 				for (FrameData fd : _rects) {
 					calc.imgWidth = fd.src.width;
@@ -172,7 +172,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 
 		int i = 0;
 
-		Calc calc = calc();
+		ZoomCalculator calc = calc();
 
 		for (FrameData fd : _rects) {
 			Rectangle r = calc.imageToScreen(fd.dst);
@@ -213,7 +213,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 				return;
 			}
 
-			Calc calc = calc();
+			ZoomCalculator calc = calc();
 			FrameData fd = _rects.get(_frame);
 			calc.imageSize(fd.dst);
 			calc.fit(getBounds());

@@ -47,15 +47,16 @@ public class ImageCanvas extends Canvas implements PaintListener {
 	private int _offsetX;
 	private int _offsetY;
 	private float _scale = 1;
+	private Rectangle _viewport;
 
-	protected static class Calc {
+	public static class ZoomCalculator {
 		public float imgWidth;
 		public float imgHeight;
 		public float offsetX;
 		public float offsetY;
 		public float scale;
 
-		public Calc(int imgWidth, int imgHeight) {
+		public ZoomCalculator(int imgWidth, int imgHeight) {
 			this.imgWidth = imgWidth;
 			this.imgHeight = imgHeight;
 		}
@@ -73,8 +74,8 @@ public class ImageCanvas extends Canvas implements PaintListener {
 					(int) (height * scale));
 		}
 
-		public Rectangle imageToScreen(Rectangle dst) {
-			return imageToScreen(dst.x, dst.y, dst.width, dst.height);
+		public Rectangle imageToScreen(Rectangle rect) {
+			return imageToScreen(rect.x, rect.y, rect.width, rect.height);
 		}
 
 		public void imageSize(Rectangle rect) {
@@ -86,6 +87,10 @@ public class ImageCanvas extends Canvas implements PaintListener {
 			scale = Math.min(window.width / imgWidth, window.height / imgHeight);
 			offsetX = window.width / 2 - imgWidth * scale / 2;
 			offsetY = window.height / 2 - imgHeight * scale / 2;
+		}
+
+		public void fit(int width, int height) {
+			fit(new Rectangle(0, 0, width, height));
 		}
 	}
 
@@ -127,7 +132,7 @@ public class ImageCanvas extends Canvas implements PaintListener {
 
 			float oldScale = getScale();
 
-			Calc calc = calc();
+			ZoomCalculator calc = calc();
 
 			float x1 = calc.screenToImageX(e.x);
 			float y1 = calc.screenToImageY(e.y);
@@ -198,13 +203,13 @@ public class ImageCanvas extends Canvas implements PaintListener {
 			return;
 		}
 
-		Calc calc = calc();
+		ZoomCalculator calc = calc();
 		calc.fit(getBounds());
 
 		setScaleAndOffset(calc);
 	}
 
-	protected void setScaleAndOffset(Calc calc) {
+	protected void setScaleAndOffset(ZoomCalculator calc) {
 		setScale(calc.scale);
 		setOffsetX((int) calc.offsetX);
 		setOffsetY((int) calc.offsetY);
@@ -269,19 +274,38 @@ public class ImageCanvas extends Canvas implements PaintListener {
 	public Image getImage() {
 		return _image;
 	}
-
 	public void setImage(Image image) {
+		setImage(image, image == null? null :image.getBounds());
+	}
+
+	public void setImage(Image image, Rectangle viewport) {
 		if (_image != null) {
 			_image.dispose();
 		}
 
 		_image = image;
 
+		if (image == null) {
+			_viewport = null;
+		} else {
+			_viewport = viewport;
+		}
+
 		// fit the window when it is fully sized
 		getDisplay().asyncExec(() -> {
-			fitWindow();
-			redraw();
+			if (!isDisposed()) {
+				fitWindow();
+				redraw();
+			}
 		});
+	}
+
+	public void setImageViewport(Rectangle viewport) {
+		_viewport = viewport;
+	}
+	
+	public Rectangle getImageViewport() {
+		return _viewport;
 	}
 
 	@Override
@@ -301,23 +325,20 @@ public class ImageCanvas extends Canvas implements PaintListener {
 		if (_image == null) {
 			PhaserEditorUI.paintPreviewMessage(gc, dst, _noImageMessage);
 		} else {
-			Rectangle src = _image.getBounds();
-
-			// Rectangle dst = PhaserEditorUI.computeImageZoom(src, dst);
+			Rectangle src = _viewport;
 
 			dst = new Rectangle(_offsetX, _offsetY, (int) (src.width * _scale), (int) (src.height * _scale));
 
 			drawImageBackground(gc, dst);
 
-			drawImage(gc, 0, 0, src.width, src.height, dst.width, dst.height, dst.x, dst.y);
+			drawImage(gc, src.x, src.y, src.width, src.height, dst.width, dst.height, dst.x, dst.y);
 
 			drawMore(gc, src.width, src.height, dst.width, dst.height, dst.x, dst.y);
 		}
 	}
 
-	protected Calc calc() {
-		Rectangle b = _image.getBounds();
-		Calc c = new Calc(b.width, b.height);
+	protected ZoomCalculator calc() {
+		ZoomCalculator c = new ZoomCalculator(_viewport.width, _viewport.height);
 		c.offsetX = _offsetX;
 		c.offsetY = _offsetY;
 		c.scale = _scale;

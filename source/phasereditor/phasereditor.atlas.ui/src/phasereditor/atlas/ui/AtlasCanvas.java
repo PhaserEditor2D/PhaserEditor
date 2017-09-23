@@ -82,7 +82,7 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 			GC gc = e.gc;
 			gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 			int i = 0;
-			Calc calc = calc();
+			ZoomCalculator calc = calc();
 			for (Rectangle r : _framesRects) {
 				AtlasFrame frame = _frames.get(i);
 				if (frame == _frame) {
@@ -112,7 +112,7 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 		} else {
 			Rectangle src = new Rectangle(_frame.getFrameX(), _frame.getFrameY(), _frame.getFrameW(),
 					_frame.getFrameH());
-			Calc calc = calc();
+			ZoomCalculator calc = calc();
 			Rectangle z = calc.imageToScreen(0, 0, src.width, src.height);
 			PhaserEditorUI.paintPreviewBackground(gc, z);
 			gc.drawImage(_image, src.x, src.y, src.width, src.height, z.x, z.y, z.width, z.height);
@@ -123,7 +123,7 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 		List<Rectangle> list = new ArrayList<>();
 
 		if (_frames != null && _image != null) {
-			Calc calc = calc();
+			ZoomCalculator calc = calc();
 			
 			for (AtlasFrame item : _frames) {
 				Rectangle r = calc.imageToScreen(item.getFrameX(), item.getFrameY(), item.getSpriteW(), item.getSpriteH());
@@ -140,7 +140,7 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 				return;
 			}
 
-			Calc calc = calc();
+			ZoomCalculator calc = calc();
 			calc.imgWidth = _frame.getFrameW();
 			calc.imgHeight = _frame.getFrameH();
 			calc.fit(getBounds());
