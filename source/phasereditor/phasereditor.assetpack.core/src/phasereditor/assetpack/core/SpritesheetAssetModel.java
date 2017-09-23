@@ -141,15 +141,15 @@ public class SpritesheetAssetModel extends AssetModel {
 	}
 
 	public List<FrameModel> getFrames() {
+		if (_frames == null) {
+			buildFrames();
+		}
 		return _frames;
 	}
 
 	@Override
 	public List<? extends IAssetElementModel> getSubElements() {
-		if (_frames == null) {
-			buildFrames();
-		}
-		return _frames;
+		return getFrames();
 	}
 
 	@Override

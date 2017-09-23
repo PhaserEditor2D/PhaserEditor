@@ -68,6 +68,9 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 
 	@Override
 	public void paintControl(PaintEvent e) {
+		
+		generateFramesRects();
+		
 		if (_singleFrame && _frame != null) {
 			paintSingleFrame(e);
 			return;
@@ -79,12 +82,13 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 			GC gc = e.gc;
 			gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 			int i = 0;
+			Calc calc = calc();
 			for (Rectangle r : _framesRects) {
 				AtlasFrame frame = _frames.get(i);
 				if (frame == _frame) {
 					gc.setClipping(r);
 					Rectangle src = _image.getBounds();
-					Rectangle dst = PhaserEditorUI.computeImageZoom(src, getBounds());
+					Rectangle dst = calc.imageToScreen(src); 
 					gc.drawImage(_image, src.x, src.y, src.width, src.height, dst.x, dst.y, dst.width, dst.height);
 					gc.setClipping((Rectangle) null);
 					gc.drawRectangle(r);
@@ -103,14 +107,13 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 	private void paintSingleFrame(PaintEvent e) {
 		GC gc = e.gc;
 
-		Rectangle dst = getBounds();
-
 		if (_image == null) {
-			PhaserEditorUI.paintPreviewMessage(gc, dst, getNoImageMessage());
+			PhaserEditorUI.paintPreviewMessage(gc, getBounds(), getNoImageMessage());
 		} else {
 			Rectangle src = new Rectangle(_frame.getFrameX(), _frame.getFrameY(), _frame.getFrameW(),
 					_frame.getFrameH());
-			Rectangle z = PhaserEditorUI.computeImageZoom(src, dst);
+			Calc calc = calc();
+			Rectangle z = calc.imageToScreen(0, 0, src.width, src.height);
 			PhaserEditorUI.paintPreviewBackground(gc, z);
 			gc.drawImage(_image, src.x, src.y, src.width, src.height, z.x, z.y, z.width, z.height);
 		}
@@ -120,25 +123,32 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 		List<Rectangle> list = new ArrayList<>();
 
 		if (_frames != null && _image != null) {
-			Rectangle img = _image.getBounds();
-
-			Rectangle canvas = getBounds();
-
-			Rectangle zoom = PhaserEditorUI.computeImageZoom(img, canvas);
-
+			Calc calc = calc();
+			
 			for (AtlasFrame item : _frames) {
-				double wfactor = zoom.width / (double) img.width;
-				double hfactor = zoom.height / (double) img.height;
-
-				int x = zoom.x + (int) (item.getFrameX() * wfactor);
-				int y = zoom.y + (int) (item.getFrameY() * hfactor);
-				int w = (int) (item.getSpriteW() * wfactor);
-				int h = (int) (item.getSpriteH() * hfactor);
-
-				list.add(new Rectangle(x, y, w, h));
+				Rectangle r = calc.imageToScreen(item.getFrameX(), item.getFrameY(), item.getSpriteW(), item.getSpriteH());
+				list.add(r);
 			}
 		}
 		_framesRects = list;
+	}
+
+	@Override
+	public void fitWindow() {
+		if (_singleFrame && _frame != null) {
+			if (_image == null) {
+				return;
+			}
+
+			Calc calc = calc();
+			calc.imgWidth = _frame.getFrameW();
+			calc.imgHeight = _frame.getFrameH();
+			calc.fit(getBounds());
+
+			setScaleAndOffset(calc);
+		} else {
+			super.fitWindow();
+		}
 	}
 
 	public void setFrames(List<? extends AtlasFrame> frames) {

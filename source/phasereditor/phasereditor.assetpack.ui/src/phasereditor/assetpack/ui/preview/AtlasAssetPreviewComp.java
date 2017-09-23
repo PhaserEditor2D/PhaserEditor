@@ -72,10 +72,10 @@ public class AtlasAssetPreviewComp extends Composite {
 				Frame fd = (Frame) element;
 				return String.format("%s (%dx%d)", fd.getName(), fd.getSourceW(), fd.getSourceH());
 			}
-			
+
 			return AssetLabelProvider.GLOBAL_16.getText(element);
 		}
-		
+
 		@Override
 		public Image getImage(Object element) {
 			return AssetLabelProvider.GLOBAL_16.getImage(element);
@@ -130,7 +130,9 @@ public class AtlasAssetPreviewComp extends Composite {
 
 			@Override
 			public void mouseUp(MouseEvent e) {
-				atlasCanvasClicked();
+				if (e.button == 1) {
+					atlasCanvasClicked();
+				}
 			}
 		});
 		_atlasCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -199,7 +201,6 @@ public class AtlasAssetPreviewComp extends Composite {
 			combo.select(-1);
 		} else {
 			_spritesViewer.setSelection(new StructuredSelection(over), true);
-			combo.forceFocus();
 		}
 	}
 

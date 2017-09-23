@@ -189,7 +189,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 			if (file != null) {
 				try {
 					Rectangle b = PhaserEditorUI.getImageBounds(file);
-					List<FrameData> frames = AssetPackUI.generateSpriteSheetRects(asset, b, b);
+					List<FrameData> frames = AssetPackUI.generateSpriteSheetRects(asset, b);
 					if (frames.isEmpty()) {
 						return getIcon(file);
 					}

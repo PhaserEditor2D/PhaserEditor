@@ -460,7 +460,7 @@ public class AssetPackUI {
 		return new FilesLabelProvider();
 	}
 
-	public static List<FrameData> generateSpriteSheetRects(SpritesheetAssetModel s, Rectangle src, Rectangle dst) {
+	public static List<FrameData> generateSpriteSheetRects(SpritesheetAssetModel s, Rectangle src) {
 
 		List<FrameData> list = new ArrayList<>();
 
@@ -474,14 +474,6 @@ public class AssetPackUI {
 			return list;
 		}
 
-		Rectangle b = src;
-		int dstX = dst.x;
-		int dstY = dst.y;
-		int dstW = dst.width;
-		int dstH = dst.height;
-		double wfactor = dstW / (double) b.width;
-		double hfactor = dstH / (double) b.height;
-
 		int max = s.getFrameMax();
 		if (max <= 0) {
 			max = Integer.MAX_VALUE;
@@ -491,23 +483,18 @@ public class AssetPackUI {
 		int x = margin;
 		int y = margin;
 		while (true) {
-			if (i >= max || y >= b.height) {
+			if (i >= max || y >= src.height) {
 				break;
 			}
 
-			int x1 = (int) (x * wfactor);
-			int y1 = (int) (y * hfactor);
-			int w1 = (int) (w * wfactor);
-			int h1 = (int) (h * hfactor);
-
 			FrameData fd = new FrameData();
 			fd.src = new Rectangle(x, y, w, h);
-			fd.dst = new Rectangle(dstX + x1, dstY + y1, w1, h1);
+			fd.dst = fd.src;
 
 			list.add(fd);
 
 			x += w + spacing;
-			if (x >= b.width) {
+			if (x >= src.width) {
 				x = margin;
 				y += h + spacing;
 			}

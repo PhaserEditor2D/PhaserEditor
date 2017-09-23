@@ -553,10 +553,9 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 							for (IFile f : missingFiles) {
 								sb.append("    " + f.getName() + "\n");
 							}
-							if (MessageDialog.openConfirm(shell, "Atlas Build",
-									String.format(
-											"The following source images do not exist. Do you want to ignore them?\n\n%s",
-											sb))) {
+							if (MessageDialog.openConfirm(shell, "Atlas Build", String.format(
+									"The following source images do not exist. Do you want to ignore them?\n\n%s",
+									sb))) {
 								confirm.set(true);
 							}
 						}
@@ -919,7 +918,9 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		canvas.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
-				atlasCanvasClicked(canvas);
+				if (e.button == 1) {
+					atlasCanvasClicked(canvas);
+				}
 			}
 		});
 		canvas.addMouseTrackListener(new MouseTrackListener() {
