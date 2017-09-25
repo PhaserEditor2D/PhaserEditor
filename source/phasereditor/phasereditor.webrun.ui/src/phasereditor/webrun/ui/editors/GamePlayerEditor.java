@@ -191,7 +191,7 @@ public class GamePlayerEditor extends EditorPart {
 	@Override
 	protected void setInput(IEditorInput input) {
 		super.setInput(input);
-		setPartName(getEditorInput().getProjectName());
+		setPartName(getEditorInput().getProjectName() + " (experimental)");
 	}
 
 	@Override
