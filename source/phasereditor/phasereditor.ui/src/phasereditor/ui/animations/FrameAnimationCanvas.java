@@ -19,39 +19,37 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors.grid.editors;
+package phasereditor.ui.animations;
 
 import java.util.List;
 
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.Transition;
 import javafx.util.Duration;
-import phasereditor.assetpack.core.FrameData;
-import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.canvas.core.AnimationModel;
 import phasereditor.ui.ImageCanvas;
 
 /**
  * @author arian
  *
  */
-public class AnimationCanvas2 extends ImageCanvas implements ControlListener {
+public class FrameAnimationCanvas extends ImageCanvas implements ControlListener {
 
-	private AnimationModel _model;
+	private IFramesAnimationModel _model;
 	private IndexTransition _anim;
 
-	public AnimationCanvas2(Composite parent, int style) {
+	public FrameAnimationCanvas(Composite parent, int style) {
 		super(parent, style);
 
 		addControlListener(this);
 	}
 
-	public void setModel(AnimationModel model) {
+	public void setModel(IFramesAnimationModel model) {
 		_model = model;
 
 		if (_anim != null) {
@@ -63,9 +61,7 @@ public class AnimationCanvas2 extends ImageCanvas implements ControlListener {
 			return;
 		}
 
-		List<IAssetFrameModel> frames = _model.getFrames();
-
-		setImageFile(frames.get(0).getImageFile());
+		setImageFile(_model.getImageFile());
 		showFrame(0);
 		getDisplay().asyncExec(() -> {
 			fitWindow();
@@ -82,14 +78,13 @@ public class AnimationCanvas2 extends ImageCanvas implements ControlListener {
 	}
 
 	public void showFrame(int index) {
-		List<IAssetFrameModel> frames = _model.getFrames();
+		List<Rectangle> frames = _model.getFrames();
 		if (index >= frames.size()) {
 			return;
 		}
 
-		IAssetFrameModel frame = frames.get(index);
-		FrameData fd = frame.getFrameData();
-		setImageViewport(fd.src);
+		Rectangle frame = frames.get(index);
+		setImageViewport(frame);
 	}
 
 	class IndexTransition extends Transition {

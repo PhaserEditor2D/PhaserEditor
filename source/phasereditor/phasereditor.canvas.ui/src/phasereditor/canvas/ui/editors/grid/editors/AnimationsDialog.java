@@ -30,6 +30,7 @@ import java.util.List;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -58,6 +59,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -78,6 +80,8 @@ import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.canvas.core.AnimationModel;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
+import phasereditor.ui.animations.FrameAnimationCanvas;
+import phasereditor.ui.animations.IFramesAnimationModel;
 
 /**
  * @author arian
@@ -93,7 +97,7 @@ public class AnimationsDialog extends Dialog {
 	private List<AnimationModel> _animList;
 	private Button _loopButton;
 	private AnimationModel _anim;
-	private AnimationCanvas2 _canvas;
+	private FrameAnimationCanvas _canvas;
 
 	/**
 	 * Create the dialog.
@@ -239,7 +243,7 @@ public class AnimationsDialog extends Dialog {
 		gl_composite_3.marginWidth = 0;
 		composite_3.setLayout(gl_composite_3);
 
-		_canvas = new AnimationCanvas2(composite_3, SWT.BORDER);
+		_canvas = new FrameAnimationCanvas(composite_3, SWT.BORDER);
 		_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		Composite composite_1 = new Composite(composite_3, SWT.NONE);
@@ -263,11 +267,11 @@ public class AnimationsDialog extends Dialog {
 
 	protected void deleteAnimation() {
 		Object anim = _animationsViewer.getStructuredSelection().getFirstElement();
-		
+
 		_animList.remove(anim);
-		
+
 		_animationsViewer.refresh();
-		
+
 		if (_animList.isEmpty()) {
 			setAnimation(null);
 		} else {
@@ -332,13 +336,13 @@ public class AnimationsDialog extends Dialog {
 			@Override
 			public String getText(Object element) {
 				AnimationModel anim = (AnimationModel) element;
-				return anim.getName() + (anim.isAutoPlay()? " (auto)" : "");
+				return anim.getName() + (anim.isAutoPlay() ? " (auto)" : "");
 			}
 		});
 
 		_animationsViewer.setContentProvider(ArrayContentProvider.getInstance());
 		_animationsViewer.setInput(_animList);
-		
+
 		AssetPackUI.installAssetTooltips(_framesViewer);
 
 		if (_animList.isEmpty()) {
@@ -491,7 +495,7 @@ public class AnimationsDialog extends Dialog {
 		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
 		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, true);
 		m_bindingContext = initDataBindings();
-		
+
 		afterCreateWidgets();
 	}
 
@@ -527,8 +531,43 @@ public class AnimationsDialog extends Dialog {
 		playAnimation();
 	}
 
+	static class SpritesheetAnimationModel implements IFramesAnimationModel {
+		private AnimationModel _base;
+		private ArrayList<Rectangle> _frames;
+
+		public SpritesheetAnimationModel(AnimationModel base) {
+			super();
+			_base = base;
+			_frames = new ArrayList<>();
+			for (IAssetFrameModel assetFrame : _base.getFrames()) {
+				_frames.add(assetFrame.getFrameData().src);
+			}
+		}
+
+		@Override
+		public List<Rectangle> getFrames() {
+			return _frames;
+		}
+
+		@Override
+		public boolean isLoop() {
+			return _base.isLoop();
+		}
+
+		@Override
+		public int getFrameRate() {
+			return _base.getFrameRate();
+		}
+
+		@Override
+		public IFile getImageFile() {
+			return _base.getFrames().get(0).getImageFile();
+		}
+
+	}
+
 	void playAnimation() {
-		_canvas.setModel(_anim);
+		_canvas.setModel(_anim == null ? null : new SpritesheetAnimationModel(_anim));
 	}
 
 	public void setAvailableFrames(List<?> allFrames) {

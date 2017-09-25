@@ -300,7 +300,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 			}
 
 			ZoomCalculator calc = calc();
-			FrameData fd = _rects.get(_frame);
+			FrameData fd = _rects.get(_frame >= _rects.size()? 0 : _frame);
 			calc.imageSize(fd.dst);
 			calc.fit(getBounds());
 

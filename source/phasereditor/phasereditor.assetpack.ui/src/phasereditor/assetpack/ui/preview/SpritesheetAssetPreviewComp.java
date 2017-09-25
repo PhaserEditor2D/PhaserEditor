@@ -66,6 +66,7 @@ public class SpritesheetAssetPreviewComp extends Composite {
 	private int _fps = 5;
 
 	SpritesheetPreviewCanvas _canvas;
+	
 
 	protected List<FrameModel> _selectedFrames;
 
