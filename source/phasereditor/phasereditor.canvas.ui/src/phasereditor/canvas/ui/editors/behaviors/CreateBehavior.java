@@ -35,9 +35,12 @@ import org.json.JSONObject;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.DragEvent;
+import phasereditor.assetpack.core.FrameData;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CanvasModelFactory;
@@ -97,6 +100,8 @@ public class CreateBehavior {
 			}
 		}
 
+		// handle when dropping into a sprite prefab (texture substitution)
+
 		if (_canvas.getEditor().getModel().getType() == CanvasType.SPRITE) {
 			Object first = selection.getFirstElement();
 
@@ -117,18 +122,21 @@ public class CreateBehavior {
 			return;
 		}
 
-		int i = 0;
 		CompositeOperation operations = new CompositeOperation();
 
 		List<String> selectionIds = new ArrayList<>();
 
 		GroupNode parentNode;
 
+		// handle when dropping into a group prefab (get the right parent node)
+
 		if (_canvas.getEditor().getModel().getType() == CanvasType.GROUP) {
 			parentNode = (GroupNode) _canvas.getWorldNode().getChildren().get(0);
 		} else {
 			parentNode = _canvas.getWorldNode();
 		}
+
+		// get the parent node from the selection
 
 		List<IObjectNode> selnodes = _canvas.getSelectionBehavior().getSelectedNodes();
 
@@ -146,6 +154,49 @@ public class CreateBehavior {
 			}
 		}
 
+		// check if the elements are from a spritesheet
+
+		boolean dropSpritesheetFrames = true;
+		{
+			int count = 0;
+			for (Object elem : elems) {
+				if (!(elem instanceof SpritesheetAssetModel.FrameModel)) {
+					dropSpritesheetFrames = false;
+					break;
+				}
+				count++;
+			}
+			if (count < 2) {
+				dropSpritesheetFrames = false;
+			}
+		}
+
+		if (dropSpritesheetFrames) {
+			// check if all frames comes from the same texture
+			SpritesheetAssetModel sheet = ((SpritesheetAssetModel.FrameModel) elems[0]).getAsset();
+			for (Object elem : elems) {
+				SpritesheetAssetModel sheet2 = ((SpritesheetAssetModel.FrameModel) elem).getAsset();
+				if (sheet2 != sheet) {
+					dropSpritesheetFrames = false;
+					break;
+				}
+			}
+		}
+
+		double minX = Double.MAX_VALUE;
+		double minY = Double.MAX_VALUE;
+
+		if (dropSpritesheetFrames) {
+			// find the offset of the frames
+			for (Object elem : elems) {
+				FrameModel frame = ((SpritesheetAssetModel.FrameModel) elem);
+				FrameData fd = frame.getFrameData();
+				minX = Math.min(fd.src.x, minX);
+				minY = Math.min(fd.src.y, minY);
+			}
+		}
+
+		int i = 0;
 		for (Object elem : elems) {
 			BaseObjectControl<?> control = null;
 			BaseObjectModel model = null;
@@ -166,9 +217,21 @@ public class CreateBehavior {
 
 			if (control != null) {
 				selectionIds.add(control.getModel().getId());
-				double x = sceneX + i * 20;
-				double y = sceneY + i * 20;
-				_canvas.dropToCanvas(operations, parentNode, control, x, y);
+				double x;
+				double y;
+
+				if (dropSpritesheetFrames) {
+					FrameModel frame = (FrameModel) elem;
+					FrameData fd = frame.getFrameData();
+					x = sceneX + (fd.src.x - minX) * _canvas.getZoomBehavior().getScale();
+					y = sceneY + (fd.src.y - minY) * _canvas.getZoomBehavior().getScale();
+				} else {
+					x = sceneX + i * 20;
+					y = sceneY + i * 20;
+				}
+
+				_canvas.dropToCanvas(operations, parentNode, control, x, y, !dropSpritesheetFrames);
+
 				i++;
 			}
 		}

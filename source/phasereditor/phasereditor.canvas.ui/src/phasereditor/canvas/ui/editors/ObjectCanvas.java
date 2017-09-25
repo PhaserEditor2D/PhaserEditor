@@ -268,7 +268,7 @@ public class ObjectCanvas extends FXCanvas {
 	}
 
 	public void dropToCanvas(CompositeOperation operations, GroupNode parentNode, BaseObjectControl<?> control,
-			double sceneX, double sceneY) {
+			double sceneX, double sceneY, boolean adjust) {
 		// IObjectNode node = control.getIObjectNode();
 
 		double invScale = 1 / _zoomBehavior.getScale();
@@ -277,19 +277,18 @@ public class ObjectCanvas extends FXCanvas {
 		double x = (sceneX - translate.getX()) * invScale;
 		double y = (sceneY - translate.getY()) * invScale;
 
-		double w = control.getTextureWidth() / 2;
-		double h = control.getTextureHeight() / 2;
-
-		x -= w;
-		y -= h;
-
-		{
-			// stepping
-			EditorSettings settings = getSettingsModel();
-			if (settings.isEnableStepping()) {
-				x = Math.round(x / settings.getStepWidth()) * settings.getStepWidth();
-				y = Math.round(y / settings.getStepHeight()) * settings.getStepHeight();
-			}
+		if (adjust) {
+			double w = control.getTextureWidth() / 2;
+			double h = control.getTextureHeight() / 2;
+			x -= w;
+			y -= h;
+		}
+		
+		// stepping
+		EditorSettings settings = getSettingsModel();
+		if (settings.isEnableStepping()) {
+			x = Math.floor(x / settings.getStepWidth()) * settings.getStepWidth();
+			y = Math.floor(y / settings.getStepHeight()) * settings.getStepHeight();
 		}
 
 		BaseObjectModel model = control.getModel();
