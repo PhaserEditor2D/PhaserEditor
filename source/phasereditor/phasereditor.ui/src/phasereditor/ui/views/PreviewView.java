@@ -21,14 +21,18 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui.views;
 
+import static java.lang.System.currentTimeMillis;
+
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IAdapterManager;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.help.HelpSystem;
 import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -49,6 +53,8 @@ import org.eclipse.ui.IElementFactory;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.IShowInTarget;
@@ -64,7 +70,7 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 	private static final String ELEM_FACTORY_KEY = "phasereditor.ui.preview.elemenFactoryId";
 	public static final String ID = "phasereditor.ui.preview"; //$NON-NLS-1$
 	private Composite _previewContainer;
-	//private Canvas _noPreviewComp;
+	// private Canvas _noPreviewComp;
 	private Composite _noPreviewComp;
 	private IPreviewFactory _previewFactory;
 	private IAdaptable _initalElement;
@@ -88,13 +94,14 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 
 		_noPreviewComp = new Composite(_previewContainer, SWT.NONE);
 		_noPreviewComp.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-		//_noPreviewComp = new Canvas(_previewContainer, SWT.NO_BACKGROUND | SWT.DOUBLE_BUFFERED);
-//		_noPreviewComp.addPaintListener(new PaintListener() {
-//			@Override
-//			public void paintControl(PaintEvent e) {
-//				paintNoPreviewComp(e);
-//			}
-//		});
+		// _noPreviewComp = new Canvas(_previewContainer, SWT.NO_BACKGROUND |
+		// SWT.DOUBLE_BUFFERED);
+		// _noPreviewComp.addPaintListener(new PaintListener() {
+		// @Override
+		// public void paintControl(PaintEvent e) {
+		// paintNoPreviewComp(e);
+		// }
+		// });
 		_noPreviewComp.setLayout(new GridLayout(1, false));
 		Label lblDropItHere = new Label(_noPreviewComp, SWT.NONE);
 		lblDropItHere.setText("Drop it here");
@@ -143,14 +150,14 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 		}
 	}
 
-//	protected void paintNoPreviewComp(PaintEvent e) {
-//		GC gc = e.gc;
-//		Rectangle b = _noPreviewComp.getBounds();
-//		{
-//			PhaserEditorUI.paintPreviewBackground(gc, b);
-//			PhaserEditorUI.paintPreviewMessage(gc, b, "Drop it here");
-//		}
-//	}
+	// protected void paintNoPreviewComp(PaintEvent e) {
+	// GC gc = e.gc;
+	// Rectangle b = _noPreviewComp.getBounds();
+	// {
+	// PhaserEditorUI.paintPreviewBackground(gc, b);
+	// PhaserEditorUI.paintPreviewMessage(gc, b, "Drop it here");
+	// }
+	// }
 
 	private void afterCreateWidgets() {
 		{
@@ -183,26 +190,18 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 				_previewFactory.initPreviewControl(_previewControl, _initialMemento);
 			}
 		}
+
 	}
 
-	/**
-	 * Create the actions.
-	 */
 	private void createActions() {
 		// nothing
 	}
 
-	/**
-	 * Initialize the toolbar.
-	 */
-	@SuppressWarnings("unused")
 	private void initializeToolBar() {
+		@SuppressWarnings("unused")
 		IToolBarManager toolbarManager = getViewSite().getActionBars().getToolBarManager();
 	}
 
-	/**
-	 * Initialize the menu.
-	 */
 	@SuppressWarnings("unused")
 	private void initializeMenu() {
 		IMenuManager menuManager = getViewSite().getActionBars().getMenuManager();
@@ -261,6 +260,20 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 				}
 
 				factory.updateControl(preview, elem);
+
+				// update toolbar
+				{
+					// missing to remove the last added actions
+					IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
+					toolbar.removeAll();
+					factory.updateToolBar(toolbar, preview);
+					if (toolbar.getItems().length > 0) {
+						toolbar.add(new Separator());
+					}
+					fillToolbarWithCommonActions(toolbar);
+					toolbar.update(true);
+				}
+
 				setPartName("Preview - " + factory.getTitle(elem));
 
 				Image icon = factory.getIcon(elem);
@@ -283,6 +296,31 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 
 		_previewElement = elem;
 		return availablePreview;
+	}
+
+	private void fillToolbarWithCommonActions(IToolBarManager toolbar) {
+		toolbar.add(new Action("Open New Preview Window") {
+			{
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_NEW_VIEW));
+			}
+
+			@Override
+			public void run() {
+				try {
+					IWorkbenchWindow window = getSite().getWorkbenchWindow();
+					IWorkbenchPage page = window.getActivePage();
+					PreviewView view = (PreviewView) page.showView(PreviewView.ID,
+							PreviewView.ID + "@" + currentTimeMillis(), IWorkbenchPage.VIEW_CREATE);
+					page.activate(view);
+					if (getPreviewElement() != null) {
+						view.preview(getPreviewElement());
+					}
+				} catch (PartInitException e) {
+					e.printStackTrace();
+					throw new RuntimeException(e);
+				}
+			}
+		});
 	}
 
 	public Object getPreviewElement() {

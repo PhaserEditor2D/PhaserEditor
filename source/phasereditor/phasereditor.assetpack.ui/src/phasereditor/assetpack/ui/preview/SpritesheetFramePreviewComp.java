@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015 Arian Fornaris
+// Copyright (c) 2015, 2017 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -21,21 +21,42 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
-import phasereditor.assetpack.core.IAssetElementModel;
-import phasereditor.assetpack.core.SpritesheetAssetModel;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Composite;
 
-@SuppressWarnings("rawtypes")
-public class AssetElementPreviewAdapterFactory extends
-		AssetPreviewAdapterFactory {
-	@Override
-	public Object getAdapter(Object adaptable, Class adapterType) {
-		if (adaptable instanceof IAssetElementModel) {
-			Object obj = adaptable;
-			if (!(obj instanceof SpritesheetAssetModel.FrameModel)) {
-				obj = ((IAssetElementModel) adaptable).getAsset();
-			}
-			return super.getAdapter(obj, adapterType);
+import phasereditor.assetpack.core.SpritesheetAssetModel;
+import phasereditor.assetpack.ui.widgets.SpritesheetPreviewCanvas;
+
+/**
+ * @author arian
+ *
+ */
+public class SpritesheetFramePreviewComp extends SpritesheetPreviewCanvas {
+
+	public SpritesheetFramePreviewComp(Composite parent, int style) {
+		super(parent, style);
+	}
+
+	public void setModel(SpritesheetAssetModel.FrameModel model) {
+		setSpritesheet(model.getAsset());
+		IFile file = model.getAsset().getUrlFile();
+		setImageFile(file);
+		setFrame(model.getIndex());
+		setSingleFrame(true);
+
+		if (getImage() != null) {
+			SpritesheetAssetModel sheet = model.getAsset();
+			String str = "Frames Size: " + sheet.getFrameWidth() + "x" + sheet.getFrameHeight() + "\n";
+			Rectangle b = getImage().getBounds();
+			str += "Image Size: " + b.width + "x" + b.height + "\n";
+			str += "Image URL: " + sheet.getUrl();
+			setToolTipText(str);
 		}
-		return null;
+
+		getDisplay().asyncExec(() -> {
+			fitWindow();
+			redraw();
+		});
 	}
 }

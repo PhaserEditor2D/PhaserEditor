@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui.views;
 
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.SubToolBarManager;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -51,6 +53,10 @@ public interface IPreviewFactory {
 	}
 
 	public void savePreviewControl(Control previewControl, IMemento memento);
-	
+
 	public void initPreviewControl(Control previewControl, IMemento initialMemento);
+
+	public default void updateToolBar(IToolBarManager toolbar, Control preview) {
+		// nothing
+	}
 }

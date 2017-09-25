@@ -25,6 +25,7 @@ import static phasereditor.ui.PhaserEditorUI.pickFileWithoutExtension;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdapterFactory;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -84,6 +85,8 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			default:
 				break;
 			}
+		} else if (adaptable instanceof SpritesheetAssetModel.FrameModel) {
+			return createSpritesheetFramePreviewAdapter();
 		}
 		return null;
 	}
@@ -101,7 +104,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 		}
 
 		@Override
-		public final void updateControl(Control preview, Object element) {
+		public void updateControl(Control preview, Object element) {
 			if (element instanceof IAssetElementModel) {
 				IAssetElementModel assetElem = ((IAssetElementModel) element).getSharedVersion();
 				AssetModel asset = assetElem == null ? null : assetElem.getAsset();
@@ -118,7 +121,20 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			// nothing by default
 		}
 
-		protected abstract void updateControl2(Control preview, Object toUpdate);
+		@SuppressWarnings("unused")
+		protected void updateControl2(Control preview, Object toUpdate) {
+			// nothing
+		}
+
+		@Override
+		public void savePreviewControl(Control previewControl, IMemento memento) {
+			//
+		}
+
+		@Override
+		public void initPreviewControl(Control previewControl, IMemento initialMemento) {
+			//
+		}
 
 		@Override
 		public String getTitle(Object element) {
@@ -170,20 +186,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 				}
 			};
 		}
-		
-		@Override
-		public void initPreviewControl(Control previewControl, IMemento memento) {
-			if (previewControl instanceof SpritesheetAssetPreviewComp) {
-				((SpritesheetAssetPreviewComp) previewControl).initState(memento);
-			}
-		}
-		
-		@Override
-		public void savePreviewControl(Control previewControl, IMemento memento) {
-			if (previewControl instanceof SpritesheetAssetPreviewComp) {
-				((SpritesheetAssetPreviewComp) previewControl).saveState(memento);
-			}
-		}
+
 	}
 
 	private static IPreviewFactory createPhysicsPreviewAdapter() {
@@ -386,12 +389,6 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 		return new AssetModelPreviewFactory() {
 
 			@Override
-			public void initPreviewControl(Control preview, IMemento initialMemento) {
-				SpritesheetAssetPreviewComp comp = (SpritesheetAssetPreviewComp) preview;
-				comp.initState(initialMemento);
-			}
-			
-			@Override
 			public void updateControl2(Control preview, Object element) {
 				SpritesheetAssetPreviewComp comp = (SpritesheetAssetPreviewComp) preview;
 				SpritesheetAssetModel asset = (SpritesheetAssetModel) element;
@@ -399,10 +396,9 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			}
 
 			@Override
-			public void selectInControl(Control preview, Object element) {
+			public void updateToolBar(IToolBarManager toolbar, Control preview) {
 				SpritesheetAssetPreviewComp comp = (SpritesheetAssetPreviewComp) preview;
-				SpritesheetAssetModel.FrameModel frame = (SpritesheetAssetModel.FrameModel) element;
-				comp.justShowThisFrame(frame);
+				comp.createToolBar(toolbar);
 			}
 
 			@Override
@@ -412,14 +408,36 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 
 			@Override
 			public boolean canReusePreviewControl(Control c, Object elem) {
-				return c instanceof SpritesheetAssetPreviewComp
-						&& !((SpritesheetAssetPreviewComp) c).isJustOneFrameMode();
+				return c instanceof SpritesheetAssetPreviewComp && elem instanceof SpritesheetAssetModel;
 			}
 
 			@Override
 			public void hiddenControl(Control preview) {
 				((SpritesheetAssetPreviewComp) preview).stopAnimation();
 			}
+		};
+	}
+
+	private static IPreviewFactory createSpritesheetFramePreviewAdapter() {
+		return new AssetModelPreviewFactory() {
+
+			@Override
+			public void updateControl(Control preview, Object element) {
+				SpritesheetFramePreviewComp comp = (SpritesheetFramePreviewComp) preview;
+				SpritesheetAssetModel.FrameModel frame = (SpritesheetAssetModel.FrameModel) element;
+				comp.setModel(frame);
+			}
+
+			@Override
+			public Control createControl(Composite previewContainer) {
+				return new SpritesheetFramePreviewComp(previewContainer, SWT.NONE);
+			}
+
+			@Override
+			public boolean canReusePreviewControl(Control c, Object elem) {
+				return c instanceof SpritesheetFramePreviewComp &&elem instanceof SpritesheetAssetModel.FrameModel;
+			}
+
 		};
 	}
 
