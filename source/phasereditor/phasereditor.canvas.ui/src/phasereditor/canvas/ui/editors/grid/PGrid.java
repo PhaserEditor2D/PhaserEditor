@@ -85,7 +85,7 @@ public class PGrid extends Composite {
 		_treeViewer = _filteredTree.getViewer();
 		_tree = _treeViewer.getTree();
 
-		if (!PhaserEditorUI.isCocoaPlatform()) {
+		if (!PhaserEditorUI.isMacPlatform()) {
 			_tree.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		}
 
@@ -212,7 +212,7 @@ public class PGrid extends Composite {
 			}
 		});
 
-		if (!PhaserEditorUI.isCocoaPlatform()) {
+		if (!PhaserEditorUI.isMacPlatform()) {
 			_tree.addListener(SWT.EraseItem, new Listener() {
 
 				@Override

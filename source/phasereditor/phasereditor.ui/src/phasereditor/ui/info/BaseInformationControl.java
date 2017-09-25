@@ -29,6 +29,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
+import phasereditor.ui.PhaserEditorUI;
+
 public abstract class BaseInformationControl extends AbstractInformationControl
 		implements IInformationControlExtension2 {
 
@@ -41,7 +43,7 @@ public abstract class BaseInformationControl extends AbstractInformationControl
 	 * wrapper that does not implements {@link IInformationControlExtension2}.
 	 */
 	public BaseInformationControl(Shell parentShell) {
-		super(parentShell, true);
+		super(parentShell, false);
 		create();
 	}
 
@@ -91,6 +93,8 @@ public abstract class BaseInformationControl extends AbstractInformationControl
 		layout.marginWidth = 0;
 		parentComp.setLayout(layout);
 		_contentControl = createContent2(parentComp);
+		Shell shell = _contentControl.getShell();
+		PhaserEditorUI.applyThemeStyle(shell);
 	}
 
 	protected abstract Control createContent2(Composite parentComp);

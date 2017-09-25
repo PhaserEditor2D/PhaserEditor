@@ -21,10 +21,14 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.widgets;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
@@ -38,19 +42,22 @@ import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.ImageCanvas;
 import phasereditor.ui.PhaserEditorUI;
 
-public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveListener {
+public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveListener, KeyListener, MouseListener {
 
 	private SpritesheetAssetModel _spritesheet;
 	private int _frame;
 	private boolean _singleFrame;
-	private FrameModel _over;
 	private List<FrameData> _rects;
+	private boolean _controlPressed;
+	private List<Integer> _selectedFrames = new ArrayList<>();
 
 	public SpritesheetPreviewCanvas(Composite parent, int style) {
 		super(parent, style);
 		setPreferredSize(new Point(100, 100));
 		_singleFrame = false;
 		addMouseMoveListener(this);
+		addMouseListener(this);
+		addKeyListener(this);
 	}
 
 	@Override
@@ -71,6 +78,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 		super.drawImageBackground(gc, b);
 	}
 
+	@SuppressWarnings("boxing")
 	@Override
 	protected void drawMore(GC gc, int srcW, int srcH, int dstW, int dstH, int dstX, int dstY) {
 		if (_spritesheet == null) {
@@ -112,6 +120,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 
 				ZoomCalculator calc = calc();
 
+				int i = 0;
 				for (FrameData fd : _rects) {
 					calc.imgWidth = fd.src.width;
 					calc.imgHeight = fd.src.height;
@@ -120,6 +129,15 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 
 					gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_RED));
 					gc.drawRectangle(r.x, r.y, r.width, r.height);
+
+					if (_selectedFrames.contains(i)) {
+						gc.setAlpha(150);
+						gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
+						gc.fillRectangle(r.x, r.y, r.width, r.height);
+						gc.setAlpha(255);
+					}
+
+					i++;
 				}
 
 				{
@@ -133,7 +151,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 					}
 
 					if (paintIndexLabels) {
-						int i = 0;
+						i = 0;
 						for (FrameData fd : _rects) {
 							calc.imgWidth = fd.dst.width;
 							calc.imgHeight = fd.dst.height;
@@ -158,35 +176,102 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 	}
 
 	@Override
-	public void mouseMove(MouseEvent e) {
-		_over = null;
+	public void mouseDoubleClick(MouseEvent e) {
+		// nothing
+	}
 
-		if (_singleFrame) {
-			_over = _spritesheet.getFrames().get(_frame);
-			return;
+	@SuppressWarnings("boxing")
+	@Override
+	public void mouseDown(MouseEvent e) {
+		if (e.button == 1) {
+			if (!_controlPressed) {
+				int frame = findFrameAt(e);
+				if (_selectedFrames.contains(frame)) {
+					return;
+				}
+
+				_selectedFrames = new ArrayList<>();
+				addFrameToSelection(e);
+			}
 		}
+	}
 
+	@Override
+	public void mouseUp(MouseEvent e) {
+		if (e.button == 1) {
+			if (_controlPressed) {
+				addFrameToSelection(e);
+			}
+		}
+	}
+
+	@SuppressWarnings("boxing")
+	private void addFrameToSelection(MouseEvent e) {
 		if (_rects == null || _rects.isEmpty()) {
 			return;
 		}
 
+		int overFrame = findFrameAt(e);
+
+		if (overFrame == -1) {
+			_selectedFrames = new ArrayList<>();
+		} else {
+			if (_selectedFrames.contains(overFrame)) {
+				_selectedFrames.remove((Object) overFrame);
+			} else {
+				_selectedFrames.add(overFrame);
+			}
+		}
+
+		redraw();
+	}
+
+	/**
+	 * @param e
+	 * @return
+	 */
+	private int findFrameAt(MouseEvent e) {
 		int i = 0;
+		int overFrame = -1;
 
 		ZoomCalculator calc = calc();
 
 		for (FrameData fd : _rects) {
 			Rectangle r = calc.imageToScreen(fd.dst);
 			if (r.contains(e.x, e.y)) {
-				_over = _spritesheet.getFrames().get(i);
-				return;
+				overFrame = i;
+				break;
 			}
 			i++;
 		}
-
+		return overFrame;
 	}
 
-	public SpritesheetAssetModel.FrameModel getOverFrame() {
-		return _over;
+	@Override
+	public void mouseMove(MouseEvent e) {
+		//
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		_controlPressed = e.keyCode == SWT.CONTROL;
+		if (e.character == SWT.ESC) {
+			_selectedFrames = new ArrayList<>();
+			redraw();
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		_controlPressed = false;
+	}
+
+	public List<FrameModel> getSelectedFrames() {
+		List<FrameModel> list = new ArrayList<>();
+		for (int i : _selectedFrames) {
+			list.add(_spritesheet.getFrames().get(i));
+		}
+		return list;
 	}
 
 	public SpritesheetAssetModel getSpritesheet() {
@@ -196,6 +281,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 	public void setSpritesheet(SpritesheetAssetModel spritesheet) {
 		_spritesheet = spritesheet;
 		_rects = null;
+		_selectedFrames = new ArrayList<>();
 	}
 
 	public boolean isSingleFrame() {

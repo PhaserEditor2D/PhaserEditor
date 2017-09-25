@@ -23,6 +23,8 @@ package phasereditor.assetpack.ui.preview;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -63,15 +65,15 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.ui.IMemento;
+import org.eclipse.wb.swt.ResourceManager;
 
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
 import phasereditor.assetpack.ui.widgets.SpritesheetPreviewCanvas;
 import phasereditor.ui.Animation;
-import org.eclipse.wb.swt.ResourceManager;
-import org.eclipse.swt.widgets.ToolBar;
-import org.eclipse.swt.widgets.ToolItem;
-import org.eclipse.ui.IMemento;
 
 public class SpritesheetAssetPreviewComp extends Composite {
 	private DataBindingContext m_bindingContext;
@@ -79,7 +81,7 @@ public class SpritesheetAssetPreviewComp extends Composite {
 	SpritesheetPreviewCanvas _canvas;
 	private Button _gridButton;
 
-	protected FrameModel _overFrame;
+	protected List<FrameModel> _selectedFrames;
 
 	public static class FpsValidator implements IValidator {
 
@@ -198,12 +200,17 @@ public class SpritesheetAssetPreviewComp extends Composite {
 
 		// DnD
 
-		_canvas.addMouseListener(new MouseAdapter() {
+		class Listener extends MouseAdapter {
+
 			@Override
 			public void mouseDown(MouseEvent e) {
-				_overFrame = _canvas.getOverFrame();
+				if (e.button == 1) {
+					_selectedFrames = _canvas.getSelectedFrames();
+				}
 			}
-		});
+		}
+
+		_canvas.addMouseListener(new Listener());
 
 		DragSource dragSource = new DragSource(_canvas, DND.DROP_MOVE | DND.DROP_DEFAULT);
 		dragSource.setTransfer(new Transfer[] { TextTransfer.getInstance(), LocalSelectionTransfer.getTransfer() });
@@ -221,17 +228,17 @@ public class SpritesheetAssetPreviewComp extends Composite {
 			}
 
 			private ISelection getSelection() {
-				if (_overFrame == null) {
+				if (_selectedFrames == null) {
 					return StructuredSelection.EMPTY;
 				}
 
-				return new StructuredSelection(_overFrame);
+				return new StructuredSelection(_selectedFrames);
 			}
 
 			@Override
 			public void dragSetData(DragSourceEvent event) {
-				if (_overFrame != null) {
-					event.data = _overFrame.getName();
+				if (_selectedFrames != null && !_selectedFrames.isEmpty()) {
+					event.data = _selectedFrames.get(0).getName();
 				}
 			}
 		});
@@ -273,6 +280,7 @@ public class SpritesheetAssetPreviewComp extends Composite {
 		_gridButton.setText(single ? "Stop" : "Play");
 		_animation.pause(!single);
 		_canvas.setSingleFrame(single);
+		_canvas.fitWindow();
 		_canvas.redraw();
 	}
 
@@ -286,8 +294,13 @@ public class SpritesheetAssetPreviewComp extends Composite {
 
 	public void setModel(SpritesheetAssetModel model) {
 		_model = model;
+
+		_selectedFrames = new ArrayList<>();
+
 		_sizeLabel.setText(model.getFrameWidth() + "x" + model.getFrameHeight());
+
 		_canvas.setSpritesheet(model);
+
 		IFile file = model.getUrlFile();
 		_canvas.setImageFile(file);
 
@@ -386,7 +399,8 @@ public class SpritesheetAssetPreviewComp extends Composite {
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
-		IObservableValue<?> observeSingleSelection_comboViewer = ViewerProperties.singleSelection().observe(_comboViewer);
+		IObservableValue<?> observeSingleSelection_comboViewer = ViewerProperties.singleSelection()
+				.observe(_comboViewer);
 		IObservableValue<?> fps_selfObserveValue = BeanProperties.value("fps").observe(_self);
 		bindingContext.bindValue(observeSingleSelection_comboViewer, fps_selfObserveValue, null, null);
 		//

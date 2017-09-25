@@ -46,6 +46,10 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.FileImageInputStream;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.ui.css.swt.theme.IThemeEngine;
+import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.jface.util.Util;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -73,6 +77,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -87,30 +92,43 @@ import javafx.embed.swt.FXCanvas;
 import javafx.scene.input.InputEvent;
 import phasereditor.ui.views.PreviewView;
 
+@SuppressWarnings("restriction")
 public class PhaserEditorUI {
 	public static Color PREVIEW_BG_DARK = SWTResourceManager.getColor(180, 180, 180);
 	public static Color PREVIEW_BG_LIGHT = SWTResourceManager.getColor(250, 250, 250);// SWTResourceManager.getColor(200,
 																						// 200,
 																						// 200);
 	private static Set<Object> _supportedImageExts = new HashSet<>(Arrays.asList("png", "bmp", "jpg", "gif", "ico"));
-	private static Boolean _isCocoaPlatform;
-	private static Boolean _isWindowsPlatform;
+	private static boolean _isCocoaPlatform = Util.isMac();
+	private static boolean _isWindowsPlatform = Util.isWindows();
 
 	private PhaserEditorUI() {
 	}
 
-	public static boolean isCocoaPlatform() {
-		if (_isCocoaPlatform == null) {
-			_isCocoaPlatform = Boolean.valueOf(SWT.getPlatform().equals("cocoa"));
-		}
-		return _isCocoaPlatform.booleanValue();
+	public static boolean isMacPlatform() {
+		return _isCocoaPlatform;
 	}
-	
+
 	public static boolean isWindowsPlaform() {
-		if (_isWindowsPlatform == null) {
-			_isWindowsPlatform = Boolean.valueOf(SWT.getPlatform().equals("win32"));
+		return _isWindowsPlatform;
+	}
+
+	public static void applyThemeStyle(Object widget) {
+		IThemeEngine engine = getThemeEngine();
+		if (engine == null) {
+			return;
 		}
-		return _isWindowsPlatform.booleanValue();
+		if (widget instanceof Shell) {
+			((Shell) widget).setBackgroundMode(SWT.INHERIT_DEFAULT);
+		}
+		engine.applyStyles(widget, true);
+	}
+
+	public static IThemeEngine getThemeEngine() {
+		MApplication application = PlatformUI.getWorkbench().getService(MApplication.class);
+		IEclipseContext context = application.getContext();
+		IThemeEngine engine = context.get(IThemeEngine.class);
+		return engine;
 	}
 
 	public static void forEachEditor(Consumer<IEditorPart> visitor) {
