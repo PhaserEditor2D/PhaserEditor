@@ -45,10 +45,10 @@ Copyright (c) Arian Fornaris 2015-2017
    </configIni>
 
    <launcherArgs>
+      <programArgs>-cssTheme none
+      </programArgs>
       <programArgsLin>--launcher.GTK_version 2 -persistState false
       </programArgsLin>
-      <programArgsWin>-cssTheme phasereditor.ide.theme.win
-      </programArgsWin>
       <vmArgs>-Dosgi.requiredJavaVersion=1.8 -Declipse.p2.unsignedPolicy=allow -Dorg.osgi.framework.bundle.parent=ext -Dosgi.framework.extensions=org.eclipse.fx.osgi
       </vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
