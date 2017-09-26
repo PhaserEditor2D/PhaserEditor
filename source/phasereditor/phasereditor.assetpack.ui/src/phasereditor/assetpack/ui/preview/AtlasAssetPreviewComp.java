@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -54,6 +55,8 @@ import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.atlas.core.AtlasFrame;
 import phasereditor.atlas.ui.AtlasCanvas;
+import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
+import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 
 @SuppressWarnings("synthetic-access")
 public class AtlasAssetPreviewComp extends Composite {
@@ -238,11 +241,8 @@ public class AtlasAssetPreviewComp extends Composite {
 		return _atlasCanvas;
 	}
 
-	public void setSingleFrame(AtlasAssetModel.Frame frame) {
-		if (!_spritesViewer.getControl().isDisposed()) {
-			_spritesViewer.getControl().dispose();
-		}
-		_atlasCanvas.setFrame(frame);
-		_atlasCanvas.setSingleFrame(true);
+	public void createToolBar(IToolBarManager toolbar) {
+		toolbar.add(new ImageCanvas_Zoom_1_1_Action(_atlasCanvas));
+		toolbar.add(new ImageCanvas_Zoom_FitWindow_Action(_atlasCanvas));
 	}
 }

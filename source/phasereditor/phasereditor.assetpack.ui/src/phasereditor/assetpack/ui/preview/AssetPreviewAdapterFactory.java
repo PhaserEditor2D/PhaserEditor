@@ -87,6 +87,8 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			}
 		} else if (adaptable instanceof SpritesheetAssetModel.FrameModel) {
 			return createSpritesheetFramePreviewAdapter();
+		} else if (adaptable instanceof AtlasAssetModel.Frame) {
+			return createAtlasSpritePreviewAdapter();
 		}
 		return null;
 	}
@@ -260,19 +262,39 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 		};
 	}
 
+	private static IPreviewFactory createAtlasSpritePreviewAdapter() {
+		return new AssetModelPreviewFactory() {
+
+			@Override
+			public void updateControl(Control preview, Object element) {
+				AtlasSpritePreviewComp comp = (AtlasSpritePreviewComp) preview;
+				comp.setModel((Frame) element);
+			}
+
+			@Override
+			public Control createControl(Composite previewContainer) {
+				return new AtlasSpritePreviewComp(previewContainer, SWT.NONE);
+			}
+
+			@Override
+			public boolean canReusePreviewControl(Control c, Object elem) {
+				return c instanceof AtlasSpritePreviewComp && elem instanceof Frame;
+			}
+
+			@Override
+			public void updateToolBar(IToolBarManager toolbar, Control preview) {
+				((AtlasSpritePreviewComp) preview).createToolBar(toolbar);
+			}
+		};
+	}
+
 	private static IPreviewFactory createAtlasPreviewAdapter() {
 		return new AssetModelPreviewFactory() {
 
 			@Override
-			public void updateControl2(Control preview, Object element) {
+			public void updateControl(Control preview, Object element) {
 				AtlasAssetPreviewComp comp = (AtlasAssetPreviewComp) preview;
 				comp.setModel((AtlasAssetModel) element);
-			}
-
-			@Override
-			public void selectInControl(Control preview, Object element) {
-				AtlasAssetPreviewComp comp = (AtlasAssetPreviewComp) preview;
-				comp.setSingleFrame((Frame) element);
 			}
 
 			@Override
@@ -282,14 +304,12 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 
 			@Override
 			public boolean canReusePreviewControl(Control c, Object elem) {
-				if (c instanceof AtlasAssetPreviewComp) {
-					AtlasAssetPreviewComp comp = (AtlasAssetPreviewComp) c;
-					if (comp.getAtlasCanvas().isSingleFrame() && !(elem instanceof AtlasAssetModel.Frame)) {
-						return false;
-					}
-					return true;
-				}
-				return false;
+				return c instanceof AtlasAssetPreviewComp && elem instanceof AtlasAssetModel;
+			}
+			
+			@Override
+			public void updateToolBar(IToolBarManager toolbar, Control preview) {
+				((AtlasAssetPreviewComp) preview).createToolBar(toolbar);
 			}
 		};
 	}
@@ -462,7 +482,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			public void updateControl2(Control preview, Object element) {
 				((ImageAssetPreviewComp) preview).setModel((ImageAssetModel) element);
 			}
-			
+
 			@Override
 			public void updateToolBar(IToolBarManager toolbar, Control preview) {
 				((ImageAssetPreviewComp) preview).createToolBar(toolbar);
