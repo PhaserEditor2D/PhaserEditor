@@ -435,7 +435,12 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 
 			@Override
 			public boolean canReusePreviewControl(Control c, Object elem) {
-				return c instanceof SpritesheetFramePreviewComp &&elem instanceof SpritesheetAssetModel.FrameModel;
+				return c instanceof SpritesheetFramePreviewComp && elem instanceof SpritesheetAssetModel.FrameModel;
+			}
+
+			@Override
+			public void updateToolBar(IToolBarManager toolbar, Control preview) {
+				((SpritesheetFramePreviewComp) preview).createToolBar(toolbar);
 			}
 
 		};

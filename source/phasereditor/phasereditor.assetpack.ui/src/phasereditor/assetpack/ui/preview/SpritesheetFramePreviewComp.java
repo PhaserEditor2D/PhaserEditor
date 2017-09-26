@@ -22,11 +22,24 @@
 package phasereditor.assetpack.ui.preview;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.util.LocalSelectionTransfer;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSource;
+import org.eclipse.swt.dnd.DragSourceAdapter;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
 import phasereditor.assetpack.core.SpritesheetAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
 import phasereditor.assetpack.ui.widgets.SpritesheetPreviewCanvas;
+import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
+import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 
 /**
  * @author arian
@@ -34,11 +47,40 @@ import phasereditor.assetpack.ui.widgets.SpritesheetPreviewCanvas;
  */
 public class SpritesheetFramePreviewComp extends SpritesheetPreviewCanvas {
 
+	private FrameModel _model;
+
 	public SpritesheetFramePreviewComp(Composite parent, int style) {
 		super(parent, style);
+
+		DragSource dragSource = new DragSource(this, DND.DROP_MOVE | DND.DROP_DEFAULT);
+		dragSource.setTransfer(new Transfer[] { TextTransfer.getInstance(), LocalSelectionTransfer.getTransfer() });
+		dragSource.addDragListener(new DragSourceAdapter() {
+
+			@Override
+			public void dragStart(DragSourceEvent event) {
+				ISelection sel = getSelection();
+				if (sel.isEmpty()) {
+					event.doit = false;
+					return;
+				}
+				LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
+				transfer.setSelection(sel);
+			}
+
+			private ISelection getSelection() {
+				return new StructuredSelection(getModel());
+			}
+
+			@Override
+			public void dragSetData(DragSourceEvent event) {
+				event.data = getSpritesheet().getKey() + " - " + getModel().getKey();
+			}
+		});
+
 	}
 
 	public void setModel(SpritesheetAssetModel.FrameModel model) {
+		_model = model;
 		setSpritesheet(model.getAsset());
 		IFile file = model.getAsset().getUrlFile();
 		setImageFile(file);
@@ -58,5 +100,14 @@ public class SpritesheetFramePreviewComp extends SpritesheetPreviewCanvas {
 			fitWindow();
 			redraw();
 		});
+	}
+
+	public FrameModel getModel() {
+		return _model;
+	}
+
+	public void createToolBar(IToolBarManager toolbar) {
+		toolbar.add(new ImageCanvas_Zoom_1_1_Action(this));
+		toolbar.add(new ImageCanvas_Zoom_FitWindow_Action(this));
 	}
 }
