@@ -133,7 +133,7 @@ public class SpritesheetAssetPreviewComp extends Composite {
 	protected void playButtonPressed() {
 		StackLayout layout = (StackLayout) getLayout();
 
-		if (layout.topControl == _sheetCanvas) {
+		if (isSheetInTheTop()) {
 			layout.topControl = _animCanvas;
 			_animCanvas.stop();
 			_animCanvas.play();
@@ -151,6 +151,11 @@ public class SpritesheetAssetPreviewComp extends Composite {
 		// _canvas.fitWindow();
 		// _canvas.redraw();
 
+	}
+
+	private boolean isSheetInTheTop() {
+		StackLayout layout = (StackLayout) getLayout();
+		return layout.topControl == _sheetCanvas;
 	}
 
 	public void setModel(SpritesheetAssetModel model) {
@@ -197,6 +202,9 @@ public class SpritesheetAssetPreviewComp extends Composite {
 
 	public void setFps(int fps) {
 		_animModel.setFrameRates(fps);
+		if (!isSheetInTheTop()) {
+			_animCanvas.play();
+		}
 	}
 
 	private Action _playAction;
@@ -273,9 +281,6 @@ public class SpritesheetAssetPreviewComp extends Composite {
 
 	}
 
-	/**
-	 * 
-	 */
 	public void stopAnimation() {
 		_animCanvas.stop();
 	}

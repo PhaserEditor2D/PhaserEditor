@@ -50,7 +50,10 @@ public class FrameAnimationCanvas extends ImageCanvas implements ControlListener
 	}
 
 	public void play() {
-		_anim.play();
+		if (_anim != null) {
+			_anim.stop();
+		}
+		createAnimation();
 	}
 
 	public void stop() {
@@ -78,10 +81,14 @@ public class FrameAnimationCanvas extends ImageCanvas implements ControlListener
 			redraw();
 		});
 
-		int size = model.getFrames().size();
-		_anim = new IndexTransition(Duration.seconds(size / (double) model.getFrameRate()), size);
+		createAnimation();
+	}
 
-		if (model.isLoop()) {
+	private void createAnimation() {
+		int size = _model.getFrames().size();
+		_anim = new IndexTransition(Duration.seconds(size / (double) _model.getFrameRate()), size);
+
+		if (_model.isLoop()) {
 			_anim.setCycleCount(Animation.INDEFINITE);
 		}
 
