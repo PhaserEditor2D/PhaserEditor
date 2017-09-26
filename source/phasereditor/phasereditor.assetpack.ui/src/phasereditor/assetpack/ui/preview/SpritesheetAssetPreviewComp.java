@@ -24,11 +24,7 @@ package phasereditor.assetpack.ui.preview;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.databinding.validation.IValidator;
-import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.util.LocalSelectionTransfer;
@@ -38,99 +34,42 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.SWTException;
+import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.dialogs.ListDialog;
 
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
 import phasereditor.assetpack.ui.widgets.SpritesheetPreviewCanvas;
-import phasereditor.ui.Animation;
+import phasereditor.canvas.core.AnimationModel;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
+import phasereditor.ui.animations.FrameAnimationCanvas;
 
 public class SpritesheetAssetPreviewComp extends Composite {
 	private int _fps = 5;
 
-	SpritesheetPreviewCanvas _canvas;
-	
+	SpritesheetPreviewCanvas _sheetCanvas;
 
 	protected List<FrameModel> _selectedFrames;
 
-	public static class FpsValidator implements IValidator {
-
-		@Override
-		public IStatus validate(Object value) {
-			Integer fps = (Integer) value;
-			if (fps.intValue() < 1) {
-				return ValidationStatus.error("Wrong FPS value");
-			} else if (fps.intValue() > 120) {
-				return ValidationStatus.error("Is not too fast?");
-			}
-			return Status.OK_STATUS;
-		}
-
-	}
-
-	/**
-	 * Create the composite.
-	 * 
-	 * @param parent
-	 * @param style
-	 */
 	public SpritesheetAssetPreviewComp(Composite parent, int style) {
 		super(parent, style);
 
-		addDisposeListener(new DisposeListener() {
-			@Override
-			public void widgetDisposed(DisposeEvent e) {
-				if (_animation != null) {
-					_animation.stop();
-				}
-			}
-		});
-		GridLayout gridLayout = new GridLayout(1, false);
-		gridLayout.marginWidth = 0;
-		gridLayout.marginHeight = 0;
-		setLayout(gridLayout);
+		setLayout(new StackLayout());
 
-		_canvas = new SpritesheetPreviewCanvas(this, SWT.NONE);
-		_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		_sheetCanvas = new SpritesheetPreviewCanvas(this, SWT.NONE);
 
-		afterCreateWidgets();
-
-	}
-
-	private void afterCreateWidgets() {
-
-		// DnD
-
-		class Listener extends MouseAdapter {
-
-			@Override
-			public void mouseDown(MouseEvent e) {
-				if (e.button == 1) {
-					_selectedFrames = _canvas.getSelectedFrames();
-				}
-			}
-		}
-
-		_canvas.addMouseListener(new Listener());
-
-		DragSource dragSource = new DragSource(_canvas, DND.DROP_MOVE | DND.DROP_DEFAULT);
+		DragSource dragSource = new DragSource(_sheetCanvas, DND.DROP_MOVE | DND.DROP_DEFAULT);
 		dragSource.setTransfer(new Transfer[] { TextTransfer.getInstance(), LocalSelectionTransfer.getTransfer() });
 		dragSource.addDragListener(new DragSourceAdapter() {
 
@@ -160,41 +99,55 @@ public class SpritesheetAssetPreviewComp extends Composite {
 				}
 			}
 		});
+
+		_animCanvas = new FrameAnimationCanvas(this, SWT.NONE);
+
+		afterCreateWidgets();
+
 	}
 
-	protected Animation _animation;
+	private void afterCreateWidgets() {
+
+		// DnD
+
+		class Listener extends MouseAdapter {
+
+			@Override
+			public void mouseDown(MouseEvent e) {
+				if (e.button == 1) {
+					_selectedFrames = _sheetCanvas.getSelectedFrames();
+				}
+			}
+		}
+
+		_sheetCanvas.addMouseListener(new Listener());
+	}
 
 	private SpritesheetAssetModel _model;
 
-	private void animate() {
-		_animation = new Animation(30) {
-
-			@Override
-			public void action() {
-				try {
-					int n = _canvas.getFrameCount();
-					if (n > 0) {
-						int f = _canvas.getFrame();
-						f = (f + 1) % n;
-						_canvas.setFrame(f);
-						_canvas.redraw();
-					}
-				} catch (SWTException e) {
-					// invalid access.
-					stop();
-				}
-			}
-		};
-		_animation.start();
-	}
+	private SpritesheetAnimationModel animModel;
 
 	protected void playButtonPressed() {
-		boolean single = _canvas.isSingleFrame();
-		single = !single;
-		_animation.pause(!single);
-		_canvas.setSingleFrame(single);
-		_canvas.fitWindow();
-		_canvas.redraw();
+		StackLayout layout = (StackLayout) getLayout();
+
+		if (layout.topControl == _sheetCanvas) {
+			layout.topControl = _animCanvas;
+			_animCanvas.stop();
+			_animCanvas.play();
+		} else {
+			layout.topControl = _sheetCanvas;
+			_animCanvas.stop();
+		}
+
+		layout();
+
+		// boolean single = _canvas.isSingleFrame();
+		// single = !single;
+		// _animation.pause(!single);
+		// _canvas.setSingleFrame(single);
+		// _canvas.fitWindow();
+		// _canvas.redraw();
+
 	}
 
 	public void setModel(SpritesheetAssetModel model) {
@@ -202,46 +155,49 @@ public class SpritesheetAssetPreviewComp extends Composite {
 
 		_selectedFrames = new ArrayList<>();
 
-		_canvas.setSpritesheet(model);
-
-		IFile file = model.getUrlFile();
-		_canvas.setImageFile(file);
+		IFile imgFile = model.getUrlFile();
 
 		{
+			// sprite canvas
+			_sheetCanvas.setSpritesheet(model);
+
+			_sheetCanvas.setImageFile(imgFile);
+
 			String str = "Frames Size: " + model.getFrameWidth() + "x" + model.getFrameHeight();
-			if (_canvas.getImage() != null) {
+			if (_sheetCanvas.getImage() != null) {
 				str += "\n";
-				Rectangle b = _canvas.getImage().getBounds();
+				Rectangle b = _sheetCanvas.getImage().getBounds();
 				str += "Image Size: " + b.width + "x" + b.height;
 				str += "Image URL: " + model.getUrl();
 			}
-			_canvas.setToolTipText(str);
+			_sheetCanvas.setToolTipText(str);
 		}
 
-		animate();
-		_animation.pause(true);
-		setFps(5);
+		{
+			// anim canvas
+			AnimationModel anim = new AnimationModel("noname");
+			anim.getFrames().addAll(_model.getFrames());
+			anim.setFrameRate(5);
+			anim.setLoop(true);
+			animModel = new SpritesheetAnimationModel(anim);
+			_animCanvas.setModel(animModel);
+			_animCanvas.stop();
+		}
+
+		((StackLayout) getLayout()).topControl = _sheetCanvas;
+		layout();
 	}
 
 	public SpritesheetAssetModel getModel() {
 		return _model;
 	}
 
-	public void stopAnimation() {
-		if (_animation != null) {
-			_animation.pause(true);
-		}
-	}
-
 	public void setFps(int fps) {
-		_fps = fps;
-		if (_animation != null) {
-			_animation.setFps(fps);
-		}
+		animModel.setFrameRates(fps);
 	}
 
 	private Action _playAction;
-
+	private FrameAnimationCanvas _animCanvas;
 
 	public void createToolBar(IToolBarManager toolbar) {
 
@@ -292,5 +248,12 @@ public class SpritesheetAssetPreviewComp extends Composite {
 				}
 			}
 		});
+	}
+
+	/**
+	 * 
+	 */
+	public void stopAnimation() {
+		_animCanvas.stop();
 	}
 }

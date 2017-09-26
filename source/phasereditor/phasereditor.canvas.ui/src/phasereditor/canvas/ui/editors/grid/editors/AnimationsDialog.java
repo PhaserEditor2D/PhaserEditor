@@ -30,7 +30,6 @@ import java.util.List;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -59,7 +58,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -77,11 +75,11 @@ import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
+import phasereditor.assetpack.ui.preview.SpritesheetAnimationModel;
 import phasereditor.canvas.core.AnimationModel;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
 import phasereditor.ui.animations.FrameAnimationCanvas;
-import phasereditor.ui.animations.IFramesAnimationModel;
 
 /**
  * @author arian
@@ -529,41 +527,6 @@ public class AnimationsDialog extends Dialog {
 		_playButton.setEnabled(_anim != null);
 
 		playAnimation();
-	}
-
-	static class SpritesheetAnimationModel implements IFramesAnimationModel {
-		private AnimationModel _base;
-		private ArrayList<Rectangle> _frames;
-
-		public SpritesheetAnimationModel(AnimationModel base) {
-			super();
-			_base = base;
-			_frames = new ArrayList<>();
-			for (IAssetFrameModel assetFrame : _base.getFrames()) {
-				_frames.add(assetFrame.getFrameData().src);
-			}
-		}
-
-		@Override
-		public List<Rectangle> getFrames() {
-			return _frames;
-		}
-
-		@Override
-		public boolean isLoop() {
-			return _base.isLoop();
-		}
-
-		@Override
-		public int getFrameRate() {
-			return _base.getFrameRate();
-		}
-
-		@Override
-		public IFile getImageFile() {
-			return _base.getFrames().get(0).getImageFile();
-		}
-
 	}
 
 	void playAnimation() {

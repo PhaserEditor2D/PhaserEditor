@@ -49,6 +49,16 @@ public class FrameAnimationCanvas extends ImageCanvas implements ControlListener
 		addControlListener(this);
 	}
 
+	public void play() {
+		_anim.play();
+	}
+
+	public void stop() {
+		if (_anim != null) {
+			_anim.stop();
+		}
+	}
+
 	public void setModel(IFramesAnimationModel model) {
 		_model = model;
 
@@ -74,6 +84,7 @@ public class FrameAnimationCanvas extends ImageCanvas implements ControlListener
 		if (model.isLoop()) {
 			_anim.setCycleCount(Animation.INDEFINITE);
 		}
+
 		_anim.play();
 	}
 
