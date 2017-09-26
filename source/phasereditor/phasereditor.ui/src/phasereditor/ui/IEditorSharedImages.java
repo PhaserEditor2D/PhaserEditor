@@ -64,5 +64,7 @@ public interface IEditorSharedImages {
 	String IMG_PLAY = "icons/control_play.png";
 	String IMG_STOP = "icons/control_stop.png";
 	String IMG_NEW_VIEW = "platform:/plugin/org.eclipse.ui.views/icons/full/elcl16/new.png";
+	String IMG_CONTROL_EQUALIZER = "icons/control_equalizer.png";
+	String IMG_ARROW_OUT = "icons/arrow_out.png";
 }
 

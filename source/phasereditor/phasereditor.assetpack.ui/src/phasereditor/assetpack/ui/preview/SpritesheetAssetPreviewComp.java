@@ -27,6 +27,7 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelection;
@@ -53,10 +54,12 @@ import phasereditor.assetpack.ui.widgets.SpritesheetPreviewCanvas;
 import phasereditor.canvas.core.AnimationModel;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
+import phasereditor.ui.ImageCanvas;
+import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
+import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 import phasereditor.ui.animations.FrameAnimationCanvas;
 
 public class SpritesheetAssetPreviewComp extends Composite {
-	private int _fps = 5;
 
 	SpritesheetPreviewCanvas _sheetCanvas;
 
@@ -125,7 +128,7 @@ public class SpritesheetAssetPreviewComp extends Composite {
 
 	private SpritesheetAssetModel _model;
 
-	private SpritesheetAnimationModel animModel;
+	private SpritesheetAnimationModel _animModel;
 
 	protected void playButtonPressed() {
 		StackLayout layout = (StackLayout) getLayout();
@@ -167,7 +170,7 @@ public class SpritesheetAssetPreviewComp extends Composite {
 			if (_sheetCanvas.getImage() != null) {
 				str += "\n";
 				Rectangle b = _sheetCanvas.getImage().getBounds();
-				str += "Image Size: " + b.width + "x" + b.height;
+				str += "Image Size: " + b.width + "x" + b.height + "\n";
 				str += "Image URL: " + model.getUrl();
 			}
 			_sheetCanvas.setToolTipText(str);
@@ -179,8 +182,8 @@ public class SpritesheetAssetPreviewComp extends Composite {
 			anim.getFrames().addAll(_model.getFrames());
 			anim.setFrameRate(5);
 			anim.setLoop(true);
-			animModel = new SpritesheetAnimationModel(anim);
-			_animCanvas.setModel(animModel);
+			_animModel = new SpritesheetAnimationModel(anim);
+			_animCanvas.setModel(_animModel);
 			_animCanvas.stop();
 		}
 
@@ -193,11 +196,13 @@ public class SpritesheetAssetPreviewComp extends Composite {
 	}
 
 	public void setFps(int fps) {
-		animModel.setFrameRates(fps);
+		_animModel.setFrameRates(fps);
 	}
 
 	private Action _playAction;
 	private FrameAnimationCanvas _animCanvas;
+
+	private Action _setFpsAction;
 
 	public void createToolBar(IToolBarManager toolbar) {
 
@@ -225,10 +230,10 @@ public class SpritesheetAssetPreviewComp extends Composite {
 		fpsList[0] = Integer.valueOf(1);
 		fpsList[1] = Integer.valueOf(5);
 
-		toolbar.add(new Action("Settings") {
+		_setFpsAction = new Action("FPS") {
 
 			{
-				setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_SETTINGS));
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_CONTROL_EQUALIZER));
 			}
 
 			@SuppressWarnings({ "boxing", "synthetic-access" })
@@ -238,7 +243,7 @@ public class SpritesheetAssetPreviewComp extends Composite {
 				dlg.setContentProvider(new ArrayContentProvider());
 				dlg.setLabelProvider(new LabelProvider());
 				dlg.setInput(fpsList);
-				dlg.setInitialSelections(new Object[] { _fps });
+				dlg.setInitialSelections(new Object[] { _animModel.getFrameRate() });
 				dlg.setMessage("Select the frames per second:");
 				dlg.setTitle("FPS");
 
@@ -247,7 +252,25 @@ public class SpritesheetAssetPreviewComp extends Composite {
 					setFps(fps.intValue());
 				}
 			}
+		};
+		toolbar.add(_setFpsAction);
+
+		toolbar.add(new Separator());
+		toolbar.add(new ImageCanvas_Zoom_1_1_Action() {
+
+			@Override
+			public ImageCanvas getImageCanvas() {
+				return (ImageCanvas) ((StackLayout) getLayout()).topControl;
+			}
 		});
+		toolbar.add(new ImageCanvas_Zoom_FitWindow_Action() {
+
+			@Override
+			public ImageCanvas getImageCanvas() {
+				return (ImageCanvas) ((StackLayout) getLayout()).topControl;
+			}
+		});
+
 	}
 
 	/**
