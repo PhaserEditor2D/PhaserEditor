@@ -25,17 +25,23 @@ import java.io.File;
 import java.nio.file.Path;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import phasereditor.ui.ImageCanvas;
+import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
+import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 
-public class ImagePreviewComposite extends Composite {
+public class ImagePreviewComp extends Composite {
 	private Label _resolutionLabel;
-	private ImageCanvas _imagePreviewCanvas;
+	private ImageCanvas _canvas;
+	private IFile _file;
 
 	/**
 	 * Create the composite.
@@ -43,13 +49,13 @@ public class ImagePreviewComposite extends Composite {
 	 * @param parent
 	 * @param style
 	 */
-	public ImagePreviewComposite(Composite parent, int style) {
+	public ImagePreviewComp(Composite parent, int style) {
 		super(parent, style);
 
 		setLayout(new GridLayout(1, false));
 
-		_imagePreviewCanvas = new ImageCanvas(this, SWT.NONE);
-		_imagePreviewCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		_canvas = new ImageCanvas(this, SWT.NONE);
+		_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		_resolutionLabel = new Label(this, SWT.CENTER);
 		_resolutionLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -61,35 +67,52 @@ public class ImagePreviewComposite extends Composite {
 	}
 
 	public void setImageFile(IFile file) {
+		_file = file;
 		setImageFile(file == null ? null : file.getLocation().toFile().getAbsolutePath());
 	}
 
 	public void setImageFile(String filepath) {
 		if (filepath == null) {
-			_imagePreviewCanvas.setImage(null);
+			_canvas.setImage(null);
 			if (_resolutionLabel != null) {
 				_resolutionLabel.setText("<No image>");
 			}
 		} else {
-			_imagePreviewCanvas.setImageFile(filepath);
+			_canvas.setImageFile(filepath);
 			if (_resolutionLabel != null) {
-				_resolutionLabel
-						.setText(new File(filepath).getName() + " (" + _imagePreviewCanvas.getResolution() + ")");
+				_resolutionLabel.setText(new File(filepath).getName() + " (" + _canvas.getResolution() + ")");
 			}
+		}
+
+		Image img = _canvas.getImage();
+		if (img != null) {
+			Rectangle b = img.getBounds();
+			String str = "Image Size: " + b.width + "x" + b.height + "\n";
+			if (_file == null) {
+				str += "File: " + filepath;
+			} else {
+				str += "File: " + _file.getProjectRelativePath().toPortableString();
+			}
+			setToolTipText(str);
 		}
 	}
 
 	public void loadImage(Path path, String label) {
 		if (path == null) {
-			_imagePreviewCanvas.setImage(null);
+			_canvas.setImage(null);
 			if (_resolutionLabel != null) {
 				_resolutionLabel.setText("<No image>");
 			}
 		} else {
-			_imagePreviewCanvas.loadImage(path.toAbsolutePath().toString());
+			_canvas.loadImage(path.toAbsolutePath().toString());
 			if (_resolutionLabel != null) {
-				_resolutionLabel.setText(label + " (" + _imagePreviewCanvas.getResolution() + ")");
+				_resolutionLabel.setText(label + " (" + _canvas.getResolution() + ")");
 			}
 		}
+	}
+
+	public void createToolBar(IToolBarManager toolbar) {
+		toolbar.add(new ImageCanvas_Zoom_1_1_Action(_canvas));
+		toolbar.add(new ImageCanvas_Zoom_FitWindow_Action(_canvas));
 	}
 }

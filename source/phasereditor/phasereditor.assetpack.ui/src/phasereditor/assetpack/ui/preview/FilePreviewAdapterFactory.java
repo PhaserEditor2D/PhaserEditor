@@ -23,6 +23,7 @@ package phasereditor.assetpack.ui.preview;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdapterFactory;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -31,7 +32,7 @@ import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.assetpack.ui.widgets.ImagePreviewComposite;
+import phasereditor.assetpack.ui.widgets.ImagePreviewComp;
 import phasereditor.audiosprite.ui.GdxMusicControl;
 import phasereditor.ui.views.IPreviewFactory;
 
@@ -63,7 +64,7 @@ public class FilePreviewAdapterFactory implements IAdapterFactory {
 		public void initPreviewControl(Control previewControl, IMemento initialMemento) {
 			// nothing
 		}
-		
+
 		@Override
 		public void savePreviewControl(Control previewControl, IMemento memento) {
 			//
@@ -94,23 +95,23 @@ public class FilePreviewAdapterFactory implements IAdapterFactory {
 			public void updateControl(Control preview, Object element) {
 				IFile file = (IFile) element;
 				if (file.exists()) {
-					((ImagePreviewComposite) preview).setImageFile(file);
+					((ImagePreviewComp) preview).setImageFile(file);
 				}
 			}
 
 			@Override
 			public Control createControl(Composite previewContainer) {
-				return new ImagePreviewComposite(previewContainer, 0);
+				return new ImagePreviewComp(previewContainer, 0);
 			}
 
 			@Override
 			public boolean canReusePreviewControl(Control c, Object elem) {
-				return c instanceof ImagePreviewComposite;
+				return c instanceof ImagePreviewComp;
 			}
 
 			@Override
-			public void hiddenControl(Control preview) {
-				// nothing
+			public void updateToolBar(IToolBarManager toolbar, Control preview) {
+				((ImagePreviewComp) preview).createToolBar(toolbar);
 			}
 		};
 	}

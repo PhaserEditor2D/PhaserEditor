@@ -94,7 +94,7 @@ import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.preview.ExternalImageFileInformationControl;
-import phasereditor.assetpack.ui.widgets.ImagePreviewComposite;
+import phasereditor.assetpack.ui.widgets.ImagePreviewComp;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CanvasCore;
@@ -548,8 +548,8 @@ public class CanvasUI {
 				ExternalImageFileInformationControl control = new ExternalImageFileInformationControl(parent) {
 
 					@Override
-					protected ImagePreviewComposite createContent2(Composite parentComp) {
-						ImagePreviewComposite preview = super.createContent2(parentComp);
+					protected ImagePreviewComp createContent2(Composite parentComp) {
+						ImagePreviewComp preview = super.createContent2(parentComp);
 						preview.destroyResolutionLabel();
 						return preview;
 					}

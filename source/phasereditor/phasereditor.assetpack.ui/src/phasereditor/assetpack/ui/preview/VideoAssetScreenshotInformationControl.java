@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 import phasereditor.assetpack.core.VideoAssetModel;
-import phasereditor.assetpack.ui.widgets.ImagePreviewComposite;
+import phasereditor.assetpack.ui.widgets.ImagePreviewComp;
 import phasereditor.audio.core.AudioCore;
 import phasereditor.ui.info.BaseInformationControl;
 
@@ -42,7 +42,7 @@ public class VideoAssetScreenshotInformationControl extends BaseInformationContr
 
 	@Override
 	protected Control createContent2(Composite parentComp) {
-		return new ImagePreviewComposite(parentComp, SWT.NONE);
+		return new ImagePreviewComp(parentComp, SWT.NONE);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class VideoAssetScreenshotInformationControl extends BaseInformationContr
 			return;
 		}
 
-		ImagePreviewComposite comp = (ImagePreviewComposite) control;
+		ImagePreviewComp comp = (ImagePreviewComp) control;
 		comp.loadImage(snapshot, label);
 	}
 }

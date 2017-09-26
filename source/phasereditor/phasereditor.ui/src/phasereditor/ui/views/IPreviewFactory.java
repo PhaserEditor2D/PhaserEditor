@@ -42,7 +42,9 @@ public interface IPreviewFactory {
 		// do nothing
 	}
 
-	public void hiddenControl(Control preview);
+	public default void hiddenControl(Control preview) {
+		// nothing
+	}
 
 	public String getTitle(Object element);
 

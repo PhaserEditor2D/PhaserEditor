@@ -462,6 +462,11 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			public void updateControl2(Control preview, Object element) {
 				((ImageAssetPreviewComp) preview).setModel((ImageAssetModel) element);
 			}
+			
+			@Override
+			public void updateToolBar(IToolBarManager toolbar, Control preview) {
+				((ImageAssetPreviewComp) preview).createToolBar(toolbar);
+			}
 		};
 	}
 

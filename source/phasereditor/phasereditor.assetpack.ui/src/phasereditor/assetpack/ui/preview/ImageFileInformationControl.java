@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import phasereditor.assetpack.ui.widgets.ImagePreviewComposite;
+import phasereditor.assetpack.ui.widgets.ImagePreviewComp;
 import phasereditor.ui.info.BaseInformationControl;
 
 public class ImageFileInformationControl extends BaseInformationControl {
@@ -38,12 +38,12 @@ public class ImageFileInformationControl extends BaseInformationControl {
 
 	@Override
 	protected Control createContent2(Composite parentComp) {
-		return new ImagePreviewComposite(parentComp, SWT.NONE);
+		return new ImagePreviewComp(parentComp, SWT.NONE);
 	}
 
 	@Override
 	protected void updateContent(Control control, Object model) {
-		ImagePreviewComposite comp = (ImagePreviewComposite) control;
+		ImagePreviewComp comp = (ImagePreviewComp) control;
 		comp.setImageFile(getFileToDisplay(model));
 	}
 

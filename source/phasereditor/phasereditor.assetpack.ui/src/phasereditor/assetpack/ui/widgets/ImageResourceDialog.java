@@ -94,7 +94,7 @@ public class ImageResourceDialog extends Dialog {
 		Table list = _listViewer.getTable();
 		list.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
 
-		_imagePreviewCanvas = new ImagePreviewComposite(composite, SWT.BORDER);
+		_imagePreviewCanvas = new ImagePreviewComp(composite, SWT.BORDER);
 		_imagePreviewCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
 				true, true, 1, 1));
 		_listViewer.setContentProvider(new ArrayContentProvider());
@@ -105,7 +105,7 @@ public class ImageResourceDialog extends Dialog {
 
 	private LabelProvider _labelProvider;
 	private Object _input;
-	private ImagePreviewComposite _imagePreviewCanvas;
+	private ImagePreviewComp _imagePreviewCanvas;
 	private IResource _initial;
 	private String _objectName;
 
@@ -181,7 +181,7 @@ public class ImageResourceDialog extends Dialog {
 		return _selection;
 	}
 
-	public ImagePreviewComposite getPreview() {
+	public ImagePreviewComp getPreview() {
 		return _imagePreviewCanvas;
 	}
 

@@ -22,6 +22,7 @@
 package phasereditor.assetpack.ui.preview;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
@@ -31,7 +32,9 @@ import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -39,6 +42,8 @@ import org.eclipse.swt.widgets.Label;
 
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.ui.ImageCanvas;
+import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
+import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 
 @SuppressWarnings("synthetic-access")
 public class ImageAssetPreviewComp extends Composite {
@@ -98,9 +103,23 @@ public class ImageAssetPreviewComp extends Composite {
 		IFile file = model.getUrlFile();
 		_canvas.setImageFile(file);
 		_resolutionLabel.setText(_canvas.getResolution());
+
+		Image img = _canvas.getImage();
+		if (img != null) {
+			Rectangle b = img.getBounds();
+			String str = "Image Size: " + b.width + "x" + b.height + "\n";
+			str += "Image URL: " + model.getUrl();
+			setToolTipText(str);
+		}
+
 	}
 
 	public ImageAssetModel getModel() {
 		return _model;
+	}
+
+	public void createToolBar(IToolBarManager toolbar) {
+		toolbar.add(new ImageCanvas_Zoom_1_1_Action(_canvas));
+		toolbar.add(new ImageCanvas_Zoom_FitWindow_Action(_canvas));
 	}
 }
