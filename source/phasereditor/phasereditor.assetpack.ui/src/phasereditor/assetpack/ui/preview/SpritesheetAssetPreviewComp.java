@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -42,8 +41,6 @@ import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.dialogs.ListDialog;
@@ -64,8 +61,6 @@ public class SpritesheetAssetPreviewComp extends Composite {
 
 	SpritesheetPreviewCanvas _sheetCanvas;
 
-	protected List<FrameModel> _selectedFrames;
-
 	public SpritesheetAssetPreviewComp(Composite parent, int style) {
 		super(parent, style);
 
@@ -84,23 +79,20 @@ public class SpritesheetAssetPreviewComp extends Composite {
 					event.doit = false;
 					return;
 				}
-				event.image = AssetLabelProvider.GLOBAL_48.getImage(((StructuredSelection)sel).getFirstElement());
+				event.image = AssetLabelProvider.GLOBAL_48.getImage(((StructuredSelection) sel).getFirstElement());
 				LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
 				transfer.setSelection(sel);
 			}
 
 			private ISelection getSelection() {
-				if (_selectedFrames == null) {
-					return StructuredSelection.EMPTY;
-				}
-
-				return new StructuredSelection(_selectedFrames);
+				return new StructuredSelection(getSelectedFrames());
 			}
 
 			@Override
 			public void dragSetData(DragSourceEvent event) {
-				if (_selectedFrames != null && !_selectedFrames.isEmpty()) {
-					event.data = _selectedFrames.get(0).getName();
+				List<FrameModel> frames = getSelectedFrames();
+				if (!frames.isEmpty()) {
+					event.data = frames.get(0).getName();
 				}
 			}
 		});
@@ -112,25 +104,14 @@ public class SpritesheetAssetPreviewComp extends Composite {
 	}
 
 	private void afterCreateWidgets() {
-
-		// DnD
-
-		class Listener extends MouseAdapter {
-
-			@Override
-			public void mouseDown(MouseEvent e) {
-				if (e.button == 1) {
-					_selectedFrames = _sheetCanvas.getSelectedFrames();
-				}
-			}
-		}
-
-		_sheetCanvas.addMouseListener(new Listener());
+		// nothing
 	}
 
 	private SpritesheetAssetModel _model;
 
-	private SpritesheetAnimationModel _animModel;
+	private SpritesheetAnimationModel _canvasAnimModel;
+
+	private AnimationModel _animModel;
 
 	protected void playButtonPressed() {
 		StackLayout layout = (StackLayout) getLayout();
@@ -138,6 +119,7 @@ public class SpritesheetAssetPreviewComp extends Composite {
 		if (isSheetInTheTop()) {
 			layout.topControl = _animCanvas;
 			_animCanvas.stop();
+			updateAnimationModels();
 			_animCanvas.play();
 		} else {
 			layout.topControl = _sheetCanvas;
@@ -145,14 +127,6 @@ public class SpritesheetAssetPreviewComp extends Composite {
 		}
 
 		layout();
-
-		// boolean single = _canvas.isSingleFrame();
-		// single = !single;
-		// _animation.pause(!single);
-		// _canvas.setSingleFrame(single);
-		// _canvas.fitWindow();
-		// _canvas.redraw();
-
 	}
 
 	private boolean isSheetInTheTop() {
@@ -162,8 +136,6 @@ public class SpritesheetAssetPreviewComp extends Composite {
 
 	public void setModel(SpritesheetAssetModel model) {
 		_model = model;
-
-		_selectedFrames = new ArrayList<>();
 
 		IFile imgFile = model.getUrlFile();
 
@@ -184,13 +156,7 @@ public class SpritesheetAssetPreviewComp extends Composite {
 		}
 
 		{
-			// anim canvas
-			AnimationModel anim = new AnimationModel("noname");
-			anim.getFrames().addAll(_model.getFrames());
-			anim.setFrameRate(5);
-			anim.setLoop(true);
-			_animModel = new SpritesheetAnimationModel(anim);
-			_animCanvas.setModel(_animModel);
+			updateAnimationModels();
 			_animCanvas.stop();
 		}
 
@@ -198,12 +164,35 @@ public class SpritesheetAssetPreviewComp extends Composite {
 		layout();
 	}
 
+	private void updateAnimationModels() {
+		List<FrameModel> frames;
+
+		List<FrameModel> selection = getSelectedFrames();
+
+		if (selection.size() > 1) {
+			frames = selection;
+		} else {
+			frames = _model.getFrames();
+		}
+
+		int fps = 5;
+		if (_animModel != null) {
+			fps = _animModel.getFrameRate();
+		}
+		_animModel = new AnimationModel("noname");
+		_animModel.getFrames().addAll(frames);
+		_animModel.setFrameRate(fps);
+		_animModel.setLoop(true);
+		_canvasAnimModel = new SpritesheetAnimationModel(_animModel);
+		_animCanvas.setModel(_canvasAnimModel);
+	}
+
 	public SpritesheetAssetModel getModel() {
 		return _model;
 	}
 
 	public void setFps(int fps) {
-		_animModel.setFrameRates(fps);
+		_canvasAnimModel.setFrameRates(fps);
 		if (!isSheetInTheTop()) {
 			_animCanvas.play();
 		}
@@ -253,7 +242,7 @@ public class SpritesheetAssetPreviewComp extends Composite {
 				dlg.setContentProvider(new ArrayContentProvider());
 				dlg.setLabelProvider(new LabelProvider());
 				dlg.setInput(fpsList);
-				dlg.setInitialSelections(new Object[] { _animModel.getFrameRate() });
+				dlg.setInitialSelections(new Object[] { _canvasAnimModel.getFrameRate() });
 				dlg.setMessage("Select the frames per second:");
 				dlg.setTitle("FPS");
 
@@ -285,5 +274,9 @@ public class SpritesheetAssetPreviewComp extends Composite {
 
 	public void stopAnimation() {
 		_animCanvas.stop();
+	}
+
+	List<FrameModel> getSelectedFrames() {
+		return _sheetCanvas.getSelectedFrames();
 	}
 }
