@@ -46,6 +46,7 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 	private AtlasFrame _overFrame;
 	private AtlasFrame _frame;
 	private boolean _singleFrame;
+	private List<String> _tooltips;
 
 	public AtlasCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -68,9 +69,9 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 
 	@Override
 	public void paintControl(PaintEvent e) {
-		
+
 		generateFramesRects();
-		
+
 		if (_singleFrame && _frame != null) {
 			paintSingleFrame(e);
 			return;
@@ -88,7 +89,7 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 				if (frame == _frame) {
 					gc.setClipping(r);
 					Rectangle src = _image.getBounds();
-					Rectangle dst = calc.imageToScreen(src); 
+					Rectangle dst = calc.imageToScreen(src);
 					gc.drawImage(_image, src.x, src.y, src.width, src.height, dst.x, dst.y, dst.width, dst.height);
 					gc.setClipping((Rectangle) null);
 					gc.drawRectangle(r);
@@ -124,9 +125,10 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 
 		if (_frames != null && _image != null) {
 			ZoomCalculator calc = calc();
-			
+
 			for (AtlasFrame item : _frames) {
-				Rectangle r = calc.imageToScreen(item.getFrameX(), item.getFrameY(), item.getSpriteW(), item.getSpriteH());
+				Rectangle r = calc.imageToScreen(item.getFrameX(), item.getFrameY(), item.getSpriteW(),
+						item.getSpriteH());
 				list.add(r);
 			}
 		}
@@ -193,8 +195,8 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 	@Override
 	public void mouseMove(MouseEvent e) {
 		AtlasFrame frame = null;
+		int i = 0;
 		if (_framesRects != null) {
-			int i = 0;
 			for (Rectangle r : _framesRects) {
 				if (r.contains(e.x, e.y)) {
 					frame = _frames.get(i);
@@ -205,8 +207,15 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 		}
 		if (frame != _overFrame) {
 			_overFrame = frame;
+			if (_tooltips != null && frame != null) {
+				setToolTipText(_tooltips.get(i));
+			}
 			redraw();
 		}
+	}
+
+	public void setTooltips(List<String> tooltips) {
+		_tooltips = tooltips;
 	}
 
 }

@@ -52,8 +52,8 @@ import org.json.JSONArray;
 
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.AtlasAssetModel.Frame;
+import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.atlas.ui.AtlasCanvas;
 import phasereditor.ui.EditorSharedImages;
@@ -260,16 +260,24 @@ public class AtlasAssetPreviewComp extends Composite {
 		_spritesList.getViewer().setInput(model);
 
 		Image img = _canvas.getImage();
+
 		if (img != null) {
 			Rectangle b = img.getBounds();
-			String str = "Image Size: " + b.width + "x" + b.height + "\n";
-			str += "Image URL: " + getModel().getTextureURL();
-			_canvas.setToolTipText(str);
-		}
 
-		{
+			List<String> tooltips = frames.stream().map(f -> {
+				String str = "Sprite Name: " + f.getKey() + "\n";
+				str += "Sprite Size: " + f.getSpriteW() + "x" + f.getSpriteH() + "\n";
+				str += "Image Size: " + b.width + "x" + b.height + "\n";
+				str += "Image URL: " + getModel().getTextureURL();
+				return str;
+			}).collect(Collectors.toList());
+			
+			_canvas.setTooltips(tooltips);
+
 			_gridCanvas.setImage(img);
 			_gridCanvas.setFrames(frames.stream().map(f -> f.getFrameData().src).collect(Collectors.toList()));
+
+			_gridCanvas.setTooltips(tooltips);
 			getDisplay().asyncExec(() -> {
 				_gridCanvas.fitWindow();
 				_gridCanvas.redraw();

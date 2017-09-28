@@ -56,6 +56,7 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 	private Rectangle _dst;
 	private Point origin;
 	private int _overIndex;
+	private List<String> _tooltips;
 
 	public SpriteGridCanvas(Composite parent, int style) {
 		super(parent, style | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL | SWT.NO_REDRAW_RESIZE);
@@ -89,6 +90,9 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 				}
 				if (old != index) {
 					_overIndex = index;
+					if (index != -1 && _tooltips != null) {
+						setToolTipText(_tooltips.get(_overIndex));
+					}
 					redraw();
 				}
 			}
@@ -256,6 +260,10 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 
 	public void setFrames(List<Rectangle> frames) {
 		_frames = frames;
+	}
+
+	public void setTooltips(List<String> tooltips) {
+		_tooltips = tooltips;
 	}
 
 	public int getFrameSize() {
