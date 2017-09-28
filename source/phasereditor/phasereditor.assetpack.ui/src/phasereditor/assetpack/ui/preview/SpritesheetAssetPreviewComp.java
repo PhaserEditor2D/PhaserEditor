@@ -25,14 +25,12 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuCreator;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.util.LocalSelectionTransfer;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.dnd.DND;
@@ -41,9 +39,16 @@ import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.dialogs.ListDialog;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.ToolItem;
 
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
@@ -169,7 +174,7 @@ public class SpritesheetAssetPreviewComp extends Composite {
 
 		List<FrameModel> selection = getSelectedFrames();
 
-		if (selection.size() > 1) {
+		if (!selection.isEmpty()) {
 			frames = selection;
 		} else {
 			frames = _model.getFrames();
@@ -203,6 +208,8 @@ public class SpritesheetAssetPreviewComp extends Composite {
 
 	private Action _setFpsAction;
 
+	public Menu _menu;
+
 	public void createToolBar(IToolBarManager toolbar) {
 
 		// play buttons
@@ -222,36 +229,70 @@ public class SpritesheetAssetPreviewComp extends Composite {
 
 		// settings
 
-		Object[] fpsList = new Object[6 + 2];
-		for (int i = 0; i < 6; i++) {
-			fpsList[i + 2] = Integer.valueOf((i + 1) * 10);
-		}
-		fpsList[0] = Integer.valueOf(1);
-		fpsList[1] = Integer.valueOf(5);
-
-		_setFpsAction = new Action("FPS") {
-
-			{
+		class FpsAction extends Action implements IMenuCreator {
+			FpsAction() {
+				super("Set Frames Per Second (FPS)", AS_DROP_DOWN_MENU);
 				setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_CONTROL_EQUALIZER));
+				setMenuCreator(this);
 			}
 
-			@SuppressWarnings({ "boxing", "synthetic-access" })
 			@Override
-			public void run() {
-				ListDialog dlg = new ListDialog(getShell());
-				dlg.setContentProvider(new ArrayContentProvider());
-				dlg.setLabelProvider(new LabelProvider());
-				dlg.setInput(fpsList);
-				dlg.setInitialSelections(new Object[] { _canvasAnimModel.getFrameRate() });
-				dlg.setMessage("Select the frames per second:");
-				dlg.setTitle("FPS");
-
-				if (dlg.open() == Window.OK) {
-					Integer fps = (Integer) dlg.getResult()[0];
-					setFps(fps.intValue());
+			public void dispose() {
+				if (_menu != null) {
+					_menu.dispose();
 				}
 			}
-		};
+
+			@SuppressWarnings("synthetic-access")
+			@Override
+			public Menu getMenu(Control parent) {
+				if (_menu != null) {
+					_menu.dispose();
+				}
+				int[] fpsList = new int[6 + 2];
+				for (int i = 0; i < 6; i++) {
+					fpsList[i + 2] = (i + 1) * 10;
+				}
+				fpsList[0] = 1;
+				fpsList[1] = 5;
+
+				_menu = new Menu(parent);
+				for (int i : fpsList) {
+					final int fps = i;
+					MenuItem item = new MenuItem(_menu, SWT.CHECK);
+					item.setText(Integer.toString(fps));
+					item.addSelectionListener(new SelectionAdapter() {
+						@Override
+						public void widgetSelected(SelectionEvent e) {
+							setFps(fps);
+						}
+					});
+					if (i == _animModel.getFrameRate()) {
+						item.setSelection(true);
+					}
+				}
+
+				return _menu;
+			}
+
+			@Override
+			public Menu getMenu(Menu parent) {
+				return null;
+			}
+
+			@Override
+			public void runWithEvent(Event event) {
+				ToolItem item = (ToolItem) event.widget;
+				Rectangle rect = item.getBounds();
+				Point pt = item.getParent().toDisplay(new Point(rect.x, rect.y));
+				Menu menu = getMenu(item.getParent());
+				menu.setLocation(pt.x, pt.y + rect.height);
+				menu.setVisible(true);
+			}
+
+		}
+
+		_setFpsAction = new FpsAction();
 		toolbar.add(_setFpsAction);
 
 		toolbar.add(new Separator());

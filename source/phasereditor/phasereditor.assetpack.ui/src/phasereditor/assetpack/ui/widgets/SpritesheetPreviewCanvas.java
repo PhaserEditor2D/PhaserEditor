@@ -127,15 +127,15 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 
 					Rectangle r = calc.imageToScreen(fd.dst);
 
-					gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_RED));
-					gc.drawRectangle(r.x, r.y, r.width, r.height);
-
 					if (_selectedFrames.contains(i)) {
 						gc.setAlpha(150);
 						gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
 						gc.fillRectangle(r.x, r.y, r.width, r.height);
 						gc.setAlpha(255);
 					}
+					
+					gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_RED));
+					gc.drawRectangle(r.x, r.y, r.width, r.height);
 
 					i++;
 				}
