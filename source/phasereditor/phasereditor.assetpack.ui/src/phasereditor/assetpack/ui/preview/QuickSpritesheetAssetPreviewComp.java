@@ -53,7 +53,11 @@ public class QuickSpritesheetAssetPreviewComp extends Composite {
 	}
 
 	public void setModel(SpritesheetAssetModel asset) {
-		_resolutionLabel.setText(asset.getKey() + " (" + asset.getFrameWidth() + "x" + asset.getFrameHeight() + ")");
+		String name = asset.getKey();
+		if (name.length() > 15) {
+			name = name.substring(0, 15) + "...";
+		}
+		_resolutionLabel.setText(name + " (" + asset.getFrameWidth() + "x" + asset.getFrameHeight() + ")");
 		IFile file = asset.getUrlFile();
 		if (file == null) {
 			_canvas.setImage(null);

@@ -69,7 +69,11 @@ public class QuickAtlasPreviewComp extends Composite {
 		if (frame == null) {
 			_resolutionLabel.setText("<No frame>");
 		} else {
-			_resolutionLabel.setText(frame.getName() + " (" + frame.getSourceW() + "x" + frame.getSourceH() + ")");
+			String name = frame.getName();
+			if (name.length() > 15) {
+				name = name.substring(0, 15) + "...";
+			}
+			_resolutionLabel.setText(name + " (" + frame.getSourceW() + "x" + frame.getSourceH() + ")");
 		}
 
 	}

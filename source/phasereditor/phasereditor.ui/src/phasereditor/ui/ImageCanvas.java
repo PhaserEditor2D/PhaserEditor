@@ -39,7 +39,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
-public class ImageCanvas extends Canvas implements PaintListener {
+public class ImageCanvas extends Canvas implements PaintListener, IZoomable {
 
 	protected Image _image;
 	private Point _preferredSize;

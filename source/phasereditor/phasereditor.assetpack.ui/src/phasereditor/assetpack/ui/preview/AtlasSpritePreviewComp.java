@@ -32,6 +32,8 @@ import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
 import phasereditor.assetpack.core.AtlasAssetModel;
@@ -87,12 +89,21 @@ public class AtlasSpritePreviewComp extends AtlasCanvas {
 		setFrame(model);
 		setSingleFrame(true);
 		redraw();
+		
+		Image img = getImage();
+		if (img != null) {
+			Rectangle b = img.getBounds();
+			String str = "Sprite Size: " + _model.getSpriteW() + "x" + _model.getSpriteH() + "\n";
+			str += "Image Size: " + b.width + "x" + b.height + "\n";
+			str += "Image URL: " + getModel().getAsset().getTextureURL();
+			setToolTipText(str);
+		}
 	}
 
 	public AtlasAssetModel.Frame getModel() {
 		return _model;
 	}
-	
+
 	public void createToolBar(IToolBarManager toolbar) {
 		toolbar.add(new ImageCanvas_Zoom_1_1_Action(this));
 		toolbar.add(new ImageCanvas_Zoom_FitWindow_Action(this));

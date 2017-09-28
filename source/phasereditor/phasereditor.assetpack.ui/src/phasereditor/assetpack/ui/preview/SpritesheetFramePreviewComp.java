@@ -37,6 +37,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
+import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.widgets.SpritesheetPreviewCanvas;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
@@ -63,6 +64,7 @@ public class SpritesheetFramePreviewComp extends SpritesheetPreviewCanvas {
 					event.doit = false;
 					return;
 				}
+				event.image = AssetLabelProvider.GLOBAL_48.getImage(((StructuredSelection)sel).getFirstElement());
 				LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
 				transfer.setSelection(sel);
 			}

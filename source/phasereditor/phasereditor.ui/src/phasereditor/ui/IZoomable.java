@@ -21,33 +21,12 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
-import org.eclipse.jface.action.Action;
-
 /**
  * @author arian
  *
  */
-public class ImageCanvas_Zoom_FitWindow_Action extends Action {
-	private IZoomable _canvas;
+public interface IZoomable {
+	public void fitWindow();
 
-	public ImageCanvas_Zoom_FitWindow_Action() {
-		this(null);
-	}
-
-	public ImageCanvas_Zoom_FitWindow_Action(IZoomable canvas) {
-		_canvas = canvas;
-		setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_ARROW_OUT));
-		setToolTipText("Zoom the image to fit the window.");
-	}
-
-	@Override
-	public void run() {
-		IZoomable canvas = getImageCanvas();
-		canvas.fitWindow();
-		canvas.redraw();
-	}
-
-	public IZoomable getImageCanvas() {
-		return _canvas;
-	}
+	public void redraw();
 }

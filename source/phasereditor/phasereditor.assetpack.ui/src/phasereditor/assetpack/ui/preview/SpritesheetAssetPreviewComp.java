@@ -50,6 +50,7 @@ import org.eclipse.ui.dialogs.ListDialog;
 
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
+import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.widgets.SpritesheetPreviewCanvas;
 import phasereditor.canvas.core.AnimationModel;
 import phasereditor.ui.EditorSharedImages;
@@ -83,6 +84,7 @@ public class SpritesheetAssetPreviewComp extends Composite {
 					event.doit = false;
 					return;
 				}
+				event.image = AssetLabelProvider.GLOBAL_48.getImage(((StructuredSelection)sel).getFirstElement());
 				LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
 				transfer.setSelection(sel);
 			}
