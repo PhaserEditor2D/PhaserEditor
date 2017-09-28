@@ -38,6 +38,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel.Frame;
+import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.atlas.ui.AtlasCanvas;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
@@ -65,6 +66,7 @@ public class AtlasSpritePreviewComp extends AtlasCanvas {
 					event.doit = false;
 					return;
 				}
+				event.image = AssetLabelProvider.GLOBAL_48.getImage(((StructuredSelection) sel).getFirstElement());
 				LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
 				transfer.setSelection(sel);
 			}
