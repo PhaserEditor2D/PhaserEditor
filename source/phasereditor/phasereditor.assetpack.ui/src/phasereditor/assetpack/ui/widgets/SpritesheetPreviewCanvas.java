@@ -50,6 +50,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 	private List<FrameData> _rects;
 	private boolean _controlPressed;
 	private List<Integer> _selectedFrames = new ArrayList<>();
+	private boolean _shiftPressed;
 
 	public SpritesheetPreviewCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -128,17 +129,23 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 					Rectangle r = calc.imageToScreen(fd.dst);
 
 					if (_selectedFrames.contains(i)) {
-						gc.setAlpha(150);
-						gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
+						gc.setAlpha(100);
+						gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_BLUE));
 						gc.fillRectangle(r.x, r.y, r.width, r.height);
 						gc.setAlpha(255);
 					}
-					
-					gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_RED));
-					gc.drawRectangle(r.x, r.y, r.width, r.height);
+					gc.setAlpha(125);
+					if (r.width >= 16) {
+						gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_RED));
+						//gc.drawRectangle(r.x, r.y, r.width, r.height);
+						gc.drawLine(r.x, r.y, r.x, r.y + r.height);
+						gc.drawLine(r.x, r.y, r.x + r.width, r.y);
+					}
+					gc.setAlpha(255);
 
 					i++;
 				}
+				
 
 				{
 					boolean paintIndexLabels = true;
@@ -247,14 +254,22 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 		return overFrame;
 	}
 
+	@SuppressWarnings("boxing")
 	@Override
 	public void mouseMove(MouseEvent e) {
-		//
+		if (_shiftPressed) {
+			int frame = findFrameAt(e);
+			if (frame != -1 && !_selectedFrames.contains(frame)) {
+				_selectedFrames.add(frame);
+				redraw();
+			}
+		}
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		_controlPressed = e.keyCode == SWT.CONTROL;
+		_shiftPressed = e.keyCode == SWT.SHIFT;
 		if (e.character == SWT.ESC) {
 			_selectedFrames = new ArrayList<>();
 			redraw();
@@ -264,6 +279,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 	@Override
 	public void keyReleased(KeyEvent e) {
 		_controlPressed = false;
+		_shiftPressed = false;
 	}
 
 	public List<FrameModel> getSelectedFrames() {
@@ -300,7 +316,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 			}
 
 			ZoomCalculator calc = calc();
-			FrameData fd = _rects.get(_frame >= _rects.size()? 0 : _frame);
+			FrameData fd = _rects.get(_frame >= _rects.size() ? 0 : _frame);
 			calc.imageSize(fd.dst);
 			calc.fit(getBounds());
 

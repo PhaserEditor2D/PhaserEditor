@@ -79,6 +79,10 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 			@SuppressWarnings("synthetic-access")
 			@Override
 			public void mouseMove(MouseEvent e) {
+				if (_places == null) {
+					return;
+				}
+				
 				int old = _overIndex;
 				int index = -1;
 				for (int i = 0; i < _places.size(); i++) {
