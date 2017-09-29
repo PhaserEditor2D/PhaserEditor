@@ -22,14 +22,14 @@
 package phasereditor.canvas.ui.shapes;
 
 import javafx.scene.Node;
-import javafx.scene.text.Text;
+import javafx.scene.control.Label;
 import phasereditor.canvas.core.TextModel;
 
 /**
  * @author arian
  *
  */
-public class TextNode extends Text implements IObjectNode {
+public class TextNode extends Label implements IObjectNode {
 
 	private TextControl _control;
 

@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
+import javafx.scene.text.Text;
 import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
@@ -31,7 +32,7 @@ import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
  * 
  * @author arian
  */
-public class TextControl extends BaseObjectControl<TextModel> {
+public class TextControl extends BaseSpriteControl<TextModel> {
 
 	public TextControl(ObjectCanvas canvas, TextModel model) {
 		super(canvas, model);
@@ -44,20 +45,19 @@ public class TextControl extends BaseObjectControl<TextModel> {
 
 	@Override
 	public double getTextureWidth() {
-		// TODO: we need to compute this based on the selected Font
-		return 0;
+		return new Text(getModel().getText()).getBoundsInLocal().getWidth();
 	}
 
 	@Override
 	public double getTextureHeight() {
-		return 0;
+		return new Text(getModel().getText()).getBoundsInLocal().getHeight();
 	}
 
 	@Override
 	public void updateFromModel() {
-		super.updateFromModel();
-
 		getNode().setText(getModel().getText());
+
+		super.updateFromModel();
 	}
 
 	@Override

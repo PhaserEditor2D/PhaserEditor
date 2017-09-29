@@ -202,7 +202,7 @@ public class ObjectCanvas extends FXCanvas {
 		getScene().setOnDragDropped(event -> {
 			try {
 				ISelection selection = LocalSelectionTransfer.getTransfer().getSelection();
-				_createBehavior.dropAssets((IStructuredSelection) selection, event);
+				_createBehavior.dropObjects((IStructuredSelection) selection, event);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -21,13 +21,17 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
+import java.util.Collections;
+import java.util.List;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
  * @author arian
  *
  */
-public class TextModel extends BaseObjectModel {
+public class TextModel extends BaseSpriteModel {
 	public static final String TYPE_NAME = "text";
 	
 	public static final String PROPSET_TEXT = "text";
@@ -78,6 +82,12 @@ public class TextModel extends BaseObjectModel {
 		super.readInfo(jsonInfo);
 
 		_text = jsonInfo.optString("text", "");
+	}
+
+	@Override
+	protected List<AnimationModel> readAnimations(JSONArray array) {
+		// not supported in Text objects
+		return Collections.emptyList();
 	}
 
 }

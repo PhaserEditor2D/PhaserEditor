@@ -70,7 +70,7 @@ public class CreateBehavior {
 		_canvas = canvas;
 	}
 
-	public void dropAssets(IStructuredSelection selection, DragEvent event) {
+	public void dropObjects(IStructuredSelection selection, DragEvent event) {
 		double sceneX = event.getSceneX();
 		double sceneY = event.getSceneY();
 		dropObjects(selection, sceneX, sceneY, (group, elem) -> {
