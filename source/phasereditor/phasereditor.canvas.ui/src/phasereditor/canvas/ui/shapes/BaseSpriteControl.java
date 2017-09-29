@@ -671,7 +671,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 
 	@Override
 	public BaseSpriteModel createModelWithTexture(IAssetFrameModel textureKey) {
-		return CanvasModelFactory.createModel(getGroup().getModel(), textureKey);
+		return (BaseSpriteModel) CanvasModelFactory.createModel(getGroup().getModel(), textureKey);
 	}
 
 }

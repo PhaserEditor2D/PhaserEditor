@@ -89,6 +89,7 @@ public abstract class AbstractMorphHandler extends AbstractHandler {
 		GroupNode parent = srcNode.getGroup();
 		BaseObjectModel dstModel = createMorphModel(srcNode, assetKey, parent);
 
+		@SuppressWarnings("unlikely-arg-type")
 		int i = parent.getNode().getChildren().indexOf(srcNode);
 		operations.add(new AddNodeOperation(dstModel.toJSON(false), i, dstModel.getX(), dstModel.getY(),
 				parent.getModel().getId()));

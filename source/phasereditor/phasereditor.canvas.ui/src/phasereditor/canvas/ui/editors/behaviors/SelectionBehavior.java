@@ -54,8 +54,6 @@ import phasereditor.canvas.ui.editors.SelectionNode;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
-import phasereditor.canvas.ui.shapes.ISpriteNode;
-import phasereditor.canvas.ui.shapes.MissingAssetNode;
 
 /**
  * @author arian
@@ -224,7 +222,7 @@ public class SelectionBehavior implements ISelectionProvider {
 			return closed;
 		}
 
-		if (picked instanceof ISpriteNode || picked instanceof MissingAssetNode) {
+		if (picked instanceof IObjectNode && !(picked instanceof GroupNode)) {
 			return picked;
 		}
 

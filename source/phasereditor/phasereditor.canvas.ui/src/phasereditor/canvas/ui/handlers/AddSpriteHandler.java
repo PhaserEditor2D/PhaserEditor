@@ -33,7 +33,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
-import phasereditor.canvas.core.BaseSpriteModel;
+import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.ButtonSpriteModel;
 import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.GroupModel;
@@ -55,17 +55,17 @@ public class AddSpriteHandler extends AbstractHandler {
 
 		ObjectCanvas canvas = editor.getCanvas();
 		CreateBehavior create = canvas.getCreateBehavior();
-		BiFunction<GroupModel, IAssetKey, BaseSpriteModel> factory = null;
+		BiFunction<GroupModel, IAssetKey, BaseObjectModel> factory = null;
 
 		AddSpriteDialog dlg = new AddSpriteDialog(HandlerUtil.getActiveShell(event), "Add Sprite");
 		dlg.setProject(editor.getEditorInputFile().getProject());
-		
+
 		if (dlg.open() != Window.OK) {
 			return null;
 		}
-		
+
 		String id = event.getParameter("phasereditor.canvas.ui.spriteType");
-		
+
 		IStructuredSelection result = dlg.getSelection();
 
 		switch (id) {
@@ -87,7 +87,10 @@ public class AddSpriteHandler extends AbstractHandler {
 		}
 
 		if (factory != null) {
-			create.dropAssets(result, factory);
+			BiFunction<GroupModel, IAssetKey, BaseObjectModel> factory2 = factory;
+			create.dropObjects(result, (group, key) -> {
+				return factory2.apply(group, (IAssetKey) key);
+			});
 		}
 
 		return null;

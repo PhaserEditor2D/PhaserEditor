@@ -333,6 +333,11 @@
                </parameter>
             </command>
             <command
+                  commandId="phasereditor.canvas.ui.addText"
+                  label="Text"
+                  style="push">
+            </command>
+            <command
                   commandId="phasereditor.canvas.ui.addsprite"
                   label="Button"
                   style="push">
@@ -907,6 +912,10 @@
             defaultHandler="phasereditor.canvas.ui.handlers.AddPrefabHandler"
             id="phasereditor.canvas.ui.addprefab"
             name="Add Prefab">
+      </command>
+      <command
+            id="phasereditor.canvas.ui.addText"
+            name="Add Text">
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
@@ -1700,6 +1709,10 @@
                </and>
             </with>
          </enabledWhen>
+      </handler>
+      <handler
+            class="AddTextHandler"
+            commandId="phasereditor.canvas.ui.addText">
       </handler>
       
    </extension>

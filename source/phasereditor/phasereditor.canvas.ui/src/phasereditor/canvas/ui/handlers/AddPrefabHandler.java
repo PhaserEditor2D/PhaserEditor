@@ -85,7 +85,7 @@ public class AddPrefabHandler extends AbstractHandler {
 
 		IStructuredSelection result = dlg.getSelection();
 
-		editor.getCanvas().getCreateBehavior().dropAssets(result, CanvasModelFactory::createModel);
+		editor.getCanvas().getCreateBehavior().dropObjects(result, CanvasModelFactory::createModel);
 
 		return null;
 	}

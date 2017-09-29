@@ -27,7 +27,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.json.JSONObject;
 
-import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.CanvasType;
@@ -77,8 +76,8 @@ public class NewWizard_Sprite extends NewWizard_Base {
 		WorldModel world = getModel().getWorld();
 
 		if (_settingsPage.isGenerateCanvasFile()) {
-			BaseSpriteModel spriteModel = CanvasModelFactory.createModel(world,
-					(IAssetKey) _settingsPage.getSelectedAsset());
+			BaseSpriteModel spriteModel = (BaseSpriteModel) CanvasModelFactory.createModel(world,
+					_settingsPage.getSelectedAsset());
 			world.addChild(spriteModel);
 		}
 

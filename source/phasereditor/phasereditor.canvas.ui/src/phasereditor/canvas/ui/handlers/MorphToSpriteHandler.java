@@ -11,7 +11,7 @@ public class MorphToSpriteHandler extends AbstractMorphHandler {
 
 	@Override
 	protected BaseObjectModel createMorphModel(ISpriteNode srcNode, IAssetKey assetKey, GroupNode parent) {
-		BaseSpriteModel model = CanvasModelFactory.createModel(parent.getModel(), assetKey);
+		BaseSpriteModel model = (BaseSpriteModel) CanvasModelFactory.createModel(parent.getModel(), assetKey);
 		model.updateWith(srcNode.getModel());
 		return model;
 	}

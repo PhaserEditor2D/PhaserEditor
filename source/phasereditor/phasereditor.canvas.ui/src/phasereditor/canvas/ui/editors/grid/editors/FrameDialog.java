@@ -66,6 +66,7 @@ public class FrameDialog extends Dialog {
 	 */
 	public FrameDialog(Shell parentShell) {
 		super(parentShell);
+		setShellStyle(SWT.RESIZE);
 	}
 
 	/**

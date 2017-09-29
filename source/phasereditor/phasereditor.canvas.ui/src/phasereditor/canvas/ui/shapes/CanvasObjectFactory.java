@@ -29,6 +29,7 @@ import phasereditor.canvas.core.ImageSpriteModel;
 import phasereditor.canvas.core.MissingAssetSpriteModel;
 import phasereditor.canvas.core.MissingPrefabModel;
 import phasereditor.canvas.core.SpritesheetSpriteModel;
+import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 
@@ -55,6 +56,8 @@ public class CanvasObjectFactory {
 			return new MissingAssetControl(canvas, (MissingAssetSpriteModel) model);
 		} else if (model instanceof MissingPrefabModel) {
 			return new MissingPrefabControl(canvas, (MissingPrefabModel) model);
+		} else if (model instanceof TextModel) {
+			return new TextControl(canvas, (TextModel) model);
 		}
 		return null;
 	}

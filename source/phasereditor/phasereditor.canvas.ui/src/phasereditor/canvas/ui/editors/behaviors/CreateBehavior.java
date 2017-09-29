@@ -42,7 +42,6 @@ import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
 import phasereditor.canvas.core.BaseObjectModel;
-import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.GroupModel;
@@ -74,15 +73,19 @@ public class CreateBehavior {
 	public void dropAssets(IStructuredSelection selection, DragEvent event) {
 		double sceneX = event.getSceneX();
 		double sceneY = event.getSceneY();
-		dropAssets(selection, sceneX, sceneY, CanvasModelFactory::createModel);
+		dropObjects(selection, sceneX, sceneY, (group, elem) -> {
+			return CanvasModelFactory.createModel(group, elem);
+		});
 	}
 
-	public void dropAssets(IStructuredSelection selection, BiFunction<GroupModel, IAssetKey, BaseSpriteModel> factory) {
-		dropAssets(selection, _canvas.getScene().getWidth() / 2, _canvas.getScene().getHeight() / 2, factory);
+	public void dropObjects(IStructuredSelection selection, BiFunction<GroupModel, Object, BaseObjectModel> factory) {
+		dropObjects(selection, _canvas.getScene().getWidth() / 2, _canvas.getScene().getHeight() / 2, (group, elem) -> {
+			return factory.apply(group, elem);
+		});
 	}
 
-	public void dropAssets(IStructuredSelection selection, double sceneX, double sceneY,
-			BiFunction<GroupModel, IAssetKey, BaseSpriteModel> factory) {
+	public void dropObjects(IStructuredSelection selection, double sceneX, double sceneY,
+			BiFunction<GroupModel, Object, BaseObjectModel> factory) {
 
 		Object[] elems = selection.toArray();
 
@@ -120,38 +123,6 @@ public class CreateBehavior {
 			}
 
 			return;
-		}
-
-		CompositeOperation operations = new CompositeOperation();
-
-		List<String> selectionIds = new ArrayList<>();
-
-		GroupNode parentNode;
-
-		// handle when dropping into a group prefab (get the right parent node)
-
-		if (_canvas.getEditor().getModel().getType() == CanvasType.GROUP) {
-			parentNode = (GroupNode) _canvas.getWorldNode().getChildren().get(0);
-		} else {
-			parentNode = _canvas.getWorldNode();
-		}
-
-		// get the parent node from the selection
-
-		List<IObjectNode> selnodes = _canvas.getSelectionBehavior().getSelectedNodes();
-
-		if (!selnodes.isEmpty()) {
-			IObjectNode node = selnodes.get(0);
-			GroupNode parentNode2 = null;
-			if (node instanceof GroupNode) {
-				parentNode2 = (GroupNode) node;
-			} else {
-				parentNode2 = node.getGroup();
-			}
-
-			if (!parentNode2.getModel().isPrefabInstance()) {
-				parentNode = parentNode2;
-			}
 		}
 
 		// check if the elements are from a spritesheet
@@ -196,6 +167,38 @@ public class CreateBehavior {
 			}
 		}
 
+		CompositeOperation operations = new CompositeOperation();
+
+		List<String> selectionIds = new ArrayList<>();
+
+		GroupNode parentNode;
+
+		// handle when dropping into a group prefab (get the right parent node)
+
+		if (_canvas.getEditor().getModel().getType() == CanvasType.GROUP) {
+			parentNode = (GroupNode) _canvas.getWorldNode().getChildren().get(0);
+		} else {
+			parentNode = _canvas.getWorldNode();
+		}
+
+		// get the parent node from the selection
+
+		List<IObjectNode> selnodes = _canvas.getSelectionBehavior().getSelectedNodes();
+
+		if (!selnodes.isEmpty()) {
+			IObjectNode node = selnodes.get(0);
+			GroupNode parentNode2 = null;
+			if (node instanceof GroupNode) {
+				parentNode2 = (GroupNode) node;
+			} else {
+				parentNode2 = node.getGroup();
+			}
+
+			if (!parentNode2.getModel().isPrefabInstance()) {
+				parentNode = parentNode2;
+			}
+		}
+
 		int i = 0;
 		for (Object elem : elems) {
 			BaseObjectControl<?> control = null;
@@ -203,10 +206,12 @@ public class CreateBehavior {
 
 			if (elem instanceof IAssetKey) {
 				// TODO: for now get as parent the world
-				model = factory.apply(parentNode.getModel(), (IAssetKey) elem);
+				model = factory.apply(parentNode.getModel(), elem);
 			} else if (elem instanceof Prefab) {
 				Prefab prefab = (Prefab) elem;
 				model = CanvasModelFactory.createModel(parentNode.getModel(), prefab);
+			} else  {
+				model = factory.apply(parentNode.getModel(), elem);
 			}
 
 			if (model != null) {

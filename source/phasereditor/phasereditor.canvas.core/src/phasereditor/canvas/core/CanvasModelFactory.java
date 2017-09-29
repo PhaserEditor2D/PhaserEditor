@@ -39,7 +39,7 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
  *
  */
 public class CanvasModelFactory {
-	public static BaseSpriteModel createModel(GroupModel parent, IAssetKey obj) {
+	public static BaseObjectModel createModel(GroupModel parent, Object obj) {
 		if (obj instanceof ImageAssetModel.Frame) {
 			return new ImageSpriteModel(parent, (ImageAssetModel.Frame) obj);
 		} else if (obj instanceof ImageAssetModel) {
@@ -51,6 +51,8 @@ public class CanvasModelFactory {
 			return model;
 		} else if (obj instanceof AtlasAssetModel.Frame) {
 			return new AtlasSpriteModel(parent, (Frame) obj);
+		} else if (obj instanceof String) {
+			return new TextModel(parent);
 		}
 		return null;
 	}
@@ -106,6 +108,9 @@ public class CanvasModelFactory {
 				break;
 			case ButtonSpriteModel.TYPE_NAME:
 				model = new ButtonSpriteModel(parent, data);
+				break;
+			case TextModel.TYPE_NAME:
+				model = new TextModel(parent, data);
 				break;
 			case GroupModel.TYPE_NAME:
 				model = new GroupModel(parent, data);

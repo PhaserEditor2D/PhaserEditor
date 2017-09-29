@@ -198,6 +198,7 @@ public class ImageCanvas extends Canvas implements PaintListener, IZoomable {
 		});
 	}
 
+	@Override
 	public void fitWindow() {
 		if (_image == null) {
 			return;
