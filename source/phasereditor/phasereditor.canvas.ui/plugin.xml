@@ -200,6 +200,15 @@
                   style="push">
             </command>
             <separator
+                  name="phasereditor.canvas.ui.separatoranimations"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="phasereditor.canvas.ui.editAnimations"
+                  label="Edit Animations"
+                  style="push">
+            </command>
+            <separator
                   name="phasereditor.canvas.ui.sprite.1"
                   visible="true">
             </separator>
@@ -909,6 +918,10 @@
             categoryId="phasereditor.canvas.ui.editor.category"
             id="phasereditor.canvas.ui.compile"
             name="Compile Canvas Files">
+      </command>
+      <command
+            id="phasereditor.canvas.ui.editAnimations"
+            name="Edit Sprite Animations">
       </command>
       
    </extension>
@@ -1668,6 +1681,26 @@
             </with>
          </enabledWhen>
       </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.EditSpriteAnimationsHandler"
+            commandId="phasereditor.canvas.ui.editAnimations">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <and>
+                  <count
+                        value="1">
+                  </count>
+                  <iterate
+                        ifEmpty="false">
+                     <instanceof
+                           value="phasereditor.canvas.ui.shapes.ISpriteNode">
+                     </instanceof>
+                  </iterate>
+               </and>
+            </with>
+         </enabledWhen>
+      </handler>
       
    </extension>
    <extension
@@ -1815,6 +1848,12 @@
              contextId="phasereditor.canvas.ui.nodescontext"
              schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
              sequence="M1+M2+M">
+       </key>
+       <key
+             commandId="phasereditor.canvas.ui.editAnimations"
+             contextId="phasereditor.canvas.ui.nodescontext"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="A">
        </key>
    </extension>
    <extension

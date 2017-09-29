@@ -248,11 +248,7 @@ public class PGridEditingSupport extends EditingSupport {
 		if (changed) {
 			if (_supportUndoRedo) {
 
-				ChangePropertyOperation<? extends Object> op = new ChangePropertyOperation<>(prop.getNodeId(),
-						prop.getName(), value);
-				CanvasEditor editor = (CanvasEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-						.getActivePage().getActiveEditor();
-				editor.getCanvas().getUpdateBehavior().executeOperations(new CompositeOperation(op));
+				changeUndoablePropertyValue(value, prop);
 
 			} else {
 				prop.setValue(value, true);
@@ -263,5 +259,14 @@ public class PGridEditingSupport extends EditingSupport {
 		}
 
 		getViewer().refresh(element);
+	}
+
+	@SuppressWarnings("rawtypes")
+	public static void changeUndoablePropertyValue(Object value, PGridProperty prop) {
+		ChangePropertyOperation<? extends Object> op = new ChangePropertyOperation<>(prop.getNodeId(), prop.getName(),
+				value);
+		CanvasEditor editor = (CanvasEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+				.getActiveEditor();
+		editor.getCanvas().getUpdateBehavior().executeOperations(new CompositeOperation(op));
 	}
 }

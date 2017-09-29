@@ -36,19 +36,6 @@
       <menuContribution
             allPopups="false"
             locationURI="menu:phasereditor.ui.preview?before=additions">
-         <command
-               commandId="phasereditor.ui.commands.openNewPreview"
-               icon="platform:/plugin/org.eclipse.ui.views/icons/full/elcl16/new.png"
-               style="push">
-         </command>
-         <command
-               commandId="org.eclipse.ui.file.refresh"
-               style="push">
-         </command>
-         <command
-               commandId="phasereditor.ui.commands.clearpreview"
-               style="push">
-         </command>
       </menuContribution>
       <menuContribution
             allPopups="false"
@@ -66,11 +53,6 @@
    </extension>
    <extension
          point="org.eclipse.ui.commands">
-      <command
-            defaultHandler="phasereditor.ui.handlers.ClearPreviewHandler"
-            id="phasereditor.ui.commands.clearpreview"
-            name="Clear">
-      </command>
       <category
             id="phasereditor.ui.phaserCategory"
             name="Phaser">

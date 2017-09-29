@@ -68,6 +68,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 
 	private PGridSection _spriteSection;
 	private PGridSection _bodyArcadeSection;
+	private PGridAnimationsProperty _animations_property;
 
 	public BaseSpriteControl(ObjectCanvas canvas, T model) {
 		super(canvas, model);
@@ -145,7 +146,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 	protected void initPrefabPGridModel(List<String> validProperties) {
 		super.initPrefabPGridModel(validProperties);
 		validProperties.addAll(Arrays.asList(
-				//@formatter:off
+		//@formatter:off
 				BaseSpriteModel.PROPSET_TEXTURE,
 				BaseSpriteModel.PROPSET_ANCHOR,
 				BaseSpriteModel.PROPSET_TINT,
@@ -252,8 +253,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 
 		_tint_property.setDefaultRGB(new RGB(255, 255, 255));
 
-		PGridAnimationsProperty animations_properties = new PGridAnimationsProperty(getId(), "animations",
-				help("Phaser.Sprite.animations")) {
+		_animations_property = new PGridAnimationsProperty(getId(), "animations", help("Phaser.Sprite.animations")) {
 
 			@Override
 			public void setValue(List<AnimationModel> value, boolean notify) {
@@ -320,7 +320,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 		_spriteSection.add(_anchor_x_property);
 		_spriteSection.add(_anchor_y_property);
 		_spriteSection.add(_tint_property);
-		_spriteSection.add(animations_properties);
+		_spriteSection.add(_animations_property);
 		_spriteSection.add(data_property);
 	}
 
@@ -635,6 +635,10 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 
 	public PGridSection getBodyArcadeSection() {
 		return _bodyArcadeSection;
+	}
+
+	public PGridAnimationsProperty getAnimationsProperty() {
+		return _animations_property;
 	}
 
 	@Override
