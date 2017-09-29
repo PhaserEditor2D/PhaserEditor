@@ -57,6 +57,8 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.menus.CommandContributionItem;
+import org.eclipse.ui.menus.CommandContributionItemParameter;
 import org.eclipse.ui.part.IShowInTarget;
 import org.eclipse.ui.part.ShowInContext;
 import org.eclipse.ui.part.ViewPart;
@@ -107,7 +109,6 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 		lblDropItHere.setText("Drop it here");
 		lblDropItHere.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true, 1, 1));
 
-		createActions();
 		initializeToolBar();
 		initializeMenu();
 		afterCreateWidgets();
@@ -184,17 +185,15 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 			_previewContainer.layout();
 		}
 
-		if (_initalElement != null) {
+		if (_initalElement == null) {
+			fillToolbarWithCommonActions();
+		} else {
 			preview(_initalElement);
 			if (_previewFactory != null && _initialMemento != null) {
 				_previewFactory.initPreviewControl(_previewControl, _initialMemento);
 			}
 		}
 
-	}
-
-	private void createActions() {
-		// nothing
 	}
 
 	private void initializeToolBar() {
@@ -238,6 +237,9 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 
 		setTitleImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_EYE));
 
+		IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
+		toolbar.removeAll();
+
 		if (elem == null) {
 			preview = _noPreviewComp;
 			setPartName("Preview");
@@ -261,18 +263,7 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 
 				factory.updateControl(preview, elem);
 
-				// update toolbar
-				{
-					// missing to remove the last added actions
-					IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
-					toolbar.removeAll();
-					factory.updateToolBar(toolbar, preview);
-					if (toolbar.getItems().length > 0) {
-						toolbar.add(new Separator());
-					}
-					fillToolbarWithCommonActions(toolbar);
-					toolbar.update(true);
-				}
+				factory.updateToolBar(toolbar, preview);
 
 				setPartName("Preview - " + factory.getTitle(elem));
 
@@ -288,6 +279,8 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 			}
 		}
 
+		// update layout
+
 		if (preview != null) {
 			StackLayout layout = (StackLayout) _previewContainer.getLayout();
 			layout.topControl = preview;
@@ -295,10 +288,38 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 		}
 
 		_previewElement = elem;
+
+		// fill toolbar common actions
+
+		if (toolbar.getItems().length > 0) {
+			toolbar.add(new Separator());
+		}
+		fillToolbarWithCommonActions();
+		toolbar.update(true);
+
 		return availablePreview;
 	}
 
-	private void fillToolbarWithCommonActions(IToolBarManager toolbar) {
+	private void fillToolbarWithCommonActions() {
+		IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
+
+		if (_previewElement != null) {
+			toolbar.add(new Action("Clear") {
+				{
+					setImageDescriptor(EditorSharedImages
+							.getImageDescriptor("platform:/plugin/org.eclipse.ui/icons/full/etool16/clear.png"));
+				}
+
+				@Override
+				public void run() {
+					preview(null);
+				}
+			});
+
+			toolbar.add(new CommandContributionItem(new CommandContributionItemParameter(getSite(), "refresh",
+					"org.eclipse.ui.file.refresh", CommandContributionItem.STYLE_PUSH)));
+		}
+
 		toolbar.add(new Action("Open New Preview Window") {
 			{
 				setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_NEW_VIEW));
