@@ -50,6 +50,7 @@ import phasereditor.canvas.core.PhysicsType;
 import phasereditor.canvas.core.RectArcadeBodyModel;
 import phasereditor.canvas.core.SpritesheetSpriteModel;
 import phasereditor.canvas.core.StateSettings;
+import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.inspect.core.InspectCore;
@@ -191,7 +192,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 
 	protected void generatePostCreateInitCode(BaseObjectModel model) {
 		String varname = getLocalVarName(model);
-		
+
 		if (model instanceof GroupModel) {
 			GroupModel group = (GroupModel) model;
 			if (group.isOverriding(GroupModel.PROPSET_SET_ALL)) {
@@ -406,6 +407,17 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 						+ ", " + frame // frame
 						+ (parVar == null ? "" : ", " + parVar) // group
 						+ ")");
+			} else if (model instanceof TextModel) {
+				TextModel text = (TextModel) model;
+				Call call = new Call("text");
+				call.value(round(text.getX()));
+				call.value(round(text.getY()));
+				String str = text.getText().replace("\r", "").replace("\n", "\\n");
+				call.value("'" + str + "'");
+				call.value(text.getStyle().toPhaserStyleObject().toString()); // style
+				call.valueOrUndefined(parVar != null, parVar);
+
+				call.append();
 			}
 		}
 		line(";");

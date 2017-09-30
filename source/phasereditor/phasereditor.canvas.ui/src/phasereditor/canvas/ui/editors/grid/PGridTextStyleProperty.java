@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2016 Arian Fornaris
+// Copyright (c) 2015, 2017 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -21,30 +21,23 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid;
 
+import phasereditor.canvas.core.TextModel;
+import phasereditor.canvas.core.TextStyle;
+
 /**
  * @author arian
  *
  */
-public abstract class PGridStringProperty extends PGridProperty<String> {
-	private boolean _longText;
-	private String _message;
+public abstract class PGridTextStyleProperty extends PGridProperty<TextStyle> {
 
-	public PGridStringProperty(String controlId, String name, String tooltip,String message) {
-		super(controlId, name, tooltip);
-		_longText = message != null;
-		_message = message;
-		
+	private TextModel _model;
+
+	public PGridTextStyleProperty(TextModel model) {
+		super(model.getId(), "style", "Text style");
+		_model = model;
 	}
 
-	public PGridStringProperty(String controlId, String name, String tooltip) {
-		this(controlId, name, tooltip, null);
-	}
-
-	public boolean isLongText() {
-		return _longText;
-	}
-	
-	public String getMessage() {
-		return _message;
+	public TextModel getModel() {
+		return _model;
 	}
 }

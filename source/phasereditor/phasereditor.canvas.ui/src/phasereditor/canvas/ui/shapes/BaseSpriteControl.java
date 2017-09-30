@@ -287,7 +287,7 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 			}
 		};
 
-		PGridStringProperty data_property = new PGridStringProperty(getId(), "data", help("Phaser.Sprite.data"), true) {
+		PGridStringProperty data_property = new PGridStringProperty(getId(), "data", help("Phaser.Sprite.data"), "Write a valid JSON string. It will be verbatim generated.") {
 
 			@Override
 			public boolean isModified() {
@@ -639,6 +639,10 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 
 	public PGridAnimationsProperty getAnimationsProperty() {
 		return _animations_property;
+	}
+	
+	public PGridColorProperty getTintProperty() {
+		return _tint_property;
 	}
 
 	@Override

@@ -260,6 +260,11 @@
                   </parameter>
                </command>
                <command
+                     commandId="phasereditor.canvas.ui.addText"
+                     label="Text"
+                     style="push">
+               </command>
+               <command
                      commandId="phasereditor.canvas.ui.addsprite"
                      label="Button"
                      style="push">

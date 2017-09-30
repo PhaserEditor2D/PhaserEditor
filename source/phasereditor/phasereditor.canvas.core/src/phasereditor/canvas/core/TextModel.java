@@ -33,10 +33,11 @@ import org.json.JSONObject;
  */
 public class TextModel extends BaseSpriteModel {
 	public static final String TYPE_NAME = "text";
-	
 	public static final String PROPSET_TEXT = "text";
+	public static final String PROPSET_TEXT_STYLE = "textStyle";
 
 	private String _text;
+	private TextStyle _style;
 
 	public TextModel(GroupModel parent, JSONObject obj) {
 		super(parent, TYPE_NAME, obj);
@@ -44,8 +45,9 @@ public class TextModel extends BaseSpriteModel {
 
 	public TextModel(GroupModel parent) {
 		super(parent, TYPE_NAME);
-		
+
 		_text = "";
+		_style = new TextStyle();
 	}
 
 	public String getText() {
@@ -54,6 +56,14 @@ public class TextModel extends BaseSpriteModel {
 
 	public void setText(String text) {
 		_text = text;
+	}
+
+	public TextStyle getStyle() {
+		return _style;
+	}
+
+	public void setStyle(TextStyle style) {
+		_style = style;
 	}
 
 	@Override
@@ -75,6 +85,12 @@ public class TextModel extends BaseSpriteModel {
 			}
 		}
 
+		if (isOverriding(PROPSET_TEXT_STYLE)) {
+			JSONObject styleData = new JSONObject();
+			_style.writeJSON(styleData);
+			jsonInfo.put("style", styleData);
+		}
+
 	}
 
 	@Override
@@ -82,6 +98,9 @@ public class TextModel extends BaseSpriteModel {
 		super.readInfo(jsonInfo);
 
 		_text = jsonInfo.optString("text", "");
+
+		_style = new TextStyle();
+		_style.readJSON(jsonInfo.getJSONObject("style"));
 	}
 
 	@Override

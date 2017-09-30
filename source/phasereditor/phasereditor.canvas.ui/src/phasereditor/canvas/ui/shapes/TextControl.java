@@ -21,12 +21,16 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import phasereditor.canvas.core.TextModel;
+import phasereditor.canvas.core.TextStyle;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
 import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
+import phasereditor.canvas.ui.editors.grid.PGridTextStyleProperty;
 
 /**
  * 
@@ -55,7 +59,14 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 
 	@Override
 	public void updateFromModel() {
-		getNode().setText(getModel().getText());
+		TextModel model = getModel();
+		TextNode node = getNode();
+
+		node.setText(model.getText());
+
+		TextStyle style = model.getStyle();
+		Font font = Font.font(style.getFont(), FontWeight.NORMAL, style.getFontStyle(), style.getFontSize());
+		node.setFont(font);
 
 		super.updateFromModel();
 	}
@@ -71,7 +82,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 
 		PGridSection section = new PGridSection("Text");
 
-		section.add(new PGridStringProperty(getId(), "text", "tooltip", true) {
+		section.add(new PGridStringProperty(getId(), "text", help("Phaser.Text.text"), "Write the text.") {
 
 			@Override
 			public boolean isModified() {
@@ -92,7 +103,35 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 			}
 		});
 
+		section.add(new PGridTextStyleProperty(getModel()) {
+
+			@Override
+			public void setValue(TextStyle value, boolean notify) {
+				getModel().setStyle(value);
+				if (notify) {
+					updateFromPropertyChange();
+				}
+			}
+
+			@Override
+			public TextStyle getValue() {
+				return getModel().getStyle();
+			}
+
+			@Override
+			public boolean isModified() {
+				return true;
+			}
+
+		});
+
 		propModel.getSections().add(section);
+
+		// will never be supported by text, this should be moved to asset
+		// sprites.
+		getAnimationsProperty().getSection().remove(getAnimationsProperty());
+		// not supported on Phaser v2
+		getTintProperty().getSection().remove(getTintProperty());
 	}
 
 }

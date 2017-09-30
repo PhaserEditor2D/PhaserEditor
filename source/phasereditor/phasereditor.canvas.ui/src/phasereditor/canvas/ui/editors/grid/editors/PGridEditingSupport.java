@@ -36,14 +36,17 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.FontDialog;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 
 import phasereditor.canvas.core.GroupModel.SetAllData;
 import phasereditor.canvas.core.PhysicsSortDirection;
 import phasereditor.canvas.core.PhysicsType;
+import phasereditor.canvas.core.TextStyle;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.NumberCellEditor;
@@ -60,6 +63,7 @@ import phasereditor.canvas.ui.editors.grid.PGridSection;
 import phasereditor.canvas.ui.editors.grid.PGridSetAllProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSpriteProperty;
 import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
+import phasereditor.canvas.ui.editors.grid.PGridTextStyleProperty;
 import phasereditor.canvas.ui.editors.grid.PGridUserCodeProperty;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
@@ -105,16 +109,16 @@ public class PGridEditingSupport extends EditingSupport {
 		} else if (element instanceof PGridSpriteProperty) {
 			return new SpriteCellEditor(parent, _canvas, ((PGridSpriteProperty) element).getValue());
 		} else if (element instanceof PGridStringProperty) {
-			PGridStringProperty longStrProp = (PGridStringProperty) element;
-			if (longStrProp.isLongText()) {
+			PGridStringProperty prop = (PGridStringProperty) element;
+			if (prop.isLongText()) {
 				return new DialogCellEditor(parent) {
 
 					@Override
 					protected Object openDialogBox(Control cellEditorWindow) {
 						TextDialog dlg = new TextDialog(cellEditorWindow.getShell());
-						dlg.setInitialText(longStrProp.getValue());
-						dlg.setTitle("data");
-						dlg.setMessage("Write a valid JSON string. It will be verbatim generated.");
+						dlg.setInitialText(prop.getValue());
+						dlg.setTitle(prop.getName());
+						dlg.setMessage(prop.getMessage());
 						if (dlg.open() == Window.OK) {
 							return dlg.getResult();
 						}
@@ -195,6 +199,26 @@ public class PGridEditingSupport extends EditingSupport {
 					}
 
 					return initialValue;
+				}
+			};
+		} else if (element instanceof PGridTextStyleProperty) {
+			PGridTextStyleProperty prop = (PGridTextStyleProperty) element;
+			return new DialogCellEditor(parent) {
+
+				@Override
+				protected Object openDialogBox(Control cellEditorWindow) {
+					TextStyle style = prop.getValue();
+
+					FontDialog dlg = new FontDialog(cellEditorWindow.getShell());
+					dlg.setFontList(new FontData[] { style.buildFontData() });
+
+					FontData fd = dlg.open();
+
+					if (fd == null) {
+						return style;
+					}
+
+					return TextStyle.createFromFontData(fd);
 				}
 			};
 		}
