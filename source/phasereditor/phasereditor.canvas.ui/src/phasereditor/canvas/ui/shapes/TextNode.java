@@ -30,7 +30,7 @@ import phasereditor.canvas.core.TextModel;
  * @author arian
  *
  */
-public class TextNode extends Pane implements IObjectNode {
+public class TextNode extends Pane implements ISpriteNode {
 
 	private TextControl _control;
 	private Text _textNode;
@@ -53,7 +53,7 @@ public class TextNode extends Pane implements IObjectNode {
 	}
 
 	@Override
-	public BaseObjectControl<?> getControl() {
+	public BaseSpriteControl<?> getControl() {
 		return _control;
 	}
 
