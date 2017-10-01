@@ -73,7 +73,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 	public void updateFromModel() {
 		TextNode node = getNode();
 		Text text = getNode().getTextNode();
-
+		
 		TextModel model = getModel();
 
 		// text
@@ -104,6 +104,8 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 		// style.align
 		text.setTextAlignment(model.getStyleAlign());
 
+		text.relocate(0, 0);
+		
 		super.updateFromModel();
 	}
 

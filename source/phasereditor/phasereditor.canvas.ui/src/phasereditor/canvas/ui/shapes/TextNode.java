@@ -38,7 +38,9 @@ public class TextNode extends Pane implements ISpriteNode {
 	public TextNode(TextControl control) {
 		_control = control;
 		_textNode = new Text();
+		
 		_textNode.relocate(0, 0);
+		
 		getChildren().add(_textNode);
 		setPickOnBounds(true);
 	}
