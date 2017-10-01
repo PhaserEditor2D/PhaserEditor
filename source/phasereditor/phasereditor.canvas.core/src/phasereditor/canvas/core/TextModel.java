@@ -29,34 +29,33 @@ import org.json.JSONObject;
 
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 
 /**
  * @author arian
  *
  */
 public class TextModel extends BaseSpriteModel {
-	/**
-	 * 
-	 */
-	private static final FontPosture DEF_FONT_STYLE = FontPosture.REGULAR;
-	public static final int DEF_FONT_SIZE = 20;
-	public static final String DEF_FONT = "Arial";
-	public static final FontWeight DEF_FONT_WEIGHT = FontWeight.BOLD;
+	public static final TextAlignment DEF_STYLE_ALIGN = TextAlignment.LEFT;
+	private static final FontPosture DEF_STYLE_FONT_STYLE = FontPosture.REGULAR;
+	public static final int DEF_STYLE_FONT_SIZE = 20;
+	public static final String DEF_STYLE_FONT = "Arial";
+	public static final FontWeight DEF_STYLE_FONT_WEIGHT = FontWeight.BOLD;
+	public static final String DEF_STYLE_FILL = "#000000";
+	public static final String DEF_STYLE_BACKGROUND_COLOR = null;
+
 	public static final String TYPE_NAME = "text";
 	public static final String PROPSET_TEXT = "text";
 	public static final String PROPSET_TEXT_STYLE = "textStyle";
 
 	private String _text;
-	private String _font;
-	private int _fontSize;
-	// like italic
-	private FontPosture _fontStyle;
-	// bold
-	private FontWeight _fontWeight;
-	// #000
-	private String _backgroundColor;
-	// #000
-	private String _fill;
+	private String _styleFont;
+	private int _styleFontSize;
+	private FontPosture _styleFontStyle;
+	private FontWeight _styleFontWeight;
+	private String _styleBackgroundColor;
+	private String _styleFill;
+	private TextAlignment _styleAlign;
 
 	public TextModel(GroupModel parent, JSONObject obj) {
 		super(parent, TYPE_NAME, obj);
@@ -67,12 +66,13 @@ public class TextModel extends BaseSpriteModel {
 
 		_text = "";
 
-		_font = DEF_FONT;
-		_fontSize = 20;
-		_fontWeight = DEF_FONT_WEIGHT;
-		_fontStyle = DEF_FONT_STYLE;
-		_backgroundColor = null;
-		_fill = "#000000";
+		_styleFont = DEF_STYLE_FONT;
+		_styleFontSize = 20;
+		_styleFontWeight = DEF_STYLE_FONT_WEIGHT;
+		_styleFontStyle = DEF_STYLE_FONT_STYLE;
+		_styleBackgroundColor = null;
+		_styleFill = DEF_STYLE_FILL;
+		_styleAlign = DEF_STYLE_ALIGN;
 	}
 
 	public String getText() {
@@ -83,52 +83,60 @@ public class TextModel extends BaseSpriteModel {
 		_text = text;
 	}
 
-	public String getFont() {
-		return _font;
+	public String getStyleFont() {
+		return _styleFont;
 	}
 
-	public void setFont(String font) {
-		_font = font;
+	public void setStyleFont(String font) {
+		_styleFont = font;
 	}
 
-	public int getFontSize() {
-		return _fontSize;
+	public int getStyleFontSize() {
+		return _styleFontSize;
 	}
 
-	public void setFontSize(int fontSize) {
-		_fontSize = fontSize;
+	public void setStyleFontSize(int fontSize) {
+		_styleFontSize = fontSize;
 	}
 
-	public FontPosture getFontStyle() {
-		return _fontStyle;
+	public FontPosture getStyleFontStyle() {
+		return _styleFontStyle;
 	}
 
-	public void setFontStyle(FontPosture fontStyle) {
-		_fontStyle = fontStyle;
+	public void setStyleFontStyle(FontPosture fontStyle) {
+		_styleFontStyle = fontStyle;
 	}
 
-	public FontWeight getFontWeight() {
-		return _fontWeight;
+	public FontWeight getStyleFontWeight() {
+		return _styleFontWeight;
 	}
 
-	public void setFontWeight(FontWeight fontWeight) {
-		_fontWeight = fontWeight;
+	public void setStyleFontWeight(FontWeight fontWeight) {
+		_styleFontWeight = fontWeight;
 	}
 
-	public String getBackgroundColor() {
-		return _backgroundColor;
+	public String getStyleBackgroundColor() {
+		return _styleBackgroundColor;
 	}
 
-	public void setBackgroundColor(String backgroundColor) {
-		_backgroundColor = backgroundColor;
+	public void setStyleBackgroundColor(String backgroundColor) {
+		_styleBackgroundColor = backgroundColor;
 	}
 
-	public String getFill() {
-		return _fill;
+	public String getStyleFill() {
+		return _styleFill;
 	}
 
-	public void setFill(String fill) {
-		_fill = fill;
+	public void setStyleFill(String fill) {
+		_styleFill = fill;
+	}
+
+	public TextAlignment getStyleAlign() {
+		return _styleAlign;
+	}
+
+	public void setStyleAlign(TextAlignment styleAlign) {
+		_styleAlign = styleAlign;
 	}
 
 	@Override
@@ -152,15 +160,21 @@ public class TextModel extends BaseSpriteModel {
 
 		if (isOverriding(PROPSET_TEXT_STYLE)) {
 			if (prefabInstance) {
-				jsonInfo.put("font", _font);
-				jsonInfo.put("fontSize", _fontSize);
-				jsonInfo.put("fontWeight", _fontWeight.name());
-				jsonInfo.put("fontStyle", _fontStyle.name());
+				jsonInfo.put("style.font", _styleFont);
+				jsonInfo.put("style.fontSize", _styleFontSize);
+				jsonInfo.put("style.fontWeight", _styleFontWeight.name());
+				jsonInfo.put("style.fontStyle", _styleFontStyle.name());
+				jsonInfo.put("style.fill", _styleFill);
+				jsonInfo.put("style.backgroundColor", _styleBackgroundColor);
+				jsonInfo.put("style.align", _styleAlign.name());
 			} else {
-				jsonInfo.put("font", _font, DEF_FONT);
-				jsonInfo.put("fontSize", _fontSize, DEF_FONT_SIZE);
-				jsonInfo.put("fontWeight", _fontWeight.name(), DEF_FONT_WEIGHT.name());
-				jsonInfo.put("fontStyle", _fontStyle.name(), DEF_FONT_STYLE.name());
+				jsonInfo.put("style.font", _styleFont, DEF_STYLE_FONT);
+				jsonInfo.put("style.fontSize", _styleFontSize, DEF_STYLE_FONT_SIZE);
+				jsonInfo.put("style.fontWeight", _styleFontWeight.name(), DEF_STYLE_FONT_WEIGHT.name());
+				jsonInfo.put("style.fontStyle", _styleFontStyle.name(), DEF_STYLE_FONT_STYLE.name());
+				jsonInfo.put("style.fill", _styleFill, DEF_STYLE_FILL);
+				jsonInfo.put("style.backgroundColor", _styleBackgroundColor, DEF_STYLE_BACKGROUND_COLOR);
+				jsonInfo.put("style.align", _styleAlign.name(), DEF_STYLE_ALIGN.name());
 			}
 		}
 
@@ -172,11 +186,15 @@ public class TextModel extends BaseSpriteModel {
 
 		_text = jsonInfo.optString("text", "");
 
-		_font = jsonInfo.optString("font", DEF_FONT);
-		_fontSize = jsonInfo.optInt("fontSize", DEF_FONT_SIZE);
-		_fontWeight = FontWeight.valueOf(jsonInfo.optString("fontWeight", DEF_FONT_WEIGHT.name()));
-		_fontStyle = FontPosture.valueOf(jsonInfo.optString("fontStyle", DEF_FONT_STYLE.name()));
+		_styleFont = jsonInfo.optString("style.font", DEF_STYLE_FONT);
+		_styleFontSize = jsonInfo.optInt("style.fontSize", DEF_STYLE_FONT_SIZE);
+		_styleFontWeight = FontWeight.valueOf(jsonInfo.optString("style.fontWeight", DEF_STYLE_FONT_WEIGHT.name()));
+		_styleFontStyle = FontPosture.valueOf(jsonInfo.optString("style.fontStyle", DEF_STYLE_FONT_STYLE.name()));
 
+		_styleFill = jsonInfo.optString("style.fill", DEF_STYLE_FILL);
+		_styleBackgroundColor = jsonInfo.optString("style.backgroundColor", DEF_STYLE_BACKGROUND_COLOR);
+
+		_styleAlign = TextAlignment.valueOf(jsonInfo.optString("style.align", DEF_STYLE_ALIGN.name()));
 	}
 
 	@Override
@@ -190,18 +208,21 @@ public class TextModel extends BaseSpriteModel {
 
 		StringBuilder sb = new StringBuilder();
 
-		if (_fontStyle == FontPosture.ITALIC) {
+		if (_styleFontStyle == FontPosture.ITALIC) {
 			sb.append("italic ");
 		}
-		
-		if (_fontWeight == FontWeight.BOLD) {
+
+		if (_styleFontWeight == FontWeight.BOLD) {
 			sb.append("bold ");
 		}
-		
-		sb.append(_fontSize + "px ");
-		sb.append(_font);
+
+		sb.append(_styleFontSize + "px ");
+		sb.append(_styleFont);
 
 		data.put("font", sb.toString());
+		data.put("fill", _styleFill, DEF_STYLE_FILL);
+		data.put("backgroundColor", _styleBackgroundColor, DEF_STYLE_BACKGROUND_COLOR);
+		data.put("align", _styleAlign.name().toLowerCase(), DEF_STYLE_ALIGN.name().toLowerCase());
 
 		return data;
 	}

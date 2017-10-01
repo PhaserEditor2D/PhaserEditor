@@ -23,17 +23,25 @@ package phasereditor.canvas.ui.shapes;
 
 import java.util.List;
 
+import org.eclipse.swt.graphics.RGB;
+
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.grid.PGridColorProperty;
 import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
 import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
+import phasereditor.ui.ColorButtonSupport;
 
 /**
  * 
@@ -52,25 +60,54 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 
 	@Override
 	public double getTextureWidth() {
-		return new Text(getModel().getText()).getBoundsInLocal().getWidth();
+		return createTestNode().getBoundsInLocal().getWidth();
 	}
 
 	@Override
 	public double getTextureHeight() {
-		return new Text(getModel().getText()).getBoundsInLocal().getHeight();
+		return createTestNode().getBoundsInLocal().getHeight();
 	}
 
 	@Override
 	public void updateFromModel() {
-		TextModel model = getModel();
 		TextNode node = getNode();
+
+		TextModel model = getModel();
 
 		node.setText(model.getText());
 
-		Font font = Font.font(model.getFont(), model.getFontWeight(), model.getFontStyle(), model.getFontSize());
+		Font font = Font.font(model.getStyleFont(), model.getStyleFontWeight(), model.getStyleFontStyle(),
+				model.getStyleFontSize());
 		node.setFont(font);
 
+		node.setTextFill(Color.valueOf(model.getStyleFill()));
+
+		String bg = model.getStyleBackgroundColor();
+		if (bg == null) {
+			node.setBackground(null);
+		} else {
+			node.setBackground(new Background(new BackgroundFill(Color.valueOf(bg), null, null)));
+		}
+
+		node.setTextAlignment(model.getStyleAlign());
+
 		super.updateFromModel();
+	}
+
+	private Text createTestNode() {
+		Text node = new Text();
+
+		TextModel model = getModel();
+
+		node.setText(model.getText());
+
+		Font font = Font.font(model.getStyleFont(), model.getStyleFontWeight(), model.getStyleFontStyle(),
+				model.getStyleFontSize());
+		node.setFont(font);
+
+		node.setTextAlignment(model.getStyleAlign());
+
+		return node;
 	}
 
 	@Override
@@ -96,6 +133,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 				getModel().setText(value);
 				if (notify) {
 					updateFromPropertyChange();
+					getCanvas().getSelectionBehavior().updateSelectedNodes();
 				}
 			}
 
@@ -107,84 +145,106 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 
 		{
 			List<String> names = Font.getFamilies();
-			section.add(new PGridEnumProperty<String>(getId(), "font", "The name of the font",
+			section.add(new PGridEnumProperty<String>(getId(), "style.font", "The name of the font",
 					names.toArray(new String[names.size()])) {
 
 				@Override
 				public String getValue() {
-					return getModel().getFont();
+					return getModel().getStyleFont();
 				}
 
 				@Override
 				public void setValue(String value, boolean notify) {
-					getModel().setFont(value);
+					getModel().setStyleFont(value);
 					if (notify) {
 						updateFromPropertyChange();
+						getCanvas().getSelectionBehavior().updateSelectedNodes();
 					}
 				}
 
 				@Override
 				public boolean isModified() {
-					return !getModel().getFont().equals(TextModel.DEF_FONT);
+					return !getModel().getStyleFont().equals(TextModel.DEF_STYLE_FONT);
 				}
 			});
 		}
 
-		section.add(new PGridNumberProperty(getId(), "fontSize", "The size of the font (eg. 20px)") {
+		section.add(new PGridNumberProperty(getId(), "style.fontSize", "The size of the font (eg. 20px)") {
 
 			@SuppressWarnings("boxing")
 			@Override
 			public Double getValue() {
-				return (double) getModel().getFontSize();
+				return (double) getModel().getStyleFontSize();
 			}
 
 			@Override
 			public void setValue(Double value, boolean notify) {
-				getModel().setFontSize(value.intValue());
+				getModel().setStyleFontSize(value.intValue());
 				if (notify) {
 					updateFromPropertyChange();
+					getCanvas().getSelectionBehavior().updateSelectedNodes();
 				}
 			}
 
 			@Override
 			public boolean isModified() {
-				return getModel().getFontSize() != TextModel.DEF_FONT_SIZE;
+				return getModel().getStyleFontSize() != TextModel.DEF_STYLE_FONT_SIZE;
 			}
 		});
 
-		section.add(new PGridEnumProperty<FontWeight>(getId(), "fontWeight", "The weight of the font (eg. 'bold').",
-				 new FontWeight[] {FontWeight.NORMAL, FontWeight.BOLD} /*FontWeight.values()*/) {
+		section.add(new PGridEnumProperty<FontWeight>(getId(), "style.fontWeight",
+				"The weight of the font (eg. 'bold').", new FontWeight[] { FontWeight.NORMAL,
+						FontWeight.BOLD } /* FontWeight.values() */) {
 
 			@Override
 			public FontWeight getValue() {
-				return getModel().getFontWeight();
+				return getModel().getStyleFontWeight();
 			}
 
 			@Override
 			public void setValue(FontWeight value, boolean notify) {
-				getModel().setFontWeight(value);
+				getModel().setStyleFontWeight(value);
 				if (notify) {
 					updateFromPropertyChange();
+					getCanvas().getSelectionBehavior().updateSelectedNodes();
 				}
 			}
 
 			@Override
 			public boolean isModified() {
-				return getModel().getFontWeight() != FontWeight.BOLD;
+				return getModel().getStyleFontWeight() != FontWeight.BOLD;
 			}
 		});
-		
-		section.add(new PGridEnumProperty<FontPosture>(getId(), "fontStyle", "The style of the font (eg. 'italic').",
-				 FontPosture.values()) {
+
+		section.add(new PGridEnumProperty<FontPosture>(getId(), "style.fontStyle",
+				"The style of the font (eg. 'italic').", FontPosture.values()) {
 
 			@Override
 			public FontPosture getValue() {
-				return getModel().getFontStyle();
+				return getModel().getStyleFontStyle();
 			}
 
 			@Override
 			public void setValue(FontPosture value, boolean notify) {
-				getModel().setFontStyle(value);
+				getModel().setStyleFontStyle(value);
+				if (notify) {
+					updateFromPropertyChange();
+					getCanvas().getSelectionBehavior().updateSelectedNodes();
+				}
+			}
+
+			@Override
+			public boolean isModified() {
+				return getModel().getStyleFontStyle() != FontPosture.REGULAR;
+			}
+		});
+
+		section.add(new PGridColorProperty(getId(), "style.fill",
+				"A canvas fillstyle that will be used on the text eg 'red', '#00FF00'.") {
+
+			@Override
+			public void setValue(RGB value, boolean notify) {
+				getModel().setStyleFill(ColorButtonSupport.getHexString(value));
 				if (notify) {
 					updateFromPropertyChange();
 				}
@@ -192,7 +252,58 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 
 			@Override
 			public boolean isModified() {
-				return getModel().getFontStyle() != FontPosture.REGULAR;
+				return !getModel().getStyleFill().equals(TextModel.DEF_STYLE_FILL);
+			}
+
+			@Override
+			public RGB getValue() {
+				return ColorButtonSupport.toRGB(getModel().getStyleFill());
+			}
+		});
+
+		section.add(new PGridColorProperty(getId(), "style.backgroundColor",
+				"A canvas fillstyle that will be used as the background for the whole Text object. Set to `null` to disable.") {
+
+			@Override
+			public void setValue(RGB value, boolean notify) {
+				getModel().setStyleBackgroundColor(ColorButtonSupport.getHexString(value));
+				if (notify) {
+					updateFromPropertyChange();
+				}
+			}
+
+			@Override
+			public boolean isModified() {
+				return getModel().getStyleBackgroundColor() != null;
+			}
+
+			@Override
+			public RGB getValue() {
+				String c = getModel().getStyleBackgroundColor();
+				return c == null ? null : ColorButtonSupport.toRGB(c);
+			}
+		});
+
+		section.add(new PGridEnumProperty<TextAlignment>(getId(), "style.align",
+				"Horizontal alignment of each line in multiline text. Can be: 'left', 'center' or 'right'. Does not affect single lines of text (see `textBounds` and `boundsAlignH` for that)",
+				new TextAlignment[] { TextAlignment.LEFT, TextAlignment.CENTER, TextAlignment.RIGHT }) {
+
+			@Override
+			public TextAlignment getValue() {
+				return getModel().getStyleAlign();
+			}
+
+			@Override
+			public void setValue(TextAlignment value, boolean notify) {
+				getModel().setStyleAlign(value);
+				if (notify) {
+					updateFromPropertyChange();
+				}
+			}
+
+			@Override
+			public boolean isModified() {
+				return getModel().getStyleAlign() != TextAlignment.LEFT;
 			}
 		});
 
