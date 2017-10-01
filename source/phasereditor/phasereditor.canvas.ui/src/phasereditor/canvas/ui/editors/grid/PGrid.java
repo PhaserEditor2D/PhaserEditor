@@ -33,6 +33,8 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -96,6 +98,15 @@ public class PGrid extends Composite {
 			}
 		});
 
+		_tree.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.character == SWT.DEL) {
+					setPropertyToNull();
+				}
+			}
+		});
+
 		_colProperty = new TreeViewerColumn(_treeViewer, SWT.NONE);
 		_colProperty.setLabelProvider(new PGridKeyLabelProvider(_treeViewer));
 		TreeColumn trclmnProperty = _colProperty.getColumn();
@@ -120,6 +131,20 @@ public class PGrid extends Composite {
 
 		afterCreateWidgets();
 
+	}
+
+	protected void setPropertyToNull() {
+		Object elem = _treeViewer.getStructuredSelection().getFirstElement();
+		if (elem != null && elem instanceof PGridProperty) {
+			try {
+				PGridProperty<?> prop = (PGridProperty<?>) elem;
+				Object value = prop.getDefaultValue();
+				PGridEditingSupport.changeUndoablePropertyValue(value, prop);
+			} catch (UnsupportedOperationException e) {
+				// OK, it is not supported
+			}
+			_treeViewer.refresh(elem);
+		}
 	}
 
 	public void setCanvas(ObjectCanvas canvas) {

@@ -90,7 +90,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 		// style.stroke
 		String stroke = model.getStyleStroke();
 		text.setStroke(Color.valueOf(stroke));
-		
+
 		// style.strokeThickness
 		text.setStrokeWidth(model.getStyleStrokeThickness());
 
@@ -101,11 +101,9 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 		} else {
 			node.setBackground(new Background(new BackgroundFill(Color.valueOf(bg), null, null)));
 		}
-
 		// style.align
 		text.setTextAlignment(model.getStyleAlign());
 
-		
 		super.updateFromModel();
 	}
 
@@ -265,6 +263,11 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 
 		section.add(new PGridColorProperty(getId(), "style.stroke",
 				"A canvas stroke style that will be used on the text stroke eg 'blue', '#FCFF00'.") {
+
+			@Override
+			public Object getDefaultValue() {
+				return new RGB(0, 0, 0);
+			}
 
 			@Override
 			public void setValue(RGB value, boolean notify) {

@@ -72,6 +72,11 @@ public abstract class PGridProperty<T> {
 	public abstract void setValue(T value, boolean notify);
 
 	public abstract boolean isModified();
+	
+	@SuppressWarnings("static-method")
+	public Object getDefaultValue() {
+		throw new UnsupportedOperationException();
+	}
 
 	public String getTooltip() {
 		return _tooltip;
