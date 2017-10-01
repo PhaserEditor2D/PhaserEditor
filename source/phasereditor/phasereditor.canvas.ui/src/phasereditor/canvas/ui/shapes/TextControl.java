@@ -47,6 +47,7 @@ import phasereditor.ui.ColorButtonSupport;
  * 
  * @author arian
  */
+@SuppressWarnings("boxing")
 public class TextControl extends BaseSpriteControl<TextModel> {
 
 	public TextControl(ObjectCanvas canvas, TextModel model) {
@@ -60,28 +61,40 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 
 	@Override
 	public double getTextureWidth() {
-		return createTestNode().getBoundsInLocal().getWidth();
+		return getSizeTestNode().getBoundsInLocal().getWidth();
 	}
 
 	@Override
 	public double getTextureHeight() {
-		return createTestNode().getBoundsInLocal().getHeight();
+		return getSizeTestNode().getBoundsInLocal().getHeight();
 	}
 
 	@Override
 	public void updateFromModel() {
 		TextNode node = getNode();
+		Text text = getNode().getTextNode();
 
 		TextModel model = getModel();
 
-		node.setText(model.getText());
+		// text
+		text.setText(model.getText());
 
+		// style.font
 		Font font = Font.font(model.getStyleFont(), model.getStyleFontWeight(), model.getStyleFontStyle(),
 				model.getStyleFontSize());
-		node.setFont(font);
+		text.setFont(font);
 
-		node.setTextFill(Color.valueOf(model.getStyleFill()));
+		// style.fill
+		text.setFill(Color.valueOf(model.getStyleFill()));
 
+		// style.stroke
+		String stroke = model.getStyleStroke();
+		text.setStroke(Color.valueOf(stroke));
+		
+		// style.strokeThickness
+		text.setStrokeWidth(model.getStyleStrokeThickness());
+
+		// style.backgroundColor
 		String bg = model.getStyleBackgroundColor();
 		if (bg == null) {
 			node.setBackground(null);
@@ -89,25 +102,15 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 			node.setBackground(new Background(new BackgroundFill(Color.valueOf(bg), null, null)));
 		}
 
-		node.setTextAlignment(model.getStyleAlign());
+		// style.align
+		text.setTextAlignment(model.getStyleAlign());
 
+		
 		super.updateFromModel();
 	}
 
-	private Text createTestNode() {
-		Text node = new Text();
-
-		TextModel model = getModel();
-
-		node.setText(model.getText());
-
-		Font font = Font.font(model.getStyleFont(), model.getStyleFontWeight(), model.getStyleFontStyle(),
-				model.getStyleFontSize());
-		node.setFont(font);
-
-		node.setTextAlignment(model.getStyleAlign());
-
-		return node;
+	private Text getSizeTestNode() {
+		return getNode().getTextNode();
 	}
 
 	@Override
@@ -171,7 +174,6 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 
 		section.add(new PGridNumberProperty(getId(), "style.fontSize", "The size of the font (eg. 20px)") {
 
-			@SuppressWarnings("boxing")
 			@Override
 			public Double getValue() {
 				return (double) getModel().getStyleFontSize();
@@ -258,6 +260,51 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 			@Override
 			public RGB getValue() {
 				return ColorButtonSupport.toRGB(getModel().getStyleFill());
+			}
+		});
+
+		section.add(new PGridColorProperty(getId(), "style.stroke",
+				"A canvas stroke style that will be used on the text stroke eg 'blue', '#FCFF00'.") {
+
+			@Override
+			public void setValue(RGB value, boolean notify) {
+				getModel().setStyleStroke(ColorButtonSupport.getHexString(value));
+				if (notify) {
+					updateFromPropertyChange();
+				}
+			}
+
+			@Override
+			public boolean isModified() {
+				return !getModel().getStyleStroke().equals(TextModel.DEF_STYLE_STROKE);
+			}
+
+			@Override
+			public RGB getValue() {
+				return ColorButtonSupport.toRGB(getModel().getStyleStroke());
+			}
+		});
+
+		section.add(new PGridNumberProperty(getId(), "style.strokeThickness",
+				"A number that represents the thickness of the stroke. Default is 0 (no stroke).") {
+
+			@Override
+			public Double getValue() {
+				return (double) getModel().getStyleStrokeThickness();
+			}
+
+			@Override
+			public void setValue(Double value, boolean notify) {
+				getModel().setStyleStrokeThickness(value.intValue());
+				if (notify) {
+					updateFromPropertyChange();
+					getCanvas().getSelectionBehavior().updateSelectedNodes();
+				}
+			}
+
+			@Override
+			public boolean isModified() {
+				return getModel().getStyleStrokeThickness() != 0;
 			}
 		});
 

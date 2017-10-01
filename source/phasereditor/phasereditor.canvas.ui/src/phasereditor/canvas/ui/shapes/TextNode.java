@@ -22,20 +22,29 @@
 package phasereditor.canvas.ui.shapes;
 
 import javafx.scene.Node;
-import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import phasereditor.canvas.core.TextModel;
 
 /**
  * @author arian
  *
  */
-public class TextNode extends Label implements IObjectNode {
+public class TextNode extends Pane implements IObjectNode {
 
 	private TextControl _control;
+	private Text _textNode;
 
 	public TextNode(TextControl control) {
 		_control = control;
+		_textNode = new Text();
+		_textNode.relocate(0, 0);
+		getChildren().add(_textNode);
 		setPickOnBounds(true);
+	}
+	
+	public Text getTextNode() {
+		return _textNode;
 	}
 
 	@Override

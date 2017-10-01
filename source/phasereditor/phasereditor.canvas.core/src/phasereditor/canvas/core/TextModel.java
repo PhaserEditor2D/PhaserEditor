@@ -43,10 +43,12 @@ public class TextModel extends BaseSpriteModel {
 	public static final FontWeight DEF_STYLE_FONT_WEIGHT = FontWeight.BOLD;
 	public static final String DEF_STYLE_FILL = "#000000";
 	public static final String DEF_STYLE_BACKGROUND_COLOR = null;
+	public static final String DEF_STYLE_STROKE = "#000000";
 
 	public static final String TYPE_NAME = "text";
 	public static final String PROPSET_TEXT = "text";
 	public static final String PROPSET_TEXT_STYLE = "textStyle";
+	public static final int DEF_STYLE_STROKE_THICKNESS = 0;
 
 	private String _text;
 	private String _styleFont;
@@ -56,6 +58,8 @@ public class TextModel extends BaseSpriteModel {
 	private String _styleBackgroundColor;
 	private String _styleFill;
 	private TextAlignment _styleAlign;
+	private String _styleStroke;
+	private int _styleStrokeThickness;
 
 	public TextModel(GroupModel parent, JSONObject obj) {
 		super(parent, TYPE_NAME, obj);
@@ -73,6 +77,8 @@ public class TextModel extends BaseSpriteModel {
 		_styleBackgroundColor = null;
 		_styleFill = DEF_STYLE_FILL;
 		_styleAlign = DEF_STYLE_ALIGN;
+		_styleStroke = DEF_STYLE_STROKE;
+		_styleStrokeThickness = DEF_STYLE_STROKE_THICKNESS;
 	}
 
 	public String getText() {
@@ -139,6 +145,22 @@ public class TextModel extends BaseSpriteModel {
 		_styleAlign = styleAlign;
 	}
 
+	public String getStyleStroke() {
+		return _styleStroke;
+	}
+
+	public void setStyleStroke(String styleStroke) {
+		_styleStroke = styleStroke;
+	}
+
+	public int getStyleStrokeThickness() {
+		return _styleStrokeThickness;
+	}
+
+	public void setStyleStrokeThickness(int styleStrokeThickness) {
+		_styleStrokeThickness = styleStrokeThickness;
+	}
+
 	@Override
 	public void build() {
 		// nothing
@@ -165,6 +187,8 @@ public class TextModel extends BaseSpriteModel {
 				jsonInfo.put("style.fontWeight", _styleFontWeight.name());
 				jsonInfo.put("style.fontStyle", _styleFontStyle.name());
 				jsonInfo.put("style.fill", _styleFill);
+				jsonInfo.put("style.stroke", _styleStroke);
+				jsonInfo.put("style.strokeThickness", _styleStrokeThickness);
 				jsonInfo.put("style.backgroundColor", _styleBackgroundColor);
 				jsonInfo.put("style.align", _styleAlign.name());
 			} else {
@@ -173,6 +197,8 @@ public class TextModel extends BaseSpriteModel {
 				jsonInfo.put("style.fontWeight", _styleFontWeight.name(), DEF_STYLE_FONT_WEIGHT.name());
 				jsonInfo.put("style.fontStyle", _styleFontStyle.name(), DEF_STYLE_FONT_STYLE.name());
 				jsonInfo.put("style.fill", _styleFill, DEF_STYLE_FILL);
+				jsonInfo.put("style.stroke", _styleStroke, DEF_STYLE_STROKE);
+				jsonInfo.put("style.strokeThickness", _styleStrokeThickness, DEF_STYLE_STROKE_THICKNESS);
 				jsonInfo.put("style.backgroundColor", _styleBackgroundColor, DEF_STYLE_BACKGROUND_COLOR);
 				jsonInfo.put("style.align", _styleAlign.name(), DEF_STYLE_ALIGN.name());
 			}
@@ -193,6 +219,8 @@ public class TextModel extends BaseSpriteModel {
 
 		_styleFill = jsonInfo.optString("style.fill", DEF_STYLE_FILL);
 		_styleBackgroundColor = jsonInfo.optString("style.backgroundColor", DEF_STYLE_BACKGROUND_COLOR);
+		_styleStroke = jsonInfo.optString("style.stroke", DEF_STYLE_STROKE);
+		_styleStrokeThickness = jsonInfo.optInt("style.strokeThickness", DEF_STYLE_STROKE_THICKNESS);
 
 		_styleAlign = TextAlignment.valueOf(jsonInfo.optString("style.align", DEF_STYLE_ALIGN.name()));
 	}
@@ -221,6 +249,8 @@ public class TextModel extends BaseSpriteModel {
 
 		data.put("font", sb.toString());
 		data.put("fill", _styleFill, DEF_STYLE_FILL);
+		data.put("stroke", _styleStroke, DEF_STYLE_STROKE);
+		data.put("strokeThickness", _styleStrokeThickness, DEF_STYLE_STROKE_THICKNESS);
 		data.put("backgroundColor", _styleBackgroundColor, DEF_STYLE_BACKGROUND_COLOR);
 		data.put("align", _styleAlign.name().toLowerCase(), DEF_STYLE_ALIGN.name().toLowerCase());
 
