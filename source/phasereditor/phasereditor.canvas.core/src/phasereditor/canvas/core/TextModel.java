@@ -27,17 +27,36 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+
 /**
  * @author arian
  *
  */
 public class TextModel extends BaseSpriteModel {
+	/**
+	 * 
+	 */
+	private static final FontPosture DEF_FONT_STYLE = FontPosture.REGULAR;
+	public static final int DEF_FONT_SIZE = 20;
+	public static final String DEF_FONT = "Arial";
+	public static final FontWeight DEF_FONT_WEIGHT = FontWeight.BOLD;
 	public static final String TYPE_NAME = "text";
 	public static final String PROPSET_TEXT = "text";
 	public static final String PROPSET_TEXT_STYLE = "textStyle";
 
 	private String _text;
-	private TextStyle _style;
+	private String _font;
+	private int _fontSize;
+	// like italic
+	private FontPosture _fontStyle;
+	// bold
+	private FontWeight _fontWeight;
+	// #000
+	private String _backgroundColor;
+	// #000
+	private String _fill;
 
 	public TextModel(GroupModel parent, JSONObject obj) {
 		super(parent, TYPE_NAME, obj);
@@ -47,7 +66,13 @@ public class TextModel extends BaseSpriteModel {
 		super(parent, TYPE_NAME);
 
 		_text = "";
-		_style = new TextStyle();
+
+		_font = DEF_FONT;
+		_fontSize = 20;
+		_fontWeight = DEF_FONT_WEIGHT;
+		_fontStyle = DEF_FONT_STYLE;
+		_backgroundColor = null;
+		_fill = "#000000";
 	}
 
 	public String getText() {
@@ -58,12 +83,52 @@ public class TextModel extends BaseSpriteModel {
 		_text = text;
 	}
 
-	public TextStyle getStyle() {
-		return _style;
+	public String getFont() {
+		return _font;
 	}
 
-	public void setStyle(TextStyle style) {
-		_style = style;
+	public void setFont(String font) {
+		_font = font;
+	}
+
+	public int getFontSize() {
+		return _fontSize;
+	}
+
+	public void setFontSize(int fontSize) {
+		_fontSize = fontSize;
+	}
+
+	public FontPosture getFontStyle() {
+		return _fontStyle;
+	}
+
+	public void setFontStyle(FontPosture fontStyle) {
+		_fontStyle = fontStyle;
+	}
+
+	public FontWeight getFontWeight() {
+		return _fontWeight;
+	}
+
+	public void setFontWeight(FontWeight fontWeight) {
+		_fontWeight = fontWeight;
+	}
+
+	public String getBackgroundColor() {
+		return _backgroundColor;
+	}
+
+	public void setBackgroundColor(String backgroundColor) {
+		_backgroundColor = backgroundColor;
+	}
+
+	public String getFill() {
+		return _fill;
+	}
+
+	public void setFill(String fill) {
+		_fill = fill;
 	}
 
 	@Override
@@ -86,9 +151,17 @@ public class TextModel extends BaseSpriteModel {
 		}
 
 		if (isOverriding(PROPSET_TEXT_STYLE)) {
-			JSONObject styleData = new JSONObject();
-			_style.writeJSON(styleData);
-			jsonInfo.put("style", styleData);
+			if (prefabInstance) {
+				jsonInfo.put("font", _font);
+				jsonInfo.put("fontSize", _fontSize);
+				jsonInfo.put("fontWeight", _fontWeight.name());
+				jsonInfo.put("fontStyle", _fontStyle.name());
+			} else {
+				jsonInfo.put("font", _font, DEF_FONT);
+				jsonInfo.put("fontSize", _fontSize, DEF_FONT_SIZE);
+				jsonInfo.put("fontWeight", _fontWeight.name(), DEF_FONT_WEIGHT.name());
+				jsonInfo.put("fontStyle", _fontStyle.name(), DEF_FONT_STYLE.name());
+			}
 		}
 
 	}
@@ -99,14 +172,38 @@ public class TextModel extends BaseSpriteModel {
 
 		_text = jsonInfo.optString("text", "");
 
-		_style = new TextStyle();
-		_style.readJSON(jsonInfo.getJSONObject("style"));
+		_font = jsonInfo.optString("font", DEF_FONT);
+		_fontSize = jsonInfo.optInt("fontSize", DEF_FONT_SIZE);
+		_fontWeight = FontWeight.valueOf(jsonInfo.optString("fontWeight", DEF_FONT_WEIGHT.name()));
+		_fontStyle = FontPosture.valueOf(jsonInfo.optString("fontStyle", DEF_FONT_STYLE.name()));
+
 	}
 
 	@Override
 	protected List<AnimationModel> readAnimations(JSONArray array) {
 		// not supported in Text objects
 		return Collections.emptyList();
+	}
+
+	public JSONObject getPhaserStyleObject() {
+		JSONObject data = new JSONObject();
+
+		StringBuilder sb = new StringBuilder();
+
+		if (_fontStyle == FontPosture.ITALIC) {
+			sb.append("italic ");
+		}
+		
+		if (_fontWeight == FontWeight.BOLD) {
+			sb.append("bold ");
+		}
+		
+		sb.append(_fontSize + "px ");
+		sb.append(_font);
+
+		data.put("font", sb.toString());
+
+		return data;
 	}
 
 }

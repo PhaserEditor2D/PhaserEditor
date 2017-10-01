@@ -414,7 +414,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				call.value(round(text.getY()));
 				String str = text.getText().replace("\r", "").replace("\n", "\\n");
 				call.value("'" + str + "'");
-				call.value(text.getStyle().toPhaserStyleObject().toString()); // style
+				call.value(text.getPhaserStyleObject().toString()); // style
 				call.valueOrUndefined(parVar != null, parVar);
 
 				call.append();

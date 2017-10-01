@@ -21,16 +21,19 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
+import java.util.List;
+
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import phasereditor.canvas.core.TextModel;
-import phasereditor.canvas.core.TextStyle;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
+import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
 import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
-import phasereditor.canvas.ui.editors.grid.PGridTextStyleProperty;
 
 /**
  * 
@@ -64,8 +67,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 
 		node.setText(model.getText());
 
-		TextStyle style = model.getStyle();
-		Font font = Font.font(style.getFont(), FontWeight.NORMAL, style.getFontStyle(), style.getFontSize());
+		Font font = Font.font(model.getFont(), model.getFontWeight(), model.getFontStyle(), model.getFontSize());
 		node.setFont(font);
 
 		super.updateFromModel();
@@ -103,26 +105,95 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 			}
 		});
 
-		section.add(new PGridTextStyleProperty(getModel()) {
+		{
+			List<String> names = Font.getFamilies();
+			section.add(new PGridEnumProperty<String>(getId(), "font", "The name of the font",
+					names.toArray(new String[names.size()])) {
+
+				@Override
+				public String getValue() {
+					return getModel().getFont();
+				}
+
+				@Override
+				public void setValue(String value, boolean notify) {
+					getModel().setFont(value);
+					if (notify) {
+						updateFromPropertyChange();
+					}
+				}
+
+				@Override
+				public boolean isModified() {
+					return !getModel().getFont().equals(TextModel.DEF_FONT);
+				}
+			});
+		}
+
+		section.add(new PGridNumberProperty(getId(), "fontSize", "The size of the font (eg. 20px)") {
+
+			@SuppressWarnings("boxing")
+			@Override
+			public Double getValue() {
+				return (double) getModel().getFontSize();
+			}
 
 			@Override
-			public void setValue(TextStyle value, boolean notify) {
-				getModel().setStyle(value);
+			public void setValue(Double value, boolean notify) {
+				getModel().setFontSize(value.intValue());
 				if (notify) {
 					updateFromPropertyChange();
 				}
 			}
 
 			@Override
-			public TextStyle getValue() {
-				return getModel().getStyle();
+			public boolean isModified() {
+				return getModel().getFontSize() != TextModel.DEF_FONT_SIZE;
+			}
+		});
+
+		section.add(new PGridEnumProperty<FontWeight>(getId(), "fontWeight", "The weight of the font (eg. 'bold').",
+				 new FontWeight[] {FontWeight.NORMAL, FontWeight.BOLD} /*FontWeight.values()*/) {
+
+			@Override
+			public FontWeight getValue() {
+				return getModel().getFontWeight();
+			}
+
+			@Override
+			public void setValue(FontWeight value, boolean notify) {
+				getModel().setFontWeight(value);
+				if (notify) {
+					updateFromPropertyChange();
+				}
 			}
 
 			@Override
 			public boolean isModified() {
-				return true;
+				return getModel().getFontWeight() != FontWeight.BOLD;
+			}
+		});
+		
+		section.add(new PGridEnumProperty<FontPosture>(getId(), "fontStyle", "The style of the font (eg. 'italic').",
+				 FontPosture.values()) {
+
+			@Override
+			public FontPosture getValue() {
+				return getModel().getFontStyle();
 			}
 
+			@Override
+			public void setValue(FontPosture value, boolean notify) {
+				getModel().setFontStyle(value);
+				if (notify) {
+					updateFromPropertyChange();
+				}
+			}
+
+			@Override
+			public boolean isModified() {
+				return getModel().getFontStyle() != FontPosture.REGULAR;
+			}
 		});
 
 		propModel.getSections().add(section);
