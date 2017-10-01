@@ -61,6 +61,7 @@ import org.json.JSONTokener;
 
 import phasereditor.atlas.core.AtlasCore;
 import phasereditor.audiosprite.core.AudioSpriteCore;
+import phasereditor.project.core.ProjectCore;
 
 /**
  * Utilities related to the assets and resources.
@@ -398,7 +399,7 @@ public class AssetPackCore {
 	 *             If error.
 	 */
 	public static boolean isAssetPackFile(IFile file) throws CoreException {
-		if (!file.exists() || !file.isSynchronized(IResource.DEPTH_ONE)) {
+		if (!file.exists() || !file.isSynchronized(IResource.DEPTH_ONE) || !ProjectCore.isWebContentFile(file)) {
 			return false;
 		}
 		IContentDescription desc = file.getContentDescription();
