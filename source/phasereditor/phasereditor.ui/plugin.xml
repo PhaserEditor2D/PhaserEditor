@@ -11,7 +11,7 @@
             allowMultiple="true"
             category="phasereditor.ui.phaser"
             class="phasereditor.ui.views.PreviewView"
-            icon="icons/eye.png"
+            icon="icons/monitor.png"
             id="phasereditor.ui.preview"
             name="Preview">
       </view>
@@ -46,7 +46,7 @@
          </separator>
          <command
                commandId="phasereditor.ui.commands.showInPreview"
-               icon="icons/eye.png"
+               icon="icons/monitor.png"
                style="push">
          </command>
       </menuContribution>

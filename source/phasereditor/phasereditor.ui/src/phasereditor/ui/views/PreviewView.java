@@ -235,7 +235,7 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 		_previewFactory = null;
 		_previewControl = null;
 
-		setTitleImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_EYE));
+		setTitleImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_MONITOR));
 
 		IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
 		toolbar.removeAll();

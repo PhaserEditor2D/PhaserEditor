@@ -6,7 +6,7 @@
       <view
             category="phasereditor.ui.phaser"
             class="phasereditor.assetexplorer.ui.views.AssetExplorer"
-            icon="platform:/plugin/phasereditor.ui/icons/box_search.png"
+            icon="platform:/plugin/phasereditor.ui/icons/package.png"
             id="phasereditor.assetpack.views.assetExplorer"
             name="Assets">
       </view>
@@ -39,7 +39,7 @@
             locationURI="toolbar:phasereditor.assetpack.views.assetExplorer?before=additions">
          <command
                commandId="phasereditor.ui.commands.showInPreview"
-               icon="platform:/plugin/phasereditor.ui/icons/eye.png"
+               icon="platform:/plugin/phasereditor.ui/icons/monitor.png"
                style="push"
                tooltip="Show the selection in the Preview window.">
          </command>
@@ -90,7 +90,7 @@
          </command>
          <command
                commandId="phasereditor.ui.commands.showInPreview"
-               icon="platform:/plugin/phasereditor.ui/icons/eye.png"
+               icon="platform:/plugin/phasereditor.ui/icons/monitor.png"
                style="push"
                tooltip="Show the selection in the Preview window.">
          </command>

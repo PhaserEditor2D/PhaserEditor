@@ -106,7 +106,7 @@
            locationURI="popup:org.eclipse.wst.jsdt.ui.CompilationUnitEditor.EditorContext?after=OpenEditor">
         <command
               commandId="phasereditor.ui.commands.showInPreview"
-              icon="platform:/plugin/phasereditor.ui/icons/eye.png"
+              icon="platform:/plugin/phasereditor.ui/icons/monitor.png"
               style="push">
         </command>
      </menuContribution>

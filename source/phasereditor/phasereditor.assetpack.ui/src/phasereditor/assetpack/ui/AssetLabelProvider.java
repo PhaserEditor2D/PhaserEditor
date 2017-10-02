@@ -84,7 +84,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 
 	@SuppressWarnings("static-method")
 	protected BufferedImage getFilmOverlay() throws IOException, MalformedURLException {
-		return ImageIO.read(new URL("platform:/plugin/phasereditor.ui/icons/film-overlay.png"));
+		return ImageIO.read(new URL("platform:/plugin/phasereditor.ui/icons/film_overlay.png"));
 	}
 
 	public IconCache getCache() {

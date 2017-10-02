@@ -626,7 +626,7 @@
             </command>
             <command
                   commandId="phasereditor.canvas.ui.showcode"
-                  icon="platform:/plugin/phasereditor.ui/icons/jcu_obj.gif"
+                  icon="platform:/plugin/phasereditor.ui/icons/page_white_code.png"
                   style="push">
                <visibleWhen
                      checkEnabled="false">

@@ -130,7 +130,7 @@ public class SearchPrefabResultPage extends Page implements ISearchResultPage, I
 				}
 
 				if (element instanceof PrefabReference) {
-					return EditorSharedImages.getImage(IEditorSharedImages.IMG_BRICKS);
+					return EditorSharedImages.getImage(IEditorSharedImages.IMG_PACKAGE_2);
 				}
 
 				return null;

@@ -50,13 +50,13 @@ public class OutlineLabelProvider extends LabelProvider implements IEditorShared
 			BaseObjectModel model = node.getModel();
 
 			if (model.isPrefabInstance()) {
-				return EditorSharedImages.getImage(IMG_BRICKS);
+				return EditorSharedImages.getImage(IMG_PACKAGE_2);
 			}
 
 			CanvasType type = node.getControl().getCanvas().getEditor().getModel().getType();
 			if (type == CanvasType.GROUP) {
 				if (model == model.getWorld().findGroupPrefabRoot()) {
-					return EditorSharedImages.getImage(IMG_BRICKS);
+					return EditorSharedImages.getImage(IMG_PACKAGE_2);
 				}
 			}
 		}

@@ -7,7 +7,7 @@
             category="phasereditor.ui.wizardCategory"
             class="phasereditor.atlas.ui.wizards.NewAtlasMakerWizard"
             finalPerspective="phasereditor.ide.ui.perspective"
-            icon="platform:/plugin/phasereditor.ui/icons/atlas-add.png"
+            icon="platform:/plugin/phasereditor.ui/icons/atlas_add.png"
             id="phasereditor.atlas.ui.wizards.new.atlasmaker"
             name="Atlas Generator File">
       </wizard>

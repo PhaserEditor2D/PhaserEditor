@@ -21,7 +21,7 @@
             category="phasereditor.ui.wizardCategory"
             class="phasereditor.audiosprite.ui.wizards.NewAudioSpritesWizard"
             finalPerspective="phasereditor.ide.ui.perspective"
-            icon="platform:/plugin/phasereditor.ui/icons/audiosprite-add.png"
+            icon="platform:/plugin/phasereditor.ui/icons/audiosprite_add.png"
             id="phasereditor.audiosprite.ui.wizards.new"
             name="Audio Sprites File"
             project="false">

@@ -214,7 +214,7 @@ public class ChainsView extends ViewPart {
 			StyleRange[] ranges = { allRange, selRange };
 			cell.setStyleRanges(ranges);
 			cell.setText(text);
-			cell.setImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_JCU_OBJ));
+			cell.setImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_SCRIPT_CODE));
 
 			super.update(cell);
 		}
@@ -430,7 +430,7 @@ public class ChainsView extends ViewPart {
 			input.setTooltip(input.getName());
 			CompilationUnitEditor editor = (CompilationUnitEditor) activePage.openEditor(input, editorId);
 			try {
-				editor.updatedTitleImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_JCU_OBJ));
+				editor.updatedTitleImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_SCRIPT_CODE));
 			} catch (Exception e) {
 				// ignore it
 			}

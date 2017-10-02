@@ -941,6 +941,90 @@
        y1="4.8437853"
        x2="0.9375"
        y2="7.549418" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4528-9"
+       id="radialGradient5382"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.8508179,-8.813921e-6,8.4531434e-6,1.7750589,644.24981,572.63612)"
+       cx="-757.20496"
+       cy="-738.83777"
+       fx="-757.20496"
+       fy="-738.83777"
+       r="3.4803574" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6281-8-0-1-6"
+       id="linearGradient5384"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(2.3199889,0,0,2.3199889,10.199693,1043.1852)"
+       x1="0.9375"
+       y1="4.8437853"
+       x2="0.9375"
+       y2="7.549418" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4528-9"
+       id="radialGradient5437"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.8508179,-8.813921e-6,8.4531434e-6,1.7750589,644.24981,572.63612)"
+       cx="-757.20496"
+       cy="-738.83777"
+       fx="-757.20496"
+       fy="-738.83777"
+       r="3.4803574" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6281-8-0-1-6"
+       id="linearGradient5439"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(2.3199889,0,0,2.3199889,10.199693,1043.1852)"
+       x1="0.9375"
+       y1="4.8437853"
+       x2="0.9375"
+       y2="7.549418" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4528-9"
+       id="radialGradient5467"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.8508179,-8.813921e-6,8.4531434e-6,1.7750589,644.24981,572.63612)"
+       cx="-757.20496"
+       cy="-738.83777"
+       fx="-757.20496"
+       fy="-738.83777"
+       r="3.4803574" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6281-8-0-1-6"
+       id="linearGradient5469"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(2.3199889,0,0,2.3199889,10.199693,1043.1852)"
+       x1="0.9375"
+       y1="4.8437853"
+       x2="0.9375"
+       y2="7.549418" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4528-9"
+       id="radialGradient5519"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.8508179,-8.813921e-6,8.4531434e-6,1.7750589,644.24981,572.63612)"
+       cx="-757.20496"
+       cy="-738.83777"
+       fx="-757.20496"
+       fy="-738.83777"
+       r="3.4803574" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6281-8-0-1-6"
+       id="linearGradient5521"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(2.3199889,0,0,2.3199889,10.199693,1043.1852)"
+       x1="0.9375"
+       y1="4.8437853"
+       x2="0.9375"
+       y2="7.549418" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -949,9 +1033,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4"
-     inkscape:cx="160.95583"
-     inkscape:cy="597.41193"
+     inkscape:zoom="2"
+     inkscape:cx="403.78357"
+     inkscape:cy="412.38395"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -976,32 +1060,14 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
-    <rect
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2.21790528;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect5924"
-       width="13.782095"
-       height="13.782095"
-       x="282.4563"
-       y="1091.4775"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Public\source\phasereditor\phasereditor.ui\icons\film-overlay.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <image
-       y="983.98718"
-       x="606.75"
-       id="image5760"
-       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAETSURBVBgZfcExS0JRGIDh996OFIQEgSRh TS1Bg0trw937B9UPCAT3hnJ1kYbGhrv0BxoaXSsMhBCsyUEcoiTKUM/3HU8Fce4Q+DyRZz5DcOkd iqIIiiAo7xiCMXs4HI4ZisPhOMcQOJQbOoxxKHm22UUxBBbHM1cRfw58GUtMIAieTIwgxAQWRclM EZSYwCIIGYsixASCYsl4pgiGwDFF+HWUaDopbfCGHRp+nCWSTktFXvFDOKyuNNYp4LhFriPPaXW5 UWAV5Y6HNH+/dbHJIjN6NHlJzMnxWqNIDqFHh8/U7hiEJbp0+ar0m2a4MGFEjie6jCrtJs1y57Fu I21R6w8g8uwnH/VJJK1ZrT3gn8gz3zcVUYEwGmDcvQAAAABJRU5ErkJggg== "
-       preserveAspectRatio="none"
-       height="16"
-       width="16" />
     <image
        width="12.041264"
        height="12.048738"
        preserveAspectRatio="none"
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAGWSURBVBgZpcE/a1NhGMbh3/OeN56cKq2D p6AoCOKmk4uCn8DNycEOIojilr2TaBfRzVnESQR3Bz+FFDoWA2IjtkRqmpyc97k9qYl/IQV7XSaJ w4g0VlZfP0m13dwepPbuiH85fyhyWCx4/ubxjU6kkdxWHt69VC6XpZlFBAhwJgwJJHAmRKorbj94 ewvoRBrbuykvT5R2/+lLTp05Tp45STmEJYJBMAjByILxYeM9jzr3GCczGpHGYAQhRM6fO8uFy1fJ QoaUwCKYEcwwC4QQaGUBd36KTDmQ523axTGQmEcIEBORKQfG1ZDxcA/MkBxXwj1ggCQyS9TVAMmZ iUxJ8Ln/kS+9PmOvcSW+jrao0mmMH5bzHfa+9UGBmciUBJ+2Fmh1h+yTQCXSkJkdCrpd8btIwwEJ QnaEkOXMk7XaiF8CUxL/JdKQOwb0Ntc5SG9zHXQNd/ZFGsaEeLa2ChjzXQcqZiKNxSL0vR4unVww MENMCATib0ZdV+QtE41I42geXt1Ze3dlMNZFdw6Ut6CIvKBhkjiM79Pyq1YUmtkKAAAAAElFTkSu QmCC "
        id="image5672"
-       x="663.70642"
-       y="946.82532" />
+       x="154.29329"
+       y="870.5675" />
     <g
        id="g7239"
        transform="translate(584.68892,-181.63805)">
@@ -2113,19 +2179,8 @@
       </g>
     </g>
     <image
-       y="739.49194"
-       x="580.22058"
-       id="image4155"
-       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAHISURBVDjLpVPNK0RRFP+9D98syMwUspHk m9I0YkFZWBFKkZ0s7a3Ewh+ilChK7FgoZCJFKYlYKB8zk2+Z5t0P577He29kQU7dd+6575zf+d1z ztWklPiPmOozt/U4SThjXIoyIQS4AJjSXO0lGGlvcXAm6Vzsz4xUhm0AIeX4QLig+C+ZpxbOG1wG hGYHr1zMUmZGWRgs0ha3PE1nX/8mWmdgWTzLB+DUYbhm9FfZ35IEyrhXA3VXJfPbsV8B9LQUIeUH YJ8ASobag1jcucNgW8g9W4reYSDi2YnnZDoDiwCokDANct6NwTB0LEdj0HRA/wxa2SN25JNBEdWl uUhZ366gqmAaGvrCAXKOozccTGPgt8+vn8GYSGcgyTYp3dpBnBg42nbQPRBTo5bTvqYkmxL6AQhN TWQGBXY3B7BxlEBXozcW64dxRKoKUZBju+P06gl5WaaviMJBM3TNDlbypemIZgHYOnlwASsCmW7n HADGnBoQ3c76YmweJ9BR5zFYjsbRHwm4tmJg6PhWA7pCXXk+bu7fURHKweXtq/sWaksz7SC/CCGF rwtyZ3r+rCnFRZ7qr1qc6mLZj4f9OEyPL8lVpbX/PucPv5QPKHB1TdEAAAAASUVORK5CYII= "
-       preserveAspectRatio="none"
-       height="16"
-       width="16"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\EclipsePhaserTools\phasereditor.ui\icons\audiosprite-add.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <image
-       y="861.24194"
-       x="598.72058"
+       y="772.59186"
+       x="206.71393"
        id="image4144"
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAEzSURBVDjLxdOxasJAHAZwwbfKkjlbJVMp JaYmxtSoNVoSsCLlekQSjcZNRUFFIUNxD5nqY7Rr+wiuX89M3a62lA4f3PL97n/HXQ5A7jfJ/Rng +/1LSsn72UAQ+HlWJp5Hj4Q8gguE4VAIw0GWwSAQWPl1sZhjv39Gr/fAB4bDAJNJhCgaYTweYbNZ IY5jrNcruM49HwiCPg6HF6RpiiRJsFwuQQhhYAS7WecD7KzY7bbwPA+UUnS7Xdi2zdZPqNVMPnC6 qPl8Cl3XoSgKZFmGJEkwTYOlzAc6HRez2RSu66DRqKNQuIAoigy7hmGU+EC73USr1WDlajayZZkZ oqoKm0rlA807S6jeVoRKRRPK5RtB14tvJ8hxbGhaEWc/JLZrXisVKcvxR8AX6Irl4/8+03fzCbre yRfHFw9qAAAAAElFTkSuQmCC "
        preserveAspectRatio="none"
@@ -2134,8 +2189,8 @@
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <image
-       y="795.4762"
-       x="537.64026"
+       y="740.59186"
+       x="152.31392"
        id="image5531"
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAI+SURBVDjLtZPPaxNBFMcX+leoIB4VFFQE cXtIMXpILbQhYprUmGyym2SbX00aSSCGWrfLhmSTTQI9tDGBtlgIIqVFBNec7NGLaJGCvczBQKG5 eGi8fZ1dbVHagiIOfHkzj3mf951hhgHA/IuY/wYoFgsuWZa+/DWgVCoO0GJJUeR9SZrFcUVETPGE i5w2AZVKma1UVFOqWmJp8edms4G1tReYmXl0BEBCU7k9MQbiDLwzAeVyCfV6DbWahmpVw8rKEtrt NpaXl5DNPPwNQIIJgTwIX+y6A+hNcCC3HRFquYDNzbfodDrQdR2tVguSJFFgDalk/BBA+Di/J0RA 7vqyZMQV7zncIIN3thl6VqyuPoOiKJBlGfl8HqlUis7nEIuJJmB3zL1D3IJ110W7DjvNHGGHQa5a wRgX1WgsQBAEeL1eOBwO2Gw2iGKIKngA6BG7x0ojyNDoD8DlmyAXBsHkclksLi4gm80gkYjDbh+D xWKhMA9CocDhEWr58Y10dRzByijuPxn61nSxIOeubTPpdBLT0wlaHDEtR6OiCeE4L3XFmYCwZn88 +5zDy615vO/q0N5Mwqldgv/e2Q6TnIqykckwGw7zbDDoZwXBt2OAMpkUeN5nAjzKrf76xyrWP9WN NdSOAK0TwvXIqf6RR0K7DvABn0y1fwAYyV3Bq62n+HVsfJg3ACc/UQqaoOoa8xvRM/2S7oeim0Ao r30nOzhOdOOcQz2Pss6bnY1orGle/eNfRzcXqL4atn/GgpH/DtOZnBuaeVfLAAAAAElFTkSuQmCC  "
        preserveAspectRatio="none"
@@ -2143,7 +2198,7 @@
        width="16" />
     <g
        id="g5566"
-       transform="translate(2055.6093,-300.21447)"
+       transform="translate(1865.9786,-320.96012)"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90">
       <image
@@ -2169,11 +2224,11 @@
        preserveAspectRatio="none"
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAHISURBVDjLpVPNK0RRFP+9D98syMwUspHk m9I0YkFZWBFKkZ0s7a3Ewh+ilChK7FgoZCJFKYlYKB8zk2+Z5t0P577He29kQU7dd+6575zf+d1z ztWklPiPmOozt/U4SThjXIoyIQS4AJjSXO0lGGlvcXAm6Vzsz4xUhm0AIeX4QLig+C+ZpxbOG1wG hGYHr1zMUmZGWRgs0ha3PE1nX/8mWmdgWTzLB+DUYbhm9FfZ35IEyrhXA3VXJfPbsV8B9LQUIeUH YJ8ASobag1jcucNgW8g9W4reYSDi2YnnZDoDiwCokDANct6NwTB0LEdj0HRA/wxa2SN25JNBEdWl uUhZ366gqmAaGvrCAXKOozccTGPgt8+vn8GYSGcgyTYp3dpBnBg42nbQPRBTo5bTvqYkmxL6AQhN TWQGBXY3B7BxlEBXozcW64dxRKoKUZBju+P06gl5WaaviMJBM3TNDlbypemIZgHYOnlwASsCmW7n HADGnBoQ3c76YmweJ9BR5zFYjsbRHwm4tmJg6PhWA7pCXXk+bu7fURHKweXtq/sWaksz7SC/CCGF rwtyZ3r+rCnFRZ7qr1qc6mLZj4f9OEyPL8lVpbX/PucPv5QPKHB1TdEAAAAASUVORK5CYII= "
        id="image5547"
-       x="739.22058"
-       y="775.99194" />
+       x="246.7149"
+       y="708.59186" />
     <g
        id="g5580"
-       transform="matrix(0.875,0,0,0.875,1975.2153,-189.50023)">
+       transform="matrix(0.875,0,0,0.875,1524.2624,-189.24589)">
       <image
          width="16"
          height="16"
@@ -2192,16 +2247,16 @@
          width="16" />
     </g>
     <image
-       y="846.01013"
-       x="480.49048"
+       y="740.59186"
+       x="222.71442"
        id="image5578"
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAH0SURBVDjLxdPPS9tgGAfwgH/ATmPD0w5j MFa3IXOMFImsOKnbmCUTacW1WZM2Mf1ho6OBrohkIdJfWm9aLKhM6GF4Lz3No/+AMC/PYQXBXL1+ 95oxh1jGhsgOX/LywvN5n/fN+3IAuKuEuzagVFoO27b1/Z+BcrnUx4otx7FPLWsJvYpIM2SS9H4P qNWqfK1W8VKplHlW/G1zs4G9vS9YXPx4CaDkXOFES4Om4gceUK2WsbZWR72+gtXVFezsbKHVamF7 ewtm/sMFgBJZhd6pvm4kDndaAo2KOmt5Gfv7X9HpdNBut9FsNmFZFgPrMHKZc4DkjHyi6KC3MZNe hTOuGAH5Xx5ybK/Y3f0Mx3Fg2zaKxSIMw2DjT0inNQ84nogcUUQJHIfZquNT3hzx46DBALizg2o0 1qEoCqLRKERRRDAYhKYlWRK/AJdCMwH2BY28+Qk8fg667wdXKJjY2FiHaeaRzWYQCk1AEASGzSCZ jP/ewtik5r6eBD0dM+nRSMb1j4LuPDnkFhZymJ/PsmLdazmV0jxEkqKsK+niIQ69mKUBwdd9OAx3 SADdHtC53FyK12dVXlVlPpF4zytK7OgMyucNyHLs8m+8+2zJHRwG3fId9LxIbNU+OR6zWU57AR5y 84FKN+71//EqM2iapfv/HtPf5gcdtKR8VW88PgAAAABJRU5ErkJggg== "
        preserveAspectRatio="none"
        height="16"
        width="16" />
     <image
-       y="802.61218"
-       x="672.25"
+       y="740.59186"
+       x="189.11392"
        id="image5542-9"
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAInSURBVDjLhZPda9NQHIbzVwlWryzthpWu IpWOieKYZXO2q1vC0KFr9aZM3Yr40QunspU2TVYmYhVRvNErwQtR3E0JTq3G2o80mc0Ql9dzTr/S YdnFA8k5yft78nLCjcxJNwKzsuoOiZoj2GKsi3NS1I7y4hIA7n9wgQvyz4KiWLphwNgyoRMq+jZ+ MUyo1ToOR6Ra3wA6ua4b8F/2gL830WF8YRGB2VX4hBwOBEWrnxl3kGzQyXzyLJbfLuL+uwQevr+J k7EsiBn2MmMBdbJ58UEEKx9vYfVDE89MBtTsTVjA53iiy/XbeD4XRaluwhWSNRZQIYmeay6cSsYx fCmFwfMpEGW4wjk4gxm4J7IECd6IhOW7z/AlkYRaawXQbyuTtCOJAQzPp/bU9gtrLOBHrUECJI3b P5bWypoJx7l9cE+tMO0TsTuIpl90uCq+xJnoEtP2hUV8Cp7G90orwMECGthQd5gynRxLPUWuoOOR 8huPN//gyde/iMuvmLZvKgtlfBTFdsBgSNwslavQiOIACaCF0ofzRQv5bzsd6BrV9obSyI8EUCw3 4JwkAcd4aWFoWn5N00ihFi30+HwaM5LCmM4UGH5SLtX28uvMtlg2mwH2U9UuNHBlDUKu2ANdo9pD wjqqpNQSOwdyrSegXeih0Rh7wQ5da2lbdDI5RBqxT/Qa2ArdUK1ddLV7/gX7jb1QzdhGjVAl1026 2n0D7IXSSbtpa9vf+QeB6/JTIb6VuwAAAABJRU5ErkJggg== "
        preserveAspectRatio="none"
@@ -2216,11 +2271,11 @@
        preserveAspectRatio="none"
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAABHNCSVQICAgIfAhkiAAAAIlJREFU CJlVjiELwlAcxH//fQWjwTL2dbTJ7BazsOSKSaOCInaDQbQs+GksL9uc8vY8wxDewnEcdxw/JPHX fZ8pzp3iG56KBwlAtUnlfQDA+0C1TQVgl/VAw9kVANQaBrfdCJPEadkXwHi64nwsQJCXzhKAycLZ p27Q68G7bshLZ+1TRHeY9zq0P5LuZXcZbRfFAAAAAElFTkSuQmCC "
        id="image5780"
-       x="658.64441"
-       y="871.18506" />
+       x="91.89183"
+       y="809.09186" />
     <image
-       y="802.61218"
-       x="681.25"
+       y="745.09186"
+       x="211.21393"
        id="image5786"
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAABHNCSVQICAgIfAhkiAAAAIlJREFU CJlVjiELwlAcxH//fQWjwTL2dbTJ7BazsOSKSaOCInaDQbQs+GksL9uc8vY8wxDewnEcdxw/JPHX fZ8pzp3iG56KBwlAtUnlfQDA+0C1TQVgl/VAw9kVANQaBrfdCJPEadkXwHi64nwsQJCXzhKAycLZ p27Q68G7bshLZ+1TRHeY9zq0P5LuZXcZbRfFAAAAAElFTkSuQmCC "
        preserveAspectRatio="none"
@@ -2228,7 +2283,7 @@
        width="7" />
     <g
        id="g5824"
-       transform="matrix(0.83326697,0,0,0.8160119,1967.2621,-91.49471)"
+       transform="matrix(0.83326697,0,0,0.8160119,1603.5097,-184.94406)"
        inkscape:export-filename="C:\Users\arian\Documents\Source\EclipsePhaserTools\phasereditor.ui\icons\package_add.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90">
@@ -2255,7 +2310,7 @@
        inkscape:export-filename="C:\Users\arian\Documents\Source\EclipsePhaserTools\phasereditor.ui\icons\compress.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
-       transform="translate(2238.75,-303.75)">
+       transform="translate(1802.1383,-363.57621)">
       <image
          inkscape:export-ydpi="90"
          inkscape:export-xdpi="90"
@@ -2284,7 +2339,7 @@
        inkscape:export-filename="C:\Users\arian\Documents\Source\EclipsePhaserTools\phasereditor.ui\icons\package_search.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
-       transform="translate(2238.75,-303.75)">
+       transform="translate(1790.8298,-423.88964)">
       <image
          inkscape:export-ydpi="90"
          inkscape:export-xdpi="90"
@@ -2308,8 +2363,8 @@
          y="1297.4154" />
     </g>
     <image
-       y="908.11218"
-       x="538.5"
+       y="804.59186"
+       x="246.7149"
        id="image5554"
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAJdSURBVDjLpZP7S1NhGMf9W7YfogSJboSE UVCY8zJ31trcps6zTI9bLGJpjp1hmkGNxVz4Q6ildtXKXzJNbJRaRmrXoeWx8tJOTWptnrNryre5 YCYuI3rh+8vL+/m8PA/PkwIg5X+y5mJWrxfOUBXm91QZM6UluUmthntHqplxUml2lciF6wrmdHri I0Wx3xw2hAediLwZRWRkCPzdDswaSvGqkGCfq8VEUsEyPF1O8Qu3O7A09RbRvjuIttsRbT6HHzeb sDjcB4/JgFFlNv9MnkmsEszodIIY7Oaut2OJcSF68Qx8dgv8tmqEL1gQaaARtp5A+N4NzB0lMXxo n/uxbI8gIYjB9HytGYuusfiPIQcN71kjgnW6VeFOkgh3XcHLvAwMSDPohOADdYQJdF1FtLMZPmsl vhZJk2ahkgRvq4HHUoWHRDqTEDDl2mDkfheiDgt8pw340/EocuClCuFvboQzb0cwIZgki4KhzlaE 6w0InipbVzBfqoK/qRH94i0rgokSFeO11iBkp8EdV8cfJo0yD75aE2ZNRvSJ0lZKcBXLaUYmQrCz DT6tDN5SyRqYlWeDLZAg0H4JQ+Jt6M3atNLE10VSwQsN4Z6r0CBwqzXesHmV+BeoyAUri8EyMfi2 FowXS5dhd7doo2DVII0V5BAjigP89GEVAtda8b2ehodU4rNaAW+dGfzlFkyo89GTlcrHYCLpKD+V 7yeeHNzLjkp24Uu1Ed6G8/F8qjqGRzlbl2H2dzjpMg1KdwsHxOlmJ7GTeZC/nesXbeZ6c9OYnuxU c3fmBuFft/Ff8xMd0s65SXIb/gAAAABJRU5ErkJggg== "
        preserveAspectRatio="none"
@@ -2320,8 +2375,8 @@
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <image
-       y="887.73718"
-       x="502.5"
+       y="804.59186"
+       x="189.11392"
        id="image5565"
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAJvSURBVDjLpZPrS5NhGIf9W7YvBYOkhlko qCklWChv2WyKik7blnNris72bi6dus0DLZ0TDxW1odtopDs4D8MDZuLU0kXq61CijSIIasOvv94V TUfLiB74fXngup7nvrnvJABJ/5PfLnTTdcwOj4RsdYmo5glBWP6iOtzwvIKSWstI0Wgx80SBblpK tE9KQs/We7EaWoT/8wbWP61gMmCH0lMDvokT4j25TiQU/ITFkek9Ow6+7WH2gwsmahCPdwyw75uw 9HEO2gUZSkfyI9zBPCJOoJ2SMmg46N61YO/rNoa39Xi41oFuXysMfh36/Fp0b7bAfWAH6RGi0Hgl WNCbzYgJaFjRv6zGuy+b9It96N3SQvNKiV9HvSaDfFEIxXItnPs23BzJQd6DDEVM0OKsoVwBG/1V MzpXVWhbkUM2K4oJBDYuGmbKIJ0qxsAbHfRLzbjcnUbFBIpx/qH3vQv9b3U03IQ/HfFkERTzfFj8 w8jSpR7GBE123uFEYAzaDRIqX/2JAtJbDat/COkd7CNBva2cMvq0MGxp0PRSCPF8BXjWG3FgNHc9 XPT71Ojy3sMFdfJRCeKxEsVtKwFHwALZfCUk3tIfNR8XiJwc1LmL4dg141JPKtj3WUdNFJqLGFVP C4OkR4BxajTWsChY64wmCnMxsWPCHcutKBxMVp5mxA1S+aMComToaqTRUQknLTH62kHOVEE+VQnj ahscNCy0cMBWsSI0TCQcZc5ALkEYckL5A5noWSBhfm2AecMAjbcRWV0pUTh0HE64TNf0mczcnnQy u/MilaFJCae1nw2fbz1DnVOxyGTlKeZft/Ff8x1BRssfACjTwQAAAABJRU5ErkJggg== "
        preserveAspectRatio="none"
@@ -2333,7 +2388,7 @@
        inkscape:export-ydpi="90" />
     <g
        id="g5720"
-       transform="translate(2238.75,-303.75)">
+       transform="translate(2040.7366,-408.1453)">
       <path
          d="m -1818.5227,1220.7372 a 7.5,7.5 0 0 1 -7.4886,7.5 7.5,7.5 0 0 1 -7.5114,-7.4773 7.5,7.5 0 0 1 7.4659,-7.5226 7.5,7.5 0 0 1 7.534,7.4545"
          sodipodi:open="true"
@@ -2355,8 +2410,8 @@
          style="opacity:1;fill:#767677;fill-opacity:1;stroke:#dcdcdc;stroke-width:1.44543755;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     </g>
     <image
-       y="877.79858"
-       x="404.10608"
+       y="772.59186"
+       x="222.71442"
        id="image5590"
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAHiSURBVDjLpZPLquJAEIbPQ+Wd8gAZnTir PIGIgiLoxo2iCxeuBJGgoggq3trLwoX3a9R4QVGxpv/mJCJzOMMwDUVCur+/qv7qfBDRx//EHx/6 /b7U6/W0brerdzodgzFmtFotvdlsavV6XfpWgMMyh9l6vabz+UyPx0PE6XSixWJBtVqNVSoV+UuB T9i8Xq+EhefhcCDTNOlyuYhvEC2Xy2apVJLfBD7LZha82+1ou91SPp8nwzBos9kQqrJEdF1n2WxW sgV4v5p1wIIBOp0/KZfLCXi5XIrAGgwGlEqlNFuAm6VDGaUCtLI6HE4RPKOA4QP8QIJEIqHbAu12 24BZ+/1ewMi4Wq047BDhcv2iarVKs9lMCN1uN4pGo4YtwMckBFC+BeMgYFV1kaL8EHvT6dSuIhKJ vAQajYYOx9GG1SsOqqr6Bk8mEzGZ4XBI4XD41QKfr4bN5/MpwPl8LspVFEXA2BuPxzQajeh+v1Ox WKRgMPgykc9VKhQKDB5gIRsCsAUiKxLgncOMh/R2kTKZjJxOp024j4PH49GuBpcJmSHCQdPn88lf XuVkMinH43HGWxItwBP0jLljlBxkHo9H/vZnisViUigU0gKBgO73+w2v12twSHe73Rp/l/76N/5r /AZGRj/URbdFDAAAAABJRU5ErkJggg== "
        preserveAspectRatio="none"
@@ -2364,7 +2419,7 @@
        width="16" />
     <g
        id="g5716"
-       transform="translate(2238.75,-303.75)">
+       transform="translate(2024.0894,-409.5203)">
       <path
          d="m -1785.875,1222.1122 a 7.5,7.5 0 0 1 -7.4886,7.5 7.5,7.5 0 0 1 -7.5114,-7.4773 7.5,7.5 0 0 1 7.4659,-7.5226 7.5,7.5 0 0 1 7.534,7.4545"
          sodipodi:open="true"
@@ -2383,16 +2438,9 @@
          d="m -1794.5307,1218.5471 v 2.2407 h -2.3978 v 2.6486 h 2.3978 v 2.2408 h 2.3113 v -2.2408 h 2.3979 v -2.6486 h -2.3979 v -2.2407 z"
          style="opacity:1;fill:#767677;fill-opacity:1;stroke:#dbdbdb;stroke-width:1.16133094;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.92156863" />
     </g>
-    <rect
-       style="opacity:1;fill:#4d4d4d;fill-opacity:1;stroke:#dcdcdc;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect5724"
-       width="261.62952"
-       height="183.84776"
-       x="21.263187"
-       y="660.22388" />
     <g
        id="g5726"
-       transform="translate(1875.2971,-345.4693)"
+       transform="translate(2003.9366,-440.1453)"
        inkscape:export-filename="C:\Users\arian\Documents\Source\EclipsePhaserTools\phasereditor.ui\icons\delete.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90">
@@ -2418,7 +2466,7 @@
     </g>
     <g
        id="g5732"
-       transform="translate(1873.2824,-341.76955)"
+       transform="translate(1990.4889,-441.5203)"
        inkscape:export-filename="C:\Users\arian\Documents\Source\EclipsePhaserTools\phasereditor.ui\icons\add.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90">
@@ -2446,11 +2494,11 @@
        preserveAspectRatio="none"
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAHiSURBVDjLpZPLquJAEIbPQ+Wd8gAZnTir PIGIgiLoxo2iCxeuBJGgoggq3trLwoX3a9R4QVGxpv/mJCJzOMMwDUVCur+/qv7qfBDRx//EHx/6 /b7U6/W0brerdzodgzFmtFotvdlsavV6XfpWgMMyh9l6vabz+UyPx0PE6XSixWJBtVqNVSoV+UuB T9i8Xq+EhefhcCDTNOlyuYhvEC2Xy2apVJLfBD7LZha82+1ou91SPp8nwzBos9kQqrJEdF1n2WxW sgV4v5p1wIIBOp0/KZfLCXi5XIrAGgwGlEqlNFuAm6VDGaUCtLI6HE4RPKOA4QP8QIJEIqHbAu12 24BZ+/1ewMi4Wq047BDhcv2iarVKs9lMCN1uN4pGo4YtwMckBFC+BeMgYFV1kaL8EHvT6dSuIhKJ vAQajYYOx9GG1SsOqqr6Bk8mEzGZ4XBI4XD41QKfr4bN5/MpwPl8LspVFEXA2BuPxzQajeh+v1Ox WKRgMPgykc9VKhQKDB5gIRsCsAUiKxLgncOMh/R2kTKZjJxOp024j4PH49GuBpcJmSHCQdPn88lf XuVkMinH43HGWxItwBP0jLljlBxkHo9H/vZnisViUigU0gKBgO73+w2v12twSHe73Rp/l/76N/5r /AZGRj/URbdFDAAAAABJRU5ErkJggg== "
        id="image5738"
-       x="84.493896"
-       y="805.67371" />
+       x="87.39183"
+       y="740.59186" />
     <image
-       y="850.39819"
-       x="132.93066"
+       y="772.59186"
+       x="152.31392"
        id="image5575"
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAHiSURBVDjLpZPLquJAEIbPQ+Wd8gAZnTir PIGIgiLoxo2iCxeuBJGgoggq3trLwoX3a9R4QVGxpv/mJCJzOMMwDUVCur+/qv7qfBDRx//EHx/6 /b7U6/W0brerdzodgzFmtFotvdlsavV6XfpWgMMyh9l6vabz+UyPx0PE6XSixWJBtVqNVSoV+UuB T9i8Xq+EhefhcCDTNOlyuYhvEC2Xy2apVJLfBD7LZha82+1ou91SPp8nwzBos9kQqrJEdF1n2WxW sgV4v5p1wIIBOp0/KZfLCXi5XIrAGgwGlEqlNFuAm6VDGaUCtLI6HE4RPKOA4QP8QIJEIqHbAu12 24BZ+/1ewMi4Wq047BDhcv2iarVKs9lMCN1uN4pGo4YtwMckBFC+BeMgYFV1kaL8EHvT6dSuIhKJ vAQajYYOx9GG1SsOqqr6Bk8mEzGZ4XBI4XD41QKfr4bN5/MpwPl8LspVFEXA2BuPxzQajeh+v1Ox WKRgMPgykc9VKhQKDB5gIRsCsAUiKxLgncOMh/R2kTKZjJxOp024j4PH49GuBpcJmSHCQdPn88lf XuVkMinH43HGWxItwBP0jLljlBxkHo9H/vZnisViUigU0gKBgO73+w2v12twSHe73Rp/l/76N/5r /AZGRj/URbdFDAAAAABJRU5ErkJggg== "
        preserveAspectRatio="none"
@@ -2461,7 +2509,7 @@
        inkscape:export-filename="C:\Users\arian\Documents\Source\EclipsePhaserTools\phasereditor.ui\icons\control_play.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
-       transform="translate(2238.75,-303.75)">
+       transform="translate(2221.5307,-393.42447)">
       <path
          d="m -2118.6389,1174.0164 a 7.5,7.5 0 0 1 -7.4887,7.4999 7.5,7.5 0 0 1 -7.5113,-7.4772 7.5,7.5 0 0 1 7.4659,-7.5227 7.5,7.5 0 0 1 7.5339,7.4545"
          sodipodi:open="true"
@@ -2485,7 +2533,7 @@
        inkscape:export-filename="C:\Users\arian\Documents\Source\EclipsePhaserTools\phasereditor.ui\icons\control_stop.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
-       transform="translate(2238.75,-303.75)">
+       transform="translate(2286.4528,-389.70878)">
       <path
          style="opacity:1;fill:#e7e7e7;fill-opacity:1;stroke:#989898;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.74509804"
          id="path5585"
@@ -2512,8 +2560,8 @@
        preserveAspectRatio="none"
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAH0SURBVDjLxdPPS9tgGAfwgH/ATmPD0w5j MFa3IXOMFImsOKnbmCUTacW1WZM2Mf1ho6OBrohkIdJfWm9aLKhM6GF4Lz3No/+AMC/PYQXBXL1+ 95oxh1jGhsgOX/LywvN5n/fN+3IAuKuEuzagVFoO27b1/Z+BcrnUx4otx7FPLWsJvYpIM2SS9H4P qNWqfK1W8VKplHlW/G1zs4G9vS9YXPx4CaDkXOFES4Om4gceUK2WsbZWR72+gtXVFezsbKHVamF7 ewtm/sMFgBJZhd6pvm4kDndaAo2KOmt5Gfv7X9HpdNBut9FsNmFZFgPrMHKZc4DkjHyi6KC3MZNe hTOuGAH5Xx5ybK/Y3f0Mx3Fg2zaKxSIMw2DjT0inNQ84nogcUUQJHIfZquNT3hzx46DBALizg2o0 1qEoCqLRKERRRDAYhKYlWRK/AJdCMwH2BY28+Qk8fg667wdXKJjY2FiHaeaRzWYQCk1AEASGzSCZ jP/ewtik5r6eBD0dM+nRSMb1j4LuPDnkFhZymJ/PsmLdazmV0jxEkqKsK+niIQ69mKUBwdd9OAx3 SADdHtC53FyK12dVXlVlPpF4zytK7OgMyucNyHLs8m+8+2zJHRwG3fId9LxIbNU+OR6zWU57AR5y 84FKN+71//EqM2iapfv/HtPf5gcdtKR8VW88PgAAAABJRU5ErkJggg== "
        id="image5615"
-       x="721.61389"
-       y="898.33606" />
+       x="169.91393"
+       y="836.59186" />
     <image
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
@@ -2522,8 +2570,8 @@
        preserveAspectRatio="none"
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAEzSURBVDjLxdOxasJAHAZwwbfKkjlbJVMp JaYmxtSoNVoSsCLlekQSjcZNRUFFIUNxD5nqY7Rr+wiuX89M3a62lA4f3PL97n/HXQ5A7jfJ/Rng +/1LSsn72UAQ+HlWJp5Hj4Q8gguE4VAIw0GWwSAQWPl1sZhjv39Gr/fAB4bDAJNJhCgaYTweYbNZ IY5jrNcruM49HwiCPg6HF6RpiiRJsFwuQQhhYAS7WecD7KzY7bbwPA+UUnS7Xdi2zdZPqNVMPnC6 qPl8Cl3XoSgKZFmGJEkwTYOlzAc6HRez2RSu66DRqKNQuIAoigy7hmGU+EC73USr1WDlajayZZkZ oqoKm0rlA807S6jeVoRKRRPK5RtB14tvJ8hxbGhaEWc/JLZrXisVKcvxR8AX6Irl4/8+03fzCbre yRfHFw9qAAAAAElFTkSuQmCC "
        id="image5621"
-       x="706.86389"
-       y="862.46106" />
+       x="246.7149"
+       y="772.59186" />
     <image
        width="16"
        height="16"
@@ -2533,13 +2581,13 @@
        x="-1596.1061"
        y="1200.0615"
        style="filter:url(#filter5641)"
-       transform="matrix(0.8160119,0,0,0.83326697,1944.7886,-100.72624)"
+       transform="matrix(0.8160119,0,0,0.83326697,1391.3053,-162.04588)"
        inkscape:export-filename="C:\Users\arian\Documents\Source\EclipsePhaserTools\phasereditor.ui\icons\package.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <image
-       y="903.37402"
-       x="672.70642"
+       y="841.09186"
+       x="156.81392"
        id="image5612"
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAH2SURBVDjLjZNLTxNRGIaJv6ZNWeBwkZFL QtGAC4l/wKULV+7YILeSYukEUhJoSASVuCI0hpAYDSUQCJBSoAaC0wbBUi4aWphpO52Zlpa+nnOq CAptJ3k3M3me73LOlAAoyZfDqQdOEvyO89/vRcGZ5HeWmySFYdWHVOQN0vE58jrLJMFJ82hewVU4 +bMfqdPxP9VBn+A4D88wP59PwFqmsH7UgeTJEMlsTuIyI5uRsDfCMcmtAtoyhVmOu5kkHZuFsiNA 3XuEi+QCdhxluL0D/SvpoO+vhIksiItNiPqqyXgfIL403gjfoTsIL70gQBdim3VQvz2FFnwOxf8E 8kYF0rIVYqcRM70Vgf/Pe/ohwsutOJdcpBpP4Mek+jPEfbWQVzkG+7tNcNsqt68tkcLZTIzM6YZ2 1IbolgHq9j1o+z04nKhHRnlH2p6A32LCvFD55fIYr960VHgSSqCFVDJBEeugh+zw2jnpc0/5rthu RMBaioWBqrVrFylXOUpankIi0AjJY0DC3wD9oA9rAnc2bat+n++2UkH8XHaTZfGQlg3QdlsIbIVX 4KSPAv+60L+SO/PECmJiI1lYM9SQBR7b3einfn6kEMwEIZd5Q48sQQt1Qv/xFqt2Tp5x3B8sBmYC 71h926az6njdUR6hMy8O17wqFqb5Bd2o/0SFzIZrAAAAAElFTkSuQmCC "
        preserveAspectRatio="none"
@@ -2547,8 +2595,8 @@
        width="7" />
     <image
        style="filter:url(#filter5641)"
-       y="733.81152"
-       x="208.01892"
+       y="708.59186"
+       x="189.11392"
        id="image5653"
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAALnSURBVDjLfZNLaFx1HIW/e2fuzJ00w0ym kpQpiUKfMT7SblzU4kayELEptRChUEFEqKALUaRUV2YhlCLYjYq4FBeuiqZgC6FIQzBpEGpDkzHN s5PMTJtmHnfu6//7uSh2IYNnffg23zmWqtIpd395YwiRL1Q0qyIfD56cmOvUs/4LWJg40auiH6jI +7v3ncybdo2Hy9ebKvqNGrn03Nj1+x0Bi1dHHVV9W0U+ye4d2d83+Ca2GJrlGZx0gkppkkfrsysq clFFvh8++3v7CWDh6ugIohfSPcPH+w6fwu05ABoSby9yb3Kc/mePYXc9TdCqslWapVGdn1Zjxo++ O33Fujtx4gdEzj61f8xyC8/jN2rsVOcxYZOoVSZtBewZOAT+NonuAWw3S728wFZpFm975cekGjlz 8NXLVtSo0SxPImGdtFfFq5epr21wdOxrnMwuaC2jrRJWfYHdxRfIFeDWr0unkyrSUqxcyk2TLQzQ rt6hqydPvidDBg/8VTAp8DegvYa3OU1z+SbuM6dQI62kioAAVgondwAnncWvzCDNCk4CLO9vsJVw 8xqN+iPiTB5SaTSKURGSaoTHHgxoAMlduL1HiFMZXP8BsvkbO1GD2O3GpLOIF0KsSBijxmCrMY+F qgGJQDzQgGT3XrJ7DuI5EKZd4iDG+CHG84m8AIki1Ai2imRsx4FEBtQHCUB8MG1wi8QKGhjEC4mb AVHTx8kNYSuoiGurkRtLN76ivb0K6SIkusCEoBEgaCQYPyT2QhKpAXKHTiMmQ2lmChWZTrw32v9T sLOyVlu8Nhi2G4Vs32HsTC9IA2KPRuU2Erp097+O5RRYvz3H1r3JldivfY7IR0+mfOu7l3pV5EM1 cq744mi+OPwaRD71tSk0Vsp3/uLB6s2minyrIpeOf7a00fFMf1w+MqRGzqvIW/teecdqV5a5P/8n cXv9ZxUdf/lCae5/3/hvpi4OjajIp4ikVOTLY+cXr3Tq/QPcssKNXib9yAAAAABJRU5ErkJggg== "
        preserveAspectRatio="none"
@@ -2560,11 +2608,11 @@
        preserveAspectRatio="none"
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAH2SURBVDjLjZNLTxNRGIaJv6ZNWeBwkZFL QtGAC4l/wKULV+7YILeSYukEUhJoSASVuCI0hpAYDSUQCJBSoAaC0wbBUi4aWphpO52Zlpa+nnOq CAptJ3k3M3me73LOlAAoyZfDqQdOEvyO89/vRcGZ5HeWmySFYdWHVOQN0vE58jrLJMFJ82hewVU4 +bMfqdPxP9VBn+A4D88wP59PwFqmsH7UgeTJEMlsTuIyI5uRsDfCMcmtAtoyhVmOu5kkHZuFsiNA 3XuEi+QCdhxluL0D/SvpoO+vhIksiItNiPqqyXgfIL403gjfoTsIL70gQBdim3VQvz2FFnwOxf8E 8kYF0rIVYqcRM70Vgf/Pe/ohwsutOJdcpBpP4Mek+jPEfbWQVzkG+7tNcNsqt68tkcLZTIzM6YZ2 1IbolgHq9j1o+z04nKhHRnlH2p6A32LCvFD55fIYr960VHgSSqCFVDJBEeugh+zw2jnpc0/5rthu RMBaioWBqrVrFylXOUpankIi0AjJY0DC3wD9oA9rAnc2bat+n++2UkH8XHaTZfGQlg3QdlsIbIVX 4KSPAv+60L+SO/PECmJiI1lYM9SQBR7b3einfn6kEMwEIZd5Q48sQQt1Qv/xFqt2Tp5x3B8sBmYC 71h926az6njdUR6hMy8O17wqFqb5Bd2o/0SFzIZrAAAAAElFTkSuQmCC "
        id="image5657"
-       x="615.83643"
-       y="914.73328" />
+       x="211.22101"
+       y="841.01013" />
     <image
-       y="969.0946"
-       x="569.57227"
+       y="868.59186"
+       x="189.11392"
        id="image5667"
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAGWSURBVBgZpcE/a1NhGMbh3/OeN56cKq2D p6AoCOKmk4uCn8DNycEOIojilr2TaBfRzVnESQR3Bz+FFDoWA2IjtkRqmpyc97k9qYl/IQV7XSaJ w4g0VlZfP0m13dwepPbuiH85fyhyWCx4/ubxjU6kkdxWHt69VC6XpZlFBAhwJgwJJHAmRKorbj94 ewvoRBrbuykvT5R2/+lLTp05Tp45STmEJYJBMAjByILxYeM9jzr3GCczGpHGYAQhRM6fO8uFy1fJ QoaUwCKYEcwwC4QQaGUBd36KTDmQ523axTGQmEcIEBORKQfG1ZDxcA/MkBxXwj1ggCQyS9TVAMmZ iUxJ8Ln/kS+9PmOvcSW+jrao0mmMH5bzHfa+9UGBmciUBJ+2Fmh1h+yTQCXSkJkdCrpd8btIwwEJ QnaEkOXMk7XaiF8CUxL/JdKQOwb0Ntc5SG9zHXQNd/ZFGsaEeLa2ChjzXQcqZiKNxSL0vR4unVww MENMCATib0ZdV+QtE41I42geXt1Ze3dlMNZFdw6Ut6CIvKBhkjiM79Pyq1YUmtkKAAAAAElFTkSu QmCC "
        preserveAspectRatio="none"
@@ -2572,7 +2620,7 @@
        width="16" />
     <g
        id="g5686"
-       transform="matrix(0.92625109,0,0,0.92682591,2118.973,-199.21229)">
+       transform="matrix(0.92625109,0,0,0.92682591,1624.3811,-272.6896)">
       <image
          transform="matrix(1.0794497,0,0,1.0703942,124.42702,-86.564375)"
          style="fill:#010101;filter:url(#filter5676)"
@@ -2594,7 +2642,7 @@
     </g>
     <g
        id="g5702"
-       transform="translate(2238.75,-303.75)">
+       transform="translate(1701.9401,-378.60509)">
       <image
          inkscape:export-ydpi="90"
          inkscape:export-xdpi="90"
@@ -2632,8 +2680,8 @@
       </g>
     </g>
     <rect
-       y="1036.0211"
-       x="580.35181"
+       y="900.85913"
+       x="170.18115"
        height="15.465552"
        width="15.465552"
        id="rect5700"
@@ -2643,7 +2691,7 @@
        inkscape:export-filename="C:\Users\arian\Documents\Source\EclipsePhaserTools\phasereditor.ui\icons\pack_key.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
-       transform="translate(2295.875,-255.125)">
+       transform="translate(1919.637,-422.23343)">
       <rect
          y="1322.8253"
          x="-1730.5231"
@@ -2693,7 +2741,7 @@
     </g>
     <g
        id="g5742"
-       transform="translate(2148.25,-205.75)"
+       transform="translate(1769.444,-372.23635)"
        inkscape:export-filename="C:\Users\arian\Documents\Source\EclipsePhaserTools\phasereditor.ui\icons\img_key.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90">
@@ -2740,14 +2788,6 @@
       </g>
     </g>
     <image
-       width="12.078427"
-       height="11.535534"
-       preserveAspectRatio="none"
-       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAETSURBVBgZfcExS0JRGIDh996OFIQEgSRh TS1Bg0trw937B9UPCAT3hnJ1kYbGhrv0BxoaXSsMhBCsyUEcoiTKUM/3HU8Fce4Q+DyRZz5DcOkd iqIIiiAo7xiCMXs4HI4ZisPhOMcQOJQbOoxxKHm22UUxBBbHM1cRfw58GUtMIAieTIwgxAQWRclM EZSYwCIIGYsixASCYsl4pgiGwDFF+HWUaDopbfCGHRp+nCWSTktFXvFDOKyuNNYp4LhFriPPaXW5 UWAV5Y6HNH+/dbHJIjN6NHlJzMnxWqNIDqFHh8/U7hiEJbp0+ar0m2a4MGFEjie6jCrtJs1y57Fu I21R6w8g8uwnH/VJJK1ZrT3gn8gz3zcVUYEwGmDcvQAAAABJRU5ErkJggg== "
-       id="image5763"
-       x="580.22058"
-       y="743.95642" />
-    <image
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
        inkscape:export-filename="C:\Users\arian\Documents\Source\EclipsePhaserTools\phasereditor.ui\icons\audiosprite-add.png"
@@ -2756,11 +2796,11 @@
        preserveAspectRatio="none"
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAHISURBVDjLpVPNK0RRFP+9D98syMwUspHk m9I0YkFZWBFKkZ0s7a3Ewh+ilChK7FgoZCJFKYlYKB8zk2+Z5t0P577He29kQU7dd+6575zf+d1z ztWklPiPmOozt/U4SThjXIoyIQS4AJjSXO0lGGlvcXAm6Vzsz4xUhm0AIeX4QLig+C+ZpxbOG1wG hGYHr1zMUmZGWRgs0ha3PE1nX/8mWmdgWTzLB+DUYbhm9FfZ35IEyrhXA3VXJfPbsV8B9LQUIeUH YJ8ASobag1jcucNgW8g9W4reYSDi2YnnZDoDiwCokDANct6NwTB0LEdj0HRA/wxa2SN25JNBEdWl uUhZ366gqmAaGvrCAXKOozccTGPgt8+vn8GYSGcgyTYp3dpBnBg42nbQPRBTo5bTvqYkmxL6AQhN TWQGBXY3B7BxlEBXozcW64dxRKoKUZBju+P06gl5WaaviMJBM3TNDlbypemIZgHYOnlwASsCmW7n HADGnBoQ3c76YmweJ9BR5zFYjsbRHwm4tmJg6PhWA7pCXXk+bu7fURHKweXtq/sWaksz7SC/CCGF rwtyZ3r+rCnFRZ7qr1qc6mLZj4f9OEyPL8lVpbX/PucPv5QPKHB1TdEAAAAASUVORK5CYII= "
        id="image5765"
-       x="578.72058"
-       y="706.99188" />
+       x="152.31392"
+       y="708.59186" />
     <image
-       y="706.99188"
-       x="587.72058"
+       y="713.09186"
+       x="174.41393"
        id="image5563"
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAABHNCSVQICAgIfAhkiAAAAIlJREFU CJlVjiELwlAcxH//fQWjwTL2dbTJ7BazsOSKSaOCInaDQbQs+GksL9uc8vY8wxDewnEcdxw/JPHX fZ8pzp3iG56KBwlAtUnlfQDA+0C1TQVgl/VAw9kVANQaBrfdCJPEadkXwHi64nwsQJCXzhKAycLZ p27Q68G7bshLZ+1TRHeY9zq0P5LuZXcZbRfFAAAAAElFTkSuQmCC "
        preserveAspectRatio="none"
@@ -2770,8 +2810,8 @@
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <image
-       y="714.99188"
-       x="578.72058"
+       y="712.59186"
+       x="226.08942"
        id="image5767"
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAETSURBVBgZfcExS0JRGIDh996OFIQEgSRh TS1Bg0trw937B9UPCAT3hnJ1kYbGhrv0BxoaXSsMhBCsyUEcoiTKUM/3HU8Fce4Q+DyRZz5DcOkd iqIIiiAo7xiCMXs4HI4ZisPhOMcQOJQbOoxxKHm22UUxBBbHM1cRfw58GUtMIAieTIwgxAQWRclM EZSYwCIIGYsixASCYsl4pgiGwDFF+HWUaDopbfCGHRp+nCWSTktFXvFDOKyuNNYp4LhFriPPaXW5 UWAV5Y6HNH+/dbHJIjN6NHlJzMnxWqNIDqFHh8/U7hiEJbp0+ar0m2a4MGFEjie6jCrtJs1y57Fu I21R6w8g8uwnH/VJJK1ZrT3gn8gz3zcVUYEwGmDcvQAAAABJRU5ErkJggg== "
        preserveAspectRatio="none"
@@ -2780,20 +2820,43 @@
        inkscape:export-filename="C:\Users\arian\Documents\Source\EclipsePhaserTools\phasereditor.ui\icons\audiosprite-add.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
+    <g
+       id="g5479"
+       transform="translate(-138.8853,64.707982)">
+      <image
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="C:\Users\arian\Documents\Source\EclipsePhaserTools\phasereditor.ui\icons\audiosprite-add.png"
+         width="16"
+         height="16"
+         preserveAspectRatio="none"
+         xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAHISURBVDjLpVPNK0RRFP+9D98syMwUspHk m9I0YkFZWBFKkZ0s7a3Ewh+ilChK7FgoZCJFKYlYKB8zk2+Z5t0P577He29kQU7dd+6575zf+d1z ztWklPiPmOozt/U4SThjXIoyIQS4AJjSXO0lGGlvcXAm6Vzsz4xUhm0AIeX4QLig+C+ZpxbOG1wG hGYHr1zMUmZGWRgs0ha3PE1nX/8mWmdgWTzLB+DUYbhm9FfZ35IEyrhXA3VXJfPbsV8B9LQUIeUH YJ8ASobag1jcucNgW8g9W4reYSDi2YnnZDoDiwCokDANct6NwTB0LEdj0HRA/wxa2SN25JNBEdWl uUhZ366gqmAaGvrCAXKOozccTGPgt8+vn8GYSGcgyTYp3dpBnBg42nbQPRBTo5bTvqYkmxL6AQhN TWQGBXY3B7BxlEBXozcW64dxRKoKUZBju+P06gl5WaaviMJBM3TNDlbypemIZgHYOnlwASsCmW7n HADGnBoQ3c76YmweJ9BR5zFYjsbRHwm4tmJg6PhWA7pCXXk+bu7fURHKweXtq/sWaksz7SC/CCGF rwtyZ3r+rCnFRZ7qr1qc6mLZj4f9OEyPL8lVpbX/PucPv5QPKHB1TdEAAAAASUVORK5CYII= "
+         id="image4155"
+         x="559.12683"
+         y="557.14819" />
+      <image
+         y="561.61267"
+         x="559.12683"
+         id="image5763"
+         xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAETSURBVBgZfcExS0JRGIDh996OFIQEgSRh TS1Bg0trw937B9UPCAT3hnJ1kYbGhrv0BxoaXSsMhBCsyUEcoiTKUM/3HU8Fce4Q+DyRZz5DcOkd iqIIiiAo7xiCMXs4HI4ZisPhOMcQOJQbOoxxKHm22UUxBBbHM1cRfw58GUtMIAieTIwgxAQWRclM EZSYwCIIGYsixASCYsl4pgiGwDFF+HWUaDopbfCGHRp+nCWSTktFXvFDOKyuNNYp4LhFriPPaXW5 UWAV5Y6HNH+/dbHJIjN6NHlJzMnxWqNIDqFHh8/U7hiEJbp0+ar0m2a4MGFEjie6jCrtJs1y57Fu I21R6w8g8uwnH/VJJK1ZrT3gn8gz3zcVUYEwGmDcvQAAAABJRU5ErkJggg== "
+         preserveAspectRatio="none"
+         height="11.535534"
+         width="12.078427" />
+      <image
+         y="557.14819"
+         x="568.12683"
+         id="image5777"
+         xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAABHNCSVQICAgIfAhkiAAAAIlJREFU CJlVjiELwlAcxH//fQWjwTL2dbTJ7BazsOSKSaOCInaDQbQs+GksL9uc8vY8wxDewnEcdxw/JPHX fZ8pzp3iG56KBwlAtUnlfQDA+0C1TQVgl/VAw9kVANQaBrfdCJPEadkXwHi64nwsQJCXzhKAycLZ p27Q68G7bshLZ+1TRHeY9zq0P5LuZXcZbRfFAAAAAElFTkSuQmCC "
+         preserveAspectRatio="none"
+         height="7"
+         width="7"
+         inkscape:export-filename="C:\Users\arian\Documents\Source\EclipsePhaserTools\phasereditor.ui\icons\audiosprite-add.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+    </g>
     <image
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\EclipsePhaserTools\phasereditor.ui\icons\audiosprite-add.png"
-       width="7"
-       height="7"
-       preserveAspectRatio="none"
-       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAABHNCSVQICAgIfAhkiAAAAIlJREFU CJlVjiELwlAcxH//fQWjwTL2dbTJ7BazsOSKSaOCInaDQbQs+GksL9uc8vY8wxDewnEcdxw/JPHX fZ8pzp3iG56KBwlAtUnlfQDA+0C1TQVgl/VAw9kVANQaBrfdCJPEadkXwHi64nwsQJCXzhKAycLZ p27Q68G7bshLZ+1TRHeY9zq0P5LuZXcZbRfFAAAAAElFTkSuQmCC "
-       id="image5777"
-       x="589.22058"
-       y="739.49194" />
-    <image
-       y="899.90259"
-       x="159.53101"
+       y="804.59186"
+       x="169.91393"
        id="image5673"
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAH0SURBVDjLlZPLbxJRGMX5X/xbjBpjjCtX Ll2L0YWkaZrhNQwdIA4FZxygC22wltYYSltG1HGGl8nopCMPX9AUKQjacdW4GNPTOywak7ZAF/eR e/M73/nOzXUAcEwaqVTKmUgkGqIoWoIgWP/fTYSTyaSTgAfdbhemaSIej+NcAgRudDod9Pt95PN5 RKPR8wnwPG/Z1XVdB8dxin0WDofBsiyCwaA1UYBY/tdqtVAqlRCJRN6FQiE1k8mg2WyCpunxArFY 7DKxfFir1VCtVlEoFCBJEhRFQbFYhM/na5wKzq/+4ALprzqxbFUqFWiaBnstl8tQVRWyLMPr9R64 3W7nCZhZ3uUS+T74jR7Y5c8wDAO5XA4MwxzalklVy+PxNCiKcp4IkbbhzR4K+h9IH02wax3MiAYC gcBfv99/4TS3xxtfepcTCPyKgGl5gCevfyJb/Q3q6Q5uMcb7s3IaTZ6lHY5f70H6YGLp7QDx9T0k SRtr5V9wLbZxw1N/fqbAHIEXsj1saQR+M8BCdg8icbJaHOJBqo3r1KfMuJdyuBZb2NT2R5a5l108 JuFl1CHuJ9q4NjceHgncefSN9LoPcYskT9pYIfA9Al+Z3X4xzUdz3H74RbODWlGGeCYPcVf4jksz 08HHId6k63USFK7ObuOia3rYHkdyavlR+267GwAAAABJRU5ErkJggg== "
        preserveAspectRatio="none"
@@ -2808,14 +2871,14 @@
        id="rect5721"
        width="15.514835"
        height="15.514835"
-       x="38.46973"
-       y="921.05225" />
+       x="189.35651"
+       y="836.83447" />
     <g
        id="g5764"
        inkscape:export-filename="C:\Users\arian\Documents\Source\Phaser Editor\phasereditor.ui\icons\layout.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
-       transform="translate(2238.75,-303.75)">
+       transform="translate(2306.1636,-405.81071)">
       <rect
          y="1242.4026"
          x="-2083.4492"
@@ -2850,7 +2913,7 @@
        inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Public\source\phasereditor\phasereditor.ui\icons\box_add.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
-       transform="translate(2238.75,-303.75)">
+       transform="translate(2083.293,-440.93534)">
       <image
          width="16"
          height="16"
@@ -2870,19 +2933,19 @@
          y="1309.5272" />
     </g>
     <rect
-       style="opacity:0.81999972;fill:none;fill-opacity:1;stroke:none;stroke-width:0.96100003;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:0.81999966;fill:none;fill-opacity:1;stroke:none;stroke-width:0.96100003;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect5692"
        width="113.84419"
        height="32"
-       x="332.39014"
-       y="1155.0184" />
+       x="38.46973"
+       y="924.59186" />
     <rect
        style="opacity:0.81999966;fill:none;fill-opacity:1;stroke:none;stroke-width:0.96100003;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect5694"
        width="32"
        height="32"
-       x="399.56531"
-       y="1116.1276"
+       x="238.7149"
+       y="892.59186"
        inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Public\source\phasereditor\phasereditor.ui\icons\empty32.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
@@ -2891,7 +2954,7 @@
        inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Public\source\phasereditor\phasereditor.ui\icons\box_search.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
-       transform="translate(2238.75,-303.75)">
+       transform="translate(1992.3744,-427.79642)">
       <image
          inkscape:export-ydpi="90"
          inkscape:export-xdpi="90"
@@ -2918,140 +2981,15 @@
     </g>
     <image
        sodipodi:absref="C:\Users\arian\Downloads\GAME_ART\EclipseIcons\VERY GOOD - famfamfam_silk_icons_v013\icons\film.png"
-       y="1034.9028"
-       x="460.57568"
+       y="900.59186"
+       x="152.31392"
        id="image5709"
        xlink:href="file:///C:/Users/arian/Downloads/GAME_ART/EclipseIcons/VERY%20GOOD%20-%20famfamfam_silk_icons_v013/icons/film.png"
        preserveAspectRatio="none"
        height="16"
        width="16" />
     <g
-       id="g5926"
-       transform="matrix(1.0154922,0,0,1.0460338,2283.4129,-367.72792)"
-       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Public\source\phasereditor\phasereditor.ui\icons\film-overlay.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90">
-      <g
-         transform="matrix(0.32773369,0,0,0.31580333,-1325.342,964.27912)"
-         id="g5750">
-        <rect
-           style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2.44716978;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-           id="rect5712"
-           width="5.8165007"
-           height="45.626526"
-           x="-1970.4208"
-           y="1361.6906"
-           ry="0" />
-        <rect
-           style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-           id="rect5714"
-           width="5.25"
-           height="6.375"
-           x="-1970.1062"
-           y="1361.9476" />
-        <rect
-           y="1369.7601"
-           x="-1970.1687"
-           height="6.375"
-           width="5.25"
-           id="rect5716"
-           style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-        <rect
-           style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-           id="rect5718"
-           width="5.25"
-           height="6.375"
-           x="-1970.1687"
-           y="1377.5726" />
-        <g
-           id="g5733"
-           transform="translate(-144.98126,44.384605)"
-           style="stroke:#000000">
-          <rect
-             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-             id="rect5735"
-             width="5.25"
-             height="6.375"
-             x="-1825.125"
-             y="1340.9872" />
-        </g>
-        <rect
-           style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-           id="rect5737"
-           width="5.25"
-           height="6.375"
-           x="-1970.1687"
-           y="1393.1843" />
-        <rect
-           y="1400.9968"
-           x="-1970.1687"
-           height="6.375"
-           width="5.25"
-           id="rect5739"
-           style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-      </g>
-      <g
-         transform="matrix(0.32773369,0,0,0.31580333,-1312.3065,964.33495)"
-         id="g5760">
-        <rect
-           ry="0"
-           y="1361.6906"
-           x="-1970.4208"
-           height="45.626526"
-           width="5.8165007"
-           id="rect5762"
-           style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2.44716978;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-        <rect
-           y="1361.9476"
-           x="-1970.1062"
-           height="6.375"
-           width="5.25"
-           id="rect5764"
-           style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-        <rect
-           style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-           id="rect5766"
-           width="5.25"
-           height="6.375"
-           x="-1970.1687"
-           y="1369.7601" />
-        <rect
-           y="1377.5726"
-           x="-1970.1687"
-           height="6.375"
-           width="5.25"
-           id="rect5768"
-           style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-        <g
-           style="stroke:#000000"
-           transform="translate(-144.98126,44.384605)"
-           id="g5770">
-          <rect
-             y="1340.9872"
-             x="-1825.125"
-             height="6.375"
-             width="5.25"
-             id="rect5772"
-             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-        </g>
-        <rect
-           y="1393.1843"
-           x="-1970.1687"
-           height="6.375"
-           width="5.25"
-           id="rect5774"
-           style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-        <rect
-           style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-           id="rect5776"
-           width="5.25"
-           height="6.375"
-           x="-1970.1687"
-           y="1400.9968" />
-      </g>
-    </g>
-    <g
-       transform="matrix(0.32773369,0,0,0.31580333,983.158,614.27912)"
+       transform="matrix(0.32773369,0,0,0.31580333,733.6942,471.29434)"
        id="g5800">
       <g
          id="g5802">
@@ -3172,7 +3110,7 @@
       </g>
     </g>
     <g
-       transform="translate(-235.8419,1302.1449)"
+       transform="translate(-267.25247,1118.8746)"
        id="g4197"
        inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Public\source\phasereditor\phasereditor.ui\icons\easing.png"
        inkscape:export-xdpi="90"
@@ -3304,7 +3242,7 @@
          id="tspan6119"
          x="-3393.75"
          y="-31.387794"
-         style="stroke-width:0.9375px"></tspan></text>
+         style="stroke-width:0.9375px" /></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:56.25px;line-height:23.4375px;font-family:'Adobe Garamond Pro';-inkscape-font-specification:'Adobe Garamond Pro';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.9375px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -3328,7 +3266,7 @@
            x="-3697"
            y="-170.48032"
            style="font-size:18.66666667px;" /></flowRegion><flowPara
-         id="flowPara6133"></flowPara></flowRoot>    <text
+         id="flowPara6133" /></flowRoot>    <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:17.5px;line-height:23.4375px;font-family:'Adobe Garamond Pro';-inkscape-font-specification:'Adobe Garamond Pro';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.9375px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="28.280689"
@@ -4033,5 +3971,503 @@
          x="45.852634"
          y="483.13669"
          style="stroke-width:0.9375px">Phaser Project decorator</tspan></text>
+    <g
+       id="g5171"
+       transform="translate(145.39554,-4.6403665)"
+       inkscape:export-filename="folder_brick@2x.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <image
+         width="30"
+         height="30"
+         preserveAspectRatio="none"
+         xlink:href="file:///C:/Users/arian/Downloads/GAME_ART/EclipseIcons/PastelSVG-1.2/32/@2x/folder@2x.png"
+         id="image5155"
+         x="302.53513"
+         y="550.12146"
+         sodipodi:absref="C:\Users\arian\Downloads\GAME_ART\EclipseIcons\PastelSVG-1.2\32\@2x\folder@2x.png" />
+      <image
+         width="15.16733"
+         height="14.670146"
+         preserveAspectRatio="none"
+         xlink:href="file:///C:/Users/arian/Downloads/GAME_ART/EclipseIcons/PastelSVG-1.2/32/@2x/brick@2x.png"
+         id="image5166"
+         x="317.3678"
+         y="550.12146"
+         sodipodi:absref="C:\Users\arian\Downloads\GAME_ART\EclipseIcons\PastelSVG-1.2\32\@2x\brick@2x.png" />
+    </g>
+    <g
+       id="g5317"
+       transform="translate(-61.519158,29.033116)">
+      <rect
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Public\source\phasereditor\phasereditor.ui\icons\film-overlay.png"
+         y="559.24445"
+         x="517.55878"
+         height="13.782096"
+         width="13.782096"
+         id="rect5924"
+         style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2.21790552;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <g
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Public\source\phasereditor\phasereditor.ui\icons\film-overlay.png"
+         transform="matrix(1.0154922,0,0,1.0460338,2518.5154,-899.96104)"
+         id="g5926">
+        <g
+           id="g5750"
+           transform="matrix(0.32773369,0,0,0.31580333,-1325.342,964.27912)">
+          <rect
+             ry="0"
+             y="1361.6906"
+             x="-1970.4208"
+             height="45.626526"
+             width="5.8165007"
+             id="rect5712"
+             style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2.44716978;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+          <rect
+             y="1361.9476"
+             x="-1970.1062"
+             height="6.375"
+             width="5.25"
+             id="rect5714"
+             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+          <rect
+             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             id="rect5716"
+             width="5.25"
+             height="6.375"
+             x="-1970.1687"
+             y="1369.7601" />
+          <rect
+             y="1377.5726"
+             x="-1970.1687"
+             height="6.375"
+             width="5.25"
+             id="rect5718"
+             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+          <g
+             style="stroke:#000000"
+             transform="translate(-144.98126,44.384605)"
+             id="g5733">
+            <rect
+               y="1340.9872"
+               x="-1825.125"
+               height="6.375"
+               width="5.25"
+               id="rect5735"
+               style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+          </g>
+          <rect
+             y="1393.1843"
+             x="-1970.1687"
+             height="6.375"
+             width="5.25"
+             id="rect5737"
+             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+          <rect
+             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             id="rect5739"
+             width="5.25"
+             height="6.375"
+             x="-1970.1687"
+             y="1400.9968" />
+        </g>
+        <g
+           id="g5760"
+           transform="matrix(0.32773369,0,0,0.31580333,-1312.3065,964.33495)">
+          <rect
+             style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2.44716978;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             id="rect5762"
+             width="5.8165007"
+             height="45.626526"
+             x="-1970.4208"
+             y="1361.6906"
+             ry="0" />
+          <rect
+             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             id="rect5764"
+             width="5.25"
+             height="6.375"
+             x="-1970.1062"
+             y="1361.9476" />
+          <rect
+             y="1369.7601"
+             x="-1970.1687"
+             height="6.375"
+             width="5.25"
+             id="rect5766"
+             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+          <rect
+             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             id="rect5768"
+             width="5.25"
+             height="6.375"
+             x="-1970.1687"
+             y="1377.5726" />
+          <g
+             id="g5770"
+             transform="translate(-144.98126,44.384605)"
+             style="stroke:#000000">
+            <rect
+               style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+               id="rect5772"
+               width="5.25"
+               height="6.375"
+               x="-1825.125"
+               y="1340.9872" />
+          </g>
+          <rect
+             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             id="rect5774"
+             width="5.25"
+             height="6.375"
+             x="-1970.1687"
+             y="1393.1843" />
+          <rect
+             y="1400.9968"
+             x="-1970.1687"
+             height="6.375"
+             width="5.25"
+             id="rect5776"
+             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="g5339"
+       transform="translate(8.4481054,-0.60313312)"
+       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Public\source\phasereditor\phasereditor.ui\icons\film_overlay@2x.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:4.1585722;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect5295"
+         width="25.841427"
+         height="25.841427"
+         x="476.25095"
+         y="548.16351"
+         inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Public\source\phasereditor\phasereditor.ui\icons\film-overlay.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+      <g
+         id="g5278"
+         transform="matrix(1.9056177,0,0,1.9587389,4231.1272,-2184.2385)"
+         inkscape:export-filename="film-overlay@2x.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90">
+        <g
+           transform="matrix(0.32773369,0,0,0.31580333,-1325.342,964.27912)"
+           id="g5258">
+          <rect
+             style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2.44716978;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             id="rect5242"
+             width="5.8165007"
+             height="45.626526"
+             x="-1970.4208"
+             y="1361.6906"
+             ry="0" />
+          <rect
+             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             id="rect5244"
+             width="5.25"
+             height="6.375"
+             x="-1970.1062"
+             y="1361.9476" />
+          <rect
+             y="1369.7601"
+             x="-1970.1687"
+             height="6.375"
+             width="5.25"
+             id="rect5246"
+             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+          <rect
+             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             id="rect5248"
+             width="5.25"
+             height="6.375"
+             x="-1970.1687"
+             y="1377.5726" />
+          <g
+             id="g5252"
+             transform="translate(-144.98126,44.384605)"
+             style="stroke:#000000">
+            <rect
+               style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+               id="rect5250"
+               width="5.25"
+               height="6.375"
+               x="-1825.125"
+               y="1340.9872" />
+          </g>
+          <rect
+             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             id="rect5254"
+             width="5.25"
+             height="6.375"
+             x="-1970.1687"
+             y="1393.1843" />
+          <rect
+             y="1400.9968"
+             x="-1970.1687"
+             height="6.375"
+             width="5.25"
+             id="rect5256"
+             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        </g>
+        <g
+           transform="matrix(0.32773369,0,0,0.31580333,-1312.3065,964.33495)"
+           id="g5276">
+          <rect
+             ry="0"
+             y="1361.6906"
+             x="-1970.4208"
+             height="45.626526"
+             width="5.8165007"
+             id="rect5260"
+             style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2.44716978;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+          <rect
+             y="1361.9476"
+             x="-1970.1062"
+             height="6.375"
+             width="5.25"
+             id="rect5262"
+             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+          <rect
+             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             id="rect5264"
+             width="5.25"
+             height="6.375"
+             x="-1970.1687"
+             y="1369.7601" />
+          <rect
+             y="1377.5726"
+             x="-1970.1687"
+             height="6.375"
+             width="5.25"
+             id="rect5266"
+             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+          <g
+             style="stroke:#000000"
+             transform="translate(-144.98126,44.384605)"
+             id="g5270">
+            <rect
+               y="1340.9872"
+               x="-1825.125"
+               height="6.375"
+               width="5.25"
+               id="rect5268"
+               style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+          </g>
+          <rect
+             y="1393.1843"
+             x="-1970.1687"
+             height="6.375"
+             width="5.25"
+             id="rect5272"
+             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+          <rect
+             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.82800007;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             id="rect5274"
+             width="5.25"
+             height="6.375"
+             x="-1970.1687"
+             y="1400.9968" />
+        </g>
+      </g>
+    </g>
+    <image
+       sodipodi:absref="C:\Users\arian\Downloads\GAME_ART\EclipseIcons\PastelSVG-1.2\32\@2x\page_white@2x.png"
+       y="580.16864"
+       x="482.61981"
+       id="image5360"
+       xlink:href="file:///C:/Users/arian/Downloads/GAME_ART/EclipseIcons/PastelSVG-1.2/32/@2x/page_white@2x.png"
+       preserveAspectRatio="none"
+       height="30"
+       width="30"
+       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Public\source\phasereditor\phasereditor.ui\icons\canvas@2x.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <image
+       sodipodi:absref="C:\Users\arian\Downloads\GAME_ART\EclipseIcons\PastelSVG-1.2\32\@2x\paintbrush@2x.png"
+       y="618.48901"
+       x="452.85254"
+       id="image5349"
+       xlink:href="file:///C:/Users/arian/Downloads/GAME_ART/EclipseIcons/PastelSVG-1.2/32/@2x/paintbrush@2x.png"
+       preserveAspectRatio="none"
+       height="22.734375"
+       width="20.15625" />
+    <g
+       id="g5391"
+       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Public\source\phasereditor\phasereditor.ui\icons\box_add@2x.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       transform="translate(-1.1302012,24.212748)">
+      <image
+         width="30"
+         height="30"
+         preserveAspectRatio="none"
+         xlink:href="file:///C:/Users/arian/Documents/Source/PhaserEditor/Public/source/phasereditor/phasereditor.ui/icons/box@2x.png"
+         id="image5371"
+         x="483.75"
+         y="590.64343"
+         sodipodi:absref="C:\Users\arian\Documents\Source\PhaserEditor\Public\source\phasereditor\phasereditor.ui\icons\box@2x.png" />
+      <g
+         transform="matrix(1.875014,0,0,1.875014,499.88157,-1382.8183)"
+         id="g5380"
+         style="display:inline">
+        <g
+           transform="translate(-9.9375)"
+           id="g5378">
+          <rect
+             transform="rotate(-135)"
+             y="-740.41083"
+             x="-758.82336"
+             height="4.454073"
+             width="4.5825453"
+             id="rect5374"
+             style="display:inline;fill:url(#radialGradient5382);fill-opacity:1;stroke:#a27d18;stroke-width:1.03243756;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+          <path
+             style="display:inline;fill:url(#linearGradient5384);fill-opacity:1;stroke:none"
+             d="m 12.471186,1054.309 h 1.001133 v 1.946 h 1.986639 v 1.0167 h -1.986639 v 2.043 h -1.001133 v -2.043 h -1.98664 v -1.0167 h 1.98664 z"
+             id="path5376"
+             inkscape:connector-curvature="0"
+             sodipodi:nodetypes="ccccccccccccc" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="g5417"
+       transform="translate(-140.53752,-6.7445098)"
+       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Public\source\phasereditor\phasereditor.ui\icons\audiosprite@2x.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <image
+         width="30"
+         height="30"
+         preserveAspectRatio="none"
+         xlink:href="file:///C:/Users/arian/Downloads/GAME_ART/EclipseIcons/PastelSVG-1.2/32/@2x/table@2x.png"
+         id="image5401"
+         x="553.77905"
+         y="586.91315"
+         sodipodi:absref="C:\Users\arian\Downloads\GAME_ART\EclipseIcons\PastelSVG-1.2\32\@2x\table@2x.png" />
+      <image
+         width="15"
+         height="15"
+         preserveAspectRatio="none"
+         xlink:href="file:///C:/Users/arian/Downloads/GAME_ART/EclipseIcons/VERY%20GOOD%20-%20famfamfam_silk_icons_v013/icons/music.png"
+         id="image5412"
+         x="553.77905"
+         y="601.91315"
+         sodipodi:absref="C:\Users\arian\Downloads\GAME_ART\EclipseIcons\VERY GOOD - famfamfam_silk_icons_v013\icons\music.png" />
+    </g>
+    <g
+       id="g5498"
+       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Public\source\phasereditor\phasereditor.ui\icons\audiosprite-add@2x.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       transform="translate(-140.06877,-5.5726567)">
+      <image
+         sodipodi:absref="C:\Users\arian\Downloads\GAME_ART\EclipseIcons\PastelSVG-1.2\32\@2x\table@2x.png"
+         y="551.05377"
+         x="553.3103"
+         id="image5419"
+         xlink:href="file:///C:/Users/arian/Downloads/GAME_ART/EclipseIcons/PastelSVG-1.2/32/@2x/table@2x.png"
+         preserveAspectRatio="none"
+         height="30"
+         width="30" />
+      <image
+         sodipodi:absref="C:\Users\arian\Downloads\GAME_ART\EclipseIcons\VERY GOOD - famfamfam_silk_icons_v013\icons\music.png"
+         y="563.35846"
+         x="553.3103"
+         id="image5421"
+         xlink:href="file:///C:/Users/arian/Downloads/GAME_ART/EclipseIcons/VERY%20GOOD%20-%20famfamfam_silk_icons_v013/icons/music.png"
+         preserveAspectRatio="none"
+         height="17.695312"
+         width="18.984375" />
+      <g
+         style="display:inline"
+         id="g5433"
+         transform="matrix(1.875014,0,0,1.875014,570.25706,-1423.3337)">
+        <g
+           id="g5431"
+           transform="translate(-9.9375)">
+          <rect
+             style="display:inline;fill:url(#radialGradient5437);fill-opacity:1;stroke:#a27d18;stroke-width:1.03243756;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             id="rect5427"
+             width="4.5825453"
+             height="4.454073"
+             x="-758.82336"
+             y="-740.41083"
+             transform="rotate(-135)" />
+          <path
+             sodipodi:nodetypes="ccccccccccccc"
+             inkscape:connector-curvature="0"
+             id="path5429"
+             d="m 12.471186,1054.309 h 1.001133 v 1.946 h 1.986639 v 1.0167 h -1.986639 v 2.043 h -1.001133 v -2.043 h -1.98664 v -1.0167 h 1.98664 z"
+             style="display:inline;fill:url(#linearGradient5439);fill-opacity:1;stroke:none" />
+        </g>
+      </g>
+    </g>
+    <g
+       transform="matrix(1.875014,0,0,1.875014,457.2368,-1317.2031)"
+       id="g5463"
+       style="display:inline">
+      <g
+         transform="translate(-9.9375)"
+         id="g5461">
+        <rect
+           transform="rotate(-135)"
+           y="-740.41083"
+           x="-758.82336"
+           height="4.454073"
+           width="4.5825453"
+           id="rect5457"
+           style="display:inline;fill:url(#radialGradient5467);fill-opacity:1;stroke:#a27d18;stroke-width:1.03243756;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           style="display:inline;fill:url(#linearGradient5469);fill-opacity:1;stroke:none"
+           d="m 12.471186,1054.309 h 1.001133 v 1.946 h 1.986639 v 1.0167 h -1.986639 v 2.043 h -1.001133 v -2.043 h -1.98664 v -1.0167 h 1.98664 z"
+           id="path5459"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ccccccccccccc" />
+      </g>
+    </g>
+    <g
+       id="g5528"
+       transform="translate(-134.25847,26.318995)">
+      <image
+         width="30"
+         height="30"
+         preserveAspectRatio="none"
+         xlink:href="file:///C:/Users/arian/Downloads/GAME_ART/EclipseIcons/PastelSVG-1.2/32/@2x/images@2x.png"
+         id="image5508"
+         x="547.5"
+         y="623.22473"
+         sodipodi:absref="C:\Users\arian\Downloads\GAME_ART\EclipseIcons\PastelSVG-1.2\32\@2x\images@2x.png" />
+      <g
+         transform="matrix(1.875014,0,0,1.875014,564.44676,-1351.1627)"
+         id="g5517"
+         style="display:inline">
+        <g
+           transform="translate(-9.9375)"
+           id="g5515">
+          <rect
+             transform="rotate(-135)"
+             y="-740.41083"
+             x="-758.82336"
+             height="4.454073"
+             width="4.5825453"
+             id="rect5511"
+             style="display:inline;fill:url(#radialGradient5519);fill-opacity:1;stroke:#a27d18;stroke-width:1.03243756;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+          <path
+             style="display:inline;fill:url(#linearGradient5521);fill-opacity:1;stroke:none"
+             d="m 12.471186,1054.309 h 1.001133 v 1.946 h 1.986639 v 1.0167 h -1.986639 v 2.043 h -1.001133 v -2.043 h -1.98664 v -1.0167 h 1.98664 z"
+             id="path5513"
+             inkscape:connector-curvature="0"
+             sodipodi:nodetypes="ccccccccccccc" />
+        </g>
+      </g>
+    </g>
   </g>
 </svg>

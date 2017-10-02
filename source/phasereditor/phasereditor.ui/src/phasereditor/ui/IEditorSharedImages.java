@@ -31,7 +31,7 @@ public interface IEditorSharedImages {
 	String IMG_FIELD_PUBLIC_OBJ = "icons/field_public_obj.png";
 	String IMG_GENERIC_ELEMENT = "icons/generic_element.png";
 	String IMG_IMAGES = "icons/images.png";
-	String IMG_JCU_OBJ = "icons/jcu_obj.gif";
+	String IMG_SCRIPT_CODE = "icons/page_white_code.png";
 	String IMG_ASSET_FOLDER = "icons/folder_brick.png";
 	String IMG_ASSET_KEY = "icons/brick.png";
 	String IMG_ASSET_ELEM_KEY = IMG_GENERIC_ELEMENT;
@@ -39,7 +39,7 @@ public interface IEditorSharedImages {
 	String IMG_LINK = "icons/link.png";
 	String IMG_METHPUB_OBJ = "icons/methpub_obj.png";
 	String IMG_PACKAGE_ADD = "icons/package_add.png";
-	String IMG_PACKAGE_SEARCH = "icons/package_search.png";
+	String IMG_PACKAGE_SEARCH = "icons/box.png";
 	String IMG_PACKAGE = "icons/box.png";
 	String IMG_PHASER_SHIP = "icons/phaser-ship.png";
 	String IMG_TEMPLATE_OBJ = "icons/template_obj.png";
@@ -47,7 +47,7 @@ public interface IEditorSharedImages {
 	String IMG_WORLD_PAGE_WHITE = "icons/page_white_world.png";
 	String IMG_COMPRESS = "icons/compress.png";
 	String IMG_BUILD = "icons/cog.png";
-	String IMG_EYE = "icons/eye.png";
+	String IMG_MONITOR = "icons/monitor.png";
 	String IMG_PALETTE = "icons/palette.png";
 	String IMG_APPLICATION_SIDE_TREE = "icons/application_side_tree.png";
 	String IMG_SETTINGS = "icons/wrench.png";
@@ -55,9 +55,7 @@ public interface IEditorSharedImages {
 	String IMG_ZOOM_RESTORE = "icons/zoom_default.png";
 	String IMG_OUTLINE = "icons/outline_co.png";
 	String IMG_SHAPE_EDIT = "icons/shape_square_edit.png";
-	String IMG_CAR = "icons/car.png";
-	String IMG_BUTTON = "icons/button.png";
-	String IMG_BRICKS = "icons/bricks.png";
+	String IMG_PACKAGE_2 = "icons/package.png";
 	String IMG_CANVAS = "icons/canvas.png";
 	String IMG_MONITOR_EDIT = "icons/monitor_edit.png";
 	String IMG_ROTATE = "icons/arrow_rotate_clockwise.png";
@@ -70,4 +68,3 @@ public interface IEditorSharedImages {
 	String IMG_APPLICATION_HOME = "icons/application_home.png";
 	String IMG_APPLICATION_TILE = "icons/application_view_tile.png";
 }
-
