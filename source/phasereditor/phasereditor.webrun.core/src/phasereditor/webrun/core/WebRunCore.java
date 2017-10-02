@@ -29,6 +29,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -77,15 +78,19 @@ public class WebRunCore {
 		_server.setAttribute("useFileMappedBuffer", "false");
 
 		// resources
-		ResourceHandler resourceHandler = new WorkspaceResourcesHandler();
-		resourceHandler.setMinMemoryMappedContentLength(-1);
-		resourceHandler.setCacheControl("no-store,no-cache,must-revalidate");
-		resourceHandler.setDirectoriesListed(true);
-		resourceHandler.setWelcomeFiles(new String[] { "index.html" });
-		// set the folder to serve
-		resourceHandler.setResourceBase(path);
 
-		Handler[] handlers = { resourceHandler };
+		ContextHandler projectsContext = new ContextHandler("/projects");
+		{
+			ResourceHandler resourceHandler = new WorkspaceResourcesHandler();
+			resourceHandler.setMinMemoryMappedContentLength(-1);
+			resourceHandler.setCacheControl("no-store,no-cache,must-revalidate");
+			resourceHandler.setDirectoriesListed(true);
+			resourceHandler.setWelcomeFiles(new String[] { "index.html" });
+			resourceHandler.setResourceBase(path);
+			projectsContext.setHandler(resourceHandler);
+		}
+
+		Handler[] handlers = { projectsContext };
 
 		// collection
 		HandlerList handlerList = new HandlerList();

@@ -112,7 +112,7 @@ public class WebRunUI {
 	public static String getProjectBrowserURL(IProject project) {
 		IContainer webContent = ProjectCore.getWebContentFolder(project);
 		String path = webContent.getFullPath().toPortableString();
-		String url = "http://localhost:" + (WebRunCore.getServerPort() + "/" + path).replace("//", "/");
+		String url = "http://localhost:" + (WebRunCore.getServerPort() + "/projects" + path).replace("\\\\", "/");
 		url = URIUtil.encodePath(url);
 		return url;
 	}
