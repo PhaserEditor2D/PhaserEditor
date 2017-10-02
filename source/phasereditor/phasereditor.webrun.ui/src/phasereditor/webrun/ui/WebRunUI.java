@@ -24,6 +24,7 @@ package phasereditor.webrun.ui;
 import static java.lang.System.out;
 
 import java.net.URL;
+import java.nio.file.Path;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
@@ -44,6 +45,8 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 
+import phasereditor.inspect.core.InspectCore;
+import phasereditor.inspect.core.examples.ExampleModel;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.webrun.core.WebRunCore;
 import phasereditor.webrun.ui.editors.GamePlayerEditor;
@@ -73,8 +76,15 @@ public class WebRunUI {
 
 	}
 
-	public static void openExampleInBrowser(String name) {
-		String url = getExampleInBrowserURL(name);
+	public static void openExampleInBrowser(ExampleModel example) {
+		openExampleInBrowser(example, -1);
+	}
+
+	public static void openExampleInBrowser(ExampleModel example, int line) {
+		Path path = example.getMainFilePath();
+		Path root = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN, "phaser-examples-master/examples");
+		String name = root.relativize(path).toString().replace("\\", "/");
+		String url = getExampleInBrowserURL(name) + (line == -1 ? "" : "&l=" + line);
 		openBrowser(url);
 	}
 

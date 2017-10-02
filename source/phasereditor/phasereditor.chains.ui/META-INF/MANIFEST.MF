@@ -15,7 +15,8 @@ Require-Bundle: org.eclipse.core.filesystem;bundle-version="1.4.100",
  phasereditor.chains.core,
  phasereditor.inspect.core,
  phasereditor.ui,
- org.json
+ org.json,
+ phasereditor.webrun.ui;bundle-version="1.4.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 

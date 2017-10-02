@@ -21,9 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.ui.wizards;
 
-import static java.lang.System.out;
-
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -227,11 +224,7 @@ public class PhaserTemplateWizardPage extends WizardPage {
 	protected void playSelectedTemplate() {
 		if (_template != null && _template instanceof ExampleModel) {
 			ExampleModel example = (ExampleModel) _template;
-			Path path = example.getMainFilePath();
-			Path root = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN, "phaser-examples-master/examples");
-			String name = root.relativize(path).toString().replace("\\", "/");
-			out.println("Opening example: " + name);
-			WebRunUI.openExampleInBrowser(name);
+			WebRunUI.openExampleInBrowser(example);
 		}
 	}
 

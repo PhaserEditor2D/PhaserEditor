@@ -59,6 +59,7 @@ public class PhaserExampleServlet extends HttpServlet {
 		out.println("<head>");
 		out.println("<script src='/phaser-code/build/phaser.js'></script>");
 		out.println("<script src='/jslibs/highlight.pack.js'></script>");
+		out.println("<script src='/jslibs/highlightjs-line-numbers.min.js'></script>");
 		out.println("<link rel='stylesheet' href='jslibs/default.css'>");
 		out.println("<title>" + fname + "</title>");
 		out.println("</head>");
@@ -94,18 +95,30 @@ public class PhaserExampleServlet extends HttpServlet {
 
 		out.println("<script src='/examples-files/" + exampleName + "'></script>");
 
-		out.println("<pre id='text'><code>");
+		out.println("<pre id='text'>");
 
 		Path file = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN,
 				"phaser-examples-master/examples/" + fname);
-		byte[] bytes = Files.readAllBytes(file);
 
+		byte[] bytes = Files.readAllBytes(file);
 		out.println(new String(bytes));
 
-		out.println("</code></pre>");
+		out.println("</pre>");
 
-		out.println(
-				"<script>window.onload = function () { hljs.highlightBlock(document.getElementById('text')); }</script>");
+		out.println("<script>");
+		out.println("var dom = document.getElementById('text');");
+		out.println("hljs.highlightBlock(dom);");
+		out.println("hljs.lineNumbersBlock(dom);");
+		out.println("var list = document.getElementsByTagName('tr');");
+
+		String line = req.getParameter("l");
+		if (line != null) {
+			line = Integer.parseInt(line) - 1 + "";
+			out.println("console.log('scrolling to " + line + "')");
+			out.println("setTimeout(function () { list[" + line + "].scrollIntoViewIfNeeded();list[" + line + "].setAttribute('style', 'background:lightgray');}, 1000);");
+		}
+
+		out.println("</script>");
 
 		out.println("</body>");
 

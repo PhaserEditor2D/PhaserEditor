@@ -84,6 +84,8 @@ import phasereditor.chains.core.ChainsModel;
 import phasereditor.chains.core.Line;
 import phasereditor.chains.core.Match;
 import phasereditor.inspect.core.InspectCore;
+import phasereditor.inspect.core.examples.ExampleCategoryModel;
+import phasereditor.inspect.core.examples.ExampleModel;
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.core.jsdoc.JSDocRenderer;
 import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
@@ -91,6 +93,7 @@ import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.WebkitBrowser;
 import phasereditor.ui.editors.StringEditorInput;
+import phasereditor.webrun.ui.WebRunUI;
 
 @SuppressWarnings("restriction")
 public class ChainsView extends ViewPart {
@@ -308,8 +311,9 @@ public class ChainsView extends ViewPart {
 									_examplesViewer.addDoubleClickListener(new IDoubleClickListener() {
 										@Override
 										public void doubleClick(DoubleClickEvent event) {
-											showExample(((Match) ((StructuredSelection) event.getSelection())
-													.getFirstElement()).item);
+											Match match = (Match) ((StructuredSelection) event.getSelection())
+													.getFirstElement();
+											showExample(match.item);
 										}
 									});
 									Table examplesTable = _examplesViewer.getTable();
@@ -412,6 +416,16 @@ public class ChainsView extends ViewPart {
 
 		Path filePath = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN,
 				"phaser-examples-master/" + file);
+
+		for (ExampleCategoryModel c : InspectCore.getExamplesModel().getExamplesCategories()) {
+			for (ExampleModel e : c.getTemplates()) {
+				if (e.getMainFilePath().equals(filePath)) {
+					WebRunUI.openExampleInBrowser(e, linenum);
+
+					return;
+				}
+			}
+		}
 
 		openJSEditor(linenum, -1, filePath);
 	}
