@@ -15,6 +15,11 @@
             id="phasereditor.webrun.ui.runinternal"
             name="Run Phaser Project (Internal Browser - Experimental)">
       </command>
+      <command
+            defaultHandler="phasereditor.webrun.ui.handlers.BrowsePhaserExamplesHandler"
+            id="phasereditor.webrun.ui.browseexamples"
+            name="Open Phaser Examples in a Browser">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -29,6 +34,11 @@
          <command
                commandId="phasereditor.webrun.ui.runinternal"
                icon="platform:/plugin/phasereditor.ui/icons/page_white_world.png"
+               style="push">
+         </command>
+         <command
+               commandId="phasereditor.webrun.ui.browseexamples"
+               icon="platform:/plugin/phasereditor.ui/icons/folder_web.png"
                style="push">
          </command>
       </menuContribution>
@@ -47,6 +57,11 @@
          <command
                commandId="phasereditor.webrun.ui.runinternal"
                icon="platform:/plugin/phasereditor.ui/icons/page_white_world.png"
+               style="push">
+         </command>
+         <command
+               commandId="phasereditor.webrun.ui.browseexamples"
+               icon="platform:/plugin/phasereditor.ui/icons/folder_web.png"
                style="push">
          </command>
       </menuContribution>
