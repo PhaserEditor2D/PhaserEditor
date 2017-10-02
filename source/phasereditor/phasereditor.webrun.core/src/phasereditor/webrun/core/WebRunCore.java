@@ -24,16 +24,20 @@ package phasereditor.webrun.core;
 import static java.lang.System.out;
 
 import java.net.ServerSocket;
+import java.nio.file.Path;
 
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.servlet.ServletHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.PlatformUI;
+
+import phasereditor.inspect.core.InspectCore;
 
 public class WebRunCore {
 	private static Server _server;
@@ -60,8 +64,6 @@ public class WebRunCore {
 			}
 		}
 
-		String path = ResourcesPlugin.getWorkspace().getRoot().getLocation().toPortableString();
-
 		int port = 0;
 
 		int p = 1_982;
@@ -73,28 +75,21 @@ public class WebRunCore {
 			}
 		}
 
-		out.println("Serving " + path + ":" + port);
+		out.println("Serving at port " + port);
+
 		_server = new Server(port);
 		_server.setAttribute("useFileMappedBuffer", "false");
 
-		// resources
-
-		ContextHandler projectsContext = new ContextHandler("/projects");
-		{
-			ResourceHandler resourceHandler = new WorkspaceResourcesHandler();
-			resourceHandler.setMinMemoryMappedContentLength(-1);
-			resourceHandler.setCacheControl("no-store,no-cache,must-revalidate");
-			resourceHandler.setDirectoriesListed(true);
-			resourceHandler.setWelcomeFiles(new String[] { "index.html" });
-			resourceHandler.setResourceBase(path);
-			projectsContext.setHandler(resourceHandler);
-		}
-
-		Handler[] handlers = { projectsContext };
-
-		// collection
 		HandlerList handlerList = new HandlerList();
-		handlerList.setHandlers(handlers);
+
+		addProjectsHandler(handlerList);
+		addExamplesHandler(handlerList);
+		addPhaserCodeHandler(handlerList);
+		addAssetsHandler(handlerList);
+		addExampleIndexHandler(handlerList);
+		
+		// collection
+
 		_server.setHandler(handlerList);
 
 		// start server
@@ -107,6 +102,63 @@ public class WebRunCore {
 					e.getClass().getName() + ": " + e.getMessage());
 		}
 
+	}
+
+	private static void addProjectsHandler(HandlerList handlerList) {
+		String path = ResourcesPlugin.getWorkspace().getRoot().getLocation().toPortableString();
+
+		out.println("Serving projects (/projects) from: " + path);
+
+		ContextHandler context = new ContextHandler("/projects");
+
+		ResourceHandler resourceHandler = new WorkspaceResourcesHandler();
+		resourceHandler.setCacheControl("no-store,no-cache,must-revalidate");
+		resourceHandler.setDirectoriesListed(true);
+		resourceHandler.setWelcomeFiles(new String[] { "index.html" });
+		resourceHandler.setResourceBase(path);
+		context.setHandler(resourceHandler);
+		handlerList.addHandler(context);
+	}
+
+	private static void addExampleIndexHandler(HandlerList handlerList) {
+		ServletHandler handler = new ServletHandler();
+		handler.addServletWithMapping(new ServletHolder(new PhaserExampleIndexServlet()), "/phaser-example");
+		handlerList.addHandler(handler);
+	}
+
+	private static void addPhaserCodeHandler(HandlerList handlerList) {
+		Path file = InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN, "phaser-master");
+		String path = file.toFile().getAbsolutePath();
+
+		addStaticFilesHandler(handlerList, path, "/phaser-code");
+	}
+
+	private static void addExamplesHandler(HandlerList handlerList) {
+		Path file = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN, "phaser-examples-master/examples");
+		String path = file.toFile().getAbsolutePath();
+
+		addStaticFilesHandler(handlerList, path, "/examples-files");
+	}
+	
+	private static void addAssetsHandler(HandlerList handlerList) {
+		Path file = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN, "phaser-examples-master/examples/assets");
+		String path = file.toFile().getAbsolutePath();
+
+		addStaticFilesHandler(handlerList, path, "/assets");
+	}
+
+	private static void addStaticFilesHandler(HandlerList handlerList, String path, String url) {
+		out.println("Serving (" + url + ") from: " + path);
+
+		ContextHandler context = new ContextHandler(url);
+
+		ResourceHandler resourceHandler = new ResourceHandler();
+		resourceHandler.setCacheControl("no-store,no-cache,must-revalidate");
+		resourceHandler.setDirectoriesListed(true);
+		resourceHandler.setWelcomeFiles(new String[] { "index.html" });
+		resourceHandler.setResourceBase(path);
+		context.setHandler(resourceHandler);
+		handlerList.addHandler(context);
 	}
 
 	@SuppressWarnings("resource")
