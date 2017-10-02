@@ -30,6 +30,7 @@ import phasereditor.canvas.core.AtlasSpriteModel;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.GroupModel;
+import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
@@ -51,6 +52,10 @@ public class OutlineLabelProvider extends LabelProvider implements IEditorShared
 
 			if (model.isPrefabInstance()) {
 				return EditorSharedImages.getImage(IMG_PACKAGE_2);
+			}
+			
+			if (model instanceof TextModel) {
+				return EditorSharedImages.getImage(IMG_FONT);
 			}
 
 			CanvasType type = node.getControl().getCanvas().getEditor().getModel().getType();

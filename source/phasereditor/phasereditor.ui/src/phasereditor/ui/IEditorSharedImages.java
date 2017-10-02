@@ -67,4 +67,5 @@ public interface IEditorSharedImages {
 	String IMG_APPLICATION_LIST = "icons/application_view_list.png";
 	String IMG_APPLICATION_HOME = "icons/application_home.png";
 	String IMG_APPLICATION_TILE = "icons/application_view_tile.png";
+	String IMG_FONT = "icons/font.png";
 }
