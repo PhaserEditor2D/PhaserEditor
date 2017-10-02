@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.ui.wizards;
 
+import static java.lang.System.out;
+
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,20 +40,26 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.wb.swt.ResourceManager;
 
 import phasereditor.inspect.core.IPhaserCategory;
 import phasereditor.inspect.core.IPhaserTemplate;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.TemplateInfo;
 import phasereditor.inspect.core.examples.ExampleCategoryModel;
+import phasereditor.inspect.core.examples.ExampleModel;
 import phasereditor.inspect.core.examples.ExamplesModel;
 import phasereditor.inspect.core.templates.TemplateCategoryModel;
 import phasereditor.ui.EditorSharedImages;
@@ -58,6 +67,7 @@ import phasereditor.ui.FilteredTree2;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.PatternFilter2;
 import phasereditor.ui.WebkitBrowser;
+import phasereditor.webrun.ui.WebRunUI;
 
 public class PhaserTemplateWizardPage extends WizardPage {
 
@@ -129,6 +139,7 @@ public class PhaserTemplateWizardPage extends WizardPage {
 	private IPhaserTemplate _template;
 	private WebkitBrowser _infoText;
 	private FilteredTree2 _filteredTree;
+	private ToolItem _playItem;
 
 	public PhaserTemplateWizardPage() {
 		super("Phaser");
@@ -176,7 +187,27 @@ public class PhaserTemplateWizardPage extends WizardPage {
 		SashForm sashForm = new SashForm(container, SWT.VERTICAL);
 		sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
-		_filteredTree = new FilteredTree2(sashForm, SWT.BORDER, new PatternFilter2(), 1);
+		Composite bottomComp = new Composite(sashForm, SWT.NONE);
+		GridLayout gl_bottomComp = new GridLayout(1, false);
+		gl_bottomComp.marginWidth = 0;
+		gl_bottomComp.marginHeight = 0;
+		bottomComp.setLayout(gl_bottomComp);
+
+		ToolBar toolBar = new ToolBar(bottomComp, SWT.FLAT | SWT.RIGHT);
+		toolBar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+
+		_playItem = new ToolItem(toolBar, SWT.NONE);
+		_playItem.setDisabledImage(ResourceManager.getPluginImage("phasereditor.ui", "icons/d/world.png"));
+		_playItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				playSelectedTemplate();
+			}
+		});
+		_playItem.setToolTipText("Play in a browser");
+		_playItem.setImage(ResourceManager.getPluginImage("phasereditor.ui", "icons/world.png"));
+
+		_filteredTree = new FilteredTree2(bottomComp, SWT.BORDER, new PatternFilter2(), 1);
 		_treeViewer = _filteredTree.getViewer();
 		_treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
@@ -193,6 +224,17 @@ public class PhaserTemplateWizardPage extends WizardPage {
 		afterCreateWidgets();
 	}
 
+	protected void playSelectedTemplate() {
+		if (_template != null && _template instanceof ExampleModel) {
+			ExampleModel example = (ExampleModel) _template;
+			Path path = example.getMainFilePath();
+			Path root = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN, "phaser-examples-master/examples");
+			String name = root.relativize(path).toString().replace("\\", "/");
+			out.println("Opening example: " + name);
+			WebRunUI.openExampleInBrowser(name);
+		}
+	}
+
 	public void setFocus() {
 		_treeViewer.getTree().setFocus();
 	}
@@ -207,6 +249,8 @@ public class PhaserTemplateWizardPage extends WizardPage {
 	}
 
 	protected void updateFromSelection() {
+		_playItem.setEnabled(false);
+
 		String err = "No template selected.";
 		ISelection sel = _treeViewer.getSelection();
 		String info = "";
@@ -230,6 +274,11 @@ public class PhaserTemplateWizardPage extends WizardPage {
 				sb.append("<br><b>Description</b><br><br>");
 				sb.append(templInfo.getDescription());
 				info = sb.toString();
+
+				if (elem instanceof ExampleModel) {
+					_playItem.setEnabled(true);
+				}
+
 			} else if (elem == PHASER_EXAMPLES) {
 				info = "Official Phaser Examples\n\nhttp://phaser.io/examples";
 			} else {

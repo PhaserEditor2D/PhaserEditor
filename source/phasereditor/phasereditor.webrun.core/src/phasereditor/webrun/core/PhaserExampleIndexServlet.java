@@ -23,11 +23,15 @@ package phasereditor.webrun.core;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import phasereditor.inspect.core.InspectCore;
 
 /**
  * @author arian
@@ -43,15 +47,39 @@ public class PhaserExampleIndexServlet extends HttpServlet {
 		PrintStream out = new PrintStream(resp.getOutputStream());
 
 		String exampleName = req.getParameter("n");
+		String fname = exampleName.replace("%20", " ");
 
+		resp.setContentType("text/html");
+
+		out.println("<!DOCTYPE html>");
 		out.println("<html>");
 
 		out.println("<head>");
-		out.println("<script src='http://localhost:1982/phaser-code/build/phaser.js'></script>");
+		out.println("<script src='/phaser-code/build/phaser.js'></script>");
+		out.println("<script src='/jslibs/highlight.pack.js'></script>");
+		out.println("<link rel='stylesheet' href='jslibs/default.css'>");
+		out.println("<title>" + fname + "</title>");
 		out.println("</head>");
 
 		out.println("<body>");
-		out.println("<script src='http://localhost:1982/examples-files/" + exampleName + "'></script>");
+		out.println("<div id='phaser-example'>");
+		out.println("</div>");
+
+		out.println("<script src='/examples-files/" + exampleName + "'></script>");
+
+		out.println("<pre id='text'><code>");
+
+		Path file = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN,
+				"phaser-examples-master/examples/" + fname);
+		byte[] bytes = Files.readAllBytes(file);
+
+		out.println(new String(bytes));
+
+		out.println("</code></pre>");
+
+		out.println(
+				"<script>window.onload = function () { hljs.highlightBlock(document.getElementById('text')); }</script>");
+
 		out.println("</body>");
 
 		out.println("</html>");

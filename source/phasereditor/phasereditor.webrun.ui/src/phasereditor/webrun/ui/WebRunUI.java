@@ -73,6 +73,11 @@ public class WebRunUI {
 
 	}
 
+	public static void openExampleInBrowser(String name) {
+		String url = getExampleInBrowserURL(name);
+		openBrowser(url);
+	}
+
 	/**
 	 * Open a internal browser pointing to the WebContent folder of the given
 	 * project.
@@ -97,7 +102,7 @@ public class WebRunUI {
 		WebRunCore.startServerIfNotRunning();
 
 		out.println("Open " + url);
-		
+
 		try {
 
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
@@ -107,6 +112,12 @@ public class WebRunUI {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+	}
+
+	public static String getExampleInBrowserURL(String name) {
+		String url = URIUtil.encodePath("http://localhost:" + WebRunCore.getServerPort() + "/phaser-example") + "?n="
+				+ URIUtil.encodePath(name);
+		return url;
 	}
 
 	public static String getProjectBrowserURL(IProject project) {

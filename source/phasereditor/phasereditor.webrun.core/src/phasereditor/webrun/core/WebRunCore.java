@@ -82,6 +82,7 @@ public class WebRunCore {
 
 		HandlerList handlerList = new HandlerList();
 
+		addJSLibsHandler(handlerList);
 		addProjectsHandler(handlerList);
 		addExamplesHandler(handlerList);
 		addPhaserCodeHandler(handlerList);
@@ -102,6 +103,13 @@ public class WebRunCore {
 					e.getClass().getName() + ": " + e.getMessage());
 		}
 
+	}
+	
+	private static void addJSLibsHandler(HandlerList handlerList) {
+		Path file = InspectCore.getBundleFile("phasereditor.webrun.core", "jslibs");
+		String path = file.toFile().getAbsolutePath();
+
+		addStaticFilesHandler(handlerList, path, "/jslibs");
 	}
 
 	private static void addProjectsHandler(HandlerList handlerList) {
