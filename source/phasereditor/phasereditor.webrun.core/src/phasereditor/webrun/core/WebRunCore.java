@@ -87,8 +87,8 @@ public class WebRunCore {
 		addExamplesHandler(handlerList);
 		addPhaserCodeHandler(handlerList);
 		addAssetsHandler(handlerList);
-		addExampleIndexHandler(handlerList);
-		
+		addExampleServletsHandler(handlerList);
+
 		// collection
 
 		_server.setHandler(handlerList);
@@ -104,7 +104,7 @@ public class WebRunCore {
 		}
 
 	}
-	
+
 	private static void addJSLibsHandler(HandlerList handlerList) {
 		Path file = InspectCore.getBundleFile("phasereditor.webrun.core", "jslibs");
 		String path = file.toFile().getAbsolutePath();
@@ -128,9 +128,15 @@ public class WebRunCore {
 		handlerList.addHandler(context);
 	}
 
-	private static void addExampleIndexHandler(HandlerList handlerList) {
+	private static void addExampleServletsHandler(HandlerList handlerList) {
 		ServletHandler handler = new ServletHandler();
-		handler.addServletWithMapping(new ServletHolder(new PhaserExampleIndexServlet()), "/phaser-example");
+
+		handler.addServletWithMapping(new ServletHolder(new PhaserExamplesServlet()),
+				"/phaser-examples");
+		handler.addServletWithMapping(new ServletHolder(new PhaserExampleCategoryServlet()),
+				"/phaser-examples-category");
+		handler.addServletWithMapping(new ServletHolder(new PhaserExampleServlet()), "/phaser-example");
+
 		handlerList.addHandler(handler);
 	}
 
@@ -147,9 +153,10 @@ public class WebRunCore {
 
 		addStaticFilesHandler(handlerList, path, "/examples-files");
 	}
-	
+
 	private static void addAssetsHandler(HandlerList handlerList) {
-		Path file = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN, "phaser-examples-master/examples/assets");
+		Path file = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN,
+				"phaser-examples-master/examples/assets");
 		String path = file.toFile().getAbsolutePath();
 
 		addStaticFilesHandler(handlerList, path, "/assets");

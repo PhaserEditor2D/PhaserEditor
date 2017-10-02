@@ -32,12 +32,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import phasereditor.inspect.core.InspectCore;
+import phasereditor.inspect.core.examples.ExampleCategoryModel;
+import phasereditor.inspect.core.examples.ExampleModel;
 
 /**
  * @author arian
  *
  */
-public class PhaserExampleIndexServlet extends HttpServlet {
+public class PhaserExampleServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
@@ -61,9 +63,34 @@ public class PhaserExampleIndexServlet extends HttpServlet {
 		out.println("<title>" + fname + "</title>");
 		out.println("</head>");
 
-		out.println("<body>");
-		out.println("<div id='phaser-example'>");
-		out.println("</div>");
+		out.println("<body style='font-family:arial;margin:1em'>");
+
+		ExampleModel example = null;
+
+		for (ExampleCategoryModel cat : InspectCore.getExamplesModel().getExamplesCategories()) {
+			for (ExampleModel e : cat.getTemplates()) {
+				if (e.getMainFilePath().toString().replace("\\", "/").endsWith(fname)) {
+					example = e;
+				}
+			}
+		}
+
+		if (example == null) {
+			out.println("Example not found: " + fname);
+			return;
+		}
+
+		ExampleCategoryModel cat = example.getCategory();
+
+		out.println("<h1>" + example.getName() + "</h1>");
+		out.println("<small><i>Hosted locally by Phaser Editor</i></small><br><br>");
+
+		out.println("<a href='/phaser-examples'>Examples</a> / ");
+
+		out.println("<a href='/phaser-examples-category?n=" + cat.getName() + "'>" + cat.getName() + "</a><br><br>");
+
+		out.println("<center><div id='phaser-example'>");
+		out.println("</div></center>");
 
 		out.println("<script src='/examples-files/" + exampleName + "'></script>");
 
