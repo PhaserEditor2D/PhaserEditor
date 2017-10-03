@@ -35,44 +35,56 @@
     "id": "e8d4c92f-0989-4f83-9228-53c470b33afb",
     "info": {
       "editorName": "Dino",
+      "setAll": [],
       "children": [{
         "type": "spritesheet",
         "id": "39c256c1-0d85-4a1b-bd76-637f725898bd",
         "asset": "0",
         "info": {
           "editorName": "dino",
-          "x": 172,
-          "y": 94,
+          "x": 148,
+          "y": 125,
           "anchor.x": 0.5,
           "anchor.y": 0.5,
           "animations": [
             {
               "name": "walk",
-              "frameRate": 4,
+              "frameRate": 6,
               "loop": true,
               "frames": [
-                "0",
-                "1"
+                "8",
+                "9",
+                "10",
+                "11"
               ]
             },
             {
               "name": "jump",
-              "frameRate": 60,
-              "frames": ["2"]
+              "frameRate": 8,
+              "loop": true,
+              "frames": [
+                "4",
+                "5"
+              ]
             },
             {
               "name": "stay",
-              "frameRate": 60,
-              "frames": ["3"]
+              "frameRate": 4,
+              "loop": true,
+              "frames": [
+                "0",
+                "1",
+                "2"
+              ]
             }
           ],
           "body": {
             "type": "ARCADE_RECT",
-            "offsetX": 42,
-            "offsetY": 42,
+            "offsetX": 46,
+            "offsetY": 107,
             "collideWorldBounds": true,
             "width": 86,
-            "height": 93
+            "height": 89
           }
         }
       }]

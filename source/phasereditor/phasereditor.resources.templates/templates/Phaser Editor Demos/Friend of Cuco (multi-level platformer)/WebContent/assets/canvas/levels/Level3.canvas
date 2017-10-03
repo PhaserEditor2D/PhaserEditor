@@ -30,6 +30,7 @@
       0,
       0
     ],
+    "autoLoad": false,
     "preloadSpriteId": "",
     "preloadSprite_direction": 0,
     "load.pack": []
@@ -39,12 +40,14 @@
     "id": "d47a8206-d2a4-455e-8c37-a03c6677dd4b",
     "info": {
       "editorName": "Level3",
+      "setAll": [],
       "children": [
         {
           "type": "group",
           "id": "fc33ca71-fbe5-4f8f-8f28-1fbcc8d943a2",
           "info": {
             "editorName": "background",
+            "setAll": [],
             "children": [
               {
                 "type": "tileSprite",
@@ -151,7 +154,6 @@
                 "info": {
                   "editorName": "door",
                   "editorPublic": true,
-                  "prefabOverride": ["position"],
                   "x": 16,
                   "y": 1384
                 }
@@ -195,6 +197,7 @@
           "info": {
             "editorName": "platforms",
             "editorPublic": true,
+            "setAll": [],
             "children": [
               {
                 "type": "tileSprite",
@@ -263,7 +266,6 @@
           "info": {
             "editorName": "dino",
             "editorPublic": true,
-            "prefabOverride": ["position"],
             "x": 1110,
             "y": 196
           }
@@ -273,6 +275,7 @@
           "id": "d6770688-14ab-47e5-89ed-5c615c830e89",
           "info": {
             "editorName": "objects",
+            "setAll": [],
             "children": [
               {
                 "type": "atlas-sprite",

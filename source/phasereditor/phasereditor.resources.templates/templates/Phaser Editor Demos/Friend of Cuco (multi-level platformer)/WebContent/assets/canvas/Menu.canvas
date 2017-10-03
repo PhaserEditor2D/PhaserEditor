@@ -27,6 +27,7 @@
       0,
       0
     ],
+    "autoLoad": false,
     "preloadSpriteId": "",
     "preloadSprite_direction": 0,
     "load.pack": []
@@ -36,6 +37,7 @@
     "id": "af8eb0de-599e-428d-94f8-09d75318f8b7",
     "info": {
       "editorName": "Menu",
+      "setAll": [],
       "children": [
         {
           "type": "image",
@@ -106,7 +108,29 @@
           "asset": "6",
           "info": {
             "editorName": "dino",
-            "x": 60,
+            "x": 58,
+            "y": 347,
+            "animations": [{
+              "name": "idle",
+              "frameRate": 4,
+              "loop": true,
+              "autoPlay": true,
+              "frames": [
+                "0",
+                "1",
+                "2"
+              ]
+            }]
+          }
+        },
+        {
+          "type": "image",
+          "id": "f10c0048-0a57-44d9-a121-f763bd5cb935",
+          "asset": "7",
+          "info": {
+            "editorName": "frutapan",
+            "editorPublic": true,
+            "x": 110,
             "y": 405
           }
         }
@@ -152,7 +176,12 @@
       "file": "WebContent/assets/pack.json",
       "section": "preloader",
       "asset": "dino",
-      "sprite": "3"
+      "sprite": "0"
+    },
+    "7": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "frutapan"
     }
   },
   "prefab-table": {}

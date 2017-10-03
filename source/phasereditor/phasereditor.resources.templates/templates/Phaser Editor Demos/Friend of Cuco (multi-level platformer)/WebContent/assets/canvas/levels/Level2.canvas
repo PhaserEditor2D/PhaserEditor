@@ -34,6 +34,7 @@
       0
     ],
     "physicsSystem": "ARCADE",
+    "autoLoad": false,
     "preloadSpriteId": "",
     "preloadSprite_direction": 0,
     "load.pack": []
@@ -43,12 +44,14 @@
     "id": "8a0fc0bc-e3be-4656-9585-f855ac8ba0bb",
     "info": {
       "editorName": "Level",
+      "setAll": [],
       "children": [
         {
           "type": "group",
           "id": "8e82604d-2517-4a0c-a9b5-0b701ccee75b",
           "info": {
             "editorName": "background",
+            "setAll": [],
             "children": [
               {
                 "type": "tileSprite",
@@ -163,7 +166,6 @@
                 "info": {
                   "editorName": "door",
                   "editorPublic": true,
-                  "prefabOverride": ["position"],
                   "x": 225,
                   "y": 83
                 }
@@ -177,6 +179,7 @@
           "info": {
             "editorName": "platforms",
             "editorPublic": true,
+            "setAll": [],
             "children": [
               {
                 "type": "tileSprite",
@@ -264,9 +267,8 @@
           "info": {
             "editorName": "dino",
             "editorPublic": true,
-            "prefabOverride": ["position"],
-            "x": 154,
-            "y": 1853
+            "x": 158,
+            "y": 1823
           }
         },
         {
@@ -275,6 +277,7 @@
           "info": {
             "editorName": "movingPlatforms",
             "editorPublic": true,
+            "setAll": [],
             "children": [
               {
                 "type": "atlas-sprite",
@@ -304,6 +307,7 @@
           "id": "e9e31305-01c9-4e6b-8742-eb2ce141c198",
           "info": {
             "editorName": "shadows",
+            "setAll": [],
             "children": [
               {
                 "type": "atlas-sprite",
@@ -353,9 +357,10 @@
           "id": "6c8b5132-365a-4af5-82be-6a0b1f206b6c",
           "info": {
             "editorName": "objects",
+            "setAll": [],
             "children": [
               {
-                "type": "atlas-sprite",
+                "type": "image",
                 "id": "6b2689da-e309-444d-a5a1-9eae27713ff8",
                 "asset": "8",
                 "info": {
@@ -446,8 +451,7 @@
     "8": {
       "file": "WebContent/assets/pack.json",
       "section": "preloader",
-      "asset": "atlas1",
-      "sprite": "guapen"
+      "asset": "frutapan"
     },
     "9": {
       "file": "WebContent/assets/pack.json",

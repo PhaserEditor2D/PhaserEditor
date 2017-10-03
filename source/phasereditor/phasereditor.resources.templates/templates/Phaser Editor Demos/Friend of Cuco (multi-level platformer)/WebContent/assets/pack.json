@@ -10,8 +10,8 @@
       "type": "spritesheet",
       "key": "dino",
       "url": "assets/sprites/dino.png",
-      "frameWidth": 207,
-      "frameHeight": 140,
+      "frameWidth": 210,
+      "frameHeight": 210,
       "frameMax": -1,
       "margin": 0,
       "spacing": 0
@@ -40,10 +40,16 @@
       "key": "window",
       "url": "assets/images/window.png",
       "overwrite": false
+    },
+    {
+      "type": "image",
+      "key": "frutapan",
+      "url": "assets/images/frutapan.png",
+      "overwrite": false
     }
   ],
   "meta": {
-    "generated": "1490974811771",
+    "generated": "1507002628322",
     "app": "Phaser Editor",
     "url": "http://phasereditor.boniatillo.com",
     "version": "1.0",
