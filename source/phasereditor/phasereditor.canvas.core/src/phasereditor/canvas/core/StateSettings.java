@@ -48,6 +48,7 @@ public class StateSettings {
 	private RGB _stageBackgroundColor = DEFAULT_STAGE_BG_COLOR;
 	private PhysicsType _physicsSystem = PhysicsType.NONE;
 	private boolean _rendererRoundPixels;
+	private boolean _autoLoad = true;
 	private boolean _isPreloader = false;
 	private String _preloadSpriteId = null;
 	private PreloadSpriteDirection _preloadSprite_direction = PreloadSpriteDirection.HORIZONTAL;
@@ -132,6 +133,7 @@ public class StateSettings {
 		EditorSettings.writeColor(data, "stageBackgroundColor", _stageBackgroundColor);
 		data.put("physicsSystem", _physicsSystem.name(), PhysicsType.NONE.name());
 		data.put("rendererRoundPixels", _rendererRoundPixels, false);
+		data.put("autoLoad", _autoLoad);
 		data.put("isPreloader", _isPreloader, false);
 		data.put("preloadSpriteId", _preloadSpriteId);
 		data.put("preloadSprite_direction", _preloadSprite_direction.ordinal());
@@ -157,6 +159,7 @@ public class StateSettings {
 			_physicsSystem = PhysicsType.valueOf(name);
 		}
 		_rendererRoundPixels = data.optBoolean("rendererRoundPixels", false);
+		_autoLoad = data.optBoolean("autoLoad", true);
 		_isPreloader = data.optBoolean("isPreloader");
 		_preloadSpriteId = data.optString("preloadSpriteId");
 		{
@@ -183,6 +186,14 @@ public class StateSettings {
 		_loadPack = loadPack;
 	}
 
+	public boolean isAutoLoad() {
+		return _autoLoad;
+	}
+	
+	public void setAutoLoad(boolean autoLoad) {
+		_autoLoad = autoLoad;
+	}
+	
 	public boolean isPreloader() {
 		return _isPreloader;
 	}
