@@ -31,6 +31,7 @@ Preloader.prototype.init = function () {
 Preloader.prototype.preload = function () {
 	
 	this.load.pack('preloader', 'assets/pack.json');
+	this.load.pack('boot', 'assets/pack.json');
 	
 	
 	var _logo1 = this.add.sprite(275, 149, 'logo');

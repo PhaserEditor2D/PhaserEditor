@@ -599,7 +599,16 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 						line(animvar + ".killOnComplete = true;");
 					}
 
+//					if (anim.isAutoPlay()) {
+//						line(animvar + ".play();");
+//					}
+				}
+				
+				// auto playing should be invoked after all the animations are created
+				
+				for (AnimationModel anim : model.getAnimations()) {
 					if (anim.isAutoPlay()) {
+						String animvar = getLocalAnimationVarName(model, anim);
 						line(animvar + ".play();");
 					}
 				}
