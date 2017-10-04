@@ -25,13 +25,10 @@ import java.util.List;
 
 import org.eclipse.swt.graphics.RGB;
 
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.paint.Color;
+import javafx.geometry.Point2D;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
@@ -61,56 +58,26 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 
 	@Override
 	public double getTextureWidth() {
-		return getSizeTestNode().getBoundsInLocal().getWidth();
+		return getSize().getY();
 	}
 
 	@Override
 	public double getTextureHeight() {
-		return getSizeTestNode().getBoundsInLocal().getHeight();
+		return getSize().getY();
+
 	}
 
 	@Override
 	public void updateFromModel() {
 		TextNode node = getNode();
-		Text text = getNode().getTextNode();
-		
-		TextModel model = getModel();
 
-		// text
-		text.setText(model.getText());
+		node.updateFromModel();
 
-		// style.font
-		Font font = Font.font(model.getStyleFont(), model.getStyleFontWeight(), model.getStyleFontStyle(),
-				model.getStyleFontSize());
-		text.setFont(font);
-
-		// style.fill
-		text.setFill(Color.valueOf(model.getStyleFill()));
-
-		// style.stroke
-		String stroke = model.getStyleStroke();
-		text.setStroke(Color.valueOf(stroke));
-
-		// style.strokeThickness
-		text.setStrokeWidth(model.getStyleStrokeThickness());
-
-		// style.backgroundColor
-		String bg = model.getStyleBackgroundColor();
-		if (bg == null) {
-			node.setBackground(null);
-		} else {
-			node.setBackground(new Background(new BackgroundFill(Color.valueOf(bg), null, null)));
-		}
-		// style.align
-		text.setTextAlignment(model.getStyleAlign());
-
-		text.relocate(0, 0);
-		
 		super.updateFromModel();
 	}
 
-	private Text getSizeTestNode() {
-		return getNode().getTextNode();
+	private Point2D getSize() {
+		return getNode().getSize();
 	}
 
 	@Override
@@ -243,7 +210,11 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 
 		section.add(new PGridColorProperty(getId(), "style.fill",
 				"A canvas fillstyle that will be used on the text eg 'red', '#00FF00'.") {
-
+			@Override
+			public Object getDefaultValue() {
+				return new RGB(0, 0, 0);
+			}
+			
 			@Override
 			public void setValue(RGB value, boolean notify) {
 				getModel().setStyleFill(ColorButtonSupport.getHexString(value));
@@ -317,8 +288,13 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 				"A canvas fillstyle that will be used as the background for the whole Text object. Set to `null` to disable.") {
 
 			@Override
+			public Object getDefaultValue() {
+				return null;
+			}
+
+			@Override
 			public void setValue(RGB value, boolean notify) {
-				getModel().setStyleBackgroundColor(ColorButtonSupport.getHexString(value));
+				getModel().setStyleBackgroundColor(value == null? null : ColorButtonSupport.getHexString(value));
 				if (notify) {
 					updateFromPropertyChange();
 				}

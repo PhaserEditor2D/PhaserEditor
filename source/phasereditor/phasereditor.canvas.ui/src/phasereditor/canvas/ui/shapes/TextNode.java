@@ -21,8 +21,15 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
+import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.layout.Pane;
+import javafx.scene.control.Label;
+import javafx.scene.control.Skin;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import phasereditor.canvas.core.TextModel;
 
@@ -30,23 +37,67 @@ import phasereditor.canvas.core.TextModel;
  * @author arian
  *
  */
-public class TextNode extends Pane implements ISpriteNode {
+public class TextNode extends Label implements ISpriteNode {
 
 	private TextControl _control;
-	private Text _textNode;
+	private Text _skinText;
 
 	public TextNode(TextControl control) {
 		_control = control;
-		_textNode = new Text();
-		
-		_textNode.relocate(0, 0);
-		
-		getChildren().add(_textNode);
 		setPickOnBounds(true);
 	}
-	
-	public Text getTextNode() {
-		return _textNode;
+
+	@Override
+	protected Skin<?> createDefaultSkin() {
+		Skin<?> skin = super.createDefaultSkin();
+		_skinText = (Text) skin.getNode().lookup(".text");
+
+		updateFromModel();
+
+		return skin;
+	}
+
+	public Point2D getSize() {
+		Node text = _skinText;
+		if (text == null) {
+			text = new Text(getModel().getText());
+		}
+
+		Bounds b = text.getBoundsInLocal();
+
+		return new Point2D(b.getWidth(), b.getHeight());
+	}
+
+	public void updateFromModel() {
+		TextModel model = getModel();
+		// text
+		setText(model.getText());
+
+		// style.font
+		Font font = Font.font(model.getStyleFont(), model.getStyleFontWeight(), model.getStyleFontStyle(),
+				model.getStyleFontSize());
+		setFont(font);
+
+		// style.fill
+		setTextFill(Color.valueOf(model.getStyleFill()));
+
+		if (_skinText != null) {
+			// style.stroke
+			String stroke = model.getStyleStroke();
+			_skinText.setStroke(stroke == null ? null : Color.valueOf(stroke));
+			// style.strokeThickness
+			_skinText.setStrokeWidth(model.getStyleStrokeThickness());
+		}
+
+		// style.backgroundColor
+		String bg = model.getStyleBackgroundColor();
+		if (bg == null) {
+			setBackground(null);
+		} else {
+			setBackground(new Background(new BackgroundFill(Color.valueOf(bg), null, null)));
+		}
+		// style.align
+		setTextAlignment(model.getStyleAlign());
 	}
 
 	@Override
