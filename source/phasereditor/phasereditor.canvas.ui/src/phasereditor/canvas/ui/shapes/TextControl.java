@@ -58,7 +58,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 
 	@Override
 	public double getTextureWidth() {
-		return getSize().getY();
+		return getSize().getX();
 	}
 
 	@Override
