@@ -30,6 +30,8 @@
       0,
       0
     ],
+    "rendererRoundPixels": true,
+    "autoLoad": false,
     "isPreloader": true,
     "preloadSpriteId": "c3b440d3-570c-4cfe-8581-b45772293931",
     "preloadSprite_direction": 0,
@@ -43,16 +45,30 @@
     "id": "16707e64-9031-498b-9e49-0be2635d79ae",
     "info": {
       "editorName": "Preload",
-      "children": [{
-        "type": "image",
-        "id": "c3b440d3-570c-4cfe-8581-b45772293931",
-        "asset": "0",
-        "info": {
-          "editorName": "logo",
-          "x": 298.5,
-          "y": 230.5
+      "setAll": [],
+      "children": [
+        {
+          "type": "image",
+          "id": "c7d6394a-a0eb-4ea6-8192-914e13056595",
+          "asset": "0",
+          "info": {
+            "editorName": "logo1",
+            "x": 275.0000305175781,
+            "y": 149,
+            "tint": "0x808000"
+          }
+        },
+        {
+          "type": "image",
+          "id": "c3b440d3-570c-4cfe-8581-b45772293931",
+          "asset": "0",
+          "info": {
+            "editorName": "logo",
+            "x": 275.0000305175781,
+            "y": 149
+          }
         }
-      }]
+      ]
     }
   },
   "type": "STATE",

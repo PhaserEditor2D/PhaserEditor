@@ -1,7 +1,7 @@
 {
   "canvas-version": 2,
   "settings": {
-    "classNAme": "Preloader",
+    "className": "Preloader",
     "sceneWidth": 800,
     "sceneHeight": 600,
     "generateOnSave": true,
@@ -30,8 +30,9 @@
       0,
       0
     ],
+    "autoLoad": false,
     "isPreloader": true,
-    "preloadSpriteId": "c3b440d3-570c-4cfe-8581-b45772293931",
+    "preloadSpriteId": "bdea5e34-8577-43e9-87df-7b4f754255e1",
     "preloadSprite_direction": 0,
     "load.pack": [{
       "file": "WebContent/assets/pack.json",
@@ -43,16 +44,30 @@
     "id": "16707e64-9031-498b-9e49-0be2635d79ae",
     "info": {
       "editorName": "Preload",
-      "children": [{
-        "type": "image",
-        "id": "c3b440d3-570c-4cfe-8581-b45772293931",
-        "asset": "0",
-        "info": {
-          "editorName": "logo",
-          "x": 298.5,
-          "y": 230.5
+      "setAll": [],
+      "children": [
+        {
+          "type": "image",
+          "id": "c3b440d3-570c-4cfe-8581-b45772293931",
+          "asset": "0",
+          "info": {
+            "editorName": "logo1",
+            "x": 275,
+            "y": 149,
+            "tint": "0x808000"
+          }
+        },
+        {
+          "type": "image",
+          "id": "bdea5e34-8577-43e9-87df-7b4f754255e1",
+          "asset": "0",
+          "info": {
+            "editorName": "logo",
+            "x": 275,
+            "y": 149
+          }
         }
-      }]
+      ]
     }
   },
   "type": "STATE",

@@ -1,7 +1,7 @@
 {
   "canvas-version": 2,
   "settings": {
-    "classNAme": "Menu",
+    "className": "Menu",
     "sceneWidth": 800,
     "sceneHeight": 600,
     "generateOnSave": true,
@@ -27,6 +27,7 @@
       0,
       0
     ],
+    "autoLoad": false,
     "preloadSpriteId": "",
     "preloadSprite_direction": 0,
     "load.pack": []
@@ -36,6 +37,7 @@
     "id": "af8eb0de-599e-428d-94f8-09d75318f8b7",
     "info": {
       "editorName": "Menu",
+      "setAll": [],
       "children": [
         {
           "type": "image",

@@ -1,7 +1,7 @@
 {
   "canvas-version": 2,
   "settings": {
-    "classNAme": "Preload",
+    "className": "Preloader",
     "sceneWidth": 640,
     "sceneHeight": 360,
     "generateOnSave": true,
@@ -20,7 +20,7 @@
     ],
     "showGrid": true,
     "create_before": "// all the assets are loaded, go to the menu screen\r\nthis.game.state.start(\"Menu\");",
-    "state_preload_after" : "this.add.text(300, 300, \"Loading...\", { fill:\"#fff\" });"
+    "state_preload_after": "this.add.text(300, 300, \"Loading...\", { fill:\"#fff\" });"
   },
   "stateSettings": {
     "scaleMode": "SHOW_ALL",
@@ -31,6 +31,7 @@
       0,
       0
     ],
+    "autoLoad": true,
     "isPreloader": true,
     "preloadSpriteId": "",
     "preloadSprite_direction": 0,
@@ -44,6 +45,7 @@
     "id": "16707e64-9031-498b-9e49-0be2635d79ae",
     "info": {
       "editorName": "Preload",
+      "setAll": [],
       "children": []
     }
   },

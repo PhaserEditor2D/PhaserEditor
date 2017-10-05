@@ -27,6 +27,7 @@
       128,
       0
     ],
+    "autoLoad": true,
     "preloadSpriteId": "",
     "preloadSprite_direction": 0,
     "load.pack": []
@@ -36,6 +37,7 @@
     "id": "8a0fc0bc-e3be-4656-9585-f855ac8ba0bb",
     "info": {
       "editorName": "Level",
+      "setAll": [],
       "children": []
     }
   },

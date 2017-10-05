@@ -1,7 +1,7 @@
 {
   "canvas-version": 2,
   "settings": {
-    "classNAme": "Boot",
+    "className": "Boot",
     "sceneWidth": 640,
     "sceneHeight": 360,
     "generateOnSave": true,
@@ -27,6 +27,7 @@
       0,
       0
     ],
+    "autoLoad": true,
     "preloadSpriteId": "",
     "preloadSprite_direction": 0,
     "load.pack": [{
@@ -39,6 +40,7 @@
     "id": "b59ec208-7f01-4a32-9a1d-4f88e6792cb1",
     "info": {
       "editorName": "Boot",
+      "setAll": [],
       "children": []
     }
   },

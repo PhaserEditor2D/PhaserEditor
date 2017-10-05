@@ -1,7 +1,7 @@
 {
   "canvas-version": 2,
   "settings": {
-    "classNAme": "Level",
+    "className": "Level",
     "sceneWidth": 800,
     "sceneHeight": 600,
     "generateOnSave": true,
@@ -32,6 +32,7 @@
       0,
       0
     ],
+    "autoLoad": true,
     "preloadSpriteId": "",
     "preloadSprite_direction": 0,
     "load.pack": []
@@ -41,6 +42,7 @@
     "id": "8a0fc0bc-e3be-4656-9585-f855ac8ba0bb",
     "info": {
       "editorName": "Level",
+      "setAll": [],
       "children": [
         {
           "type": "image",
@@ -112,14 +114,13 @@
             "file": "WebContent/assets/pack.json",
             "section": "level",
             "asset": "dino",
-            "sprite": "3"
+            "sprite": "0"
           },
           "info": {
             "editorName": "dino",
             "editorPublic": true,
-            "prefabOverride": ["position"],
-            "x": 112,
-            "y": 323
+            "x": 123,
+            "y": 260
           }
         },
         {
@@ -137,6 +138,7 @@
           "id": "aa9cae21-811b-4be5-a6f5-698749c880bd",
           "info": {
             "editorName": "coins",
+            "setAll": [],
             "children": [
               {
                 "type": "prefab",
@@ -150,7 +152,6 @@
                 },
                 "info": {
                   "editorName": "coins0",
-                  "prefabOverride": ["position"],
                   "x": 488,
                   "y": 170
                 }
@@ -167,7 +168,6 @@
                 },
                 "info": {
                   "editorName": "coins1",
-                  "prefabOverride": ["position"],
                   "x": 424,
                   "y": 170
                 }
@@ -184,7 +184,6 @@
                 },
                 "info": {
                   "editorName": "coins2",
-                  "prefabOverride": ["position"],
                   "x": 552,
                   "y": 170
                 }
