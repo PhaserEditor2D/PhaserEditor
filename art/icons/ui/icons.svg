@@ -1033,9 +1033,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2"
-     inkscape:cx="403.78357"
-     inkscape:cy="412.38395"
+     inkscape:zoom="2.8284271"
+     inkscape:cx="419.58453"
+     inkscape:cy="478.33886"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -4435,7 +4435,10 @@
     </g>
     <g
        id="g5528"
-       transform="translate(-134.25847,26.318995)">
+       transform="translate(-134.25847,26.318995)"
+       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Public\source\phasereditor\phasereditor.ui\icons\atlas_add@2x.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
       <image
          width="30"
          height="30"
