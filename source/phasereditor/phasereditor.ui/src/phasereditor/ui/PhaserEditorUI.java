@@ -49,6 +49,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.ui.css.swt.theme.IThemeEngine;
 import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.services.IStylingEngine;
 import org.eclipse.jface.util.Util;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -122,6 +123,11 @@ public class PhaserEditorUI {
 			((Shell) widget).setBackgroundMode(SWT.INHERIT_DEFAULT);
 		}
 		engine.applyStyles(widget, true);
+	}
+
+	public static void setThemeClass(Object widget, String className) {
+		IStylingEngine styledEngine = PlatformUI.getWorkbench().getService(IStylingEngine.class);
+		styledEngine.setClassname(widget, className);
 	}
 
 	public static IThemeEngine getThemeEngine() {
