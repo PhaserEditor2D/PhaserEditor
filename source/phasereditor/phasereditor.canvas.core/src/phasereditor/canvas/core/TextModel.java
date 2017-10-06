@@ -244,7 +244,7 @@ public class TextModel extends BaseSpriteModel {
 			sb.append("bold ");
 		}
 
-		sb.append(_styleFontSize + "px ");
+		sb.append(_styleFontSize + "pt ");
 		sb.append(_styleFont);
 
 		data.put("font", sb.toString());

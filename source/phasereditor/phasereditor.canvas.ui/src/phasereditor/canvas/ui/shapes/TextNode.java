@@ -22,8 +22,10 @@
 package phasereditor.canvas.ui.shapes;
 
 import javafx.geometry.Bounds;
+import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.Skin;
 import javafx.scene.layout.Background;
@@ -87,6 +89,9 @@ public class TextNode extends Label implements ISpriteNode {
 			_skinText.setStroke(stroke == null ? null : Color.valueOf(stroke));
 			// style.strokeThickness
 			_skinText.setStrokeWidth(model.getStyleStrokeThickness());
+			setPadding(Insets.EMPTY);
+			setLineSpacing(0);
+			setContentDisplay(ContentDisplay.TOP);
 		}
 
 		// style.backgroundColor

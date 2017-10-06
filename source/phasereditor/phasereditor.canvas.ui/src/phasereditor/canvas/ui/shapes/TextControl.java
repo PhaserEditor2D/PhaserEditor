@@ -139,7 +139,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 			});
 		}
 
-		section.add(new PGridNumberProperty(getId(), "style.fontSize", "The size of the font (eg. 20px)") {
+		section.add(new PGridNumberProperty(getId(), "style.fontSize", "The size of the font (eg. 20pt)") {
 
 			@Override
 			public Double getValue() {
