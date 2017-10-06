@@ -75,7 +75,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 
 		super.updateFromModel();
 	}
-
+	
 	private Point2D getSize() {
 		return getNode().getSize();
 	}

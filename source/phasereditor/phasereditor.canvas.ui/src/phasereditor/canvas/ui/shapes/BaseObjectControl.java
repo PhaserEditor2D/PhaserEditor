@@ -121,8 +121,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 	public void updateFromModel() {
 		_node.setId(_model.getEditorName());
-		_node.setLayoutX(_model.getX());
-		_node.setLayoutY(_model.getY());
+		updatePositionFromModel();
 		_node.setOpacity(_model.getAlpha());
 
 		if (_model.isEditorShow() != _node.isVisible()) {
@@ -133,6 +132,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		transforms.clear();
 
 		updateTransforms(transforms);
+	}
+
+	protected void updatePositionFromModel() {
+		_node.setLayoutX(_model.getX());
+		_node.setLayoutY(_model.getY());
 	}
 
 	public void updateTransforms(ObservableList<Transform> transforms) {

@@ -32,6 +32,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextBoundsType;
 import phasereditor.canvas.core.TextModel;
 
 /**
@@ -89,6 +90,8 @@ public class TextNode extends Label implements ISpriteNode {
 			_skinText.setStroke(stroke == null ? null : Color.valueOf(stroke));
 			// style.strokeThickness
 			_skinText.setStrokeWidth(model.getStyleStrokeThickness());
+			//_skinText.setTextOrigin(VPos.TOP);
+			_skinText.setBoundsType(TextBoundsType.VISUAL);
 		}
 
 		// style.backgroundColor
