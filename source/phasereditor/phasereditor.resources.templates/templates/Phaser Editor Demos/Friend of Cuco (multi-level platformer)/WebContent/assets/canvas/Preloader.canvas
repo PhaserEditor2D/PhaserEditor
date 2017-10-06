@@ -30,6 +30,7 @@
       0,
       0
     ],
+    "autoLoad": false,
     "isPreloader": true,
     "preloadSpriteId": "c3b440d3-570c-4cfe-8581-b45772293931",
     "preloadSprite_direction": 0,
