@@ -191,9 +191,9 @@ public class StateConfigItem extends ConfigItem {
 
 		{
 			PGridSection section = new PGridSection("Preload");
-			
+
 			section.add(new PGridBooleanProperty(null, "autoLoad",
-					"Phaser Editor: If true get all the objects of the scene and compute the sections to be loaded.\nSet to false if you loaded the assets in other secene (like in a Preloader scene).") {
+					"Phaser Editor: If true get all the objects of the scene and compute the sections to be loaded.\nIf false it loads the sections in the 'pack' property.\nIf the `isPreloader` field is true the 'autoLoad' is disabled.") {
 
 				@Override
 				public Boolean getValue() {
@@ -210,6 +210,11 @@ public class StateConfigItem extends ConfigItem {
 				@Override
 				public boolean isModified() {
 					return !state.isAutoLoad();
+				}
+
+				@Override
+				public boolean isReadOnly() {
+					return state.isPreloader();
 				}
 			});
 
@@ -243,6 +248,9 @@ public class StateConfigItem extends ConfigItem {
 				@Override
 				public void setValue(Boolean value, boolean notify) {
 					state.setPreloader(value);
+					if (value) {
+						state.setAutoLoad(false);
+					}
 					_viewer.refresh();
 				}
 

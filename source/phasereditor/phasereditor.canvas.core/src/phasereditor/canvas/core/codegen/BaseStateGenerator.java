@@ -58,7 +58,7 @@ public abstract class BaseStateGenerator extends JSLikeCanvasCodeGenerator {
 
 		Set<LoadPack> loadPacks = new LinkedHashSet<>(_state.getLoadPack());
 
-		if (_state.isAutoLoad()) {
+		if (_state.isAutoLoad() && !_state.isPreloader()) {
 			// if it is auto load, compute the sections
 			_world.walk(obj -> {
 				if (obj instanceof AssetSpriteModel) {

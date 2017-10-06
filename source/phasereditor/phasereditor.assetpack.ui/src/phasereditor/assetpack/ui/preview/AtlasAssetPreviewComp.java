@@ -271,7 +271,7 @@ public class AtlasAssetPreviewComp extends Composite {
 				str += "Image URL: " + getModel().getTextureURL();
 				return str;
 			}).collect(Collectors.toList());
-			
+
 			_canvas.setTooltips(tooltips);
 
 			_gridCanvas.setImage(img);
