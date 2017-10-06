@@ -135,12 +135,7 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 
 	private void afterCreateWidgets() {
 		// scrollable canvas do not get the rigth style
-		getDisplay().asyncExec(() -> {
-			Composite c = new Composite(this, SWT.NONE);
-			PhaserEditorUI.applyThemeStyle(c);
-			setBackground(c.getBackground());
-			c.dispose();
-		});
+		PhaserEditorUI.forceApplyCompositeStyle(this);
 	}
 
 	void updateScroll() {

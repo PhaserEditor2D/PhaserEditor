@@ -79,6 +79,7 @@ import phasereditor.assetpack.ui.preview.SpritesheetAnimationModel;
 import phasereditor.canvas.core.AnimationModel;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
+import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.animations.FrameAnimationCanvas;
 
 /**
@@ -359,6 +360,8 @@ public class AnimationsDialog extends Dialog {
 		initFramesDrop();
 
 		updateFromAnimation();
+
+		PhaserEditorUI.forceApplyCompositeStyle(_canvas);
 	}
 
 	private void initFramesDrop() {

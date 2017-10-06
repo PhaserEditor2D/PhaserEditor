@@ -747,4 +747,13 @@ public class PhaserEditorUI {
 	public static Color getMainWindowColor() {
 		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getBackground();
 	}
+
+	public static void forceApplyCompositeStyle(Composite canvas) {
+		canvas.getDisplay().asyncExec(() -> {
+			Composite c = new Composite(canvas, SWT.NONE);
+			PhaserEditorUI.applyThemeStyle(c);
+			canvas.setBackground(c.getBackground());
+			c.dispose();
+		});
+	}
 }
