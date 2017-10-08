@@ -135,7 +135,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 					getModel().setStyleFont(value);
 					if (notify) {
 						updateFromPropertyChange();
-						getCanvas().getSelectionBehavior().updateSelectedNodes();
+						getCanvas().getSelectionBehavior().updateSelectedNodes_async();
 					}
 				}
 
@@ -158,7 +158,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 				getModel().setStyleFontSize(value.intValue());
 				if (notify) {
 					updateFromPropertyChange();
-					getCanvas().getSelectionBehavior().updateSelectedNodes();
+					getCanvas().getSelectionBehavior().updateSelectedNodes_async();
 				}
 			}
 
@@ -182,7 +182,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 				getModel().setStyleFontWeight(value);
 				if (notify) {
 					updateFromPropertyChange();
-					getCanvas().getSelectionBehavior().updateSelectedNodes();
+					getCanvas().getSelectionBehavior().updateSelectedNodes_async();
 				}
 			}
 
@@ -205,7 +205,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 				getModel().setStyleFontStyle(value);
 				if (notify) {
 					updateFromPropertyChange();
-					getCanvas().getSelectionBehavior().updateSelectedNodes();
+					getCanvas().getSelectionBehavior().updateSelectedNodes_async();
 				}
 			}
 
@@ -281,7 +281,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 				getModel().setStyleStrokeThickness(value.intValue());
 				if (notify) {
 					updateFromPropertyChange();
-					getCanvas().getSelectionBehavior().updateSelectedNodes();
+					getCanvas().getSelectionBehavior().updateSelectedNodes_async();
 				}
 			}
 
