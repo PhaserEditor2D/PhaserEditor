@@ -47,6 +47,8 @@ import phasereditor.ui.ColorButtonSupport;
 @SuppressWarnings("boxing")
 public class TextControl extends BaseSpriteControl<TextModel> {
 
+	private PGridStringProperty _text_property;
+
 	public TextControl(ObjectCanvas canvas, TextModel model) {
 		super(canvas, model);
 	}
@@ -75,7 +77,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 
 		super.updateFromModel();
 	}
-	
+
 	private Point2D getSize() {
 		return getNode().getSize();
 	}
@@ -85,13 +87,17 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 		return (TextNode) super.getNode();
 	}
 
+	public PGridStringProperty getTextProperty() {
+		return _text_property;
+	}
+
 	@Override
 	protected void initPGridModel(PGridModel propModel) {
 		super.initPGridModel(propModel);
 
 		PGridSection section = new PGridSection("Text");
 
-		section.add(new PGridStringProperty(getId(), "text", help("Phaser.Text.text"), "Write the text.") {
+		_text_property = new PGridStringProperty(getId(), "text", help("Phaser.Text.text"), "Write the text.") {
 
 			@Override
 			public boolean isModified() {
@@ -103,7 +109,10 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 				getModel().setText(value);
 				if (notify) {
 					updateFromPropertyChange();
-					getCanvas().getSelectionBehavior().updateSelectedNodes();
+					// update async to let the text node compute the bounds.
+					getDisplay().asyncExec(() -> {
+						getCanvas().getSelectionBehavior().updateSelectedNodes();
+					});
 				}
 			}
 
@@ -111,7 +120,8 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 			public String getValue() {
 				return getModel().getText();
 			}
-		});
+		};
+		section.add(_text_property);
 
 		{
 			List<String> names = Font.getFamilies();
@@ -214,7 +224,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 			public Object getDefaultValue() {
 				return new RGB(0, 0, 0);
 			}
-			
+
 			@Override
 			public void setValue(RGB value, boolean notify) {
 				getModel().setStyleFill(ColorButtonSupport.getHexString(value));
@@ -294,7 +304,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 
 			@Override
 			public void setValue(RGB value, boolean notify) {
-				getModel().setStyleBackgroundColor(value == null? null : ColorButtonSupport.getHexString(value));
+				getModel().setStyleBackgroundColor(value == null ? null : ColorButtonSupport.getHexString(value));
 				if (notify) {
 					updateFromPropertyChange();
 				}

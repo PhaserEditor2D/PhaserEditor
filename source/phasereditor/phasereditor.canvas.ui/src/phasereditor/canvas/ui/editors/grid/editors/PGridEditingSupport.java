@@ -38,6 +38,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 
@@ -111,14 +112,8 @@ public class PGridEditingSupport extends EditingSupport {
 
 					@Override
 					protected Object openDialogBox(Control cellEditorWindow) {
-						TextDialog dlg = new TextDialog(cellEditorWindow.getShell());
-						dlg.setInitialText(prop.getValue());
-						dlg.setTitle(prop.getName());
-						dlg.setMessage(prop.getMessage());
-						if (dlg.open() == Window.OK) {
-							return dlg.getResult();
-						}
-						return null;
+						Shell shell = cellEditorWindow.getShell();
+						return openLongStringDialog(prop, shell);
 					}
 				};
 			}
@@ -259,6 +254,17 @@ public class PGridEditingSupport extends EditingSupport {
 		}
 
 		getViewer().refresh(element);
+	}
+
+	public static String openLongStringDialog(PGridStringProperty prop, Shell shell) {
+		TextDialog dlg = new TextDialog(shell);
+		dlg.setInitialText(prop.getValue());
+		dlg.setTitle(prop.getName());
+		dlg.setMessage(prop.getMessage());
+		if (dlg.open() == Window.OK) {
+			return dlg.getResult();
+		}
+		return null;
 	}
 
 	@SuppressWarnings("rawtypes")
