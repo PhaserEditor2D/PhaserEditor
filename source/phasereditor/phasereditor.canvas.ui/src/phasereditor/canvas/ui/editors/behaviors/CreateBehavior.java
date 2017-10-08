@@ -46,6 +46,7 @@ import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.Prefab;
+import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
@@ -210,7 +211,7 @@ public class CreateBehavior {
 			} else if (elem instanceof Prefab) {
 				Prefab prefab = (Prefab) elem;
 				model = CanvasModelFactory.createModel(parentNode.getModel(), prefab);
-			} else  {
+			} else {
 				model = factory.apply(parentNode.getModel(), elem);
 			}
 
@@ -424,8 +425,10 @@ public class CreateBehavior {
 
 		}
 
+		List<String> textIds = new ArrayList<>();
 		List<String> selection = new ArrayList<>();
 		int i = pasteIntoThis.getNode().getChildren().size();
+
 		for (BaseObjectModel copy : copies) {
 			selection.add(copy.getId());
 			double x2 = mouse.stepX(x + copy.getX(), false);
@@ -433,8 +436,24 @@ public class CreateBehavior {
 			AddNodeOperation op = new AddNodeOperation(copy.toJSON(false), i, x2, y2, pasteIntoThis.getId());
 			operations.add(op);
 			i++;
+
+			if (copy instanceof TextModel) {
+				textIds.add(copy.getId());
+			}
 		}
 		operations.add(new SelectOperation(selection));
 		_canvas.getUpdateBehavior().executeOperations(operations);
+
+		if (!textIds.isEmpty()) {
+			_canvas.getDisplay().asyncExec(() -> {
+				for (String id : textIds) {
+					BaseObjectControl<?> control = _canvas.getWorldNode().getControl().findById(id);
+					if (control != null) {
+						control.updateFromModel();
+					}
+				}
+				_canvas.getSelectionBehavior().updateSelectedNodes();
+			});
+		}
 	}
 }

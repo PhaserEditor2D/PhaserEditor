@@ -371,6 +371,10 @@ public class SelectionBehavior implements ISelectionProvider {
 
 		message(sb.toString());
 	}
+	
+	public void updateSelectedNodes_async() {
+		_canvas.getDisplay().asyncExec(this::updateSelectedNodes);
+	}
 
 	@SuppressWarnings("unlikely-arg-type")
 	public void updateSelectedNodes() {
@@ -512,7 +516,7 @@ public class SelectionBehavior implements ISelectionProvider {
 		if (local == ancestor) {
 			return point;
 		}
-		
+
 		Point2D p = local.localToParent(point);
 		return localToAncestor(p, local.getParent(), ancestor);
 	}
@@ -525,7 +529,7 @@ public class SelectionBehavior implements ISelectionProvider {
 		Bounds b = local.localToParent(bounds);
 		return localToAncestor(b, local.getParent(), ancestor);
 	}
-	
+
 	@Override
 	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
 		_listenerList.remove(listener);

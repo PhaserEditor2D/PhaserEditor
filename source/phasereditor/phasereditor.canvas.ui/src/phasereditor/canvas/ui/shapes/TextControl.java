@@ -109,10 +109,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 				getModel().setText(value);
 				if (notify) {
 					updateFromPropertyChange();
-					// update async to let the text node compute the bounds.
-					getDisplay().asyncExec(() -> {
-						getCanvas().getSelectionBehavior().updateSelectedNodes();
-					});
+					getCanvas().getSelectionBehavior().updateSelectedNodes_async();
 				}
 			}
 
