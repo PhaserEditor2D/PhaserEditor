@@ -53,6 +53,7 @@ public class TextDialog extends Dialog {
 	 */
 	public TextDialog(Shell parentShell) {
 		super(parentShell);
+		setShellStyle(SWT.RESIZE);
 	}
 
 	/**
@@ -69,7 +70,7 @@ public class TextDialog extends Dialog {
 
 		_msgLabel = new Label(container, SWT.NONE);
 
-		_text = new Text(container, SWT.BORDER | SWT.MULTI);
+		_text = new Text(container, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.MULTI);
 		_text.setTabs(4);
 		_text.setFont(SWTResourceManager.getFont("Courier New", _text.getFont().getFontData()[0].getHeight(), SWT.NORMAL));
 		_text.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -120,7 +121,7 @@ public class TextDialog extends Dialog {
 	 */
 	@Override
 	protected Point getInitialSize() {
-		return new Point(387, 300);
+		return new Point(571, 443);
 	}
 
 	public void setInitialText(String initText) {
