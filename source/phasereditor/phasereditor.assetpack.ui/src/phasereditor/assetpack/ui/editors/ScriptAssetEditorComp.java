@@ -143,13 +143,12 @@ public class ScriptAssetEditorComp extends Composite {
 			b.validateTargetToModel();
 		}
 	}
-	
+
 	protected void browseUrl() {
 		try {
 			AssetPackModel pack = _model.getPack();
 			IFile urlFile = _model.getFileFromUrl(_model.getUrl());
-			List<IFile> files = AssetPackCore.discoverFiles(pack.getWebContentFolder(),
-					AssetPackCore.createFileExtFilter("js"));
+			List<IFile> files = pack.discoverFiles(AssetPackCore.createFileExtFilter("js"));
 			AssetPackUI.browseAssetFile(pack, "script", urlFile, files, getShell(), new Consumer<String>() {
 
 				@Override

@@ -209,11 +209,11 @@ public final class AssetPackModel {
 		}
 		return _file.getName();
 	}
-	
+
 	public String getRelativePath() {
 		return _file.getProjectRelativePath().toPortableString();
 	}
-	
+
 	public IContainer getWebContentFolder() {
 		if (_file == null) {
 			return null;
@@ -223,27 +223,39 @@ public final class AssetPackModel {
 	}
 
 	public List<IFile> discoverImageFiles() throws CoreException {
-		return AssetPackCore.discoverImageFiles(getWebContentFolder());
+		return AssetPackCore.discoverImageFiles(getDiscoverFolder());
 	}
 
 	public List<IFile> discoverTilemapFiles() throws CoreException {
-		return AssetPackCore.discoverTilemapFiles(getWebContentFolder());
+		return AssetPackCore.discoverTilemapFiles(getDiscoverFolder());
 	}
 
 	public List<IFile> discoverAudioFiles() throws CoreException {
-		return AssetPackCore.discoverAudioFiles(getWebContentFolder());
+		return AssetPackCore.discoverAudioFiles(getDiscoverFolder());
 	}
 
 	public List<IFile> discoverVideoFiles() throws CoreException {
-		return AssetPackCore.discoverVideoFiles(getWebContentFolder());
+		return AssetPackCore.discoverVideoFiles(getDiscoverFolder());
 	}
 
 	public List<IFile> discoverAudioSpriteFiles() throws CoreException {
-		return AssetPackCore.discoverAudioSpriteFiles(getWebContentFolder());
+		return AssetPackCore.discoverAudioSpriteFiles(getDiscoverFolder());
 	}
 
 	public List<IFile> discoverAtlasFiles() throws CoreException {
-		return AssetPackCore.discoverAtlasFiles(getWebContentFolder());
+		return AssetPackCore.discoverAtlasFiles(getDiscoverFolder());
+	}
+
+	public IContainer getDiscoverFolder() {
+		return getFile().getParent();
+	}
+
+	public List<IFile> discoverTextFiles(String[] exts) throws CoreException {
+		return AssetPackCore.discoverFiles(getDiscoverFolder(), AssetPackCore.createFileExtFilter(exts));
+	}
+	
+	public List<IFile> discoverFiles(Function<IFile, Boolean> filter) throws CoreException {
+		return AssetPackCore.discoverFiles(getDiscoverFolder(), filter);
 	}
 
 	public void visitAssets(Consumer<AssetModel> visitor) {
@@ -302,11 +314,6 @@ public final class AssetPackModel {
 			}
 		}
 		return null;
-	}
-
-	public IFile pickFile(Function<IFile, Boolean> accept) throws CoreException {
-		List<IFile> files = AssetPackCore.discoverFiles(getWebContentFolder(), accept);
-		return pickFile(files);
 	}
 
 	/**

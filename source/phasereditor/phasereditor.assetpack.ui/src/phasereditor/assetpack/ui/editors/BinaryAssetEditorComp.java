@@ -48,7 +48,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.json.JSONException;
 
-import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.BinaryAssetModel;
 import phasereditor.assetpack.ui.AssetPackUI;
@@ -148,7 +147,7 @@ public class BinaryAssetEditorComp extends Composite {
 		try {
 			AssetPackModel pack = _model.getPack();
 			IFile urlFile = _model.getFileFromUrl(_model.getUrl());
-			List<IFile> files = AssetPackCore.discoverFiles(pack.getWebContentFolder(), f -> Boolean.TRUE);
+			List<IFile> files = pack.discoverFiles(f -> Boolean.TRUE);
 			AssetPackUI.browseAssetFile(pack, "binary", urlFile, files, getShell(), new Consumer<String>() {
 
 				@Override

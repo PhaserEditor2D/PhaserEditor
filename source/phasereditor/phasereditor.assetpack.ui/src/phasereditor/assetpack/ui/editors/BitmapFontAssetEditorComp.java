@@ -49,7 +49,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.json.JSONException;
 
-import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.ui.AssetPackUI;
@@ -194,7 +193,7 @@ public class BitmapFontAssetEditorComp extends Composite {
 					return Boolean.FALSE;
 				}
 			};
-			List<IFile> xmlFiles = AssetPackCore.discoverFiles(pack.getWebContentFolder(), isFontFile);
+			List<IFile> xmlFiles = pack.discoverFiles(isFontFile);
 
 			AssetPackUI.browseAssetFile(pack, "bitmap font XML/FNT", urlFile, xmlFiles, getShell(),
 					new Consumer<String>() {
