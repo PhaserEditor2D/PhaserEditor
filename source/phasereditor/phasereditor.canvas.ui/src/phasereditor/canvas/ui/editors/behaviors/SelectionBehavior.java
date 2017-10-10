@@ -147,12 +147,34 @@ public class SelectionBehavior implements ISelectionProvider {
 			return;
 		}
 
+		StructuredSelection sel;
 		if (_selection != null && !_selection.isEmpty() && e.isShortcutDown()) {
 			HashSet<Object> selection = new HashSet<>(Arrays.asList(_selection.toArray()));
 			selection.add(picked);
-			setSelection(new StructuredSelection(selection.toArray()));
+			sel = new StructuredSelection(selection.toArray());
 		} else {
-			setSelection(new StructuredSelection(picked));
+			sel = new StructuredSelection(picked);
+		}
+
+		setSelection(sel);
+
+		{
+			// reveal selection in the outline
+			
+			TreeViewer outline = _canvas.getOutline();
+			outline.getTree().setRedraw(false);
+			
+			Set<Object> parents = new HashSet<>(Arrays.asList(outline.getExpandedElements()));
+			for (IObjectNode node : getSelectedNodes()) {
+				parents.addAll(node.getAncestors());
+			}
+			outline.setExpandedElements(parents.toArray());
+			
+			for (IObjectNode node : getSelectedNodes()) {
+				outline.reveal(node);
+			}
+			
+			outline.getTree().setRedraw(true);
 		}
 	}
 
@@ -371,7 +393,7 @@ public class SelectionBehavior implements ISelectionProvider {
 
 		message(sb.toString());
 	}
-	
+
 	public void updateSelectedNodes_async() {
 		_canvas.getDisplay().asyncExec(this::updateSelectedNodes);
 	}
