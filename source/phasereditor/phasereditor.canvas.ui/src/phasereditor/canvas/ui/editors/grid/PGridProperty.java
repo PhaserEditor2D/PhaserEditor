@@ -73,8 +73,7 @@ public abstract class PGridProperty<T> {
 
 	public abstract boolean isModified();
 	
-	@SuppressWarnings("static-method")
-	public Object getDefaultValue() {
+	public T getDefaultValue() {
 		throw new UnsupportedOperationException();
 	}
 

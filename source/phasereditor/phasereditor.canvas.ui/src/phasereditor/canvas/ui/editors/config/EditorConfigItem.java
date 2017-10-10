@@ -106,6 +106,11 @@ public class EditorConfigItem extends ConfigItem {
 				public boolean isModified() {
 					return !getValue().equals(EditorSettings.DEFAULT_BACKGROUND_COLOR);
 				}
+				
+				@Override
+				public RGB getDefaultValue() {
+					return EditorSettings.DEFAULT_BACKGROUND_COLOR;
+				}
 			});
 
 			section.add(new PGridColorProperty(null, "gridColor", "The canvas grid color.") {
@@ -123,6 +128,11 @@ public class EditorConfigItem extends ConfigItem {
 				@Override
 				public boolean isModified() {
 					return !getValue().equals(EditorSettings.DEFAULT_GRID_COLOR);
+				}
+				
+				@Override
+				public RGB getDefaultValue() {
+					return EditorSettings.DEFAULT_GRID_COLOR;
 				}
 			});
 

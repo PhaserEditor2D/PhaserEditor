@@ -243,6 +243,11 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 
 				return ColorButtonSupport.toRGB(tint);
 			}
+			
+			@Override
+			public RGB getDefaultValue() {
+				return null;
+			}
 
 			@Override
 			public boolean isReadOnly() {

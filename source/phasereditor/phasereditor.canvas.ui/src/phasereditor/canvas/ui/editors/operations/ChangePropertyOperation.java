@@ -42,6 +42,22 @@ public class ChangePropertyOperation<T> extends AbstractNodeOperation {
 	private T _value;
 	private T _undoValue;
 	private boolean _notify;
+	private PGridProperty<T> _property;
+
+	/**
+	 * Just use in case the property does not belong to a Canvas Object.
+	 * 
+	 * @param property
+	 * @param value
+	 * @param notify
+	 */
+	public ChangePropertyOperation(PGridProperty<T> property, T value, boolean notify) {
+		super("ChangePropertyOperation", null);
+		_property = property;
+		_propId = property.getName();
+		_value = value;
+		_notify = notify;
+	}
 
 	public ChangePropertyOperation(String controlId, String propId, T value, boolean notify) {
 		super("ChangePropertyOperation", controlId);
@@ -49,7 +65,7 @@ public class ChangePropertyOperation<T> extends AbstractNodeOperation {
 		_value = value;
 		_notify = notify;
 	}
-	
+
 	public ChangePropertyOperation(String controlId, String propId, T value) {
 		this(controlId, propId, value, true);
 	}
@@ -59,18 +75,26 @@ public class ChangePropertyOperation<T> extends AbstractNodeOperation {
 			PGridProperty<T> prop = findProperty(info);
 			_undoValue = prop.getValue();
 			prop.setValue(value, _notify);
-			BaseObjectControl<?> control = findControl(info);
-			control.updateFromModel();
 
-			CanvasEditor editor = info.getAdapter(CanvasEditor.class);
+			if (isAttachedToControl()) {
+				BaseObjectControl<?> control = findControl(info);
 
-			editor.getCanvas().getUpdateBehavior().update_Grid_from_PropertyChange(prop);
-			editor.getCanvas().getSelectionBehavior().updateSelectedNodes();
+				control.updateFromModel();
+
+				CanvasEditor editor = info.getAdapter(CanvasEditor.class);
+
+				editor.getCanvas().getUpdateBehavior().update_Grid_from_PropertyChange(prop);
+				editor.getCanvas().getSelectionBehavior().updateSelectedNodes();
+			}
 
 		} catch (IllegalStateException e) {
 			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage());
 		}
 		return Status.OK_STATUS;
+	}
+	
+	private boolean isAttachedToControl() {
+		return _property == null;
 	}
 
 	@Override
@@ -92,14 +116,21 @@ public class ChangePropertyOperation<T> extends AbstractNodeOperation {
 
 	@SuppressWarnings("unchecked")
 	private PGridProperty<T> findProperty(IAdaptable info) {
-		BaseObjectControl<?> control = findControl(info);
+		PGridProperty<T> prop;
 
-		if (control == null) {
-			throw new IllegalStateException("Cannot find control " + _nodeId);
+		if (_property != null) {
+			prop = _property;
+		} else {
+
+			BaseObjectControl<?> control = findControl(info);
+
+			if (control == null) {
+				throw new IllegalStateException("Cannot find control " + _controlId);
+			}
+
+			PGridModel propModel = control.getPropertyModel();
+			prop = (PGridProperty<T>) propModel.findById(_propId);
 		}
-
-		PGridModel propModel = control.getPropertyModel();
-		PGridProperty<T> prop = (PGridProperty<T>) propModel.findById(_propId);
 
 		if (prop == null) {
 			throw new IllegalStateException("Cannot find property " + _propId);

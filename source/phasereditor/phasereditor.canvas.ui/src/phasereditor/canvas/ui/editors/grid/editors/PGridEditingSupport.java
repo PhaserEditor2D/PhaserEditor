@@ -267,10 +267,14 @@ public class PGridEditingSupport extends EditingSupport {
 		return null;
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void changeUndoablePropertyValue(Object value, PGridProperty prop) {
-		ChangePropertyOperation<? extends Object> op = new ChangePropertyOperation<>(prop.getNodeId(), prop.getName(),
-				value);
+		ChangePropertyOperation<? extends Object> op;
+		if (prop.getNodeId() == null) {
+			op = new ChangePropertyOperation<>(prop, value, true);
+		} else {
+			op = new ChangePropertyOperation<>(prop.getNodeId(), prop.getName(), value);
+		}
 		CanvasEditor editor = (CanvasEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 				.getActiveEditor();
 		editor.getCanvas().getUpdateBehavior().executeOperations(new CompositeOperation(op));

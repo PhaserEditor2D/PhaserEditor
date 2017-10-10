@@ -34,15 +34,15 @@ import phasereditor.canvas.ui.shapes.BaseObjectControl;
  */
 public abstract class AbstractNodeOperation extends AbstractOperation {
 
-	protected String _nodeId;
+	protected String _controlId;
 
 	public AbstractNodeOperation(String label, String controlId) {
 		super(label);
-		_nodeId = controlId;
+		_controlId = controlId;
 	}
 	
 	protected BaseObjectControl<?> findControl(IAdaptable info) {
-		return findControl(info, _nodeId);
+		return findControl(info, _controlId);
 	}
 
 	protected static BaseObjectControl<?> findControl(IAdaptable info, String id) {

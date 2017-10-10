@@ -83,7 +83,7 @@ public class AddNodeOperation extends AbstractNodeOperation {
 
 	@Override
 	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		BaseObjectControl<?> control = findControl(info, _nodeId);
+		BaseObjectControl<?> control = findControl(info, _controlId);
 		ObjectCanvas canvas = control.getCanvas();
 
 		control.removeme();
@@ -97,7 +97,7 @@ public class AddNodeOperation extends AbstractNodeOperation {
 		ObjectCanvas canvas = info.getAdapter(CanvasEditor.class).getCanvas();
 		GroupControl groupControl = (GroupControl) findControl(info, _parentId);
 		BaseObjectModel model = CanvasModelFactory.createModel(groupControl.getModel(), _data);
-		_nodeId = model.getId();
+		_controlId = model.getId();
 
 		if (_createUniqueName) {
 			changeName(canvas, model);

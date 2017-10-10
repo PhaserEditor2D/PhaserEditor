@@ -162,6 +162,11 @@ public class StateConfigItem extends ConfigItem {
 				public boolean isModified() {
 					return !state.getStageBackgroundColor().equals(StateSettings.DEFAULT_STAGE_BG_COLOR);
 				}
+				
+				@Override
+				public RGB getDefaultValue() {
+					return StateSettings.DEFAULT_STAGE_BG_COLOR;
+				}
 			});
 			getGridModel().getSections().add(section);
 		}

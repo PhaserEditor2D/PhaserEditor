@@ -68,10 +68,10 @@ public class TrimNodeOperation extends AbstractNodeOperation {
 		}
 
 		GroupModel groupModel = group.getModel();
-		_mapBefore.put(_nodeId, new Point2D(groupModel.getX(), groupModel.getY()));
+		_mapBefore.put(_controlId, new Point2D(groupModel.getX(), groupModel.getY()));
 		groupModel.setX(groupModel.getX() + minx);
 		groupModel.setY(groupModel.getY() + miny);
-		_mapAfter.put(_nodeId, new Point2D(groupModel.getX(), groupModel.getY()));
+		_mapAfter.put(_controlId, new Point2D(groupModel.getX(), groupModel.getY()));
 
 		for (Node node : group.getChildren()) {
 			IObjectNode sprite = (IObjectNode) node;

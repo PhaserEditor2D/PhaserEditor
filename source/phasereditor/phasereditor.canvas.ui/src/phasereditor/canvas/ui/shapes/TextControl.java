@@ -218,7 +218,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 		section.add(new PGridColorProperty(getId(), "style.fill",
 				"A canvas fillstyle that will be used on the text eg 'red', '#00FF00'.") {
 			@Override
-			public Object getDefaultValue() {
+			public RGB getDefaultValue() {
 				return new RGB(0, 0, 0);
 			}
 
@@ -245,7 +245,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 				"A canvas stroke style that will be used on the text stroke eg 'blue', '#FCFF00'.") {
 
 			@Override
-			public Object getDefaultValue() {
+			public RGB getDefaultValue() {
 				return new RGB(0, 0, 0);
 			}
 
@@ -295,7 +295,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 				"A canvas fillstyle that will be used as the background for the whole Text object. Set to `null` to disable.") {
 
 			@Override
-			public Object getDefaultValue() {
+			public RGB getDefaultValue() {
 				return null;
 			}
 
