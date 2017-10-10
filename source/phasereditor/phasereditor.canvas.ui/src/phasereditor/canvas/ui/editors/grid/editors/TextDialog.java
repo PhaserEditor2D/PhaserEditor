@@ -53,7 +53,7 @@ public class TextDialog extends Dialog {
 	 */
 	public TextDialog(Shell parentShell) {
 		super(parentShell);
-		setShellStyle(SWT.RESIZE);
+		setShellStyle(SWT.DIALOG_TRIM);
 	}
 
 	/**
