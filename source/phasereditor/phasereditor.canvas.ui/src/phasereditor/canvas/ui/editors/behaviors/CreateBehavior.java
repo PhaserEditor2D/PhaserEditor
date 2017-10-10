@@ -200,6 +200,7 @@ public class CreateBehavior {
 			}
 		}
 
+		List<String> textIds = new ArrayList<>();
 		int i = 0;
 		for (Object elem : elems) {
 			BaseObjectControl<?> control = null;
@@ -219,6 +220,9 @@ public class CreateBehavior {
 				String newname = _canvas.getWorldModel().createName(model.getEditorName());
 				model.setEditorName(newname);
 				control = CanvasObjectFactory.createObjectControl(_canvas, model);
+				if (model instanceof TextModel) {
+					textIds.add(model.getId());
+				}
 			}
 
 			if (control != null) {
@@ -245,10 +249,27 @@ public class CreateBehavior {
 		if (!operations.isEmpty()) {
 			operations.add(new SelectOperation(selectionIds));
 			_canvas.getUpdateBehavior().executeOperations(operations);
+
+			updateSelectedTextNodes(textIds);
 		}
 
 		// do not add it to palette.
 		// _palette.drop(elems);
+	}
+
+	private void updateSelectedTextNodes(List<String> textIds) {
+		if (textIds.isEmpty()) {
+			return;
+		}
+		_canvas.getDisplay().asyncExec(() -> {
+			for (String id : textIds) {
+				BaseObjectControl<?> control = _canvas.getWorldNode().getControl().findById(id);
+				if (control != null) {
+					control.updateFromModel();
+				}
+			}
+			_canvas.getSelectionBehavior().updateSelectedNodes();
+		});
 	}
 
 	public String makeGroup(CompositeOperation operations, Object... elems) {
@@ -444,16 +465,6 @@ public class CreateBehavior {
 		operations.add(new SelectOperation(selection));
 		_canvas.getUpdateBehavior().executeOperations(operations);
 
-		if (!textIds.isEmpty()) {
-			_canvas.getDisplay().asyncExec(() -> {
-				for (String id : textIds) {
-					BaseObjectControl<?> control = _canvas.getWorldNode().getControl().findById(id);
-					if (control != null) {
-						control.updateFromModel();
-					}
-				}
-				_canvas.getSelectionBehavior().updateSelectedNodes();
-			});
-		}
+		updateSelectedTextNodes(textIds);
 	}
 }
