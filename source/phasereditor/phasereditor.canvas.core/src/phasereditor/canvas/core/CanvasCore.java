@@ -24,6 +24,7 @@ package phasereditor.canvas.core;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -470,23 +471,33 @@ public class CanvasCore {
 			String fname = inputFile.getFullPath().removeFileExtension()
 					.addFileExtension(canvasModel.getSettings().getLang().getExtension()).lastSegment();
 
+			 
 			IFile file = inputFile.getParent().getFile(new Path(fname));
 
+			Charset charset;
+			
+			if (file.exists()) {
+				charset = Charset.forName(file.getCharset());
+			} else {
+				charset = Charset.forName("UTF-8");
+			}
+			
 			String replace = null;
 
 			if (file.exists()) {
 				byte[] bytes = Files.readAllBytes(file.getLocation().makeAbsolute().toFile().toPath());
-				replace = new String(bytes);
+				replace = new String(bytes, charset);
 			}
 
 			ICodeGenerator generator = new CanvasCodeGeneratorProvider().getCodeGenerator(canvasModel);
 
 			String content = generator.generate(replace);
 
-			ByteArrayInputStream stream = new ByteArrayInputStream(content.getBytes());
+			ByteArrayInputStream stream = new ByteArrayInputStream(content.getBytes(charset));
 			if (file.exists()) {
 				file.setContents(stream, IResource.NONE, monitor);
 			} else {
+				file.setCharset(charset.name(), monitor);
 				file.create(stream, false, monitor);
 			}
 			file.refreshLocal(1, null);
