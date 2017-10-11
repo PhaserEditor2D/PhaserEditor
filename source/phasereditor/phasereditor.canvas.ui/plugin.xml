@@ -157,6 +157,11 @@
                   label="Move To Group..."
                   style="push">
             </command>
+            <command
+                  commandId="phasereditor.canvas.ui.selectParent"
+                  label="Select Parent"
+                  style="push">
+            </command>
          </menu>
          <menu
                label="Sprite">
@@ -354,6 +359,28 @@
             <command
                   commandId="phasereditor.canvas.ui.addprefab"
                   label="Prefab"
+                  style="push">
+            </command>
+         </menu>
+         <separator
+               name="phasereditor.canvas.ui.separator9"
+               visible="true">
+         </separator>
+         <menu
+               label="Transform">
+            <command
+                  commandId="phasereditor.canvas.ui.scale"
+                  label="Scale"
+                  style="push">
+            </command>
+            <command
+                  commandId="phasereditor.canvas.ui.editangle"
+                  label="Rotate"
+                  style="push">
+            </command>
+            <command
+                  commandId="phasereditor.canvas.ui.editanchors"
+                  label="Anchor"
                   style="push">
             </command>
          </menu>
@@ -936,6 +963,11 @@
       <command
             id="phasereditor.canvas.ui.editAnimations"
             name="Edit Sprite Animations">
+      </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.selectParent"
+            name="Select Parent">
       </command>
       
    </extension>
@@ -1716,8 +1748,23 @@
          </enabledWhen>
       </handler>
       <handler
-            class="AddTextHandler"
+            class="phasereditor.canvas.ui.handlers.AddTextHandler"
             commandId="phasereditor.canvas.ui.addText">
+      </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.SelectParentHandler"
+            commandId="phasereditor.canvas.ui.selectParent">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <instanceof
+                        value="phasereditor.canvas.ui.shapes.IObjectNode">
+                  </instanceof>
+               </iterate>
+            </with>
+         </enabledWhen>
       </handler>
       
    </extension>
@@ -1854,6 +1901,12 @@
              contextId="phasereditor.canvas.ui.nodescontext"
              schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
              sequence="M1+T">
+	   </key>
+       <key
+             commandId="phasereditor.canvas.ui.selectParent"
+             contextId="phasereditor.canvas.ui.nodescontext"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="U">
        </key>
        <key
              commandId="phasereditor.canvas.ui.editusercode"
