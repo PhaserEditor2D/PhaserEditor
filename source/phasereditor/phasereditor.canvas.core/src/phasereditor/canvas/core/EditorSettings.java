@@ -57,7 +57,6 @@ public class EditorSettings {
 		_canvasModel = canvasModel;
 		_sceneWidth = 640;
 		_sceneHeight = 360;
-		_backgroundColor = DEFAULT_BACKGROUND_COLOR;
 		_generateOnSave = true;
 		_enableStepping = false;
 		_stepWidth = 32;
