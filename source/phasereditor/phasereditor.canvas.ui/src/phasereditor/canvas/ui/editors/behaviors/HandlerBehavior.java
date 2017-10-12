@@ -38,6 +38,7 @@ import phasereditor.canvas.ui.editors.edithandlers.ArcadeResizeCircleBodyHandler
 import phasereditor.canvas.ui.editors.edithandlers.ArcadeResizeRectBodyHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.Axis;
 import phasereditor.canvas.ui.editors.edithandlers.IEditHandlerNode;
+import phasereditor.canvas.ui.editors.edithandlers.PivotHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.ScaleHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.TileHandlerNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
@@ -129,6 +130,14 @@ public class HandlerBehavior {
 		clear();
 
 		add(new AnchorHandlerNode(object));
+
+		update();
+	}
+
+	public void editPivot(IObjectNode object) {
+		clear();
+
+		add(new PivotHandlerNode(object));
 
 		update();
 	}

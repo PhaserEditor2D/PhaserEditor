@@ -101,8 +101,8 @@ public class AnchorHandlerNode extends PathHandlerNode {
 		double anchorX = model.getAnchorX();
 		double anchorY = model.getAnchorY();
 
-		model.setAnchorX(_initX);
-		model.setAnchorY(_initY);
+		model.setX(_initX);
+		model.setY(_initY);
 		model.setAnchorX(_initAnchorX);
 		model.setAnchorY(_initAnchorY);
 
