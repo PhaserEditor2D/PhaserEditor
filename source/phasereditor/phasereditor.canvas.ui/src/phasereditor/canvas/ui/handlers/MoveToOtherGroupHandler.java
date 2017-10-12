@@ -3,6 +3,8 @@ package phasereditor.canvas.ui.handlers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -45,22 +47,18 @@ public class MoveToOtherGroupHandler extends AbstractHandler {
 			List<IObjectNode> sel = SelectionBehavior
 					.filterSelection((IStructuredSelection) HandlerUtil.getCurrentSelection(event));
 
-			List<IObjectNode> nodes = new ArrayList<>();
+			Predicate<? super IObjectNode> predicate = node -> node != target && node.getGroup() != target
+					&& !target.getAncestors().contains(node);
+
+			List<IObjectNode> nodes = sel.stream().filter(predicate).sorted(IObjectNode.DISPLAY_ORDER_COMPARATOR)
+					.collect(Collectors.toList());
 
 			// filter the nodes
 
-			for (IObjectNode node : sel) {
-				if (canMove(node, target)) {
-					nodes.add(node);
-				} else {
-					MessageDialog.openError(shell, "Move", "Cannot move the object to that group.");
-					return null;
-				}
+			if (nodes.isEmpty()) {
+				MessageDialog.openError(shell, "Move", "Cannot move the objects to its parents.");
+				return null;
 			}
-
-			// sort by Z order
-
-			nodes.sort(IObjectNode.DISPLAY_ORDER_COMPARATOR);
 
 			// make the copies
 			List<BaseObjectModel> copies = new ArrayList<>();
@@ -116,10 +114,6 @@ public class MoveToOtherGroupHandler extends AbstractHandler {
 		}
 
 		return null;
-	}
-
-	private static boolean canMove(IObjectNode node, GroupNode target) {
-		return !target.getAncestors().contains(node);
 	}
 
 }
