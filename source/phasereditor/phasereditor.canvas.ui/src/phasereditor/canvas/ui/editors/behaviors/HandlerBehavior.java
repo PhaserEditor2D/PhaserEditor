@@ -120,7 +120,8 @@ public class HandlerBehavior {
 		if (object instanceof ISpriteNode) {
 			ISpriteNode sprite = (ISpriteNode) object;
 			add(new AnchorHandlerNode(sprite));
-			// add(new PivotHandlerNode(sprite));
+		} else {
+			add(new PivotHandlerNode(object));
 		}
 
 		update();

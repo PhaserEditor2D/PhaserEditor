@@ -64,15 +64,15 @@ public class AngleHandlerNode extends PathHandlerNode {
 		_initX = x;
 		_initY = y;
 
-		_centerX = 0;
-		_centerY = 0;
+		_centerX = _model.getPivotX();
+		_centerY = _model.getPivotY();
 
 		if (_model instanceof BaseSpriteModel) {
 			BaseSpriteModel spriteModel = (BaseSpriteModel) _model;
 			_centerX = spriteModel.getAnchorX() * _control.getTextureWidth();
 			_centerY = spriteModel.getAnchorY() * _control.getTextureHeight();
 		}
-
+		
 		Point2D p = _node.localToScene(_centerX, _centerY);
 		_centerX = p.getX();
 		_centerY = p.getY();
