@@ -277,18 +277,16 @@ public class ObjectCanvas extends FXCanvas {
 		double x = (sceneX - translate.getX()) * invScale;
 		double y = (sceneY - translate.getY()) * invScale;
 
-		if (adjust) {
-			double w = control.getTextureWidth() / 2;
-			double h = control.getTextureHeight() / 2;
-			x -= w;
-			y -= h;
-		}
-		
 		// stepping
 		EditorSettings settings = getSettingsModel();
 		if (settings.isEnableStepping()) {
 			x = Math.floor(x / settings.getStepWidth()) * settings.getStepWidth();
 			y = Math.floor(y / settings.getStepHeight()) * settings.getStepHeight();
+		} else if (adjust) {
+			double w = control.getTextureWidth() / 2;
+			double h = control.getTextureHeight() / 2;
+			x -= w;
+			y -= h;
 		}
 
 		BaseObjectModel model = control.getModel();
