@@ -156,18 +156,7 @@ public class PGridEditingSupport extends EditingSupport {
 
 				@Override
 				protected Object openDialogBox(Control cellEditorWindow) {
-					ListSelectionDialog dlg = new ListSelectionDialog(cellEditorWindow.getShell(),
-							prop.getValidProperties(), new ArrayContentProvider(), new LabelProvider(),
-							"Select the properties to override in this prefab instance:");
-					List<String> initialValue = prop.getValue();
-					dlg.setInitialSelections(initialValue.toArray());
-					dlg.setTitle("Prefab Override");
-					if (dlg.open() == Window.OK) {
-						Object[] result = dlg.getResult();
-						return new ArrayList<>(Arrays.asList(result));
-					}
-
-					return initialValue;
+					return openOverridePropertiesDialog(prop, cellEditorWindow.getShell());
 				}
 			};
 		} else if (element instanceof PGridUserCodeProperty) {
@@ -254,6 +243,20 @@ public class PGridEditingSupport extends EditingSupport {
 		}
 
 		getViewer().refresh(element);
+	}
+
+	public static Object openOverridePropertiesDialog(PGridOverrideProperty prop, Shell shell) {
+		ListSelectionDialog dlg = new ListSelectionDialog(shell, prop.getValidProperties(), new ArrayContentProvider(),
+				new LabelProvider(), "Select the properties to override in this prefab instance:");
+		List<String> initialValue = prop.getValue();
+		dlg.setInitialSelections(initialValue.toArray());
+		dlg.setTitle("Prefab Override");
+		if (dlg.open() == Window.OK) {
+			Object[] result = dlg.getResult();
+			return new ArrayList<>(Arrays.asList(result));
+		}
+
+		return initialValue;
 	}
 
 	public static String openLongStringDialog(PGridStringProperty prop, Shell shell) {

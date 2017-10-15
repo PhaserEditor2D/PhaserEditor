@@ -320,6 +320,11 @@
          <menu
                label="Prefab">
             <command
+                  commandId="phasereditor.canvas.ui.openOverrideDialog"
+                  label="Override Properties"
+                  style="push">
+            </command>
+            <command
                   commandId="phasereditor.canvas.ui.openPrefab"
                   style="push">
             </command>
@@ -1097,6 +1102,11 @@
             categoryId="phasereditor.canvas.ui.editor.category"
             id="phasereditor.canvas.ui.editPivot"
             name="Edit Pivot">
+      </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.openOverrideDialog"
+            name="Override Properties">
       </command>
       
    </extension>
@@ -1906,6 +1916,15 @@
             </with>
          </enabledWhen>
       </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.OpenOverideDialogHandler"
+            commandId="phasereditor.canvas.ui.openOverrideDialog">
+         <activeWhen>
+            <reference
+                  definitionId="phasereditor.canvas.ui.isPrefabInstance">
+            </reference>
+         </activeWhen>
+      </handler>
       
    </extension>
    <extension
@@ -2077,6 +2096,12 @@
              contextId="phasereditor.canvas.ui.nodescontext"
              schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
              sequence="H">
+       </key>
+       <key
+             commandId="phasereditor.canvas.ui.openOverrideDialog"
+             contextId="phasereditor.canvas.ui.nodescontext"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="R">
        </key>
    </extension>
    <extension

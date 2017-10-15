@@ -70,7 +70,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	private PGridNumberProperty _pivot_y_property;
 	private PGridNumberProperty _alpha_property;
 	private PGridBooleanProperty _editorPick_property;
-	private PGridOverrideProperty _overrideProperty;
+	private PGridOverrideProperty _override_property;
 	private PGridStringProperty _name_property;
 	private PGridBooleanProperty _renderable_property;
 	private PGridBooleanProperty _fixedToCamera_property;
@@ -185,15 +185,15 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 		if (_model.isPrefabInstance()) {
 			PGridSection section = new PGridSection("Prefab Instance");
-			_overrideProperty = new PGridOverrideProperty(_model) {
+			_override_property = new PGridOverrideProperty(_model) {
 				@Override
 				public void setValue(List<String> value, boolean notify) {
 					super.setValue(value, notify);
 					getCanvas().getUpdateBehavior().singleRebuildFromPrefab(BaseObjectControl.this);
 				}
 			};
-			initPrefabPGridModel(_overrideProperty.getValidProperties());
-			section.add(_overrideProperty);
+			initPrefabPGridModel(_override_property.getValidProperties());
+			section.add(_override_property);
 			propModel.getSections().add(section);
 		}
 
@@ -654,6 +654,10 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	public PGridBooleanProperty getEditorPick_property() {
 		return _editorPick_property;
 	}
+	
+	public PGridOverrideProperty getOverride_property() {
+		return _override_property;
+	}
 
 	public ObjectCanvas getCanvas() {
 		return _canvas;
@@ -756,7 +760,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		int i = parentControl.removeChild(getIObjectNode());
 		parentControl.addChild(i, newControl.getIObjectNode());
 
-		_overrideProperty.setModel(newModel);
+		_override_property.setModel(newModel);
 
 		return newControl;
 	}
