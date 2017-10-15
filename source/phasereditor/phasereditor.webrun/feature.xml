@@ -2,7 +2,7 @@
 <feature
       id="phasereditor.webrun"
       label="Phaser Editor - Web Launcher"
-      version="1.4.0.20170412"
+      version="1.4.3.20171007"
       provider-name="Arian Fornaris"
       license-feature="org.eclipse.platform"
       license-feature-version="4.7.0.v20170612-1255">

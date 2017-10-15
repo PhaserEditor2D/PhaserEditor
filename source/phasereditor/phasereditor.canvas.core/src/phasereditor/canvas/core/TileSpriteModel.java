@@ -44,7 +44,9 @@ public class TileSpriteModel extends AssetSpriteModel<IAssetKey> {
 
 	private static final double DEF_HEIGHT = 0;
 
-	public static final String PROPSET_TILE = "tile";
+	public static final String PROPSET_TILE_SIZE = "tileSize";
+	public static final String PROPSET_TILE_POSITION = "tilePosition";
+	public static final String PROPSET_TILE_SCALE = "tileScale";
 
 	private double _width;
 	private double _height;
@@ -100,19 +102,31 @@ public class TileSpriteModel extends AssetSpriteModel<IAssetKey> {
 
 		boolean prefabInstance = isPrefabInstance();
 
-		if (isOverriding(PROPSET_TILE)) {
+		if (isOverriding(PROPSET_TILE_SIZE)) {
 			if (prefabInstance) {
 				jsonInfo.put("width", _width);
 				jsonInfo.put("height", _height);
-				jsonInfo.put("tilePosition.x", _tilePositionX);
-				jsonInfo.put("tilePosition.y", _tilePositionY);
-				jsonInfo.put("tileScale.x", _tileScaleX);
-				jsonInfo.put("tileScale.y", _tileScaleY);
 			} else {
 				jsonInfo.put("width", _width, DEF_WIDTH);
 				jsonInfo.put("height", _height, DEF_HEIGHT);
+			}
+		}
+		
+		if (isOverriding(PROPSET_TILE_POSITION)) {
+			if (prefabInstance) {
+				jsonInfo.put("tilePosition.x", _tilePositionX);
+				jsonInfo.put("tilePosition.y", _tilePositionY);
+			} else {
 				jsonInfo.put("tilePosition.x", _tilePositionX, DEF_TILE_POSITION);
 				jsonInfo.put("tilePosition.y", _tilePositionY, DEF_TILE_POSITION);
+			}
+		}
+		
+		if (isOverriding(PROPSET_TILE_SCALE)) {
+			if (prefabInstance) {
+				jsonInfo.put("tileScale.x", _tileScaleX);
+				jsonInfo.put("tileScale.y", _tileScaleY);
+			} else {
 				jsonInfo.put("tileScale.x", _tileScaleX, DEF_TILE_SCALE);
 				jsonInfo.put("tileScale.y", _tileScaleY, DEF_TILE_SCALE);
 			}

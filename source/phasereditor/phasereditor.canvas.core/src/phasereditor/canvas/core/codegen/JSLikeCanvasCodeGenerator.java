@@ -327,6 +327,17 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 
 				call.value("this.game", round(sprite.getX()), round(sprite.getY()));
 				call.valueOrUndefined(writeTexture, "'" + sprite.getAssetKey().getAsset().getKey() + "'", frameValue);
+			} else if (model instanceof TileSpriteModel) {
+			
+				TileSpriteModel sprite = (TileSpriteModel) model;
+				IAssetKey frame = sprite.getAssetKey();
+				String frameValue = frame instanceof SpritesheetAssetModel.FrameModel
+						? Integer.toString(((SpritesheetAssetModel.FrameModel) frame).getIndex())
+						: "'" + frame.getKey() + "'";
+
+				call.value("this.game", round(sprite.getX()), round(sprite.getY()), round(sprite.getWidth()),
+						round(sprite.getHeight()));
+				call.valueOrUndefined(writeTexture, "'" + sprite.getAssetKey().getAsset().getKey() + "'", frameValue);
 			}
 
 			call.append();
@@ -348,6 +359,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				call.append();
 
 			} else if (model instanceof SpritesheetSpriteModel || model instanceof AtlasSpriteModel) {
+				// missing to use a Call instance to generate this
 				AssetSpriteModel<?> sprite = (AssetSpriteModel<?>) model;
 				IAssetKey frame = sprite.getAssetKey();
 				String frameValue = frame instanceof SpritesheetAssetModel.FrameModel
@@ -364,6 +376,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 						+ (parVar == null ? "" : ", " + parVar) // group
 						+ ")");
 			} else if (model instanceof ButtonSpriteModel) {
+				// missing to use a Call instance to generate this
 				ButtonSpriteModel button = (ButtonSpriteModel) model;
 				String outFrameKey;
 				if (button.getAssetKey().getAsset() instanceof ImageAssetModel) {
@@ -386,6 +399,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 						+ (parVar == null ? "" : ", " + parVar) // group
 						+ ")");
 			} else if (model instanceof TileSpriteModel) {
+				// missing to use a Call instance to generate this
 				TileSpriteModel tile = (TileSpriteModel) model;
 				IAssetKey assetKey = tile.getAssetKey();
 				String frame;
@@ -408,6 +422,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 						+ (parVar == null ? "" : ", " + parVar) // group
 						+ ")");
 			} else if (model instanceof TextModel) {
+				// missing to use a Call instance to generate this
 				TextModel text = (TextModel) model;
 				Call call = new Call("text");
 				call.value(round(text.getX()));
@@ -480,6 +495,46 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				JSLikeCanvasCodeGenerator.this.append(sep + list.get(i));
 			}
 			JSLikeCanvasCodeGenerator.this.append(")");
+		}
+	}
+
+	protected class MethodDoc {
+		private List<String> _argNameList;
+		private List<String> _argTypeList;
+		private List<String> _argDocList;
+		private String _comment;
+
+		public MethodDoc() {
+			_argNameList = new ArrayList<>();
+			_argTypeList = new ArrayList<>();
+			_argDocList = new ArrayList<>();
+			_comment = "";
+		}
+
+		public void arg(String name, String type, String doc) {
+			_argNameList.add(name);
+			_argTypeList.add(type);
+			_argDocList.add(doc);
+		}
+
+		public void comment(String comment) {
+			_comment = comment;
+		}
+
+		public void append() {
+			line("/**");
+			line(" * " + _comment);
+			for (int i = 0; i < _argNameList.size(); i++) {
+				String name = _argNameList.get(i);
+				String type = _argTypeList.get(i);
+				String doc = _argDocList.get(i);
+				if (type == null) {
+					line(" * @param " + name + " " + doc);
+				} else {
+					line(" * @param {" + type + "} " + name + " " + doc);
+				}
+			}
+			line(" */");
 		}
 	}
 
@@ -599,13 +654,14 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 						line(animvar + ".killOnComplete = true;");
 					}
 
-//					if (anim.isAutoPlay()) {
-//						line(animvar + ".play();");
-//					}
+					// if (anim.isAutoPlay()) {
+					// line(animvar + ".play();");
+					// }
 				}
-				
-				// auto playing should be invoked after all the animations are created
-				
+
+				// auto playing should be invoked after all the animations are
+				// created
+
 				for (AnimationModel anim : model.getAnimations()) {
 					if (anim.isAutoPlay()) {
 						String animvar = getLocalAnimationVarName(model, anim);

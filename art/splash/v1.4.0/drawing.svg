@@ -58,9 +58,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.70710678"
-     inkscape:cx="-34.898125"
-     inkscape:cy="-868.78228"
+     inkscape:zoom="1"
+     inkscape:cx="232.05495"
+     inkscape:cy="-764.49278"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -284,7 +284,10 @@
        xlink:href="file:///C:/Users/arian/Documents/Source/PhaserEditor/Public/art/splash/v1.4.3/splash-base.png"
        preserveAspectRatio="none"
        height="295"
-       width="455" />
+       width="455"
+       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Public\art\splash\v1.4.3\splash-1.4.3.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
     <image
        width="134.0625"
        height="29.0625"
@@ -292,28 +295,28 @@
        xlink:href="file:///C:/Users/arian/Documents/Source/html5games/Otro/phaser2.4.7/phaser-master/resources/Phaser%20Logo/2D%20Text/Phaser%202D%20No%20Glow.png"
        id="image5536-7"
        x="390.26001"
-       y="1926.3015"
+       y="1932.3015"
        sodipodi:absref="C:\Users\arian\Documents\Source\html5games\Otro\phaser2.4.7\phaser-master\resources\Phaser Logo\2D Text\Phaser 2D No Glow.png" />
     <text
        id="text5540-2"
-       y="1920.3851"
+       y="1926.3851"
        x="389.91949"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:56.25px;line-height:23.4375px;font-family:'Ravi Prakash';-inkscape-font-specification:'Ravi Prakash';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#2e3436;fill-opacity:1;stroke:none;stroke-width:0.9375px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"><tspan
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Embassy BT';-inkscape-font-specification:'Embassy BT';fill:#2e3436;stroke-width:0.9375px"
-         y="1920.3851"
+         y="1926.3851"
          x="389.91949"
          id="tspan5538-2"
          sodipodi:role="line">Editor</tspan></text>
     <text
        id="text5544-8"
-       y="1969.2777"
+       y="1975.5209"
        x="463.62329"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:54.5102005px;line-height:22.71258545px;font-family:'Ravi Prakash';-inkscape-font-specification:'Ravi Prakash';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.90850329px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"
        transform="scale(1.0405065,0.96107041)"><tspan
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:18.7232666px;font-family:'Embassy BT';-inkscape-font-specification:'Embassy BT';fill:#000000;stroke-width:0.90850329px"
-         y="1969.2777"
+         y="1975.5209"
          x="463.62329"
          id="tspan5542-0"
          sodipodi:role="line">v1.4.3</tspan></text>

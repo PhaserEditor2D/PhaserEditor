@@ -23,6 +23,7 @@ package phasereditor.canvas.core.codegen.js5;
 
 import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.CanvasModel;
+import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.core.codegen.JSLikeBaseSpriteCodeGenerator;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
@@ -44,16 +45,8 @@ public class JSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 
 		PhaserJSDoc help = InspectCore.getPhaserHelp();
 
-		line("/**");
-		line(" * " + classname + ".");
-		line(" * @param {Phaser.Game} aGame " + help.getMethodArgHelp("Phaser.Sprite", "game"));
-		line(" * @param {Number} aX " + help.getMethodArgHelp("Phaser.Sprite", "x"));
-		line(" * @param {Number} aY " + help.getMethodArgHelp("Phaser.Sprite", "y"));
-		line(" * @param {any} aKey " + help.getMethodArgHelp("Phaser.Sprite", "key"));
-		line(" * @param {any} aFrame " + help.getMethodArgHelp("Phaser.Sprite", "frame"));
-		line(" */");
-		openIndent("function " + classname + "(aGame, aX, aY, aKey, aFrame) {");
 		AssetSpriteModel<?> sprite = (AssetSpriteModel<?>) _model.getWorld().findFirstSprite();
+
 		String key = "null";
 		String frame = "null";
 		if (sprite != null) {
@@ -61,30 +54,62 @@ public class JSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 			key = info.key;
 			frame = info.frame;
 		}
-		line();
-		line("var pKey = aKey === undefined? " + key + " : aKey;");
-		line("var pFrame = aFrame === undefined? " + frame + " : aFrame;");
-		line();
-		line(baseclass + ".call(this, aGame, aX, aY, pKey, pFrame);");
 
-		trim( ()->{
+		if (sprite instanceof TileSpriteModel) {
+			MethodDoc mdoc = new MethodDoc();
+			mdoc.comment(classname);
+			mdoc.arg("aGame", "Phaser.Game", help.getMethodArgHelp("Phaser.TileSprite", "game"));
+			mdoc.arg("aX", "Number", help.getMethodArgHelp("Phaser.TileSprite", "x"));
+			mdoc.arg("aY", "Number", help.getMethodArgHelp("Phaser.TileSprite", "y"));
+			mdoc.arg("aWidth", "Number", help.getMethodArgHelp("Phaser.TileSprite", "width"));
+			mdoc.arg("aHeight", "Number", help.getMethodArgHelp("Phaser.TileSprite", "height"));
+			mdoc.arg("aKey", "any", help.getMethodArgHelp("Phaser.TileSprite", "key"));
+			mdoc.arg("aFrame", "any", help.getMethodArgHelp("Phaser.TileSprite", "frame"));
+			mdoc.append();
+			
+			openIndent("function " + classname + "(aGame, aX, aY, aWidth, aHeight, aKey, aFrame) {");
+			
 			line();
-			userCode(_settings.getUserCode().getCreate_before());	
-		} );
+			line("var pKey = aKey === undefined? " + key + " : aKey;");
+			line("var pFrame = aFrame === undefined? " + frame + " : aFrame;");
+			line();
+			line(baseclass + ".call(this, aGame, aX, aY, aWidth, aHeight, pKey, pFrame);");
+
+		} else {
+			MethodDoc mdoc = new MethodDoc();
+			mdoc.comment(classname);
+			mdoc.arg("aGame", "Phaser.Game", help.getMethodArgHelp("Phaser.Sprite", "game"));
+			mdoc.arg("aX", "Number", help.getMethodArgHelp("Phaser.Sprite", "x"));
+			mdoc.arg("aY", "Number", help.getMethodArgHelp("Phaser.Sprite", "y"));
+			mdoc.arg("aKey", "any", help.getMethodArgHelp("Phaser.Sprite", "key"));
+			mdoc.arg("aFrame", "any", help.getMethodArgHelp("Phaser.Sprite", "frame"));
+			mdoc.append();
+			
+			openIndent("function " + classname + "(aGame, aX, aY, aKey, aFrame) {");
+			line();
+			line("var pKey = aKey === undefined? " + key + " : aKey;");
+			line("var pFrame = aFrame === undefined? " + frame + " : aFrame;");
+			line();
+			line(baseclass + ".call(this, aGame, aX, aY, pKey, pFrame);");
+		}
+
+		trim(() -> {
+			line();
+			userCode(_settings.getUserCode().getCreate_before());
+		});
 
 	}
-	
 
 	@Override
 	public void generateFooter() {
 		String classname = _settings.getClassName();
 		String baseclass = _settings.getBaseClass();
 
-		trim( ()->{
+		trim(() -> {
 			line();
-			userCode(_settings.getUserCode().getCreate_after());	
-		} );
-		
+			userCode(_settings.getUserCode().getCreate_after());
+		});
+
 		closeIndent("}");
 		line();
 

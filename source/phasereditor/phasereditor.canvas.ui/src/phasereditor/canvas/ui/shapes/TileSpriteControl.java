@@ -82,7 +82,9 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 	@Override
 	protected void initPrefabPGridModel(List<String> validProperties) {
 		super.initPrefabPGridModel(validProperties);
-		validProperties.add(TileSpriteModel.PROPSET_TILE);
+		validProperties.add(TileSpriteModel.PROPSET_TILE_SIZE);
+		validProperties.add(TileSpriteModel.PROPSET_TILE_POSITION);
+		validProperties.add(TileSpriteModel.PROPSET_TILE_SCALE);
 	}
 
 	@SuppressWarnings("boxing")
@@ -121,6 +123,11 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			public boolean isModified() {
 				return getModel().getTilePositionX() != 0;
 			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly(TileSpriteModel.PROPSET_TILE_POSITION);
+			}
 		};
 
 		_tilePositionY_property = new PGridNumberProperty(getId(), "tilePosition.y",
@@ -143,6 +150,11 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			public boolean isModified() {
 				return getModel().getTilePositionY() != 0;
 			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly(TileSpriteModel.PROPSET_TILE_POSITION);
+			}
 		};
 
 		_width_property = new PGridNumberProperty(getId(), "width", help("Phaser.TileSprite.width")) {
@@ -163,6 +175,11 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			@Override
 			public boolean isModified() {
 				return true;
+			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly(TileSpriteModel.PROPSET_TILE_SIZE);
 			}
 		};
 
@@ -186,6 +203,11 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 				return true;
 			}
 
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly(TileSpriteModel.PROPSET_TILE_SIZE);
+			}
+
 		};
 
 		_tileScaleX_property = new PGridNumberProperty(getId(), "tileScale.x", help("Phaser.TileSprite.tileScale")) {
@@ -207,6 +229,11 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			public boolean isModified() {
 				return getModel().getTileScaleX() != 1;
 			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly(TileSpriteModel.PROPSET_TILE_SCALE);
+			}
 		};
 
 		_tileScaleY_property = new PGridNumberProperty(getId(), "tileScale.y", help("Phaser.TileSprite.tileScale")) {
@@ -227,6 +254,11 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 			@Override
 			public boolean isModified() {
 				return getModel().getTileScaleY() != 1;
+			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly(TileSpriteModel.PROPSET_TILE_SCALE);
 			}
 		};
 
