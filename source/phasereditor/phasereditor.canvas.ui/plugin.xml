@@ -62,23 +62,55 @@
                   label="Transform">
                <command
                      commandId="phasereditor.canvas.ui.scale"
+                     disabledIcon="platform:/plugin/phasereditor.ui/icons/d/arrow_inout.png"
+                     icon="platform:/plugin/phasereditor.ui/icons/arrow_inout.png"
                      label="Scale"
                      style="push">
+                  <visibleWhen
+                        checkEnabled="false">
+                     <reference
+                           definitionId="phasereditor.canvas.ui.activeEditor">
+                     </reference>
+                  </visibleWhen>
                </command>
                <command
                      commandId="phasereditor.canvas.ui.editangle"
-                     label="Rotate"
+                     disabledIcon="platform:/plugin/phasereditor.ui/icons/d/arrow_rotate_clockwise.png"
+                     icon="platform:/plugin/phasereditor.ui/icons/arrow_rotate_clockwise.png"
+                     label="Angle"
                      style="push">
+                  <visibleWhen
+                        checkEnabled="false">
+                     <reference
+                           definitionId="phasereditor.canvas.ui.activeEditor">
+                     </reference>
+                  </visibleWhen>
                </command>
                <command
                      commandId="phasereditor.canvas.ui.editanchors"
+                     disabledIcon="platform:/plugin/phasereditor.ui/icons/d/anchor.png"
+                     icon="platform:/plugin/phasereditor.ui/icons/anchor.png"
                      label="Anchor"
                      style="push">
+                  <visibleWhen
+                        checkEnabled="false">
+                     <reference
+                           definitionId="phasereditor.canvas.ui.activeEditor">
+                     </reference>
+                  </visibleWhen>
                </command>
                <command
                      commandId="phasereditor.canvas.ui.editPivot"
+                     disabledIcon="platform:/plugin/phasereditor.ui/icons/d/bullet_green.png"
+                     icon="platform:/plugin/phasereditor.ui/icons/bullet_green.png"
                      label="Pivot"
                      style="push">
+                  <visibleWhen
+                        checkEnabled="false">
+                     <reference
+                           definitionId="phasereditor.canvas.ui.activeEditor">
+                     </reference>
+                  </visibleWhen>
                </command>
             </menu>
             <separator
@@ -375,24 +407,56 @@
                label="Transform">
             <command
                   commandId="phasereditor.canvas.ui.scale"
+                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/arrow_inout.png"
+                  icon="platform:/plugin/phasereditor.ui/icons/arrow_inout.png"
                   label="Scale"
                   style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <reference
+                        definitionId="phasereditor.canvas.ui.activeEditor">
+                  </reference>
+               </visibleWhen>
             </command>
             <command
                   commandId="phasereditor.canvas.ui.editangle"
-                  label="Rotate"
+                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/arrow_rotate_clockwise.png"
+                  icon="platform:/plugin/phasereditor.ui/icons/arrow_rotate_clockwise.png"
+                  label="Angle"
                   style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <reference
+                        definitionId="phasereditor.canvas.ui.activeEditor">
+                  </reference>
+               </visibleWhen>
             </command>
             <command
                   commandId="phasereditor.canvas.ui.editanchors"
+                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/anchor.png"
+                  icon="platform:/plugin/phasereditor.ui/icons/anchor.png"
                   label="Anchor"
                   style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <reference
+                        definitionId="phasereditor.canvas.ui.activeEditor">
+                  </reference>
+               </visibleWhen>
             </command>
             <command
-                   commandId="phasereditor.canvas.ui.editPivot"
-                   label="Pivot"
-                   style="push">
-              </command>
+                  commandId="phasereditor.canvas.ui.editPivot"
+                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/bullet_green.png"
+                  icon="platform:/plugin/phasereditor.ui/icons/bullet_green.png"
+                  label="Pivot"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <reference
+                        definitionId="phasereditor.canvas.ui.activeEditor">
+                  </reference>
+               </visibleWhen>
+            </command>
          </menu>
          <separator
                name="phasereditor.canvas.ui.separator8"
@@ -454,6 +518,62 @@
          <toolbar
                id="phasereditor.canvas.ui.toolbar"
                label="Canvas">
+            <command
+                  commandId="phasereditor.canvas.ui.scale"
+                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/arrow_inout.png"
+                  icon="platform:/plugin/phasereditor.ui/icons/arrow_inout.png"
+                  label="Scale"
+                  style="push">
+                  <visibleWhen
+                     checkEnabled="false">
+                  <reference
+                        definitionId="phasereditor.canvas.ui.activeEditor">
+                  </reference>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="phasereditor.canvas.ui.editangle"
+                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/arrow_rotate_clockwise.png"
+                  icon="platform:/plugin/phasereditor.ui/icons/arrow_rotate_clockwise.png"
+                  label="Angle"
+                  style="push">
+                  <visibleWhen
+                     checkEnabled="false">
+                  <reference
+                        definitionId="phasereditor.canvas.ui.activeEditor">
+                  </reference>
+               </visibleWhen>
+            </command>
+             <command
+                   commandId="phasereditor.canvas.ui.editanchors"
+                   disabledIcon="platform:/plugin/phasereditor.ui/icons/d/anchor.png"
+                   icon="platform:/plugin/phasereditor.ui/icons/anchor.png"
+                   label="Anchor"
+                   style="push">
+                  <visibleWhen
+                     checkEnabled="false">
+                  <reference
+                        definitionId="phasereditor.canvas.ui.activeEditor">
+                  </reference>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="phasereditor.canvas.ui.editPivot"
+                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/bullet_green.png"
+                  icon="platform:/plugin/phasereditor.ui/icons/bullet_green.png"
+                  label="Pivot"
+                  style="push">
+                  <visibleWhen
+                     checkEnabled="false">
+                  <reference
+                        definitionId="phasereditor.canvas.ui.activeEditor">
+                  </reference>
+               </visibleWhen>
+            </command>
+            <separator
+                  name="phasereditor.canvas.ui.separator6"
+                  visible="true">
+            </separator>         
             <command
                   commandId="phasereditor.canvas.ui.zoomRestore"
                   icon="platform:/plugin/phasereditor.ui/icons/zoom_default.png"
@@ -672,12 +792,6 @@
                   </reference>
                </visibleWhen>
             </command>
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="phasereditor.canvas.ui.activeEditor">
-               </reference>
-            </visibleWhen>
          </toolbar>
       </menuContribution>
    </extension>
