@@ -367,7 +367,8 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 			} else if (model instanceof TextModel) {
 				TextModel sprite = (TextModel) model;
 				call.value("this.game", round(sprite.getX()), round(sprite.getY()));
-				call.valueOrNull(sprite.isOverriding(TextModel.PROPSET_TEXT), "'" + sprite.getText() + "'");
+				call.valueOrNull(sprite.isOverriding(TextModel.PROPSET_TEXT),
+						"'" + escapeLines(sprite.getText()) + "'");
 				call.valueOrNull(sprite.isOverriding(TextModel.PROPSET_TEXT_STYLE),
 						sprite.getPhaserStyleObject().toString());
 			}
@@ -511,8 +512,8 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 		}
 
 		public Call value(String... values) {
-			_values.addAll(
-					Arrays.asList(values).stream().map(v -> v == null ? "null" : v).collect(Collectors.toList()));
+			_values.addAll(Arrays.asList(values).stream().map(v -> v == null ? "null" : v.replace("\n", "\\n"))
+					.collect(Collectors.toList()));
 			return this;
 		}
 

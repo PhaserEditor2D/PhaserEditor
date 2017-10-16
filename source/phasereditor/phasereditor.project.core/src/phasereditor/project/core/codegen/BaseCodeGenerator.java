@@ -128,6 +128,11 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 		append("\n");
 		append(getIndentTabs());
 	}
+	
+	public static String escapeLines(String text) {
+		return text.replace("\r\n", "\\n").replace("\n", "");
+	}
+	
 
 	public void openIndent(String line) {
 		_indent++;

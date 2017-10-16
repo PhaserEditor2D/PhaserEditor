@@ -123,7 +123,7 @@ public class JSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 			openIndent("function " + classname + "(aGame, aX, aY, aText, aStyle) {");
 
 			openIndent(baseclass + ".call(this, aGame, aX, aY,");
-			line("aText || '" + text.getText() + "',");
+			line("aText || '" + escapeLines(text.getText()) + "',");
 			line("aStyle || ");
 
 			String[] lines = text.getPhaserStyleObject().toString(4).split("\n");
