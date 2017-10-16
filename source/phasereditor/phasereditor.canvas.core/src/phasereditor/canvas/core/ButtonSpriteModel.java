@@ -34,14 +34,13 @@ import phasereditor.assetpack.core.IAssetKey;
  */
 public class ButtonSpriteModel extends AssetSpriteModel<IAssetKey> {
 
-	/**
-	 * 
-	 */
 	private static final String DEF_CALLBACK_CONTEXT = "this";
 
 	public static final String TYPE_NAME = "button";
 
 	private static final String DEF_FRAME = null;
+	
+	public static final String PROPSET_BUTTON_CALLBACK = "buttonCallback";
 
 	private IAssetFrameModel _overFrame;
 	private IAssetFrameModel _downFrame;
@@ -62,11 +61,22 @@ public class ButtonSpriteModel extends AssetSpriteModel<IAssetKey> {
 	protected void writeInfo(JSONObject jsonInfo, boolean saving) {
 		super.writeInfo(jsonInfo, saving);
 
+		boolean prefabInstance = isPrefabInstance();
+		
 		jsonInfo.put("callback", _callback, null);
 		jsonInfo.put("callbackContext", _callbackContext, "this");
 
-		boolean prefabInstance = isPrefabInstance();
+		if (isOverriding(PROPSET_BUTTON_CALLBACK)) {
+			if (prefabInstance) {
+				jsonInfo.put("callback", _callback);
+				jsonInfo.put("callbackContext", _callbackContext);
+			} else {
+				jsonInfo.put("callback", _callback, null);
+				jsonInfo.put("callbackContext", _callbackContext, "this");
+			}
+		}
 
+		
 		if (isOverriding(PROPSET_TEXTURE)) {
 			if (prefabInstance) {
 				jsonInfo.put("overFrame", _overFrame == null ? null : _overFrame.getKey());

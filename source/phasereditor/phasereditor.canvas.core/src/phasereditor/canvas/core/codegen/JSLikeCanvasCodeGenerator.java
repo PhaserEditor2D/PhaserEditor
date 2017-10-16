@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
@@ -328,7 +329,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				call.value("this.game", round(sprite.getX()), round(sprite.getY()));
 				call.valueOrUndefined(writeTexture, "'" + sprite.getAssetKey().getAsset().getKey() + "'", frameValue);
 			} else if (model instanceof TileSpriteModel) {
-			
+
 				TileSpriteModel sprite = (TileSpriteModel) model;
 				IAssetKey frame = sprite.getAssetKey();
 				String frameValue = frame instanceof SpritesheetAssetModel.FrameModel
@@ -338,6 +339,31 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				call.value("this.game", round(sprite.getX()), round(sprite.getY()), round(sprite.getWidth()),
 						round(sprite.getHeight()));
 				call.valueOrUndefined(writeTexture, "'" + sprite.getAssetKey().getAsset().getKey() + "'", frameValue);
+			} else if (model instanceof ButtonSpriteModel) {
+				ButtonSpriteModel button = (ButtonSpriteModel) model;
+				String outFrameKey;
+				if (button.getAssetKey().getAsset() instanceof ImageAssetModel) {
+					// buttons based on image do not have outFrames
+					outFrameKey = "null";
+				} else {
+					outFrameKey = frameKey((IAssetFrameModel) button.getAssetKey());
+				}
+				call.value("this.game");
+				call.value(round(button.getX()));
+				call.value(round(button.getY()));
+				call.valueOrNull(writeTexture, "'" + button.getAssetKey().getAsset().getKey() + "'");
+
+				if (button.isOverriding(ButtonSpriteModel.PROPSET_BUTTON_CALLBACK)) {
+					call.valueEmptyStringToNull(button.getCallback());
+					call.valueEmptyStringToNull(button.getCallbackContext());
+				} else {
+					call.value("null", "null");
+				}
+
+				call.valueOrNull(writeTexture, frameKey(button.getOverFrame()));
+				call.valueOrNull(writeTexture, outFrameKey);
+				call.valueOrNull(writeTexture, frameKey(button.getDownFrame()));
+				call.valueOrNull(writeTexture, frameKey(button.getUpFrame()));
 			}
 
 			call.append();
@@ -457,6 +483,13 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 			_method = method;
 		}
 
+		public Call valueOrNull(boolean cond, String... values) {
+			for (String v : values) {
+				value(cond ? v : "null");
+			}
+			return this;
+		}
+
 		public Call valueOrUndefined(boolean cond, String... values) {
 			for (String v : values) {
 				value(cond ? v : "undefined");
@@ -472,9 +505,13 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 		}
 
 		public Call value(String... values) {
-			_values.addAll(Arrays.asList(values));
+			_values.addAll(
+					Arrays.asList(values).stream().map(v -> v == null ? "null" : v).collect(Collectors.toList()));
 			return this;
+		}
 
+		public Call valueEmptyStringToNull(String str) {
+			return value(str == null ? null : (str.trim().length() == 0 ? null : str));
 		}
 
 		public void append() {
@@ -921,7 +958,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 		}
 	}
 
-	private static String frameKey(IAssetFrameModel frame) {
+	public static String frameKey(IAssetFrameModel frame) {
 		if (frame == null) {
 			return "null";
 		}
@@ -931,6 +968,10 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 		}
 
 		return "'" + frame.getKey() + "'";
+	}
+
+	public static String emptyStringToNull(String str) {
+		return str == null ? "null" : (str.trim().length() == 0 ? "null" : str);
 	}
 
 }

@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,6 +41,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -51,8 +53,12 @@ import org.eclipse.e4.ui.css.swt.theme.IThemeEngine;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.services.IStylingEngine;
 import org.eclipse.jface.util.Util;
+import org.eclipse.jface.viewers.CheckStateChangedEvent;
+import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
@@ -67,6 +73,8 @@ import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -75,9 +83,11 @@ import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
@@ -86,6 +96,8 @@ import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.ListSelectionDialog;
+import org.eclipse.ui.internal.misc.StringMatcher;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.wb.swt.SWTResourceManager;
 
@@ -755,5 +767,89 @@ public class PhaserEditorUI {
 			canvas.setBackground(c.getBackground());
 			c.dispose();
 		});
+	}
+
+	public static ListSelectionDialog createFilteredListSelectionDialog(Shell shell, Object input,
+			IStructuredContentProvider contentProvider, ILabelProvider labelProvider, String message) {
+		ListSelectionDialog dlg = new ListSelectionDialog(shell, input, contentProvider, labelProvider, message) {
+
+			@Override
+			protected Label createMessageArea(Composite composite) {
+				Label area = super.createMessageArea(composite);
+				Text text = new Text(composite, SWT.SEARCH);
+				text.setText("type filter text");
+				text.selectAll();
+				GridData data = new GridData(GridData.FILL_HORIZONTAL);
+				text.setLayoutData(data);
+				text.addModifyListener(new ModifyListener() {
+
+					@SuppressWarnings({ "synthetic-access" })
+					@Override
+					public void modifyText(ModifyEvent e) {
+						String query = "*" + text.getText().toLowerCase().trim() + "*";
+						StringMatcher matcher = new StringMatcher(query, true, false);
+						CheckboxTableViewer tableViewer = getViewer();
+						tableViewer.setFilters(new ViewerFilter() {
+
+							@Override
+							public boolean select(Viewer viewer, Object parentElement, Object element) {
+								if (query.length() == 0) {
+									return true;
+								}
+								return matcher.match((String) element);
+							}
+						});
+						tableViewer.setCheckedElements(_checkedElements.toArray());
+					}
+				});
+
+				return area;
+			}
+
+			LinkedHashSet<Object> _checkedElements = new LinkedHashSet<>();
+
+			@Override
+			protected Control createDialogArea(Composite parent) {
+				Composite area = (Composite) super.createDialogArea(parent);
+
+				Control[] children = area.getChildren();
+				Control selectButtonsComp = children[children.length - 1];
+				selectButtonsComp.dispose();
+
+				getViewer().addCheckStateListener(new ICheckStateListener() {
+
+					@Override
+					public void checkStateChanged(CheckStateChangedEvent event) {
+						Object element = event.getElement();
+						if (event.getChecked()) {
+							_checkedElements.add(element);
+						} else {
+							_checkedElements.remove(element);
+						}
+					}
+				});
+
+				return area;
+			}
+
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			@Override
+			public void setInitialElementSelections(List selectedElements) {
+				super.setInitialElementSelections(selectedElements);
+				_checkedElements.addAll(selectedElements);
+			}
+
+			@Override
+			protected void okPressed() {
+				// sort checked elements
+				List<?> list = ((List<?>) getViewer().getInput()).stream().filter(e -> _checkedElements.contains(e))
+						.collect(Collectors.toList());
+				setResult(list);
+				setReturnCode(OK);
+				close();
+			}
+
+		};
+		return dlg;
 	}
 }

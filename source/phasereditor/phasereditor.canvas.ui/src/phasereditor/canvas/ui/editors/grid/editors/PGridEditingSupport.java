@@ -23,37 +23,26 @@ package phasereditor.canvas.ui.editors.grid.editors;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
-import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.ComboBoxViewerCellEditor;
 import org.eclipse.jface.viewers.DialogCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
-import org.eclipse.jface.viewers.ICheckStateListener;
+import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TextCellEditor;
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
-import org.eclipse.ui.internal.misc.StringMatcher;
 
 import phasereditor.canvas.core.GroupModel.SetAllData;
 import phasereditor.canvas.core.PhysicsSortDirection;
@@ -78,12 +67,12 @@ import phasereditor.canvas.ui.editors.grid.PGridUserCodeProperty;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.project.core.codegen.SourceLang;
+import phasereditor.ui.PhaserEditorUI;
 
 /**
  * @author arian
  *
  */
-@SuppressWarnings("restriction")
 public class PGridEditingSupport extends EditingSupport {
 
 	private boolean _supportUndoRedo;
@@ -260,86 +249,12 @@ public class PGridEditingSupport extends EditingSupport {
 	}
 
 	public static Object openOverridePropertiesDialog(PGridOverrideProperty prop, Shell shell) {
-		ListSelectionDialog dlg = new ListSelectionDialog(shell, prop.getValidProperties(), new ArrayContentProvider(),
-				new LabelProvider(), "Select the properties to override in this prefab instance:") {
-
-			@Override
-			protected Label createMessageArea(Composite composite) {
-				Label area = super.createMessageArea(composite);
-				Text text = new Text(composite, SWT.SEARCH);
-				text.setText("type filter text");
-				text.selectAll();
-				GridData data = new GridData(GridData.FILL_HORIZONTAL);
-				text.setLayoutData(data);
-				text.addModifyListener(new ModifyListener() {
-
-					@SuppressWarnings({ "synthetic-access" })
-					@Override
-					public void modifyText(ModifyEvent e) {
-						String query = "*" + text.getText().toLowerCase().trim() + "*";
-						StringMatcher matcher = new StringMatcher(query, true, false);
-						CheckboxTableViewer tableViewer = getViewer();
-						tableViewer.setFilters(new ViewerFilter() {
-
-							@Override
-							public boolean select(Viewer viewer, Object parentElement, Object element) {
-								if (query.length() == 0) {
-									return true;
-								}
-								return matcher.match((String) element);
-							}
-						});
-						tableViewer.setCheckedElements(_checkedElements.toArray());
-					}
-				});
-
-				return area;
-			}
-
-			LinkedHashSet<Object> _checkedElements = new LinkedHashSet<>();
-
-			@Override
-			protected Control createDialogArea(Composite parent) {
-				Composite area = (Composite) super.createDialogArea(parent);
-
-				Control[] children = area.getChildren();
-				Control selectButtonsComp = children[children.length - 1];
-				selectButtonsComp.dispose();
-
-				getViewer().addCheckStateListener(new ICheckStateListener() {
-
-					@Override
-					public void checkStateChanged(CheckStateChangedEvent event) {
-						Object element = event.getElement();
-						if (event.getChecked()) {
-							_checkedElements.add(element);
-						} else {
-							_checkedElements.remove(element);
-						}
-					}
-				});
-
-				return area;
-			}
-
-			@SuppressWarnings({ "rawtypes", "unchecked" })
-			@Override
-			public void setInitialElementSelections(List selectedElements) {
-				super.setInitialElementSelections(selectedElements);
-				_checkedElements.addAll(selectedElements);
-			}
-
-			@Override
-			protected void okPressed() {
-				// sort checked elements
-				List<?> list = ((List<?>) getViewer().getInput()).stream().filter(e -> _checkedElements.contains(e))
-						.collect(Collectors.toList());
-				setResult(list);
-				setReturnCode(OK);
-				close();
-			}
-
-		};
+		Object input = prop.getValidProperties();
+		IStructuredContentProvider contentProvider = new ArrayContentProvider();
+		ILabelProvider labelProvider = new LabelProvider();
+		String message = "Select the properties to override in this prefab instance:";
+		ListSelectionDialog dlg = PhaserEditorUI.createFilteredListSelectionDialog(shell, input, contentProvider,
+				labelProvider, message);
 		List<String> initialValue = prop.getValue();
 		dlg.setInitialElementSelections(initialValue);
 		dlg.setTitle("Prefab Override");

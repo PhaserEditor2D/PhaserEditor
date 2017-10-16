@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
+import java.util.Arrays;
 import java.util.List;
 
 import phasereditor.assetpack.core.AssetModel;
@@ -70,6 +71,18 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 	}
 
 	@Override
+	protected void initPrefabPGridModel(List<String> validProperties) {
+		super.initPrefabPGridModel(validProperties);
+
+		validProperties.addAll(Arrays.asList(
+
+				ButtonSpriteModel.PROPSET_BUTTON_CALLBACK
+
+		));
+
+	}
+
+	@Override
 	protected void initPGridModel(PGridModel propModel) {
 		super.initPGridModel(propModel);
 
@@ -96,6 +109,11 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 				return getModel().getCallback();
 			}
 
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly(ButtonSpriteModel.PROPSET_BUTTON_CALLBACK);
+			}
+
 		};
 		section.add(callback_property);
 
@@ -118,6 +136,11 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 			@Override
 			public String getValue() {
 				return getModel().getCallbackContext();
+			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly(ButtonSpriteModel.PROPSET_BUTTON_CALLBACK);
 			}
 
 		};
@@ -145,7 +168,7 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 
 				@Override
 				public boolean isReadOnly() {
-					return getModel().isPrefabReadOnly("texture");
+					return getModel().isPrefabReadOnly(BaseSpriteModel.PROPSET_TEXTURE);
 				}
 			};
 
@@ -168,7 +191,7 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 
 				@Override
 				public boolean isReadOnly() {
-					return getModel().isPrefabReadOnly("texture");
+					return getModel().isPrefabReadOnly(BaseSpriteModel.PROPSET_TEXTURE);
 				}
 
 			};
@@ -191,7 +214,7 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 
 				@Override
 				public boolean isReadOnly() {
-					return getModel().isPrefabReadOnly("texture");
+					return getModel().isPrefabReadOnly(BaseSpriteModel.PROPSET_TEXTURE);
 				}
 
 			};
@@ -213,7 +236,7 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 
 				@Override
 				public boolean isReadOnly() {
-					return getModel().isPrefabReadOnly("texture");
+					return getModel().isPrefabReadOnly(BaseSpriteModel.PROPSET_TEXTURE);
 				}
 
 			};
@@ -263,7 +286,7 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 	public BaseSpriteModel createModelWithTexture(IAssetFrameModel textureKey) {
 		AssetModel old = getModel().getAssetKey().getAsset().getSharedVersion();
 		ButtonSpriteModel model = new ButtonSpriteModel(getGroup().getModel(), textureKey);
-		
+
 		if (old == textureKey.getAsset().getSharedVersion()) {
 			if (model.getDownFrame() != null) {
 				model.setDownFrame((IAssetFrameModel) model.getDownFrame().getSharedVersion());
@@ -283,7 +306,7 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 			model.setDownFrame(null);
 			model.setOverFrame(null);
 		}
-		
+
 		return model;
 	}
 }
