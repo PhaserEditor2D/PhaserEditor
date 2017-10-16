@@ -11,8 +11,8 @@ import phasereditor.canvas.ui.shapes.ISpriteNode;
 public class MorphToTileSpriteHandler extends AbstractMorphHandler {
 
 	@Override
-	protected TileSpriteModel createMorphModel(ISpriteNode srcNode, IAssetKey assetKey, GroupNode parent) {
-		TileSpriteModel model = new TileSpriteModel(parent.getModel(), assetKey);
+	protected TileSpriteModel createMorphModel(ISpriteNode srcNode, Object source, GroupNode parent) {
+		TileSpriteModel model = new TileSpriteModel(parent.getModel(), (IAssetKey) source);
 		model.updateWith(srcNode.getModel());
 		model.setWidth(srcNode.getControl().getTextureWidth());
 		model.setHeight(srcNode.getControl().getTextureHeight());

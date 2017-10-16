@@ -219,6 +219,11 @@
                      label="Button"
                      style="push">
                </command>
+                <command
+                     commandId="phasereditor.canvas.ui.morphToText"
+                     label="Text"
+                     style="push">
+               </command>
             </menu>
             <command
                   commandId="phasereditor.canvas.ui.resizeTile"
@@ -1108,6 +1113,11 @@
             id="phasereditor.canvas.ui.openOverrideDialog"
             name="Override Properties">
       </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.morphToText"
+            name="Morph To Text">
+      </command>
       
    </extension>
    <extension
@@ -1578,6 +1588,39 @@
             </with>
          </enabledWhen>
       </handler>
+      
+            <handler
+            class="phasereditor.canvas.ui.handlers.MorphToTextHandler"
+            commandId="phasereditor.canvas.ui.morphToText">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <and>
+                     <instanceof
+                           value="phasereditor.canvas.ui.shapes.ISpriteNode">
+                     </instanceof>
+                     <not>
+	                     <instanceof
+	                           value="phasereditor.canvas.ui.shapes.TextNode">
+	                     </instanceof>
+                     </not>
+                     <adapt
+		                  	type="phasereditor.canvas.ui.shapes.IObjectNode">
+		                  <test
+		                        property="phasereditor.canvas.ui.isPrefabInstance"
+		                        value="false">
+		                  </test>
+		              </adapt>                     
+                  </and>
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      
       <handler
             class="phasereditor.canvas.ui.handlers.CopyHandler"
             commandId="org.eclipse.ui.edit.copy">

@@ -52,21 +52,14 @@ public abstract class AbstractMorphHandler extends AbstractHandler {
 				BaseObjectModel model = control.getModel();
 				IAssetKey source = null;
 
+				boolean doMorph = true;
+
 				if (model instanceof AssetSpriteModel<?>) {
 					source = ((AssetSpriteModel<?>) model).getAssetKey();
+					doMorph = source != null;
 				}
-				
-//				if (control instanceof ImageSpriteControl) {
-//					source = ((ImageSpriteControl) control).getModel().getAssetKey();
-//				} else if (control instanceof AtlasSpriteControl) {
-//					source = ((AtlasSpriteControl) control).getModel().getAssetKey();
-//				} else if (control instanceof SpritesheetSpriteControl) {
-//					source = ((SpritesheetSpriteControl) control).getModel().getAssetKey();
-//				} else {
-//					source = null;
-//				}
 
-				if (source != null) {
+				if (doMorph) {
 					String id = addMorph(operations, (ISpriteNode) elem, source);
 					afterSelection.add(id);
 				}
@@ -81,13 +74,13 @@ public abstract class AbstractMorphHandler extends AbstractHandler {
 		return null;
 	}
 
-	protected final String addMorph(CompositeOperation operations, ISpriteNode srcNode, IAssetKey assetKey) {
+	protected final String addMorph(CompositeOperation operations, ISpriteNode srcNode, Object source) {
 		// delete source
 		operations.add(new DeleteNodeOperation(srcNode.getModel().getId()));
 
 		// create morph
 		GroupNode parent = srcNode.getGroup();
-		BaseObjectModel dstModel = createMorphModel(srcNode, assetKey, parent);
+		BaseObjectModel dstModel = createMorphModel(srcNode, source, parent);
 
 		@SuppressWarnings("unlikely-arg-type")
 		int i = parent.getNode().getChildren().indexOf(srcNode);
@@ -96,6 +89,6 @@ public abstract class AbstractMorphHandler extends AbstractHandler {
 		return dstModel.getId();
 	}
 
-	protected abstract BaseObjectModel createMorphModel(ISpriteNode srcNode, IAssetKey assetKey, GroupNode parent);
+	protected abstract BaseObjectModel createMorphModel(ISpriteNode srcNode, Object source, GroupNode parent);
 
 }
