@@ -45,6 +45,7 @@ public class TextDialog extends Dialog {
 	private String _title;
 	private String _msg;
 	private Label _msgLabel;
+	private boolean _selectAll;
 
 	/**
 	 * Create the dialog.
@@ -72,11 +73,17 @@ public class TextDialog extends Dialog {
 
 		_text = new Text(container, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.MULTI);
 		_text.setTabs(4);
-		_text.setFont(SWTResourceManager.getFont("Courier New", _text.getFont().getFontData()[0].getHeight(), SWT.NORMAL));
+		_text.setFont(
+				SWTResourceManager.getFont("Courier New", _text.getFont().getFontData()[0].getHeight(), SWT.NORMAL));
 		_text.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		_text.setText(_initText == null ? "{\n}" : _initText);
 		_msgLabel.setText(_msg == null ? "Enter the text:" : _msg);
+
+		if (_selectAll) {
+			_text.selectAll();
+		}
+
 		return container;
 	}
 
@@ -126,6 +133,10 @@ public class TextDialog extends Dialog {
 
 	public void setInitialText(String initText) {
 		_initText = initText;
+	}
+
+	public void setSelectAll(boolean selectAll) {
+		_selectAll = selectAll;
 	}
 
 	/**
