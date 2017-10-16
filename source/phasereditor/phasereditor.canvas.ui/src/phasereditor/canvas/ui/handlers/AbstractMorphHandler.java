@@ -7,11 +7,14 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.window.Window;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.TextModel;
+import phasereditor.canvas.ui.editors.AddSpriteDialog;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
@@ -57,6 +60,15 @@ public abstract class AbstractMorphHandler extends AbstractHandler {
 				if (model instanceof AssetSpriteModel<?>) {
 					source = ((AssetSpriteModel<?>) model).getAssetKey();
 					doMorph = source != null;
+				} else if (model instanceof TextModel) {
+					AddSpriteDialog dlg = new AddSpriteDialog(HandlerUtil.getActiveShell(event), "Select Texture");
+					CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
+					dlg.setProject(editor.getEditorInputFile().getProject());
+					if (dlg.open() == Window.OK) {
+						source = (IAssetKey) dlg.getSelection().getFirstElement();
+					} else {
+						continue;
+					}
 				}
 
 				if (doMorph) {
