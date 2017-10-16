@@ -40,6 +40,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -48,7 +49,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
@@ -73,9 +73,9 @@ public class NewPage_SpriteSettings extends WizardPage {
 	@SuppressWarnings("unused")
 	private DataBindingContext m_bindingContext;
 	private ComboViewer _langComboViewer;
-	private Text _text;
+	private Combo _typeCombo;
 	private EditorSettings _settings;
-	private Button _btnGenerateTheCorrspondant;
+	private Button _btnGenerateTheCorrespondant;
 	private FilteredTree2 _filteredTree;
 	private Object _selectedAsset;
 	private PreviewComp _previewComp;
@@ -100,11 +100,18 @@ public class NewPage_SpriteSettings extends WizardPage {
 		container.setLayout(new GridLayout(2, false));
 
 		Label lblBaseClassName = new Label(container, SWT.NONE);
-		lblBaseClassName.setText("Superclass:");
+		lblBaseClassName.setText("Sprite Type:");
 
-		_text = new Text(container, SWT.BORDER);
-		_text.setText("Phaser.Sprite");
-		_text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		_typeCombo = new Combo(container, SWT.READ_ONLY);
+		_typeCombo.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				validateErrors();
+			}
+		});
+		_typeCombo.setItems(new String[] {"Phaser.Sprite", "Phaser.Button", "Phaser.TileSprite", "Phaser.Text"});
+		_typeCombo.setText("Phaser.Sprite");
+		_typeCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		Label lblCodeFormat = new Label(container, SWT.NONE);
 		lblCodeFormat.setText("Code Format:");
@@ -128,10 +135,10 @@ public class NewPage_SpriteSettings extends WizardPage {
 		_previewComp = new PreviewComp(sashForm, SWT.BORDER);
 		sashForm.setWeights(new int[] { 4, 3 });
 
-		_btnGenerateTheCorrspondant = new Button(container, SWT.CHECK);
-		_btnGenerateTheCorrspondant.setSelection(true);
-		_btnGenerateTheCorrspondant.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 2, 1));
-		_btnGenerateTheCorrspondant.setText("Edit this sprite with the visual editor.");
+		_btnGenerateTheCorrespondant = new Button(container, SWT.CHECK);
+		_btnGenerateTheCorrespondant.setSelection(true);
+		_btnGenerateTheCorrespondant.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 2, 1));
+		_btnGenerateTheCorrespondant.setText("Edit this sprite with the visual editor.");
 		_langComboViewer.setContentProvider(new ArrayContentProvider());
 		_langComboViewer.setLabelProvider(new LangLabelProvider());
 
@@ -141,7 +148,7 @@ public class NewPage_SpriteSettings extends WizardPage {
 	}
 
 	public boolean isGenerateCanvasFile() {
-		return _btnGenerateTheCorrspondant.getSelection();
+		return _btnGenerateTheCorrespondant.getSelection();
 	}
 
 	private void afterCreateWidgets() {
@@ -154,7 +161,7 @@ public class NewPage_SpriteSettings extends WizardPage {
 			validateErrors();
 			previewSelection();
 		});
-		_btnGenerateTheCorrspondant.addSelectionListener(new SelectionListener() {
+		_btnGenerateTheCorrespondant.addSelectionListener(new SelectionListener() {
 
 			@SuppressWarnings("synthetic-access")
 			@Override
@@ -182,13 +189,15 @@ public class NewPage_SpriteSettings extends WizardPage {
 	private void validateErrors() {
 		setErrorMessage(null);
 
-		if (_btnGenerateTheCorrspondant.getSelection()) {
-			IStructuredSelection sel = _assetsViewer.getStructuredSelection();
-			Object elem = sel.getFirstElement();
-			if (elem instanceof IAssetFrameModel || elem instanceof ImageAssetModel) {
-				_selectedAsset = elem;
-			} else {
-				setErrorMessage("Please select a valid asset/frame.");
+		if (_btnGenerateTheCorrespondant.getSelection()) {
+			if (!_typeCombo.getText().equals("Phaser.Text")) {
+				IStructuredSelection sel = _assetsViewer.getStructuredSelection();
+				Object elem = sel.getFirstElement();
+				if (elem instanceof IAssetFrameModel || elem instanceof ImageAssetModel) {
+					_selectedAsset = elem;
+				} else {
+					setErrorMessage("Please select a valid asset/frame.");
+				}
 			}
 		}
 
@@ -212,13 +221,13 @@ public class NewPage_SpriteSettings extends WizardPage {
 		if (lastProject == null || lastProject != project) {
 			_assetsViewer.setInput(project);
 			_assetsViewer.expandToLevel(4);
-			
+
 			NewWizard_Base wizard = (NewWizard_Base) getWizard();
 			IPath path = wizard.getFilePage().getContainerFullPath();
 			SourceLang lang = ProjectCore.getProjectLanguage(path);
 			_langComboViewer.setSelection(new StructuredSelection(lang));
 		}
-		
+
 		validateErrors();
 	}
 
@@ -269,18 +278,18 @@ public class NewPage_SpriteSettings extends WizardPage {
 		support.firePropertyChange(property, true, false);
 	}
 
-	@SuppressWarnings("all")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
-		//
-		IObservableValue observeText_textObserveWidget = WidgetProperties.text(SWT.Modify).observe(_text);
-		IObservableValue settingsbaseClass_selfObserveValue = BeanProperties.value("settings.baseClass").observe(_self);
-		bindingContext.bindValue(observeText_textObserveWidget, settingsbaseClass_selfObserveValue, null, null);
 		//
 		IObservableValue observeSingleSelection_langComboViewer = ViewerProperties.singleSelection()
 				.observe(_langComboViewer);
 		IObservableValue settingslang_selfObserveValue = BeanProperties.value("settings.lang").observe(_self);
 		bindingContext.bindValue(observeSingleSelection_langComboViewer, settingslang_selfObserveValue, null, null);
+		//
+		IObservableValue observeText_textObserveWidget = WidgetProperties.text().observe(_typeCombo);
+		IObservableValue settingsbaseClass_selfObserveValue = BeanProperties.value("settings.baseClass").observe(_self);
+		bindingContext.bindValue(observeText_textObserveWidget, settingsbaseClass_selfObserveValue, null, null);
 		//
 		return bindingContext;
 	}

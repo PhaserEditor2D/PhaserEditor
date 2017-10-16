@@ -224,7 +224,7 @@ public class WorldModel extends GroupModel {
 		List<BaseObjectModel> list = new ArrayList<>(getChildren());
 		Collections.reverse(list);
 		for (BaseObjectModel obj : list) {
-			if (obj instanceof AssetSpriteModel<?>) {
+			if (obj instanceof BaseSpriteModel) {
 				return obj;
 			} else if (obj instanceof MissingAssetSpriteModel) {
 				return obj;

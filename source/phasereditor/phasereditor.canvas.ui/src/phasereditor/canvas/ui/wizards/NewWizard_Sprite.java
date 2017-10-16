@@ -27,9 +27,14 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.json.JSONObject;
 
+import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.canvas.core.BaseSpriteModel;
+import phasereditor.canvas.core.ButtonSpriteModel;
 import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.CanvasType;
+import phasereditor.canvas.core.TextModel;
+import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.core.WorldModel;
 
 /**
@@ -76,8 +81,23 @@ public class NewWizard_Sprite extends NewWizard_Base {
 		WorldModel world = getModel().getWorld();
 
 		if (_settingsPage.isGenerateCanvasFile()) {
-			BaseSpriteModel spriteModel = (BaseSpriteModel) CanvasModelFactory.createModel(world,
-					_settingsPage.getSelectedAsset());
+			BaseSpriteModel spriteModel;
+			Object asset = _settingsPage.getSelectedAsset();
+			switch (_settingsPage.getSettings().getBaseClass()) {
+			case "Phaser.Button":
+				spriteModel = new ButtonSpriteModel(world, (IAssetFrameModel) asset);
+				break;
+			case "Phaser.TileSprite":
+				spriteModel = new TileSpriteModel(world, (IAssetKey) asset);
+				break;
+			case "Phaser.Text":
+				spriteModel = new TextModel(world, "This is a text");
+				break;
+			default:
+				spriteModel = (BaseSpriteModel) CanvasModelFactory.createModel(world, asset);
+				break;
+			}
+
 			world.addChild(spriteModel);
 		}
 

@@ -364,6 +364,12 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				call.valueOrNull(writeTexture, outFrameKey);
 				call.valueOrNull(writeTexture, frameKey(button.getDownFrame()));
 				call.valueOrNull(writeTexture, frameKey(button.getUpFrame()));
+			} else if (model instanceof TextModel) {
+				TextModel sprite = (TextModel) model;
+				call.value("this.game", round(sprite.getX()), round(sprite.getY()));
+				call.valueOrNull(sprite.isOverriding(TextModel.PROPSET_TEXT), "'" + sprite.getText() + "'");
+				call.valueOrNull(sprite.isOverriding(TextModel.PROPSET_TEXT_STYLE),
+						sprite.getPhaserStyleObject().toString());
 			}
 
 			call.append();

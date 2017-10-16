@@ -22,8 +22,10 @@
 package phasereditor.canvas.core.codegen.js5;
 
 import phasereditor.canvas.core.AssetSpriteModel;
+import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.ButtonSpriteModel;
 import phasereditor.canvas.core.CanvasModel;
+import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.core.codegen.JSLikeBaseSpriteCodeGenerator;
 import phasereditor.inspect.core.InspectCore;
@@ -46,12 +48,13 @@ public class JSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 
 		PhaserJSDoc help = InspectCore.getPhaserHelp();
 
-		AssetSpriteModel<?> sprite = (AssetSpriteModel<?>) _model.getWorld().findFirstSprite();
+		BaseSpriteModel sprite = (BaseSpriteModel) _model.getWorld().findFirstSprite();
 
 		String key = "null";
 		String frame = "null";
-		if (sprite != null) {
-			TextureArgs info = getTextureArgs(sprite.getAssetKey());
+
+		if (sprite != null && sprite instanceof AssetSpriteModel) {
+			TextureArgs info = getTextureArgs(((AssetSpriteModel<?>) sprite).getAssetKey());
 			key = info.key;
 			frame = info.frame;
 		}
@@ -105,6 +108,35 @@ public class JSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 			line("aDownFrame || " + frameKey(button.getDownFrame()) + ",");
 			append("aUpFrame || " + frameKey(button.getUpFrame()));
 			closeIndent(");");
+		} else if (sprite instanceof TextModel) {
+			TextModel text = (TextModel) sprite;
+			MethodDoc mdoc = new MethodDoc();
+			mdoc.comment(classname);
+			mdoc.arg("aGame", "Phaser.Game", help.getMethodArgHelp("Phaser.Text", "game"));
+			mdoc.arg("aX", "Number", help.getMethodArgHelp("Phaser.Text", "x"));
+			mdoc.arg("aY", "Number", help.getMethodArgHelp("Phaser.Text", "y"));
+			mdoc.arg("aText", "String", help.getMethodArgHelp("Phaser.Text", "text"));
+			mdoc.arg("aStyle", "Object", help.getMethodArgHelp("Phaser.Text", "style"));
+
+			mdoc.append();
+
+			openIndent("function " + classname + "(aGame, aX, aY, aText, aStyle) {");
+
+			openIndent(baseclass + ".call(this, aGame, aX, aY,");
+			line("aText || '" + text.getText() + "',");
+			line("aStyle || ");
+
+			String[] lines = text.getPhaserStyleObject().toString(4).split("\n");
+			openIndent();
+			for (int i = 0; i < lines.length; i++) {
+				if (i == lines.length - 1) {
+					append(lines[i]);
+				} else {
+					line(lines[i]);
+				}
+			}
+			closeIndent(");");
+			closeIndent();
 		} else {
 			MethodDoc mdoc = new MethodDoc();
 			mdoc.comment(classname);

@@ -65,6 +65,11 @@ public class TextModel extends BaseSpriteModel {
 		super(parent, TYPE_NAME, obj);
 	}
 
+	public TextModel(GroupModel parent, String text) {
+		this(parent);
+		setText(text);
+	}
+	
 	public TextModel(GroupModel parent) {
 		super(parent, TYPE_NAME);
 

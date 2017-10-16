@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.swt.graphics.RGB;
@@ -91,6 +92,25 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 		return _text_property;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * phasereditor.canvas.ui.shapes.BaseSpriteControl#initPrefabPGridModel(java
+	 * .util.List)
+	 */
+	@Override
+	protected void initPrefabPGridModel(List<String> validProperties) {
+		super.initPrefabPGridModel(validProperties);
+		validProperties.addAll(Arrays.asList(
+		// @formatter:off
+				TextModel.PROPSET_TEXT,
+				TextModel.PROPSET_TEXT_STYLE
+		// @formatter:on
+		));
+
+	}
+
 	@Override
 	protected void initPGridModel(PGridModel propModel) {
 		super.initPGridModel(propModel);
@@ -116,6 +136,11 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 			@Override
 			public String getValue() {
 				return getModel().getText();
+			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly(TextModel.PROPSET_TEXT);
 			}
 		};
 		section.add(_text_property);
@@ -143,6 +168,11 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 				public boolean isModified() {
 					return !getModel().getStyleFont().equals(TextModel.DEF_STYLE_FONT);
 				}
+
+				@Override
+				public boolean isReadOnly() {
+					return getModel().isPrefabReadOnly(TextModel.PROPSET_TEXT_STYLE);
+				}
 			});
 		}
 
@@ -165,6 +195,11 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 			@Override
 			public boolean isModified() {
 				return getModel().getStyleFontSize() != TextModel.DEF_STYLE_FONT_SIZE;
+			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly(TextModel.PROPSET_TEXT_STYLE);
 			}
 		});
 
@@ -190,6 +225,11 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 			public boolean isModified() {
 				return getModel().getStyleFontWeight() != FontWeight.BOLD;
 			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly(TextModel.PROPSET_TEXT_STYLE);
+			}
 		});
 
 		section.add(new PGridEnumProperty<FontPosture>(getId(), "style.fontStyle",
@@ -212,6 +252,11 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 			@Override
 			public boolean isModified() {
 				return getModel().getStyleFontStyle() != FontPosture.REGULAR;
+			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly(TextModel.PROPSET_TEXT_STYLE);
 			}
 		});
 
@@ -238,6 +283,11 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 			@Override
 			public RGB getValue() {
 				return ColorButtonSupport.toRGB(getModel().getStyleFill());
+			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly(TextModel.PROPSET_TEXT_STYLE);
 			}
 		});
 
@@ -266,6 +316,11 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 			public RGB getValue() {
 				return ColorButtonSupport.toRGB(getModel().getStyleStroke());
 			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly(TextModel.PROPSET_TEXT_STYLE);
+			}
 		});
 
 		section.add(new PGridNumberProperty(getId(), "style.strokeThickness",
@@ -288,6 +343,11 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 			@Override
 			public boolean isModified() {
 				return getModel().getStyleStrokeThickness() != 0;
+			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly(TextModel.PROPSET_TEXT_STYLE);
 			}
 		});
 
@@ -317,6 +377,11 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 				String c = getModel().getStyleBackgroundColor();
 				return c == null ? null : ColorButtonSupport.toRGB(c);
 			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly(TextModel.PROPSET_TEXT_STYLE);
+			}
 		});
 
 		section.add(new PGridEnumProperty<TextAlignment>(getId(), "style.align",
@@ -339,6 +404,11 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 			@Override
 			public boolean isModified() {
 				return getModel().getStyleAlign() != TextAlignment.LEFT;
+			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly(TextModel.PROPSET_TEXT_STYLE);
 			}
 		});
 
