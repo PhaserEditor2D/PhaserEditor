@@ -94,7 +94,11 @@ public class UpdateBehavior {
 
 		control.updateAllFromModel();
 		_canvas.getZoomBehavior().updateZoomAndPan();
-		_canvas.getSelectionBehavior().setSelection(selection);
+
+		// needed for text controls
+		_canvas.getDisplay().asyncExec(() -> {
+			_canvas.getSelectionBehavior().setSelection(selection);
+		});
 	}
 
 	public void singleRebuildFromPrefab(BaseObjectControl<?> control) {
