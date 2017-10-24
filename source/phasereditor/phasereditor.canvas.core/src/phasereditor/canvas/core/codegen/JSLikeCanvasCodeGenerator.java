@@ -557,6 +557,10 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 			_comment = "";
 		}
 
+		public void arg(String name, String doc) {
+			arg(name, null, doc);
+		}
+		
 		public void arg(String name, String type, String doc) {
 			_argNameList.add(name);
 			_argTypeList.add(type);

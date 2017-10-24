@@ -497,8 +497,8 @@ public class CanvasCore {
 			if (file.exists()) {
 				file.setContents(stream, IResource.NONE, monitor);
 			} else {
-				file.setCharset(charset.name(), monitor);
 				file.create(stream, false, monitor);
+				file.setCharset(charset.name(), monitor);
 			}
 			file.refreshLocal(1, null);
 		} catch (Exception e) {

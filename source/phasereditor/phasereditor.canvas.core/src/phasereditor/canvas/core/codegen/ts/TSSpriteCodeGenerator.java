@@ -22,7 +22,11 @@
 package phasereditor.canvas.core.codegen.ts;
 
 import phasereditor.canvas.core.AssetSpriteModel;
+import phasereditor.canvas.core.BaseSpriteModel;
+import phasereditor.canvas.core.ButtonSpriteModel;
 import phasereditor.canvas.core.CanvasModel;
+import phasereditor.canvas.core.TextModel;
+import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.core.codegen.JSLikeBaseSpriteCodeGenerator;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
@@ -46,50 +50,165 @@ public class TSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator impleme
 		String baseclass = _settings.getBaseClass();
 		PhaserJSDoc help = InspectCore.getPhaserHelp();
 
-		line("/**");
-		line(" * " + classname + ".");
-		line(" * @param aGame " + help.getMethodArgHelp("Phaser.Sprite", "game"));
-		line(" * @param aX " + help.getMethodArgHelp("Phaser.Sprite", "x"));
-		line(" * @param aY " + help.getMethodArgHelp("Phaser.Sprite", "y"));
-		line(" * @param aKey " + help.getMethodArgHelp("Phaser.Sprite", "key"));
-		line(" * @param aFrame " + help.getMethodArgHelp("Phaser.Sprite", "frame"));
-		line(" */");
 		openIndent("class " + classname + " extends " + baseclass + " {");
-		openIndent("constructor(aGame : Phaser.Game, aX : number, aY : number, aKey? : any, aFrame? : any) {");
-		AssetSpriteModel<?> sprite = (AssetSpriteModel<?>) _model.getWorld().findFirstSprite();
+
+		BaseSpriteModel sprite = (BaseSpriteModel) _model.getWorld().findFirstSprite();
+
 		String key = "null";
 		String frame = "null";
-		if (sprite != null) {
-			TextureArgs info = getTextureArgs(sprite.getAssetKey());
+
+		if (sprite != null && sprite instanceof AssetSpriteModel) {
+			TextureArgs info = getTextureArgs(((AssetSpriteModel<?>) sprite).getAssetKey());
 			key = info.key;
 			frame = info.frame;
 		}
-		line();
-		line("super(aGame, aX, aY, aKey === undefined? " + key + " : aKey, aFrame === undefined? " + frame
-				+ " : aFrame);");
 
-		trim( ()->{
+		if (sprite instanceof TileSpriteModel) {
+			TileSpriteModel tile = (TileSpriteModel) sprite;
+
+			MethodDoc mdoc = new MethodDoc();
+			mdoc.comment(classname);
+			mdoc.arg("aGame", help.getMethodArgHelp("Phaser.TileSprite", "game"));
+			mdoc.arg("aX", help.getMethodArgHelp("Phaser.TileSprite", "x"));
+			mdoc.arg("aY", help.getMethodArgHelp("Phaser.TileSprite", "y"));
+			mdoc.arg("aWidth", help.getMethodArgHelp("Phaser.TileSprite", "width"));
+			mdoc.arg("aHeight", help.getMethodArgHelp("Phaser.TileSprite", "height"));
+			mdoc.arg("aKey", help.getMethodArgHelp("Phaser.TileSprite", "key"));
+			mdoc.arg("aFrame", help.getMethodArgHelp("Phaser.TileSprite", "frame"));
+			mdoc.append();
+
+			openIndent(
+					"constructor(aGame : Phaser.Game, aX : number, aY : number, aWidth : number, aHeight : number, aKey : any, aFrame : any) {");
+			openIndent("super(aGame, aX, aY,");
+			line("aWidth == undefined || aWidth == null? " + tile.getWidth() + " : aWidth,");
+			line("aHeight == undefined || aHeight == null? " + tile.getHeight() + " : aHeight,");
+			line("aKey || " + key + ",");
+			append("aFrame || " + frame);
+			closeIndent(");");
+
+		} else if (sprite instanceof ButtonSpriteModel) {
+			ButtonSpriteModel button = (ButtonSpriteModel) sprite;
+			MethodDoc mdoc = new MethodDoc();
+			mdoc.comment(classname);
+			mdoc.arg("aGame", help.getMethodArgHelp("Phaser.Button", "game"));
+			mdoc.arg("aX", help.getMethodArgHelp("Phaser.Button", "x"));
+			mdoc.arg("aY", help.getMethodArgHelp("Phaser.Button", "y"));
+			mdoc.arg("aKey", help.getMethodArgHelp("Phaser.Button", "key"));
+			mdoc.arg("aCallback", help.getMethodArgHelp("Phaser.Button", "callback"));
+			mdoc.arg("aCallbackContext", help.getMethodArgHelp("Phaser.Button", "callbackContext"));
+			mdoc.arg("aOverFrame", help.getMethodArgHelp("Phaser.Button", "overFrame"));
+			mdoc.arg("aOutFrame", help.getMethodArgHelp("Phaser.Button", "outFrame"));
+			mdoc.arg("aDownFrame", help.getMethodArgHelp("Phaser.Button", "downFrame"));
+			mdoc.arg("aUpFrame", help.getMethodArgHelp("Phaser.Button", "upFrame"));
+			mdoc.append();
+
+			openIndent(
+					"constructor(aGame : Phaser.Game, aX : number, aY : number, aKey : any, aCallback : any, aCallbackContext : any, aOverFrame : any, aOutFrame : any, aDownFrame : any, aUpFrame : any) {");
+
+			openIndent("super(");
+			line("aGame, aX, aY,");
+			line("aKey || " + key + ",");
+			line("aCallback || " + emptyStringToNull(button.getCallback()) + ",");
+			line("aCallbackContext /* || " + emptyStringToNull(button.getCallbackContext()) + " */,");
+			line("aOverFrame || " + frameKey(button.getOverFrame()) + ",");
+			line("aOutFrame || " + frameKey(button.getOutFrame()) + ",");
+			line("aDownFrame || " + frameKey(button.getDownFrame()) + ",");
+			append("aUpFrame || " + frameKey(button.getUpFrame()));
+			closeIndent(");");
+		} else if (sprite instanceof TextModel) {
+			TextModel text = (TextModel) sprite;
+			MethodDoc mdoc = new MethodDoc();
+			mdoc.comment(classname);
+			mdoc.arg("aGame", help.getMethodArgHelp("Phaser.Text", "game"));
+			mdoc.arg("aX", help.getMethodArgHelp("Phaser.Text", "x"));
+			mdoc.arg("aY", help.getMethodArgHelp("Phaser.Text", "y"));
+			mdoc.arg("aText", help.getMethodArgHelp("Phaser.Text", "text"));
+			mdoc.arg("aStyle", help.getMethodArgHelp("Phaser.Text", "style"));
+
+			mdoc.append();
+
+			openIndent("constructor(aGame : Phaser.Game, aX : number, aY : number, aText : string, aStyle : any) {");
+
+			openIndent("super(aGame, aX, aY,");
+			line("aText || '" + escapeLines(text.getText()) + "',");
+			line("aStyle || ");
+
+			String[] lines = text.getPhaserStyleObject().toString(4).split("\n");
+			openIndent();
+			for (int i = 0; i < lines.length; i++) {
+				if (i == lines.length - 1) {
+					append(lines[i]);
+				} else {
+					line(lines[i]);
+				}
+			}
+			closeIndent(");");
+			closeIndent();
+		} else {
+			MethodDoc mdoc = new MethodDoc();
+			mdoc.comment(classname);
+			mdoc.arg("aGame", help.getMethodArgHelp("Phaser.Sprite", "game"));
+			mdoc.arg("aX", help.getMethodArgHelp("Phaser.Sprite", "x"));
+			mdoc.arg("aY", help.getMethodArgHelp("Phaser.Sprite", "y"));
+			mdoc.arg("aKey", help.getMethodArgHelp("Phaser.Sprite", "key"));
+			mdoc.arg("aFrame", help.getMethodArgHelp("Phaser.Sprite", "frame"));
+			mdoc.append();
+
+			openIndent("constructor(aGame : Phaser.Game, aX : number, aY : number, aKey : any, aFrame : any) {");
 			line();
-			userCode(_settings.getUserCode().getCreate_before());	
-		} );
+			line("super(aGame, aX, aY, aKey || " + key + ", aFrame || " + frame + ");");
+		}
+
+		// line("/**");
+		// line(" * " + classname + ".");
+		// line(" * @param aGame " + help.getMethodArgHelp("Phaser.Sprite",
+		// "game"));
+		// line(" * @param aX " + help.getMethodArgHelp("Phaser.Sprite", "x"));
+		// line(" * @param aY " + help.getMethodArgHelp("Phaser.Sprite", "y"));
+		// line(" * @param aKey " + help.getMethodArgHelp("Phaser.Sprite",
+		// "key"));
+		// line(" * @param aFrame " + help.getMethodArgHelp("Phaser.Sprite",
+		// "frame"));
+		// line(" */");
+		// openIndent("class " + classname + " extends " + baseclass + " {");
+		// openIndent("constructor(aGame : Phaser.Game, aX : number, aY :
+		// number, aKey? : any, aFrame? : any) {");
+		// AssetSpriteModel<?> sprite = (AssetSpriteModel<?>)
+		// _model.getWorld().findFirstSprite();
+		// String key = "null";
+		// String frame = "null";
+		// if (sprite != null) {
+		// TextureArgs info = getTextureArgs(sprite.getAssetKey());
+		// key = info.key;
+		// frame = info.frame;
+		// }
+		// line();
+		// line("super(aGame, aX, aY, aKey === undefined? " + key + " : aKey,
+		// aFrame === undefined? " + frame
+		// + " : aFrame);");
+
+		trim(() -> {
+			line();
+			userCode(_settings.getUserCode().getCreate_before());
+		});
 	}
 
 	@Override
 	public void generateFooter() {
-		trim( ()->{
+		trim(() -> {
 			line();
-			userCode(_settings.getUserCode().getCreate_after());			
-		} );
-		
+			userCode(_settings.getUserCode().getCreate_after());
+		});
+
 		closeIndent("}");
 
-		trim( ()->{
+		trim(() -> {
 			line();
-			generatePublicFieldDeclarations(this, _model.getWorld());			
-		} );
-		
+			generatePublicFieldDeclarations(this, _model.getWorld());
+		});
+
 		line();
-		
+
 		section("/* sprite-methods-begin */", "/* sprite-methods-end */", getYouCanInsertCodeHere());
 
 		closeIndent("}");
