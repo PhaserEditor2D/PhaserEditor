@@ -60,6 +60,8 @@ public class JSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 		}
 
 		if (sprite instanceof TileSpriteModel) {
+			TileSpriteModel tile = (TileSpriteModel) sprite;
+
 			MethodDoc mdoc = new MethodDoc();
 			mdoc.comment(classname);
 			mdoc.arg("aGame", "Phaser.Game", help.getMethodArgHelp("Phaser.TileSprite", "game"));
@@ -72,13 +74,12 @@ public class JSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 			mdoc.append();
 
 			openIndent("function " + classname + "(aGame, aX, aY, aWidth, aHeight, aKey, aFrame) {");
-
-			line();
-			line("var pKey = aKey === undefined? " + key + " : aKey;");
-			line("var pFrame = aFrame === undefined? " + frame + " : aFrame;");
-			line();
-			line(baseclass + ".call(this, aGame, aX, aY, aWidth, aHeight, pKey, pFrame);");
-
+			openIndent(baseclass + ".call(this, aGame, aX, aY,");
+			line("aWidth == undefined || aWidth == null? " + tile.getWidth() + " : aWidth,");
+			line("aHeight == undefined || aHeight == null? " + tile.getHeight() + " : aHeight,");
+			line("aKey || " + key + ",");
+			append("aFrame || " + frame);
+			closeIndent(");");
 		} else if (sprite instanceof ButtonSpriteModel) {
 			ButtonSpriteModel button = (ButtonSpriteModel) sprite;
 			MethodDoc mdoc = new MethodDoc();

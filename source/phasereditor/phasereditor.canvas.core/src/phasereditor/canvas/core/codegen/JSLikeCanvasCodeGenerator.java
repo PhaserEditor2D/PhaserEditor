@@ -336,8 +336,10 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 						? Integer.toString(((SpritesheetAssetModel.FrameModel) frame).getIndex())
 						: "'" + frame.getKey() + "'";
 
-				call.value("this.game", round(sprite.getX()), round(sprite.getY()), round(sprite.getWidth()),
-						round(sprite.getHeight()));
+				call.value("this.game", round(sprite.getX()), round(sprite.getY()));
+				if (sprite.isOverriding(TileSpriteModel.PROPSET_TILE_SIZE)) {
+					call.value(round(sprite.getWidth()), round(sprite.getHeight()));
+				}
 				call.valueOrUndefined(writeTexture, "'" + sprite.getAssetKey().getAsset().getKey() + "'", frameValue);
 			} else if (model instanceof ButtonSpriteModel) {
 				ButtonSpriteModel button = (ButtonSpriteModel) model;
