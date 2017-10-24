@@ -109,4 +109,8 @@ public class CanvasSettingsComp extends Composite {
 	public void setCanvas(ObjectCanvas canvas) {
 		_pGrid.setCanvas(canvas);
 	}
+	
+	public void refresh() {
+		_pGrid.refresh();
+	}
 }

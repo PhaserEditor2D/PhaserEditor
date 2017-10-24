@@ -83,6 +83,8 @@ public abstract class AbstractMorphHandler extends AbstractHandler {
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 		editor.getCanvas().getUpdateBehavior().executeOperations(operations);
 
+		editor.getSettingsPage().refresh();
+
 		return null;
 	}
 
