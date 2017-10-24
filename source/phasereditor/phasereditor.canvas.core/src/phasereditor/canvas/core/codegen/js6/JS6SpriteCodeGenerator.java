@@ -179,7 +179,7 @@ public class JS6SpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator implem
 				line();
 			});
 			
-			line("super(aGame, aX, aY, aKey || " + key + ", aFrame || " + frame + ");");
+			line("super(aGame, aX, aY, aKey || " + key + ", aFrame  == undefined || aFrame == null? " + frame + " : aFrame);");
 		}
 	}
 
