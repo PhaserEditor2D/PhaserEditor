@@ -78,6 +78,13 @@ public class JS6SpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator implem
 			mdoc.append();
 
 			openIndent("constructor(aGame, aX, aY, aWidth, aHeight, aKey, aFrame) {");
+			
+			trim(() -> {
+				line();
+				userCode(_settings.getUserCode().getCreate_before());
+				line();
+			});
+			
 			openIndent("super(aGame, aX, aY,");
 			line("aWidth == undefined || aWidth == null? " + tile.getWidth() + " : aWidth,");
 			line("aHeight == undefined || aHeight == null? " + tile.getHeight() + " : aHeight,");
@@ -103,15 +110,21 @@ public class JS6SpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator implem
 
 			openIndent("constructor(aGame, aX, aY, aKey, aCallback, aCallbackContext, aOverFrame, aOutFrame, aDownFrame, aUpFrame) {");
 
+			trim(() -> {
+				line();
+				userCode(_settings.getUserCode().getCreate_before());
+				line();
+			});
+			
 			openIndent("super(");
 			line("aGame, aX, aY,");
 			line("aKey || " + key + ",");
 			line("aCallback || " + emptyStringToNull(button.getCallback()) + ",");
 			line("aCallbackContext /* || " + emptyStringToNull(button.getCallbackContext()) + " */,");
-			line("aOverFrame || " + frameKey(button.getOverFrame()) + ",");
-			line("aOutFrame || " + frameKey(button.getOutFrame()) + ",");
-			line("aDownFrame || " + frameKey(button.getDownFrame()) + ",");
-			append("aUpFrame || " + frameKey(button.getUpFrame()));
+			line("aOverFrame == undefined || aOverFrame == null? " + frameKey(button.getOverFrame()) + " : aOverFrame,");
+			line("aOutFrame == undefined || aOutFrame == null? " + frameKey(button.getOutFrame()) + " : aOutFrame,");
+			line("aDownFrame == undefined || aDownFrame == null? " + frameKey(button.getDownFrame()) + " : aDownFrame,");
+			append("aUpFrame == undefined || aUpFrame == null? " + frameKey(button.getUpFrame()) + " : aUpFrame");
 			closeIndent(");");
 		} else if (sprite instanceof TextModel) {
 			TextModel text = (TextModel) sprite;
@@ -127,6 +140,12 @@ public class JS6SpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator implem
 
 			openIndent("constructor(aGame, aX, aY, aText, aStyle) {");
 
+			trim(() -> {
+				line();
+				userCode(_settings.getUserCode().getCreate_before());
+				line();
+			});
+			
 			openIndent("super(aGame, aX, aY,");
 			line("aText || '" + escapeLines(text.getText()) + "',");
 			line("aStyle || ");
@@ -153,14 +172,15 @@ public class JS6SpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator implem
 			mdoc.append();
 
 			openIndent("constructor(aGame, aX, aY, aKey, aFrame) {");
-			line();
+
+			trim(() -> {
+				line();
+				userCode(_settings.getUserCode().getCreate_before());
+				line();
+			});
+			
 			line("super(aGame, aX, aY, aKey || " + key + ", aFrame || " + frame + ");");
 		}
-
-		trim( ()->{
-			line();
-			userCode(_settings.getUserCode().getCreate_before());	
-		} );
 	}
 
 	@Override

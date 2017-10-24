@@ -79,6 +79,14 @@ public class TSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator impleme
 
 			openIndent(
 					"constructor(aGame : Phaser.Game, aX : number, aY : number, aWidth : number, aHeight : number, aKey : any, aFrame : any) {");
+			
+			
+			trim(() -> {
+				line();
+				userCode(_settings.getUserCode().getCreate_before());
+				line();
+			});
+			
 			openIndent("super(aGame, aX, aY,");
 			line("aWidth == undefined || aWidth == null? " + tile.getWidth() + " : aWidth,");
 			line("aHeight == undefined || aHeight == null? " + tile.getHeight() + " : aHeight,");
@@ -105,15 +113,21 @@ public class TSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator impleme
 			openIndent(
 					"constructor(aGame : Phaser.Game, aX : number, aY : number, aKey : any, aCallback : any, aCallbackContext : any, aOverFrame : any, aOutFrame : any, aDownFrame : any, aUpFrame : any) {");
 
+			trim(() -> {
+				line();
+				userCode(_settings.getUserCode().getCreate_before());
+				line();
+			});
+			
 			openIndent("super(");
 			line("aGame, aX, aY,");
 			line("aKey || " + key + ",");
 			line("aCallback || " + emptyStringToNull(button.getCallback()) + ",");
 			line("aCallbackContext /* || " + emptyStringToNull(button.getCallbackContext()) + " */,");
-			line("aOverFrame || " + frameKey(button.getOverFrame()) + ",");
-			line("aOutFrame || " + frameKey(button.getOutFrame()) + ",");
-			line("aDownFrame || " + frameKey(button.getDownFrame()) + ",");
-			append("aUpFrame || " + frameKey(button.getUpFrame()));
+			line("aOverFrame == undefined || aOverFrame == null? " + frameKey(button.getOverFrame()) + " : aOverFrame,");
+			line("aOutFrame == undefined || aOutFrame == null? " + frameKey(button.getOutFrame()) + " : aOutFrame,");
+			line("aDownFrame == undefined || aDownFrame == null? " + frameKey(button.getDownFrame()) + " : aDownFrame,");
+			append("aUpFrame == undefined || aUpFrame == null? " + frameKey(button.getUpFrame()) + " : aUpFrame");
 			closeIndent(");");
 		} else if (sprite instanceof TextModel) {
 			TextModel text = (TextModel) sprite;
@@ -129,6 +143,12 @@ public class TSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator impleme
 
 			openIndent("constructor(aGame : Phaser.Game, aX : number, aY : number, aText : string, aStyle : any) {");
 
+			trim(() -> {
+				line();
+				userCode(_settings.getUserCode().getCreate_before());
+				line();
+			});			
+			
 			openIndent("super(aGame, aX, aY,");
 			line("aText || '" + escapeLines(text.getText()) + "',");
 			line("aStyle || ");
@@ -155,42 +175,15 @@ public class TSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator impleme
 			mdoc.append();
 
 			openIndent("constructor(aGame : Phaser.Game, aX : number, aY : number, aKey : any, aFrame : any) {");
-			line();
-			line("super(aGame, aX, aY, aKey || " + key + ", aFrame || " + frame + ");");
+			
+			trim(() -> {
+				line();
+				userCode(_settings.getUserCode().getCreate_before());
+				line();
+			});
+			
+			line("super(aGame, aX, aY, aKey || " + key + ", aFrame == undefined || aFrame == null? " + frame + " : aFrame);");
 		}
-
-		// line("/**");
-		// line(" * " + classname + ".");
-		// line(" * @param aGame " + help.getMethodArgHelp("Phaser.Sprite",
-		// "game"));
-		// line(" * @param aX " + help.getMethodArgHelp("Phaser.Sprite", "x"));
-		// line(" * @param aY " + help.getMethodArgHelp("Phaser.Sprite", "y"));
-		// line(" * @param aKey " + help.getMethodArgHelp("Phaser.Sprite",
-		// "key"));
-		// line(" * @param aFrame " + help.getMethodArgHelp("Phaser.Sprite",
-		// "frame"));
-		// line(" */");
-		// openIndent("class " + classname + " extends " + baseclass + " {");
-		// openIndent("constructor(aGame : Phaser.Game, aX : number, aY :
-		// number, aKey? : any, aFrame? : any) {");
-		// AssetSpriteModel<?> sprite = (AssetSpriteModel<?>)
-		// _model.getWorld().findFirstSprite();
-		// String key = "null";
-		// String frame = "null";
-		// if (sprite != null) {
-		// TextureArgs info = getTextureArgs(sprite.getAssetKey());
-		// key = info.key;
-		// frame = info.frame;
-		// }
-		// line();
-		// line("super(aGame, aX, aY, aKey === undefined? " + key + " : aKey,
-		// aFrame === undefined? " + frame
-		// + " : aFrame);");
-
-		trim(() -> {
-			line();
-			userCode(_settings.getUserCode().getCreate_before());
-		});
 	}
 
 	@Override
