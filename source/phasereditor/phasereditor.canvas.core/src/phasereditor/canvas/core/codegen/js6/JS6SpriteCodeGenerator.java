@@ -107,7 +107,7 @@ public class JS6SpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator implem
 			line("aGame, aX, aY,");
 			line("aKey || " + key + ",");
 			line("aCallback || " + emptyStringToNull(button.getCallback()) + ",");
-			line("aCallbackContext || " + emptyStringToNull(button.getCallbackContext()) + ",");
+			line("aCallbackContext /* || " + emptyStringToNull(button.getCallbackContext()) + " */,");
 			line("aOverFrame || " + frameKey(button.getOverFrame()) + ",");
 			line("aOutFrame || " + frameKey(button.getOutFrame()) + ",");
 			line("aDownFrame || " + frameKey(button.getDownFrame()) + ",");
@@ -154,10 +154,7 @@ public class JS6SpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator implem
 
 			openIndent("constructor(aGame, aX, aY, aKey, aFrame) {");
 			line();
-			line("var pKey = aKey === undefined? " + key + " : aKey;");
-			line("var pFrame = aFrame === undefined? " + frame + " : aFrame;");
-			line();
-			line("super(aGame, aX, aY, pKey, pFrame);");
+			line("super(aGame, aX, aY, aKey || " + key + ", aFrame || " + frame + ");");
 		}
 		
 		
