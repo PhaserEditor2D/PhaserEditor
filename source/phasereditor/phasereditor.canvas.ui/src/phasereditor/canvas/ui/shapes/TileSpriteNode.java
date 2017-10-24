@@ -72,7 +72,7 @@ public class TileSpriteNode extends Pane implements ISpriteNode {
 		IAssetKey assetKey = _control.getModel().getAssetKey();
 
 		Image image;
-		
+
 		if (assetKey instanceof ImageAssetModel) {
 			image = ImageCache.getFXImage(((ImageAssetModel) assetKey).getUrlFile());
 			Rectangle rect = new Rectangle(0, 0, (int) image.getWidth(), (int) image.getHeight());
@@ -85,7 +85,6 @@ public class TileSpriteNode extends Pane implements ISpriteNode {
 			image = ImageCache.getFXImage(frameModel.getImageFile());
 			_frame = frameModel.getFrameData();
 		}
-
 
 		TileSpriteModel model = _control.getModel();
 
@@ -125,8 +124,13 @@ public class TileSpriteNode extends Pane implements ISpriteNode {
 			y1 = yoffs - (_frame.srcSize.y + _frame.dst.y) * model.getTileScaleY();
 		}
 
+		// the non-trimmed size
 		double w1 = _frame.srcSize.x * model.getTileScaleX();
 		double h1 = _frame.srcSize.y * model.getTileScaleY();
+
+		// the trimmed-real size, but scaled
+		double w2 = w0 * model.getTileScaleX();
+		double h2 = h0 * model.getTileScaleY();
 
 		getChildren().clear();
 
@@ -135,13 +139,20 @@ public class TileSpriteNode extends Pane implements ISpriteNode {
 				ImageView img = new ImageView(image);
 				img.setViewport(new Rectangle2D(x0, y0, w0, h0));
 				img.relocate(x, y);
-				img.setFitWidth(w1);
-				img.setFitHeight(h1);
+				img.setFitWidth(w2);
+				img.setFitHeight(h2);
 				getChildren().add(img);
 			}
 		}
 
 		setClip(new javafx.scene.shape.Rectangle(0, 0, width, height));
+
+		setPrefWidth(width);
+		setPrefHeight(height);
+		setMinWidth(width);
+		setMinHeight(height);
+		setMaxWidth(width);
+		setMaxHeight(height);
 	}
 
 	@Override
