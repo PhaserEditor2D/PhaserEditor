@@ -560,7 +560,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 		public void arg(String name, String doc) {
 			arg(name, null, doc);
 		}
-		
+
 		public void arg(String name, String type, String doc) {
 			_argNameList.add(name);
 			_argTypeList.add(type);
@@ -726,11 +726,13 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 		// always generate data at the end, because it can use previous
 		// properties.
 
-		String data = model.getData();
-		if (data != null && data.trim().length() > 0) {
-			data = data.replace("$$", varname);
-			data = data.replace("\n", "\n" + getIndentTabs());
-			line(varname + ".data = " + data + ";");
+		if (model.isOverriding(BaseSpriteModel.PROPSET_DATA)) {
+			String data = model.getData();
+			if (data != null && data.trim().length() > 0) {
+				data = data.replace("$$", varname);
+				data = data.replace("\n", "\n" + getIndentTabs());
+				line(varname + ".data = " + data + ";");
+			}
 		}
 	}
 
@@ -888,13 +890,17 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 	private void generateTileProps(TileSpriteModel model) {
 		String varname = getLocalVarName(model);
 
-		if (model.getTilePositionX() != 0 || model.getTilePositionY() != 0) {
-			line(varname + ".tilePosition.setTo(" + round(model.getTilePositionX()) + ", "
-					+ round(model.getTilePositionY()) + ");");
+		if (model.isOverriding(TileSpriteModel.PROPSET_TILE_POSITION)) {
+			if (model.getTilePositionX() != 0 || model.getTilePositionY() != 0) {
+				line(varname + ".tilePosition.setTo(" + round(model.getTilePositionX()) + ", "
+						+ round(model.getTilePositionY()) + ");");
+			}
 		}
 
-		if (model.getTileScaleX() != 1 || model.getTileScaleY() != 1) {
-			line(varname + ".tileScale.setTo(" + model.getTileScaleX() + ", " + model.getTileScaleY() + ");");
+		if (model.isOverriding(TileSpriteModel.PROPSET_TILE_SCALE)) {
+			if (model.getTileScaleX() != 1 || model.getTileScaleY() != 1) {
+				line(varname + ".tileScale.setTo(" + model.getTileScaleX() + ", " + model.getTileScaleY() + ");");
+			}
 		}
 
 	}
