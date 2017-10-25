@@ -55,7 +55,7 @@ You can checkout the source code and modify it (EPL License).
 [pe_features]: http://phasereditor.boniatillo.com/blog/features
 [html5gamedevs]: http://www.html5gamedevs.com/profile/8392-arian-fornaris
 [pe_youtube]: https://www.youtube.com/playlist?list=PLB8gI_5U0MvCJuhPv-LBdi_a9PQxYxFqK
-[pe_twitter]: https://twitter.org/boniatillo_com
+[pe_twitter]: https://twitter.com/boniatillo_com
 [pe_facebook]: https://www.facebook.com/phasereditor/
 [pe_downloads]: http://phasereditor.boniatillo.com/blog/downloads
 [ProjectTemplates]: http://phasereditor.boniatillo.com/docs/first_steps.html#create-a-project
