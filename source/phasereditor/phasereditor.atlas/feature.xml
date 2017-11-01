@@ -2,7 +2,7 @@
 <feature
       id="phasereditor.atlas"
       label="Phaser Editor - Atlas"
-      version="1.4.3.20171025"
+      version="1.4.3.20171101"
       provider-name="Arian Fornaris"
       license-feature="org.eclipse.platform"
       license-feature-version="4.7.0.v20170612-1255">

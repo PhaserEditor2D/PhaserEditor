@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Phaser Editor" uid="phasereditor.boniatillo.com" id="phasereditor.ide.product" application="phasereditor.ide.application" version="1.4.3.20171025" useFeatures="true" includeLaunchers="true">
+<product name="Phaser Editor" uid="phasereditor.boniatillo.com" id="phasereditor.ide.product" application="phasereditor.ide.application" version="1.4.3.20171101" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="icons/about.png"/>
       <text>
-         Phaser Editor v1.4.3.20171025
+         Phaser Editor v1.4.3.20171101
 
 Supports Phaser v2.6.2 (built-in)
 
