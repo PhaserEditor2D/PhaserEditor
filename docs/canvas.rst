@@ -134,11 +134,7 @@ The coin scene (with a ``rotate`` animation)...
 	 * @param {any} aFrame If this Sprite is using part of a sprite sheet or texture atlas you can specify the exact frame to use by giving a string or numeric index.
 	 */
 	function Coin(aGame, aX, aY, aKey, aFrame) {
-		
-		var pKey = aKey === undefined? 'coins' : aKey;
-		var pFrame = aFrame === undefined? 1 : aFrame;
-		
-		Phaser.Sprite.call(this, aGame, aX, aY, pKey, pFrame);
+		Phaser.Sprite.call(this, aGame, aX, aY, aKey || 'coins', aFrame == undefined || aFrame == null? 1 : aFrame);
 		this.scale.setTo(0.5, 0.5);
 		var _anim_rotate = this.animations.add('rotate', [0, 1, 2, 3, 4, 5], 5, true);
 		
@@ -159,7 +155,7 @@ The coin scene (with a ``rotate`` animation)...
 
 To create a sprite prefab in the main menu select the ``File > New > Sprite Prefab File`` option. It opens a wizard that in its first page ask for the container folder and the name of the file.
 
-Press the **Next** button to set some needed parameters, the most important is the texture of the sprite:
+Press the **Next** button to set some needed parameters, the most important is the sprite type and texture:
 
 .. image:: images/CreateSpritePrefab.png
 	:alt: Sprite prefab wizard
@@ -298,7 +294,10 @@ The `Preview window <preview_window.html>`_ allow you you to get a closer look t
 	:alt: Add object from the Preview window.
 
 
-You can drag the objects from an image, a texture atlas or a sprite-sheet.
+You can drag the objects from an image, a texture atlas or a sprite-sheet. In case of sprite-sheets, you can select many frames (hold the `Shift` key and move the mouse) and drop them into the scene: new objects will be created but keeping the original positions. This is useful to create tile-based scenes.
+
+.. image:: images/DropSpritesheetFrames.gif
+	:alt: Drop sprite-sheet frames
 
 From the Palette
 ^^^^^^^^^^^^^^^^
@@ -493,7 +492,7 @@ Property                          Documentation
 Transformation tools
 ^^^^^^^^^^^^^^^^^^^^
 
-In addition to set the values directly in the property grid you can change the transformation of an object by selecting it and executing one of the transformation commands. It shows little handlers that you can drag to transform the object. The commands can be executed from the context menu under the ``Object > Transform`` menu, or by pressing the key shortcuts: scale (``S``), rotate (``N``).
+In addition to set the values directly in the property grid you can change the transformation of an object by selecting it and executing one of the transformation commands. It shows little handlers that you can drag to transform the object. The commands can be executed from the context menu under the ``Transform`` menu, the scene toolbar or by pressing the key shortcuts: Scale (``S``), Angle (``N``), Anchor (``H``) and Pivot (``V``). 
 
 .. image:: images/TransformObject.png
 	:alt: Object transformations.
@@ -505,12 +504,14 @@ In addition to set the values directly in the property grid you can change the t
 Prefab instance properties
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-By default the properties of a prefab instance cannot be changed, the ``position`` and ``override`` properties are the exception. The ``override`` property contains the list of properties that can be changed in that prefab instance. It means, that if you want to change the scale of a prefab instance then first step is to "open" the scale property by checking it on the ``override`` list. Note that when a property is not checked in the ``override`` list it is shown as disabled in the Property Grid and cannot be edited.
+By default the properties of a prefab instance cannot be changed, the ``position`` and ``override`` properties are the exception. The ``override`` property contains the list of properties that can be changed in that prefab instance. It means, that if you want to change the scale of a prefab instance then first step is to "open" or "unlock" the scale property by checking it on the ``override`` list. Note that when a property is not checked in the ``override`` list it is shown as disabled in the Property Grid and cannot be edited.
 
-To reset the value of a property to the initial value in the prefab just deselect the property in the ``override`` list.
+To reset the value of a property to the prefab's original value, just deselect the property in the ``override`` list.
 
 .. image:: images/OverridePrefabProperty.png
 	:alt: Override a prefab instance property.
+
+You can open this dialog by selecting the prefab instance and pressing the ``R`` key.
 
 
 Sprite properties
@@ -522,7 +523,7 @@ The ``Phaser.Sprite`` is the common class for all the game objects based on text
 Property                          Documentation
 ================================= =======================================
 ``anchor.x/y``                    The anchor sets the origin point of the texture. The default is 0,0 this means the texture's origin is the top left Setting than anchor to 0.5,0.5 means the textures origin is centered Setting the anchor to 1,1 would mean the textures origin points will be the bottom right corner.
-``tint``                          The tint applied to the sprite. This is a hex value. A value of 0xFFFFFF (white) will remove any tint effect. To edit this value the editor shows the native color dialog.
+``tint``                          The tint applied to the sprite. This is a hex value. A value of 0xFFFFFF (white) will remove any tint effect. To edit this value the editor shows the native color dialog. You can press ``DEL`` to reset the value.
 ``animations``                    A list of animations. This property is explained in the `Animations`_ section.
 ``data``                          An empty object where the user can add custom properties. See the `User data`_ section.
 ``frameName``                     This property is shown only for sprites with a texture based on a texture atlas frame. When the user edits this property it shows a dialog with all the frames of the atlas. Read more in the `Texture`_ section.
@@ -555,7 +556,7 @@ Animations
 
 The ``animations`` property is reference to the ``Phaser.AnimationManager`` of the sprite. This manager contains a list of sprite animations and provide methods to manipulate the animations like ``add``, ``play``, ``stop`` and others.
 
-When the user click to edit the ``animations`` of a sprite it opens a dialog with the list of the animations together with an area to preview them:
+To add animations to a sprite select it and press the ``A`` key, or go to the `animations` property in the properties grid and click on the dialog button.
 
 .. image:: images/AnimationsDialog.png
 	:alt: The animations dialog.
@@ -636,6 +637,7 @@ Property                          Documentation
 
 When the user click to edit any of the ``(over/out/down/up)Frame`` parameters it shows a dialog to select the new frame, from the list of frames of the same texture, atlas or sprite-sheet.
 
+
 TileSprite properties
 ~~~~~~~~~~~~~~~~~~~~~
 
@@ -655,10 +657,33 @@ You can convert any sprite on a tile sprite by selecting it and press ``L``. Thi
 .. image:: images/ResizeTile.png
 	:alt: Resizing a tile.
 
+Text properties
+~~~~~~~~~~~~~~~
+
+These are the Text properties supported by Canvas:
+
+========================== ======================================================
+Property                   Documentation
+========================== ======================================================
+``text``                   The text content (change it by pressing ``Ctrl+T``).
+``style.font``             The name of the font.
+``style.fontSize``         The font size in pixels.
+``style.fontWeight``       ``BOLD`` or ``NORMAL``.
+``style.fontStyle``        ``REGLURA`` or ``ITALIC``.
+``style.fill``             The text stroke color.
+``style.strokeThickness``  The text stroke width.
+``style.backgroundColor``  The background color of the text.
+``style.align``            The text horizontal align (``LEFT``, ``CENTER`` and ``RIGHT``)           
+========================== ======================================================
+
+Phaser Editor uses JavaFX to rennder the scenes but Phaser uses the browser for the same purpose. This mean that in some cases the text object is not rendered in design-time like Phaser renders it in run-time.
+
+Note that Phaser Editor can use the fonts installed in the OS, but the majority of them are not available in all platforms, so we recommend to use safe fonts or load the font files in the CSS of your game.
+
 Group properties
 ~~~~~~~~~~~~~~~~
 
-Many time groups are used as proxy to apply properties or operations to all the children. Here we show the properties supported by the scene editor:
+Many times, groups are used as proxy to apply properties or operations to all the children. Here we show the properties supported by the scene editor:
 
 ========================== ======================================================
 Property                   Documentation
@@ -781,6 +806,7 @@ The configuration of sprite and group scenes are pretty the same, it only contai
 ``isPreloader``               Set to ``true`` if you like to use this state as a preloader state. More is explained in the `Preloader state configuration`_ section.
 ``preloadSprite``             This parameter is shown onny if the ``isPreloader`` parameter is ``true``. When you edit this parameter it shows a dialog to select one of the scene sprites. This sprite will be used as the preload sprite as is explained in the ``Phaser.Loader.setPreloadSprite()`` method: Set a Sprite to be a "preload" sprite by passing it to this method. A "preload" sprite will have its width or height crop adjusted based on the percentage of the loader in real-time. This allows you to easily make loading bars for games. The sprite will automatically be made visible when calling this. 
 ``preloadSprite.direction``   The direction parameter of the ``Phaser.Loader.setPreloadSprite()`` method. It should be ``HORIZONTAL`` or ``VERTICAL``.
+``autoLoad``                  Set to ``false`` if you want to disable the automatic loading of assets. This is very useful when you have a Preloader state where all the assets are loaded, so the rest of states do not need to load them. If you like to load a particular asset then set it on the ``pack`` property. Note that when the ``isPreloader`` property is set to ``true`` the ``autoLoad`` should be ``false``, because all the sections to load are set manually.
 ============================= ======================================================
 
 

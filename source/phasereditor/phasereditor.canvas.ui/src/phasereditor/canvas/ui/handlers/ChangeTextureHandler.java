@@ -10,6 +10,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.assetpack.ui.TextureDialog;
 import phasereditor.canvas.core.BaseSpriteModel;
+import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
@@ -43,11 +44,16 @@ public class ChangeTextureHandler extends AbstractHandler {
 
 	private static void changeText(Shell shell, Object obj) {
 		TextNode text = (TextNode) obj;
-		TextControl control = (TextControl) text.getControl();
-		PGridStringProperty prop = control.getTextProperty();
-		String result = PGridEditingSupport.openLongStringDialog(prop, shell);
-		if (result != null) {
-			PGridEditingSupport.changeUndoablePropertyValue(result, prop);
+
+		if (text.getModel().isOverriding(TextModel.PROPSET_TEXT)) {
+			TextControl control = (TextControl) text.getControl();
+			PGridStringProperty prop = control.getTextProperty();
+			String result = PGridEditingSupport.openLongStringDialog(prop, shell);
+			if (result != null) {
+				PGridEditingSupport.changeUndoablePropertyValue(result, prop);
+			}
+		} else {
+			MessageDialog.openInformation(shell, "Change Text", "The 'text' property is read-only.");
 		}
 	}
 

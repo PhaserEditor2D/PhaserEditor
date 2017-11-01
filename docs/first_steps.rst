@@ -119,7 +119,12 @@ In addition to the **Phaser Project** wizard there is the  **Phaser Example Proj
 - **Phaser Templates**: contains the templates listed in the Phaser github repo.
 - **Phaser Examples**: contains the official Phaser examples. These templates are a great resource to learn and test Phaser features, you can create a project, run it and modify it.
 
-After you select the template you can press **Finish** to create a project with an auto-generated name, or click **Next** to change it.
+After you select the template you can press **Finish** to create a project with an auto-generated name, or click **Next** to change it. In case of the **Phaser Examples** templates, you can select one and play it and see the source code instantaneously, just press the "browser" button.
+
+.. image:: images/PhaserExamples_button.png
+
+You can access all the Phaser Examples locally, just click the Phaser Examples button in the main toolbar, it starts a local server and open the default browser in the Local Phaser Examples Website. In this minimalistic website you can access to the examples, play it and see the code.
+
 
 The Project Explorer
 --------------------
@@ -143,7 +148,27 @@ To run your game there is a button in the main toolbar, it opens the default OS 
 
 To run your game we said that you have to select the project of your game, but really you can select any file or folder of the project, or the file of the active editor can be used to know what project to run.
 
-Phaser Editor has a built-in HTTP server to serve the static content of the projects. The first time you run a project, the server is started and serves all the static content of the workspace. So, in the browser is open an URL like: ``http://localhost:1982/YourGameName/WebContent/index.html``.
+Phaser Editor has a built-in HTTP server to serve the static content of the projects. The first time you run a project, the server is started and serves all the static content of the workspace. So, in the browser is open an URL like: ``http://localhost:1982/projects/YourGameName/WebContent/index.html``.
+
+You can open the game in the experimental **Internal Browser** as well. This browser is embedded into an internal window so you can dock it in the application. When the internal browser is open in the main toolbar you have the option of change the orientation and dimension. This browser is experimental and only works on Windows and MacOS. In case of Windows it uses Internet Explorer, in the case of MacOS, Safari. We noticed this browser has a bad impact on the whole application performance, definitively it is not the best choice to execute your games, but it could be helpful to create video tutorials and similars.
+
+.. image:: images/InternalBrowser.png
+  :alt: Internal browser.
+
+
+Theming
+-------
+
+By default, Phaser Editor disables the Theme Engine. To set it back, open the ``PhaserEditor.ini`` file in the root folder and remove following lines, then restart the editor:
+
+.. code::
+
+  -cssTheme
+  none
+
+If the themes are enabled, then open the Preferences dialog (``Windows > Preferences``) and select the ``General > Appearance`` section. There you can select the theme you like. By default it comes with a dark and light theme, you can install more from the Eclipse Marketplace.
+
+`Learn more about Eclipse themes <http://help.eclipse.org/oxygen/index.jsp?topic=%2Forg.eclipse.platform.doc.user%2Freference%2Fref-16.htm&cp=0_4_1_8>`_ 
 
 Git
 ---

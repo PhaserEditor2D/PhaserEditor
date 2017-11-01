@@ -2,7 +2,7 @@
 <feature
       id="phasereditor.audiosprite"
       label="Phaser Editor - AudioSprite"
-      version="1.4.3.20171007"
+      version="1.4.3.20171025"
       provider-name="Arian Fornaris"
       license-feature="org.eclipse.platform"
       license-feature-version="4.7.0.v20170612-1255">
