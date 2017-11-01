@@ -1,0 +1,284 @@
+<html>
+
+<body>
+
+<p>Hi!</p>
+
+<p>Today we release an exciting new Phaser Editor version.  We added new  <br>
+features like the Text object, the Text, Tile and Button prefabs, the  <br>
+internal browser, the Local Phaser Examples Website and the new  <br>
+<code>autoLoad</code> parameter to get more control of the assets loading. </p>
+
+<h2>Scene editor</h2>
+
+<h3>New Text object</h3>
+
+<p>To create Text (<code>Phaser.Text</code>) objects right click on the scene and  <br>
+select <code>Add.. &gt; Text</code>:</p>
+
+<p><img src="What's new in v1.4.3_files/20171025102824-AddText.png" alt="Add text menu" title=""></p>
+
+<p>It opens a dialog to set the text content:</p>
+
+<p><img src="What's new in v1.4.3_files/20171025102953-AddTextDialog.png" alt="Add text dialog" title=""></p>
+
+<p>For the moment these are the Text parameters supported by Phaser Editor:</p>
+
+<ul>
+<li><code>text</code>: The text content.</li>
+<li><code>style.font</code>: The name of the font.</li>
+<li><code>style.fontSize</code>: The font size in pixels.</li>
+<li><code>style.fontWeight</code>: <code>BOLD</code> or <code>NORMAL</code>.</li>
+<li><code>style.fontStyle</code>: <code>REGULAR</code> or <code>ITALIC</code>.</li>
+<li><code>style.fill</code>: The text color.</li>
+<li><code>style.stroke</code>: The text stroke color.</li>
+<li><code>style.strokeThickness</code>: The stroke width.</li>
+<li><code>style.backgroundColor</code>: The background color of the text.</li>
+<li><code>style.align</code>: The text horizontal alignment (<code>LEFT</code>, <code>CENTER</code>,  <br>
+<code>RIGHT</code>)</li>
+</ul>
+
+<p>A Text object is generated to code like this:</p>
+
+<pre><code>this.add.text(340, 212, 'Hello', {
+        "font" : "bold 20px Arial",
+        "align" : "center"
+    });</code></pre>
+
+<p>To change the content of a Text object select it and press <code>Ctrl+T</code>.</p>
+
+<h4>Text prefabs</h4>
+
+<p>Text Prefab is the method we recommend to create different Text objects  <br>
+with the same style and behavior.  A Text prefab is like any other  <br>
+sprite prefab, but it extends the <code>Phaser.Text</code> class.</p>
+
+<p>To create a Text prefab select <code>File &gt; New &gt; Sprite Prefab File</code>,  <br>
+it opens the New Sprite wizard. In the first page enter the name of the  <br>
+prefab and press Next. On the following page select the <code>Phaser.Text</code>  <br>
+value of the <strong>Sprite Type</strong> parameter:</p>
+
+<p><img src="What's new in v1.4.3_files/20171025133805-NewTextPrefabWizard.png" alt="New Text prefab wizard" title=""></p>
+
+<p>To create Text prefab instances just drag the prefab from the Assets  <br>
+window and drop it in the scene. To change the content or style of a  <br>
+Text prefab instance you have to override the <code>text</code> or <code>textStyle</code>  <br>
+property. Just select the object and press <code>R</code>, it opens the Prefab  <br>
+Override dialog, where you can select the properties to override:</p>
+
+<p><img src="What's new in v1.4.3_files/20171025134333-TextPrefabInstanceOverride.png" alt="Override text properties" title=""></p>
+
+<h4>Custom fonts</h4>
+
+<p>The Text objects use the fonts installed on your system, keep this in  <br>
+mind when you use custom fonts. Not all fonts are available on all the  <br>
+platforms. You always have the option of pack the font file together  <br>
+with the game and load it via CSS.</p>
+
+<p>Phaser Editor uses JavaFX to render the scene but Phaser uses the  <br>
+browser, this could result in different metrics. For the next release,  <br>
+we will try to mimic how Phaser layout fonts to provide a more accurate  <br>
+design-time rendering.</p>
+
+<h3>Support for Text, Tile and Button prefabs</h3>
+
+<p>Like sprite and group prefabs, text, tile and button prefabs could be  <br>
+very useful in your game. In the previous section, we explained how to  <br>
+create a Text prefab, the other type of sprite prefabs can be created in <br>
+ the same way.</p>
+
+<p>In the main menu select <code>File &gt; New &gt; Sprite Prefab File</code> to open  <br>
+the wizard. In the first page set the prefab name. In the second page  <br>
+select the type of the prefab and the texture (not required for the  <br>
+<code>Phaser.Text</code> type). </p>
+
+<h4>Object morphing</h4>
+
+<p>It is possible that you create a prefab but later you need to change its <br>
+ type, in that case, you can just morph it into the desired type. Just  <br>
+right-click on the object and select <code>Sprite &gt; Morph To.. &gt; (  <br>
+Sprite | Tile Sprite | Button | Text)</code>.</p>
+
+<h3>More loader control</h3>
+
+<p>We introduced a new <code>autoLoad</code> parameter that you can use in State  <br>
+scenes to disable the automatic loading of the assets. </p>
+
+<p>By default, when you drop an object into a State scene, the texture is  <br>
+loaded in the <code>preload</code> method of the generated code. However, in bigger <br>
+ games, you would like to get full control of when to load the assets,  <br>
+for example, a common pattern is to load all of them in a Preloader  <br>
+state.</p>
+
+<p>If you want to disable the automatic loading of the assets, then set the <br>
+ <code>autoLoad</code> parameter to <code>false</code>. You can find this parameter in the  <br>
+<code>Configuration</code> tab in the <code>state&gt; Preload</code> section.</p>
+
+<p>If the <code>autoLoad</code> parameter is set to <code>false</code>, only those section listed <br>
+ in the <code>pack</code> parameter will be loaded.</p>
+
+<p><img src="What's new in v1.4.3_files/20171025151011-autoLoadParameter.png" alt="Auto Load parameter" title=""></p>
+
+<h3>Keep layout when dropping sprite-sheet frames</h3>
+
+<p>Often pixel artists deliver their art in form of sprite-sheets where the <br>
+ layout of the frames is important. Now in Phaser Editor you can select  <br>
+the frames of a sprite-sheet shown in the Preview window and drop them  <br>
+into a scene:</p>
+
+<p><img src="What's new in v1.4.3_files/20171025153903-drop-sprite-sheet-frames.gif" alt="Drop sprite-sheet frames" title=""></p>
+
+<p>To select the frames hold the <code>Shift</code> key and move the mouse over  <br>
+frames. To clear the selection press <code>ESC</code>.</p>
+
+<h3>Pivot transformation</h3>
+
+<p>To change the pivot of an object (sprite or group), right click on the  <br>
+object and select <code>Transform &gt; Pivot</code> (or press <code>V</code>). Like the rest  <br>
+of transformation tools, the Pivot transformation tool allows you to  <br>
+change the pivot by dragging a handler to the desired position. </p>
+
+<p>In combination with groups and tweens, the pivot transformation tool  <br>
+allows creating bones-like animations. Probably we are going to write a  <br>
+small tutorial about it.</p>
+
+<h3>Others</h3>
+
+<ul>
+<li>Press the <code>U</code> key to select the parent of an object.</li>
+<li>When an object is selected in the scene it is revealed in the outline  <br>
+window.</li>
+<li>The animation dialog scales the images to fit the window, and the  <br>
+frames on the left side panel can be in-line previewed.</li>
+<li>Code generator uses UTF-8 encoding by default.</li>
+<li>The <code>A</code> key opens the animations dialog.</li>
+<li>The <code>R</code> key opens the Prefab Override dialog.</li>
+<li>Press <code>DEL</code> to reset the value of a color property (like <code>tint</code>) in  <br>
+the properties grid.</li>
+<li>Added the transformation icons to the scene toolbar: <br>
+<img src="What's new in v1.4.3_files/20171026152311-TransformIconsInToolbar.png" alt="Tansformation icons" title=""></li>
+</ul>
+
+<h2>Preview window improvements</h2>
+
+<p>The Preview window received some love, images now can be scaled to be  <br>
+more readable.</p>
+
+<h3>Atlas preview</h3>
+
+<p>You can preview an atlas asset in three different modes: Tiles  <br>
+(default), List and Texture (or Original). To change from one mode to  <br>
+other, click on the toolbar buttons:</p>
+
+<p><img src="What's new in v1.4.3_files/20171026094847-atlas.gif" alt="Atlas preview" title=""></p>
+
+<h4>Tiles mode</h4>
+
+<p>The Tile mode is the default mode is open when you drop an atlas asset  <br>
+in the Preview window. In this mode, the atlas sprites are scaled to a  <br>
+fixed size and placed in rows and columns. You can scroll in/out the  <br>
+mouse to zoom the sprites.</p>
+
+<h3>Sprite-sheet preview</h3>
+
+<p>Now the sprite-sheet preview image can be scaled by scrolling the mouse. <br>
+ Individual frames can be played by selecting them and pressing the play <br>
+ button:</p>
+
+<p><img src="What's new in v1.4.3_files/20171026100035-sprites2.gif" alt="Sprite sheet preview" title=""></p>
+
+<p>As mentioned in a previous section, now you can select some frames and  <br>
+drop them into a scene, and keep the same layout. This is very useful if <br>
+ you like to create maps like you do in tools like Tiled.</p>
+
+<h2>Local Examples Website</h2>
+
+<p>The Local Examples Website is a small website running in localhost where <br>
+ you can browse the Phaser official examples. To access this click on  <br>
+this button in the toolbar:</p>
+
+<p><img src="What's new in v1.4.3_files/20171026090850-LaunchLoalWebSite.png" alt="Launch the Examples Local Website" title=""></p>
+
+<p>It starts the local HTTP server and opens the OS browser on the local  <br>
+website address. The website is very simple and minimalist, in there you <br>
+ can browse all the Phaser examples, run it and see the code. The  <br>
+advantage of this website is that you don’t need a fast internet to get  <br>
+quickly into the Phaser examples. The drawback is that some examples  <br>
+just do not work cause it depends on third-party plugins. Progressively  <br>
+we are going to fix them.</p>
+
+<p><img src="What's new in v1.4.3_files/20171026091303-ExamplesLocalWebsiteIndex.png" alt="Index of the Local Examples Website" title=""></p>
+
+<h3>Launch from project wizard</h3>
+
+<p>A nice advantage to have the examples running locally is that you can  <br>
+launch an example quickly from different sources, like from a Phaser  <br>
+Example Project wizard.</p>
+
+<p>The Phaser Example Project wizard allows you to select one of the Phaser <br>
+ examples and create a project with it, but now you have the option of  <br>
+runs the example before to create the project, just select the example  <br>
+and press the “browse” button:</p>
+
+<p><img src="What's new in v1.4.3_files/20171026092247-LaunchLoalWebSite_FromProjectWizard.png" alt="Play example from project wizard" title=""></p>
+
+<p><img src="What's new in v1.4.3_files/20171026092644-LaunchLoalWebSite_Example.png" alt="Example in the local website" title=""></p>
+
+<h3>Launch from Chains example</h3>
+
+<p>Like in the Phaser Example Project wizard, you can launch an example  <br>
+from a Chains query result. The unique difference is that in this case,  <br>
+the browser will scroll to the selected line.</p>
+
+<p><img src="What's new in v1.4.3_files/20171026093220-LaunchLoalWebSite_FromChains.png" alt="Launch local website from Chains" title=""></p>
+
+<h2>Internal browser  (experimental)</h2>
+
+<p>Eclipse allows embedding an external browser in an internal window, with <br>
+ this component we created a simple game player that you can run inside  <br>
+Phaser Editor.</p>
+
+<p>To run a project in the internal player just click on this button:</p>
+
+<p><img src="What's new in v1.4.3_files/20171026110011-InternalBrowser.png" alt="Internal browser" title=""></p>
+
+<p>Note there are two other buttons to select the screen resolution and  <br>
+rotate the “device”.</p>
+
+<p>This is a nice feature but with a bad support. In Windows it only  <br>
+supports Internet Explorer, in Linux, it just does not work and in MacOS <br>
+ it supports Safari. MacOS is the platform where this better works. In  <br>
+addition, if you keep the player window open, the whole IDE painting is  <br>
+degraded because the game rendering runs in the same thread of the IDE  <br>
+painting. Probably this internal player is good just for creating video  <br>
+tutorials and screenshots, but was easy and funny to do ;-)</p>
+
+<h2>Others</h2>
+
+<ul>
+<li>Better HiDPI monitors support (@2x icons).</li>
+<li>Themes are disabled by default. We feel the IDE runs better when the  <br>
+theming engine is off. If you like to enable them (we know some users  <br>
+prefer to go dark) then open the <code>PhaserEditor.ini</code> file in the root  <br>
+folder and remove the lines:</li>
+</ul>
+
+<pre><code>-cssTheme
+none</code></pre>
+
+<p>This is another update, there is a lot more to come. We look forward to  <br>
+supporting Bitmap Font and Tilemap objects. </p>
+
+<p>Keep in contact with us!</p>
+
+<p><a href="https://github.com/boniatillo-com/PhaserEditor/projects/1">Follow tasks progress</a>. <br>
+<a href="https://twitter.com/boniatillo_com">Follow us on Twitter</a> <br>
+<a href="http://www.facebook.com/PhaserEditor">Follow us on Facebook</a> <br>
+<a href="http://eepurl.com/bCyfNH">Subscribe to our newsletter</a></p>
+
+<p>See you soon! <br>
+Arian</p>
+
+</body>
+
+</html>
