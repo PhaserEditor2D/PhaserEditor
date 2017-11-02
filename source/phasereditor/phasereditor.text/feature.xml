@@ -2,7 +2,7 @@
 <feature
       id="phasereditor.text"
       label="Phaser Editor - JS Editor Integration"
-      version="1.4.3.20171101"
+      version="1.4.3.20171102"
       provider-name="Arian Fornaris"
       license-feature="org.eclipse.platform"
       license-feature-version="4.7.0.v20170612-1255">
