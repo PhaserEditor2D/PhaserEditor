@@ -47,7 +47,7 @@ Copyright (c) Arian Fornaris 2015-2017
    <launcherArgs>
       <programArgs>-cssTheme none
       </programArgs>
-      <programArgsLin>--launcher.GTK_version 2 -persistState false
+      <programArgsLin>--launcher.GTK_version 2
       </programArgsLin>
       <vmArgs>-Dosgi.requiredJavaVersion=1.8 -Declipse.p2.unsignedPolicy=allow -Dorg.osgi.framework.bundle.parent=ext -Dosgi.framework.extensions=org.eclipse.fx.osgi
       </vmArgs>
