@@ -29,8 +29,8 @@ Before to run the editor you should set execution permission to some programs bu
 .. code-block:: bash
 
   $ cd "Phaser Editor"
-  $ chmod +x SetExecPermissions.sh
-  $ ./SetExecPermissions.sh
+  $ chmod +x SetExecPermission.sh
+  $ ./SetExecPermission.sh
 
 
 Then run the editor as any other Linux program:
