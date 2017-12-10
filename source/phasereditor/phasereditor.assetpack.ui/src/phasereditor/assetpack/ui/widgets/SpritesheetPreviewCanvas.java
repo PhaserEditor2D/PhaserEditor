@@ -30,6 +30,8 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -51,6 +53,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 	private boolean _controlPressed;
 	private List<Integer> _selectedFrames = new ArrayList<>();
 	private boolean _shiftPressed;
+	private Font _font;
 
 	public SpritesheetPreviewCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -59,6 +62,16 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 		addMouseMoveListener(this);
 		addMouseListener(this);
 		addKeyListener(this);
+
+		FontData fd = getFont().getFontData()[0];
+		_font = new Font(getDisplay(), new FontData(fd.getName(), fd.getHeight(), SWT.BOLD));
+		setFont(_font);
+	}
+	
+	@Override
+	public void dispose() {
+		super.dispose();
+		_font.dispose();
 	}
 
 	@Override
@@ -137,7 +150,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 					gc.setAlpha(125);
 					if (r.width >= 16) {
 						gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_RED));
-						//gc.drawRectangle(r.x, r.y, r.width, r.height);
+						// gc.drawRectangle(r.x, r.y, r.width, r.height);
 						gc.drawLine(r.x, r.y, r.x, r.y + r.height);
 						gc.drawLine(r.x, r.y, r.x + r.width, r.y);
 					}
@@ -145,12 +158,12 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 
 					i++;
 				}
-				
 
 				{
 					boolean paintIndexLabels = true;
+
 					for (FrameData fd : _rects) {
-						Rectangle r = fd.dst;
+						Rectangle r = calc.imageToScreen(fd.dst);
 						if (r.width < 64 || r.height < 64) {
 							paintIndexLabels = false;
 							break;
@@ -167,12 +180,19 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 							String label = Integer.toString(i);
 							Point labelRect = gc.stringExtent(Integer.toString(i));
 							int left = r.x + r.width / 2 - labelRect.x / 2;
-							int top = Math.min(r.y + r.height + 5, getBounds().height - labelRect.y - 5);
-							gc.setAlpha(200);
-							gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
-							gc.fillRectangle(left - 2, top, labelRect.x + 4, labelRect.y);
-							gc.setAlpha(255);
+							int top = r.y + r.height / 2 - labelRect.y / 2;
+
+							// gc.setAlpha(200);
+							// gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
+							// gc.fillRectangle(left - 2, top, labelRect.x + 4,
+							// labelRect.y);
+							// gc.setAlpha(255);
+
 							gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLACK));
+							gc.drawString(label, left - 1, top + 1, true);
+							gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLACK));
+							gc.drawString(label, left + 1, top - 1, true);
+							gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
 							gc.drawString(label, left, top, true);
 							i++;
 						}
