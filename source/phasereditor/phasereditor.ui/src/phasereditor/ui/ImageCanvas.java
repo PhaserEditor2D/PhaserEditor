@@ -157,9 +157,11 @@ public class ImageCanvas extends Canvas implements PaintListener, IZoomable {
 
 		@Override
 		public void mouseEnter(MouseEvent e) {
-			if (!isFocusControl()) {
-				setFocus();
-			}
+			// This is silly!
+			
+//			if (!isFocusControl()) {
+//				setFocus();
+//			}
 		}
 
 		@Override
