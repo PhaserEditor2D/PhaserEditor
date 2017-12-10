@@ -24,8 +24,10 @@ package phasereditor.canvas.ui.editors.grid.editors;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeanProperties;
@@ -209,7 +211,7 @@ public class AnimationsDialog extends Dialog {
 		gl_composite_2.marginHeight = 0;
 		composite_2.setLayout(gl_composite_2);
 
-		_framesViewer = new TableViewer(composite_2, SWT.BORDER | SWT.FULL_SELECTION | SWT.SINGLE);
+		_framesViewer = new TableViewer(composite_2, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);
 		_table = _framesViewer.getTable();
 		_table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
@@ -282,9 +284,19 @@ public class AnimationsDialog extends Dialog {
 
 	protected void deleteFrame() {
 		int[] sel = _framesViewer.getTable().getSelectionIndices();
-		for (int i : sel) {
-			_anim.getFrames().remove(i);
+
+		Arrays.sort(sel);
+
+		for (int i = 0; i < sel.length; i++) {
+			int index = sel[i];
+			_anim.getFrames().remove(index);
+
+			// decrement the remaining index
+			for (int j = i + 1; j < sel.length; j++) {
+				sel[j]--;
+			}
 		}
+
 		_framesViewer.refresh();
 		playAnimation();
 	}
@@ -395,14 +407,18 @@ public class AnimationsDialog extends Dialog {
 		Transfer[] transfers = new Transfer[] { LocalSelectionTransfer.getTransfer() };
 		_framesViewer.addDragSupport(operations, transfers, new DragSourceListener() {
 
-			private int _data;
-
-			@Override
-			public void dragStart(DragSourceEvent event) {
-				_data = _framesViewer.getTable().getSelectionIndex();
-			}
+			private Object[] _data;
 
 			@SuppressWarnings("boxing")
+			@Override
+			public void dragStart(DragSourceEvent event) {
+				int[] sel = _framesViewer.getTable().getSelectionIndices();
+				_data = new Object[sel.length];
+				for (int i = 0; i < sel.length; i++) {
+					_data[i] = sel[i];
+				}
+			}
+
 			@Override
 			public void dragSetData(DragSourceEvent event) {
 				event.data = _data;
@@ -432,36 +448,35 @@ public class AnimationsDialog extends Dialog {
 					return false;
 				}
 
-				List<IAssetFrameModel> frames = _anim.getFrames();
+				List<IAssetFrameModel> original = _anim.getFrames();
+
+				List<IAssetFrameModel> result = new ArrayList<>(original);
 
 				Object[] elems = ((IStructuredSelection) data).toArray();
-				int target = _target;
 
-				int i = (int) elems[0];
+				List<IAssetFrameModel> toMove = new ArrayList<>();
 
-				if (i == _target) {
-					return false;
+				for (int i = 0; i < elems.length; i++) {
+					int index = (int) elems[i];
+					toMove.add(original.get(index));
+					result.set(index, null);
 				}
-
-				IAssetFrameModel toMove = frames.get(i);
-
-				if (i < _target) {
-					target--;
-				}
-
-				frames.remove(i);
 
 				switch (_location) {
 				case LOCATION_ON:
 				case LOCATION_BEFORE:
-					frames.add(target, toMove);
+					result.addAll(_target, toMove);
 					break;
 				case LOCATION_AFTER:
-					frames.add(target + 1, toMove);
+					result.addAll(_target + 1, toMove);
 					break;
 				default:
 					break;
 				}
+
+				// we clear and add to keep the same array reference.
+				original.clear();
+				original.addAll(result.stream().filter(e -> e != null).collect(Collectors.toList()));
 
 				_framesViewer.refresh();
 
@@ -471,7 +486,6 @@ public class AnimationsDialog extends Dialog {
 			@Override
 			public void dragOver(DropTargetEvent event) {
 				_location = determineLocation(event);
-				// _target = (int) determineTarget(event);
 				TableItem item = (TableItem) event.item;
 				if (item == null) {
 					_target = -1;
