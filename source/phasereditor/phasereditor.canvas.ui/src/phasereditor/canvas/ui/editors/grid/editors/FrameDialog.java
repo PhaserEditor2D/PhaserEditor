@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid.editors;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -57,7 +58,7 @@ public class FrameDialog extends Dialog {
 	private Object _selection;
 	private boolean _allowNull;
 	private boolean _allowMultipleSelection;
-	private List<?> _multipleResult;
+	private List<?> _multipleResult = Collections.emptyList();
 
 	/**
 	 * Create the dialog.

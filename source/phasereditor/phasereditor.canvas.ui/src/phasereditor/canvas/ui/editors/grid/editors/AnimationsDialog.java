@@ -97,6 +97,7 @@ public class AnimationsDialog extends Dialog {
 	private Button _loopButton;
 	private AnimationModel _anim;
 	private FrameAnimationCanvas _canvas;
+	private FrameDialog _frameDialog;
 
 	/**
 	 * Create the dialog.
@@ -289,19 +290,37 @@ public class AnimationsDialog extends Dialog {
 	}
 
 	protected void addFrame() {
-		FrameDialog dlg = new FrameDialog(getParentShell());
-		dlg.setAllowMultipleSelection(true);
-		dlg.setAllowNull(false);
-		dlg.setFrames(_allFrames);
+		closeFrameDialog();
 
-		if (dlg.open() == Window.OK) {
+		_frameDialog = new FrameDialog(getParentShell());
+		_frameDialog.setAllowMultipleSelection(true);
+		_frameDialog.setAllowNull(false);
+		_frameDialog.setFrames(_allFrames);
+
+		if (_frameDialog.open() == Window.OK) {
 			List<IAssetFrameModel> list = new ArrayList<>();
-			for (Object obj : dlg.getMultipleResult()) {
+
+			for (Object obj : _frameDialog.getMultipleResult()) {
 				list.add((IAssetFrameModel) obj);
 			}
-			_anim.getFrames().addAll(list);
-			_framesViewer.refresh();
-			playAnimation();
+
+			// if the dialog is closed, the list is empty, so do nothing,
+			// widgets are disposed
+			if (!list.isEmpty()) {
+				_anim.getFrames().addAll(list);
+				_framesViewer.refresh();
+				playAnimation();
+			}
+		}
+	}
+
+	private void closeFrameDialog() {
+		if (_frameDialog != null) {
+			try {
+				_frameDialog.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -311,6 +330,13 @@ public class AnimationsDialog extends Dialog {
 		_canvas.setModel(null);
 
 		super.buttonPressed(buttonId);
+	}
+
+	@Override
+	public boolean close() {
+		closeFrameDialog();
+
+		return super.close();
 	}
 
 	private void afterCreateWidgets() {
