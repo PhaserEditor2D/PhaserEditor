@@ -100,6 +100,7 @@ public class AssetMoveWizardPage extends UserInputWizardPage {
 	}
 
 	protected final void validatePage() {
+		fRefactoringProcessor.setDstSection(getSelectedSection());
 		RefactoringStatus status = fRefactoringProcessor.validateDestiny(getSelectedSection());
 		setPageComplete(status);
 	}

@@ -425,6 +425,7 @@ public class CanvasCore {
 		}
 
 		JSONObject worldData = canvasFileData.getJSONObject("world");
+
 		forEachJSONReference_object(worldData, visitor);
 	}
 
@@ -471,17 +472,16 @@ public class CanvasCore {
 			String fname = inputFile.getFullPath().removeFileExtension()
 					.addFileExtension(canvasModel.getSettings().getLang().getExtension()).lastSegment();
 
-			 
 			IFile file = inputFile.getParent().getFile(new Path(fname));
 
 			Charset charset;
-			
+
 			if (file.exists()) {
 				charset = Charset.forName(file.getCharset());
 			} else {
 				charset = Charset.forName("UTF-8");
 			}
-			
+
 			String replace = null;
 
 			if (file.exists()) {

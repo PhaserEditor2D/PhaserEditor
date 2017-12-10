@@ -62,7 +62,7 @@ public class AssetMoveInCanvasParticipant extends MoveParticipant {
 
 			for (CanvasFile cfile : cfiles) {
 				try {
-					JSONObject data = cfile.newInstance();
+					JSONObject data = cfile.readData();
 					CanvasCore.forEachJSONReference(data, ref -> {
 						for (int i = 0; i < _list.size(); i++) {
 							String asset = _list.getAssetName(i);
@@ -103,17 +103,18 @@ public class AssetMoveInCanvasParticipant extends MoveParticipant {
 		}
 
 		MoveAssetsArguments args = (MoveAssetsArguments) getArguments();
-		
+
 		if (args.isInDirtyEditor()) {
 			status.addFatalError("The asset is open in a dirty editor. Save before to move.");
 		}
-		
+
 		return status;
 	}
 
 	@Override
 	public Change createChange(IProgressMonitor pm) throws CoreException, OperationCanceledException {
-		return new MoveAssetsInCanvasChange(_list);
+		MoveAssetsInCanvasChange change = new MoveAssetsInCanvasChange(_list);
+		return change;
 	}
 
 }

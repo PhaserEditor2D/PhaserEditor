@@ -103,6 +103,10 @@ public class CanvasFile {
 	}
 
 	public JSONObject newInstance() throws Exception {
+		return readData();
+	}
+
+	public final JSONObject readData() throws Exception {
 		try (InputStream contents = _file.getContents()) {
 			return new JSONObject(new JSONTokener(contents));
 		}

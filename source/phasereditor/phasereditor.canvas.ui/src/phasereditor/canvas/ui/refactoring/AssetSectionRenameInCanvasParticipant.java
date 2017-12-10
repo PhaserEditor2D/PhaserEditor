@@ -67,7 +67,7 @@ public class AssetSectionRenameInCanvasParticipant extends RenameParticipant {
 				_affectedFiles = new HashSet<>();
 
 				for (CanvasFile cfile : cfiles) {
-					JSONObject data = cfile.newInstance();
+					JSONObject data = cfile.readData();
 					CanvasCore.forEachJSONReference(data, ref -> {
 						String name = ref.getString("section");
 						if (initialName.equals(name)) {
