@@ -28,7 +28,6 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -66,14 +65,15 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 		_overIndex = -1;
 
 		addPaintListener(this);
-		addMouseTrackListener(new MouseTrackAdapter() {
-			@Override
-			public void mouseEnter(MouseEvent e) {
-				if (!isFocusControl()) {
-					forceFocus();
-				}
-			}
-		});
+		// this is silly!
+//		addMouseTrackListener(new MouseTrackAdapter() {
+//			@Override
+//			public void mouseEnter(MouseEvent e) {
+//				if (!isFocusControl()) {
+//					forceFocus();
+//				}
+//			}
+//		});
 		addMouseMoveListener(new MouseMoveListener() {
 
 			@SuppressWarnings("synthetic-access")
