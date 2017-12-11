@@ -32,11 +32,14 @@ import org.eclipse.ui.ide.IDE;
 import org.json.JSONObject;
 
 import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.ButtonSpriteModel;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.GroupModel;
+import phasereditor.canvas.core.TextModel;
+import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
 import phasereditor.canvas.ui.CanvasUI;
@@ -107,13 +110,14 @@ public class CreatePrefabHandler extends AbstractHandler {
 
 			CanvasModel newModel = new CanvasModel(null);
 
-			CanvasType type = selModel instanceof GroupModel ? CanvasType.GROUP : CanvasType.SPRITE;
-			newModel.setType(type);
+			CanvasType canvasType = selModel instanceof GroupModel ? CanvasType.GROUP : CanvasType.SPRITE;
+			newModel.setType(canvasType);
 
 			String name = file.getFullPath().removeFileExtension().lastSegment();
 
 			EditorSettings settings = newModel.getSettings();
-			settings.setBaseClass(CanvasCodeGeneratorProvider.getDefaultBaseClassFor(type));
+			
+			settings.setBaseClass(CanvasCodeGeneratorProvider.getDefaultBaseClassFor(canvasType));
 			SourceLang lang = node.getControl().getCanvas().getEditor().getModel().getSettings().getLang();
 			settings.setLang(lang);
 			settings.setClassName(name);
@@ -122,7 +126,7 @@ public class CreatePrefabHandler extends AbstractHandler {
 			newModel.setFile(file);
 			world.setEditorName("root");
 
-			if (type == CanvasType.GROUP) {
+			if (canvasType == CanvasType.GROUP) {
 				GroupModel groupModel = (GroupModel) selModel;
 				groupModel = (GroupModel) CanvasModelFactory.createModel(world, groupModel.toJSON(false));
 				groupModel.setEditorName("group");
@@ -130,9 +134,25 @@ public class CreatePrefabHandler extends AbstractHandler {
 				groupModel.setY(0);
 				groupModel.trim();
 				world.addChild(groupModel);
+				settings.setBaseClass("Phaser.Group");
 			} else {
 				JSONObject json = selModel.toJSON(false);
 				BaseObjectModel cModel = CanvasModelFactory.createModel(world, json);
+				
+				switch (cModel.getTypeName()) {
+				case ButtonSpriteModel.TYPE_NAME:
+					settings.setBaseClass("Phaser.Button");
+					break;
+				case TileSpriteModel.TYPE_NAME:
+					settings.setBaseClass("Phaser.TileSprite");
+					break;
+				case TextModel.TYPE_NAME:
+					settings.setBaseClass("Phaser.Text");
+					break;
+				default:
+					break;
+				}
+				
 				cModel.setX(0);
 				cModel.setY(0);
 				world.addChild(cModel);
