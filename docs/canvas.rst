@@ -16,7 +16,7 @@ Read in Zenva GameDev Academy `Make a Mario-Style Platformer with the Phaser Edi
 Play the demos
 --------------
 
-To play around with a Canvas demo you can create a project with the `Phaser Example Project wizard <first_steps.html#phaser-example-project-wizard>`_. There you can select any of the templates under the **Phaser Editor Demos** category:
+To play around with a Canvas demo you can create a project with the `Phaser Example Project wizard <first-steps.html#phaser-example-project-wizard>`_. There you can select any of the templates under the **Phaser Editor Demos** category:
 
 .. image:: images/PhaserProject_Templates.png
 	:alt: Project with a Canvas demo.
@@ -100,7 +100,7 @@ Many of the parameters shown in that page come from the Phaser API, however ther
 
 All these settings can be changed later in the configuration tab of the editor.
 
-Sate scenes will be displayed in the `Assets <assets_manager.html#assets-explorer>`_ window under the **State** section.
+Sate scenes will be displayed in the `Assets <assets-manager.html#assets-explorer>`_ window under the **State** section.
 
 
 The sprite scene (prefab)
@@ -247,7 +247,7 @@ The ``game`` var is a reference to the global game instance, the first two argum
 		game.load.image("enemy", "assets/monster.png");
 	} 
 
-For the scenes Phaser Editor uses an `Asset manifest file (pack) <assets_manager.html>`_ that contains the declaretion of the assets and the keys. Instead of write the code to load each asset, you only need to load the asset pack file:
+For the scenes Phaser Editor uses an `Asset manifest file (pack) <assets-manager.html>`_ that contains the declaretion of the assets and the keys. Instead of write the code to load each asset, you only need to load the asset pack file:
 
 .. code::
 	
@@ -265,7 +265,7 @@ The common way to create an object is by getting a texture from somewhere and dr
 From the Assets window
 ^^^^^^^^^^^^^^^^^^^^^^
 
-In the `Assets <assets_manager.html#assets-explorer>`_ explorer you will find all the assets declared in the pack files. To create a common sprite you can drag a texture from that window and drop it into the scene:
+In the `Assets <assets-manager.html#assets-explorer>`_ explorer you will find all the assets declared in the pack files. To create a common sprite you can drag a texture from that window and drop it into the scene:
 
 .. image:: images/AddObjectFromAssets.png
 	:alt: Add objects from the Assets window.
@@ -288,7 +288,7 @@ From the Assets view you can add prefabs too. Look for the **Sprites** and **Gro
 From the Preview window
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-The `Preview window <preview_window.html>`_ allow you you to get a closer look to the assets. Like in the Assets window, you can drag an asset key from the Preview and drop it to the scene. For example, you can drop "cells" from a sprite-sheet of a retro game into the scene. This method could be easier than getting it from the Assets tree:
+The `Preview window <preview-window.html>`_ allow you you to get a closer look to the assets. Like in the Assets window, you can drag an asset key from the Preview and drop it to the scene. For example, you can drop "cells" from a sprite-sheet of a retro game into the scene. This method could be easier than getting it from the Assets tree:
 
 .. image:: images/AddObjectFromPreview.png
 	:alt: Add object from the Preview window.
@@ -616,7 +616,7 @@ Canvas support three different type of textures: image, sprite-sheet frame and a
 
 Another nice command is ``Sprite > Select All Sprites With Same Texture``, it selects all the sprites in the same scene with the same texture of the selection. It helps to replace demo textures by final textures.
 
-In addition Phaser Editor provides texture refactorings, it is a process that allow to change the texture of all the sprites of all the scenes. You can read more about it the `Global replace texture <assets_manager.html#global-replace-texture>`_ section.
+In addition Phaser Editor provides texture refactorings, it is a process that allow to change the texture of all the sprites of all the scenes. You can read more about it the `Global replace texture <assets-manager.html#global-replace-texture>`_ section.
 
 
 Button properties

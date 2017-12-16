@@ -95,7 +95,7 @@ To open the Assets view type ``Ctrl+3`` and write ``assets``. It shows you a lis
 Quick preview of the assets
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Many of the items in the Assets window can be quickly previewed: audio entries, videos, images, textures and Canvas (visual editor) files. Just hover the mouse on top of the element and a quick popup will show you the preview. Or drag the item and drop it in the `Preview <./preview_window.html>`_ window. 
+Many of the items in the Assets window can be quickly previewed: audio entries, videos, images, textures and Canvas (visual editor) files. Just hover the mouse on top of the element and a quick popup will show you the preview. Or drag the item and drop it in the `Preview <./preview-window.html>`_ window. 
 
 The icons and preview images of the assets are computed in a background process that is tiggered each time the assets change. Check the `Troubleshooting`_ section below, there is explained how to fix some glitches related to assets. 
 

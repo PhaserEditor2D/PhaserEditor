@@ -178,9 +178,9 @@ You can change the validator settings to ignore a kind of problem or treat it as
 Preview
 =======
 
-The JavaScript editor supports some preview features. When you hover a file name string, then it shows a popup with a preview of that file. In a similar way, if you hover the name of an `asset entry in the asset pack <assets_manager.html>`_ , then it shows a popup with a preview of the identified asset.
+The JavaScript editor supports some preview features. When you hover a file name string, then it shows a popup with a preview of that file. In a similar way, if you hover the name of an `asset entry in the asset pack <assets-manager.html>`_ , then it shows a popup with a preview of the identified asset.
 
-To quick preview an object you can hover its name but also you can put the cursor in the middle of the name and type ``Ctrl+Alt+V`` that command opens the identified object in the `Preview window <preview_window.html>`_.
+To quick preview an object you can hover its name but also you can put the cursor in the middle of the name and type ``Ctrl+Alt+V`` that command opens the identified object in the `Preview window <preview-window.html>`_.
 
 .. image:: images/JSEditorAssetPreview.png
 	:alt: Hover the mouse to preview the assets.

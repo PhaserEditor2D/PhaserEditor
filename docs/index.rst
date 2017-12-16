@@ -10,15 +10,15 @@ Welcome to Phaser Editor's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   first_steps
-   assets_manager
+   first-steps
+   assets-manager
    canvas
    jseditor
    chains
-   preview_window
-   texture_packer
+   preview-window
+   texture-packer
    optipng
-   audio_sprites
+   audio-sprites
    update
 
 
