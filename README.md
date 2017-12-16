@@ -1,4 +1,4 @@
-![banner](https://github.com/boniatillo-com/PhaserEditor/blob/master/art/logo/banner.png)
+![banner](https://github.com/PhaserEditor2D/PhaserEditor/blob/master/art/logo/banner.png)
 
 # Phaser Editor
 
@@ -19,7 +19,7 @@ Based on Eclipse, this IDE provides lot of functionalities made just to develop 
 
 [Read more...][pe_features]
 
-![Phaser editor scheernshot](https://github.com/boniatillo-com/PhaserEditor/raw/master/screens/header.png "Screenshot")
+![Phaser editor scheernshot](https://github.com/PhaserEditor2D/PhaserEditor/raw/master/screens/header.png "Screenshot")
 
 Links:
 
@@ -35,9 +35,9 @@ Links:
 
 ### Known issues
 
-* [Linux - After a second run it stops loading](https://github.com/boniatillo-com/PhaserEditor/issues/10)
+* [Linux - After a second run it stops loading](https://github.com/PhaserEditor2D/PhaserEditor/issues/10)
 
-Please use the issues of this repo to report bugs or request features. In addition you can use any of our social channels or write an email to **developers at boniatillo.com**.
+Please use the issues of this repo to report bugs or request features. In addition you can use any of our social channels or write an email to **developers at phasereditor2d.com**.
 
 
 ### Author
@@ -49,25 +49,22 @@ You can checkout the source code and modify it (EPL License).
 
 [phaser]: https://phaser.io
 [bitbucket]: https://bitbucket.org/boniatillo/phasereditor
-[bitbucket]: https://bitbucket.org/boniatillo/phasereditor
-[pe_website]: http://phasereditor.boniatillo.com
-[pe_blog]: http://phasereditor.boniatillo.com/blog
-[pe_features]: http://phasereditor.boniatillo.com/blog/features
+[pe_website]: https://phasereditor2d.com
+[pe_blog]: https://phasereditor2d.com/blog
+[pe_features]: https://phasereditor2d.com/blog/features
 [html5gamedevs]: http://www.html5gamedevs.com/profile/8392-arian-fornaris
 [pe_youtube]: https://www.youtube.com/playlist?list=PLB8gI_5U0MvCJuhPv-LBdi_a9PQxYxFqK
-[pe_twitter]: https://twitter.com/boniatillo_com
+[pe_twitter]: https://twitter.com/PhaserEditor2D
 [pe_facebook]: https://www.facebook.com/phasereditor/
-[pe_downloads]: http://phasereditor.boniatillo.com/blog/downloads
-[ProjectTemplates]: http://phasereditor.boniatillo.com/docs/first_steps.html#create-a-project
-[JSEditor]: http://phasereditor.boniatillo.com/docs/jseditor.html
-[AssetPack]: http://phasereditor.boniatillo.com/docs/assets_manager.html
-[Atlas]: http://phasereditor.boniatillo.com/docs/texture_packer.html
-[Preview]: http://phasereditor.boniatillo.com/docs/preview_window.html
-[Chains]: http://phasereditor.boniatillo.com/docs/chains.html
-[HttpServer]: http://phasereditor.boniatillo.com/docs/first_steps.html#run-the-game
-[OptiPNG]: http://phasereditor.boniatillo.com/docs/optipng.html
-[Canvas]: http://phasereditor.boniatillo.com/docs/canvas.html
-[AudioSprites]: http://phasereditor.boniatillo.com/docs/audio_sprites.html
-
-
+[pe_downloads]: https://phasereditor2d.com/blog/downloads
+[ProjectTemplates]: https://phasereditor2d.com/docs/first-steps.html#create-a-project
+[JSEditor]: https://phasereditor2d.com/docs/jseditor.html
+[AssetPack]: https://phasereditor2d.com/docs/assets-manager.html
+[Atlas]: https://phasereditor2d.com/docs/texture-packer.html
+[Preview]: https://phasereditor2d.com/docs/preview-window.html
+[Chains]: https://phasereditor2d.com/docs/chains.html
+[HttpServer]: https://phasereditor2d.com/docs/first-steps.html#run-the-game
+[OptiPNG]: https://phasereditor2d.com/docs/optipng.html
+[Canvas]: https://phasereditor2d.com/docs/canvas.html
+[AudioSprites]: https://phasereditor2d.com/docs/audio-sprites.html
 
