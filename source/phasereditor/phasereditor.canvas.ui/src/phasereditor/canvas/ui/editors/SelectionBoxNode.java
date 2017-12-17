@@ -21,19 +21,18 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
-import java.util.Arrays;
-import java.util.List;
-
+import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.shape.StrokeLineJoin;
-import javafx.scene.shape.StrokeType;
 
 /**
  * @author arian
@@ -41,25 +40,13 @@ import javafx.scene.shape.StrokeType;
  */
 public class SelectionBoxNode extends Pane {
 
-	private static Border _border;
-
-	static {
-		BorderWidths bw = new BorderWidths(1);
-		@SuppressWarnings("boxing")
-		List<Double> dashed = Arrays.asList(5d, 2d);
-		BorderStrokeStyle style1 = new BorderStrokeStyle(StrokeType.INSIDE, StrokeLineJoin.MITER, StrokeLineCap.BUTT,
-				10, 10, dashed);
-		BorderStrokeStyle style2 = new BorderStrokeStyle(StrokeType.INSIDE, StrokeLineJoin.MITER, StrokeLineCap.BUTT,
-				10, 0, dashed);
-
-		BorderStroke s1 = new BorderStroke(Color.WHITE, style1, null, bw);
-		BorderStroke s2 = new BorderStroke(Color.BLACK, style2, null, bw);
-
-		_border = new Border(s1, s2);
-	}
-
 	public SelectionBoxNode() {
-		setBorder(_border);
+		// setBorder(_border);
+		setEffect(new DropShadow());
+		Color c = Color.GREENYELLOW;
+		setBorder(new Border(new BorderStroke(c, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(2))));
+		setBackground(new Background(new BackgroundFill(new Color(c.getRed(), c.getGreen(), c.getBlue(), 0.1),
+				CornerRadii.EMPTY, Insets.EMPTY)));
 	}
 
 	public void setBox(Point2D start, Point2D end) {

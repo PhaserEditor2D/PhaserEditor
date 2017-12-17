@@ -23,6 +23,7 @@ package phasereditor.canvas.ui.editors;
 
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
@@ -31,6 +32,7 @@ import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
@@ -63,27 +65,31 @@ public class SelectionNode extends Pane {
 	private IObjectNode _objectNode;
 	protected Bounds _rect;
 	private ObjectCanvas _canvas;
+	private Label _label;
 
 	public SelectionNode(ObjectCanvas canvas, IObjectNode inode, Bounds rect) {
 		_objectNode = inode;
 		_rect = rect;
 		_canvas = canvas;
+		
+		_label = new Label(inode.getModel().getEditorName());
+		_label.setTextFill(Color.WHITE);
+		_label.setEffect(new DropShadow());
+		_label.relocate(0, -20);
+		
+		getChildren().add(_label);
 
 		updateFromZoomAndPanVariables();
 
-		//setBorder(inode.getModel() instanceof GroupModel ? _borderGroup : _borderSprite);
 		setEffect(new DropShadow());
-		setBorder(new Border(new BorderStroke(Color.GREENYELLOW, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(2))));
+		Color color = inode.getModel() instanceof GroupModel ? Color.LIGHTGREEN: Color.GREENYELLOW;
+		setBorder(new Border(new BorderStroke(color, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(2))));
 	}
 
 	public static final int HANDLER_SIZE = 10;
 
 	public ObjectCanvas getCanvas() {
 		return _canvas;
-	}
-
-	public void setObjectNode(IObjectNode objectNode) {
-		_objectNode = objectNode;
 	}
 
 	public void updateBounds(Bounds rect) {
