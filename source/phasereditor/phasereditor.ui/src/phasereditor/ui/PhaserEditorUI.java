@@ -762,9 +762,10 @@ public class PhaserEditorUI {
 
 	public static void forceApplyCompositeStyle(Composite canvas) {
 		canvas.getDisplay().asyncExec(() -> {
-			Composite c = new Composite(canvas, SWT.NONE);
+			Shell c = new Shell();
 			PhaserEditorUI.applyThemeStyle(c);
-			canvas.setBackground(c.getBackground());
+			Color background = c.getBackground();
+			canvas.setBackground(background);
 			c.dispose();
 		});
 	}

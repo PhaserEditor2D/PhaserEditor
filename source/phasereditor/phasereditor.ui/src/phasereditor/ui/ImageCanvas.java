@@ -202,6 +202,8 @@ public class ImageCanvas extends Canvas implements PaintListener, IZoomable {
 				//
 			}
 		});
+		
+		PhaserEditorUI.forceApplyCompositeStyle(this);
 	}
 
 	@Override
