@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseWheelListener;
@@ -66,14 +67,14 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 
 		addPaintListener(this);
 		// this is silly!
-//		addMouseTrackListener(new MouseTrackAdapter() {
-//			@Override
-//			public void mouseEnter(MouseEvent e) {
-//				if (!isFocusControl()) {
-//					forceFocus();
-//				}
-//			}
-//		});
+		// addMouseTrackListener(new MouseTrackAdapter() {
+		// @Override
+		// public void mouseEnter(MouseEvent e) {
+		// if (!isFocusControl()) {
+		// forceFocus();
+		// }
+		// }
+		// });
 		addMouseMoveListener(new MouseMoveListener() {
 
 			@SuppressWarnings("synthetic-access")
@@ -82,7 +83,7 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 				if (_places == null) {
 					return;
 				}
-				
+
 				int old = _overIndex;
 				int index = -1;
 				for (int i = 0; i < _places.size(); i++) {
@@ -115,6 +116,15 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 			}
 		});
 
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				if (!isFocusControl()) {
+					setFocus();
+				}
+			}
+		});
+
 		origin = new Point(0, 0);
 
 		final ScrollBar vBar = getVerticalBar();
@@ -129,7 +139,7 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 		addListener(SWT.Resize, e -> {
 			updateScroll();
 		});
-		
+
 		afterCreateWidgets();
 	}
 

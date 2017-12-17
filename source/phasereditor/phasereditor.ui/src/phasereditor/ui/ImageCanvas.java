@@ -94,7 +94,7 @@ public class ImageCanvas extends Canvas implements PaintListener, IZoomable {
 		}
 	}
 
-	class MouseListeer implements MouseMoveListener, MouseListener, MouseWheelListener, MouseTrackListener {
+	class MyMouseListener implements MouseMoveListener, MouseListener, MouseWheelListener, MouseTrackListener {
 
 		private Point _startPoint;
 		private Point _startOffset;
@@ -115,6 +115,10 @@ public class ImageCanvas extends Canvas implements PaintListener, IZoomable {
 
 		@Override
 		public void mouseDown(MouseEvent e) {
+			if (!isFocusControl()) {
+				setFocus();
+			}
+			
 			if (e.button == 2) {
 				_startPoint = new Point(e.x, e.y);
 				_startOffset = new Point(getOffsetX(), getOffsetY());
@@ -158,10 +162,10 @@ public class ImageCanvas extends Canvas implements PaintListener, IZoomable {
 		@Override
 		public void mouseEnter(MouseEvent e) {
 			// This is silly!
-			
-//			if (!isFocusControl()) {
-//				setFocus();
-//			}
+
+			// if (!isFocusControl()) {
+			// setFocus();
+			// }
 		}
 
 		@Override
@@ -181,7 +185,7 @@ public class ImageCanvas extends Canvas implements PaintListener, IZoomable {
 		addPaintListener(this);
 		_preferredSize = new Point(0, 0);
 
-		MouseListeer listener = new MouseListeer();
+		MyMouseListener listener = new MyMouseListener();
 		addMouseMoveListener(listener);
 		addMouseListener(listener);
 		addMouseWheelListener(listener);
@@ -277,8 +281,9 @@ public class ImageCanvas extends Canvas implements PaintListener, IZoomable {
 	public Image getImage() {
 		return _image;
 	}
+
 	public void setImage(Image image) {
-		setImage(image, image == null? null :image.getBounds());
+		setImage(image, image == null ? null : image.getBounds());
 	}
 
 	public void setImage(Image image, Rectangle viewport) {
@@ -306,7 +311,7 @@ public class ImageCanvas extends Canvas implements PaintListener, IZoomable {
 	public void setImageViewport(Rectangle viewport) {
 		_viewport = viewport;
 	}
-	
+
 	public Rectangle getImageViewport() {
 		return _viewport;
 	}

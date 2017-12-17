@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,6 +37,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.dnd.DND;
@@ -231,6 +235,8 @@ public class AtlasAssetPreviewComp extends Composite {
 		layout();
 
 		updateActionsState();
+		
+		control.setFocus();
 	}
 
 	private void updateActionsState() {
@@ -253,11 +259,22 @@ public class AtlasAssetPreviewComp extends Composite {
 		String url = model.getTextureURL();
 		IFile file = model.getFileFromUrl(url);
 		_canvas.setImageFile(file);
+
 		List<Frame> frames = model.getAtlasFrames();
+		frames = frames.stream().sorted((f1, f2) -> f1.getKey().toLowerCase().compareTo(f2.getKey().toLowerCase()))
+				.collect(toList());
+
 		_canvas.setFrames(frames);
 		_canvas.redraw();
 
 		_spritesList.getViewer().setInput(model);
+		_spritesList.getViewer().setComparator(new ViewerComparator() {
+			@Override
+			public int compare(Viewer viewer, Object e1, Object e2) {
+				return ((AtlasAssetModel.Frame) e1).getKey().toLowerCase()
+						.compareTo(((AtlasAssetModel.Frame) e2).getKey().toLowerCase());
+			}
+		});
 
 		Image img = _canvas.getImage();
 
