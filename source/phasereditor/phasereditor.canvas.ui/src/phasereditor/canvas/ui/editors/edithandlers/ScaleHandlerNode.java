@@ -71,21 +71,18 @@ public class ScaleHandlerNode extends PathHandlerNode {
 			double sign = _axis.signW();
 			double x = (_scaledInitWidth + sign * dx * _model.getScaleX()) / _initWidth;
 			_model.setScaleX(x);
+
+			_model.setX(_initX + dx * _model.getScaleX());
 		}
 
 		if (_axis.changeH()) {
 			double sign = _axis.signH();
 			double y = (_scaledInitHeight + sign * dy * _model.getScaleY()) / _initHeight;
 			_model.setScaleY(y);
-		}
 
-		if (_axis.x == 0) {
-			_model.setX(_initX + dx * _model.getScaleX());
-		}
-
-		if (_axis.y == 0) {
 			_model.setY(_initY + dy * _model.getScaleY());
 		}
+
 	}
 
 	@Override
