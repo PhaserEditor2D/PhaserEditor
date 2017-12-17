@@ -225,24 +225,18 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 	}
 
 	public boolean preview(Object elem) {
-		if (_previewFactory != null && _previewControl != null) {
-			_previewFactory.hiddenControl(_previewControl);
-		}
-
 		boolean availablePreview = false;
 		Control preview = null;
 
-		_previewFactory = null;
-		_previewControl = null;
+		IPreviewFactory previewFactory = null;
+		Control previewControl = null;
 
-		setTitleImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_MONITOR));
-
-		IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
-		toolbar.removeAll();
+		boolean updateTitleImage = false;
 
 		if (elem == null) {
 			preview = _noPreviewComp;
 			setPartName("Preview");
+			updateTitleImage = true;
 		} else {
 			IAdapterManager adapterManager = Platform.getAdapterManager();
 
@@ -261,19 +255,8 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 					preview = factory.createControl(_previewContainer);
 				}
 
-				factory.updateControl(preview, elem);
-
-				factory.updateToolBar(toolbar, preview);
-
-				setPartName("Preview - " + factory.getTitle(elem));
-
-				Image icon = factory.getIcon(elem);
-				if (icon != null) {
-					setTitleImage(icon);
-				}
-
-				_previewFactory = factory;
-				_previewControl = preview;
+				previewFactory = factory;
+				previewControl = preview;
 
 				availablePreview = true;
 			}
@@ -282,20 +265,52 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 		// update layout
 
 		if (preview != null) {
+
+			if (_previewFactory != null && _previewControl != null) {
+				_previewFactory.hiddenControl(_previewControl);
+			}
+
+			IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
+			toolbar.removeAll();
+
+			// do the factory stuff
+			if (previewFactory != null) {
+
+				previewFactory.updateToolBar(toolbar, preview);
+
+				previewFactory.updateControl(preview, elem);
+
+				setPartName("Preview - " + previewFactory.getTitle(elem));
+
+				Image icon = previewFactory.getIcon(elem);
+				if (icon != null) {
+					setTitleImage(icon);
+					updateTitleImage = false;
+				}
+			}
+
+			_previewFactory = previewFactory;
+			_previewControl = previewControl;
+
 			StackLayout layout = (StackLayout) _previewContainer.getLayout();
 			layout.topControl = preview;
 			_previewContainer.layout();
+
+			_previewElement = elem;
+
+			// fill toolbar common actions
+
+			if (toolbar.getItems().length > 0) {
+				toolbar.add(new Separator());
+			}
+
+			fillToolbarWithCommonActions();
+			toolbar.update(true);
+
+			if (updateTitleImage) {
+				setTitleImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_MONITOR));
+			}
 		}
-
-		_previewElement = elem;
-
-		// fill toolbar common actions
-
-		if (toolbar.getItems().length > 0) {
-			toolbar.add(new Separator());
-		}
-		fillToolbarWithCommonActions();
-		toolbar.update(true);
 
 		return availablePreview;
 	}
