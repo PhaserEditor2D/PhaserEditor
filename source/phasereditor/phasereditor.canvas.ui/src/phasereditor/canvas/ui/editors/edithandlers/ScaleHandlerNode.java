@@ -41,6 +41,8 @@ public class ScaleHandlerNode extends PathHandlerNode {
 	private double _initHeight;
 	private double _scaledInitWidth;
 	private double _scaledInitHeight;
+	private double _initX;
+	private double _initY;
 
 	public ScaleHandlerNode(IObjectNode object, Axis axis) {
 		super(object);
@@ -58,40 +60,63 @@ public class ScaleHandlerNode extends PathHandlerNode {
 		_initHeight = bounds.getHeight();
 		_scaledInitWidth = _initWidth * _model.getScaleX();
 		_scaledInitHeight = _initHeight * _model.getScaleY();
+		_initX = _model.getX();
+		_initY = _model.getY();
+
 	}
 
 	@Override
 	public void handleLocalDrag(double dx, double dy) {
 		if (_axis.changeW()) {
-			double x = (_scaledInitWidth + dx * _model.getScaleX()) / _initWidth;
+			double sign = _axis.signW();
+			double x = (_scaledInitWidth + sign * dx * _model.getScaleX()) / _initWidth;
 			_model.setScaleX(x);
 		}
 
 		if (_axis.changeH()) {
-			double y = (_scaledInitHeight + dy * _model.getScaleY()) / _initHeight;
+			double sign = _axis.signH();
+			double y = (_scaledInitHeight + sign * dy * _model.getScaleY()) / _initHeight;
 			_model.setScaleY(y);
+		}
+
+		if (_axis.x == 0) {
+			_model.setX(_initX + dx * _model.getScaleX());
+		}
+
+		if (_axis.y == 0) {
+			_model.setY(_initY + dy * _model.getScaleY());
 		}
 	}
 
 	@Override
 	public void handleDone() {
-		double x = _model.getScaleX();
-		double y = _model.getScaleY();
+		double scaleX = _model.getScaleX();
+		double scaleY = _model.getScaleY();
+
+		double x = _model.getX();
+		double y = _model.getY();
 
 		_model.setScaleX(_initScaleX);
 		_model.setScaleY(_initScaleY);
+
+		_model.setX(_initX);
+		_model.setY(_initY);
 
 		String id = _model.getId();
 
 		_canvas.getUpdateBehavior().executeOperations(
 
-		new CompositeOperation(
+				new CompositeOperation(
 
-		new ChangePropertyOperation<Number>(id, "scale.x", Double.valueOf(x)),
+						new ChangePropertyOperation<Number>(id, "scale.x", Double.valueOf(scaleX)),
 
-		new ChangePropertyOperation<Number>(id, "scale.y", Double.valueOf(y))
+						new ChangePropertyOperation<Number>(id, "scale.y", Double.valueOf(scaleY)),
 
-		));
+						new ChangePropertyOperation<Number>(id, "x", Double.valueOf(x)),
+
+						new ChangePropertyOperation<Number>(id, "y", Double.valueOf(y))
+
+				));
 	}
 
 	@Override

@@ -51,6 +51,18 @@ public enum Axis {
 		this.y = y;
 	}
 
+	public double signW() {
+		if (x == 0) return -1;
+		if (x == 1) return 1;
+		return 0;
+	}
+	
+	public double signH() {
+		if (y == 0) return -1;
+		if (y == 1) return 1;
+		return 0;
+	}
+ 
 	public boolean changeW() {
 		return x != 0.5;
 	}
@@ -79,12 +91,12 @@ public enum Axis {
 		} else if (x == 1) {
 			name += sx ? "E" : "W";
 		}
-		
+
 		name += "_RESIZE";
 
 		return Cursor.cursor(name);
 	}
-	
+
 	public Cursor getRotateCursor(IObjectNode object) {
 		if (this == CENTER) {
 			return Cursor.MOVE;
@@ -105,7 +117,7 @@ public enum Axis {
 		} else if (x == 1) {
 			name += sx ? "W" : "E";
 		}
-		
+
 		name += "_RESIZE";
 
 		return Cursor.cursor(name);

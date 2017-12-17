@@ -22,6 +22,7 @@
 package phasereditor.canvas.ui.editors.behaviors;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -61,9 +62,8 @@ public class HandlerBehavior {
 	public void editScale(IObjectNode object) {
 		clear();
 
-		for (Axis axis : new Axis[] { Axis.RIG, Axis.BOT, Axis.BOT_RIG }) {
-			add(new ScaleHandlerNode(object, axis));
-		}
+		Arrays.stream(Axis.values()).filter(a -> a != Axis.CENTER)
+				.forEach(axis -> add(new ScaleHandlerNode(object, axis)));
 
 		update();
 	}
