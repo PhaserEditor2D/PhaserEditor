@@ -2,8 +2,8 @@
   "canvas-version": 2,
   "settings": {
     "className": "Level",
-    "sceneWidth": 640,
-    "sceneHeight": 360,
+    "sceneWidth": 800,
+    "sceneHeight": 600,
     "generateOnSave": true,
     "enableStepping": false,
     "lang": "JAVA_SCRIPT_6",
@@ -18,8 +18,7 @@
       200,
       200
     ],
-    "showGrid": true,
-    "create_after": "this.initObjects();"
+    "showGrid": true
   },
   "stateSettings": {
     "stageBackgroundColor": [
@@ -38,7 +37,16 @@
     "info": {
       "editorName": "Level",
       "setAll": [],
-      "children": []
+      "children": [{
+        "type": "text",
+        "id": "63c35cf5-2e06-412b-b219-80fce0457392",
+        "info": {
+          "editorName": "text",
+          "x": 299.8662109375,
+          "y": 290.2373046875,
+          "text": "You are playing now!"
+        }
+      }]
     }
   },
   "type": "STATE",

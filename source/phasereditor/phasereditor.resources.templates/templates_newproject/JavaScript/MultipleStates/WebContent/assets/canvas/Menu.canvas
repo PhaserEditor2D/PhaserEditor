@@ -2,8 +2,8 @@
   "canvas-version": 2,
   "settings": {
     "className": "Menu",
-    "sceneWidth": 640,
-    "sceneHeight": 360,
+    "sceneWidth": 800,
+    "sceneHeight": 600,
     "generateOnSave": true,
     "enableStepping": false,
     "lang": "JAVA_SCRIPT",
@@ -18,8 +18,7 @@
       200,
       200
     ],
-    "showGrid": true,
-    "create_after": "// user code\r\nthis.initObjects();"
+    "showGrid": true
   },
   "stateSettings": {
     "stageBackgroundColor": [
@@ -38,7 +37,16 @@
     "info": {
       "editorName": "Menu",
       "setAll": [],
-      "children": []
+      "children": [{
+        "type": "text",
+        "id": "33877423-5c83-4194-9d6b-f3009b6c5cee",
+        "info": {
+          "editorName": "text",
+          "x": 331.755859375,
+          "y": 292.09765625,
+          "text": "Click to start..."
+        }
+      }]
     }
   },
   "type": "STATE",

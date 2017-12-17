@@ -2,8 +2,8 @@
   "canvas-version": 2,
   "settings": {
     "className": "Preloader",
-    "sceneWidth": 640,
-    "sceneHeight": 360,
+    "sceneWidth": 800,
+    "sceneHeight": 600,
     "generateOnSave": true,
     "enableStepping": false,
     "lang": "TYPE_SCRIPT",
@@ -19,8 +19,7 @@
       200
     ],
     "showGrid": true,
-    "create_before": "// all the assets are loaded, go to the menu screen\r\nthis.game.state.start(\"Menu\");",
-    "state_preload_after": "this.add.text(300, 300, \"Loading...\", { fill:\"#fff\" });"
+    "create_before": "// all the assets are loaded, go to the menu screen\r\nthis.game.state.start(\"Menu\");"
   },
   "stateSettings": {
     "scaleMode": "SHOW_ALL",
@@ -31,6 +30,7 @@
       0,
       0
     ],
+    "autoLoad": true,
     "isPreloader": true,
     "preloadSpriteId": "",
     "preloadSprite_direction": 0,
@@ -44,7 +44,18 @@
     "id": "16707e64-9031-498b-9e49-0be2635d79ae",
     "info": {
       "editorName": "Preload",
-      "children": []
+      "setAll": [],
+      "children": [{
+        "type": "text",
+        "id": "893a7e9b-5748-4cb8-88a8-254b2b853be7",
+        "info": {
+          "editorName": "loadingText",
+          "x": 353.73828125,
+          "y": 290.2373046875,
+          "text": "Loading...",
+          "style.fill": "#ffffff"
+        }
+      }]
     }
   },
   "type": "STATE",

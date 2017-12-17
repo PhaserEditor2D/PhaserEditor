@@ -2,8 +2,8 @@
   "canvas-version": 2,
   "settings": {
     "className": "Level",
-    "sceneWidth": 640,
-    "sceneHeight": 360,
+    "sceneWidth": 800,
+    "sceneHeight": 600,
     "generateOnSave": true,
     "enableStepping": false,
     "lang": "TYPE_SCRIPT",
@@ -18,8 +18,7 @@
       200,
       200
     ],
-    "showGrid": true,
-    "create_after": "// to change this code: Canvas editor > Configuration > Editor > userCode > Create\r\nthis.addHelloWorldText();\r\n\r\n"
+    "showGrid": true
   },
   "stateSettings": {
     "scaleMode": "SHOW_ALL",
@@ -30,6 +29,7 @@
       255,
       255
     ],
+    "autoLoad": true,
     "preloadSpriteId": "",
     "preloadSprite_direction": 0,
     "load.pack": []
@@ -39,7 +39,17 @@
     "id": "8a0fc0bc-e3be-4656-9585-f855ac8ba0bb",
     "info": {
       "editorName": "Level",
-      "children": []
+      "setAll": [],
+      "children": [{
+        "type": "text",
+        "id": "c693cd11-c841-411b-81b4-100248a692ac",
+        "info": {
+          "editorName": "hellowText",
+          "x": 343.9579772949219,
+          "y": 292.2246398925781,
+          "text": "Hello world!"
+        }
+      }]
     }
   },
   "type": "STATE",

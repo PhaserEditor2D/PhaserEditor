@@ -2,8 +2,8 @@
   "canvas-version": 2,
   "settings": {
     "className": "Menu",
-    "sceneWidth": 640,
-    "sceneHeight": 360,
+    "sceneWidth": 800,
+    "sceneHeight": 600,
     "generateOnSave": true,
     "enableStepping": false,
     "lang": "TYPE_SCRIPT",
@@ -18,8 +18,7 @@
       200,
       200
     ],
-    "showGrid": true,
-    "create_after": "// user code\r\nthis.initObjects();"
+    "showGrid": true
   },
   "stateSettings": {
     "stageBackgroundColor": [
@@ -27,6 +26,7 @@
       128,
       255
     ],
+    "autoLoad": true,
     "preloadSpriteId": "",
     "preloadSprite_direction": 0,
     "load.pack": []
@@ -36,7 +36,17 @@
     "id": "af8eb0de-599e-428d-94f8-09d75318f8b7",
     "info": {
       "editorName": "Menu",
-      "children": []
+      "setAll": [],
+      "children": [{
+        "type": "text",
+        "id": "c868cd6e-7a21-4002-bb18-92126ebd13bf",
+        "info": {
+          "editorName": "startText",
+          "x": 331.755859375,
+          "y": 292.09765625,
+          "text": "Click to start..."
+        }
+      }]
     }
   },
   "type": "STATE",

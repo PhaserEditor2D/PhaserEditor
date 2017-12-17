@@ -2,8 +2,8 @@
   "canvas-version": 2,
   "settings": {
     "className": "Level",
-    "sceneWidth": 640,
-    "sceneHeight": 360,
+    "sceneWidth": 800,
+    "sceneHeight": 600,
     "generateOnSave": true,
     "enableStepping": false,
     "lang": "TYPE_SCRIPT",
@@ -18,8 +18,7 @@
       200,
       200
     ],
-    "showGrid": true,
-    "create_after": "this.initObjects();"
+    "showGrid": true
   },
   "stateSettings": {
     "stageBackgroundColor": [
@@ -27,6 +26,7 @@
       128,
       0
     ],
+    "autoLoad": true,
     "preloadSpriteId": "",
     "preloadSprite_direction": 0,
     "load.pack": []
@@ -36,7 +36,17 @@
     "id": "8a0fc0bc-e3be-4656-9585-f855ac8ba0bb",
     "info": {
       "editorName": "Level",
-      "children": []
+      "setAll": [],
+      "children": [{
+        "type": "text",
+        "id": "8ce177c4-fd56-4f1e-97fd-779491eb9a4c",
+        "info": {
+          "editorName": "text",
+          "x": 299.8662109375,
+          "y": 290.2373046875,
+          "text": "You are playing now!"
+        }
+      }]
     }
   },
   "type": "STATE",
