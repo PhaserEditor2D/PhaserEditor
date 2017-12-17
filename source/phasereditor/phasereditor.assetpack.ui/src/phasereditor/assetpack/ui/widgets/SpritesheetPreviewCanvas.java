@@ -67,7 +67,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 		_font = new Font(getDisplay(), new FontData(fd.getName(), fd.getHeight(), SWT.BOLD));
 		setFont(_font);
 	}
-	
+
 	@Override
 	public void dispose() {
 		super.dispose();
@@ -147,6 +147,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 						gc.fillRectangle(r.x, r.y, r.width, r.height);
 						gc.setAlpha(255);
 					}
+
 					gc.setAlpha(125);
 					if (r.width >= 16) {
 						gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_RED));
@@ -157,6 +158,15 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 					gc.setAlpha(255);
 
 					i++;
+				}
+
+				{
+					// paint outer frame
+					Rectangle rect = calc.imageToScreen(imgBounds);
+					gc.setAlpha(125);
+					gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_RED));
+					gc.drawRectangle(rect.x, rect.y, rect.width, rect.height);
+					gc.setAlpha(255);
 				}
 
 				{
@@ -192,7 +202,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 							gc.drawString(label, left - 1, top + 1, true);
 							gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLACK));
 							gc.drawString(label, left + 1, top - 1, true);
-							gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
+							gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_YELLOW));
 							gc.drawString(label, left, top, true);
 							i++;
 						}
