@@ -252,6 +252,8 @@ public class CanvasEditor extends MultiPageEditorPart
 		addEditorActivationListeners();
 		addPageChangedListener(this);
 	}
+	
+
 
 	private IPartListener _partListener;
 
@@ -718,6 +720,7 @@ public class CanvasEditor extends MultiPageEditorPart
 	public void pageChanged(PageChangedEvent event) {
 		if (getActivePage() == 0) {
 			registerCanvasGlobalActions();
+			_canvas.getUpdateBehavior().updateFromSettings();
 		} else {
 			disposeCanvasGlobalActions();
 		}
