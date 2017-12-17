@@ -415,8 +415,8 @@
                label="Transform">
             <command
                   commandId="phasereditor.canvas.ui.scale"
-                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/arrow_inout.png"
-                  icon="platform:/plugin/phasereditor.ui/icons/arrow_inout.png"
+                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/arrow_out_blue.png"
+                  icon="platform:/plugin/phasereditor.ui/icons/arrow_out_blue.png"
                   label="Scale"
                   style="push">
                <visibleWhen
@@ -454,8 +454,8 @@
             </command>
             <command
                   commandId="phasereditor.canvas.ui.editPivot"
-                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/bullet_green.png"
-                  icon="platform:/plugin/phasereditor.ui/icons/bullet_green.png"
+                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/bullet_blue.png"
+                  icon="platform:/plugin/phasereditor.ui/icons/bullet_blue.png"
                   label="Pivot"
                   style="push">
                <visibleWhen
