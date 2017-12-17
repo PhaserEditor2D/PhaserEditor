@@ -39,17 +39,11 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
-import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.wb.swt.SWTResourceManager;
@@ -237,28 +231,28 @@ public class PGrid extends Composite {
 			}
 		});
 
-		if (!PhaserEditorUI.isMacPlatform()) {
-			_tree.addListener(SWT.EraseItem, new Listener() {
-
-				@Override
-				public void handleEvent(Event event) {
-					GC gc = event.gc;
-
-					TreeItem item = _tree.getItem(new Point(event.x, event.y));
-					if (item == null) {
-						return;
-					}
-
-					Object element = item.getData();
-					if (PGridLabelProvider.isModified(element)) {
-						RGB rgb = PGridLabelProvider
-								.brighter(PGridLabelProvider.brighter(_tree.getBackground().getRGB()));
-						gc.setBackground(SWTResourceManager.getColor(rgb));
-						gc.fillRectangle(0, event.y, _tree.getClientArea().width, event.height);
-					}
-				}
-			});
-		}
+//		if (!PhaserEditorUI.isMacPlatform()) {
+//			_tree.addListener(SWT.EraseItem, new Listener() {
+//
+//				@Override
+//				public void handleEvent(Event event) {
+//					GC gc = event.gc;
+//
+//					TreeItem item = _tree.getItem(new Point(event.x, event.y));
+//					if (item == null) {
+//						return;
+//					}
+//
+//					Object element = item.getData();
+//					if (PGridLabelProvider.isModified(element)) {
+//						RGB rgb = PGridLabelProvider
+//								.brighter(PGridLabelProvider.brighter(_tree.getBackground().getRGB()));
+//						gc.setBackground(SWTResourceManager.getColor(rgb));
+//						gc.fillRectangle(0, event.y, _tree.getClientArea().width, event.height);
+//					}
+//				}
+//			});
+//		}
 	}
 
 	private PGridModel _model;
