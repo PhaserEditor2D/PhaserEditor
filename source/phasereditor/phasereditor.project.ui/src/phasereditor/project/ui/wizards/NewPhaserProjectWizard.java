@@ -30,12 +30,14 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 import org.json.JSONObject;
 
@@ -51,18 +53,42 @@ import phasereditor.project.core.codegen.SourceLang;
 public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 	protected WizardNewProjectCreationPage _projectPage;
 	protected NewPhaserProjectSettingsWizardPage _settingsPage;
+	private IStructuredSelection _selection;
+	private IWorkbench _workbench;
 
 	public NewPhaserProjectWizard() {
 	}
 
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		// nothing
+		_workbench = workbench;
+		_selection = selection;
+	}
+
+	public IStructuredSelection getSelection() {
+		return _selection;
+	}
+
+	public IWorkbench getWorkbench() {
+		return _workbench;
 	}
 
 	@Override
 	public void addPages() {
-		_projectPage = new WizardNewProjectCreationPage("project");
+		_projectPage = new WizardNewProjectCreationPage("project") {
+			@Override
+			public void createControl(Composite parent) {
+				super.createControl(parent);
+
+				createWorkingSetGroup((Composite) getControl(),
+
+						getSelection(),
+
+						new String[] { "org.eclipse.ui.resourceWorkingSetPage" });
+
+				Dialog.applyDialogFont(getControl());
+			}
+		};
 		_projectPage.setTitle("New Phaser Project");
 		_projectPage.setDescription("Set the project name.");
 
@@ -123,17 +149,20 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 		SourceLang lang = _settingsPage.getSourceLang();
 
 		try {
+			
+			IWorkingSet[] workingSets = _projectPage.getSelectedWorkingSets();
+			
 			getContainer().run(true, false, new IRunnableWithProgress() {
 
 				@Override
 				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 					try {
-						monitor.beginTask("Creating project", 3);
+						monitor.beginTask("Creating project", 4);
 						project.create(monitor);
 						monitor.worked(1);
 
 						project.open(monitor);
-						monitor.worked(2);
+						monitor.worked(1);
 
 						TemplateModel template;
 						Map<String, String> values = new HashMap<>();
@@ -194,7 +223,11 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 						template = InspectCore.getProjectTemplates().findById(templId);
 
 						ProjectCore.configureNewPhaserProject(project, template, values, lang);
-						monitor.worked(3);
+						monitor.worked(1);
+
+						
+						getWorkbench().getWorkingSetManager().addToWorkingSets(project, workingSets);
+						monitor.worked(1);
 
 					} catch (CoreException e) {
 						throw new RuntimeException(e);
