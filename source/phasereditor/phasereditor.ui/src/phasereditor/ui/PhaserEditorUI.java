@@ -766,6 +766,7 @@ public class PhaserEditorUI {
 			PhaserEditorUI.applyThemeStyle(c);
 			Color background = c.getBackground();
 			canvas.setBackground(background);
+			c.close();
 			c.dispose();
 		});
 	}

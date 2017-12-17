@@ -59,15 +59,15 @@ public abstract class PathHandlerNode extends Path implements IEditHandlerNode {
 
 		getElements().setAll(
 
-		new MoveTo(0, 0),
+				new MoveTo(0, 0),
 
-		new LineTo(10, 0),
+				new LineTo(10, 0),
 
-		new LineTo(10, 10),
+				new LineTo(10, 10),
 
-		new LineTo(0, 10),
+				new LineTo(0, 10),
 
-		new LineTo(0, 0));
+				new LineTo(0, 0));
 
 		_helper = new HandlerNodeHelper(this);
 	}
@@ -101,7 +101,7 @@ public abstract class PathHandlerNode extends Path implements IEditHandlerNode {
 	public void handleMouseExited(MouseEvent e) {
 		setCursor(Cursor.DEFAULT);
 	}
-	
+
 	@Override
 	public boolean isValid() {
 		return true;

@@ -45,7 +45,7 @@ public class AnchorHandlerNode extends PathHandlerNode {
 
 	public AnchorHandlerNode(ISpriteNode object) {
 		super(object);
-		setFill(Color.BLUE);
+		setFill(Color.ALICEBLUE);
 		setCursor(Cursor.MOVE);
 	}
 	

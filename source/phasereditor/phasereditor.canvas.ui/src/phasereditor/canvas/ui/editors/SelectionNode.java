@@ -21,50 +21,44 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
-import java.util.Arrays;
-import java.util.List;
-
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.shape.StrokeLineJoin;
-import javafx.scene.shape.StrokeType;
-import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
  * @author arian
  *
  */
-@SuppressWarnings("boxing")
 public class SelectionNode extends Pane {
 
-	private static Border _borderSprite;
-	private static Border _borderGroup;
+//	private static Border _borderSprite;
+//	private static Border _borderGroup;
 
-	static {
-		BorderWidths bw = new BorderWidths(1);
-
-		List<Double> dashed = Arrays.asList(5d, 2d);
-		BorderStrokeStyle style1 = new BorderStrokeStyle(StrokeType.INSIDE, StrokeLineJoin.MITER, StrokeLineCap.BUTT,
-				10, 10, dashed);
-		BorderStrokeStyle style2 = new BorderStrokeStyle(StrokeType.INSIDE, StrokeLineJoin.MITER, StrokeLineCap.BUTT,
-				10, 0, dashed);
-
-		BorderStroke s1 = new BorderStroke(Color.WHITE, style1, null, bw);
-		BorderStroke s2 = new BorderStroke(Color.BLACK, style2, null, bw);
-		BorderStroke s3 = new BorderStroke(Color.BLACK, style2, null, new BorderWidths(2));
-
-		_borderSprite = new Border(s1, s2);
-
-		_borderGroup = new Border(s1, s3);
-	}
+//	static {
+//		BorderWidths bw = new BorderWidths(1);
+//
+//		List<Double> dashed = Arrays.asList(5d, 2d);
+//		BorderStrokeStyle style1 = new BorderStrokeStyle(StrokeType.INSIDE, StrokeLineJoin.MITER, StrokeLineCap.BUTT,
+//				10, 10, dashed);
+//		BorderStrokeStyle style2 = new BorderStrokeStyle(StrokeType.INSIDE, StrokeLineJoin.MITER, StrokeLineCap.BUTT,
+//				10, 0, dashed);
+//
+//		BorderStroke s1 = new BorderStroke(Color.WHITE, style1, null, bw);
+//		BorderStroke s2 = new BorderStroke(Color.BLACK, style2, null, bw);
+//		BorderStroke s3 = new BorderStroke(Color.BLACK, style2, null, new BorderWidths(2));
+//
+//		_borderSprite = new Border(s1, s2);
+//
+//		_borderGroup = new Border(s1, s3);
+//	}
 
 	private IObjectNode _objectNode;
 	protected Bounds _rect;
@@ -77,7 +71,9 @@ public class SelectionNode extends Pane {
 
 		updateFromZoomAndPanVariables();
 
-		setBorder(inode.getModel() instanceof GroupModel ? _borderGroup : _borderSprite);
+		//setBorder(inode.getModel() instanceof GroupModel ? _borderGroup : _borderSprite);
+		setEffect(new DropShadow());
+		setBorder(new Border(new BorderStroke(Color.GREENYELLOW, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(2))));
 	}
 
 	public static final int HANDLER_SIZE = 10;
