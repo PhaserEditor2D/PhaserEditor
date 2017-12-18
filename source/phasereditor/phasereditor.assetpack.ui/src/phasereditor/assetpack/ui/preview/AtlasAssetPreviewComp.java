@@ -152,7 +152,8 @@ public class AtlasAssetPreviewComp extends Composite {
 						return StructuredSelection.EMPTY;
 					}
 
-					Frame frame = getModel().getAtlasFrames().get(index);
+					List<Frame> frames = getSortedFrames();
+					Frame frame = frames.get(index);
 					return new StructuredSelection(frame);
 				}
 
@@ -235,7 +236,7 @@ public class AtlasAssetPreviewComp extends Composite {
 		layout();
 
 		updateActionsState();
-		
+
 		control.setFocus();
 	}
 
@@ -261,13 +262,12 @@ public class AtlasAssetPreviewComp extends Composite {
 		_canvas.setImageFile(file);
 
 		List<Frame> frames = model.getAtlasFrames();
-		frames = frames.stream().sorted((f1, f2) -> f1.getKey().toLowerCase().compareTo(f2.getKey().toLowerCase()))
-				.collect(toList());
 
 		_canvas.setFrames(frames);
 		_canvas.redraw();
 
 		_spritesList.getViewer().setInput(model);
+		// sort frames by name
 		_spritesList.getViewer().setComparator(new ViewerComparator() {
 			@Override
 			public int compare(Viewer viewer, Object e1, Object e2) {
@@ -281,7 +281,9 @@ public class AtlasAssetPreviewComp extends Composite {
 		if (img != null) {
 			Rectangle b = img.getBounds();
 
-			List<String> tooltips = frames.stream().map(f -> {
+			List<Frame> sortedFrames = getSortedFrames();
+
+			List<String> tooltips = sortedFrames.stream().map(f -> {
 				String str = "Sprite Name: " + f.getKey() + "\n";
 				str += "Sprite Size: " + f.getSpriteW() + "x" + f.getSpriteH() + "\n";
 				str += "Image Size: " + b.width + "x" + b.height + "\n";
@@ -292,9 +294,10 @@ public class AtlasAssetPreviewComp extends Composite {
 			_canvas.setTooltips(tooltips);
 
 			_gridCanvas.setImage(img);
-			_gridCanvas.setFrames(frames.stream().map(f -> f.getFrameData().src).collect(Collectors.toList()));
+			_gridCanvas.setFrames(sortedFrames.stream().map(f -> f.getFrameData().src).collect(Collectors.toList()));
 
 			_gridCanvas.setTooltips(tooltips);
+
 			getDisplay().asyncExec(() -> {
 				_gridCanvas.fitWindow();
 				_gridCanvas.redraw();
@@ -364,5 +367,13 @@ public class AtlasAssetPreviewComp extends Composite {
 		toolbar.add(_zoom_fitWindow_action);
 
 		updateActionsState();
+	}
+
+	/**
+	 * @return
+	 */
+	private List<Frame> getSortedFrames() {
+		return getModel().getAtlasFrames().stream()
+				.sorted((f1, f2) -> f1.getKey().toLowerCase().compareTo(f2.getKey().toLowerCase())).collect(toList());
 	}
 }

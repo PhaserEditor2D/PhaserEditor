@@ -144,7 +144,7 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 	}
 
 	private void afterCreateWidgets() {
-		// scrollable canvas do not get the rigth style
+		// scrollable canvas do not get the right style
 		PhaserEditorUI.forceApplyCompositeStyle(this);
 	}
 
