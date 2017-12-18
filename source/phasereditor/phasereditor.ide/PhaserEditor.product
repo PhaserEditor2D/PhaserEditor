@@ -280,7 +280,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <feature id="phasereditor.libgdx.support" version="1.4.0.20170412"/>
       <feature id="phasereditor.resources" version="1.4.4.20171217"/>
       <feature id="phasereditor.text" version="1.4.3.20171102"/>
-      <feature id="phasereditor.webrun" version="1.4.3.20171102"/>
+      <feature id="phasereditor.webrun" version="1.4.4.20171217"/>
       <feature id="phasereditor.reflection" version="1.4.0.20170412"/>
       <feature id="phasereditor.assets" version="1.4.4.20171217"/>
       <feature id="phasereditor.help.phaserdoc" version="1.3.0.20161130"/>
