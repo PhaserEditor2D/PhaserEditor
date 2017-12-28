@@ -18,7 +18,7 @@ However you can check for updates at any time manually, just click on ``Help > C
 
 The installing of the updates is straightforward, it will show the new plugins to be installed/updates and the license of them. Just press OK to everything.
 
-If you find any issue please `contact with us <https://github.com/boniatillo-com/PhaserEditor/issues>`_ .
+If you find any issue please `contact with us <https://github.com/PhaserEditor2D/PhaserEditor/issues>`_ .
 
 Upgrade
 -------

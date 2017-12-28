@@ -2,7 +2,7 @@ Canvas, The Scene Editor
 ========================
 
 Canvas is a visual (WYSWYG) game level/object editor for Phaser. With this tool you can create a level or the prefabs (reusable objects) of the game, layout sprites and edit object properties like transformation, physics body and animation. The scenes are compiled to Phaser code, in JavaScript or TypeScript.
-`
+
 There are three type of Canvas files: states (compiled to a ``Phaser.State`` code), sprite prefabs (compiled to ``Phaser.Sprite`` code) and group prefabs (compiled to`Phaser.Group` code). These Phaser classes contain the code that create the objects of the game world. It is not like other tools like Tiled that uses a custom format to represent the objects layout and properties, else it compiles to a code that mimics what a developer can write with his "own hands". This method has the advantage that the user can read and understand what is behind the scene and like in other tools provided in Phaser Editor, the developer can learn Phaser or reuse his current Phaser learnings.
 
 When you create a scene (let's say one named ``Level``) you get two files: ``Level.canvas`` and ``Level.js``. The ``Level.canvas`` file contains the objects of the scene and uses a custom Phaser Editor format. The ``Level.js`` file is compiled from the ``Level.canvas`` file and contains all the Phaser code that creates the real scene. Note that in a game distribution only the ``Level.js`` file is needed, since ``Level.canvas`` is only for design purpose.
@@ -86,7 +86,7 @@ A state with two coins...
 	/* --- end generated code --- */
 	// -- user code here --
 
-To create a State scene click in the main menu the ``File > New > State File`` option, it opens the State File wizard. The first page of that wizard asks for the parent folder and the name of the scene. Usually we create a ``WebContent/assets/canvas`` folder where to place all the scenes and prefabs, but you are free to use any folder inside the ``WebContent`` directory. In the next picture we use ``Level`` as the name of the scene, that will create a ``Level.canvas`` file. This is very important: the name of the file will be used to create the name of the state class.
+To create a State scene click in the main menu the ``File → New → State File`` option, it opens the State File wizard. The first page of that wizard asks for the parent folder and the name of the scene. Usually we create a ``WebContent/assets/canvas`` folder where to place all the scenes and prefabs, but you are free to use any folder inside the ``WebContent`` directory. In the next picture we use ``Level`` as the name of the scene, that will create a ``Level.canvas`` file. This is very important: the name of the file will be used to create the name of the state class.
 
 .. image:: images/NewStateWizard_FilePage.png
 	:alt: State wizard (file page)
@@ -110,12 +110,10 @@ The sprite scene or sprite prefab is a Canvas file with a unique object that com
 
 This is an example of how an sprite canvas file is compiled into a custom ``Phaser.Sprite``:
 
-The coin scene (with a ``rotate`` animation)...
+The coin scene (with a ``rotate`` animation) is compiled into a custom Sprite class:
 
 .. image:: images/CoinPrefab.png
 	:alt: Coin prefab.
-
-. . . is compiled into a custom Sprite class:
 
 .. code::
 
@@ -153,7 +151,7 @@ The coin scene (with a ``rotate`` animation)...
 	/* --- end generated code --- */
 	// -- user code here --
 
-To create a sprite prefab in the main menu select the ``File > New > Sprite Prefab File`` option. It opens a wizard that in its first page ask for the container folder and the name of the file.
+To create a sprite prefab in the main menu select the ``File → New → Sprite Prefab File`` option. It opens a wizard that in its first page ask for the container folder and the name of the file.
 
 Press the **Next** button to set some needed parameters, the most important is the sprite type and texture:
 
@@ -220,7 +218,7 @@ This group prefab...
 	// -- user code here --
 
 
-To create a group prefab select in the main menu the ``File > New > Group Prefab File`` option. It opens a wizard that ask in the first page for the name of the file. You can press the **Finish** button to create the file or press **Next** to customize some options, like the base class name (other than ``Phaser.Group``) or the code format (JavaScript 5, JavaScript 6 or TypeScript).
+To create a group prefab select in the main menu the ``File → New → Group Prefab File`` option. It opens a wizard that ask in the first page for the name of the file. You can press the **Finish** button to create the file or press **Next** to customize some options, like the base class name (other than ``Phaser.Group``) or the code format (JavaScript 5, JavaScript 6 or TypeScript).
 
 
 
@@ -310,7 +308,7 @@ The Palette is a docked window at the right of the scene and is used to keep at 
 From the context menu
 ^^^^^^^^^^^^^^^^^^^^^
 
-If you like to work without distracting windows around you can maximize the scene editor (``Ctrl+M``) so it gets all the application space. In this mode you have the option to add the objects by using the Add Sprite dialog, just right-click on the scene and select ``Sprite > Add... > Sprite``:
+If you like to work without distracting windows around you can maximize the scene editor (``Ctrl+M``) so it gets all the application space. In this mode you have the option to add the objects by using the Add Sprite dialog, just right-click on the scene and select ``Sprite → Add... → Sprite``:
 
 .. image:: images/AddSpriteMenu.png
 	:alt: Context menu to open the Add Sprite dialog.
@@ -352,7 +350,7 @@ The common way to create an object is by adding an asset into the scene and it c
 
 To morphing an object mean to convert an object from one type to other type, for example, to morph a sprite into a button or into a tile sprite. When you morph an object into other type it keeps the same proprties, like transformation, texture, body.
 
-To morph an object right click on it and select one of the options displayed in the ``Sprite > Morph To...`` menu:
+To morph an object right click on it and select one of the options displayed in the ``Sprite → Morph To...`` menu:
 
 .. image:: images/MorphObjectTo.png
 	:alt: Morph object to other type.
@@ -539,13 +537,13 @@ For now the scene editor only supports Arcade physics. It does not mean that you
 To enable Arcade physics on a sprite you have two options:
 
 - Set ``true`` the ``physicsGroup`` property of the parent group of the sprite. Physics bodies are automatically enabled in objects added to a physics group.
-- Select the object and open the context menu, in the ``Sprite > Arcade`` menu there are two commands: ``Set Arcade Body - Rectangular`` and ``Set Arcade Body - Circular``, both commands enable a physics body (rectangular or circular) in the selected object. 
+- Select the object and open the context menu, in the ``Sprite → Arcade`` menu there are two commands: ``Set Arcade Body - Rectangular`` and ``Set Arcade Body - Circular``, both commands enable a physics body (rectangular or circular) in the selected object. 
 
 
 .. image:: images/SpriteArcadeMenu.png
 	:alt: Set Arcade physics body to sprite.
 
-When you add a body to a sprite, a new section ``Arcade`` is added to the Property Grid. This section contains many properties related to the Arcade physics body of the sprite and can be edited. In addition you can visually edit the size and offset of the body, just right click on the sprite and select ``Sprite > Arcade > Edit Body`` or press the ``B`` key.
+When you add a body to a sprite, a new section ``Arcade`` is added to the Property Grid. This section contains many properties related to the Arcade physics body of the sprite and can be edited. In addition you can visually edit the size and offset of the body, just right click on the sprite and select ``Sprite → Arcade → Edit Body`` or press the ``B`` key.
 
 .. image:: images/EditArcadeBody.png
 	:alt: Edit Arcade body size and offset.
@@ -608,13 +606,13 @@ For example, if you have some enemies in a level that walk from one side to othe
 Texture
 ^^^^^^^
 
-Canvas support three different type of textures: image, sprite-sheet frame and atlas frame. If the sprite is based on atlas or sprite-sheet, the user can change the frame by editing the ``frameName`` or ``frame`` property. In addition there is a ``Change Texture`` command that allow the user to replace the texture for any other texture type. This command is available in the context menu ``Sprite > Change Sprite Texture`` or can be executed by pressing ``Ctrl+T``. It opens a dialog with all the textures declared in the asset pack. This command allow to select more than one sprite so you can change the texture of all of them.
+Canvas support three different type of textures: image, sprite-sheet frame and atlas frame. If the sprite is based on atlas or sprite-sheet, the user can change the frame by editing the ``frameName`` or ``frame`` property. In addition there is a ``Change Texture`` command that allow the user to replace the texture for any other texture type. This command is available in the context menu ``Sprite → Change Sprite Texture`` or can be executed by pressing ``Ctrl+T``. It opens a dialog with all the textures declared in the asset pack. This command allow to select more than one sprite so you can change the texture of all of them.
 
 
 .. image:: images/ChangeTextureDialog.png
 	:alt: A dialog to change the texture of the selected sprites.
 
-Another nice command is ``Sprite > Select All Sprites With Same Texture``, it selects all the sprites in the same scene with the same texture of the selection. It helps to replace demo textures by final textures.
+Another nice command is ``Sprite → Select All Sprites With Same Texture``, it selects all the sprites in the same scene with the same texture of the selection. It helps to replace demo textures by final textures.
 
 In addition Phaser Editor provides texture refactorings, it is a process that allow to change the texture of all the sprites of all the scenes. You can read more about it the `Global replace texture <assets-manager.html#global-replace-texture>`_ section.
 
@@ -832,7 +830,7 @@ In the Configuration tab, in the State section, you can see the ``isPreloader`` 
 .. image:: images/PreloaderStateConfig.png
 	:alt: Configuration of a preloader state.
 
-When you run the project you will see how the dino is cropped from left to right as a progress of the loading. We recommend to test it on Chrome and enable the ``Network > Throttling`` parameter, because serving from localhost is too fast to see the progress.
+When you run the project you will see how the dino is cropped from left to right as a progress of the loading. We recommend to test it on Chrome and enable the ``Network → Throttling`` parameter, because serving from localhost is too fast to see the progress.
 
 As we commented before, a key difference between a preloader state and a common state is that the sprites are created in the ``preload`` method. Why? Because the ``create`` is called only when all the assets are loaded, but what we need is to show the progress of the assets loading. Usually what is coded in the ``create`` method is code to start the next state of the game. So the code of the ``Preloader.js`` state of the previous project looks like this:
 
@@ -1056,5 +1054,5 @@ To navigate the scene you can open the Quick Outline window by pressing ``Ctrl+O
 	:alt: Quick navigate the scene.
 
 
-To quicly add objects to the scene you can use the fast view to the minimized windows but also you can use the Palette, that is a small panel where you can collect the assets to be used in the scene. In the section `from the palette`_ it is explained in details.
+To quickly add objects to the scene you can use the fast view to the minimized windows but also you can use the Palette, that is a small panel where you can collect the assets to be used in the scene. In the section `from the palette`_ it is explained in details.
 

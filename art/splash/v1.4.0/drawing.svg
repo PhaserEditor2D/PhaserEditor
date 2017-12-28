@@ -58,9 +58,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="232.05495"
-     inkscape:cy="-764.49278"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="271.44869"
+     inkscape:cy="-1149.0311"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -88,14 +88,14 @@
     <image
        sodipodi:absref="C:\Users\arian\Documents\Source\PhaserEditor\Public\art\splash\v1.4.0\splash.png"
        xlink:href="splash.png"
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       width="455.00049"
-       height="295.00031"
-       preserveAspectRatio="none"
-       id="image4144"
+       y="413.43332"
        x="123.92857"
-       y="413.43332" />
+       id="image4144"
+       preserveAspectRatio="none"
+       height="295.00031"
+       width="455.00049"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;line-height:125%;font-family:'Ravi Prakash';-inkscape-font-specification:'Ravi Prakash';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#5b661b;fill-opacity:1;stroke:#5b661b;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -110,14 +110,14 @@
     <image
        sodipodi:absref="C:\Users\arian\Documents\Source\PhaserEditor\Public\art\splash\v1.4.0\splash_base.png"
        xlink:href="splash_base.png"
-       width="455"
-       height="295"
-       preserveAspectRatio="none"
-       id="image4834"
-       x="121.95332"
-       y="1111.1298"
+       inkscape:export-ydpi="96"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       y="1111.1298"
+       x="121.95332"
+       id="image4834"
+       preserveAspectRatio="none"
+       height="295"
+       width="455" />
     <image
        sodipodi:absref="C:\Users\arian\Documents\Source\html5games\Otro\phaser2.4.7\phaser-master\resources\Phaser Logo\2D Text\Phaser 2D No Glow.png"
        y="1200.2566"
@@ -173,14 +173,14 @@
     <image
        sodipodi:absref="C:\Users\arian\Documents\Source\PhaserEditor\Public\art\splash\v1.4.0\splash_base.png"
        xlink:href="splash_base.png"
-       inkscape:export-ydpi="96"
-       inkscape:export-xdpi="96"
-       y="766.92828"
-       x="119.99248"
-       id="image4831"
-       preserveAspectRatio="none"
+       width="455"
        height="295"
-       width="455" />
+       preserveAspectRatio="none"
+       id="image4831"
+       x="119.99248"
+       y="766.92828"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
     <g
        transform="translate(47.444899,-702.38612)"
        id="g4775">
@@ -233,14 +233,14 @@
     <image
        sodipodi:absref="C:\Users\arian\Documents\Source\PhaserEditor\Public\art\splash\v1.4.0\splash_base.png"
        xlink:href="splash_base.png"
-       inkscape:export-ydpi="96"
-       inkscape:export-xdpi="96"
-       y="1494.9877"
-       x="99.729965"
-       id="image5534"
-       preserveAspectRatio="none"
+       width="455"
        height="295"
-       width="455" />
+       preserveAspectRatio="none"
+       id="image5534"
+       x="99.729965"
+       y="1494.9877"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
     <g
        id="g4804">
       <image
@@ -320,5 +320,61 @@
          x="463.62329"
          id="tspan5542-0"
          sodipodi:role="line">v1.4.3</tspan></text>
+    <image
+       inkscape:export-ydpi="96"
+       inkscape:export-xdpi="96"
+       inkscape:export-filename="C:\Users\arian\Documents\Source\PhaserEditor\Public\art\splash\v1.4.4\splash.png"
+       width="455"
+       height="295"
+       preserveAspectRatio="none"
+       xlink:href="file:///C:/Users/arian/Documents/Source/PhaserEditor/Public/art/splash/v1.4.3/splash-base.png"
+       id="image4522"
+       x="102.55843"
+       y="2190.6968"
+       sodipodi:absref="C:\Users\arian\Documents\Source\PhaserEditor\Public\art\splash\v1.4.3\splash-base.png" />
+    <image
+       sodipodi:absref="C:\Users\arian\Documents\Source\html5games\Otro\phaser2.4.7\phaser-master\resources\Phaser Logo\2D Text\Phaser 2D No Glow.png"
+       y="2277.3696"
+       x="393.08844"
+       id="image4524"
+       xlink:href="file:///C:/Users/arian/Documents/Source/html5games/Otro/phaser2.4.7/phaser-master/resources/Phaser%20Logo/2D%20Text/Phaser%202D%20No%20Glow.png"
+       preserveAspectRatio="none"
+       height="29.0625"
+       width="134.0625" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:56.25px;line-height:23.4375px;font-family:'Ravi Prakash';-inkscape-font-specification:'Ravi Prakash';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#2e3436;fill-opacity:1;stroke:none;stroke-width:0.9375px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="392.74792"
+       y="2271.4531"
+       id="text4528"><tspan
+         sodipodi:role="line"
+         id="tspan4526"
+         x="392.74792"
+         y="2271.4531"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Embassy BT';-inkscape-font-specification:'Embassy BT';fill:#2e3436;stroke-width:0.9375px">Editor</tspan></text>
+    <text
+       transform="scale(1.0405065,0.96107041)"
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:54.5102005px;line-height:22.71258545px;font-family:'Ravi Prakash';-inkscape-font-specification:'Ravi Prakash';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.90850329px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="466.34161"
+       y="2334.5664"
+       id="text4532"><tspan
+         sodipodi:role="line"
+         id="tspan4530"
+         x="466.34161"
+         y="2334.5664"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:18.7232666px;font-family:'Embassy BT';-inkscape-font-specification:'Embassy BT';fill:#000000;stroke-width:0.90850329px">v1.4.4</tspan></text>
+    <text
+       id="text4536"
+       y="2412.8955"
+       x="453.40961"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:54.5102005px;line-height:22.71258545px;font-family:'Ravi Prakash';-inkscape-font-specification:'Ravi Prakash';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.90850329px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"
+       transform="scale(1.0405065,0.96107041)"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.66666698px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.90850329px"
+         y="2412.8955"
+         x="453.40961"
+         id="tspan4534"
+         sodipodi:role="line">20171217</tspan></text>
   </g>
 </svg>

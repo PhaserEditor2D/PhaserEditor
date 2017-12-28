@@ -23,7 +23,7 @@ Create the pack file
 
 If you create a project based on the built-in Phaser Editor templates then this file is created automatically. You can find it in the ``WebContent/assets/assets-pack.json`` path. 
 
-To create the pack file manually, go to ``File > New > Asset Pack File``:
+To create the pack file manually, go to ``File → New → Asset Pack File``:
 
 .. image:: images/NewAssetPackMenu.png
   :alt: Asset pack file menu
@@ -128,7 +128,7 @@ A nice new feature in Phaser Editor is the refactoring tools. These tools allow 
 Delete an asset
 ^^^^^^^^^^^^^^^
 
-To delete an asset entry right-click on it and select the ``Refactoring > Delete`` option.  Please remember that an asset entry is just a definition, an entry, in the asset pack file. By deleting an asset entry you only are modifing the ``pack.json`` file, the real file, like an image, is not touched.
+To delete an asset entry right-click on it and select the ``Refactoring → Delete`` option.  Please remember that an asset entry is just a definition, an entry, in the asset pack file. By deleting an asset entry you only are modifing the ``pack.json`` file, the real file, like an image, is not touched.
 
 .. image:: images/DeleteAssetMenu.png
   :alt: Delete asset menu
@@ -150,7 +150,7 @@ The process of rename an asset is pretty similar to the process of delete it. A 
 Move asset
 ^^^^^^^^^^
 
-Assets can be moved from one section to other. Just follow the same process of the rename, in the context menu select the ``Refactoring > Move`` option. It shows a dialog to select the new section for the asset and the option to preview the affected files. This operation can be undone and updates all the affected files so it does not introduce errors.
+Assets can be moved from one section to other. Just follow the same process of the rename, in the context menu select the ``Refactoring → Move`` option. It shows a dialog to select the new section for the asset and the option to preview the affected files. This operation can be undone and updates all the affected files so it does not introduce errors.
 
 
 Global replace texture
@@ -178,10 +178,10 @@ If you find that your assets are in an invalid state or you see a strange behavi
 
 Internally Phaser Editor uses a memory model with all the assets and its properties. This memory model should be synchronized with the physical and real data, but it happens that sometime because external changes or maybe bugs, the memory model is not in synchronization with the physical one. In this case, the best is to force the editor to create the memory model from scratch.
 
-To do this select in the main menu the option ``Project > Clean...``, it opens a dialog with the list of your projects. Select those you want to re-build and press the **OK** button. After this operation all the visual editors and views should be updated to show the new fresh/fixed data.
+To do this select in the main menu the option ``Project → Clean...``, it opens a dialog with the list of your projects. Select those you want to re-build and press the **OK** button. After this operation all the visual editors and views should be updated to show the new fresh/fixed data.
 
 
 .. image:: images/CleanProjects.png
   :alt: Clean projects.
 
-If the strange behavior continues please `open an issue <https://github.com/boniatillo-com/PhaserEditor/issues>`_.
+If the strange behavior continues please `open an issue <https://github.com/PhaserEditor2D/PhaserEditor/issues>`_.

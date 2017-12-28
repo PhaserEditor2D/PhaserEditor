@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Canvas, The Scene Editor &mdash; Phaser Editor 1.4.3 documentation</title>
+  <title>Canvas, The Scene Editor &mdash; Phaser Editor 1.4.4 documentation</title>
   
 
   
@@ -52,15 +52,14 @@
             
   <div class="section" id="canvas-the-scene-editor">
 <h1>Canvas, The Scene Editor<a class="headerlink" href="#canvas-the-scene-editor" title="Permalink to this headline">¶</a></h1>
-<p>Canvas is a visual (WYSWYG) game level/object editor for Phaser. With this tool you can create a level or the prefabs (reusable objects) of the game, layout sprites and edit object properties like transformation, physics body and animation. The scenes are compiled to Phaser code, in JavaScript or TypeScript.
-`
-There are three type of Canvas files: states (compiled to a <code class="docutils literal"><span class="pre">Phaser.State</span></code> code), sprite prefabs (compiled to <code class="docutils literal"><span class="pre">Phaser.Sprite</span></code> code) and group prefabs (compiled to`Phaser.Group` code). These Phaser classes contain the code that create the objects of the game world. It is not like other tools like Tiled that uses a custom format to represent the objects layout and properties, else it compiles to a code that mimics what a developer can write with his “own hands”. This method has the advantage that the user can read and understand what is behind the scene and like in other tools provided in Phaser Editor, the developer can learn Phaser or reuse his current Phaser learnings.</p>
+<p>Canvas is a visual (WYSWYG) game level/object editor for Phaser. With this tool you can create a level or the prefabs (reusable objects) of the game, layout sprites and edit object properties like transformation, physics body and animation. The scenes are compiled to Phaser code, in JavaScript or TypeScript.</p>
+<p>There are three type of Canvas files: states (compiled to a <code class="docutils literal"><span class="pre">Phaser.State</span></code> code), sprite prefabs (compiled to <code class="docutils literal"><span class="pre">Phaser.Sprite</span></code> code) and group prefabs (compiled to`Phaser.Group` code). These Phaser classes contain the code that create the objects of the game world. It is not like other tools like Tiled that uses a custom format to represent the objects layout and properties, else it compiles to a code that mimics what a developer can write with his “own hands”. This method has the advantage that the user can read and understand what is behind the scene and like in other tools provided in Phaser Editor, the developer can learn Phaser or reuse his current Phaser learnings.</p>
 <p>When you create a scene (let’s say one named <code class="docutils literal"><span class="pre">Level</span></code>) you get two files: <code class="docutils literal"><span class="pre">Level.canvas</span></code> and <code class="docutils literal"><span class="pre">Level.js</span></code>. The <code class="docutils literal"><span class="pre">Level.canvas</span></code> file contains the objects of the scene and uses a custom Phaser Editor format. The <code class="docutils literal"><span class="pre">Level.js</span></code> file is compiled from the <code class="docutils literal"><span class="pre">Level.canvas</span></code> file and contains all the Phaser code that creates the real scene. Note that in a game distribution only the <code class="docutils literal"><span class="pre">Level.js</span></code> file is needed, since <code class="docutils literal"><span class="pre">Level.canvas</span></code> is only for design purpose.</p>
 <p>Read in Zenva GameDev Academy <a class="reference external" href="https://gamedevacademy.org/make-a-mario-style-platformer-with-the-phaser-editor/">Make a Mario-Style Platformer with the Phaser Editor</a></p>
 <img alt="Canvas." src="_images/Canvas.png" />
 <div class="section" id="play-the-demos">
 <h2>Play the demos<a class="headerlink" href="#play-the-demos" title="Permalink to this headline">¶</a></h2>
-<p>To play around with a Canvas demo you can create a project with the <a class="reference external" href="first_steps.html#phaser-example-project-wizard">Phaser Example Project wizard</a>. There you can select any of the templates under the <strong>Phaser Editor Demos</strong> category:</p>
+<p>To play around with a Canvas demo you can create a project with the <a class="reference external" href="first-steps.html#phaser-example-project-wizard">Phaser Example Project wizard</a>. There you can select any of the templates under the <strong>Phaser Editor Demos</strong> category:</p>
 <img alt="Project with a Canvas demo." src="_images/PhaserProject_Templates.png" />
 </div>
 <div class="section" id="states-sprites-and-groups">
@@ -115,21 +114,20 @@ There are three type of Canvas files: states (compiled to a <code class="docutil
 <span class="c1">// -- user code here --</span>
 </pre></div>
 </div>
-<p>To create a State scene click in the main menu the <code class="docutils literal"><span class="pre">File</span> <span class="pre">&gt;</span> <span class="pre">New</span> <span class="pre">&gt;</span> <span class="pre">State</span> <span class="pre">File</span></code> option, it opens the State File wizard. The first page of that wizard asks for the parent folder and the name of the scene. Usually we create a <code class="docutils literal"><span class="pre">WebContent/assets/canvas</span></code> folder where to place all the scenes and prefabs, but you are free to use any folder inside the <code class="docutils literal"><span class="pre">WebContent</span></code> directory. In the next picture we use <code class="docutils literal"><span class="pre">Level</span></code> as the name of the scene, that will create a <code class="docutils literal"><span class="pre">Level.canvas</span></code> file. This is very important: the name of the file will be used to create the name of the state class.</p>
+<p>To create a State scene click in the main menu the <code class="docutils literal"><span class="pre">File</span> <span class="pre">→</span> <span class="pre">New</span> <span class="pre">→</span> <span class="pre">State</span> <span class="pre">File</span></code> option, it opens the State File wizard. The first page of that wizard asks for the parent folder and the name of the scene. Usually we create a <code class="docutils literal"><span class="pre">WebContent/assets/canvas</span></code> folder where to place all the scenes and prefabs, but you are free to use any folder inside the <code class="docutils literal"><span class="pre">WebContent</span></code> directory. In the next picture we use <code class="docutils literal"><span class="pre">Level</span></code> as the name of the scene, that will create a <code class="docutils literal"><span class="pre">Level.canvas</span></code> file. This is very important: the name of the file will be used to create the name of the state class.</p>
 <img alt="State wizard (file page)" src="_images/NewStateWizard_FilePage.png" />
 <p>If you press <strong>Finish</strong> the state file is created with the default parameters, but we recommend that you press the <strong>Next</strong> button, to do some customization of the scene:</p>
 <img alt="State wizard settings page." src="_images/SceneWizard_Settings.png" />
 <p>Many of the parameters shown in that page come from the Phaser API, however there are other parameters like the <strong>Base Class Name</strong> or <strong>Code Format</strong> that are used by the scene-to-code compiler.</p>
 <p>All these settings can be changed later in the configuration tab of the editor.</p>
-<p>Sate scenes will be displayed in the <a class="reference external" href="assets_manager.html#assets-explorer">Assets</a> window under the <strong>State</strong> section.</p>
+<p>Sate scenes will be displayed in the <a class="reference external" href="assets-manager.html#assets-explorer">Assets</a> window under the <strong>State</strong> section.</p>
 </div>
 <div class="section" id="the-sprite-scene-prefab">
 <h3>The sprite scene (prefab)<a class="headerlink" href="#the-sprite-scene-prefab" title="Permalink to this headline">¶</a></h3>
 <p>The sprite scene or sprite prefab is a Canvas file with a unique object that compiles to a <code class="docutils literal"><span class="pre">Phaser.Sprite</span></code> sub-class. In the Phaser examples it is called as “custom sprite”, in other tutorials and examples about Phaser it is called also “prefab”. We like the word “prefab” since it is a concept used in other game visual tools, but the purpose is the same, to write resuable components that can be used in different parts of the game, without the need to duplicate code. For example you can create a <code class="docutils literal"><span class="pre">Coin</span></code> prefab with the coin animations, so you can use that animated coin in any other scene.</p>
 <p>This is an example of how an sprite canvas file is compiled into a custom <code class="docutils literal"><span class="pre">Phaser.Sprite</span></code>:</p>
-<p>The coin scene (with a <code class="docutils literal"><span class="pre">rotate</span></code> animation)…</p>
+<p>The coin scene (with a <code class="docutils literal"><span class="pre">rotate</span></code> animation) is compiled into a custom Sprite class:</p>
 <img alt="Coin prefab." src="_images/CoinPrefab.png" />
-<p>… is compiled into a custom Sprite class:</p>
 <div class="code highlight-javascript"><div class="highlight"><pre><span></span><span class="c1">// -- user code here --</span>
 
 <span class="cm">/* --- start generated code --- */</span>
@@ -165,7 +163,7 @@ There are three type of Canvas files: states (compiled to a <code class="docutil
 <span class="c1">// -- user code here --</span>
 </pre></div>
 </div>
-<p>To create a sprite prefab in the main menu select the <code class="docutils literal"><span class="pre">File</span> <span class="pre">&gt;</span> <span class="pre">New</span> <span class="pre">&gt;</span> <span class="pre">Sprite</span> <span class="pre">Prefab</span> <span class="pre">File</span></code> option. It opens a wizard that in its first page ask for the container folder and the name of the file.</p>
+<p>To create a sprite prefab in the main menu select the <code class="docutils literal"><span class="pre">File</span> <span class="pre">→</span> <span class="pre">New</span> <span class="pre">→</span> <span class="pre">Sprite</span> <span class="pre">Prefab</span> <span class="pre">File</span></code> option. It opens a wizard that in its first page ask for the container folder and the name of the file.</p>
 <p>Press the <strong>Next</strong> button to set some needed parameters, the most important is the sprite type and texture:</p>
 <img alt="Sprite prefab wizard" src="_images/CreateSpritePrefab.png" />
 <p>In the current version of Canvas the sprites cannot have children, so a sprite prefab cannot have children neither, it is a file with single object.</p>
@@ -219,7 +217,7 @@ There are three type of Canvas files: states (compiled to a <code class="docutil
 <span class="c1">// -- user code here --</span>
 </pre></div>
 </div>
-<p>To create a group prefab select in the main menu the <code class="docutils literal"><span class="pre">File</span> <span class="pre">&gt;</span> <span class="pre">New</span> <span class="pre">&gt;</span> <span class="pre">Group</span> <span class="pre">Prefab</span> <span class="pre">File</span></code> option. It opens a wizard that ask in the first page for the name of the file. You can press the <strong>Finish</strong> button to create the file or press <strong>Next</strong> to customize some options, like the base class name (other than <code class="docutils literal"><span class="pre">Phaser.Group</span></code>) or the code format (JavaScript 5, JavaScript 6 or TypeScript).</p>
+<p>To create a group prefab select in the main menu the <code class="docutils literal"><span class="pre">File</span> <span class="pre">→</span> <span class="pre">New</span> <span class="pre">→</span> <span class="pre">Group</span> <span class="pre">Prefab</span> <span class="pre">File</span></code> option. It opens a wizard that ask in the first page for the name of the file. You can press the <strong>Finish</strong> button to create the file or press <strong>Next</strong> to customize some options, like the base class name (other than <code class="docutils literal"><span class="pre">Phaser.Group</span></code>) or the code format (JavaScript 5, JavaScript 6 or TypeScript).</p>
 </div>
 </div>
 <div class="section" id="objects-creation">
@@ -237,7 +235,7 @@ There are three type of Canvas files: states (compiled to a <code class="docutil
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>For the scenes Phaser Editor uses an <a class="reference external" href="assets_manager.html">Asset manifest file (pack)</a> that contains the declaretion of the assets and the keys. Instead of write the code to load each asset, you only need to load the asset pack file:</p>
+<p>For the scenes Phaser Editor uses an <a class="reference external" href="assets-manager.html">Asset manifest file (pack)</a> that contains the declaretion of the assets and the keys. Instead of write the code to load each asset, you only need to load the asset pack file:</p>
 <div class="code highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">pack</span><span class="p">(</span><span class="s2">&quot;level&quot;</span><span class="p">,</span> <span class="s2">&quot;assets/pack.json&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -248,7 +246,7 @@ There are three type of Canvas files: states (compiled to a <code class="docutil
 <p>The common way to create an object is by getting a texture from somewhere and droping it into the scene. In the next sections we explain the different sources of the textures.</p>
 <div class="section" id="from-the-assets-window">
 <h4>From the Assets window<a class="headerlink" href="#from-the-assets-window" title="Permalink to this headline">¶</a></h4>
-<p>In the <a class="reference external" href="assets_manager.html#assets-explorer">Assets</a> explorer you will find all the assets declared in the pack files. To create a common sprite you can drag a texture from that window and drop it into the scene:</p>
+<p>In the <a class="reference external" href="assets-manager.html#assets-explorer">Assets</a> explorer you will find all the assets declared in the pack files. To create a common sprite you can drag a texture from that window and drop it into the scene:</p>
 <img alt="Add objects from the Assets window." src="_images/AddObjectFromAssets.png" />
 <p>Note a texture could be represented by an image key, a sprite-sheet frame key or a texture atlas frame key.</p>
 <p>The objects created by dropping an asset in the scene are simple sprites, direct instances of <code class="docutils literal"><span class="pre">Phaser.Sprite</span></code>. In the next sections we explain how to create specialized sprites like buttons and tiles.</p>
@@ -264,7 +262,7 @@ There are three type of Canvas files: states (compiled to a <code class="docutil
 </div>
 <div class="section" id="from-the-preview-window">
 <h4>From the Preview window<a class="headerlink" href="#from-the-preview-window" title="Permalink to this headline">¶</a></h4>
-<p>The <a class="reference external" href="preview_window.html">Preview window</a> allow you you to get a closer look to the assets. Like in the Assets window, you can drag an asset key from the Preview and drop it to the scene. For example, you can drop “cells” from a sprite-sheet of a retro game into the scene. This method could be easier than getting it from the Assets tree:</p>
+<p>The <a class="reference external" href="preview-window.html">Preview window</a> allow you you to get a closer look to the assets. Like in the Assets window, you can drag an asset key from the Preview and drop it to the scene. For example, you can drop “cells” from a sprite-sheet of a retro game into the scene. This method could be easier than getting it from the Assets tree:</p>
 <img alt="Add object from the Preview window." src="_images/AddObjectFromPreview.png" />
 <p>You can drag the objects from an image, a texture atlas or a sprite-sheet. In case of sprite-sheets, you can select many frames (hold the <cite>Shift</cite> key and move the mouse) and drop them into the scene: new objects will be created but keeping the original positions. This is useful to create tile-based scenes.</p>
 <img alt="Drop sprite-sheet frames" src="_images/DropSpritesheetFrames.gif" />
@@ -276,7 +274,7 @@ There are three type of Canvas files: states (compiled to a <code class="docutil
 </div>
 <div class="section" id="from-the-context-menu">
 <h4>From the context menu<a class="headerlink" href="#from-the-context-menu" title="Permalink to this headline">¶</a></h4>
-<p>If you like to work without distracting windows around you can maximize the scene editor (<code class="docutils literal"><span class="pre">Ctrl+M</span></code>) so it gets all the application space. In this mode you have the option to add the objects by using the Add Sprite dialog, just right-click on the scene and select <code class="docutils literal"><span class="pre">Sprite</span> <span class="pre">&gt;</span> <span class="pre">Add...</span> <span class="pre">&gt;</span> <span class="pre">Sprite</span></code>:</p>
+<p>If you like to work without distracting windows around you can maximize the scene editor (<code class="docutils literal"><span class="pre">Ctrl+M</span></code>) so it gets all the application space. In this mode you have the option to add the objects by using the Add Sprite dialog, just right-click on the scene and select <code class="docutils literal"><span class="pre">Sprite</span> <span class="pre">→</span> <span class="pre">Add...</span> <span class="pre">→</span> <span class="pre">Sprite</span></code>:</p>
 <img alt="Context menu to open the Add Sprite dialog." src="_images/AddSpriteMenu.png" />
 <p>It shows a dialog with all the assets that can be used to create the sprite:</p>
 <img alt="Add Sprite dialog." src="_images/AddSpriteDialog.png" />
@@ -302,7 +300,7 @@ There are three type of Canvas files: states (compiled to a <code class="docutil
 <h3>Object morphing<a class="headerlink" href="#object-morphing" title="Permalink to this headline">¶</a></h3>
 <p>The common way to create an object is by adding an asset into the scene and it create a regular sprite (<code class="docutils literal"><span class="pre">Phaser.Sprite</span></code>). If you want to create a different type of object (like a button or a tile) you have two options: the <cite>From the context menu</cite> option or the morphing option.</p>
 <p>To morphing an object mean to convert an object from one type to other type, for example, to morph a sprite into a button or into a tile sprite. When you morph an object into other type it keeps the same proprties, like transformation, texture, body.</p>
-<p>To morph an object right click on it and select one of the options displayed in the <code class="docutils literal"><span class="pre">Sprite</span> <span class="pre">&gt;</span> <span class="pre">Morph</span> <span class="pre">To...</span></code> menu:</p>
+<p>To morph an object right click on it and select one of the options displayed in the <code class="docutils literal"><span class="pre">Sprite</span> <span class="pre">→</span> <span class="pre">Morph</span> <span class="pre">To...</span></code> menu:</p>
 <img alt="Morph object to other type." src="_images/MorphObjectTo.png" />
 <p>In addition you can press the <code class="docutils literal"><span class="pre">L</span></code> key to morph the selected sprite to a tile sprite, and resize it. It is a handy shortcut for games based on fixed-size art. If the sprite is already a tile sprite it just show the handlers to resize it.</p>
 </div>
@@ -472,10 +470,10 @@ There are three type of Canvas files: states (compiled to a <code class="docutil
 <p>To enable Arcade physics on a sprite you have two options:</p>
 <ul class="simple">
 <li>Set <code class="docutils literal"><span class="pre">true</span></code> the <code class="docutils literal"><span class="pre">physicsGroup</span></code> property of the parent group of the sprite. Physics bodies are automatically enabled in objects added to a physics group.</li>
-<li>Select the object and open the context menu, in the <code class="docutils literal"><span class="pre">Sprite</span> <span class="pre">&gt;</span> <span class="pre">Arcade</span></code> menu there are two commands: <code class="docutils literal"><span class="pre">Set</span> <span class="pre">Arcade</span> <span class="pre">Body</span> <span class="pre">-</span> <span class="pre">Rectangular</span></code> and <code class="docutils literal"><span class="pre">Set</span> <span class="pre">Arcade</span> <span class="pre">Body</span> <span class="pre">-</span> <span class="pre">Circular</span></code>, both commands enable a physics body (rectangular or circular) in the selected object.</li>
+<li>Select the object and open the context menu, in the <code class="docutils literal"><span class="pre">Sprite</span> <span class="pre">→</span> <span class="pre">Arcade</span></code> menu there are two commands: <code class="docutils literal"><span class="pre">Set</span> <span class="pre">Arcade</span> <span class="pre">Body</span> <span class="pre">-</span> <span class="pre">Rectangular</span></code> and <code class="docutils literal"><span class="pre">Set</span> <span class="pre">Arcade</span> <span class="pre">Body</span> <span class="pre">-</span> <span class="pre">Circular</span></code>, both commands enable a physics body (rectangular or circular) in the selected object.</li>
 </ul>
 <img alt="Set Arcade physics body to sprite." src="_images/SpriteArcadeMenu.png" />
-<p>When you add a body to a sprite, a new section <code class="docutils literal"><span class="pre">Arcade</span></code> is added to the Property Grid. This section contains many properties related to the Arcade physics body of the sprite and can be edited. In addition you can visually edit the size and offset of the body, just right click on the sprite and select <code class="docutils literal"><span class="pre">Sprite</span> <span class="pre">&gt;</span> <span class="pre">Arcade</span> <span class="pre">&gt;</span> <span class="pre">Edit</span> <span class="pre">Body</span></code> or press the <code class="docutils literal"><span class="pre">B</span></code> key.</p>
+<p>When you add a body to a sprite, a new section <code class="docutils literal"><span class="pre">Arcade</span></code> is added to the Property Grid. This section contains many properties related to the Arcade physics body of the sprite and can be edited. In addition you can visually edit the size and offset of the body, just right click on the sprite and select <code class="docutils literal"><span class="pre">Sprite</span> <span class="pre">→</span> <span class="pre">Arcade</span> <span class="pre">→</span> <span class="pre">Edit</span> <span class="pre">Body</span></code> or press the <code class="docutils literal"><span class="pre">B</span></code> key.</p>
 <img alt="Edit Arcade body size and offset." src="_images/EditArcadeBody.png" />
 </div>
 <div class="section" id="animations">
@@ -538,10 +536,10 @@ There are three type of Canvas files: states (compiled to a <code class="docutil
 </div>
 <div class="section" id="texture">
 <h4>Texture<a class="headerlink" href="#texture" title="Permalink to this headline">¶</a></h4>
-<p>Canvas support three different type of textures: image, sprite-sheet frame and atlas frame. If the sprite is based on atlas or sprite-sheet, the user can change the frame by editing the <code class="docutils literal"><span class="pre">frameName</span></code> or <code class="docutils literal"><span class="pre">frame</span></code> property. In addition there is a <code class="docutils literal"><span class="pre">Change</span> <span class="pre">Texture</span></code> command that allow the user to replace the texture for any other texture type. This command is available in the context menu <code class="docutils literal"><span class="pre">Sprite</span> <span class="pre">&gt;</span> <span class="pre">Change</span> <span class="pre">Sprite</span> <span class="pre">Texture</span></code> or can be executed by pressing <code class="docutils literal"><span class="pre">Ctrl+T</span></code>. It opens a dialog with all the textures declared in the asset pack. This command allow to select more than one sprite so you can change the texture of all of them.</p>
+<p>Canvas support three different type of textures: image, sprite-sheet frame and atlas frame. If the sprite is based on atlas or sprite-sheet, the user can change the frame by editing the <code class="docutils literal"><span class="pre">frameName</span></code> or <code class="docutils literal"><span class="pre">frame</span></code> property. In addition there is a <code class="docutils literal"><span class="pre">Change</span> <span class="pre">Texture</span></code> command that allow the user to replace the texture for any other texture type. This command is available in the context menu <code class="docutils literal"><span class="pre">Sprite</span> <span class="pre">→</span> <span class="pre">Change</span> <span class="pre">Sprite</span> <span class="pre">Texture</span></code> or can be executed by pressing <code class="docutils literal"><span class="pre">Ctrl+T</span></code>. It opens a dialog with all the textures declared in the asset pack. This command allow to select more than one sprite so you can change the texture of all of them.</p>
 <img alt="A dialog to change the texture of the selected sprites." src="_images/ChangeTextureDialog.png" />
-<p>Another nice command is <code class="docutils literal"><span class="pre">Sprite</span> <span class="pre">&gt;</span> <span class="pre">Select</span> <span class="pre">All</span> <span class="pre">Sprites</span> <span class="pre">With</span> <span class="pre">Same</span> <span class="pre">Texture</span></code>, it selects all the sprites in the same scene with the same texture of the selection. It helps to replace demo textures by final textures.</p>
-<p>In addition Phaser Editor provides texture refactorings, it is a process that allow to change the texture of all the sprites of all the scenes. You can read more about it the <a class="reference external" href="assets_manager.html#global-replace-texture">Global replace texture</a> section.</p>
+<p>Another nice command is <code class="docutils literal"><span class="pre">Sprite</span> <span class="pre">→</span> <span class="pre">Select</span> <span class="pre">All</span> <span class="pre">Sprites</span> <span class="pre">With</span> <span class="pre">Same</span> <span class="pre">Texture</span></code>, it selects all the sprites in the same scene with the same texture of the selection. It helps to replace demo textures by final textures.</p>
+<p>In addition Phaser Editor provides texture refactorings, it is a process that allow to change the texture of all the sprites of all the scenes. You can read more about it the <a class="reference external" href="assets-manager.html#global-replace-texture">Global replace texture</a> section.</p>
 </div>
 </div>
 <div class="section" id="button-properties">
@@ -882,7 +880,7 @@ A preloader state is just like any other Phaser state, but the sprites are creat
 <img alt="Preloader scene with the preload sprite." src="_images/PreloaderStateScene.png" />
 <p>In the Configuration tab, in the State section, you can see the <code class="docutils literal"><span class="pre">isPreloader</span></code> is set to <code class="docutils literal"><span class="pre">true</span></code> and the <code class="docutils literal"><span class="pre">preloadSprite</span></code> is set to <code class="docutils literal"><span class="pre">logo</span></code>:</p>
 <img alt="Configuration of a preloader state." src="_images/PreloaderStateConfig.png" />
-<p>When you run the project you will see how the dino is cropped from left to right as a progress of the loading. We recommend to test it on Chrome and enable the <code class="docutils literal"><span class="pre">Network</span> <span class="pre">&gt;</span> <span class="pre">Throttling</span></code> parameter, because serving from localhost is too fast to see the progress.</p>
+<p>When you run the project you will see how the dino is cropped from left to right as a progress of the loading. We recommend to test it on Chrome and enable the <code class="docutils literal"><span class="pre">Network</span> <span class="pre">→</span> <span class="pre">Throttling</span></code> parameter, because serving from localhost is too fast to see the progress.</p>
 <p>As we commented before, a key difference between a preloader state and a common state is that the sprites are created in the <code class="docutils literal"><span class="pre">preload</span></code> method. Why? Because the <code class="docutils literal"><span class="pre">create</span></code> is called only when all the assets are loaded, but what we need is to show the progress of the assets loading. Usually what is coded in the <code class="docutils literal"><span class="pre">create</span></code> method is code to start the next state of the game. So the code of the <code class="docutils literal"><span class="pre">Preloader.js</span></code> state of the previous project looks like this:</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="c1">// -- user code here --</span>
 
@@ -1055,7 +1053,7 @@ A preloader state is just like any other Phaser state, but the sprites are creat
 <img alt="Edit the object in place." src="_images/QuickEditDialog.png" />
 <p>To navigate the scene you can open the Quick Outline window by pressing <code class="docutils literal"><span class="pre">Ctrl+O</span></code>:</p>
 <img alt="Quick navigate the scene." src="_images/QuickOutlineWindow.png" />
-<p>To quicly add objects to the scene you can use the fast view to the minimized windows but also you can use the Palette, that is a small panel where you can collect the assets to be used in the scene. In the section <a class="reference internal" href="#from-the-palette">from the palette</a> it is explained in details.</p>
+<p>To quickly add objects to the scene you can use the fast view to the minimized windows but also you can use the Palette, that is a small panel where you can collect the assets to be used in the scene. In the section <a class="reference internal" href="#from-the-palette">from the palette</a> it is explained in details.</p>
 </div>
 </div>
 
@@ -1092,7 +1090,7 @@ A preloader state is just like any other Phaser state, but the sprites are creat
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.4.3',
+            VERSION:'1.4.4',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

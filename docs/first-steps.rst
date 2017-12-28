@@ -8,7 +8,7 @@ This is a small guide you can follow to start writing your games and perform com
 Download and install
 --------------------
 
-`Download the Phaser Editor ZIP file <http://phasereditor.boniatillo.com/blog/downloads>`_ of your OS (win64, linux64 or macosx) and uncompress it.
+`Download the Phaser Editor ZIP file <https://phasereditor2d.com/blog/downloads>`_ of your OS (win64, linux64 or macosx) and uncompress it.
 
 Notes for Windows users 
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -41,7 +41,7 @@ Then run the editor as any other Linux program:
 
 Phaser Editor was tested on Ubuntu 14.04 Gnome.
 
-Some users are getting issues at the editor startup. Please `check this issue to get a workaround <https://github.com/boniatillo-com/PhaserEditor/issues/10>`_. Basically, the idea is to run the editor in this way: 
+Some users are getting issues at the editor startup. Please `check this issue to get a workaround <https://github.com/PhaserEditor2D/PhaserEditor/issues/10>`_. Basically, the idea is to run the editor in this way: 
 
 .. code-block:: bash
 
@@ -79,11 +79,11 @@ The **Phaser Example Project** wizard allows the user to create a project based 
 Phaser Project wizard
 ~~~~~~~~~~~~~~~~~~~~~
 
-To create the project go to ``File > New > Phaser Project``. It opens a dialog where, at the first page, asks for the name of the project:
+To create the project go to ``File → New → Phaser Project``. It opens a dialog where, at the first page, asks for the name of the project:
 
  .. image:: images/NewProject_SetName.png
 
-Write the name of your project and press the **Next** button if you want to change the project settings or press **Finish** to create the project with the default settings. We recommend you press **Next** and adjust some of the settings.
+Write the name of your project and press the **Next** button if you want to change the project settings or press **Finish** to create the project with the default settings. We recommend you press **Next** and adjust some of the settings. Also, note you can select or create a Working Set for the project.
 
 So, by pressing **Next** the wizard shows the settings page:
 
@@ -95,10 +95,10 @@ This page contains a group of parameters that affect different aspects of a proj
 ``Game Parameters``             Are the same parameters of the ``Phaser.Game`` constructor.  Set these parameters to control how the game instance is created.
 ``Project Structure``           Contains a list of project layouts that you can select. You can select to create a project with a very simple structure or a complex, production ready structure. These layout are related with the number of Phaser states are going to be used in the game.
 ``Assets``                      In this section you can set if you want to add some demo assets to the project. This could be good if you want to take a better idea of how a Phaser project is. In many of the layouts, when you select to add assets, some prefabs are created so it is a good way to know how prefabs work.
-``Language``                    To select the language of your project (JavaScript 5, JavaScript 6 or TypeScript). At the time there is not a built-in JavaScript 6/TypeScript editor inside Phaser Editor but we included this option because developers can use any other external editor like `VSCode <http://code.visualstudio.com>`_. There are some third-party plugins for Eclipse that support TypeScript, `here we talk about one of them <http://phasereditor.boniatillo.com/blog/2017/04/welcome-typescript-ide>`_.
+``Language``                    To select the language of your project (JavaScript 5, JavaScript 6 or TypeScript). At the time there is not a built-in JavaScript 6/TypeScript editor inside Phaser Editor but we included this option because developers can use any other external editor like `VSCode <http://code.visualstudio.com>`_. There are some third-party plugins for Eclipse that support TypeScript, `here we talk about one of them <https://phasereditor2d.com/blog/2017/04/welcome-typescript-ide>`_.
 =============================== ===================================================
 
-The current JavaScript editor does not support JavaScript 6, for that reason, if you select that language, a `TypeScript IDE <http://phasereditor.boniatillo.com/blog/2017/04/welcome-typescript-ide>`_ project is created. We are going to include TypeScript IDE by default in the editor in the near future.
+The current JavaScript editor does not support JavaScript 6, for that reason, if you select that language, a `TypeScript IDE <http://phasereditor2d.com/blog/2017/04/welcome-typescript-ide>`_ project is created. We are going to include TypeScript IDE by default in the editor in the near future.
 
 
 After setting the parameters, press the **Finish** button to create the project and files.
@@ -122,6 +122,7 @@ In addition to the **Phaser Project** wizard there is the  **Phaser Example Proj
 After you select the template you can press **Finish** to create a project with an auto-generated name, or click **Next** to change it. In case of the **Phaser Examples** templates, you can select one and play it and see the source code instantaneously, just press the "browser" button.
 
 .. image:: images/PhaserExamples_button.png
+  :alt: Launch the Phaser Examples locally.
 
 You can access all the Phaser Examples locally, just click the Phaser Examples button in the main toolbar, it starts a local server and open the default browser in the Local Phaser Examples Website. In this minimalistic website you can access to the examples, play it and see the code.
 
@@ -137,6 +138,13 @@ A nice feature of Phaser Editor is the preview of the assets. In the Project Exp
   :alt: Project Explorer preview image file 
 
 By default, Phaser Editor updates (refreshes) the Project Explorer if the workspace is changed by external programs (for example if you modify, delete or add a file in the OS explorer). However, you can refresh the Project Explorer manually if you select a resource (project, folder or file) and press `F5` .
+
+To organize the projects you can create Working Sets, set the Top Level Elements, set Filters and use the navigation actions like Go Into.
+
+.. image:: images/Customize-Project-Explorer.png
+  :alt: Configure the Project Explorer.
+
+
 
 Run the game
 ------------
@@ -166,7 +174,7 @@ By default, Phaser Editor disables the Theme Engine. To set it back, open the ``
   -cssTheme
   none
 
-If the themes are enabled, then open the Preferences dialog (``Windows > Preferences``) and select the ``General > Appearance`` section. There you can select the theme you like. By default it comes with a dark and light theme, you can install more from the Eclipse Marketplace.
+If the themes are enabled, then open the Preferences dialog (``Windows → Preferences``) and select the ``General → Appearance`` section. There you can select the theme you like. By default it comes with a dark and light theme, you can install more from the Eclipse Marketplace.
 
 `Learn more about Eclipse themes <http://help.eclipse.org/oxygen/index.jsp?topic=%2Forg.eclipse.platform.doc.user%2Freference%2Fref-16.htm&cp=0_4_1_8>`_ 
 
