@@ -63,9 +63,15 @@ A project is a folder where you add the code of your game. So you can create man
 Update
 ------
 
-By default when the editor opens it checks for available updates. We recommend you to install them, important bug fixes are provided this way.
+By default, when the editor opens it checks for available updates. We recommend you to install them, important bug fixes are provided this way.
 
 `Learn more about the update process <update.html>`_
+
+Unlock the editor
+-----------------
+
+Phaser Editor is a commercial product. You can try it by a period of 15 days, but after this you should purchase a license key and activate the editor.
+To activate the editor click on ``Help → Unlock Phaser Editor``, it shows an activation dialog, write the purchased license key there and click on the **Activate** button.
 
 Create a project
 ----------------
