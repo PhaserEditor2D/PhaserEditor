@@ -3,7 +3,7 @@ The Preview Window
 
 As the name suggest, in this window you can visualize different objects, specially the asset declarations of the `asset pack <assets-manager.html>`_ and media files (images, sounds, videos).
 
-This Preview window usually show details of the previewed object like dimension, name, etc... In addition in the case of textures you can `drag the frames drop them into a scene <canvas.html#from-the-preview-window>`_, to create new obejcts.
+This Preview window usually show details of the previewed object like dimension, name, etc... In addition in the case of textures you can `drag the frames drop them into a scene <canvas.html#from-the-preview-window>`_, to create new objects.
 
 To preview an asset you can drag it from the Assets explorer or Project Explorer and drop it into the Preview window, or select an asset and press ``Ctrl+Alt+V``.
 

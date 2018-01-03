@@ -39,10 +39,10 @@ To see the complete example, as we said, you can create a project based in a par
 
 The drawback of an example opened from the Chains is that you cannot run it, but the advantage is that you get a quick view of it.
 
-Using wildcards
----------------
+Using wild-cards
+----------------
 
-A powerful feature of Chains is that you can search using wildcards ``*``. This allow to you to find chains that you are not sure how they are writing but you remember some parts of it. For example, if in your game you need to listen for an input down event you can write a search pattern like this:
+A powerful feature of Chains is that you can search using wild-cards ``*``. This allow to you to find chains that you are not sure how they are writing but you remember some parts of it. For example, if in your game you need to listen for an input down event you can write a search pattern like this:
 
 .. code-block:: text
 	

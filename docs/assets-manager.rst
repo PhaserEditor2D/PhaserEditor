@@ -55,7 +55,7 @@ For example, if you select an "image" object in the tree, the details panel show
 Load the assets from the pack file
 ----------------------------------
 
-In Phaser the asstes are loaded in the preload method of the game state. The code to load them looks like this:
+In Phaser the assets are loaded in the preload method of the game state. The code to load them looks like this:
 
 .. code-block:: javascript
 
@@ -97,7 +97,7 @@ Quick preview of the assets
 
 Many of the items in the Assets window can be quickly previewed: audio entries, videos, images, textures and Canvas (visual editor) files. Just hover the mouse on top of the element and a quick popup will show you the preview. Or drag the item and drop it in the `Preview <./preview-window.html>`_ window. 
 
-The icons and preview images of the assets are computed in a background process that is tiggered each time the assets change. Check the `Troubleshooting`_ section below, there is explained how to fix some glitches related to assets. 
+The icons and preview images of the assets are computed in a background process that is triggered each time the assets change. Check the `Troubleshooting`_ section below, there is explained how to fix some glitches related to assets. 
 
 Add objects to a Canvas scene
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -107,7 +107,7 @@ In addition to the assets of the pack files, the Assets window show the visual s
 Assets references search
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-To search all the references -in the whole project- of an asset could be a very desired feature in certain cases. In the Assets window you can rigth-click on an asset and select to search all the references.
+To search all the references -in the whole project- of an asset could be a very desired feature in certain cases. In the Assets window you can right-click on an asset and select to search all the references.
 
 .. image:: images/FindAssetsMenu.png
   :alt: Find asset references
@@ -128,7 +128,7 @@ A nice new feature in Phaser Editor is the refactoring tools. These tools allow 
 Delete an asset
 ^^^^^^^^^^^^^^^
 
-To delete an asset entry right-click on it and select the ``Refactoring → Delete`` option.  Please remember that an asset entry is just a definition, an entry, in the asset pack file. By deleting an asset entry you only are modifing the ``pack.json`` file, the real file, like an image, is not touched.
+To delete an asset entry right-click on it and select the ``Refactoring → Delete`` option.  Please remember that an asset entry is just a definition, an entry, in the asset pack file. By deleting an asset entry you only are modifying the ``pack.json`` file, the real file, like an image, is not touched.
 
 .. image:: images/DeleteAssetMenu.png
   :alt: Delete asset menu
@@ -158,7 +158,7 @@ Global replace texture
 
 This is a very useful operation and consists on replace certain texture (represented by an asset in the pack file) in all the objects of all the scenes of the project. These are the steps:
 
-* Select the texture you want to replace. For example a demo texture that you want to replace for the final terxture.
+* Select the texture you want to replace. For example a demo texture that you want to replace for the final texture.
 
 .. image:: images/AssetReplaceMenu.png
   :alt: Asset replace menu

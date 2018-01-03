@@ -57,7 +57,7 @@ Parameter                      Documentation
 ``Size constraints``           You can select ``Any Size`` (default) or ``POT (Power of 2)``. In the second case the editor generates a texture with a size power of 2. In some platforms this kind of textures performs better.
 ``Padding``                    It controls the spacing between the sprites. It is useful to remove artifacts from sprites animations, tile sprites, in general when the source images has color pixels in the borders. By default it puts 2.
 ``Strip white spaces``         To remove the extra space of sprites. If your source images have extra space (transparent areas) around the picture, then activating these parameters the editor generates a texture that removes that spaces and a JSON file that specify to Phaser to render the sprites with the right spacing. By default these parameters are on.
-``Use indexes``                To sort the sprites by using a ``_01.png`` sufix in the source files.
+``Use indexes``                To sort the sprites by using a ``_01.png`` suffix in the source files.
 ``Alias``                      Equal images are packed once.
 ``Grid``                       To pack the images in a uniform grid. You can use this together with the Indexes option to create spritesheets.
 ============================== ==========================================================

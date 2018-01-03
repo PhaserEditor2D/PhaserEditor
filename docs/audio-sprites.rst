@@ -14,7 +14,7 @@ When you press finish it creates a JSON file with the sprites definitions. This 
 
 For example, if your audio sprites JSON is ``sounds.json``, then when you add audio files to the editor, these audio files are appended to a ``sounds.wav`` file new sprites entries are created with default values.
 
-This resultant ``sounds.wav`` file is transcoded to MP3 and OGG formats, so at the end you get two other ``sounds.mp3`` and ``sounds.ogg`` files.
+This resultant ``sounds.wav`` file is trans-coded to MP3 and OGG formats, so at the end you get two other ``sounds.mp3`` and ``sounds.ogg`` files.
 
 All the audio manipulation is done using the `FFMpeg <https://www.ffmpeg.org/>`_ tool.
 

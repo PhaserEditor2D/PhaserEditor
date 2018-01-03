@@ -122,7 +122,7 @@ In addition to the **Phaser Project** wizard there is the  **Phaser Example Proj
 
 - **Main Editor Demos**: provided by Phaser Editor. We recommend to start with them since it shows some the most important features in the editor, like the scene maker and the assets manager.
 - **Phaser Coding Tips**: contains the issues of the [official Phaser tutorials][13].
-- **Phaser Templates**: contains the templates listed in the Phaser github repo.
+- **Phaser Templates**: contains the templates listed in the Phaser GitHub repository.
 - **Phaser Examples**: contains the official Phaser examples. These templates are a great resource to learn and test Phaser features, you can create a project, run it and modify it.
 
 After you select the template you can press **Finish** to create a project with an auto-generated name, or click **Next** to change it. In case of the **Phaser Examples** templates, you can select one and play it and see the source code instantaneously, just press the "browser" button.
@@ -136,7 +136,7 @@ You can access all the Phaser Examples locally, just click the Phaser Examples b
 The Project Explorer
 --------------------
 
-The Project Explorer is a view with all the projects of the workspace. It is like a filesystem explorer, you can browse your projects and apply actions to the folders or files (open a file, create a folder, optimize the PNG of a folder, etc...).
+The Project Explorer is a view with all the projects of the workspace. It is like a file-system explorer, you can browse your projects and apply actions to the folders or files (open a file, create a folder, optimize the PNG of a folder, etc...).
 
 A nice feature of Phaser Editor is the preview of the assets. In the Project Explorer you have two ways of preview the media files: hover the file with the mouse or select it and press ``CTRL+ALT+V``.
 
@@ -164,7 +164,7 @@ To run your game we said that you have to select the project of your game, but r
 
 Phaser Editor has a built-in HTTP server to serve the static content of the projects. The first time you run a project, the server is started and serves all the static content of the workspace. So, in the browser is open an URL like: ``http://localhost:1982/projects/YourGameName/WebContent/index.html``.
 
-You can open the game in the experimental **Internal Browser** as well. This browser is embedded into an internal window so you can dock it in the application. When the internal browser is open in the main toolbar you have the option of change the orientation and dimension. This browser is experimental and only works on Windows and MacOS. In case of Windows it uses Internet Explorer, in the case of MacOS, Safari. We noticed this browser has a bad impact on the whole application performance, definitively it is not the best choice to execute your games, but it could be helpful to create video tutorials and similars.
+You can open the game in the experimental **Internal Browser** as well. This browser is embedded into an internal window so you can dock it in the application. When the internal browser is open in the main toolbar you have the option of change the orientation and dimension. This browser is experimental and only works on Windows and MacOS. In case of Windows it uses Internet Explorer, in the case of MacOS, Safari. We noticed this browser has a bad impact on the whole application performance, definitively it is not the best choice to execute your games, but it could be helpful to create video tutorials and other educational assets.
 
 .. image:: images/InternalBrowser.png
   :alt: Internal browser.
@@ -203,7 +203,7 @@ If you want to learn Phaser or go deeper in it, we recommend the following Zenva
   :alt: The Complete Mobile Game Development Course
 
 
-`Advanced Game Development with Phaser <https://academy.zenva.com/product/advanced-game-development-with-phaser/?a=42>`_:  Become a Black Belt Phaser developer and create advanced games. Multiplayer included!
+`Advanced Game Development with Phaser <https://academy.zenva.com/product/advanced-game-development-with-phaser/?a=42>`_:  Become a Black Belt Phaser developer and create advanced games. Multi-player included!
 
 .. image:: images/zenva_course_2.jpeg
   :alt: Advanced Game Development with Phaser

@@ -27,7 +27,7 @@ Arguments proposals:
 
 Drawbacks:
 
-Note in the proposals you see types like ``Phaser_Game`` or ``Phaser_Sprite``, etc.. It happens because JSDT does not understand the concept of namespaces, so we had to tweak the editor to simulate namespaces. This means that you can autocomplete ``Phaser.Sprite`` but also ``Phaser_Sprite``, however the last one is not valid in Phaser. We are working on replace the JSDT inference engine for a more accurate tool based on the Language Server Protocol of Microsoft.
+Note in the proposals you see types like ``Phaser_Game`` or ``Phaser_Sprite``, etc.. It happens because JSDT does not understand the concept of namespaces, so we had to tweak the editor to simulate namespaces. This means that you can auto-complete ``Phaser.Sprite`` but also ``Phaser_Sprite``, however the last one is not valid in Phaser. We are working on replace the JSDT inference engine for a more accurate tool based on the Language Server Protocol of Microsoft.
 
 Type annotation on a var declaration
 ====================================
