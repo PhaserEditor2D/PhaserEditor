@@ -19,7 +19,7 @@ Notes for MacOS users
 ~~~~~~~~~~~~~~~~~~~~~
 
 
-To execute the editor double click on the ``Phaser Editor`` application. It is a simple ``.app`` folder. By default the projects will be created in the ``~/Library/PhaserEditorProjects`` folder.
+To execute the editor double click on the ``Phaser Editor`` application. It is a simple ``.app`` folder. By default, the projects will be created in the ``~/Library/PhaserEditorProjects`` folder.
 
 Notes for Linux users
 ~~~~~~~~~~~~~~~~~~~~~
@@ -51,11 +51,11 @@ Some users are getting issues at the editor startup. Please `check this issue to
 The first run
 -------------
 
-The first time you run Phaser Editor a Workspace Launcher dialog is open. In this dialog you have to set the path to the folder where you want to create the workspace.
+The first time you run Phaser Editor a Workspace Launcher dialog is open. In this dialog, you have to set the path to the folder where you want to create the workspace.
 
 A workspace is the container folder of your projects. All your projects will be created inside the workspace, but also, in the workspace are saved your preferences and UI state. This means, that if you start Phaser Editor and select a workspace, the editor will get the preferences saved there.
 
-A project is a folder where you add the code of your game. So you can create many projects in the same workspace.
+A project is a folder where you add the code to your game. So you can create many projects in the same workspace.
 
 .. image:: images/WorkspaceLauncher.png
 
@@ -70,7 +70,7 @@ By default, when the editor opens it checks for available updates. We recommend 
 Unlock the editor
 -----------------
 
-Phaser Editor is a commercial product. You can try it by a period of 15 days, but after this you should purchase a license key and activate the editor.
+Phaser Editor is a commercial product. You can try it by a period of 15 days, but after this, you should purchase a license key and activate the editor.
 To activate the editor click on ``Help → Unlock Phaser Editor``, it shows an activation dialog, write the purchased license key there and click on the **Activate** button.
 
 Create a project
@@ -130,20 +130,20 @@ After you select the template you can press **Finish** to create a project with 
 .. image:: images/PhaserExamples_button.png
   :alt: Launch the Phaser Examples locally.
 
-You can access all the Phaser Examples locally, just click the Phaser Examples button in the main toolbar, it starts a local server and open the default browser in the Local Phaser Examples Website. In this minimalistic website you can access to the examples, play it and see the code.
+You can access all the Phaser Examples locally, just click the Phaser Examples button in the main toolbar, it starts a local server and opens the default browser in the Local Phaser Examples Website. In this minimalistic website, you can access to the examples, play it and see the code.
 
 
 The Project Explorer
 --------------------
 
-The Project Explorer is a view with all the projects of the workspace. It is like a file-system explorer, you can browse your projects and apply actions to the folders or files (open a file, create a folder, optimize the PNG of a folder, etc...).
+The Project Explorer is a view of all the projects of the workspace. It is like a file-system explorer, you can browse your projects and apply actions to the folders or files (open a file, create a folder, optimize the PNG of a folder, etc...).
 
 A nice feature of Phaser Editor is the preview of the assets. In the Project Explorer you have two ways of preview the media files: hover the file with the mouse or select it and press ``CTRL+ALT+V``.
 
 .. image:: images/ProjectExplorer.png
   :alt: Project Explorer preview image file 
 
-By default, Phaser Editor updates (refreshes) the Project Explorer if the workspace is changed by external programs (for example if you modify, delete or add a file in the OS explorer). However, you can refresh the Project Explorer manually if you select a resource (project, folder or file) and press `F5` .
+By default, Phaser Editor updates (refreshes) the Project Explorer if the workspace is changed by external programs (for example if you modify, delete or add a file in the OS explorer). However, you can refresh the Project Explorer manually if you select a resource (project, folder or file) and press `F5`.
 
 To organize the projects you can create Working Sets, set the Top Level Elements, set Filters and use the navigation actions like Go Into.
 
@@ -155,7 +155,7 @@ To organize the projects you can create Working Sets, set the Top Level Elements
 Run the game
 ------------
 
-To run your game there is a button in the main toolbar, it opens the default OS browser and start a built-in HTTP server to listen in a random free port. First you have to select, in the Project Explorer, the project you want to run, then press the Run Phaser Project button in the main toolbar (or press ``ALT+F5`` ).
+To run your game there is a button in the main toolbar, it opens the default OS browser and starts a built-in HTTP server to listen in a random free port. First, you have to select, in the Project Explorer, the project you want to run, then press the Run Phaser Project button in the main toolbar (or press ``ALT+F5`` ).
 
 .. image:: images/RunProject.png
   :alt: Run project
@@ -164,10 +164,10 @@ To run your game we said that you have to select the project of your game, but r
 
 Phaser Editor has a built-in HTTP server to serve the static content of the projects. The first time you run a project, the server is started and serves all the static content of the workspace. So, in the browser is open an URL like: ``http://localhost:1982/projects/YourGameName/WebContent/index.html``.
 
-You can open the game in the experimental **Internal Browser** as well. This browser is embedded into an internal window so you can dock it in the application. When the internal browser is open in the main toolbar you have the option of change the orientation and dimension. This browser is experimental and only works on Windows and MacOS. In case of Windows it uses Internet Explorer, in the case of MacOS, Safari. We noticed this browser has a bad impact on the whole application performance, definitively it is not the best choice to execute your games, but it could be helpful to create video tutorials and other educational assets.
+You can open the game in the experimental **Internal Browser** as well. This browser is embedded into an internal window so you can dock it in the application. When the internal browser is open in the main toolbar you have the option of changing the orientation and dimension. This browser is experimental and only works on Windows and MacOS. In case of Windows, it uses Internet Explorer, in the case of MacOS, Safari. We noticed this browser has a bad impact on the whole application performance, definitively it is not the best choice to execute your games, but it could be helpful to create video tutorials and other educational assets.
 
 .. image:: images/InternalBrowser.png
-  :alt: Internal browser.
+  :alt: The Internal browser.
 
 
 Theming
@@ -195,9 +195,9 @@ Learn Phaser
 
 (This section is a promotion)
 
-If you want to learn Phaser or go deeper in it, we recommend the following Zenva Academy courses:
+If you want to learn Phaser or go deeper into it, we recommend the following Zenva Academy courses:
 
-`The Complete Mobile Game Development Course – Platinum Edition <https://academy.zenva.com/product/the-complete-mobile-game-development-course-platinum-edition/?a=42>`_: Hands-on online course to learn iOS and Android Game Development from total scratch! Learn JavaScript, HTML5, Phaser and Cordova!
+`The Complete Mobile Game Development Course – Platinum Edition <https://academy.zenva.com/product/the-complete-mobile-game-development-course-platinum-edition/?a=42>`_: Hands-on online course to learn iOS and Android Game Development from total scratch! Learn JavaScript, HTML5, Phaser, and Cordova!
 
 .. image:: images/zenva_course_1.png
   :alt: The Complete Mobile Game Development Course

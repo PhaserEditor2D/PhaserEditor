@@ -28,7 +28,7 @@ To create the pack file manually, go to ``File → New → Asset Pack File``:
 .. image:: images/NewAssetPackMenu.png
   :alt: Asset pack file menu
 
-It opens the Asset Pack File wizard. In this wizard you should write the name of the file and select the folder where to create the pack. By default, it selects the ``assets`` folder, but you can select any folder in any project. Press Finish to create the file and it opens in the Asset Pack editor. 
+It opens the Asset Pack File wizard. In this wizard, you should write the name of the file and select the folder where to create the pack. By default, it selects the ``assets`` folder, but you can select any folder in any project. Press Finish to create the file and it opens in the Asset Pack editor. 
 
 .. image:: images/NewAssetPackSelectFolder.png
   :alt: Asset pack wizard
@@ -40,7 +40,7 @@ The Asset Pack file is a JSON file that you can edit manually, but in Phaser Edi
 
 The editor has two panels: the assets tree and the asset details.
 
-In the assets tree you add, remove and rename the sections and the entries. The asset details panel shows the properties of the object selected in the tree.
+In the assets tree, you add, remove and rename the sections and the entries. The asset details panel shows the properties of the object selected in the tree.
 
 To modify an asset entry, you select it in the tree and change the values in the details panel.
 
@@ -59,7 +59,7 @@ In Phaser the assets are loaded in the preload method of the game state. The cod
 
 .. code-block:: javascript
 
-  game.load.image("dino", "path/to/dino.png");			
+  game.load.image("dino", "path/to/dino.png");      
   game.load.image("montain", "path/to/montain.png");
   game.load.spritesheet("girl", "path/to/mujer-trotando.png", 64, 64);
   game.load.audio("music", "path/to/guajira.ogg");
@@ -83,7 +83,7 @@ The Assets explorer is a key tool in Phaser Editor. It allows the user to naviga
 Navigate the assets
 ~~~~~~~~~~~~~~~~~~~
 
-The Assets view show the hierarchy of the assets declared on the packs of the active project. The assets, as in the pack editor, are grouped in pack files and sections, but in addition you can get access to the frames of spritesheets or texture atlases. For example, a texture atlas is a node that you can expand to see all the sprites of the texture.
+The Assets view show the hierarchy of the assets declared on the packs of the active project. The assets, as in the pack editor, are grouped in pack files and sections, but in addition, you can get access to the frames of spritesheets or texture atlases. For example, a texture atlas is a node that you can expand to see all the sprites of the texture.
 
 Since ``Phaser Editor v1.4``, the visual scenes and prefabs (Canvas files) are also available in the Assets view, in addition to the assets declared in the pack files.
 
@@ -145,7 +145,7 @@ After select the option to delete an asset, it opens a confirmation dialog with 
 Rename asset
 ^^^^^^^^^^^^
 
-The process of rename an asset is pretty similar to the process of delete it. A confirmation dialog is opened and the user can preview the affected files. The main difference is that if the user confirms the operation, then all the Canvas files will be updated to use the new name.
+The process of rename an asset is pretty similar to the process of deleting it. A confirmation dialog is opened and the user can preview the affected files. The main difference is that if the user confirms the operation, then all the Canvas files will be updated to use the new name.
 
 Move asset
 ^^^^^^^^^^
@@ -158,7 +158,7 @@ Global replace texture
 
 This is a very useful operation and consists on replace certain texture (represented by an asset in the pack file) in all the objects of all the scenes of the project. These are the steps:
 
-* Select the texture you want to replace. For example a demo texture that you want to replace for the final texture.
+* Select the texture you want to replace. For example, a demo texture that you want to replace for the final texture.
 
 .. image:: images/AssetReplaceMenu.png
   :alt: Asset replace menu
@@ -176,7 +176,7 @@ Troubleshooting
 
 If you find that your assets are in an invalid state or you see a strange behavior then to fix it you can try by cleaning the projects.
 
-Internally Phaser Editor uses a memory model with all the assets and its properties. This memory model should be synchronized with the physical and real data, but it happens that sometime because external changes or maybe bugs, the memory model is not in synchronization with the physical one. In this case, the best is to force the editor to create the memory model from scratch.
+Internally Phaser Editor uses a memory model with all the assets and its properties. This memory model should be synchronized with the physical and real data, but it happens sometimes because of external changes or maybe bugs, the memory model is not in synchronization with the physical one. In this case, the best is to force the editor to create the memory model from scratch.
 
 To do this select in the main menu the option ``Project → Clean...``, it opens a dialog with the list of your projects. Select those you want to re-build and press the **OK** button. After this operation all the visual editors and views should be updated to show the new fresh/fixed data.
 

@@ -1,11 +1,11 @@
 Canvas, The Scene Editor
 ========================
 
-Canvas is a visual (WYSWYG) game level/object editor for Phaser. With this tool you can create a level or the prefabs (reusable objects) of the game, layout sprites and edit object properties like transformation, physics body and animation. The scenes are compiled to Phaser code, in JavaScript or TypeScript.
+Canvas is a visual (WYSIWYG) game level/object editor for Phaser. With this tool, you can create a level or the prefabs (reusable objects) of the game, layout sprites and edit object properties like transformation, physics body, and animation. The scenes are compiled to Phaser code, in JavaScript or TypeScript.
 
-There are three type of Canvas files: states (compiled to a ``Phaser.State`` code), sprite prefabs (compiled to ``Phaser.Sprite`` code) and group prefabs (compiled to`Phaser.Group` code). These Phaser classes contain the code that create the objects of the game world. It is not like other tools like Tiled that uses a custom format to represent the objects layout and properties, else it compiles to a code that mimics what a developer can write with his "own hands". This method has the advantage that the user can read and understand what is behind the scene and like in other tools provided in Phaser Editor, the developer can learn Phaser or reuse his current Phaser learnings.
+There are three types of Canvas files: states (compiled to a ``Phaser.State`` code), sprite prefabs (compiled to ``Phaser.Sprite`` code) and group prefabs (compiled to`Phaser.Group` code). These Phaser classes contain the code that creates the objects of the game world. It is not like other tools like Tiled that uses a custom format to represent the layout and properties of the objects, else it compiles to a code that mimics what a developer can write with his "own hands". This method has the advantage that the user can read and understand what is behind the scene and like in other tools provided in Phaser Editor, the developer can learn Phaser or reuse his current Phaser learnings.
 
-When you create a scene (let's say one named ``Level``) you get two files: ``Level.canvas`` and ``Level.js``. The ``Level.canvas`` file contains the objects of the scene and uses a custom Phaser Editor format. The ``Level.js`` file is compiled from the ``Level.canvas`` file and contains all the Phaser code that creates the real scene. Note that in a game distribution only the ``Level.js`` file is needed, since ``Level.canvas`` is only for design purpose.
+When you create a scene (let's say one named ``Level``) you get two files: ``Level.canvas`` and ``Level.js``. The ``Level.canvas`` file contains the objects of the scene and uses a custom Phaser Editor format. The ``Level.js`` file is compiled from the ``Level.canvas`` file and contains all the Phaser code that creates the real scene. Note that in a game distribution only the ``Level.js`` file is needed since ``Level.canvas`` is only for design purpose.
 
 Read in Zenva GameDev Academy `Make a Mario-Style Platformer with the Phaser Editor <https://gamedevacademy.org/make-a-mario-style-platformer-with-the-phaser-editor/>`_
 
@@ -24,12 +24,12 @@ To play around with a Canvas demo you can create a project with the `Phaser Exam
 States, sprites and groups
 -------------------------- 
 
-In this section we are going to do a quick explanation of the difference and purpose of each type of Canvas: states, sprites and groups.
+In this section, we are going to do a quick explanation of the difference and purpose of each type of Canvas: states, sprites, and groups.
 
 The state scene
 ~~~~~~~~~~~~~~~
 
-A Phaser game is divided by states, for example the menu screen is coded in a state, a game level is coded in a state, the "game over" screen... What the user does is to write a special class that extends the ``Phaser.State`` type, and implement some special methods where the creation and logic of the game is coded. These methods are the ``preload``, ``create``, ``update`` and others.
+A Phaser game is divided by states, for example, the menu screen is coded in a state, a game level is coded in a state, the "game over" screen... What the user does is to write a special class that extends the ``Phaser.State`` type, and implement some special methods where the creation and logic of the game are coded. These methods are the ``preload``, ``create``, ``update`` and others.
 
 This is an example of a state scene and the code compiled by Canvas:
 
@@ -86,7 +86,7 @@ A state with two coins...
 	/* --- end generated code --- */
 	// -- user code here --
 
-To create a State scene click in the main menu the ``File → New → State File`` option, it opens the State File wizard. The first page of that wizard asks for the parent folder and the name of the scene. Usually we create a ``WebContent/assets/canvas`` folder where to place all the scenes and prefabs, but you are free to use any folder inside the ``WebContent`` directory. In the next picture we use ``Level`` as the name of the scene, that will create a ``Level.canvas`` file. This is very important: the name of the file will be used to create the name of the state class.
+To create a State scene click in the main menu the ``File → New → State File`` option, it opens the State File wizard. The first page of that wizard asks for the parent folder and the name of the scene. Usually, we create a ``WebContent/assets/canvas`` folder where to place all the scenes and prefabs, but you are free to use any folder inside the ``WebContent`` directory. In the next picture we use ``Level`` as the name of the scene, that will create a ``Level.canvas`` file. This is very important: the name of the file will be used to create the name of the state class.
 
 .. image:: images/NewStateWizard_FilePage.png
 	:alt: State wizard (file page)
@@ -96,7 +96,7 @@ If you press **Finish** the state file is created with the default parameters, b
 .. image:: images/SceneWizard_Settings.png
 	:alt: State wizard settings page.
 
-Many of the parameters shown in that page come from the Phaser API, however there are other parameters like the **Base Class Name** or **Code Format** that are used by the scene-to-code compiler.
+Many of the parameters shown in that page come from the Phaser API, however, there are other parameters like the **Base Class Name** or **Code Format** that are used by the scene-to-code compiler.
 
 All these settings can be changed later in the configuration tab of the editor.
 
@@ -106,9 +106,9 @@ Sate scenes will be displayed in the `Assets <assets-manager.html#assets-explore
 The sprite scene (prefab)
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The sprite scene or sprite prefab is a Canvas file with a unique object that compiles to a ``Phaser.Sprite`` sub-class. In the Phaser examples it is called as "custom sprite", in other tutorials and examples about Phaser it is called also "prefab". We like the word "prefab" since it is a concept used in other game visual tools, but the purpose is the same, to write reusable components that can be used in different parts of the game, without the need to duplicate code. For example you can create a ``Coin`` prefab with the coin animations, so you can use that animated coin in any other scene. 
+The sprite scene or sprite prefab is a Canvas file with a unique object that compiles to a ``Phaser.Sprite`` sub-class. In the Phaser examples it is called as "custom sprite", in other tutorials and examples about Phaser it is called also "prefab". We like the word "prefab" since it is a concept used in other game visual tools, but the purpose is the same, to write reusable components that can be used in different parts of the game, without the need to duplicate code. For example, you can create a ``Coin`` prefab with the coin animations, so you can use that animated coin in any other scene. 
 
-This is an example of how an sprite canvas file is compiled into a custom ``Phaser.Sprite``:
+This is an example of how a sprite canvas file is compiled into a custom ``Phaser.Sprite``:
 
 The coin scene (with a ``rotate`` animation) is compiled into a custom Sprite class:
 
@@ -151,20 +151,20 @@ The coin scene (with a ``rotate`` animation) is compiled into a custom Sprite cl
 	/* --- end generated code --- */
 	// -- user code here --
 
-To create a sprite prefab in the main menu select the ``File → New → Sprite Prefab File`` option. It opens a wizard that in its first page ask for the container folder and the name of the file.
+To create a sprite prefab, in the main menu select the ``File → New → Sprite Prefab File`` option. It opens a wizard that on its first page asks for the container folder and the name of the file.
 
 Press the **Next** button to set some needed parameters, the most important is the sprite type and texture:
 
 .. image:: images/CreateSpritePrefab.png
 	:alt: Sprite prefab wizard
 
-In the current version of Canvas the sprites cannot have children, so a sprite prefab cannot have children neither, it is a file with single object.
+In the current version of Canvas the sprites cannot have children, so a sprite prefab cannot have children either, it is a file with a single object.
 
 
 The group scene (prefab)
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-In Phaser a group is an object with different purpose. It can be used as a pool of objects or like a transformation list of objects. As well as the sprites, you can create "custom groups", or what we name group prefabs. These group prefabs can be added to other scenes so they are a way to write reusable components. For example you can create a tree with fruits and use it in different levels.
+In Phaser, a group is an object with a different purpose. It can be used as a pool of objects or like a transformation list of objects. As well as the sprites, you can create "custom groups", or what we name group prefabs. These group prefabs can be added to other scenes so they are a way to write reusable components. For example, you can create a tree with fruits and use it in different levels.
 
 This group prefab...
 
@@ -218,7 +218,7 @@ This group prefab...
 	// -- user code here --
 
 
-To create a group prefab select in the main menu the ``File → New → Group Prefab File`` option. It opens a wizard that ask in the first page for the name of the file. You can press the **Finish** button to create the file or press **Next** to customize some options, like the base class name (other than ``Phaser.Group``) or the code format (JavaScript 5, JavaScript 6 or TypeScript).
+To create a group prefab select in the main menu the ``File → New → Group Prefab File`` option. It opens a wizard that asks on the first page for the name of the file. You can press the **Finish** button to create the file or press **Next** to customize some options, like the base class name (other than ``Phaser.Group``) or the code format (JavaScript 5, JavaScript 6 or TypeScript).
 
 
 
@@ -226,7 +226,7 @@ To create a group prefab select in the main menu the ``File → New → Group Pr
 Objects creation
 ----------------
 
-In general, a Canvas scene is formed by a tree of objects (sprites) and a couple of configuration parameters. In this section we are going to explain how to add the objects.
+In general, a Canvas scene is formed by a tree of objects (sprites) and a couple of configuration parameters. In this section, we are going to explain how to add the objects.
 
 Related Phaser concepts
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -245,7 +245,7 @@ The ``game`` var is a reference to the global game instance, the first two argum
 		game.load.image("enemy", "assets/monster.png");
 	} 
 
-For the scenes Phaser Editor uses an `Asset manifest file (pack) <assets-manager.html>`_ that contains the declaretion of the assets and the keys. Instead of write the code to load each asset, you only need to load the asset pack file:
+Phaser Editor uses an `Asset manifest file (pack) <assets-manager.html>`_ that contains the declaration of the assets and the keys. Instead of writing the code to load each asset, you only need to load the asset pack file:
 
 .. code::
 	
@@ -257,7 +257,7 @@ That loading code is written in the ``preload`` method of the states, so if the 
 By dropping a texture asset
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The common way to create an object is by getting a texture from somewhere and dropping it into the scene. In the next sections we explain the different sources of the textures.
+The common way to create an object is by getting a texture from somewhere and dropping it into the scene. In the next sections, we explain the different sources of the textures.
 
 
 From the Assets window
@@ -270,9 +270,9 @@ In the `Assets <assets-manager.html#assets-explorer>`_ explorer you will find al
 
 Note a texture could be represented by an image key, a sprite-sheet frame key or a texture atlas frame key.
 
-The objects created by dropping an asset in the scene are simple sprites, direct instances of ``Phaser.Sprite``. In the next sections we explain how to create specialized sprites like buttons and tiles.
+The objects created by dropping an asset in the scene are simple sprites, direct instances of ``Phaser.Sprite``. In the next sections, we explain how to create specialized sprites like buttons and tiles.
 
-From the Assets view you can add prefabs too. Look for the **Sprites** and **Group** sections of that window. When the prefab is dropped into the scene then a prefab instance is created. This is how looks a code compiled from a Sate scene that contains prefab instances. Note the difference between to add a sprite from a texture (``bg``) and a sprite from a prefab (``Tree``):
+From the Assets view, you can add prefabs too. Look for the **Sprites** and **Group** sections of that window. When the prefab is dropped into the scene then a prefab instance is created. This is how looks a code compiled from a State scene that contains prefab instances. Note the difference between to add a sprite from a texture (``bg``) and a sprite from a prefab (``Tree``):
 
 .. code::
 
@@ -286,7 +286,7 @@ From the Assets view you can add prefabs too. Look for the **Sprites** and **Gro
 From the Preview window
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-The `Preview window <preview-window.html>`_ allow you you to get a closer look to the assets. Like in the Assets window, you can drag an asset key from the Preview and drop it to the scene. For example, you can drop "cells" from a sprite-sheet of a retro game into the scene. This method could be easier than getting it from the Assets tree:
+The `Preview window <preview-window.html>`_ allows you to get a closer look at the assets. Like in the Assets window, you can drag an asset key from the Preview and drop it to the scene. For example, you can drop "cells" from a sprite-sheet of a retro game into the scene. This method could be easier than getting it from the Assets tree:
 
 .. image:: images/AddObjectFromPreview.png
 	:alt: Add object from the Preview window.
@@ -318,13 +318,13 @@ It shows a dialog with all the assets that can be used to create the sprite:
 .. image:: images/AddSpriteDialog.png
 	:alt: Add Sprite dialog.
 
-As you can see in the previous menu, you can add other type of objects like buttons (``Phaser.Button``), tiles (``Phaser.TileSprite``) and prefabs. It does the same, to open a dialog with the assets or prefabs to be added but it creates an object of different type.
+As you can see in the previous menu, you can add another type of objects like buttons (``Phaser.Button``), tiles (``Phaser.TileSprite``) and prefabs. It does the same, to open a dialog with the assets or prefabs to be added but it creates an object of different type.
 
 
 Selecting the container
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-It is a very common case when you want to add the new object to a specific group. To do this just select the group and then add the object to the scene. For example if you want to add more blocks to the ``ground`` group, then select ``ground`` and then add the objects to the scene. If instead of a group you select a sprite and add a new object, this object will be added to the parent of the selected sprite. For example, if you select a ``block`` sprite and add a new object then it will be inserted into the block's parent group, in this case the ``ground`` group.
+It is a very common case when you want to add the new object to a specific group. To do this just select the group and then add the object to the scene. For example, if you want to add more blocks to the ``ground`` group, then select ``ground`` and then add the objects to the scene. If instead of a group you select a sprite and add a new object, this object will be added to the parent of the selected sprite. For example, if you select a ``block`` sprite and add a new object then it will be inserted into the block's parent group, in this case, the ``ground`` group.
 
 
 Group creation
@@ -335,33 +335,33 @@ You can create an empty group or a group with the selected objects as children:
 .. image:: images/AddGroupMenu.png
 	:alt: Add group menu.
 
-Note to create a group with the selection objects you can press the ``G`` key.
+Note to create a group with the selected objects you can press the ``G`` key.
 
 Other group operations are:
 
-- Break group (``Shift+G``): it re-parents the children and destroy the group.
-- Trim group (``T``): it remove the blank spaces around the children.
+- Break group (``Shift+G``): it re-parents the children and destroys the group.
+- Trim group (``T``): it removes the blank spaces around the children.
 
 
 Object morphing
 ~~~~~~~~~~~~~~~
 
-The common way to create an object is by adding an asset into the scene and it create a regular sprite (``Phaser.Sprite``). If you want to create a different type of object (like a button or a tile) you have two options: the `From the context menu` option or the morphing option.
+The common way to create an object is by adding an asset to the scene and it creates a regular sprite (``Phaser.Sprite``). If you want to create a different type of object (like a button or a tile) you have two options: the `From the context menu` option or the morphing option.
 
-To morphing an object mean to convert an object from one type to other type, for example, to morph a sprite into a button or into a tile sprite. When you morph an object into other type it keeps the same properties, like transformation, texture, body.
+To morphing an object means to convert an object from one type to another type, for example, to morph a sprite into a button or into a tile sprite. When you morph an object into another type it keeps the same properties, like transformation, texture, body.
 
 To morph an object right click on it and select one of the options displayed in the ``Sprite → Morph To...`` menu:
 
 .. image:: images/MorphObjectTo.png
-	:alt: Morph object to other type.
+	:alt: Morph object to another type.
 
-In addition you can press the ``L`` key to morph the selected sprite to a tile sprite, and resize it. It is a handy shortcut for games based on fixed-size art. If the sprite is already a tile sprite it just show the handlers to resize it.
+In addition, you can press the ``L`` key to morph the selected sprite to a tile sprite, and resize it. It is a handy shortcut for games based on fixed-size art. If the sprite is already a tile sprite it just show the handlers to resize it.
 
 
 Dynamic object creation
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Many genres of games create the levels dynamically, or part of the levels. With Canvas you can design the sprite and group prefabs and then create instances of them dynamically.
+Many genres of games create the levels dynamically or part of the levels. With Canvas you can design the sprite and group prefabs and then create instances of them dynamically.
 
 Dynamic creation of sprite prefab objects
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -412,13 +412,13 @@ If you want to add the new group to a parent group then this is the syntax:
 Scene navigation
 ----------------
 
-For large scenes it is very important to navigate the tree of objects and quickly find specific objects. In the next section we show the tools provided by Phaser Editor for this purpose.
+For large scenes, it is very important to navigate the tree of objects and quickly find specific objects. In the next section, we show the tools provided by Phaser Editor for this purpose.
 
 
 The Outline window
 ~~~~~~~~~~~~~~~~~~
 
-In the top/left corner of the editor there is the Outline window. It shows the hierarchy of the scene objects. There you can filter, select, delete, group and move the objects of the scene:
+In the top/left corner of the editor, there is the Outline window. It shows the hierarchy of the scene objects. There you can filter, select, delete, group and move the objects of the scene:
 
 .. image:: images/CanvasOutline.png
 	:alt: Outline window.
@@ -427,9 +427,9 @@ In the top/left corner of the editor there is the Outline window. It shows the h
 The Quick Outline window
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-In addition there is the Quick Outline window. It is opened by the user with the key sequence ``Ctrl+O``. The object selected by the user is focused in the scene, so it can be used as a search tool too.
+In addition, there is the Quick Outline window. It is opened by the user with the key sequence ``Ctrl+O``. The object selected by the user is focused on the scene, so it can be used as a search tool too.
 
-This quick window is very useful when the scene left panel is hidden to gain on space.
+This quick window is very useful when the scene left panel is hidden to gain in space.
 
 .. image:: images/CanvasQuickOutline.png
 	:alt: Quick outline window.
@@ -439,13 +439,13 @@ This quick window is very useful when the scene left panel is hidden to gain on 
 Object properties
 -----------------
 
-To edit the scene object properties there is the Properties Grid window. The Phaser objects contain a lot of properties, but in Canvas we just support a subset of them, specially those that have an impact on the visual aspects of the objects.
+To edit the scene object properties there is the Properties Grid window. The Phaser objects contain a lot of properties, but in Canvas we just support a subset of them, especially those that have an impact on the visual aspects of the objects.
 
 To edit the properties of an object follow these steps:
 
 - Select the object -you cannot edit many objects at the same time- in the scene or in the Outline window.
 - The object's properties are shown in the Property Grid.
-- Click on the value of a property and change it. Then press ENTER to apply that change. In case of numeric properties, you can write a math expression like ``15*30``, then it is evaluated and the result is set as value.
+- Click on the value of a property and change it. Then press ENTER to apply that change. In case of numeric properties, you can write a math expression like ``15*30``, then it is evaluated and the result is set to value.
 - Some properties have special editors that open in a separated window.
 - You always can undo the change by pressing ``Ctrl+Z``.
 
@@ -454,7 +454,7 @@ To edit the properties of an object follow these steps:
 
 As you can note, in the top of the grid there is a text field with a "type filter text" message, it helps to filter the list of properties and find the one of your interest.
 
-As alternative to the Property Grid, you can open the Quick Edit dialog (by pressing `Q` or clicking in the button of the toolbar). It is actually the same thing of the Property Grid but it is shown in a popup dialog.
+As an alternative to the Property Grid, you can open the Quick Edit dialog (by pressing `Q` or clicking on the button of the toolbar). It is actually the same thing of the Property Grid but it is shown in a popup dialog.
 
 A nice feature is that you can hover the mouse over a property and it displays the help of it. This help is the same of the Phaser API, actually, that help is taken from the Phaser metadata generated by Phaser Editor, by parsing the Phaser sources.
 
@@ -490,7 +490,7 @@ Property                          Documentation
 Transformation tools
 ^^^^^^^^^^^^^^^^^^^^
 
-In addition to set the values directly in the property grid you can change the transformation of an object by selecting it and executing one of the transformation commands. It shows little handlers that you can drag to transform the object. The commands can be executed from the context menu under the ``Transform`` menu, the scene toolbar or by pressing the key shortcuts: Scale (``S``), Angle (``N``), Anchor (``H``) and Pivot (``V``). 
+In addition, to set the values directly in the property grid you can change the transformation of an object by selecting it and executing one of the transformation commands. It shows little handlers that you can drag to transform the object. The commands can be executed from the context menu under the ``Transform`` menu, the scene toolbar or by pressing the key shortcuts: Scale (``S``), Angle (``N``), Anchor (``H``) and Pivot (``V``). 
 
 .. image:: images/TransformObject.png
 	:alt: Object transformations.
@@ -515,7 +515,7 @@ You can open this dialog by selecting the prefab instance and pressing the ``R``
 Sprite properties
 ~~~~~~~~~~~~~~~~~
 
-The ``Phaser.Sprite`` is the common class for all the game objects based on textures. In this section we show the properties supported by Phaser Editor and the some dedicated property editors.
+The ``Phaser.Sprite`` is the common class for all the game objects based on textures. In this section, we show the properties supported by Phaser Editor and some dedicated property editors.
 
 ================================= =======================================
 Property                          Documentation
@@ -532,7 +532,7 @@ Property                          Documentation
 Arcade Physics
 ^^^^^^^^^^^^^^
 
-For now the scene editor only supports Arcade physics. It does not mean that you cannot add other type of physics to your game, else that you should setup the other physics bodies by hand, without any special tool.
+For now, the scene editor only supports Arcade physics. It does not mean that you cannot add another type of physics to your game, else that you should set the other physics bodies by hand, without any special tool.
 
 To enable Arcade physics on a sprite you have two options:
 
@@ -543,7 +543,7 @@ To enable Arcade physics on a sprite you have two options:
 .. image:: images/SpriteArcadeMenu.png
 	:alt: Set Arcade physics body to sprite.
 
-When you add a body to a sprite, a new section ``Arcade`` is added to the Property Grid. This section contains many properties related to the Arcade physics body of the sprite and can be edited. In addition you can visually edit the size and offset of the body, just right click on the sprite and select ``Sprite → Arcade → Edit Body`` or press the ``B`` key.
+When you add a body to a sprite, a new section ``Arcade`` is added to the Property Grid. This section contains many properties related to the Arcade physics body of the sprite and can be edited. In addition, you can visually edit the size and offset of the body, just right click on the sprite and select ``Sprite → Arcade → Edit Body`` or press the ``B`` key.
 
 .. image:: images/EditArcadeBody.png
 	:alt: Edit Arcade body size and offset.
@@ -552,7 +552,7 @@ When you add a body to a sprite, a new section ``Arcade`` is added to the Proper
 Animations
 ^^^^^^^^^^
 
-The ``animations`` property is reference to the ``Phaser.AnimationManager`` of the sprite. This manager contains a list of sprite animations and provide methods to manipulate the animations like ``add``, ``play``, ``stop`` and others.
+The ``animations`` property is a reference to the ``Phaser.AnimationManager`` of the sprite. This manager contains a list of sprite animations and provides methods to manipulate the animations like ``add``, ``play``, ``stop`` and others.
 
 To add animations to a sprite select it and press the ``A`` key, or go to the `animations` property in the properties grid and click on the dialog button.
 
@@ -596,17 +596,17 @@ If the animation ``jump`` was set to Public then a field ``fDino_jump`` will be 
 User data
 ^^^^^^^^^
 
-The ``data`` property of the sprites is a reference to an empty object where the user can put any attribute. Often this data is used top create small variations between the sprites without the need to create new sprite types (or prefabs). In Phaser Editor you can set the JSON value of that property. When the user click it to edit it opens a dialog with a text editor where you can write the JSON values:
+The ``data`` property of the sprites is a reference to an empty object where the user can put any attribute. Often this data is used to create small variations between the sprites without the need to create new sprite types (or prefabs). In Phaser Editor you can set the JSON value of that property. When the user clicks it to edit it opens a dialog with a text editor where you can write the JSON values:
 
 .. image:: images/DataDialog.png
 	:alt: The dialog to edit the data content.
 
-For example, if you have some enemies in a level that walk from one side to other, you can set in the ``data`` property the ``velocity`` and the ``left`` and ``right`` borders of the enemy walk. Each enemy will get a different movement range. In the ``update`` method of the level you can read that information for each enemy and update its position.
+For example, if you have some enemies in a level that walk from one side to other, you can set in the ``data`` property the ``velocity`` and the ``left`` and ``right`` borders of the enemy walk. Each enemy will get a different movement range. In the ``update`` method of the level, you can read that information for each enemy and update its position.
 
 Texture
 ^^^^^^^
 
-Canvas support three different type of textures: image, sprite-sheet frame and atlas frame. If the sprite is based on atlas or sprite-sheet, the user can change the frame by editing the ``frameName`` or ``frame`` property. In addition there is a ``Change Texture`` command that allow the user to replace the texture for any other texture type. This command is available in the context menu ``Sprite → Change Sprite Texture`` or can be executed by pressing ``Ctrl+T``. It opens a dialog with all the textures declared in the asset pack. This command allow to select more than one sprite so you can change the texture of all of them.
+Canvas support three different type of textures: image, sprite-sheet frame and atlas frame. If the sprite is based on atlas or sprite-sheet, the user can change the frame by editing the ``frameName`` or ``frame`` property. In addition, there is a ``Change Texture`` command that allows the user to replace the texture with any other texture type. This command is available in the context menu ``Sprite → Change Sprite Texture`` or can be executed by pressing ``Ctrl+T``. It opens a dialog with all the textures declared in the asset pack. This command allows selecting more than one sprite so you can change the texture of all of them.
 
 
 .. image:: images/ChangeTextureDialog.png
@@ -614,7 +614,7 @@ Canvas support three different type of textures: image, sprite-sheet frame and a
 
 Another nice command is ``Sprite → Select All Sprites With Same Texture``, it selects all the sprites in the same scene with the same texture of the selection. It helps to replace demo textures by final textures.
 
-In addition Phaser Editor provides texture refactoring, it is a process that allow to change the texture of all the sprites of all the scenes. You can read more about it the `Global replace texture <assets-manager.html#global-replace-texture>`_ section.
+In addition, Phaser Editor provides texture refactoring, it is a process that allows changing the texture of all the sprites of all the scenes. You can read more about it the `Global replace texture <assets-manager.html#global-replace-texture>`_ section.
 
 
 Button properties
@@ -633,7 +633,7 @@ Property                          Documentation
 ``upFrame``                       The ``frame``/``frameName`` when the button is in the Up state.
 ================================= =======================================
 
-When the user click to edit any of the ``(over/out/down/up)Frame`` parameters it shows a dialog to select the new frame, from the list of frames of the same texture, atlas or sprite-sheet.
+When the user clicks to edit any of the ``(over/out/down/up)Frame`` parameters it shows a dialog to select the new frame, from the list of frames of the same texture, atlas or sprite-sheet.
 
 
 TileSprite properties
@@ -674,7 +674,7 @@ Property                   Documentation
 ``style.align``            The text horizontal align (``LEFT``, ``CENTER`` and ``RIGHT``)           
 ========================== ======================================================
 
-Phaser Editor uses JavaFX to render the scenes but Phaser uses the browser for the same purpose. This mean that in some cases the text object is not rendered in design-time like Phaser renders it in run-time.
+Phaser Editor uses JavaFX to render the scenes but Phaser uses the browser for the same purpose. This means that in some cases the text object is not rendered in design-time like Phaser renders it at run-time.
 
 Note that Phaser Editor can use the fonts installed in the OS, but the majority of them are not available in all platforms, so we recommend to use safe fonts or load the font files in the CSS of your game.
 
@@ -702,7 +702,7 @@ Physics groups are created with a different syntax:
 	var _ground = this.add.physicsGroup(Phaser.Physics.ARCADE);
 	_ground.physicsSortDirection = Phaser.Physics.Arcade.LEFT_RIGHT;
 
-And as mentioned in the previous section, the goal of these kind of groups is to automatically enable physics bodies on the children.
+And as mentioned in the previous section, the goal of this kind of groups is to automatically enable physics bodies on the children.
 
 The ``setAll`` property
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -715,7 +715,7 @@ The ``setAll`` method is often used on the creation of scenes to initialize some
 
 Now you don’t need to write it, you can click on the ``groundSprites`` group and edit the ``setAll`` property.
 
-The ``setAll`` property editor is very simple, it is a dialog with a key/value table. For each row of the table a new ``setAll`` method call will be generated, the first column will be generated as the property name and the second column as the property value. Note that the name is generated inside a string expression ``"..."`` but the value of the property is generated verbatim, so you can write any expression there, a string literal, a number, a boolean, a function call, the name of a variable, whatever you want.
+The ``setAll`` property editor is very simple, it is a dialog with a key/value table. For each row of the table, a new ``setAll`` method call will be generated, the first column will be generated as the property name and the second column as the property value. Note that the name is generated inside a string expression ``"..."`` but the value of the property is generated verbatim, so you can write any expression there, a string literal, a number, a boolean, a function call, the name of a variable, whatever you want.
 
 
 .. image:: images/GroupSetAll.png
@@ -744,9 +744,9 @@ Parameter                  Documentation
 Scene configuration
 -------------------
 
-As you can note the scene editor has two tabs: Design and Configuration. The Design tab contains everything about the objects and the Configuration tab contains other parameters not related with any object in particular else with the scene.
+As you can note the scene editor has two tabs: Design and Configuration. The Design tab contains everything about the objects and the Configuration tab contains other parameters not related to any object in particular else with the scene.
 
-The Configuration tab is splitted in two panels, the left panel show a list of sections and the right panel a grid of properties of the selected section.
+The Configuration tab is split in two panels, the left panel shows a list of sections and the right panel a grid of properties of the selected section.
 
 The configuration of sprites and group scenes are the same, it contains only an Editor section with design/code-generation specific parameters. The state scene contains the Editor section in addition to a State section with ``Phaser.State`` related parameters.
 
@@ -812,10 +812,10 @@ The configuration of sprite and group scenes are pretty the same, it only contai
 Preloader state configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Often games load and process all the assets in a loading screen. In Phaser this loading screen is coded in a preloader state.
+Often games load and process all the assets on a loading screen. In Phaser, this loading screen is coded in a preloader state.
 A preloader state is just like any other Phaser state, but the sprites are created in the ``preload`` method (instead of the ``create`` method) and the ``game.load.setPreloadSprite()`` method is used to set the sprite to be used as progress bar.
 
-The Phaser Project wizard of the editor provides a few project layout options, one of them is the **Multiple states with preloader (for larger games)**. We recommend to use that layout if you like to add a loading screen to your game. If you want to see a demo just select the **Include demo assets** parameter, it will create a project with a loading screen with a dino progress bar:
+The Phaser Project wizard of the editor provides a few project layout options, one of them is the **Multiple states with preloader (for larger games)**. We recommend using that layout if you like to add a loading screen to your game. If you want to see a demo just select the **Include demo assets** parameter, it will create a project with a loading screen with a dino progress bar:
 
 .. image:: images/CreatePreloaderDemoProject.png
 	:alt: Create a project with a preloader state.
@@ -830,7 +830,7 @@ In the Configuration tab, in the State section, you can see the ``isPreloader`` 
 .. image:: images/PreloaderStateConfig.png
 	:alt: Configuration of a preloader state.
 
-When you run the project you will see how the dino is cropped from left to right as a progress of the loading. We recommend to test it on Chrome and enable the ``Network → Throttling`` parameter, because serving from localhost is too fast to see the progress.
+When you run the project you will see how the dino is cropped from left to right as a progress of the loading. We recommend to test it on Chrome and enable the ``Network → Throttling`` parameter because serving from localhost is too fast to see the progress.
 
 As we commented before, a key difference between a preloader state and a common state is that the sprites are created in the ``preload`` method. Why? Because the ``create`` is called only when all the assets are loaded, but what we need is to show the progress of the assets loading. Usually what is coded in the ``create`` method is code to start the next state of the game. So the code of the ``Preloader.js`` state of the previous project looks like this:
 
@@ -892,9 +892,9 @@ User code
 ---------
 
 
-Usually tools like Canvas provide a dedicated runtime to load the scenes in the Phaser games, however, that practice is not in the Phaser Editor's philosophy of support plain Phaser, so we decided to use a compiler technique. This means that the scenes files are compiled into plain Phaser code, that can be integrated into the game as any other code written by the user.
+Usually, tools like Canvas provide a dedicated runtime to load the scenes in the Phaser games, however, that practice is not in the Phaser Editor's philosophy of support plain Phaser, so we decided to use a compiler technique. This means that the scenes files are compiled into plain Phaser code, that can be integrated into the game as any other code written by the user.
 
-The scenes are compiled into Sprite, Group and State classes, however there are many aspects of the game that are out of the scope of the tool, like for example the logic of the game is something that you have to write yourself. In this section we explain how you can insert your own code into the files generated by the editor.
+The scenes are compiled into Sprite, Group and State classes, however, there are many aspects of the game that are out of the scope of the tool, like for example the logic of the game is something that you have to write yourself. In this section, we explain how you can insert your own code into the files generated by the editor.
 
 There are two main ways to insert your code: (1) by writing it directly in certain parts of the file or (2) by writing it in the ``userCode`` parameter of the scene configuration.
 
@@ -918,14 +918,14 @@ These sections are created in places that allow the user to add more elements to
 Writing into the configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The other way to insert user code into the generated file is to write it in the configuration of the scene (look at the Configuration tab the Editor section). The compiler reads the content of the ``userCode`` parameter and write it into the file. In this case there is not risk to lost the code because it is saved in the Canvas file.
+The other way to insert user code into the generated file is to write it in the configuration of the scene (look at the Configuration tab the Editor section). The compiler reads the content of the ``userCode`` parameter and writes it into the file. In this case, there is no risk to lost the code because it is saved in the Canvas file.
 
-The ``userCode`` parameter is divided by sections that refers to different points of the generated code. The idea is to insert code into the generated methods, ``before`` and ``after`` the method's body. For example you can add code after the body of the method ``create`` to perform other initialization routines, like create tween objects or audio objects or set other parameters to the current objects.
+The ``userCode`` parameter is divided into sections that refer to different points of the generated code. The idea is to insert code into the generated methods, ``before`` and ``after`` the method's body. For example you can add code after the body of the method ``create`` to perform other initialization routines, like create tween objects or audio objects or set other parameters to the current objects.
 
-When you click to edit the ``userCode`` parameter it opens a dialog with a tab for method, and each tab has two text boxes, one to write the ``before`` code and other to write the ``after`` code. For example a state scene ``userCode`` has a tab for Constructor, Init, Preload and Create. All these tabs denote a method generated by the editor, so you can write your own code there.  
+When you click to edit the ``userCode`` parameter it opens a dialog with a tab for method, and each tab has two text boxes, one to write the ``before`` code and other to write the ``after`` code. For example, a state scene ``userCode`` has a tab for Constructor, Init, Preload and Create. All these tabs denote a method generated by the editor, so you can write your own code there.  
 
 
-For example let's see a case of user code inserted in a state scene via configuration:
+For example, let's see a case of user code inserted in a state scene via configuration:
 
 .. image:: images/UserCodeDialog.png
 	:alt: User code dialog.
@@ -951,7 +951,7 @@ The code set there is inserted in the ``create`` method of the compiled code:
 	};
 
 
-We recommend to write just few lines of code via the ``userCode`` configuration, specially because that dialog does not provide advanced features like code completion. In our demos and games what we do is to write a call to a method that was defined at the end of the file, in a protected zone, using the method explained in the `Writing into the code file`_ section.
+We recommend writing just a few lines of code via the ``userCode`` configuration, especially because that dialog does not provide advanced features like code completion. In our demos and games what we do is to write a call to a method that was defined at the end of the file, in a protected zone, using the method explained in the `Writing into the code file`_ section.
 
 
 You can open the user code dialog directly from the scene, press ``Ctrl+Shift+U`` or right click and select the ``Edit User Code`` menu option.
@@ -959,7 +959,7 @@ You can open the user code dialog directly from the scene, press ``Ctrl+Shift+U`
 Public objects
 ~~~~~~~~~~~~~~
 
-In the `Object properties`_ section we mentioned the ``public`` property of an object. It is a `design time property <#design-time-object-properties>`_ used to publish the objects beyond its context. To publish objects is needed to access a particular objects outside the ``create`` method. The concept is simple, for each public object is created an instance field that reference it. These public fields follow the format ``f<ObjectName>``, for example, if the object ``star`` is marked as public a field ``fStar`` is generated:
+In the `Object properties`_ section we mentioned the ``public`` property of an object. It is a `design time property <#design-time-object-properties>`_ used to publish the objects beyond its context. To publish objects is needed to access particular objects outside the ``create`` method. The concept is simple, for each public object is created an instance field that references it. These public fields follow the format ``f<ObjectName>``, for example, if the object ``star`` is marked as public a field ``fStar`` is generated:
 
 .. code-block:: javascript
 	:emphasize-lines: 6,13
@@ -981,12 +981,12 @@ In the `Object properties`_ section we mentioned the ``public`` property of an o
 
 
 Objects alignment and depth order
---------------------------------
+---------------------------------
 
-Position commands are always a powerful resource to build the layout of scenes. In Canvas we support some basic commands for alignment (left, right, top, bottom, center and middle) and for depth order (rise, rise to top, lower and lower to bottom).
+Position commands are always a powerful resource to build the layout of scenes. In Canvas we support some basic commands for alignment (left, right, top, bottom, center, and middle) and for depth order (rise, rise to top, lower and lower to bottom).
 
 Alignment
-~~~~~~~~
+~~~~~~~~-
 
 The alignment commands are available in the context menu and the Canvas toolbar:
 
@@ -1002,7 +1002,7 @@ Pretty similar to alignment commands there are the order commands. To apply them
 
 The "order" commands send an object back and forward, in the display list of its group.
 
-*NOTE: In Phaser there are some alignment constants and methods, but they are more (we think) about to align an object in runtime. It is a great resource for those who set the game layout "by hand". We are exploring this new features and in future versions of Canvas we can take advantage of it or reuse some concepts, like align in a grid.*
+*NOTE: In Phaser, there are some alignment constants and methods, but they are more (we think) about to align an object at runtime. It is a great resource for those who set the game layout "by hand". We are exploring this new features and in future versions of Canvas we can take advantage of it or reuse some concepts, like align in a grid.*
 
 Common editing operations
 -------------------------
@@ -1043,7 +1043,7 @@ Other elements you can remove are the property grid and the outline windows that
 .. image:: images/ToolbarIconsSidePanel.png
 	:alt: Buttons for remove distractions.
 
-Really you don't need these panels all the time open, you always can edit the properties of an object by pressing ``Q``, it opens a quick edit dialog with the the property grid inside:
+Really you don't need these panels all the time open, you always can edit the properties of an object by pressing ``Q``, it opens a quick edit dialog with  the property grid inside:
 
 .. image:: images/QuickEditDialog.png
 	:alt: Edit the object in place.
@@ -1055,4 +1055,3 @@ To navigate the scene you can open the Quick Outline window by pressing ``Ctrl+O
 
 
 To quickly add objects to the scene you can use the fast view to the minimized windows but also you can use the Palette, that is a small panel where you can collect the assets to be used in the scene. In the section `from the palette`_ it is explained in details.
-
