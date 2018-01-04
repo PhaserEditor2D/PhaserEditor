@@ -3,7 +3,7 @@ Texture Packing Editor
 
 Texture maps (or atlases) is an important resource that developers have to improve the performance of their games.
 
-In Phaser Editor we give full support to texture atlases, we provide the Texture Atlas Editor to do the job. There are other external tools that you can use but we think that integrating a texture packer in Phaser Editor is part of our philosophy of deliver a complete and integrated development environment.
+In Phaser Editor we give full support to texture atlases, we provide the Texture Atlas Editor to do the job. There are other external tools that you can use but we think that integrating a texture packer in Phaser Editor is part of our philosophy of delivering a complete and integrated development environment.
 
 Our Atlas Editor uses the `LibGDX Texture Packer <https://github.com/libgdx/libgdx/tree/master/extensions/gdx-tools>`_, it features the MaxRect algorithm and can be tuned to satisfy the requirements of the majority of the games.
 
@@ -16,9 +16,9 @@ To create an atlas click on ``File > New > Atlas Generator File``, it opens a di
 .. image:: images/NewAtlasWizard.png
 	:alt: New texture map wizard.
 
-When you press **Finish**, a file ``myatlas.atlas`` is created and opened in the Atlas Editor. This file does not contains any relation with Phaser, else it contains Phaser Editor related stuff, like the atlas settings and the path of the source images. So you should exclude it from a game build,  but keep it on your game development source.
+When you press **Finish**, a file ``myatlas.atlas`` is created and opened in the Atlas Editor. This file does not contain any relation with Phaser, else it contains Phaser Editor related stuff, like the atlas settings and the path of the source images. So you should exclude it from a game build,  but keep it on your game development source.
 
-One time the atlas file is created and the Atlas Editor is open to edit it then you can start adding images to the atlas.
+One time the atlas file is created and the Atlas Editor is open to editing it then you can start adding images to the atlas.
 
 To add the image files to the atlas follow these steps:
 
@@ -29,7 +29,7 @@ To add the image files to the atlas follow these steps:
 .. image:: images/AtlasImportImages.png
 	:alt: Drag and drop the source images into the editor.
 
-The last step, to save, is very important, remember ``myatlas.atlas`` file is an internal Phaser Editor file, it is a configuration file used to generate the final JSON atlas and PNG texture file to be used in the game. So when you save the editor a ``myatlas.json`` and ``myatlas.png`` files are generated. These are the files you should load in your game. Also note the source images are not placed under the ``WebContent`` folder else under the ``Design`` folder. Phaser Editor creates the ``Design`` folder and encourages the developers to put there the files are not included in the game but are used to generate the game assets, like is the case of the atlas source images.
+The last step, to save, is very important, remember ``myatlas.atlas`` file is an internal Phaser Editor file, it is a configuration file used to generate the final JSON atlas and PNG texture file to be used in the game. So when you save the editor a ``myatlas.json`` and ``myatlas.png`` files are generated. These are the files you should load in your game. Also, note the source images are not placed under the ``WebContent`` folder else under the ``Design`` folder. Phaser Editor creates the ``Design`` folder and encourages the developers to put there the files are not included in the game but are used to generate the game assets, like is the case of the atlas source images.
 
 To load the atlas in your game you can use the ``Phaser.Loader.atlasJSONHash()`` method or load the `Asset Pack <assets-manager.html>`_ file.
 
@@ -41,7 +41,7 @@ Tuning the atlas parameters
 
 Texture MAPS can be used in different objects of your game like sprites, tile sprites, sprite-sheets, etc.. Often you should adjust the parameters of the packer to get a texture applicable to the different functions.
 
-To change these parameterS click the "settings icon" in the editor toolbar. It opens the Settings dialog:
+To change these parameters click the "settings icon" in the editor toolbar. It opens the Settings dialog:
 
 .. image:: images/AtlasEditorSettings.png
 	:alt: Atlas editor settings.
@@ -74,7 +74,7 @@ When this happens the editor creates multiple tabs to show all the textures and 
 
 The side panel
 -------------------------------
-Close to the settings icon there is the "side panel" icon. By default the side panel is hidden but you can show it selecting that icon.
+Close to the settings icon, there is the "side panel" icon. By default the side panel is hidden but you can show it selecting that icon.
 
 This panel shows the name of the sprites and a small window with the sprites and pages information.
 
@@ -88,8 +88,8 @@ You can delete some sprites by selecting it and pressing the `DEL` key or clicki
 Update the atlas with external changes
 --------------------------------------
 
-In the editor's toolbar you can see a "gear" icon, click it to re-build the atlas. When you change the source image files then you should rebuild the atlas to regenerate the texture, do this by pressing that "gear" icon.
+In the editor's toolbar, you can see a "gear" icon, click it to re-build the atlas. When you change the source image files then you should rebuild the atlas to regenerate the texture, do this by pressing that "gear" icon.
 
-When you rebuild the atlas the editor shows a dialog to confirm that you want to save the atlas, if you accept, then the atlas  is saved and the Phaser atlas files are generated.
+When you rebuild the atlas, the editor shows a dialog to confirm that you want to save it, if you accept, then the atlas is saved and the Phaser atlas files are generated.
 
 

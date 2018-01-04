@@ -71,7 +71,7 @@ Unlock the editor
 -----------------
 
 Phaser Editor is a commercial product. You can try it by a period of 15 days, but after this, you should purchase a license key and activate the editor.
-To activate the editor click on ``Help → Unlock Phaser Editor``, it shows an activation dialog, write the purchased license key there and click on the **Activate** button.
+To activate the editor, click on ``Help → Unlock Phaser Editor``, it shows an activation dialog, write the purchased license key there and click on the **Activate** button.
 
 Create a project
 ----------------
@@ -109,18 +109,18 @@ The current JavaScript editor does not support JavaScript 6, for that reason, if
 
 After setting the parameters, press the **Finish** button to create the project and files.
 
-In dependence of your layout one file or other will be open to start editing the game. Usually what is opened is a visual scene file (canvas file) so you can start adding new objects to the game.
+Then the main file of the project will be open to starting editing the game. Usually, this main file is a scene (canvas file) so you can start adding new objects to the game.
 
 `Learn more about the scene editor <canvas.html>`_
 
 Phaser Example Project wizard
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In addition to the **Phaser Project** wizard there is the  **Phaser Example Project** wizard, that provide a list of templates based on Phaser examples.
+In addition to the **Phaser Project** wizard, there is the  **Phaser Example Project** wizard, that provides a list of templates based on Phaser examples.
 
 .. image:: images/PhaserProject_Templates.png
 
-- **Main Editor Demos**: provided by Phaser Editor. We recommend to start with them since it shows some the most important features in the editor, like the scene maker and the assets manager.
+- **Main Editor Demos**: provided by Phaser Editor. We recommend starting with them since it shows some the most important features in the editor, like the scene maker and the assets manager.
 - **Phaser Coding Tips**: contains the issues of the [official Phaser tutorials][13].
 - **Phaser Templates**: contains the templates listed in the Phaser GitHub repository.
 - **Phaser Examples**: contains the official Phaser examples. These templates are a great resource to learn and test Phaser features, you can create a project, run it and modify it.

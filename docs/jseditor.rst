@@ -2,11 +2,11 @@ Coding The Game: The JavaScript Editor
 --------------------------------------
 
 
-With Phaser you write the game with JavaScript as main language (there is also support for TypeScript). In Phaser Editor the JavaScript programming is a first citizen, the JavaScript editor is the more important component for us, and we do an extra effort to build the best experience for the Phaser developer.
+With Phaser, you write the game with JavaScript as the main language (there is also support for TypeScript). In Phaser Editor the JavaScript programming is a first citizen, the JavaScript editor is the more important component for us, and we do an extra effort to build the best experience for the Phaser developer.
 
 The JavaScript editor is part of the JSDT (Eclipse Web Tools) and we extended and modified it to adjust it to the Phaser API and style.
 
-When you create a Phaser Project the main JS file is opened in the editor. To open the JS editor manually you can navigate to the JS file in the Project Explorer and double click on it.
+When you create a Phaser Project the main JS file is opened in the editor. To open the JS editor manually you can navigate to the JS file in the Project Explorer and double-click on it.
 
 Phaser API smart code completion
 ================================
@@ -27,7 +27,7 @@ Arguments proposals:
 
 Drawbacks:
 
-Note in the proposals you see types like ``Phaser_Game`` or ``Phaser_Sprite``, etc.. It happens because JSDT does not understand the concept of namespaces, so we had to tweak the editor to simulate namespaces. This means that you can auto-complete ``Phaser.Sprite`` but also ``Phaser_Sprite``, however the last one is not valid in Phaser. We are working on replace the JSDT inference engine for a more accurate tool based on the Language Server Protocol of Microsoft.
+Note in the proposals you see types like ``Phaser_Game`` or ``Phaser_Sprite``, etc.. It happens because JSDT does not understand the concept of namespaces, so we had to tweak the editor to simulate namespaces. This means that you can auto-complete ``Phaser.Sprite`` but also ``Phaser_Sprite``, however, the last one is not valid in Phaser. We are working on replacing the JSDT inference engine for a more accurate tool based on the Language Server Protocol of Microsoft.
 
 Type annotation on a var declaration
 ====================================
@@ -58,7 +58,7 @@ Unfortunately, for now, the type annotations are not supported in anonymous func
 Type annotation on prototype declaration
 ========================================
 
-In Phaser you are not forced to use type inheritance, however, a recommended practice is to split your game in functional components like game states, custom sprites and groups. In Phaser Editor we encourage to use prototype inheritance between other reasons because it helps with auto completion.
+In Phaser you are not forced to use type inheritance, however, a recommended practice is to split your game into functional components like game states, custom sprites and groups. In Phaser Editor we encourage to use prototype inheritance between other reasons because it helps with auto-completion.
 
 In JavaScript you can define a prototype like this:
 
@@ -91,7 +91,7 @@ Note that we annotate an intermediate ``MyGroup_proto`` var with the ``Phaser.Gr
 	MyGroup.prototype.constructor = MyGroup;
 
 
-This is not the more beautiful thing of the world, we prefer to use something like a ``@extends`` JSDoc tag, but for now it is not possible. We recommend to use the new file wizards, they generated a code that can be "understood" by the JavaScript editor.
+This is not the more beautiful thing of the world, we prefer to use something like a ``@extends`` JSDoc tag, but for now, it is not possible. We recommend to use the new file wizards, they generated a code that can be "understood" by the JavaScript editor.
 
 Phaser API hover help
 =====================
@@ -104,7 +104,7 @@ The hover help is about to get the documentation of a Phaser API element just wi
 Code templates
 ==============
 
-With the code templates you can get snippets of code to cover specific Phaser tasks. These templates are the same are used in the official Phaser [online editor][10].
+With the code templates, you can get snippets of code to cover specific Phaser tasks. These templates are the same are used in the official Phaser [online editor][10].
 
 .. image:: images/CodeTemplates.png
 	:alt: Code templates.
@@ -117,12 +117,12 @@ When you define your assets in an asset pack file then the JS editor read the as
 .. image:: images/AssetKeysCompletion.png
 	:alt: Assets key proposals.
 
-As you can see in the above screenshot, the asset keys are shown in the information control of the content assist popup. In the case of audio files it plays the sound.
+As you can see in the above screenshot, the asset keys are shown in the information control of the content assist popup. In the case of audio files, it plays the sound.
 
 File names proposals
 ====================
 
-Also file names are shown in the content assist popup and they are visualized in the information control. In the next image are listed all the file names that match the ``png`` string: 
+Also, file names are shown in the content assist popup and they are visualized in the information control. In the next image are listed all the file names that match the ``png`` string: 
 
 .. image:: images/FilesCompletion.png
 	:alt: File names completions.
@@ -154,7 +154,7 @@ Look the ball is animated with the selected easing.
 Errors, warnings and quick fix
 ==============================
 
-By default Phaser Editor checks for syntax and semantic problems (errors and warnings). These problems are shown in the Problems view. In the JS editor the expression with problems is underlined with a yellow or red color in dependence of if it is a warning or an error.
+By default Phaser Editor checks for syntax and semantic problems (errors and warnings). These problems are shown in the Problems view. In the JS editor, the expression with problems is underlined with a yellow or red color in dependence of if it is a warning or an error.
 
 Many of these problems can be fixed automatically with the Quick Fix command. When you get a problem, put the cursor on the error and press ``CTRL+1``, the Quick Fix dialog is shown with different options.
 
@@ -178,7 +178,7 @@ You can change the validator settings to ignore a kind of problem or treat it as
 Preview
 =======
 
-The JavaScript editor supports some preview features. When you hover a file name string, then it shows a popup with a preview of that file. In a similar way, if you hover the name of an `asset entry in the asset pack <assets-manager.html>`_ , then it shows a popup with a preview of the identified asset.
+The JavaScript editor supports some preview features. When you hover a file name string, then it shows a popup with a preview of that file. In a similar way, if you hover the name of an `asset entry in the asset pack <assets-manager.html>`_, then it shows a popup with a preview of the identified asset.
 
 To quick preview an object you can hover its name but also you can put the cursor in the middle of the name and type ``Ctrl+Alt+V`` that command opens the identified object in the `Preview window <preview-window.html>`_.
 

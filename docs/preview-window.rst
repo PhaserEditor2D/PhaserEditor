@@ -1,9 +1,9 @@
 The Preview Window
 ==================
 
-As the name suggest, in this window you can visualize different objects, specially the asset declarations of the `asset pack <assets-manager.html>`_ and media files (images, sounds, videos).
+As the name suggests, in this window you can visualize different objects, especially the asset declarations of the `asset pack <assets-manager.html>`_ and media files (images, sounds, videos).
 
-This Preview window usually show details of the previewed object like dimension, name, etc... In addition in the case of textures you can `drag the frames drop them into a scene <canvas.html#from-the-preview-window>`_, to create new objects.
+This Preview window usually shows details of the previewed object like dimension, name, etc... In addition, in the case of textures, you can `drag the frames and drop them into a scene <canvas.html#from-the-preview-window>`_, to create new objects.
 
 To preview an asset you can drag it from the Assets explorer or Project Explorer and drop it into the Preview window, or select an asset and press ``Ctrl+Alt+V``.
 
@@ -29,7 +29,7 @@ Clear                     Empty the window.
 The sprite-sheet preview
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-When you open a sprite-sheet asset in the Preview window it shows a special control where you can play animations with the sprite-sheet frames. It is useful for quick animations preview. In addition, you can select a couple of frames and drop then into the scene. To select more than one frame keep the ``Shift`` key pressed and move the mouse over the frames.
+When you open a sprite-sheet asset in the Preview window it shows a special control where you can play animations with the sprite-sheet frames. It is useful for quick animations preview. In addition, you can select a couple of frames and drop them into the scene. To select more than one frame keep the ``Shift`` key pressed and move the mouse over the frames.
 
 .. image:: images/SpritesheetPreviewAnimation.gif
 	:alt: You can play animations in the sprite-sheet preview.
@@ -37,7 +37,7 @@ When you open a sprite-sheet asset in the Preview window it shows a special cont
 The textures atlas preview
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The preview of a texture atlas asset has three different modes: Tile, List and Texture (or Original). The Tile mode shows the sprites of the atlas in a grid that you can zoom in/out (with the mouse wheel). The List mode shows the sprites in a list together with the names, and you can filter them by writing in a search field. The Texture mode shows the atlas texture as it is. In all the modes you can click on a sprite and drag it anywhere in the screen and drop it in other Preview window or in an scene editor. Note the toolbar of the Preview window shows the buttons to change from one mode to other:
+The preview of a texture atlas asset has three different modes: Tile, List, and Texture (or Original). The Tile mode shows the sprites of the atlas in a grid that you can zoom in/out (with the mouse wheel). The List mode shows the sprites in a list together with the names, and you can filter them by writing in a search field. The Texture mode shows the atlas texture as it is. In all the modes you can click on a sprite and drag it anywhere on the screen and drop it in other Preview window or in a scene editor. Note the toolbar of the Preview window shows the buttons to change from one mode to other:
 
 .. image:: images/AtlasPreview.gif
 	:alt: Preview a texture map.
