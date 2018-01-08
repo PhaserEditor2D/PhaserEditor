@@ -48,7 +48,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Phaser Editor'
-copyright = u'2017, Arian Fornaris'
+copyright = u'2016-2018, Arian Fornaris'
 author = u'Arian Fornaris'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -97,6 +97,8 @@ html_theme_path = ["_themes"]
 html_show_sourcelink = False
 html_show_sphinx = False
 html_favicon = "logo.png"
+html_title = "Phaser Editor Help"
+html_show_copyright = True
 
 
 print(html_theme_path)
