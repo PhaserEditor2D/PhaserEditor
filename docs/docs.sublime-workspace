@@ -1,0 +1,254 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"repe",
+				"repeat-x"
+			],
+			[
+				"background",
+				"background-image"
+			],
+			[
+				"PhaserEditor",
+				"PhaserEditor2D"
+			],
+			[
+				"do",
+				"double"
+			],
+			[
+				"text-dec",
+				"text-decoration-style"
+			],
+			[
+				"text",
+				"text-decoration"
+			],
+			[
+				"margin",
+				"margin-top"
+			],
+			[
+				"padding-",
+				"padding-bottom"
+			],
+			[
+				"margin-",
+				"margin-left"
+			],
+			[
+				"li",
+				"link\tTag"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 283.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 392.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/arian/Documents/PhaserEditor/Public/docs"
+	],
+	"file_history":
+	[
+		"/home/arian/Documents/PhaserEditor/Public/docs/_themes/phaser-editor/layout.html",
+		"/home/arian/Documents/PhaserEditor/Public/docs/index.rst",
+		"/home/arian/Documents/PhaserEditor/Public/docs/conf.py",
+		"/home/arian/Documents/PhaserEditor/Public/docs/_themes/phaser-editor/footer.html",
+		"/home/arian/Documents/PhaserEditor/Private/todo/TODO.txt",
+		"/home/arian/Documents/PhaserEditor/Public/docs/chains.rst",
+		"/home/arian/Documents/PhaserEditor/Public/docs/canvas.rst",
+		"/home/arian/Documents/PhaserEditor/Public/docs/audio-sprites.rst",
+		"/home/arian/Documents/PhaserEditor/Public/docs/assets-manager.rst",
+		"/home/arian/Documents/PhaserEditor/Public/docs/first-steps.rst",
+		"/home/arian/Documents/PhaserEditor/Public/docs/jseditor.rst",
+		"/home/arian/Documents/PhaserEditor/Public/docs/preview-window.rst",
+		"/home/arian/Documents/PhaserEditor/Public/docs/texture-packer.rst",
+		"/home/arian/Documents/PhaserEditor/Public/docs/update.rst",
+		"/home/arian/Documents/PhaserEditor/Private/gumroad/test_api/gumroad_test.sh",
+		"/home/arian/Documents/PhaserEditor/Private/gumroad/test_api/cuba_test.sh",
+		"/home/arian/Documents/PhaserEditor/Private/gumroad/test_api/test.sh",
+		"/home/arian/.curlrc",
+		"/home/arian/Documents/Bin/setproxy/setproxy.sh",
+		"/home/arian/Documents/PhaserEditor/Private/website2/cuba/css/styles.css",
+		"/home/arian/Documents/LayoutArtist/Format.md",
+		"/home/arian/Documents/PhaserEditor/Private/runtime-PhaserEditor.product/Load Bitmap Font/WebContent/assets/fonts/bitmapFonts/desyrel.xml",
+		"/home/arian/Documents/PhaserEditor/Public/source/phasereditor/phasereditor.resources.phaser.code/phaser-master/src/gameobjects/BitmapText.js",
+		"/home/arian/Documents/PhaserEditor/Public/source/phasereditor/phasereditor.libgdx/.classpath",
+		"/home/arian/Documents/PhaserEditor/Public/docs/optipng.rst",
+		"/home/arian/Documents/PhaserEditor/Private/todo/TODO_DONE.txt",
+		"/usr/share/gnome-background-properties/ubuntu-wallpapers.xml",
+		"/usr/share/gnome-shell/extensions/ubuntu-appindicators@ubuntu.com/iconCache.js",
+		"/usr/share/gnome-shell/extensions/ubuntu-appindicators@ubuntu.com/extension.js",
+		"/usr/share/gnome-shell/extensions/ubuntu-appindicators@ubuntu.com/dbusMenu.js",
+		"/usr/share/gnome-shell/theme/ubuntu.css",
+		"/usr/share/gnome-shell/perf-background.xml",
+		"/usr/share/backgrounds/contest/artful.xml",
+		"/home/arian/Documents/PhaserEditor/Private/website2/www/index.html",
+		"/home/arian/Documents/PhaserEditor/Private/website2/www/libs/materialize/css/materialize.css",
+		"/home/arian/Documents/PhaserEditor/Private/website2/cuba/index.html",
+		"/home/arian/Documents/PhaserEditor/Private/website2/cuba/styles.css",
+		"/home/arian/Documents/PhaserEditor/Private/website2/www/css/iconfont.css",
+		"/home/arian/.gtk-recordmydesktop",
+		"/home/arian/Documents/PhaserEditor/Public/docs/build.sh"
+	],
+	"find":
+	{
+		"height": 40.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"title",
+			"depth ior"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 25.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "docs.sublime-project",
+	"replace":
+	{
+		"height": 46.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"~/Documents/PhaserEditor/Private/todo/todo.sublime-workspace"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 275.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
