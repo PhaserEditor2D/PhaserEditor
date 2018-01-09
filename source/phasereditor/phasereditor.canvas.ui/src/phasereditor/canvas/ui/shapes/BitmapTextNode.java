@@ -30,6 +30,8 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.transform.Scale;
+import javafx.scene.transform.Transform;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.bmpfont.core.BitmapFontModel;
 import phasereditor.bmpfont.core.BitmapFontRenderer;
@@ -43,6 +45,7 @@ import phasereditor.ui.ImageCache;
 public class BitmapTextNode extends Pane implements ISpriteNode {
 
 	private BitmapTextControl _control;
+	private Scale _scaleTx;
 
 	public BitmapTextNode(BitmapTextControl control) {
 		_control = control;
@@ -71,6 +74,17 @@ public class BitmapTextNode extends Pane implements ISpriteNode {
 		try (InputStream input = fontFile.getContents()) {
 
 			BitmapFontModel fontModel = new BitmapFontModel(input);
+
+			double fontSize = fontModel.getInfoSize();
+			int textSize = getModel().getSize();
+			double scale = textSize / fontSize;
+
+			if (_scaleTx != null) {
+				getTransforms().remove(_scaleTx);
+			}
+
+			_scaleTx = Transform.scale(scale, scale);
+			getTransforms().add(_scaleTx);
 
 			getChildren().clear();
 

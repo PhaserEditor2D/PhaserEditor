@@ -94,7 +94,7 @@ public class BitmapFontCanvas extends ImageCanvas {
 		_model = model;
 
 		if (model != null) {
-			_text = model.getFace();
+			_text = model.getInfoFace();
 		}
 	}
 

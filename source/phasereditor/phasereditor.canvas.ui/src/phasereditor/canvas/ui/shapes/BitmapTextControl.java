@@ -29,6 +29,7 @@ import phasereditor.canvas.core.BitmapTextModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridBitmapTextFontProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
+import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
 import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
 
@@ -89,6 +90,34 @@ public class BitmapTextControl extends BaseSpriteControl<BitmapTextModel> {
 
 		PGridSection section = new PGridSection("BitmapText");
 
+		_font_property = new PGridBitmapTextFontProperty(getId(), "font", help("Phaser.BitmapText.font")) {
+
+			@Override
+			public void setValue(BitmapFontAssetModel value, boolean notify) {
+				getModel().setAssetKey(value);
+				if (notify) {
+					updateFromPropertyChange();
+					getCanvas().getSelectionBehavior().updateSelectedNodes_async();
+				}
+			}
+
+			@Override
+			public BitmapFontAssetModel getValue() {
+				return getModel().getAssetKey();
+			}
+
+			@Override
+			public boolean isModified() {
+				return true;
+			}
+
+			@Override
+			public BitmapTextModel getModel() {
+				return BitmapTextControl.this.getModel();
+			}
+
+		};
+
 		_text_property = new PGridStringProperty(getId(), "text", help("Phaser.BitmapText.text"), "Write the text.") {
 
 			@Override
@@ -116,11 +145,16 @@ public class BitmapTextControl extends BaseSpriteControl<BitmapTextModel> {
 			}
 		};
 
-		_font_property = new PGridBitmapTextFontProperty(getId(), "font", help("Phaser.BitmapText.font")) {
+		PGridNumberProperty _size_property = new PGridNumberProperty(getId(), "size", help("Phaser.BitmapText.size")) {
 
 			@Override
-			public void setValue(BitmapFontAssetModel value, boolean notify) {
-				getModel().setAssetKey(value);
+			public boolean isModified() {
+				return getModel().getSize() != BitmapTextModel.DEF_SIZE;
+			}
+
+			@Override
+			public void setValue(Double value, boolean notify) {
+				getModel().setSize(value.intValue());
 				if (notify) {
 					updateFromPropertyChange();
 					getCanvas().getSelectionBehavior().updateSelectedNodes_async();
@@ -128,24 +162,19 @@ public class BitmapTextControl extends BaseSpriteControl<BitmapTextModel> {
 			}
 
 			@Override
-			public BitmapFontAssetModel getValue() {
-				return getModel().getAssetKey();
+			public Double getValue() {
+				return Double.valueOf(getModel().getSize());
 			}
 
 			@Override
-			public boolean isModified() {
-				return true;
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly(BitmapTextModel.PROPSET_SIZE);
 			}
-			
-			@Override
-			public BitmapTextModel getModel() {
-				return BitmapTextControl.this.getModel();
-			}
-
 		};
 
-		section.add(_text_property);
 		section.add(_font_property);
+		section.add(_text_property);
+		section.add(_size_property);
 		propModel.getSections().add(section);
 
 		// will never be supported by BitmapText, this should be moved to asset

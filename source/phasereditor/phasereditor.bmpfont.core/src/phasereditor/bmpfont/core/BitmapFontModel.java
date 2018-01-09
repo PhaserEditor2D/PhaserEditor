@@ -44,6 +44,7 @@ public class BitmapFontModel {
 
 	public static class InfoTag {
 		private String _face;
+		private int _size;
 
 		public String getFace() {
 			return _face;
@@ -51,6 +52,14 @@ public class BitmapFontModel {
 
 		public void setFace(String face) {
 			_face = face;
+		}
+
+		public int getSize() {
+			return _size;
+		}
+
+		public void setSize(int size) {
+			_size = size;
 		}
 	}
 
@@ -229,6 +238,7 @@ public class BitmapFontModel {
 			Node elem = doc.getElementsByTagName("info").item(0);
 			NamedNodeMap attrs = elem.getAttributes();
 			_infoTag.setFace(attrs.getNamedItem("face").getNodeValue());
+			_infoTag.setSize(Integer.parseInt(attrs.getNamedItem("size").getNodeValue()));
 		}
 
 		{
@@ -292,8 +302,12 @@ public class BitmapFontModel {
 
 	}
 
-	public String getFace() {
+	public String getInfoFace() {
 		return _infoTag.getFace();
+	}
+
+	public int getInfoSize() {
+		return _infoTag.getSize();
 	}
 
 	public void render(String text, BitmapFontRenderer renderer) {
@@ -303,11 +317,11 @@ public class BitmapFontModel {
 		String normalText = text.replace("\r\n", "\n").replace("\r", "\n");
 
 		int len = normalText.length();
-		
+
 		for (int i = 0; i < len; i++) {
 			int c = normalText.charAt(i);
 			int first = c;
-			int second = i == len - 1? -1 : text.charAt(i + 1);
+			int second = i == len - 1 ? -1 : text.charAt(i + 1);
 
 			if (c == '\n') {
 				y += _commonTag.getLineHeight();

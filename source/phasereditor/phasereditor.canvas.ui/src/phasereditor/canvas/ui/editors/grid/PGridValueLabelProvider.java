@@ -133,10 +133,11 @@ public class PGridValueLabelProvider extends PGridLabelProvider {
 
 			return asset.getKey();
 		}
+		
 
 		if (element instanceof PGridProperty) {
 			Object value = ((PGridProperty<?>) element).getValue();
-			return value == null ? "" : value.toString();
+			return value == null ? "" : value.toString().replace("\n\r", "").replace("\n", "");
 		}
 
 		return super.getText(element);

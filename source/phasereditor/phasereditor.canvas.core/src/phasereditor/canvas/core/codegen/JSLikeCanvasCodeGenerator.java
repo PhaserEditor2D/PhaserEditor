@@ -38,6 +38,7 @@ import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.AtlasSpriteModel;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BaseSpriteModel;
+import phasereditor.canvas.core.BitmapTextModel;
 import phasereditor.canvas.core.BodyModel;
 import phasereditor.canvas.core.ButtonSpriteModel;
 import phasereditor.canvas.core.CanvasModel;
@@ -289,13 +290,10 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 		boolean isPreloadSprite = false;
 		{
 			StateSettings state = _model.getStateSettings();
-			//@formatter:off
-			if (
-					_model.getType() == CanvasType.STATE 
-					&& state.isPreloader()
-					&& model.getId().equals(state.getPreloadSpriteId())
-				) 
-			//@formatter:on
+			// @formatter:off
+			if (_model.getType() == CanvasType.STATE && state.isPreloader()
+					&& model.getId().equals(state.getPreloadSpriteId()))
+			// @formatter:on
 			{
 				isPreloadSprite = true;
 			}
@@ -465,6 +463,19 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				String str = escapeLines(text.getText());
 				call.value("'" + str + "'");
 				call.value(text.getPhaserStyleObject().toString()); // style
+				call.valueOrUndefined(parVar != null, parVar);
+
+				call.append();
+			} else if (model instanceof BitmapTextModel) {
+				// missing to use a Call instance to generate this
+				BitmapTextModel bmpText = (BitmapTextModel) model;
+				Call call = new Call("bitmapText");
+				call.value(round(bmpText.getX()));
+				call.value(round(bmpText.getY()));
+				call.string(bmpText.getAssetKey().getKey());
+				String str = escapeLines(bmpText.getText());
+				call.string(str);
+				call.string(Integer.toString(bmpText.getSize()));
 				call.valueOrUndefined(parVar != null, parVar);
 
 				call.append();
