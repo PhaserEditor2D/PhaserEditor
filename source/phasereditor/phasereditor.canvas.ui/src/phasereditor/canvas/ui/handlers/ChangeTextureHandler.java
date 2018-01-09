@@ -10,6 +10,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.assetpack.ui.TextureDialog;
 import phasereditor.canvas.core.BaseSpriteModel;
+import phasereditor.canvas.core.BitmapTextModel;
 import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.canvas.ui.editors.CanvasEditor;
@@ -18,6 +19,8 @@ import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
 import phasereditor.canvas.ui.editors.grid.editors.PGridEditingSupport;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.SelectOperation;
+import phasereditor.canvas.ui.shapes.BitmapTextControl;
+import phasereditor.canvas.ui.shapes.BitmapTextNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.TextControl;
 import phasereditor.canvas.ui.shapes.TextNode;
@@ -32,7 +35,10 @@ public class ChangeTextureHandler extends AbstractHandler {
 
 		for (Object obj : selection) {
 			if (obj instanceof TextNode) {
-				changeText(shell, obj);
+				changeText(shell, (TextNode) obj);
+				return null;
+			} else if (obj instanceof BitmapTextNode) {
+				changeText(shell, (BitmapTextNode) obj);
 				return null;
 			}
 		}
@@ -42,8 +48,20 @@ public class ChangeTextureHandler extends AbstractHandler {
 		return null;
 	}
 
-	private static void changeText(Shell shell, Object obj) {
-		TextNode text = (TextNode) obj;
+	private static void changeText(Shell shell, BitmapTextNode text) {
+		if (text.getModel().isOverriding(BitmapTextModel.PROPSET_TEXT)) {
+			BitmapTextControl control = (BitmapTextControl) text.getControl();
+			PGridStringProperty prop = control.getTextProperty();
+			String result = PGridEditingSupport.openLongStringDialog(prop, shell);
+			if (result != null) {
+				PGridEditingSupport.changeUndoablePropertyValue(result, prop);
+			}
+		} else {
+			MessageDialog.openInformation(shell, "Change Text", "The 'text' property is read-only.");
+		}
+	}
+
+	private static void changeText(Shell shell, TextNode text) {
 
 		if (text.getModel().isOverriding(TextModel.PROPSET_TEXT)) {
 			TextControl control = (TextControl) text.getControl();

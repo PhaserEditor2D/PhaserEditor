@@ -21,19 +21,30 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
+import java.io.InputStream;
+
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import phasereditor.assetpack.core.BitmapFontAssetModel;
-import phasereditor.ui.ImageCanvas;
+import phasereditor.bmpfont.core.BitmapFontModel;
+import phasereditor.bmpfont.ui.BitmapFontCanvas;
+import phasereditor.ui.EditorSharedImages;
+import phasereditor.ui.IEditorSharedImages;
+import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
+import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 
 public class BitmapFontAssetPreviewComp extends Composite {
 
-	private ImageCanvas _imageCanvas;
 	private BitmapFontAssetModel _model;
+	BitmapFontCanvas _bitmapFontCanvas;
 
 	/**
 	 * Create the composite.
@@ -43,24 +54,80 @@ public class BitmapFontAssetPreviewComp extends Composite {
 	 */
 	public BitmapFontAssetPreviewComp(Composite parent, int style) {
 		super(parent, style);
+		setLayout(new FillLayout());
 
-		GridLayout gridLayout = new GridLayout(1, false);
-		gridLayout.marginWidth = 0;
-		gridLayout.marginHeight = 0;
-		setLayout(gridLayout);
+		_bitmapFontCanvas = new BitmapFontCanvas(this, SWT.NONE);
 
-		_imageCanvas = new ImageCanvas(this, SWT.NONE);
-		_imageCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		afterCreateWidgets();
+	}
+
+	private void afterCreateWidgets() {
+		// nothing
+	}
+
+	public BitmapFontCanvas getBitmapFontCanvas() {
+		return _bitmapFontCanvas;
 	}
 
 	public void setModel(BitmapFontAssetModel model) {
 		_model = model;
+		
+		if (model == null) {
+			_bitmapFontCanvas.setImage(null);
+			return;
+		}
 
-		IFile file = model.getFileFromUrl(model.getTextureURL());
-		_imageCanvas.setImageFile(file);
+		IFile imgFile = model.getFileFromUrl(model.getTextureURL());
+
+		{
+			IFile atlasFile = model.getFileFromUrl(model.getAtlasURL());
+			try (InputStream contents = atlasFile.getContents()) {
+				BitmapFontModel fontModel = new BitmapFontModel(contents);
+				_bitmapFontCanvas.setModel(fontModel);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			_bitmapFontCanvas.setImageFile(imgFile);
+		}
+
 	}
 
 	public BitmapFontAssetModel getModel() {
 		return _model;
+	}
+
+	public void createToolBar(IToolBarManager toolbar) {
+		toolbar.add(new Action() {
+
+			{
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_TEXT_ABC));
+				setToolTipText("Set the demo text.");
+			}
+
+			@Override
+			public void run() {
+
+				InputDialog dlg = new InputDialog(getShell(), "BitmapFont Preview", "Write the text:",
+						_bitmapFontCanvas.getText(),
+						newText -> newText.trim().length() == 0 ? "Empty text not valid" : null);
+
+				if (dlg.open() == Window.OK) {
+					_bitmapFontCanvas.setText(dlg.getValue());
+					_bitmapFontCanvas.reset();
+				}
+
+			}
+		});
+
+		toolbar.add(new Separator());
+
+		toolbar.add(new ImageCanvas_Zoom_1_1_Action(_bitmapFontCanvas));
+		toolbar.add(new ImageCanvas_Zoom_FitWindow_Action(_bitmapFontCanvas));
+
+	}
+
+	public void setText(String text) {
+		_bitmapFontCanvas.setText(text);
+		_bitmapFontCanvas.redraw();
 	}
 }

@@ -301,6 +301,10 @@ public class ImageCanvas extends Canvas implements PaintListener, IZoomable {
 			_viewport = viewport;
 		}
 
+		reset();
+	}
+
+	public void reset() {
 		// fit the window when it is fully sized
 		getDisplay().asyncExec(() -> {
 			if (!isDisposed()) {

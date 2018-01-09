@@ -30,6 +30,7 @@ import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 
+import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.canvas.core.AnimationModel;
 import phasereditor.canvas.core.BaseObjectModel;
@@ -70,7 +71,7 @@ public class PGridValueLabelProvider extends PGridLabelProvider {
 			Set<LoadPack> value = ((PGridLoadPackProperty) element).getValue();
 			return LoadPack.toString(value);
 		}
-		
+
 		if (element instanceof PGridColorProperty) {
 			PGridColorProperty prop = (PGridColorProperty) element;
 			RGB rgb = prop.getValue();
@@ -98,11 +99,11 @@ public class PGridValueLabelProvider extends PGridLabelProvider {
 
 		if (element instanceof PGridEnumProperty) {
 			Object value = ((PGridEnumProperty<?>) element).getValue();
-			
+
 			if (value instanceof PhysicsType) {
 				return ((PhysicsType) value).getPhaserName();
 			}
-			
+
 			if (value instanceof SourceLang) {
 				return ((SourceLang) value).getDisplayName();
 			}
@@ -122,6 +123,15 @@ public class PGridValueLabelProvider extends PGridLabelProvider {
 			}
 
 			return model.getEditorName();
+		}
+
+		if (element instanceof PGridBitmapTextFontProperty) {
+			BitmapFontAssetModel asset = ((PGridBitmapTextFontProperty) element).getValue();
+			if (asset == null) {
+				return "null";
+			}
+
+			return asset.getKey();
 		}
 
 		if (element instanceof PGridProperty) {

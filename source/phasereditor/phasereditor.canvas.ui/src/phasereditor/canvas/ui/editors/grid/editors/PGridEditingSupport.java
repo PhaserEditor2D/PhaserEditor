@@ -51,6 +51,7 @@ import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.NumberCellEditor;
 import phasereditor.canvas.ui.editors.grid.PGridAnimationsProperty;
+import phasereditor.canvas.ui.editors.grid.PGridBitmapTextFontProperty;
 import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
 import phasereditor.canvas.ui.editors.grid.PGridColorProperty;
 import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
@@ -184,6 +185,8 @@ public class PGridEditingSupport extends EditingSupport {
 					return initialValue;
 				}
 			};
+		} else if (element instanceof PGridBitmapTextFontProperty) {
+			return new BitmapTextFontCellEditor(parent, (PGridBitmapTextFontProperty) element);
 		}
 
 		return null;

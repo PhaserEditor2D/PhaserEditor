@@ -234,6 +234,11 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			public boolean canReusePreviewControl(Control c, Object elem) {
 				return c instanceof BitmapFontAssetPreviewComp;
 			}
+			
+			@Override
+			public void updateToolBar(IToolBarManager toolbar, Control preview) {
+				((BitmapFontAssetPreviewComp)preview).createToolBar(toolbar);
+			}
 		};
 	}
 

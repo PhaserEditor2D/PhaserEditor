@@ -23,6 +23,7 @@ package phasereditor.canvas.ui.shapes;
 
 import phasereditor.canvas.core.AtlasSpriteModel;
 import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.BitmapTextModel;
 import phasereditor.canvas.core.ButtonSpriteModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.ImageSpriteModel;
@@ -58,6 +59,8 @@ public class CanvasObjectFactory {
 			return new MissingPrefabControl(canvas, (MissingPrefabModel) model);
 		} else if (model instanceof TextModel) {
 			return new TextControl(canvas, (TextModel) model);
+		} else if (model instanceof BitmapTextModel) {
+			return new BitmapTextControl(canvas, (BitmapTextModel) model);
 		}
 		return null;
 	}

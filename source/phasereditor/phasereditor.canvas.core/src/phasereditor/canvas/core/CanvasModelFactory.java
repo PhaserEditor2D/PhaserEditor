@@ -29,6 +29,7 @@ import org.json.JSONObject;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AtlasAssetModel;
+import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
@@ -53,6 +54,8 @@ public class CanvasModelFactory {
 			return new AtlasSpriteModel(parent, (Frame) obj);
 		} else if (obj instanceof String) {
 			return new TextModel(parent);
+		} else if (obj instanceof BitmapFontAssetModel) {
+			return new BitmapTextModel(parent, (BitmapFontAssetModel) obj);
 		}
 		return null;
 	}
@@ -111,6 +114,9 @@ public class CanvasModelFactory {
 				break;
 			case TextModel.TYPE_NAME:
 				model = new TextModel(parent, data);
+				break;
+			case BitmapTextModel.TYPE_NAME:
+				model = new BitmapTextModel(parent, data);
 				break;
 			case GroupModel.TYPE_NAME:
 				model = new GroupModel(parent, data);
