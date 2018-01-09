@@ -31,18 +31,18 @@ import phasereditor.assetpack.core.BitmapFontAssetModel;
  */
 public class BitmapTextModel extends AssetSpriteModel<BitmapFontAssetModel> {
 
-	public static final int DEF_SIZE = 32;
+	public static final int DEF_FONT_SIZE = 32;
 	public static final String TYPE_NAME = "bitmap-text";
 	public static final String PROPSET_TEXT = "text";
-	public static final String PROPSET_SIZE = "size";
+	public static final String PROPSET_SIZE = "fontSize";
 
 	private String _text;
-	private int _size;
+	private int _fontSize;
 
 	public BitmapTextModel(GroupModel parent, BitmapFontAssetModel assetKey) {
 		super(parent, assetKey, TYPE_NAME);
 		_text = "Bitmap Font";
-		_size = DEF_SIZE;
+		_fontSize = DEF_FONT_SIZE;
 	}
 
 	public BitmapTextModel(GroupModel parent, JSONObject obj) {
@@ -57,12 +57,12 @@ public class BitmapTextModel extends AssetSpriteModel<BitmapFontAssetModel> {
 		_text = text;
 	}
 
-	public int getSize() {
-		return _size;
+	public int getFontSize() {
+		return _fontSize;
 	}
 
-	public void setSize(int size) {
-		_size = size;
+	public void setFontSize(int fontSize) {
+		_fontSize = fontSize;
 	}
 
 	@Override
@@ -81,9 +81,9 @@ public class BitmapTextModel extends AssetSpriteModel<BitmapFontAssetModel> {
 
 		if (isOverriding(PROPSET_SIZE)) {
 			if (prefabInstance) {
-				jsonInfo.put("size", _size);
+				jsonInfo.put("fontSize", _fontSize);
 			} else {
-				jsonInfo.put("size", _size, DEF_SIZE);
+				jsonInfo.put("fontSize", _fontSize, DEF_FONT_SIZE);
 			}
 		}
 
@@ -94,7 +94,7 @@ public class BitmapTextModel extends AssetSpriteModel<BitmapFontAssetModel> {
 		super.readInfo(jsonInfo);
 
 		_text = jsonInfo.optString("text", "");
-		_size = jsonInfo.optInt("size", DEF_SIZE);
+		_fontSize = jsonInfo.optInt("fontSize", DEF_FONT_SIZE);
 	}
 
 }

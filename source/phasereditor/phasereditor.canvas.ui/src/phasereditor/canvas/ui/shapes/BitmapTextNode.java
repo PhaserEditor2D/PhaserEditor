@@ -76,7 +76,7 @@ public class BitmapTextNode extends Pane implements ISpriteNode {
 			BitmapFontModel fontModel = new BitmapFontModel(input);
 
 			double fontSize = fontModel.getInfoSize();
-			int textSize = getModel().getSize();
+			int textSize = getModel().getFontSize();
 			double scale = textSize / fontSize;
 
 			if (_scaleTx != null) {

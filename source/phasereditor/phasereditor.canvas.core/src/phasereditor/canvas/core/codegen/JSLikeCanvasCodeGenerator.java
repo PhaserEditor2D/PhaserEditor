@@ -475,7 +475,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				call.string(bmpText.getAssetKey().getKey());
 				String str = escapeLines(bmpText.getText());
 				call.string(str);
-				call.string(Integer.toString(bmpText.getSize()));
+				call.string(Integer.toString(bmpText.getFontSize()));
 				call.valueOrUndefined(parVar != null, parVar);
 
 				call.append();

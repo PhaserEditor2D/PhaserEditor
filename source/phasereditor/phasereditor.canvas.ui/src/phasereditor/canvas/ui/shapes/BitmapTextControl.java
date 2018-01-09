@@ -145,16 +145,16 @@ public class BitmapTextControl extends BaseSpriteControl<BitmapTextModel> {
 			}
 		};
 
-		PGridNumberProperty _size_property = new PGridNumberProperty(getId(), "size", help("Phaser.BitmapText.size")) {
+		PGridNumberProperty _size_property = new PGridNumberProperty(getId(), "fontSize", help("Phaser.BitmapText.fontSize")) {
 
 			@Override
 			public boolean isModified() {
-				return getModel().getSize() != BitmapTextModel.DEF_SIZE;
+				return getModel().getFontSize() != BitmapTextModel.DEF_FONT_SIZE;
 			}
 
 			@Override
 			public void setValue(Double value, boolean notify) {
-				getModel().setSize(value.intValue());
+				getModel().setFontSize(value.intValue());
 				if (notify) {
 					updateFromPropertyChange();
 					getCanvas().getSelectionBehavior().updateSelectedNodes_async();
@@ -163,7 +163,7 @@ public class BitmapTextControl extends BaseSpriteControl<BitmapTextModel> {
 
 			@Override
 			public Double getValue() {
-				return Double.valueOf(getModel().getSize());
+				return Double.valueOf(getModel().getFontSize());
 			}
 
 			@Override
