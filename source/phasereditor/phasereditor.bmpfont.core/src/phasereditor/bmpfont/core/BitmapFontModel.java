@@ -21,10 +21,11 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.bmpfont.core;
 
-import static java.lang.System.out;
-
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -310,47 +311,159 @@ public class BitmapFontModel {
 		return _infoTag.getSize();
 	}
 
-	public void render(String text, BitmapFontRenderer renderer) {
-		int x = 0;
-		int y = 0;
+	public static class RenderArgs {
+		private String _text;
+		private int _maxWidth;
 
-		String normalText = text.replace("\r\n", "\n").replace("\r", "\n");
+		/**
+		 * 
+		 * @param text
+		 *            The text.
+		 * @param maxWidth
+		 *            The max width to wrap the text. Set <code>0</code> to ignore it.
+		 */
+		public RenderArgs(String text, int maxWidth) {
+			super();
+			_text = text;
+			_maxWidth = maxWidth;
+		}
 
-		int len = normalText.length();
+		public RenderArgs(String text) {
+			this(text, 0);
+		}
 
-		for (int i = 0; i < len; i++) {
-			int c = normalText.charAt(i);
-			int first = c;
-			int second = i == len - 1 ? -1 : text.charAt(i + 1);
+		public String getText() {
+			return _text;
+		}
 
-			if (c == '\n') {
-				y += _commonTag.getLineHeight();
-				x = 0;
-				continue;
+		public int getMaxWidth() {
+			return _maxWidth;
+		}
+
+	}
+
+	public void render(RenderArgs args, BitmapFontRenderer renderer) {
+
+		String text = args.getText();
+		text = text.replace("\r\n", "\n").replace("\r", "\n");
+
+		String normalText = "";
+
+		{
+			StringBuilder sb = new StringBuilder();
+			for (int c : text.toCharArray()) {
+				sb.append(_chars.containsKey(c) || c == '\n'? (char) c : ' ');
 			}
+			normalText = sb.toString();
+		}
 
-			CharTag charTag = _chars.get(c);
+		List<String> lines;
 
-			if (charTag == null) {
-				// a missing char is replaced by the <space> char.
-				c = ' ';
-				charTag = _chars.get(c);
-			}
+		if (args.getMaxWidth() > 0) {
+			// compute line wrapping
 
-			renderer.render((char) c, x + charTag.getXoffset(), y + charTag.getYoffset(), charTag.getX(),
-					charTag.getY(), charTag.getWidth(), charTag.getHeight());
+			int x = 0;
 
-			int k = 0;
+			lines = new ArrayList<>();
+			StringBuilder line = new StringBuilder();
+			int lastSpaceIndex = -1;
+			int len = normalText.length();
 
-			if (second != -1) {
-				KerningTag kerning = _kernings.get(first + "-" + second);
-				if (kerning != null) {
-					k = kerning.getAmount();
+			for (int i = 0; i < len; i++) {
+				int c = normalText.charAt(i);
+				int first = c;
+				int second = i == len - 1 ? -1 : text.charAt(i + 1);
+
+				if (c == '\n') {
+					x = 0;
+					lastSpaceIndex = -1;
+					lines.add(line.toString());
+					line = new StringBuilder();
+					continue;
+				}
+
+				CharTag charTag = _chars.get(c);
+
+				if (c == ' ') {
+					lastSpaceIndex = i;
+				}
+
+				line.append((char) c);
+
+				int k = 0;
+
+				if (second != -1) {
+					KerningTag kerning = _kernings.get(first + "-" + second);
+					if (kerning != null) {
+						k = kerning.getAmount();
+					}
+				}
+
+				x += charTag.getXadvance() + k;
+
+				if (args.getMaxWidth() > 0 && x > args.getMaxWidth() && lastSpaceIndex != -1) {
+					// get the new line to add, from the line start to the current position
+					String newLine = normalText.substring(i + 1 - line.length(), lastSpaceIndex);
+
+					// move the cursor to the last space position
+					i = lastSpaceIndex;
+
+					// reset the last space position to empty
+					lastSpaceIndex = -1;
+
+					// add the new line
+					lines.add(newLine);
+					line = new StringBuilder();
+
+					// reset x
+					x = 0;
+
 				}
 			}
 
-			x += charTag.getXadvance() + k;
+			if (line.length() > 0) {
+				lines.add(line.toString());
+			}
 
+		} else {
+			lines = Arrays.asList(normalText.split("\n"));
+		}
+
+		{
+			// render lines
+
+			int x = 0;
+			int y = 0;
+
+			for (String line : lines) {
+				int len = line.length();
+				for (int i = 0; i < len; i++) {
+					int c = line.charAt(i);
+					int first = c;
+					int second = i == len - 1 ? -1 : line.charAt(i + 1);
+
+					CharTag charTag = _chars.get(c);
+
+					renderer.render((char) c, x + charTag.getXoffset(), y + charTag.getYoffset(), charTag.getX(),
+							charTag.getY(), charTag.getWidth(), charTag.getHeight());
+
+					int k = 0;
+
+					if (second != -1) {
+						KerningTag kerning = _kernings.get(first + "-" + second);
+						if (kerning != null) {
+							k = kerning.getAmount();
+						}
+					}
+
+					x += charTag.getXadvance() + k;
+				}
+				
+				// update state on new line
+
+				y += _commonTag.getLineHeight();
+				x = 0;
+			}
 		}
 	}
 
@@ -382,16 +495,7 @@ public class BitmapFontModel {
 
 	public MetricsRenderer metrics(String text) {
 		MetricsRenderer result = new MetricsRenderer();
-		render(text, result);
+		render(new RenderArgs(text), result);
 		return result;
 	}
-
-	public static void main(String[] args) throws Exception {
-		BitmapFontModel model = new BitmapFontModel(BitmapFontModel.class.getResourceAsStream("desyrel.xml"));
-
-		model.render("Helló\rworld!", (c, x, y, x1, y1, w1, h1) -> {
-			out.println(c + " " + x + ":" + y);
-		});
-	}
-
 }

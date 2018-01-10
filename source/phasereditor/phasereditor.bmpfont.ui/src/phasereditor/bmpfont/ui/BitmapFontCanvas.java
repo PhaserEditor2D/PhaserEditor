@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import phasereditor.bmpfont.core.BitmapFontModel;
 import phasereditor.bmpfont.core.BitmapFontModel.MetricsRenderer;
+import phasereditor.bmpfont.core.BitmapFontModel.RenderArgs;
 import phasereditor.bmpfont.core.BitmapFontRenderer;
 import phasereditor.ui.ImageCanvas;
 import phasereditor.ui.PhaserEditorUI;
@@ -63,7 +64,7 @@ public class BitmapFontCanvas extends ImageCanvas {
 				PhaserEditorUI.paintPreviewBackground(gc, new Rectangle(z.x, z.y, z.width, z.height));
 			}
 
-			_model.render(_text, new BitmapFontRenderer() {
+			_model.render(new RenderArgs(_text), new BitmapFontRenderer() {
 
 				@Override
 				public void render(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {

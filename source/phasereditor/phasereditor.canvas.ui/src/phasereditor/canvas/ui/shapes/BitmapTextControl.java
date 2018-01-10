@@ -145,7 +145,8 @@ public class BitmapTextControl extends BaseSpriteControl<BitmapTextModel> {
 			}
 		};
 
-		PGridNumberProperty _size_property = new PGridNumberProperty(getId(), "fontSize", help("Phaser.BitmapText.fontSize")) {
+		PGridNumberProperty _size_property = new PGridNumberProperty(getId(), "fontSize",
+				help("Phaser.BitmapText.fontSize")) {
 
 			@Override
 			public boolean isModified() {
@@ -172,9 +173,39 @@ public class BitmapTextControl extends BaseSpriteControl<BitmapTextModel> {
 			}
 		};
 
+		PGridNumberProperty _maxWidth_property = new PGridNumberProperty(getId(), "maxWidth",
+				help("Phaser.BitmapText.maxWidth")) {
+
+			@Override
+			public boolean isModified() {
+				return getModel().getMaxWidth() != BitmapTextModel.DEF_MAX_WIDTH;
+			}
+
+			@Override
+			public void setValue(Double value, boolean notify) {
+				getModel().setMaxWidth(value.intValue());
+				if (notify) {
+					updateFromPropertyChange();
+					getCanvas().getSelectionBehavior().updateSelectedNodes_async();
+				}
+			}
+
+			@Override
+			public Double getValue() {
+				return Double.valueOf(getModel().getMaxWidth());
+			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly(BitmapTextModel.PROPSET_MAX_WIDTH);
+			}
+		};
+
 		section.add(_font_property);
 		section.add(_text_property);
 		section.add(_size_property);
+		section.add(_maxWidth_property);
+
 		propModel.getSections().add(section);
 
 		// will never be supported by BitmapText, this should be moved to asset

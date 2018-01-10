@@ -67,7 +67,9 @@ public class BitmapTextNode extends Pane implements ISpriteNode {
 	}
 
 	public void updateFromModel() {
-		BitmapFontAssetModel asset = _control.getModel().getAssetKey();
+		BitmapTextModel model = _control.getModel();
+
+		BitmapFontAssetModel asset = model.getAssetKey();
 		IFile fontFile = asset.getFileFromUrl(asset.getAtlasURL());
 		Image image = ImageCache.getFXImage(asset.getTextureFile());
 
@@ -88,7 +90,7 @@ public class BitmapTextNode extends Pane implements ISpriteNode {
 
 			getChildren().clear();
 
-			fontModel.render(_control.getModel().getText(), new BitmapFontRenderer() {
+			fontModel.render(model.createRenderArgs(), new BitmapFontRenderer() {
 
 				@Override
 				public void render(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {

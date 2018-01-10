@@ -24,6 +24,7 @@ package phasereditor.canvas.core;
 import org.json.JSONObject;
 
 import phasereditor.assetpack.core.BitmapFontAssetModel;
+import phasereditor.bmpfont.core.BitmapFontModel.RenderArgs;
 
 /**
  * @author arian
@@ -32,17 +33,21 @@ import phasereditor.assetpack.core.BitmapFontAssetModel;
 public class BitmapTextModel extends AssetSpriteModel<BitmapFontAssetModel> {
 
 	public static final int DEF_FONT_SIZE = 32;
-	public static final String TYPE_NAME = "bitmap-text";
+	public static final String TYPE_NAME = "bitmapText";
 	public static final String PROPSET_TEXT = "text";
 	public static final String PROPSET_SIZE = "fontSize";
+	public static final String PROPSET_MAX_WIDTH = "maxWidth";
+	public static final int DEF_MAX_WIDTH = 0;
 
 	private String _text;
 	private int _fontSize;
+	private int _maxWidth;
 
 	public BitmapTextModel(GroupModel parent, BitmapFontAssetModel assetKey) {
 		super(parent, assetKey, TYPE_NAME);
 		_text = "Bitmap Font";
 		_fontSize = DEF_FONT_SIZE;
+		_maxWidth = DEF_MAX_WIDTH;
 	}
 
 	public BitmapTextModel(GroupModel parent, JSONObject obj) {
@@ -63,6 +68,14 @@ public class BitmapTextModel extends AssetSpriteModel<BitmapFontAssetModel> {
 
 	public void setFontSize(int fontSize) {
 		_fontSize = fontSize;
+	}
+
+	public int getMaxWidth() {
+		return _maxWidth;
+	}
+
+	public void setMaxWidth(int maxWidth) {
+		_maxWidth = maxWidth;
 	}
 
 	@Override
@@ -87,6 +100,14 @@ public class BitmapTextModel extends AssetSpriteModel<BitmapFontAssetModel> {
 			}
 		}
 
+		if (isOverriding(PROPSET_MAX_WIDTH)) {
+			if (prefabInstance) {
+				jsonInfo.put("maxWidth", _maxWidth);
+			} else {
+				jsonInfo.put("maxWidth", _maxWidth, DEF_MAX_WIDTH);
+			}
+		}
+
 	}
 
 	@Override
@@ -95,6 +116,11 @@ public class BitmapTextModel extends AssetSpriteModel<BitmapFontAssetModel> {
 
 		_text = jsonInfo.optString("text", "");
 		_fontSize = jsonInfo.optInt("fontSize", DEF_FONT_SIZE);
+		_maxWidth = jsonInfo.optInt("maxWidth", DEF_MAX_WIDTH);
+	}
+
+	public RenderArgs createRenderArgs() {
+		return new RenderArgs(_text, _maxWidth);
 	}
 
 }
