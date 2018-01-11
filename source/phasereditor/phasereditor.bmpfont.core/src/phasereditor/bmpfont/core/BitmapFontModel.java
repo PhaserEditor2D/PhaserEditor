@@ -23,7 +23,6 @@ package phasereditor.bmpfont.core;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -311,9 +310,15 @@ public class BitmapFontModel {
 		return _infoTag.getSize();
 	}
 
+	public enum Align {
+		left, center, right
+	}
+
 	public static class RenderArgs {
 		private String _text;
+		private int _fontSize;
 		private int _maxWidth;
+		private Align _align;
 
 		/**
 		 * 
@@ -321,28 +326,71 @@ public class BitmapFontModel {
 		 *            The text.
 		 * @param maxWidth
 		 *            The max width to wrap the text. Set <code>0</code> to ignore it.
+		 * @param align
 		 */
-		public RenderArgs(String text, int maxWidth) {
+		public RenderArgs(String text, int fontSize, int maxWidth, Align align) {
 			super();
 			_text = text;
+			_fontSize = fontSize;
 			_maxWidth = maxWidth;
+			_align = align;
 		}
 
 		public RenderArgs(String text) {
-			this(text, 0);
+			this(text, 0, 32, Align.left);
 		}
 
 		public String getText() {
 			return _text;
 		}
 
+		public int getFontSize() {
+			return _fontSize;
+		}
+
 		public int getMaxWidth() {
 			return _maxWidth;
+		}
+
+		public Align getAlign() {
+			return _align;
 		}
 
 	}
 
 	public void render(RenderArgs args, BitmapFontRenderer renderer) {
+
+		class CharRenderInfo {
+			public char c;
+			public int x;
+			public int y;
+			public int srcX;
+			public int srcY;
+			public int srcW;
+			public int srcH;
+			public int x2;
+
+			public CharRenderInfo(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {
+				super();
+				this.c = c;
+				this.x = x;
+				this.y = y;
+				this.srcX = srcX;
+				this.srcY = srcY;
+				this.srcW = srcW;
+				this.srcH = srcH;
+			}
+
+		}
+
+		class LineRenderInfo extends ArrayList<CharRenderInfo> {
+
+			private static final long serialVersionUID = 1L;
+
+			public int getPixelLength() {
+				return isEmpty() ? 0 : get(size() - 1).x2;
+			}
+		}
 
 		String text = args.getText();
 		text = text.replace("\r\n", "\n").replace("\r", "\n");
@@ -352,21 +400,27 @@ public class BitmapFontModel {
 		{
 			StringBuilder sb = new StringBuilder();
 			for (int c : text.toCharArray()) {
-				sb.append(_chars.containsKey(c) || c == '\n'? (char) c : ' ');
+				sb.append(_chars.containsKey(c) || c == '\n' ? (char) c : ' ');
 			}
 			normalText = sb.toString();
 		}
 
-		List<String> lines;
+		List<LineRenderInfo> lines;
 
-		if (args.getMaxWidth() > 0) {
-			// compute line wrapping
+		{
+			int maxWidth = (int) (args.getMaxWidth() * (double) _infoTag.getSize() / args.getFontSize());
+
+			boolean wrap = maxWidth > 0;
 
 			int x = 0;
+			int y = 0;
 
 			lines = new ArrayList<>();
-			StringBuilder line = new StringBuilder();
+			LineRenderInfo line = new LineRenderInfo();
+
 			int lastSpaceIndex = -1;
+			int lineStart = 0;
+
 			int len = normalText.length();
 
 			for (int i = 0; i < len; i++) {
@@ -377,8 +431,10 @@ public class BitmapFontModel {
 				if (c == '\n') {
 					x = 0;
 					lastSpaceIndex = -1;
-					lines.add(line.toString());
-					line = new StringBuilder();
+					lineStart = i;
+					lines.add(line);
+					line = new LineRenderInfo();
+					y += _commonTag.getLineHeight();
 					continue;
 				}
 
@@ -388,7 +444,11 @@ public class BitmapFontModel {
 					lastSpaceIndex = i;
 				}
 
-				line.append((char) c);
+				CharRenderInfo charRenderInfo = new CharRenderInfo((char) c, x + charTag.getXoffset(),
+						y + charTag.getYoffset(), charTag.getX(), charTag.getY(), charTag.getWidth(),
+						charTag.getHeight());
+
+				line.add(charRenderInfo);
 
 				int k = 0;
 
@@ -401,70 +461,65 @@ public class BitmapFontModel {
 
 				x += charTag.getXadvance() + k;
 
-				if (args.getMaxWidth() > 0 && x > args.getMaxWidth() && lastSpaceIndex != -1) {
+				charRenderInfo.x2 = x;
+
+				if (wrap && x > maxWidth && lastSpaceIndex != -1) {
 					// get the new line to add, from the line start to the current position
-					String newLine = normalText.substring(i + 1 - line.length(), lastSpaceIndex);
+					// String newLine = normalText.substring(i + 1 - line.size(), lastSpaceIndex);
+
+					// remove the line chars from the last space
+					line.removeAll(line.subList(lastSpaceIndex - lineStart, line.size()));
 
 					// move the cursor to the last space position
 					i = lastSpaceIndex;
+					lineStart = lastSpaceIndex;
 
 					// reset the last space position to empty
 					lastSpaceIndex = -1;
 
 					// add the new line
-					lines.add(newLine);
-					line = new StringBuilder();
+					lines.add(line);
+					line = new LineRenderInfo();
 
-					// reset x
+					// reset x, y
 					x = 0;
-
+					y += _commonTag.getLineHeight();
 				}
 			}
 
-			if (line.length() > 0) {
-				lines.add(line.toString());
+			if (line.size() > 0) {
+				lines.add(line);
 			}
-
-		} else {
-			lines = Arrays.asList(normalText.split("\n"));
 		}
 
-		{
-			// render lines
+		// align
 
-			int x = 0;
-			int y = 0;
+		if (args.getAlign() != Align.left) {
+			int maxLen = 0;
 
-			for (String line : lines) {
-				int len = line.length();
-				for (int i = 0; i < len; i++) {
-					int c = line.charAt(i);
-					int first = c;
-					int second = i == len - 1 ? -1 : line.charAt(i + 1);
+			for (LineRenderInfo line : lines) {
+				int lineLen = line.getPixelLength();
+				maxLen = Math.max(maxLen, lineLen);
+			}
 
-					CharTag charTag = _chars.get(c);
+			for (LineRenderInfo line : lines) {
+				int offset = maxLen - line.getPixelLength();
 
-					renderer.render((char) c, x + charTag.getXoffset(), y + charTag.getYoffset(), charTag.getX(),
-							charTag.getY(), charTag.getWidth(), charTag.getHeight());
-
-					int k = 0;
-
-					if (second != -1) {
-						KerningTag kerning = _kernings.get(first + "-" + second);
-						if (kerning != null) {
-							k = kerning.getAmount();
-						}
-					}
-
-					x += charTag.getXadvance() + k;
+				if (args.getAlign() == Align.center) {
+					offset = offset / 2;
 				}
-				
-				// update state on new line
 
-				y += _commonTag.getLineHeight();
-				x = 0;
+				for (CharRenderInfo c : line) {
+					c.x += offset;
+					c.x2 += offset;
+				}
 			}
+
 		}
+
+		// render lines
+
+		lines.forEach(line -> line.forEach(c -> renderer.render(c.c, c.x, c.y, c.srcX, c.srcY, c.srcW, c.srcH)));
 	}
 
 	public static class MetricsRenderer implements BitmapFontRenderer {

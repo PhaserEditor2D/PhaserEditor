@@ -24,6 +24,7 @@ package phasereditor.canvas.core;
 import org.json.JSONObject;
 
 import phasereditor.assetpack.core.BitmapFontAssetModel;
+import phasereditor.bmpfont.core.BitmapFontModel.Align;
 import phasereditor.bmpfont.core.BitmapFontModel.RenderArgs;
 
 /**
@@ -37,17 +38,21 @@ public class BitmapTextModel extends AssetSpriteModel<BitmapFontAssetModel> {
 	public static final String PROPSET_TEXT = "text";
 	public static final String PROPSET_SIZE = "fontSize";
 	public static final String PROPSET_MAX_WIDTH = "maxWidth";
+	public static final String PROPSET_ALIGN = "align";
 	public static final int DEF_MAX_WIDTH = 0;
+	public static final Align DEF_ALIGN = Align.left;
 
 	private String _text;
 	private int _fontSize;
 	private int _maxWidth;
+	private Align _align;
 
 	public BitmapTextModel(GroupModel parent, BitmapFontAssetModel assetKey) {
 		super(parent, assetKey, TYPE_NAME);
 		_text = "Bitmap Font";
 		_fontSize = DEF_FONT_SIZE;
 		_maxWidth = DEF_MAX_WIDTH;
+		_align = DEF_ALIGN;
 	}
 
 	public BitmapTextModel(GroupModel parent, JSONObject obj) {
@@ -76,6 +81,14 @@ public class BitmapTextModel extends AssetSpriteModel<BitmapFontAssetModel> {
 
 	public void setMaxWidth(int maxWidth) {
 		_maxWidth = maxWidth;
+	}
+
+	public Align getAlign() {
+		return _align;
+	}
+
+	public void setAlign(Align align) {
+		_align = align;
 	}
 
 	@Override
@@ -108,6 +121,14 @@ public class BitmapTextModel extends AssetSpriteModel<BitmapFontAssetModel> {
 			}
 		}
 
+		if (isOverriding(PROPSET_ALIGN)) {
+			if (prefabInstance) {
+				jsonInfo.put("align", _align);
+			} else {
+				jsonInfo.put("align", _align, DEF_ALIGN);
+			}
+		}
+
 	}
 
 	@Override
@@ -117,10 +138,11 @@ public class BitmapTextModel extends AssetSpriteModel<BitmapFontAssetModel> {
 		_text = jsonInfo.optString("text", "");
 		_fontSize = jsonInfo.optInt("fontSize", DEF_FONT_SIZE);
 		_maxWidth = jsonInfo.optInt("maxWidth", DEF_MAX_WIDTH);
+		_align = Align.valueOf(jsonInfo.optString("align", DEF_ALIGN.name()));
 	}
 
 	public RenderArgs createRenderArgs() {
-		return new RenderArgs(_text, _maxWidth);
+		return new RenderArgs(_text, _fontSize, _maxWidth, _align);
 	}
 
 }

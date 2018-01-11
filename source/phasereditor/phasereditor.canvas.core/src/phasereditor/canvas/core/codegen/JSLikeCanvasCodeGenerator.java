@@ -606,6 +606,24 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 
 		if (model instanceof TileSpriteModel) {
 			generateTileProps((TileSpriteModel) model);
+		} else if (model instanceof BitmapTextModel) {
+			generateBitmapTextProps((BitmapTextModel) model);
+		}
+	}
+
+	private void generateBitmapTextProps(BitmapTextModel model) {
+		String varname = getLocalVarName(model);
+
+		if (model.isOverriding(BitmapTextModel.PROPSET_MAX_WIDTH)) {
+			if (model.getMaxWidth() != BitmapTextModel.DEF_MAX_WIDTH) {
+				line(varname + ".maxWidth = " + model.getMaxWidth() + ";");
+			}
+		}
+		
+		if (model.isOverriding(BitmapTextModel.PROPSET_ALIGN)) {
+			if (model.getAlign() != BitmapTextModel.DEF_ALIGN) {
+				line(varname + ".align = '" + model.getAlign().name() + "';");
+			}
 		}
 	}
 

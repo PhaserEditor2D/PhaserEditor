@@ -25,9 +25,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import phasereditor.assetpack.core.BitmapFontAssetModel;
+import phasereditor.bmpfont.core.BitmapFontModel.Align;
 import phasereditor.canvas.core.BitmapTextModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridBitmapTextFontProperty;
+import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
@@ -201,10 +203,39 @@ public class BitmapTextControl extends BaseSpriteControl<BitmapTextModel> {
 			}
 		};
 
+		PGridEnumProperty<Align> _align_property = new PGridEnumProperty<Align>(getId(), "align",
+				help("Phaser.BitmapText.align"), Align.values()) {
+
+			@Override
+			public boolean isModified() {
+				return getModel().getAlign() != BitmapTextModel.DEF_ALIGN;
+			}
+
+			@Override
+			public void setValue(Align value, boolean notify) {
+				getModel().setAlign(value);
+				if (notify) {
+					updateFromPropertyChange();
+					getCanvas().getSelectionBehavior().updateSelectedNodes_async();
+				}
+			}
+
+			@Override
+			public Align getValue() {
+				return getModel().getAlign();
+			}
+
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly(BitmapTextModel.PROPSET_ALIGN);
+			}
+		};
+
 		section.add(_font_property);
 		section.add(_text_property);
 		section.add(_size_property);
 		section.add(_maxWidth_property);
+		section.add(_align_property);
 
 		propModel.getSections().add(section);
 
