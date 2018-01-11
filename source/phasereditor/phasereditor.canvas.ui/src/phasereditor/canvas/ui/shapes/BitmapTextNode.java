@@ -45,7 +45,6 @@ import phasereditor.ui.ImageCache;
 public class BitmapTextNode extends Pane implements ISpriteNode {
 
 	private BitmapTextControl _control;
-	private Scale _scaleTx;
 
 	public BitmapTextNode(BitmapTextControl control) {
 		_control = control;
@@ -77,16 +76,9 @@ public class BitmapTextNode extends Pane implements ISpriteNode {
 
 			BitmapFontModel fontModel = new BitmapFontModel(input);
 
-			double fontSize = fontModel.getInfoSize();
-			int textSize = getModel().getFontSize();
-			double scale = textSize / fontSize;
+			double scale = (double) getModel().getFontSize() / (double) fontModel.getInfoSize();
 
-			if (_scaleTx != null) {
-				getTransforms().remove(_scaleTx);
-			}
-
-			_scaleTx = Transform.scale(scale, scale);
-			getTransforms().add(_scaleTx);
+			Scale scaleTx = Transform.scale(scale, scale);
 
 			getChildren().clear();
 
@@ -96,14 +88,25 @@ public class BitmapTextNode extends Pane implements ISpriteNode {
 				public void render(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {
 					ImageView img = new ImageView(image);
 					img.setViewport(new Rectangle2D(srcX, srcY, srcW, srcH));
-					img.relocate(x, y);
+					img.relocate(x * scale, y * scale);
+					img.getTransforms().add(scaleTx);
 					getChildren().add(img);
 				}
 			});
+
+			BitmapFontModel.MetricsRenderer metrics = new BitmapFontModel.MetricsRenderer();
+
+			fontModel.render(model.createRenderArgs(), metrics);
+
+			double width = metrics.getWidth() * scale;
+			double height = metrics.getHeight() * scale;
+
+			setMinSize(width, height);
+			setMaxSize(width, height);
+			setPrefSize(width, height);
 
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
-
 }

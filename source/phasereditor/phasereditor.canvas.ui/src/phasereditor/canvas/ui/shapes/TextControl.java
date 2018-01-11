@@ -72,6 +72,8 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 
 	@Override
 	public void updateFromModel() {
+		getModel();
+		
 		TextNode node = getNode();
 
 		node.updateFromModel();

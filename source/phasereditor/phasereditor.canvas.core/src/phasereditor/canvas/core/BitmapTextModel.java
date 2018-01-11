@@ -21,10 +21,15 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
+import java.io.InputStream;
+
+import org.eclipse.core.resources.IFile;
 import org.json.JSONObject;
 
 import phasereditor.assetpack.core.BitmapFontAssetModel;
+import phasereditor.bmpfont.core.BitmapFontModel;
 import phasereditor.bmpfont.core.BitmapFontModel.Align;
+import phasereditor.bmpfont.core.BitmapFontModel.MetricsRenderer;
 import phasereditor.bmpfont.core.BitmapFontModel.RenderArgs;
 
 /**
@@ -46,6 +51,8 @@ public class BitmapTextModel extends AssetSpriteModel<BitmapFontAssetModel> {
 	private int _fontSize;
 	private int _maxWidth;
 	private Align _align;
+	private BitmapFontModel _fontModel;
+	private MetricsRenderer _metrics;
 
 	public BitmapTextModel(GroupModel parent, BitmapFontAssetModel assetKey) {
 		super(parent, assetKey, TYPE_NAME);
@@ -143,6 +150,39 @@ public class BitmapTextModel extends AssetSpriteModel<BitmapFontAssetModel> {
 
 	public RenderArgs createRenderArgs() {
 		return new RenderArgs(_text, _fontSize, _maxWidth, _align);
+	}
+
+	@Override
+	public void build() {
+		super.build();
+
+		_fontModel = createFontModel();
+		
+		_metrics = new BitmapFontModel.MetricsRenderer();
+		
+		_fontModel.render(createRenderArgs(), _metrics);
+	}
+	
+	public MetricsRenderer getMetrics() {
+		return _metrics;
+	}
+
+	public BitmapFontModel createFontModel() {
+		BitmapFontAssetModel asset = getAssetKey();
+		IFile fontFile = asset.getFileFromUrl(asset.getAtlasURL());
+
+		try (InputStream input = fontFile.getContents()) {
+			return new BitmapFontModel(input);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * @return The fontModel, may be <code>null</code> if the model is not built.
+	 */
+	public BitmapFontModel getFontModel() {
+		return _fontModel;
 	}
 
 }
