@@ -461,6 +461,7 @@ public class BitmapFontModel {
 
 				x += charTag.getXadvance() + k;
 
+				// this is the right code, but we have to deal with the Phaser 2.6.2 bug
 				charRenderInfo.x2 = x;
 
 				if (wrap && x > maxWidth && lastSpaceIndex != -1) {
@@ -469,6 +470,18 @@ public class BitmapFontModel {
 
 					// remove the line chars from the last space
 					line.removeAll(line.subList(lastSpaceIndex - lineStart, line.size()));
+
+					// remove trailing spaces
+					while (true) {
+						if (!line.isEmpty()) {
+							int last = line.size() - 1;
+							if (line.get(last).c == ' ') {
+								line.remove(last);
+							} else {
+								break;
+							}
+						}
+					}
 
 					// move the cursor to the last space position
 					i = lastSpaceIndex;
