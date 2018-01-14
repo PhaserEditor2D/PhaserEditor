@@ -42,11 +42,11 @@ public class TextureListContentProvider extends AssetsContentProvider {
 			List<AssetPackModel> packs = AssetPackCore.getAssetPackModels((IProject) parent);
 			for (AssetPackModel pack : packs) {
 				for (AssetModel asset : pack.getAssets()) {
-					if (asset instanceof ImageAssetModel) {
+					if (acceptAsset(asset)) {
 						list.add(asset);
 					} else {
 						for (IAssetElementModel elem : asset.getSubElements()) {
-							if (elem instanceof IAssetFrameModel) {
+							if (acceptAsset(elem)) {
 								list.add(elem);
 							}
 						}
@@ -56,5 +56,10 @@ public class TextureListContentProvider extends AssetsContentProvider {
 			return list.toArray();
 		}
 		return super.getChildren(parent);
+	}
+
+	@SuppressWarnings("static-method")
+	protected boolean acceptAsset(Object assetKey) {
+		return assetKey instanceof ImageAssetModel || assetKey instanceof IAssetFrameModel;
 	}
 }

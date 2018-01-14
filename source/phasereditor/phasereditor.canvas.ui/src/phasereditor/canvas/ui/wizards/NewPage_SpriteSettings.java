@@ -51,8 +51,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
 
-import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.FlatAssetLabelProvider;
@@ -70,12 +69,18 @@ import phasereditor.ui.views.PreviewComp;
  *
  */
 public class NewPage_SpriteSettings extends WizardPage {
+	private static final String PHASER_BITMAP_TEXT = "Phaser.BitmapText";
+	private static final String PHASER_TEXT = "Phaser.Text";
+	private static final String PHASER_TILE_SPRITE = "Phaser.TileSprite";
+	private static final String PHASER_BUTTON = "Phaser.Button";
+	private static final String PHASER_SPRITE = "Phaser.Sprite";
+
 	@SuppressWarnings("unused")
 	private DataBindingContext m_bindingContext;
 	private ComboViewer _langComboViewer;
-	private Combo _typeCombo;
+	Combo _typeCombo;
 	private EditorSettings _settings;
-	private Button _btnGenerateTheCorrespondant;
+	private Button _btnEditFileInCanvasEditor;
 	private FilteredTree2 _filteredTree;
 	private Object _selectedAsset;
 	private PreviewComp _previewComp;
@@ -109,8 +114,9 @@ public class NewPage_SpriteSettings extends WizardPage {
 				validateErrors();
 			}
 		});
-		_typeCombo.setItems(new String[] {"Phaser.Sprite", "Phaser.Button", "Phaser.TileSprite", "Phaser.Text"});
-		_typeCombo.setText("Phaser.Sprite");
+		_typeCombo.setItems(
+				new String[] { PHASER_SPRITE, PHASER_BUTTON, PHASER_TILE_SPRITE, PHASER_TEXT, PHASER_BITMAP_TEXT });
+		_typeCombo.setText(PHASER_SPRITE);
 		_typeCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		Label lblCodeFormat = new Label(container, SWT.NONE);
@@ -135,10 +141,10 @@ public class NewPage_SpriteSettings extends WizardPage {
 		_previewComp = new PreviewComp(sashForm, SWT.BORDER);
 		sashForm.setWeights(new int[] { 4, 3 });
 
-		_btnGenerateTheCorrespondant = new Button(container, SWT.CHECK);
-		_btnGenerateTheCorrespondant.setSelection(true);
-		_btnGenerateTheCorrespondant.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 2, 1));
-		_btnGenerateTheCorrespondant.setText("Edit this sprite with the visual editor.");
+		_btnEditFileInCanvasEditor = new Button(container, SWT.CHECK);
+		_btnEditFileInCanvasEditor.setSelection(true);
+		_btnEditFileInCanvasEditor.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 2, 1));
+		_btnEditFileInCanvasEditor.setText("Edit this sprite with the visual editor.");
 		_langComboViewer.setContentProvider(new ArrayContentProvider());
 		_langComboViewer.setLabelProvider(new LangLabelProvider());
 
@@ -148,20 +154,34 @@ public class NewPage_SpriteSettings extends WizardPage {
 	}
 
 	public boolean isGenerateCanvasFile() {
-		return _btnGenerateTheCorrespondant.getSelection();
+		return _btnEditFileInCanvasEditor.getSelection();
 	}
 
 	private void afterCreateWidgets() {
 		_langComboViewer.setInput(SourceLang.values());
 
 		_assetsViewer.setLabelProvider(new FlatAssetLabelProvider(AssetLabelProvider.GLOBAL_48));
-		_assetsViewer.setContentProvider(new TextureListContentProvider());
+		_assetsViewer.setContentProvider(new TextureListContentProvider() {
+			@Override
+			protected boolean acceptAsset(Object assetKey) {
+
+				if (_typeCombo.getText() == PHASER_BITMAP_TEXT) {
+					return assetKey instanceof BitmapFontAssetModel;
+				}
+
+				if (_typeCombo.getText().equals(PHASER_TEXT)) {
+					return false;
+				}
+
+				return super.acceptAsset(assetKey);
+			}
+		});
 		AssetPackUI.installAssetTooltips(_assetsViewer);
 		_assetsViewer.addSelectionChangedListener(e -> {
 			validateErrors();
 			previewSelection();
 		});
-		_btnGenerateTheCorrespondant.addSelectionListener(new SelectionListener() {
+		_btnEditFileInCanvasEditor.addSelectionListener(new SelectionListener() {
 
 			@SuppressWarnings("synthetic-access")
 			@Override
@@ -175,33 +195,33 @@ public class NewPage_SpriteSettings extends WizardPage {
 			}
 		});
 		_previewComp.preview(null);
+
+		validateErrors();
 	}
 
 	private void previewSelection() {
 		IStructuredSelection sel = _assetsViewer.getStructuredSelection();
 		Object elem = sel.getFirstElement();
-		if (!(elem instanceof IAssetFrameModel || elem instanceof ImageAssetModel)) {
-			elem = null;
-		}
 		_previewComp.preview(elem);
 	}
 
 	private void validateErrors() {
 		setErrorMessage(null);
 
-		if (_btnGenerateTheCorrespondant.getSelection()) {
-			if (!_typeCombo.getText().equals("Phaser.Text")) {
-				IStructuredSelection sel = _assetsViewer.getStructuredSelection();
-				Object elem = sel.getFirstElement();
-				if (elem instanceof IAssetFrameModel || elem instanceof ImageAssetModel) {
-					_selectedAsset = elem;
-				} else {
-					setErrorMessage("Please select a valid asset/frame.");
-				}
+		_selectedAsset = _assetsViewer.getStructuredSelection().getFirstElement();
+
+		String type = _typeCombo.getText();
+
+		if (_selectedAsset == null) {
+
+			if (type != PHASER_TEXT) {
+				setErrorMessage("Please select a texture for this sprite.");
 			}
 		}
 
 		setPageComplete(getErrorMessage() == null);
+
+		_assetsViewer.refresh();
 	}
 
 	public Object getSelectedAsset() {

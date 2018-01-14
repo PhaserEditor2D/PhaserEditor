@@ -23,6 +23,7 @@ package phasereditor.canvas.core.codegen.js5;
 
 import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.BaseSpriteModel;
+import phasereditor.canvas.core.BitmapTextModel;
 import phasereditor.canvas.core.ButtonSpriteModel;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.TextModel;
@@ -74,13 +75,13 @@ public class JSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 			mdoc.append();
 
 			openIndent("function " + classname + "(aGame, aX, aY, aWidth, aHeight, aKey, aFrame) {");
-			
+
 			trim(() -> {
 				line();
 				userCode(_settings.getUserCode().getCreate_before());
 				line();
 			});
-			
+
 			openIndent(baseclass + ".call(this, aGame, aX, aY,");
 			line("aWidth == undefined || aWidth == null? " + tile.getWidth() + " : aWidth,");
 			line("aHeight == undefined || aHeight == null? " + tile.getHeight() + " : aHeight,");
@@ -111,15 +112,17 @@ public class JSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 				userCode(_settings.getUserCode().getCreate_before());
 				line();
 			});
-			
+
 			openIndent(baseclass + ".call(");
 			line("this, aGame, aX, aY,");
 			line("aKey || " + key + ",");
 			line("aCallback || " + emptyStringToNull(button.getCallback()) + ",");
 			line("aCallbackContext || " + emptyStringToNull(button.getCallbackContext()) + ",");
-			line("aOverFrame == undefined || aOverFrame == null? " + frameKey(button.getOverFrame()) + " : aOverFrame,");
+			line("aOverFrame == undefined || aOverFrame == null? " + frameKey(button.getOverFrame())
+					+ " : aOverFrame,");
 			line("aOutFrame == undefined || aOutFrame == null? " + frameKey(button.getOutFrame()) + " : aOutFrame,");
-			line("aDownFrame == undefined || aDownFrame == null? " + frameKey(button.getDownFrame()) + " : aDownFrame,");
+			line("aDownFrame == undefined || aDownFrame == null? " + frameKey(button.getDownFrame())
+					+ " : aDownFrame,");
 			append("aUpFrame == undefined || aUpFrame == null? " + frameKey(button.getUpFrame()) + " : aUpFrame");
 			closeIndent(");");
 		} else if (sprite instanceof TextModel) {
@@ -141,7 +144,7 @@ public class JSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 				userCode(_settings.getUserCode().getCreate_before());
 				line();
 			});
-			
+
 			openIndent(baseclass + ".call(this, aGame, aX, aY,");
 			line("aText || '" + escapeLines(text.getText()) + "',");
 			line("aStyle || ");
@@ -157,6 +160,35 @@ public class JSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 			}
 			closeIndent(");");
 			closeIndent();
+		} else if (sprite instanceof BitmapTextModel) {
+			BitmapTextModel bmpText = (BitmapTextModel) sprite;
+			MethodDoc mdoc = new MethodDoc();
+			mdoc.comment(classname);
+			mdoc.arg("aGame", "Phaser.Game", help.getMethodArgHelp("Phaser.BitmapText", "game"));
+			mdoc.arg("aX", "Number", help.getMethodArgHelp("Phaser.BitmapText", "x"));
+			mdoc.arg("aY", "Number", help.getMethodArgHelp("Phaser.BitmapText", "y"));
+			mdoc.arg("aFont", "String", help.getMethodArgHelp("Phaser.BitmapText", "font"));
+			mdoc.arg("aText", "String", help.getMethodArgHelp("Phaser.BitmapText", "text"));
+			mdoc.arg("aSize", "String", help.getMethodArgHelp("Phaser.BitmapText", "size"));
+			mdoc.arg("aAlign", "String", help.getMethodArgHelp("Phaser.BitmapText", "align"));
+
+			mdoc.append();
+
+			openIndent("function " + classname + "(aGame, aX, aY, aFont, aText, aSize, aAlign) {");
+
+			trim(() -> {
+				line();
+				userCode(_settings.getUserCode().getCreate_before());
+				line();
+			});
+
+			openIndent(baseclass + ".call(this, aGame, aX, aY,");
+			line("aFont || '" + bmpText.getAssetKey().getKey() + "',");
+			line("aText || '" + escapeLines(bmpText.getText()) + "',");
+			line("aSize || " + bmpText.getFontSize() + ",");
+			append("aAlign || '" + bmpText.getAlign().name() + "'");
+			closeIndent(");");
+			line();
 		} else {
 			MethodDoc mdoc = new MethodDoc();
 			mdoc.comment(classname);
@@ -174,8 +206,9 @@ public class JSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 				userCode(_settings.getUserCode().getCreate_before());
 				line();
 			});
-			
-			line(baseclass + ".call(this, aGame, aX, aY, aKey || " + key + ", aFrame == undefined || aFrame == null? " + frame + " : aFrame);");
+
+			line(baseclass + ".call(this, aGame, aX, aY, aKey || " + key + ", aFrame == undefined || aFrame == null? "
+					+ frame + " : aFrame);");
 		}
 
 	}

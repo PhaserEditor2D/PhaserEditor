@@ -371,6 +371,17 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 						"'" + escapeLines(sprite.getText()) + "'");
 				call.valueOrNull(sprite.isOverriding(TextModel.PROPSET_TEXT_STYLE),
 						sprite.getPhaserStyleObject().toString());
+			} else if (model instanceof BitmapTextModel) {
+				BitmapTextModel sprite = (BitmapTextModel) model;
+				call.value("this.game", round(sprite.getX()), round(sprite.getY()));
+				call.valueOrNull(sprite.isOverriding(BaseSpriteModel.PROPSET_TEXTURE),
+						"'" + sprite.getAssetKey().getKey() + "'");
+				call.valueOrNull(sprite.isOverriding(BitmapTextModel.PROPSET_TEXT),
+						"'" + escapeLines(sprite.getText()) + "'");
+				call.valueOrNull(sprite.isOverriding(BitmapTextModel.PROPSET_SIZE),
+						Integer.toString(sprite.getFontSize()));
+				call.valueOrNull(sprite.isOverriding(BitmapTextModel.PROPSET_ALIGN),
+						"'" + sprite.getAlign().name() + "'");
 			}
 
 			call.append();
@@ -619,10 +630,12 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				line(varname + ".maxWidth = " + model.getMaxWidth() + ";");
 			}
 		}
-		
+
 		if (model.isOverriding(BitmapTextModel.PROPSET_ALIGN)) {
-			if (model.getAlign() != BitmapTextModel.DEF_ALIGN) {
-				line(varname + ".align = '" + model.getAlign().name() + "';");
+			if (!model.isPrefabInstance()) { // in prefabs instances the align is set in the constructor
+				if (model.getAlign() != BitmapTextModel.DEF_ALIGN) {
+					line(varname + ".align = '" + model.getAlign().name() + "';");
+				}
 			}
 		}
 	}

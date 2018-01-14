@@ -81,7 +81,13 @@ public class BitmapTextControl extends BaseSpriteControl<BitmapTextModel> {
 
 		validProperties.addAll(Arrays.asList(
 
-				BitmapTextModel.PROPSET_TEXT
+				BitmapTextModel.PROPSET_TEXT,
+
+				BitmapTextModel.PROPSET_SIZE,
+
+				BitmapTextModel.PROPSET_MAX_WIDTH,
+
+				BitmapTextModel.PROPSET_ALIGN
 
 		));
 	}

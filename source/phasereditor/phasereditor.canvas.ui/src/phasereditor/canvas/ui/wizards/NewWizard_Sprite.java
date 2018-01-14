@@ -27,9 +27,11 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.json.JSONObject;
 
+import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.canvas.core.BaseSpriteModel;
+import phasereditor.canvas.core.BitmapTextModel;
 import phasereditor.canvas.core.ButtonSpriteModel;
 import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.CanvasType;
@@ -92,6 +94,9 @@ public class NewWizard_Sprite extends NewWizard_Base {
 				break;
 			case "Phaser.Text":
 				spriteModel = new TextModel(world, "This is a text");
+				break;
+			case "Phaser.BitmapText":
+				spriteModel = new BitmapTextModel(world, (BitmapFontAssetModel) asset);
 				break;
 			default:
 				spriteModel = (BaseSpriteModel) CanvasModelFactory.createModel(world, asset);

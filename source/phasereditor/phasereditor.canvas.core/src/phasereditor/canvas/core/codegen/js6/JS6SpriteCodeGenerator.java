@@ -23,6 +23,7 @@ package phasereditor.canvas.core.codegen.js6;
 
 import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.BaseSpriteModel;
+import phasereditor.canvas.core.BitmapTextModel;
 import phasereditor.canvas.core.ButtonSpriteModel;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.TextModel;
@@ -51,7 +52,7 @@ public class JS6SpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator implem
 		PhaserJSDoc help = InspectCore.getPhaserHelp();
 
 		openIndent("class " + classname + " extends " + baseclass + " {");
-		
+
 		BaseSpriteModel sprite = (BaseSpriteModel) _model.getWorld().findFirstSprite();
 
 		String key = "null";
@@ -78,13 +79,13 @@ public class JS6SpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator implem
 			mdoc.append();
 
 			openIndent("constructor(aGame, aX, aY, aWidth, aHeight, aKey, aFrame) {");
-			
+
 			trim(() -> {
 				line();
 				userCode(_settings.getUserCode().getCreate_before());
 				line();
 			});
-			
+
 			openIndent("super(aGame, aX, aY,");
 			line("aWidth == undefined || aWidth == null? " + tile.getWidth() + " : aWidth,");
 			line("aHeight == undefined || aHeight == null? " + tile.getHeight() + " : aHeight,");
@@ -108,22 +109,25 @@ public class JS6SpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator implem
 			mdoc.arg("aUpFrame", "any", help.getMethodArgHelp("Phaser.Button", "upFrame"));
 			mdoc.append();
 
-			openIndent("constructor(aGame, aX, aY, aKey, aCallback, aCallbackContext, aOverFrame, aOutFrame, aDownFrame, aUpFrame) {");
+			openIndent(
+					"constructor(aGame, aX, aY, aKey, aCallback, aCallbackContext, aOverFrame, aOutFrame, aDownFrame, aUpFrame) {");
 
 			trim(() -> {
 				line();
 				userCode(_settings.getUserCode().getCreate_before());
 				line();
 			});
-			
+
 			openIndent("super(");
 			line("aGame, aX, aY,");
 			line("aKey || " + key + ",");
 			line("aCallback || " + emptyStringToNull(button.getCallback()) + ",");
 			line("aCallbackContext /* || " + emptyStringToNull(button.getCallbackContext()) + " */,");
-			line("aOverFrame == undefined || aOverFrame == null? " + frameKey(button.getOverFrame()) + " : aOverFrame,");
+			line("aOverFrame == undefined || aOverFrame == null? " + frameKey(button.getOverFrame())
+					+ " : aOverFrame,");
 			line("aOutFrame == undefined || aOutFrame == null? " + frameKey(button.getOutFrame()) + " : aOutFrame,");
-			line("aDownFrame == undefined || aDownFrame == null? " + frameKey(button.getDownFrame()) + " : aDownFrame,");
+			line("aDownFrame == undefined || aDownFrame == null? " + frameKey(button.getDownFrame())
+					+ " : aDownFrame,");
 			append("aUpFrame == undefined || aUpFrame == null? " + frameKey(button.getUpFrame()) + " : aUpFrame");
 			closeIndent(");");
 		} else if (sprite instanceof TextModel) {
@@ -145,7 +149,7 @@ public class JS6SpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator implem
 				userCode(_settings.getUserCode().getCreate_before());
 				line();
 			});
-			
+
 			openIndent("super(aGame, aX, aY,");
 			line("aText || '" + escapeLines(text.getText()) + "',");
 			line("aStyle || ");
@@ -161,6 +165,36 @@ public class JS6SpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator implem
 			}
 			closeIndent(");");
 			closeIndent();
+		} else if (sprite instanceof BitmapTextModel) {
+			BitmapTextModel bmpText = (BitmapTextModel) sprite;
+			MethodDoc mdoc = new MethodDoc();
+			mdoc.comment(classname);
+			mdoc.arg("aGame", "Phaser.Game", help.getMethodArgHelp("Phaser.BitmapText", "game"));
+			mdoc.arg("aX", "Number", help.getMethodArgHelp("Phaser.BitmapText", "x"));
+			mdoc.arg("aY", "Number", help.getMethodArgHelp("Phaser.BitmapText", "y"));
+			mdoc.arg("aFont", "String", help.getMethodArgHelp("Phaser.BitmapText", "font"));
+			mdoc.arg("aText", "String", help.getMethodArgHelp("Phaser.BitmapText", "text"));
+			mdoc.arg("aSize", "String", help.getMethodArgHelp("Phaser.BitmapText", "size"));
+			mdoc.arg("aAlign", "String", help.getMethodArgHelp("Phaser.BitmapText", "align"));
+
+			mdoc.append();
+
+			openIndent("constructor(aGame, aX, aY, aFont, aText, aSize, aAlign) {");
+
+			trim(() -> {
+				line();
+				userCode(_settings.getUserCode().getCreate_before());
+				line();
+			});
+
+			openIndent("super(aGame, aX, aY,");
+			
+			line("aFont || '" + bmpText.getAssetKey().getKey() + "',");
+			line("aText || '" + escapeLines(bmpText.getText()) + "',");
+			line("aSize || " + bmpText.getFontSize() + ",");
+			append("aAlign || '" + bmpText.getAlign().name() + "'");
+			closeIndent(");");
+			line();
 		} else {
 			MethodDoc mdoc = new MethodDoc();
 			mdoc.comment(classname);
@@ -178,22 +212,23 @@ public class JS6SpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator implem
 				userCode(_settings.getUserCode().getCreate_before());
 				line();
 			});
-			
-			line("super(aGame, aX, aY, aKey || " + key + ", aFrame  == undefined || aFrame == null? " + frame + " : aFrame);");
+
+			line("super(aGame, aX, aY, aKey || " + key + ", aFrame  == undefined || aFrame == null? " + frame
+					+ " : aFrame);");
 		}
 	}
 
 	@Override
 	public void generateFooter() {
-		trim( ()->{
+		trim(() -> {
 			line();
-			userCode(_settings.getUserCode().getCreate_after());			
-		} );
-		
+			userCode(_settings.getUserCode().getCreate_after());
+		});
+
 		closeIndent("}");
 
 		line();
-		
+
 		section("/* sprite-methods-begin */", "/* sprite-methods-end */", getYouCanInsertCodeHere());
 
 		closeIndent("}");
