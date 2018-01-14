@@ -385,7 +385,7 @@ public class CanvasUI {
 		operations.add(new AddNodeOperation(newData, oldModel.getIndex(), oldModel.getX(), oldModel.getY(),
 				oldModel.getParent().getId()));
 	}
-
+	
 	public static void clearCanvasScreenshot(IFile file) {
 		try {
 			if (!file.exists()) {

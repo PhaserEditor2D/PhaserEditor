@@ -18,8 +18,8 @@ import phasereditor.canvas.core.ITextSpriteModel;
 import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
-import phasereditor.canvas.ui.editors.SelectBitmapFontAssetDialog;
 import phasereditor.canvas.ui.editors.SelectTextureDialog;
+import phasereditor.canvas.ui.editors.grid.editors.BitmapTextFontDialog;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.DeleteNodeOperation;
@@ -67,11 +67,11 @@ public abstract class AbstractMorphHandler<T extends BaseObjectModel> extends Ab
 
 				boolean doMorph = true;
 				if (_morphToType == BitmapTextModel.class) {
-					SelectBitmapFontAssetDialog dlg = new SelectBitmapFontAssetDialog(HandlerUtil.getActiveShell(event));
+					BitmapTextFontDialog dlg = new BitmapTextFontDialog(HandlerUtil.getActiveShell(event));
 					CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 					dlg.setProject(editor.getEditorInputFile().getProject());
 					if (dlg.open() == Window.OK) {
-						source = (IAssetKey) dlg.getSelection().getFirstElement();
+						source = dlg.getSelectedFont();
 					} else {
 						continue;
 					}

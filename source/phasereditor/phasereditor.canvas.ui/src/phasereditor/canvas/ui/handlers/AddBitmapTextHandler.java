@@ -35,8 +35,8 @@ import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.canvas.core.BitmapTextModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
-import phasereditor.canvas.ui.editors.SelectBitmapFontAssetDialog;
 import phasereditor.canvas.ui.editors.behaviors.CreateBehavior;
+import phasereditor.canvas.ui.editors.grid.editors.BitmapTextFontDialog;
 import phasereditor.canvas.ui.editors.grid.editors.TextDialog;
 
 /**
@@ -52,7 +52,7 @@ public class AddBitmapTextHandler extends AbstractHandler {
 			CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 			ObjectCanvas canvas = editor.getCanvas();
 
-			SelectBitmapFontAssetDialog dlg = new SelectBitmapFontAssetDialog(HandlerUtil.getActiveShell(event));
+			BitmapTextFontDialog dlg = new BitmapTextFontDialog(HandlerUtil.getActiveShell(event));
 			dlg.setProject(editor.getEditorInputFile().getProject());
 
 			if (dlg.open() == Window.OK) {

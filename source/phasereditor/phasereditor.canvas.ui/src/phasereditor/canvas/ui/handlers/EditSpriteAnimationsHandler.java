@@ -44,7 +44,7 @@ public class EditSpriteAnimationsHandler extends AbstractHandler {
 		dlg.setAnimations(list);
 
 		if (dlg.open() == Window.OK) {
-			PGridEditingSupport.changeUndoablePropertyValue(dlg.getValue(), prop);
+			PGridEditingSupport.executeChangePropertyValueOperation(dlg.getValue(), prop);
 		}
 
 		return null;

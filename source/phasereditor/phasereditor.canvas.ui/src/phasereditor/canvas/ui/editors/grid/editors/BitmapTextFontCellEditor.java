@@ -21,17 +21,11 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid.editors;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.eclipse.jface.viewers.DialogCellEditor;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import phasereditor.assetpack.core.AssetModel;
-import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.canvas.ui.editors.grid.PGridBitmapTextFontProperty;
 
@@ -64,20 +58,14 @@ public class BitmapTextFontCellEditor extends DialogCellEditor {
 	protected Object openDialogBox(Control cellEditorWindow) {
 		BitmapTextFontDialog dlg = new BitmapTextFontDialog(cellEditorWindow.getShell());
 
-		List<AssetPackModel> packs = AssetPackCore
-				.getAssetPackModels(_prop.getValue().getPack().getFile().getProject());
+		dlg.setProject(_prop.getValue().getPack().getFile().getProject());
 		
-		List<AssetModel> fonts = packs.stream().flatMap(pack -> pack.getAssets().stream())
-				.filter(asset -> asset instanceof BitmapFontAssetModel).collect(Collectors.toList());
-
-		dlg.setBitmapFonts(fonts);
-		
-		dlg.setSelectedItem(_prop.getValue());
+		dlg.setSelectedFont(_prop.getValue());
 		
 		dlg.setInitialText(_prop.getModel().getText());
 		
 		if (dlg.open() == Window.OK) {
-			return dlg.getResult();
+			return dlg.getSelectedFont();
 		}
 
 		return null;

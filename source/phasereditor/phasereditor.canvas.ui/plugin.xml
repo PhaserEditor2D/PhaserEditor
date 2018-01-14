@@ -324,6 +324,12 @@
                   style="push">
             	</command>
              <command
+                   commandId="phasereditor.canvas.ui.changeFont"
+                   icon="platform:/plugin/phasereditor.ui/icons/font.png"
+                   label="Change Font"
+                   style="push">
+             </command>
+             <command
                    commandId="phasereditor.canvas.ui.selectTextSameFont"
                    label="Select All Texts With Same Font"
                    style="push">
@@ -750,6 +756,26 @@
                </visibleWhen>
             </command>
             <separator
+                  name="phasereditor.canvas.ui.particular1"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="phasereditor.canvas.ui.changeText"
+                  icon="platform:/plugin/phasereditor.ui/icons/text_abc.png"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="true">
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="phasereditor.canvas.ui.changeFont"
+                  icon="platform:/plugin/phasereditor.ui/icons/font.png"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="true">
+               </visibleWhen>
+            </command>
+            <separator
                   name="phasereditor.canvas.ui.separator3"
                   visible="true">
             </separator>
@@ -1162,6 +1188,10 @@
             categoryId="phasereditor.canvas.ui.editor.category"
             id="phasereditor.canvas.ui.selectTextSameFont"
             name="Select All Texts With Same Font">
+      </command>
+      <command
+            id="phasereditor.canvas.ui.changeFont"
+            name="Change Font">
       </command>
       
    </extension>
@@ -2096,6 +2126,21 @@
                      </instanceof>
                   </iterate>
                </and>
+            </with>
+         </activeWhen>
+      </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.ChangeBitmapFontHandler"
+            commandId="phasereditor.canvas.ui.changeFont">
+         <activeWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <instanceof
+                        value="phasereditor.canvas.ui.shapes.BitmapTextNode">
+                  </instanceof>
+               </iterate>
             </with>
          </activeWhen>
       </handler>

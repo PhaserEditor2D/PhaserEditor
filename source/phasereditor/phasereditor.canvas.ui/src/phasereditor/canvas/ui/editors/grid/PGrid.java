@@ -133,7 +133,7 @@ public class PGrid extends Composite {
 			try {
 				PGridProperty<?> prop = (PGridProperty<?>) elem;
 				Object value = prop.getDefaultValue();
-				PGridEditingSupport.changeUndoablePropertyValue(value, prop);
+				PGridEditingSupport.executeChangePropertyValueOperation(value, prop);
 			} catch (UnsupportedOperationException e) {
 				// OK, it is not supported
 			}

@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.operations;
 
+import static java.lang.System.out;
+
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -72,8 +74,10 @@ public class ChangePropertyOperation<T> extends AbstractNodeOperation {
 
 	private IStatus setValue(T value, IAdaptable info) {
 		try {
+			out.println("setting value " + value);
 			PGridProperty<T> prop = findProperty(info);
 			_undoValue = prop.getValue();
+			out.println("undo value " + _undoValue + " " + isAttachedToControl());
 			prop.setValue(value, _notify);
 
 			if (isAttachedToControl()) {
@@ -99,8 +103,6 @@ public class ChangePropertyOperation<T> extends AbstractNodeOperation {
 
 	@Override
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		PGridProperty<T> prop = findProperty(info);
-		_undoValue = prop.getValue();
 		return setValue(_value, info);
 	}
 

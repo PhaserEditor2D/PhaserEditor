@@ -61,7 +61,7 @@ public class BitmapTextNode extends Pane implements ISpriteNode, ITextSpriteNode
 	}
 
 	@Override
-	public BaseSpriteControl<?> getControl() {
+	public BitmapTextControl getControl() {
 		return _control;
 	}
 

@@ -253,4 +253,8 @@ public class BitmapTextControl extends BaseSpriteControl<BitmapTextModel> {
 	public PGridStringProperty getTextProperty() {
 		return _text_property;
 	}
+	
+	public PGridBitmapTextFontProperty getFontProperty() {
+		return _font_property;
+	}
 }

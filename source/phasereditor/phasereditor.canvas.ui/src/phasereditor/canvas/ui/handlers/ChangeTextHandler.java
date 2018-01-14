@@ -68,22 +68,20 @@ public class ChangeTextHandler extends AbstractHandler {
 					if (node.getModel().isOverriding(TextModel.PROPSET_TEXT)) {
 						TextControl control = (TextControl) node.getControl();
 						PGridStringProperty prop = control.getTextProperty();
-						PGridEditingSupport.changeUndoablePropertyValue(text, prop, operations);
+						operations.add(PGridEditingSupport.makeChangePropertyValueOperation(text, prop));
 					}
 				} else if (obj instanceof BitmapTextNode) {
 					BitmapTextNode node = (BitmapTextNode) obj;
 					if (node.getModel().isOverriding(BitmapTextModel.PROPSET_TEXT)) {
-						BitmapTextControl control = (BitmapTextControl) node.getControl();
+						BitmapTextControl control = node.getControl();
 						PGridStringProperty prop = control.getTextProperty();
-						PGridEditingSupport.changeUndoablePropertyValue(text, prop, operations);
+						operations.add(PGridEditingSupport.makeChangePropertyValueOperation(text, prop));
 					}
 				}
 			}
 
-			if (!operations.isEmpty()) {
-				CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
-				editor.getCanvas().getUpdateBehavior().executeOperations(operations);
-			}
+			CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
+			editor.getCanvas().getUpdateBehavior().executeOperations(operations);
 		}
 
 		return null;

@@ -22,7 +22,7 @@ public class OpenOverideDialogHandler extends AbstractHandler {
 		Object value = PGridEditingSupport.openOverridePropertiesDialog(prop, HandlerUtil.getActiveShell(event));
 
 		if (value != prop.getValue()) {
-			PGridEditingSupport.changeUndoablePropertyValue(value, prop);
+			PGridEditingSupport.executeChangePropertyValueOperation(value, prop);
 		}
 
 		return null;

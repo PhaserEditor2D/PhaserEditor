@@ -21,20 +21,17 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid.editors;
 
-import java.util.List;
-
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -45,8 +42,7 @@ import org.eclipse.ui.dialogs.PatternFilter;
 
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
-import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
-import org.eclipse.swt.custom.SashForm;
+import phasereditor.assetpack.ui.BitmapFontAssetContentProvider;
 import phasereditor.assetpack.ui.preview.BitmapFontAssetPreviewComp;
 
 /**
@@ -57,11 +53,11 @@ public class BitmapTextFontDialog extends Dialog {
 
 	private Composite _container;
 	private TreeViewer _viewer;
-	private List<?> _fonts;
-	private Object _result;
-	private Object _selection;
+	private BitmapFontAssetModel _result;
+	private Object _selectedFont;
 	private BitmapFontAssetPreviewComp _bitmapFontAssetPreviewComp;
 	private String _initialText;
+	private IProject _project;
 
 	/**
 	 * Create the dialog.
@@ -107,44 +103,9 @@ public class BitmapTextFontDialog extends Dialog {
 		_viewer = tree.getViewer();
 
 		_bitmapFontAssetPreviewComp = new BitmapFontAssetPreviewComp(sashForm, SWT.NONE);
-		_viewer.setContentProvider(new ITreeContentProvider() {
-
-			@Override
-			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-				//
-			}
-
-			@Override
-			public void dispose() {
-				//
-			}
-
-			@Override
-			public boolean hasChildren(Object element) {
-				return false;
-			}
-
-			@Override
-			public Object getParent(Object element) {
-				return null;
-			}
-
-			@SuppressWarnings("synthetic-access")
-			@Override
-			public Object[] getElements(Object inputElement) {
-				if (inputElement == _fonts) {
-					return _fonts.toArray();
-				}
-				return new Object[0];
-			}
-
-			@Override
-			public Object[] getChildren(Object parentElement) {
-				return getElements(parentElement);
-			}
-		});
+		_viewer.setContentProvider(new BitmapFontAssetContentProvider());
 		_viewer.setLabelProvider(AssetLabelProvider.GLOBAL_48);
-		_viewer.setInput(_fonts);
+		_viewer.setInput(_project);
 
 		_viewer.addDoubleClickListener(new IDoubleClickListener() {
 
@@ -161,7 +122,7 @@ public class BitmapTextFontDialog extends Dialog {
 			}
 		});
 
-		_viewer.setSelection(_selection == null ? StructuredSelection.EMPTY : new StructuredSelection(_selection),
+		_viewer.setSelection(_selectedFont == null ? StructuredSelection.EMPTY : new StructuredSelection(_selectedFont),
 				true);
 
 		sashForm.setWeights(new int[] { 1, 1 });
@@ -175,30 +136,20 @@ public class BitmapTextFontDialog extends Dialog {
 		}
 
 		_bitmapFontAssetPreviewComp.setModel(fontAsset);
-		
+
 		if (_initialText != null) {
 			_bitmapFontAssetPreviewComp.setText(_initialText);
 		}
 	}
 
-	public void setBitmapFonts(List<?> fonts) {
-		_fonts = fonts;
-	}
-
-	@Override
-	protected void buttonPressed(int buttonId) {
-		if (buttonId == IDialogConstants.CLIENT_ID) {
-			_result = PGridFrameProperty.NULL_FRAME;
-			setReturnCode(OK);
-			close();
-		}
-		super.buttonPressed(buttonId);
+	public void setProject(IProject project) {
+		_project = project;
 	}
 
 	@Override
 	protected void okPressed() {
 		IStructuredSelection sel = (IStructuredSelection) _viewer.getSelection();
-		_result = sel.getFirstElement();
+		_result = sel.isEmpty() ? null : (BitmapFontAssetModel) sel.getFirstElement();
 		super.okPressed();
 	}
 
@@ -210,7 +161,7 @@ public class BitmapTextFontDialog extends Dialog {
 		_initialText = initialText;
 	}
 
-	public Object getResult() {
+	public BitmapFontAssetModel getSelectedFont() {
 		return _result;
 	}
 
@@ -219,8 +170,8 @@ public class BitmapTextFontDialog extends Dialog {
 		return new Point(593, 447);
 	}
 
-	public void setSelectedItem(Object selection) {
-		_selection = selection;
+	public void setSelectedFont(Object font) {
+		_selectedFont = font;
 	}
 
 }
