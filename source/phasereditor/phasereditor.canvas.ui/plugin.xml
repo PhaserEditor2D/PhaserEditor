@@ -222,6 +222,11 @@
                      label="Text"
                      style="push">
                </command>
+               <command
+                     commandId="phasereditor.canvas.ui.morphToBitmapText"
+                     label="Bitmap Text"
+                     style="push">
+               </command>
             </menu>
             <command
                   commandId="phasereditor.canvas.ui.resizeTile"
@@ -1116,6 +1121,11 @@
             id="phasereditor.canvas.ui.morphToText"
             name="Morph To Text">
       </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.morphToBitmapText"
+            name="Morph To BitmapText">
+      </command>
       
    </extension>
    <extension
@@ -1587,7 +1597,7 @@
          </enabledWhen>
       </handler>
       
-            <handler
+         <handler
             class="phasereditor.canvas.ui.handlers.MorphToTextHandler"
             commandId="phasereditor.canvas.ui.morphToText">
          <enabledWhen>
@@ -1617,7 +1627,36 @@
             </with>
          </enabledWhen>
       </handler>
-      
+      <handler
+            class="phasereditor.canvas.ui.handlers.MorphToBitmapTextHandler"
+            commandId="phasereditor.canvas.ui.morphToBitmapText">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <and>
+                     <instanceof
+                           value="phasereditor.canvas.ui.shapes.ISpriteNode">
+                     </instanceof>
+                     <not>
+	                     <instanceof
+	                           value="phasereditor.canvas.ui.shapes.BitmapTextNode">
+	                     </instanceof>
+                     </not>
+                     <adapt
+		                  	type="phasereditor.canvas.ui.shapes.IObjectNode">
+		                  <test
+		                        property="phasereditor.canvas.ui.isPrefabInstance"
+		                        value="false">
+		                  </test>
+		              </adapt>                     
+                  </and>
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
       
       <handler
             class="phasereditor.canvas.ui.handlers.CopyHandler"

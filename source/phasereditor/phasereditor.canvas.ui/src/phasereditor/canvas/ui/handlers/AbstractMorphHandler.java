@@ -11,6 +11,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.ui.BitmapFontAssetContentProvider;
 import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BitmapTextModel;
@@ -64,8 +65,17 @@ public abstract class AbstractMorphHandler<T extends BaseObjectModel> extends Ab
 				IAssetKey source = null;
 
 				boolean doMorph = true;
-
-				if (model instanceof TextModel || model instanceof BitmapTextModel) {
+				if (_morphToType == BitmapTextModel.class) {
+					AddSpriteDialog dlg = new AddSpriteDialog(HandlerUtil.getActiveShell(event), "Select BitmapFont");
+					dlg.setContentProvider(new BitmapFontAssetContentProvider());
+					CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
+					dlg.setProject(editor.getEditorInputFile().getProject());
+					if (dlg.open() == Window.OK) {
+						source = (IAssetKey) dlg.getSelection().getFirstElement();
+					} else {
+						continue;
+					}
+				} else if (model instanceof TextModel || model instanceof BitmapTextModel) {
 					boolean morphingToOtherText = ITextSpriteModel.class.isAssignableFrom(_morphToType);
 					if (!morphingToOtherText) {
 						AddSpriteDialog dlg = new AddSpriteDialog(HandlerUtil.getActiveShell(event), "Select Texture");
@@ -97,6 +107,10 @@ public abstract class AbstractMorphHandler<T extends BaseObjectModel> extends Ab
 		editor.getSettingsPage().refresh();
 
 		return null;
+	}
+	
+	public Class<T> getMorphToType() {
+		return _morphToType;
 	}
 
 	protected final String addMorph(CompositeOperation operations, ISpriteNode srcNode, Object source) {
