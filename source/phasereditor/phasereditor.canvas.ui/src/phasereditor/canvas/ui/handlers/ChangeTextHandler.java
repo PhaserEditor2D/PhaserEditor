@@ -24,16 +24,20 @@ package phasereditor.canvas.ui.handlers;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.canvas.core.BitmapTextModel;
 import phasereditor.canvas.core.TextModel;
+import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
 import phasereditor.canvas.ui.editors.grid.editors.PGridEditingSupport;
+import phasereditor.canvas.ui.editors.grid.editors.TextDialog;
+import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.BitmapTextControl;
 import phasereditor.canvas.ui.shapes.BitmapTextNode;
+import phasereditor.canvas.ui.shapes.ITextSpriteNode;
 import phasereditor.canvas.ui.shapes.TextControl;
 import phasereditor.canvas.ui.shapes.TextNode;
 
@@ -41,52 +45,48 @@ import phasereditor.canvas.ui.shapes.TextNode;
  * @author arian
  *
  */
-public class ChangeTextHandler extends AbstractHandler{
+public class ChangeTextHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Shell shell = HandlerUtil.getActiveShell(event);
 		Object[] selection = HandlerUtil.getCurrentStructuredSelection(event).toArray();
 
-		for (Object obj : selection) {
-			if (obj instanceof TextNode) {
-				changeText(shell, (TextNode) obj);
-				return null;
-			} else if (obj instanceof BitmapTextNode) {
-				changeBitmapText(shell, (BitmapTextNode) obj);
-				return null;
+		TextDialog dlg = new TextDialog(shell);
+		dlg.setInitialText(((ITextSpriteNode) selection[0]).getModel().getText());
+		dlg.setTitle("Change Text");
+		dlg.setMessage("Write the new text:");
+
+		if (dlg.open() == Window.OK) {
+			String text = dlg.getResult();
+
+			CompositeOperation operations = new CompositeOperation();
+
+			for (Object obj : selection) {
+				if (obj instanceof TextNode) {
+					TextNode node = (TextNode) obj;
+					if (node.getModel().isOverriding(TextModel.PROPSET_TEXT)) {
+						TextControl control = (TextControl) node.getControl();
+						PGridStringProperty prop = control.getTextProperty();
+						PGridEditingSupport.changeUndoablePropertyValue(text, prop, operations);
+					}
+				} else if (obj instanceof BitmapTextNode) {
+					BitmapTextNode node = (BitmapTextNode) obj;
+					if (node.getModel().isOverriding(BitmapTextModel.PROPSET_TEXT)) {
+						BitmapTextControl control = (BitmapTextControl) node.getControl();
+						PGridStringProperty prop = control.getTextProperty();
+						PGridEditingSupport.changeUndoablePropertyValue(text, prop, operations);
+					}
+				}
+			}
+
+			if (!operations.isEmpty()) {
+				CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
+				editor.getCanvas().getUpdateBehavior().executeOperations(operations);
 			}
 		}
 
-		
 		return null;
-	}
-	
-	private static void changeBitmapText(Shell shell, BitmapTextNode text) {
-		if (text.getModel().isOverriding(BitmapTextModel.PROPSET_TEXT)) {
-			BitmapTextControl control = (BitmapTextControl) text.getControl();
-			PGridStringProperty prop = control.getTextProperty();
-			String result = PGridEditingSupport.openLongStringDialog(prop, shell);
-			if (result != null) {
-				PGridEditingSupport.changeUndoablePropertyValue(result, prop);
-			}
-		} else {
-			MessageDialog.openInformation(shell, "Change Text", "The 'text' property is read-only.");
-		}
-	}
-
-	private static void changeText(Shell shell, TextNode text) {
-
-		if (text.getModel().isOverriding(TextModel.PROPSET_TEXT)) {
-			TextControl control = (TextControl) text.getControl();
-			PGridStringProperty prop = control.getTextProperty();
-			String result = PGridEditingSupport.openLongStringDialog(prop, shell);
-			if (result != null) {
-				PGridEditingSupport.changeUndoablePropertyValue(result, prop);
-			}
-		} else {
-			MessageDialog.openInformation(shell, "Change Text", "The 'text' property is read-only.");
-		}
 	}
 
 }
