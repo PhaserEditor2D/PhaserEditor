@@ -289,41 +289,54 @@
                   name="phasereditor.canvas.ui.sprite.2"
                   visible="true">
             </separator>
-            <menu
-                  label="Add...">
-               <command
-                     commandId="phasereditor.canvas.ui.addsprite"
-                     label="Sprite"
-                     style="push">
-                  <parameter
-                        name="phasereditor.canvas.ui.spriteType"
-                        value="sprite">
-                  </parameter>
-               </command>
-               <command
-                     commandId="phasereditor.canvas.ui.addsprite"
-                     label="Tile Sprite"
-                     style="push">
-                  <parameter
-                        name="phasereditor.canvas.ui.spriteType"
-                        value="tileSprite">
-                  </parameter>
-               </command>
-               <command
-                     commandId="phasereditor.canvas.ui.addText"
-                     label="Text"
-                     style="push">
-               </command>
-               <command
-                     commandId="phasereditor.canvas.ui.addsprite"
-                     label="Button"
-                     style="push">
-                  <parameter
-                        name="phasereditor.canvas.ui.spriteType"
-                        value="button">
-                  </parameter>
-               </command>
-            </menu>
+            <command
+                  commandId="phasereditor.canvas.ui.addsprite"
+                  label="Add Sprite"
+                  style="push">
+               <parameter
+                     name="phasereditor.canvas.ui.spriteType"
+                     value="sprite">
+               </parameter>
+            </command>
+            <command
+                  commandId="phasereditor.canvas.ui.addsprite"
+                  label="Add Tile Sprite"
+                  style="push">
+               <parameter
+                     name="phasereditor.canvas.ui.spriteType"
+                     value="tileSprite">
+               </parameter>
+            </command>
+            <command
+                  commandId="phasereditor.canvas.ui.addsprite"
+                  label="Add Button"
+                  style="push">
+               <parameter
+                     name="phasereditor.canvas.ui.spriteType"
+                     value="button">
+               </parameter>
+            </command>           
+         </menu>
+          <menu label="Text">
+            	<command
+                  commandId="phasereditor.canvas.ui.changeText"
+                  label="Change Text"
+                  style="push">
+            	</command>
+             <separator
+                   name="phasereditor.canvas.ui.text1"
+                   visible="true">
+             </separator>
+             <command
+                   commandId="phasereditor.canvas.ui.addText"
+                   label="Add Text"
+                   style="push">
+             </command>
+             <command
+                   commandId="phasereditor.canvas.ui.addBitmapText"
+                   label="Add Bitmap Text"
+                   style="push">
+             </command>
          </menu>
          <menu
                label="Prefab">
@@ -395,6 +408,11 @@
             <command
                   commandId="phasereditor.canvas.ui.addText"
                   label="Text"
+                  style="push">
+            </command>
+            <command
+                  commandId="phasereditor.canvas.ui.addBitmapText"
+                  label="Bitmap Text"
                   style="push">
             </command>
             <command
@@ -1059,6 +1077,11 @@
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.changeText"
+            name="Change Text">
+      </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
             id="phasereditor.canvas.ui.selectSameTexture"
             name="Select All Sprites With Same Texture">
       </command>
@@ -1084,6 +1107,10 @@
       </command>
       <command
             id="phasereditor.canvas.ui.addText"
+            name="Add Text">
+      </command>
+      <command
+            id="phasereditor.canvas.ui.addBitmapText"
             name="Add Text">
       </command>
       <command
@@ -1875,20 +1902,33 @@
             commandId="phasereditor.canvas.ui.changeTexture">
          <activeWhen>
             <with
-               variable="selection">
-            <and>               
+               variable="selection">                         
                <iterate
                      ifEmpty="false">
                   <or>
                      <instanceof
-                           value="phasereditor.canvas.ui.shapes.ISpriteNode">
+                           value="phasereditor.canvas.ui.shapes.MissingAssetNode">
                      </instanceof>
                      <instanceof
-                           value="phasereditor.canvas.ui.shapes.MissingAssetNode">
+                           value="phasereditor.canvas.ui.shapes.FrameNode">
                      </instanceof>
                   </or>
                </iterate>
-            </and>
+         </with>
+         </activeWhen>
+      </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.ChangeTextHandler"
+            commandId="phasereditor.canvas.ui.changeText">
+         <activeWhen>
+            <with
+               variable="selection">                         
+               <iterate
+                     ifEmpty="false">
+                  <instanceof
+                        value="phasereditor.canvas.ui.shapes.ITextSpriteNode">
+                  </instanceof>
+               </iterate>
          </with>
          </activeWhen>
       </handler>
@@ -1902,7 +1942,7 @@
                      ifEmpty="false">
                   <or>
                      <instanceof
-                           value="phasereditor.canvas.ui.shapes.ISpriteNode">
+                           value="phasereditor.canvas.ui.shapes.FrameNode">
                      </instanceof>
                      <instanceof
                            value="phasereditor.canvas.ui.shapes.MissingAssetNode">
@@ -1970,7 +2010,7 @@
                   <iterate
                         ifEmpty="false">
                      <instanceof
-                           value="phasereditor.canvas.ui.shapes.ISpriteNode">
+                           value="phasereditor.canvas.ui.shapes.FrameNode">
                      </instanceof>
                   </iterate>
                </and>
@@ -1980,6 +2020,10 @@
       <handler
             class="phasereditor.canvas.ui.handlers.AddTextHandler"
             commandId="phasereditor.canvas.ui.addText">
+      </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.AddBitmapTextHandler"
+            commandId="phasereditor.canvas.ui.addBitmapText">
       </handler>
       <handler
             class="phasereditor.canvas.ui.handlers.SelectParentHandler"
@@ -2141,6 +2185,12 @@
              schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
              sequence="M1+T">
 	   </key>
+	   <key
+             commandId="phasereditor.canvas.ui.changeText"
+             contextId="phasereditor.canvas.ui.nodescontext"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="X">
+	   </key>
        <key
              commandId="phasereditor.canvas.ui.selectParent"
              contextId="phasereditor.canvas.ui.nodescontext"
@@ -2252,18 +2302,6 @@
                   ifEmpty="false">
                <instanceof
                      value="phasereditor.canvas.ui.shapes.ISpriteNode">
-               </instanceof>
-            </iterate>
-         </with>
-      </definition>
-      <definition
-            id="phasereditor.canvas.ui.spritesSelected">
-         <with
-               variable="selection">
-            <iterate
-                  ifEmpty="false">
-               <instanceof
-                     value="phasereditor.canvas.ui.shapes.IObjectNode">
                </instanceof>
             </iterate>
          </with>

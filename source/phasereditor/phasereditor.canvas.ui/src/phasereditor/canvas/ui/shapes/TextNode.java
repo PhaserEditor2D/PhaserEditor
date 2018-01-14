@@ -39,7 +39,7 @@ import phasereditor.canvas.core.TextModel;
  * @author arian
  *
  */
-public class TextNode extends Label implements ISpriteNode {
+public class TextNode extends Label implements ISpriteNode, ITextSpriteNode {
 
 	private TextControl _control;
 	private Text _skinText;

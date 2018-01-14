@@ -39,7 +39,7 @@ import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.core.CanvasFile;
 import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.ui.CanvasUI;
-import phasereditor.canvas.ui.editors.AddSpriteDialog;
+import phasereditor.canvas.ui.editors.SelectTextureDialog;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 
 /**
@@ -53,7 +53,7 @@ public class AddPrefabHandler extends AbstractHandler {
 
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 
-		AddSpriteDialog dlg = new AddSpriteDialog(HandlerUtil.getActiveShell(event), "Add Prefab");
+		SelectTextureDialog dlg = new SelectTextureDialog(HandlerUtil.getActiveShell(event), "Add Prefab");
 		dlg.setLabelProvider(new LabelProvider() {
 			@Override
 			public String getText(Object element) {

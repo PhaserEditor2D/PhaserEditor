@@ -17,9 +17,10 @@ import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BitmapTextModel;
 import phasereditor.canvas.core.ITextSpriteModel;
 import phasereditor.canvas.core.TextModel;
-import phasereditor.canvas.ui.editors.AddSpriteDialog;
+import phasereditor.canvas.ui.editors.SelectTextureDialog;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.SelectBitmapFontAssetDialog;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.DeleteNodeOperation;
@@ -67,8 +68,7 @@ public abstract class AbstractMorphHandler<T extends BaseObjectModel> extends Ab
 
 				boolean doMorph = true;
 				if (_morphToType == BitmapTextModel.class) {
-					AddSpriteDialog dlg = new AddSpriteDialog(HandlerUtil.getActiveShell(event), "Select BitmapFont");
-					dlg.setContentProvider(new BitmapFontAssetContentProvider());
+					SelectBitmapFontAssetDialog dlg = new SelectBitmapFontAssetDialog(HandlerUtil.getActiveShell(event));
 					CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 					dlg.setProject(editor.getEditorInputFile().getProject());
 					if (dlg.open() == Window.OK) {
@@ -79,7 +79,7 @@ public abstract class AbstractMorphHandler<T extends BaseObjectModel> extends Ab
 				} else if (model instanceof TextModel || model instanceof BitmapTextModel) {
 					boolean morphingToOtherText = ITextSpriteModel.class.isAssignableFrom(_morphToType);
 					if (!morphingToOtherText) {
-						AddSpriteDialog dlg = new AddSpriteDialog(HandlerUtil.getActiveShell(event), "Select Texture");
+						SelectTextureDialog dlg = new SelectTextureDialog(HandlerUtil.getActiveShell(event), "Select Texture");
 						CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 						dlg.setProject(editor.getEditorInputFile().getProject());
 						if (dlg.open() == Window.OK) {

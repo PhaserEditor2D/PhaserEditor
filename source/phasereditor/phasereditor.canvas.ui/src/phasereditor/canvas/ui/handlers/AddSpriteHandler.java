@@ -38,7 +38,7 @@ import phasereditor.canvas.core.ButtonSpriteModel;
 import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.TileSpriteModel;
-import phasereditor.canvas.ui.editors.AddSpriteDialog;
+import phasereditor.canvas.ui.editors.SelectTextureDialog;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.behaviors.CreateBehavior;
@@ -57,7 +57,7 @@ public class AddSpriteHandler extends AbstractHandler {
 		CreateBehavior create = canvas.getCreateBehavior();
 		BiFunction<GroupModel, IAssetKey, BaseObjectModel> factory = null;
 
-		AddSpriteDialog dlg = new AddSpriteDialog(HandlerUtil.getActiveShell(event), "Add Sprite");
+		SelectTextureDialog dlg = new SelectTextureDialog(HandlerUtil.getActiveShell(event), "Add Sprite");
 		dlg.setProject(editor.getEditorInputFile().getProject());
 
 		if (dlg.open() != Window.OK) {

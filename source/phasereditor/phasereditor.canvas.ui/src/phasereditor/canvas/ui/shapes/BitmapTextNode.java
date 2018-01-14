@@ -42,7 +42,7 @@ import phasereditor.ui.ImageCache;
  * @author arian
  *
  */
-public class BitmapTextNode extends Pane implements ISpriteNode {
+public class BitmapTextNode extends Pane implements ISpriteNode, ITextSpriteNode {
 
 	private BitmapTextControl _control;
 
