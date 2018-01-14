@@ -35,7 +35,7 @@ import javafx.scene.text.TextAlignment;
  * @author arian
  *
  */
-public class TextModel extends BaseSpriteModel {
+public class TextModel extends BaseSpriteModel implements ITextSpriteModel {
 	public static final TextAlignment DEF_STYLE_ALIGN = TextAlignment.LEFT;
 	private static final FontPosture DEF_STYLE_FONT_STYLE = FontPosture.REGULAR;
 	public static final int DEF_STYLE_FONT_SIZE = 20;
@@ -86,10 +86,12 @@ public class TextModel extends BaseSpriteModel {
 		_styleStrokeThickness = DEF_STYLE_STROKE_THICKNESS;
 	}
 
+	@Override
 	public String getText() {
 		return _text;
 	}
 
+	@Override
 	public void setText(String text) {
 		_text = text;
 	}

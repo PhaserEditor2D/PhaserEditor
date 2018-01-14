@@ -32,6 +32,7 @@ import org.eclipse.ui.ide.IDE;
 import org.json.JSONObject;
 
 import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.BitmapTextModel;
 import phasereditor.canvas.core.ButtonSpriteModel;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasModelFactory;
@@ -148,6 +149,9 @@ public class CreatePrefabHandler extends AbstractHandler {
 					break;
 				case TextModel.TYPE_NAME:
 					settings.setBaseClass("Phaser.Text");
+					break;
+				case BitmapTextModel.TYPE_NAME:
+					settings.setBaseClass("Phaser.BitmaptText");
 					break;
 				default:
 					break;

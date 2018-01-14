@@ -21,7 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.handlers;
 
-import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.BitmapTextModel;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.TextModel;
@@ -33,16 +33,23 @@ import phasereditor.canvas.ui.shapes.ISpriteNode;
  * @author arian
  *
  */
-public class MorphToTextHandler extends AbstractMorphHandler {
+public class MorphToTextHandler extends AbstractMorphHandler<TextModel> {
+
+	public MorphToTextHandler() {
+		super(TextModel.class);
+	}
 
 	@Override
-	protected BaseObjectModel createMorphModel(ISpriteNode srcNode, Object source, GroupNode parent) {
+	protected TextModel createMorphModel(ISpriteNode srcNode, Object source, GroupNode parent) {
 		TextModel dstModel = new TextModel(parent.getModel());
 		dstModel.updateWith(srcNode.getModel());
 
-		dstModel.setText("This is a text");
-
-		AddTextHandler.openTextDialog(dstModel::setText);
+		if (srcNode.getModel() instanceof BitmapTextModel) {
+			String text = ((BitmapTextModel) srcNode.getModel()).getText();
+			dstModel.setText(text);
+		} else {
+			AddTextHandler.openTextDialog(dstModel::setText);
+		}
 
 		ObjectCanvas canvas = srcNode.getControl().getCanvas();
 		if (canvas.getEditor().getModel().getType() == CanvasType.SPRITE) {

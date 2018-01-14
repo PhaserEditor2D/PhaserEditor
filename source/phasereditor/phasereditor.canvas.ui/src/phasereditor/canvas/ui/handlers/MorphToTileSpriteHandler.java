@@ -8,7 +8,11 @@ import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
 
-public class MorphToTileSpriteHandler extends AbstractMorphHandler {
+public class MorphToTileSpriteHandler extends AbstractMorphHandler<TileSpriteModel> {
+
+	public MorphToTileSpriteHandler() {
+		super(TileSpriteModel.class);
+	}
 
 	@Override
 	protected TileSpriteModel createMorphModel(ISpriteNode srcNode, Object source, GroupNode parent) {

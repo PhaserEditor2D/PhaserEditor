@@ -36,7 +36,7 @@ import phasereditor.bmpfont.core.BitmapFontModel.RenderArgs;
  * @author arian
  *
  */
-public class BitmapTextModel extends AssetSpriteModel<BitmapFontAssetModel> {
+public class BitmapTextModel extends AssetSpriteModel<BitmapFontAssetModel> implements ITextSpriteModel {
 
 	public static final int DEF_FONT_SIZE = 32;
 	public static final String TYPE_NAME = "bitmapText";
@@ -66,10 +66,12 @@ public class BitmapTextModel extends AssetSpriteModel<BitmapFontAssetModel> {
 		super(parent, TYPE_NAME, obj);
 	}
 
+	@Override
 	public String getText() {
 		return _text;
 	}
 
+	@Override
 	public void setText(String text) {
 		_text = text;
 	}
@@ -157,12 +159,12 @@ public class BitmapTextModel extends AssetSpriteModel<BitmapFontAssetModel> {
 		super.build();
 
 		_fontModel = createFontModel();
-		
+
 		_metrics = new BitmapFontModel.MetricsRenderer();
-		
+
 		_fontModel.render(createRenderArgs(), _metrics);
 	}
-	
+
 	public MetricsRenderer getMetrics() {
 		return _metrics;
 	}

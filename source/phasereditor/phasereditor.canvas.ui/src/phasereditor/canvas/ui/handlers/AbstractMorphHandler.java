@@ -13,6 +13,8 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.BitmapTextModel;
+import phasereditor.canvas.core.ITextSpriteModel;
 import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.ui.editors.AddSpriteDialog;
 import phasereditor.canvas.ui.editors.CanvasEditor;
@@ -30,7 +32,13 @@ import phasereditor.canvas.ui.shapes.ISpriteNode;
  * @author arian
  *
  */
-public abstract class AbstractMorphHandler extends AbstractHandler {
+public abstract class AbstractMorphHandler<T extends BaseObjectModel> extends AbstractHandler {
+
+	private Class<T> _morphToType;
+
+	public AbstractMorphHandler(Class<T> morphToType) {
+		_morphToType = morphToType;
+	}
 
 	@Override
 	public final Object execute(ExecutionEvent event) throws ExecutionException {
@@ -57,18 +65,21 @@ public abstract class AbstractMorphHandler extends AbstractHandler {
 
 				boolean doMorph = true;
 
-				if (model instanceof AssetSpriteModel<?>) {
+				if (model instanceof TextModel || model instanceof BitmapTextModel) {
+					boolean morphingToOtherText = ITextSpriteModel.class.isAssignableFrom(_morphToType);
+					if (!morphingToOtherText) {
+						AddSpriteDialog dlg = new AddSpriteDialog(HandlerUtil.getActiveShell(event), "Select Texture");
+						CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
+						dlg.setProject(editor.getEditorInputFile().getProject());
+						if (dlg.open() == Window.OK) {
+							source = (IAssetKey) dlg.getSelection().getFirstElement();
+						} else {
+							continue;
+						}
+					}
+				} else if (model instanceof AssetSpriteModel<?>) {
 					source = ((AssetSpriteModel<?>) model).getAssetKey();
 					doMorph = source != null;
-				} else if (model instanceof TextModel) {
-					AddSpriteDialog dlg = new AddSpriteDialog(HandlerUtil.getActiveShell(event), "Select Texture");
-					CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
-					dlg.setProject(editor.getEditorInputFile().getProject());
-					if (dlg.open() == Window.OK) {
-						source = (IAssetKey) dlg.getSelection().getFirstElement();
-					} else {
-						continue;
-					}
 				}
 
 				if (doMorph) {
@@ -103,6 +114,6 @@ public abstract class AbstractMorphHandler extends AbstractHandler {
 		return dstModel.getId();
 	}
 
-	protected abstract BaseObjectModel createMorphModel(ISpriteNode srcNode, Object source, GroupNode parent);
+	protected abstract T createMorphModel(ISpriteNode srcNode, Object source, GroupNode parent);
 
 }
