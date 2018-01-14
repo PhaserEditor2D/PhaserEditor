@@ -11,16 +11,15 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.assetpack.core.IAssetKey;
-import phasereditor.assetpack.ui.BitmapFontAssetContentProvider;
 import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BitmapTextModel;
 import phasereditor.canvas.core.ITextSpriteModel;
 import phasereditor.canvas.core.TextModel;
-import phasereditor.canvas.ui.editors.SelectTextureDialog;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.SelectBitmapFontAssetDialog;
+import phasereditor.canvas.ui.editors.SelectTextureDialog;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.DeleteNodeOperation;

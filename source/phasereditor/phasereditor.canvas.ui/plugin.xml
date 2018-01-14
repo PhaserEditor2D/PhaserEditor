@@ -323,6 +323,11 @@
                   label="Change Text"
                   style="push">
             	</command>
+             <command
+                   commandId="phasereditor.canvas.ui.selectTextSameFont"
+                   label="Select All Texts With Same Font"
+                   style="push">
+             </command>
              <separator
                    name="phasereditor.canvas.ui.text1"
                    visible="true">
@@ -1153,6 +1158,11 @@
             id="phasereditor.canvas.ui.morphToBitmapText"
             name="Morph To BitmapText">
       </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.selectTextSameFont"
+            name="Select All Texts With Same Font">
+      </command>
       
    </extension>
    <extension
@@ -1933,26 +1943,26 @@
          </activeWhen>
       </handler>
       <handler
-            class="phasereditor.canvas.ui.handlers.SelectAllSpriteWithSameTexture"
+            class="phasereditor.canvas.ui.handlers.SelectAllSpriteWithSameTextureHandler"
             commandId="phasereditor.canvas.ui.selectSameTexture">
          <activeWhen>
             <with
                   variable="selection">
-               <iterate
-                     ifEmpty="false">
-                  <or>
-                     <instanceof
-                           value="phasereditor.canvas.ui.shapes.FrameNode">
-                     </instanceof>
-                     <instanceof
-                           value="phasereditor.canvas.ui.shapes.MissingAssetNode">
-                     </instanceof>
-                  </or>
-               </iterate>
                <and>
                   <count
                         value="1">
                   </count>
+                  <iterate
+                        ifEmpty="false">
+                     <or>
+                        <instanceof
+                              value="phasereditor.canvas.ui.shapes.FrameNode">
+                        </instanceof>
+                        <instanceof
+                              value="phasereditor.canvas.ui.shapes.MissingAssetNode">
+                        </instanceof>
+                     </or>
+                  </iterate>
                </and>
             </with>
          </activeWhen>
@@ -2047,6 +2057,46 @@
             <reference
                   definitionId="phasereditor.canvas.ui.isPrefabInstance">
             </reference>
+         </activeWhen>
+      </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.SelectAllSpriteWithSameTextureHandler"
+            commandId="phasereditor.canvas.ui.selectTextSameFont">
+         <activeWhen>
+            <with
+                  variable="selection">
+               <and>
+                  <count
+                        value="1">
+                  </count>
+                  <iterate
+                        ifEmpty="false">
+                     <instanceof
+                           value="phasereditor.canvas.ui.shapes.BitmapTextNode">
+                     </instanceof>
+                  </iterate>
+               </and>
+            </with>
+         </activeWhen>
+      </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.SelectAllTextWithSameFontHandler"
+            commandId="phasereditor.canvas.ui.selectTextSameFont">
+         <activeWhen>
+            <with
+                  variable="selection">
+               <and>
+                  <count
+                        value="1">
+                  </count>
+                  <iterate
+                        ifEmpty="false">
+                     <instanceof
+                           value="phasereditor.canvas.ui.shapes.TextNode">
+                     </instanceof>
+                  </iterate>
+               </and>
+            </with>
          </activeWhen>
       </handler>
       
