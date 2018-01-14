@@ -51,8 +51,9 @@ public abstract class AbstractMorphToTextHandler<T extends BaseSpriteModel> exte
 		((BaseObjectModel) dstModel).updateWith(srcNode.getModel());
 
 		if (srcNode.getModel() instanceof ITextSpriteModel) {
-			String text = ((ITextSpriteModel) srcNode.getModel()).getText();
-			dstModel.setText(text);
+			ITextSpriteModel srcModel = (ITextSpriteModel) srcNode.getModel();
+			dstModel.setText(srcModel.getText());
+			dstModel.setFontSize(srcModel.getFontSize());
 		} else {
 			AddTextHandler.openTextDialog(dstModel::setText);
 		}

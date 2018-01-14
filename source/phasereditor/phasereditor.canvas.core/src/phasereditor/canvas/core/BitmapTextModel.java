@@ -76,10 +76,12 @@ public class BitmapTextModel extends AssetSpriteModel<BitmapFontAssetModel> impl
 		_text = text;
 	}
 
+	@Override
 	public int getFontSize() {
 		return _fontSize;
 	}
 
+	@Override
 	public void setFontSize(int fontSize) {
 		_fontSize = fontSize;
 	}

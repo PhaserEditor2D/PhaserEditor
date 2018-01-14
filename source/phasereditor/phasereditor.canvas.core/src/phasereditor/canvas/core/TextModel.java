@@ -85,6 +85,16 @@ public class TextModel extends BaseSpriteModel implements ITextSpriteModel {
 		_styleStroke = DEF_STYLE_STROKE;
 		_styleStrokeThickness = DEF_STYLE_STROKE_THICKNESS;
 	}
+	
+	@Override
+	public int getFontSize() {
+		return getStyleFontSize();
+	}
+	
+	@Override
+	public void setFontSize(int fontSize) {
+		setStyleFontSize(fontSize);
+	}
 
 	@Override
 	public String getText() {

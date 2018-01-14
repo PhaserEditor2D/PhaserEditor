@@ -29,6 +29,10 @@ package phasereditor.canvas.core;
  */
 public interface ITextSpriteModel {
 	public String getText();
-	
+
 	public void setText(String text);
+
+	public int getFontSize();
+
+	public void setFontSize(int fontSize);
 }

@@ -19,6 +19,7 @@ import phasereditor.canvas.core.ITextSpriteModel;
 import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.ui.editors.AddSpriteDialog;
 import phasereditor.canvas.ui.editors.CanvasEditor;
+import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.DeleteNodeOperation;
@@ -102,13 +103,19 @@ public abstract class AbstractMorphHandler<T extends BaseObjectModel> extends Ab
 		}
 
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
-		editor.getCanvas().getUpdateBehavior().executeOperations(operations);
+		ObjectCanvas canvas = editor.getCanvas();
+
+		canvas.getUpdateBehavior().executeOperations(operations);
+
+		if (_morphToType == TextModel.class) {
+			canvas.getSelectionBehavior().updateSelectedNodes_async();
+		}
 
 		editor.getSettingsPage().refresh();
 
 		return null;
 	}
-	
+
 	public Class<T> getMorphToType() {
 		return _morphToType;
 	}
