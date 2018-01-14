@@ -26,12 +26,10 @@ import org.eclipse.swt.graphics.Image;
 
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.canvas.core.AssetSpriteModel;
-import phasereditor.canvas.core.AtlasSpriteModel;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.TextModel;
-import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
@@ -53,7 +51,7 @@ public class OutlineLabelProvider extends LabelProvider implements IEditorShared
 			if (model.isPrefabInstance()) {
 				return EditorSharedImages.getImage(IMG_PACKAGE_2);
 			}
-			
+
 			if (model instanceof TextModel) {
 				return EditorSharedImages.getImage(IMG_FONT);
 			}
@@ -71,17 +69,11 @@ public class OutlineLabelProvider extends LabelProvider implements IEditorShared
 		}
 
 		if (element instanceof ISpriteNode) {
-			ISpriteNode node = (ISpriteNode) element;
-			BaseObjectControl<?> control = node.getControl();
-			BaseObjectModel model = control.getModel();
+			BaseObjectModel model = ((ISpriteNode) element).getModel();
 
 			if (model instanceof AssetSpriteModel) {
 				AssetSpriteModel<?> asstModel = (AssetSpriteModel<?>) model;
 				return AssetLabelProvider.GLOBAL_16.getImage(asstModel.getAssetKey());
-			}
-
-			if (model instanceof AtlasSpriteModel) {
-				return AssetLabelProvider.GLOBAL_16.getImage(((AtlasSpriteModel) model).getAssetKey());
 			}
 		}
 
