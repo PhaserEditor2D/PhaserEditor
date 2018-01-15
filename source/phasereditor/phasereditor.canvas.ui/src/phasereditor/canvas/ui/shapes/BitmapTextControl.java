@@ -43,6 +43,7 @@ public class BitmapTextControl extends BaseSpriteControl<BitmapTextModel> {
 
 	private PGridStringProperty _text_property;
 	private PGridBitmapTextFontProperty _font_property;
+	private PGridNumberProperty _size_property;
 
 	public BitmapTextControl(ObjectCanvas canvas, BitmapTextModel model) {
 		super(canvas, model);
@@ -153,8 +154,7 @@ public class BitmapTextControl extends BaseSpriteControl<BitmapTextModel> {
 			}
 		};
 
-		PGridNumberProperty _size_property = new PGridNumberProperty(getId(), "fontSize",
-				help("Phaser.BitmapText.fontSize")) {
+		_size_property = new PGridNumberProperty(getId(), "fontSize", help("Phaser.BitmapText.fontSize")) {
 
 			@Override
 			public boolean isModified() {
@@ -253,8 +253,12 @@ public class BitmapTextControl extends BaseSpriteControl<BitmapTextModel> {
 	public PGridStringProperty getTextProperty() {
 		return _text_property;
 	}
-	
+
 	public PGridBitmapTextFontProperty getFontProperty() {
 		return _font_property;
+	}
+
+	public PGridNumberProperty getSizeProperty() {
+		return _size_property;
 	}
 }

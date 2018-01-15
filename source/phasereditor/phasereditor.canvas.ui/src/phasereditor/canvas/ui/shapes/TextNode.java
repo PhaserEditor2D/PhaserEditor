@@ -48,7 +48,7 @@ public class TextNode extends Label implements ISpriteNode, ITextSpriteNode {
 		_control = control;
 		setPickOnBounds(true);
 	}
-
+	
 	@Override
 	protected Skin<?> createDefaultSkin() {
 		Skin<?> skin = super.createDefaultSkin();
@@ -111,7 +111,7 @@ public class TextNode extends Label implements ISpriteNode, ITextSpriteNode {
 	}
 
 	@Override
-	public BaseSpriteControl<?> getControl() {
+	public TextControl getControl() {
 		return _control;
 	}
 

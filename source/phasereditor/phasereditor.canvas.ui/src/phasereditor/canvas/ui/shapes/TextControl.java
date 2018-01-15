@@ -49,6 +49,7 @@ import phasereditor.ui.ColorButtonSupport;
 public class TextControl extends BaseSpriteControl<TextModel> {
 
 	private PGridStringProperty _text_property;
+	private PGridNumberProperty _fontSize_property;
 
 	public TextControl(ObjectCanvas canvas, TextModel model) {
 		super(canvas, model);
@@ -92,6 +93,10 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 
 	public PGridStringProperty getTextProperty() {
 		return _text_property;
+	}
+	
+	public PGridNumberProperty getFontSizeProperty() {
+		return _fontSize_property;
 	}
 
 	/*
@@ -178,7 +183,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 			});
 		}
 
-		section.add(new PGridNumberProperty(getId(), "style.fontSize", "The size of the font (eg. 20pt)") {
+		_fontSize_property = new PGridNumberProperty(getId(), "style.fontSize", "The size of the font (eg. 20)") {
 
 			@Override
 			public Double getValue() {
@@ -203,7 +208,8 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 			public boolean isReadOnly() {
 				return getModel().isPrefabReadOnly(TextModel.PROPSET_TEXT_STYLE);
 			}
-		});
+		};
+		section.add(_fontSize_property);
 
 		section.add(new PGridEnumProperty<FontWeight>(getId(), "style.fontWeight",
 				"The weight of the font (eg. 'bold').", new FontWeight[] { FontWeight.NORMAL,

@@ -330,6 +330,26 @@
                    style="push">
              </command>
              <command
+                   commandId="phasereditor.canvas.ui.changeFontSize"
+                   icon="platform:/plugin/phasereditor.ui/icons/font_enlarge.png"
+                   label="Change Font Size (Up)"
+                   style="push">
+                <parameter
+                      name="phasereditor.canvas.ui.fontSizeAmount"
+                      value="up">
+                </parameter>
+             </command>
+             <command
+                   commandId="phasereditor.canvas.ui.changeFontSize"
+                   icon="platform:/plugin/phasereditor.ui/icons/font_shrink.png"
+                   label="Change Font Size (Down)"
+                   style="push">
+                <parameter
+                      name="phasereditor.canvas.ui.fontSizeAmount"
+                      value="down">
+                </parameter>
+             </command>
+             <command
                    commandId="phasereditor.canvas.ui.selectTextSameFont"
                    label="Select All Texts With Same Font"
                    style="push">
@@ -775,6 +795,26 @@
                      checkEnabled="true">
                </visibleWhen>
             </command>
+            <command
+                  commandId="phasereditor.canvas.ui.changeFontSize"
+                  icon="platform:/plugin/phasereditor.ui/icons/font_enlarge.png"
+                  label="Change Font Size - Up"
+                  style="push">
+               <parameter
+                     name="phasereditor.canvas.ui.fontSizeAmount"
+                     value="up">
+               </parameter>
+            </command>
+            <command
+                  commandId="phasereditor.canvas.ui.changeFontSize"
+                  icon="platform:/plugin/phasereditor.ui/icons/font_shrink.png"
+                  label="Change Font Size - Down"
+                  style="push">
+               <parameter
+                     name="phasereditor.canvas.ui.fontSizeAmount"
+                     value="down">
+               </parameter>
+            </command>
             <separator
                   name="phasereditor.canvas.ui.separator3"
                   visible="true">
@@ -1192,6 +1232,16 @@
       <command
             id="phasereditor.canvas.ui.changeFont"
             name="Change Font">
+      </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.changeFontSize"
+            name="Change Font Size">
+         <commandParameter
+               id="phasereditor.canvas.ui.fontSizeAmount"
+               name="Amount"
+               optional="false">
+         </commandParameter>
       </command>
       
    </extension>
@@ -2139,6 +2189,21 @@
                      ifEmpty="false">
                   <instanceof
                         value="phasereditor.canvas.ui.shapes.BitmapTextNode">
+                  </instanceof>
+               </iterate>
+            </with>
+         </activeWhen>
+      </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.ChangeFontSizeHandler"
+            commandId="phasereditor.canvas.ui.changeFontSize">
+         <activeWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <instanceof
+                        value="phasereditor.canvas.ui.shapes.ITextSpriteNode">
                   </instanceof>
                </iterate>
             </with>
