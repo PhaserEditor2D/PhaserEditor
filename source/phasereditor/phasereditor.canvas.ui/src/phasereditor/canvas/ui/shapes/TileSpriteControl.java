@@ -268,7 +268,9 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 		section.add(_height_property);
 		section.add(_tileScaleX_property);
 		section.add(_tileScaleY_property);
-
+		
+		// we have to do a better hierarchy here, maybe a single SingleFrameModel/Control
+		getAnimationsProperty().getSection().remove(getAnimationsProperty());
 	}
 
 	private void initFrameProperty() {
