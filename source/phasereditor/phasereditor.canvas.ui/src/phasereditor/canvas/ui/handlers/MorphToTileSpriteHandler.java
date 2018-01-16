@@ -1,6 +1,5 @@
 package phasereditor.canvas.ui.handlers;
 
-import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.TileSpriteModel;
@@ -15,9 +14,13 @@ public class MorphToTileSpriteHandler extends AbstractMorphHandler<TileSpriteMod
 	}
 
 	@Override
-	protected TileSpriteModel createMorphModel(ISpriteNode srcNode, Object source, GroupNode parent) {
-		TileSpriteModel model = new TileSpriteModel(parent.getModel(), (IAssetKey) source);
+	protected TileSpriteModel createMorphModel(ISpriteNode srcNode, MorphToArgs args, GroupNode parent) {
+		MorphToSpriteArgs sprirteArgs = (MorphToSpriteArgs) args;
+
+		TileSpriteModel model = new TileSpriteModel(parent.getModel(), sprirteArgs.asset);
+
 		model.updateWith(srcNode.getModel());
+
 		model.setWidth(srcNode.getControl().getTextureWidth());
 		model.setHeight(srcNode.getControl().getTextureHeight());
 

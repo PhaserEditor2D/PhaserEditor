@@ -45,8 +45,10 @@ public abstract class AbstractMorphToTextHandler<T extends BaseSpriteModel> exte
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected T createMorphModel(ISpriteNode srcNode, Object source, GroupNode parent) {
-		ITextSpriteModel dstModel = createTextModel(srcNode, source, parent);
+	protected T createMorphModel(ISpriteNode srcNode, MorphToArgs args, GroupNode parent) {
+		MorphToTextArgs textArgs = (MorphToTextArgs) args;
+		
+		ITextSpriteModel dstModel = createTextModel(srcNode, args, parent);
 
 		((BaseObjectModel) dstModel).updateWith(srcNode.getModel());
 
@@ -55,7 +57,8 @@ public abstract class AbstractMorphToTextHandler<T extends BaseSpriteModel> exte
 			dstModel.setText(srcModel.getText());
 			dstModel.setFontSize(srcModel.getFontSize());
 		} else {
-			AddTextHandler.openTextDialog(dstModel::setText);
+			dstModel.setFontSize(textArgs.size);
+			dstModel.setText(textArgs.text);
 		}
 
 		ObjectCanvas canvas = srcNode.getControl().getCanvas();

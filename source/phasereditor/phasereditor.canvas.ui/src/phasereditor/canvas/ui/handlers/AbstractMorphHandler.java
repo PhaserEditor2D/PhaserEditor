@@ -10,6 +10,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.BaseObjectModel;
@@ -20,11 +21,11 @@ import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.SelectTextureDialog;
 import phasereditor.canvas.ui.editors.grid.editors.BitmapTextFontDialog;
+import phasereditor.canvas.ui.editors.grid.editors.TextDialog;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.DeleteNodeOperation;
 import phasereditor.canvas.ui.editors.operations.SelectOperation;
-import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
@@ -42,9 +43,49 @@ public abstract class AbstractMorphHandler<T extends BaseObjectModel> extends Ab
 		_morphToType = morphToType;
 	}
 
+	protected static class MorphToArgs {
+		// nothing
+	}
+
+	protected static class MorphToTextArgs extends MorphToArgs {
+		public String text;
+		public int size;
+
+		public MorphToTextArgs(String text, int size) {
+			super();
+			this.text = text;
+			this.size = size;
+		}
+
+	}
+
+	protected static class MorphToBitmapTextArgs extends MorphToTextArgs {
+
+		public MorphToBitmapTextArgs(String text, BitmapFontAssetModel font) {
+			super(text, 32);
+			this.font = font;
+		}
+
+		public BitmapFontAssetModel font;
+	}
+
+	protected static class MorphToSpriteArgs extends MorphToArgs {
+		public IAssetKey asset;
+
+		public MorphToSpriteArgs(IAssetKey asset) {
+			super();
+			this.asset = asset;
+		}
+
+	}
+
 	@Override
 	public final Object execute(ExecutionEvent event) throws ExecutionException {
 		Object[] sel = ((IStructuredSelection) HandlerUtil.getCurrentSelection(event)).toArray();
+
+		BitmapFontAssetModel font = null;
+		IAssetKey texture = null;
+		String text = null;
 
 		CompositeOperation operations = new CompositeOperation();
 
@@ -61,40 +102,81 @@ public abstract class AbstractMorphHandler<T extends BaseObjectModel> extends Ab
 			List<String> afterSelection = new ArrayList<>();
 
 			for (Object elem : sel) {
-				BaseObjectControl<?> control = ((IObjectNode) elem).getControl();
-				BaseObjectModel model = control.getModel();
-				IAssetKey source = null;
 
-				boolean doMorph = true;
-				if (_morphToType == BitmapTextModel.class) {
-					BitmapTextFontDialog dlg = new BitmapTextFontDialog(HandlerUtil.getActiveShell(event));
-					CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
-					dlg.setProject(editor.getEditorInputFile().getProject());
-					if (dlg.open() == Window.OK) {
-						source = dlg.getSelectedFont();
-					} else {
-						continue;
+				if (!(elem instanceof ISpriteNode)) {
+					continue;
+				}
+
+				ISpriteNode node = (ISpriteNode) elem;
+				BaseObjectModel model = node.getModel();
+
+				if (ITextSpriteModel.class.isAssignableFrom(_morphToType)) {
+
+					// convert to Text
+					if (text == null) {
+						if (model instanceof ITextSpriteModel) {
+							text = ((ITextSpriteModel) model).getText();
+						} else {
+							TextDialog dlg = AddTextHandler.createTextDialog();
+							if (dlg.open() == Window.OK) {
+								text = dlg.getResult();
+							} else {
+								return null;
+							}
+						}
 					}
-				} else if (model instanceof TextModel || model instanceof BitmapTextModel) {
-					boolean morphingToOtherText = ITextSpriteModel.class.isAssignableFrom(_morphToType);
-					if (!morphingToOtherText) {
-						SelectTextureDialog dlg = new SelectTextureDialog(HandlerUtil.getActiveShell(event), "Select Texture");
+				}
+
+				if (_morphToType == BitmapTextModel.class) {
+
+					// convert to BitmapText
+
+					if (font == null) {
+						BitmapTextFontDialog dlg = new BitmapTextFontDialog(HandlerUtil.getActiveShell(event));
 						CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 						dlg.setProject(editor.getEditorInputFile().getProject());
 						if (dlg.open() == Window.OK) {
-							source = (IAssetKey) dlg.getSelection().getFirstElement();
+							font = dlg.getSelectedFont();
 						} else {
-							continue;
+							return null;
 						}
 					}
-				} else if (model instanceof AssetSpriteModel<?>) {
-					source = ((AssetSpriteModel<?>) model).getAssetKey();
-					doMorph = source != null;
-				}
 
-				if (doMorph) {
-					String id = addMorph(operations, (ISpriteNode) elem, source);
-					afterSelection.add(id);
+					afterSelection.add(addMorph(operations, node, new MorphToBitmapTextArgs(text, font)));
+
+				} else if (_morphToType == TextModel.class) {
+					// convert to Text
+
+					afterSelection
+							.add(addMorph(operations, node, new MorphToTextArgs(text, TextModel.DEF_STYLE_FONT_SIZE)));
+
+				} else if (model instanceof AssetSpriteModel<?> && !(model instanceof BitmapTextModel)) {
+
+					// convert from sprite to sprite (excluding bitmap font)
+
+					IAssetKey asset = ((AssetSpriteModel<?>) model).getAssetKey();
+
+					if (asset != null) {
+						afterSelection.add(addMorph(operations, node, new MorphToSpriteArgs(asset)));
+					}
+
+				} else {
+
+					// convert from anything (text, bitmaps?) else to sprite
+
+					if (texture == null) {
+						SelectTextureDialog dlg = new SelectTextureDialog(HandlerUtil.getActiveShell(event),
+								"Select Texture");
+						CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
+						dlg.setProject(editor.getEditorInputFile().getProject());
+						if (dlg.open() == Window.OK) {
+							texture = (IAssetKey) dlg.getSelection().getFirstElement();
+						} else {
+							return null;
+						}
+					}
+
+					afterSelection.add(addMorph(operations, node, new MorphToSpriteArgs(texture)));
 				}
 			}
 
@@ -119,13 +201,13 @@ public abstract class AbstractMorphHandler<T extends BaseObjectModel> extends Ab
 		return _morphToType;
 	}
 
-	protected final String addMorph(CompositeOperation operations, ISpriteNode srcNode, Object source) {
+	protected final String addMorph(CompositeOperation operations, ISpriteNode srcNode, MorphToArgs args) {
 		// delete source
 		operations.add(new DeleteNodeOperation(srcNode.getModel().getId()));
 
 		// create morph
 		GroupNode parent = srcNode.getGroup();
-		BaseObjectModel dstModel = createMorphModel(srcNode, source, parent);
+		BaseObjectModel dstModel = createMorphModel(srcNode, args, parent);
 
 		@SuppressWarnings("unlikely-arg-type")
 		int i = parent.getNode().getChildren().indexOf(srcNode);
@@ -134,6 +216,6 @@ public abstract class AbstractMorphHandler<T extends BaseObjectModel> extends Ab
 		return dstModel.getId();
 	}
 
-	protected abstract T createMorphModel(ISpriteNode srcNode, Object source, GroupNode parent);
+	protected abstract T createMorphModel(ISpriteNode srcNode, MorphToArgs args, GroupNode parent);
 
 }

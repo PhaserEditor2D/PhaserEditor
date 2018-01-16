@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.handlers;
 
-import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.canvas.core.BitmapTextModel;
 import phasereditor.canvas.core.ITextSpriteModel;
 import phasereditor.canvas.ui.shapes.GroupNode;
@@ -38,8 +37,13 @@ public class MorphToBitmapTextHandler extends AbstractMorphToTextHandler<BitmapT
 	}
 
 	@Override
-	protected ITextSpriteModel createTextModel(ISpriteNode srcNode, Object source, GroupNode parent) {
-		return new BitmapTextModel(parent.getModel(), (BitmapFontAssetModel) source);
+	protected ITextSpriteModel createTextModel(ISpriteNode srcNode, Object args, GroupNode parent) {
+		MorphToBitmapTextArgs args2 = (MorphToBitmapTextArgs) args;
+		
+		BitmapTextModel model = new BitmapTextModel(parent.getModel(), args2.font);
+		model.setText(args2.text);
+		
+		return model;
 	}
 
 }

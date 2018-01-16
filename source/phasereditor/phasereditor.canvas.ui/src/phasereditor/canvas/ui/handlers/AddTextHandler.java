@@ -39,16 +39,21 @@ public class AddTextHandler extends AbstractHandler {
 	}
 
 	public static void openTextDialog(Consumer<String> textConsumer) {
+		TextDialog dlg = createTextDialog();
+
+		if (dlg.open() == Window.OK) {
+			textConsumer.accept(dlg.getResult());
+		}
+	}
+
+	public static TextDialog createTextDialog() {
 		TextDialog dlg = new TextDialog(Display.getCurrent().getActiveShell());
 
 		dlg.setTitle("Add Text");
 		dlg.setMessage("Enter the text:");
 		dlg.setInitialText("This is a text");
 		dlg.setSelectAll(true);
-
-		if (dlg.open() == Window.OK) {
-			textConsumer.accept(dlg.getResult());
-		}
+		return dlg;
 	}
 
 }

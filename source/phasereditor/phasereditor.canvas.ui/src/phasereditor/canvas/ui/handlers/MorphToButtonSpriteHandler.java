@@ -15,8 +15,11 @@ public class MorphToButtonSpriteHandler extends AbstractMorphHandler<ButtonSprit
 	}
 
 	@Override
-	protected ButtonSpriteModel createMorphModel(ISpriteNode srcNode, Object source, GroupNode parent) {
-		ButtonSpriteModel dstModel = new ButtonSpriteModel(parent.getModel(), (IAssetFrameModel) source);
+	protected ButtonSpriteModel createMorphModel(ISpriteNode srcNode, MorphToArgs args, GroupNode parent) {
+		MorphToSpriteArgs sprirteArgs = (MorphToSpriteArgs) args;
+		
+		ButtonSpriteModel dstModel = new ButtonSpriteModel(parent.getModel(), (IAssetFrameModel) sprirteArgs.asset);
+		
 		dstModel.updateWith(srcNode.getModel());
 		
 		ObjectCanvas canvas = srcNode.getControl().getCanvas();
