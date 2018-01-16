@@ -151,7 +151,7 @@ public class CreatePrefabHandler extends AbstractHandler {
 					settings.setBaseClass("Phaser.Text");
 					break;
 				case BitmapTextModel.TYPE_NAME:
-					settings.setBaseClass("Phaser.BitmaptText");
+					settings.setBaseClass("Phaser.BitmapText");
 					break;
 				default:
 					break;

@@ -181,7 +181,7 @@ public class TSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator impleme
 
 			mdoc.append();
 
-			openIndent("constructor(aGame : Phaser.Game, aX : number, aY : number, aFont : string, aText : string, aSize : number, aAlign : string) {");
+			openIndent("constructor(aGame : Phaser.Game, aX : number, aY : number, aFont? : string, aText? : string, aSize? : number, aAlign? : string) {");
 
 			trim(() -> {
 				line();
