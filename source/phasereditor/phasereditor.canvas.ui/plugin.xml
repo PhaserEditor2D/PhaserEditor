@@ -2002,6 +2002,9 @@
                      <instanceof
                            value="phasereditor.canvas.ui.shapes.FrameNode">
                      </instanceof>
+                     <instanceof
+                           value="phasereditor.canvas.ui.shapes.TileSpriteNode">
+                     </instanceof>
                   </or>
                </iterate>
          </with>
@@ -2037,6 +2040,9 @@
                      <or>
                         <instanceof
                               value="phasereditor.canvas.ui.shapes.FrameNode">
+                        </instanceof>
+                        <instanceof
+                              value="phasereditor.canvas.ui.shapes.TileSpriteNode">
                         </instanceof>
                         <instanceof
                               value="phasereditor.canvas.ui.shapes.MissingAssetNode">
