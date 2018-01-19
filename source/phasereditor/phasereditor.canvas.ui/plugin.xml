@@ -804,6 +804,9 @@
                      name="phasereditor.canvas.ui.fontSizeAmount"
                      value="up">
                </parameter>
+               <visibleWhen
+                     checkEnabled="true">
+               </visibleWhen>
             </command>
             <command
                   commandId="phasereditor.canvas.ui.changeFontSize"
@@ -814,6 +817,9 @@
                      name="phasereditor.canvas.ui.fontSizeAmount"
                      value="down">
                </parameter>
+               <visibleWhen
+                     checkEnabled="true">
+               </visibleWhen>
             </command>
             <separator
                   name="phasereditor.canvas.ui.separator3"
