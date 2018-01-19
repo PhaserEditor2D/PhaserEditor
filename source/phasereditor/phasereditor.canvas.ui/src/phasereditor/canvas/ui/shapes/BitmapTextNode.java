@@ -86,6 +86,12 @@ public class BitmapTextNode extends Pane implements ISpriteNode, ITextSpriteNode
 
 				@Override
 				public void render(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {
+					if (srcW * srcH == 0) {
+						// space characters are renderer as a single transparent pixel or as a 0-size
+						// rectangle, in this case we should ignore it.
+						return;
+					}
+
 					ImageView img = new ImageView(image);
 					img.setViewport(new Rectangle2D(srcX, srcY, srcW, srcH));
 					img.relocate(x * scale, y * scale);
