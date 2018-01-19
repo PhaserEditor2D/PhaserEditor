@@ -24,20 +24,18 @@ package phasereditor.canvas.ui.handlers;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.jface.window.Window;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import javafx.scene.text.TextAlignment;
+import phasereditor.bmpfont.core.BitmapFontModel.Align;
 import phasereditor.canvas.core.BitmapTextModel;
 import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
-import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
+import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
 import phasereditor.canvas.ui.editors.grid.editors.PGridEditingSupport;
-import phasereditor.canvas.ui.editors.grid.editors.TextDialog;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.BitmapTextControl;
 import phasereditor.canvas.ui.shapes.BitmapTextNode;
-import phasereditor.canvas.ui.shapes.ITextSpriteNode;
 import phasereditor.canvas.ui.shapes.TextControl;
 import phasereditor.canvas.ui.shapes.TextNode;
 
@@ -45,44 +43,38 @@ import phasereditor.canvas.ui.shapes.TextNode;
  * @author arian
  *
  */
-public class ChangeTextHandler extends AbstractHandler {
+public class TextAlignHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		Shell shell = HandlerUtil.getActiveShell(event);
 		Object[] selection = HandlerUtil.getCurrentStructuredSelection(event).toArray();
 
-		TextDialog dlg = new TextDialog(shell);
-		dlg.setInitialText(((ITextSpriteNode) selection[0]).getModel().getText());
-		dlg.setTitle("Change Text");
-		dlg.setMessage("Write the new text:");
+		CompositeOperation operations = new CompositeOperation();
+		
+		String align = event.getParameter("phasereditor.canvas.ui.align");
 
-		if (dlg.open() == Window.OK) {
-			String text = dlg.getResult();
-
-			CompositeOperation operations = new CompositeOperation();
-
-			for (Object obj : selection) {
-				if (obj instanceof TextNode) {
-					TextNode node = (TextNode) obj;
-					if (node.getModel().isOverriding(TextModel.PROPSET_TEXT)) {
-						TextControl control = node.getControl();
-						PGridStringProperty prop = control.getTextProperty();
-						operations.add(PGridEditingSupport.makeChangePropertyValueOperation(text, prop));
-					}
-				} else if (obj instanceof BitmapTextNode) {
-					BitmapTextNode node = (BitmapTextNode) obj;
-					if (node.getModel().isOverriding(BitmapTextModel.PROPSET_TEXT)) {
-						BitmapTextControl control = node.getControl();
-						PGridStringProperty prop = control.getTextProperty();
-						operations.add(PGridEditingSupport.makeChangePropertyValueOperation(text, prop));
-					}
+		for (Object obj : selection) {
+			if (obj instanceof TextNode) {
+				TextNode node = (TextNode) obj;
+				if (node.getModel().isOverriding(TextModel.PROPSET_TEXT_STYLE)) {
+					TextControl control = node.getControl();
+					PGridEnumProperty<TextAlignment> prop = control.getTextAlignProperty();
+					TextAlignment value = TextAlignment.valueOf(align.toUpperCase());
+					operations.add(PGridEditingSupport.makeChangePropertyValueOperation(value, prop));
+				}
+			} else if (obj instanceof BitmapTextNode) {
+				BitmapTextNode node = (BitmapTextNode) obj;
+				if (node.getModel().isOverriding(BitmapTextModel.PROPSET_TEXT)) {
+					BitmapTextControl control = node.getControl();
+					PGridEnumProperty<Align> prop = control.getAlignProperty();
+					Align value = Align.valueOf(align);
+					operations.add(PGridEditingSupport.makeChangePropertyValueOperation(value, prop));
 				}
 			}
-
-			CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
-			editor.getCanvas().getUpdateBehavior().executeOperations(operations);
 		}
+
+		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
+		editor.getCanvas().getUpdateBehavior().executeOperations(operations);
 
 		return null;
 	}

@@ -50,6 +50,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 
 	private PGridStringProperty _text_property;
 	private PGridNumberProperty _fontSize_property;
+	private PGridEnumProperty<TextAlignment> _textAlign_property;
 
 	public TextControl(ObjectCanvas canvas, TextModel model) {
 		super(canvas, model);
@@ -74,7 +75,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 	@Override
 	public void updateFromModel() {
 		getModel();
-		
+
 		TextNode node = getNode();
 
 		node.updateFromModel();
@@ -94,9 +95,13 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 	public PGridStringProperty getTextProperty() {
 		return _text_property;
 	}
-	
+
 	public PGridNumberProperty getFontSizeProperty() {
 		return _fontSize_property;
+	}
+
+	public PGridEnumProperty<TextAlignment> getTextAlignProperty() {
+		return _textAlign_property;
 	}
 
 	/*
@@ -110,9 +115,8 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 	protected void initPrefabPGridModel(List<String> validProperties) {
 		super.initPrefabPGridModel(validProperties);
 		validProperties.addAll(Arrays.asList(
-		// @formatter:off
-				TextModel.PROPSET_TEXT,
-				TextModel.PROPSET_TEXT_STYLE
+				// @formatter:off
+				TextModel.PROPSET_TEXT, TextModel.PROPSET_TEXT_STYLE
 		// @formatter:on
 		));
 
@@ -211,34 +215,34 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 		};
 		section.add(_fontSize_property);
 
-		section.add(new PGridEnumProperty<FontWeight>(getId(), "style.fontWeight",
-				"The weight of the font (eg. 'bold').", new FontWeight[] { FontWeight.NORMAL,
-						FontWeight.BOLD } /* FontWeight.values() */) {
+		section.add(
+				new PGridEnumProperty<FontWeight>(getId(), "style.fontWeight", "The weight of the font (eg. 'bold').",
+						new FontWeight[] { FontWeight.NORMAL, FontWeight.BOLD } /* FontWeight.values() */) {
 
-			@Override
-			public FontWeight getValue() {
-				return getModel().getStyleFontWeight();
-			}
+					@Override
+					public FontWeight getValue() {
+						return getModel().getStyleFontWeight();
+					}
 
-			@Override
-			public void setValue(FontWeight value, boolean notify) {
-				getModel().setStyleFontWeight(value);
-				if (notify) {
-					updateFromPropertyChange();
-					getCanvas().getSelectionBehavior().updateSelectedNodes_async();
-				}
-			}
+					@Override
+					public void setValue(FontWeight value, boolean notify) {
+						getModel().setStyleFontWeight(value);
+						if (notify) {
+							updateFromPropertyChange();
+							getCanvas().getSelectionBehavior().updateSelectedNodes_async();
+						}
+					}
 
-			@Override
-			public boolean isModified() {
-				return getModel().getStyleFontWeight() != FontWeight.BOLD;
-			}
+					@Override
+					public boolean isModified() {
+						return getModel().getStyleFontWeight() != FontWeight.BOLD;
+					}
 
-			@Override
-			public boolean isReadOnly() {
-				return getModel().isPrefabReadOnly(TextModel.PROPSET_TEXT_STYLE);
-			}
-		});
+					@Override
+					public boolean isReadOnly() {
+						return getModel().isPrefabReadOnly(TextModel.PROPSET_TEXT_STYLE);
+					}
+				});
 
 		section.add(new PGridEnumProperty<FontPosture>(getId(), "style.fontStyle",
 				"The style of the font (eg. 'italic').", FontPosture.values()) {
@@ -392,7 +396,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 			}
 		});
 
-		section.add(new PGridEnumProperty<TextAlignment>(getId(), "style.align",
+		_textAlign_property = new PGridEnumProperty<TextAlignment>(getId(), "style.align",
 				"Horizontal alignment of each line in multiline text. Can be: 'left', 'center' or 'right'. Does not affect single lines of text (see `textBounds` and `boundsAlignH` for that)",
 				new TextAlignment[] { TextAlignment.LEFT, TextAlignment.CENTER, TextAlignment.RIGHT }) {
 
@@ -418,7 +422,8 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 			public boolean isReadOnly() {
 				return getModel().isPrefabReadOnly(TextModel.PROPSET_TEXT_STYLE);
 			}
-		});
+		};
+		section.add(_textAlign_property);
 
 		propModel.getSections().add(section);
 

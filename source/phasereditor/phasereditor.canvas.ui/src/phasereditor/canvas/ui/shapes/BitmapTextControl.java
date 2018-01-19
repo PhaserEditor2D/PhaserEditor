@@ -44,6 +44,7 @@ public class BitmapTextControl extends BaseSpriteControl<BitmapTextModel> {
 	private PGridStringProperty _text_property;
 	private PGridBitmapTextFontProperty _font_property;
 	private PGridNumberProperty _size_property;
+	private PGridEnumProperty<Align> _align_property;
 
 	public BitmapTextControl(ObjectCanvas canvas, BitmapTextModel model) {
 		super(canvas, model);
@@ -209,8 +210,8 @@ public class BitmapTextControl extends BaseSpriteControl<BitmapTextModel> {
 			}
 		};
 
-		PGridEnumProperty<Align> _align_property = new PGridEnumProperty<Align>(getId(), "align",
-				help("Phaser.BitmapText.align"), Align.values()) {
+		_align_property = new PGridEnumProperty<Align>(getId(), "align", help("Phaser.BitmapText.align"),
+				Align.values()) {
 
 			@Override
 			public boolean isModified() {
@@ -252,6 +253,10 @@ public class BitmapTextControl extends BaseSpriteControl<BitmapTextModel> {
 
 	public PGridStringProperty getTextProperty() {
 		return _text_property;
+	}
+
+	public PGridEnumProperty<Align> getAlignProperty() {
+		return _align_property;
 	}
 
 	public PGridBitmapTextFontProperty getFontProperty() {
