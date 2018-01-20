@@ -29,7 +29,6 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
-import org.eclipse.jface.viewers.ComboBoxViewerCellEditor;
 import org.eclipse.jface.viewers.DialogCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -68,6 +67,7 @@ import phasereditor.canvas.ui.editors.grid.PGridUserCodeProperty;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.project.core.codegen.SourceLang;
+import phasereditor.ui.ComboBoxViewerCellEditor2;
 import phasereditor.ui.PhaserEditorUI;
 
 /**
@@ -106,90 +106,142 @@ public class PGridEditingSupport extends EditingSupport {
 		Composite parent = (Composite) getViewer().getControl();
 
 		if (element instanceof PGridNumberProperty) {
-			return new NumberCellEditor(parent);
+			return createNumberEditor(parent);
 		} else if (element instanceof PGridSpriteProperty) {
-			return new SpriteCellEditor(parent, _canvas, ((PGridSpriteProperty) element).getValue());
+			return createSpriteEditor(element, parent);
 		} else if (element instanceof PGridStringProperty) {
-			PGridStringProperty prop = (PGridStringProperty) element;
-			if (prop.isLongText()) {
-				return new DialogCellEditor(parent) {
-
-					@Override
-					protected Object openDialogBox(Control cellEditorWindow) {
-						Shell shell = cellEditorWindow.getShell();
-						return openLongStringDialog(prop, shell);
-					}
-				};
-			}
-			return new TextCellEditor(parent);
+			return createTextEditor(element, parent);
 		} else if (element instanceof PGridBooleanProperty) {
-			return new CheckboxCellEditor(parent);
+			return createBooleanEditor(parent);
 		} else if (element instanceof PGridFrameProperty) {
-			PGridFrameProperty prop = (PGridFrameProperty) element;
-			return new FrameCellEditor(parent, prop);
+			return createTextureFrameEditor(element, parent);
 		} else if (element instanceof PGridColorProperty) {
-			return new RGBCellEditor(parent, ((PGridColorProperty) element).getDefaultRGB());
+			return createRGBEditor(element, parent);
 		} else if (element instanceof PGridAnimationsProperty) {
-			return new AnimationsCellEditor(parent, (PGridAnimationsProperty) element);
+			return createAnimationsEditor(element, parent);
 		} else if (element instanceof PGridEnumProperty) {
-			ComboBoxViewerCellEditor editor = new ComboBoxViewerCellEditor(parent, SWT.READ_ONLY);
-			editor.setContentProvider(new ArrayContentProvider());
-			editor.setInput(((PGridEnumProperty<?>) element).getValues());
-			editor.setLabelProvider(new LabelProvider() {
-				@Override
-				public String getText(Object obj) {
-					if (obj instanceof PhysicsType) {
-						return ((PhysicsType) obj).getPhaserName();
-					}
-
-					if (obj instanceof PhysicsSortDirection) {
-						return ((PhysicsSortDirection) obj).getPhaserName();
-					}
-
-					if (obj instanceof SourceLang) {
-						return ((SourceLang) obj).getDisplayName();
-					}
-
-					return super.getText(obj);
-				}
-			});
-			return editor;
+			return createEnumEditor(element, parent);
 		} else if (element instanceof PGridOverrideProperty) {
-			PGridOverrideProperty prop = (PGridOverrideProperty) element;
-			return new DialogCellEditor(parent) {
-
-				@Override
-				protected Object openDialogBox(Control cellEditorWindow) {
-					return openOverridePropertiesDialog(prop, cellEditorWindow.getShell());
-				}
-			};
+			return createOverrideListEditor(element, parent);
 		} else if (element instanceof PGridUserCodeProperty) {
-			PGridUserCodeProperty prop = (PGridUserCodeProperty) element;
-			return new UserCodeCellEditor(parent, prop.getValue());
+			return createUserCodeEditor(element, parent);
 		} else if (element instanceof PGridLoadPackProperty) {
-			return new LoadPackCellEditor(parent, _canvas.getWorldModel().getProject(),
-					((PGridLoadPackProperty) element).getValue());
+			return createLoadPackEditor(element, parent);
 		} else if (element instanceof PGridSetAllProperty) {
-			PGridSetAllProperty prop = (PGridSetAllProperty) element;
-			return new DialogCellEditor(parent) {
-
-				@Override
-				protected Object openDialogBox(Control cellEditorWindow) {
-					SetAllData initialValue = prop.getValue();
-					SetAllDialog dlg = new SetAllDialog(cellEditorWindow.getShell());
-					dlg.setSetAllData(initialValue);
-					if (dlg.open() == Window.OK) {
-						return dlg.getResult();
-					}
-
-					return initialValue;
-				}
-			};
+			return createSetAllPropertyEditor(element, parent);
 		} else if (element instanceof PGridBitmapTextFontProperty) {
-			return new BitmapTextFontCellEditor(parent, (PGridBitmapTextFontProperty) element);
+			return createBitmapTextFontEditor(element, parent);
 		}
 
 		return null;
+	}
+
+	private static CellEditor createBitmapTextFontEditor(Object element, Composite parent) {
+		return new BitmapTextFontCellEditor(parent, (PGridBitmapTextFontProperty) element);
+	}
+
+	private static CellEditor createSetAllPropertyEditor(Object element, Composite parent) {
+		PGridSetAllProperty prop = (PGridSetAllProperty) element;
+		return new DialogCellEditor(parent) {
+
+			@Override
+			protected Object openDialogBox(Control cellEditorWindow) {
+				SetAllData initialValue = prop.getValue();
+				SetAllDialog dlg = new SetAllDialog(cellEditorWindow.getShell());
+				dlg.setSetAllData(initialValue);
+				if (dlg.open() == Window.OK) {
+					return dlg.getResult();
+				}
+
+				return initialValue;
+			}
+		};
+	}
+
+	private CellEditor createLoadPackEditor(Object element, Composite parent) {
+		return new LoadPackCellEditor(parent, _canvas.getWorldModel().getProject(),
+				((PGridLoadPackProperty) element).getValue());
+	}
+
+	private static CellEditor createUserCodeEditor(Object element, Composite parent) {
+		PGridUserCodeProperty prop = (PGridUserCodeProperty) element;
+		return new UserCodeCellEditor(parent, prop.getValue());
+	}
+
+	private static CellEditor createOverrideListEditor(Object element, Composite parent) {
+		PGridOverrideProperty prop = (PGridOverrideProperty) element;
+		return new DialogCellEditor(parent) {
+
+			@Override
+			protected Object openDialogBox(Control cellEditorWindow) {
+				return openOverridePropertiesDialog(prop, cellEditorWindow.getShell());
+			}
+		};
+	}
+
+	private static CellEditor createEnumEditor(Object element, Composite parent) {
+		ComboBoxViewerCellEditor2 editor = new ComboBoxViewerCellEditor2(parent, SWT.READ_ONLY);
+		editor.setContentProvider(new ArrayContentProvider());
+		editor.setInput(((PGridEnumProperty<?>) element).getValues());
+		editor.setLabelProvider(new LabelProvider() {
+			@Override
+			public String getText(Object obj) {
+				if (obj instanceof PhysicsType) {
+					return ((PhysicsType) obj).getPhaserName();
+				}
+
+				if (obj instanceof PhysicsSortDirection) {
+					return ((PhysicsSortDirection) obj).getPhaserName();
+				}
+
+				if (obj instanceof SourceLang) {
+					return ((SourceLang) obj).getDisplayName();
+				}
+
+				return super.getText(obj);
+			}
+		});
+		return editor;
+	}
+
+	private static CellEditor createAnimationsEditor(Object element, Composite parent) {
+		return new AnimationsCellEditor(parent, (PGridAnimationsProperty) element);
+	}
+
+	private static CellEditor createRGBEditor(Object element, Composite parent) {
+		return new RGBCellEditor(parent, ((PGridColorProperty) element).getDefaultRGB());
+	}
+
+	private static CellEditor createTextureFrameEditor(Object element, Composite parent) {
+		PGridFrameProperty prop = (PGridFrameProperty) element;
+		return new FrameCellEditor(parent, prop);
+	}
+
+	private static CheckboxCellEditor createBooleanEditor(Composite parent) {
+		return new CheckboxCellEditor(parent);
+	}
+
+	private static NumberCellEditor createNumberEditor(Composite parent) {
+		return new NumberCellEditor(parent);
+	}
+
+	private SpriteCellEditor createSpriteEditor(Object element, Composite parent) {
+		return new SpriteCellEditor(parent, _canvas, ((PGridSpriteProperty) element).getValue());
+	}
+
+	private static CellEditor createTextEditor(Object element, Composite parent) {
+		PGridStringProperty prop = (PGridStringProperty) element;
+		if (prop.isLongText()) {
+			return new DialogCellEditor(parent) {
+
+				@Override
+				protected Object openDialogBox(Control cellEditorWindow) {
+					Shell shell = cellEditorWindow.getShell();
+					return openLongStringDialog(prop, shell);
+				}
+			};
+		}
+		return new TextCellEditor(parent);
 	}
 
 	@Override
