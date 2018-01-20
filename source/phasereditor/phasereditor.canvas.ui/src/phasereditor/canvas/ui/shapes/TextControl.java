@@ -51,6 +51,9 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 	private PGridStringProperty _text_property;
 	private PGridNumberProperty _fontSize_property;
 	private PGridEnumProperty<TextAlignment> _textAlign_property;
+	private PGridEnumProperty<FontWeight> _fontWeight_property;
+	private PGridEnumProperty<FontPosture> _fontStyle_property;
+	private PGridEnumProperty<String> _fontName_property;
 
 	public TextControl(ObjectCanvas canvas, TextModel model) {
 		super(canvas, model);
@@ -98,6 +101,18 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 
 	public PGridNumberProperty getFontSizeProperty() {
 		return _fontSize_property;
+	}
+
+	public PGridEnumProperty<String> getFontNameProperty() {
+		return _fontName_property;
+	}
+
+	public PGridEnumProperty<FontPosture> getFontStyleProperty() {
+		return _fontStyle_property;
+	}
+
+	public PGridEnumProperty<FontWeight> getFontWeightProperty() {
+		return _fontWeight_property;
 	}
 
 	public PGridEnumProperty<TextAlignment> getTextAlignProperty() {
@@ -158,7 +173,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 
 		{
 			List<String> names = Font.getFamilies();
-			section.add(new PGridEnumProperty<String>(getId(), "style.font", "The name of the font",
+			_fontName_property = new PGridEnumProperty<String>(getId(), "style.font", "The name of the font",
 					names.toArray(new String[names.size()])) {
 
 				@Override
@@ -184,7 +199,8 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 				public boolean isReadOnly() {
 					return getModel().isPrefabReadOnly(TextModel.PROPSET_TEXT_STYLE);
 				}
-			});
+			};
+			section.add(_fontName_property);
 		}
 
 		_fontSize_property = new PGridNumberProperty(getId(), "style.fontSize", "The size of the font (eg. 20)") {
@@ -215,36 +231,37 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 		};
 		section.add(_fontSize_property);
 
-		section.add(
-				new PGridEnumProperty<FontWeight>(getId(), "style.fontWeight", "The weight of the font (eg. 'bold').",
-						new FontWeight[] { FontWeight.NORMAL, FontWeight.BOLD } /* FontWeight.values() */) {
+		_fontWeight_property = new PGridEnumProperty<FontWeight>(getId(), "style.fontWeight",
+				"The weight of the font (eg. 'bold').",
+				new FontWeight[] { FontWeight.NORMAL, FontWeight.BOLD } /* FontWeight.values() */) {
 
-					@Override
-					public FontWeight getValue() {
-						return getModel().getStyleFontWeight();
-					}
+			@Override
+			public FontWeight getValue() {
+				return getModel().getStyleFontWeight();
+			}
 
-					@Override
-					public void setValue(FontWeight value, boolean notify) {
-						getModel().setStyleFontWeight(value);
-						if (notify) {
-							updateFromPropertyChange();
-							getCanvas().getSelectionBehavior().updateSelectedNodes_async();
-						}
-					}
+			@Override
+			public void setValue(FontWeight value, boolean notify) {
+				getModel().setStyleFontWeight(value);
+				if (notify) {
+					updateFromPropertyChange();
+					getCanvas().getSelectionBehavior().updateSelectedNodes_async();
+				}
+			}
 
-					@Override
-					public boolean isModified() {
-						return getModel().getStyleFontWeight() != FontWeight.BOLD;
-					}
+			@Override
+			public boolean isModified() {
+				return getModel().getStyleFontWeight() != FontWeight.BOLD;
+			}
 
-					@Override
-					public boolean isReadOnly() {
-						return getModel().isPrefabReadOnly(TextModel.PROPSET_TEXT_STYLE);
-					}
-				});
+			@Override
+			public boolean isReadOnly() {
+				return getModel().isPrefabReadOnly(TextModel.PROPSET_TEXT_STYLE);
+			}
+		};
+		section.add(_fontWeight_property);
 
-		section.add(new PGridEnumProperty<FontPosture>(getId(), "style.fontStyle",
+		_fontStyle_property = new PGridEnumProperty<FontPosture>(getId(), "style.fontStyle",
 				"The style of the font (eg. 'italic').", FontPosture.values()) {
 
 			@Override
@@ -270,7 +287,8 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 			public boolean isReadOnly() {
 				return getModel().isPrefabReadOnly(TextModel.PROPSET_TEXT_STYLE);
 			}
-		});
+		};
+		section.add(_fontStyle_property);
 
 		section.add(new PGridColorProperty(getId(), "style.fill",
 				"A canvas fillstyle that will be used on the text eg 'red', '#00FF00'.") {

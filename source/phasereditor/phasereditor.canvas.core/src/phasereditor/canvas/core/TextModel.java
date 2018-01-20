@@ -125,7 +125,7 @@ public class TextModel extends BaseSpriteModel implements ITextSpriteModel {
 	public FontPosture getStyleFontStyle() {
 		return _styleFontStyle;
 	}
-
+	
 	public void setStyleFontStyle(FontPosture fontStyle) {
 		_styleFontStyle = fontStyle;
 	}

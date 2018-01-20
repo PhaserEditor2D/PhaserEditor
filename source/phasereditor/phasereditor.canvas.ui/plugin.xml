@@ -2303,6 +2303,21 @@
          </activeWhen>
       </handler>
       <handler
+            class="phasereditor.canvas.ui.handlers.ChangeTextFontHandler"
+            commandId="phasereditor.canvas.ui.changeFont">
+         <activeWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <instanceof
+                        value="phasereditor.canvas.ui.shapes.TextNode">
+                  </instanceof>
+               </iterate>
+            </with>
+         </activeWhen>
+      </handler>
+      <handler
             class="phasereditor.canvas.ui.handlers.ChangeFontSizeHandler"
             commandId="phasereditor.canvas.ui.changeFontSize">
          <activeWhen>

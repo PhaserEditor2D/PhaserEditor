@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
+import static java.lang.System.currentTimeMillis;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;

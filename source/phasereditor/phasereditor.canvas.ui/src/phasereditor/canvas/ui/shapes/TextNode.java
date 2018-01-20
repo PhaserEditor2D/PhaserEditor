@@ -31,6 +31,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextBoundsType;
 import phasereditor.canvas.core.TextModel;
@@ -48,7 +49,7 @@ public class TextNode extends Label implements ISpriteNode, ITextSpriteNode {
 		_control = control;
 		setPickOnBounds(true);
 	}
-	
+
 	@Override
 	protected Skin<?> createDefaultSkin() {
 		Skin<?> skin = super.createDefaultSkin();
@@ -76,9 +77,12 @@ public class TextNode extends Label implements ISpriteNode, ITextSpriteNode {
 		setText(model.getText());
 
 		// style.font
-		FontPosture styleFontStyle = model.getStyleFontStyle();
-		Font font = Font.font(model.getStyleFont(), model.getStyleFontWeight(), styleFontStyle,
-				model.getStyleFontSize());
+		FontPosture fontStyle = model.getStyleFontStyle();
+		FontWeight fontWeight = model.getStyleFontWeight();
+		int fontSize = model.getStyleFontSize();
+		String fontName = model.getStyleFont();
+		
+		Font font = Font.font(fontName, fontWeight, fontStyle, fontSize);
 		setFont(font);
 
 		// style.fill
@@ -90,7 +94,7 @@ public class TextNode extends Label implements ISpriteNode, ITextSpriteNode {
 			_skinText.setStroke(stroke == null ? null : Color.valueOf(stroke));
 			// style.strokeThickness
 			_skinText.setStrokeWidth(model.getStyleStrokeThickness());
-			//_skinText.setTextOrigin(VPos.TOP);
+			// _skinText.setTextOrigin(VPos.TOP);
 			_skinText.setBoundsType(TextBoundsType.VISUAL);
 		}
 
