@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 import javafx.scene.control.Label;
 import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
@@ -71,6 +72,8 @@ public class MissingAssetControl extends BaseObjectControl<MissingAssetSpriteMod
 			
 			if (asset instanceof ImageAssetModel) {
 				asset = ((ImageAssetModel) asset).getFrame();
+			} else if (asset instanceof BitmapFontAssetModel) {
+				asset = ((BitmapFontAssetModel)asset).getFrame();
 			}
 
 			BaseObjectModel newModel = createModelWithTexture((IAssetFrameModel) asset);
