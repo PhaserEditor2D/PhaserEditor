@@ -21,9 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
-import java.io.InputStream;
-
-import org.eclipse.core.resources.IFile;
 import org.json.JSONObject;
 
 import phasereditor.assetpack.core.BitmapFontAssetModel;
@@ -173,13 +170,7 @@ public class BitmapTextModel extends AssetSpriteModel<BitmapFontAssetModel> impl
 
 	public BitmapFontModel createFontModel() {
 		BitmapFontAssetModel asset = getAssetKey();
-		IFile fontFile = asset.getFileFromUrl(asset.getAtlasURL());
-
-		try (InputStream input = fontFile.getContents()) {
-			return new BitmapFontModel(input);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		return asset.createFontModel();
 	}
 
 	/**

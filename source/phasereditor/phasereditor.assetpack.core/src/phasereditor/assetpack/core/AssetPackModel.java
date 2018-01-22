@@ -54,6 +54,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import phasereditor.assetpack.core.AssetPackCore.PackDelta;
+import phasereditor.bmpfont.core.JsonBitmapFontContentType;
 import phasereditor.bmpfont.core.XmlBitmapFontContentType;
 import phasereditor.project.core.ProjectCore;
 
@@ -262,7 +263,7 @@ public final class AssetPackModel {
 	}
 
 	@SuppressWarnings("boxing")
-	public List<IFile> discoverFilesWithContentType(String contentTypeId) throws CoreException {
+	public List<IFile> discoverFilesWithContentType(String... contentTypes) throws CoreException {
 		return AssetPackCore.discoverFiles(getDiscoverFolder(), f -> {
 			IContentDescription desc;
 			try {
@@ -278,8 +279,10 @@ public final class AssetPackModel {
 					return false;
 				}
 
-				if (type.getId().equals(contentTypeId)) {
-					return true;
+				for (String id : contentTypes) {
+					if (type.getId().equals(id)) {
+						return true;
+					}
 				}
 			} catch (CoreException e) {
 				e.printStackTrace();
@@ -426,13 +429,9 @@ public final class AssetPackModel {
 	}
 
 	public IFile pickBitmapFontFile() throws CoreException {
-		List<IFile> files = discoverFilesWithContentType(XmlBitmapFontContentType.CONTENT_TYPE_ID);
+		List<IFile> files = discoverFilesWithContentType(XmlBitmapFontContentType.CONTENT_TYPE_ID,
+				JsonBitmapFontContentType.CONTENT_TYPE_ID);
 		IFile file = pickFile(files);
-		if (file == null) {
-			// TODO: missing json bitmapfont.
-			// file =
-			// pickFile(discoverFilesWithContentType(JsonBitmapFontContentType.CONTENT_TYPE_ID));
-		}
 		return file;
 	}
 

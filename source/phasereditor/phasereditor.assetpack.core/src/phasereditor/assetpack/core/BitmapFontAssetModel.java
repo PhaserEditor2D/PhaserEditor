@@ -31,6 +31,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import phasereditor.bmpfont.core.BitmapFontModel;
 import phasereditor.ui.PhaserEditorUI;
 
 public class BitmapFontAssetModel extends AssetModel {
@@ -77,7 +78,7 @@ public class BitmapFontAssetModel extends AssetModel {
 		_textureURL = textureURL;
 		firePropertyChange("textureURL");
 	}
-	
+
 	public IFile getTextureFile() {
 		return getFileFromUrl(getTextureURL());
 	}
@@ -122,7 +123,7 @@ public class BitmapFontAssetModel extends AssetModel {
 	public void internalBuild(List<IStatus> problems) {
 		validateUrl(problems, "textureURL", _textureURL);
 		validateUrlAndData(problems, "atlasURL", _atlasURL, "atlasData", _atlasData);
-		
+
 		try {
 			buildFrame();
 		} catch (Exception e) {
@@ -143,7 +144,7 @@ public class BitmapFontAssetModel extends AssetModel {
 			_atlasURL = newUrl;
 		}
 	}
-	
+
 	private Frame _frame;
 	private ArrayList<IAssetElementModel> _elements;
 
@@ -186,20 +187,20 @@ public class BitmapFontAssetModel extends AssetModel {
 			return getKey();
 		}
 	}
-	
+
 	public Frame getFrame() {
 		if (_frame == null) {
 			buildFrame();
 		}
 		return _frame;
 	}
-	
+
 	private synchronized void buildFrame() {
 		_frame = new Frame();
 		_elements = new ArrayList<>();
 		_elements.add(_frame);
 	}
-	
+
 	@Override
 	public List<? extends IAssetElementModel> getSubElements() {
 		if (_elements == null) {
@@ -207,5 +208,18 @@ public class BitmapFontAssetModel extends AssetModel {
 		}
 
 		return _elements;
+	}
+
+	public BitmapFontModel createFontModel() {
+		IFile file = getFileFromUrl(_atlasURL);
+		if (file == null) {
+			return null;
+		}
+		try {
+			return BitmapFontModel.createFromFile(file);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

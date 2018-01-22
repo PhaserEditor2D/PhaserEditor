@@ -30,6 +30,10 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.eclipse.core.resources.IFile;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -224,7 +228,14 @@ public class BitmapFontModel {
 	private InfoTag _infoTag;
 	private Map<String, KerningTag> _kernings;
 
-	public BitmapFontModel(InputStream input) throws Exception {
+	public static BitmapFontModel createFromXml(InputStream input) throws Exception {
+		BitmapFontModel model = new BitmapFontModel();
+		model.initXml(input);
+		return model;
+	}
+
+	private void initXml(InputStream input) throws Exception {
+
 		_chars = new HashMap<>();
 		_kernings = new HashMap<>();
 
@@ -296,6 +307,80 @@ public class BitmapFontModel {
 					kerning.setAmount(Integer.parseInt(attrs.getNamedItem("amount").getNodeValue()));
 
 					_kernings.put(kerning.getFirst() + "-" + kerning.getSecond(), kerning);
+				}
+			}
+		}
+
+	}
+
+	public static BitmapFontModel createFromJson(InputStream input) throws Exception {
+		BitmapFontModel model = new BitmapFontModel();
+		model.initJson(input);
+		return model;
+	}
+
+	private void initJson(InputStream input) throws Exception {
+
+		_chars = new HashMap<>();
+		_kernings = new HashMap<>();
+
+		JSONObject doc = new JSONObject(new JSONTokener(input));
+		doc = doc.getJSONObject("font");
+
+		{
+			_infoTag = new InfoTag();
+			JSONObject elem = doc.getJSONObject("info");
+			_infoTag.setFace(elem.getString("_face"));
+			_infoTag.setSize(elem.getInt("_size"));
+		}
+
+		{
+			JSONArray chars = doc.getJSONObject("chars").getJSONArray("char");
+
+			for (int i = 0; i < chars.length(); i++) {
+
+				JSONObject elem = chars.getJSONObject(i);
+
+				CharTag charTag = new CharTag();
+
+				charTag.setId(elem.getInt("_id"));
+				charTag.setX(elem.getInt("_x"));
+				charTag.setY(elem.getInt("_y"));
+				charTag.setWidth(elem.getInt("_width"));
+				charTag.setHeight(elem.getInt("_height"));
+				charTag.setXoffset(elem.getInt("_xoffset"));
+				charTag.setYoffset(elem.getInt("_yoffset"));
+				charTag.setXadvance(elem.getInt("_xadvance"));
+
+				_chars.put(charTag.getId(), charTag);
+			}
+		}
+
+		{
+			_commonTag = new CommonTag();
+			JSONObject elem = doc.getJSONObject("common");
+			_commonTag.setLineHeight(elem.getInt("_lineHeight"));
+			_commonTag.setBase(elem.getInt("_base"));
+			_commonTag.setScaleW(elem.getInt("_scaleW"));
+			_commonTag.setScaleH(elem.getInt("_scaleH"));
+		}
+
+		{
+			JSONObject kernings = doc.optJSONObject("kernings");
+			if (kernings != null) {
+				JSONArray kerningArray = kernings.optJSONArray("kerning");
+				if (kerningArray != null) {
+					for (int i = 0; i < kerningArray.length(); i++) {
+						JSONObject elem = kerningArray.getJSONObject(i);
+
+						KerningTag kerningTag = new KerningTag();
+
+						kerningTag.setFirst(elem.getInt("_first"));
+						kerningTag.setSecond(elem.getInt("_second"));
+						kerningTag.setAmount(elem.getInt("_amount"));
+
+						_kernings.put(kerningTag.getFirst() + "-" + kerningTag.getSecond(), kerningTag);
+					}
 				}
 			}
 		}
@@ -565,5 +650,17 @@ public class BitmapFontModel {
 		MetricsRenderer result = new MetricsRenderer();
 		render(new RenderArgs(text), result);
 		return result;
+	}
+
+	public static BitmapFontModel createFromFile(IFile file) throws Exception {
+		if (BitmapFontCore.isBitmapFontXmlFile(file)) {
+			try (InputStream input = file.getContents()) {
+				return createFromXml(input);
+			}
+		}
+
+		try (InputStream input = file.getContents()) {
+			return createFromJson(input);
+		}
 	}
 }

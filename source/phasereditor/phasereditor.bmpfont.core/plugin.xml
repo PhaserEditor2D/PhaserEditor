@@ -11,6 +11,14 @@
             name="XML Bitmap Font"
             priority="high">
       </content-type>
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            describer="phasereditor.bmpfont.core.JsonBitmapFontContentType"
+            file-extensions="json"
+            id="phasereditor.bmpfont.core.jsonBitmapFontContentType"
+            name="JSON Bitmap Font"
+            priority="high">
+      </content-type>
    </extension>
 
 </plugin>

@@ -21,10 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
-import java.io.InputStream;
-
-import org.eclipse.core.resources.IFile;
-
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -69,50 +65,44 @@ public class BitmapTextNode extends Pane implements ISpriteNode, ITextSpriteNode
 		BitmapTextModel model = _control.getModel();
 
 		BitmapFontAssetModel asset = model.getAssetKey();
-		IFile fontFile = asset.getFileFromUrl(asset.getAtlasURL());
 		Image image = ImageCache.getFXImage(asset.getTextureFile());
 
-		try (InputStream input = fontFile.getContents()) {
+		BitmapFontModel fontModel = model.createFontModel();
 
-			BitmapFontModel fontModel = new BitmapFontModel(input);
+		double scale = (double) getModel().getFontSize() / (double) fontModel.getInfoSize();
 
-			double scale = (double) getModel().getFontSize() / (double) fontModel.getInfoSize();
+		Scale scaleTx = Transform.scale(scale, scale);
 
-			Scale scaleTx = Transform.scale(scale, scale);
+		getChildren().clear();
 
-			getChildren().clear();
+		fontModel.render(model.createRenderArgs(), new BitmapFontRenderer() {
 
-			fontModel.render(model.createRenderArgs(), new BitmapFontRenderer() {
-
-				@Override
-				public void render(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {
-					if (srcW * srcH == 0) {
-						// space characters are renderer as a single transparent pixel or as a 0-size
-						// rectangle, in this case we should ignore it.
-						return;
-					}
-
-					ImageView img = new ImageView(image);
-					img.setViewport(new Rectangle2D(srcX, srcY, srcW, srcH));
-					img.relocate(x * scale, y * scale);
-					img.getTransforms().add(scaleTx);
-					getChildren().add(img);
+			@Override
+			public void render(char c, int x, int y, int srcX, int srcY, int srcW, int srcH) {
+				if (srcW * srcH == 0) {
+					// space characters are renderer as a single transparent pixel or as a 0-size
+					// rectangle, in this case we should ignore it.
+					return;
 				}
-			});
 
-			BitmapFontModel.MetricsRenderer metrics = new BitmapFontModel.MetricsRenderer();
+				ImageView img = new ImageView(image);
+				img.setViewport(new Rectangle2D(srcX, srcY, srcW, srcH));
+				img.relocate(x * scale, y * scale);
+				img.getTransforms().add(scaleTx);
+				getChildren().add(img);
+			}
+		});
 
-			fontModel.render(model.createRenderArgs(), metrics);
+		BitmapFontModel.MetricsRenderer metrics = new BitmapFontModel.MetricsRenderer();
 
-			double width = metrics.getWidth() * scale;
-			double height = metrics.getHeight() * scale;
+		fontModel.render(model.createRenderArgs(), metrics);
 
-			setMinSize(width, height);
-			setMaxSize(width, height);
-			setPrefSize(width, height);
+		double width = metrics.getWidth() * scale;
+		double height = metrics.getHeight() * scale;
 
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		setMinSize(width, height);
+		setMaxSize(width, height);
+		setPrefSize(width, height);
+
 	}
 }

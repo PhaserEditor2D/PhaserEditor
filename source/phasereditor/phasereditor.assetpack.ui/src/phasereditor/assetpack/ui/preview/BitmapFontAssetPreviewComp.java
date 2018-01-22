@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
-import java.io.InputStream;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
@@ -71,24 +69,17 @@ public class BitmapFontAssetPreviewComp extends Composite {
 
 	public void setModel(BitmapFontAssetModel model) {
 		_model = model;
-		
+
 		if (model == null) {
 			_bitmapFontCanvas.setImage(null);
 			return;
 		}
 
 		IFile imgFile = model.getFileFromUrl(model.getTextureURL());
+		BitmapFontModel fontModel = model.createFontModel();
 
-		{
-			IFile atlasFile = model.getFileFromUrl(model.getAtlasURL());
-			try (InputStream contents = atlasFile.getContents()) {
-				BitmapFontModel fontModel = new BitmapFontModel(contents);
-				_bitmapFontCanvas.setModel(fontModel);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			_bitmapFontCanvas.setImageFile(imgFile);
-		}
+		_bitmapFontCanvas.setModel(fontModel);
+		_bitmapFontCanvas.setImageFile(imgFile);
 
 	}
 

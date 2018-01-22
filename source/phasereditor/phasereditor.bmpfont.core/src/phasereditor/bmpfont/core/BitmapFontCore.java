@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.bmpfont.core;
 
-import static java.lang.System.out;
-
 import java.io.InputStream;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -33,6 +31,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.core.runtime.content.IContentType;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.w3c.dom.Document;
 
 /**
@@ -42,7 +42,7 @@ import org.w3c.dom.Document;
 public class BitmapFontCore {
 
 	public static boolean isXmlBitmapFontContent(InputStream input) throws Exception {
-		
+
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document doc = builder.parse(input);
@@ -63,8 +63,29 @@ public class BitmapFontCore {
 		return true;
 	}
 
-	public static boolean isBitmapFontJsonFile(IFile file) throws CoreException {
+	public static boolean isJsonBitmapFontContent(InputStream contents) {
+		JSONObject doc = new JSONObject(new JSONTokener(contents));
+
+		if (doc.has("font")) {
+			JSONObject fontDoc = doc.getJSONObject("font");
+			return fontDoc.has("chars");
+		}
+
 		return false;
+	}
+
+	public static boolean isBitmapFontJsonFile(IFile file) throws CoreException {
+		if (!file.exists() || !file.isSynchronized(IResource.DEPTH_ONE)) {
+			return false;
+		}
+		IContentDescription desc = file.getContentDescription();
+		if (desc == null) {
+			return false;
+		}
+
+		IContentType contentType = desc.getContentType();
+		String id = contentType.getId();
+		return id.equals(JsonBitmapFontContentType.CONTENT_TYPE_ID);
 	}
 
 	public static boolean isBitmapFontXmlFile(IFile file) throws CoreException {
