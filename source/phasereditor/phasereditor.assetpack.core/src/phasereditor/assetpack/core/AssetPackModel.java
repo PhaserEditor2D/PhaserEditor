@@ -45,6 +45,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.content.IContentDescription;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.ui.IMemento;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,6 +54,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import phasereditor.assetpack.core.AssetPackCore.PackDelta;
+import phasereditor.bmpfont.core.XmlBitmapFontContentType;
 import phasereditor.project.core.ProjectCore;
 
 public final class AssetPackModel {
@@ -253,9 +256,37 @@ public final class AssetPackModel {
 	public List<IFile> discoverTextFiles(String[] exts) throws CoreException {
 		return AssetPackCore.discoverFiles(getDiscoverFolder(), AssetPackCore.createFileExtFilter(exts));
 	}
-	
+
 	public List<IFile> discoverFiles(Function<IFile, Boolean> filter) throws CoreException {
 		return AssetPackCore.discoverFiles(getDiscoverFolder(), filter);
+	}
+
+	@SuppressWarnings("boxing")
+	public List<IFile> discoverFilesWithContentType(String contentTypeId) throws CoreException {
+		return AssetPackCore.discoverFiles(getDiscoverFolder(), f -> {
+			IContentDescription desc;
+			try {
+				desc = f.getContentDescription();
+
+				if (desc == null) {
+					return false;
+				}
+
+				IContentType type = desc.getContentType();
+
+				if (type == null) {
+					return false;
+				}
+
+				if (type.getId().equals(contentTypeId)) {
+					return true;
+				}
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
+
+			return false;
+		});
 	}
 
 	public void visitAssets(Consumer<AssetModel> visitor) {
@@ -387,12 +418,22 @@ public final class AssetPackModel {
 	/**
 	 * Pick a tilemap file that is not used.
 	 * 
-	 * @return The non used tilemap file or null if there is not anyone
-	 *         available.
+	 * @return The non used tilemap file or null if there is not anyone available.
 	 * @throws CoreException
 	 */
 	public IFile pickTilemapFile() throws CoreException {
 		return pickFile(discoverTilemapFiles());
+	}
+
+	public IFile pickBitmapFontFile() throws CoreException {
+		List<IFile> files = discoverFilesWithContentType(XmlBitmapFontContentType.CONTENT_TYPE_ID);
+		IFile file = pickFile(files);
+		if (file == null) {
+			// TODO: missing json bitmapfont.
+			// file =
+			// pickFile(discoverFilesWithContentType(JsonBitmapFontContentType.CONTENT_TYPE_ID));
+		}
+		return file;
 	}
 
 	public void addSection(AssetSectionModel section, boolean notify) {

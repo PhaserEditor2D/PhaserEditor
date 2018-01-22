@@ -174,11 +174,19 @@ public abstract class AssetFactory {
 			public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
 				BitmapFontAssetModel asset = new BitmapFontAssetModel(key, section);
 				AssetPackModel pack = section.getPack();
-				IFile file = pack.pickImageFile();
+				IFile file = pack.pickBitmapFontFile();
 				if (file != null) {
 					asset.setKey(pack.createKey(file));
-					asset.setTextureURL(ProjectCore.getAssetUrl(file));
+					asset.setAtlasURL(ProjectCore.getAssetUrl(file));
+					
+					String name = PhaserEditorUI.getNameFromFilename(file.getName());
+					IFile imgFile = file.getParent().getFile(new Path(name + ".png"));
+					if (imgFile.exists()) {
+						asset.setTextureURL(asset.getUrlFromFile(imgFile));
+					}
 				}
+				pack.pickFile(null);
+				
 				return asset;
 			}
 		});

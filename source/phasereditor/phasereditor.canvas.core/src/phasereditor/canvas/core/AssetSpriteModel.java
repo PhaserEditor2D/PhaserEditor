@@ -30,6 +30,7 @@ import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetType;
+import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
@@ -129,10 +130,14 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 			collectInformationForMissingAssetAndAbort(obj);
 		}
 
-		// what we really need is to get the frame of the image.
 		if (asset instanceof ImageAssetModel) {
+			// what we really need is to get the frame of the image.
 			_assetKey = (T) ((ImageAssetModel) asset).getFrame();
-		} else {
+		} else if (asset instanceof BitmapFontAssetModel.Frame) {
+			// get the asset from the frame
+			_assetKey = (T) (asset.getAsset());
+		}
+		else {
 			_assetKey = (T) asset;
 		}
 	}

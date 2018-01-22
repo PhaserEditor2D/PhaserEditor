@@ -21,12 +21,17 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import phasereditor.ui.PhaserEditorUI;
 
 public class BitmapFontAssetModel extends AssetModel {
 
@@ -117,6 +122,12 @@ public class BitmapFontAssetModel extends AssetModel {
 	public void internalBuild(List<IStatus> problems) {
 		validateUrl(problems, "textureURL", _textureURL);
 		validateUrlAndData(problems, "atlasURL", _atlasURL, "atlasData", _atlasData);
+		
+		try {
+			buildFrame();
+		} catch (Exception e) {
+			problems.add(errorStatus(e.getMessage()));
+		}
 	}
 
 	@Override
@@ -128,8 +139,73 @@ public class BitmapFontAssetModel extends AssetModel {
 			_textureURL = newUrl;
 		}
 
-		if (url.equals(getFileFromUrl(_atlasURL))) {
+		if (url.equals(_atlasURL)) {
 			_atlasURL = newUrl;
 		}
+	}
+	
+	private Frame _frame;
+	private ArrayList<IAssetElementModel> _elements;
+
+	public final class Frame implements IAssetFrameModel, IAssetElementModel {
+		public Frame() {
+		}
+
+		@Override
+		public String getKey() {
+			return BitmapFontAssetModel.this.getKey();
+		}
+
+		@Override
+		public AssetModel getAsset() {
+			return BitmapFontAssetModel.this;
+		}
+
+		@Override
+		public IFile getImageFile() {
+			return BitmapFontAssetModel.this.getFileFromUrl(getAtlasURL());
+		}
+
+		@Override
+		public FrameData getFrameData() {
+			Rectangle b = PhaserEditorUI.getImageBounds(getImageFile());
+			FrameData fd = new FrameData();
+			fd.src = b;
+			fd.dst = b;
+			fd.srcSize = new Point(b.width, b.height);
+			return fd;
+		}
+
+		@Override
+		public <T> T getAdapter(Class<T> adapter) {
+			return null;
+		}
+
+		@Override
+		public String getName() {
+			return getKey();
+		}
+	}
+	
+	public Frame getFrame() {
+		if (_frame == null) {
+			buildFrame();
+		}
+		return _frame;
+	}
+	
+	private synchronized void buildFrame() {
+		_frame = new Frame();
+		_elements = new ArrayList<>();
+		_elements.add(_frame);
+	}
+	
+	@Override
+	public List<? extends IAssetElementModel> getSubElements() {
+		if (_elements == null) {
+			buildFrame();
+		}
+
+		return _elements;
 	}
 }

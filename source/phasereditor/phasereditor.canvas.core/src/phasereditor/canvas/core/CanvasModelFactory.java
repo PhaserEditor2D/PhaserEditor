@@ -70,7 +70,8 @@ public class CanvasModelFactory {
 		
 		if (type.equals(AtlasSpriteModel.TYPE_NAME) 
 		|| type.equals(SpritesheetSpriteModel.TYPE_NAME)
-		|| type.equals(ImageSpriteModel.TYPE_NAME)) {
+		|| type.equals(ImageSpriteModel.TYPE_NAME)
+		|| type.equals(BitmapTextModel.TYPE_NAME)) {
 		
 		//@formatter:on
 
@@ -84,6 +85,8 @@ public class CanvasModelFactory {
 				newType = ImageSpriteModel.TYPE_NAME;
 			} else if (asset instanceof SpritesheetAssetModel) {
 				newType = SpritesheetSpriteModel.TYPE_NAME;
+			} else if (asset instanceof BitmapFontAssetModel) {
+				newType = BitmapTextModel.TYPE_NAME;
 			}
 
 			data.put("type", newType);
