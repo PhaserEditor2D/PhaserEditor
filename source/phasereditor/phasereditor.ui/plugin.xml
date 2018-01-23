@@ -94,5 +94,17 @@
             id="phasereditor.ui.prefs.phasereditor"
             name="Phaser Editor">
       </page>
+      <page
+            category="phasereditor.ui.prefs.phasereditor"
+            class="phasereditor.ui.prefs.DialogsPreferencesPage"
+            id="phasereditor.ui.dialogsPrefPage"
+            name="Dialogs">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="phasereditor.ui.prefs.PreferenceInitializer">
+      </initializer>
    </extension>
 </plugin>

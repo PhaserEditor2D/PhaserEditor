@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ide.intro;
 
+import javax.swing.UIManager;
+
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.ui.internal.ide.application.IDEApplication;
 
@@ -32,23 +34,28 @@ import phasereditor.lic.LicCore;
  */
 @SuppressWarnings("restriction")
 public class PhaserIDE2 extends IDEApplication {
-	
+
 	@Override
 	public Object start(IApplicationContext appContext) throws Exception {
-		
+
 		javafx.application.Platform.setImplicitExit(false);
+
+		try {
+			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		LicCore.startEvaluationThread();
-		
+
 		return super.start(appContext);
 	}
-	
+
 	@Override
 	public void stop() {
 		super.stop();
-		
+
 		javafx.application.Platform.exit();
 	}
-	
-	
 
 }

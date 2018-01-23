@@ -21,6 +21,10 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid.editors;
 
+import java.awt.Color;
+
+import javax.swing.JColorChooser;
+
 import org.eclipse.jface.viewers.DialogCellEditor;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.ColorDialog;
@@ -28,6 +32,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import phasereditor.ui.ColorButtonSupport;
+import phasereditor.ui.PhaserEditorUI;
 
 /**
  * @author arian
@@ -52,13 +57,37 @@ public class RGBCellEditor extends DialogCellEditor {
 
 	@Override
 	protected Object openDialogBox(Control cellEditorWindow) {
-		ColorDialog dialog = new ColorDialog(cellEditorWindow.getShell());
+
+		RGB rgb = null;
 		Object value = getValue();
 		if (value != null) {
-			dialog.setRGB((RGB) value);
+			rgb = (RGB) value;
 		}
-		value = dialog.open();
-		return dialog.getRGB();
+
+		if (PhaserEditorUI.pref_ColorDialogType_Java()) {
+			Color color = null;
+
+			if (rgb != null) {
+				color = new Color(rgb.red, rgb.green, rgb.blue);
+			}
+
+			color = JColorChooser.showDialog(null, "Color Dialog", color);
+
+			if (color != null) {
+				rgb = new RGB(color.getRed(), color.getGreen(), color.getBlue());
+			}
+
+			return rgb;
+		}
+
+		ColorDialog dlg = new ColorDialog(cellEditorWindow.getShell());
+
+		if (rgb != null) {
+			dlg.setRGB(rgb);
+		}
+		value = dlg.open();
+		return dlg.getRGB();
+
 	}
 
 	@Override

@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
+import static java.lang.System.currentTimeMillis;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -52,6 +54,7 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.ui.css.swt.theme.IThemeEngine;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.services.IStylingEngine;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.Util;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -108,14 +111,32 @@ import phasereditor.ui.views.PreviewView;
 @SuppressWarnings("restriction")
 public class PhaserEditorUI {
 	public static Color PREVIEW_BG_DARK = SWTResourceManager.getColor(180, 180, 180);
-	public static Color PREVIEW_BG_LIGHT = SWTResourceManager.getColor(250, 250, 250);// SWTResourceManager.getColor(200,
-																						// 200,
-																						// 200);
+	public static Color PREVIEW_BG_LIGHT = SWTResourceManager.getColor(250, 250, 250);
+
+	public static final String PREF_PROP_COLOR_DIALOG_TYPE = "phasereditor.ui.dialogs.colorDialogType";
+	public static final String PREF_VALUE_COLOR_DIALOG_JAVA = "java";
+	public static final String PREF_COLOR_DIALOG_NATIVE_VALUE = "native";
+
 	private static Set<Object> _supportedImageExts = new HashSet<>(Arrays.asList("png", "bmp", "jpg", "gif", "ico"));
 	private static boolean _isCocoaPlatform = Util.isMac();
 	private static boolean _isWindowsPlatform = Util.isWindows();
 
 	private PhaserEditorUI() {
+	}
+
+	public static void listenPreferences() {
+		getPreferenceStore().addPropertyChangeListener(event -> {
+			String prop = event.getProperty();
+
+			switch (prop) {
+			default:
+				break;
+			}
+		});
+	}
+
+	public static boolean pref_ColorDialogType_Java() {
+		return getPreferenceStore().getString(PREF_PROP_COLOR_DIALOG_TYPE).equals(PREF_VALUE_COLOR_DIALOG_JAVA);
 	}
 
 	public static boolean isMacPlatform() {
@@ -340,9 +361,9 @@ public class PhaserEditorUI {
 
 	/**
 	 * <p>
-	 * Searches "searchTerm" in "content" and returns an array of int pairs
-	 * (index, length) for each occurrence. The search is case-sensitive. The
-	 * consecutive occurrences are merged together.
+	 * Searches "searchTerm" in "content" and returns an array of int pairs (index,
+	 * length) for each occurrence. The search is case-sensitive. The consecutive
+	 * occurrences are merged together.
 	 * </p>
 	 * <p>
 	 * Examples:
@@ -460,6 +481,8 @@ public class PhaserEditorUI {
 	}
 
 	public static void paintPreviewBackground(GC gc, Rectangle bounds, int space, Color darkColor, Color lightColor) {
+		if (currentTimeMillis() > 0)
+			return;
 		Rectangle oldClip = gc.getClipping();
 		gc.setClipping(bounds);
 		int nx = bounds.width / space + 2;
@@ -723,8 +746,8 @@ public class PhaserEditorUI {
 	}
 
 	/**
-	 * When the internal browser is open (at least in windows) the FXCanvas is
-	 * not redrawn after any input event.
+	 * When the internal browser is open (at least in windows) the FXCanvas is not
+	 * redrawn after any input event.
 	 * 
 	 * @param canvas
 	 */
@@ -853,5 +876,9 @@ public class PhaserEditorUI {
 
 		};
 		return dlg;
+	}
+
+	public static IPreferenceStore getPreferenceStore() {
+		return Activator.getDefault().getPreferenceStore();
 	}
 }
