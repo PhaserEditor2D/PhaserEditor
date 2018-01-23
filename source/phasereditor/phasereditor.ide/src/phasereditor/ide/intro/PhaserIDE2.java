@@ -22,6 +22,7 @@
 package phasereditor.ide.intro;
 
 import javax.swing.UIManager;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.ui.internal.ide.application.IDEApplication;
@@ -41,7 +42,8 @@ public class PhaserIDE2 extends IDEApplication {
 		javafx.application.Platform.setImplicitExit(false);
 
 		try {
-			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+			//UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+			UIManager.setLookAndFeel(NimbusLookAndFeel.class.getName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
