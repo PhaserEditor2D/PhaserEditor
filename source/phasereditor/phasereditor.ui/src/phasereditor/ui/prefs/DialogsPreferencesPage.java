@@ -28,7 +28,7 @@ public class DialogsPreferencesPage extends FieldEditorPreferencePage implements
 			RadioGroupFieldEditor editor = new RadioGroupFieldEditor(PhaserEditorUI.PREF_PROP_COLOR_DIALOG_TYPE,
 					"Color Dialog", 1, new String[][] {
 
-							{ "Native color dialog", PhaserEditorUI.PREF_COLOR_DIALOG_NATIVE_VALUE },
+							{ "Native color dialog", PhaserEditorUI.PREF_VALUE_COLOR_DIALOG_NATIVE },
 							{ "Cross-platform color dialog", PhaserEditorUI.PREF_VALUE_COLOR_DIALOG_JAVA }
 
 					}, parent, true);

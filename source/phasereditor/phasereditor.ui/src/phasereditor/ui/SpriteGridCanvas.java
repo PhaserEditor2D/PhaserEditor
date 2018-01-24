@@ -140,6 +140,8 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 			updateScroll();
 		});
 
+		PhaserEditorUI.redrawCanvasWhenPreferencesChange(this);
+		
 		afterCreateWidgets();
 	}
 

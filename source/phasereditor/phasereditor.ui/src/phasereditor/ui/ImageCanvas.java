@@ -118,7 +118,7 @@ public class ImageCanvas extends Canvas implements PaintListener, IZoomable {
 			if (!isFocusControl()) {
 				setFocus();
 			}
-			
+
 			if (e.button == 2) {
 				_startPoint = new Point(e.x, e.y);
 				_startOffset = new Point(getOffsetX(), getOffsetY());
@@ -202,8 +202,10 @@ public class ImageCanvas extends Canvas implements PaintListener, IZoomable {
 				//
 			}
 		});
-		
+
 		PhaserEditorUI.forceApplyCompositeStyle(this);
+
+		PhaserEditorUI.redrawCanvasWhenPreferencesChange(this);
 	}
 
 	@Override

@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
-import static java.lang.System.currentTimeMillis;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -55,6 +53,9 @@ import org.eclipse.e4.ui.css.swt.theme.IThemeEngine;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.services.IStylingEngine;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.resource.StringConverter;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.util.Util;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -87,6 +88,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -115,7 +117,20 @@ public class PhaserEditorUI {
 
 	public static final String PREF_PROP_COLOR_DIALOG_TYPE = "phasereditor.ui.dialogs.colorDialogType";
 	public static final String PREF_VALUE_COLOR_DIALOG_JAVA = "java";
-	public static final String PREF_COLOR_DIALOG_NATIVE_VALUE = "native";
+	public static final String PREF_VALUE_COLOR_DIALOG_NATIVE = "native";
+
+	public static final String PREF_PROP_PREVIEW_IMG_PAINT_BG_TYPE = "phasereditor.ui.preview.imageBackgroundType";
+	public static final String PREF_VALUE_PREVIEW_IMG_PAINT_BG_TYPE_TRANSPARENT = "0";
+	public static final String PREF_VALUE_PREVIEW_IMG_PAINT_BG_TYPE_ONE_COLOR = "1";
+	public static final String PREF_VALUE_PREVIEW_IMG_PAINT_BG_TYPE_TWO_COLORS = "2";
+	private static String _PREF_PROP_PREVIEW_IMG_PAINT_BG_TYPE = PREF_VALUE_PREVIEW_IMG_PAINT_BG_TYPE_TWO_COLORS;
+
+	public static final String PREF_PROP_PREVIEW_IMG_PAINT_BG_SOLID_COLOR = "phasereditor.ui.preview.imageBackgroundSolidColor";
+	public static final String PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1 = "phasereditor.ui.preview.imageBackgroundColor1";
+	public static final String PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_2 = "phasereditor.ui.preview.imageBackgroundColor2";
+	public static Color _PREF_PROP_PREVIEW_IMG_PAINT_BG_SOLID_COLOR;
+	public static Color _PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1;
+	public static Color _PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_2;
 
 	private static Set<Object> _supportedImageExts = new HashSet<>(Arrays.asList("png", "bmp", "jpg", "gif", "ico"));
 	private static boolean _isCocoaPlatform = Util.isMac();
@@ -125,17 +140,52 @@ public class PhaserEditorUI {
 	}
 
 	public static void listenPreferences() {
+
+		_PREF_PROP_PREVIEW_IMG_PAINT_BG_TYPE = getPreferenceStore().getString(PREF_PROP_PREVIEW_IMG_PAINT_BG_TYPE);
+
+		{
+			RGB rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_PREVIEW_IMG_PAINT_BG_SOLID_COLOR));
+			_PREF_PROP_PREVIEW_IMG_PAINT_BG_SOLID_COLOR = SWTResourceManager.getColor(rgb);
+			rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1));
+			_PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1 = SWTResourceManager.getColor(rgb);
+			rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_2));
+			_PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_2 = SWTResourceManager.getColor(rgb);
+		}
+
 		getPreferenceStore().addPropertyChangeListener(event -> {
+
 			String prop = event.getProperty();
 
 			switch (prop) {
+			case PREF_PROP_PREVIEW_IMG_PAINT_BG_TYPE:
+				_PREF_PROP_PREVIEW_IMG_PAINT_BG_TYPE = (String) event.getNewValue();
+				break;
+			case PREF_PROP_PREVIEW_IMG_PAINT_BG_SOLID_COLOR:
+				_PREF_PROP_PREVIEW_IMG_PAINT_BG_SOLID_COLOR = new Color(Display.getDefault(),
+						getRGBFromPrefEvent(event));
+				break;
+			case PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1:
+				_PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1 = new Color(Display.getDefault(), getRGBFromPrefEvent(event));
+				break;
+			case PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_2:
+				_PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_2 = new Color(Display.getDefault(), getRGBFromPrefEvent(event));
+				break;
 			default:
 				break;
 			}
 		});
 	}
 
-	public static boolean pref_ColorDialogType_Java() {
+	private static RGB getRGBFromPrefEvent(PropertyChangeEvent event) {
+		Object newValue = event.getNewValue();
+		if (newValue instanceof RGB) {
+			return (RGB) newValue;
+
+		}
+		return StringConverter.asRGB((String) newValue);
+	}
+
+	public static boolean pref_Dialog_Color_Java() {
 		return getPreferenceStore().getString(PREF_PROP_COLOR_DIALOG_TYPE).equals(PREF_VALUE_COLOR_DIALOG_JAVA);
 	}
 
@@ -481,25 +531,35 @@ public class PhaserEditorUI {
 	}
 
 	public static void paintPreviewBackground(GC gc, Rectangle bounds, int space, Color darkColor, Color lightColor) {
-		if (currentTimeMillis() > 0)
-			return;
-		Rectangle oldClip = gc.getClipping();
-		gc.setClipping(bounds);
-		int nx = bounds.width / space + 2;
-		int ny = bounds.height / space + 2;
-		for (int x = -1; x < nx; x++) {
-			for (int y = 0; y < ny; y++) {
-				int fx = bounds.x / space * space + x * space;
-				int fy = bounds.y / space * space + y * space;
-				if ((fx / space + fy / space) % 2 == 0) {
-					gc.setBackground(darkColor);
-				} else {
-					gc.setBackground(lightColor);
+		switch (_PREF_PROP_PREVIEW_IMG_PAINT_BG_TYPE) {
+		case PREF_VALUE_PREVIEW_IMG_PAINT_BG_TYPE_TRANSPARENT:
+			break;
+		case PREF_VALUE_PREVIEW_IMG_PAINT_BG_TYPE_ONE_COLOR:
+			gc.setBackground(_PREF_PROP_PREVIEW_IMG_PAINT_BG_SOLID_COLOR);
+			gc.fillRectangle(bounds);
+			break;
+		case PREF_VALUE_PREVIEW_IMG_PAINT_BG_TYPE_TWO_COLORS:
+			Rectangle oldClip = gc.getClipping();
+			gc.setClipping(bounds);
+			int nx = bounds.width / space + 2;
+			int ny = bounds.height / space + 2;
+			for (int x = -1; x < nx; x++) {
+				for (int y = 0; y < ny; y++) {
+					int fx = bounds.x / space * space + x * space;
+					int fy = bounds.y / space * space + y * space;
+					if ((fx / space + fy / space) % 2 == 0) {
+						gc.setBackground(_PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1);
+					} else {
+						gc.setBackground(_PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_2);
+					}
+					gc.fillRectangle(fx, fy, space, space);
 				}
-				gc.fillRectangle(fx, fy, space, space);
 			}
+			gc.setClipping(oldClip);
+			break;
+		default:
+			break;
 		}
-		gc.setClipping(oldClip);
 	}
 
 	public static void paintPreviewMessage(GC gc, Rectangle canvasBounds, String msg) {
@@ -880,5 +940,13 @@ public class PhaserEditorUI {
 
 	public static IPreferenceStore getPreferenceStore() {
 		return Activator.getDefault().getPreferenceStore();
+	}
+
+	public static void redrawCanvasWhenPreferencesChange(Canvas canvas) {
+		IPropertyChangeListener listener = e -> canvas.redraw();
+		PhaserEditorUI.getPreferenceStore().addPropertyChangeListener(listener);
+		canvas.addDisposeListener(e -> {
+			PhaserEditorUI.getPreferenceStore().removePropertyChangeListener(listener);
+		});
 	}
 }
