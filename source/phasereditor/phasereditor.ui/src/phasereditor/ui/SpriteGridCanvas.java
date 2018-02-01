@@ -32,6 +32,7 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -141,7 +142,7 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 		});
 
 		PhaserEditorUI.redrawCanvasWhenPreferencesChange(this);
-		
+
 		afterCreateWidgets();
 	}
 
@@ -177,6 +178,8 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 	public void paintControl(PaintEvent e) {
 		GC gc = e.gc;
 
+		Color overColor = PhaserEditorUI.get_pref_Preview_Atlas_frameOverColor();
+
 		computeRects();
 
 		Transform tx = new Transform(getDisplay());
@@ -193,7 +196,7 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 					place.height);
 
 			if (i == _overIndex) {
-				gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_RED));
+				gc.setForeground(overColor);
 				gc.drawRectangle(place);
 			}
 		}

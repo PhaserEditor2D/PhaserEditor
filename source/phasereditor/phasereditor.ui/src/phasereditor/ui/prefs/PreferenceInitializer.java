@@ -14,6 +14,10 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
 	@Override
 	public void initializeDefaultPreferences() {
+		RGB _RED = new RGB(255, 0, 0);
+		RGB _BLUE = new RGB(0, 0, 255);
+		RGB _YELLOW = new RGB(255, 255, 0);
+
 		IPreferenceStore store = PhaserEditorUI.getPreferenceStore();
 		store.setDefault(PhaserEditorUI.PREF_PROP_COLOR_DIALOG_TYPE, PhaserEditorUI.PREF_VALUE_COLOR_DIALOG_NATIVE);
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_IMG_PAINT_BG_TYPE,
@@ -28,11 +32,11 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_PAINT_FRAMES, true);
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS, true);
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR,
-				StringConverter.asString(new RGB(255, 0, 0)));
-		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR,
-				StringConverter.asString(new RGB(255, 255, 0)));
-		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_SELECTION_COLOR,
-				StringConverter.asString(new RGB(0, 0, 255)));
+				StringConverter.asString(_RED));
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR, StringConverter.asString(_YELLOW));
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_SELECTION_COLOR, StringConverter.asString(_BLUE));
+
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_ATLAS_FRAME_OVER_COLOR, StringConverter.asString(_RED));
 	}
 
 }

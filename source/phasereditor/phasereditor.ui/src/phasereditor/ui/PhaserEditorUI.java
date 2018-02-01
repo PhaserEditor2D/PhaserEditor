@@ -141,6 +141,9 @@ public class PhaserEditorUI {
 	public static Color _PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR;
 	public static Color _PREF_PROP_PREVIEW_SPRITESHEET_SELECTION_COLOR;
 
+	public static final String PREF_PROP_PREVIEW_ATLAS_FRAME_OVER_COLOR = "phasereditor.ui.preview.atlasFrameOverColor";
+	public static Color _PREF_PROP_PREVIEW_ATLAS_FRAME_OVER_COLOR;
+
 	private static Set<Object> _supportedImageExts = new HashSet<>(Arrays.asList("png", "bmp", "jpg", "gif", "ico"));
 	private static boolean _isCocoaPlatform = Util.isMac();
 	private static boolean _isWindowsPlatform = Util.isWindows();
@@ -176,7 +179,11 @@ public class PhaserEditorUI {
 			_PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR = SWTResourceManager.getColor(rgb);
 			rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_PREVIEW_SPRITESHEET_SELECTION_COLOR));
 			_PREF_PROP_PREVIEW_SPRITESHEET_SELECTION_COLOR = SWTResourceManager.getColor(rgb);
+		}
 
+		{
+			RGB rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_PREVIEW_ATLAS_FRAME_OVER_COLOR));
+			_PREF_PROP_PREVIEW_ATLAS_FRAME_OVER_COLOR = SWTResourceManager.getColor(rgb);
 		}
 
 		getPreferenceStore().addPropertyChangeListener(event -> {
@@ -217,6 +224,9 @@ public class PhaserEditorUI {
 				_PREF_PROP_PREVIEW_SPRITESHEET_SELECTION_COLOR = new Color(Display.getDefault(),
 						getRGBFromPrefEvent(event));
 				break;
+			case PREF_PROP_PREVIEW_ATLAS_FRAME_OVER_COLOR:
+				_PREF_PROP_PREVIEW_ATLAS_FRAME_OVER_COLOR = new Color(Display.getDefault(), getRGBFromPrefEvent(event));
+				break;
 			default:
 				break;
 			}
@@ -251,9 +261,13 @@ public class PhaserEditorUI {
 	public static Color get_pref_Preview_Spritesheet_labelsColor() {
 		return _PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR;
 	}
-	
+
 	public static Color get_pref_Preview_Spritesheet_selectionColor() {
 		return _PREF_PROP_PREVIEW_SPRITESHEET_SELECTION_COLOR;
+	}
+
+	public static Color get_pref_Preview_Atlas_frameOverColor() {
+		return _PREF_PROP_PREVIEW_ATLAS_FRAME_OVER_COLOR;
 	}
 
 	public static boolean isMacPlatform() {

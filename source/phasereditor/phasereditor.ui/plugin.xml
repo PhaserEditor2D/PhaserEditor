@@ -109,8 +109,14 @@
       <page
             category="phasereditor.ui.previewPrefPage"
             class="phasereditor.ui.prefs.SpritesheetPreviewPreferencePage"
-            id="phasereditor.ui.page1"
+            id="phasereditor.ui.previewSpriteSheet"
             name="Spritesheet">
+      </page>
+      <page
+            category="phasereditor.ui.previewPrefPage"
+            class="phasereditor.ui.prefs.AtlasPreferencesPage"
+            id="phasereditor.ui.previewAtlas"
+            name="Atlas">
       </page>
    </extension>
    <extension

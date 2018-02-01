@@ -24,16 +24,15 @@ package phasereditor.atlas.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.atlas.core.AtlasFrame;
 import phasereditor.ui.ImageCanvas;
@@ -81,7 +80,11 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 
 		if (_frames != null && _image != null) {
 			GC gc = e.gc;
-			gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+			
+			Color overColor = PhaserEditorUI.get_pref_Preview_Atlas_frameOverColor();
+			
+			gc.setForeground(overColor);
+			
 			int i = 0;
 			ZoomCalculator calc = calc();
 			for (Rectangle r : _framesRects) {
