@@ -31,6 +31,8 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 				StringConverter.asString(new RGB(255, 0, 0)));
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR,
 				StringConverter.asString(new RGB(255, 255, 0)));
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_SELECTION_COLOR,
+				StringConverter.asString(new RGB(0, 0, 255)));
 	}
 
 }

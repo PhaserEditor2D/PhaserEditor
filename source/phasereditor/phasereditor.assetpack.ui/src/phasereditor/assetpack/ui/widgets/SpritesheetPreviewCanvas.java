@@ -154,7 +154,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 
 					if (_selectedFrames.contains(i)) {
 						gc.setAlpha(100);
-						gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_BLUE));
+						gc.setBackground(PhaserEditorUI.get_pref_Preview_Spritesheet_selectionColor());
 						gc.fillRectangle(r.x, r.y, r.width, r.height);
 						gc.setAlpha(255);
 					}
@@ -202,12 +202,6 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 							Point labelRect = gc.stringExtent(Integer.toString(i));
 							int left = r.x + r.width / 2 - labelRect.x / 2;
 							int top = r.y + r.height / 2 - labelRect.y / 2;
-
-							// gc.setAlpha(200);
-							// gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
-							// gc.fillRectangle(left - 2, top, labelRect.x + 4,
-							// labelRect.y);
-							// gc.setAlpha(255);
 
 							gc.setForeground(colorBlack);
 							gc.drawString(label, left - 1, top + 1, true);
