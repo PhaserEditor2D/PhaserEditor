@@ -112,8 +112,6 @@ import phasereditor.ui.views.PreviewView;
 
 @SuppressWarnings("restriction")
 public class PhaserEditorUI {
-	public static Color PREVIEW_BG_DARK = SWTResourceManager.getColor(180, 180, 180);
-	public static Color PREVIEW_BG_LIGHT = SWTResourceManager.getColor(250, 250, 250);
 
 	public static final String PREF_PROP_COLOR_DIALOG_TYPE = "phasereditor.ui.dialogs.colorDialogType";
 	public static final String PREF_VALUE_COLOR_DIALOG_JAVA = "java";
@@ -131,6 +129,11 @@ public class PhaserEditorUI {
 	public static Color _PREF_PROP_PREVIEW_IMG_PAINT_BG_SOLID_COLOR;
 	public static Color _PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1;
 	public static Color _PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_2;
+
+	public static final String PREF_PROP_PREVIEW_SPRITESHEET_PAINT_FRAMES = "phasereditor.ui.preview.spritesheetPaintFrames";
+	public static final String PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS = "phasereditor.ui.preview.spritesheetPaintLabels";
+	private static boolean _PREF_PROP_PREVIEW_SPRITESHEET_PAINT_FRAMES = true;
+	private static boolean _PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS = true;
 
 	private static Set<Object> _supportedImageExts = new HashSet<>(Arrays.asList("png", "bmp", "jpg", "gif", "ico"));
 	private static boolean _isCocoaPlatform = Util.isMac();
@@ -152,6 +155,13 @@ public class PhaserEditorUI {
 			_PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_2 = SWTResourceManager.getColor(rgb);
 		}
 
+		{
+			_PREF_PROP_PREVIEW_SPRITESHEET_PAINT_FRAMES = getPreferenceStore()
+					.getBoolean(PREF_PROP_PREVIEW_SPRITESHEET_PAINT_FRAMES);
+			_PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS = getPreferenceStore()
+					.getBoolean(PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS);
+		}
+
 		getPreferenceStore().addPropertyChangeListener(event -> {
 
 			String prop = event.getProperty();
@@ -170,6 +180,14 @@ public class PhaserEditorUI {
 			case PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_2:
 				_PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_2 = new Color(Display.getDefault(), getRGBFromPrefEvent(event));
 				break;
+			case PREF_PROP_PREVIEW_SPRITESHEET_PAINT_FRAMES:
+				_PREF_PROP_PREVIEW_SPRITESHEET_PAINT_FRAMES = getPreferenceStore()
+						.getBoolean(PREF_PROP_PREVIEW_SPRITESHEET_PAINT_FRAMES);
+				break;
+			case PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS:
+				_PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS = getPreferenceStore()
+						.getBoolean(PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS);
+				break;
 			default:
 				break;
 			}
@@ -185,8 +203,16 @@ public class PhaserEditorUI {
 		return StringConverter.asRGB((String) newValue);
 	}
 
-	public static boolean pref_Dialog_Color_Java() {
+	public static boolean get_pref_Dialog_Color_Java() {
 		return getPreferenceStore().getString(PREF_PROP_COLOR_DIALOG_TYPE).equals(PREF_VALUE_COLOR_DIALOG_JAVA);
+	}
+
+	public static boolean get_pref_Preview_Spritesheet_paintFramesBorder() {
+		return _PREF_PROP_PREVIEW_SPRITESHEET_PAINT_FRAMES;
+	}
+	
+	public static boolean get_pref_Preview_Spritesheet_paintFramesLabels() {
+		return _PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS;
 	}
 
 	public static boolean isMacPlatform() {
@@ -523,14 +549,7 @@ public class PhaserEditorUI {
 		paintPreviewBackground(gc, canvasBounds, 25);
 	}
 
-	public static void paintPreviewBackground(GC gc, Rectangle canvasBounds, int space) {
-		Color darkColor = PREVIEW_BG_DARK;
-		Color lightColor = PREVIEW_BG_LIGHT;
-
-		paintPreviewBackground(gc, canvasBounds, space, darkColor, lightColor);
-	}
-
-	public static void paintPreviewBackground(GC gc, Rectangle bounds, int space, Color darkColor, Color lightColor) {
+	public static void paintPreviewBackground(GC gc, Rectangle bounds, int space) {
 		switch (_PREF_PROP_PREVIEW_IMG_PAINT_BG_TYPE) {
 		case PREF_VALUE_PREVIEW_IMG_PAINT_BG_TYPE_TRANSPARENT:
 			break;

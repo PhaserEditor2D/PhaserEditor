@@ -121,12 +121,18 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 
 				try {
 					PhaserEditorUI.paintPreviewBackground(gc, r);
+
 					gc.drawImage(_image, fd.src.x, fd.src.y, fd.src.width, fd.src.height, r.x, r.y, r.width, r.height);
+
 				} catch (IllegalArgumentException e) {
 					// wrong parameters
 				}
 			}
 		} else {
+
+			boolean paintBorders = PhaserEditorUI.get_pref_Preview_Spritesheet_paintFramesBorder();
+			boolean paintLabels = PhaserEditorUI.get_pref_Preview_Spritesheet_paintFramesLabels();
+
 			_rects = AssetPackUI.generateSpriteSheetRects(spritesheet, imgBounds);
 			if (_rects.isEmpty()) {
 				PhaserEditorUI.paintPreviewMessage(gc, canvasBounds, "Cannot compute the grid.");
@@ -148,19 +154,21 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 						gc.setAlpha(255);
 					}
 
-					gc.setAlpha(125);
-					if (r.width >= 16) {
-						gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_RED));
-						// gc.drawRectangle(r.x, r.y, r.width, r.height);
-						gc.drawLine(r.x, r.y, r.x, r.y + r.height);
-						gc.drawLine(r.x, r.y, r.x + r.width, r.y);
+					if (paintBorders) {
+						gc.setAlpha(125);
+						if (r.width >= 16) {
+							gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_RED));
+							// gc.drawRectangle(r.x, r.y, r.width, r.height);
+							gc.drawLine(r.x, r.y, r.x, r.y + r.height);
+							gc.drawLine(r.x, r.y, r.x + r.width, r.y);
+						}
+						gc.setAlpha(255);
 					}
-					gc.setAlpha(255);
 
 					i++;
 				}
 
-				{
+				if (paintBorders) {
 					// paint outer frame
 					Rectangle rect = calc.imageToScreen(imgBounds);
 					gc.setAlpha(125);
@@ -169,18 +177,16 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 					gc.setAlpha(255);
 				}
 
-				{
-					boolean paintIndexLabels = true;
-
+				if (paintLabels) {
 					for (FrameData fd : _rects) {
 						Rectangle r = calc.imageToScreen(fd.dst);
 						if (r.width < 64 || r.height < 64) {
-							paintIndexLabels = false;
+							paintLabels = false;
 							break;
 						}
 					}
 
-					if (paintIndexLabels) {
+					if (paintLabels) {
 						i = 0;
 						for (FrameData fd : _rects) {
 							calc.imgWidth = fd.dst.width;

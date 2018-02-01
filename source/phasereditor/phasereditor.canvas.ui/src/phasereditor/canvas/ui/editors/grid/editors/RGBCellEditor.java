@@ -64,7 +64,7 @@ public class RGBCellEditor extends DialogCellEditor {
 			rgb = (RGB) value;
 		}
 
-		if (PhaserEditorUI.pref_Dialog_Color_Java()) {
+		if (PhaserEditorUI.get_pref_Dialog_Color_Java()) {
 			Color color = null;
 
 			if (rgb != null) {

@@ -106,6 +106,12 @@
             id="phasereditor.ui.previewPrefPage"
             name="Preview">
       </page>
+      <page
+            category="phasereditor.ui.previewPrefPage"
+            class="phasereditor.ui.prefs.SpritesheetPreviewPreferencePage"
+            id="phasereditor.ui.page1"
+            name="Spritesheet">
+      </page>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">
