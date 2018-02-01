@@ -22,7 +22,9 @@
 package phasereditor.ui.prefs;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
+import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -35,14 +37,28 @@ import phasereditor.ui.PhaserEditorUI;
  */
 public class SpritesheetPreviewPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
+	public SpritesheetPreviewPreferencePage() {
+		super(GRID);
+	}
+
 	@Override
 	protected void createFieldEditors() {
 		Composite parent = getFieldEditorParent();
 
 		addField(new BooleanFieldEditor(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_PAINT_FRAMES,
 				"Paint the border of the frames", parent));
+
+		addField(new ColorFieldEditor(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR, "", parent));
+
 		addField(new BooleanFieldEditor(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS,
 				"Paint the index label of the frames", parent));
+
+		addField(new ColorFieldEditor(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR, "", parent));
+	}
+
+	@Override
+	protected void adjustGridLayout() {
+		((GridLayout) getFieldEditorParent().getLayout()).numColumns = 3;
 	}
 
 	@Override

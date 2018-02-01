@@ -30,6 +30,7 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
@@ -132,6 +133,9 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 
 			boolean paintBorders = PhaserEditorUI.get_pref_Preview_Spritesheet_paintFramesBorder();
 			boolean paintLabels = PhaserEditorUI.get_pref_Preview_Spritesheet_paintFramesLabels();
+			Color borderColor = PhaserEditorUI.get_pref_Preview_Spritesheet_borderColor();
+			Color labelsColor = PhaserEditorUI.get_pref_Preview_Spritesheet_labelsColor();
+			Color colorBlack = getDisplay().getSystemColor(SWT.COLOR_BLACK);
 
 			_rects = AssetPackUI.generateSpriteSheetRects(spritesheet, imgBounds);
 			if (_rects.isEmpty()) {
@@ -141,6 +145,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 				ZoomCalculator calc = calc();
 
 				int i = 0;
+
 				for (FrameData fd : _rects) {
 					calc.imgWidth = fd.src.width;
 					calc.imgHeight = fd.src.height;
@@ -157,7 +162,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 					if (paintBorders) {
 						gc.setAlpha(125);
 						if (r.width >= 16) {
-							gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_RED));
+							gc.setForeground(borderColor);
 							// gc.drawRectangle(r.x, r.y, r.width, r.height);
 							gc.drawLine(r.x, r.y, r.x, r.y + r.height);
 							gc.drawLine(r.x, r.y, r.x + r.width, r.y);
@@ -172,7 +177,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 					// paint outer frame
 					Rectangle rect = calc.imageToScreen(imgBounds);
 					gc.setAlpha(125);
-					gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_RED));
+					gc.setForeground(borderColor);
 					gc.drawRectangle(rect.x, rect.y, rect.width, rect.height);
 					gc.setAlpha(255);
 				}
@@ -204,11 +209,11 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 							// labelRect.y);
 							// gc.setAlpha(255);
 
-							gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLACK));
+							gc.setForeground(colorBlack);
 							gc.drawString(label, left - 1, top + 1, true);
-							gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLACK));
+							gc.setForeground(colorBlack);
 							gc.drawString(label, left + 1, top - 1, true);
-							gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_YELLOW));
+							gc.setForeground(labelsColor);
 							gc.drawString(label, left, top, true);
 							i++;
 						}

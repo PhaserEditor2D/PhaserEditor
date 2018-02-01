@@ -131,9 +131,13 @@ public class PhaserEditorUI {
 	public static Color _PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_2;
 
 	public static final String PREF_PROP_PREVIEW_SPRITESHEET_PAINT_FRAMES = "phasereditor.ui.preview.spritesheetPaintFrames";
+	public static final String PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR = "phasereditor.ui.preview.spritesheetBorderColor";
 	public static final String PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS = "phasereditor.ui.preview.spritesheetPaintLabels";
+	public static final String PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR = "phasereditor.ui.preview.spritesheetLabelsColor";
 	private static boolean _PREF_PROP_PREVIEW_SPRITESHEET_PAINT_FRAMES = true;
+	public static Color _PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR;
 	private static boolean _PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS = true;
+	public static Color _PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR;
 
 	private static Set<Object> _supportedImageExts = new HashSet<>(Arrays.asList("png", "bmp", "jpg", "gif", "ico"));
 	private static boolean _isCocoaPlatform = Util.isMac();
@@ -162,6 +166,15 @@ public class PhaserEditorUI {
 					.getBoolean(PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS);
 		}
 
+		{
+			RGB rgb = StringConverter
+					.asRGB(getPreferenceStore().getString(PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR));
+			_PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR = SWTResourceManager.getColor(rgb);
+			rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR));
+			_PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR = SWTResourceManager.getColor(rgb);
+
+		}
+
 		getPreferenceStore().addPropertyChangeListener(event -> {
 
 			String prop = event.getProperty();
@@ -188,6 +201,14 @@ public class PhaserEditorUI {
 				_PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS = getPreferenceStore()
 						.getBoolean(PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS);
 				break;
+			case PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR:
+				_PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR = new Color(Display.getDefault(),
+						getRGBFromPrefEvent(event));
+				break;
+			case PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR:
+				_PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR = new Color(Display.getDefault(),
+						getRGBFromPrefEvent(event));
+				break;
 			default:
 				break;
 			}
@@ -210,9 +231,17 @@ public class PhaserEditorUI {
 	public static boolean get_pref_Preview_Spritesheet_paintFramesBorder() {
 		return _PREF_PROP_PREVIEW_SPRITESHEET_PAINT_FRAMES;
 	}
-	
+
 	public static boolean get_pref_Preview_Spritesheet_paintFramesLabels() {
 		return _PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS;
+	}
+
+	public static Color get_pref_Preview_Spritesheet_borderColor() {
+		return _PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR;
+	}
+
+	public static Color get_pref_Preview_Spritesheet_labelsColor() {
+		return _PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR;
 	}
 
 	public static boolean isMacPlatform() {

@@ -27,6 +27,10 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_PAINT_FRAMES, true);
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS, true);
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR,
+				StringConverter.asString(new RGB(255, 0, 0)));
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR,
+				StringConverter.asString(new RGB(255, 255, 0)));
 	}
 
 }
