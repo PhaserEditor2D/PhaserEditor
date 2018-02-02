@@ -29,4 +29,10 @@ public interface IZoomable {
 	public void fitWindow();
 
 	public void redraw();
+
+	public void setScale(float i);
+
+	public void setOffsetX(int i);
+
+	public void setOffsetY(int i);
 }

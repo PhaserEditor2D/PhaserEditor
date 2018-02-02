@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors;
+package phasereditor.assetpack.ui;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.Dialog;
@@ -35,10 +35,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.FilteredTree;
 
-import phasereditor.assetpack.ui.AssetLabelProvider;
-import phasereditor.assetpack.ui.AssetPackUI;
-import phasereditor.assetpack.ui.FlatAssetLabelProvider;
-import phasereditor.assetpack.ui.TextureListContentProvider;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.PatternFilter2;
 import org.eclipse.jface.viewers.IDoubleClickListener;

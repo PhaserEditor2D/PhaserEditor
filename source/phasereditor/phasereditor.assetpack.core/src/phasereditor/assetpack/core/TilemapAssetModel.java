@@ -21,7 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +42,8 @@ public class TilemapAssetModel extends AssetModel {
 	private String _url;
 	private String _data;
 	private String _format;
-	private Tilemap _tilemap;
+	private TilemapJSON _tilemapJSON;
+	private int[][] _csvData;
 
 	public TilemapAssetModel(String key, AssetSectionModel section) throws JSONException {
 		super(key, AssetType.tilemap, section);
@@ -64,11 +67,11 @@ public class TilemapAssetModel extends AssetModel {
 		_format = jsonDoc.optString("format", TILEMAP_CSV);
 	}
 
-	public class Tilemap {
+	public class TilemapJSON {
 		private List<Layer> _layers;
 		private List<Tileset> _tilesets;
 
-		public Tilemap() {
+		public TilemapJSON() {
 			_layers = new ArrayList<>();
 			_tilesets = new ArrayList<>();
 		}
@@ -159,61 +162,139 @@ public class TilemapAssetModel extends AssetModel {
 	}
 
 	public void buildTilemap() {
-		// TODO: missing if it is json format.
-		Tilemap tilemap = new Tilemap();
-		if (_format != null && _format.equals(TILEMAP_TILED_JSON)) {
-			try {
-				String data = normalizeString(_data);
-				if (data == null) {
-					IFile file = getFileFromUrl(_url);
-					if (file != null && file.exists()) {
-						try (InputStream input = file.getContents()) {
-							data = PhaserEditorUI.readString(input);
-						}
-					}
-				}
-				if (data != null) {
-					JSONObject obj = new JSONObject(data);
-					{
-						List<Layer> layers = tilemap.getLayers();
-						JSONArray array = obj.getJSONArray("layers");
-						for (int i = 0; i < array.length(); i++) {
-							JSONObject elem = array.getJSONObject(i);
-							Layer layerInfo = new Layer();
-							layerInfo.setName(elem.getString("name"));
-							layers.add(layerInfo);
-						}
-					}
-					{
-						List<Tileset> tilesets = tilemap.getTilesets();
-						JSONArray array = obj.getJSONArray("tilesets");
-						for (int i = 0; i < array.length(); i++) {
-							JSONObject elem = array.getJSONObject(i);
-							Tileset tileset = new Tileset();
-							tileset.setName(elem.getString("name"));
-							tileset.setImage(elem.getString("image"));
-							tilesets.add(tileset);
-						}
-					}
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		if (_format == null) {
+			return;
 		}
-		_tilemap = tilemap;
+
+		_csvData = new int[0][0];
+		_tilemapJSON = new TilemapJSON();
+		
+		if (isJSONFormat()) {
+			buildTilemapJSON();
+		} else {
+			buildTilemapCSV();
+		}
+
 	}
 
-	public Tilemap getTilemap() {
-		if (_tilemap == null) {
+	private void buildTilemapCSV() {
+		List<List<Integer>> data = new ArrayList<>();
+
+		try {
+			IFile file = getFileFromUrl(_url);
+			if (file != null && file.exists()) {
+				try (InputStream input = file.getContents()) {
+					
+					StringBuilder token = new StringBuilder();
+
+					BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+					String line;
+					while ((line = reader.readLine()) != null) {
+						
+						List<Integer> dataRow = new ArrayList<>();
+						
+						for (char c : line.toCharArray()) {
+							if (c == ',') {
+								dataRow.add(Integer.valueOf(Integer.parseInt(token.toString())));
+								token = new StringBuilder();
+							} else {
+								token.append(c);
+							}
+						}
+
+						dataRow.add(Integer.valueOf(Integer.parseInt(token.toString())));
+						token = new StringBuilder();
+
+						data.add(dataRow);
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		int rows = data.size();
+
+		if (rows == 0) {
+			_csvData = new int[0][0];
+		} else {
+			// row x column
+			int cols = data.get(0).size();
+
+			int[][] csvData = new int[rows][cols];
+
+			for (int i = 0; i < rows; i++) {
+				List<Integer> row = data.get(i);
+				for (int j = 0; j < cols; j++) {
+					csvData[i][j] = row.get(j).intValue();
+				}
+			}
+			_csvData = csvData;
+		}
+
+	}
+
+	public int[][] getCsvData() {
+		if (_csvData == null) {
 			buildTilemap();
 		}
-		return _tilemap;
+		return _csvData;
+	}
+
+	private void buildTilemapJSON() {
+		TilemapJSON tilemap = new TilemapJSON();
+		try {
+			String data = normalizeString(_data);
+			if (data == null) {
+				IFile file = getFileFromUrl(_url);
+				if (file != null && file.exists()) {
+					try (InputStream input = file.getContents()) {
+						data = PhaserEditorUI.readString(input);
+					}
+				}
+			}
+			if (data != null) {
+				JSONObject obj = new JSONObject(data);
+				{
+					List<Layer> layers = tilemap.getLayers();
+					JSONArray array = obj.getJSONArray("layers");
+					for (int i = 0; i < array.length(); i++) {
+						JSONObject elem = array.getJSONObject(i);
+						Layer layerInfo = new Layer();
+						layerInfo.setName(elem.getString("name"));
+						layers.add(layerInfo);
+					}
+				}
+				{
+					List<Tileset> tilesets = tilemap.getTilesets();
+					JSONArray array = obj.getJSONArray("tilesets");
+					for (int i = 0; i < array.length(); i++) {
+						JSONObject elem = array.getJSONObject(i);
+						Tileset tileset = new Tileset();
+						tileset.setName(elem.getString("name"));
+						tileset.setImage(elem.getString("image"));
+						tilesets.add(tileset);
+					}
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		_tilemapJSON = tilemap;
+	}
+
+	public TilemapJSON getTilemapJSON() {
+		if (_tilemapJSON == null) {
+			buildTilemap();
+		}
+		return _tilemapJSON;
 	}
 
 	@Override
 	public List<? extends IAssetElementModel> getSubElements() {
 		List<IAssetElementModel> list = new ArrayList<>();
-		Tilemap tilemap = getTilemap();
+		TilemapJSON tilemap = getTilemapJSON();
 		list.addAll(tilemap.getLayers());
 		list.addAll(tilemap.getTilesets());
 		return list;
@@ -279,6 +360,14 @@ public class TilemapAssetModel extends AssetModel {
 
 	public String getFormat() {
 		return _format;
+	}
+
+	public boolean isJSONFormat() {
+		return _format != null && _format.equals(TILEMAP_TILED_JSON);
+	}
+
+	public boolean isCSVFormat() {
+		return _format != null && _format.equals(TILEMAP_CSV);
 	}
 
 	@Override

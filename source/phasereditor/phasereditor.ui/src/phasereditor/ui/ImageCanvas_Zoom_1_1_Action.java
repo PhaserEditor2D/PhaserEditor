@@ -29,13 +29,13 @@ import org.eclipse.jface.action.Action;
  */
 public class ImageCanvas_Zoom_1_1_Action extends Action {
 
-	private ImageCanvas _canvas;
+	private IZoomable _canvas;
 
 	public ImageCanvas_Zoom_1_1_Action() {
 		this(null);
 	}
 
-	public ImageCanvas_Zoom_1_1_Action(ImageCanvas canvas) {
+	public ImageCanvas_Zoom_1_1_Action(IZoomable canvas) {
 		_canvas = canvas;
 		setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_ZOOM_RESTORE));
 		setToolTipText("Reset the image to the original size.");
@@ -43,14 +43,14 @@ public class ImageCanvas_Zoom_1_1_Action extends Action {
 
 	@Override
 	public void run() {
-		ImageCanvas canvas = getImageCanvas();
+		IZoomable canvas = getImageCanvas();
 		canvas.setScale(1);
 		canvas.setOffsetX(0);
 		canvas.setOffsetY(0);
 		canvas.redraw();
 	}
 
-	public ImageCanvas getImageCanvas() {
+	public IZoomable getImageCanvas() {
 		return _canvas;
 	}
 }

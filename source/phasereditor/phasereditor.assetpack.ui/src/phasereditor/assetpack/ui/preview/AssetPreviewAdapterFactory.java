@@ -62,7 +62,8 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 	@Override
 	public Object getAdapter(Object adaptable, Class adapterType) {
 		if (adaptable instanceof AssetModel) {
-			AssetType type = ((AssetModel) adaptable).getType();
+			AssetModel asset = (AssetModel) adaptable;
+			AssetType type = asset.getType();
 			switch (type) {
 			case image:
 				return createImagePreviewAdapter();
@@ -77,7 +78,11 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			case atlas:
 				return createAtlasPreviewAdapter();
 			case tilemap:
-				return createTilemapPreviewAdapter();
+				TilemapAssetModel tilemap = (TilemapAssetModel) asset;
+				if (tilemap.isCSVFormat()) {
+					return createTilemapCSVPreviewAdapter();
+				}
+				return createTilemapJSONPreviewAdapter();
 			case bitmapFont:
 				return createBitmapFontPreviewAdapter();
 			case physics:
@@ -242,27 +247,57 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 		};
 	}
 
-	private static IPreviewFactory createTilemapPreviewAdapter() {
+	private static IPreviewFactory createTilemapJSONPreviewAdapter() {
 		return new AssetModelPreviewFactory() {
 
 			@Override
 			public void updateControl2(Control preview, Object element) {
-				((TilemapAssetPreviewComp) preview).setModel((TilemapAssetModel) element);
+				((TilemapJSONAssetPreviewComp) preview).setModel((TilemapAssetModel) element);
 			}
 
 			@Override
 			public void selectInControl(Control preview, Object element) {
-				((TilemapAssetPreviewComp) preview).selectElement(element);
+				((TilemapJSONAssetPreviewComp) preview).selectElement(element);
 			}
 
 			@Override
 			public Control createControl(Composite previewContainer) {
-				return new TilemapAssetPreviewComp(previewContainer, SWT.NONE);
+				return new TilemapJSONAssetPreviewComp(previewContainer, SWT.NONE);
 			}
 
 			@Override
 			public boolean canReusePreviewControl(Control c, Object elem) {
-				return c instanceof TilemapAssetPreviewComp;
+				return c instanceof TilemapJSONAssetPreviewComp;
+			}
+		};
+	}
+	
+	private static IPreviewFactory createTilemapCSVPreviewAdapter() {
+		return new AssetModelPreviewFactory() {
+
+			@Override
+			public void updateControl2(Control preview, Object element) {
+				((TilemapCSVAssetPreviewComp) preview).setModel((TilemapAssetModel) element);
+			}
+
+			@Override
+			public void selectInControl(Control preview, Object element) {
+				// nothing
+			}
+
+			@Override
+			public Control createControl(Composite previewContainer) {
+				return new TilemapCSVAssetPreviewComp(previewContainer, SWT.NONE);
+			}
+
+			@Override
+			public boolean canReusePreviewControl(Control c, Object elem) {
+				return c instanceof TilemapCSVAssetPreviewComp;
+			}
+			
+			@Override
+			public void updateToolBar(IToolBarManager toolbar, Control preview) {
+				((TilemapCSVAssetPreviewComp) preview).createToolBar(toolbar);
 			}
 		};
 	}

@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel.Layer;
-import phasereditor.assetpack.core.TilemapAssetModel.Tilemap;
+import phasereditor.assetpack.core.TilemapAssetModel.TilemapJSON;
 import phasereditor.assetpack.core.TilemapAssetModel.Tileset;
 import phasereditor.ui.info.BaseInformationControl;
 
@@ -48,7 +48,7 @@ public class TilemapAssetInformationControl extends BaseInformationControl {
 	protected void updateContent(Control control, Object model) {
 		Label label = (Label) control;
 		TilemapAssetModel asset = (TilemapAssetModel) model;
-		Tilemap tilemap = asset.getTilemap();
+		TilemapJSON tilemap = asset.getTilemapJSON();
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("layers:\n");

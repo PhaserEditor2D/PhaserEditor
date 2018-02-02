@@ -303,4 +303,19 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 	public int getOverIndex() {
 		return _overIndex;
 	}
+
+	@Override
+	public void setScale(float i) {
+		//
+	}
+
+	@Override
+	public void setOffsetX(int i) {
+		//
+	}
+
+	@Override
+	public void setOffsetY(int i) {
+		//
+	}
 }

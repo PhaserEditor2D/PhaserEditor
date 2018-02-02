@@ -48,7 +48,7 @@ import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel.AssetAudioSprite;
 import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
-import phasereditor.assetpack.core.TilemapAssetModel.Tilemap;
+import phasereditor.assetpack.core.TilemapAssetModel.TilemapJSON;
 import phasereditor.assetpack.ui.AssetsContentProvider;
 import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.core.CanvasFile;
@@ -194,9 +194,13 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 			case spritesheet:
 				return asset.getSubElements().toArray();
 			case tilemap:
-				Tilemap tilemap = ((TilemapAssetModel) asset).getTilemap();
-				return new Object[] { new Container("Layers", tilemap.getLayers().toArray()),
-						new Container("Tilesets", tilemap.getTilesets().toArray()) };
+				TilemapAssetModel tilemapAsset = (TilemapAssetModel) asset;
+				if (tilemapAsset.isJSONFormat()) {
+					TilemapJSON tilemap = tilemapAsset.getTilemapJSON();
+					return new Object[] { new Container("Layers", tilemap.getLayers().toArray()),
+							new Container("Tilesets", tilemap.getTilesets().toArray()) };
+				}
+				return new Object[0];
 			case physics:
 				List<PhysicsAssetModel.SpriteData> sprites = ((PhysicsAssetModel) asset).getSprites();
 				return sprites.toArray();

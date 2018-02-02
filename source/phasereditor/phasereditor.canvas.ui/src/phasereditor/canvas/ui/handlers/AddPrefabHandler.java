@@ -35,11 +35,11 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetsContentProvider;
+import phasereditor.assetpack.ui.SelectTextureDialog;
 import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.core.CanvasFile;
 import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.ui.CanvasUI;
-import phasereditor.canvas.ui.editors.SelectTextureDialog;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 
 /**

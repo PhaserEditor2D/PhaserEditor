@@ -226,6 +226,7 @@ public class ImageCanvas extends Canvas implements PaintListener, IZoomable {
 		setOffsetY((int) calc.offsetY);
 	}
 
+	@Override
 	public void setScale(float scale) {
 		_scale = scale;
 	}
@@ -238,6 +239,7 @@ public class ImageCanvas extends Canvas implements PaintListener, IZoomable {
 		return _offsetX;
 	}
 
+	@Override
 	public void setOffsetX(int offsetX) {
 		_offsetX = offsetX;
 	}
@@ -246,6 +248,7 @@ public class ImageCanvas extends Canvas implements PaintListener, IZoomable {
 		return _offsetY;
 	}
 
+	@Override
 	public void setOffsetY(int offsetY) {
 		_offsetY = offsetY;
 	}

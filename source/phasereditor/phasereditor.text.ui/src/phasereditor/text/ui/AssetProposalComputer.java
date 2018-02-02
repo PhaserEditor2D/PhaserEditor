@@ -39,7 +39,7 @@ import phasereditor.assetpack.core.AudioSpriteAssetModel.AssetAudioSprite;
 import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel.Layer;
-import phasereditor.assetpack.core.TilemapAssetModel.Tilemap;
+import phasereditor.assetpack.core.TilemapAssetModel.TilemapJSON;
 import phasereditor.assetpack.core.TilemapAssetModel.Tileset;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.preview.AtlasAssetInformationControl;
@@ -175,7 +175,7 @@ public class AssetProposalComputer extends BaseProposalComputer {
 					propData.setControlCreator(new GenericInformationControlCreator(
 							TilemapAssetInformationControl.class, TilemapAssetInformationControl::new));
 
-					Tilemap tilemap = ((TilemapAssetModel) asset).getTilemap();
+					TilemapJSON tilemap = ((TilemapAssetModel) asset).getTilemapJSON();
 
 					for (Layer layer : tilemap.getLayers()) {
 						String display = "\"" + layer.getName() + "\" - layer of tilemap";

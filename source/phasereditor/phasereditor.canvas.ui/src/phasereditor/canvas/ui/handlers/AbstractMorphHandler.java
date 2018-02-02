@@ -12,6 +12,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.ui.SelectTextureDialog;
 import phasereditor.canvas.core.AssetSpriteModel;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BitmapTextModel;
@@ -19,7 +20,6 @@ import phasereditor.canvas.core.ITextSpriteModel;
 import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
-import phasereditor.canvas.ui.editors.SelectTextureDialog;
 import phasereditor.canvas.ui.editors.grid.editors.BitmapTextFontDialog;
 import phasereditor.canvas.ui.editors.grid.editors.TextDialog;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
