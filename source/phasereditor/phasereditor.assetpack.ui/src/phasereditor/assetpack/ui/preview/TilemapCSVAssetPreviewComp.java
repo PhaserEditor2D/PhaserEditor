@@ -23,6 +23,7 @@ package phasereditor.assetpack.ui.preview;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
@@ -34,12 +35,18 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IMemento;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
+import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.ui.SelectTextureDialog;
 import phasereditor.assetpack.ui.TextureListContentProvider;
+import phasereditor.ui.EditorSharedImages;
+import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 import phasereditor.ui.ZoomCanvas;
@@ -50,6 +57,10 @@ import phasereditor.ui.ZoomCanvas;
  */
 public class TilemapCSVAssetPreviewComp extends ZoomCanvas {
 
+	private static final String MEMENTO_IMAGE_KEY = "phasereditor.assetpack.ui.tilemap.csv.image";
+	private static final String MEMENTO_TILE_WIDTH = "phasereditor.assetpack.ui.tilemap.csv.tileWidth";
+	private static final String MEMENTO_TILE_HEIGHT = "phasereditor.assetpack.ui.tilemap.csv.tileHeight";
+
 	private TilemapAssetModel _model;
 	private Point _imageSize = new Point(1, 1);
 	private int _tileWidth = 16;
@@ -58,6 +69,7 @@ public class TilemapCSVAssetPreviewComp extends ZoomCanvas {
 	protected ImageAssetModel _imageModel;
 	private Image _tileSetImage;
 	private Image _renderImage;
+	private String _initialImageRef;
 
 	public TilemapCSVAssetPreviewComp(Composite parent, int style) {
 		super(parent, style);
@@ -96,6 +108,22 @@ public class TilemapCSVAssetPreviewComp extends ZoomCanvas {
 			}
 		}
 
+		if (_initialImageRef != null) {
+			if (model != null) {
+				try {
+					JSONObject obj = new JSONObject(new JSONTokener(_initialImageRef));
+					Object asset = AssetPackCore.findAssetElement(model.getPack().getFile().getProject(), obj);
+					if (asset instanceof ImageAssetModel) {
+						_imageModel = (ImageAssetModel) asset;
+						buildTilesetImage();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			_initialImageRef = null;
+		}
+
 		buildMapImage();
 
 		redraw();
@@ -105,6 +133,14 @@ public class TilemapCSVAssetPreviewComp extends ZoomCanvas {
 	public void setImageModel(ImageAssetModel imageModel) {
 		_imageModel = imageModel;
 
+		buildTilesetImage();
+
+		buildMapImage();
+
+		redraw();
+	}
+
+	private void buildTilesetImage() {
 		Image old = _tileSetImage;
 
 		if (_imageModel == null) {
@@ -116,10 +152,6 @@ public class TilemapCSVAssetPreviewComp extends ZoomCanvas {
 		if (old != null) {
 			old.dispose();
 		}
-
-		buildMapImage();
-
-		redraw();
 	}
 
 	void buildMapImage() {
@@ -154,7 +186,11 @@ public class TilemapCSVAssetPreviewComp extends ZoomCanvas {
 						int srcX = frame * _tileWidth % b.width;
 						int srcY = frame * _tileWidth / b.width * _tileHeight;
 
-						gc.drawImage(_tileSetImage, srcX, srcY, _tileWidth, _tileHeight, x, y, w, h);
+						try {
+							gc.drawImage(_tileSetImage, srcX, srcY, _tileWidth, _tileHeight, x, y, w, h);
+						} catch (IllegalArgumentException e) {
+							gc.drawText("Invalid parameters. Please check the tiles size.", 10, 10);
+						}
 					}
 				}
 
@@ -241,14 +277,34 @@ public class TilemapCSVAssetPreviewComp extends ZoomCanvas {
 	public void createToolBar(IToolBarManager toolbar) {
 		toolbar.add(new ImageCanvas_Zoom_1_1_Action(this));
 		toolbar.add(new ImageCanvas_Zoom_FitWindow_Action(this));
-		toolbar.add(new Action(getTileWidth() + "x" + getTileHeight()) {
+
+		toolbar.add(new Separator());
+
+		toolbar.add(createSelectTilesetImageAction());
+		toolbar.add(createSetTileSizeAction());
+	}
+
+	private Action createSetTileSizeAction() {
+		return new Action("Set the tiles size") {
+			{
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_SETTINGS));
+			}
+
 			@Override
 			public void run() {
 				InputDialog dlg = new InputDialog(getShell(), "Tile Size", "Set the tile size (eg. 16x16)",
 						getTileWidth() + "x" + getTileHeight(), new IInputValidator() {
 
 							@Override
-							public String isValid(String newText) {
+							public String isValid(String str) {
+								try {
+									String[] tuple = str.split("x");
+									Integer.parseInt(tuple[0]);
+									Integer.parseInt(tuple[1]);
+								} catch (Exception e) {
+									return "Invalid format. Please enter something like 16x16";
+								}
+
 								return null;
 							}
 						});
@@ -261,8 +317,16 @@ public class TilemapCSVAssetPreviewComp extends ZoomCanvas {
 					redraw();
 				}
 			}
-		});
-		toolbar.add(new Action("T") {
+		};
+	}
+
+	private Action createSelectTilesetImageAction() {
+		return new Action("Select the tileset image.") {
+
+			{
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_IMAGE));
+			}
+
 			@Override
 			public void run() {
 				TilemapAssetModel model = getModel();
@@ -284,7 +348,7 @@ public class TilemapCSVAssetPreviewComp extends ZoomCanvas {
 					setImageModel(image);
 				}
 			}
-		});
+		};
 	}
 
 	public int getTileWidth() {
@@ -301,6 +365,34 @@ public class TilemapCSVAssetPreviewComp extends ZoomCanvas {
 
 	public void setTileHeight(int tileHeight) {
 		_tileHeight = tileHeight;
+	}
+
+	public void initState(IMemento memento) {
+		_initialImageRef = memento.getString(MEMENTO_IMAGE_KEY);
+
+		{
+			Integer value = memento.getInteger(MEMENTO_TILE_WIDTH);
+			_tileWidth = value == null ? _tileWidth : value.intValue();
+		}
+
+		{
+			Integer value = memento.getInteger(MEMENTO_TILE_HEIGHT);
+			_tileHeight = value == null ? _tileHeight : value.intValue();
+		}
+
+		if (_initialImageRef != null) {
+			setModel(_model);
+		}
+	}
+
+	public void saveState(IMemento memento) {
+		if (_imageModel != null) {
+			JSONObject ref = AssetPackCore.getAssetJSONReference(_imageModel);
+			memento.putString(MEMENTO_IMAGE_KEY, ref.toString());
+		}
+
+		memento.putInteger(MEMENTO_TILE_WIDTH, _tileWidth);
+		memento.putInteger(MEMENTO_TILE_HEIGHT, _tileHeight);
 	}
 
 }

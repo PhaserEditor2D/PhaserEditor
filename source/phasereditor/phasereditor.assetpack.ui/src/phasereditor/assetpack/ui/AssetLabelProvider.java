@@ -52,6 +52,7 @@ import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.ScriptAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
+import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.VideoAssetModel;
 import phasereditor.audio.core.AudioCore;
 import phasereditor.ui.EditorSharedImages;
@@ -114,7 +115,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 	public static Image getKeyImage() {
 		return EditorSharedImages.getImage(IMG_ASSET_KEY);
 	}
-	
+
 	public static Image getGroupImage() {
 		return EditorSharedImages.getImage(IMG_ASSET_GROUP);
 	}
@@ -136,7 +137,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 			if (element instanceof ImageAssetModel) {
 				file = ((ImageAssetModel) element).getUrlFile();
 			}
-			
+
 			if (element instanceof ImageAssetModel.Frame) {
 				file = ((ImageAssetModel.Frame) element).getImageFile();
 			}
@@ -237,6 +238,10 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 			}
 		}
 
+		if (element instanceof TilemapAssetModel) {
+			return EditorSharedImages.getImage(IMG_TILED);
+		}
+
 		if (element instanceof AssetSectionModel) {
 			return getSectionImage();
 		}
@@ -267,7 +272,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 	public Image getIcon(IFile file) {
 		return _cache.getIcon(file, _iconSize, null);
 	}
-	
+
 	public Image getIcon(String filename) {
 		return _cache.getIcon(filename, _iconSize, null);
 	}
