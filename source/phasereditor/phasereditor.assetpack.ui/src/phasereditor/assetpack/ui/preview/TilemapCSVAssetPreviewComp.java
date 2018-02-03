@@ -126,8 +126,7 @@ public class TilemapCSVAssetPreviewComp extends ZoomCanvas {
 
 		buildMapImage();
 
-		redraw();
-		// reset();
+		reset();
 	}
 
 	public void setImageModel(ImageAssetModel imageModel) {

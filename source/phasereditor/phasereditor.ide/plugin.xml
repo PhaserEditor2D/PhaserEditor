@@ -164,19 +164,5 @@
                            class="phasereditor.ide.intro.IDEStartup">
                      </startup>
                   </extension>
-                  <extension
-                        point="org.eclipse.ui.menus">
-                     <menuContribution
-                           allPopups="false"
-                           locationURI="toolbar:org.eclipse.ui.navigator.ProjectExplorer?after=FRAME_ACTION_GROUP_ID">
-                        <command
-                              commandId="org.eclipse.ui.navigate.goInto"
-                              disabledIcon="platform:/plugin/phasereditor.ui/icons/d/gointo_nav.png"
-                              icon="platform:/plugin/phasereditor.ui/icons/gointo_nav.png"
-                              label="Go Into"
-                              style="push">
-                        </command>
-                     </menuContribution>
-                  </extension>
 
 </plugin>
