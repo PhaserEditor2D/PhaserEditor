@@ -34,6 +34,7 @@ import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
+import phasereditor.assetpack.core.TilemapAssetModel;
 
 /**
  * @author arian
@@ -56,6 +57,8 @@ public class CanvasModelFactory {
 			return new TextModel(parent);
 		} else if (obj instanceof BitmapFontAssetModel) {
 			return new BitmapTextModel(parent, (BitmapFontAssetModel) obj);
+		} else if (obj instanceof TilemapAssetModel) {
+			return new TilemapSpriteModel(parent, (TilemapAssetModel) obj);
 		}
 		return null;
 	}
@@ -120,6 +123,9 @@ public class CanvasModelFactory {
 				break;
 			case BitmapTextModel.TYPE_NAME:
 				model = new BitmapTextModel(parent, data);
+				break;
+			case TilemapSpriteModel.TYPE_NAME:
+				model = new TilemapSpriteModel(parent, data);
 				break;
 			case GroupModel.TYPE_NAME:
 				model = new GroupModel(parent, data);

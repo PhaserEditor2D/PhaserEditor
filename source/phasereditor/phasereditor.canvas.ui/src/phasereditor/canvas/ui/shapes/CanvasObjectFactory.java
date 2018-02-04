@@ -32,6 +32,7 @@ import phasereditor.canvas.core.MissingPrefabModel;
 import phasereditor.canvas.core.SpritesheetSpriteModel;
 import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.core.TileSpriteModel;
+import phasereditor.canvas.core.TilemapSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 
 /**
@@ -61,6 +62,8 @@ public class CanvasObjectFactory {
 			return new TextControl(canvas, (TextModel) model);
 		} else if (model instanceof BitmapTextModel) {
 			return new BitmapTextControl(canvas, (BitmapTextModel) model);
+		} else if (model instanceof TilemapSpriteModel) {
+			return new TilemapSpriteControl(canvas, (TilemapSpriteModel) model);
 		}
 		return null;
 	}
