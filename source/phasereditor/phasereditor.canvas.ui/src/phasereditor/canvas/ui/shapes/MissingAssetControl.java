@@ -66,17 +66,17 @@ public class MissingAssetControl extends BaseObjectControl<MissingAssetSpriteMod
 		JSONObject data = getModel().getSrcData();
 		JSONObject ref = data.getJSONObject("asset-ref");
 		Object asset = AssetPackCore.findAssetElement(getModel().getWorld().getProject(), ref);
-		
+
 		if (asset != null && asset instanceof IAssetKey) {
 			int i = getModel().getIndex();
-			
+
 			if (asset instanceof ImageAssetModel) {
 				asset = ((ImageAssetModel) asset).getFrame();
 			} else if (asset instanceof BitmapFontAssetModel) {
-				asset = ((BitmapFontAssetModel)asset).getFrame();
+				asset = ((BitmapFontAssetModel) asset).getFrame();
 			}
 
-			BaseObjectModel newModel = createModelWithTexture((IAssetFrameModel) asset);
+			BaseObjectModel newModel = createModelWithTexture((IAssetKey) asset);
 			BaseObjectControl<?> newControl = CanvasObjectFactory.createObjectControl(getCanvas(), newModel);
 			GroupControl parentControl = getGroup().getControl();
 
@@ -90,7 +90,7 @@ public class MissingAssetControl extends BaseObjectControl<MissingAssetSpriteMod
 	}
 
 	@Override
-	public BaseSpriteModel createModelWithTexture(IAssetFrameModel textureKey) {
+	public BaseSpriteModel createModelWithTexture(IAssetKey textureKey) {
 		JSONObject data = new JSONObject(getModel().getSrcData().toString());
 
 		CanvasModelFactory.changeTextureToObjectData(data, textureKey);

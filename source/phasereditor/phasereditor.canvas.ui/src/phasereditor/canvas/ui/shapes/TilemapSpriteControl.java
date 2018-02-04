@@ -85,7 +85,7 @@ public class TilemapSpriteControl extends BaseSpriteControl<TilemapSpriteModel> 
 
 		getNode().updateContent();
 	}
-
+	
 	@Override
 	protected void initPGridModel(PGridModel propModel) {
 		super.initPGridModel(propModel);

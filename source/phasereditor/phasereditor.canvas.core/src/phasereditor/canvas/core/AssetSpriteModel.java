@@ -136,8 +136,7 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 		} else if (asset instanceof BitmapFontAssetModel.Frame) {
 			// get the asset from the frame
 			_assetKey = (T) (asset.getAsset());
-		}
-		else {
+		} else {
 			_assetKey = (T) asset;
 		}
 	}
@@ -199,16 +198,17 @@ public class AssetSpriteModel<T extends IAssetKey> extends BaseSpriteModel {
 		throw new MissingAssetException(data);
 	}
 
-	/**
-	 * @param assetKey
-	 */
 	@SuppressWarnings("unchecked")
 	protected T buildAssetKey(T assetKey) {
+		return (T) buildAnyAssetKey(assetKey);
+	}
+
+	protected static IAssetKey buildAnyAssetKey(IAssetKey assetKey) {
 		if (assetKey == null) {
 			return null;
 		}
 
-		T freshVersion = (T) assetKey.getSharedVersion();
+		IAssetKey freshVersion = assetKey.getSharedVersion();
 
 		return freshVersion;
 	}

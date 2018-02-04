@@ -25,6 +25,7 @@ import java.util.List;
 
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.canvas.core.BaseSpriteModel;
@@ -316,7 +317,7 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 	}
 
 	@Override
-	public BaseSpriteModel createModelWithTexture(IAssetFrameModel textureKey) {
+	public BaseSpriteModel createModelWithTexture(IAssetKey textureKey) {
 		return new TileSpriteModel(getGroup().getModel(), textureKey);
 	}
 

@@ -25,6 +25,7 @@ import org.eclipse.core.resources.IProject;
 import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 
@@ -80,6 +81,15 @@ public class TilemapSpriteModel extends AssetSpriteModel<TilemapAssetModel> {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void build() {
+		super.build();
+
+		IAssetKey asset = buildAnyAssetKey(_tilesetImage);
+
+		_tilesetImage = asset instanceof ImageAssetModel ? (ImageAssetModel) asset : null;
 	}
 
 	public int getTileWidth() {

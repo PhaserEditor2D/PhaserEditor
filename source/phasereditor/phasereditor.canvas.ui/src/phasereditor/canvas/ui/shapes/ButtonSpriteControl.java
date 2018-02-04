@@ -27,6 +27,7 @@ import java.util.List;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.FrameData;
 import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.ButtonSpriteModel;
@@ -283,9 +284,9 @@ public class ButtonSpriteControl extends BaseSpriteControl<ButtonSpriteModel> {
 	}
 
 	@Override
-	public BaseSpriteModel createModelWithTexture(IAssetFrameModel textureKey) {
+	public BaseSpriteModel createModelWithTexture(IAssetKey textureKey) {
 		AssetModel old = getModel().getAssetKey().getAsset().getSharedVersion();
-		ButtonSpriteModel model = new ButtonSpriteModel(getGroup().getModel(), textureKey);
+		ButtonSpriteModel model = new ButtonSpriteModel(getGroup().getModel(), (IAssetFrameModel) textureKey);
 
 		if (old == textureKey.getAsset().getSharedVersion()) {
 			if (model.getDownFrame() != null) {

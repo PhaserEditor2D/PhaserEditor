@@ -21,7 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
-import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.canvas.core.BaseSpriteModel;
 
 /**
@@ -29,5 +29,5 @@ import phasereditor.canvas.core.BaseSpriteModel;
  *
  */
 public interface ITextureChangeableControl {
-	public BaseSpriteModel createModelWithTexture(IAssetFrameModel textureKey);
+	public BaseSpriteModel createModelWithTexture(IAssetKey textureKey);
 }
