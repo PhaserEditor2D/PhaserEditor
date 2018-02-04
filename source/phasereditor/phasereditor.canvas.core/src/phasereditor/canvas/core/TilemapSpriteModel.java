@@ -21,8 +21,11 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
+import org.eclipse.core.resources.IProject;
 import org.json.JSONObject;
 
+import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 
 /**
@@ -36,6 +39,7 @@ public class TilemapSpriteModel extends AssetSpriteModel<TilemapAssetModel> {
 
 	private int _tileWidth;
 	private int _tileHeight;
+	private ImageAssetModel _tilesetImage;
 
 	public TilemapSpriteModel(GroupModel parent, TilemapAssetModel assetKey) {
 		super(parent, assetKey, TYPE_NAME);
@@ -53,6 +57,7 @@ public class TilemapSpriteModel extends AssetSpriteModel<TilemapAssetModel> {
 
 		jsonInfo.put("tileWidth", _tileWidth, 32);
 		jsonInfo.put("tileHeight", _tileHeight, 32);
+		jsonInfo.put("tilesetImage", _tilesetImage == null ? null : AssetPackCore.getAssetJSONReference(_tilesetImage));
 	}
 
 	@Override
@@ -61,6 +66,20 @@ public class TilemapSpriteModel extends AssetSpriteModel<TilemapAssetModel> {
 
 		_tileWidth = jsonInfo.optInt("tileWidth", 32);
 		_tileHeight = jsonInfo.optInt("tileHeight", 32);
+
+		{
+			JSONObject jsonRef = jsonInfo.optJSONObject("tilesetImage");
+
+			_tilesetImage = null;
+
+			if (jsonRef != null) {
+				IProject project = getWorld().getProject();
+				Object asset = AssetPackCore.findAssetElement(project, jsonRef);
+				if (asset != null && asset instanceof ImageAssetModel) {
+					_tilesetImage = (ImageAssetModel) asset;
+				}
+			}
+		}
 	}
 
 	public int getTileWidth() {
@@ -77,5 +96,13 @@ public class TilemapSpriteModel extends AssetSpriteModel<TilemapAssetModel> {
 
 	public void setTileHeight(int tileHeight) {
 		_tileHeight = tileHeight;
+	}
+
+	public ImageAssetModel getTilesetImage() {
+		return _tilesetImage;
+	}
+
+	public void setTilesetImage(ImageAssetModel tilesetImage) {
+		_tilesetImage = tilesetImage;
 	}
 }

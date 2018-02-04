@@ -21,9 +21,17 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.ImageAssetModel.Frame;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.canvas.core.TilemapSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
@@ -90,6 +98,7 @@ public class TilemapSpriteControl extends BaseSpriteControl<TilemapSpriteModel> 
 				getModel().setTileWidth(value.intValue());
 				if (notify) {
 					updateFromPropertyChange();
+					getCanvas().getSelectionBehavior().updateSelectedNodes_async();
 				}
 			}
 
@@ -112,6 +121,7 @@ public class TilemapSpriteControl extends BaseSpriteControl<TilemapSpriteModel> 
 				getModel().setTileHeight(value.intValue());
 				if (notify) {
 					updateFromPropertyChange();
+					getCanvas().getSelectionBehavior().updateSelectedNodes_async();
 				}
 			}
 
@@ -126,10 +136,42 @@ public class TilemapSpriteControl extends BaseSpriteControl<TilemapSpriteModel> 
 			}
 		};
 
+		PGridFrameProperty tilesetImage_prop = new PGridFrameProperty(getId(), "tilesetImage",
+				"The single tileset image of the CSV map.") {
+
+			@Override
+			public void setValue(IAssetFrameModel value, boolean notify) {
+				getModel().setTilesetImage(((ImageAssetModel.Frame) value).getAsset());
+				if (notify) {
+					updateFromPropertyChange();
+				}
+			}
+
+			@Override
+			public boolean isModified() {
+				return getModel().getTilesetImage() != null;
+			}
+
+			@Override
+			public IAssetFrameModel getValue() {
+				ImageAssetModel asset = getModel().getTilesetImage();
+				return asset == null? null : asset.getFrame();
+			}
+
+			@Override
+			public List<?> getFrames() {
+				List<Frame> list = AssetPackCore.getAssetPackModels(getModel().getWorld().getProject()).stream()
+						.flatMap(pack -> pack.getAssets().stream()).filter(asset -> asset instanceof ImageAssetModel)
+						.map(image -> ((ImageAssetModel) image).getFrame()).collect(Collectors.toList());
+				return list;
+			}
+		};
+
 		PGridSection section = new PGridSection("Tilemap");
 
 		section.add(tileWidth_prop);
 		section.add(tileHeight_prop);
+		section.add(tilesetImage_prop);
 
 		propModel.getSections().add(section);
 	}

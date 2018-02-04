@@ -50,6 +50,10 @@ public class ImageCache {
 	private static IResourceChangeListener _workspaceListener;
 
 	public static Image getFXImage(IFile file) {
+		return getFXImage(file, true);
+	}
+	
+	public static Image getFXImage(IFile file, boolean backgroundLoading) {
 
 		if (_workspaceListener == null) {
 			_workspaceListener = createWorkspaceListener();
@@ -63,13 +67,13 @@ public class ImageCache {
 				Container<Image> c = _fxcache.get(file);
 				if (t != c.token) {
 					c.token = t;
-					c.value = new Image("file:" + file.getLocation().makeAbsolute().toOSString(), true);
+					c.value = new Image("file:" + file.getLocation().makeAbsolute().toOSString(), backgroundLoading);
 				}
 				return c.value;
 			}
 			Container<Image> c = new Container<>();
 			c.token = t;
-			c.value = new Image("file:" + file.getLocation().makeAbsolute().toOSString(), true);
+			c.value = new Image("file:" + file.getLocation().makeAbsolute().toOSString(), backgroundLoading);
 			_fxcache.put(file, c);
 			return c.value;
 		}

@@ -23,14 +23,21 @@ package phasereditor.canvas.ui.shapes;
 
 import java.util.Arrays;
 
+import org.eclipse.core.resources.IFile;
+
+import javafx.geometry.Rectangle2D;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.canvas.core.TilemapSpriteModel;
+import phasereditor.ui.ImageCache;
 
 /**
  * @author arian
@@ -62,6 +69,62 @@ public class TilemapSpriteNode extends Pane implements ISpriteNode {
 	}
 
 	private void createMap_CSV() {
+		TilemapAssetModel asset = getModel().getAssetKey();
+
+		int[][] map = asset.getCsvData();
+
+		if (map.length == 0) {
+			getChildren().setAll(new Label("Tilemap CSV: empty map"));
+		} else {
+			ImageAssetModel tilesetAsset = getModel().getTilesetImage();
+
+			if (tilesetAsset != null) {
+				IFile file = tilesetAsset.getUrlFile();
+
+				if (file != null && file.exists()) {
+					Image image = ImageCache.getFXImage(file, false);
+					buildMap(image);
+					return;
+				}
+			}
+
+			buildFallbackMap();
+		}
+	}
+
+	private void buildMap(Image tileset) {
+		int tileW = getModel().getTileWidth();
+		int tileH = getModel().getTileHeight();
+
+		TilemapAssetModel asset = getModel().getAssetKey();
+
+		int[][] map = asset.getCsvData();
+
+		ImageView[] list = new ImageView[map.length * map[0].length];
+		int q = 0;
+
+		for (int i = 0; i < map.length; i++) {
+			int[] row = map[i];
+
+			for (int j = 0; j < row.length; j++) {
+				int frame = map[i][j];
+
+				ImageView view = new ImageView(tileset);
+
+				int tilesetW = (int) tileset.getWidth();
+				int srcX = frame * tileW % tilesetW;
+				int srcY = frame * tileW / tilesetW * tileH;
+
+				view.setViewport(new Rectangle2D(srcX, srcY, tileW, tileH));
+				view.relocate(j * tileW, i * tileH);
+
+				list[q++] = view;
+			}
+		}
+		getChildren().setAll(Arrays.asList(list));
+	}
+
+	private void buildFallbackMap() {
 
 		int tileW = getModel().getTileWidth();
 		int tileH = getModel().getTileHeight();
@@ -70,37 +133,32 @@ public class TilemapSpriteNode extends Pane implements ISpriteNode {
 
 		int[][] map = asset.getCsvData();
 
-		if (map.length == 0) {
-			getChildren().setAll(new Label("Tilemap CSV: empty map"));
-		} else {
-
-			int max = 0;
-			for (int i = 0; i < map.length; i++) {
-				for (int j = 0; j < map[i].length; j++) {
-					max = Math.max(map[i][j], max);
-				}
+		int max = 0;
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[i].length; j++) {
+				max = Math.max(map[i][j], max);
 			}
-
-			Color[] colors = generateColors(max);
-
-			Rectangle[] list = new Rectangle[map.length * map[0].length];
-			int q = 0;
-
-			for (int i = 0; i < map.length; i++) {
-				int[] row = map[i];
-
-				for (int j = 0; j < row.length; j++) {
-					int frame = map[i][j];
-					Color c = colors[frame % colors.length];
-					Rectangle r = new Rectangle(tileW, tileH);
-					r.setFill(c);
-					r.setLayoutX(j * tileW);
-					r.setLayoutY(i * tileH);
-					list[q++] = r;
-				}
-			}
-			getChildren().setAll(Arrays.asList(list));
 		}
+
+		Color[] colors = generateColors(max);
+
+		Rectangle[] list = new Rectangle[map.length * map[0].length];
+		int q = 0;
+
+		for (int i = 0; i < map.length; i++) {
+			int[] row = map[i];
+
+			for (int j = 0; j < row.length; j++) {
+				int frame = map[i][j];
+				Color c = colors[frame % colors.length];
+				Rectangle r = new Rectangle(tileW, tileH);
+				r.setFill(c);
+				r.setLayoutX(j * tileW);
+				r.setLayoutY(i * tileH);
+				list[q++] = r;
+			}
+		}
+		getChildren().setAll(Arrays.asList(list));
 	}
 
 	private static Color[] generateColors(int n) {

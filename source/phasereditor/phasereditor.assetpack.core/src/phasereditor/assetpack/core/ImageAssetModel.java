@@ -45,7 +45,7 @@ public class ImageAssetModel extends AssetModel {
 		}
 
 		@Override
-		public AssetModel getAsset() {
+		public ImageAssetModel getAsset() {
 			return ImageAssetModel.this;
 		}
 
