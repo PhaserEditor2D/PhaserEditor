@@ -271,7 +271,7 @@ public class AtlasAssetModel extends AssetModel {
 			_textureURL = newUrl;
 		}
 
-		if (url.equals(getFileFromUrl(_atlasURL))) {
+		if (url.equals(_atlasURL)) {
 			_atlasURL = newUrl;
 		}
 	}

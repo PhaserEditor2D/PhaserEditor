@@ -54,6 +54,7 @@ import phasereditor.canvas.core.SpritesheetSpriteModel;
 import phasereditor.canvas.core.StateSettings;
 import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.core.TileSpriteModel;
+import phasereditor.canvas.core.TilemapSpriteModel;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.lic.LicCore;
@@ -157,6 +158,13 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				String localName = getLocalVarName(obj);
 				String camel = getPublicFieldName(name);
 				line("this." + camel + " = " + localName + ";");
+				
+				if (obj instanceof TilemapSpriteModel) {
+					TilemapSpriteModel tilemap = (TilemapSpriteModel) obj;
+					if (tilemap.isCreateLayer()) {
+						line("this." + camel + "_layer = " + localName + "_layer;");
+					}
+				}
 			}
 
 			if (obj instanceof BaseSpriteModel && obj.isOverriding(BaseSpriteModel.PROPSET_ANIMATIONS)) {
@@ -468,6 +476,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 			} else if (model instanceof TextModel) {
 				// missing to use a Call instance to generate this
 				TextModel text = (TextModel) model;
+
 				Call call = new Call("text");
 				call.value(round(text.getX()));
 				call.value(round(text.getY()));
@@ -480,6 +489,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 			} else if (model instanceof BitmapTextModel) {
 				// missing to use a Call instance to generate this
 				BitmapTextModel bmpText = (BitmapTextModel) model;
+
 				Call call = new Call("bitmapText");
 				call.value(round(bmpText.getX()));
 				call.value(round(bmpText.getY()));
@@ -487,6 +497,15 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				String str = escapeLines(bmpText.getText());
 				call.string(str);
 				call.string(Integer.toString(bmpText.getFontSize()));
+				call.valueOrUndefined(parVar != null, parVar);
+
+				call.append();
+			} else if (model instanceof TilemapSpriteModel) {
+				TilemapSpriteModel tilemap = (TilemapSpriteModel) model;
+
+				Call call = new Call("tilemap");
+				call.string(tilemap.getAssetKey().getKey());
+				call.value(Integer.toString(tilemap.getTileWidth()), Integer.toString(tilemap.getTileHeight()));
 				call.valueOrUndefined(parVar != null, parVar);
 
 				call.append();
@@ -619,6 +638,28 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 			generateTileProps((TileSpriteModel) model);
 		} else if (model instanceof BitmapTextModel) {
 			generateBitmapTextProps((BitmapTextModel) model);
+		} else if (model instanceof TilemapSpriteModel) {
+			generateTilemapProps((TilemapSpriteModel) model);
+		}
+	}
+
+	private void generateTilemapProps(TilemapSpriteModel model) {
+		String varname = getLocalVarName(model);
+
+		ImageAssetModel tileset = model.getTilesetImage();
+
+		if (tileset != null) {
+			line(varname + ".addTilesetImage('" + tileset.getKey() + "');");
+
+			String layerVarname = varname + "_layer";
+
+			if (model.isCreateLayer()) {
+				line(layerVarname + " = " + varname + ".createLayer(0);");
+			}
+
+			if (model.isResizeWorld()) {
+				line(layerVarname + ".resizeWorld();");
+			}
 		}
 	}
 

@@ -29,6 +29,7 @@ import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.ButtonSpriteModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.TileSpriteModel;
+import phasereditor.canvas.core.TilemapSpriteModel;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.core.codegen.JSLikeCanvasCodeGenerator;
 
@@ -53,6 +54,13 @@ public interface ITSCodeGeneratorUtils {
 				String name = generator.getVarName(obj);
 				String camel = JSLikeCanvasCodeGenerator.getPublicFieldName(name);
 				generator.line("public " + camel + " : " + getObjectType(obj) + ";");
+				
+				if (obj instanceof TilemapSpriteModel) {
+					TilemapSpriteModel tilemap = (TilemapSpriteModel) obj;
+					if (tilemap.isCreateLayer()) {
+						generator.line("public " + camel + "_layer : Phaser.TilemapLayer;");
+					}
+				}
 			}
 
 			if (obj instanceof BaseSpriteModel && obj.isOverriding(BaseSpriteModel.PROPSET_ANIMATIONS)) {

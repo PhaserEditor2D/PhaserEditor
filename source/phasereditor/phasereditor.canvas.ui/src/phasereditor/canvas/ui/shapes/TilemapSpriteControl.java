@@ -31,6 +31,7 @@ import phasereditor.assetpack.core.ImageAssetModel.Frame;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.canvas.core.TilemapSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
 import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
@@ -85,7 +86,8 @@ public class TilemapSpriteControl extends BaseSpriteControl<TilemapSpriteModel> 
 
 		getNode().updateContent();
 	}
-	
+
+	@SuppressWarnings("boxing")
 	@Override
 	protected void initPGridModel(PGridModel propModel) {
 		super.initPGridModel(propModel);
@@ -155,7 +157,7 @@ public class TilemapSpriteControl extends BaseSpriteControl<TilemapSpriteModel> 
 			@Override
 			public IAssetFrameModel getValue() {
 				ImageAssetModel asset = getModel().getTilesetImage();
-				return asset == null? null : asset.getFrame();
+				return asset == null ? null : asset.getFrame();
 			}
 
 			@Override
@@ -167,11 +169,57 @@ public class TilemapSpriteControl extends BaseSpriteControl<TilemapSpriteModel> 
 			}
 		};
 
+		PGridBooleanProperty createLayer_prop = new PGridBooleanProperty(getId(), "createLayer",
+				help("Phaser.Tilemap.createLayer")) {
+
+			@Override
+			public void setValue(Boolean value, boolean notify) {
+				getModel().setCreateLayer(value);
+				if (notify) {
+					updateFromPropertyChange();
+				}
+			}
+
+			@Override
+			public Boolean getValue() {
+				return getModel().isCreateLayer();
+			}
+
+			@Override
+			public boolean isModified() {
+				return !getModel().isCreateLayer();
+			}
+		};
+
+		PGridBooleanProperty resizeWorld_prop = new PGridBooleanProperty(getId(), "resizeWorld",
+				help("Phaser.TilemapLayer.resizeWorld")) {
+
+			@Override
+			public void setValue(Boolean value, boolean notify) {
+				getModel().setResizeWorld(value);
+				if (notify) {
+					updateFromPropertyChange();
+				}
+			}
+
+			@Override
+			public Boolean getValue() {
+				return getModel().isResizeWorld();
+			}
+
+			@Override
+			public boolean isModified() {
+				return !getModel().isResizeWorld();
+			}
+		};
+
 		PGridSection section = new PGridSection("Tilemap");
 
 		section.add(tileWidth_prop);
 		section.add(tileHeight_prop);
 		section.add(tilesetImage_prop);
+		section.add(createLayer_prop);
+		section.add(resizeWorld_prop);
 
 		propModel.getSections().add(section);
 	}
