@@ -21,14 +21,24 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -49,13 +59,14 @@ import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
+import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.ZoomCanvas;
 
 /**
  * @author arian
  *
  */
-public class TilemapCSVAssetPreviewComp extends ZoomCanvas {
+public class TilemapCSVAssetPreviewComp extends ZoomCanvas implements MouseMoveListener, MouseListener, KeyListener {
 
 	private static final String MEMENTO_IMAGE_KEY = "phasereditor.assetpack.ui.tilemap.csv.image";
 	private static final String MEMENTO_TILE_WIDTH = "phasereditor.assetpack.ui.tilemap.csv.tileWidth";
@@ -70,11 +81,31 @@ public class TilemapCSVAssetPreviewComp extends ZoomCanvas {
 	private Image _tileSetImage;
 	private Image _renderImage;
 	private String _initialImageRef;
+	private int _mouseX;
+	private int _mouseY;
+	private List<Point> _selectedCells;
+	private int _mouseMapX;
+	private int _mouseMapY;
 
 	public TilemapCSVAssetPreviewComp(Composite parent, int style) {
 		super(parent, style);
 
+		_selectedCells = new ArrayList<Point>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean add(Point e) {
+				if (!contains(e)) {
+					return super.add(e);
+				}
+				return false;
+			}
+		};
+
 		addPaintListener(this);
+		addMouseMoveListener(this);
+		addMouseListener(this);
+		addKeyListener(this);
 	}
 
 	public void generateColors(int n) {
@@ -246,6 +277,10 @@ public class TilemapCSVAssetPreviewComp extends ZoomCanvas {
 
 				ZoomCalculator calc = calc();
 
+				float scale = calc.scale;
+				float offX = calc.offsetX;
+				float offY = calc.offsetY;
+
 				if (_renderImage == null) {
 
 					for (int i = 0; i < map.length; i++) {
@@ -255,24 +290,81 @@ public class TilemapCSVAssetPreviewComp extends ZoomCanvas {
 
 							int frame = map[i][j];
 
-							int w = (int) (getTileWidth() * calc.scale);
-							int h = (int) (getTileHeight() * calc.scale);
-							int x = (int) (j * getTileWidth() * calc.scale + calc.offsetX);
-							int y = (int) (i * getTileHeight() * calc.scale + calc.offsetY);
+							int w = (int) (getTileWidth() * scale);
+							int h = (int) (getTileHeight() * scale);
+							int x = (int) (j * getTileWidth() * scale + offX);
+							int y = (int) (i * getTileHeight() * scale + offY);
 
 							if (_tileSetImage == null) {
 								// paint map with colors
 								Color c = _colors[frame % _colors.length];
 								gc.setBackground(c);
-
 								gc.fillRectangle(x, y, w + 1, h + 1);
 							}
 						}
 					}
 				} else {
 					Rectangle b = _renderImage.getBounds();
-					gc.drawImage(_renderImage, 0, 0, b.width, b.height, (int) calc.offsetX, (int) calc.offsetY,
-							(int) (b.width * calc.scale), (int) (b.height * calc.scale));
+					gc.drawImage(_renderImage, 0, 0, b.width, b.height, (int) offX, (int) offY, (int) (b.width * scale),
+							(int) (b.height * scale));
+				}
+
+				Color borderColor = PhaserEditorUI.get_pref_Preview_Spritesheet_borderColor();
+				Color labelsColor = PhaserEditorUI.get_pref_Preview_Spritesheet_labelsColor();
+				Color colorBlack = getDisplay().getSystemColor(SWT.COLOR_BLACK);
+				Color selectionColor = PhaserEditorUI.get_pref_Preview_Spritesheet_selectionColor();
+
+				for (Point p : _selectedCells) {
+					gc.setAlpha(100);
+					gc.setBackground(selectionColor);
+					gc.fillRectangle((int) (offX + p.x * _tileWidth * scale), (int) (offY + p.y * _tileHeight * scale),
+							(int) (_tileWidth * scale), (int) (_tileHeight * scale));
+					gc.setAlpha(255);
+				}
+
+				try {
+
+					int frame = map[_mouseMapY][_mouseMapX];
+
+					gc.setForeground(borderColor);
+
+					int cellY = (int) (offY + _mouseMapY * _tileHeight * scale);
+					int cellX = (int) (offX + _mouseMapX * _tileWidth * scale);
+					int cellW = (int) (_tileWidth * scale);
+					int cellH = (int) (_tileHeight * scale);
+
+					gc.drawRectangle(cellX, cellY, cellW, cellH);
+
+					FontMetrics fm = gc.getFontMetrics();
+					int fh = fm.getHeight() + 3;
+					int fw = fm.getAverageCharWidth() + 3;
+
+					int y;
+					int x;
+
+					Rectangle b = getBounds();
+
+					if (_mouseY < b.height / 2) {
+						y = cellY + cellH;
+					} else {
+						y = cellY - fh;
+					}
+
+					if (_mouseX < b.width / 2) {
+						x = cellX + cellW;
+					} else {
+						x = cellX - fw;
+					}
+
+					String label = Integer.toString(frame);
+					gc.setForeground(colorBlack);
+					gc.drawString(label, x - 1, y + 1, true);
+					gc.setForeground(colorBlack);
+					gc.drawString(label, x + 1, y - 1, true);
+					gc.setForeground(labelsColor);
+					gc.drawString(label, x, y, true);
+				} catch (Exception e2) {
+					// nothing
 				}
 
 				return;
@@ -402,6 +494,82 @@ public class TilemapCSVAssetPreviewComp extends ZoomCanvas {
 
 		memento.putInteger(MEMENTO_TILE_WIDTH, _tileWidth);
 		memento.putInteger(MEMENTO_TILE_HEIGHT, _tileHeight);
+	}
+
+	@Override
+	public void mouseMove(MouseEvent e) {
+		_mouseX = e.x;
+		_mouseY = e.y;
+
+		ZoomCalculator calc = calc();
+
+		_mouseMapX = (int) ((_mouseX - calc.offsetX) / calc.scale / _tileWidth);
+		_mouseMapY = (int) ((_mouseY - calc.offsetY) / calc.scale / _tileHeight);
+
+		redraw();
+	}
+
+	@Override
+	public void mouseDoubleClick(MouseEvent e) {
+		if (e.button == 1) {
+			selectAllFrames();
+		}
+	}
+
+	private void selectAllFrames() {
+		try {
+			boolean selected = _selectedCells.contains(new Point(_mouseMapX, _mouseMapY));
+			int[][] map = _model.getCsvData();
+			int frame = map[_mouseMapY][_mouseMapX];
+			for (int i = 0; i < map.length; i++) {
+				int[] row = map[i];
+				for (int j = 0; j < row.length; j++) {
+					if (frame == map[i][j]) {
+						if (selected) {
+							_selectedCells.remove(new Point(j, i));
+						} else {
+							_selectedCells.add(new Point(j, i));
+						}
+					}
+				}
+			}
+			redraw();
+		} catch (Exception e2) {
+			// nothing
+		}
+	}
+
+	@Override
+	public void mouseDown(MouseEvent e) {
+		if (e.button == 1) {
+			Point p = new Point(_mouseMapX, _mouseMapY);
+			if (_selectedCells.contains(p)) {
+				_selectedCells.remove(p);
+			} else {
+				_selectedCells.add(p);
+			}
+			redraw();
+		}
+	}
+
+	@Override
+	public void mouseUp(MouseEvent e) {
+		// nothing
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// nothing
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		if (e.keyCode == SWT.ESC) {
+			_selectedCells.clear();
+			redraw();
+		} else if (e.character == ' ') {
+			selectAllFrames();
+		}
 	}
 
 }

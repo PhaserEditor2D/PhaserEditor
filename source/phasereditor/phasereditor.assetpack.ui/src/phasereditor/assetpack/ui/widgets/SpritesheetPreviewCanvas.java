@@ -136,6 +136,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 			Color borderColor = PhaserEditorUI.get_pref_Preview_Spritesheet_borderColor();
 			Color labelsColor = PhaserEditorUI.get_pref_Preview_Spritesheet_labelsColor();
 			Color colorBlack = getDisplay().getSystemColor(SWT.COLOR_BLACK);
+			Color selectionColor = PhaserEditorUI.get_pref_Preview_Spritesheet_selectionColor();
 
 			_rects = AssetPackUI.generateSpriteSheetRects(spritesheet, imgBounds);
 			if (_rects.isEmpty()) {
@@ -154,7 +155,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 
 					if (_selectedFrames.contains(i)) {
 						gc.setAlpha(100);
-						gc.setBackground(PhaserEditorUI.get_pref_Preview_Spritesheet_selectionColor());
+						gc.setBackground(selectionColor);
 						gc.fillRectangle(r.x, r.y, r.width, r.height);
 						gc.setAlpha(255);
 					}

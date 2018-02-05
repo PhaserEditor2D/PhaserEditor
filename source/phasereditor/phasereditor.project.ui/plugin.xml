@@ -132,12 +132,6 @@
             id="phasereditor.project.ui.openNewProjectExplorer"
             name="Open New Project Explorer">
       </command>
-      <command
-            categoryId="phasereditor.ui.phaserCategory"
-            defaultHandler="phasereditor.project.ui.handlers.OpenNewProjectExplorerHandler"
-            id="phasereditor.project.ui.openNewProjectExplorer"
-            name="Open New Project Explorer">
-      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
