@@ -102,20 +102,6 @@
       <perspectiveExtension
             targetID="phasereditor.ide.ui.perspective">
          <view
-               id="phasereditor.assetpack.views.assetExplorer"
-               minimized="false"
-               ratio="0.7"
-               relationship="right"
-               relative="org.eclipse.ui.editorss">
-         </view>
-         <view
-               id="phasereditor.ui.preview"
-               minimized="false"
-               ratio="0.6"
-               relationship="bottom"
-               relative="phasereditor.assetpack.views.assetExplorer">
-         </view>
-         <view
                id="phasereditor.chains.ui.views.chains"
                minimized="false"
                ratio="0.6"

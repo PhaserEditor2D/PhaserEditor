@@ -27,18 +27,20 @@ import org.eclipse.ui.navigator.resources.ProjectExplorer;
 
 public class PhaserPerspective implements IPerspectiveFactory {
 
+	private static final String PREVIEW_VIEW = "phasereditor.ui.preview";
+	private static final String ASSETS_VIEW = "phasereditor.assetpack.views.assetExplorer";
 	public static final String ID = "phasereditor.ide.ui.perspective";
 
 	@Override
 	public void createInitialLayout(IPageLayout layout) {
-		// IFolderLayout folder =
-		// layout.createFolder("phasereditor.ide.ui.explorerFolder", IPageLayout.LEFT,
-		// 0.2f, IPageLayout.ID_EDITOR_AREA);
-		// folder.addPlaceholder(ProjectExplorer.VIEW_ID + ":*");
-		// folder.addView(ProjectExplorer.VIEW_ID);
-
 		layout.addView(ProjectExplorer.VIEW_ID, IPageLayout.LEFT, 0.2f, IPageLayout.ID_EDITOR_AREA);
-		layout.addPlaceholder(ProjectExplorer.VIEW_ID + ":*", IPageLayout.BOTTOM, 0.2f, ProjectExplorer.VIEW_ID);
+		layout.addPlaceholder(ProjectExplorer.VIEW_ID + ":*", IPageLayout.BOTTOM, 0.5f, ProjectExplorer.VIEW_ID);
+
+		layout.addView(ASSETS_VIEW, IPageLayout.RIGHT, 0.7f, IPageLayout.ID_EDITOR_AREA);
+		layout.addPlaceholder(ASSETS_VIEW + ":*", IPageLayout.TOP, 0.5f, ASSETS_VIEW);
+
+		layout.addView(PREVIEW_VIEW, IPageLayout.BOTTOM, 0.6f, ASSETS_VIEW);
+		layout.addPlaceholder(PREVIEW_VIEW + ":*", IPageLayout.BOTTOM, 0.5f, PREVIEW_VIEW);
 	}
 
 }
