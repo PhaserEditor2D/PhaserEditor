@@ -27,9 +27,15 @@ package phasereditor.canvas.ui.editors.grid;
  */
 public abstract class PGridNumberProperty extends PGridProperty<Double> {
 	private double _value;
+	private boolean _isInteger;
 	
 	public PGridNumberProperty(String controlId, String name, String tootlip) {
+		this(controlId, name, tootlip, false);
+	}
+	
+	public PGridNumberProperty(String controlId, String name, String tootlip, boolean isInteger) {
 		super(controlId, name, tootlip);
+		_isInteger = isInteger;
 	}
 
 	@Override
@@ -40,5 +46,9 @@ public abstract class PGridNumberProperty extends PGridProperty<Double> {
 	@Override
 	public void setValue(Double value, boolean notify) {
 		_value = value.doubleValue();
+	}
+	
+	public boolean isInteger() {
+		return _isInteger;
 	}
 }

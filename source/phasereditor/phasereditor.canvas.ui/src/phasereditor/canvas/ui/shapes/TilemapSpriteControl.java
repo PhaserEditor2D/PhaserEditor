@@ -93,7 +93,7 @@ public class TilemapSpriteControl extends BaseSpriteControl<TilemapSpriteModel> 
 		super.initPGridModel(propModel);
 
 		PGridNumberProperty tileWidth_prop = new PGridNumberProperty(getId(), "tileWidth",
-				help("Phaser.Tilemap", "tileWidth")) {
+				help("Phaser.Tilemap", "tileWidth"), true) {
 
 			@Override
 			public void setValue(Double value, boolean notify) {
@@ -116,7 +116,7 @@ public class TilemapSpriteControl extends BaseSpriteControl<TilemapSpriteModel> 
 		};
 
 		PGridNumberProperty tileHeight_prop = new PGridNumberProperty(getId(), "tileHeight",
-				help("Phaser.Tilemap", "tileWidth")) {
+				help("Phaser.Tilemap", "tileWidth"), true) {
 
 			@Override
 			public void setValue(Double value, boolean notify) {

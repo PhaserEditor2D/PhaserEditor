@@ -23,6 +23,7 @@ package phasereditor.ide.ui;
 
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
+import org.eclipse.ui.navigator.resources.ProjectExplorer;
 
 public class PhaserPerspective implements IPerspectiveFactory {
 
@@ -30,7 +31,14 @@ public class PhaserPerspective implements IPerspectiveFactory {
 
 	@Override
 	public void createInitialLayout(IPageLayout layout) {
-		//
+		// IFolderLayout folder =
+		// layout.createFolder("phasereditor.ide.ui.explorerFolder", IPageLayout.LEFT,
+		// 0.2f, IPageLayout.ID_EDITOR_AREA);
+		// folder.addPlaceholder(ProjectExplorer.VIEW_ID + ":*");
+		// folder.addView(ProjectExplorer.VIEW_ID);
+
+		layout.addView(ProjectExplorer.VIEW_ID, IPageLayout.LEFT, 0.2f, IPageLayout.ID_EDITOR_AREA);
+		layout.addPlaceholder(ProjectExplorer.VIEW_ID + ":*", IPageLayout.BOTTOM, 0.2f, ProjectExplorer.VIEW_ID);
 	}
 
 }
