@@ -63,8 +63,8 @@ public class TilemapCSVAssetPreviewComp extends ZoomCanvas {
 
 	private TilemapAssetModel _model;
 	private Point _imageSize = new Point(1, 1);
-	private int _tileWidth = 16;
-	private int _tileHeight = 16;
+	private int _tileWidth = 32;
+	private int _tileHeight = 32;
 	private Color[] _colors;
 	protected ImageAssetModel _imageModel;
 	private Image _tileSetImage;
@@ -100,12 +100,10 @@ public class TilemapCSVAssetPreviewComp extends ZoomCanvas {
 					max = Math.max(map[i][j], max);
 				}
 			}
+
 			generateColors(max);
-			if (map[0].length > 0) {
-				_imageSize = new Point(map[0].length * getTileWidth(), map.length * getTileHeight());
-			} else {
-				_imageSize = new Point(1, 1);
-			}
+
+			updateImageSize();
 		}
 
 		if (_initialImageRef != null) {
@@ -127,6 +125,17 @@ public class TilemapCSVAssetPreviewComp extends ZoomCanvas {
 		buildMapImage();
 
 		reset();
+	}
+
+	void updateImageSize() {
+		if (_model != null) {
+			int[][] map = _model.getCsvData();
+			if (map[0].length > 0) {
+				_imageSize = new Point(map[0].length * getTileWidth(), map.length * getTileHeight());
+				return;
+			}
+		}
+		_imageSize = new Point(1, 1);
 	}
 
 	public void setImageModel(ImageAssetModel imageModel) {
@@ -312,6 +321,7 @@ public class TilemapCSVAssetPreviewComp extends ZoomCanvas {
 					String[] tuple = result.split("x");
 					setTileWidth(Integer.parseInt(tuple[0]));
 					setTileHeight(Integer.parseInt(tuple[1]));
+					updateImageSize();
 					buildMapImage();
 					redraw();
 				}
