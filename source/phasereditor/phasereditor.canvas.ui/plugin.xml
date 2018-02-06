@@ -417,6 +417,12 @@
                label="Tilemap">
             <command
                   commandId="phasereditor.canvas.ui.editTilemapCollision"
+                  label="Edit Collision Indexes"
+                  style="push">
+            </command>
+            <command
+                  commandId="phasereditor.canvas.ui.setTilesetImage"
+                  label="Set Tileset Image"
                   style="push">
             </command>
          </menu>
@@ -1356,6 +1362,11 @@
             categoryId="phasereditor.canvas.ui.editor.category"
             id="phasereditor.canvas.ui.editTilemapCollision"
             name="Edit Tilemap Collision Indexes">
+      </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.setTilesetImage"
+            name="Set Tileset Image">
       </command>
       
    </extension>
@@ -2362,6 +2373,25 @@
       <handler
             class="phasereditor.canvas.ui.handlers.EditTilemapCollisionIndexesHandler"
             commandId="phasereditor.canvas.ui.editTilemapCollision">
+         <activeWhen>
+            <with
+                  variable="selection">
+               <and>
+                  <count
+                        value="1">
+                  </count>
+                  <iterate>
+                     <instanceof
+                           value="phasereditor.canvas.ui.shapes.TilemapSpriteNode">
+                     </instanceof>
+                  </iterate>
+               </and>
+            </with>
+         </activeWhen>
+      </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.SetTilesetImageHandler"
+            commandId="phasereditor.canvas.ui.setTilesetImage">
          <activeWhen>
             <with
                   variable="selection">

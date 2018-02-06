@@ -318,6 +318,17 @@ public class PGridEditingSupport extends EditingSupport {
 		getViewer().refresh(element);
 	}
 
+	public static Object openSelectFrameDialog(PGridFrameProperty prop, Shell shell) {
+		FrameDialog dlg = new FrameDialog(shell);
+		dlg.setAllowNull(prop.isAllowNull());
+		dlg.setFrames(prop.getFrames());
+		dlg.setSelectedItem(prop.getValue());
+		if (dlg.open() == Window.OK) {
+			return dlg.getResult();
+		}
+		return null;
+	}
+
 	public static List<Integer> openTilemapIndexesDialog(PGridTilemapIndexesProperty prop, Shell shell) {
 		SelectTilemapIndexesDialog dlg = new SelectTilemapIndexesDialog(shell);
 		dlg.setModel(prop.getSpriteModel());

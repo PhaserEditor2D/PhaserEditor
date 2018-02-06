@@ -22,9 +22,9 @@
 package phasereditor.canvas.ui.editors.grid.editors;
 
 import org.eclipse.jface.viewers.DialogCellEditor;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
@@ -66,14 +66,8 @@ public class FrameCellEditor extends DialogCellEditor {
 
 	@Override
 	protected Object openDialogBox(Control cellEditorWindow) {
-		FrameDialog dlg = new FrameDialog(cellEditorWindow.getShell());
-		dlg.setAllowNull(_prop.isAllowNull());
-		dlg.setFrames(_prop.getFrames());
-		dlg.setSelectedItem(_prop.getValue());
-		if (dlg.open() == Window.OK) {
-			return dlg.getResult();
-		}
-
-		return null;
+		Shell shell = cellEditorWindow.getShell();
+		return PGridEditingSupport.openSelectFrameDialog(_prop, shell);
 	}
+
 }

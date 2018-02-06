@@ -44,6 +44,7 @@ import phasereditor.canvas.ui.editors.grid.PGridTilemapIndexesProperty;
 public class TilemapSpriteControl extends BaseSpriteControl<TilemapSpriteModel> {
 
 	private PGridTilemapIndexesProperty _collisionIndexes_prop;
+	private PGridFrameProperty _tilesetImage_prop;
 
 	public TilemapSpriteControl(ObjectCanvas canvas, TilemapSpriteModel model) {
 		super(canvas, model);
@@ -85,6 +86,10 @@ public class TilemapSpriteControl extends BaseSpriteControl<TilemapSpriteModel> 
 	
 	public PGridTilemapIndexesProperty getCollisionIndexesProperty() {
 		return _collisionIndexes_prop;
+	}
+	
+	public PGridFrameProperty getTilesetImageProperty() {
+		return _tilesetImage_prop;
 	}
 
 	@Override
@@ -145,7 +150,7 @@ public class TilemapSpriteControl extends BaseSpriteControl<TilemapSpriteModel> 
 			}
 		};
 
-		PGridFrameProperty tilesetImage_prop = new PGridFrameProperty(getId(), "tilesetImage",
+		_tilesetImage_prop = new PGridFrameProperty(getId(), "tilesetImage",
 				"The single tileset image of the CSV map.") {
 
 			@Override
@@ -251,7 +256,7 @@ public class TilemapSpriteControl extends BaseSpriteControl<TilemapSpriteModel> 
 
 		section.add(tileWidth_prop);
 		section.add(tileHeight_prop);
-		section.add(tilesetImage_prop);
+		section.add(_tilesetImage_prop);
 		section.add(createLayer_prop);
 		section.add(resizeWorld_prop);
 		section.add(_collisionIndexes_prop);

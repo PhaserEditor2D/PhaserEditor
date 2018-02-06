@@ -1,18 +1,16 @@
 package phasereditor.canvas.ui.handlers;
 
-import java.util.List;
-
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import phasereditor.canvas.ui.editors.grid.PGridTilemapIndexesProperty;
+import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
 import phasereditor.canvas.ui.editors.grid.editors.PGridEditingSupport;
 import phasereditor.canvas.ui.shapes.TilemapSpriteNode;
 
-public class EditTilemapCollisionIndexesHandler extends AbstractHandler {
+public class SetTilesetImageHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -20,12 +18,12 @@ public class EditTilemapCollisionIndexesHandler extends AbstractHandler {
 
 		TilemapSpriteNode sprite = (TilemapSpriteNode) sel.getFirstElement();
 
-		PGridTilemapIndexesProperty prop = sprite.getControl().getCollisionIndexesProperty();
+		PGridFrameProperty prop = sprite.getControl().getTilesetImageProperty();
 
-		List<Integer> indexes = PGridEditingSupport.openTilemapIndexesDialog(prop, HandlerUtil.getActiveShell(event));
+		Object frame = PGridEditingSupport.openSelectFrameDialog(prop, HandlerUtil.getActiveShell(event));
 
-		if (indexes != null) {
-			PGridEditingSupport.executeChangePropertyValueOperation(indexes, prop);
+		if (frame != null) {
+			PGridEditingSupport.executeChangePropertyValueOperation(frame, prop);
 		}
 
 		return null;
