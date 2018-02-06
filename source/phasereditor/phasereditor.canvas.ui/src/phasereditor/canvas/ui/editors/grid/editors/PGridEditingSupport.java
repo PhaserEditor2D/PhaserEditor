@@ -145,14 +145,8 @@ public class PGridEditingSupport extends EditingSupport {
 
 			@Override
 			protected Object openDialogBox(Control cellEditorWindow) {
-				SelectTilemapIndexesDialog dlg = new SelectTilemapIndexesDialog(cellEditorWindow.getShell());
-				dlg.setModel(prop.getSpriteModel());
-
-				if (dlg.open() == Window.OK) {
-					return dlg.getSelection();
-				}
-
-				return null;
+				Shell shell = cellEditorWindow.getShell();
+				return openTilemapIndexesDialog(prop, shell);
 			}
 		};
 	}
@@ -322,6 +316,17 @@ public class PGridEditingSupport extends EditingSupport {
 		}
 
 		getViewer().refresh(element);
+	}
+
+	public static List<Integer> openTilemapIndexesDialog(PGridTilemapIndexesProperty prop, Shell shell) {
+		SelectTilemapIndexesDialog dlg = new SelectTilemapIndexesDialog(shell);
+		dlg.setModel(prop.getSpriteModel());
+
+		if (dlg.open() == Window.OK) {
+			return dlg.getSelection();
+		}
+
+		return null;
 	}
 
 	public static Object openOverridePropertiesDialog(PGridOverrideProperty prop, Shell shell) {

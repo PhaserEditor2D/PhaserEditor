@@ -43,6 +43,8 @@ import phasereditor.canvas.ui.editors.grid.PGridTilemapIndexesProperty;
  */
 public class TilemapSpriteControl extends BaseSpriteControl<TilemapSpriteModel> {
 
+	private PGridTilemapIndexesProperty _collisionIndexes_prop;
+
 	public TilemapSpriteControl(ObjectCanvas canvas, TilemapSpriteModel model) {
 		super(canvas, model);
 	}
@@ -79,6 +81,10 @@ public class TilemapSpriteControl extends BaseSpriteControl<TilemapSpriteModel> 
 	@Override
 	public TilemapSpriteNode getNode() {
 		return (TilemapSpriteNode) super.getNode();
+	}
+	
+	public PGridTilemapIndexesProperty getCollisionIndexesProperty() {
+		return _collisionIndexes_prop;
 	}
 
 	@Override
@@ -214,7 +220,7 @@ public class TilemapSpriteControl extends BaseSpriteControl<TilemapSpriteModel> 
 			}
 		};
 
-		PGridTilemapIndexesProperty collisionIndexes_prop = new PGridTilemapIndexesProperty(getId(),
+		_collisionIndexes_prop = new PGridTilemapIndexesProperty(getId(),
 				"collision.indexes", help("Phaser.Tilemap.setCollision", "indexes")) {
 
 			@Override
@@ -248,7 +254,7 @@ public class TilemapSpriteControl extends BaseSpriteControl<TilemapSpriteModel> 
 		section.add(tilesetImage_prop);
 		section.add(createLayer_prop);
 		section.add(resizeWorld_prop);
-		section.add(collisionIndexes_prop);
+		section.add(_collisionIndexes_prop);
 
 		propModel.getSections().add(section);
 	}

@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -117,9 +118,13 @@ public class TilemapCSVAssetPreviewComp extends Composite implements ISelectionC
 	protected void loadSelectedFramesFromText() {
 		String text = _selectedFramesText.getText();
 		try {
-			List<Integer> frames = Arrays.stream(text.split(",")).map(t -> Integer.parseInt(t))
-					.collect(Collectors.toList());
-			_tilemapCanvas.selectAllFrames(frames);
+			List<Integer> frames;
+			if (text.trim().length() == 0) {
+				frames = new ArrayList<>();
+			} else {
+				frames = Arrays.stream(text.split(",")).map(t -> Integer.parseInt(t)).collect(Collectors.toList());
+			}
+			_tilemapCanvas.selectAllFrames(frames, true);
 		} catch (Exception e) {
 			// nothing
 		}

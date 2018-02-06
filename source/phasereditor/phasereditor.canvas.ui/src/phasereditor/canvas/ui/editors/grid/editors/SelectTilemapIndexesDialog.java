@@ -52,7 +52,7 @@ public class SelectTilemapIndexesDialog extends Dialog {
 
 	public SelectTilemapIndexesDialog(Shell parentShell) {
 		super(parentShell);
-		setShellStyle(SWT.MAX | SWT.RESIZE);
+		setShellStyle(SWT.MAX | SWT.RESIZE | SWT.CLOSE);
 	}
 
 	@Override

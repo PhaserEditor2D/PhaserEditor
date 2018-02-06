@@ -554,10 +554,14 @@ public class TilemapCanvas extends ZoomCanvas
 		}
 	}
 
-	@SuppressWarnings("boxing")
 	public void selectAllFrames(List<Integer> frames) {
-		Set<Integer> set = new HashSet<>(frames);
+		selectAllFrames(frames, false);
+	}
 
+	@SuppressWarnings("boxing")
+	public void selectAllFrames(List<Integer> frames, boolean clearSelection) {
+		Set<Integer> set = new HashSet<>(frames);
+		List<Point> newlist = new ArrayList<>();
 		try {
 			int[][] map = _model.getCsvData();
 			for (int i = 0; i < map.length; i++) {
@@ -565,10 +569,19 @@ public class TilemapCanvas extends ZoomCanvas
 				for (int j = 0; j < row.length; j++) {
 					int frame = map[i][j];
 					if (set.contains(frame)) {
-						_selectedCells.add(new Point(j, i));
+						newlist.add(new Point(j, i));
 					}
 				}
 			}
+
+			if (clearSelection) {
+				_selectedCells.clear();
+			}
+
+			for (Point p : newlist) {
+				_selectedCells.add(p);
+			}
+
 			fireSelectionChanged(new StructuredSelection(_selectedCells));
 			redraw();
 		} catch (Exception e2) {
