@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.json.JSONArray;
+
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
@@ -158,7 +160,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				String localName = getLocalVarName(obj);
 				String camel = getPublicFieldName(name);
 				line("this." + camel + " = " + localName + ";");
-				
+
 				if (obj instanceof TilemapSpriteModel) {
 					TilemapSpriteModel tilemap = (TilemapSpriteModel) obj;
 					if (tilemap.isCreateLayer()) {
@@ -659,6 +661,14 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 
 			if (model.isResizeWorld()) {
 				line(layerVarname + ".resizeWorld();");
+			}
+
+			if (!model.getCollisionIndexes().isEmpty()) {
+				JSONArray list = new JSONArray();
+				for (Integer i : model.getCollisionIndexes()) {
+					list.put(i);
+				}
+				line(varname + ".setCollision(" + list.toString() + ");");
 			}
 		}
 	}

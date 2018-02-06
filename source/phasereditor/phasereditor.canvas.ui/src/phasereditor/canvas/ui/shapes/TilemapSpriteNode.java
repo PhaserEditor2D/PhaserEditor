@@ -100,7 +100,7 @@ public class TilemapSpriteNode extends Pane implements ISpriteNode {
 
 		int[][] map = asset.getCsvData();
 
-		ImageView[] list = new ImageView[map.length * map[0].length];
+		Node[] list = new Node[map.length * map[0].length];
 		int q = 0;
 
 		for (int i = 0; i < map.length; i++) {
@@ -108,17 +108,25 @@ public class TilemapSpriteNode extends Pane implements ISpriteNode {
 
 			for (int j = 0; j < row.length; j++) {
 				int frame = map[i][j];
+				Node node;
+				if (frame < 0) {
+					node = new Rectangle(tileW, tileH);
+					node.setOpacity(0);
+				} else {
 
-				ImageView view = new ImageView(tileset);
+					ImageView view = new ImageView(tileset);
 
-				int tilesetW = (int) tileset.getWidth();
-				int srcX = frame * tileW % tilesetW;
-				int srcY = frame * tileW / tilesetW * tileH;
+					node = view;
 
-				view.setViewport(new Rectangle2D(srcX, srcY, tileW, tileH));
-				view.relocate(j * tileW, i * tileH);
+					int tilesetW = (int) tileset.getWidth();
+					int srcX = frame * tileW % tilesetW;
+					int srcY = frame * tileW / tilesetW * tileH;
 
-				list[q++] = view;
+					view.setViewport(new Rectangle2D(srcX, srcY, tileW, tileH));
+				}
+
+				node.relocate(j * tileW, i * tileH);
+				list[q++] = node;
 			}
 		}
 		getChildren().setAll(Arrays.asList(list));
@@ -149,10 +157,17 @@ public class TilemapSpriteNode extends Pane implements ISpriteNode {
 			int[] row = map[i];
 
 			for (int j = 0; j < row.length; j++) {
-				int frame = map[i][j];
-				Color c = colors[frame % colors.length];
 				Rectangle r = new Rectangle(tileW, tileH);
-				r.setFill(c);
+
+				int frame = map[i][j];
+
+				if (frame < 0) {
+					r.setOpacity(0.2);
+				} else {
+					Color c = colors[frame % colors.length];
+					r.setFill(c);
+				}
+
 				r.setLayoutX(j * tileW);
 				r.setLayoutY(i * tileH);
 				list[q++] = r;

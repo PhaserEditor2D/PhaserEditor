@@ -168,7 +168,7 @@ public class TilemapAssetModel extends AssetModel {
 
 		_csvData = new int[0][0];
 		_tilemapJSON = new TilemapJSON();
-		
+
 		if (isJSONFormat()) {
 			buildTilemapJSON();
 		} else {
@@ -177,6 +177,7 @@ public class TilemapAssetModel extends AssetModel {
 
 	}
 
+	@SuppressWarnings("boxing")
 	private void buildTilemapCSV() {
 		List<List<Integer>> data = new ArrayList<>();
 
@@ -184,18 +185,24 @@ public class TilemapAssetModel extends AssetModel {
 			IFile file = getFileFromUrl(_url);
 			if (file != null && file.exists()) {
 				try (InputStream input = file.getContents()) {
-					
+
 					StringBuilder token = new StringBuilder();
 
 					BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 					String line;
 					while ((line = reader.readLine()) != null) {
-						
+
 						List<Integer> dataRow = new ArrayList<>();
-						
+
 						for (char c : line.toCharArray()) {
 							if (c == ',') {
-								dataRow.add(Integer.valueOf(Integer.parseInt(token.toString())));
+								Integer tile;
+								try {
+									tile = Integer.valueOf(Integer.parseInt(token.toString()));
+								} catch (Exception e) {
+									tile = -1;
+								}
+								dataRow.add(tile);
 								token = new StringBuilder();
 							} else {
 								token.append(c);
