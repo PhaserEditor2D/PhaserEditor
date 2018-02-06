@@ -63,6 +63,7 @@ import phasereditor.canvas.ui.editors.grid.PGridSection;
 import phasereditor.canvas.ui.editors.grid.PGridSetAllProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSpriteProperty;
 import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
+import phasereditor.canvas.ui.editors.grid.PGridTilemapIndexesProperty;
 import phasereditor.canvas.ui.editors.grid.PGridUserCodeProperty;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
@@ -131,9 +132,29 @@ public class PGridEditingSupport extends EditingSupport {
 			return createSetAllPropertyEditor(element, parent);
 		} else if (element instanceof PGridBitmapTextFontProperty) {
 			return createBitmapTextFontEditor(element, parent);
+		} else if (element instanceof PGridTilemapIndexesProperty) {
+			return createTilemapCollisionIndexesEditor(element, parent);
 		}
 
 		return null;
+	}
+
+	private static CellEditor createTilemapCollisionIndexesEditor(Object element, Composite parent) {
+		PGridTilemapIndexesProperty prop = (PGridTilemapIndexesProperty) element;
+		return new DialogCellEditor(parent) {
+
+			@Override
+			protected Object openDialogBox(Control cellEditorWindow) {
+				SelectTilemapIndexesDialog dlg = new SelectTilemapIndexesDialog(cellEditorWindow.getShell());
+				dlg.setModel(prop.getSpriteModel());
+
+				if (dlg.open() == Window.OK) {
+					return dlg.getSelection();
+				}
+
+				return null;
+			}
+		};
 	}
 
 	private static CellEditor createBitmapTextFontEditor(Object element, Composite parent) {

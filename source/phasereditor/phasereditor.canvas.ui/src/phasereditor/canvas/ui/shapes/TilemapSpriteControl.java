@@ -36,6 +36,7 @@ import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
 import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
+import phasereditor.canvas.ui.editors.grid.PGridTilemapIndexesProperty;
 
 /**
  * @author arian
@@ -213,6 +214,33 @@ public class TilemapSpriteControl extends BaseSpriteControl<TilemapSpriteModel> 
 			}
 		};
 
+		PGridTilemapIndexesProperty collisionIndexes_prop = new PGridTilemapIndexesProperty(getId(),
+				"collision.indexes", help("Phaser.Tilemap.setCollision", "indexes")) {
+
+			@Override
+			public void setValue(List<Integer> value, boolean notify) {
+				getModel().setCollisionIndexes(value);
+				if (notify) {
+					updateFromPropertyChange();
+				}
+			}
+
+			@Override
+			public boolean isModified() {
+				return !getModel().getCollisionIndexes().isEmpty();
+			}
+
+			@Override
+			public List<Integer> getValue() {
+				return getModel().getCollisionIndexes();
+			}
+
+			@Override
+			public TilemapSpriteModel getSpriteModel() {
+				return getModel();
+			}
+		};
+
 		PGridSection section = new PGridSection("Tilemap");
 
 		section.add(tileWidth_prop);
@@ -220,6 +248,7 @@ public class TilemapSpriteControl extends BaseSpriteControl<TilemapSpriteModel> 
 		section.add(tilesetImage_prop);
 		section.add(createLayer_prop);
 		section.add(resizeWorld_prop);
+		section.add(collisionIndexes_prop);
 
 		propModel.getSections().add(section);
 	}

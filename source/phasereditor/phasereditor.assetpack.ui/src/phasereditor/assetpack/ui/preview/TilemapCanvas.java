@@ -579,14 +579,22 @@ public class TilemapCanvas extends ZoomCanvas
 	@Override
 	public void mouseDown(MouseEvent e) {
 		if (e.button == 1) {
-			Point p = new Point(_mouseMapX, _mouseMapY);
-			if (_selectedCells.contains(p)) {
-				_selectedCells.remove(p);
-			} else {
-				_selectedCells.add(p);
+			try {
+				// just validate the mouse is in range
+				@SuppressWarnings("unused")
+				int _tmp = getModel().getCsvData()[_mouseMapY][_mouseMapX];
+
+				Point p = new Point(_mouseMapX, _mouseMapY);
+				if (_selectedCells.contains(p)) {
+					_selectedCells.remove(p);
+				} else {
+					_selectedCells.add(p);
+				}
+				fireSelectionChanged(new StructuredSelection(_selectedCells));
+				redraw();
+			} catch (Exception e2) {
+				// nothing
 			}
-			fireSelectionChanged(new StructuredSelection(_selectedCells));
-			redraw();
 		}
 	}
 

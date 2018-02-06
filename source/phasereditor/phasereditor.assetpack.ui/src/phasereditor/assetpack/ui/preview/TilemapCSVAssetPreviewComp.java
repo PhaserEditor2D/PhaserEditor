@@ -50,6 +50,7 @@ public class TilemapCSVAssetPreviewComp extends Composite implements ISelectionC
 	Text _selectedFramesText;
 	private TilemapCanvas _tilemapCanvas;
 	// 54,55,56,57,59,60,61,62,63,65,66,69,70,75,104,105,108
+	private List<Integer> _selectedIndexes;
 
 	/**
 	 * Create the composite.
@@ -61,7 +62,7 @@ public class TilemapCSVAssetPreviewComp extends Composite implements ISelectionC
 		super(parent, style);
 		setLayout(new GridLayout(1, false));
 
-		_tilemapCanvas = new TilemapCanvas(this, SWT.NONE);
+		_tilemapCanvas = new TilemapCanvas(this, SWT.BORDER);
 		_tilemapCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		Composite composite = new Composite(this, SWT.NONE);
@@ -87,7 +88,7 @@ public class TilemapCSVAssetPreviewComp extends Composite implements ISelectionC
 		Button btnNewButton_2 = new Button(composite, SWT.NONE);
 		btnNewButton_2.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) { 
+			public void widgetSelected(SelectionEvent e) {
 				_selectedFramesText.paste();
 			}
 		});
@@ -124,6 +125,14 @@ public class TilemapCSVAssetPreviewComp extends Composite implements ISelectionC
 		}
 	}
 
+	public TilemapCanvas getTilemapCanvas() {
+		return _tilemapCanvas;
+	}
+
+	public List<Integer> getSelectedIndexes() {
+		return _selectedIndexes;
+	}
+
 	public void setModel(TilemapAssetModel model) {
 		_tilemapCanvas.setModel(model);
 	}
@@ -144,9 +153,11 @@ public class TilemapCSVAssetPreviewComp extends Composite implements ISelectionC
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
 		List<Point> sel = _tilemapCanvas.getSelectedCells();
-		String text = sel.stream().map(p -> _tilemapCanvas.getModel().getCsvData()[p.y][p.x]).distinct().sorted()
-				.map(o -> o.toString()).collect(Collectors.joining(","));
+		_selectedIndexes = sel.stream().map(p -> _tilemapCanvas.getModel().getCsvData()[p.y][p.x]).distinct().sorted()
+				.collect(Collectors.toList());
+		String text = _selectedIndexes.stream().map(o -> o.toString()).collect(Collectors.joining(","));
 		_selectedFramesText.setText(text);
+
 	}
 
 }

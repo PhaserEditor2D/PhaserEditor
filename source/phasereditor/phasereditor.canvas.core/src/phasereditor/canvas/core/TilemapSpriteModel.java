@@ -21,7 +21,12 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.eclipse.core.resources.IProject;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import phasereditor.assetpack.core.AssetPackCore;
@@ -43,6 +48,7 @@ public class TilemapSpriteModel extends AssetSpriteModel<TilemapAssetModel> {
 	private ImageAssetModel _tilesetImage;
 	private boolean _createLayer;
 	private boolean _resizeWorld;
+	private List<Integer> _collisionIndexes;
 
 	public TilemapSpriteModel(GroupModel parent, TilemapAssetModel assetKey) {
 		super(parent, assetKey, TYPE_NAME);
@@ -50,6 +56,7 @@ public class TilemapSpriteModel extends AssetSpriteModel<TilemapAssetModel> {
 		_tileHeight = 32;
 		_createLayer = true;
 		_resizeWorld = true;
+		_collisionIndexes = Collections.emptyList();
 	}
 
 	public TilemapSpriteModel(GroupModel parent, JSONObject obj) {
@@ -65,8 +72,17 @@ public class TilemapSpriteModel extends AssetSpriteModel<TilemapAssetModel> {
 		jsonInfo.put("tilesetImage", _tilesetImage == null ? null : AssetPackCore.getAssetJSONReference(_tilesetImage));
 		jsonInfo.put("createLayer", _createLayer, true);
 		jsonInfo.put("resizeWorld", _resizeWorld, true);
+
+		if (!_collisionIndexes.isEmpty()) {
+			JSONArray list = new JSONArray();
+			for (Integer i : _collisionIndexes) {
+				list.put(i.intValue());
+			}
+			jsonInfo.put("collision.indexes", list);
+		}
 	}
 
+	@SuppressWarnings("boxing")
 	@Override
 	public void readInfo(JSONObject jsonInfo) {
 		super.readInfo(jsonInfo);
@@ -90,6 +106,16 @@ public class TilemapSpriteModel extends AssetSpriteModel<TilemapAssetModel> {
 
 		_createLayer = jsonInfo.optBoolean("createLayer", true);
 		_resizeWorld = jsonInfo.optBoolean("resizeWorld", true);
+
+		{
+			_collisionIndexes = new ArrayList<>();
+			JSONArray list = jsonInfo.optJSONArray("collision.indexes");
+			if (list != null) {
+				for (int i = 0; i < list.length(); i++) {
+					_collisionIndexes.add(list.getInt(i));
+				}
+			}
+		}
 	}
 
 	@Override
@@ -139,6 +165,14 @@ public class TilemapSpriteModel extends AssetSpriteModel<TilemapAssetModel> {
 
 	public void setResizeWorld(boolean layerResizeWorld) {
 		_resizeWorld = layerResizeWorld;
+	}
+
+	public List<Integer> getCollisionIndexes() {
+		return _collisionIndexes;
+	}
+
+	public void setCollisionIndexes(List<Integer> collisionIndexes) {
+		_collisionIndexes = collisionIndexes;
 	}
 
 }
