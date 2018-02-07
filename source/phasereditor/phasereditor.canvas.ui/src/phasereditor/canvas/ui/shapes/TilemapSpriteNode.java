@@ -25,6 +25,7 @@ import java.util.Arrays;
 
 import org.eclipse.core.resources.IFile;
 
+import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
@@ -53,6 +54,19 @@ public class TilemapSpriteNode extends Pane implements ISpriteNode {
 		setCacheHint(CacheHint.SCALE_AND_ROTATE);
 
 		updateContent();
+	}
+
+	@Override
+	public boolean contains(double localX, double localY) {
+		for (Node node : getChildren()) {
+			if (node.getOpacity() > 0) {
+				Point2D p = node.parentToLocal(localX, localY);
+				if (node.contains(p)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public void updateContent() {
@@ -162,7 +176,7 @@ public class TilemapSpriteNode extends Pane implements ISpriteNode {
 				int frame = map[i][j];
 
 				if (frame < 0) {
-					r.setOpacity(0.2);
+					r.setOpacity(0);
 				} else {
 					Color c = colors[frame % colors.length];
 					r.setFill(c);
