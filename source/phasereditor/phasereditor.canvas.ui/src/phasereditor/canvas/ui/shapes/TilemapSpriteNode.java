@@ -51,7 +51,7 @@ public class TilemapSpriteNode extends Pane implements ISpriteNode {
 		_control = control;
 
 		setCache(true);
-		setCacheHint(CacheHint.SCALE_AND_ROTATE);
+		setCacheHint(CacheHint.SPEED);
 
 		updateContent();
 	}
