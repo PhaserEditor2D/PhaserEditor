@@ -83,11 +83,11 @@ public class TilemapSpriteControl extends BaseSpriteControl<TilemapSpriteModel> 
 	public TilemapSpriteNode getNode() {
 		return (TilemapSpriteNode) super.getNode();
 	}
-	
+
 	public PGridTilemapIndexesProperty getCollisionIndexesProperty() {
 		return _collisionIndexes_prop;
 	}
-	
+
 	public PGridFrameProperty getTilesetImageProperty() {
 		return _tilesetImage_prop;
 	}
@@ -104,141 +104,158 @@ public class TilemapSpriteControl extends BaseSpriteControl<TilemapSpriteModel> 
 	protected void initPGridModel(PGridModel propModel) {
 		super.initPGridModel(propModel);
 
-		PGridNumberProperty tileWidth_prop = new PGridNumberProperty(getId(), "tileWidth",
-				help("Phaser.Tilemap", "tileWidth"), true) {
+		List<PGridSection> sections = propModel.getSections();
+		sections.subList(1, sections.size()).stream().forEach(s -> {
+			s.setName("TilemapLayer " + s.getName());
+		});
 
-			@Override
-			public void setValue(Double value, boolean notify) {
-				getModel().setTileWidth(value.intValue());
-				if (notify) {
-					updateFromPropertyChange();
-					getCanvas().getSelectionBehavior().updateSelectedNodes_async();
+		{
+			// tilemap
+
+			PGridNumberProperty tileWidth_prop = new PGridNumberProperty(getId(), "tileWidth",
+					help("Phaser.Tilemap", "tileWidth"), true) {
+
+				@Override
+				public void setValue(Double value, boolean notify) {
+					getModel().setTileWidth(value.intValue());
+					if (notify) {
+						updateFromPropertyChange();
+						getCanvas().getSelectionBehavior().updateSelectedNodes_async();
+					}
 				}
-			}
 
-			@Override
-			public Double getValue() {
-				return Double.valueOf(getModel().getTileWidth());
-			}
-
-			@Override
-			public boolean isModified() {
-				return getModel().getTileWidth() != 32;
-			}
-		};
-
-		PGridNumberProperty tileHeight_prop = new PGridNumberProperty(getId(), "tileHeight",
-				help("Phaser.Tilemap", "tileWidth"), true) {
-
-			@Override
-			public void setValue(Double value, boolean notify) {
-				getModel().setTileHeight(value.intValue());
-				if (notify) {
-					updateFromPropertyChange();
-					getCanvas().getSelectionBehavior().updateSelectedNodes_async();
+				@Override
+				public Double getValue() {
+					return Double.valueOf(getModel().getTileWidth());
 				}
-			}
 
-			@Override
-			public Double getValue() {
-				return Double.valueOf(getModel().getTileHeight());
-			}
-
-			@Override
-			public boolean isModified() {
-				return getModel().getTileHeight() != 32;
-			}
-		};
-
-		_tilesetImage_prop = new PGridFrameProperty(getId(), "tilesetImage",
-				"The single tileset image of the CSV map.") {
-
-			@Override
-			public void setValue(IAssetFrameModel value, boolean notify) {
-				getModel().setTilesetImage(((ImageAssetModel.Frame) value).getAsset());
-				if (notify) {
-					updateFromPropertyChange();
+				@Override
+				public boolean isModified() {
+					return getModel().getTileWidth() != 32;
 				}
-			}
+			};
 
-			@Override
-			public boolean isModified() {
-				return getModel().getTilesetImage() != null;
-			}
+			PGridNumberProperty tileHeight_prop = new PGridNumberProperty(getId(), "tileHeight",
+					help("Phaser.Tilemap", "tileWidth"), true) {
 
-			@Override
-			public IAssetFrameModel getValue() {
-				ImageAssetModel asset = getModel().getTilesetImage();
-				return asset == null ? null : asset.getFrame();
-			}
-
-			@Override
-			public List<?> getFrames() {
-				List<Frame> list = AssetPackCore.getAssetPackModels(getModel().getWorld().getProject()).stream()
-						.flatMap(pack -> pack.getAssets().stream()).filter(asset -> asset instanceof ImageAssetModel)
-						.map(image -> ((ImageAssetModel) image).getFrame()).collect(Collectors.toList());
-				return list;
-			}
-		};
-
-		PGridBooleanProperty resizeWorld_prop = new PGridBooleanProperty(getId(), "resizeWorld",
-				help("Phaser.TilemapLayer.resizeWorld")) {
-
-			@Override
-			public void setValue(Boolean value, boolean notify) {
-				getModel().setResizeWorld(value);
-				if (notify) {
-					updateFromPropertyChange();
+				@Override
+				public void setValue(Double value, boolean notify) {
+					getModel().setTileHeight(value.intValue());
+					if (notify) {
+						updateFromPropertyChange();
+						getCanvas().getSelectionBehavior().updateSelectedNodes_async();
+					}
 				}
-			}
 
-			@Override
-			public Boolean getValue() {
-				return getModel().isResizeWorld();
-			}
-
-			@Override
-			public boolean isModified() {
-				return !getModel().isResizeWorld();
-			}
-		};
-
-		_collisionIndexes_prop = new PGridTilemapIndexesProperty(getId(),
-				"collision.indexes", help("Phaser.Tilemap.setCollision", "indexes")) {
-
-			@Override
-			public void setValue(List<Integer> value, boolean notify) {
-				getModel().setCollisionIndexes(value);
-				if (notify) {
-					updateFromPropertyChange();
+				@Override
+				public Double getValue() {
+					return Double.valueOf(getModel().getTileHeight());
 				}
-			}
 
-			@Override
-			public boolean isModified() {
-				return !getModel().getCollisionIndexes().isEmpty();
-			}
+				@Override
+				public boolean isModified() {
+					return getModel().getTileHeight() != 32;
+				}
+			};
 
-			@Override
-			public List<Integer> getValue() {
-				return getModel().getCollisionIndexes();
-			}
+			_tilesetImage_prop = new PGridFrameProperty(getId(), "tilesetImage",
+					"The single tileset image of the CSV map.") {
 
-			@Override
-			public TilemapSpriteModel getSpriteModel() {
-				return getModel();
-			}
-		};
+				@Override
+				public void setValue(IAssetFrameModel value, boolean notify) {
+					getModel().setTilesetImage(((ImageAssetModel.Frame) value).getAsset());
+					if (notify) {
+						updateFromPropertyChange();
+					}
+				}
 
-		PGridSection section = new PGridSection("Tilemap");
+				@Override
+				public boolean isModified() {
+					return getModel().getTilesetImage() != null;
+				}
 
-		section.add(tileWidth_prop);
-		section.add(tileHeight_prop);
-		section.add(_tilesetImage_prop);
-		section.add(resizeWorld_prop);
-		section.add(_collisionIndexes_prop);
+				@Override
+				public IAssetFrameModel getValue() {
+					ImageAssetModel asset = getModel().getTilesetImage();
+					return asset == null ? null : asset.getFrame();
+				}
 
-		propModel.getSections().add(section);
+				@Override
+				public List<?> getFrames() {
+					List<Frame> list = AssetPackCore.getAssetPackModels(getModel().getWorld().getProject()).stream()
+							.flatMap(pack -> pack.getAssets().stream())
+							.filter(asset -> asset instanceof ImageAssetModel)
+							.map(image -> ((ImageAssetModel) image).getFrame()).collect(Collectors.toList());
+					return list;
+				}
+			};
+
+			_collisionIndexes_prop = new PGridTilemapIndexesProperty(getId(), "collision.indexes",
+					help("Phaser.Tilemap.setCollision", "indexes")) {
+
+				@Override
+				public void setValue(List<Integer> value, boolean notify) {
+					getModel().setCollisionIndexes(value);
+					if (notify) {
+						updateFromPropertyChange();
+					}
+				}
+
+				@Override
+				public boolean isModified() {
+					return !getModel().getCollisionIndexes().isEmpty();
+				}
+
+				@Override
+				public List<Integer> getValue() {
+					return getModel().getCollisionIndexes();
+				}
+
+				@Override
+				public TilemapSpriteModel getSpriteModel() {
+					return getModel();
+				}
+			};
+
+			PGridSection section = new PGridSection("Tilemap");
+
+			section.add(tileWidth_prop);
+			section.add(tileHeight_prop);
+			section.add(_tilesetImage_prop);
+			section.add(_collisionIndexes_prop);
+
+			sections.add(section);
+		}
+
+		{
+			// tilemapLayer
+
+			PGridSection section = new PGridSection("TilemapLayer");
+
+			PGridBooleanProperty resizeWorld_prop = new PGridBooleanProperty(getId(), "resizeWorld",
+					help("Phaser.TilemapLayer.resizeWorld")) {
+
+				@Override
+				public void setValue(Boolean value, boolean notify) {
+					getModel().setResizeWorld(value);
+					if (notify) {
+						updateFromPropertyChange();
+					}
+				}
+
+				@Override
+				public Boolean getValue() {
+					return getModel().isResizeWorld();
+				}
+
+				@Override
+				public boolean isModified() {
+					return !getModel().isResizeWorld();
+				}
+			};
+			section.add(resizeWorld_prop);
+		}
+
 	}
 
 }

@@ -632,7 +632,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 	protected void generateProperties(BaseSpriteModel model) {
 
 		if (model instanceof TilemapSpriteModel) {
-			generateTilemapLayer((TilemapSpriteModel) model);
+			generateTilemapProps((TilemapSpriteModel) model);
 		}
 
 		generateObjectProps(model);
@@ -644,38 +644,36 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 		} else if (model instanceof BitmapTextModel) {
 			generateBitmapTextProps((BitmapTextModel) model);
 		} else if (model instanceof TilemapSpriteModel) {
-			generateTilemapProps((TilemapSpriteModel) model);
+			generateTilemapLayerProps((TilemapSpriteModel) model);
 		}
-	}
-
-	private void generateTilemapLayer(TilemapSpriteModel model) {
-		String varname = getLocalVarName(model);
-		String layerVarname = varname + "_layer";
-		line(layerVarname + " = " + varname + ".createLayer(0);");
 	}
 
 	private void generateTilemapProps(TilemapSpriteModel model) {
 		String varname = getLocalVarName(model);
 		String layerVarname = varname + "_layer";
-
+		
 		ImageAssetModel tileset = model.getTilesetImage();
 
 		if (tileset != null) {
 			line(varname + ".addTilesetImage('" + tileset.getKey() + "');");
 		}
-
-		line(layerVarname + " = " + varname + ".createLayer(0);");
-
-		if (model.isResizeWorld()) {
-			line(layerVarname + ".resizeWorld();");
-		}
-
+		
 		if (!model.getCollisionIndexes().isEmpty()) {
 			JSONArray list = new JSONArray();
 			for (Integer i : model.getCollisionIndexes()) {
 				list.put(i);
 			}
 			line(varname + ".setCollision(" + list.toString() + ");");
+		}
+		
+		line(layerVarname + " = " + varname + ".createLayer(0);");
+	}
+
+	private void generateTilemapLayerProps(TilemapSpriteModel model) {
+		String varname = getLocalVarName(model) + "_layer";
+
+		if (model.isResizeWorld()) {
+			line(varname + ".resizeWorld();");
 		}
 	}
 
