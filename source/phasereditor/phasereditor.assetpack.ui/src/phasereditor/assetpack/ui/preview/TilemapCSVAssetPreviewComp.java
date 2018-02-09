@@ -30,6 +30,8 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
@@ -71,6 +73,14 @@ public class TilemapCSVAssetPreviewComp extends Composite implements ISelectionC
 		composite.setLayout(new GridLayout(4, false));
 
 		_selectedFramesText = new Text(composite, SWT.BORDER);
+		_selectedFramesText.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.character == '\r' || e.character == '\n') {
+					loadSelectedFramesFromText();
+				}
+			}
+		});
 		_selectedFramesText.setToolTipText("The selected tile indexes, sepparated by a colon.");
 		_selectedFramesText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
