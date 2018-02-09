@@ -66,6 +66,7 @@ import phasereditor.project.core.codegen.BaseCodeGenerator;
  * @author arian
  *
  */
+@SuppressWarnings("boxing")
 public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 
 	protected final String PRE_INIT_CODE_BEGIN = "/* --- pre-init-begin --- */";
@@ -162,10 +163,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				line("this." + camel + " = " + localName + ";");
 
 				if (obj instanceof TilemapSpriteModel) {
-					TilemapSpriteModel tilemap = (TilemapSpriteModel) obj;
-					if (tilemap.isCreateLayer()) {
-						line("this." + camel + "_layer = " + localName + "_layer;");
-					}
+					line("this." + camel + "_layer = " + localName + "_layer;");
 				}
 			}
 
@@ -323,7 +321,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 			if (model instanceof ImageSpriteModel) {
 
 				ImageSpriteModel image = (ImageSpriteModel) model;
-				call.value("this.game", round(image.getX()), round(image.getY()));
+				call.value("this.game", image.getX(), image.getY());
 				call.valueOrUndefined(writeTexture, "'" + image.getAssetKey().getKey() + "'", "null");
 
 			} else if (model instanceof SpritesheetSpriteModel || model instanceof AtlasSpriteModel) {
@@ -334,7 +332,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 						? Integer.toString(((SpritesheetAssetModel.FrameModel) frame).getIndex())
 						: "'" + frame.getKey() + "'";
 
-				call.value("this.game", round(sprite.getX()), round(sprite.getY()));
+				call.value("this.game", sprite.getX(), sprite.getY());
 				call.valueOrUndefined(writeTexture, "'" + sprite.getAssetKey().getAsset().getKey() + "'", frameValue);
 			} else if (model instanceof TileSpriteModel) {
 
@@ -344,9 +342,9 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 						? Integer.toString(((SpritesheetAssetModel.FrameModel) frame).getIndex())
 						: "'" + frame.getKey() + "'";
 
-				call.value("this.game", round(sprite.getX()), round(sprite.getY()));
+				call.value("this.game", sprite.getX(), sprite.getY());
 				if (sprite.isOverriding(TileSpriteModel.PROPSET_TILE_SIZE)) {
-					call.value(round(sprite.getWidth()), round(sprite.getHeight()));
+					call.value(sprite.getWidth(), sprite.getHeight());
 				}
 				call.valueOrUndefined(writeTexture, "'" + sprite.getAssetKey().getAsset().getKey() + "'", frameValue);
 			} else if (model instanceof ButtonSpriteModel) {
@@ -359,8 +357,8 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 					outFrameKey = frameKey((IAssetFrameModel) button.getAssetKey());
 				}
 				call.value("this.game");
-				call.value(round(button.getX()));
-				call.value(round(button.getY()));
+				call.value(button.getX());
+				call.value(button.getY());
 				call.valueOrNull(writeTexture, "'" + button.getAssetKey().getAsset().getKey() + "'");
 
 				if (button.isOverriding(ButtonSpriteModel.PROPSET_BUTTON_CALLBACK)) {
@@ -376,14 +374,14 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				call.valueOrNull(writeTexture, frameKey(button.getUpFrame()));
 			} else if (model instanceof TextModel) {
 				TextModel sprite = (TextModel) model;
-				call.value("this.game", round(sprite.getX()), round(sprite.getY()));
+				call.value("this.game", sprite.getX(), sprite.getY());
 				call.valueOrNull(sprite.isOverriding(TextModel.PROPSET_TEXT),
 						"'" + escapeLines(sprite.getText()) + "'");
 				call.valueOrNull(sprite.isOverriding(TextModel.PROPSET_TEXT_STYLE),
 						sprite.getPhaserStyleObject().toString());
 			} else if (model instanceof BitmapTextModel) {
 				BitmapTextModel sprite = (BitmapTextModel) model;
-				call.value("this.game", round(sprite.getX()), round(sprite.getY()));
+				call.value("this.game", sprite.getX(), sprite.getY());
 				call.valueOrNull(sprite.isOverriding(BaseSpriteModel.PROPSET_TEXTURE),
 						"'" + sprite.getAssetKey().getKey() + "'");
 				call.valueOrNull(sprite.isOverriding(BitmapTextModel.PROPSET_TEXT),
@@ -404,8 +402,8 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				ImageSpriteModel image = (ImageSpriteModel) model;
 
 				Call call = new Call("sprite");
-				call.value(round(image.getX()));
-				call.value(round(image.getY()));
+				call.value(image.getX());
+				call.value(image.getY());
 				call.value("'" + image.getAssetKey().getKey() + "'");
 				call.value("null");
 				call.valueOrUndefined(parVar != null, parVar);
@@ -423,8 +421,8 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				append("sprite");
 
 				append("(" + // sprite
-						round(sprite.getX())// x
-						+ ", " + round(sprite.getY()) // y
+						sprite.getX()// x
+						+ ", " + sprite.getY() // y
 						+ ", '" + sprite.getAssetKey().getAsset().getKey() + "'" // key
 						+ ", " + frameValue // frame
 						+ (parVar == null ? "" : ", " + parVar) // group
@@ -441,8 +439,8 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				}
 
 				append("button(" + // sprite
-						round(button.getX())// x
-						+ ", " + round(button.getY()) // y
+						button.getX()// x
+						+ ", " + button.getY() // y
 						+ ", '" + button.getAssetKey().getAsset().getKey() + "'" // key
 						+ ", " + emptyStringToNull(button.getCallback()) // callback
 						+ ", " + emptyStringToNull(button.getCallbackContext()) // context
@@ -467,10 +465,10 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				}
 
 				append("tileSprite(" + // sprite
-						round(tile.getX())// x
-						+ ", " + round(tile.getY()) // y
-						+ ", " + round(tile.getWidth()) // width
-						+ ", " + round(tile.getHeight()) // height
+						tile.getX()// x
+						+ ", " + tile.getY() // y
+						+ ", " + tile.getWidth() // width
+						+ ", " + tile.getHeight() // height
 						+ ", '" + tile.getAssetKey().getAsset().getKey() + "'" // key
 						+ ", " + frame // frame
 						+ (parVar == null ? "" : ", " + parVar) // group
@@ -480,8 +478,8 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				TextModel text = (TextModel) model;
 
 				Call call = new Call("text");
-				call.value(round(text.getX()));
-				call.value(round(text.getY()));
+				call.value(text.getX());
+				call.value(text.getY());
 				String str = escapeLines(text.getText());
 				call.value("'" + str + "'");
 				call.value(text.getPhaserStyleObject().toString()); // style
@@ -493,8 +491,8 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				BitmapTextModel bmpText = (BitmapTextModel) model;
 
 				Call call = new Call("bitmapText");
-				call.value(round(bmpText.getX()));
-				call.value(round(bmpText.getY()));
+				call.value(bmpText.getX());
+				call.value(bmpText.getY());
 				call.string(bmpText.getAssetKey().getKey());
 				String str = escapeLines(bmpText.getText());
 				call.string(str);
@@ -556,9 +554,9 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 			return this;
 		}
 
-		public Call value(String... values) {
-			_values.addAll(Arrays.asList(values).stream().map(v -> v == null ? "null" : v.replace("\n", "\\n"))
-					.collect(Collectors.toList()));
+		public Call value(Object... values) {
+			_values.addAll(Arrays.asList(values).stream()
+					.map(v -> v == null ? "null" : v.toString().replace("\n", "\\n")).collect(Collectors.toList()));
 			return this;
 		}
 
@@ -655,9 +653,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 
 			String layerVarname = varname + "_layer";
 
-			if (model.isCreateLayer()) {
-				line(layerVarname + " = " + varname + ".createLayer(0);");
-			}
+			line(layerVarname + " = " + varname + ".createLayer(0);");
 
 			if (model.isResizeWorld()) {
 				line(layerVarname + ".resizeWorld();");
@@ -694,6 +690,10 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 	protected void generateObjectProps(BaseObjectModel model) {
 		String varname = getLocalVarName(model);
 
+		if (model instanceof TilemapSpriteModel) {
+			varname += "_layer";
+		}
+
 		if (model.getName() != null) {
 			line(varname + ".name = '" + model.getName() + "';");
 		}
@@ -701,7 +701,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 		if (model.isOverriding(BaseObjectModel.PROPSET_POSITION)) {
 			if (model instanceof GroupModel) {
 				if (model.getX() != 0 || model.getY() != 0) {
-					line(varname + ".position.setTo(" + round(model.getX()) + ", " + round(model.getY()) + ");");
+					line(varname + ".position.setTo(" + model.getX() + ", " + model.getY() + ");");
 				}
 			}
 		}
@@ -755,6 +755,10 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 
 	private void generateSpriteProps(BaseSpriteModel model) {
 		String varname = getLocalVarName(model);
+
+		if (model instanceof TilemapSpriteModel) {
+			varname += "_layer";
+		}
 
 		if (model.isOverriding(BaseSpriteModel.PROPSET_ANCHOR)) {
 			if (model.getAnchorX() != 0 || model.getAnchorY() != 0) {
@@ -885,7 +889,6 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 		generateCommonArcadeProps(model);
 	}
 
-	@SuppressWarnings("boxing")
 	private void generateCommonArcadeProps(BaseSpriteModel model) {
 		String varname = getLocalVarName(model);
 		ArcadeBodyModel body = model.getArcadeBody();
@@ -985,8 +988,8 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 
 		if (model.isOverriding(TileSpriteModel.PROPSET_TILE_POSITION)) {
 			if (model.getTilePositionX() != 0 || model.getTilePositionY() != 0) {
-				line(varname + ".tilePosition.setTo(" + round(model.getTilePositionX()) + ", "
-						+ round(model.getTilePositionY()) + ");");
+				line(varname + ".tilePosition.setTo(" + model.getTilePositionX() + ", " + model.getTilePositionY()
+						+ ");");
 			}
 		}
 

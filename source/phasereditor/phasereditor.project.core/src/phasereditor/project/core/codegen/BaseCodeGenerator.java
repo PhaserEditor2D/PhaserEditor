@@ -165,10 +165,6 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 		return str == null ? null : (str.trim().length() == 0 ? null : str);
 	}
 
-	public static String round(double x) {
-		return Integer.toString((int) Math.round(x));
-	}
-
 	public static String getHexString(RGB rgb) {
 		return "#" + toHexString(rgb.red) + toHexString(rgb.green) + toHexString(rgb.blue);
 	}

@@ -46,7 +46,6 @@ public class TilemapSpriteModel extends AssetSpriteModel<TilemapAssetModel> {
 	private int _tileWidth;
 	private int _tileHeight;
 	private ImageAssetModel _tilesetImage;
-	private boolean _createLayer;
 	private boolean _resizeWorld;
 	private List<Integer> _collisionIndexes;
 
@@ -54,7 +53,6 @@ public class TilemapSpriteModel extends AssetSpriteModel<TilemapAssetModel> {
 		super(parent, assetKey, TYPE_NAME);
 		_tileWidth = 32;
 		_tileHeight = 32;
-		_createLayer = true;
 		_resizeWorld = true;
 		_collisionIndexes = Collections.emptyList();
 	}
@@ -70,7 +68,6 @@ public class TilemapSpriteModel extends AssetSpriteModel<TilemapAssetModel> {
 		jsonInfo.put("tileWidth", _tileWidth, 32);
 		jsonInfo.put("tileHeight", _tileHeight, 32);
 		jsonInfo.put("tilesetImage", _tilesetImage == null ? null : AssetPackCore.getAssetJSONReference(_tilesetImage));
-		jsonInfo.put("createLayer", _createLayer, true);
 		jsonInfo.put("resizeWorld", _resizeWorld, true);
 
 		if (!_collisionIndexes.isEmpty()) {
@@ -104,7 +101,6 @@ public class TilemapSpriteModel extends AssetSpriteModel<TilemapAssetModel> {
 			}
 		}
 
-		_createLayer = jsonInfo.optBoolean("createLayer", true);
 		_resizeWorld = jsonInfo.optBoolean("resizeWorld", true);
 
 		{
@@ -149,14 +145,6 @@ public class TilemapSpriteModel extends AssetSpriteModel<TilemapAssetModel> {
 
 	public void setTilesetImage(ImageAssetModel tilesetImage) {
 		_tilesetImage = tilesetImage;
-	}
-
-	public boolean isCreateLayer() {
-		return _createLayer;
-	}
-
-	public void setCreateLayer(boolean createLayer) {
-		_createLayer = createLayer;
 	}
 
 	public boolean isResizeWorld() {

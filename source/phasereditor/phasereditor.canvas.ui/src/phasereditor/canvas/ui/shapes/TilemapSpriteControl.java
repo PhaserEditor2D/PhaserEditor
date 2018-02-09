@@ -181,28 +181,6 @@ public class TilemapSpriteControl extends BaseSpriteControl<TilemapSpriteModel> 
 			}
 		};
 
-		PGridBooleanProperty createLayer_prop = new PGridBooleanProperty(getId(), "createLayer",
-				help("Phaser.Tilemap.createLayer")) {
-
-			@Override
-			public void setValue(Boolean value, boolean notify) {
-				getModel().setCreateLayer(value);
-				if (notify) {
-					updateFromPropertyChange();
-				}
-			}
-
-			@Override
-			public Boolean getValue() {
-				return getModel().isCreateLayer();
-			}
-
-			@Override
-			public boolean isModified() {
-				return !getModel().isCreateLayer();
-			}
-		};
-
 		PGridBooleanProperty resizeWorld_prop = new PGridBooleanProperty(getId(), "resizeWorld",
 				help("Phaser.TilemapLayer.resizeWorld")) {
 
@@ -257,7 +235,6 @@ public class TilemapSpriteControl extends BaseSpriteControl<TilemapSpriteModel> 
 		section.add(tileWidth_prop);
 		section.add(tileHeight_prop);
 		section.add(_tilesetImage_prop);
-		section.add(createLayer_prop);
 		section.add(resizeWorld_prop);
 		section.add(_collisionIndexes_prop);
 

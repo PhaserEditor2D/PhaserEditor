@@ -41,9 +41,9 @@ public interface ITSCodeGeneratorUtils {
 
 	public default void generatePublicFieldDeclarations(JSLikeCanvasCodeGenerator generator, WorldModel worldModel) {
 		worldModel.walk_skipGroupIfFalse(model -> {
-			
+
 			this.generatePublicFieldDeclaration(generator, model);
-			
+
 			return !model.isPrefabInstance();
 		});
 	}
@@ -54,12 +54,9 @@ public interface ITSCodeGeneratorUtils {
 				String name = generator.getVarName(obj);
 				String camel = JSLikeCanvasCodeGenerator.getPublicFieldName(name);
 				generator.line("public " + camel + " : " + getObjectType(obj) + ";");
-				
+
 				if (obj instanceof TilemapSpriteModel) {
-					TilemapSpriteModel tilemap = (TilemapSpriteModel) obj;
-					if (tilemap.isCreateLayer()) {
-						generator.line("public " + camel + "_layer : Phaser.TilemapLayer;");
-					}
+					generator.line("public " + camel + "_layer : Phaser.TilemapLayer;");
 				}
 			}
 
@@ -67,7 +64,8 @@ public interface ITSCodeGeneratorUtils {
 				List<AnimationModel> anims = ((BaseSpriteModel) obj).getAnimations();
 				for (AnimationModel anim : anims) {
 					if (anim.isPublic()) {
-						String name = JSLikeCanvasCodeGenerator.getPublicFieldName(generator.getAnimationVarName(obj, anim));
+						String name = JSLikeCanvasCodeGenerator
+								.getPublicFieldName(generator.getAnimationVarName(obj, anim));
 						generator.line("public " + name + " : Phaser.Animation;");
 					}
 				}
@@ -87,7 +85,7 @@ public interface ITSCodeGeneratorUtils {
 		if (obj instanceof TileSpriteModel) {
 			return "Phaser.TileSprite";
 		}
-		
+
 		if (obj instanceof GroupModel) {
 			return "Phaser.Group";
 		}
