@@ -106,6 +106,8 @@ import org.eclipse.ui.internal.misc.StringMatcher;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import com.sun.javafx.util.Utils;
+
 import javafx.embed.swt.FXCanvas;
 import javafx.scene.input.InputEvent;
 import phasereditor.ui.views.PreviewView;
@@ -147,6 +149,7 @@ public class PhaserEditorUI {
 	private static Set<Object> _supportedImageExts = new HashSet<>(Arrays.asList("png", "bmp", "jpg", "gif", "ico"));
 	private static boolean _isCocoaPlatform = Util.isMac();
 	private static boolean _isWindowsPlatform = Util.isWindows();
+	private static boolean _isLinux = Utils.isUnix();
 
 	private PhaserEditorUI() {
 	}
@@ -276,6 +279,10 @@ public class PhaserEditorUI {
 
 	public static boolean isWindowsPlaform() {
 		return _isWindowsPlatform;
+	}
+
+	public static boolean isLinux() {
+		return _isLinux;
 	}
 
 	public static void applyThemeStyle(Object widget) {

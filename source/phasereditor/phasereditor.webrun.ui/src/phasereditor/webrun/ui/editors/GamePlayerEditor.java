@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
@@ -36,7 +35,8 @@ public class GamePlayerEditor extends EditorPart {
 		}
 	}
 
-	private Browser _browser;
+	private IGameBrowser _browser;
+	private Composite _browserComp;
 	private Composite _parentComposite;
 
 	public GamePlayerEditor() {
@@ -82,18 +82,27 @@ public class GamePlayerEditor extends EditorPart {
 		gl_parentComposite.verticalSpacing = 0;
 		parent.setLayout(gl_parentComposite);
 
-		_browser = new Browser(parent, SWT.NONE);
-		_browser.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		_browser = createBrowserImpl(parent);
+		_browserComp= _browser.getComposite();
+		_browserComp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		_parentComposite = parent;
 
 		afterCreateWidgets();
 	}
 
+	private static IGameBrowser createBrowserImpl(Composite parent) {
+		if (PhaserEditorUI.isLinux()) {
+			return new JavaFXBrowser(parent, SWT.NONE);
+		}
+		return new NativeBrowser(parent, SWT.NONE);
+	}
+
 	private void afterCreateWidgets() {
+		_browserComp = _browser.getComposite();
 
 		PhaserEditorUI.openedInternalBrowser();
-		_browser.addDisposeListener(e -> PhaserEditorUI.closedInternalBrowser());
+		_browserComp.addDisposeListener(e -> PhaserEditorUI.closedInternalBrowser());
 
 		Display.getDefault().asyncExec(() -> {
 			_browser.setUrl(getEditorInput().getUrl());
@@ -120,12 +129,12 @@ public class GamePlayerEditor extends EditorPart {
 				b.y = 0;
 
 				gc.setAntialias(SWT.ON);
-				
+
 				Color bg = gc.getBackground();
-				
+
 				gc.setBackground(e.display.getSystemColor(SWT.COLOR_WHITE));
-				Point start = _browser.getLocation();
-				Point size = _browser.getSize();
+				Point start = _browserComp.getLocation();
+				Point size = _browserComp.getSize();
 
 				gc.setForeground(e.display.getSystemColor(SWT.COLOR_DARK_GRAY));
 				gc.setLineWidth(2);
@@ -183,7 +192,7 @@ public class GamePlayerEditor extends EditorPart {
 			gd.minimumHeight = h;
 		}
 
-		_browser.setLayoutData(gd);
+		_browserComp.setLayoutData(gd);
 		_parentComposite.layout();
 		_parentComposite.redraw();
 	}
@@ -196,7 +205,7 @@ public class GamePlayerEditor extends EditorPart {
 
 	@Override
 	public void setFocus() {
-		_browser.setFocus();
+		_browserComp.setFocus();
 	}
 
 	public void rotate() {
