@@ -1,0 +1,127 @@
+{
+  "canvas-version": 2,
+  "settings": {
+    "className": "TitleScreen",
+    "sceneWidth": 320,
+    "sceneHeight": 240,
+    "generateOnSave": true,
+    "enableStepping": false,
+    "lang": "JAVA_SCRIPT",
+    "baseClass": "Phaser.State",
+    "backgroundColor": [
+      180,
+      180,
+      180
+    ],
+    "gridColor": [
+      200,
+      200,
+      200
+    ],
+    "showGrid": true,
+    "create_after": "this.afterCreate();"
+  },
+  "stateSettings": {
+    "stageBackgroundColor": [
+      0,
+      0,
+      0
+    ],
+    "autoLoad": true,
+    "preloadSpriteId": "",
+    "preloadSprite_direction": 0,
+    "load.pack": []
+  },
+  "world": {
+    "type": "group",
+    "id": "924e16b0-6601-4a4a-a84d-7dc36aa20b2d",
+    "info": {
+      "editorName": "TitleScreen",
+      "setAll": [],
+      "children": [
+        {
+          "type": "tileSprite",
+          "id": "e664461f-f5b8-4d1b-b776-f6dba02c0a4f",
+          "asset": "0",
+          "info": {
+            "editorName": "background",
+            "editorPublic": true,
+            "width": 320,
+            "height": 240
+          }
+        },
+        {
+          "type": "tileSprite",
+          "id": "f0df71f6-eba8-48b3-9679-ab4edc970ccc",
+          "asset": "1",
+          "info": {
+            "editorName": "middleground",
+            "editorPublic": true,
+            "width": 320,
+            "height": 240
+          }
+        },
+        {
+          "type": "image",
+          "id": "3b808338-7c9f-42d5-97be-0af9ced2c7b1",
+          "asset": "2",
+          "info": {
+            "editorName": "title",
+            "x": 63,
+            "y": 87.5
+          }
+        },
+        {
+          "type": "image",
+          "id": "faa8ebd8-7260-4e68-a8db-538446acab2d",
+          "asset": "3",
+          "info": {
+            "editorName": "credits_text",
+            "x": 52.5,
+            "y": 202
+          }
+        },
+        {
+          "type": "image",
+          "id": "12a5d0a0-6b23-4821-8c38-891966f21803",
+          "asset": "4",
+          "info": {
+            "editorName": "pressEnter",
+            "editorPublic": true,
+            "x": 122,
+            "y": 176
+          }
+        }
+      ]
+    }
+  },
+  "type": "STATE",
+  "asset-table": {
+    "0": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "background"
+    },
+    "1": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "middleground"
+    },
+    "2": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "title"
+    },
+    "3": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "credits-text"
+    },
+    "4": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "press-enter-text"
+    }
+  },
+  "prefab-table": {}
+}

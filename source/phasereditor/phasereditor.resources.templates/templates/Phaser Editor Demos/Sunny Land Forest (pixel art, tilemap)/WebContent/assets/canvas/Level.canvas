@@ -1,0 +1,1298 @@
+{
+  "canvas-version": 2,
+  "settings": {
+    "className": "Level",
+    "sceneWidth": 320,
+    "sceneHeight": 240,
+    "generateOnSave": true,
+    "enableStepping": false,
+    "stepWidth": 16,
+    "stepHeight": 16,
+    "lang": "JAVA_SCRIPT",
+    "baseClass": "Phaser.State",
+    "backgroundColor": [
+      191,
+      191,
+      191
+    ],
+    "gridColor": [
+      200,
+      200,
+      200
+    ],
+    "showGrid": true,
+    "create_after": "this.afterCreate();"
+  },
+  "stateSettings": {
+    "stageBackgroundColor": [
+      0,
+      0,
+      0
+    ],
+    "physicsSystem": "ARCADE",
+    "autoLoad": true,
+    "preloadSpriteId": "",
+    "preloadSprite_direction": 0,
+    "load.pack": []
+  },
+  "world": {
+    "type": "group",
+    "id": "8a0fc0bc-e3be-4656-9585-f855ac8ba0bb",
+    "info": {
+      "editorName": "Level",
+      "setAll": [],
+      "children": [
+        {
+          "type": "tileSprite",
+          "id": "f9d2063c-20e0-4f23-be21-9d13673e00d9",
+          "asset": "0",
+          "info": {
+            "editorName": "background",
+            "editorPublic": true,
+            "fixedToCamera": true,
+            "width": 320,
+            "height": 240
+          }
+        },
+        {
+          "type": "tileSprite",
+          "id": "40d6dc68-c9e6-465d-a121-906bd120c8e6",
+          "asset": "1",
+          "info": {
+            "editorName": "middleground",
+            "editorPublic": true,
+            "fixedToCamera": true,
+            "width": 320,
+            "height": 240
+          }
+        },
+        {
+          "type": "tilemap",
+          "id": "e7a7e766-3cf6-4f6d-895c-15916d437c48",
+          "asset": "2",
+          "info": {
+            "editorName": "level",
+            "editorPublic": true,
+            "x": 1.886376594484318E-5,
+            "y": -1.1317799362586811E-5,
+            "tileWidth": 16,
+            "tileHeight": 16,
+            "tilesetImage": {
+              "file": "WebContent/assets/pack.json",
+              "section": "preloader",
+              "asset": "tileset"
+            },
+            "collision.indexes": [1]
+          }
+        },
+        {
+          "type": "tilemap",
+          "id": "f900a174-2427-4472-9343-c47d2be0a4ce",
+          "asset": "3",
+          "info": {
+            "editorName": "level1_collisions",
+            "editorPublic": true,
+            "editorShow": false,
+            "renderable": false,
+            "tileWidth": 16,
+            "tileHeight": 16,
+            "tilesetImage": {
+              "file": "WebContent/assets/pack.json",
+              "section": "preloader",
+              "asset": "collisions"
+            },
+            "collision.indexes": [0]
+          }
+        },
+        {
+          "type": "group",
+          "id": "ebdd650f-a78c-43ac-9d5f-6ac11705958c",
+          "info": {
+            "editorName": "props",
+            "setAll": [],
+            "children": [
+              {
+                "type": "atlas-sprite",
+                "id": "d97c57e3-a7aa-4639-82b1-8ba6c602eac6",
+                "asset": "4",
+                "info": {
+                  "editorName": "tree",
+                  "x": 16,
+                  "y": 3.2
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "3806824f-7f24-4f3f-92db-3533f37802b3",
+                "asset": "5",
+                "info": {
+                  "editorName": "mushroom_brown",
+                  "x": 272,
+                  "y": 176
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "927b67d1-5579-4371-84e6-c0f60cbf5d8d",
+                "asset": "6",
+                "info": {
+                  "editorName": "mushroom_red",
+                  "x": 176,
+                  "y": 164.8
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "fe2d346e-05a0-4980-9051-89890209e721",
+                "asset": "7",
+                "info": {
+                  "editorName": "vine0",
+                  "x": 48
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "858b2cfb-5608-4acc-a46f-ec8d91f4ffe8",
+                "asset": "7",
+                "info": {
+                  "editorName": "vine1",
+                  "x": 400
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "11d00672-9c2c-458a-83b0-0333ac601441",
+                "asset": "7",
+                "info": {
+                  "editorName": "vine2",
+                  "x": 2080
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "d5277fa8-14c3-4a4d-bde4-617fd68d25d1",
+                "asset": "7",
+                "info": {
+                  "editorName": "vine3",
+                  "x": 2176
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "5dcca7ad-3010-4a98-aa06-e92bd5f2ae5b",
+                "asset": "4",
+                "info": {
+                  "editorName": "tree1",
+                  "x": 1920,
+                  "y": 3.2
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "abd23999-dfbe-4d75-9ab9-7566b464032d",
+                "asset": "8",
+                "info": {
+                  "editorName": "house",
+                  "x": 2336,
+                  "y": 43.2
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "81a4371f-3391-404b-9b6e-81864cfae792",
+                "asset": "6",
+                "info": {
+                  "editorName": "mushroom_red1",
+                  "x": 2304,
+                  "y": 180.8
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "f5115a16-ff1a-47d0-9191-3db75fd0d95a",
+                "asset": "5",
+                "info": {
+                  "editorName": "mushroom_brown1",
+                  "x": 2240,
+                  "y": 180.8
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "group",
+          "id": "7a413ec5-7c4b-451d-aee7-1428887be41a",
+          "info": {
+            "editorName": "chests_group",
+            "editorPublic": true,
+            "setAll": [],
+            "children": [
+              {
+                "type": "prefab",
+                "prefab": "0",
+                "id": "60a6388c-1c86-43da-a742-768292648382",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "chest/chest-1"
+                },
+                "info": {
+                  "editorName": "chest",
+                  "x": 1136,
+                  "y": 160
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "0",
+                "id": "2d72046b-553d-47d7-b2ef-fe8bf1a3fcff",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "chest/chest-1"
+                },
+                "info": {
+                  "editorName": "chest1",
+                  "x": 512,
+                  "y": 336
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "prefab",
+          "prefab": "1",
+          "id": "079caa7d-6be6-4a50-8855-ca564b3c056f",
+          "asset-ref": {
+            "file": "WebContent/assets/pack.json",
+            "section": "preloader",
+            "asset": "atlas",
+            "sprite": "player-idle/player-idle-3"
+          },
+          "info": {
+            "editorName": "player",
+            "editorPublic": true,
+            "x": 43,
+            "y": 168
+          }
+        },
+        {
+          "type": "group",
+          "id": "8daa5da3-933d-4a04-83d8-b824c4cb2690",
+          "info": {
+            "editorName": "enemies_group",
+            "editorPublic": true,
+            "setAll": [],
+            "children": [
+              {
+                "type": "prefab",
+                "prefab": "2",
+                "id": "12a8266c-d977-4110-9e66-ec6ffa464cec",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "slug/slug-1"
+                },
+                "info": {
+                  "editorName": "slug7",
+                  "x": 288,
+                  "y": 192
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "2",
+                "id": "25883674-8093-49d4-a268-42361762c95e",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "slug/slug-1"
+                },
+                "info": {
+                  "editorName": "slug6",
+                  "x": 496,
+                  "y": 32
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "2",
+                "id": "98bb0ce6-b67c-49aa-a93a-c841b3b12f34",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "slug/slug-1"
+                },
+                "info": {
+                  "editorName": "slug5",
+                  "x": 1488,
+                  "y": 336
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "2",
+                "id": "86315732-399e-4830-9197-0d25a9238945",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "slug/slug-1"
+                },
+                "info": {
+                  "editorName": "slug4",
+                  "x": 1168,
+                  "y": 336
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "2",
+                "id": "2f854872-0f94-4255-bb02-efd606e436a2",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "slug/slug-1"
+                },
+                "info": {
+                  "editorName": "slug3",
+                  "x": 1328,
+                  "y": 336
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "2",
+                "id": "0aff9205-93a1-4469-968b-35356ba4414b",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "slug/slug-1"
+                },
+                "info": {
+                  "editorName": "slug2",
+                  "x": 2064,
+                  "y": 176
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "2",
+                "id": "33de2e71-2870-4e10-a85d-ba4000dbf3c3",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "slug/slug-1"
+                },
+                "info": {
+                  "editorName": "slug1",
+                  "x": 2112,
+                  "y": 176
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "2",
+                "id": "e0c7e195-0498-45d4-b88f-874e2c8c0aac",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "slug/slug-1"
+                },
+                "info": {
+                  "editorName": "slug",
+                  "x": 192,
+                  "y": 160
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "3",
+                "id": "b2970e41-f691-4d8a-b680-e0de7d94661c",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "bee/bee-1"
+                },
+                "info": {
+                  "editorName": "bee_bee_",
+                  "prefabOverride": [
+                    "position",
+                    "data"
+                  ],
+                  "x": 528,
+                  "y": 160,
+                  "data": "{\n\tdistance: 10,\n\thorizontal: 20\n}"
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "3",
+                "id": "4381d6e8-445d-453a-a453-717a67a906c7",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "bee/bee-1"
+                },
+                "info": {
+                  "editorName": "bee_bee_1",
+                  "prefabOverride": [
+                    "position",
+                    "data"
+                  ],
+                  "x": 768,
+                  "y": 160,
+                  "data": "{\ndistance: 30,\nhorizontal: true\n}"
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "3",
+                "id": "fa16b572-33a2-4302-a934-121b7e8a4c33",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "bee/bee-1"
+                },
+                "info": {
+                  "editorName": "bee_bee_2",
+                  "prefabOverride": [
+                    "position",
+                    "data"
+                  ],
+                  "x": 960,
+                  "y": 160,
+                  "data": "{\ndistance: 30,\nhorizontal: false\n}"
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "3",
+                "id": "1b5a4529-9067-4cf4-a0af-930dd7efd8c1",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "bee/bee-1"
+                },
+                "info": {
+                  "editorName": "bee_bee_4",
+                  "prefabOverride": [
+                    "position",
+                    "data"
+                  ],
+                  "x": 2272,
+                  "y": 144,
+                  "data": "{\ndistance: 30,\nhorizontal: false\n}"
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "4",
+                "id": "df3a87d9-788a-4485-b454-fdc1773b0ae1",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "piranha-plant-attack/piranha-plant-attack-1"
+                },
+                "info": {
+                  "editorName": "piranha_0",
+                  "x": 672,
+                  "y": 160
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "4",
+                "id": "3b18c052-914c-4749-b5f2-e113af3a6c5b",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "piranha-plant-attack/piranha-plant-attack-1"
+                },
+                "info": {
+                  "editorName": "piranha_1",
+                  "x": 1024,
+                  "y": 80
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "4",
+                "id": "4e2dd624-a21a-4450-98f8-24a3286957c5",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "piranha-plant-attack/piranha-plant-attack-1"
+                },
+                "info": {
+                  "editorName": "piranha_2",
+                  "editorPublic": true,
+                  "x": 1616,
+                  "y": 320
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "4",
+                "id": "999f4914-14ae-4210-8f8c-c99912129c40",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "piranha-plant-attack/piranha-plant-attack-1"
+                },
+                "info": {
+                  "editorName": "piranha_3",
+                  "x": 1600,
+                  "y": 112
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "group",
+          "id": "729b6089-cb18-4855-8949-89a75a76850c",
+          "info": {
+            "editorName": "loot_group",
+            "editorPublic": true,
+            "setAll": [],
+            "children": []
+          }
+        },
+        {
+          "type": "group",
+          "id": "194e747b-00d7-48ca-8571-ccaadfefc824",
+          "info": {
+            "editorName": "propsFront",
+            "setAll": [],
+            "children": [
+              {
+                "type": "atlas-sprite",
+                "id": "9b1ff2e0-53fd-4b7e-ac33-fce3bc8ab152",
+                "asset": "9",
+                "info": {
+                  "editorName": "rock",
+                  "x": 256,
+                  "y": 203.2
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "df55aedf-5f87-4e06-aaaf-81b525b21cb2",
+                "asset": "10",
+                "info": {
+                  "editorName": "plant",
+                  "x": 32,
+                  "y": 192
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "050bbd45-8843-4488-ba78-29723c78510b",
+                "asset": "10",
+                "info": {
+                  "editorName": "plant1",
+                  "x": 2288,
+                  "y": 192
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "3d46c050-557b-4d2a-af17-2af1effcdbda",
+                "asset": "10",
+                "info": {
+                  "editorName": "plant2",
+                  "x": 2400,
+                  "y": 192
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "024df371-4a13-49ef-8859-ffdfe16a9de2",
+                "asset": "10",
+                "info": {
+                  "editorName": "plant4",
+                  "x": 368,
+                  "y": 192
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "30323efc-d91e-4360-88fa-9ac8834fcff6",
+                "asset": "10",
+                "info": {
+                  "editorName": "plant5",
+                  "x": 2432,
+                  "y": 192
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "54719ce0-0848-46ac-ae3e-629e89c81985",
+                "asset": "10",
+                "info": {
+                  "editorName": "plant6",
+                  "x": 1904,
+                  "y": 192
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "430aa5dd-ae87-47ed-8946-1b3afc42810c",
+                "asset": "9",
+                "info": {
+                  "editorName": "rock1",
+                  "x": 848,
+                  "y": 176
+                }
+              },
+              {
+                "type": "atlas-sprite",
+                "id": "65d55afd-eb67-4930-90fe-a1c60f4af6e5",
+                "asset": "9",
+                "info": {
+                  "editorName": "rock2",
+                  "x": 1952,
+                  "y": 192
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "group",
+          "id": "a3de4aea-862f-4404-9ba0-73fe47e16279",
+          "info": {
+            "editorName": "stars_group",
+            "editorPublic": true,
+            "setAll": [],
+            "children": [
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "279a1900-0091-4896-b7af-9cca1b1d6d5a",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_",
+                  "x": 1632,
+                  "y": 63.1666666666667
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "921a0f18-9d47-42d0-b528-f0cc1e57b358",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_1",
+                  "x": 1367.33333333333,
+                  "y": 293.833333333333
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "dd7f9c87-1fd7-4f17-a4bb-7b70e9bd07ac",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_2",
+                  "x": 1272.66666666667,
+                  "y": 295.166666666667
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "711f6275-8464-4d31-8d22-875903a1c4e3",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_3",
+                  "x": 1183.33333333333,
+                  "y": 293.166666666667
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "399cf368-7ad4-4165-a198-d4f9322deb15",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_4",
+                  "x": 1664,
+                  "y": 245
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "7211f8ea-559f-4764-ae3e-be6c0cc7696e",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_5",
+                  "x": 1516.66666666667,
+                  "y": 240.5
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "03230e43-8d8b-4911-96e7-d39e74eb346b",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_6",
+                  "x": 1486,
+                  "y": 241.16666666666703
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "7ceffa3a-29ac-40fd-8343-3a20f5457f72",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_7",
+                  "x": 1456,
+                  "y": 241.83333333333297
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "a935dfb1-58fa-40d1-be46-918bd1b7b1e7",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_8",
+                  "x": 655.333333333333,
+                  "y": 96.5
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "1a111f55-a2dc-4145-b7e9-887b6a8c988e",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_9",
+                  "x": 653.333333333333,
+                  "y": 63.8333333333334
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "d650865a-4585-4ee1-9c38-f52cd92c8ca1",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_10",
+                  "x": 428.666666666667,
+                  "y": 127.833333333333
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "228d836c-6b7f-4ca8-83ad-dbdd247b100c",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_11",
+                  "x": 399.333333333333,
+                  "y": 128.5
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "d6537d1d-dd8c-4068-b90d-64e75bb28413",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_13",
+                  "x": 242.666666666667,
+                  "y": 47.1666666666667
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "9af2d0b4-bb00-4463-b5fb-92b7ae2c81f7",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_15",
+                  "x": 272.666666666667,
+                  "y": 47.1666666666667
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "3396513a-bd0f-4db2-a45c-a5f450cf808f",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_16",
+                  "x": 302.666666666667,
+                  "y": 47
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "4bfb3f99-e80c-4609-8331-00464d47b4b7",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_12",
+                  "x": 160.5,
+                  "y": 110.833333333333
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "0ac2d66a-3131-4f85-9b3e-3d5ea701c56e",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_18",
+                  "x": 2145,
+                  "y": 64
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "dcebbc4e-ea9a-4a38-b460-4c19b11f8289",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_19",
+                  "x": 2082,
+                  "y": 64
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "a2df829a-e886-4bfe-9353-12d282fb0903",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_20",
+                  "x": 1697,
+                  "y": 64
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "baecb1b8-ce31-460d-958f-50e2f6240c10",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_21",
+                  "x": 209,
+                  "y": 106
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "5f5f99bd-0449-478e-9455-9e7083f37089",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_23",
+                  "x": 209,
+                  "y": 106
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "f29148ba-4f53-4742-9bf1-f0b05e968304",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_29",
+                  "x": 2351,
+                  "y": 176
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "667eab69-f0f0-4edb-b70f-257c427d9022",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_30",
+                  "x": 2287,
+                  "y": 177
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "7657e3f4-f331-4a7b-af57-61cee96ccd4d",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_31",
+                  "x": 2323,
+                  "y": 176
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "b9e47637-0031-4011-9734-bb406d87109a",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_32",
+                  "x": 2210,
+                  "y": 64
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "5",
+                "id": "77be30b4-d5fd-4a06-bf1d-7a4a9f2c4277",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "star/star-1"
+                },
+                "info": {
+                  "editorName": "star_star_17",
+                  "x": 1664.66666666667,
+                  "y": 63.1666666666667
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "group",
+          "id": "1df9e309-c934-42c4-86a9-ef9f5c4b0161",
+          "info": {
+            "editorName": "carrots_group",
+            "editorPublic": true,
+            "setAll": [],
+            "children": [
+              {
+                "type": "prefab",
+                "prefab": "6",
+                "id": "d6efbbad-e449-4db9-a96d-758ab1fd9aed",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "carrot/carrot-1"
+                },
+                "info": {
+                  "editorName": "carrot_carrot_",
+                  "x": 1484.66666666667,
+                  "y": 29.5
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "6",
+                "id": "11f441af-59d0-49c7-afcd-3826f1f6cbcb",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "carrot/carrot-1"
+                },
+                "info": {
+                  "editorName": "carrot_carrot_2",
+                  "x": 404.5,
+                  "y": 51
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "6",
+                "id": "2d8bc208-08fa-4f80-bf58-5558737e7b1d",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "carrot/carrot-1"
+                },
+                "info": {
+                  "editorName": "carrot_carrot_3",
+                  "x": 766.833333333333,
+                  "y": 65.5
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "6",
+                "id": "d10b525d-9918-4030-a55b-56f4d0aeece8",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "preloader",
+                  "asset": "atlas",
+                  "sprite": "carrot/carrot-1"
+                },
+                "info": {
+                  "editorName": "carrot_carrot_4",
+                  "x": 936.833333333333,
+                  "y": 313.833333333333
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "atlas-sprite",
+          "id": "addad39d-1040-46df-bad3-a2851b8a1b55",
+          "asset": "11",
+          "info": {
+            "editorName": "hud",
+            "editorPublic": true,
+            "x": 10,
+            "y": 10,
+            "fixedToCamera": true
+          }
+        },
+        {
+          "type": "bitmapText",
+          "id": "025bdada-ab67-4ef3-b24b-e6fc82183ffb",
+          "asset": "12",
+          "info": {
+            "editorName": "scoreLabel",
+            "editorPublic": true,
+            "x": 55,
+            "y": 10,
+            "scale.x": 0.4428295183236429,
+            "scale.y": 0.31234285277599705,
+            "fixedToCamera": true,
+            "text": "0"
+          }
+        }
+      ]
+    }
+  },
+  "type": "STATE",
+  "asset-table": {
+    "0": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "background"
+    },
+    "1": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "middleground"
+    },
+    "2": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "level1"
+    },
+    "3": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "level1_collisions"
+    },
+    "4": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "atlas-props",
+      "sprite": "tree"
+    },
+    "5": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "atlas-props",
+      "sprite": "mushroom-brown"
+    },
+    "6": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "atlas-props",
+      "sprite": "mushroom-red"
+    },
+    "7": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "atlas-props",
+      "sprite": "vine"
+    },
+    "8": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "atlas-props",
+      "sprite": "house"
+    },
+    "9": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "atlas-props",
+      "sprite": "rock"
+    },
+    "10": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "atlas-props",
+      "sprite": "plant"
+    },
+    "11": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "atlas",
+      "sprite": "hud/hud-4"
+    },
+    "12": {
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader",
+      "asset": "vt323"
+    }
+  },
+  "prefab-table": {
+    "0": "WebContent/assets/canvas/prefabs/Chest.canvas",
+    "1": "WebContent/assets/canvas/prefabs/Player.canvas",
+    "2": "WebContent/assets/canvas/prefabs/Slug.canvas",
+    "3": "WebContent/assets/canvas/prefabs/Bee.canvas",
+    "4": "WebContent/assets/canvas/prefabs/Plant.canvas",
+    "5": "WebContent/assets/canvas/prefabs/PickStar.canvas",
+    "6": "WebContent/assets/canvas/prefabs/Carrot.canvas"
+  }
+}
