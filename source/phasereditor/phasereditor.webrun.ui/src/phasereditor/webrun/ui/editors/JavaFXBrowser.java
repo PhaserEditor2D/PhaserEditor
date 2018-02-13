@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.webrun.ui.editors;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.Composite;
 
 import javafx.embed.swt.FXCanvas;
@@ -39,12 +42,30 @@ public class JavaFXBrowser extends FXCanvas implements IGameBrowser {
 		super(parent, style);
 		_webView = new WebView();
 		setScene(new Scene(_webView));
+		addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.keyCode == SWT.F5) {
+					getWebView().getEngine().reload();
+				}
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				//
+			}
+		});
 	}
 
 	@Override
 	public boolean setUrl(String url) {
 		_webView.getEngine().load(url);
 		return true;
+	}
+
+	public WebView getWebView() {
+		return _webView;
 	}
 
 	@Override
