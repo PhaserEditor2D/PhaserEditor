@@ -41,9 +41,9 @@ public class HandlerNodeHelper {
 
 	public void handleMousePressed(MouseEvent e) {
 		_start = new Point2D(e.getSceneX(), e.getSceneY());
-		_node.handleSceneStart(e.getSceneX(), e.getSceneY());
+		_node.handleSceneStart(e.getSceneX(), e.getSceneY(), e);
 		Point2D startLocal = _node.sceneToObject(e.getSceneX(), e.getSceneY());
-		_node.handleLocalStart(startLocal.getX(), startLocal.getY());
+		_node.handleLocalStart(startLocal.getX(), startLocal.getY(), e);
 	}
 
 	public void handleMouseDragged(MouseEvent e) {
@@ -62,7 +62,7 @@ public class HandlerNodeHelper {
 		{
 			double dx = cursorX - _start.getX();
 			double dy = cursorY - _start.getY();
-			_node.handleSceneDrag(dx, dy);
+			_node.handleSceneDrag(dx, dy, e);
 		}
 
 		{
@@ -72,7 +72,7 @@ public class HandlerNodeHelper {
 			double localDX = localCursor.getX() - localStart.getX();
 			double localDY = localCursor.getY() - localStart.getY();
 
-			_node.handleLocalDrag(localDX, localDY);
+			_node.handleLocalDrag(localDX, localDY, e);
 		}
 		obj.getControl().updateFromModel();
 		obj.getControl().getCanvas().getSelectionBehavior().updateSelectedNodes();

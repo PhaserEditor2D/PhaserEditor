@@ -23,6 +23,7 @@ package phasereditor.canvas.ui.editors.edithandlers;
 
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
@@ -51,7 +52,7 @@ public class ScaleHandlerNode extends PathHandlerNode {
 	}
 
 	@Override
-	public void handleLocalStart(double localX, double localY) {
+	public void handleLocalStart(double localX, double localY, MouseEvent e) {
 		Bounds bounds = _node.getBoundsInLocal();
 
 		_initScaleX = _model.getScaleX();
@@ -66,27 +67,62 @@ public class ScaleHandlerNode extends PathHandlerNode {
 	}
 
 	@Override
-	public void handleLocalDrag(double dx, double dy) {
-		if (_axis.changeW()) {
-			double sign = _axis.signW();
-			double x = (_scaledInitWidth + sign * dx * _model.getScaleX()) / _initWidth;
-			_model.setScaleX(x);
+	public void handleLocalDrag(double dx, double dy, MouseEvent e) {
+		if (e.isShiftDown()) {
+			boolean updateX = false;
+			boolean updateY = false;
 
-			if (_axis.x == 0) {
-				_model.setX(_initX + dx * _model.getScaleX());
+			if (_axis.x != 0.5 && _axis.y != 0.5) {
+				updateY = _axis.y == 0;
+				updateX = _axis.y == 1;
+			} else if (_axis.y == 0.5) {
+				updateX = true;
+			} else if (_axis.x == 0.5) {
+				updateY = true;
+			}
+
+			if (updateX) {
+				double x = updateScaleX(dx);
+				_model.setScaleY(x);
+			}
+
+			if (updateY) {
+				double y = updateScaleY(dy);
+				_model.setScaleX(y);
+			}
+
+		} else {
+			if (_axis.changeW()) {
+				updateScaleX(dx);
+			}
+
+			if (_axis.changeH()) {
+				updateScaleY(dy);
 			}
 		}
 
-		if (_axis.changeH()) {
-			double sign = _axis.signH();
-			double y = (_scaledInitHeight + sign * dy * _model.getScaleY()) / _initHeight;
-			_model.setScaleY(y);
+	}
 
-			if (_axis.y == 0) {
-				_model.setY(_initY + dy * _model.getScaleY());
-			}
+	private double updateScaleY(double dy) {
+		double sign = _axis.signH();
+		double y = (_scaledInitHeight + sign * dy * _model.getScaleY()) / _initHeight;
+		_model.setScaleY(y);
+
+		if (_axis.y == 0) {
+			_model.setY(_initY + dy * _model.getScaleY());
 		}
+		return y;
+	}
 
+	private double updateScaleX(double dx) {
+		double sign = _axis.signW();
+		double x = (_scaledInitWidth + sign * dx * _model.getScaleX()) / _initWidth;
+		_model.setScaleX(x);
+
+		if (_axis.x == 0) {
+			_model.setX(_initX + dx * _model.getScaleX());
+		}
+		return x;
 	}
 
 	@Override

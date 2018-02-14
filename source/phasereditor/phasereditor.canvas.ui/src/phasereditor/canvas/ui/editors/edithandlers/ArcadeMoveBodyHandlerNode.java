@@ -23,6 +23,7 @@ package phasereditor.canvas.ui.editors.edithandlers;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import phasereditor.canvas.core.ArcadeBodyModel;
 import phasereditor.canvas.core.BaseSpriteModel;
@@ -38,7 +39,7 @@ import phasereditor.canvas.ui.shapes.ISpriteNode;
  * @author arian
  *
  */
-public class ArcadeMoveBodyHandlerNode extends CircleHandlerNode {
+public class ArcadeMoveBodyHandlerNode extends CircleHandlerNode implements IArcadeBodyHandlerNode {
 	private double _initX;
 	private double _initY;
 
@@ -55,7 +56,7 @@ public class ArcadeMoveBodyHandlerNode extends CircleHandlerNode {
 	}
 
 	@Override
-	public void handleLocalStart(double localX, double localY) {
+	public void handleLocalStart(double localX, double localY, MouseEvent e) {
 		ISpriteNode sprite = (ISpriteNode) _object;
 		ArcadeBodyModel body = (ArcadeBodyModel) sprite.getModel().getBody();
 		_initX = body.getOffsetX();
@@ -63,7 +64,7 @@ public class ArcadeMoveBodyHandlerNode extends CircleHandlerNode {
 	}
 
 	@Override
-	public void handleLocalDrag(double dx, double dy) {
+	public void handleLocalDrag(double dx, double dy, MouseEvent e) {
 		ISpriteNode sprite = (ISpriteNode) _object;
 		ArcadeBodyModel body = (ArcadeBodyModel) sprite.getModel().getBody();
 

@@ -22,6 +22,7 @@
 package phasereditor.canvas.ui.editors.edithandlers;
 
 import javafx.geometry.Point2D;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.RectArcadeBodyModel;
@@ -35,7 +36,7 @@ import phasereditor.canvas.ui.shapes.ISpriteNode;
  * @author arian
  *
  */
-public class ArcadeResizeRectBodyHandlerNode extends PathHandlerNode {
+public class ArcadeResizeRectBodyHandlerNode extends PathHandlerNode implements IArcadeBodyHandlerNode {
 
 	private Axis _axis;
 	private double _initX;
@@ -51,11 +52,11 @@ public class ArcadeResizeRectBodyHandlerNode extends PathHandlerNode {
 
 	@Override
 	public boolean isValid() {
-		return super.isRectArcadeValid();
+		return isRectArcadeValid();
 	}
 
 	@Override
-	public void handleLocalStart(double localX, double localY) {
+	public void handleLocalStart(double localX, double localY, MouseEvent e) {
 		ISpriteNode sprite = (ISpriteNode) _object;
 		RectArcadeBodyModel body = (RectArcadeBodyModel) sprite.getModel().getBody();
 		_initX = body.getOffsetX();
@@ -65,7 +66,7 @@ public class ArcadeResizeRectBodyHandlerNode extends PathHandlerNode {
 	}
 
 	@Override
-	public void handleLocalDrag(double dx, double dy) {
+	public void handleLocalDrag(double dx, double dy, MouseEvent e) {
 		ISpriteNode sprite = (ISpriteNode) _object;
 		RectArcadeBodyModel body = (RectArcadeBodyModel) sprite.getModel().getBody();
 

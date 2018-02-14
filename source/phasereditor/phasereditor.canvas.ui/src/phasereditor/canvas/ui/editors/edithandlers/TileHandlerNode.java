@@ -22,6 +22,7 @@
 package phasereditor.canvas.ui.editors.edithandlers;
 
 import javafx.geometry.Point2D;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.TileSpriteModel;
@@ -54,7 +55,7 @@ public class TileHandlerNode extends PathHandlerNode {
 	}
 
 	@Override
-	public void handleLocalStart(double localX, double localY) {
+	public void handleLocalStart(double localX, double localY, MouseEvent e) {
 		TileSpriteNode tile = (TileSpriteNode) _object;
 		TileSpriteModel tilemodel = tile.getModel();
 
@@ -65,7 +66,7 @@ public class TileHandlerNode extends PathHandlerNode {
 	}
 
 	@Override
-	public void handleLocalDrag(double dx, double dy) {
+	public void handleLocalDrag(double dx, double dy, MouseEvent e) {
 		TileSpriteNode tile = (TileSpriteNode) _object;
 		TileSpriteModel tilemodel = tile.getModel();
 

@@ -23,6 +23,7 @@ package phasereditor.canvas.ui.editors.edithandlers;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Transform;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
@@ -52,7 +53,7 @@ public class PivotHandlerNode extends PathHandlerNode {
 	}
 
 	@Override
-	public void handleLocalStart(double localX, double localY) {
+	public void handleLocalStart(double localX, double localY, MouseEvent e) {
 		_initX = _model.getX();
 		_initY = _model.getY();
 		_initPivotX = _model.getPivotX();
@@ -60,7 +61,7 @@ public class PivotHandlerNode extends PathHandlerNode {
 	}
 
 	@Override
-	public void handleLocalDrag(double dx, double dy) {
+	public void handleLocalDrag(double dx, double dy, MouseEvent e) {
 		_model.setPivotX(_initPivotX + dx);
 		_model.setPivotY(_initPivotY + dy);
 

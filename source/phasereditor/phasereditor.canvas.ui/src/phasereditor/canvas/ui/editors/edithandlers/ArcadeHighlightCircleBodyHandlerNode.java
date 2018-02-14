@@ -31,7 +31,7 @@ import phasereditor.canvas.ui.shapes.IObjectNode;
  * @author arian
  *
  */
-public class ArcadeHighlightCircleBodyHandlerNode extends CircleHandlerNode {
+public class ArcadeHighlightCircleBodyHandlerNode extends CircleHandlerNode implements IArcadeBodyHandlerNode {
 
 	public ArcadeHighlightCircleBodyHandlerNode(IObjectNode object) {
 		super(object);
@@ -39,7 +39,7 @@ public class ArcadeHighlightCircleBodyHandlerNode extends CircleHandlerNode {
 		setFill(Color.GREENYELLOW);
 		setStrokeWidth(0);
 	}
-	
+
 	@Override
 	public boolean isValid() {
 		return isCircleArcadeValid();

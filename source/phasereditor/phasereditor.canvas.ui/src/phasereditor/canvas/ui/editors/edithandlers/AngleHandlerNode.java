@@ -23,6 +23,7 @@ package phasereditor.canvas.ui.editors.edithandlers;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
@@ -59,7 +60,7 @@ public class AngleHandlerNode extends PathHandlerNode {
 	}
 
 	@Override
-	public void handleSceneStart(double x, double y) {
+	public void handleSceneStart(double x, double y, MouseEvent e) {
 		_initAngle = _object.getModel().getAngle();
 		_initX = x;
 		_initY = y;
@@ -79,7 +80,7 @@ public class AngleHandlerNode extends PathHandlerNode {
 	}
 
 	@Override
-	public void handleSceneDrag(double dx, double dy) {
+	public void handleSceneDrag(double dx, double dy, MouseEvent e) {
 		if (Math.abs(dx) < 1 || Math.abs(dy) < 1) {
 			return;
 		}

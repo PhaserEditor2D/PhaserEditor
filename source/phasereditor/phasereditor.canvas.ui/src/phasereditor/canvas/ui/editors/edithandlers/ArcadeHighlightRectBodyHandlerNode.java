@@ -22,6 +22,7 @@
 package phasereditor.canvas.ui.editors.edithandlers;
 
 import javafx.geometry.Point2D;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -33,7 +34,7 @@ import phasereditor.canvas.ui.shapes.IObjectNode;
  * @author arian
  *
  */
-public class ArcadeHighlightRectBodyHandlerNode extends PathHandlerNode {
+public class ArcadeHighlightRectBodyHandlerNode extends PathHandlerNode implements IArcadeBodyHandlerNode{
 
 	public ArcadeHighlightRectBodyHandlerNode(IObjectNode object) {
 		super(object);
@@ -49,12 +50,12 @@ public class ArcadeHighlightRectBodyHandlerNode extends PathHandlerNode {
 	}
 
 	@Override
-	public void handleLocalStart(double localX, double localY) {
+	public void handleLocalStart(double localX, double localY, MouseEvent e) {
 		// nothing
 	}
 
 	@Override
-	public void handleLocalDrag(double dx, double dy) {
+	public void handleLocalDrag(double dx, double dy, MouseEvent e) {
 		// nothing
 	}
 

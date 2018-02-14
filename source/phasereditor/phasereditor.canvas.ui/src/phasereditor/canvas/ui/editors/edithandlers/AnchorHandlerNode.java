@@ -23,6 +23,7 @@ package phasereditor.canvas.ui.editors.edithandlers;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Transform;
 import phasereditor.canvas.core.BaseSpriteModel;
@@ -55,7 +56,7 @@ public class AnchorHandlerNode extends PathHandlerNode {
 	}
 	
 	@Override
-	public void handleLocalStart(double localX, double localY) {
+	public void handleLocalStart(double localX, double localY, MouseEvent e) {
 		ISpriteNode sprite = (ISpriteNode) _object;
 		BaseSpriteModel model = sprite.getModel();
 		_initX = model.getX();
@@ -67,7 +68,7 @@ public class AnchorHandlerNode extends PathHandlerNode {
 	}
 
 	@Override
-	public void handleLocalDrag(double dx, double dy) {
+	public void handleLocalDrag(double dx, double dy, MouseEvent e) {
 		ISpriteNode sprite = (ISpriteNode) _object;
 		BaseSpriteModel model = sprite.getModel();
 

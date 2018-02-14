@@ -23,12 +23,6 @@ package phasereditor.canvas.ui.editors.edithandlers;
 
 import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
-import phasereditor.canvas.core.ArcadeBodyModel;
-import phasereditor.canvas.core.BaseObjectModel;
-import phasereditor.canvas.core.BaseSpriteModel;
-import phasereditor.canvas.core.BodyModel;
-import phasereditor.canvas.core.CircleArcadeBodyModel;
-import phasereditor.canvas.core.RectArcadeBodyModel;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
@@ -52,22 +46,22 @@ public interface IEditHandlerNode {
 	void updateHandler();
 
 	@SuppressWarnings("unused")
-	default void handleSceneStart(double x, double y) {
+	default void handleSceneStart(double x, double y, MouseEvent e) {
 		// nothing
 	}
 
 	@SuppressWarnings("unused")
-	default void handleLocalStart(double x, double y) {
+	default void handleLocalStart(double x, double y, MouseEvent e) {
 		// nothing
 	}
 
 	@SuppressWarnings("unused")
-	default void handleSceneDrag(double dx, double dy) {
+	default void handleSceneDrag(double dx, double dy, MouseEvent e) {
 		// nothing
 	}
 
 	@SuppressWarnings("unused")
-	default void handleLocalDrag(double dx, double dy) {
+	default void handleLocalDrag(double dx, double dy, MouseEvent e) {
 		// nothing
 	}
 
@@ -86,48 +80,6 @@ public interface IEditHandlerNode {
 	default Point2D sceneToObject(double x, double y) {
 		Point2D p = getObject().getNode().sceneToLocal(new Point2D(x, y));
 		return p;
-	}
-
-	public default boolean isCircleArcadeValid() {
-		BaseObjectModel model = getObject().getModel();
-
-		if (model instanceof BaseSpriteModel) {
-			BodyModel body = ((BaseSpriteModel) model).getBody();
-
-			if (body != null) {
-				return body instanceof CircleArcadeBodyModel;
-			}
-		}
-
-		return false;
-	}
-
-	public default boolean isRectArcadeValid() {
-		BaseObjectModel model = getObject().getModel();
-
-		if (model instanceof BaseSpriteModel) {
-			BodyModel body = ((BaseSpriteModel) model).getBody();
-
-			if (body != null) {
-				return body instanceof RectArcadeBodyModel;
-			}
-		}
-
-		return false;
-	}
-
-	public default boolean isArcadeValid() {
-		BaseObjectModel model = getObject().getModel();
-
-		if (model instanceof BaseSpriteModel) {
-			BodyModel body = ((BaseSpriteModel) model).getBody();
-
-			if (body != null) {
-				return body instanceof ArcadeBodyModel;
-			}
-		}
-
-		return false;
 	}
 
 	boolean isValid();
