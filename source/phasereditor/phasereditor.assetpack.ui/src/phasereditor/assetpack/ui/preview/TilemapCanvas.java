@@ -22,6 +22,7 @@
 package phasereditor.assetpack.ui.preview;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -214,6 +215,8 @@ public class TilemapCanvas extends ZoomCanvas
 
 				ImageData srcData = _tileSetImage.getImageData();
 				ImageData data = new ImageData(size.x, size.y, srcData.depth, srcData.palette);
+				data.setAlpha(0, 0, 0);
+				Arrays.fill(data.alphaData, (byte) 0);
 
 				Image image = new Image(getDisplay(), data);
 
@@ -221,11 +224,11 @@ public class TilemapCanvas extends ZoomCanvas
 
 				for (int i = 0; i < map.length; i++) {
 					int[] row = map[i];
-					
+
 					for (int j = 0; j < row.length; j++) {
 
 						int frame = map[i][j];
-						
+
 						if (frame < 0) {
 							continue;
 						}
@@ -332,7 +335,7 @@ public class TilemapCanvas extends ZoomCanvas
 				}
 
 				// paint selection
-				
+
 				Color borderColor = PhaserEditorUI.get_pref_Preview_Spritesheet_borderColor();
 				Color labelsColor = PhaserEditorUI.get_pref_Preview_Spritesheet_labelsColor();
 				Color colorBlack = getDisplay().getSystemColor(SWT.COLOR_BLACK);
@@ -350,19 +353,17 @@ public class TilemapCanvas extends ZoomCanvas
 
 					int frame = map[_mouseMapY][_mouseMapX];
 
-					
-					
 					int cellY = (int) (offY + _mouseMapY * _tileHeight * scale);
 					int cellX = (int) (offX + _mouseMapX * _tileWidth * scale);
 					int cellW = (int) (_tileWidth * scale);
 					int cellH = (int) (_tileHeight * scale);
 
 					// paint border
-					
+
 					gc.setForeground(borderColor);
-					
+
 					gc.drawRectangle(cellX, cellY, cellW, cellH);
-					
+
 					// paint label
 
 					FontMetrics fm = gc.getFontMetrics();

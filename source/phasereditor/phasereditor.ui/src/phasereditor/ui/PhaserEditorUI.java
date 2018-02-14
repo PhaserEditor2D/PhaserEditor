@@ -607,8 +607,8 @@ public class PhaserEditorUI {
 		};
 	}
 
-	public static void paintPreviewBackground(GC gc, Rectangle canvasBounds) {
-		paintPreviewBackground(gc, canvasBounds, 25);
+	public static void paintPreviewBackground(GC gc, Rectangle rect) {
+		paintPreviewBackground(gc, rect, 25);
 	}
 
 	public static void paintPreviewBackground(GC gc, Rectangle bounds, int space) {
