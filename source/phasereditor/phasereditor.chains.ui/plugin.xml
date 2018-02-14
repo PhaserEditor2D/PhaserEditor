@@ -12,4 +12,19 @@
             restorable="true">
       </view>
    </extension>
+<extension
+      point="org.eclipse.ui.preferencePages">
+   <page
+         category="phasereditor.ui.prefs.phasereditor"
+         class="phasereditor.chains.ui.prefs.ChainsPreferencesPage"
+         id="phasereditor.chains.ui.prefs.chainsview"
+         name="Chains">
+   </page>
+</extension>
+<extension
+      point="org.eclipse.core.runtime.preferences">
+   <initializer
+         class="phasereditor.chains.ui.prefs.ChainsPreferenceInitializer">
+   </initializer>
+</extension>
 </plugin>

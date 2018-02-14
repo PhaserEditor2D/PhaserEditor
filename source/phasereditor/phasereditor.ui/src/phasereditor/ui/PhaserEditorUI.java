@@ -59,6 +59,7 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.util.Util;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.viewers.ContentViewer;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -215,14 +216,13 @@ public class PhaserEditorUI {
 				_PREF_PROP_PREVIEW_IMG_PAINT_BG_TYPE = (String) event.getNewValue();
 				break;
 			case PREF_PROP_PREVIEW_IMG_PAINT_BG_SOLID_COLOR:
-				_PREF_PROP_PREVIEW_IMG_PAINT_BG_SOLID_COLOR = new Color(Display.getDefault(),
-						getRGBFromPrefEvent(event));
+				_PREF_PROP_PREVIEW_IMG_PAINT_BG_SOLID_COLOR = SWTResourceManager.getColor(getRGBFromPrefEvent(event));
 				break;
 			case PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1:
-				_PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1 = new Color(Display.getDefault(), getRGBFromPrefEvent(event));
+				_PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1 = SWTResourceManager.getColor(getRGBFromPrefEvent(event));
 				break;
 			case PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_2:
-				_PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_2 = new Color(Display.getDefault(), getRGBFromPrefEvent(event));
+				_PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_2 = SWTResourceManager.getColor(getRGBFromPrefEvent(event));
 				break;
 
 			// spritesheet
@@ -236,36 +236,34 @@ public class PhaserEditorUI {
 						.getBoolean(PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS);
 				break;
 			case PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR:
-				_PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR = new Color(Display.getDefault(),
-						getRGBFromPrefEvent(event));
+				_PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR = SWTResourceManager
+						.getColor(getRGBFromPrefEvent(event));
 				break;
 			case PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR:
-				_PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR = new Color(Display.getDefault(),
-						getRGBFromPrefEvent(event));
+				_PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR = SWTResourceManager.getColor(getRGBFromPrefEvent(event));
 				break;
 			case PREF_PROP_PREVIEW_SPRITESHEET_SELECTION_COLOR:
-				_PREF_PROP_PREVIEW_SPRITESHEET_SELECTION_COLOR = new Color(Display.getDefault(),
-						getRGBFromPrefEvent(event));
+				_PREF_PROP_PREVIEW_SPRITESHEET_SELECTION_COLOR = SWTResourceManager
+						.getColor(getRGBFromPrefEvent(event));
 				break;
 
 			// atlas
 
 			case PREF_PROP_PREVIEW_ATLAS_FRAME_OVER_COLOR:
-				_PREF_PROP_PREVIEW_ATLAS_FRAME_OVER_COLOR = new Color(Display.getDefault(), getRGBFromPrefEvent(event));
+				_PREF_PROP_PREVIEW_ATLAS_FRAME_OVER_COLOR = SWTResourceManager.getColor(getRGBFromPrefEvent(event));
 				break;
 
 			// tilemap
 
 			case PREF_PROP_PREVIEW_TILEMAP_OVER_TILE_BORDER_COLOR:
-				_PREF_PROP_PREVIEW_TILEMAP_OVER_TILE_BORDER_COLOR = new Color(Display.getDefault(),
-						getRGBFromPrefEvent(event));
+				_PREF_PROP_PREVIEW_TILEMAP_OVER_TILE_BORDER_COLOR = SWTResourceManager
+						.getColor(getRGBFromPrefEvent(event));
 				break;
 			case PREF_PROP_PREVIEW_TILEMAP_LABELS_COLOR:
-				_PREF_PROP_PREVIEW_TILEMAP_LABELS_COLOR = new Color(Display.getDefault(), getRGBFromPrefEvent(event));
+				_PREF_PROP_PREVIEW_TILEMAP_LABELS_COLOR = SWTResourceManager.getColor(getRGBFromPrefEvent(event));
 				break;
 			case PREF_PROP_PREVIEW_TILEMAP_SELECTION_BG_COLOR:
-				_PREF_PROP_PREVIEW_TILEMAP_SELECTION_BG_COLOR = new Color(Display.getDefault(),
-						getRGBFromPrefEvent(event));
+				_PREF_PROP_PREVIEW_TILEMAP_SELECTION_BG_COLOR = SWTResourceManager.getColor(getRGBFromPrefEvent(event));
 				break;
 			default:
 				break;
@@ -273,7 +271,7 @@ public class PhaserEditorUI {
 		});
 	}
 
-	private static RGB getRGBFromPrefEvent(PropertyChangeEvent event) {
+	public static RGB getRGBFromPrefEvent(PropertyChangeEvent event) {
 		Object newValue = event.getNewValue();
 		if (newValue instanceof RGB) {
 			return (RGB) newValue;
@@ -1077,6 +1075,18 @@ public class PhaserEditorUI {
 		PhaserEditorUI.getPreferenceStore().addPropertyChangeListener(listener);
 		canvas.addDisposeListener(e -> {
 			PhaserEditorUI.getPreferenceStore().removePropertyChangeListener(listener);
+		});
+	}
+
+	public static void refreshViewerWhenPreferencesChange(IPreferenceStore store, ContentViewer... viewers) {
+		IPropertyChangeListener listener = e -> {
+			for (ContentViewer viewer : viewers) {
+				viewer.refresh();
+			}
+		};
+		store.addPropertyChangeListener(listener);
+		viewers[0].getControl().addDisposeListener(e -> {
+			store.removePropertyChangeListener(listener);
 		});
 	}
 }

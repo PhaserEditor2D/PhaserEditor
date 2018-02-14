@@ -83,6 +83,7 @@ import phasereditor.chains.core.ChainsCore;
 import phasereditor.chains.core.ChainsModel;
 import phasereditor.chains.core.Line;
 import phasereditor.chains.core.Match;
+import phasereditor.chains.ui.ChainsUI;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.examples.ExampleCategoryModel;
 import phasereditor.inspect.core.examples.ExampleModel;
@@ -91,6 +92,7 @@ import phasereditor.inspect.core.jsdoc.JSDocRenderer;
 import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
+import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.WebkitBrowser;
 import phasereditor.ui.editors.StringEditorInput;
 import phasereditor.webrun.ui.WebRunUI;
@@ -138,8 +140,8 @@ public class ChainsView extends ViewPart {
 
 			StyleRange[] ranges;
 
-			Color fgColor = getMatchFgColor(cell.getControl().getDisplay());
-			Color bgColor = getMatchBgColor(cell.getControl().getDisplay());
+			Color fgColor = ChainsUI.get_pref_Chains_highlightFgColor();
+			Color bgColor = ChainsUI.get_pref_Chains_highlightBgColor();
 
 			StyleRange selRange = new StyleRange(match.start, match.length, fgColor, bgColor);
 			StyleRange allRange = new StyleRange(0, text.length(), null, null);
@@ -211,8 +213,8 @@ public class ChainsView extends ViewPart {
 			}
 			StyleRange allRange = new StyleRange(0, text.length(), null, null);
 			allRange.font = font;
-			Color fgcolor = getMatchFgColor(cell.getControl().getDisplay());
-			Color bgcolor = getMatchBgColor(cell.getControl().getDisplay());
+			Color fgcolor = ChainsUI.get_pref_Chains_highlightFgColor();
+			Color bgcolor = ChainsUI.get_pref_Chains_highlightBgColor();
 			StyleRange selRange = new StyleRange(match.start, match.length, fgcolor, bgcolor);
 			StyleRange[] ranges = { allRange, selRange };
 			cell.setStyleRanges(ranges);
@@ -551,29 +553,10 @@ public class ChainsView extends ViewPart {
 			}
 		}.schedule();
 
-		// TODO:
-		// _docBrowser.addLocationListener(new LocationListener() {
-		//
-		// @Override
-		// public void changing(LocationEvent event) {
-		// String loc = event.location;
-		// int i = loc.indexOf("#member:");
-		// if (i >= 0) {
-		// String member = loc.substring(i + 8);
-		// if (_chainsModel.isPhaserType(member)) {
-		// member += ".";
-		// }
-		// _queryText.setText(member);
-		// _tabFolder.setSelection(0);
-		// }
-		// }
-		//
-		// @Override
-		// public void changed(LocationEvent event) {
-		// // nothing
-		// }
-		// });
 		_docBrowser.setText(wrapBody("<b>Double click a chain to see the JSDoc here.</b>"));
+
+		PhaserEditorUI.refreshViewerWhenPreferencesChange(ChainsUI.getPreferenceStore(), _chainsViewer,
+				_examplesViewer);
 	}
 
 	/**
@@ -632,16 +615,5 @@ public class ChainsView extends ViewPart {
 			};
 		}
 		return super.getAdapter(adapter);
-	}
-
-	// private static RGB MATCH_BG_COLOR = new RGB(188,182,13);
-
-	static Color getMatchBgColor(Display display) {
-		return display.getSystemColor(SWT.COLOR_LIST_SELECTION);
-		// return SWTResourceManager.getColor(MATCH_BG_COLOR);
-	}
-
-	static Color getMatchFgColor(Display display) {
-		return display.getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT);
 	}
 }
