@@ -330,16 +330,21 @@ public class TilemapCanvas extends ZoomCanvas
 					}
 				} else {
 					Rectangle b = _renderImage.getBounds();
-					gc.drawImage(_renderImage, 0, 0, b.width, b.height, (int) offX, (int) offY, (int) (b.width * scale),
+
+					Rectangle dst = new Rectangle((int) offX, (int) offY, (int) (b.width * scale),
 							(int) (b.height * scale));
+
+					PhaserEditorUI.paintPreviewBackground(gc, dst);
+
+					gc.drawImage(_renderImage, 0, 0, b.width, b.height, dst.x, dst.y, dst.width, dst.height);
 				}
 
 				// paint selection
 
-				Color borderColor = PhaserEditorUI.get_pref_Preview_Spritesheet_borderColor();
-				Color labelsColor = PhaserEditorUI.get_pref_Preview_Spritesheet_labelsColor();
-				Color colorBlack = getDisplay().getSystemColor(SWT.COLOR_BLACK);
-				Color selectionColor = PhaserEditorUI.get_pref_Preview_Spritesheet_selectionColor();
+				Color borderColor = PhaserEditorUI.get_pref_Preview_Tilemap_overTileBorderColor();
+				Color labelsColor = PhaserEditorUI.get_pref_Preview_Tilemap_labelsColor();
+				Color shadowColor = getDisplay().getSystemColor(SWT.COLOR_BLACK);
+				Color selectionColor = PhaserEditorUI.get_pref_Preview_Tilemap_selectionBgColor();
 
 				for (Point p : _selectedCells) {
 					gc.setAlpha(100);
@@ -388,9 +393,9 @@ public class TilemapCanvas extends ZoomCanvas
 					}
 
 					String label = Integer.toString(frame);
-					gc.setForeground(colorBlack);
+					gc.setForeground(shadowColor);
 					gc.drawString(label, x - 1, y + 1, true);
-					gc.setForeground(colorBlack);
+					gc.setForeground(shadowColor);
 					gc.drawString(label, x + 1, y - 1, true);
 					gc.setForeground(labelsColor);
 					gc.drawString(label, x, y, true);

@@ -112,6 +112,12 @@
             id="phasereditor.ui.previewSpriteSheet"
             name="Spritesheet">
       </page>
+       <page
+            category="phasereditor.ui.previewPrefPage"
+            class="phasereditor.ui.prefs.TilemapPreviewPreferencesPage"
+            id="phasereditor.ui.previewTilemap"
+            name="Tilemap">
+      </page>
       <page
             category="phasereditor.ui.previewPrefPage"
             class="phasereditor.ui.prefs.AtlasPreferencesPage"

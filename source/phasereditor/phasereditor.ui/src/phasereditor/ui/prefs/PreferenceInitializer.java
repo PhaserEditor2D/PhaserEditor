@@ -29,14 +29,27 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_2,
 				StringConverter.asString(new RGB(250, 250, 250)));
 
+		// spritesheet
+		
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_PAINT_FRAMES, true);
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS, true);
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR,
 				StringConverter.asString(_RED));
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR, StringConverter.asString(_YELLOW));
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_SELECTION_COLOR, StringConverter.asString(_BLUE));
+		
+		// atlas
 
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_ATLAS_FRAME_OVER_COLOR, StringConverter.asString(_RED));
+		
+		// tilemap
+		
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_TILEMAP_OVER_TILE_BORDER_COLOR,
+				StringConverter.asString(_RED));
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_TILEMAP_LABELS_COLOR, StringConverter.asString(_YELLOW));
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_TILEMAP_SELECTION_BG_COLOR, StringConverter.asString(_BLUE));
+		
+		
 	}
 
 }
