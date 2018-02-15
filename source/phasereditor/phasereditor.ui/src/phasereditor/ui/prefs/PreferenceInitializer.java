@@ -48,8 +48,8 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 				StringConverter.asString(_RED));
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_TILEMAP_LABELS_COLOR, StringConverter.asString(_YELLOW));
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_TILEMAP_SELECTION_BG_COLOR, StringConverter.asString(_BLUE));
-		
-		
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_TILEMAP_TILE_WIDTH, 32);
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_TILEMAP_TILE_HEIGHT, 32);
 	}
 
 }

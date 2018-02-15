@@ -23,6 +23,7 @@ package phasereditor.ui.prefs;
 
 import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -49,6 +50,11 @@ public class TilemapPreviewPreferencesPage extends FieldEditorPreferencePage imp
 
 		addField(new ColorFieldEditor(PhaserEditorUI.PREF_PROP_PREVIEW_TILEMAP_SELECTION_BG_COLOR,
 				"Selected tile background color", parent));
+
+		addField(new IntegerFieldEditor(PhaserEditorUI.PREF_PROP_PREVIEW_TILEMAP_TILE_WIDTH, "Default tile width (CSV)",
+				parent));
+		addField(new IntegerFieldEditor(PhaserEditorUI.PREF_PROP_PREVIEW_TILEMAP_TILE_HEIGHT,
+				"Default tile height (CSV)", parent));
 	}
 
 	@Override

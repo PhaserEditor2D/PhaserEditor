@@ -155,6 +155,9 @@ public class PhaserEditorUI {
 	public static Color _PREF_PROP_PREVIEW_TILEMAP_LABELS_COLOR;
 	public static Color _PREF_PROP_PREVIEW_TILEMAP_SELECTION_BG_COLOR;
 
+	public static final String PREF_PROP_PREVIEW_TILEMAP_TILE_WIDTH = "phasereditor.ui.preview.tilemapTileWidth";
+	public static final String PREF_PROP_PREVIEW_TILEMAP_TILE_HEIGHT = "phasereditor.ui.preview.tilemapTileHeight";
+
 	private static Set<Object> _supportedImageExts = new HashSet<>(Arrays.asList("png", "bmp", "jpg", "gif", "ico"));
 	private static boolean _isCocoaPlatform = Util.isMac();
 	private static boolean _isWindowsPlatform = Util.isWindows();
@@ -318,6 +321,12 @@ public class PhaserEditorUI {
 
 	public static Color get_pref_Preview_Tilemap_selectionBgColor() {
 		return _PREF_PROP_PREVIEW_TILEMAP_SELECTION_BG_COLOR;
+	}
+
+	public static Point get_pref_Preview_Tilemap_size() {
+		IPreferenceStore store = getPreferenceStore();
+		return new Point(store.getInt(PREF_PROP_PREVIEW_TILEMAP_TILE_WIDTH),
+				store.getInt(PREF_PROP_PREVIEW_TILEMAP_TILE_HEIGHT));
 	}
 
 	public static boolean isMacPlatform() {

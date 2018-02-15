@@ -85,8 +85,8 @@ public class TilemapCanvas extends ZoomCanvas
 
 	private TilemapAssetModel _model;
 	private Point _imageSize = new Point(1, 1);
-	private int _tileWidth = 32;
-	private int _tileHeight = 32;
+	private int _tileWidth;
+	private int _tileHeight;
 	private Color[] _colors;
 	protected ImageAssetModel _imageModel;
 	private Image _tileSetImage;
@@ -117,6 +117,10 @@ public class TilemapCanvas extends ZoomCanvas
 		addMouseMoveListener(this);
 		addMouseListener(this);
 		addKeyListener(this);
+		
+		Point size = PhaserEditorUI.get_pref_Preview_Tilemap_size();
+		_tileWidth = size.x;
+		_tileHeight = size.y;
 	}
 
 	public void generateColors(int n) {
