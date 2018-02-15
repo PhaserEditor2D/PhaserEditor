@@ -125,10 +125,17 @@ public class AssetExplorer extends ViewPart {
 
 	protected void showSelectionInEditor() {
 		Object elem = ((IStructuredSelection) _viewer.getSelection()).getFirstElement();
+		IFile file = null;
 
 		if (elem instanceof CanvasFile) {
+			file = ((CanvasFile) elem).getFile();
+		} else if (elem instanceof IFile) {
+			file = (IFile) elem;
+		}
+
+		if (file != null) {
 			try {
-				IDE.openEditor(getSite().getPage(), ((CanvasFile) elem).getFile());
+				IDE.openEditor(getSite().getPage(), file);
 			} catch (PartInitException e) {
 				throw new RuntimeException(e); // NOSONAR
 			}
@@ -149,7 +156,7 @@ public class AssetExplorer extends ViewPart {
 		// content
 
 		_viewer.setInput(ROOT);
-		_viewer.expandToLevel(3);
+		_viewer.expandToLevel(1);
 
 		// drag and drop
 

@@ -168,6 +168,29 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 			}
 		}
 
+		if (parent instanceof CanvasFile) {
+			List<IFile> list = new ArrayList<>();
+
+			CanvasFile canvasFile = (CanvasFile) parent;
+			IFile file = canvasFile.getFile();
+			String name = file.getName();
+			name = name.substring(0, name.length() - ".canvas".length());
+
+			IFile srcFile = file.getParent().getFile(new org.eclipse.core.runtime.Path(name + ".js"));
+
+			if (srcFile.exists()) {
+				list.add(srcFile);
+			}
+
+			srcFile = file.getParent().getFile(new org.eclipse.core.runtime.Path(name + ".ts"));
+
+			if (srcFile.exists()) {
+				list.add(srcFile);
+			}
+			
+			return list.toArray();
+		}
+
 		if (parent instanceof IProject) {
 			List<AssetPackModel> list = AssetPackCore.getAssetPackModels((IProject) parent);
 			return list.toArray();
