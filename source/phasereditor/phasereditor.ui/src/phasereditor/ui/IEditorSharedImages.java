@@ -65,6 +65,7 @@ public interface IEditorSharedImages {
 	String IMG_NEW_VIEW = "platform:/plugin/org.eclipse.ui.views/icons/full/elcl16/new.png";
 	String IMG_CONTROL_EQUALIZER = "icons/control_equalizer.png";
 	String IMG_ARROW_OUT = "icons/arrow_out.png";
+	String IMG_ARROW_UP = "icons/arrow_up.png";
 	String IMG_APPLICATION_LIST = "icons/application_view_list.png";
 	String IMG_APPLICATION_HOME = "icons/application_home.png";
 	String IMG_APPLICATION_TILE = "icons/application_view_tile.png";

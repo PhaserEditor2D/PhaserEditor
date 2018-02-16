@@ -29,38 +29,45 @@ import phasereditor.canvas.ui.shapes.IObjectNode;
  * @author arian
  *
  */
+@SuppressWarnings("unused")
 public interface IEditHandlerNode {
-
-	void handleMouseMoved(MouseEvent e);
-
-	void handleMousePressed(MouseEvent e);
-
-	void handleMouseDragged(MouseEvent e);
-
-	void handleMouseReleased(MouseEvent e);
-
-	void handleMouseExited(MouseEvent e);
 
 	IObjectNode getObject();
 
 	void updateHandler();
 
-	@SuppressWarnings("unused")
+	default void handleMouseMoved(MouseEvent e) {
+		// nothing
+	}
+
+	default void handleMousePressed(MouseEvent e) {
+		// nothing
+	}
+
+	default void handleMouseDragged(MouseEvent e) {
+		// nothing
+	}
+
+	default void handleMouseReleased(MouseEvent e) {
+		// nothing
+	}
+
+	default void handleMouseExited(MouseEvent e) {
+		// nothing
+	}
+
 	default void handleSceneStart(double x, double y, MouseEvent e) {
 		// nothing
 	}
 
-	@SuppressWarnings("unused")
 	default void handleLocalStart(double x, double y, MouseEvent e) {
 		// nothing
 	}
 
-	@SuppressWarnings("unused")
 	default void handleSceneDrag(double dx, double dy, MouseEvent e) {
 		// nothing
 	}
 
-	@SuppressWarnings("unused")
 	default void handleLocalDrag(double dx, double dy, MouseEvent e) {
 		// nothing
 	}

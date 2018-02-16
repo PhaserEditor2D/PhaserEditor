@@ -23,6 +23,7 @@ package phasereditor.project.ui;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 /**
@@ -32,8 +33,16 @@ import org.eclipse.ui.statushandlers.StatusManager;
 public class ProjectUI {
 	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
 
+	public static final String PREF_PROP_PROJECT_WIZARD_GAME_WIDTH = "phasereditor.project.ui.projectWizardGameWidth";
+	public static final String PREF_PROP_PROJECT_WIZARD_GAME_HEIGHT = "phasereditor.project.ui.projectWizardGameHeight";
+	public static final String PREF_PROP_PROJECT_WIZARD_LANGUAJE = "phasereditor.project.ui.projectWizardLang";
+
 	public static void logError(Exception e) {
 		e.printStackTrace();
 		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
+	}
+
+	public static IPreferenceStore getPreferenceStore() {
+		return Activator.getDefault().getPreferenceStore();
 	}
 }

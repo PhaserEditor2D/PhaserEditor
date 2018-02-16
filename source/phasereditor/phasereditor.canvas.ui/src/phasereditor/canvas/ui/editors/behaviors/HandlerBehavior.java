@@ -31,7 +31,9 @@ import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.edithandlers.AnchorHandlerNode;
+import phasereditor.canvas.ui.editors.edithandlers.AnchorShortcutsPane;
 import phasereditor.canvas.ui.editors.edithandlers.AngleHandlerNode;
+import phasereditor.canvas.ui.editors.edithandlers.AngleShortucsPane;
 import phasereditor.canvas.ui.editors.edithandlers.ArcadeHighlightCircleBodyHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.ArcadeHighlightRectBodyHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.ArcadeMoveBodyHandlerNode;
@@ -110,19 +112,14 @@ public class HandlerBehavior {
 	}
 
 	public void editAngle(IObjectNode object) {
-		clear();
+		clear(); 
 
+		add(new AngleShortucsPane(object));
+		 
 		add(new AngleHandlerNode(object, Axis.TOP_LEF));
 		add(new AngleHandlerNode(object, Axis.TOP_RIG));
 		add(new AngleHandlerNode(object, Axis.BOT_LEF));
 		add(new AngleHandlerNode(object, Axis.BOT_RIG));
-
-//		if (object instanceof ISpriteNode) {
-//			ISpriteNode sprite = (ISpriteNode) object;
-//			add(new AnchorHandlerNode(sprite));
-//		} else {
-//			add(new PivotHandlerNode(object));
-//		}
 
 		update();
 	}
@@ -130,6 +127,7 @@ public class HandlerBehavior {
 	public void editAnchor(ISpriteNode object) {
 		clear();
 
+		add(new AnchorShortcutsPane(object));
 		add(new AnchorHandlerNode(object));
 
 		update();

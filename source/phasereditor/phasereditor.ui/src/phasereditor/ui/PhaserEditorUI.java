@@ -919,6 +919,10 @@ public class PhaserEditorUI {
 		return getImageBounds(file.getLocation().toPortableString());
 	}
 
+	public static String getUIIconURL(String icon) {
+		return "platform:/plugin/phasereditor.ui/" + icon;
+	}
+
 	public static Image makeColorIcon(RGB rgb) {
 		RGB black = new RGB(0, 0, 0);
 		PaletteData dataPalette = new PaletteData(new RGB[] { black, black, rgb });

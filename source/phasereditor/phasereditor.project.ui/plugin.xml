@@ -242,4 +242,19 @@
             natureId="phasereditor.project.core.nature">
       </image>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="phasereditor.ui.prefs.phasereditor"
+            class="phasereditor.project.ui.prefs.PhaserProjectPreferencesPage"
+            id="phasereditor.project.ui.prefs.phaserProjectPrefs"
+            name="Project">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="phasereditor.project.ui.prefs.ProjectPreferenceInitializer">
+      </initializer>
+   </extension>
 </plugin>

@@ -23,6 +23,7 @@ package phasereditor.canvas.ui.editors.behaviors;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -39,14 +40,14 @@ public class MouseBehavior {
 	private ZoomBehavior _zoomPan;
 	private DragBehavior _drag;
 	private SelectionBehavior _selection;
-	private IEditHandlerNode _dragHandler;
+	private IEditHandlerNode _editHandler;
 	private Point2D _mousePosition;
 
 	public MouseBehavior(ObjectCanvas canvas) {
 		super();
 		_canvas = canvas;
 
-		_canvas.getScene().addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
+		_canvas.getScene().addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
 			try {
 				handleMousePressed(e);
 			} catch (Exception ex) {
@@ -54,7 +55,7 @@ public class MouseBehavior {
 			}
 		});
 
-		_canvas.getScene().addEventFilter(MouseEvent.MOUSE_RELEASED, e -> {
+		_canvas.getScene().addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
 			try {
 				handleMouseReleased(e);
 			} catch (Exception ex) {
@@ -62,7 +63,7 @@ public class MouseBehavior {
 			}
 		});
 
-		_canvas.getScene().addEventFilter(MouseEvent.MOUSE_DRAGGED, e -> {
+		_canvas.getScene().addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
 			try {
 				handleMouseDragged(e);
 			} catch (Exception ex) {
@@ -70,7 +71,7 @@ public class MouseBehavior {
 			}
 		});
 
-		_canvas.getScene().addEventFilter(MouseEvent.DRAG_DETECTED, e -> {
+		_canvas.getScene().addEventHandler(MouseEvent.DRAG_DETECTED, e -> {
 			try {
 				handleDragDetected(e);
 			} catch (Exception ex) {
@@ -78,7 +79,7 @@ public class MouseBehavior {
 			}
 		});
 
-		_canvas.getScene().addEventFilter(MouseEvent.MOUSE_MOVED, e -> {
+		_canvas.getScene().addEventHandler(MouseEvent.MOUSE_MOVED, e -> {
 			try {
 				handleMouseMoved(e);
 			} catch (Exception ex) {
@@ -86,7 +87,7 @@ public class MouseBehavior {
 			}
 		});
 
-		_canvas.getScene().addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
+		_canvas.getScene().addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
 			try {
 				handleMouseExited(e);
 			} catch (Exception ex) {
@@ -94,7 +95,7 @@ public class MouseBehavior {
 			}
 		});
 
-		_canvas.getScene().addEventFilter(ScrollEvent.ANY, e -> {
+		_canvas.getScene().addEventHandler(ScrollEvent.ANY, e -> {
 			try {
 				handleScroll(e);
 			} catch (Exception ex) {
@@ -113,15 +114,15 @@ public class MouseBehavior {
 
 	private void handleMouseMoved(MouseEvent e) {
 		_mousePosition = new Point2D(e.getSceneX(), e.getSceneY());
-		if (_dragHandler != null) {
-			_dragHandler.handleMouseMoved(e);
+		if (_editHandler != null) {
+			_editHandler.handleMouseMoved(e);
 		}
 	}
 
 	private void handleMouseExited(MouseEvent e) {
 		_mousePosition = null;
-		if (_dragHandler != null) {
-			_dragHandler.handleMouseExited(e);
+		if (_editHandler != null) {
+			_editHandler.handleMouseExited(e);
 		}
 	}
 
@@ -133,26 +134,45 @@ public class MouseBehavior {
 
 		Node node = e.getPickResult().getIntersectedNode();
 		if (node instanceof IEditHandlerNode) {
-			_dragHandler = (IEditHandlerNode) node;
-			_dragHandler.handleMousePressed(e);
+			_editHandler = (IEditHandlerNode) node;
+			_editHandler.handleMousePressed(e);
 			return;
 		}
 
-		_dragHandler = null;
+		if (isInsideEditHandler(node)) {
+			// do nothing
+			return;
+		}
+
+		_editHandler = null;
 
 		if (isPanGesture(e)) {
 			_zoomPan.handleMousePressed(e);
 			return;
 		}
-		
+
 		if (e.isSecondaryButtonDown()) {
 			_selection.handleMouseReleased(e);
 		}
 	}
 
+	private boolean isInsideEditHandler(Node node) {
+		Parent parent = node.getParent();
+
+		if (parent == null) {
+			return false;
+		}
+
+		if (parent instanceof IEditHandlerNode) {
+			return true;
+		}
+
+		return isInsideEditHandler(parent);
+	}
+
 	private void handleDragDetected(MouseEvent e) {
 		if (e.isPrimaryButtonDown()) {
-			if (_dragHandler != null) {
+			if (_editHandler != null) {
 				return;
 			}
 
@@ -169,11 +189,11 @@ public class MouseBehavior {
 			_zoomPan.handleMouseDragged(e);
 			return;
 		}
-		
+
 		if (e.isPrimaryButtonDown()) {
 
-			if (_dragHandler != null) {
-				_dragHandler.handleMouseDragged(e);
+			if (_editHandler != null) {
+				_editHandler.handleMouseDragged(e);
 				return;
 			}
 
@@ -196,9 +216,9 @@ public class MouseBehavior {
 		}
 
 		if (e.getButton() == MouseButton.PRIMARY) {
-			if (_dragHandler != null) {
-				_dragHandler.handleMouseReleased(e);
-				_dragHandler = null;
+			if (_editHandler != null) {
+				_editHandler.handleMouseReleased(e);
+				_editHandler = null;
 				return;
 			}
 
@@ -206,7 +226,7 @@ public class MouseBehavior {
 				_drag.handleMouseReleased(e);
 				return;
 			}
-			
+
 			_selection.handleMouseReleased(e);
 		}
 	}

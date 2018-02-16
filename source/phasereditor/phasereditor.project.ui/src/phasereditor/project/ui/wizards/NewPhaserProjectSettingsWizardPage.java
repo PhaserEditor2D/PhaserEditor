@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.ui.wizards;
 
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -37,6 +38,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import phasereditor.project.core.codegen.SourceLang;
+import phasereditor.project.ui.ProjectUI;
 
 /**
  * @author arian
@@ -49,7 +51,7 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 
 		@Override
 		public String getText(Object element) {
-			return ((SourceLang)element).getDisplayName();
+			return ((SourceLang) element).getDisplayName();
 		}
 	}
 
@@ -174,28 +176,34 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 
 		_includeAssets = new Button(grpAssets, SWT.CHECK);
 		_includeAssets.setText("Include demo assets.");
-		
+
 		_group = new Group(container, SWT.NONE);
 		_group.setLayout(new GridLayout(2, false));
 		_group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		_group.setText("Code");
-		
+
 		_label = new Label(_group, SWT.NONE);
 		_label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		_label.setText("Language: ");
-		
-		_comboLang = new ComboViewer(_group, SWT.READ_ONLY);		
+
+		_comboLang = new ComboViewer(_group, SWT.READ_ONLY);
 		Combo combo = _comboLang.getCombo();
 		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		_comboLang.setContentProvider(new ArrayContentProvider());
 		_comboLang.setLabelProvider(new ViewerLabelProvider());
-		
+
 		afterCreateWidgets();
 	}
 
 	private void afterCreateWidgets() {
+		IPreferenceStore store = ProjectUI.getPreferenceStore();
+
+		_widthText.setText(store.getString(ProjectUI.PREF_PROP_PROJECT_WIZARD_GAME_WIDTH));
+		_heightText.setText(store.getString(ProjectUI.PREF_PROP_PROJECT_WIZARD_GAME_HEIGHT));
+
 		_comboLang.setInput(SourceLang.values());
-		_comboLang.setSelection(new StructuredSelection(SourceLang.JAVA_SCRIPT));
+		_comboLang.setSelection(new StructuredSelection(
+				SourceLang.valueOf(store.getString(ProjectUI.PREF_PROP_PROJECT_WIZARD_LANGUAJE))));
 	}
 
 	public void setFocus() {
@@ -209,7 +217,7 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 	public Text getHeightText() {
 		return _heightText;
 	}
-	
+
 	public Button getTransparentBtn() {
 		return _transparentBtn;
 	}
@@ -257,8 +265,8 @@ public class NewPhaserProjectSettingsWizardPage extends WizardPage {
 	public Button getIncludeAssets() {
 		return _includeAssets;
 	}
-	
+
 	public SourceLang getSourceLang() {
-		return (SourceLang) _comboLang.getStructuredSelection().getFirstElement();	
+		return (SourceLang) _comboLang.getStructuredSelection().getFirstElement();
 	}
 }
