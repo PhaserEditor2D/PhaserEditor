@@ -24,6 +24,7 @@ package phasereditor.canvas.ui.editors.edithandlers;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -50,6 +51,8 @@ public abstract class ShortcutButton extends Button {
 
 		setBorder(null);
 		// setEffect(new BoxBlur(2, 2, 1));
+		
+		setTextFill(Color.WHITE);
 
 		Background bg = new Background(
 				new BackgroundFill(baseColor.deriveColor(0, 0, 1, 0.2), CornerRadii.EMPTY, new Insets(0)));
@@ -75,6 +78,13 @@ public abstract class ShortcutButton extends Button {
 
 			e.consume();
 		});
+	}
+	
+	@SuppressWarnings("static-method")
+	protected Label createLabel(Object text) {
+		Label label = new Label(text + "");
+		label.setTextFill(Color.WHITE);
+		return label;
 	}
 
 	protected void setSize(double w, double h) {

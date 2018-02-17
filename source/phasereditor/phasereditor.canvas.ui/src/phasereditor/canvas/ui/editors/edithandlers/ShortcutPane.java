@@ -26,6 +26,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.control.OverrunStyle;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -51,6 +53,8 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 	private boolean _updated;
 	private Point2D _startPoint;
 	private Point2D _initPos;
+	private static Point2D _location;
+	private static String _lastObjectId;
 
 	public ShortcutPane(IObjectNode object) {
 		_object = object;
@@ -82,8 +86,10 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 		setOnMouseDragged(e -> {
 			if (_initPos != null) {
 				Point2D point = localToParent(e.getX(), e.getY());
-				relocate(_initPos.getX() + (point.getX() - _startPoint.getX()),
-						_initPos.getY() + (point.getY() - _startPoint.getY()));
+				double x = _initPos.getX() + (point.getX() - _startPoint.getX());
+				double y = _initPos.getY() + (point.getY() - _startPoint.getY());
+				_location = new Point2D(x, y);
+				relocate(x, y);
 			}
 			e.consume();
 		});
@@ -93,6 +99,15 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 		});
 
 		setCursor(Cursor.MOVE);
+	}
+
+	protected static Label createValueLabel() {
+		Label label = new Label();
+		label.setMinWidth(150);
+		label.setMaxWidth(150);
+		label.setTextOverrun(OverrunStyle.ELLIPSIS);
+		label.setTextFill(Color.WHITE);
+		return label;
 	}
 
 	@Override
@@ -108,13 +123,27 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 
 		_updated = true;
 
-		Bounds bounds = _control.getNode().getBoundsInLocal();
-		bounds = _control.getNode().localToScene(bounds);
-		double x = Math.max(bounds.getMinX(), bounds.getMaxX() + bounds.getWidth());
-		double y = Math.max(bounds.getMinY(), bounds.getMaxY() + bounds.getHeight());
-		x = bounds.getMinX() + bounds.getWidth();
-		y = bounds.getMinY();
+		String id = _object.getModel().getId();
 
-		relocate(x + 10, y);
+		if (_location == null || !id.equals(_lastObjectId)) {
+
+			Bounds bounds = _control.getNode().getBoundsInLocal();
+			bounds = _control.getNode().localToScene(bounds);
+			double x = Math.max(bounds.getMinX(), bounds.getMaxX() + bounds.getWidth());
+			double y = Math.max(bounds.getMinY(), bounds.getMaxY() + bounds.getHeight());
+			x = bounds.getMinX() + bounds.getWidth();
+			y = bounds.getMinY();
+
+			_location = new Point2D(x + 30, y);
+			_lastObjectId = id;
+
+		}
+
+		relocate(_location.getX(), _location.getY());
+	}
+
+	@Override
+	public boolean isValid() {
+		return true;
 	}
 }

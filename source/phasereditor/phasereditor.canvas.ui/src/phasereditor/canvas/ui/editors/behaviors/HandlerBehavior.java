@@ -43,6 +43,7 @@ import phasereditor.canvas.ui.editors.edithandlers.Axis;
 import phasereditor.canvas.ui.editors.edithandlers.IEditHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.PivotHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.ScaleHandlerNode;
+import phasereditor.canvas.ui.editors.edithandlers.ScaleShortcutsPane;
 import phasereditor.canvas.ui.editors.edithandlers.TileHandlerNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
@@ -64,6 +65,8 @@ public class HandlerBehavior {
 	public void editScale(IObjectNode object) {
 		clear();
 
+		add(new ScaleShortcutsPane(object));
+		
 		Arrays.stream(Axis.values()).filter(a -> a != Axis.CENTER)
 				.forEach(axis -> add(new ScaleHandlerNode(object, axis)));
 

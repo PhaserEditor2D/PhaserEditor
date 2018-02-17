@@ -72,4 +72,8 @@ public interface IEditorSharedImages {
 	String IMG_FONT = "icons/font.png";
 	String IMG_TEXT_ABC = "icons/text_abc.png";
 	String IMG_TILED = "icons/tiled.png";
+	String IMG_WHITE_FLIP_HORIZONTAL = "icons/white_flip_horizontal.png";
+	String IMG_WHITE_FLIP_VERTICAL = "icons/white_flip_vertical.png";
+	String IMG_WHITE_ROTATE_CLOCKWISE = "icons/white_arrow_rotate_clockwise.png";
+	String IMG_WHITE_ROTATE_ANTICLOCKWISE = "icons/white_arrow_rotate_anticlockwise.png";
 }

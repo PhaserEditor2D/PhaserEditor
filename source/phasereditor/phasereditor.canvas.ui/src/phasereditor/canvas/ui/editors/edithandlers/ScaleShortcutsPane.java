@@ -33,73 +33,87 @@ import phasereditor.ui.PhaserEditorUI;
  * @author arian
  *
  */
-public class AngleShortucsPane extends ShortcutPane {
+public class ScaleShortcutsPane extends ShortcutPane {
 
-	private Label _angleLabel;
+	private Label _xLabel;
+	private Label _yLabel;
 
 	@SuppressWarnings("boxing")
-	public AngleShortucsPane(IObjectNode object) {
+	public ScaleShortcutsPane(IObjectNode object) {
 		super(object);
 
-		String[] values = { "-45", "+45", "0" };
+		_xLabel = createValueLabel();
+		_yLabel = createValueLabel();
 
-		_angleLabel = createValueLabel();
+		add(_xLabel, 0, 0);
+		add(_yLabel, 0, 1);
 
-		add(_angleLabel, 0, 0);
-		setColumnSpan(_angleLabel, 3);
+		setColumnSpan(_xLabel, 3);
+		setColumnSpan(_yLabel, 3);
 
-		int i = 0;
-
-		for (String value : values) {
-			Btn btn = new Btn(value);
-			add(btn, i, 1);
-			i++;
-		}
+		add(new Btn("x"), 0, 2);
+		add(new Btn("y"), 1, 2);
+		add(new ResetBtn(), 2, 2);
 
 	}
 
 	@Override
 	public void updateHandler() {
 
-		_angleLabel.setText("=" + _model.getAngle());
+		_xLabel.setText("x=" + _model.getScaleX());
+		_yLabel.setText("y=" + _model.getScaleY());
 
 		super.updateHandler();
 	}
 
-	class Btn extends ShortcutButton {
-		private double _value;
-
-		public Btn(String label) {
-			_value = Double.parseDouble(label);
-
-			if (_value == 0) {
-				setGraphic(createLabel("0"));
-			} else if (_value < 0) {
-				setGraphic(
-						new ImageView(PhaserEditorUI.getUIIconURL(IEditorSharedImages.IMG_WHITE_ROTATE_ANTICLOCKWISE)));
-			} else {
-				setGraphic(new ImageView(PhaserEditorUI.getUIIconURL(IEditorSharedImages.IMG_WHITE_ROTATE_CLOCKWISE)));
-			}
-
+	class ResetBtn extends ShortcutButton {
+		public ResetBtn() {
 			setSize(50, -1);
+			setGraphic(createLabel("1:1"));
 		}
 
 		@Override
 		protected void doAction() {
 			CompositeOperation operations = new CompositeOperation();
-			double angle = _model.getAngle() + _value;
-
-			if (_value == 0) {
-				angle = 0;
-			}
 
 			String id = _model.getId();
 
-			operations.add(new ChangePropertyOperation<Number>(id, "angle", Double.valueOf(angle)));
+			operations.add(new ChangePropertyOperation<Number>(id, "scale.x", Double.valueOf(1)));
+			operations.add(new ChangePropertyOperation<Number>(id, "scale.y", Double.valueOf(1)));
 
 			_canvas.getUpdateBehavior().executeOperations(operations);
-
 		}
 
 	}
+
+	class Btn extends ShortcutButton {
+
+		private String _axis;
+
+		public Btn(String axis) {
+			_axis = axis;
+			setSize(50, -1);
+
+			if (_axis.equals("x")) {
+				setGraphic(new ImageView(PhaserEditorUI.getUIIconURL(IEditorSharedImages.IMG_WHITE_FLIP_HORIZONTAL)));
+			} else {
+				setGraphic(new ImageView(PhaserEditorUI.getUIIconURL(IEditorSharedImages.IMG_WHITE_FLIP_VERTICAL)));
+			}
+		}
+
+		@Override
+		protected void doAction() {
+			CompositeOperation operations = new CompositeOperation();
+
+			String id = _model.getId();
+
+			double scale = -1 * (_axis.equals("x") ? _model.getScaleX() : _model.getScaleY());
+
+			operations.add(new ChangePropertyOperation<Number>(id, "scale." + _axis, Double.valueOf(scale)));
+
+			_canvas.getUpdateBehavior().executeOperations(operations);
+		}
+
+	}
+
 }
