@@ -21,10 +21,11 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.edithandlers;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.OverrunStyle;
@@ -34,6 +35,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
@@ -68,8 +70,12 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 		setVgap(5);
 
 		setEffect(new DropShadow());
-		setBackground(new Background(
-				new BackgroundFill(Color.ALICEBLUE.deriveColor(0, 0, 1, 0.5), CornerRadii.EMPTY, new Insets(0))));
+
+		// Color color1 = Color.ALICEBLUE;
+		// Color color2 = color1.deriveColor(0, 0, 1, 0.6);
+		// color2 = Color.BLACK;
+
+		setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, new Insets(0))));
 
 		setOnDragDetected(e -> {
 			_initPos = localToParent(0, 0);
@@ -98,7 +104,17 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 			e.consume();
 		});
 
-		setCursor(Cursor.MOVE);
+		FadeTransition t = new FadeTransition(new Duration(100), this);
+		t.setFromValue(0);
+		t.setToValue(1);
+		t.play();
+
+		ScaleTransition s = new ScaleTransition(new Duration(100), this);
+		s.setFromX(0.5);
+		s.setFromY(0.5);
+		s.setToX(1);
+		s.setToY(1);
+		s.play();
 	}
 
 	protected static Label createValueLabel() {

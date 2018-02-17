@@ -23,6 +23,7 @@ package phasereditor.canvas.ui.editors.edithandlers;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -40,12 +41,21 @@ import phasereditor.canvas.ui.shapes.ISpriteNode;
 @SuppressWarnings("boxing")
 public class AnchorShortcutsPane extends ShortcutPane {
 
+	private Label _xLabel;
+	private Label _yLabel;
+
 	public AnchorShortcutsPane(IObjectNode object) {
 		super(object);
 
 		double[] values = { 0, 0.5, 1 };
 
-		int row = 0;
+		_xLabel = createValueLabel();
+		_yLabel = createValueLabel();
+
+		add(_xLabel, 0, 0, 3, 1);
+		add(_yLabel, 0, 1, 3, 1);
+
+		int row = 3;
 		for (double y : values) {
 			int col = 0;
 			for (double x : values) {
@@ -58,37 +68,56 @@ public class AnchorShortcutsPane extends ShortcutPane {
 		}
 	}
 
+	@Override
+	public void updateHandler() {
+
+		BaseSpriteModel model = (BaseSpriteModel) _model;
+
+		_xLabel.setText("x = " + Double.toString(model.getAnchorX()));
+		_yLabel.setText("y = " + Double.toString(model.getAnchorY()));
+
+		for (Object node : getChildren()) {
+			if (node instanceof Btn) {
+				((Btn) node).updateHandler();
+			}
+		}
+
+		super.updateHandler();
+	}
+
 	class Btn extends ShortcutButton {
 
 		private double _anchorX;
 		private double _anchorY;
+		private Rectangle _rect2;
 
 		public Btn(double anchorX, double anchorY) {
 			_anchorX = anchorX;
 			_anchorY = anchorY;
 
-			double size = getPrefWidth();
+			double size = 30;
+
+			setSize(size, size);
 
 			Rectangle rect1 = new Rectangle(size, size);
-			rect1.setStroke(Color.GRAY);
 			rect1.setFill(Color.TRANSPARENT);
 			rect1.setStrokeWidth(0);
 
-			Rectangle rect2 = new Rectangle(size / 4, size / 4);
-			rect2.setFill(Color.ALICEBLUE);
-			rect2.setStroke(Color.BLACK);
-			rect2.setStrokeWidth(1);
-			rect2.setEffect(new DropShadow(1, Color.WHITE));
+			_rect2 = new Rectangle(size / 4, size / 4);
+			_rect2.setFill(Color.ALICEBLUE);
+			_rect2.setStroke(Color.BLACK);
+			_rect2.setStrokeWidth(1);
+			_rect2.setEffect(new DropShadow(1, Color.WHITE));
 
 			double x = 0;
 			double y = 0;
 
 			switch ((int) (_anchorX * 10)) {
 			case 5:
-				x = size / 2 - rect2.getWidth() / 2;
+				x = size / 2 - _rect2.getWidth() / 2;
 				break;
 			case 10:
-				x = size - rect2.getWidth();
+				x = size - _rect2.getWidth();
 				break;
 			default:
 				break;
@@ -96,19 +125,26 @@ public class AnchorShortcutsPane extends ShortcutPane {
 
 			switch ((int) (_anchorY * 10)) {
 			case 5:
-				y = size / 2 - rect2.getHeight() / 2;
+				y = size / 2 - _rect2.getHeight() / 2;
 				break;
 			case 10:
-				y = size - rect2.getHeight();
+				y = size - _rect2.getHeight();
 				break;
 			default:
 				break;
 			}
 
-			rect2.relocate(x, y);
+			_rect2.relocate(x, y);
 
-			setGraphic(new Group(rect1, rect2));
+			setGraphic(new Group(rect1, _rect2));
 
+		}
+
+		public void updateHandler() {
+			BaseSpriteModel model = (BaseSpriteModel) _model;
+			
+			_rect2.setFill(
+					model.getAnchorX() == _anchorX && model.getAnchorY() == _anchorY ? Color.RED : Color.ALICEBLUE);
 		}
 
 		@Override

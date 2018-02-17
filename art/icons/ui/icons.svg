@@ -6599,17 +6599,42 @@
          d="M -4.9,-1 A 5,5 0 1 1 0,5 H -0.5 V 6.5 L -3,4 -0.5,1.5 V 3 H 0 a 3,3 0 1 0 -2.83,-4 z"
          inkscape:connector-curvature="0" />
     </g>
-    <rect
-       style="opacity:1;fill:none;fill-opacity:0.47692309;stroke:none;stroke-width:0.9375;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect2150"
-       width="15.000001"
-       height="15"
-       x="640.7879"
-       y="675.82629" />
-    <path
-       style="fill:#ffffff;stroke-width:0.9375"
-       d="m 648.44109,676.76592 a 5.625,5.625 0 0 0 -5.7898,5.62317 h 3.75 a 1.875,1.875 0 1 1 1.875,1.875 v -1.875 l -3.75,3.75 3.75,3.75 v -1.875 a 5.625,5.625 0 0 0 0.1648,-11.24817 z m -0.022,0.9375 a 4.6875,4.6875 0 0 1 -0.14282,9.37317 h -0.46875 v 1.40625 l -2.34375,-2.34375 2.34375,-2.34375 v 1.40625 h 0.46875 a 2.8125,2.8125 0 1 0 -2.6532,-3.75 h -1.94091 a 4.6875,4.6875 0 0 1 4.73693,-3.74817 z"
-       id="path2130"
-       inkscape:connector-curvature="0" />
+    <g
+       id="g2154"
+       inkscape:export-filename="/home/arian/Documents/PhaserEditor/Public/source/phasereditor/phasereditor.ui/icons/white_arrow_rotate_clockwise.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
+      <rect
+         y="675.82629"
+         x="640.7879"
+         height="15"
+         width="15.000001"
+         id="rect2150"
+         style="opacity:1;fill:none;fill-opacity:0.47692309;stroke:none;stroke-width:0.9375;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path2130"
+         d="m 648.44109,676.76592 a 5.625,5.625 0 0 0 -5.7898,5.62317 h 3.75 a 1.875,1.875 0 1 1 1.875,1.875 v -1.875 l -3.75,3.75 3.75,3.75 v -1.875 a 5.625,5.625 0 0 0 0.1648,-11.24817 z m -0.022,0.9375 a 4.6875,4.6875 0 0 1 -0.14282,9.37317 h -0.46875 v 1.40625 l -2.34375,-2.34375 2.34375,-2.34375 v 1.40625 h 0.46875 a 2.8125,2.8125 0 1 0 -2.6532,-3.75 h -1.94091 a 4.6875,4.6875 0 0 1 4.73693,-3.74817 z"
+         style="fill:#ffffff;stroke-width:0.9375" />
+    </g>
+    <g
+       inkscape:export-ydpi="96"
+       inkscape:export-xdpi="96"
+       inkscape:export-filename="/home/arian/Documents/PhaserEditor/Public/source/phasereditor/phasereditor.ui/icons/white_arrow_rotate_anticlockwise.png"
+       id="g2160"
+       transform="matrix(-1,0,0,1,1314.2259,-0.08286408)">
+      <rect
+         style="opacity:1;fill:none;fill-opacity:0.47692309;stroke:none;stroke-width:0.9375;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect2156"
+         width="15.000001"
+         height="15"
+         x="640.7879"
+         y="675.82629" />
+      <path
+         style="fill:#ffffff;stroke-width:0.9375"
+         d="m 648.44109,676.76592 a 5.625,5.625 0 0 0 -5.7898,5.62317 h 3.75 a 1.875,1.875 0 1 1 1.875,1.875 v -1.875 l -3.75,3.75 3.75,3.75 v -1.875 a 5.625,5.625 0 0 0 0.1648,-11.24817 z m -0.022,0.9375 a 4.6875,4.6875 0 0 1 -0.14282,9.37317 h -0.46875 v 1.40625 l -2.34375,-2.34375 2.34375,-2.34375 v 1.40625 h 0.46875 a 2.8125,2.8125 0 1 0 -2.6532,-3.75 h -1.94091 a 4.6875,4.6875 0 0 1 4.73693,-3.74817 z"
+         id="path2158"
+         inkscape:connector-curvature="0" />
+    </g>
   </g>
 </svg>
