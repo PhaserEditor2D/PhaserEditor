@@ -58,6 +58,7 @@ public class AngleShortucsPane extends ShortcutPane {
 			add(btn, i, 1);
 			i++;
 		}
+		
 	}
 
 	@Override

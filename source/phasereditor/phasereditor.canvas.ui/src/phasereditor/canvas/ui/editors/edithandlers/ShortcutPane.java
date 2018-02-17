@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.edithandlers;
 
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
@@ -107,8 +108,13 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 
 		_updated = true;
 
-		double width = _control.getTextureWidth();
-		Point2D p = objectToScene(width, 0);
-		relocate(p.getX() + 10, p.getY());
+		Bounds bounds = _control.getNode().getBoundsInLocal();
+		bounds = _control.getNode().localToScene(bounds);
+		double x = Math.max(bounds.getMinX(), bounds.getMaxX() + bounds.getWidth());
+		double y = Math.max(bounds.getMinY(), bounds.getMaxY() + bounds.getHeight());
+		x = bounds.getMinX() + bounds.getWidth();
+		y = bounds.getMinY();
+
+		relocate(x + 10, y);
 	}
 }
