@@ -26,6 +26,7 @@ import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Transform;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
@@ -78,7 +79,7 @@ public class PivotShortcutPane extends ShortcutPane {
 
 		private double _anchorX;
 		private double _anchorY;
-		private Rectangle _rect2;
+		private Circle _rect2;
 
 		public PivotBtn(double anchorX, double anchorY) {
 			_anchorX = anchorX;
@@ -92,7 +93,7 @@ public class PivotShortcutPane extends ShortcutPane {
 			rect1.setFill(Color.TRANSPARENT);
 			rect1.setStrokeWidth(0);
 
-			_rect2 = new Rectangle(size / 4, size / 4);
+			_rect2 = new Circle(size / 8);
 			_rect2.setStroke(Color.WHITESMOKE);
 			_rect2.setStrokeWidth(1);
 			_rect2.setEffect(new DropShadow(1, Color.WHITE));
@@ -102,10 +103,10 @@ public class PivotShortcutPane extends ShortcutPane {
 
 			switch ((int) (_anchorX * 10)) {
 			case 5:
-				x = size / 2 - _rect2.getWidth() / 2;
+				x = size / 2 - _rect2.getRadius();
 				break;
 			case 10:
-				x = size - _rect2.getWidth();
+				x = size - _rect2.getRadius();
 				break;
 			default:
 				break;
@@ -113,10 +114,10 @@ public class PivotShortcutPane extends ShortcutPane {
 
 			switch ((int) (_anchorY * 10)) {
 			case 5:
-				y = size / 2 - _rect2.getHeight() / 2;
+				y = size / 2 - _rect2.getRadius();
 				break;
 			case 10:
-				y = size - _rect2.getHeight();
+				y = size - _rect2.getRadius();
 				break;
 			default:
 				break;

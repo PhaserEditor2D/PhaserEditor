@@ -35,7 +35,7 @@ import phasereditor.canvas.ui.shapes.ISpriteNode;
  * @author arian
  *
  */
-public class AnchorHandlerNode extends PathHandlerNode {
+public class AnchorHandlerNode extends CircleHandlerNode {
 
 	public static final Color HANDLER_COLOR = Color.ALICEBLUE;
 	private double _initAnchorX;

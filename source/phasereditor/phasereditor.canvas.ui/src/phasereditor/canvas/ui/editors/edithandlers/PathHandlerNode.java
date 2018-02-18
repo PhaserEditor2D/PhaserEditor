@@ -57,6 +57,12 @@ public abstract class PathHandlerNode extends Path implements IEditHandlerNode {
 		setStroke(Color.BLACK);
 		setStrokeWidth(1);
 
+		createElements();
+
+		_helper = new HandlerNodeHelper(this);
+	}
+
+	protected void createElements() {
 		getElements().setAll(
 
 				new MoveTo(0, 0),
@@ -68,8 +74,6 @@ public abstract class PathHandlerNode extends Path implements IEditHandlerNode {
 				new LineTo(0, 10),
 
 				new LineTo(0, 0));
-
-		_helper = new HandlerNodeHelper(this);
 	}
 
 	@Override

@@ -34,20 +34,48 @@ import phasereditor.canvas.ui.shapes.IObjectNode;
  * @author arian
  *
  */
-public class AngleHandlerNode extends PathHandlerNode {
+public class AngleHandlerNode extends CircleHandlerNode {
 
-	private Axis _axis;
 	private double _initAngle;
 	private double _initX;
 	private double _initY;
 	private double _centerX;
 	private double _centerY;
+	private int _order;
+	private static Color[] COLORS = { null, Color.RED, Color.GREEN, Color.BLUE };
+	private static double TRANSP_FACTOR = 0.5;
 
-	public AngleHandlerNode(IObjectNode object, Axis axis) {
+	public AngleHandlerNode(IObjectNode object, int order) {
 		super(object);
-		_axis = axis;
-		setFill(Color.BLUEVIOLET);
+
+		_order = order;
+
+		setFill(Color.TRANSPARENT);
+		setStroke(COLORS[order]);
 		setCursor(Cursor.MOVE);
+
+		setOpacity(TRANSP_FACTOR);
+
+		setOnMouseEntered(e -> setOpacity(1));
+
+		setOnMouseExited(e -> {
+			if (!e.isPrimaryButtonDown()) {
+				setOpacity(TRANSP_FACTOR);
+			}
+		});
+
+		setOnMouseReleased(e -> setOpacity(1));
+	}
+
+	@Override
+	public boolean contains(double localX, double localY) {
+		Point2D p = new Point2D(localX, localY);
+
+		double d = p.distance(new Point2D(getCenterX(), getCenterY()));
+
+		double diff = Math.abs(d - getRadius());
+
+		return diff < 10;
 	}
 
 	public static double angleBetweenTwoPointsWithFixedPoint(double point1X, double point1Y, double point2X,
@@ -65,15 +93,21 @@ public class AngleHandlerNode extends PathHandlerNode {
 		_initX = x;
 		_initY = y;
 
+		computeCenter();
+	}
+
+	private void computeCenter() {
 		_centerX = _model.getPivotX();
 		_centerY = _model.getPivotY();
 
 		if (_model instanceof BaseSpriteModel) {
 			BaseSpriteModel spriteModel = (BaseSpriteModel) _model;
-			_centerX = spriteModel.getAnchorX() * _control.getTextureWidth();
-			_centerY = spriteModel.getAnchorY() * _control.getTextureHeight();
+			double x = spriteModel.getAnchorX() * _control.getTextureWidth();
+			double y = spriteModel.getAnchorY() * _control.getTextureHeight();
+			_centerX = _centerX + x;
+			_centerY = _centerY + y;
 		}
-		
+
 		Point2D p = _node.localToScene(_centerX, _centerY);
 		_centerX = p.getX();
 		_centerY = p.getY();
@@ -105,19 +139,19 @@ public class AngleHandlerNode extends PathHandlerNode {
 
 		_canvas.getUpdateBehavior().executeOperations(
 
-		new CompositeOperation(
+				new CompositeOperation(
 
-		new ChangePropertyOperation<Number>(id, "angle", Double.valueOf(a))
+						new ChangePropertyOperation<Number>(id, "angle", Double.valueOf(a))
 
-		));
+				));
 	}
 
 	@Override
 	public void updateHandler() {
-		double x = _axis.x * _control.getTextureWidth();
-		double y = _axis.y * _control.getTextureHeight();
+		computeCenter();
 
-		Point2D p = objectToScene(x, y);
-		relocate(p.getX() - 5, p.getY() - 5);
+		setCenterX(_centerX);
+		setCenterY(_centerY);
+		setRadius(_order * 50);
 	}
 }

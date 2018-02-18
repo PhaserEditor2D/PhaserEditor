@@ -56,6 +56,8 @@ import phasereditor.canvas.ui.shapes.ISpriteNode;
 public class HandlerBehavior {
 	private ObjectCanvas _canvas;
 	private Pane _pane;
+	private String _lastCmd;
+	private Object _lastObjId;
 
 	public HandlerBehavior(ObjectCanvas canvas) {
 		super();
@@ -64,10 +66,12 @@ public class HandlerBehavior {
 	}
 
 	public void editScale(IObjectNode object) {
-		clear();
+		if (!prepareCommand("scale", object)) {
+			return;
+		}
 
 		add(new ScaleShortcutsPane(object));
-		
+
 		Arrays.stream(Axis.values()).filter(a -> a != Axis.CENTER)
 				.forEach(axis -> add(new ScaleHandlerNode(object, axis)));
 
@@ -75,7 +79,9 @@ public class HandlerBehavior {
 	}
 
 	public void editTile(IObjectNode object) {
-		clear();
+		if (!prepareCommand("tile", object)) {
+			return;
+		}
 
 		for (Axis axis : Axis.values()) {
 			if (axis == Axis.CENTER) {
@@ -88,7 +94,9 @@ public class HandlerBehavior {
 	}
 
 	public void editArcadeRectBody(ISpriteNode object) {
-		clear();
+		if (!prepareCommand("arcadeRectBody", object)) {
+			return;
+		}
 
 		add(new ArcadeHighlightRectBodyHandlerNode(object));
 
@@ -106,7 +114,9 @@ public class HandlerBehavior {
 	}
 
 	public void editArcadeCircleBody(ISpriteNode sprite) {
-		clear();
+		if (!prepareCommand("arcadeCircleBody", sprite)) {
+			return;
+		}
 
 		add(new ArcadeHighlightCircleBodyHandlerNode(sprite));
 		add(new ArcadeMoveBodyHandlerNode(sprite));
@@ -116,20 +126,23 @@ public class HandlerBehavior {
 	}
 
 	public void editAngle(IObjectNode object) {
-		clear(); 
+		if (!prepareCommand("angle", object)) {
+			return;
+		}
 
 		add(new AngleShortucsPane(object));
-		 
-		add(new AngleHandlerNode(object, Axis.TOP_LEF));
-		add(new AngleHandlerNode(object, Axis.TOP_RIG));
-		add(new AngleHandlerNode(object, Axis.BOT_LEF));
-		add(new AngleHandlerNode(object, Axis.BOT_RIG));
+
+		add(new AngleHandlerNode(object, 1));
+		add(new AngleHandlerNode(object, 2));
+		add(new AngleHandlerNode(object, 3));
 
 		update();
 	}
 
 	public void editAnchor(ISpriteNode object) {
-		clear();
+		if (!prepareCommand("anchor", object)) {
+			return;
+		}
 
 		add(new AnchorShortcutsPane(object));
 		add(new AnchorHandlerNode(object));
@@ -138,10 +151,12 @@ public class HandlerBehavior {
 	}
 
 	public void editPivot(IObjectNode object) {
-		clear();
+		if (!prepareCommand("pivot", object)) {
+			return;
+		}
 
 		add(new PivotShortcutPane(object));
-		
+
 		add(new PivotHandlerNode(object));
 
 		update();
@@ -151,7 +166,27 @@ public class HandlerBehavior {
 		_pane.getChildren().add(node);
 	}
 
+	public boolean prepareCommand(String cmd, IObjectNode node) {
+		_pane.getChildren().clear();
+
+		String id = node.getModel().getId();
+
+		if (!id.equals(_lastObjId)) {
+			_lastObjId = id;
+			_lastCmd = cmd;
+			return true;
+		}
+
+		boolean ok = _lastCmd == null || !cmd.equals(_lastCmd);
+
+		_lastCmd = ok ? cmd : null;
+
+		return ok;
+	}
+
 	public void clear() {
+		_lastCmd = null;
+		_lastObjId = null;
 		_pane.getChildren().clear();
 	}
 
@@ -179,6 +214,8 @@ public class HandlerBehavior {
 			IObjectNode obj = ((IEditHandlerNode) n).getObject();
 			if (!set.contains(obj)) {
 				_pane.getChildren().remove(n);
+				_lastCmd = null;
+				_lastObjId = null;
 			}
 		});
 	}
