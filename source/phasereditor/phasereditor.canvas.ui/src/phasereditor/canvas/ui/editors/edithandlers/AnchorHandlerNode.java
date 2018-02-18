@@ -37,6 +37,7 @@ import phasereditor.canvas.ui.shapes.ISpriteNode;
  */
 public class AnchorHandlerNode extends PathHandlerNode {
 
+	public static final Color HANDLER_COLOR = Color.ALICEBLUE;
 	private double _initAnchorX;
 	private double _initAnchorY;
 	private double _initX;
@@ -46,15 +47,15 @@ public class AnchorHandlerNode extends PathHandlerNode {
 
 	public AnchorHandlerNode(ISpriteNode object) {
 		super(object);
-		setFill(Color.ALICEBLUE);
+		setFill(HANDLER_COLOR);
 		setCursor(Cursor.MOVE);
 	}
-	
+
 	@Override
 	public boolean isValid() {
 		return _object instanceof ISpriteNode;
 	}
-	
+
 	@Override
 	public void handleLocalStart(double localX, double localY, MouseEvent e) {
 		ISpriteNode sprite = (ISpriteNode) _object;

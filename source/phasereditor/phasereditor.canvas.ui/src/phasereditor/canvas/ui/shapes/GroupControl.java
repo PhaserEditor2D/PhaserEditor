@@ -148,16 +148,18 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 			return 0;
 		}
 
-		double min = Double.MAX_VALUE;
-		double max = Double.MIN_VALUE;
-
-		for (Object obj : list) {
-			IObjectNode node = (IObjectNode) obj;
-			min = Math.min(node.getControl().getTextureLeft(), min);
-			max = Math.max(node.getControl().getTextureRight(), max);
-		}
-
-		return max - min;
+//		double min = Double.MAX_VALUE;
+//		double max = Double.MIN_VALUE;
+//
+//		for (Object obj : list) {
+//			IObjectNode node = (IObjectNode) obj;
+//			min = Math.min(node.getControl().getTextureLeft(), min);
+//			max = Math.max(node.getControl().getTextureRight(), max);
+//		}
+//
+//		return max - min;
+		
+		return getNode().getBoundsInLocal().getWidth();
 	}
 
 	@Override
@@ -171,16 +173,18 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 			return 0;
 		}
 
-		double min = Double.MAX_VALUE;
-		double max = Double.MIN_VALUE;
+//		double min = Double.MAX_VALUE;
+//		double max = Double.MIN_VALUE;
 
-		for (Object obj : list) {
-			IObjectNode node = (IObjectNode) obj;
-			min = Math.min(node.getControl().getTextureTop(), min);
-			max = Math.max(node.getControl().getTextureBottom(), max);
-		}
-
-		return max - min;
+//		for (Object obj : list) {
+//			IObjectNode node = (IObjectNode) obj;
+//			min = Math.min(node.getControl().getTextureTop(), min);
+//			max = Math.max(node.getControl().getTextureBottom(), max);
+//		}
+//
+//		return max - min;
+		
+		return getNode().getBoundsInLocal().getWidth();
 	}
 
 	public PGridBooleanProperty getClosed_property() {

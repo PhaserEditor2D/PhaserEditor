@@ -36,6 +36,7 @@ import phasereditor.canvas.ui.shapes.IObjectNode;
  */
 public class PivotHandlerNode extends PathHandlerNode {
 
+	public static Color HANDLER_COLOR = Color.ORANGE;
 	private double _initPivotX;
 	private double _initPivotY;
 	private double _initX;
@@ -43,7 +44,7 @@ public class PivotHandlerNode extends PathHandlerNode {
 
 	public PivotHandlerNode(IObjectNode object) {
 		super(object);
-		setFill(Color.ORANGE);
+		setFill(HANDLER_COLOR);
 		setCursor(Cursor.MOVE);
 	}
 

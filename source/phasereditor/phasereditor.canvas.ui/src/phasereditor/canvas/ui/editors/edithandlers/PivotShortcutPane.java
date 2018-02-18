@@ -28,29 +28,24 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Transform;
-import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;
-import phasereditor.canvas.ui.shapes.ISpriteNode;
 
 /**
  * @author arian
  *
  */
-public class AnchorShortcutsPane extends ShortcutPane {
+public class PivotShortcutPane extends ShortcutPane {
 
 	private Label _xLabel;
 	private Label _yLabel;
 
-	public AnchorShortcutsPane(IObjectNode object) {
+	public PivotShortcutPane(IObjectNode object) {
 		super(object);
 
-		_xLabel = createValueLabel();
-		_yLabel = createValueLabel();
-
-		add(_xLabel, 0, 0, 3, 1);
-		add(_yLabel, 0, 1, 3, 1);
+		add(_xLabel = createValueLabel(), 0, 0, 3, 1);
+		add(_yLabel = createValueLabel(), 0, 1, 3, 1);
 
 		double[] values = { 0, 0.5, 1 };
 
@@ -58,7 +53,7 @@ public class AnchorShortcutsPane extends ShortcutPane {
 		for (double y : values) {
 			int col = 0;
 			for (double x : values) {
-				add(new AnchorBtn(x, y), col++, row);
+				add(new PivotBtn(x, y), col++, row);
 			}
 			row++;
 		}
@@ -67,27 +62,25 @@ public class AnchorShortcutsPane extends ShortcutPane {
 	@Override
 	public void updateHandler() {
 
-		BaseSpriteModel model = (BaseSpriteModel) _model;
-
-		_xLabel.setText("x = " + Double.toString(model.getAnchorX()));
-		_yLabel.setText("y = " + Double.toString(model.getAnchorY()));
+		_xLabel.setText("x = " + _model.getPivotX());
+		_yLabel.setText("y = " + _model.getPivotY());
 
 		for (Object node : getChildren()) {
-			if (node instanceof AnchorBtn) {
-				((AnchorBtn) node).updateHandler();
+			if (node instanceof PivotBtn) {
+				((PivotBtn) node).updateHandler();
 			}
 		}
 
 		super.updateHandler();
 	}
 
-	private class AnchorBtn extends ShortcutButton {
+	private class PivotBtn extends ShortcutButton {
 
 		private double _anchorX;
 		private double _anchorY;
 		private Rectangle _rect2;
 
-		public AnchorBtn(double anchorX, double anchorY) {
+		public PivotBtn(double anchorX, double anchorY) {
 			_anchorX = anchorX;
 			_anchorY = anchorY;
 
@@ -136,51 +129,46 @@ public class AnchorShortcutsPane extends ShortcutPane {
 		}
 
 		public void updateHandler() {
-			BaseSpriteModel model = (BaseSpriteModel) _model;
+			double width = _control.getTextureWidth();
+			double height = _control.getTextureHeight();
 
-			_rect2.setFill(
-					model.getAnchorX() == _anchorX && model.getAnchorY() == _anchorY ? AnchorHandlerNode.HANDLER_COLOR : Color.BLACK);
+			double pivotX = _anchorX * width;
+			double pivotY = _anchorY * height;
+
+			_rect2.setFill(_model.getPivotX() == pivotX && _model.getPivotY() == pivotY ? PivotHandlerNode.HANDLER_COLOR : Color.BLACK);
 		}
 
 		@Override
 		protected void doAction() {
 			CompositeOperation operations = new CompositeOperation();
-			ISpriteNode sprite = (ISpriteNode) _object;
-			BaseSpriteModel model = sprite.getModel();
 
-			double anchorDX = _anchorX - model.getAnchorX();
-			double dx = anchorDX * _control.getTextureWidth();
+			double width = _control.getTextureWidth();
+			double height = _control.getTextureHeight();
 
-			double anchorDY = _anchorY - model.getAnchorY();
-			double dy = anchorDY * _control.getTextureHeight();
+			double pivotX = _anchorX * width;
+			double pivotY = _anchorY * height;
+
+			double dx = pivotX - _model.getPivotX();
+
+			double dy = pivotY - _model.getPivotY();
 
 			Point2D p = new Point2D(dx, dy);
 			for (Transform t : _node.getTransforms()) {
 				p = t.deltaTransform(p);
 			}
 
-			double x = model.getX() + p.getX();
-			double y = model.getY() + p.getY();
+			double x = _model.getX() + p.getX();
+			double y = _model.getY() + p.getY();
 
-			String id = model.getId();
+			String id = _model.getId();
 
 			operations.add(new ChangePropertyOperation<Number>(id, "x", Double.valueOf(x)));
 			operations.add(new ChangePropertyOperation<Number>(id, "y", Double.valueOf(y)));
-			operations.add(new ChangePropertyOperation<Number>(id, "anchor.x", Double.valueOf(_anchorX)));
-			operations.add(new ChangePropertyOperation<Number>(id, "anchor.y", Double.valueOf(_anchorY)));
+			operations.add(new ChangePropertyOperation<Number>(id, "pivot.x", Double.valueOf(pivotX)));
+			operations.add(new ChangePropertyOperation<Number>(id, "pivot.y", Double.valueOf(pivotY)));
 
 			_canvas.getUpdateBehavior().executeOperations(operations);
 		}
-	}
-
-	@Override
-	public IObjectNode getObject() {
-		return _object;
-	}
-
-	@Override
-	public boolean isValid() {
-		return true;
 	}
 
 }

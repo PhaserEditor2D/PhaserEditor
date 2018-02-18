@@ -61,7 +61,7 @@ public class AngleShortucsPane extends ShortcutPane {
 	@Override
 	public void updateHandler() {
 
-		_angleLabel.setText("=" + _model.getAngle());
+		_angleLabel.setText("= " + _model.getAngle());
 
 		super.updateHandler();
 	}
