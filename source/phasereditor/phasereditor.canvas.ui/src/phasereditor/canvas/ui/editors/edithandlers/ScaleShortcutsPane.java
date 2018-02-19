@@ -42,15 +42,18 @@ public class ScaleShortcutsPane extends ShortcutPane {
 	public ScaleShortcutsPane(IObjectNode object) {
 		super(object);
 
+		
+		add(createTitle("scale"), 0, 0, 3, 1);
+		
 		_xLabel = createTextField(_model.getScaleX(), "scale.x", x -> setScaleInObject(x, _model.getScaleY()));
 		_yLabel = createTextField(_model.getScaleY(), "scale.y", y -> setScaleInObject(_model.getScaleY(), y));
 
-		add(_xLabel, 0, 0, 3, 1);
-		add(_yLabel, 0, 1, 3, 1);
+		add(_xLabel, 0, 1, 3, 1);
+		add(_yLabel, 0, 2, 3, 1);
 
-		add(new Btn("x"), 0, 2);
-		add(new Btn("y"), 1, 2);
-		add(new ResetBtn(), 2, 2);
+		add(new Btn("x"), 0, 3);
+		add(new Btn("y"), 1, 3);
+		add(new ResetBtn(), 2, 3);
 
 	}
 

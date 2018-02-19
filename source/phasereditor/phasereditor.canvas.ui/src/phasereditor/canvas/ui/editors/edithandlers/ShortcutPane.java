@@ -106,6 +106,12 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 		});
 
 	}
+	
+	protected static Label createTitle(String label) {
+		Label title = new Label(label);
+		title.setStyle("-fx-opacity:0.5;-fx-text-fill:white;");
+		return title;
+	}
 
 	protected Label createTextField(double text, String name, Consumer<Double> consumer) {
 		Label label = new Label(Double.toString(text));

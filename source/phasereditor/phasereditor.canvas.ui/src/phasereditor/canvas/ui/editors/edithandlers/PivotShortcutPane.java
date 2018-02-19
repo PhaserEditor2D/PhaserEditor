@@ -46,6 +46,8 @@ public class PivotShortcutPane extends ShortcutPane {
 	public PivotShortcutPane(IObjectNode object) {
 		super(object);
 
+		add(createTitle("pivot"), 0, 0, 3, 1);
+		
 		_xLabel = createTextField(_model.getPivotX(), "pivot.x", x -> {
 			setPivotInObject(x, _model.getPivotY());
 		});
@@ -54,12 +56,12 @@ public class PivotShortcutPane extends ShortcutPane {
 			setPivotInObject(_model.getPivotX(), y);
 		});
 
-		add(_xLabel, 0, 0, 3, 1);
-		add(_yLabel, 0, 1, 3, 1);
+		add(_xLabel, 0, 1, 3, 1);
+		add(_yLabel, 0, 2, 3, 1);
 
 		double[] values = { 0, 0.5, 1 };
 
-		int row = 3;
+		int row = 4;
 		for (double y : values) {
 			int col = 0;
 			for (double x : values) {
