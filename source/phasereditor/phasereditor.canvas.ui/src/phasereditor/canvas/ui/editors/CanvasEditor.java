@@ -100,8 +100,8 @@ public class CanvasEditor extends MultiPageEditorPart
 	private static final String PALETTE_CONTEXT_ID = "phasereditor.canvas.ui.palettecontext";
 	public final static String ID = "phasereditor.canvas.ui.editors.canvas";
 	public final static String NODES_CONTEXT_ID = "phasereditor.canvas.ui.nodescontext";
-	protected static final String SCENE_CONTEXT_ID = "phasereditor.canvas.ui.scenecontext";
-	protected static final String EDITOR_CONTEXT_ID = "phasereditor.canvas.ui.any";
+	public static final String SCENE_CONTEXT_ID = "phasereditor.canvas.ui.scenecontext";
+	public static final String EDITOR_CONTEXT_ID = "phasereditor.canvas.ui.any";
 
 	public final IUndoContext undoContext = new IUndoContext() {
 
@@ -252,10 +252,10 @@ public class CanvasEditor extends MultiPageEditorPart
 		addEditorActivationListeners();
 		addPageChangedListener(this);
 	}
-	
-
 
 	private IPartListener _partListener;
+	protected IContextActivation _sceneContext;
+	protected IContextActivation _nodesContext;
 
 	@SuppressWarnings("synthetic-access")
 	private void addEditorActivationListeners() {
@@ -406,13 +406,12 @@ public class CanvasEditor extends MultiPageEditorPart
 	private void initPalette() {
 		_paletteComp.setProject(getEditorInputFile().getProject());
 	}
+	
 
 	private void initContexts() {
 		getContextService().activateContext(EDITOR_CONTEXT_ID);
 
 		_canvas.addFocusListener(new FocusListener() {
-
-			private IContextActivation _sceneContext;
 
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -421,24 +420,20 @@ public class CanvasEditor extends MultiPageEditorPart
 
 			@Override
 			public void focusGained(FocusEvent e) {
-				_sceneContext = getContextService().activateContext(SCENE_CONTEXT_ID);
+				activateSceneContext();
 			}
 		});
 
 		FocusListener nodesContextHandler = new FocusListener() {
 
-			private IContextActivation _nodesContext;
-
 			@Override
 			public void focusLost(FocusEvent e) {
-				// out.println("de-activate " + NODES_CONTEXT_ID);
-				getContextService().deactivateContext(_nodesContext);
+				deactivateNodesContext();
 			}
 
 			@Override
 			public void focusGained(FocusEvent e) {
-				// out.println("activate " + NODES_CONTEXT_ID);
-				_nodesContext = getContextService().activateContext(NODES_CONTEXT_ID);
+				activateNodesContext();
 			}
 		};
 		_canvas.addFocusListener(nodesContextHandler);
@@ -724,5 +719,29 @@ public class CanvasEditor extends MultiPageEditorPart
 		} else {
 			disposeCanvasGlobalActions();
 		}
+	}
+
+	public void activateSceneContext() {
+		_sceneContext = getContextService().activateContext(SCENE_CONTEXT_ID);
+	}
+
+	public void deactivateSceneContext() {
+		if (_sceneContext != null) {
+			getContextService().deactivateContext(_sceneContext);
+		}
+	}
+
+	public void deactivateNodesContext() {
+		if (_nodesContext != null) {
+			getContextService().deactivateContext(_nodesContext);
+		}
+	}
+
+	public void activateNodesContext() {
+		_nodesContext = getContextService().activateContext(NODES_CONTEXT_ID);
+	}
+
+	public boolean isContextActive(String contextId) {
+		return getContextService().getActiveContextIds().contains(contextId);
 	}
 }

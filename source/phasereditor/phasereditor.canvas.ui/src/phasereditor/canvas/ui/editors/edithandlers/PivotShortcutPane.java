@@ -136,7 +136,8 @@ public class PivotShortcutPane extends ShortcutPane {
 			double pivotX = _anchorX * width;
 			double pivotY = _anchorY * height;
 
-			_rect2.setFill(_model.getPivotX() == pivotX && _model.getPivotY() == pivotY ? PivotHandlerNode.HANDLER_COLOR : Color.BLACK);
+			_rect2.setFill(_model.getPivotX() == pivotX && _model.getPivotY() == pivotY ? PivotHandlerNode.HANDLER_COLOR
+					: Color.BLACK);
 		}
 
 		@Override

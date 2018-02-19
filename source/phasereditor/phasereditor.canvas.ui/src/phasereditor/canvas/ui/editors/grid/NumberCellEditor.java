@@ -35,11 +35,11 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class NumberCellEditor extends TextCellEditor {
 
-	private static ScriptEngine _engine;
+	public static ScriptEngine scriptEngine;
 
 	static {
 		ScriptEngineManager m = new ScriptEngineManager();
-		_engine = m.getEngineByName("nashorn");
+		scriptEngine = m.getEngineByName("nashorn");
 	}
 
 	public NumberCellEditor(Composite parent) {
@@ -48,24 +48,7 @@ public class NumberCellEditor extends TextCellEditor {
 
 			@Override
 			public String isValid(Object value) {
-				if (value instanceof String) {
-					String script = (String) value;
-					try {
-						Double.parseDouble(script);
-					} catch (NumberFormatException e) {
-						// try a javascript expression
-						try {
-							@SuppressWarnings("synthetic-access")
-							Object result = _engine.eval(script);
-							if (!(result instanceof Number)) {
-								return "Invalid expression result.";
-							}
-						} catch (ScriptException e1) {
-							return "Invalid number or script format.";
-						}
-					}
-				}
-				return null;
+				return scriptEngineValidate(value);
 			}
 		});
 	}
@@ -78,16 +61,40 @@ public class NumberCellEditor extends TextCellEditor {
 	@Override
 	protected Object doGetValue() {
 		String value = (String) super.doGetValue();
+		return scriptEngineEval(value);
+	}
+
+	public static Double scriptEngineEval(String value) {
 		try {
 			return Double.valueOf(value);
 		} catch (NumberFormatException e) {
 			try {
-				Object result = _engine.eval(value);
-				return Double.valueOf(((Number)result).doubleValue());
+				Object result = scriptEngine.eval(value);
+				return Double.valueOf(((Number) result).doubleValue());
 			} catch (ScriptException e1) {
 				throw new RuntimeException(e1);
 			}
 		}
+	}
+
+	public static String scriptEngineValidate(Object value) {
+		if (value instanceof String) {
+			String script = (String) value;
+			try {
+				Double.parseDouble(script);
+			} catch (NumberFormatException e) {
+				// try a javascript expression
+				try {
+					Object result = scriptEngine.eval(script);
+					if (!(result instanceof Number)) {
+						return "Invalid expression result.";
+					}
+				} catch (ScriptException e1) {
+					return "Invalid number or script format.";
+				}
+			}
+		}
+		return null;
 	}
 
 }

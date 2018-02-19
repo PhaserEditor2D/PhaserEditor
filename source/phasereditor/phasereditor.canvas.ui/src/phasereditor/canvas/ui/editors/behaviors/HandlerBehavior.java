@@ -45,6 +45,7 @@ import phasereditor.canvas.ui.editors.edithandlers.PivotHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.PivotShortcutPane;
 import phasereditor.canvas.ui.editors.edithandlers.ScaleHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.ScaleShortcutsPane;
+import phasereditor.canvas.ui.editors.edithandlers.ShortcutPane;
 import phasereditor.canvas.ui.editors.edithandlers.TileHandlerNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
@@ -146,8 +147,12 @@ public class HandlerBehavior {
 		update();
 	}
 
-	private void add(Node node) {
-		_pane.getChildren().add(node);
+	public void add(IEditHandlerNode node) {
+		_pane.getChildren().add((Node) node);
+	}
+
+	public void remove(IEditHandlerNode node) {
+		_pane.getChildren().remove((Node) node);
 	}
 
 	public void clear() {
@@ -184,5 +189,17 @@ public class HandlerBehavior {
 
 	public boolean isEditing() {
 		return !_pane.getChildren().isEmpty();
+	}
+
+	public List<ShortcutPane> findShortcutPanes() {
+		List<ShortcutPane> list = new ArrayList<>();
+
+		for (Object n : _pane.getChildren()) {
+			if (n instanceof ShortcutPane) {
+				list.add((ShortcutPane) n);
+			}
+		}
+
+		return list;
 	}
 }

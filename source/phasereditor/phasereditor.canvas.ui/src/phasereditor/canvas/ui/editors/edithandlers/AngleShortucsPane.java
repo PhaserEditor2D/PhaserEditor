@@ -21,13 +21,11 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.edithandlers;
 
-import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.Labeled;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.ui.IEditorSharedImages;
-import phasereditor.ui.PhaserEditorUI;
 
 /**
  * @author arian
@@ -35,70 +33,66 @@ import phasereditor.ui.PhaserEditorUI;
  */
 public class AngleShortucsPane extends ShortcutPane {
 
-	private Label _angleLabel;
+	private Labeled _angleText;
+	private Labeled _angleDeltaText;
+	private static double _lastDeltaValue = 45;
 
 	@SuppressWarnings("boxing")
 	public AngleShortucsPane(IObjectNode object) {
 		super(object);
 
-		String[] values = { "-45", "+45", "0" };
+		add(_angleText = createTextField(object.getModel().getAngle(), "angle", value -> {
+			setAngleInObject(value);
+		}), 0, 0, 3, 1);
 
-		_angleLabel = createValueLabel();
+		add(new AngleBtn(-1), 0, 1);
+		add(new AngleBtn(1), 1, 1);
 
-		add(_angleLabel, 0, 0);
-		setColumnSpan(_angleLabel, 3);
+		_angleDeltaText = createTextField(_lastDeltaValue, "delta", v -> _lastDeltaValue = v);
+		_angleDeltaText.setPrefSize(50, -1);
 
-		int i = 0;
-
-		for (String value : values) {
-			Btn btn = new Btn(value);
-			add(btn, i, 1);
-			i++;
-		}
-
+		add(_angleDeltaText, 2, 1);
 	}
 
 	@Override
 	public void updateHandler() {
 
-		_angleLabel.setText("= " + _model.getAngle());
+		_angleText.setText("= " + _model.getAngle());
 
 		super.updateHandler();
 	}
 
-	class Btn extends ShortcutButton {
-		private double _value;
+	private void setAngleInObject(double angle) {
+		CompositeOperation operations = new CompositeOperation();
 
-		public Btn(String label) {
-			_value = Double.parseDouble(label);
+		String id = _model.getId();
 
-			if (_value == 0) {
-				setGraphic(createLabel("0"));
-			} else if (_value < 0) {
-				setGraphic(
-						new ImageView(PhaserEditorUI.getUIIconURL(IEditorSharedImages.IMG_WHITE_ROTATE_ANTICLOCKWISE)));
+		operations.add(new ChangePropertyOperation<Number>(id, "angle", Double.valueOf(angle)));
+
+		_canvas.getUpdateBehavior().executeOperations(operations);
+	}
+
+	class AngleBtn extends ShortcutButton {
+
+		private double _sign;
+
+		public AngleBtn(double sign) {
+			_sign = sign;
+
+			if (sign < 0) {
+				setIcon(IEditorSharedImages.IMG_WHITE_ROTATE_ANTICLOCKWISE);
 			} else {
-				setGraphic(new ImageView(PhaserEditorUI.getUIIconURL(IEditorSharedImages.IMG_WHITE_ROTATE_CLOCKWISE)));
+				setIcon(IEditorSharedImages.IMG_WHITE_ROTATE_CLOCKWISE);
 			}
 
 			setSize(50, -1);
 		}
 
+		@SuppressWarnings("synthetic-access")
 		@Override
 		protected void doAction() {
-			CompositeOperation operations = new CompositeOperation();
-			double angle = _model.getAngle() + _value;
-
-			if (_value == 0) {
-				angle = 0;
-			}
-
-			String id = _model.getId();
-
-			operations.add(new ChangePropertyOperation<Number>(id, "angle", Double.valueOf(angle)));
-
-			_canvas.getUpdateBehavior().executeOperations(operations);
-
+			double incr = Double.parseDouble(_angleDeltaText.getText());
+			setAngleInObject(_model.getAngle() + _sign * incr);
 		}
 
 	}

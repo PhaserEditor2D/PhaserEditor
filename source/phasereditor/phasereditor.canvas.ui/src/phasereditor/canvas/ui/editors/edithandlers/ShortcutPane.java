@@ -21,9 +21,15 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.edithandlers;
 
+import java.util.function.Consumer;
+
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.window.Window;
+
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.OverrunStyle;
@@ -32,9 +38,11 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.grid.NumberCellEditor;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
@@ -52,7 +60,7 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 	private boolean _updated;
 	private Point2D _startPoint;
 	private Point2D _initPos;
-	private static Point2D _location;
+	protected static Point2D _location;
 	private static String _lastObjectId;
 
 	public ShortcutPane(IObjectNode object) {
@@ -99,6 +107,39 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 
 	}
 
+	protected Label createTextField(double text, String name, Consumer<Double> consumer) {
+		Label label = new Label(Double.toString(text));
+		label.setStyle("-fx-text-fill:white;");
+		label.setCursor(Cursor.TEXT);
+
+		setHgrow(label, Priority.ALWAYS);
+
+		label.setOnMouseClicked(e -> {
+
+			// this is a useful patch!
+			String text2 = label.getText();
+			int i = text2.indexOf("=");
+			if (i != -1) {
+				text2 = text2.substring(i + 1).trim();
+			}
+
+			InputDialog dlg = new InputDialog(_canvas.getEditor().getEditorSite().getShell(), name,
+					"Enter a new value expression:", text2, value -> {
+						return NumberCellEditor.scriptEngineValidate(value);
+					});
+
+			if (dlg.open() == Window.OK) {
+				String value = dlg.getValue();
+				Double result = NumberCellEditor.scriptEngineEval(value);
+				label.setText(result.toString());
+				consumer.accept(result);
+			}
+
+		});
+		return label;
+
+	}
+
 	protected static Label createValueLabel() {
 		Label label = new Label();
 		label.setMinWidth(150);
@@ -124,17 +165,14 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 		String id = _object.getModel().getId();
 
 		if (_location == null || !id.equals(_lastObjectId)) {
-
 			Bounds bounds = _control.getNode().getBoundsInLocal();
 			bounds = _control.getNode().localToScene(bounds);
-			double x = Math.max(bounds.getMinX(), bounds.getMaxX() + bounds.getWidth());
-			double y = Math.max(bounds.getMinY(), bounds.getMaxY() + bounds.getHeight());
-			x = bounds.getMinX() + bounds.getWidth();
-			y = bounds.getMinY();
 
-			_location = new Point2D(x + 30, y);
+			double x = bounds.getMinX() + bounds.getWidth() + 30;
+			double y = bounds.getMinY();
+
+			_location = new Point2D(x, y);
 			_lastObjectId = id;
-
 		}
 
 		relocate(_location.getX(), _location.getY());

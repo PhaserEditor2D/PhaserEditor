@@ -26,6 +26,7 @@ import java.util.List;
 import javafx.scene.input.KeyEvent;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.EditorSettings;
+import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.UpdateFromPropertyChange;
@@ -42,10 +43,12 @@ public class KeyboardBehavior {
 		_canvas = canvas;
 
 		_canvas.getScene().addEventFilter(KeyEvent.KEY_PRESSED, e -> {
-			try {
-				handleKeyPressed(e);
-			} catch (Exception ex) {
-				ex.printStackTrace();
+			if (_canvas.getEditor().isContextActive(CanvasEditor.NODES_CONTEXT_ID)) {
+				try {
+					handleKeyPressed(e);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 			}
 		});
 	}

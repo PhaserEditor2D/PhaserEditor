@@ -160,20 +160,20 @@ public class SelectionBehavior implements ISelectionProvider {
 
 		{
 			// reveal selection in the outline
-			
+
 			TreeViewer outline = _canvas.getOutline();
 			outline.getTree().setRedraw(false);
-			
+
 			Set<Object> parents = new HashSet<>(Arrays.asList(outline.getExpandedElements()));
 			for (IObjectNode node : getSelectedNodes()) {
 				parents.addAll(node.getAncestors());
 			}
 			outline.setExpandedElements(parents.toArray());
-			
+
 			for (IObjectNode node : getSelectedNodes()) {
 				outline.reveal(node);
 			}
-			
+
 			outline.getTree().setRedraw(true);
 		}
 	}
@@ -378,6 +378,10 @@ public class SelectionBehavior implements ISelectionProvider {
 		updateSelectedNodes();
 
 		updateStatusLine();
+	}
+
+	public void selectAll() {
+		_canvas.getSelectionBehavior().setSelection(new StructuredSelection(_canvas.getWorldNode().getChildren()));
 	}
 
 	private void updateStatusLine() {
@@ -590,14 +594,10 @@ public class SelectionBehavior implements ISelectionProvider {
 		setSelection(StructuredSelection.EMPTY);
 	}
 
-	public void selectAll() {
-		_canvas.getSelectionBehavior().setSelection(new StructuredSelection(_canvas.getWorldNode().getChildren()));
-	}
-
 	/**
-	 * If a node is in the selection but its parent is in the selection too,
-	 * then that node is filtered. This helps to do operations like delete,
-	 * paste, etc.. It removes redundant nodes.
+	 * If a node is in the selection but its parent is in the selection too, then
+	 * that node is filtered. This helps to do operations like delete, paste, etc..
+	 * It removes redundant nodes.
 	 * 
 	 */
 	public static List<IObjectNode> filterSelection(IStructuredSelection sel) {

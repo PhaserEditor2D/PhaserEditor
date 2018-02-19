@@ -125,7 +125,9 @@ public class ObjectCanvas extends FXCanvas {
 	}
 
 	public void selectAll() {
-		_selectionBehavior.selectAll();
+		if (getEditor().getContextService().getActiveContextIds().contains(CanvasEditor.NODES_CONTEXT_ID)) {
+			_selectionBehavior.selectAll();
+		}
 	}
 
 	public PaintBehavior getPaintBehavior() {

@@ -25,11 +25,13 @@ import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
+import phasereditor.ui.PhaserEditorUI;
 
 /**
  * @author arian
@@ -51,7 +53,7 @@ public abstract class ShortcutButton extends Button {
 
 		setBorder(null);
 		// setEffect(new BoxBlur(2, 2, 1));
-		
+
 		setTextFill(Color.WHITE);
 
 		Background bg = new Background(
@@ -79,7 +81,11 @@ public abstract class ShortcutButton extends Button {
 			e.consume();
 		});
 	}
-	
+
+	public void setIcon(String icon) {
+		setGraphic(new ImageView(PhaserEditorUI.getUIIconURL(icon)));
+	}
+
 	@SuppressWarnings("static-method")
 	protected Label createLabel(Object text) {
 		Label label = new Label(text + "");
