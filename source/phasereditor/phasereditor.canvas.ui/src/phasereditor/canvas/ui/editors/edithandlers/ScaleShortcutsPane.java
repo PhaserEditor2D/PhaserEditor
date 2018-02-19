@@ -42,14 +42,11 @@ public class ScaleShortcutsPane extends ShortcutPane {
 	public ScaleShortcutsPane(IObjectNode object) {
 		super(object);
 
-		_xLabel = createValueLabel();
-		_yLabel = createValueLabel();
+		_xLabel = createTextField(_model.getScaleX(), "scale.x", x -> setScaleInObject(x, _model.getScaleY()));
+		_yLabel = createTextField(_model.getScaleY(), "scale.y", y -> setScaleInObject(_model.getScaleY(), y));
 
-		add(_xLabel, 0, 0);
-		add(_yLabel, 0, 1);
-
-		setColumnSpan(_xLabel, 3);
-		setColumnSpan(_yLabel, 3);
+		add(_xLabel, 0, 0, 3, 1);
+		add(_yLabel, 0, 1, 3, 1);
 
 		add(new Btn("x"), 0, 2);
 		add(new Btn("y"), 1, 2);
@@ -60,10 +57,21 @@ public class ScaleShortcutsPane extends ShortcutPane {
 	@Override
 	public void updateHandler() {
 
-		_xLabel.setText("x=" + _model.getScaleX());
-		_yLabel.setText("y=" + _model.getScaleY());
+		_xLabel.setText("x = " + _model.getScaleX());
+		_yLabel.setText("y = " + _model.getScaleY());
 
 		super.updateHandler();
+	}
+
+	void setScaleInObject(double scaleX, double scaleY) {
+		CompositeOperation operations = new CompositeOperation();
+
+		String id = _model.getId();
+
+		operations.add(new ChangePropertyOperation<Number>(id, "scale.x", Double.valueOf(scaleX)));
+		operations.add(new ChangePropertyOperation<Number>(id, "scale.y", Double.valueOf(scaleY)));
+
+		_canvas.getUpdateBehavior().executeOperations(operations);
 	}
 
 	class ResetBtn extends ShortcutButton {
@@ -74,14 +82,7 @@ public class ScaleShortcutsPane extends ShortcutPane {
 
 		@Override
 		protected void doAction() {
-			CompositeOperation operations = new CompositeOperation();
-
-			String id = _model.getId();
-
-			operations.add(new ChangePropertyOperation<Number>(id, "scale.x", Double.valueOf(1)));
-			operations.add(new ChangePropertyOperation<Number>(id, "scale.y", Double.valueOf(1)));
-
-			_canvas.getUpdateBehavior().executeOperations(operations);
+			setScaleInObject(1, 1);
 		}
 
 	}
