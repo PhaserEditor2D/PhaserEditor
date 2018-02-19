@@ -42,11 +42,20 @@ public class PivotShortcutPane extends ShortcutPane {
 	private Label _xLabel;
 	private Label _yLabel;
 
+	@SuppressWarnings("boxing")
 	public PivotShortcutPane(IObjectNode object) {
 		super(object);
 
-		add(_xLabel = createValueLabel(), 0, 0, 3, 1);
-		add(_yLabel = createValueLabel(), 0, 1, 3, 1);
+		_xLabel = createTextField(_model.getPivotX(), "pivot.x", x -> {
+			setPivotInObject(x, _model.getPivotY());
+		});
+
+		_yLabel = createTextField(object.getModel().getPivotY(), "pivot.y", y -> {
+			setPivotInObject(_model.getPivotX(), y);
+		});
+
+		add(_xLabel, 0, 0, 3, 1);
+		add(_yLabel, 0, 1, 3, 1);
 
 		double[] values = { 0, 0.5, 1 };
 
@@ -142,35 +151,39 @@ public class PivotShortcutPane extends ShortcutPane {
 
 		@Override
 		protected void doAction() {
-			CompositeOperation operations = new CompositeOperation();
-
 			double width = _control.getTextureWidth();
 			double height = _control.getTextureHeight();
 
 			double pivotX = _anchorX * width;
 			double pivotY = _anchorY * height;
 
-			double dx = pivotX - _model.getPivotX();
-
-			double dy = pivotY - _model.getPivotY();
-
-			Point2D p = new Point2D(dx, dy);
-			for (Transform t : _node.getTransforms()) {
-				p = t.deltaTransform(p);
-			}
-
-			double x = _model.getX() + p.getX();
-			double y = _model.getY() + p.getY();
-
-			String id = _model.getId();
-
-			operations.add(new ChangePropertyOperation<Number>(id, "x", Double.valueOf(x)));
-			operations.add(new ChangePropertyOperation<Number>(id, "y", Double.valueOf(y)));
-			operations.add(new ChangePropertyOperation<Number>(id, "pivot.x", Double.valueOf(pivotX)));
-			operations.add(new ChangePropertyOperation<Number>(id, "pivot.y", Double.valueOf(pivotY)));
-
-			_canvas.getUpdateBehavior().executeOperations(operations);
+			setPivotInObject(pivotX, pivotY);
 		}
+
 	}
 
+	void setPivotInObject(double pivotX, double pivotY) {
+		CompositeOperation operations = new CompositeOperation();
+
+		double dx = pivotX - _model.getPivotX();
+
+		double dy = pivotY - _model.getPivotY();
+
+		Point2D p = new Point2D(dx, dy);
+		for (Transform t : _node.getTransforms()) {
+			p = t.deltaTransform(p);
+		}
+
+		double x = _model.getX() + p.getX();
+		double y = _model.getY() + p.getY();
+
+		String id = _model.getId();
+
+		operations.add(new ChangePropertyOperation<Number>(id, "x", Double.valueOf(x)));
+		operations.add(new ChangePropertyOperation<Number>(id, "y", Double.valueOf(y)));
+		operations.add(new ChangePropertyOperation<Number>(id, "pivot.x", Double.valueOf(pivotX)));
+		operations.add(new ChangePropertyOperation<Number>(id, "pivot.y", Double.valueOf(pivotY)));
+
+		_canvas.getUpdateBehavior().executeOperations(operations);
+	}
 }
