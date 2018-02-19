@@ -44,11 +44,14 @@ public class AnchorShortcutsPane extends ShortcutPane {
 	private Label _xLabel;
 	private Label _yLabel;
 
+	@SuppressWarnings("boxing")
 	public AnchorShortcutsPane(IObjectNode object) {
 		super(object);
 
-		_xLabel = createValueLabel();
-		_yLabel = createValueLabel();
+		BaseSpriteModel model = (BaseSpriteModel) _model;
+
+		_xLabel = createTextField(model.getAnchorX(), "anchor.x", x -> setAnchorInObject(x, model.getAnchorY()));
+		_yLabel = createTextField(model.getAnchorY(), "anchor.y", y -> setAnchorInObject(model.getAnchorX(), y));
 
 		add(_xLabel, 0, 0, 3, 1);
 		add(_yLabel, 0, 1, 3, 1);
@@ -140,37 +143,16 @@ public class AnchorShortcutsPane extends ShortcutPane {
 			BaseSpriteModel model = (BaseSpriteModel) _model;
 
 			_rect2.setFill(
-					model.getAnchorX() == _anchorX && model.getAnchorY() == _anchorY ? AnchorHandlerNode.HANDLER_COLOR : Color.BLACK);
+					model.getAnchorX() == _anchorX && model.getAnchorY() == _anchorY ? AnchorHandlerNode.HANDLER_COLOR
+							: Color.BLACK);
 		}
 
 		@Override
 		protected void doAction() {
-			CompositeOperation operations = new CompositeOperation();
-			ISpriteNode sprite = (ISpriteNode) _object;
-			BaseSpriteModel model = sprite.getModel();
+			double anchorX = _anchorX;
+			double anchorY = _anchorY;
 
-			double anchorDX = _anchorX - model.getAnchorX();
-			double dx = anchorDX * _control.getTextureWidth();
-
-			double anchorDY = _anchorY - model.getAnchorY();
-			double dy = anchorDY * _control.getTextureHeight();
-
-			Point2D p = new Point2D(dx, dy);
-			for (Transform t : _node.getTransforms()) {
-				p = t.deltaTransform(p);
-			}
-
-			double x = model.getX() + p.getX();
-			double y = model.getY() + p.getY();
-
-			String id = model.getId();
-
-			operations.add(new ChangePropertyOperation<Number>(id, "x", Double.valueOf(x)));
-			operations.add(new ChangePropertyOperation<Number>(id, "y", Double.valueOf(y)));
-			operations.add(new ChangePropertyOperation<Number>(id, "anchor.x", Double.valueOf(_anchorX)));
-			operations.add(new ChangePropertyOperation<Number>(id, "anchor.y", Double.valueOf(_anchorY)));
-
-			_canvas.getUpdateBehavior().executeOperations(operations);
+			setAnchorInObject(anchorX, anchorY);
 		}
 	}
 
@@ -182,6 +164,35 @@ public class AnchorShortcutsPane extends ShortcutPane {
 	@Override
 	public boolean isValid() {
 		return true;
+	}
+
+	void setAnchorInObject(double anchorX, double anchorY) {
+		CompositeOperation operations = new CompositeOperation();
+		ISpriteNode sprite = (ISpriteNode) _object;
+		BaseSpriteModel model = sprite.getModel();
+
+		double anchorDX = anchorX - model.getAnchorX();
+		double dx = anchorDX * _control.getTextureWidth();
+
+		double anchorDY = anchorY - model.getAnchorY();
+		double dy = anchorDY * _control.getTextureHeight();
+
+		Point2D p = new Point2D(dx, dy);
+		for (Transform t : _node.getTransforms()) {
+			p = t.deltaTransform(p);
+		}
+
+		double x = model.getX() + p.getX();
+		double y = model.getY() + p.getY();
+
+		String id = model.getId();
+
+		operations.add(new ChangePropertyOperation<Number>(id, "x", Double.valueOf(x)));
+		operations.add(new ChangePropertyOperation<Number>(id, "y", Double.valueOf(y)));
+		operations.add(new ChangePropertyOperation<Number>(id, "anchor.x", Double.valueOf(anchorX)));
+		operations.add(new ChangePropertyOperation<Number>(id, "anchor.y", Double.valueOf(anchorY)));
+
+		_canvas.getUpdateBehavior().executeOperations(operations);
 	}
 
 }
