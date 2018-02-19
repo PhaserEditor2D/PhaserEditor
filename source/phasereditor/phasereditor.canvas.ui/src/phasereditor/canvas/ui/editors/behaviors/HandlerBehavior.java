@@ -56,8 +56,6 @@ import phasereditor.canvas.ui.shapes.ISpriteNode;
 public class HandlerBehavior {
 	private ObjectCanvas _canvas;
 	private Pane _pane;
-	private String _lastCmd;
-	private Object _lastObjId;
 
 	public HandlerBehavior(ObjectCanvas canvas) {
 		super();
@@ -66,9 +64,7 @@ public class HandlerBehavior {
 	}
 
 	public void editScale(IObjectNode object) {
-		if (!prepareCommand("scale", object)) {
-			return;
-		}
+		clear();
 
 		add(new ScaleShortcutsPane(object));
 
@@ -79,9 +75,7 @@ public class HandlerBehavior {
 	}
 
 	public void editTile(IObjectNode object) {
-		if (!prepareCommand("tile", object)) {
-			return;
-		}
+		clear();
 
 		for (Axis axis : Axis.values()) {
 			if (axis == Axis.CENTER) {
@@ -94,9 +88,7 @@ public class HandlerBehavior {
 	}
 
 	public void editArcadeRectBody(ISpriteNode object) {
-		if (!prepareCommand("arcadeRectBody", object)) {
-			return;
-		}
+		clear();
 
 		add(new ArcadeHighlightRectBodyHandlerNode(object));
 
@@ -114,9 +106,7 @@ public class HandlerBehavior {
 	}
 
 	public void editArcadeCircleBody(ISpriteNode sprite) {
-		if (!prepareCommand("arcadeCircleBody", sprite)) {
-			return;
-		}
+		clear();
 
 		add(new ArcadeHighlightCircleBodyHandlerNode(sprite));
 		add(new ArcadeMoveBodyHandlerNode(sprite));
@@ -126,9 +116,7 @@ public class HandlerBehavior {
 	}
 
 	public void editAngle(IObjectNode object) {
-		if (!prepareCommand("angle", object)) {
-			return;
-		}
+		clear();
 
 		add(new AngleShortucsPane(object));
 
@@ -140,9 +128,7 @@ public class HandlerBehavior {
 	}
 
 	public void editAnchor(ISpriteNode object) {
-		if (!prepareCommand("anchor", object)) {
-			return;
-		}
+		clear();
 
 		add(new AnchorShortcutsPane(object));
 		add(new AnchorHandlerNode(object));
@@ -151,9 +137,7 @@ public class HandlerBehavior {
 	}
 
 	public void editPivot(IObjectNode object) {
-		if (!prepareCommand("pivot", object)) {
-			return;
-		}
+		clear();
 
 		add(new PivotShortcutPane(object));
 
@@ -166,27 +150,7 @@ public class HandlerBehavior {
 		_pane.getChildren().add(node);
 	}
 
-	public boolean prepareCommand(String cmd, IObjectNode node) {
-		_pane.getChildren().clear();
-
-		String id = node.getModel().getId();
-
-		if (!id.equals(_lastObjId)) {
-			_lastObjId = id;
-			_lastCmd = cmd;
-			return true;
-		}
-
-		boolean ok = _lastCmd == null || !cmd.equals(_lastCmd);
-
-		_lastCmd = ok ? cmd : null;
-
-		return ok;
-	}
-
 	public void clear() {
-		_lastCmd = null;
-		_lastObjId = null;
 		_pane.getChildren().clear();
 	}
 
@@ -214,8 +178,6 @@ public class HandlerBehavior {
 			IObjectNode obj = ((IEditHandlerNode) n).getObject();
 			if (!set.contains(obj)) {
 				_pane.getChildren().remove(n);
-				_lastCmd = null;
-				_lastObjId = null;
 			}
 		});
 	}
