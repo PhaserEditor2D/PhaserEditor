@@ -76,4 +76,5 @@ public interface IEditorSharedImages {
 	String IMG_WHITE_FLIP_VERTICAL = "icons/white_flip_vertical.png";
 	String IMG_WHITE_ROTATE_CLOCKWISE = "icons/white_arrow_rotate_clockwise.png";
 	String IMG_WHITE_ROTATE_ANTICLOCKWISE = "icons/white_arrow_rotate_anticlockwise.png";
+	String IMG_WHITE_ASTERISK = "icons/white_asterisk.png";
 }

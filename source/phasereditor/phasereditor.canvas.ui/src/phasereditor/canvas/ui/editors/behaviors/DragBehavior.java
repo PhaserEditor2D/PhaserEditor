@@ -134,20 +134,28 @@ public class DragBehavior {
 			double x = start.getX() + dx / scale;
 			double y = start.getY() + dy / scale;
 
-			EditorSettings settings = _canvas.getSettingsModel();
-			if (settings.isEnableStepping()) {
-				x = Math.round(x / settings.getStepWidth()) * settings.getStepWidth();
-				y = Math.round(y / settings.getStepHeight()) * settings.getStepHeight();
-			} else {
-				// TODO: round position to integer
-				x = Math.round(x);
-				y = Math.round(y);
-			}
+			Point2D p = adjustPositionToStep(x, y);
 
-			dragnode.setLayoutX(x);
-			dragnode.setLayoutY(y);
+			dragnode.setLayoutX(p.getX());
+			dragnode.setLayoutY(p.getY());
 		}
 		_canvas.getSelectionBehavior().updateSelectedNodes();
+	}
+	
+	public Point2D adjustPositionToStep(double x, double y) {
+		double x1 = x;
+		double y1 = y;
+		EditorSettings settings = _canvas.getSettingsModel();
+		if (settings.isEnableStepping()) {
+			x1 = Math.round(x / settings.getStepWidth()) * settings.getStepWidth();
+			y1 = Math.round(y / settings.getStepHeight()) * settings.getStepHeight();
+		} else {
+			// TODO: round position to integer
+			x1 = Math.round(x);
+			y1 = Math.round(y);
+		}
+		
+		return new Point2D(x1, y1);
 	}
 
 	void handleDragDetected(MouseEvent event) {

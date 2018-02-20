@@ -59,9 +59,22 @@
          <menu
                label="Object">
                <command
+                     commandId="phasereditor.canvas.ui.move"
+                     disabledIcon="platform:/plugin/phasereditor.ui/icons/d/shape_move.png"
+                     icon="platform:/plugin/phasereditor.ui/icons/shape_move.png"
+                     label="Move"
+                     style="push">
+                  <visibleWhen
+                        checkEnabled="false">
+                     <reference
+                           definitionId="phasereditor.canvas.ui.activeEditor">
+                     </reference>
+                  </visibleWhen>
+               </command>               
+               <command
                      commandId="phasereditor.canvas.ui.scale"
-                     disabledIcon="platform:/plugin/phasereditor.ui/icons/d/arrow_out_blue.png"
-                     icon="platform:/plugin/phasereditor.ui/icons/arrow_out_blue.png"
+                     disabledIcon="platform:/plugin/phasereditor.ui/icons/d/shape_handles.png"
+                     icon="platform:/plugin/phasereditor.ui/icons/shape_handles.png"
                      label="Scale"
                      style="push">
                   <visibleWhen
@@ -524,10 +537,23 @@
          </separator>
          <menu
                label="Transform">
+              <command
+                  commandId="phasereditor.canvas.ui.move"
+                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/shape_move.png"
+                  icon="platform:/plugin/phasereditor.ui/icons/shape_move.png"
+                  label="Move"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <reference
+                        definitionId="phasereditor.canvas.ui.activeEditor">
+                  </reference>
+               </visibleWhen>
+            </command>
             <command
                   commandId="phasereditor.canvas.ui.scale"
-                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/arrow_out_blue.png"
-                  icon="platform:/plugin/phasereditor.ui/icons/arrow_out_blue.png"
+                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/shape_handles.png"
+                  icon="platform:/plugin/phasereditor.ui/icons/shape_handles.png"
                   label="Scale"
                   style="push">
                <visibleWhen
@@ -653,9 +679,22 @@
                   visible="true">
             </separator>
             <command
+                  commandId="phasereditor.canvas.ui.move"
+                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/shape_move.png"
+                  icon="platform:/plugin/phasereditor.ui/icons/shape_move.png"
+                  label="Move"
+                  style="push">
+                  <visibleWhen
+                     checkEnabled="false">
+                  <reference
+                        definitionId="phasereditor.canvas.ui.activeEditor">
+                  </reference>
+               </visibleWhen>
+            </command>
+            <command
                   commandId="phasereditor.canvas.ui.scale"
-                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/arrow_out_blue.png"
-                  icon="platform:/plugin/phasereditor.ui/icons/arrow_out_blue.png"
+                  disabledIcon="platform:/plugin/phasereditor.ui/icons/d/shape_handles.png"
+                  icon="platform:/plugin/phasereditor.ui/icons/shape_handles.png"
                   label="Scale"
                   style="push">
                   <visibleWhen
@@ -1186,6 +1225,11 @@
             categoryId="phasereditor.canvas.ui.editor.category"
             id="phasereditor.canvas.ui.editbody"
             name="Edit Physical Body">
+      </command>
+      <command
+            categoryId="phasereditor.canvas.ui.editor.category"
+            id="phasereditor.canvas.ui.move"
+            name="Edit Position">
       </command>
       <command
             categoryId="phasereditor.canvas.ui.editor.category"
@@ -2043,6 +2087,15 @@
          </activeWhen>
       </handler>
       <handler
+            class="phasereditor.canvas.ui.handlers.MoveHandler"
+            commandId="phasereditor.canvas.ui.move">
+         <activeWhen>
+            <reference
+                  definitionId="phasereditor.canvas.ui.oneObjectSelected">
+            </reference>
+         </activeWhen>
+      </handler>
+      <handler
             class="phasereditor.canvas.ui.handlers.ScaleHandler"
             commandId="phasereditor.canvas.ui.scale">
          <activeWhen>
@@ -2513,6 +2566,12 @@
             contextId="phasereditor.canvas.ui.nodescontext"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="B">
+      </key>
+      <key
+            commandId="phasereditor.canvas.ui.move"
+            contextId="phasereditor.canvas.ui.nodescontext"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M">
       </key>
       <key
             commandId="phasereditor.canvas.ui.scale"

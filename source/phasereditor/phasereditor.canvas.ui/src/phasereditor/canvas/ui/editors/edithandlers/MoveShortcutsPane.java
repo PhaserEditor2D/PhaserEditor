@@ -22,6 +22,7 @@
 package phasereditor.canvas.ui.editors.edithandlers;
 
 import javafx.scene.control.Label;
+import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;
@@ -31,91 +32,81 @@ import phasereditor.ui.IEditorSharedImages;
  * @author arian
  *
  */
-public class ScaleShortcutsPane extends ShortcutPane {
+public class MoveShortcutsPane extends ShortcutPane {
 
 	private Label _xLabel;
 	private Label _yLabel;
+	private ShortcutButton _stepBtn;
+	private Label _stepXLabel;
+	private Label _stepYLabel;
 
 	@SuppressWarnings("boxing")
-	public ScaleShortcutsPane(IObjectNode object) {
+	public MoveShortcutsPane(IObjectNode object) {
 		super(object);
 
-		
-		add(createTitle("scale"), 0, 0, 3, 1);
-		
-		_xLabel = createTextField(_model.getScaleX(), "scale.x", x -> setScaleInObject(x, _model.getScaleY()));
-		_yLabel = createTextField(_model.getScaleY(), "scale.y", y -> setScaleInObject(_model.getScaleY(), y));
+		EditorSettings settings = _canvas.getSettingsModel();
 
+		_xLabel = createTextField(_model.getX(), "x", x -> setPositionInObject(x, _model.getY()));
+
+		_yLabel = createTextField(_model.getY(), "y", y -> setPositionInObject(_model.getX(), y));
+
+		_stepBtn = new ShortcutButton() {
+
+			{
+				setIcon(IEditorSharedImages.IMG_WHITE_ASTERISK);
+			}
+
+			@Override
+			protected void doAction() {
+				settings.setEnableStepping(!settings.isEnableStepping());
+				updateHandler();
+				_canvas.getPaintBehavior().repaint();
+			}
+		};
+
+		_stepXLabel = createTextField(_model.getX(), "stepWidth", x -> {
+			settings.setStepWidth(x.intValue());
+			updateHandler();
+		});
+
+		_stepYLabel = createTextField(_model.getY(), "stepHeight", y -> {
+			settings.setStepHeight(y.intValue());
+			updateHandler();
+		});
+
+		add(createTitle("position"), 0, 0, 3, 1);
 		add(_xLabel, 0, 1, 3, 1);
 		add(_yLabel, 0, 2, 3, 1);
-
-		add(new Btn("x"), 0, 3);
-		add(new Btn("y"), 1, 3);
-		add(new ResetBtn(), 2, 3);
-
+		add(_stepBtn, 0, 3, 1, 1);
+		add(_stepXLabel, 1, 3, 1, 1);
+		add(_stepYLabel, 2, 3, 1, 1);
 	}
 
 	@Override
 	public void updateHandler() {
 
-		_xLabel.setText("x = " + _model.getScaleX());
-		_yLabel.setText("y = " + _model.getScaleY());
+		_xLabel.setText("x = " + _model.getX());
+		_yLabel.setText("y = " + _model.getY());
+
+		EditorSettings settings = _canvas.getSettingsModel();
+		_stepXLabel.setText("w=" + settings.getStepWidth());
+		_stepYLabel.setText("h=" + settings.getStepHeight());
+
+		_stepBtn.setSelected(settings.isEnableStepping() ? Boolean.TRUE : Boolean.FALSE);
 
 		super.updateHandler();
+
 	}
 
-	void setScaleInObject(double scaleX, double scaleY) {
+	void setPositionInObject(double x, double y) {
 		CompositeOperation operations = new CompositeOperation();
 
 		String id = _model.getId();
 
-		operations.add(new ChangePropertyOperation<Number>(id, "scale.x", Double.valueOf(scaleX)));
-		operations.add(new ChangePropertyOperation<Number>(id, "scale.y", Double.valueOf(scaleY)));
+		operations.add(new ChangePropertyOperation<Number>(id, "x", Double.valueOf(x)));
+		operations.add(new ChangePropertyOperation<Number>(id, "y", Double.valueOf(y)));
 
 		_canvas.getUpdateBehavior().executeOperations(operations);
-	}
-
-	class ResetBtn extends ShortcutButton {
-		public ResetBtn() {
-			setSize(50, -1);
-			setGraphic(createLabel("1:1"));
-		}
-
-		@Override
-		protected void doAction() {
-			setScaleInObject(1, 1);
-		}
-
-	}
-
-	class Btn extends ShortcutButton {
-
-		private String _axis;
-
-		public Btn(String axis) {
-			_axis = axis;
-			setSize(50, -1);
-
-			if (_axis.equals("x")) {
-				setIcon(IEditorSharedImages.IMG_WHITE_FLIP_HORIZONTAL);
-			} else {
-				setIcon(IEditorSharedImages.IMG_WHITE_FLIP_VERTICAL);
-			}
-		}
-
-		@Override
-		protected void doAction() {
-			CompositeOperation operations = new CompositeOperation();
-
-			String id = _model.getId();
-
-			double scale = -1 * (_axis.equals("x") ? _model.getScaleX() : _model.getScaleY());
-
-			operations.add(new ChangePropertyOperation<Number>(id, "scale." + _axis, Double.valueOf(scale)));
-
-			_canvas.getUpdateBehavior().executeOperations(operations);
-		}
-
 	}
 
 }

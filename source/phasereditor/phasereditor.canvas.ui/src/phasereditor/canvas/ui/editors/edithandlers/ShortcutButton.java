@@ -38,6 +38,10 @@ import phasereditor.ui.PhaserEditorUI;
  *
  */
 public abstract class ShortcutButton extends Button {
+	private Boolean _selected;
+	private Background _bgSelected;
+	private Background _bgMove;
+	private Background _bgNormal;
 
 	public ShortcutButton() {
 		this(Color.ALICEBLUE);
@@ -56,23 +60,34 @@ public abstract class ShortcutButton extends Button {
 
 		setTextFill(Color.WHITE);
 
-		Background bg = new Background(
+		_bgNormal = new Background(
 				new BackgroundFill(baseColor.deriveColor(0, 0, 1, 0.2), CornerRadii.EMPTY, new Insets(0)));
 
-		Background bgMove = new Background(
+		_bgMove = new Background(
 				new BackgroundFill(baseColor.deriveColor(0, 0, 1, 0.4), CornerRadii.EMPTY, new Insets(0)));
 
-		setBackground(bg);
+		_bgSelected = new Background(
+				new BackgroundFill(baseColor.deriveColor(0, 0, 1, 0.6), CornerRadii.EMPTY, new Insets(0)));
+
+		setBackground(_bgNormal);
 
 		setCursor(Cursor.DEFAULT);
 
 		setOnMouseMoved(e -> {
-			setBackground(bgMove);
+			if (_selected != Boolean.TRUE) {
+				setBackground(_bgMove);
+			}
 		});
 
 		setOnMouseExited(e -> {
-			setBackground(bg);
+			if (_selected != Boolean.TRUE) {
+				setBackground(_bgNormal);
+			}
 		});
+
+		if (_selected == Boolean.TRUE) {
+			setBackground(_bgSelected);
+		}
 
 		addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
 
@@ -80,6 +95,20 @@ public abstract class ShortcutButton extends Button {
 
 			e.consume();
 		});
+	}
+
+	public void setSelected(Boolean selected) {
+		_selected = selected;
+
+		if (_selected == Boolean.TRUE) {
+			setBackground(_bgSelected);
+		} else {
+			setBackground(_bgNormal);
+		}
+	}
+
+	public Boolean isSelected() {
+		return _selected;
 	}
 
 	public void setIcon(String icon) {

@@ -7,6 +7,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.ui.editors.CanvasEditor;
+import phasereditor.canvas.ui.editors.ObjectCanvas;
 
 public class ToggleSnappingHandler extends AbstractHandler {
 
@@ -14,10 +15,17 @@ public class ToggleSnappingHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
-		EditorSettings model = editor.getCanvas().getSettingsModel();
+
+		ObjectCanvas canvas = editor.getCanvas();
+
+		EditorSettings model = canvas.getSettingsModel();
+
 		model.setEnableStepping(!model.isEnableStepping());
-		editor.getCanvas().getBackGridPane().repaint();
+
+		canvas.getHandlerBehavior().update();
 		
+		canvas.getPaintBehavior().repaint();
+
 		return null;
 	}
 

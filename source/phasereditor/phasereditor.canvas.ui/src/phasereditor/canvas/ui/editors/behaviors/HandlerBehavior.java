@@ -41,6 +41,8 @@ import phasereditor.canvas.ui.editors.edithandlers.ArcadeResizeCircleBodyHandler
 import phasereditor.canvas.ui.editors.edithandlers.ArcadeResizeRectBodyHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.Axis;
 import phasereditor.canvas.ui.editors.edithandlers.IEditHandlerNode;
+import phasereditor.canvas.ui.editors.edithandlers.MoveHandlerNode;
+import phasereditor.canvas.ui.editors.edithandlers.MoveShortcutsPane;
 import phasereditor.canvas.ui.editors.edithandlers.PivotHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.PivotShortcutPane;
 import phasereditor.canvas.ui.editors.edithandlers.ScaleHandlerNode;
@@ -64,6 +66,17 @@ public class HandlerBehavior {
 		_pane = _canvas.getHandlerPane();
 	}
 
+	public void editPosition(IObjectNode object) {
+		clear();
+		
+		add(new MoveShortcutsPane(object));
+		
+		add(new MoveHandlerNode(Axis.TOP, object));
+		add(new MoveHandlerNode(Axis.RIG, object));
+		
+		update();
+	}
+	
 	public void editScale(IObjectNode object) {
 		clear();
 
