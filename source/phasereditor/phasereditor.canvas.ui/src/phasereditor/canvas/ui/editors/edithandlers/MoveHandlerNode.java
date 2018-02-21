@@ -25,8 +25,11 @@ import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.ClosePath;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
+import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;
@@ -40,48 +43,45 @@ public class MoveHandlerNode extends PathHandlerNode {
 	private Axis _axis;
 	private double _initX;
 	private double _initY;
+	private double _initModelX;
+	private double _initModelY;
 
 	public MoveHandlerNode(Axis axis, IObjectNode object) {
 		super(object);
 
-		setFill(Color.WHITESMOKE);
+		Paint color = axis == Axis.CENTER ? Color.WHITE : (axis.changeW() ? Color.RED.brighter() : Color.LIGHTGREEN);
+
+		setFill(color);
+		setStroke(Color.BLACK);
 
 		_axis = axis;
-
-		if (_axis == Axis.TOP) {
-			setRotate(-90);
-		}
-
 	}
 
 	@Override
-	protected void createElements() {
-		getElements().setAll(
+	public void handleSceneStart(double x, double y, MouseEvent e) {
+		_initModelX = _model.getX();
+		_initModelY = _model.getY();
 
-				new MoveTo(0, 0),
+		Point2D p = _object.getNode().getParent().localToScene(_initModelX, _initModelY);
 
-				new LineTo(16, 8),
-
-				new LineTo(0, 16),
-
-				new LineTo(0, 0)
-
-		);
+		_initX = p.getX();
+		_initY = p.getY();
 	}
 
 	@Override
-	public void handleLocalStart(double x, double y, MouseEvent e) {
-		_initX = _model.getX();
-		_initY = _model.getY();
-	}
-
-	@Override
-	public void handleLocalDrag(double dx, double dy, MouseEvent e) {
+	public void handleSceneDrag(double dx, double dy, MouseEvent e) {
 		Point2D p = _canvas.getDragBehavior().adjustPositionToStep(_initX + dx, _initY + dy);
 
-		if (_axis.changeW()) {
+		p = _object.getNode().getParent().sceneToLocal(p);
+
+		boolean changeBoth = _axis == Axis.CENTER;
+
+		if (_axis.changeW() || changeBoth) {
 			_model.setX(p.getX());
-		} else {
+
+		}
+
+		if (_axis.changeH() || changeBoth) {
 			_model.setY(p.getY());
 		}
 	}
@@ -92,8 +92,8 @@ public class MoveHandlerNode extends PathHandlerNode {
 		double x = _model.getX();
 		double y = _model.getY();
 
-		_model.setX(_initX);
-		_model.setY(_initY);
+		_model.setX(_initModelX);
+		_model.setY(_initModelY);
 
 		String id = _model.getId();
 
@@ -110,15 +110,77 @@ public class MoveHandlerNode extends PathHandlerNode {
 
 	@Override
 	public void updateHandler() {
-		double x = _axis.x * _control.getTextureWidth();
-		double y = _axis.y * _control.getTextureHeight();
+		double centerX = _model.getPivotX();
+		double centerY = _model.getPivotY();
 
-		Point2D p = objectToScene(x, y);
+		if (_model instanceof BaseSpriteModel) {
+			BaseSpriteModel spriteModel = (BaseSpriteModel) _model;
+			double x2 = spriteModel.getAnchorX() * _control.getTextureWidth();
+			double y2 = spriteModel.getAnchorY() * _control.getTextureHeight();
+			centerX = centerX + x2;
+			centerY = centerY + y2;
+		}
 
-		if (_axis == Axis.TOP) {
-			relocate(p.getX() - 8, p.getY() - 16 - 5);
+		Point2D p = _node.localToScene(centerX, centerY);
+		centerX = p.getX();
+		centerY = p.getY();
+
+		double x = centerX;
+		double y = centerY;
+
+		int N = 150;
+
+		if (_axis == Axis.CENTER) {
+
+			relocate(x - 5, y - 5);
+
+		} else if (_axis.changeW()) {
+
+			//@formatter:off
+			getElements().setAll(
+
+					new MoveTo(0, -1),
+
+					new LineTo(N, -1),
+					
+					new LineTo(N, -5),
+					new LineTo(N + 10, -5),
+					new LineTo(N + 10, 5),
+					new LineTo(N, 5),
+					
+					new LineTo(N, 1),
+					new LineTo(0, 1),
+					
+					new ClosePath()
+
+			);
+			//@formatter:on
+
+			relocate(x, y - 5);
+
 		} else {
-			relocate(p.getX() + 5, p.getY() - 8);
+
+			//@formatter:off
+			getElements().setAll(
+
+					new MoveTo(-1, 0),
+
+					new LineTo(-1, N),
+					
+					new LineTo(-5, N),
+					new LineTo(-5, N + 10),
+					new LineTo(5, N + 10),
+					new LineTo(5, N),
+					
+					new LineTo(1, N),
+					new LineTo(1, 0),
+					
+					new ClosePath()
+
+			);
+			//@formatter:on
+
+			relocate(x - 5, y);
 		}
 
 		setCursor(Cursor.HAND);

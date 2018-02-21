@@ -68,15 +68,18 @@ public class HandlerBehavior {
 
 	public void editPosition(IObjectNode object) {
 		clear();
-		
+
 		add(new MoveShortcutsPane(object));
+
+		//add(new MoveAxisHandlerNode(object));
 		
 		add(new MoveHandlerNode(Axis.TOP, object));
-		add(new MoveHandlerNode(Axis.RIG, object));
-		
+		add(new MoveHandlerNode(Axis.RIGHT, object));
+		add(new MoveHandlerNode(Axis.CENTER, object));
+
 		update();
 	}
-	
+
 	public void editScale(IObjectNode object) {
 		clear();
 

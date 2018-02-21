@@ -29,17 +29,17 @@ public enum Axis {
 
 	TOP(0.5, 0),
 
-	TOP_RIG(1, 0),
+	TOP_RIGHT(1, 0),
 
-	RIG(1, 0.5),
+	RIGHT(1, 0.5),
 
 	BOT_RIG(1, 1),
 
-	BOT(0.5, 1),
+	BOTTOM(0.5, 1),
 
-	BOT_LEF(0, 1),
+	BOTOM_LEFT(0, 1),
 
-	LEF(0, 0.5),
+	LEFT(0, 0.5),
 
 	CENTER(0.5, 0.5);
 

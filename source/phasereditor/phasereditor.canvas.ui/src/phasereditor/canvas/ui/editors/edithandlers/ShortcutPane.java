@@ -26,7 +26,6 @@ import java.util.function.Consumer;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 
-import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
@@ -60,8 +59,6 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 	private boolean _updated;
 	private Point2D _startPoint;
 	private Point2D _initPos;
-	protected static Point2D _location;
-	private static String _lastObjectId;
 
 	public ShortcutPane(IObjectNode object) {
 		_object = object;
@@ -79,6 +76,10 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 		setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, new Insets(0))));
 
 		setOnDragDetected(e -> {
+			
+			layoutXProperty().unbind();
+			layoutYProperty().unbind();
+			
 			_initPos = localToParent(0, 0);
 			_startPoint = localToParent(e.getX(), e.getY());
 			e.consume();
@@ -95,7 +96,6 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 				Point2D point = localToParent(e.getX(), e.getY());
 				double x = _initPos.getX() + (point.getX() - _startPoint.getX());
 				double y = _initPos.getY() + (point.getY() - _startPoint.getY());
-				_location = new Point2D(x, y);
 				relocate(x, y);
 			}
 			e.consume();
@@ -106,7 +106,7 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 		});
 
 	}
-	
+
 	protected static Label createTitle(String label) {
 		Label title = new Label(label);
 		title.setStyle("-fx-opacity:0.5;-fx-text-fill:white;");
@@ -168,20 +168,9 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 
 		_updated = true;
 
-		String id = _object.getModel().getId();
+		layoutXProperty().bind(_canvas.getScene().widthProperty().add(widthProperty().add(10).multiply(-1)));
+		layoutYProperty().bind(_canvas.getScene().heightProperty().add(heightProperty().add(10).multiply(-1)));
 
-		if (_location == null || !id.equals(_lastObjectId)) {
-			Bounds bounds = _control.getNode().getBoundsInLocal();
-			bounds = _control.getNode().localToScene(bounds);
-
-			double x = bounds.getMinX() + bounds.getWidth() + 30;
-			double y = bounds.getMinY();
-
-			_location = new Point2D(x, y);
-			_lastObjectId = id;
-		}
-
-		relocate(_location.getX(), _location.getY());
 	}
 
 	@Override
