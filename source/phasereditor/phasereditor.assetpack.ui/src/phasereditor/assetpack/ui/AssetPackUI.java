@@ -96,7 +96,8 @@ import phasereditor.assetpack.ui.preview.ImageFileInformationControl;
 import phasereditor.assetpack.ui.preview.OtherAssetInformationControl;
 import phasereditor.assetpack.ui.preview.PhysicsAssetInformationControl;
 import phasereditor.assetpack.ui.preview.SpritesheetAssetInformationControl;
-import phasereditor.assetpack.ui.preview.TilemapAssetInformationControl;
+import phasereditor.assetpack.ui.preview.TilemapCSVAssetInformationControl;
+import phasereditor.assetpack.ui.preview.TilemapJSONAssetInformationControl;
 import phasereditor.assetpack.ui.preview.TilemapTilesetInformationControl;
 import phasereditor.assetpack.ui.preview.VideoAssetInformationControl;
 import phasereditor.assetpack.ui.preview.VideoFileInformationControl;
@@ -724,18 +725,33 @@ public class AssetPackUI {
 				}
 			});
 
-			// tilemap
+			// tilemap json
 
 			_informationControlCreators.add(new ICustomInformationControlCreator() {
 
 				@Override
 				public IInformationControl createInformationControl(Shell parent) {
-					return new TilemapAssetInformationControl(parent);
+					return new TilemapJSONAssetInformationControl(parent);
 				}
 
 				@Override
 				public boolean isSupported(Object info) {
-					return info instanceof TilemapAssetModel;
+					return info instanceof TilemapAssetModel && ((TilemapAssetModel) info).isJSONFormat();
+				}
+			});
+
+			// tilemap csv
+
+			_informationControlCreators.add(new ICustomInformationControlCreator() {
+
+				@Override
+				public IInformationControl createInformationControl(Shell parent) {
+					return new TilemapCSVAssetInformationControl(parent);
+				}
+
+				@Override
+				public boolean isSupported(Object info) {
+					return info instanceof TilemapAssetModel && ((TilemapAssetModel) info).isCSVFormat();
 				}
 			});
 

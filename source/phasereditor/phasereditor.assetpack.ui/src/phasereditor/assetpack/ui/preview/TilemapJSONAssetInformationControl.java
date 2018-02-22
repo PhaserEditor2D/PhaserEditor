@@ -33,9 +33,9 @@ import phasereditor.assetpack.core.TilemapAssetModel.TilemapJSON;
 import phasereditor.assetpack.core.TilemapAssetModel.Tileset;
 import phasereditor.ui.info.BaseInformationControl;
 
-public class TilemapAssetInformationControl extends BaseInformationControl {
+public class TilemapJSONAssetInformationControl extends BaseInformationControl {
 
-	public TilemapAssetInformationControl(Shell parentShell) {
+	public TilemapJSONAssetInformationControl(Shell parentShell) {
 		super(parentShell);
 	}
 

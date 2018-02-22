@@ -51,7 +51,7 @@ import phasereditor.assetpack.ui.preview.ImageAssetInformationControl;
 import phasereditor.assetpack.ui.preview.OtherAssetInformationControl;
 import phasereditor.assetpack.ui.preview.PhysicsAssetInformationControl;
 import phasereditor.assetpack.ui.preview.SpritesheetAssetInformationControl;
-import phasereditor.assetpack.ui.preview.TilemapAssetInformationControl;
+import phasereditor.assetpack.ui.preview.TilemapJSONAssetInformationControl;
 import phasereditor.assetpack.ui.preview.TilemapTilesetInformationControl;
 import phasereditor.assetpack.ui.preview.VideoAssetScreenshotInformationControl;
 import phasereditor.ui.info.GenericInformationControlCreator;
@@ -173,7 +173,7 @@ public class AssetProposalComputer extends BaseProposalComputer {
 					break;
 				case tilemap: {
 					propData.setControlCreator(new GenericInformationControlCreator(
-							TilemapAssetInformationControl.class, TilemapAssetInformationControl::new));
+							TilemapJSONAssetInformationControl.class, TilemapJSONAssetInformationControl::new));
 
 					TilemapJSON tilemap = ((TilemapAssetModel) asset).getTilemapJSON();
 
