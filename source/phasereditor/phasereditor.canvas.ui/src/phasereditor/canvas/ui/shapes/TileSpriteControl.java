@@ -92,7 +92,7 @@ public class TileSpriteControl extends BaseSpriteControl<TileSpriteModel> {
 	@Override
 	protected void initPGridModel(PGridModel propModel) {
 		super.initPGridModel(propModel);
-		PGridSection section = new PGridSection("Sprite Tile") {
+		PGridSection section = new PGridSection("Tile Sprite") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
