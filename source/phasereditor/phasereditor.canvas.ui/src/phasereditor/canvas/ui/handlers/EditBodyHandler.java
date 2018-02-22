@@ -3,13 +3,15 @@ package phasereditor.canvas.ui.handlers;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.window.Window;
-import org.eclipse.ui.dialogs.ListDialog;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.menus.CommandContributionItem;
+import org.eclipse.ui.menus.CommandContributionItemParameter;
 
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.BodyModel;
@@ -45,21 +47,19 @@ public class EditBodyHandler extends AbstractHandler {
 		BodyModel body = sprite.getModel().getBody();
 
 		if (body == null) {
-
 			// create a new body
 
-			ListDialog dlg = new ListDialog(HandlerUtil.getActiveShell(event));
-			dlg.setTitle("Set Body");
-			dlg.setMessage("Select a physics system and body type:");
-			dlg.setContentProvider(new ArrayContentProvider());
-			dlg.setLabelProvider(new LabelProvider());
-			dlg.setInput(new Object[] { ARCADE_BODY_RECTANGULAR, ARCADE_BODY_CIRCULAR });
+			MenuManager manager = new MenuManager();
 
-			if (dlg.open() == Window.OK) {
-				String result = (String) dlg.getResult()[0];
+			IEditorSite locator = canvas.getEditor().getEditorSite();
+			manager.add(new CommandContributionItem(new CommandContributionItemParameter(locator, "1",
+					"phasereditor.canvas.ui.arcadeRectBody", SWT.PUSH)));
+			manager.add(new CommandContributionItem(new CommandContributionItemParameter(locator, "2",
+					"phasereditor.canvas.ui.arcadeCircleBody", SWT.PUSH)));
 
-				setNewBody(sprite, result);
-			}
+			Menu menu = manager.createContextMenu(canvas);
+
+			menu.setVisible(true);
 
 		} else if (body instanceof RectArcadeBodyModel) {
 			canvas.getHandlerBehavior().editArcadeRectBody(sprite);
@@ -73,9 +73,9 @@ public class EditBodyHandler extends AbstractHandler {
 
 		BaseSpriteControl<?> control = sprite.getControl();
 		ObjectCanvas canvas = control.getCanvas();
-		
+
 		BodyModel body;
-		
+
 		CompositeOperation operations = new CompositeOperation();
 
 		SelectOperation select = new SelectOperation();
@@ -89,7 +89,7 @@ public class EditBodyHandler extends AbstractHandler {
 		}
 
 		String id = control.getId();
-		
+
 		operations.add(new ChangeBodyOperation(id, body));
 
 		select.add(id);
