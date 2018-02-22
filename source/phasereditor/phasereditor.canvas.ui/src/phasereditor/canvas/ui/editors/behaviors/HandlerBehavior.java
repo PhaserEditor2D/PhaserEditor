@@ -35,6 +35,7 @@ import phasereditor.canvas.ui.editors.edithandlers.AnchorShortcutsPane;
 import phasereditor.canvas.ui.editors.edithandlers.AngleHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.AngleShortucsPane;
 import phasereditor.canvas.ui.editors.edithandlers.ArcadeBodyCircularShortcutsPane;
+import phasereditor.canvas.ui.editors.edithandlers.ArcadeBodyRectShortcutsPane;
 import phasereditor.canvas.ui.editors.edithandlers.ArcadeHighlightCircleBodyHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.ArcadeHighlightRectBodyHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.ArcadeMoveBodyHandlerNode;
@@ -110,7 +111,9 @@ public class HandlerBehavior {
 
 	public void editArcadeRectBody(ISpriteNode object) {
 		clear();
-		
+
+		add(new ArcadeBodyRectShortcutsPane(object));
+
 		add(new ArcadeHighlightRectBodyHandlerNode(object));
 
 		for (Axis axis : Axis.values()) {
@@ -128,7 +131,7 @@ public class HandlerBehavior {
 
 	public void editArcadeCircleBody(ISpriteNode sprite) {
 		clear();
-		
+
 		add(new ArcadeBodyCircularShortcutsPane(sprite));
 
 		add(new ArcadeHighlightCircleBodyHandlerNode(sprite));
