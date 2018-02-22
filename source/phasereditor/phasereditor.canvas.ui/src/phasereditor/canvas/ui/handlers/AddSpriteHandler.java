@@ -33,12 +33,15 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.ui.SelectTextureDialog;
+import phasereditor.assetpack.ui.TextureListContentProvider;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.ButtonSpriteModel;
 import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.TileSpriteModel;
+import phasereditor.canvas.core.TilemapSpriteModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.behaviors.CreateBehavior;
@@ -57,14 +60,25 @@ public class AddSpriteHandler extends AbstractHandler {
 		CreateBehavior create = canvas.getCreateBehavior();
 		BiFunction<GroupModel, IAssetKey, BaseObjectModel> factory = null;
 
+		String id = event.getParameter("phasereditor.canvas.ui.spriteType");
+
 		SelectTextureDialog dlg = new SelectTextureDialog(HandlerUtil.getActiveShell(event), "Add Sprite");
+
+		if (id.equals("tilemap")) {
+			dlg.setContentProvider(new TextureListContentProvider() {
+
+				@Override
+				protected boolean acceptAsset(Object assetKey) {
+					return assetKey instanceof TilemapAssetModel;
+				}
+			});
+		}
+
 		dlg.setProject(editor.getEditorInputFile().getProject());
 
 		if (dlg.open() != Window.OK) {
 			return null;
 		}
-
-		String id = event.getParameter("phasereditor.canvas.ui.spriteType");
 
 		IStructuredSelection result = dlg.getSelection();
 
@@ -80,6 +94,11 @@ public class AddSpriteHandler extends AbstractHandler {
 		case "tileSprite":
 			factory = (group, key) -> {
 				return new TileSpriteModel(group, getAssetFrame(key));
+			};
+			break;
+		case "tilemap":
+			factory = (group, key) -> {
+				return new TilemapSpriteModel(group, (TilemapAssetModel) key);
 			};
 			break;
 		default:

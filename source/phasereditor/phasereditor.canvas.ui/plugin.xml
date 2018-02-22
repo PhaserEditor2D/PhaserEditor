@@ -328,7 +328,7 @@
                      name="phasereditor.canvas.ui.spriteType"
                      value="button">
                </parameter>
-            </command>           
+            </command>
          </menu>
           <menu label="Text">
             	<command
@@ -438,6 +438,15 @@
                   label="Set Tileset Image"
                   style="push">
             </command>
+            <command
+                  commandId="phasereditor.canvas.ui.addsprite"
+                  label="Add Tilemap"
+                  style="push">
+               <parameter
+                     name="phasereditor.canvas.ui.spriteType"
+                     value="tilemap">
+               </parameter>
+            </command>
          </menu>
          <menu
                label="Prefab">
@@ -523,6 +532,15 @@
                <parameter
                      name="phasereditor.canvas.ui.spriteType"
                      value="button">
+               </parameter>
+            </command>
+            <command
+                  commandId="phasereditor.canvas.ui.addsprite"
+                  label="Tilemap"
+                  style="push">
+               <parameter
+                     name="phasereditor.canvas.ui.spriteType"
+                     value="tilemap">
                </parameter>
             </command>
             <command
