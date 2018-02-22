@@ -104,6 +104,8 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 		setOnMouseMoved(e -> {
 			e.consume();
 		});
+		
+		setPrefSize(160, -1);
 
 	}
 

@@ -2071,19 +2071,9 @@
             class="phasereditor.canvas.ui.handlers.EditBodyHandler"
             commandId="phasereditor.canvas.ui.editbody">
          <activeWhen>
-            <with
-                  variable="selection">
-               <and>
-                  <count
-                        value="1">
-                  </count>
-                  <iterate>
-                     <adapt
-                           type="phasereditor.canvas.core.BodyModel">
-                     </adapt>
-                  </iterate>
-               </and>
-            </with>
+            <reference
+                  definitionId="phasereditor.canvas.ui.oneSpriteSelected">
+            </reference>
          </activeWhen>
       </handler>
       <handler

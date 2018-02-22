@@ -4,7 +4,11 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.window.Window;
+import org.eclipse.ui.dialogs.ListDialog;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.canvas.core.BaseSpriteModel;
@@ -13,9 +17,16 @@ import phasereditor.canvas.core.CircleArcadeBodyModel;
 import phasereditor.canvas.core.RectArcadeBodyModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.operations.ChangeBodyOperation;
+import phasereditor.canvas.ui.editors.operations.CompositeOperation;
+import phasereditor.canvas.ui.editors.operations.SelectOperation;
+import phasereditor.canvas.ui.shapes.BaseSpriteControl;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
 
 public class EditBodyHandler extends AbstractHandler {
+
+	public static final String ARCADE_BODY_CIRCULAR = "Arcade Body - Circular";
+	public static final String ARCADE_BODY_RECTANGULAR = "Arcade Body - Rectangular";
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -32,12 +43,66 @@ public class EditBodyHandler extends AbstractHandler {
 		ObjectCanvas canvas = editor.getCanvas();
 
 		BodyModel body = sprite.getModel().getBody();
-		if (body instanceof RectArcadeBodyModel) {
+
+		if (body == null) {
+
+			// create a new body
+
+			ListDialog dlg = new ListDialog(HandlerUtil.getActiveShell(event));
+			dlg.setTitle("Set Body");
+			dlg.setMessage("Select a physics system and body type:");
+			dlg.setContentProvider(new ArrayContentProvider());
+			dlg.setLabelProvider(new LabelProvider());
+			dlg.setInput(new Object[] { ARCADE_BODY_RECTANGULAR, ARCADE_BODY_CIRCULAR });
+
+			if (dlg.open() == Window.OK) {
+				String result = (String) dlg.getResult()[0];
+
+				setNewBody(sprite, result);
+			}
+
+		} else if (body instanceof RectArcadeBodyModel) {
 			canvas.getHandlerBehavior().editArcadeRectBody(sprite);
 		} else if (body instanceof CircleArcadeBodyModel) {
 			canvas.getHandlerBehavior().editArcadeCircleBody(sprite);
 		}
 		return null;
+	}
+
+	public static void setNewBody(ISpriteNode sprite, String result) {
+
+		BaseSpriteControl<?> control = sprite.getControl();
+		ObjectCanvas canvas = control.getCanvas();
+		
+		BodyModel body;
+		
+		CompositeOperation operations = new CompositeOperation();
+
+		SelectOperation select = new SelectOperation();
+
+		if (result == ARCADE_BODY_CIRCULAR) {
+			CircleArcadeBodyModel circle = new CircleArcadeBodyModel();
+			circle.setRadius(Math.min(control.getTextureWidth() / 2, control.getTextureHeight() / 2));
+			body = circle;
+		} else {
+			body = new RectArcadeBodyModel();
+		}
+
+		String id = control.getId();
+		
+		operations.add(new ChangeBodyOperation(id, body));
+
+		select.add(id);
+
+		operations.add(select);
+
+		canvas.getUpdateBehavior().executeOperations(operations);
+
+		if (body instanceof RectArcadeBodyModel) {
+			canvas.getHandlerBehavior().editArcadeRectBody(sprite);
+		} else if (body instanceof CircleArcadeBodyModel) {
+			canvas.getHandlerBehavior().editArcadeCircleBody(sprite);
+		}
 	}
 
 }

@@ -18,12 +18,16 @@ public class DisablePhysicsHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
-
-		ObjectCanvas canvas = editor.getCanvas();
-
 		Object[] sel = ((IStructuredSelection) HandlerUtil.getCurrentSelection(event)).toArray();
 
+		ObjectCanvas canvas = ((CanvasEditor) HandlerUtil.getActiveEditor(event)).getCanvas();
+
+		removeBody(canvas, sel);
+
+		return null;
+	}
+
+	public static void removeBody(ObjectCanvas canvas, Object[] sel) {
 		CompositeOperation operations = new CompositeOperation();
 
 		SelectOperation select = new SelectOperation();
@@ -45,7 +49,7 @@ public class DisablePhysicsHandler extends AbstractHandler {
 		}
 
 		if (operations.isEmpty()) {
-			return null;
+			return;
 		}
 
 		operations.add(select);
@@ -53,8 +57,6 @@ public class DisablePhysicsHandler extends AbstractHandler {
 		canvas.getHandlerBehavior().clear();
 
 		canvas.getUpdateBehavior().executeOperations(operations);
-
-		return null;
 	}
 
 }
