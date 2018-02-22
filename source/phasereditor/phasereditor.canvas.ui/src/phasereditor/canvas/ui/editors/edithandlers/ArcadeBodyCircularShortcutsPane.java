@@ -122,4 +122,9 @@ public class ArcadeBodyCircularShortcutsPane extends ShortcutPane {
 		_canvas.getUpdateBehavior().executeOperations(operations);
 	}
 
+	@Override
+	public boolean isValid() {
+		return ((ISpriteNode) _object).getModel().getBody() instanceof CircleArcadeBodyModel;
+	}
+
 }

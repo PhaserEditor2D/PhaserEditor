@@ -144,6 +144,7 @@ public class CompositeOperation extends AbstractOperation {
 		canvas.getSelectionBehavior().updateSelectedNodes();
 		canvas.getUpdateBehavior().fireWorldChanged();
 		canvas.getUpdateBehavior().update_Grid();
+		canvas.getHandlerBehavior().update();
 	}
 
 	@Override
