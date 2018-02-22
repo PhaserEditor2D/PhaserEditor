@@ -115,6 +115,8 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 
 	protected Label createTextField(double text, String name, Consumer<Double> consumer) {
 		Label label = new Label(Double.toString(text));
+		label.setMaxWidth(150);
+		
 		label.setStyle("-fx-text-fill:white;");
 		label.setCursor(Cursor.TEXT);
 

@@ -73,7 +73,7 @@ public class HandlerBehavior {
 
 		//add(new MoveAxisHandlerNode(object));
 		
-		add(new MoveHandlerNode(Axis.TOP, object));
+		add(new MoveHandlerNode(Axis.BOTTOM, object));
 		add(new MoveHandlerNode(Axis.RIGHT, object));
 		add(new MoveHandlerNode(Axis.CENTER, object));
 
