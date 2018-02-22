@@ -49,6 +49,7 @@ import phasereditor.canvas.ui.editors.edithandlers.ScaleHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.ScaleShortcutsPane;
 import phasereditor.canvas.ui.editors.edithandlers.ShortcutPane;
 import phasereditor.canvas.ui.editors.edithandlers.TileHandlerNode;
+import phasereditor.canvas.ui.editors.edithandlers.TileShortcutsPane;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
 
@@ -71,8 +72,8 @@ public class HandlerBehavior {
 
 		add(new MoveShortcutsPane(object));
 
-		//add(new MoveAxisHandlerNode(object));
-		
+		// add(new MoveAxisHandlerNode(object));
+
 		add(new MoveHandlerNode(Axis.BOTTOM, object));
 		add(new MoveHandlerNode(Axis.RIGHT, object));
 		add(new MoveHandlerNode(Axis.CENTER, object));
@@ -100,6 +101,8 @@ public class HandlerBehavior {
 			}
 			add(new TileHandlerNode(object, axis));
 		}
+
+		add(new TileShortcutsPane(object));
 
 		update();
 	}
