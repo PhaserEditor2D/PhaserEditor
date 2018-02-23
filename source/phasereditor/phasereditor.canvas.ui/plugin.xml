@@ -671,6 +671,10 @@
                style="push">
          </command>
          <command
+               commandId="org.eclipse.ui.edit.rename"
+               style="push">
+         </command>
+         <command
                commandId="org.eclipse.ui.edit.delete"
                style="push">
          </command>
@@ -2467,6 +2471,15 @@
                   </iterate>
                </and>
             </with>
+         </activeWhen>
+      </handler>
+      <handler
+            class="phasereditor.canvas.ui.handlers.RenameObjectHandler"
+            commandId="org.eclipse.ui.edit.rename">
+         <activeWhen>
+            <reference
+                  definitionId="phasereditor.canvas.ui.nodesSelected">
+            </reference>
          </activeWhen>
       </handler>
       

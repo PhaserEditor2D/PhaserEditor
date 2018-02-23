@@ -25,7 +25,9 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.BiFunction;
 
 import org.eclipse.core.resources.IFile;
@@ -192,6 +194,12 @@ public class WorldModel extends GroupModel {
 		_support.firePropertyChange(property, true, false);
 	}
 
+	public Set<String> collectAllNames() {
+		Set<String> set = new HashSet<>();
+		walk(n -> set.add(n.getEditorName()));
+		return set;
+	}
+
 	/**
 	 * @param editorName
 	 * @return
@@ -199,17 +207,17 @@ public class WorldModel extends GroupModel {
 	public String createName(String basename) {
 		int count = 1;
 		String basename2 = basename;
-		
+
 		// remove trailing numbers
-		for(int i = basename.length() - 1; i > 0 ; i--) {
+		for (int i = basename.length() - 1; i > 0; i--) {
 			if (!Character.isDigit(basename.charAt(i))) {
 				basename2 = basename.substring(0, i + 1);
 				break;
 			}
 		}
-		
+
 		String name = basename2;
-		
+
 		while (true) {
 			if (findByName(name) == null) {
 				break;
@@ -257,8 +265,8 @@ public class WorldModel extends GroupModel {
 	}
 
 	/**
-	 * This function is used for open the asset registry. It means, it can look
-	 * for assets in the shared model or any other model provided by the user.
+	 * This function is used for open the asset registry. It means, it can look for
+	 * assets in the shared model or any other model provided by the user.
 	 * 
 	 * @param assetRef
 	 * @return
