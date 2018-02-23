@@ -103,10 +103,16 @@ public class HandlerBehavior {
 		});
 	}
 
+	private static boolean isShortcutPaneEnabled() {
+		return CanvasUI.getPreferenceStore().getBoolean(CanvasUI.PREF_PROP_CANVAS_SHORTCUT_PANE_ENABLED);
+	}
+
 	public void editPosition(IObjectNode object) {
 		clear();
 
-		add(new MoveShortcutsPane(object));
+		if (isShortcutPaneEnabled()) {
+			add(new MoveShortcutsPane(object));
+		}
 
 		// add(new MoveAxisHandlerNode(object));
 
@@ -119,8 +125,9 @@ public class HandlerBehavior {
 
 	public void editScale(IObjectNode object) {
 		clear();
-
-		add(new ScaleShortcutsPane(object));
+		if (isShortcutPaneEnabled()) {
+			add(new ScaleShortcutsPane(object));
+		}
 
 		Arrays.stream(Axis.values()).filter(a -> a != Axis.CENTER)
 				.forEach(axis -> add(new ScaleHandlerNode(object, axis)));
@@ -131,6 +138,10 @@ public class HandlerBehavior {
 	public void editTile(IObjectNode object) {
 		clear();
 
+		if (isShortcutPaneEnabled()) {
+			add(new TileShortcutsPane(object));
+		}
+
 		for (Axis axis : Axis.values()) {
 			if (axis == Axis.CENTER) {
 				continue;
@@ -138,15 +149,15 @@ public class HandlerBehavior {
 			add(new TileHandlerNode(object, axis));
 		}
 
-		add(new TileShortcutsPane(object));
-
 		update();
 	}
 
 	public void editArcadeRectBody(ISpriteNode object) {
 		clear();
 
-		add(new ArcadeBodyRectShortcutsPane(object));
+		if (isShortcutPaneEnabled()) {
+			add(new ArcadeBodyRectShortcutsPane(object));
+		}
 
 		add(new ArcadeHighlightRectBodyHandlerNode(object));
 
@@ -166,7 +177,9 @@ public class HandlerBehavior {
 	public void editArcadeCircleBody(ISpriteNode sprite) {
 		clear();
 
-		add(new ArcadeBodyCircularShortcutsPane(sprite));
+		if (isShortcutPaneEnabled()) {
+			add(new ArcadeBodyCircularShortcutsPane(sprite));
+		}
 
 		add(new ArcadeHighlightCircleBodyHandlerNode(sprite));
 		add(new ArcadeMoveBodyHandlerNode(sprite));
@@ -178,7 +191,9 @@ public class HandlerBehavior {
 	public void editAngle(IObjectNode object) {
 		clear();
 
-		add(new AngleShortucsPane(object));
+		if (isShortcutPaneEnabled()) {
+			add(new AngleShortucsPane(object));
+		}
 
 		add(new AngleHandlerNode(object, 1));
 		add(new AngleHandlerNode(object, 2));
@@ -190,7 +205,10 @@ public class HandlerBehavior {
 	public void editAnchor(ISpriteNode object) {
 		clear();
 
-		add(new AnchorShortcutsPane(object));
+		if (isShortcutPaneEnabled()) {
+			add(new AnchorShortcutsPane(object));
+		}
+
 		add(new AnchorHandlerNode(object));
 
 		update();
@@ -199,7 +217,9 @@ public class HandlerBehavior {
 	public void editPivot(IObjectNode object) {
 		clear();
 
-		add(new PivotShortcutPane(object));
+		if (isShortcutPaneEnabled()) {
+			add(new PivotShortcutPane(object));
+		}
 
 		add(new PivotHandlerNode(object));
 
