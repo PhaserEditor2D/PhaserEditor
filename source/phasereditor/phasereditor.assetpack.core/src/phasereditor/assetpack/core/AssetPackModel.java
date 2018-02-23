@@ -611,6 +611,7 @@ public final class AssetPackModel {
 						return elem;
 					}
 				}
+				return null;
 			}
 
 			return asset;
