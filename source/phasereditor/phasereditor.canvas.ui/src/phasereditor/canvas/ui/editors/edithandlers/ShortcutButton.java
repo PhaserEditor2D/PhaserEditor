@@ -31,6 +31,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.SVGPath;
 import phasereditor.ui.PhaserEditorUI;
 
 /**
@@ -113,6 +114,14 @@ public abstract class ShortcutButton extends Button {
 
 	public void setIcon(String icon) {
 		setGraphic(new ImageView(PhaserEditorUI.getUIIconURL(icon)));
+	}
+	
+	public SVGPath setIconSVG(String content) {
+		SVGPath path = new SVGPath();
+		path.setStroke(Color.WHITE);
+		path.setContent(content);
+		setGraphic(path);
+		return path;
 	}
 
 	@SuppressWarnings("static-method")

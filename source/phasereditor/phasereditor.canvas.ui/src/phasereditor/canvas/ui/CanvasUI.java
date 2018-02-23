@@ -135,6 +135,7 @@ public class CanvasUI {
 	
 	
 	public static final String PREF_PROP_CANVAS_SHORTCUT_PANE_BG_COLOR = "phasereditor.canvas.ui.shortcuts.bgColor";
+	public static final String PREF_PROP_CANVAS_SHORTCUT_PANE_FG_COLOR = "phasereditor.canvas.ui.shortcuts.fgColor";
 	
 	public static String get_pref_Canvas_Shortcuts_position() {
 		return getPreferenceStore().getString(PREF_PROP_CANVAS_SHORTCUT_PANE_POSITION);

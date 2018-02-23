@@ -20,6 +20,7 @@ public class CanvasPreferenceInitializer extends AbstractPreferenceInitializer {
 				CanvasUI.PREF_VALUE_CANVAS_SHORTCUT_PANE_POSITION_TOP_RIGHT);
 
 		store.setDefault(CanvasUI.PREF_PROP_CANVAS_SHORTCUT_PANE_BG_COLOR, StringConverter.asString(new RGB(0, 0, 0)));
+		store.setDefault(CanvasUI.PREF_PROP_CANVAS_SHORTCUT_PANE_FG_COLOR, StringConverter.asString(new RGB(255, 255, 255)));
 	}
 
 }

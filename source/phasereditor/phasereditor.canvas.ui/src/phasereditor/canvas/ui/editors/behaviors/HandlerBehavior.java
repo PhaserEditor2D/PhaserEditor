@@ -82,6 +82,7 @@ public class HandlerBehavior {
 
 			case CanvasUI.PREF_PROP_CANVAS_SHORTCUT_PANE_POSITION:
 			case CanvasUI.PREF_PROP_CANVAS_SHORTCUT_PANE_BG_COLOR:
+			case CanvasUI.PREF_PROP_CANVAS_SHORTCUT_PANE_FG_COLOR:
 
 				for (Node n : _pane.getChildren()) {
 					if (n instanceof ShortcutPane) {

@@ -78,7 +78,7 @@ public class ScaleShortcutsPane extends ShortcutPane {
 	class ResetBtn extends ShortcutButton {
 		public ResetBtn() {
 			setSize(50, -1);
-			setGraphic(createLabel("1:1"));
+			setText("1:1");
 		}
 
 		@Override
