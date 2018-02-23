@@ -27,8 +27,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.jface.util.IPropertyChangeListener;
+
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
+import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.edithandlers.AnchorHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.AnchorShortcutsPane;
@@ -62,11 +65,41 @@ import phasereditor.canvas.ui.shapes.ISpriteNode;
 public class HandlerBehavior {
 	private ObjectCanvas _canvas;
 	private Pane _pane;
+	private IPropertyChangeListener _prefsListener;
 
 	public HandlerBehavior(ObjectCanvas canvas) {
 		super();
 		_canvas = canvas;
 		_pane = _canvas.getHandlerPane();
+
+		listenPreferences();
+	}
+
+	private void listenPreferences() {
+
+		_prefsListener = e -> {
+			switch (e.getProperty()) {
+
+			case CanvasUI.PREF_PROP_CANVAS_SHORTCUT_PANE_POSITION:
+			case CanvasUI.PREF_PROP_CANVAS_SHORTCUT_PANE_BG_COLOR:
+
+				for (Node n : _pane.getChildren()) {
+					if (n instanceof ShortcutPane) {
+						ShortcutPane pane = (ShortcutPane) n;
+						pane.updateFromPreferences();
+					}
+				}
+
+				break;
+			default:
+				break;
+			}
+		};
+
+		CanvasUI.getPreferenceStore().addPropertyChangeListener(_prefsListener);
+		_canvas.addDisposeListener(e -> {
+			CanvasUI.getPreferenceStore().removePropertyChangeListener(_prefsListener);
+		});
 	}
 
 	public void editPosition(IObjectNode object) {

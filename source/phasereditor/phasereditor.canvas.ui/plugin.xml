@@ -3060,5 +3060,26 @@
             searchResultClass="phasereditor.canvas.ui.search.SearchPrefabResult">
       </viewPage>
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="phasereditor.canvas.ui.prefs.CanvasPreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="phasereditor.ui.prefs.phasereditor"
+            class="phasereditor.canvas.ui.prefs.CanvasPreferencesPage"
+            id="phasereditor.canvas.ui.prefs"
+            name="Canvas">
+      </page>
+      <page
+            category="phasereditor.canvas.ui.prefs"
+            class="phasereditor.canvas.ui.prefs.ShortcutsPanePreferencePage"
+            id="phasereditor.canvas.ui.prefs.shortcutsPane"
+            name="Shortcuts Pane">
+      </page>
+   </extension>
 
 </plugin>

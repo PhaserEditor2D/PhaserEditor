@@ -12,6 +12,7 @@ public class PhaserEditorPreferencePage extends PreferencePage implements IWorkb
 
 	public PhaserEditorPreferencePage() {
 		super("Phaser Editor");
+		
 		noDefaultAndApplyButton();
 	}
 

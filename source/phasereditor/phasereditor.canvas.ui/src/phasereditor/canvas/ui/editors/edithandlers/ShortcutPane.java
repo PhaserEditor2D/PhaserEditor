@@ -24,7 +24,10 @@ package phasereditor.canvas.ui.editors.edithandlers;
 import java.util.function.Consumer;
 
 import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.resource.StringConverter;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.graphics.RGB;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
@@ -40,6 +43,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.NumberCellEditor;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
@@ -76,10 +80,10 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 		setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, new Insets(0))));
 
 		setOnDragDetected(e -> {
-			
+
 			layoutXProperty().unbind();
 			layoutYProperty().unbind();
-			
+
 			_initPos = localToParent(0, 0);
 			_startPoint = localToParent(e.getX(), e.getY());
 			e.consume();
@@ -104,9 +108,8 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 		setOnMouseMoved(e -> {
 			e.consume();
 		});
-		
-		setPrefSize(160, -1);
 
+		setPrefSize(160, -1);
 	}
 
 	protected static Label createTitle(String label) {
@@ -118,7 +121,7 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 	protected Label createTextField(double text, String name, Consumer<Double> consumer) {
 		Label label = new Label(Double.toString(text));
 		label.setMaxWidth(150);
-		
+
 		label.setStyle("-fx-text-fill:white;");
 		label.setCursor(Cursor.TEXT);
 
@@ -172,13 +175,60 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 
 		_updated = true;
 
-		layoutXProperty().bind(_canvas.getScene().widthProperty().add(widthProperty().add(10).multiply(-1)));
-		layoutYProperty().bind(_canvas.getScene().heightProperty().add(heightProperty().add(10).multiply(-1)));
+		updateFromPreferences();
 
+	}
+
+	public void updateFromPreferences() {
+		IPreferenceStore store = CanvasUI.getPreferenceStore();
+
+		// position
+
+		String pos = store.getString(CanvasUI.PREF_PROP_CANVAS_SHORTCUT_PANE_POSITION);
+
+		switch (pos) {
+		case CanvasUI.PREF_VALUE_CANVAS_SHORTCUT_PANE_POSITION_TOP_LEFT:
+			layoutXProperty().unbind();
+			layoutYProperty().unbind();
+			relocate(10, 10);
+			break;
+		case CanvasUI.PREF_VALUE_CANVAS_SHORTCUT_PANE_POSITION_TOP_RIGHT:
+			layoutXProperty().unbind();
+			layoutYProperty().unbind();
+
+			layoutXProperty().bind(_canvas.getScene().widthProperty().add(widthProperty().add(10).multiply(-1)));
+			setLayoutY(10);
+			break;
+
+		case CanvasUI.PREF_VALUE_CANVAS_SHORTCUT_PANE_POSITION_BOTTOM_LEFT:
+			layoutXProperty().unbind();
+			layoutYProperty().unbind();
+
+			layoutYProperty().bind(_canvas.getScene().heightProperty().add(heightProperty().add(10).multiply(-1)));
+			setLayoutX(10);
+			break;
+
+		case CanvasUI.PREF_VALUE_CANVAS_SHORTCUT_PANE_POSITION_BOTTOM_RIGHT:
+			layoutXProperty().bind(_canvas.getScene().widthProperty().add(widthProperty().add(10).multiply(-1)));
+			layoutYProperty().bind(_canvas.getScene().heightProperty().add(heightProperty().add(10).multiply(-1)));
+			break;
+
+		default:
+			break;
+		}
+
+		// color
+
+		{
+			RGB rgb = StringConverter.asRGB(store.getString(CanvasUI.PREF_PROP_CANVAS_SHORTCUT_PANE_BG_COLOR));
+			Color color = Color.rgb(rgb.red, rgb.green, rgb.blue);
+			setBackground(new Background(new BackgroundFill(color, CornerRadii.EMPTY, new Insets(0))));
+		}
 	}
 
 	@Override
 	public boolean isValid() {
 		return true;
 	}
+
 }

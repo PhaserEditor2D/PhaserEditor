@@ -50,6 +50,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -124,6 +125,24 @@ public class CanvasUI {
 	private static final int CANVAS_SCREENSHOT_SIZE = 256;
 	public static final String PLUGIN_ID = "phasereditor.canvas.ui";
 	private static boolean _fxStarted = false;
+	
+	public static final String PREF_PROP_CANVAS_SHORTCUT_PANE_POSITION = "phasereditor.canvas.ui.shortcuts.position";
+	public static final String PREF_VALUE_CANVAS_SHORTCUT_PANE_POSITION_TOP_LEFT = "Top-Left";
+	public static final String PREF_VALUE_CANVAS_SHORTCUT_PANE_POSITION_TOP_RIGHT = "Top-Right";
+	public static final String PREF_VALUE_CANVAS_SHORTCUT_PANE_POSITION_BOTTOM_LEFT = "Bottom-Left";
+	public static final String PREF_VALUE_CANVAS_SHORTCUT_PANE_POSITION_BOTTOM_RIGHT = "Bottom-Right";
+	public static final String PREF_VALUE_CANVAS_SHORTCUT_PANE_POSITION_NEXT_TO_OBJECT = "Next-To-Object";
+	
+	
+	public static final String PREF_PROP_CANVAS_SHORTCUT_PANE_BG_COLOR = "phasereditor.canvas.ui.shortcuts.bgColor";
+	
+	public static String get_pref_Canvas_Shortcuts_position() {
+		return getPreferenceStore().getString(PREF_PROP_CANVAS_SHORTCUT_PANE_POSITION);
+	}
+	
+	public static IPreferenceStore getPreferenceStore() {
+		return Activator.getDefault().getPreferenceStore();
+	}
 
 	public static void logError(Exception e) {
 		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
