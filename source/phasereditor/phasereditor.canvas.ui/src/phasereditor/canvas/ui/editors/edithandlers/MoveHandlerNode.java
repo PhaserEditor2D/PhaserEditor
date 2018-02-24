@@ -22,6 +22,8 @@
 package phasereditor.canvas.ui.editors.edithandlers;
 
 import javafx.geometry.Point2D;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -71,7 +73,9 @@ public class MoveHandlerNode extends PathHandlerNode {
 	public void handleSceneDrag(double dx, double dy, MouseEvent e) {
 		Point2D p = _canvas.getDragBehavior().adjustPositionToStep(_initX + dx, _initY + dy);
 
-		p = _object.getNode().getParent().sceneToLocal(p);
+		Node node = _object.getNode();
+		Parent parent = node.getParent();
+		p = parent.sceneToLocal(p);
 
 		boolean changeBoth = _axis == Axis.CENTER;
 
@@ -143,8 +147,7 @@ public class MoveHandlerNode extends PathHandlerNode {
 					new LineTo(N, -1),
 					
 					new LineTo(N, -5),
-					new LineTo(N + 10, -5),
-					new LineTo(N + 10, 5),
+					new LineTo(N + 10, 0),
 					new LineTo(N, 5),
 					
 					new LineTo(N, 1),
@@ -167,8 +170,7 @@ public class MoveHandlerNode extends PathHandlerNode {
 					new LineTo(-1, N),
 					
 					new LineTo(-5, N),
-					new LineTo(-5, N + 10),
-					new LineTo(5, N + 10),
+					new LineTo(0, N + 10),
 					new LineTo(5, N),
 					
 					new LineTo(1, N),
