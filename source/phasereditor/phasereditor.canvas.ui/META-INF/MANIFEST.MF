@@ -32,7 +32,8 @@ Require-Bundle: org.eclipse.ui,
  phasereditor.project.ui;bundle-version="1.4.0",
  org.eclipse.ltk.ui.refactoring;bundle-version="3.8.0",
  org.eclipse.ltk.core.refactoring;bundle-version="3.7.0",
- phasereditor.bmpfont.core;bundle-version="1.5.0"
+ phasereditor.bmpfont.core;bundle-version="1.5.0",
+ phasereditor.lic;bundle-version="1.4.4"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.canvas.ui

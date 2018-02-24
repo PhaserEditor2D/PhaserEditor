@@ -42,15 +42,23 @@ public class PhaserIDE2 extends IDEApplication {
 		javafx.application.Platform.setImplicitExit(false);
 
 		try {
-			//UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+			// UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 			UIManager.setLookAndFeel(NimbusLookAndFeel.class.getName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		LicCore.startEvaluationThread();
+		LicCore.startMonitor();
 
-		return super.start(appContext);
+		Object res = super.start(appContext);
+
+		try {
+			javafx.application.Platform.exit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return res;
 	}
 
 	@Override

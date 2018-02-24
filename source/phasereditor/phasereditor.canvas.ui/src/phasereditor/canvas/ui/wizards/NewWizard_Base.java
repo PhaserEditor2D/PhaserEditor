@@ -53,6 +53,7 @@ import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
+import phasereditor.lic.LicCore;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.project.core.codegen.ICodeGenerator;
 import phasereditor.project.core.codegen.SourceLang;
@@ -151,6 +152,7 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 
 	@Override
 	public boolean performFinish() {
+
 		boolean performedOK = false;
 
 		// no file extension specified so add default extension
@@ -166,6 +168,16 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 		// if there was problem with creating file, it will be null, so make
 		// sure to check
 		if (mainFile != null) {
+
+			// check for free version
+
+			IProject project = mainFile.getProject();
+			if (LicCore.isEvaluationProduct() && !CanvasCore.isFreeVersionAllowed(project)) {
+				LicCore.launchGoPremiumDialogs(LicCore.getFreeNumberOfCanvasFiles() + " Canvas files");
+				return false;
+			}
+
+			// --
 
 			setLangFromProjectType();
 
@@ -250,6 +262,14 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 
 		_setLangFromProjectType_set = true;
 
+		IProject project = getProject();
+
+		if (ProjectCore.isTypeScriptProject(project)) {
+			_model.getSettings().setLang(SourceLang.TYPE_SCRIPT);
+		}
+	}
+
+	public IProject getProject() {
 		IPath path = _filePage.getContainerFullPath();
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IContainer folder;
@@ -260,9 +280,6 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 		}
 
 		IProject project = folder.getProject();
-
-		if (ProjectCore.isTypeScriptProject(project)) {
-			_model.getSettings().setLang(SourceLang.TYPE_SCRIPT);
-		}
+		return project;
 	}
 }

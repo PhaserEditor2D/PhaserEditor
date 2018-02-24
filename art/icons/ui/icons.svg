@@ -2502,7 +2502,7 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="5.656854"
-     inkscape:cx="677.17456"
+     inkscape:cx="677.97006"
      inkscape:cy="421.78492"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -6852,13 +6852,10 @@
        inkscape:export-filename="/home/arian/Documents/PhaserEditor/Public/source/phasereditor/phasereditor.ui/icons/white_arrow_rotate_clockwise.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96">
-      <rect
-         y="675.82629"
-         x="640.7879"
-         height="15"
-         width="15.000001"
-         id="rect2150"
-         style="opacity:1;fill:none;fill-opacity:0.47692309;stroke:none;stroke-width:0.9375;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         style="opacity:1;fill:none;fill-opacity:0.47692309;stroke:none;stroke-width:0.9375;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         d="m 640.7879,675.82629 h 15 v 15 h -15 z"
+         id="rect2150" />
       <path
          inkscape:connector-curvature="0"
          id="path2130"

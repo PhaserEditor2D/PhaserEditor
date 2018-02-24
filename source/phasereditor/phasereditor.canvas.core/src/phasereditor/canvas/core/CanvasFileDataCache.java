@@ -50,5 +50,4 @@ public class CanvasFileDataCache extends FileDataCache<CanvasFile> {
 	protected void updateDataWithMove(CanvasFile data, IFile file, IPath movedFromPath, IPath movedToPath) {
 		data.setFile(file);
 	}
-
 }

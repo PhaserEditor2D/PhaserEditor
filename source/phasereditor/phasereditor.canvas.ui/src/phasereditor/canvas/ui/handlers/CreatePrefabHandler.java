@@ -34,6 +34,7 @@ import org.json.JSONObject;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BitmapTextModel;
 import phasereditor.canvas.core.ButtonSpriteModel;
+import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.CanvasType;
@@ -46,6 +47,7 @@ import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
 import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.shapes.IObjectNode;
+import phasereditor.lic.LicCore;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.project.core.codegen.SourceLang;
 
@@ -55,6 +57,13 @@ public class CreatePrefabHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 		IFile canvasFile = editor.getEditorInputFile();
+		
+		if (LicCore.isEvaluationProduct() && !CanvasCore.isFreeVersionAllowed(canvasFile.getProject())) {
+			LicCore.launchGoPremiumDialogs(LicCore.getFreeNumberOfCanvasFiles() + " Canvas files");
+			return null;
+		}
+		
+		
 		IProject project = canvasFile.getProject();
 		IContainer webFolder = ProjectCore.getWebContentFolder(project);
 		IWorkspaceRoot root = project.getWorkspace().getRoot();

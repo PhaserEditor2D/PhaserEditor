@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.core;
 
+import static java.lang.System.out;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,6 +35,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -55,6 +58,7 @@ import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.IAssetReference;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
+import phasereditor.lic.LicCore;
 import phasereditor.project.core.codegen.ICodeGenerator;
 import phasereditor.project.core.codegen.SourceLang;
 
@@ -108,8 +112,8 @@ public class CanvasCore {
 	}
 
 	/**
-	 * This method is used to quickly know the type of a canvas file. If it is
-	 * not a canvas file then it returns <code>null</code>.
+	 * This method is used to quickly know the type of a canvas file. If it is not a
+	 * canvas file then it returns <code>null</code>.
 	 * 
 	 * @param file
 	 *            The file to test.
@@ -504,6 +508,22 @@ public class CanvasCore {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public static boolean isFreeVersionAllowed(IProject project) {
+		List<CanvasFile> data = getCanvasFileCache().getProjectData(project);
+
+		int size = data.size();
+
+		out.println("Count canvas files for '" + project + "' : " + size);
+
+		if (size <= LicCore.getFreeNumberOfCanvasFiles()) {
+			return true;
+		}
+
+		out.println("Number of canvas files exceeded.");
+
+		return false;
 	}
 
 }
