@@ -74,20 +74,22 @@ public class MoveHandlerNode extends PathHandlerNode {
 	public void handleSceneDrag(double dx, double dy, MouseEvent e) {
 		Point2D p = _canvas.getDragBehavior().adjustPositionToStep(_initX + dx, _initY + dy);
 
+		boolean changeBoth = _axis == Axis.CENTER;
+
+		if (_axis.changeW() || changeBoth) {
+			p = _canvas.getDragBehavior().adjustPositionToStep(_initX + dx, _initY);
+		}
+
+		if (_axis.changeH() || changeBoth) {
+			p = _canvas.getDragBehavior().adjustPositionToStep(_initX, _initY + dy);
+		}
+
 		Node node = _object.getNode();
 		Parent parent = node.getParent();
 		p = parent.sceneToLocal(p);
 
-		boolean changeBoth = _axis == Axis.CENTER;
-
-		if (_axis.changeW() || changeBoth) {
-			_model.setX(p.getX());
-
-		}
-
-		if (_axis.changeH() || changeBoth) {
-			_model.setY(p.getY());
-		}
+		_model.setX(p.getX());
+		_model.setY(p.getY());
 	}
 
 	@Override
