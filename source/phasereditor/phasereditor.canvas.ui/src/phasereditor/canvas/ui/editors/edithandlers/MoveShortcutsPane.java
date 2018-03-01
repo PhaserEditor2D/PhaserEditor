@@ -23,6 +23,7 @@ package phasereditor.canvas.ui.editors.edithandlers;
 
 import javafx.scene.control.Label;
 import phasereditor.canvas.core.EditorSettings;
+import phasereditor.canvas.ui.editors.behaviors.HandlerBehavior;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;
@@ -39,6 +40,7 @@ public class MoveShortcutsPane extends ShortcutPane {
 	private ShortcutButton _stepBtn;
 	private Label _stepXLabel;
 	private Label _stepYLabel;
+	private ShortcutButton _localBtn;
 
 	@SuppressWarnings("boxing")
 	public MoveShortcutsPane(IObjectNode object) {
@@ -74,12 +76,32 @@ public class MoveShortcutsPane extends ShortcutPane {
 			updateHandler();
 		});
 
+		_localBtn = new ShortcutButton() {
+
+			{
+				setText("local");
+				setSize(80, -1);
+			}
+
+			@Override
+			protected void doAction() {
+				HandlerBehavior handles = _canvas.getHandlerBehavior();
+				if (handles.getData().containsKey(MoveHandlerNode.HANDLES_MOVE_LOCAL_ATTR)) {
+					handles.getData().remove(MoveHandlerNode.HANDLES_MOVE_LOCAL_ATTR);
+				} else {
+					handles.getData().put(MoveHandlerNode.HANDLES_MOVE_LOCAL_ATTR, true);
+				}
+				handles.update();
+			}
+		};
+
 		add(createTitle("position"), 0, 0, 3, 1);
 		add(_xLabel, 0, 1, 3, 1);
 		add(_yLabel, 0, 2, 3, 1);
 		add(_stepBtn, 0, 3, 1, 1);
 		add(_stepXLabel, 1, 3, 1, 1);
 		add(_stepYLabel, 2, 3, 1, 1);
+		add(_localBtn, 0, 4, 3, 1);
 	}
 
 	@Override
@@ -93,6 +115,9 @@ public class MoveShortcutsPane extends ShortcutPane {
 		_stepYLabel.setText("h=" + settings.getStepHeight());
 
 		_stepBtn.setSelected(settings.isEnableStepping() ? Boolean.TRUE : Boolean.FALSE);
+
+		boolean local = _canvas.getHandlerBehavior().getData().containsKey(MoveHandlerNode.HANDLES_MOVE_LOCAL_ATTR);
+		_localBtn.setText(local ? "local" : "global");
 
 		super.updateHandler();
 

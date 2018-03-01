@@ -28,9 +28,12 @@ import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.ArcTo;
 import javafx.scene.shape.ClosePath;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
+import javafx.scene.transform.Rotate;
+import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
@@ -42,6 +45,8 @@ import phasereditor.canvas.ui.shapes.IObjectNode;
  */
 public class MoveHandlerNode extends PathHandlerNode {
 
+	public static final String HANDLES_MOVE_LOCAL_ATTR = "handles.move.local";
+
 	private Axis _axis;
 	private double _initX;
 	private double _initY;
@@ -51,16 +56,57 @@ public class MoveHandlerNode extends PathHandlerNode {
 	public MoveHandlerNode(Axis axis, IObjectNode object) {
 		super(object);
 
-		Paint color = axis == Axis.CENTER ? Color.WHITE : (axis.changeW() ? Color.RED.brighter() : Color.LIGHTGREEN);
-
-		setFill(color);
 		setStroke(Color.BLACK);
 
 		_axis = axis;
+
+		updateHandler();
+
+	}
+
+	public boolean isLocal() {
+		return _canvas.getHandlerBehavior().getData().containsKey(HANDLES_MOVE_LOCAL_ATTR);
+	}
+
+	@Override
+	public void handleLocalStart(double x, double y, MouseEvent e) {
+		if (!isLocal()) {
+			return;
+		}
+
+		_initModelX = _model.getX();
+		_initModelY = _model.getY();
+
+		_initX = _initModelX;
+		_initY = _initModelY;
+	}
+
+	@Override
+	public void handleLocalDrag(double dx, double dy, MouseEvent e) {
+		if (!isLocal()) {
+			return;
+		}
+
+		boolean changeBoth = _axis == Axis.CENTER;
+
+		Point2D p = _canvas.getDragBehavior().adjustPositionToStep(_initX + dx, _initY + dy);
+
+		if (_axis.changeW() || changeBoth) {
+			_model.setX(p.getX());
+		}
+
+		if (_axis.changeH() || changeBoth) {
+			_model.setY(p.getY());
+		}
+
 	}
 
 	@Override
 	public void handleSceneStart(double x, double y, MouseEvent e) {
+		if (isLocal()) {
+			return;
+		}
+
 		_initModelX = _model.getX();
 		_initModelY = _model.getY();
 
@@ -72,16 +118,22 @@ public class MoveHandlerNode extends PathHandlerNode {
 
 	@Override
 	public void handleSceneDrag(double dx, double dy, MouseEvent e) {
-		Point2D p = _canvas.getDragBehavior().adjustPositionToStep(_initX + dx, _initY + dy);
-
-		boolean changeBoth = _axis == Axis.CENTER;
-
-		if (_axis.changeW() || changeBoth) {
-			p = _canvas.getDragBehavior().adjustPositionToStep(_initX + dx, _initY);
+		if (isLocal()) {
+			return;
 		}
 
-		if (_axis.changeH() || changeBoth) {
-			p = _canvas.getDragBehavior().adjustPositionToStep(_initX, _initY + dy);
+		Point2D p = null;
+
+		if (_axis == Axis.CENTER) {
+			p = _canvas.getDragBehavior().adjustPositionToStep(_initX + dx, _initY + dy);
+		} else {
+			if (_axis.changeW()) {
+				p = _canvas.getDragBehavior().adjustPositionToStep(_initX + dx, _initY);
+			}
+
+			if (_axis.changeH()) {
+				p = _canvas.getDragBehavior().adjustPositionToStep(_initX, _initY + dy);
+			}
 		}
 
 		Node node = _object.getNode();
@@ -90,6 +142,7 @@ public class MoveHandlerNode extends PathHandlerNode {
 
 		_model.setX(p.getX());
 		_model.setY(p.getY());
+
 	}
 
 	@Override
@@ -140,6 +193,20 @@ public class MoveHandlerNode extends PathHandlerNode {
 
 			relocate(x - 5, y - 5);
 
+			ArcTo arcTo1 = new ArcTo();
+			arcTo1.setX(10);
+			arcTo1.setY(0);
+			arcTo1.setRadiusX(5);
+			arcTo1.setRadiusY(5);
+
+			ArcTo arcTo2 = new ArcTo();
+			arcTo2.setX(0);
+			arcTo2.setY(0);
+			arcTo2.setRadiusX(5);
+			arcTo2.setRadiusY(5);
+
+			getElements().setAll(new MoveTo(0, 0), arcTo1, arcTo2);
+
 		} else if (_axis.changeW()) {
 
 			//@formatter:off
@@ -187,8 +254,30 @@ public class MoveHandlerNode extends PathHandlerNode {
 			relocate(x - 5, y);
 		}
 
+		getTransforms().clear();
+
+		if (isLocal()) {
+			double a = 0;
+			BaseObjectModel model = _model.getParent();
+			while (model != _canvas.getWorldModel()) {
+				a += model.getAngle();
+				model = model.getParent();
+			}
+
+			if (_axis == Axis.CENTER) {
+				getTransforms().setAll(new Rotate(a, 5, 0));
+			} else {
+				getTransforms().setAll(new Rotate(a, 0, 0));
+			}
+		}
+
 		// setCursor(_axis.getResizeCursor(_object));
 		setCursor(Cursor.MOVE);
+
+		Paint color = _axis == Axis.CENTER ? (isLocal() ? Color.LIGHTBLUE : Color.WHITE)
+				: (_axis.changeW() ? Color.RED.brighter() : Color.LIGHTGREEN);
+
+		setFill(color);
 	}
 
 }

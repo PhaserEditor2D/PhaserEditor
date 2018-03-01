@@ -23,8 +23,10 @@ package phasereditor.canvas.ui.editors.behaviors;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.jface.util.IPropertyChangeListener;
@@ -66,13 +68,19 @@ public class HandlerBehavior {
 	private ObjectCanvas _canvas;
 	private Pane _pane;
 	private IPropertyChangeListener _prefsListener;
+	private Map<String, Object> _data;
 
 	public HandlerBehavior(ObjectCanvas canvas) {
 		super();
 		_canvas = canvas;
 		_pane = _canvas.getHandlerPane();
+		_data = new HashMap<>();
 
 		listenPreferences();
+	}
+	
+	public Map<String, Object> getData() {
+		return _data;
 	}
 
 	private void listenPreferences() {
