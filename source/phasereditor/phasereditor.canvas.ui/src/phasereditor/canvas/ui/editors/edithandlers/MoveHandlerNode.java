@@ -22,6 +22,7 @@
 package phasereditor.canvas.ui.editors.edithandlers;
 
 import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
@@ -184,7 +185,8 @@ public class MoveHandlerNode extends PathHandlerNode {
 			relocate(x - 5, y);
 		}
 
-		setCursor(_axis.getResizeCursor(_object));
+		// setCursor(_axis.getResizeCursor(_object));
+		setCursor(Cursor.MOVE);
 	}
 
 }
