@@ -69,44 +69,7 @@ public class MoveHandlerNode extends PathHandlerNode {
 	}
 
 	@Override
-	public void handleLocalStart(double x, double y, MouseEvent e) {
-		if (!isLocal()) {
-			return;
-		}
-
-		_initModelX = _model.getX();
-		_initModelY = _model.getY();
-
-		_initX = _initModelX;
-		_initY = _initModelY;
-	}
-
-	@Override
-	public void handleLocalDrag(double dx, double dy, MouseEvent e) {
-		if (!isLocal()) {
-			return;
-		}
-
-		boolean changeBoth = _axis == Axis.CENTER;
-
-		Point2D p = _canvas.getDragBehavior().adjustPositionToStep(_initX + dx, _initY + dy);
-
-		if (_axis.changeW() || changeBoth) {
-			_model.setX(p.getX());
-		}
-
-		if (_axis.changeH() || changeBoth) {
-			_model.setY(p.getY());
-		}
-
-	}
-
-	@Override
 	public void handleSceneStart(double x, double y, MouseEvent e) {
-		if (isLocal()) {
-			return;
-		}
-
 		_initModelX = _model.getX();
 		_initModelY = _model.getY();
 
@@ -118,31 +81,65 @@ public class MoveHandlerNode extends PathHandlerNode {
 
 	@Override
 	public void handleSceneDrag(double dx, double dy, MouseEvent e) {
-		if (isLocal()) {
-			return;
-		}
-
 		Point2D p = null;
 
-		if (_axis == Axis.CENTER) {
+		if (isLocal() && _axis != Axis.CENTER) {
+			
 			p = _canvas.getDragBehavior().adjustPositionToStep(_initX + dx, _initY + dy);
-		} else {
+
+			Point2D vector;
+
 			if (_axis.changeW()) {
-				p = _canvas.getDragBehavior().adjustPositionToStep(_initX + dx, _initY);
+				vector = new Point2D(1, 0);
+			} else {
+				vector = new Point2D(0, 1);
 			}
 
-			if (_axis.changeH()) {
-				p = _canvas.getDragBehavior().adjustPositionToStep(_initX, _initY + dy);
+			Rotate rot = new Rotate(_model.getAngle(), 0, 0);
+			vector = rot.transform(vector);
+
+			p = _node.getParent().sceneToLocal(p);
+			Point2D p0 = _node.getParent().sceneToLocal(new Point2D(_initX, _initY));
+			p = p.add(p0.multiply(-1));
+			
+
+			double d = 0;
+
+			if (_axis.changeW()) {
+				d = p.getX();
+			} else {
+				d = p.getY();
 			}
+
+			vector = vector.multiply(d);
+
+			_model.setX(_initModelX + vector.getX());
+			_model.setY(_initModelY + vector.getY());
+
+		} else {
+
+			if (_axis == Axis.CENTER) {
+
+				p = _canvas.getDragBehavior().adjustPositionToStep(_initX + dx, _initY + dy);
+
+			} else {
+
+				if (_axis.changeW()) {
+					p = _canvas.getDragBehavior().adjustPositionToStep(_initX + dx, _initY);
+				}
+
+				if (_axis.changeH()) {
+					p = _canvas.getDragBehavior().adjustPositionToStep(_initX, _initY + dy);
+				}
+			}
+
+			Node node = _object.getNode();
+			Parent parent = node.getParent();
+			p = parent.sceneToLocal(p);
+
+			_model.setX(p.getX());
+			_model.setY(p.getY());
 		}
-
-		Node node = _object.getNode();
-		Parent parent = node.getParent();
-		p = parent.sceneToLocal(p);
-
-		_model.setX(p.getX());
-		_model.setY(p.getY());
-
 	}
 
 	@Override
@@ -258,7 +255,7 @@ public class MoveHandlerNode extends PathHandlerNode {
 
 		if (isLocal()) {
 			double a = 0;
-			BaseObjectModel model = _model.getParent();
+			BaseObjectModel model = _model;
 			while (model != _canvas.getWorldModel()) {
 				a += model.getAngle();
 				model = model.getParent();
