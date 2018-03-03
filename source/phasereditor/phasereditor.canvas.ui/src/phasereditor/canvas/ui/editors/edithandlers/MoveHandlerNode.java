@@ -57,6 +57,7 @@ public class MoveHandlerNode extends PathHandlerNode {
 		super(object);
 
 		setStroke(Color.BLACK);
+		setStrokeWidth(0.5);
 
 		_axis = axis;
 
@@ -184,7 +185,7 @@ public class MoveHandlerNode extends PathHandlerNode {
 		double x = centerX;
 		double y = centerY;
 
-		int N = 150;
+		int N = 80;
 
 		if (_axis == Axis.CENTER) {
 
@@ -214,7 +215,7 @@ public class MoveHandlerNode extends PathHandlerNode {
 					new LineTo(N, -1),
 					
 					new LineTo(N, -5),
-					new LineTo(N + 10, 0),
+					new LineTo(N + 20, 0),
 					new LineTo(N, 5),
 					
 					new LineTo(N, 1),
@@ -237,7 +238,7 @@ public class MoveHandlerNode extends PathHandlerNode {
 					new LineTo(-1, N),
 					
 					new LineTo(-5, N),
-					new LineTo(0, N + 10),
+					new LineTo(0, N + 20),
 					new LineTo(5, N),
 					
 					new LineTo(1, N),
