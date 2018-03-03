@@ -26,9 +26,12 @@ import java.util.List;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
+import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.edithandlers.Axis;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.UpdateFromPropertyChange;
 import phasereditor.canvas.ui.shapes.IObjectNode;
@@ -48,20 +51,36 @@ public class DragBehavior {
 
 	static class DragInfo {
 		private Node _node;
-		private Point2D _start;
+		public final double _initX;
+		public final double _initY;
+		public final double _initModelX;
+		public final double _initModelY;
 
-		public DragInfo(Node node, Point2D start) {
+		public DragInfo(Node node) {
 			super();
 			this._node = node;
-			this._start = start;
+
+			BaseObjectModel model = getModel();
+
+			_initModelX = model.getX();
+			_initModelY = model.getY();
+
+			Point2D p = getObject().getNode().getParent().localToScene(_initModelX, _initModelY);
+
+			_initX = p.getX();
+			_initY = p.getY();
+		}
+
+		public BaseObjectModel getModel() {
+			return getObject().getModel();
 		}
 
 		public Node getNode() {
 			return _node;
 		}
 
-		public Point2D getStart() {
-			return _start;
+		public IObjectNode getObject() {
+			return (IObjectNode) _node;
 		}
 
 	}
@@ -79,14 +98,15 @@ public class DragBehavior {
 		CompositeOperation operations = new CompositeOperation();
 		UpdateBehavior update = _canvas.getUpdateBehavior();
 		UpdateFromPropertyChange updateFromPropChanges = new UpdateFromPropertyChange();
-		for (DragInfo draginfo : _dragInfoList) {
-			Node node = draginfo.getNode();
-			double x = node.getLayoutX();
-			double y = node.getLayoutY();
-			IObjectNode object = (IObjectNode) node;
+
+		for (DragInfo info : _dragInfoList) {
+			double x = info.getModel().getX();
+			double y = info.getModel().getY();
+			IObjectNode object = info.getObject();
 			update.addUpdateLocationOperation(operations, object, x, y, false);
 			updateFromPropChanges.add(object.getControl().getId());
 		}
+
 		operations.add(updateFromPropChanges);
 		update.executeOperations(operations);
 
@@ -120,28 +140,49 @@ public class DragBehavior {
 			_fixedAxisY = false;
 		}
 
-		Point2D delta = new Point2D(dx, dy);
-
-		double scale = _canvas.getZoomBehavior().getScale();
-
-		for (DragInfo draginfo : _dragInfoList) {
-			Node dragnode = draginfo.getNode();
-			Point2D start = draginfo.getStart();
-
-			dx = delta.getX();
-			dy = delta.getY();
-
-			double x = start.getX() + dx / scale;
-			double y = start.getY() + dy / scale;
-
-			Point2D p = adjustPositionToStep(x, y);
-
-			dragnode.setLayoutX(p.getX());
-			dragnode.setLayoutY(p.getY());
+		Axis axis = Axis.CENTER;
+		if (_fixedAxisX) {
+			axis = Axis.RIGHT;
 		}
+		if (_fixedAxisY) {
+			axis = Axis.TOP;
+		}
+
+		for (DragInfo info : _dragInfoList) {
+			Point2D p = null;
+			
+			if (axis == Axis.CENTER) {
+
+				p = _canvas.getDragBehavior().adjustPositionToStep(info._initX + dx, info._initY + dy);
+
+			} else {
+
+				if (axis.changeW()) {
+					p = _canvas.getDragBehavior().adjustPositionToStep(info._initX + dx, info._initY);
+				}
+
+				if (axis.changeH()) {
+					p = _canvas.getDragBehavior().adjustPositionToStep(info._initX, info._initY + dy);
+				}
+			}
+
+			IObjectNode object = info.getObject();
+			Node node = object.getNode();
+			Parent parent = node.getParent();
+			p = parent.sceneToLocal(p);
+
+			BaseObjectModel model = info.getModel();
+			
+			model.setX(p.getX());
+			model.setY(p.getY());
+			
+			object.getControl().updateFromModel();
+			
+		}
+
 		_canvas.getSelectionBehavior().updateSelectedNodes();
 	}
-	
+
 	public Point2D adjustPositionToStep(double x, double y) {
 		double x1 = x;
 		double y1 = y;
@@ -154,7 +195,7 @@ public class DragBehavior {
 			x1 = Math.round(x);
 			y1 = Math.round(y);
 		}
-		
+
 		return new Point2D(x1, y1);
 	}
 
@@ -170,21 +211,24 @@ public class DragBehavior {
 				continue;
 			}
 
-			Point2D start = new Point2D(dragnode.getLayoutX(), dragnode.getLayoutY());
-			_dragInfoList.add(new DragInfo(dragnode, start));
+			DragInfo info = new DragInfo(dragnode);
+
+			_dragInfoList.add(info);
 		}
 
 		_startScenePoint = new Point2D(event.getSceneX(), event.getSceneY());
 	}
 
 	public void abort() {
-		for (DragInfo draginfo : _dragInfoList) {
-			Point2D start = draginfo.getStart();
-			Node node = draginfo.getNode();
+		for (DragInfo info : _dragInfoList) {
 
-			node.relocate(start.getX(), start.getY());
+			BaseObjectModel model = info.getModel();
+			model.setX(info._initModelX);
+			model.setY(info._initModelY);
 		}
+
 		_dragInfoList.clear();
+
 		_selbehavior.updateSelectedNodes();
 	}
 
