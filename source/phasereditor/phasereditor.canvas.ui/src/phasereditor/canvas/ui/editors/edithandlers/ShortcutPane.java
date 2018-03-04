@@ -42,10 +42,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.behaviors.HandlerBehavior;
-import phasereditor.canvas.ui.editors.grid.NumberCellEditor;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
@@ -126,7 +126,7 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 		return title;
 	}
 
-	protected Label createTextField(double text, String name, Consumer<Double> consumer) {
+	protected Label createNumberField(double text, String name, Consumer<Double> consumer) {
 		Label label = new Label(Double.toString(text));
 		label.setMaxWidth(150);
 
@@ -146,12 +146,12 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 
 			InputDialog dlg = new InputDialog(_canvas.getEditor().getEditorSite().getShell(), name,
 					"Enter a new value expression:", text2, value -> {
-						return NumberCellEditor.scriptEngineValidate(value);
+						return CanvasCore.scriptEngineValidate(value);
 					});
 
 			if (dlg.open() == Window.OK) {
 				String value = dlg.getValue();
-				Double result = NumberCellEditor.scriptEngineEval(value);
+				Double result = CanvasCore.scriptEngineEval(value);
 				label.setText(result.toString());
 				consumer.accept(result);
 			}

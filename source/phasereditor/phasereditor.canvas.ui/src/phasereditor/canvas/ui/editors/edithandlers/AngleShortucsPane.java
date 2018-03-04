@@ -42,8 +42,8 @@ public class AngleShortucsPane extends ShortcutPane {
 	public AngleShortucsPane(IObjectNode object) {
 		super(object);
 
-		_angleText = createTextField(object.getModel().getAngle(), "angle", value -> setAngleInObject(value));
-		_angleDeltaText = createTextField(_lastDeltaValue, "delta", v -> _lastDeltaValue = v);
+		_angleText = createNumberField(object.getModel().getAngle(), "angle", value -> setAngleInObject(value));
+		_angleDeltaText = createNumberField(_lastDeltaValue, "delta", v -> _lastDeltaValue = v);
 		_angleDeltaText.setPrefSize(50, -1);
 
 		_coordsBtn = createCoordsButton();

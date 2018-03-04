@@ -50,7 +50,7 @@ public class MoveShortcutsPane extends ShortcutPane {
 
 		EditorSettings settings = _canvas.getSettingsModel();
 
-		_xLabel = createTextField(_model.getX(), "x", x -> {
+		_xLabel = createNumberField(_model.getX(), "x", x -> {
 			if (isLocalCoords()) {
 				setPositionInObject(x, _model.getY());
 			} else {
@@ -59,7 +59,7 @@ public class MoveShortcutsPane extends ShortcutPane {
 			}
 		});
 
-		_yLabel = createTextField(_model.getY(), "y", y -> {
+		_yLabel = createNumberField(_model.getY(), "y", y -> {
 			if (isLocalCoords()) {
 				setPositionInObject(_model.getX(), y);
 			} else {
@@ -82,12 +82,12 @@ public class MoveShortcutsPane extends ShortcutPane {
 			}
 		};
 
-		_stepXLabel = createTextField(_model.getX(), "stepWidth", x -> {
+		_stepXLabel = createNumberField(_model.getX(), "stepWidth", x -> {
 			settings.setStepWidth(x.intValue());
 			updateHandler();
 		});
 
-		_stepYLabel = createTextField(_model.getY(), "stepHeight", y -> {
+		_stepYLabel = createNumberField(_model.getY(), "stepHeight", y -> {
 			settings.setStepHeight(y.intValue());
 			updateHandler();
 		});

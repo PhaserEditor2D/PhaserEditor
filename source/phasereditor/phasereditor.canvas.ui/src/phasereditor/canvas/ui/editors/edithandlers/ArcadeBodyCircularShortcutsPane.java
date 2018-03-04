@@ -52,13 +52,13 @@ public class ArcadeBodyCircularShortcutsPane extends ShortcutPane {
 
 		_body = (CircleArcadeBodyModel) ((BaseSpriteModel) _model).getBody();
 
-		_offsetXLabel = createTextField(_body.getOffsetX(), "body.offset.x",
+		_offsetXLabel = createNumberField(_body.getOffsetX(), "body.offset.x",
 				x -> setBodyInObject(x, _body.getOffsetY(), _body.getRadius()));
 
-		_offsetYLabel = createTextField(_body.getOffsetY(), "body.offset.y",
+		_offsetYLabel = createNumberField(_body.getOffsetY(), "body.offset.y",
 				y -> setBodyInObject(_body.getOffsetX(), y, _body.getRadius()));
 
-		_radiusLabel = createTextField(_body.getRadius(), "radius",
+		_radiusLabel = createNumberField(_body.getRadius(), "radius",
 				r -> setBodyInObject(_body.getOffsetX(), _body.getOffsetY(), r));
 
 		_setRectBodyBtn = new ShortcutButton() {

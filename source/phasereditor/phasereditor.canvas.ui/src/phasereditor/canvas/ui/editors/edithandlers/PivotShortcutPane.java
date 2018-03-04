@@ -48,11 +48,11 @@ public class PivotShortcutPane extends ShortcutPane {
 
 		add(createTitle("pivot"), 0, 0, 3, 1);
 
-		_xLabel = createTextField(_model.getPivotX(), "pivot.x", x -> {
+		_xLabel = createNumberField(_model.getPivotX(), "pivot.x", x -> {
 			setPivotInObject(x, _model.getPivotY());
 		});
 
-		_yLabel = createTextField(object.getModel().getPivotY(), "pivot.y", y -> {
+		_yLabel = createNumberField(object.getModel().getPivotY(), "pivot.y", y -> {
 			setPivotInObject(_model.getPivotX(), y);
 		});
 

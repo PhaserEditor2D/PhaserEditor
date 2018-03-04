@@ -52,8 +52,8 @@ public class AnchorShortcutsPane extends ShortcutPane {
 		
 		BaseSpriteModel model = (BaseSpriteModel) _model;
 
-		_xLabel = createTextField(model.getAnchorX(), "anchor.x", x -> setAnchorInObject(x, model.getAnchorY()));
-		_yLabel = createTextField(model.getAnchorY(), "anchor.y", y -> setAnchorInObject(model.getAnchorX(), y));
+		_xLabel = createNumberField(model.getAnchorX(), "anchor.x", x -> setAnchorInObject(x, model.getAnchorY()));
+		_yLabel = createNumberField(model.getAnchorY(), "anchor.y", y -> setAnchorInObject(model.getAnchorX(), y));
 
 		add(_xLabel, 0, 1, 3, 1);
 		add(_yLabel, 0, 2, 3, 1);

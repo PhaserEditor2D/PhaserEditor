@@ -50,10 +50,10 @@ public class TileShortcutsPane extends ShortcutPane {
 
 		EditorSettings settings = _canvas.getSettingsModel();
 
-		_widthLabel = createTextField(_tileModel.getWidth(), "width",
+		_widthLabel = createNumberField(_tileModel.getWidth(), "width",
 				w -> setTileSizeInObject(w, _tileModel.getHeight()));
 
-		_heightLabel = createTextField(_model.getY(), "height", h -> setTileSizeInObject(_tileModel.getWidth(), h));
+		_heightLabel = createNumberField(_model.getY(), "height", h -> setTileSizeInObject(_tileModel.getWidth(), h));
 
 		_stepBtn = new ShortcutButton() {
 
@@ -69,12 +69,12 @@ public class TileShortcutsPane extends ShortcutPane {
 			}
 		};
 
-		_stepXLabel = createTextField(_model.getX(), "stepWidth", x -> {
+		_stepXLabel = createNumberField(_model.getX(), "stepWidth", x -> {
 			settings.setStepWidth(x.intValue());
 			updateHandler();
 		});
 
-		_stepYLabel = createTextField(_model.getY(), "stepHeight", y -> {
+		_stepYLabel = createNumberField(_model.getY(), "stepHeight", y -> {
 			settings.setStepHeight(y.intValue());
 			updateHandler();
 		});

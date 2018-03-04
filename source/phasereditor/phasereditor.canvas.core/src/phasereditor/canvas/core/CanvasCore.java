@@ -33,6 +33,10 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
@@ -75,7 +79,46 @@ public class CanvasCore {
 	private static final CanvasFileDataCache _fileDataCache = new CanvasFileDataCache();
 	public static final String GOTO_MARKER_OBJECT_ID_ATTR = "phasereditor.canvas.core.marker.objectId";
 	public static final String CANVAS_OBJECT_REF_MARKER_ID = "phasereditor.canvas.core.objectref";
+	private static final ScriptEngine scriptEngine;
 
+	static {
+		ScriptEngineManager m = new ScriptEngineManager();
+		scriptEngine = m.getEngineByName("nashorn");
+	}
+	
+	public static Double scriptEngineEval(String value) {
+		try {
+			return Double.valueOf(value);
+		} catch (NumberFormatException e) {
+			try {
+				Object result = scriptEngine.eval(value);
+				return Double.valueOf(((Number) result).doubleValue());
+			} catch (ScriptException e1) {
+				throw new RuntimeException(e1);
+			}
+		}
+	}
+	
+	public static String scriptEngineValidate(Object value) {
+		if (value instanceof String) {
+			String script = (String) value;
+			try {
+				Double.parseDouble(script);
+			} catch (NumberFormatException e) {
+				// try a javascript expression
+				try {
+					Object result = CanvasCore.scriptEngine.eval(script);
+					if (!(result instanceof Number)) {
+						return "Invalid expression result.";
+					}
+				} catch (ScriptException e1) {
+					return "Invalid number or script format.";
+				}
+			}
+		}
+		return null;
+	}
+	
 	public static void logError(Exception e) {
 		e.printStackTrace();
 		StatusManager.getManager().handle(new Status(IStatus.ERROR, CanvasCore.PLUGIN_ID, e.getMessage(), e));

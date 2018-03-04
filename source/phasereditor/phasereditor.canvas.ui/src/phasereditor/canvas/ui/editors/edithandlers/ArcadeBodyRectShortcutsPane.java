@@ -53,16 +53,16 @@ public class ArcadeBodyRectShortcutsPane extends ShortcutPane {
 
 		_body = (RectArcadeBodyModel) ((BaseSpriteModel) _model).getBody();
 
-		_offsetXLabel = createTextField(_body.getOffsetX(), "body.offset.x",
+		_offsetXLabel = createNumberField(_body.getOffsetX(), "body.offset.x",
 				x -> setBodyInObject(x, _body.getOffsetY(), _body.getWidth(), _body.getHeight()));
 
-		_offsetYLabel = createTextField(_body.getOffsetY(), "body.offset.y",
+		_offsetYLabel = createNumberField(_body.getOffsetY(), "body.offset.y",
 				y -> setBodyInObject(_body.getOffsetX(), y, _body.getWidth(), _body.getHeight()));
 
-		_widthLabel = createTextField(_body.getWidth(), "body.width",
+		_widthLabel = createNumberField(_body.getWidth(), "body.width",
 				w -> setBodyInObject(_body.getOffsetX(), _body.getOffsetY(), w, _body.getHeight()));
 
-		_heightLabel = createTextField(_body.getWidth(), "body.height",
+		_heightLabel = createNumberField(_body.getWidth(), "body.height",
 				h -> setBodyInObject(_body.getOffsetX(), _body.getOffsetY(), _body.getWidth(), h));
 
 		_setCircBodyBtn = new ShortcutButton() {
