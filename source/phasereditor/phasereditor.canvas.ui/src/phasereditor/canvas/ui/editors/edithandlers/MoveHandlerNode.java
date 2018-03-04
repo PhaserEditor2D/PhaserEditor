@@ -32,9 +32,7 @@ import javafx.scene.shape.ClosePath;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.transform.Rotate;
-import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BaseSpriteModel;
-import phasereditor.canvas.ui.editors.behaviors.HandlerBehavior.TransformationCoords;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;
@@ -63,10 +61,6 @@ public class MoveHandlerNode extends PathHandlerNode {
 
 	}
 
-	public boolean isLocal() {
-		return _canvas.getHandlerBehavior().getTransformationCoords() == TransformationCoords.LOCAL;
-	}
-
 	@Override
 	public void handleSceneStart(double x, double y, MouseEvent e) {
 		_initModelX = _model.getX();
@@ -82,7 +76,7 @@ public class MoveHandlerNode extends PathHandlerNode {
 	public void handleSceneDrag(double dx, double dy, MouseEvent e) {
 		Point2D p = null;
 
-		if (isLocal() && _axis != Axis.CENTER) {
+		if (isLocalCoords() && _axis != Axis.CENTER) {
 
 			p = _canvas.getDragBehavior().adjustPositionToStep(_initX + dx, _initY + dy);
 
@@ -237,13 +231,8 @@ public class MoveHandlerNode extends PathHandlerNode {
 
 		getTransforms().clear();
 
-		if (isLocal()) {
-			double a = 0;
-			BaseObjectModel model = _model;
-			while (model != _canvas.getWorldModel()) {
-				a += model.getAngle();
-				model = model.getParent();
-			}
+		if (isLocalCoords()) {
+			double a = _model.getGlobalAngle();
 
 			if (_axis == Axis.CENTER) {
 				getTransforms().setAll(new Rotate(a, 5, 5));

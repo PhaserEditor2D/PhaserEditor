@@ -120,7 +120,7 @@ public abstract class BaseObjectModel {
 		_alpha = DEF_ALPHA;
 
 		_renderable = DEF_RENDERABLE;
-		
+
 		_fixedToCamera = DEF_FIXED_TO_CAMERA;
 	}
 
@@ -302,6 +302,15 @@ public abstract class BaseObjectModel {
 		_rotation = angle * Math.PI / 180;
 	}
 
+	public double getGlobalAngle() {
+
+		if (this instanceof WorldModel) {
+			return 0;
+		}
+
+		return getParent().getGlobalAngle() + getAngle();
+	}
+
 	public double getScaleX() {
 		return _scaleX;
 	}
@@ -341,19 +350,19 @@ public abstract class BaseObjectModel {
 	public void setAlpha(double alpha) {
 		_alpha = alpha;
 	}
-	
+
 	public boolean isRenderable() {
 		return _renderable;
 	}
-	
+
 	public void setRenderable(boolean renderable) {
 		_renderable = renderable;
 	}
-	
+
 	public boolean isFixedToCamera() {
 		return _fixedToCamera;
 	}
-	
+
 	public void setFixedToCamera(boolean fixedToCamera) {
 		_fixedToCamera = fixedToCamera;
 	}
@@ -562,7 +571,7 @@ public abstract class BaseObjectModel {
 				jsonInfo.put("renderable", _renderable, DEF_RENDERABLE);
 			}
 		}
-		
+
 		if (isOverriding(PROPSET_FIXED_TO_CAMERA)) {
 			if (prefabInstance) {
 				jsonInfo.put("fixedToCamera", _fixedToCamera);

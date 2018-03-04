@@ -44,6 +44,7 @@ import javafx.scene.paint.Color;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.behaviors.HandlerBehavior;
 import phasereditor.canvas.ui.editors.grid.NumberCellEditor;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.IObjectNode;
@@ -152,6 +153,30 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 
 	}
 
+	class CoordsButton extends ShortcutButton {
+		
+		public CoordsButton() {
+			setText("local");
+			setSize(80, -1);
+		}
+
+		@Override
+		protected void doAction() {
+			HandlerBehavior handles = _canvas.getHandlerBehavior();
+			handles.setTransformationCoords(handles.getTransformationCoords().next());
+			handles.update();
+		}
+		
+		public void update() {
+			setText(_canvas.getHandlerBehavior().getTransformationCoords().name().toLowerCase());
+		}
+
+	}
+
+	protected CoordsButton createCoordsButton() {
+		return new CoordsButton();
+	}
+
 	@Override
 	public IObjectNode getObject() {
 		return _object;
@@ -214,40 +239,42 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 			Color color = Color.rgb(rgb.red, rgb.green, rgb.blue);
 			setBackground(new Background(new BackgroundFill(color, CornerRadii.EMPTY, new Insets(0))));
 		}
-//		{
-//			RGB rgb = StringConverter.asRGB(store.getString(CanvasUI.PREF_PROP_CANVAS_SHORTCUT_PANE_FG_COLOR));
-//			Color color = Color.rgb(rgb.red, rgb.green, rgb.blue);
-//			String style = "-fx-text-fill:rgb(" + (int) (color.getRed() * 255) + "," + (int) (color.getGreen() * 255)
-//					+ "," + (int) (color.getBlue() * 255) + ");";
-//			for (Node node : getChildren()) {
-//				if (node instanceof Label) {
-//					node.setStyle(style);
-//				} else if (node instanceof Button) {
-//					node.setStyle(style);
-//					Button btn = (Button) node;
-//					Node graphic = btn.getGraphic();
-//					if (graphic != null) {
-//						if (graphic instanceof Label) {
-//							graphic.setStyle(style);
-//						} else if (graphic instanceof ImageView) {
-//							
-//							Blend multiply = new Blend(BlendMode.MULTIPLY);
-//
-//							double width = btn.getWidth();
-//							double height = btn.getHeight();
-//
-//							ColorInput value = new ColorInput(0, 0, width, height, color);
-//							multiply.setTopInput(value);
-//
-//							Blend atop = new Blend(BlendMode.SRC_ATOP);
-//							atop.setTopInput(multiply);
-//							node.setEffect(atop);
-//							
-//						}
-//					}
-//				}
-//			}
-//		}
+		// {
+		// RGB rgb =
+		// StringConverter.asRGB(store.getString(CanvasUI.PREF_PROP_CANVAS_SHORTCUT_PANE_FG_COLOR));
+		// Color color = Color.rgb(rgb.red, rgb.green, rgb.blue);
+		// String style = "-fx-text-fill:rgb(" + (int) (color.getRed() * 255) + "," +
+		// (int) (color.getGreen() * 255)
+		// + "," + (int) (color.getBlue() * 255) + ");";
+		// for (Node node : getChildren()) {
+		// if (node instanceof Label) {
+		// node.setStyle(style);
+		// } else if (node instanceof Button) {
+		// node.setStyle(style);
+		// Button btn = (Button) node;
+		// Node graphic = btn.getGraphic();
+		// if (graphic != null) {
+		// if (graphic instanceof Label) {
+		// graphic.setStyle(style);
+		// } else if (graphic instanceof ImageView) {
+		//
+		// Blend multiply = new Blend(BlendMode.MULTIPLY);
+		//
+		// double width = btn.getWidth();
+		// double height = btn.getHeight();
+		//
+		// ColorInput value = new ColorInput(0, 0, width, height, color);
+		// multiply.setTopInput(value);
+		//
+		// Blend atop = new Blend(BlendMode.SRC_ATOP);
+		// atop.setTopInput(multiply);
+		// node.setEffect(atop);
+		//
+		// }
+		// }
+		// }
+		// }
+		// }
 	}
 
 	@Override

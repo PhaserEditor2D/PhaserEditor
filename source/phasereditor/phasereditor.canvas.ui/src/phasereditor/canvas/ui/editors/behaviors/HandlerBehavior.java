@@ -38,6 +38,7 @@ import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.edithandlers.AnchorHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.AnchorShortcutsPane;
 import phasereditor.canvas.ui.editors.edithandlers.AngleHandlerNode;
+import phasereditor.canvas.ui.editors.edithandlers.AngleLineHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.AngleShortucsPane;
 import phasereditor.canvas.ui.editors.edithandlers.ArcadeBodyCircularShortcutsPane;
 import phasereditor.canvas.ui.editors.edithandlers.ArcadeBodyRectShortcutsPane;
@@ -222,6 +223,8 @@ public class HandlerBehavior {
 			add(new AngleShortucsPane(object));
 		}
 
+		add(new AngleLineHandlerNode(object, true));
+		add(new AngleLineHandlerNode(object, false));
 		add(new AngleHandlerNode(object, 1));
 		add(new AngleHandlerNode(object, 2));
 		add(new AngleHandlerNode(object, 3));

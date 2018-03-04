@@ -35,50 +35,57 @@ public class AngleShortucsPane extends ShortcutPane {
 
 	private Labeled _angleText;
 	private Labeled _angleDeltaText;
+	private CoordsButton _coordsBtn;
 	private static double _lastDeltaValue = 45;
 
 	@SuppressWarnings("boxing")
 	public AngleShortucsPane(IObjectNode object) {
 		super(object);
 
-		add(createTitle("angle"), 0, 0, 3, 1);
-		
-		add(_angleText = createTextField(object.getModel().getAngle(), "angle", value -> {
-			setAngleInObject(value);
-		}), 0, 1, 3, 1);
-
-		add(new AngleBtn(-1), 0, 2);
-		add(new AngleBtn(1), 1, 2);
-
+		_angleText = createTextField(object.getModel().getAngle(), "angle", value -> setAngleInObject(value));
 		_angleDeltaText = createTextField(_lastDeltaValue, "delta", v -> _lastDeltaValue = v);
 		_angleDeltaText.setPrefSize(50, -1);
 
+		_coordsBtn = createCoordsButton();
+
+		add(createTitle("angle"), 0, 0, 3, 1);
+
+		add(_angleText, 0, 1, 3, 1);
+
+		add(new IncrAngleBtn(-1), 0, 2);
+		add(new IncrAngleBtn(1), 1, 2);
+
 		add(_angleDeltaText, 2, 2);
+		add(_coordsBtn, 0, 3, 2, 1);
 	}
 
 	@Override
 	public void updateHandler() {
 
-		_angleText.setText("= " + _model.getAngle());
+		_angleText.setText("= " + (isLocalCoords()? _model.getAngle() : _model.getGlobalAngle()));
+		_coordsBtn.update();
 
 		super.updateHandler();
 	}
 
 	private void setAngleInObject(double angle) {
+		
+		double a = isLocalCoords()? angle : angle - _model.getParent().getGlobalAngle();
+		
 		CompositeOperation operations = new CompositeOperation();
 
 		String id = _model.getId();
 
-		operations.add(new ChangePropertyOperation<Number>(id, "angle", Double.valueOf(angle)));
+		operations.add(new ChangePropertyOperation<Number>(id, "angle", Double.valueOf(a)));
 
 		_canvas.getUpdateBehavior().executeOperations(operations);
 	}
 
-	class AngleBtn extends ShortcutButton {
+	class IncrAngleBtn extends ShortcutButton {
 
 		private double _sign;
 
-		public AngleBtn(double sign) {
+		public IncrAngleBtn(double sign) {
 			_sign = sign;
 
 			if (sign < 0) {
@@ -94,7 +101,8 @@ public class AngleShortucsPane extends ShortcutPane {
 		@Override
 		protected void doAction() {
 			double incr = Double.parseDouble(_angleDeltaText.getText());
-			setAngleInObject(_model.getAngle() + _sign * incr);
+			double a = _model.getAngle() + _sign * incr;
+			setAngleInObject(a % 360);
 		}
 
 	}

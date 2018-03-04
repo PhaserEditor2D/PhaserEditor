@@ -23,6 +23,7 @@ package phasereditor.canvas.ui.editors.edithandlers;
 
 import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
+import phasereditor.canvas.ui.editors.behaviors.HandlerBehavior.TransformationCoords;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
@@ -36,6 +37,18 @@ public interface IEditHandlerNode {
 
 	void updateHandler();
 
+	default boolean isLocalCoords() {
+		return getTransformationCoords() == TransformationCoords.LOCAL;
+	}
+	
+	default boolean isGlobalCoords() {
+		return getTransformationCoords() == TransformationCoords.GLOBAL;
+	}
+
+	default TransformationCoords getTransformationCoords() {
+		return getObject().getControl().getCanvas().getHandlerBehavior().getTransformationCoords();
+	}
+	
 	default void handleMouseMoved(MouseEvent e) {
 		// nothing
 	}
