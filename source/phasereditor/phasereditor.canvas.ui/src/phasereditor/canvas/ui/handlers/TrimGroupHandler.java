@@ -47,11 +47,12 @@ public class TrimGroupHandler extends AbstractHandler {
 		for (Object obj : sel.toArray()) {
 			GroupNode group = (GroupNode) obj;
 			if (group.getModel().isPrefabInstance()) {
-				MessageDialog.openWarning(HandlerUtil.getActiveShell(event), "Trim Group", "Cannot trim prefab groups.");
+				MessageDialog.openWarning(HandlerUtil.getActiveShell(event), "Trim Group",
+						"Cannot trim prefab groups.");
 				return null;
 			}
 		}
-		
+
 		for (Object obj : sel.toArray()) {
 			GroupNode group = (GroupNode) obj;
 			operations.add(new TrimNodeOperation(group.getModel().getId()));

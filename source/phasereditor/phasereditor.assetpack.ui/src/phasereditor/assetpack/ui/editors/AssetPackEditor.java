@@ -30,6 +30,7 @@ import org.eclipse.core.commands.operations.IUndoContext;
 import org.eclipse.core.commands.operations.IUndoableOperation;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -108,6 +109,7 @@ import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetsContentProvider;
 import phasereditor.assetpack.ui.editors.operations.AddAssetOperation;
 import phasereditor.assetpack.ui.editors.operations.AddSectionOperation;
+import phasereditor.lic.LicCore;
 import phasereditor.ui.PhaserEditorUI;
 
 public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInSource {
@@ -549,6 +551,18 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	}
 
 	protected void openNewAssetDialog() {
+
+		if (LicCore.isEvaluationProduct()) {
+
+			IProject project = getEditorInput().getFile().getProject();
+
+			String rule = AssetPackCore.isFreeVersionAllowed(project);
+			if (rule != null) {
+				LicCore.launchGoPremiumDialogs(rule);
+				return;
+			}
+		}
+
 		try {
 
 			Object selection = ((StructuredSelection) _allAssetsViewer.getSelection()).getFirstElement();

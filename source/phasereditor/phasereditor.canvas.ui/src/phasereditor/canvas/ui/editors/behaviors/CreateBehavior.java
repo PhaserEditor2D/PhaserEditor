@@ -35,6 +35,7 @@ import org.json.JSONObject;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.DragEvent;
+import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.FrameData;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
@@ -42,6 +43,7 @@ import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
 import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.core.CanvasModelFactory;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.GroupModel;
@@ -59,6 +61,7 @@ import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
+import phasereditor.lic.LicCore;
 
 /**
  * @author arian
@@ -92,16 +95,33 @@ public class CreateBehavior {
 
 		// check the elements come from the same project
 
-		IProject dstProject = _canvas.getEditor().getEditorInputFile().getProject();
+		IProject project = _canvas.getEditor().getEditorInputFile().getProject();
 		for (Object elem : elems) {
 			if (elem instanceof IAssetKey) {
 				IProject srcProject = ((IAssetKey) elem).getAsset().getPack().getFile().getProject();
-				if (!srcProject.equals(dstProject)) {
+				if (!srcProject.equals(project)) {
 					MessageDialog.openInformation(_canvas.getShell(), "Canvas",
 							"Cannot paste assets from other projects.");
 					return;
 				}
 			}
+		}
+
+		// check if free edition rules
+		if (LicCore.isEvaluationProduct()) {
+
+			String rule = CanvasCore.isFreeVersionAllowed(project);
+			if (rule != null) {
+				LicCore.launchGoPremiumDialogs(rule);
+				return;
+			}
+
+			rule = AssetPackCore.isFreeVersionAllowed(project);
+			if (rule != null) {
+				LicCore.launchGoPremiumDialogs(rule);
+				return;
+			}
+
 		}
 
 		// handle when dropping into a sprite prefab (texture substitution)

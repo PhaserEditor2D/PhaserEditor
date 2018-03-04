@@ -553,7 +553,7 @@ public class CanvasCore {
 		}
 	}
 
-	public static boolean isFreeVersionAllowed(IProject project) {
+	public static String isFreeVersionAllowed(IProject project) {
 		List<CanvasFile> data = getCanvasFileCache().getProjectData(project);
 
 		int size = data.size();
@@ -561,12 +561,12 @@ public class CanvasCore {
 		out.println("Count canvas files for '" + project + "' : " + size);
 
 		if (size <= LicCore.getFreeNumberOfCanvasFiles()) {
-			return true;
+			return null;
 		}
 
 		out.println("Number of canvas files exceeded.");
 
-		return false;
+		return LicCore.getFreeNumberOfCanvasFiles() + " Canvas files.";
 	}
 
 }

@@ -22,6 +22,7 @@
 package phasereditor.assetpack.core;
 
 import static java.lang.System.err;
+import static java.lang.System.out;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -61,6 +62,7 @@ import org.json.JSONTokener;
 
 import phasereditor.atlas.core.AtlasCore;
 import phasereditor.audiosprite.core.AudioSpriteCore;
+import phasereditor.lic.LicCore;
 import phasereditor.project.core.ProjectCore;
 
 /**
@@ -444,8 +446,8 @@ public class AssetPackCore {
 	 * 
 	 * @param contents
 	 *            The content to test.
-	 * @return Return <code>null</code> if the content has a valid format, else
-	 *         it return an error message.
+	 * @return Return <code>null</code> if the content has a valid format, else it
+	 *         return an error message.
 	 */
 	public static String isAssetPackContent(InputStream contents) {
 		try {
@@ -780,7 +782,7 @@ public class AssetPackCore {
 
 		return k1.equals(k2);
 	}
-	
+
 	public static boolean equals(AssetSectionModel a, AssetSectionModel b) {
 		String k1 = uniqueKey(a);
 		String k2 = uniqueKey(b);
@@ -820,5 +822,41 @@ public class AssetPackCore {
 				return findAssetElement(project, assetRef);
 			}
 		};
+	}
+
+	public static String isFreeVersionAllowed(IProject project) {
+
+		List<AssetPackModel> packs = getAssetPackModels(project);
+
+		int tilemapCount = 0;
+		int atlasCount = 0;
+
+		for (AssetPackModel pack : packs) {
+			for (AssetModel asset : pack.getAssets()) {
+				if (asset instanceof TilemapAssetModel) {
+					tilemapCount++;
+				}
+
+				if (asset instanceof AtlasAssetModel) {
+					atlasCount++;
+				}
+			}
+		}
+
+		out.println("Count tilemap assets for '" + project + "' : " + tilemapCount);
+
+		if (tilemapCount > LicCore.getFreeNumberOfTilemapAssets()) {
+			out.println("Number of tilemap assets exceeded.");
+			return LicCore.getFreeNumberOfTilemapAssets() + " tilemap assets";
+		}
+
+		out.println("Count atlas assets for '" + project + "' : " + atlasCount);
+
+		if (atlasCount > LicCore.getFreeNumberOfAtlasAssets()) {
+			out.println("Number of atlas assets exceeded.");
+			return LicCore.getFreeNumberOfAtlasAssets() + " atlas assets";
+		}
+
+		return null;
 	}
 }

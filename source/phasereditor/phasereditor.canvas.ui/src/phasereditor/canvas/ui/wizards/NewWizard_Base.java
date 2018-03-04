@@ -172,9 +172,12 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 			// check for free version
 
 			IProject project = mainFile.getProject();
-			if (LicCore.isEvaluationProduct() && !CanvasCore.isFreeVersionAllowed(project)) {
-				LicCore.launchGoPremiumDialogs(LicCore.getFreeNumberOfCanvasFiles() + " Canvas files");
-				return false;
+			if (LicCore.isEvaluationProduct()) {
+				String rule = CanvasCore.isFreeVersionAllowed(project);
+				if (rule != null) {
+					LicCore.launchGoPremiumDialogs(rule);
+					return false;
+				}
 			}
 
 			// --

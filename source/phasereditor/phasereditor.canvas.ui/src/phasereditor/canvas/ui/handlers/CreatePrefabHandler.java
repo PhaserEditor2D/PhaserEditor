@@ -57,13 +57,16 @@ public class CreatePrefabHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 		IFile canvasFile = editor.getEditorInputFile();
-		
-		if (LicCore.isEvaluationProduct() && !CanvasCore.isFreeVersionAllowed(canvasFile.getProject())) {
-			LicCore.launchGoPremiumDialogs(LicCore.getFreeNumberOfCanvasFiles() + " Canvas files");
-			return null;
+
+		if (LicCore.isEvaluationProduct()) {
+
+			String rule = CanvasCore.isFreeVersionAllowed(canvasFile.getProject());
+			if (rule != null) {
+				LicCore.launchGoPremiumDialogs(rule);
+				return null;
+			}
 		}
-		
-		
+
 		IProject project = canvasFile.getProject();
 		IContainer webFolder = ProjectCore.getWebContentFolder(project);
 		IWorkspaceRoot root = project.getWorkspace().getRoot();
@@ -126,12 +129,12 @@ public class CreatePrefabHandler extends AbstractHandler {
 			String name = file.getFullPath().removeFileExtension().lastSegment();
 
 			EditorSettings settings = newModel.getSettings();
-			
+
 			settings.setBaseClass(CanvasCodeGeneratorProvider.getDefaultBaseClassFor(canvasType));
 			SourceLang lang = node.getControl().getCanvas().getEditor().getModel().getSettings().getLang();
 			settings.setLang(lang);
 			settings.setClassName(name);
-			
+
 			WorldModel world = newModel.getWorld();
 			newModel.setFile(file);
 			world.setEditorName("root");
@@ -148,7 +151,7 @@ public class CreatePrefabHandler extends AbstractHandler {
 			} else {
 				JSONObject json = selModel.toJSON(false);
 				BaseObjectModel cModel = CanvasModelFactory.createModel(world, json);
-				
+
 				switch (cModel.getTypeName()) {
 				case ButtonSpriteModel.TYPE_NAME:
 					settings.setBaseClass("Phaser.Button");
@@ -165,7 +168,7 @@ public class CreatePrefabHandler extends AbstractHandler {
 				default:
 					break;
 				}
-				
+
 				cModel.setX(0);
 				cModel.setY(0);
 				world.addChild(cModel);
