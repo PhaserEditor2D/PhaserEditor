@@ -28,7 +28,6 @@ import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.ArcTo;
 import javafx.scene.shape.ClosePath;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -84,7 +83,7 @@ public class MoveHandlerNode extends PathHandlerNode {
 		Point2D p = null;
 
 		if (isLocal() && _axis != Axis.CENTER) {
-			
+
 			p = _canvas.getDragBehavior().adjustPositionToStep(_initX + dx, _initY + dy);
 
 			Point2D vector;
@@ -101,7 +100,6 @@ public class MoveHandlerNode extends PathHandlerNode {
 			p = _node.getParent().sceneToLocal(p);
 			Point2D p0 = _node.getParent().sceneToLocal(new Point2D(_initX, _initY));
 			p = p.add(p0.multiply(-1));
-			
 
 			double d = 0;
 
@@ -190,20 +188,6 @@ public class MoveHandlerNode extends PathHandlerNode {
 
 			relocate(x - 5, y - 5);
 
-			ArcTo arcTo1 = new ArcTo();
-			arcTo1.setX(10);
-			arcTo1.setY(0);
-			arcTo1.setRadiusX(5);
-			arcTo1.setRadiusY(5);
-
-			ArcTo arcTo2 = new ArcTo();
-			arcTo2.setX(0);
-			arcTo2.setY(0);
-			arcTo2.setRadiusX(5);
-			arcTo2.setRadiusY(5);
-
-			getElements().setAll(new MoveTo(0, 0), arcTo1, arcTo2);
-
 		} else if (_axis.changeW()) {
 
 			//@formatter:off
@@ -262,7 +246,7 @@ public class MoveHandlerNode extends PathHandlerNode {
 			}
 
 			if (_axis == Axis.CENTER) {
-				getTransforms().setAll(new Rotate(a, 5, 0));
+				getTransforms().setAll(new Rotate(a, 5, 5));
 			} else {
 				getTransforms().setAll(new Rotate(a, 0, 0));
 			}
@@ -271,7 +255,7 @@ public class MoveHandlerNode extends PathHandlerNode {
 		// setCursor(_axis.getResizeCursor(_object));
 		setCursor(Cursor.MOVE);
 
-		Paint color = _axis == Axis.CENTER ? (isLocal() ? Color.LIGHTBLUE : Color.WHITE)
+		Paint color = _axis == Axis.CENTER ? Color.BLUE
 				: (_axis.changeW() ? Color.RED.brighter() : Color.LIGHTGREEN);
 
 		setFill(color);
