@@ -51,10 +51,10 @@ public class DragBehavior {
 
 	static class DragInfo {
 		private Node _node;
-		public final double _initX;
-		public final double _initY;
-		public final double _initModelX;
-		public final double _initModelY;
+		public final double initX;
+		public final double initY;
+		public final double initModelX;
+		public final double initModelY;
 
 		public DragInfo(Node node) {
 			super();
@@ -62,13 +62,13 @@ public class DragBehavior {
 
 			BaseObjectModel model = getModel();
 
-			_initModelX = model.getX();
-			_initModelY = model.getY();
+			initModelX = model.getX();
+			initModelY = model.getY();
 
-			Point2D p = getObject().getNode().getParent().localToScene(_initModelX, _initModelY);
+			Point2D p = getObject().getNode().getParent().localToScene(initModelX, initModelY);
 
-			_initX = p.getX();
-			_initY = p.getY();
+			initX = p.getX();
+			initY = p.getY();
 		}
 
 		public BaseObjectModel getModel() {
@@ -100,10 +100,19 @@ public class DragBehavior {
 		UpdateFromPropertyChange updateFromPropChanges = new UpdateFromPropertyChange();
 
 		for (DragInfo info : _dragInfoList) {
-			double x = info.getModel().getX();
-			double y = info.getModel().getY();
+			
+			BaseObjectModel model = info.getModel();
+			
+			double x = model.getX();
+			double y = model.getY();
+
+			model.setX(info.initModelX);
+			model.setY(info.initModelY);
+			
 			IObjectNode object = info.getObject();
+			
 			update.addUpdateLocationOperation(operations, object, x, y, false);
+			
 			updateFromPropChanges.add(object.getControl().getId());
 		}
 
@@ -153,16 +162,16 @@ public class DragBehavior {
 			
 			if (axis == Axis.CENTER) {
 
-				p = _canvas.getDragBehavior().adjustPositionToStep(info._initX + dx, info._initY + dy);
+				p = _canvas.getDragBehavior().adjustPositionToStep(info.initX + dx, info.initY + dy);
 
 			} else {
 
 				if (axis.changeW()) {
-					p = _canvas.getDragBehavior().adjustPositionToStep(info._initX + dx, info._initY);
+					p = _canvas.getDragBehavior().adjustPositionToStep(info.initX + dx, info.initY);
 				}
 
 				if (axis.changeH()) {
-					p = _canvas.getDragBehavior().adjustPositionToStep(info._initX, info._initY + dy);
+					p = _canvas.getDragBehavior().adjustPositionToStep(info.initX, info.initY + dy);
 				}
 			}
 
@@ -223,8 +232,8 @@ public class DragBehavior {
 		for (DragInfo info : _dragInfoList) {
 
 			BaseObjectModel model = info.getModel();
-			model.setX(info._initModelX);
-			model.setY(info._initModelY);
+			model.setX(info.initModelX);
+			model.setY(info.initModelY);
 		}
 
 		_dragInfoList.clear();
