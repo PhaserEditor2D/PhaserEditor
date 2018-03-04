@@ -148,17 +148,6 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 			return 0;
 		}
 
-//		double min = Double.MAX_VALUE;
-//		double max = Double.MIN_VALUE;
-//
-//		for (Object obj : list) {
-//			IObjectNode node = (IObjectNode) obj;
-//			min = Math.min(node.getControl().getTextureLeft(), min);
-//			max = Math.max(node.getControl().getTextureRight(), max);
-//		}
-//
-//		return max - min;
-		
 		return getNode().getBoundsInLocal().getWidth();
 	}
 
@@ -173,18 +162,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 			return 0;
 		}
 
-//		double min = Double.MAX_VALUE;
-//		double max = Double.MIN_VALUE;
-
-//		for (Object obj : list) {
-//			IObjectNode node = (IObjectNode) obj;
-//			min = Math.min(node.getControl().getTextureTop(), min);
-//			max = Math.max(node.getControl().getTextureBottom(), max);
-//		}
-//
-//		return max - min;
-		
-		return getNode().getBoundsInLocal().getWidth();
+		return getNode().getBoundsInLocal().getHeight();
 	}
 
 	public PGridBooleanProperty getClosed_property() {
@@ -323,7 +301,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 					updateFromPropertyChange();
 				}
 			}
-			
+
 		});
 
 		propModel.getSections().add(section);

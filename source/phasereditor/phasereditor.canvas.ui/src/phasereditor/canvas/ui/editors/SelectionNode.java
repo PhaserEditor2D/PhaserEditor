@@ -21,8 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
-import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Border;
@@ -32,7 +32,11 @@ import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Translate;
+import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.GroupModel;
+import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
@@ -40,50 +44,28 @@ import phasereditor.canvas.ui.shapes.IObjectNode;
  *
  */
 public class SelectionNode extends Pane {
-
-//	private static Border _borderSprite;
-//	private static Border _borderGroup;
-
-//	static {
-//		BorderWidths bw = new BorderWidths(1);
-//
-//		List<Double> dashed = Arrays.asList(5d, 2d);
-//		BorderStrokeStyle style1 = new BorderStrokeStyle(StrokeType.INSIDE, StrokeLineJoin.MITER, StrokeLineCap.BUTT,
-//				10, 10, dashed);
-//		BorderStrokeStyle style2 = new BorderStrokeStyle(StrokeType.INSIDE, StrokeLineJoin.MITER, StrokeLineCap.BUTT,
-//				10, 0, dashed);
-//
-//		BorderStroke s1 = new BorderStroke(Color.WHITE, style1, null, bw);
-//		BorderStroke s2 = new BorderStroke(Color.BLACK, style2, null, bw);
-//		BorderStroke s3 = new BorderStroke(Color.BLACK, style2, null, new BorderWidths(2));
-//
-//		_borderSprite = new Border(s1, s2);
-//
-//		_borderGroup = new Border(s1, s3);
-//	}
-
 	private IObjectNode _objectNode;
-	protected Bounds _rect;
 	private ObjectCanvas _canvas;
 	private Label _label;
+	private Pane _border;
 
-	public SelectionNode(ObjectCanvas canvas, IObjectNode inode, Bounds rect) {
+	public SelectionNode(ObjectCanvas canvas, IObjectNode inode) {
 		_objectNode = inode;
-		_rect = rect;
 		_canvas = canvas;
-		
+
 		_label = new Label(inode.getModel().getEditorName());
 		_label.setTextFill(Color.WHITE);
 		_label.setEffect(new DropShadow());
-		_label.relocate(0, -20);
-		
-		getChildren().add(_label);
 
-		updateFromZoomAndPanVariables();
+		_border = new Pane();
+		_border.setEffect(new DropShadow());
+		Color color = inode.getModel() instanceof GroupModel ? Color.LIGHTGREEN : Color.GREENYELLOW;
+		_border.setBorder(
+				new Border(new BorderStroke(color, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(2))));
 
-		setEffect(new DropShadow());
-		Color color = inode.getModel() instanceof GroupModel ? Color.LIGHTGREEN: Color.GREENYELLOW;
-		setBorder(new Border(new BorderStroke(color, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(2))));
+		getChildren().setAll(_label, _border);
+
+		update();
 	}
 
 	public static final int HANDLER_SIZE = 10;
@@ -92,25 +74,37 @@ public class SelectionNode extends Pane {
 		return _canvas;
 	}
 
-	public void updateBounds(Bounds rect) {
-		_rect = rect;
-		updateFromZoomAndPanVariables();
-	}
+	public void update() {
+		Node node = _objectNode.getNode();
+		BaseObjectControl<?> control = _objectNode.getControl();
 
-	public void updateFromZoomAndPanVariables() {
-		double scale = _canvas.getZoomBehavior().getScale();
+		double a = 0;
+		BaseObjectModel model = _objectNode.getModel();
+		while (model != _canvas.getWorldModel()) {
+			a += model.getAngle();
+			model = model.getParent();
+		}
 
-		Point2D translate = _canvas.getZoomBehavior().getTranslate();
+		double w = control.getTextureWidth();
+		double h = control.getTextureHeight();
 
-		double x = translate.getX() + _rect.getMinX() * scale;
-		double y = translate.getY() + _rect.getMinY() * scale;
+		Point2D p1 = node.localToScene(0, 0);
+		Point2D p2 = node.localToScene(w, 0);
+		Point2D p4 = node.localToScene(0, h);
 
-		double h = _rect.getHeight() * scale;
-		double w = _rect.getWidth() * scale;
+		double pw = p1.distance(p2);
+		double ph = p1.distance(p4);
 
-		relocate(x, y);
-		setMinSize(w, h);
-		setMaxSize(w, h);
+		_border.setMaxWidth(pw);
+		_border.setMinWidth(pw);
+		_border.setMaxHeight(ph);
+		_border.setMinHeight(ph);
+
+		_border.relocate(p1.getX(), p1.getY());
+		_border.getTransforms().setAll(new Rotate(a, 0, 0));
+
+		_label.getTransforms().setAll(new Rotate(a, 0, 0), new Translate(0, -20));
+		_label.relocate(p1.getX(), p1.getY());
 
 	}
 

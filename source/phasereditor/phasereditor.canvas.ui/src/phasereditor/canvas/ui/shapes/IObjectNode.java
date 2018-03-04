@@ -64,4 +64,5 @@ public interface IObjectNode {
 		}
 		return c;
 	};
+	
 }

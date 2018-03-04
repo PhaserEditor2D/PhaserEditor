@@ -440,9 +440,9 @@ public class SelectionBehavior implements ISelectionProvider {
 				SelectionNode selnode;
 				if (map.containsKey(node)) {
 					selnode = map.get(node);
-					selnode.updateBounds(rect);
+					selnode.update();
 				} else {
-					selnode = new SelectionNode(_canvas, inode, rect);
+					selnode = new SelectionNode(_canvas, inode);
 				}
 				selpane.getChildren().add(selnode);
 			}
@@ -468,7 +468,7 @@ public class SelectionBehavior implements ISelectionProvider {
 		return mergeBounds(list);
 	}
 
-	public static Bounds buildSelectionBounds(Node node, GroupNode world) {
+	private static Bounds buildSelectionBounds(Node node, GroupNode world) {
 		List<Bounds> list = new ArrayList<>();
 
 		buildSelectionBounds(node, list, world);
@@ -514,7 +514,7 @@ public class SelectionBehavior implements ISelectionProvider {
 		return new BoundingBox(x0, y0, x1 - x0, y1 - y0);
 	}
 
-	public Bounds buildSelectionBounds(Node node) {
+	private Bounds buildSelectionBounds(Node node) {
 		return buildSelectionBounds(node, _canvas.getWorldNode());
 	}
 
