@@ -35,6 +35,7 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.transform.Rotate;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BaseSpriteModel;
+import phasereditor.canvas.ui.editors.behaviors.HandlerBehavior.TransformationCoords;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;
@@ -44,8 +45,6 @@ import phasereditor.canvas.ui.shapes.IObjectNode;
  *
  */
 public class MoveHandlerNode extends PathHandlerNode {
-
-	public static final String HANDLES_MOVE_LOCAL_ATTR = "handles.move.local";
 
 	private Axis _axis;
 	private double _initX;
@@ -66,7 +65,7 @@ public class MoveHandlerNode extends PathHandlerNode {
 	}
 
 	public boolean isLocal() {
-		return _canvas.getHandlerBehavior().getData().containsKey(HANDLES_MOVE_LOCAL_ATTR);
+		return _canvas.getHandlerBehavior().getTransformationCoords() == TransformationCoords.LOCAL;
 	}
 
 	@Override

@@ -65,18 +65,37 @@ import phasereditor.canvas.ui.shapes.ISpriteNode;
  *
  */
 public class HandlerBehavior {
+	
+	public enum TransformationCoords {
+		LOCAL, GLOBAL;
+
+		public TransformationCoords next() {
+			return this == LOCAL? GLOBAL : LOCAL;
+		}
+	}
+	
 	private ObjectCanvas _canvas;
 	private Pane _pane;
 	private IPropertyChangeListener _prefsListener;
 	private Map<String, Object> _data;
+	private TransformationCoords _transformationCoords;
 
 	public HandlerBehavior(ObjectCanvas canvas) {
 		super();
 		_canvas = canvas;
 		_pane = _canvas.getHandlerPane();
 		_data = new HashMap<>();
+		_transformationCoords = TransformationCoords.LOCAL;
 
 		listenPreferences();
+	}
+	
+	public TransformationCoords getTransformationCoords() {
+		return _transformationCoords;
+	}
+	
+	public void setTransformationCoords(TransformationCoords transformationCoords) {
+		_transformationCoords = transformationCoords;
 	}
 	
 	public Map<String, Object> getData() {

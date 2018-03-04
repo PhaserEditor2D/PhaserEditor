@@ -86,11 +86,7 @@ public class MoveShortcutsPane extends ShortcutPane {
 			@Override
 			protected void doAction() {
 				HandlerBehavior handles = _canvas.getHandlerBehavior();
-				if (handles.getData().containsKey(MoveHandlerNode.HANDLES_MOVE_LOCAL_ATTR)) {
-					handles.getData().remove(MoveHandlerNode.HANDLES_MOVE_LOCAL_ATTR);
-				} else {
-					handles.getData().put(MoveHandlerNode.HANDLES_MOVE_LOCAL_ATTR, true);
-				}
+				handles.setTransformationCoords(handles.getTransformationCoords().next());
 				handles.update();
 			}
 		};
@@ -116,8 +112,7 @@ public class MoveShortcutsPane extends ShortcutPane {
 
 		_stepBtn.setSelected(settings.isEnableStepping() ? Boolean.TRUE : Boolean.FALSE);
 
-		boolean local = _canvas.getHandlerBehavior().getData().containsKey(MoveHandlerNode.HANDLES_MOVE_LOCAL_ATTR);
-		_localBtn.setText(local ? "local" : "global");
+		_localBtn.setText(_canvas.getHandlerBehavior().getTransformationCoords().name().toLowerCase());
 
 		super.updateHandler();
 
