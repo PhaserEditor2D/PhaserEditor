@@ -693,19 +693,6 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 	public abstract double getTextureHeight();
 
-	public double getTextureLeft() {
-		T model = getModel();
-		return model.getX();
-	}
-
-	public double getTextureTop() {
-		T model = getModel();
-		return model.getY();
-	}
-
-	public double getTextureRight() {
-		return getX() + getTextureWidth();
-	}
 
 	public double getTextureBottom() {
 		return getY() + getTextureHeight();

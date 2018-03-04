@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors;
 
+import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -34,9 +35,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
-import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
+import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
@@ -47,7 +48,7 @@ public class SelectionNode extends Pane {
 	private IObjectNode _objectNode;
 	private ObjectCanvas _canvas;
 	private Label _label;
-	private Pane _border;
+	private Pane _frame;
 
 	public SelectionNode(ObjectCanvas canvas, IObjectNode inode) {
 		_objectNode = inode;
@@ -57,13 +58,13 @@ public class SelectionNode extends Pane {
 		_label.setTextFill(Color.WHITE);
 		_label.setEffect(new DropShadow());
 
-		_border = new Pane();
-		_border.setEffect(new DropShadow());
+		_frame = new Pane();
+		_frame.setEffect(new DropShadow());
 		Color color = inode.getModel() instanceof GroupModel ? Color.LIGHTGREEN : Color.GREENYELLOW;
-		_border.setBorder(
+		_frame.setBorder(
 				new Border(new BorderStroke(color, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(2))));
 
-		getChildren().setAll(_label, _border);
+		getChildren().setAll(_label, _frame);
 
 		update();
 	}
@@ -78,33 +79,69 @@ public class SelectionNode extends Pane {
 		Node node = _objectNode.getNode();
 		BaseObjectControl<?> control = _objectNode.getControl();
 
-		double a = 0;
-		BaseObjectModel model = _objectNode.getModel();
-		while (model != _canvas.getWorldModel()) {
-			a += model.getAngle();
-			model = model.getParent();
+		double pw;
+		double ph;
+
+		Point2D p1;
+		if (node instanceof GroupNode) {
+			GroupNode group = (GroupNode) node;
+			double minX = Double.MAX_VALUE;
+			double minY = Double.MAX_VALUE;
+			double maxX = Double.MIN_VALUE;
+			double maxY = Double.MIN_VALUE;
+
+			Point2D[] points = new Point2D[4];
+
+			for (Node child : group.getChildren()) {
+				Bounds b = child.getBoundsInLocal();
+
+				points[0] = child.localToScene(0, 0);
+				points[1] = child.localToScene(b.getWidth(), 0);
+				points[2] = child.localToScene(b.getWidth(), b.getHeight());
+				points[3] = child.localToScene(0, b.getHeight());
+
+				for (Point2D point : points) {
+					minX = Math.min(point.getX(), minX);
+					minY = Math.min(point.getY(), minY);
+					maxX = Math.max(point.getX(), maxX);
+					maxY = Math.max(point.getY(), maxY);
+				}
+			}
+
+			p1 = new Point2D(minX, minY);
+
+			Point2D p2 = new Point2D(maxX, minY);
+			Point2D p4 = new Point2D(minX, maxY);
+
+			pw = p1.distance(p2);
+			ph = p1.distance(p4);
+
+		} else {
+			p1 = node.localToScene(0, 0);
+			double w = control.getTextureWidth();
+			double h = control.getTextureHeight();
+			Point2D p2 = node.localToScene(w, 0);
+			Point2D p4 = node.localToScene(0, h);
+			pw = p1.distance(p2);
+			ph = p1.distance(p4);
 		}
 
-		double w = control.getTextureWidth();
-		double h = control.getTextureHeight();
+		_frame.setMaxWidth(pw);
+		_frame.setMinWidth(pw);
+		_frame.setMaxHeight(ph);
+		_frame.setMinHeight(ph);
 
-		Point2D p1 = node.localToScene(0, 0);
-		Point2D p2 = node.localToScene(w, 0);
-		Point2D p4 = node.localToScene(0, h);
+		_frame.relocate(p1.getX(), p1.getY());
 
-		double pw = p1.distance(p2);
-		double ph = p1.distance(p4);
-
-		_border.setMaxWidth(pw);
-		_border.setMinWidth(pw);
-		_border.setMaxHeight(ph);
-		_border.setMinHeight(ph);
-
-		_border.relocate(p1.getX(), p1.getY());
-		_border.getTransforms().setAll(new Rotate(a, 0, 0));
-
-		_label.getTransforms().setAll(new Rotate(a, 0, 0), new Translate(0, -20));
 		_label.relocate(p1.getX(), p1.getY());
+
+		if (_objectNode instanceof GroupNode) {
+			_label.getTransforms().setAll(new Translate(0, -20));
+		} else {
+			double a = _objectNode.getModel().getGlobalAngle();
+			_frame.getTransforms().setAll(new Rotate(a, 0, 0));
+			_label.getTransforms().setAll(new Rotate(a, 0, 0), new Translate(0, -20));
+		}
 
 	}
 

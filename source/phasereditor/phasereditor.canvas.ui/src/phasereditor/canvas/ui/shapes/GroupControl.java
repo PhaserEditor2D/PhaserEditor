@@ -95,49 +95,6 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 	}
 
 	@Override
-	public double getTextureLeft() {
-		if (getModel() instanceof WorldModel) {
-			return 0;
-		}
-
-		ObservableList<Node> list = getNode().getChildren();
-		if (list.isEmpty()) {
-			return 0;
-		}
-
-		double modelx = getModel().getX();
-		double x = Double.MAX_VALUE;
-
-		for (Object obj : getNode().getChildren()) {
-			IObjectNode node = (IObjectNode) obj;
-			x = Math.min(modelx + node.getControl().getTextureLeft(), x);
-		}
-
-		return x;
-	}
-
-	@Override
-	public double getTextureTop() {
-		if (getModel() instanceof WorldModel) {
-			return 0;
-		}
-
-		ObservableList<Node> list = getNode().getChildren();
-		if (list.isEmpty()) {
-			return 0;
-		}
-
-		double modely = getModel().getY();
-		double y = Double.MAX_VALUE;
-
-		for (Object obj : list) {
-			IObjectNode node = (IObjectNode) obj;
-			y = Math.min(modely + node.getControl().getTextureTop(), y);
-		}
-		return y;
-	}
-
-	@Override
 	public double getTextureWidth() {
 		if (getModel() instanceof WorldModel) {
 			return getCanvas().getSettingsModel().getSceneWidth();

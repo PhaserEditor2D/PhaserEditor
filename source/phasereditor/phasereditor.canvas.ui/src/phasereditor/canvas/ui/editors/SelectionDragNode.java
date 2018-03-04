@@ -38,9 +38,9 @@ import javafx.scene.paint.Color;
  * @author arian
  *
  */
-public class SelectionBoxNode extends Pane {
+public class SelectionDragNode extends Pane {
 
-	public SelectionBoxNode() {
+	public SelectionDragNode() {
 		// setBorder(_border);
 		setEffect(new DropShadow());
 		Color c = Color.GREENYELLOW;

@@ -49,7 +49,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
-import phasereditor.canvas.ui.editors.SelectionBoxNode;
+import phasereditor.canvas.ui.editors.SelectionDragNode;
 import phasereditor.canvas.ui.editors.SelectionNode;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
@@ -64,7 +64,7 @@ public class SelectionBehavior implements ISelectionProvider {
 	private ListenerList<ISelectionChangedListener> _listenerList;
 	private IStructuredSelection _selection;
 	private List<IObjectNode> _selectedNodes;
-	private SelectionBoxNode _selectionBox;
+	private SelectionDragNode _selectionBox;
 	private Point2D _boxStart;
 
 	public SelectionBehavior(ObjectCanvas canvas) {
@@ -182,7 +182,7 @@ public class SelectionBehavior implements ISelectionProvider {
 		Pane frontPane = _canvas.getSelectionFrontPane();
 		Point2D point = frontPane.sceneToLocal(e.getSceneX(), e.getSceneY());
 		_boxStart = point;
-		_selectionBox = new SelectionBoxNode();
+		_selectionBox = new SelectionDragNode();
 		_selectionBox.setBox(point, point.add(0, 0));
 		frontPane.getChildren().add(_selectionBox);
 	}
@@ -205,7 +205,7 @@ public class SelectionBehavior implements ISelectionProvider {
 		}
 	}
 
-	private void selectBox(SelectionBoxNode selectionBox) {
+	private void selectBox(SelectionDragNode selectionBox) {
 		List<Object> list = new ArrayList<>();
 		Bounds selBounds = selectionBox.localToScene(selectionBox.getBoundsInLocal());
 

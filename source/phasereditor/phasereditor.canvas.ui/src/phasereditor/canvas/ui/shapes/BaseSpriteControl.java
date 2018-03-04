@@ -656,28 +656,6 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 	public abstract double getTextureHeight();
 
 	@Override
-	public double getTextureLeft() {
-		T model = getModel();
-		return model.getX() - getTextureWidth() * model.getAnchorX();
-	}
-
-	@Override
-	public double getTextureTop() {
-		T model = getModel();
-		return model.getY() - getTextureHeight() * model.getAnchorY();
-	}
-
-	@Override
-	public double getTextureRight() {
-		return getTextureLeft() + getTextureWidth();
-	}
-
-	@Override
-	public double getTextureBottom() {
-		return getTextureTop() + getTextureHeight();
-	}
-
-	@Override
 	public BaseSpriteModel createModelWithTexture(IAssetKey textureKey) {
 		return (BaseSpriteModel) CanvasModelFactory.createModel(getGroup().getModel(), textureKey);
 	}
