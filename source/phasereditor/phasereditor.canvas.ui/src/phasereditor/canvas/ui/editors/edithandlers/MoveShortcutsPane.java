@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.edithandlers;
 
+import static java.lang.System.out;
+
+import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
 import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
@@ -47,9 +50,23 @@ public class MoveShortcutsPane extends ShortcutPane {
 
 		EditorSettings settings = _canvas.getSettingsModel();
 
-		_xLabel = createTextField(_model.getX(), "x", x -> setPositionInObject(x, _model.getY()));
+		_xLabel = createTextField(_model.getX(), "x", x -> {
+			if (isLocalCoords()) {
+				setPositionInObject(x, _model.getY());
+			} else {
+				Point2D p = localToWorld(_node.getParent(), _model.getX(), _model.getY());
+				setPositionInObject(x, p.getY());
+			}
+		});
 
-		_yLabel = createTextField(_model.getY(), "y", y -> setPositionInObject(_model.getX(), y));
+		_yLabel = createTextField(_model.getY(), "y", y -> {
+			if (isLocalCoords()) {
+				setPositionInObject(_model.getX(), y);
+			} else {
+				Point2D p = localToWorld(_node.getParent(), _model.getX(), _model.getY());
+				setPositionInObject(p.getX(), y);
+			}
+		});
 
 		_stepBtn = new ShortcutButton() {
 
@@ -89,8 +106,18 @@ public class MoveShortcutsPane extends ShortcutPane {
 	@Override
 	public void updateHandler() {
 
-		_xLabel.setText("x = " + _model.getX());
-		_yLabel.setText("y = " + _model.getY());
+		{
+			Point2D p;
+
+			if (isLocalCoords()) {
+				p = new Point2D(_model.getX(), _model.getY());
+			} else {
+				p = localToWorld(_node.getParent(), _model.getX(), _model.getY());
+			}
+
+			_xLabel.setText("x = " + p.getX());
+			_yLabel.setText("y = " + p.getY());
+		}
 
 		EditorSettings settings = _canvas.getSettingsModel();
 		_stepXLabel.setText("w=" + settings.getStepWidth());
@@ -105,12 +132,22 @@ public class MoveShortcutsPane extends ShortcutPane {
 	}
 
 	void setPositionInObject(double x, double y) {
+
+		Point2D p;
+
+		if (isLocalCoords()) {
+			p = new Point2D(x, y);
+		} else {
+			out.println("set position " + x + " " + y);
+			p = worldToLocal(_node.getParent(), x, y);
+		}
+
 		CompositeOperation operations = new CompositeOperation();
 
 		String id = _model.getId();
 
-		operations.add(new ChangePropertyOperation<Number>(id, "x", Double.valueOf(x)));
-		operations.add(new ChangePropertyOperation<Number>(id, "y", Double.valueOf(y)));
+		operations.add(new ChangePropertyOperation<Number>(id, "x", Double.valueOf(p.getX())));
+		operations.add(new ChangePropertyOperation<Number>(id, "y", Double.valueOf(p.getY())));
 
 		_canvas.getUpdateBehavior().executeOperations(operations);
 	}

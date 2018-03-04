@@ -62,16 +62,22 @@ public class AngleShortucsPane extends ShortcutPane {
 	@Override
 	public void updateHandler() {
 
-		_angleText.setText("= " + (isLocalCoords()? _model.getAngle() : _model.getGlobalAngle()));
+		_angleText.setText("= " + (isLocalCoords() ? _model.getAngle() : _model.getGlobalAngle()));
 		_coordsBtn.update();
 
 		super.updateHandler();
 	}
 
 	private void setAngleInObject(double angle) {
-		
-		double a = isLocalCoords()? angle : angle - _model.getParent().getGlobalAngle();
-		
+
+		double a;
+
+		if (isLocalCoords()) {
+			a = angle;
+		} else {
+			a = angle - _model.getParent().getGlobalAngle();
+		}
+
 		CompositeOperation operations = new CompositeOperation();
 
 		String id = _model.getId();

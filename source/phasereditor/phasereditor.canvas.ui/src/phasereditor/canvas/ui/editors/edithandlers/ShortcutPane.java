@@ -112,6 +112,14 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 		setPrefSize(160, -1);
 	}
 
+	protected Point2D localToWorld(Node localNode, double x, double y) {
+		return _canvas.getZoomBehavior().localToWorld(localNode, x, y);
+	}
+
+	protected Point2D worldToLocal(Node localNode, double x, double y) {
+		return _canvas.getZoomBehavior().worldToLocal(localNode, x, y);
+	}
+
 	protected static Label createTitle(String label) {
 		Label title = new Label(label);
 		title.setStyle("-fx-opacity:0.5;-fx-text-fill:white;");
@@ -154,7 +162,7 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 	}
 
 	class CoordsButton extends ShortcutButton {
-		
+
 		public CoordsButton() {
 			setText("local");
 			setSize(80, -1);
@@ -166,7 +174,7 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 			handles.setTransformationCoords(handles.getTransformationCoords().next());
 			handles.update();
 		}
-		
+
 		public void update() {
 			setText(_canvas.getHandlerBehavior().getTransformationCoords().name().toLowerCase());
 		}

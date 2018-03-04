@@ -45,7 +45,7 @@ public class AngleLineHandlerNode extends PathHandlerNode {
 		_start = start;
 
 		setStroke(Color.WHITE);
-		setOpacity(0.5);
+		setOpacity(0.8);
 	}
 
 	@Override
