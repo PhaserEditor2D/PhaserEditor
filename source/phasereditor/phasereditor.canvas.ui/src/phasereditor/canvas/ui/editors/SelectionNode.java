@@ -35,6 +35,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
+import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
@@ -78,6 +79,7 @@ public class SelectionNode extends Pane {
 	public void update() {
 		Node node = _objectNode.getNode();
 		BaseObjectControl<?> control = _objectNode.getControl();
+		BaseObjectModel model = _objectNode.getModel();
 
 		double pw;
 		double ph;
@@ -121,9 +123,27 @@ public class SelectionNode extends Pane {
 			double w = control.getTextureWidth();
 			double h = control.getTextureHeight();
 			Point2D p2 = node.localToScene(w, 0);
+			Point2D p3 = node.localToScene(w, h);
 			Point2D p4 = node.localToScene(0, h);
 			pw = p1.distance(p2);
 			ph = p1.distance(p4);
+			
+			double sx = model.getScaleX();
+			double sy = model.getScaleY();
+			
+			if (sx < 0) {
+				if (sy < 0) {
+					p1 = p3;
+				} else {
+					p1 = p2;
+				}
+			} else {
+				if (sy < 0) {
+					p1 = p4;	
+				} else {
+					// p1 == p1
+				}
+			}
 		}
 
 		_frame.setMaxWidth(pw);
@@ -131,14 +151,14 @@ public class SelectionNode extends Pane {
 		_frame.setMaxHeight(ph);
 		_frame.setMinHeight(ph);
 
+		
 		_frame.relocate(p1.getX(), p1.getY());
-
 		_label.relocate(p1.getX(), p1.getY());
 
 		if (_objectNode instanceof GroupNode) {
 			_label.getTransforms().setAll(new Translate(0, -20));
 		} else {
-			double a = _objectNode.getModel().getGlobalAngle();
+			double a = model.getGlobalAngle();
 			_frame.getTransforms().setAll(new Rotate(a, 0, 0));
 			_label.getTransforms().setAll(new Rotate(a, 0, 0), new Translate(0, -20));
 		}
