@@ -22,6 +22,7 @@
 package phasereditor.canvas.ui.editors.edithandlers;
 
 import javafx.scene.control.Label;
+import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;
@@ -35,16 +36,21 @@ public class ScaleShortcutsPane extends ShortcutPane {
 
 	private Label _xLabel;
 	private Label _yLabel;
+	private CoordsButton _coordsBtn;
 
 	@SuppressWarnings("boxing")
 	public ScaleShortcutsPane(IObjectNode object) {
 		super(object);
 
-		
 		add(createTitle("scale"), 0, 0, 3, 1);
+
+		_xLabel = createNumberField(_model.getScaleX(), "scale.x",
+				x -> setScaleInObject(x, isLocalCoords() ? _model.getScaleY() : _model.getGlobalScaleY()));
 		
-		_xLabel = createNumberField(_model.getScaleX(), "scale.x", x -> setScaleInObject(x, _model.getScaleY()));
-		_yLabel = createNumberField(_model.getScaleY(), "scale.y", y -> setScaleInObject(_model.getScaleY(), y));
+		_yLabel = createNumberField(_model.getScaleY(), "scale.y",
+				y -> setScaleInObject(isLocalCoords() ? _model.getScaleX() : _model.getGlobalScaleX(), y));
+
+		_coordsBtn = createCoordsButton();
 
 		add(_xLabel, 0, 1, 3, 1);
 		add(_yLabel, 0, 2, 3, 1);
@@ -52,14 +58,17 @@ public class ScaleShortcutsPane extends ShortcutPane {
 		add(new Btn("x"), 0, 3);
 		add(new Btn("y"), 1, 3);
 		add(new ResetBtn(), 2, 3);
+		add(_coordsBtn, 0, 4, 3, 1);
 
 	}
 
 	@Override
 	public void updateHandler() {
 
-		_xLabel.setText("x = " + _model.getScaleX());
-		_yLabel.setText("y = " + _model.getScaleY());
+		_xLabel.setText("x = " + (isLocalCoords() ? _model.getScaleX() : _model.getGlobalScaleX()));
+		_yLabel.setText("y = " + (isLocalCoords() ? _model.getScaleY() : _model.getGlobalScaleY()));
+
+		_coordsBtn.update();
 
 		super.updateHandler();
 	}
@@ -69,8 +78,21 @@ public class ScaleShortcutsPane extends ShortcutPane {
 
 		String id = _model.getId();
 
-		operations.add(new ChangePropertyOperation<Number>(id, "scale.x", Double.valueOf(scaleX)));
-		operations.add(new ChangePropertyOperation<Number>(id, "scale.y", Double.valueOf(scaleY)));
+		double x = scaleX;
+		double y = scaleY;
+
+		if (isGlobalCoords()) {
+			GroupModel parent = _model.getParent();
+
+			double parentX = parent.getGlobalScaleX();
+			double parentY = parent.getGlobalScaleY();
+
+			x = parentX == 0 ? 0 : scaleX / parentX;
+			y = parentY == 0 ? 0 : scaleY / parentY;
+		}
+
+		operations.add(new ChangePropertyOperation<Number>(id, "scale.x", Double.valueOf(x)));
+		operations.add(new ChangePropertyOperation<Number>(id, "scale.y", Double.valueOf(y)));
 
 		_canvas.getUpdateBehavior().executeOperations(operations);
 	}

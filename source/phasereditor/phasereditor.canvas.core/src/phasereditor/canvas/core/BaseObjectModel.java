@@ -311,6 +311,22 @@ public abstract class BaseObjectModel {
 		return getParent().getGlobalAngle() + getAngle();
 	}
 
+	public double getGlobalScaleX() {
+		if (this instanceof WorldModel) {
+			return 1;
+		}
+
+		return getParent().getGlobalScaleX() * getScaleX();
+	}
+
+	public double getGlobalScaleY() {
+		if (this instanceof WorldModel) {
+			return 1;
+		}
+
+		return getParent().getGlobalScaleY() * getScaleY();
+	}
+
 	public double getScaleX() {
 		return _scaleX;
 	}
