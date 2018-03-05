@@ -58,7 +58,7 @@ public class TileShortcutsPane extends ShortcutPane {
 		_stepBtn = new ShortcutButton() {
 
 			{
-				setIcon(IEditorSharedImages.IMG_WHITE_ASTERISK);
+				setIcon(IEditorSharedImages.IMG_ASTERISK);
 			}
 
 			@Override

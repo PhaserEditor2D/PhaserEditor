@@ -72,9 +72,9 @@ public interface IEditorSharedImages {
 	String IMG_FONT = "icons/font.png";
 	String IMG_TEXT_ABC = "icons/text_abc.png";
 	String IMG_TILED = "icons/tiled.png";
-	String IMG_WHITE_FLIP_HORIZONTAL = "icons/white_flip_horizontal.png";
-	String IMG_WHITE_FLIP_VERTICAL = "icons/white_flip_vertical.png";
-	String IMG_WHITE_ROTATE_CLOCKWISE = "icons/white_arrow_rotate_clockwise.png";
-	String IMG_WHITE_ROTATE_ANTICLOCKWISE = "icons/white_arrow_rotate_anticlockwise.png";
-	String IMG_WHITE_ASTERISK = "icons/white_asterisk.png";
+	String IMG_SHAPE_FLIP_HORIZONTAL = "icons/shape_flip_horizontal.png";
+	String IMG_SHAPE_FLIP_VERTICAL = "icons/shape_flip_vertical.png";
+	String IMG_ARROW_ROTATE_CLOCKWISE = "icons/arrow_rotate_clockwise_blue.png";
+	String IMG_ARROW_ROTATE_ANTICLOCKWISE = "icons/arrow_rotate_anticlockwise_blue.png";
+	String IMG_ASTERISK = "icons/asterisk.png";
 }

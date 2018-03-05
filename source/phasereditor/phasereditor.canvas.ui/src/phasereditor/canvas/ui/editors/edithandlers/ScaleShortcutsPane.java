@@ -119,9 +119,9 @@ public class ScaleShortcutsPane extends ShortcutPane {
 			setSize(50, -1);
 
 			if (_axis.equals("x")) {
-				setIcon(IEditorSharedImages.IMG_WHITE_FLIP_HORIZONTAL);
+				setIcon(IEditorSharedImages.IMG_SHAPE_FLIP_HORIZONTAL);
 			} else {
-				setIcon(IEditorSharedImages.IMG_WHITE_FLIP_VERTICAL);
+				setIcon(IEditorSharedImages.IMG_SHAPE_FLIP_VERTICAL);
 			}
 		}
 

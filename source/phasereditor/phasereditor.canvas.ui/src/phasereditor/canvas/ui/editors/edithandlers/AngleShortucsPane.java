@@ -95,9 +95,9 @@ public class AngleShortucsPane extends ShortcutPane {
 			_sign = sign;
 
 			if (sign < 0) {
-				setIcon(IEditorSharedImages.IMG_WHITE_ROTATE_ANTICLOCKWISE);
+				setIcon(IEditorSharedImages.IMG_ARROW_ROTATE_ANTICLOCKWISE);
 			} else {
-				setIcon(IEditorSharedImages.IMG_WHITE_ROTATE_CLOCKWISE);
+				setIcon(IEditorSharedImages.IMG_ARROW_ROTATE_CLOCKWISE);
 			}
 
 			setSize(50, -1);
