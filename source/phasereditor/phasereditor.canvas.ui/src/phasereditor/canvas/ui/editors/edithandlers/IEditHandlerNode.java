@@ -22,8 +22,12 @@
 package phasereditor.canvas.ui.editors.edithandlers;
 
 import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.ui.editors.behaviors.HandlerBehavior.TransformationCoords;
+import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
@@ -36,6 +40,31 @@ public interface IEditHandlerNode {
 	IObjectNode getObject();
 
 	void updateHandler();
+	
+	default Point2D computeObjectCenter_global() {
+		BaseObjectModel model = getObject().getModel();
+		BaseObjectControl<?> control = getObject().getControl();
+		Node node = getObject().getNode();
+		
+		
+		double centerX = model.getPivotX();
+		double centerY = model.getPivotY();
+
+		if (model instanceof BaseSpriteModel) {
+			BaseSpriteModel spriteModel = (BaseSpriteModel) model;
+			double x = spriteModel.getAnchorX() * control.getTextureWidth();
+			double y = spriteModel.getAnchorY() * control.getTextureHeight();
+			centerX = centerX + x;
+			centerY = centerY + y;
+		}
+
+		
+		Point2D p = node.localToScene(centerX, centerY);
+		centerX = p.getX();
+		centerY = p.getY();
+		
+		return new Point2D(centerX, centerY);
+	}
 
 	default boolean isLocalCoords() {
 		return getTransformationCoords() == TransformationCoords.LOCAL;

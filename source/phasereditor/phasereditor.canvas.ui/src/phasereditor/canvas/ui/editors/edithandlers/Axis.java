@@ -25,7 +25,7 @@ import javafx.scene.Cursor;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
 public enum Axis {
-	TOP_LEF(0, 0),
+	TOP_LEFT(0, 0),
 
 	TOP(0.5, 0),
 
@@ -33,11 +33,11 @@ public enum Axis {
 
 	RIGHT(1, 0.5),
 
-	BOT_RIG(1, 1),
+	BOTTOM_RIGHT(1, 1),
 
 	BOTTOM(0.5, 1),
 
-	BOTOM_LEFT(0, 1),
+	BOTTOM_LEFT(0, 1),
 
 	LEFT(0, 0.5),
 

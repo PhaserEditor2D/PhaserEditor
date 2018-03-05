@@ -23,10 +23,16 @@ package phasereditor.canvas.ui.editors.edithandlers;
 
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.ClosePath;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
+import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
@@ -48,7 +54,14 @@ public class ScaleHandlerNode extends PathHandlerNode {
 	public ScaleHandlerNode(IObjectNode object, Axis axis) {
 		super(object);
 		_axis = axis;
-		setFill(Color.AQUAMARINE);
+		
+		setCursor(Cursor.MOVE);
+
+		Paint color = _axis == Axis.CENTER ? Color.BLUE
+				: (_axis.changeW() ? Color.RED.brighter() : Color.LIGHTGREEN);
+
+		setFill(color);
+
 	}
 
 	@Override
@@ -158,13 +171,69 @@ public class ScaleHandlerNode extends PathHandlerNode {
 
 	@Override
 	public void updateHandler() {
-		double x = _axis.x * _control.getTextureWidth();
-		double y = _axis.y * _control.getTextureHeight();
+		Point2D p;
+		if (_object instanceof GroupNode) {
 
-		Point2D p = objectToScene(x, y);
-		relocate(p.getX() - 5, p.getY() - 5);
+			Point2D center = computeObjectCenter_global();
 
-		setCursor(_axis.getResizeCursor(_object));
+			p = new Point2D(center.getX(), center.getY());
+
+			double N = 50;
+
+			if (_axis == Axis.RIGHT) {
+
+				//@formatter:off
+				getElements().setAll(
+
+						new MoveTo(0, -1),
+
+						new LineTo(N, -1),
+						
+						new LineTo(N, -5),
+						new LineTo(N + 10, -5),
+						new LineTo(N + 10, 5),
+						new LineTo(N, 5),
+						
+						new LineTo(N, 1),
+						new LineTo(0, 1),
+						
+						new ClosePath()
+
+				);
+				//@formatter:on
+				relocate(p.getX(), p.getY() - 5);
+
+			} else {
+				//@formatter:off
+				getElements().setAll(
+
+						new MoveTo(-1, 0),
+
+						new LineTo(-1, N),
+						
+						new LineTo(-5, N),
+						new LineTo(-5, N + 10),
+						new LineTo(5, N + 10),
+						new LineTo(5, N),
+						
+						new LineTo(1, N),
+						new LineTo(1, 0),
+						
+						new ClosePath()
+
+				);
+				//@formatter:on
+				relocate(p.getX() - 5, p.getY());
+			}
+		} else {
+			double x = _axis.x * _control.getTextureWidth();
+			double y = _axis.y * _control.getTextureHeight();
+
+			p = objectToScene(x, y);
+
+			relocate(p.getX() - 5, p.getY() - 5);
+		}
+
 	}
 
 }

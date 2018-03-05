@@ -52,11 +52,19 @@ public class MoveHandlerNode extends PathHandlerNode {
 	public MoveHandlerNode(Axis axis, IObjectNode object) {
 		super(object);
 
+		_axis = axis;
+		
 		setStroke(Color.BLACK);
 		setStrokeWidth(0.5);
 
-		_axis = axis;
+		setCursor(Cursor.MOVE);
 
+		Paint color = _axis == Axis.CENTER ? Color.BLUE
+				: (_axis.changeW() ? Color.RED.brighter() : Color.LIGHTGREEN);
+
+		setFill(color);
+
+		
 		updateHandler();
 
 	}
@@ -241,13 +249,6 @@ public class MoveHandlerNode extends PathHandlerNode {
 			}
 		}
 
-		// setCursor(_axis.getResizeCursor(_object));
-		setCursor(Cursor.MOVE);
-
-		Paint color = _axis == Axis.CENTER ? Color.BLUE
-				: (_axis.changeW() ? Color.RED.brighter() : Color.LIGHTGREEN);
-
-		setFill(color);
 	}
 
 }

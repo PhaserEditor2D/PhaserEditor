@@ -25,7 +25,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.IObjectNode;
@@ -39,9 +38,8 @@ public class AngleHandlerNode extends CircleHandlerNode {
 	private double _initAngle;
 	private double _initX;
 	private double _initY;
-	private double _centerX;
-	private double _centerY;
 	private int _order;
+	private Point2D _center;
 	private static Color[] COLORS = { null, Color.RED, Color.GREEN, Color.BLUE };
 	private static double TRANSP_FACTOR = 0.5;
 
@@ -93,24 +91,7 @@ public class AngleHandlerNode extends CircleHandlerNode {
 		_initX = x;
 		_initY = y;
 
-		computeCenter();
-	}
-
-	private void computeCenter() {
-		_centerX = _model.getPivotX();
-		_centerY = _model.getPivotY();
-
-		if (_model instanceof BaseSpriteModel) {
-			BaseSpriteModel spriteModel = (BaseSpriteModel) _model;
-			double x = spriteModel.getAnchorX() * _control.getTextureWidth();
-			double y = spriteModel.getAnchorY() * _control.getTextureHeight();
-			_centerX = _centerX + x;
-			_centerY = _centerY + y;
-		}
-
-		Point2D p = _node.localToScene(_centerX, _centerY);
-		_centerX = p.getX();
-		_centerY = p.getY();
+		_center = computeObjectCenter_global();
 	}
 
 	@Override
@@ -122,7 +103,7 @@ public class AngleHandlerNode extends CircleHandlerNode {
 		double x = _initX + dx;
 		double y = _initY + dy;
 
-		double a = angleBetweenTwoPointsWithFixedPoint(x, y, _initX, _initY, _centerX, _centerY);
+		double a = angleBetweenTwoPointsWithFixedPoint(x, y, _initX, _initY, _center.getX(), _center.getY());
 
 		double d = Math.toDegrees(a);
 
@@ -148,10 +129,10 @@ public class AngleHandlerNode extends CircleHandlerNode {
 
 	@Override
 	public void updateHandler() {
-		computeCenter();
+		_center = computeObjectCenter_global();
 
-		setCenterX(_centerX);
-		setCenterY(_centerY);
+		setCenterX(_center.getX());
+		setCenterY(_center.getY());
 		setRadius(_order * 50);
 	}
 }

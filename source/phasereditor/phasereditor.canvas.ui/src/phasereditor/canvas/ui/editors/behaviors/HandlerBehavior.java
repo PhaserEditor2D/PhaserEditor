@@ -22,7 +22,6 @@
 package phasereditor.canvas.ui.editors.behaviors;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -58,6 +57,7 @@ import phasereditor.canvas.ui.editors.edithandlers.ScaleShortcutsPane;
 import phasereditor.canvas.ui.editors.edithandlers.ShortcutPane;
 import phasereditor.canvas.ui.editors.edithandlers.TileHandlerNode;
 import phasereditor.canvas.ui.editors.edithandlers.TileShortcutsPane;
+import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
 
@@ -66,15 +66,15 @@ import phasereditor.canvas.ui.shapes.ISpriteNode;
  *
  */
 public class HandlerBehavior {
-	
+
 	public enum TransformationCoords {
 		LOCAL, GLOBAL;
 
 		public TransformationCoords next() {
-			return this == LOCAL? GLOBAL : LOCAL;
+			return this == LOCAL ? GLOBAL : LOCAL;
 		}
 	}
-	
+
 	private ObjectCanvas _canvas;
 	private Pane _pane;
 	private IPropertyChangeListener _prefsListener;
@@ -90,15 +90,15 @@ public class HandlerBehavior {
 
 		listenPreferences();
 	}
-	
+
 	public TransformationCoords getTransformationCoords() {
 		return _transformationCoords;
 	}
-	
+
 	public void setTransformationCoords(TransformationCoords transformationCoords) {
 		_transformationCoords = transformationCoords;
 	}
-	
+
 	public Map<String, Object> getData() {
 		return _data;
 	}
@@ -157,9 +157,19 @@ public class HandlerBehavior {
 			add(new ScaleShortcutsPane(object));
 		}
 
-		Arrays.stream(Axis.values()).filter(a -> a != Axis.CENTER)
-				.forEach(axis -> add(new ScaleHandlerNode(object, axis)));
-
+		if (object instanceof GroupNode) {
+			add(new ScaleHandlerNode(object, Axis.RIGHT));
+			add(new ScaleHandlerNode(object, Axis.BOTTOM));
+		} else {
+			add(new ScaleHandlerNode(object, Axis.TOP_LEFT));
+			add(new ScaleHandlerNode(object, Axis.TOP));
+			add(new ScaleHandlerNode(object, Axis.TOP_RIGHT));
+			add(new ScaleHandlerNode(object, Axis.RIGHT));
+			add(new ScaleHandlerNode(object, Axis.BOTTOM_RIGHT));
+			add(new ScaleHandlerNode(object, Axis.BOTTOM));
+			add(new ScaleHandlerNode(object, Axis.BOTTOM_LEFT));
+			add(new ScaleHandlerNode(object, Axis.LEFT));
+		}
 		update();
 	}
 

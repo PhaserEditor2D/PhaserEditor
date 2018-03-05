@@ -26,7 +26,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.transform.Rotate;
-import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 
 /**
@@ -35,9 +34,8 @@ import phasereditor.canvas.ui.shapes.IObjectNode;
  */
 public class AngleLineHandlerNode extends PathHandlerNode {
 
-	private double _centerX;
-	private double _centerY;
 	private boolean _start;
+	private Point2D _center;
 
 	public AngleLineHandlerNode(IObjectNode object, boolean start) {
 		super(object);
@@ -56,26 +54,9 @@ public class AngleLineHandlerNode extends PathHandlerNode {
 
 	}
 
-	private void computeCenter() {
-		_centerX = _model.getPivotX();
-		_centerY = _model.getPivotY();
-
-		if (_model instanceof BaseSpriteModel) {
-			BaseSpriteModel spriteModel = (BaseSpriteModel) _model;
-			double x = spriteModel.getAnchorX() * _control.getTextureWidth();
-			double y = spriteModel.getAnchorY() * _control.getTextureHeight();
-			_centerX = _centerX + x;
-			_centerY = _centerY + y;
-		}
-
-		Point2D p = _node.localToScene(_centerX, _centerY);
-		_centerX = p.getX();
-		_centerY = p.getY();
-	}
-
 	@Override
 	public void updateHandler() {
-		computeCenter();
+		_center = computeObjectCenter_global();
 
 		double startAngle;
 		double endAngle;
@@ -92,7 +73,7 @@ public class AngleLineHandlerNode extends PathHandlerNode {
 
 		getTransforms().setAll(new Rotate(_start ? startAngle : endAngle, 0, 0));
 
-		relocate(_centerX, _centerY);
+		relocate(_center.getX(), _center.getY());
 	}
 
 }
