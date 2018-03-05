@@ -29,6 +29,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
@@ -56,8 +60,8 @@ public abstract class ShortcutButton extends Button {
 
 		setSize(size, size);
 
-		setBorder(null);
-		// setEffect(new BoxBlur(2, 2, 1));
+		setBorder(new Border(
+				new BorderStroke(Color.WHITE.deriveColor(0, 0, 1, 0.5), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
 		setTextFill(Color.WHITE);
 
@@ -115,7 +119,7 @@ public abstract class ShortcutButton extends Button {
 	public void setIcon(String icon) {
 		setGraphic(new ImageView(PhaserEditorUI.getUIIconURL(icon)));
 	}
-	
+
 	public SVGPath setIconSVG(String content) {
 		SVGPath path = new SVGPath();
 		path.setStroke(Color.WHITE);

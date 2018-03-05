@@ -40,9 +40,7 @@ public class ShortcutsPanePreferencePage extends FieldEditorPreferencePage imple
 
 				}, parent));
 
-		// addField(new
-		// ColorFieldEditor(CanvasUI.PREF_PROP_CANVAS_SHORTCUT_PANE_FG_COLOR,
-		// "Foreground color", parent));
+		addField(new ColorFieldEditor(CanvasUI.PREF_PROP_CANVAS_SHORTCUT_PANE_FG_COLOR, "Foreground color", parent));
 		addField(new ColorFieldEditor(CanvasUI.PREF_PROP_CANVAS_SHORTCUT_PANE_BG_COLOR, "Background color", parent));
 	}
 

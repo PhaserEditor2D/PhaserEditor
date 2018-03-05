@@ -33,6 +33,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Background;
@@ -247,42 +248,26 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 			Color color = Color.rgb(rgb.red, rgb.green, rgb.blue);
 			setBackground(new Background(new BackgroundFill(color, CornerRadii.EMPTY, new Insets(0))));
 		}
-		// {
-		// RGB rgb =
-		// StringConverter.asRGB(store.getString(CanvasUI.PREF_PROP_CANVAS_SHORTCUT_PANE_FG_COLOR));
-		// Color color = Color.rgb(rgb.red, rgb.green, rgb.blue);
-		// String style = "-fx-text-fill:rgb(" + (int) (color.getRed() * 255) + "," +
-		// (int) (color.getGreen() * 255)
-		// + "," + (int) (color.getBlue() * 255) + ");";
-		// for (Node node : getChildren()) {
-		// if (node instanceof Label) {
-		// node.setStyle(style);
-		// } else if (node instanceof Button) {
-		// node.setStyle(style);
-		// Button btn = (Button) node;
-		// Node graphic = btn.getGraphic();
-		// if (graphic != null) {
-		// if (graphic instanceof Label) {
-		// graphic.setStyle(style);
-		// } else if (graphic instanceof ImageView) {
-		//
-		// Blend multiply = new Blend(BlendMode.MULTIPLY);
-		//
-		// double width = btn.getWidth();
-		// double height = btn.getHeight();
-		//
-		// ColorInput value = new ColorInput(0, 0, width, height, color);
-		// multiply.setTopInput(value);
-		//
-		// Blend atop = new Blend(BlendMode.SRC_ATOP);
-		// atop.setTopInput(multiply);
-		// node.setEffect(atop);
-		//
-		// }
-		// }
-		// }
-		// }
-		// }
+		{
+			RGB rgb = StringConverter.asRGB(store.getString(CanvasUI.PREF_PROP_CANVAS_SHORTCUT_PANE_FG_COLOR));
+			Color color = Color.rgb(rgb.red, rgb.green, rgb.blue);
+			String style = "-fx-text-fill:rgb(" + (int) (color.getRed() * 255) + "," + (int) (color.getGreen() * 255)
+					+ "," + (int) (color.getBlue() * 255) + ");";
+			for (Node node : getChildren()) {
+				if (node instanceof Label) {
+					node.setStyle(style);
+				} else if (node instanceof Button) {
+					node.setStyle(style);
+					Button btn = (Button) node;
+					Node graphic = btn.getGraphic();
+					if (graphic != null) {
+						if (graphic instanceof Label) {
+							graphic.setStyle(style);
+						}
+					}
+				}
+			}
+		}
 	}
 
 	@Override
