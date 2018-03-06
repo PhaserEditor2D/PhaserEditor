@@ -57,8 +57,13 @@ public class ScaleHandlerNode extends PathHandlerNode {
 		
 		setCursor(Cursor.MOVE);
 
-		Paint color = _axis == Axis.CENTER ? Color.BLUE
-				: (_axis.changeW() ? Color.RED.brighter() : Color.LIGHTGREEN);
+		Paint color;
+		
+		if (_object instanceof GroupNode) {
+			color = _axis.changeW() ? Color.RED.brighter() : Color.LIGHTGREEN;
+		} else {
+			color = Color.CYAN;
+		}
 
 		setFill(color);
 
