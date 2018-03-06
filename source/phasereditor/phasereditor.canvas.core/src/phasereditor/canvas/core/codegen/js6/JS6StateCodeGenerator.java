@@ -85,7 +85,7 @@ public class JS6StateCodeGenerator extends BaseStateGenerator implements IJS6Cod
 
 	private void generateInitMethod() {
 		// INIT
-		openIndent("init() {");
+		openIndent("init(" + _settings.getUserCode().getState_init_args() + ") {");
 		generateInitMethodBody();
 		closeIndent("}");
 	}

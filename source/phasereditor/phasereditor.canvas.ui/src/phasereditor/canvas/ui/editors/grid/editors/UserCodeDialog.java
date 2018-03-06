@@ -26,11 +26,15 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.swt.widgets.Text;
 
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.EditorSettings_UserCode;
@@ -47,6 +51,7 @@ public class UserCodeDialog extends Dialog {
 	private UserCodeBeforeAfterCodeComp _codeComp_preload;
 	private UserCodeBeforeAfterCodeComp _codeComp_create;
 	private TabFolder _tabFolder;
+	private Text _argsText_init;
 
 	/**
 	 * Create the dialog.
@@ -80,6 +85,7 @@ public class UserCodeDialog extends Dialog {
 
 				_codeComp_ctor = new UserCodeBeforeAfterCodeComp(_tabFolder, SWT.NONE);
 				tabItem.setControl(_codeComp_ctor);
+				tabItem.setData(_codeComp_ctor);
 			}
 
 			{
@@ -87,8 +93,25 @@ public class UserCodeDialog extends Dialog {
 				TabItem tabItem = new TabItem(_tabFolder, SWT.NONE);
 				tabItem.setText("Init");
 
-				_codeComp_init = new UserCodeBeforeAfterCodeComp(_tabFolder, SWT.NONE);
-				tabItem.setControl(_codeComp_init);
+				Composite comp = new Composite(_tabFolder, SWT.NONE);
+
+				GridLayout gl = new GridLayout(2, false);
+				comp.setLayout(gl);
+
+				Label label = new Label(comp, SWT.NONE);
+				label.setText("Arguments:");
+				GridData gd = new GridData();
+				gd.horizontalIndent = 5;
+				label.setLayoutData(gd);
+
+				_argsText_init = new Text(comp, SWT.BORDER);
+				_argsText_init.setLayoutData(new GridData(SWT.FILL, SWT.LEFT, true, false, 1, 1));
+
+				_codeComp_init = new UserCodeBeforeAfterCodeComp(comp, SWT.NONE);
+				_codeComp_init.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+
+				tabItem.setControl(comp);
+				tabItem.setData(_codeComp_init);
 			}
 
 			{
@@ -98,6 +121,7 @@ public class UserCodeDialog extends Dialog {
 
 				_codeComp_preload = new UserCodeBeforeAfterCodeComp(_tabFolder, SWT.NONE);
 				tabItem.setControl(_codeComp_preload);
+				tabItem.setData(_codeComp_preload);
 			}
 		}
 
@@ -108,6 +132,7 @@ public class UserCodeDialog extends Dialog {
 
 			_codeComp_create = new UserCodeBeforeAfterCodeComp(_tabFolder, SWT.NONE);
 			tabItem.setControl(_codeComp_create);
+			tabItem.setData(_codeComp_create);
 		}
 
 		afterCreateWidgets();
@@ -120,6 +145,7 @@ public class UserCodeDialog extends Dialog {
 			_codeComp_ctor.setBeforeText(_code.getState_constructor_before());
 			_codeComp_ctor.setAfterText(_code.getState_constructor_after());
 
+			_argsText_init.setText(_code.getState_init_args());
 			_codeComp_init.setBeforeText(_code.getState_init_before());
 			_codeComp_init.setAfterText(_code.getState_init_after());
 
@@ -129,9 +155,10 @@ public class UserCodeDialog extends Dialog {
 
 		_codeComp_create.setBeforeText(_code.getCreate_before());
 		_codeComp_create.setAfterText(_code.getCreate_after());
-		
-		for(TabItem item : _tabFolder.getItems()) {
-			UserCodeBeforeAfterCodeComp comp = (UserCodeBeforeAfterCodeComp) item.getControl();
+
+		for (TabItem item : _tabFolder.getItems()) {
+			UserCodeBeforeAfterCodeComp comp = (UserCodeBeforeAfterCodeComp) item.getData();
+			
 			if (comp.getBeforeText().trim().length() > 0 || comp.getAfterText().trim().length() > 0) {
 				item.setText(item.getText() + "*");
 			}
@@ -148,13 +175,14 @@ public class UserCodeDialog extends Dialog {
 			_code.setState_constructor_before(_codeComp_ctor.getBeforeText());
 			_code.setState_constructor_after(_codeComp_ctor.getAfterText());
 
+			_code.setState_init_args(_argsText_init.getText());
 			_code.setState_init_before(_codeComp_init.getBeforeText());
 			_code.setState_init_after(_codeComp_init.getAfterText());
 
 			_code.setState_preload_before(_codeComp_preload.getBeforeText());
 			_code.setState_preload_after(_codeComp_preload.getAfterText());
 		}
-		
+
 		_code.setCreate_before(_codeComp_create.getBeforeText());
 		_code.setCreate_after(_codeComp_create.getAfterText());
 

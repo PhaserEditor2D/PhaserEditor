@@ -85,7 +85,7 @@ public class TSStateCodeGenerator extends BaseStateGenerator implements ITSCodeG
 
 	private void generateInitMethod() {
 		// INIT
-		openIndent("init() {");
+		openIndent("init(" + _settings.getUserCode().getState_init_args() + ") {");
 		generateInitMethodBody();
 		closeIndent("}");
 	}

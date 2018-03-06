@@ -89,7 +89,7 @@ public class JSStateCodeGenerator extends BaseStateGenerator {
 	private void generateInitMethod(String classname) {
 		// INIT
 
-		openIndent(classname + ".prototype.init = function () {");
+		openIndent(classname + ".prototype.init = function (" + _settings.getUserCode().getState_init_args() + ") {");
 		generateInitMethodBody();
 		closeIndent("};");
 	}

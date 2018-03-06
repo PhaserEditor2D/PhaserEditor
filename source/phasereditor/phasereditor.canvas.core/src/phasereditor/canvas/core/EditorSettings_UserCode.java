@@ -32,6 +32,7 @@ public class EditorSettings_UserCode {
 	private String _create_before = "";
 	private String _create_after = "";
 	private String _state_constructor_before = "";
+	private String _state_init_args = "";
 	private String _state_init_before = "";
 	private String _state_init_after = "";
 	private String _state_preload_before = "";
@@ -79,6 +80,14 @@ public class EditorSettings_UserCode {
 		_state_constructor_after = state_constructor_after;
 	}
 
+	public String getState_init_args() {
+		return _state_init_args;
+	}
+	
+	public void setState_init_args(String state_init_args) {
+		_state_init_args = state_init_args;
+	}
+	
 	public String getState_init_before() {
 		return _state_init_before;
 	}
@@ -126,6 +135,7 @@ public class EditorSettings_UserCode {
 			data.put("state_constructor_before", _state_constructor_before, "");
 			data.put("state_constructor_after", _state_constructor_after, "");
 
+			data.put("state_init_args", _state_init_args, "");
 			data.put("state_init_before", _state_init_before, "");
 			data.put("state_init_after", _state_init_after, "");
 
@@ -142,6 +152,7 @@ public class EditorSettings_UserCode {
 			_state_constructor_before = data.optString("state_constructor_before", "");
 			_state_constructor_after = data.optString("state_constructor_after", "");
 
+			_state_init_args = data.optString("state_init_args", "");
 			_state_init_before = data.optString("state_init_before", "");
 			_state_init_after = data.optString("state_init_after", "");
 
@@ -165,7 +176,11 @@ public class EditorSettings_UserCode {
 		}
 
 		if (_state_init_before.length() > 0 || _state_init_after.length() > 0) {
-			sb.append("init,");
+			sb.append("init");
+			if (_state_init_args.length() > 0) {
+				sb.append("(*)");
+			}
+			sb.append(",");
 		}
 
 		if (_state_preload_before.length() > 0 || _state_preload_after.length() > 0) {
