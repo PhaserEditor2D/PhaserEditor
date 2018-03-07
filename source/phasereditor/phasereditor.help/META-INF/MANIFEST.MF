@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - Help
 Bundle-SymbolicName: phasereditor.help;singleton:=true
-Bundle-Version: 1.4.4.20171217
+Bundle-Version: 1.5.0.20180307
 Bundle-Activator: phasereditor.help.HelpPlugin
 Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,

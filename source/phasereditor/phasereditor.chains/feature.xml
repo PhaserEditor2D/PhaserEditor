@@ -2,7 +2,7 @@
 <feature
       id="phasereditor.chains"
       label="Phaser Editor - Chains"
-      version="1.4.3.20171102"
+      version="1.5.0.20180307"
       provider-name="Arian Fornaris"
       license-feature="org.eclipse.platform"
       license-feature-version="4.7.0.v20170612-1255">
