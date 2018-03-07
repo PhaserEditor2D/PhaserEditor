@@ -5,7 +5,7 @@
       version="1.4.2.20170831"
       provider-name="Arian Fornaris"
       license-feature="org.eclipse.platform"
-      license-feature-version="4.7.0.v20170612-1255">
+      license-feature-version="4.7.2.v20171130-0510">
 
    <description url="http://phasereditor.boniatillo.com">
       Eclipse platform plugins used by Phaser Editor.
@@ -199,6 +199,7 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
 
    <plugin
          id="com.sun.jna"
+         os="win32"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -206,6 +207,7 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
 
    <plugin
          id="com.sun.jna.platform"
+         os="win32"
          download-size="0"
          install-size="0"
          version="0.0.0"

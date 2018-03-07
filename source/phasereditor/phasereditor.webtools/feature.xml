@@ -5,7 +5,7 @@
       version="1.3.0.20161130"
       provider-name="Arian Fornaris"
       license-feature="org.eclipse.platform"
-      license-feature-version="4.7.0.v20170612-1255">
+      license-feature-version="4.7.2.v20171130-0510">
 
    <description url="http://phasereditor.boniatillo.com">
       Eclipse Web Tools plugins used/modified by Phaser Editor.
