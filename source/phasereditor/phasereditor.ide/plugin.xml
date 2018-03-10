@@ -136,6 +136,12 @@
                            label="Phaser Editor"
                            os="win32">
                      </theme>
+                     <theme
+                           basestylesheeturi="css/phasereditor_win.css"
+                           id="phasereditor.ide.theme.linux"
+                           label="Phaser Editor"
+                           os="linux">
+                     </theme>
                   </extension>
                   <extension
                         point="org.eclipse.ui.startup">
