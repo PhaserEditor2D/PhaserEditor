@@ -133,14 +133,7 @@
                      <theme
                            basestylesheeturi="css/phasereditor_win.css"
                            id="phasereditor.ide.theme.win"
-                           label="Phaser Editor"
-                           os="win32">
-                     </theme>
-                     <theme
-                           basestylesheeturi="css/phasereditor_win.css"
-                           id="phasereditor.ide.theme.linux"
-                           label="Phaser Editor"
-                           os="linux">
+                           label="Phaser Editor">
                      </theme>
                   </extension>
                   <extension
