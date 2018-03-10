@@ -63,7 +63,7 @@ Copyright (c) Arian Fornaris 2015-2017
 
    <splash
       startupProgressRect="5,275,445,15"
-      startupMessageRect="7,252,445,20"
+      startupMessageRect="7,252,445,0"
       startupForegroundColor="000000" />
    <launcher name="PhaserEditor">
       <macosx icon="/phasereditor.ide/icons/Eclipse.icns"/>
