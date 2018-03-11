@@ -21,7 +21,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		IPreferenceStore store = PhaserEditorUI.getPreferenceStore();
 		store.setDefault(PhaserEditorUI.PREF_PROP_COLOR_DIALOG_TYPE, PhaserEditorUI.PREF_VALUE_COLOR_DIALOG_NATIVE);
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_IMG_PAINT_BG_TYPE,
-				PhaserEditorUI.PREF_VALUE_PREVIEW_IMG_PAINT_BG_TYPE_TWO_COLORS);
+				PhaserEditorUI.PREF_VALUE_PREVIEW_IMG_PAINT_BG_TYPE_TRANSPARENT);
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_IMG_PAINT_BG_SOLID_COLOR,
 				StringConverter.asString(new RGB(180, 180, 180)));
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1,
