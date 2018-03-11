@@ -60,10 +60,10 @@ public abstract class ShortcutButton extends Button {
 
 		setSize(size, size);
 
-		setBorder(new Border(
-				new BorderStroke(Color.WHITE.deriveColor(0, 0, 1, 0.5), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+		Color color = Color.WHITE;
+		setBorderColor(color);
 
-		setTextFill(Color.WHITE);
+		setTextFill(color);
 
 		_bgNormal = new Background(
 				new BackgroundFill(baseColor.deriveColor(0, 0, 1, 0.2), CornerRadii.EMPTY, new Insets(0)));
@@ -100,6 +100,11 @@ public abstract class ShortcutButton extends Button {
 
 			e.consume();
 		});
+	}
+
+	public void setBorderColor(Color color) {
+		setBorder(new Border(new BorderStroke(color.deriveColor(0, 0, 1, 0.5), BorderStrokeStyle.SOLID,
+				CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 	}
 
 	public void setSelected(Boolean selected) {
