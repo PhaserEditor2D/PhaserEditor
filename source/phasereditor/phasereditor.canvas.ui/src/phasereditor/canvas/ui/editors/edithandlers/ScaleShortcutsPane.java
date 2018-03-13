@@ -37,6 +37,7 @@ public class ScaleShortcutsPane extends ShortcutPane {
 	private Label _xLabel;
 	private Label _yLabel;
 	private CoordsButton _coordsBtn;
+	private ShortcutButton _lockBtn;
 
 	@SuppressWarnings("boxing")
 	public ScaleShortcutsPane(IObjectNode object) {
@@ -52,13 +53,32 @@ public class ScaleShortcutsPane extends ShortcutPane {
 
 		_coordsBtn = createCoordsButton();
 
+		_lockBtn = new ShortcutButton() {
+			{
+				setSize(50, -1);
+				update();
+			}
+			@Override
+			protected void doAction() {
+				_canvas.getHandlerBehavior().setScaleLocked(!_canvas.getHandlerBehavior().isScaleLocked());
+				update();
+			}
+			
+			private void update() {
+				boolean locked = _canvas.getHandlerBehavior().isScaleLocked();
+				setIcon(locked? IEditorSharedImages.IMG_LOCK : IEditorSharedImages.IMG_LOCK_OPEN);
+			}
+		};
+		
 		add(_xLabel, 0, 1, 3, 1);
 		add(_yLabel, 0, 2, 3, 1);
 
 		add(new Btn("x"), 0, 3);
 		add(new Btn("y"), 1, 3);
-		add(new ResetBtn(), 2, 3);
-		add(_coordsBtn, 0, 4, 3, 1);
+		add(new ResetBtn(), 2, 3);		
+		add(_coordsBtn, 0, 4, 2, 1);
+		add(_lockBtn, 2,  4, 1, 1);
+		
 
 	}
 

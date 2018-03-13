@@ -80,6 +80,7 @@ public class HandlerBehavior {
 	private IPropertyChangeListener _prefsListener;
 	private Map<String, Object> _data;
 	private TransformationCoords _transformationCoords;
+	private boolean _scaleLocked;
 
 	public HandlerBehavior(ObjectCanvas canvas) {
 		super();
@@ -320,5 +321,13 @@ public class HandlerBehavior {
 		}
 
 		return list;
+	}
+
+	public boolean isScaleLocked() {
+		return _scaleLocked;
+	}
+	
+	public void setScaleLocked(boolean scaleLocked) {
+		_scaleLocked = scaleLocked;
 	}
 }

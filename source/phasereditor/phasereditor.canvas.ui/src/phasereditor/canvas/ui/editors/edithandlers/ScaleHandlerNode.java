@@ -86,7 +86,7 @@ public class ScaleHandlerNode extends PathHandlerNode {
 
 	@Override
 	public void handleLocalDrag(double dx, double dy, MouseEvent e) {
-		if (e.isShiftDown()) {
+		if (e.isShiftDown() || _canvas.getHandlerBehavior().isScaleLocked()) {
 			boolean updateX = false;
 			boolean updateY = false;
 

@@ -77,4 +77,6 @@ public interface IEditorSharedImages {
 	String IMG_ARROW_ROTATE_CLOCKWISE = "icons/arrow_rotate_clockwise_blue.png";
 	String IMG_ARROW_ROTATE_ANTICLOCKWISE = "icons/arrow_rotate_anticlockwise_blue.png";
 	String IMG_ASTERISK = "icons/asterisk.png";
+	String IMG_LOCK_OPEN = "icons/lock_open.png";
+	String IMG_LOCK = "icons/lock.png";
 }
