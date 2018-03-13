@@ -92,6 +92,7 @@ public class AngleShortucsPane extends ShortcutPane {
 		private double _sign;
 
 		public IncrAngleBtn(double sign) {
+			super((sign < 0 ? "Decrement" : "Increment") + " the angle.");
 			_sign = sign;
 
 			if (sign < 0) {

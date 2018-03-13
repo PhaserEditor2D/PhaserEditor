@@ -68,10 +68,11 @@ public class MoveShortcutsPane extends ShortcutPane {
 			}
 		});
 
-		_stepBtn = new ShortcutButton() {
+		_stepBtn = new ShortcutButton("Enable/disable snapping.") {
 
 			{
 				setIcon(IEditorSharedImages.IMG_ASTERISK);
+				setSize(50, -1);
 			}
 
 			@Override
@@ -94,13 +95,14 @@ public class MoveShortcutsPane extends ShortcutPane {
 
 		_coordsBtn = createCoordsButton();
 
-		add(createTitle("position"), 0, 0, 3, 1);
-		add(_xLabel, 0, 1, 3, 1);
-		add(_yLabel, 0, 2, 3, 1);
-		add(_stepBtn, 0, 3, 1, 1);
-		add(_stepXLabel, 1, 3, 1, 1);
-		add(_stepYLabel, 2, 3, 1, 1);
-		add(_coordsBtn, 0, 4, 3, 1);
+		add(createTitle("position"), 0, 0, 2, 1);
+		add(_xLabel, 0, 1, 2, 1);
+		add(_yLabel, 0, 2, 2, 1);
+		add(_stepXLabel, 0, 3, 1, 1);
+		add(_stepYLabel, 1, 3, 1, 1);
+		add(_coordsBtn, 0, 4, 1, 1);
+		add(_stepBtn, 1, 4, 1, 1);		
+		
 	}
 
 	@Override

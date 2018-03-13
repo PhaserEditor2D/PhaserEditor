@@ -44,7 +44,7 @@ public class ArcadeBodyCircularShortcutsPane extends ShortcutPane {
 	private Label _offsetXLabel;
 	private Label _offsetYLabel;
 	private ShortcutButton _setRectBodyBtn;
-	private ShortcutButton _demoveBodyBtn;
+	private ShortcutButton _removeBodyBtn;
 
 	@SuppressWarnings("boxing")
 	public ArcadeBodyCircularShortcutsPane(IObjectNode object) {
@@ -61,7 +61,7 @@ public class ArcadeBodyCircularShortcutsPane extends ShortcutPane {
 		_radiusLabel = createNumberField(_body.getRadius(), "radius",
 				r -> setBodyInObject(_body.getOffsetX(), _body.getOffsetY(), r));
 
-		_setRectBodyBtn = new ShortcutButton() {
+		_setRectBodyBtn = new ShortcutButton("Set a rectangular body.") {
 
 			{
 				Rectangle rect = new Rectangle(16, 16);
@@ -78,7 +78,7 @@ public class ArcadeBodyCircularShortcutsPane extends ShortcutPane {
 			}
 		};
 
-		_demoveBodyBtn = new ShortcutButton() {
+		_removeBodyBtn = new ShortcutButton("Remove body.") {
 
 			{
 				setText("remove body");
@@ -97,7 +97,7 @@ public class ArcadeBodyCircularShortcutsPane extends ShortcutPane {
 		add(_offsetYLabel, 0, 2);
 		add(_radiusLabel, 0, 3);
 		add(_setRectBodyBtn, 0, 4);
-		add(_demoveBodyBtn, 0, 5);
+		add(_removeBodyBtn, 0, 5);
 	}
 
 	@Override

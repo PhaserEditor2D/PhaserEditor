@@ -47,8 +47,10 @@ import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.behaviors.HandlerBehavior;
+import phasereditor.canvas.ui.editors.behaviors.HandlerBehavior.TransformationCoords;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.IObjectNode;
+import phasereditor.ui.IEditorSharedImages;
 
 /**
  * @author arian
@@ -71,7 +73,7 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 		_node = _object.getControl().getNode();
 		_model = _object.getModel();
 		_canvas = _object.getControl().getCanvas();
-
+		
 		setPadding(new Insets(10));
 		setHgap(5);
 		setVgap(5);
@@ -166,8 +168,9 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 	class CoordsButton extends ShortcutButton {
 
 		public CoordsButton() {
-			setText("local");
-			setSize(80, -1);
+			super("");
+			
+			setSize(50, -1);
 		}
 
 		@Override
@@ -178,7 +181,9 @@ public abstract class ShortcutPane extends GridPane implements IEditHandlerNode 
 		}
 
 		public void update() {
-			setText(_canvas.getHandlerBehavior().getTransformationCoords().name().toLowerCase());
+			TransformationCoords coords = _canvas.getHandlerBehavior().getTransformationCoords();
+			setTooltipText("Do transformations in the " + coords.name().toLowerCase() + " coords.");
+			setIcon(coords == TransformationCoords.LOCAL? IEditorSharedImages.IMG_HOUSE : IEditorSharedImages.IMG_WORLD);
 		}
 
 	}

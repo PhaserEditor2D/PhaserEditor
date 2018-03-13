@@ -43,7 +43,7 @@ public class ArcadeBodyRectShortcutsPane extends ShortcutPane {
 	private Label _offsetXLabel;
 	private Label _offsetYLabel;
 	private ShortcutButton _setCircBodyBtn;
-	private ShortcutButton _demoveBodyBtn;
+	private ShortcutButton _removeBodyBtn;
 	private Label _widthLabel;
 	private Label _heightLabel;
 
@@ -65,7 +65,7 @@ public class ArcadeBodyRectShortcutsPane extends ShortcutPane {
 		_heightLabel = createNumberField(_body.getWidth(), "body.height",
 				h -> setBodyInObject(_body.getOffsetX(), _body.getOffsetY(), _body.getWidth(), h));
 
-		_setCircBodyBtn = new ShortcutButton() {
+		_setCircBodyBtn = new ShortcutButton("Set circle body.") {
 
 			{
 				Circle rect = new Circle(8);
@@ -82,7 +82,7 @@ public class ArcadeBodyRectShortcutsPane extends ShortcutPane {
 			}
 		};
 
-		_demoveBodyBtn = new ShortcutButton() {
+		_removeBodyBtn = new ShortcutButton("Remove body.") {
 
 			{
 				setText("remove body");
@@ -102,7 +102,7 @@ public class ArcadeBodyRectShortcutsPane extends ShortcutPane {
 		add(_widthLabel, 0, 3);
 		add(_heightLabel, 0, 4);
 		add(_setCircBodyBtn, 0, 5);
-		add(_demoveBodyBtn, 0, 6);
+		add(_removeBodyBtn, 0, 6);
 	}
 
 	@Override

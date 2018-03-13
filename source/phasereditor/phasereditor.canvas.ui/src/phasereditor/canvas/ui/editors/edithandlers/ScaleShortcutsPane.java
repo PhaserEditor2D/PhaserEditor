@@ -47,38 +47,38 @@ public class ScaleShortcutsPane extends ShortcutPane {
 
 		_xLabel = createNumberField(_model.getScaleX(), "scale.x",
 				x -> setScaleInObject(x, isLocalCoords() ? _model.getScaleY() : _model.getGlobalScaleY()));
-		
+
 		_yLabel = createNumberField(_model.getScaleY(), "scale.y",
 				y -> setScaleInObject(isLocalCoords() ? _model.getScaleX() : _model.getGlobalScaleX(), y));
 
 		_coordsBtn = createCoordsButton();
 
-		_lockBtn = new ShortcutButton() {
+		_lockBtn = new ShortcutButton("Lock/unlock the proportional scale.") {
 			{
 				setSize(50, -1);
 				update();
 			}
+
 			@Override
 			protected void doAction() {
 				_canvas.getHandlerBehavior().setScaleLocked(!_canvas.getHandlerBehavior().isScaleLocked());
 				update();
 			}
-			
+
 			private void update() {
 				boolean locked = _canvas.getHandlerBehavior().isScaleLocked();
-				setIcon(locked? IEditorSharedImages.IMG_LOCK : IEditorSharedImages.IMG_LOCK_OPEN);
+				setIcon(locked ? IEditorSharedImages.IMG_LOCK : IEditorSharedImages.IMG_LOCK_OPEN);
 			}
 		};
-		
+
 		add(_xLabel, 0, 1, 3, 1);
 		add(_yLabel, 0, 2, 3, 1);
 
 		add(new Btn("x"), 0, 3);
 		add(new Btn("y"), 1, 3);
-		add(new ResetBtn(), 2, 3);		
+		add(new ResetBtn(), 2, 3);
 		add(_coordsBtn, 0, 4, 2, 1);
-		add(_lockBtn, 2,  4, 1, 1);
-		
+		add(_lockBtn, 2, 4, 1, 1);
 
 	}
 
@@ -119,6 +119,8 @@ public class ScaleShortcutsPane extends ShortcutPane {
 
 	class ResetBtn extends ShortcutButton {
 		public ResetBtn() {
+			super("Set scale to 1:1");
+
 			setSize(50, -1);
 			setText("1:1");
 		}
@@ -135,6 +137,7 @@ public class ScaleShortcutsPane extends ShortcutPane {
 		private String _axis;
 
 		public Btn(String axis) {
+			super("Flip " + (axis.equals("x") ? "horizontal" : "vertical") + ".");
 			_axis = axis;
 			setSize(50, -1);
 

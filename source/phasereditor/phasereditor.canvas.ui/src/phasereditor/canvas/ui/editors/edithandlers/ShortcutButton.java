@@ -25,6 +25,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
@@ -47,13 +48,17 @@ public abstract class ShortcutButton extends Button {
 	private Background _bgSelected;
 	private Background _bgMove;
 	private Background _bgNormal;
+	private Tooltip _tooltip;
 
-	public ShortcutButton() {
-		this(Color.ALICEBLUE);
+	public ShortcutButton(String tooltip) {
+		this(tooltip, Color.ALICEBLUE);
 	}
 
-	public ShortcutButton(Color bgColor) {
+	public ShortcutButton(String tooltip, Color bgColor) {
 
+		_tooltip = new Tooltip(tooltip);
+		setTooltip(_tooltip);
+		
 		Color baseColor = bgColor == null ? Color.ALICEBLUE : bgColor;
 
 		int size = 28;
@@ -100,6 +105,10 @@ public abstract class ShortcutButton extends Button {
 
 			e.consume();
 		});
+	}
+	
+	public void setTooltipText(String text) {
+		_tooltip.setText(text);
 	}
 
 	public void setBorderColor(Color color) {

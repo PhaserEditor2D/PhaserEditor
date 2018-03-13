@@ -55,7 +55,7 @@ public class TileShortcutsPane extends ShortcutPane {
 
 		_heightLabel = createNumberField(_model.getY(), "height", h -> setTileSizeInObject(_tileModel.getWidth(), h));
 
-		_stepBtn = new ShortcutButton() {
+		_stepBtn = new ShortcutButton("Enable/disable snapping.") {
 
 			{
 				setIcon(IEditorSharedImages.IMG_ASTERISK);

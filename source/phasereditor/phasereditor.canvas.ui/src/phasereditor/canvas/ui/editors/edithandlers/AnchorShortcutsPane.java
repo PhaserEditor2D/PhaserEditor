@@ -94,6 +94,8 @@ public class AnchorShortcutsPane extends ShortcutPane {
 		private Circle _rect2;
 
 		public AnchorBtn(double anchorX, double anchorY) {
+			super("Set anchor.");
+			
 			_anchorX = anchorX;
 			_anchorY = anchorY;
 

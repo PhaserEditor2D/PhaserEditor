@@ -93,6 +93,8 @@ public class PivotShortcutPane extends ShortcutPane {
 		private Circle _rect2;
 
 		public PivotBtn(double anchorX, double anchorY) {
+			super("Set pivot.");
+			
 			_anchorX = anchorX;
 			_anchorY = anchorY;
 
