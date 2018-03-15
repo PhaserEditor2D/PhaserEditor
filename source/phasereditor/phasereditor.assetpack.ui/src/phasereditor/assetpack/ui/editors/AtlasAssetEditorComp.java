@@ -50,7 +50,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.wb.swt.SWTResourceManager;
 import org.json.JSONException;
 
 import phasereditor.assetpack.core.AssetPackModel;
@@ -172,7 +171,7 @@ public class AtlasAssetEditorComp extends Composite {
 		_label.setText("Help");
 
 		_helpLabel = new Text(this, SWT.READ_ONLY | SWT.WRAP | SWT.MULTI);
-		_helpLabel.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
+		// _helpLabel.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 		GridData gd_helpLabel = new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1);
 		gd_helpLabel.widthHint = 200;
 		_helpLabel.setLayoutData(gd_helpLabel);

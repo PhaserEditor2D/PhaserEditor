@@ -50,7 +50,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.wb.swt.SWTResourceManager;
 import org.json.JSONException;
 
 import phasereditor.assetpack.core.AssetPackCore;
@@ -143,7 +142,7 @@ public class PhysicsAssetEditorComp extends Composite {
 		lblHelp.setText("Help");
 
 		_helpLabel = new Text(this, SWT.READ_ONLY | SWT.WRAP | SWT.MULTI);
-		_helpLabel.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
+		// _helpLabel.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 		GridData gd__helpLabel = new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1);
 		gd__helpLabel.widthHint = 200;
 		_helpLabel.setLayoutData(gd__helpLabel);

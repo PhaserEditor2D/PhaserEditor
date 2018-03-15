@@ -46,7 +46,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.wb.swt.SWTResourceManager;
 import org.json.JSONException;
 
 import phasereditor.assetpack.core.AssetPackModel;
@@ -160,7 +159,7 @@ public class AudioSpriteAssetEditorComp extends Composite {
 		_label.setText("Help");
 
 		_helpText = new Text(this, SWT.READ_ONLY | SWT.WRAP | SWT.MULTI);
-		_helpText.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
+		// _helpText.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 		_helpText.setText("");
 		GridData gd_helpText = new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1);
 		gd_helpText.widthHint = 200;
