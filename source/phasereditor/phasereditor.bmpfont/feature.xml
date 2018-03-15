@@ -3,10 +3,12 @@
       id="phasereditor.bmpfont"
       label="Phaser Editor - Bitmap Font"
       version="1.5.0.20180307"
-      provider-name="Arian Fornaris">
+      provider-name="Arian Fornaris"
+      license-feature="org.eclipse.platform"
+      license-feature-version="4.7.2.v20171130-0510">
 
-   <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
+   <description url="http://phasereditor2d.com">
+      Bitmap Font support for Canvas editor.
    </description>
 
    <copyright url="http://www.example.com/copyright">
