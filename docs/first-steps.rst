@@ -19,7 +19,7 @@ Notes for MacOS users
 ~~~~~~~~~~~~~~~~~~~~~
 
 
-To execute the editor double click on the ``Phaser Editor`` application. It is a simple ``.app`` folder. By default, the projects will be created in the ``~/Library/PhaserEditorProjects`` folder.
+To execute the editor double click on the ``Phaser Editor`` application. It is a simple ``.app`` folder. By default, the projects will be created in the ``Phaser Editor.app/Contents/MacOS/workspace`` folder. We do not recommend to choose this location, just select any other forlder outside the ``Phaser Editor.app`` directory.
 
 Notes for Linux users
 ~~~~~~~~~~~~~~~~~~~~~
@@ -39,13 +39,7 @@ Then run the editor as any other Linux program:
 
     $ ./PhaserEditor
 
-Phaser Editor was tested on Ubuntu 14.04 Gnome.
-
-Some users are getting issues at the editor startup. Please `check this issue to get a workaround <https://github.com/PhaserEditor2D/PhaserEditor/issues/10>`_. Basically, the idea is to run the editor in this way: 
-
-.. code-block:: bash
-
-  $ ./PhaserEditor -persistState false -clearPersistedState
+Phaser Editor is tested on Ubuntu 17.10.
 
 
 The first run
@@ -70,8 +64,23 @@ By default, when the editor opens it checks for available updates. We recommend 
 Unlock the editor
 -----------------
 
-Phaser Editor is a commercial product. You can try it by a period of 15 days, but after this, you should purchase a license key and activate the editor.
+Phaser Editor is a commercial product, however, by default, it runs in a Free mode that contains all the features, but only allows certain number of assets (see the table below). To use the editor without any limitations you should unlock the Premium mode, by purchasing a license key and activating the editor.
+
 To activate the editor, click on ``Help → Unlock Phaser Editor``, it shows an activation dialog, write the purchased license key there and click on the **Activate** button.
+
+
+This is a table with a comparison between the Free and Premium mode:
+
+=========================== =============== ================
+Assets                      Free Edition    Premium Edition
+=========================== =============== ================
+Texture Atlas               Limited to 3    No limits
+Tilemap                     Limited to 5    No limits
+Scene (``.canvas`` files)   Limited to 15   No limits
+Others                      No limits       No limits
+=========================== =============== ================
+
+
 
 Create a project
 ----------------

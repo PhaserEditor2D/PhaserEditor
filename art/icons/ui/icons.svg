@@ -2819,13 +2819,13 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="11.313708"
-     inkscape:cx="617.04221"
-     inkscape:cy="21.627868"
+     inkscape:cx="617.26319"
+     inkscape:cy="21.451091"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1869"
-     inkscape:window-height="1025"
+     inkscape:window-height="1019"
      inkscape:window-x="51"
      inkscape:window-y="27"
      inkscape:window-maximized="1" />
@@ -7434,6 +7434,9 @@
        style="fill:#5a85d3;fill-opacity:1;stroke-width:0.93750012"
        id="path4199"
        d="m 595.56669,1034.2564 h 15 v 1.3636 h -15 m 3.75,1.3637 h 11.25 v 1.3636 h -11.25 m -3.75,1.3636 h 15 v 1.3636 h -15 m 3.75,1.3637 h 11.25 v 1.3636 h -11.25 m -3.75,1.3636 h 15 v 1.3637 h -15 m 3.75,1.3636 h 11.25 v 1.3637 h -11.25"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/arian/Documents/PhaserEditor/Public/source/phasereditor/phasereditor.ui/icons/text_align_right.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
   </g>
 </svg>
