@@ -65,8 +65,10 @@ public class TextNode extends Label implements ISpriteNode, ITextSpriteNode {
 		if (text == null) {
 			text = new Text(getModel().getText());
 		}
-
-		Bounds b = text.getBoundsInLocal();
+		
+		applyCss();
+		
+		Bounds b = getBoundsInLocal();
 
 		return new Point2D(b.getWidth(), b.getHeight());
 	}
