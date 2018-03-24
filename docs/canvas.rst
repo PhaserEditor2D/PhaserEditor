@@ -737,6 +737,47 @@ Command                                      Description
 ============================================ ===========================
 
 
+Tilemap properties
+~~~~~~~~~~~~~~~~~~
+
+At the moment Canvas only supports CSV tilemaps. A CSV tilemap only provides the data of one layer, for that reason, a Canvas tilemap object represents, at the same time, a ``Phaser.Tilemap`` and a ``Phaser.TilemapLayer``, so it contains a merge of properties of the two types. However, the tilemap layer does not have any special properties, it just contains the common sprite properties, so in the Property Grid the Object and Sprite sections are renamed to TilemapLayer Object and TilemapLayer Sprite. These are the properties of the Tilemap:
+
+
+========================== ======================================================
+Property                   Documentation
+========================== ======================================================
+``tileWidth``              The base width of the tiles in the map (in pixels). By default ``32px``.
+``tileHeight``             The base height of the tiles in the map (in pixels). By default ``32px``.
+``tilesetImage``           The unique tileset image of the CSV map. It uses the ``Tilemap.addTilesetImage()`` method to set the image. If it is not set, the editor simulates an image using different colors, but it is required.
+``collision.indexes``      Sets collision to the given tiles. It uses the ``Tilemap.setCollision()`` method.
+========================== ======================================================
+
+All these properties work pretty similar of how works the `Tilemap Preview <preview-window.html#csv-tilemap-preview>`_, it requires you set the right tile size and tileset image, else you will get an unexpected tilemap rendring. 
+
+
+The ``collision.indexes`` property is edited with the Tilemap Indexes Editor. This editor shows a dialog with the tilemap preview so you can select the indexes. 
+
+.. image:: images/TilemapIndexesSelection.png
+	:alt: The ``collision.indexes`` editor dialog.
+
+As we mentioned, the Canvas tilemap object represents both the Phaser tilemap and Phaser tilemap layer, so the code generator generates two Phaser objects. For example, a ``level`` tilemap is generated like this:
+
+
+.. code::
+
+	var _level = this.add.tilemap('level1', 16, 16);
+	_level.addTilesetImage('tileset');
+	_level.setCollision([1]);
+	var _level_layer = _level.createLayer(0);
+	_level_layer.resizeWorld();
+
+And if the tilemap is set public, then the associated fields are generated:
+
+.. code::
+	
+	this.fLevel = _level;
+	this.fLevel_layer = _level_layer;
+
 Group properties
 ~~~~~~~~~~~~~~~~
 

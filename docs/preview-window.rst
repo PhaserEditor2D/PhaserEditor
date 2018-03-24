@@ -59,6 +59,11 @@ To preview bitmap font just drop it into the window. By default it shows the nam
 .. image:: images/BitmapFontPreview.png
 	:alt: Preview a bitmap text.
 
+CSV Tilemap preview
+~~~~~~~~~~~~~~~~~~~
+
+Missing doc.
+
 
 Audio preview
 ~~~~~~~~~~~~~
