@@ -50,6 +50,16 @@ To preview an image asset or file, drop it into the Preview window. You can zoom
 .. image:: images/ImagePreview.png
 	:alt: Preview an image.
 
+
+Bitmap Font preview
+~~~~~~~~~~~~~~~~~~~
+
+To preview bitmap font just drop it into the window. By default it shows the name of the font. You can change the text by pressing the ``Set text`` command, it opens a text input dialog.
+
+.. image:: images/BitmapFontPreview.png
+	:alt: Preview a bitmap text.
+
+
 Audio preview
 ~~~~~~~~~~~~~
 

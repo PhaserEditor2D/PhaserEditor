@@ -251,10 +251,10 @@ Phaser Editor uses an `Asset manifest file (pack) <assets-manager.html>`_ that c
 That loading code is written in the ``preload`` method of the states, so if the state was compiled from a Canvas file then it is generated automatically.
 
 
-By dropping a texture asset
+By dropping an asset
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The common way to create an object is by getting a texture from somewhere and dropping it into the scene. In the next sections, we explain the different sources of the textures.
+The common way to create an object is by getting an asset from somewhere and dropping it into the scene. In the next sections, we explain the different sources of the assets.
 
 
 From the Assets window
@@ -267,7 +267,7 @@ In the `Assets <assets-manager.html#assets-explorer>`_ explorer you will find al
 
 Note a texture could be represented by an image key, a sprite-sheet frame key or a texture atlas frame key.
 
-The objects created by dropping an asset in the scene are simple sprites, direct instances of ``Phaser.Sprite``. In the next sections, we explain how to create specialized sprites like buttons and tiles.
+The type of object created by dropping an asset in the scene depends on the type of the asset. If you drop a texture (image, atlas frame or spritesheet frame), it creates a simple sprite, a direct instance of ``Phaser.Sprite``. If you drop a bitmap font, a bitmap text (``Phaser.BitmapText``) object is created, and if you drop a tilemap asset, a ``Phaser.Tilemap`` object is created. There are different types of sprites (like tile sprites or buttons) that can be created with a texture, in the next sections, we explain how to create them.
 
 From the Assets view, you can add prefabs too. Look for the **Sprites** and **Group** sections of that window. When the prefab is dropped into the scene then a prefab instance is created. This is how looks a code compiled from a State scene that contains prefab instances. Note the difference between to add a sprite from a texture (``bg``) and a sprite from a prefab (``Tree``):
 
@@ -318,6 +318,7 @@ It shows a dialog with all the assets that can be used to create the sprite:
 As you can see in the previous menu, you can add another type of objects like buttons (``Phaser.Button``), tiles (``Phaser.TileSprite``) and prefabs. It does the same, to open a dialog with the assets or prefabs to be added but it creates an object of different type.
 
 
+
 Selecting the container
 ^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -353,6 +354,30 @@ To morph an object right click on it and select one of the options displayed in 
 	:alt: Morph object to another type.
 
 In addition, you can press the ``L`` key to morph the selected sprite to a tile sprite, and resize it. It is a handy shortcut for games based on fixed-size art. If the sprite is already a tile sprite it just show the handlers to resize it.
+
+Text morphing
+^^^^^^^^^^^^^
+
+You can morph a Text or Bitmap Text object into other type of objects, but the must interesting is to morph between them. When you morph a Text object to a Bitmap Text object, or a Bitmap Text into a Text object, some properties remain the same, like the size, text and alignment. This helps to swap from a demo art assets to the final art assets.
+
+
+A handy command is the ``Text → Select All Texts With The Same Font`` (available in the context menu), that allow to select all objects of the scene that shares the same font, then you can morph them into a different type of font:
+
+Select all objects with the same font and run the Morph To BitmapText command:
+
+.. image:: images/MorphToBitmapTextMenu.png
+	:alt: Morph to bitmap text.
+
+It opens a Bitmap Font selection dialog:
+
+
+.. image:: images/SelectBitmapFontToMorph.png
+	:alt: A dialog to select the bitmap font.
+
+Then all texts are morphed to the selected font:
+
+.. image:: images/MorphedText.png
+	:alt: The text morphed into a bitmap text.
 
 
 Dynamic object creation
@@ -636,7 +661,7 @@ When the user clicks to edit any of the ``(over/out/down/up)Frame`` parameters i
 TileSprite properties
 ~~~~~~~~~~~~~~~~~~~~~
 
-These are the tile properties supported by Canvas:
+These are the tile (``Phaser.TileSprite``) properties supported by Canvas:
 
 ========================== ======================================================
 Property                   Documentation
@@ -655,7 +680,7 @@ You can convert any sprite on a tile sprite by selecting it and press ``L``. Thi
 Text properties
 ~~~~~~~~~~~~~~~
 
-These are the Text properties supported by Canvas:
+These are the Text (``Phaser.Text``) properties supported by Canvas:
 
 ========================== ======================================================
 Property                   Documentation
@@ -674,6 +699,43 @@ Property                   Documentation
 Phaser Editor uses JavaFX to render the scenes but Phaser uses the browser for the same purpose. This means that in some cases the text object is not rendered in design-time like Phaser renders it at run-time.
 
 Note that Phaser Editor can use the fonts installed in the OS, but the majority of them are not available in all platforms, so we recommend to use safe fonts or load the font files in the CSS of your game.
+
+Bitmap Text properties
+~~~~~~~~~~~~~~~~~~~~~~
+
+The ``Phaser.BitmapText`` properties supported by Canvas:
+
+========================== ======================================================
+Property                   Documentation
+========================== ======================================================
+``font``                   The key of the BitmapFont asset.
+``text``                   The text to be displayed by this BitmapText object. Can be changed by pressing the ``X`` key.
+``fontSize``               The font size in pixels.
+``maxWidth``               The maximum width of this BitmapText in pixels.
+``align``                  Alignment for multi-line text (``'left'``, ``'center'`` or ``'right'``), does not affect single lines of text.
+========================== ======================================================
+
+
+Text and Bitmap Text common commands
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The Text and BitmapText objects contain similar properties that can be changed with the same command (or toolbar button).
+
+.. image:: images/FontToolbar.png
+	:alt: Common commands to Text and BitmapFont.
+
+============================================ ===========================
+Command                                      Description
+============================================ ===========================
+``1`` Change text                            Opens a text dialog.
+``2`` Change font                            If a Text object is selected, it opens a system Font dialog. If a Bitmap Text object is selected, it opens a dialog to select a Bitmap Font asset.
+``3`` Font size up                           Increment the font size.
+``4`` Font size down                         Decrement the font size.
+``5`` Align left                             Align text to left.
+``6`` Align center                           Align text to center.
+``7`` Align right                            Align text to right.
+============================================ ===========================
+
 
 Group properties
 ~~~~~~~~~~~~~~~~
