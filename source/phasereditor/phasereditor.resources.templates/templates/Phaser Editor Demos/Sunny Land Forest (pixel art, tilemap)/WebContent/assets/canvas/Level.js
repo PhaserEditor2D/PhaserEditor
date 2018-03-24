@@ -42,13 +42,13 @@ Level.prototype.create = function() {
 	var _level = this.add.tilemap('level1', 16, 16);
 	_level.addTilesetImage('tileset');
 	_level.setCollision([ 1 ]);
-	_level_layer = _level.createLayer(0);
+	var _level_layer = _level.createLayer(0);
 	_level_layer.resizeWorld();
 
 	var _level1_collisions = this.add.tilemap('level1_collisions', 16, 16);
 	_level1_collisions.addTilesetImage('collisions');
 	_level1_collisions.setCollision([ 0 ]);
-	_level1_collisions_layer = _level1_collisions.createLayer(0);
+	var _level1_collisions_layer = _level1_collisions.createLayer(0);
 	_level1_collisions_layer.renderable = false;
 	_level1_collisions_layer.resizeWorld();
 

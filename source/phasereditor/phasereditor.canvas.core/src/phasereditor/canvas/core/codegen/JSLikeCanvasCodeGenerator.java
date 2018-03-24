@@ -666,7 +666,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 			line(varname + ".setCollision(" + list.toString() + ");");
 		}
 		
-		line(layerVarname + " = " + varname + ".createLayer(0);");
+		line("var " + layerVarname + " = " + varname + ".createLayer(0);");
 	}
 
 	private void generateTilemapLayerProps(TilemapSpriteModel model) {
