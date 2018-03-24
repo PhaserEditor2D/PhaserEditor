@@ -5,7 +5,7 @@
       version="1.5.0.20180307"
       provider-name="Arian Fornaris"
       license-feature="org.eclipse.platform"
-      license-feature-version="4.7.2.v20171130-0510">
+      license-feature-version="4.7.3.v20180301-0715">
 
    <description url="http://phasereditor.boniatillo.com">
       Chains, an advanced Phaser doc search tool.
