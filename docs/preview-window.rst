@@ -62,7 +62,38 @@ To preview bitmap font just drop it into the window. By default it shows the nam
 CSV Tilemap preview
 ~~~~~~~~~~~~~~~~~~~
 
-Missing doc.
+To preview a CSV tilemap, drag it from the Assets view and drop it in the Preview window. The CSV format does not provide any information about the tile size or tilset image of he tilemap, so you have to enters it manually. By default, the tileset image is simulated by assigning a different color to each tile ID, and the tile size is set to 32x32.
+
+This is how looks a tilemap preview by default:
+
+.. image:: images/TilemapPreviewDefault.png
+	:alt: A default rendering of tilemap.
+
+To set the tile size, press the "settings" toolbar icon and set the right values in the format ``<width>x<height>``:
+
+.. image:: images/TilemapPreviewSetSize.png
+	:alt: Set the size.
+
+To set the tileset image, press the "image" toolbar icon and select the right image asset:
+
+.. image:: images/TilemapPreviewSetTilesetImage.png
+	:alt: Set the tileset image.
+
+The result is the tilemap as it should be generated in the game:
+
+.. image:: images/TilemapPreviewFinal.png
+	:alt: The final tilemap.
+
+
+Indexes selection
+^^^^^^^^^^^^^^^^^
+
+A nice feature of the tilemap preview is the indexes selection. Note when you move the mouse over the tilemap it shows a label with the ID of the tile behind it. If you click it, that tile is selected, and the ID added to the set of selected IDs, in the text field at the bottom of the window. If you double click a tile (or press the ``SPACE`` key), all the tiles with the same ID are selected and that ID is added to the selection set:
+
+.. image:: images/TilemapPreviewSelectIndexes.png
+	:alt: How to select tilemap indexes (tile IDs).
+
+Note the list of the selected IDs has a JavaScript array like syntax, so it is very easy for you to use it in your code, create a list in the preview window and paste it in your code, or get the list of IDs from your code and paste it in the preview window. 
 
 
 Audio preview
