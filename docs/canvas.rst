@@ -509,18 +509,6 @@ Property                          Documentation
 ``renderable``                    Whether this object is renderable or not. Often used in Phaser Editor to create hidden layers with physics bodies.
 ================================= =======================================
 
-Transformation tools
-^^^^^^^^^^^^^^^^^^^^
-
-In addition, to set the values directly in the property grid you can change the transformation of an object by selecting it and executing one of the transformation commands. It shows little handlers that you can drag to transform the object. The commands can be executed from the context menu under the ``Transform`` menu, the scene toolbar or by pressing the key shortcuts: Scale (``S``), Angle (``N``), Anchor (``H``) and Pivot (``V``). 
-
-.. image:: images/TransformObject.png
-	:alt: Object transformations.
-
-.. image:: images/TransformObjectTool.png
-	:alt: Transformation handlers.
-
-
 Prefab instance properties
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -839,7 +827,83 @@ Parameter                  Documentation
 ========================== ======================================================
 
 
+In-scene object manipulators
+----------------------------
 
+Some object properties can be edited directly in the scene, the common case are the transformation properties (translation, scale and rotation), but there are other properties like pivot, anchor and physics body. These special editors or manipulators can be shown by pressing a shortcut key, clicking on a toolbar button or selecting an option in the context menu:
+
+.. image:: images/ManipulatorMenu.png
+	:alt: Menu of common manipulators.
+
+
+Translation
+~~~~~~~~~~~
+
+The translation manipulators can be used to move the object in all directions or in a specific axis:
+
+.. image:: images/ManipulatorMove.png
+	:alt: The translation manipulators.
+
+The manipulators are positioned in dependence of the anchor and pivot values.
+
+That black box on the top/right corner is the Shortcuts Pane. That pane shows some properties and buttons. The properties can be edited by clicking on them. The buttons provides some functions like swap from the local to the global coordinates, or the stepping button, to set the stepping on/off. This is common in other transformations.
+
+When you click on a property, it opens a value input dialog. You can write the value directly or an expression that is evaluated. You can use any JavaScript valid expression, including ``Math`` functions.
+
+.. image:: images/ShortcutsPaneFieldValue.png
+	:alt: Shortcuts pane value dialog.
+
+
+Scale
+~~~~~
+
+The scale manipulators are used to scale an object. If you keep the ``SHIFT`` key pressed, the scale is changed proportionally in the X and Y axis.
+
+.. image:: images/ManipulatorScale.png
+	:alt: Scale manipulators.
+
+The shortcuts pane contains the following buttons:
+
+1) Flip horizontally. It just multiplies the ``scale.x`` property by ``-1``.
+2) Flip vertically. It just multiplies the ``scale.y`` property by ``-1``.
+3) Set the scale to ``1``.
+4) Lock the scale, it means, change it proportionally or not.
+5) Use the local or global coordinates.
+
+Rotation
+~~~~~~~~
+
+The rotation manipulators are used to rotate an object:
+
+.. image:: images/ManipulatorRotate.png
+	:alt: Rotation manipulators.
+
+
+The shortcuts pane for this transformation contains the following elements:
+
+1) Decrement the angle.
+2) Increment the angle.
+3) The value of the angle to increment/decrement with the buttons 1 and 2.
+4) Use the local or global coordinates.
+
+
+Anchor
+~~~~~~
+
+With the anchor manipulators you can move the anchor point to the desired position:
+
+.. image:: images/ManipulatorAnchor.png
+	:alt: Anchor manipulators.
+
+The shortcuts pane contains a series of buttons to select one of the anchor presets: ``0``-``0``, ``0.5``-``0``, ``1``-``0`` ...
+
+Pivot
+~~~~~
+
+Just like the anchor manipulators: the pivot manipulator and the shortcuts pane.
+
+.. image:: images/ManipulatorPivot.png
+	:alt: Pivot manipulators.
 
 Scene configuration
 -------------------
