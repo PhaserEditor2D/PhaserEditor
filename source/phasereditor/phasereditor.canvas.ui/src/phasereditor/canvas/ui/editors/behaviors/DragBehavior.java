@@ -161,17 +161,19 @@ public class DragBehavior {
 			Point2D p = null;
 			
 			if (axis == Axis.CENTER) {
-
-				p = _canvas.getDragBehavior().adjustPositionToStep(info.initX + dx, info.initY + dy);
+				
+				p = new Point2D(info.initX + dx, info.initY + dy);
 
 			} else {
 
 				if (axis.changeW()) {
-					p = _canvas.getDragBehavior().adjustPositionToStep(info.initX + dx, info.initY);
+					//p = _canvas.getDragBehavior().adjustPositionToStep(info.initX + dx, info.initY);
+					p = new Point2D(info.initX + dx, info.initY);
 				}
 
 				if (axis.changeH()) {
-					p = _canvas.getDragBehavior().adjustPositionToStep(info.initX, info.initY + dy);
+					// p = _canvas.getDragBehavior().adjustPositionToStep(info.initX, info.initY + dy);
+					p = new Point2D(info.initX, info.initY + dy);
 				}
 			}
 
@@ -181,6 +183,8 @@ public class DragBehavior {
 			p = parent.sceneToLocal(p);
 
 			BaseObjectModel model = info.getModel();
+			
+			p = _canvas.getDragBehavior().adjustPositionToStep(p.getX(), p.getY());
 			
 			model.setX(p.getX());
 			model.setY(p.getY());

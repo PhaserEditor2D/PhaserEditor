@@ -53,18 +53,16 @@ public class MoveHandlerNode extends PathHandlerNode {
 		super(object);
 
 		_axis = axis;
-		
+
 		setStroke(Color.BLACK);
 		setStrokeWidth(0.5);
 
 		setCursor(Cursor.MOVE);
 
-		Paint color = _axis == Axis.CENTER ? Color.BLUE
-				: (_axis.changeW() ? Color.RED.brighter() : Color.LIGHTGREEN);
+		Paint color = _axis == Axis.CENTER ? Color.BLUE : (_axis.changeW() ? Color.RED.brighter() : Color.LIGHTGREEN);
 
 		setFill(color);
 
-		
 		updateHandler();
 
 	}
@@ -86,7 +84,7 @@ public class MoveHandlerNode extends PathHandlerNode {
 
 		if (isLocalCoords() && _axis != Axis.CENTER) {
 
-			p = _canvas.getDragBehavior().adjustPositionToStep(_initX + dx, _initY + dy);
+			p = new Point2D(_initX + dx, _initY + dy);
 
 			Point2D vector;
 
@@ -113,30 +111,35 @@ public class MoveHandlerNode extends PathHandlerNode {
 
 			vector = vector.multiply(d);
 
-			_model.setX(_initModelX + vector.getX());
-			_model.setY(_initModelY + vector.getY());
+			p = _canvas.getDragBehavior().adjustPositionToStep(_initModelX + vector.getX(),
+					_initModelY + vector.getY());
+
+			_model.setX(p.getX());
+			_model.setY(p.getY());
 
 		} else {
 
 			if (_axis == Axis.CENTER) {
 
-				p = _canvas.getDragBehavior().adjustPositionToStep(_initX + dx, _initY + dy);
+				p = new Point2D(_initX + dx, _initY + dy);
 
 			} else {
 
 				if (_axis.changeW()) {
-					p = _canvas.getDragBehavior().adjustPositionToStep(_initX + dx, _initY);
+					p = new Point2D(_initX + dx, _initY);
 				}
 
 				if (_axis.changeH()) {
-					p = _canvas.getDragBehavior().adjustPositionToStep(_initX, _initY + dy);
+					p = new Point2D(_initX, _initY + dy);
 				}
 			}
-
+			
 			Node node = _object.getNode();
 			Parent parent = node.getParent();
 			p = parent.sceneToLocal(p);
 
+			p = _canvas.getDragBehavior().adjustPositionToStep(p.getX(), p.getY());
+			
 			_model.setX(p.getX());
 			_model.setY(p.getY());
 		}
