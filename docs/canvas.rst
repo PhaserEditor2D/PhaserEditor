@@ -547,13 +547,13 @@ For now, the scene editor only supports Arcade physics. It does not mean that yo
 To enable Arcade physics on a sprite you have two options:
 
 - Set ``true`` the ``physicsGroup`` property of the parent group of the sprite. Physics bodies are automatically enabled in objects added to a physics group.
-- Select the object and open the context menu, in the ``Sprite → Arcade`` menu there are two commands: ``Set Arcade Body - Rectangular`` and ``Set Arcade Body - Circular``, both commands enable a physics body (rectangular or circular) in the selected object. 
+- Select the object and open the context menu, in the ``Sprite → Arcade`` menu there are two commands: ``Set Arcade Body - Rectangular`` and ``Set Arcade Body - Circular``, both commands enable a physics body (rectangular or circular) in the selected object. In addition, you can press the ``B`` key, it shows a context menu with all the type of physics bodies, like in the following image:
 
 
 .. image:: images/SpriteArcadeMenu.png
 	:alt: Set Arcade physics body to sprite.
 
-When you add a body to a sprite, a new section ``Arcade`` is added to the Property Grid. This section contains many properties related to the Arcade physics body of the sprite and can be edited. In addition, you can visually edit the size and offset of the body, just right click on the sprite and select ``Sprite → Arcade → Edit Body`` or press the ``B`` key.
+When you add a body to a sprite, a new section ``Arcade`` is added to the Property Grid. This section contains many properties related to the Arcade physics body of the sprite and can be edited. In addition, you can visually edit the size and offset of the body, just right click on the sprite and select ``Sprite → Arcade → Edit Body`` or press the ``B`` key. Look a shortcuts pane is shown, there you can perform certain actions like change the body type or set the body size "manually":
 
 .. image:: images/EditArcadeBody.png
 	:alt: Edit Arcade body size and offset.
@@ -818,7 +818,7 @@ There are special properties that are not directly related to any Phaser API, el
 ========================== ======================================================
 Parameter                  Documentation
 ========================== ======================================================
-``varName``                Used as var name in the generated code and label in the Outline window. Do not confuse it with the **name** parameter, which is part of the Phaser API.
+``varName``                Used as var name in the generated code and label in the Outline window. Do not confuse it with the **name** parameter, which is part of the Phaser API. You can change this value by pressing ``F2``.
 ``public``                 To make public an object in the generated code. By default the objects variables are declared is local in the creation method, however public objects will be referenced by instance fields, so they are accessible from any other context.
 ``pick``                   If set to ``false`` then it cannot be selected in the scene.
 ``generate``               Set to ``false`` if you need to keep the object in the scene but exclude it from the generated code.
@@ -1150,7 +1150,7 @@ Objects alignment and depth order
 Position commands are always a powerful resource to build the layout of scenes. In Canvas we support some basic commands for alignment (left, right, top, bottom, center, and middle) and for depth order (rise, rise to top, lower and lower to bottom).
 
 Alignment
-~~~~~~~~-
+~~~~~~~~~
 
 The alignment commands are available in the context menu and the Canvas toolbar:
 
