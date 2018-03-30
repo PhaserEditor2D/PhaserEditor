@@ -21,11 +21,15 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.imageio.ImageIO;
 
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.action.Action;
@@ -51,7 +55,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
@@ -89,7 +92,7 @@ public class TilemapCanvas extends ZoomCanvas
 	private int _tileHeight;
 	private Color[] _colors;
 	protected ImageAssetModel _imageModel;
-	private Image _tileSetImage;
+	private BufferedImage _tileSetImage2;
 	private Image _renderImage;
 	private String _initialImageRef;
 	private int _mouseX;
@@ -117,7 +120,7 @@ public class TilemapCanvas extends ZoomCanvas
 		addMouseMoveListener(this);
 		addMouseListener(this);
 		addKeyListener(this);
-		
+
 		Point size = PhaserEditorUI.get_pref_Preview_Tilemap_size();
 		_tileWidth = size.x;
 		_tileHeight = size.y;
@@ -195,21 +198,20 @@ public class TilemapCanvas extends ZoomCanvas
 	}
 
 	private void buildTilesetImage() {
-		Image old = _tileSetImage;
-
 		if (_imageModel == null) {
-			_tileSetImage = null;
+			_tileSetImage2 = null;
 		} else {
-			_tileSetImage = new Image(getDisplay(), _imageModel.getUrlFile().getLocation().toFile().getAbsolutePath());
-		}
-
-		if (old != null) {
-			old.dispose();
+			try {
+				_tileSetImage2 = ImageIO.read(_imageModel.getUrlFile().getLocation().toFile());
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
 		}
 	}
 
 	void buildMapImage() {
-		if (_model != null && _tileSetImage != null) {
+		if (_model != null && _tileSetImage2 != null) {
 
 			int[][] map = _model.getCsvData();
 
@@ -217,14 +219,12 @@ public class TilemapCanvas extends ZoomCanvas
 
 				Point size = getImageSize();
 
-				ImageData srcData = _tileSetImage.getImageData();
-				ImageData data = new ImageData(size.x, size.y, srcData.depth, srcData.palette);
-				data.setAlpha(0, 0, 0);
-				Arrays.fill(data.alphaData, (byte) 0);
+				int mapWidth = size.x;
+				int mapHeight = size.y;
 
-				Image image = new Image(getDisplay(), data);
+				BufferedImage mapImage = new BufferedImage(mapWidth, mapHeight, BufferedImage.TYPE_INT_ARGB);
 
-				GC gc = new GC(image);
+				Graphics2D gc = mapImage.createGraphics();
 
 				for (int i = 0; i < map.length; i++) {
 					int[] row = map[i];
@@ -242,26 +242,31 @@ public class TilemapCanvas extends ZoomCanvas
 						int x = j * getTileWidth();
 						int y = i * getTileHeight();
 
-						Rectangle b = _tileSetImage.getBounds();
-						int srcX = frame * _tileWidth % b.width;
-						int srcY = frame * _tileWidth / b.width * _tileHeight;
+						int srcX = frame * _tileWidth % _tileSetImage2.getWidth();
+						int srcY = frame * _tileWidth / _tileSetImage2.getWidth() * _tileHeight;
 
 						try {
-							gc.drawImage(_tileSetImage, srcX, srcY, _tileWidth, _tileHeight, x, y, w, h);
+							gc.drawImage(_tileSetImage2, x, y, x + w, y + h, srcX, srcY, srcX + _tileWidth,
+									srcY + _tileHeight, null);
 						} catch (IllegalArgumentException e) {
-							gc.drawText("Invalid parameters. Please check the tiles size.", 10, 10);
+							gc.drawString("Invalid parameters. Please check the tiles size.", 10, 10);
 						}
 					}
 				}
 
-				Image old = _renderImage;
-				_renderImage = image;
+				try {
+					Image old = _renderImage;
 
-				if (old != null) {
-					old.dispose();
+					_renderImage = PhaserEditorUI.image_Swing_To_SWT(mapImage);
+
+					if (old != null) {
+						old.dispose();
+					}
+
+				} catch (IOException e) {
+					e.printStackTrace();
+					throw new RuntimeException(e);
 				}
-
-				_renderImage = image;
 
 				return;
 			}
@@ -324,7 +329,7 @@ public class TilemapCanvas extends ZoomCanvas
 							int x = (int) (j * getTileWidth() * scale + offX);
 							int y = (int) (i * getTileHeight() * scale + offY);
 
-							if (_tileSetImage == null) {
+							if (_tileSetImage2 == null) {
 								// paint map with colors
 								Color c = _colors[frame % _colors.length];
 								gc.setBackground(c);

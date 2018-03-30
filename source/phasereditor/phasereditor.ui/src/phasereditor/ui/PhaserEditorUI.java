@@ -21,7 +21,10 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -835,6 +838,13 @@ public class PhaserEditorUI {
 		int dstY = (controlHeight - dstH) / 2;
 
 		return new Rectangle(dstX, dstY, dstW, dstH);
+	}
+	
+	public static Image image_Swing_To_SWT(BufferedImage img) throws IOException {
+		ByteArrayOutputStream memory = new ByteArrayOutputStream();
+		ImageIO.write(img, "png", memory);
+		Image result = new Image(Display.getCurrent(), new ByteArrayInputStream(memory.toByteArray()));
+		return result;
 	}
 
 	public static String readString(InputStream input) throws IOException {
