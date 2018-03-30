@@ -24,7 +24,6 @@ package phasereditor.atlas.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.MouseEvent;
@@ -65,8 +64,9 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 		}
 
 		super.drawImage(gc, srcX, srcY, srcW, srcH, dstW, dstH, dstX, dstY);
-		gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
-		gc.drawRectangle(dstX, dstY, dstW, dstH);
+		
+//		gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
+//		gc.drawRectangle(dstX, dstY, dstW, dstH);
 	}
 
 	@Override
