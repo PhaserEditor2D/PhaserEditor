@@ -91,7 +91,7 @@ todo_include_todos = False
 html_theme = "phaser-editor"
 
 # Uncomment for generate Eclipse Offline Help
-#html_theme = "eclipse-help"
+html_theme = "eclipse-help"
 
 html_theme_path = ["_themes"]
 html_show_sourcelink = False

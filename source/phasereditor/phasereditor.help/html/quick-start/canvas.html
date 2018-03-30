@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Canvas, The Scene Editor &mdash; Phaser Editor 1.4.4 documentation</title>
+  <title>Canvas, The Scene Editor &mdash; Phaser Editor Help</title>
   
 
   
@@ -52,26 +52,25 @@
             
   <div class="section" id="canvas-the-scene-editor">
 <h1>Canvas, The Scene Editor<a class="headerlink" href="#canvas-the-scene-editor" title="Permalink to this headline">¶</a></h1>
-<p>Canvas is a visual (WYSWYG) game level/object editor for Phaser. With this tool you can create a level or the prefabs (reusable objects) of the game, layout sprites and edit object properties like transformation, physics body and animation. The scenes are compiled to Phaser code, in JavaScript or TypeScript.</p>
-<p>There are three type of Canvas files: states (compiled to a <code class="docutils literal"><span class="pre">Phaser.State</span></code> code), sprite prefabs (compiled to <code class="docutils literal"><span class="pre">Phaser.Sprite</span></code> code) and group prefabs (compiled to`Phaser.Group` code). These Phaser classes contain the code that create the objects of the game world. It is not like other tools like Tiled that uses a custom format to represent the objects layout and properties, else it compiles to a code that mimics what a developer can write with his “own hands”. This method has the advantage that the user can read and understand what is behind the scene and like in other tools provided in Phaser Editor, the developer can learn Phaser or reuse his current Phaser learnings.</p>
-<p>When you create a scene (let’s say one named <code class="docutils literal"><span class="pre">Level</span></code>) you get two files: <code class="docutils literal"><span class="pre">Level.canvas</span></code> and <code class="docutils literal"><span class="pre">Level.js</span></code>. The <code class="docutils literal"><span class="pre">Level.canvas</span></code> file contains the objects of the scene and uses a custom Phaser Editor format. The <code class="docutils literal"><span class="pre">Level.js</span></code> file is compiled from the <code class="docutils literal"><span class="pre">Level.canvas</span></code> file and contains all the Phaser code that creates the real scene. Note that in a game distribution only the <code class="docutils literal"><span class="pre">Level.js</span></code> file is needed, since <code class="docutils literal"><span class="pre">Level.canvas</span></code> is only for design purpose.</p>
+<p>Canvas is a visual (WYSIWYG) game level/object editor for Phaser. With this tool, you can create a level or the prefabs (reusable objects) of the game, layout sprites and edit object properties like transformation, physics body, and animation. The scenes are compiled to Phaser code, in JavaScript or TypeScript.</p>
+<p>There are three types of Canvas files: states (compiled to a <code class="docutils literal"><span class="pre">Phaser.State</span></code> code), sprite prefabs (compiled to <code class="docutils literal"><span class="pre">Phaser.Sprite</span></code> code) and group prefabs (compiled to`Phaser.Group` code). These Phaser classes contain the code that creates the objects of the game world. It is not like other tools like Tiled that uses a custom format to represent the layout and properties of the objects, else it compiles to a code that mimics what a developer can write with his &#8220;own hands&#8221;. This method has the advantage that the user can read and understand what is behind the scene and like in other tools provided in Phaser Editor, the developer can learn Phaser or reuse his current Phaser learnings.</p>
+<p>When you create a scene (let&#8217;s say one named <code class="docutils literal"><span class="pre">Level</span></code>) you get two files: <code class="docutils literal"><span class="pre">Level.canvas</span></code> and <code class="docutils literal"><span class="pre">Level.js</span></code>. The <code class="docutils literal"><span class="pre">Level.canvas</span></code> file contains the objects of the scene and uses a custom Phaser Editor format. The <code class="docutils literal"><span class="pre">Level.js</span></code> file is compiled from the <code class="docutils literal"><span class="pre">Level.canvas</span></code> file and contains all the Phaser code that creates the real scene. Note that in a game distribution only the <code class="docutils literal"><span class="pre">Level.js</span></code> file is needed since <code class="docutils literal"><span class="pre">Level.canvas</span></code> is only for design purpose.</p>
 <p>Read in Zenva GameDev Academy <a class="reference external" href="https://gamedevacademy.org/make-a-mario-style-platformer-with-the-phaser-editor/">Make a Mario-Style Platformer with the Phaser Editor</a></p>
 <img alt="Canvas." src="_images/Canvas.png" />
 <div class="section" id="play-the-demos">
 <h2>Play the demos<a class="headerlink" href="#play-the-demos" title="Permalink to this headline">¶</a></h2>
-<p>To play around with a Canvas demo you can create a project with the <a class="reference external" href="first-steps.html#phaser-example-project-wizard">Phaser Example Project wizard</a>. There you can select any of the templates under the <strong>Phaser Editor Demos</strong> category:</p>
-<img alt="Project with a Canvas demo." src="_images/PhaserProject_Templates.png" />
+<p>To play around with a Canvas demo you can create a project with the <a class="reference external" href="first-steps.html#phaser-example-project-wizard">Phaser Example Project wizard</a>. There you can select any of the templates under the <strong>Phaser Editor Demos</strong> category.</p>
 </div>
 <div class="section" id="states-sprites-and-groups">
 <h2>States, sprites and groups<a class="headerlink" href="#states-sprites-and-groups" title="Permalink to this headline">¶</a></h2>
-<p>In this section we are going to do a quick explanation of the difference and purpose of each type of Canvas: states, sprites and groups.</p>
+<p>In this section, we are going to do a quick explanation of the difference and purpose of each type of Canvas: states, sprites, and groups.</p>
 <div class="section" id="the-state-scene">
 <h3>The state scene<a class="headerlink" href="#the-state-scene" title="Permalink to this headline">¶</a></h3>
-<p>A Phaser game is divided by states, for example the menu screen is coded in a state, a game level is coded in a state, the “game over” screen… What the user does is to write a special class that extends the <code class="docutils literal"><span class="pre">Phaser.State</span></code> type, and implement some special methods where the creation and logic of the game is coded. These methods are the <code class="docutils literal"><span class="pre">preload</span></code>, <code class="docutils literal"><span class="pre">create</span></code>, <code class="docutils literal"><span class="pre">update</span></code> and others.</p>
+<p>A Phaser game is divided by states, for example, the menu screen is coded in a state, a game level is coded in a state, the &#8220;game over&#8221; screen... What the user does is to write a special class that extends the <code class="docutils literal"><span class="pre">Phaser.State</span></code> type, and implement some special methods where the creation and logic of the game are coded. These methods are the <code class="docutils literal"><span class="pre">preload</span></code>, <code class="docutils literal"><span class="pre">create</span></code>, <code class="docutils literal"><span class="pre">update</span></code> and others.</p>
 <p>This is an example of a state scene and the code compiled by Canvas:</p>
-<p>A state with two coins…</p>
+<p>A state with two coins...</p>
 <img alt="State demo with two coins." src="_images/CanvasStateDemo.png" />
-<p>… is compiled into this code:</p>
+<p>. . . is compiled into this code:</p>
 <div class="code highlight-javascript"><div class="highlight"><pre><span></span><span class="c1">// -- user code here --</span>
 
 <span class="cm">/* --- start generated code --- */</span>
@@ -114,18 +113,18 @@
 <span class="c1">// -- user code here --</span>
 </pre></div>
 </div>
-<p>To create a State scene click in the main menu the <code class="docutils literal"><span class="pre">File</span> <span class="pre">→</span> <span class="pre">New</span> <span class="pre">→</span> <span class="pre">State</span> <span class="pre">File</span></code> option, it opens the State File wizard. The first page of that wizard asks for the parent folder and the name of the scene. Usually we create a <code class="docutils literal"><span class="pre">WebContent/assets/canvas</span></code> folder where to place all the scenes and prefabs, but you are free to use any folder inside the <code class="docutils literal"><span class="pre">WebContent</span></code> directory. In the next picture we use <code class="docutils literal"><span class="pre">Level</span></code> as the name of the scene, that will create a <code class="docutils literal"><span class="pre">Level.canvas</span></code> file. This is very important: the name of the file will be used to create the name of the state class.</p>
+<p>To create a State scene click in the main menu the <code class="docutils literal"><span class="pre">File</span> <span class="pre">→</span> <span class="pre">New</span> <span class="pre">→</span> <span class="pre">State</span> <span class="pre">File</span></code> option, it opens the State File wizard. The first page of that wizard asks for the parent folder and the name of the scene. Usually, we create a <code class="docutils literal"><span class="pre">WebContent/assets/canvas</span></code> folder where to place all the scenes and prefabs, but you are free to use any folder inside the <code class="docutils literal"><span class="pre">WebContent</span></code> directory. In the next picture we use <code class="docutils literal"><span class="pre">Level</span></code> as the name of the scene, that will create a <code class="docutils literal"><span class="pre">Level.canvas</span></code> file. This is very important: the name of the file will be used to create the name of the state class.</p>
 <img alt="State wizard (file page)" src="_images/NewStateWizard_FilePage.png" />
 <p>If you press <strong>Finish</strong> the state file is created with the default parameters, but we recommend that you press the <strong>Next</strong> button, to do some customization of the scene:</p>
 <img alt="State wizard settings page." src="_images/SceneWizard_Settings.png" />
-<p>Many of the parameters shown in that page come from the Phaser API, however there are other parameters like the <strong>Base Class Name</strong> or <strong>Code Format</strong> that are used by the scene-to-code compiler.</p>
+<p>Many of the parameters shown in that page come from the Phaser API, however, there are other parameters like the <strong>Base Class Name</strong> or <strong>Code Format</strong> that are used by the scene-to-code compiler.</p>
 <p>All these settings can be changed later in the configuration tab of the editor.</p>
 <p>Sate scenes will be displayed in the <a class="reference external" href="assets-manager.html#assets-explorer">Assets</a> window under the <strong>State</strong> section.</p>
 </div>
 <div class="section" id="the-sprite-scene-prefab">
 <h3>The sprite scene (prefab)<a class="headerlink" href="#the-sprite-scene-prefab" title="Permalink to this headline">¶</a></h3>
-<p>The sprite scene or sprite prefab is a Canvas file with a unique object that compiles to a <code class="docutils literal"><span class="pre">Phaser.Sprite</span></code> sub-class. In the Phaser examples it is called as “custom sprite”, in other tutorials and examples about Phaser it is called also “prefab”. We like the word “prefab” since it is a concept used in other game visual tools, but the purpose is the same, to write resuable components that can be used in different parts of the game, without the need to duplicate code. For example you can create a <code class="docutils literal"><span class="pre">Coin</span></code> prefab with the coin animations, so you can use that animated coin in any other scene.</p>
-<p>This is an example of how an sprite canvas file is compiled into a custom <code class="docutils literal"><span class="pre">Phaser.Sprite</span></code>:</p>
+<p>The sprite scene or sprite prefab is a Canvas file with a unique object that compiles to a <code class="docutils literal"><span class="pre">Phaser.Sprite</span></code> sub-class. In the Phaser examples it is called as &#8220;custom sprite&#8221;, in other tutorials and examples about Phaser it is called also &#8220;prefab&#8221;. We like the word &#8220;prefab&#8221; since it is a concept used in other game visual tools, but the purpose is the same, to write reusable components that can be used in different parts of the game, without the need to duplicate code. For example, you can create a <code class="docutils literal"><span class="pre">Coin</span></code> prefab with the coin animations, so you can use that animated coin in any other scene.</p>
+<p>This is an example of how a sprite canvas file is compiled into a custom <code class="docutils literal"><span class="pre">Phaser.Sprite</span></code>:</p>
 <p>The coin scene (with a <code class="docutils literal"><span class="pre">rotate</span></code> animation) is compiled into a custom Sprite class:</p>
 <img alt="Coin prefab." src="_images/CoinPrefab.png" />
 <div class="code highlight-javascript"><div class="highlight"><pre><span></span><span class="c1">// -- user code here --</span>
@@ -163,17 +162,17 @@
 <span class="c1">// -- user code here --</span>
 </pre></div>
 </div>
-<p>To create a sprite prefab in the main menu select the <code class="docutils literal"><span class="pre">File</span> <span class="pre">→</span> <span class="pre">New</span> <span class="pre">→</span> <span class="pre">Sprite</span> <span class="pre">Prefab</span> <span class="pre">File</span></code> option. It opens a wizard that in its first page ask for the container folder and the name of the file.</p>
+<p>To create a sprite prefab, in the main menu select the <code class="docutils literal"><span class="pre">File</span> <span class="pre">→</span> <span class="pre">New</span> <span class="pre">→</span> <span class="pre">Sprite</span> <span class="pre">Prefab</span> <span class="pre">File</span></code> option. It opens a wizard that on its first page asks for the container folder and the name of the file.</p>
 <p>Press the <strong>Next</strong> button to set some needed parameters, the most important is the sprite type and texture:</p>
 <img alt="Sprite prefab wizard" src="_images/CreateSpritePrefab.png" />
-<p>In the current version of Canvas the sprites cannot have children, so a sprite prefab cannot have children neither, it is a file with single object.</p>
+<p>In the current version of Canvas the sprites cannot have children, so a sprite prefab cannot have children either, it is a file with a single object.</p>
 </div>
 <div class="section" id="the-group-scene-prefab">
 <h3>The group scene (prefab)<a class="headerlink" href="#the-group-scene-prefab" title="Permalink to this headline">¶</a></h3>
-<p>In Phaser a group is an object with different purpose. It can be used as a pool of objects or like a transformation list of objects. As well as the sprites, you can create “custom groups”, or what we name group prefabs. These group prefabs can be added to other scenes so they are a way to write reusable components. For example you can create a tree with fruits and use it in different levels.</p>
-<p>This group prefab…</p>
+<p>In Phaser, a group is an object with a different purpose. It can be used as a pool of objects or like a transformation list of objects. As well as the sprites, you can create &#8220;custom groups&#8221;, or what we name group prefabs. These group prefabs can be added to other scenes so they are a way to write reusable components. For example, you can create a tree with fruits and use it in different levels.</p>
+<p>This group prefab...</p>
 <img alt="Group prefab." src="_images/GroupPrefab.png" />
-<p>… is compiled into this code:</p>
+<p>. . . is compiled into this code:</p>
 <div class="code highlight-javascript"><div class="highlight"><pre><span></span><span class="c1">// -- user code here --</span>
 
 <span class="cm">/* --- start generated code --- */</span>
@@ -217,12 +216,12 @@
 <span class="c1">// -- user code here --</span>
 </pre></div>
 </div>
-<p>To create a group prefab select in the main menu the <code class="docutils literal"><span class="pre">File</span> <span class="pre">→</span> <span class="pre">New</span> <span class="pre">→</span> <span class="pre">Group</span> <span class="pre">Prefab</span> <span class="pre">File</span></code> option. It opens a wizard that ask in the first page for the name of the file. You can press the <strong>Finish</strong> button to create the file or press <strong>Next</strong> to customize some options, like the base class name (other than <code class="docutils literal"><span class="pre">Phaser.Group</span></code>) or the code format (JavaScript 5, JavaScript 6 or TypeScript).</p>
+<p>To create a group prefab select in the main menu the <code class="docutils literal"><span class="pre">File</span> <span class="pre">→</span> <span class="pre">New</span> <span class="pre">→</span> <span class="pre">Group</span> <span class="pre">Prefab</span> <span class="pre">File</span></code> option. It opens a wizard that asks on the first page for the name of the file. You can press the <strong>Finish</strong> button to create the file or press <strong>Next</strong> to customize some options, like the base class name (other than <code class="docutils literal"><span class="pre">Phaser.Group</span></code>) or the code format (JavaScript 5, JavaScript 6 or TypeScript).</p>
 </div>
 </div>
 <div class="section" id="objects-creation">
 <h2>Objects creation<a class="headerlink" href="#objects-creation" title="Permalink to this headline">¶</a></h2>
-<p>In general, a Canvas scene is formed by a tree of objects (sprites) and a couple of configuration parameters. In this section we are going to explain how to add the objects.</p>
+<p>In general, a Canvas scene is formed by a tree of objects (sprites) and a couple of configuration parameters. In this section, we are going to explain how to add the objects.</p>
 <div class="section" id="related-phaser-concepts">
 <h3>Related Phaser concepts<a class="headerlink" href="#related-phaser-concepts" title="Permalink to this headline">¶</a></h3>
 <p>In Phaser the common syntax to create the sprites is like this:</p>
@@ -235,22 +234,22 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>For the scenes Phaser Editor uses an <a class="reference external" href="assets-manager.html">Asset manifest file (pack)</a> that contains the declaretion of the assets and the keys. Instead of write the code to load each asset, you only need to load the asset pack file:</p>
+<p>Phaser Editor uses an <a class="reference external" href="assets-manager.html">Asset manifest file (pack)</a> that contains the declaration of the assets and the keys. Instead of writing the code to load each asset, you only need to load the asset pack file:</p>
 <div class="code highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">pack</span><span class="p">(</span><span class="s2">&quot;level&quot;</span><span class="p">,</span> <span class="s2">&quot;assets/pack.json&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>That loading code is written in the <code class="docutils literal"><span class="pre">preload</span></code> method of the states, so if the state was compiled from a Canvas file then it is generated automatically.</p>
 </div>
-<div class="section" id="by-dropping-a-texture-asset">
-<h3>By dropping a texture asset<a class="headerlink" href="#by-dropping-a-texture-asset" title="Permalink to this headline">¶</a></h3>
-<p>The common way to create an object is by getting a texture from somewhere and droping it into the scene. In the next sections we explain the different sources of the textures.</p>
+<div class="section" id="by-dropping-an-asset">
+<h3>By dropping an asset<a class="headerlink" href="#by-dropping-an-asset" title="Permalink to this headline">¶</a></h3>
+<p>The common way to create an object is by getting an asset from somewhere and dropping it into the scene. In the next sections, we explain the different sources of the assets.</p>
 <div class="section" id="from-the-assets-window">
 <h4>From the Assets window<a class="headerlink" href="#from-the-assets-window" title="Permalink to this headline">¶</a></h4>
 <p>In the <a class="reference external" href="assets-manager.html#assets-explorer">Assets</a> explorer you will find all the assets declared in the pack files. To create a common sprite you can drag a texture from that window and drop it into the scene:</p>
 <img alt="Add objects from the Assets window." src="_images/AddObjectFromAssets.png" />
 <p>Note a texture could be represented by an image key, a sprite-sheet frame key or a texture atlas frame key.</p>
-<p>The objects created by dropping an asset in the scene are simple sprites, direct instances of <code class="docutils literal"><span class="pre">Phaser.Sprite</span></code>. In the next sections we explain how to create specialized sprites like buttons and tiles.</p>
-<p>From the Assets view you can add prefabs too. Look for the <strong>Sprites</strong> and <strong>Group</strong> sections of that window. When the prefab is dropped into the scene then a prefab instance is created. This is how looks a code compiled from a Sate scene that contains prefab instances. Note the difference between to add a sprite from a texture (<code class="docutils literal"><span class="pre">bg</span></code>) and a sprite from a prefab (<code class="docutils literal"><span class="pre">Tree</span></code>):</p>
+<p>The type of object created by dropping an asset in the scene depends on the type of the asset. If you drop a texture (image, atlas frame or spritesheet frame), it creates a simple sprite, a direct instance of <code class="docutils literal"><span class="pre">Phaser.Sprite</span></code>. If you drop a bitmap font, a bitmap text (<code class="docutils literal"><span class="pre">Phaser.BitmapText</span></code>) object is created, and if you drop a tilemap asset, a <code class="docutils literal"><span class="pre">Phaser.Tilemap</span></code> object is created. There are different types of sprites (like tile sprites or buttons) that can be created with a texture, in the next sections, we explain how to create them.</p>
+<p>From the Assets view, you can add prefabs too. Look for the <strong>Sprites</strong> and <strong>Group</strong> sections of that window. When the prefab is dropped into the scene then a prefab instance is created. This is how looks a code compiled from a State scene that contains prefab instances. Note the difference between to add a sprite from a texture (<code class="docutils literal"><span class="pre">bg</span></code>) and a sprite from a prefab (<code class="docutils literal"><span class="pre">Tree</span></code>):</p>
 <div class="code highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">Level</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">create</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;bg&#39;</span><span class="p">);</span>
 
@@ -262,7 +261,7 @@
 </div>
 <div class="section" id="from-the-preview-window">
 <h4>From the Preview window<a class="headerlink" href="#from-the-preview-window" title="Permalink to this headline">¶</a></h4>
-<p>The <a class="reference external" href="preview-window.html">Preview window</a> allow you you to get a closer look to the assets. Like in the Assets window, you can drag an asset key from the Preview and drop it to the scene. For example, you can drop “cells” from a sprite-sheet of a retro game into the scene. This method could be easier than getting it from the Assets tree:</p>
+<p>The <a class="reference external" href="preview-window.html">Preview window</a> allows you to get a closer look at the assets. Like in the Assets window, you can drag an asset key from the Preview and drop it to the scene. For example, you can drop &#8220;cells&#8221; from a sprite-sheet of a retro game into the scene. This method could be easier than getting it from the Assets tree:</p>
 <img alt="Add object from the Preview window." src="_images/AddObjectFromPreview.png" />
 <p>You can drag the objects from an image, a texture atlas or a sprite-sheet. In case of sprite-sheets, you can select many frames (hold the <cite>Shift</cite> key and move the mouse) and drop them into the scene: new objects will be created but keeping the original positions. This is useful to create tile-based scenes.</p>
 <img alt="Drop sprite-sheet frames" src="_images/DropSpritesheetFrames.gif" />
@@ -278,35 +277,46 @@
 <img alt="Context menu to open the Add Sprite dialog." src="_images/AddSpriteMenu.png" />
 <p>It shows a dialog with all the assets that can be used to create the sprite:</p>
 <img alt="Add Sprite dialog." src="_images/AddSpriteDialog.png" />
-<p>As you can see in the previous menu, you can add other type of objects like buttons (<code class="docutils literal"><span class="pre">Phaser.Button</span></code>), tiles (<code class="docutils literal"><span class="pre">Phaser.TileSprite</span></code>) and prefabs. It does the same, to open a dialog with the asstes or prefabs to be added but it creates an object of different type.</p>
+<p>As you can see in the previous menu, you can add another type of objects like buttons (<code class="docutils literal"><span class="pre">Phaser.Button</span></code>), tiles (<code class="docutils literal"><span class="pre">Phaser.TileSprite</span></code>) and prefabs. It does the same, to open a dialog with the assets or prefabs to be added but it creates an object of different type.</p>
 </div>
 <div class="section" id="selecting-the-container">
 <h4>Selecting the container<a class="headerlink" href="#selecting-the-container" title="Permalink to this headline">¶</a></h4>
-<p>It is a very common case when you want to add the new object to a specific group. To do this just select the group and then add the object to the scene. For example if you want to add more blocks to the <code class="docutils literal"><span class="pre">ground</span></code> group, then select <code class="docutils literal"><span class="pre">ground</span></code> and then add the objects to the scene. If instead of a group you select a sprite and add a new object, this object will be added to the parent of the selected sprite. For example, if you select a <code class="docutils literal"><span class="pre">block</span></code> sprite and add a new object then it will be inserted into the block’s parent group, in this case the <code class="docutils literal"><span class="pre">ground</span></code> group.</p>
+<p>It is a very common case when you want to add the new object to a specific group. To do this just select the group and then add the object to the scene. For example, if you want to add more blocks to the <code class="docutils literal"><span class="pre">ground</span></code> group, then select <code class="docutils literal"><span class="pre">ground</span></code> and then add the objects to the scene. If instead of a group you select a sprite and add a new object, this object will be added to the parent of the selected sprite. For example, if you select a <code class="docutils literal"><span class="pre">block</span></code> sprite and add a new object then it will be inserted into the block&#8217;s parent group, in this case, the <code class="docutils literal"><span class="pre">ground</span></code> group.</p>
 </div>
 </div>
 <div class="section" id="group-creation">
 <h3>Group creation<a class="headerlink" href="#group-creation" title="Permalink to this headline">¶</a></h3>
 <p>You can create an empty group or a group with the selected objects as children:</p>
 <img alt="Add group menu." src="_images/AddGroupMenu.png" />
-<p>Note to create a group with the selection objects you can press the <code class="docutils literal"><span class="pre">G</span></code> key.</p>
+<p>Note to create a group with the selected objects you can press the <code class="docutils literal"><span class="pre">G</span></code> key.</p>
 <p>Other group operations are:</p>
 <ul class="simple">
-<li>Break group (<code class="docutils literal"><span class="pre">Shift+G</span></code>): it reparent the children and destroy the group.</li>
-<li>Trim group (<code class="docutils literal"><span class="pre">T</span></code>): it remove the blank spaces around the children.</li>
+<li>Break group (<code class="docutils literal"><span class="pre">Shift+G</span></code>): it re-parents the children and destroys the group.</li>
+<li>Trim group (<code class="docutils literal"><span class="pre">T</span></code>): it removes the blank spaces around the children.</li>
 </ul>
 </div>
 <div class="section" id="object-morphing">
 <h3>Object morphing<a class="headerlink" href="#object-morphing" title="Permalink to this headline">¶</a></h3>
-<p>The common way to create an object is by adding an asset into the scene and it create a regular sprite (<code class="docutils literal"><span class="pre">Phaser.Sprite</span></code>). If you want to create a different type of object (like a button or a tile) you have two options: the <cite>From the context menu</cite> option or the morphing option.</p>
-<p>To morphing an object mean to convert an object from one type to other type, for example, to morph a sprite into a button or into a tile sprite. When you morph an object into other type it keeps the same proprties, like transformation, texture, body.</p>
+<p>The common way to create an object is by adding an asset to the scene and it creates a regular sprite (<code class="docutils literal"><span class="pre">Phaser.Sprite</span></code>). If you want to create a different type of object (like a button or a tile) you have two options: the <cite>From the context menu</cite> option or the morphing option.</p>
+<p>To morphing an object means to convert an object from one type to another type, for example, to morph a sprite into a button or into a tile sprite. When you morph an object into another type it keeps the same properties, like transformation, texture, body.</p>
 <p>To morph an object right click on it and select one of the options displayed in the <code class="docutils literal"><span class="pre">Sprite</span> <span class="pre">→</span> <span class="pre">Morph</span> <span class="pre">To...</span></code> menu:</p>
-<img alt="Morph object to other type." src="_images/MorphObjectTo.png" />
-<p>In addition you can press the <code class="docutils literal"><span class="pre">L</span></code> key to morph the selected sprite to a tile sprite, and resize it. It is a handy shortcut for games based on fixed-size art. If the sprite is already a tile sprite it just show the handlers to resize it.</p>
+<img alt="Morph object to another type." src="_images/MorphObjectTo.png" />
+<p>In addition, you can press the <code class="docutils literal"><span class="pre">L</span></code> key to morph the selected sprite to a tile sprite, and resize it. It is a handy shortcut for games based on fixed-size art. If the sprite is already a tile sprite it just show the handlers to resize it.</p>
+<div class="section" id="text-morphing">
+<h4>Text morphing<a class="headerlink" href="#text-morphing" title="Permalink to this headline">¶</a></h4>
+<p>You can morph a Text or Bitmap Text object into other type of objects, but the must interesting is to morph between them. When you morph a Text object to a Bitmap Text object, or a Bitmap Text into a Text object, some properties remain the same, like the size, text and alignment. This helps to swap from a demo art assets to the final art assets.</p>
+<p>A handy command is the <code class="docutils literal"><span class="pre">Text</span> <span class="pre">→</span> <span class="pre">Select</span> <span class="pre">All</span> <span class="pre">Texts</span> <span class="pre">With</span> <span class="pre">The</span> <span class="pre">Same</span> <span class="pre">Font</span></code> (available in the context menu), that allow to select all objects of the scene that shares the same font, then you can morph them into a different type of font:</p>
+<p>Select all objects with the same font and run the Morph To BitmapText command:</p>
+<img alt="Morph to bitmap text." src="_images/MorphToBitmapTextMenu.png" />
+<p>It opens a Bitmap Font selection dialog:</p>
+<img alt="A dialog to select the bitmap font." src="_images/SelectBitmapFontToMorph.png" />
+<p>Then all texts are morphed to the selected font:</p>
+<img alt="The text morphed into a bitmap text." src="_images/MorphedText.png" />
+</div>
 </div>
 <div class="section" id="dynamic-object-creation">
 <h3>Dynamic object creation<a class="headerlink" href="#dynamic-object-creation" title="Permalink to this headline">¶</a></h3>
-<p>Many genres of games create the levels dynamically, or part of the levels. With Canvas you can design the sprite and group prefabs and then create instances of them dinamically.</p>
+<p>Many genres of games create the levels dynamically or part of the levels. With Canvas you can design the sprite and group prefabs and then create instances of them dynamically.</p>
 <div class="section" id="dynamic-creation-of-sprite-prefab-objects">
 <h4>Dynamic creation of sprite prefab objects<a class="headerlink" href="#dynamic-creation-of-sprite-prefab-objects" title="Permalink to this headline">¶</a></h4>
 <p>To create a sprite prefab dynamically follow this syntax:</p>
@@ -342,33 +352,33 @@
 </div>
 <div class="section" id="scene-navigation">
 <h2>Scene navigation<a class="headerlink" href="#scene-navigation" title="Permalink to this headline">¶</a></h2>
-<p>For large scenes it is very important to navigate the tree of objects and quickly find specific objects. In the next section we show the tools provided by Phaser Editor for this purpose.</p>
+<p>For large scenes, it is very important to navigate the tree of objects and quickly find specific objects. In the next section, we show the tools provided by Phaser Editor for this purpose.</p>
 <div class="section" id="the-outline-window">
 <h3>The Outline window<a class="headerlink" href="#the-outline-window" title="Permalink to this headline">¶</a></h3>
-<p>In the top/left corner of the editor there is the Outline window. It shows the hierarchy of the scene objects. There you can filter, select, delete, group and move the objects of the scene:</p>
+<p>In the top/left corner of the editor, there is the Outline window. It shows the hierarchy of the scene objects. There you can filter, select, delete, group and move the objects of the scene:</p>
 <img alt="Outline window." src="_images/CanvasOutline.png" />
 </div>
 <div class="section" id="the-quick-outline-window">
 <h3>The Quick Outline window<a class="headerlink" href="#the-quick-outline-window" title="Permalink to this headline">¶</a></h3>
-<p>In addition there is the Quick Outline window. It is opened by the user with the key sequence <code class="docutils literal"><span class="pre">Ctrl+O</span></code>. The object selected by the user is focused in the scene, so it can be used as a search tool too.</p>
-<p>This quick window is very useful when the scene left panel is hidden to gain on space.</p>
+<p>In addition, there is the Quick Outline window. It is opened by the user with the key sequence <code class="docutils literal"><span class="pre">Ctrl+O</span></code>. The object selected by the user is focused on the scene, so it can be used as a search tool too.</p>
+<p>This quick window is very useful when the scene left panel is hidden to gain in space.</p>
 <img alt="Quick outline window." src="_images/CanvasQuickOutline.png" />
 </div>
 </div>
 <div class="section" id="object-properties">
 <h2>Object properties<a class="headerlink" href="#object-properties" title="Permalink to this headline">¶</a></h2>
-<p>To edit the scene object properties there is the Properties Grid window. The Phaser objects contain a lot of properties, but in Canvas we just support a subset of them, specially those that have an impact on the visuality of the objects.</p>
+<p>To edit the scene object properties there is the Properties Grid window. The Phaser objects contain a lot of properties, but in Canvas we just support a subset of them, especially those that have an impact on the visual aspects of the objects.</p>
 <p>To edit the properties of an object follow these steps:</p>
 <ul class="simple">
 <li>Select the object -you cannot edit many objects at the same time- in the scene or in the Outline window.</li>
-<li>The object’s properties are shown in the Property Grid.</li>
-<li>Click on the value of a property and change it. Then press ENTER to apply that change. In case of numeric properties, you can write a math expression like <code class="docutils literal"><span class="pre">15*30</span></code>, then it is evaluated and the result is set as value.</li>
+<li>The object&#8217;s properties are shown in the Property Grid.</li>
+<li>Click on the value of a property and change it. Then press ENTER to apply that change. In case of numeric properties, you can write a math expression like <code class="docutils literal"><span class="pre">15*30</span></code>, then it is evaluated and the result is set to value.</li>
 <li>Some properties have special editors that open in a separated window.</li>
 <li>You always can undo the change by pressing <code class="docutils literal"><span class="pre">Ctrl+Z</span></code>.</li>
 </ul>
 <img alt="Edit the sprite properties." src="_images/PropertyGrid.png" />
-<p>As you can note, in the top of the grid there is a text field with a “type filter text” message, it helps to filter the list of properties and find the one of your interest.</p>
-<p>As alternative to the Property Grid, you can open the Quick Edit dialog (by pressing <cite>Q</cite> or clicking in the button of the toolbar). It is actually the same thing of the Property Grid but it is shown in a popup dialog.</p>
+<p>As you can note, in the top of the grid there is a text field with a &#8220;type filter text&#8221; message, it helps to filter the list of properties and find the one of your interest.</p>
+<p>As an alternative to the Property Grid, you can open the Quick Edit dialog (by pressing <code class="docutils literal"><span class="pre">Q</span></code> or clicking on the button of the toolbar). It is actually the same thing of the Property Grid but it is shown in a popup dialog.</p>
 <p>A nice feature is that you can hover the mouse over a property and it displays the help of it. This help is the same of the Phaser API, actually, that help is taken from the Phaser metadata generated by Phaser Editor, by parsing the Phaser sources.</p>
 <img alt="The help of a property in the grid." src="_images/PropertyGridHelp.png" />
 <p>When you change a property it is highlighted with a bold font, and generated in the code in this way:</p>
@@ -391,7 +401,7 @@
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">name</span></code></td>
-<td>A user defined name. This value isn’t ever used internally by Phaser or Phaser Editor.</td>
+<td>A user defined name. This value isn&#8217;t ever used internally by Phaser or Phaser Editor.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">x/y</span></code></td>
 <td>The position of the Game Object on the x axis relative to the local coordinates of the parent.</td>
@@ -409,30 +419,24 @@
 <td>The alpha value of the object. 0 is transparent, 1 is fully opaque.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">fixedToCamera</span></code></td>
-<td>If true the Game Object will appear to be ‘fixed’ to the camera, regardless of where in the game world the camera is viewing. Useful for backgrounds or UI elements in scrolling games.</td>
+<td>If true the Game Object will appear to be &#8216;fixed&#8217; to the camera, regardless of where in the game world the camera is viewing. Useful for backgrounds or UI elements in scrolling games.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">renderable</span></code></td>
 <td>Whether this object is renderable or not. Often used in Phaser Editor to create hidden layers with physics bodies.</td>
 </tr>
 </tbody>
 </table>
-<div class="section" id="transformation-tools">
-<h4>Transformation tools<a class="headerlink" href="#transformation-tools" title="Permalink to this headline">¶</a></h4>
-<p>In addition to set the values directly in the property grid you can change the transformation of an object by selecting it and executing one of the transformation commands. It shows little handlers that you can drag to transform the object. The commands can be executed from the context menu under the <code class="docutils literal"><span class="pre">Transform</span></code> menu, the scene toolbar or by pressing the key shortcuts: Scale (<code class="docutils literal"><span class="pre">S</span></code>), Angle (<code class="docutils literal"><span class="pre">N</span></code>), Anchor (<code class="docutils literal"><span class="pre">H</span></code>) and Pivot (<code class="docutils literal"><span class="pre">V</span></code>).</p>
-<img alt="Object transformations." src="_images/TransformObject.png" />
-<img alt="Transformation handlers." src="_images/TransformObjectTool.png" />
-</div>
 </div>
 <div class="section" id="prefab-instance-properties">
 <h3>Prefab instance properties<a class="headerlink" href="#prefab-instance-properties" title="Permalink to this headline">¶</a></h3>
-<p>By default the properties of a prefab instance cannot be changed, the <code class="docutils literal"><span class="pre">position</span></code> and <code class="docutils literal"><span class="pre">override</span></code> properties are the exception. The <code class="docutils literal"><span class="pre">override</span></code> property contains the list of properties that can be changed in that prefab instance. It means, that if you want to change the scale of a prefab instance then first step is to “open” or “unlock” the scale property by checking it on the <code class="docutils literal"><span class="pre">override</span></code> list. Note that when a property is not checked in the <code class="docutils literal"><span class="pre">override</span></code> list it is shown as disabled in the Property Grid and cannot be edited.</p>
-<p>To reset the value of a property to the prefab’s original value, just deselect the property in the <code class="docutils literal"><span class="pre">override</span></code> list.</p>
+<p>By default the properties of a prefab instance cannot be changed, the <code class="docutils literal"><span class="pre">position</span></code> and <code class="docutils literal"><span class="pre">override</span></code> properties are the exception. The <code class="docutils literal"><span class="pre">override</span></code> property contains the list of properties that can be changed in that prefab instance. It means, that if you want to change the scale of a prefab instance then first step is to &#8220;open&#8221; or &#8220;unlock&#8221; the scale property by checking it on the <code class="docutils literal"><span class="pre">override</span></code> list. Note that when a property is not checked in the <code class="docutils literal"><span class="pre">override</span></code> list it is shown as disabled in the Property Grid and cannot be edited.</p>
+<p>To reset the value of a property to the prefab&#8217;s original value, just uncheck the property in the <code class="docutils literal"><span class="pre">override</span></code> list.</p>
 <img alt="Override a prefab instance property." src="_images/OverridePrefabProperty.png" />
 <p>You can open this dialog by selecting the prefab instance and pressing the <code class="docutils literal"><span class="pre">R</span></code> key.</p>
 </div>
 <div class="section" id="sprite-properties">
 <h3>Sprite properties<a class="headerlink" href="#sprite-properties" title="Permalink to this headline">¶</a></h3>
-<p>The <code class="docutils literal"><span class="pre">Phaser.Sprite</span></code> is the common class for all the game objects based on textures. In this section we show the properties supported by Phaser Editor and the some dedicated property editors.</p>
+<p>The <code class="docutils literal"><span class="pre">Phaser.Sprite</span></code> is the common class for all the game objects based on textures. In this section, we show the properties supported by Phaser Editor and some dedicated property editors.</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="11%" />
@@ -445,7 +449,7 @@
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">anchor.x/y</span></code></td>
-<td>The anchor sets the origin point of the texture. The default is 0,0 this means the texture’s origin is the top left Setting than anchor to 0.5,0.5 means the textures origin is centered Setting the anchor to 1,1 would mean the textures origin points will be the bottom right corner.</td>
+<td>The anchor sets the origin point of the texture. The default is 0,0 this means the texture&#8217;s origin is the top left Setting than anchor to 0.5,0.5 means the textures origin is centered Setting the anchor to 1,1 would mean the textures origin points will be the bottom right corner.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">tint</span></code></td>
 <td>The tint applied to the sprite. This is a hex value. A value of 0xFFFFFF (white) will remove any tint effect. To edit this value the editor shows the native color dialog. You can press <code class="docutils literal"><span class="pre">DEL</span></code> to reset the value.</td>
@@ -466,19 +470,19 @@
 </table>
 <div class="section" id="arcade-physics">
 <h4>Arcade Physics<a class="headerlink" href="#arcade-physics" title="Permalink to this headline">¶</a></h4>
-<p>For now the scene editor only supports Arcade physics. It does not mean that you cannot add other type of physics to your game, else that you should setup the other physics bodies by hand, without any special tool.</p>
+<p>For now, the scene editor only supports Arcade physics. It does not mean that you cannot add another type of physics to your game, else that you should set the other physics bodies by hand, without any special tool.</p>
 <p>To enable Arcade physics on a sprite you have two options:</p>
 <ul class="simple">
 <li>Set <code class="docutils literal"><span class="pre">true</span></code> the <code class="docutils literal"><span class="pre">physicsGroup</span></code> property of the parent group of the sprite. Physics bodies are automatically enabled in objects added to a physics group.</li>
-<li>Select the object and open the context menu, in the <code class="docutils literal"><span class="pre">Sprite</span> <span class="pre">→</span> <span class="pre">Arcade</span></code> menu there are two commands: <code class="docutils literal"><span class="pre">Set</span> <span class="pre">Arcade</span> <span class="pre">Body</span> <span class="pre">-</span> <span class="pre">Rectangular</span></code> and <code class="docutils literal"><span class="pre">Set</span> <span class="pre">Arcade</span> <span class="pre">Body</span> <span class="pre">-</span> <span class="pre">Circular</span></code>, both commands enable a physics body (rectangular or circular) in the selected object.</li>
+<li>Select the object and open the context menu, in the <code class="docutils literal"><span class="pre">Sprite</span> <span class="pre">→</span> <span class="pre">Arcade</span></code> menu there are two commands: <code class="docutils literal"><span class="pre">Set</span> <span class="pre">Arcade</span> <span class="pre">Body</span> <span class="pre">-</span> <span class="pre">Rectangular</span></code> and <code class="docutils literal"><span class="pre">Set</span> <span class="pre">Arcade</span> <span class="pre">Body</span> <span class="pre">-</span> <span class="pre">Circular</span></code>, both commands enable a physics body (rectangular or circular) in the selected object. In addition, you can press the <code class="docutils literal"><span class="pre">B</span></code> key, it shows a context menu with all the type of physics bodies, like in the following image:</li>
 </ul>
 <img alt="Set Arcade physics body to sprite." src="_images/SpriteArcadeMenu.png" />
-<p>When you add a body to a sprite, a new section <code class="docutils literal"><span class="pre">Arcade</span></code> is added to the Property Grid. This section contains many properties related to the Arcade physics body of the sprite and can be edited. In addition you can visually edit the size and offset of the body, just right click on the sprite and select <code class="docutils literal"><span class="pre">Sprite</span> <span class="pre">→</span> <span class="pre">Arcade</span> <span class="pre">→</span> <span class="pre">Edit</span> <span class="pre">Body</span></code> or press the <code class="docutils literal"><span class="pre">B</span></code> key.</p>
+<p>When you add a body to a sprite, a new section <code class="docutils literal"><span class="pre">Arcade</span></code> is added to the Property Grid. This section contains many properties related to the Arcade physics body of the sprite and can be edited. In addition, you can visually edit the size and offset of the body, just right click on the sprite and select <code class="docutils literal"><span class="pre">Sprite</span> <span class="pre">→</span> <span class="pre">Arcade</span> <span class="pre">→</span> <span class="pre">Edit</span> <span class="pre">Body</span></code> or press the <code class="docutils literal"><span class="pre">B</span></code> key. Look a shortcuts pane is shown, there you can perform certain actions like change the body type or set the body size &#8220;manually&#8221;:</p>
 <img alt="Edit Arcade body size and offset." src="_images/EditArcadeBody.png" />
 </div>
 <div class="section" id="animations">
 <h4>Animations<a class="headerlink" href="#animations" title="Permalink to this headline">¶</a></h4>
-<p>The <code class="docutils literal"><span class="pre">animations</span></code> property is reference to the <code class="docutils literal"><span class="pre">Phaser.AnimationManager</span></code> of the sprite. This manager contains a list of sprite animations and provide methods to manipulate the animations like <code class="docutils literal"><span class="pre">add</span></code>, <code class="docutils literal"><span class="pre">play</span></code>, <code class="docutils literal"><span class="pre">stop</span></code> and others.</p>
+<p>The <code class="docutils literal"><span class="pre">animations</span></code> property is a reference to the <code class="docutils literal"><span class="pre">Phaser.AnimationManager</span></code> of the sprite. This manager contains a list of sprite animations and provides methods to manipulate the animations like <code class="docutils literal"><span class="pre">add</span></code>, <code class="docutils literal"><span class="pre">play</span></code>, <code class="docutils literal"><span class="pre">stop</span></code> and others.</p>
 <p>To add animations to a sprite select it and press the <code class="docutils literal"><span class="pre">A</span></code> key, or go to the <cite>animations</cite> property in the properties grid and click on the dialog button.</p>
 <img alt="The animations dialog." src="_images/AnimationsDialog.png" />
 <p>As you can see in the dialog you can add/remove animation, add/remove frames to an animation sequence, edit each animation properties and play an animation. The animations properties you can edit are:</p>
@@ -530,21 +534,21 @@
 </div>
 <div class="section" id="user-data">
 <h4>User data<a class="headerlink" href="#user-data" title="Permalink to this headline">¶</a></h4>
-<p>The <code class="docutils literal"><span class="pre">data</span></code> property of the sprites is a reference to an empty object where the user can put any attribute. Often this data is used top create small variations between the sprites without the need to create new sprite types (or prefabs). In Phaser Editor you can set the JSON value of that property. When the user click it to edit it opens a dialog with a text editor where you can write the JSON values:</p>
+<p>The <code class="docutils literal"><span class="pre">data</span></code> property of the sprites is a reference to an empty object where the user can put any attribute. Often this data is used to create small variations between the sprites without the need to create new sprite types (or prefabs). In Phaser Editor you can set the JSON value of that property. When the user clicks it to edit it opens a dialog with a text editor where you can write the JSON values:</p>
 <img alt="The dialog to edit the data content." src="_images/DataDialog.png" />
-<p>For example, if you have some enemies in a level that walk from one side to other, you can set in the <code class="docutils literal"><span class="pre">data</span></code> property the <code class="docutils literal"><span class="pre">velocity</span></code> and the <code class="docutils literal"><span class="pre">left</span></code> and <code class="docutils literal"><span class="pre">right</span></code> borders of the enemy walk. Each enemy will get a different movement range. In the <code class="docutils literal"><span class="pre">update</span></code> method of the level you can read that information for each enemy and update its position.</p>
+<p>For example, if you have some enemies in a level that walk from one side to other, you can set in the <code class="docutils literal"><span class="pre">data</span></code> property the <code class="docutils literal"><span class="pre">velocity</span></code> and the <code class="docutils literal"><span class="pre">left</span></code> and <code class="docutils literal"><span class="pre">right</span></code> borders of the enemy walk. Each enemy will get a different movement range. In the <code class="docutils literal"><span class="pre">update</span></code> method of the level, you can read that information for each enemy and update its position.</p>
 </div>
 <div class="section" id="texture">
 <h4>Texture<a class="headerlink" href="#texture" title="Permalink to this headline">¶</a></h4>
-<p>Canvas support three different type of textures: image, sprite-sheet frame and atlas frame. If the sprite is based on atlas or sprite-sheet, the user can change the frame by editing the <code class="docutils literal"><span class="pre">frameName</span></code> or <code class="docutils literal"><span class="pre">frame</span></code> property. In addition there is a <code class="docutils literal"><span class="pre">Change</span> <span class="pre">Texture</span></code> command that allow the user to replace the texture for any other texture type. This command is available in the context menu <code class="docutils literal"><span class="pre">Sprite</span> <span class="pre">→</span> <span class="pre">Change</span> <span class="pre">Sprite</span> <span class="pre">Texture</span></code> or can be executed by pressing <code class="docutils literal"><span class="pre">Ctrl+T</span></code>. It opens a dialog with all the textures declared in the asset pack. This command allow to select more than one sprite so you can change the texture of all of them.</p>
+<p>Canvas support three different type of textures: image, sprite-sheet frame and atlas frame. If the sprite is based on atlas or sprite-sheet, the user can change the frame by editing the <code class="docutils literal"><span class="pre">frameName</span></code> or <code class="docutils literal"><span class="pre">frame</span></code> property. In addition, there is a <code class="docutils literal"><span class="pre">Change</span> <span class="pre">Texture</span></code> command that allows the user to replace the texture with any other texture type. This command is available in the context menu <code class="docutils literal"><span class="pre">Sprite</span> <span class="pre">→</span> <span class="pre">Change</span> <span class="pre">Sprite</span> <span class="pre">Texture</span></code> or can be executed by pressing <code class="docutils literal"><span class="pre">Ctrl+T</span></code>. It opens a dialog with all the textures declared in the asset pack. This command allows selecting more than one sprite so you can change the texture of all of them.</p>
 <img alt="A dialog to change the texture of the selected sprites." src="_images/ChangeTextureDialog.png" />
 <p>Another nice command is <code class="docutils literal"><span class="pre">Sprite</span> <span class="pre">→</span> <span class="pre">Select</span> <span class="pre">All</span> <span class="pre">Sprites</span> <span class="pre">With</span> <span class="pre">Same</span> <span class="pre">Texture</span></code>, it selects all the sprites in the same scene with the same texture of the selection. It helps to replace demo textures by final textures.</p>
-<p>In addition Phaser Editor provides texture refactorings, it is a process that allow to change the texture of all the sprites of all the scenes. You can read more about it the <a class="reference external" href="assets-manager.html#global-replace-texture">Global replace texture</a> section.</p>
+<p>In addition, Phaser Editor provides texture refactoring, it is a process that allows changing the texture of all the sprites of all the scenes. You can read more about it the <a class="reference external" href="assets-manager.html#global-replace-texture">Global replace texture</a> section.</p>
 </div>
 </div>
 <div class="section" id="button-properties">
 <h3>Button properties<a class="headerlink" href="#button-properties" title="Permalink to this headline">¶</a></h3>
-<p>The button object (<code class="docutils literal"><span class="pre">Phaser.Button</span></code>) inherites all the properties from the sprite and adds the following:</p>
+<p>The button object (<code class="docutils literal"><span class="pre">Phaser.Button</span></code>) inherits all the properties from the sprite and adds the following:</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="33%" />
@@ -576,11 +580,11 @@
 </tr>
 </tbody>
 </table>
-<p>When the user click to edit any of the <code class="docutils literal"><span class="pre">(over/out/down/up)Frame</span></code> parameters it shows a dialog to select the new frame, from the list of frames of the same texture, atlas or sprite-sheet.</p>
+<p>When the user clicks to edit any of the <code class="docutils literal"><span class="pre">(over/out/down/up)Frame</span></code> parameters it shows a dialog to select the new frame, from the list of frames of the same texture, atlas or sprite-sheet.</p>
 </div>
 <div class="section" id="tilesprite-properties">
 <h3>TileSprite properties<a class="headerlink" href="#tilesprite-properties" title="Permalink to this headline">¶</a></h3>
-<p>These are the tile properties supported by Canvas:</p>
+<p>These are the tile (<code class="docutils literal"><span class="pre">Phaser.TileSprite</span></code>) properties supported by Canvas:</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="33%" />
@@ -611,7 +615,7 @@
 </div>
 <div class="section" id="text-properties">
 <h3>Text properties<a class="headerlink" href="#text-properties" title="Permalink to this headline">¶</a></h3>
-<p>These are the Text properties supported by Canvas:</p>
+<p>These are the Text (<code class="docutils literal"><span class="pre">Phaser.Text</span></code>) properties supported by Canvas:</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="30%" />
@@ -652,8 +656,124 @@
 </tr>
 </tbody>
 </table>
-<p>Phaser Editor uses JavaFX to rennder the scenes but Phaser uses the browser for the same purpose. This mean that in some cases the text object is not rendered in design-time like Phaser renders it in run-time.</p>
+<p>Phaser Editor uses JavaFX to render the scenes but Phaser uses the browser for the same purpose. This means that in some cases the text object is not rendered in design-time like Phaser renders it at run-time.</p>
 <p>Note that Phaser Editor can use the fonts installed in the OS, but the majority of them are not available in all platforms, so we recommend to use safe fonts or load the font files in the CSS of your game.</p>
+</div>
+<div class="section" id="bitmap-text-properties">
+<h3>Bitmap Text properties<a class="headerlink" href="#bitmap-text-properties" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">Phaser.BitmapText</span></code> properties supported by Canvas:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="81%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Property</th>
+<th class="head">Documentation</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">font</span></code></td>
+<td>The key of the BitmapFont asset.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">text</span></code></td>
+<td>The text to be displayed by this BitmapText object. Can be changed by pressing the <code class="docutils literal"><span class="pre">X</span></code> key.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">fontSize</span></code></td>
+<td>The font size in pixels.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">maxWidth</span></code></td>
+<td>The maximum width of this BitmapText in pixels.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">align</span></code></td>
+<td>Alignment for multi-line text (<code class="docutils literal"><span class="pre">'left'</span></code>, <code class="docutils literal"><span class="pre">'center'</span></code> or <code class="docutils literal"><span class="pre">'right'</span></code>), does not affect single lines of text.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="text-and-bitmap-text-common-commands">
+<h3>Text and Bitmap Text common commands<a class="headerlink" href="#text-and-bitmap-text-common-commands" title="Permalink to this headline">¶</a></h3>
+<p>The Text and BitmapText objects contain similar properties that can be changed with the same command (or toolbar button).</p>
+<img alt="Common commands to Text and BitmapFont." src="_images/FontToolbar.png" />
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Command</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">1</span></code> Change text</td>
+<td>Opens a text dialog.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">2</span></code> Change font</td>
+<td>If a Text object is selected, it opens a system Font dialog. If a Bitmap Text object is selected, it opens a dialog to select a Bitmap Font asset.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">3</span></code> Font size up</td>
+<td>Increment the font size.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">4</span></code> Font size down</td>
+<td>Decrement the font size.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">5</span></code> Align left</td>
+<td>Align text to left.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">6</span></code> Align center</td>
+<td>Align text to center.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">7</span></code> Align right</td>
+<td>Align text to right.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="tilemap-properties">
+<h3>Tilemap properties<a class="headerlink" href="#tilemap-properties" title="Permalink to this headline">¶</a></h3>
+<p>At the moment Canvas only supports CSV tilemaps. A CSV tilemap only provides the data of one layer, for that reason, a Canvas tilemap object represents, at the same time, a <code class="docutils literal"><span class="pre">Phaser.Tilemap</span></code> and a <code class="docutils literal"><span class="pre">Phaser.TilemapLayer</span></code>, so it contains a merge of properties of the two types. However, the tilemap layer does not have any special properties, it just contains the common sprite properties, so in the Property Grid the Object and Sprite sections are renamed to TilemapLayer Object and TilemapLayer Sprite. These are the properties of the Tilemap:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="88%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Property</th>
+<th class="head">Documentation</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">tileWidth</span></code></td>
+<td>The base width of the tiles in the map (in pixels). By default <code class="docutils literal"><span class="pre">32px</span></code>.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">tileHeight</span></code></td>
+<td>The base height of the tiles in the map (in pixels). By default <code class="docutils literal"><span class="pre">32px</span></code>.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">tilesetImage</span></code></td>
+<td>The unique tileset image of the CSV map. It uses the <code class="docutils literal"><span class="pre">Tilemap.addTilesetImage()</span></code> method to set the image. If it is not set, the editor simulates an image using different colors, but it is required.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">collision.indexes</span></code></td>
+<td>Sets collision to the given tiles. It uses the <code class="docutils literal"><span class="pre">Tilemap.setCollision()</span></code> method.</td>
+</tr>
+</tbody>
+</table>
+<p>All these properties work pretty similar of how works the <a class="reference external" href="preview-window.html#csv-tilemap-preview">Tilemap Preview</a>, it requires you set the right tile size and tileset image, else you will get an unexpected tilemap rendring.</p>
+<p>The <code class="docutils literal"><span class="pre">collision.indexes</span></code> property is edited with the Tilemap Indexes Editor. This editor shows a dialog with the tilemap preview so you can select the indexes.</p>
+<img alt="The ``collision.indexes`` editor dialog." src="_images/TilemapIndexesSelection.png" />
+<p>As we mentioned, the Canvas tilemap object represents both the Phaser tilemap and Phaser tilemap layer, so the code generator generates two Phaser objects. For example, a <code class="docutils literal"><span class="pre">level</span></code> tilemap is generated like this:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">_level</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tilemap</span><span class="p">(</span><span class="s1">&#39;level1&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+<span class="nx">_level</span><span class="p">.</span><span class="nx">addTilesetImage</span><span class="p">(</span><span class="s1">&#39;tileset&#39;</span><span class="p">);</span>
+<span class="nx">_level</span><span class="p">.</span><span class="nx">setCollision</span><span class="p">([</span><span class="mi">1</span><span class="p">]);</span>
+<span class="kd">var</span> <span class="nx">_level_layer</span> <span class="o">=</span> <span class="nx">_level</span><span class="p">.</span><span class="nx">createLayer</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="nx">_level_layer</span><span class="p">.</span><span class="nx">resizeWorld</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>And if the tilemap is set public, then the associated fields are generated:</p>
+<div class="code highlight-javascript"><div class="highlight"><pre><span></span><span class="k">this</span><span class="p">.</span><span class="nx">fLevel</span> <span class="o">=</span> <span class="nx">_level</span><span class="p">;</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">fLevel_layer</span> <span class="o">=</span> <span class="nx">_level_layer</span><span class="p">;</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="group-properties">
 <h3>Group properties<a class="headerlink" href="#group-properties" title="Permalink to this headline">¶</a></h3>
@@ -690,7 +810,7 @@
 <span class="nx">_ground</span><span class="p">.</span><span class="nx">physicsSortDirection</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Physics</span><span class="p">.</span><span class="nx">Arcade</span><span class="p">.</span><span class="nx">LEFT_RIGHT</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>And as mentioned in the previous section, the goal of these kind of groups is to automatically enable physics bodies on the children.</p>
+<p>And as mentioned in the previous section, the goal of this kind of groups is to automatically enable physics bodies on the children.</p>
 </div>
 <div class="section" id="the-setall-property">
 <h4>The <code class="docutils literal"><span class="pre">setAll</span></code> property<a class="headerlink" href="#the-setall-property" title="Permalink to this headline">¶</a></h4>
@@ -699,13 +819,13 @@
 </pre></div>
 </div>
 <p>Now you don’t need to write it, you can click on the <code class="docutils literal"><span class="pre">groundSprites</span></code> group and edit the <code class="docutils literal"><span class="pre">setAll</span></code> property.</p>
-<p>The <code class="docutils literal"><span class="pre">setAll</span></code> property editor is very simple, it is a dialog with a key/value table. For each row of the table a new <code class="docutils literal"><span class="pre">setAll</span></code> method call will be generated, the first column will be generated as the property name and the second column as the property value. Note that the name is generated inside a string expression <code class="docutils literal"><span class="pre">&quot;...&quot;</span></code> but the value of the property is generated verbatim, so you can write any expression there, a string literal, a number, a boolean, a function call, the name of a variable, whatever you want.</p>
+<p>The <code class="docutils literal"><span class="pre">setAll</span></code> property editor is very simple, it is a dialog with a key/value table. For each row of the table, a new <code class="docutils literal"><span class="pre">setAll</span></code> method call will be generated, the first column will be generated as the property name and the second column as the property value. Note that the name is generated inside a string expression <code class="docutils literal"><span class="pre">&quot;...&quot;</span></code> but the value of the property is generated verbatim, so you can write any expression there, a string literal, a number, a boolean, a function call, the name of a variable, whatever you want.</p>
 <img alt="SetAll property dialog." src="_images/GroupSetAll.png" />
 </div>
 </div>
 <div class="section" id="design-time-object-properties">
 <h3>Design-time object properties<a class="headerlink" href="#design-time-object-properties" title="Permalink to this headline">¶</a></h3>
-<p>There are special properties that are not directly related to any Phaser API, else these are parameters provided to customize some editor’s behaviors like code generation of objects manipulation. These properties are under the “Editor” section of the Property Grid and we are explain them here:</p>
+<p>There are special properties that are not directly related to any Phaser API, else these are parameters provided to customize some editor&#8217;s behaviors like code generation of objects manipulation. These properties are under the &#8220;Editor&#8221; section of the Property Grid and we are explain them here:</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="9%" />
@@ -718,10 +838,10 @@
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">varName</span></code></td>
-<td>Used as var name in the generated code and label in the Outline window. Do not confuse it with the <strong>name</strong> parameter, which is part of the Phaser API.</td>
+<td>Used as var name in the generated code and label in the Outline window. Do not confuse it with the <strong>name</strong> parameter, which is part of the Phaser API. You can change this value by pressing <code class="docutils literal"><span class="pre">F2</span></code>.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">public</span></code></td>
-<td>To make public an object in the generated code. By default the objects variables are declared is local in the creation method, however public objects will be referenced by instance fields, so they are accesible from any other context.</td>
+<td>To make public an object in the generated code. By default the objects variables are declared is local in the creation method, however public objects will be referenced by instance fields, so they are accessible from any other context.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">pick</span></code></td>
 <td>If set to <code class="docutils literal"><span class="pre">false</span></code> then it cannot be selected in the scene.</td>
@@ -739,10 +859,60 @@
 </table>
 </div>
 </div>
+<div class="section" id="in-scene-object-manipulators">
+<h2>In-scene object manipulators<a class="headerlink" href="#in-scene-object-manipulators" title="Permalink to this headline">¶</a></h2>
+<p>Some object properties can be edited directly in the scene, the common case are the transformation properties (translation, scale and rotation), but there are other properties like pivot, anchor and physics body. These special editors or manipulators can be shown by pressing a shortcut key, clicking on a toolbar button or selecting an option in the context menu:</p>
+<img alt="Menu of common manipulators." src="_images/ManipulatorMenu.png" />
+<div class="section" id="translation">
+<h3>Translation<a class="headerlink" href="#translation" title="Permalink to this headline">¶</a></h3>
+<p>The translation manipulators can be used to move the object in all directions or in a specific axis:</p>
+<img alt="The translation manipulators." src="_images/ManipulatorMove.png" />
+<p>The manipulators are positioned in dependence of the anchor and pivot values.</p>
+<p>That black box on the top/right corner is the Shortcuts Pane. That pane shows some properties and buttons. The properties can be edited by clicking on them. The buttons provides some functions like swap from the local to the global coordinates, or the stepping button, to set the stepping on/off. This is common in other transformations.</p>
+<p>When you click on a property, it opens a value input dialog. You can write the value directly or an expression that is evaluated. You can use any JavaScript valid expression, including <code class="docutils literal"><span class="pre">Math</span></code> functions.</p>
+<img alt="Shortcuts pane value dialog." src="_images/ShortcutsPaneFieldValue.png" />
+</div>
+<div class="section" id="scale">
+<h3>Scale<a class="headerlink" href="#scale" title="Permalink to this headline">¶</a></h3>
+<p>The scale manipulators are used to scale an object. If you keep the <code class="docutils literal"><span class="pre">SHIFT</span></code> key pressed, the scale is changed proportionally in the X and Y axis.</p>
+<img alt="Scale manipulators." src="_images/ManipulatorScale.png" />
+<p>The shortcuts pane contains the following buttons:</p>
+<ol class="arabic simple">
+<li>Flip horizontally. It just multiplies the <code class="docutils literal"><span class="pre">scale.x</span></code> property by <code class="docutils literal"><span class="pre">-1</span></code>.</li>
+<li>Flip vertically. It just multiplies the <code class="docutils literal"><span class="pre">scale.y</span></code> property by <code class="docutils literal"><span class="pre">-1</span></code>.</li>
+<li>Set the scale to <code class="docutils literal"><span class="pre">1</span></code>.</li>
+<li>Lock the scale, it means, change it proportionally or not.</li>
+<li>Use the local or global coordinates.</li>
+</ol>
+</div>
+<div class="section" id="rotation">
+<h3>Rotation<a class="headerlink" href="#rotation" title="Permalink to this headline">¶</a></h3>
+<p>The rotation manipulators are used to rotate an object:</p>
+<img alt="Rotation manipulators." src="_images/ManipulatorRotate.png" />
+<p>The shortcuts pane for this transformation contains the following elements:</p>
+<ol class="arabic simple">
+<li>Decrement the angle.</li>
+<li>Increment the angle.</li>
+<li>The value of the angle to increment/decrement with the buttons 1 and 2.</li>
+<li>Use the local or global coordinates.</li>
+</ol>
+</div>
+<div class="section" id="anchor">
+<h3>Anchor<a class="headerlink" href="#anchor" title="Permalink to this headline">¶</a></h3>
+<p>With the anchor manipulators you can move the anchor point to the desired position:</p>
+<img alt="Anchor manipulators." src="_images/ManipulatorAnchor.png" />
+<p>The shortcuts pane contains a series of buttons to select one of the anchor presets: <code class="docutils literal"><span class="pre">0</span></code>-<code class="docutils literal"><span class="pre">0</span></code>, <code class="docutils literal"><span class="pre">0.5</span></code>-<code class="docutils literal"><span class="pre">0</span></code>, <code class="docutils literal"><span class="pre">1</span></code>-<code class="docutils literal"><span class="pre">0</span></code> ...</p>
+</div>
+<div class="section" id="pivot">
+<h3>Pivot<a class="headerlink" href="#pivot" title="Permalink to this headline">¶</a></h3>
+<p>Just like the anchor manipulators: the pivot manipulator and the shortcuts pane.</p>
+<img alt="Pivot manipulators." src="_images/ManipulatorPivot.png" />
+</div>
+</div>
 <div class="section" id="scene-configuration">
 <h2>Scene configuration<a class="headerlink" href="#scene-configuration" title="Permalink to this headline">¶</a></h2>
-<p>As you can note the scene editor has two tabs: Design and Configuration. The Design tab contains everything about the objects and the Configuration tab contains other parameters not related with any object in particular else with the scene.</p>
-<p>The Configuration tab is splitted in two panels, the left panel show a list of sections and the right panel a grid of properties of the selected section.</p>
+<p>As you can note the scene editor has two tabs: Design and Configuration. The Design tab contains everything about the objects and the Configuration tab contains other parameters not related to any object in particular else with the scene.</p>
+<p>The Configuration tab is split in two panels, the left panel shows a list of sections and the right panel a grid of properties of the selected section.</p>
 <p>The configuration of sprites and group scenes are the same, it contains only an Editor section with design/code-generation specific parameters. The state scene contains the Editor section in addition to a State section with <code class="docutils literal"><span class="pre">Phaser.State</span></code> related parameters.</p>
 <div class="section" id="the-editor-section">
 <h3>The Editor section<a class="headerlink" href="#the-editor-section" title="Permalink to this headline">¶</a></h3>
@@ -818,7 +988,7 @@ the name of the file.</td>
 </div>
 <div class="section" id="state-scene-configuration">
 <h3>State scene configuration<a class="headerlink" href="#state-scene-configuration" title="Permalink to this headline">¶</a></h3>
-<p>The configuration of sprite and group scenes are pretty the same, it only contains an Editor section. However the state scene has a State section with some paremeters related to the <code class="docutils literal"><span class="pre">Phaser.State</span></code> API. At the moment this section only contains a few parameters but the ideal is to have a bigger set of parameters so it makes easy to the user to configure a state. Let’s see the list of parameters supported rigth now:</p>
+<p>The configuration of sprite and group scenes are pretty the same, it only contains an Editor section. However the state scene has a State section with some paremeters related to the <code class="docutils literal"><span class="pre">Phaser.State</span></code> API. At the moment this section only contains a few parameters but the ideal is to have a bigger set of parameters so it makes easy to the user to configure a state. Let&#8217;s see the list of parameters supported rigth now:</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="5%" />
@@ -859,7 +1029,7 @@ the name of the file.</td>
 <td>Set to <code class="docutils literal"><span class="pre">true</span></code> if you like to use this state as a preloader state. More is explained in the <a class="reference internal" href="#preloader-state-configuration">Preloader state configuration</a> section.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">preloadSprite</span></code></td>
-<td>This parameter is shown onny if the <code class="docutils literal"><span class="pre">isPreloader</span></code> parameter is <code class="docutils literal"><span class="pre">true</span></code>. When you edit this parameter it shows a dialog to select one of the scene sprites. This sprite will be used as the preload sprite as is explained in the <code class="docutils literal"><span class="pre">Phaser.Loader.setPreloadSprite()</span></code> method: Set a Sprite to be a “preload” sprite by passing it to this method. A “preload” sprite will have its width or height crop adjusted based on the percentage of the loader in real-time. This allows you to easily make loading bars for games. The sprite will automatically be made visible when calling this.</td>
+<td>This parameter is shown onny if the <code class="docutils literal"><span class="pre">isPreloader</span></code> parameter is <code class="docutils literal"><span class="pre">true</span></code>. When you edit this parameter it shows a dialog to select one of the scene sprites. This sprite will be used as the preload sprite as is explained in the <code class="docutils literal"><span class="pre">Phaser.Loader.setPreloadSprite()</span></code> method: Set a Sprite to be a &#8220;preload&#8221; sprite by passing it to this method. A &#8220;preload&#8221; sprite will have its width or height crop adjusted based on the percentage of the loader in real-time. This allows you to easily make loading bars for games. The sprite will automatically be made visible when calling this.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">preloadSprite.direction</span></code></td>
 <td>The direction parameter of the <code class="docutils literal"><span class="pre">Phaser.Loader.setPreloadSprite()</span></code> method. It should be <code class="docutils literal"><span class="pre">HORIZONTAL</span></code> or <code class="docutils literal"><span class="pre">VERTICAL</span></code>.</td>
@@ -872,15 +1042,15 @@ the name of the file.</td>
 </div>
 <div class="section" id="preloader-state-configuration">
 <h3>Preloader state configuration<a class="headerlink" href="#preloader-state-configuration" title="Permalink to this headline">¶</a></h3>
-<p>Often games load and process all the assets in a loading screen. In Phaser this loading screen is coded in a preloader state.
+<p>Often games load and process all the assets on a loading screen. In Phaser, this loading screen is coded in a preloader state.
 A preloader state is just like any other Phaser state, but the sprites are created in the <code class="docutils literal"><span class="pre">preload</span></code> method (instead of the <code class="docutils literal"><span class="pre">create</span></code> method) and the <code class="docutils literal"><span class="pre">game.load.setPreloadSprite()</span></code> method is used to set the sprite to be used as progress bar.</p>
-<p>The Phaser Project wizard of the editor provides a few project layout options, one of them is the <strong>Multiple states with preloader (for larger games)</strong>. We recommend to use that layout if you like to add a loading screen to your game. If you want to see a demo just select the <strong>Include demo assets</strong> parameter, it will create a project with a loading screen with a dino progress bar:</p>
+<p>The Phaser Project wizard of the editor provides a few project layout options, one of them is the <strong>Multiple states with preloader (for larger games)</strong>. We recommend using that layout if you like to add a loading screen to your game. If you want to see a demo just select the <strong>Include demo assets</strong> parameter, it will create a project with a loading screen with a dino progress bar:</p>
 <img alt="Create a project with a preloader state." src="_images/CreatePreloaderDemoProject.png" />
 <p>The created project contains a <code class="docutils literal"><span class="pre">Preloader.canvas</span></code> file with the preload sprite (the dino kid):</p>
 <img alt="Preloader scene with the preload sprite." src="_images/PreloaderStateScene.png" />
 <p>In the Configuration tab, in the State section, you can see the <code class="docutils literal"><span class="pre">isPreloader</span></code> is set to <code class="docutils literal"><span class="pre">true</span></code> and the <code class="docutils literal"><span class="pre">preloadSprite</span></code> is set to <code class="docutils literal"><span class="pre">logo</span></code>:</p>
 <img alt="Configuration of a preloader state." src="_images/PreloaderStateConfig.png" />
-<p>When you run the project you will see how the dino is cropped from left to right as a progress of the loading. We recommend to test it on Chrome and enable the <code class="docutils literal"><span class="pre">Network</span> <span class="pre">→</span> <span class="pre">Throttling</span></code> parameter, because serving from localhost is too fast to see the progress.</p>
+<p>When you run the project you will see how the dino is cropped from left to right as a progress of the loading. We recommend to test it on Chrome and enable the <code class="docutils literal"><span class="pre">Network</span> <span class="pre">→</span> <span class="pre">Throttling</span></code> parameter because serving from localhost is too fast to see the progress.</p>
 <p>As we commented before, a key difference between a preloader state and a common state is that the sprites are created in the <code class="docutils literal"><span class="pre">preload</span></code> method. Why? Because the <code class="docutils literal"><span class="pre">create</span></code> is called only when all the assets are loaded, but what we need is to show the progress of the assets loading. Usually what is coded in the <code class="docutils literal"><span class="pre">create</span></code> method is code to start the next state of the game. So the code of the <code class="docutils literal"><span class="pre">Preloader.js</span></code> state of the previous project looks like this:</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="c1">// -- user code here --</span>
 
@@ -937,16 +1107,16 @@ A preloader state is just like any other Phaser state, but the sprites are creat
 </div>
 <div class="section" id="user-code">
 <h2>User code<a class="headerlink" href="#user-code" title="Permalink to this headline">¶</a></h2>
-<p>Usually tools like Canvas provide a dedicated runtime to load the scenes in the Phaser games, however, that practice is not in the Phaser Editor’s philosophy of support plain Phaser, so we decided to use a compiler technique. This means that the scenes files are compiled into plain Phaser code, that can be integrated into the game as any other code written by the user.</p>
-<p>The scenes are compiled into Sprite, Group and State classes, however there are many aspects of the game that are out of the scope of the tool, like for example the logic of the game is something that you have to write yourself. In this section we explain how you can insert your own code into the files generated by the editor.</p>
-<p>There are two main ways to insert your code: (1) by writting it directly in certain parts of the file or (2) by writing it in the <code class="docutils literal"><span class="pre">userCode</span></code> parameter of the scene configuration.</p>
-<div class="section" id="writting-into-the-code-file">
-<h3>Writting into the code file<a class="headerlink" href="#writting-into-the-code-file" title="Permalink to this headline">¶</a></h3>
+<p>Usually, tools like Canvas provide a dedicated runtime to load the scenes in the Phaser games, however, that practice is not in the Phaser Editor&#8217;s philosophy of support plain Phaser, so we decided to use a compiler technique. This means that the scenes files are compiled into plain Phaser code, that can be integrated into the game as any other code written by the user.</p>
+<p>The scenes are compiled into Sprite, Group and State classes, however, there are many aspects of the game that are out of the scope of the tool, like for example the logic of the game is something that you have to write yourself. In this section, we explain how you can insert your own code into the files generated by the editor.</p>
+<p>There are two main ways to insert your code: (1) by writing it directly in certain parts of the file or (2) by writing it in the <code class="docutils literal"><span class="pre">userCode</span></code> parameter of the scene configuration.</p>
+<div class="section" id="writing-into-the-code-file">
+<h3>Writing into the code file<a class="headerlink" href="#writing-into-the-code-file" title="Permalink to this headline">¶</a></h3>
 <p>You are always allowed to write in any part of the generated file, but if you do not follow certain rules that code could be overwritten (lost) in the next compilation. There are very well defined sections of the file where you can write your code and it is preserved from compilation to compilation.</p>
 <ul>
 <li><p class="first">As general rule just write your code in sections where it says <code class="docutils literal"><span class="pre">//</span> <span class="pre">--</span> <span class="pre">user</span> <span class="pre">code</span> <span class="pre">here</span> <span class="pre">--</span></code>.</p>
 </li>
-<li><p class="first">All the files have a <code class="docutils literal"><span class="pre">/*</span> <span class="pre">---</span> <span class="pre">start</span> <span class="pre">generated</span> <span class="pre">code</span> <span class="pre">---</span> <span class="pre">*/</span></code> line at the begining of the file, you can write your code before that.</p>
+<li><p class="first">All the files have a <code class="docutils literal"><span class="pre">/*</span> <span class="pre">---</span> <span class="pre">start</span> <span class="pre">generated</span> <span class="pre">code</span> <span class="pre">---</span> <span class="pre">*/</span></code> line at the beginning of the file, you can write your code before that.</p>
 </li>
 <li><p class="first">All the files have a <code class="docutils literal"><span class="pre">/*</span> <span class="pre">---</span> <span class="pre">end</span> <span class="pre">generated</span> <span class="pre">code</span> <span class="pre">---</span> <span class="pre">*/</span></code> line at the end of the file, you can write your code after that.</p>
 </li>
@@ -962,12 +1132,12 @@ A preloader state is just like any other Phaser state, but the sprites are creat
 </ul>
 <p>These sections are created in places that allow the user to add more elements to the classes, like methods or fields.</p>
 </div>
-<div class="section" id="writting-into-the-configuration">
-<h3>Writting into the configuration<a class="headerlink" href="#writting-into-the-configuration" title="Permalink to this headline">¶</a></h3>
-<p>The other way to insert user code into the generated file is to write it in the configuration of the scene (look at the Configuration tab the Editor section). The compiler reads the content of the <code class="docutils literal"><span class="pre">userCode</span></code> parameter and write it into the file. In this case there is not risk to lost the code because it is saved in the Canvas file.</p>
-<p>The <code class="docutils literal"><span class="pre">userCode</span></code> parameter is divided by sections that refers to different points of the generated code. The idea is to insert code into the generated methods, <code class="docutils literal"><span class="pre">before</span></code> and <code class="docutils literal"><span class="pre">after</span></code> the method’s body. For example you can add code after the body of the method <code class="docutils literal"><span class="pre">create</span></code> to perform other initialization routines, like create tween objects or audio objects or set other parameters to the current objects.</p>
-<p>When you click to edit the <code class="docutils literal"><span class="pre">userCode</span></code> parameter it opens a dialog with a tab for method, and each tab has two text boxes, one to write the <code class="docutils literal"><span class="pre">before</span></code> code and other to write the <code class="docutils literal"><span class="pre">after</span></code> code. For example a state scene <code class="docutils literal"><span class="pre">userCode</span></code> has a tab for Constructor, Init, Preload and Create. All these tabs denote a method generated by the editor, so you can write your own code there.</p>
-<p>For example let’s see a case of user code inserted in a state scene via configuration:</p>
+<div class="section" id="writing-into-the-configuration">
+<h3>Writing into the configuration<a class="headerlink" href="#writing-into-the-configuration" title="Permalink to this headline">¶</a></h3>
+<p>The other way to insert user code into the generated file is to write it in the configuration of the scene (look at the Configuration tab the Editor section). The compiler reads the content of the <code class="docutils literal"><span class="pre">userCode</span></code> parameter and writes it into the file. In this case, there is no risk to lost the code because it is saved in the Canvas file.</p>
+<p>The <code class="docutils literal"><span class="pre">userCode</span></code> parameter is divided into sections that refer to different points of the generated code. The idea is to insert code into the generated methods, <code class="docutils literal"><span class="pre">before</span></code> and <code class="docutils literal"><span class="pre">after</span></code> the method&#8217;s body. For example you can add code after the body of the method <code class="docutils literal"><span class="pre">create</span></code> to perform other initialization routines, like create tween objects or audio objects or set other parameters to the current objects.</p>
+<p>When you click to edit the <code class="docutils literal"><span class="pre">userCode</span></code> parameter it opens a dialog with a tab for method, and each tab has two text boxes, one to write the <code class="docutils literal"><span class="pre">before</span></code> code and other to write the <code class="docutils literal"><span class="pre">after</span></code> code. For example, a state scene <code class="docutils literal"><span class="pre">userCode</span></code> has a tab for Constructor, Init, Preload and Create. All these tabs denote a method generated by the editor, so you can write your own code there.</p>
+<p>For example, let&#8217;s see a case of user code inserted in a state scene via configuration:</p>
 <img alt="User code dialog." src="_images/UserCodeDialog.png" />
 <p>The code set there is inserted in the <code class="docutils literal"><span class="pre">create</span></code> method of the compiled code:</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">Level</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">create</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
@@ -986,12 +1156,12 @@ A preloader state is just like any other Phaser state, but the sprites are creat
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>We recommend to write just few lines of code via the <code class="docutils literal"><span class="pre">userCode</span></code> configuration, specially because that dialog does not provide advanced features like code completion. In our demos and games what we do is to write a call to a method that was defined at the end of the file, in a protected zone, using the method explained in the <a class="reference internal" href="#writting-into-the-code-file">Writting into the code file</a> section.</p>
+<p>We recommend writing just a few lines of code via the <code class="docutils literal"><span class="pre">userCode</span></code> configuration, especially because that dialog does not provide advanced features like code completion. In our demos and games what we do is to write a call to a method that was defined at the end of the file, in a protected zone, using the method explained in the <a class="reference internal" href="#writing-into-the-code-file">Writing into the code file</a> section.</p>
 <p>You can open the user code dialog directly from the scene, press <code class="docutils literal"><span class="pre">Ctrl+Shift+U</span></code> or right click and select the <code class="docutils literal"><span class="pre">Edit</span> <span class="pre">User</span> <span class="pre">Code</span></code> menu option.</p>
 </div>
 <div class="section" id="public-objects">
 <h3>Public objects<a class="headerlink" href="#public-objects" title="Permalink to this headline">¶</a></h3>
-<p>In the <a class="reference internal" href="#object-properties">Object properties</a> section we mentioned the <code class="docutils literal"><span class="pre">public</span></code> property of an object. It is a <a class="reference external" href="#design-time-object-properties">design time property</a> used to publish the objects beyond its context. To publish objects is needed to access a particular objects outside the <code class="docutils literal"><span class="pre">create</span></code> method. The concept is simple, for each public object is created an instance fild that reference it. These public fields follow the format <code class="docutils literal"><span class="pre">f&lt;ObjectName&gt;</span></code>, for example, if the object <code class="docutils literal"><span class="pre">star</span></code> is marked as public a field <code class="docutils literal"><span class="pre">fStar</span></code> is generated:</p>
+<p>In the <a class="reference internal" href="#object-properties">Object properties</a> section we mentioned the <code class="docutils literal"><span class="pre">public</span></code> property of an object. It is a <a class="reference external" href="#design-time-object-properties">design time property</a> used to publish the objects beyond its context. To publish objects is needed to access particular objects outside the <code class="docutils literal"><span class="pre">create</span></code> method. The concept is simple, for each public object is created an instance field that references it. These public fields follow the format <code class="docutils literal"><span class="pre">f&lt;ObjectName&gt;</span></code>, for example, if the object <code class="docutils literal"><span class="pre">star</span></code> is marked as public a field <code class="docutils literal"><span class="pre">fStar</span></code> is generated:</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">Level</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">create</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">_star</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">67</span><span class="p">,</span> <span class="mi">197</span><span class="p">,</span> <span class="s1">&#39;environ&#39;</span><span class="p">,</span> <span class="s1">&#39;star&#39;</span><span class="p">);</span>
 
@@ -1010,20 +1180,20 @@ A preloader state is just like any other Phaser state, but the sprites are creat
 </div>
 </div>
 </div>
-<div class="section" id="objects-aligment-and-depth-order">
-<h2>Objects aligment and depth order<a class="headerlink" href="#objects-aligment-and-depth-order" title="Permalink to this headline">¶</a></h2>
-<p>Position commands are always a powerful resource to build the layout of scenes. In Canvas we support some basic commands for alignment (left, right, top, bottom, center and middle) and for depth order (rise, rise to top, lower and lower to bottom).</p>
-<div class="section" id="aligment">
-<h3>Aligment<a class="headerlink" href="#aligment" title="Permalink to this headline">¶</a></h3>
-<p>The alignment commands are avilable in the conext menu and the Canvas toolbar:</p>
+<div class="section" id="objects-alignment-and-depth-order">
+<h2>Objects alignment and depth order<a class="headerlink" href="#objects-alignment-and-depth-order" title="Permalink to this headline">¶</a></h2>
+<p>Position commands are always a powerful resource to build the layout of scenes. In Canvas we support some basic commands for alignment (left, right, top, bottom, center, and middle) and for depth order (rise, rise to top, lower and lower to bottom).</p>
+<div class="section" id="alignment">
+<h3>Alignment<a class="headerlink" href="#alignment" title="Permalink to this headline">¶</a></h3>
+<p>The alignment commands are available in the context menu and the Canvas toolbar:</p>
 <img alt="Align objects." src="_images/AlignObjects.png" />
-<p>The aligment commands are related to the parent group of the target object. If the sprite “head” belongs to the group “dino”, and we select the “left” aligment, then the local X position of “dino” will be set to <code class="docutils literal"><span class="pre">0</span></code>, it means, that it will be at the left border of the group. Note that objects with no parent are set explicity belong to the global scene group.</p>
+<p>The alignment commands are related to the parent group of the target object. If the sprite &#8220;head&#8221; belongs to the group &#8220;dino&#8221;, and we select the &#8220;left&#8221; alignment, then the local X position of &#8220;dino&#8221; will be set to <code class="docutils literal"><span class="pre">0</span></code>, it means, that it will be at the left border of the group. Note that objects with no parent are set to belong to the global scene group.</p>
 </div>
 <div class="section" id="depth-order">
 <h3>Depth order<a class="headerlink" href="#depth-order" title="Permalink to this headline">¶</a></h3>
-<p>Pretty similar to aligment commands there are the order commands. To apply them first you select the target objects and click on the corresponfing toolbar button or context menu option.</p>
-<p>The “order” commands send an object back and forward, in the display list of its group.</p>
-<p><em>NOTE: In Phaser there are some aligment constants and methods, but they are more (we think) about to align an object in runtime. It is a great resource for those who set the game layout “by hand”. We are exploring this new features and in future versions of Canvas we can take advantage of it or reuse some concepts, like align in a grid.</em></p>
+<p>Pretty similar to alignment commands there are the order commands. To apply them first you select the target objects and click on the corresponding toolbar button or context menu option.</p>
+<p>The &#8220;order&#8221; commands send an object back and forward, in the display list of its group.</p>
+<p><em>NOTE: In Phaser, there are some alignment constants and methods, but they are more (we think) about to align an object at runtime. It is a great resource for those who set the game layout &#8220;by hand&#8221;. We are exploring this new features and in future versions of Canvas we can take advantage of it or reuse some concepts, like align in a grid.</em></p>
 </div>
 </div>
 <div class="section" id="common-editing-operations">
@@ -1033,23 +1203,23 @@ A preloader state is just like any other Phaser state, but the sprites are creat
 <li>Cut, Copy and Paste of the objects.</li>
 <li>Undo, Redo of all major operations on nodes.</li>
 <li>Zoom in/out/restore. Scroll the wheel of the mouse to zoom in/out, and the Zoom 1:1 button in the toolbar.</li>
-<li>Pan the scene, by hodling the middle mouse button and dragging in any direction.</li>
+<li>Pan the scene, by holding the middle mouse button and dragging in any direction.</li>
 <li>Object selection, by clicking it or dragging the mouse and create a selection box.</li>
 <li>Object moving, first you select the objects and then you drag them.</li>
 </ul>
 </div>
 <div class="section" id="removing-distractions">
 <h2>Removing distractions<a class="headerlink" href="#removing-distractions" title="Permalink to this headline">¶</a></h2>
-<p>The default layout in Phaser Editor is a bit charged, it opens the Project Explorer, Chains view, Problems view, Preview view and Assets view, in addition to the editor area. However, Eclipse (the platform behind Phaser Editor) has a very customizable and flexible layout. You can minimize windows and open them with a quick look, or dock the windows (the right term for them is “views”) in the screen corners or stack them. We encourage you to read the Workbench User Guide bundled in Phaser Editor.</p>
+<p>The default layout in Phaser Editor is a bit charged, it opens the Project Explorer, Chains view, Problems view, Preview view and Assets view, in addition to the editor area. However, Eclipse (the platform behind Phaser Editor) has a very customizable and flexible layout. You can minimize windows and open them with a quick look, or dock the windows (the right term for them is &#8220;views&#8221;) in the screen corners or stack them. We encourage you to read the Workbench User Guide bundled in Phaser Editor.</p>
 <p>Drag the windows to a corner or fold it with other windows:</p>
 <img alt="Docked windows." src="_images/DockedWindows.png" />
 <p>A window (like the scene editor) can be detached from the main application by dragging it away from the main window:</p>
 <img alt="Stand-alone scene editor." src="_images/DetachedWindow.png" />
 <p>Double click in the scene editor tab (or press <code class="docutils literal"><span class="pre">Ctrl+M</span></code>), it maximizes the editor window and minimizes all the other windows around. You will get all the space for the scene editor but at the same time you can do a quick look (by clicking on its icon) to the minimized windows (like the Assets or Preview windows):</p>
 <img alt="Fast view." src="_images/QuickLookMinWindow.png" />
-<p>Other elements you can remove are the property grid and the outline windows that are inside the scene editor. To do this just click on the “side panel” icon of the toolbar:</p>
+<p>Other elements you can remove are the property grid and the outline windows that are inside the scene editor. To do this just click on the &#8220;side panel&#8221; icon of the toolbar:</p>
 <img alt="Buttons for remove distractions." src="_images/ToolbarIconsSidePanel.png" />
-<p>Really you don’t need these panels all the time open, you always can edit the properties of an object by pressing <code class="docutils literal"><span class="pre">Q</span></code>, it opens a quick edit dialog with the the property grid inside:</p>
+<p>Really you don&#8217;t need these panels all the time open, you always can edit the properties of an object by pressing <code class="docutils literal"><span class="pre">Q</span></code>, it opens a quick edit dialog with  the property grid inside:</p>
 <img alt="Edit the object in place." src="_images/QuickEditDialog.png" />
 <p>To navigate the scene you can open the Quick Outline window by pressing <code class="docutils literal"><span class="pre">Ctrl+O</span></code>:</p>
 <img alt="Quick navigate the scene." src="_images/QuickOutlineWindow.png" />
@@ -1069,7 +1239,7 @@ A preloader state is just like any other Phaser state, but the sprites are creat
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Arian Fornaris.
+        &copy; Copyright 2016-2018, Arian Fornaris.
 
     </p>
   </div> 
@@ -1090,7 +1260,7 @@ A preloader state is just like any other Phaser state, but the sprites are creat
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.4.4',
+            VERSION:'1.5.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

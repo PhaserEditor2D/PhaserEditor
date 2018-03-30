@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Coding The Game: The JavaScript Editor &mdash; Phaser Editor 1.4.4 documentation</title>
+  <title>Coding The Game: The JavaScript Editor &mdash; Phaser Editor Help</title>
   
 
   
@@ -52,19 +52,19 @@
             
   <div class="section" id="coding-the-game-the-javascript-editor">
 <h1>Coding The Game: The JavaScript Editor<a class="headerlink" href="#coding-the-game-the-javascript-editor" title="Permalink to this headline">¶</a></h1>
-<p>With Phaser you write the game with JavaScript as main language (there is also support for TypeScript). In Phaser Editor the JavaScript programming is a first citizen, the JavaScript editor is the more important component for us, and we do an extra effort to build the best experience for the Phaser developer.</p>
+<p>With Phaser, you write the game with JavaScript as the main language (there is also support for TypeScript). In Phaser Editor the JavaScript programming is a first citizen, the JavaScript editor is the more important component for us, and we do an extra effort to build the best experience for the Phaser developer.</p>
 <p>The JavaScript editor is part of the JSDT (Eclipse Web Tools) and we extended and modified it to adjust it to the Phaser API and style.</p>
-<p>When you create a Phaser Project the main JS file is opened in the editor. To open the JS editor manually you can navigate to the JS file in the Project Explorer and double click on it.</p>
+<p>When you create a Phaser Project the main JS file is opened in the editor. To open the JS editor manually you can navigate to the JS file in the Project Explorer and double-click on it.</p>
 <div class="section" id="phaser-api-smart-code-completion">
 <h2>Phaser API smart code completion<a class="headerlink" href="#phaser-api-smart-code-completion" title="Permalink to this headline">¶</a></h2>
-<p>The JS editor has a <em>“a complex inference engine”</em> to bind JS elements with static type information. We think it works very well with the Phaser API. We made a Phaser API library to make it easier for the inference engine to compute the static type of the JS expressions.</p>
+<p>The JS editor has a <em>&#8220;a complex inference engine&#8221;</em> to bind JS elements with static type information. We think it works very well with the Phaser API. We made a Phaser API library to make it easier for the inference engine to compute the static type of the JS expressions.</p>
 <p>If you follow certain coding structure you will enjoy a smart completion of the Phaser methods, properties and classes. JavaScript is a dynamic language and there are cases where compute the type of an expression is hard or impossible. However, in Phaser Editor you can annotate with static type information different statements like var declarations, method returns, method parameters and prototypes. See the next section.</p>
 <p>Member proposals:</p>
 <img alt="Auto-complete Phaser API." src="_images/ApiSmartCompletion.png" />
 <p>Arguments proposals:</p>
 <img alt="Method args completion." src="_images/APISmartCompletionsParams.png" />
 <p>Drawbacks:</p>
-<p>Note in the proposals you see types like <code class="docutils literal"><span class="pre">Phaser_Game</span></code> or <code class="docutils literal"><span class="pre">Phaser_Sprite</span></code>, etc.. It happens because JSDT does not understand the concept of namespaces, so we had to tweak the editor to simulate namespaces. This means that you can autocomplete <code class="docutils literal"><span class="pre">Phaser.Sprite</span></code> but also <code class="docutils literal"><span class="pre">Phaser_Sprite</span></code>, however the last one is not valid in Phaser. We are working on replace the JSDT inference engine for a more accurate tool based on the Language Server Protocol of Microsoft.</p>
+<p>Note in the proposals you see types like <code class="docutils literal"><span class="pre">Phaser_Game</span></code> or <code class="docutils literal"><span class="pre">Phaser_Sprite</span></code>, etc.. It happens because JSDT does not understand the concept of namespaces, so we had to tweak the editor to simulate namespaces. This means that you can auto-complete <code class="docutils literal"><span class="pre">Phaser.Sprite</span></code> but also <code class="docutils literal"><span class="pre">Phaser_Sprite</span></code>, however, the last one is not valid in Phaser. We are working on replacing the JSDT inference engine for a more accurate tool based on the Language Server Protocol of Microsoft.</p>
 </div>
 <div class="section" id="type-annotation-on-a-var-declaration">
 <h2>Type annotation on a var declaration<a class="headerlink" href="#type-annotation-on-a-var-declaration" title="Permalink to this headline">¶</a></h2>
@@ -82,7 +82,7 @@
 </div>
 <div class="section" id="type-annotation-on-prototype-declaration">
 <h2>Type annotation on prototype declaration<a class="headerlink" href="#type-annotation-on-prototype-declaration" title="Permalink to this headline">¶</a></h2>
-<p>In Phaser you are not forced to use type inheritance, however, a recommended practice is to split your game in functional components like game states, custom sprites and groups. In Phaser Editor we encourage to use prototype inheritance between other reasons because it helps with auto completion.</p>
+<p>In Phaser you are not forced to use type inheritance, however, a recommended practice is to split your game into functional components like game states, custom sprites and groups. In Phaser Editor we encourage to use prototype inheritance between other reasons because it helps with auto-completion.</p>
 <p>In JavaScript you can define a prototype like this:</p>
 <div class="code highlight-javascript"><div class="highlight"><pre><span></span><span class="kd">function</span> <span class="nx">NewClass</span><span class="p">()</span> <span class="p">{</span>
         <span class="nx">BaseClass</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
@@ -105,7 +105,7 @@
 <span class="nx">MyGroup</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">MyGroup</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>This is not the more beautiful thing of the world, we prefer to use something like a <code class="docutils literal"><span class="pre">&#64;extends</span></code> JSDoc tag, but for now it is not possible. We recommend to use the new file wizards, they generated a code that can be “understood” by the JavaScript editor.</p>
+<p>This is not the more beautiful thing of the world, we prefer to use something like a <code class="docutils literal"><span class="pre">&#64;extends</span></code> JSDoc tag, but for now, it is not possible. We recommend to use the new file wizards, they generated a code that can be &#8220;understood&#8221; by the JavaScript editor.</p>
 </div>
 <div class="section" id="phaser-api-hover-help">
 <h2>Phaser API hover help<a class="headerlink" href="#phaser-api-hover-help" title="Permalink to this headline">¶</a></h2>
@@ -114,18 +114,18 @@
 </div>
 <div class="section" id="code-templates">
 <h2>Code templates<a class="headerlink" href="#code-templates" title="Permalink to this headline">¶</a></h2>
-<p>With the code templates you can get snippets of code to cover specific Phaser tasks. These templates are the same are used in the official Phaser [online editor][10].</p>
+<p>With the code templates, you can get snippets of code to cover specific Phaser tasks. These templates are the same are used in the official Phaser [online editor][10].</p>
 <img alt="Code templates." src="_images/CodeTemplates.png" />
 </div>
 <div class="section" id="asset-keys-proposals">
 <h2>Asset keys proposals<a class="headerlink" href="#asset-keys-proposals" title="Permalink to this headline">¶</a></h2>
 <p>When you define your assets in an asset pack file then the JS editor read the asset keys and show them in the proposals popup. These proposals are listed when the content assist popup is invoked in a string context:</p>
 <img alt="Assets key proposals." src="_images/AssetKeysCompletion.png" />
-<p>As you can see in the above screenshot, the asset keys are shown in the information control of the content assist popup. In the case of audio files it plays the sound.</p>
+<p>As you can see in the above screenshot, the asset keys are shown in the information control of the content assist popup. In the case of audio files, it plays the sound.</p>
 </div>
 <div class="section" id="file-names-proposals">
 <h2>File names proposals<a class="headerlink" href="#file-names-proposals" title="Permalink to this headline">¶</a></h2>
-<p>Also file names are shown in the content assist popup and they are visualized in the information control. In the next image are listed all the file names that match the <code class="docutils literal"><span class="pre">png</span></code> string:</p>
+<p>Also, file names are shown in the content assist popup and they are visualized in the information control. In the next image are listed all the file names that match the <code class="docutils literal"><span class="pre">png</span></code> string:</p>
 <img alt="File names completions." src="_images/FilesCompletion.png" />
 </div>
 <div class="section" id="easing-names-proposals">
@@ -144,7 +144,7 @@
 </div>
 <div class="section" id="errors-warnings-and-quick-fix">
 <h2>Errors, warnings and quick fix<a class="headerlink" href="#errors-warnings-and-quick-fix" title="Permalink to this headline">¶</a></h2>
-<p>By default Phaser Editor checks for syntax and semantic problems (errors and warnings). These problems are shown in the Problems view. In the JS editor the expression with problems is underlined with a yellow or red color in dependence of if it is a warning or an error.</p>
+<p>By default Phaser Editor checks for syntax and semantic problems (errors and warnings). These problems are shown in the Problems view. In the JS editor, the expression with problems is underlined with a yellow or red color in dependence of if it is a warning or an error.</p>
 <p>Many of these problems can be fixed automatically with the Quick Fix command. When you get a problem, put the cursor on the error and press <code class="docutils literal"><span class="pre">CTRL+1</span></code>, the Quick Fix dialog is shown with different options.</p>
 <p>Hover the mouse on the error marker:</p>
 <img alt="Error tip." src="_images/QuickFix_1.png" />
@@ -155,7 +155,7 @@
 </div>
 <div class="section" id="preview">
 <h2>Preview<a class="headerlink" href="#preview" title="Permalink to this headline">¶</a></h2>
-<p>The JavaScript editor supports some preview features. When you hover a file name string, then it shows a popup with a preview of that file. In a similar way, if you hover the name of an <a class="reference external" href="assets-manager.html">asset entry in the asset pack</a> , then it shows a popup with a preview of the identified asset.</p>
+<p>The JavaScript editor supports some preview features. When you hover a file name string, then it shows a popup with a preview of that file. In a similar way, if you hover the name of an <a class="reference external" href="assets-manager.html">asset entry in the asset pack</a>, then it shows a popup with a preview of the identified asset.</p>
 <p>To quick preview an object you can hover its name but also you can put the cursor in the middle of the name and type <code class="docutils literal"><span class="pre">Ctrl+Alt+V</span></code> that command opens the identified object in the <a class="reference external" href="preview-window.html">Preview window</a>.</p>
 <img alt="Hover the mouse to preview the assets." src="_images/JSEditorAssetPreview.png" />
 </div>
@@ -173,7 +173,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Arian Fornaris.
+        &copy; Copyright 2016-2018, Arian Fornaris.
 
     </p>
   </div> 
@@ -194,7 +194,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.4.4',
+            VERSION:'1.5.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
