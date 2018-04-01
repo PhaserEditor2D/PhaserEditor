@@ -17,7 +17,7 @@ public class DialogsPreferencesPage extends FieldEditorPreferencePage implements
 	@Override
 	public void init(IWorkbench workbench) {
 		setPreferenceStore(PhaserEditorUI.getPreferenceStore());
-//		setDescription("Configure default dialogs.");
+		// setDescription("Configure default dialogs.");
 	}
 
 	@Override
@@ -33,6 +33,11 @@ public class DialogsPreferencesPage extends FieldEditorPreferencePage implements
 
 					}, parent, true);
 			addField(editor);
+
+			if (PhaserEditorUI.isMacPlatform()) {
+				editor.setEnabled(false, parent);
+			}
+
 		}
 	}
 

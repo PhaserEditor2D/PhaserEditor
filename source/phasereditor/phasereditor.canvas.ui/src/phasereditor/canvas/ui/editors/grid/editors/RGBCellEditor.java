@@ -64,20 +64,23 @@ public class RGBCellEditor extends DialogCellEditor {
 			rgb = (RGB) value;
 		}
 
-		if (PhaserEditorUI.get_pref_Dialog_Color_Java()) {
-			Color color = null;
+		// TODO: we should find the way this work on Mac!
+		if (!PhaserEditorUI.isMacPlatform()) {
+			if (PhaserEditorUI.get_pref_Dialog_Color_Java()) {
 
-			if (rgb != null) {
-				color = new Color(rgb.red, rgb.green, rgb.blue);
+				Color color = null;
+
+				if (rgb != null) {
+					color = new Color(rgb.red, rgb.green, rgb.blue);
+				}
+
+				color = JColorChooser.showDialog(null, "Color Dialog", color);
+				if (color != null) {
+					rgb = new RGB(color.getRed(), color.getGreen(), color.getBlue());
+				}
+
+				return rgb;
 			}
-
-			color = JColorChooser.showDialog(null, "Color Dialog", color);
-
-			if (color != null) {
-				rgb = new RGB(color.getRed(), color.getGreen(), color.getBlue());
-			}
-
-			return rgb;
 		}
 
 		ColorDialog dlg = new ColorDialog(cellEditorWindow.getShell());

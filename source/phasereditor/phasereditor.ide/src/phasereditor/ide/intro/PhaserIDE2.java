@@ -21,8 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ide.intro;
 
-import javax.swing.UIManager;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
+import static java.lang.System.out;
 
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.ui.internal.ide.application.IDEApplication;
@@ -39,17 +38,14 @@ public class PhaserIDE2 extends IDEApplication {
 	@Override
 	public Object start(IApplicationContext appContext) throws Exception {
 
+		out.println("Starting Phaser IDE application " + LicCore.PRODUCT_VERSION);
+
 		javafx.application.Platform.setImplicitExit(false);
 
-		try {
-			// UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-			UIManager.setLookAndFeel(NimbusLookAndFeel.class.getName());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
+		out.println("Starting license monitor");
 		LicCore.startMonitor();
 
+		out.println("Starting Eclipse application");
 		Object res = super.start(appContext);
 
 		try {
