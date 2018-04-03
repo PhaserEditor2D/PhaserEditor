@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.shapes;
 
-import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -44,10 +43,18 @@ public class TextNode extends Label implements ISpriteNode, ITextSpriteNode {
 
 	private TextControl _control;
 	private Text _skinText;
-
+	private Point2D _size;
+	
+	
 	public TextNode(TextControl control) {
 		_control = control;
 		setPickOnBounds(true);
+		
+		_size = new Point2D(0, 0);
+		
+		boundsInLocalProperty().addListener((obs, oldv, newv) -> {
+			_size = new Point2D(newv.getWidth(), newv.getHeight());
+		});
 	}
 
 	@Override
@@ -61,16 +68,7 @@ public class TextNode extends Label implements ISpriteNode, ITextSpriteNode {
 	}
 
 	public Point2D getSize() {
-		Node text = _skinText;
-		if (text == null) {
-			text = new Text(getModel().getText());
-		}
-		
-		applyCss();
-		
-		Bounds b = getBoundsInLocal();
-
-		return new Point2D(b.getWidth(), b.getHeight());
+		return _size;
 	}
 
 	public void updateFromModel() {
