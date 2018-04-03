@@ -28,14 +28,21 @@ import org.eclipse.swt.widgets.Composite;
  * @author arian
  *
  */
-public class NativeBrowser extends Browser implements IGameBrowser {
+public class NativeBrowser implements IGameBrowser {
+
+	private Browser _browser;
 
 	public NativeBrowser(Composite parent, int style) {
-		super(parent, style);
+		_browser = new Browser(parent, style);
 	}
 	
 	@Override
 	public Composite getComposite() {
-		return this;
+		return _browser;
+	}
+
+	@Override
+	public boolean setUrl(String url) {
+		return _browser.setUrl(url);
 	}
 }
