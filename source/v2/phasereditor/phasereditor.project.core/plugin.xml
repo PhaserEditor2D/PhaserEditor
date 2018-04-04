@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="buildParticipant" name="buildParticipant" schema="schema/buildParticipant.exsd"/>
+<extension
+         id="phasereditor.project.core.nature"
+         name="Phaser Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="phasereditor.project.core.PhaserProjectNature">
+         </run>
+      </runtime>
+      <builder
+            id="phasereditor.project.core.builder">
+      </builder>
+   </extension>
+   <extension
+         id="phasereditor.project.core.builder"
+         name="Phaser Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            callOnEmptyDelta="true"
+            hasNature="true">
+         <run
+               class="phasereditor.project.core.PhaserProjectBuilder">
+         </run>
+      </builder>
+   </extension>
+   <extension
+         point="org.eclipse.wst.jsdt.core.JsGlobalScopeContainerInitializer">
+        <JsGlobalScopeContainerInitializer
+            class="phasereditor.project.core.PhaserGlobalScopeContainerInitializer"
+            id="phasereditor.project.core.globalScope">
+      	</JsGlobalScopeContainerInitializer>
+        <JsGlobalScopeContainerInitializer
+              class="phasereditor.project.core.BrowserGlobalScopeContainerInitializer"
+              id="phasereditor.project.core.browserscope">
+        </JsGlobalScopeContainerInitializer>
+        <JsGlobalScopeContainerInitializer
+              class="phasereditor.project.core.Ecma5GlobalScopeContainerInitializer"
+              id="phasereditor.project.core.ecma5scope">
+        </JsGlobalScopeContainerInitializer>      	
+   </extension>
+   <extension
+         id="phasereditor.project.core.problem"
+         name="Phaser Problem"
+         point="org.eclipse.core.resources.markers">
+      <persistent
+            value="true">
+      </persistent>
+      <super
+            type="org.eclipse.wst.jsdt.core.problem">
+      </super>
+   </extension>
+</plugin>

@@ -1,0 +1,111 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: InWorld</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a><a href="Phaser.html#.Component">.Component</a>.</span> InWorld </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="InWorld"><span class="type-signature"></span>new InWorld<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The InWorld component checks if a Game Object is within the Game World Bounds.<br>An object is considered as being "in bounds" so long as its own bounds intersects at any point with the World bounds.<br>If the AutoCull component is enabled on the Game Object then it will check the Game Object against the Camera bounds as well.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_InWorld.js.html">gameobjects/components/InWorld.js</a>, 
+      <a href="src_gameobjects_components_InWorld.js.html#sunlight-1-line-14">line 14</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="checkWorldBounds"><span class="type-signature"></span>checkWorldBounds<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If this is set to <code>true</code> the Game Object checks if it is within the World bounds each frame. </p> 
+     <p>When it is no longer intersecting the world bounds it dispatches the <code>onOutOfBounds</code> event.</p> 
+     <p>If it was <em>previously</em> out of bounds but is now intersecting the world bounds again it dispatches the <code>onEnterBounds</code> event.</p> 
+     <p>It also optionally kills the Game Object if <code>outOfBoundsKill</code> is <code>true</code>.</p> 
+     <p>When <code>checkWorldBounds</code> is enabled it forces the Game Object to calculate its full bounds every frame.</p> 
+     <p>This is a relatively expensive operation, especially if enabled on hundreds of Game Objects. So enable it only if you know it's required,<br>or you have tested performance and find it acceptable.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_InWorld.js.html">gameobjects/components/InWorld.js</a>, 
+      <a href="src_gameobjects_components_InWorld.js.html#sunlight-1-line-98">line 98</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="inWorld"><span class="type-signature">&lt;readonly&gt; </span>inWorld<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Checks if the Game Objects bounds are within, or intersect at any point with the Game World bounds.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_InWorld.js.html">gameobjects/components/InWorld.js</a>, 
+      <a href="src_gameobjects_components_InWorld.js.html#sunlight-1-line-129">line 129</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="outOfBoundsKill"><span class="type-signature"></span>outOfBoundsKill<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If this and the <code>checkWorldBounds</code> property are both set to <code>true</code> then the <code>kill</code> method is called as soon as <code>inWorld</code> returns false.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_InWorld.js.html">gameobjects/components/InWorld.js</a>, 
+      <a href="src_gameobjects_components_InWorld.js.html#sunlight-1-line-106">line 106</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="outOfCameraBoundsKill"><span class="type-signature"></span>outOfCameraBoundsKill<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If this and the <code>autoCull</code> property are both set to <code>true</code>, then the <code>kill</code> method<br>is called as soon as the Game Object leaves the camera bounds.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_InWorld.js.html">gameobjects/components/InWorld.js</a>, 
+      <a href="src_gameobjects_components_InWorld.js.html#sunlight-1-line-115">line 115</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+  <h3 class="subsection-title">Methods</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id=".preUpdate"><span class="type-signature">&lt;static&gt; </span>preUpdate<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The InWorld component preUpdate handler.<br>Called automatically by the Game Object.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_InWorld.js.html">gameobjects/components/InWorld.js</a>, 
+      <a href="src_gameobjects_components_InWorld.js.html#sunlight-1-line-22">line 22</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

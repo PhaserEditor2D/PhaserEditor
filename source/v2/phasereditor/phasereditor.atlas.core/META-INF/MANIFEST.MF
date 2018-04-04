@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Phaser Editor - Atlas Core
+Bundle-SymbolicName: phasereditor.atlas.core;singleton:=true
+Bundle-Version: 1.4.0.20170412
+Bundle-Activator: phasereditor.atlas.core.Activator
+Bundle-Vendor: Arian Fornaris
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources;bundle-version="3.9.1",
+ org.json,
+ phasereditor.ui,
+ phasereditor.libgdx
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Export-Package: phasereditor.atlas.core

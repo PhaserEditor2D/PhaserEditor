@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="assetConsumers" name="consumer" schema="schema/assetConsumers.exsd"/>
+ 	<extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            base-type="org.eclipse.wst.jsdt.core.jsonSource"
+            describer="phasereditor.assetpack.core.AssetPackContentDescriber"
+            file-extensions="json"
+            id="phasereditor.assetpack.contentType"
+            name="Phaser Asset Pack">
+      </content-type>
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            describer="phasereditor.assetpack.core.TilemapJSONDescriber"
+            file-extensions="json"
+            id="phasereditor.assetpack.tilemapJson"
+            name="Phaser Tilemap">
+      </content-type>
+   </extension>
+  <extension
+        point="phasereditor.project.core.buildParticipant">
+     <participant
+           handler="phasereditor.assetpack.core.AssetPackBuildParticipant"
+           id="phasereditor.assetpack.core.participant1"
+           order="1">
+     </participant>
+  </extension>
+  <extension
+        id="phasereditor.assetpack.core.problem"
+        name="Asset Pack Problem"
+        point="org.eclipse.core.resources.markers">
+     <persistent
+           value="true">
+     </persistent>
+     <super
+           type="phasereditor.project.core.problem">
+     </super>
+  </extension>
+</plugin>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="phasereditor.ide.intro.PhaserIDE2">
+         </run>
+      </application>
+   </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="phasereditor.ide.application"
+            description="Develop 2D video-games with the Phaser game engine."
+            name="Phaser Editor">
+         <!--   
+         <property
+               name="applicationCSS"
+               value="platform:/plugin/phasereditor.ide/css/default.css">
+         </property>
+         -->
+         <property
+               name="windowImages"
+               value="icons/16.png,icons/32.png,icons/48.png,icons/64.png,icons/128.png,icons/256.png">
+         </property>
+         <property
+               name="appName"
+               value="Phaser Editor">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="5,275,445,15">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="platform:/plugin/phasereditor.ide/plugin_customization.ini">
+         </property>
+         <property
+               name="aboutImage"
+               value="icons/about.png">
+         </property>
+         <property
+               name="aboutText"
+               value="Phaser Editor 1.5.0.20180307&#x0A;&#x0A;Supports Phaser v2.6.2 (built-in)&#x0A;&#x0A;Powered by:&#x0A;&#x0A;PhaserJS - http://phaser.io&#x0A;Eclipse - http://eclipse.org&#x0A;Libgdx - http://libgdx.badlogicgames.com&#x0A;FFMpeg - http://ffmpeg.org&#x0A;OptiPNG - http://optipng.sourceforge.net&#x0A;Java 8 - http://java.com&#x0A;Game Mechanics Explorer - http://gamemechanicexplorer.com&#x0A;How To Draw Funny Cartoons - http://how-to-draw-funny-cartoons.com&#x0A;Fam Fam Fam slick icons - http://famfamfam.com&#x0A;&#x0A;Developed by:&#x0A;&#x0A;Arian Fornaris (@boniatillo_com)&#x0A;&#x0A;Thanks:&#x0A;&#x0A;Richard Davey (@photonstorm) - https://twitter.com/photonstorm&#x0A;Angelo Zerr (@angelozerr) - https://twitter.com/angelozerr&#x0A;Sam Riggs - http://samsstuffsoftware.blogspot.com&#x0A;Grethel Naranjo, Ernesto Gutierrez - http://rvirtual.uci.cu&#x0A;Vertex Group - University of Informatic Sciences - UCI&#x0A;Havana Games  - http://globalgamejam.org/2016/games/life-cuco&#x0A;&#x0A;Keep in touch with the Phaser Editor community: &#x0A;&#x0A;https://phasereditor2d.com&#x0A;https://twitter.com/PhaserEditor2D&#x0A;https://facebook.com/PhaserEditor2D&#x0A;&#x0A;Copyright (c) Arian Fornaris 2015-2017">
+         </property>
+         <property
+               name="startupForegroundColor"
+               value="000000">
+         </property>
+         <property
+               name="startupMessageRect"
+               value="7,252,445,0">
+         </property>
+        
+      </product>
+   </extension>
+   <!--
+   No intro for now
+   <extension
+         point="org.eclipse.ui.intro">
+      <intro
+            class="org.eclipse.ui.intro.config.CustomizableIntroPart"
+            id="phasereditor.ide.intro">
+      </intro>
+      <introProductBinding
+            introId="phasereditor.ide.intro"
+            productId="phasereditor.ide.product">
+      </introProductBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.intro.config">
+      <config
+            introId="phasereditor.ide.intro"
+            content="introContent.xml"
+            id="phasereditor.ide.configId">
+         <presentation
+               home-page-id="root">
+            <implementation
+                  kind="html"
+                  os="win32,linux,macosx">
+            </implementation>
+         </presentation>
+      </config>
+   </extension>
+   -->
+   
+      <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="phasereditor.ide.ui.PhaserPerspective"
+            icon="platform:/plugin/phasereditor.ui/icons/phaser-ship.png"
+            id="phasereditor.ide.ui.perspective"
+            name="Phaser">
+      </perspective>
+   </extension>   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="phasereditor.ide.ui.perspective">
+         <view
+               id="phasereditor.chains.ui.views.chains"
+               minimized="false"
+               ratio="0.6"
+               relationship="bottom"
+               relative="org.eclipse.ui.editorss">
+         </view>
+         <view
+               id="org.eclipse.ui.views.ProblemView"
+               minimized="false"
+               relationship="stack"
+               relative="phasereditor.chains.ui.views.chains">
+         </view>
+         <viewShortcut
+               id="phasereditor.ui.preview">
+         </viewShortcut>
+         <viewShortcut
+               id="org.eclipse.ui.navigator.ProjectExplorer">
+         </viewShortcut>
+         <viewShortcut
+               id="phasereditor.chains.ui.views.chains">
+         </viewShortcut>
+         <showInPart
+               id="phasereditor.ui.preview">
+         </showInPart>
+      </perspectiveExtension>
+   </extension>
+                  <extension
+                        point="org.eclipse.e4.ui.css.swt.theme">
+                     <theme
+                           basestylesheeturi="css/phasereditor_win.css"
+                           id="phasereditor.ide.theme.win"
+                           label="Phaser Editor">
+                     </theme>
+                  </extension>
+                  <extension
+                        point="org.eclipse.ui.startup">
+                     <startup
+                           class="phasereditor.ide.intro.IDEStartup">
+                     </startup>
+                  </extension>
+
+</plugin>

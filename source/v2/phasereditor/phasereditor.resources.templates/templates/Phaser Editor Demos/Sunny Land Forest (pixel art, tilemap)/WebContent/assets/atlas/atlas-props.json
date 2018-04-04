@@ -1,0 +1,75 @@
+{"frames": [
+
+{
+	"filename": "house",
+	"frame": {"x":2,"y":57,"w":193,"h":165},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":193,"h":165},
+	"sourceSize": {"w":193,"h":165},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "mushroom-brown",
+	"frame": {"x":27,"y":2,"w":25,"h":33},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":25,"h":33},
+	"sourceSize": {"w":25,"h":33},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "mushroom-red",
+	"frame": {"x":2,"y":2,"w":23,"h":28},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":23,"h":28},
+	"sourceSize": {"w":23,"h":28},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "plant",
+	"frame": {"x":54,"y":2,"w":36,"h":36},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":36},
+	"sourceSize": {"w":36,"h":36},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "rock",
+	"frame": {"x":135,"y":2,"w":49,"h":29},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":49,"h":29},
+	"sourceSize": {"w":49,"h":29},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tree",
+	"frame": {"x":2,"y":224,"w":213,"h":223},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":213,"h":223},
+	"sourceSize": {"w":213,"h":223},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "vine",
+	"frame": {"x":92,"y":2,"w":41,"h":53},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":41,"h":53},
+	"sourceSize": {"w":41,"h":53},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "atlas-props.png",
+	"format": "RGBA8888",
+	"size": {"w":217,"h":449},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:d98a1b43a799fd0d154b12da3615f07d:615128ff01514eaf7380038065bbea02:7367abe05465f33555345994fbb3342e$"
+}
+}

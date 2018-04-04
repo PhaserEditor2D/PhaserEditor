@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+<extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="phasereditor.ui.phaserCategory"
+            description="Run the Phaser project in a browser."
+            id="phasereditor.webrun.ui.runlocal"
+            name="Run Phaser Project">
+      </command>
+      <command
+            categoryId="phasereditor.ui.phaserCategory"
+            description="Run the Phaser project in an internal browser."
+            id="phasereditor.webrun.ui.runinternal"
+            name="Run Phaser Project (Internal Browser - Experimental)">
+      </command>
+      <command
+            defaultHandler="phasereditor.webrun.ui.handlers.BrowsePhaserExamplesHandler"
+            id="phasereditor.webrun.ui.browseexamples"
+            name="Open Phaser Examples in a Browser">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.eclipse.ui.workbench.file?after=additions">
+         <command
+               commandId="phasereditor.webrun.ui.runlocal"
+               icon="platform:/plugin/phasereditor.ui/icons/world.png"
+               style="push">
+         </command>
+         <command
+               commandId="phasereditor.webrun.ui.runinternal"
+               icon="platform:/plugin/phasereditor.ui/icons/page_white_world.png"
+               style="push">
+         </command>
+         <command
+               commandId="phasereditor.webrun.ui.browseexamples"
+               icon="platform:/plugin/phasereditor.ui/icons/folder_web.png"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:project?after=buildAutomatically">
+         <separator
+               name="phasereditor.webrun.ui.separator1"
+               visible="true">
+         </separator>
+         <command
+               commandId="phasereditor.webrun.ui.runlocal"
+               icon="platform:/plugin/phasereditor.ui/icons/world.png"
+               style="push">
+         </command>
+         <command
+               commandId="phasereditor.webrun.ui.runinternal"
+               icon="platform:/plugin/phasereditor.ui/icons/page_white_world.png"
+               style="push">
+         </command>
+         <command
+               commandId="phasereditor.webrun.ui.browseexamples"
+               icon="platform:/plugin/phasereditor.ui/icons/folder_web.png"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="phasereditor.webrun.ui.handlers.RunLocalHandler"
+            commandId="phasereditor.webrun.ui.runlocal">
+      </handler>
+      <handler
+            class="phasereditor.webrun.ui.handlers.RunInternalHandler"
+            commandId="phasereditor.webrun.ui.runinternal">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="phasereditor.webrun.ui.runlocal"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+M3+F5">
+      </key>
+      <key
+            commandId="phasereditor.webrun.ui.runinternal"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+M3+F6">
+      </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="phasereditor.webrun.ui.editors.GamePlayerEditor"
+            contributorClass="phasereditor.webrun.ui.editors.GamePlayerEditorContributor"
+            default="false"
+            icon="platform:/plugin/phasereditor.ui/icons/page_white_world.png"
+            id="phasereditor.webrun.ui.gameplayer"
+            name="Game Player">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.elementFactories">
+      <factory
+            class="phasereditor.webrun.ui.editors.GamePlayerInputFactory"
+            id="phasereditor.webrun.ui.gameplayerFactory">
+      </factory>
+   </extension>
+</plugin>

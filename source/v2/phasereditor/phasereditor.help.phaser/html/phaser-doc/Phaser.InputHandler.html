@@ -1,0 +1,2126 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: InputHandler</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a>.</span> InputHandler </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="InputHandler"><span class="type-signature"></span>new InputHandler<span class="signature">(sprite)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The Input Handler is bound to a specific Sprite and is responsible for managing all Input events on that Sprite.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>sprite</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Sprite.html">Phaser.Sprite</a></span> </td> 
+       <td class="description last"><p>The Sprite object to which this Input Handler belongs.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-14">line 14</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="allowHorizontalDrag"><span class="type-signature"></span>allowHorizontalDrag<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Controls if the Sprite is allowed to be dragged horizontally.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>true</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-69">line 69</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="allowVerticalDrag"><span class="type-signature"></span>allowVerticalDrag<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Controls if the Sprite is allowed to be dragged vertically.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>true</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-75">line 75</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="boundsRect"><span class="type-signature"></span>boundsRect<span class="type-signature"> :<a href="Phaser.Rectangle.html">Phaser.Rectangle</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A region of the game world within which the sprite is restricted during drag.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-161">line 161</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="boundsSprite"><span class="type-signature"></span>boundsSprite<span class="type-signature"> :<a href="Phaser.Sprite.html">Phaser.Sprite</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A Sprite the bounds of which this sprite is restricted during drag.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-167">line 167</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="bringToTop"><span class="type-signature"></span>bringToTop<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If true when this Sprite is clicked or dragged it will automatically be bought to the top of the Group it is within.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-81">line 81</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="checked"><span class="type-signature">&lt;internal&gt; </span>checked<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A disposable flag used by the Pointer class when performing priority checks.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-36">line 36</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="downPoint"><span class="type-signature"></span>downPoint<span class="type-signature"> :<a href="Phaser.Point.html">Phaser.Point</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A Point object containing the coordinates of the Pointer when it was first pressed down onto this Sprite.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-207">line 207</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="dragDistanceThreshold"><span class="type-signature"></span>dragDistanceThreshold<span class="type-signature"> :integer</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The distance, in pixels, the pointer has to move while being held down, before the Sprite thinks it is being dragged.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-197">line 197</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="dragFromCenter"><span class="type-signature"></span>dragFromCenter<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Is the Sprite dragged from its center, or the point at which the Pointer was pressed down upon it?</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-182">line 182</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="draggable"><span class="type-signature"></span>draggable<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Is this sprite allowed to be dragged by the mouse? true = yes, false = no</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-155">line 155</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="dragOffset"><span class="type-signature"></span>dragOffset<span class="type-signature"> :<a href="Phaser.Point.html">Phaser.Point</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The offset from the Sprites position that dragging takes place from.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-177">line 177</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="dragStartPoint"><span class="type-signature"></span>dragStartPoint<span class="type-signature"> :<a href="Phaser.Point.html">Phaser.Point</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The Point from which the most recent drag started from. Useful if you need to return an object to its starting position.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-192">line 192</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="dragStopBlocksInputUp"><span class="type-signature"></span>dragStopBlocksInputUp<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If enabled, when the Sprite stops being dragged, it will only dispatch the <code>onDragStop</code> event, and not the <code>onInputUp</code> event. If set to <code>false</code> it will dispatch both events.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-187">line 187</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="dragTimeThreshold"><span class="type-signature"></span>dragTimeThreshold<span class="type-signature"> :integer</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The amount of time, in ms, the pointer has to be held down over the Sprite before it thinks it is being dragged.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-202">line 202</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="enabled"><span class="type-signature"></span>enabled<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If enabled the Input Handler will process input requests and monitor pointer activity.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-30">line 30</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="game"><span class="type-signature"></span>game<span class="type-signature"> :<a href="Phaser.Game.html">Phaser.Game</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A reference to the currently running game.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-24">line 24</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="isDragged"><span class="type-signature"></span>isDragged<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>true if the Sprite is being currently dragged.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-63">line 63</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="pixelPerfectAlpha"><span class="type-signature"></span>pixelPerfectAlpha<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The alpha tolerance threshold. If the alpha value of the pixel matches or is above this value, it's considered a hit.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>255</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-149">line 149</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="pixelPerfectClick"><span class="type-signature"></span>pixelPerfectClick<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Set to true to use pixel perfect hit detection when checking if the pointer is over this Sprite when it's clicked or touched.<br>The x/y coordinates of the pointer are tested against the image in combination with the InputHandler.pixelPerfectAlpha value.<br>This feature only works for display objects with image based textures such as Sprites. It won't work on BitmapText or Rope.<br>Warning: This is expensive so only enable if you really need it. Use a pixel perfect check when testing for clicks or touches on the Sprite.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-143">line 143</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="pixelPerfectOver"><span class="type-signature"></span>pixelPerfectOver<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Set to true to use pixel perfect hit detection when checking if the pointer is over this Sprite.<br>The x/y coordinates of the pointer are tested against the image in combination with the InputHandler.pixelPerfectAlpha value.<br>This feature only works for display objects with image based textures such as Sprites. It won't work on BitmapText or Rope.<br>Warning: This is expensive, especially on mobile (where it's not even needed!) so only enable if required. Also see the less-expensive InputHandler.pixelPerfectClick. Use a pixel perfect check when testing for pointer over.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-133">line 133</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="priorityID"><span class="type-signature"></span>priorityID<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The priorityID is used to determine which game objects should get priority when input events occur. For example if you have<br>several Sprites that overlap, by default the one at the top of the display list is given priority for input events. You can<br>stop this from happening by controlling the priorityID value. The higher the value, the more important they are considered to the Input events.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-45">line 45</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="scaleLayer"><span class="type-signature"></span>scaleLayer<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>EXPERIMENTAL: Please do not use this property unless you know what it does. Likely to change in the future.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-172">line 172</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="snapOffset"><span class="type-signature"></span>snapOffset<span class="type-signature"> :<a href="Phaser.Point.html">Phaser.Point</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A Point object that contains by how far the Sprite snap is offset.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-87">line 87</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="snapOffsetX"><span class="type-signature"></span>snapOffsetX<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This defines the top-left X coordinate of the snap grid.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-117">line 117</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="snapOffsetY"><span class="type-signature"></span>snapOffsetY<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This defines the top-left Y coordinate of the snap grid..</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-123">line 123</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="snapOnDrag"><span class="type-signature"></span>snapOnDrag<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>When the Sprite is dragged this controls if the center of the Sprite will snap to the pointer on drag or not.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-93">line 93</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="snapOnRelease"><span class="type-signature"></span>snapOnRelease<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>When the Sprite is dragged this controls if the Sprite will be snapped on release.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-99">line 99</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="snapPoint"><span class="type-signature"></span>snapPoint<span class="type-signature"> :<a href="Phaser.Point.html">Phaser.Point</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If the sprite is set to snap while dragging this holds the point of the most recent 'snap' event.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-212">line 212</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="snapX"><span class="type-signature"></span>snapX<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>When a Sprite has snapping enabled this holds the width of the snap grid.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-105">line 105</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="snapY"><span class="type-signature"></span>snapY<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>When a Sprite has snapping enabled this holds the height of the snap grid.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-111">line 111</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="sprite"><span class="type-signature"></span>sprite<span class="type-signature"> :<a href="Phaser.Sprite.html">Phaser.Sprite</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The Sprite object to which this Input Handler belongs.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-19">line 19</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="useHandCursor"><span class="type-signature"></span>useHandCursor<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>On a desktop browser you can set the 'hand' cursor to appear when moving over the Sprite.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-51">line 51</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+  <h3 class="subsection-title">Methods</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="checkBoundsRect"><span class="type-signature"></span>checkBoundsRect<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Bounds Rect check for the sprite drag</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1654">line 1654</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="checkBoundsSprite"><span class="type-signature"></span>checkBoundsSprite<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Parent Sprite Bounds check for the sprite drag.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1704">line 1704</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="checkPixel"><span class="type-signature"></span>checkPixel<span class="signature">(x, y, <span class="optional">pointer</span>)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Runs a pixel perfect check against the given x/y coordinates of the Sprite this InputHandler is bound to.<br>It compares the alpha value of the pixel and if &gt;= InputHandler.pixelPerfectAlpha it returns true.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>x</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>The x coordinate to check.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>y</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>The y coordinate to check.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>pointer</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Pointer.html">Phaser.Pointer</a></span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>The pointer to get the x/y coordinate from if not passed as the first two parameters.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>true if there is the alpha of the pixel is &gt;= InputHandler.pixelPerfectAlpha</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-799">line 799</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="checkPointerDown"><span class="type-signature"></span>checkPointerDown<span class="signature">(pointer, <span class="optional">fastTest</span>)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Checks if the given pointer is both down and over the Sprite this InputHandler belongs to.<br>Use the <code>fastTest</code> flag is to quickly check just the bounding hit area even if <code>InputHandler.pixelPerfectOver</code> is <code>true</code>.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>pointer</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Pointer.html">Phaser.Pointer</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>fastTest</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>Force a simple hit area check even if <code>pixelPerfectOver</code> is true for this object?</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>True if the pointer is down, otherwise false.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-710">line 710</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="checkPointerOver"><span class="type-signature"></span>checkPointerOver<span class="signature">(pointer, <span class="optional">fastTest</span>)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Checks if the given pointer is over the Sprite this InputHandler belongs to.<br>Use the <code>fastTest</code> flag is to quickly check just the bounding hit area even if <code>InputHandler.pixelPerfectOver</code> is <code>true</code>.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>pointer</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Pointer.html">Phaser.Pointer</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>fastTest</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>Force a simple hit area check even if <code>pixelPerfectOver</code> is true for this object?</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-755">line 755</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="destroy"><span class="type-signature"></span>destroy<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Clean up memory.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-430">line 430</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="disableDrag"><span class="type-signature"></span>disableDrag<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Stops this sprite from being able to be dragged.<br>If it is currently the target of an active drag it will be stopped immediately; also disables any set callbacks.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1441">line 1441</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="disableSnap"><span class="type-signature"></span>disableSnap<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Stops the sprite from snapping to a grid during drag or release.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1642">line 1642</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="downDuration"><span class="type-signature"></span>downDuration<span class="signature">(<span class="optional">pointerId</span>)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If the pointer is currently over this Sprite this returns how long it has been there for in milliseconds.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>pointerId</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The number of milliseconds the pointer has been pressed down on the Sprite, or -1 if not over.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1363">line 1363</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="enableDrag"><span class="type-signature"></span>enableDrag<span class="signature">(<span class="optional">lockCenter</span>, <span class="optional">bringToTop</span>, <span class="optional">pixelPerfect</span>, <span class="optional">alphaThreshold</span>, <span class="optional">boundsRect</span>, <span class="optional">boundsSprite</span>)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Allow this Sprite to be dragged by any valid pointer.</p> 
+     <p>When the drag begins the Sprite.events.onDragStart event will be dispatched.</p> 
+     <p>When the drag completes by way of the user letting go of the pointer that was dragging the sprite, the Sprite.events.onDragStop event is dispatched.</p> 
+     <p>You can control the thresholds over when a drag starts via the properties:</p> 
+     <p><code>Pointer.dragDistanceThreshold</code> the distance, in pixels, that the pointer has to move<br>before the drag will start.</p> 
+     <p><code>Pointer.dragTimeThreshold</code> the time, in ms, that the pointer must be held down on<br>the Sprite before the drag will start.</p> 
+     <p>You can set either (or both) of these properties after enabling a Sprite for drag.</p> 
+     <p>For the duration of the drag the Sprite.events.onDragUpdate event is dispatched. This event is only dispatched when the pointer actually<br>changes position and moves. The event sends 5 parameters: <code>sprite</code>, <code>pointer</code>, <code>dragX</code>, <code>dragY</code> and <code>snapPoint</code>.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>lockCenter</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>If false the Sprite will drag from where you click it minus the dragOffset. If true it will center itself to the tip of the mouse pointer.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>bringToTop</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>If true the Sprite will be bought to the top of the rendering list in its current Group.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>pixelPerfect</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>If true it will use a pixel perfect test to see if you clicked the Sprite. False uses the bounding box.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>alphaThreshold</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 255 </td> 
+       <td class="description last"><p>If using pixel perfect collision this specifies the alpha level from 0 to 255 above which a collision is processed.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>boundsRect</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Rectangle.html">Phaser.Rectangle</a></span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> null </td> 
+       <td class="description last"><p>If you want to restrict the drag of this sprite to a specific Rectangle, pass the Phaser.Rectangle here, otherwise it's free to drag anywhere.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>boundsSprite</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Sprite.html">Phaser.Sprite</a></span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> null </td> 
+       <td class="description last"><p>If you want to restrict the drag of this sprite to within the bounding box of another sprite, pass it here.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1383">line 1383</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="enableSnap"><span class="type-signature"></span>enableSnap<span class="signature">(snapX, snapY, <span class="optional">onDrag</span>, <span class="optional">onRelease</span>, <span class="optional">snapOffsetX</span>, <span class="optional">snapOffsetY</span>)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Make this Sprite snap to the given grid either during drag or when it's released.<br>For example 16x16 as the snapX and snapY would make the sprite snap to every 16 pixels.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>snapX</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The width of the grid cell to snap to.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>snapY</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The height of the grid cell to snap to.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>onDrag</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> true </td> 
+       <td class="description last"><p>If true the sprite will snap to the grid while being dragged.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>onRelease</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>If true the sprite will snap to the grid when released.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>snapOffsetX</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>Used to offset the top-left starting point of the snap grid.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>snapOffsetY</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>Used to offset the top-left starting point of the snap grid.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1614">line 1614</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="globalToLocalX"><span class="type-signature"></span>globalToLocalX<span class="signature">(x)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Warning: EXPERIMENTAL</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>x</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1524">line 1524</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="globalToLocalY"><span class="type-signature"></span>globalToLocalY<span class="signature">(y)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Warning: EXPERIMENTAL</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>y</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1542">line 1542</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="isPixelPerfect"><span class="type-signature"></span>isPixelPerfect<span class="signature">()</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Is this object using pixel perfect checking?</p> 
+    </div> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>True if the this InputHandler has either <code>pixelPerfectClick</code> or <code>pixelPerfectOver</code> set to <code>true</code>.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-495">line 495</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="justOut"><span class="type-signature"></span>justOut<span class="signature">(<span class="optional">pointerId</span>, delay)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Returns true if the pointer has left the Sprite within the specified delay time (defaults to 500ms, half a second)</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>pointerId</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>delay</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The time below which the pointer is considered as just out.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1292">line 1292</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="justOver"><span class="type-signature"></span>justOver<span class="signature">(<span class="optional">pointerId</span>, delay)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Returns true if the pointer has entered the Sprite within the specified delay time (defaults to 500ms, half a second)</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>pointerId</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>delay</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The time below which the pointer is considered as just over.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1275">line 1275</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="justPressed"><span class="type-signature"></span>justPressed<span class="signature">(<span class="optional">pointerId</span>, delay)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Returns true if the pointer has touched or clicked on the Sprite within the specified delay time (defaults to 500ms, half a second)</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>pointerId</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>delay</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The time below which the pointer is considered as just over.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1309">line 1309</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="justReleased"><span class="type-signature"></span>justReleased<span class="signature">(<span class="optional">pointerId</span>, delay)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Returns true if the pointer was touching this Sprite, but has been released within the specified delay time (defaults to 500ms, half a second)</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>pointerId</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>delay</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The time below which the pointer is considered as just out.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1326">line 1326</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="overDuration"><span class="type-signature"></span>overDuration<span class="signature">(<span class="optional">pointerId</span>)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If the pointer is currently over this Sprite this returns how long it has been there for in milliseconds.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>pointerId</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The number of milliseconds the pointer has been over the Sprite, or -1 if not over.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1343">line 1343</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="pointerDown"><span class="type-signature"></span>pointerDown<span class="signature">(<span class="optional">pointerId</span>)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If the Pointer is down this returns true.<br>This <em>only</em> checks if the Pointer is down, not if it's down over any specific Sprite.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>pointerId</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <ul> 
+       <li>True if the given pointer is down, otherwise false.</li> 
+      </ul> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-539">line 539</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="pointerDragged"><span class="type-signature"></span>pointerDragged<span class="signature">(<span class="optional">pointerId</span>)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Is this sprite being dragged by the mouse or not?</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>pointerId</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>True if the pointer is dragging an object, otherwise false.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-695">line 695</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="pointerOut"><span class="type-signature"></span>pointerOut<span class="signature">(<span class="optional">pointerId</span>)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Is the Pointer outside of this Sprite?</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>pointerId</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> (check all) </td> 
+       <td class="description last"><p>The ID number of a Pointer to check. If you don't provide a number it will check all Pointers.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>True if the given pointer (if a index was given, or any pointer if not) is out of this object.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-634">line 634</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="pointerOver"><span class="type-signature"></span>pointerOver<span class="signature">(<span class="optional">pointerId</span>)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Is the Pointer over this Sprite?</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>pointerId</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> (check all) </td> 
+       <td class="description last"><p>The ID number of a Pointer to check. If you don't provide a number it will check all Pointers.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <ul> 
+       <li>True if the given pointer (if a index was given, or any pointer if not) is over this object.</li> 
+      </ul> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-601">line 601</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="pointerTimeDown"><span class="type-signature"></span>pointerTimeDown<span class="signature">(<span class="optional">pointerId</span>)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A timestamp representing when the Pointer first touched the touchscreen.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>pointerId</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> (check all) </td> 
+       <td class="description last"></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-571">line 571</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="pointerTimeOut"><span class="type-signature"></span>pointerTimeOut<span class="signature">(<span class="optional">pointerId</span>)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A timestamp representing when the Pointer left the touchscreen.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>pointerId</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-680">line 680</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="pointerTimeOver"><span class="type-signature"></span>pointerTimeOver<span class="signature">(<span class="optional">pointerId</span>)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A timestamp representing when the Pointer first touched the touchscreen.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>pointerId</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-665">line 665</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="pointerTimeUp"><span class="type-signature"></span>pointerTimeUp<span class="signature">(<span class="optional">pointerId</span>)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A timestamp representing when the Pointer left the touchscreen.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>pointerId</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-586">line 586</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="pointerUp"><span class="type-signature"></span>pointerUp<span class="signature">(<span class="optional">pointerId</span>)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If the Pointer is up this returns true.<br>This <em>only</em> checks if the Pointer is up, not if it's up over any specific Sprite.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>pointerId</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <ul> 
+       <li>True if the given pointer is up, otherwise false.</li> 
+      </ul> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-555">line 555</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="pointerX"><span class="type-signature"></span>pointerX<span class="signature">(<span class="optional">pointerId</span>)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The x coordinate of the Input pointer, relative to the top-left of the parent Sprite.<br>This value is only set when the pointer is over this Sprite.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>pointerId</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The x coordinate of the Input pointer.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-507">line 507</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="pointerY"><span class="type-signature"></span>pointerY<span class="signature">(<span class="optional">pointerId</span>)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The y coordinate of the Input pointer, relative to the top-left of the parent Sprite<br>This value is only set when the pointer is over this Sprite.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>pointerId</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The y coordinate of the Input pointer.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-523">line 523</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="reset"><span class="type-signature"></span>reset<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Resets the Input Handler and disables it.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-382">line 382</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="setDragLock"><span class="type-signature"></span>setDragLock<span class="signature">(<span class="optional">allowHorizontal</span>, <span class="optional">allowVertical</span>)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Restricts this sprite to drag movement only on the given axis. Note: If both are set to false the sprite will never move!</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>allowHorizontal</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> true </td> 
+       <td class="description last"><p>To enable the sprite to be dragged horizontally set to true, otherwise false.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>allowVertical</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> true </td> 
+       <td class="description last"><p>To enable the sprite to be dragged vertically set to true, otherwise false.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1597">line 1597</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="start"><span class="type-signature"></span>start<span class="signature">(<span class="optional">priority</span>, <span class="optional">useHandCursor</span>)</span><span class="type-signature"> ? {<a href="Phaser.Sprite.html">Phaser.Sprite</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Starts the Input Handler running. This is called automatically when you enable input on a Sprite, or can be called directly if you need to set a specific priority.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>priority</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>Higher priority sprites take click priority over low-priority sprites when they are stacked on-top of each other.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>useHandCursor</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>If true the Sprite will show the hand cursor on mouse-over (doesn't apply to mobile browsers)</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Sprite.html">Phaser.Sprite</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The Sprite object to which the Input Handler is bound.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-284">line 284</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="startDrag"><span class="type-signature"></span>startDrag<span class="signature">(pointer)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Called by Pointer when drag starts on this Sprite. Should not usually be called directly.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>pointer</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Pointer.html">Phaser.Pointer</a></span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1464">line 1464</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="stop"><span class="type-signature"></span>stop<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Stops the Input Handler from running.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-410">line 410</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="stopDrag"><span class="type-signature"></span>stopDrag<span class="signature">(pointer)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Called by Pointer when drag is stopped on this Sprite. Should not usually be called directly.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>pointer</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Pointer.html">Phaser.Pointer</a></span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-1560">line 1560</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="update"><span class="type-signature">&lt;internal&gt; </span>update<span class="signature">(pointer)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Internal Update method. This is called automatically and handles the Pointer<br>and drag update loops.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>pointer</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Pointer.html">Phaser.Pointer</a></span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>True if the pointer is still active, otherwise false.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-868">line 868</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="validForInput"><span class="type-signature">&lt;internal&gt; </span>validForInput<span class="signature">(highestID, highestRenderID, <span class="optional">includePixelPerfect</span>)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Checks if the object this InputHandler is bound to is valid for consideration in the Pointer move event.<br>This is called by Phaser.Pointer and shouldn't typically be called directly.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>highestID</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The highest ID currently processed by the Pointer.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>highestRenderID</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The highest Render Order ID currently processed by the Pointer.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>includePixelPerfect</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> true </td> 
+       <td class="description last"><p>If this object has <code>pixelPerfectClick</code> or <code>pixelPerfectOver</code> set should it be considered as valid?</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>True if the object this InputHandler is bound to should be considered as valid for input detection.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_InputHandler.js.html">input/InputHandler.js</a>, 
+      <a href="src_input_InputHandler.js.html#sunlight-1-line-456">line 456</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

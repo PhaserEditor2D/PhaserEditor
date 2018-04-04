@@ -1,0 +1,1580 @@
+{
+  "canvas-version": 2,
+  "settings": {
+    "className": "Level",
+    "sceneWidth": 1232,
+    "sceneHeight": 272,
+    "generateOnSave": true,
+    "enableStepping": true,
+    "stepWidth": 16,
+    "stepHeight": 16,
+    "lang": "JAVA_SCRIPT",
+    "baseClass": "Phaser.State",
+    "backgroundColor": [
+      180,
+      180,
+      180
+    ],
+    "gridColor": [
+      200,
+      200,
+      200
+    ],
+    "showGrid": true,
+    "create_after": "// from the User Code dialog\r\nthis.myCreate();\r\n\r\n",
+    "state_init_after": "// from User Code dialog\r\nthis.myInit();"
+  },
+  "stateSettings": {
+    "scaleMode": "SHOW_ALL",
+    "pageAlignHorizontally": true,
+    "pageAlignVertically": true,
+    "stageBackgroundColor": [
+      0,
+      0,
+      0
+    ],
+    "physicsSystem": "ARCADE",
+    "rendererRoundPixels": true,
+    "preloadSpriteId": "",
+    "preloadSprite_direction": 0,
+    "load.pack": []
+  },
+  "world": {
+    "type": "group",
+    "id": "8a0fc0bc-e3be-4656-9585-f855ac8ba0bb",
+    "info": {
+      "editorName": "Level",
+      "children": [
+        {
+          "type": "tileSprite",
+          "id": "f19132f7-8291-4845-af1f-672d0658cf09",
+          "asset": "0",
+          "info": {
+            "editorName": "background",
+            "y": 32,
+            "width": 1216,
+            "height": 176
+          }
+        },
+        {
+          "type": "group",
+          "id": "3a73bfb5-59d1-46a7-8e71-f464658359ce",
+          "info": {
+            "editorName": "lava",
+            "editorPublic": true,
+            "physicsGroup": true,
+            "children": [
+              {
+                "type": "tileSprite",
+                "id": "a1f34147-ae0e-42e4-b3e0-76f6cb841192",
+                "asset": "1",
+                "info": {
+                  "editorName": "tiles36",
+                  "x": 896,
+                  "y": 176,
+                  "width": 176,
+                  "height": 96
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "2cc1db16-ba43-48f0-b6ad-e2663f3d0ac7",
+                "asset": "1",
+                "info": {
+                  "editorName": "tiles19",
+                  "x": 464,
+                  "y": 208,
+                  "width": 96,
+                  "height": 64
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "group",
+          "id": "c19b667e-9a0a-4ca8-8cd9-65e4e6d6f0a7",
+          "info": {
+            "editorName": "bricks",
+            "children": [
+              {
+                "type": "tileSprite",
+                "id": "84370a14-d6d1-44c2-8c2e-e8f00442e471",
+                "asset": "2",
+                "info": {
+                  "editorName": "tiles632",
+                  "x": 1104,
+                  "width": 128,
+                  "height": 32
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "1e144afd-f306-4c2d-b195-14bdc6db5877",
+                "asset": "2",
+                "info": {
+                  "editorName": "tiles63",
+                  "x": 448,
+                  "width": 656,
+                  "height": 48
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "cfeab260-9ae3-48b5-baa1-9208754ed75a",
+                "asset": "3",
+                "info": {
+                  "editorName": "tiles6",
+                  "x": 16,
+                  "y": 96,
+                  "width": 416,
+                  "height": 16
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "d0870ab5-e6f0-41d2-b0b7-ed1cb423ca98",
+                "asset": "4",
+                "info": {
+                  "editorName": "tiles7",
+                  "x": 48,
+                  "y": 192,
+                  "width": 416,
+                  "height": 16
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "4e02445d-cea0-4422-bec5-45d974a9b913",
+                "asset": "5",
+                "info": {
+                  "editorName": "tiles8",
+                  "x": 32,
+                  "y": 192
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "9bd79cbc-aed0-49c7-ad3f-129a0bda6d9f",
+                "asset": "4",
+                "info": {
+                  "editorName": "tiles9",
+                  "x": 16,
+                  "y": 192
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "9edc03ef-4405-4d94-beee-9b8cef465229",
+                "asset": "6",
+                "info": {
+                  "editorName": "tiles10",
+                  "x": 64,
+                  "y": 112,
+                  "width": 96,
+                  "height": 16
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "cb76d1ac-1e4f-47dd-858e-c415b98e9a23",
+                "asset": "5",
+                "info": {
+                  "editorName": "tiles12",
+                  "x": 176,
+                  "y": 64
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "daf97250-9682-44e2-9587-66b51a6a1c2d",
+                "asset": "6",
+                "info": {
+                  "editorName": "tiles101",
+                  "x": 288,
+                  "y": 112,
+                  "width": 96,
+                  "height": 16
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "f274e4ee-5aac-4903-b778-f031868e1ce9",
+                "asset": "5",
+                "info": {
+                  "editorName": "tiles13",
+                  "x": 304,
+                  "y": 96
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "659d883f-80c6-4737-85e9-9df341344953",
+                "asset": "3",
+                "info": {
+                  "editorName": "tiles61",
+                  "x": 448,
+                  "y": 80,
+                  "width": 80,
+                  "height": 16
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "a349034d-268a-415f-b700-da418396928e",
+                "asset": "6",
+                "info": {
+                  "editorName": "tiles14",
+                  "x": 448,
+                  "y": 96
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "17c2ad6f-6b66-430f-9a39-76080dedf460",
+                "asset": "6",
+                "info": {
+                  "editorName": "tiles15",
+                  "x": 480,
+                  "y": 96
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "46c3e95a-1f47-47b2-855d-1bc6be2cd30a",
+                "asset": "7",
+                "info": {
+                  "editorName": "tiles16",
+                  "x": 528,
+                  "y": 80
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "709fb427-648e-4348-8e1e-8ec3cccbc5cf",
+                "asset": "8",
+                "info": {
+                  "editorName": "tiles24",
+                  "x": 560,
+                  "y": 144
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "0acdae71-acf1-4365-85fb-cf848b48f886",
+                "asset": "9",
+                "info": {
+                  "editorName": "tiles25",
+                  "x": 560,
+                  "y": 160,
+                  "width": 16,
+                  "height": 112
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "ee7d9247-de10-405e-b42b-125382b1d6ce",
+                "asset": "4",
+                "info": {
+                  "editorName": "tiles71",
+                  "x": 576,
+                  "y": 144,
+                  "width": 304,
+                  "height": 16
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "2ceb003d-e539-491f-bbd0-d4bc33985efb",
+                "asset": "6",
+                "info": {
+                  "editorName": "tiles1011",
+                  "x": 720,
+                  "y": 64,
+                  "width": 160,
+                  "height": 16
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "04760f7e-d2d5-4453-9673-128f03b53261",
+                "asset": "3",
+                "info": {
+                  "editorName": "tiles27",
+                  "x": 544,
+                  "y": 64
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "79f0a83f-0a76-4de9-acd6-714174d9791a",
+                "asset": "10",
+                "info": {
+                  "editorName": "tiles28",
+                  "x": 560,
+                  "y": 64,
+                  "width": 112,
+                  "height": 16
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "4f8eec8e-9f79-49ff-b8f5-6e60357f9f83",
+                "asset": "11",
+                "info": {
+                  "editorName": "tiles29",
+                  "x": 880,
+                  "y": 144
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "e15ce02e-f460-4d41-8eb4-68e1d1a7a731",
+                "asset": "12",
+                "info": {
+                  "editorName": "tiles30",
+                  "x": 880,
+                  "y": 160,
+                  "width": 16,
+                  "height": 112
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "f35beb03-42b3-4146-b7cc-108753fee267",
+                "asset": "7",
+                "info": {
+                  "editorName": "tiles31",
+                  "x": 912,
+                  "y": 48
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "d083cfee-304b-45e8-9597-be5162f38230",
+                "asset": "10",
+                "info": {
+                  "editorName": "tiles281",
+                  "x": 928,
+                  "y": 32,
+                  "width": 160,
+                  "height": 16
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "d9e25d17-6b7c-45c0-86f6-a893dbabc1d0",
+                "asset": "6",
+                "info": {
+                  "editorName": "tiles10111",
+                  "x": 976,
+                  "y": 48,
+                  "width": 96,
+                  "height": 16
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "f3705dc9-81fa-4443-a02a-950d0972c390",
+                "asset": "8",
+                "info": {
+                  "editorName": "tiles41",
+                  "x": 1072,
+                  "y": 144
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "ee75419d-c3aa-4323-86f4-f6bb37d3a3fc",
+                "asset": "13",
+                "info": {
+                  "editorName": "tiles42",
+                  "x": 1088,
+                  "y": 144,
+                  "width": 32,
+                  "height": 16
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "a307a04c-c1b0-41b4-96f6-16d930cf91e7",
+                "asset": "8",
+                "info": {
+                  "editorName": "tiles43",
+                  "x": 1120,
+                  "y": 128
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "b5a984cc-a2e7-46a6-b71b-729335c1b5ec",
+                "asset": "4",
+                "info": {
+                  "editorName": "tiles44",
+                  "x": 1136,
+                  "y": 128
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "b2325f9b-58c3-4a00-a98f-5bd55a30bc60",
+                "asset": "8",
+                "info": {
+                  "editorName": "tiles45",
+                  "x": 1152,
+                  "y": 112
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "963135fc-b17c-4b13-a02c-90af30986302",
+                "asset": "8",
+                "info": {
+                  "editorName": "tiles451",
+                  "x": 1184,
+                  "y": 96
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "938f6f9c-c4a1-4e61-a820-9efe8e2944ca",
+                "asset": "4",
+                "info": {
+                  "editorName": "tiles441",
+                  "x": 1168,
+                  "y": 112
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "47afd348-342f-47c9-a607-c7a3c1adedd0",
+                "asset": "7",
+                "info": {
+                  "editorName": "tiles46",
+                  "x": 1088,
+                  "y": 32
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "08935b27-3711-41bd-808d-66f80340470e",
+                "asset": "13",
+                "info": {
+                  "editorName": "tiles47",
+                  "x": 1200,
+                  "y": 96
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "2ca6e488-af30-446c-b73f-da9202d1aa21",
+                "asset": "10",
+                "info": {
+                  "editorName": "tiles2811",
+                  "x": 1104,
+                  "y": 16,
+                  "width": 112,
+                  "height": 16
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "b6294eca-f358-4c48-893c-3705b56d6ce9",
+                "asset": "9",
+                "info": {
+                  "editorName": "tiles49",
+                  "x": 1072,
+                  "y": 160,
+                  "width": 16,
+                  "height": 112
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "32c2590f-e405-497b-9f2a-19444798bff4",
+                "asset": "14",
+                "info": {
+                  "editorName": "tiles52",
+                  "x": 320,
+                  "y": 176
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "830d5a1e-a077-4394-b2cf-b01d304e280c",
+                "asset": "15",
+                "info": {
+                  "editorName": "tiles53",
+                  "x": 368,
+                  "y": 176
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "cb2dbc3f-f688-4029-ab68-ce798395ab8b",
+                "asset": "14",
+                "info": {
+                  "editorName": "tiles54",
+                  "x": 576,
+                  "y": 128,
+                  "data": "",
+                  "width": 48,
+                  "height": 16
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "95e5c412-c2a8-47f5-a9da-2ac873a5b086",
+                "asset": "15",
+                "info": {
+                  "editorName": "tiles55",
+                  "x": 672,
+                  "y": 128
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "ba32d5d2-4deb-4a7e-b97a-91befb4347dd",
+                "asset": "14",
+                "info": {
+                  "editorName": "tiles56",
+                  "x": 688,
+                  "y": 128
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "0ecf7309-a56d-4149-9130-a3ac532acb7c",
+                "asset": "16",
+                "info": {
+                  "editorName": "tiles57",
+                  "x": 736,
+                  "y": 128
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "a9d11e4e-7bf0-4e7f-9989-1099093a72d0",
+                "asset": "7",
+                "info": {
+                  "editorName": "tiles50",
+                  "x": 672,
+                  "y": 64
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "b659a9ae-5785-4bdf-b036-0b546c7bdfdb",
+                "asset": "10",
+                "info": {
+                  "editorName": "tiles282",
+                  "x": 688,
+                  "y": 48,
+                  "width": 224,
+                  "height": 16
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "038d535a-d3b2-411a-85b8-c6b27c96ff44",
+                "asset": "14",
+                "info": {
+                  "editorName": "tiles26",
+                  "x": 752,
+                  "y": 128
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "fc440640-750d-4c19-a546-e481226009aa",
+                "asset": "16",
+                "info": {
+                  "editorName": "tiles58",
+                  "x": 816,
+                  "y": 128
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "6184c791-aeb7-4e7d-8b76-9e06a5134c63",
+                "asset": "15",
+                "info": {
+                  "editorName": "tiles59",
+                  "x": 1072,
+                  "y": 128
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "2a2c6e5d-bc24-4864-83ae-02332abc4daa",
+                "asset": "5",
+                "info": {
+                  "editorName": "tiles60",
+                  "x": 1120,
+                  "y": 144
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "79e5d861-6831-4779-9700-da91d9de9cf6",
+                "asset": "5",
+                "info": {
+                  "editorName": "tiles62",
+                  "x": 864,
+                  "width": 32,
+                  "height": 16
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "1a22d80a-3e23-4585-a022-a9f54537751e",
+                "asset": "2",
+                "info": {
+                  "editorName": "tiles631",
+                  "x": 448,
+                  "y": 48,
+                  "width": 240,
+                  "height": 16
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "8bdb6d22-bcc0-4b7b-b927-16ed287e955e",
+                "asset": "2",
+                "info": {
+                  "editorName": "tiles6311",
+                  "x": 448,
+                  "y": 64,
+                  "width": 96,
+                  "height": 16
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "c15f252b-1c69-4884-808c-edb1015e700f",
+                "asset": "6",
+                "info": {
+                  "editorName": "tiles64",
+                  "x": 1136,
+                  "y": 32
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "90ae9ecb-145a-4eae-a5cf-24473b4a5805",
+                "asset": "6",
+                "info": {
+                  "editorName": "tiles65",
+                  "x": 1184,
+                  "y": 32
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "3bbbc840-6b7b-4281-bf62-d84f28a25177",
+                "asset": "5",
+                "info": {
+                  "editorName": "tiles66",
+                  "x": 768,
+                  "y": 16,
+                  "width": 32,
+                  "height": 16
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "fa816f1f-0650-4f28-9131-963009e305fe",
+                "asset": "5",
+                "info": {
+                  "editorName": "tiles67",
+                  "x": 816,
+                  "y": 32
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "cae7b146-2b6f-4917-948c-28f123faccaf",
+                "asset": "5",
+                "info": {
+                  "editorName": "tiles68",
+                  "x": 944,
+                  "y": 16
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "1b3e1e37-9c78-40bf-b934-1b2ff8b717c8",
+                "asset": "5",
+                "info": {
+                  "editorName": "tiles621",
+                  "x": 1040,
+                  "width": 16,
+                  "height": 32
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "b812906c-91d1-4ba8-93f4-21988fa199e1",
+                "asset": "17",
+                "info": {
+                  "editorName": "tiles18",
+                  "x": 464,
+                  "y": 192,
+                  "width": 96,
+                  "height": 16
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "b7efa65b-a3f5-4305-9491-a62105361c61",
+                "asset": "18",
+                "info": {
+                  "editorName": "tiles20",
+                  "x": 480,
+                  "y": 192
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "0955e4b6-35a5-4c6a-b409-f98741c20dd6",
+                "asset": "18",
+                "info": {
+                  "editorName": "tiles21",
+                  "x": 512,
+                  "y": 192
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "77529d74-e899-4de0-b9d1-741f7870627c",
+                "asset": "17",
+                "info": {
+                  "editorName": "tiles35",
+                  "x": 896,
+                  "y": 160,
+                  "width": 176,
+                  "height": 16
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "58e54bdf-b1ad-41e0-ad34-4b7aef932a5f",
+                "asset": "18",
+                "info": {
+                  "editorName": "tiles37",
+                  "x": 928,
+                  "y": 160
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "ead424cf-98a5-464c-8776-46f549b73e0d",
+                "asset": "18",
+                "info": {
+                  "editorName": "tiles38",
+                  "x": 960,
+                  "y": 160
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "b3817057-47ec-4977-821d-d7ea1f38c1f4",
+                "asset": "18",
+                "info": {
+                  "editorName": "tiles39",
+                  "x": 1008,
+                  "y": 160
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "4234118c-579e-4055-83ad-0388b77faeb4",
+                "asset": "18",
+                "info": {
+                  "editorName": "tiles40",
+                  "x": 1056,
+                  "y": 160
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "7a4d29ba-466b-426b-9352-05ea0eb6ffbe",
+                "asset": "2",
+                "info": {
+                  "editorName": "tiles",
+                  "width": 448,
+                  "height": 112
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "e76dc7bb-3242-4575-b9a4-f9138ddf873e",
+                "asset": "2",
+                "info": {
+                  "editorName": "tiles51111112",
+                  "x": 1184,
+                  "y": 96,
+                  "width": 32,
+                  "height": 176
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "2ae9518f-f6b3-4162-9d40-7240a3abe5fa",
+                "asset": "2",
+                "info": {
+                  "editorName": "tiles5",
+                  "y": 192,
+                  "width": 464,
+                  "height": 80
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "d0c7f3cd-1ab9-4400-b32a-494665e11397",
+                "asset": "12",
+                "info": {
+                  "editorName": "tiles1",
+                  "y": 112,
+                  "width": 16,
+                  "height": 64
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "e3d53c1a-e90d-48bb-9fe4-e6375820f378",
+                "asset": "2",
+                "info": {
+                  "editorName": "tiles2",
+                  "y": 176
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "d7ffd49c-f64f-491a-81f0-120ca145b7c9",
+                "asset": "4",
+                "info": {
+                  "editorName": "tiles3",
+                  "x": 16,
+                  "y": 176
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "51c9e9d8-7f9d-4b48-a6b4-16237180d8a4",
+                "asset": "11",
+                "info": {
+                  "editorName": "tiles4",
+                  "x": 32,
+                  "y": 176
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "59c54a30-f188-4407-af40-a6a926bae3d9",
+                "asset": "19",
+                "info": {
+                  "editorName": "tiles17",
+                  "x": 496,
+                  "y": 176
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "f0934fe1-94c6-4b96-b8d2-8d0d7cb88b0d",
+                "asset": "20",
+                "info": {
+                  "editorName": "tiles22",
+                  "x": 528,
+                  "y": 160
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "4966801d-bb41-494c-9d32-324e4162bfb5",
+                "asset": "21",
+                "info": {
+                  "editorName": "tiles23",
+                  "x": 544,
+                  "y": 176
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "9686fdf5-fce6-4f00-9d1f-e5c8e0c41929",
+                "asset": "2",
+                "info": {
+                  "editorName": "tiles51",
+                  "x": 560,
+                  "y": 144,
+                  "width": 336,
+                  "height": 128
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "1da74fd8-9f6d-4a8e-bd59-57aee36e901e",
+                "asset": "20",
+                "info": {
+                  "editorName": "tiles32",
+                  "x": 928,
+                  "y": 144
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "cfdebcaf-b5e5-4d8d-8517-84f641aa3f0e",
+                "asset": "22",
+                "info": {
+                  "editorName": "tiles33",
+                  "x": 976,
+                  "y": 144
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "20cf07d7-f6ee-47ff-bdfa-f9c9b8e8579c",
+                "asset": "19",
+                "info": {
+                  "editorName": "tiles34",
+                  "x": 1024,
+                  "y": 144
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "9986c870-a9d7-4446-ab2e-ad7d14f91c02",
+                "asset": "2",
+                "info": {
+                  "editorName": "tiles94",
+                  "x": 1216,
+                  "y": 96,
+                  "width": 16,
+                  "height": 176
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "e30e77e3-c839-4b48-9286-cf4f6c8650ae",
+                "asset": "2",
+                "info": {
+                  "editorName": "tiles93",
+                  "x": 1152,
+                  "y": 112,
+                  "width": 32,
+                  "height": 160
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "8e0ef979-c6bc-4cdd-91c7-f2fe890d0db0",
+                "asset": "2",
+                "info": {
+                  "editorName": "tiles92",
+                  "x": 1120,
+                  "y": 128,
+                  "width": 32,
+                  "height": 144
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "7f3a7e7a-4c06-412f-8fee-bd9932ab96c7",
+                "asset": "2",
+                "info": {
+                  "editorName": "tiles91",
+                  "x": 1072,
+                  "y": 144,
+                  "width": 48,
+                  "height": 128
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "aa485e88-ee29-4c92-8a9e-baa40eaefe44",
+                "asset": "9",
+                "info": {
+                  "editorName": "tiles48",
+                  "x": 1216,
+                  "y": 32,
+                  "width": 16,
+                  "height": 64
+                }
+              },
+              {
+                "type": "spritesheet",
+                "id": "a42bbf20-7432-4c7f-87d8-16bde4a47081",
+                "asset": "7",
+                "info": {
+                  "editorName": "tiles11",
+                  "x": 432,
+                  "y": 96
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "group",
+          "id": "9e7b519e-189b-49da-8d5c-406d60a08ae3",
+          "info": {
+            "editorName": "enemies",
+            "editorPublic": true,
+            "children": [
+              {
+                "type": "prefab",
+                "prefab": "0",
+                "id": "cdc6dcaa-ce87-4391-a4a1-23b6767f7a4c",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "level",
+                  "asset": "enemies",
+                  "sprite": "4"
+                },
+                "info": {
+                  "editorName": "enemies1",
+                  "prefabOverride": [
+                    "position",
+                    "data"
+                  ],
+                  "x": 624,
+                  "y": 128,
+                  "data": "{\r\n\tleft: 570,\r\n\tright: 880\r\n}"
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "1",
+                "id": "286514a5-ff72-4bb3-b3b2-116f3843be82",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "level",
+                  "asset": "enemies",
+                  "sprite": "0"
+                },
+                "info": {
+                  "editorName": "enemies2",
+                  "prefabOverride": [
+                    "position",
+                    "data"
+                  ],
+                  "x": 240,
+                  "y": 176,
+                  "data": "{\r\n\tleft: 80,\r\n\tright: 432\r\n}"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "spritesheet",
+          "id": "6d190abd-7098-4975-a426-1fbfaa510611",
+          "asset": "23",
+          "info": {
+            "editorName": "items",
+            "x": 1184,
+            "y": 80
+          }
+        },
+        {
+          "type": "group",
+          "id": "9a2d630d-73e4-46ba-ab98-a3c3310718b7",
+          "info": {
+            "editorName": "ground",
+            "editorPublic": true,
+            "physicsGroup": true,
+            "children": [
+              {
+                "type": "tileSprite",
+                "id": "31a39ce1-4d0d-4fbe-adac-29db64ee0859",
+                "asset": "24",
+                "info": {
+                  "editorName": "p0",
+                  "x": 48,
+                  "y": 192,
+                  "width": 416,
+                  "height": 16
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "ad655a6d-9ada-4839-8c00-f2962d233dd1",
+                "asset": "24",
+                "info": {
+                  "editorName": "p1",
+                  "x": 16,
+                  "y": 176,
+                  "width": 32,
+                  "height": 16
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "f5d03857-4afc-4190-bed2-49bc57901c7a",
+                "asset": "24",
+                "info": {
+                  "editorName": "p3",
+                  "y": 112,
+                  "width": 16,
+                  "height": 64
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "6cb62521-9a5c-43ff-ab76-0086aff2973f",
+                "asset": "24",
+                "info": {
+                  "editorName": "p",
+                  "x": 496,
+                  "y": 176,
+                  "width": 16,
+                  "height": 16
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "02d64282-849e-4907-ba42-8f0a7694dcbe",
+                "asset": "24",
+                "info": {
+                  "editorName": "p2",
+                  "x": 528,
+                  "y": 160,
+                  "width": 16,
+                  "height": 16
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "716b4b2d-32f4-40ea-a839-0c1b8a0a5740",
+                "asset": "24",
+                "info": {
+                  "editorName": "p4",
+                  "x": 544,
+                  "y": 176,
+                  "width": 16,
+                  "height": 16
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "f17e350f-6e27-45a1-99a2-df8303defdbd",
+                "asset": "24",
+                "info": {
+                  "editorName": "p5",
+                  "x": 560,
+                  "y": 144,
+                  "width": 336,
+                  "height": 16
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "0a5fa033-2cfc-4694-804e-a216246189cc",
+                "asset": "24",
+                "info": {
+                  "editorName": "p6",
+                  "x": 560,
+                  "y": 160,
+                  "width": 16,
+                  "height": 16
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "aed92ffc-1f24-45a8-b217-e96701aca89c",
+                "asset": "24",
+                "info": {
+                  "editorName": "p7",
+                  "x": 928,
+                  "y": 144,
+                  "width": 16,
+                  "height": 16
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "cbc95eb1-7b77-402e-a34a-d22084a178e6",
+                "asset": "24",
+                "info": {
+                  "editorName": "p8",
+                  "x": 976,
+                  "y": 144,
+                  "width": 16,
+                  "height": 16
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "2437e564-68ca-4de2-bc8f-356759574423",
+                "asset": "24",
+                "info": {
+                  "editorName": "p9",
+                  "x": 1024,
+                  "y": 144,
+                  "width": 16,
+                  "height": 16
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "a018248c-4ce3-4372-84f0-d2b4a0bae15d",
+                "asset": "24",
+                "info": {
+                  "editorName": "p10",
+                  "x": 1072,
+                  "y": 144,
+                  "width": 48,
+                  "height": 16
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "6b8bb3cc-87fc-49e7-bab7-2eb3c28ea3c6",
+                "asset": "24",
+                "info": {
+                  "editorName": "p11",
+                  "x": 1120,
+                  "y": 128,
+                  "width": 32,
+                  "height": 16
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "b5e15622-90a5-460b-aeae-d79a8502e5bc",
+                "asset": "24",
+                "info": {
+                  "editorName": "p12",
+                  "x": 1152,
+                  "y": 112,
+                  "width": 32,
+                  "height": 16
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "a60b6fcd-98cd-4be7-8166-def868017ffc",
+                "asset": "24",
+                "info": {
+                  "editorName": "p13",
+                  "x": 1184,
+                  "y": 96,
+                  "width": 32,
+                  "height": 16
+                }
+              },
+              {
+                "type": "tileSprite",
+                "id": "723d5e54-9c83-427c-aaee-2e6b69b00ce0",
+                "asset": "24",
+                "info": {
+                  "editorName": "p14",
+                  "x": 1216,
+                  "y": 32,
+                  "width": 16,
+                  "height": 64
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "prefab",
+          "prefab": "2",
+          "id": "2fd0b59b-5628-4f2d-b831-9cab90075f0f",
+          "asset-ref": {
+            "file": "WebContent/assets/pack.json",
+            "section": "level",
+            "asset": "player",
+            "sprite": "5"
+          },
+          "info": {
+            "editorName": "player",
+            "editorPublic": true,
+            "x": 32,
+            "y": 128
+          }
+        },
+        {
+          "type": "group",
+          "id": "e976247a-64fe-42c6-8733-91ae044d9e88",
+          "info": {
+            "editorName": "daemons",
+            "children": [
+              {
+                "type": "prefab",
+                "prefab": "3",
+                "id": "bae96fef-0998-4a37-baa8-dd7193e0830a",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "level",
+                  "asset": "items",
+                  "sprite": "5"
+                },
+                "info": {
+                  "editorName": "items1",
+                  "x": 144,
+                  "y": 144
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "3",
+                "id": "66a988ee-a8da-4c4a-aba8-40ae00548977",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "level",
+                  "asset": "items",
+                  "sprite": "5"
+                },
+                "info": {
+                  "editorName": "items2",
+                  "x": 160,
+                  "y": 144
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "3",
+                "id": "f381d13d-2dd9-43d7-8cfe-7bc7c95ed2e1",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "level",
+                  "asset": "items",
+                  "sprite": "5"
+                },
+                "info": {
+                  "editorName": "items3",
+                  "x": 176,
+                  "y": 144
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "3",
+                "id": "de149a07-19a8-47f8-86bd-bc94928ea9c3",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "level",
+                  "asset": "items",
+                  "sprite": "5"
+                },
+                "info": {
+                  "editorName": "items4",
+                  "x": 192,
+                  "y": 144
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "3",
+                "id": "7e78058e-6738-42ee-9d8a-09be76717b1b",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "level",
+                  "asset": "items",
+                  "sprite": "5"
+                },
+                "info": {
+                  "editorName": "items5",
+                  "x": 928,
+                  "y": 128
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "3",
+                "id": "55d2964e-cb0b-429f-948b-f8e7af1fa29e",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "level",
+                  "asset": "items",
+                  "sprite": "5"
+                },
+                "info": {
+                  "editorName": "items6",
+                  "x": 976,
+                  "y": 128
+                }
+              },
+              {
+                "type": "prefab",
+                "prefab": "3",
+                "id": "33e77cb3-934c-4b9c-9571-3963180ec6c4",
+                "asset-ref": {
+                  "file": "WebContent/assets/pack.json",
+                  "section": "level",
+                  "asset": "items",
+                  "sprite": "5"
+                },
+                "info": {
+                  "editorName": "items7",
+                  "x": 1024,
+                  "y": 128
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "type": "STATE",
+  "asset-table": {
+    "0": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "tiles",
+      "sprite": "18"
+    },
+    "1": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "tiles",
+      "sprite": "12"
+    },
+    "2": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "tiles",
+      "sprite": "34"
+    },
+    "3": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "tiles",
+      "sprite": "1"
+    },
+    "4": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "tiles",
+      "sprite": "25"
+    },
+    "5": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "tiles",
+      "sprite": "33"
+    },
+    "6": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "tiles",
+      "sprite": "8"
+    },
+    "7": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "tiles",
+      "sprite": "3"
+    },
+    "8": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "tiles",
+      "sprite": "24"
+    },
+    "9": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "tiles",
+      "sprite": "32"
+    },
+    "10": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "tiles",
+      "sprite": "2"
+    },
+    "11": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "tiles",
+      "sprite": "27"
+    },
+    "12": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "tiles",
+      "sprite": "35"
+    },
+    "13": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "tiles",
+      "sprite": "26"
+    },
+    "14": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "tiles",
+      "sprite": "17"
+    },
+    "15": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "tiles",
+      "sprite": "19"
+    },
+    "16": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "tiles",
+      "sprite": "16"
+    },
+    "17": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "tiles",
+      "sprite": "4"
+    },
+    "18": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "tiles",
+      "sprite": "5"
+    },
+    "19": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "tiles",
+      "sprite": "21"
+    },
+    "20": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "tiles",
+      "sprite": "20"
+    },
+    "21": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "tiles",
+      "sprite": "29"
+    },
+    "22": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "tiles",
+      "sprite": "13"
+    },
+    "23": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "items",
+      "sprite": "13"
+    },
+    "24": {
+      "file": "WebContent/assets/pack.json",
+      "section": "level",
+      "asset": "p"
+    }
+  },
+  "prefab-table": {
+    "0": "WebContent/assets/canvas/prefabs/Enemy2.canvas",
+    "1": "WebContent/assets/canvas/prefabs/Enemy1.canvas",
+    "2": "WebContent/assets/canvas/prefabs/Player.canvas",
+    "3": "WebContent/assets/canvas/prefabs/Daemon.canvas"
+  }
+}

@@ -1,0 +1,472 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: ArraySet</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a>.</span> ArraySet </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="ArraySet"><span class="type-signature"></span>new ArraySet<span class="signature">(<span class="optional">list</span>)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>ArraySet is a Set data structure (items must be unique within the set) that also maintains order.<br>This allows specific items to be easily added or removed from the Set.</p> 
+     <p>Item equality (and uniqueness) is determined by the behavior of <code>Array.indexOf</code>.</p> 
+     <p>This used primarily by the Input subsystem.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>list</code></td> 
+       <td class="type"> <span class="param-type">Array.&lt;any&gt;</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> (new array) </td> 
+       <td class="description last"><p>The backing array: if specified the items in the list <em>must</em> be unique, per <code>Array.indexOf</code>, and the ownership of the array <em>should</em> be relinquished to the ArraySet.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArraySet.js.html">utils/ArraySet.js</a>, 
+      <a href="src_utils_ArraySet.js.html#sunlight-1-line-19">line 19</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="first"><span class="type-signature"></span>first<span class="type-signature"> :any</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Returns the first item and resets the cursor to the start.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArraySet.js.html">utils/ArraySet.js</a>, 
+      <a href="src_utils_ArraySet.js.html#sunlight-1-line-231">line 231</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="list"><span class="type-signature"></span>list<span class="type-signature"> :Array.&lt;any&gt;</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The backing array.</p> 
+    </div> 
+    <h5>Type:</h5> 
+    <ul> 
+     <li> <span class="param-type">Array.&lt;any&gt;</span> </li> 
+    </ul> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArraySet.js.html">utils/ArraySet.js</a>, 
+      <a href="src_utils_ArraySet.js.html#sunlight-1-line-32">line 32</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="next"><span class="type-signature"></span>next<span class="type-signature"> :any</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Returns the the next item (based on the cursor) and advances the cursor.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArraySet.js.html">utils/ArraySet.js</a>, 
+      <a href="src_utils_ArraySet.js.html#sunlight-1-line-256">line 256</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="position"><span class="type-signature"></span>position<span class="type-signature"> :integer</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Current cursor position as established by <code>first</code> and <code>next</code>.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArraySet.js.html">utils/ArraySet.js</a>, 
+      <a href="src_utils_ArraySet.js.html#sunlight-1-line-26">line 26</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="total"><span class="type-signature"></span>total<span class="type-signature"> :integer</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Number of items in the ArraySet. Same as <code>list.length</code>.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArraySet.js.html">utils/ArraySet.js</a>, 
+      <a href="src_utils_ArraySet.js.html#sunlight-1-line-217">line 217</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+  <h3 class="subsection-title">Methods</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="add"><span class="type-signature"></span>add<span class="signature">(item)</span><span class="type-signature"> ? {any}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Adds a new element to the end of the list.<br>If the item already exists in the list it is not moved.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>item</code></td> 
+       <td class="type"> <span class="param-type">any</span> </td> 
+       <td class="description last"><p>The element to add to this list.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">any</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The item that was added.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArraySet.js.html">utils/ArraySet.js</a>, 
+      <a href="src_utils_ArraySet.js.html#sunlight-1-line-38">line 38</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="callAll"><span class="type-signature"></span>callAll<span class="signature">(key, parameter)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Calls a function on all members of this list, using the member as the context for the callback.</p> 
+     <p>If the <code>key</code> property is present it must be a function.<br>The function is invoked using the item as the context.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>key</code></td> 
+       <td class="type"> <span class="param-type">string</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>The name of the property with the function to call.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>parameter</code></td> 
+       <td class="type"> <span class="param-type">*</span> </td> 
+       <td class="attributes"> &lt;repeatable&gt;<br> </td> 
+       <td class="description last"><p>Additional parameters that will be passed to the callback.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArraySet.js.html">utils/ArraySet.js</a>, 
+      <a href="src_utils_ArraySet.js.html#sunlight-1-line-159">line 159</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="exists"><span class="type-signature"></span>exists<span class="signature">(item)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Checks for the item within this list.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>item</code></td> 
+       <td class="type"> <span class="param-type">any</span> </td> 
+       <td class="description last"><p>The element to get the list index for.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>True if the item is found in the list, otherwise false.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArraySet.js.html">utils/ArraySet.js</a>, 
+      <a href="src_utils_ArraySet.js.html#sunlight-1-line-95">line 95</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="getByKey"><span class="type-signature"></span>getByKey<span class="signature">(property, value)</span><span class="type-signature"> ? {any}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Gets an item from the set based on the property strictly equaling the value given.<br>Returns null if not found.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>property</code></td> 
+       <td class="type"> <span class="param-type">string</span> </td> 
+       <td class="description last"><p>The property to check against the value.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>value</code></td> 
+       <td class="type"> <span class="param-type">any</span> </td> 
+       <td class="description last"><p>The value to check if the property strictly equals.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">any</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The item that was found, or null if nothing matched.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArraySet.js.html">utils/ArraySet.js</a>, 
+      <a href="src_utils_ArraySet.js.html#sunlight-1-line-70">line 70</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="getIndex"><span class="type-signature"></span>getIndex<span class="signature">(item)</span><span class="type-signature"> ? {integer}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Gets the index of the item in the list, or -1 if it isn't in the list.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>item</code></td> 
+       <td class="type"> <span class="param-type">any</span> </td> 
+       <td class="description last"><p>The element to get the list index for.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">integer</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The index of the item or -1 if not found.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArraySet.js.html">utils/ArraySet.js</a>, 
+      <a href="src_utils_ArraySet.js.html#sunlight-1-line-57">line 57</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="remove"><span class="type-signature"></span>remove<span class="signature">(item)</span><span class="type-signature"> ? {any}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Removes the given element from this list if it exists.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>item</code></td> 
+       <td class="type"> <span class="param-type">any</span> </td> 
+       <td class="description last"><p>The item to be removed from the list.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">any</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>item - The item that was removed.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArraySet.js.html">utils/ArraySet.js</a>, 
+      <a href="src_utils_ArraySet.js.html#sunlight-1-line-119">line 119</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="removeAll"><span class="type-signature"></span>removeAll<span class="signature">(<span class="optional">destroy</span>)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Removes every member from this ArraySet and optionally destroys it.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>destroy</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>Call <code>destroy</code> on each member as it's removed from this set.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArraySet.js.html">utils/ArraySet.js</a>, 
+      <a href="src_utils_ArraySet.js.html#sunlight-1-line-185">line 185</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="reset"><span class="type-signature"></span>reset<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Removes all the items.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArraySet.js.html">utils/ArraySet.js</a>, 
+      <a href="src_utils_ArraySet.js.html#sunlight-1-line-108">line 108</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="setAll"><span class="type-signature"></span>setAll<span class="signature">(key, value)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Sets the property <code>key</code> to the given value on all members of this list.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>key</code></td> 
+       <td class="type"> <span class="param-type">any</span> </td> 
+       <td class="description last"><p>The property of the item to set.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>value</code></td> 
+       <td class="type"> <span class="param-type">any</span> </td> 
+       <td class="description last"><p>The value to set the property to.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_ArraySet.js.html">utils/ArraySet.js</a>, 
+      <a href="src_utils_ArraySet.js.html#sunlight-1-line-138">line 138</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

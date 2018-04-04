@@ -1,0 +1,10 @@
+{
+	"author": {
+		"name": "Arian Fornaris (original from Ansimuz)",
+		"email": "developers@phasereditor2d.com",
+		"website": "phasereditor2d.com",
+	},
+	"mainFile": "assets/canvas/Level.canvas",
+	"description": "A demo about to import a CSV tilemap into a scene. The original version was created by Ansimuz - https://ansimuz.itch.io/sunnyland-forest -",
+	"id" : "phasereditor.demos.sunny_land_forrest"
+}

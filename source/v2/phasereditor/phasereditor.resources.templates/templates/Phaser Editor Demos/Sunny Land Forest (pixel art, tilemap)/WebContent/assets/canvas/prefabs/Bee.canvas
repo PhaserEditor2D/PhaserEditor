@@ -1,0 +1,84 @@
+{
+  "canvas-version": 2,
+  "settings": {
+    "className": "Bee",
+    "sceneWidth": 640,
+    "sceneHeight": 360,
+    "generateOnSave": true,
+    "enableStepping": false,
+    "lang": "JAVA_SCRIPT",
+    "baseClass": "Phaser.Sprite",
+    "backgroundColor": [
+      180,
+      180,
+      180
+    ],
+    "gridColor": [
+      200,
+      200,
+      200
+    ],
+    "showGrid": true,
+    "create_after": "this.afterCreate();"
+  },
+  "stateSettings": {
+    "stageBackgroundColor": [
+      0,
+      0,
+      0
+    ],
+    "autoLoad": true,
+    "preloadSpriteId": "",
+    "preloadSprite_direction": 0,
+    "load.pack": []
+  },
+  "world": {
+    "type": "group",
+    "id": "69ae5501-1052-4b4f-be61-a4ee8570c3d3",
+    "info": {
+      "editorName": "Bee",
+      "setAll": [],
+      "children": [{
+        "type": "atlas-sprite",
+        "id": "0209ea60-4980-4e7a-a885-ca7b6928d0f3",
+        "asset": "0",
+        "info": {
+          "editorName": "bee",
+          "anchor.x": 0.5,
+          "anchor.y": 0.5,
+          "animations": [{
+            "name": "fly",
+            "frameRate": 15,
+            "loop": true,
+            "autoPlay": true,
+            "frames": [
+              "bee/bee-1",
+              "bee/bee-2",
+              "bee/bee-3",
+              "bee/bee-4",
+              "bee/bee-5",
+              "bee/bee-6",
+              "bee/bee-7",
+              "bee/bee-8"
+            ]
+          }],
+          "body": {
+            "type": "ARCADE_RECT",
+            "offsetX": 11,
+            "offsetY": 13,
+            "width": 15,
+            "height": 18
+          }
+        }
+      }]
+    }
+  },
+  "type": "SPRITE",
+  "asset-table": {"0": {
+    "file": "WebContent/assets/pack.json",
+    "section": "preloader",
+    "asset": "atlas",
+    "sprite": "bee/bee-1"
+  }},
+  "prefab-table": {}
+}

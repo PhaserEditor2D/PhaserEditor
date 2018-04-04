@@ -1,0 +1,2877 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: Math</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a>.</span> Math </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="Math"><span class="type-signature"></span>new Math<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A collection of useful mathematical functions.</p> 
+     <p>These are normally accessed through <code>game.math</code>.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-17">line 17</a> 
+     </dt> 
+     <dt class="tag-see">
+      See:
+     </dt> 
+     <dd class="tag-see"> 
+      <ul> 
+       <li><a href="Phaser.Utils.html">Phaser.Utils</a></li> 
+       <li><a href="Phaser.ArrayUtils.html">Phaser.ArrayUtils</a></li> 
+      </ul> 
+     </dd> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id=".PI2"><span class="type-signature">&lt;static&gt; </span>PI2<span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Twice PI.</p> 
+    </div> 
+    <dl class="details"> 
+     <h5 class="subsection-title">Properties:</h5> 
+     <dl> 
+      <table class="props table table-striped"> 
+       <thead> 
+        <tr> 
+         <th>Name</th> 
+         <th>Type</th> 
+         <th class="last">Description</th> 
+        </tr> 
+       </thead> 
+       <tbody> 
+        <tr> 
+         <td class="name"><code>Phaser.Math#PI2</code></td> 
+         <td class="type"> <span class="param-type">number</span> </td> 
+         <td class="description last"></td> 
+        </tr> 
+       </tbody> 
+      </table> 
+     </dl> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>~6.283</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-24">line 24</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+  <h3 class="subsection-title">Methods</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="angleBetween"><span class="type-signature"></span>angleBetween<span class="signature">(x1, y1, x2, y2)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Find the angle of a segment from (x1, y1) -&gt; (x2, y2).</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>x1</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The x coordinate of the first value.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>y1</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The y coordinate of the first value.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>x2</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The x coordinate of the second value.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>y2</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The y coordinate of the second value.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The angle, in radians.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-404">line 404</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="angleBetweenPoints"><span class="type-signature"></span>angleBetweenPoints<span class="signature">(point1, point2)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Find the angle of a segment from (point1.x, point1.y) -&gt; (point2.x, point2.y).</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>point1</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Point.html">Phaser.Point</a></span> </td> 
+       <td class="description last"><p>The first point.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>point2</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Point.html">Phaser.Point</a></span> </td> 
+       <td class="description last"><p>The second point.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The angle between the two points, in radians.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-439">line 439</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="angleBetweenPointsY"><span class="type-signature"></span>angleBetweenPointsY<span class="signature">(point1, point2)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Find the angle of a segment from (point1.x, point1.y) -&gt; (point2.x, point2.y).</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>point1</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Point.html">Phaser.Point</a></span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>point2</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Point.html">Phaser.Point</a></span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The angle, in radians.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-453">line 453</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="angleBetweenY"><span class="type-signature"></span>angleBetweenY<span class="signature">(x1, y1, x2, y2)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Find the angle of a segment from (x1, y1) -&gt; (x2, y2).</p> 
+     <p>The difference between this method and Math.angleBetween is that this assumes the y coordinate travels<br>down the screen.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>x1</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The x coordinate of the first value.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>y1</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The y coordinate of the first value.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>x2</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The x coordinate of the second value.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>y2</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The y coordinate of the second value.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The angle, in radians.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-420">line 420</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="average"><span class="type-signature"></span>average<span class="signature">()</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Averages all values passed to the function and returns the result.</p> 
+    </div> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The average of all given values.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-123">line 123</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="bernstein"><span class="type-signature">&lt;internal&gt; </span>bernstein<span class="signature">(n, i)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>n</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>i</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-846">line 846</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="between"><span class="type-signature"></span>between<span class="signature">(min, max)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Returns a number between the <code>min</code> and <code>max</code> values.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>min</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The minimum value. Must be positive, and less than 'max'.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>max</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The maximum value. Must be position, and greater than 'min'.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>A value between the range min to max.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-26">line 26</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="bezierInterpolation"><span class="type-signature"></span>bezierInterpolation<span class="signature">(v, k)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A Bezier Interpolation Method, mostly used by Phaser.Tween.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>v</code></td> 
+       <td class="type"> <span class="param-type">Array</span> </td> 
+       <td class="description last"><p>The input array of values to interpolate between.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>k</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The percentage of interpolation, between 0 and 1.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The interpolated value</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-769">line 769</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="catmullRom"><span class="type-signature">&lt;internal&gt; </span>catmullRom<span class="signature">(p0, p1, p2, p3, t)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Calculates a catmum rom value.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>p0</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>p1</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>p2</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>p3</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>t</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-882">line 882</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="catmullRomInterpolation"><span class="type-signature"></span>catmullRomInterpolation<span class="signature">(v, k)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A Catmull Rom Interpolation Method, mostly used by Phaser.Tween.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>v</code></td> 
+       <td class="type"> <span class="param-type">Array</span> </td> 
+       <td class="description last"><p>The input array of values to interpolate between.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>k</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The percentage of interpolation, between 0 and 1.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The interpolated value</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-791">line 791</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="ceilTo"><span class="type-signature"></span>ceilTo<span class="signature">(value, <span class="optional">place</span>, <span class="optional">base</span>)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Ceils to some place comparative to a <code>base</code>, default is 10 for decimal place.<br>The <code>place</code> is represented by the power applied to <code>base</code> to get that place.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>value</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The value to round.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>place</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>The place to round to.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>base</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 10 </td> 
+       <td class="description last"><p>The base to round in. Default is 10 for decimal.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The rounded value.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-302">line 302</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="clamp"><span class="type-signature"></span>clamp<span class="signature">(v, min, max)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Force a value within the boundaries by clamping it to the range <code>min</code>, <code>max</code>.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>v</code></td> 
+       <td class="type"> <span class="param-type">float</span> </td> 
+       <td class="description last"><p>The value to be clamped.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>min</code></td> 
+       <td class="type"> <span class="param-type">float</span> </td> 
+       <td class="description last"><p>The minimum bounds.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>max</code></td> 
+       <td class="type"> <span class="param-type">float</span> </td> 
+       <td class="description last"><p>The maximum bounds.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The clamped value.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-1028">line 1028</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="clampBottom"><span class="type-signature"></span>clampBottom<span class="signature">(x, a)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Clamp <code>x</code> to the range <code>[a, Infinity)</code>.<br>Roughly the same as <code>Math.max(x, a)</code>, except for NaN handling.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>x</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>a</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-1054">line 1054</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="degToRad"><span class="type-signature"></span>degToRad<span class="signature">(degrees)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Convert degrees to radians.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>degrees</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>Angle in degrees.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>Angle in radians.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-1186">line 1186</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="difference"><span class="type-signature"></span>difference<span class="signature">(a, b)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The absolute difference between two values.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>a</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The first value to check.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>b</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The second value to check.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The absolute difference between the two values.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-902">line 902</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="distance"><span class="type-signature"></span>distance<span class="signature">(x1, y1, x2, y2)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Returns the euclidian distance between the two given set of coordinates.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>x1</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>y1</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>x2</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>y2</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The distance between the two sets of coordinates.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-970">line 970</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="distancePow"><span class="type-signature"></span>distancePow<span class="signature">(x1, y1, x2, y2, <span class="optional">pow</span>)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Returns the distance between the two given set of coordinates at the power given.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>x1</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>y1</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>x2</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>y2</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>pow</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 2 </td> 
+       <td class="description last"></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The distance between the two sets of coordinates.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-1009">line 1009</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="distanceSq"><span class="type-signature"></span>distanceSq<span class="signature">(x1, y1, x2, y2)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Returns the euclidean distance squared between the two given set of<br>coordinates (cuts out a square root operation before returning).</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>x1</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>y1</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>x2</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>y2</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The distance squared between the two sets of coordinates.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-989">line 989</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="factorial"><span class="type-signature"></span>factorial<span class="signature">(value)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>value</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>the number you want to evaluate</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-859">line 859</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="floorTo"><span class="type-signature"></span>floorTo<span class="signature">(value, <span class="optional">place</span>, <span class="optional">base</span>)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Floors to some place comparative to a <code>base</code>, default is 10 for decimal place.<br>The <code>place</code> is represented by the power applied to <code>base</code> to get that place.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>value</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The value to round.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>place</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>The place to round to.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>base</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 10 </td> 
+       <td class="description last"><p>The base to round in. Default is 10 for decimal.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The rounded value.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-281">line 281</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="fuzzyCeil"><span class="type-signature"></span>fuzzyCeil<span class="signature">(val, <span class="optional">epsilon</span>)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Applies a fuzzy ceil to the given value.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>val</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The value to ceil.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>epsilon</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0.0001 </td> 
+       <td class="description last"><p>The epsilon (a small value used in the calculation)</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>ceiling(val-epsilon)</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-91">line 91</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="fuzzyEqual"><span class="type-signature"></span>fuzzyEqual<span class="signature">(a, b, <span class="optional">epsilon</span>)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Two number are fuzzyEqual if their difference is less than epsilon.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>a</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The first number to compare.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>b</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The second number to compare.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>epsilon</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0.0001 </td> 
+       <td class="description last"><p>The epsilon (a small value used in the calculation)</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>True if |a-b|&lt;epsilon</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-40">line 40</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="fuzzyFloor"><span class="type-signature"></span>fuzzyFloor<span class="signature">(val, <span class="optional">epsilon</span>)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Applies a fuzzy floor to the given value.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>val</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The value to floor.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>epsilon</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0.0001 </td> 
+       <td class="description last"><p>The epsilon (a small value used in the calculation)</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>floor(val+epsilon)</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-107">line 107</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="fuzzyGreaterThan"><span class="type-signature"></span>fuzzyGreaterThan<span class="signature">(a, b, <span class="optional">epsilon</span>)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p><code>a</code> is fuzzyGreaterThan <code>b</code> if it is more than b - epsilon.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>a</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The first number to compare.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>b</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The second number to compare.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>epsilon</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0.0001 </td> 
+       <td class="description last"><p>The epsilon (a small value used in the calculation)</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>True if a&gt;b+epsilon</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-74">line 74</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="fuzzyLessThan"><span class="type-signature"></span>fuzzyLessThan<span class="signature">(a, b, <span class="optional">epsilon</span>)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p><code>a</code> is fuzzyLessThan <code>b</code> if it is less than b + epsilon.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>a</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The first number to compare.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>b</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The second number to compare.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>epsilon</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0.0001 </td> 
+       <td class="description last"><p>The epsilon (a small value used in the calculation)</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>True if a&lt;b+epsilon</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-57">line 57</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="getShortestAngle"><span class="type-signature"></span>getShortestAngle<span class="signature">(angle1, angle2)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Gets the shortest angle between <code>angle1</code> and <code>angle2</code>.<br>Both angles must be in the range -180 to 180, which is the same clamped<br>range that <code>sprite.angle</code> uses, so you can pass in two sprite angles to<br>this method, and get the shortest angle back between the two of them.</p> 
+     <p>The angle returned will be in the same range. If the returned angle is<br>greater than 0 then it's a counter-clockwise rotation, if &lt; 0 then it's<br>a clockwise rotation.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>angle1</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The first angle. In the range -180 to 180.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>angle2</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The second angle. In the range -180 to 180.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The shortest angle, in degrees. If greater than zero it's a counter-clockwise rotation.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-374">line 374</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="isEven"><span class="type-signature"></span>isEven<span class="signature">(n)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Returns true if the number given is even.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>n</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="description last"><p>The number to check.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>True if the given number is even. False if the given number is odd.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-589">line 589</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="isOdd"><span class="type-signature"></span>isOdd<span class="signature">(n)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Returns true if the number given is odd.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>n</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="description last"><p>The number to check.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>True if the given number is odd. False if the given number is even.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-575">line 575</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="linear"><span class="type-signature"></span>linear<span class="signature">(p0, p1, t)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Calculates a linear (interpolation) value over t.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>p0</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>p1</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>t</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>A value between 0 and 1.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-831">line 831</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="linearInterpolation"><span class="type-signature"></span>linearInterpolation<span class="signature">(v, k)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A Linear Interpolation Method, mostly used by Phaser.Tween.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>v</code></td> 
+       <td class="type"> <span class="param-type">Array</span> </td> 
+       <td class="description last"><p>The input array of values to interpolate between.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>k</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The percentage of interpolation, between 0 and 1.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The interpolated value</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-741">line 741</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="mapLinear"><span class="type-signature"></span>mapLinear<span class="signature">(x, a1, a2, b1, b2)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Linear mapping from range 
+      <a1, a2>
+        to range 
+       <b1, b2></b1,>
+      </a1,></p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>x</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The value to map</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>a1</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>First endpoint of the range 
+         <a1, a2></a1,></p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>a2</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>Final endpoint of the range 
+         <a1, a2></a1,></p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>b1</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>First endpoint of the range 
+         <b1, b2></b1,></p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>b2</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>Final endpoint of the range 
+         <b1, b2></b1,></p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-1085">line 1085</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="max"><span class="type-signature"></span>max<span class="signature">()</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Variation of Math.max that can be passed either an array of numbers or the numbers as parameters.</p> 
+     <p>Prefer the standard <code>Math.max</code> function when appropriate.</p> 
+    </div> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The largest value from those given.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-635">line 635</a> 
+     </dt> 
+     <dt class="tag-see">
+      See:
+     </dt> 
+     <dd class="tag-see"> 
+      <ul> 
+       <li><a href="http://jsperf.com/math-s-min-max-vs-homemade">http://jsperf.com/math-s-min-max-vs-homemade</a></li> 
+      </ul> 
+     </dd> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="maxAdd"><span class="type-signature"></span>maxAdd<span class="signature">(value, amount, max)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Adds the given amount to the value, but never lets the value go over the specified maximum.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>value</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The value to add the amount to.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>amount</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The amount to add to the value.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>max</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The maximum the value is allowed to be.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The new value.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-491">line 491</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="maxProperty"><span class="type-signature"></span>maxProperty<span class="signature">()</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Variation of Math.max that can be passed a property and either an array of objects or the objects as parameters.<br>It will find the largest matching property value from the given objects.</p> 
+    </div> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The largest value from those given.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-697">line 697</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="min"><span class="type-signature"></span>min<span class="signature">()</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Variation of Math.min that can be passed either an array of numbers or the numbers as parameters.</p> 
+     <p>Prefer the standard <code>Math.min</code> function when appropriate.</p> 
+    </div> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The lowest value from those given.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-603">line 603</a> 
+     </dt> 
+     <dt class="tag-see">
+      See:
+     </dt> 
+     <dd class="tag-see"> 
+      <ul> 
+       <li><a href="http://jsperf.com/math-s-min-max-vs-homemade">http://jsperf.com/math-s-min-max-vs-homemade</a></li> 
+      </ul> 
+     </dd> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="minProperty"><span class="type-signature"></span>minProperty<span class="signature">()</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Variation of Math.min that can be passed a property and either an array of objects or the objects as parameters.<br>It will find the lowest matching property value from the given objects.</p> 
+    </div> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The lowest value from those given.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-667">line 667</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="minSub"><span class="type-signature"></span>minSub<span class="signature">(value, amount, min)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Subtracts the given amount from the value, but never lets the value go below the specified minimum.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>value</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The base value.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>amount</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The amount to subtract from the base value.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>min</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The minimum the value is allowed to be.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The new value.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-506">line 506</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="normalizeAngle"><span class="type-signature"></span>normalizeAngle<span class="signature">(angleRad)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Normalizes an angle to the [0,2pi) range.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>angleRad</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The angle to normalize, in radians.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The angle, fit within the [0,2pi] range, in radians.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-478">line 478</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="percent"><span class="type-signature"></span>percent<span class="signature">(a, b, <span class="optional">base</span>)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Work out what percentage value <code>a</code> is of value <code>b</code> using the given base.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>a</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The value to work out the percentage for.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>b</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The value you wish to get the percentage of.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>base</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>The base value.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The percentage a is of b, between 0 and 1.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-1153">line 1153</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="radToDeg"><span class="type-signature"></span>radToDeg<span class="signature">(radians)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Convert radians to degrees.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>radians</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>Angle in radians.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>Angle in degrees</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-1197">line 1197</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="reverseAngle"><span class="type-signature"></span>reverseAngle<span class="signature">(angleRad)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Reverses an angle.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>angleRad</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The angle to reverse, in radians.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The reverse angle, in radians.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-466">line 466</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="rotateToAngle"><span class="type-signature"></span>rotateToAngle<span class="signature">(currentAngle, targetAngle, <span class="optional">lerp</span>)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Rotates currentAngle towards targetAngle, taking the shortest rotation distance.<br>The lerp argument is the amount to rotate by in this call.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>currentAngle</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The current angle, in radians.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>targetAngle</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The target angle to rotate to, in radians.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>lerp</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0.05 </td> 
+       <td class="description last"><p>The lerp value to add to the current angle.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The adjusted angle.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-323">line 323</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="roundAwayFromZero"><span class="type-signature"></span>roundAwayFromZero<span class="signature">(value)</span><span class="type-signature"> ? {integer}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Round to the next whole number <em>away</em> from zero.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>value</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>Any number.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">integer</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The rounded value of that number.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-916">line 916</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="roundTo"><span class="type-signature"></span>roundTo<span class="signature">(value, <span class="optional">place</span>, <span class="optional">base</span>)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Round to some place comparative to a <code>base</code>, default is 10 for decimal place.<br>The <code>place</code> is represented by the power applied to <code>base</code> to get that place.</p> 
+     <pre class="prettyprint source"><code>e.g. 2000/7 ~= 285.714285714285714285714 ~= (bin)100011101.1011011011011011
+
+roundTo(2000/7,3) === 0
+roundTo(2000/7,2) == 300
+roundTo(2000/7,1) == 290
+roundTo(2000/7,0) == 286
+roundTo(2000/7,-1) == 285.7
+roundTo(2000/7,-2) == 285.71
+roundTo(2000/7,-3) == 285.714
+roundTo(2000/7,-4) == 285.7143
+roundTo(2000/7,-5) == 285.71429
+
+roundTo(2000/7,3,2)  == 288       -- 100100000
+roundTo(2000/7,2,2)  == 284       -- 100011100
+roundTo(2000/7,1,2)  == 286       -- 100011110
+roundTo(2000/7,0,2)  == 286       -- 100011110
+roundTo(2000/7,-1,2) == 285.5     -- 100011101.1
+roundTo(2000/7,-2,2) == 285.75    -- 100011101.11
+roundTo(2000/7,-3,2) == 285.75    -- 100011101.11
+roundTo(2000/7,-4,2) == 285.6875  -- 100011101.1011
+roundTo(2000/7,-5,2) == 285.71875 -- 100011101.10111</code></pre>
+     <p>Note what occurs when we round to the 3rd space (8ths place), 100100000, this is to be assumed<br>because we are rounding 100011.1011011011011011 which rounds up.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>value</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The value to round.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>place</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>The place to round to.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>base</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 10 </td> 
+       <td class="description last"><p>The base to round in. Default is 10 for decimal.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The rounded value.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-235">line 235</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="shear"><span class="type-signature"></span>shear<span class="signature">(n)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>n</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>n mod 1</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-144">line 144</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="sign"><span class="type-signature"></span>sign<span class="signature">(x)</span><span class="type-signature"> ? {integer}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A value representing the sign of the value: -1 for negative, +1 for positive, 0 if value is 0.</p> 
+     <p>This works differently from <code>Math.sign</code> for values of NaN and -0, etc.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>x</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">integer</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>An integer in {-1, 0, 1}</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-1138">line 1138</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="sinCosGenerator"><span class="type-signature"></span>sinCosGenerator<span class="signature">(length, sinAmplitude, cosAmplitude, frequency)</span><span class="type-signature"> ? {Object}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Generate a sine and cosine table simultaneously and extremely quickly.<br>The parameters allow you to specify the length, amplitude and frequency of the wave.<br>This generator is fast enough to be used in real-time.<br>Code based on research by Franky of scene.at</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>length</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The length of the wave</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>sinAmplitude</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The amplitude to apply to the sine table (default 1.0) if you need values between say -+ 125 then give 125 as the value</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>cosAmplitude</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The amplitude to apply to the cosine table (default 1.0) if you need values between say -+ 125 then give 125 as the value</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>frequency</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The frequency of the sine and cosine table data</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">Object</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>Returns the table data.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-930">line 930</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="smootherstep"><span class="type-signature"></span>smootherstep<span class="signature">(x, min, max)</span><span class="type-signature"> ? {float}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Smootherstep function as detailed at http://en.wikipedia.org/wiki/Smoothstep</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>x</code></td> 
+       <td class="type"> <span class="param-type">float</span> </td> 
+       <td class="description last"><p>The input value.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>min</code></td> 
+       <td class="type"> <span class="param-type">float</span> </td> 
+       <td class="description last"><p>The left edge. Should be smaller than the right edge.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>max</code></td> 
+       <td class="type"> <span class="param-type">float</span> </td> 
+       <td class="description last"><p>The right edge.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">float</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>A value between 0 and 1.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-1121">line 1121</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="smoothstep"><span class="type-signature"></span>smoothstep<span class="signature">(x, min, max)</span><span class="type-signature"> ? {float}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Smoothstep function as detailed at http://en.wikipedia.org/wiki/Smoothstep</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>x</code></td> 
+       <td class="type"> <span class="param-type">float</span> </td> 
+       <td class="description last"><p>The input value.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>min</code></td> 
+       <td class="type"> <span class="param-type">float</span> </td> 
+       <td class="description last"><p>The left edge. Should be smaller than the right edge.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>max</code></td> 
+       <td class="type"> <span class="param-type">float</span> </td> 
+       <td class="description last"><p>The right edge.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">float</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>A value between 0 and 1.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-1102">line 1102</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="snapTo"><span class="type-signature"></span>snapTo<span class="signature">(input, gap, <span class="optional">start</span>)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Snap a value to nearest grid slice, using rounding.</p> 
+     <p>Example: if you have an interval gap of 5 and a position of 12... you will snap to 10 whereas 14 will snap to 15.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>input</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The value to snap.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>gap</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The interval gap of the grid.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>start</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>Optional starting offset for gap.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The snapped value.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-155">line 155</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="snapToCeil"><span class="type-signature"></span>snapToCeil<span class="signature">(input, gap, <span class="optional">start</span>)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Snap a value to nearest grid slice, using ceil.</p> 
+     <p>Example: if you have an interval gap of 5 and a position of 12... you will snap to 15.<br>As will 14 will snap to 15... but 16 will snap to 20.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>input</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The value to snap.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>gap</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The interval gap of the grid.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>start</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>Optional starting offset for gap.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The snapped value.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-208">line 208</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="snapToFloor"><span class="type-signature"></span>snapToFloor<span class="signature">(input, gap, <span class="optional">start</span>)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Snap a value to nearest grid slice, using floor.</p> 
+     <p>Example: if you have an interval gap of 5 and a position of 12... you will snap to 10.<br>As will 14 snap to 10... but 16 will snap to 15.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>input</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The value to snap.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>gap</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The interval gap of the grid.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>start</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>Optional starting offset for gap.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The snapped value.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-181">line 181</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="within"><span class="type-signature"></span>within<span class="signature">(a, b, tolerance)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Checks if two values are within the given tolerance of each other.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>a</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The first number to check</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>b</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The second number to check</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>tolerance</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The tolerance. Anything equal to or less than this is considered within the range.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>True if a is &lt;= tolerance of b.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-1069">line 1069</a> 
+     </dt> 
+     <dt class="tag-see">
+      See:
+     </dt> 
+     <dd class="tag-see"> 
+      <ul> 
+       <li>Phaser.Math.fuzzyEqual</li> 
+      </ul> 
+     </dd> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="wrap"><span class="type-signature"></span>wrap<span class="signature">(value, min, max)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Ensures that the value always stays between min and max, by wrapping the value around.</p> 
+     <p>If <code>max</code> is not larger than <code>min</code> the result is 0.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>value</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The value to wrap.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>min</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The minimum the value is allowed to be.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>max</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The maximum the value is allowed to be, should be larger than <code>min</code>.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The wrapped value.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-521">line 521</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="wrapAngle"><span class="type-signature"></span>wrapAngle<span class="signature">(angle, <span class="optional">radians</span>)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Keeps an angle value between -180 and +180; or -PI and PI if radians.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>angle</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The angle value to wrap</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>radians</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>Set to <code>true</code> if the angle is given in radians, otherwise degrees is expected.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The new angle value; will be the same as the input angle if it was within bounds.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-727">line 727</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="wrapValue"><span class="type-signature"></span>wrapValue<span class="signature">(value, amount, max)</span><span class="type-signature"> ? {number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Adds value to amount and ensures that the result always stays between 0 and max, by wrapping the value around.</p> 
+     <p>Values <em>must</em> be positive integers, and are passed through Math.abs. See <a href="Phaser.Math.html#wrap">Phaser.Math#wrap</a> for an alternative.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>value</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The value to add the amount to.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>amount</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The amount to add to the value.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>max</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The maximum the value is allowed to be.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The wrapped value.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_math_Math.js.html">math/Math.js</a>, 
+      <a href="src_math_Math.js.html#sunlight-1-line-552">line 552</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

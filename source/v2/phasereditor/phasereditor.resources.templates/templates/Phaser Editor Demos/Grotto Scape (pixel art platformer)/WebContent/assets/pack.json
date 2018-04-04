@@ -1,0 +1,67 @@
+{
+  "level": [
+    {
+      "type": "spritesheet",
+      "key": "items",
+      "url": "assets/sprites/items.png",
+      "frameWidth": 16,
+      "frameHeight": 16,
+      "frameMax": -1,
+      "margin": 0,
+      "spacing": 0
+    },
+    {
+      "type": "spritesheet",
+      "key": "meter",
+      "url": "assets/sprites/meter.png",
+      "frameWidth": 28,
+      "frameHeight": 7,
+      "frameMax": -1,
+      "margin": 0,
+      "spacing": 0
+    },
+    {
+      "type": "spritesheet",
+      "key": "player",
+      "url": "assets/sprites/player.png",
+      "frameWidth": 16,
+      "frameHeight": 16,
+      "frameMax": -1,
+      "margin": 0,
+      "spacing": 0
+    },
+    {
+      "type": "spritesheet",
+      "key": "tiles",
+      "url": "assets/sprites/tiles.png",
+      "frameWidth": 16,
+      "frameHeight": 16,
+      "frameMax": -1,
+      "margin": 0,
+      "spacing": 0
+    },
+    {
+      "type": "spritesheet",
+      "key": "enemies",
+      "url": "assets/sprites/enemies.png",
+      "frameWidth": 16,
+      "frameHeight": 16,
+      "frameMax": -1,
+      "margin": 0,
+      "spacing": 0
+    },
+    {
+      "type": "image",
+      "key": "p",
+      "url": "assets/sprites/physics.png",
+      "overwrite": false
+    }
+  ],
+  "meta": {
+    "generated": "1491053665026",
+    "app": "Phaser Editor",
+    "url": "http://phasereditor.boniatillo.com",
+    "version": "1.0",
+    "copyright": "Arian Fornaris (c) 2015,2016"
+  }
+}

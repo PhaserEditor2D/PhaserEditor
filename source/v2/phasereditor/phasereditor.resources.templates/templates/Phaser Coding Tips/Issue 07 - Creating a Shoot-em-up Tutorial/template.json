@@ -1,0 +1,10 @@
+{
+	"author": {
+		"name": "Richard Davey",
+		"email": "Phaser.io (rich@photonstorm.com)",
+		"website": "http://phaser.io",
+	},
+	"mainFile": "bulletpool.js",
+	"url": "http://phaser.io/tutorials/coding-tips-007",
+	"description": "The whole point of a shoot-em-up is of course shooting things. For this you need bullets. Lots of them."
+}

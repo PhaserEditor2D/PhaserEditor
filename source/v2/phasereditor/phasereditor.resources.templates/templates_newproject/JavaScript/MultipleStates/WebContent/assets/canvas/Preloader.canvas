@@ -1,0 +1,64 @@
+{
+  "canvas-version": 2,
+  "settings": {
+    "className": "Preloader",
+    "sceneWidth": 800,
+    "sceneHeight": 600,
+    "generateOnSave": true,
+    "enableStepping": false,
+    "lang": "JAVA_SCRIPT",
+    "baseClass": "Phaser.State",
+    "backgroundColor": [
+      180,
+      180,
+      180
+    ],
+    "gridColor": [
+      200,
+      200,
+      200
+    ],
+    "showGrid": true,
+    "create_before": "// all the assets are loaded, go to the menu screen\r\nthis.game.state.start(\"Menu\");"
+  },
+  "stateSettings": {
+    "scaleMode": "SHOW_ALL",
+    "pageAlignHorizontally": true,
+    "pageAlignVertically": true,
+    "stageBackgroundColor": [
+      0,
+      0,
+      0
+    ],
+    "autoLoad": true,
+    "isPreloader": true,
+    "preloadSpriteId": "",
+    "preloadSprite_direction": 0,
+    "load.pack": [{
+      "file": "WebContent/assets/pack.json",
+      "section": "preloader"
+    }]
+  },
+  "world": {
+    "type": "group",
+    "id": "16707e64-9031-498b-9e49-0be2635d79ae",
+    "info": {
+      "editorName": "Preload",
+      "setAll": [],
+      "children": [{
+        "type": "text",
+        "id": "6c7ec22b-e55c-49b2-84f7-1486fd4f4e7b",
+        "info": {
+          "editorName": "loadingText",
+          "x": 353.73828125,
+          "y": 290.2373046875,
+          "text": "Loading...",
+          "style.fill": "#ffffff"
+        }
+      }]
+    }
+  },
+  "type": "STATE",
+  "asset-table": {},
+  "prefab-table": {}
+}

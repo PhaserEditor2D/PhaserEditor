@@ -1,0 +1,91 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: Destroy</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a><a href="Phaser.html#.Component">.Component</a>.</span> Destroy </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="Destroy"><span class="type-signature"></span>new Destroy<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The Destroy component is responsible for destroying a Game Object.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Destroy.js.html">gameobjects/components/Destroy.js</a>, 
+      <a href="src_gameobjects_components_Destroy.js.html#sunlight-1-line-12">line 12</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="destroyPhase"><span class="type-signature">&lt;readonly&gt; </span>destroyPhase<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>As a Game Object runs through its destroy method this flag is set to true,<br>and can be checked in any sub-systems or plugins it is being destroyed from.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Destroy.js.html">gameobjects/components/Destroy.js</a>, 
+      <a href="src_gameobjects_components_Destroy.js.html#sunlight-1-line-22">line 22</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+  <h3 class="subsection-title">Methods</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="destroy"><span class="type-signature"></span>destroy<span class="signature">(<span class="optional">destroyChildren</span>, <span class="optional">destroyTexture</span>)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Destroys the Game Object. This removes it from its parent group, destroys the input, event and animation handlers if present<br>and nulls its reference to <code>game</code>, freeing it up for garbage collection.</p> 
+     <p>If this Game Object has the Events component it will also dispatch the <code>onDestroy</code> event.</p> 
+     <p>You can optionally also destroy the BaseTexture this Game Object is using. Be careful if you've<br>more than one Game Object sharing the same BaseTexture.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>destroyChildren</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> true </td> 
+       <td class="description last"><p>Should every child of this object have its destroy method called as well?</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>destroyTexture</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>Destroy the BaseTexture this Game Object is using? Note that if another Game Object is sharing the same BaseTexture it will invalidate it.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Destroy.js.html">gameobjects/components/Destroy.js</a>, 
+      <a href="src_gameobjects_components_Destroy.js.html#sunlight-1-line-37">line 37</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

@@ -1,0 +1,55 @@
+{
+  "canvas-version": 2,
+  "settings": {
+    "className": "Menu",
+    "sceneWidth": 800,
+    "sceneHeight": 600,
+    "generateOnSave": true,
+    "enableStepping": false,
+    "lang": "JAVA_SCRIPT_6",
+    "baseClass": "Phaser.State",
+    "backgroundColor": [
+      180,
+      180,
+      180
+    ],
+    "gridColor": [
+      200,
+      200,
+      200
+    ],
+    "showGrid": true
+  },
+  "stateSettings": {
+    "stageBackgroundColor": [
+      128,
+      128,
+      255
+    ],
+    "autoLoad": true,
+    "preloadSpriteId": "",
+    "preloadSprite_direction": 0,
+    "load.pack": []
+  },
+  "world": {
+    "type": "group",
+    "id": "af8eb0de-599e-428d-94f8-09d75318f8b7",
+    "info": {
+      "editorName": "Menu",
+      "setAll": [],
+      "children": [{
+        "type": "text",
+        "id": "a5c6425e-3024-4f63-b3bc-3cfc55433511",
+        "info": {
+          "editorName": "text",
+          "x": 331.7558898925781,
+          "y": 292.09765625,
+          "text": "Click to start..."
+        }
+      }]
+    }
+  },
+  "type": "STATE",
+  "asset-table": {},
+  "prefab-table": {}
+}

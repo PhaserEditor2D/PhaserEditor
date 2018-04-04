@@ -1,0 +1,66 @@
+<html>
+
+<body>
+
+<p>Hello, finally Phaser Editor 1.2.0 is released and there is exciting stuff here!</p>
+
+<h2>Visual scene editor</h2>
+
+<p>This is the first release of <a href="https://phasereditor2d.com/blog/quick-start/080-canvas">Canvas</a>, the built-in scene editor that is fully integrated with the other components of Phaser Editor.</p>
+
+<p><img src="What's%20new%20in%20v1.2.0_files/20160624094409-canvas.png" alt="Canvas preview" title=""></p>
+
+<p>We are really exiting with this new feature, that we are releasing today as a preview but yet there is lot of thing you can do with it. We do not pretend that you develop all the visual elements of your game with Canvas, but it can help a lot.</p>
+
+<p>Let’s see some of its features:</p>
+
+<ul>
+<li>To create the objects you drag the assets defined in the asset pack and drop them in the scene (check <a href="http://www.html5gamedevs.com/topic/22771-phaser-scene-builder-getting-the-sprites-from-different-sources/">this thread</a> in the HTML5GameDevs forum).</li>
+<li>The object types and the properties of the objects of the scene follow all the Phaser conventions and API.</li>
+<li>For now it supports groups (<code>game.add.group()</code>), sprites (<code>game.add.sprite()</code>), tile sprites (<code>game.add.tileSprite()</code>) and buttons (<code>game.add.button()</code>).</li>
+<li>The objects can be created from spritesheets, texture atlas and images.</li>
+<li>You can edit these properties of an object: <br>
+<ul><li>Sprite: position, scale, angle, anchor, pivot, tint, animations.</li>
+<li>Tile Sprite: tilePosition, width, height and tileScale.</li>
+<li>Button: callback, callbackContext, overFrame, outFrame, downFrame, upFrame.</li>
+<li>Group: physicsGroup.</li></ul></li>
+<li>All properties are documented, actually, it just show the Phaser API doc of the property in cuestion.</li>
+<li>Provides an assets Palette that together with the very costomizable Phaser Editor layout, make easy for the user to remove distractions.</li>
+<li>You can align and change Z order of the objects.</li>
+<li>Supports common editing operations: zoom in/out, scroll, copy/paste, undo/redo.</li>
+<li>Generates human readable code that can be re-used and extended even by external text editors, like the one of your preference.</li>
+<li>A project template with a demo of a platformer made with Canvas (<code>Main Templates &gt; Platformer (using level designer)</code>). We recommend you try it.</li>
+</ul>
+
+<p>We want a great future for this scene editor, we belive it is going to make easier the Phaser game development and we have a strong motivation to complete and continue improving it, by adding support to other Phaser concepts and objects, like font objects (bitmap, retro, text), emitters, tween editors, physics bodies, re-utilization of objects across diferent scenes (a sort of prefabs) and support tilemaps, just to mention some of them. Don’t hesitate to contact with us in any of our social channels to express your ideas or the issues you find.</p>
+
+<p><a href="https://phasereditor2d.com/blog/quick-start/080-canvas">Read more…</a></p>
+
+<h2>A new method to update Phaser</h2>
+
+<p>Until now, we was trying to release Phaser Editor at every Phaser release. But lately Phaser is getting updated in a high frequency, something that is gerat, but our promise of update the editor stress us a lot and interrupts the development of major features that requires lot of concentration and time.</p>
+
+<p>For that reason we created a method to update the Phaser related stuff without the need to deliver a new version of the editor.</p>
+
+<p>In the editor there are lot of components that requires the Phaser sources and some metadata we generate by parsing the sources: Chains, the JavaScript editor (to auto-complte the Phaser API), the project wizard, to create projects based on the Phaser examples, the Asset Pack editor and Canvas, to show the Phaser help of the properties. </p>
+
+<p>So we created the <a href="https://phasereditor2d.com/blog/quick-start/090-phaser-update">Phaser Bundle</a>, a repository that contains the Phaser sources and metadata with the format we need in the editor. When Phaser is released, we update our Phaser Bundle (something that should take less than a week) and the user can download it or update it via git, and link it with the editor. We hope in this way to reduce stress and focus more on the editor specific issues.</p>
+
+<p><a href="https://phasereditor2d.com/blog/quick-start/090-phaser-update">Read more…</a></p>
+
+<h2>Evaluation period of 15 days</h2>
+
+<p>In previous releases we was showing an evaluation message every few disturbing minutes, now we show this message every 15 minutes, but the evaluation expires in 15 days, after that period you will not be able to use that Phaser Editor version anymore. We encourage you to purchase it :-)</p>
+
+<h2>Java JRE updated</h2>
+
+<p>The embeded Java JRE was updated to 1.8.95 in Windows and Linux. </p>
+
+<h2>Thanks</h2>
+
+<p>Many thanks to <a href="http://samsstuffsoftware.blogspot.com">Sam Riggs</a> for his tutorials about Phaser Editor and the <a href="http://globalgamejam.org/2016/games/life-cuco">Havana Games Team</a> for the assets used in the Canvas tutorial and project template. And for all of you that was reporting issues and commenting in our social channels.</p>
+
+<p>See you soon!</p>
+
+</body>
+</html>

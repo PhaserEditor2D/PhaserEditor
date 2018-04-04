@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="phasereditor.bmpfont"
+      label="Phaser Editor - Bitmap Font"
+      version="1.5.0.20180307"
+      provider-name="Arian Fornaris"
+      license-feature="org.eclipse.platform"
+      license-feature-version="4.7.3.v20180301-0715">
+
+   <description url="http://phasereditor2d.com">
+      Bitmap Font support for Canvas editor.
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+   <plugin
+         id="phasereditor.bmpfont.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="phasereditor.bmpfont.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

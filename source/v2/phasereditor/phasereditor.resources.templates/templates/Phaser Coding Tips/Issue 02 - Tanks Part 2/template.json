@@ -1,0 +1,10 @@
+{
+	"author": {
+		"name": "Richard Davey",
+		"email": "Phaser.io (rich@photonstorm.com)",
+		"website": "http://phaser.io",
+	},
+	"mainFile": "tanks.js",
+	"url": "http://phaser.io/tutorials/coding-tips-002",
+	"description": "In Part 1 we got the tank displayed and firing a single bullet at some targets. Now it's time to make it a proper tanks game and add a landscape!"
+}

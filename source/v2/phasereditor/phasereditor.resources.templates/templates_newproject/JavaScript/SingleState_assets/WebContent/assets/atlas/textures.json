@@ -1,0 +1,129 @@
+{
+  "frames": {
+    "grass-1": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 106,
+        "y": 2,
+        "w": 98,
+        "h": 58
+      },
+      "spriteSourceSize": {
+        "x": 1,
+        "y": 0,
+        "w": 98,
+        "h": 58
+      },
+      "sourceSize": {
+        "w": 100,
+        "h": 60
+      }
+    },
+    "tree-1": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 2,
+        "y": 26,
+        "w": 102,
+        "h": 161
+      },
+      "spriteSourceSize": {
+        "x": 13,
+        "y": 0,
+        "w": 102,
+        "h": 161
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 180
+      }
+    },
+    "bridge": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 236,
+        "y": 36,
+        "w": 128,
+        "h": 34
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 3,
+        "w": 128,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 40
+      }
+    },
+    "ground-0": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 236,
+        "y": 72,
+        "w": 124,
+        "h": 115
+      },
+      "spriteSourceSize": {
+        "x": 4,
+        "y": 0,
+        "w": 124,
+        "h": 115
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 128
+      }
+    },
+    "ground-1": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 106,
+        "y": 62,
+        "w": 128,
+        "h": 125
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 125
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 128
+      }
+    },
+    "ground-2": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "x": 362,
+        "y": 72,
+        "w": 124,
+        "h": 115
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 124,
+        "h": 115
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 128
+      }
+    }
+  },
+  "meta": {
+    "app": "Phaser Editor",
+    "version": "1",
+    "image": "textures.png"
+  }
+}

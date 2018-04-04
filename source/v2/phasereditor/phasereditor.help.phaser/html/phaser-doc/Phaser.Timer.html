@@ -1,0 +1,853 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: Timer</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a>.</span> Timer </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="Timer"><span class="type-signature"></span>new Timer<span class="signature">(game, <span class="optional">autoDestroy</span>)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A Timer is a way to create and manage <a href="Phaser.TimerEvent.html">timer events</a> that wait for a specific duration and then run a callback.<br>Many different timer events, with individual delays, can be added to the same Timer.</p> 
+     <p>All Timer delays are in milliseconds (there are 1000 ms in 1 second); so a delay value of 250 represents a quarter of a second.</p> 
+     <p>Timers are based on real life time, adjusted for game pause durations.<br>That is, <em>timer events are based on elapsed <a href="Phaser.Time.html">game time</a></em> and do <em>not</em> take physics time or slow motion into account.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>game</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Game.html">Phaser.Game</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>A reference to the currently running game.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>autoDestroy</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> true </td> 
+       <td class="description last"><p>If true, the timer will automatically destroy itself after all the events have been dispatched (assuming no looping events).</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-21">line 21</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id=".HALF"><span class="type-signature">&lt;static, constant&gt; </span>HALF<span class="type-signature"> :integer</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Number of milliseconds in half a second.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-175">line 175</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id=".MINUTE"><span class="type-signature">&lt;static, constant&gt; </span>MINUTE<span class="type-signature"> :integer</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Number of milliseconds in a minute.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-161">line 161</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id=".QUARTER"><span class="type-signature">&lt;static, constant&gt; </span>QUARTER<span class="type-signature"> :integer</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Number of milliseconds in a quarter of a second.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-182">line 182</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id=".SECOND"><span class="type-signature">&lt;static, constant&gt; </span>SECOND<span class="type-signature"> :integer</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Number of milliseconds in a second.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-168">line 168</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="autoDestroy"><span class="type-signature"></span>autoDestroy<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If true, the timer will automatically destroy itself after all the events have been dispatched (assuming no looping events).</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-45">line 45</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="duration"><span class="type-signature">&lt;readonly&gt; </span>duration<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The duration in ms remaining until the next event will occur.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-677">line 677</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="elapsed"><span class="type-signature">&lt;internal&gt; </span>elapsed<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Elapsed time since the last frame (in ms).</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-58">line 58</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="events"><span class="type-signature"></span>events<span class="type-signature"> :Array.&lt;<a href="Phaser.TimerEvent.html">Phaser.TimerEvent</a>&gt;</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>An array holding all of this timers Phaser.TimerEvent objects. Use the methods add, repeat and loop to populate it.</p> 
+    </div> 
+    <h5>Type:</h5> 
+    <ul> 
+     <li> <span class="param-type">Array.&lt;<a href="Phaser.TimerEvent.html">Phaser.TimerEvent</a>&gt;</span> </li> 
+    </ul> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-63">line 63</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="expired"><span class="type-signature">&lt;readonly&gt; </span>expired<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>An expired Timer is one in which all of its events have been dispatched and none are pending.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-52">line 52</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="game"><span class="type-signature">&lt;internal&gt; </span>game<span class="type-signature"> :<a href="Phaser.Game.html">Phaser.Game</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Local reference to game.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-29">line 29</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="length"><span class="type-signature">&lt;readonly&gt; </span>length<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The number of pending events in the queue.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-699">line 699</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="ms"><span class="type-signature">&lt;readonly&gt; </span>ms<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The duration in milliseconds that this Timer has been running for.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-712">line 712</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="next"><span class="type-signature">&lt;readonly&gt; </span>next<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The time at which the next event will occur.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-664">line 664</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="nextTick"><span class="type-signature">&lt;internal, readonly&gt; </span>nextTick<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The time the next tick will occur.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-79">line 79</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onComplete"><span class="type-signature"></span>onComplete<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal will be dispatched when this Timer has completed which means that there are no more events in the queue.</p> 
+     <p>The signal is supplied with one argument, <code>timer</code>, which is this Timer object.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-72">line 72</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="paused"><span class="type-signature">&lt;readonly&gt; </span>paused<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The paused state of the Timer. You can pause the timer by calling Timer.pause() and Timer.resume() or by the game pausing.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-91">line 91</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="running"><span class="type-signature">&lt;readonly&gt; </span>running<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>True if the Timer is actively running.</p> 
+     <p>Do not modify this boolean - use <a href="Phaser.Timer.html#pause">pause</a> (and <a href="Phaser.Timer.html#resume">resume</a>) to pause the timer.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-39">line 39</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="seconds"><span class="type-signature">&lt;readonly&gt; </span>seconds<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The duration in seconds that this Timer has been running for.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-734">line 734</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="timeCap"><span class="type-signature"></span>timeCap<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If the difference in time between two frame updates exceeds this value, the event times are reset to avoid catch-up situations.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-84">line 84</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+  <h3 class="subsection-title">Methods</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="add"><span class="type-signature"></span>add<span class="signature">(delay, callback, callbackContext, arguments)</span><span class="type-signature"> ? {<a href="Phaser.TimerEvent.html">Phaser.TimerEvent</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Adds a new Event to this Timer.</p> 
+     <p>The event will fire after the given amount of <code>delay</code> in milliseconds has passed, once the Timer has started running.<br>The delay is in relation to when the Timer starts, not the time it was added. If the Timer is already running the delay will be calculated based on the timers current time.</p> 
+     <p>Make sure to call <a href="Phaser.Timer.html#start">start</a> after adding all of the Events you require for this Timer.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>delay</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>The number of milliseconds, in <a href="Phaser.Time.html">game time</a>, before the timer event occurs.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>callback</code></td> 
+       <td class="type"> <span class="param-type">function</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>The callback that will be called when the timer event occurs.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>callbackContext</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>The context in which the callback will be called.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>arguments</code></td> 
+       <td class="type"> <span class="param-type">*</span> </td> 
+       <td class="attributes"> &lt;repeatable&gt;<br> </td> 
+       <td class="description last"><p>Additional arguments that will be supplied to the callback.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.TimerEvent.html">Phaser.TimerEvent</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The Phaser.TimerEvent object that was created.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-228">line 228</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="adjustEvents"><span class="type-signature">&lt;internal&gt; </span>adjustEvents<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Adjusts the time of all pending events and the nextTick by the given baseTime.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-552">line 552</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="clearPendingEvents"><span class="type-signature">&lt;internal&gt; </span>clearPendingEvents<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Clears any events from the Timer which have pendingDelete set to true and then resets the private _len and _i values.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-392">line 392</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="destroy"><span class="type-signature"></span>destroy<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Destroys this Timer. Any pending Events are not dispatched.<br>The onComplete callbacks won't be called.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-646">line 646</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="loop"><span class="type-signature"></span>loop<span class="signature">(delay, callback, callbackContext, arguments)</span><span class="type-signature"> ? {<a href="Phaser.TimerEvent.html">Phaser.TimerEvent</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Adds a new looped Event to this Timer that will repeat forever or until the Timer is stopped.</p> 
+     <p>The event will fire after the given amount of <code>delay</code> in milliseconds has passed, once the Timer has started running.<br>The delay is in relation to when the Timer starts, not the time it was added. If the Timer is already running the delay will be calculated based on the timers current time.</p> 
+     <p>Make sure to call <a href="Phaser.Timer.html#start">start</a> after adding all of the Events you require for this Timer.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>delay</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>The number of milliseconds, in <a href="Phaser.Time.html">game time</a>, before the timer event occurs.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>callback</code></td> 
+       <td class="type"> <span class="param-type">function</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>The callback that will be called when the timer event occurs.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>callbackContext</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>The context in which the callback will be called.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>arguments</code></td> 
+       <td class="type"> <span class="param-type">*</span> </td> 
+       <td class="attributes"> &lt;repeatable&gt;<br> </td> 
+       <td class="description last"><p>Additional arguments that will be supplied to the callback.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.TimerEvent.html">Phaser.TimerEvent</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The Phaser.TimerEvent object that was created.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-272">line 272</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="order"><span class="type-signature">&lt;internal&gt; </span>order<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Orders the events on this Timer so they are in tick order.<br>This is called automatically when new events are created.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-354">line 354</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="pause"><span class="type-signature"></span>pause<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Pauses the Timer and all events in the queue.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-510">line 510</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="remove"><span class="type-signature"></span>remove<span class="signature">(event)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Removes a pending TimerEvent from the queue.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>event</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.TimerEvent.html">Phaser.TimerEvent</a></span> </td> 
+       <td class="description last"><p>The event to remove from the queue.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-334">line 334</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="removeAll"><span class="type-signature"></span>removeAll<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Removes all Events from this Timer and all callbacks linked to onComplete, but leaves the Timer running.<br>The onComplete callbacks won't be called.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-631">line 631</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="repeat"><span class="type-signature"></span>repeat<span class="signature">(delay, repeatCount, callback, callbackContext, arguments)</span><span class="type-signature"> ? {<a href="Phaser.TimerEvent.html">Phaser.TimerEvent</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Adds a new TimerEvent that will always play through once and then repeat for the given number of iterations.</p> 
+     <p>The event will fire after the given amount of <code>delay</code> in milliseconds has passed, once the Timer has started running.<br>The delay is in relation to when the Timer starts, not the time it was added.<br>If the Timer is already running the delay will be calculated based on the timers current time.</p> 
+     <p>Make sure to call <a href="Phaser.Timer.html#start">start</a> after adding all of the Events you require for this Timer.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>delay</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>The number of milliseconds, in <a href="Phaser.Time.html">game time</a>, before the timer event occurs.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>repeatCount</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>The number of times the event will repeat once is has finished playback. A repeatCount of 1 means it will repeat itself once, playing the event twice in total.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>callback</code></td> 
+       <td class="type"> <span class="param-type">function</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>The callback that will be called when the timer event occurs.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>callbackContext</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>The context in which the callback will be called.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>arguments</code></td> 
+       <td class="type"> <span class="param-type">*</span> </td> 
+       <td class="attributes"> &lt;repeatable&gt;<br> </td> 
+       <td class="description last"><p>Additional arguments that will be supplied to the callback.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.TimerEvent.html">Phaser.TimerEvent</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The Phaser.TimerEvent object that was created.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-249">line 249</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="resume"><span class="type-signature"></span>resume<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Resumes the Timer and updates all pending events.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-590">line 590</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="start"><span class="type-signature"></span>start<span class="signature">(<span class="optional">delay</span>)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Starts this Timer running.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>delay</code></td> 
+       <td class="type"> <span class="param-type">integer</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>The number of milliseconds, in <a href="Phaser.Time.html">game time</a>, that should elapse before the Timer will start.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-293">line 293</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="stop"><span class="type-signature"></span>stop<span class="signature">(<span class="optional">clearEvents</span>)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Stops this Timer from running. Does not cause it to be destroyed if autoDestroy is set to true.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>clearEvents</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> true </td> 
+       <td class="description last"><p>If true all the events in Timer will be cleared, otherwise they will remain.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-316">line 316</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="update"><span class="type-signature">&lt;internal&gt; </span>update<span class="signature">(time)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The main Timer update event, called automatically by Phaser.Time.update.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>time</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The time from the core game clock.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>True if there are still events waiting to be dispatched, otherwise false if this Timer can be destroyed.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_time_Timer.js.html">time/Timer.js</a>, 
+      <a href="src_time_Timer.js.html#sunlight-1-line-415">line 415</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

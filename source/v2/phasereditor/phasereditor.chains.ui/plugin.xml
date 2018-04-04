@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+<extension
+         point="org.eclipse.ui.views">
+      <view
+            category="phasereditor.ui.phaser"
+            class="phasereditor.chains.ui.views.ChainsView"
+            icon="platform:/plugin/phasereditor.ui/icons/link.png"
+            id="phasereditor.chains.ui.views.chains"
+            name="Chains"
+            restorable="true">
+      </view>
+   </extension>
+<extension
+      point="org.eclipse.ui.preferencePages">
+   <page
+         category="phasereditor.ui.prefs.phasereditor"
+         class="phasereditor.chains.ui.prefs.ChainsPreferencesPage"
+         id="phasereditor.chains.ui.prefs.chainsview"
+         name="Chains">
+   </page>
+</extension>
+<extension
+      point="org.eclipse.core.runtime.preferences">
+   <initializer
+         class="phasereditor.chains.ui.prefs.ChainsPreferenceInitializer">
+   </initializer>
+</extension>
+</plugin>

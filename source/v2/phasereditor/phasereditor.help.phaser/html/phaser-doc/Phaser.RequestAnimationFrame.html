@@ -1,0 +1,210 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: RequestAnimationFrame</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a>.</span> RequestAnimationFrame </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="RequestAnimationFrame"><span class="type-signature"></span>new RequestAnimationFrame<span class="signature">(game, <span class="optional">forceSetTimeOut</span>)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Abstracts away the use of RAF or setTimeOut for the core game update loop.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>game</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Game.html">Phaser.Game</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>A reference to the currently running game.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>forceSetTimeOut</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>Tell Phaser to use setTimeOut even if raf is available.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_RequestAnimationFrame.js.html">utils/RequestAnimationFrame.js</a>, 
+      <a href="src_utils_RequestAnimationFrame.js.html#sunlight-1-line-15">line 15</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="forceSetTimeOut"><span class="type-signature"></span>forceSetTimeOut<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Tell Phaser to use setTimeOut even if raf is available.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_RequestAnimationFrame.js.html">utils/RequestAnimationFrame.js</a>, 
+      <a href="src_utils_RequestAnimationFrame.js.html#sunlight-1-line-33">line 33</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="game"><span class="type-signature"></span>game<span class="type-signature"> :<a href="Phaser.Game.html">Phaser.Game</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The currently running game.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_RequestAnimationFrame.js.html">utils/RequestAnimationFrame.js</a>, 
+      <a href="src_utils_RequestAnimationFrame.js.html#sunlight-1-line-22">line 22</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="isRunning"><span class="type-signature"></span>isRunning<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>true if RequestAnimationFrame is running, otherwise false.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_RequestAnimationFrame.js.html">utils/RequestAnimationFrame.js</a>, 
+      <a href="src_utils_RequestAnimationFrame.js.html#sunlight-1-line-28">line 28</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+  <h3 class="subsection-title">Methods</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="isRAF"><span class="type-signature"></span>isRAF<span class="signature">()</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Is the browser using requestAnimationFrame?</p> 
+    </div> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_RequestAnimationFrame.js.html">utils/RequestAnimationFrame.js</a>, 
+      <a href="src_utils_RequestAnimationFrame.js.html#sunlight-1-line-162">line 162</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="isSetTimeOut"><span class="type-signature"></span>isSetTimeOut<span class="signature">()</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Is the browser using setTimeout?</p> 
+    </div> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_RequestAnimationFrame.js.html">utils/RequestAnimationFrame.js</a>, 
+      <a href="src_utils_RequestAnimationFrame.js.html#sunlight-1-line-153">line 153</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="start"><span class="type-signature"></span>start<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Starts the requestAnimationFrame running or setTimeout if unavailable in browser</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_RequestAnimationFrame.js.html">utils/RequestAnimationFrame.js</a>, 
+      <a href="src_utils_RequestAnimationFrame.js.html#sunlight-1-line-70">line 70</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="stop"><span class="type-signature"></span>stop<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Stops the requestAnimationFrame from running.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_RequestAnimationFrame.js.html">utils/RequestAnimationFrame.js</a>, 
+      <a href="src_utils_RequestAnimationFrame.js.html#sunlight-1-line-134">line 134</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="updateRAF"><span class="type-signature"></span>updateRAF<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The update method for the requestAnimationFrame</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_RequestAnimationFrame.js.html">utils/RequestAnimationFrame.js</a>, 
+      <a href="src_utils_RequestAnimationFrame.js.html#sunlight-1-line-103">line 103</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="updateSetTimeout"><span class="type-signature"></span>updateSetTimeout<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The update method for the setTimeout.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_utils_RequestAnimationFrame.js.html">utils/RequestAnimationFrame.js</a>, 
+      <a href="src_utils_RequestAnimationFrame.js.html#sunlight-1-line-119">line 119</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

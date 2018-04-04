@@ -1,0 +1,1133 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: TilingSprite</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="PIXI.html">PIXI</a>.</span> TilingSprite </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="TilingSprite"><span class="type-signature"></span>new TilingSprite<span class="signature">(texture, width, height)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A tiling sprite is a fast way of rendering a tiling image</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>texture</code></td> 
+       <td class="type"> <span class="param-type"><a href="PIXI.Texture.html">PIXI.Texture</a></span> </td> 
+       <td class="description last"><p>the texture of the tiling sprite</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>width</code></td> 
+       <td class="type"> <span class="param-type">Number</span> </td> 
+       <td class="description last"><p>the width of the tiling sprite</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>height</code></td> 
+       <td class="type"> <span class="param-type">Number</span> </td> 
+       <td class="description last"><p>the height of the tiling sprite</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_extras_TilingSprite.js.html">pixi/extras/TilingSprite.js</a>, 
+      <a href="src_pixi_extras_TilingSprite.js.html#sunlight-1-line-5">line 5</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Extends</h3> 
+  <ul> 
+   <li><a href="PIXI.Sprite.html">PIXI.Sprite</a></li> 
+  </ul> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="anchor"><span class="type-signature"></span>anchor<span class="type-signature"> :Point</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The anchor sets the origin point of the texture.<br>The default is 0,0 this means the texture's origin is the top left<br>Setting than anchor to 0.5,0.5 means the textures origin is centered<br>Setting the anchor to 1,1 would mean the textures origin points will be the bottom right corner</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="inherited-from">
+      Inherited From:
+     </dt> 
+     <dd class="inherited-from">
+      <ul class="dummy">
+       <li> <a href="PIXI.Sprite.html#anchor">PIXI.Sprite#anchor</a> </li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_display_Sprite.js.html">pixi/display/Sprite.js</a>, 
+      <a href="src_pixi_display_Sprite.js.html#sunlight-1-line-17">line 17</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="blendMode"><span class="type-signature"></span>blendMode<span class="type-signature"> :Number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The blend mode to be applied to the sprite</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>PIXI.blendModes.NORMAL;</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_extras_TilingSprite.js.html">pixi/extras/TilingSprite.js</a>, 
+      <a href="src_pixi_extras_TilingSprite.js.html#sunlight-1-line-86">line 86</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="canvasBuffer"><span class="type-signature"></span>canvasBuffer<span class="type-signature"> :PIXICanvasBuffer</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The CanvasBuffer object that the tiled texture is drawn to.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_extras_TilingSprite.js.html">pixi/extras/TilingSprite.js</a>, 
+      <a href="src_pixi_extras_TilingSprite.js.html#sunlight-1-line-95">line 95</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="children"><span class="type-signature">&lt;readonly&gt; </span>children<span class="type-signature"> :Array.&lt;<a href="global.html#DisplayObject">DisplayObject</a>&gt;</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>[read-only] The array of children of this container.</p> 
+    </div> 
+    <h5>Type:</h5> 
+    <ul> 
+     <li> <span class="param-type">Array.&lt;<a href="global.html#DisplayObject">DisplayObject</a>&gt;</span> </li> 
+    </ul> 
+    <dl class="details"> 
+     <dt class="inherited-from">
+      Inherited From:
+     </dt> 
+     <dd class="inherited-from">
+      <ul class="dummy">
+       <li> <a href="PIXI.DisplayObjectContainer.html#children">PIXI.DisplayObjectContainer#children</a> </li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html">pixi/display/DisplayObjectContainer.js</a>, 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-17">line 17</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="exists"><span class="type-signature"></span>exists<span class="type-signature"> :Boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Controls if this Sprite is processed by the core Phaser game loops and Group loops.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="inherited-from">
+      Inherited From:
+     </dt> 
+     <dd class="inherited-from">
+      <ul class="dummy">
+       <li> <a href="PIXI.Sprite.html#exists">PIXI.Sprite#exists</a> </li>
+      </ul>
+     </dd> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>true</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_display_Sprite.js.html">pixi/display/Sprite.js</a>, 
+      <a href="src_pixi_display_Sprite.js.html#sunlight-1-line-103">line 103</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="height"><span class="type-signature"></span>height<span class="type-signature"> :Number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The height of the tiling sprite</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_extras_TilingSprite.js.html">pixi/extras/TilingSprite.js</a>, 
+      <a href="src_pixi_extras_TilingSprite.js.html#sunlight-1-line-27">line 27</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="height"><span class="type-signature"></span>height<span class="type-signature"> :Number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The height of the TilingSprite, setting this will actually modify the scale to achieve the value set</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_extras_TilingSprite.js.html">pixi/extras/TilingSprite.js</a>, 
+      <a href="src_pixi_extras_TilingSprite.js.html#sunlight-1-line-535">line 535</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="ignoreChildInput"><span class="type-signature"></span>ignoreChildInput<span class="type-signature"> :Boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If <code>ignoreChildInput</code> is <code>false</code> it will allow this objects <em>children</em> to be considered as valid for Input events.</p> 
+     <p>If this property is <code>true</code> then the children will <em>not</em> be considered as valid for Input events.</p> 
+     <p>Note that this property isn't recursive: only immediate children are influenced, it doesn't scan further down.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="inherited-from">
+      Inherited From:
+     </dt> 
+     <dd class="inherited-from">
+      <ul class="dummy">
+       <li> <a href="PIXI.DisplayObjectContainer.html#ignoreChildInput">PIXI.DisplayObjectContainer#ignoreChildInput</a> </li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html">pixi/display/DisplayObjectContainer.js</a>, 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-26">line 26</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="refreshTexture"><span class="type-signature"></span>refreshTexture<span class="type-signature"> :Boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If true the TilingSprite will run generateTexture on its <strong>next</strong> render pass.<br>This is set by the likes of Phaser.LoadTexture.setFrame.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>true</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_extras_TilingSprite.js.html">pixi/extras/TilingSprite.js</a>, 
+      <a href="src_pixi_extras_TilingSprite.js.html#sunlight-1-line-119">line 119</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="renderable"><span class="type-signature"></span>renderable<span class="type-signature"> :Boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Whether this sprite is renderable or not</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>true</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_extras_TilingSprite.js.html">pixi/extras/TilingSprite.js</a>, 
+      <a href="src_pixi_extras_TilingSprite.js.html#sunlight-1-line-59">line 59</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="shader"><span class="type-signature"></span>shader<span class="type-signature"> :<a href="PIXI.AbstractFilter.html">PIXI.AbstractFilter</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The shader that will be used to render this Sprite.<br>Set to null to remove a current shader.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="inherited-from">
+      Inherited From:
+     </dt> 
+     <dd class="inherited-from">
+      <ul class="dummy">
+       <li> <a href="PIXI.Sprite.html#shader">PIXI.Sprite#shader</a> </li>
+      </ul>
+     </dd> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>null</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_display_Sprite.js.html">pixi/display/Sprite.js</a>, 
+      <a href="src_pixi_display_Sprite.js.html#sunlight-1-line-93">line 93</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="texture"><span class="type-signature"></span>texture<span class="type-signature"> :<a href="PIXI.Texture.html">PIXI.Texture</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The texture that the sprite is using</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="inherited-from">
+      Inherited From:
+     </dt> 
+     <dd class="inherited-from">
+      <ul class="dummy">
+       <li> <a href="PIXI.Sprite.html#texture">PIXI.Sprite#texture</a> </li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_display_Sprite.js.html">pixi/display/Sprite.js</a>, 
+      <a href="src_pixi_display_Sprite.js.html#sunlight-1-line-28">line 28</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="textureDebug"><span class="type-signature"></span>textureDebug<span class="type-signature"> :Boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If enabled a green rectangle will be drawn behind the generated tiling texture, allowing you to visually<br>debug the texture being used.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_extras_TilingSprite.js.html">pixi/extras/TilingSprite.js</a>, 
+      <a href="src_pixi_extras_TilingSprite.js.html#sunlight-1-line-77">line 77</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="tilePattern"><span class="type-signature"></span>tilePattern<span class="type-signature"> :PIXITexture</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The Context fill pattern that is used to draw the TilingSprite in Canvas mode only (will be null in WebGL).</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_extras_TilingSprite.js.html">pixi/extras/TilingSprite.js</a>, 
+      <a href="src_pixi_extras_TilingSprite.js.html#sunlight-1-line-111">line 111</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="tilePosition"><span class="type-signature"></span>tilePosition<span class="type-signature"> :Point</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The offset position of the image that is being tiled</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_extras_TilingSprite.js.html">pixi/extras/TilingSprite.js</a>, 
+      <a href="src_pixi_extras_TilingSprite.js.html#sunlight-1-line-51">line 51</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="tileScale"><span class="type-signature"></span>tileScale<span class="type-signature"> :Point</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The scaling of the image that is being tiled</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_extras_TilingSprite.js.html">pixi/extras/TilingSprite.js</a>, 
+      <a href="src_pixi_extras_TilingSprite.js.html#sunlight-1-line-35">line 35</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="tileScaleOffset"><span class="type-signature"></span>tileScaleOffset<span class="type-signature"> :Point</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A point that represents the scale of the texture object</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_extras_TilingSprite.js.html">pixi/extras/TilingSprite.js</a>, 
+      <a href="src_pixi_extras_TilingSprite.js.html#sunlight-1-line-43">line 43</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="tilingTexture"><span class="type-signature"></span>tilingTexture<span class="type-signature"> :PIXITexture</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>An internal Texture object that holds the tiling texture that was generated from TilingSprite.texture.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_extras_TilingSprite.js.html">pixi/extras/TilingSprite.js</a>, 
+      <a href="src_pixi_extras_TilingSprite.js.html#sunlight-1-line-103">line 103</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="tint"><span class="type-signature"></span>tint<span class="type-signature"> :Number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The tint applied to the sprite. This is a hex value</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>0xFFFFFF</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_extras_TilingSprite.js.html">pixi/extras/TilingSprite.js</a>, 
+      <a href="src_pixi_extras_TilingSprite.js.html#sunlight-1-line-68">line 68</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="tintedTexture"><span class="type-signature"></span>tintedTexture<span class="type-signature"> :Canvas</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A canvas that contains the tinted version of the Sprite (in Canvas mode, WebGL doesn't populate this)</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="inherited-from">
+      Inherited From:
+     </dt> 
+     <dd class="inherited-from">
+      <ul class="dummy">
+       <li> <a href="PIXI.Sprite.html#tintedTexture">PIXI.Sprite#tintedTexture</a> </li>
+      </ul>
+     </dd> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>null</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_display_Sprite.js.html">pixi/display/Sprite.js</a>, 
+      <a href="src_pixi_display_Sprite.js.html#sunlight-1-line-73">line 73</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="width"><span class="type-signature"></span>width<span class="type-signature"> :Number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The width of the sprite, setting this will actually modify the scale to achieve the value set</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_extras_TilingSprite.js.html">pixi/extras/TilingSprite.js</a>, 
+      <a href="src_pixi_extras_TilingSprite.js.html#sunlight-1-line-517">line 517</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="width"><span class="type-signature"></span>width<span class="type-signature"> :Number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The width of the tiling sprite</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_extras_TilingSprite.js.html">pixi/extras/TilingSprite.js</a>, 
+      <a href="src_pixi_extras_TilingSprite.js.html#sunlight-1-line-19">line 19</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+  <h3 class="subsection-title">Methods</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="addChild"><span class="type-signature"></span>addChild<span class="signature">(child)</span><span class="type-signature"> ? {<a href="global.html#DisplayObject">DisplayObject</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Adds a child to the container.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>child</code></td> 
+       <td class="type"> <span class="param-type"><a href="global.html#DisplayObject">DisplayObject</a></span> </td> 
+       <td class="description last"><p>The DisplayObject to add to the container</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="global.html#DisplayObject">DisplayObject</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The child that was added.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="inherited-from">
+      Inherited From:
+     </dt> 
+     <dd class="inherited-from">
+      <ul class="dummy">
+       <li> <a href="PIXI.DisplayObjectContainer.html#addChild">PIXI.DisplayObjectContainer#addChild</a> </li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html">pixi/display/DisplayObjectContainer.js</a>, 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-42">line 42</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="addChildAt"><span class="type-signature"></span>addChildAt<span class="signature">(child, index)</span><span class="type-signature"> ? {<a href="global.html#DisplayObject">DisplayObject</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Adds a child to the container at a specified index. If the index is out of bounds an error will be thrown</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>child</code></td> 
+       <td class="type"> <span class="param-type"><a href="global.html#DisplayObject">DisplayObject</a></span> </td> 
+       <td class="description last"><p>The child to add</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>index</code></td> 
+       <td class="type"> <span class="param-type">Number</span> </td> 
+       <td class="description last"><p>The index to place the child in</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="global.html#DisplayObject">DisplayObject</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The child that was added.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="inherited-from">
+      Inherited From:
+     </dt> 
+     <dd class="inherited-from">
+      <ul class="dummy">
+       <li> <a href="PIXI.DisplayObjectContainer.html#addChildAt">PIXI.DisplayObjectContainer#addChildAt</a> </li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html">pixi/display/DisplayObjectContainer.js</a>, 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-55">line 55</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="contains"><span class="type-signature"></span>contains<span class="signature">(child)</span><span class="type-signature"> ? {Boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Determines whether the specified display object is a child of the DisplayObjectContainer instance or the instance itself.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>child</code></td> 
+       <td class="type"> <span class="param-type"><a href="global.html#DisplayObject">DisplayObject</a></span> </td> 
+       <td class="description last"><p>-</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">Boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="inherited-from">
+      Inherited From:
+     </dt> 
+     <dd class="inherited-from">
+      <ul class="dummy">
+       <li> <a href="PIXI.DisplayObjectContainer.html#contains">PIXI.DisplayObjectContainer#contains</a> </li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html">pixi/display/DisplayObjectContainer.js</a>, 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-449">line 449</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="generateTilingTexture"><span class="type-signature"></span>generateTilingTexture<span class="signature">(forcePowerOfTwo, renderSession)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>forcePowerOfTwo</code></td> 
+       <td class="type"> <span class="param-type">Boolean</span> </td> 
+       <td class="description last"><p>Whether we want to force the texture to be a power of two</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>renderSession</code></td> 
+       <td class="type"> <span class="param-type">RenderSession</span> </td> 
+       <td class="description last"><p>-</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_extras_TilingSprite.js.html">pixi/extras/TilingSprite.js</a>, 
+      <a href="src_pixi_extras_TilingSprite.js.html#sunlight-1-line-332">line 332</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="getBounds"><span class="type-signature"></span>getBounds<span class="signature">()</span><span class="type-signature"> ? {Rectangle}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Returns the framing rectangle of the sprite as a PIXI.Rectangle object</p> 
+    </div> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">Rectangle</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>the framing rectangle</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_extras_TilingSprite.js.html">pixi/extras/TilingSprite.js</a>, 
+      <a href="src_pixi_extras_TilingSprite.js.html#sunlight-1-line-417">line 417</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="getChildAt"><span class="type-signature"></span>getChildAt<span class="signature">(index)</span><span class="type-signature"> ? {<a href="global.html#DisplayObject">DisplayObject</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Returns the child at the specified index</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>index</code></td> 
+       <td class="type"> <span class="param-type">Number</span> </td> 
+       <td class="description last"><p>The index to get the child from</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="global.html#DisplayObject">DisplayObject</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The child at the given index, if any.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="inherited-from">
+      Inherited From:
+     </dt> 
+     <dd class="inherited-from">
+      <ul class="dummy">
+       <li> <a href="PIXI.DisplayObjectContainer.html#getChildAt">PIXI.DisplayObjectContainer#getChildAt</a> </li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html">pixi/display/DisplayObjectContainer.js</a>, 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-153">line 153</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="getChildIndex"><span class="type-signature"></span>getChildIndex<span class="signature">(child)</span><span class="type-signature"> ? {Number}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Returns the index position of a child DisplayObject instance</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>child</code></td> 
+       <td class="type"> <span class="param-type"><a href="global.html#DisplayObject">DisplayObject</a></span> </td> 
+       <td class="description last"><p>The DisplayObject instance to identify</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">Number</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The index position of the child display object to identify</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="inherited-from">
+      Inherited From:
+     </dt> 
+     <dd class="inherited-from">
+      <ul class="dummy">
+       <li> <a href="PIXI.DisplayObjectContainer.html#getChildIndex">PIXI.DisplayObjectContainer#getChildIndex</a> </li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html">pixi/display/DisplayObjectContainer.js</a>, 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-112">line 112</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="getLocalBounds"><span class="type-signature"></span>getLocalBounds<span class="signature">()</span><span class="type-signature"> ? {Rectangle}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Retrieves the non-global local bounds of the Sprite as a rectangle. The calculation takes all visible children into consideration.</p> 
+    </div> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">Rectangle</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The rectangular bounding area</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="inherited-from">
+      Inherited From:
+     </dt> 
+     <dd class="inherited-from">
+      <ul class="dummy">
+       <li> <a href="PIXI.Sprite.html#getLocalBounds">PIXI.Sprite#getLocalBounds</a> </li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_display_Sprite.js.html">pixi/display/Sprite.js</a>, 
+      <a href="src_pixi_display_Sprite.js.html#sunlight-1-line-315">line 315</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="removeChild"><span class="type-signature"></span>removeChild<span class="signature">(child)</span><span class="type-signature"> ? {<a href="global.html#DisplayObject">DisplayObject</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Removes a child from the container.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>child</code></td> 
+       <td class="type"> <span class="param-type"><a href="global.html#DisplayObject">DisplayObject</a></span> </td> 
+       <td class="description last"><p>The DisplayObject to remove</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="global.html#DisplayObject">DisplayObject</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The child that was removed.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="inherited-from">
+      Inherited From:
+     </dt> 
+     <dd class="inherited-from">
+      <ul class="dummy">
+       <li> <a href="PIXI.DisplayObjectContainer.html#removeChild">PIXI.DisplayObjectContainer#removeChild</a> </li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html">pixi/display/DisplayObjectContainer.js</a>, 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-171">line 171</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="removeChildAt"><span class="type-signature"></span>removeChildAt<span class="signature">(index)</span><span class="type-signature"> ? {<a href="global.html#DisplayObject">DisplayObject</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Removes a child from the specified index position.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>index</code></td> 
+       <td class="type"> <span class="param-type">Number</span> </td> 
+       <td class="description last"><p>The index to get the child from</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="global.html#DisplayObject">DisplayObject</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The child that was removed.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="inherited-from">
+      Inherited From:
+     </dt> 
+     <dd class="inherited-from">
+      <ul class="dummy">
+       <li> <a href="PIXI.DisplayObjectContainer.html#removeChildAt">PIXI.DisplayObjectContainer#removeChildAt</a> </li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html">pixi/display/DisplayObjectContainer.js</a>, 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-191">line 191</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="removeChildren"><span class="type-signature"></span>removeChildren<span class="signature">(beginIndex, endIndex)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Removes all children from this container that are within the begin and end indexes.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>beginIndex</code></td> 
+       <td class="type"> <span class="param-type">Number</span> </td> 
+       <td class="description last"><p>The beginning position. Default value is 0.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>endIndex</code></td> 
+       <td class="type"> <span class="param-type">Number</span> </td> 
+       <td class="description last"><p>The ending position. Default value is size of the container.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="inherited-from">
+      Inherited From:
+     </dt> 
+     <dd class="inherited-from">
+      <ul class="dummy">
+       <li> <a href="PIXI.DisplayObjectContainer.html#removeChildren">PIXI.DisplayObjectContainer#removeChildren</a> </li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html">pixi/display/DisplayObjectContainer.js</a>, 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-213">line 213</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="setChildIndex"><span class="type-signature"></span>setChildIndex<span class="signature">(child, index)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Changes the position of an existing child in the display object container</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>child</code></td> 
+       <td class="type"> <span class="param-type"><a href="global.html#DisplayObject">DisplayObject</a></span> </td> 
+       <td class="description last"><p>The child DisplayObject instance for which you want to change the index number</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>index</code></td> 
+       <td class="type"> <span class="param-type">Number</span> </td> 
+       <td class="description last"><p>The resulting index number for the child display object</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="inherited-from">
+      Inherited From:
+     </dt> 
+     <dd class="inherited-from">
+      <ul class="dummy">
+       <li> <a href="PIXI.DisplayObjectContainer.html#setChildIndex">PIXI.DisplayObjectContainer#setChildIndex</a> </li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html">pixi/display/DisplayObjectContainer.js</a>, 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-132">line 132</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="setTexture"><span class="type-signature"></span>setTexture<span class="signature">(texture, <span class="optional">destroy</span>)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Sets the texture of the sprite. Be warned that this doesn't remove or destroy the previous<br>texture this Sprite was using.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>texture</code></td> 
+       <td class="type"> <span class="param-type"><a href="PIXI.Texture.html">PIXI.Texture</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The PIXI texture that is displayed by the sprite</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>destroy</code></td> 
+       <td class="type"> <span class="param-type">Boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>Call Texture.destroy on the current texture before replacing it with the new one?</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="inherited-from">
+      Inherited From:
+     </dt> 
+     <dd class="inherited-from">
+      <ul class="dummy">
+       <li> <a href="PIXI.Sprite.html#setTexture">PIXI.Sprite#setTexture</a> </li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_display_Sprite.js.html">pixi/display/Sprite.js</a>, 
+      <a href="src_pixi_display_Sprite.js.html#sunlight-1-line-163">line 163</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="swapChildren"><span class="type-signature"></span>swapChildren<span class="signature">(child, child2)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Swaps the position of 2 Display Objects within this container.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>child</code></td> 
+       <td class="type"> <span class="param-type"><a href="global.html#DisplayObject">DisplayObject</a></span> </td> 
+       <td class="description last"><p>-</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>child2</code></td> 
+       <td class="type"> <span class="param-type"><a href="global.html#DisplayObject">DisplayObject</a></span> </td> 
+       <td class="description last"><p>-</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="inherited-from">
+      Inherited From:
+     </dt> 
+     <dd class="inherited-from">
+      <ul class="dummy">
+       <li> <a href="PIXI.DisplayObjectContainer.html#swapChildren">PIXI.DisplayObjectContainer#swapChildren</a> </li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html">pixi/display/DisplayObjectContainer.js</a>, 
+      <a href="src_pixi_display_DisplayObjectContainer.js.html#sunlight-1-line-85">line 85</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

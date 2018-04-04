@@ -1,0 +1,249 @@
+{
+  "frames": {
+    "platform2": {
+      "spriteSourceSize": {
+        "w": 499,
+        "x": 0,
+        "h": 74,
+        "y": 0
+      },
+      "rotated": false,
+      "trimmed": true,
+      "sourceSize": {
+        "w": 499,
+        "h": 74
+      },
+      "frame": {
+        "w": 499,
+        "x": 826,
+        "h": 74,
+        "y": 404
+      }
+    },
+    "platform1": {
+      "spriteSourceSize": {
+        "w": 319,
+        "x": 0,
+        "h": 62,
+        "y": 0
+      },
+      "rotated": false,
+      "trimmed": true,
+      "sourceSize": {
+        "w": 320,
+        "h": 62
+      },
+      "frame": {
+        "w": 319,
+        "x": 965,
+        "h": 62,
+        "y": 100
+      }
+    },
+    "mouth": {
+      "spriteSourceSize": {
+        "w": 59,
+        "x": 0,
+        "h": 9,
+        "y": 1
+      },
+      "rotated": false,
+      "trimmed": true,
+      "sourceSize": {
+        "w": 60,
+        "h": 11
+      },
+      "frame": {
+        "w": 59,
+        "x": 719,
+        "h": 9,
+        "y": 197
+      }
+    },
+    "shadow": {
+      "spriteSourceSize": {
+        "w": 527,
+        "x": 0,
+        "h": 270,
+        "y": 2
+      },
+      "rotated": false,
+      "trimmed": true,
+      "sourceSize": {
+        "w": 527,
+        "h": 272
+      },
+      "frame": {
+        "w": 527,
+        "x": 297,
+        "h": 270,
+        "y": 208
+      }
+    },
+    "musgo": {
+      "spriteSourceSize": {
+        "w": 498,
+        "x": 0,
+        "h": 238,
+        "y": 44
+      },
+      "rotated": false,
+      "trimmed": true,
+      "sourceSize": {
+        "w": 498,
+        "h": 282
+      },
+      "frame": {
+        "w": 498,
+        "x": 826,
+        "h": 238,
+        "y": 164
+      }
+    },
+    "maceta": {
+      "spriteSourceSize": {
+        "w": 420,
+        "x": 0,
+        "h": 184,
+        "y": 0
+      },
+      "rotated": false,
+      "trimmed": true,
+      "sourceSize": {
+        "w": 420,
+        "h": 184
+      },
+      "frame": {
+        "w": 420,
+        "x": 297,
+        "h": 184,
+        "y": 22
+      }
+    },
+    "guapen": {
+      "spriteSourceSize": {
+        "w": 50,
+        "x": 0,
+        "h": 60,
+        "y": 0
+      },
+      "rotated": false,
+      "trimmed": true,
+      "sourceSize": {
+        "w": 50,
+        "h": 60
+      },
+      "frame": {
+        "w": 50,
+        "x": 1326,
+        "h": 60,
+        "y": 159
+      }
+    },
+    "zombi-head": {
+      "spriteSourceSize": {
+        "w": 137,
+        "x": 0,
+        "h": 143,
+        "y": 4
+      },
+      "rotated": false,
+      "trimmed": true,
+      "sourceSize": {
+        "w": 139,
+        "h": 147
+      },
+      "frame": {
+        "w": 137,
+        "x": 1327,
+        "h": 143,
+        "y": 335
+      }
+    },
+    "flor": {
+      "spriteSourceSize": {
+        "w": 76,
+        "x": 0,
+        "h": 112,
+        "y": 0
+      },
+      "rotated": false,
+      "trimmed": true,
+      "sourceSize": {
+        "w": 76,
+        "h": 112
+      },
+      "frame": {
+        "w": 76,
+        "x": 1326,
+        "h": 112,
+        "y": 221
+      }
+    },
+    "wall-hole": {
+      "spriteSourceSize": {
+        "w": 244,
+        "x": 0,
+        "h": 142,
+        "y": 0
+      },
+      "rotated": false,
+      "trimmed": true,
+      "sourceSize": {
+        "w": 244,
+        "h": 142
+      },
+      "frame": {
+        "w": 244,
+        "x": 719,
+        "h": 142,
+        "y": 20
+      }
+    },
+    "Puerta": {
+      "spriteSourceSize": {
+        "w": 293,
+        "x": 18,
+        "h": 476,
+        "y": 0
+      },
+      "rotated": false,
+      "trimmed": true,
+      "sourceSize": {
+        "w": 326,
+        "h": 500
+      },
+      "frame": {
+        "w": 293,
+        "x": 2,
+        "h": 476,
+        "y": 2
+      }
+    },
+    "zombi-eye": {
+      "spriteSourceSize": {
+        "w": 8,
+        "x": 0,
+        "h": 8,
+        "y": 0
+      },
+      "rotated": false,
+      "trimmed": true,
+      "sourceSize": {
+        "w": 8,
+        "h": 8
+      },
+      "frame": {
+        "w": 8,
+        "x": 780,
+        "h": 8,
+        "y": 198
+      }
+    }
+  },
+  "meta": {
+    "app": "Phaser Editor",
+    "image": "atlas1.png",
+    "version": "1"
+  }
+}

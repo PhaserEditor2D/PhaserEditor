@@ -1,0 +1,15 @@
+{
+	"author": {
+		"name": "Arian Fornaris",
+		"email": "developers@boniatillo.com",
+		"website": "phasereditor.boniatillo.com",
+	},
+	"mainFile": "assets/canvas/Level.canvas",
+	"eval" : {
+		"index.html" : ["title"], 
+		"js/Main.js" : ["game.width", "game.height", "game.renderer", "game.extra"]
+	},
+	"description": "The simplest project structure (TypeScript)",
+	"id" : "phasereditor.project.multipleStates.js6.assets",
+	typescript: true
+}

@@ -1,0 +1,128 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: PrismaticConstraint</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a><a href="Phaser.Physics.html">.Physics</a><a href="Phaser.Physics.P2.html">.P2</a>.</span> PrismaticConstraint </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="PrismaticConstraint"><span class="type-signature"></span>new PrismaticConstraint<span class="signature">(world, bodyA, bodyB, <span class="optional">lockRotation</span>, <span class="optional">anchorA</span>, <span class="optional">anchorB</span>, <span class="optional">axis</span>, <span class="optional">maxForce</span>)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Connects two bodies at given offset points, letting them rotate relative to each other around this point.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>world</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Physics.P2.html">Phaser.Physics.P2</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>A reference to the P2 World.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>bodyA</code></td> 
+       <td class="type"> <span class="param-type"><a href="p2.Body.html">p2.Body</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>First connected body.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>bodyB</code></td> 
+       <td class="type"> <span class="param-type"><a href="p2.Body.html">p2.Body</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>Second connected body.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>lockRotation</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> true </td> 
+       <td class="description last"><p>If set to false, bodyB will be free to rotate around its anchor point.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>anchorA</code></td> 
+       <td class="type"> <span class="param-type">Array</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>Body A's anchor point, defined in its own local frame. The value is an array with 2 elements matching x and y, i.e: [32, 32].</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>anchorB</code></td> 
+       <td class="type"> <span class="param-type">Array</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>Body A's anchor point, defined in its own local frame. The value is an array with 2 elements matching x and y, i.e: [32, 32].</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>axis</code></td> 
+       <td class="type"> <span class="param-type">Array</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>An axis, defined in body A frame, that body B's anchor point may slide along. The value is an array with 2 elements matching x and y, i.e: [32, 32].</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>maxForce</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The maximum force that should be applied to constrain the bodies.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_PrismaticConstraint.js.html">physics/p2/PrismaticConstraint.js</a>, 
+      <a href="src_physics_p2_PrismaticConstraint.js.html#sunlight-1-line-21">line 21</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="game"><span class="type-signature"></span>game<span class="type-signature"> :<a href="Phaser.Game.html">Phaser.Game</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Local reference to game.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_PrismaticConstraint.js.html">physics/p2/PrismaticConstraint.js</a>, 
+      <a href="src_physics_p2_PrismaticConstraint.js.html#sunlight-1-line-32">line 32</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="world"><span class="type-signature"></span>world<span class="type-signature"> :<a href="Phaser.Physics.P2.html">Phaser.Physics.P2</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Local reference to P2 World.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_physics_p2_PrismaticConstraint.js.html">physics/p2/PrismaticConstraint.js</a>, 
+      <a href="src_physics_p2_PrismaticConstraint.js.html#sunlight-1-line-37">line 37</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

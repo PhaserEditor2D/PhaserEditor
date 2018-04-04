@@ -1,0 +1,808 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: Matrix</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a>.</span> Matrix </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="Matrix"><span class="type-signature"></span>new Matrix<span class="signature">(<span class="optional">a</span>, <span class="optional">b</span>, <span class="optional">c</span>, <span class="optional">d</span>, <span class="optional">tx</span>, <span class="optional">ty</span>)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The Matrix is a 3x3 matrix mostly used for display transforms within the renderer.</p> 
+     <p>It is represented like so:</p> 
+     <p>| a | b | tx |<br>| c | d | ty |<br>| 0 | 0 | 1 |</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>a</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 1 </td> 
+       <td class="description last"><p>Horizontal scaling</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>b</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>Horizontal skewing</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>c</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>Vertical skewing</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>d</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 1 </td> 
+       <td class="description last"><p>Vertical scaling</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>tx</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>Horizontal translation</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>ty</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>Vertical translation</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_geom_Matrix.js.html">geom/Matrix.js</a>, 
+      <a href="src_geom_Matrix.js.html#sunlight-1-line-26">line 26</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="a"><span class="type-signature"></span>a<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>1</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_geom_Matrix.js.html">geom/Matrix.js</a>, 
+      <a href="src_geom_Matrix.js.html#sunlight-1-line-39">line 39</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="b"><span class="type-signature"></span>b<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>0</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_geom_Matrix.js.html">geom/Matrix.js</a>, 
+      <a href="src_geom_Matrix.js.html#sunlight-1-line-45">line 45</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="c"><span class="type-signature"></span>c<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>0</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_geom_Matrix.js.html">geom/Matrix.js</a>, 
+      <a href="src_geom_Matrix.js.html#sunlight-1-line-51">line 51</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="d"><span class="type-signature"></span>d<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>1</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_geom_Matrix.js.html">geom/Matrix.js</a>, 
+      <a href="src_geom_Matrix.js.html#sunlight-1-line-57">line 57</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="tx"><span class="type-signature"></span>tx<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>0</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_geom_Matrix.js.html">geom/Matrix.js</a>, 
+      <a href="src_geom_Matrix.js.html#sunlight-1-line-63">line 63</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="ty"><span class="type-signature"></span>ty<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>0</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_geom_Matrix.js.html">geom/Matrix.js</a>, 
+      <a href="src_geom_Matrix.js.html#sunlight-1-line-69">line 69</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="type"><span class="type-signature">&lt;readonly&gt; </span>type<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The const type of this object.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_geom_Matrix.js.html">geom/Matrix.js</a>, 
+      <a href="src_geom_Matrix.js.html#sunlight-1-line-75">line 75</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+  <h3 class="subsection-title">Methods</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="append"><span class="type-signature"></span>append<span class="signature">(matrix)</span><span class="type-signature"> ? {<a href="Phaser.Matrix.html">Phaser.Matrix</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Appends the given Matrix to this Matrix.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>matrix</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Matrix.html">Phaser.Matrix</a></span> </td> 
+       <td class="description last"><p>The matrix to append to this one.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Matrix.html">Phaser.Matrix</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This Matrix object.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_geom_Matrix.js.html">geom/Matrix.js</a>, 
+      <a href="src_geom_Matrix.js.html#sunlight-1-line-345">line 345</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="apply"><span class="type-signature"></span>apply<span class="signature">(pos, <span class="optional">newPos</span>)</span><span class="type-signature"> ? {<a href="Phaser.Point.html">Phaser.Point</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Get a new position with the current transformation applied.</p> 
+     <p>Can be used to go from a childs coordinate space to the world coordinate space (e.g. rendering)</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>pos</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Point.html">Phaser.Point</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>The origin Point.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>newPos</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Point.html">Phaser.Point</a></span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>The point that the new position is assigned to. This can be same as input point.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Point.html">Phaser.Point</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The new point, transformed through this matrix.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_geom_Matrix.js.html">geom/Matrix.js</a>, 
+      <a href="src_geom_Matrix.js.html#sunlight-1-line-233">line 233</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="applyInverse"><span class="type-signature"></span>applyInverse<span class="signature">(pos, <span class="optional">newPos</span>)</span><span class="type-signature"> ? {<a href="Phaser.Point.html">Phaser.Point</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Get a new position with the inverse of the current transformation applied.</p> 
+     <p>Can be used to go from the world coordinate space to a childs coordinate space. (e.g. input)</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>pos</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Point.html">Phaser.Point</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="description last"><p>The origin Point.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>newPos</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Point.html">Phaser.Point</a></span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>The point that the new position is assigned to. This can be same as input point.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Point.html">Phaser.Point</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The new point, inverse transformed through this matrix.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_geom_Matrix.js.html">geom/Matrix.js</a>, 
+      <a href="src_geom_Matrix.js.html#sunlight-1-line-254">line 254</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="clone"><span class="type-signature"></span>clone<span class="signature">(<span class="optional">output</span>)</span><span class="type-signature"> ? {<a href="Phaser.Matrix.html">Phaser.Matrix</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Creates a new Matrix object based on the values of this Matrix.<br>If you provide the output parameter the values of this Matrix will be copied over to it.<br>If the output parameter is blank a new Matrix object will be created.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>output</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Matrix.html">Phaser.Matrix</a></span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>If provided the values of this Matrix will be copied to it, otherwise a new Matrix object is created.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Matrix.html">Phaser.Matrix</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>A clone of this Matrix.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_geom_Matrix.js.html">geom/Matrix.js</a>, 
+      <a href="src_geom_Matrix.js.html#sunlight-1-line-128">line 128</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="copyFrom"><span class="type-signature"></span>copyFrom<span class="signature">(matrix)</span><span class="type-signature"> ? {<a href="Phaser.Matrix.html">Phaser.Matrix</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Copies the properties from the given Matrix into this Matrix.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>matrix</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Matrix.html">Phaser.Matrix</a></span> </td> 
+       <td class="description last"><p>The Matrix to copy from.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Matrix.html">Phaser.Matrix</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This Matrix object.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_geom_Matrix.js.html">geom/Matrix.js</a>, 
+      <a href="src_geom_Matrix.js.html#sunlight-1-line-172">line 172</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="copyTo"><span class="type-signature"></span>copyTo<span class="signature">(matrix)</span><span class="type-signature"> ? {<a href="Phaser.Matrix.html">Phaser.Matrix</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Copies the properties from this Matrix to the given Matrix.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>matrix</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Matrix.html">Phaser.Matrix</a></span> </td> 
+       <td class="description last"><p>The Matrix to copy from.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Matrix.html">Phaser.Matrix</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The destination Matrix object.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_geom_Matrix.js.html">geom/Matrix.js</a>, 
+      <a href="src_geom_Matrix.js.html#sunlight-1-line-157">line 157</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="fromArray"><span class="type-signature"></span>fromArray<span class="signature">(array)</span><span class="type-signature"> ? {<a href="Phaser.Matrix.html">Phaser.Matrix</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Sets the values of this Matrix to the values in the given array.</p> 
+     <p>The Array elements should be set as follows:</p> 
+     <p>a = array[0]<br>b = array[1]<br>c = array[3]<br>d = array[4]<br>tx = array[2]<br>ty = array[5]</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>array</code></td> 
+       <td class="type"> <span class="param-type">Array</span> </td> 
+       <td class="description last"><p>The array to copy from.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Matrix.html">Phaser.Matrix</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This Matrix object.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_geom_Matrix.js.html">geom/Matrix.js</a>, 
+      <a href="src_geom_Matrix.js.html#sunlight-1-line-81">line 81</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="identity"><span class="type-signature"></span>identity<span class="signature">()</span><span class="type-signature"> ? {<a href="Phaser.Matrix.html">Phaser.Matrix</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Resets this Matrix to an identity (default) matrix.</p> 
+    </div> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Matrix.html">Phaser.Matrix</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This Matrix object.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_geom_Matrix.js.html">geom/Matrix.js</a>, 
+      <a href="src_geom_Matrix.js.html#sunlight-1-line-371">line 371</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="rotate"><span class="type-signature"></span>rotate<span class="signature">(angle)</span><span class="type-signature"> ? {<a href="Phaser.Matrix.html">Phaser.Matrix</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Applies a rotation transformation to this matrix.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>angle</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The angle to rotate by, given in radians.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Matrix.html">Phaser.Matrix</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This Matrix object.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_geom_Matrix.js.html">geom/Matrix.js</a>, 
+      <a href="src_geom_Matrix.js.html#sunlight-1-line-318">line 318</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="scale"><span class="type-signature"></span>scale<span class="signature">(x, y)</span><span class="type-signature"> ? {<a href="Phaser.Matrix.html">Phaser.Matrix</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Applies a scale transformation to this matrix.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>x</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The amount to scale horizontally.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>y</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The amount to scale vertically.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Matrix.html">Phaser.Matrix</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This Matrix object.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_geom_Matrix.js.html">geom/Matrix.js</a>, 
+      <a href="src_geom_Matrix.js.html#sunlight-1-line-297">line 297</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="setTo"><span class="type-signature"></span>setTo<span class="signature">(a, b, c, d, tx, ty)</span><span class="type-signature"> ? {<a href="Phaser.Matrix.html">Phaser.Matrix</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Sets the values of this Matrix to the given values.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>a</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>Horizontal scaling</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>b</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>Horizontal skewing</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>c</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>Vertical skewing</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>d</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>Vertical scaling</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>tx</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>Horizontal translation</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>ty</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>Vertical translation</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Matrix.html">Phaser.Matrix</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This Matrix object.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_geom_Matrix.js.html">geom/Matrix.js</a>, 
+      <a href="src_geom_Matrix.js.html#sunlight-1-line-103">line 103</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="toArray"><span class="type-signature"></span>toArray<span class="signature">(<span class="optional">transpose</span>, <span class="optional">array</span>)</span><span class="type-signature"> ? {PIXI.Float32Array}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Creates a Float32 Array with values populated from this Matrix object.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>transpose</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>Whether the values in the array are transposed or not.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>array</code></td> 
+       <td class="type"> <span class="param-type">PIXI.Float32Array</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>If provided the values will be set into this array, otherwise a new Float32Array is created.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">PIXI.Float32Array</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>The newly created array which contains the matrix.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_geom_Matrix.js.html">geom/Matrix.js</a>, 
+      <a href="src_geom_Matrix.js.html#sunlight-1-line-192">line 192</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="translate"><span class="type-signature"></span>translate<span class="signature">(x, y)</span><span class="type-signature"> ? {<a href="Phaser.Matrix.html">Phaser.Matrix</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Translates the matrix on the x and y.<br>This is the same as Matrix.tx += x.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>x</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The x value to translate on.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>y</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The y value to translate on.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Matrix.html">Phaser.Matrix</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This Matrix object.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_geom_Matrix.js.html">geom/Matrix.js</a>, 
+      <a href="src_geom_Matrix.js.html#sunlight-1-line-279">line 279</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

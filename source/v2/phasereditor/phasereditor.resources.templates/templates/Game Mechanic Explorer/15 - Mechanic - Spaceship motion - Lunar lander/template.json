@@ -1,0 +1,9 @@
+{
+    "author": {
+        "website": "http://gamemechanicexplorer.com",
+        "name": "John Watson",
+        "email": "john@watson-net.com"
+    },
+    "description": "<p>Use the left and right arrow keys or tap near the edges to rotate the ship. Press the up arrow key or tap the center to turn on the engine.<\/p><p>Try to land the ship safely on the ground. You must land gently or the ship will explode!<\/p><p>This example introduces a function <code>getExplosion()<\/code> which either creates a new explosion object or re-uses one that was created earlier. This approach allows the number of explosion sprites to increase dynamically but never creates more than are needed to display on screen at any one time.<\/p>",
+    "mainFile": "ex-thrust-04.js"
+}

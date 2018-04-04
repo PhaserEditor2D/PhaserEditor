@@ -1,0 +1,33 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Phaser Editor - Asset Explorer
+Bundle-SymbolicName: phasereditor.assetexplorer.ui;singleton:=true
+Bundle-Version: 1.5.0.20180307
+Bundle-Vendor: Arian Fornaris
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.ide;bundle-version="3.10.2",
+ org.eclipse.core.resources;bundle-version="3.9.1",
+ org.eclipse.core.databinding;bundle-version="1.4.2",
+ org.json,
+ org.eclipse.core.databinding.beans;bundle-version="1.2.200",
+ org.eclipse.core.databinding.property;bundle-version="1.4.200",
+ org.eclipse.jface.databinding;bundle-version="1.6.200",
+ org.eclipse.jface.text;bundle-version="3.10.0",
+ phasereditor.ui,
+ phasereditor.audiosprite.core,
+ phasereditor.audio.core,
+ phasereditor.audiosprite.ui,
+ phasereditor.atlas.core,
+ phasereditor.project.core,
+ phasereditor.inspect.core,
+ phasereditor.assetpack.core,
+ org.eclipse.ui.navigator;bundle-version="3.6.0",
+ org.eclipse.ui.navigator.resources;bundle-version="3.5.0",
+ org.eclipse.help;bundle-version="3.6.0",
+ phasereditor.atlas.ui;bundle-version="1.4.0",
+ phasereditor.canvas.core;bundle-version="1.4.0",
+ phasereditor.assetpack.ui;bundle-version="1.4.0",
+ phasereditor.canvas.ui;bundle-version="1.4.0",
+ phasereditor.project.ui;bundle-version="1.4.0"

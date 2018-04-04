@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.help.toc">
+      <toc
+            category="com.boniatillo.phasereditor"
+            file="phaser-editor-toc.xml"
+            primary="true">
+      </toc>
+      <toc
+            file="quick-start.xml">
+      </toc>
+   </extension>
+   <extension
+         point="org.eclipse.help.contexts">
+      <contexts
+            file="quick-start-contexts.xml">
+      </contexts>
+      <contextProvider
+            class="phasereditor.help.PhaserEditorContextProvider">
+      </contextProvider>
+   </extension>
+</plugin>

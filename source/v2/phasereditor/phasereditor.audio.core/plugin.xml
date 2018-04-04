@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="phasereditor.project.core.buildParticipant">
+      <participant
+            handler="phasereditor.audio.core.MediaBuildParticipant"
+            id="phasereditor.audio.core.participant2"
+            order="2">
+      </participant>
+   </extension>
+
+</plugin>

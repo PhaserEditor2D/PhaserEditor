@@ -1,0 +1,1381 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: Tween</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a>.</span> Tween </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="Tween"><span class="type-signature"></span>new Tween<span class="signature">(target, game, manager)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A Tween allows you to alter one or more properties of a target object over a defined period of time.<br>This can be used for things such as alpha fading Sprites, scaling them or motion.<br>Use <code>Tween.to</code> or <code>Tween.from</code> to set-up the tween values. You can create multiple tweens on the same object<br>by calling Tween.to multiple times on the same Tween. Additional tweens specified in this way become "child" tweens and<br>are played through in sequence. You can use Tween.timeScale and Tween.reverse to control the playback of this Tween and all of its children.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>target</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="description last"><p>The target object, such as a Phaser.Sprite or Phaser.Sprite.scale.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>game</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Game.html">Phaser.Game</a></span> </td> 
+       <td class="description last"><p>Current game instance.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>manager</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.TweenManager.html">Phaser.TweenManager</a></span> </td> 
+       <td class="description last"><p>The TweenManager responsible for looking after this Tween.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-20">line 20</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="chainedTween"><span class="type-signature"></span>chainedTween<span class="type-signature"> :<a href="Phaser.Tween.html">Phaser.Tween</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If this Tween is chained to another this holds a reference to it.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-130">line 130</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="current"><span class="type-signature">&lt;readonly&gt; </span>current<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The current Tween child being run.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-120">line 120</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="frameBased"><span class="type-signature"></span>frameBased<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Is this Tween frame or time based? A frame based tween will use the physics elapsed timer when updating. This means<br>it will retain the same consistent frame rate, regardless of the speed of the device. The duration value given should<br>be given in frames.</p> 
+     <p>If the Tween uses a time based update (which is the default) then the duration is given in milliseconds.<br>In this situation a 2000ms tween will last exactly 2 seconds, regardless of the device and how many visual updates the tween<br>has actually been through. For very short tweens you may wish to experiment with a frame based update instead.</p> 
+     <p>The default value is whatever you've set in TweenManager.frameBased.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-152">line 152</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="game"><span class="type-signature"></span>game<span class="type-signature"> :<a href="Phaser.Game.html">Phaser.Game</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A reference to the currently running Game.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-25">line 25</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="isPaused"><span class="type-signature"></span>isPaused<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Is this Tween paused or not?</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-136">line 136</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="isRunning"><span class="type-signature"></span>isRunning<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If the tween is running this is set to true, otherwise false. Tweens that are in a delayed state or waiting to start are considered as being running.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-113">line 113</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="manager"><span class="type-signature"></span>manager<span class="type-signature"> :<a href="Phaser.TweenManager.html">Phaser.TweenManager</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Reference to the TweenManager responsible for updating this Tween.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-35">line 35</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onChildComplete"><span class="type-signature"></span>onChildComplete<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The onChildComplete event is fired when the Tween or any of its children completes.<br>Fires every time a child completes unless a child is set to repeat forever.<br>It will be sent 2 parameters: the target object and this tween.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-100">line 100</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onComplete"><span class="type-signature"></span>onComplete<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The onComplete event is fired when the Tween and all of its children completes. Does not fire if the Tween is set to loop or repeatAll(-1).<br>It will be sent 2 parameters: the target object and this tween.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-107">line 107</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onLoop"><span class="type-signature"></span>onLoop<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The onLoop event is fired if the Tween, or any child tweens loop.<br>It will be sent 2 parameters: the target object and this tween.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-85">line 85</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onRepeat"><span class="type-signature"></span>onRepeat<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The onRepeat event is fired if the Tween and all of its children repeats. If this tween has no children this will never be fired.<br>It will be sent 2 parameters: the target object and this tween.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-92">line 92</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onStart"><span class="type-signature"></span>onStart<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The onStart event is fired when the Tween begins. If there is a delay before the tween starts then onStart fires after the delay is finished.<br>It will be sent 2 parameters: the target object and this tween.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-77">line 77</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="pendingDelete"><span class="type-signature">&lt;readonly&gt; </span>pendingDelete<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>True if this Tween is ready to be deleted by the TweenManager.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-70">line 70</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="properties"><span class="type-signature"></span>properties<span class="type-signature"> :object</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Target property cache used when building the child data values.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-125">line 125</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="repeatCounter"><span class="type-signature"></span>repeatCounter<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If the Tween and any child tweens are set to repeat this contains the current repeat count.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-63">line 63</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="reverse"><span class="type-signature"></span>reverse<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>If set to <code>true</code> the current tween will play in reverse.<br>If the tween hasn't yet started this has no effect.<br>If there are child tweens then all child tweens will play in reverse from the current point.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-49">line 49</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="target"><span class="type-signature"></span>target<span class="type-signature"> :object</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The target object, such as a Phaser.Sprite or property like Phaser.Sprite.scale.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-30">line 30</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="timeline"><span class="type-signature"></span>timeline<span class="type-signature"> :Array</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>An Array of TweenData objects that comprise the different parts of this Tween.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-40">line 40</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="timeScale"><span class="type-signature"></span>timeScale<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The speed at which the tweens will run. A value of 1 means it will match the game frame rate. 0.5 will run at half the frame rate. 2 at double the frame rate, etc.<br>If a tweens duration is 1 second but timeScale is 0.5 then it will take 2 seconds to complete.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>1</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-58">line 58</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="totalDuration"><span class="type-signature"></span>totalDuration<span class="type-signature"> :<a href="Phaser.TweenData.html">Phaser.TweenData</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Gets the total duration of this Tween, including all child tweens, in milliseconds.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-893">line 893</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+  <h3 class="subsection-title">Methods</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="chain"><span class="type-signature"></span>chain<span class="signature">(tweens)</span><span class="type-signature"> ? {<a href="Phaser.Tween.html">Phaser.Tween</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This method allows you to chain tweens together. Any tween chained to this tween will have its <code>Tween.start</code> method called<br>as soon as this tween completes. If this tween never completes (i.e. repeatAll or loop is set) then the chain will never progress.<br>Note that <code>Tween.onComplete</code> will fire when <em>this</em> tween completes, not when the whole chain completes.<br>For that you should listen to <code>onComplete</code> on the final tween in your chain.</p> 
+     <p>If you pass multiple tweens to this method they will be joined into a single long chain.<br>For example if this is Tween A and you pass in B, C and D then B will be chained to A, C will be chained to B and D will be chained to C.<br>Any previously chained tweens that may have been set will be overwritten.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>tweens</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Tween.html">Phaser.Tween</a></span> </td> 
+       <td class="attributes"> &lt;repeatable&gt;<br> </td> 
+       <td class="description last"><p>One or more tweens that will be chained to this one.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Tween.html">Phaser.Tween</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This tween. Useful for method chaining.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-566">line 566</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="delay"><span class="type-signature"></span>delay<span class="signature">(duration, <span class="optional">index</span>)</span><span class="type-signature"> ? {<a href="Phaser.Tween.html">Phaser.Tween</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Sets the delay in milliseconds before this tween will start. If there are child tweens it sets the delay before the first child starts.<br>The delay is invoked as soon as you call <code>Tween.start</code>. If the tween is already running this method doesn't do anything for the current active tween.<br>If you have not yet called <code>Tween.to</code> or <code>Tween.from</code> at least once then this method will do nothing, as there are no tweens to delay.<br>If you have child tweens and pass -1 as the index value it sets the delay across all of them.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>duration</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The amount of time in ms that the Tween should wait until it begins once started is called. Set to zero to remove any active delay.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>index</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>If this tween has more than one child this allows you to target a specific child. If set to -1 it will set the delay on all the children.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Tween.html">Phaser.Tween</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This tween. Useful for method chaining.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-408">line 408</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="easing"><span class="type-signature"></span>easing<span class="signature">(ease, <span class="optional">index</span>)</span><span class="type-signature"> ? {<a href="Phaser.Tween.html">Phaser.Tween</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Set easing function this tween will use, i.e. Phaser.Easing.Linear.None.<br>The ease function allows you define the rate of change. You can pass either a function such as Phaser.Easing.Circular.Out or a string such as "Circ".<br>".easeIn", ".easeOut" and "easeInOut" variants are all supported for all ease types.<br>If you have child tweens and pass -1 as the index value it sets the easing function defined here across all of them.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>ease</code></td> 
+       <td class="type"> <span class="param-type">function</span> | <span class="param-type">string</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The easing function this tween will use, i.e. Phaser.Easing.Linear.None.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>index</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>If this tween has more than one child this allows you to target a specific child. If set to -1 it will set the easing function on all children.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Tween.html">Phaser.Tween</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This tween. Useful for method chaining.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-504">line 504</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="from"><span class="type-signature"></span>from<span class="signature">(properties, <span class="optional">duration</span>, <span class="optional">ease</span>, <span class="optional">autoStart</span>, <span class="optional">delay</span>, <span class="optional">repeat</span>, <span class="optional">yoyo</span>)</span><span class="type-signature"> ? {<a href="Phaser.Tween.html">Phaser.Tween</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Sets this tween to be a <code>from</code> tween on the properties given. A <code>from</code> tween sets the target to the destination value and tweens to its current value.<br>For example a Sprite with an <code>x</code> coordinate of 100 tweened from <code>x</code> 500 would be set to <code>x</code> 500 and then tweened to <code>x</code> 100 by giving a properties object of <code>{ x: 500 }</code>.<br>The ease function allows you define the rate of change. You can pass either a function such as Phaser.Easing.Circular.Out or a string such as "Circ".<br>".easeIn", ".easeOut" and "easeInOut" variants are all supported for all ease types.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>properties</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>An object containing the properties you want to tween., such as <code>Sprite.x</code> or <code>Sound.volume</code>. Given as a JavaScript object.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>duration</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 1000 </td> 
+       <td class="description last"><p>Duration of this tween in ms. Or if <code>Tween.frameBased</code> is true this represents the number of frames that should elapse.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>ease</code></td> 
+       <td class="type"> <span class="param-type">function</span> | <span class="param-type">string</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> null </td> 
+       <td class="description last"><p>Easing function. If not set it will default to Phaser.Easing.Default, which is Phaser.Easing.Linear.None by default but can be over-ridden.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>autoStart</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>Set to <code>true</code> to allow this tween to start automatically. Otherwise call Tween.start().</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>delay</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>Delay before this tween will start in milliseconds. Defaults to 0, no delay.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>repeat</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>Should the tween automatically restart once complete? If you want it to run forever set as -1. This only effects this individual tween, not any chained tweens.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>yoyo</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>A tween that yoyos will reverse itself and play backwards automatically. A yoyo'd tween doesn't fire the Tween.onComplete event, so listen for Tween.onLoop instead.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Tween.html">Phaser.Tween</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This Tween object.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-237">line 237</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="generateData"><span class="type-signature"></span>generateData<span class="signature">(<span class="optional">frameRate</span>, <span class="optional">data</span>)</span><span class="type-signature"> ? {array}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This will generate an array populated with the tweened object values from start to end.<br>It works by running the tween simulation at the given frame rate based on the values set-up in Tween.to and Tween.from.<br>It ignores delay and repeat counts and any chained tweens, but does include child tweens.<br>Just one play through of the tween data is returned, including yoyo if set.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>frameRate</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 60 </td> 
+       <td class="description last"><p>The speed in frames per second that the data should be generated at. The higher the value, the larger the array it creates.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>data</code></td> 
+       <td class="type"> <span class="param-type">array</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>If given the generated data will be appended to this array, otherwise a new array will be returned.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">array</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>An array of tweened values.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-840">line 840</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="interpolation"><span class="type-signature"></span>interpolation<span class="signature">(interpolation, <span class="optional">context</span>, <span class="optional">index</span>)</span><span class="type-signature"> ? {<a href="Phaser.Tween.html">Phaser.Tween</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Sets the interpolation function the tween will use. By default it uses Phaser.Math.linearInterpolation.<br>Also available: Phaser.Math.bezierInterpolation and Phaser.Math.catmullRomInterpolation.<br>The interpolation function is only used if the target properties is an array.<br>If you have child tweens and pass -1 as the index value and it will set the interpolation function across all of them.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>interpolation</code></td> 
+       <td class="type"> <span class="param-type">function</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The interpolation function to use (Phaser.Math.linearInterpolation by default)</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>context</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The context under which the interpolation function will be run.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>index</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>If this tween has more than one child this allows you to target a specific child. If set to -1 it will set the interpolation function on all children.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Tween.html">Phaser.Tween</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This tween. Useful for method chaining.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-526">line 526</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="loop"><span class="type-signature"></span>loop<span class="signature">(<span class="optional">value</span>)</span><span class="type-signature"> ? {<a href="Phaser.Tween.html">Phaser.Tween</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Enables the looping of this tween. The tween will loop forever, and onComplete will never fire.</p> 
+     <p>If <code>value</code> is <code>true</code> then this is the same as setting <code>Tween.repeatAll(-1)</code>.<br>If <code>value</code> is <code>false</code> it is the same as setting <code>Tween.repeatAll(0)</code> and will reset the <code>repeatCounter</code> to zero.</p> 
+     <p>Usage:<br>game.add.tween(p).to({ x: 700 }, 1000, Phaser.Easing.Linear.None, true)<br>.to({ y: 300 }, 1000, Phaser.Easing.Linear.None)<br>.to({ x: 0 }, 1000, Phaser.Easing.Linear.None)<br>.to({ y: 0 }, 1000, Phaser.Easing.Linear.None)<br>.loop();</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>value</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> true </td> 
+       <td class="description last"><p>If <code>true</code> this tween will loop once it reaches the end. Set to <code>false</code> to remove an active loop.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Tween.html">Phaser.Tween</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This tween. Useful for method chaining.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-600">line 600</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onUpdateCallback"><span class="type-signature"></span>onUpdateCallback<span class="signature">(callback, callbackContext)</span><span class="type-signature"> ? {<a href="Phaser.Tween.html">Phaser.Tween</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Sets a callback to be fired each time this tween updates.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>callback</code></td> 
+       <td class="type"> <span class="param-type">function</span> </td> 
+       <td class="description last"><p>The callback to invoke each time this tween is updated. Set to <code>null</code> to remove an already active callback.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>callbackContext</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="description last"><p>The context in which to call the onUpdate callback.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Tween.html">Phaser.Tween</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This tween. Useful for method chaining.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-626">line 626</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="pause"><span class="type-signature"></span>pause<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Pauses the tween. Resume playback with Tween.resume.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-643">line 643</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="repeat"><span class="type-signature"></span>repeat<span class="signature">(total, <span class="optional">repeat</span>, <span class="optional">index</span>)</span><span class="type-signature"> ? {<a href="Phaser.Tween.html">Phaser.Tween</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Sets the number of times this tween will repeat.<br>If you have not yet called <code>Tween.to</code> or <code>Tween.from</code> at least once then this method will do nothing, as there are no tweens to repeat.<br>If you have child tweens and pass -1 as the index value it sets the number of times they'll repeat across all of them.<br>If you wish to define how many times this Tween and all children will repeat see Tween.repeatAll.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>total</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>How many times a tween should repeat before completing. Set to zero to remove an active repeat. Set to -1 to repeat forever.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>repeat</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>This is the amount of time to pause (in ms) before the repeat will start.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>index</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>If this tween has more than one child this allows you to target a specific child. If set to -1 it will set the repeat value on all the children.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Tween.html">Phaser.Tween</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This tween. Useful for method chaining.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-425">line 425</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="repeatAll"><span class="type-signature"></span>repeatAll<span class="signature">(<span class="optional">total</span>)</span><span class="type-signature"> ? {<a href="Phaser.Tween.html">Phaser.Tween</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Set how many times this tween and all of its children will repeat.<br>A tween (A) with 3 children (B,C,D) with a <code>repeatAll</code> value of 2 would play as: ABCDABCD before completing.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>total</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>How many times this tween and all children should repeat before completing. Set to zero to remove an active repeat. Set to -1 to repeat forever.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Tween.html">Phaser.Tween</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This tween. Useful for method chaining.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-548">line 548</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="repeatDelay"><span class="type-signature"></span>repeatDelay<span class="signature">(duration, <span class="optional">index</span>)</span><span class="type-signature"> ? {<a href="Phaser.Tween.html">Phaser.Tween</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Sets the delay in milliseconds before this tween will repeat itself.<br>The repeatDelay is invoked as soon as you call <code>Tween.start</code>. If the tween is already running this method doesn't do anything for the current active tween.<br>If you have not yet called <code>Tween.to</code> or <code>Tween.from</code> at least once then this method will do nothing, as there are no tweens to set repeatDelay on.<br>If you have child tweens and pass -1 as the index value it sets the repeatDelay across all of them.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>duration</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The amount of time in ms that the Tween should wait until it repeats or yoyos once start is called. Set to zero to remove any active repeatDelay.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>index</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>If this tween has more than one child this allows you to target a specific child. If set to -1 it will set the repeatDelay on all the children.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Tween.html">Phaser.Tween</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This tween. Useful for method chaining.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-447">line 447</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="resume"><span class="type-signature"></span>resume<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Resumes a paused tween.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-675">line 675</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="start"><span class="type-signature"></span>start<span class="signature">(<span class="optional">index</span>)</span><span class="type-signature"> ? {<a href="Phaser.Tween.html">Phaser.Tween</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Starts the tween running. Can also be called by the autoStart parameter of <code>Tween.to</code> or <code>Tween.from</code>.<br>This sets the <code>Tween.isRunning</code> property to <code>true</code> and dispatches a <code>Tween.onStart</code> signal.<br>If the Tween has a delay set then nothing will start tweening until the delay has expired.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>index</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>If this Tween contains child tweens you can specify which one to start from. The default is zero, i.e. the first tween created.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Tween.html">Phaser.Tween</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This tween. Useful for method chaining.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-284">line 284</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="stop"><span class="type-signature"></span>stop<span class="signature">(<span class="optional">complete</span>)</span><span class="type-signature"> ? {<a href="Phaser.Tween.html">Phaser.Tween</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Stops the tween if running and flags it for deletion from the TweenManager.<br>If called directly the <code>Tween.onComplete</code> signal is not dispatched and no chained tweens are started unless the complete parameter is set to <code>true</code>.<br>If you just wish to pause a tween then use Tween.pause instead.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>complete</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>Set to <code>true</code> to dispatch the Tween.onComplete signal.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Tween.html">Phaser.Tween</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This tween. Useful for method chaining.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-340">line 340</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="to"><span class="type-signature"></span>to<span class="signature">(properties, <span class="optional">duration</span>, <span class="optional">ease</span>, <span class="optional">autoStart</span>, <span class="optional">delay</span>, <span class="optional">repeat</span>, <span class="optional">yoyo</span>)</span><span class="type-signature"> ? {<a href="Phaser.Tween.html">Phaser.Tween</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Sets this tween to be a <code>to</code> tween on the properties given. A <code>to</code> tween starts at the current value and tweens to the destination value given.<br>For example a Sprite with an <code>x</code> coordinate of 100 could be tweened to <code>x</code> 200 by giving a properties object of <code>{ x: 200 }</code>.<br>The ease function allows you define the rate of change. You can pass either a function such as Phaser.Easing.Circular.Out or a string such as "Circ".<br>".easeIn", ".easeOut" and "easeInOut" variants are all supported for all ease types.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>properties</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>An object containing the properties you want to tween, such as <code>Sprite.x</code> or <code>Sound.volume</code>. Given as a JavaScript object.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>duration</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 1000 </td> 
+       <td class="description last"><p>Duration of this tween in ms. Or if <code>Tween.frameBased</code> is true this represents the number of frames that should elapse.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>ease</code></td> 
+       <td class="type"> <span class="param-type">function</span> | <span class="param-type">string</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> null </td> 
+       <td class="description last"><p>Easing function. If not set it will default to Phaser.Easing.Default, which is Phaser.Easing.Linear.None by default but can be over-ridden.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>autoStart</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>Set to <code>true</code> to allow this tween to start automatically. Otherwise call Tween.start().</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>delay</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>Delay before this tween will start in milliseconds. Defaults to 0, no delay.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>repeat</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>Should the tween automatically restart once complete? If you want it to run forever set as -1. This only effects this individual tween, not any chained tweens.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>yoyo</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> false </td> 
+       <td class="description last"><p>A tween that yoyos will reverse itself and play backwards automatically. A yoyo'd tween doesn't fire the Tween.onComplete event, so listen for Tween.onLoop instead.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Tween.html">Phaser.Tween</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This Tween object.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-190">line 190</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="update"><span class="type-signature"></span>update<span class="signature">(time)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Core tween update function called by the TweenManager. Does not need to be invoked directly.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>time</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>A timestamp passed in by the TweenManager.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>false if the tween and all child tweens have completed and should be deleted from the manager, otherwise true (still active).</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-717">line 717</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="updateTweenData"><span class="type-signature"></span>updateTweenData<span class="signature">(property, value, <span class="optional">index</span>)</span><span class="type-signature"> ? {<a href="Phaser.Tween.html">Phaser.Tween</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Updates either a single TweenData or all TweenData objects properties to the given value.<br>Used internally by methods like Tween.delay, Tween.yoyo, etc. but can also be called directly if you know which property you want to tweak.<br>The property is not checked, so if you pass an invalid one you'll generate a run-time error.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>property</code></td> 
+       <td class="type"> <span class="param-type">string</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The property to update.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>value</code></td> 
+       <td class="type"> <span class="param-type">number</span> | <span class="param-type">function</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The value to set the property to.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>index</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>If this tween has more than one child this allows you to target a specific child. If set to -1 it will set the delay on all the children.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Tween.html">Phaser.Tween</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This tween. Useful for method chaining.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-375">line 375</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="yoyo"><span class="type-signature"></span>yoyo<span class="signature">(enable, <span class="optional">yoyoDelay</span>, <span class="optional">index</span>)</span><span class="type-signature"> ? {<a href="Phaser.Tween.html">Phaser.Tween</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A Tween that has yoyo set to true will run through from its starting values to its end values and then play back in reverse from end to start.<br>Used in combination with repeat you can create endless loops.<br>If you have not yet called <code>Tween.to</code> or <code>Tween.from</code> at least once then this method will do nothing, as there are no tweens to yoyo.<br>If you have child tweens and pass -1 as the index value it sets the yoyo property across all of them.<br>If you wish to yoyo this Tween and all of its children then see Tween.yoyoAll.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>enable</code></td> 
+       <td class="type"> <span class="param-type">boolean</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>Set to true to yoyo this tween, or false to disable an already active yoyo.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>yoyoDelay</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>This is the amount of time to pause (in ms) before the yoyo will start.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>index</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>If this tween has more than one child this allows you to target a specific child. If set to -1 it will set yoyo on all the children.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Tween.html">Phaser.Tween</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This tween. Useful for method chaining.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-464">line 464</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="yoyoDelay"><span class="type-signature"></span>yoyoDelay<span class="signature">(duration, <span class="optional">index</span>)</span><span class="type-signature"> ? {<a href="Phaser.Tween.html">Phaser.Tween</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Sets the delay in milliseconds before this tween will run a yoyo (only applies if yoyo is enabled).<br>The repeatDelay is invoked as soon as you call <code>Tween.start</code>. If the tween is already running this method doesn't do anything for the current active tween.<br>If you have not yet called <code>Tween.to</code> or <code>Tween.from</code> at least once then this method will do nothing, as there are no tweens to set repeatDelay on.<br>If you have child tweens and pass -1 as the index value it sets the repeatDelay across all of them.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>duration</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The amount of time in ms that the Tween should wait until it repeats or yoyos once start is called. Set to zero to remove any active yoyoDelay.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>index</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>If this tween has more than one child this allows you to target a specific child. If set to -1 it will set the yoyoDelay on all the children.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.Tween.html">Phaser.Tween</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>This tween. Useful for method chaining.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_tween_Tween.js.html">tween/Tween.js</a>, 
+      <a href="src_tween_Tween.js.html#sunlight-1-line-487">line 487</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

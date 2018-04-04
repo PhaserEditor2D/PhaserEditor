@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Phaser Editor - LibGDX Win32
+Bundle-SymbolicName: phasereditor.libgdx.win32;singleton:=true
+Bundle-Version: 1.3.0.20161130
+Bundle-Vendor: Arian Fornaris
+Fragment-Host: phasereditor.libgdx
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Eclipse-BundleShape: dir
+Eclipse-PlatformFilter: (osgi.os=win32)

@@ -1,0 +1,44 @@
+{
+  "level": [
+    {
+      "type": "atlas",
+      "key": "environ",
+      "textureURL": "assets/atlas/textures.png",
+      "atlasURL": "assets/atlas/textures.json",
+      "format": "TEXTURE_ATLAS_JSON_HASH"
+    },
+    {
+      "type": "image",
+      "key": "bg",
+      "url": "assets/images/bg.png",
+      "overwrite": false
+    },
+    {
+      "type": "spritesheet",
+      "key": "coins",
+      "url": "assets/sprites/coins.png",
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameMax": -1,
+      "margin": 0,
+      "spacing": 0
+    },
+    {
+      "type": "spritesheet",
+      "key": "dino",
+      "url": "assets/sprites/dino.png",
+      "frameWidth": 210,
+      "frameHeight": 210,
+      "frameMax": -1,
+      "margin": 0,
+      "spacing": 0
+    }
+  ],
+  "meta": {
+    "generated": "1507009565580",
+    "app": "Phaser Editor",
+    "url": "http://phasereditor.boniatillo.com",
+    "version": "1.0",
+    "copyright": "Arian Fornaris (c) 2015,2016"
+  }
+}

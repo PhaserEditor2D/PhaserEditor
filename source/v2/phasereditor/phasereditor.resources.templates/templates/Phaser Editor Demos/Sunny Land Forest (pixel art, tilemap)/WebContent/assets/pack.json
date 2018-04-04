@@ -1,0 +1,208 @@
+{
+  "boot": [{
+    "type": "image",
+    "key": "logo",
+    "url": "assets/loading/logo.png",
+    "overwrite": false
+  }],
+  "preloader": [
+    {
+      "type": "tilemap",
+      "key": "level1",
+      "url": "assets/maps/level1.csv",
+      "format": "CSV"
+    },
+    {
+      "type": "image",
+      "key": "tileset",
+      "url": "assets/environment/tileset.png",
+      "overwrite": false
+    },
+    {
+      "type": "atlas",
+      "key": "atlas-props",
+      "textureURL": "assets/atlas/atlas-props.png",
+      "atlasURL": "assets/atlas/atlas-props.json",
+      "format": "TEXTURE_ATLAS_JSON_ARRAY"
+    },
+    {
+      "type": "atlas",
+      "key": "atlas",
+      "textureURL": "assets/atlas/atlas.png",
+      "atlasURL": "assets/atlas/atlas.json",
+      "format": "TEXTURE_ATLAS_JSON_ARRAY"
+    },
+    {
+      "type": "script",
+      "key": "Player",
+      "url": "assets/canvas/prefabs/Player.js"
+    },
+    {
+      "type": "image",
+      "key": "background",
+      "url": "assets/environment/background.png",
+      "overwrite": false
+    },
+    {
+      "type": "image",
+      "key": "middleground",
+      "url": "assets/environment/middleground.png",
+      "overwrite": false
+    },
+    {
+      "type": "script",
+      "key": "Star",
+      "url": "assets/canvas/prefabs/Star.js"
+    },
+    {
+      "type": "script",
+      "key": "Slug",
+      "url": "assets/canvas/prefabs/Slug.js"
+    },
+    {
+      "type": "script",
+      "key": "Bee",
+      "url": "assets/canvas/prefabs/Bee.js"
+    },
+    {
+      "type": "script",
+      "key": "Plant",
+      "url": "assets/canvas/prefabs/Plant.js"
+    },
+    {
+      "type": "script",
+      "key": "Chest",
+      "url": "assets/canvas/prefabs/Chest.js"
+    },
+    {
+      "type": "image",
+      "key": "collisions",
+      "url": "assets/environment/collisions.png",
+      "overwrite": false
+    },
+    {
+      "type": "tilemap",
+      "key": "level1_collisions",
+      "url": "assets/maps/level1_collisions.csv",
+      "format": "CSV"
+    },
+    {
+      "type": "script",
+      "key": "Carrot",
+      "url": "assets/canvas/prefabs/Carrot.js"
+    },
+    {
+      "type": "script",
+      "key": "EnemyDeath",
+      "url": "assets/canvas/prefabs/EnemyDeath.js"
+    },
+    {
+      "type": "audio",
+      "key": "carrot",
+      "urls": ["assets/sound/carrot.mp3"],
+      "autoDecode": true
+    },
+    {
+      "type": "audio",
+      "key": "chest",
+      "urls": ["assets/sound/chest.mp3"],
+      "autoDecode": true
+    },
+    {
+      "type": "audio",
+      "key": "music",
+      "urls": ["assets/sound/enchanted_forest.mp3"],
+      "autoDecode": true
+    },
+    {
+      "type": "audio",
+      "key": "enemy-death",
+      "urls": ["assets/sound/enemy-death.mp3"],
+      "autoDecode": true
+    },
+    {
+      "type": "audio",
+      "key": "hurt",
+      "urls": ["assets/sound/hurt.mp3"],
+      "autoDecode": true
+    },
+    {
+      "type": "audio",
+      "key": "jump",
+      "urls": ["assets/sound/jump.mp3"],
+      "autoDecode": true
+    },
+    {
+      "type": "audio",
+      "key": "star",
+      "urls": ["assets/sound/star.mp3"],
+      "autoDecode": true
+    },
+    {
+      "type": "script",
+      "key": "PickStar",
+      "url": "assets/canvas/prefabs/PickStar.js"
+    },
+    {
+      "type": "bitmapFont",
+      "key": "vt323",
+      "textureURL": "assets/fonts/VT323-Regular.png",
+      "atlasURL": "assets/fonts/VT323-Regular.fnt.xml",
+      "xSpacing": 0,
+      "ySpacing": 0
+    },
+    {
+      "type": "image",
+      "key": "credits-text",
+      "url": "assets/sprites/credits-text.png",
+      "overwrite": false
+    },
+    {
+      "type": "image",
+      "key": "game-over",
+      "url": "assets/sprites/game-over.png",
+      "overwrite": false
+    },
+    {
+      "type": "image",
+      "key": "instructions",
+      "url": "assets/sprites/instructions.png",
+      "overwrite": false
+    },
+    {
+      "type": "image",
+      "key": "loading",
+      "url": "assets/sprites/loading.png",
+      "overwrite": false
+    },
+    {
+      "type": "image",
+      "key": "press-enter-text",
+      "url": "assets/sprites/press-enter-text.png",
+      "overwrite": false
+    },
+    {
+      "type": "image",
+      "key": "title",
+      "url": "assets/sprites/title-screen.png",
+      "overwrite": false
+    },
+    {
+      "type": "script",
+      "key": "TtileScreen",
+      "url": "assets/canvas/TitleScreen.js"
+    },
+    {
+      "type": "script",
+      "key": "Level",
+      "url": "assets/canvas/Level.js"
+    }
+  ],
+  "meta": {
+    "generated": "1518558087054",
+    "app": "Phaser Editor",
+    "url": "http://phasereditor.boniatillo.com",
+    "version": "1.0",
+    "copyright": "Arian Fornaris (c) 2015,2016"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "canvas-version": 2,
+  "settings": {
+    "className": "Chest",
+    "sceneWidth": 640,
+    "sceneHeight": 360,
+    "generateOnSave": true,
+    "enableStepping": false,
+    "lang": "JAVA_SCRIPT",
+    "baseClass": "Phaser.Sprite",
+    "backgroundColor": [
+      180,
+      180,
+      180
+    ],
+    "gridColor": [
+      200,
+      200,
+      200
+    ],
+    "showGrid": true,
+    "create_after": "this.afterCreate();"
+  },
+  "stateSettings": {
+    "stageBackgroundColor": [
+      0,
+      0,
+      0
+    ],
+    "autoLoad": true,
+    "preloadSpriteId": "",
+    "preloadSprite_direction": 0,
+    "load.pack": []
+  },
+  "world": {
+    "type": "group",
+    "id": "f117a007-f08e-47fe-a902-9a6724ddf69b",
+    "info": {
+      "editorName": "Chest",
+      "setAll": [],
+      "children": [{
+        "type": "atlas-sprite",
+        "id": "acf1236c-e81c-4258-ab1c-d4b38ebd24c8",
+        "asset": "0",
+        "info": {
+          "editorName": "chest",
+          "anchor.x": 0.5,
+          "anchor.y": 0.5,
+          "animations": [{
+            "name": "open",
+            "frameRate": 0,
+            "frames": ["chest/chest-2"]
+          }],
+          "body": {
+            "type": "ARCADE_RECT",
+            "offsetX": 9,
+            "offsetY": 13,
+            "gravityY": 500,
+            "width": 19,
+            "height": 12
+          }
+        }
+      }]
+    }
+  },
+  "type": "SPRITE",
+  "asset-table": {"0": {
+    "file": "WebContent/assets/pack.json",
+    "section": "preloader",
+    "asset": "atlas",
+    "sprite": "chest/chest-1"
+  }},
+  "prefab-table": {}
+}

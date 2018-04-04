@@ -1,0 +1,299 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: AnimationParser</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a>.</span> AnimationParser </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="AnimationParser"><span class="type-signature"></span>new AnimationParser<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Responsible for parsing sprite sheet and JSON data into the internal FrameData format that Phaser uses for animations.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_animation_AnimationParser.js.html">animation/AnimationParser.js</a>, 
+      <a href="src_animation_AnimationParser.js.html#sunlight-1-line-13">line 13</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Methods</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id=".JSONData"><span class="type-signature">&lt;static&gt; </span>JSONData<span class="signature">(game, json)</span><span class="type-signature"> ? {<a href="Phaser.FrameData.html">Phaser.FrameData</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Parse the JSON data and extract the animation frame data from it.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>game</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Game.html">Phaser.Game</a></span> </td> 
+       <td class="description last"><p>A reference to the currently running game.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>json</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="description last"><p>The JSON data from the Texture Atlas. Must be in Array format.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.FrameData.html">Phaser.FrameData</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>A FrameData object containing the parsed frames.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_animation_AnimationParser.js.html">animation/AnimationParser.js</a>, 
+      <a href="src_animation_AnimationParser.js.html#sunlight-1-line-93">line 93</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id=".JSONDataHash"><span class="type-signature">&lt;static&gt; </span>JSONDataHash<span class="signature">(game, json)</span><span class="type-signature"> ? {<a href="Phaser.FrameData.html">Phaser.FrameData</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Parse the JSON data and extract the animation frame data from it.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>game</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Game.html">Phaser.Game</a></span> </td> 
+       <td class="description last"><p>A reference to the currently running game.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>json</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="description last"><p>The JSON data from the Texture Atlas. Must be in JSON Hash format.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.FrameData.html">Phaser.FrameData</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>A FrameData object containing the parsed frames.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_animation_AnimationParser.js.html">animation/AnimationParser.js</a>, 
+      <a href="src_animation_AnimationParser.js.html#sunlight-1-line-204">line 204</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id=".JSONDataPyxel"><span class="type-signature">&lt;static&gt; </span>JSONDataPyxel<span class="signature">(game, json)</span><span class="type-signature"> ? {<a href="Phaser.FrameData.html">Phaser.FrameData</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Parse the JSON data and extract the animation frame data from it.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>game</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Game.html">Phaser.Game</a></span> </td> 
+       <td class="description last"><p>A reference to the currently running game.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>json</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="description last"><p>The JSON data from the Texture Atlas. Must be in Pyxel JSON format.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.FrameData.html">Phaser.FrameData</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>A FrameData object containing the parsed frames.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_animation_AnimationParser.js.html">animation/AnimationParser.js</a>, 
+      <a href="src_animation_AnimationParser.js.html#sunlight-1-line-147">line 147</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id=".spriteSheet"><span class="type-signature">&lt;static&gt; </span>spriteSheet<span class="signature">(game, key, frameWidth, frameHeight, <span class="optional">frameMax</span>, <span class="optional">margin</span>, <span class="optional">spacing</span>)</span><span class="type-signature"> ? {<a href="Phaser.FrameData.html">Phaser.FrameData</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Parse a Sprite Sheet and extract the animation frame data from it.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>game</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Game.html">Phaser.Game</a></span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>A reference to the currently running game.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>key</code></td> 
+       <td class="type"> <span class="param-type">string</span> | <span class="param-type">Image</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The Game.Cache asset key of the Sprite Sheet image or an actual HTML Image element.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>frameWidth</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The fixed width of each frame of the animation.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>frameHeight</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> </td> 
+       <td class="default"> </td> 
+       <td class="description last"><p>The fixed height of each frame of the animation.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>frameMax</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> -1 </td> 
+       <td class="description last"><p>The total number of animation frames to extract from the Sprite Sheet. The default value of -1 means "extract all frames".</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>margin</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>If the frames have been drawn with a margin, specify the amount here.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>spacing</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 0 </td> 
+       <td class="description last"><p>If the frames have been drawn with spacing between them, specify the amount here.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.FrameData.html">Phaser.FrameData</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>A FrameData object containing the parsed frames.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_animation_AnimationParser.js.html">animation/AnimationParser.js</a>, 
+      <a href="src_animation_AnimationParser.js.html#sunlight-1-line-15">line 15</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id=".XMLData"><span class="type-signature">&lt;static&gt; </span>XMLData<span class="signature">(game, xml)</span><span class="type-signature"> ? {<a href="Phaser.FrameData.html">Phaser.FrameData</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Parse the XML data and extract the animation frame data from it.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>game</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Game.html">Phaser.Game</a></span> </td> 
+       <td class="description last"><p>A reference to the currently running game.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>xml</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="description last"><p>The XML data from the Texture Atlas. Must be in Starling XML format.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="Phaser.FrameData.html">Phaser.FrameData</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>A FrameData object containing the parsed frames.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_animation_AnimationParser.js.html">animation/AnimationParser.js</a>, 
+      <a href="src_animation_AnimationParser.js.html#sunlight-1-line-261">line 261</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

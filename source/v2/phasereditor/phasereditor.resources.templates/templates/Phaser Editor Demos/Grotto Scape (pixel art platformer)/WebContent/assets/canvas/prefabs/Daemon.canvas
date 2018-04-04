@@ -1,0 +1,69 @@
+{
+  "canvas-version": 2,
+  "settings": {
+    "className": "Daemon",
+    "sceneWidth": 640,
+    "sceneHeight": 360,
+    "generateOnSave": true,
+    "enableStepping": false,
+    "lang": "JAVA_SCRIPT",
+    "baseClass": "Phaser.Sprite",
+    "backgroundColor": [
+      180,
+      180,
+      180
+    ],
+    "gridColor": [
+      200,
+      200,
+      200
+    ],
+    "showGrid": true
+  },
+  "stateSettings": {
+    "stageBackgroundColor": [
+      0,
+      0,
+      0
+    ],
+    "preloadSpriteId": "",
+    "preloadSprite_direction": 0,
+    "load.pack": []
+  },
+  "world": {
+    "type": "group",
+    "id": "c6f164c9-2189-4948-bb91-01fc11c30b92",
+    "info": {
+      "editorName": "Daemon",
+      "children": [{
+        "type": "spritesheet",
+        "id": "f3a6fdc4-2201-44d0-905e-1f38a523d5ee",
+        "asset": "0",
+        "info": {
+          "editorName": "items",
+          "animations": [{
+            "name": "turn",
+            "frameRate": 5,
+            "loop": true,
+            "autoPlay": true,
+            "frames": [
+              "5",
+              "6",
+              "7",
+              "6",
+              "5"
+            ]
+          }]
+        }
+      }]
+    }
+  },
+  "type": "SPRITE",
+  "asset-table": {"0": {
+    "file": "WebContent/assets/pack.json",
+    "section": "level",
+    "asset": "items",
+    "sprite": "5"
+  }},
+  "prefab-table": {}
+}

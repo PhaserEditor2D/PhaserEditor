@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Phaser Editor - Asset Pack Core
+Bundle-SymbolicName: phasereditor.assetpack.core;singleton:=true
+Bundle-Version: 1.5.0.20180307
+Bundle-Activator: phasereditor.assetpack.core.Activator
+Bundle-Vendor: Arian Fornaris
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.ui.ide;bundle-version="3.10.2",
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources;bundle-version="3.9.1",
+ org.json,
+ phasereditor.inspect.core,
+ phasereditor.audiosprite.core,
+ phasereditor.atlas.core,
+ phasereditor.ui,
+ phasereditor.project.core,
+ phasereditor.bmpfont.core;bundle-version="1.5.0",
+ phasereditor.lic;bundle-version="1.4.4"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Export-Package: phasereditor.assetpack.core

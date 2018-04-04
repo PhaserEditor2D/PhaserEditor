@@ -1,0 +1,366 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: Events</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a>.</span> Events </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="Events"><span class="type-signature"></span>new Events<span class="signature">(sprite)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The Events component is a collection of events fired by the parent Game Object.</p> 
+     <p>Phaser uses what are known as 'Signals' for all event handling. All of the events in<br>this class are signals you can subscribe to, much in the same way you'd "listen" for<br>an event.</p> 
+     <p>For example to tell when a Sprite has been added to a new group, you can bind a function<br>to the <code>onAddedToGroup</code> signal:</p> 
+     <p><code>sprite.events.onAddedToGroup.add(yourFunction, this);</code></p> 
+     <p>Where <code>yourFunction</code> is the function you want called when this event occurs.</p> 
+     <p>For more details about how signals work please see the Phaser.Signal class.</p> 
+     <p>The Input-related events will only be dispatched if the Sprite has had <code>inputEnabled</code> set to <code>true</code><br>and the Animation-related events only apply to game objects with animations like <a href="Phaser.Sprite.html">Phaser.Sprite</a>.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>sprite</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Sprite.html">Phaser.Sprite</a></span> </td> 
+       <td class="description last"><p>A reference to the game object / Sprite that owns this Events object.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-30">line 30</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="onAddedToGroup"><span class="type-signature"></span>onAddedToGroup<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched when this Game Object is added to a new Group.<br>It is sent two arguments:<br>{any} The Game Object that was added to the Group.<br>{Phaser.Group} The Group it was added to.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-84">line 84</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onAnimationComplete"><span class="type-signature"></span>onAnimationComplete<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched if the Game Object has the AnimationManager component,<br>and an Animation has been stopped (via <code>animation.stop()</code> and the <code>dispatchComplete</code> argument has been set.<br>You can also listen to <code>Animation.onComplete</code> rather than via the Game Objects events.<br>It is sent two arguments:<br>{any} The Game Object that received the event.<br>{Phaser.Animation} The Phaser.Animation that was stopped.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-249">line 249</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onAnimationLoop"><span class="type-signature"></span>onAnimationLoop<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched if the Game Object has the AnimationManager component,<br>and an Animation has looped playback.<br>You can also listen to <code>Animation.onLoop</code> rather than via the Game Objects events.<br>It is sent two arguments:<br>{any} The Game Object that received the event.<br>{Phaser.Animation} The Phaser.Animation that looped.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-260">line 260</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onAnimationStart"><span class="type-signature"></span>onAnimationStart<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched if the Game Object has the AnimationManager component,<br>and an Animation has been played.<br>You can also listen to <code>Animation.onStart</code> rather than via the Game Objects events.<br>It is sent two arguments:<br>{any} The Game Object that received the event.<br>{Phaser.Animation} The Phaser.Animation that was started.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-238">line 238</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onDestroy"><span class="type-signature"></span>onDestroy<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched when the Game Object is destroyed.<br>This happens when <code>Sprite.destroy()</code> is called, or <code>Group.destroy()</code> with <code>destroyChildren</code> set to true.<br>It is sent one argument:<br>{any} The Game Object that was destroyed.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-109">line 109</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onDragStart"><span class="type-signature"></span>onDragStart<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched if the Game Object has been <code>inputEnabled</code> and <code>enableDrag</code> has been set.<br>It is sent when a Phaser.Pointer starts to drag the Game Object, taking into consideration the various<br>drag limitations that may be set.<br>It is sent four arguments:<br>{any} The Game Object that received the event.<br>{Phaser.Pointer} The Phaser.Pointer object that caused the event.<br>{number} The x coordinate that the drag started from.<br>{number} The y coordinate that the drag started from.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-202">line 202</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onDragStop"><span class="type-signature"></span>onDragStop<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched if the Game Object has been <code>inputEnabled</code> and <code>enableDrag</code> has been set.<br>It is sent when a Phaser.Pointer stops dragging the Game Object.<br>It is sent two arguments:<br>{any} The Game Object that received the event.<br>{Phaser.Pointer} The Phaser.Pointer object that caused the event.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-227">line 227</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onDragUpdate"><span class="type-signature"></span>onDragUpdate<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched if the Game Object has been <code>inputEnabled</code> and <code>enableDrag</code> has been set.<br>It is sent when a Phaser.Pointer is actively dragging the Game Object.<br>Be warned: This is a high volume Signal. Be careful what you bind to it.<br>It is sent six arguments:<br>{any} The Game Object that received the event.<br>{Phaser.Pointer} The Phaser.Pointer object that caused the event.<br>{number} The new x coordinate of the Game Object.<br>{number} The new y coordinate of the Game Object.<br>{Phaser.Point} A Point object that contains the point the Game Object was snapped to, if <code>snapOnDrag</code> has been enabled.<br>{boolean} The <code>fromStart</code> boolean, indicates if this is the first update immediately after the drag has started.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-217">line 217</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onEnterBounds"><span class="type-signature"></span>onEnterBounds<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched when the Game Object returns within the Phaser.World bounds, having previously been outside of them.<br>This signal is only if <code>Sprite.checkWorldBounds</code> is set to <code>true</code>.<br>It is sent one argument:<br>{any} The Game Object that entered the World bounds.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-146">line 146</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onInputDown"><span class="type-signature"></span>onInputDown<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched if the Game Object has <code>inputEnabled</code> set to <code>true</code>,<br>and receives a down event from a Phaser.Pointer. This effectively means the Pointer has been<br>pressed down (but not yet released) on the Game Object.<br>It is sent two arguments:<br>{any} The Game Object that received the event.<br>{Phaser.Pointer} The Phaser.Pointer object that caused the event.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-177">line 177</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onInputOut"><span class="type-signature"></span>onInputOut<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched if the Game Object has <code>inputEnabled</code> set to <code>true</code>,<br>and receives an out event from a Phaser.Pointer, which was previously over it.<br>It is sent two arguments:<br>{any} The Game Object that received the event.<br>{Phaser.Pointer} The Phaser.Pointer object that caused the event.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-166">line 166</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onInputOver"><span class="type-signature"></span>onInputOver<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched if the Game Object has <code>inputEnabled</code> set to <code>true</code>,<br>and receives an over event from a Phaser.Pointer.<br>It is sent two arguments:<br>{any} The Game Object that received the event.<br>{Phaser.Pointer} The Phaser.Pointer object that caused the event.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-156">line 156</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onInputUp"><span class="type-signature"></span>onInputUp<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched if the Game Object has <code>inputEnabled</code> set to <code>true</code>,<br>and receives an up event from a Phaser.Pointer. This effectively means the Pointer had been<br>pressed down, and was then released on the Game Object.<br>It is sent three arguments:<br>{any} The Game Object that received the event.<br>{Phaser.Pointer} The Phaser.Pointer object that caused the event.<br>{boolean} isOver - Is the Pointer still over the Game Object?</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-189">line 189</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onKilled"><span class="type-signature"></span>onKilled<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched when the Game Object is killed.<br>This happens when <code>Sprite.kill()</code> is called.<br>Please understand the difference between <code>kill</code> and <code>destroy</code> by looking at their respective methods.<br>It is sent one argument:<br>{any} The Game Object that was killed.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-119">line 119</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onOutOfBounds"><span class="type-signature"></span>onOutOfBounds<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched when the Game Object leaves the Phaser.World bounds.<br>This signal is only if <code>Sprite.checkWorldBounds</code> is set to <code>true</code>.<br>It is sent one argument:<br>{any} The Game Object that left the World bounds.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-137">line 137</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onRemovedFromGroup"><span class="type-signature"></span>onRemovedFromGroup<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched when the Game Object is removed from a Group.<br>It is sent two arguments:<br>{any} The Game Object that was removed from the Group.<br>{Phaser.Group} The Group it was removed from.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-93">line 93</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name toc-deprecated" id="onRemovedFromWorld"><span class="type-signature"></span>onRemovedFromWorld<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+   </dd>
+   <dt class="important deprecated-notice">
+     This method is 
+    <em>deprecated</em> and should not be used. It may be removed in the future. 
+   </dt> 
+   <div class="description"> 
+    <p>This Signal is never used internally by Phaser and is now deprecated.</p> 
+   </div> 
+   <dl class="details"> 
+    <dt class="important tag-deprecated">
+     Deprecated:
+    </dt> 
+    <dd class="tag-deprecated">
+     <ul> 
+      <li>Yes</li> 
+     </ul>
+    </dd> 
+    <dt class="tag-source">
+     Source - 
+     <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+     <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-100">line 100</a> 
+    </dt> 
+   </dl>  
+   <dt> 
+    <h4 class="name " id="onRevived"><span class="type-signature"></span>onRevived<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This signal is dispatched when the Game Object is revived from a previously killed state.<br>This happens when <code>Sprite.revive()</code> is called.<br>It is sent one argument:<br>{any} The Game Object that was revived.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-128">line 128</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="parent"><span class="type-signature"></span>parent<span class="type-signature"> :<a href="Phaser.Sprite.html">Phaser.Sprite</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The Sprite that owns these events.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-35">line 35</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+  <h3 class="subsection-title">Methods</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="destroy"><span class="type-signature"></span>destroy<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Removes all events.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_Events.js.html">gameobjects/components/Events.js</a>, 
+      <a href="src_gameobjects_components_Events.js.html#sunlight-1-line-43">line 43</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

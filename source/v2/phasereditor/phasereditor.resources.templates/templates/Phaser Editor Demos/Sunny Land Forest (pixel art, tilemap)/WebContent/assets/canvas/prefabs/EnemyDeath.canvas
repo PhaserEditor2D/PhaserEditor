@@ -1,0 +1,74 @@
+{
+  "canvas-version": 2,
+  "settings": {
+    "className": "EnemyDeath",
+    "sceneWidth": 640,
+    "sceneHeight": 360,
+    "generateOnSave": true,
+    "enableStepping": false,
+    "lang": "JAVA_SCRIPT",
+    "baseClass": "Phaser.Sprite",
+    "backgroundColor": [
+      180,
+      180,
+      180
+    ],
+    "gridColor": [
+      200,
+      200,
+      200
+    ],
+    "showGrid": true
+  },
+  "stateSettings": {
+    "stageBackgroundColor": [
+      0,
+      0,
+      0
+    ],
+    "autoLoad": true,
+    "preloadSpriteId": "",
+    "preloadSprite_direction": 0,
+    "load.pack": []
+  },
+  "world": {
+    "type": "group",
+    "id": "1daaee60-e1bb-4be9-9584-a40b4aad1949",
+    "info": {
+      "editorName": "EnemyDeath",
+      "setAll": [],
+      "children": [{
+        "type": "atlas-sprite",
+        "id": "1b82af8b-a113-4fb5-8cc8-493e369b1bec",
+        "asset": "0",
+        "info": {
+          "editorName": "enemy_death_enemy_death_5",
+          "anchor.x": 0.5,
+          "anchor.y": 0.5,
+          "animations": [{
+            "name": "death",
+            "frameRate": 18,
+            "killOnComplete": true,
+            "autoPlay": true,
+            "frames": [
+              "enemy-death/enemy-death-1",
+              "enemy-death/enemy-death-2",
+              "enemy-death/enemy-death-3",
+              "enemy-death/enemy-death-4",
+              "enemy-death/enemy-death-5",
+              "enemy-death/enemy-death-6"
+            ]
+          }]
+        }
+      }]
+    }
+  },
+  "type": "SPRITE",
+  "asset-table": {"0": {
+    "file": "WebContent/assets/pack.json",
+    "section": "preloader",
+    "asset": "atlas",
+    "sprite": "enemy-death/enemy-death-5"
+  }},
+  "prefab-table": {}
+}

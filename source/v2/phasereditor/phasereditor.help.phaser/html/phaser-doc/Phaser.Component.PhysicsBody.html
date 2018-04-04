@@ -1,0 +1,115 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: PhysicsBody</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a><a href="Phaser.html#.Component">.Component</a>.</span> PhysicsBody </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="PhysicsBody"><span class="type-signature"></span>new PhysicsBody<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The PhysicsBody component manages the Game Objects physics body and physics enabling.<br>It also overrides the x and y properties, ensuring that any manual adjustment of them is reflected in the physics body itself.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_PhysicsBody.js.html">gameobjects/components/PhysicsBody.js</a>, 
+      <a href="src_gameobjects_components_PhysicsBody.js.html#sunlight-1-line-13">line 13</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="body"><span class="type-signature"></span>body<span class="type-signature"> :<a href="Phaser.Physics.Arcade.Body.html">Phaser.Physics.Arcade.Body</a>|<a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a>|<a href="Phaser.Physics.Ninja.Body.html">Phaser.Physics.Ninja.Body</a>|null</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p><code>body</code> is the Game Objects physics body. Once a Game Object is enabled for physics you access all associated<br>properties and methods via it.</p> 
+     <p>By default Game Objects won't add themselves to any physics system and their <code>body</code> property will be <code>null</code>.</p> 
+     <p>To enable this Game Object for physics you need to call <code>game.physics.enable(object, system)</code> where <code>object</code> is this object<br>and <code>system</code> is the Physics system you are using. If none is given it defaults to <code>Phaser.Physics.Arcade</code>.</p> 
+     <p>You can alternatively call <code>game.physics.arcade.enable(object)</code>, or add this Game Object to a physics enabled Group.</p> 
+     <p>Important: Enabling a Game Object for P2 or Ninja physics will automatically set its <code>anchor</code> property to 0.5,<br>so the physics body is centered on the Game Object.</p> 
+     <p>If you need a different result then adjust or re-create the Body shape offsets manually or reset the anchor after enabling physics.</p> 
+    </div> 
+    <h5>Type:</h5> 
+    <ul> 
+     <li> <span class="param-type"><a href="Phaser.Physics.Arcade.Body.html">Phaser.Physics.Arcade.Body</a></span> | <span class="param-type"><a href="Phaser.Physics.P2.Body.html">Phaser.Physics.P2.Body</a></span> | <span class="param-type"><a href="Phaser.Physics.Ninja.Body.html">Phaser.Physics.Ninja.Body</a></span> | <span class="param-type">null</span> </li> 
+    </ul> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_PhysicsBody.js.html">gameobjects/components/PhysicsBody.js</a>, 
+      <a href="src_gameobjects_components_PhysicsBody.js.html#sunlight-1-line-91">line 91</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="x"><span class="type-signature"></span>x<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The position of the Game Object on the x axis relative to the local coordinates of the parent.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_PhysicsBody.js.html">gameobjects/components/PhysicsBody.js</a>, 
+      <a href="src_gameobjects_components_PhysicsBody.js.html#sunlight-1-line-98">line 98</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="y"><span class="type-signature"></span>y<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The position of the Game Object on the y axis relative to the local coordinates of the parent.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_PhysicsBody.js.html">gameobjects/components/PhysicsBody.js</a>, 
+      <a href="src_gameobjects_components_PhysicsBody.js.html#sunlight-1-line-124">line 124</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+  <h3 class="subsection-title">Methods</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id=".postUpdate"><span class="type-signature">&lt;static&gt; </span>postUpdate<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The PhysicsBody component postUpdate handler.<br>Called automatically by the Game Object.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_PhysicsBody.js.html">gameobjects/components/PhysicsBody.js</a>, 
+      <a href="src_gameobjects_components_PhysicsBody.js.html#sunlight-1-line-61">line 61</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id=".preUpdate"><span class="type-signature">&lt;static&gt; </span>preUpdate<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The PhysicsBody component preUpdate handler.<br>Called automatically by the Game Object.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_PhysicsBody.js.html">gameobjects/components/PhysicsBody.js</a>, 
+      <a href="src_gameobjects_components_PhysicsBody.js.html#sunlight-1-line-21">line 21</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

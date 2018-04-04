@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Sprite Demo - Core
+Bundle-SymbolicName: phasereditor.demosprite.core
+Bundle-Version: 1.4.0.20170412
+Bundle-Vendor: Arian Fornaris
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

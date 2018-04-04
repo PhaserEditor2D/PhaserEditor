@@ -1,0 +1,585 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: DeviceButton</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a>.</span> DeviceButton </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="DeviceButton"><span class="type-signature"></span>new DeviceButton<span class="signature">(parent, buttonCode)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>DeviceButtons belong to both <code>Phaser.Pointer</code> and <code>Phaser.SinglePad</code> (Gamepad) instances.</p> 
+     <p>For Pointers they represent the various buttons that can exist on mice and pens, such as the left button, right button,<br>middle button and advanced buttons like back and forward.</p> 
+     <p>Access them via <code>Pointer.leftbutton</code>, <code>Pointer.rightButton</code> and so on.</p> 
+     <p>On Gamepads they represent all buttons on the pad: from shoulder buttons to action buttons.</p> 
+     <p>At the time of writing this there are device limitations you should be aware of:</p> 
+     <ul> 
+      <li>On Windows, if you install a mouse driver, and its utility software allows you to customize button actions<br>(e.g., IntelliPoint and SetPoint), the middle (wheel) button, the 4th button, and the 5th button might not be set,<br>even when they are pressed.</li> 
+      <li>On Linux (GTK), the 4th button and the 5th button are not supported.</li> 
+      <li>On Mac OS X 10.5 there is no platform API for implementing any advanced buttons.</li> 
+     </ul> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>parent</code></td> 
+       <td class="type"> <span class="param-type"><a href="Phaser.Pointer.html">Phaser.Pointer</a></span> | <span class="param-type"><a href="Phaser.SinglePad.html">Phaser.SinglePad</a></span> </td> 
+       <td class="description last"><p>A reference to the parent of this button. Either a Pointer or a Gamepad.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>buttonCode</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>The button code this DeviceButton is responsible for.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_DeviceButton.js.html">input/DeviceButton.js</a>, 
+      <a href="src_input_DeviceButton.js.html#sunlight-1-line-31">line 31</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="altKey"><span class="type-signature"></span>altKey<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>True if the alt key was held down when this button was last pressed or released.<br>Not supported on Gamepads.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_DeviceButton.js.html">input/DeviceButton.js</a>, 
+      <a href="src_input_DeviceButton.js.html#sunlight-1-line-87">line 87</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="buttonCode"><span class="type-signature"></span>buttonCode<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The buttoncode of this button if a Gamepad, or the DOM button event value if a Pointer.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_DeviceButton.js.html">input/DeviceButton.js</a>, 
+      <a href="src_input_DeviceButton.js.html#sunlight-1-line-114">line 114</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="ctrlKey"><span class="type-signature"></span>ctrlKey<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>True if the control key was held down when this button was last pressed or released.<br>Not supported on Gamepads.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_DeviceButton.js.html">input/DeviceButton.js</a>, 
+      <a href="src_input_DeviceButton.js.html#sunlight-1-line-103">line 103</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="duration"><span class="type-signature">&lt;readonly&gt; </span>duration<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>How long the button has been held down for in milliseconds.<br>If not currently down it returns -1.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_DeviceButton.js.html">input/DeviceButton.js</a>, 
+      <a href="src_input_DeviceButton.js.html#sunlight-1-line-300">line 300</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="event"><span class="type-signature"></span>event<span class="type-signature"> :object</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The DOM event that caused the change in button state.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_DeviceButton.js.html">input/DeviceButton.js</a>, 
+      <a href="src_input_DeviceButton.js.html#sunlight-1-line-47">line 47</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="game"><span class="type-signature"></span>game<span class="type-signature"> :<a href="Phaser.Game.html">Phaser.Game</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A reference to the currently running game.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_DeviceButton.js.html">input/DeviceButton.js</a>, 
+      <a href="src_input_DeviceButton.js.html#sunlight-1-line-41">line 41</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="isDown"><span class="type-signature"></span>isDown<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The "down" state of the button.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_DeviceButton.js.html">input/DeviceButton.js</a>, 
+      <a href="src_input_DeviceButton.js.html#sunlight-1-line-53">line 53</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="isUp"><span class="type-signature"></span>isUp<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The "up" state of the button.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>true</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_DeviceButton.js.html">input/DeviceButton.js</a>, 
+      <a href="src_input_DeviceButton.js.html#sunlight-1-line-59">line 59</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onDown"><span class="type-signature"></span>onDown<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This Signal is dispatched every time this DeviceButton is pressed down.<br>It is only dispatched once (until the button is released again).<br>When dispatched it sends 2 arguments: A reference to this DeviceButton and the value of the button.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_DeviceButton.js.html">input/DeviceButton.js</a>, 
+      <a href="src_input_DeviceButton.js.html#sunlight-1-line-122">line 122</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onFloat"><span class="type-signature"></span>onFloat<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Gamepad only.<br>This Signal is dispatched every time this DeviceButton changes floating value (between, but not exactly, 0 and 1).<br>When dispatched it sends 2 arguments: A reference to this DeviceButton and the value of the button.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_DeviceButton.js.html">input/DeviceButton.js</a>, 
+      <a href="src_input_DeviceButton.js.html#sunlight-1-line-138">line 138</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="onUp"><span class="type-signature"></span>onUp<span class="type-signature"> :<a href="Phaser.Signal.html">Phaser.Signal</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>This Signal is dispatched every time this DeviceButton is released from a down state.<br>It is only dispatched once (until the button is pressed again).<br>When dispatched it sends 2 arguments: A reference to this DeviceButton and the value of the button.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_DeviceButton.js.html">input/DeviceButton.js</a>, 
+      <a href="src_input_DeviceButton.js.html#sunlight-1-line-130">line 130</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="parent"><span class="type-signature"></span>parent<span class="type-signature"> :<a href="Phaser.Pointer.html">Phaser.Pointer</a>|<a href="Phaser.SinglePad.html">Phaser.SinglePad</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A reference to the Pointer or Gamepad that owns this button.</p> 
+    </div> 
+    <h5>Type:</h5> 
+    <ul> 
+     <li> <span class="param-type"><a href="Phaser.Pointer.html">Phaser.Pointer</a></span> | <span class="param-type"><a href="Phaser.SinglePad.html">Phaser.SinglePad</a></span> </li> 
+    </ul> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_DeviceButton.js.html">input/DeviceButton.js</a>, 
+      <a href="src_input_DeviceButton.js.html#sunlight-1-line-36">line 36</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="repeats"><span class="type-signature"></span>repeats<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Gamepad only.<br>If a button is held down this holds down the number of times the button has 'repeated'.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_DeviceButton.js.html">input/DeviceButton.js</a>, 
+      <a href="src_input_DeviceButton.js.html#sunlight-1-line-79">line 79</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="shiftKey"><span class="type-signature"></span>shiftKey<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>True if the shift key was held down when this button was last pressed or released.<br>Not supported on Gamepads.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_DeviceButton.js.html">input/DeviceButton.js</a>, 
+      <a href="src_input_DeviceButton.js.html#sunlight-1-line-95">line 95</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="timeDown"><span class="type-signature"></span>timeDown<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The timestamp when the button was last pressed down.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_DeviceButton.js.html">input/DeviceButton.js</a>, 
+      <a href="src_input_DeviceButton.js.html#sunlight-1-line-65">line 65</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="timeUp"><span class="type-signature"></span>timeUp<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The timestamp when the button was last released.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_DeviceButton.js.html">input/DeviceButton.js</a>, 
+      <a href="src_input_DeviceButton.js.html#sunlight-1-line-71">line 71</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="value"><span class="type-signature"></span>value<span class="type-signature"> :number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Button value. Mainly useful for checking analog buttons (like shoulder triggers) on Gamepads.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_DeviceButton.js.html">input/DeviceButton.js</a>, 
+      <a href="src_input_DeviceButton.js.html#sunlight-1-line-109">line 109</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+  <h3 class="subsection-title">Methods</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="destroy"><span class="type-signature"></span>destroy<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Destroys this DeviceButton, this disposes of the onDown, onUp and onFloat signals<br>and clears the parent and game references.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_DeviceButton.js.html">input/DeviceButton.js</a>, 
+      <a href="src_input_DeviceButton.js.html#sunlight-1-line-279">line 279</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="justPressed"><span class="type-signature"></span>justPressed<span class="signature">(<span class="optional">duration</span>)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Returns the "just pressed" state of this button.<br>Just pressed is considered true if the button was pressed down within the duration given (default 250ms).</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>duration</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 250 </td> 
+       <td class="description last"><p>The duration in ms below which the button is considered as being just pressed.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>True if the button is just pressed otherwise false.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_DeviceButton.js.html">input/DeviceButton.js</a>, 
+      <a href="src_input_DeviceButton.js.html#sunlight-1-line-228">line 228</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="justReleased"><span class="type-signature"></span>justReleased<span class="signature">(<span class="optional">duration</span>)</span><span class="type-signature"> ? {boolean}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Returns the "just released" state of this button.<br>Just released is considered as being true if the button was released within the duration given (default 250ms).</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th>Default</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>duration</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="default"> 250 </td> 
+       <td class="description last"><p>The duration in ms below which the button is considered as being just released.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type">boolean</span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+      <p>True if the button is just released otherwise false.</p> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_DeviceButton.js.html">input/DeviceButton.js</a>, 
+      <a href="src_input_DeviceButton.js.html#sunlight-1-line-244">line 244</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="padFloat"><span class="type-signature">&lt;internal&gt; </span>padFloat<span class="signature">(value)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Called automatically by Phaser.SinglePad.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>value</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="description last"><p>Button value</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_DeviceButton.js.html">input/DeviceButton.js</a>, 
+      <a href="src_input_DeviceButton.js.html#sunlight-1-line-213">line 213</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="reset"><span class="type-signature"></span>reset<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Resets this DeviceButton, changing it to an isUp state and resetting the duration and repeats counters.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_DeviceButton.js.html">input/DeviceButton.js</a>, 
+      <a href="src_input_DeviceButton.js.html#sunlight-1-line-260">line 260</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="start"><span class="type-signature">&lt;internal&gt; </span>start<span class="signature">(<span class="optional">event</span>, <span class="optional">value</span>)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Called automatically by Phaser.Pointer and Phaser.SinglePad.<br>Handles the button down state.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>event</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>The DOM event that triggered the button change.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>value</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>The button value. Only get for Gamepads.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_DeviceButton.js.html">input/DeviceButton.js</a>, 
+      <a href="src_input_DeviceButton.js.html#sunlight-1-line-144">line 144</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="stop"><span class="type-signature">&lt;internal&gt; </span>stop<span class="signature">(<span class="optional">event</span>, <span class="optional">value</span>)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Called automatically by Phaser.Pointer and Phaser.SinglePad.<br>Handles the button up state.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th>Argument</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>event</code></td> 
+       <td class="type"> <span class="param-type">object</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>The DOM event that triggered the button change.</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>value</code></td> 
+       <td class="type"> <span class="param-type">number</span> </td> 
+       <td class="attributes"> &lt;optional&gt;<br> </td> 
+       <td class="description last"><p>The button value. Only get for Gamepads.</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="important tag-deprecated">
+      Internal:
+     </dt> 
+     <dd class="tag-deprecated">
+      <ul> 
+       <li>This member is <em>internal (protected)</em> and may be modified or removed in the future.</li> 
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_input_DeviceButton.js.html">input/DeviceButton.js</a>, 
+      <a href="src_input_DeviceButton.js.html#sunlight-1-line-179">line 179</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Phaser Editor - Web Run UI
+Bundle-SymbolicName: phasereditor.webrun.ui;singleton:=true
+Bundle-Version: 1.5.0.20180307
+Bundle-Activator: phasereditor.webrun.ui.Activator
+Bundle-Vendor: Arian Fornaris
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources;bundle-version="3.9.1",
+ org.eclipse.ui.ide;bundle-version="3.10.2",
+ org.eclipse.ui.navigator;bundle-version="3.5.401",
+ org.eclipse.jetty.util;bundle-version="9.2.9",
+ phasereditor.project.core,
+ phasereditor.webrun.core,
+ phasereditor.ui;bundle-version="1.4.0",
+ phasereditor.inspect.core;bundle-version="1.4.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Export-Package: phasereditor.webrun.ui

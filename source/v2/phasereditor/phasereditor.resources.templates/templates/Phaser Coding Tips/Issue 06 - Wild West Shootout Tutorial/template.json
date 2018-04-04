@@ -1,0 +1,10 @@
+{
+	"author": {
+		"name": "Richard Davey",
+		"email": "Phaser.io (rich@photonstorm.com)",
+		"website": "http://phaser.io",
+	},
+	"mainFile": "shootout.js",
+	"url": "http://phaser.io/tutorials/coding-tips-006",
+	"description": "You are standing back to back. You take 10 paces, turn and reach for your guns. How quick are you? Can you shoot first?"
+}

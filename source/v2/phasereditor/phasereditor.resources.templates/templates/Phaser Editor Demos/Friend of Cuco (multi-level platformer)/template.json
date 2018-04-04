@@ -1,0 +1,10 @@
+{
+	"author": {
+		"name": "Arian Fornaris",
+		"email": "developers@phasereditor2d.com",
+		"website": "phasereditor2d.com",
+	},
+	"mainFile": "assets/canvas/levels/Level1.canvas",
+	"description": "Demo of how to make a multi-level platformer with the scene builder.",
+	"id" : "phasereditor.demos.friend_of_cuco"
+}

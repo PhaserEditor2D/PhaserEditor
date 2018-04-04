@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Phaser Editor - Chains UI
+Bundle-SymbolicName: phasereditor.chains.ui;singleton:=true
+Bundle-Version: 1.5.0.20180307
+Bundle-Activator: phasereditor.chains.ui.Activator
+Bundle-Vendor: Arian Fornaris
+Require-Bundle: org.eclipse.core.filesystem;bundle-version="1.4.100",
+ org.eclipse.ui.ide;bundle-version="3.10.2",
+ org.eclipse.ui,
+ org.eclipse.jface.text;bundle-version="3.9.2",
+ org.eclipse.core.runtime,
+ org.eclipse.help;bundle-version="3.6.0",
+ org.eclipse.wst.jsdt.ui;bundle-version="1.1.500",
+ phasereditor.chains.core,
+ phasereditor.inspect.core,
+ phasereditor.ui,
+ org.json,
+ phasereditor.webrun.ui;bundle-version="1.4.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+

@@ -1,0 +1,30 @@
+<h1> What's new in v1.1.2</h1>
+
+<p>The main reason of this version is to support the new Phaser v2.4.6. In addition we include a couple of new features and fixes that we find very useful.</p>
+
+<ul>
+<li><strong>Embedded Java runtime (JRE)</strong>. Now to run Phaser Editor you don’t need to install any software. It runs out of the box.</li>
+<li><strong>Added the GameMechanicsExplorer examples as project templates</strong>. Probably you are familiarized with the great <a href="http://gamemechanicsexplorer.com">GameMechanicExplorer</a> website; we added those examples as project templates so it is very easy for you to run the examples but also modify and test it again.</li>
+<li><strong>Integrated offline help</strong>. Both the Phaser and Phaser Editor documentation was added to the local help (<code>Help &gt; Help Contents</code>). It makes easy the task of browse and search into the Phaser and Phaser Editor docs. In addition users can open a docked little help window (<code>Help &gt; Dynamic Help</code>) and get hints and links related to the active views and editors. <br>
+<p>
+<img src="Whats new - Phaser Editor Blog_files/20160218145420-DynamicHelp.png" alt="Dynamic help" title=""> <br>
+</p>
+<li><strong>Use default Eclipse appearance</strong>. In previous versions of the editor we used a modified version of the the Dark theme of Eclipse. In this release we decided to remove it and use the default themes of Eclipse. We think it makes the product to look more professional and it is more friendly with third-party components. If you like dark, you can change it in <code>Window &gt; Preferences &gt; General &gt; Appearance &gt; Theme</code>, and <code>... Appearance &gt; Color Theme</code>.</li>
+<li><strong>Improved JavaScript libraries</strong>. We replaced the default JSDT JavaScript libraries by new <em>Browser API Library</em> and <em>ECMA5 API Library</em>. Now you will get a much better (yet not perfect) and documented completions of those JavaScript runtimes in the JavaScript editor. Both new libs was generated from the <code>ecam5.json</code> and <code>browser.json</code> <a href="https://github.com/ternjs/tern/tree/master/defs">TernJS definitions</a>.</li>
+<li><strong>Chains, Phaser examples project templates and Phaser API editor completions</strong> was updated with the Phaser v2.4.6 data.</li>
+</ul>
+
+<p>In the past two months we was working hard on <a href="http://phasereditor.boniatillo.com/blog/rayo">Rayo</a>, an experiment we did with the hope to migrate the default Eclipse JavaScript inference engine to the one provided by <a href="https://github.com/angelozerr/tern.java">tern.java</a>, but yet we do not want to make a so huge step, Eclipse developers are aware of that tool and there is in the community a lot of discussion about how to improve the whole JavaScript stuff. In the meantime, we continue adding other useful tools to our IDE, like Canvas, an editor to compose simple scenes that integrates very well with the current asset manager.</p>
+
+<p>There is a lot to do, and we are excited waiting for the new world that Lazer promises!</p>
+
+<h1>Migration guide</h1>
+
+<p>Game projects created with previous version of Phaser Editor sticks on the old JavaScript libraries. To change them for the new Browser and ECMA5 libraries follow these steps:</p>
+
+<ol>
+<li>Expand your project and select the <strong>JavaScript Resources</strong> node.</li>
+<li>In the main menu, select the <code>Project &gt; Reset Project Libraries</code>.</li>
+</ol>
+
+<p><img src="Whats new - Phaser Editor Blog_files/20160218143602-ResetRpojectLibs.png" alt="Rest project libs" title=""></p>

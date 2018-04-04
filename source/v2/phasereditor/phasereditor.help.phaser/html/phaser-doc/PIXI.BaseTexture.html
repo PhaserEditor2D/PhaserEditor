@@ -1,0 +1,382 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: BaseTexture</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="PIXI.html">PIXI</a>.</span> BaseTexture </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="BaseTexture"><span class="type-signature"></span>new BaseTexture<span class="signature">(source, scaleMode)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A texture stores the information that represents an image. All textures have a base texture.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>source</code></td> 
+       <td class="type"> <span class="param-type">String</span> | <span class="param-type">Canvas</span> </td> 
+       <td class="description last"><p>the source object (image or canvas)</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>scaleMode</code></td> 
+       <td class="type"> <span class="param-type">Number</span> </td> 
+       <td class="description last"><p>See {{#crossLink "PIXI/scaleModes:property"}}PIXI.scaleModes{{/crossLink}} for possible values</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_BaseTexture.js.html">pixi/textures/BaseTexture.js</a>, 
+      <a href="src_pixi_textures_BaseTexture.js.html#sunlight-1-line-5">line 5</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="hasLoaded"><span class="type-signature">&lt;readonly&gt; </span>hasLoaded<span class="type-signature"> :Boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>[read-only] Set to true once the base texture has loaded</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_BaseTexture.js.html">pixi/textures/BaseTexture.js</a>, 
+      <a href="src_pixi_textures_BaseTexture.js.html#sunlight-1-line-51">line 51</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="height"><span class="type-signature">&lt;readonly&gt; </span>height<span class="type-signature"> :Number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>[read-only] The height of the base texture set when the image has loaded</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_BaseTexture.js.html">pixi/textures/BaseTexture.js</a>, 
+      <a href="src_pixi_textures_BaseTexture.js.html#sunlight-1-line-33">line 33</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="mipmap"><span class="type-signature"></span>mipmap<span class="type-signature"> :Boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Set this to true if a mipmap of this texture needs to be generated. This value needs to be set before the texture is used<br>Also the texture must be a power of two size to work</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_BaseTexture.js.html">pixi/textures/BaseTexture.js</a>, 
+      <a href="src_pixi_textures_BaseTexture.js.html#sunlight-1-line-86">line 86</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="premultipliedAlpha"><span class="type-signature"></span>premultipliedAlpha<span class="type-signature"> :Boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Controls if RGB channels should be pre-multiplied by Alpha (WebGL only)</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>true</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_BaseTexture.js.html">pixi/textures/BaseTexture.js</a>, 
+      <a href="src_pixi_textures_BaseTexture.js.html#sunlight-1-line-68">line 68</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="resolution"><span class="type-signature"></span>resolution<span class="type-signature"> :Number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The Resolution of the texture.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_BaseTexture.js.html">pixi/textures/BaseTexture.js</a>, 
+      <a href="src_pixi_textures_BaseTexture.js.html#sunlight-1-line-16">line 16</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="scaleMode"><span class="type-signature"></span>scaleMode<span class="type-signature"> :Number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The scale mode to apply when scaling this texture</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-default">
+      Default Value:
+     </dt> 
+     <dd class="tag-default">
+      <ul class="dummy">
+       <li>PIXI.scaleModes.LINEAR</li>
+      </ul>
+     </dd> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_BaseTexture.js.html">pixi/textures/BaseTexture.js</a>, 
+      <a href="src_pixi_textures_BaseTexture.js.html#sunlight-1-line-42">line 42</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="skipRender"><span class="type-signature"></span>skipRender<span class="type-signature"> :Boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A BaseTexture can be set to skip the rendering phase in the WebGL Sprite Batch.</p> 
+     <p>You may want to do this if you have a parent Sprite with no visible texture (i.e. uses the internal <code>__default</code> texture)<br>that has children that you do want to render, without causing a batch flush in the process.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_BaseTexture.js.html">pixi/textures/BaseTexture.js</a>, 
+      <a href="src_pixi_textures_BaseTexture.js.html#sunlight-1-line-115">line 115</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="source"><span class="type-signature"></span>source<span class="type-signature"> :Image</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The image source that is used to create the texture.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_BaseTexture.js.html">pixi/textures/BaseTexture.js</a>, 
+      <a href="src_pixi_textures_BaseTexture.js.html#sunlight-1-line-60">line 60</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="width"><span class="type-signature">&lt;readonly&gt; </span>width<span class="type-signature"> :Number</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>[read-only] The width of the base texture set when the image has loaded</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_BaseTexture.js.html">pixi/textures/BaseTexture.js</a>, 
+      <a href="src_pixi_textures_BaseTexture.js.html#sunlight-1-line-24">line 24</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+  <h3 class="subsection-title">Methods</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id=".fromCanvas"><span class="type-signature">&lt;static&gt; </span>fromCanvas<span class="signature">(canvas, scaleMode)</span><span class="type-signature"> ? {<a href="PIXI.BaseTexture.html">PIXI.BaseTexture</a>}</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Helper function that creates a base texture from the given canvas element.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>canvas</code></td> 
+       <td class="type"> <span class="param-type">Canvas</span> </td> 
+       <td class="description last"><p>The canvas element source of the texture</p></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>scaleMode</code></td> 
+       <td class="type"> <span class="param-type">Number</span> </td> 
+       <td class="description last"><p>See {{#crossLink "PIXI/scaleModes:property"}}PIXI.scaleModes{{/crossLink}} for possible values</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h5>Returns:</h5> 
+    <div class="returns"> 
+     <div class="returns-type"> 
+      <span class="param-type"><a href="PIXI.BaseTexture.html">PIXI.BaseTexture</a></span> - 
+     </div> 
+     <div class="returns-desc param-desc"> 
+     </div> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_BaseTexture.js.html">pixi/textures/BaseTexture.js</a>, 
+      <a href="src_pixi_textures_BaseTexture.js.html#sunlight-1-line-224">line 224</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="destroy"><span class="type-signature"></span>destroy<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Destroys this base texture</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_BaseTexture.js.html">pixi/textures/BaseTexture.js</a>, 
+      <a href="src_pixi_textures_BaseTexture.js.html#sunlight-1-line-154">line 154</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="dirty"><span class="type-signature"></span>dirty<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Sets all glTextures to be dirty.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_BaseTexture.js.html">pixi/textures/BaseTexture.js</a>, 
+      <a href="src_pixi_textures_BaseTexture.js.html#sunlight-1-line-183">line 183</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="forceLoaded"><span class="type-signature"></span>forceLoaded<span class="signature">(width, height)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Forces this BaseTexture to be set as loaded, with the given width and height.<br>Then calls BaseTexture.dirty.<br>Important for when you don't want to modify the source object by forcing in <code>complete</code> or dimension properties it may not have.</p> 
+    </div> 
+    <h5>Parameters:</h5> 
+    <table class="params table table-striped"> 
+     <thead> 
+      <tr> 
+       <th>Name</th> 
+       <th>Type</th> 
+       <th class="last">Description</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td class="name"><code>width</code></td> 
+       <td class="type"> <span class="param-type">Number</span> </td> 
+       <td class="description last">
+        <ul> 
+         <li>The new width to force the BaseTexture to be.</li> 
+        </ul></td> 
+      </tr> 
+      <tr> 
+       <td class="name"><code>height</code></td> 
+       <td class="type"> <span class="param-type">Number</span> </td> 
+       <td class="description last">
+        <ul> 
+         <li>The new height to force the BaseTexture to be.</li> 
+        </ul></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_BaseTexture.js.html">pixi/textures/BaseTexture.js</a>, 
+      <a href="src_pixi_textures_BaseTexture.js.html#sunlight-1-line-137">line 137</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="unloadFromGPU"><span class="type-signature"></span>unloadFromGPU<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>Removes the base texture from the GPU, useful for managing resources on the GPU.<br>Atexture is still 100% usable and will simply be reuploaded if there is a sprite on screen that is using it.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_pixi_textures_BaseTexture.js.html">pixi/textures/BaseTexture.js</a>, 
+      <a href="src_pixi_textures_BaseTexture.js.html#sunlight-1-line-196">line 196</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name toc-deprecated" id="updateSourceImage"><span class="type-signature"></span>updateSourceImage<span class="signature">(newSrc)</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+   </dd>
+   <dt class="important deprecated-notice">
+     This method is 
+    <em>deprecated</em> and should not be used. It may be removed in the future. 
+   </dt> 
+   <div class="description"> 
+    <p>Changes the source image of the texture</p> 
+   </div> 
+   <h5>Parameters:</h5> 
+   <table class="params table table-striped"> 
+    <thead> 
+     <tr> 
+      <th>Name</th> 
+      <th>Type</th> 
+      <th class="last">Description</th> 
+     </tr> 
+    </thead> 
+    <tbody> 
+     <tr> 
+      <td class="name"><code>newSrc</code></td> 
+      <td class="type"> <span class="param-type">String</span> </td> 
+      <td class="description last"><p>the path of the image</p></td> 
+     </tr> 
+    </tbody> 
+   </table> 
+   <dl class="details"> 
+    <dt class="important tag-deprecated">
+     Deprecated:
+    </dt> 
+    <dd class="tag-deprecated">
+     <ul> 
+      <li>true</li> 
+     </ul>
+    </dd> 
+    <dt class="tag-source">
+     Source - 
+     <a href="src_pixi_textures_BaseTexture.js.html">pixi/textures/BaseTexture.js</a>, 
+     <a href="src_pixi_textures_BaseTexture.js.html#sunlight-1-line-171">line 171</a> 
+    </dt> 
+   </dl>  
+  </dl> 
+ </article> 
+</section></head></html>

@@ -1,0 +1,10 @@
+
+To enable Theming, edit the PhaserEditor.ini file and comment the following lines:
+
+-cssTheme
+none
+
+To comment a line insert the # symbol, like this: 
+
+# -cssTheme
+# none

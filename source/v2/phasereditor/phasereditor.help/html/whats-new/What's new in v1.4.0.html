@@ -1,0 +1,197 @@
+
+<!-- saved from url=(0143)file:///C:/Users/arian/Downloads/test/phaser%20editor%20release/Phaser%20Editor%20v1.4.0%20Preview%20released%20-%20Phaser%20Editor%20Blog.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"></head><body>
+                                                                                                <div class="info text-left">                  
+             
+                                                      
+                    <p>Hello, today we are releasing Phaser Editor v1.4.0 Preview! Yes, more than three months of development but there are a lot of changes! We think the new stuff worth the wait.</p>
+
+<p>We decided to deliver a Preview before the final release because there are a lot of features and some users wants to test it and provide feedback, specially those waiting for Mac, TypeScript and Prefabs.</p>
+
+<p>Something that we are not including in this Preview is the documentation of the last changes, please take these notes as the temporal documentation for the new stuff. For the final release we are going to update the whole documentation and videos.</p>
+
+<p>A couple of users are collaborating with the project by suggesting ideas and reporting bugs. Thanks to all of them!!! We really appreciate all the feedback, so please do not hesitate to add new issues to <a href="https://github.com/boniatillo-com/PhaserEditor">our GitHub repo</a>.</p>
+
+<h2 class="blue-grey-text text-darken-3" id="toc-0">Welcome Mac OS!</h2>
+
+<p>Yes, finally the Mac OS version of our editor is available for you to test it!</p>
+
+<p><a href="https://phasereditor2d.com/blog/downloads">Download Phaser Editor for Mac</a></p>
+
+<p>This is one of the main reasons we are going to release a preview. We the Phaser Editor developers are not a long time Mac users so if you find something is not in the Mac OS spirit please open an issue about it, we love issues.</p>
+
+<p>The installation process is simple, just uncompress the downloaded file and execute the Phaser Editor application. It should show the splash screen and later a small dialog asking for the workspace location, by default it should show <code>(User Home)/Library/PhaserEditorProjects</code>.</p>
+
+<p></p><div class="material-placeholder"><img src="./What&#39;s new in v1.4.0_files/C7in13iVwAQsjtu.jpg" alt="Phaser Editor on Mac OS" class="materialboxed z-depth-4 responsive-img initialized"></div><p></p>
+
+<h2 class="blue-grey-text text-darken-3" id="toc-1">New Project wizards</h2>
+
+<p>In this release we intrododuce the new <strong>Phaser Project</strong> wizard. With this wizard the user is able to select the initial parameters of the game (size, renderer, physics). The project layout (simplest, single state or multiple state). The language (optional TypeScript) and the inclusion of demo assets.</p>
+
+<p>Yes, TypeScript!!! We do not provide a TypeScript editor for now but you can open the project in any other external tool, like Visual Studio Code, and keep using Phaser Editor to pack the resources and create the scenes.</p>
+
+<p><strong>Updated</strong>: In <a href="https://phasereditor2d.com/blog/2017/04/welcome-typescript-ide">this post we explain in details</a> how to install the TypeScript IDE plugin inside Phaser Editor, to get a more complete TypeScript support.</p>
+
+<p></p><div class="material-placeholder"><img src="./What&#39;s new in v1.4.0_files/20170410153155-NewProjectWizard.png" alt="New Phaser Project wizard" class="materialboxed z-depth-4 responsive-img initialized"></div><p></p>
+
+<p>We hope this is a better way to start a project. The old wizard was renamed to <strong>Phaser Example Project</strong>, and as usual the user can select a Phaser example as template. This is a great option to learn Phaser and Phaser Editor.</p>
+
+<h2 class="blue-grey-text text-darken-3" id="toc-2">New visual editor concepts: prefabs and states.</h2>
+
+<p>One target of this release is to provide to the developer better tools to create bigger games. Prefabs are part of this effort and like in other game devlopment tools they are used to create reusable objects.</p>
+
+<p>In this release we introduced two kind of visual prefabs: Sprite Prefab and Group Prefab. Note that in previous versions the visual editor it generated only a custom Group code, but now in addition it can generate the code of a custom Sprite and the code of a State.</p>
+
+<p>Prefabs is a long topic and in these notes we are going to cover the basics, for the final release you will get the whole documentation.</p>
+
+<p><strong>Create a Sprite Prefab</strong></p>
+
+<p>To create a prefab select the menu <code>File &gt; New &gt; Sprite Prefab</code>. It opens the Sprite Prefab wizard, select the file name (used also to create the initial class name) and the texture of the sprite. This texture should be defined previously in the Asset Pack file of the project.</p>
+
+<p></p><div class="material-placeholder"><img src="./What&#39;s new in v1.4.0_files/20170410155726-NewSpritePrefabWizard.png" alt="New Sprite Prefab wizard" class="materialboxed z-depth-4 responsive-img initialized"></div><p></p>
+
+<p>In addition there are other parameters you can set, like the base class (<code>Phaser.Sprite</code> by default) and the language (like TypeScript).</p>
+
+<p>Press <strong>Finish</strong> to create the files, the canvas file associated to the sprite will be opened in the visual editor and the JavaScript file with the prototype definition will be created too.</p>
+
+<p>A Sprite Prefab follows the Phaser standards to create custom sprites, it uses a prototype that extends the <code>Phaser.Sprite</code> class.</p>
+
+<p>In the visual editor you can change the properties of the sprite like the animations or texture. To change the texture of the sprite you can press <code>Ctrl+T</code> or drag a texture from the <strong>Assets</strong> view and drop it on the scene.</p>
+
+<p><strong>Create a Group Prefab</strong></p>
+
+<p>To create a Group Prefab select <code>File &gt; New &gt; Group Prefab</code>. It opens a wizard that ask for the file name and other parameters like the base class and the language. It is similar to the Sprite Prefab wizard, just that you do not have to select a texture.</p>
+
+<p>When the files are created it opens the group canvas file in the visual editor, so you can start adding objects to it.</p>
+
+<p><strong>Add a prefab to the scene</strong></p>
+
+<p>Sprite and group prefabs are shown in the <strong>Assets</strong> view, and like any other asset you can drag and drop it into any visual editor, a new prefab instance will be created.</p>
+
+<p></p><div class="material-placeholder"><img src="./What&#39;s new in v1.4.0_files/20170410162205-DropPrefabOnScene.png" alt="Drop prefab into the scene" class="materialboxed z-depth-4 responsive-img initialized"></div><p></p>
+
+<p><span id="change-prefab-properties"><strong>Change/reset prefab instance properties</strong></span></p>
+
+<p>A key aspect of a prefab is the ability to override the inherited properties. In Phaser Editor by default all properties (excluding position) are closed, the user cannot edit them. To override a property first you have to open it and then you will be able to change it. To open a property or better, a set or properties, you have to select the object and in the properties grid modify the <code>override</code> property and check the property you wish to change. In the next image you can see a prefab instance that overrides the <code>position</code> and <code>scale</code> properties:</p>
+
+<p></p><div class="material-placeholder"><img src="./What&#39;s new in v1.4.0_files/20170410163533-OverridePrefabInstanceProperty.png" alt="Prefab override property" class="materialboxed z-depth-4 responsive-img initialized"></div><p></p>
+
+<p>Note that to reset a property to its initial prefab value you only need to exclude it from the list of overriden properties. At the same time, as expected, if you change a property on the original prefab then that change will be propagated on all the prefab instances that do not override it.</p>
+
+<p><strong>Add logic (code) to the prefab definition</strong></p>
+
+<p>To insert you own code in the generated JavaScript (or TypeScript) file you can open the User Code dialog. Press <code>Ctrl+Shift+U</code> or right click on the scene and select <code>Edit User Code</code>.</p>
+
+<p>This dialog shows different sections of the generated code. In case of prefabs there is a unique <code>Create</code> section that refers to the constructor (in case of sprites and groups) or the <code>create</code> method (in case of states). It allows the user to insert custom code before and after the creation.</p>
+
+<p></p><div class="material-placeholder"><img src="./What&#39;s new in v1.4.0_files/20170410165120-UserCodeDialog.png" alt="User Code dialog" class="materialboxed z-depth-4 responsive-img initialized"></div><p></p>
+
+<p>A good practice is just to write a call to a custom method. The implementation of this method can be written in the JavaScript editor. Just open a generated JavaScript file, you will note at the end of the file there is a line with a comment  <code>/* --- end generated code --- */</code>, just write your custom code after it.</p>
+
+<p></p><div class="material-placeholder"><img src="./What&#39;s new in v1.4.0_files/20170410165159-UserCode.png" alt="Edit the generated file in JavaScript editor" class="materialboxed z-depth-4 responsive-img initialized"></div><p></p>
+
+<h2 class="blue-grey-text text-darken-3" id="toc-3">States visual editor. Preloader states.</h2>
+
+<p>In addition to sprites and groups you can create Phaser states and edit them in the visual editor. Select the <code>File &gt; New &gt; State File</code> option, it opens a wizard where you can set the state name, base class, language, background color, page alignment and other parameters.</p>
+
+<p></p><div class="material-placeholder"><img src="./What&#39;s new in v1.4.0_files/20170411091352-NewStateWizard.png" alt="New state wizard" class="materialboxed z-depth-4 responsive-img initialized"></div><p></p>
+
+<p>The main difference between the state and the sprites and groups is that it generates a couple of methods like the <code>init</code>, <code>preload</code> and <code>create</code>. Like we explained before, to insert your own code in these methods you have to use the <strong>User Code</strong> dialog.</p>
+
+<p>Note that now the visual editor has two tabs, one for the scene and other for <strong>Configuration</strong>. In this second tab you can edit the editor parameters and the state parameters.</p>
+
+<p>For now there are only a few state parameters, but we plan to include a lot of them, to fully cover aspects like camera, input and physics, to mention some of them.</p>
+
+<p><strong>Preloader states</strong></p>
+
+<p>An important set of parameters of the state configuration are those dedicated to the loading of assets. We invite you to create a project but set as options <strong>Multiple states with Preloader</strong> and check <strong>Include demo assets</strong>. It creates a project with a preloader state that you can edit with the visual editor. This is the configuration:</p>
+
+<p></p><div class="material-placeholder"><img src="./What&#39;s new in v1.4.0_files/20170411100041-PreloaderStateConfiguration.png" alt="Preloader state configuration" class="materialboxed z-depth-4 responsive-img initialized"></div><p></p>
+
+<p>First, to make the state a preloader state, set the <code>isPreloader</code> property to <code>true</code>. Then you will be able to select the sections in the asset pack to be loaded, the preload sprite and the preload sprite direction.</p>
+
+<p>Note that in difference of a regular state, a preloader state creates the objects inside the <code>preload</code> method. Then you have to add custom code to jump to the next state after the loading is done.</p>
+
+<h2 class="blue-grey-text text-darken-3" id="toc-4">New asset refactoring tools</h2>
+
+<p>Something that put a difference between a text editor and an IDE are the deep refactoring tools that commonly the IDE provides. Refactoring tools are convenient specially for large projects, and in case of game development it helps to evolve from the demo to the real game. Phaser Editor, however its name, pretends to be an IDE :) and we are doing an effort to reuse all these great feautres provided by the Eclipse platform, like the refactoring tools.</p>
+
+<p>In this release the editor supports delete/rename/move asset files (like images), asset pack entries and canvas files (prefabs and states).</p>
+
+<p>When you delete or rename an object (asset file,  audio, scene, prefabs) it opens a refactoring dialog that show the files to be affected. You can aprove or cancel the operation, even you can undo/redo it.</p>
+
+<p>In the next image it shows the confirmation dialog after request the rename of the prefab <code>Dino.canvas</code> that is used by other scene files like <code>Leve1.canvas</code>, <code>Level2.canvas</code> and <code>Level3.canvas</code>. When the user aprove it, all those files will be updated to reference the new name.</p>
+
+<p></p><div class="material-placeholder"><img src="./What&#39;s new in v1.4.0_files/20170411104727-RefactorRenamePrefab.png" alt="Refactoring prefab rename" class="materialboxed z-depth-4 responsive-img initialized"></div><p></p>
+
+<p>To rename/delete assets you can do it in the <strong>Assets</strong> view. Just select them and right click to select the operation or press the <code>Delete</code> or <code>F2</code> keys.</p>
+
+<p>In addition to rename/delete/move files, we implemented new ways to change the texture of sprites. If you want to change the texture of a particular sprite inside the visual editor, select it and press <code>Ctrl+T</code>. It opens a dialog with all the available textures. But if you want to replace for example a demo texture by the final texture in all the project, you can select the old texture in the <strong>Assets</strong> view, right click and select <code>References &gt; Replace</code>. It opens a dilog to select the new texture and when you press OK, the old texture will be replaced by the new one in all the scenes of the project. We think it is great :)</p>
+
+<p></p><div class="material-placeholder"><img src="./What&#39;s new in v1.4.0_files/20170411110751-ReplaceTextureMenu.png" alt="Replace texture menu" class="materialboxed z-depth-4 responsive-img initialized"></div><p></p>
+
+<p></p><div class="material-placeholder"><img src="./What&#39;s new in v1.4.0_files/20170411110824-TextureSelector.png" alt="Select the new texture" class="materialboxed z-depth-4 responsive-img initialized"></div><p></p>
+
+<p>In the same way you can search for all the reference of a texture or prefab. Just click it on the <strong>Assets</strong> view and select <code>References &gt; Find</code>. It searches for all the references and show it in the <strong>Search</strong> view. You cacn click on it to open it in an editor or you can ask to replace it, in case it is a texture.</p>
+
+<h2 class="blue-grey-text text-darken-3" id="toc-5">Introducing partial TypeScript support</h2>
+
+<p>In this release we start supporting TypeScript, something that is a request from many users. However, this support is partial, because yet we do not provide a TypeScript editor, but we provide TypeScript code genetators for projects and scenes. This mean that you can create the project and the scenes in Phaser Editor, and at the same time you can edit and compile the TypeScript code in an external tool, specially Visual Studio Code or any other that consumes the TypeScript Language Server.</p>
+
+<p>We hope in the near future to introduce TypeScript code editors and tooling (compiler). We are following the progress of the TypeScript plugins for Eclipse but for now those are not stable, they will be. But we want to start supporting TypeScript as first citizen, to edit the code in external editors is not a bad idea, it is part of our phylosophy, to be friendly with the text editor of your choice.</p>
+
+<p>If you find any problem with the generated TypeScript code please open an issue in <a href="https://github.com/boniatillo-com/PhaserEditor">our repo</a>.</p>
+
+<h2 class="blue-grey-text text-darken-3" id="toc-6">Git tooling and UI</h2>
+
+<p>EGit is a great plugin to manage Git repositories. We included it in Phaser Editor by default. To learn more about EGit you can <a href="https://www.eclipse.org/egit/">visit its website</a>. As a quick start just try by importing a project (<code>File &gt; Import &gt; Git &gt; Projects from Git</code>).</p>
+
+<h2 class="blue-grey-text text-darken-3" id="toc-7">Other changes</h2>
+
+<p><strong>General</strong></p>
+
+<ul>
+<li>A new UI theme for Windows called Phaser Editor. We like it more than the default theme, try it :).</li>
+<li>New class wizard.</li>
+<li>Phaser Editor demo templates were migrated to use prefabs and visual states. The Friend of Cuco template is a demo of how to develop a multi-level game.</li>
+<li>A new menu option in <strong>Assets</strong> view to compile all selected scenes.</li>
+<li>Improved the Atlas Generator file, now it uses project-relative paths for the source images, so it makes that file more portable.</li>
+<li>When run the project it ask for confirmation if the project has errors.</li>
+</ul>
+
+<p><strong>Visual editor</strong></p>
+
+<ul>
+<li>When an object is selected a description message is shown in the status bar of the application.</li>
+<li>Better grouping of the commands in the context menu.</li>
+<li>The old settings dialog was replaced by the <strong>Configuration</strong> tab.</li>
+<li>Added the Morph to Sprite option.</li>
+<li>A new command to select all the sprites of the same texture, in the same editor.</li>
+<li>Support add prefabs to the scene palette.</li>
+<li>When paste an object add it to the current selected group or the group of the selected object. It helps to avoid a constant group-to moving of objects.</li>
+<li>Move the objects along the X or Y axis when the shift key is pressed. </li>
+<li>The <code>name</code> property of the scene objects now refers to the name of the sprite in the runtime. To set the variable name is used <code>varName</code>.</li>
+<li>Now you can move the objects with the arrow keys. If the <code>Shift</code> key is pressed it moves 10 pixels. If stepping is enabled then it will move the defined space.</li>
+<li>Added a new <code>alpha</code> property to objects. </li>
+<li>New Auto Play parameter in the animation dialog. When this option is checked the animation starts playing at the creation. Only one animation could be Auto Play.
+<div class="material-placeholder"><img src="./What&#39;s new in v1.4.0_files/20170412080403-AnimationAutoPlay.png" alt="Animation auto play" class="materialboxed z-depth-4 responsive-img initialized"></div>
+<div class="material-placeholder"><img src="./What&#39;s new in v1.4.0_files/20170412080645-AnimationAutoPlayCode.png" alt="Animation auto play code" class="materialboxed z-depth-4 responsive-img initialized"></div></li>
+<li>Added the option to morph between tile sprites, buttons and sprites.</li>
+<li>Mouse hover on canvas files (in Project Explorer and Assets views) show a scene preview.</li>
+</ul>
+
+<h2 class="blue-grey-text text-darken-3" id="toc-8">Migration Guide</h2>
+
+<ul>
+<li>The visual editor added new elements to the canvas format, you will see warnings in the Problem view about to migrate the old files. You are not forced to do it, but if you like to update the files just open them and save.</li>
+<li>New menu and wizards was added, if you are opening an old workspace then reset the Phaser perspective to be sure all the new elements are shown.
+<div class="material-placeholder"><img src="./What&#39;s new in v1.4.0_files/20170413153056-ResetPerspective.png" alt="Reset perspective" class="materialboxed z-depth-4 responsive-img initialized"></div></li>
+</ul>
+
+<h2 class="blue-grey-text text-darken-3" id="toc-9">Troubleshooting</h2>
+
+<p>In the previous version some users experimented a strange behavior of the editor, like corrupted scenes. This happens mainly when you do file modifications outside Phaser Editor. If it happens to you, please just clean the project. In the main menu select <code>Project &gt; Clean</code> and select the project. The reason is that Phaser Editor keeps an internal model of all the assets and secenes. This model needs to be updated in the background when a file is modified, moved or deleted. The same happens with the assets icons, those are created/updated in the background. So with a clean of the project, this internal model is built again and the different views and editors will be updated. In any case, if you experience any strange behavior please open an issue in our github repo, we are going to help on it.</p>
+
+
+                         
+						 </div></body></html>

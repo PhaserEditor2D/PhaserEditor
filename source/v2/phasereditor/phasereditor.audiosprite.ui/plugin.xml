@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="phasereditor.audiosprite.ui.AudioSpriteEditor"
+            default="false"
+            extensions="json"
+            icon="platform:/plugin/phasereditor.ui/icons/audiosprite.png"
+            id="phasereditor.audiosprite.ui.editor"
+            name="Audio Sprite Editor">
+         <contentTypeBinding
+               contentTypeId="phasereditor.core.contenttype.audiosprite">
+         </contentTypeBinding>
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            category="phasereditor.ui.wizardCategory"
+            class="phasereditor.audiosprite.ui.wizards.NewAudioSpritesWizard"
+            finalPerspective="phasereditor.ide.ui.perspective"
+            icon="platform:/plugin/phasereditor.ui/icons/audiosprite_add.png"
+            id="phasereditor.audiosprite.ui.wizards.new"
+            name="Audio Sprites File"
+            project="false">
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.navigatorContent">
+      <commonWizard
+            menuGroupId="phaser.new.other"
+            type="new"
+            wizardId="phasereditor.audiosprite.ui.wizards.new">
+         <enablement></enablement>
+      </commonWizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.viewer">
+      <viewerContentBinding
+            viewerId="org.eclipse.ui.navigator.resources.ProjectExplorer">
+         <includes>
+            <contentExtension
+                  pattern="phasereditor.audiosprite.ui.*">
+            </contentExtension>
+         </includes>
+      </viewerContentBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="*">
+         <newWizardShortcut
+               id="phasereditor.audiosprite.ui.wizards.new">
+         </newWizardShortcut>
+      </perspectiveExtension>
+   </extension>
+
+</plugin>

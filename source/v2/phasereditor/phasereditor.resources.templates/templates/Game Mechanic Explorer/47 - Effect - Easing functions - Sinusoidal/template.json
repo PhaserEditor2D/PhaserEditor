@@ -1,0 +1,9 @@
+{
+    "author": {
+        "website": "http://gamemechanicexplorer.com",
+        "name": "John Watson",
+        "email": "john@watson-net.com"
+    },
+    "description": "<p>Click or tap to toggle between In, Out, and InOut versions of the easing function.<\/p><p>Easing functions are used to interpolate one value to another value over a period of time. Typically they are used to change the value of a property of a sprite such as its position or size. Game engines usually provide easing functions that apply the named function at the beginning of the ease (In), at the end (Out), or both (InOut). In all of these examples, the ball is moved at a constant speed from the left side of the screen to the right while its vertical position is controlled by the named easing function.<\/p>",
+    "mainFile": "ex-easing-06.js"
+}

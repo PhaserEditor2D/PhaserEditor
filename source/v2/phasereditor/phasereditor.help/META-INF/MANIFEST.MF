@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Phaser Editor - Help
+Bundle-SymbolicName: phasereditor.help;singleton:=true
+Bundle-Version: 1.5.0.20180307
+Bundle-Activator: phasereditor.help.HelpPlugin
+Bundle-Vendor: Arian Fornaris
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.help;bundle-version="3.6.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Eclipse-BundleShape: dir
+Bundle-ActivationPolicy: lazy

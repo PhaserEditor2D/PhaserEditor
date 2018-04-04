@@ -1,0 +1,9 @@
+{
+    "author": {
+        "website": "http://gamemechanicexplorer.com",
+        "name": "John Watson",
+        "email": "john@watson-net.com"
+    },
+    "description": "<p>Move the pointer or tap to move the light.<\/p><p>Lights are given a flickering appearance, as if by torches or a campfire, by randomly changing the size of the light texture.<\/p>",
+    "mainFile": "ex-lighting-03.js"
+}

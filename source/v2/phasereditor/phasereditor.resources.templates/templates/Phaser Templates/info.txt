@@ -1,0 +1,3 @@
+Official Phaser Templates
+
+https://github.com/photonstorm/phaser/tree/master/resources/Project Templates

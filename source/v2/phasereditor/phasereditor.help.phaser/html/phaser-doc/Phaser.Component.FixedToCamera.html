@@ -1,0 +1,82 @@
+<html><head><link type='text/css' rel='stylesheet' href='styles/javadoc.css'><link type='text/css' rel='stylesheet' href='styles/default.css'><!--<h1 class="page-title">Class: FixedToCamera</h1>--> 
+<section> 
+ <header> 
+  <h2> <span class="ancestors"><a href="Phaser.html">Phaser</a><a href="Phaser.html#.Component">.Component</a>.</span> FixedToCamera </h2> 
+ </header> 
+ <article> 
+  <div class="container-overview"> 
+   <dt> 
+    <h4 class="name " id="FixedToCamera"><span class="type-signature"></span>new FixedToCamera<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The FixedToCamera component enables a Game Object to be rendered relative to the game camera coordinates, regardless<br>of where in the world the camera is. This is used for things like sticking game UI to the camera that scrolls as it moves around the world.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_FixedToCamera.js.html">gameobjects/components/FixedToCamera.js</a>, 
+      <a href="src_gameobjects_components_FixedToCamera.js.html#sunlight-1-line-13">line 13</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </div> 
+  <h3 class="subsection-title">Members</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id="cameraOffset"><span class="type-signature"></span>cameraOffset<span class="type-signature"> :<a href="Phaser.Point.html">Phaser.Point</a></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The x/y coordinate offset applied to the top-left of the camera that this Game Object will be drawn at if <code>fixedToCamera</code> is true.</p> 
+     <p>The values are relative to the top-left of the camera view and in addition to any parent of the Game Object on the display list.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_FixedToCamera.js.html">gameobjects/components/FixedToCamera.js</a>, 
+      <a href="src_gameobjects_components_FixedToCamera.js.html#sunlight-1-line-86">line 86</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+   <dt> 
+    <h4 class="name " id="fixedToCamera"><span class="type-signature"></span>fixedToCamera<span class="type-signature"> :boolean</span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>A Game Object that is "fixed" to the camera uses its x/y coordinates as offsets from the top left of the camera during rendering.</p> 
+     <p>The values are adjusted at the rendering stage, overriding the Game Objects actual world position.</p> 
+     <p>The end result is that the Game Object will appear to be 'fixed' to the camera, regardless of where in the game world<br>the camera is viewing. This is useful if for example this Game Object is a UI item that you wish to be visible at all times<br>regardless where in the world the camera is.</p> 
+     <p>The offsets are stored in the <code>cameraOffset</code> property.</p> 
+     <p>Note that the <code>cameraOffset</code> values are in addition to any parent of this Game Object on the display list.</p> 
+     <p>Be careful not to set <code>fixedToCamera</code> on Game Objects which are in Groups that already have <code>fixedToCamera</code> enabled on them.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_FixedToCamera.js.html">gameobjects/components/FixedToCamera.js</a>, 
+      <a href="src_gameobjects_components_FixedToCamera.js.html#sunlight-1-line-56">line 56</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+  <h3 class="subsection-title">Methods</h3> 
+  <dl> 
+   <dt> 
+    <h4 class="name " id=".postUpdate"><span class="type-signature">&lt;static&gt; </span>postUpdate<span class="signature">()</span><span class="type-signature"></span></h4> 
+   </dt> 
+   <dd> 
+    <div class="description"> 
+     <p>The FixedToCamera component postUpdate handler.<br>Called automatically by the Game Object.</p> 
+    </div> 
+    <dl class="details"> 
+     <dt class="tag-source">
+      Source - 
+      <a href="src_gameobjects_components_FixedToCamera.js.html">gameobjects/components/FixedToCamera.js</a>, 
+      <a href="src_gameobjects_components_FixedToCamera.js.html#sunlight-1-line-21">line 21</a> 
+     </dt> 
+    </dl> 
+   </dd> 
+  </dl> 
+ </article> 
+</section></head></html>

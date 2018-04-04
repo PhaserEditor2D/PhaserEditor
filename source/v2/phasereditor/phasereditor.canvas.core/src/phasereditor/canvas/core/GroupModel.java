@@ -1,0 +1,412 @@
+// The MIT License (MIT)
+//
+// Copyright (c) 2015, 2016 Arian Fornaris
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions: The above copyright notice and this permission
+// notice shall be included in all copies or substantial portions of the
+// Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+package phasereditor.canvas.core;
+
+import static java.lang.System.out;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+/**
+ * @author arian
+ *
+ */
+public class GroupModel extends BaseObjectModel {
+
+	public static final String TYPE_NAME = "group";
+	public static final String PROPSET_SET_ALL = "setAll";
+	private List<BaseObjectModel> _children;
+	private boolean _editorClosed;
+	private boolean _physicsGroup;
+	private PhysicsType _physicsBodyType;
+	private PhysicsSortDirection _physicsSortDirection;
+	private SetAllData _setAll;
+
+	public static class SetAllData extends ArrayList<String[]> {
+
+		private static final long serialVersionUID = 1L;
+
+		public void add(String key, String value) {
+			add(new String[] { key, value });
+		}
+
+		public SetAllData copy() {
+			SetAllData copy = new SetAllData();
+			for (String[] tuple : this) {
+				copy.add(new String[] { tuple[0], tuple[1] });
+			}
+			return copy;
+		}
+
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			sb.append("[");
+			for (String[] tuple : this) {
+				if (sb.length() > 1) {
+					sb.append(",");
+				}
+				sb.append(tuple[0] + "=" + tuple[1]);
+			}
+			sb.append("]");
+			return sb.toString();
+		}
+
+	}
+
+	public GroupModel(GroupModel parent, JSONObject data) {
+		super(parent, TYPE_NAME, data);
+	}
+
+	public GroupModel(GroupModel parent) {
+		super(parent, "group");
+
+		_children = new ArrayList<>();
+		_physicsBodyType = PhysicsType.ARCADE;
+		_physicsSortDirection = PhysicsSortDirection.NULL;
+		_setAll = new SetAllData();
+	}
+
+	@Override
+	public void resetId() {
+		super.resetId();
+		for (BaseObjectModel child : _children) {
+			child.resetId();
+		}
+	}
+
+	@SuppressWarnings("static-method")
+	public boolean isWorldModel() {
+		return false;
+	}
+
+	public boolean isEditorClosed() {
+
+		if (isPrefabInstance()) {
+			return true;
+		}
+
+		return _editorClosed;
+	}
+
+	public void setEditorClosed(boolean editorClosed) {
+		_editorClosed = editorClosed;
+	}
+
+	public boolean isPhysicsGroup() {
+		return _physicsGroup;
+	}
+
+	public void setPhysicsGroup(boolean physicsGroup) {
+		_physicsGroup = physicsGroup;
+	}
+
+	public PhysicsType getPhysicsBodyType() {
+		return _physicsBodyType;
+	}
+
+	public void setPhysicsBodyType(PhysicsType physicsBodyType) {
+		_physicsBodyType = physicsBodyType;
+	}
+
+	public PhysicsSortDirection getPhysicsSortDirection() {
+		return _physicsSortDirection;
+	}
+
+	public void setPhysicsSortDirection(PhysicsSortDirection physicsSortDirection) {
+		_physicsSortDirection = physicsSortDirection;
+	}
+
+	public SetAllData getSetAll() {
+		return _setAll;
+	}
+
+	public void setSetAll(SetAllData setAll) {
+		_setAll = setAll;
+	}
+
+	@Override
+	public String getLabel() {
+		return "[grp] " + getEditorName();
+	}
+
+	public List<BaseObjectModel> getChildren() {
+		return _children;
+	}
+
+	@Override
+	public BaseObjectModel findById(String id) {
+		if (getId().equals(id)) {
+			return this;
+		}
+
+		for (BaseObjectModel c : getChildren()) {
+			BaseObjectModel found = c.findById(id);
+			if (found != null) {
+				return found;
+			}
+		}
+
+		return null;
+	}
+
+	public BaseObjectModel findByName(String name) {
+		if (getEditorName().equals(name)) {
+			return this;
+		}
+
+		if (isPrefabInstance()) {
+			return null;
+		}
+
+		for (BaseObjectModel model : _children) {
+			if (model instanceof GroupModel) {
+				BaseObjectModel found = ((GroupModel) model).findByName(name);
+				if (found != null) {
+					return found;
+				}
+			} else if (model.getEditorName().equals(name)) {
+				return model;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public void readInfo(JSONObject jsonInfo) {
+		super.readInfo(jsonInfo);
+
+		_editorClosed = jsonInfo.optBoolean("editorClosed", false);
+
+		_physicsGroup = jsonInfo.optBoolean("physicsGroup", false);
+		{
+			String name = jsonInfo.optString("physicsBodyType", PhysicsType.ARCADE.name());
+			_physicsBodyType = PhysicsType.valueOf(name);
+		}
+		{
+			String name = jsonInfo.optString("physicsSortDirection", PhysicsSortDirection.NULL.name());
+			_physicsSortDirection = PhysicsSortDirection.valueOf(name);
+		}
+		{
+			JSONArray array = jsonInfo.optJSONArray("setAll");
+			if (array == null) {
+				_setAll = new SetAllData();
+			} else {
+				SetAllData data = new SetAllData();
+				for (int i = 0; i < array.length(); i++) {
+					JSONObject tuple = array.getJSONObject(i);
+					String key = tuple.getString("key");
+					String value = tuple.getString("value");
+					data.add(key, value);
+				}
+				_setAll = data;
+			}
+		}
+
+		_children = new ArrayList<>();
+
+		// v1 -> v2 migration
+		if (isWorldModel() && getWorld().getCanvasModel().getVersion() == 1) {
+			// In v1 all canvas files represent groups so we have to convert
+			// them
+			// to group prefabs.
+			// In v2 a group prefab has a root element that is not present the
+			// v1, so we have to add that root group here:
+			GroupModel prefabRoot = new GroupModel(this);
+			addChild(prefabRoot);
+			prefabRoot.readInfo(jsonInfo);
+			prefabRoot.setEditorName("prefabRoot_" + getEditorName());
+		} else {
+
+			try {
+				JSONArray modelList = jsonInfo.optJSONArray("children");
+				if (modelList != null) {
+					for (int i = 0; i < modelList.length(); i++) {
+						JSONObject jsonModel = modelList.getJSONObject(i);
+
+						try {
+							BaseObjectModel model = CanvasModelFactory.createModel(this, jsonModel);
+
+							if (model != null) {
+								_children.add(model);
+							}
+						} catch (MissingAssetException e) {
+							out.println("Cannot open asset " + e.getData().toString(2));
+							MissingAssetSpriteModel missingModel = new MissingAssetSpriteModel(this, e.getData());
+							_children.add(missingModel);
+						} catch (MissingPrefabException e) {
+							out.println("Cannot open prefab " + e.getData().toString(2));
+							MissingPrefabModel missingModel = new MissingPrefabModel(this, e.getData());
+							_children.add(missingModel);
+						}
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	protected void writeInfo(JSONObject jsonInfo, boolean saving) {
+		super.writeInfo(jsonInfo, saving);
+
+		jsonInfo.put("editorClosed", _editorClosed, false);
+
+		if (isOverriding(BaseSpriteModel.PROPSET_PHYSICS)) {
+			jsonInfo.put("physicsGroup", _physicsGroup, false);
+			jsonInfo.put("physicsBodyType", _physicsBodyType, PhysicsType.ARCADE);
+			jsonInfo.put("physicsSortDirection", _physicsSortDirection, PhysicsSortDirection.NULL);
+		}
+
+		if (isOverriding(PROPSET_SET_ALL)) {
+			JSONArray array = new JSONArray();
+			for (String[] tuple : _setAll) {
+				JSONObject obj = new JSONObject();
+				obj.put("key", tuple[0]);
+				obj.put("value", tuple[1]);
+				array.put(obj);
+			}
+			jsonInfo.put("setAll", array);
+		}
+
+		if (isPrefabInstance() && saving) {
+			// we are not going to save the children of prefabs cause we are not
+			// allowing to change them in the editor. Only properties can be
+			// edited in prefabs.
+			//
+		} else {
+			JSONArray childrenData = new JSONArray();
+			for (BaseObjectModel model : _children) {
+				JSONObject data = new JSONObject();
+				childrenData.put(data);
+				model.write(data, saving);
+			}
+			jsonInfo.put("children", childrenData);
+		}
+	}
+
+	public void addChild(BaseObjectModel model) {
+		addChild(_children.size(), model);
+	}
+
+	public void addChild(int i, BaseObjectModel model) {
+		model.getParent()._children.remove(model);
+		_children.add(i, model);
+	}
+
+	public void removeChild(BaseObjectModel model) {
+		_children.remove(model);
+	}
+
+	@Override
+	public void build() {
+		for (BaseObjectModel child : _children) {
+			child.build();
+		}
+	}
+
+	public void walk(Consumer<BaseObjectModel> visitor) {
+		visitor.accept(this);
+		for (BaseObjectModel child : getChildren()) {
+			if (child instanceof GroupModel) {
+				((GroupModel) child).walk(visitor);
+			} else {
+				visitor.accept(child);
+			}
+		}
+	}
+
+	public void walk_stopIfFalse(Predicate<BaseObjectModel> visitor) {
+		walk_stopIfFalse2(visitor);
+	}
+
+	private boolean walk_stopIfFalse2(Predicate<BaseObjectModel> visitor) {
+		if (visitor.test(this)) {
+			for (BaseObjectModel child : getChildren()) {
+				if (child instanceof GroupModel) {
+					if (!((GroupModel) child).walk_stopIfFalse2(visitor)) {
+						return false;
+					}
+				} else {
+					if (!visitor.test(child)) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Walk the object tree. To avoid enter in a sub tree the visitor function
+	 * has to return false.
+	 * 
+	 * @param visitor
+	 *            The visitor, return false if want to skip a sub-tree walk.
+	 */
+	public void walk_skipGroupIfFalse(Predicate<BaseObjectModel> visitor) {
+		if (visitor.test(this)) {
+			for (BaseObjectModel child : getChildren()) {
+				if (child instanceof GroupModel) {
+					((GroupModel) child).walk_skipGroupIfFalse(visitor);
+				} else {
+					visitor.test(child);
+				}
+			}
+		}
+	}
+
+	@Override
+	public boolean hasErrors() {
+		for (BaseObjectModel child : _children) {
+			if (child.hasErrors()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * 
+	 */
+	public void trim() {
+		// remove the empty space from the left and top.
+		double minx = Double.MAX_VALUE;
+		double miny = Double.MAX_VALUE;
+		for (BaseObjectModel model : _children) {
+			minx = Math.min(model.getX(), minx);
+			miny = Math.min(model.getY(), miny);
+		}
+
+		for (BaseObjectModel model : _children) {
+			model.setX(model.getX() - minx);
+			model.setY(model.getY() - miny);
+		}
+	}
+}

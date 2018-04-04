@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Phaser Editor - Canvas Core
+Bundle-SymbolicName: phasereditor.canvas.core;singleton:=true
+Bundle-Version: 1.5.0.20180307
+Bundle-Activator: phasereditor.canvas.core.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.ide;bundle-version="3.12.0",
+ org.eclipse.core.resources;bundle-version="3.10.0",
+ org.json,
+ phasereditor.assetpack.core,
+ phasereditor.atlas.core,
+ phasereditor.atlas.ui,
+ phasereditor.lic,
+ phasereditor.project.core,
+ phasereditor.inspect.core;bundle-version="1.4.0",
+ phasereditor.ui;bundle-version="1.4.0",
+ phasereditor.bmpfont.core;bundle-version="1.5.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Export-Package: phasereditor.canvas.core,
+ phasereditor.canvas.core.codegen
+Bundle-Vendor: Arian Fornaris

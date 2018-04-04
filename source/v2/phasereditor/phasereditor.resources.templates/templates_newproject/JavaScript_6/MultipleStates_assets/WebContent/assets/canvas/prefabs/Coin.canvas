@@ -1,0 +1,74 @@
+{
+  "canvas-version": 2,
+  "settings": {
+    "className": "Coin",
+    "sceneWidth": 640,
+    "sceneHeight": 360,
+    "generateOnSave": true,
+    "enableStepping": false,
+    "lang": "JAVA_SCRIPT_6",
+    "baseClass": "Phaser.Sprite",
+    "backgroundColor": [
+      180,
+      180,
+      180
+    ],
+    "gridColor": [
+      200,
+      200,
+      200
+    ],
+    "showGrid": true,
+    "create_after": "// my code after objects creation\r\nthis.afterCreate();"
+  },
+  "stateSettings": {
+    "stageBackgroundColor": [
+      0,
+      0,
+      0
+    ],
+    "preloadSpriteId": "",
+    "preloadSprite_direction": 0,
+    "load.pack": []
+  },
+  "world": {
+    "type": "group",
+    "id": "db5b05a0-fe72-44e3-9b24-cff33c8b0db5",
+    "info": {
+      "editorName": "Coin",
+      "children": [{
+        "type": "spritesheet",
+        "id": "45254453-a494-4f35-ae7f-9afc4838b041",
+        "asset": "0",
+        "info": {
+          "editorName": "coins",
+          "editorPublic": true,
+          "scale.x": 0.5,
+          "scale.y": 0.5,
+          "animations": [{
+            "name": "rotate",
+            "frameRate": 5,
+            "loop": true,
+            "public": true,
+            "frames": [
+              "0",
+              "1",
+              "2",
+              "3",
+              "4",
+              "5"
+            ]
+          }]
+        }
+      }]
+    }
+  },
+  "type": "SPRITE",
+  "asset-table": {"0": {
+    "file": "WebContent/assets/pack.json",
+    "section": "preloader",
+    "asset": "coins",
+    "sprite": "0"
+  }},
+  "prefab-table": {}
+}
