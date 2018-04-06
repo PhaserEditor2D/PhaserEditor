@@ -39,7 +39,7 @@
    <extension
          point="org.eclipse.core.contenttype.contentTypes">
       <content-type
-            base-type="org.eclipse.wst.jsdt.core.jsonSource"
+            base-type="org.eclipse.core.runtime.text"
             describer="phasereditor.canvas.core.contenttype.CanvasContentTypeDescriber"
             file-extensions="canvas"
             id="phasereditor.canvas.core.canvasContentType"

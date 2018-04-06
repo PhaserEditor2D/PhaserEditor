@@ -41,3 +41,4 @@ Export-Package: phasereditor.assetpack.ui,
  phasereditor.assetpack.ui.preview,
  phasereditor.assetpack.ui.refactorings,
  phasereditor.assetpack.ui.widgets
+Automatic-Module-Name: phasereditor.assetpack.ui

@@ -63,7 +63,6 @@ import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.statushandlers.StatusManager;
-import org.eclipse.wst.jsdt.ui.project.JsNature;
 
 import phasereditor.inspect.core.IPhaserTemplate;
 import phasereditor.project.core.codegen.SourceLang;
@@ -277,9 +276,10 @@ public class ProjectCore {
 
 				template.copyInto(webContentFolder, paramValues, monitor);
 
-				if (lang == SourceLang.JAVA_SCRIPT) {
-					JsNature.addJsNature(project, monitor);
-				}
+				//TODO: #RemovingWST
+//				if (lang == SourceLang.JAVA_SCRIPT) {
+//					JsNature.addJsNature(project, monitor);
+//				}
 
 				setProjectLanguage(project, lang);
 				PhaserProjectNature.addPhaserNature(project, lang, monitor);

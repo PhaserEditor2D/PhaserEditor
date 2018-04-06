@@ -39,7 +39,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.AssertionFailedException;
-import org.eclipse.wst.jsdt.core.IMember;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -136,23 +135,26 @@ public class PhaserJSDoc {
 		return _globalConstants;
 	}
 
-	public String getJSDoc(IMember member) {
-		String name = InspectCore.getFullName(member);
-		Object phaserMember = _membersMap.get(name);
+	
+	//TODO: #RemovingWST
+//	public String getJSDoc(IMember member) {
+//		String name = InspectCore.getFullName(member);
+//		Object phaserMember = _membersMap.get(name);
+//
+//		if (phaserMember == null) {
+//			out.println("<b>Cannot find JSDoc of " + name + "</b>");
+//			return "<b>Cannot find JSDoc of " + name + "</b>";
+//		}
+//
+//		return JSDocRenderer.getInstance().render(phaserMember);
+//	}
 
-		if (phaserMember == null) {
-			out.println("<b>Cannot find JSDoc of " + name + "</b>");
-			return "<b>Cannot find JSDoc of " + name + "</b>";
-		}
-
-		return JSDocRenderer.getInstance().render(phaserMember);
-	}
-
-	public boolean isPhaserMember(IMember member) {
-		String name = InspectCore.getFullName(member);
-		boolean b = _membersMap.containsKey(name);
-		return b;
-	}
+	//TODO: #RemovingWST
+//	public boolean isPhaserMember(IMember member) {
+//		String name = InspectCore.getFullName(member);
+//		boolean b = _membersMap.containsKey(name);
+//		return b;
+//	}
 
 	private Map<String, PhaserType> buildPhaserJSDoc(Path docsJsonFile) throws IOException {
 		if (!Files.exists(docsJsonFile)) {

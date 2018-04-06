@@ -31,3 +31,4 @@ Require-Bundle: org.eclipse.ui,
  phasereditor.assetpack.ui;bundle-version="1.4.0",
  phasereditor.canvas.ui;bundle-version="1.4.0",
  phasereditor.project.ui;bundle-version="1.4.0"
+Automatic-Module-Name: phasereditor.assetexplorer.ui

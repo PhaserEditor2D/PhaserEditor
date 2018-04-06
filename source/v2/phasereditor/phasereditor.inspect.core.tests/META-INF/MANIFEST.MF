@@ -7,3 +7,4 @@ Bundle-Vendor: Arian Fornaris
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: phasereditor.inspect.core,
  org.junit
+Automatic-Module-Name: phasereditor.inspect.core.tests

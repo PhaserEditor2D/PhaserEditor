@@ -21,28 +21,15 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.project.core;
 
-import static java.lang.System.out;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.wst.jsdt.core.IIncludePathEntry;
-import org.eclipse.wst.jsdt.core.IJavaScriptProject;
-import org.eclipse.wst.jsdt.core.JavaScriptCore;
-import org.eclipse.wst.jsdt.core.JavaScriptModelException;
 
 import phasereditor.project.core.codegen.SourceLang;
 
@@ -66,7 +53,8 @@ public class PhaserProjectNature implements IProjectNature {
 			description.setNatureIds(newNatures);
 			project.setDescription(description, monitor);
 
-			resetProjectLibraries(project, lang, monitor);
+			//TODO: #RemovingWST
+//			resetProjectLibraries(project, lang, monitor);
 
 		} else {
 			if (monitor != null) {
@@ -74,38 +62,39 @@ public class PhaserProjectNature implements IProjectNature {
 			}
 		}
 	}
-
-	public static void resetProjectLibraries(IProject project, SourceLang lang, IProgressMonitor monitor)
-			throws JavaScriptModelException {
-
-		if (lang != SourceLang.JAVA_SCRIPT) {
-			return;
-		}
-
-		IJavaScriptProject jsProject = JavaScriptCore.create(project);
-
-		// add libs
-
-		List<IIncludePathEntry> list = new ArrayList<>();
-		for (String id : new String[] { ProjectCore.ECMA5_SCOPE_INITIALIZER_ID,
-				ProjectCore.BROWSER_SCOPE_INITIALIZER_ID, ProjectCore.GLOBAL_SCOPE_INITIALIZER_ID }) {
-			list.add(JavaScriptCore.newContainerEntry(new Path(id)));
-		}
-
-		// add source
-
-		IPath[] exclude = { new Path("**/lib"), new Path("**/phaser.js"), new Path("**/*.min.js"),
-				new Path("**/node_modules") };
-		IIncludePathEntry srcEntry = JavaScriptCore.newSourceEntry(project.getFullPath(), exclude);
-		list.add(srcEntry);
-
-		IIncludePathEntry[] newIncludeEntries = new IIncludePathEntry[list.size()];
-		list.toArray(newIncludeEntries);
-
-		out.println("Include entries: " + Arrays.toString(newIncludeEntries));
-
-		jsProject.setRawIncludepath(newIncludeEntries, monitor);
-	}
+	
+//TODO: #RemovingWST
+//	public static void resetProjectLibraries(IProject project, SourceLang lang, IProgressMonitor monitor)
+//			throws JavaScriptModelException {
+//
+//		if (lang != SourceLang.JAVA_SCRIPT) {
+//			return;
+//		}
+//
+//		IJavaScriptProject jsProject = JavaScriptCore.create(project);
+//
+//		// add libs
+//
+//		List<IIncludePathEntry> list = new ArrayList<>();
+//		for (String id : new String[] { ProjectCore.ECMA5_SCOPE_INITIALIZER_ID,
+//				ProjectCore.BROWSER_SCOPE_INITIALIZER_ID, ProjectCore.GLOBAL_SCOPE_INITIALIZER_ID }) {
+//			list.add(JavaScriptCore.newContainerEntry(new Path(id)));
+//		}
+//
+//		// add source
+//
+//		IPath[] exclude = { new Path("**/lib"), new Path("**/phaser.js"), new Path("**/*.min.js"),
+//				new Path("**/node_modules") };
+//		IIncludePathEntry srcEntry = JavaScriptCore.newSourceEntry(project.getFullPath(), exclude);
+//		list.add(srcEntry);
+//
+//		IIncludePathEntry[] newIncludeEntries = new IIncludePathEntry[list.size()];
+//		list.toArray(newIncludeEntries);
+//
+//		out.println("Include entries: " + Arrays.toString(newIncludeEntries));
+//
+//		jsProject.setRawIncludepath(newIncludeEntries, monitor);
+//	}
 
 	public static void removePhaserNature(IProject project, IProgressMonitor monitor) throws CoreException {
 		if (monitor != null && monitor.isCanceled()) {
@@ -184,19 +173,20 @@ public class PhaserProjectNature implements IProjectNature {
 				newCommands[0] = phaserBuilderCommand;
 
 				// sort commands, move the javascript project to the end
-				Arrays.sort(newCommands, new Comparator<ICommand>() {
-
-					@Override
-					public int compare(ICommand o1, ICommand o2) {
-						String id1 = o1.getBuilderName();
-						String id2 = o2.getBuilderName();
-
-						int v1 = (id1 == JavaScriptCore.BUILDER_ID ? 1 : 0);
-						int v2 = (id2 == JavaScriptCore.BUILDER_ID ? 1 : 0);
-
-						return v1 - v2;
-					}
-				});
+				//TODO: #RemovingWST
+//				Arrays.sort(newCommands, new Comparator<ICommand>() {
+//
+//					@Override
+//					public int compare(ICommand o1, ICommand o2) {
+//						String id1 = o1.getBuilderName();
+//						String id2 = o2.getBuilderName();
+//
+//						int v1 = (id1 == JavaScriptCore.BUILDER_ID ? 1 : 0);
+//						int v2 = (id2 == JavaScriptCore.BUILDER_ID ? 1 : 0);
+//
+//						return v1 - v2;
+//					}
+//				});
 			} else {
 				newCommands = new ICommand[commands.length + 2];
 				// Add it before other builders.

@@ -20,41 +20,6 @@
    </license>
 
    <plugin
-         id="org.eclipse.wst.command.env"
-         download-size="0"
-         install-size="0"
-         version="1.0.500.v201505131719"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.command.env.core"
-         download-size="0"
-         install-size="0"
-         version="1.0.300.v201505131719"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.command.env.doc.user"
-         download-size="0"
-         install-size="0"
-         version="1.5.400.v201309242123"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.command.env.infopop"
-         download-size="0"
-         install-size="0"
-         version="1.0.200.v201309242123"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.command.env.ui"
-         download-size="0"
-         install-size="0"
-         version="1.1.200.v201503231435"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.wst.common.core"
          download-size="0"
          install-size="0"
@@ -118,13 +83,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.wst.common.project.facet.ui"
-         download-size="0"
-         install-size="0"
-         version="1.4.600.v201505072140"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.wst.common.snippets"
          download-size="0"
          install-size="0"
@@ -143,90 +101,6 @@
          download-size="0"
          install-size="0"
          version="1.2.300.v201702270556"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.css.core"
-         download-size="0"
-         install-size="0"
-         version="1.1.800.v201402172058"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.css.ui"
-         download-size="0"
-         install-size="0"
-         version="1.0.901.v201501212057"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.doc.user"
-         download-size="0"
-         install-size="0"
-         version="1.2.0.v201309112106"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.html.core"
-         download-size="0"
-         install-size="0"
-         version="1.1.802.v201501312139"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.html.ui"
-         download-size="0"
-         install-size="0"
-         version="1.0.1000.v201505130300"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.html.ui.infopop"
-         download-size="0"
-         install-size="0"
-         version="1.0.201.v201409111852"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.jsdt.core"
-         download-size="0"
-         install-size="0"
-         version="1.3.401.qualifier"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.jsdt.doc"
-         download-size="0"
-         install-size="0"
-         version="1.4.100.v201309042002"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.jsdt.manipulation"
-         download-size="0"
-         install-size="0"
-         version="1.0.600.qualifier"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.jsdt.ui"
-         download-size="0"
-         install-size="0"
-         version="1.1.601.qualifier"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.jsdt.web.core"
-         download-size="0"
-         install-size="0"
-         version="1.0.800.v201505130300"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.jsdt.web.ui"
-         download-size="0"
-         install-size="0"
-         version="1.0.800.v201403271809"
          unpack="false"/>
 
    <plugin
@@ -286,34 +160,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.wst.web"
-         download-size="0"
-         install-size="0"
-         version="1.1.800.v201312041437"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.web.ui"
-         download-size="0"
-         install-size="0"
-         version="1.1.600.v201302011850"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.web.ui.infopop"
-         download-size="0"
-         install-size="0"
-         version="1.0.300.v200805140206"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.webtools.doc.user"
-         download-size="0"
-         install-size="0"
-         version="1.0.500.v201208081537"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.wst.xml.ui"
          download-size="0"
          install-size="0"
@@ -339,48 +185,6 @@
          download-size="0"
          install-size="0"
          version="1.1.900.v201401141857"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.server.core"
-         download-size="0"
-         install-size="0"
-         version="1.9.9.qualifier"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.server.ui"
-         download-size="0"
-         install-size="0"
-         version="1.9.9.qualifier"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.jsdt.debug.core"
-         download-size="0"
-         install-size="0"
-         version="3.2.200.v201610211901"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.jsdt.debug.ui"
-         download-size="0"
-         install-size="0"
-         version="1.0.600.v201605311817"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.json.core"
-         download-size="0"
-         install-size="0"
-         version="1.0.100.v201702220424"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.json"
-         download-size="0"
-         install-size="0"
-         version="1.0.100.v201612232120"
          unpack="false"/>
 
    <plugin

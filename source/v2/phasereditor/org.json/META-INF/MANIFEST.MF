@@ -7,3 +7,4 @@ Bundle-Vendor: org.json (boniatillo.com modfications)
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: com.boniatillo.json,
  org.json
+Automatic-Module-Name: org.json

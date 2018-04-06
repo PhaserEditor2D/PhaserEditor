@@ -21,26 +21,17 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid.editors;
 
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.wst.jsdt.internal.ui.JavaScriptPlugin;
-import org.eclipse.wst.jsdt.internal.ui.javaeditor.JavaSourceViewer;
-import org.eclipse.wst.jsdt.internal.ui.text.SimpleJavaSourceViewerConfiguration;
-import org.eclipse.wst.jsdt.ui.PreferenceConstants;
-import org.eclipse.wst.jsdt.ui.text.IJavaScriptPartitions;
-import org.eclipse.wst.jsdt.ui.text.JavaScriptTextTools;
 
 /**
  * @author arian
@@ -89,20 +80,27 @@ public class UserCodeBeforeAfterCodeComp extends Composite {
 
 	private static SourceViewer createViewer(Composite parent) {
 		IDocument document = new Document();
-		JavaScriptTextTools tools = JavaScriptPlugin.getDefault().getJavaTextTools();
-		tools.setupJavaDocumentPartitioner(document, IJavaScriptPartitions.JAVA_PARTITIONING);
-		IPreferenceStore store = JavaScriptPlugin.getDefault().getCombinedPreferenceStore();
-		SourceViewer viewer = new JavaSourceViewer(parent, null, null, false, SWT.BORDER |  SWT.V_SCROLL | SWT.H_SCROLL,
-				store);
-		viewer.getTextWidget().setAlwaysShowScrollBars(false);
-		SimpleJavaSourceViewerConfiguration configuration = new SimpleJavaSourceViewerConfiguration(tools.getColorManager(), store, null, IJavaScriptPartitions.JAVA_PARTITIONING, false);
 		
-		viewer.configure(configuration);
+		//TODO: #RemovingWST		
+//		JavaScriptTextTools tools = JavaScriptPlugin.getDefault().getJavaTextTools();
+//		tools.setupJavaDocumentPartitioner(document, IJavaScriptPartitions.JAVA_PARTITIONING);
+//		IPreferenceStore store = JavaScriptPlugin.getDefault().getCombinedPreferenceStore();
+//		SourceViewer viewer = new JavaSourceViewer(parent, null, null, false, SWT.BORDER |  SWT.V_SCROLL | SWT.H_SCROLL,
+//				store);
+//		viewer.getTextWidget().setAlwaysShowScrollBars(false);
+//		SimpleJavaSourceViewerConfiguration configuration = new SimpleJavaSourceViewerConfiguration(tools.getColorManager(), store, null, IJavaScriptPartitions.JAVA_PARTITIONING, false);
+		
+//		viewer.configure(configuration);
+
+//		Font font = JFaceResources.getFont(PreferenceConstants.EDITOR_TEXT_FONT);
+//		viewer.getTextWidget().setFont(font);
+
+		
+		SourceViewer viewer = //new JavaSourceViewer(parent, null, null, false, SWT.BORDER |  SWT.V_SCROLL | SWT.H_SCROLL,store);
+				new SourceViewer(parent, null, SWT.BORDER |  SWT.V_SCROLL | SWT.H_SCROLL);
+		
 		viewer.setEditable(true);
 		viewer.setDocument(document);
-
-		Font font = JFaceResources.getFont(PreferenceConstants.EDITOR_TEXT_FONT);
-		viewer.getTextWidget().setFont(font);
 
 		return viewer;
 	}

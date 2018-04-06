@@ -12,3 +12,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Arian Fornaris
 Export-Package: phasereditor.bmpfont.ui
+Automatic-Module-Name: phasereditor.bmpfont.ui

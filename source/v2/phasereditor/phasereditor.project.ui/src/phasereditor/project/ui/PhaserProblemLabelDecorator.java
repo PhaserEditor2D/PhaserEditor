@@ -1,7 +1,6 @@
 package phasereditor.project.ui;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ListenerList;
@@ -9,7 +8,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ILightweightLabelDecorator;
-import org.eclipse.wst.jsdt.internal.ui.JavaPluginImages;
 
 import phasereditor.project.core.ProjectCore;
 
@@ -54,12 +52,13 @@ public class PhaserProblemLabelDecorator implements ILightweightLabelDecorator {
 					ImageDescriptor img;
 
 					switch (severity) {
-					case IMarker.SEVERITY_ERROR:
-						img = JavaPluginImages.DESC_OVR_ERROR;
-						break;
-					case IMarker.SEVERITY_WARNING:
-						img = JavaPluginImages.DESC_OVR_WARNING;
-						break;
+					//TODO: #RemovingWST
+//					case IMarker.SEVERITY_ERROR:
+//						img = JavaPluginImages.DESC_OVR_ERROR;
+//						break;
+//					case IMarker.SEVERITY_WARNING:
+//						img = JavaPluginImages.DESC_OVR_WARNING;
+//						break;
 					default:
 						img = null;
 						break;

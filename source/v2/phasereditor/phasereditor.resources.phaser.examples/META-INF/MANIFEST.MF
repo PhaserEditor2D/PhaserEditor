@@ -6,3 +6,4 @@ Bundle-Version: 1.3.0.20161130
 Bundle-Vendor: Arian Fornaris
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-BundleShape: dir
+Automatic-Module-Name: phasereditor.resources.phaser.examples

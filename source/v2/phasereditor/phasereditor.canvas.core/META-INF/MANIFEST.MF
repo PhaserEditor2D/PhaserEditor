@@ -22,3 +22,4 @@ Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.canvas.core,
  phasereditor.canvas.core.codegen
 Bundle-Vendor: Arian Fornaris
+Automatic-Module-Name: phasereditor.canvas.core

@@ -8,3 +8,4 @@ Fragment-Host: phasereditor.libgdx
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-BundleShape: dir
 Eclipse-PlatformFilter: (osgi.os=win32)
+Automatic-Module-Name: phasereditor.libgdx.win32

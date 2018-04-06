@@ -5,7 +5,7 @@
  	<extension
          point="org.eclipse.core.contenttype.contentTypes">
       <content-type
-            base-type="org.eclipse.wst.jsdt.core.jsonSource"
+            base-type="org.eclipse.core.runtime.text"
             describer="phasereditor.assetpack.core.AssetPackContentDescriber"
             file-extensions="json"
             id="phasereditor.assetpack.contentType"

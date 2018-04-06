@@ -23,8 +23,6 @@ package phasereditor.inspect.core.jsdoc;
 
 import java.util.List;
 
-import org.eclipse.wst.jsdt.internal.ui.text.html.HTMLPrinter;
-
 /**
  * Class to render JSDoc comments.
  * 
@@ -203,6 +201,9 @@ public class JSDocRenderer {
 	}
 
 	private static String html(String help) {
-		return HTMLPrinter.convertToHTMLContent(help).replace("\\n", "<br>");
+		// TODO: #RemovingWST
+		// return HTMLPrinter.convertToHTMLContent(help).replace("\\n", "<br>");
+		
+		return help.replace("\\n", "<br>");
 	}
 }

@@ -16,3 +16,4 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.audio.core
+Automatic-Module-Name: phasereditor.audio.core

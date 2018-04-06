@@ -23,3 +23,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.audiosprite.ui,
  phasereditor.audiosprite.ui.wizards
+Automatic-Module-Name: phasereditor.audiosprite.ui

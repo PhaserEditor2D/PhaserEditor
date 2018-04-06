@@ -1,24 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-<extension
-         point="org.eclipse.wst.jsdt.ui.JsGlobalScopeContainerPage">
-      <JsGlobalScopeContainerPage
-            class="phasereditor.project.ui.wizards.PhaserLibraryWizardPage"
-            id="phasereditor.project.ui.wizards.libraryPage"
-            name="Phaser API 2.4.6 Library">
-      </JsGlobalScopeContainerPage>
-      <JsGlobalScopeContainerPage
-            class="phasereditor.project.ui.wizards.ECMA5LibraryWizardPage"
-            id="phasereditor.project.ui.ecma5page"
-            name="ECMA 5 API Library">
-      </JsGlobalScopeContainerPage>
-      <JsGlobalScopeContainerPage
-            class="phasereditor.project.ui.wizards.BrowserLibraryWizardPage"
-            id="phasereditor.project.ui.browserpage"
-            name="Browser API Library">
-      </JsGlobalScopeContainerPage>
-   </extension>
    
    <extension
          point="org.eclipse.ui.newWizards">
@@ -199,29 +181,12 @@
          </command>
       </menuContribution>
    </extension>
-   <extension
-         point="org.eclipse.ui.handlers">
-      <handler
-            class="phasereditor.project.ui.handlers.ResetProjectLibsHanler"
-            commandId="phasereditor.project.ui.resetlibraries">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false">
-                  <instanceof
-                        value="org.eclipse.wst.jsdt.ui.ProjectLibraryRoot">
-                  </instanceof>
-               </iterate>
-            </with>
-         </enabledWhen>
-      </handler>
-   </extension>
+   
    <extension
          point="org.eclipse.ui.decorators">
       <decorator
-            class="phasereditor.project.ui.PhaserProblemLabelDecorator"
-            icon="platform:/plugin/org.eclipse.wst.jsdt.ui/icons/full/obj16/error_obj.gif"
+            class="phasereditor.project.ui.PhaserProblemLabelDecorator"            
+            icon="platform:/plugin/org.eclipse.wst.jsdt.ui/icons/full/obj16/error_obj.gif #RemovingWST"
             id="phasereditor.project.ui.problemsDecorator"
             label="Phaser Problems Decorator"
             lightweight="true"

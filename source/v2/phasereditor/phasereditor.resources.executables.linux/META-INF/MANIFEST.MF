@@ -8,3 +8,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-BundleShape: dir
 Eclipse-PlatformFilter: (osgi.os=linux)
 Bundle-Vendor: Arian Fornaris
+Automatic-Module-Name: phasereditor.resources.executables.linux

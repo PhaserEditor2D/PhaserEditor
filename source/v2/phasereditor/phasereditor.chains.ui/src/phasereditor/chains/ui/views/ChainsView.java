@@ -21,12 +21,10 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.chains.ui.views;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -37,7 +35,6 @@ import org.eclipse.help.IContextProvider;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -53,7 +50,6 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.StyleRange;
-import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -74,8 +70,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.wb.swt.SWTResourceManager;
-import org.eclipse.wst.jsdt.internal.ui.javaeditor.CompilationUnitEditor;
-import org.eclipse.wst.jsdt.ui.PreferenceConstants;
 import org.json.JSONException;
 
 import phasereditor.chains.core.ChainItem;
@@ -444,29 +438,32 @@ public class ChainsView extends ViewPart {
 
 			StringEditorInput input = new StringEditorInput(filePath.getFileName().toString(), new String(bytes));
 			input.setTooltip(input.getName());
-			CompilationUnitEditor editor = (CompilationUnitEditor) activePage.openEditor(input, editorId);
-			try {
-				editor.updatedTitleImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_SCRIPT_CODE));
-			} catch (Exception e) {
-				// ignore it
-			}
-			ISourceViewer viewer = editor.getViewer();
-			StyledText textWidget = viewer.getTextWidget();
-			textWidget.setEditable(false);
-			int index = linenum - 1;
-			try {
-				int offset2 = offset;
-				if (offset == -1) {
-					offset2 = textWidget.getOffsetAtLine(index);
-				}
-				textWidget.setCaretOffset(offset2);
-				textWidget.setTopIndex(index);
-			} catch (IllegalArgumentException e) {
-				// protect from index out of bounds
-				e.printStackTrace();
-			}
+			
+			//TODO: #RemovingWST migrate to generic editor 
+			
+//			CompilationUnitEditor editor = (CompilationUnitEditor) activePage.openEditor(input, editorId);
+//			try {
+//				editor.updatedTitleImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_SCRIPT_CODE));
+//			} catch (Exception e) {
+//				// ignore it
+//			}
+//			ISourceViewer viewer = editor.getViewer();
+//			StyledText textWidget = viewer.getTextWidget();
+//			textWidget.setEditable(false);
+//			int index = linenum - 1;
+//			try {
+//				int offset2 = offset;
+//				if (offset == -1) {
+//					offset2 = textWidget.getOffsetAtLine(index);
+//				}
+//				textWidget.setCaretOffset(offset2);
+//				textWidget.setTopIndex(index);
+//			} catch (IllegalArgumentException e) {
+//				// protect from index out of bounds
+//				e.printStackTrace();
+//			}
 
-		} catch (CoreException | IOException e) {
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -489,11 +486,16 @@ public class ChainsView extends ViewPart {
 		RGB rgb = SWTResourceManager.getColor(SWT.COLOR_INFO_BACKGROUND).getRGB();
 		String color = "rgb(" + rgb.red + ", " + rgb.green + ", " + rgb.blue + ")";
 
-		FontData fontData = JFaceResources.getFontRegistry()
-				.getFontData(PreferenceConstants.APPEARANCE_JAVADOC_FONT)[0];
-		String size = Integer.toString(fontData.getHeight()) + ("carbon".equals(SWT.getPlatform()) ? "px" : "pt");
-		String family = "\"" + fontData.getName() + "\",sans-serif";
+		// TODO: #RemovingWST
+		
+//		FontData fontData = JFaceResources.getFontRegistry()
+//				.getFontData(PreferenceConstants.APPEARANCE_JAVADOC_FONT)[0];
+//		String size = Integer.toString(fontData.getHeight()) + ("carbon".equals(SWT.getPlatform()) ? "px" : "pt");
+//		String family = "\"" + fontData.getName() + "\",sans-serif";
 
+		String size = 18 + ("carbon".equals(SWT.getPlatform()) ? "px" : "pt");
+		String family = "sans-serif";
+		
 		String html = "<html><body style='background:\"" + color + "\";";
 		html += "font-size:" + size + ";";
 		html += "font-family:" + family + ";'>";

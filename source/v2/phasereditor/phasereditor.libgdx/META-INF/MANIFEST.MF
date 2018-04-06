@@ -21,3 +21,4 @@ Bundle-ClassPath: lib/gdx-backend-jglfw.jar,
  lib/gdx-tools.jar,
  lib/gdx-natives.jar,
  .
+Automatic-Module-Name: phasereditor.libgdx

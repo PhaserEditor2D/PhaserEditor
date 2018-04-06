@@ -11,7 +11,6 @@ Require-Bundle: org.eclipse.core.filesystem;bundle-version="1.4.100",
  org.eclipse.jface.text;bundle-version="3.9.2",
  org.eclipse.core.runtime,
  org.eclipse.help;bundle-version="3.6.0",
- org.eclipse.wst.jsdt.ui;bundle-version="1.1.500",
  phasereditor.chains.core,
  phasereditor.inspect.core,
  phasereditor.ui,
@@ -19,4 +18,5 @@ Require-Bundle: org.eclipse.core.filesystem;bundle-version="1.4.100",
  phasereditor.webrun.ui;bundle-version="1.4.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: phasereditor.chains.ui
 

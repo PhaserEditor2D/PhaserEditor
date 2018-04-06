@@ -21,3 +21,4 @@ Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.webrun.core
 Bundle-ClassPath: libs/java2html.jar,
  .
+Automatic-Module-Name: phasereditor.webrun.core

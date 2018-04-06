@@ -40,8 +40,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.statushandlers.StatusManager;
-import org.eclipse.wst.jsdt.core.IMember;
-import org.eclipse.wst.jsdt.core.IType;
 import org.json.JSONObject;
 
 import phasereditor.inspect.core.examples.ExamplesModel;
@@ -124,20 +122,21 @@ public class InspectCore {
 		return _projectTemplates;
 	}
 
-	public static String getFullName(IMember member) {
-		String name;
-
-		if (member instanceof IType) {
-			name = member.getDisplayName();
-		} else {
-			IType type = member.getDeclaringType();
-			if (type == null) {
-				return "<invalid-member>";
-			}
-			name = type.getDisplayName() + "." + member.getDisplayName();
-		}
-		return name;
-	}
+	//TODO: removing wst
+//	public static String getFullName(IMember member) {
+//		String name;
+//
+//		if (member instanceof IType) {
+//			name = member.getDisplayName();
+//		} else {
+//			IType type = member.getDeclaringType();
+//			if (type == null) {
+//				return "<invalid-member>";
+//			}
+//			name = type.getDisplayName() + "." + member.getDisplayName();
+//		}
+//		return name;
+//	}
 
 	/**
 	 * @param folder

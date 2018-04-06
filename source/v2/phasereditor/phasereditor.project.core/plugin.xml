@@ -26,22 +26,7 @@
                class="phasereditor.project.core.PhaserProjectBuilder">
          </run>
       </builder>
-   </extension>
-   <extension
-         point="org.eclipse.wst.jsdt.core.JsGlobalScopeContainerInitializer">
-        <JsGlobalScopeContainerInitializer
-            class="phasereditor.project.core.PhaserGlobalScopeContainerInitializer"
-            id="phasereditor.project.core.globalScope">
-      	</JsGlobalScopeContainerInitializer>
-        <JsGlobalScopeContainerInitializer
-              class="phasereditor.project.core.BrowserGlobalScopeContainerInitializer"
-              id="phasereditor.project.core.browserscope">
-        </JsGlobalScopeContainerInitializer>
-        <JsGlobalScopeContainerInitializer
-              class="phasereditor.project.core.Ecma5GlobalScopeContainerInitializer"
-              id="phasereditor.project.core.ecma5scope">
-        </JsGlobalScopeContainerInitializer>      	
-   </extension>
+   </extension>   
    <extension
          id="phasereditor.project.core.problem"
          name="Phaser Problem"
