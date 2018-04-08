@@ -1,8 +1,10 @@
 package phasereditor.project.ui;
 
+import java.net.URL;
+
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IDecoration;
@@ -11,7 +13,6 @@ import org.eclipse.jface.viewers.ILightweightLabelDecorator;
 
 import phasereditor.project.core.ProjectCore;
 
-@SuppressWarnings("restriction")
 public class PhaserProblemLabelDecorator implements ILightweightLabelDecorator {
 	private ListenerList<ILabelProviderListener> _listeners;
 
@@ -31,8 +32,7 @@ public class PhaserProblemLabelDecorator implements ILightweightLabelDecorator {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
+		//
 	}
 
 	@Override
@@ -52,13 +52,12 @@ public class PhaserProblemLabelDecorator implements ILightweightLabelDecorator {
 					ImageDescriptor img;
 
 					switch (severity) {
-					//TODO: #RemovingWST
-//					case IMarker.SEVERITY_ERROR:
-//						img = JavaPluginImages.DESC_OVR_ERROR;
-//						break;
-//					case IMarker.SEVERITY_WARNING:
-//						img = JavaPluginImages.DESC_OVR_WARNING;
-//						break;
+					case IMarker.SEVERITY_ERROR:
+						img = ImageDescriptor.createFromURL(new URL("platform:/plugin/org.eclipse.ui/icons/full/ovr16/error_ovr.png"));
+						break;
+					case IMarker.SEVERITY_WARNING:
+						img = ImageDescriptor.createFromURL(new URL("platform:/plugin/org.eclipse.ui/icons/full/ovr16/warning_ovr.png"));
+						break;
 					default:
 						img = null;
 						break;
@@ -68,7 +67,7 @@ public class PhaserProblemLabelDecorator implements ILightweightLabelDecorator {
 						decoration.addOverlay(img);
 					}
 				}
-			} catch (CoreException e) {
+			} catch (Exception e) {
 				ProjectUI.logError(e);
 			}
 		}

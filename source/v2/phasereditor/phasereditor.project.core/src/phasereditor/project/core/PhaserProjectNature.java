@@ -53,9 +53,6 @@ public class PhaserProjectNature implements IProjectNature {
 			description.setNatureIds(newNatures);
 			project.setDescription(description, monitor);
 
-			//TODO: #RemovingWST
-//			resetProjectLibraries(project, lang, monitor);
-
 		} else {
 			if (monitor != null) {
 				monitor.worked(1);
@@ -63,39 +60,6 @@ public class PhaserProjectNature implements IProjectNature {
 		}
 	}
 	
-//TODO: #RemovingWST
-//	public static void resetProjectLibraries(IProject project, SourceLang lang, IProgressMonitor monitor)
-//			throws JavaScriptModelException {
-//
-//		if (lang != SourceLang.JAVA_SCRIPT) {
-//			return;
-//		}
-//
-//		IJavaScriptProject jsProject = JavaScriptCore.create(project);
-//
-//		// add libs
-//
-//		List<IIncludePathEntry> list = new ArrayList<>();
-//		for (String id : new String[] { ProjectCore.ECMA5_SCOPE_INITIALIZER_ID,
-//				ProjectCore.BROWSER_SCOPE_INITIALIZER_ID, ProjectCore.GLOBAL_SCOPE_INITIALIZER_ID }) {
-//			list.add(JavaScriptCore.newContainerEntry(new Path(id)));
-//		}
-//
-//		// add source
-//
-//		IPath[] exclude = { new Path("**/lib"), new Path("**/phaser.js"), new Path("**/*.min.js"),
-//				new Path("**/node_modules") };
-//		IIncludePathEntry srcEntry = JavaScriptCore.newSourceEntry(project.getFullPath(), exclude);
-//		list.add(srcEntry);
-//
-//		IIncludePathEntry[] newIncludeEntries = new IIncludePathEntry[list.size()];
-//		list.toArray(newIncludeEntries);
-//
-//		out.println("Include entries: " + Arrays.toString(newIncludeEntries));
-//
-//		jsProject.setRawIncludepath(newIncludeEntries, monitor);
-//	}
-
 	public static void removePhaserNature(IProject project, IProgressMonitor monitor) throws CoreException {
 		if (monitor != null && monitor.isCanceled()) {
 			throw new OperationCanceledException();
