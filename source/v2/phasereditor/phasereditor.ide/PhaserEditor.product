@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Phaser Editor" uid="phasereditor2d.com" id="phasereditor.ide.product" application="phasereditor.ide.application" version="1.5.0.20180307" useFeatures="true" includeLaunchers="true">
+<product name="Phaser Editor" uid="phasereditor2d.com" id="phasereditor.ide.product" application="phasereditor.ide.application" version="2.0.0.20180408" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="icons/about.png"/>
