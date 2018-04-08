@@ -24,6 +24,7 @@ package phasereditor.canvas.ui.editors.behaviors;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -47,7 +48,17 @@ public class MouseBehavior {
 		super();
 		_canvas = canvas;
 
-		_canvas.getScene().addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
+		Scene scene = _canvas.getScene();
+
+		scene.addEventHandler(ScrollEvent.ANY, e -> {
+			try {
+				handleScroll(e);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		});
+
+		scene.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
 			try {
 				handleMousePressed(e);
 			} catch (Exception ex) {
@@ -55,7 +66,7 @@ public class MouseBehavior {
 			}
 		});
 
-		_canvas.getScene().addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
+		scene.addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
 			try {
 				handleMouseReleased(e);
 			} catch (Exception ex) {
@@ -63,7 +74,7 @@ public class MouseBehavior {
 			}
 		});
 
-		_canvas.getScene().addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
+		scene.addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
 			try {
 				handleMouseDragged(e);
 			} catch (Exception ex) {
@@ -71,7 +82,7 @@ public class MouseBehavior {
 			}
 		});
 
-		_canvas.getScene().addEventHandler(MouseEvent.DRAG_DETECTED, e -> {
+		scene.addEventHandler(MouseEvent.DRAG_DETECTED, e -> {
 			try {
 				handleDragDetected(e);
 			} catch (Exception ex) {
@@ -79,7 +90,7 @@ public class MouseBehavior {
 			}
 		});
 
-		_canvas.getScene().addEventHandler(MouseEvent.MOUSE_MOVED, e -> {
+		scene.addEventHandler(MouseEvent.MOUSE_MOVED, e -> {
 			try {
 				handleMouseMoved(e);
 			} catch (Exception ex) {
@@ -87,17 +98,9 @@ public class MouseBehavior {
 			}
 		});
 
-		_canvas.getScene().addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
+		scene.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
 			try {
 				handleMouseExited(e);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		});
-
-		_canvas.getScene().addEventHandler(ScrollEvent.ANY, e -> {
-			try {
-				handleScroll(e);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}

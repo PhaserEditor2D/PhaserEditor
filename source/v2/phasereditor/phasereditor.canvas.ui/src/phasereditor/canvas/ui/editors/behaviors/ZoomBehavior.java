@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.behaviors;
 
-import static java.lang.System.out;
-
 import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
@@ -84,6 +82,7 @@ public class ZoomBehavior {
 	}
 
 	private void onZoom(ScrollEvent e) {
+
 		double delta = 1.2;
 
 		double scale = _scale;
@@ -202,10 +201,6 @@ public class ZoomBehavior {
 		
 		Point2D result = localNode.sceneToLocal(scenePoint);
 
-		out.println("world " + worldX + " " + worldY);
-		out.println("scene " + scenePoint);
-		out.println("result " + result);
-		
 		return result;
 	}
 }

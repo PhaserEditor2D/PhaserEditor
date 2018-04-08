@@ -19,7 +19,6 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
-import phasereditor.ui.PhaserEditorUI;
 import phasereditor.webrun.ui.GamePlayerEditorInput;
 
 @SuppressWarnings({ "boxing", "synthetic-access" })
@@ -100,9 +99,6 @@ public class GamePlayerEditor extends EditorPart {
 
 	private void afterCreateWidgets() {
 		_browserComp = _browser.getComposite();
-
-		PhaserEditorUI.openedInternalBrowser();
-		_browserComp.addDisposeListener(e -> PhaserEditorUI.closedInternalBrowser());
 
 		Display.getDefault().asyncExec(() -> {
 			_browser.setUrl(getEditorInput().getUrl());

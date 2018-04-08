@@ -55,7 +55,6 @@ import phasereditor.canvas.ui.editors.palette.PaletteComp;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
-import phasereditor.ui.PhaserEditorUI;
 
 /**
  * @author arian
@@ -117,7 +116,6 @@ public class ObjectCanvas extends FXCanvas {
 		// just to force to select the default stuff in the property grid
 		_selectionBehavior.setSelection(StructuredSelection.EMPTY);
 
-		PhaserEditorUI.fixInternalBrowserBug(this);
 	}
 
 	public CanvasEditor getEditor() {

@@ -40,7 +40,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -112,8 +111,6 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.sun.javafx.util.Utils;
 
-import javafx.embed.swt.FXCanvas;
-import javafx.scene.input.InputEvent;
 import phasereditor.ui.views.PreviewView;
 
 @SuppressWarnings("restriction")
@@ -954,30 +951,6 @@ public class PhaserEditorUI {
 		Image img = new Image(Display.getCurrent(), data);
 
 		return img;
-	}
-
-	/**
-	 * When the internal browser is open (at least in windows) the FXCanvas is not
-	 * redrawn after any input event.
-	 * 
-	 * @param canvas
-	 */
-	public static void fixInternalBrowserBug(FXCanvas canvas) {
-		canvas.getScene().addEventFilter(InputEvent.ANY, (e) -> {
-			if (_countInternalBrowsers.get() > 0) {
-				canvas.redraw();
-			}
-		});
-	}
-
-	private static AtomicInteger _countInternalBrowsers = new AtomicInteger(0);
-
-	public static void openedInternalBrowser() {
-		_countInternalBrowsers.incrementAndGet();
-	}
-
-	public static void closedInternalBrowser() {
-		_countInternalBrowsers.decrementAndGet();
 	}
 
 	public static void setTreeBackgroundColor(Color bgColor, Control control) {
