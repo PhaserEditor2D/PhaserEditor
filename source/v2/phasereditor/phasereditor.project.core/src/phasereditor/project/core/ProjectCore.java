@@ -106,7 +106,7 @@ public class ProjectCore {
 
 			java.nio.file.Path dir;
 			if (getOS() == OS.MAC) {
-				dir = homePath.resolve("Library/Caches/com.boniatillo.phasereditor");
+				dir = homePath.resolve("Library/Caches/com.phasereditor2d");
 			} else {
 				dir = homePath.resolve(".phasereditor");
 			}

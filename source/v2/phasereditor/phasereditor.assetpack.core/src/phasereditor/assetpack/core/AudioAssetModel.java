@@ -32,7 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import com.boniatillo.json.JSONUtils;
+import com.phasereditor2d.json.JSONUtils;
 
 public class AudioAssetModel extends AssetModel {
 

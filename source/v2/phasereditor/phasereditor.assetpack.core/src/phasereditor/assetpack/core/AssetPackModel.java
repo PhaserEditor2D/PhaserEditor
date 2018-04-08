@@ -60,7 +60,7 @@ import phasereditor.project.core.ProjectCore;
 
 public final class AssetPackModel {
 	public static final String MEMENT_PROJECT_KEY = "projectName";
-	static final String MEMENTO_KEY = "com.boniatillo.assetpack.ept.AssetPackModel";
+	static final String MEMENTO_KEY = "phasereditor.assetpack.core.AssetPackModel";
 	public static final String PROP_DIRTY = "dirty";
 	public static final String PROP_FILE = "file";
 	public static final String PROP_ASSET_KEY = "assetKey";
@@ -162,9 +162,9 @@ public final class AssetPackModel {
 		pack.put("meta", meta);
 		meta.put("generated", Long.toString(System.currentTimeMillis()));
 		meta.put("app", "Phaser Editor");
-		meta.put("url", "http://phasereditor.boniatillo.com");
+		meta.put("url", "https://phasereditor2d.com");
 		meta.put("version", "1.0");
-		meta.put("copyright", "Arian Fornaris (c) 2015,2016");
+		meta.put("copyright", "Arian Fornaris (c) 2015,2018");
 	}
 
 	public void save(IProgressMonitor monitor) {

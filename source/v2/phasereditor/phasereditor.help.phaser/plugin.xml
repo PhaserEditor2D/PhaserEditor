@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.help.toc">
       <toc
-            category="com.boniatillo.phasereditor"
+            category="com.phasereditor2d"
             file="phaser-toc.xml"
             primary="true">
       </toc>

@@ -30,7 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.boniatillo.json.JSONUtils;
+import com.phasereditor2d.json.JSONUtils;
 
 /**
  * @author arian

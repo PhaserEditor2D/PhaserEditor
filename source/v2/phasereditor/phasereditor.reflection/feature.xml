@@ -7,11 +7,11 @@
       license-feature="org.eclipse.platform"
       license-feature-version="4.7.3.v20180301-0715">
 
-   <description url="http://phasereditor.boniatillo.com">
+   <description url="http://phasereditor2d.com">
       Phaser and Phaser Editor metadata inspector.
    </description>
 
-   <copyright url="http://phasereditor.boniatillo.com/blog/about">
+   <copyright url="http://phasereditor2d.com/blog/about">
       Arian Fornaris Copyright - 2015, 2016
    </copyright>
 
