@@ -135,27 +135,6 @@ public class PhaserJSDoc {
 		return _globalConstants;
 	}
 
-	
-	//TODO: #RemovingWST
-//	public String getJSDoc(IMember member) {
-//		String name = InspectCore.getFullName(member);
-//		Object phaserMember = _membersMap.get(name);
-//
-//		if (phaserMember == null) {
-//			out.println("<b>Cannot find JSDoc of " + name + "</b>");
-//			return "<b>Cannot find JSDoc of " + name + "</b>";
-//		}
-//
-//		return JSDocRenderer.getInstance().render(phaserMember);
-//	}
-
-	//TODO: #RemovingWST
-//	public boolean isPhaserMember(IMember member) {
-//		String name = InspectCore.getFullName(member);
-//		boolean b = _membersMap.containsKey(name);
-//		return b;
-//	}
-
 	private Map<String, PhaserType> buildPhaserJSDoc(Path docsJsonFile) throws IOException {
 		if (!Files.exists(docsJsonFile)) {
 			return new HashMap<>();
