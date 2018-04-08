@@ -4,6 +4,6 @@ Bundle-Name: Phaser Editor - Phaser Code Resources
 Bundle-SymbolicName: phasereditor.resources.phaser.code;singleton:=true
 Bundle-Version: 1.4.0.20170412
 Bundle-Vendor: Arian Fornaris
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-9
 Eclipse-BundleShape: dir
 Automatic-Module-Name: phasereditor.resources.phaser.code

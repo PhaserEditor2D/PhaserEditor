@@ -17,7 +17,7 @@ Require-Bundle: org.eclipse.ui,
  phasereditor.project.core,
  phasereditor.bmpfont.core;bundle-version="1.5.0",
  phasereditor.lic;bundle-version="1.4.4"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-9
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.assetpack.core
 Automatic-Module-Name: phasereditor.assetpack.core

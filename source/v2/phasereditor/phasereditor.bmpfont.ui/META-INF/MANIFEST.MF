@@ -8,7 +8,7 @@ Require-Bundle: org.eclipse.core.runtime,
  phasereditor.ui;bundle-version="1.4.4",
  org.eclipse.swt;bundle-version="3.106.2",
  phasereditor.bmpfont.core;bundle-version="1.5.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-9
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Arian Fornaris
 Export-Package: phasereditor.bmpfont.ui

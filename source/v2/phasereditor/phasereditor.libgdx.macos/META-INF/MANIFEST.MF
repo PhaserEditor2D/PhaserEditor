@@ -4,6 +4,6 @@ Bundle-Name: Phaser Editor - LibGDX MacOS
 Bundle-SymbolicName: phasereditor.libgdx.macos;singleton:=true
 Bundle-Version: 1.4.0.20170412
 Fragment-Host: phasereditor.libgdx;bundle-version="1.3.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-9
 Bundle-Vendor: Arian Fornaris
 Eclipse-PlatformFilter: (osgi.os=macosx)
