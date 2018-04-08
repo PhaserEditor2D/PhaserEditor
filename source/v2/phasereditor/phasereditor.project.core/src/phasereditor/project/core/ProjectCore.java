@@ -148,7 +148,7 @@ public class ProjectCore {
 			try {
 				String order1 = orderMap.get(a);
 				String order2 = orderMap.get(b);
-				int c = new Double(Double.parseDouble(order1)).compareTo(new Double(Double.parseDouble(order2)));
+				int c = Double.valueOf(Double.parseDouble(order1)).compareTo(Double.valueOf(Double.parseDouble(order2)));
 				return c;
 			} catch (Exception e) {
 				return 0;
