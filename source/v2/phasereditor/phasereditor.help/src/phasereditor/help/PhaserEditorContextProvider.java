@@ -13,7 +13,8 @@ public class PhaserEditorContextProvider extends AbstractContextProvider {
 		private static final long serialVersionUID = 1L;
 
 		{
-			put("org.eclipse.wst.jsdt.ui.java_editor_context", "phasereditor.help.javascripteditor");
+			//TODO: #RemovingWST
+			// put("org.eclipse.wst.jsdt.ui.java_editor_context", "phasereditor.help.javascripteditor");
 		}
 	};
 
@@ -33,7 +34,9 @@ public class PhaserEditorContextProvider extends AbstractContextProvider {
 
 	@Override
 	public String[] getPlugins() {
-		return new String[] { "org.eclipse.wst.jsdt.ui" };
+		//TODO: #RemovingWST
+		// return new String[] { "org.eclipse.wst.jsdt.ui" };
+		return new String[] {  };
 	}
 
 }

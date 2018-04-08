@@ -493,7 +493,7 @@ public final class AssetPackModel {
 
 	public String createKey(String prefix) {
 		for (int i = 0; i < 200; i++) {
-			String key = prefix + (i == 0 ? "" : new Integer(i));
+			String key = prefix + (i == 0 ? "" : Integer.valueOf(i));
 			if (!hasKey(key)) {
 				return key;
 			}

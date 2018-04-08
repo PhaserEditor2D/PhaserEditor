@@ -195,6 +195,7 @@ public class PhaserWorkbenchAdvisor extends IDEWorkbenchAdvisor {
 // XXX: just do not load the JS editor at startup, it creates a strange
 // behavior!
 	
+// #RemovingWST
 //	@Override
 //	public void postStartup() {
 //		super.postStartup();
