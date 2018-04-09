@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Phaser Editor" uid="phasereditor.boniatillo.com" id="phasereditor.ide.product" application="phasereditor.ide.application" version="1.5.0.20180307" useFeatures="true" includeLaunchers="true">
+<product name="Phaser Editor" uid="phasereditor.boniatillo.com" id="phasereditor.ide.product" application="phasereditor.ide.application" version="1.5.0.20180409_1" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="icons/about.png"/>
       <text>
-         Phaser Editor 1.5.0.20180307
+         Phaser Editor 1.5.0.20180409_1
 
 Supports Phaser v2.6.2 (built-in)
 
@@ -290,8 +290,8 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <feature id="phasereditor.atlas" version="1.5.0.20180307"/>
       <feature id="phasereditor.core" version="1.5.0.20180307"/>
       <feature id="phasereditor.help.guide" version="1.5.0.20180307"/>
-      <feature id="phasereditor.launcher" version="1.5.0.20180307"/>
-      <feature id="phasereditor.canvas" version="1.5.0.20180307"/>
+      <feature id="phasereditor.launcher" version="1.5.0.20180409_1"/>
+      <feature id="phasereditor.canvas" version="1.5.0.20180409_1"/>
       <feature id="phasereditor.chains" version="1.5.0.20180307"/>
       <feature id="phasereditor.bmpfont" version="1.5.0.20180307"/>
       <feature id="org.eclipse.jgit"/>
