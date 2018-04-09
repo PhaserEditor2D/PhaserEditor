@@ -26,8 +26,10 @@ import java.util.List;
 import phasereditor.canvas.core.AnimationModel;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.BaseSpriteModel;
+import phasereditor.canvas.core.BitmapTextModel;
 import phasereditor.canvas.core.ButtonSpriteModel;
 import phasereditor.canvas.core.GroupModel;
+import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.core.TilemapSpriteModel;
 import phasereditor.canvas.core.WorldModel;
@@ -86,9 +88,23 @@ public interface ITSCodeGeneratorUtils {
 			return "Phaser.TileSprite";
 		}
 
+		if (obj instanceof TextModel) {
+			return "Phaser.Text";
+		}
+		
+		if (obj instanceof BitmapTextModel) {
+			return "Phaser.BitmapText";
+		}
+		
+		if (obj instanceof TilemapSpriteModel) {
+			return "Phaser.Tilemap";
+		}
+		
 		if (obj instanceof GroupModel) {
 			return "Phaser.Group";
 		}
+		
+		
 
 		return "Phaser.Sprite";
 	}
