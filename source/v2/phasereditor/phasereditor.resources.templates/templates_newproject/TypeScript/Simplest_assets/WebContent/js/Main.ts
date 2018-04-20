@@ -1,20 +1,20 @@
-
-var game = new Phaser.Game({{game.width}}, {{game.height}}, {{game.renderer}}, "", this{{game.extra}});
-
-function init() {
-	game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-	game.scale.pageAlignHorizontally = true;
-	game.scale.pageAlignVertically = true;
+class GameScene extends Phaser.Scene {
+			
+	preload() {
+		this.load.image("mono", "assets/mono.png");
+	}
+	
+	create() {
+		this.add.sprite(100, 100, "mono");
+	}
 }
 
-function preload() {
-	game.load.image("mono", "assets/mono.png");	 
-}
+var game = new Phaser.Game({
+	type: Phaser.AUTO,
+    width: 800,
+    height: 600,
+    backgroundColor: '#0d0d0d',
+    scene: GameScene
+});
 
-function create() {
-	game.add.sprite(100, 100, "mono");
-}
 
-function update() {
-	 
-}
