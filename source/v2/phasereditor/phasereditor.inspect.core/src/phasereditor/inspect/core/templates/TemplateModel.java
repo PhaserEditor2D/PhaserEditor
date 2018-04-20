@@ -142,12 +142,11 @@ public class TemplateModel implements IPhaserTemplate {
 		// copy phaser.js
 		Path phaserJs = getParent().getPhaserJs();
 		copyFile(phaserJs, "lib/phaser.js", dstWebContentFolder, monitor);
-		
-		if (_info.isTypescript()) {
-			Path[] typings = getParent().getTypings();
-			for(Path typing : typings) {
-				copyFile(typing, "typings/" + typing.getFileName().toString(), dstWebContentFolder, monitor);
-			}
+
+		// now all projects uses the typescript defs.
+		Path[] tsFiles = getParent().getTypeScriptFiles();
+		for (Path tsfile : tsFiles) {
+			copyFile(tsfile, "typings/" + tsfile.getFileName().toString(), dstWebContentFolder, monitor);
 		}
 	}
 
@@ -164,11 +163,11 @@ public class TemplateModel implements IPhaserTemplate {
 					sb.append(line + "\n");
 				}
 			}
-			
+
 			String content = sb.toString();
-			
+
 			List<String> params = _info.getEval().get(filename);
-			
+
 			for (String param : params) {
 				String value = values.get(param);
 				content = content.replace("{{" + param + "}}", value);

@@ -33,21 +33,18 @@ public class TemplatesModel {
 	private List<TemplateCategoryModel> _categories;
 	private Path _templatesFolder;
 	private Path _phaserJs;
-	private Path[] _typings;
+	private Path[] _tsFiles;
 
 	public TemplatesModel(Path templatesFolder) throws IOException {
 		_categories = new ArrayList<>();
 		_templatesFolder = templatesFolder;
 		_phaserJs = InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN,
-				"phaser-master/build/phaser.js");
+				"phaser-master/dist/phaser.js");
 
-		_typings = new Path[] {
+		_tsFiles = new Path[] {
 
 				InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN,
-						"phaser-master/typescript/phaser.comments.d.ts"),
-				InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN,
-						"phaser-master/typescript/pixi.comments.d.ts"),
-				InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN, "phaser-master/typescript/p2.d.ts")
+						"phaser-master/typescript/phaser.d.ts")
 
 		};
 
@@ -65,9 +62,9 @@ public class TemplatesModel {
 	public Path getPhaserJs() {
 		return _phaserJs;
 	}
-	
-	public Path[] getTypings() {
-		return _typings;
+
+	public Path[] getTypeScriptFiles() {
+		return _tsFiles;
 	}
 
 	private void load() throws IOException {

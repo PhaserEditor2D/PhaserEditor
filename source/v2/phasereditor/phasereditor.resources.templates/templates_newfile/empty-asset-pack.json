@@ -1,9 +1,8 @@
 {	
     "meta": {
-        "generated": "1401380327373",
-        "version": "1.0",
+        "version": "2.0",
         "app": "Phaser Editor",
-        "url": "http://phasereditor.boniatillo.com",
-        "copyright": "Arian Fornaris (boniatillo.com) 2016"
+        "url": "https://phasereditor2d.com",
+        "copyright": "Arian Fornaris (c) 2016-2018"
     }
 }

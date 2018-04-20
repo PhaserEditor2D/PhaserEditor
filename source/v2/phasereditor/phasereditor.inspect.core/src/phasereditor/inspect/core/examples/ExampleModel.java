@@ -80,7 +80,7 @@ public class ExampleModel implements IPhaserTemplate {
 		_info.setDescription("Official Phaser example.");
 		_mainFilePath = examples.getExamplesRepoPath().resolve(category.getName().toLowerCase()).resolve(mainFile);
 		_phaserBuildFolder = InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN,
-				"phaser-master/build/");
+				"phaser-master/dist/");
 		_phaserCustomFolder = InspectCore.getBundleFile(InspectCore.RESOURCES_METADATA_PLUGIN, "phaser-custom/");
 	}
 
