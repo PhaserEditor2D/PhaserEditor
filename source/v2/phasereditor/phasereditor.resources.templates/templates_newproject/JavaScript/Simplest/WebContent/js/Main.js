@@ -1,21 +1,29 @@
 
-var game = new Phaser.Game({{game.width}}, {{game.height}}, {{game.renderer}}, "", this{{game.extra}});
-
-function init() {
-	game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-	game.scale.pageAlignHorizontally = true;
-	game.scale.pageAlignVertically = true;
-}
-
 function preload() {
-	
+
 }
 
 function create() {
-	game.stage.backgroundColor = 0xffffff;
-	game.add.text(300, 250, "hello world!");
+	this.add.text(300, 250, "hello world!", { fill: "#000"});
 }
 
 function update() {
-	
+
 }
+
+
+var game = new Phaser.Game({
+	type: {{game.renderer}},
+    width: {{game.width}},
+    height: {{game.height}},
+    backgroundColor: '#fff',
+    scene: {
+    	preload: preload,
+    	create: create,
+    	update: update
+    }
+});
+
+
+
+

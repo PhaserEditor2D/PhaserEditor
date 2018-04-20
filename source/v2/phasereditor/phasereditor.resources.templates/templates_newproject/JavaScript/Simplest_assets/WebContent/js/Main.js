@@ -1,20 +1,31 @@
 
-var game = new Phaser.Game({{game.width}}, {{game.height}}, {{game.renderer}}, "", this{{game.extra}});
+function update() {
 
-function init() {
-	game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-	game.scale.pageAlignHorizontally = true;
-	game.scale.pageAlignVertically = true;
 }
 
+
 function preload() {
-	game.load.image("mono", "assets/mono.png");
+	this.load.image("mono", "assets/mono.png");
 }
 
 function create() {
-	game.add.sprite(100, 100, "mono");
+	this.add.sprite(100, 100, "mono");
 }
 
 function update() {
 
 }
+
+
+var game = new Phaser.Game({
+	type: {{game.renderer}},
+    width: {{game.width}},
+    height: {{game.height}},
+    backgroundColor: '#fff',
+    scene: {
+    	preload: preload,
+    	create: create,
+    	update: update
+    }
+});
+

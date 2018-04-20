@@ -4,7 +4,7 @@
 		"email": "developers@boniatillo.com",
 		"website": "phasereditor.boniatillo.com",
 	},
-	"mainFile": "index.html",
+	"mainFile": "js/Main.js",
 	"eval" : {
 		"index.html" : ["title"], 
 		"js/Main.js" : ["game.width", "game.height", "game.renderer", "game.extra"],
