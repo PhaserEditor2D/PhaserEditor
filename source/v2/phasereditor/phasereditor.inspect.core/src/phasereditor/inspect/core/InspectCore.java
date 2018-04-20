@@ -53,7 +53,6 @@ public class InspectCore {
 	public static final String RESOURCES_PHASER_CODE_PLUGIN = "phasereditor.resources.phaser.code";
 	public static final String RESOURCES_EXECUTABLES_PLUGIN = "phasereditor.resources.executables";
 	public static final String RESOURCES_TEMPLATES_PLUGIN = "phasereditor.resources.templates";
-	public static final String RESOURCES_JSLIBS_PLUGIN = "phasereditor.resources.jslibs";
 
 	public static final String PHASER_VERSION;
 
@@ -122,7 +121,7 @@ public class InspectCore {
 		return _projectTemplates;
 	}
 
-	//TODO: removing wst
+	//TODO: #RemovingWST
 //	public static String getFullName(IMember member) {
 //		String name;
 //

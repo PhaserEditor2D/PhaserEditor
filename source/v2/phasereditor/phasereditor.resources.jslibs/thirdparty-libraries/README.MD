@@ -1,1 +1,0 @@
-Transformation of the Tern JSON definitions to Phaser Editor API javascripts.
