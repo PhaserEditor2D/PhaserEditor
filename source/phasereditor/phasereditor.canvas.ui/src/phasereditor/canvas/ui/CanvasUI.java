@@ -403,7 +403,7 @@ public class CanvasUI {
 
 		operations.add(new DeleteNodeOperation(oldModel.getId()));
 		operations.add(new AddNodeOperation(newData, oldModel.getIndex(), oldModel.getX(), oldModel.getY(),
-				oldModel.getParent().getId()));
+				oldModel.getParent().getId(), false));
 	}
 
 	public static void clearCanvasScreenshot(IFile file) {
