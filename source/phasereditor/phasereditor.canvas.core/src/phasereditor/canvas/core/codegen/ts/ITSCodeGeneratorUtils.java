@@ -52,10 +52,11 @@ public interface ITSCodeGeneratorUtils {
 
 	default public void generatePublicFieldDeclaration(JSLikeCanvasCodeGenerator generator, BaseObjectModel obj) {
 		if (!(obj instanceof WorldModel) && obj.isEditorGenerate()) {
-			if (obj.isEditorPublic()) {
+			if (obj.isEditorField()) {
 				String name = generator.getVarName(obj);
 				String camel = JSLikeCanvasCodeGenerator.getPublicFieldName(name);
-				generator.line("public " + camel + " : " + getObjectType(obj) + ";");
+				String visibility = obj.isEditorPublic() ? "public" : "private";
+				generator.line(visibility + " " + camel + " : " + getObjectType(obj) + ";");
 
 				if (obj instanceof TilemapSpriteModel) {
 					generator.line("public " + camel + "_layer : Phaser.TilemapLayer;");
@@ -91,20 +92,18 @@ public interface ITSCodeGeneratorUtils {
 		if (obj instanceof TextModel) {
 			return "Phaser.Text";
 		}
-		
+
 		if (obj instanceof BitmapTextModel) {
 			return "Phaser.BitmapText";
 		}
-		
+
 		if (obj instanceof TilemapSpriteModel) {
 			return "Phaser.Tilemap";
 		}
-		
+
 		if (obj instanceof GroupModel) {
 			return "Phaser.Group";
 		}
-		
-		
 
 		return "Phaser.Sprite";
 	}

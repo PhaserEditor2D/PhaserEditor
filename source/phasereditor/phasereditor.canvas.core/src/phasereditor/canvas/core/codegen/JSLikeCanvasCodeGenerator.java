@@ -135,7 +135,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 			int mark2 = length();
 
 			if (mark1 < mark2) {
-				line("// public fields");
+				line("// fields");
 				line();
 				append(cut(mark1, mark2));
 			}
@@ -156,7 +156,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 
 	protected void generatePublicField(BaseObjectModel obj) {
 		if (!(obj instanceof WorldModel) && obj.isEditorGenerate()) {
-			if (obj.isEditorPublic()) {
+			if (obj.isEditorField()) {
 				String name = getVarName(obj);
 				String localName = getLocalVarName(obj);
 				String camel = getPublicFieldName(name);
@@ -307,7 +307,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 			}
 		}
 
-		if (mark1 < mark2 || model.isEditorPublic() || model.isPrefabInstance() || isPreloadSprite) {
+		if (mark1 < mark2 || model.isEditorField() || model.isPrefabInstance() || isPreloadSprite) {
 			append("var " + getLocalVarName(model) + " = ");
 		}
 

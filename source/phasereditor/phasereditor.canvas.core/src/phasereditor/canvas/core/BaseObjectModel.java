@@ -51,6 +51,7 @@ public abstract class BaseObjectModel {
 	private static final double DEF_ALPHA = 1;
 	private static final boolean DEF_EDITOR_GENERATE = true;
 	public static final boolean DEF_EDITOR_PUBLIC = false;
+	public static final boolean DEF_EDITOR_FIELD = false;
 
 	public static final String PROPSET_POSITION = "position";
 	public static final String PROPSET_ANGLE = "angle";
@@ -72,6 +73,7 @@ public abstract class BaseObjectModel {
 	private boolean _editorPick;
 	private boolean _editorGenerate;
 	private boolean _editorPublic;
+	private boolean _editorField;
 	private boolean _editorShow;
 
 	private String _id;
@@ -107,6 +109,7 @@ public abstract class BaseObjectModel {
 		_editorPick = DEF_EDITOR_PICK;
 		_editorGenerate = DEF_EDITOR_GENERATE;
 		_editorPublic = DEF_EDITOR_PUBLIC;
+		_editorField = DEF_EDITOR_FIELD;
 		_editorShow = true;
 
 		_name = DEF_NAME;
@@ -231,6 +234,14 @@ public abstract class BaseObjectModel {
 
 	public void setEditorPublic(boolean editorPublic) {
 		_editorPublic = editorPublic;
+	}
+	
+	public boolean isEditorField() {
+		return _editorField;
+	}
+	
+	public void setEditorField(boolean editorField) {
+		_editorField = editorField;
 	}
 
 	public boolean isEditorPick() {
@@ -394,6 +405,10 @@ public abstract class BaseObjectModel {
 		_editorPick = jsonInfo.optBoolean("editorPick", DEF_EDITOR_PICK);
 		_editorGenerate = jsonInfo.optBoolean("editorGenerate", DEF_EDITOR_GENERATE);
 		_editorPublic = jsonInfo.optBoolean("editorPublic", DEF_EDITOR_PUBLIC);
+		_editorField = jsonInfo.optBoolean("editorField", DEF_EDITOR_FIELD);
+		if (_editorPublic) {
+			_editorField = true;
+		}
 		_editorShow = jsonInfo.optBoolean("editorShow", true);
 
 		{
@@ -520,6 +535,7 @@ public abstract class BaseObjectModel {
 		jsonInfo.put("editorPick", _editorPick, DEF_EDITOR_PICK);
 		jsonInfo.put("editorGenerate", _editorGenerate, DEF_EDITOR_GENERATE);
 		jsonInfo.put("editorPublic", _editorPublic, DEF_EDITOR_PUBLIC);
+		jsonInfo.put("editorField", _editorField, DEF_EDITOR_FIELD);
 		jsonInfo.put("editorShow", _editorShow, true);
 
 		boolean prefabInstance = isPrefabInstance();

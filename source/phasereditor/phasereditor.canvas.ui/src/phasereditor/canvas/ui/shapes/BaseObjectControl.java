@@ -49,6 +49,7 @@ import phasereditor.canvas.ui.editors.grid.PGridOverrideProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
 import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
 import phasereditor.inspect.core.InspectCore;
+import phasereditor.project.core.codegen.SourceLang;
 
 /**
  * @author arian
@@ -203,7 +204,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	@SuppressWarnings("static-method")
 	protected void initPrefabPGridModel(List<String> validProperties) {
 		validProperties.addAll(Arrays.asList(
-				//@formatter:off
+		//@formatter:off
 				BaseObjectModel.PROPSET_POSITION, 
 				BaseObjectModel.PROPSET_ANGLE, 
 				BaseObjectModel.PROPSET_SCALE, 
@@ -454,7 +455,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 				return getModel().isPrefabReadOnly(BaseObjectModel.PROPSET_ALPHA);
 			}
 		};
-		
+
 		_renderable_property = new PGridBooleanProperty(getId(), "renderable", help("PIXI.DisplayObject.renderable")) {
 			@Override
 			public Boolean getValue() {
@@ -479,8 +480,9 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 				return getModel().isPrefabReadOnly(BaseObjectModel.PROPSET_RENDERABLE);
 			}
 		};
-		
-		_fixedToCamera_property = new PGridBooleanProperty(getId(), "fixedToCamera", help("Phaser.Sprite.fixedToCamera")) {
+
+		_fixedToCamera_property = new PGridBooleanProperty(getId(), "fixedToCamera",
+				help("Phaser.Sprite.fixedToCamera")) {
 			@Override
 			public Boolean getValue() {
 				return Boolean.valueOf(getModel().isFixedToCamera());
@@ -505,7 +507,6 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			}
 		};
 
-
 		displaySection.add(_name_property);
 		displaySection.add(_x_property);
 		displaySection.add(_y_property);
@@ -514,7 +515,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 		displaySection.add(_scale_y_property);
 		displaySection.add(_pivot_x_property);
 		displaySection.add(_pivot_y_property);
-		displaySection.add(_alpha_property);		
+		displaySection.add(_alpha_property);
 		displaySection.add(_fixedToCamera_property);
 		displaySection.add(_renderable_property);
 	}
@@ -545,8 +546,34 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 					}
 				});
 
+		PGridBooleanProperty editorField_property = new PGridBooleanProperty(getId(), "field",
+				"If true, a field reference to the object is generated.") {
+			@Override
+			public Boolean getValue() {
+				return Boolean.valueOf(getModel().isEditorField());
+			}
+
+			@Override
+			public void setValue(Boolean value, boolean notify) {
+				boolean b = value.booleanValue();
+				getModel().setEditorField(b);
+				if (!b) {
+					getModel().setEditorPublic(false);
+				}
+				if (notify) {
+					updateFromPropertyChange();
+				}
+			}
+
+			@Override
+			public boolean isModified() {
+				return getModel().isEditorField() != BaseObjectModel.DEF_EDITOR_FIELD;
+			}
+		};
+		section.add(editorField_property);
+
 		PGridBooleanProperty editorPublic_property = new PGridBooleanProperty(getId(), "public",
-				"If true the object is set 'public' in the generated code.") {
+				"If true, a public field reference to the object is generated.") {
 			@Override
 			public Boolean getValue() {
 				return Boolean.valueOf(getModel().isEditorPublic());
@@ -554,7 +581,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 			@Override
 			public void setValue(Boolean value, boolean notify) {
-				getModel().setEditorPublic(value.booleanValue());
+				boolean b = value.booleanValue();
+				getModel().setEditorPublic(b);
+				if (b) {
+					getModel().setEditorField(true);
+				}
 				if (notify) {
 					updateFromPropertyChange();
 				}
@@ -563,6 +594,11 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 			@Override
 			public boolean isModified() {
 				return getModel().isEditorPublic() != BaseObjectModel.DEF_EDITOR_PUBLIC;
+			}
+
+			@Override
+			public boolean isActive() {
+				return getCanvas().getSettingsModel().getLang() == SourceLang.TYPE_SCRIPT;
 			}
 		};
 		section.add(editorPublic_property);
@@ -654,7 +690,7 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	public PGridBooleanProperty getEditorPick_property() {
 		return _editorPick_property;
 	}
-	
+
 	public PGridOverrideProperty getOverride_property() {
 		return _override_property;
 	}
@@ -693,7 +729,6 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 	public abstract double getTextureHeight();
 
-
 	public double getTextureBottom() {
 		return getY() + getTextureHeight();
 	}
@@ -707,8 +742,8 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 	/**
 	 * Rebuild the model and nodes.
 	 * 
-	 * @return If the structure changed. Needed for example t refresh the
-	 *         outline view.
+	 * @return If the structure changed. Needed for example t refresh the outline
+	 *         view.
 	 */
 	public boolean rebuild() {
 		rebuildFromPrefab();
