@@ -126,26 +126,6 @@ public class CreateBehavior {
 
 			MessageDialog.openInformation(_canvas.getShell(), "Not Allowed",
 					"A sprite prefab only supports one object.");
-
-			/*
-			 * 
-			 * Object first = selection.getFirstElement();
-			 * 
-			 * if (!(first instanceof IAssetFrameModel || first instanceof ImageAssetModel))
-			 * { return; }
-			 * 
-			 * 
-			 * 
-			 * IObjectNode node = (IObjectNode) _canvas.getWorldNode().getChildren().get(0);
-			 * if (node instanceof ISpriteNode) { _canvas.getHandlerBehavior().clear();
-			 * 
-			 * CompositeOperation operations = new CompositeOperation();
-			 * CanvasUI.changeSpriteTexture(node, first, operations); operations.add(new
-			 * SelectOperation(node.getModel().getId()));
-			 * _canvas.getUpdateBehavior().executeOperations(operations); }
-			 * 
-			 */
-
 			return;
 		}
 
