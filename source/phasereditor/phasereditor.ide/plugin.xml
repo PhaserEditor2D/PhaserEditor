@@ -114,6 +114,12 @@
                relationship="stack"
                relative="phasereditor.chains.ui.views.chains">
          </view>
+         <view
+               id="org.eclipse.egit.ui.RepositoriesView"
+               minimized="false"
+               relationship="stack"
+               relative="org.eclipse.ui.views.ProblemView">
+         </view>
          <viewShortcut
                id="phasereditor.ui.preview">
          </viewShortcut>
