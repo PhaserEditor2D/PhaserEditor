@@ -37,9 +37,7 @@ import javafx.scene.Node;
 import javafx.scene.input.DragEvent;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.FrameData;
-import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
-import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
 import phasereditor.canvas.core.BaseObjectModel;
@@ -49,7 +47,6 @@ import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.Prefab;
 import phasereditor.canvas.core.TextModel;
-import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
@@ -60,7 +57,6 @@ import phasereditor.canvas.ui.shapes.CanvasObjectFactory;
 import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
-import phasereditor.canvas.ui.shapes.ISpriteNode;
 import phasereditor.lic.LicCore;
 
 /**
@@ -127,21 +123,28 @@ public class CreateBehavior {
 		// handle when dropping into a sprite prefab (texture substitution)
 
 		if (_canvas.getEditor().getModel().getType() == CanvasType.SPRITE) {
-			Object first = selection.getFirstElement();
 
-			if (!(first instanceof IAssetFrameModel || first instanceof ImageAssetModel)) {
-				return;
-			}
+			MessageDialog.openInformation(_canvas.getShell(), "Not Allowed",
+					"A sprite prefab only supports one object.");
 
-			IObjectNode node = (IObjectNode) _canvas.getWorldNode().getChildren().get(0);
-			if (node instanceof ISpriteNode) {
-				_canvas.getHandlerBehavior().clear();
-
-				CompositeOperation operations = new CompositeOperation();
-				CanvasUI.changeSpriteTexture(node, first, operations);
-				operations.add(new SelectOperation(node.getModel().getId()));
-				_canvas.getUpdateBehavior().executeOperations(operations);
-			}
+			/*
+			 * 
+			 * Object first = selection.getFirstElement();
+			 * 
+			 * if (!(first instanceof IAssetFrameModel || first instanceof ImageAssetModel))
+			 * { return; }
+			 * 
+			 * 
+			 * 
+			 * IObjectNode node = (IObjectNode) _canvas.getWorldNode().getChildren().get(0);
+			 * if (node instanceof ISpriteNode) { _canvas.getHandlerBehavior().clear();
+			 * 
+			 * CompositeOperation operations = new CompositeOperation();
+			 * CanvasUI.changeSpriteTexture(node, first, operations); operations.add(new
+			 * SelectOperation(node.getModel().getId()));
+			 * _canvas.getUpdateBehavior().executeOperations(operations); }
+			 * 
+			 */
 
 			return;
 		}
