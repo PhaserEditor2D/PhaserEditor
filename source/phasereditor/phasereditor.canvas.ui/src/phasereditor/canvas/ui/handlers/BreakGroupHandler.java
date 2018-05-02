@@ -110,7 +110,7 @@ public class BreakGroupHandler extends AbstractHandler {
 				model.write(data, true);
 				double x = groupx + model.getX();
 				double y = groupy + model.getY();
-				operations.add(new AddNodeOperation(data, i, x, y, parentId));
+				operations.add(new AddNodeOperation(data, i, x, y, parentId, false));
 				childrenSelection.add(inode.getModel().getId());
 				i++;
 			}

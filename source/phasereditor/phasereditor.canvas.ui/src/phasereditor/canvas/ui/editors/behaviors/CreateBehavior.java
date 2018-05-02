@@ -328,7 +328,7 @@ public class CreateBehavior {
 			model.write(groupData, true);
 		}
 		// add new group
-		operations.add(new AddNodeOperation(groupData, -1, 0, 0, parentModel.getId()));
+		operations.add(new AddNodeOperation(groupData, -1, 0, 0, parentModel.getId(), true));
 
 		// add children
 
@@ -337,7 +337,7 @@ public class CreateBehavior {
 			JSONObject data = new JSONObject();
 			BaseObjectModel model = node.getModel();
 			model.write(data, true);
-			operations.add(new AddNodeOperation(data, i, model.getX(), model.getY(), newGroupId));
+			operations.add(new AddNodeOperation(data, i, model.getX(), model.getY(), newGroupId, false));
 			i++;
 		}
 		operations.add(new SelectOperation(newGroupId));
@@ -457,7 +457,7 @@ public class CreateBehavior {
 			selection.add(copy.getId());
 			double x2 = mouse.stepX(x + copy.getX(), false);
 			double y2 = mouse.stepY(y + copy.getY(), false);
-			AddNodeOperation op = new AddNodeOperation(copy.toJSON(false), i, x2, y2, pasteIntoThis.getId());
+			AddNodeOperation op = new AddNodeOperation(copy.toJSON(false), i, x2, y2, pasteIntoThis.getId(), false);
 			operations.add(op);
 			i++;
 

@@ -212,7 +212,7 @@ public abstract class AbstractMorphHandler<T extends BaseObjectModel> extends Ab
 		@SuppressWarnings("unlikely-arg-type")
 		int i = parent.getNode().getChildren().indexOf(srcNode);
 		operations.add(new AddNodeOperation(dstModel.toJSON(false), i, dstModel.getX(), dstModel.getY(),
-				parent.getModel().getId()));
+				parent.getModel().getId(), false));
 		return dstModel.getId();
 	}
 
