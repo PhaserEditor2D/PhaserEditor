@@ -92,10 +92,6 @@ public class NewPage_StateSettings extends WizardPage {
 		_text.setText("Phaser.State");
 		_text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		_btnAutoLoad = new Button(container, SWT.CHECK);
-		_btnAutoLoad.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-		_btnAutoLoad.setText("Auto-load assets. Disable this if the assets are loaded in a previous Preloader state.");
-
 		Label lblCodeFormat = new Label(container, SWT.NONE);
 		lblCodeFormat.setText("Code Format");
 
@@ -103,6 +99,11 @@ public class NewPage_StateSettings extends WizardPage {
 		Combo combo = _langComboViewer.getCombo();
 		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
+		_btnAutoLoad = new Button(container, SWT.CHECK);
+		_btnAutoLoad.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		_btnAutoLoad.setText("Auto-load assets. Disable this if the assets are loaded in a previous Preloader state.");
+
+		
 		Label lblScaleMode = new Label(container, SWT.NONE);
 		lblScaleMode.setText("Scale Mode");
 

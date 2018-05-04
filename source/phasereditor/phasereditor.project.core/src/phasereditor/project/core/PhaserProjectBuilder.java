@@ -85,7 +85,7 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 
 	@Override
 	protected void startupOnInitialize() {
-		super.startupOnInitialize();
+		super.startupOnInitialize();		
 
 		IProject project = getProject();
 

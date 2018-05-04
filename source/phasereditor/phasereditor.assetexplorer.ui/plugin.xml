@@ -38,6 +38,12 @@
             allPopups="false"
             locationURI="toolbar:phasereditor.assetpack.views.assetExplorer?before=additions">
          <command
+               commandId="org.eclipse.ui.project.cleanAction"
+               icon="platform:/plugin/phasereditor.ui/icons/arrow_refresh.png"
+               label="Re-build the internal representation of the assets."
+               style="push">
+         </command>
+         <command
                commandId="phasereditor.ui.commands.showInPreview"
                icon="platform:/plugin/phasereditor.ui/icons/monitor.png"
                style="push"
