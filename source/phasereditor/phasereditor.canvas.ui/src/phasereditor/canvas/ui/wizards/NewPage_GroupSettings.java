@@ -60,6 +60,7 @@ public class NewPage_GroupSettings extends WizardPage {
 	private EditorSettings _settings;
 	private Button _btnGenerateTheCorrspondant;
 	private boolean _firstTime = true;
+	private boolean _generateCanvasFile = true;
 
 	public NewPage_GroupSettings() {
 		super("group.settings.page");
@@ -120,7 +121,11 @@ public class NewPage_GroupSettings extends WizardPage {
 	}
 
 	public boolean isGenerateCanvasFile() {
-		return _btnGenerateTheCorrspondant.getSelection();
+		return _generateCanvasFile;
+	}
+
+	public void setGenerateCanvasFile(boolean generateCanvasFile) {
+		_generateCanvasFile = generateCanvasFile;
 	}
 
 	private void afterCreateWidgets() {
@@ -167,7 +172,7 @@ public class NewPage_GroupSettings extends WizardPage {
 		support.firePropertyChange(property, true, false);
 	}
 
-	@SuppressWarnings("all")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
@@ -179,6 +184,13 @@ public class NewPage_GroupSettings extends WizardPage {
 				.observe(_langComboViewer);
 		IObservableValue settingslang_selfObserveValue = BeanProperties.value("settings.lang").observe(_self);
 		bindingContext.bindValue(observeSingleSelection_langComboViewer, settingslang_selfObserveValue, null, null);
+		//
+		IObservableValue observeSelection_btnGenerateTheCorrspondantObserveWidget = WidgetProperties.selection()
+				.observe(_btnGenerateTheCorrspondant);
+		IObservableValue generateCanvasFile_selfObserveValue = BeanProperties.value("generateCanvasFile")
+				.observe(_self);
+		bindingContext.bindValue(observeSelection_btnGenerateTheCorrspondantObserveWidget,
+				generateCanvasFile_selfObserveValue, null, null);
 		//
 		return bindingContext;
 	}

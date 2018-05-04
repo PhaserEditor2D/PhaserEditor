@@ -65,6 +65,7 @@ public class NewPage_StateSettings extends WizardPage {
 	private StateSettings _stateSettings;
 	private ColorButtonSupport _bgColorSupport;
 	private boolean _firstTime = true;
+	private boolean _generateCanvasFile = true;
 
 	public NewPage_StateSettings() {
 		super("group.settings.page");
@@ -162,7 +163,11 @@ public class NewPage_StateSettings extends WizardPage {
 	}
 
 	public boolean isGenerateCanvasFile() {
-		return _btnGenerateTheCorrspondant.getSelection();
+		return _generateCanvasFile;
+	}
+	
+	public void setGenerateCanvasFile(boolean generateCanvasFile) {
+		_generateCanvasFile = generateCanvasFile;
 	}
 
 	private void afterCreateWidgets() {
@@ -176,6 +181,8 @@ public class NewPage_StateSettings extends WizardPage {
 		});
 		_bgColorSupport.setColor(_stateSettings.getStageBackgroundColor());
 		_bgColorSupport.updateContent();
+		
+		
 	}
 
 	@Override
@@ -275,6 +282,10 @@ public class NewPage_StateSettings extends WizardPage {
 		IObservableValue observeSelection_btnAutoLoadObserveWidget = WidgetProperties.selection().observe(_btnAutoLoad);
 		IObservableValue stateSettingsautoLoad_selfObserveValue = BeanProperties.value("stateSettings.autoLoad").observe(_self);
 		bindingContext.bindValue(observeSelection_btnAutoLoadObserveWidget, stateSettingsautoLoad_selfObserveValue, null, null);
+		//
+		IObservableValue observeSelection_btnGenerateTheCorrspondantObserveWidget = WidgetProperties.selection().observe(_btnGenerateTheCorrspondant);
+		IObservableValue generateCanvasFile_selfObserveValue = BeanProperties.value("generateCanvasFile").observe(_self);
+		bindingContext.bindValue(observeSelection_btnGenerateTheCorrspondantObserveWidget, generateCanvasFile_selfObserveValue, null, null);
 		//
 		return bindingContext;
 	}

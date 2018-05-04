@@ -84,6 +84,7 @@ public class NewPage_SpriteSettings extends WizardPage {
 	private FilteredTree2 _filteredTree;
 	private Object _selectedAsset;
 	private PreviewComp _previewComp;
+	private boolean _generateCanvasFile;
 
 	public NewPage_SpriteSettings() {
 		super("group.settings.page");
@@ -154,7 +155,7 @@ public class NewPage_SpriteSettings extends WizardPage {
 	}
 
 	public boolean isGenerateCanvasFile() {
-		return _btnEditFileInCanvasEditor.getSelection();
+		return _generateCanvasFile;
 	}
 
 	private void afterCreateWidgets() {
@@ -209,6 +210,7 @@ public class NewPage_SpriteSettings extends WizardPage {
 		setErrorMessage(null);
 
 		_selectedAsset = _assetsViewer.getStructuredSelection().getFirstElement();
+		_generateCanvasFile = _btnEditFileInCanvasEditor.getSelection();
 
 		String type = _typeCombo.getText();
 

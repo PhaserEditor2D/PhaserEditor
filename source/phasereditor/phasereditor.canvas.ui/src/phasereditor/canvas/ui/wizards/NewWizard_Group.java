@@ -52,10 +52,10 @@ public class NewWizard_Group extends NewWizard_Base {
 	}
 
 	@Override
-	public void addPages() {
-		super.addPages();
+	protected void addMiddlePages() {
 		_settingsPage = new NewPage_GroupSettings();
 		_settingsPage.setSettings(getModel().getSettings());
+
 		addPage(_settingsPage);
 	}
 }

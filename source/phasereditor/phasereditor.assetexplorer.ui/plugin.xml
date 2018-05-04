@@ -40,8 +40,9 @@
          <command
                commandId="org.eclipse.ui.project.cleanAction"
                icon="platform:/plugin/phasereditor.ui/icons/arrow_refresh.png"
-               label="Re-build the internal representation of the assets."
-               style="push">
+               label="Re-build assets."
+               style="push"
+               tooltip="Re-build the internal representation of the assets.">
          </command>
          <command
                commandId="phasereditor.ui.commands.showInPreview"
