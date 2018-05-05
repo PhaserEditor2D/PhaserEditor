@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.IPath;
 
 import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.core.CanvasFile;
+import phasereditor.canvas.core.CanvasFileDataCache;
 import phasereditor.project.core.IProjectBuildParticipant;
 import phasereditor.project.core.IResourceDeltaVisitor2;
 import phasereditor.project.core.ProjectCore;
@@ -25,7 +26,9 @@ public class CanvasScreenshotProjectBuildParticipant implements IProjectBuildPar
 
 	@Override
 	public void startupOnInitialize(IProject project, Map<String, Object> env) {
-		List<CanvasFile> cfiles = CanvasCore.getCanvasFileCache().getProjectData(project);
+		CanvasFileDataCache cache = CanvasCore.getCanvasFileCache();
+		List<CanvasFile> data = cache.getProjectData(project);
+		List<CanvasFile> cfiles = data;
 		for (CanvasFile cfile : cfiles) {
 			CanvasUI.getCanvasScreenshotFile(cfile.getFile(), true);
 		}
