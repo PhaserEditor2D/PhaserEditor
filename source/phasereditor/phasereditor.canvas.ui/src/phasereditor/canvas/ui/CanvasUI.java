@@ -28,7 +28,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -45,7 +44,6 @@ import javax.imageio.ImageIO;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.QualifiedName;
@@ -77,7 +75,6 @@ import javafx.embed.swt.FXCanvas;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.WritableImage;
@@ -107,7 +104,6 @@ import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.Prefab;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
-import phasereditor.canvas.ui.editors.behaviors.SelectionBehavior;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.DeleteNodeOperation;
@@ -453,6 +449,7 @@ public class CanvasUI {
 
 			return writeTo;
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 	}
@@ -478,51 +475,50 @@ public class CanvasUI {
 			model.read(new JSONObject(new JSONTokener(contents)));
 			GroupControl worldControl = new GroupControl(null, model.getWorld());
 			GroupNode node = worldControl.getNode();
+			node.setBackground(
+					new Background(new BackgroundFill(Color.TRANSPARENT, new CornerRadii(0), new Insets(0))));
 
 			Scene scene = new Scene(node);
+			scene.getRoot().applyCss();
+			scene.getRoot().layout();
 
 			Display.getDefault().syncExec(new Runnable() {
 
 				@Override
 				public void run() {
-
 					try {
-						Method m = Scene.class.getDeclaredMethod("doCSSLayoutSyncForSnapshot", Node.class);
-						m.setAccessible(true);
-						m.invoke(scene, node);
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
+						SnapshotParameters params = new SnapshotParameters();
+						params.setFill(Color.TRANSPARENT);
 
-					SnapshotParameters params = new SnapshotParameters();
-					params.setFill(Color.TRANSPARENT);
-					node.setBackground(
-							new Background(new BackgroundFill(Color.TRANSPARENT, new CornerRadii(0), new Insets(0))));
+						Bounds b = node.getBoundsInLocal();
 
-					Bounds b = SelectionBehavior.buildSelectionBounds(node.getChildren(), node);
+						if (b != null) {
+							// out.println("Bounds: " + b);
+							double f = 1;
+							double x = b.getMinX();
+							double y = b.getMinY();
+							double w = b.getWidth();
+							double h = b.getHeight();
 
-					if (b != null) {
-						// out.println("Bounds: " + b);
-						double f = 1;
-						double x = b.getMinX();
-						double y = b.getMinY();
-						double w = b.getWidth();
-						double h = b.getHeight();
+							double max = Math.max(w, h);
+							if (max > maxSize) {
+								f = maxSize / max;
+							}
 
-						double max = Math.max(w, h);
-						if (max > maxSize) {
-							f = maxSize / max;
+							params.setTransform(new Scale(f, f, x, y));
+							params.setViewport(new Rectangle2D(x, y, w * f, h * f));
 						}
 
-						params.setTransform(new Scale(f, f, x, y));
-						params.setViewport(new Rectangle2D(x, y, w * f, h * f));
+						WritableImage image = node.snapshot(params, null);
+						result[0] = image;
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 
-					WritableImage image = node.snapshot(params, null);
-					result[0] = image;
 				}
 			});
-		} catch (IOException | CoreException e) {
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

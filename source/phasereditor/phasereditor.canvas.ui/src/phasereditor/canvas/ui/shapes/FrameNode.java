@@ -25,7 +25,6 @@ import org.eclipse.core.resources.IFile;
 
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import phasereditor.assetpack.core.FrameData;
@@ -39,11 +38,12 @@ import phasereditor.ui.ImageCache;
 public class FrameNode extends Pane {
 
 	private ImageView _imageView;
+	private boolean _headless;
 
-	public FrameNode(IAssetFrameModel frameModel) {
-		IFile file = frameModel.getImageFile();
-		Image image = ImageCache.getFXImage(file);
-		_imageView = new ImageView(image);
+	public FrameNode(IAssetFrameModel frameModel, boolean headless) {
+		_headless = headless;
+		
+		_imageView = new ImageView();
 
 		getChildren().add(_imageView);
 
@@ -69,7 +69,7 @@ public class FrameNode extends Pane {
 
 		IFile file = frameModel.getImageFile();
 
-		_imageView.setImage(ImageCache.getFXImage(file));
+		_imageView.setImage(ImageCache.getFXImage(file, !_headless));
 
 		_imageView.relocate(frame.dst.x, frame.dst.y);
 		_imageView.setViewport(new Rectangle2D(frame.src.x, frame.src.y, frame.src.width, frame.src.height));

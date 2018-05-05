@@ -31,7 +31,7 @@ public class ImageSpriteNode extends FrameNode implements ISpriteNode {
 	private ImageSpriteControl _control;
 
 	ImageSpriteNode(ImageSpriteControl control) {
-		super(control.getModel().getAssetKey());
+		super(control.getModel().getAssetKey(), control.isHeadless());
 		_control = control;
 	}
 

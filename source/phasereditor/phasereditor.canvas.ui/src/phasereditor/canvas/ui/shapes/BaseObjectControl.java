@@ -87,6 +87,10 @@ public abstract class BaseObjectControl<T extends BaseObjectModel> {
 
 		updateFromModel();
 	}
+	
+	public boolean isHeadless() {
+		return _canvas == null;
+	}
 
 	public String getId() {
 		return _model.getId();
