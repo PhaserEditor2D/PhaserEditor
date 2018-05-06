@@ -3046,6 +3046,12 @@
             id="phasereditor.canvas.ui.prefs.shortcutsPane"
             name="Shortcuts Pane">
       </page>
+      <page
+            category="phasereditor.canvas.ui.prefs"
+            class="phasereditor.canvas.ui.prefs.CodeGeneratorPreferencesPage"
+            id="phasereditor.canvas.ui.prefs.codeGeneration"
+            name="Code Generation">
+      </page>
    </extension>
 
 </plugin>
