@@ -63,6 +63,8 @@ import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
+import phasereditor.canvas.ui.CanvasUI;
+import phasereditor.canvas.ui.prefs.CodeGeneratorPreferencesPage;
 import phasereditor.lic.LicCore;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.project.core.codegen.ICodeGenerator;
@@ -158,6 +160,10 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 		CanvasModel model = new CanvasModel(null);
 		model.setType(getCanvasType());
 		model.getSettings().setBaseClass(CanvasCodeGeneratorProvider.getDefaultBaseClassFor(model.getType()));
+
+		CodeGeneratorPreferencesPage.update_Settings_from_Store(CanvasUI.getPreferenceStore(),
+				model.getSettings().getUserCode(), getCanvasType());
+
 		return model;
 	}
 

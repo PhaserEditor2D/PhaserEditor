@@ -24,6 +24,7 @@ package phasereditor.canvas.ui.prefs;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -169,42 +170,52 @@ public class CodeGeneratorPreferencesPage extends PreferencePage implements IWor
 	}
 
 	private void update_Settings_from_Store(EditorSettings_UserCode settings, CanvasType type) {
+		IPreferenceStore store = getPreferenceStore();
+		update_Settings_from_Store(store, settings, type);
+	}
 
-		settings.setCreate_before(getCode(type, "Create_before"));
-		settings.setCreate_after(getCode(type, "Create_after"));
+	public static void update_Settings_from_Store(IPreferenceStore store, EditorSettings_UserCode settings,
+			CanvasType type) {
+		settings.setCreate_before(getCode(store, type, "Create_before"));
+		settings.setCreate_after(getCode(store, type, "Create_after"));
 
 		if (type == CanvasType.STATE) {
-			settings.setState_constructor_before(getCode(type, "State_constructor_before"));
-			settings.setState_constructor_after(getCode(type, "State_constructor_after"));
-			settings.setState_init_before(getCode(type, "State_init_before"));
-			settings.setState_init_after(getCode(type, "State_init_after"));
-			settings.setState_init_args(getCode(type, "State_init_args"));
-			settings.setState_preload_before(getCode(type, "State_preload_before"));
-			settings.setState_preload_after(getCode(type, "State_preload_after"));
+			settings.setState_constructor_before(getCode(store, type, "State_constructor_before"));
+			settings.setState_constructor_after(getCode(store, type, "State_constructor_after"));
+			settings.setState_init_before(getCode(store, type, "State_init_before"));
+			settings.setState_init_after(getCode(store, type, "State_init_after"));
+			settings.setState_init_args(getCode(store, type, "State_init_args"));
+			settings.setState_preload_before(getCode(store, type, "State_preload_before"));
+			settings.setState_preload_after(getCode(store, type, "State_preload_after"));
 		}
 	}
 
 	private void update_Store_from_Settings(EditorSettings_UserCode settings, CanvasType type) {
+		update_Store_from_Settings(getPreferenceStore(), settings, type);
+	}
 
-		setCode(type, "Create_before", settings.getCreate_before());
-		setCode(type, "Create_after", settings.getCreate_after());
+	public static void update_Store_from_Settings(IPreferenceStore store, EditorSettings_UserCode settings,
+			CanvasType type) {
+
+		setCode(store, type, "Create_before", settings.getCreate_before());
+		setCode(store, type, "Create_after", settings.getCreate_after());
 
 		if (type == CanvasType.STATE) {
-			setCode(type, "State_constructor_before", settings.getState_constructor_before());
-			setCode(type, "State_constructor_after", settings.getState_constructor_after());
-			setCode(type, "State_init_before", settings.getState_init_before());
-			setCode(type, "State_init_after", settings.getState_init_after());
-			setCode(type, "State_init_args", settings.getState_init_args());
-			setCode(type, "State_preload_before", settings.getState_preload_before());
-			setCode(type, "State_preload_after", settings.getState_preload_after());
+			setCode(store, type, "State_constructor_before", settings.getState_constructor_before());
+			setCode(store, type, "State_constructor_after", settings.getState_constructor_after());
+			setCode(store, type, "State_init_before", settings.getState_init_before());
+			setCode(store, type, "State_init_after", settings.getState_init_after());
+			setCode(store, type, "State_init_args", settings.getState_init_args());
+			setCode(store, type, "State_preload_before", settings.getState_preload_before());
+			setCode(store, type, "State_preload_after", settings.getState_preload_after());
 		}
 	}
 
-	private String getCode(CanvasType type, String key) {
-		return getPreferenceStore().getString("phasereditor.canvas.ui.codegen." + type + "." + key);
+	private static String getCode(IPreferenceStore store, CanvasType type, String key) {
+		return store.getString("phasereditor.canvas.ui.codegen." + type + "." + key);
 	}
 
-	private void setCode(CanvasType type, String key, String value) {
-		getPreferenceStore().setValue("phasereditor.canvas.ui.codegen." + type + "." + key, value);
+	private static void setCode(IPreferenceStore store, CanvasType type, String key, String value) {
+		store.setValue("phasereditor.canvas.ui.codegen." + type + "." + key, value);
 	}
 }
