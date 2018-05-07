@@ -41,7 +41,7 @@ public class NewWizard_State extends NewWizard_Base {
 	}
 
 	@Override
-	protected void addMiddlePages() {
+	protected void addExtraPages() {
 		_settingsPage = new NewPage_StateSettings();
 		_settingsPage.setSettings(getModel().getSettings());
 		_settingsPage.setStateSettings(getModel().getStateSettings());

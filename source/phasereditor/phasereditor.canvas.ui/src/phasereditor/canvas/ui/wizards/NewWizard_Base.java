@@ -142,15 +142,15 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 
 		addPage(_filePage);
 
-		addMiddlePages();
-
 		_assetPackPage = new NewPage_AssetPackSection();
 		_assetPackPage.setCanvasModel(getModel());
 
 		addPage(_assetPackPage);
+		
+		addExtraPages();
 	}
 
-	protected abstract void addMiddlePages();
+	protected abstract void addExtraPages();
 
 	public NewPage_AssetPackSection getAssetPackPage() {
 		return _assetPackPage;

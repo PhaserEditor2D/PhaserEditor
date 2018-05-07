@@ -57,7 +57,7 @@ public class NewWizard_Sprite extends NewWizard_Base {
 	}
 
 	@Override
-	protected void addMiddlePages() {
+	protected void addExtraPages() {
 		_settingsPage = new NewPage_SpriteSettings();
 		_settingsPage.setSettings(getModel().getSettings());
 		_settingsPage.setProjectProvider(() -> {
