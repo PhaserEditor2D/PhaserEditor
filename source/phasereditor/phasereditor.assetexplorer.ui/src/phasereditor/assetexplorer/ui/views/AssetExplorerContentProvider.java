@@ -125,7 +125,10 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 		IProject activeProjet = getActiveProject();
 
 		if (parent == AssetExplorer.ROOT) {
-			IWorkspace workspace = ResourcesPlugin.getWorkspace();
+			return new Object[] { AssetExplorer.CANVAS_NODE, AssetExplorer.PACK_NODE };
+		}
+
+		if (parent == AssetExplorer.CANVAS_NODE) {
 			List<Object> list = new ArrayList<>();
 
 			if (activeProjet != null) {
@@ -134,7 +137,15 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 				list.add(CanvasType.STATE);
 			}
 
+			return list.toArray();
+		}
+
+		if (parent == AssetExplorer.PACK_NODE) {
+			IWorkspace workspace = ResourcesPlugin.getWorkspace();
+
 			for (IProject project : workspace.getRoot().getProjects()) {
+				List<Object> list = new ArrayList<>();
+
 				if (activeProjet != null && activeProjet != project) {
 					continue;
 				}
@@ -144,8 +155,9 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 					list.addAll(packs);
 				}
 
+				return list.toArray();
+
 			}
-			return list.toArray();
 		}
 
 		if (activeProjet != null) {
@@ -187,7 +199,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 			if (srcFile.exists()) {
 				list.add(srcFile);
 			}
-			
+
 			return list.toArray();
 		}
 

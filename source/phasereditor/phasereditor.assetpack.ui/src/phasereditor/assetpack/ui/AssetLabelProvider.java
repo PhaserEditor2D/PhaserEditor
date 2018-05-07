@@ -255,7 +255,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 		}
 
 		if (element instanceof AssetPackModel) {
-			return EditorSharedImages.getImage(IMG_PACKAGE);
+			return getPackageImage();
 		}
 
 		if (element instanceof IAssetElementModel) {
@@ -263,6 +263,10 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 		}
 
 		return getFolderImage();
+	}
+
+	public static Image getPackageImage() {
+		return EditorSharedImages.getImage(IMG_PACKAGE);
 	}
 
 	public static Image getSectionImage() {
