@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetexplorer.ui.views;
 
-import static java.lang.System.out;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -141,8 +139,6 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 
 			return list.toArray();
 		}
-
-		out.println("Active project: " + activeProjet);
 
 		if (parent == AssetExplorer.PACK_NODE) {
 			IWorkspace workspace = ResourcesPlugin.getWorkspace();
