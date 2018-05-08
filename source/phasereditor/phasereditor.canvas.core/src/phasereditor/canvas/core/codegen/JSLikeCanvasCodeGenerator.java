@@ -651,13 +651,13 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 	private void generateTilemapProps(TilemapSpriteModel model) {
 		String varname = getLocalVarName(model);
 		String layerVarname = varname + "_layer";
-		
+
 		ImageAssetModel tileset = model.getTilesetImage();
 
 		if (tileset != null) {
 			line(varname + ".addTilesetImage('" + tileset.getKey() + "');");
 		}
-		
+
 		if (!model.getCollisionIndexes().isEmpty()) {
 			JSONArray list = new JSONArray();
 			for (Integer i : model.getCollisionIndexes()) {
@@ -665,7 +665,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 			}
 			line(varname + ".setCollision(" + list.toString() + ");");
 		}
-		
+
 		line("var " + layerVarname + " = " + varname + ".createLayer(0);");
 	}
 
@@ -751,14 +751,48 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 		}
 	}
 
+	public static String getValidIdentifier(String ident) {
+		StringBuilder result = new StringBuilder();
+
+		boolean camelCase = false;
+		for (int i = 0; i < ident.length(); i++) {
+			char c = ident.charAt(i);
+
+			if (camelCase) {
+				c = Character.toUpperCase(c);
+				camelCase = false;
+			}
+
+			if (i == 0) {
+				if (!Character.isUnicodeIdentifierStart(c)) {
+					c = '_';
+				}
+			} else {
+
+				if (c == ' ') {
+					camelCase = true;
+					continue;
+				}
+
+				if (!Character.isUnicodeIdentifierPart(c)) {
+					c = '_';
+				}
+			}
+
+			result.append(c);
+		}
+
+		return result.toString();
+	}
+
 	@SuppressWarnings("static-method")
 	public String getVarName(BaseObjectModel model) {
-		return model.getEditorName();
+		return getValidIdentifier(model.getEditorName());
 	}
 
 	@SuppressWarnings("static-method")
 	public String getLocalVarName(BaseObjectModel model) {
-		return "_" + model.getEditorName();
+		return "_" + getValidIdentifier(model.getEditorName());
 	}
 
 	private void generateSpriteProps(BaseSpriteModel model) {
