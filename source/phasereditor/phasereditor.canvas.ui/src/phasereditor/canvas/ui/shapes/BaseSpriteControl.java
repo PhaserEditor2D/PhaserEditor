@@ -53,6 +53,7 @@ import phasereditor.canvas.ui.editors.grid.PGridModel;
 import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
 import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
+import phasereditor.project.core.codegen.SourceLang;
 import phasereditor.ui.ColorButtonSupport;
 
 /**
@@ -283,6 +284,11 @@ public abstract class BaseSpriteControl<T extends BaseSpriteModel> extends BaseO
 					return ((AssetSpriteModel<?>) getModel()).getAssetKey();
 				}
 				return null;
+			}
+			
+			@Override
+			public SourceLang getLang() {
+				return getCanvas().getSettingsModel().getLang();
 			}
 
 			@Override

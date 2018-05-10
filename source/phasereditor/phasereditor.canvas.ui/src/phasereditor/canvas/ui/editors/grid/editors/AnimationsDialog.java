@@ -81,6 +81,7 @@ import phasereditor.assetpack.ui.preview.SpritesheetAnimationModel;
 import phasereditor.canvas.core.AnimationModel;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
+import phasereditor.project.core.codegen.SourceLang;
 import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.animations.FrameAnimationCanvas;
 
@@ -100,6 +101,7 @@ public class AnimationsDialog extends Dialog {
 	private AnimationModel _anim;
 	private FrameAnimationCanvas _canvas;
 	private FrameDialog _frameDialog;
+	private Button _btnPublic;
 
 	/**
 	 * Create the dialog.
@@ -185,7 +187,7 @@ public class AnimationsDialog extends Dialog {
 		_frameRateText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
 		Composite composite_4 = new Composite(composite, SWT.NONE);
-		composite_4.setLayout(new GridLayout(7, false));
+		composite_4.setLayout(new GridLayout(8, false));
 		composite_4.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 4, 1));
 
 		_loopButton = new Button(composite_4, SWT.CHECK);
@@ -198,6 +200,9 @@ public class AnimationsDialog extends Dialog {
 		_button = new Button(composite_4, SWT.CHECK);
 		_button.setToolTipText("Phaser Editor: play this animation after created.");
 		_button.setText("Auto Play");
+
+		_btnField = new Button(composite_4, SWT.CHECK);
+		_btnField.setText("Field");
 
 		_btnPublic = new Button(composite_4, SWT.CHECK);
 		_btnPublic.setText("Public");
@@ -393,7 +398,9 @@ public class AnimationsDialog extends Dialog {
 		_lblFrameRate.setToolTipText(help.getMethodArgHelp("Phaser.AnimationManager.add", "frameRate"));
 		_loopButton.setToolTipText(help.getMemberHelp("Phaser.Animation.loop"));
 		_btnKilloncomplete.setToolTipText(help.getMemberHelp("Phaser.Animation.killOnComplete"));
-		_btnPublic.setToolTipText("If generate a public field to reference this animation (Phaser Editor).");
+		_btnField.setToolTipText("Check to generate a field to reference this animation (Phaser Editor).");
+		_btnPublic.setToolTipText("Check to make the field public.");
+		_btnPublic.setVisible(_lang == SourceLang.TYPE_SCRIPT);
 
 		initFramesDrop();
 
@@ -548,6 +555,10 @@ public class AnimationsDialog extends Dialog {
 		return new Point(457, 424);
 	}
 
+	public void setLang(SourceLang lang) {
+		_lang = lang;
+	}
+
 	public void setAnimations(List<AnimationModel> animations) {
 		_animList = animations;
 	}
@@ -696,16 +707,34 @@ public class AnimationsDialog extends Dialog {
 
 		return _anim.isPublic();
 	}
+	
+	public void setField(boolean aField) {
+		if (_anim == null) {
+			return;
+		}
+
+		_anim.setField(aField);
+		firePropertyChange("field");
+	}
+
+	public boolean getField() {
+		if (_anim == null) {
+			return false;
+		}
+
+		return _anim.isField();
+	}
 
 	private transient final PropertyChangeSupport support = new PropertyChangeSupport(this);
 	private Composite _framesToolbar;
 	private Button _deleteAnimButton;
 	private Button _playButton;
 	private Button _btnKilloncomplete;
-	private Button _btnPublic;
+	private Button _btnField;
 	private Label _lblFrameRate;
 	private Label _lblName;
 	private Button _button;
+	private SourceLang _lang;
 
 	public void addPropertyChangeListener(PropertyChangeListener l) {
 		support.addPropertyChangeListener(l);
@@ -726,13 +755,11 @@ public class AnimationsDialog extends Dialog {
 	public void firePropertyChange(String property) {
 		support.firePropertyChange(property, true, false);
 	}
-
 	@SuppressWarnings("rawtypes")
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
-		IObservableValue observeText_frameRateTextObserveWidget = WidgetProperties.text(SWT.Modify)
-				.observe(_frameRateText);
+		IObservableValue observeText_frameRateTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(_frameRateText);
 		IObservableValue frameRate_selfObserveValue = BeanProperties.value("frameRate").observe(_self);
 		bindingContext.bindValue(observeText_frameRateTextObserveWidget, frameRate_selfObserveValue, null, null);
 		//
@@ -740,19 +767,21 @@ public class AnimationsDialog extends Dialog {
 		IObservableValue loop_selfObserveValue = BeanProperties.value("loop").observe(_self);
 		bindingContext.bindValue(observeSelection_loopButtonObserveWidget, loop_selfObserveValue, null, null);
 		//
-		IObservableValue observeSelection_btnKilloncompleteObserveWidget = WidgetProperties.selection()
-				.observe(_btnKilloncomplete);
+		IObservableValue observeSelection_btnKilloncompleteObserveWidget = WidgetProperties.selection().observe(_btnKilloncomplete);
 		IObservableValue killOnComplete_selfObserveValue = BeanProperties.value("killOnComplete").observe(_self);
-		bindingContext.bindValue(observeSelection_btnKilloncompleteObserveWidget, killOnComplete_selfObserveValue, null,
-				null);
+		bindingContext.bindValue(observeSelection_btnKilloncompleteObserveWidget, killOnComplete_selfObserveValue, null, null);
 		//
-		IObservableValue observeSelection_btnPublicObserveWidget = WidgetProperties.selection().observe(_btnPublic);
-		IObservableValue public_selfObserveValue = BeanProperties.value("public").observe(_self);
-		bindingContext.bindValue(observeSelection_btnPublicObserveWidget, public_selfObserveValue, null, null);
+		IObservableValue observeSelection_btnFieldObserveWidget = WidgetProperties.selection().observe(_btnField);
+		IObservableValue field_selfObserveValue = BeanProperties.value("field").observe(_self);
+		bindingContext.bindValue(observeSelection_btnFieldObserveWidget, field_selfObserveValue, null, null);
 		//
 		IObservableValue observeSelection_buttonObserveWidget = WidgetProperties.selection().observe(_button);
 		IObservableValue autoPlay_selfObserveValue = BeanProperties.value("autoPlay").observe(_self);
 		bindingContext.bindValue(observeSelection_buttonObserveWidget, autoPlay_selfObserveValue, null, null);
+		//
+		IObservableValue observeSelection_btnPublicObserveWidget = WidgetProperties.selection().observe(_btnPublic);
+		IObservableValue public_selfObserveValue = BeanProperties.value("public").observe(_self);
+		bindingContext.bindValue(observeSelection_btnPublicObserveWidget, public_selfObserveValue, null, null);
 		//
 		return bindingContext;
 	}

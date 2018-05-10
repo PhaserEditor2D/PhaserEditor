@@ -66,10 +66,10 @@ public interface ITSCodeGeneratorUtils {
 			if (obj instanceof BaseSpriteModel && obj.isOverriding(BaseSpriteModel.PROPSET_ANIMATIONS)) {
 				List<AnimationModel> anims = ((BaseSpriteModel) obj).getAnimations();
 				for (AnimationModel anim : anims) {
-					if (anim.isPublic()) {
+					if (anim.isField()) {
 						String name = JSLikeCanvasCodeGenerator
 								.getPublicFieldName(generator.getAnimationVarName(obj, anim));
-						generator.line("public " + name + " : Phaser.Animation;");
+						generator.line((anim.isPublic() ? "public" : "private") + " " + name + " : Phaser.Animation;");
 					}
 				}
 			}

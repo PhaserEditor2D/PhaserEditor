@@ -42,6 +42,7 @@ public class AnimationModel implements Cloneable {
 	private boolean _loop;
 	private boolean _killOnComplete;
 	private boolean _public;
+	private boolean _field;
 	private boolean _autoPlay;
 
 	public AnimationModel(String name) {
@@ -51,6 +52,7 @@ public class AnimationModel implements Cloneable {
 		_loop = false;
 		_killOnComplete = false;
 		_public = false;
+		_field = false;
 		_autoPlay = false;
 	}
 
@@ -85,6 +87,14 @@ public class AnimationModel implements Cloneable {
 	public void setPublic(boolean public1) {
 		_public = public1;
 	}
+	
+	public boolean isField() {
+		return _field;
+	}
+	
+	public void setField(boolean field) {
+		_field = field;
+	}
 
 	public List<IAssetFrameModel> getFrames() {
 		return _frames;
@@ -115,6 +125,7 @@ public class AnimationModel implements Cloneable {
 		obj.put("frameRate", _frameRate);
 		obj.put("loop", _loop, false);
 		obj.put("killOnComplete", _killOnComplete, false);
+		obj.put("field", _field, false);
 		obj.put("public", _public, false);
 		obj.put("autoPlay", _autoPlay, false);
 		{
@@ -133,6 +144,7 @@ public class AnimationModel implements Cloneable {
 		_killOnComplete = obj.optBoolean("killOnComplete", false);
 		_autoPlay = obj.optBoolean("autoPlay", false);
 		_public = obj.optBoolean("public", false);
+		_field = _public || obj.optBoolean("field", false);
 		_frames = new ArrayList<>();
 		{
 			JSONArray array = obj.getJSONArray("frames");
@@ -155,6 +167,7 @@ public class AnimationModel implements Cloneable {
 		model._frames = new ArrayList<>(_frames);
 		model._killOnComplete = _killOnComplete;
 		model._public = _public;
+		model._field = _field;
 		model._autoPlay = _autoPlay;
 		return model;
 	}
