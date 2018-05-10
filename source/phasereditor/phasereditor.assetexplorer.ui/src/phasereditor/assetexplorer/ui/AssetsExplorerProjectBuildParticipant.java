@@ -26,25 +26,25 @@ public class AssetsExplorerProjectBuildParticipant implements IProjectBuildParti
 
 	@Override
 	public void clean(IProject project, Map<String, Object> env) {
-		swtRun(AssetsExplorerProjectBuildParticipant::refreshExplorer);
+		swtRun(() -> refreshExplorer(project));
 	}
 
 	@Override
 	public void projectDeleted(IProject project, Map<String, Object> env) {
-		swtRun(AssetsExplorerProjectBuildParticipant::refreshExplorer);
+		swtRun(() -> refreshExplorer(project));
 	}
 
 	@Override
 	public void build(IProject project, IResourceDelta delta, Map<String, Object> env) {
-		swtRun(AssetsExplorerProjectBuildParticipant::refreshExplorer);
+		swtRun(() -> refreshExplorer(project));
 	}
 
 	@Override
 	public void fullBuild(IProject project, Map<String, Object> env) {
-		swtRun(AssetsExplorerProjectBuildParticipant::refreshExplorer);
+		swtRun(() -> refreshExplorer(project));
 	}
 
-	private static void refreshExplorer() {
+	private static void refreshExplorer(IProject project) {
 		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		IWorkbenchPage page = window.getActivePage();
 		IViewReference[] refs = page.getViewReferences();
@@ -52,7 +52,7 @@ public class AssetsExplorerProjectBuildParticipant implements IProjectBuildParti
 			if (ref.getId().equals(AssetExplorer.ID)) {
 				AssetExplorer view = (AssetExplorer) ref.getView(false);
 				if (view != null) {
-					view.refreshContent();
+					view.refreshContent(project);
 				}
 			}
 		}

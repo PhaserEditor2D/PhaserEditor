@@ -125,7 +125,7 @@ public class CreateBehavior {
 		if (_canvas.getEditor().getModel().getType() == CanvasType.SPRITE) {
 
 			MessageDialog.openInformation(_canvas.getShell(), "Not Allowed",
-					"A sprite prefab only supports one object.");
+					"A sprite prefab does not allow children.");
 			return;
 		}
 
@@ -351,7 +351,7 @@ public class CreateBehavior {
 
 		if (canvasType == CanvasType.SPRITE) {
 			MessageDialog.openInformation(_canvas.getShell(), "Paste",
-					"Cannot paste on a Sprite prefab. Only one object is allowed.");
+					"Cannot paste on a Sprite prefab. Children are not allowed.");
 			return;
 		}
 

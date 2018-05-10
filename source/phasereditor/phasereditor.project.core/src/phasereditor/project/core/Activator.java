@@ -58,7 +58,9 @@ public class Activator extends AbstractUIPlugin {
 			@Override
 			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 
-				ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor);
+				if (!PhaserProjectBuilder.isStartedFirstTime()) {
+					ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor);
+				}
 
 				return Status.OK_STATUS;
 			}

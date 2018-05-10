@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetexplorer.ui.views;
 
+import static java.lang.System.out;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +60,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 
 	IPartListener _partListener;
 	private TreeViewer _viewer;
+	private IProject _projectInContent;
 
 	public AssetExplorerContentProvider() {
 		_partListener = new IPartListener() {
@@ -123,7 +126,9 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 	@Override
 	public Object[] getChildren(Object parent) {
 		IProject activeProjet = getActiveProject();
-
+		
+		_projectInContent = activeProjet;
+		
 		if (parent == AssetExplorer.ROOT) {
 			return new Object[] { AssetExplorer.CANVAS_NODE, AssetExplorer.PACK_NODE };
 		}
@@ -261,6 +266,10 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 		}
 		return activeProjet;
 	}
+	
+	public IProject getProjectInContent() {
+		return _projectInContent;
+	}
 
 	Object _lastToken = null;
 
@@ -275,6 +284,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 
 		_viewer.getTree().setRedraw(false);
 		try {
+			out.println("AssetExplorerContentProvider.refreshViewer()");
 			_viewer.refresh();
 
 			IProject project = getActiveProject();
