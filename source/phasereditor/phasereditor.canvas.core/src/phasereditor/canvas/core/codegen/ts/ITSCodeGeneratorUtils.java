@@ -59,7 +59,7 @@ public interface ITSCodeGeneratorUtils {
 				generator.line(visibility + " " + camel + " : " + getObjectType(obj) + ";");
 
 				if (obj instanceof TilemapSpriteModel) {
-					generator.line("public " + camel + "_layer : Phaser.TilemapLayer;");
+					generator.line(visibility + " " + camel + "_layer : Phaser.TilemapLayer;");
 				}
 			}
 
