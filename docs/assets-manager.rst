@@ -85,7 +85,7 @@ Navigate the assets
 
 The Assets view show the hierarchy of the assets declared on the packs of the active project. The assets, as in the pack editor, are grouped in pack files and sections, but in addition, you can get access to the frames of spritesheets or texture atlases. For example, a texture atlas is a node that you can expand to see all the sprites of the texture.
 
-Since ``Phaser Editor v1.4``, the visual scenes and prefabs (Canvas files) are also available in the Assets view, in addition to the assets declared in the pack files.
+The visual scenes and prefabs (Canvas files) are also available in the Assets view, unser the Canvas section.
 
 .. image:: images/AssetsView.png
   :alt: Assets explorer

@@ -88,12 +88,20 @@ To create a State scene click in the main menu the ``File → New → State File
 .. image:: images/NewStateWizard_FilePage.png
 	:alt: State wizard (file page)
 
+
+The next page shows the sections of the asset packs of the project. If you select a section, the generated JavaScript file will be added to that section as a ``script`` asset. This is the way we recommend to load the scripts, however, you can use any other loader framework or the traditional ``script`` tag inside the ``index.html`` file.
+
+.. image:: images/SceneWizard_Loading.png
+	:alt: State wizard (loading page)
+
+
+
 If you press **Finish** the state file is created with the default parameters, but we recommend that you press the **Next** button, to do some customization of the scene:
 
 .. image:: images/SceneWizard_Settings.png
 	:alt: State wizard settings page.
 
-Many of the parameters shown in that page come from the Phaser API, however, there are other parameters like the **Base Class Name** or **Code Format** that are used by the scene-to-code compiler.
+Many of the parameters shown in that page come from the Phaser API, however, there are other parameters like the **Auto Load**, **Base Class Name** or **Code Format** that are used by the scene-to-code compiler. Special attention to the **Auto Load** parameter, it indeicates if the assets used in the scene will be loaded in the ``preload`` method, but it is a common practice to load all the assets in a ''Preloader'' state, so maybe you would like to uncheck that parameter for the "menu" and "level" states.
 
 All these settings can be changed later in the configuration tab of the editor.
 
@@ -133,7 +141,7 @@ The coin scene (with a ``rotate`` animation) is compiled into a custom Sprite cl
 		this.scale.setTo(0.5, 0.5);
 		var _anim_rotate = this.animations.add('rotate', [0, 1, 2, 3, 4, 5], 5, true);
 		
-		// public fields
+		// fields
 		
 		this.fCoins = this;
 		this.fAnim_rotate = _anim_rotate;
@@ -148,9 +156,9 @@ The coin scene (with a ``rotate`` animation) is compiled into a custom Sprite cl
 	/* --- end generated code --- */
 	// -- user code here --
 
-To create a sprite prefab, in the main menu select the ``File → New → Sprite Prefab File`` option. It opens a wizard that on its first page asks for the container folder and the name of the file.
+To create a sprite prefab, in the main menu select the ``File → New → Sprite Prefab File`` option. Like the State wizard, the first two pages are about to select the container folder, the file name and the asset pack section where to load the script.
 
-Press the **Next** button to set some needed parameters, the most important is the sprite type and texture:
+In the last page you set some needed parameters, the most important is the sprite type and texture:
 
 .. image:: images/CreateSpritePrefab.png
 	:alt: Sprite prefab wizard
@@ -215,9 +223,7 @@ This group prefab...
 	// -- user code here --
 
 
-To create a group prefab select in the main menu the ``File → New → Group Prefab File`` option. It opens a wizard that asks on the first page for the name of the file. You can press the **Finish** button to create the file or press **Next** to customize some options, like the base class name (other than ``Phaser.Group``) or the code format (JavaScript 5, JavaScript 6 or TypeScript).
-
-
+To create a group prefab select in the main menu the ``File → New → Group Prefab File`` option. The first two pages, like in the other Canvas wizards, are about to select the container folder and container asset pack section. In the last page you can set some options, like the base class name (other than ``Phaser.Group``) or the code format (JavaScript 5, JavaScript 6 or TypeScript).
 
 
 Objects creation
@@ -576,9 +582,10 @@ Property                          Documentation
 ================================= =======================================
 ``Frame Rate``                    The animation speed in frames per second.
 ``Loop``                          To repeat the animation.
-``Kill On Complete``              If checked the animation will be played once and then destroyed.
-``Auto Play``                     If checked the animation will be played just after it is created. Only one animation can be auto-played.
-``Public``                        If checked a field will be generated to reference this animation. Useful if you want to publish animations of prefabs.
+``Kill On Complete``              If checked, the animation will be played once and then destroyed.
+``Auto Play``                     If checked, the animation will be played just after it is created. Only one animation can be auto-played.
+``Field``                         If checked, a field will be generated to reference this animation. Useful if you want to publish animations of prefabs.
+``Public``                        Only valid for TypeScript projects. If checked, the generated field will be set to public, else to private.
 ================================= =======================================
 
 The animations are compiled into code in this way:
@@ -591,7 +598,7 @@ The animations are compiled into code in this way:
 	_dino.animations.add('jump', [2], 5, false);
 	_dino.animations.add('stay', [3], 5, false);
 
-If the animation ``jump`` was set to Public then a field ``fDino_jump`` will be generated:
+If the animation ``jump`` has checked the ``Field`` flag, then an instance field ``fDino_jump`` will be generated:
 
 .. code-block:: javascript
 	:emphasize-lines: 6,6
@@ -599,7 +606,7 @@ If the animation ``jump`` was set to Public then a field ``fDino_jump`` will be 
 	var _dino_jump = _dino.animations.add('jump', [2], 5, false);
 	_dino.animations.add('stay', [3], 5, false);
 	
-	// public fields
+	// fields
 	
 	this.fDino_jump = _dino_jump;
 
@@ -759,7 +766,7 @@ As we mentioned, the Canvas tilemap object represents both the Phaser tilemap an
 	var _level_layer = _level.createLayer(0);
 	_level_layer.resizeWorld();
 
-And if the tilemap is set public, then the associated fields are generated:
+If the ``field`` property of the tilemap is set ``true``, then the associated fields are generated:
 
 .. code::
 	
@@ -819,7 +826,8 @@ There are special properties that are not directly related to any Phaser API, el
 Parameter                  Documentation
 ========================== ======================================================
 ``varName``                Used as var name in the generated code and label in the Outline window. Do not confuse it with the **name** parameter, which is part of the Phaser API. You can change this value by pressing ``F2``.
-``public``                 To make public an object in the generated code. By default the objects variables are declared is local in the creation method, however public objects will be referenced by instance fields, so they are accessible from any other context.
+``field``                  By default, the objects are references by local variables, however you can set to reference the object by an instance field, so they are accessible outside the method.
+``public``                 If the target language of the Canvas file is TypeScript, then you can tell if the generated field is private or public.
 ``pick``                   If set to ``false`` then it cannot be selected in the scene.
 ``generate``               Set to ``false`` if you need to keep the object in the scene but exclude it from the generated code.
 ``show``                    Set to ``false`` if you want to hide the object in the scene, but it will be included in the code generation. Useful when you want to temporarily hide distracting elements from the scene, like background objects.
@@ -1086,7 +1094,7 @@ The other way to insert user code into the generated file is to write it in the 
 
 The ``userCode`` parameter is divided into sections that refer to different points of the generated code. The idea is to insert code into the generated methods, ``before`` and ``after`` the method's body. For example you can add code after the body of the method ``create`` to perform other initialization routines, like create tween objects or audio objects or set other parameters to the current objects.
 
-When you click to edit the ``userCode`` parameter it opens a dialog with a tab for method, and each tab has two text boxes, one to write the ``before`` code and other to write the ``after`` code. For example, a state scene ``userCode`` has a tab for Constructor, Init, Preload and Create. All these tabs denote a method generated by the editor, so you can write your own code there.  
+When you click to edit the ``userCode`` parameter, it opens a dialog with a tab for method, and each tab has two text boxes, one to write the ``before`` code and other to write the ``after`` code. For example, a state scene ``userCode`` has a tab for Constructor, Init, Preload and Create. All these tabs denote a method generated by the editor, so you can write your own code there.  
 
 
 For example, let's see a case of user code inserted in a state scene via configuration:
@@ -1097,11 +1105,9 @@ For example, let's see a case of user code inserted in a state scene via configu
 The code set there is inserted in the ``create`` method of the compiled code:
 
 .. code-block:: javascript
-	:emphasize-lines: 3,12
+	:emphasize-lines: 10
 
 	Level.prototype.create = function () {
-		
-		this.beforeCreate();
 		
 		this.add.sprite(-175, -85, 'bg');
 		
@@ -1110,20 +1116,22 @@ The code set there is inserted in the ``create`` method of the compiled code:
 		
 		this.add.sprite(453, 306, 'environ', 'bridge');
 		
-		this.addKeyboardShortcuts();
+		this.myOnStateCreated();
 		
 	};
 
 
 We recommend writing just a few lines of code via the ``userCode`` configuration, especially because that dialog does not provide advanced features like code completion. In our demos and games what we do is to write a call to a method that was defined at the end of the file, in a protected zone, using the method explained in the `Writing into the code file`_ section.
 
-
 You can open the user code dialog directly from the scene, press ``Ctrl+Shift+U`` or right click and select the ``Edit User Code`` menu option.
+
+In the Preferences window, in the ``Phaser Editor → Canvas → Code Generation`` section, you can change the default user code for each new Canvas file. This helps you to follow certain programming style in all your games.
+
 
 Public objects
 ~~~~~~~~~~~~~~
 
-In the `Object properties`_ section we mentioned the ``public`` property of an object. It is a `design time property <#design-time-object-properties>`_ used to publish the objects beyond its context. To publish objects is needed to access particular objects outside the ``create`` method. The concept is simple, for each public object is created an instance field that references it. These public fields follow the format ``f<ObjectName>``, for example, if the object ``star`` is marked as public a field ``fStar`` is generated:
+In the `Object properties`_ section we mentioned the ``field`` property of an object. It is a `design time property <#design-time-object-properties>`_ used to publish the objects beyond its declaring method. The concept is simple, for each object (if the ``field`` property is set to ``true``) is created an instance field that references it. These fields follow the format ``f<ObjectName>``, for example, if the object ``star`` has ``field=true``, the an ``fStar`` field is generated:
 
 .. code-block:: javascript
 	:emphasize-lines: 6,13
@@ -1131,7 +1139,7 @@ In the `Object properties`_ section we mentioned the ``public`` property of an o
 	Level.prototype.create = function() {
 		var _star = this.add.sprite(67, 197, 'environ', 'star');
 
-		// public fields
+		// fields
 
 		this.fStar = _star;
 
@@ -1142,6 +1150,8 @@ In the `Object properties`_ section we mentioned the ``public`` property of an o
 	Level.prototype.update = function() {
 		this.fStar.angle += 5;
 	};
+
+In case of TypeScript projects, there is the ``public`` property. It indicates if the field will be public or private.
 
 
 Objects alignment and depth order
