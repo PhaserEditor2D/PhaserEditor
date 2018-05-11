@@ -115,9 +115,11 @@
 </div>
 <p>To create a State scene click in the main menu the <code class="docutils literal"><span class="pre">File</span> <span class="pre">→</span> <span class="pre">New</span> <span class="pre">→</span> <span class="pre">State</span> <span class="pre">File</span></code> option, it opens the State File wizard. The first page of that wizard asks for the parent folder and the name of the scene. Usually, we create a <code class="docutils literal"><span class="pre">WebContent/assets/canvas</span></code> folder where to place all the scenes and prefabs, but you are free to use any folder inside the <code class="docutils literal"><span class="pre">WebContent</span></code> directory. In the next picture we use <code class="docutils literal"><span class="pre">Level</span></code> as the name of the scene, that will create a <code class="docutils literal"><span class="pre">Level.canvas</span></code> file. This is very important: the name of the file will be used to create the name of the state class.</p>
 <img alt="State wizard (file page)" src="_images/NewStateWizard_FilePage.png" />
+<p>The next page shows the sections of the asset packs of the project. If you select a section, the generated JavaScript file will be added to that section as a <code class="docutils literal"><span class="pre">script</span></code> asset. This is the way we recommend to load the scripts, however, you can use any other loader framework or the traditional <code class="docutils literal"><span class="pre">script</span></code> tag inside the <code class="docutils literal"><span class="pre">index.html</span></code> file.</p>
+<img alt="State wizard (loading page)" src="_images/SceneWizard_Loading.png" />
 <p>If you press <strong>Finish</strong> the state file is created with the default parameters, but we recommend that you press the <strong>Next</strong> button, to do some customization of the scene:</p>
 <img alt="State wizard settings page." src="_images/SceneWizard_Settings.png" />
-<p>Many of the parameters shown in that page come from the Phaser API, however, there are other parameters like the <strong>Base Class Name</strong> or <strong>Code Format</strong> that are used by the scene-to-code compiler.</p>
+<p>Many of the parameters shown in that page come from the Phaser API, however, there are other parameters like the <strong>Auto Load</strong>, <strong>Base Class Name</strong> or <strong>Code Format</strong> that are used by the scene-to-code compiler. Special attention to the <strong>Auto Load</strong> parameter, it indeicates if the assets used in the scene will be loaded in the <code class="docutils literal"><span class="pre">preload</span></code> method, but it is a common practice to load all the assets in a &#8216;&#8217;Preloader&#8217;&#8217; state, so maybe you would like to uncheck that parameter for the &#8220;menu&#8221; and &#8220;level&#8221; states.</p>
 <p>All these settings can be changed later in the configuration tab of the editor.</p>
 <p>Sate scenes will be displayed in the <a class="reference external" href="assets-manager.html#assets-explorer">Assets</a> window under the <strong>State</strong> section.</p>
 </div>
@@ -146,7 +148,7 @@
         <span class="k">this</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
         <span class="kd">var</span> <span class="nx">_anim_rotate</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;rotate&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="mi">5</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 
-        <span class="c1">// public fields</span>
+        <span class="c1">// fields</span>
 
         <span class="k">this</span><span class="p">.</span><span class="nx">fCoins</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">fAnim_rotate</span> <span class="o">=</span> <span class="nx">_anim_rotate</span><span class="p">;</span>
@@ -162,8 +164,8 @@
 <span class="c1">// -- user code here --</span>
 </pre></div>
 </div>
-<p>To create a sprite prefab, in the main menu select the <code class="docutils literal"><span class="pre">File</span> <span class="pre">→</span> <span class="pre">New</span> <span class="pre">→</span> <span class="pre">Sprite</span> <span class="pre">Prefab</span> <span class="pre">File</span></code> option. It opens a wizard that on its first page asks for the container folder and the name of the file.</p>
-<p>Press the <strong>Next</strong> button to set some needed parameters, the most important is the sprite type and texture:</p>
+<p>To create a sprite prefab, in the main menu select the <code class="docutils literal"><span class="pre">File</span> <span class="pre">→</span> <span class="pre">New</span> <span class="pre">→</span> <span class="pre">Sprite</span> <span class="pre">Prefab</span> <span class="pre">File</span></code> option. Like the State wizard, the first two pages are about to select the container folder, the file name and the asset pack section where to load the script.</p>
+<p>In the last page you set some needed parameters, the most important is the sprite type and texture:</p>
 <img alt="Sprite prefab wizard" src="_images/CreateSpritePrefab.png" />
 <p>In the current version of Canvas the sprites cannot have children, so a sprite prefab cannot have children either, it is a file with a single object.</p>
 </div>
@@ -216,7 +218,7 @@
 <span class="c1">// -- user code here --</span>
 </pre></div>
 </div>
-<p>To create a group prefab select in the main menu the <code class="docutils literal"><span class="pre">File</span> <span class="pre">→</span> <span class="pre">New</span> <span class="pre">→</span> <span class="pre">Group</span> <span class="pre">Prefab</span> <span class="pre">File</span></code> option. It opens a wizard that asks on the first page for the name of the file. You can press the <strong>Finish</strong> button to create the file or press <strong>Next</strong> to customize some options, like the base class name (other than <code class="docutils literal"><span class="pre">Phaser.Group</span></code>) or the code format (JavaScript 5, JavaScript 6 or TypeScript).</p>
+<p>To create a group prefab select in the main menu the <code class="docutils literal"><span class="pre">File</span> <span class="pre">→</span> <span class="pre">New</span> <span class="pre">→</span> <span class="pre">Group</span> <span class="pre">Prefab</span> <span class="pre">File</span></code> option. The first two pages, like in the other Canvas wizards, are about to select the container folder and container asset pack section. In the last page you can set some options, like the base class name (other than <code class="docutils literal"><span class="pre">Phaser.Group</span></code>) or the code format (JavaScript 5, JavaScript 6 or TypeScript).</p>
 </div>
 </div>
 <div class="section" id="objects-creation">
@@ -504,13 +506,16 @@
 <td>To repeat the animation.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">Kill</span> <span class="pre">On</span> <span class="pre">Complete</span></code></td>
-<td>If checked the animation will be played once and then destroyed.</td>
+<td>If checked, the animation will be played once and then destroyed.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">Auto</span> <span class="pre">Play</span></code></td>
-<td>If checked the animation will be played just after it is created. Only one animation can be auto-played.</td>
+<td>If checked, the animation will be played just after it is created. Only one animation can be auto-played.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">Public</span></code></td>
-<td>If checked a field will be generated to reference this animation. Useful if you want to publish animations of prefabs.</td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">Field</span></code></td>
+<td>If checked, a field will be generated to reference this animation. Useful if you want to publish animations of prefabs.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">Public</span></code></td>
+<td>Only valid for TypeScript projects. If checked, the generated field will be set to public, else to private.</td>
 </tr>
 </tbody>
 </table>
@@ -522,11 +527,11 @@
 <span class="nx">_dino</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;stay&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="mi">5</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>If the animation <code class="docutils literal"><span class="pre">jump</span></code> was set to Public then a field <code class="docutils literal"><span class="pre">fDino_jump</span></code> will be generated:</p>
+<p>If the animation <code class="docutils literal"><span class="pre">jump</span></code> has checked the <code class="docutils literal"><span class="pre">Field</span></code> flag, then an instance field <code class="docutils literal"><span class="pre">fDino_jump</span></code> will be generated:</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">_dino_jump</span> <span class="o">=</span> <span class="nx">_dino</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;jump&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">5</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
 <span class="nx">_dino</span><span class="p">.</span><span class="nx">animations</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;stay&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="mi">5</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
 
-<span class="c1">// public fields</span>
+<span class="c1">// fields</span>
 
 <span class="hll"><span class="k">this</span><span class="p">.</span><span class="nx">fDino_jump</span> <span class="o">=</span> <span class="nx">_dino_jump</span><span class="p">;</span>
 </span></pre></div>
@@ -769,7 +774,7 @@
 <span class="nx">_level_layer</span><span class="p">.</span><span class="nx">resizeWorld</span><span class="p">();</span>
 </pre></div>
 </div>
-<p>And if the tilemap is set public, then the associated fields are generated:</p>
+<p>If the <code class="docutils literal"><span class="pre">field</span></code> property of the tilemap is set <code class="docutils literal"><span class="pre">true</span></code>, then the associated fields are generated:</p>
 <div class="code highlight-javascript"><div class="highlight"><pre><span></span><span class="k">this</span><span class="p">.</span><span class="nx">fLevel</span> <span class="o">=</span> <span class="nx">_level</span><span class="p">;</span>
 <span class="k">this</span><span class="p">.</span><span class="nx">fLevel_layer</span> <span class="o">=</span> <span class="nx">_level_layer</span><span class="p">;</span>
 </pre></div>
@@ -840,19 +845,22 @@
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">varName</span></code></td>
 <td>Used as var name in the generated code and label in the Outline window. Do not confuse it with the <strong>name</strong> parameter, which is part of the Phaser API. You can change this value by pressing <code class="docutils literal"><span class="pre">F2</span></code>.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">public</span></code></td>
-<td>To make public an object in the generated code. By default the objects variables are declared is local in the creation method, however public objects will be referenced by instance fields, so they are accessible from any other context.</td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">field</span></code></td>
+<td>By default, the objects are references by local variables, however you can set to reference the object by an instance field, so they are accessible outside the method.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">pick</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">public</span></code></td>
+<td>If the target language of the Canvas file is TypeScript, then you can tell if the generated field is private or public.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">pick</span></code></td>
 <td>If set to <code class="docutils literal"><span class="pre">false</span></code> then it cannot be selected in the scene.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">generate</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">generate</span></code></td>
 <td>Set to <code class="docutils literal"><span class="pre">false</span></code> if you need to keep the object in the scene but exclude it from the generated code.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">show</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">show</span></code></td>
 <td>Set to <code class="docutils literal"><span class="pre">false</span></code> if you want to hide the object in the scene, but it will be included in the code generation. Useful when you want to temporarily hide distracting elements from the scene, like background objects.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">closed</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">closed</span></code></td>
 <td>It only applies to groups. If set to <code class="docutils literal"><span class="pre">true</span></code>, the group and the children are going to perform like a single object in operations like selection and dragging. It means, if you pick a child, the group is selected. Yet you can select the children in the Outline window.</td>
 </tr>
 </tbody>
@@ -1136,14 +1144,12 @@ A preloader state is just like any other Phaser state, but the sprites are creat
 <h3>Writing into the configuration<a class="headerlink" href="#writing-into-the-configuration" title="Permalink to this headline">¶</a></h3>
 <p>The other way to insert user code into the generated file is to write it in the configuration of the scene (look at the Configuration tab the Editor section). The compiler reads the content of the <code class="docutils literal"><span class="pre">userCode</span></code> parameter and writes it into the file. In this case, there is no risk to lost the code because it is saved in the Canvas file.</p>
 <p>The <code class="docutils literal"><span class="pre">userCode</span></code> parameter is divided into sections that refer to different points of the generated code. The idea is to insert code into the generated methods, <code class="docutils literal"><span class="pre">before</span></code> and <code class="docutils literal"><span class="pre">after</span></code> the method&#8217;s body. For example you can add code after the body of the method <code class="docutils literal"><span class="pre">create</span></code> to perform other initialization routines, like create tween objects or audio objects or set other parameters to the current objects.</p>
-<p>When you click to edit the <code class="docutils literal"><span class="pre">userCode</span></code> parameter it opens a dialog with a tab for method, and each tab has two text boxes, one to write the <code class="docutils literal"><span class="pre">before</span></code> code and other to write the <code class="docutils literal"><span class="pre">after</span></code> code. For example, a state scene <code class="docutils literal"><span class="pre">userCode</span></code> has a tab for Constructor, Init, Preload and Create. All these tabs denote a method generated by the editor, so you can write your own code there.</p>
+<p>When you click to edit the <code class="docutils literal"><span class="pre">userCode</span></code> parameter, it opens a dialog with a tab for method, and each tab has two text boxes, one to write the <code class="docutils literal"><span class="pre">before</span></code> code and other to write the <code class="docutils literal"><span class="pre">after</span></code> code. For example, a state scene <code class="docutils literal"><span class="pre">userCode</span></code> has a tab for Constructor, Init, Preload and Create. All these tabs denote a method generated by the editor, so you can write your own code there.</p>
 <p>For example, let&#8217;s see a case of user code inserted in a state scene via configuration:</p>
 <img alt="User code dialog." src="_images/UserCodeDialog.png" />
 <p>The code set there is inserted in the <code class="docutils literal"><span class="pre">create</span></code> method of the compiled code:</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">Level</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">create</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
 
-<span class="hll">        <span class="k">this</span><span class="p">.</span><span class="nx">beforeCreate</span><span class="p">();</span>
-</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="o">-</span><span class="mi">175</span><span class="p">,</span> <span class="o">-</span><span class="mi">85</span><span class="p">,</span> <span class="s1">&#39;bg&#39;</span><span class="p">);</span>
 
         <span class="kd">var</span> <span class="nx">_tree_</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">127</span><span class="p">,</span> <span class="s1">&#39;environ&#39;</span><span class="p">,</span> <span class="s1">&#39;tree-1&#39;</span><span class="p">);</span>
@@ -1151,21 +1157,22 @@ A preloader state is just like any other Phaser state, but the sprites are creat
 
         <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">453</span><span class="p">,</span> <span class="mi">306</span><span class="p">,</span> <span class="s1">&#39;environ&#39;</span><span class="p">,</span> <span class="s1">&#39;bridge&#39;</span><span class="p">);</span>
 
-<span class="hll">        <span class="k">this</span><span class="p">.</span><span class="nx">addKeyboardShortcuts</span><span class="p">();</span>
+<span class="hll">        <span class="k">this</span><span class="p">.</span><span class="nx">myOnStateCreated</span><span class="p">();</span>
 </span>
 <span class="p">};</span>
 </pre></div>
 </div>
 <p>We recommend writing just a few lines of code via the <code class="docutils literal"><span class="pre">userCode</span></code> configuration, especially because that dialog does not provide advanced features like code completion. In our demos and games what we do is to write a call to a method that was defined at the end of the file, in a protected zone, using the method explained in the <a class="reference internal" href="#writing-into-the-code-file">Writing into the code file</a> section.</p>
 <p>You can open the user code dialog directly from the scene, press <code class="docutils literal"><span class="pre">Ctrl+Shift+U</span></code> or right click and select the <code class="docutils literal"><span class="pre">Edit</span> <span class="pre">User</span> <span class="pre">Code</span></code> menu option.</p>
+<p>In the Preferences window, in the <code class="docutils literal"><span class="pre">Phaser</span> <span class="pre">Editor</span> <span class="pre">→</span> <span class="pre">Canvas</span> <span class="pre">→</span> <span class="pre">Code</span> <span class="pre">Generation</span></code> section, you can change the default user code for each new Canvas file. This helps you to follow certain programming style in all your games.</p>
 </div>
 <div class="section" id="public-objects">
 <h3>Public objects<a class="headerlink" href="#public-objects" title="Permalink to this headline">¶</a></h3>
-<p>In the <a class="reference internal" href="#object-properties">Object properties</a> section we mentioned the <code class="docutils literal"><span class="pre">public</span></code> property of an object. It is a <a class="reference external" href="#design-time-object-properties">design time property</a> used to publish the objects beyond its context. To publish objects is needed to access particular objects outside the <code class="docutils literal"><span class="pre">create</span></code> method. The concept is simple, for each public object is created an instance field that references it. These public fields follow the format <code class="docutils literal"><span class="pre">f&lt;ObjectName&gt;</span></code>, for example, if the object <code class="docutils literal"><span class="pre">star</span></code> is marked as public a field <code class="docutils literal"><span class="pre">fStar</span></code> is generated:</p>
+<p>In the <a class="reference internal" href="#object-properties">Object properties</a> section we mentioned the <code class="docutils literal"><span class="pre">field</span></code> property of an object. It is a <a class="reference external" href="#design-time-object-properties">design time property</a> used to publish the objects beyond its declaring method. The concept is simple, for each object (if the <code class="docutils literal"><span class="pre">field</span></code> property is set to <code class="docutils literal"><span class="pre">true</span></code>) is created an instance field that references it. These fields follow the format <code class="docutils literal"><span class="pre">f&lt;ObjectName&gt;</span></code>, for example, if the object <code class="docutils literal"><span class="pre">star</span></code> has <code class="docutils literal"><span class="pre">field=true</span></code>, the an <code class="docutils literal"><span class="pre">fStar</span></code> field is generated:</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">Level</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">create</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">_star</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">67</span><span class="p">,</span> <span class="mi">197</span><span class="p">,</span> <span class="s1">&#39;environ&#39;</span><span class="p">,</span> <span class="s1">&#39;star&#39;</span><span class="p">);</span>
 
-        <span class="c1">// public fields</span>
+        <span class="c1">// fields</span>
 
 <span class="hll">        <span class="k">this</span><span class="p">.</span><span class="nx">fStar</span> <span class="o">=</span> <span class="nx">_star</span><span class="p">;</span>
 </span>
@@ -1178,6 +1185,7 @@ A preloader state is just like any other Phaser state, but the sprites are creat
 </span><span class="p">};</span>
 </pre></div>
 </div>
+<p>In case of TypeScript projects, there is the <code class="docutils literal"><span class="pre">public</span></code> property. It indicates if the field will be public or private.</p>
 </div>
 </div>
 <div class="section" id="objects-alignment-and-depth-order">
