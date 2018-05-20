@@ -25,6 +25,7 @@ import java.util.List;
 
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.canvas.core.AnimationModel;
+import phasereditor.project.core.codegen.SourceLang;
 
 /**
  * @author arian
@@ -52,4 +53,6 @@ public abstract class PGridAnimationsProperty extends PGridProperty<List<Animati
 	}
 	
 	public abstract IAssetKey getAssetKey();
+
+	public abstract SourceLang getLang();
 }

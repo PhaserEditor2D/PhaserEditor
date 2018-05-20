@@ -34,6 +34,8 @@ public class EditSpriteAnimationsHandler extends AbstractHandler {
 
 		PGridAnimationsProperty prop = node.getControl().getAnimationsProperty();
 
+		dlg.setLang(prop.getLang());
+		
 		List<AnimationModel> list = new ArrayList<>();
 
 		for (AnimationModel model : prop.getValue()) {

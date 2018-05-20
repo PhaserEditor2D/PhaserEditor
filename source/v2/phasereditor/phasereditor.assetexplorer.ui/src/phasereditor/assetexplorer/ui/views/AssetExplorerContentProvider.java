@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetexplorer.ui.views;
 
+import static java.lang.System.out;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +60,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 
 	IPartListener _partListener;
 	private TreeViewer _viewer;
+	private IProject _projectInContent;
 
 	public AssetExplorerContentProvider() {
 		_partListener = new IPartListener() {
@@ -123,9 +126,14 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 	@Override
 	public Object[] getChildren(Object parent) {
 		IProject activeProjet = getActiveProject();
-
+		
+		_projectInContent = activeProjet;
+		
 		if (parent == AssetExplorer.ROOT) {
-			IWorkspace workspace = ResourcesPlugin.getWorkspace();
+			return new Object[] { AssetExplorer.CANVAS_NODE, AssetExplorer.PACK_NODE };
+		}
+
+		if (parent == AssetExplorer.CANVAS_NODE) {
 			List<Object> list = new ArrayList<>();
 
 			if (activeProjet != null) {
@@ -134,7 +142,16 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 				list.add(CanvasType.STATE);
 			}
 
+			return list.toArray();
+		}
+
+		if (parent == AssetExplorer.PACK_NODE) {
+			IWorkspace workspace = ResourcesPlugin.getWorkspace();
+
+			List<Object> list = new ArrayList<>();
+
 			for (IProject project : workspace.getRoot().getProjects()) {
+
 				if (activeProjet != null && activeProjet != project) {
 					continue;
 				}
@@ -143,8 +160,8 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 					List<AssetPackModel> packs = AssetPackCore.getAssetPackModels(project);
 					list.addAll(packs);
 				}
-
 			}
+
 			return list.toArray();
 		}
 
@@ -187,7 +204,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 			if (srcFile.exists()) {
 				list.add(srcFile);
 			}
-			
+
 			return list.toArray();
 		}
 
@@ -249,6 +266,10 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 		}
 		return activeProjet;
 	}
+	
+	public IProject getProjectInContent() {
+		return _projectInContent;
+	}
 
 	Object _lastToken = null;
 
@@ -263,6 +284,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 
 		_viewer.getTree().setRedraw(false);
 		try {
+			out.println("AssetExplorerContentProvider.refreshViewer()");
 			_viewer.refresh();
 
 			IProject project = getActiveProject();

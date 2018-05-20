@@ -23,6 +23,7 @@ package phasereditor.canvas.ui.wizards;
 
 import java.io.ByteArrayInputStream;
 import java.nio.file.Files;
+import java.util.List;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -30,10 +31,13 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IPageChangedListener;
 import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -48,15 +52,24 @@ import org.eclipse.ui.ide.IDE;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.AssetPackModel;
+import phasereditor.assetpack.core.AssetSectionModel;
+import phasereditor.assetpack.core.ScriptAssetModel;
+import phasereditor.assetpack.ui.AssetPackUI;
+import phasereditor.assetpack.ui.editors.AssetPackEditor;
 import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
+import phasereditor.canvas.ui.CanvasUI;
+import phasereditor.canvas.ui.prefs.CodeGeneratorPreferencesPage;
 import phasereditor.lic.LicCore;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.project.core.codegen.ICodeGenerator;
 import phasereditor.project.core.codegen.SourceLang;
+import phasereditor.ui.PhaserEditorUI;
 
 /**
  * @author arian
@@ -69,6 +82,7 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 	private NewPage_File _filePage;
 	private IWorkbenchPage _windowPage;
 	private CanvasType _canvasType;
+	private NewPage_AssetPackSection _assetPackPage;
 
 	public NewWizard_Base(CanvasType canvasType) {
 		super();
@@ -119,7 +133,7 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 	}
 
 	@Override
-	public void addPages() {
+	public final void addPages() {
 		_model = createInitialModel();
 		_model.setType(_canvasType);
 
@@ -127,12 +141,29 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 		_filePage.setModel(_model);
 
 		addPage(_filePage);
+
+		_assetPackPage = new NewPage_AssetPackSection();
+		_assetPackPage.setCanvasModel(getModel());
+
+		addPage(_assetPackPage);
+		
+		addExtraPages();
+	}
+
+	protected abstract void addExtraPages();
+
+	public NewPage_AssetPackSection getAssetPackPage() {
+		return _assetPackPage;
 	}
 
 	protected CanvasModel createInitialModel() {
 		CanvasModel model = new CanvasModel(null);
 		model.setType(getCanvasType());
 		model.getSettings().setBaseClass(CanvasCodeGeneratorProvider.getDefaultBaseClassFor(model.getType()));
+
+		CodeGeneratorPreferencesPage.update_Settings_from_Store(CanvasUI.getPreferenceStore(),
+				model.getSettings().getUserCode(), getCanvasType());
+
 		return model;
 	}
 
@@ -152,8 +183,6 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 
 	@Override
 	public boolean performFinish() {
-
-		boolean performedOK = false;
 
 		// no file extension specified so add default extension
 		String fileName = _filePage.getFileName();
@@ -182,36 +211,90 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 
 			// --
 
-			setLangFromProjectType();
+			WorkspaceJob job = new WorkspaceJob("Add script to packs") {
 
-			if (isCanvasFileDesired()) {
-				createCanvasFile(mainFile);
-			} else {
-				createFinalModelJSON(mainFile);
-			}
+				@Override
+				public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 
-			createSourceFile(mainFile.getParent());
+					setLangFromProjectType();
 
-			// open the file in editor
-			try {
-				IDE.openEditor(_windowPage, mainFile);
-			} catch (PartInitException e) {
-				throw new RuntimeException(e);
-			}
+					if (isCanvasFileDesired()) {
+						createCanvasFile(mainFile, monitor);
+					} else {
+						createFinalModelJSON(mainFile);
+					}
 
-			// everything's fine
-			performedOK = true;
+					{
+						createSourceFile(mainFile.getParent(), monitor);
+						AssetSectionModel addToSection = getAssetPackPage().getSelectedSection();
+						if (addToSection != null) {
+
+							PhaserEditorUI.swtRun(new Runnable() {
+
+								@Override
+								public void run() {
+									List<AssetPackEditor> editors = AssetPackUI
+											.findOpenAssetPackEditors(addToSection.getPack().getFile());
+
+									for (AssetPackEditor editor : editors) {
+										AssetPackModel pack = editor.getModel();
+										addScriptAssetToPack(mainFile, pack, addToSection.getKey());
+										editor.getViewer().refresh();
+									}
+								}
+							});
+
+							for (AssetPackModel pack : AssetPackCore.getAssetPackModels(project)) {
+								addScriptAssetToPack(mainFile, pack, addToSection.getKey());
+								pack.save(monitor);
+							}
+
+						}
+					}
+
+					PhaserEditorUI.swtRun(new Runnable() {
+
+						@Override
+						public void run() {
+							// open the file in editor
+							try {
+								IDE.openEditor(getWindowPage(), mainFile);
+							} catch (PartInitException e) {
+								throw new RuntimeException(e);
+							}
+						}
+					});
+
+					return Status.OK_STATUS;
+				}
+			};
+			job.schedule();
 		}
 
-		return performedOK;
+		return true;
 	}
 
-	private void createCanvasFile(IFile file) {
+	static void addScriptAssetToPack(IFile mainFile, AssetPackModel pack, String sectionKey) {
+		IProject project = mainFile.getProject();
+
+		AssetSectionModel section2 = pack.findSection(sectionKey);
+		if (section2 != null) {
+			ScriptAssetModel asset = new ScriptAssetModel(pack.createKey(mainFile), section2);
+
+			IPath jsFilePath = mainFile.getFullPath().removeFileExtension().addFileExtension("js");
+			String url = ProjectCore.getAssetUrl(project, jsFilePath);
+			asset.setUrl(url);
+
+			section2.addAsset(asset, false);
+		}
+		pack.setDirty(false);
+	}
+
+	void createCanvasFile(IFile file, IProgressMonitor monitor) {
 		JSONObject obj = createFinalModelJSON(file);
 
 		try {
-			file.setContents(new ByteArrayInputStream(obj.toString(2).getBytes()), false, false,
-					new NullProgressMonitor());
+			file.setContents(new ByteArrayInputStream(obj.toString(2).getBytes()), false, false, monitor);
 		} catch (JSONException | CoreException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -228,7 +311,7 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 		return obj;
 	}
 
-	private void createSourceFile(IContainer parent) {
+	IFile createSourceFile(IContainer parent, IProgressMonitor monitor) {
 		try {
 
 			EditorSettings settings = _model.getSettings();
@@ -246,11 +329,13 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 
 			ByteArrayInputStream stream = new ByteArrayInputStream(content.getBytes());
 			if (srcFile.exists()) {
-				srcFile.setContents(stream, IResource.NONE, null);
+				srcFile.setContents(stream, IResource.NONE, monitor);
 			} else {
-				srcFile.create(stream, false, null);
+				srcFile.create(stream, false, monitor);
 			}
-			srcFile.refreshLocal(1, null);
+			srcFile.refreshLocal(1, monitor);
+
+			return srcFile;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

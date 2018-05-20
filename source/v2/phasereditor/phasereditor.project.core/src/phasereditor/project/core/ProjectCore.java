@@ -229,8 +229,15 @@ public class ProjectCore {
 	}
 
 	public static String getAssetUrl(IFile file) {
-		IContainer assetsFolder = ProjectCore.getWebContentFolder(file.getProject());
-		String relPath = file.getFullPath().makeRelativeTo(assetsFolder.getFullPath()).toPortableString();
+		IProject project = file.getProject();
+		IPath fullPath = file.getFullPath();
+		
+		return getAssetUrl(project, fullPath);
+	}
+
+	public static String getAssetUrl(IProject project, IPath assetFullPath) {
+		IContainer assetsFolder = ProjectCore.getWebContentFolder(project);
+		String relPath = assetFullPath.makeRelativeTo(assetsFolder.getFullPath()).toPortableString();
 		return relPath;
 	}
 

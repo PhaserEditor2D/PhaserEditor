@@ -33,7 +33,7 @@ public class ButtonSpriteNode extends FrameNode implements ISpriteNode {
 	private ButtonSpriteControl _control;
 
 	public ButtonSpriteNode(ButtonSpriteControl control) {
-		super(control.getModel().getFrame());
+		super(control.getModel().getFrame(), control.isHeadless());
 		_control = control;
 	}
 

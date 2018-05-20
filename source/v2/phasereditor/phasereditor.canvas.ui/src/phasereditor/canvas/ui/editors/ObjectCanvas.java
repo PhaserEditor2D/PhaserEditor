@@ -291,7 +291,7 @@ public class ObjectCanvas extends FXCanvas {
 
 		BaseObjectModel model = control.getModel();
 
-		operations.add(new AddNodeOperation(model.toJSON(false), -1, x, y, parentNode.getModel().getId()));
+		operations.add(new AddNodeOperation(model.toJSON(false), -1, x, y, parentNode.getModel().getId(), true));
 
 	}
 

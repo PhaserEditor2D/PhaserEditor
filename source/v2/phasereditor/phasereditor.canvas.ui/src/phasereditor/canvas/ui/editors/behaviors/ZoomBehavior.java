@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.behaviors;
 
+import static java.lang.System.out;
+
 import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
@@ -82,7 +84,6 @@ public class ZoomBehavior {
 	}
 
 	private void onZoom(ScrollEvent e) {
-
 		double delta = 1.2;
 
 		double scale = _scale;
@@ -94,11 +95,34 @@ public class ZoomBehavior {
 		}
 
 		scale = clamp(scale, 0.01d, 10d);
-		
+
 		double sceneX = e.getSceneX();
 		double sceneY = e.getSceneY();
-		
+
 		zoom(scale, sceneX, sceneY);
+	}
+
+	public void zoomKey(boolean zoomIn) {
+		Point2D pointer = getCanvas().getMouseBehavior().getMousePosition();
+
+		if (pointer == null) {
+			pointer = new Point2D(getCanvas().getScene().getWidth() / 2, getCanvas().getScene().getHeight() / 2);
+		}
+
+		double delta = 1.2;
+
+		double scale = _scale;
+
+		double deltaY = zoomIn ? 40 : -40;
+		if (deltaY < 0) {
+			scale /= delta;
+		} else {
+			scale *= delta;
+		}
+
+		scale = clamp(scale, 0.01d, 10d);
+
+		zoom(scale, pointer.getX(), pointer.getY());
 	}
 
 	public void zoom(double scale, double sceneX, double sceneY) {
@@ -154,9 +178,9 @@ public class ZoomBehavior {
 		});
 
 		_canvas.getHandlerBehavior().update();
-		_canvas.getPaintBehavior().repaint();				
+		_canvas.getPaintBehavior().repaint();
 	}
-	
+
 	public double getScale() {
 		return _scale;
 	}
@@ -198,8 +222,12 @@ public class ZoomBehavior {
 
 	public Point2D worldToLocal(Node localNode, double worldX, double worldY) {
 		Point2D scenePoint = _canvas.getWorldNode().localToScene(worldX, worldY);
-		
+
 		Point2D result = localNode.sceneToLocal(scenePoint);
+
+		out.println("world " + worldX + " " + worldY);
+		out.println("scene " + scenePoint);
+		out.println("result " + result);
 
 		return result;
 	}

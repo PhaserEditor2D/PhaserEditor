@@ -65,6 +65,7 @@ public class NewPage_StateSettings extends WizardPage {
 	private StateSettings _stateSettings;
 	private ColorButtonSupport _bgColorSupport;
 	private boolean _firstTime = true;
+	private boolean _generateCanvasFile = true;
 
 	public NewPage_StateSettings() {
 		super("group.settings.page");
@@ -91,7 +92,7 @@ public class NewPage_StateSettings extends WizardPage {
 		_text = new Text(container, SWT.BORDER);
 		_text.setText("Phaser.State");
 		_text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
+		
 		Label lblCodeFormat = new Label(container, SWT.NONE);
 		lblCodeFormat.setText("Code Format");
 
@@ -99,6 +100,11 @@ public class NewPage_StateSettings extends WizardPage {
 		Combo combo = _langComboViewer.getCombo();
 		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
+		_btnAutoLoad = new Button(container, SWT.CHECK);
+		_btnAutoLoad.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		_btnAutoLoad.setText("Auto-load assets. Disable this if the assets are loaded in a previous Preloader state.");
+
+		
 		Label lblScaleMode = new Label(container, SWT.NONE);
 		lblScaleMode.setText("Scale Mode");
 
@@ -137,6 +143,8 @@ public class NewPage_StateSettings extends WizardPage {
 		combo_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		_physicsSystemViewer.setLabelProvider(new LabelProvider());
 		_physicsSystemViewer.setContentProvider(new ArrayContentProvider());
+		new Label(container, SWT.NONE);
+		new Label(container, SWT.NONE);
 
 		_btnRendererRoundPixels = new Button(container, SWT.CHECK);
 		_btnRendererRoundPixels.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
@@ -155,7 +163,11 @@ public class NewPage_StateSettings extends WizardPage {
 	}
 
 	public boolean isGenerateCanvasFile() {
-		return _btnGenerateTheCorrspondant.getSelection();
+		return _generateCanvasFile;
+	}
+	
+	public void setGenerateCanvasFile(boolean generateCanvasFile) {
+		_generateCanvasFile = generateCanvasFile;
 	}
 
 	private void afterCreateWidgets() {
@@ -169,6 +181,8 @@ public class NewPage_StateSettings extends WizardPage {
 		});
 		_bgColorSupport.setColor(_stateSettings.getStageBackgroundColor());
 		_bgColorSupport.updateContent();
+		
+		
 	}
 
 	@Override
@@ -212,6 +226,7 @@ public class NewPage_StateSettings extends WizardPage {
 	private Button _btnPageAlignVertically;
 	private Button _btnRendererRoundPixels;
 	private Button _btnGenerateTheCorrspondant;
+	private Button _btnAutoLoad;
 
 	public void addPropertyChangeListener(PropertyChangeListener l) {
 		support.addPropertyChangeListener(l);
@@ -232,8 +247,7 @@ public class NewPage_StateSettings extends WizardPage {
 	public void firePropertyChange(String property) {
 		support.firePropertyChange(property, true, false);
 	}
-
-	@SuppressWarnings("all")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
@@ -241,45 +255,37 @@ public class NewPage_StateSettings extends WizardPage {
 		IObservableValue settingsbaseClass_selfObserveValue = BeanProperties.value("settings.baseClass").observe(_self);
 		bindingContext.bindValue(observeText_textObserveWidget, settingsbaseClass_selfObserveValue, null, null);
 		//
-		IObservableValue observeSingleSelection_langComboViewer = ViewerProperties.singleSelection()
-				.observe(_langComboViewer);
+		IObservableValue observeSingleSelection_langComboViewer = ViewerProperties.singleSelection().observe(_langComboViewer);
 		IObservableValue settingslang_selfObserveValue = BeanProperties.value("settings.lang").observe(_self);
 		bindingContext.bindValue(observeSingleSelection_langComboViewer, settingslang_selfObserveValue, null, null);
 		//
-		IObservableValue observeSingleSelection_scaleModeViewer = ViewerProperties.singleSelection()
-				.observe(_scaleModeViewer);
-		IObservableValue stateSettingsscaleMode_selfObserveValue = BeanProperties.value("stateSettings.scaleMode")
-				.observe(_self);
-		bindingContext.bindValue(observeSingleSelection_scaleModeViewer, stateSettingsscaleMode_selfObserveValue, null,
-				null);
+		IObservableValue observeSingleSelection_scaleModeViewer = ViewerProperties.singleSelection().observe(_scaleModeViewer);
+		IObservableValue stateSettingsscaleMode_selfObserveValue = BeanProperties.value("stateSettings.scaleMode").observe(_self);
+		bindingContext.bindValue(observeSingleSelection_scaleModeViewer, stateSettingsscaleMode_selfObserveValue, null, null);
 		//
-		IObservableValue observeSelection_btnPageAlignHorizontallyObserveWidget = WidgetProperties.selection()
-				.observe(_btnPageAlignHorizontally);
-		IObservableValue stateSettingspageAlignHorizontally_selfObserveValue = BeanProperties
-				.value("stateSettings.pageAlignHorizontally").observe(_self);
-		bindingContext.bindValue(observeSelection_btnPageAlignHorizontallyObserveWidget,
-				stateSettingspageAlignHorizontally_selfObserveValue, null, null);
+		IObservableValue observeSelection_btnPageAlignHorizontallyObserveWidget = WidgetProperties.selection().observe(_btnPageAlignHorizontally);
+		IObservableValue stateSettingspageAlignHorizontally_selfObserveValue = BeanProperties.value("stateSettings.pageAlignHorizontally").observe(_self);
+		bindingContext.bindValue(observeSelection_btnPageAlignHorizontallyObserveWidget, stateSettingspageAlignHorizontally_selfObserveValue, null, null);
 		//
-		IObservableValue observeSelection_btnPageAlignVerticallyObserveWidget = WidgetProperties.selection()
-				.observe(_btnPageAlignVertically);
-		IObservableValue stateSettingspageAlignVertically_selfObserveValue = BeanProperties
-				.value("stateSettings.pageAlignVertically").observe(_self);
-		bindingContext.bindValue(observeSelection_btnPageAlignVerticallyObserveWidget,
-				stateSettingspageAlignVertically_selfObserveValue, null, null);
+		IObservableValue observeSelection_btnPageAlignVerticallyObserveWidget = WidgetProperties.selection().observe(_btnPageAlignVertically);
+		IObservableValue stateSettingspageAlignVertically_selfObserveValue = BeanProperties.value("stateSettings.pageAlignVertically").observe(_self);
+		bindingContext.bindValue(observeSelection_btnPageAlignVerticallyObserveWidget, stateSettingspageAlignVertically_selfObserveValue, null, null);
 		//
-		IObservableValue observeSingleSelection_physicsSystemViewer = ViewerProperties.singleSelection()
-				.observe(_physicsSystemViewer);
-		IObservableValue stateSettingsphysicsSystem_selfObserveValue = BeanProperties
-				.value("stateSettings.physicsSystem").observe(_self);
-		bindingContext.bindValue(observeSingleSelection_physicsSystemViewer,
-				stateSettingsphysicsSystem_selfObserveValue, null, null);
+		IObservableValue observeSingleSelection_physicsSystemViewer = ViewerProperties.singleSelection().observe(_physicsSystemViewer);
+		IObservableValue stateSettingsphysicsSystem_selfObserveValue = BeanProperties.value("stateSettings.physicsSystem").observe(_self);
+		bindingContext.bindValue(observeSingleSelection_physicsSystemViewer, stateSettingsphysicsSystem_selfObserveValue, null, null);
 		//
-		IObservableValue observeSelection_btnRendererRoundPixelsObserveWidget = WidgetProperties.selection()
-				.observe(_btnRendererRoundPixels);
-		IObservableValue stateSettingsrendererRoundPixels_selfObserveValue = BeanProperties
-				.value("stateSettings.rendererRoundPixels").observe(_self);
-		bindingContext.bindValue(observeSelection_btnRendererRoundPixelsObserveWidget,
-				stateSettingsrendererRoundPixels_selfObserveValue, null, null);
+		IObservableValue observeSelection_btnRendererRoundPixelsObserveWidget = WidgetProperties.selection().observe(_btnRendererRoundPixels);
+		IObservableValue stateSettingsrendererRoundPixels_selfObserveValue = BeanProperties.value("stateSettings.rendererRoundPixels").observe(_self);
+		bindingContext.bindValue(observeSelection_btnRendererRoundPixelsObserveWidget, stateSettingsrendererRoundPixels_selfObserveValue, null, null);
+		//
+		IObservableValue observeSelection_btnAutoLoadObserveWidget = WidgetProperties.selection().observe(_btnAutoLoad);
+		IObservableValue stateSettingsautoLoad_selfObserveValue = BeanProperties.value("stateSettings.autoLoad").observe(_self);
+		bindingContext.bindValue(observeSelection_btnAutoLoadObserveWidget, stateSettingsautoLoad_selfObserveValue, null, null);
+		//
+		IObservableValue observeSelection_btnGenerateTheCorrspondantObserveWidget = WidgetProperties.selection().observe(_btnGenerateTheCorrspondant);
+		IObservableValue generateCanvasFile_selfObserveValue = BeanProperties.value("generateCanvasFile").observe(_self);
+		bindingContext.bindValue(observeSelection_btnGenerateTheCorrspondantObserveWidget, generateCanvasFile_selfObserveValue, null, null);
 		//
 		return bindingContext;
 	}

@@ -50,6 +50,7 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
@@ -121,6 +122,18 @@ public class AssetPackUI {
 	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
 	private static List<ICustomInformationControlCreator> _informationControlCreators;
 
+	public static List<AssetPackEditor> findOpenAssetPackEditors(IFile assetPackFile) {
+		List<AssetPackEditor> result = new ArrayList<>();
+		List<IEditorPart> editors = PhaserEditorUI.findOpenFileEditors(assetPackFile);
+		for (IEditorPart editor : editors) {
+			if (editor instanceof AssetPackEditor) {
+				AssetPackEditor packEditor = (AssetPackEditor) editor;
+				result.add(packEditor);
+			}
+		}
+		return result;
+	}
+	
 	public static void launchMoveWizard(IStructuredSelection selection) {
 		Object[] selarray = selection.toArray();
 

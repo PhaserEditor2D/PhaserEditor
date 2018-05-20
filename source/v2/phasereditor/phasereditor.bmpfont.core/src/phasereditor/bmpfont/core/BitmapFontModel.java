@@ -524,6 +524,15 @@ public class BitmapFontModel {
 				}
 
 				CharTag charTag = _chars.get(c);
+				
+				if (charTag == null) {
+					charTag = _chars.get((int)' ');
+				}
+				
+				if (charTag == null) {
+					c = _chars.keySet().iterator().next();
+					charTag = _chars.get(c);
+				}
 
 				if (c == ' ') {
 					lastSpaceIndex = i;

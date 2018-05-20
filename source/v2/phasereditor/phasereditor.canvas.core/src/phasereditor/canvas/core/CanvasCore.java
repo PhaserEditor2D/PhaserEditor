@@ -76,7 +76,7 @@ public class CanvasCore {
 	public static final String SPRITE_CONTENT_TYPE_ID = "phasereditor.canvas.core.spriteContentType";
 	public static final String GROUP_CONTENT_TYPE_ID = "phasereditor.canvas.core.groupContentType";
 	public static final String STATE_CONTENT_TYPE_ID = "phasereditor.canvas.core.stateContentType";
-	private static final CanvasFileDataCache _fileDataCache = new CanvasFileDataCache();
+	private static CanvasFileDataCache _fileDataCache;
 	public static final String GOTO_MARKER_OBJECT_ID_ATTR = "phasereditor.canvas.core.marker.objectId";
 	public static final String CANVAS_OBJECT_REF_MARKER_ID = "phasereditor.canvas.core.objectref";
 	private static final ScriptEngine scriptEngine;
@@ -439,6 +439,9 @@ public class CanvasCore {
 	}
 
 	public static CanvasFileDataCache getCanvasFileCache() {
+		if (_fileDataCache == null) {
+			_fileDataCache = new CanvasFileDataCache();
+		}
 		return _fileDataCache;
 	}
 

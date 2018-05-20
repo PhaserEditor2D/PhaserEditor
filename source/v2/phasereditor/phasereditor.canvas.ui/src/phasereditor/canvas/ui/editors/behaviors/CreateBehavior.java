@@ -37,9 +37,7 @@ import javafx.scene.Node;
 import javafx.scene.input.DragEvent;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.FrameData;
-import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
-import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
 import phasereditor.canvas.core.BaseObjectModel;
@@ -49,7 +47,6 @@ import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.Prefab;
 import phasereditor.canvas.core.TextModel;
-import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
@@ -60,7 +57,6 @@ import phasereditor.canvas.ui.shapes.CanvasObjectFactory;
 import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
-import phasereditor.canvas.ui.shapes.ISpriteNode;
 import phasereditor.lic.LicCore;
 
 /**
@@ -127,22 +123,9 @@ public class CreateBehavior {
 		// handle when dropping into a sprite prefab (texture substitution)
 
 		if (_canvas.getEditor().getModel().getType() == CanvasType.SPRITE) {
-			Object first = selection.getFirstElement();
 
-			if (!(first instanceof IAssetFrameModel || first instanceof ImageAssetModel)) {
-				return;
-			}
-
-			IObjectNode node = (IObjectNode) _canvas.getWorldNode().getChildren().get(0);
-			if (node instanceof ISpriteNode) {
-				_canvas.getHandlerBehavior().clear();
-
-				CompositeOperation operations = new CompositeOperation();
-				CanvasUI.changeSpriteTexture(node, first, operations);
-				operations.add(new SelectOperation(node.getModel().getId()));
-				_canvas.getUpdateBehavior().executeOperations(operations);
-			}
-
+			MessageDialog.openInformation(_canvas.getShell(), "Not Allowed",
+					"A sprite prefab does not allow children.");
 			return;
 		}
 
@@ -345,7 +328,7 @@ public class CreateBehavior {
 			model.write(groupData, true);
 		}
 		// add new group
-		operations.add(new AddNodeOperation(groupData, -1, 0, 0, parentModel.getId()));
+		operations.add(new AddNodeOperation(groupData, -1, 0, 0, parentModel.getId(), true));
 
 		// add children
 
@@ -354,7 +337,7 @@ public class CreateBehavior {
 			JSONObject data = new JSONObject();
 			BaseObjectModel model = node.getModel();
 			model.write(data, true);
-			operations.add(new AddNodeOperation(data, i, model.getX(), model.getY(), newGroupId));
+			operations.add(new AddNodeOperation(data, i, model.getX(), model.getY(), newGroupId, false));
 			i++;
 		}
 		operations.add(new SelectOperation(newGroupId));
@@ -368,7 +351,7 @@ public class CreateBehavior {
 
 		if (canvasType == CanvasType.SPRITE) {
 			MessageDialog.openInformation(_canvas.getShell(), "Paste",
-					"Cannot paste on a Sprite prefab. Only one object is allowed.");
+					"Cannot paste on a Sprite prefab. Children are not allowed.");
 			return;
 		}
 
@@ -474,7 +457,7 @@ public class CreateBehavior {
 			selection.add(copy.getId());
 			double x2 = mouse.stepX(x + copy.getX(), false);
 			double y2 = mouse.stepY(y + copy.getY(), false);
-			AddNodeOperation op = new AddNodeOperation(copy.toJSON(false), i, x2, y2, pasteIntoThis.getId());
+			AddNodeOperation op = new AddNodeOperation(copy.toJSON(false), i, x2, y2, pasteIntoThis.getId(), false);
 			operations.add(op);
 			i++;
 

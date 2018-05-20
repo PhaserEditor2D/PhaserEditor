@@ -42,6 +42,7 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 
 	private static HashMap<IProject, Runnable> _actions = new HashMap<>();
 	private static boolean _registeredProjectDeleteListener = false;
+	private static boolean _startedFirstTime;
 
 	public PhaserProjectBuilder() {
 		if (!_registeredProjectDeleteListener) {
@@ -83,15 +84,22 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 		}
 	}
 
+	public static boolean isStartedFirstTime() {
+		return _startedFirstTime;
+	}
+
 	@Override
 	protected void startupOnInitialize() {
+
+		_startedFirstTime = true;
+
 		super.startupOnInitialize();
 
 		IProject project = getProject();
 
 		Map<String, Object> env = new HashMap<>();
 
-		out.println("PhaserProjectBuilder.startupOnInitialize (start)");
+		out.println("PhaserProjectBuilder.startupOnInitialize (start) [" + project.getName() + "]");
 
 		List<IProjectBuildParticipant> list = ProjectCore.getBuildParticipants();
 
@@ -104,15 +112,16 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 			}
 		}
 
-		out.println("PhaserProjectBuilder.startupOnInitialize (done)");
+		out.println("PhaserProjectBuilder.startupOnInitialize (done) [" + project.getName() + "]");
 
 	}
 
 	@Override
 	protected void clean(IProgressMonitor monitor) throws CoreException {
-		out.println("PhaserProjectBuilder.clean (start)");
-
 		IProject project = getProject();
+
+		out.println("PhaserProjectBuilder.clean (start) [" + project.getName() + "]");
+
 		Map<String, Object> env = new HashMap<>();
 		List<IProjectBuildParticipant> list = ProjectCore.getBuildParticipants();
 		for (IProjectBuildParticipant participant : list) {
@@ -124,13 +133,13 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 			}
 		}
 
-		out.println("PhaserProjectBuilder.clean (done)");
+		out.println("PhaserProjectBuilder.clean (done) [" + project.getName() + "]");
 	}
 
 	protected static void projectDeleted(IProject project) {
 		Map<String, Object> env = new HashMap<>();
 
-		out.println("PhaserProjectBuilder.projectDeleted (start)");
+		out.println("PhaserProjectBuilder.projectDeleted (start) [" + project.getName() + "]");
 
 		List<IProjectBuildParticipant> list = ProjectCore.getBuildParticipants();
 
@@ -143,16 +152,18 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 			}
 		}
 
-		out.println("PhaserProjectBuilder.projectDeleted (done)");
+		out.println("PhaserProjectBuilder.projectDeleted (done) [" + project.getName() + "]");
 	}
 
 	@Override
 	protected IProject[] build(int kind, Map<String, String> args, IProgressMonitor monitor) throws CoreException {
+		IProject project = getProject();
+
 		boolean fullBuild = kind == FULL_BUILD;
 		if (fullBuild) {
-			out.println("PhaserProjectBuilder.fullBuild (start)");
+			out.println("PhaserProjectBuilder.fullBuild (start) [" + project.getName() + "]");
 		} else {
-			out.println("PhaserProjectBuilder.build (start)");
+			out.println("PhaserProjectBuilder.build (start) [" + project.getName() + "]");
 		}
 
 		// call all build participant!!!
@@ -161,8 +172,6 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 		List<IProjectBuildParticipant> list = ProjectCore.getBuildParticipants();
 
 		monitor.beginTask("Building Phaser elements", list.size());
-
-		IProject project = getProject();
 
 		for (IProjectBuildParticipant participant : list) {
 			try {
@@ -183,9 +192,9 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 		monitor.done();
 
 		if (fullBuild) {
-			out.println("PhaserProjectBuilder.fullBuild (done)");
+			out.println("PhaserProjectBuilder.fullBuild (done) [" + project.getName() + "]");
 		} else {
-			out.println("PhaserProjectBuilder.build (done)");
+			out.println("PhaserProjectBuilder.build (done) [" + project.getName() + "]");
 		}
 
 		runAfterBuildActions(project);

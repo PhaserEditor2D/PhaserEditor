@@ -50,10 +50,6 @@ public class AddNodeOperation extends AbstractNodeOperation {
 	private int _index;
 	private boolean _createUniqueName;
 
-	public AddNodeOperation(JSONObject data, int index, double x, double y, String parentId) {
-		this(data, index, x, y, parentId, true);
-	}
-	
 	public AddNodeOperation(JSONObject data, int index, double x, double y, String parentId, boolean createUniqueName) {
 		super("CreateNodeOperation", null);
 		_data = data;

@@ -51,6 +51,7 @@ public class AnimationsCellEditor extends DialogCellEditor {
 	protected Object openDialogBox(Control cellEditorWindow) {
 		AnimationsDialog dlg = new AnimationsDialog(cellEditorWindow.getShell());
 
+		dlg.setLang(_prop.getLang());
 		List<AnimationModel> list = new ArrayList<>();
 		for (AnimationModel model : _prop.getValue()) {
 			list.add(model.clone());

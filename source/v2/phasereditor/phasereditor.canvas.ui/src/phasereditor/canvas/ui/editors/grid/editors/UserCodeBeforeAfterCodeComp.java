@@ -25,13 +25,13 @@ import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 /**
  * @author arian
@@ -42,6 +42,7 @@ public class UserCodeBeforeAfterCodeComp extends Composite {
 
 	private SourceViewer _beforeTextViewer;
 	private SourceViewer _afterTextViewer;
+	private Text _init_args_text;
 
 	/**
 	 * Create the composite.
@@ -49,32 +50,45 @@ public class UserCodeBeforeAfterCodeComp extends Composite {
 	 * @param parent
 	 * @param style
 	 */
-	public UserCodeBeforeAfterCodeComp(Composite parent, int style) {
+	public UserCodeBeforeAfterCodeComp(Composite parent, int style, String methodName) {
 		super(parent, style);
-		setLayout(new FillLayout(SWT.HORIZONTAL));
+		setLayout(new GridLayout(1, true));
 
-		SashForm sashForm = new SashForm(this, SWT.VERTICAL);
+		if (methodName.equals("init")) {
+			Composite line = new Composite(this, SWT.NONE);
+			line.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+			line.setLayout(new GridLayout(3, false));
+			Label label1 = new Label(line, SWT.NONE);
+			label1.setFont(SWTResourceManager.getFont("Monospace", 11, SWT.BOLD));
+			label1.setText(methodName + "(");
+			_init_args_text = new Text(line, SWT.BORDER);
+			_init_args_text.setFont(SWTResourceManager.getFont("Monospace", 11, SWT.NORMAL));
+			_init_args_text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			Label label2 = new Label(line, SWT.NONE);
+			label2.setFont(SWTResourceManager.getFont("Monospace", 11, SWT.BOLD));
+			label2.setText(") {");
+		} else {
+			Label lblMethodName = new Label(this, SWT.NONE);
+			lblMethodName.setFont(SWTResourceManager.getFont("Monospace", 11, SWT.BOLD));
+			lblMethodName.setText(methodName + "() { ");
+		}
 
-		Composite composite = new Composite(sashForm, SWT.NONE);
-		composite.setLayout(new GridLayout(1, false));
-
-		Label lblBefore = new Label(composite, SWT.NONE);
-		lblBefore.setText("Before");
-
-		 _beforeTextViewer = createViewer(composite);
+		_beforeTextViewer = createViewer(this);
 		StyledText styledText = _beforeTextViewer.getTextWidget();
 		styledText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		Composite composite_1 = new Composite(sashForm, SWT.NONE);
-		composite_1.setLayout(new GridLayout(1, false));
+		Label lblMiddle = new Label(this, SWT.NONE);
+		lblMiddle.setForeground(SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN));
+		lblMiddle.setText("/*\n * In the middle, the code generated\n * by the Canvas compiler...\n */");
+		lblMiddle.setFont(SWTResourceManager.getFont("Monospace", 11, SWT.NORMAL));
 
-		Label lblAfter = new Label(composite_1, SWT.NONE);
-		lblAfter.setText("After");
-
-		_afterTextViewer = createViewer(composite_1);
+		_afterTextViewer = createViewer(this);
 		StyledText styledText_1 = _afterTextViewer.getTextWidget();
 		styledText_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		sashForm.setWeights(new int[] { 1, 1 });
+
+		Label lblMethodEnd = new Label(this, SWT.NONE);
+		lblMethodEnd.setFont(SWTResourceManager.getFont("Monospace", 11, SWT.BOLD));
+		lblMethodEnd.setText("}");
 
 	}
 
@@ -108,17 +122,24 @@ public class UserCodeBeforeAfterCodeComp extends Composite {
 	public void setBeforeText(String text) {
 		_beforeTextViewer.getDocument().set(text);
 	}
-	
+
 	public String getBeforeText() {
 		return _beforeTextViewer.getDocument().get();
 	}
-	
+
 	public void setAfterText(String text) {
 		_afterTextViewer.getDocument().set(text);
 	}
-	
+
 	public String getAfterText() {
 		return _afterTextViewer.getDocument().get();
 	}
-	
+
+	public void setInitArgs(String text) {
+		_init_args_text.setText(text);
+	}
+
+	public String getInitArgs() {
+		return _init_args_text.getText();
+	}
 }

@@ -33,7 +33,7 @@ public class SpritesheetSpriteNode extends FrameNode implements ISpriteNode {
 	private SpritesheetSpriteControl _control;
 
 	public SpritesheetSpriteNode(SpritesheetSpriteControl control) {
-		super(control.getModel().getAssetKey());
+		super(control.getModel().getAssetKey(), control.isHeadless());
 		_control = control;
 	}
 

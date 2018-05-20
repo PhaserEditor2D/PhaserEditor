@@ -66,8 +66,16 @@ class AssetExplorerLabelProvider extends LabelProvider {
 
 	@Override
 	public Image getImage(Object element) {
+		if (element == AssetExplorer.CANVAS_NODE) {
+			return AssetLabelProvider.getFolderImage();
+		}
+		
+		if (element == AssetExplorer.PACK_NODE) {
+			return AssetLabelProvider.getFolderImage();
+		}
+		
 		if (element instanceof CanvasType) {
-			return EditorSharedImages.getImage(IEditorSharedImages.IMG_CANVAS);
+			return AssetLabelProvider.getFolderImage();
 		}
 
 		if (element instanceof CanvasFile) {
@@ -75,5 +83,9 @@ class AssetExplorerLabelProvider extends LabelProvider {
 		}
 
 		return AssetLabelProvider.GLOBAL_16.getImage(element);
+	}
+
+	public static Image getCanvasImage() {
+		return EditorSharedImages.getImage(IEditorSharedImages.IMG_CANVAS);
 	}
 }
