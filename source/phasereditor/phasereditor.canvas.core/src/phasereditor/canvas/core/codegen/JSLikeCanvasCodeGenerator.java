@@ -376,7 +376,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				TextModel sprite = (TextModel) model;
 				call.value("this.game", sprite.getX(), sprite.getY());
 				call.valueOrNull(sprite.isOverriding(TextModel.PROPSET_TEXT),
-						"'" + escapeLines(sprite.getText()) + "'");
+						"'" + escapeStringLiteral(sprite.getText()) + "'");
 				call.valueOrNull(sprite.isOverriding(TextModel.PROPSET_TEXT_STYLE),
 						sprite.getPhaserStyleObject().toString());
 			} else if (model instanceof BitmapTextModel) {
@@ -385,7 +385,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				call.valueOrNull(sprite.isOverriding(BaseSpriteModel.PROPSET_TEXTURE),
 						"'" + sprite.getAssetKey().getKey() + "'");
 				call.valueOrNull(sprite.isOverriding(BitmapTextModel.PROPSET_TEXT),
-						"'" + escapeLines(sprite.getText()) + "'");
+						"'" + escapeStringLiteral(sprite.getText()) + "'");
 				call.valueOrNull(sprite.isOverriding(BitmapTextModel.PROPSET_SIZE),
 						Integer.toString(sprite.getFontSize()));
 				call.valueOrNull(sprite.isOverriding(BitmapTextModel.PROPSET_ALIGN),
@@ -480,7 +480,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				Call call = new Call("text");
 				call.value(text.getX());
 				call.value(text.getY());
-				String str = escapeLines(text.getText());
+				String str = escapeStringLiteral(text.getText());
 				call.value("'" + str + "'");
 				call.value(text.getPhaserStyleObject().toString()); // style
 				call.valueOrUndefined(parVar != null, parVar);
@@ -494,7 +494,7 @@ public abstract class JSLikeCanvasCodeGenerator extends BaseCodeGenerator {
 				call.value(bmpText.getX());
 				call.value(bmpText.getY());
 				call.string(bmpText.getAssetKey().getKey());
-				String str = escapeLines(bmpText.getText());
+				String str = escapeStringLiteral(bmpText.getText());
 				call.string(str);
 				call.value(Integer.toString(bmpText.getFontSize()));
 				call.valueOrUndefined(parVar != null, parVar);

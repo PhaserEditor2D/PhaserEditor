@@ -129,8 +129,8 @@ public abstract class BaseCodeGenerator implements ICodeGenerator {
 		append(getIndentTabs());
 	}
 	
-	public static String escapeLines(String text) {		
-		return text.replace("\r\n", "\n").replace("\n", "\\n");
+	public static String escapeStringLiteral(String text) {		
+		return text.replace("\\", "\\\\").replace("\r\n", "\n").replace("\n", "\\n").replace("'", "\\'").replace("\"", "\\\"");
 	}
 	
 
