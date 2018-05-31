@@ -65,8 +65,6 @@ public class ExampleModel implements IPhaserTemplate {
 	private TemplateInfo _info;
 	private ExampleCategoryModel _category;
 	private Path _mainFilePath;
-	private Path _phaserBuildFolder;
-	private Path _phaserCustomFolder;
 
 	public ExampleModel(ExamplesModel examples, ExampleCategoryModel category, String name, String mainFile) {
 		_name = name;
@@ -79,9 +77,6 @@ public class ExampleModel implements IPhaserTemplate {
 		_info.setMainFile(mainFile);
 		_info.setDescription("Official Phaser example.");
 		_mainFilePath = examples.getExamplesRepoPath().resolve(category.getName().toLowerCase()).resolve(mainFile);
-		_phaserBuildFolder = InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN,
-				"phaser-master/dist/");
-		_phaserCustomFolder = InspectCore.getBundleFile(InspectCore.RESOURCES_METADATA_PLUGIN, "phaser-custom/");
 	}
 
 	@Override
@@ -101,38 +96,55 @@ public class ExampleModel implements IPhaserTemplate {
 	public void copyInto(IFolder folder, Map<String, String> values, IProgressMonitor monitor) {
 		try {
 
-			// copy mappings
+			{
+				// copy mappings
 
-			for (Mapping m : _filesMapping) {
+				for (Mapping m : _filesMapping) {
 
-				Path orig = m.getOriginal();
-				IFile dst = folder.getFile(m.getDestiny());
+					Path orig = m.getOriginal();
+					IFile dst = folder.getFile(m.getDestiny());
 
-				copy(orig, dst, monitor);
-			}
-
-			// copy phaser.js
-
-			copy(_phaserBuildFolder.resolve("phaser.js"), folder.getFile("lib/phaser.js"), monitor);
-
-			// copy index.html
-
-			StringBuilder include = new StringBuilder();
-			for (Mapping m : _filesMapping) {
-				String dst = m.getDestiny();
-				if (dst.endsWith("js")) {
-					include.append("<script src=\"" + dst + "\" ></script>\n");
+					copy(orig, dst, monitor);
 				}
 			}
 
-			Path indexhtml = _phaserCustomFolder.resolve("examples/examples-index.html");
-			String content = new String(Files.readAllBytes(indexhtml));
+			{
+				// copy phaser.js
 
-			content = content.replace("{{title}}", folder.getProject().getName());
-			content = content.replace("{{include-js}}", include.toString());
+				Path phaserBuildFolder = InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN,
+						"phaser-master/dist/");
+				copy(phaserBuildFolder.resolve("phaser.js"), folder.getFile("lib/phaser.js"), monitor);
+			}
 
-			ByteArrayInputStream input = new ByteArrayInputStream(content.getBytes());
-			copy(input, folder.getFile("index.html"), monitor);
+			{
+				// copy typescript defs
+				Path phaserBuildFolder = InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN,
+						"phaser-master/typescript/");
+				copy(phaserBuildFolder.resolve("phaser.d.ts"), folder.getFile("typings/phaser.d.ts"), monitor);
+			}
+
+			{
+				// copy index.html
+
+				StringBuilder include = new StringBuilder();
+				for (Mapping m : _filesMapping) {
+					String dst = m.getDestiny();
+					if (dst.endsWith("js")) {
+						include.append("<script src=\"" + dst + "\" ></script>\n");
+					}
+				}
+
+				Path phaserCustomFolder = InspectCore.getBundleFile(InspectCore.RESOURCES_METADATA_PLUGIN,
+						"phaser-custom/");
+				Path indexhtml = phaserCustomFolder.resolve("examples/examples-index.html");
+				String content = new String(Files.readAllBytes(indexhtml));
+
+				content = content.replace("{{title}}", folder.getProject().getName());
+				content = content.replace("{{include-js}}", include.toString());
+
+				ByteArrayInputStream input = new ByteArrayInputStream(content.getBytes());
+				copy(input, folder.getFile("index.html"), monitor);
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();

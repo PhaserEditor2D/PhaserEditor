@@ -48,7 +48,7 @@ public class ExamplesModel {
 	private List<ExampleCategoryModel> _examplesCategories;
 
 	public ExamplesModel(Path reposDir) {
-		_examplesFolderPath = reposDir.resolve("phaser-examples-master/examples");
+		_examplesFolderPath = reposDir.resolve("phaser3-examples/public");
 		_examplesCategories = new ArrayList<>();
 	}
 
@@ -58,17 +58,14 @@ public class ExamplesModel {
 
 	private void buildExamples(IProgressMonitor monitor) throws IOException {
 		Path assetsPath = _examplesFolderPath.resolve("assets");
-		Path pluginsPath = _examplesFolderPath.resolve("_plugins");
-
+		Path srcPath = _examplesFolderPath.resolve("src");
 		List<Path> requiredFiles = new ArrayList<>();
 		{
 			Path[] inAssets = Files.walk(assetsPath).filter(p -> !Files.isDirectory(p)).toArray(Path[]::new);
-			Path[] inPlugins = Files.walk(pluginsPath).filter(p -> !Files.isDirectory(p)).toArray(Path[]::new);
 			requiredFiles.addAll(Arrays.asList(inAssets));
-			requiredFiles.addAll(Arrays.asList(inPlugins));
 		}
 
-		Path[] jsFiles = Files.walk(_examplesFolderPath).filter(this::isExampleJSFile).toArray(Path[]::new);
+		Path[] jsFiles = Files.walk(srcPath).filter(this::isExampleJSFile).toArray(Path[]::new);
 
 		out.println("Examples: " + jsFiles.length);
 
@@ -83,13 +80,14 @@ public class ExamplesModel {
 			Path catPath = jsFile.getParent();
 			ExampleCategoryModel catModel = catMap.get(catPath);
 			if (catModel == null) {
-				catModel = new ExampleCategoryModel(getName(catPath));
+				Path relPath = _examplesFolderPath.resolve("src").relativize(catPath);
+				catModel = new ExampleCategoryModel(getName(relPath));
 				catMap.put(catPath, catModel);
 				_examplesCategories.add(catModel);
 			}
 
 			String mainFile = jsFile.getFileName().toString().replace("\\", "/");
-			ExampleModel exampleModel = new ExampleModel(this, catModel, getName(jsFile), mainFile);
+			ExampleModel exampleModel = new ExampleModel(this, catModel, getName(jsFile.getFileName()), mainFile);
 
 			// add main example file
 			exampleModel.addMapping(_examplesFolderPath.relativize(jsFile), jsFile.getFileName().toString());
@@ -112,17 +110,7 @@ public class ExamplesModel {
 
 			@Override
 			public int compare(ExampleCategoryModel o1, ExampleCategoryModel o2) {
-				return valueof(o1) - valueof(o2);
-			}
-
-			private int valueof(ExampleCategoryModel o) {
-				if (o.getName().toLowerCase().equals("basics")) {
-					return 1;
-				}
-				if (o.getName().toLowerCase().equals("games")) {
-					return 2;
-				}
-				return 3;
+				return o1.getName().compareTo(o2.getName());
 			}
 		});
 
@@ -135,7 +123,7 @@ public class ExamplesModel {
 	}
 
 	private static String getName(Path path) {
-		String name = path.getFileName().toString();
+		String name = path.toString().replace("\\", "/").replace("/", " - ");
 		if (name.endsWith(".js")) {
 			name = name.substring(0, name.length() - 3);
 		}
@@ -160,13 +148,8 @@ public class ExamplesModel {
 	}
 
 	private boolean isExampleJSFile(Path p) {
-		if (p.getParent().getFileName().toString().equals("_plugins")) {
-			return false;
-		}
-
 		String str = p.toString();
-
-		return !str.contains("_site") && !str.contains("wip") && str.endsWith(".js");
+		return str.endsWith(".js");
 	}
 
 	public Path getExamplesRepoPath() {
@@ -214,7 +197,7 @@ public class ExamplesModel {
 		jsonDoc.put("examplesCategories", jsonExamplesCategories);
 		saveCategories(jsonExamplesCategories, _examplesCategories);
 
-		Files.write(cache, jsonDoc.toString().getBytes());
+		Files.write(cache, jsonDoc.toString(2).getBytes());
 	}
 
 	private static void saveCategories(JSONArray jsonExamplesCategories, List<ExampleCategoryModel> categories) {

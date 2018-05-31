@@ -21,7 +21,10 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.core.build;
 
+import static java.lang.System.out;
+
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -33,14 +36,32 @@ import phasereditor.inspect.core.examples.ExamplesModel;
 class BuildExamplesCache {
 	public static void main(String[] args) throws IOException {
 		Path wsPath = Paths.get(".").toAbsolutePath().getParent().getParent();
-		Path projectPath = wsPath.resolve(InspectCore.RESOURCES_EXAMPLES_PLUGIN);
-		ExamplesModel model = new ExamplesModel(projectPath);
+		Path examplesProjectPath = wsPath.resolve(InspectCore.RESOURCES_EXAMPLES_PLUGIN);
+		Path metadataProjectPath = wsPath.resolve(InspectCore.RESOURCES_METADATA_PLUGIN);
+
+		{
+			Path archivedFolder = examplesProjectPath.resolve("phaser3-examples/public/src/archived");
+			if (Files.exists(archivedFolder)) {
+				out.println("Error: the 'archived' folder is not going to be included.");
+				System.exit(0);
+			}
+			
+			archivedFolder = examplesProjectPath.resolve("phaser3-examples/public/src/transform/archived");
+			if (Files.exists(archivedFolder)) {
+				out.println("Error: the 'transform/archived' folder is not going to be included.");
+				System.exit(0);
+			}
+		}
+
+		ExamplesModel model = new ExamplesModel(examplesProjectPath);
 		model.build(new NullProgressMonitor());
-		Path cache = projectPath.resolve("phaser-custom/examples/examples-cache.json");
+		Path cache = metadataProjectPath.resolve("phaser-custom/examples/examples-cache.json");
 		model.saveCache(cache);
 
 		// verify
-		model = new ExamplesModel(projectPath);
+		model = new ExamplesModel(examplesProjectPath);
 		model.loadCache(cache);
+
+		out.println("Finished!");
 	}
 }
