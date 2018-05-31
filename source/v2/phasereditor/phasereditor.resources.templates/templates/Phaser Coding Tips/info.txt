@@ -1,3 +1,0 @@
-Contains the source code of the Phaser official tutorials.
-
-http://phaser.io/learn/official-tutorials  

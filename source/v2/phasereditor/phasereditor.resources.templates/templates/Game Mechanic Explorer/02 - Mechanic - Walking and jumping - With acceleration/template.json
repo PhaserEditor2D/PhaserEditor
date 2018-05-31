@@ -1,9 +1,0 @@
-{
-    "author": {
-        "website": "http://gamemechanicexplorer.com",
-        "name": "John Watson",
-        "email": "john@watson-net.com"
-    },
-    "description": "<p>Use the arrow keys or tap to move the player left and right.<\/p><p>The player now gradually accelerates from zero to top speed while a key is pressed.<\/p><p>Did you notice the side-effect caused by the way the movement is coded? If you hold <code>RIGHT<\/code>, release it, then hold <code>LEFT<\/code>, the player moves right, stops, then moves left. But if you hold <code>RIGHT<\/code> then start holding <code>LEFT<\/code>, the player will gradually change direction to the left. The code to stop the player is never called because a key is being held down at all times. And the player moves left when both keys are held down because <code>LEFT<\/code> is tested first. You can fix this by stopping the player whenever the movement direction changes. But look at the next example for a better solution.<\/p>",
-    "mainFile": "ex-walking-02.js"
-}

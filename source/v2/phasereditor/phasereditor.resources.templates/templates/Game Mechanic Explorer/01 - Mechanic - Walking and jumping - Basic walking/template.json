@@ -1,9 +1,0 @@
-{
-    "author": {
-        "website": "http://gamemechanicexplorer.com",
-        "name": "John Watson",
-        "email": "john@watson-net.com"
-    },
-    "description": "<p>In this set of examples, we'll look at the components of platformer-style movement. Here, the movement is very simple: the player is either stopped or moving at full speed. It works but it doesn't feel very good.<\/p><p>Use the arrow keys or tap to move the player left and right.<\/p>",
-    "mainFile": "ex-walking-01.js"
-}

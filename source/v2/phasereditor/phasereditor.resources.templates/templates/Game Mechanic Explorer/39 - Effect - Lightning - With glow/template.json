@@ -1,9 +1,0 @@
-{
-    "author": {
-        "website": "http://gamemechanicexplorer.com",
-        "name": "John Watson",
-        "email": "john@watson-net.com"
-    },
-    "description": "<p>Click or tap to create a lightning bolt.<\/p><p>This version introduces a WebGL fragment shader to add a glow to the lightning bolt. Another way of creating glow would be to use a texture for each segment with the glow baked in instead of drawing each segment by hand. The ADD blend mode could also be used to good effect. Fragment shaders are beyond the scope of this tutorial. But most frameworks have a way to use shaders and usually come with some popular ones built-in.<\/p>",
-    "mainFile": "ex-lightning-03.js"
-}

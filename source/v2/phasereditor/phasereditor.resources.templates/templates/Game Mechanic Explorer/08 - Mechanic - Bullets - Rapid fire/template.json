@@ -1,9 +1,0 @@
-{
-    "author": {
-        "website": "http://gamemechanicexplorer.com",
-        "name": "John Watson",
-        "email": "john@watson-net.com"
-    },
-    "description": "<p>Click or tap to fire a bullet. Hold to fire multiple bullets.<\/p><p>We can enable rapid fire simply by increasing the number of available bullets in the <code>bulletPool<\/code>.<\/p>",
-    "mainFile": "ex-bullet-02.js"
-}

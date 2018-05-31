@@ -1,9 +1,0 @@
-{
-    "author": {
-        "website": "http://gamemechanicexplorer.com",
-        "name": "John Watson",
-        "email": "john@watson-net.com"
-    },
-    "description": "<p>Click or tap to create a lightning bolt.<\/p><p>Lightning bolts are created procedurally by drawing line segments from a starting position until the ground is reached. The end point of each line segment is randomly offset horizontally and vertically to give the jagged appearance. There are many other ways to accomplish this. For example, instead of drawing each segment, you could use a texture for each segment, stretched to the correct length. <a href='http://gamedevelopment.tutsplus.com/tutorials/how-to-generate-shockingly-good-2d-lightning-effects--gamedev-2681' target='_blank'>Here's a good example<\/a> of that method.<\/p>",
-    "mainFile": "ex-lightning-01.js"
-}

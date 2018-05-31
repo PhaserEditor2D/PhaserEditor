@@ -1,9 +1,0 @@
-{
-    "author": {
-        "website": "http://gamemechanicexplorer.com",
-        "name": "John Watson",
-        "email": "john@watson-net.com"
-    },
-    "description": "<p>Click or tap to create a lightning bolt.<\/p><p>Finally, this example allows you to aim the lightning bolts anywhere on the screen. Bolts are drawn in almost exactly the same way as the previous examples. The only difference is that the last segment of the bolt is always terminated at the horizontal center of the texture and then the entire lightning bolt is rotated towards the pointer.<\/p><p>When a lightning bolt hits a monster, it dies. Wield your mighty power with wisdom.<\/p>",
-    "mainFile": "ex-lightning-05.js"
-}
