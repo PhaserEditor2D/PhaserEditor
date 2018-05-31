@@ -151,7 +151,7 @@ public class JS6SpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator implem
 			});
 
 			openIndent("super(aGame, aX, aY,");
-			line("aText || '" + escapeLines(text.getText()) + "',");
+			line("aText || '" + escapeStringLiterals(text.getText()) + "',");
 			line("aStyle || ");
 
 			String[] lines = text.getPhaserStyleObject().toString(4).split("\n");
@@ -190,7 +190,7 @@ public class JS6SpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator implem
 			openIndent("super(aGame, aX, aY,");
 			
 			line("aFont || '" + bmpText.getAssetKey().getKey() + "',");
-			line("aText || '" + escapeLines(bmpText.getText()) + "',");
+			line("aText || '" + escapeStringLiterals(bmpText.getText()) + "',");
 			line("aSize || " + bmpText.getFontSize() + ",");
 			append("aAlign || '" + bmpText.getAlign().name() + "'");
 			closeIndent(");");
