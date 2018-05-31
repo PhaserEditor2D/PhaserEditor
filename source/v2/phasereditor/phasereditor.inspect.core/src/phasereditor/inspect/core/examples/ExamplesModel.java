@@ -74,6 +74,11 @@ public class ExamplesModel {
 		monitor.beginTask("Building examples", jsFiles.length);
 
 		for (Path jsFile : jsFiles) {
+			
+			//TODO: for the moment ignore this kind of examples.
+			if (Files.exists(jsFile.resolveSibling("boot.json"))) {
+				continue;
+			}
 
 			monitor.subTask(jsFile.getFileName().toString());
 
