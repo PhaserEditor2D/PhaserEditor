@@ -82,7 +82,7 @@ public class WebRunUI {
 
 	public static void openExampleInBrowser(ExampleModel example, int line) {
 		Path path = example.getMainFilePath();
-		Path root = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN, "phaser-examples-master/examples");
+		Path root = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN, "phaser3-examples/public");
 		String name = root.relativize(path).toString().replace("\\", "/");
 		String url = getExampleInBrowserURL(name) + (line == -1 ? "" : "&l=" + line);
 		openBrowser(url);

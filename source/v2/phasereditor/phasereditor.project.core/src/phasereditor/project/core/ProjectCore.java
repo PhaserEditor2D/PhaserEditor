@@ -64,7 +64,7 @@ import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import phasereditor.inspect.core.IPhaserTemplate;
+import phasereditor.inspect.core.IProjectTemplate;
 import phasereditor.project.core.codegen.SourceLang;
 
 public class ProjectCore {
@@ -267,7 +267,7 @@ public class ProjectCore {
 		return list;
 	}
 
-	public static void configureNewPhaserProject(IProject project, IPhaserTemplate template,
+	public static void configureNewPhaserProject(IProject project, IProjectTemplate template,
 			Map<String, String> paramValues, SourceLang lang) {
 		PhaserProjectBuilder.setActionAfterFirstBuild(project, () -> openTemplateMainFileInEditor(project, template));
 
@@ -376,7 +376,7 @@ public class ProjectCore {
 		}
 	}
 
-	static void openTemplateMainFileInEditor(IProject project, IPhaserTemplate template) {
+	static void openTemplateMainFileInEditor(IProject project, IProjectTemplate template) {
 		IFolder webContentFolder = project.getFolder("WebContent");
 		IFile file = template.getOpenFile(webContentFolder);
 		if (file != null) {

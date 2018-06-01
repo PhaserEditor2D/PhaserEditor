@@ -29,7 +29,7 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class TemplateInfo {
+public class ProjectTemplateInfo {
 	private String _author;
 	private String _email;
 	private String _website;
@@ -40,10 +40,10 @@ public class TemplateInfo {
 	private String _id;
 	private boolean _typescript;
 
-	public TemplateInfo() {
+	public ProjectTemplateInfo() {
 	}
 
-	public TemplateInfo(JSONObject jsonTemplManifest) {
+	public ProjectTemplateInfo(JSONObject jsonTemplManifest) {
 		_mainFile = jsonTemplManifest.optString("mainFile");
 		_description = jsonTemplManifest.optString("description", "");
 

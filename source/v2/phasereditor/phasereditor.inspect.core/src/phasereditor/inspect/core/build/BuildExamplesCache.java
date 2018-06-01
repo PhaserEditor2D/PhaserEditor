@@ -28,9 +28,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.eclipse.core.runtime.NullProgressMonitor;
-
 import phasereditor.inspect.core.InspectCore;
+import phasereditor.inspect.core.examples.ExampleCategoryModel;
 import phasereditor.inspect.core.examples.ExamplesModel;
 
 class BuildExamplesCache {
@@ -45,7 +44,7 @@ class BuildExamplesCache {
 				out.println("Error: the 'archived' folder is not going to be included.");
 				System.exit(0);
 			}
-			
+
 			archivedFolder = examplesProjectPath.resolve("phaser3-examples/public/src/transform/archived");
 			if (Files.exists(archivedFolder)) {
 				out.println("Error: the 'transform/archived' folder is not going to be included.");
@@ -54,13 +53,19 @@ class BuildExamplesCache {
 		}
 
 		ExamplesModel model = new ExamplesModel(examplesProjectPath);
-		model.build(new NullProgressMonitor());
+		model.build();
 		Path cache = metadataProjectPath.resolve("phaser-custom/examples/examples-cache.json");
 		model.saveCache(cache);
 
 		// verify
 		model = new ExamplesModel(examplesProjectPath);
 		model.loadCache(cache);
+		
+		out.println("\n\n\n\n\n\n\n\n");
+		
+		for(ExampleCategoryModel c : model.getExamplesCategories()) {
+			c.printTree(0);
+		}
 
 		out.println("Finished!");
 	}

@@ -42,17 +42,17 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import phasereditor.inspect.core.IPhaserCategory;
-import phasereditor.inspect.core.IPhaserTemplate;
-import phasereditor.inspect.core.TemplateInfo;
+import phasereditor.inspect.core.IProjectTemplateCategory;
+import phasereditor.inspect.core.IProjectTemplate;
+import phasereditor.inspect.core.ProjectTemplateInfo;
 
-public class TemplateModel implements IPhaserTemplate {
+public class TemplateModel implements IProjectTemplate {
 	private Path _templateFolder;
 	private TemplatesModel _parent;
-	private TemplateInfo _info;
-	private IPhaserCategory _category;
+	private ProjectTemplateInfo _info;
+	private IProjectTemplateCategory _category;
 
-	public TemplateModel(TemplatesModel parent, IPhaserCategory category, Path templateFolder) {
+	public TemplateModel(TemplatesModel parent, IProjectTemplateCategory category, Path templateFolder) {
 		super();
 		_parent = parent;
 		_category = category;
@@ -77,19 +77,19 @@ public class TemplateModel implements IPhaserTemplate {
 		if (Files.exists(path)) {
 			try (InputStream input = Files.newInputStream(path)) {
 				JSONObject obj = new JSONObject(new JSONTokener(input));
-				_info = new TemplateInfo(obj);
+				_info = new ProjectTemplateInfo(obj);
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		} else {
-			_info = new TemplateInfo();
+			_info = new ProjectTemplateInfo();
 		}
 
 		return true;
 	}
 
 	@Override
-	public IPhaserCategory getCategory() {
+	public IProjectTemplateCategory getCategory() {
 		return _category;
 	}
 
@@ -107,7 +107,7 @@ public class TemplateModel implements IPhaserTemplate {
 	}
 
 	@Override
-	public TemplateInfo getInfo() {
+	public ProjectTemplateInfo getInfo() {
 		return _info;
 	}
 

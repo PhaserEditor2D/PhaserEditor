@@ -21,19 +21,39 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.core.examples;
 
+import static java.lang.System.out;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import phasereditor.inspect.core.IPhaserCategory;
+import phasereditor.inspect.core.IProjectTemplateCategory;
 
-public class ExampleCategoryModel implements IPhaserCategory {
+public class ExampleCategoryModel implements IProjectTemplateCategory {
 	private String _name;
 	private List<ExampleModel> _examples;
+	private List<ExampleCategoryModel> _subCategories;
+	private IProjectTemplateCategory _parentCategory;
 
-	public ExampleCategoryModel(String name) {
+	public ExampleCategoryModel(ExampleCategoryModel parent, String name) {
 		super();
 		_name = name;
 		_examples = new ArrayList<>();
+		_subCategories = new ArrayList<>();
+		_parentCategory = parent;
+
+		if (parent != null) {
+			parent._subCategories.add(this);
+		}
+	}
+
+	@Override
+	public IProjectTemplateCategory getParentCategory() {
+		return _parentCategory;
+	}
+
+	@Override
+	public List<ExampleCategoryModel> getSubCategories() {
+		return _subCategories;
 	}
 
 	@Override
@@ -53,6 +73,24 @@ public class ExampleCategoryModel implements IPhaserCategory {
 	@Override
 	public String getDescription() {
 		return "Groups the Phaser examples.";
+	}
+
+	public void printTree(int depth) {
+		for (int i = 0; i < depth; i++) {
+			out.print("\t");
+		}
+		out.println(getName());
+
+		for (ExampleCategoryModel c : _subCategories) {
+			c.printTree(depth + 1);
+		}
+
+		for (ExampleModel e : _examples) {
+			for (int i = 0; i < depth + 1; i++) {
+				out.print("\t");
+			}
+			out.println(e.getName());
+		}
 	}
 
 }

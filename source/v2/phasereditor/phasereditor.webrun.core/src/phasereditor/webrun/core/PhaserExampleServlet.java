@@ -57,7 +57,7 @@ public class PhaserExampleServlet extends HttpServlet {
 		out.println("<html>");
 
 		out.println("<head>");
-		out.println("<script src='/phaser-code/build/phaser.js'></script>");
+		out.println("<script src='/phaser-code/dist/phaser.js'></script>");
 		out.println("<script src='/jslibs/highlight.pack.js'></script>");
 		out.println("<script src='/jslibs/highlightjs-line-numbers.min.js'></script>");
 		out.println("<link rel='stylesheet' href='jslibs/default.css'>");
@@ -98,7 +98,7 @@ public class PhaserExampleServlet extends HttpServlet {
 		out.println("<pre id='text'>");
 
 		Path file = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN,
-				"phaser-examples-master/examples/" + fname);
+				"phaser3-examples/public/src/" + fname);
 
 		byte[] bytes = Files.readAllBytes(file);
 		out.println(new String(bytes));

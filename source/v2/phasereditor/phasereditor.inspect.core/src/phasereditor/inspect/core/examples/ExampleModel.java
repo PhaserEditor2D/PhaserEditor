@@ -36,11 +36,11 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import phasereditor.inspect.core.IPhaserTemplate;
+import phasereditor.inspect.core.IProjectTemplate;
 import phasereditor.inspect.core.InspectCore;
-import phasereditor.inspect.core.TemplateInfo;
+import phasereditor.inspect.core.ProjectTemplateInfo;
 
-public class ExampleModel implements IPhaserTemplate {
+public class ExampleModel implements IProjectTemplate {
 	public static class Mapping {
 		private Path _original;
 		private String destiny;
@@ -62,7 +62,7 @@ public class ExampleModel implements IPhaserTemplate {
 
 	private String _name;
 	private List<Mapping> _filesMapping;
-	private TemplateInfo _info;
+	private ProjectTemplateInfo _info;
 	private ExampleCategoryModel _category;
 	private Path _mainFilePath;
 
@@ -70,7 +70,7 @@ public class ExampleModel implements IPhaserTemplate {
 		_name = name;
 		_category = category;
 		_filesMapping = new ArrayList<>();
-		_info = new TemplateInfo();
+		_info = new ProjectTemplateInfo();
 		_info.setAuthor("Phaser.io");
 		_info.setEmail("rich@photonstorm.com");
 		_info.setWebsite("http://github.io/photonstorm/phaser");
@@ -195,7 +195,7 @@ public class ExampleModel implements IPhaserTemplate {
 	}
 
 	@Override
-	public TemplateInfo getInfo() {
+	public ProjectTemplateInfo getInfo() {
 		return _info;
 	}
 

@@ -148,7 +148,7 @@ public class WebRunCore {
 	}
 
 	private static void addExamplesHandler(HandlerList handlerList) {
-		Path file = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN, "phaser-examples-master/examples");
+		Path file = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN, "phaser3-examples/public/src");
 		String path = file.toFile().getAbsolutePath();
 
 		addStaticFilesHandler(handlerList, path, "/examples-files");
@@ -156,7 +156,7 @@ public class WebRunCore {
 
 	private static void addAssetsHandler(HandlerList handlerList) {
 		Path file = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN,
-				"phaser-examples-master/examples/assets");
+				"phaser3-examples/public/assets");
 		String path = file.toFile().getAbsolutePath();
 
 		addStaticFilesHandler(handlerList, path, "/assets");

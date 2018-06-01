@@ -40,7 +40,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 
-import phasereditor.inspect.core.IPhaserTemplate;
+import phasereditor.inspect.core.IProjectTemplate;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.project.core.codegen.SourceLang;
 
@@ -77,8 +77,8 @@ public class NewPhaserExampleProjectWizard extends Wizard implements INewWizard 
 				if (visible) {
 					Object elem = ((IStructuredSelection) _templPage.getSelectionProvider().getSelection())
 							.getFirstElement();
-					if (elem != null && elem instanceof IPhaserTemplate) {
-						String name = ((IPhaserTemplate) elem).getName();
+					if (elem != null && elem instanceof IProjectTemplate) {
+						String name = ((IProjectTemplate) elem).getName();
 						setProjectName(name);
 					} else {
 						setProjectName("Game");

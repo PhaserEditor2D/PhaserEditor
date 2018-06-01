@@ -25,17 +25,17 @@ import static java.lang.System.out;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Stack;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,19 +44,15 @@ import org.json.JSONTokener;
 import phasereditor.inspect.core.examples.ExampleModel.Mapping;
 
 public class ExamplesModel {
-	private Path _examplesFolderPath;
-	private List<ExampleCategoryModel> _examplesCategories;
+	Path _examplesFolderPath;
+	List<ExampleCategoryModel> _examplesCategories;
 
 	public ExamplesModel(Path reposDir) {
 		_examplesFolderPath = reposDir.resolve("phaser3-examples/public");
 		_examplesCategories = new ArrayList<>();
 	}
 
-	public void build(IProgressMonitor monitor) throws IOException {
-		buildExamples(monitor);
-	}
-
-	private void buildExamples(IProgressMonitor monitor) throws IOException {
+	public void build() throws IOException {
 		Path assetsPath = _examplesFolderPath.resolve("assets");
 		Path srcPath = _examplesFolderPath.resolve("src");
 		List<Path> requiredFiles = new ArrayList<>();
@@ -65,70 +61,100 @@ public class ExamplesModel {
 			requiredFiles.addAll(Arrays.asList(inAssets));
 		}
 
-		Path[] jsFiles = Files.walk(srcPath).filter(this::isExampleJSFile).toArray(Path[]::new);
-
-		out.println("Examples: " + jsFiles.length);
-
-		Map<Path, ExampleCategoryModel> catMap = new HashMap<>();
-
-		monitor.beginTask("Building examples", jsFiles.length);
-
-		for (Path jsFile : jsFiles) {
-			
-			//TODO: for the moment ignore this kind of examples.
-			if (Files.exists(jsFile.resolveSibling("boot.json"))) {
-				continue;
-			}
-
-			monitor.subTask(jsFile.getFileName().toString());
-
-			Path catPath = jsFile.getParent();
-			ExampleCategoryModel catModel = catMap.get(catPath);
-			if (catModel == null) {
-				Path relPath = _examplesFolderPath.resolve("src").relativize(catPath);
-				catModel = new ExampleCategoryModel(getName(relPath));
-				catMap.put(catPath, catModel);
-				_examplesCategories.add(catModel);
-			}
-
-			String mainFile = jsFile.getFileName().toString().replace("\\", "/");
-			ExampleModel exampleModel = new ExampleModel(this, catModel, getName(jsFile.getFileName()), mainFile);
-
-			// add main example file
-			exampleModel.addMapping(_examplesFolderPath.relativize(jsFile), jsFile.getFileName().toString());
-			catModel.addExample(exampleModel);
-
-			// add assets files
-			String content = new String(Files.readAllBytes(jsFile));
-			for (Path file : requiredFiles) {
-				String assetRelPath = _examplesFolderPath.relativize(file).toString().replace("\\", "/");
-				if (content.contains(assetRelPath) || content.contains("../" + assetRelPath)) {
-					exampleModel.addMapping(_examplesFolderPath.relativize(file), assetRelPath);
-				}
-			}
-
-			monitor.worked(1);
-		}
-		monitor.done();
-
-		_examplesCategories.sort(new Comparator<ExampleCategoryModel>() {
+		Comparator<ExampleCategoryModel> comparator = new Comparator<ExampleCategoryModel>() {
 
 			@Override
 			public int compare(ExampleCategoryModel o1, ExampleCategoryModel o2) {
 				return o1.getName().compareTo(o2.getName());
 			}
+		};
+
+		Files.walkFileTree(srcPath, new SimpleFileVisitor<Path>() {
+
+			Stack<ExampleCategoryModel> _stack = new Stack<>();
+
+			@Override
+			public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+				String filename = dir.getFileName().toString();
+				if (filename.startsWith("_") || filename.equals("archived")) {
+					out.println("Skip " + dir);
+					return FileVisitResult.CONTINUE;
+				}
+
+				if (dir.equals(srcPath)) {
+					return FileVisitResult.CONTINUE;
+				}
+
+				ExampleCategoryModel parent = _stack.isEmpty() ? null : _stack.peek();
+				ExampleCategoryModel category = new ExampleCategoryModel(parent, getName(dir.getFileName()));
+				_stack.push(category);
+
+				if (parent == null) {
+					_examplesCategories.add(category);
+				}
+
+				return FileVisitResult.CONTINUE;
+			}
+
+			@Override
+			public FileVisitResult visitFile(Path jsFile, BasicFileAttributes attrs) throws IOException {
+				ExampleCategoryModel category = _stack.peek();
+
+				if (!isExampleJSFile(jsFile)) {
+					out.println("Skip " + jsFile);
+					return FileVisitResult.CONTINUE;
+				}
+
+				if (Files.exists(jsFile.resolve("boot.json"))) {
+					return FileVisitResult.SKIP_SIBLINGS;
+				}
+
+				String mainFile = jsFile.getFileName().toString().replace("\\", "/");
+				ExampleModel exampleModel = new ExampleModel(ExamplesModel.this, category,
+						getName(jsFile.getFileName()), mainFile);
+
+				// add main example file
+				exampleModel.addMapping(_examplesFolderPath.relativize(jsFile), jsFile.getFileName().toString());
+				category.addExample(exampleModel);
+
+				// add assets files
+				String content = new String(Files.readAllBytes(jsFile));
+
+				for (Path requiredFile : requiredFiles) {
+					String assetRelPath = _examplesFolderPath.relativize(requiredFile).toString().replace("\\", "/");
+					if (content.contains(assetRelPath) || content.contains("../" + assetRelPath)) {
+						exampleModel.addMapping(_examplesFolderPath.relativize(requiredFile), assetRelPath);
+					}
+				}
+
+				return FileVisitResult.CONTINUE;
+			}
+
+			@Override
+			public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+				if (dir.equals(srcPath) || _stack.isEmpty()) {
+					return FileVisitResult.CONTINUE;
+				}
+
+				ExampleCategoryModel category = _stack.pop();
+				category.getSubCategories().sort(comparator);
+				category.getTemplates().sort((t1, t2) -> t1.getName().compareTo(t2.getName()));
+
+				return FileVisitResult.CONTINUE;
+			}
+
 		});
 
-		AtomicInteger i = new AtomicInteger(1);
-		_examplesCategories.stream().forEach(m -> {
-			out.println(i + ": " + m.getName());
-			i.incrementAndGet();
-		});
+		_examplesCategories.sort(comparator);
+
+		for (ExampleCategoryModel c : _examplesCategories) {
+			c.printTree(0);
+		}
 
 	}
 
-	private static String getName(Path path) {
-		String name = path.toString().replace("\\", "/").replace("/", " - ");
+	static String getName(Path path) {
+		String name = path.toString().replace("\\", "/");
 		if (name.endsWith(".js")) {
 			name = name.substring(0, name.length() - 3);
 		}
@@ -152,9 +178,10 @@ public class ExamplesModel {
 		return _examplesCategories;
 	}
 
-	private boolean isExampleJSFile(Path p) {
-		String str = p.toString();
-		return str.endsWith(".js");
+	static boolean isExampleJSFile(Path p) {
+		String filename = p.getFileName().toString();
+
+		return !filename.startsWith("_") && filename.endsWith(".js");
 	}
 
 	public Path getExamplesRepoPath() {
@@ -169,14 +196,20 @@ public class ExamplesModel {
 			jsonDoc = new JSONObject(new JSONTokener(input));
 		}
 
-		loadCategories(jsonDoc.getJSONArray("examplesCategories"), _examplesCategories);
+		loadCategories(jsonDoc.getJSONArray("examplesCategories"), null);
 	}
 
-	private void loadCategories(JSONArray jsonCategories, List<ExampleCategoryModel> categories) {
+	private void loadCategories(JSONArray jsonCategories, ExampleCategoryModel parent) {
 		for (int i = 0; i < jsonCategories.length(); i++) {
 			JSONObject jsonCategory = jsonCategories.getJSONObject(i);
-			ExampleCategoryModel category = new ExampleCategoryModel(jsonCategory.getString("name"));
-			categories.add(category);
+			ExampleCategoryModel category = new ExampleCategoryModel(parent, jsonCategory.getString("name"));
+
+			if (parent == null) {
+				_examplesCategories.add(category);
+			}
+
+			JSONArray jsonSubCategories = jsonCategory.getJSONArray("subCategories");
+			loadCategories(jsonSubCategories, category);
 
 			JSONArray jsonExamples = jsonCategory.getJSONArray("examples");
 			for (int j = 0; j < jsonExamples.length(); j++) {
@@ -189,7 +222,8 @@ public class ExamplesModel {
 				for (int k = 0; k < jsonMaps.length(); k++) {
 					JSONObject jsonMap = jsonMaps.getJSONObject(k);
 					String orig = jsonMap.getString("orig");
-					example.addMapping(_examplesFolderPath.resolve(orig), jsonMap.getString("dst"));
+					String dst = jsonMap.optString("dst", orig);
+					example.addMapping(_examplesFolderPath.resolve(orig), dst);
 				}
 			}
 		}
@@ -211,6 +245,10 @@ public class ExamplesModel {
 			jsonCategory.put("name", category.getName());
 			jsonExamplesCategories.put(jsonCategory);
 
+			JSONArray jsonSubCategories = new JSONArray();
+			jsonCategory.put("subCategories", jsonSubCategories);
+			saveCategories(jsonSubCategories, category.getSubCategories());
+
 			JSONArray jsonExamples = new JSONArray();
 			jsonCategory.put("examples", jsonExamples);
 			for (ExampleModel example : category.getTemplates()) {
@@ -224,8 +262,12 @@ public class ExamplesModel {
 				for (Mapping map : example.getFilesMapping()) {
 					JSONObject jsonMap = new JSONObject();
 					jsonMaps.put(jsonMap);
-					jsonMap.put("orig", map.getOriginal().toString().replace("\\", "/"));
-					jsonMap.put("dst", map.getDestiny());
+					String orig = map.getOriginal().toString().replace("\\", "/");
+					String dst = map.getDestiny();
+					jsonMap.put("orig", orig);
+					if (!orig.equals(dst)) {
+						jsonMap.put("dst", dst);
+					}
 				}
 			}
 		}

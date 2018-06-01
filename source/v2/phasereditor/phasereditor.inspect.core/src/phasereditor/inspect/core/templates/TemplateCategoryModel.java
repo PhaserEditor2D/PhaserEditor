@@ -25,11 +25,12 @@ import static java.lang.System.out;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import phasereditor.inspect.core.IPhaserCategory;
+import phasereditor.inspect.core.IProjectTemplateCategory;
 
-public class TemplateCategoryModel implements IPhaserCategory {
+public class TemplateCategoryModel implements IProjectTemplateCategory {
 	private String _name;
 	private List<TemplateModel> _templates;
 	private TemplatesModel _parent;
@@ -41,6 +42,16 @@ public class TemplateCategoryModel implements IPhaserCategory {
 		_templates = new ArrayList<>();
 		_parent = parent;
 		_description = "";
+	}
+
+	@Override
+	public IProjectTemplateCategory getParentCategory() {
+		return null;
+	}
+
+	@Override
+	public List<? extends IProjectTemplateCategory> getSubCategories() {
+		return Collections.emptyList();
 	}
 
 	public TemplatesModel getParent() {

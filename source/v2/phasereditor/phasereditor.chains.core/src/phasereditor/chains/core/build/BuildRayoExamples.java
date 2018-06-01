@@ -30,7 +30,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -53,7 +52,7 @@ public class BuildRayoExamples {
 		List<String> files = new ArrayList<>();
 
 		ExamplesModel examples = new ExamplesModel(projectPath);
-		examples.build(new NullProgressMonitor());
+		examples.build();
 
 		for (ExampleCategoryModel category : examples.getExamplesCategories()) {
 			for (ExampleModel example : category.getTemplates()) {

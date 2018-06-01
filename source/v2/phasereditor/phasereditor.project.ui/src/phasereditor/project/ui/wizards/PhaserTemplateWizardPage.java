@@ -51,10 +51,10 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wb.swt.ResourceManager;
 
-import phasereditor.inspect.core.IPhaserCategory;
-import phasereditor.inspect.core.IPhaserTemplate;
+import phasereditor.inspect.core.IProjectTemplateCategory;
+import phasereditor.inspect.core.IProjectTemplate;
 import phasereditor.inspect.core.InspectCore;
-import phasereditor.inspect.core.TemplateInfo;
+import phasereditor.inspect.core.ProjectTemplateInfo;
 import phasereditor.inspect.core.examples.ExampleCategoryModel;
 import phasereditor.inspect.core.examples.ExampleModel;
 import phasereditor.inspect.core.examples.ExamplesModel;
@@ -104,8 +104,12 @@ public class PhaserTemplateWizardPage extends WizardPage {
 				return _examples.getExamplesCategories().toArray();
 			}
 
-			if (parent instanceof IPhaserCategory) {
-				return ((IPhaserCategory) parent).getTemplates().toArray();
+			if (parent instanceof IProjectTemplateCategory) {
+				List<Object> list = new ArrayList<>();
+				IProjectTemplateCategory category = (IProjectTemplateCategory) parent;
+				list.addAll(category.getSubCategories());
+				list.addAll(category.getTemplates());
+				return list.toArray();
 			}
 
 			return new Object[0];
@@ -113,8 +117,8 @@ public class PhaserTemplateWizardPage extends WizardPage {
 
 		@Override
 		public Object getParent(Object element) {
-			if (element instanceof IPhaserTemplate) {
-				return ((IPhaserTemplate) element).getCategory();
+			if (element instanceof IProjectTemplate) {
+				return ((IProjectTemplate) element).getCategory();
 			}
 			if (element instanceof ExampleCategoryModel) {
 				return PHASER_EXAMPLES;
@@ -133,7 +137,7 @@ public class PhaserTemplateWizardPage extends WizardPage {
 
 	TreeViewer _treeViewer;
 	ExamplesModel _examples;
-	private IPhaserTemplate _template;
+	private IProjectTemplate _template;
 	private WebkitBrowser _infoText;
 	private FilteredTree2 _filteredTree;
 	private ToolItem _playItem;
@@ -152,7 +156,7 @@ public class PhaserTemplateWizardPage extends WizardPage {
 		@Override
 		public Image getImage(Object element) {
 			ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
-			if (element instanceof IPhaserTemplate) {
+			if (element instanceof IProjectTemplate) {
 				return EditorSharedImages.getImage(IEditorSharedImages.IMG_TEMPLATE_OBJ);
 			}
 			return sharedImages.getImage(ISharedImages.IMG_OBJ_FOLDER);
@@ -160,12 +164,12 @@ public class PhaserTemplateWizardPage extends WizardPage {
 
 		@Override
 		public String getText(Object element) {
-			if (element instanceof IPhaserCategory) {
-				return ((IPhaserCategory) element).getName();
+			if (element instanceof IProjectTemplateCategory) {
+				return ((IProjectTemplateCategory) element).getName();
 			}
 
-			if (element instanceof IPhaserTemplate) {
-				return ((IPhaserTemplate) element).getName();
+			if (element instanceof IProjectTemplate) {
+				return ((IProjectTemplate) element).getName();
 			}
 
 			return super.getText(element);
@@ -251,10 +255,10 @@ public class PhaserTemplateWizardPage extends WizardPage {
 			setErrorMessage(err);
 		} else {
 			Object elem = ((IStructuredSelection) _treeViewer.getSelection()).getFirstElement();
-			if (elem instanceof IPhaserTemplate) {
+			if (elem instanceof IProjectTemplate) {
 				setErrorMessage(null);
-				_template = (IPhaserTemplate) elem;
-				TemplateInfo templInfo = _template.getInfo();
+				_template = (IProjectTemplate) elem;
+				ProjectTemplateInfo templInfo = _template.getInfo();
 				StringBuilder sb = new StringBuilder();
 
 				sb.append("<b>Author:</b> " + templInfo.getAuthor() + " (" + templInfo.getEmail() + ")<br>");
@@ -275,8 +279,8 @@ public class PhaserTemplateWizardPage extends WizardPage {
 			} else if (elem == PHASER_EXAMPLES) {
 				info = "Official Phaser Examples\n\nhttp://phaser.io/examples";
 			} else {
-				if (elem instanceof IPhaserCategory) {
-					info = ((IPhaserCategory) elem).getDescription();
+				if (elem instanceof IProjectTemplateCategory) {
+					info = ((IProjectTemplateCategory) elem).getDescription();
 				}
 
 				setErrorMessage(err);
@@ -291,7 +295,7 @@ public class PhaserTemplateWizardPage extends WizardPage {
 		}
 	}
 
-	public IPhaserTemplate getTemplate() {
+	public IProjectTemplate getTemplate() {
 		return _template;
 	}
 

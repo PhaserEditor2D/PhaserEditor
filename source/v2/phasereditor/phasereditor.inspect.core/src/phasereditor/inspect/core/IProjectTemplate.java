@@ -27,7 +27,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-public interface IPhaserTemplate {
+public interface IProjectTemplate {
 	void copyInto(IFolder dstWebContentfolder, Map<String, String> values, IProgressMonitor monitor);
 	
 	public default void copyInto(IFolder folder, IProgressMonitor monitor) {
@@ -38,7 +38,7 @@ public interface IPhaserTemplate {
 
 	public IFile getOpenFile(IFolder folder);
 
-	public TemplateInfo getInfo();
+	public ProjectTemplateInfo getInfo();
 
-	public IPhaserCategory getCategory();
+	public IProjectTemplateCategory getCategory();
 }

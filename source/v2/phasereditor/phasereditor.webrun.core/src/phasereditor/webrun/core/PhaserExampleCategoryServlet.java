@@ -69,7 +69,7 @@ public class PhaserExampleCategoryServlet extends HttpServlet {
 			out.println("<a href='/phaser-examples'>Examples</a><br><br>");
 
 			Path root = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN,
-					"phaser-examples-master/examples/");
+					"phaser3-examples/public/");
 
 			for (ExampleModel example : cat.getTemplates()) {
 				String url = root.relativize(example.getMainFilePath()).toString().replace("\\", "/");

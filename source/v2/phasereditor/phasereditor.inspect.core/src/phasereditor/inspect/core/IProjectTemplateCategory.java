@@ -23,10 +23,14 @@ package phasereditor.inspect.core;
 
 import java.util.List;
 
-public interface IPhaserCategory {
+public interface IProjectTemplateCategory {
 	public String getName();
 
-	public List<? extends IPhaserTemplate> getTemplates();
+	public List<? extends IProjectTemplate> getTemplates();
+	
+	public List<? extends IProjectTemplateCategory> getSubCategories();
+	
+	public IProjectTemplateCategory getParentCategory();
 
 	public String getDescription();
 }
