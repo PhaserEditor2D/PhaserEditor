@@ -318,6 +318,11 @@ public class ChainsModel {
 					continue;
 				}
 
+				if (!type.startsWith("Phaser") && !type.startsWith("Matter")) {
+					// avoid to enters into non-Phaser types
+					continue;
+				}
+
 				buildChain(type, chains, currentDepth + 1, depth, chain);
 			}
 		}
