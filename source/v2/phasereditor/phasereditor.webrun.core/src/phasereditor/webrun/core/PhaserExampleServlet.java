@@ -78,7 +78,12 @@ public class PhaserExampleServlet extends HttpServlet {
 		out.println("<h1>" + example.getName() + "</h1>");
 		out.println("<small><i>Hosted locally by Phaser Editor</i></small><br><br>");
 
-		out.println("<a href='/phaser-examples'>Examples</a> / ");
+
+		out.println("<div style='float:left; margin-right:2em' id='phaser-example'></div>");
+		
+		out.println("<div style='float:left'>");
+		out.println("<h3>All the examples in this folder</h3>");
+		out.println("<a href='/phaser-examples'>Home</a> / ");
 
 		{
 			StringBuilder sb = new StringBuilder();
@@ -88,14 +93,9 @@ public class PhaserExampleServlet extends HttpServlet {
 				cat = cat.getParentCategory();
 			} while (cat != null);
 			
-			sb.append(example.getName());
 			out.println(sb.toString());
 		}
 		
-
-		out.println("<br><br>");
-
-		out.println("<div style='float:left'>");
 		out.println("<ul>");
 		for (ExampleModel example2 : example.getCategory().getTemplates()) {
 			out.println("<li><a href='/phaser-example?n=" + examples.lookup(example2) + "'>" + example2.getName()
@@ -104,9 +104,8 @@ public class PhaserExampleServlet extends HttpServlet {
 		out.println("</ul>");
 		out.println("</div>");
 
-		out.println("<div style='float:left; margin-left:2em' id='phaser-example'></div>");
 		out.println("<div style='clear:both	'></div>");
-
+		
 		{
 			Path path = examples.getExamplesRepoPath().relativize(example.getMainFilePath());
 			out.println("<script src='/examples-files/" + path.toString().replace("\\", "/") + "'></script>");

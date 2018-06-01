@@ -406,12 +406,8 @@ public class ChainsView extends ViewPart {
 			linenum = line.linenum;
 		}
 
-		if (file.indexOf("labs") != 0) {
-			file = "examples/" + file;
-		}
-
 		Path filePath = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN,
-				"phaser-examples-master/" + file);
+				"phaser3-examples/public/src/" + file);
 
 		for (ExampleCategoryModel c : InspectCore.getExamplesModel().getExamplesCategories()) {
 			for (ExampleModel e : c.getTemplates()) {

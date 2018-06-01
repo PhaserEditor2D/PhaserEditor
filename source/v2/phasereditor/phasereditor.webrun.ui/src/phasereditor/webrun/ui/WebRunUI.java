@@ -24,7 +24,6 @@ package phasereditor.webrun.ui;
 import static java.lang.System.out;
 
 import java.net.URL;
-import java.nio.file.Path;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
@@ -81,10 +80,9 @@ public class WebRunUI {
 	}
 
 	public static void openExampleInBrowser(ExampleModel example, int line) {
-		Path path = example.getMainFilePath();
-		Path root = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN, "phaser3-examples/public");
-		String name = root.relativize(path).toString().replace("\\", "/");
-		String url = getExampleInBrowserURL(name) + (line == -1 ? "" : "&l=" + line);
+		Object id = InspectCore.getExamplesModel().lookup(example);
+		String url = "http://localhost:" + WebRunCore.getServerPort() + "/phaser-example?n=" + id
+				+ (line == -1 ? "" : "&l=" + line);
 		openBrowser(url);
 	}
 
@@ -122,12 +120,6 @@ public class WebRunUI {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-	}
-
-	public static String getExampleInBrowserURL(String name) {
-		String url = URIUtil.encodePath("http://localhost:" + WebRunCore.getServerPort() + "/phaser-example") + "?n="
-				+ URIUtil.encodePath(name);
-		return url;
 	}
 
 	public static String getProjectBrowserURL(IProject project) {
@@ -200,8 +192,8 @@ public class WebRunUI {
 	}
 
 	/**
-	 * Open the external/default browser to show the given url. The external
-	 * browser is that one returned by
+	 * Open the external/default browser to show the given url. The external browser
+	 * is that one returned by
 	 * {@link IWorkbenchBrowserSupport#getExternalBrowser()}.
 	 * 
 	 * @see IWorkbenchBrowserSupport#getExternalBrowser()
