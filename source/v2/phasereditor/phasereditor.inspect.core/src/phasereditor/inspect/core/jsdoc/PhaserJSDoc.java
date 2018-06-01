@@ -52,7 +52,7 @@ public class PhaserJSDoc {
 		if (_instance == null) {
 			long t = currentTimeMillis();
 			Path docsJsonFile = InspectCore
-					.getBundleFile(InspectCore.RESOURCES_METADATA_PLUGIN, "phaser-custom/jsdoc/docs.json")
+					.getBundleFile(InspectCore.RESOURCES_METADATA_PLUGIN, "phaser-custom/phaser3-docs/json/phaser.json")
 					.toAbsolutePath().normalize();
 			Path srcFolder = InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN, "phaser-master/src");
 
@@ -141,7 +141,8 @@ public class PhaserJSDoc {
 		}
 
 		try (InputStream input = Files.newInputStream(docsJsonFile)) {
-			JSONArray jsdocElements = new JSONArray(new JSONTokener(input));
+			JSONObject jsonDoc = new JSONObject(new JSONTokener(input));
+			JSONArray jsdocElements = jsonDoc.getJSONArray("docs");
 
 			// Set<String> kinds = new HashSet<>();
 			// Set<String> scopes = new HashSet<>();
@@ -166,9 +167,9 @@ public class PhaserJSDoc {
 			for (int i = 0; i < jsdocElements.length(); i++) {
 				JSONObject obj = jsdocElements.getJSONObject(i);
 
-				if (obj.getString("longname").contains("~")) {
-					continue;
-				}
+				// if (obj.getString("longname").contains("~")) {
+				// continue;
+				// }
 
 				buildClass(obj, typeMap);
 			}
@@ -242,11 +243,7 @@ public class PhaserJSDoc {
 							for (int i = 0; i < retTypes.length; i++) {
 								String name = retTypes[i];
 								if (!typeMap.containsKey(name)) {
-									if (typeMap.containsKey("PIXI." + name)) {
-										// out.println("Fix property " +
-										// var.getName() + " to PIXI." + name);
-										retTypes[i] = "PIXI." + name;
-									} else if (typeMap.containsKey("Phaser." + name)) {
+									if (typeMap.containsKey("Phaser." + name)) {
 										// out.println("Fix property " +
 										// var.getName() + " to Phaser." +
 										// name);
@@ -257,18 +254,6 @@ public class PhaserJSDoc {
 						}
 					}
 				}
-			}
-
-			{
-				// Duplicate Phaser.KeyCode values in Phaser.Keyboard for
-				// compatibility
-				PhaserType keyboard = typeMap.get("Phaser.Keyboard");
-				PhaserType keycode = typeMap.get("Phaser.KeyCode");
-				Map<String, PhaserMember> keys = keycode.getMemberMap();
-				for (PhaserMember m : keys.values()) {
-					((PhaserConstant) m).setTypes(new String[] { "Number" });
-				}
-				keyboard.getMemberMap().putAll(keys);
 			}
 
 			{
@@ -564,10 +549,6 @@ public class PhaserJSDoc {
 		if (kind.equals("class")) {
 
 			String name = obj.getString("longname");
-
-			if (name.equals("module:PIXI.PIXI")) {
-				return;
-			}
 
 			// out.println("Parsing class: " + name);
 

@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.chains.core;
 
+import static java.lang.System.out;
+
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -55,12 +57,12 @@ public class ChainsModel {
 	private void build() {
 		_chains = new ArrayList<>();
 
-		buildChain("Phaser.Game", _chains, 0, 3, null);
+		buildChain("Phaser.Scene", _chains, 0, 2, null);
 
 		for (PhaserType unit : _jsdoc.getTypes()) {
 			String name = unit.getName();
 
-			if (!name.equals("Phaser.Game")) {
+			if (!name.equals("Phaser.Scene")) {
 				buildChain(name, _chains, 0, 2, null);
 			}
 		}
@@ -107,6 +109,8 @@ public class ChainsModel {
 			}
 		});
 
+		out.println("Built chains: " + _chains.size());
+
 		// examples
 
 		_examplesFiles = new ArrayList<>();
@@ -144,7 +148,7 @@ public class ChainsModel {
 		boolean showall = query.trim().length() == 0;
 
 		if (query.startsWith("this.")) {
-			query = "state." + query.substring(5);
+			query = "scene." + query.substring(5);
 		}
 
 		List<Match> matches = new ArrayList<>();
@@ -250,6 +254,7 @@ public class ChainsModel {
 	}
 
 	Set<String> _usedTypes = new HashSet<>();
+	Set<String> _usedChains = new HashSet<>();
 
 	private void buildChain(String className, List<ChainItem> chains, int currentDepth, int depth, String aPrefix) {
 		if (currentDepth == depth) {
@@ -264,26 +269,22 @@ public class ChainsModel {
 
 		// constructor
 		if (!_usedTypes.contains(className)) {
-			// class
-			{
-				String chain = "class " + className + (unit.getExtends().isEmpty() ? "" : " extends");
-				int i = 0;
-				for (String e : unit.getExtends()) {
-					chain += (i == 0 ? " " : "|") + e;
-					i++;
-				}
-				_chains.add(new ChainItem(unit, chain, className, 0));
-			}
-
 			// constructor
 			{
-				String chain = "new " + className + "(";
+				String chain = "class " + className + "(";
 				int i = 0;
 				for (PhaserMethodArg arg : unit.getConstructorArgs()) {
 					chain += (i > 0 ? "," : "") + arg.getName();
 					i++;
 				}
 				chain += ")";
+
+				chain += (unit.getExtends().isEmpty() ? "" : " extends");
+				i = 0;
+				for (String e : unit.getExtends()) {
+					chain += (i == 0 ? " " : "|") + e;
+					i++;
+				}
 
 				_chains.add(new ChainItem(unit, chain, className, 0));
 			}
@@ -294,11 +295,29 @@ public class ChainsModel {
 
 		// properties
 
+		boolean is_Phaser_Scenes_Systems = className.equals("Phaser.Scenes.Systems");
+
 		for (PhaserVariable prop : unit.getProperties()) {
 			for (String type : prop.getTypes()) {
 				String name = prop.getName();
 				String chain = prefix + "." + name;
+				if (_usedChains.contains(chain)) {
+					continue;
+				}
 				chains.add(new ChainItem(prop, chain, type, currentDepth));
+				_usedChains.add(chain);
+
+				if (is_Phaser_Scenes_Systems) {
+					// do not enters into Phaser.Scenes.Systems.(property) because it repeats the
+					// same of the Phaser.Scene.(property).
+					continue;
+				}
+
+				if (type.equals("Phaser.Scene")) {
+					// do not enters into Phaser.Scene chains
+					continue;
+				}
+
 				buildChain(type, chains, currentDepth + 1, depth, chain);
 			}
 		}
@@ -309,7 +328,11 @@ public class ChainsModel {
 			String name = cons.getName();
 			String type = cons.getTypes()[0];
 			String chain = prefix + "." + name;
+			if (_usedChains.contains(chain)) {
+				continue;
+			}
 			chains.add(new ChainItem(cons, chain, type, currentDepth));
+			_usedChains.add(chain);
 		}
 
 		// methods
@@ -334,7 +357,11 @@ public class ChainsModel {
 				}
 				chain += ")";
 
+				if (_usedChains.contains(chain)) {
+					continue;
+				}
 				chains.add(new ChainItem(method, chain, type, currentDepth));
+				_usedChains.add(chain);
 			}
 		}
 	}
