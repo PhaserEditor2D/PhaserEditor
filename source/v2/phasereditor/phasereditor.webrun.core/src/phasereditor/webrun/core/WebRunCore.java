@@ -148,7 +148,7 @@ public class WebRunCore {
 	}
 
 	private static void addExamplesHandler(HandlerList handlerList) {
-		Path file = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN, "phaser3-examples/public/src");
+		Path file = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN, "phaser3-examples/public");
 		String path = file.toFile().getAbsolutePath();
 
 		addStaticFilesHandler(handlerList, path, "/examples-files");

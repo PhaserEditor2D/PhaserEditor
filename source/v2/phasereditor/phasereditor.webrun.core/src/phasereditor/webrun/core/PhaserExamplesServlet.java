@@ -23,6 +23,7 @@ package phasereditor.webrun.core;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -31,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.examples.ExampleCategoryModel;
+import phasereditor.inspect.core.examples.ExampleModel;
 import phasereditor.inspect.core.examples.ExamplesModel;
 
 /**
@@ -54,18 +56,51 @@ public class PhaserExamplesServlet extends HttpServlet {
 
 		out.println("<h1>Phaser Examples</h1>");
 		out.println("<small><i>Hosted locally by Phaser Editor</i></small><br><br>");
-		
+
 		ExamplesModel examples = InspectCore.getExamplesModel();
 
+		out.println("<h2>Chapters</h2>");
+		out.println("<ul>");
 		for (ExampleCategoryModel cat : examples.getExamplesCategories()) {
-			out.println("<a href='/phaser-examples-category?n=" + cat.getName() + "'>" + cat.getName() + "</a>");
-			out.println("<br>");
+			out.println("<li><a href='#" + examples.lookup(cat) + "'>" + cat.getName() + "</li></a>");
 		}
+		out.println("</ul>");
+
+		out.println("<h2>Table of Contents</h2>");
+
+		out.println("<ul>");
+		printTableOfContents(out, examples, examples.getExamplesCategories());
+		out.println("</ul>");
 
 		out.println("</body>");
 
 		out.println("</html>");
 
+	}
+
+	/**
+	 * @param out
+	 * @param examples
+	 * @param examplesCategories
+	 */
+	private void printTableOfContents(PrintStream out, ExamplesModel examples, List<ExampleCategoryModel> categories) {
+
+		for (ExampleCategoryModel category : categories) {
+			out.println("<li>");
+			out.println("<h3 id='" + examples.lookup(category) + "'>" + category.getName() + "</h3>");
+
+			out.println("<ul>");
+
+			for (ExampleModel example : category.getTemplates()) {
+				out.println("<li><a href='/phaser-example?n=" + examples.lookup(example) + "'>" + example.getName() + "</a></li>");
+			}
+
+			List<ExampleCategoryModel> subCategories = category.getSubCategories();
+			printTableOfContents(out, examples, subCategories);
+
+			out.println("</ul>");
+			out.println("</li>");
+		}
 	}
 
 }

@@ -33,7 +33,9 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 import org.json.JSONArray;
@@ -43,13 +45,43 @@ import org.json.JSONTokener;
 
 import phasereditor.inspect.core.examples.ExampleModel.Mapping;
 
+@SuppressWarnings("boxing")
 public class ExamplesModel {
 	Path _examplesFolderPath;
 	List<ExampleCategoryModel> _examplesCategories;
+	Map<Object, Object> _lookupTable;
+	private int _counter;
 
 	public ExamplesModel(Path reposDir) {
 		_examplesFolderPath = reposDir.resolve("phaser3-examples/public");
 		_examplesCategories = new ArrayList<>();
+	}
+
+	private void buildLookupTable() {
+		_counter = 0;
+		_lookupTable = new HashMap<>();
+		buildLookupTable(_examplesCategories);
+	}
+
+	private void buildLookupTable(List<ExampleCategoryModel> categories) {
+		for (ExampleCategoryModel category : categories) {
+			int id = _counter++;
+			_lookupTable.put(id, category);
+			_lookupTable.put(category, id);
+
+			for (ExampleModel example : category.getTemplates()) {
+				id = _counter++;
+				_lookupTable.put(id, example);
+				_lookupTable.put(example, id);
+			}
+
+			buildLookupTable(category.getSubCategories());
+		}
+
+	}
+
+	public Object lookup(Object obj) {
+		return _lookupTable.get(obj);
 	}
 
 	public void build() throws IOException {
@@ -75,14 +107,20 @@ public class ExamplesModel {
 
 			@Override
 			public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+				if (dir.equals(srcPath)) {
+					return FileVisitResult.CONTINUE;
+				}
+
 				String filename = dir.getFileName().toString();
+
 				if (filename.startsWith("_") || filename.equals("archived")) {
 					out.println("Skip " + dir);
 					return FileVisitResult.CONTINUE;
 				}
 
-				if (dir.equals(srcPath)) {
-					return FileVisitResult.CONTINUE;
+				if (Files.exists(dir.resolve("boot.json"))) {
+					out.println("Skip boot based examples " + dir);
+					return FileVisitResult.SKIP_SIBLINGS;
 				}
 
 				ExampleCategoryModel parent = _stack.isEmpty() ? null : _stack.peek();
@@ -105,13 +143,7 @@ public class ExamplesModel {
 					return FileVisitResult.CONTINUE;
 				}
 
-				if (Files.exists(jsFile.resolve("boot.json"))) {
-					return FileVisitResult.SKIP_SIBLINGS;
-				}
-
-				String mainFile = jsFile.getFileName().toString().replace("\\", "/");
-				ExampleModel exampleModel = new ExampleModel(ExamplesModel.this, category,
-						getName(jsFile.getFileName()), mainFile);
+				ExampleModel exampleModel = new ExampleModel(category, jsFile);
 
 				// add main example file
 				exampleModel.addMapping(_examplesFolderPath.relativize(jsFile), jsFile.getFileName().toString());
@@ -189,6 +221,7 @@ public class ExamplesModel {
 	}
 
 	public void loadCache(Path cache) throws IOException {
+
 		_examplesCategories = new ArrayList<>();
 
 		JSONObject jsonDoc;
@@ -197,6 +230,8 @@ public class ExamplesModel {
 		}
 
 		loadCategories(jsonDoc.getJSONArray("examplesCategories"), null);
+
+		buildLookupTable();
 	}
 
 	private void loadCategories(JSONArray jsonCategories, ExampleCategoryModel parent) {
@@ -214,8 +249,9 @@ public class ExamplesModel {
 			JSONArray jsonExamples = jsonCategory.getJSONArray("examples");
 			for (int j = 0; j < jsonExamples.length(); j++) {
 				JSONObject jsonExample = jsonExamples.getJSONObject(j);
-				ExampleModel example = new ExampleModel(this, category, jsonExample.getString("name"),
-						jsonExample.getString("mainFile"));
+				String mainFilePathStr = jsonExample.getString("mainFile");
+				Path mainFile = _examplesFolderPath.resolve(mainFilePathStr);
+				ExampleModel example = new ExampleModel(category, mainFile);
 				category.addExample(example);
 
 				JSONArray jsonMaps = jsonExample.getJSONArray("map");
@@ -239,7 +275,7 @@ public class ExamplesModel {
 		Files.write(cache, jsonDoc.toString(2).getBytes());
 	}
 
-	private static void saveCategories(JSONArray jsonExamplesCategories, List<ExampleCategoryModel> categories) {
+	private void saveCategories(JSONArray jsonExamplesCategories, List<ExampleCategoryModel> categories) {
 		for (ExampleCategoryModel category : categories) {
 			JSONObject jsonCategory = new JSONObject();
 			jsonCategory.put("name", category.getName());
@@ -254,8 +290,7 @@ public class ExamplesModel {
 			for (ExampleModel example : category.getTemplates()) {
 				JSONObject jsonExample = new JSONObject();
 				jsonExamples.put(jsonExample);
-				jsonExample.put("name", example.getName());
-				jsonExample.put("mainFile", example.getInfo().getMainFile());
+				jsonExample.put("mainFile", _examplesFolderPath.relativize(example.getMainFilePath()));
 
 				JSONArray jsonMaps = new JSONArray();
 				jsonExample.put("map", jsonMaps);

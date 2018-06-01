@@ -32,7 +32,7 @@ public class ExampleCategoryModel implements IProjectTemplateCategory {
 	private String _name;
 	private List<ExampleModel> _examples;
 	private List<ExampleCategoryModel> _subCategories;
-	private IProjectTemplateCategory _parentCategory;
+	private ExampleCategoryModel _parentCategory;
 
 	public ExampleCategoryModel(ExampleCategoryModel parent, String name) {
 		super();
@@ -44,10 +44,11 @@ public class ExampleCategoryModel implements IProjectTemplateCategory {
 		if (parent != null) {
 			parent._subCategories.add(this);
 		}
+		
 	}
-
+	
 	@Override
-	public IProjectTemplateCategory getParentCategory() {
+	public ExampleCategoryModel getParentCategory() {
 		return _parentCategory;
 	}
 

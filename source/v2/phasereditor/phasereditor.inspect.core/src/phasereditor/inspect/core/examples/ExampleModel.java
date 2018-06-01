@@ -66,17 +66,17 @@ public class ExampleModel implements IProjectTemplate {
 	private ExampleCategoryModel _category;
 	private Path _mainFilePath;
 
-	public ExampleModel(ExamplesModel examples, ExampleCategoryModel category, String name, String mainFile) {
-		_name = name;
+	public ExampleModel(ExampleCategoryModel category, Path mainFilePath) {
+		_name = ExamplesModel.getName(mainFilePath.getFileName());
 		_category = category;
 		_filesMapping = new ArrayList<>();
 		_info = new ProjectTemplateInfo();
 		_info.setAuthor("Phaser.io");
 		_info.setEmail("rich@photonstorm.com");
 		_info.setWebsite("http://github.io/photonstorm/phaser");
-		_info.setMainFile(mainFile);
+		_info.setMainFile(mainFilePath.getFileName().toString());
 		_info.setDescription("Official Phaser example.");
-		_mainFilePath = examples.getExamplesRepoPath().resolve(category.getName().toLowerCase()).resolve(mainFile);
+		_mainFilePath = mainFilePath;
 	}
 
 	@Override
