@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.chains.ui.views;
 
+import static java.lang.System.out;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.nio.file.Files;
@@ -54,6 +55,7 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -65,12 +67,14 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.json.JSONException;
@@ -94,7 +98,6 @@ import phasereditor.ui.WebkitBrowser;
 import phasereditor.ui.editors.StringEditorInput;
 import phasereditor.webrun.ui.WebRunUI;
 
-@SuppressWarnings("restriction")
 public class ChainsView extends ViewPart {
 	private Text _queryText;
 	private TableViewer _chainsViewer;
@@ -431,7 +434,7 @@ public class ChainsView extends ViewPart {
 		// open in editor
 		try {
 
-			String editorId = "org.eclipse.wst.jsdt.ui.CompilationUnitEditor";
+			String editorId = "org.eclipse.ui.genericeditor.GenericEditor";
 
 			byte[] bytes = Files.readAllBytes(filePath);
 
@@ -440,30 +443,27 @@ public class ChainsView extends ViewPart {
 			StringEditorInput input = new StringEditorInput(filePath.getFileName().toString(), new String(bytes));
 			input.setTooltip(input.getName());
 
-			// TODO: #RemovingWST migrate to generic editor
+			// open in generic editor
 
-			// CompilationUnitEditor editor = (CompilationUnitEditor)
-			// activePage.openEditor(input, editorId);
-			// try {
-			// editor.updatedTitleImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_SCRIPT_CODE));
-			// } catch (Exception e) {
-			// // ignore it
-			// }
-			// ISourceViewer viewer = editor.getViewer();
-			// StyledText textWidget = viewer.getTextWidget();
-			// textWidget.setEditable(false);
-			// int index = linenum - 1;
-			// try {
-			// int offset2 = offset;
-			// if (offset == -1) {
-			// offset2 = textWidget.getOffsetAtLine(index);
-			// }
-			// textWidget.setCaretOffset(offset2);
-			// textWidget.setTopIndex(index);
-			// } catch (IllegalArgumentException e) {
-			// // protect from index out of bounds
-			// e.printStackTrace();
-			// }
+			TextEditor editor = (TextEditor) activePage.openEditor(input, editorId);
+
+			StyledText textWidget = (StyledText) editor.getAdapter(Control.class);
+			textWidget.setEditable(false);
+			
+			out.println("Open " + filePath.getFileName() + " at line " + linenum);
+			
+			int index = linenum - 1;
+			try {
+				int offset2 = offset;
+				if (offset == -1) {
+					offset2 = textWidget.getOffsetAtLine(index);
+				}
+				textWidget.setCaretOffset(offset2);
+				textWidget.setTopIndex(index);
+			} catch (IllegalArgumentException e) {
+				// protect from index out of bounds
+				e.printStackTrace();
+			}
 
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -488,15 +488,7 @@ public class ChainsView extends ViewPart {
 		RGB rgb = SWTResourceManager.getColor(SWT.COLOR_INFO_BACKGROUND).getRGB();
 		String color = "rgb(" + rgb.red + ", " + rgb.green + ", " + rgb.blue + ")";
 
-		// TODO: #RemovingWST
-
-		// FontData fontData = JFaceResources.getFontRegistry()
-		// .getFontData(PreferenceConstants.APPEARANCE_JAVADOC_FONT)[0];
-		// String size = Integer.toString(fontData.getHeight()) +
-		// ("carbon".equals(SWT.getPlatform()) ? "px" : "pt");
-		// String family = "\"" + fontData.getName() + "\",sans-serif";
-
-		String size = 18 + ("carbon".equals(SWT.getPlatform()) ? "px" : "pt");
+		String size = 16 + ("carbon".equals(SWT.getPlatform()) ? "px" : "pt");
 		String family = "sans-serif";
 
 		String html = "<html><body style='background:\"" + color + "\";";
@@ -555,13 +547,13 @@ public class ChainsView extends ViewPart {
 	 * Initialize the toolbar.
 	 */
 	private void initializeToolBar() {
-		@SuppressWarnings("unused")
 		IToolBarManager toolbarManager = getViewSite().getActionBars().getToolBarManager();
 
 		toolbarManager.add(
 				new Action("Split", EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_SPLIT_HORIZONTAL)) {
 					private boolean _horiz = true;
 
+					@SuppressWarnings("synthetic-access")
 					@Override
 					public void run() {
 						_horiz = !_horiz;
@@ -574,7 +566,7 @@ public class ChainsView extends ViewPart {
 						_mainSash.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 						_chainsViewer.getTable().setParent(_mainSash);
 						_examplesViewer.getTable().setParent(_mainSash);
-						_mainSash.setWeights(new int[] {1, 1});
+						_mainSash.setWeights(new int[] { 1, 1 });
 						_mainSashContainer.layout();
 						_mainSashContainer.update();
 						old.dispose();
