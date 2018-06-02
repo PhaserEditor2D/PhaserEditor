@@ -81,4 +81,6 @@ public interface IEditorSharedImages {
 	String IMG_LOCK_OPEN = "icons/lock_open.png";
 	String IMG_LOCK = "icons/lock.png";
 	String IMG_HOUSE = "icons/house.png";
+	String IMG_SPLIT_HORIZONTAL = "icons/application-tile-horizontal.png";
+	String IMG_SPLIT_VERTICAL = "icons/application-tile-vertical.png";
 }

@@ -35,6 +35,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.help.HelpSystem;
 import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.resource.JFaceResources;
@@ -103,6 +104,8 @@ public class ChainsView extends ViewPart {
 	private TableColumn _examplesTableColumn;
 	private WebkitBrowser _docBrowser;
 	private CTabFolder _tabFolder;
+	private SashForm _mainSash;
+	private Composite _mainSashContainer;
 
 	class ChainsLabelProvider extends StyledCellLabelProvider {
 
@@ -246,22 +249,22 @@ public class ChainsView extends ViewPart {
 				CTabItem tbtmSearch = new CTabItem(_tabFolder, SWT.NONE);
 				tbtmSearch.setText("Search");
 				{
-					Composite composite = new Composite(_tabFolder, SWT.NONE);
-					tbtmSearch.setControl(composite);
+					_mainSashContainer = new Composite(_tabFolder, SWT.NONE);
+					tbtmSearch.setControl(_mainSashContainer);
 					GridLayout gl_composite = new GridLayout(1, false);
 					gl_composite.marginHeight = 0;
 					gl_composite.marginWidth = 0;
-					composite.setLayout(gl_composite);
+					_mainSashContainer.setLayout(gl_composite);
 					{
-						_queryText = new Text(composite, SWT.BORDER);
+						_queryText = new Text(_mainSashContainer, SWT.BORDER);
 						_queryText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 						_queryText.setText("add.*(");
 						{
-							SashForm horizSash = new SashForm(composite, SWT.NONE);
-							horizSash.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-							horizSash.setSize(468, 463);
+							_mainSash = new SashForm(_mainSashContainer, SWT.HORIZONTAL);
+							_mainSash.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+							_mainSash.setSize(468, 463);
 							{
-								_chainsViewer = new TableViewer(horizSash, SWT.FULL_SELECTION);
+								_chainsViewer = new TableViewer(_mainSash, SWT.FULL_SELECTION);
 								_chainsViewer.addDoubleClickListener(new IDoubleClickListener() {
 									@Override
 									public void doubleClick(DoubleClickEvent event) {
@@ -305,7 +308,7 @@ public class ChainsView extends ViewPart {
 									}
 								}
 								{
-									_examplesViewer = new TableViewer(horizSash, SWT.FULL_SELECTION);
+									_examplesViewer = new TableViewer(_mainSash, SWT.FULL_SELECTION);
 									_examplesViewer.addDoubleClickListener(new IDoubleClickListener() {
 										@Override
 										public void doubleClick(DoubleClickEvent event) {
@@ -347,7 +350,7 @@ public class ChainsView extends ViewPart {
 								}
 								_chainsViewer.setContentProvider(new ArrayContentProvider());
 							}
-							horizSash.setWeights(new int[] { 1, 1 });
+							_mainSash.setWeights(new int[] { 1, 1 });
 						}
 						{
 							CTabItem tbtmDocumentation = new CTabItem(_tabFolder, SWT.NONE);
@@ -554,6 +557,29 @@ public class ChainsView extends ViewPart {
 	private void initializeToolBar() {
 		@SuppressWarnings("unused")
 		IToolBarManager toolbarManager = getViewSite().getActionBars().getToolBarManager();
+
+		toolbarManager.add(
+				new Action("Split", EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_SPLIT_HORIZONTAL)) {
+					private boolean _horiz = true;
+
+					@Override
+					public void run() {
+						_horiz = !_horiz;
+						setImageDescriptor(
+								EditorSharedImages.getImageDescriptor(_horiz ? IEditorSharedImages.IMG_SPLIT_HORIZONTAL
+										: IEditorSharedImages.IMG_SPLIT_VERTICAL));
+						int style = _horiz ? SWT.HORIZONTAL : SWT.VERTICAL;
+						SashForm old = _mainSash;
+						_mainSash = new SashForm(_mainSashContainer, style);
+						_mainSash.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+						_chainsViewer.getTable().setParent(_mainSash);
+						_examplesViewer.getTable().setParent(_mainSash);
+						_mainSash.setWeights(new int[] {1, 1});
+						_mainSashContainer.layout();
+						_mainSashContainer.update();
+						old.dispose();
+					}
+				});
 	}
 
 	/**
