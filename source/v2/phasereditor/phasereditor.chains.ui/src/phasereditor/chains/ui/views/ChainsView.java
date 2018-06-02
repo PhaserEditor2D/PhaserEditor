@@ -52,8 +52,6 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.custom.CTabFolder;
-import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
@@ -71,6 +69,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
@@ -106,7 +106,7 @@ public class ChainsView extends ViewPart {
 	private TableViewer _examplesViewer;
 	private TableColumn _examplesTableColumn;
 	private Browser _docBrowser;
-	private CTabFolder _tabFolder;
+	private TabFolder _tabFolder;
 	private SashForm _mainSash;
 	private Composite _mainSashContainer;
 
@@ -246,10 +246,10 @@ public class ChainsView extends ViewPart {
 		gl_container.horizontalSpacing = 0;
 		container.setLayout(gl_container);
 		{
-			_tabFolder = new CTabFolder(container, SWT.NONE);
+			_tabFolder = new TabFolder(container, SWT.NONE);
 			_tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 			{
-				CTabItem tbtmSearch = new CTabItem(_tabFolder, SWT.NONE);
+				TabItem tbtmSearch = new TabItem(_tabFolder, SWT.NONE);
 				tbtmSearch.setText("Search");
 				{
 					_mainSashContainer = new Composite(_tabFolder, SWT.NONE);
@@ -356,7 +356,7 @@ public class ChainsView extends ViewPart {
 							_mainSash.setWeights(new int[] { 1, 1 });
 						}
 						{
-							CTabItem tbtmDocumentation = new CTabItem(_tabFolder, SWT.NONE);
+							TabItem tbtmDocumentation = new TabItem(_tabFolder, SWT.NONE);
 							tbtmDocumentation.setText("JSDoc");
 							{
 								Composite composite_1 = new Composite(_tabFolder, SWT.NONE);
