@@ -51,6 +51,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
@@ -94,7 +95,6 @@ import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.PhaserEditorUI;
-import phasereditor.ui.WebkitBrowser;
 import phasereditor.ui.editors.StringEditorInput;
 import phasereditor.webrun.ui.WebRunUI;
 
@@ -105,7 +105,7 @@ public class ChainsView extends ViewPart {
 	private TableColumn _chainTableColumn;
 	private TableViewer _examplesViewer;
 	private TableColumn _examplesTableColumn;
-	private WebkitBrowser _docBrowser;
+	private Browser _docBrowser;
 	private CTabFolder _tabFolder;
 	private SashForm _mainSash;
 	private Composite _mainSashContainer;
@@ -366,7 +366,7 @@ public class ChainsView extends ViewPart {
 								gl_composite_1.marginHeight = 0;
 								composite_1.setLayout(gl_composite_1);
 								{
-									_docBrowser = new WebkitBrowser(composite_1, SWT.NONE);
+									_docBrowser = new Browser(composite_1, SWT.NONE);
 									_docBrowser.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 								}
 							}
@@ -488,12 +488,7 @@ public class ChainsView extends ViewPart {
 		RGB rgb = SWTResourceManager.getColor(SWT.COLOR_INFO_BACKGROUND).getRGB();
 		String color = "rgb(" + rgb.red + ", " + rgb.green + ", " + rgb.blue + ")";
 
-		String size = 16 + ("carbon".equals(SWT.getPlatform()) ? "px" : "pt");
-		String family = "sans-serif";
-
-		String html = "<html><body style='background:\"" + color + "\";";
-		html += "font-size:" + size + ";";
-		html += "font-family:" + family + ";'>";
+		String html = "<html><body style='background:\"" + color + "\";'>";
 		html += doc;
 		html += "</body></html>";
 		return html;
