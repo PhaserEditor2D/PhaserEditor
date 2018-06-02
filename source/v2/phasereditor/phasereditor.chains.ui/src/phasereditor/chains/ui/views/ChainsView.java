@@ -21,9 +21,12 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.chains.ui.views;
 
+import static phasereditor.ui.PhaserEditorUI.swtRun;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -61,7 +64,6 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
@@ -93,14 +95,14 @@ import phasereditor.webrun.ui.WebRunUI;
 
 @SuppressWarnings("restriction")
 public class ChainsView extends ViewPart {
-	protected Text _queryText;
+	private Text _queryText;
 	private TableViewer _chainsViewer;
-	protected ChainsModel _chainsModel;
+	ChainsModel _chainsModel;
 	private TableColumn _chainTableColumn;
 	private TableViewer _examplesViewer;
 	private TableColumn _examplesTableColumn;
 	private WebkitBrowser _docBrowser;
-	protected CTabFolder _tabFolder;
+	private CTabFolder _tabFolder;
 
 	class ChainsLabelProvider extends StyledCellLabelProvider {
 
@@ -434,30 +436,31 @@ public class ChainsView extends ViewPart {
 
 			StringEditorInput input = new StringEditorInput(filePath.getFileName().toString(), new String(bytes));
 			input.setTooltip(input.getName());
-			
-			//TODO: #RemovingWST migrate to generic editor 
-			
-//			CompilationUnitEditor editor = (CompilationUnitEditor) activePage.openEditor(input, editorId);
-//			try {
-//				editor.updatedTitleImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_SCRIPT_CODE));
-//			} catch (Exception e) {
-//				// ignore it
-//			}
-//			ISourceViewer viewer = editor.getViewer();
-//			StyledText textWidget = viewer.getTextWidget();
-//			textWidget.setEditable(false);
-//			int index = linenum - 1;
-//			try {
-//				int offset2 = offset;
-//				if (offset == -1) {
-//					offset2 = textWidget.getOffsetAtLine(index);
-//				}
-//				textWidget.setCaretOffset(offset2);
-//				textWidget.setTopIndex(index);
-//			} catch (IllegalArgumentException e) {
-//				// protect from index out of bounds
-//				e.printStackTrace();
-//			}
+
+			// TODO: #RemovingWST migrate to generic editor
+
+			// CompilationUnitEditor editor = (CompilationUnitEditor)
+			// activePage.openEditor(input, editorId);
+			// try {
+			// editor.updatedTitleImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_SCRIPT_CODE));
+			// } catch (Exception e) {
+			// // ignore it
+			// }
+			// ISourceViewer viewer = editor.getViewer();
+			// StyledText textWidget = viewer.getTextWidget();
+			// textWidget.setEditable(false);
+			// int index = linenum - 1;
+			// try {
+			// int offset2 = offset;
+			// if (offset == -1) {
+			// offset2 = textWidget.getOffsetAtLine(index);
+			// }
+			// textWidget.setCaretOffset(offset2);
+			// textWidget.setTopIndex(index);
+			// } catch (IllegalArgumentException e) {
+			// // protect from index out of bounds
+			// e.printStackTrace();
+			// }
 
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -483,15 +486,16 @@ public class ChainsView extends ViewPart {
 		String color = "rgb(" + rgb.red + ", " + rgb.green + ", " + rgb.blue + ")";
 
 		// TODO: #RemovingWST
-		
-//		FontData fontData = JFaceResources.getFontRegistry()
-//				.getFontData(PreferenceConstants.APPEARANCE_JAVADOC_FONT)[0];
-//		String size = Integer.toString(fontData.getHeight()) + ("carbon".equals(SWT.getPlatform()) ? "px" : "pt");
-//		String family = "\"" + fontData.getName() + "\",sans-serif";
+
+		// FontData fontData = JFaceResources.getFontRegistry()
+		// .getFontData(PreferenceConstants.APPEARANCE_JAVADOC_FONT)[0];
+		// String size = Integer.toString(fontData.getHeight()) +
+		// ("carbon".equals(SWT.getPlatform()) ? "px" : "pt");
+		// String family = "\"" + fontData.getName() + "\",sans-serif";
 
 		String size = 18 + ("carbon".equals(SWT.getPlatform()) ? "px" : "pt");
 		String family = "sans-serif";
-		
+
 		String html = "<html><body style='background:\"" + color + "\";";
 		html += "font-size:" + size + ";";
 		html += "font-family:" + family + ";'>";
@@ -500,33 +504,17 @@ public class ChainsView extends ViewPart {
 		return html;
 	}
 
+	AtomicInteger _token = new AtomicInteger(0);
+
 	protected void queryTextModified() {
 
-		// this method is executed async sowe should check this
+		// this method is executed async so we should check this
 		if (_queryText.isDisposed()) {
 			return;
 		}
 
-		String query = _queryText.getText();
-		int chainsSize = 0;
-		int examplesSize = 0;
-		int chainsLimit = 100;
+		new Thread(this::searchAndUpdateTables).start();
 
-		if (_chainsModel != null) {
-			List<Match> list = _chainsModel.searchChains(query, chainsLimit);
-			_chainsViewer.setInput(list);
-			chainsSize = list.size();
-
-			list = _chainsModel.searchExamples(query, chainsLimit);
-			_examplesViewer.setInput(list);
-			examplesSize = list.size();
-		}
-
-		_chainTableColumn.setText(
-				"Chains (" + (chainsSize == chainsLimit ? chainsSize + "+" : Integer.valueOf(chainsSize)) + ")");
-
-		_examplesTableColumn.setText("Examples ("
-				+ (examplesSize == chainsLimit ? examplesSize + "+" : Integer.valueOf(examplesSize)) + ")");
 	}
 
 	private void afterCreateWidgets() {
@@ -540,13 +528,9 @@ public class ChainsView extends ViewPart {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				_chainsModel = ChainsCore.getChainsModel();
-				Display.getDefault().asyncExec(new Runnable() {
 
-					@Override
-					public void run() {
-						queryTextModified();
-					}
-				});
+				queryTextModified();
+
 				return Status.OK_STATUS;
 			}
 		}.schedule();
@@ -613,5 +597,44 @@ public class ChainsView extends ViewPart {
 			};
 		}
 		return super.getAdapter(adapter);
+	}
+
+	private void searchAndUpdateTables() {
+		int token = _token.incrementAndGet();
+
+		String[] query = new String[1];
+
+		getSite().getShell().getDisplay().syncExec(() -> {
+			query[0] = _queryText.getText();
+		});
+
+		int chainsLimit = 100;
+
+		if (_chainsModel == null) {
+			return;
+		}
+
+		List<Match> list1 = _chainsModel.searchChains(query[0], chainsLimit);
+		List<Match> list2 = _chainsModel.searchExamples(query[0], chainsLimit);
+
+		if (_token.get() != token) {
+			return;
+		}
+
+		swtRun(() -> {
+			_chainsViewer.setInput(list1);
+
+			_examplesViewer.setInput(list2);
+
+			int chainsSize = list1.size();
+			int examplesSize = list2.size();
+
+			_chainTableColumn.setText(
+					"Chains (" + (chainsSize == chainsLimit ? chainsSize + "+" : Integer.valueOf(chainsSize)) + ")");
+
+			_examplesTableColumn.setText("Examples ("
+					+ (examplesSize == chainsLimit ? examplesSize + "+" : Integer.valueOf(examplesSize)) + ")");
+
+		});
 	}
 }
