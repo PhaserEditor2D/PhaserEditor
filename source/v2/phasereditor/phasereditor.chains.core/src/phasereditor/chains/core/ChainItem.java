@@ -24,6 +24,7 @@ package phasereditor.chains.core;
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.core.jsdoc.PhaserConstant;
 import phasereditor.inspect.core.jsdoc.PhaserMethod;
+import phasereditor.inspect.core.jsdoc.PhaserNamespace;
 import phasereditor.inspect.core.jsdoc.PhaserProperty;
 import phasereditor.inspect.core.jsdoc.PhaserType;
 
@@ -39,7 +40,7 @@ public class ChainItem {
 		_chain = chain;
 		_returnTypeName = returnTypeName;
 		_depth = depth;
-		if (isType()) {
+		if (isType() || isNamespace()) {
 			_display = chain;
 		} else {
 			_display = getChain() + " : " + getReturnTypeName() + ";";
@@ -48,10 +49,6 @@ public class ChainItem {
 
 	public String getDisplay() {
 		return _display;
-	}
-
-	public PhaserType getDeclarationType() {
-		return getPhaserMember().getDeclType();
 	}
 
 	public String getMemberName() {
@@ -72,6 +69,15 @@ public class ChainItem {
 
 	public boolean isType() {
 		return getPhaserMember() instanceof PhaserType;
+	}
+
+	public boolean isEnum() {
+		IPhaserMember member = getPhaserMember();
+		return member instanceof PhaserType && ((PhaserType) member).isEnum();
+	}
+
+	public boolean isNamespace() {
+		return getPhaserMember() instanceof PhaserNamespace;
 	}
 
 	public PhaserMethod getMethod() {

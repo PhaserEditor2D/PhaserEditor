@@ -26,7 +26,9 @@ public interface IEditorSharedImages {
 	String IMG_SHAPE_GROUP_NODE = "icons/shape_node_group.png";
 	String IMG_DELETE = "icons/delete.png";
 	String IMG_EASING_ICON = "icons/vector.png";
+	String IMG_ENUM_OBJ = "icons/enum_obj.png";
 	String IMG_CLASS_OBJ = "icons/class_obj.png";
+	String IMG_PACKAGE_OBJ = "icons/package_obj.png";
 	String IMG_FIELD_DEFAULT_OBJ = "icons/field_default_obj.png";
 	String IMG_FIELD_PUBLIC_OBJ = "icons/field_public_obj.png";
 	String IMG_GENERIC_ELEMENT = "icons/generic_element.png";

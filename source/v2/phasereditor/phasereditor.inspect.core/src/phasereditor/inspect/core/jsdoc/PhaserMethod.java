@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PhaserMethod extends PhaserMember {
+public class PhaserMethod extends PhaserMember implements ITypeMember {
 	private List<PhaserMethodArg> _args;
 	private Map<String, PhaserVariable> _argsMap;
 	private String[] _returnTypes;

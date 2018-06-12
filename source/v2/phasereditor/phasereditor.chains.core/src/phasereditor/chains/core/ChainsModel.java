@@ -36,10 +36,11 @@ import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.examples.ExampleCategoryModel;
 import phasereditor.inspect.core.examples.ExampleModel;
 import phasereditor.inspect.core.examples.ExamplesModel;
-import phasereditor.inspect.core.jsdoc.PhaserConstant;
+import phasereditor.inspect.core.jsdoc.IMemberContainer;
 import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
 import phasereditor.inspect.core.jsdoc.PhaserMethod;
 import phasereditor.inspect.core.jsdoc.PhaserMethodArg;
+import phasereditor.inspect.core.jsdoc.PhaserNamespace;
 import phasereditor.inspect.core.jsdoc.PhaserType;
 import phasereditor.inspect.core.jsdoc.PhaserVariable;
 
@@ -59,20 +60,12 @@ public class ChainsModel {
 
 		buildChain("Phaser.Scene", _chains, 0, 2, null);
 
-		for (PhaserType unit : _jsdoc.getTypes()) {
-			String name = unit.getName();
+		for (IMemberContainer container : _jsdoc.getContainers()) {
+			String name = container.getName();
 
 			if (!name.equals("Phaser.Scene")) {
 				buildChain(name, _chains, 0, 2, null);
 			}
-		}
-
-		// global constants
-		for (PhaserConstant cons : _jsdoc.getGlobalConstants()) {
-			String name = cons.getName();
-			String type = cons.getTypes()[0];
-			String chain = "const Phaser." + name;
-			_chains.add(new ChainItem(cons, chain, type, 0));
 		}
 
 		// sort data
@@ -240,7 +233,7 @@ public class ChainsModel {
 	}
 
 	public boolean isPhaserType(String typeName) {
-		return _jsdoc.getTypesMap().containsKey(typeName);
+		return _jsdoc.getContainerMap().containsKey(typeName);
 	}
 
 	static int countDots(String s) {
@@ -253,58 +246,90 @@ public class ChainsModel {
 		return n;
 	}
 
-	Set<String> _usedTypes = new HashSet<>();
+	Set<String> _usednames = new HashSet<>();
 	Set<String> _usedChains = new HashSet<>();
 
-	private void buildChain(String className, List<ChainItem> chains, int currentDepth, int depth, String aPrefix) {
-		if (currentDepth == depth) {
+	private void buildChain(String containerName, List<ChainItem> chains, int currentDepth, int depthLimit,
+			String aPrefix) {
+		if (currentDepth == depthLimit) {
 			return;
 		}
 
-		PhaserType unit = _jsdoc.getType(className);
+		IMemberContainer container = _jsdoc.getContainerMap().get(containerName);
 
-		if (unit == null) {
+		if (container == null) {
 			return;
 		}
 
-		// constructor
-		if (!_usedTypes.contains(className)) {
+		String prefix = aPrefix == null ? containerName : aPrefix;
+
+		if (container instanceof PhaserType) {
+			PhaserType type = (PhaserType) container;
+
 			// constructor
-			{
-				String chain = "class " + className + "(";
-				int i = 0;
-				for (PhaserMethodArg arg : unit.getConstructorArgs()) {
-					chain += (i > 0 ? "," : "") + arg.getName();
-					i++;
-				}
-				chain += ")";
+			if (!_usednames.contains(containerName)) {
 
-				chain += (unit.getExtends().isEmpty() ? "" : " extends");
-				i = 0;
-				for (String e : unit.getExtends()) {
-					chain += (i == 0 ? " " : "|") + e;
-					i++;
+				if (type.isEnum()) {
+					String chain = "enum " + containerName;
+					_chains.add(new ChainItem(type, chain, containerName, 0));
+					_usedChains.add(chain);
+				} else {
+					// constructor
+					{
+						String chain = "class " + containerName + "(";
+						int i = 0;
+						for (PhaserMethodArg arg : type.getConstructorArgs()) {
+							chain += (i > 0 ? "," : "") + arg.getName();
+							i++;
+						}
+						chain += ")";
+
+						chain += (type.getExtends().isEmpty() ? "" : " extends");
+						i = 0;
+						for (String e : type.getExtends()) {
+							chain += (i == 0 ? " " : "|") + e;
+							i++;
+						}
+
+						_chains.add(new ChainItem(type, chain, containerName, 0));
+					}
 				}
 
-				_chains.add(new ChainItem(unit, chain, className, 0));
+				_usednames.add(containerName);
 			}
-			_usedTypes.add(className);
+		} else {
+			PhaserNamespace namespace = (PhaserNamespace) container;
+			String chain = "namespace " + containerName;
+			if (!_usedChains.contains(chain)) {
+				_chains.add(new ChainItem(namespace, chain, containerName, 0));
+				_usedChains.add(chain);
+			}
+
+			for (PhaserNamespace namespace2 : namespace.getNamespaces()) {
+				String longname = containerName + "." + namespace2.getName();
+				buildChain(longname, chains, currentDepth, depthLimit, containerName);
+			}
 		}
 
-		String prefix = aPrefix == null ? className : aPrefix;
+		// types
+
+		for (PhaserType type : container.getTypes()) {
+			String longname = containerName + "." + type.getName();
+			buildChain(longname, chains, currentDepth, depthLimit, containerName);
+		}
 
 		// properties
 
-		boolean is_Phaser_Scenes_Systems = className.equals("Phaser.Scenes.Systems");
+		boolean is_Phaser_Scenes_Systems = containerName.equals("Phaser.Scenes.Systems");
 
-		for (PhaserVariable prop : unit.getProperties()) {
-			for (String type : prop.getTypes()) {
+		for (PhaserVariable prop : container.getProperties()) {
+			for (String typename : prop.getTypes()) {
 				String name = prop.getName();
 				String chain = prefix + "." + name;
 				if (_usedChains.contains(chain)) {
 					continue;
 				}
-				chains.add(new ChainItem(prop, chain, type, currentDepth));
+				chains.add(new ChainItem(prop, chain, typename, currentDepth));
 				_usedChains.add(chain);
 
 				if (is_Phaser_Scenes_Systems) {
@@ -313,43 +338,46 @@ public class ChainsModel {
 					continue;
 				}
 
-				if (type.equals("Phaser.Scene")) {
+				if (typename.equals("Phaser.Scene")) {
 					// do not enters into Phaser.Scene chains
 					continue;
 				}
 
-				if (!type.startsWith("Phaser") && !type.startsWith("Matter")) {
+				if (!typename.startsWith("Phaser") && !typename.startsWith("Matter")) {
 					// avoid to enters into non-Phaser types
 					continue;
 				}
 
-				buildChain(type, chains, currentDepth + 1, depth, chain);
+				buildChain(typename, chains, currentDepth + 1, depthLimit, chain);
 			}
+
 		}
 
 		// constants
 
-		for (PhaserVariable cons : unit.getConstants()) {
+		for (PhaserVariable cons : container.getConstants()) {
 			String name = cons.getName();
-			String type = cons.getTypes()[0];
+			String typename = cons.getTypes()[0];
 			String chain = prefix + "." + name;
 			if (_usedChains.contains(chain)) {
 				continue;
 			}
-			chains.add(new ChainItem(cons, chain, type, currentDepth));
+			chains.add(new ChainItem(cons, chain, typename, currentDepth));
 			_usedChains.add(chain);
+
+			buildChain(typename, chains, currentDepth + 1, depthLimit, chain);
 		}
 
 		// methods
 
-		for (PhaserMethod method : unit.getMethods()) {
+		for (PhaserMethod method : container.getMethods()) {
 			String[] methodTypes = method.getReturnTypes();
 
 			if (methodTypes.length == 0) {
 				methodTypes = new String[] { "void" };
 			}
 
-			for (String type : methodTypes) {
+			for (String typename : methodTypes) {
 				String name = method.getName();
 				String chain = prefix + "." + name + "(";
 				int i = 0;
@@ -365,7 +393,7 @@ public class ChainsModel {
 				if (_usedChains.contains(chain)) {
 					continue;
 				}
-				chains.add(new ChainItem(method, chain, type, currentDepth));
+				chains.add(new ChainItem(method, chain, typename, currentDepth));
 				_usedChains.add(chain);
 			}
 		}

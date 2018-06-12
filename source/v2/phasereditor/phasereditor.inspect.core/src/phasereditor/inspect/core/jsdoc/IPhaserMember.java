@@ -28,8 +28,6 @@ public interface IPhaserMember {
 
 	public String getHelp();
 
-	public PhaserType getDeclType();
-
 	public int getLine();
 
 	public void setLine(int line);

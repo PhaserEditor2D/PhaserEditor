@@ -164,14 +164,18 @@ public class ChainsView extends ViewPart {
 			{
 				String key;
 
-				if (chain.isProperty()) {
+				if (chain.isEnum()) {
+					key = IEditorSharedImages.IMG_ENUM_OBJ;
+				} else if (chain.isProperty()) {
 					key = IEditorSharedImages.IMG_FIELD_PUBLIC_OBJ;
 				} else if (chain.isConst()) {
 					key = IEditorSharedImages.IMG_FIELD_DEFAULT_OBJ;
-				} else if (chain.isMethod() || chain.isType() && !chain.getDisplay().startsWith("class")) {
+				} else if (chain.isMethod()) {
 					key = IEditorSharedImages.IMG_METHPUB_OBJ;
-				} else {
+				} else if (chain.isType()) {
 					key = IEditorSharedImages.IMG_CLASS_OBJ;
+				} else {
+					key = IEditorSharedImages.IMG_PACKAGE_OBJ;
 				}
 				cell.setImage(EditorSharedImages.getImage(key));
 			}
@@ -394,7 +398,7 @@ public class ChainsView extends ViewPart {
 		IPhaserMember member = item.getPhaserMember();
 
 		PhaserJSDoc jsdoc = PhaserJSDoc.getInstance();
-		Path file = jsdoc.getTypePath(member.getDeclType());
+		Path file = jsdoc.getMemberPath(member);
 		if (file != null) {
 			int line = member.getLine();
 			int offset = member.getOffset();
@@ -449,9 +453,9 @@ public class ChainsView extends ViewPart {
 
 			StyledText textWidget = (StyledText) editor.getAdapter(Control.class);
 			textWidget.setEditable(false);
-			
+
 			out.println("Open " + filePath.getFileName() + " at line " + linenum);
-			
+
 			int index = linenum - 1;
 			try {
 				int offset2 = offset;

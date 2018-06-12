@@ -21,7 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.core.jsdoc;
 
-public abstract class PhaserVariable extends PhaserMember {
+public abstract class PhaserVariable extends PhaserMember implements ITypeMember{
 	private Object _defaultValue;
 	private boolean _optional;
 	private String[] _types;

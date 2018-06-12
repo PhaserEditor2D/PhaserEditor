@@ -30,6 +30,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,7 +39,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.core.runtime.AssertionFailedException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -67,75 +67,67 @@ public class PhaserJSDoc {
 		return _instance;
 	}
 
-	private Map<String, PhaserType> _typesMap;
+	private Map<String, IMemberContainer> _containersMap;
 	private Map<String, IPhaserMember> _membersMap;
-	private List<PhaserConstant> _globalConstants;
 
 	private Path _srcFolder;
 
 	public PhaserJSDoc(Path srcFolder, Path docsJsonFile) throws IOException {
 		_srcFolder = srcFolder;
-		_globalConstants = new ArrayList<>();
 		_membersMap = new HashMap<>();
 
-		_typesMap = buildPhaserJSDoc(docsJsonFile);
+		_containersMap = buildPhaserJSDoc(docsJsonFile);
 
-		for (PhaserType type : _typesMap.values()) {
-			String typeName1 = type.getName();
-			String typeName2 = typeName1.replace(".", "_");
+		for (IMemberContainer container : _containersMap.values()) {
+			String name = container.getName();
 
-			for (String typeName : new String[] { typeName1, typeName2 }) {
-				_membersMap.put(typeName, type);
-				_membersMap.put(typeName + ".constructor", type);
+			_membersMap.put(name, container);
 
-				for (PhaserMember m : type.getMethods()) {
-					_membersMap.put(typeName + "." + m.getName(), m);
-				}
+			PhaserType type = container.castType();
 
-				for (PhaserMember m : type.getProperties()) {
-					_membersMap.put(typeName + "." + m.getName(), m);
-				}
+			if (type == null) {
+				continue;
+			}
 
-				for (PhaserMember m : type.getConstants()) {
-					_membersMap.put(typeName + "." + m.getName(), m);
-				}
+			_membersMap.put(name + ".constructor", type);
+
+			for (PhaserMember m : type.getMethods()) {
+				_membersMap.put(name + "." + m.getName(), m);
+			}
+
+			for (PhaserMember m : type.getProperties()) {
+				_membersMap.put(name + "." + m.getName(), m);
+			}
+
+			for (PhaserMember m : type.getConstants()) {
+				_membersMap.put(name + "." + m.getName(), m);
 			}
 		}
 
-		for (PhaserConstant cons : _globalConstants) {
-			_membersMap.put("Phaser." + cons.getName(), cons);
-		}
 	}
 
-	public Path getTypePath(PhaserType type) {
-		if (type == null) {
-			// a global constant
-			return _srcFolder.resolve("Phaser.js");
-		}
-		return _srcFolder.resolve(type.getFile());
+	public Path getMemberPath(IPhaserMember member) {
+		return _srcFolder.resolve(member.getFile());
 	}
 
-	public Map<String, PhaserType> getTypesMap() {
-		return _typesMap;
+	public Map<String, IMemberContainer> getContainerMap() {
+		return _containersMap;
 	}
 
 	public PhaserType getType(String name) {
-		return _typesMap.get(name);
+		IMemberContainer container = _containersMap.get(name);
+		return container == null ? null : (PhaserType) container;
 	}
 
-	public Collection<PhaserType> getTypes() {
-		return _typesMap.values();
+	public Collection<IMemberContainer> getContainers() {
+		return _containersMap.values();
 	}
 
 	public Map<String, IPhaserMember> getMembersMap() {
 		return _membersMap;
 	}
 
-	public List<PhaserConstant> getGlobalConstants() {
-		return _globalConstants;
-	}
-
-	private Map<String, PhaserType> buildPhaserJSDoc(Path docsJsonFile) throws IOException {
+	private static Map<String, IMemberContainer> buildPhaserJSDoc(Path docsJsonFile) throws IOException {
 		if (!Files.exists(docsJsonFile)) {
 			return new HashMap<>();
 		}
@@ -144,34 +136,28 @@ public class PhaserJSDoc {
 			JSONObject jsonDoc = new JSONObject(new JSONTokener(input));
 			JSONArray jsdocElements = jsonDoc.getJSONArray("docs");
 
-			// Set<String> kinds = new HashSet<>();
-			// Set<String> scopes = new HashSet<>();
-			// for (int i = 0; i < jsdocElements.length(); i++) {
-			// JSONObject obj = jsdocElements.getJSONObject(i);
-			// kinds.add(obj.getString("kind"));
-			// if (obj.getString("kind").equals("namespace")) {
-			// out.println(obj.toString(2));
-			// }
-			// scopes.add(obj.getString("scope"));
-			// }
-			// out.println("kinds: " + Arrays.toString(kinds.toArray()));
-			// out.println("scopes: " + Arrays.toString(scopes.toArray()));
-			// out.println();
-			//
-			// System.exit(0);
+			// printElementKinds(jsdocElements);
 
-			Map<String, PhaserType> typeMap = new HashMap<>();
+			Map<String, IMemberContainer> containersMap = new HashMap<>();
 
-			// first pass to get all the classes in the map
+			// pass to get all the namespaces in the map
 
 			for (int i = 0; i < jsdocElements.length(); i++) {
 				JSONObject obj = jsdocElements.getJSONObject(i);
 
-				// if (obj.getString("longname").contains("~")) {
-				// continue;
-				// }
+				buildNamespace(obj, containersMap);
+			}
 
-				buildClass(obj, typeMap);
+			// pass to get all the classes in the map
+
+			for (int i = 0; i < jsdocElements.length(); i++) {
+				JSONObject obj = jsdocElements.getJSONObject(i);
+
+				if (obj.getString("longname").contains("~")) {
+					continue;
+				}
+
+				buildClass(obj, containersMap);
 			}
 
 			for (int i = 0; i < jsdocElements.length(); i++) {
@@ -188,105 +174,55 @@ public class PhaserJSDoc {
 					continue;
 				}
 
-				{
-					boolean added = buildConstant(jsdocElement, typeMap);
-					if (added) {
-						// just to avoid the same obj is parsed as other kind of
-						// member.
-						continue;
-					}
-				}
+				buildEnum(jsdocElement, containersMap);
 
-				buildMethod(jsdocElement, typeMap);
+				buildConstant(jsdocElement, containersMap);
 
-				buildProperty(jsdocElement, typeMap);
+				buildMethod(jsdocElement, containersMap);
+
+				buildProperty(jsdocElement, containersMap);
 			}
 
-			Collection<PhaserType> types = typeMap.values();
-
-			{
-				// fix incomplete names
-
-				for (PhaserType type : types) {
-
-					List<String> superTypes = type.getExtends();
-					for (int i = 0; i < superTypes.size(); i++) {
-						String name = superTypes.get(i);
-						if (!typeMap.containsKey(name)) {
-							if (typeMap.containsKey("PIXI." + name)) {
-								superTypes.set(i, "PIXI." + name);
-							} else if (typeMap.containsKey("Phaser." + name)) {
-								superTypes.set(i, "Phaser." + name);
-							}
-
-						}
-					}
-
-					Collection<PhaserMember> list = type.getMemberMap().values();
-					for (PhaserMember member : list) {
-						if (member instanceof PhaserMethod) {
-							PhaserMethod method = (PhaserMethod) member;
-							String[] retTypes = method.getReturnTypes();
-							for (int i = 0; i < retTypes.length; i++) {
-								String name = retTypes[i];
-								if (!typeMap.containsKey(name)) {
-									if (typeMap.containsKey("PIXI." + name)) {
-										retTypes[i] = "PIXI." + name;
-									} else if (typeMap.containsKey("Phaser." + name)) {
-										retTypes[i] = "Phaser." + name;
-									}
-								}
-							}
-						} else if (member instanceof PhaserVariable) {
-							PhaserVariable var = (PhaserVariable) member;
-							String[] retTypes = var.getTypes();
-							for (int i = 0; i < retTypes.length; i++) {
-								String name = retTypes[i];
-								if (!typeMap.containsKey(name)) {
-									if (typeMap.containsKey("Phaser." + name)) {
-										// out.println("Fix property " +
-										// var.getName() + " to Phaser." +
-										// name);
-										retTypes[i] = "Phaser." + name;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+			Collection<IMemberContainer> containers = containersMap.values();
 
 			{
 				// build inherited members
 
 				Set<PhaserType> visited = new HashSet<>();
 
-				for (PhaserType type : types) {
-					buildInheritance(typeMap, visited, type);
+				for (IMemberContainer container : containers) {
+					if (container instanceof PhaserType) {
+						buildInheritance(containersMap, visited, (PhaserType) container);
+					}
 				}
 			}
 
 			{
 				// build specific member lists
 
-				for (PhaserType type : types) {
-					for (PhaserMember member : type.getMemberMap().values()) {
-						if (member instanceof PhaserMethod) {
-							type.getMethods().add((PhaserMethod) member);
-						} else if (member instanceof PhaserConstant) {
-							type.getConstants().add((PhaserConstant) member);
-						} else if (member instanceof PhaserProperty) {
-							type.getProperties().add((PhaserProperty) member);
-						}
-					}
+				for (IMemberContainer container : containers) {
+					container.build();
 				}
 			}
 
-			return typeMap;
+			return containersMap;
 		}
 	}
 
-	private static void buildInheritance(Map<String, PhaserType> typeMap, Set<PhaserType> visited, PhaserType type) {
+	@SuppressWarnings("unused")
+	private static void printElementKinds(JSONArray jsdocElements) {
+		Set<String> kinds = new HashSet<>();
+		Set<String> scopes = new HashSet<>();
+		for (int i = 0; i < jsdocElements.length(); i++) {
+			JSONObject obj = jsdocElements.getJSONObject(i);
+			kinds.add(obj.getString("kind"));
+		}
+		out.println("kinds: " + Arrays.toString(kinds.toArray()));
+		out.println();
+	}
+
+	private static void buildInheritance(Map<String, IMemberContainer> typeMap, Set<PhaserType> visited,
+			PhaserType type) {
 		if (visited.contains(type)) {
 			return;
 		}
@@ -294,9 +230,11 @@ public class PhaserJSDoc {
 		visited.add(type);
 
 		for (String superTypeName : type.getExtends()) {
-			Map<String, PhaserMember> subTypeMap = type.getMemberMap();
+			Map<String, IPhaserMember> subTypeMap = type.getMemberMap();
 
-			PhaserType superType = typeMap.get(superTypeName);
+			IMemberContainer container = typeMap.get(superTypeName);
+			PhaserType superType = container == null ? null : container.castType();
+
 			if (superType == null) {
 				// out.println("Ignore " + superTypeName);
 				continue;
@@ -304,9 +242,9 @@ public class PhaserJSDoc {
 
 			buildInheritance(typeMap, visited, superType);
 
-			Map<String, PhaserMember> superTypeMap = superType.getMemberMap();
+			Map<String, IPhaserMember> superTypeMap = superType.getMemberMap();
 
-			for (PhaserMember member : superTypeMap.values()) {
+			for (IPhaserMember member : superTypeMap.values()) {
 				String memberName = member.getName();
 				if (!subTypeMap.containsKey(memberName)) {
 					// out.println("Add " + superTypeName + "." + memberName + "
@@ -317,7 +255,7 @@ public class PhaserJSDoc {
 		}
 	}
 
-	private boolean buildConstant(JSONObject obj, Map<String, PhaserType> typeMap) {
+	private static boolean buildConstant(JSONObject obj, Map<String, IMemberContainer> containersMap) {
 		boolean isCons = obj.getString("kind").equals("constant");
 
 		if (!isCons) {
@@ -346,8 +284,6 @@ public class PhaserJSDoc {
 			types = new String[] { "Object" };
 		}
 
-		replacePixiPointByPhaserPoint(types);
-
 		PhaserConstant cons = new PhaserConstant();
 		{
 			// static flag
@@ -361,38 +297,23 @@ public class PhaserJSDoc {
 		cons.setTypes(types);
 		cons.setDefaultValue(defaultValue);
 		String memberof = obj.optString("memberof", null);
-		if (memberof == null) {
-			// global constant
+		IMemberContainer container = containersMap.get(memberof);
+		PhaserType type = container == null ? null : container.castType();
+
+		if (type == null) {
+			return false;
+		}
+
+		Map<String, IPhaserMember> map = type.getMemberMap();
+		if (!map.containsKey(name)) {
+			map.put(name, cons);
+			cons.setDeclType(type);
 			buildMeta(cons, obj);
-
-			// FIXME: only add those Phaser.js constants
-			if (cons.getFile().getFileName().toString().equals("Phaser.js")) {
-				_globalConstants.add(cons);
-			} else {
-				out.println(obj.toString(2));
-				throw new AssertionFailedException("All global constants should come from Phaser.js and not from "
-						+ cons.getFile().getFileName() + "#" + cons.getName());
-			}
-
-		} else {
-			PhaserType type = typeMap.get(memberof);
-
-			// here
-			if (type == null) {
-				return false;
-			}
-
-			Map<String, PhaserMember> map = type.getMemberMap();
-			if (!map.containsKey(name)) {
-				map.put(name, cons);
-				cons.setDeclType(type);
-				buildMeta(cons, obj);
-			}
 		}
 		return true;
 	}
 
-	private static void buildProperty(JSONObject obj, Map<String, PhaserType> typeMap) {
+	private static void buildProperty(JSONObject obj, Map<String, IMemberContainer> typeMap) {
 		if (!obj.has("memberof")) {
 			return;
 		}
@@ -426,6 +347,7 @@ public class PhaserJSDoc {
 					}
 				}
 			}
+			
 			if (types == null) {
 				if (jsonTypes == null) {
 					types = new String[] { "Object" };
@@ -433,8 +355,6 @@ public class PhaserJSDoc {
 					types = getStringArray(jsonTypes);
 				}
 			}
-
-			replacePixiPointByPhaserPoint(types);
 
 			PhaserProperty property = new PhaserProperty();
 			{
@@ -453,14 +373,16 @@ public class PhaserJSDoc {
 			String memberof = obj.getString("memberof");
 
 			if (typeMap.containsKey(memberof)) {
-				PhaserType type = typeMap.get(memberof);
 
-				// TODO: I don't know why I did this!
-				// if (type.isStatic()) {
-				// property.setStatic(true);
-				// }
+				IMemberContainer container = typeMap.get(memberof);
+				PhaserType type = container == null ? null : container.castType();
 
-				Map<String, PhaserMember> map = type.getMemberMap();
+				if (type == null) {
+					return;
+				}
+				
+
+				Map<String, IPhaserMember> map = type.getMemberMap();
 
 				if (!map.containsKey(name)) {
 					map.put(name, property);
@@ -468,20 +390,14 @@ public class PhaserJSDoc {
 					buildMeta(property, obj);
 				}
 			}
+			// else {
+			// out.println("JSDoc: memberof not found: " + memberof + " from member " +
+			// obj.getString("longname"));
+			// }
 		}
 	}
 
-	private static void replacePixiPointByPhaserPoint(String[] types) {
-		// In Phaser this substitution is done explicitly
-		for (int i = 0; i < types.length; i++) {
-			String t = types[i];
-			if (t.equals("PIXI.Point")) {
-				types[i] = "Phaser.Point";
-			}
-		}
-	}
-
-	private static void buildMethod(JSONObject obj, Map<String, PhaserType> typeMap) {
+	private static void buildMethod(JSONObject obj, Map<String, IMemberContainer> typeMap) {
 		String kind = obj.getString("kind");
 
 		if (kind.equals("function") || obj.has("params")) {
@@ -511,8 +427,6 @@ public class PhaserJSDoc {
 					types = getStringArray(names);
 				}
 
-				replacePixiPointByPhaserPoint(types);
-
 				method.setReturnTypes(types);
 				method.setReturnHelp(jsonReturnObj.optString("description", ""));
 			}
@@ -527,24 +441,98 @@ public class PhaserJSDoc {
 			if (memberof == null) {
 				return;
 			}
-			PhaserType type = typeMap.get(memberof);
-			if (type == null) {
+
+			IMemberContainer container = typeMap.get(memberof);
+
+			if (container == null) {
 				return;
 			}
 
-			if (type.isStatic()) {
+			if (container instanceof PhaserType) {
+				PhaserType type = (PhaserType) container;
+				if (type.isStatic()) {
+					method.setStatic(true);
+				}
+				method.setDeclType(type);
+			} else {
 				method.setStatic(true);
 			}
 
-			if (!type.getMemberMap().containsKey(name)) {
-				type.getMemberMap().put(name, method);
-				method.setDeclType(type);
+			if (!container.getMemberMap().containsKey(name)) {
+				container.getMemberMap().put(name, method);
 				buildMeta(method, obj);
 			}
 		}
 	}
 
-	private static void buildClass(JSONObject obj, Map<String, PhaserType> typeMap) {
+	private static void buildNamespace(JSONObject obj, Map<String, IMemberContainer> containersMap) {
+		String kind = obj.getString("kind");
+		if (kind.equals("namespace")) {
+
+			String name = obj.getString("longname");
+
+			// out.println("Parsing namespace: " + name);
+
+			String desc = obj.optString("description", "");
+
+			PhaserNamespace namespace = new PhaserNamespace();
+			containersMap.put(name, namespace);
+
+			namespace.setName(name);
+			namespace.setHelp(desc);
+
+			String memberof = obj.optString("memberof");
+			if (memberof == null) {
+				return;
+			}
+
+			IMemberContainer container = containersMap.get(memberof);
+
+			if (container == null) {
+				return;
+			}
+
+			if (!container.getMemberMap().containsKey(name)) {
+				container.getMemberMap().put(name, namespace);
+				buildMeta(namespace, obj);
+			}
+
+		}
+	}
+
+	private static void buildEnum(JSONObject obj, Map<String, IMemberContainer> containersMap) {
+		boolean isEnum = obj.optBoolean("isEnum");
+		if (isEnum) {
+			String name = obj.getString("longname");
+
+			String desc = obj.optString("description", "");
+
+			PhaserType type = new PhaserType();
+			type.setEnum(true);
+			containersMap.put(name, type);
+
+			type.setName(name);
+			type.setHelp(desc);
+
+			String memberof = obj.optString("memberof");
+			if (memberof == null) {
+				return;
+			}
+
+			IMemberContainer container = containersMap.get(memberof);
+
+			if (container == null) {
+				return;
+			}
+
+			if (!container.getMemberMap().containsKey(name)) {
+				container.getMemberMap().put(name, type);
+				buildMeta(type, obj);
+			}
+		}
+	}
+
+	private static void buildClass(JSONObject obj, Map<String, IMemberContainer> containersMap) {
 		String kind = obj.getString("kind");
 		if (kind.equals("class")) {
 
@@ -568,14 +556,28 @@ public class PhaserJSDoc {
 			String desc = obj.optString("description", "");
 
 			PhaserType type = new PhaserType();
-			typeMap.put(name, type);
+			containersMap.put(name, type);
 
 			type.setName(name);
 			type.setHelp(desc);
 			type.setExtends(extend);
 			type.getConstructorArgs().addAll(args);
 
-			buildMeta(type, obj);
+			String memberof = obj.optString("memberof");
+			if (memberof == null) {
+				return;
+			}
+
+			IMemberContainer container = containersMap.get(memberof);
+
+			if (container == null) {
+				return;
+			}
+
+			if (!container.getMemberMap().containsKey(name)) {
+				container.getMemberMap().put(name, type);
+				buildMeta(type, obj);
+			}
 		}
 	}
 

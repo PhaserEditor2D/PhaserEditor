@@ -47,8 +47,8 @@ import org.eclipse.core.runtime.Status;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
-import phasereditor.inspect.core.jsdoc.PhaserMember;
 import phasereditor.inspect.core.jsdoc.PhaserMethod;
 import phasereditor.inspect.core.jsdoc.PhaserType;
 import phasereditor.inspect.core.jsdoc.PhaserVariable;
@@ -59,12 +59,12 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 
 	static {
 		PhaserJSDoc jsdoc = PhaserJSDoc.getInstance();
-		PhaserType phaserType = jsdoc.getTypesMap().get("Phaser.Loader");
+		PhaserType phaserType = jsdoc.getContainerMap().get("Phaser.Loader").castType();
 
 		// the phaserType can be null if the phaser version is wrong.
 		if (phaserType != null) {
 
-			Map<String, PhaserMember> map = phaserType.getMemberMap();
+			Map<String, IPhaserMember> map = phaserType.getMemberMap();
 
 			for (AssetType assetType : AssetType.values()) {
 				PhaserMethod method = (PhaserMethod) map.get(assetType.name());
