@@ -49,6 +49,8 @@ public class ChainsPreferencesPage extends FieldEditorPreferencePage implements 
 				new ColorFieldEditor(ChainsUI.PREF_PROP_HIGHLIGHT_BG_COLOR, "Text highlight background color", parent));
 		addField(
 				new ColorFieldEditor(ChainsUI.PREF_PROP_HIGHLIGHT_FG_COLOR, "Text highlight foreground color", parent));
+		addField(
+				new ColorFieldEditor(ChainsUI.PREF_PROP_TYPE_PART_FG_COLOR, "Member's type foreground color", parent));
 	}
 
 }

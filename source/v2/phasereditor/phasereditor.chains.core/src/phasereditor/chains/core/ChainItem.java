@@ -34,17 +34,24 @@ public class ChainItem {
 	private int _depth;
 	private IPhaserMember _phaserMember;
 	private String _display;
+	private int _returnTypeIndex;
 
 	public ChainItem(IPhaserMember phaserMember, String chain, String returnTypeName, int depth) {
 		_phaserMember = phaserMember;
 		_chain = chain;
 		_returnTypeName = returnTypeName;
 		_depth = depth;
+		_returnTypeIndex = -1;
 		if (isType() || isNamespace()) {
 			_display = chain;
 		} else {
-			_display = getChain() + " : " + getReturnTypeName() + ";";
+			_display = chain + " : " + getReturnTypeName();
+			_returnTypeIndex = chain.length();
 		}
+	}
+	
+	public int getReturnTypeIndex() {
+		return _returnTypeIndex;
 	}
 
 	public String getDisplay() {

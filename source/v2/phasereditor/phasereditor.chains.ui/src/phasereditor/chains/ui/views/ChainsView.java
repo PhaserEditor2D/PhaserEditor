@@ -144,18 +144,29 @@ public class ChainsView extends ViewPart {
 
 			Color fgColor = ChainsUI.get_pref_Chains_highlightFgColor();
 			Color bgColor = ChainsUI.get_pref_Chains_highlightBgColor();
+			Color typeColor = ChainsUI.get_pref_Chains_typePartFgColor();//SWTResourceManager.getColor(154, 131, 80);
 
 			StyleRange selRange = new StyleRange(match.start, match.length, fgColor, bgColor);
 			StyleRange allRange = new StyleRange(0, text.length(), null, null);
 			allRange.font = _font;
+			StyleRange returnTypeRange = new StyleRange();
+
+			{
+				int index = chain.getReturnTypeIndex();
+				if (index > 0) {
+					int len = chain.getDisplay().length() - index;
+					returnTypeRange = new StyleRange(index, len, typeColor, null);
+				}
+			}
+
 			if (chain.getDepth() > 0) {
 				StyleRange italicRange = new StyleRange();
 				italicRange.font = _italic;
 				italicRange.start = 0;
 				italicRange.length = text.length();
-				ranges = new StyleRange[] { allRange, italicRange, selRange };
+				ranges = new StyleRange[] { allRange, italicRange, returnTypeRange, selRange };
 			} else {
-				ranges = new StyleRange[] { allRange, selRange };
+				ranges = new StyleRange[] { allRange, returnTypeRange , selRange};
 			}
 
 			cell.setText(text);
