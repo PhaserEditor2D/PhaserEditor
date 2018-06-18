@@ -21,13 +21,16 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.core.jsdoc;
 
+import org.json.JSONObject;
+
 public abstract class PhaserVariable extends PhaserMember implements ITypeMember{
 	private Object _defaultValue;
 	private boolean _optional;
 	private String[] _types;
 	private PhaserType _declType;
 
-	public PhaserVariable() {
+	public PhaserVariable(JSONObject json) {
+		super(json);
 	}
 
 	@Override

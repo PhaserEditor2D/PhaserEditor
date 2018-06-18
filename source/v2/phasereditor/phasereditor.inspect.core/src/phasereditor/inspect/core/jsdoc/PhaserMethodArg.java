@@ -21,9 +21,12 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.core.jsdoc;
 
+import org.json.JSONObject;
+
 public class PhaserMethodArg extends PhaserVariable {
 
-	public PhaserMethodArg() {
+	public PhaserMethodArg(JSONObject json) {
+		super(json);
 	}
 
 }

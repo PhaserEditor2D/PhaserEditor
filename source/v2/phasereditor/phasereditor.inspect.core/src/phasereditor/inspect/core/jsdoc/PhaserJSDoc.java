@@ -176,11 +176,11 @@ public class PhaserJSDoc {
 
 				buildEnum(jsdocElement, containersMap);
 
-				buildConstant(jsdocElement, containersMap);
+				if (!buildConstant(jsdocElement, containersMap)) {
+					buildProperty(jsdocElement, containersMap);
+				}
 
 				buildMethod(jsdocElement, containersMap);
-
-				buildProperty(jsdocElement, containersMap);
 			}
 
 			Collection<IMemberContainer> containers = containersMap.values();
@@ -284,7 +284,7 @@ public class PhaserJSDoc {
 			types = new String[] { "Object" };
 		}
 
-		PhaserConstant cons = new PhaserConstant();
+		PhaserConstant cons = new PhaserConstant(obj);
 		{
 			// static flag
 			String scope = obj.optString("scope", "");
@@ -308,6 +308,9 @@ public class PhaserJSDoc {
 		if (!map.containsKey(name)) {
 			map.put(name, cons);
 			cons.setDeclType(type);
+			if (!obj.has("type")) {
+				cons.setTypes(type.getEnumElementsType());
+			}
 			buildMeta(cons, obj);
 		}
 		return true;
@@ -323,40 +326,10 @@ public class PhaserJSDoc {
 			String name = obj.optString("name", "");
 			String desc = obj.optString("description", "");
 			Object defaultValue = obj.opt("defaultvalue");
-			JSONArray jsonTypes = null;
-			if (obj.has("type")) {
-				jsonTypes = obj.optJSONObject("type").getJSONArray("names");
-			}
-			String[] types = null;
-			if (obj.has("properties")) {
-				JSONArray props = obj.getJSONArray("properties");
-				if (props.length() > 0) {
-					if (props.length() > 1) {
-						types = new String[] { "Object" };
-					} else {
-						Object propObj = props.get(0);
-						if (propObj instanceof JSONObject) {
-							JSONObject prop = (JSONObject) propObj;
-							name = prop.optString("name", name);
-							desc = prop.optString("description", desc);
-							if (prop.has("type")) {
-								JSONObject namesJson = prop.getJSONObject("type");
-								jsonTypes = namesJson.getJSONArray("names");
-							}
-						}
-					}
-				}
-			}
-			
-			if (types == null) {
-				if (jsonTypes == null) {
-					types = new String[] { "Object" };
-				} else {
-					types = getStringArray(jsonTypes);
-				}
-			}
 
-			PhaserProperty property = new PhaserProperty();
+			String[] types = parseElementTypes(obj);
+
+			PhaserProperty property = new PhaserProperty(obj);
 			{
 				// static flag
 				String scope = obj.optString("scope", "");
@@ -375,18 +348,21 @@ public class PhaserJSDoc {
 			if (typeMap.containsKey(memberof)) {
 
 				IMemberContainer container = typeMap.get(memberof);
-				PhaserType type = container == null ? null : container.castType();
 
-				if (type == null) {
+				if (container == null) {
 					return;
 				}
-				
 
-				Map<String, IPhaserMember> map = type.getMemberMap();
+				Map<String, IPhaserMember> map = container.getMemberMap();
 
 				if (!map.containsKey(name)) {
 					map.put(name, property);
-					property.setDeclType(type);
+
+					if (container instanceof PhaserType) {
+						PhaserType type = (PhaserType) container;
+						property.setDeclType(type);
+					}
+
 					buildMeta(property, obj);
 				}
 			}
@@ -397,11 +373,28 @@ public class PhaserJSDoc {
 		}
 	}
 
+	private static String[] parseElementTypes(JSONObject obj) {
+		JSONArray jsonTypes = null;
+
+		if (obj.has("type")) {
+			jsonTypes = obj.optJSONObject("type").getJSONArray("names");
+		}
+
+		String[] types;
+
+		if (jsonTypes == null) {
+			types = new String[] { "Object" };
+		} else {
+			types = getStringArray(jsonTypes);
+		}
+		return types;
+	}
+
 	private static void buildMethod(JSONObject obj, Map<String, IMemberContainer> typeMap) {
 		String kind = obj.getString("kind");
 
 		if (kind.equals("function") || obj.has("params")) {
-			PhaserMethod method = new PhaserMethod();
+			PhaserMethod method = new PhaserMethod(obj);
 
 			{
 				// static flag
@@ -475,7 +468,7 @@ public class PhaserJSDoc {
 
 			String desc = obj.optString("description", "");
 
-			PhaserNamespace namespace = new PhaserNamespace();
+			PhaserNamespace namespace = new PhaserNamespace(obj);
 			containersMap.put(name, namespace);
 
 			namespace.setName(name);
@@ -507,8 +500,10 @@ public class PhaserJSDoc {
 
 			String desc = obj.optString("description", "");
 
-			PhaserType type = new PhaserType();
+			PhaserType type = new PhaserType(obj);
 			type.setEnum(true);
+			type.setEnumElementsType(parseElementTypes(obj));
+
 			containersMap.put(name, type);
 
 			type.setName(name);
@@ -555,7 +550,7 @@ public class PhaserJSDoc {
 
 			String desc = obj.optString("description", "");
 
-			PhaserType type = new PhaserType();
+			PhaserType type = new PhaserType(obj);
 			containersMap.put(name, type);
 
 			type.setName(name);
@@ -610,7 +605,7 @@ public class PhaserJSDoc {
 		if (params != null) {
 			for (int j = 0; j < params.length(); j++) {
 				JSONObject param = params.getJSONObject(j);
-				PhaserMethodArg arg = new PhaserMethodArg();
+				PhaserMethodArg arg = new PhaserMethodArg(param);
 				arg.setName(param.optString("name", "_any"));
 				arg.setHelp(param.optString("description"));
 				arg.setDefaultValue(param.opt("defaultvalue"));

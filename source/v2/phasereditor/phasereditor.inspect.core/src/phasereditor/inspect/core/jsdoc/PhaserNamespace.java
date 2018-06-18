@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
+
 /**
  * @author arian
  *
@@ -39,7 +41,8 @@ public class PhaserNamespace extends PhaserMember implements IMemberContainer {
 	private List<PhaserMethod> _methods;
 	private Map<String, IPhaserMember> _memberMap;
 
-	public PhaserNamespace() {
+	public PhaserNamespace(JSONObject json) {
+		super(json);
 		_namespaces = new ArrayList<>();
 		_types = new ArrayList<>();
 		_properties = new ArrayList<>();
@@ -49,8 +52,9 @@ public class PhaserNamespace extends PhaserMember implements IMemberContainer {
 	}
 
 	@Override
-	public void build() {
+	public final void build() {
 		for (IPhaserMember member : _memberMap.values()) {
+			member.setContainer(this);
 			if (member instanceof PhaserType) {
 				_types.add((PhaserType) member);
 			} else if (member instanceof PhaserMethod) {

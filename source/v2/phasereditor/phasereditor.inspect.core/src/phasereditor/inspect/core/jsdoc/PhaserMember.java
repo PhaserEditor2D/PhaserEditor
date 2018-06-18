@@ -23,6 +23,8 @@ package phasereditor.inspect.core.jsdoc;
 
 import java.nio.file.Path;
 
+import org.json.JSONObject;
+
 public abstract class PhaserMember implements IPhaserMember {
 	private String _name;
 	private String _help;
@@ -30,9 +32,27 @@ public abstract class PhaserMember implements IPhaserMember {
 	private int _offset;
 	private Path _file;
 	private boolean _static;
+	private JSONObject _json;
+	private IMemberContainer _container;
 
-	public PhaserMember() {
+	public PhaserMember(JSONObject json) {
 		_static = false;
+		_json = json;
+	}
+	
+	@Override
+	public IMemberContainer getContainer() {
+		return _container;
+	}
+	
+	@Override
+	public void setContainer(IMemberContainer container) {
+		_container = container;
+	}
+	
+	@Override
+	public JSONObject getJSON() {
+		return _json;
 	}
 
 	/**

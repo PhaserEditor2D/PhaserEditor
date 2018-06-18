@@ -23,6 +23,8 @@ package phasereditor.inspect.core.jsdoc;
 
 import java.nio.file.Path;
 
+import org.json.JSONObject;
+
 public interface IPhaserMember {
 	public String getName();
 
@@ -41,4 +43,10 @@ public interface IPhaserMember {
 	public void setFile(Path file);
 
 	public boolean isStatic();
+	
+	public JSONObject getJSON();
+	
+	public IMemberContainer getContainer();
+	
+	public void setContainer(IMemberContainer container); 
 }

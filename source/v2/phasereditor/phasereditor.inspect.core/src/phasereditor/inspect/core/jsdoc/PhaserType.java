@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.json.JSONObject;
+
 public class PhaserType extends PhaserNamespace implements ITypeMember {
 	public static final String PRIVATE = "private";
 	public static final String PROTECTED = "protected";
@@ -35,8 +37,10 @@ public class PhaserType extends PhaserNamespace implements ITypeMember {
 	private boolean _constructor;
 	private List<PhaserMethodArg> _constructorArgs;
 	private boolean _enum;
+	private String[] _enumElementsType;
 
-	public PhaserType() {
+	public PhaserType(JSONObject json) {
+		super(json);
 		_constructorArgs = new ArrayList<>();
 		_extends = Collections.emptyList();
 		_constructor = false;
@@ -74,5 +78,13 @@ public class PhaserType extends PhaserNamespace implements ITypeMember {
 
 	public boolean isEnum() {
 		return _enum;
+	}
+
+	public void setEnumElementsType(String[] enumElementsType) {
+		_enumElementsType = enumElementsType;
+	}
+	
+	public String[] getEnumElementsType() {
+		return _enumElementsType;
 	}
 }

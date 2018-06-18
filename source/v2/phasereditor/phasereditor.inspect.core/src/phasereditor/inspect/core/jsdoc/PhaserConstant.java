@@ -21,9 +21,12 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.core.jsdoc;
 
+import org.json.JSONObject;
+
 public class PhaserConstant extends PhaserVariable {
 
-	public PhaserConstant() {
+	public PhaserConstant(JSONObject json) {
+		super(json);
 	}
 
 	public boolean isGlobal() {

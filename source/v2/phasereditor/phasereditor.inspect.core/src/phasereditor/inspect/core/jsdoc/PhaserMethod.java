@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
+
 public class PhaserMethod extends PhaserMember implements ITypeMember {
 	private List<PhaserMethodArg> _args;
 	private Map<String, PhaserVariable> _argsMap;
@@ -33,7 +35,8 @@ public class PhaserMethod extends PhaserMember implements ITypeMember {
 	private String _returnHelp;
 	private PhaserType _declType;
 
-	public PhaserMethod() {
+	public PhaserMethod(JSONObject json) {
+		super(json);
 		_args = new ArrayList<>();
 		_argsMap = new HashMap<>();
 		_returnTypes = new String[0];

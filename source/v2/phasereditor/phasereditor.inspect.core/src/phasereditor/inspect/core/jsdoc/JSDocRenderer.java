@@ -81,8 +81,8 @@ public class JSDocRenderer {
 		StringBuilder sb = new StringBuilder();
 
 		String returnSignature = htmlTypes(var.getTypes());
-		PhaserType declType = var.getDeclType();
-		String qname = declType.getName() + "." + var.getName();
+		IMemberContainer container = var.getContainer();
+		String qname = container.getName() + "." + var.getName();
 		sb.append("<b>" + returnSignature + " " + qname + "</b>");
 
 		sb.append("<p>" + html(var.getHelp()) + "</p>");

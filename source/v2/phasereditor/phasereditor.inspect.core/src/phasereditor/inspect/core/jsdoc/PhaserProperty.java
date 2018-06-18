@@ -21,10 +21,13 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.core.jsdoc;
 
+import org.json.JSONObject;
+
 public class PhaserProperty extends PhaserVariable {
 	private boolean _readOnly;
 
-	public PhaserProperty() {
+	public PhaserProperty(JSONObject json) {
+		super(json);
 	}
 
 	public boolean isReadOnly() {
