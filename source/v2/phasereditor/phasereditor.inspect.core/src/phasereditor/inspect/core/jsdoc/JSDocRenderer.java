@@ -21,7 +21,13 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.core.jsdoc;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.List;
+
+import org.eclipse.mylyn.wikitext.markdown.MarkdownLanguage;
+import org.eclipse.mylyn.wikitext.parser.MarkupParser;
+import org.eclipse.mylyn.wikitext.parser.builder.HtmlDocumentBuilder;
 
 /**
  * Class to render JSDoc comments.
@@ -35,6 +41,20 @@ public class JSDocRenderer {
 
 	public static JSDocRenderer getInstance() {
 		return _instance;
+	}
+
+	public String markdownToHtml(String markdown) {
+		try (StringWriter writer = new StringWriter()) {
+			HtmlDocumentBuilder builder = new HtmlDocumentBuilder(writer, true);
+			final MarkupParser parser = new MarkupParser();
+			parser.setMarkupLanguage(new MarkdownLanguage());
+			parser.setBuilder(builder);
+			parser.parse(markdown);
+			String html = writer.toString();
+			return html;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public String render(Object member) {
@@ -61,18 +81,18 @@ public class JSDocRenderer {
 		StringBuilder sb = new StringBuilder();
 
 		String returnSignature = htmlTypes(cons.getTypes());
-		PhaserType declType = cons.getDeclType();
+		IMemberContainer container = cons.getContainer();
 		String qname;
 		if (cons.isGlobal()) {
 			// FIXME: we assume global constants are from the Phaser namespace,
 			// but it can be false in the future.
 			qname = "Phaser." + cons.getName();
 		} else {
-			qname = declType.getName() + "." + cons.getName();
+			qname = container.getName() + "." + cons.getName();
 		}
 		sb.append("<b>" + returnSignature + " " + qname + "</b>");
 
-		sb.append("<p>" + html(cons.getHelp()) + "</p>");
+		sb.append("<p>" + markdownToHtml(cons.getHelp()) + "</p>");
 
 		return sb.toString();
 	}
@@ -85,7 +105,7 @@ public class JSDocRenderer {
 		String qname = container.getName() + "." + var.getName();
 		sb.append("<b>" + returnSignature + " " + qname + "</b>");
 
-		sb.append("<p>" + html(var.getHelp()) + "</p>");
+		sb.append("<p>" + markdownToHtml(var.getHelp()) + "</p>");
 
 		if (var instanceof PhaserProperty && ((PhaserProperty) var).isReadOnly()) {
 			sb.append("<p><b>readonly</b></p>");
@@ -99,14 +119,14 @@ public class JSDocRenderer {
 
 		String returnSignature = htmlTypes(method.getReturnTypes());
 
-		String qname = method.getDeclType().getName() + "." + method.getName();
+		String qname = method.getContainer().getName() + "." + method.getName();
 		sb.append("<b>" + returnSignature + " " + qname + htmlArgsList(method.getArgs()) + "</b>");
 
-		sb.append("<p>" + html(method.getHelp()) + "</p>");
+		sb.append("<p>" + markdownToHtml(method.getHelp()) + "</p>");
 
 		if (method.getReturnTypes().length > 0) {
 			sb.append("<b>Returns:</b> " + returnSignature);
-			sb.append("<dd>" + html(method.getReturnHelp()) + "</dd>");
+			sb.append("<dd>" + markdownToHtml(method.getReturnHelp()) + "</dd>");
 		}
 
 		sb.append(htmlArgsDoc(method.getArgs()));
@@ -126,7 +146,7 @@ public class JSDocRenderer {
 		}
 		sb.append("</p>");
 
-		sb.append("<p>" + html(type.getHelp()) + "</p>");
+		sb.append("<p>" + markdownToHtml(type.getHelp()) + "</p>");
 
 		sb.append(htmlArgsDoc(type.getConstructorArgs()));
 
@@ -157,7 +177,7 @@ public class JSDocRenderer {
 			}
 
 			sb.append(htmlTypes(var.getTypes()));
-			sb.append("<dd>" + html(var.getHelp()) + "</dd>");
+			sb.append("<dd>" + markdownToHtml(var.getHelp()) + "</dd>");
 			sb.append("<br>");
 		}
 
@@ -200,10 +220,4 @@ public class JSDocRenderer {
 		return sb.toString();
 	}
 
-	private static String html(String help) {
-		// TODO: #RemovingWST
-		// return HTMLPrinter.convertToHTMLContent(help).replace("\\n", "<br>");
-		
-		return help.replace("\\n", "<br>");
-	}
 }

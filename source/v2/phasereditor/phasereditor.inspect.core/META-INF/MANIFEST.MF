@@ -8,7 +8,9 @@ Bundle-Vendor: Arian Fornaris
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources;bundle-version="3.9.1",
- org.json
+ org.json,
+ org.eclipse.mylyn.wikitext.markdown;bundle-version="3.0.19",
+ org.eclipse.mylyn.wikitext;bundle-version="3.0.19"
 Bundle-RequiredExecutionEnvironment: JavaSE-9
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.inspect.core,
