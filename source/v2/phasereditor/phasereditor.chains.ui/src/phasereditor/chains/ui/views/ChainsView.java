@@ -26,6 +26,7 @@ import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -36,12 +37,10 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.help.HelpSystem;
 import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -51,7 +50,6 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.ModifyEvent;
@@ -61,7 +59,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -101,11 +98,6 @@ public class ChainsView extends ViewPart {
 	private Text _queryText;
 	private TableViewer _chainsViewer;
 	ChainsModel _chainsModel;
-	private TableColumn _chainTableColumn;
-	private TableViewer _examplesViewer;
-	private TableColumn _examplesTableColumn;
-	private SashForm _mainSash;
-	private Composite _mainSashContainer;
 
 	class ChainsLabelProvider extends StyledCellLabelProvider {
 
@@ -122,8 +114,59 @@ public class ChainsView extends ViewPart {
 			return element.toString();
 		}
 
+		private void updateExampleLabel(ViewerCell cell) {
+			if (_font == null) {
+				_font = JFaceResources.getFont(JFaceResources.TEXT_FONT);
+			}
+			if (_italic == null) {
+				FontData fd = _font.getFontData()[0];
+				_italic = SWTResourceManager.getFont(fd.getName(), fd.getHeight(), SWT.ITALIC);
+			}
+
+			Match match = (Match) cell.getElement();
+			Line line = null;
+			String text;
+			Font font = _italic;
+			int secondaryColorIndex;
+			if (match.item instanceof Line) {
+				line = (Line) match.item;
+				text = line.text + " - " + line.filename + " [" + line.linenum + "]";
+				secondaryColorIndex = line.text.length();
+			} else {
+				secondaryColorIndex = 0;
+				text = match.item.toString();
+				font = _italic;
+			}
+
+			StyleRange allRange = new StyleRange(0, text.length(), null, null);
+			allRange.font = font;
+
+			Color fgcolor = ChainsUI.get_pref_Chains_highlightFgColor();
+			Color bgcolor = ChainsUI.get_pref_Chains_highlightBgColor();
+			Color secondaryColor = ChainsUI.get_pref_Chains_typePartFgColor();
+
+			StyleRange selRange = new StyleRange(match.start, match.length, fgcolor, bgcolor);
+			StyleRange secondaryRange = new StyleRange(secondaryColorIndex, text.length() - secondaryColorIndex,
+					secondaryColor, null);
+
+			StyleRange[] ranges = { allRange, secondaryRange, selRange };
+			cell.setStyleRanges(ranges);
+			cell.setText(text);
+			cell.setImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_SCRIPT_CODE));
+		}
+
 		@Override
 		public void update(ViewerCell cell) {
+			Match match = (Match) cell.getElement();
+			if (match.item instanceof ChainItem) {
+				updateChainLabel(cell);
+			} else {
+				updateExampleLabel(cell);
+			}
+			super.update(cell);
+		}
+
+		private void updateChainLabel(ViewerCell cell) {
 			if (_font == null) {
 				_font = JFaceResources.getFont(JFaceResources.TEXT_FONT);
 			}
@@ -187,55 +230,6 @@ public class ChainsView extends ViewPart {
 				}
 				cell.setImage(EditorSharedImages.getImage(key));
 			}
-			super.update(cell);
-		}
-	}
-
-	class ExamplesLineLabelProvider extends StyledCellLabelProvider {
-
-		private Font _font;
-		private Font _italic;
-
-		public ExamplesLineLabelProvider() {
-		}
-
-		@Override
-		public String getToolTipText(Object element) {
-			return element.toString();
-		}
-
-		@Override
-		public void update(ViewerCell cell) {
-			if (_font == null) {
-				_font = JFaceResources.getFont(JFaceResources.TEXT_FONT);
-			}
-			if (_italic == null) {
-				FontData fd = _font.getFontData()[0];
-				_italic = SWTResourceManager.getFont(fd.getName(), fd.getHeight(), SWT.ITALIC);
-			}
-
-			Match match = (Match) cell.getElement();
-			Line line = null;
-			String text;
-			Font font = _font;
-			if (match.item instanceof Line) {
-				line = (Line) match.item;
-				text = line.text;
-			} else {
-				text = match.item.toString();
-				font = _italic;
-			}
-			StyleRange allRange = new StyleRange(0, text.length(), null, null);
-			allRange.font = font;
-			Color fgcolor = ChainsUI.get_pref_Chains_highlightFgColor();
-			Color bgcolor = ChainsUI.get_pref_Chains_highlightBgColor();
-			StyleRange selRange = new StyleRange(match.start, match.length, fgcolor, bgcolor);
-			StyleRange[] ranges = { allRange, selRange };
-			cell.setStyleRanges(ranges);
-			cell.setText(text);
-			cell.setImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_SCRIPT_CODE));
-
-			super.update(cell);
 		}
 	}
 
@@ -250,38 +244,37 @@ public class ChainsView extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NONE);
-		container.setLayout(new FillLayout());
-
-		_mainSashContainer = new Composite(container, SWT.NONE);
 		GridLayout gl_composite = new GridLayout(1, false);
 		gl_composite.marginHeight = 0;
 		gl_composite.marginWidth = 0;
-		_mainSashContainer.setLayout(gl_composite);
+		container.setLayout(gl_composite);
 		{
-			_queryText = new Text(_mainSashContainer, SWT.BORDER);
+			_queryText = new Text(container, SWT.BORDER);
 			_queryText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 			_queryText.setText("add.*(");
 			{
-				_mainSash = new SashForm(_mainSashContainer, SWT.HORIZONTAL);
-				_mainSash.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-				_mainSash.setSize(468, 463);
 				{
-					_chainsViewer = new TableViewer(_mainSash, SWT.FULL_SELECTION);
+					_chainsViewer = new TableViewer(container, SWT.FULL_SELECTION);
+					_chainsViewer.getTable().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 					_chainsViewer.addDoubleClickListener(new IDoubleClickListener() {
 						@Override
 						public void doubleClick(DoubleClickEvent event) {
-							showChainDoc((Match) ((StructuredSelection) event.getSelection()).getFirstElement());
+							Match match = (Match) ((StructuredSelection) event.getSelection()).getFirstElement();
+							if (match.item instanceof ChainItem) {
+								showChainDoc(match);
+							} else {
+								showExample(match.item);
+							}
 						}
 					});
 					Table chainsTable = _chainsViewer.getTable();
 					chainsTable.setLinesVisible(true);
-					chainsTable.setHeaderVisible(true);
+					chainsTable.setHeaderVisible(false);
 					{
 						TableViewerColumn tableViewerColumn = new TableViewerColumn(_chainsViewer, SWT.NONE);
 						tableViewerColumn.setLabelProvider(new ChainsLabelProvider());
-						_chainTableColumn = tableViewerColumn.getColumn();
-						_chainTableColumn.setWidth(1000);
-						_chainTableColumn.setText("Chains");
+						TableColumn column = tableViewerColumn.getColumn();
+						column.setWidth(1000);
 					}
 					{
 						Menu menu = new Menu(chainsTable);
@@ -307,47 +300,8 @@ public class ChainsView extends ViewPart {
 							mntmShowSourceCode.setText("Show Source Code");
 						}
 					}
-					{
-						_examplesViewer = new TableViewer(_mainSash, SWT.FULL_SELECTION);
-						_examplesViewer.addDoubleClickListener(new IDoubleClickListener() {
-							@Override
-							public void doubleClick(DoubleClickEvent event) {
-								Match match = (Match) ((StructuredSelection) event.getSelection()).getFirstElement();
-								showExample(match.item);
-							}
-						});
-						Table examplesTable = _examplesViewer.getTable();
-						examplesTable.setLinesVisible(true);
-						examplesTable.setHeaderVisible(true);
-						{
-							TableViewerColumn tableViewerColumn = new TableViewerColumn(_examplesViewer, SWT.NONE);
-							tableViewerColumn.setLabelProvider(new ExamplesLineLabelProvider());
-							_examplesTableColumn = tableViewerColumn.getColumn();
-							_examplesTableColumn.setWidth(392);
-							_examplesTableColumn.setText("Examples");
-						}
-						{
-							TableViewerColumn tableViewerColumn = new TableViewerColumn(_examplesViewer, SWT.NONE);
-							tableViewerColumn.setLabelProvider(new ColumnLabelProvider() {
-								@Override
-								public String getText(Object aElement) {
-									Object element = ((Match) aElement).item;
-									if (element instanceof Line) {
-										Line line = (Line) element;
-										return line.filename + " [" + line.linenum + "]";
-									}
-									return element.toString();
-								}
-							});
-							TableColumn tblclmnFile = tableViewerColumn.getColumn();
-							tblclmnFile.setWidth(300);
-							tblclmnFile.setText("File");
-						}
-						_examplesViewer.setContentProvider(new ArrayContentProvider());
-					}
 					_chainsViewer.setContentProvider(new ArrayContentProvider());
 				}
-				_mainSash.setWeights(new int[] { 1, 1 });
 			}
 
 			_queryText.addModifyListener(new ModifyListener() {
@@ -366,6 +320,17 @@ public class ChainsView extends ViewPart {
 	}
 
 	protected void showSourceCode(Match match) {
+		if (match.item instanceof ChainItem) {
+			showChainSource(match);
+		} else {
+			showExample(match.item);
+		}
+	}
+
+	/**
+	 * @param match
+	 */
+	private void showChainSource(Match match) {
 		ChainItem item = (ChainItem) match.item;
 		IPhaserMember member = item.getPhaserMember();
 
@@ -447,6 +412,10 @@ public class ChainsView extends ViewPart {
 	}
 
 	protected void showChainDoc(Match match) {
+		if (!(match.item instanceof ChainItem)) {
+			return;
+		}
+
 		ChainItem item = (ChainItem) match.item;
 		try {
 			try {
@@ -478,7 +447,6 @@ public class ChainsView extends ViewPart {
 
 	private void afterCreateWidgets() {
 		_chainsViewer.setInput(new Object[0]);
-		_examplesViewer.setInput(new Object[0]);
 
 		new Job("Building chains...") {
 
@@ -492,8 +460,7 @@ public class ChainsView extends ViewPart {
 			}
 		}.schedule();
 
-		PhaserEditorUI.refreshViewerWhenPreferencesChange(ChainsUI.getPreferenceStore(), _chainsViewer,
-				_examplesViewer);
+		PhaserEditorUI.refreshViewerWhenPreferencesChange(ChainsUI.getPreferenceStore(), _chainsViewer);
 
 		getViewSite().setSelectionProvider(_chainsViewer);
 	}
@@ -509,31 +476,8 @@ public class ChainsView extends ViewPart {
 	 * Initialize the toolbar.
 	 */
 	private void initializeToolBar() {
+		@SuppressWarnings("unused")
 		IToolBarManager toolbarManager = getViewSite().getActionBars().getToolBarManager();
-
-		toolbarManager.add(
-				new Action("Split", EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_SPLIT_HORIZONTAL)) {
-					private boolean _horiz = true;
-
-					@SuppressWarnings("synthetic-access")
-					@Override
-					public void run() {
-						_horiz = !_horiz;
-						setImageDescriptor(
-								EditorSharedImages.getImageDescriptor(_horiz ? IEditorSharedImages.IMG_SPLIT_HORIZONTAL
-										: IEditorSharedImages.IMG_SPLIT_VERTICAL));
-						int style = _horiz ? SWT.HORIZONTAL : SWT.VERTICAL;
-						SashForm old = _mainSash;
-						_mainSash = new SashForm(_mainSashContainer, style);
-						_mainSash.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-						_chainsViewer.getTable().setParent(_mainSash);
-						_examplesViewer.getTable().setParent(_mainSash);
-						_mainSash.setWeights(new int[] { 1, 1 });
-						_mainSashContainer.layout();
-						_mainSashContainer.update();
-						old.dispose();
-					}
-				});
 	}
 
 	/**
@@ -597,24 +541,24 @@ public class ChainsView extends ViewPart {
 		List<Match> list1 = _chainsModel.searchChains(query[0], chainsLimit);
 		List<Match> list2 = _chainsModel.searchExamples(query[0], chainsLimit);
 
+		List<Match> matches = new ArrayList<>();
+
+		for (int i = 0; i < Math.max(list1.size(), list2.size()); i++) {
+			if (i < list1.size()) {
+				matches.add(list1.get(i));
+			}
+
+			if (i < list2.size()) {
+				matches.add(list2.get(i));
+			}
+		}
+
 		if (_token.get() != token) {
 			return;
 		}
 
 		swtRun(() -> {
-			_chainsViewer.setInput(list1);
-
-			_examplesViewer.setInput(list2);
-
-			int chainsSize = list1.size();
-			int examplesSize = list2.size();
-
-			_chainTableColumn.setText(
-					"Chains (" + (chainsSize == chainsLimit ? chainsSize + "+" : Integer.valueOf(chainsSize)) + ")");
-
-			_examplesTableColumn.setText("Examples ("
-					+ (examplesSize == chainsLimit ? examplesSize + "+" : Integer.valueOf(examplesSize)) + ")");
-
+			_chainsViewer.setInput(matches);
 		});
 	}
 }
