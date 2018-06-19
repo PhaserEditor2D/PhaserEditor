@@ -1,5 +1,7 @@
 package phasereditor.inspect.ui.views;
 
+import static java.lang.System.out;
+
 import org.eclipse.core.runtime.Adapters;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -49,6 +51,11 @@ public class JsdocView extends ViewPart implements ISelectionListener {
 	}
 
 	public void showJsdocFor(Object obj) {
+
+		if (obj != null) {
+			out.println(obj.getClass().getCanonicalName() + " " + obj);
+		}
+
 		IJsdocProvider provider = null;
 
 		if (obj != null) {
