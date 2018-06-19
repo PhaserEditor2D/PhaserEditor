@@ -115,7 +115,7 @@ public class ExamplesModel {
 
 				if (filename.startsWith("_") || filename.equals("archived")) {
 					out.println("Skip " + dir);
-					return FileVisitResult.CONTINUE;
+					return FileVisitResult.SKIP_SUBTREE;
 				}
 
 				if (Files.exists(dir.resolve("boot.json"))) {

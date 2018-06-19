@@ -24,7 +24,6 @@ package phasereditor.inspect.core.build;
 import static java.lang.System.out;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -37,20 +36,6 @@ class BuildExamplesCache {
 		Path wsPath = Paths.get(".").toAbsolutePath().getParent().getParent();
 		Path examplesProjectPath = wsPath.resolve(InspectCore.RESOURCES_EXAMPLES_PLUGIN);
 		Path metadataProjectPath = wsPath.resolve(InspectCore.RESOURCES_METADATA_PLUGIN);
-
-		{
-			Path archivedFolder = examplesProjectPath.resolve("phaser3-examples/public/src/archived");
-			if (Files.exists(archivedFolder)) {
-				out.println("Error: the 'archived' folder is not going to be included.");
-				System.exit(0);
-			}
-
-			archivedFolder = examplesProjectPath.resolve("phaser3-examples/public/src/transform/archived");
-			if (Files.exists(archivedFolder)) {
-				out.println("Error: the 'transform/archived' folder is not going to be included.");
-				System.exit(0);
-			}
-		}
 
 		ExamplesModel model = new ExamplesModel(examplesProjectPath);
 		model.build();
