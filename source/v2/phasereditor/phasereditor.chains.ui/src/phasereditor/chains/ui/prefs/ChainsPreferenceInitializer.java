@@ -26,7 +26,7 @@ public class ChainsPreferenceInitializer extends AbstractPreferenceInitializer {
 		rgb = Display.getDefault().getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT).getRGB();
 		store.setDefault(ChainsUI.PREF_PROP_HIGHLIGHT_FG_COLOR, StringConverter.asString(rgb));
 		rgb = new RGB(154, 131, 80);
-		store.setDefault(ChainsUI.PREF_PROP_TYPE_PART_FG_COLOR, StringConverter.asString(rgb));
+		store.setDefault(ChainsUI.PREF_PROP_SECONDARY_FG_COLOR, StringConverter.asString(rgb));
 
 	}
 

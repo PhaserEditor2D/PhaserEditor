@@ -143,7 +143,7 @@ public class ChainsView extends ViewPart {
 
 			Color fgcolor = ChainsUI.get_pref_Chains_highlightFgColor();
 			Color bgcolor = ChainsUI.get_pref_Chains_highlightBgColor();
-			Color secondaryColor = ChainsUI.get_pref_Chains_typePartFgColor();
+			Color secondaryColor = ChainsUI.get_pref_Chains_secondaryFgColor();
 
 			StyleRange selRange = new StyleRange(match.start, match.length, fgcolor, bgcolor);
 			StyleRange secondaryRange = new StyleRange(secondaryColorIndex, text.length() - secondaryColorIndex,
@@ -184,7 +184,7 @@ public class ChainsView extends ViewPart {
 
 			Color fgColor = ChainsUI.get_pref_Chains_highlightFgColor();
 			Color bgColor = ChainsUI.get_pref_Chains_highlightBgColor();
-			Color typeColor = ChainsUI.get_pref_Chains_typePartFgColor();// SWTResourceManager.getColor(154, 131, 80);
+			Color typeColor = ChainsUI.get_pref_Chains_secondaryFgColor();// SWTResourceManager.getColor(154, 131, 80);
 
 			StyleRange selRange = new StyleRange(match.start, match.length, fgColor, bgColor);
 			StyleRange allRange = new StyleRange(0, text.length(), null, null);

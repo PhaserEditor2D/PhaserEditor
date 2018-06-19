@@ -37,10 +37,10 @@ public class ChainsUI {
 
 	public static final String PREF_PROP_HIGHLIGHT_BG_COLOR = "phasereditor.chains.highlightBgColor";
 	public static final String PREF_PROP_HIGHLIGHT_FG_COLOR = "phasereditor.chains.highlightFgColor";
-	public static final String PREF_PROP_TYPE_PART_FG_COLOR = "phasereditor.chains.typePartFgColor";
+	public static final String PREF_PROP_SECONDARY_FG_COLOR = "phasereditor.chains.secondaryFgColor";
 	public static Color _PREF_PROP_HIGHLIGHT_BG_COLOR;
 	public static Color _PREF_PROP_HIGHLIGHT_FG_COLOR;
-	public static Color _PREF_PROP_TYPE_PART_FG_COLOR;
+	public static Color _PREF_PROP_SECONDARY_FG_COLOR;
 
 	public static void listenPreferences() {
 		{
@@ -48,8 +48,8 @@ public class ChainsUI {
 			_PREF_PROP_HIGHLIGHT_BG_COLOR = SWTResourceManager.getColor(rgb);
 			rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_HIGHLIGHT_FG_COLOR));
 			_PREF_PROP_HIGHLIGHT_FG_COLOR = SWTResourceManager.getColor(rgb);
-			rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_TYPE_PART_FG_COLOR));
-			_PREF_PROP_TYPE_PART_FG_COLOR = SWTResourceManager.getColor(rgb);
+			rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_SECONDARY_FG_COLOR));
+			_PREF_PROP_SECONDARY_FG_COLOR = SWTResourceManager.getColor(rgb);
 		}
 
 		getPreferenceStore().addPropertyChangeListener(event -> {
@@ -64,8 +64,8 @@ public class ChainsUI {
 			case PREF_PROP_HIGHLIGHT_FG_COLOR:
 				_PREF_PROP_HIGHLIGHT_FG_COLOR = SWTResourceManager.getColor(PhaserEditorUI.getRGBFromPrefEvent(event));
 				break;
-			case PREF_PROP_TYPE_PART_FG_COLOR:
-				_PREF_PROP_TYPE_PART_FG_COLOR = SWTResourceManager.getColor(PhaserEditorUI.getRGBFromPrefEvent(event));
+			case PREF_PROP_SECONDARY_FG_COLOR:
+				_PREF_PROP_SECONDARY_FG_COLOR = SWTResourceManager.getColor(PhaserEditorUI.getRGBFromPrefEvent(event));
 				break;
 			default:
 				break;
@@ -81,8 +81,8 @@ public class ChainsUI {
 		return _PREF_PROP_HIGHLIGHT_FG_COLOR;
 	}
 	
-	public static Color get_pref_Chains_typePartFgColor() {
-		return _PREF_PROP_TYPE_PART_FG_COLOR;
+	public static Color get_pref_Chains_secondaryFgColor() {
+		return _PREF_PROP_SECONDARY_FG_COLOR;
 	}
 
 	public static IPreferenceStore getPreferenceStore() {
