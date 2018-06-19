@@ -548,7 +548,10 @@ public class PhaserJSDoc {
 
 			List<PhaserMethodArg> args = buildArgs(obj);
 
-			String desc = obj.optString("description", "");
+			String desc = obj.optString("description", null);
+			if (desc == null) {
+				desc = obj.optString("classdesc", "");
+			}
 
 			PhaserType type = new PhaserType(obj);
 			containersMap.put(name, type);
@@ -587,6 +590,7 @@ public class PhaserJSDoc {
 		}
 
 		String path = meta.getString("path");
+		path = path.replace("\\", "/");
 		int beginIndex = path.indexOf("src") + 4;
 		int endIndex = path.length();
 		if (beginIndex > endIndex) {
