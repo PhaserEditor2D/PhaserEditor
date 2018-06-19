@@ -27,8 +27,8 @@ var Class = require('../utils/Class');
  * @constructor
  * @since 3.0.0
  *
- * @param {number} [x] - The x component of this Vector.
- * @param {number} [y] - The y component of this Vector.
+ * @param {number} [x] - The x component.
+ * @param {number} [y] - The y component.
  */
 var Vector2 = new Class({
 
@@ -353,7 +353,7 @@ var Vector2 = new Class({
     },
 
     /**
-     * Calculate the distance between this Vector, and the given Vector, squared.
+     * Calculate the distance between this Vector and the given Vector, squared.
      *
      * @method Phaser.Math.Vector2#distanceSq
      * @since 3.0.0

@@ -151,7 +151,7 @@ var File = new Class({
          * @type {integer}
          * @since 3.0.0
          */
-        this.state = typeof(this.url) === 'function' ? CONST.FILE_POPULATED : CONST.FILE_PENDING;
+        this.state = (typeof(this.url) === 'function') ? CONST.FILE_POPULATED : CONST.FILE_PENDING;
 
         /**
          * The total size of this file.
@@ -517,7 +517,7 @@ var File = new Class({
         var type = this.type;
 
         this.loader.emit('filecomplete', key, type, data);
-        this.loader.emit('filecomplete_' + type + '_' + key, key, type, data);
+        this.loader.emit('filecomplete-' + type + '-' + key, key, type, data);
 
         this.loader.flagForRemoval(this);
     },
