@@ -109,10 +109,16 @@
                relative="org.eclipse.ui.editorss">
          </view>
          <view
-               id="org.eclipse.ui.views.ProblemView"
+               id="phasereditor.inspect.ui.jsdoc"
                minimized="false"
                relationship="stack"
                relative="phasereditor.chains.ui.views.chains">
+         </view>
+         <view
+               id="org.eclipse.ui.views.ProblemView"
+               minimized="false"
+               relationship="stack"
+               relative="phasereditor.inspect.ui.jsdoc">
          </view>
          <view
                id="org.eclipse.egit.ui.RepositoriesView"
