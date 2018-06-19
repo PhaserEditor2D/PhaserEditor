@@ -51,7 +51,6 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
@@ -62,19 +61,18 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.wb.swt.SWTResourceManager;
@@ -90,8 +88,9 @@ import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.examples.ExampleCategoryModel;
 import phasereditor.inspect.core.examples.ExampleModel;
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
-import phasereditor.inspect.core.jsdoc.JSDocRenderer;
 import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
+import phasereditor.inspect.ui.InspectUI;
+import phasereditor.inspect.ui.views.JsdocView;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.PhaserEditorUI;
@@ -105,8 +104,6 @@ public class ChainsView extends ViewPart {
 	private TableColumn _chainTableColumn;
 	private TableViewer _examplesViewer;
 	private TableColumn _examplesTableColumn;
-	private Browser _docBrowser;
-	private TabFolder _tabFolder;
 	private SashForm _mainSash;
 	private Composite _mainSashContainer;
 
@@ -144,7 +141,7 @@ public class ChainsView extends ViewPart {
 
 			Color fgColor = ChainsUI.get_pref_Chains_highlightFgColor();
 			Color bgColor = ChainsUI.get_pref_Chains_highlightBgColor();
-			Color typeColor = ChainsUI.get_pref_Chains_typePartFgColor();//SWTResourceManager.getColor(154, 131, 80);
+			Color typeColor = ChainsUI.get_pref_Chains_typePartFgColor();// SWTResourceManager.getColor(154, 131, 80);
 
 			StyleRange selRange = new StyleRange(match.start, match.length, fgColor, bgColor);
 			StyleRange allRange = new StyleRange(0, text.length(), null, null);
@@ -166,7 +163,7 @@ public class ChainsView extends ViewPart {
 				italicRange.length = text.length();
 				ranges = new StyleRange[] { allRange, italicRange, returnTypeRange, selRange };
 			} else {
-				ranges = new StyleRange[] { allRange, returnTypeRange , selRange};
+				ranges = new StyleRange[] { allRange, returnTypeRange, selRange };
 			}
 
 			cell.setText(text);
@@ -253,148 +250,112 @@ public class ChainsView extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NONE);
+		container.setLayout(new FillLayout());
 
-		GridLayout gl_container = new GridLayout(1, false);
-		gl_container.marginWidth = 0;
-		gl_container.marginHeight = 0;
-		gl_container.verticalSpacing = 0;
-		gl_container.horizontalSpacing = 0;
-		container.setLayout(gl_container);
+		_mainSashContainer = new Composite(container, SWT.NONE);
+		GridLayout gl_composite = new GridLayout(1, false);
+		gl_composite.marginHeight = 0;
+		gl_composite.marginWidth = 0;
+		_mainSashContainer.setLayout(gl_composite);
 		{
-			_tabFolder = new TabFolder(container, SWT.NONE);
-			_tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+			_queryText = new Text(_mainSashContainer, SWT.BORDER);
+			_queryText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+			_queryText.setText("add.*(");
 			{
-				TabItem tbtmSearch = new TabItem(_tabFolder, SWT.NONE);
-				tbtmSearch.setText("Search");
+				_mainSash = new SashForm(_mainSashContainer, SWT.HORIZONTAL);
+				_mainSash.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+				_mainSash.setSize(468, 463);
 				{
-					_mainSashContainer = new Composite(_tabFolder, SWT.NONE);
-					tbtmSearch.setControl(_mainSashContainer);
-					GridLayout gl_composite = new GridLayout(1, false);
-					gl_composite.marginHeight = 0;
-					gl_composite.marginWidth = 0;
-					_mainSashContainer.setLayout(gl_composite);
+					_chainsViewer = new TableViewer(_mainSash, SWT.FULL_SELECTION);
+					_chainsViewer.addDoubleClickListener(new IDoubleClickListener() {
+						@Override
+						public void doubleClick(DoubleClickEvent event) {
+							showChainDoc((Match) ((StructuredSelection) event.getSelection()).getFirstElement());
+						}
+					});
+					Table chainsTable = _chainsViewer.getTable();
+					chainsTable.setLinesVisible(true);
+					chainsTable.setHeaderVisible(true);
 					{
-						_queryText = new Text(_mainSashContainer, SWT.BORDER);
-						_queryText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-						_queryText.setText("add.*(");
+						TableViewerColumn tableViewerColumn = new TableViewerColumn(_chainsViewer, SWT.NONE);
+						tableViewerColumn.setLabelProvider(new ChainsLabelProvider());
+						_chainTableColumn = tableViewerColumn.getColumn();
+						_chainTableColumn.setWidth(1000);
+						_chainTableColumn.setText("Chains");
+					}
+					{
+						Menu menu = new Menu(chainsTable);
+						chainsTable.setMenu(menu);
 						{
-							_mainSash = new SashForm(_mainSashContainer, SWT.HORIZONTAL);
-							_mainSash.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-							_mainSash.setSize(468, 463);
-							{
-								_chainsViewer = new TableViewer(_mainSash, SWT.FULL_SELECTION);
-								_chainsViewer.addDoubleClickListener(new IDoubleClickListener() {
-									@Override
-									public void doubleClick(DoubleClickEvent event) {
-										showChainDoc(
-												(Match) ((StructuredSelection) event.getSelection()).getFirstElement());
-									}
-								});
-								Table chainsTable = _chainsViewer.getTable();
-								chainsTable.setLinesVisible(true);
-								chainsTable.setHeaderVisible(true);
-								{
-									TableViewerColumn tableViewerColumn = new TableViewerColumn(_chainsViewer,
-											SWT.NONE);
-									tableViewerColumn.setLabelProvider(new ChainsLabelProvider());
-									_chainTableColumn = tableViewerColumn.getColumn();
-									_chainTableColumn.setWidth(1000);
-									_chainTableColumn.setText("Chains");
+							MenuItem mntmShowDocumentation = new MenuItem(menu, SWT.NONE);
+							mntmShowDocumentation.addSelectionListener(new SelectionAdapter() {
+								@Override
+								public void widgetSelected(SelectionEvent e) {
+									showChainDoc(getSelectedChainItemMatch());
 								}
-								{
-									Menu menu = new Menu(chainsTable);
-									chainsTable.setMenu(menu);
-									{
-										MenuItem mntmShowDocumentation = new MenuItem(menu, SWT.NONE);
-										mntmShowDocumentation.addSelectionListener(new SelectionAdapter() {
-											@Override
-											public void widgetSelected(SelectionEvent e) {
-												showChainDoc(getSelectedChainItemMatch());
-											}
-										});
-										mntmShowDocumentation.setText("Show Documentation");
-									}
-									{
-										MenuItem mntmShowSourceCode = new MenuItem(menu, SWT.NONE);
-										mntmShowSourceCode.addSelectionListener(new SelectionAdapter() {
-											@Override
-											public void widgetSelected(SelectionEvent e) {
-												showSourceCode(getSelectedChainItemMatch());
-											}
-										});
-										mntmShowSourceCode.setText("Show Source Code");
-									}
-								}
-								{
-									_examplesViewer = new TableViewer(_mainSash, SWT.FULL_SELECTION);
-									_examplesViewer.addDoubleClickListener(new IDoubleClickListener() {
-										@Override
-										public void doubleClick(DoubleClickEvent event) {
-											Match match = (Match) ((StructuredSelection) event.getSelection())
-													.getFirstElement();
-											showExample(match.item);
-										}
-									});
-									Table examplesTable = _examplesViewer.getTable();
-									examplesTable.setLinesVisible(true);
-									examplesTable.setHeaderVisible(true);
-									{
-										TableViewerColumn tableViewerColumn = new TableViewerColumn(_examplesViewer,
-												SWT.NONE);
-										tableViewerColumn.setLabelProvider(new ExamplesLineLabelProvider());
-										_examplesTableColumn = tableViewerColumn.getColumn();
-										_examplesTableColumn.setWidth(392);
-										_examplesTableColumn.setText("Examples");
-									}
-									{
-										TableViewerColumn tableViewerColumn = new TableViewerColumn(_examplesViewer,
-												SWT.NONE);
-										tableViewerColumn.setLabelProvider(new ColumnLabelProvider() {
-											@Override
-											public String getText(Object aElement) {
-												Object element = ((Match) aElement).item;
-												if (element instanceof Line) {
-													Line line = (Line) element;
-													return line.filename + " [" + line.linenum + "]";
-												}
-												return element.toString();
-											}
-										});
-										TableColumn tblclmnFile = tableViewerColumn.getColumn();
-										tblclmnFile.setWidth(300);
-										tblclmnFile.setText("File");
-									}
-									_examplesViewer.setContentProvider(new ArrayContentProvider());
-								}
-								_chainsViewer.setContentProvider(new ArrayContentProvider());
-							}
-							_mainSash.setWeights(new int[] { 1, 1 });
+							});
+							mntmShowDocumentation.setText("Show Documentation");
 						}
 						{
-							TabItem tbtmDocumentation = new TabItem(_tabFolder, SWT.NONE);
-							tbtmDocumentation.setText("JSDoc");
-							{
-								Composite composite_1 = new Composite(_tabFolder, SWT.NONE);
-								tbtmDocumentation.setControl(composite_1);
-								GridLayout gl_composite_1 = new GridLayout(1, false);
-								gl_composite_1.marginWidth = 0;
-								gl_composite_1.marginHeight = 0;
-								composite_1.setLayout(gl_composite_1);
-								{
-									_docBrowser = new Browser(composite_1, SWT.NONE);
-									_docBrowser.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+							MenuItem mntmShowSourceCode = new MenuItem(menu, SWT.NONE);
+							mntmShowSourceCode.addSelectionListener(new SelectionAdapter() {
+								@Override
+								public void widgetSelected(SelectionEvent e) {
+									showSourceCode(getSelectedChainItemMatch());
 								}
-							}
+							});
+							mntmShowSourceCode.setText("Show Source Code");
 						}
-						_queryText.addModifyListener(new ModifyListener() {
+					}
+					{
+						_examplesViewer = new TableViewer(_mainSash, SWT.FULL_SELECTION);
+						_examplesViewer.addDoubleClickListener(new IDoubleClickListener() {
 							@Override
-							public void modifyText(ModifyEvent e) {
-								queryTextModified();
+							public void doubleClick(DoubleClickEvent event) {
+								Match match = (Match) ((StructuredSelection) event.getSelection()).getFirstElement();
+								showExample(match.item);
 							}
 						});
+						Table examplesTable = _examplesViewer.getTable();
+						examplesTable.setLinesVisible(true);
+						examplesTable.setHeaderVisible(true);
+						{
+							TableViewerColumn tableViewerColumn = new TableViewerColumn(_examplesViewer, SWT.NONE);
+							tableViewerColumn.setLabelProvider(new ExamplesLineLabelProvider());
+							_examplesTableColumn = tableViewerColumn.getColumn();
+							_examplesTableColumn.setWidth(392);
+							_examplesTableColumn.setText("Examples");
+						}
+						{
+							TableViewerColumn tableViewerColumn = new TableViewerColumn(_examplesViewer, SWT.NONE);
+							tableViewerColumn.setLabelProvider(new ColumnLabelProvider() {
+								@Override
+								public String getText(Object aElement) {
+									Object element = ((Match) aElement).item;
+									if (element instanceof Line) {
+										Line line = (Line) element;
+										return line.filename + " [" + line.linenum + "]";
+									}
+									return element.toString();
+								}
+							});
+							TableColumn tblclmnFile = tableViewerColumn.getColumn();
+							tblclmnFile.setWidth(300);
+							tblclmnFile.setText("File");
+						}
+						_examplesViewer.setContentProvider(new ArrayContentProvider());
 					}
+					_chainsViewer.setContentProvider(new ArrayContentProvider());
 				}
+				_mainSash.setWeights(new int[] { 1, 1 });
 			}
+
+			_queryText.addModifyListener(new ModifyListener() {
+				@Override
+				public void modifyText(ModifyEvent e) {
+					queryTextModified();
+				}
+			});
 		}
 
 		createActions();
@@ -403,7 +364,7 @@ public class ChainsView extends ViewPart {
 
 		afterCreateWidgets();
 	}
-	
+
 	protected void showSourceCode(Match match) {
 		ChainItem item = (ChainItem) match.item;
 		IPhaserMember member = item.getPhaserMember();
@@ -488,25 +449,18 @@ public class ChainsView extends ViewPart {
 	protected void showChainDoc(Match match) {
 		ChainItem item = (ChainItem) match.item;
 		try {
-			// String doc = ChainsModel.getDoc(item);
-			IPhaserMember member = item.getPhaserMember();
-			String doc = JSDocRenderer.getInstance().render(member);
-			String html = wrapBody(doc);
-			_docBrowser.setText(html);
-			_tabFolder.setSelection(1);
+			try {
+				JsdocView view = (JsdocView) getViewSite().getPage().showView(InspectUI.JSDOC_VIEW_ID, null,
+						IWorkbenchPage.VIEW_CREATE);
+				view.showJsdocFor(item.getPhaserMember());
+				getViewSite().getPage().activate(view);
+			} catch (PartInitException e) {
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-	}
-
-	private static String wrapBody(String doc) {
-		RGB rgb = SWTResourceManager.getColor(SWT.COLOR_INFO_BACKGROUND).getRGB();
-		String color = "rgb(" + rgb.red + ", " + rgb.green + ", " + rgb.blue + ")";
-
-		String html = "<html><body style='background:\"" + color + "\";'>";
-		html += doc;
-		html += "</body></html>";
-		return html;
 	}
 
 	AtomicInteger _token = new AtomicInteger(0);
@@ -523,8 +477,6 @@ public class ChainsView extends ViewPart {
 	}
 
 	private void afterCreateWidgets() {
-		_tabFolder.setSelection(0);
-
 		_chainsViewer.setInput(new Object[0]);
 		_examplesViewer.setInput(new Object[0]);
 
@@ -540,11 +492,9 @@ public class ChainsView extends ViewPart {
 			}
 		}.schedule();
 
-		_docBrowser.setText(wrapBody("<b>Double click a chain to see the JSDoc here.</b>"));
-
 		PhaserEditorUI.refreshViewerWhenPreferencesChange(ChainsUI.getPreferenceStore(), _chainsViewer,
 				_examplesViewer);
-		
+
 		getViewSite().setSelectionProvider(_chainsViewer);
 	}
 
