@@ -23,7 +23,9 @@ package phasereditor.chains.core;
 
 import static java.lang.System.out;
 
+import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -112,27 +114,37 @@ public class ChainsModel {
 		try {
 			ExamplesModel examples = InspectCore.getExamplesModel();
 			for (ExampleCategoryModel category : examples.getExamplesCategories()) {
-				for (ExampleModel example : category.getTemplates()) {
-					String filename = example.getCategory().getName().toLowerCase() + "/"
-							+ example.getInfo().getMainFile();
-					_examplesFiles.add(filename);
-					List<String> contentLines = Files.readAllLines(example.getMainFilePath());
-					int linenum = 1;
-					for (String text : contentLines) {
-						text = text.trim();
-						if (text.length() > 0 && !text.startsWith("//")) {
-							Line line = new Line();
-							line.filename = filename;
-							line.linenum = linenum;
-							line.text = text;
-							_examplesLines.add(line);
-						}
-						linenum++;
-					}
-				}
+				processCategory(category);
 			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);
+		}
+	}
+
+	private void processCategory(ExampleCategoryModel category) throws IOException {
+		for (ExampleCategoryModel category2 : category.getSubCategories()) {
+			processCategory(category2);
+		}
+
+		Path repoPath = InspectCore.getExamplesModel().getExamplesRepoPath().resolve("src");
+
+		for (ExampleModel example : category.getTemplates()) {
+			String filename = repoPath.relativize(example.getMainFilePath()).toString();
+			_examplesFiles.add(filename);
+			List<String> contentLines = Files.readAllLines(example.getMainFilePath());
+			int linenum = 1;
+			for (String text : contentLines) {
+				text = text.trim();
+				if (text.length() > 0 && !text.startsWith("//")) {
+					Line line = new Line();
+					line.filename = filename;
+					line.linenum = linenum;
+					line.text = text;
+					line.example = example;
+					_examplesLines.add(line);
+				}
+				linenum++;
+			}
 		}
 	}
 

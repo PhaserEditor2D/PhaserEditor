@@ -21,10 +21,13 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.chains.core;
 
+import phasereditor.inspect.core.examples.ExampleModel;
+
 public class Line {
 	public String text;
 	public int linenum;
 	public String filename;
+	public ExampleModel example;
 
 	@Override
 	public String toString() {

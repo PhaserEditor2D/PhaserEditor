@@ -344,19 +344,18 @@ public class ChainsView extends ViewPart {
 	}
 
 	protected void showExample(Object item) {
-		String file;
+		Path filePath;
 		int linenum = -1;
 
 		if (item instanceof String) {
-			file = (String) item;
+			String file = (String) item;
+			filePath = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN,
+					"phaser3-examples/public/src/" + file);
 		} else {
 			Line line = (Line) item;
-			file = line.filename;
 			linenum = line.linenum;
+			filePath = line.example.getMainFilePath();
 		}
-
-		Path filePath = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN,
-				"phaser3-examples/public/src/" + file);
 
 		for (ExampleCategoryModel c : InspectCore.getExamplesModel().getExamplesCategories()) {
 			for (ExampleModel e : c.getTemplates()) {
