@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="phasereditor.ui.phaser"
+            class="phasereditor.inspect.ui.views.JsdocView"
+            icon="platform:/plugin/phasereditor.ui/icons/javadoc.png"
+            id="phasereditor.inspect.ui.jsdoc"
+            name="Jsdoc"
+            restorable="true">
+      </view>
+   </extension>
+
+</plugin>

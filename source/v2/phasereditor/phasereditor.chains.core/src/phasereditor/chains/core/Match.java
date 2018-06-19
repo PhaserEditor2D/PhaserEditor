@@ -21,7 +21,10 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.chains.core;
 
-public class Match {
+import org.eclipse.core.runtime.Adapters;
+import org.eclipse.core.runtime.IAdaptable;
+
+public class Match implements IAdaptable {
 	public Object item;
 	public int start;
 	public int length;
@@ -29,5 +32,10 @@ public class Match {
 	@Override
 	public String toString() {
 		return item.toString();
+	}
+
+	@Override
+	public <T> T getAdapter(Class<T> adapter) {
+		return Adapters.adapt(item, adapter);
 	}
 }

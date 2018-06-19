@@ -403,7 +403,7 @@ public class ChainsView extends ViewPart {
 
 		afterCreateWidgets();
 	}
-
+	
 	protected void showSourceCode(Match match) {
 		ChainItem item = (ChainItem) match.item;
 		IPhaserMember member = item.getPhaserMember();
@@ -544,6 +544,8 @@ public class ChainsView extends ViewPart {
 
 		PhaserEditorUI.refreshViewerWhenPreferencesChange(ChainsUI.getPreferenceStore(), _chainsViewer,
 				_examplesViewer);
+		
+		getViewSite().setSelectionProvider(_chainsViewer);
 	}
 
 	/**

@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.chains.core;
 
+import org.eclipse.core.runtime.IAdaptable;
+
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.core.jsdoc.PhaserConstant;
 import phasereditor.inspect.core.jsdoc.PhaserMethod;
@@ -28,7 +30,7 @@ import phasereditor.inspect.core.jsdoc.PhaserNamespace;
 import phasereditor.inspect.core.jsdoc.PhaserProperty;
 import phasereditor.inspect.core.jsdoc.PhaserType;
 
-public class ChainItem {
+public class ChainItem implements IAdaptable {
 	private String _chain;
 	private String _returnTypeName;
 	private int _depth;
@@ -49,7 +51,7 @@ public class ChainItem {
 			_returnTypeIndex = chain.length();
 		}
 	}
-	
+
 	public int getReturnTypeIndex() {
 		return _returnTypeIndex;
 	}
@@ -118,5 +120,14 @@ public class ChainItem {
 
 	public IPhaserMember getPhaserMember() {
 		return _phaserMember;
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public Object getAdapter(Class adapter) {
+		if (adapter == IPhaserMember.class) {
+			return _phaserMember;
+		}
+		return null;
 	}
 }
