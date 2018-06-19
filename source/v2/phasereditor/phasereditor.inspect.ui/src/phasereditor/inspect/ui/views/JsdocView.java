@@ -14,8 +14,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import phasereditor.inspect.core.jsdoc.IPhaserMember;
-import phasereditor.inspect.core.jsdoc.JSDocRenderer;
+import phasereditor.inspect.core.jsdoc.IJsdocProvider;
 
 public class JsdocView extends ViewPart implements ISelectionListener {
 
@@ -50,20 +49,17 @@ public class JsdocView extends ViewPart implements ISelectionListener {
 	}
 
 	public void showJsdocFor(Object obj) {
-		IPhaserMember member;
+		IJsdocProvider provider = null;
 
-		if (obj == null) {
-			member = null;
-		} else {
-			member = Adapters.adapt(obj, IPhaserMember.class);
+		if (obj != null) {
+			provider = Adapters.adapt(obj, IJsdocProvider.class);
 		}
 
 		String html;
-		if (member == null) {
+		if (provider == null) {
 			html = "No available documentation.";
 		} else {
-			JSDocRenderer renderer = JSDocRenderer.getInstance();
-			html = renderer.render(member);
+			html = provider.getJsdoc();
 		}
 		_browser.setText(wrapBody(html));
 	}

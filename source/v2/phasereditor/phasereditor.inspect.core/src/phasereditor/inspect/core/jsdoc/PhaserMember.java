@@ -23,9 +23,10 @@ package phasereditor.inspect.core.jsdoc;
 
 import java.nio.file.Path;
 
+import org.eclipse.core.runtime.IAdaptable;
 import org.json.JSONObject;
 
-public abstract class PhaserMember implements IPhaserMember {
+public abstract class PhaserMember implements IPhaserMember, IAdaptable {
 	private String _name;
 	private String _help;
 	private int _line;
@@ -39,17 +40,17 @@ public abstract class PhaserMember implements IPhaserMember {
 		_static = false;
 		_json = json;
 	}
-	
+
 	@Override
 	public IMemberContainer getContainer() {
 		return _container;
 	}
-	
+
 	@Override
 	public void setContainer(IMemberContainer container) {
 		_container = container;
 	}
-	
+
 	@Override
 	public JSONObject getJSON() {
 		return _json;
@@ -117,5 +118,14 @@ public abstract class PhaserMember implements IPhaserMember {
 
 	public void setHelp(String help) {
 		_help = help;
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public Object getAdapter(Class adapter) {
+		if (adapter == IJsdocProvider.class) {
+			return new PhaserMemberJsdocProvider(this);
+		}
+		return null;
 	}
 }

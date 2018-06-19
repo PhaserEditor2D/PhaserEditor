@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.chains.core;
 
+import org.eclipse.core.runtime.Adapters;
 import org.eclipse.core.runtime.IAdaptable;
 
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
@@ -125,9 +126,6 @@ public class ChainItem implements IAdaptable {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Object getAdapter(Class adapter) {
-		if (adapter == IPhaserMember.class) {
-			return _phaserMember;
-		}
-		return null;
+		return Adapters.adapt(_phaserMember, adapter);
 	}
 }
