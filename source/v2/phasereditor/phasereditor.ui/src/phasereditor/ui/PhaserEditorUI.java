@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
+import static java.lang.System.out;
+
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -76,6 +78,7 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
@@ -105,12 +108,14 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
+import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.internal.misc.StringMatcher;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.sun.javafx.util.Utils;
 
+import phasereditor.ui.editors.StringEditorInput;
 import phasereditor.ui.views.PreviewView;
 
 @SuppressWarnings("restriction")
@@ -328,6 +333,47 @@ public class PhaserEditorUI {
 		return new Point(store.getInt(PREF_PROP_PREVIEW_TILEMAP_TILE_WIDTH),
 				store.getInt(PREF_PROP_PREVIEW_TILEMAP_TILE_HEIGHT));
 	}
+	
+	public static void openJSEditor(int linenum, int offset, Path filePath) {
+		// open in editor
+		try {
+
+			String editorId = "org.eclipse.ui.genericeditor.GenericEditor";
+
+			byte[] bytes = Files.readAllBytes(filePath);
+
+			IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+
+			StringEditorInput input = new StringEditorInput(filePath.getFileName().toString(), new String(bytes));
+			input.setTooltip(input.getName());
+
+			// open in generic editor
+
+			TextEditor editor = (TextEditor) activePage.openEditor(input, editorId);
+
+			StyledText textWidget = (StyledText) editor.getAdapter(Control.class);
+			textWidget.setEditable(false);
+
+			out.println("Open " + filePath.getFileName() + " at line " + linenum);
+
+			int index = linenum - 1;
+			try {
+				int offset2 = offset;
+				if (offset == -1) {
+					offset2 = textWidget.getOffsetAtLine(index);
+				}
+				textWidget.setCaretOffset(offset2);
+				textWidget.setTopIndex(index);
+			} catch (IllegalArgumentException e) {
+				// protect from index out of bounds
+				e.printStackTrace();
+			}
+
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 
 	public static boolean isMacPlatform() {
 		return _isCocoaPlatform;

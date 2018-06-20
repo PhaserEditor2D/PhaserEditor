@@ -23,6 +23,8 @@ package phasereditor.inspect.ui.views;
 
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
@@ -36,6 +38,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
+import phasereditor.inspect.ui.InspectUI;
 
 /**
  * @author arian
@@ -78,11 +81,28 @@ public class PhaserTypesView extends ViewPart {
 		TreeColumn column = viewerColumn.getColumn();
 		column.setWidth(1000);
 
+		treeViewer.addDoubleClickListener(new IDoubleClickListener() {
+
+			@Override
+			public void doubleClick(DoubleClickEvent event) {
+				showSourceCodeOfSelectedItem();
+			}
+		});
+
 		afterCreateWidgets();
 
 		createActions();
 		initializeToolBar();
 		initializeMenu();
+	}
+
+	void showSourceCodeOfSelectedItem() {
+		Object elem = _filteredTree.getViewer().getStructuredSelection().getFirstElement();
+		if (elem == null) {
+			return;
+		}
+
+		InspectUI.showSourceCode((IPhaserMember) elem);
 	}
 
 	private void afterCreateWidgets() {

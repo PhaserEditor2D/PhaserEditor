@@ -21,10 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.chains.ui.views;
 
-import static java.lang.System.out;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +49,6 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
-import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -63,7 +60,6 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
@@ -71,7 +67,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.json.JSONException;
@@ -87,13 +82,11 @@ import phasereditor.inspect.core.examples.ExampleCategoryModel;
 import phasereditor.inspect.core.examples.ExampleModel;
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.core.jsdoc.JSDocRenderer;
-import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
 import phasereditor.inspect.ui.InspectUI;
 import phasereditor.inspect.ui.views.JsdocView;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.PhaserEditorUI;
-import phasereditor.ui.editors.StringEditorInput;
 import phasereditor.webrun.ui.WebRunUI;
 
 public class ChainsView extends ViewPart {
@@ -293,7 +286,7 @@ public class ChainsView extends ViewPart {
 		afterCreateWidgets();
 	}
 
-	protected void showSourceCode(Match match) {
+	protected static void showSourceCode(Match match) {
 		if (match.item instanceof ChainItem) {
 			showChainSource(match);
 		} else {
@@ -301,23 +294,13 @@ public class ChainsView extends ViewPart {
 		}
 	}
 
-	/**
-	 * @param match
-	 */
-	private void showChainSource(Match match) {
+	private static void showChainSource(Match match) {
 		ChainItem item = (ChainItem) match.item;
 		IPhaserMember member = item.getPhaserMember();
-
-		PhaserJSDoc jsdoc = PhaserJSDoc.getInstance();
-		Path file = jsdoc.getMemberPath(member);
-		if (file != null) {
-			int line = member.getLine();
-			int offset = member.getOffset();
-			openJSEditor(line, offset, file);
-		}
+		InspectUI.showSourceCode(member);
 	}
 
-	protected void showExample(Object item) {
+	protected static void showExample(Object item) {
 		Path filePath;
 		int linenum = -1;
 
@@ -341,47 +324,7 @@ public class ChainsView extends ViewPart {
 			}
 		}
 
-		openJSEditor(linenum, -1, filePath);
-	}
-
-	private void openJSEditor(int linenum, int offset, Path filePath) {
-		// open in editor
-		try {
-
-			String editorId = "org.eclipse.ui.genericeditor.GenericEditor";
-
-			byte[] bytes = Files.readAllBytes(filePath);
-
-			IWorkbenchPage activePage = getViewSite().getWorkbenchWindow().getActivePage();
-
-			StringEditorInput input = new StringEditorInput(filePath.getFileName().toString(), new String(bytes));
-			input.setTooltip(input.getName());
-
-			// open in generic editor
-
-			TextEditor editor = (TextEditor) activePage.openEditor(input, editorId);
-
-			StyledText textWidget = (StyledText) editor.getAdapter(Control.class);
-			textWidget.setEditable(false);
-
-			out.println("Open " + filePath.getFileName() + " at line " + linenum);
-
-			int index = linenum - 1;
-			try {
-				int offset2 = offset;
-				if (offset == -1) {
-					offset2 = textWidget.getOffsetAtLine(index);
-				}
-				textWidget.setCaretOffset(offset2);
-				textWidget.setTopIndex(index);
-			} catch (IllegalArgumentException e) {
-				// protect from index out of bounds
-				e.printStackTrace();
-			}
-
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		PhaserEditorUI.openJSEditor(linenum, -1, filePath);
 	}
 
 	protected void showChainDoc(Match match) {

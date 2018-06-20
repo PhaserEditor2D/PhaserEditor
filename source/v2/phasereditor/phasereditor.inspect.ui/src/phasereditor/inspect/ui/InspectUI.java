@@ -21,10 +21,27 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.ui;
 
+import java.nio.file.Path;
+
+import phasereditor.inspect.core.jsdoc.IPhaserMember;
+import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
+import phasereditor.ui.PhaserEditorUI;
+
 /**
  * @author arian
  *
  */
 public class InspectUI {
 	public static final String JSDOC_VIEW_ID = "phasereditor.inspect.ui.jsdoc";
+
+	public static void showSourceCode(IPhaserMember member) {
+		PhaserJSDoc jsdoc = PhaserJSDoc.getInstance();
+		Path file = jsdoc.getMemberPath(member);
+		if (file != null) {
+			int line = member.getLine();
+			int offset = member.getOffset();
+			PhaserEditorUI.openJSEditor(line, offset, file);
+		}
+	}
+
 }
