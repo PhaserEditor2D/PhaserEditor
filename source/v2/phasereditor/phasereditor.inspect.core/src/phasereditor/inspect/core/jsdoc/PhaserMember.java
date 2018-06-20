@@ -128,4 +128,9 @@ public abstract class PhaserMember implements IPhaserMember, IAdaptable {
 		}
 		return null;
 	}
+	
+	@Override
+	public String toString() {
+		return getName() + ":" + getClass().getSimpleName();
+	}
 }

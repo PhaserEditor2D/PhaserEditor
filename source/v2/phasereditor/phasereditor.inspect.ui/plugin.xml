@@ -11,6 +11,13 @@
             name="Jsdoc"
             restorable="true">
       </view>
+      <view
+            category="phasereditor.ui.phaser"
+            class="phasereditor.inspect.ui.views.PhaserTypesView"
+            icon="platform:/plugin/phasereditor.ui/icons/class_obj.png"
+            id="phasereditor.inspect.ui.views.PhaserTypesView"
+            name="Phaser Types">
+      </view>
    </extension>
 
 </plugin>

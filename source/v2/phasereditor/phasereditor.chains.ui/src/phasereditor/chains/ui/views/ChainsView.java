@@ -85,6 +85,7 @@ import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.examples.ExampleCategoryModel;
 import phasereditor.inspect.core.examples.ExampleModel;
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
+import phasereditor.inspect.core.jsdoc.JSDocRenderer;
 import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
 import phasereditor.inspect.ui.InspectUI;
 import phasereditor.inspect.ui.views.JsdocView;
@@ -103,10 +104,14 @@ public class ChainsView extends ViewPart {
 
 		private Font _italic;
 		private Font _font;
+		private Font _codeFont;
 
 		public ChainsLabelProvider() {
-			// _hilightColor = SWTResourceManager.getColor(253, 250, 210);
-
+			_font = JFaceResources.getFont(JFaceResources.TEXT_FONT);
+			FontData fd = _font.getFontData()[0];
+			_codeFont = SWTResourceManager.getFont("Monospace", fd.getHeight(), fd.getStyle());
+			fd = _font.getFontData()[0];
+			_italic = SWTResourceManager.getFont(fd.getName(), fd.getHeight(), SWT.ITALIC);
 		}
 
 		@Override
@@ -115,18 +120,10 @@ public class ChainsView extends ViewPart {
 		}
 
 		private void updateExampleLabel(ViewerCell cell) {
-			if (_font == null) {
-				_font = JFaceResources.getFont(JFaceResources.TEXT_FONT);
-			}
-			if (_italic == null) {
-				FontData fd = _font.getFontData()[0];
-				_italic = SWTResourceManager.getFont(fd.getName(), fd.getHeight(), SWT.ITALIC);
-			}
 
 			Match match = (Match) cell.getElement();
 			Line line = null;
 			String text;
-			Font font = _italic;
 			int secondaryColorIndex;
 			if (match.item instanceof Line) {
 				line = (Line) match.item;
@@ -135,11 +132,10 @@ public class ChainsView extends ViewPart {
 			} else {
 				secondaryColorIndex = 0;
 				text = match.item.toString();
-				font = _italic;
 			}
 
 			StyleRange allRange = new StyleRange(0, text.length(), null, null);
-			allRange.font = font;
+			allRange.font = _codeFont;
 
 			Color fgcolor = ChainsUI.get_pref_Chains_highlightFgColor();
 			Color bgcolor = ChainsUI.get_pref_Chains_highlightBgColor();
@@ -167,14 +163,6 @@ public class ChainsView extends ViewPart {
 		}
 
 		private void updateChainLabel(ViewerCell cell) {
-			if (_font == null) {
-				_font = JFaceResources.getFont(JFaceResources.TEXT_FONT);
-			}
-			if (_italic == null) {
-				FontData fd = cell.getFont().getFontData()[0];
-				_italic = SWTResourceManager.getFont(fd.getName(), fd.getHeight(), SWT.ITALIC);
-			}
-
 			Match match = (Match) cell.getElement();
 			ChainItem chain = (ChainItem) match.item;
 
@@ -211,25 +199,7 @@ public class ChainsView extends ViewPart {
 
 			cell.setText(text);
 			cell.setStyleRanges(ranges);
-
-			{
-				String key;
-
-				if (chain.isEnum()) {
-					key = IEditorSharedImages.IMG_ENUM_OBJ;
-				} else if (chain.isProperty()) {
-					key = IEditorSharedImages.IMG_FIELD_PUBLIC_OBJ;
-				} else if (chain.isConst()) {
-					key = IEditorSharedImages.IMG_FIELD_DEFAULT_OBJ;
-				} else if (chain.isMethod()) {
-					key = IEditorSharedImages.IMG_METHPUB_OBJ;
-				} else if (chain.isType()) {
-					key = IEditorSharedImages.IMG_CLASS_OBJ;
-				} else {
-					key = IEditorSharedImages.IMG_PACKAGE_OBJ;
-				}
-				cell.setImage(EditorSharedImages.getImage(key));
-			}
+			cell.setImage(JSDocRenderer.getInstance().getImage(chain.getPhaserMember()));
 		}
 	}
 
@@ -542,15 +512,8 @@ public class ChainsView extends ViewPart {
 
 		List<Match> matches = new ArrayList<>();
 
-		for (int i = 0; i < Math.max(list1.size(), list2.size()); i++) {
-			if (i < list1.size()) {
-				matches.add(list1.get(i));
-			}
-
-			if (i < list2.size()) {
-				matches.add(list2.get(i));
-			}
-		}
+		matches.addAll(list1);
+		matches.addAll(list2);
 
 		if (_token.get() != token) {
 			return;

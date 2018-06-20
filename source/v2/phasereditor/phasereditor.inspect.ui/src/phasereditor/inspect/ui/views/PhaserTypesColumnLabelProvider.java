@@ -19,44 +19,38 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.inspect.core.jsdoc;
+package phasereditor.inspect.ui.views;
 
-import java.util.List;
-import java.util.Map;
+import org.eclipse.jface.viewers.StyledCellLabelProvider;
+import org.eclipse.jface.viewers.ViewerCell;
+
+import phasereditor.inspect.core.jsdoc.IPhaserMember;
+import phasereditor.inspect.core.jsdoc.JSDocRenderer;
+import phasereditor.inspect.core.jsdoc.PhaserNamespace;
 
 /**
  * @author arian
  *
  */
-public interface IMemberContainer extends IPhaserMember {
+public class PhaserTypesColumnLabelProvider extends StyledCellLabelProvider {
 
-	default PhaserType castType() {
-		if (this instanceof PhaserType) {
-			return (PhaserType) this;
+	@Override
+	public void update(ViewerCell cell) {
+
+		IPhaserMember member = (IPhaserMember) cell.getElement();
+
+		String text;
+
+		if (member instanceof PhaserNamespace) {
+			text = ((PhaserNamespace) member).getSimpleName();
+		} else {
+			text = member.getName();
 		}
-		return null;
+
+		cell.setText(text);
+		cell.setImage(JSDocRenderer.getInstance().getImage(member));
+
+		super.update(cell);
 	}
 
-	default PhaserNamespace castNamespace() {
-		if (this instanceof PhaserNamespace) {
-			return (PhaserNamespace) this;
-		}
-		return null;
-	}
-
-	public int getHeight();
-	
-	Map<String, IPhaserMember> getMemberMap();
-
-	List<PhaserNamespace> getNamespaces();
-
-	List<PhaserType> getTypes();
-
-	List<PhaserProperty> getProperties();
-
-	List<PhaserMethod> getMethods();
-
-	List<PhaserConstant> getConstants();
-
-	void build();
 }

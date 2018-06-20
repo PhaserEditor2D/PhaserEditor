@@ -28,6 +28,10 @@ import java.util.List;
 import org.eclipse.mylyn.wikitext.markdown.MarkdownLanguage;
 import org.eclipse.mylyn.wikitext.parser.MarkupParser;
 import org.eclipse.mylyn.wikitext.parser.builder.HtmlDocumentBuilder;
+import org.eclipse.swt.graphics.Image;
+
+import phasereditor.ui.EditorSharedImages;
+import phasereditor.ui.IEditorSharedImages;
 
 /**
  * Class to render JSDoc comments.
@@ -57,6 +61,26 @@ public class JSDocRenderer {
 		}
 	}
 
+	public Image getImage(IPhaserMember member) {
+		String key = null;
+
+		if (member instanceof PhaserType && ((PhaserType) member).isEnum()) {
+			key = IEditorSharedImages.IMG_ENUM_OBJ;
+		} else if (member instanceof PhaserProperty) {
+			key = IEditorSharedImages.IMG_FIELD_PUBLIC_OBJ;
+		} else if (member instanceof PhaserConstant) {
+			key = IEditorSharedImages.IMG_FIELD_DEFAULT_OBJ;
+		} else if (member instanceof PhaserMethod) {
+			key = IEditorSharedImages.IMG_METHPUB_OBJ;
+		} else if (member instanceof PhaserType) {
+			key = IEditorSharedImages.IMG_CLASS_OBJ;
+		} else {
+			key = IEditorSharedImages.IMG_PACKAGE_OBJ;
+		}
+
+		return EditorSharedImages.getImage(key);
+	}
+
 	public String render(Object member) {
 		if (member instanceof PhaserType) {
 			return renderType((PhaserType) member);
@@ -73,8 +97,21 @@ public class JSDocRenderer {
 		if (member instanceof PhaserVariable) {
 			return renderVariable((PhaserVariable) member);
 		}
+		if (member instanceof PhaserNamespace) {
+			return renderNamespace((PhaserNamespace) member);
+		}
 
 		return member.toString();
+	}
+
+	private String renderNamespace(PhaserNamespace member) {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("<b>" + member.getName() + "</b>");
+
+		sb.append("<p>" + markdownToHtml(member.getHelp()) + "</p>");
+
+		return sb.toString();
 	}
 
 	private String renderConstant(PhaserConstant cons) {

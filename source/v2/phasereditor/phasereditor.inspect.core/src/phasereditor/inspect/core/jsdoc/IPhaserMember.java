@@ -27,7 +27,7 @@ import org.json.JSONObject;
 
 public interface IPhaserMember {
 	public String getName();
-
+	
 	public String getHelp();
 
 	public int getLine();
@@ -48,5 +48,5 @@ public interface IPhaserMember {
 	
 	public IMemberContainer getContainer();
 	
-	public void setContainer(IMemberContainer container); 
+	public void setContainer(IMemberContainer container);
 }

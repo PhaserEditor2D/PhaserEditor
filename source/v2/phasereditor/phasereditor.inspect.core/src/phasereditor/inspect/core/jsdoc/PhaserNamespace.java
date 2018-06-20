@@ -22,6 +22,7 @@
 package phasereditor.inspect.core.jsdoc;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,15 +41,45 @@ public class PhaserNamespace extends PhaserMember implements IMemberContainer {
 	private List<PhaserProperty> _properties;
 	private List<PhaserMethod> _methods;
 	private Map<String, IPhaserMember> _memberMap;
+	private int _height = -1;
+	private String _simpleName;
 
 	public PhaserNamespace(JSONObject json) {
 		super(json);
+		_simpleName = json.getString("name");
 		_namespaces = new ArrayList<>();
 		_types = new ArrayList<>();
 		_properties = new ArrayList<>();
 		_methods = new ArrayList<>();
 		_consts = new ArrayList<>();
 		_memberMap = new HashMap<>();
+	}
+
+	public String getSimpleName() {
+		return _simpleName;
+	}
+
+	private int computeHeight() {
+		int h = 1;
+
+		for (IPhaserMember member : getMemberMap().values()) {
+			if (member instanceof PhaserNamespace) {
+				h = Math.max(((PhaserNamespace) member).computeHeight() + 1, h);
+			}
+		}
+
+		_height = h;
+
+		return h;
+	}
+
+	@Override
+	public int getHeight() {
+		if (_height == -1) {
+			computeHeight();
+		}
+
+		return _height;
 	}
 
 	@Override
@@ -67,6 +98,19 @@ public class PhaserNamespace extends PhaserMember implements IMemberContainer {
 				_namespaces.add((PhaserNamespace) member);
 			}
 		}
+
+		Comparator<IPhaserMember> comparator = (a, b) -> a.getName().compareTo(b.getName());
+
+		_namespaces.sort(comparator);
+		_types.sort(comparator);
+		_types.sort((a, b) -> {
+			int aa = a.isEnum() ? 1 : 0;
+			int bb = b.isEnum() ? 1 : 0;
+			return Integer.compare(aa, bb);
+		});
+		_methods.sort(comparator);
+		_consts.sort(comparator);
+		_properties.sort(comparator);
 	}
 
 	@Override
