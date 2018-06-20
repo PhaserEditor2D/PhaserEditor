@@ -80,7 +80,7 @@ public class WebRunUI {
 	}
 
 	public static void openExampleInBrowser(ExampleModel example, int line) {
-		Object id = InspectCore.getExamplesModel().lookup(example);
+		Object id = InspectCore.getExamplesRepoModel().lookup(example);
 		String url = "http://localhost:" + WebRunCore.getServerPort() + "/phaser-example?n=" + id
 				+ (line == -1 ? "" : "&l=" + line);
 		openBrowser(url);

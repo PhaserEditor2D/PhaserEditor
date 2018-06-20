@@ -57,7 +57,7 @@ public class PhaserExampleCategoryServlet extends HttpServlet {
 
 		out.println("<body style='font-family:arial;margin:1em'>");
 
-		Optional<ExampleCategoryModel> opt = InspectCore.getExamplesModel().getExamplesCategories().stream()
+		Optional<ExampleCategoryModel> opt = InspectCore.getExamplesRepoModel().getExamplesCategories().stream()
 				.filter(c -> c.getName().equals(fname)).findFirst();
 
 		if (opt.isPresent()) {

@@ -29,7 +29,7 @@ import java.nio.file.Paths;
 
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.examples.ExampleCategoryModel;
-import phasereditor.inspect.core.examples.ExamplesModel;
+import phasereditor.inspect.core.examples.ExamplesRepoModel;
 
 class BuildExamplesCache {
 	public static void main(String[] args) throws IOException {
@@ -37,13 +37,13 @@ class BuildExamplesCache {
 		Path examplesProjectPath = wsPath.resolve(InspectCore.RESOURCES_EXAMPLES_PLUGIN);
 		Path metadataProjectPath = wsPath.resolve(InspectCore.RESOURCES_METADATA_PLUGIN);
 
-		ExamplesModel model = new ExamplesModel(examplesProjectPath);
+		ExamplesRepoModel model = new ExamplesRepoModel(examplesProjectPath);
 		model.build();
 		Path cache = metadataProjectPath.resolve("phaser-custom/examples/examples-cache.json");
 		model.saveCache(cache);
 
 		// verify
-		model = new ExamplesModel(examplesProjectPath);
+		model = new ExamplesRepoModel(examplesProjectPath);
 		model.loadCache(cache);
 		
 		out.println("\n\n\n\n\n\n\n\n");

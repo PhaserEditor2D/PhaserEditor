@@ -26,11 +26,10 @@ import phasereditor.inspect.core.examples.ExampleModel;
 public class Line {
 	public String text;
 	public int linenum;
-	public String filename;
 	public ExampleModel example;
 
 	@Override
 	public String toString() {
-		return text + " - " + filename + " [" + linenum + "]";
+		return text + " - " + example.getFullName() + " [" + linenum + "]";
 	}
 }

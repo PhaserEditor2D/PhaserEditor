@@ -46,13 +46,13 @@ import org.json.JSONTokener;
 import phasereditor.inspect.core.examples.ExampleModel.Mapping;
 
 @SuppressWarnings("boxing")
-public class ExamplesModel {
+public class ExamplesRepoModel {
 	Path _examplesFolderPath;
 	List<ExampleCategoryModel> _examplesCategories;
 	Map<Object, Object> _lookupTable;
 	private int _counter;
 
-	public ExamplesModel(Path reposDir) {
+	public ExamplesRepoModel(Path reposDir) {
 		_examplesFolderPath = reposDir.resolve("phaser3-examples/public");
 		_examplesCategories = new ArrayList<>();
 	}
@@ -124,7 +124,7 @@ public class ExamplesModel {
 				}
 
 				ExampleCategoryModel parent = _stack.isEmpty() ? null : _stack.peek();
-				ExampleCategoryModel category = new ExampleCategoryModel(parent, getName(dir.getFileName()));
+				ExampleCategoryModel category = new ExampleCategoryModel(parent, dir, getName(dir.getFileName()));
 				_stack.push(category);
 
 				if (parent == null) {
@@ -237,7 +237,9 @@ public class ExamplesModel {
 	private void loadCategories(JSONArray jsonCategories, ExampleCategoryModel parent) {
 		for (int i = 0; i < jsonCategories.length(); i++) {
 			JSONObject jsonCategory = jsonCategories.getJSONObject(i);
-			ExampleCategoryModel category = new ExampleCategoryModel(parent, jsonCategory.getString("name"));
+			String relPath = jsonCategory.getString("relPath");
+			Path path = _examplesFolderPath.resolve(relPath);
+			ExampleCategoryModel category = new ExampleCategoryModel(parent, path, jsonCategory.getString("name"));
 
 			if (parent == null) {
 				_examplesCategories.add(category);
@@ -278,7 +280,9 @@ public class ExamplesModel {
 	private void saveCategories(JSONArray jsonExamplesCategories, List<ExampleCategoryModel> categories) {
 		for (ExampleCategoryModel category : categories) {
 			JSONObject jsonCategory = new JSONObject();
+			String relPath = _examplesFolderPath.relativize(category.getPath()).toString().replace("\\", "/");
 			jsonCategory.put("name", category.getName());
+			jsonCategory.put("relPath", relPath);
 			jsonExamplesCategories.put(jsonCategory);
 
 			JSONArray jsonSubCategories = new JSONArray();

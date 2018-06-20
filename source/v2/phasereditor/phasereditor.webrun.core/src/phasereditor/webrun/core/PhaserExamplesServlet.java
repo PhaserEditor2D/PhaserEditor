@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.examples.ExampleCategoryModel;
 import phasereditor.inspect.core.examples.ExampleModel;
-import phasereditor.inspect.core.examples.ExamplesModel;
+import phasereditor.inspect.core.examples.ExamplesRepoModel;
 
 /**
  * @author arian
@@ -57,7 +57,7 @@ public class PhaserExamplesServlet extends HttpServlet {
 		out.println("<h1>Phaser Examples</h1>");
 		out.println("<small><i>Hosted locally by Phaser Editor</i></small><br><br>");
 
-		ExamplesModel examples = InspectCore.getExamplesModel();
+		ExamplesRepoModel examples = InspectCore.getExamplesRepoModel();
 
 		out.println("<h2>Chapters</h2>");
 		out.println("<ul>");
@@ -83,7 +83,7 @@ public class PhaserExamplesServlet extends HttpServlet {
 	 * @param examples
 	 * @param examplesCategories
 	 */
-	private void printTableOfContents(PrintStream out, ExamplesModel examples, List<ExampleCategoryModel> categories) {
+	private void printTableOfContents(PrintStream out, ExamplesRepoModel examples, List<ExampleCategoryModel> categories) {
 
 		for (ExampleCategoryModel category : categories) {
 			out.println("<li>");

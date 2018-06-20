@@ -65,9 +65,10 @@ public class ExampleModel implements IProjectTemplate {
 	private ProjectTemplateInfo _info;
 	private ExampleCategoryModel _category;
 	private Path _mainFilePath;
+	private String _fullname;
 
 	public ExampleModel(ExampleCategoryModel category, Path mainFilePath) {
-		_name = ExamplesModel.getName(mainFilePath.getFileName());
+		_name = ExamplesRepoModel.getName(mainFilePath.getFileName());
 		_category = category;
 		_filesMapping = new ArrayList<>();
 		_info = new ProjectTemplateInfo();
@@ -77,6 +78,11 @@ public class ExampleModel implements IProjectTemplate {
 		_info.setMainFile(mainFilePath.getFileName().toString());
 		_info.setDescription("Official Phaser example.");
 		_mainFilePath = mainFilePath;
+		_fullname = category.getFullName() + " / " + _name;
+	}
+	
+	public String getFullName() {
+		return _fullname;
 	}
 
 	@Override

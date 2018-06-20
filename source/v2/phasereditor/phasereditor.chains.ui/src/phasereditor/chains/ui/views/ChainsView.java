@@ -23,7 +23,6 @@ package phasereditor.chains.ui.views;
 
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -77,8 +76,6 @@ import phasereditor.chains.core.ChainsModel;
 import phasereditor.chains.core.Line;
 import phasereditor.chains.core.Match;
 import phasereditor.chains.ui.ChainsUI;
-import phasereditor.inspect.core.InspectCore;
-import phasereditor.inspect.core.examples.ExampleCategoryModel;
 import phasereditor.inspect.core.examples.ExampleModel;
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.core.jsdoc.JSDocRenderer;
@@ -129,11 +126,11 @@ public class ChainsView extends ViewPart {
 			int secondaryColorIndex;
 			if (match.item instanceof Line) {
 				line = (Line) match.item;
-				text = line.text + " - " + line.filename + " [" + line.linenum + "]";
+				text = line.text + " - " + line.example.getFullName() + " [" + line.linenum + "]";
 				secondaryColorIndex = line.text.length();
 			} else {
 				secondaryColorIndex = 0;
-				text = match.item.toString();
+				text = ((ExampleModel) match.item).getFullName();
 			}
 
 			StyleRange allRange = new StyleRange(0, text.length(), null, null);
@@ -272,10 +269,12 @@ public class ChainsView extends ViewPart {
 			}
 
 			_queryText.addModifyListener(new ModifyListener() {
+
 				@Override
 				public void modifyText(ModifyEvent e) {
 					queryTextModified();
 				}
+
 			});
 		}
 
@@ -301,30 +300,20 @@ public class ChainsView extends ViewPart {
 	}
 
 	protected static void showExample(Object item) {
-		Path filePath;
 		int linenum = -1;
-
-		if (item instanceof String) {
-			String file = (String) item;
-			filePath = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN,
-					"phaser3-examples/public/src/" + file);
+		ExampleModel example;
+		if (item instanceof ExampleModel) {
+			example = (ExampleModel) item;
 		} else {
 			Line line = (Line) item;
 			linenum = line.linenum;
-			filePath = line.example.getMainFilePath();
+			example = line.example;
 		}
 
-		for (ExampleCategoryModel c : InspectCore.getExamplesModel().getExamplesCategories()) {
-			for (ExampleModel e : c.getTemplates()) {
-				if (e.getMainFilePath().equals(filePath)) {
-					WebRunUI.openExampleInBrowser(e, linenum);
+		WebRunUI.openExampleInBrowser(example, linenum);
 
-					return;
-				}
-			}
-		}
+		PhaserEditorUI.openJSEditor(linenum, -1, example.getMainFilePath());
 
-		PhaserEditorUI.openJSEditor(linenum, -1, filePath);
 	}
 
 	protected void showChainDoc(Match match) {

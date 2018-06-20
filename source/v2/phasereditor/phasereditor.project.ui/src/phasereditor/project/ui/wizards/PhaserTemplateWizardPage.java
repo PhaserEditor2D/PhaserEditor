@@ -58,7 +58,7 @@ import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.ProjectTemplateInfo;
 import phasereditor.inspect.core.examples.ExampleCategoryModel;
 import phasereditor.inspect.core.examples.ExampleModel;
-import phasereditor.inspect.core.examples.ExamplesModel;
+import phasereditor.inspect.core.examples.ExamplesRepoModel;
 import phasereditor.inspect.core.templates.TemplateCategoryModel;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTree2;
@@ -136,7 +136,7 @@ public class PhaserTemplateWizardPage extends WizardPage {
 	}
 
 	TreeViewer _treeViewer;
-	ExamplesModel _examples;
+	ExamplesRepoModel _examples;
 	private IProjectTemplate _template;
 	private Browser _infoText;
 	private FilteredTree2 _filteredTree;
@@ -237,7 +237,7 @@ public class PhaserTemplateWizardPage extends WizardPage {
 	}
 
 	private void afterCreateWidgets() {
-		_examples = InspectCore.getExamplesModel();
+		_examples = InspectCore.getExamplesRepoModel();
 
 		_treeViewer.setInput(ROOT);
 

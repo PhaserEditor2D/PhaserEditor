@@ -23,6 +23,7 @@ package phasereditor.inspect.core.examples;
 
 import static java.lang.System.out;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,20 +34,31 @@ public class ExampleCategoryModel implements IProjectTemplateCategory {
 	private List<ExampleModel> _examples;
 	private List<ExampleCategoryModel> _subCategories;
 	private ExampleCategoryModel _parentCategory;
+	private Path _path;
+	private String _fullname;
 
-	public ExampleCategoryModel(ExampleCategoryModel parent, String name) {
+	public ExampleCategoryModel(ExampleCategoryModel parent, Path path, String name) {
 		super();
 		_name = name;
 		_examples = new ArrayList<>();
 		_subCategories = new ArrayList<>();
 		_parentCategory = parent;
+		_path = path;
 
 		if (parent != null) {
 			parent._subCategories.add(this);
 		}
-		
+		_fullname = (parent == null ? "" : parent.getFullName() + " / ") + _name;
 	}
-	
+
+	public String getFullName() {
+		return _fullname;
+	}
+
+	public Path getPath() {
+		return _path;
+	}
+
 	@Override
 	public ExampleCategoryModel getParentCategory() {
 		return _parentCategory;

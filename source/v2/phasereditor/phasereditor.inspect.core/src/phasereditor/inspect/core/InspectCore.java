@@ -42,7 +42,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.json.JSONObject;
 
-import phasereditor.inspect.core.examples.ExamplesModel;
+import phasereditor.inspect.core.examples.ExamplesRepoModel;
 import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
 import phasereditor.inspect.core.templates.TemplatesModel;
 
@@ -60,7 +60,7 @@ public class InspectCore {
 	public static final String PREF_USER_PHASER_VERSION_PATH = "phasereditor.inspect.core.userPhaserVersion";
 	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
 
-	protected static ExamplesModel _examplesModel;
+	protected static ExamplesRepoModel _examplesModel;
 	private static TemplatesModel _builtInTemplates;
 	private static TemplatesModel _projectTemplates;
 
@@ -73,13 +73,13 @@ public class InspectCore {
 		return PhaserJSDoc.getInstance();
 	}
 
-	public static ExamplesModel getExamplesModel() {
+	public static ExamplesRepoModel getExamplesRepoModel() {
 		if (_examplesModel == null) {
 			try {
 				// Path phaserVersionPath =
 				// InspectCore.getPhaserVersionFolder();
 				Path examplesPath = getBundleFile(RESOURCES_EXAMPLES_PLUGIN, "");
-				_examplesModel = new ExamplesModel(examplesPath);
+				_examplesModel = new ExamplesRepoModel(examplesPath);
 				Path cachePath = getBundleFile(RESOURCES_METADATA_PLUGIN, "phaser-custom/examples/examples-cache.json");
 				if (Files.exists(cachePath)) {
 					_examplesModel.loadCache(cachePath);

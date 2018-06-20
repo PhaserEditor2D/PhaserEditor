@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.examples.ExampleCategoryModel;
 import phasereditor.inspect.core.examples.ExampleModel;
-import phasereditor.inspect.core.examples.ExamplesModel;
+import phasereditor.inspect.core.examples.ExamplesRepoModel;
 
 /**
  * @author arian
@@ -52,7 +52,7 @@ public class PhaserExampleServlet extends HttpServlet {
 
 		String id = req.getParameter("n");
 
-		ExamplesModel examples = InspectCore.getExamplesModel();
+		ExamplesRepoModel examples = InspectCore.getExamplesRepoModel();
 		ExampleModel example = (ExampleModel) examples.lookup(Integer.parseInt(id));
 
 		resp.setContentType("text/html");

@@ -1,6 +1,7 @@
 {"examplesCategories": [
   {
     "name": "Actions",
+    "relPath": "src/actions",
     "subCategories": [],
     "examples": [
       {
@@ -256,6 +257,7 @@
   },
   {
     "name": "Animation",
+    "relPath": "src/animation",
     "subCategories": [],
     "examples": [
       {
@@ -622,9 +624,11 @@
   },
   {
     "name": "Audio",
+    "relPath": "src/audio",
     "subCategories": [
       {
         "name": "HTML5 Audio",
+        "relPath": "src/audio/HTML5 Audio",
         "subCategories": [],
         "examples": [
           {
@@ -779,6 +783,7 @@
       },
       {
         "name": "No Audio",
+        "relPath": "src/audio/No Audio",
         "subCategories": [],
         "examples": [
           {
@@ -905,6 +910,7 @@
       },
       {
         "name": "SID",
+        "relPath": "src/audio/SID",
         "subCategories": [],
         "examples": [{
           "mainFile": "src/audio/SID/test.js",
@@ -929,6 +935,7 @@
       },
       {
         "name": "Web Audio",
+        "relPath": "src/audio/Web Audio",
         "subCategories": [],
         "examples": [
           {
@@ -1098,6 +1105,7 @@
   },
   {
     "name": "Bugs",
+    "relPath": "src/bugs",
     "subCategories": [],
     "examples": [
       {
@@ -1130,6 +1138,7 @@
   },
   {
     "name": "Cache",
+    "relPath": "src/cache",
     "subCategories": [],
     "examples": [
       {
@@ -1166,8 +1175,10 @@
   },
   {
     "name": "Camera",
+    "relPath": "src/camera",
     "subCategories": [{
       "name": "3D Camera",
+      "relPath": "src/camera/3D camera",
       "subCategories": [],
       "examples": [
         {
@@ -1544,8 +1555,10 @@
   },
   {
     "name": "Components",
+    "relPath": "src/components",
     "subCategories": [{
       "name": "Data",
+      "relPath": "src/components/data",
       "subCategories": [],
       "examples": [
         {
@@ -1621,6 +1634,7 @@
   },
   {
     "name": "Demoscene",
+    "relPath": "src/demoscene",
     "subCategories": [],
     "examples": [
       {
@@ -1685,6 +1699,7 @@
   },
   {
     "name": "Depth Sorting",
+    "relPath": "src/depth sorting",
     "subCategories": [],
     "examples": [
       {
@@ -1783,9 +1798,11 @@
   },
   {
     "name": "Display",
+    "relPath": "src/display",
     "subCategories": [
       {
         "name": "Align",
+        "relPath": "src/display/align",
         "subCategories": [],
         "examples": [
           {
@@ -1891,6 +1908,7 @@
       },
       {
         "name": "Alpha",
+        "relPath": "src/display/alpha",
         "subCategories": [],
         "examples": [
           {
@@ -1951,6 +1969,7 @@
       },
       {
         "name": "Blend Modes",
+        "relPath": "src/display/blend modes",
         "subCategories": [],
         "examples": [
           {
@@ -2041,6 +2060,7 @@
       },
       {
         "name": "Color",
+        "relPath": "src/display/color",
         "subCategories": [],
         "examples": [
           {
@@ -2068,6 +2088,7 @@
       },
       {
         "name": "Effects",
+        "relPath": "src/display/effects",
         "subCategories": [],
         "examples": [
           {
@@ -2095,8 +2116,10 @@
       },
       {
         "name": "Masks",
+        "relPath": "src/display/masks",
         "subCategories": [{
           "name": "Component",
+          "relPath": "src/display/masks/component",
           "subCategories": [],
           "examples": [{
             "mainFile": "src/display/masks/component/add mask to sprite.js",
@@ -2336,6 +2359,7 @@
       },
       {
         "name": "Tint",
+        "relPath": "src/display/tint",
         "subCategories": [],
         "examples": [
           {
@@ -2432,6 +2456,7 @@
   },
   {
     "name": "Dwitter",
+    "relPath": "src/dwitter",
     "subCategories": [],
     "examples": [
       {
@@ -2466,6 +2491,7 @@
   },
   {
     "name": "Events",
+    "relPath": "src/events",
     "subCategories": [],
     "examples": [
       {
@@ -2564,6 +2590,7 @@
   },
   {
     "name": "Game Config",
+    "relPath": "src/game config",
     "subCategories": [],
     "examples": [
       {
@@ -2743,12 +2770,15 @@
   },
   {
     "name": "Game Objects",
+    "relPath": "src/game objects",
     "subCategories": [
       {
         "name": "Bitmaptext",
+        "relPath": "src/game objects/bitmaptext",
         "subCategories": [
           {
             "name": "Dynamic",
+            "relPath": "src/game objects/bitmaptext/dynamic",
             "subCategories": [],
             "examples": [
               {
@@ -2851,6 +2881,7 @@
           },
           {
             "name": "Retro Font",
+            "relPath": "src/game objects/bitmaptext/retro font",
             "subCategories": [],
             "examples": [
               {
@@ -2934,6 +2965,7 @@
           },
           {
             "name": "Static",
+            "relPath": "src/game objects/bitmaptext/static",
             "subCategories": [],
             "examples": [
               {
@@ -3108,6 +3140,7 @@
       },
       {
         "name": "Blitter",
+        "relPath": "src/game objects/blitter",
         "subCategories": [],
         "examples": [
           {
@@ -3284,6 +3317,7 @@
       },
       {
         "name": "Container",
+        "relPath": "src/game objects/container",
         "subCategories": [],
         "examples": [
           {
@@ -3775,6 +3809,7 @@
       },
       {
         "name": "Graphics",
+        "relPath": "src/game objects/graphics",
         "subCategories": [],
         "examples": [
           {
@@ -4092,6 +4127,7 @@
       },
       {
         "name": "Group",
+        "relPath": "src/game objects/group",
         "subCategories": [],
         "examples": [
           {
@@ -4256,6 +4292,7 @@
       },
       {
         "name": "Images",
+        "relPath": "src/game objects/images",
         "subCategories": [],
         "examples": [
           {
@@ -4423,6 +4460,7 @@
       },
       {
         "name": "Lights",
+        "relPath": "src/game objects/lights",
         "subCategories": [],
         "examples": [
           {
@@ -4469,6 +4507,7 @@
       },
       {
         "name": "Mesh",
+        "relPath": "src/game objects/mesh",
         "subCategories": [],
         "examples": [
           {
@@ -4557,6 +4596,7 @@
       },
       {
         "name": "Particle Emitter",
+        "relPath": "src/game objects/particle emitter",
         "subCategories": [],
         "examples": [
           {
@@ -5250,6 +5290,7 @@
       },
       {
         "name": "Quad",
+        "relPath": "src/game objects/quad",
         "subCategories": [],
         "examples": [{
           "mainFile": "src/game objects/quad/basic quad.js",
@@ -5264,6 +5305,7 @@
       },
       {
         "name": "Render Texture",
+        "relPath": "src/game objects/render texture",
         "subCategories": [],
         "examples": [
           {
@@ -5383,6 +5425,7 @@
       },
       {
         "name": "Sprites",
+        "relPath": "src/game objects/sprites",
         "subCategories": [],
         "examples": [
           {
@@ -5463,10 +5506,13 @@
       },
       {
         "name": "Text",
+        "relPath": "src/game objects/text",
         "subCategories": [{
           "name": "Static",
+          "relPath": "src/game objects/text/static",
           "subCategories": [{
             "name": "Tests",
+            "relPath": "src/game objects/text/static/tests",
             "subCategories": [],
             "examples": [{
               "mainFile": "src/game objects/text/static/tests/word wrap.js",
@@ -5612,6 +5658,7 @@
       },
       {
         "name": "Tile Sprite",
+        "relPath": "src/game objects/tile sprite",
         "subCategories": [],
         "examples": [
           {
@@ -5701,9 +5748,11 @@
       },
       {
         "name": "Tilemap",
+        "relPath": "src/game objects/tilemap",
         "subCategories": [
           {
             "name": "Collision",
+            "relPath": "src/game objects/tilemap/collision",
             "subCategories": [],
             "examples": [
               {
@@ -5861,6 +5910,7 @@
           },
           {
             "name": "Dynamic",
+            "relPath": "src/game objects/tilemap/dynamic",
             "subCategories": [],
             "examples": [
               {
@@ -6066,6 +6116,7 @@
           },
           {
             "name": "Static",
+            "relPath": "src/game objects/tilemap/static",
             "subCategories": [],
             "examples": [
               {
@@ -6329,6 +6380,7 @@
           },
           {
             "name": "Tests",
+            "relPath": "src/game objects/tilemap/tests",
             "subCategories": [],
             "examples": [
               {
@@ -6446,9 +6498,11 @@
   },
   {
     "name": "Games",
+    "relPath": "src/games",
     "subCategories": [
       {
         "name": "Defenda",
+        "relPath": "src/games/defenda",
         "subCategories": [],
         "examples": [{
           "mainFile": "src/games/defenda/test.js",
@@ -6469,6 +6523,7 @@
       },
       {
         "name": "Flood",
+        "relPath": "src/games/flood",
         "subCategories": [],
         "examples": [{
           "mainFile": "src/games/flood/flood-fill.js",
@@ -6486,6 +6541,7 @@
       },
       {
         "name": "Mass Attack",
+        "relPath": "src/games/mass attack",
         "subCategories": [],
         "examples": [
           {
@@ -6506,6 +6562,7 @@
       },
       {
         "name": "Snake",
+        "relPath": "src/games/snake",
         "subCategories": [],
         "examples": [
           {
@@ -6592,9 +6649,11 @@
   },
   {
     "name": "Geom",
+    "relPath": "src/geom",
     "subCategories": [
       {
         "name": "Circle",
+        "relPath": "src/geom/circle",
         "subCategories": [],
         "examples": [
           {
@@ -6755,6 +6814,7 @@
       },
       {
         "name": "Ellipse",
+        "relPath": "src/geom/ellipse",
         "subCategories": [],
         "examples": [
           {
@@ -6943,6 +7003,7 @@
       },
       {
         "name": "Intersects",
+        "relPath": "src/geom/intersects",
         "subCategories": [],
         "examples": [
           {
@@ -7047,6 +7108,7 @@
       },
       {
         "name": "Line",
+        "relPath": "src/geom/line",
         "subCategories": [],
         "examples": [
           {
@@ -7256,6 +7318,7 @@
       },
       {
         "name": "Point",
+        "relPath": "src/geom/point",
         "subCategories": [],
         "examples": [
           {
@@ -7423,6 +7486,7 @@
       },
       {
         "name": "Polygon",
+        "relPath": "src/geom/polygon",
         "subCategories": [],
         "examples": [
           {
@@ -7492,6 +7556,7 @@
       },
       {
         "name": "Rectangle",
+        "relPath": "src/geom/rectangle",
         "subCategories": [],
         "examples": [
           {
@@ -7809,6 +7874,7 @@
       },
       {
         "name": "Triangle",
+        "relPath": "src/geom/triangle",
         "subCategories": [],
         "examples": [
           {
@@ -8042,9 +8108,11 @@
   },
   {
     "name": "Input",
+    "relPath": "src/input",
     "subCategories": [
       {
         "name": "Camera",
+        "relPath": "src/input/camera",
         "subCategories": [],
         "examples": [
           {
@@ -8100,6 +8168,7 @@
       },
       {
         "name": "Cursors",
+        "relPath": "src/input/cursors",
         "subCategories": [],
         "examples": [
           {
@@ -8153,6 +8222,7 @@
       },
       {
         "name": "Dom Events",
+        "relPath": "src/input/dom events",
         "subCategories": [],
         "examples": [
           {
@@ -8199,6 +8269,7 @@
       },
       {
         "name": "Dragging",
+        "relPath": "src/input/dragging",
         "subCategories": [],
         "examples": [
           {
@@ -8343,6 +8414,7 @@
       },
       {
         "name": "Game Object",
+        "relPath": "src/input/game object",
         "subCategories": [],
         "examples": [
           {
@@ -8493,6 +8565,7 @@
       },
       {
         "name": "Gamepad",
+        "relPath": "src/input/gamepad",
         "subCategories": [],
         "examples": [
           {
@@ -8556,6 +8629,7 @@
       },
       {
         "name": "Keyboard",
+        "relPath": "src/input/keyboard",
         "subCategories": [],
         "examples": [
           {
@@ -8680,6 +8754,7 @@
       },
       {
         "name": "Mouse",
+        "relPath": "src/input/mouse",
         "subCategories": [],
         "examples": [
           {
@@ -8909,6 +8984,7 @@
       },
       {
         "name": "Multitouch",
+        "relPath": "src/input/multitouch",
         "subCategories": [],
         "examples": [
           {
@@ -8932,6 +9008,7 @@
       },
       {
         "name": "Pixel Perfect",
+        "relPath": "src/input/pixel perfect",
         "subCategories": [],
         "examples": [
           {
@@ -8971,6 +9048,7 @@
       },
       {
         "name": "Pointer",
+        "relPath": "src/input/pointer",
         "subCategories": [],
         "examples": [
           {
@@ -9077,6 +9155,7 @@
       },
       {
         "name": "Zones",
+        "relPath": "src/input/zones",
         "subCategories": [],
         "examples": [
           {
@@ -9138,9 +9217,11 @@
   },
   {
     "name": "Loader",
+    "relPath": "src/loader",
     "subCategories": [
       {
         "name": "Animation Json",
+        "relPath": "src/loader/animation json",
         "subCategories": [],
         "examples": [{
           "mainFile": "src/loader/animation json/load animation json.js",
@@ -9157,6 +9238,7 @@
       },
       {
         "name": "Audio",
+        "relPath": "src/loader/audio",
         "subCategories": [],
         "examples": [
           {
@@ -9213,6 +9295,7 @@
       },
       {
         "name": "Binary",
+        "relPath": "src/loader/binary",
         "subCategories": [],
         "examples": [
           {
@@ -9249,6 +9332,7 @@
       },
       {
         "name": "Bitmap Text",
+        "relPath": "src/loader/bitmap text",
         "subCategories": [],
         "examples": [
           {
@@ -9280,6 +9364,7 @@
       },
       {
         "name": "File Pack",
+        "relPath": "src/loader/file pack",
         "subCategories": [],
         "examples": [
           {
@@ -9347,6 +9432,7 @@
       },
       {
         "name": "Html",
+        "relPath": "src/loader/html",
         "subCategories": [],
         "examples": [{
           "mainFile": "src/loader/html/load html to texture.js",
@@ -9361,6 +9447,7 @@
       },
       {
         "name": "Image",
+        "relPath": "src/loader/image",
         "subCategories": [],
         "examples": [
           {
@@ -9434,6 +9521,7 @@
       },
       {
         "name": "Loader Events",
+        "relPath": "src/loader/loader events",
         "subCategories": [],
         "examples": [
           {
@@ -9531,6 +9619,7 @@
       },
       {
         "name": "Plugin",
+        "relPath": "src/loader/plugin",
         "subCategories": [],
         "examples": [{
           "mainFile": "src/loader/plugin/load plugin.js",
@@ -9545,6 +9634,7 @@
       },
       {
         "name": "Scene Payload",
+        "relPath": "src/loader/scene payload",
         "subCategories": [],
         "examples": [{
           "mainFile": "src/loader/scene payload/scene files payload.js",
@@ -9562,6 +9652,7 @@
       },
       {
         "name": "Script",
+        "relPath": "src/loader/script",
         "subCategories": [],
         "examples": [{
           "mainFile": "src/loader/script/load script.js",
@@ -9576,6 +9667,7 @@
       },
       {
         "name": "Sprite Sheet",
+        "relPath": "src/loader/sprite sheet",
         "subCategories": [],
         "examples": [
           {
@@ -9620,6 +9712,7 @@
       },
       {
         "name": "Svg",
+        "relPath": "src/loader/svg",
         "subCategories": [],
         "examples": [{
           "mainFile": "src/loader/svg/load svg.js",
@@ -9635,6 +9728,7 @@
       },
       {
         "name": "Texture Atlas Json",
+        "relPath": "src/loader/texture atlas json",
         "subCategories": [],
         "examples": [
           {
@@ -9741,6 +9835,7 @@
       },
       {
         "name": "Texture Atlas Multi",
+        "relPath": "src/loader/texture atlas multi",
         "subCategories": [],
         "examples": [
           {
@@ -9764,6 +9859,7 @@
       },
       {
         "name": "Texture Atlas Unity",
+        "relPath": "src/loader/texture atlas unity",
         "subCategories": [],
         "examples": [
           {
@@ -9794,6 +9890,7 @@
       },
       {
         "name": "Texture Atlas Xml",
+        "relPath": "src/loader/texture atlas xml",
         "subCategories": [],
         "examples": [{
           "mainFile": "src/loader/texture atlas xml/load xml texture atlas.js",
@@ -9809,6 +9906,7 @@
       },
       {
         "name": "Tile Maps",
+        "relPath": "src/loader/tile maps",
         "subCategories": [],
         "examples": [
           {
@@ -9885,6 +9983,7 @@
   },
   {
     "name": "Paths",
+    "relPath": "src/paths",
     "subCategories": [],
     "examples": [
       {
@@ -9946,9 +10045,11 @@
   },
   {
     "name": "Physics",
+    "relPath": "src/physics",
     "subCategories": [
       {
         "name": "Arcade",
+        "relPath": "src/physics/arcade",
         "subCategories": [],
         "examples": [
           {
@@ -10271,6 +10372,7 @@
       },
       {
         "name": "Impact",
+        "relPath": "src/physics/impact",
         "subCategories": [],
         "examples": [
           {
@@ -10564,6 +10666,7 @@
       },
       {
         "name": "Matterjs",
+        "relPath": "src/physics/matterjs",
         "subCategories": [],
         "examples": [
           {
@@ -10993,6 +11096,7 @@
       },
       {
         "name": "Multi",
+        "relPath": "src/physics/multi",
         "subCategories": [],
         "examples": [
           {
@@ -11027,6 +11131,7 @@
   },
   {
     "name": "Plugins",
+    "relPath": "src/plugins",
     "subCategories": [],
     "examples": [
       {
@@ -11186,6 +11291,7 @@
   },
   {
     "name": "Pools",
+    "relPath": "src/pools",
     "subCategories": [],
     "examples": [
       {
@@ -11257,6 +11363,7 @@
   },
   {
     "name": "Renderer",
+    "relPath": "src/renderer",
     "subCategories": [],
     "examples": [
       {
@@ -11283,8 +11390,10 @@
   },
   {
     "name": "Scenes",
+    "relPath": "src/scenes",
     "subCategories": [{
       "name": "Tutorial",
+      "relPath": "src/scenes/tutorial",
       "subCategories": [],
       "examples": [
         {
@@ -11380,6 +11489,7 @@
   },
   {
     "name": "Snapshot",
+    "relPath": "src/snapshot",
     "subCategories": [],
     "examples": [{
       "mainFile": "src/snapshot/Snapshot Example.js",
@@ -11395,6 +11505,7 @@
   },
   {
     "name": "Textures",
+    "relPath": "src/textures",
     "subCategories": [],
     "examples": [
       {
@@ -11550,6 +11661,7 @@
   },
   {
     "name": "Time",
+    "relPath": "src/time",
     "subCategories": [],
     "examples": [
       {
@@ -11644,6 +11756,7 @@
   },
   {
     "name": "Timestep",
+    "relPath": "src/timestep",
     "subCategories": [],
     "examples": [
       {
@@ -11691,6 +11804,7 @@
   },
   {
     "name": "Transform",
+    "relPath": "src/transform",
     "subCategories": [],
     "examples": [
       {
@@ -11837,8 +11951,10 @@
   },
   {
     "name": "Tweens",
+    "relPath": "src/tweens",
     "subCategories": [{
       "name": "Timelines",
+      "relPath": "src/tweens/timelines",
       "subCategories": [],
       "examples": [
         {
@@ -12544,9 +12660,11 @@
   },
   {
     "name": "Utils",
+    "relPath": "src/utils",
     "subCategories": [
       {
         "name": "Array",
+        "relPath": "src/utils/array",
         "subCategories": [],
         "examples": [
           {
@@ -12574,6 +12692,7 @@
       },
       {
         "name": "Rbush",
+        "relPath": "src/utils/rbush",
         "subCategories": [],
         "examples": [
           {

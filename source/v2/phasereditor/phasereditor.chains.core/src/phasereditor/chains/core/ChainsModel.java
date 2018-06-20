@@ -25,7 +25,6 @@ import static java.lang.System.out;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -37,7 +36,7 @@ import java.util.regex.Pattern;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.examples.ExampleCategoryModel;
 import phasereditor.inspect.core.examples.ExampleModel;
-import phasereditor.inspect.core.examples.ExamplesModel;
+import phasereditor.inspect.core.examples.ExamplesRepoModel;
 import phasereditor.inspect.core.jsdoc.IMemberContainer;
 import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
 import phasereditor.inspect.core.jsdoc.PhaserMethod;
@@ -48,7 +47,7 @@ import phasereditor.inspect.core.jsdoc.PhaserVariable;
 
 public class ChainsModel {
 	private ArrayList<ChainItem> _chains;
-	private List<String> _examplesFiles;
+	private List<ExampleModel> _exampleItems;
 	private List<Line> _examplesLines;
 	private PhaserJSDoc _jsdoc;
 
@@ -108,11 +107,11 @@ public class ChainsModel {
 
 		// examples
 
-		_examplesFiles = new ArrayList<>();
+		_exampleItems = new ArrayList<>();
 		_examplesLines = new ArrayList<>();
 
 		try {
-			ExamplesModel examples = InspectCore.getExamplesModel();
+			ExamplesRepoModel examples = InspectCore.getExamplesRepoModel();
 			for (ExampleCategoryModel category : examples.getExamplesCategories()) {
 				processCategory(category);
 			}
@@ -126,18 +125,14 @@ public class ChainsModel {
 			processCategory(category2);
 		}
 
-		Path repoPath = InspectCore.getExamplesModel().getExamplesRepoPath().resolve("src");
-
 		for (ExampleModel example : category.getTemplates()) {
-			String filename = repoPath.relativize(example.getMainFilePath()).toString();
-			_examplesFiles.add(filename);
+			_exampleItems.add(example);
 			List<String> contentLines = Files.readAllLines(example.getMainFilePath());
 			int linenum = 1;
 			for (String text : contentLines) {
 				text = text.trim();
 				if (text.length() > 0 && !text.startsWith("//")) {
 					Line line = new Line();
-					line.filename = filename;
 					line.linenum = linenum;
 					line.text = text;
 					line.example = example;
@@ -201,11 +196,11 @@ public class ChainsModel {
 
 			// search of file names
 
-			for (String filename : _examplesFiles) {
-				Matcher matcher = pattern.matcher(filename);
+			for (ExampleModel example : _exampleItems) {
+				Matcher matcher = pattern.matcher(example.getFullName());
 				if (showall || matcher.matches()) {
 					Match match = new Match();
-					match.item = filename;
+					match.item = example;
 					if (showall) {
 						match.start = 0;
 						match.length = 0;
