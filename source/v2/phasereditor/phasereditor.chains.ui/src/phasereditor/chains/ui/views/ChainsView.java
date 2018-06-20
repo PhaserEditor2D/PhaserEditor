@@ -59,6 +59,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -104,14 +105,22 @@ public class ChainsView extends ViewPart {
 
 		private Font _italic;
 		private Font _font;
+		private Font _bold;
 		private Font _codeFont;
+		private Color _secondaryColor;
 
 		public ChainsLabelProvider() {
-			_font = JFaceResources.getFont(JFaceResources.TEXT_FONT);
+			_font = JFaceResources.getFont(JFaceResources.DEFAULT_FONT);
+
 			FontData fd = _font.getFontData()[0];
-			_codeFont = SWTResourceManager.getFont("Monospace", fd.getHeight(), fd.getStyle());
-			fd = _font.getFontData()[0];
 			_italic = SWTResourceManager.getFont(fd.getName(), fd.getHeight(), SWT.ITALIC);
+			_bold = SWTResourceManager.getFont(fd.getName(), fd.getHeight(), SWT.BOLD);
+
+			_codeFont = JFaceResources.getFont(JFaceResources.TEXT_FONT);
+
+			RGB rgb = new RGB(154, 131, 80);
+			_secondaryColor = SWTResourceManager.getColor(rgb);
+
 		}
 
 		@Override
@@ -137,13 +146,10 @@ public class ChainsView extends ViewPart {
 			StyleRange allRange = new StyleRange(0, text.length(), null, null);
 			allRange.font = _codeFont;
 
-			Color fgcolor = ChainsUI.get_pref_Chains_highlightFgColor();
-			Color bgcolor = ChainsUI.get_pref_Chains_highlightBgColor();
-			Color secondaryColor = ChainsUI.get_pref_Chains_secondaryFgColor();
-
-			StyleRange selRange = new StyleRange(match.start, match.length, fgcolor, bgcolor);
+			StyleRange selRange = new StyleRange(match.start, match.length, null, null);
+			selRange.font = _bold;
 			StyleRange secondaryRange = new StyleRange(secondaryColorIndex, text.length() - secondaryColorIndex,
-					secondaryColor, null);
+					_secondaryColor, null);
 
 			StyleRange[] ranges = { allRange, secondaryRange, selRange };
 			cell.setStyleRanges(ranges);
@@ -170,11 +176,9 @@ public class ChainsView extends ViewPart {
 
 			StyleRange[] ranges;
 
-			Color fgColor = ChainsUI.get_pref_Chains_highlightFgColor();
-			Color bgColor = ChainsUI.get_pref_Chains_highlightBgColor();
-			Color typeColor = ChainsUI.get_pref_Chains_secondaryFgColor();// SWTResourceManager.getColor(154, 131, 80);
-
-			StyleRange selRange = new StyleRange(match.start, match.length, fgColor, bgColor);
+			StyleRange selRange = new StyleRange(match.start, match.length, null, null);
+			selRange = new StyleRange(match.start, match.length, null, null);
+			selRange.font = _bold;
 			StyleRange allRange = new StyleRange(0, text.length(), null, null);
 			allRange.font = _font;
 			StyleRange returnTypeRange = new StyleRange();
@@ -183,7 +187,7 @@ public class ChainsView extends ViewPart {
 				int index = chain.getReturnTypeIndex();
 				if (index > 0) {
 					int len = chain.getDisplay().length() - index;
-					returnTypeRange = new StyleRange(index, len, typeColor, null);
+					returnTypeRange = new StyleRange(index, len, _secondaryColor, null);
 				}
 			}
 

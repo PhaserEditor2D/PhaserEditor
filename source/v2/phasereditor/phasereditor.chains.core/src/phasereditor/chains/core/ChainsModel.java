@@ -195,7 +195,7 @@ public class ChainsModel {
 		String query = aQuery.toLowerCase();
 		boolean showall = query.trim().length() == 0;
 		List<Match> matches = new ArrayList<>();
-		if (query.length() > 2 || showall) {
+		if (query.length() > 1 || showall) {
 			query = quote(query);
 			Pattern pattern = Pattern.compile(query, Pattern.CASE_INSENSITIVE);
 

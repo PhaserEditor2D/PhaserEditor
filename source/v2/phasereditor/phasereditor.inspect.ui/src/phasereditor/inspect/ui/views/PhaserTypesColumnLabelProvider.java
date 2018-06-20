@@ -23,16 +23,30 @@ package phasereditor.inspect.ui.views;
 
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.core.jsdoc.JSDocRenderer;
+import phasereditor.inspect.core.jsdoc.PhaserMethod;
+import phasereditor.inspect.core.jsdoc.PhaserMethodArg;
 import phasereditor.inspect.core.jsdoc.PhaserNamespace;
+import phasereditor.inspect.core.jsdoc.PhaserVariable;
 
 /**
  * @author arian
  *
  */
 public class PhaserTypesColumnLabelProvider extends StyledCellLabelProvider {
+
+	private Color _secondaryColor;
+
+	public PhaserTypesColumnLabelProvider() {
+		RGB rgb = new RGB(154, 131, 80);
+		_secondaryColor = SWTResourceManager.getColor(rgb);
+	}
 
 	@Override
 	public void update(ViewerCell cell) {
@@ -41,12 +55,47 @@ public class PhaserTypesColumnLabelProvider extends StyledCellLabelProvider {
 
 		String text;
 
+		String[] returnTypes = new String[0];
+
+		int secondaryTextIndex = -1;
+
 		if (member instanceof PhaserNamespace) {
 			text = ((PhaserNamespace) member).getSimpleName();
 		} else {
 			text = member.getName();
-		}
 
+			if (member instanceof PhaserMethod) {
+				PhaserMethod method = (PhaserMethod) member;
+				StringBuilder sb = new StringBuilder();
+				for (PhaserMethodArg arg : method.getArgs()) {
+					if (sb.length() > 0) {
+						sb.append(",");
+					}
+					sb.append(arg.getName());
+				}
+				text += "(" + sb + ")";
+				returnTypes = method.getReturnTypes();
+			} else if (member instanceof PhaserVariable) {
+				returnTypes = ((PhaserVariable) member).getTypes();
+			}
+
+			if (returnTypes != null && returnTypes.length > 0) {
+				StringBuilder sb = new StringBuilder();
+				for (String type : returnTypes) {
+					if (sb.length() > 0) {
+						sb.append(",");
+					}
+					sb.append(type);
+				}
+				secondaryTextIndex = text.length();
+				text += ": " + sb;
+			}
+		}
+		if (secondaryTextIndex > -1) {
+			// Color secondaryColor = ChainsUI.get_pref_Chains_secondaryFgColor();
+			StyleRange styleRange = new StyleRange(secondaryTextIndex, text.length(), _secondaryColor, null);
+			cell.setStyleRanges(new StyleRange[] { styleRange });
+		}
 		cell.setText(text);
 		cell.setImage(JSDocRenderer.getInstance().getImage(member));
 

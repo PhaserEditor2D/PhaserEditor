@@ -22,68 +22,12 @@
 package phasereditor.chains.ui;
 
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.resource.StringConverter;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.RGB;
-import org.eclipse.wb.swt.SWTResourceManager;
-
-import phasereditor.ui.PhaserEditorUI;
 
 /**
  * @author arian
  *
  */
 public class ChainsUI {
-
-	public static final String PREF_PROP_HIGHLIGHT_BG_COLOR = "phasereditor.chains.highlightBgColor";
-	public static final String PREF_PROP_HIGHLIGHT_FG_COLOR = "phasereditor.chains.highlightFgColor";
-	public static final String PREF_PROP_SECONDARY_FG_COLOR = "phasereditor.chains.secondaryFgColor";
-	public static Color _PREF_PROP_HIGHLIGHT_BG_COLOR;
-	public static Color _PREF_PROP_HIGHLIGHT_FG_COLOR;
-	public static Color _PREF_PROP_SECONDARY_FG_COLOR;
-
-	public static void listenPreferences() {
-		{
-			RGB rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_HIGHLIGHT_BG_COLOR));
-			_PREF_PROP_HIGHLIGHT_BG_COLOR = SWTResourceManager.getColor(rgb);
-			rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_HIGHLIGHT_FG_COLOR));
-			_PREF_PROP_HIGHLIGHT_FG_COLOR = SWTResourceManager.getColor(rgb);
-			rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_SECONDARY_FG_COLOR));
-			_PREF_PROP_SECONDARY_FG_COLOR = SWTResourceManager.getColor(rgb);
-		}
-
-		getPreferenceStore().addPropertyChangeListener(event -> {
-
-			String prop = event.getProperty();
-
-			switch (prop) {
-
-			case PREF_PROP_HIGHLIGHT_BG_COLOR:
-				_PREF_PROP_HIGHLIGHT_BG_COLOR = SWTResourceManager.getColor(PhaserEditorUI.getRGBFromPrefEvent(event));
-				break;
-			case PREF_PROP_HIGHLIGHT_FG_COLOR:
-				_PREF_PROP_HIGHLIGHT_FG_COLOR = SWTResourceManager.getColor(PhaserEditorUI.getRGBFromPrefEvent(event));
-				break;
-			case PREF_PROP_SECONDARY_FG_COLOR:
-				_PREF_PROP_SECONDARY_FG_COLOR = SWTResourceManager.getColor(PhaserEditorUI.getRGBFromPrefEvent(event));
-				break;
-			default:
-				break;
-			}
-		});
-	}
-
-	public static Color get_pref_Chains_highlightBgColor() {
-		return _PREF_PROP_HIGHLIGHT_BG_COLOR;
-	}
-
-	public static Color get_pref_Chains_highlightFgColor() {
-		return _PREF_PROP_HIGHLIGHT_FG_COLOR;
-	}
-	
-	public static Color get_pref_Chains_secondaryFgColor() {
-		return _PREF_PROP_SECONDARY_FG_COLOR;
-	}
 
 	public static IPreferenceStore getPreferenceStore() {
 		return Activator.getDefault().getPreferenceStore();
