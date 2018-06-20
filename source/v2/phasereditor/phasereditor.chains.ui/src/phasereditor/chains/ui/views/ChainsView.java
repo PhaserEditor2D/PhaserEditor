@@ -50,8 +50,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
@@ -59,16 +57,11 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.wb.swt.SWTResourceManager;
-import org.json.JSONException;
 
 import phasereditor.chains.core.ChainItem;
 import phasereditor.chains.core.ChainsCore;
@@ -77,14 +70,12 @@ import phasereditor.chains.core.Line;
 import phasereditor.chains.core.Match;
 import phasereditor.chains.ui.ChainsUI;
 import phasereditor.inspect.core.examples.ExampleModel;
-import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.core.jsdoc.JSDocRenderer;
-import phasereditor.inspect.ui.InspectUI;
-import phasereditor.inspect.ui.views.JsdocView;
+import phasereditor.inspect.ui.handlers.RunPhaserExampleHandler;
+import phasereditor.inspect.ui.handlers.ShowPhaserJsdocHandler;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.PhaserEditorUI;
-import phasereditor.webrun.ui.WebRunUI;
 
 public class ChainsView extends ViewPart {
 	private Text _queryText;
@@ -223,11 +214,13 @@ public class ChainsView extends ViewPart {
 					_chainsViewer.addDoubleClickListener(new IDoubleClickListener() {
 						@Override
 						public void doubleClick(DoubleClickEvent event) {
+							IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+
 							Match match = (Match) ((StructuredSelection) event.getSelection()).getFirstElement();
 							if (match.item instanceof ChainItem) {
-								showChainDoc(match);
+								ShowPhaserJsdocHandler.run(selection);
 							} else {
-								showExample(match.item);
+								RunPhaserExampleHandler.run(selection);
 							}
 						}
 					});
@@ -239,30 +232,6 @@ public class ChainsView extends ViewPart {
 						tableViewerColumn.setLabelProvider(new ChainsLabelProvider());
 						TableColumn column = tableViewerColumn.getColumn();
 						column.setWidth(1000);
-					}
-					{
-						Menu menu = new Menu(chainsTable);
-						chainsTable.setMenu(menu);
-						{
-							MenuItem mntmShowDocumentation = new MenuItem(menu, SWT.NONE);
-							mntmShowDocumentation.addSelectionListener(new SelectionAdapter() {
-								@Override
-								public void widgetSelected(SelectionEvent e) {
-									showChainDoc(getSelectedChainItemMatch());
-								}
-							});
-							mntmShowDocumentation.setText("Show Documentation");
-						}
-						{
-							MenuItem mntmShowSourceCode = new MenuItem(menu, SWT.NONE);
-							mntmShowSourceCode.addSelectionListener(new SelectionAdapter() {
-								@Override
-								public void widgetSelected(SelectionEvent e) {
-									showSourceCode(getSelectedChainItemMatch());
-								}
-							});
-							mntmShowSourceCode.setText("Show Source Code");
-						}
 					}
 					_chainsViewer.setContentProvider(new ArrayContentProvider());
 				}
@@ -283,58 +252,6 @@ public class ChainsView extends ViewPart {
 		initializeMenu();
 
 		afterCreateWidgets();
-	}
-
-	protected static void showSourceCode(Match match) {
-		if (match.item instanceof ChainItem) {
-			showChainSource(match);
-		} else {
-			showExample(match.item);
-		}
-	}
-
-	private static void showChainSource(Match match) {
-		ChainItem item = (ChainItem) match.item;
-		IPhaserMember member = item.getPhaserMember();
-		InspectUI.showSourceCode(member);
-	}
-
-	protected static void showExample(Object item) {
-		int linenum = -1;
-		ExampleModel example;
-		if (item instanceof ExampleModel) {
-			example = (ExampleModel) item;
-		} else {
-			Line line = (Line) item;
-			linenum = line.linenum;
-			example = line.example;
-		}
-
-		WebRunUI.openExampleInBrowser(example, linenum);
-
-		PhaserEditorUI.openJSEditor(linenum, -1, example.getMainFilePath());
-
-	}
-
-	protected void showChainDoc(Match match) {
-		if (!(match.item instanceof ChainItem)) {
-			return;
-		}
-
-		ChainItem item = (ChainItem) match.item;
-		try {
-			try {
-				JsdocView view = (JsdocView) getViewSite().getPage().showView(InspectUI.JSDOC_VIEW_ID, null,
-						IWorkbenchPage.VIEW_CREATE);
-				view.showJsdocFor(item.getPhaserMember());
-				getViewSite().getPage().activate(view);
-			} catch (PartInitException e) {
-				e.printStackTrace();
-				throw new RuntimeException(e);
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
 	}
 
 	AtomicInteger _token = new AtomicInteger(0);

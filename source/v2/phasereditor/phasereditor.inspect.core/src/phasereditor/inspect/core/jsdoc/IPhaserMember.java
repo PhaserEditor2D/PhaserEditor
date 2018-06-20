@@ -25,12 +25,13 @@ import java.nio.file.Path;
 
 import org.json.JSONObject;
 
-public interface IPhaserMember {
+import phasereditor.inspect.core.InspectCore;
+import phasereditor.ui.ISourceLocation;
+
+public interface IPhaserMember extends ISourceLocation {
 	public String getName();
 	
 	public String getHelp();
-
-	public int getLine();
 
 	public void setLine(int line);
 
@@ -49,4 +50,12 @@ public interface IPhaserMember {
 	public IMemberContainer getContainer();
 	
 	public void setContainer(IMemberContainer container);
+	
+	@Override
+	public int getLine();
+	
+	@Override
+	default Path getFilePath() {
+		return InspectCore.getPhaserHelp().getMemberPath(this);
+	}
 }

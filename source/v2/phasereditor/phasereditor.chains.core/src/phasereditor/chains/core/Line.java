@@ -21,15 +21,36 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.chains.core;
 
-import phasereditor.inspect.core.examples.ExampleModel;
+import java.nio.file.Path;
 
-public class Line {
+import org.eclipse.core.runtime.Adapters;
+import org.eclipse.core.runtime.IAdaptable;
+
+import phasereditor.inspect.core.examples.ExampleModel;
+import phasereditor.ui.ISourceLocation;
+
+public class Line implements IAdaptable, ISourceLocation {
 	public String text;
 	public int linenum;
 	public ExampleModel example;
 
 	@Override
+	public Path getFilePath() {
+		return example.getMainFilePath();
+	}
+
+	@Override
+	public int getLine() {
+		return linenum;
+	}
+
+	@Override
 	public String toString() {
 		return text + " - " + example.getFullName() + " [" + linenum + "]";
+	}
+
+	@Override
+	public <T> T getAdapter(Class<T> adapter) {
+		return Adapters.adapt(example, adapter);
 	}
 }

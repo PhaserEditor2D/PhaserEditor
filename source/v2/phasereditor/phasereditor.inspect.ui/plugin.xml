@@ -19,5 +19,65 @@
             name="Phaser Types">
       </view>
    </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:phasereditor.inspect.ui.views.PhaserTypesView?after=additions">
+         <command
+               commandId="phasereditor.inspect.ui.showPhaserJsdoc"
+               icon="platform:/plugin/phasereditor.ui/icons/javadoc.png"
+               style="push">
+         </command>
+         <command
+               commandId="phasereditor.ui.showSourceCode"
+               icon="platform:/plugin/phasereditor.ui/icons/source.png"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="phasereditor.inspect.ui.handlers.ShowPhaserJsdocHandler"
+            commandId="phasereditor.inspect.ui.showPhaserJsdoc">
+         <activeWhen>
+            <iterate
+                  ifEmpty="false">
+               <adapt
+                     type="phasereditor.inspect.core.jsdoc.IPhaserMember">
+               </adapt>
+            </iterate>
+         </activeWhen>
+      </handler>
+      <handler
+            class="phasereditor.inspect.ui.handlers.RunPhaserExampleHandler"
+            commandId="phasereditor.inspect.ui.runPhaserExample">
+         <activeWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <adapt
+                        type="phasereditor.inspect.core.examples.ExampleModel">
+                  </adapt>
+               </iterate>
+            </with>
+         </activeWhen>
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="phasereditor.ui.phaserCategory"
+            id="phasereditor.inspect.ui.showPhaserJsdoc"
+            name="Show Phaser Documentation">
+      </command>
+      <command
+            categoryId="phasereditor.ui.phaserCategory"
+            id="phasereditor.inspect.ui.runPhaserExample"
+            name="Run Phaser Example">
+      </command>
+   </extension>
 
 </plugin>

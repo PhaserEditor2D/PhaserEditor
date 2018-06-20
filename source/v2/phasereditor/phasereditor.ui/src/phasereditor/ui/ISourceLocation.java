@@ -19,47 +19,16 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.inspect.ui;
+package phasereditor.ui;
 
 import java.nio.file.Path;
-
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
-
-import phasereditor.inspect.core.jsdoc.IPhaserMember;
-import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
-import phasereditor.inspect.ui.views.JsdocView;
-import phasereditor.ui.PhaserEditorUI;
 
 /**
  * @author arian
  *
  */
-public class InspectUI {
-	public static final String JSDOC_VIEW_ID = "phasereditor.inspect.ui.jsdoc";
+public interface ISourceLocation {
+	public Path getFilePath();
 
-	public static void showSourceCode(IPhaserMember member) {
-		PhaserJSDoc jsdoc = PhaserJSDoc.getInstance();
-		Path file = jsdoc.getMemberPath(member);
-		if (file != null) {
-			int line = member.getLine();
-			int offset = member.getOffset();
-			PhaserEditorUI.openJSEditor(line, offset, file);
-		}
-	}
-
-	public static void showJavaDoc(IPhaserMember member) {
-		try {
-			IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
-			JsdocView view = (JsdocView) page.showView(InspectUI.JSDOC_VIEW_ID, null, IWorkbenchPage.VIEW_CREATE);
-			view.showJsdocFor(member);
-			page.activate(view);
-		} catch (PartInitException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
-	}
-
+	public int getLine();
 }

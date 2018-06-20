@@ -12,4 +12,26 @@
             restorable="true">
       </view>
    </extension>
+<extension
+      point="org.eclipse.ui.menus">
+   <menuContribution
+         allPopups="false"
+         locationURI="toolbar:phasereditor.chains.ui.views.chains?after=additions">
+      <command
+            commandId="phasereditor.inspect.ui.showPhaserJsdoc"
+            icon="platform:/plugin/phasereditor.ui/icons/javadoc.png"
+            style="push">
+      </command>
+      <command
+            commandId="phasereditor.ui.showSourceCode"
+            icon="platform:/plugin/phasereditor.ui/icons/source.png"
+            style="push">
+      </command>
+      <command
+            commandId="phasereditor.inspect.ui.runPhaserExample"
+            icon="platform:/plugin/phasereditor.ui/icons/world.png"
+            style="push">
+      </command>
+   </menuContribution>
+</extension>
 </plugin>

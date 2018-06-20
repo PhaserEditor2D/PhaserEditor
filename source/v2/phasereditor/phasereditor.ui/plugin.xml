@@ -30,6 +30,21 @@
             </with>
          </activeWhen>
       </handler>
+      <handler
+            class="phasereditor.ui.handlers.ShowSourceCodeHandler"
+            commandId="phasereditor.ui.showSourceCode">
+         <activeWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <adapt
+                        type="phasereditor.ui.ISourceLocation">
+                  </adapt>
+               </iterate>
+            </with>
+         </activeWhen>
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -62,6 +77,11 @@
             description="Show selection in the Preview window"
             id="phasereditor.ui.commands.showInPreview"
             name="Open In Preview">
+      </command>
+      <command
+            categoryId="phasereditor.ui.phaserCategory"
+            id="phasereditor.ui.showSourceCode"
+            name="Show Source Code">
       </command>
    </extension>
    <extension
