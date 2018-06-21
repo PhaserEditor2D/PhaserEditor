@@ -34,8 +34,11 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.help.HelpSystem;
 import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -60,6 +63,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.wb.swt.SWTResourceManager;
 
@@ -81,6 +85,7 @@ public class ChainsView extends ViewPart {
 	private Text _queryText;
 	private TableViewer _chainsViewer;
 	ChainsModel _chainsModel;
+	private ToolBar _filterToolbar;
 
 	class ChainsLabelProvider extends StyledCellLabelProvider {
 
@@ -135,7 +140,7 @@ public class ChainsView extends ViewPart {
 			StyleRange[] ranges = { allRange, secondaryRange, selRange };
 			cell.setStyleRanges(ranges);
 			cell.setText(text);
-			cell.setImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_SCRIPT_CODE));
+			cell.setImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_GAME_CONTROLLER));
 		}
 
 		@Override
@@ -204,9 +209,21 @@ public class ChainsView extends ViewPart {
 		gl_composite.marginWidth = 0;
 		container.setLayout(gl_composite);
 		{
-			_queryText = new Text(container, SWT.BORDER);
+
+			Composite topComposite = new Composite(container, SWT.NONE);
+			topComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+			GridLayout gl_layout = new GridLayout(2, false);
+			gl_layout.marginWidth = 0;
+			gl_layout.marginHeight = 0;
+			topComposite.setLayout(gl_layout);
+
+			_queryText = new Text(topComposite, SWT.BORDER);
 			_queryText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 			_queryText.setText("add.*(");
+
+			_filterToolbar = new ToolBar(topComposite, SWT.NONE);
+			_filterToolbar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+
 			{
 				{
 					_chainsViewer = new TableViewer(container, SWT.FULL_SELECTION);
@@ -255,6 +272,8 @@ public class ChainsView extends ViewPart {
 	}
 
 	AtomicInteger _token = new AtomicInteger(0);
+	private Action _showChainsAction;
+	private Action _showExamplesAction;
 
 	protected void queryTextModified() {
 
@@ -285,13 +304,41 @@ public class ChainsView extends ViewPart {
 		PhaserEditorUI.refreshViewerWhenPreferencesChange(ChainsUI.getPreferenceStore(), _chainsViewer);
 
 		getViewSite().setSelectionProvider(_chainsViewer);
+
+		ToolBarManager manager = new ToolBarManager(_filterToolbar);
+		manager.add(_showChainsAction);
+		manager.add(_showExamplesAction);
+		manager.update(true);
 	}
 
 	/**
 	 * Create the actions.
 	 */
 	private void createActions() {
-		// Create the actions
+		_showChainsAction = new Action("Show Chains", IAction.AS_CHECK_BOX) {
+			{
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_METHPUB_OBJ));
+				setChecked(true);
+			}
+
+			@Override
+			public void run() {
+				searchAndUpdateTables();
+			}
+		};
+
+		_showExamplesAction = new Action("Show Examples", IAction.AS_CHECK_BOX) {
+			{
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_GAME_CONTROLLER));
+				setChecked(true);
+			}
+
+			@Override
+			public void run() {
+				searchAndUpdateTables();
+			}
+
+		};
 	}
 
 	/**
@@ -345,7 +392,7 @@ public class ChainsView extends ViewPart {
 		return super.getAdapter(adapter);
 	}
 
-	private void searchAndUpdateTables() {
+	void searchAndUpdateTables() {
 		int token = _token.incrementAndGet();
 
 		String[] query = new String[1];
@@ -360,8 +407,16 @@ public class ChainsView extends ViewPart {
 			return;
 		}
 
-		List<Match> list1 = _chainsModel.searchChains(query[0], chainsLimit);
-		List<Match> list2 = _chainsModel.searchExamples(query[0], chainsLimit);
+		List<Match> list1 = new ArrayList<>();
+		List<Match> list2 = new ArrayList<>();
+
+		if (_showChainsAction.isChecked()) {
+			list1 = _chainsModel.searchChains(query[0], chainsLimit);
+		}
+
+		if (_showExamplesAction.isChecked()) {
+			list2 = _chainsModel.searchExamples(query[0], chainsLimit);
+		}
 
 		List<Match> matches = new ArrayList<>();
 

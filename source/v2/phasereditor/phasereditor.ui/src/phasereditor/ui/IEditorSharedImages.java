@@ -85,4 +85,5 @@ public interface IEditorSharedImages {
 	String IMG_HOUSE = "icons/house.png";
 	String IMG_SPLIT_HORIZONTAL = "icons/application-tile-horizontal.png";
 	String IMG_SPLIT_VERTICAL = "icons/application-tile-vertical.png";
+	String IMG_GAME_CONTROLLER = "icons/controller.png";
 }
