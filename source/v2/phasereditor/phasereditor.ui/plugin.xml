@@ -151,4 +151,14 @@
             class="phasereditor.ui.prefs.PreferenceInitializer">
       </initializer>
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="java.nio.file.Path"
+            class="phasereditor.ui.JavaPathAdapterFactory">
+         <adapter
+               type="phasereditor.ui.ISourceLocation">
+         </adapter>
+      </factory>
+   </extension>
 </plugin>

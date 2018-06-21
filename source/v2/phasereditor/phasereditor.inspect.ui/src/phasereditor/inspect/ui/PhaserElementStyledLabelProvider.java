@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.inspect.ui.views;
+package phasereditor.inspect.ui;
 
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.ViewerCell;
@@ -39,11 +39,11 @@ import phasereditor.inspect.core.jsdoc.PhaserVariable;
  * @author arian
  *
  */
-public class PhaserTypesColumnLabelProvider extends StyledCellLabelProvider {
+public class PhaserElementStyledLabelProvider extends StyledCellLabelProvider {
 
 	private Color _secondaryColor;
 
-	public PhaserTypesColumnLabelProvider() {
+	public PhaserElementStyledLabelProvider() {
 		RGB rgb = new RGB(154, 131, 80);
 		_secondaryColor = SWTResourceManager.getColor(rgb);
 	}
@@ -51,7 +51,13 @@ public class PhaserTypesColumnLabelProvider extends StyledCellLabelProvider {
 	@Override
 	public void update(ViewerCell cell) {
 
-		IPhaserMember member = (IPhaserMember) cell.getElement();
+		Object element = cell.getElement();
+
+		if (!(element instanceof IPhaserMember)) {
+			return;
+		}
+
+		IPhaserMember member = (IPhaserMember) element;
 
 		String text;
 

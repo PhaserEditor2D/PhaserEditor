@@ -23,7 +23,7 @@ package phasereditor.canvas.ui.editors.grid;
 
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.GroupModel.SetAllData;
-import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
+import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
 
 /**
  * @author arian
@@ -34,7 +34,7 @@ public class PGridSetAllProperty extends PGridProperty<SetAllData>{
 	private GroupModel _model;
 
 	public PGridSetAllProperty(GroupModel model) {
-		super(model.getId(), "setAll", PhaserJSDoc.getInstance().getMemberHelp("Phaser.Group.setAll"));
+		super(model.getId(), "setAll", PhaserJsdocModel.getInstance().getMemberHelp("Phaser.Group.setAll"));
 		_model = model;
 	}
 

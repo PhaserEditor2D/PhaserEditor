@@ -38,7 +38,7 @@ import phasereditor.inspect.core.examples.PhaserExampleCategoryModel;
 import phasereditor.inspect.core.examples.PhaserExampleModel;
 import phasereditor.inspect.core.examples.PhaserExamplesRepoModel;
 import phasereditor.inspect.core.jsdoc.IMemberContainer;
-import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
+import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
 import phasereditor.inspect.core.jsdoc.PhaserMethod;
 import phasereditor.inspect.core.jsdoc.PhaserMethodArg;
 import phasereditor.inspect.core.jsdoc.PhaserNamespace;
@@ -49,10 +49,10 @@ public class ChainsModel {
 	private ArrayList<ChainItem> _chains;
 	private List<PhaserExampleModel> _exampleItems;
 	private List<Line> _examplesLines;
-	private PhaserJSDoc _jsdoc;
+	private PhaserJsdocModel _jsdoc;
 
 	public ChainsModel() {
-		_jsdoc = PhaserJSDoc.getInstance();
+		_jsdoc = PhaserJsdocModel.getInstance();
 		build();
 	}
 

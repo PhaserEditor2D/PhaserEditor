@@ -31,7 +31,7 @@ import org.junit.Test;
 
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
-import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
+import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
 import phasereditor.inspect.core.jsdoc.PhaserMethod;
 import phasereditor.inspect.core.jsdoc.PhaserVariable;
 
@@ -43,7 +43,7 @@ public class Phaser_Member_Exists_Test {
 		Path wsPath = Paths.get(".").toAbsolutePath().getParent().getParent();
 		Path sourceProjectPath = wsPath.resolve(InspectCore.RESOURCES_PHASER_CODE_PLUGIN);
 		Path metadataProjectPath = wsPath.resolve(InspectCore.RESOURCES_METADATA_PLUGIN);
-		PhaserJSDoc jsDoc = new PhaserJSDoc(sourceProjectPath.resolve("phaser-master/src"),
+		PhaserJsdocModel jsDoc = new PhaserJsdocModel(sourceProjectPath.resolve("phaser-master/src"),
 				metadataProjectPath.resolve("phaser-custom/jsdoc/docs.json"));
 
 		// test the members exist

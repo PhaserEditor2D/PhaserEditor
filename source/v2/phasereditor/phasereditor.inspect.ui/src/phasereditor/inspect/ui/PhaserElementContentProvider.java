@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.inspect.ui.views;
+package phasereditor.inspect.ui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,19 +29,19 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 
 import phasereditor.inspect.core.jsdoc.IMemberContainer;
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
-import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
+import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
 
 /**
  * @author arian
  *
  */
-public class PhaserTypesContentProvider implements ITreeContentProvider {
+public class PhaserElementContentProvider implements ITreeContentProvider {
 
 	@Override
 	public Object[] getElements(Object inputElement) {
 		
-		if (inputElement instanceof PhaserJSDoc) {
-			PhaserJSDoc docs = (PhaserJSDoc) inputElement;
+		if (inputElement instanceof PhaserJsdocModel) {
+			PhaserJsdocModel docs = (PhaserJsdocModel) inputElement;
 			Map<String, IMemberContainer> map = docs.getContainerMap();
 			return new Object[] { map.get("Phaser"), map.get("MatterJS") };
 		}

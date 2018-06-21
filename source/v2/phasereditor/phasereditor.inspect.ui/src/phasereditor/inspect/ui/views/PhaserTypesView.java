@@ -25,7 +25,6 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.swt.SWT;
@@ -39,6 +38,9 @@ import org.eclipse.ui.part.ViewPart;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.ui.InspectUI;
+import phasereditor.inspect.ui.PhaserElementLabelProvider;
+import phasereditor.inspect.ui.PhaserElementStyledLabelProvider;
+import phasereditor.inspect.ui.PhaserElementContentProvider;
 
 /**
  * @author arian
@@ -68,16 +70,11 @@ public class PhaserTypesView extends ViewPart {
 		_filteredTree = new FilteredTree(container, SWT.NONE, filter, true);
 
 		TreeViewer treeViewer = _filteredTree.getViewer();
-		treeViewer.setContentProvider(new PhaserTypesContentProvider());
-		treeViewer.setLabelProvider(new LabelProvider() {
-			@Override
-			public String getText(Object element) {
-				return ((IPhaserMember) element).getName();
-			}
-		});
+		treeViewer.setContentProvider(new PhaserElementContentProvider());
+		treeViewer.setLabelProvider(new PhaserElementLabelProvider());
 
 		TreeViewerColumn viewerColumn = new TreeViewerColumn(treeViewer, SWT.NONE);
-		viewerColumn.setLabelProvider(new PhaserTypesColumnLabelProvider());
+		viewerColumn.setLabelProvider(new PhaserElementStyledLabelProvider());
 		TreeColumn column = viewerColumn.getColumn();
 		column.setWidth(1000);
 

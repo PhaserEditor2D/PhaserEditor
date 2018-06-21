@@ -43,7 +43,8 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import org.json.JSONObject;
 
 import phasereditor.inspect.core.examples.PhaserExamplesRepoModel;
-import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
+import phasereditor.inspect.core.jsdoc.PhaserFilesModel;
+import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
 import phasereditor.inspect.core.templates.TemplatesModel;
 
 public class InspectCore {
@@ -63,14 +64,23 @@ public class InspectCore {
 	protected static PhaserExamplesRepoModel _examplesModel;
 	private static TemplatesModel _builtInTemplates;
 	private static TemplatesModel _projectTemplates;
+	private static PhaserFilesModel _phaserFilesModel;
 
 	static {
 		PHASER_VERSION = readPhaserVersion(InspectCore.getBundleFile(RESOURCES_METADATA_PLUGIN, "phaser-custom"));
 		out.println("Built-in Phaser version: " + PHASER_VERSION);
 	}
 
-	public static PhaserJSDoc getPhaserHelp() {
-		return PhaserJSDoc.getInstance();
+	public static PhaserJsdocModel getPhaserHelp() {
+		return PhaserJsdocModel.getInstance();
+	}
+
+	public static PhaserFilesModel getPhaserFiles() {
+		if (_phaserFilesModel == null) {
+			_phaserFilesModel = new PhaserFilesModel(getPhaserHelp());
+		}
+		
+		return _phaserFilesModel;
 	}
 
 	public static PhaserExamplesRepoModel getPhaserExamplesRepoModel() {
@@ -107,11 +117,12 @@ public class InspectCore {
 		}
 		return _builtInTemplates;
 	}
-	
+
 	public static TemplatesModel getProjectTemplates() {
 		if (_projectTemplates == null) {
 			try {
-				Path templatesPath = InspectCore.getBundleFile(InspectCore.RESOURCES_TEMPLATES_PLUGIN, "templates_newproject");
+				Path templatesPath = InspectCore.getBundleFile(InspectCore.RESOURCES_TEMPLATES_PLUGIN,
+						"templates_newproject");
 				_projectTemplates = new TemplatesModel(templatesPath);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -121,21 +132,21 @@ public class InspectCore {
 		return _projectTemplates;
 	}
 
-	//TODO: #RemovingWST
-//	public static String getFullName(IMember member) {
-//		String name;
-//
-//		if (member instanceof IType) {
-//			name = member.getDisplayName();
-//		} else {
-//			IType type = member.getDeclaringType();
-//			if (type == null) {
-//				return "<invalid-member>";
-//			}
-//			name = type.getDisplayName() + "." + member.getDisplayName();
-//		}
-//		return name;
-//	}
+	// TODO: #RemovingWST
+	// public static String getFullName(IMember member) {
+	// String name;
+	//
+	// if (member instanceof IType) {
+	// name = member.getDisplayName();
+	// } else {
+	// IType type = member.getDeclaringType();
+	// if (type == null) {
+	// return "<invalid-member>";
+	// }
+	// name = type.getDisplayName() + "." + member.getDisplayName();
+	// }
+	// return name;
+	// }
 
 	/**
 	 * @param folder

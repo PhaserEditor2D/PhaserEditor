@@ -41,7 +41,7 @@ import com.subshell.snippets.jface.tooltip.tooltipsupport.TreeViewerInformationP
 
 import phasereditor.inspect.core.jsdoc.IJsdocProvider;
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
-import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
+import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
 import phasereditor.inspect.ui.views.JsdocView;
 import phasereditor.ui.PhaserEditorUI;
 
@@ -88,7 +88,7 @@ public class InspectUI {
 	}
 
 	public static void showSourceCode(IPhaserMember member) {
-		PhaserJSDoc jsdoc = PhaserJSDoc.getInstance();
+		PhaserJsdocModel jsdoc = PhaserJsdocModel.getInstance();
 		Path file = jsdoc.getMemberPath(member);
 		if (file != null) {
 			int line = member.getLine();

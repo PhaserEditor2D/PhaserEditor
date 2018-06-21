@@ -48,7 +48,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
-import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
+import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
 import phasereditor.inspect.core.jsdoc.PhaserMethod;
 import phasereditor.inspect.core.jsdoc.PhaserType;
 import phasereditor.inspect.core.jsdoc.PhaserVariable;
@@ -58,7 +58,7 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 	private static Map<AssetType, PhaserMethod> _methodMap = new HashMap<>();
 
 	static {
-		PhaserJSDoc jsdoc = PhaserJSDoc.getInstance();
+		PhaserJsdocModel jsdoc = PhaserJsdocModel.getInstance();
 		PhaserType phaserType = jsdoc.getContainerMap().get("Phaser.Loader").castType();
 
 		// the phaserType can be null if the phaser version is wrong.

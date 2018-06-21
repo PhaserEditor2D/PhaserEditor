@@ -29,7 +29,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import phasereditor.inspect.core.InspectCore;
-import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
+import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
 
 /**
  * @author arian
@@ -42,7 +42,7 @@ public class Canvas_Phaser_Help_Test {
 		Path wsPath = Paths.get(".").toAbsolutePath().getParent().getParent();
 		Path sourceProjectPath = wsPath.resolve(InspectCore.RESOURCES_PHASER_CODE_PLUGIN);
 		Path metadataProjectPath = wsPath.resolve(InspectCore.RESOURCES_METADATA_PLUGIN);
-		PhaserJSDoc jsDoc = new PhaserJSDoc(sourceProjectPath.resolve("phaser-master/src"),
+		PhaserJsdocModel jsDoc = new PhaserJsdocModel(sourceProjectPath.resolve("phaser-master/src"),
 				metadataProjectPath.resolve("phaser-custom/jsdoc/docs.json"));
 
 		// @formatter:off

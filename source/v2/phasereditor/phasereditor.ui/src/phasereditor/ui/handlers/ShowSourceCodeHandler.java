@@ -15,10 +15,16 @@ public class ShowSourceCodeHandler extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IStructuredSelection sel = HandlerUtil.getCurrentStructuredSelection(event);
+		run(sel);
+		return null;
+	}
+
+	public static void run(IStructuredSelection sel) {
 		Object obj = sel.getFirstElement();
 		ISourceLocation location = Adapters.adapt(obj, ISourceLocation.class);
-		PhaserEditorUI.openJSEditor(location.getLine(), -1, location.getFilePath());
-		return null;
+		if (location != null) {
+			PhaserEditorUI.openJSEditor(location.getLine(), -1, location.getFilePath());
+		}
 	}
 
 }

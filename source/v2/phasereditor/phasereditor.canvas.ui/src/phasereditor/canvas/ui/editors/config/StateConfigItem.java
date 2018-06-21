@@ -38,7 +38,7 @@ import phasereditor.canvas.ui.editors.grid.PGridLoadPackProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSection;
 import phasereditor.canvas.ui.editors.grid.PGridSpriteProperty;
 import phasereditor.inspect.core.InspectCore;
-import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
+import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
 
 /**
  * @author arian
@@ -58,7 +58,7 @@ public class StateConfigItem extends ConfigItem {
 	public void buildProperties() {
 		StateSettings state = getModel().getStateSettings();
 
-		PhaserJSDoc help = InspectCore.getPhaserHelp();
+		PhaserJsdocModel help = InspectCore.getPhaserHelp();
 		{
 			PGridSection section = new PGridSection("Scale");
 			section.add(new PGridEnumProperty<String>(null, "scaleMode",

@@ -25,7 +25,7 @@ import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.codegen.JSLikeGroupCodeGenerator;
 import phasereditor.inspect.core.InspectCore;
-import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
+import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
 
 /**
  * @author arian
@@ -45,7 +45,7 @@ public class JS6GroupCodeGenerator extends JSLikeGroupCodeGenerator implements I
 		String classname = _settings.getClassName();
 		String baseclass = _settings.getBaseClass();
 
-		PhaserJSDoc help = InspectCore.getPhaserHelp();
+		PhaserJsdocModel help = InspectCore.getPhaserHelp();
 
 		openIndent("class " + classname + " extends " + baseclass + " {");
 		

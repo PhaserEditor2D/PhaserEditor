@@ -46,10 +46,10 @@ import org.json.JSONTokener;
 
 import phasereditor.inspect.core.InspectCore;
 
-public class PhaserJSDoc {
-	private static PhaserJSDoc _instance;
+public class PhaserJsdocModel {
+	private static PhaserJsdocModel _instance;
 
-	public synchronized static PhaserJSDoc getInstance() {
+	public synchronized static PhaserJsdocModel getInstance() {
 		if (_instance == null) {
 			long t = currentTimeMillis();
 			Path docsJsonFile = InspectCore
@@ -58,7 +58,7 @@ public class PhaserJSDoc {
 			Path srcFolder = InspectCore.getBundleFile(InspectCore.RESOURCES_PHASER_CODE_PLUGIN, "phaser-master/src");
 
 			try {
-				_instance = new PhaserJSDoc(srcFolder, docsJsonFile);
+				_instance = new PhaserJsdocModel(srcFolder, docsJsonFile);
 				out.println("Build Phaser JSDoc " + (currentTimeMillis() - t));
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -73,7 +73,7 @@ public class PhaserJSDoc {
 
 	private Path _srcFolder;
 
-	public PhaserJSDoc(Path srcFolder, Path docsJsonFile) throws IOException {
+	public PhaserJsdocModel(Path srcFolder, Path docsJsonFile) throws IOException {
 		_srcFolder = srcFolder;
 
 		buildPhaserJSDoc(docsJsonFile);
@@ -81,6 +81,10 @@ public class PhaserJSDoc {
 
 	public Path getMemberPath(IPhaserMember member) {
 		return _srcFolder.resolve(member.getFile());
+	}
+	
+	public Path getSrcFolder() {
+		return _srcFolder;
 	}
 
 	public Map<String, IMemberContainer> getContainerMap() {
@@ -146,7 +150,8 @@ public class PhaserJSDoc {
 					IMemberContainer container = _containersMap.get(memberof);
 
 					if (container == null) {
-						err.println("!ERROR: Member-of not found. The element '" + elem.getName() + "' is member of '" + memberof + "'");
+						err.println("!ERROR: Member-of not found. The element '" + elem.getName() + "' is member of '"
+								+ memberof + "'");
 						continue;
 					}
 

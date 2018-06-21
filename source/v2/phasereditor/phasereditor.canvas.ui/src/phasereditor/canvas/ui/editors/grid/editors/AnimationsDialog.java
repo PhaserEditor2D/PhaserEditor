@@ -80,7 +80,7 @@ import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.preview.SpritesheetAnimationModel;
 import phasereditor.canvas.core.AnimationModel;
 import phasereditor.inspect.core.InspectCore;
-import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
+import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
 import phasereditor.project.core.codegen.SourceLang;
 import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.animations.FrameAnimationCanvas;
@@ -393,7 +393,7 @@ public class AnimationsDialog extends Dialog {
 			setAnimation(_animList.get(0));
 		}
 
-		PhaserJSDoc help = InspectCore.getPhaserHelp();
+		PhaserJsdocModel help = InspectCore.getPhaserHelp();
 		_lblName.setToolTipText(help.getMethodArgHelp("Phaser.AnimationManager.add", "name"));
 		_lblFrameRate.setToolTipText(help.getMethodArgHelp("Phaser.AnimationManager.add", "frameRate"));
 		_loopButton.setToolTipText(help.getMemberHelp("Phaser.Animation.loop"));

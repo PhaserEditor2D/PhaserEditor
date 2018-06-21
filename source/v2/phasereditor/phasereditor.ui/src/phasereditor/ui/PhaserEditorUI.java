@@ -357,6 +357,7 @@ public class PhaserEditorUI {
 			out.println("Open " + filePath.getFileName() + " at line " + linenum);
 
 			int index = linenum - 1;
+			
 			try {
 				int offset2 = offset;
 				if (offset == -1) {

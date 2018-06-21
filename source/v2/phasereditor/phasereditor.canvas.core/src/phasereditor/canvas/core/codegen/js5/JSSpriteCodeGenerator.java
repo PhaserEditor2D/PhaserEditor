@@ -30,7 +30,7 @@ import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.core.codegen.JSLikeBaseSpriteCodeGenerator;
 import phasereditor.inspect.core.InspectCore;
-import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
+import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
 
 /**
  * @author arian
@@ -47,7 +47,7 @@ public class JSSpriteCodeGenerator extends JSLikeBaseSpriteCodeGenerator {
 		String classname = _settings.getClassName();
 		String baseclass = _settings.getBaseClass();
 
-		PhaserJSDoc help = InspectCore.getPhaserHelp();
+		PhaserJsdocModel help = InspectCore.getPhaserHelp();
 
 		BaseSpriteModel sprite = (BaseSpriteModel) _model.getWorld().findFirstSprite();
 
