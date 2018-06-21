@@ -156,9 +156,11 @@ public class PhaserTemplateWizardPage extends WizardPage {
 		@Override
 		public Image getImage(Object element) {
 			ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+
 			if (element instanceof IProjectTemplate) {
-				return EditorSharedImages.getImage(IEditorSharedImages.IMG_TEMPLATE_OBJ);
+				return EditorSharedImages.getImage(IEditorSharedImages.IMG_GAME_CONTROLLER);
 			}
+
 			return sharedImages.getImage(ISharedImages.IMG_OBJ_FOLDER);
 		}
 
