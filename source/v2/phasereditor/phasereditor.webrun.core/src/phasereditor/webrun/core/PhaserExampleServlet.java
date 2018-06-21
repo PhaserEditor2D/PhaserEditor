@@ -32,9 +32,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import phasereditor.inspect.core.InspectCore;
-import phasereditor.inspect.core.examples.ExampleCategoryModel;
-import phasereditor.inspect.core.examples.ExampleModel;
-import phasereditor.inspect.core.examples.ExamplesRepoModel;
+import phasereditor.inspect.core.examples.PhaserExampleCategoryModel;
+import phasereditor.inspect.core.examples.PhaserExampleModel;
+import phasereditor.inspect.core.examples.PhaserExamplesRepoModel;
 
 /**
  * @author arian
@@ -52,8 +52,8 @@ public class PhaserExampleServlet extends HttpServlet {
 
 		String id = req.getParameter("n");
 
-		ExamplesRepoModel examples = InspectCore.getExamplesRepoModel();
-		ExampleModel example = (ExampleModel) examples.lookup(Integer.parseInt(id));
+		PhaserExamplesRepoModel examples = InspectCore.getPhaserExamplesRepoModel();
+		PhaserExampleModel example = (PhaserExampleModel) examples.lookup(Integer.parseInt(id));
 
 		resp.setContentType("text/html");
 
@@ -87,7 +87,7 @@ public class PhaserExampleServlet extends HttpServlet {
 
 		{
 			StringBuilder sb = new StringBuilder();
-			ExampleCategoryModel cat = example.getCategory();
+			PhaserExampleCategoryModel cat = example.getCategory();
 			do {
 				sb.insert(0, "<a href='/phaser-examples#" + examples.lookup(cat) + "'>" + cat.getName() + "</a> / ");
 				cat = cat.getParentCategory();
@@ -97,7 +97,7 @@ public class PhaserExampleServlet extends HttpServlet {
 		}
 		
 		out.println("<ul>");
-		for (ExampleModel example2 : example.getCategory().getTemplates()) {
+		for (PhaserExampleModel example2 : example.getCategory().getTemplates()) {
 			out.println("<li><a href='/phaser-example?n=" + examples.lookup(example2) + "'>" + example2.getName()
 					+ "</a></li>");
 		}

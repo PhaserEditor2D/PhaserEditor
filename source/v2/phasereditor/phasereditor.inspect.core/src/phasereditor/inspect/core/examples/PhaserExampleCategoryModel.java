@@ -29,15 +29,15 @@ import java.util.List;
 
 import phasereditor.inspect.core.IProjectTemplateCategory;
 
-public class ExampleCategoryModel implements IProjectTemplateCategory {
+public class PhaserExampleCategoryModel implements IProjectTemplateCategory {
 	private String _name;
-	private List<ExampleModel> _examples;
-	private List<ExampleCategoryModel> _subCategories;
-	private ExampleCategoryModel _parentCategory;
+	private List<PhaserExampleModel> _examples;
+	private List<PhaserExampleCategoryModel> _subCategories;
+	private PhaserExampleCategoryModel _parentCategory;
 	private Path _path;
 	private String _fullname;
 
-	public ExampleCategoryModel(ExampleCategoryModel parent, Path path, String name) {
+	public PhaserExampleCategoryModel(PhaserExampleCategoryModel parent, Path path, String name) {
 		super();
 		_name = name;
 		_examples = new ArrayList<>();
@@ -60,12 +60,12 @@ public class ExampleCategoryModel implements IProjectTemplateCategory {
 	}
 
 	@Override
-	public ExampleCategoryModel getParentCategory() {
+	public PhaserExampleCategoryModel getParentCategory() {
 		return _parentCategory;
 	}
 
 	@Override
-	public List<ExampleCategoryModel> getSubCategories() {
+	public List<PhaserExampleCategoryModel> getSubCategories() {
 		return _subCategories;
 	}
 
@@ -75,11 +75,11 @@ public class ExampleCategoryModel implements IProjectTemplateCategory {
 	}
 
 	@Override
-	public List<ExampleModel> getTemplates() {
+	public List<PhaserExampleModel> getTemplates() {
 		return _examples;
 	}
 
-	public void addExample(ExampleModel exampleModel) {
+	public void addExample(PhaserExampleModel exampleModel) {
 		_examples.add(exampleModel);
 	}
 
@@ -94,11 +94,11 @@ public class ExampleCategoryModel implements IProjectTemplateCategory {
 		}
 		out.println(getName());
 
-		for (ExampleCategoryModel c : _subCategories) {
+		for (PhaserExampleCategoryModel c : _subCategories) {
 			c.printTree(depth + 1);
 		}
 
-		for (ExampleModel e : _examples) {
+		for (PhaserExampleModel e : _examples) {
 			for (int i = 0; i < depth + 1; i++) {
 				out.print("\t");
 			}

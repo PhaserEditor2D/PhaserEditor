@@ -39,8 +39,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import phasereditor.inspect.core.IProjectTemplate;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.ProjectTemplateInfo;
+import phasereditor.ui.ISourceLocation;
 
-public class ExampleModel implements IProjectTemplate {
+public class PhaserExampleModel implements IProjectTemplate, ISourceLocation {
 	public static class Mapping {
 		private Path _original;
 		private String destiny;
@@ -63,12 +64,12 @@ public class ExampleModel implements IProjectTemplate {
 	private String _name;
 	private List<Mapping> _filesMapping;
 	private ProjectTemplateInfo _info;
-	private ExampleCategoryModel _category;
+	private PhaserExampleCategoryModel _category;
 	private Path _mainFilePath;
 	private String _fullname;
 
-	public ExampleModel(ExampleCategoryModel category, Path mainFilePath) {
-		_name = ExamplesRepoModel.getName(mainFilePath.getFileName());
+	public PhaserExampleModel(PhaserExampleCategoryModel category, Path mainFilePath) {
+		_name = PhaserExamplesRepoModel.getName(mainFilePath.getFileName());
 		_category = category;
 		_filesMapping = new ArrayList<>();
 		_info = new ProjectTemplateInfo();
@@ -206,8 +207,17 @@ public class ExampleModel implements IProjectTemplate {
 	}
 
 	@Override
-	public ExampleCategoryModel getCategory() {
+	public PhaserExampleCategoryModel getCategory() {
 		return _category;
 	}
-
+	
+	@Override
+	public Path getFilePath() {
+		return getMainFilePath();
+	}
+	
+	@Override
+	public int getLine() {
+		return -1;
+	}
 }

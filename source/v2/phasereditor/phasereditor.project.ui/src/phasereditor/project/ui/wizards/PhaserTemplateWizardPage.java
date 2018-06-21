@@ -28,12 +28,9 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
@@ -42,27 +39,23 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.wb.swt.ResourceManager;
 
 import phasereditor.inspect.core.IProjectTemplate;
 import phasereditor.inspect.core.IProjectTemplateCategory;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.ProjectTemplateInfo;
-import phasereditor.inspect.core.examples.ExampleCategoryModel;
-import phasereditor.inspect.core.examples.ExampleModel;
-import phasereditor.inspect.core.examples.ExamplesRepoModel;
-import phasereditor.inspect.core.templates.TemplateCategoryModel;
-import phasereditor.ui.EditorSharedImages;
+import phasereditor.inspect.core.examples.PhaserExamplesRepoModel;
+import phasereditor.inspect.core.examples.PhaserExampleCategoryModel;
+import phasereditor.inspect.core.examples.PhaserExampleModel;
+import phasereditor.inspect.ui.TemplateContentProvider;
+import phasereditor.inspect.ui.TemplateLabelProvider;
 import phasereditor.ui.FilteredTree2;
-import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.PatternFilter2;
 import phasereditor.webrun.ui.WebRunUI;
 
@@ -71,24 +64,9 @@ public class PhaserTemplateWizardPage extends WizardPage {
 	public static final String ROOT = "root";
 	public static final String PHASER_EXAMPLES = "Phaser Examples";
 
-	private class TemplateContentProvider implements ITreeContentProvider {
+	private class WizardTemplateContentProvider extends TemplateContentProvider {
 
-		public TemplateContentProvider() {
-		}
-
-		@Override
-		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-			// nothing
-		}
-
-		@Override
-		public void dispose() {
-			// nothing
-		}
-
-		@Override
-		public Object[] getElements(Object inputElement) {
-			return getChildren(inputElement);
+		public WizardTemplateContentProvider() {
 		}
 
 		@Override
@@ -104,29 +82,16 @@ public class PhaserTemplateWizardPage extends WizardPage {
 				return _examples.getExamplesCategories().toArray();
 			}
 
-			if (parent instanceof IProjectTemplateCategory) {
-				List<Object> list = new ArrayList<>();
-				IProjectTemplateCategory category = (IProjectTemplateCategory) parent;
-				list.addAll(category.getSubCategories());
-				list.addAll(category.getTemplates());
-				return list.toArray();
-			}
-
-			return new Object[0];
+			return super.getChildren(parent);
 		}
 
 		@Override
 		public Object getParent(Object element) {
-			if (element instanceof IProjectTemplate) {
-				return ((IProjectTemplate) element).getCategory();
-			}
-			if (element instanceof ExampleCategoryModel) {
+			if (element instanceof PhaserExampleCategoryModel) {
 				return PHASER_EXAMPLES;
 			}
-			if (element instanceof TemplateCategoryModel) {
-				return InspectCore.getGeneralTemplates();
-			}
-			return null;
+
+			return super.getParent(element);
 		}
 
 		@Override
@@ -136,7 +101,7 @@ public class PhaserTemplateWizardPage extends WizardPage {
 	}
 
 	TreeViewer _treeViewer;
-	ExamplesRepoModel _examples;
+	PhaserExamplesRepoModel _examples;
 	private IProjectTemplate _template;
 	private Browser _infoText;
 	private FilteredTree2 _filteredTree;
@@ -147,35 +112,6 @@ public class PhaserTemplateWizardPage extends WizardPage {
 		setTitle("New Phaser Project");
 		setDescription("Select a project template.");
 		_template = InspectCore.getGeneralTemplates().findById("phasereditor.demos.friend_of_cuco");
-	}
-
-	private class TemplatesLabelProvider extends LabelProvider {
-		public TemplatesLabelProvider() {
-		}
-
-		@Override
-		public Image getImage(Object element) {
-			ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
-
-			if (element instanceof IProjectTemplate) {
-				return EditorSharedImages.getImage(IEditorSharedImages.IMG_GAME_CONTROLLER);
-			}
-
-			return sharedImages.getImage(ISharedImages.IMG_OBJ_FOLDER);
-		}
-
-		@Override
-		public String getText(Object element) {
-			if (element instanceof IProjectTemplateCategory) {
-				return ((IProjectTemplateCategory) element).getName();
-			}
-
-			if (element instanceof IProjectTemplate) {
-				return ((IProjectTemplate) element).getName();
-			}
-
-			return super.getText(element);
-		}
 	}
 
 	@Override
@@ -218,8 +154,8 @@ public class PhaserTemplateWizardPage extends WizardPage {
 				updateFromSelection();
 			}
 		});
-		_treeViewer.setContentProvider(new TemplateContentProvider());
-		_treeViewer.setLabelProvider(new TemplatesLabelProvider());
+		_treeViewer.setContentProvider(new WizardTemplateContentProvider());
+		_treeViewer.setLabelProvider(new TemplateLabelProvider());
 
 		_infoText = new Browser(sashForm, SWT.BORDER);
 		sashForm.setWeights(new int[] { 2, 1 });
@@ -228,8 +164,8 @@ public class PhaserTemplateWizardPage extends WizardPage {
 	}
 
 	protected void playSelectedTemplate() {
-		if (_template != null && _template instanceof ExampleModel) {
-			ExampleModel example = (ExampleModel) _template;
+		if (_template != null && _template instanceof PhaserExampleModel) {
+			PhaserExampleModel example = (PhaserExampleModel) _template;
 			WebRunUI.openExampleInBrowser(example);
 		}
 	}
@@ -239,7 +175,7 @@ public class PhaserTemplateWizardPage extends WizardPage {
 	}
 
 	private void afterCreateWidgets() {
-		_examples = InspectCore.getExamplesRepoModel();
+		_examples = InspectCore.getPhaserExamplesRepoModel();
 
 		_treeViewer.setInput(ROOT);
 
@@ -274,7 +210,7 @@ public class PhaserTemplateWizardPage extends WizardPage {
 				sb.append(templInfo.getDescription());
 				info = sb.toString();
 
-				if (elem instanceof ExampleModel) {
+				if (elem instanceof PhaserExampleModel) {
 					_playItem.setEnabled(true);
 				}
 

@@ -18,6 +18,12 @@
             id="phasereditor.inspect.ui.views.PhaserTypesView"
             name="Phaser Types">
       </view>
+      <view
+            class="phasereditor.inspect.ui.views.PhaserExamplesView"
+            icon="platform:/plugin/phasereditor.ui/icons/controller.png"
+            id="phasereditor.inspect.ui.views.phaserExamples"
+            name="Phaser Examples">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -27,6 +33,20 @@
          <command
                commandId="phasereditor.inspect.ui.showPhaserJsdoc"
                icon="platform:/plugin/phasereditor.ui/icons/javadoc.png"
+               style="push">
+         </command>
+         <command
+               commandId="phasereditor.ui.showSourceCode"
+               icon="platform:/plugin/phasereditor.ui/icons/source.png"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:phasereditor.inspect.ui.views.phaserExamples?after=additions">
+         <command
+               commandId="phasereditor.inspect.ui.runPhaserExample"
+               icon="platform:/plugin/phasereditor.ui/icons/world.png"
                style="push">
          </command>
          <command
@@ -59,7 +79,7 @@
                <iterate
                      ifEmpty="false">
                   <adapt
-                        type="phasereditor.inspect.core.examples.ExampleModel">
+                        type="phasereditor.inspect.core.examples.PhaserExampleModel">
                   </adapt>
                </iterate>
             </with>

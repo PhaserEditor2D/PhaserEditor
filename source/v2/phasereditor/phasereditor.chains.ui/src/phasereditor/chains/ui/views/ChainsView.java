@@ -73,7 +73,7 @@ import phasereditor.chains.core.ChainsModel;
 import phasereditor.chains.core.Line;
 import phasereditor.chains.core.Match;
 import phasereditor.chains.ui.ChainsUI;
-import phasereditor.inspect.core.examples.ExampleModel;
+import phasereditor.inspect.core.examples.PhaserExampleModel;
 import phasereditor.inspect.core.jsdoc.JsdocRenderer;
 import phasereditor.inspect.ui.InspectUI;
 import phasereditor.inspect.ui.handlers.RunPhaserExampleHandler;
@@ -127,7 +127,7 @@ public class ChainsView extends ViewPart {
 				secondaryColorIndex = line.text.length();
 			} else {
 				secondaryColorIndex = 0;
-				text = ((ExampleModel) match.item).getFullName();
+				text = ((PhaserExampleModel) match.item).getFullName();
 			}
 
 			StyleRange allRange = new StyleRange(0, text.length(), null, null);

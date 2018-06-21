@@ -31,9 +31,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import phasereditor.inspect.core.InspectCore;
-import phasereditor.inspect.core.examples.ExampleCategoryModel;
-import phasereditor.inspect.core.examples.ExampleModel;
-import phasereditor.inspect.core.examples.ExamplesRepoModel;
+import phasereditor.inspect.core.examples.PhaserExampleCategoryModel;
+import phasereditor.inspect.core.examples.PhaserExampleModel;
+import phasereditor.inspect.core.examples.PhaserExamplesRepoModel;
 
 /**
  * @author arian
@@ -57,11 +57,11 @@ public class PhaserExamplesServlet extends HttpServlet {
 		out.println("<h1>Phaser Examples</h1>");
 		out.println("<small><i>Hosted locally by Phaser Editor</i></small><br><br>");
 
-		ExamplesRepoModel examples = InspectCore.getExamplesRepoModel();
+		PhaserExamplesRepoModel examples = InspectCore.getPhaserExamplesRepoModel();
 
 		out.println("<h2>Chapters</h2>");
 		out.println("<ul>");
-		for (ExampleCategoryModel cat : examples.getExamplesCategories()) {
+		for (PhaserExampleCategoryModel cat : examples.getExamplesCategories()) {
 			out.println("<li><a href='#" + examples.lookup(cat) + "'>" + cat.getName() + "</li></a>");
 		}
 		out.println("</ul>");
@@ -83,19 +83,19 @@ public class PhaserExamplesServlet extends HttpServlet {
 	 * @param examples
 	 * @param examplesCategories
 	 */
-	private void printTableOfContents(PrintStream out, ExamplesRepoModel examples, List<ExampleCategoryModel> categories) {
+	private void printTableOfContents(PrintStream out, PhaserExamplesRepoModel examples, List<PhaserExampleCategoryModel> categories) {
 
-		for (ExampleCategoryModel category : categories) {
+		for (PhaserExampleCategoryModel category : categories) {
 			out.println("<li>");
 			out.println("<h3 id='" + examples.lookup(category) + "'>" + category.getName() + "</h3>");
 
 			out.println("<ul>");
 
-			for (ExampleModel example : category.getTemplates()) {
+			for (PhaserExampleModel example : category.getTemplates()) {
 				out.println("<li><a href='/phaser-example?n=" + examples.lookup(example) + "'>" + example.getName() + "</a></li>");
 			}
 
-			List<ExampleCategoryModel> subCategories = category.getSubCategories();
+			List<PhaserExampleCategoryModel> subCategories = category.getSubCategories();
 			printTableOfContents(out, examples, subCategories);
 
 			out.println("</ul>");

@@ -26,13 +26,13 @@ import java.nio.file.Path;
 import org.eclipse.core.runtime.Adapters;
 import org.eclipse.core.runtime.IAdaptable;
 
-import phasereditor.inspect.core.examples.ExampleModel;
+import phasereditor.inspect.core.examples.PhaserExampleModel;
 import phasereditor.ui.ISourceLocation;
 
 public class Line implements IAdaptable, ISourceLocation {
 	public String text;
 	public int linenum;
-	public ExampleModel example;
+	public PhaserExampleModel example;
 
 	@Override
 	public Path getFilePath() {

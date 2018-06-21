@@ -43,16 +43,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import phasereditor.inspect.core.examples.ExampleModel.Mapping;
+import phasereditor.inspect.core.examples.PhaserExampleModel.Mapping;
 
 @SuppressWarnings("boxing")
-public class ExamplesRepoModel {
+public class PhaserExamplesRepoModel {
 	Path _examplesFolderPath;
-	List<ExampleCategoryModel> _examplesCategories;
+	List<PhaserExampleCategoryModel> _examplesCategories;
 	Map<Object, Object> _lookupTable;
 	private int _counter;
 
-	public ExamplesRepoModel(Path reposDir) {
+	public PhaserExamplesRepoModel(Path reposDir) {
 		_examplesFolderPath = reposDir.resolve("phaser3-examples/public");
 		_examplesCategories = new ArrayList<>();
 	}
@@ -63,13 +63,13 @@ public class ExamplesRepoModel {
 		buildLookupTable(_examplesCategories);
 	}
 
-	private void buildLookupTable(List<ExampleCategoryModel> categories) {
-		for (ExampleCategoryModel category : categories) {
+	private void buildLookupTable(List<PhaserExampleCategoryModel> categories) {
+		for (PhaserExampleCategoryModel category : categories) {
 			int id = _counter++;
 			_lookupTable.put(id, category);
 			_lookupTable.put(category, id);
 
-			for (ExampleModel example : category.getTemplates()) {
+			for (PhaserExampleModel example : category.getTemplates()) {
 				id = _counter++;
 				_lookupTable.put(id, example);
 				_lookupTable.put(example, id);
@@ -93,17 +93,17 @@ public class ExamplesRepoModel {
 			requiredFiles.addAll(Arrays.asList(inAssets));
 		}
 
-		Comparator<ExampleCategoryModel> comparator = new Comparator<ExampleCategoryModel>() {
+		Comparator<PhaserExampleCategoryModel> comparator = new Comparator<PhaserExampleCategoryModel>() {
 
 			@Override
-			public int compare(ExampleCategoryModel o1, ExampleCategoryModel o2) {
+			public int compare(PhaserExampleCategoryModel o1, PhaserExampleCategoryModel o2) {
 				return o1.getName().compareTo(o2.getName());
 			}
 		};
 
 		Files.walkFileTree(srcPath, new SimpleFileVisitor<Path>() {
 
-			Stack<ExampleCategoryModel> _stack = new Stack<>();
+			Stack<PhaserExampleCategoryModel> _stack = new Stack<>();
 
 			@Override
 			public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
@@ -123,8 +123,8 @@ public class ExamplesRepoModel {
 					return FileVisitResult.SKIP_SIBLINGS;
 				}
 
-				ExampleCategoryModel parent = _stack.isEmpty() ? null : _stack.peek();
-				ExampleCategoryModel category = new ExampleCategoryModel(parent, dir, getName(dir.getFileName()));
+				PhaserExampleCategoryModel parent = _stack.isEmpty() ? null : _stack.peek();
+				PhaserExampleCategoryModel category = new PhaserExampleCategoryModel(parent, dir, getName(dir.getFileName()));
 				_stack.push(category);
 
 				if (parent == null) {
@@ -136,14 +136,14 @@ public class ExamplesRepoModel {
 
 			@Override
 			public FileVisitResult visitFile(Path jsFile, BasicFileAttributes attrs) throws IOException {
-				ExampleCategoryModel category = _stack.peek();
+				PhaserExampleCategoryModel category = _stack.peek();
 
 				if (!isExampleJSFile(jsFile)) {
 					out.println("Skip " + jsFile);
 					return FileVisitResult.CONTINUE;
 				}
 
-				ExampleModel exampleModel = new ExampleModel(category, jsFile);
+				PhaserExampleModel exampleModel = new PhaserExampleModel(category, jsFile);
 
 				// add main example file
 				exampleModel.addMapping(_examplesFolderPath.relativize(jsFile), jsFile.getFileName().toString());
@@ -168,7 +168,7 @@ public class ExamplesRepoModel {
 					return FileVisitResult.CONTINUE;
 				}
 
-				ExampleCategoryModel category = _stack.pop();
+				PhaserExampleCategoryModel category = _stack.pop();
 				category.getSubCategories().sort(comparator);
 				category.getTemplates().sort((t1, t2) -> t1.getName().compareTo(t2.getName()));
 
@@ -179,7 +179,7 @@ public class ExamplesRepoModel {
 
 		_examplesCategories.sort(comparator);
 
-		for (ExampleCategoryModel c : _examplesCategories) {
+		for (PhaserExampleCategoryModel c : _examplesCategories) {
 			c.printTree(0);
 		}
 
@@ -206,7 +206,7 @@ public class ExamplesRepoModel {
 		return sb.toString();
 	}
 
-	public List<ExampleCategoryModel> getExamplesCategories() {
+	public List<PhaserExampleCategoryModel> getExamplesCategories() {
 		return _examplesCategories;
 	}
 
@@ -234,12 +234,12 @@ public class ExamplesRepoModel {
 		buildLookupTable();
 	}
 
-	private void loadCategories(JSONArray jsonCategories, ExampleCategoryModel parent) {
+	private void loadCategories(JSONArray jsonCategories, PhaserExampleCategoryModel parent) {
 		for (int i = 0; i < jsonCategories.length(); i++) {
 			JSONObject jsonCategory = jsonCategories.getJSONObject(i);
 			String relPath = jsonCategory.getString("relPath");
 			Path path = _examplesFolderPath.resolve(relPath);
-			ExampleCategoryModel category = new ExampleCategoryModel(parent, path, jsonCategory.getString("name"));
+			PhaserExampleCategoryModel category = new PhaserExampleCategoryModel(parent, path, jsonCategory.getString("name"));
 
 			if (parent == null) {
 				_examplesCategories.add(category);
@@ -253,7 +253,7 @@ public class ExamplesRepoModel {
 				JSONObject jsonExample = jsonExamples.getJSONObject(j);
 				String mainFilePathStr = jsonExample.getString("mainFile");
 				Path mainFile = _examplesFolderPath.resolve(mainFilePathStr);
-				ExampleModel example = new ExampleModel(category, mainFile);
+				PhaserExampleModel example = new PhaserExampleModel(category, mainFile);
 				category.addExample(example);
 
 				JSONArray jsonMaps = jsonExample.getJSONArray("map");
@@ -277,8 +277,8 @@ public class ExamplesRepoModel {
 		Files.write(cache, jsonDoc.toString(2).getBytes());
 	}
 
-	private void saveCategories(JSONArray jsonExamplesCategories, List<ExampleCategoryModel> categories) {
-		for (ExampleCategoryModel category : categories) {
+	private void saveCategories(JSONArray jsonExamplesCategories, List<PhaserExampleCategoryModel> categories) {
+		for (PhaserExampleCategoryModel category : categories) {
 			JSONObject jsonCategory = new JSONObject();
 			String relPath = _examplesFolderPath.relativize(category.getPath()).toString().replace("\\", "/");
 			jsonCategory.put("name", category.getName());
@@ -291,7 +291,7 @@ public class ExamplesRepoModel {
 
 			JSONArray jsonExamples = new JSONArray();
 			jsonCategory.put("examples", jsonExamples);
-			for (ExampleModel example : category.getTemplates()) {
+			for (PhaserExampleModel example : category.getTemplates()) {
 				JSONObject jsonExample = new JSONObject();
 				jsonExamples.put(jsonExample);
 				jsonExample.put("mainFile", _examplesFolderPath.relativize(example.getMainFilePath()));

@@ -34,9 +34,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import phasereditor.inspect.core.InspectCore;
-import phasereditor.inspect.core.examples.ExampleCategoryModel;
-import phasereditor.inspect.core.examples.ExampleModel;
-import phasereditor.inspect.core.examples.ExamplesRepoModel;
+import phasereditor.inspect.core.examples.PhaserExampleCategoryModel;
+import phasereditor.inspect.core.examples.PhaserExampleModel;
+import phasereditor.inspect.core.examples.PhaserExamplesRepoModel;
 import phasereditor.inspect.core.jsdoc.IMemberContainer;
 import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
 import phasereditor.inspect.core.jsdoc.PhaserMethod;
@@ -47,7 +47,7 @@ import phasereditor.inspect.core.jsdoc.PhaserVariable;
 
 public class ChainsModel {
 	private ArrayList<ChainItem> _chains;
-	private List<ExampleModel> _exampleItems;
+	private List<PhaserExampleModel> _exampleItems;
 	private List<Line> _examplesLines;
 	private PhaserJSDoc _jsdoc;
 
@@ -111,8 +111,8 @@ public class ChainsModel {
 		_examplesLines = new ArrayList<>();
 
 		try {
-			ExamplesRepoModel examples = InspectCore.getExamplesRepoModel();
-			for (ExampleCategoryModel category : examples.getExamplesCategories()) {
+			PhaserExamplesRepoModel examples = InspectCore.getPhaserExamplesRepoModel();
+			for (PhaserExampleCategoryModel category : examples.getExamplesCategories()) {
 				processCategory(category);
 			}
 		} catch (Exception e) {
@@ -120,12 +120,12 @@ public class ChainsModel {
 		}
 	}
 
-	private void processCategory(ExampleCategoryModel category) throws IOException {
-		for (ExampleCategoryModel category2 : category.getSubCategories()) {
+	private void processCategory(PhaserExampleCategoryModel category) throws IOException {
+		for (PhaserExampleCategoryModel category2 : category.getSubCategories()) {
 			processCategory(category2);
 		}
 
-		for (ExampleModel example : category.getTemplates()) {
+		for (PhaserExampleModel example : category.getTemplates()) {
 			_exampleItems.add(example);
 			List<String> contentLines = Files.readAllLines(example.getMainFilePath());
 			int linenum = 1;
@@ -196,7 +196,7 @@ public class ChainsModel {
 
 			// search of file names
 
-			for (ExampleModel example : _exampleItems) {
+			for (PhaserExampleModel example : _exampleItems) {
 				Matcher matcher = pattern.matcher(example.getFullName());
 				if (showall || matcher.matches()) {
 					Match match = new Match();

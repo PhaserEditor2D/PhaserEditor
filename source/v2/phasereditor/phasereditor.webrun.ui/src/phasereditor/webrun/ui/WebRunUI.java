@@ -45,7 +45,7 @@ import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 
 import phasereditor.inspect.core.InspectCore;
-import phasereditor.inspect.core.examples.ExampleModel;
+import phasereditor.inspect.core.examples.PhaserExampleModel;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.webrun.core.WebRunCore;
 import phasereditor.webrun.ui.editors.GamePlayerEditor;
@@ -75,12 +75,12 @@ public class WebRunUI {
 
 	}
 
-	public static void openExampleInBrowser(ExampleModel example) {
+	public static void openExampleInBrowser(PhaserExampleModel example) {
 		openExampleInBrowser(example, -1);
 	}
 
-	public static void openExampleInBrowser(ExampleModel example, int line) {
-		Object id = InspectCore.getExamplesRepoModel().lookup(example);
+	public static void openExampleInBrowser(PhaserExampleModel example, int line) {
+		Object id = InspectCore.getPhaserExamplesRepoModel().lookup(example);
 		String url = "http://localhost:" + WebRunCore.getServerPort() + "/phaser-example?n=" + id
 				+ (line == -1 ? "" : "&l=" + line);
 		openBrowser(url);

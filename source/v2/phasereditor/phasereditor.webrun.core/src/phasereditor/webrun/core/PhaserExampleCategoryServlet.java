@@ -32,8 +32,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import phasereditor.inspect.core.InspectCore;
-import phasereditor.inspect.core.examples.ExampleCategoryModel;
-import phasereditor.inspect.core.examples.ExampleModel;
+import phasereditor.inspect.core.examples.PhaserExampleCategoryModel;
+import phasereditor.inspect.core.examples.PhaserExampleModel;
 
 /**
  * @author arian
@@ -57,11 +57,11 @@ public class PhaserExampleCategoryServlet extends HttpServlet {
 
 		out.println("<body style='font-family:arial;margin:1em'>");
 
-		Optional<ExampleCategoryModel> opt = InspectCore.getExamplesRepoModel().getExamplesCategories().stream()
+		Optional<PhaserExampleCategoryModel> opt = InspectCore.getPhaserExamplesRepoModel().getExamplesCategories().stream()
 				.filter(c -> c.getName().equals(fname)).findFirst();
 
 		if (opt.isPresent()) {
-			ExampleCategoryModel cat = opt.get();
+			PhaserExampleCategoryModel cat = opt.get();
 
 			out.println("<h1>" + cat.getName() + "</h1>");
 			out.println("<small><i>Hosted locally by Phaser Editor</i></small><br><br>");
@@ -71,7 +71,7 @@ public class PhaserExampleCategoryServlet extends HttpServlet {
 			Path root = InspectCore.getBundleFile(InspectCore.RESOURCES_EXAMPLES_PLUGIN,
 					"phaser3-examples/public/");
 
-			for (ExampleModel example : cat.getTemplates()) {
+			for (PhaserExampleModel example : cat.getTemplates()) {
 				String url = root.relativize(example.getMainFilePath()).toString().replace("\\", "/");
 
 				out.println("<a href='/phaser-example?n=" + url + "'>" + example.getName() + "</a>");

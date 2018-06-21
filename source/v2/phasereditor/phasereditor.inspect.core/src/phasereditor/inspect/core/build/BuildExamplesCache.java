@@ -28,8 +28,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import phasereditor.inspect.core.InspectCore;
-import phasereditor.inspect.core.examples.ExampleCategoryModel;
-import phasereditor.inspect.core.examples.ExamplesRepoModel;
+import phasereditor.inspect.core.examples.PhaserExampleCategoryModel;
+import phasereditor.inspect.core.examples.PhaserExamplesRepoModel;
 
 class BuildExamplesCache {
 	public static void main(String[] args) throws IOException {
@@ -37,18 +37,18 @@ class BuildExamplesCache {
 		Path examplesProjectPath = wsPath.resolve(InspectCore.RESOURCES_EXAMPLES_PLUGIN);
 		Path metadataProjectPath = wsPath.resolve(InspectCore.RESOURCES_METADATA_PLUGIN);
 
-		ExamplesRepoModel model = new ExamplesRepoModel(examplesProjectPath);
+		PhaserExamplesRepoModel model = new PhaserExamplesRepoModel(examplesProjectPath);
 		model.build();
 		Path cache = metadataProjectPath.resolve("phaser-custom/examples/examples-cache.json");
 		model.saveCache(cache);
 
 		// verify
-		model = new ExamplesRepoModel(examplesProjectPath);
+		model = new PhaserExamplesRepoModel(examplesProjectPath);
 		model.loadCache(cache);
 		
 		out.println("\n\n\n\n\n\n\n\n");
 		
-		for(ExampleCategoryModel c : model.getExamplesCategories()) {
+		for(PhaserExampleCategoryModel c : model.getExamplesCategories()) {
 			c.printTree(0);
 		}
 
