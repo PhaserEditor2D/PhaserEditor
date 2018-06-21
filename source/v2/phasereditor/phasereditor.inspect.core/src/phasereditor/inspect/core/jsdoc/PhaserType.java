@@ -23,7 +23,9 @@ package phasereditor.inspect.core.jsdoc;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.json.JSONObject;
 
@@ -38,6 +40,8 @@ public class PhaserType extends PhaserNamespace implements ITypeMember {
 	private List<PhaserMethodArg> _constructorArgs;
 	private boolean _enum;
 	private String[] _enumElementsType;
+	private Set<PhaserType> _extenders;
+	private Set<PhaserType> _extending;
 
 	public PhaserType(JSONObject json) {
 		super(json);
@@ -45,6 +49,16 @@ public class PhaserType extends PhaserNamespace implements ITypeMember {
 		_extends = Collections.emptyList();
 		_constructor = false;
 		_enum = false;
+		_extending = new LinkedHashSet<>();
+		_extenders = new LinkedHashSet<>();
+	}
+
+	public Set<PhaserType> getExtending() {
+		return _extending;
+	}
+
+	public Set<PhaserType> getExtenders() {
+		return _extenders;
 	}
 
 	public List<String> getExtends() {
@@ -83,7 +97,7 @@ public class PhaserType extends PhaserNamespace implements ITypeMember {
 	public void setEnumElementsType(String[] enumElementsType) {
 		_enumElementsType = enumElementsType;
 	}
-	
+
 	public String[] getEnumElementsType() {
 		return _enumElementsType;
 	}

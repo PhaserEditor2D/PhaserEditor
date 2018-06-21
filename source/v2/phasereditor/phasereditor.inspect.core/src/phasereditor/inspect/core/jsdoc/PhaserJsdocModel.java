@@ -240,6 +240,9 @@ public class PhaserJsdocModel {
 				// out.println("Ignore " + superTypeName);
 				continue;
 			}
+			
+			superType.getExtenders().add(type);
+			type.getExtending().add(superType);
 
 			buildInheritance(visited, superType);
 

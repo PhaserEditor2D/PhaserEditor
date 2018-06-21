@@ -32,6 +32,13 @@
             id="phasereditor.inspect.ui.views.PhaserFilesView"
             name="Phaser Files">
       </view>
+      <view
+            category="phasereditor.ui.phaser"
+            class="phasereditor.inspect.ui.views.PhaserHierarchyView"
+            icon="platform:/plugin/phasereditor.ui/icons/class_hi.png"
+            id="phasereditor.inspect.ui.views.PhaserHierarchyView"
+            name="Phaser Hierarchy">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -66,6 +73,20 @@
       <menuContribution
             allPopups="false"
             locationURI="toolbar:phasereditor.inspect.ui.views.PhaserFilesView?after=additions">
+         <command
+               commandId="phasereditor.inspect.ui.showPhaserJsdoc"
+               icon="platform:/plugin/phasereditor.ui/icons/javadoc.png"
+               style="push">
+         </command>
+         <command
+               commandId="phasereditor.ui.showSourceCode"
+               icon="platform:/plugin/phasereditor.ui/icons/source.png"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:phasereditor.inspect.ui.views.PhaserHierarchyView?after=additions">
          <command
                commandId="phasereditor.inspect.ui.showPhaserJsdoc"
                icon="platform:/plugin/phasereditor.ui/icons/javadoc.png"

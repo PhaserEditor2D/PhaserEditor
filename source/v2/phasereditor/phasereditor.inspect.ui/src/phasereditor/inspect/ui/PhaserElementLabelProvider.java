@@ -22,8 +22,10 @@
 package phasereditor.inspect.ui;
 
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.swt.graphics.Image;
 
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
+import phasereditor.inspect.core.jsdoc.JsdocRenderer;
 
 /**
  * @author arian
@@ -36,5 +38,13 @@ public class PhaserElementLabelProvider extends LabelProvider {
 			return ((IPhaserMember) element).getName();
 		}
 		return super.getText(element);
+	}
+
+	@Override
+	public Image getImage(Object element) {
+		if (element instanceof IPhaserMember) {
+			return JsdocRenderer.getInstance().getImage((IPhaserMember) element);
+		}
+		return super.getImage(element);
 	}
 }
