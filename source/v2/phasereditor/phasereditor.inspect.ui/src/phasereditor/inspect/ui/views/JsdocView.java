@@ -7,16 +7,15 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.inspect.core.jsdoc.IJsdocProvider;
+import phasereditor.inspect.core.jsdoc.JsdocRenderer;
 
 public class JsdocView extends ViewPart implements ISelectionListener {
 
@@ -68,7 +67,7 @@ public class JsdocView extends ViewPart implements ISelectionListener {
 		} else {
 			html = provider.getJsdoc();
 		}
-		_browser.setText(wrapBody(html));
+		_browser.setText(JsdocRenderer.wrapDocBody(html));
 	}
 
 	@Override
@@ -78,16 +77,6 @@ public class JsdocView extends ViewPart implements ISelectionListener {
 			obj = ((IStructuredSelection) selection).getFirstElement();
 		}
 		showJsdocFor(obj);
-	}
-
-	private static String wrapBody(String doc) {
-		RGB rgb = SWTResourceManager.getColor(SWT.COLOR_INFO_BACKGROUND).getRGB();
-		String color = "rgb(" + rgb.red + ", " + rgb.green + ", " + rgb.blue + ")";
-
-		String html = "<html><body style='background:\"" + color + "\";'>";
-		html += doc;
-		html += "</body></html>";
-		return html;
 	}
 
 }

@@ -74,7 +74,8 @@ import phasereditor.chains.core.Line;
 import phasereditor.chains.core.Match;
 import phasereditor.chains.ui.ChainsUI;
 import phasereditor.inspect.core.examples.ExampleModel;
-import phasereditor.inspect.core.jsdoc.JSDocRenderer;
+import phasereditor.inspect.core.jsdoc.JsdocRenderer;
+import phasereditor.inspect.ui.InspectUI;
 import phasereditor.inspect.ui.handlers.RunPhaserExampleHandler;
 import phasereditor.inspect.ui.handlers.ShowPhaserJsdocHandler;
 import phasereditor.ui.EditorSharedImages;
@@ -189,7 +190,7 @@ public class ChainsView extends ViewPart {
 
 			cell.setText(text);
 			cell.setStyleRanges(ranges);
-			cell.setImage(JSDocRenderer.getInstance().getImage(chain.getPhaserMember()));
+			cell.setImage(JsdocRenderer.getInstance().getImage(chain.getPhaserMember()));
 		}
 	}
 
@@ -302,6 +303,7 @@ public class ChainsView extends ViewPart {
 		}.schedule();
 
 		PhaserEditorUI.refreshViewerWhenPreferencesChange(ChainsUI.getPreferenceStore(), _chainsViewer);
+		InspectUI.installJsdocTooltips(_chainsViewer);
 
 		getViewSite().setSelectionProvider(_chainsViewer);
 

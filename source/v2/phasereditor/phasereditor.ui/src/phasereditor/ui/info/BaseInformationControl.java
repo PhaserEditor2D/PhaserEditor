@@ -37,10 +37,21 @@ public abstract class BaseInformationControl extends AbstractInformationControl
 	private Control _contentControl;
 
 	/**
-	 * This is used because there are scenarios where the
-	 * {@link #setInput(Object)} method is not called. It is the case of the
-	 * "hover" in the javascript editor, cause it uses a {@link BestMatchHover}
-	 * wrapper that does not implements {@link IInformationControlExtension2}.
+	 * This is used because there are scenarios where the {@link #setInput(Object)}
+	 * method is not called. It is the case of the "hover" in the javascript editor,
+	 * cause it uses a {@link BestMatchHover} wrapper that does not implements
+	 * {@link IInformationControlExtension2}.
+	 */
+	public BaseInformationControl(Shell parentShell, boolean isResizable) {
+		super(parentShell, isResizable);
+		create();
+	}
+
+	/**
+	 * This is used because there are scenarios where the {@link #setInput(Object)}
+	 * method is not called. It is the case of the "hover" in the javascript editor,
+	 * cause it uses a {@link BestMatchHover} wrapper that does not implements
+	 * {@link IInformationControlExtension2}.
 	 */
 	public BaseInformationControl(Shell parentShell) {
 		super(parentShell, false);

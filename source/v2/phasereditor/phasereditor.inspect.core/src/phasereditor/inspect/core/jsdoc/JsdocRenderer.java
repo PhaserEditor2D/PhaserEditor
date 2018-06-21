@@ -28,7 +28,10 @@ import java.util.List;
 import org.eclipse.mylyn.wikitext.markdown.MarkdownLanguage;
 import org.eclipse.mylyn.wikitext.parser.MarkupParser;
 import org.eclipse.mylyn.wikitext.parser.builder.HtmlDocumentBuilder;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
@@ -40,12 +43,23 @@ import phasereditor.ui.IEditorSharedImages;
  *
  */
 @SuppressWarnings({ "static-method", "restriction" })
-public class JSDocRenderer {
-	private static JSDocRenderer _instance = new JSDocRenderer();
+public class JsdocRenderer {
+	private static JsdocRenderer _instance = new JsdocRenderer();
 
-	public static JSDocRenderer getInstance() {
+	public static JsdocRenderer getInstance() {
 		return _instance;
 	}
+	
+	public static String wrapDocBody(String doc) {
+		RGB rgb = SWTResourceManager.getColor(SWT.COLOR_INFO_BACKGROUND).getRGB();
+		String color = "rgb(" + rgb.red + ", " + rgb.green + ", " + rgb.blue + ")";
+
+		String html = "<html><body style='background:\"" + color + "\";'>";
+		html += doc;
+		html += "</body></html>";
+		return html;
+	}
+
 
 	public String markdownToHtml(String markdown) {
 		try (StringWriter writer = new StringWriter()) {

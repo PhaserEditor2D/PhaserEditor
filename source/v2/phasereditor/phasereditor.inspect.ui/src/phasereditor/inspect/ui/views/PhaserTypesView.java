@@ -109,6 +109,8 @@ public class PhaserTypesView extends ViewPart {
 		getViewSite().setSelectionProvider(_filteredTree.getViewer());
 
 		_filteredTree.getViewer().setInput(InspectCore.getPhaserHelp());
+
+		InspectUI.installJsdocTooltips(_filteredTree.getViewer());
 	}
 
 	/**

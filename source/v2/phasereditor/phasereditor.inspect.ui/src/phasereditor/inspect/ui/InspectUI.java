@@ -22,11 +22,24 @@
 package phasereditor.inspect.ui;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.eclipse.core.runtime.Adapters;
+import org.eclipse.jface.text.IInformationControl;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
+import com.subshell.snippets.jface.tooltip.tooltipsupport.ICustomInformationControlCreator;
+import com.subshell.snippets.jface.tooltip.tooltipsupport.TableViewerInformationProvider;
+import com.subshell.snippets.jface.tooltip.tooltipsupport.Tooltips;
+import com.subshell.snippets.jface.tooltip.tooltipsupport.TreeViewerInformationProvider;
+
+import phasereditor.inspect.core.jsdoc.IJsdocProvider;
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.core.jsdoc.PhaserJSDoc;
 import phasereditor.inspect.ui.views.JsdocView;
@@ -38,6 +51,41 @@ import phasereditor.ui.PhaserEditorUI;
  */
 public class InspectUI {
 	public static final String JSDOC_VIEW_ID = "phasereditor.inspect.ui.jsdoc";
+	private static List<ICustomInformationControlCreator> _informationControls;
+
+	public static void installJsdocTooltips(TreeViewer viewer) {
+		List<ICustomInformationControlCreator> creators = getInformationControlCreatorsForTooltips();
+
+		Tooltips.install(viewer.getControl(), new TreeViewerInformationProvider(viewer), creators, false);
+	}
+
+	public static void installJsdocTooltips(TableViewer viewer) {
+		List<ICustomInformationControlCreator> creators = getInformationControlCreatorsForTooltips();
+
+		Tooltips.install(viewer.getControl(), new TableViewerInformationProvider(viewer), creators, false);
+	}
+
+	private static List<ICustomInformationControlCreator> getInformationControlCreatorsForTooltips() {
+		if (_informationControls == null) {
+			_informationControls = new ArrayList<>();
+
+			_informationControls.add(new ICustomInformationControlCreator() {
+
+				@Override
+				public IInformationControl createInformationControl(Shell parent) {
+					return new PhaserJsdocInformationControl(parent);
+				}
+
+				@Override
+				public boolean isSupported(Object info) {
+					IJsdocProvider provider = Adapters.adapt(info, IJsdocProvider.class);
+					return provider != null;
+				}
+			});
+		}
+
+		return _informationControls;
+	}
 
 	public static void showSourceCode(IPhaserMember member) {
 		PhaserJSDoc jsdoc = PhaserJSDoc.getInstance();

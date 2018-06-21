@@ -29,7 +29,7 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
-import phasereditor.inspect.core.jsdoc.JSDocRenderer;
+import phasereditor.inspect.core.jsdoc.JsdocRenderer;
 import phasereditor.inspect.core.jsdoc.PhaserMethod;
 import phasereditor.inspect.core.jsdoc.PhaserMethodArg;
 import phasereditor.inspect.core.jsdoc.PhaserNamespace;
@@ -97,7 +97,7 @@ public class PhaserTypesColumnLabelProvider extends StyledCellLabelProvider {
 			cell.setStyleRanges(new StyleRange[] { styleRange });
 		}
 		cell.setText(text);
-		cell.setImage(JSDocRenderer.getInstance().getImage(member));
+		cell.setImage(JsdocRenderer.getInstance().getImage(member));
 
 		super.update(cell);
 	}

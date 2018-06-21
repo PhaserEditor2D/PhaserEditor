@@ -52,7 +52,7 @@ public class Tooltips {
 			List<ICustomInformationControlCreator> controlCreators, boolean takeFocusWhenVisible) {
 		final InformationControlManager informationControlManager = new InformationControlManager(provider,
 				controlCreators, takeFocusWhenVisible);
-		informationControlManager.setSizeConstraints(40, 12, false, true);
+		//informationControlManager.setSizeConstraints(40, 12, false, true);
 		informationControlManager.install(control);
 
 		// MouseListener to show the information when the user hovers a table

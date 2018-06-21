@@ -19,24 +19,45 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.inspect.core.jsdoc;
+package phasereditor.inspect.ui;
+
+import org.eclipse.core.runtime.Adapters;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
+
+import phasereditor.inspect.core.jsdoc.IJsdocProvider;
+import phasereditor.inspect.core.jsdoc.JsdocRenderer;
+import phasereditor.ui.info.BaseInformationControl;
 
 /**
  * @author arian
  *
  */
-public class PhaserMemberJsdocProvider implements IJsdocProvider {
+public class PhaserJsdocInformationControl extends BaseInformationControl {
 
-	private IPhaserMember _member;
-
-	public PhaserMemberJsdocProvider(IPhaserMember member) {
-		super();
-		_member = member;
+	public PhaserJsdocInformationControl(Shell parentShell) {
+		super(parentShell, true);
 	}
 
 	@Override
-	public String getJsdoc() {
-		return JsdocRenderer.getInstance().render(_member);
+	protected Control createContent2(Composite parentComp) {
+		return new Browser(parentComp, SWT.NONE);
+	}
+
+	@Override
+	protected void updateContent(Control control, Object model) {
+		IJsdocProvider provider = Adapters.adapt(model, IJsdocProvider.class);
+		Browser browser = (Browser) control;
+		browser.setText(JsdocRenderer.wrapDocBody(provider.getJsdoc()));
+	}
+
+	@Override
+	public Point computeSizeHint() {
+		return new Point(255 * 2, 200 * 2);
 	}
 
 }
