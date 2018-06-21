@@ -51,7 +51,12 @@ public class PhaserHierarchyView extends ViewPart implements ISelectionListener 
 	@Override
 	public void createPartControl(Composite parent) {
 		_viewer = new TreeViewer(parent);
-		_viewer.setLabelProvider(new PhaserElementLabelProvider());
+		_viewer.setLabelProvider(new PhaserElementLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((IPhaserMember) element).getName();
+			}
+		});
 		_viewer.setContentProvider(new PhaserHierarchyContentProvider());
 
 		afterCreateWidgets();

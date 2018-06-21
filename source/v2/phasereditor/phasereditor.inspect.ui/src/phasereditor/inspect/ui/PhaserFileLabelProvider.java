@@ -23,6 +23,8 @@ package phasereditor.inspect.ui;
 
 import java.nio.file.Path;
 
+import phasereditor.inspect.core.jsdoc.IPhaserMember;
+
 /**
  * @author arian
  *
@@ -31,6 +33,10 @@ public class PhaserFileLabelProvider extends PhaserElementLabelProvider {
 
 	@Override
 	public String getText(Object element) {
+		if (element instanceof IPhaserMember) {
+			return ((IPhaserMember) element).getName();
+		}
+
 		if (element instanceof Path) {
 			return ((Path) element).getFileName().toString();
 		}

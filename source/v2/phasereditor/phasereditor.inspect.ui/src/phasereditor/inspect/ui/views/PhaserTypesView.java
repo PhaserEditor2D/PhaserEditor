@@ -42,7 +42,6 @@ import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.dialogs.FilteredTree;
-import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.part.ViewPart;
 
 import phasereditor.inspect.core.InspectCore;
@@ -51,6 +50,7 @@ import phasereditor.inspect.ui.InspectUI;
 import phasereditor.inspect.ui.PhaserElementContentProvider;
 import phasereditor.inspect.ui.PhaserElementLabelProvider;
 import phasereditor.inspect.ui.PhaserElementStyledLabelProvider;
+import phasereditor.ui.PatternFilter2;
 
 /**
  * @author arian
@@ -74,8 +74,7 @@ public class PhaserTypesView extends ViewPart implements ISelectionListener {
 		Composite container = new Composite(parent, SWT.NONE);
 		container.setLayout(new FillLayout());
 
-		PatternFilter filter = new PatternFilter();
-		filter.setIncludeLeadingWildcard(true);
+		PatternFilter2 filter = new PatternFilter2();
 
 		_filteredTree = new FilteredTree(container, SWT.NONE, filter, true);
 

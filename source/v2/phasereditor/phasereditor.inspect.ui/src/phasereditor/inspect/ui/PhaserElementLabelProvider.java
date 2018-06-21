@@ -26,6 +26,7 @@ import org.eclipse.swt.graphics.Image;
 
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.core.jsdoc.JsdocRenderer;
+import phasereditor.inspect.core.jsdoc.PhaserNamespace;
 
 /**
  * @author arian
@@ -34,6 +35,9 @@ import phasereditor.inspect.core.jsdoc.JsdocRenderer;
 public class PhaserElementLabelProvider extends LabelProvider {
 	@Override
 	public String getText(Object element) {
+		if (element instanceof PhaserNamespace) {
+			return ((PhaserNamespace) element).getSimpleName();
+		}
 		if (element instanceof IPhaserMember) {
 			return ((IPhaserMember) element).getName();
 		}
