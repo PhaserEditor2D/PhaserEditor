@@ -21,16 +21,26 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.ui.views;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.core.runtime.Adapters;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TreeColumn;
+import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.part.ViewPart;
@@ -38,15 +48,15 @@ import org.eclipse.ui.part.ViewPart;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.ui.InspectUI;
+import phasereditor.inspect.ui.PhaserElementContentProvider;
 import phasereditor.inspect.ui.PhaserElementLabelProvider;
 import phasereditor.inspect.ui.PhaserElementStyledLabelProvider;
-import phasereditor.inspect.ui.PhaserElementContentProvider;
 
 /**
  * @author arian
  *
  */
-public class PhaserTypesView extends ViewPart {
+public class PhaserTypesView extends ViewPart implements ISelectionListener {
 
 	public static final String ID = "phasereditor.inspect.ui.views.PhaserTypesView"; //$NON-NLS-1$
 	private FilteredTree _filteredTree;
@@ -108,6 +118,8 @@ public class PhaserTypesView extends ViewPart {
 		_filteredTree.getViewer().setInput(InspectCore.getPhaserHelp());
 
 		InspectUI.installJsdocTooltips(_filteredTree.getViewer());
+
+		getViewSite().getWorkbenchWindow().getSelectionService().addSelectionListener(this);
 	}
 
 	/**
@@ -136,6 +148,43 @@ public class PhaserTypesView extends ViewPart {
 	@Override
 	public void setFocus() {
 		_filteredTree.getFilterControl().setFocus();
+	}
+
+	@Override
+	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+		if (part == this) {
+			return;
+		}
+
+		if (selection instanceof IStructuredSelection) {
+			Object elem = ((IStructuredSelection) selection).getFirstElement();
+			IPhaserMember member = Adapters.adapt(elem, IPhaserMember.class);
+
+			if (member == null) {
+				return;
+			}
+
+			TreeViewer viewer = _filteredTree.getViewer();
+			viewer.reveal(new TreePath(buildTreePath(member)));
+			viewer.setSelection(new StructuredSelection(member));
+		}
+
+	}
+
+	private Object[] buildTreePath(IPhaserMember member) {
+		List<IPhaserMember> path = new ArrayList<>();
+
+		buildTreePath(path, member);
+
+		return path.toArray();
+	}
+
+	private void buildTreePath(List<IPhaserMember> path, IPhaserMember member) {
+		path.add(member);
+
+		if (member.getContainer() != null) {
+			buildTreePath(path, member.getContainer());
+		}
 	}
 
 }
