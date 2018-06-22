@@ -19,46 +19,23 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.inspect.ui;
+package phasereditor.inspect.core.jsdoc;
 
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.swt.graphics.Image;
-
-import phasereditor.inspect.core.jsdoc.GlobalScope;
-import phasereditor.inspect.core.jsdoc.IPhaserMember;
-import phasereditor.inspect.core.jsdoc.JsdocRenderer;
-import phasereditor.inspect.core.jsdoc.PhaserNamespace;
+import java.util.List;
 
 /**
  * @author arian
  *
  */
-public class PhaserElementLabelProvider extends LabelProvider {
-	@Override
-	public String getText(Object element) {
-		if (element instanceof GlobalScope) {
-			return "Global";
-		}
+public class GlobalScope {
+	private List<IPhaserMember> _members;
 
-		if (element instanceof PhaserNamespace) {
-			return ((PhaserNamespace) element).getSimpleName();
-		}
-		if (element instanceof IPhaserMember) {
-			return ((IPhaserMember) element).getName();
-		}
-		return super.getText(element);
+	public GlobalScope(List<IPhaserMember> members) {
+		super();
+		_members = members;
 	}
 
-	@Override
-	public Image getImage(Object element) {
-		if (element instanceof IPhaserMember) {
-			return JsdocRenderer.getInstance().getImage((IPhaserMember) element);
-		}
-
-		if (element instanceof GlobalScope) {
-			return JsdocRenderer.getInstance().getGlobalScopeImage();
-		}
-
-		return super.getImage(element);
+	public List<IPhaserMember> getMembers() {
+		return _members;
 	}
 }

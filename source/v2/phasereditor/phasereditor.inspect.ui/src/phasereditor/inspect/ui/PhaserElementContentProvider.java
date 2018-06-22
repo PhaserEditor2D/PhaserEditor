@@ -23,10 +23,10 @@ package phasereditor.inspect.ui;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 
+import phasereditor.inspect.core.jsdoc.GlobalScope;
 import phasereditor.inspect.core.jsdoc.IMemberContainer;
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
@@ -39,18 +39,24 @@ public class PhaserElementContentProvider implements ITreeContentProvider {
 
 	@Override
 	public Object[] getElements(Object inputElement) {
-		
+
 		if (inputElement instanceof PhaserJsdocModel) {
 			PhaserJsdocModel docs = (PhaserJsdocModel) inputElement;
-			Map<String, IMemberContainer> map = docs.getContainerMap();
-			return new Object[] { map.get("Phaser"), map.get("MatterJS") };
+			List<Object> list = new ArrayList<>(docs.getRootNamespaces());
+			list.add(docs.getGlobalScope());
+
+			return list.toArray();
 		}
-		
+
 		return new Object[] {};
 	}
 
 	@Override
 	public Object[] getChildren(Object parentElement) {
+		if (parentElement instanceof GlobalScope) {
+			return ((GlobalScope) parentElement).getMembers().toArray();
+		}
+
 		if (parentElement instanceof IMemberContainer) {
 			IMemberContainer container = (IMemberContainer) parentElement;
 			List<Object> list = new ArrayList<>();

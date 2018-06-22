@@ -49,7 +49,7 @@ public class JsdocRenderer {
 	public static JsdocRenderer getInstance() {
 		return _instance;
 	}
-	
+
 	public static String wrapDocBody(String doc) {
 		RGB rgb = SWTResourceManager.getColor(SWT.COLOR_INFO_BACKGROUND).getRGB();
 		String color = "rgb(" + rgb.red + ", " + rgb.green + ", " + rgb.blue + ")";
@@ -59,7 +59,6 @@ public class JsdocRenderer {
 		html += "</body></html>";
 		return html;
 	}
-
 
 	public String markdownToHtml(String markdown) {
 		try (StringWriter writer = new StringWriter()) {
@@ -93,6 +92,10 @@ public class JsdocRenderer {
 		}
 
 		return EditorSharedImages.getImage(key);
+	}
+
+	public Image getGlobalScopeImage() {
+		return EditorSharedImages.getImage(IEditorSharedImages.IMG_PACKAGE_OBJ);
 	}
 
 	public String render(Object member) {

@@ -70,8 +70,10 @@ public class PhaserJsdocModel {
 
 	private Map<String, IMemberContainer> _containersMap;
 	private Map<String, IPhaserMember> _membersMap;
+	private List<IPhaserMember> _rootNamespaces;
 
 	private Path _srcFolder;
+	private GlobalScope _globalScope;
 
 	public PhaserJsdocModel(Path srcFolder, Path docsJsonFile) throws IOException {
 		_srcFolder = srcFolder;
@@ -82,7 +84,7 @@ public class PhaserJsdocModel {
 	public Path getMemberPath(IPhaserMember member) {
 		return _srcFolder.resolve(member.getFile());
 	}
-	
+
 	public Path getSrcFolder() {
 		return _srcFolder;
 	}
@@ -107,6 +109,7 @@ public class PhaserJsdocModel {
 	private void buildPhaserJSDoc(Path docsJsonFile) throws IOException {
 		_containersMap = new HashMap<>();
 		_membersMap = new HashMap<>();
+		_rootNamespaces = new ArrayList<>();
 
 		if (!Files.exists(docsJsonFile)) {
 			return;
@@ -136,6 +139,7 @@ public class PhaserJsdocModel {
 				}
 
 				buildClass(obj);
+				buildTypeDef(obj);
 			}
 
 			// link to containers
@@ -208,7 +212,31 @@ public class PhaserJsdocModel {
 					container.build();
 				}
 			}
+
+			{
+				List<IPhaserMember> globals = new ArrayList<>();
+				// build root members
+				for (IPhaserMember member : _membersMap.values()) {
+					if (member.getContainer() == null) {
+						if (member.getClass() == PhaserNamespace.class) {
+							_rootNamespaces.add(member);
+						} else {
+							globals.add(member);
+						}
+					}
+				}
+				globals.sort((a, b) -> a.getName().compareTo(b.getName()));
+				_globalScope = new GlobalScope(globals);
+			}
 		}
+	}
+
+	public GlobalScope getGlobalScope() {
+		return _globalScope;
+	}
+
+	public List<IPhaserMember> getRootNamespaces() {
+		return _rootNamespaces;
 	}
 
 	@SuppressWarnings("unused")
@@ -240,7 +268,7 @@ public class PhaserJsdocModel {
 				// out.println("Ignore " + superTypeName);
 				continue;
 			}
-			
+
 			superType.getExtenders().add(type);
 			type.getExtending().add(superType);
 
@@ -524,6 +552,47 @@ public class PhaserJsdocModel {
 				container.getMemberMap().put(longname, type);
 				buildMeta(type, obj);
 			}
+		}
+	}
+
+	private void buildTypeDef(JSONObject obj) {
+		String kind = obj.getString("kind");
+		if (kind.equals("typedef")) {
+
+			String longname = obj.getString("longname");
+
+			String desc = obj.optString("description", null);
+			if (desc == null) {
+				desc = obj.optString("classdesc", "");
+			}
+
+			PhaserType type = new PhaserType(obj);
+			_containersMap.put(longname, type);
+			_membersMap.put(longname, type);
+
+			type.setName(longname);
+			type.setHelp(desc);
+
+			JSONArray propertiesJson = obj.optJSONArray("properties");
+			if (propertiesJson != null) {
+				for (int i = 0; i < propertiesJson.length(); i++) {
+					JSONObject propertyJson = propertiesJson.getJSONObject(i);
+					String propName = propertyJson.getString("name");
+					String propLongname = longname + "." + propName;
+					propertyJson.put("longname", propLongname);
+					PhaserProperty property = new PhaserProperty(propertyJson);
+					property.setName(propName);
+					property.setDeclType(type);
+					property.setContainer(type);
+					property.setTypes(parseElementTypes(propertyJson));
+					property.setHelp(propertyJson.optString("description", ""));
+					_membersMap.put(propLongname, property);
+					type.getMemberMap().put(propName, property);
+					buildMeta(property, obj);
+				}
+			}
+
+			buildMeta(type, obj);
 		}
 	}
 
