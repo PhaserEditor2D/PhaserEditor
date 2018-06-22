@@ -25,6 +25,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -47,17 +48,26 @@ public class PhaserFilesModel {
 	private void build() {
 		_pathMembersMap = new HashMap<>();
 
+		Map<Path, List<IPhaserMember>> map = new HashMap<>();
+
 		for (IPhaserMember member : _jsdocModel.getMembersMap().values()) {
 			Path file = realFile(member);
 			List<IPhaserMember> list;
-			if (_pathMembersMap.containsKey(file)) {
-				list = _pathMembersMap.get(file);
+			if (map.containsKey(file)) {
+				list = map.get(file);
 			} else {
 				list = new ArrayList<>();
-				IPhaserMember rootMemeber = findRootMember(member);
-				list.add(rootMemeber);
-				_pathMembersMap.put(file, list);
 			}
+			IPhaserMember rootMemeber = findRootMember(member);
+			list.add(rootMemeber);
+			map.put(file, list);
+		}
+
+		for (Path file : map.keySet()) {
+			List<IPhaserMember> list = map.get(file);
+			list = new ArrayList<>(new HashSet<>(list));
+			list.sort((a, b) -> a.getName().compareTo(b.getName()));
+			_pathMembersMap.put(file, list);
 		}
 	}
 
