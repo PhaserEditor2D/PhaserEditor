@@ -97,6 +97,12 @@
             id="phasereditor.ide.ui.perspective"
             name="Phaser">
       </perspective>
+      <perspective
+            class="phasereditor.ide.ui.LabsPerspectiveFactory"
+            icon="platform:/plugin/phasereditor.ui/icons/potion.png"
+            id="phasereditor.ide.ui.labs"
+            name="Labs">
+      </perspective>
    </extension>   <extension
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
@@ -138,6 +144,39 @@
          <showInPart
                id="phasereditor.ui.preview">
          </showInPart>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="phasereditor.ide.ui.labs">
+         <view
+               id="phasereditor.inspect.ui.views.phaserExamples"
+               minimized="false"
+               relationship="stack">
+         </view>
+         <view
+               id="phasereditor.inspect.ui.views.PhaserFilesView"
+               minimized="false"
+               relationship="stack">
+         </view>
+         <view
+               id="phasereditor.inspect.ui.views.PhaserHierarchyView"
+               minimized="false"
+               relationship="stack">
+         </view>
+         <view
+               id="phasereditor.chains.ui.views.chains"
+               minimized="false"
+               relationship="stack">
+         </view>
+         <view
+               id="phasereditor.inspect.ui.views.PhaserTypesView"
+               minimized="false"
+               relationship="stack">
+         </view>
+         <view
+               id="org.eclipse.ui.navigator.ProjectExplorer"
+               minimized="false"
+               relationship="stack">
+         </view>
       </perspectiveExtension>
    </extension>
                   <extension

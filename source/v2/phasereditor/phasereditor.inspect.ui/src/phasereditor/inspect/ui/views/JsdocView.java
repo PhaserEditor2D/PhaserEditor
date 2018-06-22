@@ -17,6 +17,7 @@ import phasereditor.inspect.core.jsdoc.JsdocRenderer;
 
 public class JsdocView extends ViewPart implements ISelectionListener {
 
+	public static final String ID = "phasereditor.inspect.ui.jsdoc";
 	private Browser _browser;
 
 	public JsdocView() {

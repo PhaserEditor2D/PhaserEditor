@@ -49,7 +49,6 @@ import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.jsdoc.IMemberContainer;
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
-import phasereditor.inspect.ui.InspectUI;
 import phasereditor.inspect.ui.PhaserFileContentProvider;
 import phasereditor.inspect.ui.PhaserFileLabelProvider;
 import phasereditor.inspect.ui.PhaserFileStyledLabelProvider;
@@ -84,6 +83,14 @@ public class PhaserFilesView extends ViewPart implements ISelectionListener {
 		afterCreateWidgets();
 	}
 
+	@Override
+	public void dispose() {
+		
+		getViewSite().getWorkbenchWindow().getSelectionService().removeSelectionListener(this);
+		
+		super.dispose();
+	}
+	
 	private void afterCreateWidgets() {
 		_viewer.setInput(InspectCore.getPhaserFiles().getSrcFolder());
 		_viewer.addDoubleClickListener(new IDoubleClickListener() {
@@ -94,7 +101,7 @@ public class PhaserFilesView extends ViewPart implements ISelectionListener {
 			}
 		});
 
-		InspectUI.installJsdocTooltips(_viewer);
+		// InspectUI.installJsdocTooltips(_viewer);
 
 		getViewSite().setSelectionProvider(_viewer);
 

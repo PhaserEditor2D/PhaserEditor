@@ -75,7 +75,6 @@ import phasereditor.chains.core.Match;
 import phasereditor.chains.ui.ChainsUI;
 import phasereditor.inspect.core.examples.PhaserExampleModel;
 import phasereditor.inspect.core.jsdoc.JsdocRenderer;
-import phasereditor.inspect.ui.InspectUI;
 import phasereditor.inspect.ui.handlers.RunPhaserExampleHandler;
 import phasereditor.inspect.ui.handlers.ShowPhaserJsdocHandler;
 import phasereditor.ui.EditorSharedImages;
@@ -83,6 +82,7 @@ import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.PhaserEditorUI;
 
 public class ChainsView extends ViewPart {
+	public static final String ID = "phasereditor.chains.ui.views.chains";
 	private Text _queryText;
 	private TableViewer _chainsViewer;
 	ChainsModel _chainsModel;
@@ -303,7 +303,7 @@ public class ChainsView extends ViewPart {
 		}.schedule();
 
 		PhaserEditorUI.refreshViewerWhenPreferencesChange(ChainsUI.getPreferenceStore(), _chainsViewer);
-		InspectUI.installJsdocTooltips(_chainsViewer);
+		// InspectUI.installJsdocTooltips(_chainsViewer);
 
 		getViewSite().setSelectionProvider(_chainsViewer);
 

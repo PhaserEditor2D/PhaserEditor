@@ -102,6 +102,14 @@ public class PhaserTypesView extends ViewPart implements ISelectionListener {
 		initializeMenu();
 	}
 
+	@Override
+	public void dispose() {
+
+		getViewSite().getWorkbenchWindow().getSelectionService().removeSelectionListener(this);
+
+		super.dispose();
+	}
+
 	void showSourceCodeOfSelectedItem() {
 		Object elem = _filteredTree.getViewer().getStructuredSelection().getFirstElement();
 		if (elem == null) {
@@ -116,7 +124,7 @@ public class PhaserTypesView extends ViewPart implements ISelectionListener {
 
 		_filteredTree.getViewer().setInput(InspectCore.getPhaserHelp());
 
-		InspectUI.installJsdocTooltips(_filteredTree.getViewer());
+		// InspectUI.installJsdocTooltips(_filteredTree.getViewer());
 
 		getViewSite().getWorkbenchWindow().getSelectionService().addSelectionListener(this);
 	}

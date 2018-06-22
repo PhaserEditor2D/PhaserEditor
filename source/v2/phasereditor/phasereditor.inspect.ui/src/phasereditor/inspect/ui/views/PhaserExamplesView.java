@@ -38,7 +38,7 @@ import phasereditor.ui.PatternFilter2;
  */
 public class PhaserExamplesView extends ViewPart {
 
-	public static final String ID = "phasereditor.inspect.ui.views.PhaserExamplesView"; //$NON-NLS-1$
+	public static final String ID = "phasereditor.inspect.ui.views.phaserExamples"; //$NON-NLS-1$
 	private TreeViewer _viewer;
 	private FilteredTree _filteredViewer;
 
