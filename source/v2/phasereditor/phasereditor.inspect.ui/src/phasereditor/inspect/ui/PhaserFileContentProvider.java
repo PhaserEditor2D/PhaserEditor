@@ -45,7 +45,7 @@ public class PhaserFileContentProvider extends PhaserElementContentProvider {
 
 		if (parent instanceof Path) {
 			Path path = (Path) parent;
-
+			
 			if (Files.isDirectory(path)) {
 				try {
 					Object[] array = Files.list(path).toArray();

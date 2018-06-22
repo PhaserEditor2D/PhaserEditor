@@ -21,18 +21,34 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.ui.views;
 
+import static java.lang.System.out;
+
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.eclipse.core.runtime.Adapters;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TreeColumn;
+import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.part.ViewPart;
 
 import phasereditor.inspect.core.InspectCore;
+import phasereditor.inspect.core.jsdoc.IMemberContainer;
+import phasereditor.inspect.core.jsdoc.IPhaserMember;
+import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
 import phasereditor.inspect.ui.InspectUI;
 import phasereditor.inspect.ui.PhaserFileContentProvider;
 import phasereditor.inspect.ui.PhaserFileLabelProvider;
@@ -44,7 +60,7 @@ import phasereditor.ui.handlers.ShowSourceCodeHandler;
  * @author arian
  *
  */
-public class PhaserFilesView extends ViewPart {
+public class PhaserFilesView extends ViewPart implements ISelectionListener {
 
 	public static final String ID = "phasereditor.inspect.ui.views.PhaserFilesView"; //$NON-NLS-1$
 	private FilteredTree _filteredTree;
@@ -77,15 +93,67 @@ public class PhaserFilesView extends ViewPart {
 				ShowSourceCodeHandler.run((IStructuredSelection) event.getSelection());
 			}
 		});
-		
+
 		InspectUI.installJsdocTooltips(_viewer);
-		
+
 		getViewSite().setSelectionProvider(_viewer);
+
+		getViewSite().getWorkbenchWindow().getSelectionService().addSelectionListener(this);
 	}
 
 	@Override
 	public void setFocus() {
 		_filteredTree.getViewer().getTree().setFocus();
+	}
+
+	@Override
+	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+		if (this == part) {
+			return;
+		}
+		
+		if (selection instanceof IStructuredSelection) {
+			Object elem = ((IStructuredSelection) selection).getFirstElement();
+			IPhaserMember member = Adapters.adapt(elem, IPhaserMember.class);
+			if (member != null) {
+				Object[] path = memberPath(member);
+				out.println(Arrays.toString(path));
+				_viewer.reveal(new TreePath(path));
+				_viewer.setSelection(new StructuredSelection(member));
+				
+			}
+		}
+	}
+
+	private Object[] memberPath(Object obj) {
+		List<Object> treepath = new ArrayList<>();
+		memberPath(obj, treepath);
+		return treepath.toArray();
+	}
+
+	private void memberPath(Object obj, List<Object> treepath) {
+		if (obj instanceof Path) {
+
+			if (((Path) obj).getFileName().toString().equals("src")) {
+				return;
+			}
+
+			memberPath(((Path) obj).getParent(), treepath);
+			treepath.add(obj);
+		} else {
+			IPhaserMember member = (IPhaserMember) obj;
+			Object parent;
+			IMemberContainer container = member.getContainer();
+			
+			if (container != null && container.getFile().equals(member.getFile())) {
+				parent = container;
+			} else {
+				parent = PhaserJsdocModel.getInstance().getMemberPath(member);
+			}
+			
+			memberPath(parent, treepath);
+			treepath.add(member);
+		}
 	}
 
 }

@@ -73,7 +73,7 @@ public class PhaserFilesModel {
 		}
 
 		if (realFile(container).equals(realFile(member))) {
-			return container;
+			return findRootMember(container);
 		}
 
 		return member;
