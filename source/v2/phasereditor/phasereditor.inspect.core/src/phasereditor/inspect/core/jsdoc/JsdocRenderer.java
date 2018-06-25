@@ -164,15 +164,11 @@ public class JsdocRenderer {
 		StringBuilder sb = new StringBuilder();
 
 		String returnSignature = htmlTypes(cons.getTypes());
+		
 		IMemberContainer container = cons.getContainer();
-		String qname;
-		if (cons.isGlobal()) {
-			// FIXME: we assume global constants are from the Phaser namespace,
-			// but it can be false in the future.
-			qname = "Phaser." + cons.getName();
-		} else {
-			qname = container.getName() + "." + cons.getName();
-		}
+		
+		String qname = container.getName() + "." + cons.getName();
+		
 		sb.append("<b>" + returnSignature + " " + qname + "</b>");
 
 		sb.append("<p>" + markdownToHtml(cons.getHelp()) + "</p>");
@@ -240,7 +236,7 @@ public class JsdocRenderer {
 		StringBuilder sb = new StringBuilder();
 		int i = 0;
 		for (String e : type.getExtends()) {
-			sb.append((i == 0 ? "" : " | ") + e);
+			sb.append((i == 0 ? "" : " | ") + renderLink(e));
 			i++;
 		}
 		return sb.toString();
@@ -288,7 +284,7 @@ public class JsdocRenderer {
 		}
 
 		if (types.length == 1) {
-			return "{" + types[0] + "}";
+			return "{" + renderLink(types[0]) + "}";
 		}
 
 		StringBuilder sb = new StringBuilder();
@@ -297,10 +293,14 @@ public class JsdocRenderer {
 			if (i > 0) {
 				sb.append("|");
 			}
-			sb.append(types[i]);
+			sb.append(renderLink(types[i]));
 		}
 		sb.append("}");
 		return sb.toString();
+	}
+
+	private String renderLink(String name) {
+		return "<a href='" + name + "'>" + name + "</a>";
 	}
 
 }
