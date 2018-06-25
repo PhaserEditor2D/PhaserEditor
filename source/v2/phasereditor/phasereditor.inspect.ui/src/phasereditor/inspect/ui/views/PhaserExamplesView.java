@@ -88,6 +88,10 @@ public class PhaserExamplesView extends ViewPart implements ISelectionListener {
 
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+		if (part == this) {
+			return;
+		}
+
 		if (selection instanceof IStructuredSelection) {
 			Object elem = ((IStructuredSelection) selection).getFirstElement();
 

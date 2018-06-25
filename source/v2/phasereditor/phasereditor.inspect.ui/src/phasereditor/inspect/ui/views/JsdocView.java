@@ -9,8 +9,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.LocationEvent;
 import org.eclipse.swt.browser.LocationListener;
-import org.eclipse.swt.browser.ProgressEvent;
-import org.eclipse.swt.browser.ProgressListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IViewSite;
@@ -21,7 +19,7 @@ import org.eclipse.ui.part.ViewPart;
 import phasereditor.inspect.core.jsdoc.IJsdocProvider;
 import phasereditor.inspect.core.jsdoc.JsdocRenderer;
 
-public class JsdocView extends ViewPart implements ISelectionListener, LocationListener, ProgressListener {
+public class JsdocView extends ViewPart implements ISelectionListener, LocationListener {
 
 	public static final String ID = "phasereditor.inspect.ui.jsdoc";
 	private Browser _browser;
@@ -33,8 +31,7 @@ public class JsdocView extends ViewPart implements ISelectionListener, LocationL
 	@Override
 	public void createPartControl(Composite parent) {
 		_browser = new Browser(parent, SWT.NONE);
-		_browser.addProgressListener(this);
-
+		_browser.addLocationListener(this);
 	}
 
 	@Override
@@ -81,7 +78,6 @@ public class JsdocView extends ViewPart implements ISelectionListener, LocationL
 	}
 
 	private void setHtml(String html) {
-		_browser.removeLocationListener(this);
 		_browser.setText(html);
 	}
 
@@ -96,13 +92,17 @@ public class JsdocView extends ViewPart implements ISelectionListener, LocationL
 
 	@Override
 	public void changing(LocationEvent event) {
-		event.doit = false;
-
 		out.println("Process link: " + event.location);
+		
+		if (event.location.equals("about:blank")) {
+			return;
+		}
 
 		if (_currentProvider != null) {
 			IJsdocProvider newProvider = _currentProvider.processLink(event.location);
-			if (newProvider != null) {
+			if (newProvider == null) {
+				event.doit = false;
+			} else {
 				showFromProvider(newProvider);
 			}
 		}
@@ -111,16 +111,6 @@ public class JsdocView extends ViewPart implements ISelectionListener, LocationL
 	@Override
 	public void changed(LocationEvent event) {
 		//
-	}
-
-	@Override
-	public void changed(ProgressEvent event) {
-		//
-	}
-
-	@Override
-	public void completed(ProgressEvent event) {
-		_browser.addLocationListener(this);
 	}
 
 }
