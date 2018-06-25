@@ -1,10 +1,16 @@
 package phasereditor.inspect.ui.views;
 
+import static java.lang.System.out;
+
 import org.eclipse.core.runtime.Adapters;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.browser.LocationEvent;
+import org.eclipse.swt.browser.LocationListener;
+import org.eclipse.swt.browser.ProgressEvent;
+import org.eclipse.swt.browser.ProgressListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IViewSite;
@@ -15,10 +21,11 @@ import org.eclipse.ui.part.ViewPart;
 import phasereditor.inspect.core.jsdoc.IJsdocProvider;
 import phasereditor.inspect.core.jsdoc.JsdocRenderer;
 
-public class JsdocView extends ViewPart implements ISelectionListener {
+public class JsdocView extends ViewPart implements ISelectionListener, LocationListener, ProgressListener {
 
 	public static final String ID = "phasereditor.inspect.ui.jsdoc";
 	private Browser _browser;
+	private IJsdocProvider _currentProvider;
 
 	public JsdocView() {
 	}
@@ -26,6 +33,8 @@ public class JsdocView extends ViewPart implements ISelectionListener {
 	@Override
 	public void createPartControl(Composite parent) {
 		_browser = new Browser(parent, SWT.NONE);
+		_browser.addProgressListener(this);
+
 	}
 
 	@Override
@@ -55,13 +64,25 @@ public class JsdocView extends ViewPart implements ISelectionListener {
 			provider = Adapters.adapt(obj, IJsdocProvider.class);
 		}
 
+		showFromProvider(provider);
+	}
+
+	private void showFromProvider(IJsdocProvider provider) {
 		String html;
 		if (provider == null) {
 			html = "No available documentation.";
 		} else {
 			html = provider.getJsdoc();
 		}
-		_browser.setText(JsdocRenderer.wrapDocBody(html));
+		html = JsdocRenderer.wrapDocBody(html);
+		setHtml(html);
+
+		_currentProvider = provider;
+	}
+
+	private void setHtml(String html) {
+		_browser.removeLocationListener(this);
+		_browser.setText(html);
 	}
 
 	@Override
@@ -71,6 +92,35 @@ public class JsdocView extends ViewPart implements ISelectionListener {
 			obj = ((IStructuredSelection) selection).getFirstElement();
 		}
 		showJsdocFor(obj);
+	}
+
+	@Override
+	public void changing(LocationEvent event) {
+		event.doit = false;
+
+		out.println("Process link: " + event.location);
+
+		if (_currentProvider != null) {
+			IJsdocProvider newProvider = _currentProvider.processLink(event.location);
+			if (newProvider != null) {
+				showFromProvider(newProvider);
+			}
+		}
+	}
+
+	@Override
+	public void changed(LocationEvent event) {
+		//
+	}
+
+	@Override
+	public void changed(ProgressEvent event) {
+		//
+	}
+
+	@Override
+	public void completed(ProgressEvent event) {
+		_browser.addLocationListener(this);
 	}
 
 }

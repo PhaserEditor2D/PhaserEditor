@@ -21,6 +21,12 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.core.jsdoc;
 
+import static java.lang.System.out;
+
+import java.net.URL;
+
+import phasereditor.inspect.core.InspectCore;
+
 /**
  * @author arian
  *
@@ -37,6 +43,49 @@ public class PhaserMemberJsdocProvider implements IJsdocProvider {
 	@Override
 	public String getJsdoc() {
 		return JsdocRenderer.getInstance().render(_member);
+	}
+
+	@Override
+	public IJsdocProvider processLink(String link) {
+
+		String link2 = link;
+
+		link2 = link2.replace("about:blank", "");
+
+		if (link2.startsWith("#")) {
+			IMemberContainer container;
+			if (_member instanceof IMemberContainer) {
+				container = (IMemberContainer) _member;
+			} else {
+				container = _member.getContainer();
+			}
+
+			if (container != null) {
+				link2 = container.getName() + link2;
+			}
+
+		}
+
+		link2 = link2.replace("#", ".");
+
+		String name;
+		try {
+			URL url = new URL(link2);
+			name = url.getPath().replace("/", "");
+		} catch (Exception e) {
+			name = link2;
+		}
+
+		out.println("PhaserMemberJsdocProvider: looking for member " + name);
+
+		IPhaserMember member = InspectCore.getPhaserHelp().getMembersMap().get(name);
+
+		if (member != null) {
+			return new PhaserMemberJsdocProvider(member);
+		}
+
+		return null;
+
 	}
 
 }

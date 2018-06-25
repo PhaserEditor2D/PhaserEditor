@@ -38,5 +38,10 @@ public class SymbolInformationJsdocProvider implements IJsdocProvider {
 	public String getJsdoc() {
 		return _symbolInformation.toString();
 	}
+	
+	@Override
+	public IJsdocProvider processLink(String location) {
+		return null;
+	}
 
 }

@@ -77,7 +77,7 @@ public class JsdocRenderer {
 			parser.parse(markdown);
 			String html = writer.toString();
 
-			html = expandLinks(html);
+			html = expandLinksInHtml(html);
 
 			return html;
 		} catch (IOException e) {
@@ -85,7 +85,7 @@ public class JsdocRenderer {
 		}
 	}
 
-	private String expandLinks(String html) {
+	private String expandLinksInHtml(String html) {
 		Matcher matcher = _linkPattern.matcher(html);
 
 		String result = matcher.replaceAll(mr -> {
