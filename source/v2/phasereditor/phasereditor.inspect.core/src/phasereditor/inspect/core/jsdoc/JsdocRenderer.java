@@ -24,6 +24,8 @@ package phasereditor.inspect.core.jsdoc;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.mylyn.wikitext.markdown.MarkdownLanguage;
 import org.eclipse.mylyn.wikitext.parser.MarkupParser;
@@ -46,6 +48,10 @@ import phasereditor.ui.IEditorSharedImages;
 public class JsdocRenderer {
 	private static JsdocRenderer _instance = new JsdocRenderer();
 
+	public JsdocRenderer() {
+		_linkPattern = Pattern.compile("\\{@link (?<href>[^\\}]*)\\}");
+	}
+
 	public static JsdocRenderer getInstance() {
 		return _instance;
 	}
@@ -60,6 +66,8 @@ public class JsdocRenderer {
 		return html;
 	}
 
+	private Pattern _linkPattern;
+
 	public String markdownToHtml(String markdown) {
 		try (StringWriter writer = new StringWriter()) {
 			HtmlDocumentBuilder builder = new HtmlDocumentBuilder(writer, true);
@@ -68,10 +76,31 @@ public class JsdocRenderer {
 			parser.setBuilder(builder);
 			parser.parse(markdown);
 			String html = writer.toString();
+
+			html = expandLinks(html);
+
 			return html;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private String expandLinks(String html) {
+		Matcher matcher = _linkPattern.matcher(html);
+
+		String result = matcher.replaceAll(mr -> {
+			String name = mr.group(mr.groupCount());
+			String href = name;
+
+			if (name.contains("#")) {
+				String[] split = href.split("#");
+				name = split[split.length - 1];
+			}
+
+			return "<a href='" + href + "'>" + name + "</a>";
+		});
+
+		return result;
 	}
 
 	public Image getImage(IPhaserMember member) {
