@@ -101,7 +101,7 @@
             class="phasereditor.ide.ui.LabsPerspectiveFactory"
             icon="platform:/plugin/phasereditor.ui/icons/potion.png"
             id="phasereditor.ide.ui.labs"
-            name="Labs">
+            name="Phaser Lab">
       </perspective>
    </extension>   <extension
          point="org.eclipse.ui.perspectiveExtensions">
