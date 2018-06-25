@@ -36,6 +36,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -89,6 +90,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
@@ -333,7 +335,7 @@ public class PhaserEditorUI {
 		return new Point(store.getInt(PREF_PROP_PREVIEW_TILEMAP_TILE_WIDTH),
 				store.getInt(PREF_PROP_PREVIEW_TILEMAP_TILE_HEIGHT));
 	}
-	
+
 	public static void openJSEditor(int linenum, int offset, Path filePath) {
 		// open in editor
 		try {
@@ -357,7 +359,7 @@ public class PhaserEditorUI {
 			out.println("Open " + filePath.getFileName() + " at line " + linenum);
 
 			int index = linenum - 1;
-			
+
 			try {
 				int offset2 = offset;
 				if (offset == -1) {
@@ -374,7 +376,6 @@ public class PhaserEditorUI {
 			throw new RuntimeException(e);
 		}
 	}
-
 
 	public static boolean isMacPlatform() {
 		return _isCocoaPlatform;
@@ -883,7 +884,7 @@ public class PhaserEditorUI {
 
 		return new Rectangle(dstX, dstY, dstW, dstH);
 	}
-	
+
 	public static Image image_Swing_To_SWT(BufferedImage img) throws IOException {
 		ByteArrayOutputStream memory = new ByteArrayOutputStream();
 		ImageIO.write(img, "png", memory);
@@ -1133,5 +1134,26 @@ public class PhaserEditorUI {
 		viewers[0].getControl().addDisposeListener(e -> {
 			store.removePropertyChangeListener(listener);
 		});
+	}
+
+	public static String imageToBase64(Image image) {
+		if (image == null) {
+			return "";
+		}
+
+		try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+
+			ImageLoader loader = new ImageLoader();
+
+			loader.data = new ImageData[] { image.getImageData() };
+
+			loader.save(output, SWT.IMAGE_PNG);
+
+			String base64 = Base64.getEncoder().encodeToString(output.toByteArray());
+
+			return base64;
+		} catch (Exception e) {
+			return "";
+		}
 	}
 }

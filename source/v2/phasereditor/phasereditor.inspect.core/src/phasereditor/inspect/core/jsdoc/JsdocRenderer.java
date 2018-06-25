@@ -37,6 +37,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
+import phasereditor.ui.PhaserEditorUI;
 
 /**
  * Class to render JSDoc comments.
@@ -163,11 +164,21 @@ public class JsdocRenderer {
 	private String renderNamespace(PhaserNamespace member) {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("<b>" + member.getName() + "</b>");
+		sb.append("<b>" + renderImageBase64(getImage(member)) + " " + member.getName() + "</b>");
 
 		sb.append("<p>" + markdownToHtml(member.getHelp()) + "</p>");
 
 		return sb.toString();
+	}
+
+	private String renderImageBase64(Image image) {
+		if (image == null) {
+			return "";
+		}
+
+		String base64 = PhaserEditorUI.imageToBase64(image);
+
+		return "<img src='data:image/png;base64," + base64 + "' style='vertical-align:text-middle'>";
 	}
 
 	private String renderConstant(PhaserConstant cons) {
@@ -179,7 +190,7 @@ public class JsdocRenderer {
 
 		String qname = container.getName() + "." + cons.getName();
 
-		sb.append("<b>" + returnSignature + " " + qname + "</b>");
+		sb.append("<b>" + renderImageBase64(getImage(cons)) + returnSignature + " " + qname + "</b>");
 
 		sb.append("<p>" + markdownToHtml(cons.getHelp()) + "</p>");
 
@@ -192,7 +203,8 @@ public class JsdocRenderer {
 		String returnSignature = htmlTypes(var.getTypes());
 		IMemberContainer container = var.getContainer();
 		String qname = container.getName() + "." + var.getName();
-		sb.append("<b>" + returnSignature + " " + qname + "</b>");
+
+		sb.append("<b>" + renderImageBase64(getImage(var)) + returnSignature + " " + qname + "</b>");
 
 		sb.append("<p>" + markdownToHtml(var.getHelp()) + "</p>");
 
@@ -209,7 +221,9 @@ public class JsdocRenderer {
 		String returnSignature = htmlTypes(method.getReturnTypes());
 
 		String qname = method.getContainer().getName() + "." + method.getName();
-		sb.append("<b>" + returnSignature + " " + qname + htmlArgsList(method.getArgs()) + "</b>");
+
+		sb.append("<b>" + renderImageBase64(getImage(method)) + returnSignature + " " + qname
+				+ htmlArgsList(method.getArgs()) + "</b>");
 
 		sb.append("<p>" + markdownToHtml(method.getHelp()) + "</p>");
 
@@ -225,15 +239,11 @@ public class JsdocRenderer {
 	public String renderType(PhaserType type) {
 		StringBuilder sb = new StringBuilder();
 
-		if (type.isConstructor()) {
-			sb.append("<b>constructor " + type.getName() + htmlArgsList(type.getConstructorArgs()) + "</b>");
-		}
-
-		sb.append("<p><b>class</b> " + type.getName());
+		sb.append("<b>" + renderImageBase64(getImage(type)) + "class</b> " + type.getName());
 		if (!type.getExtends().isEmpty()) {
 			sb.append(" <b>extends</b> " + renderExtends(type));
 		}
-		sb.append("</p>");
+		sb.append("<br>");
 
 		sb.append("<p>" + markdownToHtml(type.getHelp()) + "</p>");
 
