@@ -31,6 +31,11 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.tm4e.core.grammar.IGrammar;
+import org.eclipse.tm4e.registry.IGrammarRegistryManager;
+import org.eclipse.tm4e.registry.TMEclipseRegistryPlugin;
+import org.eclipse.tm4e.ui.TMUIPlugin;
+import org.eclipse.tm4e.ui.themes.ITheme;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 /**
@@ -94,25 +99,17 @@ public class UserCodeBeforeAfterCodeComp extends Composite {
 
 	private static SourceViewer createViewer(Composite parent) {
 		IDocument document = new Document();
-		
-		//TODO: #RemovingWST		
-//		JavaScriptTextTools tools = JavaScriptPlugin.getDefault().getJavaTextTools();
-//		tools.setupJavaDocumentPartitioner(document, IJavaScriptPartitions.JAVA_PARTITIONING);
-//		IPreferenceStore store = JavaScriptPlugin.getDefault().getCombinedPreferenceStore();
-//		SourceViewer viewer = new JavaSourceViewer(parent, null, null, false, SWT.BORDER |  SWT.V_SCROLL | SWT.H_SCROLL,
-//				store);
-//		viewer.getTextWidget().setAlwaysShowScrollBars(false);
-//		SimpleJavaSourceViewerConfiguration configuration = new SimpleJavaSourceViewerConfiguration(tools.getColorManager(), store, null, IJavaScriptPartitions.JAVA_PARTITIONING, false);
-		
-//		viewer.configure(configuration);
 
-//		Font font = JFaceResources.getFont(PreferenceConstants.EDITOR_TEXT_FONT);
-//		viewer.getTextWidget().setFont(font);
+		TMViewer2 viewer = new TMViewer2(parent, null, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
 
-		
-		SourceViewer viewer = //new JavaSourceViewer(parent, null, null, false, SWT.BORDER |  SWT.V_SCROLL | SWT.H_SCROLL,store);
-				new SourceViewer(parent, null, SWT.BORDER |  SWT.V_SCROLL | SWT.H_SCROLL);
-		
+		IGrammarRegistryManager manager = TMEclipseRegistryPlugin.getGrammarRegistryManager();
+
+		IGrammar grammar = manager.getGrammarForScope("source.js");
+		ITheme theme = TMUIPlugin.getThemeManager().getThemeForScope("source.js");
+
+		viewer.setGrammar(grammar);
+		viewer.setTheme(theme);
+
 		viewer.setEditable(true);
 		viewer.setDocument(document);
 
