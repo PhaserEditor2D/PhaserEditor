@@ -42,6 +42,7 @@ public class PhaserType extends PhaserNamespace implements ITypeMember {
 	private String[] _enumElementsType;
 	private Set<PhaserType> _extenders;
 	private Set<PhaserType> _extending;
+	private boolean _typeDef;
 
 	public PhaserType(JSONObject json) {
 		super(json);
@@ -100,5 +101,13 @@ public class PhaserType extends PhaserNamespace implements ITypeMember {
 
 	public String[] getEnumElementsType() {
 		return _enumElementsType;
+	}
+
+	public void setTypeDef(boolean typeDef) {
+		_typeDef = typeDef;
+	}
+	
+	public boolean isTypeDef() {
+		return _typeDef;
 	}
 }

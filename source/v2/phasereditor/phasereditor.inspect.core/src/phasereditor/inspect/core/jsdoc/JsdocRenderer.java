@@ -106,16 +106,26 @@ public class JsdocRenderer {
 	public Image getImage(IPhaserMember member) {
 		String key = null;
 
+		IMemberContainer container = member.getContainer();
+
 		if (member instanceof PhaserType && ((PhaserType) member).isEnum()) {
-			key = IEditorSharedImages.IMG_ENUM_OBJ;
+			key = IEditorSharedImages.IMG_ENUM;
 		} else if (member instanceof PhaserProperty) {
-			key = IEditorSharedImages.IMG_FIELD_PUBLIC_OBJ;
+			if (container instanceof PhaserType && ((PhaserType) container).isTypeDef()) {
+				key = IEditorSharedImages.IMG_FIELD;
+			} else {
+				key = IEditorSharedImages.IMG_PROPERTY;
+			}
 		} else if (member instanceof PhaserConstant) {
-			key = IEditorSharedImages.IMG_FIELD_DEFAULT_OBJ;
+			key = IEditorSharedImages.IMG_CONSTANT;
 		} else if (member instanceof PhaserMethod) {
-			key = IEditorSharedImages.IMG_METHPUB_OBJ;
+			if (member.getContainer() instanceof PhaserType) {
+				key = IEditorSharedImages.IMG_METHOD;
+			} else {
+				key = IEditorSharedImages.IMG_FUNTION;
+			}
 		} else if (member instanceof PhaserType) {
-			key = IEditorSharedImages.IMG_CLASS_OBJ;
+			key = IEditorSharedImages.IMG_CLASS;
 		} else {
 			key = IEditorSharedImages.IMG_PACKAGE_OBJ;
 		}
@@ -164,11 +174,11 @@ public class JsdocRenderer {
 		StringBuilder sb = new StringBuilder();
 
 		String returnSignature = htmlTypes(cons.getTypes());
-		
+
 		IMemberContainer container = cons.getContainer();
-		
+
 		String qname = container.getName() + "." + cons.getName();
-		
+
 		sb.append("<b>" + returnSignature + " " + qname + "</b>");
 
 		sb.append("<p>" + markdownToHtml(cons.getHelp()) + "</p>");

@@ -567,6 +567,7 @@ public class PhaserJsdocModel {
 			}
 
 			PhaserType type = new PhaserType(obj);
+			type.setTypeDef(true);
 			_containersMap.put(longname, type);
 			_membersMap.put(longname, type);
 

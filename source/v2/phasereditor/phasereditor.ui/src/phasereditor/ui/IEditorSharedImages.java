@@ -86,4 +86,15 @@ public interface IEditorSharedImages {
 	String IMG_SPLIT_HORIZONTAL = "icons/application-tile-horizontal.png";
 	String IMG_SPLIT_VERTICAL = "icons/application-tile-vertical.png";
 	String IMG_GAME_CONTROLLER = "icons/controller.png";
+	
+	// lsp4e
+	String IMG_NAMESPACE = "icons/namespace.png";
+	String IMG_ENUM = "icons/enum.png";
+	String IMG_CLASS = "icons/class.png";
+	String IMG_CONSTANT = "icons/constant.png";
+	String IMG_FIELD = "icons/field.png";
+	String IMG_FUNTION = "icons/function.png";
+	String IMG_METHOD = "icons/method.png";
+	String IMG_PROPERTY = "icons/property.png";
+	String IMG_VARIABLE = "icons/variable.png";
 }
