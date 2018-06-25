@@ -28,7 +28,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import phasereditor.inspect.core.jsdoc.GlobalScope;
+import phasereditor.inspect.core.jsdoc.PhaserGlobalScope;
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.core.jsdoc.JsdocRenderer;
 import phasereditor.inspect.core.jsdoc.PhaserMethod;
@@ -54,7 +54,7 @@ public class PhaserElementStyledLabelProvider extends StyledCellLabelProvider {
 
 		Object element = cell.getElement();
 
-		if (element instanceof GlobalScope) {
+		if (element instanceof PhaserGlobalScope) {
 			cell.setText("[global]");
 			cell.setImage(JsdocRenderer.getInstance().getGlobalScopeImage());
 			return;

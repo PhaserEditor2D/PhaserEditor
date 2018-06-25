@@ -24,7 +24,7 @@ package phasereditor.inspect.ui;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-import phasereditor.inspect.core.jsdoc.GlobalScope;
+import phasereditor.inspect.core.jsdoc.PhaserGlobalScope;
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.core.jsdoc.JsdocRenderer;
 import phasereditor.inspect.core.jsdoc.PhaserNamespace;
@@ -36,7 +36,7 @@ import phasereditor.inspect.core.jsdoc.PhaserNamespace;
 public class PhaserElementLabelProvider extends LabelProvider {
 	@Override
 	public String getText(Object element) {
-		if (element instanceof GlobalScope) {
+		if (element instanceof PhaserGlobalScope) {
 			return "Global";
 		}
 
@@ -55,7 +55,7 @@ public class PhaserElementLabelProvider extends LabelProvider {
 			return JsdocRenderer.getInstance().getImage((IPhaserMember) element);
 		}
 
-		if (element instanceof GlobalScope) {
+		if (element instanceof PhaserGlobalScope) {
 			return JsdocRenderer.getInstance().getGlobalScopeImage();
 		}
 

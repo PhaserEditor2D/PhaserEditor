@@ -172,21 +172,26 @@ public class PhaserTypesView extends ViewPart implements ISelectionListener {
 			}
 
 			TreeViewer viewer = _filteredTree.getViewer();
-			viewer.reveal(new TreePath(buildTreePath(member)));
+			Object[] path = buildTreePath(member);
+			viewer.reveal(new TreePath(path));
 			viewer.setSelection(new StructuredSelection(member));
 		}
 
 	}
 
 	private Object[] buildTreePath(IPhaserMember member) {
-		List<IPhaserMember> path = new ArrayList<>();
+		List<Object> path = new ArrayList<>();
 
 		buildTreePath(path, member);
 
 		return path.toArray();
 	}
 
-	private void buildTreePath(List<IPhaserMember> path, IPhaserMember member) {
+	private void buildTreePath(List<Object> path, IPhaserMember member) {
+		if (InspectCore.getPhaserHelp().getGlobalScope().isGlobal(member)) {
+			path.add(InspectCore.getPhaserHelp().getGlobalScope());
+		}
+		
 		path.add(member);
 
 		if (member.getContainer() != null) {

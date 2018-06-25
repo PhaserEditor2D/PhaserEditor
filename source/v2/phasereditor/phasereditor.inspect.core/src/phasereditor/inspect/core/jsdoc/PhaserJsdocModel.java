@@ -73,7 +73,7 @@ public class PhaserJsdocModel {
 	private List<IPhaserMember> _rootNamespaces;
 
 	private Path _srcFolder;
-	private GlobalScope _globalScope;
+	private PhaserGlobalScope _globalScope;
 
 	public PhaserJsdocModel(Path srcFolder, Path docsJsonFile) throws IOException {
 		_srcFolder = srcFolder;
@@ -226,12 +226,12 @@ public class PhaserJsdocModel {
 					}
 				}
 				globals.sort((a, b) -> a.getName().compareTo(b.getName()));
-				_globalScope = new GlobalScope(globals);
+				_globalScope = new PhaserGlobalScope(globals);
 			}
 		}
 	}
 
-	public GlobalScope getGlobalScope() {
+	public PhaserGlobalScope getGlobalScope() {
 		return _globalScope;
 	}
 

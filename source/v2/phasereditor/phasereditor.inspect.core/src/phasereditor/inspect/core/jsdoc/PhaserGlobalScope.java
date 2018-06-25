@@ -21,18 +21,25 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.core.jsdoc;
 
+import java.util.HashSet;
 import java.util.List;
 
 /**
  * @author arian
  *
  */
-public class GlobalScope {
+public class PhaserGlobalScope {
 	private List<IPhaserMember> _members;
+	private HashSet<IPhaserMember> _set;
 
-	public GlobalScope(List<IPhaserMember> members) {
+	public PhaserGlobalScope(List<IPhaserMember> members) {
 		super();
 		_members = members;
+		_set = new HashSet<>(members);
+	}
+
+	public boolean isGlobal(IPhaserMember member) {
+		return _set.contains(member);
 	}
 
 	public List<IPhaserMember> getMembers() {

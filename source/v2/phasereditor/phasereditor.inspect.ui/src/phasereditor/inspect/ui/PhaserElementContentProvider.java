@@ -26,7 +26,7 @@ import java.util.List;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 
-import phasereditor.inspect.core.jsdoc.GlobalScope;
+import phasereditor.inspect.core.jsdoc.PhaserGlobalScope;
 import phasereditor.inspect.core.jsdoc.IMemberContainer;
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
@@ -53,8 +53,8 @@ public class PhaserElementContentProvider implements ITreeContentProvider {
 
 	@Override
 	public Object[] getChildren(Object parentElement) {
-		if (parentElement instanceof GlobalScope) {
-			return ((GlobalScope) parentElement).getMembers().toArray();
+		if (parentElement instanceof PhaserGlobalScope) {
+			return ((PhaserGlobalScope) parentElement).getMembers().toArray();
 		}
 
 		if (parentElement instanceof IMemberContainer) {
