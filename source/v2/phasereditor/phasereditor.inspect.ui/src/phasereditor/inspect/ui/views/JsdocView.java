@@ -3,13 +3,19 @@ package phasereditor.inspect.ui.views;
 import static java.lang.System.out;
 
 import org.eclipse.core.runtime.Adapters;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.LocationEvent;
 import org.eclipse.swt.browser.LocationListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.tm4e.ui.TMUIPlugin;
+import org.eclipse.tm4e.ui.themes.ITheme;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPart;
@@ -19,7 +25,7 @@ import org.eclipse.ui.part.ViewPart;
 import phasereditor.inspect.core.jsdoc.IJsdocProvider;
 import phasereditor.inspect.core.jsdoc.JsdocRenderer;
 
-public class JsdocView extends ViewPart implements ISelectionListener, LocationListener {
+public class JsdocView extends ViewPart implements ISelectionListener, LocationListener, IPreferenceChangeListener {
 
 	public static final String ID = "phasereditor.inspect.ui.jsdoc";
 	private Browser _browser;
@@ -32,6 +38,9 @@ public class JsdocView extends ViewPart implements ISelectionListener, LocationL
 	public void createPartControl(Composite parent) {
 		_browser = new Browser(parent, SWT.NONE);
 		_browser.addLocationListener(this);
+		
+		InstanceScope.INSTANCE.getNode(TMUIPlugin.PLUGIN_ID).addPreferenceChangeListener(this);
+		InstanceScope.INSTANCE.getNode("org.eclipse.e4.ui.css.swt.theme").addPreferenceChangeListener(this);
 	}
 
 	@Override
@@ -45,6 +54,9 @@ public class JsdocView extends ViewPart implements ISelectionListener, LocationL
 	public void dispose() {
 
 		getViewSite().getWorkbenchWindow().getSelectionService().removeSelectionListener(this);
+
+		InstanceScope.INSTANCE.getNode(TMUIPlugin.PLUGIN_ID).removePreferenceChangeListener(this);
+		InstanceScope.INSTANCE.getNode("org.eclipse.e4.ui.css.swt.theme").removePreferenceChangeListener(this);
 
 		super.dispose();
 	}
@@ -71,7 +83,14 @@ public class JsdocView extends ViewPart implements ISelectionListener, LocationL
 		} else {
 			html = provider.getJsdoc();
 		}
-		html = JsdocRenderer.wrapDocBody(html);
+
+		ITheme theme = TMUIPlugin.getThemeManager().getThemeForScope("source.js");
+
+		Color bg = theme.getEditorBackground();
+		Color fg = theme.getEditorForeground();
+
+		html = JsdocRenderer.wrapDocBody(html, bg.getRGB(), fg.getRGB());
+
 		setHtml(html);
 
 		_currentProvider = provider;
@@ -93,7 +112,7 @@ public class JsdocView extends ViewPart implements ISelectionListener, LocationL
 	@Override
 	public void changing(LocationEvent event) {
 		out.println("Process link: " + event.location);
-		
+
 		if (event.location.equals("about:blank")) {
 			return;
 		}
@@ -111,6 +130,11 @@ public class JsdocView extends ViewPart implements ISelectionListener, LocationL
 	@Override
 	public void changed(LocationEvent event) {
 		//
+	}
+
+	@Override
+	public void preferenceChange(PreferenceChangeEvent event) {
+		showFromProvider(_currentProvider);
 	}
 
 }

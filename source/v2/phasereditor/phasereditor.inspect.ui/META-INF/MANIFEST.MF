@@ -12,7 +12,10 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface.text;bundle-version="3.12.2",
  org.eclipse.ui.editors;bundle-version="3.11.0",
  org.eclipse.ui.ide;bundle-version="3.13.1",
- phasereditor.webrun.ui;bundle-version="1.5.0"
+ phasereditor.webrun.ui;bundle-version="1.5.0",
+ org.eclipse.tm4e.core;bundle-version="0.1.0",
+ org.eclipse.tm4e.registry;bundle-version="0.1.0",
+ org.eclipse.tm4e.ui;bundle-version="0.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-9
 Automatic-Module-Name: phasereditor.inspect.ui
 Bundle-ActivationPolicy: lazy

@@ -58,13 +58,24 @@ public class JsdocRenderer {
 	}
 
 	public static String wrapDocBody(String doc) {
-		RGB rgb = SWTResourceManager.getColor(SWT.COLOR_INFO_BACKGROUND).getRGB();
-		String color = "rgb(" + rgb.red + ", " + rgb.green + ", " + rgb.blue + ")";
+		return wrapDocBody(doc, SWTResourceManager.getColor(SWT.COLOR_INFO_BACKGROUND).getRGB(),
+				SWTResourceManager.getColor(SWT.COLOR_BLACK).getRGB());
+	}
 
-		String html = "<html><body style='background:\"" + color + "\";'>";
-		html += doc;
-		html += "</body></html>";
-		return html;
+	public static String wrapDocBody(String doc, RGB bg, RGB fg) {
+		String bgcolor = "rgb(" + bg.red + ", " + bg.green + ", " + bg.blue + ")";
+		String fgcolor = "rgb(" + fg.red + ", " + fg.green + ", " + fg.blue + ")";
+
+		StringBuilder html = new StringBuilder();
+
+		html.append("<html><body style='background:" + bgcolor + ";color:" + fgcolor + "'>");
+		html.append("<style>");
+		html.append("a { color: " + fgcolor +";font-weight: bold;}");
+		html.append("</style>");
+		
+		html.append(doc);
+		html.append("</body></html>");
+		return html.toString();
 	}
 
 	private Pattern _linkPattern;
@@ -72,6 +83,7 @@ public class JsdocRenderer {
 	public String markdownToHtml(String markdown) {
 		try (StringWriter writer = new StringWriter()) {
 			HtmlDocumentBuilder builder = new HtmlDocumentBuilder(writer, true);
+			builder.setEmitAsDocument(false);
 			final MarkupParser parser = new MarkupParser();
 			parser.setMarkupLanguage(new MarkdownLanguage());
 			parser.setBuilder(builder);
