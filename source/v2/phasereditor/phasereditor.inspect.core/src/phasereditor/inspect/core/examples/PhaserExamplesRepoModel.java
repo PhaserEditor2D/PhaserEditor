@@ -124,7 +124,8 @@ public class PhaserExamplesRepoModel {
 				}
 
 				PhaserExampleCategoryModel parent = _stack.isEmpty() ? null : _stack.peek();
-				PhaserExampleCategoryModel category = new PhaserExampleCategoryModel(parent, dir, getName(dir.getFileName()));
+				PhaserExampleCategoryModel category = new PhaserExampleCategoryModel(parent, dir,
+						getName(dir.getFileName()));
 				_stack.push(category);
 
 				if (parent == null) {
@@ -152,10 +153,37 @@ public class PhaserExamplesRepoModel {
 				// add assets files
 				String content = new String(Files.readAllBytes(jsFile));
 
+				String loaderPath = null;
+
+				// detect loader base path
+				try {
+					int i = content.indexOf("this.load.path = 'assets/");
+					if (i != -1) {
+						int j = content.indexOf("'", i);
+						int k = content.indexOf("'", j + 1);
+						loaderPath = content.substring(j + 1, k);
+						out.println("Detected loader path: " + loaderPath);
+					}
+				} catch (Exception e) {
+					//
+				}
+
 				for (Path requiredFile : requiredFiles) {
 					String assetRelPath = _examplesFolderPath.relativize(requiredFile).toString().replace("\\", "/");
 					if (content.contains(assetRelPath) || content.contains("../" + assetRelPath)) {
 						exampleModel.addMapping(_examplesFolderPath.relativize(requiredFile), assetRelPath);
+					}
+
+					if (loaderPath != null) {
+						String loaderRelPath = _examplesFolderPath.resolve(loaderPath).relativize(requiredFile)
+								.toString().replace("\\", "/");
+
+						// out.println("Test with loader path: " + assetRelPath);
+
+						if (content.contains(loaderRelPath)) {
+							out.println("Mapping from loader sub-path: " + loaderRelPath + " -> " + assetRelPath);
+							exampleModel.addMapping(_examplesFolderPath.relativize(requiredFile), assetRelPath);
+						}
 					}
 				}
 
@@ -239,7 +267,8 @@ public class PhaserExamplesRepoModel {
 			JSONObject jsonCategory = jsonCategories.getJSONObject(i);
 			String relPath = jsonCategory.getString("relPath");
 			Path path = _examplesFolderPath.resolve(relPath);
-			PhaserExampleCategoryModel category = new PhaserExampleCategoryModel(parent, path, jsonCategory.getString("name"));
+			PhaserExampleCategoryModel category = new PhaserExampleCategoryModel(parent, path,
+					jsonCategory.getString("name"));
 
 			if (parent == null) {
 				_examplesCategories.add(category);

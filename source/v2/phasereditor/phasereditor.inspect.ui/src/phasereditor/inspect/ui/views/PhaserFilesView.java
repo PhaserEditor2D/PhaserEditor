@@ -21,11 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.ui.views;
 
-import static java.lang.System.out;
-
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.runtime.Adapters;
@@ -132,7 +129,6 @@ public class PhaserFilesView extends ViewPart implements ISelectionListener, IPr
 			IPhaserMember member = Adapters.adapt(elem, IPhaserMember.class);
 			if (member != null) {
 				Object[] path = memberPath(member);
-				out.println(Arrays.toString(path));
 				_viewer.reveal(new TreePath(path));
 				_viewer.setSelection(new StructuredSelection(member));
 

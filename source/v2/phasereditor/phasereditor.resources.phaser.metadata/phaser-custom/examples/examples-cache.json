@@ -305,10 +305,16 @@
       },
       {
         "mainFile": "src/animation/animation from png sequence.js",
-        "map": [{
-          "orig": "src/animation/animation from png sequence.js",
-          "dst": "animation from png sequence.js"
-        }]
+        "map": [
+          {
+            "orig": "src/animation/animation from png sequence.js",
+            "dst": "animation from png sequence.js"
+          },
+          {"orig": "assets/animations/cat1.png"},
+          {"orig": "assets/animations/cat3.png"},
+          {"orig": "assets/animations/cat2.png"},
+          {"orig": "assets/animations/cat4.png"}
+        ]
       },
       {
         "mainFile": "src/animation/animation progress.js",
@@ -452,10 +458,13 @@
       },
       {
         "mainFile": "src/animation/multi atlas animation.js",
-        "map": [{
-          "orig": "src/animation/multi atlas animation.js",
-          "dst": "multi atlas animation.js"
-        }]
+        "map": [
+          {
+            "orig": "src/animation/multi atlas animation.js",
+            "dst": "multi atlas animation.js"
+          },
+          {"orig": "assets/animations/cybercity/cybercity-multi.json"}
+        ]
       },
       {
         "mainFile": "src/animation/multiple sprite sheets.js",
@@ -9458,6 +9467,8 @@
                 "dst": "load image.js"
               },
               {"orig": "assets/pics/taikodrummaster.jpg"},
+              {"orig": "assets/pics/taikodrummaster.jpg"},
+              {"orig": "assets/pics/sukasuka-chtholly.png"},
               {"orig": "assets/pics/sukasuka-chtholly.png"}
             ]
           },
@@ -11592,17 +11603,33 @@
       },
       {
         "mainFile": "src/textures/multi atlas.js",
-        "map": [{
-          "orig": "src/textures/multi atlas.js",
-          "dst": "multi atlas.js"
-        }]
+        "map": [
+          {
+            "orig": "src/textures/multi atlas.js",
+            "dst": "multi atlas.js"
+          },
+          {"orig": "assets/atlas/megaset-0.json"},
+          {"orig": "assets/atlas/megaset-2.json"},
+          {"orig": "assets/atlas/megaset-3.json"},
+          {"orig": "assets/atlas/megaset-3.png"},
+          {"orig": "assets/atlas/megaset-1.png"},
+          {"orig": "assets/atlas/megaset-0.png"},
+          {"orig": "assets/atlas/megaset-1.json"},
+          {"orig": "assets/atlas/megaset-2.png"}
+        ]
       },
       {
         "mainFile": "src/textures/multi atlas auto name.js",
-        "map": [{
-          "orig": "src/textures/multi atlas auto name.js",
-          "dst": "multi atlas auto name.js"
-        }]
+        "map": [
+          {
+            "orig": "src/textures/multi atlas auto name.js",
+            "dst": "multi atlas auto name.js"
+          },
+          {"orig": "assets/atlas/megaset-0.json"},
+          {"orig": "assets/atlas/megaset-3.json"},
+          {"orig": "assets/atlas/megaset-3.png"},
+          {"orig": "assets/atlas/megaset-0.png"}
+        ]
       },
       {
         "mainFile": "src/textures/rotated frames from single atlas.js",
@@ -11627,24 +11654,43 @@
       },
       {
         "mainFile": "src/textures/sprite sheet from atlas.js",
-        "map": [{
-          "orig": "src/textures/sprite sheet from atlas.js",
-          "dst": "sprite sheet from atlas.js"
-        }]
+        "map": [
+          {
+            "orig": "src/textures/sprite sheet from atlas.js",
+            "dst": "sprite sheet from atlas.js"
+          },
+          {"orig": "assets/atlas/trimsheet/trimsheet.json"},
+          {"orig": "assets/atlas/trimsheet/trimsheet.png"}
+        ]
       },
       {
         "mainFile": "src/textures/texture packer atlas.js",
-        "map": [{
-          "orig": "src/textures/texture packer atlas.js",
-          "dst": "texture packer atlas.js"
-        }]
+        "map": [
+          {
+            "orig": "src/textures/texture packer atlas.js",
+            "dst": "texture packer atlas.js"
+          },
+          {"orig": "assets/atlas/tp3test.png"},
+          {"orig": "assets/atlas/ant.png"},
+          {"orig": "assets/atlas/tp3test.json"}
+        ]
       },
       {
         "mainFile": "src/textures/trimmed frame from multi atlas.js",
-        "map": [{
-          "orig": "src/textures/trimmed frame from multi atlas.js",
-          "dst": "trimmed frame from multi atlas.js"
-        }]
+        "map": [
+          {
+            "orig": "src/textures/trimmed frame from multi atlas.js",
+            "dst": "trimmed frame from multi atlas.js"
+          },
+          {"orig": "assets/atlas/megaset-0.json"},
+          {"orig": "assets/atlas/megaset-2.json"},
+          {"orig": "assets/atlas/megaset-3.json"},
+          {"orig": "assets/atlas/megaset-3.png"},
+          {"orig": "assets/atlas/megaset-1.png"},
+          {"orig": "assets/atlas/megaset-0.png"},
+          {"orig": "assets/atlas/megaset-1.json"},
+          {"orig": "assets/atlas/megaset-2.png"}
+        ]
       },
       {
         "mainFile": "src/textures/trimmed frame from single atlas.js",
