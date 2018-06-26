@@ -31,6 +31,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.help.HelpSystem;
 import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
@@ -39,7 +43,9 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.jface.preference.JFacePreferences;
 import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -56,7 +62,6 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -64,6 +69,12 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.tm4e.core.grammar.IGrammar;
+import org.eclipse.tm4e.core.grammar.IToken;
+import org.eclipse.tm4e.core.grammar.ITokenizeLineResult;
+import org.eclipse.tm4e.registry.TMEclipseRegistryPlugin;
+import org.eclipse.tm4e.ui.TMUIPlugin;
+import org.eclipse.tm4e.ui.themes.ITheme;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.wb.swt.SWTResourceManager;
 
@@ -84,30 +95,60 @@ import phasereditor.ui.PhaserEditorUI;
 public class ChainsView extends ViewPart {
 	public static final String ID = "phasereditor.chains.ui.views.chains";
 	private Text _queryText;
-	private TableViewer _chainsViewer;
+	TableViewer _viewer;
 	ChainsModel _chainsModel;
 	private ToolBar _filterToolbar;
+	private ChainsStyledCellLabelProvider _cellLabelProvider;
 
-	class ChainsLabelProvider extends StyledCellLabelProvider {
+	class ChainsStyledCellLabelProvider extends StyledCellLabelProvider {
 
 		private Font _italic;
 		private Font _font;
-		private Font _bold;
 		private Font _codeFont;
 		private Color _secondaryColor;
+		private ITheme _theme;
+		private IGrammar _grammar;
+		private Color _matchBorderColor;
 
-		public ChainsLabelProvider() {
+		public ChainsStyledCellLabelProvider() {
+			updateStyleValues();
+		}
+
+		public void updateStyleValues() {
 			_font = JFaceResources.getFont(JFaceResources.DEFAULT_FONT);
 
 			FontData fd = _font.getFontData()[0];
 			_italic = SWTResourceManager.getFont(fd.getName(), fd.getHeight(), SWT.ITALIC);
-			_bold = SWTResourceManager.getFont(fd.getName(), fd.getHeight(), SWT.BOLD);
 
 			_codeFont = JFaceResources.getFont(JFaceResources.TEXT_FONT);
 
-			RGB rgb = new RGB(154, 131, 80);
-			_secondaryColor = SWTResourceManager.getColor(rgb);
+			_secondaryColor = JFaceResources.getColorRegistry().get(JFacePreferences.DECORATIONS_COLOR);
+			_matchBorderColor = JFaceResources.getColorRegistry().get(JFacePreferences.COUNTER_COLOR);
 
+			_grammar = TMEclipseRegistryPlugin.getGrammarRegistryManager().getGrammarForScope("source.js");
+			_theme = TMUIPlugin.getThemeManager().getThemeForScope("source.js");
+		}
+
+		private void parseCode(String line, List<StyleRange> ranges) {
+			ITokenizeLineResult result = _grammar.tokenizeLine(line);
+			for (IToken token : result.getTokens()) {
+				for (String scope : token.getScopes()) {
+					org.eclipse.jface.text.rules.IToken themeToken = _theme.getToken(scope);
+					if (themeToken != null) {
+						Object data = themeToken.getData();
+						if (data != null && data instanceof TextAttribute) {
+							TextAttribute attr = (TextAttribute) data;
+							if (attr.getForeground() != null || attr.getBackground() != null) {
+								StyleRange range = new StyleRange(token.getStartIndex(),
+										token.getEndIndex() - token.getStartIndex(), attr.getForeground(),
+										attr.getBackground());
+								range.font = _codeFont;
+								ranges.add(range);
+							}
+						}
+					}
+				}
+			}
 		}
 
 		@Override
@@ -120,26 +161,59 @@ public class ChainsView extends ViewPart {
 			Match match = (Match) cell.getElement();
 			Line line = null;
 			String text;
+			String code = null;
 			int secondaryColorIndex;
 			if (match.item instanceof Line) {
 				line = (Line) match.item;
-				text = line.text + " - " + line.example.getFullName() + " [" + line.linenum + "]";
+				code = line.text;
+				text = line.text + " @ " + line.example.getFullName() + " [" + line.linenum + "]";
 				secondaryColorIndex = line.text.length();
 			} else {
 				secondaryColorIndex = 0;
 				text = ((PhaserExampleModel) match.item).getFullName();
 			}
 
-			StyleRange allRange = new StyleRange(0, text.length(), null, null);
-			allRange.font = _codeFont;
-
-			StyleRange selRange = new StyleRange(match.start, match.length, null, null);
-			selRange.font = _bold;
 			StyleRange secondaryRange = new StyleRange(secondaryColorIndex, text.length() - secondaryColorIndex,
 					_secondaryColor, null);
 
-			StyleRange[] ranges = { allRange, secondaryRange, selRange };
-			cell.setStyleRanges(ranges);
+			List<StyleRange> ranges = new ArrayList<>();
+
+			ranges.add(secondaryRange);
+
+			if (code != null) {
+
+				List<StyleRange> syntaxRanges = new ArrayList<>();
+
+				parseCode(code, syntaxRanges);
+
+				List<StyleRange> list = new ArrayList<>();
+
+				for (int i = 0; i < code.length(); i++) {
+					StyleRange mergeRange = new StyleRange();
+					mergeRange.font = _codeFont;
+					mergeRange.start = i;
+					mergeRange.length = 1;
+					mergeRange.foreground = _theme.getEditorForeground();
+
+					if (i >= match.start && i < match.start + match.length) {
+						mergeRange.borderColor = _matchBorderColor;
+						mergeRange.borderStyle = SWT.BORDER_SOLID;
+					}
+
+					for (StyleRange syntaxRange : syntaxRanges) {
+						if (i >= syntaxRange.start && i < syntaxRange.start + syntaxRange.length) {
+							mergeRange.foreground = syntaxRange.foreground;
+						}
+					}
+
+					list.add(mergeRange);
+				}
+
+				ranges.addAll(list);
+			}
+
+			cell.setBackground(_theme.getEditorBackground());
+			cell.setStyleRanges(ranges.toArray(new StyleRange[ranges.size()]));
 			cell.setText(text);
 			cell.setImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_GAME_CONTROLLER));
 		}
@@ -164,8 +238,10 @@ public class ChainsView extends ViewPart {
 			StyleRange[] ranges;
 
 			StyleRange selRange = new StyleRange(match.start, match.length, null, null);
-			selRange = new StyleRange(match.start, match.length, null, null);
-			selRange.font = _bold;
+			selRange.font = _font;
+			selRange.borderColor = _matchBorderColor;
+			selRange.borderStyle = SWT.BORDER_SOLID;
+
 			StyleRange allRange = new StyleRange(0, text.length(), null, null);
 			allRange.font = _font;
 			StyleRange returnTypeRange = new StyleRange();
@@ -188,6 +264,8 @@ public class ChainsView extends ViewPart {
 				ranges = new StyleRange[] { allRange, returnTypeRange, selRange };
 			}
 
+			cell.setBackground(_theme.getEditorBackground());
+			cell.setForeground(_theme.getEditorForeground());
 			cell.setText(text);
 			cell.setStyleRanges(ranges);
 			cell.setImage(JsdocRenderer.getInstance().getImage(chain.getPhaserMember()));
@@ -227,9 +305,9 @@ public class ChainsView extends ViewPart {
 
 			{
 				{
-					_chainsViewer = new TableViewer(container, SWT.FULL_SELECTION);
-					_chainsViewer.getTable().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-					_chainsViewer.addDoubleClickListener(new IDoubleClickListener() {
+					_viewer = new TableViewer(container, SWT.FULL_SELECTION);
+					_viewer.getTable().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+					_viewer.addDoubleClickListener(new IDoubleClickListener() {
 						@Override
 						public void doubleClick(DoubleClickEvent event) {
 							IStructuredSelection selection = (IStructuredSelection) event.getSelection();
@@ -242,16 +320,17 @@ public class ChainsView extends ViewPart {
 							}
 						}
 					});
-					Table chainsTable = _chainsViewer.getTable();
+					Table chainsTable = _viewer.getTable();
 					chainsTable.setLinesVisible(true);
 					chainsTable.setHeaderVisible(false);
 					{
-						TableViewerColumn tableViewerColumn = new TableViewerColumn(_chainsViewer, SWT.NONE);
-						tableViewerColumn.setLabelProvider(new ChainsLabelProvider());
+						TableViewerColumn tableViewerColumn = new TableViewerColumn(_viewer, SWT.NONE);
+						_cellLabelProvider = new ChainsStyledCellLabelProvider();
+						tableViewerColumn.setLabelProvider(_cellLabelProvider);
 						TableColumn column = tableViewerColumn.getColumn();
 						column.setWidth(1000);
 					}
-					_chainsViewer.setContentProvider(new ArrayContentProvider());
+					_viewer.setContentProvider(new ArrayContentProvider());
 				}
 			}
 
@@ -275,6 +354,7 @@ public class ChainsView extends ViewPart {
 	AtomicInteger _token = new AtomicInteger(0);
 	private Action _showChainsAction;
 	private Action _showExamplesAction;
+	private IPreferenceChangeListener _tmPrefsListener;
 
 	protected void queryTextModified() {
 
@@ -288,7 +368,7 @@ public class ChainsView extends ViewPart {
 	}
 
 	private void afterCreateWidgets() {
-		_chainsViewer.setInput(new Object[0]);
+		_viewer.setInput(new Object[0]);
 
 		new Job("Building chains...") {
 
@@ -302,15 +382,38 @@ public class ChainsView extends ViewPart {
 			}
 		}.schedule();
 
-		PhaserEditorUI.refreshViewerWhenPreferencesChange(ChainsUI.getPreferenceStore(), _chainsViewer);
+		PhaserEditorUI.refreshViewerWhenPreferencesChange(ChainsUI.getPreferenceStore(), _viewer);
 		// InspectUI.installJsdocTooltips(_chainsViewer);
 
-		getViewSite().setSelectionProvider(_chainsViewer);
+		getViewSite().setSelectionProvider(_viewer);
 
 		ToolBarManager manager = new ToolBarManager(_filterToolbar);
 		manager.add(_showChainsAction);
 		manager.add(_showExamplesAction);
 		manager.update(true);
+
+		_tmPrefsListener = new IPreferenceChangeListener() {
+
+			@Override
+			public void preferenceChange(PreferenceChangeEvent event) {
+				updateFromPreferencesChange();
+			}
+		};
+
+		IEclipsePreferences prefs = getTMPreferencesNode();
+		prefs.addPreferenceChangeListener(_tmPrefsListener);
+	}
+
+	private static IEclipsePreferences getTMPreferencesNode() {
+		return InstanceScope.INSTANCE.getNode(TMUIPlugin.PLUGIN_ID);
+	}
+
+	@Override
+	public void dispose() {
+
+		getTMPreferencesNode().removePreferenceChangeListener(_tmPrefsListener);
+
+		super.dispose();
 	}
 
 	/**
@@ -365,7 +468,7 @@ public class ChainsView extends ViewPart {
 	}
 
 	protected Match getSelectedChainItemMatch() {
-		return (Match) ((IStructuredSelection) _chainsViewer.getSelection()).getFirstElement();
+		return (Match) ((IStructuredSelection) _viewer.getSelection()).getFirstElement();
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -430,7 +533,12 @@ public class ChainsView extends ViewPart {
 		}
 
 		swtRun(() -> {
-			_chainsViewer.setInput(matches);
+			_viewer.setInput(matches);
 		});
+	}
+
+	protected void updateFromPreferencesChange() {
+		_cellLabelProvider.updateStyleValues();
+		_viewer.refresh();
 	}
 }
