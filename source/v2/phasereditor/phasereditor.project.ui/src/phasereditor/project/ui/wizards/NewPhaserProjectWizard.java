@@ -149,9 +149,9 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 		SourceLang lang = _settingsPage.getSourceLang();
 
 		try {
-			
+
 			IWorkingSet[] workingSets = _projectPage.getSelectedWorkingSets();
-			
+
 			getContainer().run(true, false, new IRunnableWithProgress() {
 
 				@Override
@@ -222,10 +222,9 @@ public class NewPhaserProjectWizard extends Wizard implements INewWizard {
 
 						template = InspectCore.getProjectTemplates().findById(templId);
 
-						ProjectCore.configureNewPhaserProject(project, template, values, lang);
+						ProjectCore.configureNewPhaserProject(project, template, values, lang, monitor);
 						monitor.worked(1);
 
-						
 						getWorkbench().getWorkingSetManager().addToWorkingSets(project, workingSets);
 						monitor.worked(1);
 

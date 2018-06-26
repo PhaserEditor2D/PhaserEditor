@@ -155,7 +155,7 @@ public class NewPhaserExampleProjectWizard extends Wizard implements INewWizard 
 						monitor.worked(1);
 
 						ProjectCore.configureNewPhaserProject(project, _templPage.getTemplate(), null,
-								SourceLang.JAVA_SCRIPT);
+								SourceLang.JAVA_SCRIPT, monitor);
 						monitor.worked(1);
 
 						getWorkbench().getWorkingSetManager().addToWorkingSets(project, workingSets);

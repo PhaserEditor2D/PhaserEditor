@@ -41,8 +41,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -148,7 +148,8 @@ public class ProjectCore {
 			try {
 				String order1 = orderMap.get(a);
 				String order2 = orderMap.get(b);
-				int c = Double.valueOf(Double.parseDouble(order1)).compareTo(Double.valueOf(Double.parseDouble(order2)));
+				int c = Double.valueOf(Double.parseDouble(order1))
+						.compareTo(Double.valueOf(Double.parseDouble(order2)));
 				return c;
 			} catch (Exception e) {
 				return 0;
@@ -231,7 +232,7 @@ public class ProjectCore {
 	public static String getAssetUrl(IFile file) {
 		IProject project = file.getProject();
 		IPath fullPath = file.getFullPath();
-		
+
 		return getAssetUrl(project, fullPath);
 	}
 
@@ -268,34 +269,22 @@ public class ProjectCore {
 	}
 
 	public static void configureNewPhaserProject(IProject project, IProjectTemplate template,
-			Map<String, String> paramValues, SourceLang lang) {
+			Map<String, String> paramValues, SourceLang lang, IProgressMonitor monitor) throws CoreException {
 		PhaserProjectBuilder.setActionAfterFirstBuild(project, () -> openTemplateMainFileInEditor(project, template));
 
-		WorkspaceJob copyJob = new WorkspaceJob("Copying template content") {
+		IFolder webContentFolder = project.getFolder("WebContent");
+		webContentFolder.create(true, true, monitor);
 
-			@Override
-			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-				IFolder webContentFolder = project.getFolder("WebContent");
-				webContentFolder.create(true, true, monitor);
+		IFolder folder = project.getFolder("Design");
+		folder.create(true, true, monitor);
 
-				IFolder folder = project.getFolder("Design");
-				folder.create(true, true, monitor);
+		template.copyInto(webContentFolder, paramValues, monitor);
 
-				template.copyInto(webContentFolder, paramValues, monitor);
+		setProjectLanguage(project, lang);
+		PhaserProjectNature.addPhaserNature(project, lang, monitor);
 
-				//TODO: #RemovingWST
-//				if (lang == SourceLang.JAVA_SCRIPT) {
-//					JsNature.addJsNature(project, monitor);
-//				}
+		project.build(IncrementalProjectBuilder.CLEAN_BUILD, monitor);
 
-				setProjectLanguage(project, lang);
-				PhaserProjectNature.addPhaserNature(project, lang, monitor);
-
-				return Status.OK_STATUS;
-			}
-
-		};
-		copyJob.schedule();
 	}
 
 	/**

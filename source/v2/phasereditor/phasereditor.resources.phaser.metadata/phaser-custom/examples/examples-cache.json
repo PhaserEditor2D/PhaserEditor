@@ -1411,6 +1411,16 @@
         ]
       },
       {
+        "mainFile": "src/camera/center on.js",
+        "map": [
+          {
+            "orig": "src/camera/center on.js",
+            "dst": "center on.js"
+          },
+          {"orig": "assets/tests/camera/earthbound-scarab.png"}
+        ]
+      },
+      {
         "mainFile": "src/camera/follow offset.js",
         "map": [
           {
@@ -1430,6 +1440,53 @@
           },
           {"orig": "assets/sprites/clown.png"},
           {"orig": "assets/tests/camera/CherilPerils.png"}
+        ]
+      },
+      {
+        "mainFile": "src/camera/follow sprite small bounds.js",
+        "map": [
+          {
+            "orig": "src/camera/follow sprite small bounds.js",
+            "dst": "follow sprite small bounds.js"
+          },
+          {"orig": "assets/sprites/crate32.png"},
+          {"orig": "assets/pics/the-end-by-iloe-and-made.jpg"},
+          {"orig": "assets/pics/backscroll.png"}
+        ]
+      },
+      {
+        "mainFile": "src/camera/follow sprite with deadzone.js",
+        "map": [
+          {
+            "orig": "src/camera/follow sprite with deadzone.js",
+            "dst": "follow sprite with deadzone.js"
+          },
+          {"orig": "assets/sprites/block.png"},
+          {"orig": "assets/pics/the-end-by-iloe-and-made.jpg"},
+          {"orig": "assets/pics/uv-grid-diag.png"}
+        ]
+      },
+      {
+        "mainFile": "src/camera/follow zoom.js",
+        "map": [
+          {
+            "orig": "src/camera/follow zoom.js",
+            "dst": "follow zoom.js"
+          },
+          {"orig": "assets/sprites/fmship.png"},
+          {"orig": "assets/tests/camera/earthbound-scarab.png"}
+        ]
+      },
+      {
+        "mainFile": "src/camera/follow zoom tilemap.js",
+        "map": [
+          {
+            "orig": "src/camera/follow zoom tilemap.js",
+            "dst": "follow zoom tilemap.js"
+          },
+          {"orig": "assets/sprites/fmship.png"},
+          {"orig": "assets/tilemaps/maps/super-mario.json"},
+          {"orig": "assets/tilemaps/tiles/super-mario.png"}
         ]
       },
       {
@@ -1483,6 +1540,27 @@
             "dst": "overlap.js"
           },
           {"orig": "assets/tests/camera/CherilPerils.png"}
+        ]
+      },
+      {
+        "mainFile": "src/camera/pan to.js",
+        "map": [
+          {
+            "orig": "src/camera/pan to.js",
+            "dst": "pan to.js"
+          },
+          {"orig": "assets/tests/camera/earthbound-scarab.png"}
+        ]
+      },
+      {
+        "mainFile": "src/camera/rotate camera.js",
+        "map": [
+          {
+            "orig": "src/camera/rotate camera.js",
+            "dst": "rotate camera.js"
+          },
+          {"orig": "assets/sprites/block.png"},
+          {"orig": "assets/pics/uv-grid-diag.png"}
         ]
       },
       {
@@ -1558,6 +1636,16 @@
             "dst": "world camera.js"
           },
           {"orig": "assets/pics/lance-overdose-loader-eye.png"}
+        ]
+      },
+      {
+        "mainFile": "src/camera/zoom to.js",
+        "map": [
+          {
+            "orig": "src/camera/zoom to.js",
+            "dst": "zoom to.js"
+          },
+          {"orig": "assets/tests/camera/earthbound-scarab.png"}
         ]
       }
     ]
@@ -3216,6 +3304,16 @@
             ]
           },
           {
+            "mainFile": "src/game objects/blitter/blitter global alpha.js",
+            "map": [
+              {
+                "orig": "src/game objects/blitter/blitter global alpha.js",
+                "dst": "blitter global alpha.js"
+              },
+              {"orig": "assets/sprites/atari130xe.png"}
+            ]
+          },
+          {
             "mainFile": "src/game objects/blitter/bob frame object.js",
             "map": [
               {
@@ -3867,6 +3965,13 @@
             }]
           },
           {
+            "mainFile": "src/game objects/graphics/fill rounded rectangle.js",
+            "map": [{
+              "orig": "src/game objects/graphics/fill rounded rectangle.js",
+              "dst": "fill rounded rectangle.js"
+            }]
+          },
+          {
             "mainFile": "src/game objects/graphics/generate texture to blitter.js",
             "map": [
               {
@@ -4099,6 +4204,13 @@
             "map": [{
               "orig": "src/game objects/graphics/stroke rect.js",
               "dst": "stroke rect.js"
+            }]
+          },
+          {
+            "mainFile": "src/game objects/graphics/stroke rounded rectangle.js",
+            "map": [{
+              "orig": "src/game objects/graphics/stroke rounded rectangle.js",
+              "dst": "stroke rounded rectangle.js"
             }]
           },
           {
@@ -11608,27 +11720,7 @@
             "orig": "src/textures/multi atlas.js",
             "dst": "multi atlas.js"
           },
-          {"orig": "assets/atlas/megaset-0.json"},
-          {"orig": "assets/atlas/megaset-2.json"},
-          {"orig": "assets/atlas/megaset-3.json"},
-          {"orig": "assets/atlas/megaset-3.png"},
-          {"orig": "assets/atlas/megaset-1.png"},
-          {"orig": "assets/atlas/megaset-0.png"},
-          {"orig": "assets/atlas/megaset-1.json"},
-          {"orig": "assets/atlas/megaset-2.png"}
-        ]
-      },
-      {
-        "mainFile": "src/textures/multi atlas auto name.js",
-        "map": [
-          {
-            "orig": "src/textures/multi atlas auto name.js",
-            "dst": "multi atlas auto name.js"
-          },
-          {"orig": "assets/atlas/megaset-0.json"},
-          {"orig": "assets/atlas/megaset-3.json"},
-          {"orig": "assets/atlas/megaset-3.png"},
-          {"orig": "assets/atlas/megaset-0.png"}
+          {"orig": "assets/atlas/tp3-multi-atlas.json"}
         ]
       },
       {
@@ -11682,14 +11774,7 @@
             "orig": "src/textures/trimmed frame from multi atlas.js",
             "dst": "trimmed frame from multi atlas.js"
           },
-          {"orig": "assets/atlas/megaset-0.json"},
-          {"orig": "assets/atlas/megaset-2.json"},
-          {"orig": "assets/atlas/megaset-3.json"},
-          {"orig": "assets/atlas/megaset-3.png"},
-          {"orig": "assets/atlas/megaset-1.png"},
-          {"orig": "assets/atlas/megaset-0.png"},
-          {"orig": "assets/atlas/megaset-1.json"},
-          {"orig": "assets/atlas/megaset-2.png"}
+          {"orig": "assets/atlas/tp3-multi-atlas.json"}
         ]
       },
       {

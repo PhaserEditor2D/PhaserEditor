@@ -114,6 +114,11 @@
             id="phasereditor.project.ui.openNewProjectExplorer"
             name="Open New Project Explorer">
       </command>
+      <command
+            categoryId="phasereditor.ui.phaserCategory"
+            id="phasereditor.project.ui.createExampleProject"
+            name="Create Project with Example">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -180,6 +185,15 @@
             </visibleWhen>
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:phasereditor.inspect.ui.views.phaserExamples?after=additions">
+         <command
+               commandId="phasereditor.project.ui.createExampleProject"
+               icon="platform:/plugin/phasereditor.ui/icons/new_phaser_project.png"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    
    <extension
@@ -221,5 +235,22 @@
       <initializer
             class="phasereditor.project.ui.prefs.ProjectPreferenceInitializer">
       </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="phasereditor.project.ui.handlers.CreateProjectFromExampleHandler"
+            commandId="phasereditor.project.ui.createExampleProject">
+         <activeWhen>
+            <with
+                  variable="selection">
+               <iterate>
+                  <adapt
+                        type="phasereditor.inspect.core.examples.PhaserExampleModel">
+                  </adapt>
+               </iterate>
+            </with>
+         </activeWhen>
+      </handler>
    </extension>
 </plugin>
