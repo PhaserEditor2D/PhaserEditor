@@ -244,7 +244,8 @@
          <activeWhen>
             <with
                   variable="selection">
-               <iterate>
+               <iterate
+                     ifEmpty="false">
                   <adapt
                         type="phasereditor.inspect.core.examples.PhaserExampleModel">
                   </adapt>

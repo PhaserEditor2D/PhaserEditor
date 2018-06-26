@@ -32,6 +32,11 @@
             icon="platform:/plugin/phasereditor.ui/icons/world.png"
             style="push">
       </command>
+      <command
+            commandId="phasereditor.project.ui.createExampleProject"
+            icon="platform:/plugin/phasereditor.ui/icons/new_phaser_project.png"
+            style="push">
+      </command>
    </menuContribution>
 </extension>
 </plugin>
