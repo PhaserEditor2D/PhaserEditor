@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid.editors;
 
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.source.SourceViewer;
@@ -32,10 +33,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.tm4e.core.grammar.IGrammar;
-import org.eclipse.tm4e.registry.IGrammarRegistryManager;
 import org.eclipse.tm4e.registry.TMEclipseRegistryPlugin;
-import org.eclipse.tm4e.ui.TMUIPlugin;
-import org.eclipse.tm4e.ui.themes.ITheme;
+import org.eclipse.tm4e.ui.text.TMPresentationReconciler;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 /**
@@ -100,15 +99,18 @@ public class UserCodeBeforeAfterCodeComp extends Composite {
 	private static SourceViewer createViewer(Composite parent) {
 		IDocument document = new Document();
 
-		TMViewer2 viewer = new TMViewer2(parent, null, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
+		IGrammar grammar = TMEclipseRegistryPlugin.getGrammarRegistryManager().getGrammarForScope("source.js");
 
-		IGrammarRegistryManager manager = TMEclipseRegistryPlugin.getGrammarRegistryManager();
+		SourceViewer viewer = new SourceViewer(parent, null, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
+		StyledText styledText = (StyledText) viewer.getControl();
+		styledText.setFont(JFaceResources.getTextFont());
 
-		IGrammar grammar = manager.getGrammarForScope("source.js");
-		ITheme theme = TMUIPlugin.getThemeManager().getThemeForScope("source.js");
-
-		viewer.setGrammar(grammar);
-		viewer.setTheme(theme);
+		TMPresentationReconciler reconciler = new TMPresentationReconciler();
+		reconciler.setGrammar(grammar);
+		reconciler.install(viewer);
+		viewer.getControl().addDisposeListener(e -> {
+			reconciler.uninstall();
+		});
 
 		viewer.setEditable(true);
 		viewer.setDocument(document);
