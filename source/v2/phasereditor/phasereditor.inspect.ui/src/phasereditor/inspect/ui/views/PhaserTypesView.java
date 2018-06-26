@@ -27,6 +27,9 @@ import java.util.List;
 import org.eclipse.core.runtime.Adapters;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -56,10 +59,11 @@ import phasereditor.ui.PatternFilter2;
  * @author arian
  *
  */
-public class PhaserTypesView extends ViewPart implements ISelectionListener {
+public class PhaserTypesView extends ViewPart implements ISelectionListener, IPropertyChangeListener {
 
 	public static final String ID = "phasereditor.inspect.ui.views.PhaserTypesView"; //$NON-NLS-1$
 	private FilteredTree _filteredTree;
+	private PhaserElementStyledLabelProvider _styleLabelProvider;
 
 	public PhaserTypesView() {
 	}
@@ -83,7 +87,8 @@ public class PhaserTypesView extends ViewPart implements ISelectionListener {
 		treeViewer.setLabelProvider(new PhaserElementLabelProvider());
 
 		TreeViewerColumn viewerColumn = new TreeViewerColumn(treeViewer, SWT.NONE);
-		viewerColumn.setLabelProvider(new PhaserElementStyledLabelProvider());
+		_styleLabelProvider = new PhaserElementStyledLabelProvider();
+		viewerColumn.setLabelProvider(_styleLabelProvider);
 		TreeColumn column = viewerColumn.getColumn();
 		column.setWidth(1000);
 
@@ -107,6 +112,8 @@ public class PhaserTypesView extends ViewPart implements ISelectionListener {
 
 		getViewSite().getWorkbenchWindow().getSelectionService().removeSelectionListener(this);
 
+		JFaceResources.getColorRegistry().removeListener(this);
+
 		super.dispose();
 	}
 
@@ -120,6 +127,8 @@ public class PhaserTypesView extends ViewPart implements ISelectionListener {
 	}
 
 	private void afterCreateWidgets() {
+		JFaceResources.getColorRegistry().addListener(this);
+
 		getViewSite().setSelectionProvider(_filteredTree.getViewer());
 
 		_filteredTree.getViewer().setInput(InspectCore.getPhaserHelp());
@@ -191,12 +200,18 @@ public class PhaserTypesView extends ViewPart implements ISelectionListener {
 		if (InspectCore.getPhaserHelp().getGlobalScope().isGlobal(member)) {
 			path.add(InspectCore.getPhaserHelp().getGlobalScope());
 		}
-		
+
 		path.add(member);
 
 		if (member.getContainer() != null) {
 			buildTreePath(path, member.getContainer());
 		}
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent event) {
+		_styleLabelProvider.updateStyleValues();
+		_filteredTree.getViewer().refresh();
 	}
 
 }

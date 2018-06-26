@@ -21,16 +21,16 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.ui;
 
+import org.eclipse.jface.preference.JFacePreferences;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.RGB;
-import org.eclipse.wb.swt.SWTResourceManager;
 
-import phasereditor.inspect.core.jsdoc.PhaserGlobalScope;
 import phasereditor.inspect.core.jsdoc.IPhaserMember;
 import phasereditor.inspect.core.jsdoc.JsdocRenderer;
+import phasereditor.inspect.core.jsdoc.PhaserGlobalScope;
 import phasereditor.inspect.core.jsdoc.PhaserMethod;
 import phasereditor.inspect.core.jsdoc.PhaserMethodArg;
 import phasereditor.inspect.core.jsdoc.PhaserNamespace;
@@ -45,8 +45,11 @@ public class PhaserElementStyledLabelProvider extends StyledCellLabelProvider {
 	private Color _secondaryColor;
 
 	public PhaserElementStyledLabelProvider() {
-		RGB rgb = new RGB(154, 131, 80);
-		_secondaryColor = SWTResourceManager.getColor(rgb);
+		updateStyleValues();
+	}
+
+	public void updateStyleValues() {
+		_secondaryColor = JFaceResources.getColorRegistry().get(JFacePreferences.DECORATIONS_COLOR);
 	}
 
 	@Override

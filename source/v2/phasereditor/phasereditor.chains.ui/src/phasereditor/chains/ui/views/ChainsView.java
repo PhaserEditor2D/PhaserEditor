@@ -46,6 +46,8 @@ import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.preference.JFacePreferences;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.TextAttribute;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -92,7 +94,7 @@ import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.PhaserEditorUI;
 
-public class ChainsView extends ViewPart {
+public class ChainsView extends ViewPart implements IPropertyChangeListener {
 	public static final String ID = "phasereditor.chains.ui.views.chains";
 	private Text _queryText;
 	TableViewer _viewer;
@@ -400,18 +402,25 @@ public class ChainsView extends ViewPart {
 			}
 		};
 
-		IEclipsePreferences prefs = getTMPreferencesNode();
-		prefs.addPreferenceChangeListener(_tmPrefsListener);
+		getTMPreferencesNode().addPreferenceChangeListener(_tmPrefsListener);
+		getE4CSSThemePreferencesNode().addPreferenceChangeListener(_tmPrefsListener);
+		JFaceResources.getColorRegistry().addListener(this);
 	}
 
 	private static IEclipsePreferences getTMPreferencesNode() {
 		return InstanceScope.INSTANCE.getNode(TMUIPlugin.PLUGIN_ID);
 	}
 
+	private static IEclipsePreferences getE4CSSThemePreferencesNode() {
+		return InstanceScope.INSTANCE.getNode("org.eclipse.e4.ui.css.swt.theme");
+	}
+
 	@Override
 	public void dispose() {
 
 		getTMPreferencesNode().removePreferenceChangeListener(_tmPrefsListener);
+		getE4CSSThemePreferencesNode().removePreferenceChangeListener(_tmPrefsListener);
+		JFaceResources.getColorRegistry().removeListener(this);
 
 		super.dispose();
 	}
@@ -540,5 +549,10 @@ public class ChainsView extends ViewPart {
 	protected void updateFromPreferencesChange() {
 		_cellLabelProvider.updateStyleValues();
 		_viewer.refresh();
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent event) {
+		updateFromPreferencesChange();
 	}
 }

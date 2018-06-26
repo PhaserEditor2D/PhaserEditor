@@ -29,6 +29,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.runtime.Adapters;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -59,11 +62,12 @@ import phasereditor.ui.handlers.ShowSourceCodeHandler;
  * @author arian
  *
  */
-public class PhaserFilesView extends ViewPart implements ISelectionListener {
+public class PhaserFilesView extends ViewPart implements ISelectionListener, IPropertyChangeListener {
 
 	public static final String ID = "phasereditor.inspect.ui.views.PhaserFilesView"; //$NON-NLS-1$
 	private FilteredTree _filteredTree;
 	private TreeViewer _viewer;
+	private PhaserFileStyledLabelProvider _styledLabelProvider;
 
 	public PhaserFilesView() {
 	}
@@ -76,7 +80,8 @@ public class PhaserFilesView extends ViewPart implements ISelectionListener {
 		_viewer.setContentProvider(new PhaserFileContentProvider());
 
 		TreeViewerColumn viewerColumn = new TreeViewerColumn(_viewer, SWT.NONE);
-		viewerColumn.setLabelProvider(new PhaserFileStyledLabelProvider());
+		_styledLabelProvider = new PhaserFileStyledLabelProvider();
+		viewerColumn.setLabelProvider(_styledLabelProvider);
 		TreeColumn column = viewerColumn.getColumn();
 		column.setWidth(1000);
 
@@ -85,12 +90,13 @@ public class PhaserFilesView extends ViewPart implements ISelectionListener {
 
 	@Override
 	public void dispose() {
-		
+
 		getViewSite().getWorkbenchWindow().getSelectionService().removeSelectionListener(this);
-		
+		JFaceResources.getColorRegistry().removeListener(this);
+
 		super.dispose();
 	}
-	
+
 	private void afterCreateWidgets() {
 		_viewer.setInput(InspectCore.getPhaserFiles().getSrcFolder());
 		_viewer.addDoubleClickListener(new IDoubleClickListener() {
@@ -106,6 +112,8 @@ public class PhaserFilesView extends ViewPart implements ISelectionListener {
 		getViewSite().setSelectionProvider(_viewer);
 
 		getViewSite().getWorkbenchWindow().getSelectionService().addSelectionListener(this);
+
+		JFaceResources.getColorRegistry().addListener(this);
 	}
 
 	@Override
@@ -118,7 +126,7 @@ public class PhaserFilesView extends ViewPart implements ISelectionListener {
 		if (this == part) {
 			return;
 		}
-		
+
 		if (selection instanceof IStructuredSelection) {
 			Object elem = ((IStructuredSelection) selection).getFirstElement();
 			IPhaserMember member = Adapters.adapt(elem, IPhaserMember.class);
@@ -127,7 +135,7 @@ public class PhaserFilesView extends ViewPart implements ISelectionListener {
 				out.println(Arrays.toString(path));
 				_viewer.reveal(new TreePath(path));
 				_viewer.setSelection(new StructuredSelection(member));
-				
+
 			}
 		}
 	}
@@ -151,16 +159,22 @@ public class PhaserFilesView extends ViewPart implements ISelectionListener {
 			IPhaserMember member = (IPhaserMember) obj;
 			Object parent;
 			IMemberContainer container = member.getContainer();
-			
+
 			if (container != null && container.getFile().equals(member.getFile())) {
 				parent = container;
 			} else {
 				parent = PhaserJsdocModel.getInstance().getMemberPath(member);
 			}
-			
+
 			memberPath(parent, treepath);
 			treepath.add(member);
 		}
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent event) {
+		_styledLabelProvider.updateStyleValues();
+		_viewer.refresh();
 	}
 
 }
