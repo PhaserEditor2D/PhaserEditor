@@ -33,6 +33,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.IInputValidator;
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.inspect.core.examples.PhaserExampleModel;
@@ -52,22 +55,40 @@ public class CreateProjectFromExampleHandler extends AbstractHandler {
 		PhaserExampleModel example = Adapters.adapt(elem, PhaserExampleModel.class);
 
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IProject project = root.getProject(example.getName());
 
-		WorkspaceJob job = new WorkspaceJob("Create example project '" + project.getName() + "'") {
+		String name = example.getName();
 
-			@Override
-			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-				project.create(monitor);
-				project.open(monitor);
-				
-				ProjectCore.configureNewPhaserProject(project, example, null, SourceLang.JAVA_SCRIPT, monitor);
-				
-				return Status.OK_STATUS;
-			}
-		};
+		InputDialog dlg = new InputDialog(HandlerUtil.getActiveShell(event), "Create Project",
+				"Create a project with the selected example.", name, new IInputValidator() {
 
-		job.schedule();
+					@Override
+					public String isValid(String newText) {
+						IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(newText);
+						if (project.exists()) {
+							return "That name already exists.";
+						}
+						return null;
+					}
+				});
+
+		if (dlg.open() == Window.OK) {
+			IProject project = root.getProject(name);
+
+			WorkspaceJob job = new WorkspaceJob("Create example project '" + project.getName() + "'") {
+
+				@Override
+				public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+					project.create(monitor);
+					project.open(monitor);
+
+					ProjectCore.configureNewPhaserProject(project, example, null, SourceLang.JAVA_SCRIPT, monitor);
+
+					return Status.OK_STATUS;
+				}
+			};
+
+			job.schedule();
+		}
 
 		return null;
 	}
