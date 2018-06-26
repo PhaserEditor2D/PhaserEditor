@@ -102,55 +102,18 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 	private ToolBar _filterToolbar;
 	private ChainsStyledCellLabelProvider _cellLabelProvider;
 
-	class ChainsStyledCellLabelProvider extends StyledCellLabelProvider {
+	protected Font _italic;
+	protected Font _font;
+	protected Font _codeFont;
+	protected Color _secondaryColor;
+	protected ITheme _theme;
+	protected IGrammar _grammar;
+	protected Color _matchBorderColor;
 
-		private Font _italic;
-		private Font _font;
-		private Font _codeFont;
-		private Color _secondaryColor;
-		private ITheme _theme;
-		private IGrammar _grammar;
-		private Color _matchBorderColor;
+	class ChainsStyledCellLabelProvider extends StyledCellLabelProvider {
 
 		public ChainsStyledCellLabelProvider() {
 			updateStyleValues();
-		}
-
-		public void updateStyleValues() {
-			_font = JFaceResources.getFont(JFaceResources.DEFAULT_FONT);
-
-			FontData fd = _font.getFontData()[0];
-			_italic = SWTResourceManager.getFont(fd.getName(), fd.getHeight(), SWT.ITALIC);
-
-			_codeFont = JFaceResources.getFont(JFaceResources.TEXT_FONT);
-
-			_secondaryColor = JFaceResources.getColorRegistry().get(JFacePreferences.DECORATIONS_COLOR);
-			_matchBorderColor = JFaceResources.getColorRegistry().get(JFacePreferences.COUNTER_COLOR);
-
-			_grammar = TMEclipseRegistryPlugin.getGrammarRegistryManager().getGrammarForScope("source.js");
-			_theme = TMUIPlugin.getThemeManager().getThemeForScope("source.js");
-		}
-
-		private void parseCode(String line, List<StyleRange> ranges) {
-			ITokenizeLineResult result = _grammar.tokenizeLine(line);
-			for (IToken token : result.getTokens()) {
-				for (String scope : token.getScopes()) {
-					org.eclipse.jface.text.rules.IToken themeToken = _theme.getToken(scope);
-					if (themeToken != null) {
-						Object data = themeToken.getData();
-						if (data != null && data instanceof TextAttribute) {
-							TextAttribute attr = (TextAttribute) data;
-							if (attr.getForeground() != null || attr.getBackground() != null) {
-								StyleRange range = new StyleRange(token.getStartIndex(),
-										token.getEndIndex() - token.getStartIndex(), attr.getForeground(),
-										attr.getBackground());
-								range.font = _codeFont;
-								ranges.add(range);
-							}
-						}
-					}
-				}
-			}
 		}
 
 		@Override
@@ -159,63 +122,18 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 		}
 
 		private void updateExampleLabel(ViewerCell cell) {
-
 			Match match = (Match) cell.getElement();
 			Line line = null;
 			String text;
-			String code = null;
-			int secondaryColorIndex;
 			if (match.item instanceof Line) {
 				line = (Line) match.item;
-				code = line.text;
 				text = line.text + " @ " + line.example.getFullName() + " [" + line.linenum + "]";
-				secondaryColorIndex = line.text.length();
 			} else {
-				secondaryColorIndex = 0;
 				text = ((PhaserExampleModel) match.item).getFullName();
 			}
 
-			StyleRange secondaryRange = new StyleRange(secondaryColorIndex, text.length() - secondaryColorIndex,
-					_secondaryColor, null);
-
-			List<StyleRange> ranges = new ArrayList<>();
-
-			ranges.add(secondaryRange);
-
-			if (code != null) {
-
-				List<StyleRange> syntaxRanges = new ArrayList<>();
-
-				parseCode(code, syntaxRanges);
-
-				List<StyleRange> list = new ArrayList<>();
-
-				for (int i = 0; i < code.length(); i++) {
-					StyleRange mergeRange = new StyleRange();
-					mergeRange.font = _codeFont;
-					mergeRange.start = i;
-					mergeRange.length = 1;
-					mergeRange.foreground = _theme.getEditorForeground();
-
-					if (i >= match.start && i < match.start + match.length) {
-						mergeRange.borderColor = _matchBorderColor;
-						mergeRange.borderStyle = SWT.BORDER_SOLID;
-					}
-
-					for (StyleRange syntaxRange : syntaxRanges) {
-						if (i >= syntaxRange.start && i < syntaxRange.start + syntaxRange.length) {
-							mergeRange.foreground = syntaxRange.foreground;
-						}
-					}
-
-					list.add(mergeRange);
-				}
-
-				ranges.addAll(list);
-			}
-
 			cell.setBackground(_theme.getEditorBackground());
-			cell.setStyleRanges(ranges.toArray(new StyleRange[ranges.size()]));
+			cell.setStyleRanges(match.styles);
 			cell.setText(text);
 			cell.setImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_GAME_CONTROLLER));
 		}
@@ -234,47 +152,30 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 		private void updateChainLabel(ViewerCell cell) {
 			Match match = (Match) cell.getElement();
 			ChainItem chain = (ChainItem) match.item;
-
-			String text = match.toString();
-
-			StyleRange[] ranges;
-
-			StyleRange selRange = new StyleRange(match.start, match.length, null, null);
-			selRange.font = _font;
-			selRange.borderColor = _matchBorderColor;
-			selRange.borderStyle = SWT.BORDER_SOLID;
-
-			StyleRange allRange = new StyleRange(0, text.length(), null, null);
-			allRange.font = _font;
-			StyleRange returnTypeRange = new StyleRange();
-
-			{
-				int index = chain.getReturnTypeIndex();
-				if (index > 0) {
-					int len = chain.getDisplay().length() - index;
-					returnTypeRange = new StyleRange(index, len, _secondaryColor, null);
-				}
-			}
-
-			if (chain.getDepth() > 0) {
-				StyleRange italicRange = new StyleRange();
-				italicRange.font = _italic;
-				italicRange.start = 0;
-				italicRange.length = text.length();
-				ranges = new StyleRange[] { allRange, italicRange, returnTypeRange, selRange };
-			} else {
-				ranges = new StyleRange[] { allRange, returnTypeRange, selRange };
-			}
-
 			cell.setBackground(_theme.getEditorBackground());
 			cell.setForeground(_theme.getEditorForeground());
-			cell.setText(text);
-			cell.setStyleRanges(ranges);
+			cell.setText(match.toString());
+			cell.setStyleRanges(match.styles);
 			cell.setImage(JsdocRenderer.getInstance().getImage(chain.getPhaserMember()));
 		}
 	}
 
 	public ChainsView() {
+	}
+
+	protected void updateStyleValues() {
+		_font = JFaceResources.getFont(JFaceResources.DEFAULT_FONT);
+
+		FontData fd = _font.getFontData()[0];
+		_italic = SWTResourceManager.getFont(fd.getName(), fd.getHeight(), SWT.ITALIC);
+
+		_codeFont = JFaceResources.getFont(JFaceResources.TEXT_FONT);
+
+		_secondaryColor = JFaceResources.getColorRegistry().get(JFacePreferences.DECORATIONS_COLOR);
+		_matchBorderColor = JFaceResources.getColorRegistry().get(JFacePreferences.COUNTER_COLOR);
+
+		_grammar = TMEclipseRegistryPlugin.getGrammarRegistryManager().getGrammarForScope("source.js");
+		_theme = TMUIPlugin.getThemeManager().getThemeForScope("source.js");
 	}
 
 	/**
@@ -526,10 +427,12 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 
 		if (_showChainsAction.isChecked()) {
 			list1 = _chainsModel.searchChains(query[0], chainsLimit);
+			prepareChainsMatches(list1);
 		}
 
 		if (_showExamplesAction.isChecked()) {
 			list2 = _chainsModel.searchExamples(query[0], chainsLimit);
+			prepareExamplesMatches(list2);
 		}
 
 		List<Match> matches = new ArrayList<>();
@@ -546,8 +449,143 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 		});
 	}
 
+	/**
+	 * @param list1
+	 */
+	private void prepareChainsMatches(List<Match> matches) {
+		for (Match match : matches) {
+			ChainItem chain = (ChainItem) match.item;
+
+			String text = match.toString();
+
+			StyleRange[] ranges;
+
+			StyleRange selRange = new StyleRange(match.start, match.length, null, null);
+			selRange.font = _font;
+			selRange.borderColor = _matchBorderColor;
+			selRange.borderStyle = SWT.BORDER_SOLID;
+
+			StyleRange allRange = new StyleRange(0, text.length(), null, null);
+			allRange.font = _font;
+			StyleRange returnTypeRange = new StyleRange();
+
+			{
+				int index = chain.getReturnTypeIndex();
+				if (index > 0) {
+					int len = chain.getDisplay().length() - index;
+					returnTypeRange = new StyleRange(index, len, _secondaryColor, null);
+				}
+			}
+
+			if (chain.getDepth() > 0) {
+				StyleRange italicRange = new StyleRange();
+				italicRange.font = _italic;
+				italicRange.start = 0;
+				italicRange.length = text.length();
+				ranges = new StyleRange[] { allRange, italicRange, returnTypeRange, selRange };
+			} else {
+				ranges = new StyleRange[] { allRange, returnTypeRange, selRange };
+			}
+
+			match.styles = ranges;
+		}
+	}
+
+	private void prepareExamplesMatches(List<Match> matches) {
+		for (Match match : matches) {
+			Line line = null;
+			String text;
+			String code = null;
+			int secondaryColorIndex;
+			if (match.item instanceof Line) {
+				line = (Line) match.item;
+				code = line.text;
+				text = line.text + " @ " + line.example.getFullName() + " [" + line.linenum + "]";
+				secondaryColorIndex = line.text.length();
+			} else {
+				secondaryColorIndex = 0;
+				text = ((PhaserExampleModel) match.item).getFullName();
+			}
+
+			StyleRange secondaryRange = new StyleRange(secondaryColorIndex, text.length() - secondaryColorIndex,
+					_secondaryColor, null);
+
+			List<StyleRange> ranges = new ArrayList<>();
+
+			ranges.add(secondaryRange);
+
+			if (code != null) {
+
+				List<StyleRange> syntaxRanges = new ArrayList<>();
+
+				parseCode(code, syntaxRanges);
+
+				List<StyleRange> list = new ArrayList<>();
+
+				for (int i = 0; i < code.length(); i++) {
+					StyleRange mergeRange = new StyleRange();
+					mergeRange.font = _codeFont;
+					mergeRange.start = i;
+					mergeRange.length = 1;
+					mergeRange.foreground = _theme.getEditorForeground();
+
+					if (i >= match.start && i < match.start + match.length) {
+						mergeRange.borderColor = _matchBorderColor;
+						mergeRange.borderStyle = SWT.BORDER_SOLID;
+					}
+
+					for (StyleRange syntaxRange : syntaxRanges) {
+						if (i >= syntaxRange.start && i < syntaxRange.start + syntaxRange.length) {
+							mergeRange.foreground = syntaxRange.foreground;
+						}
+					}
+
+					list.add(mergeRange);
+				}
+
+				ranges.addAll(list);
+			}
+
+			match.styles = ranges.toArray(new StyleRange[ranges.size()]);
+		}
+
+	}
+
+	private void parseCode(String line, List<StyleRange> ranges) {
+		try {
+			ITokenizeLineResult result;
+
+//			synchronized (_grammar) {
+				result = _grammar.tokenizeLine(line);
+//			}
+
+			for (IToken token : result.getTokens()) {
+				for (String scope : token.getScopes()) {
+					org.eclipse.jface.text.rules.IToken themeToken = _theme.getToken(scope);
+					if (themeToken != null) {
+						Object data = themeToken.getData();
+						if (data != null && data instanceof TextAttribute) {
+							TextAttribute attr = (TextAttribute) data;
+							if (attr.getForeground() != null || attr.getBackground() != null) {
+								StyleRange range = new StyleRange(token.getStartIndex(),
+										token.getEndIndex() - token.getStartIndex(), attr.getForeground(),
+										attr.getBackground());
+								range.font = _codeFont;
+								ranges.add(range);
+							}
+						}
+					}
+				}
+
+			}
+		} catch (Exception e) {
+			//TODO: there are problems with parallel parsing, we should test it in Photon.
+			// e.printStackTrace();
+		}
+	}
+
 	protected void updateFromPreferencesChange() {
-		_cellLabelProvider.updateStyleValues();
+		updateStyleValues();
 		_viewer.refresh();
 	}
 

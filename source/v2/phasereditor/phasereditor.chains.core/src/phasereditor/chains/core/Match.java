@@ -23,12 +23,14 @@ package phasereditor.chains.core;
 
 import org.eclipse.core.runtime.Adapters;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.swt.custom.StyleRange;
 
 public class Match implements IAdaptable {
 	public Object item;
 	public int start;
 	public int length;
-
+	public StyleRange[] styles;
+	
 	@Override
 	public String toString() {
 		return item.toString();
