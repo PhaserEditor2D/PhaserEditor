@@ -38,9 +38,11 @@ public class JsdocView extends ViewPart implements ISelectionListener, LocationL
 	public void createPartControl(Composite parent) {
 		_browser = new Browser(parent, SWT.NONE);
 		_browser.addLocationListener(this);
-		
+
 		InstanceScope.INSTANCE.getNode(TMUIPlugin.PLUGIN_ID).addPreferenceChangeListener(this);
 		InstanceScope.INSTANCE.getNode("org.eclipse.e4.ui.css.swt.theme").addPreferenceChangeListener(this);
+
+		setHtml("Select an element in the workbbench.");
 	}
 
 	@Override
@@ -84,20 +86,20 @@ public class JsdocView extends ViewPart implements ISelectionListener, LocationL
 			html = provider.getJsdoc();
 		}
 
-		ITheme theme = TMUIPlugin.getThemeManager().getThemeForScope("source.js");
-
-		Color bg = theme.getEditorBackground();
-		Color fg = theme.getEditorForeground();
-
-		html = JsdocRenderer.wrapDocBody(html, bg.getRGB(), fg.getRGB());
-
 		setHtml(html);
 
 		_currentProvider = provider;
 	}
 
 	private void setHtml(String html) {
-		_browser.setText(html);
+		ITheme theme = TMUIPlugin.getThemeManager().getThemeForScope("source.js");
+
+		Color bg = theme.getEditorBackground();
+		Color fg = theme.getEditorForeground();
+
+		String html2 = JsdocRenderer.wrapDocBody(html, bg.getRGB(), fg.getRGB());
+
+		_browser.setText(html2);
 	}
 
 	@Override
