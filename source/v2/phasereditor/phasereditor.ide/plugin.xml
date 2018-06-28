@@ -5,7 +5,8 @@
    <extension
          id="application"
          point="org.eclipse.core.runtime.applications">
-      <application>
+      <application
+            icon="icons/64.png">
          <run
                class="phasereditor.ide.intro.PhaserIDE2">
          </run>
@@ -96,12 +97,18 @@
             icon="platform:/plugin/phasereditor.ui/icons/phaser-ship.png"
             id="phasereditor.ide.ui.perspective"
             name="Phaser">
+         <description>
+            Main Phaser Editor perspective to create the games.
+         </description>
       </perspective>
       <perspective
             class="phasereditor.ide.ui.LabsPerspectiveFactory"
             icon="platform:/plugin/phasereditor.ui/icons/potion.png"
             id="phasereditor.ide.ui.labs"
             name="Phaser Lab">
+         <description>
+            A perspective to learn and experiment with Phaser.
+         </description>
       </perspective>
    </extension>   <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -147,36 +154,6 @@
       </perspectiveExtension>
       <perspectiveExtension
             targetID="phasereditor.ide.ui.labs">
-         <view
-               id="phasereditor.inspect.ui.views.phaserExamples"
-               minimized="false"
-               relationship="stack">
-         </view>
-         <view
-               id="phasereditor.inspect.ui.views.PhaserFilesView"
-               minimized="false"
-               relationship="stack">
-         </view>
-         <view
-               id="phasereditor.inspect.ui.views.PhaserHierarchyView"
-               minimized="false"
-               relationship="stack">
-         </view>
-         <view
-               id="phasereditor.chains.ui.views.chains"
-               minimized="false"
-               relationship="stack">
-         </view>
-         <view
-               id="phasereditor.inspect.ui.views.PhaserTypesView"
-               minimized="false"
-               relationship="stack">
-         </view>
-         <view
-               id="org.eclipse.ui.navigator.ProjectExplorer"
-               minimized="false"
-               relationship="stack">
-         </view>
       </perspectiveExtension>
    </extension>
                   <extension
