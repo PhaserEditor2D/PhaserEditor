@@ -73,11 +73,6 @@
                style="push">
          </command>
          <command
-               commandId="phasereditor.atlas.ui.editor.changelayout"
-               icon="platform:/plugin/phasereditor.ui/icons/application_side_expand.png"
-               style="push">
-         </command>
-         <command
                commandId="phasereditor.atlas.ui.editor.showsettings"
                icon="platform:/plugin/phasereditor.ui/icons/wrench.png"
                style="push">

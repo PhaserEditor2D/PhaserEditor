@@ -55,6 +55,17 @@ public class AtlasGeneratorEditorModel {
 
 	public static class EditorPage extends ArrayList<AtlasFrame> {
 		private static final long serialVersionUID = 1L;
+		private int _index;
+
+		public EditorPage(int index) {
+			super();
+			_index = index;
+		}
+		
+		public int getIndex() {
+			return _index;
+		}
+		
 	}
 
 	public AtlasGeneratorEditorModel(IFile file) throws IOException, CoreException {

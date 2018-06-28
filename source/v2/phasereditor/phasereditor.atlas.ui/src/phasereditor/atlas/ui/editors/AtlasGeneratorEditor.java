@@ -33,7 +33,6 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.resources.IContainer;
@@ -59,23 +58,19 @@ import org.eclipse.help.HelpSystem;
 import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
-import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetAdapter;
@@ -83,13 +78,10 @@ import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
@@ -101,7 +93,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -109,6 +100,8 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
+import org.eclipse.ui.views.contentoutline.ContentOutlinePage;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.json.JSONObject;
@@ -125,11 +118,13 @@ import phasereditor.atlas.core.ResultPage;
 import phasereditor.atlas.core.SettingsBean;
 import phasereditor.atlas.ui.AtlasCanvas;
 import phasereditor.atlas.ui.editors.AtlasGeneratorEditorModel.EditorPage;
+import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.IconCache;
 import phasereditor.ui.PhaserEditorUI;
 
-public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedImages, IResourceChangeListener {
+public class AtlasGeneratorEditor extends EditorPart
+		implements IEditorSharedImages, IResourceChangeListener, ISelectionChangedListener {
 	class FramesLabelProvider extends LabelProvider {
 
 		private IconCache _cache = new IconCache();
@@ -142,16 +137,30 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 
 		@Override
 		public String getText(Object element) {
-			return ((AtlasFrame) element).getName();
+			if (element instanceof EditorPage) {
+				return getTabTitle(((EditorPage) element).getIndex());
+			}
+
+			if (element instanceof AtlasFrame) {
+				return ((AtlasFrame) element).getName();
+			}
+
+			return super.getText(element);
 		}
 
 		@Override
 		public Image getImage(Object element) {
-			AtlasFrame frame = (AtlasFrame) element;
-			IFile file = findFile(frame);
-			if (file != null) {
-				Image img = _cache.getIcon(file, 32, null);
-				return img;
+			if (element instanceof EditorPage) {
+				return EditorSharedImages.getImage(IEditorSharedImages.IMG_IMAGES);
+			}
+
+			if (element instanceof AtlasFrame) {
+				AtlasFrame frame = (AtlasFrame) element;
+				IFile file = findFile(frame);
+				if (file != null) {
+					Image img = _cache.getIcon(file, 32, null);
+					return img;
+				}
 			}
 			return super.getImage(element);
 		}
@@ -161,7 +170,6 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 	private static final QualifiedName QNAME_SHOW_FILE_LIST = new QualifiedName("com.phasereditor.atlas.editor",
 			"show-file-list");
 
-	TableViewer _framesViewer;
 	protected AtlasGeneratorEditorModel _model;
 	HashMap<AtlasFrame, String> _frameRegionNameMap;
 	private Composite _container;
@@ -172,12 +180,9 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 	private Action _buildAction;
 	private ToolBar _toolBar;
 	private Action _settingsAction;
-	private SashForm _sashForm;
-	private Action _layoutAction;
 	TabFolder _tabsFolder;
 	private List<IFile> _guessLastOutputFiles;
-	private boolean _showFileList;
-	private MenuManager _popupManager;
+	private AtlasGeneratorContentOutlinePage _outliner;
 
 	public AtlasGeneratorEditor() {
 		_guessLastOutputFiles = new ArrayList<>();
@@ -203,30 +208,9 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		_toolBar = new ToolBar(_container, SWT.FLAT | SWT.RIGHT);
 		_toolBar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
 
-		_sashForm = new SashForm(_container, SWT.NONE);
-		_sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-
-		_framesViewer = new TableViewer(_sashForm, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);
-		_framesViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-				frameSelectedInViewerSelected();
-			}
-		});
-		Table table = _framesViewer.getTable();
-		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-		table.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				handleTableKey(e);
-			}
-		});
-		_framesViewer.setLabelProvider(new FramesLabelProvider());
-		_framesViewer.setContentProvider(new ArrayContentProvider());
-		_tabsFolder = new TabFolder(_sashForm, SWT.NONE);
+		_tabsFolder = new TabFolder(_container, SWT.NONE);
+		_tabsFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		_tabsFolder.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-
-		_sashForm.setWeights(new int[] { 20, 100 });
 
 		_tabsFolder.setSelection(0);
 
@@ -277,27 +261,6 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		_settingsAction
 				.setImageDescriptor(ResourceManager.getPluginImageDescriptor("phasereditor.ui", "icons/wrench.png"));
 
-		_layoutAction = new Action("Show/hide the legft side panel.", IAction.AS_CHECK_BOX) {
-			@Override
-			public void run() {
-				changeLayout();
-			}
-		};
-		_layoutAction.setImageDescriptor(
-				ResourceManager.getPluginImageDescriptor("phasereditor.ui", "icons/application_side_expand.png"));
-	}
-
-	public void changeLayout() {
-		String icon;
-		if (_sashForm.getMaximizedControl() == null) {
-			_sashForm.setMaximizedControl(_tabsFolder);
-			icon = "icons/application_side_expand.png";
-		} else {
-			_sashForm.setMaximizedControl(null);
-			icon = "icons/application_side_contract.png";
-		}
-		_layoutAction.setImageDescriptor(ResourceManager.getPluginImageDescriptor("phasereditor.ui", icon));
-		persistShowFileListState();
 	}
 
 	public void openSettingsDialog() {
@@ -315,18 +278,20 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 	}
 
 	public void deleteSelection() {
-		Object[] sel = ((IStructuredSelection) _framesViewer.getSelection()).toArray();
-		if (sel.length > 0) {
-			List<IFile> toRemove = new ArrayList<>();
-			for (Object item : sel) {
-				AtlasFrame frame = (AtlasFrame) item;
-				IFile file = findFile(frame);
-				toRemove.add(file);
+		if (_outliner != null) {
+			Object[] sel = ((IStructuredSelection) _outliner.getSelection()).toArray();
+			if (sel.length > 0) {
+				List<IFile> toRemove = new ArrayList<>();
+				for (Object item : sel) {
+					AtlasFrame frame = (AtlasFrame) item;
+					IFile file = findFile(frame);
+					toRemove.add(file);
+				}
+
+				_model.getImageFiles().removeAll(toRemove);
+
+				build(true);
 			}
-
-			_model.getImageFiles().removeAll(toRemove);
-
-			build(true);
 		}
 	}
 
@@ -341,22 +306,6 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		}
 
 		return null;
-	}
-
-	protected void frameSelectedInViewerSelected() {
-		AtlasFrame selected = getSelectedFrame();
-		for (int i = 0; i < _tabsFolder.getItemCount(); i++) {
-			AtlasCanvas canvas = getAtlasCanvas(i);
-			canvas.setFrame(selected);
-			canvas.redraw();
-			canvas.setToolTipText(buildTooltip(selected));
-
-			if (selected != null && canvas.getFrames().contains(selected)) {
-				_tabsFolder.setSelection(i);
-				canvas.setFocus();
-				break;
-			}
-		}
 	}
 
 	private AtlasCanvas getAtlasCanvas(int i) {
@@ -395,40 +344,23 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		manager.add(_addAction);
 		manager.add(_delAction);
 		manager.add(_buildAction);
-		manager.add(_layoutAction);
 		manager.add(_settingsAction);
 
 		manager.update(true);
 
-		getEditorSite().setSelectionProvider(_framesViewer);
-		_popupManager = new MenuManager();
-		Table table = _framesViewer.getTable();
-		table.setMenu(_popupManager.createContextMenu(table));
-		getEditorSite().registerContextMenu(_popupManager, _framesViewer, false);
-
 		build(false);
 
-		updateLayout(_showFileList);
-
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
-
-		// To fix a bug in linux
-		_tabsFolder.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				int i = _tabsFolder.getSelectionIndex();
-				AtlasCanvas canvas = (AtlasCanvas) _tabsFolder.getItem(i).getControl();
-				if (canvas.getScale() == 0) {
-					canvas.fitWindow();
-				}
-			}
-		});
-
 	}
 
 	@Override
 	public void dispose() {
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
+
+		if (_outliner != null) {
+			_outliner.removeSelectionChangedListener(this);
+		}
+
 		super.dispose();
 	}
 
@@ -478,7 +410,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 
 		IFile file = ((IFileEditorInput) input).getFile();
 		try {
-			boolean hasUI = _framesViewer != null;
+			boolean hasUI = _tabsFolder != null;
 			if (_model == null) {
 				_model = new AtlasGeneratorEditorModel(file);
 
@@ -490,32 +422,10 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 			}
 			setPartName(file.getName());
 
-			Map<QualifiedName, String> props = file.getPersistentProperties();
-			_showFileList = props.getOrDefault(QNAME_SHOW_FILE_LIST, Boolean.TRUE.toString())
-					.equals(Boolean.TRUE.toString());
-			if (hasUI) {
-				updateLayout(_showFileList);
-			}
-
 		} catch (IOException | CoreException e) {
 			throw new RuntimeException(e);
 		}
 
-	}
-
-	/**
-	 * @param showFileList
-	 */
-	private void updateLayout(boolean showFileList) {
-		String icon;
-		if (showFileList) {
-			_sashForm.setMaximizedControl(null);
-			icon = "icons/application_side_contract.png";
-		} else {
-			_sashForm.setMaximizedControl(_tabsFolder);
-			icon = "icons/application_side_expand.png";
-		}
-		_layoutAction.setImageDescriptor(ResourceManager.getPluginImageDescriptor("phasereditor.ui", icon));
 	}
 
 	private void build(boolean dirty) {
@@ -664,13 +574,15 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 					// create editor model
 
 					List<EditorPage> editorPages = new ArrayList<>();
+					int i = 0;
 					for (ResultPage resultPage : _result.getPages()) {
 						{
 							out.println("page " + resultPage.getImage().getBounds());
 						}
-						EditorPage editorPage = new EditorPage();
+						EditorPage editorPage = new EditorPage(i);
 						editorPage.addAll(resultPage.getFrames());
 						editorPages.add(editorPage);
+						i++;
 					}
 					_model.setPages(editorPages);
 
@@ -735,7 +647,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 
 	@Override
 	public void setFocus() {
-		_framesViewer.getControl().setFocus();
+		_tabsFolder.setFocus();
 	}
 
 	@Override
@@ -830,16 +742,6 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		}
 	}
 
-	private void persistShowFileListState() {
-		// save UI state
-		try {
-			Object value = _sashForm.getMaximizedControl() == null ? Boolean.TRUE : Boolean.FALSE;
-			_model.getFile().setPersistentProperty(QNAME_SHOW_FILE_LIST, value.toString());
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
-	}
-
 	private void refreshFolder(IProgressMonitor monitor) throws CoreException {
 		_model.getFile().getParent().refreshLocal(IResource.DEPTH_ONE, monitor);
 	}
@@ -897,20 +799,16 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		if (tabsCount == 0) {
 			addMainTab();
 		} else {
-			_tabsFolder.setSelection(Math.min(sel, tabsCount - 1));
+			selectTab(Math.min(sel, tabsCount - 1));
 		}
 
-		List<AtlasFrame> frames = new ArrayList<>();
-		for (ResultPage page : result.getPages()) {
-			frames.addAll(page.getFrames());
+		if (_outliner != null) {
+			_outliner.refresh();
 		}
-		_framesViewer.setInput(frames);
-
-		buildTooltip(getSelectedFrame());
 	}
 
-	private static String getTabTitle(int i) {
-		return "Texture " + i;
+	String getTabTitle(int i) {
+		return _model.getAtlasImageName(i);
 	}
 
 	private String buildTooltip(AtlasFrame frame) {
@@ -942,10 +840,6 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		return sb.toString();
 	}
 
-	private AtlasFrame getSelectedFrame() {
-		return (AtlasFrame) ((IStructuredSelection) _framesViewer.getSelection()).getFirstElement();
-	}
-
 	private AtlasCanvas createAtlasCanvas(Composite parent) {
 		AtlasCanvas canvas = new AtlasCanvas(parent, SWT.NONE);
 		canvas.addMouseListener(new MouseAdapter() {
@@ -973,18 +867,12 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 				// nothing
 			}
 		});
-		canvas.setMenu(_popupManager.createContextMenu(canvas));
+
 		return canvas;
 	}
 
 	protected void atlasCanvasClicked(AtlasCanvas canvas) {
-		AtlasFrame over = canvas.getOverFrame();
-		if (over == null) {
-			_framesViewer.setSelection(StructuredSelection.EMPTY);
-		} else {
-			_framesViewer.setSelection(new StructuredSelection(over), true);
-			_framesViewer.getTable().forceFocus();
-		}
+		// TODO: throw an event for the selection provider.
 	}
 
 	protected void atlasCanvasHover(AtlasCanvas canvas) {
@@ -1001,7 +889,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		AtlasCanvas canvas = createAtlasCanvas(_tabsFolder);
 		canvas.setNoImageMessage("(drop image files here)");
 		item.setControl(canvas);
-		_tabsFolder.setSelection(0);
+		selectTab(0);
 		canvas.setFocus();
 	}
 
@@ -1089,9 +977,69 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		job.schedule();
 	}
 
+	class AtlasEditorOutlineContentProvider implements ITreeContentProvider {
+
+		@Override
+		public Object[] getElements(Object inputElement) {
+			return _model.getPages().toArray();
+		}
+
+		@Override
+		public Object[] getChildren(Object parent) {
+			if (parent instanceof EditorPage) {
+				return ((EditorPage) parent).toArray();
+			}
+
+			return new Object[] {};
+		}
+
+		@Override
+		public Object getParent(Object element) {
+			return null;
+		}
+
+		@Override
+		public boolean hasChildren(Object element) {
+			return getChildren(element).length > 0;
+		}
+
+	}
+
+	class AtlasGeneratorContentOutlinePage extends ContentOutlinePage {
+		public AtlasGeneratorContentOutlinePage() {
+		}
+
+		public TreeViewer getViewer() {
+			return getTreeViewer();
+		}
+
+		public void refresh() {
+			getTreeViewer().refresh();
+		}
+
+		@Override
+		public void createControl(Composite parent) {
+			super.createControl(parent);
+
+			TreeViewer viewer = getTreeViewer();
+			viewer.setLabelProvider(new FramesLabelProvider());
+			viewer.setContentProvider(new AtlasEditorOutlineContentProvider());
+			viewer.setInput(_model);
+		}
+
+	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Object getAdapter(Class adapter) {
+		if (adapter.equals(IContentOutlinePage.class)) {
+			if (_outliner == null) {
+				_outliner = new AtlasGeneratorContentOutlinePage();
+				_outliner.addSelectionChangedListener(this);
+			}
+			return _outliner;
+		}
+
 		if (adapter.equals(IContextProvider.class)) {
 			return new IContextProvider() {
 
@@ -1113,5 +1061,42 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 			};
 		}
 		return super.getAdapter(adapter);
+	}
+
+	@Override
+	public void selectionChanged(SelectionChangedEvent event) {
+		Object elem = ((IStructuredSelection) event.getSelection()).getFirstElement();
+		if (elem == null) {
+			for (int i = 0; i < _tabsFolder.getItemCount(); i++) {
+				AtlasCanvas canvas = getAtlasCanvas(i);
+				canvas.setFrame(null);
+				canvas.redraw();
+			}
+		} else if (elem instanceof AtlasFrame) {
+			AtlasFrame selected = (AtlasFrame) elem;
+			for (int i = 0; i < _tabsFolder.getItemCount(); i++) {
+				AtlasCanvas canvas = getAtlasCanvas(i);
+				canvas.setFrame(selected);
+				canvas.redraw();
+				canvas.setToolTipText(buildTooltip(selected));
+
+				if (canvas.getFrames().contains(selected)) {
+					selectTab(i);
+					canvas.setFocus();
+					break;
+				}
+			}
+		} else if (elem instanceof EditorPage) {
+			int i = ((EditorPage) elem).getIndex();
+			selectTab(i);
+		}
+	}
+
+	private void selectTab(int i) {
+		_tabsFolder.setSelection(i);
+		AtlasCanvas canvas = (AtlasCanvas) _tabsFolder.getItem(i).getControl();
+		if (canvas.getScale() == 0) {
+			canvas.fitWindow();
+		}
 	}
 }
