@@ -95,7 +95,7 @@ public class AtlasGeneratorEditorModel {
 					// remove the project segment.
 					path = path.removeFirstSegments(1);
 				}
-				
+
 				IFile imgfile = file.getProject().getFile(path);
 
 				_imageFiles.add(imgfile);
@@ -155,6 +155,38 @@ public class AtlasGeneratorEditorModel {
 		return obj;
 	}
 
+	public JSONObject toPhaser3MultiatlasJSON() {
+		JSONObject jsonData = new JSONObject();
+
+		JSONArray jsonTextures = new JSONArray();
+		jsonData.put("textures", jsonTextures);
+
+		int pageIndex = 0;
+		for (EditorPage page : _pages) {
+			JSONObject jsonTexture = new JSONObject();
+			jsonTextures.put(jsonTexture);
+			jsonTexture.put("image", getAtlasImageName(pageIndex));
+
+			JSONArray jsonFrames = new JSONArray();
+			jsonTexture.put("frames", jsonFrames);
+
+			for (AtlasFrame frame : page) {
+				JSONObject jsonFrame = new JSONObject();
+				jsonFrames.put(jsonFrame);
+
+				jsonFrame.put("filename", frame.getName());
+				writeFrameJsonData(frame, jsonFrame);
+			}
+			pageIndex++;
+		}
+
+		JSONObject meta = new JSONObject();
+		jsonData.put("meta", meta);
+		writeJsonMeta(meta);
+
+		return jsonData;
+	}
+
 	public JSONObject[] toPhaserHashJSON() {
 		JSONObject[] list = new JSONObject[_pages.size()];
 
@@ -171,40 +203,51 @@ public class AtlasGeneratorEditorModel {
 				JSONObject jsonEntry = new JSONObject();
 				jsonFrames.put(frame.getName(), jsonEntry);
 
-				JSONObject jsonFrame = new JSONObject();
-				jsonEntry.put("trimmed", _settings.stripWhitespaceX || _settings.stripWhitespaceY);
-				jsonEntry.put("rotated", _settings.rotation);
-				jsonEntry.put("frame", jsonFrame);
-
-				jsonFrame.put("x", frame.getFrameX());
-				jsonFrame.put("y", frame.getFrameY());
-				jsonFrame.put("w", frame.getFrameW());
-				jsonFrame.put("h", frame.getFrameH());
-
-				JSONObject jsonSpriteSourceSize = new JSONObject();
-				jsonEntry.put("spriteSourceSize", jsonSpriteSourceSize);
-
-				jsonSpriteSourceSize.put("x", frame.getSpriteX());
-				jsonSpriteSourceSize.put("y", frame.getSpriteY());
-				jsonSpriteSourceSize.put("w", frame.getSpriteW());
-				jsonSpriteSourceSize.put("h", frame.getSpriteH());
-
-				JSONObject jsonSourceSize = new JSONObject();
-				jsonEntry.put("sourceSize", jsonSourceSize);
-
-				jsonSourceSize.put("w", frame.getSourceW());
-				jsonSourceSize.put("h", frame.getSourceH());
+				writeFrameJsonData(frame, jsonEntry);
 
 			}
 			JSONObject jsonMeta = new JSONObject();
 			obj.put("meta", jsonMeta);
-			jsonMeta.put("app", "Phaser Editor");
-			jsonMeta.put("version", "1");
+
 			jsonMeta.put("image", getAtlasImageName(i));
+
+			writeJsonMeta(jsonMeta);
+
 			i++;
 		}
 
 		return list;
+	}
+
+	private static void writeJsonMeta(JSONObject jsonMeta) {
+		jsonMeta.put("app", "Phaser Editor - Atlas Generator");
+		jsonMeta.put("version", "2");
+	}
+
+	private void writeFrameJsonData(AtlasFrame frame, JSONObject jsonEntry) {
+		JSONObject jsonFrame = new JSONObject();
+		jsonEntry.put("trimmed", _settings.stripWhitespaceX || _settings.stripWhitespaceY);
+		jsonEntry.put("rotated", _settings.rotation);
+		jsonEntry.put("frame", jsonFrame);
+
+		jsonFrame.put("x", frame.getFrameX());
+		jsonFrame.put("y", frame.getFrameY());
+		jsonFrame.put("w", frame.getFrameW());
+		jsonFrame.put("h", frame.getFrameH());
+
+		JSONObject jsonSpriteSourceSize = new JSONObject();
+		jsonEntry.put("spriteSourceSize", jsonSpriteSourceSize);
+
+		jsonSpriteSourceSize.put("x", frame.getSpriteX());
+		jsonSpriteSourceSize.put("y", frame.getSpriteY());
+		jsonSpriteSourceSize.put("w", frame.getSpriteW());
+		jsonSpriteSourceSize.put("h", frame.getSpriteH());
+
+		JSONObject jsonSourceSize = new JSONObject();
+		jsonEntry.put("sourceSize", jsonSourceSize);
+
+		jsonSourceSize.put("w", frame.getSourceW());
+		jsonSourceSize.put("h", frame.getSourceH());
 	}
 
 	public String getAtlasImageName(int i) {

@@ -776,11 +776,12 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 
 			{
 				// save atlas model
-				int i = 0;
-				JSONObject[] list = _model.toPhaserHashJSON();
-				for (JSONObject json : list) {
+
+				if (_model.getSettings().multiatlas) {
+					out.println("Generating with the multiatlas format");
+					JSONObject json = _model.toPhaser3MultiatlasJSON();
 					ByteArrayInputStream source = new ByteArrayInputStream(json.toString(2).getBytes());
-					String atlasJSONName = _model.getAtlasJSONName(i);
+					String atlasJSONName = _model.getAtlasName() + ".json";
 					IFile file = _model.getFile().getParent().getFile(new Path(atlasJSONName));
 					if (file.exists()) {
 						file.setContents(source, true, false, monitor);
@@ -788,7 +789,21 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 						file.create(source, true, monitor);
 					}
 					toDelete.remove(file);
-					i++;
+				} else {
+					int i = 0;
+					JSONObject[] list = _model.toPhaserHashJSON();
+					for (JSONObject json : list) {
+						ByteArrayInputStream source = new ByteArrayInputStream(json.toString(2).getBytes());
+						String atlasJSONName = _model.getAtlasJSONName(i);
+						IFile file = _model.getFile().getParent().getFile(new Path(atlasJSONName));
+						if (file.exists()) {
+							file.setContents(source, true, false, monitor);
+						} else {
+							file.create(source, true, monitor);
+						}
+						toDelete.remove(file);
+						i++;
+					}
 				}
 			}
 
@@ -927,9 +942,6 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		return sb.toString();
 	}
 
-	/**
-	 * @return
-	 */
 	private AtlasFrame getSelectedFrame() {
 		return (AtlasFrame) ((IStructuredSelection) _framesViewer.getSelection()).getFirstElement();
 	}
