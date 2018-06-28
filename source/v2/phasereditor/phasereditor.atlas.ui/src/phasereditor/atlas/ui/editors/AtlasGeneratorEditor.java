@@ -75,8 +75,6 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
-import org.eclipse.swt.custom.CTabFolder;
-import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
@@ -90,6 +88,8 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
@@ -99,6 +99,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.IEditorInput;
@@ -172,7 +174,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 	private Action _settingsAction;
 	private SashForm _sashForm;
 	private Action _layoutAction;
-	private CTabFolder _tabsFolder;
+	TabFolder _tabsFolder;
 	private List<IFile> _guessLastOutputFiles;
 	private boolean _showFileList;
 	private MenuManager _popupManager;
@@ -221,7 +223,7 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		});
 		_framesViewer.setLabelProvider(new FramesLabelProvider());
 		_framesViewer.setContentProvider(new ArrayContentProvider());
-		_tabsFolder = new CTabFolder(_sashForm, SWT.NONE);
+		_tabsFolder = new TabFolder(_sashForm, SWT.NONE);
 		_tabsFolder.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 
 		_sashForm.setWeights(new int[] { 20, 100 });
@@ -409,6 +411,18 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		updateLayout(_showFileList);
 
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
+
+		// To fix a bug in linux
+		_tabsFolder.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				int i = _tabsFolder.getSelectionIndex();
+				AtlasCanvas canvas = (AtlasCanvas) _tabsFolder.getItem(i).getControl();
+				if (canvas.getScale() == 0) {
+					canvas.fitWindow();
+				}
+			}
+		});
 
 	}
 
@@ -852,13 +866,16 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 
 		int i = 1;
 		for (ResultPage page : result.getPages()) {
-			AtlasCanvas canvas;
-			canvas = createAtlasCanvas();
-			CTabItem item = createTabItem();
-			item.setText("page " + i);
-			item.setControl(canvas);
+
+			TabItem item = createTabItem();
+			item.setText(getTabTitle(i));
+
+			AtlasCanvas canvas = createAtlasCanvas(_tabsFolder);
 			canvas.setImage(page.getImage());
 			canvas.setFrames(page.getFrames());
+
+			item.setControl(canvas);
+
 			i++;
 		}
 		int tabsCount = _tabsFolder.getItemCount();
@@ -875,6 +892,10 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		_framesViewer.setInput(frames);
 
 		buildTooltip(getSelectedFrame());
+	}
+
+	private static String getTabTitle(int i) {
+		return "Texture " + i;
 	}
 
 	private String buildTooltip(AtlasFrame frame) {
@@ -913,8 +934,8 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 		return (AtlasFrame) ((IStructuredSelection) _framesViewer.getSelection()).getFirstElement();
 	}
 
-	private AtlasCanvas createAtlasCanvas() {
-		AtlasCanvas canvas = new AtlasCanvas(_tabsFolder, SWT.NONE);
+	private AtlasCanvas createAtlasCanvas(Composite parent) {
+		AtlasCanvas canvas = new AtlasCanvas(parent, SWT.NONE);
 		canvas.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
@@ -963,9 +984,9 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 	}
 
 	private void addMainTab() {
-		CTabItem item = createTabItem();
-		item.setText("page 1");
-		AtlasCanvas canvas = createAtlasCanvas();
+		TabItem item = createTabItem();
+		item.setText(getTabTitle(1));
+		AtlasCanvas canvas = createAtlasCanvas(_tabsFolder);
 		canvas.setNoImageMessage("(drop image files here)");
 		item.setControl(canvas);
 		_tabsFolder.setSelection(0);
@@ -975,8 +996,8 @@ public class AtlasGeneratorEditor extends EditorPart implements IEditorSharedIma
 	/**
 	 * @return
 	 */
-	private CTabItem createTabItem() {
-		return new CTabItem(_tabsFolder, SWT.NONE);
+	private TabItem createTabItem() {
+		return new TabItem(_tabsFolder, SWT.NONE);
 	}
 
 	public IFile getEditorInputFile() {
