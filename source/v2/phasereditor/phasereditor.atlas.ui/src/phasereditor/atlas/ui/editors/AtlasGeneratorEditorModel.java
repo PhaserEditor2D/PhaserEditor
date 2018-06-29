@@ -71,7 +71,6 @@ public class AtlasGeneratorEditorModel {
 		public String getName() {
 			return _model.getAtlasImageName(_index);
 		}
-		
 	}
 
 	public AtlasGeneratorEditorModel(IFile file) throws IOException, CoreException {

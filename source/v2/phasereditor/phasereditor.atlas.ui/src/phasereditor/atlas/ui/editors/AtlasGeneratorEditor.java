@@ -106,6 +106,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
+import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.json.JSONObject;
@@ -122,6 +123,7 @@ import phasereditor.atlas.core.ResultPage;
 import phasereditor.atlas.core.SettingsBean;
 import phasereditor.atlas.ui.AtlasCanvas;
 import phasereditor.atlas.ui.editors.AtlasGeneratorEditorModel.EditorPage;
+import phasereditor.atlas.ui.properties.DemoPropPage;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredContentOutlinePage;
 import phasereditor.ui.IEditorSharedImages;
@@ -1064,6 +1066,10 @@ public class AtlasGeneratorEditor extends EditorPart
 				_outliner.addSelectionChangedListener(this);
 			}
 			return _outliner;
+		}
+		
+		if (adapter == IPropertySheetPage.class) {
+			return new DemoPropPage();
 		}
 
 		if (adapter.equals(IContextProvider.class)) {
