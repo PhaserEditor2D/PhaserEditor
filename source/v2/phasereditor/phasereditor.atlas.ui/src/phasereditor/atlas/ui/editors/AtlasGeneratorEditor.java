@@ -138,14 +138,13 @@ public class AtlasGeneratorEditor extends EditorPart
 	private Composite _container;
 	protected Result _result;
 	private boolean _dirty;
-	private Action _delAction;
-	private Action _addAction;
-	private Action _buildAction;
 	private ToolBar _toolBar;
 	private Action _settingsAction;
 	TabFolder _tabsFolder;
 	private List<IFile> _guessLastOutputFiles;
 	AtlasEditorContentOutlinePage _outliner;
+
+	private ISelectionProvider _selectionProvider;
 
 	public AtlasGeneratorEditor() {
 		_guessLastOutputFiles = new ArrayList<>();
@@ -184,32 +183,6 @@ public class AtlasGeneratorEditor extends EditorPart
 	}
 
 	private void createActions() {
-		_delAction = new Action("Delete selected files") {
-			@Override
-			public void run() {
-				deleteSelection();
-			}
-		};
-		_delAction.setImageDescriptor(
-				ResourceManager.getPluginImageDescriptor("phasereditor.ui", "icons/picture_delete.png"));
-
-		_addAction = new Action("Add image files") {
-			@Override
-			public void run() {
-				addFiles();
-			}
-		};
-		_addAction.setImageDescriptor(
-				ResourceManager.getPluginImageDescriptor("phasereditor.ui", "icons/picture_add.png"));
-
-		_buildAction = new Action("Build Atlas") {
-			@Override
-			public void run() {
-				manuallyBuild();
-			}
-		};
-		_buildAction.setImageDescriptor(ResourceManager.getPluginImageDescriptor("phasereditor.ui", "icons/cog.png"));
-
 		_settingsAction = new Action("Settings") {
 			@Override
 			public void run() {
@@ -228,11 +201,6 @@ public class AtlasGeneratorEditor extends EditorPart
 			_model.setSettings(dlg.getSettings());
 			build(true);
 		}
-	}
-
-	public void addFiles() {
-		MessageDialog.openInformation(getEditorSite().getShell(), "Add Files",
-				"Drag the files from the Project Explorer and drop them here.");
 	}
 
 	public void deleteSelection() {
@@ -299,9 +267,6 @@ public class AtlasGeneratorEditor extends EditorPart
 		// menu
 
 		ToolBarManager manager = new ToolBarManager(_toolBar);
-		manager.add(_addAction);
-		manager.add(_delAction);
-		manager.add(_buildAction);
 		manager.add(_settingsAction);
 
 		manager.update(true);
@@ -316,6 +281,37 @@ public class AtlasGeneratorEditor extends EditorPart
 				repaintTab(_tabsFolder.getSelectionIndex());
 			}
 		});
+
+		_selectionProvider = new ISelectionProvider() {
+
+			private ListenerList<ISelectionChangedListener> _list = new ListenerList<>();
+			private ISelection _selection;
+
+			@Override
+			public void setSelection(ISelection selection) {
+				_selection = selection;
+				SelectionChangedEvent event = new SelectionChangedEvent(this, selection);
+				for (ISelectionChangedListener l : _list) {
+					l.selectionChanged(event);
+				}
+			}
+
+			@Override
+			public void removeSelectionChangedListener(ISelectionChangedListener listener) {
+				_list.remove(listener);
+			}
+
+			@Override
+			public ISelection getSelection() {
+				return _selection;
+			}
+
+			@Override
+			public void addSelectionChangedListener(ISelectionChangedListener listener) {
+				_list.add(listener);
+			}
+		};
+		getEditorSite().setSelectionProvider(_selectionProvider);
 	}
 
 	class AtlasEditorSelectionProvider implements ISelectionProvider {
@@ -839,6 +835,8 @@ public class AtlasGeneratorEditor extends EditorPart
 		if (_outliner != null) {
 			_outliner.setSelection(selection);
 		}
+		
+		_selectionProvider.setSelection(selection);
 	}
 
 	private void addMainTab() {
@@ -1116,6 +1114,8 @@ public class AtlasGeneratorEditor extends EditorPart
 			int i = ((EditorPage) elem).getIndex();
 			selectTab(i);
 		}
+		
+		_selectionProvider.setSelection(event.getSelection());
 	}
 
 	private void selectTab(int i) {

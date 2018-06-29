@@ -57,12 +57,6 @@
             allPopups="false"
             locationURI="popup:phasereditor.atlas.ui.editors.AtlasGenEditor?before=additions">
          <command
-               commandId="phasereditor.atlas.ui.editor.addfiles"
-               icon="platform:/plugin/phasereditor.ui/icons/picture_add.png"
-               style="push"
-               tooltip="Add image files.">
-         </command>
-         <command
                commandId="org.eclipse.ui.edit.delete"
                style="push"
                tooltip="Delete selected sprites.">
@@ -78,59 +72,80 @@
                style="push">
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=org.eclipse.ui.workbench.navigate">
+         <toolbar
+               id="phasereditor.atlas.ui.maintoolbar"
+               label="Atlas">
+            <command
+                  commandId="phasereditor.atlas.ui.editor.buildatlas"
+                  icon="platform:/plugin/phasereditor.ui/icons/cog.png"
+                  style="push">
+               <visibleWhen>
+                  <with
+                        variable="activeEditorId">
+                     <equals
+                           value="phasereditor.atlas.ui.editors.AtlasGenEditor">
+                     </equals>
+                  </with>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="org.eclipse.ui.edit.delete"
+                  style="push"
+                  tooltip="Delete selected frames.">
+               <visibleWhen
+                     checkEnabled="true">
+                  <with
+                        variable="activeEditorId">
+                     <equals
+                           value="phasereditor.atlas.ui.editors.AtlasGenEditor">
+                     </equals>
+                  </with>
+               </visibleWhen>
+            </command>
+         </toolbar>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
             class="phasereditor.atlas.ui.handlers.DeleteAtlasSelectionHandler"
             commandId="org.eclipse.ui.edit.delete">
-         <activeWhen>
-         	<and>
-            <with
-                  variable="selection">
-               <count
-                     value="+">
-               </count>
-            </with>
-            <with
-                  variable="activePartId">
-               <equals
-                     value="phasereditor.atlas.ui.editors.AtlasGenEditor">
-               </equals>
-            </with>
-            </and>
-         </activeWhen>
+         <enabledWhen>
+            <and>
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <instanceof
+                           value="phasereditor.atlas.core.AtlasFrame">
+                     </instanceof>
+                  </iterate>
+               </with>
+               <with
+                     variable="activeEditorId">
+                  <equals
+                        value="phasereditor.atlas.ui.editors.AtlasGenEditor">
+                  </equals>
+               </with></and>
+         </enabledWhen>
       </handler>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
-      <category
-            id="phasereditor.atlas.ui.category"
-            name="Atlas Generator">
-      </category>
       <command
-            categoryId="phasereditor.atlas.ui.category"
-            defaultHandler="phasereditor.atlas.ui.handlers.AddFilesHandler"
-            id="phasereditor.atlas.ui.editor.addfiles"
-            name="Add Files">
-      </command>
-      <command
-            categoryId="phasereditor.atlas.ui.category"
+            categoryId="phasereditor.ui.phaserCategory"
             defaultHandler="phasereditor.atlas.ui.handlers.BuildAtlasHandler"
             id="phasereditor.atlas.ui.editor.buildatlas"
             name="Build Atlas">
       </command>
       <command
-            categoryId="phasereditor.atlas.ui.category"
+            categoryId="phasereditor.ui.phaserCategory"
             defaultHandler="phasereditor.atlas.ui.handlers.ShowSettingsHandler"
             id="phasereditor.atlas.ui.editor.showsettings"
             name="Settings">
-      </command>
-      <command
-            categoryId="phasereditor.atlas.ui.category"
-            defaultHandler="phasereditor.atlas.ui.handlers.ChangeLayoutHandler"
-            id="phasereditor.atlas.ui.editor.changelayout"
-            name="Side Panel">
       </command>
    </extension>
 

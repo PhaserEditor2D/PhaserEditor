@@ -26,7 +26,6 @@ import static phasereditor.ui.PhaserEditorUI.isEditorSupportedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -51,7 +50,6 @@ public class AtlasGeneratorEditorModel {
 	private SettingsBean _settings;
 	private List<EditorPage> _pages;
 	private int _version;
-	HashMap<AtlasFrame, String> _frameRegionNameMap;
 
 	public static int CURRENT_VERSION = 2;
 
@@ -81,17 +79,12 @@ public class AtlasGeneratorEditorModel {
 		_imageFiles = new ArrayList<>();
 		_pages = new ArrayList<>();
 		_settings = new SettingsBean();
-		_frameRegionNameMap = new HashMap<>();
 
 		if (file != null) {
 			readFile(file);
 		}
 	}
 	
-	public HashMap<AtlasFrame, String> getFrameRegionNameMap() {
-		return _frameRegionNameMap;
-	}
-
 	public SettingsBean getSettings() {
 		return _settings;
 	}

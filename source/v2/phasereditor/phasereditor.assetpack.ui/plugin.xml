@@ -179,6 +179,7 @@
             class="phasereditor.assetpack.ui.handlers.DeleteAssetHandler"
             commandId="org.eclipse.ui.edit.delete">
          <enabledWhen>
+         	<and>
             <with
                   variable="selection">
                <iterate
@@ -197,6 +198,13 @@
                   </or>
                </iterate>
             </with>
+            <with
+                  variable="activeEditorId">
+               <equals
+                     value="phasereditor.assetpack.editor">
+               </equals>
+            </with>
+            </and>
          </enabledWhen>
       </handler>
       <handler
