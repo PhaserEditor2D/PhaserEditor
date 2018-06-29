@@ -165,7 +165,7 @@ public class AtlasGeneratorEditor extends EditorPart
 		_toolBar = new ToolBar(_container, SWT.FLAT | SWT.RIGHT);
 		_toolBar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
 
-		_tabsFolder = new TabFolder(_container, SWT.NONE);
+		_tabsFolder = new TabFolder(_container, SWT.BOTTOM);
 		_tabsFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		_tabsFolder.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 
