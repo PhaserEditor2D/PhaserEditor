@@ -53,7 +53,7 @@ public class AtlasGeneratorEditorModel {
 
 	public static int CURRENT_VERSION = 2;
 
-	public static class EditorPage extends ArrayList<AtlasFrame> {
+	public static class EditorPage extends ArrayList<AtlasEditorFrame> {
 		private static final long serialVersionUID = 1L;
 		private int _index;
 		private AtlasGeneratorEditorModel _model;
@@ -186,7 +186,7 @@ public class AtlasGeneratorEditorModel {
 			JSONArray jsonFrames = new JSONArray();
 			jsonTexture.put("frames", jsonFrames);
 
-			for (AtlasFrame frame : page) {
+			for (AtlasEditorFrame frame : page) {
 				JSONObject jsonFrame = new JSONObject();
 				jsonFrames.put(jsonFrame);
 

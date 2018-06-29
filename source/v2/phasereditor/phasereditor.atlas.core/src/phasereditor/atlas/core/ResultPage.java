@@ -28,10 +28,10 @@ import java.util.Map;
 
 import org.eclipse.swt.graphics.Image;
 
-public class ResultPage {
-	private List<AtlasFrame> _frames;
-	private Map<AtlasFrame, String> _frameFileMap;
-	private Map<AtlasFrame, Integer> _frameIndexMap;
+public class ResultPage <T extends AtlasFrame>{
+	private List<T> _frames;
+	private Map<T, String> _frameFileMap;
+	private Map<T, Integer> _frameIndexMap;
 	private Image _image;
 
 	public ResultPage() {
@@ -40,7 +40,7 @@ public class ResultPage {
 		_frameIndexMap = new HashMap<>();
 	}
 
-	public void addFrame(AtlasFrame frame, String filepath, int index) {
+	public void addFrame(T frame, String filepath, int index) {
 		_frameFileMap.put(frame, filepath);
 		_frameIndexMap.put(frame, Integer.valueOf(index));
 		_frames.add(frame);
@@ -54,7 +54,7 @@ public class ResultPage {
 		});
 	}
 
-	public List<AtlasFrame> getFrames() {
+	public List<T> getFrames() {
 		return _frames;
 	}
 

@@ -120,7 +120,7 @@
                   <iterate
                         ifEmpty="false">
                      <instanceof
-                           value="phasereditor.atlas.core.AtlasFrame">
+                           value="phasereditor.atlas.ui.editors.AtlasEditorFrame">
                      </instanceof>
                   </iterate>
                </with>
@@ -131,6 +131,14 @@
                   </equals>
                </with></and>
          </enabledWhen>
+         <activeWhen>
+            <with
+                  variable="activeEditorId">
+               <equals
+                     value="phasereditor.atlas.ui.editors.AtlasGenEditor">
+               </equals>
+            </with>
+         </activeWhen>
       </handler>
    </extension>
    <extension

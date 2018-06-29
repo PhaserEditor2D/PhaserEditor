@@ -24,19 +24,19 @@ package phasereditor.atlas.core;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Result {
-	private List<ResultPage> _pages;
+public class Result<T extends AtlasFrame> {
+	private List<ResultPage<T>> _pages;
 
 	public Result() {
 		_pages = new ArrayList<>();
 	}
 
-	public List<ResultPage> getPages() {
+	public List<ResultPage<T>> getPages() {
 		return _pages;
 	}
 
 	public void dispose() {
-		for (ResultPage page : _pages) {
+		for (ResultPage<T> page : _pages) {
 			page.getImage().dispose();
 		}
 	}
