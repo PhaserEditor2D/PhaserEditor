@@ -21,12 +21,108 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.atlas.ui.editors;
 
+import java.util.function.Supplier;
+
+import org.eclipse.core.runtime.IAdaptable;
+
 import phasereditor.atlas.core.AtlasFrame;
+import phasereditor.ui.properties.PGridModel;
+import phasereditor.ui.properties.PGridNumberProperty;
+import phasereditor.ui.properties.PGridSection;
+import phasereditor.ui.properties.PGridStringProperty;
 
 /**
  * @author arian
  *
  */
-public class AtlasEditorFrame extends AtlasFrame {
-	//
+@SuppressWarnings("boxing")
+public class AtlasEditorFrame extends AtlasFrame implements IAdaptable {
+
+	private PGridModel _gridModel;
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public Object getAdapter(Class adapter) {
+		if (adapter == PGridModel.class) {
+			if (_gridModel == null) {
+				_gridModel = createGridModel();
+			}
+			return _gridModel;
+		}
+		return null;
+	}
+
+	private PGridModel createGridModel() {
+		PGridModel model = new PGridModel();
+
+		PGridSection section = new PGridSection("frame");
+		model.getSections().add(section);
+
+		section.add(createStringProperty("name", this::getName));
+		section.add(createNumberProperty("frameX", this::getFrameX));
+		section.add(createNumberProperty("frameY", this::getFrameY));
+		section.add(createNumberProperty("frameW", this::getFrameW));
+		section.add(createNumberProperty("frameH", this::getFrameH));
+
+		section = new PGridSection("sprite");
+		model.getSections().add(section);
+
+		section.add(createNumberProperty("spriteX", this::getSpriteX));
+		section.add(createNumberProperty("spriteY", this::getSpriteY));
+		section.add(createNumberProperty("spriteW", this::getSpriteW));
+		section.add(createNumberProperty("spriteH", this::getSpriteH));
+
+		section = new PGridSection("source");
+		model.getSections().add(section);
+
+		section.add(createNumberProperty("sourceW", this::getSourceW));
+		section.add(createNumberProperty("sourceH", this::getSourceH));
+
+		return model;
+	}
+
+	private static PGridNumberProperty createNumberProperty(String name, Supplier<Number> getter) {
+		return new PGridNumberProperty(name, name, "") {
+
+			@Override
+			public boolean isModified() {
+				return false;
+			}
+
+			@Override
+			public boolean isReadOnly() {
+				return true;
+			}
+
+			@Override
+			public Double getValue() {
+				return getter.get().doubleValue();
+			}
+		};
+	}
+
+	private static PGridStringProperty createStringProperty(String name, Supplier<String> getter) {
+		return new PGridStringProperty(name, name, "") {
+
+			@Override
+			public boolean isModified() {
+				return false;
+			}
+
+			@Override
+			public boolean isReadOnly() {
+				return true;
+			}
+
+			@Override
+			public String getValue() {
+				return getter.get();
+			}
+
+			@Override
+			public void setValue(String value, boolean notify) {
+				//
+			}
+		};
+	}
 }

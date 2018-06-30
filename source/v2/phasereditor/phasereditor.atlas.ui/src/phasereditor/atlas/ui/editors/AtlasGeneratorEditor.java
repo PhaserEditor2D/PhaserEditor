@@ -122,12 +122,12 @@ import phasereditor.atlas.core.ResultPage;
 import phasereditor.atlas.core.SettingsBean;
 import phasereditor.atlas.ui.AtlasCanvas;
 import phasereditor.atlas.ui.editors.AtlasGeneratorEditorModel.EditorPage;
-import phasereditor.atlas.ui.properties.DemoPropPage;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredContentOutlinePage;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.IconCache;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.properties.PGridPage;
 
 public class AtlasGeneratorEditor extends EditorPart
 		implements IEditorSharedImages, IResourceChangeListener, ISelectionChangedListener {
@@ -146,6 +146,8 @@ public class AtlasGeneratorEditor extends EditorPart
 	AtlasEditorContentOutlinePage _outliner;
 
 	private ISelectionProvider _selectionProvider;
+
+	private PGridPage _properties;
 
 	public AtlasGeneratorEditor() {
 		_guessLastOutputFiles = new ArrayList<>();
@@ -836,7 +838,7 @@ public class AtlasGeneratorEditor extends EditorPart
 		if (_outliner != null) {
 			_outliner.setSelection(selection);
 		}
-		
+
 		_selectionProvider.setSelection(selection);
 	}
 
@@ -1066,9 +1068,13 @@ public class AtlasGeneratorEditor extends EditorPart
 			}
 			return _outliner;
 		}
-		
+
 		if (adapter == IPropertySheetPage.class) {
-			return new DemoPropPage();
+			if (_properties == null) {
+				_properties = new PGridPage();
+			}
+
+			return _properties;
 		}
 
 		if (adapter.equals(IContextProvider.class)) {
@@ -1119,7 +1125,7 @@ public class AtlasGeneratorEditor extends EditorPart
 			int i = ((EditorPage) elem).getIndex();
 			selectTab(i);
 		}
-		
+
 		_selectionProvider.setSelection(event.getSelection());
 	}
 
