@@ -23,6 +23,7 @@ package phasereditor.canvas.ui.editors.grid;
 
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.canvas.core.BitmapTextModel;
+import phasereditor.ui.properties.PGridProperty;
 
 /**
  * @author arian

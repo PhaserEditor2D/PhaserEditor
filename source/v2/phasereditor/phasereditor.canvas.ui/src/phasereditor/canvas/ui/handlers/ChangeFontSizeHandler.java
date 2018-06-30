@@ -6,12 +6,12 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import phasereditor.canvas.ui.editors.CanvasEditor;
-import phasereditor.canvas.ui.editors.grid.PGridProperty;
-import phasereditor.canvas.ui.editors.grid.editors.PGridEditingSupport;
+import phasereditor.canvas.ui.editors.grid.editors.CanvasPGridEditingSupport;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.BitmapTextNode;
 import phasereditor.canvas.ui.shapes.ITextSpriteNode;
 import phasereditor.canvas.ui.shapes.TextNode;
+import phasereditor.ui.properties.PGridProperty;
 
 public class ChangeFontSizeHandler extends AbstractHandler {
 
@@ -46,7 +46,7 @@ public class ChangeFontSizeHandler extends AbstractHandler {
 			delta *= sign;
 
 			operations
-					.add(PGridEditingSupport.makeChangePropertyValueOperation(Double.valueOf(fontSize + delta), prop));
+					.add(CanvasPGridEditingSupport.makeChangePropertyValueOperation(Double.valueOf(fontSize + delta), prop));
 		}
 
 		((CanvasEditor) HandlerUtil.getActiveEditor(event)).getCanvas().getUpdateBehavior()

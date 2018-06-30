@@ -28,7 +28,7 @@ import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
 import phasereditor.canvas.core.SpritesheetSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
-import phasereditor.canvas.ui.editors.grid.PGridModel;
+import phasereditor.ui.properties.PGridModel;
 
 /**
  * @author arian

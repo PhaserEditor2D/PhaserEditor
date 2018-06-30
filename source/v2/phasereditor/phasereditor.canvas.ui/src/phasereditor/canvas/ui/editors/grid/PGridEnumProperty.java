@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid;
 
+import phasereditor.ui.properties.PGridProperty;
+
 /**
  * @author arian
  *

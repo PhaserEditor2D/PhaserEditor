@@ -24,6 +24,7 @@ package phasereditor.canvas.ui.editors.grid;
 import java.util.List;
 
 import phasereditor.canvas.core.TilemapSpriteModel;
+import phasereditor.ui.properties.PGridProperty;
 
 /**
  * @author arian

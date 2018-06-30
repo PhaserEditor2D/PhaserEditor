@@ -32,10 +32,10 @@ import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.TileSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
-import phasereditor.canvas.ui.editors.grid.PGridModel;
-import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
-import phasereditor.canvas.ui.editors.grid.PGridProperty;
-import phasereditor.canvas.ui.editors.grid.PGridSection;
+import phasereditor.ui.properties.PGridModel;
+import phasereditor.ui.properties.PGridNumberProperty;
+import phasereditor.ui.properties.PGridProperty;
+import phasereditor.ui.properties.PGridSection;
 
 /**
  * @author arian

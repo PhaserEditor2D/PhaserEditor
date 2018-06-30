@@ -14,9 +14,9 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.canvas.core.AnimationModel;
 import phasereditor.canvas.core.AssetSpriteModel;
+import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.grid.PGridAnimationsProperty;
 import phasereditor.canvas.ui.editors.grid.editors.AnimationsDialog;
-import phasereditor.canvas.ui.editors.grid.editors.PGridEditingSupport;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
 
 public class EditSpriteAnimationsHandler extends AbstractHandler {
@@ -26,6 +26,7 @@ public class EditSpriteAnimationsHandler extends AbstractHandler {
 
 		AnimationsDialog dlg = new AnimationsDialog(HandlerUtil.getActiveShell(event));
 		ISpriteNode node = (ISpriteNode) HandlerUtil.getCurrentStructuredSelection(event).getFirstElement();
+		CanvasEditor editor = (CanvasEditor) HandlerUtil.getActiveEditor(event);
 
 		if (!(node.getModel() instanceof AssetSpriteModel)) {
 			MessageDialog.openInformation(null, "Animations", "Only sprite-sheet/atlas based objects are supported.");
@@ -46,7 +47,7 @@ public class EditSpriteAnimationsHandler extends AbstractHandler {
 		dlg.setAnimations(list);
 
 		if (dlg.open() == Window.OK) {
-			PGridEditingSupport.executeChangePropertyValueOperation(dlg.getValue(), prop);
+			editor.getPropertyGrid().getEditSupport().executeChangePropertyValueOperation(dlg.getValue(), prop);
 		}
 
 		return null;

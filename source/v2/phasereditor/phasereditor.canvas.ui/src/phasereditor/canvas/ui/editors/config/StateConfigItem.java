@@ -31,14 +31,14 @@ import phasereditor.canvas.core.PhysicsType;
 import phasereditor.canvas.core.StateSettings;
 import phasereditor.canvas.core.StateSettings.LoadPack;
 import phasereditor.canvas.core.StateSettings.PreloadSpriteDirection;
-import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
-import phasereditor.canvas.ui.editors.grid.PGridColorProperty;
 import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
 import phasereditor.canvas.ui.editors.grid.PGridLoadPackProperty;
-import phasereditor.canvas.ui.editors.grid.PGridSection;
 import phasereditor.canvas.ui.editors.grid.PGridSpriteProperty;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
+import phasereditor.ui.properties.PGridBooleanProperty;
+import phasereditor.ui.properties.PGridColorProperty;
+import phasereditor.ui.properties.PGridSection;
 
 /**
  * @author arian

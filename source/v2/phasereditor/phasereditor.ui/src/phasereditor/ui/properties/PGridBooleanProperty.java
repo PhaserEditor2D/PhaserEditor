@@ -19,34 +19,27 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors.grid;
-
-import java.util.ArrayList;
-import java.util.List;
+package phasereditor.ui.properties;
 
 /**
  * @author arian
  *
  */
-public class PGridModel {
-	private List<PGridSection> _sections;
+public abstract class PGridBooleanProperty extends PGridProperty<Boolean> {
 
-	public PGridModel() {
-		_sections = new ArrayList<>();
+	private boolean _value;
+
+	public PGridBooleanProperty(String controlId, String name, String tooltip) {
+		super(controlId, name, tooltip);
 	}
 
-	public List<PGridSection> getSections() {
-		return _sections;
+	@Override
+	public Boolean getValue() {
+		return Boolean.valueOf(_value);
 	}
 
-	public PGridProperty<?> findById(String id) {
-		for (PGridSection section : _sections) {
-			for (PGridProperty<?> prop : section) {
-				if (prop.getName().equals(id)) {
-					return prop;
-				}
-			}
-		}
-		return null;
+	@Override
+	public void setValue(Boolean value, boolean notify) {
+		_value = value.booleanValue();
 	}
 }

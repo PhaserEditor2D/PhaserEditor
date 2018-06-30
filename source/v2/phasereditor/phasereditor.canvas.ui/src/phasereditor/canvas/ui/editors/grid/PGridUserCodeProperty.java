@@ -22,6 +22,7 @@
 package phasereditor.canvas.ui.editors.grid;
 
 import phasereditor.canvas.core.EditorSettings_UserCode;
+import phasereditor.ui.properties.PGridProperty;
 
 /**
  * @author arian

@@ -21,9 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.config;
 
-import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.CanvasModel;
-import phasereditor.canvas.ui.editors.grid.PGridModel;
+import phasereditor.canvas.core.EditorSettings;
+import phasereditor.ui.properties.PGridModel;
 
 /**
  * @author arian

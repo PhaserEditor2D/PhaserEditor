@@ -83,7 +83,7 @@ import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.behaviors.ZoomBehavior;
 import phasereditor.canvas.ui.editors.config.CanvasSettingsComp;
-import phasereditor.canvas.ui.editors.grid.PGrid;
+import phasereditor.canvas.ui.editors.grid.CanvasPGrid;
 import phasereditor.canvas.ui.editors.palette.PaletteComp;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.ui.EditorSharedImages;
@@ -118,7 +118,7 @@ public class CanvasEditor extends MultiPageEditorPart
 
 	private ObjectCanvas _canvas;
 	private CanvasModel _model;
-	private PGrid _grid;
+	private CanvasPGrid _grid;
 	private SashForm _leftSashForm;
 	private FilteredTree _outlineTree;
 
@@ -358,7 +358,7 @@ public class CanvasEditor extends MultiPageEditorPart
 		_outlineTree.getViewer().setLabelProvider(new OutlineLabelProvider());
 		_outlineTree.getViewer().setContentProvider(new OutlineContentProvider());
 
-		_grid = new PGrid(_leftSashForm, SWT.NONE);
+		_grid = new CanvasPGrid(_leftSashForm, SWT.NONE);
 		_leftSashForm.setWeights(new int[] { 1, 1 });
 
 		_centerComposite = new Composite(_mainSashForm, SWT.NONE);
@@ -399,8 +399,14 @@ public class CanvasEditor extends MultiPageEditorPart
 		restoreState();
 
 		initContexts();
+		
+		initPGrid();
 
 		// addEditorActivationListeners();
+	}
+
+	private void initPGrid() {
+		_grid.setCanvas(_canvas);
 	}
 
 	private void initPalette() {
@@ -576,7 +582,7 @@ public class CanvasEditor extends MultiPageEditorPart
 		return _outlineTree.getViewer();
 	}
 
-	public PGrid getPropertyGrid() {
+	public CanvasPGrid getPropertyGrid() {
 		return _grid;
 	}
 

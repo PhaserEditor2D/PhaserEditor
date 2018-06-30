@@ -42,14 +42,14 @@ import phasereditor.canvas.core.Prefab;
 import phasereditor.canvas.core.WorldModel.ZOperation;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.behaviors.UpdateBehavior;
-import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
-import phasereditor.canvas.ui.editors.grid.PGridModel;
-import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridOverrideProperty;
-import phasereditor.canvas.ui.editors.grid.PGridSection;
-import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.project.core.codegen.SourceLang;
+import phasereditor.ui.properties.PGridBooleanProperty;
+import phasereditor.ui.properties.PGridModel;
+import phasereditor.ui.properties.PGridNumberProperty;
+import phasereditor.ui.properties.PGridSection;
+import phasereditor.ui.properties.PGridStringProperty;
 
 /**
  * @author arian

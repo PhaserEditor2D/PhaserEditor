@@ -6,9 +6,10 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import phasereditor.canvas.ui.editors.PGridDialog;
-import phasereditor.canvas.ui.editors.grid.PGridModel;
+import phasereditor.canvas.ui.editors.CanvasPGridDialog;
+import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.IObjectNode;
+import phasereditor.ui.properties.PGridModel;
 
 public class QuickObjectEditHandler extends AbstractHandler {
 
@@ -17,9 +18,11 @@ public class QuickObjectEditHandler extends AbstractHandler {
 		IStructuredSelection sel = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
 		Object e = sel.getFirstElement();
 		if (e != null) {
-			PGridDialog dlg = new PGridDialog(HandlerUtil.getActiveShell(event));
-			PGridModel model = ((IObjectNode)e).getControl().getPropertyModel();
+			CanvasPGridDialog dlg = new CanvasPGridDialog(HandlerUtil.getActiveShell(event));
+			BaseObjectControl<?> control = ((IObjectNode)e).getControl();
+			PGridModel model = control.getPropertyModel();
 			dlg.setModel(model);
+			dlg.setCanvas(control.getCanvas());
 			dlg.open();
 		}
 		

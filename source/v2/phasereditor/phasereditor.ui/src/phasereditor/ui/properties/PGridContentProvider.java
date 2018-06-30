@@ -19,71 +19,59 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors.grid;
+package phasereditor.ui.properties;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+
+import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.Viewer;
 
 /**
  * @author arian
  *
  */
-public class PGridSection extends ArrayList<PGridProperty<?>> {
-	private static final long serialVersionUID = 1L;
-	private String _name;
-	private boolean _active;
-	private Map<String, PGridProperty<?>> _map;
+public class PGridContentProvider implements ITreeContentProvider {
 
-	public PGridSection(String name) {
-		super();
-		_name = name;
-		_active = true;
-		_map = new HashMap<>();
-	}
-	
 	@Override
-	public boolean add(PGridProperty<?> e) {
-		e.setSection(this);
-		_map.put(e.getName(), e);
-		return super.add(e);
+	public void dispose() {
+		// nothing
 	}
-	
+
 	@Override
-	public void add(int index, PGridProperty<?> e) {
-		e.setSection(this);
-		_map.put(e.getName(), e);
-		super.add(index, e);
+	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+		// nothing
 	}
-	
+
 	@Override
-	public boolean addAll(Collection<? extends PGridProperty<?>> c) {
-		for(PGridProperty<?> e : c) {
-			e.setSection(this);
-			_map.put(e.getName(), e);
+	public Object[] getElements(Object parent) {
+		return getChildren(parent);
+	}
+
+	private static Object[] EMPTY = new Object[0];
+
+	@Override
+	public Object[] getChildren(Object parent) {
+		if (parent instanceof PGridModel) {
+			List<PGridSection> sections = ((PGridModel) parent).getSections();
+			return sections.stream().filter(s -> s.isActive()).toArray();
 		}
-		return super.addAll(c);
+
+		if (parent instanceof PGridSection) {
+			PGridSection section = (PGridSection) parent;
+			return section.stream().filter(p -> p.isActive()).toArray();
+		}
+		
+		return EMPTY;
 	}
 
-	public boolean isActive() {
-		return _active;
+	@Override
+	public Object getParent(Object element) {
+		return null;
 	}
 
-	public void setActive(boolean active) {
-		_active = active;
+	@Override
+	public boolean hasChildren(Object element) {
+		return getChildren(element).length > 0;
 	}
 
-	public String getName() {
-		return _name;
-	}
-
-	public void setName(String name) {
-		_name = name;
-	}
-
-	@SuppressWarnings("static-method")
-	public boolean isReadOnly() {
-		return false;
-	}
 }

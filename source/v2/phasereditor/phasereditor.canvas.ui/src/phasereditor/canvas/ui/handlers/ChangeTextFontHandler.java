@@ -13,11 +13,11 @@ import javafx.scene.text.FontWeight;
 import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
-import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
-import phasereditor.canvas.ui.editors.grid.editors.PGridEditingSupport;
+import phasereditor.canvas.ui.editors.grid.editors.CanvasPGridEditingSupport;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.TextControl;
 import phasereditor.canvas.ui.shapes.TextNode;
+import phasereditor.ui.properties.PGridNumberProperty;
 
 public class ChangeTextFontHandler extends AbstractHandler {
 
@@ -66,11 +66,11 @@ public class ChangeTextFontHandler extends AbstractHandler {
 				PGridEnumProperty<FontWeight> propFontWeight = control.getFontWeightProperty();
 				FontWeight fxWeight = (data.getStyle() & SWT.BOLD) == SWT.BOLD ? FontWeight.BOLD : FontWeight.NORMAL;
 
-				operations.add(PGridEditingSupport.makeChangePropertyValueOperation(data.getName(), propFontName));
-				operations.add(PGridEditingSupport.makeChangePropertyValueOperation(Double.valueOf(data.getHeight()),
+				operations.add(CanvasPGridEditingSupport.makeChangePropertyValueOperation(data.getName(), propFontName));
+				operations.add(CanvasPGridEditingSupport.makeChangePropertyValueOperation(Double.valueOf(data.getHeight()),
 						propFontSize));
-				operations.add(PGridEditingSupport.makeChangePropertyValueOperation(fxPosture, propFontStyle));
-				operations.add(PGridEditingSupport.makeChangePropertyValueOperation(fxWeight, propFontWeight));
+				operations.add(CanvasPGridEditingSupport.makeChangePropertyValueOperation(fxPosture, propFontStyle));
+				operations.add(CanvasPGridEditingSupport.makeChangePropertyValueOperation(fxWeight, propFontWeight));
 			}
 
 			editor.getCanvas().getUpdateBehavior().executeOperations(operations);

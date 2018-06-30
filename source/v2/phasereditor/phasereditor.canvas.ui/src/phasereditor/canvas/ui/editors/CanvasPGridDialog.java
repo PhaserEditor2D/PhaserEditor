@@ -31,18 +31,19 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import phasereditor.canvas.ui.editors.grid.PGrid;
-import phasereditor.canvas.ui.editors.grid.PGridModel;
+import phasereditor.canvas.ui.editors.grid.CanvasPGrid;
+import phasereditor.ui.properties.PGridModel;
 
 /**
  * @author arian
  *
  */
-public class PGridDialog extends Dialog {
-	private PGrid _grid;
+public class CanvasPGridDialog extends Dialog {
+	private CanvasPGrid _grid;
 	private PGridModel _model;
+	private ObjectCanvas _canvas;
 
-	public PGridDialog(Shell parentShell) {
+	public CanvasPGridDialog(Shell parentShell) {
 		super(parentShell);
 	}
 
@@ -53,7 +54,7 @@ public class PGridDialog extends Dialog {
 		gridLayout.marginWidth = 5;
 		gridLayout.marginHeight = 5;
 
-		_grid = new PGrid(container, SWT.NONE);
+		_grid = new CanvasPGrid(container, SWT.NONE);
 		_grid.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		afterCreateWidgets();
@@ -74,6 +75,7 @@ public class PGridDialog extends Dialog {
 
 	private void afterCreateWidgets() {
 		_grid.setModel(_model);
+		_grid.setCanvas(_canvas);
 	}
 
 	@Override
@@ -86,6 +88,10 @@ public class PGridDialog extends Dialog {
 		return new Point(450, 300);
 	}
 
+	public void setCanvas(ObjectCanvas canvas) {
+		_canvas = canvas;
+	}
+	
 	public void setModel(PGridModel model) {
 		_model = model;
 	}

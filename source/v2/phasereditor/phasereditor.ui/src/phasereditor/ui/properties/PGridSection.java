@@ -19,44 +19,59 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors.grid;
+package phasereditor.ui.properties;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author arian
  *
  */
-public abstract class PGridProperty<T> {
+public class PGridSection extends ArrayList<PGridProperty<?>> {
+	private static final long serialVersionUID = 1L;
 	private String _name;
-	private String _tooltip;
-	private String _nodeId;
-	private PGridSection _section;
+	private boolean _active;
+	private Map<String, PGridProperty<?>> _map;
 
-	public PGridProperty(String nodeId, String name, String tooltip) {
+	public PGridSection(String name) {
 		super();
 		_name = name;
-		_nodeId = nodeId;
-		_tooltip = tooltip;
+		_active = true;
+		_map = new HashMap<>();
+	}
+	
+	@Override
+	public boolean add(PGridProperty<?> e) {
+		e.setSection(this);
+		_map.put(e.getName(), e);
+		return super.add(e);
+	}
+	
+	@Override
+	public void add(int index, PGridProperty<?> e) {
+		e.setSection(this);
+		_map.put(e.getName(), e);
+		super.add(index, e);
+	}
+	
+	@Override
+	public boolean addAll(Collection<? extends PGridProperty<?>> c) {
+		for(PGridProperty<?> e : c) {
+			e.setSection(this);
+			_map.put(e.getName(), e);
+		}
+		return super.addAll(c);
 	}
 
-	public PGridSection getSection() {
-		return _section;
-	}
-
-	public void setSection(PGridSection section) {
-		_section = section;
-	}
-
-	@SuppressWarnings("static-method")
 	public boolean isActive() {
-		return true;
+		return _active;
 	}
 
-	public boolean isReadOnly() {
-		return getSection().isReadOnly();
-	}
-
-	public String getNodeId() {
-		return _nodeId;
+	public void setActive(boolean active) {
+		_active = active;
 	}
 
 	public String getName() {
@@ -67,21 +82,8 @@ public abstract class PGridProperty<T> {
 		_name = name;
 	}
 
-	public abstract T getValue();
-
-	public abstract void setValue(T value, boolean notify);
-
-	public abstract boolean isModified();
-	
-	public T getDefaultValue() {
-		throw new UnsupportedOperationException();
-	}
-
-	public String getTooltip() {
-		return _tooltip;
-	}
-
-	public void setTooltip(String tooltip) {
-		_tooltip = tooltip;
+	@SuppressWarnings("static-method")
+	public boolean isReadOnly() {
+		return false;
 	}
 }

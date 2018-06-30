@@ -32,7 +32,7 @@ import org.eclipse.ui.dialogs.FilteredTree;
 
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
-import phasereditor.canvas.ui.editors.grid.PGrid;
+import phasereditor.canvas.ui.editors.grid.CanvasPGrid;
 import phasereditor.ui.PatternFilter2;
 
 /**
@@ -43,7 +43,7 @@ public class CanvasSettingsComp extends Composite {
 
 	// private GeneralEditorSettingsComp _generalEditorSettingsComp;
 	private FilteredTree _outlineTree;
-	private PGrid _pGrid;
+	private CanvasPGrid _pGrid;
 	private CanvasModel _model;
 
 	/**
@@ -60,7 +60,7 @@ public class CanvasSettingsComp extends Composite {
 		SashForm sashForm = new SashForm(this, SWT.NONE);
 
 		_outlineTree = new FilteredTree(sashForm, SWT.BORDER, new PatternFilter2(), true);
-		_pGrid = new PGrid(sashForm, SWT.NONE, false);
+		_pGrid = new CanvasPGrid(sashForm, SWT.NONE, false);
 		sashForm.setWeights(new int[] { 1, 2 });
 
 		afterCreateWidgets();

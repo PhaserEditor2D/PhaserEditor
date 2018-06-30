@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import phasereditor.canvas.core.BaseObjectModel;
+import phasereditor.ui.properties.PGridProperty;
 
 /**
  * @author arian

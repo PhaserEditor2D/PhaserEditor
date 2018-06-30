@@ -19,59 +19,28 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors.grid;
+package phasereditor.ui.properties;
 
-import java.util.List;
-
-import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.swt.graphics.RGB;
 
 /**
  * @author arian
  *
  */
-public class PGridContentProvider implements ITreeContentProvider {
+public abstract class PGridColorProperty extends PGridProperty<RGB> {
 
-	@Override
-	public void dispose() {
-		// nothing
+	private RGB _defaultRGB;
+
+	public PGridColorProperty(String controlId, String name, String tooltip) {
+		super(controlId, name, tooltip);
 	}
 
-	@Override
-	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		// nothing
+	public RGB getDefaultRGB() {
+		return _defaultRGB;
 	}
 
-	@Override
-	public Object[] getElements(Object parent) {
-		return getChildren(parent);
-	}
-
-	private static Object[] EMPTY = new Object[0];
-
-	@Override
-	public Object[] getChildren(Object parent) {
-		if (parent instanceof PGridModel) {
-			List<PGridSection> sections = ((PGridModel) parent).getSections();
-			return sections.stream().filter(s -> s.isActive()).toArray();
-		}
-
-		if (parent instanceof PGridSection) {
-			PGridSection section = (PGridSection) parent;
-			return section.stream().filter(p -> p.isActive()).toArray();
-		}
-		
-		return EMPTY;
-	}
-
-	@Override
-	public Object getParent(Object element) {
-		return null;
-	}
-
-	@Override
-	public boolean hasChildren(Object element) {
-		return getChildren(element).length > 0;
+	public void setDefaultRGB(RGB defaultRGB) {
+		_defaultRGB = defaultRGB;
 	}
 
 }

@@ -23,18 +23,18 @@ package phasereditor.canvas.ui.editors.config;
 
 import org.eclipse.swt.graphics.RGB;
 
+import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.EditorSettings;
 import phasereditor.canvas.core.EditorSettings_UserCode;
-import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.codegen.CanvasCodeGeneratorProvider;
-import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
-import phasereditor.canvas.ui.editors.grid.PGridColorProperty;
 import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
-import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
-import phasereditor.canvas.ui.editors.grid.PGridSection;
-import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
 import phasereditor.canvas.ui.editors.grid.PGridUserCodeProperty;
 import phasereditor.project.core.codegen.SourceLang;
+import phasereditor.ui.properties.PGridBooleanProperty;
+import phasereditor.ui.properties.PGridColorProperty;
+import phasereditor.ui.properties.PGridNumberProperty;
+import phasereditor.ui.properties.PGridSection;
+import phasereditor.ui.properties.PGridStringProperty;
 
 /**
  * @author arian

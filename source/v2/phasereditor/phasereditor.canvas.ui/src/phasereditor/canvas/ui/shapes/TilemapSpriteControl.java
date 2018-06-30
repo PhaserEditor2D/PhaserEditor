@@ -31,12 +31,12 @@ import phasereditor.assetpack.core.ImageAssetModel.Frame;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.canvas.core.TilemapSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
-import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
 import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
-import phasereditor.canvas.ui.editors.grid.PGridModel;
-import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
-import phasereditor.canvas.ui.editors.grid.PGridSection;
 import phasereditor.canvas.ui.editors.grid.PGridTilemapIndexesProperty;
+import phasereditor.ui.properties.PGridBooleanProperty;
+import phasereditor.ui.properties.PGridModel;
+import phasereditor.ui.properties.PGridNumberProperty;
+import phasereditor.ui.properties.PGridSection;
 
 /**
  * @author arian

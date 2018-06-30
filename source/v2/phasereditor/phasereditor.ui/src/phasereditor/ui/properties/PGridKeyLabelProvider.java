@@ -19,28 +19,39 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors.grid;
+package phasereditor.ui.properties;
 
-import org.eclipse.swt.graphics.RGB;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.swt.graphics.Font;
 
 /**
  * @author arian
  *
  */
-public abstract class PGridColorProperty extends PGridProperty<RGB> {
+public class PGridKeyLabelProvider extends PGridLabelProvider {
 
-	private RGB _defaultRGB;
-
-	public PGridColorProperty(String controlId, String name, String tooltip) {
-		super(controlId, name, tooltip);
+	public PGridKeyLabelProvider(Viewer viewer) {
+		super(viewer);
 	}
 
-	public RGB getDefaultRGB() {
-		return _defaultRGB;
+	@Override
+	public String getText(Object element) {
+		if (element instanceof PGridSection) {
+			return ((PGridSection) element).getName();
+		}
+
+		if (element instanceof PGridProperty<?>) {
+			return ((PGridProperty<?>) element).getName();
+		}
+
+		return super.getText(element);
 	}
 
-	public void setDefaultRGB(RGB defaultRGB) {
-		_defaultRGB = defaultRGB;
+	@Override
+	public Font getFont(Object element) {
+		if (element instanceof PGridSection) {
+			return getNormalFont();
+		}
+		return super.getFont(element);
 	}
-
 }

@@ -19,26 +19,15 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors.grid;
+package phasereditor.ui.properties;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 
-import phasereditor.assetpack.core.BitmapFontAssetModel;
-import phasereditor.assetpack.ui.AssetLabelProvider;
-import phasereditor.canvas.core.AnimationModel;
-import phasereditor.canvas.core.BaseObjectModel;
-import phasereditor.canvas.core.PhysicsType;
-import phasereditor.canvas.core.StateSettings.LoadPack;
-import phasereditor.canvas.ui.editors.ObjectCanvas;
-import phasereditor.project.core.codegen.SourceLang;
-import phasereditor.canvas.core.PhysicsSortDirection;
 import phasereditor.ui.ColorButtonSupport;
 import phasereditor.ui.PhaserEditorUI;
 
@@ -47,29 +36,14 @@ import phasereditor.ui.PhaserEditorUI;
  *
  */
 public class PGridValueLabelProvider extends PGridLabelProvider {
-	private ObjectCanvas _canvas;
-
 	public PGridValueLabelProvider(ColumnViewer viewer) {
 		super(viewer);
-	}
-
-	public void setCanvas(ObjectCanvas canvas) {
-		_canvas = canvas;
-	}
-
-	public ObjectCanvas getCanvas() {
-		return _canvas;
 	}
 
 	@Override
 	public String getText(Object element) {
 		if (element instanceof PGridSection) {
 			return "(properties)";
-		}
-
-		if (element instanceof PGridLoadPackProperty) {
-			Set<LoadPack> value = ((PGridLoadPackProperty) element).getValue();
-			return LoadPack.toString(value);
 		}
 
 		if (element instanceof PGridColorProperty) {
@@ -87,53 +61,6 @@ public class PGridValueLabelProvider extends PGridLabelProvider {
 			return ColorButtonSupport.getHexString(rgb);
 		}
 
-		if (element instanceof PGridFrameProperty) {
-			String label = ((PGridFrameProperty) element).getLabel();
-			return label == null ? "" : label;
-		}
-
-		if (element instanceof PGridAnimationsProperty) {
-			List<AnimationModel> value = ((PGridAnimationsProperty) element).getValue();
-			return PGridAnimationsProperty.getLabel(value);
-		}
-
-		if (element instanceof PGridEnumProperty) {
-			Object value = ((PGridEnumProperty<?>) element).getValue();
-
-			if (value instanceof PhysicsType) {
-				return ((PhysicsType) value).getPhaserName();
-			}
-
-			if (value instanceof SourceLang) {
-				return ((SourceLang) value).getDisplayName();
-			}
-
-			if (value instanceof PhysicsSortDirection) {
-				return ((PhysicsSortDirection) value).getPhaserName();
-			}
-		}
-
-		if (element instanceof PGridSpriteProperty) {
-			PGridSpriteProperty prop = (PGridSpriteProperty) element;
-			String id = prop.getValue();
-			BaseObjectModel model = _canvas.getWorldModel().findById(id);
-
-			if (model == null) {
-				return id;
-			}
-
-			return model.getEditorName();
-		}
-
-		if (element instanceof PGridBitmapTextFontProperty) {
-			BitmapFontAssetModel asset = ((PGridBitmapTextFontProperty) element).getValue();
-			if (asset == null) {
-				return "null";
-			}
-
-			return asset.getKey();
-		}
-		
 
 		if (element instanceof PGridProperty) {
 			Object value = ((PGridProperty<?>) element).getValue();
@@ -164,10 +91,6 @@ public class PGridValueLabelProvider extends PGridLabelProvider {
 			Image image = PhaserEditorUI.makeColorIcon(value);
 			_images.put(value, image);
 			return image;
-		}
-
-		if (element instanceof PGridFrameProperty) {
-			return AssetLabelProvider.GLOBAL_16.getImage(((PGridFrameProperty) element).getValue());
 		}
 
 		return super.getImage(element);

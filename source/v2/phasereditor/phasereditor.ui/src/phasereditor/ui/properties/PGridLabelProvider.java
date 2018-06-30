@@ -19,19 +19,15 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors.grid;
+package phasereditor.ui.properties;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.wb.swt.SWTResourceManager;
-
-import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.assetpack.ui.AssetLabelProvider;
 
 /**
  * @author arian
@@ -72,15 +68,6 @@ public class PGridLabelProvider extends ColumnLabelProvider {
 			return tooltip;
 		}
 		return super.getToolTipText(element);
-	}
-
-	@Override
-	public Image getToolTipImage(Object object) {
-		if (object instanceof PGridFrameProperty) {
-			IAssetFrameModel value = ((PGridFrameProperty) object).getValue();
-			return AssetLabelProvider.GLOBAL_48.getImage(value);
-		}
-		return super.getToolTipImage(object);
 	}
 
 	@Override

@@ -32,7 +32,7 @@ import phasereditor.canvas.core.BitmapTextModel;
 import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
-import phasereditor.canvas.ui.editors.grid.editors.PGridEditingSupport;
+import phasereditor.canvas.ui.editors.grid.editors.CanvasPGridEditingSupport;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.BitmapTextControl;
 import phasereditor.canvas.ui.shapes.BitmapTextNode;
@@ -60,7 +60,7 @@ public class TextAlignHandler extends AbstractHandler {
 					TextControl control = node.getControl();
 					PGridEnumProperty<TextAlignment> prop = control.getTextAlignProperty();
 					TextAlignment value = TextAlignment.valueOf(align.toUpperCase());
-					operations.add(PGridEditingSupport.makeChangePropertyValueOperation(value, prop));
+					operations.add(CanvasPGridEditingSupport.makeChangePropertyValueOperation(value, prop));
 				}
 			} else if (obj instanceof BitmapTextNode) {
 				BitmapTextNode node = (BitmapTextNode) obj;
@@ -68,7 +68,7 @@ public class TextAlignHandler extends AbstractHandler {
 					BitmapTextControl control = node.getControl();
 					PGridEnumProperty<Align> prop = control.getAlignProperty();
 					Align value = Align.valueOf(align);
-					operations.add(PGridEditingSupport.makeChangePropertyValueOperation(value, prop));
+					operations.add(CanvasPGridEditingSupport.makeChangePropertyValueOperation(value, prop));
 				}
 			}
 		}

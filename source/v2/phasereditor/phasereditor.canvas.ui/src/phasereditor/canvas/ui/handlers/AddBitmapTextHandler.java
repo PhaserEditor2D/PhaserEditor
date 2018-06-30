@@ -37,7 +37,7 @@ import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.behaviors.CreateBehavior;
 import phasereditor.canvas.ui.editors.grid.editors.BitmapTextFontDialog;
-import phasereditor.canvas.ui.editors.grid.editors.TextDialog;
+import phasereditor.ui.properties.TextDialog;
 
 /**
  * @author arian

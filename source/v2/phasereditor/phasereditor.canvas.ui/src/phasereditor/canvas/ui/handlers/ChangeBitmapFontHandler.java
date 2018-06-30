@@ -10,7 +10,7 @@ import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.grid.PGridBitmapTextFontProperty;
 import phasereditor.canvas.ui.editors.grid.editors.BitmapTextFontDialog;
-import phasereditor.canvas.ui.editors.grid.editors.PGridEditingSupport;
+import phasereditor.canvas.ui.editors.grid.editors.CanvasPGridEditingSupport;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.BitmapTextNode;
 
@@ -34,7 +34,7 @@ public class ChangeBitmapFontHandler extends AbstractHandler {
 
 			for (Object obj : selection) {
 				PGridBitmapTextFontProperty prop = ((BitmapTextNode) obj).getControl().getFontProperty();
-				operations.add(PGridEditingSupport.makeChangePropertyValueOperation(font, prop));
+				operations.add(CanvasPGridEditingSupport.makeChangePropertyValueOperation(font, prop));
 			}
 
 			editor.getCanvas().getUpdateBehavior().executeOperations(operations);

@@ -48,7 +48,7 @@ import phasereditor.canvas.ui.editors.behaviors.PaintBehavior;
 import phasereditor.canvas.ui.editors.behaviors.SelectionBehavior;
 import phasereditor.canvas.ui.editors.behaviors.UpdateBehavior;
 import phasereditor.canvas.ui.editors.behaviors.ZoomBehavior;
-import phasereditor.canvas.ui.editors.grid.PGrid;
+import phasereditor.canvas.ui.editors.grid.CanvasPGrid;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.palette.PaletteComp;
@@ -66,7 +66,7 @@ public class ObjectCanvas extends FXCanvas {
 	private SelectionBehavior _selectionBehavior;
 	private DragBehavior _dragBehavior;
 	private WorldModel _worldModel;
-	private PGrid _pgrid;
+	private CanvasPGrid _pgrid;
 	private UpdateBehavior _updateBehavior;
 	private GroupControl _worldControl;
 	private TreeViewer _outline;
@@ -88,7 +88,7 @@ public class ObjectCanvas extends FXCanvas {
 		super(parent, style);
 	}
 
-	public void init(CanvasEditor editor, CanvasModel model, PGrid grid, TreeViewer outline, PaletteComp palette) {
+	public void init(CanvasEditor editor, CanvasModel model, CanvasPGrid grid, TreeViewer outline, PaletteComp palette) {
 		_editor = editor;
 		_settingsModel = model.getSettings();
 		_worldModel = model.getWorld();
@@ -140,7 +140,7 @@ public class ObjectCanvas extends FXCanvas {
 		return _outline;
 	}
 
-	public PGrid getPGrid() {
+	public CanvasPGrid getPGrid() {
 		return _pgrid;
 	}
 

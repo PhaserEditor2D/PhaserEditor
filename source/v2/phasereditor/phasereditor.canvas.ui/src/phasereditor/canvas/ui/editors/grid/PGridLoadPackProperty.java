@@ -24,6 +24,7 @@ package phasereditor.canvas.ui.editors.grid;
 import java.util.Set;
 
 import phasereditor.canvas.core.StateSettings.LoadPack;
+import phasereditor.ui.properties.PGridProperty;
 
 /**
  * @author arian

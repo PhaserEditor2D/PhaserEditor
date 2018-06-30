@@ -19,55 +19,69 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors.grid.editors;
-
-import org.eclipse.jface.viewers.DialogCellEditor;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Shell;
-
-import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
+package phasereditor.ui.properties;
 
 /**
  * @author arian
  *
  */
-public class FrameCellEditor extends DialogCellEditor {
+public abstract class PGridProperty<T> {
+	private String _name;
+	private String _tooltip;
+	private String _nodeId;
+	private PGridSection _section;
 
-	private PGridFrameProperty _prop;
-
-	public FrameCellEditor(Composite parent, PGridFrameProperty prop) {
-		super(parent);
-		_prop = prop;
+	public PGridProperty(String nodeId, String name, String tooltip) {
+		super();
+		_name = name;
+		_nodeId = nodeId;
+		_tooltip = tooltip;
 	}
 
-	@Override
-	protected void updateContents(Object value) {
-		super.updateContents(value);
-
-		if (value == null) {
-			getDefaultLabel().setText("");
-			return;
-		}
-
-		getDefaultLabel().setText(" " + ((IAssetFrameModel) value).getKey());
+	public PGridSection getSection() {
+		return _section;
 	}
 
-	@Override
-	protected void doSetValue(Object value) {
-		if (value == PGridFrameProperty.NULL_FRAME) {
-			super.doSetValue(null);
-			return;
-		}
-
-		super.doSetValue(value);
+	public void setSection(PGridSection section) {
+		_section = section;
 	}
 
-	@Override
-	protected Object openDialogBox(Control cellEditorWindow) {
-		Shell shell = cellEditorWindow.getShell();
-		return CanvasPGridEditingSupport.openSelectFrameDialog(_prop, shell);
+	@SuppressWarnings("static-method")
+	public boolean isActive() {
+		return true;
 	}
 
+	public boolean isReadOnly() {
+		return getSection().isReadOnly();
+	}
+
+	public String getNodeId() {
+		return _nodeId;
+	}
+
+	public String getName() {
+		return _name;
+	}
+
+	public void setName(String name) {
+		_name = name;
+	}
+
+	public abstract T getValue();
+
+	public abstract void setValue(T value, boolean notify);
+
+	public abstract boolean isModified();
+	
+	public T getDefaultValue() {
+		throw new UnsupportedOperationException();
+	}
+
+	public String getTooltip() {
+		return _tooltip;
+	}
+
+	public void setTooltip(String tooltip) {
+		_tooltip = tooltip;
+	}
 }

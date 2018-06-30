@@ -19,32 +19,31 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors.grid;
+package phasereditor.ui.properties;
+
+import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * @author arian
  *
  */
-public abstract class PGridStringProperty extends PGridProperty<String> {
-	private boolean _longText;
-	private String _message;
+public class NumberCellEditor extends TextCellEditor {
 
-	public PGridStringProperty(String controlId, String name, String tooltip,String message) {
-		super(controlId, name, tooltip);
-		_longText = message != null;
-		_message = message;
-		
+	public NumberCellEditor(Composite parent) {
+		super(parent);
 	}
 
-	public PGridStringProperty(String controlId, String name, String tooltip) {
-		this(controlId, name, tooltip, null);
+	@Override
+	protected void doSetValue(Object value) {
+		super.doSetValue(value == null ? null : value.toString());
 	}
 
-	public boolean isLongText() {
-		return _longText;
+	@SuppressWarnings("boxing")
+	@Override
+	protected Object doGetValue() {
+		String value = (String) super.doGetValue();
+		return Double.parseDouble(value);
 	}
-	
-	public String getMessage() {
-		return _message;
-	}
+
 }

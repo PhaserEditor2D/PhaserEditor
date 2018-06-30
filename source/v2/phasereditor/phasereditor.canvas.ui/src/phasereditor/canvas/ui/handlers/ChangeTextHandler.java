@@ -31,15 +31,15 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import phasereditor.canvas.core.BitmapTextModel;
 import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
-import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
-import phasereditor.canvas.ui.editors.grid.editors.PGridEditingSupport;
-import phasereditor.canvas.ui.editors.grid.editors.TextDialog;
+import phasereditor.canvas.ui.editors.grid.editors.CanvasPGridEditingSupport;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.BitmapTextControl;
 import phasereditor.canvas.ui.shapes.BitmapTextNode;
 import phasereditor.canvas.ui.shapes.ITextSpriteNode;
 import phasereditor.canvas.ui.shapes.TextControl;
 import phasereditor.canvas.ui.shapes.TextNode;
+import phasereditor.ui.properties.PGridStringProperty;
+import phasereditor.ui.properties.TextDialog;
 
 /**
  * @author arian
@@ -68,14 +68,14 @@ public class ChangeTextHandler extends AbstractHandler {
 					if (node.getModel().isOverriding(TextModel.PROPSET_TEXT)) {
 						TextControl control = node.getControl();
 						PGridStringProperty prop = control.getTextProperty();
-						operations.add(PGridEditingSupport.makeChangePropertyValueOperation(text, prop));
+						operations.add(CanvasPGridEditingSupport.makeChangePropertyValueOperation(text, prop));
 					}
 				} else if (obj instanceof BitmapTextNode) {
 					BitmapTextNode node = (BitmapTextNode) obj;
 					if (node.getModel().isOverriding(BitmapTextModel.PROPSET_TEXT)) {
 						BitmapTextControl control = node.getControl();
 						PGridStringProperty prop = control.getTextProperty();
-						operations.add(PGridEditingSupport.makeChangePropertyValueOperation(text, prop));
+						operations.add(CanvasPGridEditingSupport.makeChangePropertyValueOperation(text, prop));
 					}
 				}
 			}

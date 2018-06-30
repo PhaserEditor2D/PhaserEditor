@@ -29,9 +29,9 @@ import org.eclipse.core.runtime.Status;
 
 import phasereditor.canvas.ui.Activator;
 import phasereditor.canvas.ui.editors.CanvasEditor;
-import phasereditor.canvas.ui.editors.grid.PGridModel;
-import phasereditor.canvas.ui.editors.grid.PGridProperty;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
+import phasereditor.ui.properties.PGridModel;
+import phasereditor.ui.properties.PGridProperty;
 
 /**
  * @author arian

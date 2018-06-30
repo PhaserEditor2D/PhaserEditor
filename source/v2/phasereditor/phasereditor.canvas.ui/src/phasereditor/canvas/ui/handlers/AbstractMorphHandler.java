@@ -21,7 +21,6 @@ import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.editors.BitmapTextFontDialog;
-import phasereditor.canvas.ui.editors.grid.editors.TextDialog;
 import phasereditor.canvas.ui.editors.operations.AddNodeOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.editors.operations.DeleteNodeOperation;
@@ -29,6 +28,7 @@ import phasereditor.canvas.ui.editors.operations.SelectOperation;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.ISpriteNode;
+import phasereditor.ui.properties.TextDialog;
 
 /**
  * 

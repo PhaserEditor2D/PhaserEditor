@@ -19,39 +19,32 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors.grid;
-
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.swt.graphics.Font;
+package phasereditor.ui.properties;
 
 /**
  * @author arian
  *
  */
-public class PGridKeyLabelProvider extends PGridLabelProvider {
+public abstract class PGridStringProperty extends PGridProperty<String> {
+	private boolean _longText;
+	private String _message;
 
-	public PGridKeyLabelProvider(Viewer viewer) {
-		super(viewer);
+	public PGridStringProperty(String controlId, String name, String tooltip,String message) {
+		super(controlId, name, tooltip);
+		_longText = message != null;
+		_message = message;
+		
 	}
 
-	@Override
-	public String getText(Object element) {
-		if (element instanceof PGridSection) {
-			return ((PGridSection) element).getName();
-		}
-
-		if (element instanceof PGridProperty<?>) {
-			return ((PGridProperty<?>) element).getName();
-		}
-
-		return super.getText(element);
+	public PGridStringProperty(String controlId, String name, String tooltip) {
+		this(controlId, name, tooltip, null);
 	}
 
-	@Override
-	public Font getFont(Object element) {
-		if (element instanceof PGridSection) {
-			return getNormalFont();
-		}
-		return super.getFont(element);
+	public boolean isLongText() {
+		return _longText;
+	}
+	
+	public String getMessage() {
+		return _message;
 	}
 }

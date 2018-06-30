@@ -33,13 +33,13 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
-import phasereditor.canvas.ui.editors.grid.PGridColorProperty;
 import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
-import phasereditor.canvas.ui.editors.grid.PGridModel;
-import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
-import phasereditor.canvas.ui.editors.grid.PGridSection;
-import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
 import phasereditor.ui.ColorButtonSupport;
+import phasereditor.ui.properties.PGridColorProperty;
+import phasereditor.ui.properties.PGridModel;
+import phasereditor.ui.properties.PGridNumberProperty;
+import phasereditor.ui.properties.PGridSection;
+import phasereditor.ui.properties.PGridStringProperty;
 
 /**
  * 

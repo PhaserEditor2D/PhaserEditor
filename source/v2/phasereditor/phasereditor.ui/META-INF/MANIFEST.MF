@@ -29,4 +29,5 @@ Export-Package: com.subshell.snippets.jface.tooltip.tooltipsupport,
  phasereditor.ui.editors,
  phasereditor.ui.handlers,
  phasereditor.ui.info,
+ phasereditor.ui.properties,
  phasereditor.ui.views

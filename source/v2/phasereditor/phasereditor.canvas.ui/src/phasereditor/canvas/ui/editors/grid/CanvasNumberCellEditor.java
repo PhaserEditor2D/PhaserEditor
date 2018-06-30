@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2017 Arian Fornaris
+// Copyright (c) 2015, 2016 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -21,16 +21,38 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid;
 
-import phasereditor.ui.properties.PGridStringProperty;
+import org.eclipse.jface.viewers.ICellEditorValidator;
+import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.swt.widgets.Composite;
+
+import phasereditor.canvas.core.CanvasCore;
 
 /**
  * @author arian
  *
  */
-public abstract class PGridSpriteProperty extends PGridStringProperty{
+public class CanvasNumberCellEditor extends TextCellEditor {
 
-	public PGridSpriteProperty(String controlId, String name, String tooltip) {
-		super(controlId, name, tooltip);
+	public CanvasNumberCellEditor(Composite parent) {
+		super(parent);
+		setValidator(new ICellEditorValidator() {
+
+			@Override
+			public String isValid(Object value) {
+				return CanvasCore.scriptEngineValidate(value);
+			}
+		});
+	}
+
+	@Override
+	protected void doSetValue(Object value) {
+		super.doSetValue(value == null ? null : value.toString());
+	}
+
+	@Override
+	protected Object doGetValue() {
+		String value = (String) super.doGetValue();
+		return CanvasCore.scriptEngineEval(value);
 	}
 
 }

@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.canvas.ui.editors.grid;
+package phasereditor.ui.properties;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +48,6 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import phasereditor.canvas.ui.editors.ObjectCanvas;
-import phasereditor.canvas.ui.editors.grid.editors.PGridEditingSupport;
 import phasereditor.ui.PhaserEditorUI;
 
 /**
@@ -66,7 +64,8 @@ public class PGrid extends Composite {
 	protected boolean _resizing;
 	private FilteredTree _filteredTree;
 	private PGridEditingSupport _editSupport;
-	private PGridValueLabelProvider _labelProvider;
+	private PGridValueLabelProvider _valueLabelProvider;
+	private PGridKeyLabelProvider _keyLabelProvider;
 
 	public PGrid(Composite parent, int style) {
 		this(parent, style, true);
@@ -102,7 +101,8 @@ public class PGrid extends Composite {
 		});
 
 		_colProperty = new TreeViewerColumn(_treeViewer, SWT.NONE);
-		_colProperty.setLabelProvider(new PGridKeyLabelProvider(_treeViewer));
+		_keyLabelProvider = createKeyLabelProvider();
+		_colProperty.setLabelProvider(_keyLabelProvider);
 		TreeColumn trclmnProperty = _colProperty.getColumn();
 		trclmnProperty.addControlListener(new ControlAdapter() {
 			@Override
@@ -114,10 +114,10 @@ public class PGrid extends Composite {
 		trclmnProperty.setText("property");
 
 		_colValue = new TreeViewerColumn(_treeViewer, SWT.NONE);
-		_editSupport = new PGridEditingSupport(_treeViewer, supportUndoRedo);
+		_editSupport = createEditingSupport(_treeViewer,supportUndoRedo);
 		_colValue.setEditingSupport(_editSupport);
-		_labelProvider = new PGridValueLabelProvider(_treeViewer);
-		_colValue.setLabelProvider(_labelProvider);
+		_valueLabelProvider = createValueLabelProvider();
+		_colValue.setLabelProvider(_valueLabelProvider);
 		TreeColumn trclmnValue = _colValue.getColumn();
 		trclmnValue.setWidth(100);
 		trclmnValue.setText("value");
@@ -126,24 +126,45 @@ public class PGrid extends Composite {
 		afterCreateWidgets();
 
 	}
+	
+	public PGridValueLabelProvider getValueLabelProvider() {
+		return _valueLabelProvider;
+	}
+	
+	public PGridKeyLabelProvider getKeyLabelProvider() {
+		return _keyLabelProvider;
+	}
 
+	protected PGridKeyLabelProvider createKeyLabelProvider() {
+		return new PGridKeyLabelProvider(_treeViewer);
+	}
+
+	protected PGridValueLabelProvider createValueLabelProvider() {
+		return new PGridValueLabelProvider(getViewer());
+	}
+
+	
+	@SuppressWarnings("static-method")
+	protected PGridEditingSupport createEditingSupport(TreeViewer viewer, boolean supportUndoRedo) {
+		return new PGridEditingSupport(viewer, supportUndoRedo);
+	}
+
+	public PGridEditingSupport getEditSupport() {
+		return _editSupport;
+	}
+	
 	protected void setPropertyToNull() {
 		Object elem = _treeViewer.getStructuredSelection().getFirstElement();
 		if (elem != null && elem instanceof PGridProperty) {
 			try {
 				PGridProperty<?> prop = (PGridProperty<?>) elem;
 				Object value = prop.getDefaultValue();
-				PGridEditingSupport.executeChangePropertyValueOperation(value, prop);
+				_editSupport.executeChangePropertyValueOperation(value, prop);
 			} catch (UnsupportedOperationException e) {
 				// OK, it is not supported
 			}
 			_treeViewer.refresh(elem);
 		}
-	}
-
-	public void setCanvas(ObjectCanvas canvas) {
-		_editSupport.setCanvas(canvas);
-		_labelProvider.setCanvas(canvas);
 	}
 
 	public void setOnChanged(Runnable onChanged) {
@@ -153,11 +174,9 @@ public class PGrid extends Composite {
 	private PatternFilter createPatternFilter() {
 		PatternFilter filter = new PatternFilter() {
 
-			private PGridKeyLabelProvider labelProvider = new PGridKeyLabelProvider(_treeViewer);
-
 			@Override
 			protected boolean isLeafMatch(Viewer viewer, Object element) {
-				String text = labelProvider.getText(element);
+				String text = getKeyLabelProvider().getText(element);
 				return wordMatches(text);
 			}
 

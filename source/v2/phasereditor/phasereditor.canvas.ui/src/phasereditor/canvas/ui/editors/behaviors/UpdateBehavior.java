@@ -41,25 +41,25 @@ import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
-import phasereditor.canvas.ui.editors.grid.PGrid;
-import phasereditor.canvas.ui.editors.grid.PGridModel;
-import phasereditor.canvas.ui.editors.grid.PGridProperty;
+import phasereditor.canvas.ui.editors.grid.CanvasPGrid;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.BaseObjectControl;
 import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
+import phasereditor.ui.properties.PGridModel;
+import phasereditor.ui.properties.PGridProperty;
 
 /**
  * @author arian
  */
 public class UpdateBehavior {
 	private ObjectCanvas _canvas;
-	private PGrid _grid;
+	private CanvasPGrid _grid;
 	private TreeViewer _outline;
 
-	public UpdateBehavior(ObjectCanvas canvas, PGrid grid, TreeViewer outline) {
+	public UpdateBehavior(ObjectCanvas canvas, CanvasPGrid grid, TreeViewer outline) {
 		super();
 		_canvas = canvas;
 		_grid = grid;

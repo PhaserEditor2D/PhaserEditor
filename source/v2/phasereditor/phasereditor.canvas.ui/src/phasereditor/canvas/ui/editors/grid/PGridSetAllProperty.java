@@ -24,6 +24,7 @@ package phasereditor.canvas.ui.editors.grid;
 import phasereditor.canvas.core.GroupModel;
 import phasereditor.canvas.core.GroupModel.SetAllData;
 import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
+import phasereditor.ui.properties.PGridProperty;
 
 /**
  * @author arian

@@ -27,42 +27,31 @@ import java.util.List;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.DialogCellEditor;
-import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 
 import phasereditor.canvas.core.GroupModel.SetAllData;
 import phasereditor.canvas.core.PhysicsSortDirection;
 import phasereditor.canvas.core.PhysicsType;
-import phasereditor.canvas.ui.editors.CanvasEditor;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
-import phasereditor.canvas.ui.editors.grid.NumberCellEditor;
+import phasereditor.canvas.ui.editors.grid.CanvasNumberCellEditor;
 import phasereditor.canvas.ui.editors.grid.PGridAnimationsProperty;
 import phasereditor.canvas.ui.editors.grid.PGridBitmapTextFontProperty;
-import phasereditor.canvas.ui.editors.grid.PGridBooleanProperty;
-import phasereditor.canvas.ui.editors.grid.PGridColorProperty;
 import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
 import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
 import phasereditor.canvas.ui.editors.grid.PGridLoadPackProperty;
-import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
 import phasereditor.canvas.ui.editors.grid.PGridOverrideProperty;
-import phasereditor.canvas.ui.editors.grid.PGridProperty;
-import phasereditor.canvas.ui.editors.grid.PGridSection;
 import phasereditor.canvas.ui.editors.grid.PGridSetAllProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSpriteProperty;
-import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
 import phasereditor.canvas.ui.editors.grid.PGridTilemapIndexesProperty;
 import phasereditor.canvas.ui.editors.grid.PGridUserCodeProperty;
 import phasereditor.canvas.ui.editors.operations.ChangePropertyOperation;
@@ -70,20 +59,22 @@ import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.project.core.codegen.SourceLang;
 import phasereditor.ui.ComboBoxViewerCellEditor2;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.properties.PGridEditingSupport;
+import phasereditor.ui.properties.PGridNumberProperty;
+import phasereditor.ui.properties.PGridProperty;
+import phasereditor.ui.properties.PGridStringProperty;
+import phasereditor.ui.properties.TextDialog;
 
 /**
  * @author arian
  *
  */
-public class PGridEditingSupport extends EditingSupport {
+public class CanvasPGridEditingSupport extends PGridEditingSupport {
 
-	private boolean _supportUndoRedo;
-	private Runnable _onChanged;
 	private ObjectCanvas _canvas;
 
-	public PGridEditingSupport(ColumnViewer viewer, boolean supportUndoRedo) {
-		super(viewer);
-		_supportUndoRedo = supportUndoRedo;
+	public CanvasPGridEditingSupport(ColumnViewer viewer, boolean supportUndoRedo) {
+		super(viewer, supportUndoRedo);
 	}
 
 	public void setCanvas(ObjectCanvas canvas) {
@@ -94,30 +85,16 @@ public class PGridEditingSupport extends EditingSupport {
 		return _canvas;
 	}
 
-	public void setOnChanged(Runnable onChanged) {
-		_onChanged = onChanged;
-	}
-
-	public Runnable getOnChanged() {
-		return _onChanged;
-	}
-
 	@Override
 	protected CellEditor getCellEditor(Object element) {
 		Composite parent = (Composite) getViewer().getControl();
 
 		if (element instanceof PGridNumberProperty) {
-			return createNumberEditor(parent);
+			return createCanvasNumberEditor(parent);
 		} else if (element instanceof PGridSpriteProperty) {
 			return createSpriteEditor(element, parent);
-		} else if (element instanceof PGridStringProperty) {
-			return createTextEditor(element, parent);
-		} else if (element instanceof PGridBooleanProperty) {
-			return createBooleanEditor(parent);
 		} else if (element instanceof PGridFrameProperty) {
 			return createTextureFrameEditor(element, parent);
-		} else if (element instanceof PGridColorProperty) {
-			return createRGBEditor(element, parent);
 		} else if (element instanceof PGridAnimationsProperty) {
 			return createAnimationsEditor(element, parent);
 		} else if (element instanceof PGridEnumProperty) {
@@ -136,7 +113,7 @@ public class PGridEditingSupport extends EditingSupport {
 			return createTilemapCollisionIndexesEditor(element, parent);
 		}
 
-		return null;
+		return super.getCellEditor(element);
 	}
 
 	private static CellEditor createTilemapCollisionIndexesEditor(Object element, Composite parent) {
@@ -223,99 +200,17 @@ public class PGridEditingSupport extends EditingSupport {
 		return new AnimationsCellEditor(parent, (PGridAnimationsProperty) element);
 	}
 
-	private static CellEditor createRGBEditor(Object element, Composite parent) {
-		return new RGBCellEditor(parent, ((PGridColorProperty) element).getDefaultRGB());
-	}
-
 	private static CellEditor createTextureFrameEditor(Object element, Composite parent) {
 		PGridFrameProperty prop = (PGridFrameProperty) element;
 		return new FrameCellEditor(parent, prop);
 	}
 
-	private static CheckboxCellEditor createBooleanEditor(Composite parent) {
-		return new CheckboxCellEditor(parent);
-	}
-
-	private static NumberCellEditor createNumberEditor(Composite parent) {
-		return new NumberCellEditor(parent);
+	private static CanvasNumberCellEditor createCanvasNumberEditor(Composite parent) {
+		return new CanvasNumberCellEditor(parent);
 	}
 
 	private SpriteCellEditor createSpriteEditor(Object element, Composite parent) {
 		return new SpriteCellEditor(parent, _canvas, ((PGridSpriteProperty) element).getValue());
-	}
-
-	private static CellEditor createTextEditor(Object element, Composite parent) {
-		PGridStringProperty prop = (PGridStringProperty) element;
-		if (prop.isLongText()) {
-			return new DialogCellEditor(parent) {
-
-				@Override
-				protected Object openDialogBox(Control cellEditorWindow) {
-					Shell shell = cellEditorWindow.getShell();
-					return openLongStringDialog(prop, shell);
-				}
-			};
-		}
-		return new TextCellEditor(parent);
-	}
-
-	@Override
-	protected boolean canEdit(Object element) {
-		if (element instanceof PGridSection) {
-			return false;
-		} else if (element instanceof PGridProperty) {
-			return !((PGridProperty<?>) element).isReadOnly();
-		}
-		return true;
-	}
-
-	@Override
-	protected Object getValue(Object element) {
-		if (element instanceof PGridProperty<?>) {
-			return ((PGridProperty<?>) element).getValue();
-		}
-		return null;
-	}
-
-	@SuppressWarnings({ "null", "rawtypes", "unchecked" })
-	@Override
-	protected void setValue(Object element, Object value) {
-		PGridProperty prop = (PGridProperty) element;
-
-		Object old = prop.getValue();
-
-		boolean changed = false;
-
-		if (old == null && value == null) {
-			return;
-		}
-
-		if (old == null && value != null) {
-			changed = true;
-		}
-
-		if (old != null && value == null) {
-			changed = true;
-		}
-
-		if (!changed) {
-			changed = !old.equals(value);
-		}
-
-		if (changed) {
-			if (_supportUndoRedo) {
-
-				executeChangePropertyValueOperation(value, prop);
-
-			} else {
-				prop.setValue(value, true);
-				if (_onChanged != null) {
-					_onChanged.run();
-				}
-			}
-		}
-
-		getViewer().refresh(element);
 	}
 
 	public static Object openSelectFrameDialog(PGridFrameProperty prop, Shell shell) {
@@ -370,11 +265,10 @@ public class PGridEditingSupport extends EditingSupport {
 	}
 
 	@SuppressWarnings({ "rawtypes" })
-	public static void executeChangePropertyValueOperation(Object value, PGridProperty prop) {
-		CanvasEditor editor = (CanvasEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				.getActiveEditor();
+	@Override
+	public void executeChangePropertyValueOperation(Object value, PGridProperty prop) {
 		ChangePropertyOperation<? extends Object> op = makeChangePropertyValueOperation(value, prop);
-		editor.getCanvas().getUpdateBehavior().executeOperations(new CompositeOperation(op));
+		_canvas.getUpdateBehavior().executeOperations(new CompositeOperation(op));
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })

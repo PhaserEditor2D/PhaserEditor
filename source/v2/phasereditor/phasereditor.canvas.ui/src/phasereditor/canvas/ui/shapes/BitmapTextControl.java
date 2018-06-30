@@ -30,10 +30,10 @@ import phasereditor.canvas.core.BitmapTextModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridBitmapTextFontProperty;
 import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
-import phasereditor.canvas.ui.editors.grid.PGridModel;
-import phasereditor.canvas.ui.editors.grid.PGridNumberProperty;
-import phasereditor.canvas.ui.editors.grid.PGridSection;
-import phasereditor.canvas.ui.editors.grid.PGridStringProperty;
+import phasereditor.ui.properties.PGridModel;
+import phasereditor.ui.properties.PGridNumberProperty;
+import phasereditor.ui.properties.PGridSection;
+import phasereditor.ui.properties.PGridStringProperty;
 
 /**
  * @author arian

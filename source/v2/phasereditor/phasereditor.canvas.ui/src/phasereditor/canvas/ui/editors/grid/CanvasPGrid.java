@@ -21,38 +21,52 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.canvas.ui.editors.grid;
 
-import org.eclipse.jface.viewers.ICellEditorValidator;
-import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
 
-import phasereditor.canvas.core.CanvasCore;
+import phasereditor.canvas.ui.editors.ObjectCanvas;
+import phasereditor.canvas.ui.editors.grid.editors.CanvasPGridEditingSupport;
+import phasereditor.ui.properties.PGrid;
+import phasereditor.ui.properties.PGridEditingSupport;
+import phasereditor.ui.properties.PGridValueLabelProvider;
 
 /**
  * @author arian
  *
  */
-public class NumberCellEditor extends TextCellEditor {
+public class CanvasPGrid extends PGrid {
 
-	public NumberCellEditor(Composite parent) {
-		super(parent);
-		setValidator(new ICellEditorValidator() {
-
-			@Override
-			public String isValid(Object value) {
-				return CanvasCore.scriptEngineValidate(value);
-			}
-		});
+	public CanvasPGrid(Composite parent, int style) {
+		this(parent, style, true);
 	}
+
+	public CanvasPGrid(Composite parent, int style, boolean supportUndoRedo) {
+		super(parent, style, supportUndoRedo);
+	}
+	
+	@Override
+	protected PGridEditingSupport createEditingSupport(TreeViewer viewer, boolean supportUndoRedo) {
+		return new CanvasPGridEditingSupport(viewer, supportUndoRedo);
+	}
+	
 
 	@Override
-	protected void doSetValue(Object value) {
-		super.doSetValue(value == null ? null : value.toString());
+	protected PGridValueLabelProvider createValueLabelProvider() {
+		return new CanvasPGridValueLabelProvider(getViewer());
 	}
-
+	
 	@Override
-	protected Object doGetValue() {
-		String value = (String) super.doGetValue();
-		return CanvasCore.scriptEngineEval(value);
+	public CanvasPGridValueLabelProvider getValueLabelProvider() {
+		return (CanvasPGridValueLabelProvider) super.getValueLabelProvider();
+	}
+	
+	@Override
+	public CanvasPGridEditingSupport getEditSupport() {
+		return (CanvasPGridEditingSupport) super.getEditSupport();
 	}
 
+	public void setCanvas(ObjectCanvas canvas) {
+		getEditSupport().setCanvas(canvas);
+		getValueLabelProvider().setCanvas(canvas);
+	}
 }
