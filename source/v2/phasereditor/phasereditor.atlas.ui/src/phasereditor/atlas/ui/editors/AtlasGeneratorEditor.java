@@ -253,6 +253,7 @@ public class AtlasGeneratorEditor extends EditorPart
 
 				getEditorSite().getSelectionProvider().setSelection(selection);
 			}
+
 		});
 
 		_selectionProvider = new ISelectionProvider() {
@@ -630,6 +631,8 @@ public class AtlasGeneratorEditor extends EditorPart
 	@Override
 	public void setFocus() {
 		_tabsFolder.setFocus();
+
+		repaintTab(_tabsFolder.getSelectionIndex());
 	}
 
 	@Override
