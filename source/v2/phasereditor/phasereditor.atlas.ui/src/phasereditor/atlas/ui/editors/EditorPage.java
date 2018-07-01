@@ -23,6 +23,7 @@ package phasereditor.atlas.ui.editors;
 
 import java.util.ArrayList;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
@@ -37,13 +38,12 @@ public class EditorPage extends ArrayList<AtlasEditorFrame> implements IAdaptabl
 	private int _index;
 	private AtlasGeneratorEditorModel _model;
 	private PGridModel _gridModel;
-	private AtlasGeneratorEditor _editor;
 	private Image _image;
+	private IFile _imageFile;
 
-	public EditorPage(AtlasGeneratorEditor editor, int index) {
+	public EditorPage(AtlasGeneratorEditorModel model, int index) {
 		super();
-		_editor = editor;
-		_model = editor.getModel();
+		_model = model;
 		_index = index;
 	}
 
@@ -51,10 +51,14 @@ public class EditorPage extends ArrayList<AtlasEditorFrame> implements IAdaptabl
 		return _index;
 	}
 
+	public void setIndex(int index) {
+		_index = index;
+	}
+
 	public String getName() {
 		return _model.getAtlasImageName(_index);
 	}
-	
+
 	public void sortByIndexes() {
 		sort((a, b) -> {
 			int i1 = a.getRegionIndex();
@@ -87,7 +91,7 @@ public class EditorPage extends ArrayList<AtlasEditorFrame> implements IAdaptabl
 		model.getSections().add(section);
 
 		section.add(new PGridInfoProperty("size", () -> {
-			AtlasCanvas canvas = _editor.getAtlasCanvas(_index);
+			AtlasCanvas canvas = _model.getEditor().getAtlasCanvas(_index);
 			Image img = canvas.getImage();
 			if (img == null) {
 				return "";
@@ -107,12 +111,20 @@ public class EditorPage extends ArrayList<AtlasEditorFrame> implements IAdaptabl
 	public void setImage(Image img) {
 		_image = img;
 	}
-	
+
 	public Image getImage() {
 		return _image;
 	}
-	
+
 	public void dispose() {
 		_image.dispose();
+	}
+
+	public void setImageFile(IFile imageFile) {
+		_imageFile = imageFile;
+	}
+
+	public IFile getImageFile() {
+		return _imageFile;
 	}
 }

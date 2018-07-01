@@ -224,7 +224,11 @@ public class AtlasGeneratorEditor extends EditorPart
 
 		// menu
 
-		build(false);
+		// maybe we should build if we set a preference for that
+		// build(false);
+		if (_model != null) {
+			updateUIFromModel();
+		}
 
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
 
@@ -232,8 +236,8 @@ public class AtlasGeneratorEditor extends EditorPart
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				for (EditorPage page : _model.getPages()) {
-					AtlasCanvas atlas = getAtlasCanvas(page.getIndex());
+				for (int i = 0; i < _tabsFolder.getItemCount(); i++) {
+					AtlasCanvas atlas = getAtlasCanvas(i);
 					atlas.setFrame(null);
 				}
 
@@ -324,7 +328,7 @@ public class AtlasGeneratorEditor extends EditorPart
 		}
 
 		try {
-			if (_model.getPages() != null) {
+			if (_model != null) {
 				for (EditorPage page : _model.getPages()) {
 					page.dispose();
 				}
@@ -387,7 +391,7 @@ public class AtlasGeneratorEditor extends EditorPart
 				_model = new AtlasGeneratorEditorModel(this, file);
 
 				if (hasUI) {
-					build(false);
+					updateUIFromModel();
 				}
 			} else {
 				_model.setFile(file);
@@ -488,7 +492,7 @@ public class AtlasGeneratorEditor extends EditorPart
 
 					out.println("Temporal atlas file " + libgdxAtlasFile);
 
-					out.println(new String(Files.readAllBytes(libgdxAtlasFile.toPath())));
+					// out.println(new String(Files.readAllBytes(libgdxAtlasFile.toPath())));
 
 					TextureAtlasData data = new TextureAtlasData(new FileHandle(libgdxAtlasFile),
 							new FileHandle(tempDir), false);
@@ -509,8 +513,8 @@ public class AtlasGeneratorEditor extends EditorPart
 						ImageData[] imgData = loader.load(textureFile.getAbsolutePath());
 						Image img = new Image(Display.getDefault(), imgData[0]);
 
-						EditorPage editorPage = new EditorPage(AtlasGeneratorEditor.this, editorPages.size());
-						editorPages.add(editorPage);
+						EditorPage editorPage = new EditorPage(_model, editorPages.size());
+
 						editorPage.setImage(img);
 
 						for (Region region : regions) {
@@ -547,14 +551,17 @@ public class AtlasGeneratorEditor extends EditorPart
 
 								editorPage.add(frame);
 							}
+
 						}
 
 						if (settings.useIndexes) {
 							editorPage.sortByIndexes();
 						}
 
-						_model.setPages(editorPages);
+						editorPages.add(editorPage);
 					}
+
+					_model.setPages(editorPages);
 
 					monitor.worked(1);
 
@@ -564,7 +571,7 @@ public class AtlasGeneratorEditor extends EditorPart
 
 						@Override
 						public void run() {
-							updateUIWithBuildResult();
+							updateUIFromModel();
 
 							try {
 								if (oldEditorPages != null) {
@@ -633,19 +640,12 @@ public class AtlasGeneratorEditor extends EditorPart
 			List<IFile> toDelete = new ArrayList<>(_guessLastOutputFiles);
 
 			{
-				// save editor model
-				JSONObject json = _model.toJSON();
-				ByteArrayInputStream source = new ByteArrayInputStream(json.toString(2).getBytes());
-				IFile file = _model.getFile();
-				file.setContents(source, true, false, monitor);
-			}
-
-			{
 				// save image
 				int i = 0;
 				for (EditorPage page : _model.getPages()) {
 					String atlasImageName = _model.getAtlasImageName(i);
 					IFile file = _model.getFile().getParent().getFile(new Path(atlasImageName));
+					page.setImageFile(file);
 					ImageLoader loader = new ImageLoader();
 					loader.data = new ImageData[] { page.getImage().getImageData() };
 					ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -659,6 +659,14 @@ public class AtlasGeneratorEditor extends EditorPart
 					toDelete.remove(file);
 					i++;
 				}
+			}
+
+			{
+				// save editor model
+				JSONObject json = _model.toJSON();
+				ByteArrayInputStream source = new ByteArrayInputStream(json.toString(2).getBytes());
+				IFile file = _model.getFile();
+				file.setContents(source, true, false, monitor);
 			}
 
 			{
@@ -742,7 +750,7 @@ public class AtlasGeneratorEditor extends EditorPart
 		return false;
 	}
 
-	void updateUIWithBuildResult() {
+	void updateUIFromModel() {
 		int sel = _tabsFolder.getSelectionIndex();
 		if (sel < 0) {
 			sel = 0;

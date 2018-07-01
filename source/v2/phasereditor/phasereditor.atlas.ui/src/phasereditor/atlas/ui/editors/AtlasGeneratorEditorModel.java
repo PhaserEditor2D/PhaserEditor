@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.atlas.ui.editors;
 
+import static java.lang.System.out;
 import static phasereditor.ui.PhaserEditorUI.isEditorSupportedImage;
 
 import java.io.IOException;
@@ -36,6 +37,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.ImageLoader;
+import org.eclipse.swt.widgets.Display;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -72,6 +77,10 @@ public class AtlasGeneratorEditorModel implements IAdaptable {
 		}
 	}
 
+	public AtlasGeneratorEditor getEditor() {
+		return _editor;
+	}
+
 	public SettingsBean getSettings() {
 		return _settings;
 	}
@@ -80,24 +89,73 @@ public class AtlasGeneratorEditorModel implements IAdaptable {
 		_settings = settings;
 	}
 
-	public void readFile(IFile file) throws IOException, CoreException {
+	private void readFile(IFile file) throws IOException, CoreException {
 		_imageFiles.clear();
+
 		_settings = new SettingsBean();
+		_pages = new ArrayList<>();
+
 		try (InputStream contents = file.getContents()) {
 			JSONObject obj = new JSONObject(new JSONTokener(contents));
 
-			_version = obj.optInt("version", 1);
-
-			JSONArray jsonFiles = obj.getJSONArray("files");
-			for (int i = 0; i < jsonFiles.length(); i++) {
-				String pathStr = jsonFiles.getString(i);
-				IPath path = new Path(pathStr);
-				IFile imgfile = file.getProject().getFile(path);
-				_imageFiles.add(imgfile);
+			// meta
+			{
+				_version = obj.optInt("version", 1);
 			}
 
-			JSONObject jsonSettings = obj.getJSONObject("settings");
-			_settings.read(jsonSettings);
+			// source files
+			{
+				JSONArray jsonFiles = obj.getJSONArray("files");
+				for (int i = 0; i < jsonFiles.length(); i++) {
+					String pathStr = jsonFiles.getString(i);
+					IPath path = new Path(pathStr);
+					IFile imgfile = file.getProject().getFile(path);
+					_imageFiles.add(imgfile);
+				}
+			}
+
+			// settings
+			{
+				JSONObject jsonSettings = obj.getJSONObject("settings");
+				_settings.read(jsonSettings);
+			}
+
+			// pages
+			{
+				JSONArray jsonPages = obj.optJSONArray("pages");
+				if (jsonPages != null) {
+					ImageLoader loader = new ImageLoader();
+					for (int i = 0; i < jsonPages.length(); i++) {
+						JSONObject jsonPage = jsonPages.getJSONObject(i);
+						EditorPage page = new EditorPage(this, i);
+						_pages.add(page);
+						String filename = jsonPage.getString("imageFile");
+						IFile imagefile = file.getParent().getFile(new Path(filename));
+
+						if (imagefile.exists()) {
+							ImageData[] imgData = loader.load(imagefile.getContents());
+							Image img = new Image(Display.getDefault(), imgData[0]);
+							page.setImage(img);
+							page.setImageFile(imagefile);
+						} else {
+							out.println("Image file '" + imagefile + "' not found.");
+						}
+
+						JSONArray jsonFrames = jsonPage.getJSONArray("frames");
+						for (int j = 0; j < jsonFrames.length(); j++) {
+							JSONObject jsonFrame = jsonFrames.getJSONObject(j);
+
+							String regionFilename = jsonFrame.getString("regionFilename");
+							int regionIndex = jsonFrame.getInt("regionIndex");
+							AtlasEditorFrame frame = new AtlasEditorFrame(regionFilename, regionIndex);
+							AtlasFrame.updateFrameFromJSON(frame, jsonFrame);
+
+							page.add(frame);
+						}
+
+					}
+				}
+			}
 		}
 	}
 
@@ -159,17 +217,23 @@ public class AtlasGeneratorEditorModel implements IAdaptable {
 			_settings.write(jsonSettings);
 			obj.put("settings", jsonSettings);
 		}
-		
+
 		{
 			JSONArray jsonPages = new JSONArray();
 			obj.put("pages", jsonPages);
-			for(EditorPage page : _pages) {
-				JSONArray jsonPage = new JSONArray();
+			for (EditorPage page : _pages) {
+				JSONObject jsonPage = new JSONObject();
 				jsonPages.put(jsonPage);
-				for(AtlasEditorFrame frame : page) {
+				jsonPage.put("imageFile", page.getImageFile().getName());
+				JSONArray jsonFrames = new JSONArray();
+				jsonPage.put("frames", jsonFrames);
+
+				for (AtlasEditorFrame frame : page) {
 					JSONObject jsonFrame = new JSONObject();
-					jsonPage.put(jsonFrame);
+					jsonFrames.put(jsonFrame);
 					writeFrameJsonData(frame, jsonFrame);
+					jsonFrame.put("regionFilename", frame.getRegionFilename());
+					jsonFrame.put("regionIndex", frame.getRegionIndex());
 				}
 			}
 		}

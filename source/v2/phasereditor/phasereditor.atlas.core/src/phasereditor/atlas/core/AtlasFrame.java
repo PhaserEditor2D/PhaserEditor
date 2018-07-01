@@ -65,18 +65,18 @@ public class AtlasFrame {
 	public static AtlasFrame fromArrayItem(JSONObject jsonItem) {
 		AtlasFrame fi = new AtlasFrame();
 		fi._name = jsonItem.getString("filename");
-		update(fi, jsonItem);
+		updateFrameFromJSON(fi, jsonItem);
 		return fi;
 	}
 
 	public static AtlasFrame fromHashItem(String name, JSONObject jsonItem) {
 		AtlasFrame fi = new AtlasFrame();
 		fi._name = name;
-		update(fi, jsonItem);
+		updateFrameFromJSON(fi, jsonItem);
 		return fi;
 	}
 
-	private static void update(AtlasFrame fi, JSONObject jsonItem) {
+	public static void updateFrameFromJSON(AtlasFrame fi, JSONObject jsonItem) {
 		{
 			JSONObject rect = jsonItem.getJSONObject("frame");
 			fi._frameX = rect.getInt("x");
