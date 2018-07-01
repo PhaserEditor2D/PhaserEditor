@@ -149,6 +149,7 @@ public class AtlasGeneratorEditorModel implements IAdaptable {
 							int regionIndex = jsonFrame.getInt("regionIndex");
 							AtlasEditorFrame frame = new AtlasEditorFrame(regionFilename, regionIndex);
 							AtlasFrame.updateFrameFromJSON(frame, jsonFrame);
+							frame.setName(jsonFrame.getString("name"));
 
 							page.add(frame);
 						}
@@ -232,6 +233,7 @@ public class AtlasGeneratorEditorModel implements IAdaptable {
 					JSONObject jsonFrame = new JSONObject();
 					jsonFrames.put(jsonFrame);
 					writeFrameJsonData(frame, jsonFrame);
+					jsonFrame.put("name", frame.getName());
 					jsonFrame.put("regionFilename", frame.getRegionFilename());
 					jsonFrame.put("regionIndex", frame.getRegionIndex());
 				}
