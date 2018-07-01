@@ -57,8 +57,9 @@ public class AtlasGeneratorEditorModel implements IAdaptable {
 	private int _version;
 	private PGridModel _gridModel;
 	private AtlasGeneratorEditor _editor;
+	private BuildResult _buildResult;
 
-	public static int CURRENT_VERSION = 2;
+	public static int CURRENT_VERSION = 3;
 
 	public AtlasGeneratorEditorModel(AtlasGeneratorEditor editor, IFile file) throws IOException, CoreException {
 		_editor = editor;
@@ -70,6 +71,14 @@ public class AtlasGeneratorEditorModel implements IAdaptable {
 		if (file != null) {
 			readFile(file);
 		}
+	}
+
+	public BuildResult getBuildResult() {
+		return _buildResult;
+	}
+
+	public void setBuildResult(BuildResult buildResult) {
+		_buildResult = buildResult;
 	}
 
 	public SettingsBean getSettings() {
@@ -92,22 +101,17 @@ public class AtlasGeneratorEditorModel implements IAdaptable {
 			for (int i = 0; i < jsonFiles.length(); i++) {
 				String pathStr = jsonFiles.getString(i);
 				IPath path = new Path(pathStr);
-
-				if (_version == 1) {
-					// in version 1 the path was relative to the workspace but
-					// in version 2 it is relative to the project, so we have to
-					// remove the project segment.
-					path = path.removeFirstSegments(1);
-				}
-
 				IFile imgfile = file.getProject().getFile(path);
-
 				_imageFiles.add(imgfile);
 			}
 
 			JSONObject jsonSettings = obj.getJSONObject("settings");
 			_settings.read(jsonSettings);
 		}
+	}
+
+	public int getVersion() {
+		return _version;
 	}
 
 	public IFile getFile() {
@@ -141,21 +145,44 @@ public class AtlasGeneratorEditorModel implements IAdaptable {
 	}
 
 	public JSONObject toJSON() {
-		JSONObject obj = new JSONObject();
-		obj.put("version", CURRENT_VERSION);
 
-		JSONArray jsonFiles = new JSONArray();
-		if (_file != null) {
-			for (IFile file : _imageFiles) {
-				IPath path = file.getProjectRelativePath();
-				jsonFiles.put(path.toPortableString());
+		JSONObject obj = new JSONObject();
+
+		{
+			obj.put("version", CURRENT_VERSION);
+		}
+
+		{
+			JSONArray jsonFiles = new JSONArray();
+			if (_file != null) {
+				for (IFile file : _imageFiles) {
+					IPath path = file.getProjectRelativePath();
+					jsonFiles.put(path.toPortableString());
+				}
+			}
+			obj.put("files", jsonFiles);
+		}
+
+		{
+			JSONObject jsonSettings = new JSONObject();
+			_settings.write(jsonSettings);
+			obj.put("settings", jsonSettings);
+		}
+		
+		{
+			JSONArray jsonPages = new JSONArray();
+			obj.put("pages", jsonPages);
+			for(EditorPage page : _pages) {
+				JSONArray jsonPage = new JSONArray();
+				jsonPages.put(jsonPage);
+				for(AtlasEditorFrame frame : page) {
+					JSONObject jsonFrame = new JSONObject();
+					jsonPage.put(jsonFrame);
+					writeFrameJsonData(frame, jsonFrame);
+				}
 			}
 		}
-		obj.put("files", jsonFiles);
 
-		JSONObject jsonSettings = new JSONObject();
-		_settings.write(jsonSettings);
-		obj.put("settings", jsonSettings);
 		return obj;
 	}
 

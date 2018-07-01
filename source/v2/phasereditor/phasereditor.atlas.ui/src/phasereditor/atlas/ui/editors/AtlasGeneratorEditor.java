@@ -110,8 +110,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData.Region;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.utils.Array;
 
-import phasereditor.atlas.core.Result;
-import phasereditor.atlas.core.ResultPage;
 import phasereditor.atlas.core.SettingsBean;
 import phasereditor.atlas.ui.AtlasCanvas;
 import phasereditor.ui.EditorSharedImages;
@@ -127,9 +125,7 @@ public class AtlasGeneratorEditor extends EditorPart
 	public static final String ID = "phasereditor.atlas.ui.editors.AtlasGenEditor"; //$NON-NLS-1$
 
 	protected AtlasGeneratorEditorModel _model;
-	HashMap<AtlasEditorFrame, String> _frameRegionNameMap;
 	private Composite _container;
-	protected Result<AtlasEditorFrame> _result;
 	private boolean _dirty;
 	TabFolder _tabsFolder;
 	private List<IFile> _guessLastOutputFiles;
@@ -141,7 +137,6 @@ public class AtlasGeneratorEditor extends EditorPart
 
 	public AtlasGeneratorEditor() {
 		_guessLastOutputFiles = new ArrayList<>();
-		_frameRegionNameMap = new HashMap<>();
 	}
 
 	@Override
@@ -191,11 +186,11 @@ public class AtlasGeneratorEditor extends EditorPart
 	}
 
 	IFile findFile(AtlasEditorFrame frame) {
-		String name = _frameRegionNameMap.get(frame);
+		String regionName = frame.getRegionFilename();
 
 		for (IFile file : _model.getImageFiles()) {
 			String location = file.getLocation().toPortableString();
-			if (location.startsWith(name + ".")) {
+			if (location.startsWith(regionName + ".")) {
 				return file;
 			}
 		}
@@ -309,8 +304,8 @@ public class AtlasGeneratorEditor extends EditorPart
 		}
 
 		try {
-			if (_result != null) {
-				_result.dispose();
+			if (_model.getBuildResult() != null) {
+				_model.getBuildResult().dispose();
 			}
 		} catch (SWTException e) {
 			// nothing
@@ -478,15 +473,13 @@ public class AtlasGeneratorEditor extends EditorPart
 
 					// create result model
 
-					Result<AtlasEditorFrame> oldResult = _result;
+					BuildResult oldResult = _model.getBuildResult();
 
-					_result = new Result<>();
+					_model.setBuildResult(new BuildResult());
 
 					ImageLoader loader = new ImageLoader();
 
 					Array<Region> regions = data.getRegions();
-
-					_frameRegionNameMap = new HashMap<>();
 
 					for (TextureAtlasData.Page page : data.getPages()) {
 						File textureFile = page.textureFile.file();
@@ -494,18 +487,20 @@ public class AtlasGeneratorEditor extends EditorPart
 						ImageData[] imgData = loader.load(textureFile.getAbsolutePath());
 						Image img = new Image(Display.getDefault(), imgData[0]);
 
-						ResultPage<AtlasEditorFrame> resultPage = new ResultPage<>();
+						ResultPage resultPage = new ResultPage();
 						resultPage.setImage(img);
 
 						for (Region region : regions) {
 							if (region.page == page) {
-								AtlasEditorFrame frame = new AtlasEditorFrame();
 
-								String regionName = region.name;
+								String regionFilename = region.name;
 								if (region.index != -1) {
-									regionName += "_" + region.index;
+									regionFilename += "_" + region.index;
 								}
-								frame.setName(PhaserEditorUI.getNameFromFilename(regionName));
+
+								AtlasEditorFrame frame = new AtlasEditorFrame(regionFilename, region.index);
+
+								frame.setName(PhaserEditorUI.getNameFromFilename(regionFilename));
 								frame.setFrameX(region.left);
 								frame.setFrameY(region.top);
 								frame.setFrameW(region.width);
@@ -527,21 +522,21 @@ public class AtlasGeneratorEditor extends EditorPart
 								frame.setSourceW(region.originalWidth);
 								frame.setSourceH(region.originalHeight);
 
-								resultPage.addFrame(frame, regionName, region.index);
-								_frameRegionNameMap.put(frame, regionName);
+								resultPage.addFrame(frame, regionFilename);
 							}
 						}
+						
 						if (settings.useIndexes) {
 							resultPage.sortByIndexes();
 						}
-						_result.getPages().add(resultPage);
+						_model.getBuildResult().getPages().add(resultPage);
 					}
 
 					// create editor model
 
 					List<EditorPage> editorPages = new ArrayList<>();
 					int i = 0;
-					for (ResultPage<AtlasEditorFrame> resultPage : _result.getPages()) {
+					for (ResultPage resultPage : _model.getBuildResult().getPages()) {
 						{
 							out.println("page " + resultPage.getImage().getBounds());
 						}
@@ -560,7 +555,7 @@ public class AtlasGeneratorEditor extends EditorPart
 
 						@Override
 						public void run() {
-							postBuild(_result);
+							updateUIWithBuildResult(_model.getBuildResult());
 
 							try {
 								if (oldResult != null) {
@@ -637,7 +632,7 @@ public class AtlasGeneratorEditor extends EditorPart
 			{
 				// save image
 				int i = 0;
-				for (ResultPage<AtlasEditorFrame> page : _result.getPages()) {
+				for (ResultPage page : _model.getBuildResult().getPages()) {
 					String atlasImageName = _model.getAtlasImageName(i);
 					IFile file = _model.getFile().getParent().getFile(new Path(atlasImageName));
 					ImageLoader loader = new ImageLoader();
@@ -736,7 +731,7 @@ public class AtlasGeneratorEditor extends EditorPart
 		return false;
 	}
 
-	void postBuild(Result<AtlasEditorFrame> result) {
+	void updateUIWithBuildResult(BuildResult result) {
 		int sel = _tabsFolder.getSelectionIndex();
 		if (sel < 0) {
 			sel = 0;
@@ -751,7 +746,7 @@ public class AtlasGeneratorEditor extends EditorPart
 		}
 
 		int i = 1;
-		for (ResultPage<AtlasEditorFrame> page : result.getPages()) {
+		for (ResultPage page : result.getPages()) {
 
 			TabItem item = createTabItem();
 			item.setText(getTabTitle(i));

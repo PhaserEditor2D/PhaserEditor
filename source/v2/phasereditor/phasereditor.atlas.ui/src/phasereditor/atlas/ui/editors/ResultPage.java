@@ -19,25 +19,47 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.atlas.core;
+package phasereditor.atlas.ui.editors;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class Result<T extends AtlasFrame> {
-	private List<ResultPage<T>> _pages;
+import org.eclipse.swt.graphics.Image;
 
-	public Result() {
-		_pages = new ArrayList<>();
+public class ResultPage {
+	private List<AtlasEditorFrame> _frames;
+	private Map<AtlasEditorFrame, String> _frameFileMap;
+	private Image _image;
+
+	public ResultPage() {
+		_frames = new ArrayList<>();
+		_frameFileMap = new HashMap<>();
 	}
 
-	public List<ResultPage<T>> getPages() {
-		return _pages;
+	public void addFrame(AtlasEditorFrame frame, String filepath) {
+		_frameFileMap.put(frame, filepath);
+		_frames.add(frame);
 	}
 
-	public void dispose() {
-		for (ResultPage<T> page : _pages) {
-			page.getImage().dispose();
-		}
+	public void sortByIndexes() {
+		_frames.sort((a, b) -> {
+			int i1 = a.getRegionIndex();
+			int i2 = b.getRegionIndex();
+			return Integer.compare(i1 == -1 ? Integer.MAX_VALUE : i1, i2 == -1 ? Integer.MAX_VALUE : i2);
+		});
+	}
+
+	public List<AtlasEditorFrame> getFrames() {
+		return _frames;
+	}
+
+	public Image getImage() {
+		return _image;
+	}
+
+	public void setImage(Image image) {
+		_image = image;
 	}
 }

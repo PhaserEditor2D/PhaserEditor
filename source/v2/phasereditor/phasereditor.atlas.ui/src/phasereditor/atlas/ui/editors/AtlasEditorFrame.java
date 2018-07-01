@@ -39,7 +39,22 @@ import phasereditor.ui.properties.PGridStringProperty;
 public class AtlasEditorFrame extends AtlasFrame implements IAdaptable {
 
 	private PGridModel _gridModel;
+	private String _regionFilename;
+	private int _regionIndex;
 
+	public AtlasEditorFrame(String regionFilename, int regionIndex) {
+		_regionFilename = regionFilename;
+		_regionIndex = regionIndex;
+	}
+	
+	public int getRegionIndex() {
+		return _regionIndex;
+	}
+	
+	public String getRegionFilename() {
+		return _regionFilename;
+	}
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Object getAdapter(Class adapter) {
