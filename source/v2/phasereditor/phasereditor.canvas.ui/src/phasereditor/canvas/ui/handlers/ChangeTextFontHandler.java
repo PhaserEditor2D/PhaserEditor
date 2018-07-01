@@ -12,11 +12,11 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
-import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
 import phasereditor.canvas.ui.editors.grid.editors.CanvasPGridEditingSupport;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.TextControl;
 import phasereditor.canvas.ui.shapes.TextNode;
+import phasereditor.ui.properties.PGridEnumProperty;
 import phasereditor.ui.properties.PGridNumberProperty;
 
 public class ChangeTextFontHandler extends AbstractHandler {

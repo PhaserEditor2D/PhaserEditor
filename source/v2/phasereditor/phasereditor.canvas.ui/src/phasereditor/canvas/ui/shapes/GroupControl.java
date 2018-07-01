@@ -41,9 +41,9 @@ import phasereditor.canvas.core.PhysicsSortDirection;
 import phasereditor.canvas.core.PhysicsType;
 import phasereditor.canvas.core.WorldModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
-import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
 import phasereditor.canvas.ui.editors.grid.PGridSetAllProperty;
 import phasereditor.ui.properties.PGridBooleanProperty;
+import phasereditor.ui.properties.PGridEnumProperty;
 import phasereditor.ui.properties.PGridModel;
 import phasereditor.ui.properties.PGridSection;
 

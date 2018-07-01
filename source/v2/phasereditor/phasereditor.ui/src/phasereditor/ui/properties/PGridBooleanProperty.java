@@ -29,6 +29,14 @@ public abstract class PGridBooleanProperty extends PGridProperty<Boolean> {
 
 	private boolean _value;
 
+	public PGridBooleanProperty(String name) {
+		super(name, name, name);
+	}
+	
+	public PGridBooleanProperty(String name, String tooltip) {
+		super(name, name, tooltip);
+	}
+	
 	public PGridBooleanProperty(String controlId, String name, String tooltip) {
 		super(controlId, name, tooltip);
 	}

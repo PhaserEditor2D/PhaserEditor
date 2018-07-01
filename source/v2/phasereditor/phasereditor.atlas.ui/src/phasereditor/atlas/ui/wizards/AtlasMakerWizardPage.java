@@ -100,7 +100,7 @@ public class AtlasMakerWizardPage extends WizardNewFileCreationPage {
 	@Override
 	protected InputStream getInitialContents() {
 		try {
-			AtlasGeneratorEditorModel model = new AtlasGeneratorEditorModel(null);
+			AtlasGeneratorEditorModel model = new AtlasGeneratorEditorModel(null, null);
 			return new ByteArrayInputStream(model.toJSON().toString(2).getBytes());
 		} catch (IOException | CoreException e) {
 			throw new RuntimeException(e);

@@ -29,7 +29,7 @@ import phasereditor.bmpfont.core.BitmapFontModel.Align;
 import phasereditor.canvas.core.BitmapTextModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.PGridBitmapTextFontProperty;
-import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
+import phasereditor.ui.properties.PGridEnumProperty;
 import phasereditor.ui.properties.PGridModel;
 import phasereditor.ui.properties.PGridNumberProperty;
 import phasereditor.ui.properties.PGridSection;

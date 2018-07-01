@@ -33,7 +33,6 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
@@ -46,7 +45,6 @@ import phasereditor.canvas.ui.editors.ObjectCanvas;
 import phasereditor.canvas.ui.editors.grid.CanvasNumberCellEditor;
 import phasereditor.canvas.ui.editors.grid.PGridAnimationsProperty;
 import phasereditor.canvas.ui.editors.grid.PGridBitmapTextFontProperty;
-import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
 import phasereditor.canvas.ui.editors.grid.PGridFrameProperty;
 import phasereditor.canvas.ui.editors.grid.PGridLoadPackProperty;
 import phasereditor.canvas.ui.editors.grid.PGridOverrideProperty;
@@ -97,8 +95,6 @@ public class CanvasPGridEditingSupport extends PGridEditingSupport {
 			return createTextureFrameEditor(element, parent);
 		} else if (element instanceof PGridAnimationsProperty) {
 			return createAnimationsEditor(element, parent);
-		} else if (element instanceof PGridEnumProperty) {
-			return createEnumEditor(element, parent);
 		} else if (element instanceof PGridOverrideProperty) {
 			return createOverrideListEditor(element, parent);
 		} else if (element instanceof PGridUserCodeProperty) {
@@ -171,11 +167,10 @@ public class CanvasPGridEditingSupport extends PGridEditingSupport {
 		};
 	}
 
-	private static CellEditor createEnumEditor(Object element, Composite parent) {
-		ComboBoxViewerCellEditor2 editor = new ComboBoxViewerCellEditor2(parent, SWT.READ_ONLY);
-		editor.setContentProvider(new ArrayContentProvider());
-		editor.setInput(((PGridEnumProperty<?>) element).getValues());
-		editor.setLabelProvider(new LabelProvider() {
+	@Override
+	protected CellEditor createEnumEditor(Object element, Composite parent) {
+		CellEditor editor = super.createEnumEditor(element, parent);
+		((ComboBoxViewerCellEditor2) editor).setLabelProvider(new LabelProvider() {
 			@Override
 			public String getText(Object obj) {
 				if (obj instanceof PhysicsType) {

@@ -42,6 +42,7 @@ import phasereditor.project.core.codegen.SourceLang;
 import phasereditor.ui.ColorButtonSupport;
 import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.properties.PGridColorProperty;
+import phasereditor.ui.properties.PGridEnumProperty;
 import phasereditor.ui.properties.PGridProperty;
 import phasereditor.ui.properties.PGridSection;
 import phasereditor.ui.properties.PGridValueLabelProvider;

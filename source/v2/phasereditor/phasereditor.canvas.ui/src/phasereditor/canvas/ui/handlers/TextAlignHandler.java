@@ -31,13 +31,13 @@ import phasereditor.bmpfont.core.BitmapFontModel.Align;
 import phasereditor.canvas.core.BitmapTextModel;
 import phasereditor.canvas.core.TextModel;
 import phasereditor.canvas.ui.editors.CanvasEditor;
-import phasereditor.canvas.ui.editors.grid.PGridEnumProperty;
 import phasereditor.canvas.ui.editors.grid.editors.CanvasPGridEditingSupport;
 import phasereditor.canvas.ui.editors.operations.CompositeOperation;
 import phasereditor.canvas.ui.shapes.BitmapTextControl;
 import phasereditor.canvas.ui.shapes.BitmapTextNode;
 import phasereditor.canvas.ui.shapes.TextControl;
 import phasereditor.canvas.ui.shapes.TextNode;
+import phasereditor.ui.properties.PGridEnumProperty;
 
 /**
  * @author arian

@@ -19,58 +19,35 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.ui.properties;
+package phasereditor.atlas.ui.editors;
 
-import org.eclipse.core.runtime.Adapters;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.part.Page;
-import org.eclipse.ui.views.properties.IPropertySheetPage;
+
+import phasereditor.ui.properties.PGridPage;
 
 /**
  * @author arian
  *
  */
-public class PGridPage extends Page implements IPropertySheetPage {
+public class AtlasEditorPGridPage extends PGridPage {
 
-	private PGrid _grid;
+	private AtlasGeneratorEditor _editor;
 
-	public PGridPage() {
+	public AtlasEditorPGridPage(AtlasGeneratorEditor editor) {
+		_editor = editor;
 	}
-	
+
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		if (selection.isEmpty()) {
-			_grid.setModel(null);
+			super.selectionChanged(part, new StructuredSelection(_editor.getModel()));
+		} else {
+			super.selectionChanged(part, selection);
 		}
-		
-		if (selection instanceof IStructuredSelection) {
-			Object elem = ((IStructuredSelection) selection).getFirstElement();
-			PGridModel model = Adapters.adapt(elem, PGridModel.class);
-			_grid.setModel(model);
-		}
+
+		getGrid().getViewer().expandAll();
 	}
 
-	@Override
-	public void createControl(Composite parent) {
-		_grid = new PGrid(parent, SWT.NONE, false);
-	}
-
-	@Override
-	public Control getControl() {
-		return _grid;
-	}
-
-	@Override
-	public void setFocus() {
-		_grid.setFocus();
-	}
-	
-	public PGrid getGrid() {
-		return _grid;
-	}
 }

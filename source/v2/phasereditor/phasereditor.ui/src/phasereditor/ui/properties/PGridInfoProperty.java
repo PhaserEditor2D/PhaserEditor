@@ -21,56 +21,50 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui.properties;
 
-import org.eclipse.core.runtime.Adapters;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.part.Page;
-import org.eclipse.ui.views.properties.IPropertySheetPage;
+import java.util.function.Supplier;
 
 /**
  * @author arian
  *
  */
-public class PGridPage extends Page implements IPropertySheetPage {
+public class PGridInfoProperty extends PGridStringProperty {
 
-	private PGrid _grid;
+	private Supplier<? extends Object> _getter;
 
-	public PGridPage() {
-	}
-	
-	@Override
-	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		if (selection.isEmpty()) {
-			_grid.setModel(null);
-		}
-		
-		if (selection instanceof IStructuredSelection) {
-			Object elem = ((IStructuredSelection) selection).getFirstElement();
-			PGridModel model = Adapters.adapt(elem, PGridModel.class);
-			_grid.setModel(model);
-		}
+	public PGridInfoProperty(String controlId, String name, String tooltip, Supplier<? extends Object> getter) {
+		super(controlId, name, tooltip);
+		_getter = getter;
 	}
 
-	@Override
-	public void createControl(Composite parent) {
-		_grid = new PGrid(parent, SWT.NONE, false);
+	public PGridInfoProperty(String name, String tooltip, Supplier<String> getter) {
+		super(name, name, tooltip);
+		_getter = getter;
+	}
+
+	public PGridInfoProperty(String name, Supplier<String> getter) {
+		super(name, name, name);
+		_getter = getter;
 	}
 
 	@Override
-	public Control getControl() {
-		return _grid;
+	public String getValue() {
+		Object value = _getter.get();
+		return value == null ? "" : value.toString();
 	}
 
 	@Override
-	public void setFocus() {
-		_grid.setFocus();
+	public void setValue(String value, boolean notify) {
+		//
 	}
-	
-	public PGrid getGrid() {
-		return _grid;
+
+	@Override
+	public boolean isModified() {
+		return false;
 	}
+
+	@Override
+	public boolean isReadOnly() {
+		return true;
+	}
+
 }

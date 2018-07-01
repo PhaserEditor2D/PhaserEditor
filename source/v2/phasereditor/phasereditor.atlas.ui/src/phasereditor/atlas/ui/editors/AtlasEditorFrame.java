@@ -55,28 +55,28 @@ public class AtlasEditorFrame extends AtlasFrame implements IAdaptable {
 	private PGridModel createGridModel() {
 		PGridModel model = new PGridModel();
 
-		PGridSection section = new PGridSection("frame");
+		PGridSection section = new PGridSection("Frame");
 		model.getSections().add(section);
 
-		section.add(createStringProperty("name", this::getName));
-		section.add(createNumberProperty("frameX", this::getFrameX));
-		section.add(createNumberProperty("frameY", this::getFrameY));
-		section.add(createNumberProperty("frameW", this::getFrameW));
-		section.add(createNumberProperty("frameH", this::getFrameH));
+		section.add(createStringProperty("Name", this::getName));
+		section.add(createNumberProperty("Frame X", this::getFrameX));
+		section.add(createNumberProperty("Frame Y", this::getFrameY));
+		section.add(createNumberProperty("Frame Width", this::getFrameW));
+		section.add(createNumberProperty("Frame Height", this::getFrameH));
 
-		section = new PGridSection("sprite");
+		section = new PGridSection("Sprite");
 		model.getSections().add(section);
 
-		section.add(createNumberProperty("spriteX", this::getSpriteX));
-		section.add(createNumberProperty("spriteY", this::getSpriteY));
-		section.add(createNumberProperty("spriteW", this::getSpriteW));
-		section.add(createNumberProperty("spriteH", this::getSpriteH));
+		section.add(createNumberProperty("Sprite X", this::getSpriteX));
+		section.add(createNumberProperty("Sprite Y", this::getSpriteY));
+		section.add(createNumberProperty("Sprite Width", this::getSpriteW));
+		section.add(createNumberProperty("Sprite Height", this::getSpriteH));
 
-		section = new PGridSection("source");
+		section = new PGridSection("Source");
 		model.getSections().add(section);
 
-		section.add(createNumberProperty("sourceW", this::getSourceW));
-		section.add(createNumberProperty("sourceH", this::getSourceH));
+		section.add(createNumberProperty("Source Width", this::getSourceW));
+		section.add(createNumberProperty("Source Height", this::getSourceH));
 
 		return model;
 	}

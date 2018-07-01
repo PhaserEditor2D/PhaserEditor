@@ -21,16 +21,21 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui.properties;
 
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.DialogCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+
+import phasereditor.ui.ComboBoxViewerCellEditor2;
 
 /**
  * @author arian
@@ -66,9 +71,20 @@ public class PGridEditingSupport extends EditingSupport {
 			return createBooleanEditor(parent);
 		} else if (element instanceof PGridColorProperty) {
 			return createRGBEditor(element, parent);
+		} else if (element instanceof PGridEnumProperty) {
+			return createEnumEditor(element, parent);
 		}
 
 		return null;
+	}
+
+	@SuppressWarnings("static-method")
+	protected CellEditor createEnumEditor(Object element, Composite parent) {
+		ComboBoxViewerCellEditor2 editor = new ComboBoxViewerCellEditor2(parent, SWT.READ_ONLY);
+		editor.setContentProvider(new ArrayContentProvider());
+		editor.setInput(((PGridEnumProperty<?>) element).getValues());
+		editor.setLabelProvider(new LabelProvider());
+		return editor;
 	}
 
 	private static CellEditor createRGBEditor(Object element, Composite parent) {
@@ -97,7 +113,7 @@ public class PGridEditingSupport extends EditingSupport {
 		}
 		return new TextCellEditor(parent);
 	}
-	
+
 	public static String openLongStringDialog(PGridStringProperty prop, Shell shell) {
 		TextDialog dlg = new TextDialog(shell);
 		dlg.setInitialText(prop.getValue());
@@ -108,7 +124,6 @@ public class PGridEditingSupport extends EditingSupport {
 		}
 		return null;
 	}
-
 
 	@Override
 	protected boolean canEdit(Object element) {

@@ -29,6 +29,22 @@ public abstract class PGridNumberProperty extends PGridProperty<Double> {
 	private double _value;
 	private boolean _isInteger;
 	
+	public PGridNumberProperty(String name) {
+		this(name, name, name, false);
+	}
+	
+	public PGridNumberProperty(String name, String tooltip) {
+		this(name, name, tooltip, false);
+	}
+	
+	public PGridNumberProperty(String name, boolean isInteger) {
+		this(name, name, name, isInteger);
+	}
+	
+	public PGridNumberProperty(String name, String tooltip, boolean isInteger) {
+		this(name, name, tooltip, isInteger);
+	}
+	
 	public PGridNumberProperty(String controlId, String name, String tootlip) {
 		this(controlId, name, tootlip, false);
 	}
