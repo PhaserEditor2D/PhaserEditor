@@ -202,6 +202,10 @@ public class AtlasGeneratorEditor extends EditorPart
 		return (AtlasCanvas) _tabsFolder.getItem(i).getControl();
 	}
 
+	public AtlasEditorContentOutlinePage getOutliner() {
+		return _outliner;
+	}
+
 	private void afterCreateWidgets() {
 		{
 			int options = DND.DROP_MOVE | DND.DROP_DEFAULT;
@@ -227,7 +231,22 @@ public class AtlasGeneratorEditor extends EditorPart
 		_tabsFolder.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				repaintTab(_tabsFolder.getSelectionIndex());
+				int index = _tabsFolder.getSelectionIndex();
+
+				repaintTab(index);
+
+				StructuredSelection selection = new StructuredSelection((Object) _model.getPages().get(index));
+
+				if (getOutliner() != null) {
+					getOutliner().setSelection(selection);
+				}
+
+				for(EditorPage page : _model.getPages()) {
+					AtlasCanvas atlas = getAtlasCanvas(page.getIndex());
+					atlas.setFrame(null);
+				}
+				
+				getEditorSite().getSelectionProvider().setSelection(selection);
 			}
 		});
 
@@ -525,7 +544,7 @@ public class AtlasGeneratorEditor extends EditorPart
 								resultPage.addFrame(frame, regionFilename);
 							}
 						}
-						
+
 						if (settings.useIndexes) {
 							resultPage.sortByIndexes();
 						}
@@ -1014,7 +1033,7 @@ public class AtlasGeneratorEditor extends EditorPart
 				getTreeViewer().reveal(new TreePath(new Object[] { entry.getValue(), entry.getKey() }));
 			}
 
-			getTreeViewer().setSelection(new StructuredSelection(items));
+			getTreeViewer().setSelection(selection);
 		}
 
 		@Override
