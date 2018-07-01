@@ -231,6 +231,12 @@ public class AtlasGeneratorEditor extends EditorPart
 		_tabsFolder.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+
+				for (EditorPage page : _model.getPages()) {
+					AtlasCanvas atlas = getAtlasCanvas(page.getIndex());
+					atlas.setFrame(null);
+				}
+
 				int index = _tabsFolder.getSelectionIndex();
 
 				repaintTab(index);
@@ -241,11 +247,6 @@ public class AtlasGeneratorEditor extends EditorPart
 					getOutliner().setSelection(selection);
 				}
 
-				for(EditorPage page : _model.getPages()) {
-					AtlasCanvas atlas = getAtlasCanvas(page.getIndex());
-					atlas.setFrame(null);
-				}
-				
 				getEditorSite().getSelectionProvider().setSelection(selection);
 			}
 		});
@@ -323,8 +324,10 @@ public class AtlasGeneratorEditor extends EditorPart
 		}
 
 		try {
-			if (_model.getBuildResult() != null) {
-				_model.getBuildResult().dispose();
+			if (_model.getPages() != null) {
+				for (EditorPage page : _model.getPages()) {
+					page.dispose();
+				}
 			}
 		} catch (SWTException e) {
 			// nothing
@@ -492,25 +495,26 @@ public class AtlasGeneratorEditor extends EditorPart
 
 					// create result model
 
-					BuildResult oldResult = _model.getBuildResult();
+					List<EditorPage> oldEditorPages = _model.getPages();
 
-					_model.setBuildResult(new BuildResult());
+					List<EditorPage> editorPages = new ArrayList<>();
 
 					ImageLoader loader = new ImageLoader();
 
 					Array<Region> regions = data.getRegions();
 
-					for (TextureAtlasData.Page page : data.getPages()) {
-						File textureFile = page.textureFile.file();
+					for (TextureAtlasData.Page packerPage : data.getPages()) {
+						File textureFile = packerPage.textureFile.file();
 
 						ImageData[] imgData = loader.load(textureFile.getAbsolutePath());
 						Image img = new Image(Display.getDefault(), imgData[0]);
 
-						ResultPage resultPage = new ResultPage();
-						resultPage.setImage(img);
+						EditorPage editorPage = new EditorPage(AtlasGeneratorEditor.this, editorPages.size());
+						editorPages.add(editorPage);
+						editorPage.setImage(img);
 
 						for (Region region : regions) {
-							if (region.page == page) {
+							if (region.page == packerPage) {
 
 								String regionFilename = region.name;
 								if (region.index != -1) {
@@ -541,30 +545,16 @@ public class AtlasGeneratorEditor extends EditorPart
 								frame.setSourceW(region.originalWidth);
 								frame.setSourceH(region.originalHeight);
 
-								resultPage.addFrame(frame, regionFilename);
+								editorPage.add(frame);
 							}
 						}
 
 						if (settings.useIndexes) {
-							resultPage.sortByIndexes();
+							editorPage.sortByIndexes();
 						}
-						_model.getBuildResult().getPages().add(resultPage);
-					}
 
-					// create editor model
-
-					List<EditorPage> editorPages = new ArrayList<>();
-					int i = 0;
-					for (ResultPage resultPage : _model.getBuildResult().getPages()) {
-						{
-							out.println("page " + resultPage.getImage().getBounds());
-						}
-						EditorPage editorPage = new EditorPage(AtlasGeneratorEditor.this, i);
-						editorPage.addAll(resultPage.getFrames());
-						editorPages.add(editorPage);
-						i++;
+						_model.setPages(editorPages);
 					}
-					_model.setPages(editorPages);
 
 					monitor.worked(1);
 
@@ -574,11 +564,13 @@ public class AtlasGeneratorEditor extends EditorPart
 
 						@Override
 						public void run() {
-							updateUIWithBuildResult(_model.getBuildResult());
+							updateUIWithBuildResult();
 
 							try {
-								if (oldResult != null) {
-									oldResult.dispose();
+								if (oldEditorPages != null) {
+									for (EditorPage page : oldEditorPages) {
+										page.dispose();
+									}
 								}
 							} catch (Exception e) {
 								e.printStackTrace();
@@ -651,7 +643,7 @@ public class AtlasGeneratorEditor extends EditorPart
 			{
 				// save image
 				int i = 0;
-				for (ResultPage page : _model.getBuildResult().getPages()) {
+				for (EditorPage page : _model.getPages()) {
 					String atlasImageName = _model.getAtlasImageName(i);
 					IFile file = _model.getFile().getParent().getFile(new Path(atlasImageName));
 					ImageLoader loader = new ImageLoader();
@@ -719,7 +711,7 @@ public class AtlasGeneratorEditor extends EditorPart
 			refreshFolder(monitor);
 
 			_dirty = false;
-			firePropertyChange(PROP_DIRTY);
+			swtRun(() -> firePropertyChange(PROP_DIRTY));
 		} catch (CoreException e) {
 			throw new RuntimeException(e);
 		}
@@ -750,7 +742,7 @@ public class AtlasGeneratorEditor extends EditorPart
 		return false;
 	}
 
-	void updateUIWithBuildResult(BuildResult result) {
+	void updateUIWithBuildResult() {
 		int sel = _tabsFolder.getSelectionIndex();
 		if (sel < 0) {
 			sel = 0;
@@ -764,19 +756,15 @@ public class AtlasGeneratorEditor extends EditorPart
 			}
 		}
 
-		int i = 1;
-		for (ResultPage page : result.getPages()) {
-
+		for (EditorPage page : _model.getPages()) {
 			TabItem item = createTabItem();
-			item.setText(getTabTitle(i));
+			item.setText(page.getName());
 
 			AtlasCanvas canvas = createAtlasCanvas(_tabsFolder);
 			canvas.setImage(page.getImage());
-			canvas.setFrames(page.getFrames());
+			canvas.setFrames(page);
 
 			item.setControl(canvas);
-
-			i++;
 		}
 		int tabsCount = _tabsFolder.getItemCount();
 		if (tabsCount == 0) {
@@ -788,10 +776,6 @@ public class AtlasGeneratorEditor extends EditorPart
 		if (_outliner != null) {
 			_outliner.refresh();
 		}
-	}
-
-	String getTabTitle(int i) {
-		return _model.getAtlasImageName(i);
 	}
 
 	private AtlasCanvas createAtlasCanvas(Composite parent) {
@@ -830,7 +814,7 @@ public class AtlasGeneratorEditor extends EditorPart
 
 	private void addMainTab() {
 		TabItem item = createTabItem();
-		item.setText(getTabTitle(1));
+		item.setText(_model.getAtlasImageName(0));
 		AtlasCanvas canvas = createAtlasCanvas(_tabsFolder);
 		canvas.setNoImageMessage("(drop image files here)");
 		item.setControl(canvas);
@@ -963,7 +947,7 @@ public class AtlasGeneratorEditor extends EditorPart
 		@Override
 		public String getText(Object element) {
 			if (element instanceof EditorPage) {
-				return getTabTitle(((EditorPage) element).getIndex());
+				return ((EditorPage) element).getName();
 			}
 
 			if (element instanceof AtlasEditorFrame) {

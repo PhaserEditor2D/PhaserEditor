@@ -57,7 +57,6 @@ public class AtlasGeneratorEditorModel implements IAdaptable {
 	private int _version;
 	private PGridModel _gridModel;
 	private AtlasGeneratorEditor _editor;
-	private BuildResult _buildResult;
 
 	public static int CURRENT_VERSION = 3;
 
@@ -71,14 +70,6 @@ public class AtlasGeneratorEditorModel implements IAdaptable {
 		if (file != null) {
 			readFile(file);
 		}
-	}
-
-	public BuildResult getBuildResult() {
-		return _buildResult;
-	}
-
-	public void setBuildResult(BuildResult buildResult) {
-		_buildResult = buildResult;
 	}
 
 	public SettingsBean getSettings() {

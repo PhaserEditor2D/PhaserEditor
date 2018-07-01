@@ -38,6 +38,7 @@ public class EditorPage extends ArrayList<AtlasEditorFrame> implements IAdaptabl
 	private AtlasGeneratorEditorModel _model;
 	private PGridModel _gridModel;
 	private AtlasGeneratorEditor _editor;
+	private Image _image;
 
 	public EditorPage(AtlasGeneratorEditor editor, int index) {
 		super();
@@ -52,6 +53,14 @@ public class EditorPage extends ArrayList<AtlasEditorFrame> implements IAdaptabl
 
 	public String getName() {
 		return _model.getAtlasImageName(_index);
+	}
+	
+	public void sortByIndexes() {
+		sort((a, b) -> {
+			int i1 = a.getRegionIndex();
+			int i2 = b.getRegionIndex();
+			return Integer.compare(i1 == -1 ? Integer.MAX_VALUE : i1, i2 == -1 ? Integer.MAX_VALUE : i2);
+		});
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -93,5 +102,17 @@ public class EditorPage extends ArrayList<AtlasEditorFrame> implements IAdaptabl
 		section.add(new PGridInfoProperty("filename", () -> _model.getAtlasImageName(getIndex())));
 
 		return model;
+	}
+
+	public void setImage(Image img) {
+		_image = img;
+	}
+	
+	public Image getImage() {
+		return _image;
+	}
+	
+	public void dispose() {
+		_image.dispose();
 	}
 }
