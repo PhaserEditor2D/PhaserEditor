@@ -10,7 +10,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.resources;bundle-version="3.9.1",
  org.json,
  phasereditor.ui,
- phasereditor.libgdx
+ phasereditor.libgdx,
+ phasereditor.project.core;bundle-version="1.5.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-9
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.atlas.core

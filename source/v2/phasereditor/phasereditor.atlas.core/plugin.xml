@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="phasereditor.project.core.buildParticipant">
+      <participant
+            handler="phasereditor.atlas.core.AtlasFileBuilderParticipant"
+            id="phasereditor.atlas.core.atlasDataBuilder"
+            order="0">
+      </participant>
+   </extension>
+
+</plugin>

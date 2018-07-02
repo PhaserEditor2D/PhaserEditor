@@ -43,6 +43,15 @@ public class AtlasCore {
 
 	private static final Set<String> IMG_EXTS = new HashSet<>(Arrays.asList("png", "jpg", "gif", "bmp"));
 
+	private static AtlasFileDataCache _atlasFileCache;
+
+	public static AtlasFileDataCache getAtlasFileCache() {
+		if (_atlasFileCache == null) {
+			_atlasFileCache = new AtlasFileDataCache();
+		}
+		return _atlasFileCache;
+	}
+
 	public static boolean isImageFile(IFile file) {
 		return IMG_EXTS.contains(file.getFileExtension());
 	}
@@ -50,8 +59,8 @@ public class AtlasCore {
 	/**
 	 * Get the atlas JSON format of the given content. Possible values are
 	 * {@link AtlasAssetModel#TEXTURE_ATLAS_JSON_ARRAY} or
-	 * {@link AtlasAssetModel#TEXTURE_ATLAS_JSON_HASH}, or null if it does not
-	 * have any of those formats.
+	 * {@link AtlasAssetModel#TEXTURE_ATLAS_JSON_HASH}, or null if it does not have
+	 * any of those formats.
 	 * 
 	 * @param contents
 	 *            The content to test.

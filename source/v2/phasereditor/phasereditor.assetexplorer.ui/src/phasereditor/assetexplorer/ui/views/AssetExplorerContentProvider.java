@@ -52,6 +52,7 @@ import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel.TilemapJSON;
 import phasereditor.assetpack.ui.AssetsContentProvider;
+import phasereditor.atlas.core.AtlasCore;
 import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.core.CanvasFile;
 import phasereditor.canvas.core.CanvasType;
@@ -126,11 +127,17 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 	@Override
 	public Object[] getChildren(Object parent) {
 		IProject activeProjet = getActiveProject();
-		
+
 		_projectInContent = activeProjet;
-		
+
 		if (parent == AssetExplorer.ROOT) {
-			return new Object[] { AssetExplorer.CANVAS_NODE, AssetExplorer.PACK_NODE };
+			return new Object[] { AssetExplorer.ATLAS_NODE, AssetExplorer.PACK_NODE, AssetExplorer.CANVAS_NODE };
+		}
+
+		if (parent == AssetExplorer.ATLAS_NODE) {
+			if (activeProjet != null) {
+				return AtlasCore.getAtlasFileCache().getProjectData(activeProjet).toArray();
+			}
 		}
 
 		if (parent == AssetExplorer.CANVAS_NODE) {
@@ -266,7 +273,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 		}
 		return activeProjet;
 	}
-	
+
 	public IProject getProjectInContent() {
 		return _projectInContent;
 	}

@@ -62,6 +62,7 @@ import org.json.JSONArray;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.ui.AssetPackUI;
+import phasereditor.atlas.core.AtlasData;
 import phasereditor.canvas.core.CanvasFile;
 import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.ui.FilteredTree2;
@@ -77,6 +78,7 @@ public class AssetExplorer extends ViewPart {
 	// private AssetExplorerListLabelProvider _listLabelProvider;
 	// private AssetExplorerListContentProvider _listContentProvider;
 	static String ROOT = "root";
+	static String ATLAS_NODE = "Atlas";
 	static String CANVAS_NODE = "Canvas";
 	static String PACK_NODE = "Pack";
 
@@ -128,6 +130,8 @@ public class AssetExplorer extends ViewPart {
 
 		if (elem instanceof CanvasFile) {
 			file = ((CanvasFile) elem).getFile();
+		} else if (elem instanceof AtlasData) {
+			file = ((AtlasData) elem).getFile();
 		} else if (elem instanceof IFile) {
 			file = (IFile) elem;
 		}
