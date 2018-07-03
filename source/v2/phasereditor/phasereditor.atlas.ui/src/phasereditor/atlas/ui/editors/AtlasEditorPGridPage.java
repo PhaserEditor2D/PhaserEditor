@@ -33,9 +33,9 @@ import phasereditor.ui.properties.PGridPage;
  */
 public class AtlasEditorPGridPage extends PGridPage {
 
-	private AtlasGeneratorEditor _editor;
+	private TexturePackerEditor _editor;
 
-	public AtlasEditorPGridPage(AtlasGeneratorEditor editor) {
+	public AtlasEditorPGridPage(TexturePackerEditor editor) {
 		_editor = editor;
 	}
 

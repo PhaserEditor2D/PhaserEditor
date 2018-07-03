@@ -61,11 +61,11 @@ public class AtlasGeneratorEditorModel implements IAdaptable {
 	private List<EditorPage> _pages;
 	private int _version;
 	private PGridModel _gridModel;
-	private AtlasGeneratorEditor _editor;
+	private TexturePackerEditor _editor;
 
 	public static int CURRENT_VERSION = 3;
 
-	public AtlasGeneratorEditorModel(AtlasGeneratorEditor editor, IFile file) throws IOException, CoreException {
+	public AtlasGeneratorEditorModel(TexturePackerEditor editor, IFile file) throws IOException, CoreException {
 		_editor = editor;
 		_file = file;
 		_imageFiles = new ArrayList<>();
@@ -77,7 +77,7 @@ public class AtlasGeneratorEditorModel implements IAdaptable {
 		}
 	}
 
-	public AtlasGeneratorEditor getEditor() {
+	public TexturePackerEditor getEditor() {
 		return _editor;
 	}
 

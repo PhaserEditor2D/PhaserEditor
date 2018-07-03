@@ -9,7 +9,7 @@
             finalPerspective="phasereditor.ide.ui.perspective"
             icon="platform:/plugin/phasereditor.ui/icons/atlas_add.png"
             id="phasereditor.atlas.ui.wizards.new.atlasmaker"
-            name="Atlas Generator File">
+            name="Texture Packer File">
       </wizard>
    </extension>
    <extension
@@ -44,18 +44,18 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="phasereditor.atlas.ui.editors.AtlasGeneratorEditor"
+            class="phasereditor.atlas.ui.editors.TexturePackerEditor"
             extensions="atlas"
             icon="platform:/plugin/phasereditor.ui/icons/images.png"
-            id="phasereditor.atlas.ui.editors.AtlasGenEditor"
-            name="Atlas Generator">
+            id="phasereditor.atlas.ui.editors.TexturePackerEditor"
+            name="Texture Packer">
       </editor>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
             allPopups="false"
-            locationURI="popup:phasereditor.atlas.ui.editors.AtlasGenEditor?before=additions">
+            locationURI="popup:phasereditor.atlas.ui.editors.TexturePackerEditor?before=additions">
          <command
                commandId="org.eclipse.ui.edit.delete"
                style="push"
@@ -77,7 +77,7 @@
             locationURI="toolbar:org.eclipse.ui.main.toolbar?after=org.eclipse.ui.workbench.navigate">
          <toolbar
                id="phasereditor.atlas.ui.maintoolbar"
-               label="Atlas">
+               label="Texture Packer">
             <command
                   commandId="phasereditor.atlas.ui.editor.buildatlas"
                   icon="platform:/plugin/phasereditor.ui/icons/cog.png"
@@ -86,7 +86,7 @@
                   <with
                         variable="activeEditorId">
                      <equals
-                           value="phasereditor.atlas.ui.editors.AtlasGenEditor">
+                           value="phasereditor.atlas.ui.editors.TexturePackerEditor">
                      </equals>
                   </with>
                </visibleWhen>
@@ -100,7 +100,7 @@
                   <with
                         variable="activeEditorId">
                      <equals
-                           value="phasereditor.atlas.ui.editors.AtlasGenEditor">
+                           value="phasereditor.atlas.ui.editors.TexturePackerEditor">
                      </equals>
                   </with>
                </visibleWhen>
@@ -127,7 +127,7 @@
                <with
                      variable="activeEditorId">
                   <equals
-                        value="phasereditor.atlas.ui.editors.AtlasGenEditor">
+                        value="phasereditor.atlas.ui.editors.TexturePackerEditor">
                   </equals>
                </with></and>
          </enabledWhen>
@@ -135,7 +135,7 @@
             <with
                   variable="activeEditorId">
                <equals
-                     value="phasereditor.atlas.ui.editors.AtlasGenEditor">
+                     value="phasereditor.atlas.ui.editors.TexturePackerEditor">
                </equals>
             </with>
          </activeWhen>
@@ -148,12 +148,6 @@
             defaultHandler="phasereditor.atlas.ui.handlers.BuildAtlasHandler"
             id="phasereditor.atlas.ui.editor.buildatlas"
             name="Build Atlas">
-      </command>
-      <command
-            categoryId="phasereditor.ui.phaserCategory"
-            defaultHandler="phasereditor.atlas.ui.handlers.ShowSettingsHandler"
-            id="phasereditor.atlas.ui.editor.showsettings"
-            name="Settings">
       </command>
    </extension>
 

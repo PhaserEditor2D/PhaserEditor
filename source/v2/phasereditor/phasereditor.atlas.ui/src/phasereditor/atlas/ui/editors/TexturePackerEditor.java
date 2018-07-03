@@ -71,7 +71,6 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.dnd.DND;
@@ -119,10 +118,10 @@ import phasereditor.ui.IconCache;
 import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.properties.PGridPage;
 
-public class AtlasGeneratorEditor extends EditorPart
+public class TexturePackerEditor extends EditorPart
 		implements IEditorSharedImages, IResourceChangeListener, ISelectionChangedListener {
 
-	public static final String ID = "phasereditor.atlas.ui.editors.AtlasGenEditor"; //$NON-NLS-1$
+	public static final String ID = "phasereditor.atlas.ui.editors.TexturePackerEditor"; //$NON-NLS-1$
 
 	protected AtlasGeneratorEditorModel _model;
 	private Composite _container;
@@ -135,7 +134,7 @@ public class AtlasGeneratorEditor extends EditorPart
 
 	private PGridPage _properties;
 
-	public AtlasGeneratorEditor() {
+	public TexturePackerEditor() {
 		_guessLastOutputFiles = new ArrayList<>();
 	}
 
@@ -155,15 +154,6 @@ public class AtlasGeneratorEditor extends EditorPart
 	protected void handleTableKey(KeyEvent e) {
 		if (e.character == SWT.DEL) {
 			deleteSelection();
-		}
-	}
-
-	public void openSettingsDialog() {
-		AtlasSettingsDialog dlg = new AtlasSettingsDialog(getEditorSite().getShell());
-		dlg.setSettings(_model.getSettings().clone());
-		if (dlg.open() == Window.OK) {
-			_model.setSettings(dlg.getSettings());
-			build(true);
 		}
 	}
 
@@ -601,7 +591,6 @@ public class AtlasGeneratorEditor extends EditorPart
 						@Override
 						public void run() {
 							MessageDialog.openError(getEditorSite().getShell(), "Build Atlas", e.getMessage());
-							openSettingsDialog();
 						}
 					});
 				} finally {
@@ -867,14 +856,14 @@ public class AtlasGeneratorEditor extends EditorPart
 
 									@Override
 									public void run() {
-										getSite().getPage().closeEditor(AtlasGeneratorEditor.this, false);
+										getSite().getPage().closeEditor(TexturePackerEditor.this, false);
 									}
 								});
 
 							} else {
 								// rename
 								setInput(new FileEditorInput(root.getFile(movedTo)));
-								swtRun(AtlasGeneratorEditor.this::updateTitle);
+								swtRun(TexturePackerEditor.this::updateTitle);
 							}
 						}
 					}
@@ -1033,8 +1022,8 @@ public class AtlasGeneratorEditor extends EditorPart
 
 		@Override
 		public void dispose() {
-			getTreeViewer().removeSelectionChangedListener(AtlasGeneratorEditor.this);
-			AtlasGeneratorEditor.this._outliner = null;
+			getTreeViewer().removeSelectionChangedListener(TexturePackerEditor.this);
+			TexturePackerEditor.this._outliner = null;
 			super.dispose();
 		}
 	}
