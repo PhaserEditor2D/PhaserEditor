@@ -53,7 +53,7 @@ import phasereditor.ui.properties.PGridModel;
 import phasereditor.ui.properties.PGridNumberProperty;
 import phasereditor.ui.properties.PGridSection;
 
-public class AtlasGeneratorEditorModel implements IAdaptable {
+public class TexturePackerEditorModel implements IAdaptable {
 
 	private List<IFile> _imageFiles;
 	private IFile _file;
@@ -65,7 +65,7 @@ public class AtlasGeneratorEditorModel implements IAdaptable {
 
 	public static int CURRENT_VERSION = 3;
 
-	public AtlasGeneratorEditorModel(TexturePackerEditor editor, IFile file) throws IOException, CoreException {
+	public TexturePackerEditorModel(TexturePackerEditor editor, IFile file) throws IOException, CoreException {
 		_editor = editor;
 		_file = file;
 		_imageFiles = new ArrayList<>();
@@ -147,7 +147,7 @@ public class AtlasGeneratorEditorModel implements IAdaptable {
 
 							String regionFilename = jsonFrame.getString("regionFilename");
 							int regionIndex = jsonFrame.getInt("regionIndex");
-							AtlasEditorFrame frame = new AtlasEditorFrame(regionFilename, regionIndex);
+							TexturePackerEditorFrame frame = new TexturePackerEditorFrame(regionFilename, regionIndex);
 							AtlasFrame.updateFrameFromJSON(frame, jsonFrame);
 							frame.setName(jsonFrame.getString("name"));
 
@@ -229,7 +229,7 @@ public class AtlasGeneratorEditorModel implements IAdaptable {
 				JSONArray jsonFrames = new JSONArray();
 				jsonPage.put("frames", jsonFrames);
 
-				for (AtlasEditorFrame frame : page) {
+				for (TexturePackerEditorFrame frame : page) {
 					JSONObject jsonFrame = new JSONObject();
 					jsonFrames.put(jsonFrame);
 					writeFrameJsonData(frame, jsonFrame);
@@ -258,7 +258,7 @@ public class AtlasGeneratorEditorModel implements IAdaptable {
 			JSONArray jsonFrames = new JSONArray();
 			jsonTexture.put("frames", jsonFrames);
 
-			for (AtlasEditorFrame frame : page) {
+			for (TexturePackerEditorFrame frame : page) {
 				JSONObject jsonFrame = new JSONObject();
 				jsonFrames.put(jsonFrame);
 

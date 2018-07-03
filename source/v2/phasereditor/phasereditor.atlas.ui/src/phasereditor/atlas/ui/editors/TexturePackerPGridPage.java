@@ -31,11 +31,11 @@ import phasereditor.ui.properties.PGridPage;
  * @author arian
  *
  */
-public class AtlasEditorPGridPage extends PGridPage {
+public class TexturePackerPGridPage extends PGridPage {
 
 	private TexturePackerEditor _editor;
 
-	public AtlasEditorPGridPage(TexturePackerEditor editor) {
+	public TexturePackerPGridPage(TexturePackerEditor editor) {
 		_editor = editor;
 	}
 

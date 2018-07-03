@@ -55,25 +55,6 @@
          point="org.eclipse.ui.menus">
       <menuContribution
             allPopups="false"
-            locationURI="popup:phasereditor.atlas.ui.editors.TexturePackerEditor?before=additions">
-         <command
-               commandId="org.eclipse.ui.edit.delete"
-               style="push"
-               tooltip="Delete selected sprites.">
-         </command>
-         <command
-               commandId="phasereditor.atlas.ui.editor.buildatlas"
-               icon="platform:/plugin/phasereditor.ui/icons/cog.png"
-               style="push">
-         </command>
-         <command
-               commandId="phasereditor.atlas.ui.editor.showsettings"
-               icon="platform:/plugin/phasereditor.ui/icons/wrench.png"
-               style="push">
-         </command>
-      </menuContribution>
-      <menuContribution
-            allPopups="false"
             locationURI="toolbar:org.eclipse.ui.main.toolbar?after=org.eclipse.ui.workbench.navigate">
          <toolbar
                id="phasereditor.atlas.ui.maintoolbar"
@@ -107,6 +88,20 @@
             </command>
          </toolbar>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:phasereditor.atlas.ui.editors.TexturePackerEditor">
+         <command
+               commandId="phasereditor.atlas.ui.editor.buildatlas"
+               icon="platform:/plugin/phasereditor.ui/icons/cog.png"
+               style="push">
+         </command>
+         <command
+               commandId="org.eclipse.ui.edit.delete"
+               style="push"
+               tooltip="Delete selected frames.">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -120,7 +115,7 @@
                   <iterate
                         ifEmpty="false">
                      <instanceof
-                           value="phasereditor.atlas.ui.editors.AtlasEditorFrame">
+                           value="phasereditor.atlas.ui.editors.TexturePackerEditorFrame">
                      </instanceof>
                   </iterate>
                </with>

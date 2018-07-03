@@ -34,7 +34,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
-import phasereditor.atlas.ui.editors.AtlasGeneratorEditorModel;
+import phasereditor.atlas.ui.editors.TexturePackerEditorModel;
 
 public class AtlasMakerWizardPage extends WizardNewFileCreationPage {
 	public AtlasMakerWizardPage(IStructuredSelection selection, String title, String description) {
@@ -100,7 +100,7 @@ public class AtlasMakerWizardPage extends WizardNewFileCreationPage {
 	@Override
 	protected InputStream getInitialContents() {
 		try {
-			AtlasGeneratorEditorModel model = new AtlasGeneratorEditorModel(null, null);
+			TexturePackerEditorModel model = new TexturePackerEditorModel(null, null);
 			return new ByteArrayInputStream(model.toJSON().toString(2).getBytes());
 		} catch (IOException | CoreException e) {
 			throw new RuntimeException(e);

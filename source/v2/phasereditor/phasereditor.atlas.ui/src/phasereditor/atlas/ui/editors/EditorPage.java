@@ -33,15 +33,15 @@ import phasereditor.ui.properties.PGridInfoProperty;
 import phasereditor.ui.properties.PGridModel;
 import phasereditor.ui.properties.PGridSection;
 
-public class EditorPage extends ArrayList<AtlasEditorFrame> implements IAdaptable {
+public class EditorPage extends ArrayList<TexturePackerEditorFrame> implements IAdaptable {
 	private static final long serialVersionUID = 1L;
 	private int _index;
-	private AtlasGeneratorEditorModel _model;
+	private TexturePackerEditorModel _model;
 	private PGridModel _gridModel;
 	private Image _image;
 	private IFile _imageFile;
 
-	public EditorPage(AtlasGeneratorEditorModel model, int index) {
+	public EditorPage(TexturePackerEditorModel model, int index) {
 		super();
 		_model = model;
 		_index = index;

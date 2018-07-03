@@ -36,13 +36,13 @@ import phasereditor.ui.properties.PGridStringProperty;
  *
  */
 @SuppressWarnings("boxing")
-public class AtlasEditorFrame extends AtlasFrame implements IAdaptable {
+public class TexturePackerEditorFrame extends AtlasFrame implements IAdaptable {
 
 	private PGridModel _gridModel;
 	private String _regionFilename;
 	private int _regionIndex;
 
-	public AtlasEditorFrame(String regionFilename, int regionIndex) {
+	public TexturePackerEditorFrame(String regionFilename, int regionIndex) {
 		_regionFilename = regionFilename;
 		_regionIndex = regionIndex;
 	}

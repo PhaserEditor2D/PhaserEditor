@@ -59,6 +59,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.help.HelpSystem;
 import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
@@ -123,16 +124,18 @@ public class TexturePackerEditor extends EditorPart
 
 	public static final String ID = "phasereditor.atlas.ui.editors.TexturePackerEditor"; //$NON-NLS-1$
 
-	protected AtlasGeneratorEditorModel _model;
+	protected TexturePackerEditorModel _model;
 	private Composite _container;
 	private boolean _dirty;
 	TabFolder _tabsFolder;
 	private List<IFile> _guessLastOutputFiles;
-	AtlasEditorContentOutlinePage _outliner;
+	TexturePackerContentOutlinePage _outliner;
 
 	private ISelectionProvider _selectionProvider;
 
 	private PGridPage _properties;
+
+	private MenuManager _menuManager;
 
 	public TexturePackerEditor() {
 		_guessLastOutputFiles = new ArrayList<>();
@@ -163,7 +166,7 @@ public class TexturePackerEditor extends EditorPart
 			if (sel.length > 0) {
 				List<IFile> toRemove = new ArrayList<>();
 				for (Object item : sel) {
-					AtlasEditorFrame frame = (AtlasEditorFrame) item;
+					TexturePackerEditorFrame frame = (TexturePackerEditorFrame) item;
 					IFile file = findFile(frame);
 					toRemove.add(file);
 				}
@@ -175,7 +178,7 @@ public class TexturePackerEditor extends EditorPart
 		}
 	}
 
-	IFile findFile(AtlasEditorFrame frame) {
+	IFile findFile(TexturePackerEditorFrame frame) {
 		String regionName = frame.getRegionFilename();
 
 		for (IFile file : _model.getImageFiles()) {
@@ -192,7 +195,7 @@ public class TexturePackerEditor extends EditorPart
 		return (AtlasCanvas) _tabsFolder.getItem(i).getControl();
 	}
 
-	public AtlasEditorContentOutlinePage getOutliner() {
+	public TexturePackerContentOutlinePage getOutliner() {
 		return _outliner;
 	}
 
@@ -213,12 +216,6 @@ public class TexturePackerEditor extends EditorPart
 		}
 
 		// menu
-
-		// maybe we should build if we set a preference for that
-		// build(false);
-		if (_model != null) {
-			updateUIFromModel();
-		}
 
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
 
@@ -277,7 +274,22 @@ public class TexturePackerEditor extends EditorPart
 		};
 		getEditorSite().setSelectionProvider(_selectionProvider);
 
+		createMenu();
+
+		// maybe we should build if we set a preference for that
+		// build(false);
+		if (_model != null) {
+			updateUIFromModel();
+		}
+
+	}
+
+	private void createMenu() {
 		_selectionProvider.setSelection(StructuredSelection.EMPTY);
+
+		_menuManager = new MenuManager();
+
+		getEditorSite().registerContextMenu(_menuManager, _selectionProvider, false);
 	}
 
 	class AtlasEditorSelectionProvider implements ISelectionProvider {
@@ -379,7 +391,7 @@ public class TexturePackerEditor extends EditorPart
 		try {
 			boolean hasUI = _tabsFolder != null;
 			if (_model == null) {
-				_model = new AtlasGeneratorEditorModel(this, file);
+				_model = new TexturePackerEditorModel(this, file);
 
 				if (hasUI) {
 					updateUIFromModel();
@@ -516,7 +528,8 @@ public class TexturePackerEditor extends EditorPart
 									regionFilename += "_" + region.index;
 								}
 
-								AtlasEditorFrame frame = new AtlasEditorFrame(regionFilename, region.index);
+								TexturePackerEditorFrame frame = new TexturePackerEditorFrame(regionFilename,
+										region.index);
 
 								frame.setName(PhaserEditorUI.getNameFromFilename(regionFilename));
 								frame.setFrameX(region.left);
@@ -550,6 +563,12 @@ public class TexturePackerEditor extends EditorPart
 						}
 
 						editorPages.add(editorPage);
+					}
+
+					for (EditorPage page : _model.getPages()) {
+						String atlasImageName = _model.getAtlasImageName(page.getIndex());
+						IFile file = _model.getFile().getParent().getFile(new Path(atlasImageName));
+						page.setImageFile(file);
 					}
 
 					_model.setPages(editorPages);
@@ -789,11 +808,13 @@ public class TexturePackerEditor extends EditorPart
 			}
 		});
 
+		canvas.setMenu(_menuManager.createContextMenu(canvas));
+
 		return canvas;
 	}
 
 	protected void canvasClicked(AtlasCanvas canvas) {
-		AtlasEditorFrame frame = (AtlasEditorFrame) canvas.getOverFrame();
+		TexturePackerEditorFrame frame = (TexturePackerEditorFrame) canvas.getOverFrame();
 		canvas.setFrame(frame);
 		canvas.redraw();
 
@@ -906,15 +927,24 @@ public class TexturePackerEditor extends EditorPart
 		job.schedule();
 	}
 
-	class AtlasEditorOutlineContentProvider implements ITreeContentProvider {
+	class TexturePackerEditorOutlineContentProvider implements ITreeContentProvider {
 
 		@Override
 		public Object[] getElements(Object inputElement) {
-			return _model.getPages().toArray();
+			return getChildren(inputElement);
 		}
 
 		@Override
 		public Object[] getChildren(Object parent) {
+
+			if (parent instanceof TexturePackerEditor) {
+				return new Object[] { ((TexturePackerEditor) parent).getModel() };
+			}
+
+			if (parent instanceof TexturePackerEditorModel) {
+				return ((TexturePackerEditorModel) parent).getPages().toArray();
+			}
+
 			if (parent instanceof EditorPage) {
 				return ((EditorPage) parent).toArray();
 			}
@@ -934,7 +964,7 @@ public class TexturePackerEditor extends EditorPart
 
 	}
 
-	class AtlasEditorOutlineLabelProvider extends LabelProvider {
+	class TexturePackerEditorOutlineLabelProvider extends LabelProvider {
 
 		private IconCache _cache = new IconCache();
 
@@ -946,12 +976,16 @@ public class TexturePackerEditor extends EditorPart
 
 		@Override
 		public String getText(Object element) {
+			if (element instanceof TexturePackerEditorModel) {
+				return ((TexturePackerEditorModel) element).getFile().getName();
+			}
+
 			if (element instanceof EditorPage) {
 				return ((EditorPage) element).getName();
 			}
 
-			if (element instanceof AtlasEditorFrame) {
-				return ((AtlasEditorFrame) element).getName();
+			if (element instanceof TexturePackerEditorFrame) {
+				return ((TexturePackerEditorFrame) element).getName();
 			}
 
 			return super.getText(element);
@@ -959,15 +993,20 @@ public class TexturePackerEditor extends EditorPart
 
 		@Override
 		public Image getImage(Object element) {
-			if (element instanceof EditorPage) {
+
+			if (element instanceof TexturePackerEditorModel) {
 				return EditorSharedImages.getImage(IEditorSharedImages.IMG_IMAGES);
 			}
 
-			if (element instanceof AtlasEditorFrame) {
-				AtlasEditorFrame frame = (AtlasEditorFrame) element;
+			if (element instanceof EditorPage) {
+				return ((EditorPage) element).getImage();
+			}
+
+			if (element instanceof TexturePackerEditorFrame) {
+				TexturePackerEditorFrame frame = (TexturePackerEditorFrame) element;
 				IFile file = findFile(frame);
 				if (file != null) {
-					Image img = _cache.getIcon(file, 32, null);
+					Image img = _cache.getIcon(file, 16, null);
 					return img;
 				}
 			}
@@ -975,8 +1014,8 @@ public class TexturePackerEditor extends EditorPart
 		}
 	}
 
-	class AtlasEditorContentOutlinePage extends FilteredContentOutlinePage {
-		public AtlasEditorContentOutlinePage() {
+	class TexturePackerContentOutlinePage extends FilteredContentOutlinePage {
+		public TexturePackerContentOutlinePage() {
 		}
 
 		public TreeViewer getViewer() {
@@ -992,9 +1031,9 @@ public class TexturePackerEditor extends EditorPart
 			super.createControl(parent);
 
 			TreeViewer viewer = getTreeViewer();
-			viewer.setLabelProvider(new AtlasEditorOutlineLabelProvider());
-			viewer.setContentProvider(new AtlasEditorOutlineContentProvider());
-			viewer.setInput(_model);
+			viewer.setLabelProvider(new TexturePackerEditorOutlineLabelProvider());
+			viewer.setContentProvider(new TexturePackerEditorOutlineContentProvider());
+			viewer.setInput(TexturePackerEditor.this);
 		}
 
 		@Override
@@ -1003,7 +1042,7 @@ public class TexturePackerEditor extends EditorPart
 			Map<Object, Object> parents = new HashMap<>();
 
 			for (Object elem : ((IStructuredSelection) selection).toArray()) {
-				if (elem instanceof AtlasEditorFrame) {
+				if (elem instanceof TexturePackerEditorFrame) {
 					items.add(elem);
 					for (EditorPage pages : _model.getPages()) {
 						if (pages.contains(elem)) {
@@ -1014,7 +1053,7 @@ public class TexturePackerEditor extends EditorPart
 			}
 
 			for (Entry<Object, Object> entry : parents.entrySet()) {
-				getTreeViewer().reveal(new TreePath(new Object[] { entry.getValue(), entry.getKey() }));
+				getTreeViewer().reveal(new TreePath(new Object[] { getModel(), entry.getValue(), entry.getKey() }));
 			}
 
 			getTreeViewer().setSelection(selection);
@@ -1033,7 +1072,7 @@ public class TexturePackerEditor extends EditorPart
 	public Object getAdapter(Class adapter) {
 		if (adapter.equals(IContentOutlinePage.class)) {
 			if (_outliner == null) {
-				_outliner = new AtlasEditorContentOutlinePage();
+				_outliner = new TexturePackerContentOutlinePage();
 				_outliner.addSelectionChangedListener(this);
 			}
 			return _outliner;
@@ -1041,7 +1080,7 @@ public class TexturePackerEditor extends EditorPart
 
 		if (adapter == IPropertySheetPage.class) {
 			if (_properties == null) {
-				_properties = new AtlasEditorPGridPage(this);
+				_properties = new TexturePackerPGridPage(this);
 			}
 
 			return _properties;
@@ -1079,8 +1118,8 @@ public class TexturePackerEditor extends EditorPart
 				canvas.setFrame(null);
 				canvas.redraw();
 			}
-		} else if (elem instanceof AtlasEditorFrame) {
-			AtlasEditorFrame selected = (AtlasEditorFrame) elem;
+		} else if (elem instanceof TexturePackerEditorFrame) {
+			TexturePackerEditorFrame selected = (TexturePackerEditorFrame) elem;
 			for (int i = 0; i < _tabsFolder.getItemCount(); i++) {
 				AtlasCanvas canvas = getAtlasCanvas(i);
 				canvas.setFrame(selected);
@@ -1111,7 +1150,7 @@ public class TexturePackerEditor extends EditorPart
 		}
 	}
 
-	public AtlasGeneratorEditorModel getModel() {
+	public TexturePackerEditorModel getModel() {
 		return _model;
 	}
 }
