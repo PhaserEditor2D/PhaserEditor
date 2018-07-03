@@ -32,9 +32,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.resources.IContainer;
@@ -137,6 +139,8 @@ public class TexturePackerEditor extends EditorPart
 
 	private MenuManager _menuManager;
 
+	private AtlasCanvas _canvasClicked;
+
 	public TexturePackerEditor() {
 		_guessLastOutputFiles = new ArrayList<>();
 	}
@@ -226,23 +230,8 @@ public class TexturePackerEditor extends EditorPart
 		_tabsFolder.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-
-				for (int i = 0; i < _tabsFolder.getItemCount(); i++) {
-					AtlasCanvas atlas = getAtlasCanvas(i);
-					atlas.setFrame(null);
-				}
-
 				int index = _tabsFolder.getSelectionIndex();
-
 				repaintTab(index);
-
-				StructuredSelection selection = new StructuredSelection((Object) _model.getPages().get(index));
-
-				if (getOutliner() != null) {
-					getOutliner().setSelection(selection);
-				}
-
-				getEditorSite().getSelectionProvider().setSelection(selection);
 			}
 
 		});
@@ -807,7 +796,10 @@ public class TexturePackerEditor extends EditorPart
 			@Override
 			public void mouseUp(MouseEvent e) {
 				if (e.button == 1) {
-					canvasClicked(canvas);
+
+					boolean control = (e.stateMask & SWT.MOD1) != 0;
+
+					canvasClicked(canvas, control);
 				}
 			}
 		});
@@ -817,24 +809,46 @@ public class TexturePackerEditor extends EditorPart
 		return canvas;
 	}
 
-	protected void canvasClicked(AtlasCanvas canvas) {
-		TexturePackerEditorFrame frame = (TexturePackerEditorFrame) canvas.getOverFrame();
-		canvas.setFrame(frame);
-		canvas.redraw();
+	protected void canvasClicked(AtlasCanvas canvas, boolean controlPressed) {
+		_canvasClicked = canvas;
 
-		StructuredSelection selection;
+		TexturePackerEditorFrame frame = (TexturePackerEditorFrame) canvas.getOverFrame();
+
+		IStructuredSelection selection;
+
+		@SuppressWarnings("unchecked")
+		Set<Object> currentSelection = new HashSet<>(
+				((IStructuredSelection) _selectionProvider.getSelection()).toList());
 
 		if (frame == null) {
-			selection = StructuredSelection.EMPTY;
+			if (controlPressed) {
+				selection = (IStructuredSelection) _selectionProvider.getSelection();
+			} else {
+				selection = StructuredSelection.EMPTY;
+			}
 		} else {
-			selection = new StructuredSelection(frame);
+			if (controlPressed) {
+				if (currentSelection.contains(frame)) {
+					currentSelection.remove(frame);
+				} else {
+					currentSelection.add(frame);
+				}
+				selection = new StructuredSelection(currentSelection.toArray());
+			} else {
+				selection = new StructuredSelection(frame);
+			}
 		}
 
-		if (_outliner != null) {
-			_outliner.setSelection(selection);
-		}
+		if (selection != _selectionProvider.getSelection()) {
+			canvas.setSelection(selection);
+			canvas.redraw();
 
-		_selectionProvider.setSelection(selection);
+			if (_outliner != null) {
+				_outliner.setSelection(selection);
+			}
+
+			_selectionProvider.setSelection(selection);
+		}
 	}
 
 	private void addMainTab() {
@@ -1131,29 +1145,34 @@ public class TexturePackerEditor extends EditorPart
 
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
-		Object elem = ((IStructuredSelection) event.getSelection()).getFirstElement();
-		if (elem == null) {
-			for (int i = 0; i < _tabsFolder.getItemCount(); i++) {
-				AtlasCanvas canvas = getAtlasCanvas(i);
-				canvas.setFrame(null);
-				canvas.redraw();
-			}
-		} else if (elem instanceof TexturePackerEditorFrame) {
-			TexturePackerEditorFrame selected = (TexturePackerEditorFrame) elem;
-			for (int i = 0; i < _tabsFolder.getItemCount(); i++) {
-				AtlasCanvas canvas = getAtlasCanvas(i);
-				canvas.setFrame(selected);
-				canvas.redraw();
+		IStructuredSelection selection = (IStructuredSelection) event.getSelection();
 
-				if (canvas.getFrames().contains(selected)) {
-					selectTab(i);
-					break;
-				}
-			}
-		} else if (elem instanceof EditorPage) {
-			int i = ((EditorPage) elem).getIndex();
-			selectTab(i);
+		Object elem = selection.getFirstElement();
+
+		int tabIndex = -1;
+
+		if (elem instanceof EditorPage) {
+			tabIndex = ((EditorPage) elem).getIndex();
 		}
+
+		for (int i = 0; i < _tabsFolder.getItemCount(); i++) {
+			AtlasCanvas canvas = getAtlasCanvas(i);
+			canvas.setSelection(selection);
+			canvas.redraw();
+			if (_canvasClicked == null) {
+				if (!canvas.getSelection().isEmpty()) {
+					tabIndex = i;
+				}
+			} else if (canvas == _canvasClicked) {
+				tabIndex = i;
+			}
+		}
+
+		if (tabIndex != -1) {
+			selectTab(tabIndex);
+		}
+
+		_canvasClicked = null;
 
 		_selectionProvider.setSelection(event.getSelection());
 	}

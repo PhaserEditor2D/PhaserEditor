@@ -22,8 +22,17 @@
 package phasereditor.atlas.ui;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.eclipse.core.runtime.ListenerList;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.MouseEvent;
@@ -38,7 +47,7 @@ import phasereditor.atlas.core.AtlasFrame;
 import phasereditor.ui.ImageCanvas;
 import phasereditor.ui.PhaserEditorUI;
 
-public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMoveListener {
+public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMoveListener, ISelectionProvider {
 
 	private List<? extends AtlasFrame> _frames;
 	private List<Rectangle> _framesRects;
@@ -55,18 +64,23 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 
 	@Override
 	protected void drawImage(GC gc, int srcX, int srcY, int srcW, int srcH, int dstW, int dstH, int dstX, int dstY) {
-		if (_frame != null) {
+		if (_frame != null || !_selectedFrames.isEmpty()) {
+			
 			PhaserEditorUI.paintPreviewBackground(gc, new Rectangle(dstX, dstY, dstW, dstH));
+			
 			gc.setAlpha(100);
+			
 			super.drawImage(gc, srcX, srcY, srcW, srcH, dstW, dstH, dstX, dstY);
+			
 			gc.setAlpha(255);
+			
 			return;
 		}
 
 		super.drawImage(gc, srcX, srcY, srcW, srcH, dstW, dstH, dstX, dstY);
-		
-//		gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
-//		gc.drawRectangle(dstX, dstY, dstW, dstH);
+
+		// gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
+		// gc.drawRectangle(dstX, dstY, dstW, dstH);
 	}
 
 	@Override
@@ -83,16 +97,18 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 
 		if (_frames != null && _image != null) {
 			GC gc = e.gc;
-			
+
 			Color overColor = PhaserEditorUI.get_pref_Preview_Atlas_frameOverColor();
-			
+
 			gc.setForeground(overColor);
-			
+
 			int i = 0;
 			ZoomCalculator calc = calc();
 			for (Rectangle r : _framesRects) {
 				AtlasFrame frame = _frames.get(i);
-				if (frame == _frame) {
+				boolean theFrameIsSelected = frame == _frame || _selectedFrames.contains(frame);
+
+				if (theFrameIsSelected) {
 					gc.setClipping(r);
 					Rectangle src = _image.getBounds();
 					Rectangle dst = calc.imageToScreen(src);
@@ -102,7 +118,7 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 
 				}
 
-				if (frame == _frame || frame == _overFrame) {
+				if (theFrameIsSelected || frame == _overFrame) {
 					gc.drawRectangle(r);
 				}
 
@@ -222,6 +238,46 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 
 	public void setTooltips(List<String> tooltips) {
 		_tooltips = tooltips;
+	}
+
+	private ListenerList<ISelectionChangedListener> _selectionListeners = new ListenerList<>();
+	private IStructuredSelection _selection;
+	private Set<AtlasFrame> _selectedFrames = new HashSet<>();
+
+	@Override
+	public void addSelectionChangedListener(ISelectionChangedListener listener) {
+		_selectionListeners.add(listener);
+	}
+
+	@Override
+	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
+		_selectionListeners.remove(listener);
+	}
+
+	@Override
+	public void setSelection(ISelection selection) {
+		_selectedFrames = new HashSet<>();
+
+		HashSet<AtlasFrame> frameSet = new HashSet<>(_frames);
+
+		for (Object elem : ((IStructuredSelection) selection).toArray()) {
+			if (frameSet.contains(elem)) {
+				_selectedFrames.add((AtlasFrame) elem);
+			}
+		}
+
+		_selection = new StructuredSelection(_selectedFrames.toArray());
+
+		SelectionChangedEvent event = new SelectionChangedEvent(this, _selection);
+
+		for (ISelectionChangedListener l : _selectionListeners) {
+			l.selectionChanged(event);
+		}
+	}
+
+	@Override
+	public IStructuredSelection getSelection() {
+		return _selection;
 	}
 
 }
