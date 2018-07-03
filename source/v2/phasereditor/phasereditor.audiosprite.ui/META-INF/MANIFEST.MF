@@ -19,7 +19,7 @@ Require-Bundle: org.eclipse.ui,
  phasereditor.project.core,
  phasereditor.libgdx,
  org.json
-Bundle-RequiredExecutionEnvironment: JavaSE-10
+Bundle-RequiredExecutionEnvironment: JavaSE-9
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.audiosprite.ui,
  phasereditor.audiosprite.ui.wizards
