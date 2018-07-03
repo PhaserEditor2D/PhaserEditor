@@ -1,7 +1,5 @@
 package phasereditor.inspect.ui.views;
 
-import static java.lang.System.out;
-
 import org.eclipse.core.runtime.Adapters;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
@@ -113,8 +111,6 @@ public class JsdocView extends ViewPart implements ISelectionListener, LocationL
 
 	@Override
 	public void changing(LocationEvent event) {
-		out.println("Process link: " + event.location);
-
 		if (event.location.equals("about:blank")) {
 			return;
 		}
