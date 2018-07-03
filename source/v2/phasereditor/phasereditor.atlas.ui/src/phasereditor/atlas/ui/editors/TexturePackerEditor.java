@@ -199,6 +199,10 @@ public class TexturePackerEditor extends EditorPart
 		return _outliner;
 	}
 
+	public MenuManager getMenuManager() {
+		return _menuManager;
+	}
+
 	private void afterCreateWidgets() {
 		{
 			int options = DND.DROP_MOVE | DND.DROP_DEFAULT;
@@ -1034,6 +1038,8 @@ public class TexturePackerEditor extends EditorPart
 			viewer.setLabelProvider(new TexturePackerEditorOutlineLabelProvider());
 			viewer.setContentProvider(new TexturePackerEditorOutlineContentProvider());
 			viewer.setInput(TexturePackerEditor.this);
+
+			viewer.getControl().setMenu(getMenuManager().createContextMenu(viewer.getControl()));
 		}
 
 		@Override
@@ -1071,19 +1077,11 @@ public class TexturePackerEditor extends EditorPart
 	@Override
 	public Object getAdapter(Class adapter) {
 		if (adapter.equals(IContentOutlinePage.class)) {
-			if (_outliner == null) {
-				_outliner = new TexturePackerContentOutlinePage();
-				_outliner.addSelectionChangedListener(this);
-			}
-			return _outliner;
+			return createOutliner();
 		}
 
 		if (adapter == IPropertySheetPage.class) {
-			if (_properties == null) {
-				_properties = new TexturePackerPGridPage(this);
-			}
-
-			return _properties;
+			return createProperties();
 		}
 
 		if (adapter.equals(IContextProvider.class)) {
@@ -1107,6 +1105,28 @@ public class TexturePackerEditor extends EditorPart
 			};
 		}
 		return super.getAdapter(adapter);
+	}
+
+	/**
+	 * @return
+	 */
+	private Object createProperties() {
+		if (_properties == null) {
+			_properties = new TexturePackerPGridPage(this);
+		}
+
+		return _properties;
+	}
+
+	/**
+	 * @return
+	 */
+	private Object createOutliner() {
+		if (_outliner == null) {
+			_outliner = new TexturePackerContentOutlinePage();
+			_outliner.addSelectionChangedListener(this);
+		}
+		return _outliner;
 	}
 
 	@Override
