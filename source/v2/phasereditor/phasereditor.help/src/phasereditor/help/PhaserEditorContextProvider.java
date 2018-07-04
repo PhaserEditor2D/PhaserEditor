@@ -9,7 +9,7 @@ import org.eclipse.help.IContext;
 
 public class PhaserEditorContextProvider extends AbstractContextProvider {
 
-	private Map<String, String> MAP = new HashMap<String, String>() {
+	private Map<String, String> MAP = new HashMap<>() {
 		private static final long serialVersionUID = 1L;
 
 		{

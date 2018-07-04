@@ -22,7 +22,7 @@ Require-Bundle: org.eclipse.core.filesystem;bundle-version="1.4.100",
  org.eclipse.tm4e.registry;bundle-version="0.1.0",
  org.eclipse.tm4e.ui;bundle-version="0.1.0",
  phasereditor.project.ui;bundle-version="1.5.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-9
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: phasereditor.chains.ui
 

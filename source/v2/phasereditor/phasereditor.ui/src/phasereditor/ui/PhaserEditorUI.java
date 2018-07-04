@@ -115,8 +115,6 @@ import org.eclipse.ui.internal.misc.StringMatcher;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import com.sun.javafx.util.Utils;
-
 import phasereditor.ui.editors.StringEditorInput;
 import phasereditor.ui.views.PreviewView;
 
@@ -168,7 +166,7 @@ public class PhaserEditorUI {
 	private static Set<Object> _supportedImageExts = new HashSet<>(Arrays.asList("png", "bmp", "jpg", "gif", "ico"));
 	private static boolean _isCocoaPlatform = Util.isMac();
 	private static boolean _isWindowsPlatform = Util.isWindows();
-	private static boolean _isLinux = Utils.isUnix();
+	private static boolean _isLinux = Util.isLinux();
 
 	private PhaserEditorUI() {
 	}

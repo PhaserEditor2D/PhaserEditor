@@ -4,7 +4,7 @@ Bundle-Name: JSON (Modified)
 Bundle-SymbolicName: org.json
 Bundle-Version: 1.4.0.20170412
 Bundle-Vendor: org.json (phasereditor2d.com modfications)
-Bundle-RequiredExecutionEnvironment: JavaSE-9
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: com.phasereditor2d.json,
  org.json
 Automatic-Module-Name: org.json

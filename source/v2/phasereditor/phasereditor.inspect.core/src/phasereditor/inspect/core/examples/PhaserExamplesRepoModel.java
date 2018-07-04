@@ -93,7 +93,7 @@ public class PhaserExamplesRepoModel {
 			requiredFiles.addAll(Arrays.asList(inAssets));
 		}
 
-		Comparator<PhaserExampleCategoryModel> comparator = new Comparator<PhaserExampleCategoryModel>() {
+		Comparator<PhaserExampleCategoryModel> comparator = new Comparator<>() {
 
 			@Override
 			public int compare(PhaserExampleCategoryModel o1, PhaserExampleCategoryModel o2) {

@@ -37,7 +37,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.tm4e.core;bundle-version="0.1.0",
  org.eclipse.tm4e.registry;bundle-version="0.1.0",
  org.eclipse.tm4e.ui;bundle-version="0.1.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-9
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.canvas.ui
 Automatic-Module-Name: phasereditor.canvas.ui

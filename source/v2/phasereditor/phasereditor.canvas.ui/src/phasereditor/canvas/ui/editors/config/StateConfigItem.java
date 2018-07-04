@@ -61,7 +61,7 @@ public class StateConfigItem extends ConfigItem {
 		PhaserJsdocModel help = InspectCore.getPhaserHelp();
 		{
 			PGridSection section = new PGridSection("Scale");
-			section.add(new PGridEnumProperty<String>(null, "scaleMode",
+			section.add(new PGridEnumProperty<>(null, "scaleMode",
 					help.getMemberHelp("Phaser.ScaleManager.scaleMode"), StateSettings.SCALE_MODES) {
 
 				@Override
@@ -122,7 +122,7 @@ public class StateConfigItem extends ConfigItem {
 
 		{
 			PGridSection section = new PGridSection("Physics");
-			section.add(new PGridEnumProperty<PhysicsType>(null, "startSystem",
+			section.add(new PGridEnumProperty<>(null, "startSystem",
 					help.getMemberHelp("Phaser.Physics.startSystem"), PhysicsType.values()) {
 
 				@Override
@@ -289,7 +289,7 @@ public class StateConfigItem extends ConfigItem {
 				}
 			});
 
-			section.add(new PGridEnumProperty<PreloadSpriteDirection>(null, "preloadSprite.direction",
+			section.add(new PGridEnumProperty<>(null, "preloadSprite.direction",
 					help.getMethodArgHelp("Phaser.Loader.setPreloadSprite", "direction"),
 					PreloadSpriteDirection.values()) {
 

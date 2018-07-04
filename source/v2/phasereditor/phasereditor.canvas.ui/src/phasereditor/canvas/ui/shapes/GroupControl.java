@@ -194,7 +194,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 
 		});
 
-		section.add(new PGridEnumProperty<PhysicsType>(getId(), "physicsBodyType", help("Phaser.Group.physicsBodyType"),
+		section.add(new PGridEnumProperty<>(getId(), "physicsBodyType", help("Phaser.Group.physicsBodyType"),
 				PhysicsType.VALUES_WITHOUT_NONE) {
 
 			@Override
@@ -221,7 +221,7 @@ public class GroupControl extends BaseObjectControl<GroupModel> {
 			}
 		});
 
-		section.add(new PGridEnumProperty<PhysicsSortDirection>(getId(), "physicsSortDirection",
+		section.add(new PGridEnumProperty<>(getId(), "physicsSortDirection",
 				help("Phaser.Group.physicsSortDirection"), PhysicsSortDirection.values()) {
 
 			@Override

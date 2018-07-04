@@ -359,7 +359,7 @@ public class AssetPackCore {
 	}
 
 	public static Function<IFile, Boolean> createFileExtFilter(String... exts) {
-		return new Function<IFile, Boolean>() {
+		return new Function<>() {
 
 			@Override
 			public Boolean apply(IFile f) {
@@ -809,7 +809,7 @@ public class AssetPackCore {
 	}
 
 	public static BiFunction<IProject, JSONObject, Object> createCustomFindAssetFunction(final AssetPackModel pack) {
-		return new BiFunction<IProject, JSONObject, Object>() {
+		return new BiFunction<>() {
 
 			@Override
 			public Object apply(IProject project, JSONObject assetRef) {

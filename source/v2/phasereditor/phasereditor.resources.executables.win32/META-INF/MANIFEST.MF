@@ -4,7 +4,7 @@ Bundle-Name: Phaser Editor - Executables Win32 Resources
 Bundle-SymbolicName: phasereditor.resources.executables.win32;singleton:=true
 Bundle-Version: 1.3.0.20161130
 Fragment-Host: phasereditor.resources.executables;bundle-version="1.3.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-9
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-PlatformFilter: (osgi.os=win32)
 Eclipse-BundleShape: dir
 Bundle-Vendor: Arian Fornaris

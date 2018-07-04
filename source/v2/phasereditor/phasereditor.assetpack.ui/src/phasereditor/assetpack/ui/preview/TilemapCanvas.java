@@ -104,7 +104,7 @@ public class TilemapCanvas extends ZoomCanvas
 	public TilemapCanvas(Composite parent, int style) {
 		super(parent, style);
 
-		_selectedCells = new ArrayList<Point>() {
+		_selectedCells = new ArrayList<>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override

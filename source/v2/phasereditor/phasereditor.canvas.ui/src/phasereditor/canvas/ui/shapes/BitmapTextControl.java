@@ -210,7 +210,7 @@ public class BitmapTextControl extends BaseSpriteControl<BitmapTextModel> {
 			}
 		};
 
-		_align_property = new PGridEnumProperty<Align>(getId(), "align", help("Phaser.BitmapText.align"),
+		_align_property = new PGridEnumProperty<>(getId(), "align", help("Phaser.BitmapText.align"),
 				Align.values()) {
 
 			@Override

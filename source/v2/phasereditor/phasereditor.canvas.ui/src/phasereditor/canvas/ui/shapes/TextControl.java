@@ -173,7 +173,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 
 		{
 			List<String> names = Font.getFamilies();
-			_fontName_property = new PGridEnumProperty<String>(getId(), "style.font", "The name of the font",
+			_fontName_property = new PGridEnumProperty<>(getId(), "style.font", "The name of the font",
 					names.toArray(new String[names.size()])) {
 
 				@Override
@@ -231,7 +231,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 		};
 		section.add(_fontSize_property);
 
-		_fontWeight_property = new PGridEnumProperty<FontWeight>(getId(), "style.fontWeight",
+		_fontWeight_property = new PGridEnumProperty<>(getId(), "style.fontWeight",
 				"The weight of the font (eg. 'bold').",
 				new FontWeight[] { FontWeight.NORMAL, FontWeight.BOLD } /* FontWeight.values() */) {
 
@@ -261,7 +261,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 		};
 		section.add(_fontWeight_property);
 
-		_fontStyle_property = new PGridEnumProperty<FontPosture>(getId(), "style.fontStyle",
+		_fontStyle_property = new PGridEnumProperty<>(getId(), "style.fontStyle",
 				"The style of the font (eg. 'italic').", FontPosture.values()) {
 
 			@Override
@@ -414,7 +414,7 @@ public class TextControl extends BaseSpriteControl<TextModel> {
 			}
 		});
 
-		_textAlign_property = new PGridEnumProperty<TextAlignment>(getId(), "style.align",
+		_textAlign_property = new PGridEnumProperty<>(getId(), "style.align",
 				"Horizontal alignment of each line in multiline text. Can be: 'left', 'center' or 'right'. Does not affect single lines of text (see `textBounds` and `boundsAlignH` for that)",
 				new TextAlignment[] { TextAlignment.LEFT, TextAlignment.CENTER, TextAlignment.RIGHT }) {
 

@@ -52,7 +52,7 @@ public class PaintBehavior {
 			}
 		});
 
-		ChangeListener<Number> sizeListener = new ChangeListener<Number>() {
+		ChangeListener<Number> sizeListener = new ChangeListener<>() {
 
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {

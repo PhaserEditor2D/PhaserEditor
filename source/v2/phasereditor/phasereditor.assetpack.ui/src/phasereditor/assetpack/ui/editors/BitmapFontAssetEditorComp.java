@@ -181,7 +181,7 @@ public class BitmapFontAssetEditorComp extends Composite {
 		try {
 			AssetPackModel pack = _model.getPack();
 			IFile urlFile = _model.getFileFromUrl(_model.getAtlasURL());
-			Function<IFile, Boolean> isFontFile = new Function<IFile, Boolean>() {
+			Function<IFile, Boolean> isFontFile = new Function<>() {
 
 				@Override
 				public Boolean apply(IFile f) {

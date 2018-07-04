@@ -274,7 +274,7 @@ public class EditorConfigItem extends ConfigItem {
 				}
 			});
 
-			section.add(new PGridEnumProperty<SourceLang>(null, "lang", "The language of the generated code.",
+			section.add(new PGridEnumProperty<>(null, "lang", "The language of the generated code.",
 					SourceLang.values()) {
 
 				@Override
