@@ -162,7 +162,7 @@ public class ComboBoxViewerCellEditor2 extends CellEditor {
 		} else {
 			// make the comboBox 10 characters wide
 			GC gc = new GC(viewer.getControl());
-			layoutData.minimumWidth = (gc.getFontMetrics().getAverageCharWidth() * 10) + 10;
+			layoutData.minimumWidth = (int) ((gc.getFontMetrics().getAverageCharacterWidth() * 10) + 10);
 			gc.dispose();
 		}
 		return layoutData;

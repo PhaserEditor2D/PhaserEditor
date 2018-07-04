@@ -382,7 +382,7 @@ public class TilemapCanvas extends ZoomCanvas
 
 					FontMetrics fm = gc.getFontMetrics();
 					int fh = fm.getHeight() + 3;
-					int fw = fm.getAverageCharWidth() + 3;
+					int fw = (int) (fm.getAverageCharacterWidth() + 3);
 
 					int y;
 					int x;
