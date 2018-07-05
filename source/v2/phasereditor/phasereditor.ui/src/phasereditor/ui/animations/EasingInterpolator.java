@@ -39,7 +39,7 @@ public class EasingInterpolator extends Interpolator {
 
 	@Override
 	protected double curve(double k) {
-		return _easing.apply(new Double(k)).doubleValue();
+		return _easing.apply(Double.valueOf(k)).doubleValue();
 	}
 
 }

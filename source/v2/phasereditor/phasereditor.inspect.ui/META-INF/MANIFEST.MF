@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.tm4e.core;bundle-version="0.1.0",
  org.eclipse.tm4e.registry;bundle-version="0.1.0",
  org.eclipse.tm4e.ui;bundle-version="0.1.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-10
 Automatic-Module-Name: phasereditor.inspect.ui
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.inspect.ui,

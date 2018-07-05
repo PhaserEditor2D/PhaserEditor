@@ -439,30 +439,60 @@ public class TexturePackerEditor extends EditorPart
 				}
 
 				List<IFile> missingFiles = new ArrayList<>();
+				List<IFile> oversizedFiles = new ArrayList<>();
 
 				for (IFile wsFile : _model.getImageFiles()) {
 					File file = eclipseFileToJavaPath(wsFile).toFile();
 					if (file.exists() && file.isFile()) {
-						packer.addImage(file);
+
+						try {
+							int[] size = PhaserEditorUI.getImageSize(file);
+							int maxWidth = getModel().getSettings().maxWidth;
+							int maxHeight = getModel().getSettings().maxHeight;
+
+							if (size[0] > maxWidth || size[1] > maxHeight) {
+								oversizedFiles.add(wsFile);
+							} else {
+								packer.addImage(file);
+							}
+
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 					} else {
 						missingFiles.add(wsFile);
 					}
 				}
 
-				if (!missingFiles.isEmpty()) {
+				if (missingFiles.size() + oversizedFiles.size() > 0) {
+
+					StringBuilder sb = new StringBuilder();
+
+					sb.append(
+							"There are some problems with the source files.\nDo you want to skip them and continue?\n");
+
+					if (!missingFiles.isEmpty()) {
+						sb.append("\nMissing files:\n");
+						for (var file : missingFiles) {
+							sb.append(file.getName() + " ");
+						}
+					}
+
+					if (!oversizedFiles.isEmpty()) {
+						sb.append("\nFiles above maximum size:\n");
+						for (var file : oversizedFiles) {
+							sb.append(file.getName() + " ");
+						}
+					}
+
 					Shell shell = getSite().getShell();
 					AtomicBoolean confirm = new AtomicBoolean(false);
+
 					shell.getDisplay().syncExec(new Runnable() {
 
 						@Override
 						public void run() {
-							StringBuilder sb = new StringBuilder();
-							for (IFile f : missingFiles) {
-								sb.append("    " + f.getName() + "\n");
-							}
-							if (MessageDialog.openConfirm(shell, "Atlas Build", String.format(
-									"The following source images do not exist. Do you want to ignore them?\n\n%s",
-									sb))) {
+							if (MessageDialog.openConfirm(shell, "Atlas Build", sb.toString())) {
 								confirm.set(true);
 							}
 						}

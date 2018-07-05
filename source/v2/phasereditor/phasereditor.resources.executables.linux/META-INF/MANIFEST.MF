@@ -4,7 +4,7 @@ Bundle-Name: Phaser Editor - Executable Linux Resources
 Bundle-SymbolicName: phasereditor.resources.executables.linux
 Bundle-Version: 1.5.0.20180307
 Fragment-Host: phasereditor.resources.executables;bundle-version="1.3.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-10
 Eclipse-BundleShape: dir
 Eclipse-PlatformFilter: (osgi.os=linux)
 Bundle-Vendor: Arian Fornaris

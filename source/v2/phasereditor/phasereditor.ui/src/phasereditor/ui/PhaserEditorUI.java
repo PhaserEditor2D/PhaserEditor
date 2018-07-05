@@ -39,6 +39,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -1153,5 +1154,27 @@ public class PhaserEditorUI {
 		} catch (Exception e) {
 			return "";
 		}
+	}
+
+	public static int[] getImageSize(File file) throws IOException {
+		String[] split = file.getName().split("\\.");
+		String ext = split[split.length - 1];
+
+		Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName(ext.toUpperCase());
+
+		while (readers.hasNext()) {
+			var reader = readers.next();
+			try (FileImageInputStream fis = new FileImageInputStream(file)) {
+
+				reader.setInput(fis);
+
+				int width = reader.getWidth(reader.getMinIndex());
+				int height = reader.getHeight(reader.getMinIndex());
+
+				return new int[] { width, height };
+			}
+		}
+
+		return null;
 	}
 }
