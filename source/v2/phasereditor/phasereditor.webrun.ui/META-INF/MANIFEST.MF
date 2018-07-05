@@ -15,7 +15,7 @@ Require-Bundle: org.eclipse.ui,
  phasereditor.webrun.core,
  phasereditor.ui;bundle-version="1.4.0",
  phasereditor.inspect.core;bundle-version="1.4.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-10
+Bundle-RequiredExecutionEnvironment: JavaSE-9
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.webrun.ui
 Automatic-Module-Name: phasereditor.webrun.ui
