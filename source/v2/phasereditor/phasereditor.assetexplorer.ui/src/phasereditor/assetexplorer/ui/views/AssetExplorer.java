@@ -82,16 +82,7 @@ public class AssetExplorer extends ViewPart {
 	static String CANVAS_NODE = "Canvas";
 	static String PACK_NODE = "Pack";
 
-	static class Container {
-		public Object[] children;
-		public String name;
-
-		public Container(String name, Object[] children) {
-			super();
-			this.children = children;
-			this.name = name;
-		}
-	}
+	
 
 	public AssetExplorer() {
 		super();

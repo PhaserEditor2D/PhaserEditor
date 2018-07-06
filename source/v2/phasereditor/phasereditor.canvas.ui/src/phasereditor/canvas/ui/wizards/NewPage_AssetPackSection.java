@@ -38,9 +38,9 @@ import org.eclipse.swt.widgets.Tree;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
+import phasereditor.assetpack.ui.AssetSectionsContentProvider;
 import phasereditor.assetpack.ui.editors.AssetPackEditor;
 import phasereditor.canvas.core.CanvasModel;
-import phasereditor.canvas.ui.AssetSectionsContentProvider;
 import phasereditor.project.core.ProjectCore;
 
 /**

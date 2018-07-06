@@ -40,17 +40,8 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 
-import phasereditor.assetexplorer.ui.views.AssetExplorer.Container;
-import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
-import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel.Frame;
-import phasereditor.assetpack.core.AudioSpriteAssetModel;
-import phasereditor.assetpack.core.AudioSpriteAssetModel.AssetAudioSprite;
-import phasereditor.assetpack.core.PhysicsAssetModel;
-import phasereditor.assetpack.core.TilemapAssetModel;
-import phasereditor.assetpack.core.TilemapAssetModel.TilemapJSON;
 import phasereditor.assetpack.ui.AssetsContentProvider;
 import phasereditor.atlas.core.AtlasCore;
 import phasereditor.canvas.core.CanvasCore;
@@ -64,6 +55,8 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 	private IProject _projectInContent;
 
 	public AssetExplorerContentProvider() {
+		super(true);
+		
 		_partListener = new IPartListener() {
 
 			@Override
@@ -104,9 +97,6 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 		getActivePage().addPartListener(_partListener);
 	}
 
-	/**
-	 * @return
-	 */
 	private static IWorkbenchPage getActivePage() {
 		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 	}
@@ -224,37 +214,11 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 			return EMPTY;
 		}
 
-		if (parent instanceof Container) {
+		if (parent instanceof AssetsContentProvider.Container) {
 			return ((Container) parent).children;
 		}
 
-		if (parent instanceof AssetModel) {
-			AssetModel asset = (AssetModel) parent;
-
-			switch (asset.getType()) {
-			case audiosprite:
-				List<AssetAudioSprite> spritemap = ((AudioSpriteAssetModel) asset).getSpriteMap();
-				return spritemap.toArray();
-			case atlas:
-				List<Frame> frames = ((AtlasAssetModel) asset).getAtlasFrames();
-				return frames.toArray();
-			case spritesheet:
-				return asset.getSubElements().toArray();
-			case tilemap:
-				TilemapAssetModel tilemapAsset = (TilemapAssetModel) asset;
-				if (tilemapAsset.isJSONFormat()) {
-					TilemapJSON tilemap = tilemapAsset.getTilemapJSON();
-					return new Object[] { new Container("Layers", tilemap.getLayers().toArray()),
-							new Container("Tilesets", tilemap.getTilesets().toArray()) };
-				}
-				return new Object[0];
-			case physics:
-				List<PhysicsAssetModel.SpriteData> sprites = ((PhysicsAssetModel) asset).getSprites();
-				return sprites.toArray();
-			default:
-				break;
-			}
-		}
+		
 
 		return super.getChildren(parent);
 	}

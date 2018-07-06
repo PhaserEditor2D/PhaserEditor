@@ -24,7 +24,6 @@ package phasereditor.assetexplorer.ui.views;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-import phasereditor.assetexplorer.ui.views.AssetExplorer.Container;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.canvas.core.CanvasFile;
 import phasereditor.canvas.core.CanvasType;
@@ -39,10 +38,6 @@ class AssetExplorerLabelProvider extends LabelProvider {
 
 	@Override
 	public String getText(Object element) {
-		if (element instanceof Container) {
-			return ((Container) element).name;
-		}
-
 		if (element instanceof CanvasFile) {
 			return ((CanvasFile) element).getFile().getName();
 		}

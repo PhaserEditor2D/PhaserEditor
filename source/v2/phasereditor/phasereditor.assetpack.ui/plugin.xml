@@ -13,6 +13,13 @@
                contentTypeId="phasereditor.assetpack.contentType">
          </contentTypeBinding>
       </editor>
+      <editor
+            class="phasereditor.assetpack.ui.editors.AssetPackEditor2"
+            default="false"
+            icon="platform:/plugin/phasereditor.ui/icons/box.png"
+            id="phasereditor.assetpack.editor2"
+            name="Asset Pack Editor 2">
+      </editor>
    </extension>
 	<extension
          point="org.eclipse.core.runtime.adapters">
