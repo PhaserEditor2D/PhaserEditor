@@ -41,25 +41,24 @@ public class CanvasPGrid extends PGrid {
 	}
 
 	public CanvasPGrid(Composite parent, int style, boolean supportUndoRedo) {
-		super(parent, style, supportUndoRedo);
+		super(parent, style, supportUndoRedo, false);
 	}
-	
+
 	@Override
 	protected PGridEditingSupport createEditingSupport(TreeViewer viewer, boolean supportUndoRedo) {
 		return new CanvasPGridEditingSupport(viewer, supportUndoRedo);
 	}
-	
 
 	@Override
 	protected PGridValueLabelProvider createValueLabelProvider() {
 		return new CanvasPGridValueLabelProvider(getViewer());
 	}
-	
+
 	@Override
 	public CanvasPGridValueLabelProvider getValueLabelProvider() {
 		return (CanvasPGridValueLabelProvider) super.getValueLabelProvider();
 	}
-	
+
 	@Override
 	public CanvasPGridEditingSupport getEditSupport() {
 		return (CanvasPGridEditingSupport) super.getEditSupport();

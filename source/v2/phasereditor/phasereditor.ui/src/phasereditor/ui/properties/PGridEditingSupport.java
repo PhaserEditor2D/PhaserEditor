@@ -59,9 +59,17 @@ public class PGridEditingSupport extends EditingSupport {
 		return _onChanged;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	protected CellEditor getCellEditor(Object element) {
 		Composite parent = (Composite) getViewer().getControl();
+
+		if (element instanceof PGridProperty) {
+			CellEditor editor = ((PGridProperty) element).createCellEditor(parent, element);
+			if (editor != null) {
+				return editor;
+			}
+		}
 
 		if (element instanceof PGridNumberProperty) {
 			return createNumberEditor(parent);

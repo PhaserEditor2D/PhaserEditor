@@ -25,13 +25,14 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.swt.widgets.Display;
 
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor;
+import phasereditor.assetpack.ui.editors.AssetPackEditor2;
 
 /**
  * @author arian
@@ -40,15 +41,15 @@ import phasereditor.assetpack.ui.editors.AssetPackEditor;
 public class DeleteAssetSectionInEditorChange extends Change {
 
 	private int _index;
-	private AssetPackEditor _editor;
+	private AssetPackEditor2 _editor;
 	private boolean _delete;
 	private String _sectionName;
 
-	public DeleteAssetSectionInEditorChange(String sectionName, AssetPackEditor editor) {
+	public DeleteAssetSectionInEditorChange(String sectionName, AssetPackEditor2 editor) {
 		this(sectionName, editor, true, 0);
 	}
 
-	private DeleteAssetSectionInEditorChange(String sectionName, AssetPackEditor editor, boolean delete, int index) {
+	private DeleteAssetSectionInEditorChange(String sectionName, AssetPackEditor2 editor, boolean delete, int index) {
 		_sectionName = sectionName;
 		_editor = editor;
 		_delete = delete;
@@ -97,8 +98,9 @@ public class DeleteAssetSectionInEditorChange extends Change {
 			} else {
 				pack.addSection(_index, new AssetSectionModel(_sectionName, pack), true);
 			}
-			_editor.getViewer().refresh();
-			_editor.getViewer().setSelection(StructuredSelection.EMPTY);
+			TreeViewer viewer = _editor.getAssetsComp().getViewer();
+			viewer.refresh();
+			viewer.setSelection(StructuredSelection.EMPTY);
 		});
 
 		return new DeleteAssetSectionInEditorChange(_sectionName, _editor, !_delete, index[0]);

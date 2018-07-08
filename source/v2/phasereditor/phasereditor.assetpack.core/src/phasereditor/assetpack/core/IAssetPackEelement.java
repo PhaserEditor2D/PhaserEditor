@@ -19,29 +19,12 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.atlas.ui.editors;
-
-import org.eclipse.swt.widgets.Composite;
+package phasereditor.assetpack.core;
 
 /**
  * @author arian
  *
  */
-public class DemoComp extends Composite {
-
-	/**
-	 * Create the composite.
-	 * @param parent
-	 * @param style
-	 */
-	public DemoComp(Composite parent, int style) {
-		super(parent, style);
-
-	}
-
-	@Override
-	protected void checkSubclass() {
-		// Disable the check that prevents subclassing of SWT components
-	}
-
+public interface IAssetPackEelement {
+	//
 }

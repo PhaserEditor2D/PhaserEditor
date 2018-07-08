@@ -25,8 +25,15 @@ import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.operations.IOperationHistory;
+import org.eclipse.core.commands.operations.IUndoContext;
+import org.eclipse.core.commands.operations.IUndoableOperation;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.Adapters;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.preference.JFacePreferences;
 import org.eclipse.jface.resource.JFaceResources;
@@ -34,8 +41,10 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
@@ -43,6 +52,8 @@ import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -55,18 +66,28 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.dialogs.FilteredTree;
+import org.eclipse.ui.ide.undo.WorkspaceUndoUtil;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
+import org.eclipse.ui.views.properties.IPropertySheetPage;
 
+import phasereditor.assetpack.core.AssetFactory;
 import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AssetType;
+import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
+import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetsContentProvider;
+import phasereditor.assetpack.ui.editors.operations.AddAssetOperation2;
+import phasereditor.lic.LicCore;
+import phasereditor.ui.ComplexSelectionProvider;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.PatternFilter2;
+import phasereditor.ui.properties.PGridPage;
 
 /**
  * @author arian
@@ -74,18 +95,48 @@ import phasereditor.ui.PatternFilter2;
  */
 public class AssetPackEditor2 extends EditorPart {
 
+	public static final IUndoContext UNDO_CONTEXT = new IUndoContext() {
+
+		@Override
+		public boolean matches(IUndoContext context) {
+			return context == this || WorkspaceUndoUtil.getWorkspaceUndoContext().matches(context);
+		}
+
+		@Override
+		public String getLabel() {
+			return "ASSET_PACK_EDITOR_CONTEXT";
+		}
+	};
+
 	private AssetPackModel _model;
 	private Composite _container;
 	private SectionsComp _sectionsComp;
 	private TypesComp _typesComp;
-	private ColumnComp _assetsComp;
+	private AssetsComp _assetsComp;
+
+	private PGridPage _properties;
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
+		_model.save(monitor);
+		firePropertyChange(PROP_DIRTY);
+		saveEditingPoint();
+		refresh();
+	}
+
+	public void refresh() {
+		_sectionsComp.getViewer().refresh();
+		_typesComp.getViewer().refresh();
+		_assetsComp.getViewer().refresh();
+	}
+
+	public void saveEditingPoint() {
+		//
 	}
 
 	@Override
 	public void doSaveAs() {
+		//
 	}
 
 	@Override
@@ -96,7 +147,7 @@ public class AssetPackEditor2 extends EditorPart {
 
 	@Override
 	public boolean isDirty() {
-		return false;
+		return _model.isDirty();
 	}
 
 	@Override
@@ -162,10 +213,18 @@ public class AssetPackEditor2 extends EditorPart {
 
 	}
 
-	class EditableColumnComp extends ColumnComp {
+	class EditableColumnComp extends ColumnComp implements ISelectionChangedListener {
+
+		protected ToolItem _addBtn;
+		protected ToolItem _deleteBtn;
+		protected ToolItem _renameBtn;
 
 		public EditableColumnComp(Composite parent, String title) {
 			super(parent, title);
+
+			getViewer().addSelectionChangedListener(this);
+
+			validateButtons();
 		}
 
 		@Override
@@ -173,20 +232,63 @@ public class AssetPackEditor2 extends EditorPart {
 			{
 				ToolItem item = new ToolItem(toolbar, SWT.NONE);
 				item.setImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_ADD));
+				item.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						onClickedAddButton();
+					}
+				});
+				_addBtn = item;
 			}
 			{
 				ToolItem item = new ToolItem(toolbar, SWT.NONE);
 				item.setImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_DELETE));
+				item.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						onClickedDeleteButton();
+					}
+				});
+				_deleteBtn = item;
 			}
 			{
 				ToolItem item = new ToolItem(toolbar, SWT.NONE);
 				item.setImage(EditorSharedImages.getImage(IEditorSharedImages.IMG_RENAME));
+				item.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						onClickedRenameButton();
+					}
+				});
+				_renameBtn = item;
 			}
 		}
 
+		protected void onClickedAddButton() {
+			//
+		}
+
+		protected void onClickedDeleteButton() {
+			//
+		}
+
+		protected void onClickedRenameButton() {
+			//
+		}
+
+		@Override
+		public void selectionChanged(SelectionChangedEvent event) {
+			validateButtons();
+		}
+
+		private void validateButtons() {
+			ITreeSelection sel = getViewer().getStructuredSelection();
+			_deleteBtn.setEnabled(!sel.isEmpty());
+			_renameBtn.setEnabled(!sel.isEmpty());
+		}
 	}
 
-	class SectionsComp extends EditableColumnComp {
+	public class SectionsComp extends EditableColumnComp {
 
 		public SectionsComp(Composite parent) {
 			super(parent, "Sections");
@@ -216,13 +318,16 @@ public class AssetPackEditor2 extends EditorPart {
 			getViewer().setLabelProvider(AssetLabelProvider.GLOBAL_16);
 		}
 
+		public AssetSectionModel getSelectedSection() {
+			return (AssetSectionModel) getViewer().getStructuredSelection().getFirstElement();
+		}
 	}
 
-	class SectionTypeModel implements Comparable<SectionTypeModel> {
+	class SectionTypePairModel implements Comparable<SectionTypePairModel>, IAdaptable {
 		public AssetSectionModel section;
 		public AssetType type;
 
-		public SectionTypeModel(AssetSectionModel section, AssetType type) {
+		public SectionTypePairModel(AssetSectionModel section, AssetType type) {
 			super();
 			this.section = section;
 			this.type = type;
@@ -233,18 +338,59 @@ public class AssetPackEditor2 extends EditorPart {
 		}
 
 		@Override
-		public int compareTo(SectionTypeModel o) {
+		public int compareTo(SectionTypePairModel o) {
 			return -Integer.compare(getAssets().size(), o.getAssets().size());
+		}
+
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		@Override
+		public Object getAdapter(Class adapter) {
+			return Adapters.adapt(type, adapter);
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + getOuterType().hashCode();
+			result = prime * result + ((section == null) ? 0 : section.hashCode());
+			result = prime * result + ((type == null) ? 0 : type.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			SectionTypePairModel other = (SectionTypePairModel) obj;
+			if (!getOuterType().equals(other.getOuterType()))
+				return false;
+			if (section == null) {
+				if (other.section != null)
+					return false;
+			} else if (!section.equals(other.section))
+				return false;
+			if (type != other.type)
+				return false;
+			return true;
+		}
+
+		private AssetPackEditor2 getOuterType() {
+			return AssetPackEditor2.this;
 		}
 	}
 
-	class TypesColumnLabelProvider extends StyledCellLabelProvider {
+	public class TypesColumnLabelProvider extends StyledCellLabelProvider {
 		@Override
 		public void update(ViewerCell cell) {
 			Color counterColor = JFaceResources.getColorRegistry().get(JFacePreferences.COUNTER_COLOR);
 			Color decorationsColor = JFaceResources.getColorRegistry().get(JFacePreferences.DECORATIONS_COLOR);
 
-			var item = (SectionTypeModel) cell.getElement();
+			var item = (SectionTypePairModel) cell.getElement();
 
 			int countAssets = item.section.getGroup(item.type).getAssets().size();
 
@@ -275,15 +421,43 @@ public class AssetPackEditor2 extends EditorPart {
 		}
 	}
 
-	class TypesComp extends ColumnComp {
+	public class TypesComp extends ColumnComp {
 
 		public TypesComp(Composite parent) {
 			super(parent, "Types");
-			getViewer().setContentProvider(new ArrayAsTreeContentProvider());
+			getViewer().setContentProvider(new ITreeContentProvider() {
+
+				@Override
+				public boolean hasChildren(Object element) {
+					return false;
+				}
+
+				@Override
+				public Object getParent(Object element) {
+					return null;
+				}
+
+				@Override
+				public Object[] getElements(Object inputElement) {
+					return getChildren(inputElement);
+				}
+
+				@Override
+				public Object[] getChildren(Object parentElement) {
+					if (parentElement instanceof AssetSectionModel) {
+						var section = (AssetSectionModel) parentElement;
+						Object[] data = Arrays.stream(AssetType.values()).map(t -> new SectionTypePairModel(section, t))
+								.sorted().toArray();
+						return data;
+					}
+					return new Object[] {};
+				}
+			});
+
 			getViewer().setLabelProvider(new LabelProvider() {
 				@Override
 				public String getText(Object element) {
-					SectionTypeModel item = (SectionTypeModel) element;
+					SectionTypePairModel item = (SectionTypePairModel) element;
 					return item.type.name();
 				}
 			});
@@ -292,16 +466,80 @@ public class AssetPackEditor2 extends EditorPart {
 
 			col.setLabelProvider(new TypesColumnLabelProvider());
 		}
+
+		public AssetType getSelectedType() {
+			SectionTypePairModel sel = (SectionTypePairModel) getViewer().getStructuredSelection().getFirstElement();
+			return sel == null ? null : sel.type;
+		}
 	}
 
-	class AssetsComp extends EditableColumnComp {
+	public class AssetsComp extends EditableColumnComp {
 
 		public AssetsComp(Composite parent) {
 			super(parent, "Assets");
-			getViewer().setLabelProvider(AssetLabelProvider.GLOBAL_48);
-			getViewer().setContentProvider(new AssetsContentProvider(true));
+			TreeViewer viewer = getViewer();
+			viewer.setLabelProvider(AssetLabelProvider.GLOBAL_16);
+			viewer.setContentProvider(new AssetsContentProvider(true) {
+
+				@Override
+				public Object[] getChildren(Object parentElement) {
+
+					if (parentElement instanceof SectionTypePairModel) {
+						return ((SectionTypePairModel) parentElement).getAssets().toArray();
+					}
+
+					return super.getChildren(parentElement);
+				}
+			});
+
+			ISelectionChangedListener listener = e -> {
+				_addBtn.setEnabled(
+						getSectionsComp().getSelectedSection() != null && getTypesComp().getSelectedType() != null);
+			};
+			getSectionsComp().getViewer().addSelectionChangedListener(listener);
+			getTypesComp().getViewer().addSelectionChangedListener(listener);
+
+			listener.selectionChanged(null);
 		}
 
+		@Override
+		protected void onClickedAddButton() {
+			if (LicCore.isEvaluationProduct()) {
+
+				IProject project = getEditorInput().getFile().getProject();
+
+				String rule = AssetPackCore.isFreeVersionAllowed(project);
+				if (rule != null) {
+					LicCore.launchGoPremiumDialogs(rule);
+					return;
+				}
+			}
+
+			try {
+
+				AssetSectionModel section = getSectionsComp().getSelectedSection();
+				AssetType initialType = getTypesComp().getSelectedType();
+
+				AssetFactory factory = AssetFactory.getFactory(initialType);
+
+				if (factory != null) {
+					AssetType type = factory.getType();
+					AssetPackModel pack = getModel();
+					String key = pack.createKey(type.name());
+					AssetModel asset = factory.createAsset(key, section);
+					executeOperation(new AddAssetOperation2(section, asset));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
+		}
+
+		@Override
+		protected void onClickedDeleteButton() {
+			Object[] selection = ((StructuredSelection) getViewer().getSelection()).toArray();
+			AssetPackUI.launchDeleteWizard(selection);
+		}
 	}
 
 	class ArrayAsTreeContentProvider implements ITreeContentProvider {
@@ -354,11 +592,10 @@ public class AssetPackEditor2 extends EditorPart {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				var section = (AssetSectionModel) event.getStructuredSelection().getFirstElement();
-				Object[] data = Arrays.stream(AssetType.values()).map(t -> new SectionTypeModel(section, t)).sorted()
-						.toArray();
-				getTypesComp().getViewer().setInput(data);
+				getTypesComp().getViewer().setInput(section);
 			}
 		});
+
 		_typesComp.getViewer().addSelectionChangedListener(new ISelectionChangedListener() {
 
 			@Override
@@ -368,13 +605,15 @@ public class AssetPackEditor2 extends EditorPart {
 				if (selection.isEmpty()) {
 					input = new Object[] {};
 				} else {
-					var type = (SectionTypeModel) selection.getFirstElement();
-					input = type.getAssets();
+					input = selection.getFirstElement();
 				}
 
 				getAssetsComp().getViewer().setInput(input);
 			}
 		});
+
+		getEditorSite().setSelectionProvider(new ComplexSelectionProvider(_sectionsComp.getViewer(),
+				_typesComp.getViewer(), _assetsComp.getViewer()));
 
 	}
 
@@ -386,7 +625,7 @@ public class AssetPackEditor2 extends EditorPart {
 		return _typesComp;
 	}
 
-	public ColumnComp getAssetsComp() {
+	public AssetsComp getAssetsComp() {
 		return _assetsComp;
 	}
 
@@ -434,4 +673,40 @@ public class AssetPackEditor2 extends EditorPart {
 		_container.setFocus();
 	}
 
+	void executeOperation(IUndoableOperation op) {
+		IOperationHistory history = getEditorSite().getWorkbenchWindow().getWorkbench().getOperationSupport()
+				.getOperationHistory();
+		try {
+			history.execute(op, null, this);
+		} catch (ExecutionException e) {
+			AssetPackUI.showError(e);
+		}
+	}
+
+	public void revealElement(Object elem) {
+		if (elem == null) {
+			return;
+		}
+		Object reveal = elem instanceof IAssetElementModel ? ((IAssetElementModel) elem).getAsset() : elem;
+		TreeViewer viewer;
+		if (elem instanceof AssetModel) {
+			viewer = getAssetsComp().getViewer();
+		} else {
+			viewer = getSectionsComp().getViewer();
+		}
+		viewer.getTree().setFocus();
+		viewer.setSelection(new StructuredSelection(reveal), true);
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public Object getAdapter(Class adapter) {
+		if (adapter == IPropertySheetPage.class) {
+			if (_properties == null) {
+				_properties = new PGridPage(true);
+			}
+			return _properties;
+		}
+		return super.getAdapter(adapter);
+	}
 }

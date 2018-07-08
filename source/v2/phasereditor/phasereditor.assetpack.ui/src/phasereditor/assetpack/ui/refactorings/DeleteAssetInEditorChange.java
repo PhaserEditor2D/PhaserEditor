@@ -28,13 +28,14 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.swt.widgets.Display;
 
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor;
+import phasereditor.assetpack.ui.editors.AssetPackEditor2;
 
 /**
  * @author arian
@@ -44,9 +45,9 @@ public class DeleteAssetInEditorChange extends Change {
 
 	private AssetModel _asset;
 	private int _index;
-	private AssetPackEditor _editor;
+	private AssetPackEditor2 _editor;
 
-	public DeleteAssetInEditorChange(AssetModel asset, AssetPackEditor editor) {
+	public DeleteAssetInEditorChange(AssetModel asset, AssetPackEditor2 editor) {
 		_asset = asset;
 		_editor = editor;
 	}
@@ -65,9 +66,9 @@ public class DeleteAssetInEditorChange extends Change {
 	public RefactoringStatus isValid(IProgressMonitor pm) throws CoreException, OperationCanceledException {
 		RefactoringStatus status = new RefactoringStatus();
 		if (_editor != null) {
-			
+
 			boolean visible = _editor.getEditorSite().getWorkbenchWindow().getActivePage().isPartVisible(_editor);
-			
+
 			if (!visible) {
 				status.addFatalError("The editor is not open.");
 			}
@@ -84,11 +85,12 @@ public class DeleteAssetInEditorChange extends Change {
 		boolean[] reveal = { false };
 
 		Display.getDefault().syncExec(() -> {
-			List<Object> expanded = Arrays.asList(_editor.getViewer().getExpandedElements());
+			TreeViewer viewer = _editor.getAssetsComp().getViewer();
+			List<Object> expanded = Arrays.asList(viewer.getExpandedElements());
 			reveal[0] = expanded.contains(_asset.getGroup());
 			section.removeAsset(_asset);
-			_editor.getViewer().refresh();
-			_editor.getViewer().setSelection(StructuredSelection.EMPTY);
+			viewer.refresh();
+			viewer.setSelection(StructuredSelection.EMPTY);
 		});
 
 		return new AddAssetInEditorChange(_asset, reveal[0], _index, _editor);

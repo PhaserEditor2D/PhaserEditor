@@ -33,7 +33,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class AssetSectionModel implements IAdaptable {
+public class AssetSectionModel implements IAdaptable, IAssetPackEelement {
 	private JSONArray _definition;
 	private String _key;
 	private List<AssetModel> _assets;

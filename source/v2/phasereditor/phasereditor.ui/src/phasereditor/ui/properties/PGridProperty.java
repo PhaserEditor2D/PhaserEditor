@@ -21,6 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui.properties;
 
+import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.swt.widgets.Composite;
+
 /**
  * @author arian
  *
@@ -83,5 +86,10 @@ public abstract class PGridProperty<T> {
 
 	public void setTooltip(String tooltip) {
 		_tooltip = tooltip;
+	}
+
+	@SuppressWarnings({ "static-method", "unused" })
+	public CellEditor createCellEditor(Composite parent, Object element) {
+		return null;
 	}
 }

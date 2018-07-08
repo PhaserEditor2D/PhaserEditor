@@ -353,5 +353,15 @@
          </enablement>
       </moveParticipant>
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="phasereditor.assetpack.core.IAssetPackEelement"
+            class="phasereditor.assetpack.ui.AssetPGrigAdapterFactory">
+         <adapter
+               type="phasereditor.ui.properties.PGridModel">
+         </adapter>
+      </factory>
+   </extension>
    
 </plugin>

@@ -85,6 +85,7 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.VideoAssetModel;
 import phasereditor.assetpack.ui.editors.AssetPackEditor;
+import phasereditor.assetpack.ui.editors.AssetPackEditor2;
 import phasereditor.assetpack.ui.preview.AtlasAssetInformationControl;
 import phasereditor.assetpack.ui.preview.AtlasFrameInformationControl;
 import phasereditor.assetpack.ui.preview.AudioAssetInformationControl;
@@ -133,7 +134,7 @@ public class AssetPackUI {
 		}
 		return result;
 	}
-	
+
 	public static void launchMoveWizard(IStructuredSelection selection) {
 		Object[] selarray = selection.toArray();
 
@@ -185,7 +186,7 @@ public class AssetPackUI {
 		IWorkbenchPart activePart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 				.getActivePart();
 
-		AssetPackEditor editor = activePart instanceof AssetPackEditor ? (AssetPackEditor) activePart : null;
+		AssetPackEditor2 editor = activePart instanceof AssetPackEditor2 ? (AssetPackEditor2) activePart : null;
 
 		AssetDeleteWizard wizard = new AssetDeleteWizard(
 				new DeleteRefactoring(new AssetDeleteProcessor(selection, editor)));
@@ -316,6 +317,10 @@ public class AssetPackUI {
 	}
 
 	public static String browseImageUrl(AssetPackModel packModel, String objectName, IFile curImageFile,
+			List<IFile> imageFiles, Shell shell) {
+		return browseImageUrl(packModel, objectName, curImageFile, imageFiles, shell, null);
+	}
+	public static String browseImageUrl(AssetPackModel packModel, String objectName, IFile curImageFile,
 			List<IFile> imageFiles, Shell shell, Consumer<String> action) {
 
 		Set<IFile> usedFiles = packModel.sortFilesByNotUsed(imageFiles);
@@ -345,7 +350,9 @@ public class AssetPackUI {
 			result = (IFile) dlg.getSelection();
 			if (result != null) {
 				String path = ProjectCore.getAssetUrl(result);
-				action.accept(path);
+				if (action != null) {
+					action.accept(path);
+				}
 				return path;
 			}
 		}

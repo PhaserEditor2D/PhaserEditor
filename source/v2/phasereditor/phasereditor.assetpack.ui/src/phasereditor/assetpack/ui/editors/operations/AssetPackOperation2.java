@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015 Arian Fornaris
+// Copyright (c) 2015, 2016 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -19,12 +19,27 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.core;
+package phasereditor.assetpack.ui.editors.operations;
 
-public enum AssetType implements IAssetPackEelement {
-	image, spritesheet, atlas, audio, audiosprite, video, tilemap, bitmapFont, physics, text, json, xml, script, shader, binary;
+import org.eclipse.core.commands.operations.AbstractOperation;
+import org.eclipse.core.runtime.IAdaptable;
 
-	public String capitalName() {
-		return name().substring(0, 1).toUpperCase() + name().substring(1);
+import phasereditor.assetpack.ui.editors.AssetPackEditor;
+import phasereditor.assetpack.ui.editors.AssetPackEditor2;
+
+/**
+ * @author arian
+ *
+ */
+public abstract class AssetPackOperation2 extends AbstractOperation {
+
+	public AssetPackOperation2(String label) {
+		super(label);
+		addContext(AssetPackEditor2.UNDO_CONTEXT);
 	}
+	
+	public static AssetPackEditor2 getEditor(IAdaptable info) {
+		return info.getAdapter(AssetPackEditor2.class);
+	}
+
 }

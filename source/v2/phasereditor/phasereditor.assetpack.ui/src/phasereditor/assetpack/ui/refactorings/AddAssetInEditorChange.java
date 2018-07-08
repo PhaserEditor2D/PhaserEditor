@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Display;
 
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor;
+import phasereditor.assetpack.ui.editors.AssetPackEditor2;
 
 /**
  * @author arian
@@ -40,9 +40,9 @@ public class AddAssetInEditorChange extends Change {
 	private AssetModel _asset;
 	private boolean _reveal;
 	private int _index;
-	private AssetPackEditor _editor;
+	private AssetPackEditor2 _editor;
 
-	public AddAssetInEditorChange(AssetModel asset, boolean reveal, int index, AssetPackEditor editor) {
+	public AddAssetInEditorChange(AssetModel asset, boolean reveal, int index, AssetPackEditor2 editor) {
 		super();
 		_asset = asset;
 		_reveal = reveal;
@@ -81,7 +81,7 @@ public class AddAssetInEditorChange extends Change {
 		section.addAsset(_index, _asset, false);
 
 		Display.getDefault().syncExec(() -> {
-			_editor.refresh();
+			_editor.getAssetsComp().getViewer().refresh();
 			if (_reveal) {
 				_editor.revealElement(_asset);
 			}

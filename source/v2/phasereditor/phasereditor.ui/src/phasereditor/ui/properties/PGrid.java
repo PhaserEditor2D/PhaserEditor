@@ -66,12 +66,13 @@ public class PGrid extends Composite {
 	private PGridEditingSupport _editSupport;
 	private PGridValueLabelProvider _valueLabelProvider;
 	private PGridKeyLabelProvider _keyLabelProvider;
+	private boolean _alwaysExpandAll;
 
 	public PGrid(Composite parent, int style) {
-		this(parent, style, true);
+		this(parent, style, true, false);
 	}
 
-	public PGrid(Composite parent, int style, boolean supportUndoRedo) {
+	public PGrid(Composite parent, int style, boolean supportUndoRedo, boolean alwaysExpandAll) {
 		super(parent, style);
 
 		setLayout(new FillLayout(SWT.HORIZONTAL));
@@ -114,7 +115,7 @@ public class PGrid extends Composite {
 		trclmnProperty.setText("property");
 
 		_colValue = new TreeViewerColumn(_treeViewer, SWT.NONE);
-		_editSupport = createEditingSupport(_treeViewer,supportUndoRedo);
+		_editSupport = createEditingSupport(_treeViewer, supportUndoRedo);
 		_colValue.setEditingSupport(_editSupport);
 		_valueLabelProvider = createValueLabelProvider();
 		_colValue.setLabelProvider(_valueLabelProvider);
@@ -123,14 +124,16 @@ public class PGrid extends Composite {
 		trclmnValue.setText("value");
 		_treeViewer.setContentProvider(new PGridContentProvider());
 
+		_alwaysExpandAll = alwaysExpandAll;
+
 		afterCreateWidgets();
 
 	}
-	
+
 	public PGridValueLabelProvider getValueLabelProvider() {
 		return _valueLabelProvider;
 	}
-	
+
 	public PGridKeyLabelProvider getKeyLabelProvider() {
 		return _keyLabelProvider;
 	}
@@ -143,7 +146,6 @@ public class PGrid extends Composite {
 		return new PGridValueLabelProvider(getViewer());
 	}
 
-	
 	@SuppressWarnings("static-method")
 	protected PGridEditingSupport createEditingSupport(TreeViewer viewer, boolean supportUndoRedo) {
 		return new PGridEditingSupport(viewer, supportUndoRedo);
@@ -152,7 +154,7 @@ public class PGrid extends Composite {
 	public PGridEditingSupport getEditSupport() {
 		return _editSupport;
 	}
-	
+
 	protected void setPropertyToNull() {
 		Object elem = _treeViewer.getStructuredSelection().getFirstElement();
 		if (elem != null && elem instanceof PGridProperty) {
@@ -250,28 +252,28 @@ public class PGrid extends Composite {
 			}
 		});
 
-//		if (!PhaserEditorUI.isMacPlatform()) {
-//			_tree.addListener(SWT.EraseItem, new Listener() {
-//
-//				@Override
-//				public void handleEvent(Event event) {
-//					GC gc = event.gc;
-//
-//					TreeItem item = _tree.getItem(new Point(event.x, event.y));
-//					if (item == null) {
-//						return;
-//					}
-//
-//					Object element = item.getData();
-//					if (PGridLabelProvider.isModified(element)) {
-//						RGB rgb = PGridLabelProvider
-//								.brighter(PGridLabelProvider.brighter(_tree.getBackground().getRGB()));
-//						gc.setBackground(SWTResourceManager.getColor(rgb));
-//						gc.fillRectangle(0, event.y, _tree.getClientArea().width, event.height);
-//					}
-//				}
-//			});
-//		}
+		// if (!PhaserEditorUI.isMacPlatform()) {
+		// _tree.addListener(SWT.EraseItem, new Listener() {
+		//
+		// @Override
+		// public void handleEvent(Event event) {
+		// GC gc = event.gc;
+		//
+		// TreeItem item = _tree.getItem(new Point(event.x, event.y));
+		// if (item == null) {
+		// return;
+		// }
+		//
+		// Object element = item.getData();
+		// if (PGridLabelProvider.isModified(element)) {
+		// RGB rgb = PGridLabelProvider
+		// .brighter(PGridLabelProvider.brighter(_tree.getBackground().getRGB()));
+		// gc.setBackground(SWTResourceManager.getColor(rgb));
+		// gc.fillRectangle(0, event.y, _tree.getClientArea().width, event.height);
+		// }
+		// }
+		// });
+		// }
 	}
 
 	private PGridModel _model;
@@ -298,36 +300,41 @@ public class PGrid extends Composite {
 			Object[] selected = ((IStructuredSelection) _treeViewer.getSelection()).toArray();
 
 			_treeViewer.getTree().setRedraw(false);
+
 			try {
 				_treeViewer.setInput(model);
 
-				List<Object> toexpand = new ArrayList<>();
-				List<Object> toselect = new ArrayList<>();
-				for (PGridSection section : model.getSections()) {
+				if (_alwaysExpandAll) {
+					_treeViewer.expandAll();
+				} else {
+					List<Object> toexpand = new ArrayList<>();
+					List<Object> toselect = new ArrayList<>();
+					for (PGridSection section : model.getSections()) {
 
-					for (Object obj : expanded) {
-						if (obj instanceof PGridSection) {
-							if (((PGridSection) obj).getName().equals(section.getName())) {
-								toexpand.add(section);
+						for (Object obj : expanded) {
+							if (obj instanceof PGridSection) {
+								if (((PGridSection) obj).getName().equals(section.getName())) {
+									toexpand.add(section);
+								}
 							}
 						}
-					}
 
-					for (PGridProperty<?> prop : section) {
-						for (Object sel : selected) {
-							if (sel instanceof PGridProperty) {
-								String name = ((PGridProperty<?>) sel).getName();
-								if (name.equals(prop.getName())) {
-									toselect.add(prop);
+						for (PGridProperty<?> prop : section) {
+							for (Object sel : selected) {
+								if (sel instanceof PGridProperty) {
+									String name = ((PGridProperty<?>) sel).getName();
+									if (name.equals(prop.getName())) {
+										toselect.add(prop);
+									}
 								}
 							}
 						}
 					}
-				}
 
-				_treeViewer.setExpandedElements(toexpand.toArray());
-				_treeViewer.setSelection(new StructuredSelection(toselect.toArray()));
-				_tree.showSelection();
+					_treeViewer.setExpandedElements(toexpand.toArray());
+					_treeViewer.setSelection(new StructuredSelection(toselect.toArray()));
+					_tree.showSelection();
+				}
 			} finally {
 				_treeViewer.getTree().setRedraw(true);
 			}

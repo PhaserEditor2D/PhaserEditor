@@ -27,7 +27,7 @@ import java.util.List;
  * @author arian
  *
  */
-public interface IAssetKey {
+public interface IAssetKey extends IAssetPackEelement {
 	public String getKey();
 
 	public AssetModel getAsset();
@@ -37,8 +37,8 @@ public interface IAssetKey {
 	}
 
 	/**
-	 * An asset key is out-dated after a pack build. This method return if this
-	 * is the fresh instance.
+	 * An asset key is out-dated after a pack build. This method return if this is
+	 * the fresh instance.
 	 * 
 	 * @return
 	 */

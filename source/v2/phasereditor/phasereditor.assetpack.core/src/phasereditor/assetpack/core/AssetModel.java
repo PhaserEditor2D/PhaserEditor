@@ -59,7 +59,7 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 
 	static {
 		PhaserJsdocModel jsdoc = PhaserJsdocModel.getInstance();
-		PhaserType phaserType = jsdoc.getContainerMap().get("Phaser.Loader").castType();
+		PhaserType phaserType = jsdoc.getContainerMap().get("Phaser.Loader.LoaderPlugin").castType();
 
 		// the phaserType can be null if the phaser version is wrong.
 		if (phaserType != null) {

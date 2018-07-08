@@ -19,60 +19,63 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.ui.properties;
+package phasereditor.ui;
 
-import org.eclipse.core.runtime.Adapters;
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.part.Page;
-import org.eclipse.ui.views.properties.IPropertySheetPage;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredViewer;
 
 /**
  * @author arian
  *
  */
-public class PGridPage extends Page implements IPropertySheetPage {
+public class ComplexSelectionProvider implements ISelectionProvider {
 
-	private PGrid _grid;
-	private boolean _alwaysExandAll;
+	private StructuredViewer[] _viewers;
+	private ListenerList<ISelectionChangedListener> _listeners;
+	private ISelection _selection;
 
-	public PGridPage(boolean alwaysExpandAll) {
-		_alwaysExandAll = alwaysExpandAll;
-	}
+	public ComplexSelectionProvider(StructuredViewer... viewers) {
+		super();
+		_viewers = viewers;
+		_listeners = new ListenerList<>();
 
-	@Override
-	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		if (selection.isEmpty()) {
-			_grid.setModel(null);
-		}
+		ISelectionChangedListener l = e -> {
+			setSelection(e.getSelection());
+		};
 
-		if (selection instanceof IStructuredSelection) {
-			Object elem = ((IStructuredSelection) selection).getFirstElement();
-			PGridModel model = Adapters.adapt(elem, PGridModel.class);
-			_grid.setModel(model);
+		for (var viewer : _viewers) {
+			viewer.addSelectionChangedListener(l);
 		}
 	}
 
 	@Override
-	public void createControl(Composite parent) {
-		_grid = new PGrid(parent, SWT.NONE, false, _alwaysExandAll);
+	public void addSelectionChangedListener(ISelectionChangedListener listener) {
+		_listeners.add(listener);
 	}
 
 	@Override
-	public Control getControl() {
-		return _grid;
+	public ISelection getSelection() {
+		return _selection;
 	}
 
 	@Override
-	public void setFocus() {
-		_grid.setFocus();
+	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
+		_listeners.remove(listener);
 	}
 
-	public PGrid getGrid() {
-		return _grid;
+	@Override
+	public void setSelection(ISelection selection) {
+		_selection = selection;
+
+		var e = new SelectionChangedEvent(this, selection);
+
+		for (var l : _listeners) {
+			l.selectionChanged(e);
+		}
 	}
+
 }

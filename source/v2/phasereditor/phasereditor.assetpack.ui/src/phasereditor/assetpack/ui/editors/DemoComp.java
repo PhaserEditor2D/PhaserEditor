@@ -19,36 +19,29 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.atlas.ui.editors;
+package phasereditor.assetpack.ui.editors;
 
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.ui.IWorkbenchPart;
-
-import phasereditor.ui.properties.PGridPage;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * @author arian
  *
  */
-public class TexturePackerPGridPage extends PGridPage {
+public class DemoComp extends Composite {
 
-	private TexturePackerEditor _editor;
+	/**
+	 * Create the composite.
+	 * @param parent
+	 * @param style
+	 */
+	public DemoComp(Composite parent, int style) {
+		super(parent, style);
 
-	public TexturePackerPGridPage(TexturePackerEditor editor) {
-		super(true);
-		_editor = editor;
 	}
 
 	@Override
-	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		if (selection.isEmpty()) {
-			super.selectionChanged(part, new StructuredSelection(_editor.getModel()));
-		} else {
-			super.selectionChanged(part, selection);
-		}
-
-		getGrid().getViewer().expandAll();
+	protected void checkSubclass() {
+		// Disable the check that prevents subclassing of SWT components
 	}
 
 }
