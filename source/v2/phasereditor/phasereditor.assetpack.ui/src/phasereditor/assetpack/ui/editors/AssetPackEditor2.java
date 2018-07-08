@@ -424,7 +424,7 @@ public class AssetPackEditor2 extends EditorPart {
 	public class TypesComp extends ColumnComp {
 
 		public TypesComp(Composite parent) {
-			super(parent, "Types");
+			super(parent, "File Types");
 			getViewer().setContentProvider(new ITreeContentProvider() {
 
 				@Override
@@ -476,7 +476,7 @@ public class AssetPackEditor2 extends EditorPart {
 	public class AssetsComp extends EditableColumnComp {
 
 		public AssetsComp(Composite parent) {
-			super(parent, "Assets");
+			super(parent, "Files");
 			TreeViewer viewer = getViewer();
 			viewer.setLabelProvider(AssetLabelProvider.GLOBAL_16);
 			viewer.setContentProvider(new AssetsContentProvider(true) {

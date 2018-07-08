@@ -71,7 +71,7 @@ public class AssetPGrigAdapterFactory implements IAdapterFactory {
 		public AssetTypePGridModel(AssetType type) {
 			_type = type;
 
-			PGridSection section = new PGridSection("Asset Type");
+			PGridSection section = new PGridSection("File Type");
 
 			section.add(new PGridInfoProperty("name", _type::name));
 

@@ -43,6 +43,7 @@ import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
+import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.core.AudioAssetModel;
@@ -117,7 +118,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 	}
 
 	public static Image getGroupImage() {
-		return EditorSharedImages.getImage(IMG_ASSET_GROUP);
+		return EditorSharedImages.getImage(IMG_TYPE_VARIABLE_OBJ);
 	}
 
 	@Override
@@ -247,9 +248,9 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 			return getSectionImage();
 		}
 
-		// if (element instanceof AssetGroupModel) {
-		// return getGroupImage();
-		// }
+		if (element instanceof AssetGroupModel) {
+			return getGroupImage();
+		}
 
 		if (element instanceof AssetModel) {
 			return getKeyImage();
@@ -267,7 +268,15 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 			return EditorSharedImages.getImage(IEditorSharedImages.IMG_IMAGES);
 		}
 
+		if (element instanceof AssetType) {
+			return getFileTypeImage();
+		}
+
 		return getFolderImage();
+	}
+
+	public static Image getFileTypeImage() {
+		return EditorSharedImages.getImage(IEditorSharedImages.IMG_TYPE_VARIABLE_OBJ);
 	}
 
 	public static Image getPackageImage() {
