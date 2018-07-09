@@ -26,10 +26,8 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -47,38 +45,20 @@ import org.eclipse.core.runtime.Status;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import phasereditor.inspect.core.jsdoc.IPhaserMember;
-import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
+import phasereditor.inspect.core.jsdoc.IJsdocProvider;
+import phasereditor.inspect.core.jsdoc.PhaserMemberJsdocProvider;
 import phasereditor.inspect.core.jsdoc.PhaserMethod;
-import phasereditor.inspect.core.jsdoc.PhaserType;
 import phasereditor.inspect.core.jsdoc.PhaserVariable;
 import phasereditor.project.core.ProjectCore;
 
 public abstract class AssetModel implements IAssetKey, IAdaptable {
-	private static Map<AssetType, PhaserMethod> _methodMap = new HashMap<>();
-
-	static {
-		PhaserJsdocModel jsdoc = PhaserJsdocModel.getInstance();
-		PhaserType phaserType = jsdoc.getContainerMap().get("Phaser.Loader.LoaderPlugin").castType();
-
-		// the phaserType can be null if the phaser version is wrong.
-		if (phaserType != null) {
-
-			Map<String, IPhaserMember> map = phaserType.getMemberMap();
-
-			for (AssetType assetType : AssetType.values()) {
-				PhaserMethod method = (PhaserMethod) map.get(assetType.name());
-				_methodMap.put(assetType, method);
-			}
-		}
-	}
 
 	@Override
 	public boolean isSharedVersion() {
 		AssetPackModel pack = getPack();
 		return pack.isSharedVersion() && pack.getSections().contains(_section) && _section.getAssets().contains(this);
 	}
-	
+
 	@Override
 	public final AssetModel getSharedVersion() {
 		if (isSharedVersion()) {
@@ -111,7 +91,7 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 	}
 
 	public static String getHelp(AssetType type) throws JSONException {
-		PhaserMethod method = _methodMap.get(type);
+		PhaserMethod method = AssetType.getMethodMap().get(type);
 
 		if (method == null) {
 			return "<Help not found>";
@@ -122,7 +102,7 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 	}
 
 	public static String getHelp(AssetType type, String parameter) throws JSONException {
-		PhaserMethod method = _methodMap.get(type);
+		PhaserMethod method = type.getPhaserMethod();
 
 		if (method == null) {
 			return "<Help not found>";
@@ -414,6 +394,10 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Object getAdapter(Class adapter) {
+		if (adapter == IJsdocProvider.class) {
+			return new PhaserMemberJsdocProvider(getType().getPhaserMethod());
+		}
+
 		return null;
 	}
 

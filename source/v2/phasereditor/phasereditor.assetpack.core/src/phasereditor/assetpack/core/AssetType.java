@@ -21,10 +21,60 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core;
 
-public enum AssetType implements IAssetPackEelement {
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.core.runtime.IAdaptable;
+
+import phasereditor.inspect.core.jsdoc.IJsdocProvider;
+import phasereditor.inspect.core.jsdoc.IPhaserMember;
+import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
+import phasereditor.inspect.core.jsdoc.PhaserMemberJsdocProvider;
+import phasereditor.inspect.core.jsdoc.PhaserMethod;
+import phasereditor.inspect.core.jsdoc.PhaserType;
+
+public enum AssetType implements IAssetPackEelement, IAdaptable {
 	image, spritesheet, atlas, audio, audiosprite, video, tilemap, bitmapFont, physics, text, json, xml, script, shader, binary;
 
 	public String capitalName() {
 		return name().substring(0, 1).toUpperCase() + name().substring(1);
 	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public Object getAdapter(Class adapter) {
+		if (adapter == IJsdocProvider.class) {
+			return new PhaserMemberJsdocProvider(getPhaserMethod());
+		}
+
+		return null;
+	}
+
+	private static Map<AssetType, PhaserMethod> _methodMap;
+
+	public static Map<AssetType, PhaserMethod> getMethodMap() {
+		if (_methodMap == null) {
+			_methodMap = new HashMap<>();
+			PhaserJsdocModel jsdoc = PhaserJsdocModel.getInstance();
+			PhaserType phaserType = jsdoc.getContainerMap().get("Phaser.Loader.LoaderPlugin").castType();
+
+			// the phaserType can be null if the phaser version is wrong.
+			if (phaserType != null) {
+
+				Map<String, IPhaserMember> map = phaserType.getMemberMap();
+
+				for (AssetType assetType : AssetType.values()) {
+					PhaserMethod method = (PhaserMethod) map.get(assetType.name());
+					_methodMap.put(assetType, method);
+				}
+			}
+
+		}
+		return _methodMap;
+	}
+
+	public PhaserMethod getPhaserMethod() {
+		return getMethodMap().get(this);
+	}
+
 }

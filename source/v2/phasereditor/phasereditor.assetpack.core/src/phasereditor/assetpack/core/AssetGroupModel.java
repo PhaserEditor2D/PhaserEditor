@@ -24,7 +24,10 @@ package phasereditor.assetpack.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.Adapters;
 import org.eclipse.core.runtime.IAdaptable;
+
+import phasereditor.inspect.core.jsdoc.IJsdocProvider;
 
 public class AssetGroupModel implements Comparable<AssetGroupModel>, IAdaptable, IAssetPackEelement {
 	private AssetType _type;
@@ -58,6 +61,9 @@ public class AssetGroupModel implements Comparable<AssetGroupModel>, IAdaptable,
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
+		if (adapter == IJsdocProvider.class) {
+			return Adapters.adapt(_type, adapter);
+		}
 		return null;
 	}
 	
