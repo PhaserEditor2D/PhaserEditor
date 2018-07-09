@@ -26,7 +26,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
 
-public class AssetGroupModel implements Comparable<AssetGroupModel>, IAdaptable {
+public class AssetGroupModel implements Comparable<AssetGroupModel>, IAdaptable, IAssetPackEelement {
 	private AssetType _type;
 	private AssetSectionModel _section;
 

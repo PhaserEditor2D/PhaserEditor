@@ -11,9 +11,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.PlatformUI;
 
+import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.ui.editors.AssetPackEditor2;
 import phasereditor.ui.properties.PGridInfoProperty;
@@ -33,8 +33,8 @@ public class AssetPGrigAdapterFactory implements IAdapterFactory {
 
 			if (adaptableObject instanceof AssetSectionModel) {
 				return new SectionPGridModel((AssetSectionModel) adaptableObject);
-			} else if (adaptableObject instanceof AssetType) {
-				return new AssetTypePGridModel((AssetType) adaptableObject);
+			} else if (adaptableObject instanceof AssetGroupModel) {
+				return new AssetGroupPGridModel((AssetGroupModel) adaptableObject);
 			} else if (adaptableObject instanceof ImageAssetModel) {
 				return new ImageAssetPGridModel((ImageAssetModel) adaptableObject);
 			}
@@ -64,16 +64,13 @@ public class AssetPGrigAdapterFactory implements IAdapterFactory {
 		}
 	}
 
-	static class AssetTypePGridModel extends PGridModel {
+	static class AssetGroupPGridModel extends PGridModel {
 
-		private AssetType _type;
-
-		public AssetTypePGridModel(AssetType type) {
-			_type = type;
-
+		public AssetGroupPGridModel(AssetGroupModel group) {
+			
 			PGridSection section = new PGridSection("File Type");
 
-			section.add(new PGridInfoProperty("name", _type::name));
+			section.add(new PGridInfoProperty("name", group.getType()::name));
 
 			getSections().add(section);
 		}
