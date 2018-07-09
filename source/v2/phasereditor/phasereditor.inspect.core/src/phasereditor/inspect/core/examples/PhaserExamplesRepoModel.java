@@ -168,21 +168,66 @@ public class PhaserExamplesRepoModel {
 					//
 				}
 
-				for (Path requiredFile : requiredFiles) {
-					String assetRelPath = _examplesFolderPath.relativize(requiredFile).toString().replace("\\", "/");
+				for (Path file : requiredFiles) {
+					String assetRelPath = _examplesFolderPath.relativize(file).toString().replace("\\", "/");
+
+					boolean fileAdded = false;
+
 					if (content.contains(assetRelPath) || content.contains("../" + assetRelPath)) {
-						exampleModel.addMapping(_examplesFolderPath.relativize(requiredFile), assetRelPath);
+						exampleModel.addMapping(_examplesFolderPath.relativize(file), assetRelPath);
+						fileAdded = true;
 					}
 
-					if (loaderPath != null) {
-						String loaderRelPath = _examplesFolderPath.resolve(loaderPath).relativize(requiredFile)
-								.toString().replace("\\", "/");
+					if (!fileAdded) {
+						if (loaderPath != null) {
+							String loaderRelPath = _examplesFolderPath.resolve(loaderPath).relativize(file).toString()
+									.replace("\\", "/");
 
-						// out.println("Test with loader path: " + assetRelPath);
+							// out.println("Test with loader path: " + assetRelPath);
 
-						if (content.contains(loaderRelPath)) {
-							out.println("Mapping from loader sub-path: " + loaderRelPath + " -> " + assetRelPath);
-							exampleModel.addMapping(_examplesFolderPath.relativize(requiredFile), assetRelPath);
+							if (content.contains(loaderRelPath)) {
+								out.println("Mapping from loader sub-path: " + loaderRelPath + " -> " + assetRelPath);
+								exampleModel.addMapping(_examplesFolderPath.relativize(file), assetRelPath);
+								fileAdded = true;
+							}
+						}
+					}
+
+					if (fileAdded) {
+						if (file.getFileName().toString().endsWith(".json")) {
+							// check if it is an asset pack
+							try {
+
+								JSONObject jsonPack = new JSONObject(file);
+
+								JSONObject jsonMeta = jsonPack.getJSONObject("meta");
+
+								if (jsonMeta.getString("url").equals("https://phaser.io")) {
+									if (jsonMeta.getString("app").toLowerCase().contains("asset")) {
+										// ok, it is a pack
+										out.println("Processing pack: " + assetRelPath);
+										for(var key : jsonPack.keySet()) {
+											if (key.equals("meta")) {
+												continue;
+											}
+											var jsonSection = jsonPack.getJSONObject(key);
+											var jsonFiles = jsonSection.getJSONArray("files");
+											for(int i = 0; i < jsonFiles.length(); i++) {
+												var jsonFile = jsonFiles.getJSONObject(i);
+												if (jsonFile.has("url")) {
+													var url = jsonFile.getString("url");
+													out.println("\tPack url: " + url);
+												}
+											}
+										}
+									}
+								}
+							} catch (Exception e) {
+								// nothing
+							}
+							
+							// check if it is a multi-atlas
+							// TODO: missing implementation
 						}
 					}
 				}

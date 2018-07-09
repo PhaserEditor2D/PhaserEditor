@@ -1,5 +1,7 @@
 package org.json;
 
+import java.io.File;
+
 /*
  Copyright (c) 2002 JSON.org
 
@@ -31,6 +33,7 @@ import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -325,6 +328,20 @@ public class JSONObject {
 		}
 	}
 
+	/**
+	 * @author arian
+	 */
+	public JSONObject(Path path) throws JSONException, IOException {
+		this(new JSONTokener(path));
+	}
+	
+	/**
+	 * @author arian
+	 */
+	public JSONObject(File file) throws JSONException, IOException {
+		this(new JSONTokener(file));
+	}
+	
 	/**
 	 * Construct a JSONObject from a JSONTokener.
 	 *
