@@ -40,8 +40,8 @@ public class ComplexSelectionProvider implements ISelectionProvider {
 
 	public ComplexSelectionProvider(StructuredViewer... viewers) {
 		super();
-		_viewers = viewers;
 		_listeners = new ListenerList<>();
+		_viewers = viewers;
 
 		ISelectionChangedListener l = e -> {
 			setSelection(e.getSelection());

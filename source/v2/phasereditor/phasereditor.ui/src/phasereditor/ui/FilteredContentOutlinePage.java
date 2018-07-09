@@ -176,5 +176,13 @@ public class FilteredContentOutlinePage extends Page implements IContentOutlineP
 			treeViewer.setSelection(selection);
 		}
 	}
+	
+	public TreeViewer getViewer() {
+		return getTreeViewer();
+	}
+
+	public void refresh() {
+		getTreeViewer().refresh();
+	}
 
 }

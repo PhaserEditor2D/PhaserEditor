@@ -1066,14 +1066,6 @@ public class TexturePackerEditor extends EditorPart
 		public TexturePackerContentOutlinePage() {
 		}
 
-		public TreeViewer getViewer() {
-			return getTreeViewer();
-		}
-
-		public void refresh() {
-			getTreeViewer().refresh();
-		}
-
 		@Override
 		public void createControl(Composite parent) {
 			super.createControl(parent);

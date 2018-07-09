@@ -33,7 +33,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ltk.ui.refactoring;bundle-version="3.8.0",
  phasereditor.bmpfont.ui;bundle-version="1.5.0",
  phasereditor.bmpfont.core;bundle-version="1.5.0",
- phasereditor.lic;bundle-version="1.4.4"
+ phasereditor.lic;bundle-version="1.4.4",
+ org.eclipse.ui.views;bundle-version="3.9.100"
 Bundle-RequiredExecutionEnvironment: JavaSE-9
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.assetpack.ui,

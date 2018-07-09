@@ -23,7 +23,9 @@ package phasereditor.assetpack.ui.editors;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.IOperationHistory;
@@ -32,12 +34,11 @@ import org.eclipse.core.commands.operations.IUndoableOperation;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.Adapters;
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.preference.JFacePreferences;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -69,15 +70,18 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.ide.undo.WorkspaceUndoUtil;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 
 import phasereditor.assetpack.core.AssetFactory;
+import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.IAssetElementModel;
+import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetsContentProvider;
@@ -85,6 +89,7 @@ import phasereditor.assetpack.ui.editors.operations.AddAssetOperation2;
 import phasereditor.lic.LicCore;
 import phasereditor.ui.ComplexSelectionProvider;
 import phasereditor.ui.EditorSharedImages;
+import phasereditor.ui.FilteredContentOutlinePage;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.PatternFilter2;
 import phasereditor.ui.properties.PGridPage;
@@ -116,6 +121,20 @@ public class AssetPackEditor2 extends EditorPart {
 
 	private PGridPage _properties;
 
+	private AssetPackEditorOutlinePage _outliner;
+
+	public AssetPackEditorOutlinePage getOutliner() {
+		return _outliner;
+	}
+
+	public void setOutliner(AssetPackEditorOutlinePage outliner) {
+		_outliner = outliner;
+	}
+
+	public PGridPage getProperties() {
+		return _properties;
+	}
+
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 		_model.save(monitor);
@@ -128,6 +147,9 @@ public class AssetPackEditor2 extends EditorPart {
 		_sectionsComp.getViewer().refresh();
 		_typesComp.getViewer().refresh();
 		_assetsComp.getViewer().refresh();
+		if (_outliner != null) {
+			_outliner.refresh();
+		}
 	}
 
 	public void saveEditingPoint() {
@@ -195,7 +217,7 @@ public class AssetPackEditor2 extends EditorPart {
 			}
 
 			{
-				FilteredTree tree = new FilteredTree(this, SWT.NONE, new PatternFilter2(), true);
+				FilteredTree tree = new FilteredTree(this, SWT.MULTI, new PatternFilter2(), true);
 				tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 				_viewer = tree.getViewer();
 			}
@@ -323,81 +345,20 @@ public class AssetPackEditor2 extends EditorPart {
 		}
 	}
 
-	class SectionTypePairModel implements Comparable<SectionTypePairModel>, IAdaptable {
-		public AssetSectionModel section;
-		public AssetType type;
-
-		public SectionTypePairModel(AssetSectionModel section, AssetType type) {
-			super();
-			this.section = section;
-			this.type = type;
-		}
-
-		public List<AssetModel> getAssets() {
-			return section.getGroup(type).getAssets();
-		}
-
-		@Override
-		public int compareTo(SectionTypePairModel o) {
-			return -Integer.compare(getAssets().size(), o.getAssets().size());
-		}
-
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		@Override
-		public Object getAdapter(Class adapter) {
-			return Adapters.adapt(type, adapter);
-		}
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + getOuterType().hashCode();
-			result = prime * result + ((section == null) ? 0 : section.hashCode());
-			result = prime * result + ((type == null) ? 0 : type.hashCode());
-			return result;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			SectionTypePairModel other = (SectionTypePairModel) obj;
-			if (!getOuterType().equals(other.getOuterType()))
-				return false;
-			if (section == null) {
-				if (other.section != null)
-					return false;
-			} else if (!section.equals(other.section))
-				return false;
-			if (type != other.type)
-				return false;
-			return true;
-		}
-
-		private AssetPackEditor2 getOuterType() {
-			return AssetPackEditor2.this;
-		}
-	}
-
 	public class TypesColumnLabelProvider extends StyledCellLabelProvider {
 		@Override
 		public void update(ViewerCell cell) {
 			Color counterColor = JFaceResources.getColorRegistry().get(JFacePreferences.COUNTER_COLOR);
 			Color decorationsColor = JFaceResources.getColorRegistry().get(JFacePreferences.DECORATIONS_COLOR);
 
-			var item = (SectionTypePairModel) cell.getElement();
+			var item = (AssetGroupModel) cell.getElement();
 
-			int countAssets = item.section.getGroup(item.type).getAssets().size();
+			int countAssets = item.getAssets().size();
 
 			String text;
 			StyleRange[] styles;
 
-			String name = item.type.name();
+			String name = item.getType().name();
 			if (countAssets > 0) {
 				text = name + " (" + countAssets + ")";
 				int start = name.length();
@@ -417,7 +378,7 @@ public class AssetPackEditor2 extends EditorPart {
 
 			cell.setStyleRanges(styles);
 			cell.setText(text);
-			cell.setImage(AssetLabelProvider.GLOBAL_16.getImage(item.type));
+			cell.setImage(AssetLabelProvider.GLOBAL_16.getImage(item.getType()));
 		}
 	}
 
@@ -446,8 +407,9 @@ public class AssetPackEditor2 extends EditorPart {
 				public Object[] getChildren(Object parentElement) {
 					if (parentElement instanceof AssetSectionModel) {
 						var section = (AssetSectionModel) parentElement;
-						Object[] data = Arrays.stream(AssetType.values()).map(t -> new SectionTypePairModel(section, t))
-								.sorted().toArray();
+						Object[] data = Arrays.stream(AssetType.values()).map(t -> section.getGroup(t))
+								.sorted((a, b) -> -Integer.compare(a.getAssets().size(), b.getAssets().size()))
+								.toArray();
 						return data;
 					}
 					return new Object[] {};
@@ -457,8 +419,8 @@ public class AssetPackEditor2 extends EditorPart {
 			getViewer().setLabelProvider(new LabelProvider() {
 				@Override
 				public String getText(Object element) {
-					SectionTypePairModel item = (SectionTypePairModel) element;
-					return item.type.name();
+					var item = (AssetGroupModel) element;
+					return item.getType().name();
 				}
 			});
 			var col = new TreeViewerColumn(getViewer(), SWT.NONE);
@@ -468,8 +430,8 @@ public class AssetPackEditor2 extends EditorPart {
 		}
 
 		public AssetType getSelectedType() {
-			SectionTypePairModel sel = (SectionTypePairModel) getViewer().getStructuredSelection().getFirstElement();
-			return sel == null ? null : sel.type;
+			var sel = (AssetGroupModel) getViewer().getStructuredSelection().getFirstElement();
+			return sel == null ? null : sel.getType();
 		}
 	}
 
@@ -479,18 +441,7 @@ public class AssetPackEditor2 extends EditorPart {
 			super(parent, "Files");
 			TreeViewer viewer = getViewer();
 			viewer.setLabelProvider(AssetLabelProvider.GLOBAL_16);
-			viewer.setContentProvider(new AssetsContentProvider(true) {
-
-				@Override
-				public Object[] getChildren(Object parentElement) {
-
-					if (parentElement instanceof SectionTypePairModel) {
-						return ((SectionTypePairModel) parentElement).getAssets().toArray();
-					}
-
-					return super.getChildren(parentElement);
-				}
-			});
+			viewer.setContentProvider(new AssetsContentProvider(true));
 
 			ISelectionChangedListener listener = e -> {
 				_addBtn.setEnabled(
@@ -593,6 +544,12 @@ public class AssetPackEditor2 extends EditorPart {
 			public void selectionChanged(SelectionChangedEvent event) {
 				var section = (AssetSectionModel) event.getStructuredSelection().getFirstElement();
 				getTypesComp().getViewer().setInput(section);
+
+				if (getSectionsComp().getViewer().getTree().isFocusControl()) {
+					if (getOutliner() != null) {
+						getOutliner().revealAndSelect(event.getStructuredSelection());
+					}
+				}
 			}
 		});
 
@@ -609,6 +566,24 @@ public class AssetPackEditor2 extends EditorPart {
 				}
 
 				getAssetsComp().getViewer().setInput(input);
+
+				if (getTypesComp().getViewer().getTree().isFocusControl()) {
+					if (getOutliner() != null) {
+						getOutliner().revealAndSelect(event.getStructuredSelection());
+					}
+				}
+			}
+		});
+
+		_assetsComp.getViewer().addSelectionChangedListener(new ISelectionChangedListener() {
+
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				if (getAssetsComp().getViewer().getTree().isFocusControl()) {
+					if (getOutliner() != null) {
+						getOutliner().revealAndSelect(event.getStructuredSelection());
+					}
+				}
 			}
 		});
 
@@ -698,6 +673,87 @@ public class AssetPackEditor2 extends EditorPart {
 		viewer.setSelection(new StructuredSelection(reveal), true);
 	}
 
+	class AssetPackEditorOutlinePage extends FilteredContentOutlinePage {
+		private ISelectionChangedListener _listener;
+
+		public AssetPackEditorOutlinePage() {
+		}
+
+		public void revealAndSelect(IStructuredSelection selection) {
+			TreeViewer viewer = getViewer();
+
+			var iter = selection.iterator();
+			while (iter.hasNext()) {
+				var elem = iter.next();
+				if (elem instanceof AssetGroupModel) {
+					viewer.expandToLevel(((AssetGroupModel) elem).getSection(), 1);
+				} else if (elem instanceof IAssetKey) {
+					AssetModel asset = ((IAssetKey) elem).getAsset();
+					AssetSectionModel section = asset.getSection();
+					viewer.expandToLevel(section, 1);
+					viewer.expandToLevel(asset, 1);
+				}
+			}
+
+			viewer.setSelection(selection);
+
+		}
+
+		@Override
+		public void createControl(Composite parent) {
+			super.createControl(parent);
+
+			TreeViewer viewer = getTreeViewer();
+			viewer.setLabelProvider(AssetLabelProvider.GLOBAL_16);
+			viewer.setContentProvider(new AssetsContentProvider(true));
+			viewer.setInput(getModel());
+			viewer.addSelectionChangedListener(_listener = new ISelectionChangedListener() {
+
+				@Override
+				public void selectionChanged(SelectionChangedEvent event) {
+					if (!viewer.getTree().isFocusControl()) {
+						return;
+					}
+
+					Set<Object> clousure = new HashSet<>();
+
+					for (var elem : event.getStructuredSelection().toList()) {
+						clousure.add(elem);
+						if (elem instanceof IAssetKey) {
+							AssetModel asset = ((IAssetKey) elem).getAsset();
+							clousure.addAll(List.of(asset, asset.getGroup(), asset.getSection()));
+						} else if (elem instanceof AssetGroupModel) {
+							clousure.add(((AssetGroupModel) elem).getSection());
+						}
+					}
+
+					ISelection sel = new StructuredSelection(clousure.toArray());
+					getSectionsComp().getViewer().setSelection(sel);
+					getTypesComp().getViewer().setSelection(sel);
+
+					for (var elem : clousure) {
+						if (elem instanceof IAssetKey) {
+							getAssetsComp().getViewer().expandToLevel(((IAssetKey) elem).getAsset(), 1);
+						}
+					}
+
+					getAssetsComp().getViewer().setSelection(event.getSelection());
+				}
+			});
+			// viewer.getControl().setMenu(getMenuManager().createContextMenu(viewer.getControl()));
+		}
+
+		@Override
+		public void dispose() {
+
+			getViewer().removeSelectionChangedListener(_listener);
+
+			setOutliner(null);
+
+			super.dispose();
+		}
+	}
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Object getAdapter(Class adapter) {
@@ -707,6 +763,14 @@ public class AssetPackEditor2 extends EditorPart {
 			}
 			return _properties;
 		}
+
+		if (adapter == IContentOutlinePage.class) {
+			if (_outliner == null) {
+				_outliner = new AssetPackEditorOutlinePage();
+			}
+			return _outliner;
+		}
 		return super.getAdapter(adapter);
 	}
+
 }
