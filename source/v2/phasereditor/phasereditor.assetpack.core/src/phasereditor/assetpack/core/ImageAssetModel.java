@@ -76,13 +76,9 @@ public class ImageAssetModel extends AssetModel {
 	}
 
 	private String _url;
-	private boolean _overwrite;
+	private String _normalMap;
 	private Frame _frame;
 	private ArrayList<IAssetElementModel> _elements;
-
-	{
-		_overwrite = false;
-	}
 
 	public ImageAssetModel(String key, AssetSectionModel section) throws JSONException {
 		super(key, AssetType.image, section);
@@ -90,15 +86,16 @@ public class ImageAssetModel extends AssetModel {
 
 	public ImageAssetModel(JSONObject definition, AssetSectionModel section) throws JSONException {
 		super(definition, section);
+
 		_url = definition.optString("url");
-		_overwrite = definition.getBoolean("overwrite");
+		_normalMap = definition.optString("normalMap");
 	}
 
 	@Override
 	protected void writeParameters(JSONObject obj) {
 		super.writeParameters(obj);
 		obj.put("url", _url);
-		obj.put("overwrite", _overwrite);
+		obj.put("normalMap", _normalMap);
 	}
 
 	public IFile getUrlFile() {
@@ -114,13 +111,17 @@ public class ImageAssetModel extends AssetModel {
 		firePropertyChange("url");
 	}
 
-	public boolean isOverwrite() {
-		return _overwrite;
+	public String getNormalMap() {
+		return _normalMap;
 	}
 
-	public void setOverwrite(boolean overwrite) {
-		_overwrite = overwrite;
-		firePropertyChange("overwrite");
+	public void setNormalMap(String normalMap) {
+		_normalMap = normalMap;
+		firePropertyChange("normalMap");
+	}
+
+	public IFile getNormalMapFile() {
+		return getFileFromUrl(_normalMap);
 	}
 
 	@Override
@@ -131,6 +132,11 @@ public class ImageAssetModel extends AssetModel {
 	@Override
 	public void internalBuild(List<IStatus> problems) {
 		validateUrl(problems, "url", _url);
+		
+		if (_normalMap != null && _normalMap.length() > 0) {
+			validateUrl(problems, "normalMap", _normalMap);
+		}
+
 		try {
 			buildFrame();
 		} catch (Exception e) {
@@ -163,8 +169,13 @@ public class ImageAssetModel extends AssetModel {
 	@Override
 	public void fileChanged(IFile file, IFile newFile) {
 		String url = getUrlFromFile(file);
+
 		if (url.equals(_url)) {
 			_url = getUrlFromFile(newFile);
+		}
+
+		if (url.equals(_normalMap)) {
+			_normalMap = getUrlFromFile(newFile);
 		}
 	}
 }

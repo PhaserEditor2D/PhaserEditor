@@ -83,12 +83,22 @@ public final class AssetPackModel {
 		@SuppressWarnings("rawtypes")
 		Iterator keysIter = jsonRoot.keys();
 		while (keysIter.hasNext()) {
-			String key = (String) keysIter.next();
-			if (key.equals("meta")) {
+			String sectionKey = (String) keysIter.next();
+			if (sectionKey.equals("meta")) {
 				// keep meta-data here
 			} else {
-				JSONArray array = jsonRoot.getJSONArray(key);
-				AssetSectionModel section = new AssetSectionModel(key, array, this);
+
+				Object jsonSection = jsonRoot.get(sectionKey);
+				JSONArray jsonSectionFilesArray;
+				if (jsonSection instanceof JSONArray) {
+					jsonSectionFilesArray = (JSONArray) jsonSection;
+				} else {
+					JSONObject jsonNewSection = (JSONObject)jsonSection;
+					jsonSectionFilesArray = jsonNewSection.getJSONArray("files");
+					//TODO: missing to process the other section fields like "prefix", "path", "defaultType"
+				}
+
+				AssetSectionModel section = new AssetSectionModel(sectionKey, jsonSectionFilesArray, this);
 				addSection(section, false);
 			}
 		}

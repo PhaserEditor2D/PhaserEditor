@@ -1,18 +1,11 @@
 package phasereditor.assetpack.ui;
 
-import java.util.List;
-
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.DialogCellEditor;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.PlatformUI;
 
 import phasereditor.assetpack.core.AssetGroupModel;
-import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.ui.editors.AssetPackEditor2;
@@ -67,7 +60,7 @@ public class AssetPGrigAdapterFactory implements IAdapterFactory {
 	static class AssetGroupPGridModel extends PGridModel {
 
 		public AssetGroupPGridModel(AssetGroupModel group) {
-			
+
 			PGridSection section = new PGridSection("File Type");
 
 			section.add(new PGridInfoProperty("name", group.getType()::name));
@@ -85,7 +78,28 @@ public class AssetPGrigAdapterFactory implements IAdapterFactory {
 
 			PGridSection section = new PGridSection("Image");
 
-			section.add(new PGridInfoProperty("key", _asset.getHelp("key"), _asset::getKey));
+			section.add(new PGridStringProperty("key", "key", _asset.getHelp("key")) {
+
+				@Override
+				public String getValue() {
+					return _asset.getKey();
+				}
+
+				@Override
+				public void setValue(String value, boolean notify) {
+					_asset.setKey(value);
+
+					if (notify) {
+						updateFromPropertyChange();
+					}
+				}
+
+				@Override
+				public boolean isModified() {
+					return true;
+				}
+
+			});
 			section.add(new PGridStringProperty("url", "url", _asset.getHelp("url")) {
 
 				@Override
@@ -109,24 +123,39 @@ public class AssetPGrigAdapterFactory implements IAdapterFactory {
 
 				@Override
 				public CellEditor createCellEditor(Composite parent, Object element) {
-					DialogCellEditor editor = new DialogCellEditor(parent) {
+					return new ImageUrlCellEditor(parent, _asset, a -> ((ImageAssetModel) a).getUrlFile());
+				}
+			});
 
-						@Override
-						protected Object openDialogBox(Control cellEditorWindow) {
-							try {
-								AssetPackModel pack = _asset.getPack();
-								IFile urlFile = _asset.getUrlFile();
-								List<IFile> imageFiles = pack.discoverImageFiles();
-								String result = AssetPackUI.browseImageUrl(pack, "", urlFile, imageFiles,
-										cellEditorWindow.getShell());
-								return result;
-							} catch (CoreException e) {
-								e.printStackTrace();
-								throw new RuntimeException(e);
-							}
-						}
-					};
-					return editor;
+			section.add(new PGridStringProperty("normalMap", "normalMap", _asset.getHelp("normalMap")) {
+
+				@Override
+				public void setValue(String value, boolean notify) {
+					_asset.setNormalMap(value);
+
+					if (notify) {
+						updateFromPropertyChange();
+					}
+				}
+
+				@Override
+				public boolean isModified() {
+					return _asset.getNormalMap() != null && _asset.getNormalMap().length() > 0;
+				}
+
+				@Override
+				public String getValue() {
+					return _asset.getNormalMap();
+				}
+
+				@Override
+				public String getDefaultValue() {
+					return null;
+				}
+
+				@Override
+				public CellEditor createCellEditor(Composite parent, Object element) {
+					return new ImageUrlCellEditor(parent, _asset, a -> ((ImageAssetModel) a).getNormalMapFile());
 				}
 			});
 

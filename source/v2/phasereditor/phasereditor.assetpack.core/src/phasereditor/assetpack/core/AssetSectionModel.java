@@ -142,10 +142,14 @@ public class AssetSectionModel implements IAdaptable, IAssetPackEelement {
 	}
 
 	public void writeSection(JSONObject pack) {
-		JSONArray array = new JSONArray();
-		pack.put(_key, array);
+		JSONObject jsonSection = new JSONObject();
+		JSONArray jsonFiles = new JSONArray();
+		jsonSection.put("files", jsonFiles);
+		
+		pack.put(_key, jsonSection);
+		
 		for (AssetModel asset : _assets) {
-			array.put(asset.toJSON());
+			jsonFiles.put(asset.toJSON());
 		}
 	}
 

@@ -192,8 +192,6 @@ public class ImageAssetEditorComp extends Composite {
 		try {
 			_keyLabel.setToolTipText(model.getHelp("key"));
 			_urlLabel.setToolTipText(model.getHelp("url"));
-			_overwriteButton.setToolTipText(model.getHelp("overwrite"));
-			_overwriteLabel.setToolTipText(model.getHelp("overwrite"));
 		} catch (JSONException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -243,12 +241,6 @@ public class ImageAssetEditorComp extends Composite {
 		UpdateValueStrategy strategy_1 = new UpdateValueStrategy();
 		strategy_1.setBeforeSetValidator(new RequiredValidator());
 		bindingContext.bindValue(observeText_text_1ObserveWidget, modelurl_selfObserveValue, strategy_1, null);
-		//
-		IObservableValue<?> observeSelection_btnOverwriteObserveWidget = WidgetProperties.selection()
-				.observe(_overwriteButton);
-		IObservableValue<?> modeloverwrite_selfObserveValue = BeanProperties.value("model.overwrite").observe(_self);
-		bindingContext.bindValue(observeSelection_btnOverwriteObserveWidget, modeloverwrite_selfObserveValue, null,
-				null);
 		//
 		return bindingContext;
 	}
