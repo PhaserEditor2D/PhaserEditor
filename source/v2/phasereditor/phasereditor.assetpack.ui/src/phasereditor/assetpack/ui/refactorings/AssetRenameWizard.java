@@ -32,7 +32,7 @@ public class AssetRenameWizard extends RefactoringWizard {
 
 	public AssetRenameWizard(RenameRefactoring refactoring) {
 		super(refactoring, DIALOG_BASED_USER_INTERFACE);
-		setDefaultPageTitle("Remove Asset");
+		setDefaultPageTitle("Rename Asset");
 	}
 
 	@Override
