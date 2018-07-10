@@ -357,7 +357,7 @@
          point="org.eclipse.core.runtime.adapters">
       <factory
             adaptableType="phasereditor.assetpack.core.IAssetPackEelement"
-            class="phasereditor.assetpack.ui.AssetPGrigAdapterFactory">
+            class="phasereditor.assetpack.ui.properties.AssetPGrigAdapterFactory">
          <adapter
                type="phasereditor.ui.properties.PGridModel">
          </adapter>

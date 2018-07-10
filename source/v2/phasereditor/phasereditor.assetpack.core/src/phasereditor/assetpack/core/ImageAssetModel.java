@@ -126,7 +126,7 @@ public class ImageAssetModel extends AssetModel {
 
 	@Override
 	public IFile[] computeUsedFiles() {
-		return new IFile[] { getUrlFile() };
+		return new IFile[] { getUrlFile(), getNormalMapFile() };
 	}
 
 	@Override

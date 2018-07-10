@@ -375,11 +375,6 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 	}
 
 	public int getFrameCount() {
-		int max = _spritesheet.getFrameMax();
-		if (max >= 0) {
-			return max;
-		}
-
 		if (_image == null) {
 			return 0;
 		}

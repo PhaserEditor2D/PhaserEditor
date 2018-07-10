@@ -495,16 +495,22 @@ public class AssetPackUI {
 			return list;
 		}
 
-		int max = s.getFrameMax();
-		if (max <= 0) {
-			max = Integer.MAX_VALUE;
+		int start = s.getStartFrame();
+		int end = s.getEndFrame();
+		
+		if (start < 0) {
+			start = 0;
+		}
+		
+		if (end < 0) {
+			end = Integer.MAX_VALUE;
 		}
 
-		int i = 0;
+		int i = start;
 		int x = margin;
 		int y = margin;
 		while (true) {
-			if (i >= max || y >= src.height) {
+			if (i > end || y >= src.height) {
 				break;
 			}
 

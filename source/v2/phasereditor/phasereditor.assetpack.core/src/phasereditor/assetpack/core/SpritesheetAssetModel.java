@@ -40,26 +40,35 @@ public class SpritesheetAssetModel extends AssetModel {
 	private String _url;
 	private int _frameWidth;
 	private int _frameHeight;
-	private int _frameMax;
 	private int _margin;
+	private int _startFrame;
+	private int _endFrame;
 	private int _spacing;
+	private String _normalMap;
+
 	private List<FrameModel> _frames;
 
 	{
-		_frameMax = -1;
+		_startFrame = -1;
+		_endFrame = -1;
 		_margin = 0;
 		_spacing = 0;
 		_frames = null;
 	}
 
-	public SpritesheetAssetModel(JSONObject definition, AssetSectionModel section) throws JSONException {
-		super(definition, section);
-		_url = definition.optString("url", null);
-		_frameWidth = definition.optInt("frameWidth", 0);
-		_frameHeight = definition.optInt("frameHeight", 0);
-		_frameMax = definition.optInt("frameMax", -1);
-		_margin = definition.optInt("margin", 0);
-		_spacing = definition.optInt("spacing", 0);
+	public SpritesheetAssetModel(JSONObject jsonData, AssetSectionModel section) throws JSONException {
+		super(jsonData, section);
+		_url = jsonData.optString("url", null);
+
+		JSONObject jsonFrameConfig = jsonData.optJSONObject("frameConfig");
+		if (jsonFrameConfig != null) {
+			_frameWidth = jsonFrameConfig.optInt("frameWidth", 0);
+			_frameHeight = jsonFrameConfig.optInt("frameHeight", 0);
+			_startFrame = jsonFrameConfig.optInt("startFrame", -1);
+			_endFrame = jsonFrameConfig.optInt("endFrame", -1);
+			_margin = jsonFrameConfig.optInt("margin", 0);
+			_spacing = jsonFrameConfig.optInt("spacing", 0);
+		}
 	}
 
 	public SpritesheetAssetModel(String key, AssetSectionModel section) throws JSONException {
@@ -70,11 +79,16 @@ public class SpritesheetAssetModel extends AssetModel {
 	protected void writeParameters(JSONObject obj) {
 		super.writeParameters(obj);
 		obj.put("url", _url);
-		obj.put("frameWidth", _frameWidth);
-		obj.put("frameHeight", _frameHeight);
-		obj.put("frameMax", _frameMax);
-		obj.put("margin", _margin);
-		obj.put("spacing", _spacing);
+		JSONObject jsonFrameConfig = new JSONObject();
+		obj.put("frameConfig", jsonFrameConfig);
+		jsonFrameConfig.put("frameWidth", _frameWidth);
+		jsonFrameConfig.put("frameHeight", _frameHeight);
+		jsonFrameConfig.put("startFrame", _startFrame, -1);
+		jsonFrameConfig.put("endFrame", _endFrame, -1);
+		jsonFrameConfig.put("margin", _margin);
+		jsonFrameConfig.put("spacing", _spacing);
+		
+		
 	}
 
 	public IFile getUrlFile() {
@@ -90,9 +104,22 @@ public class SpritesheetAssetModel extends AssetModel {
 		firePropertyChange("url");
 	}
 
+	public String getNormalMap() {
+		return _normalMap;
+	}
+
+	public void setNormalMap(String normalMap) {
+		_normalMap = normalMap;
+		firePropertyChange("normalMap");
+	}
+
+	public IFile getNormalMapFile() {
+		return getFileFromUrl(_normalMap);
+	}
+
 	@Override
 	public IFile[] computeUsedFiles() {
-		return new IFile[] { getUrlFile() };
+		return new IFile[] { getUrlFile(), getNormalMapFile() };
 	}
 
 	public int getFrameWidth() {
@@ -113,13 +140,26 @@ public class SpritesheetAssetModel extends AssetModel {
 		firePropertyChange("frameHeight");
 	}
 
-	public int getFrameMax() {
-		return _frameMax;
+	public int getStartFrame() {
+		return _startFrame;
 	}
 
-	public void setFrameMax(int frameMax) {
-		_frameMax = frameMax;
-		firePropertyChange("margin");
+	public void setStartFrame(int startFrame) {
+		_startFrame = startFrame;
+		firePropertyChange("startFrame");
+	}
+
+	public int getEndFrame() {
+		return _endFrame;
+	}
+
+	public void setEndFrame(int endFrame) {
+		_endFrame = endFrame;
+		firePropertyChange("endFrame");
+	}
+
+	public void setFrames(List<FrameModel> frames) {
+		_frames = frames;
 	}
 
 	public int getMargin() {
@@ -238,16 +278,14 @@ public class SpritesheetAssetModel extends AssetModel {
 				return;
 			}
 
-			int max = getFrameMax();
-			if (max <= 0) {
-				max = Integer.MAX_VALUE;
-			}
+			int start = getStartFrame();
+			int end = getEndFrame() == -1 ? Integer.MAX_VALUE : getEndFrame();
 
-			int i = 0;
+			int i = start == -1 ? 0 : start;
 			int x = margin;
 			int y = margin;
 			while (true) {
-				if (i >= max || y >= b.height) {
+				if (i > end || y >= b.height) {
 					break;
 				}
 
