@@ -31,33 +31,30 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.ui.editors.AssetPackEditor2;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
-import phasereditor.ui.properties.PGridModel;
 import phasereditor.ui.properties.PGridNumberProperty;
 import phasereditor.ui.properties.PGridSection;
 import phasereditor.ui.properties.PGridStringProperty;
 
 @SuppressWarnings("boxing")
-public class SpritesheetAssetPGridModel extends PGridModel {
-	SpritesheetAssetModel _asset;
+public class SpritesheetAssetPGridModel extends BaseAssetPGridModel<SpritesheetAssetModel> {
 
 	public SpritesheetAssetPGridModel(SpritesheetAssetModel asset) {
-		super();
-		_asset = asset;
+		super(asset);
 
 		PhaserJsdocModel help = InspectCore.getPhaserHelp();
 
 		PGridSection section = new PGridSection("Spritesheet");
 
-		section.add(new PGridStringProperty("key", "key", _asset.getHelp("key")) {
+		section.add(new PGridStringProperty("key", "key", getAsset().getHelp("key")) {
 
 			@Override
 			public String getValue() {
-				return _asset.getKey();
+				return getAsset().getKey();
 			}
 
 			@Override
 			public void setValue(String value, boolean notify) {
-				_asset.setKey(value);
+				getAsset().setKey(value);
 
 				if (notify) {
 					updateEditorFromPropertyChange();
@@ -70,12 +67,12 @@ public class SpritesheetAssetPGridModel extends PGridModel {
 			}
 
 		});
-		section.add(new PGridStringProperty("url", "url", _asset.getHelp("url")) {
+		section.add(new PGridStringProperty("url", "url", getAsset().getHelp("url")) {
 
 			@Override
 			public void setValue(String value, boolean notify) {
-				_asset.setUrl(value);
-				_asset.build(new ArrayList<>());
+				getAsset().setUrl(value);
+				getAsset().build(new ArrayList<>());
 
 				if (notify) {
 					updateEditorFromPropertyChange();
@@ -89,12 +86,12 @@ public class SpritesheetAssetPGridModel extends PGridModel {
 
 			@Override
 			public String getValue() {
-				return _asset.getUrl();
+				return getAsset().getUrl();
 			}
 
 			@Override
 			public CellEditor createCellEditor(Composite parent, Object element) {
-				return new ImageUrlCellEditor(parent, _asset, a -> ((SpritesheetAssetModel) a).getUrlFile());
+				return new ImageUrlCellEditor(parent, getAsset(), a -> ((SpritesheetAssetModel) a).getUrlFile());
 			}
 		});
 
@@ -103,7 +100,7 @@ public class SpritesheetAssetPGridModel extends PGridModel {
 
 			@Override
 			public void setValue(String value, boolean notify) {
-				_asset.setNormalMap(value);
+				getAsset().setNormalMap(value);
 
 				if (notify) {
 					updateEditorFromPropertyChange();
@@ -112,12 +109,12 @@ public class SpritesheetAssetPGridModel extends PGridModel {
 
 			@Override
 			public boolean isModified() {
-				return _asset.getNormalMap() != null && _asset.getNormalMap().length() > 0;
+				return getAsset().getNormalMap() != null && getAsset().getNormalMap().length() > 0;
 			}
 
 			@Override
 			public String getValue() {
-				return _asset.getNormalMap();
+				return getAsset().getNormalMap();
 			}
 
 			@Override
@@ -127,7 +124,7 @@ public class SpritesheetAssetPGridModel extends PGridModel {
 
 			@Override
 			public CellEditor createCellEditor(Composite parent, Object element) {
-				return new ImageUrlCellEditor(parent, _asset, a -> ((SpritesheetAssetModel) a).getNormalMapFile());
+				return new ImageUrlCellEditor(parent, getAsset(), a -> ((SpritesheetAssetModel) a).getNormalMapFile());
 			}
 		});
 
@@ -140,13 +137,13 @@ public class SpritesheetAssetPGridModel extends PGridModel {
 
 			@Override
 			public Double getValue() {
-				return (double) _asset.getFrameWidth();
+				return (double) getAsset().getFrameWidth();
 			}
 
 			@Override
 			public void setValue(Double value, boolean notify) {
-				_asset.setFrameWidth(value.intValue());
-				_asset.build(new ArrayList<>());
+				getAsset().setFrameWidth(value.intValue());
+				getAsset().build(new ArrayList<>());
 
 				if (notify) {
 					updateEditorFromPropertyChange();
@@ -164,13 +161,13 @@ public class SpritesheetAssetPGridModel extends PGridModel {
 
 			@Override
 			public Double getValue() {
-				return (double) _asset.getFrameHeight();
+				return (double) getAsset().getFrameHeight();
 			}
 
 			@Override
 			public void setValue(Double value, boolean notify) {
-				_asset.setFrameHeight(value.intValue());
-				_asset.build(new ArrayList<>());
+				getAsset().setFrameHeight(value.intValue());
+				getAsset().build(new ArrayList<>());
 
 				if (notify) {
 					updateEditorFromPropertyChange();
@@ -188,13 +185,13 @@ public class SpritesheetAssetPGridModel extends PGridModel {
 
 			@Override
 			public Double getValue() {
-				return (double) _asset.getStartFrame();
+				return (double) getAsset().getStartFrame();
 			}
 
 			@Override
 			public void setValue(Double value, boolean notify) {
-				_asset.setStartFrame(value.intValue());
-				_asset.build(new ArrayList<>());
+				getAsset().setStartFrame(value.intValue());
+				getAsset().build(new ArrayList<>());
 
 				if (notify) {
 					updateEditorFromPropertyChange();
@@ -204,7 +201,7 @@ public class SpritesheetAssetPGridModel extends PGridModel {
 
 			@Override
 			public boolean isModified() {
-				return _asset.getEndFrame() != -1;
+				return getAsset().getEndFrame() != -1;
 			}
 
 			@Override
@@ -218,13 +215,13 @@ public class SpritesheetAssetPGridModel extends PGridModel {
 
 			@Override
 			public Double getValue() {
-				return (double) _asset.getEndFrame();
+				return (double) getAsset().getEndFrame();
 			}
 
 			@Override
 			public void setValue(Double value, boolean notify) {
-				_asset.setEndFrame(value.intValue());
-				_asset.build(new ArrayList<>());
+				getAsset().setEndFrame(value.intValue());
+				getAsset().build(new ArrayList<>());
 				
 				if (notify) {
 					updateEditorFromPropertyChange();
@@ -233,7 +230,7 @@ public class SpritesheetAssetPGridModel extends PGridModel {
 
 			@Override
 			public boolean isModified() {
-				return _asset.getEndFrame() != -1;
+				return getAsset().getEndFrame() != -1;
 			}
 
 			@Override
@@ -247,13 +244,13 @@ public class SpritesheetAssetPGridModel extends PGridModel {
 
 			@Override
 			public Double getValue() {
-				return (double) _asset.getSpacing();
+				return (double) getAsset().getSpacing();
 			}
 
 			@Override
 			public void setValue(Double value, boolean notify) {
-				_asset.setSpacing(value.intValue());
-				_asset.build(new ArrayList<>());
+				getAsset().setSpacing(value.intValue());
+				getAsset().build(new ArrayList<>());
 
 				if (notify) {
 					updateEditorFromPropertyChange();
@@ -262,7 +259,7 @@ public class SpritesheetAssetPGridModel extends PGridModel {
 
 			@Override
 			public boolean isModified() {
-				return _asset.getSpacing() != 0;
+				return getAsset().getSpacing() != 0;
 			}
 		});
 
@@ -271,13 +268,13 @@ public class SpritesheetAssetPGridModel extends PGridModel {
 
 			@Override
 			public Double getValue() {
-				return (double) _asset.getMargin();
+				return (double) getAsset().getMargin();
 			}
 
 			@Override
 			public void setValue(Double value, boolean notify) {
-				_asset.setMargin(value.intValue());
-				_asset.build(new ArrayList<>());
+				getAsset().setMargin(value.intValue());
+				getAsset().build(new ArrayList<>());
 
 				if (notify) {
 					updateEditorFromPropertyChange();
@@ -286,7 +283,7 @@ public class SpritesheetAssetPGridModel extends PGridModel {
 
 			@Override
 			public boolean isModified() {
-				return _asset.getMargin() != 0;
+				return getAsset().getMargin() != 0;
 			}
 		});
 

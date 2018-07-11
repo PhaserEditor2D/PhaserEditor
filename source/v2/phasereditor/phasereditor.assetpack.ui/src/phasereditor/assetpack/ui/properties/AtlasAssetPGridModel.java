@@ -21,20 +21,33 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.properties;
 
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.Composite;
 
+import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.atlas.core.AtlasCore;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.properties.PGridSection;
 import phasereditor.ui.properties.PGridStringProperty;
 
-public class ImageAssetPGridModel extends BaseAssetPGridModel<ImageAssetModel> {
+/**
+ * @author arian
+ *
+ */
+public class AtlasAssetPGridModel extends BaseAssetPGridModel<AtlasAssetModel> {
 
-	public ImageAssetPGridModel(ImageAssetModel asset) {
+	public AtlasAssetPGridModel(AtlasAssetModel asset) {
 		super(asset);
 
-		PGridSection section = new PGridSection("Image");
+		PGridSection section = new PGridSection("Atlas JSON");
 
 		section.add(new PGridStringProperty("key", "key", getAsset().getHelp("key")) {
 
@@ -56,13 +69,13 @@ public class ImageAssetPGridModel extends BaseAssetPGridModel<ImageAssetModel> {
 			public boolean isModified() {
 				return true;
 			}
-
 		});
-		section.add(new PGridStringProperty("url", "url", getAsset().getHelp("url")) {
+
+		section.add(new PGridStringProperty("textureURL", "textureURL", getAsset().getHelp("textureURL")) {
 
 			@Override
 			public void setValue(String value, boolean notify) {
-				getAsset().setUrl(value);
+				getAsset().setTextureURL(value);
 
 				if (notify) {
 					updateFromPropertyChange();
@@ -76,7 +89,7 @@ public class ImageAssetPGridModel extends BaseAssetPGridModel<ImageAssetModel> {
 
 			@Override
 			public String getValue() {
-				return getAsset().getUrl();
+				return getAsset().getTextureURL();
 			}
 
 			@Override
@@ -85,7 +98,57 @@ public class ImageAssetPGridModel extends BaseAssetPGridModel<ImageAssetModel> {
 			}
 		});
 
-		section.add(new PGridStringProperty("normalMap", "normalMap", InspectCore.getPhaserHelp().getMemberHelp("Phaser.Loader.FileTypes.ImageFileConfig.normalMap")) {
+		section.add(new PGridStringProperty("atlasURL", "atlasURL", getAsset().getHelp("atlasURL")) {
+
+			@Override
+			public void setValue(String value, boolean notify) {
+				getAsset().setAtlasURL(value);
+				
+				IFile file = getAsset().getFileFromUrl(value);
+				if (file != null) {
+					String format;
+					try {
+						format = AtlasCore.getAtlasFormat(file);
+						if (format != null) {
+							asset.setFormat(format);
+						}
+					} catch (CoreException e) {
+						e.printStackTrace();
+					}
+				}
+
+				if (notify) {
+					updateFromPropertyChange();
+				}
+			}
+
+			@Override
+			public boolean isModified() {
+				return true;
+			}
+
+			@Override
+			public String getValue() {
+				return getAsset().getAtlasURL();
+			}
+
+			@Override
+			public CellEditor createCellEditor(Composite parent, Object element) {
+				Function<AssetModel, IFile> getFile = a -> a.getFileFromUrl(((AtlasAssetModel) a).getAtlasURL());
+				Supplier<List<IFile>> discoverFiles = () -> {
+					try {
+						return getAsset().getPack().discoverAtlasFiles();
+					} catch (CoreException e) {
+						throw new RuntimeException(e);
+					}
+				};
+
+				return new FileUrlCellEditor(parent, getAsset(), getFile, discoverFiles, "atlas JSON");
+			}
+		});
+
+		section.add(new PGridStringProperty("normalMap", "normalMap",
+				InspectCore.getPhaserHelp().getMemberHelp("Phaser.Loader.FileTypes.AtlasJSONFileConfig.normalMap")) {
 
 			@Override
 			public void setValue(String value, boolean notify) {
@@ -113,14 +176,10 @@ public class ImageAssetPGridModel extends BaseAssetPGridModel<ImageAssetModel> {
 
 			@Override
 			public CellEditor createCellEditor(Composite parent, Object element) {
-				return new ImageUrlCellEditor(parent, getAsset(), a -> ((ImageAssetModel) a).getNormalMapFile());
+				return new ImageUrlCellEditor(parent, getAsset(), a -> ((AtlasAssetModel) a).getNormalMapFile());
 			}
 		});
 
 		getSections().add(section);
-
 	}
-
-	
-
 }

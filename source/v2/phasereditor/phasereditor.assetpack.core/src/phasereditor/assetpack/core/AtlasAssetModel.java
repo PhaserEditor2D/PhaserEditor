@@ -46,8 +46,8 @@ import phasereditor.ui.PhaserEditorUI;
 
 public class AtlasAssetModel extends AssetModel {
 	private String _textureURL;
+	private String _normalMap;
 	private String _atlasURL;
-	private String _atlasData;
 	private String _format;
 	private List<Frame> _frames;
 
@@ -55,24 +55,12 @@ public class AtlasAssetModel extends AssetModel {
 		_format = AtlasCore.TEXTURE_ATLAS_JSON_ARRAY;
 	}
 
-	public AtlasAssetModel(JSONObject jsonDoc, AssetSectionModel section) throws JSONException {
-		super(jsonDoc, section);
-		_textureURL = jsonDoc.optString("textureURL", null);
-		_atlasURL = jsonDoc.optString("atlasURL", null);
-		{
-			_atlasData = null;
-			if (jsonDoc.has("atlasData")) {
-				Object data = jsonDoc.get("atlasData");
-				if (data != null) {
-					if (data instanceof JSONObject) {
-						_atlasData = ((JSONObject) data).toString(4);
-					} else {
-						_atlasData = data.toString();
-					}
-				}
-			}
-		}
-		_format = jsonDoc.optString("format", AtlasCore.TEXTURE_ATLAS_JSON_ARRAY);
+	public AtlasAssetModel(JSONObject jsonData, AssetSectionModel section) throws JSONException {
+		super(jsonData, section);
+		_textureURL = jsonData.optString("textureURL", null);
+		_normalMap = jsonData.optString("normalMap", null);
+		_atlasURL = jsonData.optString("atlasURL", null);
+		_format = jsonData.optString("format", AtlasCore.TEXTURE_ATLAS_JSON_ARRAY);
 	}
 
 	public AtlasAssetModel(String key, AssetSectionModel section) throws JSONException {
@@ -83,26 +71,14 @@ public class AtlasAssetModel extends AssetModel {
 	protected void writeParameters(JSONObject obj) {
 		super.writeParameters(obj);
 		obj.put("textureURL", _textureURL);
+		obj.put("normalMap", _normalMap);
 		obj.put("atlasURL", _atlasURL);
-		{
-			// the data can be a json object, json string, or an xml string.
-			String strData = normalizeString(_atlasData);
-			Object data = strData;
-			if (strData != null) {
-				try {
-					data = new JSONObject(strData);
-				} catch (JSONException e) {
-					// nothing
-				}
-			}
-			obj.put("atlasData", data);
-		}
 		obj.put("format", _format);
 	}
 
 	@Override
 	public IFile[] computeUsedFiles() {
-		return new IFile[] { getFileFromUrl(_textureURL), getFileFromUrl(_atlasURL) };
+		return new IFile[] { getFileFromUrl(_textureURL), getFileFromUrl(_normalMap), getFileFromUrl(_atlasURL) };
 	}
 
 	public IFile getTextureFile() {
@@ -118,6 +94,19 @@ public class AtlasAssetModel extends AssetModel {
 		firePropertyChange("textureURL");
 	}
 
+	public IFile getNormalMapFile() {
+		return getFileFromUrl(_normalMap);
+	}
+	
+	public String getNormalMap() {
+		return _normalMap;
+	}
+
+	public void setNormalMap(String normalMap) {
+		_normalMap = normalMap;
+		firePropertyChange("normalMap");
+	}
+
 	public String getAtlasURL() {
 		return _atlasURL;
 	}
@@ -125,15 +114,6 @@ public class AtlasAssetModel extends AssetModel {
 	public void setAtlasURL(String atlasURL) {
 		_atlasURL = atlasURL;
 		firePropertyChange("atlasURL");
-	}
-
-	public String getAtlasData() {
-		return _atlasData;
-	}
-
-	public void setAtlasData(String atlasData) {
-		_atlasData = atlasData;
-		firePropertyChange("atlasData");
 	}
 
 	public String getFormat() {
@@ -197,13 +177,11 @@ public class AtlasAssetModel extends AssetModel {
 
 		List<Frame> list = new ArrayList<>();
 		try {
-			String data = normalizeString(_atlasData);
-			if (data == null) {
-				IFile file = getFileFromUrl(_atlasURL);
-				if (file != null && file.exists()) {
-					try (InputStream input = file.getContents()) {
-						data = PhaserEditorUI.readString(input);
-					}
+			String data = null;
+			IFile file = getFileFromUrl(_atlasURL);
+			if (file != null && file.exists()) {
+				try (InputStream input = file.getContents()) {
+					data = PhaserEditorUI.readString(input);
 				}
 			}
 
@@ -260,8 +238,11 @@ public class AtlasAssetModel extends AssetModel {
 
 	@Override
 	public void internalBuild(List<IStatus> problems) {
-		validateUrlAndData(problems, "atlasURL", _atlasURL, "atlasData", _atlasData);
+		validateUrl(problems, "atlasURL", _atlasURL);
 		validateUrl(problems, "textureURL", _textureURL);
+		if (_normalMap != null && _normalMap.length() > 0) {
+			validateUrl(problems, "normalMap", _normalMap);
+		}
 
 		buildFrames();
 	}
@@ -273,6 +254,10 @@ public class AtlasAssetModel extends AssetModel {
 
 		if (url.equals(_textureURL)) {
 			_textureURL = newUrl;
+		}
+		
+		if (url.equals(_normalMap)) {
+			_normalMap = newUrl;
 		}
 
 		if (url.equals(_atlasURL)) {

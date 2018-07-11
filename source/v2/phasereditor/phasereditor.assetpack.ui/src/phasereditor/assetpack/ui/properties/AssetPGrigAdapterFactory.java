@@ -4,6 +4,7 @@ import org.eclipse.core.runtime.IAdapterFactory;
 
 import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetSectionModel;
+import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.ui.properties.PGridModel;
@@ -26,6 +27,8 @@ public class AssetPGrigAdapterFactory implements IAdapterFactory {
 				return new ImageAssetPGridModel((ImageAssetModel) adaptableObject);
 			} else if (adaptableObject instanceof SpritesheetAssetModel) {
 				return new SpritesheetAssetPGridModel((SpritesheetAssetModel) adaptableObject);
+			} else if (adaptableObject instanceof AtlasAssetModel) {
+				return new AtlasAssetPGridModel((AtlasAssetModel) adaptableObject);
 			}
 
 		}
