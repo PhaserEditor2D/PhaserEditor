@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.editors;
 
+import static java.lang.System.out;
+
 import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -119,8 +121,6 @@ public class AssetPackEditor2 extends EditorPart {
 	private TypesComp _typesComp;
 	private AssetsComp _assetsComp;
 
-	private PGridPage _properties;
-
 	private AssetPackEditorOutlinePage _outliner;
 
 	public AssetPackEditorOutlinePage getOutliner() {
@@ -129,10 +129,6 @@ public class AssetPackEditor2 extends EditorPart {
 
 	public void setOutliner(AssetPackEditorOutlinePage outliner) {
 		_outliner = outliner;
-	}
-
-	public PGridPage getProperties() {
-		return _properties;
 	}
 
 	@Override
@@ -682,9 +678,9 @@ public class AssetPackEditor2 extends EditorPart {
 
 		public void revealAndSelect(IStructuredSelection selection) {
 			TreeViewer viewer = getViewer();
-			
+
 			AssetPackUI.installAssetTooltips(viewer);
-			
+
 			var iter = selection.iterator();
 			while (iter.hasNext()) {
 				var elem = iter.next();
@@ -761,10 +757,8 @@ public class AssetPackEditor2 extends EditorPart {
 	@Override
 	public Object getAdapter(Class adapter) {
 		if (adapter == IPropertySheetPage.class) {
-			if (_properties == null) {
-				_properties = new PGridPage(true);
-			}
-			return _properties;
+			out.println("AssetPackEditor: create new propety page.");
+			return new PGridPage(true);
 		}
 
 		if (adapter == IContentOutlinePage.class) {

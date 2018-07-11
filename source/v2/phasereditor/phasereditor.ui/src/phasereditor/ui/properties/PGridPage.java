@@ -54,7 +54,9 @@ public class PGridPage extends Page implements IPropertySheetPage {
 		if (selection instanceof IStructuredSelection) {
 			Object elem = ((IStructuredSelection) selection).getFirstElement();
 			PGridModel model = Adapters.adapt(elem, PGridModel.class);
-			model.getExtraData().put(PART, part);
+			if (model != null) {
+				model.getExtraData().put(PART, part);
+			}
 			_grid.setModel(model);
 		}
 	}
