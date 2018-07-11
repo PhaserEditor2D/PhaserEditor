@@ -150,8 +150,9 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 		obj.put("key", _key);
 	}
 
-	public static AssetType readAssetType(JSONObject definition) throws JSONException {
-		return AssetType.valueOf(definition.getString("type"));
+	public static AssetType readAssetType(JSONObject jsonData) throws JSONException {
+		String name = jsonData.getString("type");
+		return AssetType.valueOf(name);
 	}
 
 	@Override

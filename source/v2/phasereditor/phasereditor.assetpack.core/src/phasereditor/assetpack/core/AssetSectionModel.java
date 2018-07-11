@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core;
 
+import static java.lang.System.err;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
@@ -47,16 +49,21 @@ public class AssetSectionModel implements IAdaptable, IAssetPackEelement {
 		_pack = pack;
 	}
 
-	public AssetSectionModel(String key, JSONArray definition, AssetPackModel pack) throws Exception {
+	public AssetSectionModel(String key, JSONArray jsonData, AssetPackModel pack) throws Exception {
 		this(key, pack);
-		_definition = definition;
+		_definition = jsonData;
 		_assets = new ArrayList<>();
-		for (int i = 0; i < definition.length(); i++) {
-			JSONObject jsonAsset = definition.getJSONObject(i);
-			AssetType type = AssetModel.readAssetType(jsonAsset);
-			AssetFactory factory = AssetFactory.getFactory(type);
-			AssetModel asset = factory.createAsset(jsonAsset, this);
-			_assets.add(asset);
+		for (int i = 0; i < jsonData.length(); i++) {
+			JSONObject jsonAsset = jsonData.getJSONObject(i);
+			String name = jsonAsset.getString("type");
+			if (AssetType.isTypeSupported(name)) {
+				AssetType type = AssetModel.readAssetType(jsonAsset);
+				AssetFactory factory = AssetFactory.getFactory(type);
+				AssetModel asset = factory.createAsset(jsonAsset, this);
+				_assets.add(asset);
+			} else {
+				err.println("AssetSectionModel: AssetType '" + name + "' is not supported.");
+			}
 		}
 	}
 
@@ -145,9 +152,9 @@ public class AssetSectionModel implements IAdaptable, IAssetPackEelement {
 		JSONObject jsonSection = new JSONObject();
 		JSONArray jsonFiles = new JSONArray();
 		jsonSection.put("files", jsonFiles);
-		
+
 		pack.put(_key, jsonSection);
-		
+
 		for (AssetModel asset : _assets) {
 			jsonFiles.put(asset.toJSON());
 		}

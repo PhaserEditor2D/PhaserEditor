@@ -77,8 +77,40 @@ import java.util.Map;
  * @author JSON.org
  * @version 2014-05-03
  */
-public class JSONArray {
+public class JSONArray /* arian */ {
 
+	// arian
+	
+	public <T> Iterable<T> iter() {
+		return new Iterable<T>() {
+			
+			@Override
+			public Iterator<T> iterator() {
+				return new Iterator<T>() {
+
+					Iterator<Object> _iter = myArrayList.iterator();
+					
+					@Override
+					public boolean hasNext() {
+						return _iter.hasNext();
+					}
+
+					@Override
+					public T next() {
+						return (T) _iter.next();
+					}
+				};
+			}
+		};
+	}
+	
+	public Iterable<JSONObject> iterJSON() {
+		return iter();
+	}
+	
+	// ---
+	
+	
     /**
      * The arrayList where the JSONArray's properties are kept.
      */

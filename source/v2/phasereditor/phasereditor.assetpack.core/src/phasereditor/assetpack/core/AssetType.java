@@ -22,7 +22,9 @@
 package phasereditor.assetpack.core;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IAdaptable;
 
@@ -48,6 +50,19 @@ public enum AssetType implements IAssetPackEelement, IAdaptable {
 		}
 
 		return null;
+	}
+	
+	private static Set<String> _allowedNames;
+	
+	static {
+		_allowedNames = new HashSet<>();
+		for(var value : values()) {
+			_allowedNames.add(value.name());
+		}
+	}
+	
+	public static boolean isTypeSupported(String name) {
+		return _allowedNames.contains(name);
 	}
 
 	private static Map<AssetType, PhaserMethod> _methodMap;

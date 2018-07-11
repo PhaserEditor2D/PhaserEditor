@@ -93,9 +93,21 @@ public final class AssetPackModel {
 				if (jsonSection instanceof JSONArray) {
 					jsonSectionFilesArray = (JSONArray) jsonSection;
 				} else {
-					JSONObject jsonNewSection = (JSONObject)jsonSection;
+					JSONObject jsonNewSection = (JSONObject) jsonSection;
 					jsonSectionFilesArray = jsonNewSection.getJSONArray("files");
-					//TODO: missing to process the other section fields like "prefix", "path", "defaultType"
+
+					String defaultType = jsonNewSection.optString("defaultType");
+					if (defaultType != null) {
+						for (var jsonFile : jsonSectionFilesArray.iterJSON()) {
+							if (!jsonFile.has("type")) {
+								out.println("AssetPackModel: set type from defaultType '" + defaultType + "'");
+								jsonFile.put("type", defaultType);
+							}
+						}
+					}
+
+					// TODO: missing to process the other section fields like "prefix", "path",
+					// "defaultType"
 				}
 
 				AssetSectionModel section = new AssetSectionModel(sectionKey, jsonSectionFilesArray, this);
