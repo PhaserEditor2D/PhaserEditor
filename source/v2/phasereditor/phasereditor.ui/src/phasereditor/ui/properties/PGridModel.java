@@ -22,7 +22,9 @@
 package phasereditor.ui.properties;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author arian
@@ -30,9 +32,15 @@ import java.util.List;
  */
 public class PGridModel {
 	private List<PGridSection> _sections;
+	private Map<String, Object> _extraData;
 
 	public PGridModel() {
 		_sections = new ArrayList<>();
+		_extraData = new HashMap<>();
+	}
+	
+	public Map<String, Object> getExtraData() {
+		return _extraData;
 	}
 
 	public List<PGridSection> getSections() {

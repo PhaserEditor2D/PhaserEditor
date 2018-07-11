@@ -40,7 +40,7 @@ public abstract class PGridProperty<T> {
 		_nodeId = nodeId;
 		_tooltip = tooltip;
 	}
-
+	
 	public PGridSection getSection() {
 		return _section;
 	}

@@ -67,7 +67,7 @@ public class PGrid extends Composite {
 	private PGridValueLabelProvider _valueLabelProvider;
 	private PGridKeyLabelProvider _keyLabelProvider;
 	private boolean _alwaysExpandAll;
-
+	
 	public PGrid(Composite parent, int style) {
 		this(parent, style, true, false);
 	}
