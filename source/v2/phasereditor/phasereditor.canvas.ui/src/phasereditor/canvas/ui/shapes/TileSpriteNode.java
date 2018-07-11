@@ -76,7 +76,7 @@ public class TileSpriteNode extends Pane implements ISpriteNode {
 		if (assetKey instanceof ImageAssetModel) {
 			image = ImageCache.getFXImage(((ImageAssetModel) assetKey).getUrlFile());
 			Rectangle rect = new Rectangle(0, 0, (int) image.getWidth(), (int) image.getHeight());
-			_frame = new FrameData();
+			_frame = new FrameData(0);
 			_frame.src = rect;
 			_frame.dst = rect;
 			_frame.srcSize = new Point(rect.width, rect.height);

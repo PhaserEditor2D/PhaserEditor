@@ -27,7 +27,6 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 
-import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.ui.editors.AssetPackEditor2;
 import phasereditor.inspect.core.InspectCore;
@@ -95,7 +94,7 @@ public class SpritesheetAssetPGridModel extends PGridModel {
 
 			@Override
 			public CellEditor createCellEditor(Composite parent, Object element) {
-				return new ImageUrlCellEditor(parent, _asset, a -> ((ImageAssetModel) a).getUrlFile());
+				return new ImageUrlCellEditor(parent, _asset, a -> ((SpritesheetAssetModel) a).getUrlFile());
 			}
 		});
 

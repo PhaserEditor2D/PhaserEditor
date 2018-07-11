@@ -147,9 +147,11 @@ public class AtlasAssetModel extends AssetModel {
 
 	public static class Frame extends AtlasFrame implements IAssetElementModel, IAssetFrameModel {
 		private final AtlasAssetModel _asset;
+		private int _index;
 
-		public Frame(AtlasAssetModel asset) {
+		public Frame(AtlasAssetModel asset, int index) {
 			_asset = asset;
+			_index = index;
 		}
 
 		@Override
@@ -164,7 +166,7 @@ public class AtlasAssetModel extends AssetModel {
 
 		@Override
 		public FrameData getFrameData() {
-			FrameData data = new FrameData();
+			FrameData data = new FrameData(_index);
 			data.src = new Rectangle(getFrameX(), getFrameY(), getFrameW(), getFrameH());
 			data.dst = new Rectangle(getSpriteX(), getSpriteY(), getSpriteW(), getSpriteH());
 			data.srcSize = new Point(getSourceW(), getSourceH());
@@ -217,7 +219,7 @@ public class AtlasAssetModel extends AssetModel {
 				JSONArray array = obj.getJSONArray("frames");
 				for (int i = 0; i < array.length(); i++) {
 					JSONObject item = array.getJSONObject(i);
-					Frame fi = new Frame(this);
+					Frame fi = new Frame(this, i);
 					fi.update(AtlasFrame.fromArrayItem(item));
 					list.add(fi);
 				}
@@ -225,21 +227,23 @@ public class AtlasAssetModel extends AssetModel {
 			case AtlasCore.TEXTURE_ATLAS_JSON_HASH:
 				obj = new JSONObject(data);
 				JSONObject frames = obj.getJSONObject("frames");
+				int i = 0;
 				for (String k : frames.keySet()) {
 					JSONObject item = frames.getJSONObject(k);
-					Frame fi = new Frame(this);
+					Frame fi = new Frame(this, i);
 					fi.update(AtlasFrame.fromHashItem(k, item));
 					list.add(fi);
+					i++;
 				}
 				break;
 			case AtlasCore.TEXTURE_ATLAS_XML_STARLING:
 				Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
 						.parse(new ByteArrayInputStream(data.getBytes()));
 				NodeList elems = doc.getElementsByTagName("SubTexture");
-				for (int i = 0; i < elems.getLength(); i++) {
-					Node elem = elems.item(i);
+				for (int j = 0; j < elems.getLength(); j++) {
+					Node elem = elems.item(j);
 					if (elem.getNodeType() == Node.ELEMENT_NODE) {
-						Frame fi = new Frame(this);
+						Frame fi = new Frame(this, j);
 						fi.update(AtlasFrame.fromXMLItem((Element) elem));
 						list.add(fi);
 					}

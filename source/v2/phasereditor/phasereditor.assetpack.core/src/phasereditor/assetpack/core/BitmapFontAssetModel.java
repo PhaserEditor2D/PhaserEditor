@@ -149,7 +149,10 @@ public class BitmapFontAssetModel extends AssetModel {
 	private ArrayList<IAssetElementModel> _elements;
 
 	public final class Frame implements IAssetFrameModel, IAssetElementModel {
-		public Frame() {
+		private int _index;
+
+		public Frame(int index) {
+			_index = index;
 		}
 
 		@Override
@@ -170,7 +173,7 @@ public class BitmapFontAssetModel extends AssetModel {
 		@Override
 		public FrameData getFrameData() {
 			Rectangle b = PhaserEditorUI.getImageBounds(getImageFile());
-			FrameData fd = new FrameData();
+			FrameData fd = new FrameData(_index);
 			fd.src = b;
 			fd.dst = b;
 			fd.srcSize = new Point(b.width, b.height);
@@ -196,7 +199,7 @@ public class BitmapFontAssetModel extends AssetModel {
 	}
 
 	private synchronized void buildFrame() {
-		_frame = new Frame();
+		_frame = new Frame(0);
 		_elements = new ArrayList<>();
 		_elements.add(_frame);
 	}

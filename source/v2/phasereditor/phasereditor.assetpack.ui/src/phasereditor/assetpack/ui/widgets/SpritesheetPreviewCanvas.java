@@ -145,17 +145,22 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 
 				ZoomCalculator calc = calc();
 
-				int i = 0;
-
 				for (FrameData fd : _rects) {
 					calc.imgWidth = fd.src.width;
 					calc.imgHeight = fd.src.height;
 
 					Rectangle r = calc.imageToScreen(fd.dst);
 
-					if (_selectedFrames.contains(i)) {
+					if (_selectedFrames.contains(fd.index)) {
 						gc.setAlpha(100);
 						gc.setBackground(selectionColor);
+						gc.fillRectangle(r.x, r.y, r.width, r.height);
+						gc.setAlpha(255);
+					}
+
+					if (!fd.visible) {
+						gc.setAlpha(200);
+						gc.setBackground(getBackground());
 						gc.fillRectangle(r.x, r.y, r.width, r.height);
 						gc.setAlpha(255);
 					}
@@ -170,8 +175,6 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 						}
 						gc.setAlpha(255);
 					}
-
-					i++;
 				}
 
 				if (paintBorders) {
@@ -193,14 +196,13 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 					}
 
 					if (paintLabels) {
-						i = 0;
 						for (FrameData fd : _rects) {
 							calc.imgWidth = fd.dst.width;
 							calc.imgHeight = fd.dst.height;
 							Rectangle r = calc.imageToScreen(fd.dst);
 
-							String label = Integer.toString(i);
-							Point labelRect = gc.stringExtent(Integer.toString(i));
+							String label = Integer.toString(fd.index);
+							Point labelRect = gc.stringExtent(Integer.toString(fd.index));
 							int left = r.x + r.width / 2 - labelRect.x / 2;
 							int top = r.y + r.height / 2 - labelRect.y / 2;
 
@@ -210,7 +212,6 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 							gc.drawString(label, left + 1, top - 1, true);
 							gc.setForeground(labelsColor);
 							gc.drawString(label, left, top, true);
-							i++;
 						}
 					}
 				}
@@ -274,18 +275,20 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 	 * @return
 	 */
 	private int findFrameAt(MouseEvent e) {
-		int i = 0;
 		int overFrame = -1;
 
 		ZoomCalculator calc = calc();
 
 		for (FrameData fd : _rects) {
+			if (!fd.visible) {
+				continue;
+			}
+
 			Rectangle r = calc.imageToScreen(fd.dst);
 			if (r.contains(e.x, e.y)) {
-				overFrame = i;
+				overFrame = fd.index;
 				break;
 			}
-			i++;
 		}
 		return overFrame;
 	}
@@ -380,6 +383,12 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 		}
 
 		List<FrameData> list = AssetPackUI.generateSpriteSheetRects(_spritesheet, _image.getBounds());
-		return list.size();
+
+		int count = 0;
+		for (var fd : list) {
+			count += fd.visible ? 1 : 0;
+		}
+
+		return count;
 	}
 }

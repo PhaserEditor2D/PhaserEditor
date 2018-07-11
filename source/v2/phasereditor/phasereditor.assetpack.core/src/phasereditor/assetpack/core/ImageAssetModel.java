@@ -57,7 +57,7 @@ public class ImageAssetModel extends AssetModel {
 		@Override
 		public FrameData getFrameData() {
 			Rectangle b = PhaserEditorUI.getImageBounds(getImageFile());
-			FrameData fd = new FrameData();
+			FrameData fd = new FrameData(0);
 			fd.src = b;
 			fd.dst = b;
 			fd.srcSize = new Point(b.width, b.height);

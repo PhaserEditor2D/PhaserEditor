@@ -511,16 +511,15 @@ public class AssetPackUI {
 		int x = margin;
 		int y = margin;
 		while (true) {
-			if (i > end || y >= src.height) {
+			if (y >= src.height) {
 				break;
 			}
 
-			if (i >= start) {
-				FrameData fd = new FrameData();
-				fd.src = new Rectangle(x, y, w, h);
-				fd.dst = fd.src;
-				list.add(fd);
-			}
+			FrameData fd = new FrameData(i);
+			fd.visible = i >= start && i <= end;
+			fd.src = new Rectangle(x, y, w, h);
+			fd.dst = fd.src;
+			list.add(fd);
 
 			x += w + spacing;
 			if (x >= src.width) {

@@ -211,7 +211,7 @@ public class SpritesheetAssetModel extends AssetModel {
 
 		@Override
 		public FrameData getFrameData() {
-			FrameData data = new FrameData();
+			FrameData data = new FrameData(_index);
 			data.src = _bounds;
 			data.dst = new Rectangle(0, 0, _bounds.width, _bounds.height);
 			data.srcSize = new Point(_bounds.width, _bounds.height);

@@ -29,7 +29,13 @@ import org.eclipse.swt.graphics.Rectangle;
  *
  */
 public class FrameData {
+	public int index;
+	public boolean visible = true;
 	public Rectangle src;
 	public Rectangle dst;
 	public Point srcSize;
+	
+	public FrameData(int index) {
+		this.index = index;
+	}
 }
