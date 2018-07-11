@@ -136,6 +136,7 @@ public class AssetsContentProvider implements ITreeContentProvider {
 					List<AssetAudioSprite> spritemap = ((AudioSpriteAssetModel) asset).getSpriteMap();
 					return spritemap.toArray();
 				case atlas:
+				case atlasXML:
 					List<Frame> frames = ((AtlasAssetModel) asset).getAtlasFrames();
 					return frames.toArray();
 				case spritesheet:

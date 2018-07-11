@@ -282,7 +282,7 @@ public class AssetPackCore {
 	 * @throws CoreException
 	 *             If error.
 	 */
-	public static List<IFile> discoverAtlasFiles(IContainer folder) throws CoreException {
+	public static List<IFile> discoverAtlasFiles(IContainer folder, String... formats) throws CoreException {
 		return discoverFiles(folder, new Function<IFile, Boolean>() {
 
 			@Override
@@ -290,7 +290,12 @@ public class AssetPackCore {
 				String format;
 				try {
 					format = AtlasCore.getAtlasFormat(t);
-					return format == null ? Boolean.FALSE : Boolean.TRUE;
+
+					if (format != null && Set.of(formats).contains(format)) {
+						return Boolean.TRUE;
+					}
+
+					return Boolean.FALSE;
 				} catch (CoreException e) {
 					throw new RuntimeException(e);
 				}
@@ -858,5 +863,14 @@ public class AssetPackCore {
 		}
 
 		return null;
+	}
+
+	public static String[] getAtlasFormatsForType(AssetType type) {
+		switch (type) {
+		case atlasXML:
+			return new String[] { AtlasCore.TEXTURE_ATLAS_XML_STARLING };
+		default:
+			return new String[] { AtlasCore.TEXTURE_ATLAS_JSON_HASH, AtlasCore.TEXTURE_ATLAS_JSON_ARRAY };
+		}
 	}
 }

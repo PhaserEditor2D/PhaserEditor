@@ -268,8 +268,12 @@ public final class AssetPackModel {
 		return AssetPackCore.discoverAudioSpriteFiles(getDiscoverFolder());
 	}
 
-	public List<IFile> discoverAtlasFiles() throws CoreException {
-		return AssetPackCore.discoverAtlasFiles(getDiscoverFolder());
+	public List<IFile> discoverAtlasFiles(String... formats) throws CoreException {
+		return AssetPackCore.discoverAtlasFiles(getDiscoverFolder(), formats);
+	}
+
+	public List<IFile> discoverAtlasFiles(AssetType type) throws CoreException {
+		return discoverAtlasFiles(AssetPackCore.getAtlasFormatsForType(type));
 	}
 
 	public IContainer getDiscoverFolder() {

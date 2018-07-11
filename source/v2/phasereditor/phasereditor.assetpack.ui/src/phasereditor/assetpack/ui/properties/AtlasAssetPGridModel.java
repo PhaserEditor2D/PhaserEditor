@@ -31,6 +31,7 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.Composite;
 
 import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.atlas.core.AtlasCore;
@@ -103,7 +104,7 @@ public class AtlasAssetPGridModel extends BaseAssetPGridModel<AtlasAssetModel> {
 			@Override
 			public void setValue(String value, boolean notify) {
 				getAsset().setAtlasURL(value);
-				
+
 				IFile file = getAsset().getFileFromUrl(value);
 				if (file != null) {
 					String format;
@@ -134,16 +135,21 @@ public class AtlasAssetPGridModel extends BaseAssetPGridModel<AtlasAssetModel> {
 
 			@Override
 			public CellEditor createCellEditor(Composite parent, Object element) {
+				AssetType type = getAsset().getType();
+
 				Function<AssetModel, IFile> getFile = a -> a.getFileFromUrl(((AtlasAssetModel) a).getAtlasURL());
+
 				Supplier<List<IFile>> discoverFiles = () -> {
 					try {
-						return getAsset().getPack().discoverAtlasFiles();
+						return getAsset().getPack().discoverAtlasFiles(type);
 					} catch (CoreException e) {
 						throw new RuntimeException(e);
 					}
 				};
 
-				return new FileUrlCellEditor(parent, getAsset(), getFile, discoverFiles, "atlas JSON");
+				String title = type == AssetType.atlasXML ? "atlas XML" : "atlas JSON";
+
+				return new FileUrlCellEditor(parent, getAsset(), getFile, discoverFiles, title);
 			}
 		});
 

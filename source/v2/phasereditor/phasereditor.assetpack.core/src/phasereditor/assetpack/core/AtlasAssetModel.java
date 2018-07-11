@@ -63,8 +63,8 @@ public class AtlasAssetModel extends AssetModel {
 		_format = jsonData.optString("format", AtlasCore.TEXTURE_ATLAS_JSON_ARRAY);
 	}
 
-	public AtlasAssetModel(String key, AssetSectionModel section) throws JSONException {
-		super(key, AssetType.atlas, section);
+	public AtlasAssetModel(AssetType type, String key, AssetSectionModel section) throws JSONException {
+		super(key, type, section);
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class AtlasAssetModel extends AssetModel {
 	public IFile getNormalMapFile() {
 		return getFileFromUrl(_normalMap);
 	}
-	
+
 	public String getNormalMap() {
 		return _normalMap;
 	}
@@ -255,7 +255,7 @@ public class AtlasAssetModel extends AssetModel {
 		if (url.equals(_textureURL)) {
 			_textureURL = newUrl;
 		}
-		
+
 		if (url.equals(_normalMap)) {
 			_normalMap = newUrl;
 		}

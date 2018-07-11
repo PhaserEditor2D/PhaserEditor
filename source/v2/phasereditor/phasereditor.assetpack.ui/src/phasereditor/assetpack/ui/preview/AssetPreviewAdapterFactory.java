@@ -76,6 +76,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			case audiosprite:
 				return createAudioSpritePreviewAdpter();
 			case atlas:
+			case atlasXML:
 				return createAtlasPreviewAdapter();
 			case tilemap:
 				TilemapAssetModel tilemap = (TilemapAssetModel) asset;

@@ -178,7 +178,7 @@ public abstract class AssetFactory {
 				if (file != null) {
 					asset.setKey(pack.createKey(file));
 					asset.setAtlasURL(ProjectCore.getAssetUrl(file));
-					
+
 					String name = PhaserEditorUI.getNameFromFilename(file.getName());
 					IFile imgFile = file.getParent().getFile(new Path(name + ".png"));
 					if (imgFile.exists()) {
@@ -186,7 +186,7 @@ public abstract class AssetFactory {
 					}
 				}
 				pack.pickFile(null);
-				
+
 				return asset;
 			}
 		});
@@ -204,7 +204,11 @@ public abstract class AssetFactory {
 			}
 		});
 
-		cache(new AssetFactory(AssetType.atlas) {
+		class AtlasAssetFactory extends AssetFactory {
+			AtlasAssetFactory(AssetType type) {
+				super(type);
+			}
+
 			@Override
 			public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
 				AtlasAssetModel asset = new AtlasAssetModel(jsonDoc, section);
@@ -214,8 +218,9 @@ public abstract class AssetFactory {
 			@Override
 			public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
 				AssetPackModel pack = section.getPack();
-				AtlasAssetModel asset = new AtlasAssetModel(key, section);
-				IFile file = pack.pickFile(pack.discoverAtlasFiles());
+				AtlasAssetModel asset = new AtlasAssetModel(getType(), key, section);
+
+				IFile file = pack.pickFile(pack.discoverAtlasFiles(getType()));
 
 				if (file == null) {
 					file = pack.pickImageFile();
@@ -239,7 +244,11 @@ public abstract class AssetFactory {
 
 				return asset;
 			}
-		});
+		}
+
+		cache(new AtlasAssetFactory(AssetType.atlas));
+
+		cache(new AtlasAssetFactory(AssetType.atlasXML));
 
 		class TextAssetFactory extends AssetFactory {
 
