@@ -442,6 +442,7 @@ public class AssetPackEditor2 extends EditorPart {
 			TreeViewer viewer = getViewer();
 			viewer.setLabelProvider(AssetLabelProvider.GLOBAL_16);
 			viewer.setContentProvider(new AssetsContentProvider(true));
+			AssetPackUI.installAssetTooltips(viewer);
 
 			ISelectionChangedListener listener = e -> {
 				_addBtn.setEnabled(
@@ -681,7 +682,9 @@ public class AssetPackEditor2 extends EditorPart {
 
 		public void revealAndSelect(IStructuredSelection selection) {
 			TreeViewer viewer = getViewer();
-
+			
+			AssetPackUI.installAssetTooltips(viewer);
+			
 			var iter = selection.iterator();
 			while (iter.hasNext()) {
 				var elem = iter.next();
