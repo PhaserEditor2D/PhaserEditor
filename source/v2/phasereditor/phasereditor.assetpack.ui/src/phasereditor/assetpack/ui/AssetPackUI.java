@@ -320,6 +320,7 @@ public class AssetPackUI {
 			List<IFile> imageFiles, Shell shell) {
 		return browseImageUrl(packModel, objectName, curImageFile, imageFiles, shell, null);
 	}
+
 	public static String browseImageUrl(AssetPackModel packModel, String objectName, IFile curImageFile,
 			List<IFile> imageFiles, Shell shell, Consumer<String> action) {
 
@@ -497,16 +498,16 @@ public class AssetPackUI {
 
 		int start = s.getStartFrame();
 		int end = s.getEndFrame();
-		
+
 		if (start < 0) {
 			start = 0;
 		}
-		
+
 		if (end < 0) {
 			end = Integer.MAX_VALUE;
 		}
 
-		int i = start;
+		int i = 0;
 		int x = margin;
 		int y = margin;
 		while (true) {
@@ -514,11 +515,12 @@ public class AssetPackUI {
 				break;
 			}
 
-			FrameData fd = new FrameData();
-			fd.src = new Rectangle(x, y, w, h);
-			fd.dst = fd.src;
-
-			list.add(fd);
+			if (i >= start) {
+				FrameData fd = new FrameData();
+				fd.src = new Rectangle(x, y, w, h);
+				fd.dst = fd.src;
+				list.add(fd);
+			}
 
 			x += w + spacing;
 			if (x >= src.width) {

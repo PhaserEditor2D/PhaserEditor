@@ -49,7 +49,7 @@ public class SpritesheetAssetModel extends AssetModel {
 	private List<FrameModel> _frames;
 
 	{
-		_startFrame = -1;
+		_startFrame = 0;
 		_endFrame = -1;
 		_margin = 0;
 		_spacing = 0;
@@ -64,7 +64,7 @@ public class SpritesheetAssetModel extends AssetModel {
 		if (jsonFrameConfig != null) {
 			_frameWidth = jsonFrameConfig.optInt("frameWidth", 0);
 			_frameHeight = jsonFrameConfig.optInt("frameHeight", 0);
-			_startFrame = jsonFrameConfig.optInt("startFrame", -1);
+			_startFrame = jsonFrameConfig.optInt("startFrame", 0);
 			_endFrame = jsonFrameConfig.optInt("endFrame", -1);
 			_margin = jsonFrameConfig.optInt("margin", 0);
 			_spacing = jsonFrameConfig.optInt("spacing", 0);
@@ -83,12 +83,10 @@ public class SpritesheetAssetModel extends AssetModel {
 		obj.put("frameConfig", jsonFrameConfig);
 		jsonFrameConfig.put("frameWidth", _frameWidth);
 		jsonFrameConfig.put("frameHeight", _frameHeight);
-		jsonFrameConfig.put("startFrame", _startFrame, -1);
+		jsonFrameConfig.put("startFrame", _startFrame, 0);
 		jsonFrameConfig.put("endFrame", _endFrame, -1);
 		jsonFrameConfig.put("margin", _margin);
 		jsonFrameConfig.put("spacing", _spacing);
-		
-		
 	}
 
 	public IFile getUrlFile() {
@@ -278,10 +276,10 @@ public class SpritesheetAssetModel extends AssetModel {
 				return;
 			}
 
-			int start = getStartFrame();
-			int end = getEndFrame() == -1 ? Integer.MAX_VALUE : getEndFrame();
+			int start = getStartFrame() < 0 ? 0 : getStartFrame();
+			int end = getEndFrame() < 0 ? Integer.MAX_VALUE : getEndFrame();
 
-			int i = start == -1 ? 0 : start;
+			int i = 0;
 			int x = margin;
 			int y = margin;
 			while (true) {
@@ -289,9 +287,10 @@ public class SpritesheetAssetModel extends AssetModel {
 					break;
 				}
 
-				FrameModel frame = new FrameModel(this, i, new Rectangle(x, y, w, h));
-
-				list.add(frame);
+				if (i >= start) {
+					FrameModel frame = new FrameModel(this, i, new Rectangle(x, y, w, h));
+					list.add(frame);
+				}
 
 				x += w + spacing;
 				if (x >= b.width) {

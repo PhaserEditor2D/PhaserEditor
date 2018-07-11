@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.properties;
 
+import java.util.ArrayList;
+
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
@@ -74,6 +76,7 @@ public class SpritesheetAssetPGridModel extends PGridModel {
 			@Override
 			public void setValue(String value, boolean notify) {
 				_asset.setUrl(value);
+				_asset.build(new ArrayList<>());
 
 				if (notify) {
 					updateEditorFromPropertyChange();
@@ -144,6 +147,7 @@ public class SpritesheetAssetPGridModel extends PGridModel {
 			@Override
 			public void setValue(Double value, boolean notify) {
 				_asset.setFrameWidth(value.intValue());
+				_asset.build(new ArrayList<>());
 
 				if (notify) {
 					updateEditorFromPropertyChange();
@@ -167,6 +171,7 @@ public class SpritesheetAssetPGridModel extends PGridModel {
 			@Override
 			public void setValue(Double value, boolean notify) {
 				_asset.setFrameHeight(value.intValue());
+				_asset.build(new ArrayList<>());
 
 				if (notify) {
 					updateEditorFromPropertyChange();
@@ -190,10 +195,12 @@ public class SpritesheetAssetPGridModel extends PGridModel {
 			@Override
 			public void setValue(Double value, boolean notify) {
 				_asset.setStartFrame(value.intValue());
+				_asset.build(new ArrayList<>());
 
 				if (notify) {
 					updateEditorFromPropertyChange();
 				}
+				
 			}
 
 			@Override
@@ -218,7 +225,8 @@ public class SpritesheetAssetPGridModel extends PGridModel {
 			@Override
 			public void setValue(Double value, boolean notify) {
 				_asset.setEndFrame(value.intValue());
-
+				_asset.build(new ArrayList<>());
+				
 				if (notify) {
 					updateEditorFromPropertyChange();
 				}
@@ -246,6 +254,7 @@ public class SpritesheetAssetPGridModel extends PGridModel {
 			@Override
 			public void setValue(Double value, boolean notify) {
 				_asset.setSpacing(value.intValue());
+				_asset.build(new ArrayList<>());
 
 				if (notify) {
 					updateEditorFromPropertyChange();
@@ -269,6 +278,7 @@ public class SpritesheetAssetPGridModel extends PGridModel {
 			@Override
 			public void setValue(Double value, boolean notify) {
 				_asset.setMargin(value.intValue());
+				_asset.build(new ArrayList<>());
 
 				if (notify) {
 					updateEditorFromPropertyChange();
