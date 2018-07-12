@@ -65,11 +65,6 @@ public class ImageAssetModel extends AssetModel {
 		}
 
 		@Override
-		public <T> T getAdapter(Class<T> adapter) {
-			return null;
-		}
-
-		@Override
 		public String getName() {
 			return getKey();
 		}

@@ -200,11 +200,6 @@ public class MultiAtlasAssetModel extends AssetModel {
 		}
 
 		@Override
-		public <T> T getAdapter(Class<T> adapter) {
-			return null;
-		}
-
-		@Override
 		public MultiAtlasAssetModel getAsset() {
 			return MultiAtlasAssetModel.this;
 		}

@@ -92,10 +92,6 @@ public class PhysicsAssetModel extends AssetModel {
 			_name = name;
 		}
 
-		@Override
-		public <T> T getAdapter(Class<T> adapter) {
-			return null;
-		}
 	}
 
 	public List<SpriteData> getSprites() {

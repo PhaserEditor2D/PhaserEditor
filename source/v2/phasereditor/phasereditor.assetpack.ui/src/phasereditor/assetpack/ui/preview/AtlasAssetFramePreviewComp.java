@@ -33,22 +33,22 @@ import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
-import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel.Frame;
+import phasereditor.assetpack.core.FrameData;
+import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
+import phasereditor.atlas.core.AtlasFrame;
 import phasereditor.atlas.ui.AtlasCanvas;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 
-public class AtlasSpritePreviewComp extends AtlasCanvas {
+public class AtlasAssetFramePreviewComp extends AtlasCanvas {
 	static final Object NO_SELECTION = "none";
 
-	private Frame _model;
+	private IAssetFrameModel _model;
 
-	public AtlasSpritePreviewComp(Composite parent, int style) {
+	public AtlasAssetFramePreviewComp(Composite parent, int style) {
 		super(parent, style);
 
 		afterCreateWidgets();
@@ -82,27 +82,23 @@ public class AtlasSpritePreviewComp extends AtlasCanvas {
 		});
 	}
 
-	public void setModel(AtlasAssetModel.Frame model) {
+	public void setModel(IAssetFrameModel model) {
 		_model = model;
-		AtlasAssetModel atlas = model.getAsset();
-		String url = atlas.getTextureURL();
-		IFile file = atlas.getFileFromUrl(url);
+		IFile file = model.getImageFile();
 		setImageFile(file);
-		setFrame(model);
+		setFrame((AtlasFrame) model);
 		setSingleFrame(true);
-		redraw();
-		
+
 		Image img = getImage();
 		if (img != null) {
-			Rectangle b = img.getBounds();
-			String str = "Sprite Size: " + _model.getSpriteW() + "x" + _model.getSpriteH() + "\n";
-			str += "Image Size: " + b.width + "x" + b.height + "\n";
-			str += "Image URL: " + getModel().getAsset().getTextureURL();
-			setToolTipText(str);
+			FrameData fd = _model.getFrameData();
+			setToolTipText(fd.src.width + "x" + fd.src.height);
 		}
+
+		resetZoom();
 	}
 
-	public AtlasAssetModel.Frame getModel() {
+	public IAssetFrameModel getModel() {
 		return _model;
 	}
 

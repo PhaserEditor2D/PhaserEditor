@@ -44,6 +44,13 @@
                type="phasereditor.ui.views.IPreviewFactory">
          </adapter>
       </factory>
+      <factory
+            adaptableType="phasereditor.assetpack.core.IAssetPackEelement"
+            class="phasereditor.assetpack.ui.properties.AssetPGrigAdapterFactory">
+         <adapter
+               type="phasereditor.ui.properties.PGridModel">
+         </adapter>
+      </factory>
    </extension>
    <extension
          point="org.eclipse.ui.elementFactories">
@@ -352,16 +359,6 @@
             </instanceof>
          </enablement>
       </moveParticipant>
-   </extension>
-   <extension
-         point="org.eclipse.core.runtime.adapters">
-      <factory
-            adaptableType="phasereditor.assetpack.core.IAssetPackEelement"
-            class="phasereditor.assetpack.ui.properties.AssetPGrigAdapterFactory">
-         <adapter
-               type="phasereditor.ui.properties.PGridModel">
-         </adapter>
-      </factory>
    </extension>
    
 </plugin>

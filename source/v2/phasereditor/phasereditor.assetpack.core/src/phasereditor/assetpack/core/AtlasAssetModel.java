@@ -140,11 +140,6 @@ public class AtlasAssetModel extends AssetModel {
 		}
 
 		@Override
-		public <T> T getAdapter(Class<T> adapter) {
-			return null;
-		}
-
-		@Override
 		public FrameData getFrameData() {
 			FrameData data = new FrameData(_index);
 			data.src = new Rectangle(getFrameX(), getFrameY(), getFrameW(), getFrameH());

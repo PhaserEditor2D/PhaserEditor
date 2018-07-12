@@ -40,17 +40,18 @@ import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetElementModel;
+import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.VideoAssetModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
+import phasereditor.atlas.core.AtlasFrame;
 import phasereditor.audiosprite.ui.GdxMusicControl;
 import phasereditor.ui.views.IPreviewFactory;
 
@@ -93,8 +94,8 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			}
 		} else if (adaptable instanceof SpritesheetAssetModel.FrameModel) {
 			return createSpritesheetFramePreviewAdapter();
-		} else if (adaptable instanceof AtlasAssetModel.Frame) {
-			return createAtlasSpritePreviewAdapter();
+		} else if (adaptable instanceof IAssetFrameModel && adaptable instanceof AtlasFrame) {
+			return createAtlasFramePreviewAdapter();
 		}
 		return null;
 	}
@@ -240,10 +241,10 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			public boolean canReusePreviewControl(Control c, Object elem) {
 				return c instanceof BitmapFontAssetPreviewComp;
 			}
-			
+
 			@Override
 			public void updateToolBar(IToolBarManager toolbar, Control preview) {
-				((BitmapFontAssetPreviewComp)preview).createToolBar(toolbar);
+				((BitmapFontAssetPreviewComp) preview).createToolBar(toolbar);
 			}
 		};
 	}
@@ -272,7 +273,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			}
 		};
 	}
-	
+
 	private static IPreviewFactory createTilemapCSVPreviewAdapter() {
 		return new AssetModelPreviewFactory() {
 
@@ -295,17 +296,17 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			public boolean canReusePreviewControl(Control c, Object elem) {
 				return c instanceof TilemapCSVAssetPreviewComp;
 			}
-			
+
 			@Override
 			public void updateToolBar(IToolBarManager toolbar, Control preview) {
 				((TilemapCSVAssetPreviewComp) preview).createToolBar(toolbar);
 			}
-			
+
 			@Override
 			public void initPreviewControl(Control preview, IMemento memento) {
 				((TilemapCSVAssetPreviewComp) preview).initState(memento);
 			}
-			
+
 			@Override
 			public void savePreviewControl(Control preview, IMemento memento) {
 				((TilemapCSVAssetPreviewComp) preview).saveState(memento);
@@ -313,28 +314,29 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 		};
 	}
 
-	private static IPreviewFactory createAtlasSpritePreviewAdapter() {
+	private static IPreviewFactory createAtlasFramePreviewAdapter() {
 		return new AssetModelPreviewFactory() {
 
 			@Override
 			public void updateControl(Control preview, Object element) {
-				AtlasSpritePreviewComp comp = (AtlasSpritePreviewComp) preview;
-				comp.setModel((Frame) element);
+				var comp = (AtlasAssetFramePreviewComp) preview;
+				comp.setModel((IAssetFrameModel) element);
 			}
 
 			@Override
 			public Control createControl(Composite previewContainer) {
-				return new AtlasSpritePreviewComp(previewContainer, SWT.NONE);
+				return new AtlasAssetFramePreviewComp(previewContainer, SWT.NONE);
 			}
 
 			@Override
 			public boolean canReusePreviewControl(Control c, Object elem) {
-				return c instanceof AtlasSpritePreviewComp && elem instanceof Frame;
+				return c instanceof AtlasAssetFramePreviewComp && elem instanceof IAssetFrameModel
+						&& elem instanceof AtlasFrame;
 			}
 
 			@Override
 			public void updateToolBar(IToolBarManager toolbar, Control preview) {
-				((AtlasSpritePreviewComp) preview).createToolBar(toolbar);
+				((AtlasAssetFramePreviewComp) preview).createToolBar(toolbar);
 			}
 		};
 	}
@@ -357,7 +359,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			public boolean canReusePreviewControl(Control c, Object elem) {
 				return c instanceof AtlasAssetPreviewComp && elem instanceof AtlasAssetModel;
 			}
-			
+
 			@Override
 			public void updateToolBar(IToolBarManager toolbar, Control preview) {
 				((AtlasAssetPreviewComp) preview).createToolBar(toolbar);
