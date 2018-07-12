@@ -53,6 +53,7 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 	private Image _image;
 	private List<Rectangle> _frames;
 	private List<Rectangle> _places;
+	private List<Image> _images;
 	private int _frameSize;
 	private Rectangle _dst;
 	private Point origin;
@@ -63,6 +64,7 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 		super(parent, style | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL | SWT.NO_REDRAW_RESIZE);
 
 		_frames = Collections.emptyList();
+		_images = Collections.emptyList();
 		_frameSize = 64;
 		_overIndex = -1;
 
@@ -97,7 +99,10 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 				if (old != index) {
 					_overIndex = index;
 					if (index != -1 && _tooltips != null) {
-						setToolTipText(_tooltips.get(_overIndex));
+						String tooltip = _tooltips.get(_overIndex);
+						if (tooltip != null) {
+							setToolTipText(tooltip);
+						}
 					}
 					redraw();
 				}
@@ -280,6 +285,10 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 		_image = image;
 	}
 
+	public List<Image> getImages() {
+		return _images;
+	}
+
 	public List<Rectangle> getFrames() {
 		return _frames;
 	}
@@ -317,5 +326,46 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 	@Override
 	public void setOffsetY(int i) {
 		//
+	}
+
+	public void setFramesProvider(IFramesProvider provider) {
+		_frames = new ArrayList<>();
+		_images = new ArrayList<>();
+		_tooltips = new ArrayList<>();
+
+		for (int i = 0; i < provider.getFrameCount(); i++) {
+			var frame = provider.getFrameRectangle(i);
+			var image = provider.getFrameImage(i);
+			var tooltip = provider.getFrameTooltip(i);
+
+			_frames.add(frame);
+			_images.add(image);
+			_tooltips.add(tooltip);
+		}
+
+		redraw();
+	}
+
+	public void disposeImages() {
+		if (_image != null) {
+			_image.dispose();
+		}
+
+		for (var img : _images) {
+			if (img != null) {
+				img.dispose();
+			}
+		}
+	}
+
+	public interface IFramesProvider {
+		public int getFrameCount();
+
+		public Rectangle getFrameRectangle(int index);
+
+		public Image getFrameImage(int index);
+
+		public String getFrameTooltip(int index);
+
 	}
 }
