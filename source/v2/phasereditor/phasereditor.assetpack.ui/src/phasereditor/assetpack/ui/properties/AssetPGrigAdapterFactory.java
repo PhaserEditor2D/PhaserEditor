@@ -6,6 +6,7 @@ import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.ui.properties.PGridModel;
 
@@ -29,6 +30,8 @@ public class AssetPGrigAdapterFactory implements IAdapterFactory {
 				return new SpritesheetAssetPGridModel((SpritesheetAssetModel) adaptableObject);
 			} else if (adaptableObject instanceof AtlasAssetModel) {
 				return new AtlasAssetPGridModel((AtlasAssetModel) adaptableObject);
+			} else if (adaptableObject instanceof MultiAtlasAssetModel) {
+				return new MultiAtlasAssetPGridModel((MultiAtlasAssetModel) adaptableObject);
 			}
 
 		}

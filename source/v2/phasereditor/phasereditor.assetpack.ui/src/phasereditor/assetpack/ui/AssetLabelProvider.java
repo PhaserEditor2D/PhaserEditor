@@ -50,12 +50,14 @@ import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.ScriptAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.VideoAssetModel;
 import phasereditor.assetpack.ui.AssetsContentProvider.Container;
 import phasereditor.atlas.core.AtlasData;
+import phasereditor.atlas.core.AtlasFrame;
 import phasereditor.audio.core.AudioCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
@@ -147,6 +149,13 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 				file = ((AtlasAssetModel) element).getTextureFile();
 			}
 
+			if (element instanceof MultiAtlasAssetModel) {
+				var frames = ((MultiAtlasAssetModel) element).getSubElements();
+				if (!frames.isEmpty()) {
+					return getImage(frames.get(0));
+				}
+			}
+
 			if (element instanceof BitmapFontAssetModel) {
 				file = ((BitmapFontAssetModel) element).getTextureFile();
 			}
@@ -208,14 +217,18 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 		if (element instanceof Frame) {
 			Frame frame = (Frame) element;
 			IFile file = frame.getAsset().getTextureFile();
-			if (file != null) {
-				try {
-					Rectangle src = new Rectangle(frame.getFrameX(), frame.getFrameY(), frame.getFrameW(),
-							frame.getFrameH());
-					return _cache.getIcon(file, src, _iconSize, null);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+			var img = getAtlasFrameImage(frame, file);
+			if (img != null) {
+				return img;
+			}
+		}
+		
+		if (element instanceof MultiAtlasAssetModel.Frame) {
+			var frame = (MultiAtlasAssetModel.Frame) element;
+			var file = frame.getImageFile();
+			var img = getAtlasFrameImage(frame, file);
+			if (img != null) {
+				return img;
 			}
 		}
 
@@ -273,6 +286,19 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 		}
 
 		return getFolderImage();
+	}
+
+	private Image getAtlasFrameImage(AtlasFrame frame, IFile imageFile) {
+		if (imageFile != null) {
+			try {
+				Rectangle src = new Rectangle(frame.getFrameX(), frame.getFrameY(), frame.getFrameW(),
+						frame.getFrameH());
+				return _cache.getIcon(imageFile, src, _iconSize, null);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 
 	public static Image getFileTypeImage() {

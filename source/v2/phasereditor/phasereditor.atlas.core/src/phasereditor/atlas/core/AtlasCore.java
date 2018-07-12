@@ -37,6 +37,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 public class AtlasCore {
+	public static final String TEXTURE_ATLAS_MULTI = "TEXTURE_ATLAS_MULTI";
 	public static final String TEXTURE_ATLAS_JSON_ARRAY = "TEXTURE_ATLAS_JSON_ARRAY";
 	public static final String TEXTURE_ATLAS_JSON_HASH = "TEXTURE_ATLAS_JSON_HASH";
 	public static final String TEXTURE_ATLAS_XML_STARLING = "TEXTURE_ATLAS_XML_STARLING";
@@ -72,10 +73,19 @@ public class AtlasCore {
 			// try json format
 			JSONTokener tokener = new JSONTokener(new InputStreamReader(contents));
 			JSONObject obj = new JSONObject(tokener);
+
+			{
+				Object jsonTextures = obj.opt("textures");
+				if (jsonTextures != null && jsonTextures instanceof JSONArray) {
+					return TEXTURE_ATLAS_MULTI;
+				}
+			}
+
 			Object frames = obj.get("frames");
 			if (frames instanceof JSONArray) {
 				return TEXTURE_ATLAS_JSON_ARRAY;
 			}
+			
 			return TEXTURE_ATLAS_JSON_HASH;
 		} catch (JSONException e) {
 			// no json

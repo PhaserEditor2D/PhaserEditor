@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -204,87 +205,11 @@ public abstract class AssetFactory {
 			}
 		});
 
-		class AtlasAssetFactory extends AssetFactory {
-			AtlasAssetFactory(AssetType type) {
-				super(type);
-			}
-
-			@Override
-			public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
-				AtlasAssetModel asset = new AtlasAssetModel(jsonDoc, section);
-				return asset;
-			}
-
-			@Override
-			public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
-				AssetPackModel pack = section.getPack();
-				AtlasAssetModel asset = new AtlasAssetModel(getType(), key, section);
-
-				IFile file = pack.pickFile(pack.discoverAtlasFiles(getType()));
-
-				if (file == null) {
-					file = pack.pickImageFile();
-					if (file != null) {
-						asset.setKey(pack.createKey(file));
-						asset.setTextureURL(ProjectCore.getAssetUrl(file));
-					}
-				} else {
-					asset.setKey(pack.createKey(file));
-					String format = AtlasCore.getAtlasFormat(file);
-					if (format != null) {
-						asset.setFormat(format);
-					}
-					asset.setAtlasURL(ProjectCore.getAssetUrl(file));
-					String name = PhaserEditorUI.getNameFromFilename(file.getName());
-					IFile imgFile = file.getParent().getFile(new Path(name + ".png"));
-					if (imgFile.exists()) {
-						asset.setTextureURL(asset.getUrlFromFile(imgFile));
-					}
-				}
-
-				return asset;
-			}
-		}
-
 		cache(new AtlasAssetFactory(AssetType.atlas));
 
 		cache(new AtlasAssetFactory(AssetType.atlasXML));
-
-		class TextAssetFactory extends AssetFactory {
-
-			private String[] _exts;
-
-			protected TextAssetFactory(AssetType type, String... exts) {
-				super(type);
-				_exts = exts;
-			}
-
-			public TextAssetFactory() {
-				this(AssetType.text, "txt", "text");
-			}
-
-			@Override
-			public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
-				return new TextAssetModel(jsonDoc, section);
-			}
-
-			@Override
-			public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
-				AssetPackModel pack = section.getPack();
-				TextAssetModel asset = makeAsset(key, section);
-				List<IFile> files = pack.discoverTextFiles(_exts);
-				IFile file = pack.pickFile(files);
-				if (file != null) {
-					asset.setKey(pack.createKey(file));
-					asset.setUrl(ProjectCore.getAssetUrl(file));
-				}
-				return asset;
-			}
-
-			protected TextAssetModel makeAsset(String key, AssetSectionModel section) {
-				return new TextAssetModel(key, section);
-			}
-		}
+		
+		cache(new MultiAtlasAssetFactory());
 
 		cache(new TextAssetFactory());
 
@@ -315,21 +240,6 @@ public abstract class AssetFactory {
 
 		});
 
-		class ShaderAssetFactory extends TextAssetFactory {
-			public ShaderAssetFactory() {
-				super(AssetType.shader, "vert", "frag", "tesc", "tese", "geom", "comp");
-			}
-
-			@Override
-			public AssetModel createAsset(JSONObject jsonDef, AssetSectionModel section) throws Exception {
-				return new ShaderAssetModel(jsonDef, section);
-			}
-
-			@Override
-			protected ShaderAssetModel makeAsset(String key, AssetSectionModel section) {
-				return new ShaderAssetModel(key, section);
-			}
-		}
 		cache(new ShaderAssetFactory());
 
 		cache(new AssetFactory(AssetType.binary) {
@@ -424,4 +334,128 @@ public abstract class AssetFactory {
 	public abstract AssetModel createAsset(String key, AssetSectionModel section) throws Exception;
 
 	public abstract AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception;
+}
+
+class MultiAtlasAssetFactory extends AssetFactory {
+
+	public MultiAtlasAssetFactory() {
+		super(AssetType.multiatlas);
+	}
+
+	@Override
+	public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
+		AssetPackModel pack = section.getPack();
+		var asset = new MultiAtlasAssetModel(key, section);
+
+		IFile file = pack.pickFile(pack.discoverAtlasFiles(getType()));
+
+		if (file != null) {
+			asset.setKey(pack.createKey(file));
+			asset.setAtlasURL(ProjectCore.getAssetUrl(file));
+			asset.setPath(ProjectCore.getAssetUrl(file.getProject(), file.getParent().getFullPath()));
+			asset.build(new ArrayList<>());
+		}
+
+		return asset;
+	}
+
+	@Override
+	public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
+		return new MultiAtlasAssetModel(jsonData, section);
+	}
+}
+
+class AtlasAssetFactory extends AssetFactory {
+	AtlasAssetFactory(AssetType type) {
+		super(type);
+	}
+
+	@Override
+	public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
+		AtlasAssetModel asset = new AtlasAssetModel(jsonDoc, section);
+		return asset;
+	}
+
+	@Override
+	public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
+		AssetPackModel pack = section.getPack();
+		AtlasAssetModel asset = new AtlasAssetModel(getType(), key, section);
+
+		IFile file = pack.pickFile(pack.discoverAtlasFiles(getType()));
+
+		if (file == null) {
+			file = pack.pickImageFile();
+			if (file != null) {
+				asset.setKey(pack.createKey(file));
+				asset.setTextureURL(ProjectCore.getAssetUrl(file));
+			}
+		} else {
+			asset.setKey(pack.createKey(file));
+			String format = AtlasCore.getAtlasFormat(file);
+			if (format != null) {
+				asset.setFormat(format);
+			}
+			asset.setAtlasURL(ProjectCore.getAssetUrl(file));
+			String name = PhaserEditorUI.getNameFromFilename(file.getName());
+			IFile imgFile = file.getParent().getFile(new Path(name + ".png"));
+			if (imgFile.exists()) {
+				asset.setTextureURL(asset.getUrlFromFile(imgFile));
+			}
+		}
+
+		return asset;
+	}
+}
+
+class TextAssetFactory extends AssetFactory {
+
+	private String[] _exts;
+
+	protected TextAssetFactory(AssetType type, String... exts) {
+		super(type);
+		_exts = exts;
+	}
+
+	public TextAssetFactory() {
+		this(AssetType.text, "txt", "text");
+	}
+
+	@Override
+	public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
+		return new TextAssetModel(jsonDoc, section);
+	}
+
+	@Override
+	public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
+		AssetPackModel pack = section.getPack();
+		TextAssetModel asset = makeAsset(key, section);
+		List<IFile> files = pack.discoverTextFiles(_exts);
+		IFile file = pack.pickFile(files);
+		if (file != null) {
+			asset.setKey(pack.createKey(file));
+			asset.setUrl(ProjectCore.getAssetUrl(file));
+		}
+		return asset;
+	}
+
+	@SuppressWarnings("static-method")
+	protected TextAssetModel makeAsset(String key, AssetSectionModel section) {
+		return new TextAssetModel(key, section);
+	}
+}
+
+class ShaderAssetFactory extends TextAssetFactory {
+	public ShaderAssetFactory() {
+		super(AssetType.shader, "vert", "frag", "tesc", "tese", "geom", "comp");
+	}
+
+	@Override
+	public AssetModel createAsset(JSONObject jsonDef, AssetSectionModel section) throws Exception {
+		return new ShaderAssetModel(jsonDef, section);
+	}
+
+	@Override
+	protected ShaderAssetModel makeAsset(String key, AssetSectionModel section) {
+		return new ShaderAssetModel(key, section);
+	}
 }

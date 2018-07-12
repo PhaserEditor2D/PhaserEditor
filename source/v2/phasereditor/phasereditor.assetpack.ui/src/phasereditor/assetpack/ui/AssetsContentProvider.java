@@ -41,6 +41,7 @@ import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel.AssetAudioSprite;
 import phasereditor.assetpack.core.IAssetElementModel;
+import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel.TilemapJSON;
@@ -132,16 +133,22 @@ public class AssetsContentProvider implements ITreeContentProvider {
 				AssetModel asset = (AssetModel) parentElement;
 
 				switch (asset.getType()) {
-				case audiosprite:
+				case audiosprite: {
 					List<AssetAudioSprite> spritemap = ((AudioSpriteAssetModel) asset).getSpriteMap();
 					return spritemap.toArray();
+				}
 				case atlas:
-				case atlasXML:
+				case atlasXML: {
 					List<Frame> frames = ((AtlasAssetModel) asset).getAtlasFrames();
 					return frames.toArray();
+				}
+				case multiatlas: {
+					var frames = ((MultiAtlasAssetModel) asset).getSubElements();
+					return frames.toArray();
+				}
 				case spritesheet:
 					return asset.getSubElements().toArray();
-				case tilemap:
+				case tilemap: {
 					TilemapAssetModel tilemapAsset = (TilemapAssetModel) asset;
 					if (tilemapAsset.isJSONFormat()) {
 						TilemapJSON tilemap = tilemapAsset.getTilemapJSON();
@@ -149,9 +156,11 @@ public class AssetsContentProvider implements ITreeContentProvider {
 								new Container("Tilesets", tilemap.getTilesets().toArray()) };
 					}
 					return new Object[0];
-				case physics:
+				}
+				case physics: {
 					List<PhysicsAssetModel.SpriteData> sprites = ((PhysicsAssetModel) asset).getSprites();
 					return sprites.toArray();
+				}
 				default:
 					break;
 				}

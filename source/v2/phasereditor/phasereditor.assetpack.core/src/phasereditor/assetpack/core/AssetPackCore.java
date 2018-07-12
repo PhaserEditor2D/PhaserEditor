@@ -867,6 +867,8 @@ public class AssetPackCore {
 
 	public static String[] getAtlasFormatsForType(AssetType type) {
 		switch (type) {
+		case multiatlas:
+			return new String[] { AtlasCore.TEXTURE_ATLAS_MULTI};
 		case atlasXML:
 			return new String[] { AtlasCore.TEXTURE_ATLAS_XML_STARLING };
 		default:
