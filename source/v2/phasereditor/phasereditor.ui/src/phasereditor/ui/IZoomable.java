@@ -26,8 +26,8 @@ package phasereditor.ui;
  *
  */
 public interface IZoomable {
-	public void fitWindow();
-
+	public void resetZoom();
+	
 	public void redraw();
 
 	public void setScale(float i);

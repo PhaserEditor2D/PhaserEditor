@@ -28,8 +28,9 @@ import org.eclipse.swt.widgets.Shell;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.atlas.core.AtlasFrame;
+import phasereditor.ui.info.BaseInformationControl;
 
-public class AtlasFrameInformationControl extends AtlasAssetInformationControl {
+public class AtlasFrameInformationControl extends BaseInformationControl {
 
 	public AtlasFrameInformationControl(Shell parentShell) {
 		super(parentShell);
@@ -46,6 +47,7 @@ public class AtlasFrameInformationControl extends AtlasAssetInformationControl {
 		QuickAtlasPreviewComp comp = (QuickAtlasPreviewComp) control;
 		comp.setFrame((AtlasFrame) frame);
 		comp.setImageFile(frame.getImageFile());
+		
 		var fd = frame.getFrameData();
 		comp.getResolutionLabel().setText(fd.src.width + "x" + fd.src.height);
 	}

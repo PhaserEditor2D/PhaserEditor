@@ -29,6 +29,7 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.MouseWheelListener;
+import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
@@ -42,6 +43,7 @@ public abstract class ZoomCanvas extends Canvas implements PaintListener, IZooma
 	private int _offsetX;
 	private int _offsetY;
 	private float _scale = 1;
+	private boolean _fitWindow;
 
 	public static class ZoomCalculator {
 		public float imgWidth;
@@ -203,7 +205,21 @@ public abstract class ZoomCanvas extends Canvas implements PaintListener, IZooma
 	}
 
 	@Override
-	public void fitWindow() {
+	public final void paintControl(PaintEvent e) {
+		if (_fitWindow) {
+			_fitWindow = false;
+			fitWindow();
+		}
+		
+		customPaintControl(e);
+	}
+	
+	@SuppressWarnings("unused")
+	protected void customPaintControl(PaintEvent e) {
+		// 
+	}
+
+	protected void fitWindow() {
 		ZoomCalculator calc = calc();
 		calc.fit(getBounds());
 
@@ -243,14 +259,10 @@ public abstract class ZoomCanvas extends Canvas implements PaintListener, IZooma
 		_offsetY = offsetY;
 	}
 
-	public void reset() {
-		// fit the window when it is fully sized
-		getDisplay().asyncExec(() -> {
-			if (!isDisposed()) {
-				fitWindow();
-				redraw();
-			}
-		});
+	@Override
+	public void resetZoom() {
+		_fitWindow = true;
+		redraw();
 	}
 
 	protected abstract Point getImageSize();

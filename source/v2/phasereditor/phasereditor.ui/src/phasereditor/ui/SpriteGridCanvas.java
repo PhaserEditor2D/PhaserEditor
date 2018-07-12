@@ -59,6 +59,7 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 	private Point origin;
 	private int _overIndex;
 	private List<String> _tooltips;
+	private boolean _fitWindow;
 
 	public SpriteGridCanvas(Composite parent, int style) {
 		super(parent, style | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL | SWT.NO_REDRAW_RESIZE);
@@ -181,6 +182,11 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 
 	@Override
 	public void paintControl(PaintEvent e) {
+		if (_fitWindow) {
+			_fitWindow = false;
+			fitWindow();
+		}
+		
 		GC gc = e.gc;
 
 		Color overColor = PhaserEditorUI.get_pref_Preview_Atlas_frameOverColor();
@@ -274,7 +280,12 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 	}
 
 	@Override
-	public void fitWindow() {
+	public void resetZoom() {
+		_fitWindow = true;
+		redraw();
+	}
+	
+	protected void fitWindow() {
 		Rectangle b = getClientArea();
 		int area = b.width * b.height;
 		int count = _frames.size() * 2;

@@ -104,7 +104,7 @@ public class BitmapFontAssetPreviewComp extends Composite {
 
 				if (dlg.open() == Window.OK) {
 					_bitmapFontCanvas.setText(dlg.getValue());
-					_bitmapFontCanvas.reset();
+					_bitmapFontCanvas.resetZoom();
 				}
 
 			}

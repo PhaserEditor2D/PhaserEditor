@@ -57,10 +57,7 @@ public class QuickAtlasAssetPreviewComp extends SpriteGridCanvas {
 			setImage(img);
 			setFrames(sortedFrames.stream().map(f -> f.getFrameData().src).collect(Collectors.toList()));
 
-			getDisplay().asyncExec(() -> {
-				fitWindow();
-				redraw();
-			});
+			resetZoom();
 		}
 	}
 

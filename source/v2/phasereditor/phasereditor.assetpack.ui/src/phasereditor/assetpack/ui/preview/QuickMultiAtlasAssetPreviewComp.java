@@ -78,10 +78,7 @@ public class QuickMultiAtlasAssetPreviewComp extends SpriteGridCanvas {
 			}
 		});
 
-		getDisplay().asyncExec(() -> {
-			fitWindow();
-			redraw();
-		});
+		resetZoom();
 
 	}
 

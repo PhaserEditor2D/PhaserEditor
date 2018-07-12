@@ -85,4 +85,8 @@ public class QuickAtlasPreviewComp extends Composite {
 	public void setFrames(List<? extends AtlasFrame> frames) {
 		_canvas.setFrames(frames);
 	}
+	
+	public AtlasCanvas getCanvas() {
+		return _canvas;
+	}
 }

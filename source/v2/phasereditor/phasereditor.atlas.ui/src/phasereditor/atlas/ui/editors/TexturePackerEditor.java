@@ -1207,7 +1207,7 @@ public class TexturePackerEditor extends EditorPart
 	void repaintTab(int i) {
 		AtlasCanvas canvas = getAtlasCanvas(i);
 		if (canvas.getScale() == 0) {
-			canvas.fitWindow();
+			canvas.resetZoom();
 		}
 	}
 

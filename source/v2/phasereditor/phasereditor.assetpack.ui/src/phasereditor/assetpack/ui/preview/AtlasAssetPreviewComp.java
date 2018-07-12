@@ -298,10 +298,7 @@ public class AtlasAssetPreviewComp extends Composite {
 
 			_gridCanvas.setTooltips(tooltips);
 
-			getDisplay().asyncExec(() -> {
-				_gridCanvas.fitWindow();
-				_gridCanvas.redraw();
-			});
+			_gridCanvas.resetZoom();
 		}
 	}
 

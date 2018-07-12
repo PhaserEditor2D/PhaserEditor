@@ -48,6 +48,7 @@ public class ImageCanvas extends Canvas implements PaintListener, IZoomable {
 	private int _offsetY;
 	private float _scale = 1;
 	private Rectangle _viewport;
+	private boolean _fitWindow;
 
 	public static class ZoomCalculator {
 		public float imgWidth;
@@ -208,8 +209,7 @@ public class ImageCanvas extends Canvas implements PaintListener, IZoomable {
 		PhaserEditorUI.redrawCanvasWhenPreferencesChange(this);
 	}
 
-	@Override
-	public void fitWindow() {
+	protected void fitWindow() {
 		if (_image == null) {
 			return;
 		}
@@ -306,17 +306,21 @@ public class ImageCanvas extends Canvas implements PaintListener, IZoomable {
 			_viewport = viewport;
 		}
 
-		reset();
+		resetZoom();
 	}
 
-	public void reset() {
+	@Override
+	public void resetZoom() {
+		_fitWindow = true;
+		redraw();
+		
 		// fit the window when it is fully sized
-		getDisplay().asyncExec(() -> {
-			if (!isDisposed()) {
-				fitWindow();
-				redraw();
-			}
-		});
+//		getDisplay().asyncExec(() -> {
+//			if (!isDisposed()) {
+//				fitWindow();
+//				redraw();
+//			}
+//		});
 	}
 
 	public void setImageViewport(Rectangle viewport) {
@@ -336,7 +340,16 @@ public class ImageCanvas extends Canvas implements PaintListener, IZoomable {
 	}
 
 	@Override
-	public void paintControl(PaintEvent e) {
+	public final void paintControl(PaintEvent e) {
+		if (_fitWindow) {
+			_fitWindow = false;
+			fitWindow();
+		}
+		
+		customPaintControl(e);
+	}
+
+	protected void customPaintControl(PaintEvent e) {
 		GC gc = e.gc;
 
 		Rectangle dst = getBounds();

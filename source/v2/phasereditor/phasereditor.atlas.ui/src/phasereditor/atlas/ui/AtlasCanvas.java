@@ -84,7 +84,7 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 	}
 
 	@Override
-	public void paintControl(PaintEvent e) {
+	public void customPaintControl(PaintEvent e) {
 
 		generateFramesRects();
 
@@ -93,7 +93,7 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 			return;
 		}
 
-		super.paintControl(e);
+		super.customPaintControl(e);
 
 		if (_frames != null && _image != null) {
 			GC gc = e.gc;
@@ -158,7 +158,7 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 	}
 
 	@Override
-	public void fitWindow() {
+	protected void fitWindow() {
 		if (_singleFrame && _frame != null) {
 			if (_image == null) {
 				return;

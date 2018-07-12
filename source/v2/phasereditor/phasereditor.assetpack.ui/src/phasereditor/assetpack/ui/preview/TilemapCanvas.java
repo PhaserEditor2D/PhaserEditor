@@ -173,7 +173,7 @@ public class TilemapCanvas extends ZoomCanvas
 
 		buildMapImage();
 
-		reset();
+		resetZoom();
 	}
 
 	void updateImageSize() {
@@ -295,7 +295,7 @@ public class TilemapCanvas extends ZoomCanvas
 	}
 
 	@Override
-	public void paintControl(PaintEvent e) {
+	public void customPaintControl(PaintEvent e) {
 		GC gc = e.gc;
 		gc.setAdvanced(true);
 

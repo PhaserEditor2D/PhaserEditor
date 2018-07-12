@@ -64,7 +64,7 @@ public class SpritesheetFramePreviewComp extends SpritesheetPreviewCanvas {
 					event.doit = false;
 					return;
 				}
-				event.image = AssetLabelProvider.GLOBAL_48.getImage(((StructuredSelection)sel).getFirstElement());
+				event.image = AssetLabelProvider.GLOBAL_48.getImage(((StructuredSelection) sel).getFirstElement());
 				LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
 				transfer.setSelection(sel);
 			}
@@ -98,10 +98,7 @@ public class SpritesheetFramePreviewComp extends SpritesheetPreviewCanvas {
 			setToolTipText(str);
 		}
 
-		getDisplay().asyncExec(() -> {
-			fitWindow();
-			redraw();
-		});
+		resetZoom();
 	}
 
 	public FrameModel getModel() {

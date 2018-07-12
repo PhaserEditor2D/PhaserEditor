@@ -49,7 +49,7 @@ public class BitmapFontCanvas extends ImageCanvas {
 	}
 
 	@Override
-	public void paintControl(PaintEvent e) {
+	public void customPaintControl(PaintEvent e) {
 		GC gc = e.gc;
 
 		if (_image == null) {

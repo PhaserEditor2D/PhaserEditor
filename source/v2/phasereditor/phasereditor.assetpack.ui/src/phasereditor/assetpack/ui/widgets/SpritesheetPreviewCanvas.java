@@ -344,8 +344,8 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 	}
 
 	@Override
-	public void fitWindow() {
-		if (_singleFrame && _rects != null && _rects.size() > 0) {
+	protected void fitWindow() {
+		if (_singleFrame) {
 			if (getImage() == null) {
 				return;
 			}
@@ -354,12 +354,18 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 				return;
 			}
 
-			ZoomCalculator calc = calc();
-			FrameData fd = _rects.get(_frame >= _rects.size() ? 0 : _frame);
-			calc.imageSize(fd.dst);
-			calc.fit(getBounds());
+			if (_rects == null) {
+				_rects = AssetPackUI.generateSpriteSheetRects(_spritesheet, _image.getBounds());
+			}
 
-			setScaleAndOffset(calc);
+			if (_rects.size() > 0) {
+				ZoomCalculator calc = calc();
+				FrameData fd = _rects.get(_frame >= _rects.size() ? 0 : _frame);
+				calc.imageSize(fd.dst);
+				calc.fit(getBounds());
+
+				setScaleAndOffset(calc);
+			}
 		} else {
 			super.fitWindow();
 		}
