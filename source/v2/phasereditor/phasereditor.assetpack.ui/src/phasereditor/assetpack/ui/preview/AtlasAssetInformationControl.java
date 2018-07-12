@@ -42,8 +42,8 @@ public class AtlasAssetInformationControl extends BaseInformationControl {
 
 	@Override
 	protected void updateContent(Control control, Object model) {
-		AtlasAssetModel asset = (AtlasAssetModel) model;
 		QuickAtlasPreviewComp comp = (QuickAtlasPreviewComp) control;
+		AtlasAssetModel asset = (AtlasAssetModel) model;
 		comp.setImageFile(asset.getFileFromUrl(asset.getTextureURL()));
 		comp.setFrames(asset.getAtlasFrames());
 		comp.getResolutionLabel().setText("atlas");

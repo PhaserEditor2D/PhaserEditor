@@ -21,11 +21,13 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel.Frame;
+import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.atlas.core.AtlasFrame;
 
 public class AtlasFrameInformationControl extends AtlasAssetInformationControl {
 
@@ -34,11 +36,17 @@ public class AtlasFrameInformationControl extends AtlasAssetInformationControl {
 	}
 
 	@Override
-	protected void updateContent(Control control, Object model) {
-		AtlasAssetModel.Frame frame = (Frame) model;
-		super.updateContent(control, frame.getAsset());
-		QuickAtlasPreviewComp comp = (QuickAtlasPreviewComp) control;
-		comp.setFrame(frame);
+	protected Control createContent2(Composite parentComp) {
+		return new QuickAtlasPreviewComp(parentComp, SWT.NONE);
 	}
 
+	@Override
+	protected void updateContent(Control control, Object model) {
+		var frame = (IAssetFrameModel) model;
+		QuickAtlasPreviewComp comp = (QuickAtlasPreviewComp) control;
+		comp.setFrame((AtlasFrame) frame);
+		comp.setImageFile(frame.getImageFile());
+		var fd = frame.getFrameData();
+		comp.getResolutionLabel().setText(fd.src.width + "x" + fd.src.height);
+	}
 }

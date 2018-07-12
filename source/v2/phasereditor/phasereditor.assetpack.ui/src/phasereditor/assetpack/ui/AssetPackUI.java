@@ -78,6 +78,7 @@ import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.FrameData;
 import phasereditor.assetpack.core.IAssetElementModel;
+import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
@@ -116,6 +117,7 @@ import phasereditor.assetpack.ui.refactorings.BaseAssetRenameProcessor;
 import phasereditor.assetpack.ui.widgets.AudioResourceDialog;
 import phasereditor.assetpack.ui.widgets.ImageResourceDialog;
 import phasereditor.assetpack.ui.widgets.VideoResourceDialog;
+import phasereditor.atlas.core.AtlasFrame;
 import phasereditor.audio.core.AudioCore;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.PhaserEditorUI;
@@ -708,9 +710,9 @@ public class AssetPackUI {
 					return info instanceof AtlasAssetModel;
 				}
 			});
-			
+
 			// multi-atlas
-			
+
 			_informationControlCreators.add(new ICustomInformationControlCreator() {
 
 				@Override
@@ -735,7 +737,7 @@ public class AssetPackUI {
 
 				@Override
 				public boolean isSupported(Object info) {
-					return info instanceof AtlasAssetModel.Frame;
+					return info instanceof AtlasFrame && info instanceof IAssetFrameModel;
 				}
 			});
 
