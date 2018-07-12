@@ -70,15 +70,7 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 		_overIndex = -1;
 
 		addPaintListener(this);
-		// this is silly!
-		// addMouseTrackListener(new MouseTrackAdapter() {
-		// @Override
-		// public void mouseEnter(MouseEvent e) {
-		// if (!isFocusControl()) {
-		// forceFocus();
-		// }
-		// }
-		// });
+		
 		addMouseMoveListener(new MouseMoveListener() {
 
 			@SuppressWarnings("synthetic-access")

@@ -23,7 +23,9 @@ package phasereditor.assetpack.ui.preview;
 
 import static java.util.stream.Collectors.toList;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.graphics.Image;
@@ -46,6 +48,8 @@ public class QuickMultiAtlasAssetPreviewComp extends SpriteGridCanvas {
 
 		var frames = getSortedFrames();
 
+		Map<IFile, Image> imageCache = new HashMap<>();
+
 		setFramesProvider(new IFramesProvider() {
 
 			@Override
@@ -67,7 +71,12 @@ public class QuickMultiAtlasAssetPreviewComp extends SpriteGridCanvas {
 					return null;
 				}
 
+				if (imageCache.containsKey(file)) {
+					return imageCache.get(file);
+				}
+
 				Image img = new Image(getDisplay(), file.getLocation().toFile().getAbsolutePath());
+				imageCache.put(file, img);
 
 				return img;
 			}
@@ -77,6 +86,8 @@ public class QuickMultiAtlasAssetPreviewComp extends SpriteGridCanvas {
 				return frames.size();
 			}
 		});
+
+		imageCache.clear();
 
 		resetZoom();
 
