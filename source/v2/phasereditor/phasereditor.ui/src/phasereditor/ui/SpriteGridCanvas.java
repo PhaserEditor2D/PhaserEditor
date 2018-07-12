@@ -196,9 +196,17 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 			Rectangle place = _places.get(i);
 
 			PhaserEditorUI.paintPreviewBackground(gc, place);
+			Image image;
+			if (_image != null) {
+				image = _image;
+			} else {
+				image = _images.get(i);
+			}
 
-			gc.drawImage(_image, frame.x, frame.y, frame.width, frame.height, place.x, place.y, place.width,
-					place.height);
+			if (image != null) {
+				gc.drawImage(image, frame.x, frame.y, frame.width, frame.height, place.x, place.y, place.width,
+						place.height);
+			}
 
 			if (i == _overIndex) {
 				gc.setForeground(overColor);
@@ -208,7 +216,7 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 	}
 
 	private void computeRects() {
-		if (_image == null) {
+		if (_image == null && _images.isEmpty()) {
 			return;
 		}
 
@@ -341,6 +349,7 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 			_frames.add(frame);
 			_images.add(image);
 			_tooltips.add(tooltip);
+
 		}
 
 		redraw();

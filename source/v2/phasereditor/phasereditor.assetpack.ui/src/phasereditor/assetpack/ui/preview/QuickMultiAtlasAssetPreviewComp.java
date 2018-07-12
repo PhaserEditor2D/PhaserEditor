@@ -61,7 +61,7 @@ public class QuickMultiAtlasAssetPreviewComp extends SpriteGridCanvas {
 			@Override
 			public Image getFrameImage(int index) {
 				MultiAtlasAssetModel.Frame frame = frames.get(index);
-				IFile file = frame.getAsset().getFileFromUrl(frame.getTextureFilename());
+				IFile file = frame.getAsset().getFileFromUrl(frame.getTextureUrl());
 
 				if (file == null) {
 					return null;

@@ -709,6 +709,8 @@ public class AssetPackUI {
 				}
 			});
 			
+			// multi-atlas
+			
 			_informationControlCreators.add(new ICustomInformationControlCreator() {
 
 				@Override

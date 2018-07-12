@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import phasereditor.assetpack.core.AtlasAssetModel;
+import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.ui.info.BaseInformationControl;
 
 public class MultiAtlasAssetInformationControl extends BaseInformationControl {
@@ -37,15 +37,13 @@ public class MultiAtlasAssetInformationControl extends BaseInformationControl {
 
 	@Override
 	protected Control createContent2(Composite parentComp) {
-		return new QuickAtlasPreviewComp(parentComp, SWT.NONE);
+		return new QuickMultiAtlasAssetPreviewComp(parentComp, SWT.NONE);
 	}
 
 	@Override
 	protected void updateContent(Control control, Object model) {
-		AtlasAssetModel asset = (AtlasAssetModel) model;
-		QuickAtlasPreviewComp comp = (QuickAtlasPreviewComp) control;
-		comp.setImageFile(asset.getFileFromUrl(asset.getTextureURL()));
-		comp.setFrames(asset.getAtlasFrames());
-		comp.getResolutionLabel().setText("atlas");
+		var asset = (MultiAtlasAssetModel) model;
+		var comp = (QuickMultiAtlasAssetPreviewComp) control;
+		comp.setModel(asset);
 	}
 }
