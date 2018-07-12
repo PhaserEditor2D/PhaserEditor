@@ -34,8 +34,11 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.DialogCellEditor;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListDialog;
 
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
@@ -108,32 +111,51 @@ public class MultiAtlasAssetPGridModel extends BaseAssetPGridModel<MultiAtlasAss
 					protected Object openDialogBox(Control cellEditorWindow) {
 
 						List<IFolder> input = new ArrayList<>();
-						IFile file = getAsset().getPack().getFile();
-						var folder = file.getParent();
-						try {
-							folder.accept(new IResourceVisitor() {
+						{
+							IFile file = getAsset().getPack().getFile();
 
-								@Override
-								public boolean visit(IResource resource) throws CoreException {
-									if (resource instanceof IFolder) {
-										input.add((IFolder) resource);
+							var folder = file.getParent();
+							try {
+								folder.accept(new IResourceVisitor() {
+
+									@Override
+									public boolean visit(IResource resource) throws CoreException {
+										if (resource instanceof IFolder) {
+											input.add((IFolder) resource);
+										}
+										return true;
 									}
-									return true;
-								}
-							});
-						} catch (CoreException e) {
-							e.printStackTrace();
+								});
+							} catch (CoreException e) {
+								e.printStackTrace();
+							}
 						}
 
 						ListDialog dlg = new ListDialog(cellEditorWindow.getShell());
+						dlg.setTitle("Path");
+						dlg.setMessage("Select the 'path' to prepend to the textures name.");
 						dlg.setContentProvider(new ArrayContentProvider());
 						dlg.setLabelProvider(new LabelProvider() {
 							@Override
 							public String getText(Object elem) {
-								return ((IFolder) elem).getFullPath().toString();
+								IFolder folder = (IFolder) elem;
+								String url = ProjectCore.getAssetUrl(folder.getProject(), folder.getFullPath());
+								return url;
+							}
+
+							@Override
+							public Image getImage(Object elem) {
+								return PlatformUI.getWorkbench().getSharedImages()
+										.getImage(ISharedImages.IMG_OBJ_FOLDER);
 							}
 						});
+						
 						dlg.setInput(input);
+						
+						{
+							var folder = getAsset().getFolderFromUrl(getAsset().getPath());
+							dlg.setInitialSelections(folder);
+						}
 
 						if (dlg.open() == Window.OK) {
 							var result = (IFolder) dlg.getResult()[0];

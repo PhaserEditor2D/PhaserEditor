@@ -33,6 +33,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.runtime.Assert;
@@ -220,6 +221,21 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 		}
 
 		return file;
+	}
+	
+	public IFolder getFolderFromUrl(String url) {
+		if (url == null || url.length() == 0) {
+			return null;
+		}
+
+		IContainer webContentFolder = getPack().getWebContentFolder();
+		var folder = webContentFolder.getFolder(new Path(url));
+
+		if (!folder.exists()) {
+			return null;
+		}
+
+		return folder;
 	}
 
 	private transient final PropertyChangeSupport _support = new PropertyChangeSupport(this);
