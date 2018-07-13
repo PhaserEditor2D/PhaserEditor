@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015 Arian Fornaris
+// Copyright (c) 2015, 2018 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -21,25 +21,52 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
-import org.eclipse.swt.widgets.Composite;
+import static java.util.stream.Collectors.toList;
+
+import java.util.List;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.swt.graphics.Rectangle;
 
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
-import phasereditor.ui.FrameGridCanvas;
+import phasereditor.assetpack.core.MultiAtlasAssetModel.Frame;
+import phasereditor.ui.FrameGridCanvas.IFrameProvider;
 
-public class QuickMultiAtlasAssetPreviewComp extends FrameGridCanvas {
+/**
+ * @author arian
+ *
+ */
+public class MultiAtlasFrameProvider implements IFrameProvider {
 
-	private MultiAtlasAssetModel _model;
+	private List<Frame> _frames;
 
-	public QuickMultiAtlasAssetPreviewComp(Composite parent, int style) {
-		super(parent, style);
+	public MultiAtlasFrameProvider(MultiAtlasAssetModel model) {
+		super();
+		_frames = model.getSubElements();
+		_frames = _frames.stream().sorted((f1, f2) -> f1.getKey().toLowerCase().compareTo(f2.getKey().toLowerCase()))
+				.collect(toList());
 	}
 
-	public void setModel(MultiAtlasAssetModel model) {
-		_model = model;
-		loadFrameProvider(new MultiAtlasFrameProvider(model));
+	@Override
+	public String getFrameTooltip(int index) {
+		return null;
 	}
 
-	public MultiAtlasAssetModel getModel() {
-		return _model;
+	@Override
+	public Rectangle getFrameRectangle(int index) {
+		return _frames.get(index).getFrameData().src;
 	}
+
+	@Override
+	public IFile getFrameImageFile(int index) {
+		MultiAtlasAssetModel.Frame frame = _frames.get(index);
+		IFile file = frame.getAsset().getFileFromUrl(frame.getTextureUrl());
+		return file;
+	}
+
+	@Override
+	public int getFrameCount() {
+		return _frames.size();
+	}
+
 }

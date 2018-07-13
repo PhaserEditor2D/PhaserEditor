@@ -46,6 +46,7 @@ import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
@@ -79,6 +80,8 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			case atlas:
 			case atlasXML:
 				return createAtlasPreviewAdapter();
+			case multiatlas:
+				return createMultiAtlasPreviewAdapter();
 			case tilemap:
 				TilemapAssetModel tilemap = (TilemapAssetModel) asset;
 				if (tilemap.isCSVFormat()) {
@@ -364,6 +367,32 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			@Override
 			public void updateToolBar(IToolBarManager toolbar, Control preview) {
 				((AtlasAssetPreviewComp) preview).createToolBar(toolbar);
+			}
+		};
+	}
+	
+	private static IPreviewFactory createMultiAtlasPreviewAdapter() {
+		return new AssetModelPreviewFactory() {
+
+			@Override
+			public void updateControl(Control preview, Object element) {
+				var comp = (MultiAtlasAssetPreviewComp) preview;
+				comp.setModel((MultiAtlasAssetModel) element);
+			}
+
+			@Override
+			public Control createControl(Composite previewContainer) {
+				return new MultiAtlasAssetPreviewComp(previewContainer, SWT.NONE);
+			}
+
+			@Override
+			public boolean canReusePreviewControl(Control c, Object elem) {
+				return c instanceof MultiAtlasAssetPreviewComp && elem instanceof MultiAtlasAssetModel;
+			}
+
+			@Override
+			public void updateToolBar(IToolBarManager toolbar, Control preview) {
+				((MultiAtlasAssetPreviewComp) preview).createToolBar(toolbar);
 			}
 		};
 	}

@@ -170,7 +170,7 @@ public class IconCache {
 		}
 
 		for (Image img : _extraDispose) {
-			if (img.isDisposed()) {
+			if (!img.isDisposed()) {
 				img.dispose();
 			}
 		}
