@@ -23,7 +23,6 @@ package phasereditor.canvas.ui.shapes;
 
 import java.util.List;
 
-import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.canvas.core.AtlasSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;
@@ -53,12 +52,12 @@ public class AtlasSpriteControl extends BaseSpriteControl<AtlasSpriteModel> {
 
 	@Override
 	public double getTextureWidth() {
-		return getModel().getAssetKey().getSourceW();
+		return getModel().getAssetKey().getFrameData().src.width;
 	}
 
 	@Override
 	public double getTextureHeight() {
-		return getModel().getAssetKey().getSourceH();
+		return getModel().getAssetKey().getFrameData().src.height;
 	}
 
 	@Override
@@ -77,7 +76,7 @@ public class AtlasSpriteControl extends BaseSpriteControl<AtlasSpriteModel> {
 
 			@Override
 			public void setValue(IAssetFrameModel value, boolean notify) {
-				getModel().setAssetKey((Frame) value);
+				getModel().setAssetKey(value);
 				if (notify) {
 					updateFromPropertyChange();
 				}

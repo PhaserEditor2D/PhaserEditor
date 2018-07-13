@@ -59,6 +59,11 @@ public class MultiAtlasAssetModel extends AssetModel {
 	}
 
 	@Override
+	public IFile[] computeUsedFiles() {
+		return new IFile[] { getAtlasURLFile() };
+	}
+
+	@Override
 	protected void writeParameters(JSONObject obj) {
 		super.writeParameters(obj);
 

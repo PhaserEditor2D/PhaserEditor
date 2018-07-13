@@ -67,7 +67,11 @@ public class BitmapFontAssetModel extends AssetModel {
 
 	@Override
 	public IFile[] computeUsedFiles() {
-		return new IFile[] { getFileFromUrl(_textureURL), getFileFromUrl(_atlasURL) };
+		return new IFile[] { getTextureFile(), getAtlasFile() };
+	}
+
+	public IFile getAtlasFile() {
+		return getFileFromUrl(_atlasURL);
 	}
 
 	public String getTextureURL() {
@@ -209,7 +213,7 @@ public class BitmapFontAssetModel extends AssetModel {
 	}
 
 	public BitmapFontModel createFontModel() {
-		IFile file = getFileFromUrl(_atlasURL);
+		IFile file = getAtlasFile();
 		if (file == null) {
 			return null;
 		}

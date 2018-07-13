@@ -117,6 +117,9 @@ public class SpritesheetAssetModel extends AssetModel {
 
 	@Override
 	public IFile[] computeUsedFiles() {
+		if (_normalMap == null || _normalMap.length() == 0) {
+			return new IFile[] { getUrlFile() };
+		}
 		return new IFile[] { getUrlFile(), getNormalMapFile() };
 	}
 

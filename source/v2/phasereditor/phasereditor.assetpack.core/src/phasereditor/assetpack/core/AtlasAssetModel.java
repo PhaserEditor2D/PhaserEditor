@@ -78,7 +78,15 @@ public class AtlasAssetModel extends AssetModel {
 
 	@Override
 	public IFile[] computeUsedFiles() {
-		return new IFile[] { getFileFromUrl(_textureURL), getFileFromUrl(_normalMap), getFileFromUrl(_atlasURL) };
+
+		IFile textureFile = getFileFromUrl(_textureURL);
+		IFile atlasFile = getFileFromUrl(_atlasURL);
+
+		if (_normalMap == null || _normalMap.length() == 0) {
+			return new IFile[] { textureFile, atlasFile };
+		}
+
+		return new IFile[] { textureFile, atlasFile, getFileFromUrl(_normalMap)};
 	}
 
 	public IFile getTextureFile() {

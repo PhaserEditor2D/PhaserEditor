@@ -250,7 +250,7 @@ public class CreateBehavior {
 		}
 
 		if (!operations.isEmpty()) {
-			operations.add(new SelectOperation(selectionIds));
+			 operations.add(new SelectOperation(selectionIds));
 			_canvas.getUpdateBehavior().executeOperations(operations);
 
 			updateSelectedTextNodes(textIds);

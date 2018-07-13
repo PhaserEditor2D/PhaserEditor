@@ -30,9 +30,10 @@ import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel.Frame;
+import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 
@@ -51,8 +52,8 @@ public class CanvasModelFactory {
 		} else if (obj instanceof SpritesheetAssetModel.FrameModel) {
 			SpritesheetSpriteModel model = new SpritesheetSpriteModel(parent, (SpritesheetAssetModel.FrameModel) obj);
 			return model;
-		} else if (obj instanceof AtlasAssetModel.Frame) {
-			return new AtlasSpriteModel(parent, (Frame) obj);
+		} else if (obj instanceof AtlasAssetModel.Frame || obj instanceof MultiAtlasAssetModel.Frame) {
+			return new AtlasSpriteModel(parent, (IAssetFrameModel) obj);
 		} else if (obj instanceof String) {
 			return new TextModel(parent);
 		} else if (obj instanceof BitmapFontAssetModel) {

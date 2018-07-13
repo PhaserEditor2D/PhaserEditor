@@ -23,16 +23,16 @@ package phasereditor.canvas.core;
 
 import org.json.JSONObject;
 
-import phasereditor.assetpack.core.AtlasAssetModel;
+import phasereditor.assetpack.core.IAssetFrameModel;
 
 /**
  * @author arian
  *
  */
-public class AtlasSpriteModel extends AssetSpriteModel<AtlasAssetModel.Frame> {
+public class AtlasSpriteModel extends AssetSpriteModel<IAssetFrameModel> {
 	public static final String TYPE_NAME = "atlas-sprite";
 
-	public AtlasSpriteModel(GroupModel parent, AtlasAssetModel.Frame frame) {
+	public AtlasSpriteModel(GroupModel parent, IAssetFrameModel frame) {
 		super(parent, frame, TYPE_NAME);
 	}
 

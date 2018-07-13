@@ -58,7 +58,8 @@ public class ImagePreviewComp extends Composite {
 		_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		_resolutionLabel = new Label(this, SWT.CENTER);
-		_resolutionLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		GridData ld = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
+		_resolutionLabel.setLayoutData(ld);
 	}
 
 	public void destroyResolutionLabel() {
@@ -80,7 +81,12 @@ public class ImagePreviewComp extends Composite {
 		} else {
 			_canvas.setImageFile(filepath);
 			if (_resolutionLabel != null) {
-				_resolutionLabel.setText(new File(filepath).getName() + " (" + _canvas.getResolution() + ")");
+				String name = new File(filepath).getName();
+				if (name.length() > 20) {
+					name = name.substring(0, 20) + "...";
+				}
+				String text = name + " (" + _canvas.getResolution() + ")";
+				_resolutionLabel.setText(text);
 			}
 		}
 
