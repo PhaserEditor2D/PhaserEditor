@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015 Arian Fornaris
+// Copyright (c) 2015, 2018 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -21,31 +21,50 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Display;
 
-import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.ui.info.BaseInformationControl;
+import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.ui.FrameGridCanvas.IFrameProvider;
 
-public class AtlasAssetInformationControl extends BaseInformationControl {
+/**
+ * @author arian
+ *
+ */
+public class AtlasSingleFrameProvider implements IFrameProvider {
 
-	public AtlasAssetInformationControl(Shell parentShell) {
-		super(parentShell);
+	private IAssetFrameModel _frame;
+	private Image _image;
+
+	public AtlasSingleFrameProvider(IAssetFrameModel frame) {
+		_frame = frame;
+		IFile file = frame.getImageFile();
+		if (file != null) {
+			_image = new Image(Display.getDefault(), file.getLocation().toFile().getAbsolutePath());
+		}
 	}
 
 	@Override
-	protected Control createContent2(Composite parentComp) {
-		return new QuickAtlasPreviewComp(parentComp, SWT.NONE);
+	public int getFrameCount() {
+		return 1;
 	}
 
 	@Override
-	protected void updateContent(Control control, Object model) {
-		QuickAtlasPreviewComp comp = (QuickAtlasPreviewComp) control;
-		AtlasAssetModel asset = (AtlasAssetModel) model;
-		comp.getCanvas().disposeImages();
-		comp.getCanvas().loadFrameProvider(new AtlasAssetFramesProvider(asset));
-		comp.getResolutionLabel().setText("atlas");
+	public Rectangle getFrameRectangle(int index) {
+		return _frame.getFrameData().src;
 	}
+
+	@Override
+	public Image getFrameImage(int index) {
+		return _image;
+	}
+
+	@Override
+	public String getFrameTooltip(int index) {
+		var rect = getFrameRectangle(index);
+		return rect.width + "x" + rect.height;
+	}
+
 }

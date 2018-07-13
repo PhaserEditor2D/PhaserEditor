@@ -320,7 +320,8 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			@Override
 			public void updateControl(Control preview, Object element) {
 				var comp = (AtlasAssetFramePreviewComp) preview;
-				comp.setModel((IAssetFrameModel) element);
+				IAssetFrameModel frame = (IAssetFrameModel) element;
+				comp.setModel(frame);
 			}
 
 			@Override

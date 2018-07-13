@@ -50,6 +50,8 @@ public class QuickMultiAtlasAssetPreviewComp extends FrameGridCanvas {
 
 		Map<IFile, Image> imageCache = new HashMap<>();
 
+		disposeImages();
+
 		loadFrameProvider(new IFrameProvider() {
 
 			@Override

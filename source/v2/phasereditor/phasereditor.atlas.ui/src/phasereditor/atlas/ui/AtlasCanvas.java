@@ -52,8 +52,6 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 	private List<? extends AtlasFrame> _frames;
 	private List<Rectangle> _framesRects;
 	private AtlasFrame _overFrame;
-	private AtlasFrame _frame;
-	private boolean _singleFrame;
 	private List<String> _tooltips;
 
 	public AtlasCanvas(Composite parent, int style) {
@@ -64,7 +62,7 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 
 	@Override
 	protected void drawImage(GC gc, int srcX, int srcY, int srcW, int srcH, int dstW, int dstH, int dstX, int dstY) {
-		if (_frame != null || !_selectedFrames.isEmpty()) {
+		if (!_selectedFrames.isEmpty()) {
 			
 			PhaserEditorUI.paintPreviewBackground(gc, new Rectangle(dstX, dstY, dstW, dstH));
 			
@@ -88,11 +86,6 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 
 		generateFramesRects();
 
-		if (_singleFrame && _frame != null) {
-			paintSingleFrame(e);
-			return;
-		}
-
 		super.customPaintControl(e);
 
 		if (_frames != null && _image != null) {
@@ -106,7 +99,7 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 			ZoomCalculator calc = calc();
 			for (Rectangle r : _framesRects) {
 				AtlasFrame frame = _frames.get(i);
-				boolean theFrameIsSelected = frame == _frame || _selectedFrames.contains(frame);
+				boolean theFrameIsSelected = _selectedFrames.contains(frame);
 
 				if (theFrameIsSelected) {
 					gc.setClipping(r);
@@ -127,21 +120,6 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 		}
 	}
 
-	private void paintSingleFrame(PaintEvent e) {
-		GC gc = e.gc;
-
-		if (_image == null) {
-			PhaserEditorUI.paintPreviewMessage(gc, getBounds(), getNoImageMessage());
-		} else {
-			Rectangle src = new Rectangle(_frame.getFrameX(), _frame.getFrameY(), _frame.getFrameW(),
-					_frame.getFrameH());
-			ZoomCalculator calc = calc();
-			Rectangle z = calc.imageToScreen(0, 0, src.width, src.height);
-			PhaserEditorUI.paintPreviewBackground(gc, z);
-			gc.drawImage(_image, src.x, src.y, src.width, src.height, z.x, z.y, z.width, z.height);
-		}
-	}
-
 	private void generateFramesRects() {
 		List<Rectangle> list = new ArrayList<>();
 
@@ -157,24 +135,6 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 		_framesRects = list;
 	}
 
-	@Override
-	protected void fitWindow() {
-		if (_singleFrame && _frame != null) {
-			if (_image == null) {
-				return;
-			}
-
-			ZoomCalculator calc = calc();
-			calc.imgWidth = _frame.getFrameW();
-			calc.imgHeight = _frame.getFrameH();
-			calc.fit(getBounds());
-
-			setScaleAndOffset(calc);
-		} else {
-			super.fitWindow();
-		}
-	}
-
 	public void setFrames(List<? extends AtlasFrame> frames) {
 		_frames = frames;
 		generateFramesRects();
@@ -186,22 +146,6 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 
 	public AtlasFrame getOverFrame() {
 		return _overFrame;
-	}
-
-	public AtlasFrame getFrame() {
-		return _frame;
-	}
-
-	public void setFrame(AtlasFrame frame) {
-		_frame = frame;
-	}
-
-	public void setSingleFrame(boolean singleFrame) {
-		_singleFrame = singleFrame;
-	}
-
-	public boolean isSingleFrame() {
-		return _singleFrame;
 	}
 
 	@Override

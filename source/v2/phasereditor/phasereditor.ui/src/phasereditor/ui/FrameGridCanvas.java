@@ -318,9 +318,7 @@ public class FrameGridCanvas extends Canvas implements PaintListener, IZoomable 
 	}
 
 	public void loadFrameProvider(IFrameProvider provider) {
-		_frames = new ArrayList<>();
-		_images = new ArrayList<>();
-		_tooltips = new ArrayList<>();
+		resetFramesData();
 
 		for (int i = 0; i < provider.getFrameCount(); i++) {
 			var frame = provider.getFrameRectangle(i);
@@ -333,7 +331,13 @@ public class FrameGridCanvas extends Canvas implements PaintListener, IZoomable 
 
 		}
 
-		redraw();
+		resetZoom();
+	}
+
+	private void resetFramesData() {
+		_frames = new ArrayList<>();
+		_images = new ArrayList<>();
+		_tooltips = new ArrayList<>();
 	}
 
 	public void disposeImages() {
@@ -342,6 +346,8 @@ public class FrameGridCanvas extends Canvas implements PaintListener, IZoomable 
 				img.dispose();
 			}
 		}
+
+		resetFramesData();
 	}
 
 	public interface IFrameProvider {

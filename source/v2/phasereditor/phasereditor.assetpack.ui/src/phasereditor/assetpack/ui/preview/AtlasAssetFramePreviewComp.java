@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
@@ -32,18 +31,15 @@ import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
-import phasereditor.assetpack.core.FrameData;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
-import phasereditor.atlas.core.AtlasFrame;
-import phasereditor.atlas.ui.AtlasCanvas;
+import phasereditor.ui.FrameGridCanvas;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 
-public class AtlasAssetFramePreviewComp extends AtlasCanvas {
+public class AtlasAssetFramePreviewComp extends FrameGridCanvas {
 	static final Object NO_SELECTION = "none";
 
 	private IAssetFrameModel _model;
@@ -84,18 +80,10 @@ public class AtlasAssetFramePreviewComp extends AtlasCanvas {
 
 	public void setModel(IAssetFrameModel model) {
 		_model = model;
-		IFile file = model.getImageFile();
-		setImageFile(file);
-		setFrame((AtlasFrame) model);
-		setSingleFrame(true);
-
-		Image img = getImage();
-		if (img != null) {
-			FrameData fd = _model.getFrameData();
-			setToolTipText(fd.src.width + "x" + fd.src.height);
-		}
-
-		resetZoom();
+		
+		disposeImages();
+		
+		loadFrameProvider(new AtlasSingleFrameProvider(model));
 	}
 
 	public IAssetFrameModel getModel() {
@@ -105,6 +93,13 @@ public class AtlasAssetFramePreviewComp extends AtlasCanvas {
 	public void createToolBar(IToolBarManager toolbar) {
 		toolbar.add(new ImageCanvas_Zoom_1_1_Action(this));
 		toolbar.add(new ImageCanvas_Zoom_FitWindow_Action(this));
+	}
+	
+	@Override
+	public void dispose() {
+		disposeImages();
+		
+		super.dispose();
 	}
 
 }
