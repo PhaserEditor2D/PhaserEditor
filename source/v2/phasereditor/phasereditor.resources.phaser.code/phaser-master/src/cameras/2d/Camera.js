@@ -4,6 +4,7 @@
  * @license      {@link https://github.com/photonstorm/phaser/blob/master/license.txt|MIT License}
  */
 
+var CenterOn = require('../../geom/rectangle/CenterOn');
 var Clamp = require('../../math/Clamp');
 var Class = require('../../utils/Class');
 var DegToRad = require('../../math/DegToRad');
@@ -94,6 +95,17 @@ var Camera = new Class({
         this.scene;
 
         /**
+         * The Camera ID. Assigned by the Camera Manager and used to handle camera exclusion.
+         * This value is a bitmask.
+         *
+         * @name Phaser.Cameras.Scene2D.Camera#id
+         * @type {integer}
+         * @readOnly
+         * @since 3.11.0
+         */
+        this.id = 0;
+
+        /**
          * The name of the Camera. This is left empty for your own use.
          *
          * @name Phaser.Cameras.Scene2D.Camera#name
@@ -104,7 +116,9 @@ var Camera = new Class({
         this.name = '';
 
         /**
-         * The x position of the Camera, relative to the top-left of the game canvas.
+         * The x position of the Camera viewport, relative to the top-left of the game canvas.
+         * The viewport is the area into which the camera renders.
+         * To adjust the position the camera is looking at in the game world, see the `scrollX` value.
          *
          * @name Phaser.Cameras.Scene2D.Camera#x
          * @type {number}
@@ -114,6 +128,8 @@ var Camera = new Class({
 
         /**
          * The y position of the Camera, relative to the top-left of the game canvas.
+         * The viewport is the area into which the camera renders.
+         * To adjust the position the camera is looking at in the game world, see the `scrollY` value.
          *
          * @name Phaser.Cameras.Scene2D.Camera#y
          * @type {number}
@@ -122,22 +138,30 @@ var Camera = new Class({
         this.y = y;
 
         /**
-         * The width of the Camera, in pixels.
+         * The width of the Camera viewport, in pixels.
          *
-         * @name Phaser.Cameras.Scene2D.Camera#width
+         * The viewport is the area into which the Camera renders. Setting the viewport does
+         * not restrict where the Camera can scroll to.
+         *
+         * @name Phaser.Cameras.Scene2D.Camera#_width
          * @type {number}
-         * @since 3.0.0
+         * @private
+         * @since 3.11.0
          */
-        this.width = width;
+        this._width = width;
 
         /**
-         * The height of the Camera, in pixels.
+         * The height of the Camera viewport, in pixels.
          *
-         * @name Phaser.Cameras.Scene2D.Camera#height
+         * The viewport is the area into which the Camera renders. Setting the viewport does
+         * not restrict where the Camera can scroll to.
+         *
+         * @name Phaser.Cameras.Scene2D.Camera#_height
          * @type {number}
-         * @since 3.0.0
+         * @private
+         * @since 3.11.0
          */
-        this.height = height;
+        this._height = height;
 
         /**
          * Should this camera round its pixel values to integers?
@@ -151,7 +175,7 @@ var Camera = new Class({
 
         /**
          * Is this Camera visible or not?
-         * 
+         *
          * A visible camera will render and perform input tests.
          * An invisible camera will not render anything and will skip input tests.
          *
@@ -164,6 +188,7 @@ var Camera = new Class({
 
         /**
          * Is this Camera using a bounds to restrict scrolling movement?
+         *
          * Set this property along with the bounds via `Camera.setBounds`.
          *
          * @name Phaser.Cameras.Scene2D.Camera#useBounds
@@ -184,6 +209,33 @@ var Camera = new Class({
         this._bounds = new Rectangle();
 
         /**
+         * The World View is a Rectangle that defines the area of the 'world' the Camera is currently looking at.
+         * This factors in the Camera viewport size, zoom and scroll position and is updated in the Camera preRender step.
+         * If you have enabled Camera bounds the worldview will be clamped to those bounds accordingly.
+         * You can use it for culling or intersection checks.
+         *
+         * @name Phaser.Cameras.Scene2D.Camera#worldView
+         * @type {Phaser.Geom.Rectangle}
+         * @readOnly
+         * @since 3.11.0
+         */
+        this.worldView = new Rectangle();
+
+        /**
+         * Is this Camera dirty?
+         * 
+         * A dirty Camera has had either its viewport size, bounds, scroll, rotation or zoom levels changed since the last frame.
+         * 
+         * This flag is cleared during the `postRenderCamera` method of the renderer.
+         *
+         * @name Phaser.Cameras.Scene2D.Camera#dirty
+         * @type {boolean}
+         * @default true
+         * @since 3.11.0
+         */
+        this.dirty = true;
+
+        /**
          * Does this Camera allow the Game Objects it renders to receive input events?
          *
          * @name Phaser.Cameras.Scene2D.Camera#inputEnabled
@@ -194,56 +246,86 @@ var Camera = new Class({
         this.inputEnabled = true;
 
         /**
-         * The horizontal scroll position of this camera.
-         * Optionally restricted via the Camera bounds.
+         * The horizontal scroll position of this Camera.
          *
-         * @name Phaser.Cameras.Scene2D.Camera#scrollX
+         * Change this value to cause the Camera to scroll around your Scene.
+         *
+         * Alternatively, setting the Camera to follow a Game Object, via the `startFollow` method,
+         * will automatically adjust the Camera scroll values accordingly.
+         *
+         * You can set the bounds within which the Camera can scroll via the `setBounds` method.
+         *
+         * @name Phaser.Cameras.Scene2D.Camera#_scrollX
          * @type {number}
+         * @private
          * @default 0
-         * @since 3.0.0
+         * @since 3.11.0
          */
-        this.scrollX = 0;
+        this._scrollX = 0;
 
         /**
-         * The vertical scroll position of this camera.
-         * Optionally restricted via the Camera bounds.
+         * The vertical scroll position of this Camera.
          *
-         * @name Phaser.Cameras.Scene2D.Camera#scrollY
+         * Change this value to cause the Camera to scroll around your Scene.
+         *
+         * Alternatively, setting the Camera to follow a Game Object, via the `startFollow` method,
+         * will automatically adjust the Camera scroll values accordingly.
+         *
+         * You can set the bounds within which the Camera can scroll via the `setBounds` method.
+         *
+         * @name Phaser.Cameras.Scene2D.Camera#_scrollY
          * @type {number}
+         * @private
          * @default 0
-         * @since 3.0.0
+         * @since 3.11.0
          */
-        this.scrollY = 0;
+        this._scrollY = 0;
 
         /**
          * The Camera zoom value. Change this value to zoom in, or out of, a Scene.
+         *
+         * A value of 0.5 would zoom the Camera out, so you can now see twice as much
+         * of the Scene as before. A value of 2 would zoom the Camera in, so every pixel
+         * now takes up 2 pixels when rendered.
+         *
          * Set to 1 to return to the default zoom level.
          *
-         * @name Phaser.Cameras.Scene2D.Camera#zoom
-         * @type {float}
+         * Be careful to never set this value to zero.
+         *
+         * @name Phaser.Cameras.Scene2D.Camera#_zoom
+         * @type {number}
+         * @private
          * @default 1
-         * @since 3.0.0
+         * @since 3.11.0
          */
-        this.zoom = 1;
+        this._zoom = 1;
 
         /**
-         * The rotation of the Camera. This influences the rendering of all Game Objects visible by this camera.
+         * The rotation of the Camera in radians.
          *
-         * @name Phaser.Cameras.Scene2D.Camera#rotation
+         * Camera rotation always takes place based on the Camera viewport. By default, rotation happens
+         * in the center of the viewport. You can adjust this with the `originX` and `originY` properties.
+         *
+         * Rotation influences the rendering of _all_ Game Objects visible by this Camera. However, it does not
+         * rotate the Camera viewport itself, which always remains an axis-aligned rectangle.
+         *
+         * @name Phaser.Cameras.Scene2D.Camera#_rotation
          * @type {number}
+         * @private
          * @default 0
-         * @since 3.0.0
+         * @since 3.11.0
          */
-        this.rotation = 0;
+        this._rotation = 0;
 
         /**
          * A local transform matrix used for internal calculations.
          *
          * @name Phaser.Cameras.Scene2D.Camera#matrix
          * @type {Phaser.GameObjects.Components.TransformMatrix}
+         * @private
          * @since 3.0.0
          */
-        this.matrix = new TransformMatrix(1, 0, 0, 1, 0, 0);
+        this.matrix = new TransformMatrix();
 
         /**
          * Does this Camera have a transparent background?
@@ -263,6 +345,18 @@ var Camera = new Class({
          * @since 3.0.0
          */
         this.backgroundColor = ValueToColor('rgba(0,0,0,0)');
+
+        /**
+         * The Camera alpha value. Setting this property impacts every single object that this Camera
+         * renders. You can either set the property directly, i.e. via a Tween, to fade a Camera in or out,
+         * or via the chainable `setAlpha` method instead.
+         *
+         * @name Phaser.Cameras.Scene2D.Camera#alpha
+         * @type {number}
+         * @default 1
+         * @since 3.11.0
+         */
+        this.alpha = 1;
 
         /**
          * The Camera Fade effect handler.
@@ -295,6 +389,26 @@ var Camera = new Class({
         this.shakeEffect = new Effects.Shake(this);
 
         /**
+         * The Camera Pan effect handler.
+         * To pan this camera see the `Camera.pan` method.
+         *
+         * @name Phaser.Cameras.Scene2D.Camera#panEffect
+         * @type {Phaser.Cameras.Scene2D.Effects.Pan}
+         * @since 3.11.0
+         */
+        this.panEffect = new Effects.Pan(this);
+
+        /**
+         * The Camera Zoom effect handler.
+         * To zoom this camera see the `Camera.zoom` method.
+         *
+         * @name Phaser.Cameras.Scene2D.Camera#zoomEffect
+         * @type {Phaser.Cameras.Scene2D.Effects.Zoom}
+         * @since 3.11.0
+         */
+        this.zoomEffect = new Effects.Zoom(this);
+
+        /**
          * Should the camera cull Game Objects before checking them for input hit tests?
          * In some special cases it may be beneficial to disable this.
          *
@@ -311,6 +425,7 @@ var Camera = new Class({
          * @name Phaser.Cameras.Scene2D.Camera#culledObjects
          * @type {Phaser.GameObjects.GameObject[]}
          * @default []
+         * @private
          * @since 3.0.0
          */
         this.culledObjects = [];
@@ -345,6 +460,80 @@ var Camera = new Class({
         this.followOffset = new Vector2();
 
         /**
+         * The mid-point of the Camera in 'world' coordinates.
+         *
+         * Use it to obtain exactly where in the world the center of the camera is currently looking.
+         *
+         * This value is updated in the preRender method, after the scroll values and follower
+         * have been processed.
+         *
+         * @name Phaser.Cameras.Scene2D.Camera#midPoint
+         * @type {Phaser.Math.Vector2}
+         * @readOnly
+         * @since 3.11.0
+         */
+        this.midPoint = new Vector2(width / 2, height / 2);
+
+        /**
+         * The horizontal origin of rotation for this Camera.
+         *
+         * By default the camera rotates around the center of the viewport.
+         *
+         * Changing the origin allows you to adjust the point in the viewport from which rotation happens.
+         * A value of 0 would rotate from the top-left of the viewport. A value of 1 from the bottom right.
+         *
+         * See `setOrigin` to set both origins in a single, chainable call.
+         *
+         * @name Phaser.Cameras.Scene2D.Camera#originX
+         * @type {number}
+         * @default 0.5
+         * @since 3.11.0
+         */
+        this.originX = 0.5;
+
+        /**
+         * The vertical origin of rotation for this Camera.
+         *
+         * By default the camera rotates around the center of the viewport.
+         *
+         * Changing the origin allows you to adjust the point in the viewport from which rotation happens.
+         * A value of 0 would rotate from the top-left of the viewport. A value of 1 from the bottom right.
+         *
+         * See `setOrigin` to set both origins in a single, chainable call.
+         *
+         * @name Phaser.Cameras.Scene2D.Camera#originY
+         * @type {number}
+         * @default 0.5
+         * @since 3.11.0
+         */
+        this.originY = 0.5;
+
+        /**
+         * The Camera dead zone.
+         *
+         * The deadzone is only used when the camera is following a target.
+         *
+         * It defines a rectangular region within which if the target is present, the camera will not scroll.
+         * If the target moves outside of this area, the camera will begin scrolling in order to follow it.
+         *
+         * The `lerp` values that you can set for a follower target also apply when using a deadzone.
+         *
+         * You can directly set this property to be an instance of a Rectangle. Or, you can use the
+         * `setDeadzone` method for a chainable approach.
+         *
+         * The rectangle you provide can have its dimensions adjusted dynamically, however, please
+         * note that its position is updated every frame, as it is constantly re-centered on the cameras mid point.
+         *
+         * Calling `setDeadzone` with no arguments will reset an active deadzone, as will setting this property
+         * to `null`.
+         *
+         * @name Phaser.Cameras.Scene2D.Camera#deadzone
+         * @type {?Phaser.Geom.Rectangle}
+         * @since 3.11.0
+         */
+        this.deadzone = null;
+
+        /**
          * Internal follow target reference.
          *
          * @name Phaser.Cameras.Scene2D.Camera#_follow
@@ -354,21 +543,184 @@ var Camera = new Class({
          * @since 3.0.0
          */
         this._follow = null;
-
-        /**
-         * Internal camera ID. Assigned by the Camera Manager and used in the camera pool.
-         *
-         * @name Phaser.Cameras.Scene2D.Camera#_id
-         * @type {integer}
-         * @private
-         * @default 0
-         * @since 3.0.0
-         */
-        this._id = 0;
     },
 
     /**
-     * Scrolls the Camera so that it is looking at the center of the Camera Bounds (if previously enabled)
+     * Set the Alpha level of this Camera. The alpha controls the opacity of the Camera as it renders.
+     * Alpha values are provided as a float between 0, fully transparent, and 1, fully opaque.
+     *
+     * @method Phaser.GameObjects.Components.Origin#setAlpha
+     * @since 3.11.0
+     *
+     * @param {number} [value=1] - The Camera alpha value.
+     *
+     * @return {this} This Camera instance.
+     */
+    setAlpha: function (value)
+    {
+        if (value === undefined) { value = 1; }
+
+        this.alpha = value;
+
+        return this;
+    },
+
+    /**
+     * Sets the rotation origin of this Camera.
+     *
+     * The values are given in the range 0 to 1 and are only used when calculating Camera rotation.
+     *
+     * By default the camera rotates around the center of the viewport.
+     *
+     * Changing the origin allows you to adjust the point in the viewport from which rotation happens.
+     * A value of 0 would rotate from the top-left of the viewport. A value of 1 from the bottom right.
+     *
+     * @method Phaser.GameObjects.Components.Origin#setOrigin
+     * @since 3.11.0
+     *
+     * @param {number} [x=0.5] - The horizontal origin value.
+     * @param {number} [y=x] - The vertical origin value. If not defined it will be set to the value of `x`.
+     *
+     * @return {this} This Camera instance.
+     */
+    setOrigin: function (x, y)
+    {
+        if (x === undefined) { x = 0.5; }
+        if (y === undefined) { y = x; }
+
+        this.originX = x;
+        this.originY = y;
+
+        return this;
+    },
+
+    /**
+     * Sets the Camera dead zone.
+     *
+     * The deadzone is only used when the camera is following a target.
+     *
+     * It defines a rectangular region within which if the target is present, the camera will not scroll.
+     * If the target moves outside of this area, the camera will begin scrolling in order to follow it.
+     *
+     * The deadzone rectangle is re-positioned every frame so that it is centered on the mid-point
+     * of the camera. This allows you to use the object for additional game related checks, such as
+     * testing if an object is within it or not via a Rectangle.contains call.
+     *
+     * The `lerp` values that you can set for a follower target also apply when using a deadzone.
+     *
+     * Calling this method with no arguments will reset an active deadzone.
+     *
+     * @method Phaser.Cameras.Scene2D.Camera#setDeadzone
+     * @since 3.11.0
+     *
+     * @param {number} [width] - The width of the deadzone rectangle in pixels. If not specified the deadzone is removed.
+     * @param {number} [height] - The height of the deadzone rectangle in pixels.
+     *
+     * @return {Phaser.Cameras.Scene2D.Camera} This Camera instance.
+     */
+    setDeadzone: function (width, height)
+    {
+        if (width === undefined)
+        {
+            this.deadzone = null;
+        }
+        else
+        {
+            if (this.deadzone)
+            {
+                this.deadzone.width = width;
+                this.deadzone.height = height;
+            }
+            else
+            {
+                this.deadzone = new Rectangle(0, 0, width, height);
+            }
+
+            if (this._follow)
+            {
+                var originX = this.width / 2;
+                var originY = this.height / 2;
+
+                var fx = this._follow.x - this.followOffset.x;
+                var fy = this._follow.y - this.followOffset.y;
+
+                this.midPoint.set(fx, fy);
+
+                this.scrollX = fx - originX;
+                this.scrollY = fy - originY;
+            }
+
+            CenterOn(this.deadzone, this.midPoint.x, this.midPoint.y);
+        }
+
+        return this;
+    },
+
+    /**
+     * Calculates what the Camera.scrollX and scrollY values would need to be in order to move
+     * the Camera so it is centered on the given x and y coordinates, without actually moving
+     * the Camera there. The results are clamped based on the Camera bounds, if set.
+     *
+     * @method Phaser.Cameras.Scene2D.Camera#getScroll
+     * @since 3.11.0
+     *
+     * @param {number} x - The horizontal coordinate to center on.
+     * @param {number} y - The vertical coordinate to center on.
+     * @param {Phaser.Math.Vector2} [out] - A Vec2 to store the values in. If not given a new Vec2 is created.
+     *
+     * @return {Phaser.Math.Vector2} The scroll coordinates stored in the `x` abd `y` properties.
+     */
+    getScroll: function (x, y, out)
+    {
+        if (out === undefined) { out = new Vector2(); }
+
+        var originX = this.width * 0.5;
+        var originY = this.height * 0.5;
+
+        out.x = x - originX;
+        out.y = y - originY;
+
+        if (this.useBounds)
+        {
+            out.x = this.clampX(out.x);
+            out.y = this.clampY(out.y);
+        }
+
+        return out;
+    },
+
+    /**
+     * Moves the Camera so that it is centered on the given coordinates, bounds allowing.
+     *
+     * @method Phaser.Cameras.Scene2D.Camera#centerOn
+     * @since 3.11.0
+     *
+     * @param {number} x - The horizontal coordinate to center on.
+     * @param {number} y - The vertical coordinate to center on.
+     *
+     * @return {Phaser.Cameras.Scene2D.Camera} This Camera instance.
+     */
+    centerOn: function (x, y)
+    {
+        var originX = this.width * 0.5;
+        var originY = this.height * 0.5;
+
+        this.midPoint.set(x, y);
+
+        this.scrollX = x - originX;
+        this.scrollY = y - originY;
+
+        if (this.useBounds)
+        {
+            this.scrollX = this.clampX(this.scrollX);
+            this.scrollY = this.clampY(this.scrollY);
+        }
+
+        return this;
+    },
+
+    /**
+     * Moves the Camera so that it is looking at the center of the Camera Bounds, if enabled.
      *
      * @method Phaser.Cameras.Scene2D.Camera#centerToBounds
      * @since 3.0.0
@@ -379,15 +731,21 @@ var Camera = new Class({
     {
         if (this.useBounds)
         {
-            this.scrollX = (this._bounds.width * 0.5) - (this.width * 0.5);
-            this.scrollY = (this._bounds.height * 0.5) - (this.height * 0.5);
+            var bounds = this._bounds;
+            var originX = this.width * 0.5;
+            var originY = this.height * 0.5;
+
+            this.midPoint.set(bounds.centerX, bounds.centerY);
+
+            this.scrollX = bounds.centerX - originX;
+            this.scrollY = bounds.centerY - originY;
         }
 
         return this;
     },
 
     /**
-     * Scrolls the Camera so that it is re-centered based on its viewport size.
+     * Moves the Camera so that it is re-centered based on its viewport size.
      *
      * @method Phaser.Cameras.Scene2D.Camera#centerToSize
      * @since 3.0.0
@@ -612,6 +970,52 @@ var Camera = new Class({
     },
 
     /**
+     * This effect will scroll the Camera so that the center of its viewport finishes at the given destination,
+     * over the duration and with the ease specified.
+     *
+     * @method Phaser.Cameras.Scene2D.Camera#pan
+     * @since 3.11.0
+     *
+     * @param {number} x - The destination x coordinate to scroll the center of the Camera viewport to.
+     * @param {number} y - The destination y coordinate to scroll the center of the Camera viewport to.
+     * @param {integer} [duration=1000] - The duration of the effect in milliseconds.
+     * @param {(string|function)} [ease='Linear'] - The ease to use for the pan. Can be any of the Phaser Easing constants or a custom function.
+     * @param {boolean} [force=false] - Force the shake effect to start immediately, even if already running.
+     * @param {CameraPanCallback} [callback] - This callback will be invoked every frame for the duration of the effect.
+     * It is sent four arguments: A reference to the camera, a progress amount between 0 and 1 indicating how complete the effect is,
+     * the current camera scroll x coordinate and the current camera scroll y coordinate.
+     * @param {any} [context] - The context in which the callback is invoked. Defaults to the Scene to which the Camera belongs.
+     *
+     * @return {Phaser.Cameras.Scene2D.Camera} This Camera instance.
+     */
+    pan: function (x, y, duration, ease, force, callback, context)
+    {
+        return this.panEffect.start(x, y, duration, ease, force, callback, context);
+    },
+
+    /**
+     * This effect will zoom the Camera to the given scale, over the duration and with the ease specified.
+     *
+     * @method Phaser.Cameras.Scene2D.Camera#zoomTo
+     * @since 3.11.0
+     *
+     * @param {number} zoom - The target Camera zoom value.
+     * @param {integer} [duration=1000] - The duration of the effect in milliseconds.
+     * @param {(string|function)} [ease='Linear'] - The ease to use for the pan. Can be any of the Phaser Easing constants or a custom function.
+     * @param {boolean} [force=false] - Force the shake effect to start immediately, even if already running.
+     * @param {CameraPanCallback} [callback] - This callback will be invoked every frame for the duration of the effect.
+     * It is sent four arguments: A reference to the camera, a progress amount between 0 and 1 indicating how complete the effect is,
+     * the current camera scroll x coordinate and the current camera scroll y coordinate.
+     * @param {any} [context] - The context in which the callback is invoked. Defaults to the Scene to which the Camera belongs.
+     *
+     * @return {Phaser.Cameras.Scene2D.Camera} This Camera instance.
+     */
+    zoomTo: function (zoom, duration, ease, force, callback, context)
+    {
+        return this.zoomEffect.start(zoom, duration, ease, force, callback, context);
+    },
+
+    /**
      * Converts the given `x` and `y` coordinates into World space, based on this Cameras transform.
      * You can optionally provide a Vector2, or similar object, to store the results in.
      *
@@ -690,7 +1094,7 @@ var Camera = new Class({
      */
     ignore: function (gameObject)
     {
-        var id = this._id;
+        var id = this.id;
 
         if (Array.isArray(gameObject))
         {
@@ -721,49 +1125,91 @@ var Camera = new Class({
     {
         var width = this.width;
         var height = this.height;
+
+        var halfWidth = width * 0.5;
+        var halfHeight = height * 0.5;
+
         var zoom = this.zoom * baseScale;
         var matrix = this.matrix;
-        var originX = width / 2;
-        var originY = height / 2;
+
+        var originX = width * this.originX;
+        var originY = height * this.originY;
+
         var follow = this._follow;
+        var deadzone = this.deadzone;
+
+        var sx = this.scrollX;
+        var sy = this.scrollY;
+
+        if (deadzone)
+        {
+            CenterOn(deadzone, this.midPoint.x, this.midPoint.y);
+        }
 
         if (follow)
         {
-            this.scrollX = Linear(this.scrollX, (follow.x - this.followOffset.x) - originX, this.lerp.x) / zoom;
-            this.scrollY = Linear(this.scrollY, (follow.y - this.followOffset.y) - originY, this.lerp.y) / zoom;
+            var fx = (follow.x - this.followOffset.x);
+            var fy = (follow.y - this.followOffset.y);
+
+            if (deadzone)
+            {
+                if (fx < deadzone.x)
+                {
+                    sx = Linear(sx, sx - (deadzone.x - fx), this.lerp.x);
+                }
+                else if (fx > deadzone.right)
+                {
+                    sx = Linear(sx, sx + (fx - deadzone.right), this.lerp.x);
+                }
+
+                if (fy < deadzone.y)
+                {
+                    sy = Linear(sy, sy - (deadzone.y - fy), this.lerp.y);
+                }
+                else if (fy > deadzone.bottom)
+                {
+                    sy = Linear(sy, sy + (fy - deadzone.bottom), this.lerp.y);
+                }
+            }
+            else
+            {
+                sx = Linear(sx, fx - originX, this.lerp.x);
+                sy = Linear(sy, fy - originY, this.lerp.y);
+            }
         }
 
         if (this.useBounds)
         {
-            var bounds = this._bounds;
-
-            var bw = Math.max(0, bounds.right - width);
-            var bh = Math.max(0, bounds.bottom - height);
-
-            if (this.scrollX < bounds.x)
-            {
-                this.scrollX = bounds.x;
-            }
-            else if (this.scrollX > bw)
-            {
-                this.scrollX = bw;
-            }
-
-            if (this.scrollY < bounds.y)
-            {
-                this.scrollY = bounds.y;
-            }
-            else if (this.scrollY > bh)
-            {
-                this.scrollY = bh;
-            }
+            sx = this.clampX(sx);
+            sy = this.clampY(sy);
         }
 
         if (this.roundPixels)
         {
-            this.scrollX = Math.round(this.scrollX);
-            this.scrollY = Math.round(this.scrollY);
+            originX = Math.round(originX);
+            originY = Math.round(originY);
         }
+
+        //  Values are in pixels and not impacted by zooming the Camera
+        this.scrollX = sx;
+        this.scrollY = sy;
+
+        var midX = sx + halfWidth;
+        var midY = sy + halfHeight;
+
+        //  The center of the camera, in world space, so taking zoom into account
+        //  Basically the pixel value of what it's looking at in the middle of the cam
+        this.midPoint.set(midX, midY);
+
+        var displayWidth = width / zoom;
+        var displayHeight = height / zoom;
+
+        this.worldView.setTo(
+            midX - (displayWidth / 2),
+            midY - (displayHeight / 2),
+            displayWidth,
+            displayHeight
+        );
 
         matrix.loadIdentity();
         matrix.scale(resolution, resolution);
@@ -776,6 +1222,75 @@ var Camera = new Class({
     },
 
     /**
+     * Takes an x value and checks it's within the range of the Camera bounds, adjusting if required.
+     * Do not call this method if you are not using camera bounds.
+     *
+     * @method Phaser.Cameras.Scene2D.Camera#clampX
+     * @since 3.11.0
+     *
+     * @param {number} x - The value to horizontally scroll clamp.
+     *
+     * @return {number} The adjusted value to use as scrollX.
+     */
+    clampX: function (x)
+    {
+        var bounds = this._bounds;
+
+        var dw = this.displayWidth;
+
+        var bx = bounds.x + ((dw - this.width) / 2);
+        var bw = Math.max(bx, bx + bounds.width - dw);
+
+        if (x < bx)
+        {
+            x = bx;
+        }
+        else if (x > bw)
+        {
+            x = bw;
+        }
+
+        return x;
+    },
+
+    /**
+     * Takes a y value and checks it's within the range of the Camera bounds, adjusting if required.
+     * Do not call this method if you are not using camera bounds.
+     *
+     * @method Phaser.Cameras.Scene2D.Camera#clampY
+     * @since 3.11.0
+     *
+     * @param {number} y - The value to vertically scroll clamp.
+     *
+     * @return {number} The adjusted value to use as scrollY.
+     */
+    clampY: function (y)
+    {
+        var bounds = this._bounds;
+
+        var dh = this.displayHeight;
+
+        var by = bounds.y + ((dh - this.height) / 2);
+        var bh = Math.max(by, by + bounds.height - dh);
+
+        if (y < by)
+        {
+            y = by;
+        }
+        else if (y > bh)
+        {
+            y = bh;
+        }
+
+        return y;
+    },
+
+    /*
+        var gap = this._zoomInversed;
+        return gap * Math.round((src.x - this.scrollX * src.scrollFactorX) / gap);
+    */
+
+    /**
      * If this Camera has previously had movement bounds set on it, this will remove them.
      *
      * @method Phaser.Cameras.Scene2D.Camera#removeBounds
@@ -786,6 +1301,8 @@ var Camera = new Class({
     removeBounds: function ()
     {
         this.useBounds = false;
+
+        this.dirty = true;
 
         this._bounds.setEmpty();
 
@@ -890,10 +1407,23 @@ var Camera = new Class({
     },
 
     /**
-     * Set the world bounds for this Camera.
-     *
-     * A Camera bounds controls where the camera can scroll to within the world. It does not limit
-     * rendering of the camera, or placement of the viewport within your game.
+     * Set the bounds of the Camera. The bounds are an axis-aligned rectangle.
+     * 
+     * The Camera bounds controls where the Camera can scroll to, stopping it from scrolling off the
+     * edges and into blank space. It does not limit the placement of Game Objects, or where
+     * the Camera viewport can be positioned.
+     * 
+     * Temporarily disable the bounds by changing the boolean `Camera.useBounds`.
+     * 
+     * Clear the bounds entirely by calling `Camera.removeBounds`.
+     * 
+     * If you set bounds that are smaller than the viewport it will stop the Camera from being
+     * able to scroll. The bounds can be positioned where-ever you wish. By default they are from
+     * 0x0 to the canvas width x height. This means that the coordinate 0x0 is the top left of
+     * the Camera bounds. However, you can position them anywhere. So if you wanted a game world
+     * that was 2048x2048 in size, with 0x0 being the center of it, you can set the bounds x/y
+     * to be -1024, -1024, with a width and height of 2048. Depending on your game you may find
+     * it easier for 0x0 to be the top-left of the bounds, or you may wish 0x0 to be the middle.
      *
      * @method Phaser.Cameras.Scene2D.Camera#setBounds
      * @since 3.0.0
@@ -902,14 +1432,26 @@ var Camera = new Class({
      * @param {integer} y - The top-left y coordinate of the bounds.
      * @param {integer} width - The width of the bounds, in pixels.
      * @param {integer} height - The height of the bounds, in pixels.
+     * @param {boolean} [centerOn] - If `true` the Camera will automatically be centered on the new bounds.
      *
      * @return {Phaser.Cameras.Scene2D.Camera} This Camera instance.
      */
-    setBounds: function (x, y, width, height)
+    setBounds: function (x, y, width, height, centerOn)
     {
         this._bounds.setTo(x, y, width, height);
 
+        this.dirty = true;
         this.useBounds = true;
+
+        if (centerOn)
+        {
+            this.centerToBounds();
+        }
+        else
+        {
+            this.scrollX = this.clampX(this.scrollX);
+            this.scrollY = this.clampY(this.scrollY);
+        }
 
         return this;
     },
@@ -979,8 +1521,9 @@ var Camera = new Class({
     },
 
     /**
-     * Should the Camera round pixel values to whole integers when scrolling?
-     * In some types of game this is required to prevent sub-pixel aliasing.
+     * Should the Camera round pixel values to whole integers when rendering Game Objects?
+     * 
+     * In some types of game, especially with pixel art, this is required to prevent sub-pixel aliasing.
      *
      * @method Phaser.Cameras.Scene2D.Camera#setRoundPixels
      * @since 3.0.0
@@ -1107,13 +1650,18 @@ var Camera = new Class({
      * @method Phaser.Cameras.Scene2D.Camera#setZoom
      * @since 3.0.0
      *
-     * @param {float} [value=1] - The zoom value of the Camera.
+     * @param {number} [value=1] - The zoom value of the Camera. The minimum it can be is 0.001.
      *
      * @return {Phaser.Cameras.Scene2D.Camera} This Camera instance.
      */
     setZoom: function (value)
     {
         if (value === undefined) { value = 1; }
+
+        if (value === 0)
+        {
+            value = 0.001;
+        }
 
         this.zoom = value;
 
@@ -1122,14 +1670,14 @@ var Camera = new Class({
 
     /**
      * Sets the visibility of this Camera.
-     * 
+     *
      * An invisible Camera will skip rendering and input tests of everything it can see.
      *
      * @method Phaser.Cameras.Scene2D.Camera#setVisible
      * @since 3.10.0
      *
      * @param {boolean} value - The visible state of the Camera.
-     * 
+     *
      * @return {this} This Camera instance.
      */
     setVisible: function (value)
@@ -1158,8 +1706,8 @@ var Camera = new Class({
      *
      * @param {(Phaser.GameObjects.GameObject|object)} target - The target for the Camera to follow.
      * @param {boolean} [roundPixels=false] - Round the camera position to whole integers to avoid sub-pixel rendering?
-     * @param {float} [lerpX=1] - A value between 0 and 1. This value specifies the amount of linear interpolation to use when horizontally tracking the target. The closer the value to 1, the faster the camera will track.
-     * @param {float} [lerpY=1] - A value between 0 and 1. This value specifies the amount of linear interpolation to use when vertically tracking the target. The closer the value to 1, the faster the camera will track.
+     * @param {number} [lerpX=1] - A value between 0 and 1. This value specifies the amount of linear interpolation to use when horizontally tracking the target. The closer the value to 1, the faster the camera will track.
+     * @param {number} [lerpY=1] - A value between 0 and 1. This value specifies the amount of linear interpolation to use when vertically tracking the target. The closer the value to 1, the faster the camera will track.
      * @param {number} [offsetX=0] - The horizontal offset from the camera follow target.x position.
      * @param {number} [offsetY=0] - The vertical offset from the camera follow target.y position.
      *
@@ -1184,13 +1732,16 @@ var Camera = new Class({
 
         this.followOffset.set(offsetX, offsetY);
 
-        //  Move the camera there immediately, to avoid a large lerp during preUpdate
-        var zoom = this.zoom;
         var originX = this.width / 2;
         var originY = this.height / 2;
 
-        this.scrollX = (target.x - offsetX - originX) / zoom;
-        this.scrollY = (target.y - offsetY - originY) / zoom;
+        var fx = target.x - offsetX;
+        var fy = target.y - offsetY;
+
+        this.midPoint.set(fx, fy);
+
+        this.scrollX = fx - originX;
+        this.scrollY = fy - originY;
 
         return this;
     },
@@ -1258,6 +1809,7 @@ var Camera = new Class({
      */
     resetFX: function ()
     {
+        this.panEffect.reset();
         this.shakeEffect.reset();
         this.flashEffect.reset();
         this.fadeEffect.reset();
@@ -1279,6 +1831,8 @@ var Camera = new Class({
     {
         if (this.visible)
         {
+            this.panEffect.update(time, delta);
+            this.zoomEffect.update(time, delta);
             this.shakeEffect.update(time, delta);
             this.flashEffect.update(time, delta);
             this.fadeEffect.update(time, delta);
@@ -1315,10 +1869,180 @@ var Camera = new Class({
         this.culledObjects = [];
 
         this._follow = null;
-
         this._bounds = null;
-
         this.scene = null;
+        this.deadzone = null;
+    },
+
+    /**
+     * The width of the Camera viewport, in pixels.
+     *
+     * The viewport is the area into which the Camera renders. Setting the viewport does
+     * not restrict where the Camera can scroll to.
+     *
+     * @name Phaser.Cameras.Scene2D.Camera#width
+     * @type {number}
+     * @since 3.0.0
+     */
+    width: {
+
+        get: function ()
+        {
+            return this._width;
+        },
+
+        set: function (value)
+        {
+            this._width = value;
+            this.dirty = true;
+        }
+
+    },
+
+    /**
+     * The height of the Camera viewport, in pixels.
+     *
+     * The viewport is the area into which the Camera renders. Setting the viewport does
+     * not restrict where the Camera can scroll to.
+     *
+     * @name Phaser.Cameras.Scene2D.Camera#height
+     * @type {number}
+     * @since 3.0.0
+     */
+    height: {
+
+        get: function ()
+        {
+            return this._height;
+        },
+
+        set: function (value)
+        {
+            this._height = value;
+            this.dirty = true;
+        }
+
+    },
+
+    /**
+     * The horizontal scroll position of this Camera.
+     *
+     * Change this value to cause the Camera to scroll around your Scene.
+     *
+     * Alternatively, setting the Camera to follow a Game Object, via the `startFollow` method,
+     * will automatically adjust the Camera scroll values accordingly.
+     *
+     * You can set the bounds within which the Camera can scroll via the `setBounds` method.
+     *
+     * @name Phaser.Cameras.Scene2D.Camera#scrollX
+     * @type {number}
+     * @default 0
+     * @since 3.0.0
+     */
+    scrollX: {
+
+        get: function ()
+        {
+            return this._scrollX;
+        },
+
+        set: function (value)
+        {
+            this._scrollX = value;
+            this.dirty = true;
+        }
+
+    },
+
+    /**
+     * The vertical scroll position of this Camera.
+     *
+     * Change this value to cause the Camera to scroll around your Scene.
+     *
+     * Alternatively, setting the Camera to follow a Game Object, via the `startFollow` method,
+     * will automatically adjust the Camera scroll values accordingly.
+     *
+     * You can set the bounds within which the Camera can scroll via the `setBounds` method.
+     *
+     * @name Phaser.Cameras.Scene2D.Camera#scrollY
+     * @type {number}
+     * @default 0
+     * @since 3.0.0
+     */
+    scrollY: {
+
+        get: function ()
+        {
+            return this._scrollY;
+        },
+
+        set: function (value)
+        {
+            this._scrollY = value;
+            this.dirty = true;
+        }
+
+    },
+
+    /**
+     * The Camera zoom value. Change this value to zoom in, or out of, a Scene.
+     *
+     * A value of 0.5 would zoom the Camera out, so you can now see twice as much
+     * of the Scene as before. A value of 2 would zoom the Camera in, so every pixel
+     * now takes up 2 pixels when rendered.
+     *
+     * Set to 1 to return to the default zoom level.
+     *
+     * Be careful to never set this value to zero.
+     *
+     * @name Phaser.Cameras.Scene2D.Camera#zoom
+     * @type {number}
+     * @default 1
+     * @since 3.0.0
+     */
+    zoom: {
+
+        get: function ()
+        {
+            return this._zoom;
+        },
+
+        set: function (value)
+        {
+            this._zoom = value;
+            this.dirty = true;
+        }
+
+    },
+
+    /**
+     * The rotation of the Camera in radians.
+     *
+     * Camera rotation always takes place based on the Camera viewport. By default, rotation happens
+     * in the center of the viewport. You can adjust this with the `originX` and `originY` properties.
+     *
+     * Rotation influences the rendering of _all_ Game Objects visible by this Camera. However, it does not
+     * rotate the Camera viewport itself, which always remains an axis-aligned rectangle.
+     *
+     * @name Phaser.Cameras.Scene2D.Camera#rotation
+     * @type {number}
+     * @private
+     * @default 0
+     * @since 3.11.0
+     */
+    rotation: {
+
+        get: function ()
+        {
+            return this._rotation;
+        },
+
+        set: function (value)
+        {
+            this._rotation = value;
+            this.dirty = true;
+        }
+
     },
 
     /**
@@ -1351,6 +2075,52 @@ var Camera = new Class({
         get: function ()
         {
             return this.y + (0.5 * this.height);
+        }
+
+    },
+
+    /**
+     * The displayed width of the camera viewport, factoring in the camera zoom level.
+     *
+     * If a camera has a viewport width of 800 and a zoom of 0.5 then its display width
+     * would be 1600, as it's displaying twice as many pixels as zoom level 1.
+     *
+     * Equally, a camera with a width of 800 and zoom of 2 would have a display width
+     * of 400 pixels.
+     *
+     * @name Phaser.Cameras.Scene2D.Camera#displayWidth
+     * @type {number}
+     * @readOnly
+     * @since 3.11.0
+     */
+    displayWidth: {
+
+        get: function ()
+        {
+            return this.width / this.zoom;
+        }
+
+    },
+
+    /**
+     * The displayed height of the camera viewport, factoring in the camera zoom level.
+     *
+     * If a camera has a viewport height of 600 and a zoom of 0.5 then its display height
+     * would be 1200, as it's displaying twice as many pixels as zoom level 1.
+     *
+     * Equally, a camera with a height of 600 and zoom of 2 would have a display height
+     * of 300 pixels.
+     *
+     * @name Phaser.Cameras.Scene2D.Camera#displayHeight
+     * @type {number}
+     * @readOnly
+     * @since 3.11.0
+     */
+    displayHeight: {
+
+        get: function ()
+        {
+            return this.height / this.zoom;
         }
 
     }

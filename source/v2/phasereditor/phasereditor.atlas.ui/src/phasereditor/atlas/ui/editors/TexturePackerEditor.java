@@ -803,7 +803,7 @@ public class TexturePackerEditor extends EditorPart
 			item.setText(page.getName());
 
 			AtlasCanvas canvas = createAtlasCanvas(_tabsFolder);
-			canvas.setImage(page.getImage());
+			canvas.setImageFile(page.getImageFile());
 			canvas.setFrames(page);
 
 			item.setControl(canvas);

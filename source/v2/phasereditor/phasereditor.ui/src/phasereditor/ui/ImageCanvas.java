@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
+import java.io.File;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -36,10 +38,9 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
-public class ImageCanvas extends Canvas implements PaintListener, IZoomable {
+public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoomable {
 
 	protected Image _image;
 	private Point _preferredSize;
@@ -262,7 +263,11 @@ public class ImageCanvas extends Canvas implements PaintListener, IZoomable {
 	}
 
 	public void setImageFile(IFile file) {
-		setImageFile(file == null ? null : file.getLocation().toFile().getAbsolutePath());
+		setImage(loadImage(file));
+	}
+	
+	public void removeImage() {
+		setImage(null);
 	}
 
 	public void setImageFile(String filepath) {
@@ -275,29 +280,18 @@ public class ImageCanvas extends Canvas implements PaintListener, IZoomable {
 	}
 
 	public void loadImage(String filepath) {
-		Image image;
-		try {
-			image = new Image(getDisplay(), filepath);
-		} catch (Exception e) {
-			e.printStackTrace();
-			image = null;
-		}
-		setImage(image);
+		setImage(loadImage(new File(filepath)));
 	}
 
 	public Image getImage() {
 		return _image;
 	}
 
-	public void setImage(Image image) {
+	private void setImage(Image image) {
 		setImage(image, image == null ? null : image.getBounds());
 	}
 
-	public void setImage(Image image, Rectangle viewport) {
-		if (_image != null) {
-			_image.dispose();
-		}
-
+	private void setImage(Image image, Rectangle viewport) {
 		_image = image;
 
 		if (image == null) {
@@ -313,14 +307,6 @@ public class ImageCanvas extends Canvas implements PaintListener, IZoomable {
 	public void resetZoom() {
 		_fitWindow = true;
 		redraw();
-		
-		// fit the window when it is fully sized
-//		getDisplay().asyncExec(() -> {
-//			if (!isDisposed()) {
-//				fitWindow();
-//				redraw();
-//			}
-//		});
 	}
 
 	public void setImageViewport(Rectangle viewport) {
@@ -329,14 +315,6 @@ public class ImageCanvas extends Canvas implements PaintListener, IZoomable {
 
 	public Rectangle getImageViewport() {
 		return _viewport;
-	}
-
-	@Override
-	public void dispose() {
-		if (_image != null) {
-			_image.dispose();
-		}
-		super.dispose();
 	}
 
 	@Override

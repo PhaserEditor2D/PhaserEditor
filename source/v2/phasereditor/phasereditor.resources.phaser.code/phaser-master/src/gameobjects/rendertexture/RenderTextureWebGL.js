@@ -1,14 +1,16 @@
 var RenderTextureWebGL = {
 
-    fill: function (rgb)
+    fill: function (rgb, alpha)
     {
+        if (alpha === undefined) { alpha = 1; }
+
         var ur = ((rgb >> 16)|0) & 0xff;
         var ug = ((rgb >> 8)|0) & 0xff;
         var ub = (rgb|0) & 0xff;
 
         this.renderer.setFramebuffer(this.framebuffer);
         var gl = this.gl;
-        gl.clearColor(ur / 255.0, ug / 255.0, ub / 255.0, 1);
+        gl.clearColor(ur / 255.0, ug / 255.0, ub / 255.0, alpha);
         gl.clear(gl.COLOR_BUFFER_BIT);
         this.renderer.setFramebuffer(null);
         return this;
@@ -24,15 +26,29 @@ var RenderTextureWebGL = {
         return this;
     },
 
-    draw: function (texture, frame, x, y)
+    draw: function (texture, frame, x, y, tint)
     {
-        var glTexture = texture.source[frame.sourceIndex].glTexture;
-        var tint = (this.globalTint >> 16) + (this.globalTint & 0xff00) + ((this.globalTint & 0xff) << 16);
+        if (tint === undefined)
+        {
+            tint = (this.globalTint >> 16) + (this.globalTint & 0xff00) + ((this.globalTint & 0xff) << 16);
+        }
+        else
+        {
+            tint = (tint >> 16) + (tint & 0xff00) + ((tint & 0xff) << 16);
+        }
+
         this.renderer.setFramebuffer(this.framebuffer);
-        this.renderer.pipelines.TextureTintPipeline.projOrtho(0, this.renderer.pipelines.TextureTintPipeline.width, 0, this.renderer.pipelines.TextureTintPipeline.height, -1000.0, 1000.0);
-        this.renderer.pipelines.TextureTintPipeline.drawTexture(glTexture, x, y, tint, this.globalAlpha, frame.cutX, frame.cutY, frame.cutWidth, frame.cutHeight, this.currentMatrix, null, this);
+
+        var pipeline = this.pipeline;
+
+        pipeline.projOrtho(0, pipeline.width, 0, pipeline.height, -1000.0, 1000.0);
+
+        pipeline.drawTextureFrame(frame, x, y, tint, this.globalAlpha, this.currentMatrix, null);
+
         this.renderer.setFramebuffer(null);
-        this.renderer.pipelines.TextureTintPipeline.projOrtho(0, this.renderer.pipelines.TextureTintPipeline.width, this.renderer.pipelines.TextureTintPipeline.height, 0, -1000.0, 1000.0);
+
+        pipeline.projOrtho(0, pipeline.width, pipeline.height, 0, -1000.0, 1000.0);
+
         return this;
     }
 

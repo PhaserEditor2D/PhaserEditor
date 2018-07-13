@@ -23,11 +23,14 @@ package phasereditor.ui;
 
 import static java.lang.System.out;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.events.DisposeEvent;
@@ -43,23 +46,23 @@ import org.eclipse.ui.PlatformUI;
 public class BaseImageCanvas extends Canvas {
 
 	private static Map<String, Image> _keyFileMap;
-	private static Map<IFile, Image> _fileImageMap;
+	private static Map<File, Image> _fileImageMap;
 	private static List<BaseImageCanvas> _gobalCanvases;
-	private static List<Image> _globalImages;
 	private Collection<ImageRef> _references;
+	private static Set<Image> _globalGarbageImages;
 
 	static {
 		_keyFileMap = new HashMap<>();
 		_fileImageMap = new HashMap<>();
 		_gobalCanvases = new ArrayList<>();
-		_globalImages = new ArrayList<>();
+		_globalGarbageImages = new HashSet<>();
 	}
 
 	static class ImageRef {
 		public Image image;
-		public IFile file;
+		public File file;
 
-		public ImageRef(Image image, IFile file) {
+		public ImageRef(Image image, File file) {
 			super();
 			this.image = image;
 			this.file = file;
@@ -88,6 +91,10 @@ public class BaseImageCanvas extends Canvas {
 	}
 
 	protected Image loadImage(IFile file) {
+		return loadImage(file.getLocation().toFile());
+	}
+
+	protected Image loadImage(File file) {
 		if (file == null || !file.exists()) {
 			return null;
 		}
@@ -109,11 +116,16 @@ public class BaseImageCanvas extends Canvas {
 
 		try {
 
-			Image image = new Image(getDisplay(), file.getLocation().toFile().getAbsolutePath());
+			Image image = new Image(getDisplay(), file.getAbsolutePath());
 
-			_fileImageMap.put(file, image);
+			{
+				Image old = _fileImageMap.put(file, image);
+				if (old != null) {
+					_globalGarbageImages.add(old);
+				}
+			}
+
 			_keyFileMap.put(key, image);
-			_globalImages.add(image);
 
 			addRefernce(file, image);
 
@@ -126,7 +138,7 @@ public class BaseImageCanvas extends Canvas {
 		return null;
 	}
 
-	private void addRefernce(IFile file, Image image) {
+	private void addRefernce(File file, Image image) {
 		for (var ref : new ArrayList<>(this._references)) {
 			if (ref.file.equals(file)) {
 				this._references.remove(ref);
@@ -139,11 +151,11 @@ public class BaseImageCanvas extends Canvas {
 	}
 
 	private static void collectGarbage() {
-		for (var image : new ArrayList<>(_globalImages)) {
+		for (var image : new ArrayList<>(_globalGarbageImages)) {
 			if (isDisposableImage(image)) {
 				out.println("BaseImageCanvas.disposeImages(): dispose image " + image);
+				_globalGarbageImages.remove(image);
 				image.dispose();
-				_globalImages.remove(image);
 			}
 		}
 	}
@@ -159,7 +171,7 @@ public class BaseImageCanvas extends Canvas {
 		return true;
 	}
 
-	private static String computeKey(IFile file) {
-		return file.getLocation().toPortableString() + "@" + file.getLocalTimeStamp();
+	private static String computeKey(File file) {
+		return file.getAbsolutePath() + "@" + file.lastModified();
 	}
 }

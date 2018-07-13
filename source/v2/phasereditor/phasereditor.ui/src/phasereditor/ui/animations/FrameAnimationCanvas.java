@@ -23,6 +23,7 @@ package phasereditor.ui.animations;
 
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.graphics.Rectangle;
@@ -70,7 +71,7 @@ public class FrameAnimationCanvas extends ImageCanvas implements ControlListener
 		}
 
 		if (_model == null || _model.getFrames().isEmpty()) {
-			setImage(null);
+			setImageFile((IFile) null);
 			return;
 		}
 

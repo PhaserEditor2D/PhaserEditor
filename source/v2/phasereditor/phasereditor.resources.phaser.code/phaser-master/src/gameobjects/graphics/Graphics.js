@@ -10,6 +10,7 @@ var Commands = require('./Commands');
 var Components = require('../components');
 var Ellipse = require('../../geom/ellipse/');
 var GameObject = require('../GameObject');
+var GetFastValue = require('../../utils/object/GetFastValue');
 var GetValue = require('../../utils/object/GetValue');
 var MATH_CONST = require('../../math/const');
 var Render = require('./GraphicsRender');
@@ -19,9 +20,9 @@ var Render = require('./GraphicsRender');
  *
  * @typedef {object} GraphicsLineStyle
  *
- * @property {number} width - The stroke width.
- * @property {number} color - The stroke color.
- * @property {number} alpha - The stroke alpha.
+ * @property {number} [width] - The stroke width.
+ * @property {number} [color] - The stroke color.
+ * @property {number} [alpha] - The stroke alpha.
  */
 
 /**
@@ -29,8 +30,8 @@ var Render = require('./GraphicsRender');
  *
  * @typedef {object} GraphicsFillStyle
  *
- * @property {number} color - The fill color.
- * @property {number} alpha - The fill alpha.
+ * @property {number} [color] - The fill color.
+ * @property {number} [alpha] - The fill alpha.
  */
 
 /**
@@ -38,8 +39,8 @@ var Render = require('./GraphicsRender');
  *
  * @typedef {object} GraphicsStyles
  *
- * @property {GraphicsLineStyle} lineStyle - The style applied to shape outlines.
- * @property {GraphicsFillStyle} fillStyle - The style applied to shape areas.
+ * @property {GraphicsLineStyle} [lineStyle] - The style applied to shape outlines.
+ * @property {GraphicsFillStyle} [fillStyle] - The style applied to shape areas.
  */
 
 /**
@@ -48,8 +49,8 @@ var Render = require('./GraphicsRender');
  * @typedef {object} GraphicsOptions
  * @extends GraphicsStyles
  *
- * @property {number} x - The x coordinate of the Graphics.
- * @property {number} y - The y coordinate of the Graphics.
+ * @property {number} [x] - The x coordinate of the Graphics.
+ * @property {number} [y] - The y coordinate of the Graphics.
  */
 
 /**
@@ -109,7 +110,7 @@ var Render = require('./GraphicsRender');
  * @extends Phaser.GameObjects.Components.ScrollFactor
  *
  * @param {Phaser.Scene} scene - The Scene to which this Graphics object belongs.
- * @param {GraphicsOptions} options - Options that set the position and default style of this Graphics object.
+ * @param {GraphicsOptions} [options] - Options that set the position and default style of this Graphics object.
  */
 var Graphics = new Class({
 
@@ -549,6 +550,106 @@ var Graphics = new Class({
     },
 
     /**
+     * Fill a rounded rectangle with the given position, size and radius.
+     *
+     * @method Phaser.GameObjects.Graphics#fillRoundedRect
+     * @since 3.11.0
+     *
+     * @param {number} x - The x coordinate of the top-left of the rectangle.
+     * @param {number} y - The y coordinate of the top-left of the rectangle.
+     * @param {number} width - The width of the rectangle.
+     * @param {number} height - The height of the rectangle.
+     * @param {number} [radius = 20] - The corner radius; It can also be an object to specify different radii for corners
+     * @param {number} [radius.tl = 20] Top left
+     * @param {number} [radius.tr = 20] Top right
+     * @param {number} [radius.br = 20] Bottom right
+     * @param {number} [radius.bl = 20] Bottom left
+     *
+     * @return {Phaser.GameObjects.Graphics} This Game Object.
+     */
+    fillRoundedRect: function (x, y, width, height, radius)
+    {
+        if (radius === undefined) { radius = 20; }
+
+        var tl = radius;
+        var tr = radius;
+        var bl = radius;
+        var br = radius;
+
+        if (typeof radius !== 'number')
+        {
+            tl = GetFastValue(radius, 'tl', 20);
+            tr = GetFastValue(radius, 'tr', 20);
+            bl = GetFastValue(radius, 'bl', 20);
+            br = GetFastValue(radius, 'br', 20);
+        }
+
+        this.beginPath();
+        this.moveTo(x + tl, y);
+        this.lineTo(x + width - tr, y);
+        this.arc(x + width - tr, y + tr, tr, -MATH_CONST.TAU, 0);
+        this.lineTo(x + width, y + height - br);
+        this.arc(x + width - br, y + height - br, br, 0, MATH_CONST.TAU);
+        this.lineTo(x + bl, y + height);
+        this.arc(x + bl, y + height - bl, bl, MATH_CONST.TAU, Math.PI);
+        this.lineTo(x, y + tl);
+        this.arc(x + tl, y + tl, tl, -Math.PI, -MATH_CONST.TAU);
+        this.fillPath();
+
+        return this;
+    },
+
+    /**
+     * Stroke a rounded rectangle with the given position, size and radius.
+     *
+     * @method Phaser.GameObjects.Graphics#strokeRoundedRect
+     * @since 3.11.0
+     *
+     * @param {number} x - The x coordinate of the top-left of the rectangle.
+     * @param {number} y - The y coordinate of the top-left of the rectangle.
+     * @param {number} width - The width of the rectangle.
+     * @param {number} height - The height of the rectangle.
+     * @param {number} [radius = 20] - The corner radius; It can also be an object to specify different radii for corners
+     * @param {number} [radius.tl = 20] Top left
+     * @param {number} [radius.tr = 20] Top right
+     * @param {number} [radius.br = 20] Bottom right
+     * @param {number} [radius.bl = 20] Bottom left
+     *
+     * @return {Phaser.GameObjects.Graphics} This Game Object.
+     */
+    strokeRoundedRect: function (x, y, width, height, radius)
+    {
+        if (radius === undefined) { radius = 20; }
+
+        var tl = radius;
+        var tr = radius;
+        var bl = radius;
+        var br = radius;
+
+        if (typeof radius !== 'number')
+        {
+            tl = GetFastValue(radius, 'tl', 20);
+            tr = GetFastValue(radius, 'tr', 20);
+            bl = GetFastValue(radius, 'bl', 20);
+            br = GetFastValue(radius, 'br', 20);
+        }
+
+        this.beginPath();
+        this.moveTo(x + tl, y);
+        this.lineTo(x + width - tr, y);
+        this.arc(x + width - tr, y + tr, tr, -MATH_CONST.TAU, 0);
+        this.lineTo(x + width, y + height - br);
+        this.arc(x + width - br, y + height - br, br, 0, MATH_CONST.TAU);
+        this.lineTo(x + bl, y + height);
+        this.arc(x + bl, y + height - bl, bl, MATH_CONST.TAU, Math.PI);
+        this.lineTo(x, y + tl);
+        this.arc(x + tl, y + tl, tl, -Math.PI, -MATH_CONST.TAU);
+        this.strokePath();
+
+        return this;
+    },
+
+    /**
      * Fill the given point.
      *
      * Draws a square at the given position, 1 pixel in size by default.
@@ -978,6 +1079,9 @@ var Graphics = new Class({
      * Draw an arc.
      *
      * This method can be used to create circles, or parts of circles.
+     * 
+     * Use the optional `overshoot` argument to allow the arc to extend beyond 360 degrees. This is useful if you're drawing
+     * an arc with an especially thick line, as it will allow the arc to fully join-up. Try small values at first, i.e. 0.01.
      *
      * Call {@link Phaser.GameObjects.Graphics#fillPath} or {@link Phaser.GameObjects.Graphics#strokePath} after calling
      * this method to draw the arc.
@@ -991,11 +1095,44 @@ var Graphics = new Class({
      * @param {number} startAngle - The starting angle, in radians.
      * @param {number} endAngle - The ending angle, in radians.
      * @param {boolean} [anticlockwise=false] - Whether the drawing should be anticlockwise or clockwise.
+     * @param {number} [overshoot=0] - This value allows you to overshoot the endAngle by this amount. Useful if the arc has a thick stroke and needs to overshoot to join-up cleanly.
      *
      * @return {Phaser.GameObjects.Graphics} This Game Object.
      */
-    arc: function (x, y, radius, startAngle, endAngle, anticlockwise)
+    arc: function (x, y, radius, startAngle, endAngle, anticlockwise, overshoot)
     {
+        if (anticlockwise === undefined) { anticlockwise = false; }
+        if (overshoot === undefined) { overshoot = 0; }
+
+        var PI2 = Math.PI * 2;
+
+        if (anticlockwise)
+        {
+            if (endAngle < -PI2)
+            {
+                endAngle = -PI2 - overshoot;
+            }
+            else if (endAngle >= 0)
+            {
+                endAngle = -PI2 + endAngle % PI2 - overshoot;
+            }
+        }
+        else
+        {
+            endAngle -= startAngle;
+            endAngle += overshoot;
+
+            if (endAngle > PI2 + overshoot)
+            {
+                endAngle = PI2 + overshoot;
+                
+            }
+            else if (endAngle < -overshoot)
+            {
+                endAngle = PI2 + endAngle % PI2 - overshoot;
+            }
+        }
+
         this.commandBuffer.push(
             Commands.ARC,
             x, y, radius, startAngle, endAngle, anticlockwise
@@ -1022,13 +1159,44 @@ var Graphics = new Class({
      * @param {number} radius - The radius of the slice.
      * @param {number} startAngle - The start angle of the slice, given in radians.
      * @param {number} endAngle - The end angle of the slice, given in radians.
-     * @param {boolean} [anticlockwise=false] - Draw the slice piece anticlockwise or clockwise?
+     * @param {boolean} [anticlockwise=false] - Whether the drawing should be anticlockwise or clockwise.
+     * @param {number} [overshoot=0] - This value allows you to overshoot the endAngle by this amount. Useful if the arc has a thick stroke and needs to overshoot to join-up cleanly.
      *
      * @return {Phaser.GameObjects.Graphics} This Game Object.
      */
-    slice: function (x, y, radius, startAngle, endAngle, anticlockwise)
+    slice: function (x, y, radius, startAngle, endAngle, anticlockwise, overshoot)
     {
         if (anticlockwise === undefined) { anticlockwise = false; }
+        if (overshoot === undefined) { overshoot = 0; }
+
+        var PI2 = Math.PI * 2;
+
+        if (anticlockwise)
+        {
+            if (endAngle < -PI2)
+            {
+                endAngle = -PI2 - overshoot;
+            }
+            else if (endAngle >= 0)
+            {
+                endAngle = -PI2 + endAngle % PI2 - overshoot;
+            }
+        }
+        else
+        {
+            endAngle -= startAngle;
+            endAngle += overshoot;
+
+            if (endAngle > PI2 + overshoot)
+            {
+                endAngle = PI2 + overshoot;
+                
+            }
+            else if (endAngle <= -overshoot)
+            {
+                endAngle = PI2 + endAngle % PI2 - overshoot;
+            }
+        }
 
         this.commandBuffer.push(Commands.BEGIN_PATH);
 

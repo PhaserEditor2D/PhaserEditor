@@ -1124,23 +1124,18 @@
             "orig": "src/bugs/emitter blend mode.js",
             "dst": "emitter blend mode.js"
           },
-          {"orig": "assets/sprites/mushroom2.png"},
-          {"orig": "assets/sprites/fruitnveg64wh37.png"},
-          {"orig": "assets/sprites/phaser3-logo.png"},
-          {"orig": "assets/pics/ra-einstein.png"},
-          {"orig": "assets/particles/flares.json"},
-          {"orig": "assets/particles/flares.png"}
+          {"orig": "assets/pics/ra-einstein.png"}
         ]
       },
       {
-        "mainFile": "src/bugs/scroll factor test.js",
+        "mainFile": "src/bugs/mask.js",
         "map": [
           {
-            "orig": "src/bugs/scroll factor test.js",
-            "dst": "scroll factor test.js"
+            "orig": "src/bugs/mask.js",
+            "dst": "mask.js"
           },
-          {"orig": "assets/atlas/cards.json"},
-          {"orig": "assets/atlas/cards.png"}
+          {"orig": "assets/sprites/bunny.png"},
+          {"orig": "assets/pics/checker.png"}
         ]
       }
     ]
@@ -1370,6 +1365,16 @@
     }],
     "examples": [
       {
+        "mainFile": "src/camera/32 camera test.js",
+        "map": [
+          {
+            "orig": "src/camera/32 camera test.js",
+            "dst": "32 camera test.js"
+          },
+          {"orig": "assets/pics/ra-einstein.png"}
+        ]
+      },
+      {
         "mainFile": "src/camera/add and remove test.js",
         "map": [
           {
@@ -1377,6 +1382,16 @@
             "dst": "add and remove test.js"
           },
           {"orig": "assets/tests/camera/CherilPerils.png"}
+        ]
+      },
+      {
+        "mainFile": "src/camera/add camera on click.js",
+        "map": [
+          {
+            "orig": "src/camera/add camera on click.js",
+            "dst": "add camera on click.js"
+          },
+          {"orig": "assets/pics/ra-einstein.png"}
         ]
       },
       {
@@ -1564,6 +1579,16 @@
         ]
       },
       {
+        "mainFile": "src/camera/round pixels.js",
+        "map": [
+          {
+            "orig": "src/camera/round pixels.js",
+            "dst": "round pixels.js"
+          },
+          {"orig": "assets/sprites/128x128-v2.png"}
+        ]
+      },
+      {
         "mainFile": "src/camera/set bounds.js",
         "map": [
           {
@@ -1636,6 +1661,16 @@
             "dst": "world camera.js"
           },
           {"orig": "assets/pics/lance-overdose-loader-eye.png"}
+        ]
+      },
+      {
+        "mainFile": "src/camera/world view.js",
+        "map": [
+          {
+            "orig": "src/camera/world view.js",
+            "dst": "world view.js"
+          },
+          {"orig": "assets/pics/uv-grid-4096-ian-maclachlan.png"}
         ]
       },
       {
@@ -2214,24 +2249,73 @@
       {
         "name": "Masks",
         "relPath": "src/display/masks",
-        "subCategories": [{
-          "name": "Component",
-          "relPath": "src/display/masks/component",
-          "subCategories": [],
-          "examples": [{
-            "mainFile": "src/display/masks/component/add mask to sprite.js",
-            "map": [
+        "subCategories": [
+          {
+            "name": "Component",
+            "relPath": "src/display/masks/component",
+            "subCategories": [],
+            "examples": [{
+              "mainFile": "src/display/masks/component/add mask to sprite.js",
+              "map": [
+                {
+                  "orig": "src/display/masks/component/add mask to sprite.js",
+                  "dst": "add mask to sprite.js"
+                },
+                {"orig": "assets/pics/turkey-1985086.jpg"},
+                {"orig": "assets/pics/titan-mech.png"},
+                {"orig": "assets/pics/mask.png"},
+                {"orig": "assets/pics/gridmask.png"}
+              ]
+            }]
+          },
+          {
+            "name": "Geometry Mask",
+            "relPath": "src/display/masks/geometry mask",
+            "subCategories": [],
+            "examples": [
               {
-                "orig": "src/display/masks/component/add mask to sprite.js",
-                "dst": "add mask to sprite.js"
+                "mainFile": "src/display/masks/geometry mask/graphics mask.js",
+                "map": [{
+                  "orig": "src/display/masks/geometry mask/graphics mask.js",
+                  "dst": "graphics mask.js"
+                }]
               },
-              {"orig": "assets/pics/turkey-1985086.jpg"},
-              {"orig": "assets/pics/titan-mech.png"},
-              {"orig": "assets/pics/mask.png"},
-              {"orig": "assets/pics/gridmask.png"}
+              {
+                "mainFile": "src/display/masks/geometry mask/image mask.js",
+                "map": [
+                  {
+                    "orig": "src/display/masks/geometry mask/image mask.js",
+                    "dst": "image mask.js"
+                  },
+                  {"orig": "assets/pics/rick-and-morty-by-sawuinhaff-da64e7y.png"}
+                ]
+              },
+              {
+                "mainFile": "src/display/masks/geometry mask/image mask arc.js",
+                "map": [
+                  {
+                    "orig": "src/display/masks/geometry mask/image mask arc.js",
+                    "dst": "image mask arc.js"
+                  },
+                  {"orig": "assets/pics/rick-and-morty-by-sawuinhaff-da64e7y.png"}
+                ]
+              },
+              {
+                "mainFile": "src/display/masks/geometry mask/multiple image mask.js",
+                "map": [
+                  {
+                    "orig": "src/display/masks/geometry mask/multiple image mask.js",
+                    "dst": "multiple image mask.js"
+                  },
+                  {"orig": "assets/pics/cougar-sanity-train.png"},
+                  {"orig": "assets/pics/coma-zero-gravity.png"},
+                  {"orig": "assets/pics/alex-bear.png"},
+                  {"orig": "assets/pics/cougar-face-of-nature.png"}
+                ]
+              }
             ]
-          }]
-        }],
+          }
+        ],
         "examples": [
           {
             "mainFile": "src/display/masks/BitmapMask Alpha.js",
@@ -2471,6 +2555,16 @@
             ]
           },
           {
+            "mainFile": "src/display/tint/corner tint.js",
+            "map": [
+              {
+                "orig": "src/display/tint/corner tint.js",
+                "dst": "corner tint.js"
+              },
+              {"orig": "assets/sprites/16x16.png"}
+            ]
+          },
+          {
             "mainFile": "src/display/tint/multiple images.js",
             "map": [
               {
@@ -2509,6 +2603,16 @@
             }]
           },
           {
+            "mainFile": "src/display/tint/rasters.js",
+            "map": [
+              {
+                "orig": "src/display/tint/rasters.js",
+                "dst": "rasters.js"
+              },
+              {"orig": "assets/sprites/16x16.png"}
+            ]
+          },
+          {
             "mainFile": "src/display/tint/single color tint.js",
             "map": [
               {
@@ -2534,6 +2638,26 @@
               },
               {"orig": "assets/atlas/megaset-2.json"},
               {"orig": "assets/atlas/megaset-2.png"}
+            ]
+          },
+          {
+            "mainFile": "src/display/tint/tint fill.js",
+            "map": [
+              {
+                "orig": "src/display/tint/tint fill.js",
+                "dst": "tint fill.js"
+              },
+              {"orig": "assets/pics/shocktroopers-lulu2.png"}
+            ]
+          },
+          {
+            "mainFile": "src/display/tint/tint fill effect.js",
+            "map": [
+              {
+                "orig": "src/display/tint/tint fill effect.js",
+                "dst": "tint fill effect.js"
+              },
+              {"orig": "assets/particles/glass.png"}
             ]
           },
           {
@@ -2968,6 +3092,7 @@
                     "orig": "src/game objects/bitmaptext/dynamic/vertical scroller.js",
                     "dst": "vertical scroller.js"
                   },
+                  {"orig": "assets/pics/neuromancer.jpg"},
                   {"orig": "assets/fonts/bitmap/desyrel.png"},
                   {"orig": "assets/fonts/bitmap/atari-smooth.png"},
                   {"orig": "assets/fonts/bitmap/desyrel.xml"},
@@ -3131,6 +3256,25 @@
                 ]
               },
               {
+                "mainFile": "src/game objects/bitmaptext/static/change font.js",
+                "map": [
+                  {
+                    "orig": "src/game objects/bitmaptext/static/change font.js",
+                    "dst": "change font.js"
+                  },
+                  {"orig": "assets/fonts/bitmap/desyrel.png"},
+                  {"orig": "assets/fonts/bitmap/iceicebaby.xml"},
+                  {"orig": "assets/fonts/bitmap/iceicebaby.png"},
+                  {"orig": "assets/fonts/bitmap/atari-smooth.png"},
+                  {"orig": "assets/fonts/bitmap/desyrel.xml"},
+                  {"orig": "assets/fonts/bitmap/gothic.png"},
+                  {"orig": "assets/fonts/bitmap/hyperdrive.png"},
+                  {"orig": "assets/fonts/bitmap/gothic.xml"},
+                  {"orig": "assets/fonts/bitmap/hyperdrive.xml"},
+                  {"orig": "assets/fonts/bitmap/atari-smooth.xml"}
+                ]
+              },
+              {
                 "mainFile": "src/game objects/bitmaptext/static/get text size.js",
                 "map": [
                   {
@@ -3196,6 +3340,19 @@
                 ]
               },
               {
+                "mainFile": "src/game objects/bitmaptext/static/multi line alignment.js",
+                "map": [
+                  {
+                    "orig": "src/game objects/bitmaptext/static/multi line alignment.js",
+                    "dst": "multi line alignment.js"
+                  },
+                  {"orig": "assets/fonts/bitmap/desyrel.png"},
+                  {"orig": "assets/fonts/bitmap/atari-smooth.png"},
+                  {"orig": "assets/fonts/bitmap/desyrel.xml"},
+                  {"orig": "assets/fonts/bitmap/atari-smooth.xml"}
+                ]
+              },
+              {
                 "mainFile": "src/game objects/bitmaptext/static/padding.js",
                 "map": [
                   {
@@ -3206,6 +3363,19 @@
                   {"orig": "assets/atlas/chiller.json"},
                   {"orig": "assets/fonts/bitmap/chiller.xml"},
                   {"orig": "assets/fonts/bitmap/chiller.png"}
+                ]
+              },
+              {
+                "mainFile": "src/game objects/bitmaptext/static/text origin.js",
+                "map": [
+                  {
+                    "orig": "src/game objects/bitmaptext/static/text origin.js",
+                    "dst": "text origin.js"
+                  },
+                  {"orig": "assets/fonts/bitmap/gothic.png"},
+                  {"orig": "assets/fonts/bitmap/hyperdrive.png"},
+                  {"orig": "assets/fonts/bitmap/gothic.xml"},
+                  {"orig": "assets/fonts/bitmap/hyperdrive.xml"}
                 ]
               },
               {
@@ -3427,6 +3597,16 @@
         "relPath": "src/game objects/container",
         "subCategories": [],
         "examples": [
+          {
+            "mainFile": "src/game objects/container/add array of sprites at index.js",
+            "map": [
+              {
+                "orig": "src/game objects/container/add array of sprites at index.js",
+                "dst": "add array of sprites at index.js"
+              },
+              {"orig": "assets/sprites/rick.png"}
+            ]
+          },
           {
             "mainFile": "src/game objects/container/add array of sprites to container.js",
             "map": [
@@ -3924,6 +4104,13 @@
             "map": [{
               "orig": "src/game objects/graphics/arc.js",
               "dst": "arc.js"
+            }]
+          },
+          {
+            "mainFile": "src/game objects/graphics/arc stroke.js",
+            "map": [{
+              "orig": "src/game objects/graphics/arc stroke.js",
+              "dst": "arc stroke.js"
             }]
           },
           {
@@ -4585,6 +4772,18 @@
         "subCategories": [],
         "examples": [
           {
+            "mainFile": "src/game objects/lights/blitter light.js",
+            "map": [
+              {
+                "orig": "src/game objects/lights/blitter light.js",
+                "dst": "blitter light.js"
+              },
+              {"orig": "assets/tests/fruit/veg2.png"},
+              {"orig": "assets/tests/fruit/veg2-n.png"},
+              {"orig": "assets/tests/fruit/veg2.json"}
+            ]
+          },
+          {
             "mainFile": "src/game objects/lights/change scene.js",
             "map": [{
               "orig": "src/game objects/lights/change scene.js",
@@ -4614,14 +4813,37 @@
             ]
           },
           {
+            "mainFile": "src/game objects/lights/mesh light.js",
+            "map": [
+              {
+                "orig": "src/game objects/lights/mesh light.js",
+                "dst": "mesh light.js"
+              },
+              {"orig": "assets/normal-maps/brick_n.png"},
+              {"orig": "assets/normal-maps/brick.jpg"}
+            ]
+          },
+          {
             "mainFile": "src/game objects/lights/spotlight.js",
             "map": [
               {
                 "orig": "src/game objects/lights/spotlight.js",
                 "dst": "spotlight.js"
               },
+              {"orig": "assets/sprites/atari400.png"},
               {"orig": "assets/pics/equality-by-ragnarok.png"},
               {"orig": "assets/normal-maps/equality-by-ragnarok_n.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/lights/tilesprite light.js",
+            "map": [
+              {
+                "orig": "src/game objects/lights/tilesprite light.js",
+                "dst": "tilesprite light.js"
+              },
+              {"orig": "assets/normal-maps/brick_n.png"},
+              {"orig": "assets/normal-maps/brick.jpg"}
             ]
           }
         ]
@@ -5413,16 +5635,29 @@
         "name": "Quad",
         "relPath": "src/game objects/quad",
         "subCategories": [],
-        "examples": [{
-          "mainFile": "src/game objects/quad/basic quad.js",
-          "map": [
-            {
-              "orig": "src/game objects/quad/basic quad.js",
-              "dst": "basic quad.js"
-            },
-            {"orig": "assets/pics/sure-shot-by-made.png"}
-          ]
-        }]
+        "examples": [
+          {
+            "mainFile": "src/game objects/quad/basic quad.js",
+            "map": [
+              {
+                "orig": "src/game objects/quad/basic quad.js",
+                "dst": "basic quad.js"
+              },
+              {"orig": "assets/pics/sure-shot-by-made.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/quad/quad with atlas frame.js",
+            "map": [
+              {
+                "orig": "src/game objects/quad/quad with atlas frame.js",
+                "dst": "quad with atlas frame.js"
+              },
+              {"orig": "assets/atlas/megaset-3.json"},
+              {"orig": "assets/atlas/megaset-3.png"}
+            ]
+          }
+        ]
       },
       {
         "name": "Render Texture",
@@ -5477,6 +5712,46 @@
               },
               {"orig": "assets/sprites/phaser-dude.png"},
               {"orig": "assets/particles/muzzleflash3.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/render texture/paint.js",
+            "map": [
+              {
+                "orig": "src/game objects/render texture/paint.js",
+                "dst": "paint.js"
+              },
+              {"orig": "assets/sprites/brush1.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/render texture/paint interpolated.js",
+            "map": [
+              {
+                "orig": "src/game objects/render texture/paint interpolated.js",
+                "dst": "paint interpolated.js"
+              },
+              {"orig": "assets/sprites/brush2.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/render texture/paint interpolated shadow.js",
+            "map": [
+              {
+                "orig": "src/game objects/render texture/paint interpolated shadow.js",
+                "dst": "paint interpolated shadow.js"
+              },
+              {"orig": "assets/sprites/brush2.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/render texture/paint tinted.js",
+            "map": [
+              {
+                "orig": "src/game objects/render texture/paint tinted.js",
+                "dst": "paint tinted.js"
+              },
+              {"orig": "assets/sprites/brush1.png"}
             ]
           },
           {
@@ -5864,6 +6139,16 @@
               {"orig": "assets/sprites/mushroom2.png"},
               {"orig": "assets/pics/ra-einstein.png"}
             ]
+          },
+          {
+            "mainFile": "src/game objects/tile sprite/tilesprite pixel art test.js",
+            "map": [
+              {
+                "orig": "src/game objects/tile sprite/tilesprite pixel art test.js",
+                "dst": "tilesprite pixel art test.js"
+              },
+              {"orig": "assets/sprites/mushroom16x16.png"}
+            ]
           }
         ]
       },
@@ -6072,7 +6357,6 @@
                     "orig": "src/game objects/tilemap/dynamic/dungeon generator.js",
                     "dst": "dungeon generator.js"
                   },
-                  {"orig": "assets/sprites/dude.png"},
                   {"orig": "assets/tilemaps/tiles/buch-dungeon-tileset.png"}
                 ]
               },
@@ -6099,19 +6383,6 @@
                 ]
               },
               {
-                "mainFile": "src/game objects/tilemap/dynamic/Example.js",
-                "map": [
-                  {
-                    "orig": "src/game objects/tilemap/dynamic/Example.js",
-                    "dst": "Example.js"
-                  },
-                  {"orig": "assets/tilemaps/csv/catastrophi_level3.csv"},
-                  {"orig": "assets/tilemaps/tiles/catastrophi_tiles_16.png"},
-                  {"orig": "assets/fonts/bitmap/nokia16.xml"},
-                  {"orig": "assets/fonts/bitmap/nokia16.png"}
-                ]
-              },
-              {
                 "mainFile": "src/game objects/tilemap/dynamic/fill tiles.js",
                 "map": [
                   {
@@ -6131,6 +6402,19 @@
                   },
                   {"orig": "assets/tilemaps/maps/cybernoid.json"},
                   {"orig": "assets/tilemaps/tiles/cybernoid.png"}
+                ]
+              },
+              {
+                "mainFile": "src/game objects/tilemap/dynamic/light map.js",
+                "map": [
+                  {
+                    "orig": "src/game objects/tilemap/dynamic/light map.js",
+                    "dst": "light map.js"
+                  },
+                  {"orig": "assets/sprites/car90.png"},
+                  {"orig": "assets/tilemaps/csv/grid.csv"},
+                  {"orig": "assets/tilemaps/tiles/drawtiles1.png"},
+                  {"orig": "assets/tilemaps/tiles/drawtiles1_n.png"}
                 ]
               },
               {
@@ -7870,6 +8154,13 @@
             }]
           },
           {
+            "mainFile": "src/geom/rectangle/intersection.js",
+            "map": [{
+              "orig": "src/geom/rectangle/intersection.js",
+              "dst": "intersection.js"
+            }]
+          },
+          {
             "mainFile": "src/geom/rectangle/is empty.js",
             "map": [{
               "orig": "src/geom/rectangle/is empty.js",
@@ -8821,6 +9112,16 @@
               "orig": "src/input/keyboard/key combo max key delay.js",
               "dst": "key combo max key delay.js"
             }]
+          },
+          {
+            "mainFile": "src/input/keyboard/key down delay.js",
+            "map": [
+              {
+                "orig": "src/input/keyboard/key down delay.js",
+                "dst": "key down delay.js"
+              },
+              {"orig": "assets/sprites/block.png"}
+            ]
           },
           {
             "mainFile": "src/input/keyboard/keydown.js",
@@ -11630,6 +11931,26 @@
     "subCategories": [],
     "examples": [
       {
+        "mainFile": "src/textures/batch canvas texture.js",
+        "map": [
+          {
+            "orig": "src/textures/batch canvas texture.js",
+            "dst": "batch canvas texture.js"
+          },
+          {"orig": "assets/pics/shocktroopers-lulu2.png"}
+        ]
+      },
+      {
+        "mainFile": "src/textures/batch texture.js",
+        "map": [
+          {
+            "orig": "src/textures/batch texture.js",
+            "dst": "batch texture.js"
+          },
+          {"orig": "assets/pics/lance-overdose-loader-eye.png"}
+        ]
+      },
+      {
         "mainFile": "src/textures/create canvas.js",
         "map": [{
           "orig": "src/textures/create canvas.js",
@@ -11637,13 +11958,77 @@
         }]
       },
       {
-        "mainFile": "src/textures/crop x.js",
+        "mainFile": "src/textures/crop texture atlas frame.js",
         "map": [
           {
-            "orig": "src/textures/crop x.js",
-            "dst": "crop x.js"
+            "orig": "src/textures/crop texture atlas frame.js",
+            "dst": "crop texture atlas frame.js"
           },
-          {"orig": "assets/pics/backscroll.png"}
+          {"orig": "assets/atlas/megaset-0.json"},
+          {"orig": "assets/atlas/megaset-0.png"}
+        ]
+      },
+      {
+        "mainFile": "src/textures/crop texture atlas frame flip.js",
+        "map": [
+          {
+            "orig": "src/textures/crop texture atlas frame flip.js",
+            "dst": "crop texture atlas frame flip.js"
+          },
+          {"orig": "assets/atlas/megaset-0.json"},
+          {"orig": "assets/atlas/megaset-0.png"}
+        ]
+      },
+      {
+        "mainFile": "src/textures/crop texture atlas frame trimmed.js",
+        "map": [
+          {
+            "orig": "src/textures/crop texture atlas frame trimmed.js",
+            "dst": "crop texture atlas frame trimmed.js"
+          },
+          {"orig": "assets/atlas/megaset-2.json"},
+          {"orig": "assets/atlas/megaset-2.png"}
+        ]
+      },
+      {
+        "mainFile": "src/textures/crop texture atlas frame trimmed flip.js",
+        "map": [
+          {
+            "orig": "src/textures/crop texture atlas frame trimmed flip.js",
+            "dst": "crop texture atlas frame trimmed flip.js"
+          },
+          {"orig": "assets/atlas/megaset-2.json"},
+          {"orig": "assets/atlas/megaset-2.png"}
+        ]
+      },
+      {
+        "mainFile": "src/textures/crop texture image.js",
+        "map": [
+          {
+            "orig": "src/textures/crop texture image.js",
+            "dst": "crop texture image.js"
+          },
+          {"orig": "assets/pics/kris-jovo.jpg"}
+        ]
+      },
+      {
+        "mainFile": "src/textures/crop texture image flip.js",
+        "map": [
+          {
+            "orig": "src/textures/crop texture image flip.js",
+            "dst": "crop texture image flip.js"
+          },
+          {"orig": "assets/pics/kris-jovo.jpg"}
+        ]
+      },
+      {
+        "mainFile": "src/textures/crop texture image scaled.js",
+        "map": [
+          {
+            "orig": "src/textures/crop texture image scaled.js",
+            "dst": "crop texture image scaled.js"
+          },
+          {"orig": "assets/sprites/hotdog.png"}
         ]
       },
       {

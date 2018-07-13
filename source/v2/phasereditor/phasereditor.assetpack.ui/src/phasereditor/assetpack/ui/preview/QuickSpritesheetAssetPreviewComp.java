@@ -60,7 +60,7 @@ public class QuickSpritesheetAssetPreviewComp extends Composite {
 		_resolutionLabel.setText(name + " (" + asset.getFrameWidth() + "x" + asset.getFrameHeight() + ")");
 		IFile file = asset.getUrlFile();
 		if (file == null) {
-			_canvas.setImage(null);
+			_canvas.removeImage();
 		} else {
 			_canvas.setSpritesheet(asset);
 			_canvas.setImageFile(file);
