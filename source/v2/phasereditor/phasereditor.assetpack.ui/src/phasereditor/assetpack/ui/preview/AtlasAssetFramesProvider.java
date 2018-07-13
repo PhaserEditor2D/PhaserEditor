@@ -26,9 +26,7 @@ import static java.util.stream.Collectors.toList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Display;
 
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel.Frame;
@@ -42,7 +40,7 @@ public class AtlasAssetFramesProvider implements IFrameProvider {
 
 	private AtlasAssetModel _asset;
 	private List<Frame> _frames;
-	private Image _image;
+	private IFile _file;
 
 	public AtlasAssetFramesProvider(AtlasAssetModel asset) {
 		super();
@@ -50,11 +48,7 @@ public class AtlasAssetFramesProvider implements IFrameProvider {
 		var frames = asset.getAtlasFrames();
 		_frames = frames.stream().sorted((f1, f2) -> f1.getKey().toLowerCase().compareTo(f2.getKey().toLowerCase()))
 				.collect(toList());
-
-		IFile file = _asset.getTextureFile();
-		if (file != null) {
-			_image = new Image(Display.getDefault(), file.getLocation().toFile().getAbsolutePath());
-		}
+		_file = _asset.getTextureFile();
 	}
 
 	@Override
@@ -68,8 +62,8 @@ public class AtlasAssetFramesProvider implements IFrameProvider {
 	}
 
 	@Override
-	public Image getFrameImage(int index) {
-		return _image;
+	public IFile getFrameImageFile(int index) {
+		return _file;
 	}
 
 	@Override

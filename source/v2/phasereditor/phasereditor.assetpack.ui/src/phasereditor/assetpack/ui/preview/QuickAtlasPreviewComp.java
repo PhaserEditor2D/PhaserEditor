@@ -54,7 +54,6 @@ public class QuickAtlasPreviewComp extends Composite {
 
 	public void setFrame(IAssetFrameModel frame) {
 		if (frame == null) {
-			_canvas.disposeImages();
 			_resolutionLabel.setText("(empty)");
 		} else {
 			_canvas.loadFrameProvider(new AtlasSingleFrameProvider(frame));

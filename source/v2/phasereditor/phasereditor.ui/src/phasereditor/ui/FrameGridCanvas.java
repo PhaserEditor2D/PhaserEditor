@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -38,7 +39,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
-import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ScrollBar;
 
@@ -48,7 +48,7 @@ import phasereditor.ui.ImageCanvas.ZoomCalculator;
  * @author arian
  *
  */
-public class FrameGridCanvas extends Canvas implements PaintListener, IZoomable {
+public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, IZoomable {
 
 	private List<Rectangle> _frames;
 	private List<Rectangle> _places;
@@ -322,7 +322,8 @@ public class FrameGridCanvas extends Canvas implements PaintListener, IZoomable 
 
 		for (int i = 0; i < provider.getFrameCount(); i++) {
 			var frame = provider.getFrameRectangle(i);
-			var image = provider.getFrameImage(i);
+			var file = provider.getFrameImageFile(i);
+			var image = loadImage(file);
 			var tooltip = provider.getFrameTooltip(i);
 
 			_frames.add(frame);
@@ -340,22 +341,12 @@ public class FrameGridCanvas extends Canvas implements PaintListener, IZoomable 
 		_tooltips = new ArrayList<>();
 	}
 
-	public void disposeImages() {
-		for (var img : _images) {
-			if (img != null) {
-				img.dispose();
-			}
-		}
-
-		resetFramesData();
-	}
-
 	public interface IFrameProvider {
 		public int getFrameCount();
 
 		public Rectangle getFrameRectangle(int index);
 
-		public Image getFrameImage(int index);
+		public IFile getFrameImageFile(int index);
 
 		public String getFrameTooltip(int index);
 

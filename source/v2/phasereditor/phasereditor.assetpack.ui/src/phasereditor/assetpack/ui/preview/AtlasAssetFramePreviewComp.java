@@ -81,8 +81,6 @@ public class AtlasAssetFramePreviewComp extends FrameGridCanvas {
 	public void setModel(IAssetFrameModel model) {
 		_model = model;
 		
-		disposeImages();
-		
 		loadFrameProvider(new AtlasSingleFrameProvider(model));
 	}
 
@@ -94,12 +92,4 @@ public class AtlasAssetFramePreviewComp extends FrameGridCanvas {
 		toolbar.add(new ImageCanvas_Zoom_1_1_Action(this));
 		toolbar.add(new ImageCanvas_Zoom_FitWindow_Action(this));
 	}
-	
-	@Override
-	public void dispose() {
-		disposeImages();
-		
-		super.dispose();
-	}
-
 }

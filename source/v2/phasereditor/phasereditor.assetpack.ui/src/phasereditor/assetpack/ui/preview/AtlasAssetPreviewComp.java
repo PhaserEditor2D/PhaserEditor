@@ -273,15 +273,8 @@ public class AtlasAssetPreviewComp extends Composite {
 			}
 		});
 
-		_gridCanvas.disposeImages();
 		_gridCanvas.loadFrameProvider(new AtlasAssetFramesProvider(model));
 		_gridCanvas.resetZoom();
-	}
-
-	@Override
-	public void dispose() {
-		_gridCanvas.disposeImages();
-		super.dispose();
 	}
 
 	public AtlasAssetModel getModel() {

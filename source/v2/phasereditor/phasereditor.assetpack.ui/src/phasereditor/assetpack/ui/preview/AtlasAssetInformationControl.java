@@ -44,7 +44,6 @@ public class AtlasAssetInformationControl extends BaseInformationControl {
 	protected void updateContent(Control control, Object model) {
 		QuickAtlasPreviewComp comp = (QuickAtlasPreviewComp) control;
 		AtlasAssetModel asset = (AtlasAssetModel) model;
-		comp.getCanvas().disposeImages();
 		comp.getCanvas().loadFrameProvider(new AtlasAssetFramesProvider(asset));
 		comp.getResolutionLabel().setText("atlas");
 	}

@@ -22,9 +22,7 @@
 package phasereditor.assetpack.ui.preview;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Display;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.ui.FrameGridCanvas.IFrameProvider;
@@ -36,14 +34,9 @@ import phasereditor.ui.FrameGridCanvas.IFrameProvider;
 public class AtlasSingleFrameProvider implements IFrameProvider {
 
 	private IAssetFrameModel _frame;
-	private Image _image;
 
 	public AtlasSingleFrameProvider(IAssetFrameModel frame) {
 		_frame = frame;
-		IFile file = frame.getImageFile();
-		if (file != null) {
-			_image = new Image(Display.getDefault(), file.getLocation().toFile().getAbsolutePath());
-		}
 	}
 
 	@Override
@@ -57,8 +50,8 @@ public class AtlasSingleFrameProvider implements IFrameProvider {
 	}
 
 	@Override
-	public Image getFrameImage(int index) {
-		return _image;
+	public IFile getFrameImageFile(int index) {
+		return _frame.getImageFile();
 	}
 
 	@Override

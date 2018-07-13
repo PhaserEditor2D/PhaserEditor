@@ -23,12 +23,9 @@ package phasereditor.assetpack.ui.preview;
 
 import static java.util.stream.Collectors.toList;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
@@ -48,10 +45,6 @@ public class QuickMultiAtlasAssetPreviewComp extends FrameGridCanvas {
 
 		var frames = getSortedFrames();
 
-		Map<IFile, Image> imageCache = new HashMap<>();
-
-		disposeImages();
-
 		loadFrameProvider(new IFrameProvider() {
 
 			@Override
@@ -65,22 +58,10 @@ public class QuickMultiAtlasAssetPreviewComp extends FrameGridCanvas {
 			}
 
 			@Override
-			public Image getFrameImage(int index) {
+			public IFile getFrameImageFile(int index) {
 				MultiAtlasAssetModel.Frame frame = frames.get(index);
 				IFile file = frame.getAsset().getFileFromUrl(frame.getTextureUrl());
-
-				if (file == null) {
-					return null;
-				}
-
-				if (imageCache.containsKey(file)) {
-					return imageCache.get(file);
-				}
-
-				Image img = new Image(getDisplay(), file.getLocation().toFile().getAbsolutePath());
-				imageCache.put(file, img);
-
-				return img;
+				return file;
 			}
 
 			@Override
@@ -89,18 +70,8 @@ public class QuickMultiAtlasAssetPreviewComp extends FrameGridCanvas {
 			}
 		});
 
-		imageCache.clear();
-
 		resetZoom();
 
-	}
-
-	@Override
-	public void dispose() {
-
-		disposeImages();
-
-		super.dispose();
 	}
 
 	public MultiAtlasAssetModel getModel() {
