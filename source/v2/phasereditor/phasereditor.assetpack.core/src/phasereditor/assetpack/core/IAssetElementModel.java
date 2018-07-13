@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core;
 
+import org.eclipse.core.runtime.IAdaptable;
+
 /**
  * Some assets have sub-elements like the atlas or the audio sprite. This
  * sub-elements have common features described in this interface.
@@ -28,7 +30,7 @@ package phasereditor.assetpack.core;
  * @author arian
  *
  */
-public interface IAssetElementModel extends IAssetKey {
+public interface IAssetElementModel extends IAssetKey, IAdaptable {
 	public String getName();
 
 	@Override
@@ -62,6 +64,12 @@ public interface IAssetElementModel extends IAssetKey {
 			}
 		}
 
+		return null;
+	}
+	
+	@Override
+	default <T> T getAdapter(Class<T> adapter) {
+		// required by phasereditor.assetpack.core.AssetModelFactory.createElement(IMemento)
 		return null;
 	}
 }

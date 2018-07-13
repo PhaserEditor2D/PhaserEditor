@@ -48,9 +48,8 @@ import phasereditor.ui.ImageCanvas.ZoomCalculator;
  * @author arian
  *
  */
-public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable {
+public class FrameGridCanvas extends Canvas implements PaintListener, IZoomable {
 
-	private Image _image;
 	private List<Rectangle> _frames;
 	private List<Rectangle> _places;
 	private List<Image> _images;
@@ -61,7 +60,7 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 	private List<String> _tooltips;
 	private boolean _fitWindow;
 
-	public SpriteGridCanvas(Composite parent, int style) {
+	public FrameGridCanvas(Composite parent, int style) {
 		super(parent, style | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL | SWT.NO_REDRAW_RESIZE);
 
 		_frames = Collections.emptyList();
@@ -70,7 +69,7 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 		_overIndex = -1;
 
 		addPaintListener(this);
-		
+
 		addMouseMoveListener(new MouseMoveListener() {
 
 			@SuppressWarnings("synthetic-access")
@@ -178,7 +177,7 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 			_fitWindow = false;
 			fitWindow();
 		}
-		
+
 		GC gc = e.gc;
 
 		Color overColor = PhaserEditorUI.get_pref_Preview_Atlas_frameOverColor();
@@ -194,12 +193,7 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 			Rectangle place = _places.get(i);
 
 			PhaserEditorUI.paintPreviewBackground(gc, place);
-			Image image;
-			if (_image != null) {
-				image = _image;
-			} else {
-				image = _images.get(i);
-			}
+			Image image = _images.get(i);
 
 			if (image != null) {
 				gc.drawImage(image, frame.x, frame.y, frame.width, frame.height, place.x, place.y, place.width,
@@ -214,7 +208,7 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 	}
 
 	private void computeRects() {
-		if (_image == null && _images.isEmpty()) {
+		if (_images.isEmpty()) {
 			return;
 		}
 
@@ -276,7 +270,7 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 		_fitWindow = true;
 		redraw();
 	}
-	
+
 	protected void fitWindow() {
 		Rectangle b = getClientArea();
 		int area = b.width * b.height;
@@ -288,28 +282,12 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 		updateScroll();
 	}
 
-	public Image getImage() {
-		return _image;
-	}
-
-	public void setImage(Image image) {
-		_image = image;
-	}
-
 	public List<Image> getImages() {
 		return _images;
 	}
 
 	public List<Rectangle> getFrames() {
 		return _frames;
-	}
-
-	public void setFrames(List<Rectangle> frames) {
-		_frames = frames;
-	}
-
-	public void setTooltips(List<String> tooltips) {
-		_tooltips = tooltips;
 	}
 
 	public int getFrameSize() {
@@ -339,7 +317,7 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 		//
 	}
 
-	public void setFramesProvider(IFramesProvider provider) {
+	public void loadFrameProvider(IFrameProvider provider) {
 		_frames = new ArrayList<>();
 		_images = new ArrayList<>();
 		_tooltips = new ArrayList<>();
@@ -359,10 +337,6 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 	}
 
 	public void disposeImages() {
-		if (_image != null) {
-			_image.dispose();
-		}
-
 		for (var img : _images) {
 			if (img != null) {
 				img.dispose();
@@ -370,7 +344,7 @@ public class SpriteGridCanvas extends Canvas implements PaintListener, IZoomable
 		}
 	}
 
-	public interface IFramesProvider {
+	public interface IFrameProvider {
 		public int getFrameCount();
 
 		public Rectangle getFrameRectangle(int index);

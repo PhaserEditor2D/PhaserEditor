@@ -33,9 +33,9 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
-import phasereditor.ui.SpriteGridCanvas;
+import phasereditor.ui.FrameGridCanvas;
 
-public class QuickMultiAtlasAssetPreviewComp extends SpriteGridCanvas {
+public class QuickMultiAtlasAssetPreviewComp extends FrameGridCanvas {
 
 	private MultiAtlasAssetModel _model;
 
@@ -50,7 +50,7 @@ public class QuickMultiAtlasAssetPreviewComp extends SpriteGridCanvas {
 
 		Map<IFile, Image> imageCache = new HashMap<>();
 
-		setFramesProvider(new IFramesProvider() {
+		loadFrameProvider(new IFrameProvider() {
 
 			@Override
 			public String getFrameTooltip(int index) {

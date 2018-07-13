@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015 Arian Fornaris
+// Copyright (c) 2015, 2018 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -24,49 +24,58 @@ package phasereditor.assetpack.ui.preview;
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Display;
 
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel.Frame;
-import phasereditor.ui.SpriteGridCanvas;
+import phasereditor.ui.FrameGridCanvas.IFrameProvider;
 
-public class QuickAtlasAssetPreviewComp extends SpriteGridCanvas {
+/**
+ * @author arian
+ *
+ */
+public class AtlasAssetFramesProvider implements IFrameProvider {
 
-	private AtlasAssetModel _model;
+	private AtlasAssetModel _asset;
+	private List<Frame> _frames;
+	private Image _image;
 
-	public QuickAtlasAssetPreviewComp(Composite parent, int style) {
-		super(parent, style);
-	}
+	public AtlasAssetFramesProvider(AtlasAssetModel asset) {
+		super();
+		_asset = asset;
+		var frames = asset.getAtlasFrames();
+		_frames = frames.stream().sorted((f1, f2) -> f1.getKey().toLowerCase().compareTo(f2.getKey().toLowerCase()))
+				.collect(toList());
 
-	public void setModel(AtlasAssetModel model) {
-		_model = model;
-		String url = model.getTextureURL();
-		IFile file = model.getFileFromUrl(url);
-
-		Image img = file == null? null : new Image(getDisplay(), file.getLocation().toFile().getAbsolutePath());
-
-		if (img == null) {
-			setImage(img);
-		} else {
-			List<Frame> sortedFrames = getSortedFrames();
-
-			setImage(img);
-			setFrames(sortedFrames.stream().map(f -> f.getFrameData().src).collect(Collectors.toList()));
-
-			resetZoom();
+		IFile file = _asset.getTextureFile();
+		if (file != null) {
+			_image = new Image(Display.getDefault(), file.getLocation().toFile().getAbsolutePath());
 		}
 	}
 
-	public AtlasAssetModel getModel() {
-		return _model;
+	@Override
+	public int getFrameCount() {
+		return _frames.size();
 	}
 
-	private List<Frame> getSortedFrames() {
-		return getModel().getAtlasFrames().stream()
-				.sorted((f1, f2) -> f1.getKey().toLowerCase().compareTo(f2.getKey().toLowerCase())).collect(toList());
+	@Override
+	public Rectangle getFrameRectangle(int index) {
+		return _frames.get(index).getFrameData().src;
 	}
+
+	@Override
+	public Image getFrameImage(int index) {
+		return _image;
+	}
+
+	@Override
+	public String getFrameTooltip(int index) {
+		var rect = getFrameRectangle(index);
+		return rect.width + "x" + rect.height;
+	}
+
 }

@@ -24,7 +24,6 @@ package phasereditor.assetpack.ui.preview;
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.Action;
@@ -47,8 +46,6 @@ import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.dialogs.FilteredTree;
@@ -61,12 +58,12 @@ import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.atlas.ui.AtlasCanvas;
 import phasereditor.ui.EditorSharedImages;
+import phasereditor.ui.FrameGridCanvas;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.IZoomable;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 import phasereditor.ui.PatternFilter2;
-import phasereditor.ui.SpriteGridCanvas;
 
 @SuppressWarnings("synthetic-access")
 public class AtlasAssetPreviewComp extends Composite {
@@ -75,7 +72,7 @@ public class AtlasAssetPreviewComp extends Composite {
 	private FilteredTree _spritesList;
 	private AtlasCanvas _canvas;
 	private AtlasAssetModel _model;
-	private SpriteGridCanvas _gridCanvas;
+	private FrameGridCanvas _gridCanvas;
 
 	private Action _textureAction;
 
@@ -94,7 +91,7 @@ public class AtlasAssetPreviewComp extends Composite {
 
 		_canvas = new AtlasCanvas(this, SWT.NONE);
 		_spritesList = new FilteredTree(this, SWT.MULTI, new PatternFilter2(), true);
-		_gridCanvas = new SpriteGridCanvas(this, SWT.NONE);
+		_gridCanvas = new FrameGridCanvas(this, SWT.NONE);
 
 		{
 			DragSource dragSource = new DragSource(_canvas, DND.DROP_MOVE | DND.DROP_DEFAULT);
@@ -276,30 +273,14 @@ public class AtlasAssetPreviewComp extends Composite {
 			}
 		});
 
-		Image img = _canvas.getImage();
+		_gridCanvas.loadFrameProvider(new AtlasAssetFramesProvider(model));
+		_gridCanvas.resetZoom();
+	}
 
-		if (img != null) {
-			Rectangle b = img.getBounds();
-
-			List<Frame> sortedFrames = getSortedFrames();
-
-			List<String> tooltips = sortedFrames.stream().map(f -> {
-				String str = "Sprite Name: " + f.getKey() + "\n";
-				str += "Sprite Size: " + f.getSpriteW() + "x" + f.getSpriteH() + "\n";
-				str += "Image Size: " + b.width + "x" + b.height + "\n";
-				str += "Image URL: " + getModel().getTextureURL();
-				return str;
-			}).collect(Collectors.toList());
-
-			_canvas.setTooltips(tooltips);
-
-			_gridCanvas.setImage(img);
-			_gridCanvas.setFrames(sortedFrames.stream().map(f -> f.getFrameData().src).collect(Collectors.toList()));
-
-			_gridCanvas.setTooltips(tooltips);
-
-			_gridCanvas.resetZoom();
-		}
+	@Override
+	public void dispose() {
+		_gridCanvas.disposeImages();
+		super.dispose();
 	}
 
 	public AtlasAssetModel getModel() {
