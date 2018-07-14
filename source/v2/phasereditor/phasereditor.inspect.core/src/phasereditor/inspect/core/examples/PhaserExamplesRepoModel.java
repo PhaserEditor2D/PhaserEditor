@@ -164,7 +164,7 @@ public class PhaserExamplesRepoModel {
 						loaderPath = content.substring(j + 1, k);
 						out.println("Detected loader path: " + loaderPath);
 					}
-					
+
 					i = content.indexOf("this.load.setPath('assets/");
 					if (i != -1) {
 						int j = content.indexOf("'", i);
@@ -214,16 +214,45 @@ public class PhaserExamplesRepoModel {
 									if (jsonMeta.getString("app").toLowerCase().contains("asset")) {
 										// ok, it is a pack
 										out.println("Processing pack: " + assetRelPath);
-										for(var key : jsonPack.keySet()) {
+										for (var key : jsonPack.keySet()) {
 											if (key.equals("meta")) {
 												continue;
 											}
 											var jsonSection = jsonPack.getJSONObject(key);
+											var path = jsonSection.optString("path", null);
+											if (path != null) {
+												if (path.endsWith("/")) {
+													path += path.substring(0, path.length() - 1);
+												}
+												out.println("\tDetecting section path: " + path);
+											}
 											var jsonFiles = jsonSection.getJSONArray("files");
-											for(int i = 0; i < jsonFiles.length(); i++) {
+											for (int i = 0; i < jsonFiles.length(); i++) {
+												String url = null;
 												var jsonFile = jsonFiles.getJSONObject(i);
-												if (jsonFile.has("url")) {
-													var url = jsonFile.getString("url");
+												boolean hasExplicitUrl = jsonFile.has("url");
+												if (hasExplicitUrl) {
+													url = jsonFile.getString("url");
+													if (path != null) {
+														url = path + "/" + url;
+													}
+												} else {
+													if (path != null) {
+														var fileKey = jsonFile.getString("key");
+														url = path + "/" + fileKey;
+													}
+												}
+												
+												if (url != null) {
+													
+													var fileExt = jsonFile.optString("extension", null);
+													if (fileExt == null) {
+														// TODO: add the extension in dependence of the file type.
+													} else {
+														url += "." + fileExt;
+														out.println("\t\tAdding extension: " + fileExt);
+													}
+													
 													out.println("\tPack url: " + url);
 												}
 											}
@@ -233,7 +262,7 @@ public class PhaserExamplesRepoModel {
 							} catch (Exception e) {
 								// nothing
 							}
-							
+
 							// check if it is a multi-atlas
 							// TODO: missing implementation
 						}
