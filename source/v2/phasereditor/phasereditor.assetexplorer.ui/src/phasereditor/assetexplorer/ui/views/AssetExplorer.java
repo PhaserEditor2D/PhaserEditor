@@ -23,6 +23,9 @@ package phasereditor.assetexplorer.ui.views;
 
 import static java.lang.System.out;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.commands.operations.IUndoContext;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -58,12 +61,17 @@ import org.eclipse.ui.operations.RedoActionHandler;
 import org.eclipse.ui.operations.UndoActionHandler;
 import org.eclipse.ui.part.ViewPart;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
+import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.AssetPackModel;
+import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.atlas.core.AtlasData;
 import phasereditor.canvas.core.CanvasFile;
+import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.ui.FilteredTree2;
 import phasereditor.ui.PatternFilter2;
@@ -81,8 +89,6 @@ public class AssetExplorer extends ViewPart {
 	static String ATLAS_NODE = "Atlas";
 	static String CANVAS_NODE = "Canvas";
 	static String PACK_NODE = "Pack";
-
-	
 
 	public AssetExplorer() {
 		super();
@@ -257,57 +263,56 @@ public class AssetExplorer extends ViewPart {
 			return;
 		}
 
-		_viewer.refresh();
-
-		// Object[] expanded = _viewer.getVisibleExpandedElements();
-		//
-		// _viewer.getTree().setRedraw(false);
-		// try {
 		// _viewer.refresh();
-		//
-		// List<Object> toExpand = new ArrayList<>();
-		//
-		// for (Object obj : expanded) {
-		// if (obj instanceof IAssetKey) {
-		// IAssetKey key = ((IAssetKey) obj).getSharedVersion();
-		// toExpand.add(key);
-		// } else if (obj instanceof AssetGroupModel) {
-		// AssetPackModel oldPack = ((AssetGroupModel) obj).getSection().getPack();
-		// JSONObject ref = oldPack.getAssetJSONRefrence(obj);
-		// IFile file = oldPack.getFile();
-		// AssetPackModel newPack = AssetPackCore.getAssetPackModel(file, false);
-		// if (newPack != null) {
-		// Object obj2 = newPack.getElementFromJSONReference(ref);
-		// if (obj2 != null) {
-		// toExpand.add(obj2);
-		// }
-		// }
-		// } else if (obj instanceof AssetSectionModel) {
-		// AssetPackModel oldPack = ((AssetSectionModel) obj).getPack();
-		// JSONObject ref = oldPack.getAssetJSONRefrence(obj);
-		// IFile file = oldPack.getFile();
-		// AssetPackModel newPack = AssetPackCore.getAssetPackModel(file, false);
-		// if (newPack != null) {
-		// Object obj2 = newPack.getElementFromJSONReference(ref);
-		// toExpand.add(obj2);
-		// }
-		// } else if (obj instanceof AssetPackModel) {
-		// AssetPackModel newPack = AssetPackCore.getAssetPackModel(((AssetPackModel)
-		// obj).getFile(), false);
-		// toExpand.add(newPack);
-		// } else if (obj instanceof CanvasType) {
-		// toExpand.add(obj);
-		// }
-		// }
-		// toExpand.remove(null);
-		// Object[] array = toExpand.toArray();
-		// if (array != null) {
-		// _viewer.setExpandedElements(array);
-		// }
-		//
-		// } finally {
-		// _viewer.getTree().setRedraw(true);
-		// }
+
+		Object[] expanded = _viewer.getVisibleExpandedElements();
+
+		_viewer.getTree().setRedraw(false);
+		try {
+			_viewer.refresh();
+
+			List<Object> toExpand = new ArrayList<>();
+
+			for (Object obj : expanded) {
+				if (obj instanceof IAssetKey) {
+					IAssetKey key = ((IAssetKey) obj).getSharedVersion();
+					toExpand.add(key);
+				} else if (obj instanceof AssetGroupModel) {
+					AssetPackModel oldPack = ((AssetGroupModel) obj).getSection().getPack();
+					JSONObject ref = oldPack.getAssetJSONRefrence(obj);
+					IFile file = oldPack.getFile();
+					AssetPackModel newPack = AssetPackCore.getAssetPackModel(file, false);
+					if (newPack != null) {
+						Object obj2 = newPack.getElementFromJSONReference(ref);
+						if (obj2 != null) {
+							toExpand.add(obj2);
+						}
+					}
+				} else if (obj instanceof AssetSectionModel) {
+					AssetPackModel oldPack = ((AssetSectionModel) obj).getPack();
+					JSONObject ref = oldPack.getAssetJSONRefrence(obj);
+					IFile file = oldPack.getFile();
+					AssetPackModel newPack = AssetPackCore.getAssetPackModel(file, false);
+					if (newPack != null) {
+						Object obj2 = newPack.getElementFromJSONReference(ref);
+						toExpand.add(obj2);
+					}
+				} else if (obj instanceof AssetPackModel) {
+					AssetPackModel newPack = AssetPackCore.getAssetPackModel(((AssetPackModel) obj).getFile(), false);
+					toExpand.add(newPack);
+				} else if (obj instanceof CanvasType) {
+					toExpand.add(obj);
+				} else {
+					toExpand.add(obj);
+				}
+			}
+			toExpand.remove(null);
+			Object[] array = toExpand.toArray();
+			_viewer.setExpandedElements(array);
+
+		} finally {
+			_viewer.getTree().setRedraw(true);
+		}
 	}
 
 }
