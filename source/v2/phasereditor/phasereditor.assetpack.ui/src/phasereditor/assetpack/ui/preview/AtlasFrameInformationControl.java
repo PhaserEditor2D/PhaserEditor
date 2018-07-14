@@ -37,13 +37,13 @@ public class AtlasFrameInformationControl extends BaseInformationControl {
 
 	@Override
 	protected Control createContent2(Composite parentComp) {
-		return new QuickAtlasPreviewComp(parentComp, SWT.NONE);
+		return new QuickAtlasFramePreviewComp(parentComp, SWT.NONE);
 	}
 
 	@Override
 	protected void updateContent(Control control, Object model) {
 		var frame = (IAssetFrameModel) model;
-		QuickAtlasPreviewComp comp = (QuickAtlasPreviewComp) control;
+		QuickAtlasFramePreviewComp comp = (QuickAtlasFramePreviewComp) control;
 		comp.setFrame(frame);
 	}
 }

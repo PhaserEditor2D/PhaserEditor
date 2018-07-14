@@ -21,25 +21,47 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
-import phasereditor.assetpack.core.MultiAtlasAssetModel;
-import phasereditor.ui.FrameGridCanvas;
+import phasereditor.assetpack.core.FrameData;
+import phasereditor.assetpack.core.IAssetFrameModel;
 
-public class QuickMultiAtlasAssetPreviewComp extends FrameGridCanvas {
+public class QuickAtlasFramePreviewComp extends Composite {
+	private Label _resolutionLabel;
+	private SingleFrameCanvas _canvas;
 
-	private MultiAtlasAssetModel _model;
-
-	public QuickMultiAtlasAssetPreviewComp(Composite parent, int style) {
+	/**
+	 * Create the composite.
+	 * 
+	 * @param parent
+	 * @param style
+	 */
+	public QuickAtlasFramePreviewComp(Composite parent, int style) {
 		super(parent, style);
+		setLayout(new GridLayout(1, false));
+
+		_canvas = new SingleFrameCanvas(this, SWT.NONE);
+		_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+
+		_resolutionLabel = new Label(this, SWT.CENTER);
+		_resolutionLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 	}
 
-	public void setModel(MultiAtlasAssetModel model) {
-		_model = model;
-		loadFrameProvider(new MultiAtlasFrameProvider(model));
+	public void setFrame(IAssetFrameModel frame) {
+		if (frame == null) {
+			_resolutionLabel.setText("(empty)");
+		} else {
+			_canvas.setModel(frame);
+			FrameData fd = frame.getFrameData();
+			_resolutionLabel.setText(fd.src.width + "x" + fd.src.height);
+		}
 	}
 
-	public MultiAtlasAssetModel getModel() {
-		return _model;
+	public Label getResolutionLabel() {
+		return _resolutionLabel;
 	}
 }

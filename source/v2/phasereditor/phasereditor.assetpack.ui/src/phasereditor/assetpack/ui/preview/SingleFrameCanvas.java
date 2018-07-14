@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015 Arian Fornaris
+// Copyright (c) 2015, 2018 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -21,52 +21,35 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 
-import phasereditor.assetpack.core.FrameData;
 import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.ui.FrameGridCanvas;
+import phasereditor.ui.ImageCanvas;
 
-public class QuickAtlasPreviewComp extends Composite {
-	private Label _resolutionLabel;
-	private FrameGridCanvas _canvas;
+/**
+ * @author arian
+ *
+ */
+public class SingleFrameCanvas extends ImageCanvas {
 
-	/**
-	 * Create the composite.
-	 * 
-	 * @param parent
-	 * @param style
-	 */
-	public QuickAtlasPreviewComp(Composite parent, int style) {
+	private IAssetFrameModel _model;
+
+
+	public SingleFrameCanvas(Composite parent, int style) {
 		super(parent, style);
-		setLayout(new GridLayout(1, false));
-
-		_canvas = new FrameGridCanvas(this, SWT.NONE);
-		_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-
-		_resolutionLabel = new Label(this, SWT.CENTER);
-		_resolutionLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 	}
 
-	public void setFrame(IAssetFrameModel frame) {
-		if (frame == null) {
-			_resolutionLabel.setText("(empty)");
+	
+	public void setModel(IAssetFrameModel model) {
+		_model = model;
+		if (_model == null) {
+			removeImage();
 		} else {
-			_canvas.loadFrameProvider(new AtlasSingleFrameProvider(frame));
-			FrameData fd = frame.getFrameData();
-			_resolutionLabel.setText(fd.src.width + "x" + fd.src.height);
+			setImageFile(model.getImageFile(), model.getFrameData().src);
 		}
 	}
 	
-	public Label getResolutionLabel() {
-		return _resolutionLabel;
-	}
-
-	public FrameGridCanvas getCanvas() {
-		return _canvas;
+	public IAssetFrameModel getModel() {
+		return _model;
 	}
 }

@@ -33,16 +33,12 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
 
-import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
-import phasereditor.ui.FrameGridCanvas;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 
-public class AtlasAssetFramePreviewComp extends FrameGridCanvas {
+public class AtlasAssetFramePreviewComp extends SingleFrameCanvas {
 	static final Object NO_SELECTION = "none";
-
-	private IAssetFrameModel _model;
 
 	public AtlasAssetFramePreviewComp(Composite parent, int style) {
 		super(parent, style);
@@ -76,16 +72,6 @@ public class AtlasAssetFramePreviewComp extends FrameGridCanvas {
 				event.data = getModel().getKey();
 			}
 		});
-	}
-
-	public void setModel(IAssetFrameModel model) {
-		_model = model;
-		
-		loadFrameProvider(new AtlasSingleFrameProvider(model));
-	}
-
-	public IAssetFrameModel getModel() {
-		return _model;
 	}
 
 	public void createToolBar(IToolBarManager toolbar) {

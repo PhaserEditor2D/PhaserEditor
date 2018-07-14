@@ -266,6 +266,10 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 		setImage(loadImage(file));
 	}
 	
+	public void setImageFile(IFile file, Rectangle viewport) {
+		setImage(loadImage(file), viewport);
+	}
+	
 	public void removeImage() {
 		setImage(null);
 	}

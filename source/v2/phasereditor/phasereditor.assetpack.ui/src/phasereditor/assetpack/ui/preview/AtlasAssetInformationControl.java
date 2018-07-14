@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 import phasereditor.assetpack.core.AtlasAssetModel;
+import phasereditor.ui.FrameGridCanvas;
 import phasereditor.ui.info.BaseInformationControl;
 
 public class AtlasAssetInformationControl extends BaseInformationControl {
@@ -37,14 +38,13 @@ public class AtlasAssetInformationControl extends BaseInformationControl {
 
 	@Override
 	protected Control createContent2(Composite parentComp) {
-		return new QuickAtlasPreviewComp(parentComp, SWT.NONE);
+		return new FrameGridCanvas(parentComp, SWT.NONE);
 	}
 
 	@Override
 	protected void updateContent(Control control, Object model) {
-		QuickAtlasPreviewComp comp = (QuickAtlasPreviewComp) control;
+		var comp = (FrameGridCanvas) control;
 		AtlasAssetModel asset = (AtlasAssetModel) model;
-		comp.getCanvas().loadFrameProvider(new AtlasAssetFramesProvider(asset));
-		comp.getResolutionLabel().setText("atlas");
+		comp.loadFrameProvider(new AtlasAssetFramesProvider(asset));
 	}
 }
