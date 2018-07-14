@@ -526,7 +526,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 
 			@Override
 			public void updateControl(Control preview, Object element) {
-				SpritesheetFramePreviewComp comp = (SpritesheetFramePreviewComp) preview;
+				var comp = (SpritesheetFramePreviewComp) preview;
 				SpritesheetAssetModel.FrameModel frame = (SpritesheetAssetModel.FrameModel) element;
 				comp.setModel(frame);
 			}

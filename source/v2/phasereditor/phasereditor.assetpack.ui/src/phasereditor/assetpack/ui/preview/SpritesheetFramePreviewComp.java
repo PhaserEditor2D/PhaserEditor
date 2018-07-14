@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
@@ -32,13 +31,9 @@ import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
-import phasereditor.assetpack.core.SpritesheetAssetModel;
-import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
-import phasereditor.assetpack.ui.widgets.SpritesheetPreviewCanvas;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 
@@ -46,9 +41,7 @@ import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
  * @author arian
  *
  */
-public class SpritesheetFramePreviewComp extends SpritesheetPreviewCanvas {
-
-	private FrameModel _model;
+public class SpritesheetFramePreviewComp extends SingleFrameCanvas {
 
 	public SpritesheetFramePreviewComp(Composite parent, int style) {
 		super(parent, style);
@@ -75,34 +68,10 @@ public class SpritesheetFramePreviewComp extends SpritesheetPreviewCanvas {
 
 			@Override
 			public void dragSetData(DragSourceEvent event) {
-				event.data = getSpritesheet().getKey() + " - " + getModel().getKey();
+				event.data = getModel().getAsset().getKey() + " - " + getModel().getKey();
 			}
 		});
 
-	}
-
-	public void setModel(SpritesheetAssetModel.FrameModel model) {
-		_model = model;
-		setSpritesheet(model.getAsset());
-		IFile file = model.getAsset().getUrlFile();
-		setImageFile(file);
-		setFrame(model.getIndex());
-		setSingleFrame(true);
-
-		if (getImage() != null) {
-			SpritesheetAssetModel sheet = model.getAsset();
-			String str = "Frames Size: " + sheet.getFrameWidth() + "x" + sheet.getFrameHeight() + "\n";
-			Rectangle b = getImage().getBounds();
-			str += "Image Size: " + b.width + "x" + b.height + "\n";
-			str += "Image URL: " + sheet.getUrl();
-			setToolTipText(str);
-		}
-
-		resetZoom();
-	}
-
-	public FrameModel getModel() {
-		return _model;
 	}
 
 	public void createToolBar(IToolBarManager toolbar) {

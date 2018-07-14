@@ -48,8 +48,6 @@ import phasereditor.ui.PhaserEditorUI;
 public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveListener, KeyListener, MouseListener {
 
 	private SpritesheetAssetModel _spritesheet;
-	private int _frame;
-	private boolean _singleFrame;
 	private List<FrameData> _rects;
 	private boolean _controlPressed;
 	private List<Integer> _selectedFrames = new ArrayList<>();
@@ -59,7 +57,6 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 	public SpritesheetPreviewCanvas(Composite parent, int style) {
 		super(parent, style);
 		setPreferredSize(new Point(100, 100));
-		_singleFrame = false;
 		addMouseMoveListener(this);
 		addMouseListener(this);
 		addKeyListener(this);
@@ -75,24 +72,6 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 		_font.dispose();
 	}
 
-	@Override
-	protected void drawImage(GC gc, int srcX, int srcY, int srcW, int srcH, int dstW, int dstH, int dstX, int dstY) {
-		if (_singleFrame) {
-			return;
-		}
-
-		super.drawImage(gc, srcX, srcY, srcW, srcH, dstW, dstH, dstX, dstY);
-	}
-
-	@Override
-	protected void drawImageBackground(GC gc, Rectangle b) {
-		if (_singleFrame) {
-			return;
-		}
-
-		super.drawImageBackground(gc, b);
-	}
-
 	@SuppressWarnings("boxing")
 	@Override
 	protected void drawMore(GC gc, int srcW, int srcH, int dstW, int dstH, int dstX, int dstY) {
@@ -104,115 +83,87 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 		Rectangle canvasBounds = getBounds();
 		Rectangle imgBounds = _image.getBounds();
 
-		if (_singleFrame) {
+		boolean paintBorders = PhaserEditorUI.get_pref_Preview_Spritesheet_paintFramesBorder();
+		boolean paintLabels = PhaserEditorUI.get_pref_Preview_Spritesheet_paintFramesLabels();
+		Color borderColor = PhaserEditorUI.get_pref_Preview_Spritesheet_borderColor();
+		Color labelsColor = PhaserEditorUI.get_pref_Preview_Spritesheet_labelsColor();
+		Color colorBlack = getDisplay().getSystemColor(SWT.COLOR_BLACK);
+		Color selectionColor = PhaserEditorUI.get_pref_Preview_Spritesheet_selectionColor();
 
-			_rects = AssetPackUI.generateSpriteSheetRects(spritesheet, imgBounds);
+		_rects = AssetPackUI.generateSpriteSheetRects(spritesheet, imgBounds);
+		if (_rects.isEmpty()) {
+			PhaserEditorUI.paintPreviewMessage(gc, canvasBounds, "Cannot compute the grid.");
+		} else {
 
-			if (_rects.isEmpty()) {
-				PhaserEditorUI.paintPreviewMessage(gc, canvasBounds, "Cannot compute the grid.");
-			} else {
-				FrameData fd = _rects.get(_frame % _rects.size());
+			ZoomCalculator calc = calc();
 
-				ZoomCalculator calc = calc();
+			for (FrameData fd : _rects) {
 				calc.imgWidth = fd.src.width;
 				calc.imgHeight = fd.src.height;
 
-				Rectangle r = calc.imageToScreen(0, 0, fd.src.width, fd.src.height);
-				// r = PhaserEditorUI.computeImageZoom(r, getBounds());
+				Rectangle r = calc.imageToScreen(fd.dst);
 
-				try {
-					PhaserEditorUI.paintPreviewBackground(gc, r);
-
-					gc.drawImage(_image, fd.src.x, fd.src.y, fd.src.width, fd.src.height, r.x, r.y, r.width, r.height);
-
-				} catch (IllegalArgumentException e) {
-					// wrong parameters
+				if (_selectedFrames.contains(fd.index)) {
+					gc.setAlpha(100);
+					gc.setBackground(selectionColor);
+					gc.fillRectangle(r.x, r.y, r.width, r.height);
+					gc.setAlpha(255);
 				}
-			}
-		} else {
 
-			boolean paintBorders = PhaserEditorUI.get_pref_Preview_Spritesheet_paintFramesBorder();
-			boolean paintLabels = PhaserEditorUI.get_pref_Preview_Spritesheet_paintFramesLabels();
-			Color borderColor = PhaserEditorUI.get_pref_Preview_Spritesheet_borderColor();
-			Color labelsColor = PhaserEditorUI.get_pref_Preview_Spritesheet_labelsColor();
-			Color colorBlack = getDisplay().getSystemColor(SWT.COLOR_BLACK);
-			Color selectionColor = PhaserEditorUI.get_pref_Preview_Spritesheet_selectionColor();
-
-			_rects = AssetPackUI.generateSpriteSheetRects(spritesheet, imgBounds);
-			if (_rects.isEmpty()) {
-				PhaserEditorUI.paintPreviewMessage(gc, canvasBounds, "Cannot compute the grid.");
-			} else {
-
-				ZoomCalculator calc = calc();
-
-				for (FrameData fd : _rects) {
-					calc.imgWidth = fd.src.width;
-					calc.imgHeight = fd.src.height;
-
-					Rectangle r = calc.imageToScreen(fd.dst);
-
-					if (_selectedFrames.contains(fd.index)) {
-						gc.setAlpha(100);
-						gc.setBackground(selectionColor);
-						gc.fillRectangle(r.x, r.y, r.width, r.height);
-						gc.setAlpha(255);
-					}
-
-					if (!fd.visible) {
-						gc.setAlpha(200);
-						gc.setBackground(getBackground());
-						gc.fillRectangle(r.x, r.y, r.width, r.height);
-						gc.setAlpha(255);
-					}
-
-					if (paintBorders) {
-						gc.setAlpha(125);
-						if (r.width >= 16) {
-							gc.setForeground(borderColor);
-							// gc.drawRectangle(r.x, r.y, r.width, r.height);
-							gc.drawLine(r.x, r.y, r.x, r.y + r.height);
-							gc.drawLine(r.x, r.y, r.x + r.width, r.y);
-						}
-						gc.setAlpha(255);
-					}
+				if (!fd.visible) {
+					gc.setAlpha(200);
+					gc.setBackground(getBackground());
+					gc.fillRectangle(r.x, r.y, r.width, r.height);
+					gc.setAlpha(255);
 				}
 
 				if (paintBorders) {
-					// paint outer frame
-					Rectangle rect = calc.imageToScreen(imgBounds);
 					gc.setAlpha(125);
-					gc.setForeground(borderColor);
-					gc.drawRectangle(rect.x, rect.y, rect.width, rect.height);
+					if (r.width >= 16) {
+						gc.setForeground(borderColor);
+						// gc.drawRectangle(r.x, r.y, r.width, r.height);
+						gc.drawLine(r.x, r.y, r.x, r.y + r.height);
+						gc.drawLine(r.x, r.y, r.x + r.width, r.y);
+					}
 					gc.setAlpha(255);
+				}
+			}
+
+			if (paintBorders) {
+				// paint outer frame
+				Rectangle rect = calc.imageToScreen(imgBounds);
+				gc.setAlpha(125);
+				gc.setForeground(borderColor);
+				gc.drawRectangle(rect.x, rect.y, rect.width, rect.height);
+				gc.setAlpha(255);
+			}
+
+			if (paintLabels) {
+				for (FrameData fd : _rects) {
+					Rectangle r = calc.imageToScreen(fd.dst);
+					if (r.width < 64 || r.height < 64) {
+						paintLabels = false;
+						break;
+					}
 				}
 
 				if (paintLabels) {
 					for (FrameData fd : _rects) {
+						calc.imgWidth = fd.dst.width;
+						calc.imgHeight = fd.dst.height;
 						Rectangle r = calc.imageToScreen(fd.dst);
-						if (r.width < 64 || r.height < 64) {
-							paintLabels = false;
-							break;
-						}
-					}
 
-					if (paintLabels) {
-						for (FrameData fd : _rects) {
-							calc.imgWidth = fd.dst.width;
-							calc.imgHeight = fd.dst.height;
-							Rectangle r = calc.imageToScreen(fd.dst);
+						String label = Integer.toString(fd.index);
+						Point labelRect = gc.stringExtent(Integer.toString(fd.index));
+						int left = r.x + r.width / 2 - labelRect.x / 2;
+						int top = r.y + r.height / 2 - labelRect.y / 2;
 
-							String label = Integer.toString(fd.index);
-							Point labelRect = gc.stringExtent(Integer.toString(fd.index));
-							int left = r.x + r.width / 2 - labelRect.x / 2;
-							int top = r.y + r.height / 2 - labelRect.y / 2;
-
-							gc.setForeground(colorBlack);
-							gc.drawString(label, left - 1, top + 1, true);
-							gc.setForeground(colorBlack);
-							gc.drawString(label, left + 1, top - 1, true);
-							gc.setForeground(labelsColor);
-							gc.drawString(label, left, top, true);
-						}
+						gc.setForeground(colorBlack);
+						gc.drawString(label, left - 1, top + 1, true);
+						gc.setForeground(colorBlack);
+						gc.drawString(label, left + 1, top - 1, true);
+						gc.setForeground(labelsColor);
+						gc.drawString(label, left, top, true);
 					}
 				}
 			}
@@ -337,50 +288,6 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 		_spritesheet = spritesheet;
 		_rects = null;
 		_selectedFrames = new ArrayList<>();
-	}
-
-	public boolean isSingleFrame() {
-		return _singleFrame;
-	}
-
-	@Override
-	protected void fitWindow() {
-		if (_singleFrame) {
-			if (getImage() == null) {
-				return;
-			}
-
-			if (_image == null) {
-				return;
-			}
-
-			if (_rects == null) {
-				_rects = AssetPackUI.generateSpriteSheetRects(_spritesheet, _image.getBounds());
-			}
-
-			if (_rects.size() > 0) {
-				ZoomCalculator calc = calc();
-				FrameData fd = _rects.get(_frame >= _rects.size() ? 0 : _frame);
-				calc.imageSize(fd.dst);
-				calc.fit(getBounds());
-
-				setScaleAndOffset(calc);
-			}
-		} else {
-			super.fitWindow();
-		}
-	}
-
-	public void setSingleFrame(boolean singleFrame) {
-		_singleFrame = singleFrame;
-	}
-
-	public int getFrame() {
-		return _frame;
-	}
-
-	public void setFrame(int frame) {
-		_frame = frame;
 	}
 
 	public int getFrameCount() {

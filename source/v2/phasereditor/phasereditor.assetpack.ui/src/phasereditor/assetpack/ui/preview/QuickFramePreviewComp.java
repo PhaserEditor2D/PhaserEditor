@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Label;
 import phasereditor.assetpack.core.FrameData;
 import phasereditor.assetpack.core.IAssetFrameModel;
 
-public class QuickAtlasFramePreviewComp extends Composite {
+public class QuickFramePreviewComp extends Composite {
 	private Label _resolutionLabel;
 	private SingleFrameCanvas _canvas;
 
@@ -40,7 +40,7 @@ public class QuickAtlasFramePreviewComp extends Composite {
 	 * @param parent
 	 * @param style
 	 */
-	public QuickAtlasFramePreviewComp(Composite parent, int style) {
+	public QuickFramePreviewComp(Composite parent, int style) {
 		super(parent, style);
 		setLayout(new GridLayout(1, false));
 

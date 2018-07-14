@@ -89,7 +89,7 @@ import phasereditor.assetpack.core.VideoAssetModel;
 import phasereditor.assetpack.ui.editors.AssetPackEditor;
 import phasereditor.assetpack.ui.editors.AssetPackEditor2;
 import phasereditor.assetpack.ui.preview.AtlasAssetInformationControl;
-import phasereditor.assetpack.ui.preview.AtlasFrameInformationControl;
+import phasereditor.assetpack.ui.preview.AssetFrameInformationControl;
 import phasereditor.assetpack.ui.preview.AudioAssetInformationControl;
 import phasereditor.assetpack.ui.preview.AudioFileInformationControl;
 import phasereditor.assetpack.ui.preview.AudioSpriteAssetElementInformationControl;
@@ -632,7 +632,22 @@ public class AssetPackUI {
 
 				@Override
 				public boolean isSupported(Object info) {
-					return info instanceof SpritesheetAssetModel || info instanceof SpritesheetAssetModel.FrameModel;
+					return info instanceof SpritesheetAssetModel;
+				}
+			});
+
+			// spritesheet frame
+
+			_informationControlCreators.add(new ICustomInformationControlCreator() {
+
+				@Override
+				public IInformationControl createInformationControl(Shell parent) {
+					return new AssetFrameInformationControl(parent);
+				}
+
+				@Override
+				public boolean isSupported(Object info) {
+					return info instanceof SpritesheetAssetModel.FrameModel;
 				}
 			});
 
@@ -732,7 +747,7 @@ public class AssetPackUI {
 
 				@Override
 				public IInformationControl createInformationControl(Shell parent) {
-					return new AtlasFrameInformationControl(parent);
+					return new AssetFrameInformationControl(parent);
 				}
 
 				@Override

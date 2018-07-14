@@ -29,21 +29,21 @@ import org.eclipse.swt.widgets.Shell;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.ui.info.BaseInformationControl;
 
-public class AtlasFrameInformationControl extends BaseInformationControl {
+public class AssetFrameInformationControl extends BaseInformationControl {
 
-	public AtlasFrameInformationControl(Shell parentShell) {
+	public AssetFrameInformationControl(Shell parentShell) {
 		super(parentShell);
 	}
 
 	@Override
 	protected Control createContent2(Composite parentComp) {
-		return new QuickAtlasFramePreviewComp(parentComp, SWT.NONE);
+		return new QuickFramePreviewComp(parentComp, SWT.NONE);
 	}
 
 	@Override
 	protected void updateContent(Control control, Object model) {
 		var frame = (IAssetFrameModel) model;
-		QuickAtlasFramePreviewComp comp = (QuickAtlasFramePreviewComp) control;
+		QuickFramePreviewComp comp = (QuickFramePreviewComp) control;
 		comp.setFrame(frame);
 	}
 }
