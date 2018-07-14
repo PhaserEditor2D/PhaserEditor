@@ -13,18 +13,6 @@
    </extension>
  <extension
        point="org.eclipse.ui.commands">
-       <command
-            categoryId="phasereditor.ui.phaserCategory"
-            defaultHandler="phasereditor.assetexplorer.ui.handlers.AssetExplorerShowListHandler"
-            id="phasereditor.assetpack.ui.explorer.showlist"
-            name="Only Sprites">
-      </command>
-      <command
-            categoryId="phasereditor.ui.phaserCategory"
-            defaultHandler="phasereditor.assetexplorer.ui.handlers.AssetExplorerShowTreeHandler"
-            id="phasereditor.assetpack.ui.explorer.showtree"
-            name="All Assets">
-      </command>
       <command
             categoryId="phasereditor.ui.phaserCategory"
             defaultHandler="phasereditor.assetexplorer.ui.handlers.NewAssetExplorerHandler"
@@ -61,22 +49,6 @@
                icon="platform:/plugin/org.eclipse.ui.views/icons/full/elcl16/new.png"
                style="push">
          </command>
-         <!--
-         <separator
-               name="phasereditor.assetpack.ui.separator1"
-               visible="true">
-         </separator>
-         <command
-               commandId="phasereditor.assetpack.ui.explorer.showlist"
-               icon="platform:/plugin/phasereditor.ui/icons/application_view_icons.png"
-               style="push">
-         </command>
-         <command
-               commandId="phasereditor.assetpack.ui.explorer.showtree"
-               icon="platform:/plugin/phasereditor.ui/icons/application_view_list.png"
-               style="push">
-         </command>
-         -->
       </menuContribution>
       <menuContribution
             allPopups="false"

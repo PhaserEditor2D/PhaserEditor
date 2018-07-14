@@ -238,14 +238,6 @@ public class AssetExplorer extends ViewPart {
 		return super.getAdapter(adapter);
 	}
 
-	public void showList() {
-		// changeViewMode(_listLabelProvider, _listContentProvider);
-	}
-
-	public void showTree() {
-		// changeViewMode(_treeLabelProvider, _treeContentProvider);
-	}
-
 	public void refreshContent(IProject project) {
 		out.println("Assets.refreshContent(" + project.getName() + ")");
 
