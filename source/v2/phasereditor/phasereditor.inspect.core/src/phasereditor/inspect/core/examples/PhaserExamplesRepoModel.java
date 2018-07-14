@@ -164,6 +164,14 @@ public class PhaserExamplesRepoModel {
 						loaderPath = content.substring(j + 1, k);
 						out.println("Detected loader path: " + loaderPath);
 					}
+					
+					i = content.indexOf("this.load.setPath('assets/");
+					if (i != -1) {
+						int j = content.indexOf("'", i);
+						int k = content.indexOf("'", j + 1);
+						loaderPath = content.substring(j + 1, k);
+						out.println("Detected loader path: " + loaderPath);
+					}
 				} catch (Exception e) {
 					//
 				}

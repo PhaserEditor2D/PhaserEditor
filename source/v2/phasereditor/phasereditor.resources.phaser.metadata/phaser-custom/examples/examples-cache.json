@@ -4785,10 +4785,15 @@
           },
           {
             "mainFile": "src/game objects/lights/change scene.js",
-            "map": [{
-              "orig": "src/game objects/lights/change scene.js",
-              "dst": "change scene.js"
-            }]
+            "map": [
+              {
+                "orig": "src/game objects/lights/change scene.js",
+                "dst": "change scene.js"
+              },
+              {"orig": "assets/loader-tests/texture-packer-atlas-with-normals-0_n.png"},
+              {"orig": "assets/loader-tests/texture-packer-atlas-with-normals-0.png"},
+              {"orig": "assets/loader-tests/texture-packer-atlas-with-normals.json"}
+            ]
           },
           {
             "mainFile": "src/game objects/lights/graveyard.js",
@@ -4797,7 +4802,9 @@
                 "orig": "src/game objects/lights/graveyard.js",
                 "dst": "graveyard.js"
               },
-              {"orig": "assets/normal-maps/light.png"}
+              {"orig": "assets/normal-maps/light.png"},
+              {"orig": "assets/tests/grave/tombs_n.png"},
+              {"orig": "assets/tests/grave/tombs.png"}
             ]
           },
           {
@@ -9677,17 +9684,26 @@
           },
           {
             "mainFile": "src/loader/audio/load audio sprite.js",
-            "map": [{
-              "orig": "src/loader/audio/load audio sprite.js",
-              "dst": "load audio sprite.js"
-            }]
+            "map": [
+              {
+                "orig": "src/loader/audio/load audio sprite.js",
+                "dst": "load audio sprite.js"
+              },
+              {"orig": "assets/audio/kyobi/kyobi.json"},
+              {"orig": "assets/audio/kyobi/kyobi.m4a"},
+              {"orig": "assets/audio/kyobi/kyobi.ogg"},
+              {"orig": "assets/audio/kyobi/kyobi.mp3"}
+            ]
           },
           {
             "mainFile": "src/loader/audio/load audio sprite resources.js",
-            "map": [{
-              "orig": "src/loader/audio/load audio sprite resources.js",
-              "dst": "load audio sprite resources.js"
-            }]
+            "map": [
+              {
+                "orig": "src/loader/audio/load audio sprite resources.js",
+                "dst": "load audio sprite resources.js"
+              },
+              {"orig": "assets/audio/kyobi/kyobi.json"}
+            ]
           },
           {
             "mainFile": "src/loader/audio/load audio stream.js",
@@ -10228,17 +10244,27 @@
           },
           {
             "mainFile": "src/loader/texture atlas json/load texture atlas with normal map.js",
-            "map": [{
-              "orig": "src/loader/texture atlas json/load texture atlas with normal map.js",
-              "dst": "load texture atlas with normal map.js"
-            }]
+            "map": [
+              {
+                "orig": "src/loader/texture atlas json/load texture atlas with normal map.js",
+                "dst": "load texture atlas with normal map.js"
+              },
+              {"orig": "assets/loader-tests/texture-packer-atlas-with-normals-0_n.png"},
+              {"orig": "assets/loader-tests/texture-packer-atlas-with-normals-0.png"},
+              {"orig": "assets/loader-tests/texture-packer-atlas-with-normals.json"}
+            ]
           },
           {
             "mainFile": "src/loader/texture atlas json/load texture atlas with normal map from object.js",
-            "map": [{
-              "orig": "src/loader/texture atlas json/load texture atlas with normal map from object.js",
-              "dst": "load texture atlas with normal map from object.js"
-            }]
+            "map": [
+              {
+                "orig": "src/loader/texture atlas json/load texture atlas with normal map from object.js",
+                "dst": "load texture atlas with normal map from object.js"
+              },
+              {"orig": "assets/loader-tests/texture-packer-atlas-with-normals-0_n.png"},
+              {"orig": "assets/loader-tests/texture-packer-atlas-with-normals-0.png"},
+              {"orig": "assets/loader-tests/texture-packer-atlas-with-normals.json"}
+            ]
           },
           {
             "mainFile": "src/loader/texture atlas json/mixed json test.js",
@@ -10272,10 +10298,13 @@
           },
           {
             "mainFile": "src/loader/texture atlas multi/load multi texture atlas with normal maps.js",
-            "map": [{
-              "orig": "src/loader/texture atlas multi/load multi texture atlas with normal maps.js",
-              "dst": "load multi texture atlas with normal maps.js"
-            }]
+            "map": [
+              {
+                "orig": "src/loader/texture atlas multi/load multi texture atlas with normal maps.js",
+                "dst": "load multi texture atlas with normal maps.js"
+              },
+              {"orig": "assets/loader-tests/texture-packer-multi-atlas-with-normals.json"}
+            ]
           }
         ]
       },
@@ -10366,10 +10395,15 @@
           },
           {
             "mainFile": "src/loader/tile maps/load tile map json with normal map.js",
-            "map": [{
-              "orig": "src/loader/tile maps/load tile map json with normal map.js",
-              "dst": "load tile map json with normal map.js"
-            }]
+            "map": [
+              {
+                "orig": "src/loader/tile maps/load tile map json with normal map.js",
+                "dst": "load tile map json with normal map.js"
+              },
+              {"orig": "assets/tilemaps/maps/cybernoid.json"},
+              {"orig": "assets/tilemaps/tiles/cybernoid_n.png"},
+              {"orig": "assets/tilemaps/tiles/cybernoid.png"}
+            ]
           }
         ]
       }
