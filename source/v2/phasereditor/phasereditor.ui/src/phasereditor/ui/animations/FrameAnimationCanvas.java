@@ -24,6 +24,7 @@ package phasereditor.ui.animations;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.graphics.Rectangle;
@@ -32,6 +33,7 @@ import org.eclipse.swt.widgets.Composite;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.Transition;
+import javafx.embed.swt.FXCanvas;
 import javafx.util.Duration;
 import phasereditor.ui.ImageCanvas;
 
@@ -48,6 +50,11 @@ public class FrameAnimationCanvas extends ImageCanvas implements ControlListener
 		super(parent, style);
 
 		addControlListener(this);
+		
+		{
+			var temp = new FXCanvas(parent, SWT.NONE);
+			temp.dispose();
+		}
 	}
 
 	public void play() {
@@ -77,11 +84,9 @@ public class FrameAnimationCanvas extends ImageCanvas implements ControlListener
 
 		setImageFile(_model.getImageFile());
 		showFrame(0);
-		getDisplay().asyncExec(() -> {
-			fitWindow();
-			redraw();
-		});
 
+		resetZoom();
+		
 		createAnimation();
 	}
 
@@ -140,10 +145,7 @@ public class FrameAnimationCanvas extends ImageCanvas implements ControlListener
 
 	@Override
 	public void controlResized(ControlEvent e) {
-		getDisplay().asyncExec(() -> {
-			this.fitWindow();
-			redraw();
-		});
+		resetZoom();
 	}
 
 }
