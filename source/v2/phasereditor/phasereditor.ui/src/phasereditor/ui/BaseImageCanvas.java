@@ -91,6 +91,9 @@ public class BaseImageCanvas extends Canvas {
 	}
 
 	protected Image loadImage(IFile file) {
+		if (file == null) {
+			return null;
+		}
 		return loadImage(file.getLocation().toFile());
 	}
 

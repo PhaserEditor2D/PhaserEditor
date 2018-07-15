@@ -96,24 +96,62 @@ public final class AssetPackModel {
 					JSONObject jsonNewSection = (JSONObject) jsonSection;
 					jsonSectionFilesArray = jsonNewSection.getJSONArray("files");
 
-					String defaultType = jsonNewSection.optString("defaultType");
-					if (defaultType != null) {
-						for (var jsonFile : jsonSectionFilesArray.iterJSON()) {
-							if (!jsonFile.has("type")) {
-								out.println("AssetPackModel: set type from defaultType '" + defaultType + "'");
-								jsonFile.put("type", defaultType);
-							}
-						}
+					String prefix = jsonNewSection.optString("prefix", null);
+					String extension = jsonNewSection.optString("extension", null);
+					String defaultType = jsonNewSection.optString("defaultType", null);
+					String path = jsonNewSection.optString("path", "");
+					
+					if (path.length() > 0 && !path.endsWith("/")) {
+						path += "/";
 					}
 
-					// TODO: missing to process the other section fields like "prefix", "path",
-					// "defaultType"
+					for (var jsonFile : jsonSectionFilesArray.iterJSON()) {
+
+						String fileExtension = jsonFile.optString("extension", null);
+						if (fileExtension == null) {
+							fileExtension = extension;
+						}
+
+						String fileType = jsonFile.optString("type", null);
+
+						if (fileType == null) {
+							fileType = defaultType;
+							jsonFile.put("type", fileType);
+						}
+
+						String origKey = jsonFile.getString("key");
+						String key = origKey;
+
+						if (prefix != null) {
+							key = prefix + key;
+						}
+
+						jsonFile.put("key", key);
+
+						String url = jsonFile.optString("url", null);
+						if (url == null) {
+							if (fileExtension == null) {
+								fileExtension = getFileExtensionFromType(fileType);
+							}
+							url = path + origKey + (fileExtension.length() > 0 ? "." : "") + fileExtension;
+							jsonFile.put("url", url);
+						}
+
+					}
 				}
 
 				AssetSectionModel section = new AssetSectionModel(sectionKey, jsonSectionFilesArray, this);
 				addSection(section, false);
 			}
 		}
+	}
+
+	private static String getFileExtensionFromType(String fileType) {
+		if (AssetType.isTypeSupported(fileType)) {
+			AssetType type = AssetType.valueOf(fileType);
+			return type.getFileExtension();
+		}
+		return "";
 	}
 
 	public PackDelta computeDelta(IPath deltaFilePath) {
