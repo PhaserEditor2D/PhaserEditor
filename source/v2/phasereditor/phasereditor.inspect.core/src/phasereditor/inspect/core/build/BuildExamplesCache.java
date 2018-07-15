@@ -21,37 +21,251 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.inspect.core.build;
 
+import static java.lang.System.exit;
 import static java.lang.System.out;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
+import org.json.JSONException;
+
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker.State;
+import javafx.scene.web.WebEngine;
+import javafx.stage.Stage;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.examples.PhaserExampleCategoryModel;
+import phasereditor.inspect.core.examples.PhaserExampleModel;
 import phasereditor.inspect.core.examples.PhaserExamplesRepoModel;
 
-class BuildExamplesCache {
-	public static void main(String[] args) throws IOException {
-		Path wsPath = Paths.get(".").toAbsolutePath().getParent().getParent();
-		Path examplesProjectPath = wsPath.resolve(InspectCore.RESOURCES_EXAMPLES_PLUGIN);
-		Path metadataProjectPath = wsPath.resolve(InspectCore.RESOURCES_METADATA_PLUGIN);
+public class BuildExamplesCache extends Application {
+	Path _wsPath;
+	Path _examplesProjectPath;
+	Path _metadataProjectPath;
+	WebEngine _engine;
+	LinkedList<PhaserExampleModel> _examples;
+	private Path _cacheFolder;
+	private PhaserExampleModel _currentExample;
+	private PhaserExamplesRepoModel model;
 
-		PhaserExamplesRepoModel model = new PhaserExamplesRepoModel(examplesProjectPath);
+	@Override
+	public void start(Stage stage) throws Exception {
+
+		// init cache
+
+		_cacheFolder = Paths.get(System.getProperty("user.home") + "/.phasereditor_dev/examples-cache");
+		Files.createDirectories(_cacheFolder);
+
+		_engine = new WebEngine();
+
+		Logger logger = Logger.getLogger("com.sun.webkit.WebPage");
+		logger.setLevel(Level.FINE);
+		logger.addHandler(createLoggerHandler());
+
+		_wsPath = Paths.get(".").toAbsolutePath().getParent().getParent();
+		_examplesProjectPath = _wsPath.resolve(InspectCore.RESOURCES_EXAMPLES_PLUGIN);
+		_metadataProjectPath = _wsPath.resolve(InspectCore.RESOURCES_METADATA_PLUGIN);
+
+		out.println("Building model...");
+		out.println();
+
+		model = new PhaserExamplesRepoModel(_examplesProjectPath);
 		model.build();
-		Path cache = metadataProjectPath.resolve("phaser-custom/examples/examples-cache.json");
+
+		_examples = new LinkedList<>();
+
+		for (var c : model.getExamplesCategories()) {
+			visitCategory(c);
+		}
+
+		ExecutorService pool = Executors.newCachedThreadPool();
+
+		_engine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
+
+			@Override
+			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
+				if (newValue == State.SUCCEEDED) {
+					pool.execute(new Runnable() {
+						@Override
+						public void run() {
+
+							try {
+								Thread.sleep(1 * 1000);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+
+							Platform.runLater(new Runnable() {
+
+								@Override
+								public void run() {
+									try {
+										processNewExample();
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+								}
+							});
+
+						}
+					});
+				}
+			}
+		});
+
+		processNewExample();
+	}
+
+	void processNewExample() throws Exception {
+		if (_examples.isEmpty()) {
+			examplesProcessingDone();
+		} else {
+			_currentExample = _examples.removeFirst();
+
+			Path path = _currentExample.getFilePath();
+			path = _examplesProjectPath.resolve("phaser3-examples/public").relativize(path);
+			String url = "http://127.0.0.1:8080/view.html?src=" + path;
+
+			Path cacheFile = getCacheFile(_currentExample);
+
+			out.println();
+			out.println("Processing example: " + _currentExample.getFullName());
+
+			if (loadFromCache(_currentExample)) {
+				processNewExample();
+			} else {
+				if (!Files.exists(cacheFile)) {
+					Files.createFile(cacheFile);
+				}
+				out.println("Loading " + url);
+				_engine.load(url);
+			}
+		}
+	}
+
+	private void examplesProcessingDone() throws Exception {
+		out.println("DONE!");
+
+		saveCache();
+
+		exit(0);
+	}
+
+	void addExampleMapping(String url) throws IOException {
+		out.println("- Catching asset: " + url);
+
+		_currentExample.addMapping(Paths.get(url), url);
+
+		Path cacheFile = getCacheFile(_currentExample);
+
+		List<String> urls = new ArrayList<>(Files.readAllLines(cacheFile));
+
+		urls.add(url);
+
+		Files.write(cacheFile, urls);
+	}
+
+	boolean loadFromCache(PhaserExampleModel example) throws IOException {
+		Path cacheFile = getCacheFile(example);
+
+		if (Files.exists(cacheFile)) {
+			List<String> urls = Files.readAllLines(cacheFile);
+
+			for (var url : urls) {
+				out.println("* Restore asset: " + url);
+				_currentExample.addMapping(Paths.get(url), url);
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	private Path getCacheFile(PhaserExampleModel example) throws IOException {
+		String id = getExampleId(example);
+		Path cacheFile = _cacheFolder.resolve(id);
+		return cacheFile;
+	}
+
+	private String getExampleId(PhaserExampleModel example) throws IOException {
+		Path exampleFile = example.getFilePath();
+		Path relFile = _examplesProjectPath.resolve("phaser3-examples/public/src").relativize(exampleFile);
+		String name = relFile.toString().replace(" ", "_").replace(".", "_").replace("/", "_");
+		long t = Files.getLastModifiedTime(exampleFile).toMillis();
+		String id = name + "-" + t;
+		return id;
+	}
+
+	private void saveCache() throws JSONException, IOException {
+		Path cache = _metadataProjectPath.resolve("phaser-custom/examples/examples-cache.json");
 		model.saveCache(cache);
 
 		// verify
-		model = new PhaserExamplesRepoModel(examplesProjectPath);
-		model.loadCache(cache);
-		
+		var newModel = new PhaserExamplesRepoModel(_examplesProjectPath);
+		newModel.loadCache(cache);
+
 		out.println("\n\n\n\n\n\n\n\n");
-		
-		for(PhaserExampleCategoryModel c : model.getExamplesCategories()) {
+
+		for (PhaserExampleCategoryModel c : newModel.getExamplesCategories()) {
 			c.printTree(0);
 		}
+	}
 
-		out.println("Finished!");
+	private void visitCategory(PhaserExampleCategoryModel category) {
+		for (var example : category.getTemplates()) {
+			visitExample(example);
+		}
+
+		for (var subcategory : category.getSubCategories()) {
+			visitCategory(subcategory);
+		}
+	}
+
+	private void visitExample(PhaserExampleModel example) {
+		_examples.add(example);
+	}
+
+	private Handler createLoggerHandler() {
+		return new Handler() {
+
+			@Override
+			public void publish(LogRecord record) {
+				String msg = record.getMessage();
+				int i = msg.indexOf("http://127.0.0.1:8080/assets");
+				if (i > 0) {
+					var url = msg.substring(i + "http://127.0.0.1:8080".length() + 1);
+					try {
+						addExampleMapping(url);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+
+			@Override
+			public void flush() {
+				//
+			}
+
+			@Override
+			public void close() throws SecurityException {
+				//
+			}
+		};
 	}
 }

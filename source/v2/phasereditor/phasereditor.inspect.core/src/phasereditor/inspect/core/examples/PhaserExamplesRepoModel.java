@@ -146,128 +146,7 @@ public class PhaserExamplesRepoModel {
 
 				PhaserExampleModel exampleModel = new PhaserExampleModel(category, jsFile);
 
-				// add main example file
-				exampleModel.addMapping(_examplesFolderPath.relativize(jsFile), jsFile.getFileName().toString());
 				category.addExample(exampleModel);
-
-				// add assets files
-				String content = new String(Files.readAllBytes(jsFile));
-
-				String loaderPath = null;
-
-				// detect loader base path
-				try {
-					int i = content.indexOf("this.load.path = 'assets/");
-					if (i != -1) {
-						int j = content.indexOf("'", i);
-						int k = content.indexOf("'", j + 1);
-						loaderPath = content.substring(j + 1, k);
-						out.println("Detected loader path: " + loaderPath);
-					}
-
-					i = content.indexOf("this.load.setPath('assets/");
-					if (i != -1) {
-						int j = content.indexOf("'", i);
-						int k = content.indexOf("'", j + 1);
-						loaderPath = content.substring(j + 1, k);
-						out.println("Detected loader path: " + loaderPath);
-					}
-				} catch (Exception e) {
-					//
-				}
-
-				for (Path file : requiredFiles) {
-					String assetRelPath = _examplesFolderPath.relativize(file).toString().replace("\\", "/");
-
-					boolean fileAdded = false;
-
-					if (content.contains(assetRelPath) || content.contains("../" + assetRelPath)) {
-						exampleModel.addMapping(_examplesFolderPath.relativize(file), assetRelPath);
-						fileAdded = true;
-					}
-
-					if (!fileAdded) {
-						if (loaderPath != null) {
-							String loaderRelPath = _examplesFolderPath.resolve(loaderPath).relativize(file).toString()
-									.replace("\\", "/");
-
-							// out.println("Test with loader path: " + assetRelPath);
-
-							if (content.contains(loaderRelPath)) {
-								out.println("Mapping from loader sub-path: " + loaderRelPath + " -> " + assetRelPath);
-								exampleModel.addMapping(_examplesFolderPath.relativize(file), assetRelPath);
-								fileAdded = true;
-							}
-						}
-					}
-
-					if (fileAdded) {
-						if (file.getFileName().toString().endsWith(".json")) {
-							// check if it is an asset pack
-							try {
-
-								JSONObject jsonPack = new JSONObject(file);
-
-								JSONObject jsonMeta = jsonPack.getJSONObject("meta");
-
-								if (jsonMeta.getString("url").equals("https://phaser.io")) {
-									if (jsonMeta.getString("app").toLowerCase().contains("asset")) {
-										// ok, it is a pack
-										out.println("Processing pack: " + assetRelPath);
-										for (var key : jsonPack.keySet()) {
-											if (key.equals("meta")) {
-												continue;
-											}
-											var jsonSection = jsonPack.getJSONObject(key);
-											var path = jsonSection.optString("path", null);
-											if (path != null) {
-												if (path.endsWith("/")) {
-													path += path.substring(0, path.length() - 1);
-												}
-												out.println("\tDetecting section path: " + path);
-											}
-											var jsonFiles = jsonSection.getJSONArray("files");
-											for (int i = 0; i < jsonFiles.length(); i++) {
-												String url = null;
-												var jsonFile = jsonFiles.getJSONObject(i);
-												boolean hasExplicitUrl = jsonFile.has("url");
-												if (hasExplicitUrl) {
-													url = jsonFile.getString("url");
-													if (path != null) {
-														url = path + "/" + url;
-													}
-												} else {
-													if (path != null) {
-														var fileKey = jsonFile.getString("key");
-														url = path + "/" + fileKey;
-													}
-												}
-												
-												if (url != null) {
-													
-													var fileExt = jsonFile.optString("extension", null);
-													if (fileExt == null) {
-														// TODO: add the extension in dependence of the file type.
-													} else {
-														url += "." + fileExt;
-														out.println("\t\tAdding extension: " + fileExt);
-													}
-													
-													out.println("\tPack url: " + url);
-												}
-											}
-										}
-									}
-								}
-							} catch (Exception e) {
-								// nothing
-							}
-
-							// check if it is a multi-atlas
-							// TODO: missing implementation
-						}
-					}
-				}
 
 				return FileVisitResult.CONTINUE;
 			}
@@ -288,11 +167,6 @@ public class PhaserExamplesRepoModel {
 		});
 
 		_examplesCategories.sort(comparator);
-
-		for (PhaserExampleCategoryModel c : _examplesCategories) {
-			c.printTree(0);
-		}
-
 	}
 
 	static String getName(Path path) {
