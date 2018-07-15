@@ -61,6 +61,7 @@ public class BuildExamplesCache extends Application {
 	private Path _cacheFolder;
 	private PhaserExampleModel _currentExample;
 	private PhaserExamplesRepoModel model;
+	private Path _examplesPath;
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -78,6 +79,7 @@ public class BuildExamplesCache extends Application {
 
 		_wsPath = Paths.get(".").toAbsolutePath().getParent().getParent();
 		_examplesProjectPath = _wsPath.resolve(InspectCore.RESOURCES_EXAMPLES_PLUGIN);
+		_examplesPath = _examplesProjectPath.resolve("phaser3-examples/public");
 		_metadataProjectPath = _wsPath.resolve(InspectCore.RESOURCES_METADATA_PLUGIN);
 
 		out.println("Building model...");
@@ -131,13 +133,18 @@ public class BuildExamplesCache extends Application {
 	}
 
 	void processNewExample() throws Exception {
+
 		if (_examples.isEmpty()) {
 			examplesProcessingDone();
 		} else {
 			_currentExample = _examples.removeFirst();
 
-			Path path = _currentExample.getFilePath();
-			path = _examplesProjectPath.resolve("phaser3-examples/public").relativize(path);
+			Path exampleFile = _currentExample.getFilePath();
+			
+			_currentExample.addMapping(_examplesPath.relativize(exampleFile), exampleFile.getFileName().toString());
+
+			Path path = exampleFile;
+			path = _examplesPath.relativize(path);
 			String url = "http://127.0.0.1:8080/view.html?src=" + path;
 
 			Path cacheFile = getCacheFile(_currentExample);
