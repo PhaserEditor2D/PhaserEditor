@@ -106,6 +106,19 @@ public class PhaserExampleServlet extends HttpServlet {
 
 		out.println("<div style='clear:both	'></div>");
 		
+		
+		out.println("<h5>Files:</h5>");
+		out.println("<ul>");
+		for(var mapping : example.getFilesMapping()) {
+			var orig = mapping.getOriginal();
+			var relpath = examples.getExamplesRepoPath().relativize(orig);
+			var url = relpath.toString().replace("\\", "/");
+			out.println("<li><a href='" + url + "' target='blank'>" + url + "</a></li>");
+		}
+		out.println("</ul>");
+		
+		
+		out.println("<h5>Code:</h5>");
 		{
 			Path path = examples.getExamplesRepoPath().relativize(example.getMainFilePath());
 			out.println("<script src='/examples-files/" + path.toString().replace("\\", "/") + "'></script>");
