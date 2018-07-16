@@ -68,6 +68,7 @@ import com.subshell.snippets.jface.tooltip.tooltipsupport.TableViewerInformation
 import com.subshell.snippets.jface.tooltip.tooltipsupport.Tooltips;
 import com.subshell.snippets.jface.tooltip.tooltipsupport.TreeViewerInformationProvider;
 
+import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
@@ -250,6 +251,8 @@ public class AssetPackUI {
 		AssetPackModel pack = null;
 		if (elem instanceof AssetModel) {
 			pack = ((AssetModel) elem).getPack();
+		} else if (elem instanceof AssetGroupModel) {
+			pack = ((AssetGroupModel) elem).getSection().getPack();
 		} else if (elem instanceof AssetSectionModel) {
 			pack = ((AssetSectionModel) elem).getPack();
 		} else if (elem instanceof AssetPackModel) {

@@ -25,6 +25,7 @@ import static java.lang.System.out;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -83,7 +84,6 @@ import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AssetType;
-import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
@@ -105,7 +105,6 @@ public class AssetPackEditor2 extends EditorPart {
 
 	public static final String ID = "phasereditor.assetpack.editor";
 
-	
 	public static final IUndoContext UNDO_CONTEXT = new IUndoContext() {
 
 		@Override
@@ -119,7 +118,6 @@ public class AssetPackEditor2 extends EditorPart {
 		}
 	};
 
-	
 	private AssetPackModel _model;
 	private Composite _container;
 	private SectionsComp _sectionsComp;
@@ -664,15 +662,31 @@ public class AssetPackEditor2 extends EditorPart {
 		if (elem == null) {
 			return;
 		}
-		Object reveal = elem instanceof IAssetElementModel ? ((IAssetElementModel) elem).getAsset() : elem;
-		TreeViewer viewer;
-		if (elem instanceof AssetModel) {
-			viewer = getAssetsComp().getViewer();
+
+		List<Object> list = new ArrayList<>();
+
+		if (elem instanceof IAssetKey) {
+			var assetKey = (IAssetKey) elem;
+			list.add(assetKey.getAsset().getSection());
+			list.add(assetKey.getAsset().getGroup());
+			list.add(assetKey.getAsset());
+			list.add(assetKey);
+			
+			getAssetsComp().getViewer().expandToLevel(assetKey.getAsset(), 1);
+			
+		} else if (elem instanceof AssetGroupModel) {
+			var group = (AssetGroupModel) elem;
+			list.add(group.getSection());
+			list.add(group);
 		} else {
-			viewer = getSectionsComp().getViewer();
+			list.add(elem);
 		}
-		viewer.getTree().setFocus();
-		viewer.setSelection(new StructuredSelection(reveal), true);
+
+		var sel = new StructuredSelection(list);
+		
+		getSectionsComp().getViewer().setSelection(sel);
+		getTypesComp().getViewer().setSelection(sel);
+		getAssetsComp().getViewer().setSelection(sel);
 	}
 
 	class AssetPackEditorOutlinePage extends FilteredContentOutlinePage {
@@ -683,8 +697,6 @@ public class AssetPackEditor2 extends EditorPart {
 
 		public void revealAndSelect(IStructuredSelection selection) {
 			TreeViewer viewer = getViewer();
-
-			AssetPackUI.installAssetTooltips(viewer);
 
 			var iter = selection.iterator();
 			while (iter.hasNext()) {
@@ -744,6 +756,7 @@ public class AssetPackEditor2 extends EditorPart {
 					getAssetsComp().getViewer().setSelection(event.getSelection());
 				}
 			});
+			AssetPackUI.installAssetTooltips(viewer);
 			// viewer.getControl().setMenu(getMenuManager().createContextMenu(viewer.getControl()));
 		}
 
