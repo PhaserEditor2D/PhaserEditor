@@ -351,7 +351,7 @@ class MultiAtlasAssetFactory extends AssetFactory {
 
 		if (file != null) {
 			asset.setKey(pack.createKey(file));
-			asset.setAtlasURL(ProjectCore.getAssetUrl(file));
+			asset.setUrl(ProjectCore.getAssetUrl(file));
 			asset.setPath(ProjectCore.getAssetUrl(file.getProject(), file.getParent().getFullPath()));
 			asset.build(new ArrayList<>());
 		}

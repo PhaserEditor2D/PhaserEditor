@@ -151,6 +151,10 @@ public class JsdocRenderer {
 	}
 
 	public String render(Object member) {
+		if (member == null) {
+			return "";
+		}
+		
 		if (member instanceof PhaserType) {
 			return renderType((PhaserType) member);
 		}

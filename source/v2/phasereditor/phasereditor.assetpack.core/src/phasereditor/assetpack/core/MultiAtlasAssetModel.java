@@ -42,7 +42,7 @@ import phasereditor.ui.PhaserEditorUI;
  */
 public class MultiAtlasAssetModel extends AssetModel {
 
-	private String _atlasURL;
+	private String _url;
 	private String _path;
 	private List<Frame> _frames;
 
@@ -53,35 +53,35 @@ public class MultiAtlasAssetModel extends AssetModel {
 	public MultiAtlasAssetModel(JSONObject jsonData, AssetSectionModel section) throws JSONException {
 		super(jsonData, section);
 
-		_atlasURL = jsonData.optString("atlasURL", null);
+		_url = jsonData.optString("url", null);
 		_path = jsonData.optString("path", null);
 		_frames = null;
 	}
 
 	@Override
 	public IFile[] computeUsedFiles() {
-		return new IFile[] { getAtlasURLFile() };
+		return new IFile[] { getUrlFile() };
 	}
 
 	@Override
 	protected void writeParameters(JSONObject obj) {
 		super.writeParameters(obj);
 
-		obj.put("atlasURL", _atlasURL);
+		obj.put("url", _url);
 		obj.put("path", _path);
 	}
 
-	public String getAtlasURL() {
-		return _atlasURL;
+	public String getUrl() {
+		return _url;
 	}
 
-	public void setAtlasURL(String atlasURL) {
-		_atlasURL = atlasURL;
-		firePropertyChange("atlasURL");
+	public void setUrl(String atlasURL) {
+		_url = atlasURL;
+		firePropertyChange("url");
 	}
 
-	public IFile getAtlasURLFile() {
-		return getFileFromUrl(_atlasURL);
+	public IFile getUrlFile() {
+		return getFileFromUrl(_url);
 	}
 
 	public String getPath() {
@@ -103,7 +103,7 @@ public class MultiAtlasAssetModel extends AssetModel {
 
 	@Override
 	protected void internalBuild(List<IStatus> problems) {
-		validateUrl(problems, "atlasURL", _atlasURL);
+		validateUrl(problems, "url", _url);
 
 		buildFrames(problems);
 	}
@@ -113,7 +113,7 @@ public class MultiAtlasAssetModel extends AssetModel {
 		try {
 			String content = null;
 			{
-				IFile file = getFileFromUrl(_atlasURL);
+				IFile file = getFileFromUrl(_url);
 				if (file != null && file.exists()) {
 					try (InputStream input = file.getContents()) {
 						content = PhaserEditorUI.readString(input);
@@ -170,8 +170,8 @@ public class MultiAtlasAssetModel extends AssetModel {
 		String url = getUrlFromFile(file);
 		String newUrl = getUrlFromFile(newFile);
 
-		if (url.equals(_atlasURL)) {
-			_atlasURL = newUrl;
+		if (url.equals(_url)) {
+			_url = newUrl;
 		}
 	}
 
