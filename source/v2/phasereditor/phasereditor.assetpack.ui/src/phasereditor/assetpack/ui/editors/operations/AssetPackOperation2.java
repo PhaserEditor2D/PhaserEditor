@@ -24,7 +24,6 @@ package phasereditor.assetpack.ui.editors.operations;
 import org.eclipse.core.commands.operations.AbstractOperation;
 import org.eclipse.core.runtime.IAdaptable;
 
-import phasereditor.assetpack.ui.editors.AssetPackEditor;
 import phasereditor.assetpack.ui.editors.AssetPackEditor2;
 
 /**

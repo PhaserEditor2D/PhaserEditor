@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Display;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor;
+import phasereditor.assetpack.ui.editors.AssetPackEditor2;
 
 /**
  * @author arian
@@ -41,9 +41,9 @@ import phasereditor.assetpack.ui.editors.AssetPackEditor;
 public class MoveAssetInEditorChange extends Change {
 
 	private AssetMoveList _list;
-	private AssetPackEditor _editor;
+	private AssetPackEditor2 _editor;
 
-	public MoveAssetInEditorChange(AssetMoveList list, AssetPackEditor editor) {
+	public MoveAssetInEditorChange(AssetMoveList list, AssetPackEditor2 editor) {
 		_list = list;
 		_editor = editor;
 	}
@@ -79,7 +79,7 @@ public class MoveAssetInEditorChange extends Change {
 				dstSection.addAsset(asset, false);
 			}
 
-			_editor.getViewer().refresh();
+			_editor.refresh();
 			_editor.updateAssetEditor();
 			_editor.revealElement(asset);
 		});

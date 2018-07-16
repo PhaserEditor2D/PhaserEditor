@@ -29,7 +29,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.swt.widgets.Display;
@@ -39,7 +38,7 @@ import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor;
+import phasereditor.assetpack.ui.editors.AssetPackEditor2;
 import phasereditor.ui.PhaserEditorUI;
 
 /**
@@ -89,8 +88,8 @@ public class RenameAssetInFileChange extends Change {
 		Display.getDefault().syncExec(() -> {
 			List<IEditorPart> editors = PhaserEditorUI.findOpenFileEditors(_file);
 			for (IEditorPart editor : editors) {
-				if (editor instanceof AssetPackEditor) {
-					AssetPackEditor packEditor = (AssetPackEditor) editor;
+				if (editor instanceof AssetPackEditor2) {
+					var packEditor = (AssetPackEditor2) editor;
 					renameAsset(packEditor);
 				}
 			}
@@ -99,13 +98,12 @@ public class RenameAssetInFileChange extends Change {
 		return new RenameAssetInFileChange(_file, _sectionKey, _newName, _initialName);
 	}
 
-	private void renameAsset(AssetPackEditor editor) {
+	private void renameAsset(AssetPackEditor2 editor) {
 		AssetSectionModel section = editor.getModel().findSection(_sectionKey);
 		if (section != null) {
 			AssetModel asset = section.findAsset(_initialName);
 			asset.setKey(_newName, false);
-			TreeViewer viewer = editor.getViewer();
-			viewer.refresh();
+			editor.refresh();
 			editor.updateAssetEditor();
 		}
 	}

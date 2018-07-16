@@ -27,11 +27,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.TreeViewer;
 
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor;
+import phasereditor.assetpack.ui.editors.AssetPackEditor2;
 
 /**
  * @author arian
@@ -53,16 +52,14 @@ public class AddSectionOperation extends AssetPackOperation {
 
 	@Override
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		AssetPackEditor editor = getEditor(info);
+		AssetPackEditor2 editor = getEditor(info);
 		AssetPackModel model = editor.getModel();
 
 		_addedSection = new AssetSectionModel(_sectionName, model);
 
-		TreeViewer viewer = editor.getViewer();
-
 		model.addSection(_addedSection, true);
 
-		_prevSelection = viewer.getSelection();
+		_prevSelection = editor.getEditorSite().getSelectionProvider().getSelection();
 		editor.refresh();
 		editor.revealElement(_addedSection);
 
@@ -76,13 +73,12 @@ public class AddSectionOperation extends AssetPackOperation {
 
 	@Override
 	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		AssetPackEditor editor = getEditor(info);
+		AssetPackEditor2 editor = getEditor(info);
 		AssetPackModel model = editor.getModel();
 
-		TreeViewer viewer = editor.getViewer();
-			model.removeSection(_addedSection, false);
-			viewer.refresh();
-			viewer.setSelection(_prevSelection);
+		model.removeSection(_addedSection, false);
+		editor.refresh();
+		editor.getSectionsComp().getViewer().setSelection(_prevSelection);
 
 		return Status.OK_STATUS;
 	}

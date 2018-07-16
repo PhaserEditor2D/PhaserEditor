@@ -112,7 +112,8 @@ import phasereditor.assetpack.ui.editors.operations.AddSectionOperation;
 import phasereditor.lic.LicCore;
 import phasereditor.ui.PhaserEditorUI;
 
-public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInSource {
+@Deprecated
+public class AssetPackEditor_deprecated extends EditorPart implements IGotoMarker, IShowInSource {
 
 	public static final String ID = AssetPackCore.ASSET_EDITOR_ID;
 
@@ -131,7 +132,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 	private AssetPackModel _model;
 
-	public AssetPackEditor() {
+	public AssetPackEditor_deprecated() {
 	}
 
 	@Override

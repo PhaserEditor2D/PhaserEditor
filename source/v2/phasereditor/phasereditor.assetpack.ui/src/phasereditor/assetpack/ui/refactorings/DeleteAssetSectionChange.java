@@ -29,7 +29,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.swt.widgets.Display;
@@ -37,7 +36,7 @@ import org.eclipse.ui.IEditorPart;
 
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor;
+import phasereditor.assetpack.ui.editors.AssetPackEditor2;
 import phasereditor.ui.PhaserEditorUI;
 
 /**
@@ -92,8 +91,8 @@ public class DeleteAssetSectionChange extends Change {
 		Display.getDefault().asyncExec(() -> {
 			List<IEditorPart> editors = PhaserEditorUI.findOpenFileEditors(_file);
 			for (IEditorPart editor : editors) {
-				if (editor instanceof AssetPackEditor) {
-					AssetPackEditor packEditor = (AssetPackEditor) editor;
+				if (editor instanceof AssetPackEditor2) {
+					var packEditor = (AssetPackEditor2) editor;
 					AssetPackModel pack = packEditor.getModel();
 					if (_doDelete) {
 						AssetSectionModel section = pack.findSection(_sectionName);
@@ -101,9 +100,8 @@ public class DeleteAssetSectionChange extends Change {
 					} else {
 						pack.addSection(new AssetSectionModel(_sectionName, pack), false);
 					}
-					TreeViewer viewer = packEditor.getViewer();
-					viewer.refresh();
-					viewer.setSelection(StructuredSelection.EMPTY);
+					packEditor.refresh();
+					packEditor.getAssetsComp().getViewer().setSelection(StructuredSelection.EMPTY);
 				}
 			}
 		});

@@ -22,6 +22,7 @@
 package phasereditor.assetpack.ui.editors;
 
 import static java.lang.System.out;
+import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
@@ -102,6 +103,9 @@ import phasereditor.ui.properties.PGridPage;
  */
 public class AssetPackEditor2 extends EditorPart {
 
+	public static final String ID = "phasereditor.assetpack.editor";
+
+	
 	public static final IUndoContext UNDO_CONTEXT = new IUndoContext() {
 
 		@Override
@@ -115,6 +119,7 @@ public class AssetPackEditor2 extends EditorPart {
 		}
 	};
 
+	
 	private AssetPackModel _model;
 	private Composite _container;
 	private SectionsComp _sectionsComp;
@@ -768,6 +773,18 @@ public class AssetPackEditor2 extends EditorPart {
 			return _outliner;
 		}
 		return super.getAdapter(adapter);
+	}
+
+	public void updateAssetEditor() {
+		// TODO: What to do here? Maybe update all the properties.
+	}
+
+	public void handleFileRename(IFile file) {
+		_model.setFile(file);
+		swtRun(() -> {
+			super.setInput(new FileEditorInput(file));
+			setPartName(_model.getName());
+		});
 	}
 
 }

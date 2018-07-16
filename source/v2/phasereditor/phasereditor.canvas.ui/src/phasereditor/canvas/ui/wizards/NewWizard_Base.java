@@ -57,7 +57,7 @@ import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.ScriptAssetModel;
 import phasereditor.assetpack.ui.AssetPackUI;
-import phasereditor.assetpack.ui.editors.AssetPackEditor;
+import phasereditor.assetpack.ui.editors.AssetPackEditor2;
 import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.canvas.core.CanvasType;
@@ -233,13 +233,13 @@ public abstract class NewWizard_Base extends Wizard implements INewWizard {
 
 								@Override
 								public void run() {
-									List<AssetPackEditor> editors = AssetPackUI
+									List<AssetPackEditor2> editors = AssetPackUI
 											.findOpenAssetPackEditors(addToSection.getPack().getFile());
 
-									for (AssetPackEditor editor : editors) {
+									for (AssetPackEditor2 editor : editors) {
 										AssetPackModel pack = editor.getModel();
 										addScriptAssetToPack(mainFile, pack, addToSection.getKey());
-										editor.getViewer().refresh();
+										editor.refresh();
 									}
 								}
 							});

@@ -37,7 +37,7 @@ import org.eclipse.ltk.core.refactoring.participants.RenameParticipant;
 import org.eclipse.ltk.core.refactoring.participants.RenameProcessor;
 import org.eclipse.ltk.core.refactoring.participants.SharableParticipants;
 
-import phasereditor.assetpack.ui.editors.AssetPackEditor;
+import phasereditor.assetpack.ui.editors.AssetPackEditor2;
 import phasereditor.project.core.PhaserProjectNature;
 
 /**
@@ -47,11 +47,11 @@ import phasereditor.project.core.PhaserProjectNature;
 public abstract class BaseAssetRenameProcessor extends RenameProcessor {
 
 	protected final Object _element;
-	protected final AssetPackEditor _editor;
+	protected final AssetPackEditor2 _editor;
 	protected String _newName;
 	protected final String _initialName;
 
-	public BaseAssetRenameProcessor(Object element, String initialName, AssetPackEditor editor) {
+	public BaseAssetRenameProcessor(Object element, String initialName, AssetPackEditor2 editor) {
 		super();
 		_editor = editor;
 		_element = element;

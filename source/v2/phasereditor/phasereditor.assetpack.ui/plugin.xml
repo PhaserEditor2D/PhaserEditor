@@ -3,8 +3,20 @@
 <plugin>
 	<extension
          point="org.eclipse.ui.editors">
+      <!--
       <editor
-            class="phasereditor.assetpack.ui.editors.AssetPackEditor"
+            class="phasereditor.assetpack.ui.editors.AssetPackEditor_deprecated"
+            default="false"
+            icon="platform:/plugin/phasereditor.ui/icons/box.png"
+            id="phasereditor.assetpack.editor_deprecated"
+            name="Asset Pack Editor (deprecated)">
+         <contentTypeBinding
+               contentTypeId="phasereditor.assetpack.contentType">
+         </contentTypeBinding>
+      </editor>
+      -->
+      <editor
+            class="phasereditor.assetpack.ui.editors.AssetPackEditor2"
             default="false"
             icon="platform:/plugin/phasereditor.ui/icons/box.png"
             id="phasereditor.assetpack.editor"
@@ -12,13 +24,6 @@
          <contentTypeBinding
                contentTypeId="phasereditor.assetpack.contentType">
          </contentTypeBinding>
-      </editor>
-      <editor
-            class="phasereditor.assetpack.ui.editors.AssetPackEditor2"
-            default="false"
-            icon="platform:/plugin/phasereditor.ui/icons/box.png"
-            id="phasereditor.assetpack.editor2"
-            name="Asset Pack Editor 2">
       </editor>
    </extension>
 	<extension

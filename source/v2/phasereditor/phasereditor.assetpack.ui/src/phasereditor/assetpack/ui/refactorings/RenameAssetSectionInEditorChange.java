@@ -23,12 +23,11 @@ package phasereditor.assetpack.ui.refactorings;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.swt.widgets.Display;
 
 import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor;
+import phasereditor.assetpack.ui.editors.AssetPackEditor2;
 
 /**
  * @author arian
@@ -39,7 +38,7 @@ public class RenameAssetSectionInEditorChange extends BaseRenameAssetInEditorCha
 	private AssetSectionModel _section;
 
 	public RenameAssetSectionInEditorChange(AssetSectionModel section, String initialName, String newName,
-			AssetPackEditor editor) {
+			AssetPackEditor2 editor) {
 		super(section, initialName, newName, editor);
 		_section = section;
 	}
@@ -56,8 +55,7 @@ public class RenameAssetSectionInEditorChange extends BaseRenameAssetInEditorCha
 			AssetSectionModel section = _editor.getModel().findSection(_initialName);
 			if (section != null) {
 				section.setKey(_newName, true);
-				TreeViewer viewer = _editor.getViewer();
-				viewer.refresh();
+				_editor.refresh();
 				_editor.updateAssetEditor();
 			}
 

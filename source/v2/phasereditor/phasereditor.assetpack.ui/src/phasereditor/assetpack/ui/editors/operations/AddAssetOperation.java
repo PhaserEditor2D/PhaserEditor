@@ -29,7 +29,7 @@ import org.eclipse.core.runtime.Status;
 
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor;
+import phasereditor.assetpack.ui.editors.AssetPackEditor2;
 
 /**
  * @author arian
@@ -51,9 +51,9 @@ public class AddAssetOperation extends AssetPackOperation {
 
 	@Override
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		AssetPackEditor editor = getEditor(info);
+		AssetPackEditor2 editor = getEditor(info);
 		_section.addAsset(_asset, true);
-		editor.getViewer().refresh();
+		editor.refresh();
 		editor.revealElement(_asset);
 		return Status.OK_STATUS;
 	}
@@ -65,9 +65,9 @@ public class AddAssetOperation extends AssetPackOperation {
 
 	@Override
 	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		AssetPackEditor editor = getEditor(info);
+		AssetPackEditor2 editor = getEditor(info);
 		_section.removeAsset(_asset);
-		editor.getViewer().refresh();
+		editor.refresh();
 		return Status.OK_STATUS;
 	}
 

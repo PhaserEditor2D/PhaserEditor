@@ -37,7 +37,7 @@ import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.ui.AssetPackUI;
-import phasereditor.assetpack.ui.editors.AssetPackEditor;
+import phasereditor.assetpack.ui.editors.AssetPackEditor2;
 import phasereditor.ui.PhaserEditorUI;
 
 /**
@@ -92,8 +92,8 @@ public class MoveAssetInFileChange extends Change {
 		Display.getDefault().syncExec(() -> {
 			List<IEditorPart> editors = PhaserEditorUI.findOpenFileEditors(_list.getPackFile());
 			for (IEditorPart editor : editors) {
-				if (editor instanceof AssetPackEditor) {
-					AssetPackEditor packEditor = (AssetPackEditor) editor;
+				if (editor instanceof AssetPackEditor2) {
+					var packEditor = (AssetPackEditor2) editor;
 					moveAsset(packEditor);
 				}
 			}
@@ -102,7 +102,7 @@ public class MoveAssetInFileChange extends Change {
 		return new MoveAssetInFileChange(_list.reverse());
 	}
 	
-	private void moveAsset(AssetPackEditor editor) {
+	private void moveAsset(AssetPackEditor2 editor) {
 		AssetPackModel pack = editor.getModel();
 		
 		for(int i = 0; i < _list.size(); i++) {
@@ -113,7 +113,7 @@ public class MoveAssetInFileChange extends Change {
 			dstSection.addAsset(asset, false);
 		}
 		
-		editor.getViewer().refresh();
+		editor.refresh();
 		editor.updateAssetEditor();
 	}
 

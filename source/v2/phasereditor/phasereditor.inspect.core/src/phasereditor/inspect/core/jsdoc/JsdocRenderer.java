@@ -45,7 +45,7 @@ import phasereditor.ui.PhaserEditorUI;
  * @author arian
  *
  */
-@SuppressWarnings({ "static-method", "restriction" })
+@SuppressWarnings({ "static-method" })
 public class JsdocRenderer {
 	private static JsdocRenderer _instance = new JsdocRenderer();
 

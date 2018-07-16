@@ -28,7 +28,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.swt.widgets.Display;
@@ -36,7 +35,7 @@ import org.eclipse.ui.IEditorPart;
 
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor;
+import phasereditor.assetpack.ui.editors.AssetPackEditor2;
 import phasereditor.ui.PhaserEditorUI;
 
 /**
@@ -76,15 +75,14 @@ public class UndoDeleteAssetChange extends Change {
 		Display.getDefault().asyncExec(() -> {
 			List<IEditorPart> editors = PhaserEditorUI.findOpenFileEditors(_asset.getPack().getFile());
 			for (IEditorPart editor : editors) {
-				if (editor instanceof AssetPackEditor) {
-					AssetPackEditor packEditor = (AssetPackEditor) editor;
+				if (editor instanceof AssetPackEditor2) {
+					var packEditor = (AssetPackEditor2) editor;
 					AssetSectionModel section = packEditor.getModel().findSection(_asset.getSection().getKey());
 					if (section != null) {
 						AssetModel copy = _asset.copy(section);
 						section.addAsset(_index, copy, false);
-						TreeViewer viewer = packEditor.getViewer();
-						viewer.refresh();
-						viewer.setSelection(StructuredSelection.EMPTY);
+						packEditor.refresh();
+						packEditor.getAssetsComp().getViewer().setSelection(StructuredSelection.EMPTY);
 					}
 				}
 			}
