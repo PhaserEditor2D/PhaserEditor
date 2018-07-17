@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.IOperationHistory;
@@ -62,6 +63,7 @@ import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.jface.viewers.ViewerDropAdapter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
@@ -69,7 +71,9 @@ import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -80,6 +84,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
@@ -166,7 +171,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		_sectionsComp.getViewer().refresh();
 		_typesComp.getViewer().refresh();
 		_assetsComp.getViewer().refresh();
-		
+
 		if (_outliner != null) {
 			_outliner.refresh();
 		}
@@ -525,8 +530,12 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		}
 
 		public AssetType getSelectedType() {
-			var sel = (AssetGroupModel) getViewer().getStructuredSelection().getFirstElement();
+			var sel = getSelectedGroup();
 			return sel == null ? null : sel.getType();
+		}
+
+		public AssetGroupModel getSelectedGroup() {
+			return (AssetGroupModel) getViewer().getStructuredSelection().getFirstElement();
 		}
 	}
 
@@ -547,6 +556,95 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			getTypesComp().getViewer().addSelectionChangedListener(listener);
 
 			listener.selectionChanged(null);
+
+			Transfer[] types = { LocalSelectionTransfer.getTransfer() };
+			viewer.addDragSupport(DND.DROP_COPY | DND.DROP_MOVE, types, new DragSourceAdapter() {
+
+				@Override
+				public void dragStart(DragSourceEvent event) {
+					IStructuredSelection selection = (IStructuredSelection) getAssetsComp().getViewer().getSelection();
+					LocalSelectionTransfer.getTransfer().setSelection(selection);
+				}
+			});
+			viewer.addDropSupport(DND.DROP_MOVE, types, new ViewerDropAdapter(viewer) {
+
+				private int _location;
+				private int _target;
+
+				@Override
+				public boolean validateDrop(Object target, int operation, TransferData transferType) {
+					return true;
+				}
+
+				@Override
+				public boolean performDrop(Object data) {
+					if (_target == -1) {
+						return false;
+					}
+
+					var moving = List.of(((IStructuredSelection) data).toArray()).stream().map(e -> (AssetModel) e)
+							.collect(Collectors.toList());
+					var assets = getTypesComp().getSelectedGroup().getAssets();
+
+					int index = _target;
+
+					AssetModel pivot = assets.get(index);
+
+					AssetSectionModel section = getSectionsComp().getSelectedSection();
+
+					section.removeAllAssets(moving, false);
+
+					index = section.getAssets().indexOf(pivot);
+
+					if (index < 0) {
+						index = 0;
+					}
+
+					if (_location == LOCATION_AFTER) {
+						index++;
+					}
+
+					section.addAllAssets(index, moving, true);
+
+					viewer.refresh();
+
+					return true;
+				}
+
+				@Override
+				public void dragOver(DropTargetEvent event) {
+					_location = determineLocation(event);
+					var item = (TreeItem) event.item;
+					if (item == null) {
+						_target = -1;
+					} else {
+						_target = viewer.getTree().indexOf(item);
+					}
+					super.dragOver(event);
+				}
+			});
+
+			// viewer.addDropSupport(DND.DROP_MOVE, types, new DropTargetAdapter() {
+			//
+			// @Override
+			// public void drop(DropTargetEvent event) {
+			// if (event.data instanceof IStructuredSelection) {
+			// var elems = ((IStructuredSelection) event.data).toArray();
+			//
+			// List<AssetModel> list = new ArrayList<>();
+			//
+			// for (var elem : elems) {
+			// if (elem instanceof AssetModel) {
+			// if (((AssetModel) elem).getPack() == getModel()) {
+			// list.add((AssetModel) elem);
+			// }
+			// }
+			// }
+			//
+			// }
+			// }
+			// });
+
 		}
 
 		@Override
@@ -649,16 +747,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 						getOutliner().revealAndSelect(event.getStructuredSelection());
 					}
 				}
-			}
-		});
-
-		Transfer[] types = { LocalSelectionTransfer.getTransfer() };
-		_assetsComp.getViewer().addDragSupport(DND.DROP_COPY | DND.DROP_MOVE, types, new DragSourceAdapter() {
-
-			@Override
-			public void dragStart(DragSourceEvent event) {
-				IStructuredSelection selection = (IStructuredSelection) getAssetsComp().getViewer().getSelection();
-				LocalSelectionTransfer.getTransfer().setSelection(selection);
 			}
 		});
 

@@ -83,6 +83,18 @@ public class AssetSectionModel implements IAdaptable, IAssetPackEelement {
 		}
 	}
 
+	public void addAllAssets(int index, List<AssetModel> assets, boolean notify) {
+		for (var asset : assets) {
+			asset.setSection(this, false);
+		}
+
+		_assets.addAll(index, assets);
+		
+		if (notify) {
+			getPack().setDirty(true);
+		}
+	}
+
 	public void addAsset(AssetModel asset, boolean notify) {
 		this.addAsset(_assets.size(), asset, notify);
 	}
@@ -134,6 +146,13 @@ public class AssetSectionModel implements IAdaptable, IAssetPackEelement {
 
 	public void removeAsset(AssetModel asset, boolean notify) {
 		_assets.remove(asset);
+		if (notify) {
+			getPack().setDirty(true);
+		}
+	}
+
+	public void removeAllAssets(List<AssetModel> assets, boolean notify) {
+		_assets.removeAll(assets);
 		if (notify) {
 			getPack().setDirty(true);
 		}
