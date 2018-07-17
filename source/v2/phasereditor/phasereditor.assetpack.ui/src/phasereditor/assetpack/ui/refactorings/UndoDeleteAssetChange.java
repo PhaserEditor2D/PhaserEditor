@@ -27,7 +27,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.swt.widgets.Display;
@@ -82,7 +81,6 @@ public class UndoDeleteAssetChange extends Change {
 						AssetModel copy = _asset.copy(section);
 						section.addAsset(_index, copy, false);
 						packEditor.refresh();
-						packEditor.getAssetsComp().getViewer().setSelection(StructuredSelection.EMPTY);
 					}
 				}
 			}

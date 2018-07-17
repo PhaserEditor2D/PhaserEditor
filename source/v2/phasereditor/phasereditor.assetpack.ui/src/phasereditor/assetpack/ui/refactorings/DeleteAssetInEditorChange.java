@@ -27,7 +27,6 @@ import java.util.List;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
@@ -67,14 +66,18 @@ public class DeleteAssetInEditorChange extends Change {
 		RefactoringStatus status = new RefactoringStatus();
 		if (_editor != null) {
 
-			boolean visible = _editor.getEditorSite().getWorkbenchWindow().getActivePage().isPartVisible(_editor);
+			boolean visible = isEditorVisible();
 
 			if (!visible) {
-				status.addFatalError("The editor is not open.");
+				status.addError("The asset pack editor is not open.");
 			}
 		}
 
 		return status;
+	}
+
+	private boolean isEditorVisible() {
+		return _editor.getEditorSite().getWorkbenchWindow().getActivePage().isPartVisible(_editor);
 	}
 
 	@Override
@@ -88,9 +91,8 @@ public class DeleteAssetInEditorChange extends Change {
 			TreeViewer viewer = _editor.getAssetsComp().getViewer();
 			List<Object> expanded = Arrays.asList(viewer.getExpandedElements());
 			reveal[0] = expanded.contains(_asset.getGroup());
-			section.removeAsset(_asset);
-			viewer.refresh();
-			viewer.setSelection(StructuredSelection.EMPTY);
+			section.removeAsset(_asset, true);
+			_editor.refresh();
 		});
 
 		return new AddAssetInEditorChange(_asset, reveal[0], _index, _editor);

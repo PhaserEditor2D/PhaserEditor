@@ -98,9 +98,7 @@ public class DeleteAssetSectionInEditorChange extends Change {
 			} else {
 				pack.addSection(_index, new AssetSectionModel(_sectionName, pack), true);
 			}
-			TreeViewer viewer = _editor.getAssetsComp().getViewer();
-			viewer.refresh();
-			viewer.setSelection(StructuredSelection.EMPTY);
+			_editor.refresh();
 		});
 
 		return new DeleteAssetSectionInEditorChange(_sectionName, _editor, !_delete, index[0]);

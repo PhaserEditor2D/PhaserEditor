@@ -53,8 +53,7 @@ public class AddAssetOperation2 extends AssetPackOperation2 {
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		AssetPackEditor2 editor = getEditor(info);
 		_section.addAsset(_asset, true);
-		editor.getAssetsComp().getViewer().refresh();
-		editor.getTypesComp().getViewer().refresh();
+		editor.refresh();
 		editor.revealElement(_asset);
 		return Status.OK_STATUS;
 	}
@@ -68,8 +67,7 @@ public class AddAssetOperation2 extends AssetPackOperation2 {
 	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		AssetPackEditor2 editor = getEditor(info);
 		_section.removeAsset(_asset);
-		editor.getAssetsComp().getViewer().refresh();
-		editor.getSectionsComp().getViewer().refresh();
+		editor.refresh();
 		return Status.OK_STATUS;
 	}
 

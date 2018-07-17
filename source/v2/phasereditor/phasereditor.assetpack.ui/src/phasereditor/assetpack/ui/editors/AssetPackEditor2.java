@@ -36,12 +36,20 @@ import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.core.commands.operations.IUndoContext;
 import org.eclipse.core.commands.operations.IUndoableOperation;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.help.HelpSystem;
+import org.eclipse.help.IContext;
+import org.eclipse.help.IContextProvider;
+import org.eclipse.jface.dialogs.IInputValidator;
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.preference.JFacePreferences;
 import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -54,9 +62,14 @@ import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSourceAdapter;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -71,9 +84,13 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.dialogs.FilteredTree;
+import org.eclipse.ui.ide.IGotoMarker;
 import org.eclipse.ui.ide.undo.WorkspaceUndoUtil;
+import org.eclipse.ui.operations.UndoRedoActionGroup;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
+import org.eclipse.ui.part.IShowInSource;
+import org.eclipse.ui.part.ShowInContext;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 
@@ -89,6 +106,7 @@ import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetsContentProvider;
 import phasereditor.assetpack.ui.editors.operations.AddAssetOperation2;
+import phasereditor.assetpack.ui.editors.operations.AddSectionOperation;
 import phasereditor.lic.LicCore;
 import phasereditor.ui.ComplexSelectionProvider;
 import phasereditor.ui.EditorSharedImages;
@@ -101,7 +119,7 @@ import phasereditor.ui.properties.PGridPage;
  * @author arian
  *
  */
-public class AssetPackEditor2 extends EditorPart {
+public class AssetPackEditor2 extends EditorPart implements IGotoMarker, IShowInSource {
 
 	public static final String ID = "phasereditor.assetpack.editor";
 
@@ -117,6 +135,8 @@ public class AssetPackEditor2 extends EditorPart {
 			return "ASSET_PACK_EDITOR_CONTEXT";
 		}
 	};
+
+	private static final QualifiedName EDITING_NODE = new QualifiedName("phasereditor.assetpack", "editingNode_v2");
 
 	private AssetPackModel _model;
 	private Composite _container;
@@ -146,13 +166,41 @@ public class AssetPackEditor2 extends EditorPart {
 		_sectionsComp.getViewer().refresh();
 		_typesComp.getViewer().refresh();
 		_assetsComp.getViewer().refresh();
+		
 		if (_outliner != null) {
 			_outliner.refresh();
 		}
 	}
 
 	public void saveEditingPoint() {
-		//
+		AssetPackModel pack = getModel();
+		if (pack != null) {
+			var sel = (IStructuredSelection) getEditorSite().getSelectionProvider().getSelection();
+			Object elem = sel.getFirstElement();
+			if (elem != null) {
+				IFile file = pack.getFile();
+				try {
+					file.setPersistentProperty(EDITING_NODE, pack.getStringReference(elem));
+				} catch (CoreException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	public void recoverEditingPoint() {
+		AssetPackModel pack = getModel();
+		IFile file = pack.getFile();
+		try {
+			String str = file.getPersistentProperty(EDITING_NODE);
+			if (str != null) {
+				Object elem = pack.getElementFromStringReference(str);
+				revealElement(elem);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	@Override
@@ -161,9 +209,39 @@ public class AssetPackEditor2 extends EditorPart {
 	}
 
 	@Override
+	public void dispose() {
+		if (_model != null && _model.getFile().exists()) {
+			saveEditingPoint();
+		}
+
+		super.dispose();
+	}
+
+	@Override
+	public void gotoMarker(IMarker marker) {
+		try {
+			String ref = (String) marker.getAttribute(AssetPackCore.ASSET_EDITOR_GOTO_MARKER_ATTR);
+			if (ref != null) {
+				Object asset = getModel().getElementFromStringReference(ref);
+				revealElement(asset);
+			}
+		} catch (CoreException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		setSite(site);
 		setInput(input);
+
+		registerUndoRedoActions();
+	}
+
+	private void registerUndoRedoActions() {
+		IEditorSite site = getEditorSite();
+		UndoRedoActionGroup group = new UndoRedoActionGroup(site, UNDO_CONTEXT, true);
+		group.fillActionBars(site.getActionBars());
 	}
 
 	@Override
@@ -290,11 +368,12 @@ public class AssetPackEditor2 extends EditorPart {
 		}
 
 		protected void onClickedDeleteButton() {
-			//
+			Object[] selection = ((StructuredSelection) getViewer().getSelection()).toArray();
+			AssetPackUI.launchDeleteWizard(selection);
 		}
 
 		protected void onClickedRenameButton() {
-			//
+			AssetPackUI.launchRenameWizard(getViewer().getStructuredSelection().getFirstElement());
 		}
 
 		@Override
@@ -341,6 +420,23 @@ public class AssetPackEditor2 extends EditorPart {
 
 		public AssetSectionModel getSelectedSection() {
 			return (AssetSectionModel) getViewer().getStructuredSelection().getFirstElement();
+		}
+
+		@Override
+		protected void onClickedAddButton() {
+			AssetPackModel model = getModel();
+			InputDialog dlg = new InputDialog(getSite().getShell(), "New Section", "Enter the section key:",
+					model.createKey("section"), new IInputValidator() {
+
+						@Override
+						public String isValid(String newText) {
+							return model.hasKey(newText) ? "That key already exists, use other." : null;
+						}
+					});
+			if (dlg.open() == Window.OK) {
+				String sectionName = dlg.getValue();
+				executeOperation(new AddSectionOperation(sectionName));
+			}
 		}
 	}
 
@@ -485,37 +581,6 @@ public class AssetPackEditor2 extends EditorPart {
 				throw new RuntimeException(e);
 			}
 		}
-
-		@Override
-		protected void onClickedDeleteButton() {
-			Object[] selection = ((StructuredSelection) getViewer().getSelection()).toArray();
-			AssetPackUI.launchDeleteWizard(selection);
-		}
-	}
-
-	class ArrayAsTreeContentProvider implements ITreeContentProvider {
-		private ArrayContentProvider _provider = new ArrayContentProvider();
-
-		@Override
-		public Object[] getElements(Object inputElement) {
-			return _provider.getElements(inputElement);
-		}
-
-		@Override
-		public Object[] getChildren(Object parentElement) {
-			return _provider.getElements(parentElement);
-		}
-
-		@Override
-		public Object getParent(Object element) {
-			return null;
-		}
-
-		@Override
-		public boolean hasChildren(Object element) {
-			return false;
-		}
-
 	}
 
 	@Override
@@ -587,9 +652,28 @@ public class AssetPackEditor2 extends EditorPart {
 			}
 		});
 
+		Transfer[] types = { LocalSelectionTransfer.getTransfer() };
+		_assetsComp.getViewer().addDragSupport(DND.DROP_COPY | DND.DROP_MOVE, types, new DragSourceAdapter() {
+
+			@Override
+			public void dragStart(DragSourceEvent event) {
+				IStructuredSelection selection = (IStructuredSelection) getAssetsComp().getViewer().getSelection();
+				LocalSelectionTransfer.getTransfer().setSelection(selection);
+			}
+		});
+
 		getEditorSite().setSelectionProvider(new ComplexSelectionProvider(_sectionsComp.getViewer(),
 				_typesComp.getViewer(), _assetsComp.getViewer()));
 
+		recoverEditingPoint();
+
+		swtRun(this::refresh);
+
+	}
+
+	@Override
+	public ShowInContext getShowInContext() {
+		return new ShowInContext(getEditorInput(), getEditorSite().getSelectionProvider().getSelection());
 	}
 
 	public SectionsComp getSectionsComp() {
@@ -669,11 +753,15 @@ public class AssetPackEditor2 extends EditorPart {
 			var assetKey = (IAssetKey) elem;
 			list.add(assetKey.getAsset().getSection());
 			list.add(assetKey.getAsset().getGroup());
-			list.add(assetKey.getAsset());
+
+			if (!(assetKey instanceof AssetModel)) {
+				list.add(assetKey.getAsset());
+			}
+
 			list.add(assetKey);
-			
+
 			getAssetsComp().getViewer().expandToLevel(assetKey.getAsset(), 1);
-			
+
 		} else if (elem instanceof AssetGroupModel) {
 			var group = (AssetGroupModel) elem;
 			list.add(group.getSection());
@@ -683,7 +771,7 @@ public class AssetPackEditor2 extends EditorPart {
 		}
 
 		var sel = new StructuredSelection(list);
-		
+
 		getSectionsComp().getViewer().setSelection(sel);
 		getTypesComp().getViewer().setSelection(sel);
 		getAssetsComp().getViewer().setSelection(sel);
@@ -785,6 +873,28 @@ public class AssetPackEditor2 extends EditorPart {
 			}
 			return _outliner;
 		}
+
+		if (adapter == IContextProvider.class) {
+			return new IContextProvider() {
+
+				@Override
+				public String getSearchExpression(Object target) {
+					return null;
+				}
+
+				@Override
+				public int getContextChangeMask() {
+					return NONE;
+				}
+
+				@Override
+				public IContext getContext(Object target) {
+					IContext context = HelpSystem.getContext("phasereditor.help.assetpackeditor");
+					return context;
+				}
+			};
+		}
+
 		return super.getAdapter(adapter);
 	}
 

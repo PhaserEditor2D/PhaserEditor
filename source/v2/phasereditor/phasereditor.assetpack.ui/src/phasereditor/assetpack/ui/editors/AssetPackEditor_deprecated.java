@@ -217,6 +217,10 @@ public class AssetPackEditor_deprecated extends EditorPart implements IGotoMarke
 	}
 
 	private void propertyChange(@SuppressWarnings("unused") PropertyChangeEvent evt) {
+		setDirty();
+	}
+
+	public void setDirty() {
 		getEditorSite().getShell().getDisplay().asyncExec(() -> {
 			firePropertyChange(PROP_DIRTY);
 		});
@@ -278,7 +282,7 @@ public class AssetPackEditor_deprecated extends EditorPart implements IGotoMarke
 		}
 		return super.getAdapter(adapter);
 	}
-
+	
 	TreeViewer _allAssetsViewer;
 	private Button _addSectionButton;
 	private Button _removeButton;

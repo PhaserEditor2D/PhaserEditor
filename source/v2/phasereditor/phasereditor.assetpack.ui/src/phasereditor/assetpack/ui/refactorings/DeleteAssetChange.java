@@ -83,7 +83,6 @@ public class DeleteAssetChange extends Change {
 						if (asset != null) {
 							section.removeAsset(asset, false);
 							packEditor.refresh();
-							packEditor.getAssetsComp().getViewer().setSelection(StructuredSelection.EMPTY);
 						}
 					}
 				}

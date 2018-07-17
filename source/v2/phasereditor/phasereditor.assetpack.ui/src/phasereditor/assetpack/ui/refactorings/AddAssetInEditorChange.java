@@ -78,10 +78,11 @@ public class AddAssetInEditorChange extends Change {
 	@Override
 	public Change perform(IProgressMonitor pm) throws CoreException {
 		AssetSectionModel section = _asset.getPack().findSection(_asset.getSection().getKey());
-		section.addAsset(_index, _asset, false);
+		section.addAsset(_index, _asset, true);
 
 		Display.getDefault().syncExec(() -> {
-			_editor.getAssetsComp().getViewer().refresh();
+			_editor.refresh();
+			
 			if (_reveal) {
 				_editor.revealElement(_asset);
 			}

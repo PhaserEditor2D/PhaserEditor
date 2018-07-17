@@ -28,7 +28,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.swt.widgets.Display;
@@ -101,7 +100,6 @@ public class DeleteAssetSectionChange extends Change {
 						pack.addSection(new AssetSectionModel(_sectionName, pack), false);
 					}
 					packEditor.refresh();
-					packEditor.getAssetsComp().getViewer().setSelection(StructuredSelection.EMPTY);
 				}
 			}
 		});
