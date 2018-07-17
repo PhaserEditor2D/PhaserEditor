@@ -454,6 +454,48 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 					Object[] array = ((IStructuredSelection) data).toArray();
 
+					for (var elem : array) {
+						if (elem instanceof AssetModel) {
+							return performAssetModelDrop(array);
+						}
+					}
+
+					return performSectionDrop(array);
+				}
+
+				private boolean performAssetModelDrop(Object[] array) {
+
+					AssetPackModel pack = getModel();
+					var moving = List.of(array)
+
+							.stream()
+
+							.filter(e -> e instanceof AssetModel && ((AssetModel) e).getPack() == pack)
+
+							.map(e -> (AssetModel) e).collect(Collectors.toList());
+
+					if (moving.size() != array.length) {
+						return false;
+					}
+
+					if (_location != LOCATION_ON) {
+						return false;
+					}
+
+					var section = pack.getSections().get(_target);
+
+					for (var asset : moving) {
+						asset.getSection().removeAsset(asset, false);
+					}
+
+					section.addAllAssets(0, moving, true);
+					
+					AssetPackEditor.this.refresh();
+
+					return true;
+				}
+
+				private boolean performSectionDrop(Object[] array) {
 					AssetPackModel pack = getModel();
 					var moving = List.of(array)
 
