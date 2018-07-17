@@ -25,6 +25,7 @@ import static java.lang.System.exit;
 import static java.lang.System.out;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -173,15 +174,17 @@ public class BuildExamplesCache extends Application {
 	}
 
 	void addExampleMapping(String url) throws IOException {
-		out.println("- Catching asset: " + url);
+		var url2 = decodeUrl(url);
+		
+		out.println("- Catching asset: " + url2);
 
-		_currentExample.addMapping(Paths.get(url), url);
+		_currentExample.addMapping(Paths.get(url2), url2);
 
 		Path cacheFile = getCacheFile(_currentExample);
 
 		List<String> urls = new ArrayList<>(Files.readAllLines(cacheFile));
 
-		urls.add(url);
+		urls.add(url2);
 
 		Files.write(cacheFile, urls);
 	}
@@ -193,6 +196,7 @@ public class BuildExamplesCache extends Application {
 			List<String> urls = Files.readAllLines(cacheFile);
 
 			for (var url : urls) {
+				url = decodeUrl(url);
 				out.println("* Restore asset: " + url);
 				_currentExample.addMapping(Paths.get(url), url);
 			}
@@ -201,6 +205,10 @@ public class BuildExamplesCache extends Application {
 		}
 
 		return false;
+	}
+
+	private static String decodeUrl(String url) throws UnsupportedEncodingException {
+		return java.net.URLDecoder.decode(url, "UTF-8");
 	}
 
 	private Path getCacheFile(PhaserExampleModel example) throws IOException {
