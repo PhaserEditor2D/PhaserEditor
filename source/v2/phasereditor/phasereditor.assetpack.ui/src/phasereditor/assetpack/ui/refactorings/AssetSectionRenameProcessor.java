@@ -28,7 +28,7 @@ import org.eclipse.ltk.core.refactoring.Change;
 
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor2;
+import phasereditor.assetpack.ui.editors.AssetPackEditor;
 
 /**
  * @author arian
@@ -38,7 +38,7 @@ public class AssetSectionRenameProcessor extends BaseAssetRenameProcessor {
 
 	private AssetSectionModel _section;
 
-	public AssetSectionRenameProcessor(AssetSectionModel section, AssetPackEditor2 editor) {
+	public AssetSectionRenameProcessor(AssetSectionModel section, AssetPackEditor editor) {
 		super(section, section.getKey(), editor);
 		_section = section;
 	}

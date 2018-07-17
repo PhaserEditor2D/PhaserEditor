@@ -24,7 +24,7 @@ package phasereditor.assetpack.ui.editors.operations;
 import org.eclipse.core.commands.operations.AbstractOperation;
 import org.eclipse.core.runtime.IAdaptable;
 
-import phasereditor.assetpack.ui.editors.AssetPackEditor2;
+import phasereditor.assetpack.ui.editors.AssetPackEditor;
 
 /**
  * @author arian
@@ -34,11 +34,11 @@ public abstract class AssetPackOperation extends AbstractOperation {
 
 	public AssetPackOperation(String label) {
 		super(label);
-		addContext(AssetPackEditor2.UNDO_CONTEXT);
+		addContext(AssetPackEditor.UNDO_CONTEXT);
 	}
 	
-	public static AssetPackEditor2 getEditor(IAdaptable info) {
-		return info.getAdapter(AssetPackEditor2.class);
+	public static AssetPackEditor getEditor(IAdaptable info) {
+		return info.getAdapter(AssetPackEditor.class);
 	}
 
 }

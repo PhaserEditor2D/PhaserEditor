@@ -27,7 +27,7 @@ import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.swt.widgets.Display;
 
 import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor2;
+import phasereditor.assetpack.ui.editors.AssetPackEditor;
 
 /**
  * @author arian
@@ -38,7 +38,7 @@ public class RenameAssetSectionInEditorChange extends BaseRenameAssetInEditorCha
 	private AssetSectionModel _section;
 
 	public RenameAssetSectionInEditorChange(AssetSectionModel section, String initialName, String newName,
-			AssetPackEditor2 editor) {
+			AssetPackEditor editor) {
 		super(section, initialName, newName, editor);
 		_section = section;
 	}

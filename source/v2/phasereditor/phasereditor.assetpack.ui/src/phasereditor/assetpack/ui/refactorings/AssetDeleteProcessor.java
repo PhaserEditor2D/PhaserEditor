@@ -44,7 +44,7 @@ import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor2;
+import phasereditor.assetpack.ui.editors.AssetPackEditor;
 import phasereditor.project.core.PhaserProjectNature;
 
 /**
@@ -54,9 +54,9 @@ import phasereditor.project.core.PhaserProjectNature;
 public class AssetDeleteProcessor extends DeleteProcessor {
 
 	private Object[] _elements;
-	private AssetPackEditor2 _editor;
+	private AssetPackEditor _editor;
 
-	public AssetDeleteProcessor(Object[] elements, AssetPackEditor2 editor) {
+	public AssetDeleteProcessor(Object[] elements, AssetPackEditor editor) {
 		super();
 
 		_editor = editor;

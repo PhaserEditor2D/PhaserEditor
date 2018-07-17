@@ -22,7 +22,7 @@
 package phasereditor.assetpack.ui.properties;
 
 import phasereditor.assetpack.core.AssetModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor2;
+import phasereditor.assetpack.ui.editors.AssetPackEditor;
 import phasereditor.ui.properties.PGridModel;
 import phasereditor.ui.properties.PGridPage;
 
@@ -46,7 +46,7 @@ public class BaseAssetPGridModel<T extends AssetModel> extends PGridModel {
 	}
 
 	protected void updateFromPropertyChange() {
-		var editor = (AssetPackEditor2) getExtraData().get(PGridPage.PART);
+		var editor = (AssetPackEditor) getExtraData().get(PGridPage.PART);
 		editor.refresh();
 	}
 }

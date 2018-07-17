@@ -105,7 +105,7 @@ import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetsContentProvider;
-import phasereditor.assetpack.ui.editors.operations.AddAssetOperation2;
+import phasereditor.assetpack.ui.editors.operations.AddAssetOperation;
 import phasereditor.assetpack.ui.editors.operations.AddSectionOperation;
 import phasereditor.lic.LicCore;
 import phasereditor.ui.ComplexSelectionProvider;
@@ -119,7 +119,7 @@ import phasereditor.ui.properties.PGridPage;
  * @author arian
  *
  */
-public class AssetPackEditor2 extends EditorPart implements IGotoMarker, IShowInSource {
+public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInSource {
 
 	public static final String ID = "phasereditor.assetpack.editor";
 
@@ -574,7 +574,7 @@ public class AssetPackEditor2 extends EditorPart implements IGotoMarker, IShowIn
 					AssetPackModel pack = getModel();
 					String key = pack.createKey(type.name());
 					AssetModel asset = factory.createAsset(key, section);
-					executeOperation(new AddAssetOperation2(section, asset));
+					executeOperation(new AddAssetOperation(section, asset));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

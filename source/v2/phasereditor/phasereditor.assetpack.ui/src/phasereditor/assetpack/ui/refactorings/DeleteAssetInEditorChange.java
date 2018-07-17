@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Display;
 
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor2;
+import phasereditor.assetpack.ui.editors.AssetPackEditor;
 
 /**
  * @author arian
@@ -44,9 +44,9 @@ public class DeleteAssetInEditorChange extends Change {
 
 	private AssetModel _asset;
 	private int _index;
-	private AssetPackEditor2 _editor;
+	private AssetPackEditor _editor;
 
-	public DeleteAssetInEditorChange(AssetModel asset, AssetPackEditor2 editor) {
+	public DeleteAssetInEditorChange(AssetModel asset, AssetPackEditor editor) {
 		_asset = asset;
 		_editor = editor;
 	}

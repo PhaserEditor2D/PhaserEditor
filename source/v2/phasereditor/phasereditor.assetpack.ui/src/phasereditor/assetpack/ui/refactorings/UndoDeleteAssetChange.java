@@ -34,7 +34,7 @@ import org.eclipse.ui.IEditorPart;
 
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor2;
+import phasereditor.assetpack.ui.editors.AssetPackEditor;
 import phasereditor.ui.PhaserEditorUI;
 
 /**
@@ -74,8 +74,8 @@ public class UndoDeleteAssetChange extends Change {
 		Display.getDefault().asyncExec(() -> {
 			List<IEditorPart> editors = PhaserEditorUI.findOpenFileEditors(_asset.getPack().getFile());
 			for (IEditorPart editor : editors) {
-				if (editor instanceof AssetPackEditor2) {
-					var packEditor = (AssetPackEditor2) editor;
+				if (editor instanceof AssetPackEditor) {
+					var packEditor = (AssetPackEditor) editor;
 					AssetSectionModel section = packEditor.getModel().findSection(_asset.getSection().getKey());
 					if (section != null) {
 						AssetModel copy = _asset.copy(section);

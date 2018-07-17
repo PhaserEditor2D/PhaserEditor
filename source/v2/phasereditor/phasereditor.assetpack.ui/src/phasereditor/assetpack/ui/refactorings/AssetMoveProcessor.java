@@ -40,7 +40,7 @@ import org.eclipse.ltk.core.refactoring.participants.SharableParticipants;
 
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor2;
+import phasereditor.assetpack.ui.editors.AssetPackEditor;
 import phasereditor.project.core.PhaserProjectNature;
 
 /**
@@ -50,10 +50,10 @@ import phasereditor.project.core.PhaserProjectNature;
 public class AssetMoveProcessor extends MoveProcessor {
 
 	protected final AssetModel[] _assets;
-	protected final AssetPackEditor2 _editor;
+	protected final AssetPackEditor _editor;
 	private AssetSectionModel _dstSection;
 
-	public AssetMoveProcessor(AssetModel[] assets, AssetPackEditor2 editor) {
+	public AssetMoveProcessor(AssetModel[] assets, AssetPackEditor editor) {
 		super();
 		_editor = editor;
 		_assets = assets;

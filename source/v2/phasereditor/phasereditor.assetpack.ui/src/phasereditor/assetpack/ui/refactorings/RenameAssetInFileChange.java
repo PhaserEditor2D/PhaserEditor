@@ -38,7 +38,7 @@ import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor2;
+import phasereditor.assetpack.ui.editors.AssetPackEditor;
 import phasereditor.ui.PhaserEditorUI;
 
 /**
@@ -88,8 +88,8 @@ public class RenameAssetInFileChange extends Change {
 		Display.getDefault().syncExec(() -> {
 			List<IEditorPart> editors = PhaserEditorUI.findOpenFileEditors(_file);
 			for (IEditorPart editor : editors) {
-				if (editor instanceof AssetPackEditor2) {
-					var packEditor = (AssetPackEditor2) editor;
+				if (editor instanceof AssetPackEditor) {
+					var packEditor = (AssetPackEditor) editor;
 					renameAsset(packEditor);
 				}
 			}
@@ -98,7 +98,7 @@ public class RenameAssetInFileChange extends Change {
 		return new RenameAssetInFileChange(_file, _sectionKey, _newName, _initialName);
 	}
 
-	private void renameAsset(AssetPackEditor2 editor) {
+	private void renameAsset(AssetPackEditor editor) {
 		AssetSectionModel section = editor.getModel().findSection(_sectionKey);
 		if (section != null) {
 			AssetModel asset = section.findAsset(_initialName);

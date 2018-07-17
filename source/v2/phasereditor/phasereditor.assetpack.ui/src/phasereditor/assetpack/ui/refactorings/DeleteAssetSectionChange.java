@@ -35,7 +35,7 @@ import org.eclipse.ui.IEditorPart;
 
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor2;
+import phasereditor.assetpack.ui.editors.AssetPackEditor;
 import phasereditor.ui.PhaserEditorUI;
 
 /**
@@ -90,8 +90,8 @@ public class DeleteAssetSectionChange extends Change {
 		Display.getDefault().asyncExec(() -> {
 			List<IEditorPart> editors = PhaserEditorUI.findOpenFileEditors(_file);
 			for (IEditorPart editor : editors) {
-				if (editor instanceof AssetPackEditor2) {
-					var packEditor = (AssetPackEditor2) editor;
+				if (editor instanceof AssetPackEditor) {
+					var packEditor = (AssetPackEditor) editor;
 					AssetPackModel pack = packEditor.getModel();
 					if (_doDelete) {
 						AssetSectionModel section = pack.findSection(_sectionName);

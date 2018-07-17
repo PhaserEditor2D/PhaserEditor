@@ -87,7 +87,7 @@ import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.VideoAssetModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor2;
+import phasereditor.assetpack.ui.editors.AssetPackEditor;
 import phasereditor.assetpack.ui.preview.AssetFrameInformationControl;
 import phasereditor.assetpack.ui.preview.AtlasAssetInformationControl;
 import phasereditor.assetpack.ui.preview.AudioAssetInformationControl;
@@ -127,12 +127,12 @@ public class AssetPackUI {
 	public static final String PLUGIN_ID = Activator.PLUGIN_ID;
 	private static List<ICustomInformationControlCreator> _informationControlCreators;
 
-	public static List<AssetPackEditor2> findOpenAssetPackEditors(IFile assetPackFile) {
-		List<AssetPackEditor2> result = new ArrayList<>();
+	public static List<AssetPackEditor> findOpenAssetPackEditors(IFile assetPackFile) {
+		List<AssetPackEditor> result = new ArrayList<>();
 		List<IEditorPart> editors = PhaserEditorUI.findOpenFileEditors(assetPackFile);
 		for (IEditorPart editor : editors) {
-			if (editor instanceof AssetPackEditor2) {
-				var packEditor = (AssetPackEditor2) editor;
+			if (editor instanceof AssetPackEditor) {
+				var packEditor = (AssetPackEditor) editor;
 				result.add(packEditor);
 			}
 		}
@@ -149,7 +149,7 @@ public class AssetPackUI {
 		IWorkbenchPart activePart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 				.getActivePart();
 
-		AssetPackEditor2 editor = activePart instanceof AssetPackEditor2 ? (AssetPackEditor2) activePart : null;
+		AssetPackEditor editor = activePart instanceof AssetPackEditor ? (AssetPackEditor) activePart : null;
 
 		AssetMoveWizard wizard = new AssetMoveWizard(new MoveRefactoring(new AssetMoveProcessor(assets, editor)));
 
@@ -165,7 +165,7 @@ public class AssetPackUI {
 		IWorkbenchPart activePart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 				.getActivePart();
 
-		AssetPackEditor2 editor = activePart instanceof AssetPackEditor2 ? (AssetPackEditor2) activePart : null;
+		AssetPackEditor editor = activePart instanceof AssetPackEditor ? (AssetPackEditor) activePart : null;
 
 		BaseAssetRenameProcessor processor;
 		if (element instanceof AssetModel) {
@@ -190,7 +190,7 @@ public class AssetPackUI {
 		IWorkbenchPart activePart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 				.getActivePart();
 
-		AssetPackEditor2 editor = activePart instanceof AssetPackEditor2 ? (AssetPackEditor2) activePart : null;
+		AssetPackEditor editor = activePart instanceof AssetPackEditor ? (AssetPackEditor) activePart : null;
 
 		AssetDeleteWizard wizard = new AssetDeleteWizard(
 				new DeleteRefactoring(new AssetDeleteProcessor(selection, editor)));
@@ -207,8 +207,8 @@ public class AssetPackUI {
 		List<AssetModel> list = new ArrayList<>();
 
 		PhaserEditorUI.forEachEditor(editor -> {
-			if (editor instanceof AssetPackEditor2) {
-				AssetPackModel pack = ((AssetPackEditor2) editor).getModel();
+			if (editor instanceof AssetPackEditor) {
+				AssetPackModel pack = ((AssetPackEditor) editor).getModel();
 				list.addAll(AssetPackCore.findAssetResourceReferencesInPack(assetFile, pack));
 			}
 		});
@@ -265,8 +265,8 @@ public class AssetPackUI {
 
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		try {
-			AssetPackEditor2 editor = (AssetPackEditor2) page.openEditor(new FileEditorInput(pack.getFile()),
-					AssetPackEditor2.ID);
+			AssetPackEditor editor = (AssetPackEditor) page.openEditor(new FileEditorInput(pack.getFile()),
+					AssetPackEditor.ID);
 			if (editor != null) {
 				JSONObject ref = pack.getAssetJSONRefrence(elem);
 				Object elem2 = editor.getModel().getElementFromJSONReference(ref);

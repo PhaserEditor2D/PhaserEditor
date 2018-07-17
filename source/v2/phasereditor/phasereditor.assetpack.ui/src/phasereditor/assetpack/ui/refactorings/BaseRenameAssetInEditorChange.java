@@ -27,7 +27,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 
-import phasereditor.assetpack.ui.editors.AssetPackEditor2;
+import phasereditor.assetpack.ui.editors.AssetPackEditor;
 
 /**
  * @author arian
@@ -38,9 +38,9 @@ public abstract class BaseRenameAssetInEditorChange extends Change {
 	protected final String _initialName;
 	protected final String _newName;
 	protected final Object _element;
-	protected final AssetPackEditor2 _editor;
+	protected final AssetPackEditor _editor;
 
-	public BaseRenameAssetInEditorChange(Object element, String initialName, String newName, AssetPackEditor2 editor) {
+	public BaseRenameAssetInEditorChange(Object element, String initialName, String newName, AssetPackEditor editor) {
 		_element = element;
 		_newName = newName;
 		_editor = editor;

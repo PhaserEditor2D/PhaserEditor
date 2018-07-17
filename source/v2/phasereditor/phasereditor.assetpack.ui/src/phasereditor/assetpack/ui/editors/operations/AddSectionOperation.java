@@ -30,7 +30,7 @@ import org.eclipse.jface.viewers.ISelection;
 
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor2;
+import phasereditor.assetpack.ui.editors.AssetPackEditor;
 
 /**
  * @author arian
@@ -52,7 +52,7 @@ public class AddSectionOperation extends AssetPackOperation {
 
 	@Override
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		AssetPackEditor2 editor = getEditor(info);
+		AssetPackEditor editor = getEditor(info);
 		AssetPackModel model = editor.getModel();
 
 		_addedSection = new AssetSectionModel(_sectionName, model);
@@ -73,7 +73,7 @@ public class AddSectionOperation extends AssetPackOperation {
 
 	@Override
 	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		AssetPackEditor2 editor = getEditor(info);
+		AssetPackEditor editor = getEditor(info);
 		AssetPackModel model = editor.getModel();
 
 		model.removeSection(_addedSection, false);

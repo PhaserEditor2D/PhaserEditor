@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Display;
 
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor2;
+import phasereditor.assetpack.ui.editors.AssetPackEditor;
 
 /**
  * @author arian
@@ -38,7 +38,7 @@ public class RenameAssetInEditorChange extends BaseRenameAssetInEditorChange {
 
 	private AssetModel _asset;
 
-	public RenameAssetInEditorChange(AssetModel asset, String initialName, String newName, AssetPackEditor2 editor) {
+	public RenameAssetInEditorChange(AssetModel asset, String initialName, String newName, AssetPackEditor editor) {
 		super(asset, initialName, newName, editor);
 		_asset = asset;
 	}

@@ -22,7 +22,7 @@ import phasereditor.assetpack.core.AssetPackBuildParticipant;
 import phasereditor.assetpack.core.AssetPackCore.PackDelta;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.IAssetKey;
-import phasereditor.assetpack.ui.editors.AssetPackEditor2;
+import phasereditor.assetpack.ui.editors.AssetPackEditor;
 import phasereditor.project.core.IProjectBuildParticipant;
 import phasereditor.ui.views.PreviewView;
 
@@ -129,8 +129,8 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 
 		IEditorReference[] refs = page.getEditorReferences();
 		for (IEditorReference ref : refs) {
-			if (ref.getId().equals(AssetPackEditor2.ID)) {
-				AssetPackEditor2 editor = (AssetPackEditor2) ref.getEditor(false);
+			if (ref.getId().equals(AssetPackEditor.ID)) {
+				AssetPackEditor editor = (AssetPackEditor) ref.getEditor(false);
 				if (editor != null) {
 					IFile curFile = editor.getEditorInput().getFile();
 					try {

@@ -30,7 +30,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
-import phasereditor.assetpack.ui.editors.AssetPackEditor2;
+import phasereditor.assetpack.ui.editors.AssetPackEditor;
 
 /**
  * @author arian
@@ -58,8 +58,8 @@ public class CompositeOperation extends AssetPackOperation {
 
 	@Override
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		AssetPackEditor2 editor = getEditor(info);
-		for (AssetPackOperation op : _operations) {
+		AssetPackEditor editor = getEditor(info);
+		for (var op : _operations) {
 			op.execute(monitor, info);
 		}
 
@@ -72,8 +72,8 @@ public class CompositeOperation extends AssetPackOperation {
 
 	@Override
 	public IStatus redo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		AssetPackEditor2 editor = getEditor(info);
-		for (AssetPackOperation op : _operations) {
+		AssetPackEditor editor = getEditor(info);
+		for (var op : _operations) {
 			op.redo(monitor, info);
 		}
 
@@ -86,9 +86,9 @@ public class CompositeOperation extends AssetPackOperation {
 
 	@Override
 	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		AssetPackEditor2 editor = getEditor(info);
+		AssetPackEditor editor = getEditor(info);
 		for (int i = _operations.size() - 1; i >= 0; i--) {
-			AssetPackOperation op = _operations.get(i);
+			var op = _operations.get(i);
 			op.undo(monitor, info);
 		}
 		editor.refresh();

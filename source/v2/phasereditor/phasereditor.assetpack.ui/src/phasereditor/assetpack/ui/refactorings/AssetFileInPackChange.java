@@ -35,7 +35,7 @@ import org.eclipse.ui.IEditorPart;
 
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor2;
+import phasereditor.assetpack.ui.editors.AssetPackEditor;
 import phasereditor.ui.PhaserEditorUI;
 
 /**
@@ -85,8 +85,8 @@ public class AssetFileInPackChange extends Change {
 			public void run() {
 				List<IEditorPart> editors = PhaserEditorUI.findOpenFileEditors(_pack.getFile());
 				for (IEditorPart editor : editors) {
-					if (editor instanceof AssetPackEditor2) {
-						AssetPackEditor2 packEditor = (AssetPackEditor2) editor;
+					if (editor instanceof AssetPackEditor) {
+						AssetPackEditor packEditor = (AssetPackEditor) editor;
 						packEditor.getModel().getAssets().forEach(asset -> {
 							asset.fileChanged(_oldFile, _newFile);
 						});

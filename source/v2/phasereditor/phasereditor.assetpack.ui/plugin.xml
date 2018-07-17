@@ -16,7 +16,7 @@
       </editor>
       -->
       <editor
-            class="phasereditor.assetpack.ui.editors.AssetPackEditor2"
+            class="phasereditor.assetpack.ui.editors.AssetPackEditor"
             default="false"
             icon="platform:/plugin/phasereditor.ui/icons/box.png"
             id="phasereditor.assetpack.editor"

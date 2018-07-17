@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 
 import phasereditor.assetpack.core.SpritesheetAssetModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor2;
+import phasereditor.assetpack.ui.editors.AssetPackEditor;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
 import phasereditor.ui.properties.PGridNumberProperty;
@@ -292,7 +292,7 @@ public class SpritesheetAssetPGridModel extends BaseAssetPGridModel<SpritesheetA
 	}
 
 	protected static void updateEditorFromPropertyChange() {
-		AssetPackEditor2 editor = (AssetPackEditor2) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+		AssetPackEditor editor = (AssetPackEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.getActivePage().getActiveEditor();
 		editor.refresh();
 	}

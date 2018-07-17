@@ -39,7 +39,7 @@ import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.AssetSectionsContentProvider;
-import phasereditor.assetpack.ui.editors.AssetPackEditor2;
+import phasereditor.assetpack.ui.editors.AssetPackEditor;
 import phasereditor.canvas.core.CanvasModel;
 import phasereditor.project.core.ProjectCore;
 
@@ -110,7 +110,7 @@ public class NewPage_AssetPackSection extends WizardPage {
 
 					// find if there is an open and dirty editor
 
-					List<AssetPackEditor2> editors = AssetPackUI.findOpenAssetPackEditors(section.getPack().getFile());
+					List<AssetPackEditor> editors = AssetPackUI.findOpenAssetPackEditors(section.getPack().getFile());
 
 					if (editors.stream().filter(editor -> editor.isDirty()).findFirst().isPresent()) {
 						error = "The selected section is open in a dirty editor.";

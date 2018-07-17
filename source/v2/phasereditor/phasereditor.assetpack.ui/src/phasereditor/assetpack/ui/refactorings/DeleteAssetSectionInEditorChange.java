@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Display;
 
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor2;
+import phasereditor.assetpack.ui.editors.AssetPackEditor;
 
 /**
  * @author arian
@@ -41,15 +41,15 @@ import phasereditor.assetpack.ui.editors.AssetPackEditor2;
 public class DeleteAssetSectionInEditorChange extends Change {
 
 	private int _index;
-	private AssetPackEditor2 _editor;
+	private AssetPackEditor _editor;
 	private boolean _delete;
 	private String _sectionName;
 
-	public DeleteAssetSectionInEditorChange(String sectionName, AssetPackEditor2 editor) {
+	public DeleteAssetSectionInEditorChange(String sectionName, AssetPackEditor editor) {
 		this(sectionName, editor, true, 0);
 	}
 
-	private DeleteAssetSectionInEditorChange(String sectionName, AssetPackEditor2 editor, boolean delete, int index) {
+	private DeleteAssetSectionInEditorChange(String sectionName, AssetPackEditor editor, boolean delete, int index) {
 		_sectionName = sectionName;
 		_editor = editor;
 		_delete = delete;
