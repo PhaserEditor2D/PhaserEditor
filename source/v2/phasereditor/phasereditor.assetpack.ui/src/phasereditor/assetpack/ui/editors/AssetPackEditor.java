@@ -582,8 +582,22 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 						return false;
 					}
 
-					var moving = List.of(((IStructuredSelection) data).toArray()).stream().map(e -> (AssetModel) e)
-							.collect(Collectors.toList());
+					AssetGroupModel selectedGroup = getTypesComp().getSelectedGroup();
+
+					Object[] array = ((IStructuredSelection) data).toArray();
+
+					var moving = List.of(array)
+
+							.stream()
+
+							.filter(e -> e instanceof AssetModel && ((AssetModel) e).getGroup() == selectedGroup)
+
+							.map(e -> (AssetModel) e).collect(Collectors.toList());
+
+					if (moving.size() != array.length) {
+						return false;
+					}
+
 					var assets = getTypesComp().getSelectedGroup().getAssets();
 
 					int index = _target;
@@ -623,28 +637,6 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 					super.dragOver(event);
 				}
 			});
-
-			// viewer.addDropSupport(DND.DROP_MOVE, types, new DropTargetAdapter() {
-			//
-			// @Override
-			// public void drop(DropTargetEvent event) {
-			// if (event.data instanceof IStructuredSelection) {
-			// var elems = ((IStructuredSelection) event.data).toArray();
-			//
-			// List<AssetModel> list = new ArrayList<>();
-			//
-			// for (var elem : elems) {
-			// if (elem instanceof AssetModel) {
-			// if (((AssetModel) elem).getPack() == getModel()) {
-			// list.add((AssetModel) elem);
-			// }
-			// }
-			// }
-			//
-			// }
-			// }
-			// });
-
 		}
 
 		@Override
