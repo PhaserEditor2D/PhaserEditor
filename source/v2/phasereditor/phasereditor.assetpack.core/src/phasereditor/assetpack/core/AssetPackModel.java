@@ -517,6 +517,21 @@ public final class AssetPackModel {
 			setDirty(true);
 		}
 	}
+	
+	public void removeAllSections(List<AssetSectionModel> sections, boolean notify) {
+		_sections.removeAll(sections);
+		if (notify) {
+			setDirty(true);
+		}
+	}
+	
+	public void addAllSections(int index, List<AssetSectionModel> sections, boolean notify) {
+		_sections.addAll(index, sections);
+		if (notify) {
+			setDirty(true);
+		}
+	}
+	
 
 	public List<AssetSectionModel> getSections() {
 		return Collections.unmodifiableList(_sections);

@@ -398,7 +398,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		public SectionsComp(Composite parent) {
 			super(parent, "Sections");
 
-			getViewer().setContentProvider(new ITreeContentProvider() {
+			TreeViewer viewer = getViewer();
+			viewer.setContentProvider(new ITreeContentProvider() {
 
 				@Override
 				public boolean hasChildren(Object element) {
@@ -420,7 +421,89 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 					return new Object[] {};
 				}
 			});
-			getViewer().setLabelProvider(AssetLabelProvider.GLOBAL_16);
+			viewer.setLabelProvider(AssetLabelProvider.GLOBAL_16);
+
+			initDragAndDrop(viewer);
+		}
+
+		private void initDragAndDrop(TreeViewer viewer) {
+			Transfer[] types = { LocalSelectionTransfer.getTransfer() };
+			viewer.addDragSupport(DND.DROP_COPY | DND.DROP_MOVE, types, new DragSourceAdapter() {
+
+				@Override
+				public void dragStart(DragSourceEvent event) {
+					IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
+					LocalSelectionTransfer.getTransfer().setSelection(selection);
+				}
+			});
+			viewer.addDropSupport(DND.DROP_MOVE, types, new ViewerDropAdapter(viewer) {
+
+				private int _location;
+				private int _target;
+
+				@Override
+				public boolean validateDrop(Object target, int operation, TransferData transferType) {
+					return true;
+				}
+
+				@Override
+				public boolean performDrop(Object data) {
+					if (_target == -1) {
+						return false;
+					}
+
+					Object[] array = ((IStructuredSelection) data).toArray();
+
+					AssetPackModel pack = getModel();
+					var moving = List.of(array)
+
+							.stream()
+
+							.filter(e -> e instanceof AssetSectionModel && ((AssetSectionModel) e).getPack() == pack)
+
+							.map(e -> (AssetSectionModel) e).collect(Collectors.toList());
+
+					if (moving.size() != array.length) {
+						return false;
+					}
+
+					var sections = pack.getSections();
+
+					int index = _target;
+
+					var pivot = sections.get(index);
+
+					pack.removeAllSections(moving, false);
+
+					index = pack.getSections().indexOf(pivot);
+
+					if (index < 0) {
+						index = 0;
+					}
+
+					if (_location == LOCATION_AFTER) {
+						index++;
+					}
+
+					pack.addAllSections(index, moving, true);
+
+					AssetPackEditor.this.refresh();
+
+					return true;
+				}
+
+				@Override
+				public void dragOver(DropTargetEvent event) {
+					_location = determineLocation(event);
+					var item = (TreeItem) event.item;
+					if (item == null) {
+						_target = -1;
+					} else {
+						_target = viewer.getTree().indexOf(item);
+					}
+					super.dragOver(event);
+				}
+			});
 		}
 
 		public AssetSectionModel getSelectedSection() {
@@ -557,12 +640,16 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 			listener.selectionChanged(null);
 
+			initDragAndDrop(viewer);
+		}
+
+		private void initDragAndDrop(TreeViewer viewer) {
 			Transfer[] types = { LocalSelectionTransfer.getTransfer() };
 			viewer.addDragSupport(DND.DROP_COPY | DND.DROP_MOVE, types, new DragSourceAdapter() {
 
 				@Override
 				public void dragStart(DragSourceEvent event) {
-					IStructuredSelection selection = (IStructuredSelection) getAssetsComp().getViewer().getSelection();
+					IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
 					LocalSelectionTransfer.getTransfer().setSelection(selection);
 				}
 			});
@@ -620,7 +707,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 					section.addAllAssets(index, moving, true);
 
-					viewer.refresh();
+					AssetPackEditor.this.refresh();
 
 					return true;
 				}
