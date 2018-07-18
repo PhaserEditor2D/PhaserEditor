@@ -133,7 +133,7 @@ public class AssetsContentProvider implements ITreeContentProvider {
 				AssetModel asset = (AssetModel) parentElement;
 
 				switch (asset.getType()) {
-				case audiosprite: {
+				case audioSprite: {
 					List<AssetAudioSprite> spritemap = ((AudioSpriteAssetModel) asset).getSpriteMap();
 					return spritemap.toArray();
 				}

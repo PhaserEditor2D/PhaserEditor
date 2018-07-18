@@ -36,30 +36,34 @@ public class PGridSection extends ArrayList<PGridProperty<?>> {
 	private boolean _active;
 	private Map<String, PGridProperty<?>> _map;
 
-	public PGridSection(String name) {
+	public PGridSection(String name, PGridProperty<?>... properties) {
 		super();
 		_name = name;
 		_active = true;
 		_map = new HashMap<>();
+		
+		for (var prop : properties) {
+			add(prop);
+		}
 	}
-	
+
 	@Override
 	public boolean add(PGridProperty<?> e) {
 		e.setSection(this);
 		_map.put(e.getName(), e);
 		return super.add(e);
 	}
-	
+
 	@Override
 	public void add(int index, PGridProperty<?> e) {
 		e.setSection(this);
 		_map.put(e.getName(), e);
 		super.add(index, e);
 	}
-	
+
 	@Override
 	public boolean addAll(Collection<? extends PGridProperty<?>> c) {
-		for(PGridProperty<?> e : c) {
+		for (PGridProperty<?> e : c) {
 			e.setSection(this);
 			_map.put(e.getName(), e);
 		}

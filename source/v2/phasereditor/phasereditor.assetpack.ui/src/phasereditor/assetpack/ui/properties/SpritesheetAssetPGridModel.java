@@ -45,28 +45,8 @@ public class SpritesheetAssetPGridModel extends BaseAssetPGridModel<SpritesheetA
 
 		PGridSection section = new PGridSection("Spritesheet");
 
-		section.add(new PGridStringProperty("key", "key", getAsset().getHelp("key")) {
-
-			@Override
-			public String getValue() {
-				return getAsset().getKey();
-			}
-
-			@Override
-			public void setValue(String value, boolean notify) {
-				getAsset().setKey(value);
-
-				if (notify) {
-					updateEditorFromPropertyChange();
-				}
-			}
-
-			@Override
-			public boolean isModified() {
-				return true;
-			}
-
-		});
+		section.add(createKeyProperty());
+		
 		section.add(new PGridStringProperty("url", "url", getAsset().getHelp("url")) {
 
 			@Override

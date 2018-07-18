@@ -50,37 +50,13 @@ public class AtlasAssetPGridModel extends BaseAssetPGridModel<AtlasAssetModel> {
 
 		PGridSection section = new PGridSection("Atlas JSON");
 
-		section.add(new PGridStringProperty("key", "key", getAsset().getHelp("key")) {
-
-			@Override
-			public String getValue() {
-				return getAsset().getKey();
-			}
-
-			@Override
-			public void setValue(String value, boolean notify) {
-				getAsset().setKey(value);
-
-				if (notify) {
-					updateFromPropertyChange();
-				}
-			}
-
-			@Override
-			public boolean isModified() {
-				return true;
-			}
-		});
+		section.add(createKeyProperty());
 
 		section.add(new PGridStringProperty("textureURL", "textureURL", getAsset().getHelp("textureURL")) {
 
 			@Override
 			public void setValue(String value, boolean notify) {
 				getAsset().setTextureURL(value);
-
-				if (notify) {
-					updateFromPropertyChange();
-				}
 			}
 
 			@Override
@@ -116,10 +92,6 @@ public class AtlasAssetPGridModel extends BaseAssetPGridModel<AtlasAssetModel> {
 					} catch (CoreException e) {
 						e.printStackTrace();
 					}
-				}
-
-				if (notify) {
-					updateFromPropertyChange();
 				}
 			}
 
@@ -159,10 +131,6 @@ public class AtlasAssetPGridModel extends BaseAssetPGridModel<AtlasAssetModel> {
 			@Override
 			public void setValue(String value, boolean notify) {
 				getAsset().setNormalMap(value);
-
-				if (notify) {
-					updateFromPropertyChange();
-				}
 			}
 
 			@Override

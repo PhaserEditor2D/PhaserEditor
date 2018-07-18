@@ -22,9 +22,8 @@
 package phasereditor.assetpack.ui.properties;
 
 import phasereditor.assetpack.core.AssetModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor;
 import phasereditor.ui.properties.PGridModel;
-import phasereditor.ui.properties.PGridPage;
+import phasereditor.ui.properties.PGridStringProperty;
 
 /**
  * @author arian
@@ -45,8 +44,23 @@ public class BaseAssetPGridModel<T extends AssetModel> extends PGridModel {
 		return _asset;
 	}
 
-	protected void updateFromPropertyChange() {
-		var editor = (AssetPackEditor) getExtraData().get(PGridPage.PART);
-		editor.refresh();
+	protected PGridStringProperty createKeyProperty() {
+		return new PGridStringProperty("key", "key", getAsset().getHelp("key")) {
+
+			@Override
+			public String getValue() {
+				return getAsset().getKey();
+			}
+
+			@Override
+			public void setValue(String value, boolean notify) {
+				getAsset().setKey(value);
+			}
+
+			@Override
+			public boolean isModified() {
+				return true;
+			}
+		};
 	}
 }

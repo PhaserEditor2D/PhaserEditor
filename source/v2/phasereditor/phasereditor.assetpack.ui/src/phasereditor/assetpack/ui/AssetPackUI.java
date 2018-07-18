@@ -403,12 +403,14 @@ public class AssetPackUI {
 					array.put(url);
 				}
 				String json = array.toString();
-				action.accept(json);
+				if (action != null) {
+					action.accept(json);
+				}
 				return json;
 			}
 		}
 
-		return "";
+		return null;
 	}
 
 	public static String browseVideoUrl(AssetPackModel packModel, List<IFile> curVideoFiles, List<IFile> videoFiles,

@@ -112,7 +112,7 @@ public abstract class AssetFactory {
 			}
 		});
 
-		cache(new AssetFactory(AssetType.audiosprite) {
+		cache(new AssetFactory(AssetType.audioSprite) {
 
 			@Override
 			public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {

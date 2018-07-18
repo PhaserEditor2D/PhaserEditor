@@ -30,6 +30,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -195,7 +196,7 @@ public class BuildExamplesCache extends Application {
 		if (Files.exists(cacheFile)) {
 			List<String> urls = Files.readAllLines(cacheFile);
 
-			for (var url : urls) {
+			for (var url : new HashSet<>(urls)) {
 				url = decodeUrl(url);
 				out.println("* Restore asset: " + url);
 				_currentExample.addMapping(Paths.get(url), url);

@@ -920,6 +920,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 	private void propertyChange(@SuppressWarnings("unused") PropertyChangeEvent evt) {
 		getEditorSite().getShell().getDisplay().asyncExec(() -> {
 			firePropertyChange(PROP_DIRTY);
+			refresh();
 		});
 	}
 

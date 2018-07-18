@@ -36,37 +36,12 @@ public class ImageAssetPGridModel extends BaseAssetPGridModel<ImageAssetModel> {
 
 		PGridSection section = new PGridSection("Image");
 
-		section.add(new PGridStringProperty("key", "key", getAsset().getHelp("key")) {
-
-			@Override
-			public String getValue() {
-				return getAsset().getKey();
-			}
-
-			@Override
-			public void setValue(String value, boolean notify) {
-				getAsset().setKey(value);
-
-				if (notify) {
-					updateFromPropertyChange();
-				}
-			}
-
-			@Override
-			public boolean isModified() {
-				return true;
-			}
-
-		});
+		section.add(createKeyProperty());
 		section.add(new PGridStringProperty("url", "url", getAsset().getHelp("url")) {
 
 			@Override
 			public void setValue(String value, boolean notify) {
 				getAsset().setUrl(value);
-
-				if (notify) {
-					updateFromPropertyChange();
-				}
 			}
 
 			@Override
@@ -90,10 +65,6 @@ public class ImageAssetPGridModel extends BaseAssetPGridModel<ImageAssetModel> {
 			@Override
 			public void setValue(String value, boolean notify) {
 				getAsset().setNormalMap(value);
-
-				if (notify) {
-					updateFromPropertyChange();
-				}
 			}
 
 			@Override

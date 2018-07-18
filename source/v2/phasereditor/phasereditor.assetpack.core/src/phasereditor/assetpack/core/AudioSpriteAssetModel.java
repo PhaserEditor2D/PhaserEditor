@@ -57,7 +57,7 @@ public class AudioSpriteAssetModel extends AudioAssetModel {
 
 	public AudioSpriteAssetModel(String key, AssetSectionModel section)
 			throws JSONException {
-		super(key, AssetType.audiosprite, section);
+		super(key, AssetType.audioSprite, section);
 	}
 
 	@Override

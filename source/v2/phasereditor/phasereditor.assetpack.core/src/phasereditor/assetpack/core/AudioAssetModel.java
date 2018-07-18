@@ -37,18 +37,15 @@ import com.phasereditor2d.json.JSONUtils;
 public class AudioAssetModel extends AssetModel {
 
 	private List<String> _urls;
-	private boolean _autoDecode;
 
 	{
 		_urls = new ArrayList<>();
-		_autoDecode = true;
 	}
 
-	public AudioAssetModel(JSONObject definition, AssetSectionModel section) throws JSONException {
-		super(definition, section);
-		JSONArray urls = definition.getJSONArray("urls");
+	public AudioAssetModel(JSONObject jsonData, AssetSectionModel section) throws JSONException {
+		super(jsonData, section);
+		JSONArray urls = jsonData.getJSONArray("urls");
 		_urls = JSONUtils.toList(urls);
-		_autoDecode = definition.optBoolean("autoDecode", true);
 	}
 
 	public AudioAssetModel(String key, AssetSectionModel section) throws JSONException {
@@ -70,7 +67,6 @@ public class AudioAssetModel extends AssetModel {
 			}
 		}
 		obj.put("urls", urls);
-		obj.put("autoDecode", _autoDecode);
 	}
 
 	public List<String> getUrls() {
@@ -112,15 +108,6 @@ public class AudioAssetModel extends AssetModel {
 			array.put(url);
 		}
 		return array.toString(2);
-	}
-
-	public boolean isAutoDecode() {
-		return _autoDecode;
-	}
-
-	public void setAutoDecode(boolean autoDecode) {
-		_autoDecode = autoDecode;
-		firePropertyChange("autoDecode");
 	}
 
 	@Override

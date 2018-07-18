@@ -58,27 +58,7 @@ public class MultiAtlasAssetPGridModel extends BaseAssetPGridModel<MultiAtlasAss
 
 		PGridSection section = new PGridSection("Multi Atlas");
 
-		section.add(new PGridStringProperty("key", "key", getAsset().getHelp("key")) {
-
-			@Override
-			public String getValue() {
-				return getAsset().getKey();
-			}
-
-			@Override
-			public void setValue(String value, boolean notify) {
-				getAsset().setKey(value);
-
-				if (notify) {
-					updateFromPropertyChange();
-				}
-			}
-
-			@Override
-			public boolean isModified() {
-				return true;
-			}
-		});
+		section.add(createKeyProperty());
 
 		section.add(new PGridStringProperty("path", "path",
 				InspectCore.getPhaserHelp().getMemberHelp("Phaser.Loader.FileTypes.MultiAtlasFileConfig.path")) {
@@ -87,10 +67,6 @@ public class MultiAtlasAssetPGridModel extends BaseAssetPGridModel<MultiAtlasAss
 			public void setValue(String value, boolean notify) {
 				getAsset().setPath(value);
 				getAsset().build(new ArrayList<>());
-
-				if (notify) {
-					updateFromPropertyChange();
-				}
 			}
 
 			@Override
