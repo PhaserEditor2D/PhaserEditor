@@ -23,57 +23,54 @@ package phasereditor.assetpack.ui.properties;
 
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.DialogCellEditor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
+import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.ui.AssetPackUI;
 
 /**
  * @author arian
  *
  */
-public class FileUrlCellEditor extends DialogCellEditor {
+public class BitmapFontDataUrlCellEditor extends DialogCellEditor {
 
-	private AssetModel _asset;
-	private Function<AssetModel, String> _getUrl;
-	private Supplier<List<IFile>> _discoverFiles;
-	private String _dialogTitle;
-	private String _currentValue;
+	private BitmapFontAssetModel _asset;
 
-	public FileUrlCellEditor(Composite parent, AssetModel asset, Function<AssetModel, String> getUrl,
-			Supplier<List<IFile>> discoverFiles, String dialogTitle) {
+	public BitmapFontDataUrlCellEditor(Composite parent, BitmapFontAssetModel asset) {
 		super(parent);
 		_asset = asset;
-		_getUrl = getUrl;
-		_discoverFiles = discoverFiles;
-		_dialogTitle = dialogTitle;
-		_currentValue = getUrl.apply(asset);
 	}
 
 	@Override
 	protected Object openDialogBox(Control cellEditorWindow) {
-		AssetPackModel pack = _asset.getPack();
+		try {
+			AssetPackModel pack = _asset.getPack();
+			IFile urlFile = _asset.getFontDataURLFile();
+			Function<IFile, Boolean> isFontFile = new Function<>() {
 
-		IFile urlFile = _asset.getFileFromUrl(_getUrl.apply(_asset));
+				@Override
+				public Boolean apply(IFile f) {
+					String ext = f.getFileExtension();
+					if (ext != null && (ext.equals("xml") || ext.equals("fnt"))) {
+						return Boolean.TRUE;
+					}
+					return Boolean.FALSE;
+				}
+			};
+			List<IFile> xmlFiles = pack.discoverFiles(isFontFile);
 
-		List<IFile> files = _discoverFiles.get();
-
-		String result = AssetPackUI.browseAssetFile(pack, _dialogTitle /* "atlas JSON/XML" */, urlFile, files,
-				cellEditorWindow.getShell(), null);
-
-		if (result == null) {
-			result = _currentValue;
+			return AssetPackUI.browseAssetFile(pack, "bitmap font XML/FNT", urlFile, xmlFiles,
+					cellEditorWindow.getShell(), null);
+		} catch (CoreException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-
-		IFile file = _asset.getFileFromUrl(result);
-
-		return file;
 	}
 
 }

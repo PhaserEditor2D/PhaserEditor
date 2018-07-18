@@ -71,7 +71,7 @@ public class AtlasAssetPGridModel extends BaseAssetPGridModel<AtlasAssetModel> {
 
 			@Override
 			public CellEditor createCellEditor(Composite parent, Object element) {
-				return new ImageUrlCellEditor(parent, getAsset(), a -> ((ImageAssetModel) a).getUrlFile());
+				return new ImageUrlCellEditor(parent, getAsset(), a -> ((ImageAssetModel) a).getUrl());
 			}
 		});
 
@@ -109,7 +109,7 @@ public class AtlasAssetPGridModel extends BaseAssetPGridModel<AtlasAssetModel> {
 			public CellEditor createCellEditor(Composite parent, Object element) {
 				AssetType type = getAsset().getType();
 
-				Function<AssetModel, IFile> getFile = a -> a.getFileFromUrl(((AtlasAssetModel) a).getAtlasURL());
+				Function<AssetModel, String> getUrl = a -> ((AtlasAssetModel) a).getAtlasURL();
 
 				Supplier<List<IFile>> discoverFiles = () -> {
 					try {
@@ -121,7 +121,7 @@ public class AtlasAssetPGridModel extends BaseAssetPGridModel<AtlasAssetModel> {
 
 				String title = type == AssetType.atlasXML ? "atlas XML" : "atlas JSON";
 
-				return new FileUrlCellEditor(parent, getAsset(), getFile, discoverFiles, title);
+				return new FileUrlCellEditor(parent, getAsset(), getUrl, discoverFiles, title);
 			}
 		});
 
@@ -150,7 +150,7 @@ public class AtlasAssetPGridModel extends BaseAssetPGridModel<AtlasAssetModel> {
 
 			@Override
 			public CellEditor createCellEditor(Composite parent, Object element) {
-				return new ImageUrlCellEditor(parent, getAsset(), a -> ((AtlasAssetModel) a).getNormalMapFile());
+				return new ImageUrlCellEditor(parent, getAsset(), a -> ((AtlasAssetModel) a).getNormalMap());
 			}
 		});
 

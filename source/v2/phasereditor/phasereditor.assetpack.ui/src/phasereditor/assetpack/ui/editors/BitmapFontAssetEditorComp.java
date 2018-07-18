@@ -180,7 +180,7 @@ public class BitmapFontAssetEditorComp extends Composite {
 	protected void browseAtlasURL() {
 		try {
 			AssetPackModel pack = _model.getPack();
-			IFile urlFile = _model.getFileFromUrl(_model.getAtlasURL());
+			IFile urlFile = _model.getFileFromUrl(_model.getFontDataURL());
 			Function<IFile, Boolean> isFontFile = new Function<>() {
 
 				@Override
@@ -199,7 +199,7 @@ public class BitmapFontAssetEditorComp extends Composite {
 
 						@Override
 						public void accept(String t) {
-							getModel().setAtlasURL(t);
+							getModel().setFontDataURL(t);
 						}
 					});
 		} catch (CoreException e) {

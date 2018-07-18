@@ -71,7 +71,7 @@ public class SpritesheetAssetPGridModel extends BaseAssetPGridModel<SpritesheetA
 
 			@Override
 			public CellEditor createCellEditor(Composite parent, Object element) {
-				return new ImageUrlCellEditor(parent, getAsset(), a -> ((SpritesheetAssetModel) a).getUrlFile());
+				return new ImageUrlCellEditor(parent, getAsset(), a -> ((SpritesheetAssetModel) a).getUrl());
 			}
 		});
 
@@ -104,7 +104,7 @@ public class SpritesheetAssetPGridModel extends BaseAssetPGridModel<SpritesheetA
 
 			@Override
 			public CellEditor createCellEditor(Composite parent, Object element) {
-				return new ImageUrlCellEditor(parent, getAsset(), a -> ((SpritesheetAssetModel) a).getNormalMapFile());
+				return new ImageUrlCellEditor(parent, getAsset(), a -> ((SpritesheetAssetModel) a).getNormalMap());
 			}
 		});
 

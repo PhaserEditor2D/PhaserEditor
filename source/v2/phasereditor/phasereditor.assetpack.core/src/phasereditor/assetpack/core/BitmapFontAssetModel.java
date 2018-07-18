@@ -37,18 +37,14 @@ import phasereditor.ui.PhaserEditorUI;
 public class BitmapFontAssetModel extends AssetModel {
 
 	private String _textureURL;
-	private String _atlasURL;
-	private String _atlasData;
-	private int _xSpacing;
-	private int _ySpacing;
+	private String _fontDataURL;
+	private String _normalMap;
 
-	public BitmapFontAssetModel(JSONObject jsonDoc, AssetSectionModel section) throws JSONException {
-		super(jsonDoc, section);
-		_textureURL = jsonDoc.optString("textureURL", null);
-		_atlasURL = jsonDoc.optString("atlasURL", null);
-		_atlasData = jsonDoc.optString("atlasData", null);
-		_xSpacing = jsonDoc.optInt("xSpacing", 0);
-		_ySpacing = jsonDoc.optInt("ySpacing", 0);
+	public BitmapFontAssetModel(JSONObject jsonData, AssetSectionModel section) throws JSONException {
+		super(jsonData, section);
+		_textureURL = jsonData.optString("textureURL", null);
+		_fontDataURL = jsonData.optString("fontDataURL", null);
+		_normalMap = jsonData.optString("normalMap", null);
 	}
 
 	public BitmapFontAssetModel(String key, AssetSectionModel section) throws JSONException {
@@ -59,19 +55,34 @@ public class BitmapFontAssetModel extends AssetModel {
 	protected void writeParameters(JSONObject obj) {
 		super.writeParameters(obj);
 		obj.put("textureURL", _textureURL);
-		obj.put("atlasURL", _atlasURL);
-		obj.put("atlasData", _atlasData);
-		obj.put("xSpacing", _xSpacing);
-		obj.put("ySpacing", _ySpacing);
+		obj.put("fontDataURL", _fontDataURL);
+		obj.put("normalMap", _normalMap);
 	}
 
 	@Override
 	public IFile[] computeUsedFiles() {
-		return new IFile[] { getTextureFile(), getAtlasFile() };
+		if (_normalMap == null) {
+			return new IFile[] { getTextureFile(), getFontDataURLFile() };
+		}
+
+		return new IFile[] { getTextureFile(), getFontDataURLFile(), getNormalMapFile() };
 	}
 
-	public IFile getAtlasFile() {
-		return getFileFromUrl(_atlasURL);
+	public String getNormalMap() {
+		return _normalMap;
+	}
+
+	public void setNormalMap(String normalMap) {
+		_normalMap = normalMap;
+		firePropertyChange("normalMap");
+	}
+
+	public IFile getNormalMapFile() {
+		return getFileFromUrl(_normalMap);
+	}
+
+	public IFile getFontDataURLFile() {
+		return getFileFromUrl(_fontDataURL);
 	}
 
 	public String getTextureURL() {
@@ -87,46 +98,22 @@ public class BitmapFontAssetModel extends AssetModel {
 		return getFileFromUrl(getTextureURL());
 	}
 
-	public String getAtlasURL() {
-		return _atlasURL;
+	public String getFontDataURL() {
+		return _fontDataURL;
 	}
 
-	public void setAtlasURL(String atlasURL) {
-		_atlasURL = atlasURL;
-		firePropertyChange("atlasURL");
-	}
-
-	public String getAtlasData() {
-		return _atlasData;
-	}
-
-	public void setAtlasData(String atlasData) {
-		_atlasData = atlasData;
-		firePropertyChange("atlasData");
-	}
-
-	public int getxSpacing() {
-		return _xSpacing;
-	}
-
-	public void setxSpacing(int xSpacing) {
-		_xSpacing = xSpacing;
-		firePropertyChange("xSpacing");
-	}
-
-	public int getySpacing() {
-		return _ySpacing;
-	}
-
-	public void setySpacing(int ySpacing) {
-		_ySpacing = ySpacing;
-		firePropertyChange("ySpacing");
+	public void setFontDataURL(String fontDataURL) {
+		_fontDataURL = fontDataURL;
+		firePropertyChange("fontDataURL");
 	}
 
 	@Override
 	public void internalBuild(List<IStatus> problems) {
 		validateUrl(problems, "textureURL", _textureURL);
-		validateUrlAndData(problems, "atlasURL", _atlasURL, "atlasData", _atlasData);
+		validateUrl(problems, "fontDataURL", _fontDataURL);
+		if (_normalMap != null) {
+			validateUrl(problems, "normalMap", _normalMap);
+		}
 
 		try {
 			buildFrame();
@@ -144,8 +131,12 @@ public class BitmapFontAssetModel extends AssetModel {
 			_textureURL = newUrl;
 		}
 
-		if (url.equals(_atlasURL)) {
-			_atlasURL = newUrl;
+		if (url.equals(_fontDataURL)) {
+			_fontDataURL = newUrl;
+		}
+
+		if (url.equals(_normalMap)) {
+			_normalMap = newUrl;
 		}
 	}
 
@@ -171,7 +162,7 @@ public class BitmapFontAssetModel extends AssetModel {
 
 		@Override
 		public IFile getImageFile() {
-			return BitmapFontAssetModel.this.getFileFromUrl(getAtlasURL());
+			return BitmapFontAssetModel.this.getFileFromUrl(getFontDataURL());
 		}
 
 		@Override
@@ -213,7 +204,7 @@ public class BitmapFontAssetModel extends AssetModel {
 	}
 
 	public BitmapFontModel createFontModel() {
-		IFile file = getAtlasFile();
+		IFile file = getFontDataURLFile();
 		if (file == null) {
 			return null;
 		}

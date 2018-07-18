@@ -158,7 +158,7 @@ public abstract class AssetFactory {
 				IFile file = pack.pickBitmapFontFile();
 				if (file != null) {
 					asset.setKey(pack.createKey(file));
-					asset.setAtlasURL(ProjectCore.getAssetUrl(file));
+					asset.setFontDataURL(ProjectCore.getAssetUrl(file));
 
 					String name = PhaserEditorUI.getNameFromFilename(file.getName());
 					IFile imgFile = file.getParent().getFile(new Path(name + ".png"));

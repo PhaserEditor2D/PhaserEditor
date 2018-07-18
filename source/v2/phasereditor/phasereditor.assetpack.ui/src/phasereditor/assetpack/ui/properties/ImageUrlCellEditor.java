@@ -41,23 +41,28 @@ import phasereditor.assetpack.ui.AssetPackUI;
 public class ImageUrlCellEditor extends DialogCellEditor {
 
 	private AssetModel _asset;
-	private Function<AssetModel, IFile> _getUrlFile;
+	private String _currentValue;
+	private Function<AssetModel, String> _getUrl;
 	
 	
-	public ImageUrlCellEditor(Composite parent, AssetModel asset, Function<AssetModel, IFile> getUrlFile) {
+	public ImageUrlCellEditor(Composite parent, AssetModel asset, Function<AssetModel, String> getUrl) {
 		super(parent);
 		_asset = asset;
-		_getUrlFile = getUrlFile;
+		_getUrl = getUrl;
+		_currentValue = getUrl.apply(asset);
 	}
 
 	@Override
 	protected Object openDialogBox(Control cellEditorWindow) {
 		try {
 			AssetPackModel pack = _asset.getPack();
-			IFile urlFile = _getUrlFile.apply(_asset);
+			IFile urlFile = _asset.getFileFromUrl(_getUrl.apply(_asset));
 			List<IFile> imageFiles = pack.discoverImageFiles();
 			String result = AssetPackUI.browseImageUrl(pack, "", urlFile, imageFiles,
 					cellEditorWindow.getShell());
+			if (result == null) {
+				result = _currentValue;
+			}
 			return result;
 		} catch (CoreException e) {
 			e.printStackTrace();

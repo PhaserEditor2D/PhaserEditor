@@ -24,24 +24,25 @@ package phasereditor.assetpack.ui.properties;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.Composite;
 
-import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.properties.PGridSection;
 import phasereditor.ui.properties.PGridStringProperty;
 
-public class ImageAssetPGridModel extends BaseAssetPGridModel<ImageAssetModel> {
+public class BitmapFontAssetPGridModel extends BaseAssetPGridModel<BitmapFontAssetModel> {
 
-	public ImageAssetPGridModel(ImageAssetModel asset) {
+	public BitmapFontAssetPGridModel(BitmapFontAssetModel asset) {
 		super(asset);
 
-		PGridSection section = new PGridSection("Image");
+		PGridSection section = new PGridSection("Bitmap Font");
 
 		section.add(createKeyProperty());
-		section.add(new PGridStringProperty("url", "url", getAsset().getHelp("url")) {
+
+		section.add(new PGridStringProperty("fontDataURL", "fontDataURL", getAsset().getHelp("fontDataURL")) {
 
 			@Override
 			public void setValue(String value, boolean notify) {
-				getAsset().setUrl(value);
+				getAsset().setFontDataURL(value);
 			}
 
 			@Override
@@ -51,16 +52,40 @@ public class ImageAssetPGridModel extends BaseAssetPGridModel<ImageAssetModel> {
 
 			@Override
 			public String getValue() {
-				return getAsset().getUrl();
+				return getAsset().getFontDataURL();
 			}
 
 			@Override
 			public CellEditor createCellEditor(Composite parent, Object element) {
-				return new ImageUrlCellEditor(parent, getAsset(), a -> ((ImageAssetModel) a).getUrl());
+				return new BitmapFontDataUrlCellEditor(parent, getAsset());
 			}
 		});
 
-		section.add(new PGridStringProperty("normalMap", "normalMap", InspectCore.getPhaserHelp().getMemberHelp("Phaser.Loader.FileTypes.ImageFileConfig.normalMap")) {
+		section.add(new PGridStringProperty("textureURL", "textureURL", getAsset().getHelp("textureURL")) {
+
+			@Override
+			public void setValue(String value, boolean notify) {
+				getAsset().setTextureURL(value);
+			}
+
+			@Override
+			public boolean isModified() {
+				return true;
+			}
+
+			@Override
+			public String getValue() {
+				return getAsset().getTextureURL();
+			}
+
+			@Override
+			public CellEditor createCellEditor(Composite parent, Object element) {
+				return new ImageUrlCellEditor(parent, getAsset(), a -> ((BitmapFontAssetModel) a).getTextureURL());
+			}
+		});
+
+		section.add(new PGridStringProperty("normalMap", "normalMap",
+				InspectCore.getPhaserHelp().getMemberHelp("Phaser.Loader.FileTypes.BitmapFontFileConfig.normalMap")) {
 
 			@Override
 			public void setValue(String value, boolean notify) {
@@ -84,14 +109,12 @@ public class ImageAssetPGridModel extends BaseAssetPGridModel<ImageAssetModel> {
 
 			@Override
 			public CellEditor createCellEditor(Composite parent, Object element) {
-				return new ImageUrlCellEditor(parent, getAsset(), a -> ((ImageAssetModel) a).getNormalMap());
+				return new ImageUrlCellEditor(parent, getAsset(), a -> ((BitmapFontAssetModel) a).getNormalMap());
 			}
 		});
 
 		getSections().add(section);
 
 	}
-
-	
 
 }
