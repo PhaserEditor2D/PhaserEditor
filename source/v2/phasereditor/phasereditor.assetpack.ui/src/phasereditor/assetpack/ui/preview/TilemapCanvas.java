@@ -179,7 +179,7 @@ public class TilemapCanvas extends ZoomCanvas
 	void updateImageSize() {
 		if (_model != null) {
 			int[][] map = _model.getCsvData();
-			if (map[0].length > 0) {
+			if (map.length > 0 && map[0].length > 0) {
 				_imageSize = new Point(map[0].length * getTileWidth(), map.length * getTileHeight());
 				return;
 			}

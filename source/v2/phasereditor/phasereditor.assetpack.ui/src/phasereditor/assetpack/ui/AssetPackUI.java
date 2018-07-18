@@ -314,12 +314,14 @@ public class AssetPackUI {
 			result = (IFile) dlg.getResult()[0];
 			if (result != null) {
 				String path = ProjectCore.getAssetUrl(result);
-				action.accept(path);
+				if (action != null) {
+					action.accept(path);
+				}
 				return path;
 			}
 		}
 
-		return "";
+		return null;
 	}
 
 	public static String browseImageUrl(AssetPackModel packModel, String objectName, IFile curImageFile,
