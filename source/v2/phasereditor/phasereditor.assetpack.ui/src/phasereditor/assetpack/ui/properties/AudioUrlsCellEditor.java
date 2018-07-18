@@ -65,8 +65,9 @@ public class AudioUrlsCellEditor extends DialogCellEditor {
 
 			String json = AssetPackUI.browseAudioUrl(packModel, currentFiles, packModel.discoverAudioFiles(),
 					cellEditorWindow.getShell(), null);
+			
 			if (json == null) {
-				return null;
+				return _asset.getUrls();
 			}
 
 			JSONArray urls = AudioAssetModel.parseUrlsJSONArray(json);

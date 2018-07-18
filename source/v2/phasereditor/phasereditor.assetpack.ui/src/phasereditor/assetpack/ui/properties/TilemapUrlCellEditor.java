@@ -54,6 +54,11 @@ public class TilemapUrlCellEditor extends DialogCellEditor {
 			IFile urlFile = _asset.getUrlFile();
 			List<IFile> tilemapFiles = pack.discoverTilemapFiles(_asset.getType());
 			String url = AssetPackUI.browseAssetFile(pack, "tilemap", urlFile, tilemapFiles, cellEditorWindow.getShell(), null);
+			
+			if (url == null) {
+				return _asset.getUrl();
+			}
+			
 			return url;
 		} catch (CoreException e) {
 			e.printStackTrace();
