@@ -82,11 +82,9 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 				return createAtlasPreviewAdapter();
 			case multiatlas:
 				return createMultiAtlasPreviewAdapter();
-			case tilemap:
-				TilemapAssetModel tilemap = (TilemapAssetModel) asset;
-				if (tilemap.isCSVFormat()) {
+			case tilemapCSV:
 					return createTilemapCSVPreviewAdapter();
-				}
+			case tilemapTiledJSON:
 				return createTilemapJSONPreviewAdapter();
 			case bitmapFont:
 				return createBitmapFontPreviewAdapter();

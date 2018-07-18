@@ -259,16 +259,25 @@ public class AssetPackCore {
 		return discoverFiles(folder, AudioSpriteCore::isAudioSpriteFile);
 	}
 
-	public static List<IFile> discoverTilemapFiles(IContainer folder) throws CoreException {
+	public static List<IFile> discoverTilemapFiles(IContainer folder, AssetType tilemapType) throws CoreException {
 		return discoverFiles(folder, new Function<IFile, Boolean>() {
 
+			@SuppressWarnings("boxing")
 			@Override
 			public Boolean apply(IFile file) {
 				String ext = file.getFileExtension();
-				if (ext != null && ext.toLowerCase().equals("csv"))
-					return Boolean.TRUE;
-				boolean tilemap = isTilemapJSONFile(file);
-				return Boolean.valueOf(tilemap);
+
+				switch (tilemapType) {
+				case tilemapCSV:
+					if ("csv".equals(ext) || (ext != null && "csv".equals(ext.toLowerCase()))) {
+						return true;
+					}
+					return false;
+				case tilemapTiledJSON:
+					return isTilemapJSONFile(file);
+				default:
+					return false;
+				}
 			}
 		});
 	}
@@ -868,7 +877,7 @@ public class AssetPackCore {
 	public static String[] getAtlasFormatsForType(AssetType type) {
 		switch (type) {
 		case multiatlas:
-			return new String[] { AtlasCore.TEXTURE_ATLAS_MULTI};
+			return new String[] { AtlasCore.TEXTURE_ATLAS_MULTI };
 		case atlasXML:
 			return new String[] { AtlasCore.TEXTURE_ATLAS_XML_STARLING };
 		default:

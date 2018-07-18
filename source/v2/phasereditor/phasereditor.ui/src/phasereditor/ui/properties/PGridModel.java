@@ -46,6 +46,10 @@ public class PGridModel {
 	public List<PGridSection> getSections() {
 		return _sections;
 	}
+	
+	public void addSection(String name, PGridProperty<?>... porperties) {
+		_sections.add(new PGridSection(name, porperties));
+	}
 
 	public PGridProperty<?> findById(String id) {
 		for (PGridSection section : _sections) {

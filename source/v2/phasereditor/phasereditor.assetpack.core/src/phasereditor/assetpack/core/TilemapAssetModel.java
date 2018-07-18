@@ -40,31 +40,17 @@ public class TilemapAssetModel extends AssetModel {
 	public static final String TILEMAP_CSV = "CSV";
 	public static final String TILEMAP_TILED_JSON = "TILED_JSON";
 	private String _url;
-	private String _data;
-	private String _format;
 	private TilemapJSON _tilemapJSON;
 	private int[][] _csvData;
 
-	public TilemapAssetModel(String key, AssetSectionModel section) throws JSONException {
-		super(key, AssetType.tilemap, section);
+	public TilemapAssetModel(String key, AssetType type, AssetSectionModel section) throws JSONException {
+		super(key, type, section);
 		buildTilemap();
 	}
 
 	public TilemapAssetModel(JSONObject jsonDoc, AssetSectionModel section) throws JSONException {
 		super(jsonDoc, section);
 		_url = jsonDoc.optString("url", null);
-		// the data can be a string (with CSV format) or a JSON object.
-		Object obj = jsonDoc.opt("data");
-		if (obj == null) {
-			_data = null;
-		} else {
-			if (obj instanceof JSONObject) {
-				_data = ((JSONObject) obj).toString(4);
-			} else {
-				_data = (String) obj;
-			}
-		}
-		_format = jsonDoc.optString("format", TILEMAP_CSV);
 	}
 
 	public class TilemapJSON {
@@ -152,10 +138,6 @@ public class TilemapAssetModel extends AssetModel {
 	}
 
 	public void buildTilemap() {
-		if (_format == null) {
-			return;
-		}
-
 		_csvData = new int[0][0];
 		_tilemapJSON = new TilemapJSON();
 
@@ -241,13 +223,11 @@ public class TilemapAssetModel extends AssetModel {
 	private void buildTilemapJSON() {
 		TilemapJSON tilemap = new TilemapJSON();
 		try {
-			String data = normalizeString(_data);
-			if (data == null) {
-				IFile file = getFileFromUrl(_url);
-				if (file != null && file.exists()) {
-					try (InputStream input = file.getContents()) {
-						data = PhaserEditorUI.readString(input);
-					}
+			String data = null;
+			IFile file = getFileFromUrl(_url);
+			if (file != null && file.exists()) {
+				try (InputStream input = file.getContents()) {
+					data = PhaserEditorUI.readString(input);
 				}
 			}
 			if (data != null) {
@@ -301,23 +281,6 @@ public class TilemapAssetModel extends AssetModel {
 	protected void writeParameters(JSONObject obj) {
 		super.writeParameters(obj);
 		obj.put("url", _url);
-		{
-			Object data = null;
-			String strData = normalizeString(_data);
-			if (strData != null) {
-				if (_format.equals(TILEMAP_TILED_JSON)) {
-					try {
-						data = new JSONObject(strData);
-					} catch (JSONException e) {
-						throw new RuntimeException("Tilemap '" + getKey() + "' data: " + e.getMessage());
-					}
-				} else {
-					data = strData;
-				}
-			}
-			obj.put("data", data);
-		}
-		obj.put("format", _format);
 	}
 
 	@Override
@@ -339,37 +302,17 @@ public class TilemapAssetModel extends AssetModel {
 		return getFileFromUrl(_url);
 	}
 
-	public String getData() {
-		return _data;
-	}
-
-	public void setData(String data) {
-		_data = data;
-		firePropertyChange("data");
-		buildTilemap();
-	}
-
-	public void setFormat(String format) {
-		_format = format;
-		firePropertyChange("format");
-		buildTilemap();
-	}
-
-	public String getFormat() {
-		return _format;
-	}
-
 	public boolean isJSONFormat() {
-		return _format != null && _format.equals(TILEMAP_TILED_JSON);
+		return getType() == AssetType.tilemapTiledJSON;
 	}
 
 	public boolean isCSVFormat() {
-		return _format != null && _format.equals(TILEMAP_CSV);
+		return getType() == AssetType.tilemapCSV;
 	}
 
 	@Override
 	public void internalBuild(List<IStatus> problems) {
-		validateUrlAndData(problems, "url", _url, "data", _data);
+		validateUrl(problems, "url", _url);
 
 		buildTilemap();
 	}

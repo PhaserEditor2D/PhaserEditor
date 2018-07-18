@@ -10,6 +10,7 @@ import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
+import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.ui.properties.PGridModel;
 
 public class AssetPGrigAdapterFactory implements IAdapterFactory {
@@ -18,26 +19,28 @@ public class AssetPGrigAdapterFactory implements IAdapterFactory {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public Object getAdapter(Object adaptableObject, Class adapterType) {
+	public Object getAdapter(Object obj, Class adapterType) {
 
 		if (adapterType == PGridModel.class) {
 
-			if (adaptableObject instanceof AssetSectionModel) {
-				return new SectionPGridModel((AssetSectionModel) adaptableObject);
-			} else if (adaptableObject instanceof AssetGroupModel) {
-				return new AssetGroupPGridModel((AssetGroupModel) adaptableObject);
-			} else if (adaptableObject instanceof ImageAssetModel) {
-				return new ImageAssetPGridModel((ImageAssetModel) adaptableObject);
-			} else if (adaptableObject instanceof SpritesheetAssetModel) {
-				return new SpritesheetAssetPGridModel((SpritesheetAssetModel) adaptableObject);
-			} else if (adaptableObject instanceof AtlasAssetModel) {
-				return new AtlasAssetPGridModel((AtlasAssetModel) adaptableObject);
-			} else if (adaptableObject instanceof MultiAtlasAssetModel) {
-				return new MultiAtlasAssetPGridModel((MultiAtlasAssetModel) adaptableObject);
-			} else if (adaptableObject instanceof AudioSpriteAssetModel) {
-				return new AudioSpriteAssetPGridModel((AudioSpriteAssetModel) adaptableObject);
-			} else if (adaptableObject instanceof AudioAssetModel) {
-				return new AudioAssetPGridModel((AudioAssetModel) adaptableObject);
+			if (obj instanceof AssetSectionModel) {
+				return new SectionPGridModel((AssetSectionModel) obj);
+			} else if (obj instanceof AssetGroupModel) {
+				return new AssetGroupPGridModel((AssetGroupModel) obj);
+			} else if (obj instanceof ImageAssetModel) {
+				return new ImageAssetPGridModel((ImageAssetModel) obj);
+			} else if (obj instanceof SpritesheetAssetModel) {
+				return new SpritesheetAssetPGridModel((SpritesheetAssetModel) obj);
+			} else if (obj instanceof AtlasAssetModel) {
+				return new AtlasAssetPGridModel((AtlasAssetModel) obj);
+			} else if (obj instanceof MultiAtlasAssetModel) {
+				return new MultiAtlasAssetPGridModel((MultiAtlasAssetModel) obj);
+			} else if (obj instanceof AudioSpriteAssetModel) {
+				return new AudioSpriteAssetPGridModel((AudioSpriteAssetModel) obj);
+			} else if (obj instanceof AudioAssetModel) {
+				return new AudioAssetPGridModel((AudioAssetModel) obj);
+			} else if (obj instanceof TilemapAssetModel) {
+				return new TilemapAssetPGridModel((TilemapAssetModel) obj);
 			}
 
 		}

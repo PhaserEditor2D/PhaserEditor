@@ -139,31 +139,11 @@ public abstract class AssetFactory {
 			}
 		});
 
-		cache(new AssetFactory(AssetType.tilemap) {
-			@Override
-			public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
-				return new TilemapAssetModel(jsonDoc, section);
-			}
-
-			@Override
-			public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
-				AssetPackModel pack = section.getPack();
-				TilemapAssetModel asset = new TilemapAssetModel(key, section);
-				IFile file = pack.pickTilemapFile();
-				if (file != null) {
-					asset.setKey(pack.createKey(file));
-					asset.setUrl(ProjectCore.getAssetUrl(file));
-					String ext = file.getFileExtension().toLowerCase();
-					if (ext.equals("csv")) {
-						asset.setFormat(TilemapAssetModel.TILEMAP_CSV);
-					} else {
-						asset.setFormat(TilemapAssetModel.TILEMAP_TILED_JSON);
-					}
-				}
-
-				return asset;
-			}
-		});
+		cache(new TilemapAssetFactory(AssetType.tilemapCSV));
+		
+		cache(new TilemapAssetFactory(AssetType.tilemapTiledJSON));
+		
+		cache(new TilemapAssetFactory(AssetType.tilemapWeltmeister));
 
 		cache(new AssetFactory(AssetType.bitmapFont) {
 			@Override
@@ -208,7 +188,7 @@ public abstract class AssetFactory {
 		cache(new AtlasAssetFactory(AssetType.atlas));
 
 		cache(new AtlasAssetFactory(AssetType.atlasXML));
-		
+
 		cache(new MultiAtlasAssetFactory());
 
 		cache(new TextAssetFactory());
@@ -362,6 +342,33 @@ class MultiAtlasAssetFactory extends AssetFactory {
 	@Override
 	public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
 		return new MultiAtlasAssetModel(jsonData, section);
+	}
+}
+
+class TilemapAssetFactory extends AssetFactory {
+
+	public TilemapAssetFactory(AssetType type) {
+		super(type);
+	}
+
+	@Override
+	public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
+		return new TilemapAssetModel(jsonDoc, section);
+	}
+
+	@Override
+	public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
+		AssetPackModel pack = section.getPack();
+		TilemapAssetModel asset = new TilemapAssetModel(key, getType(), section);
+
+		IFile file = pack.pickTilemapFile(getType());
+
+		if (file != null) {
+			asset.setKey(pack.createKey(file));
+			asset.setUrl(ProjectCore.getAssetUrl(file));
+		}
+
+		return asset;
 	}
 }
 

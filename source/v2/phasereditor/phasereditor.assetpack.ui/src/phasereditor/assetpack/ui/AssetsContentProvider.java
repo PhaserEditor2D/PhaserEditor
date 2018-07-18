@@ -148,7 +148,7 @@ public class AssetsContentProvider implements ITreeContentProvider {
 				}
 				case spritesheet:
 					return asset.getSubElements().toArray();
-				case tilemap: {
+				case tilemapCSV: {
 					TilemapAssetModel tilemapAsset = (TilemapAssetModel) asset;
 					if (tilemapAsset.isJSONFormat()) {
 						TilemapJSON tilemap = tilemapAsset.getTilemapJSON();

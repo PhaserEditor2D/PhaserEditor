@@ -37,7 +37,7 @@ import phasereditor.inspect.core.jsdoc.PhaserType;
 
 public enum AssetType implements IAssetPackEelement, IAdaptable {
 	image("png"), spritesheet("png"), atlas("json"), atlasXML("xml"), multiatlas("json"), audio("mp3"), audioSprite(
-			"json"), video("mp4"), tilemap("json"), bitmapFont("xml"), physics(
+			"json"), video("mp4"), tilemapCSV("csv"), tilemapTiledJSON("json"), tilemapWeltmeister("json"), bitmapFont("xml"), physics(
 					"json"), text("txt"), json("json"), xml("xml"), script("js"), shader("glsl"), binary("");
 
 	private AssetType(String fileExt) {

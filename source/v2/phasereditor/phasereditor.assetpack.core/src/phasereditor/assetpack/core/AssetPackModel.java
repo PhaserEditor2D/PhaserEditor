@@ -290,8 +290,8 @@ public final class AssetPackModel {
 		return AssetPackCore.discoverImageFiles(getDiscoverFolder());
 	}
 
-	public List<IFile> discoverTilemapFiles() throws CoreException {
-		return AssetPackCore.discoverTilemapFiles(getDiscoverFolder());
+	public List<IFile> discoverTilemapFiles(AssetType tilemapType) throws CoreException {
+		return AssetPackCore.discoverTilemapFiles(getDiscoverFolder(), tilemapType);
 	}
 
 	public List<IFile> discoverAudioFiles() throws CoreException {
@@ -484,12 +484,13 @@ public final class AssetPackModel {
 
 	/**
 	 * Pick a tilemap file that is not used.
+	 * @param tilemapType 
 	 * 
 	 * @return The non used tilemap file or null if there is not anyone available.
 	 * @throws CoreException
 	 */
-	public IFile pickTilemapFile() throws CoreException {
-		return pickFile(discoverTilemapFiles());
+	public IFile pickTilemapFile(AssetType tilemapType) throws CoreException {
+		return pickFile(discoverTilemapFiles(tilemapType));
 	}
 
 	public IFile pickBitmapFontFile() throws CoreException {

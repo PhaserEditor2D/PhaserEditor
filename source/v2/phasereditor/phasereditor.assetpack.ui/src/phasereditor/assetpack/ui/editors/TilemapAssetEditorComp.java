@@ -144,7 +144,7 @@ public class TilemapAssetEditorComp extends Composite {
 		try {
 			AssetPackModel pack = _model.getPack();
 			IFile urlFile = _model.getUrlFile();
-			List<IFile> tilemapFiles = pack.discoverTilemapFiles();
+			List<IFile> tilemapFiles = pack.discoverTilemapFiles(null);
 			AssetPackUI.browseAssetFile(pack, "tilemap JSON/CSV", urlFile, tilemapFiles, getShell(),
 					new Consumer<String>() {
 
