@@ -44,15 +44,12 @@ import phasereditor.project.core.ProjectCore;
 public class AudioSpriteAssetModel extends AudioAssetModel {
 
 	private String _jsonURL;
-	private String _jsonData;
 	private List<AssetAudioSprite> _spritemap;
 
 	public AudioSpriteAssetModel(JSONObject definition,
 			AssetSectionModel section) throws JSONException {
 		super(definition, section);
 		_jsonURL = definition.optString("jsonURL", null);
-		JSONObject data = definition.optJSONObject("jsonData");
-		_jsonData = data == null ? null : data.toString(4);
 	}
 
 	public AudioSpriteAssetModel(String key, AssetSectionModel section)
@@ -64,13 +61,6 @@ public class AudioSpriteAssetModel extends AudioAssetModel {
 	protected void writeParameters(JSONObject obj) {
 		super.writeParameters(obj);
 		obj.put("jsonURL", normalizeString(_jsonURL));
-
-		JSONObject data = null;
-		String jsonData = normalizeString(_jsonData);
-		if (jsonData != null) {
-			data = new JSONObject(jsonData);
-		}
-		obj.put("jsonData", data);
 	}
 
 	public String getJsonURL() {
@@ -88,18 +78,6 @@ public class AudioSpriteAssetModel extends AudioAssetModel {
 
 	public void setJsonURLFile(IFile file) {
 		setJsonURL(ProjectCore.getAssetUrl(file));
-	}
-
-	public String getJsonData() {
-		return _jsonData;
-	}
-
-	public void setJsonData(String jsonData) {
-		_jsonData = jsonData;
-
-		buildSpriteMap();
-
-		firePropertyChange("jsonData");
 	}
 
 	/**
@@ -210,16 +188,7 @@ public class AudioSpriteAssetModel extends AudioAssetModel {
 	public JSONObject getJsonDataObject() {
 		JSONObject obj = null;
 		IFile file = getJsonURLFile();
-		if (file == null || !file.exists()) {
-			// load the json from the inline data.
-			if (_jsonData != null && _jsonData.length() > 0) {
-				try {
-					obj = new JSONObject(_jsonData);
-				} catch (JSONException e) {
-					// nothing, it has an invalid format
-				}
-			}
-		} else {
+		if (file != null && file.exists()) {
 			// load the json from the file
 			try (InputStream input = file.getContents()) {
 				obj = new JSONObject(new JSONTokener(input));
@@ -285,7 +254,7 @@ public class AudioSpriteAssetModel extends AudioAssetModel {
 
 	@Override
 	public void internalBuild(List<IStatus> problems) {
-		validateUrlAndData(problems, "jsonURL", _jsonURL, "jsonData", _jsonData);
+		validateUrl(problems, "jsonURL", _jsonURL);
 
 		buildSpriteMap();
 	}

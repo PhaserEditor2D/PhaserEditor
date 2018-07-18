@@ -6,6 +6,7 @@ import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AudioAssetModel;
+import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
@@ -33,6 +34,8 @@ public class AssetPGrigAdapterFactory implements IAdapterFactory {
 				return new AtlasAssetPGridModel((AtlasAssetModel) adaptableObject);
 			} else if (adaptableObject instanceof MultiAtlasAssetModel) {
 				return new MultiAtlasAssetPGridModel((MultiAtlasAssetModel) adaptableObject);
+			} else if (adaptableObject instanceof AudioSpriteAssetModel) {
+				return new AudioSpriteAssetPGridModel((AudioSpriteAssetModel) adaptableObject);
 			} else if (adaptableObject instanceof AudioAssetModel) {
 				return new AudioAssetPGridModel((AudioAssetModel) adaptableObject);
 			}
