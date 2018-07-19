@@ -56,15 +56,15 @@ public abstract class AssetFactory {
 			}
 
 			@Override
-			public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
-				return new ImageAssetModel(jsonDoc, section);
+			public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
+				return new ImageAssetModel(jsonData, section);
 			}
 		});
 
 		cache(new AssetFactory(AssetType.spritesheet) {
 			@Override
-			public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
-				return new SpritesheetAssetModel(jsonDoc, section);
+			public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
+				return new SpritesheetAssetModel(jsonData, section);
 			}
 
 			@Override
@@ -83,8 +83,8 @@ public abstract class AssetFactory {
 		cache(new AssetFactory(AssetType.audio) {
 
 			@Override
-			public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
-				return new AudioAssetModel(jsonDoc, section);
+			public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
+				return new AudioAssetModel(jsonData, section);
 			}
 
 			@Override
@@ -99,8 +99,8 @@ public abstract class AssetFactory {
 		cache(new AssetFactory(AssetType.video) {
 
 			@Override
-			public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
-				return new VideoAssetModel(jsonDoc, section);
+			public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
+				return new VideoAssetModel(jsonData, section);
 			}
 
 			@Override
@@ -115,8 +115,8 @@ public abstract class AssetFactory {
 		cache(new AssetFactory(AssetType.audioSprite) {
 
 			@Override
-			public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
-				return new AudioSpriteAssetModel(jsonDoc, section);
+			public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
+				return new AudioSpriteAssetModel(jsonData, section);
 			}
 
 			@Override
@@ -147,8 +147,8 @@ public abstract class AssetFactory {
 
 		cache(new AssetFactory(AssetType.bitmapFont) {
 			@Override
-			public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
-				return new BitmapFontAssetModel(jsonDoc, section);
+			public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
+				return new BitmapFontAssetModel(jsonData, section);
 			}
 
 			@Override
@@ -174,8 +174,8 @@ public abstract class AssetFactory {
 
 		cache(new AssetFactory(AssetType.physics) {
 			@Override
-			public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
-				return new PhysicsAssetModel(jsonDoc, section);
+			public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
+				return new PhysicsAssetModel(jsonData, section);
 			}
 
 			@Override
@@ -196,8 +196,8 @@ public abstract class AssetFactory {
 		cache(new TextAssetFactory(AssetType.json, "json") {
 
 			@Override
-			public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
-				return new JsonAssetModel(jsonDoc, section);
+			public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
+				return new JsonAssetModel(jsonData, section);
 			}
 
 			@Override
@@ -209,8 +209,8 @@ public abstract class AssetFactory {
 		cache(new TextAssetFactory(AssetType.xml, "xml") {
 
 			@Override
-			public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
-				return new XmlAssetModel(jsonDoc, section);
+			public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
+				return new XmlAssetModel(jsonData, section);
 			}
 
 			@Override
@@ -224,8 +224,8 @@ public abstract class AssetFactory {
 
 		cache(new AssetFactory(AssetType.binary) {
 			@Override
-			public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
-				return new BinaryAssetModel(jsonDoc, section);
+			public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
+				return new BinaryAssetModel(jsonData, section);
 			}
 
 			@Override
@@ -237,13 +237,34 @@ public abstract class AssetFactory {
 		cache(new TextAssetFactory(AssetType.script, "js") {
 
 			@Override
-			public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
-				return new ScriptAssetModel(jsonDoc, section);
+			public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
+				return new ScriptAssetModel(jsonData, section);
 			}
 
 			@Override
 			protected SimpleFileAssetModel makeAsset(String key, AssetSectionModel section) {
 				return new ScriptAssetModel(key, section);
+			}
+		});
+
+		cache(new AssetFactory(AssetType.plugin) {
+
+			@Override
+			public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
+				return new PluginAssetModel(jsonData, section);
+			}
+
+			@Override
+			public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
+				AssetPackModel pack = section.getPack();
+				var asset = new PluginAssetModel(key, section);
+				List<IFile> files = pack.discoverTextFiles(new String[] { "js" });
+				IFile file = pack.pickFile(files);
+				if (file != null) {
+					asset.setKey(pack.createKey(file));
+					asset.setUrl(ProjectCore.getAssetUrl(file));
+				}
+				return asset;
 			}
 		});
 
@@ -316,7 +337,7 @@ public abstract class AssetFactory {
 	 */
 	public abstract AssetModel createAsset(String key, AssetSectionModel section) throws Exception;
 
-	public abstract AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception;
+	public abstract AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception;
 }
 
 class MultiAtlasAssetFactory extends AssetFactory {
@@ -355,8 +376,8 @@ class TilemapAssetFactory extends AssetFactory {
 	}
 
 	@Override
-	public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
-		return new TilemapAssetModel(jsonDoc, section);
+	public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
+		return new TilemapAssetModel(jsonData, section);
 	}
 
 	@Override
@@ -381,8 +402,8 @@ class AtlasAssetFactory extends AssetFactory {
 	}
 
 	@Override
-	public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
-		AtlasAssetModel asset = new AtlasAssetModel(jsonDoc, section);
+	public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
+		AtlasAssetModel asset = new AtlasAssetModel(jsonData, section);
 		return asset;
 	}
 
@@ -424,8 +445,8 @@ class HtmlAssetFactory extends AssetFactory {
 	}
 
 	@Override
-	public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
-		return new HtmlAssetModel(jsonDoc, section);
+	public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
+		return new HtmlAssetModel(jsonData, section);
 	}
 
 	@Override
@@ -457,8 +478,8 @@ class TextAssetFactory extends AssetFactory {
 	}
 
 	@Override
-	public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
-		return new SimpleFileAssetModel(jsonDoc, section);
+	public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
+		return new SimpleFileAssetModel(jsonData, section);
 	}
 
 	@Override

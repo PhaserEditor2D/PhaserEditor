@@ -71,11 +71,15 @@ public enum AssetType implements IAssetPackEelement, IAdaptable {
 	
 	script("js"),
 	
+	plugin("js"),
+	
+	scenePlugin("js"),
+	
 	html("html"),
 	
 	glsl("glsl"), 
 	
-	binary("");
+	binary("dat");
 
 	private AssetType(String fileExt) {
 		_fileExt = fileExt;

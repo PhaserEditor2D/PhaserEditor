@@ -160,6 +160,10 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 	public String getKey() {
 		return _key;
 	}
+	
+	public String getId() {
+		return getPack().getName() + "." + getSection().getKey() + "." + _key;
+	}
 
 	public void setKey(String key) {
 		setKey(key, true);

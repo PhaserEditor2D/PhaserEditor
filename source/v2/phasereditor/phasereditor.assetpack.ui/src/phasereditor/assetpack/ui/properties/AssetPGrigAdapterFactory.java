@@ -11,6 +11,7 @@ import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.HtmlAssetModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
+import phasereditor.assetpack.core.PluginAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.SimpleFileAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
@@ -49,9 +50,10 @@ public class AssetPGrigAdapterFactory implements IAdapterFactory {
 				return new SimpleFileAssetPGridModel((SimpleFileAssetModel) obj);
 			} else if (obj instanceof HtmlAssetModel) {
 				return new HtmlAssetPGridModel((HtmlAssetModel) obj);
+			} else if (obj instanceof PluginAssetModel) {
+				return new PluginAssetPGridModel((PluginAssetModel) obj);
 			}
-		}
-
+		} 
 		return null;
 	}
 
