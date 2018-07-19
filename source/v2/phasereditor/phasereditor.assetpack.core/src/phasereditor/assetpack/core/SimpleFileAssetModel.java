@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2016 Arian Fornaris
+// Copyright (c) 2015 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -28,20 +28,26 @@ import org.eclipse.core.runtime.IStatus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * @author arian
- *
- */
-public class UrlAssetModel extends AssetModel {
+public class SimpleFileAssetModel extends AssetModel {
+
 	private String _url;
 
-	public UrlAssetModel(JSONObject jsonDoc, AssetSectionModel section) throws JSONException {
+	public SimpleFileAssetModel(JSONObject jsonDoc, AssetSectionModel section) throws JSONException {
 		super(jsonDoc, section);
 		_url = jsonDoc.optString("url", null);
 	}
 
-	protected UrlAssetModel(String key, AssetType type, AssetSectionModel section) {
+	protected SimpleFileAssetModel(String key, AssetType type, AssetSectionModel section) throws JSONException {
 		super(key, type, section);
+	}
+
+	public SimpleFileAssetModel(String key, AssetSectionModel section) throws JSONException {
+		this(key, AssetType.text, section);
+	}
+
+	@Override
+	public IFile[] computeUsedFiles() {
+		return new IFile[] { getFileFromUrl(_url) };
 	}
 
 	@Override
@@ -61,11 +67,6 @@ public class UrlAssetModel extends AssetModel {
 
 	public IFile getUrlFile() {
 		return getFileFromUrl(_url);
-	}
-
-	@Override
-	public IFile[] computeUsedFiles() {
-		return new IFile[] { getFileFromUrl(_url) };
 	}
 
 	@Override

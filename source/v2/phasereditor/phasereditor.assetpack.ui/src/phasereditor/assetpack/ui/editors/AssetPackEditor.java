@@ -489,7 +489,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 					}
 
 					section.addAllAssets(0, moving, true);
-					
+
 					AssetPackEditor.this.refresh();
 
 					return true;
@@ -632,8 +632,14 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				public Object[] getChildren(Object parentElement) {
 					if (parentElement instanceof AssetSectionModel) {
 						var section = (AssetSectionModel) parentElement;
-						Object[] data = Arrays.stream(AssetType.values()).map(t -> section.getGroup(t))
+						Object[] data = Arrays.stream(AssetType.values())
+
+								.filter(t -> AssetType.isTypeSupported(t.name()))
+
+								.map(t -> section.getGroup(t))
+
 								.sorted((a, b) -> -Integer.compare(a.getAssets().size(), b.getAssets().size()))
+
 								.toArray();
 						return data;
 					}

@@ -357,7 +357,7 @@ public class AssetPackCore {
 
 			@Override
 			public Boolean apply(IFile t) {
-				return isImage(t) || isAudio(t) || isVideo(t) || isShader(t) ? Boolean.FALSE : Boolean.TRUE;
+				return isImage(t) || isAudio(t) || isVideo(t) ? Boolean.FALSE : Boolean.TRUE;
 			}
 		});
 	}

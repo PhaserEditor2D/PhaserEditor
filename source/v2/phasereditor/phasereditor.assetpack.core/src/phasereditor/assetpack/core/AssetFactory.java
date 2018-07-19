@@ -140,9 +140,9 @@ public abstract class AssetFactory {
 		});
 
 		cache(new TilemapAssetFactory(AssetType.tilemapCSV));
-		
+
 		cache(new TilemapAssetFactory(AssetType.tilemapTiledJSON));
-		
+
 		cache(new TilemapAssetFactory(AssetType.tilemapWeltmeister));
 
 		cache(new AssetFactory(AssetType.bitmapFont) {
@@ -201,7 +201,7 @@ public abstract class AssetFactory {
 			}
 
 			@Override
-			protected TextAssetModel makeAsset(String key, AssetSectionModel section) {
+			protected SimpleFileAssetModel makeAsset(String key, AssetSectionModel section) {
 				return new JsonAssetModel(key, section);
 			}
 		});
@@ -214,7 +214,7 @@ public abstract class AssetFactory {
 			}
 
 			@Override
-			protected TextAssetModel makeAsset(String key, AssetSectionModel section) {
+			protected SimpleFileAssetModel makeAsset(String key, AssetSectionModel section) {
 				return new XmlAssetModel(key, section);
 			}
 
@@ -234,17 +234,20 @@ public abstract class AssetFactory {
 			}
 		});
 
-		cache(new AssetFactory(AssetType.script) {
+		cache(new TextAssetFactory(AssetType.script, "js") {
+
 			@Override
 			public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
 				return new ScriptAssetModel(jsonDoc, section);
 			}
 
 			@Override
-			public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
+			protected SimpleFileAssetModel makeAsset(String key, AssetSectionModel section) {
 				return new ScriptAssetModel(key, section);
 			}
 		});
+
+		cache(new HtmlAssetFactory());
 	}
 
 	private static void cache(AssetFactory factory) {
@@ -414,6 +417,32 @@ class AtlasAssetFactory extends AssetFactory {
 	}
 }
 
+class HtmlAssetFactory extends AssetFactory {
+
+	protected HtmlAssetFactory() {
+		super(AssetType.html);
+	}
+
+	@Override
+	public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
+		return new HtmlAssetModel(jsonDoc, section);
+	}
+
+	@Override
+	public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
+		AssetPackModel pack = section.getPack();
+		HtmlAssetModel asset = new HtmlAssetModel(key, section);
+		List<IFile> files = pack.discoverTextFiles(new String[] { "html" });
+		IFile file = pack.pickFile(files);
+		if (file != null) {
+			asset.setKey(pack.createKey(file));
+			asset.setUrl(ProjectCore.getAssetUrl(file));
+		}
+		return asset;
+	}
+
+}
+
 class TextAssetFactory extends AssetFactory {
 
 	private String[] _exts;
@@ -429,13 +458,13 @@ class TextAssetFactory extends AssetFactory {
 
 	@Override
 	public AssetModel createAsset(JSONObject jsonDoc, AssetSectionModel section) throws Exception {
-		return new TextAssetModel(jsonDoc, section);
+		return new SimpleFileAssetModel(jsonDoc, section);
 	}
 
 	@Override
 	public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
 		AssetPackModel pack = section.getPack();
-		TextAssetModel asset = makeAsset(key, section);
+		SimpleFileAssetModel asset = makeAsset(key, section);
 		List<IFile> files = pack.discoverTextFiles(_exts);
 		IFile file = pack.pickFile(files);
 		if (file != null) {
@@ -446,14 +475,14 @@ class TextAssetFactory extends AssetFactory {
 	}
 
 	@SuppressWarnings("static-method")
-	protected TextAssetModel makeAsset(String key, AssetSectionModel section) {
-		return new TextAssetModel(key, section);
+	protected SimpleFileAssetModel makeAsset(String key, AssetSectionModel section) {
+		return new SimpleFileAssetModel(key, section);
 	}
 }
 
 class ShaderAssetFactory extends TextAssetFactory {
 	public ShaderAssetFactory() {
-		super(AssetType.shader, "vert", "frag", "tesc", "tese", "geom", "comp");
+		super(AssetType.glsl, "vert", "frag", "tesc", "tese", "geom", "comp");
 	}
 
 	@Override

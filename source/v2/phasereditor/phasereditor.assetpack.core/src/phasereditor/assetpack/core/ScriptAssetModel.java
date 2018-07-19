@@ -24,15 +24,13 @@ package phasereditor.assetpack.core;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ScriptAssetModel extends UrlAssetModel {
+public class ScriptAssetModel extends SimpleFileAssetModel {
 
-	public ScriptAssetModel(JSONObject jsonDoc, AssetSectionModel section)
-			throws JSONException {
+	public ScriptAssetModel(JSONObject jsonDoc, AssetSectionModel section) throws JSONException {
 		super(jsonDoc, section);
 	}
 
-	public ScriptAssetModel(String key, AssetSectionModel section)
-			throws JSONException {
+	public ScriptAssetModel(String key, AssetSectionModel section) throws JSONException {
 		super(key, AssetType.script, section);
 	}
 }

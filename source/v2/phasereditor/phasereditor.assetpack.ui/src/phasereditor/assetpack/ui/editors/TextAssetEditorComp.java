@@ -50,7 +50,7 @@ import org.json.JSONException;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetType;
-import phasereditor.assetpack.core.TextAssetModel;
+import phasereditor.assetpack.core.SimpleFileAssetModel;
 import phasereditor.assetpack.ui.AssetPackUI;
 
 public class TextAssetEditorComp extends Composite {
@@ -58,7 +58,7 @@ public class TextAssetEditorComp extends Composite {
 
 	private Text _text;
 	private Text _text_1;
-	private TextAssetModel _model = new TextAssetModel("", null);
+	private SimpleFileAssetModel _model = new SimpleFileAssetModel("", null);
 	private TextAssetEditorComp _self = this;
 
 	private boolean _firstTime = true;
@@ -186,11 +186,11 @@ public class TextAssetEditorComp extends Composite {
 		}
 	}
 
-	public TextAssetModel getModel() {
+	public SimpleFileAssetModel getModel() {
 		return _model;
 	}
 
-	public void setModel(TextAssetModel model) {
+	public void setModel(SimpleFileAssetModel model) {
 		_model = model;
 		firePropertyChange("model");
 
@@ -204,7 +204,7 @@ public class TextAssetEditorComp extends Composite {
 		setHelpMessages(model);
 	}
 
-	private void setHelpMessages(TextAssetModel model) {
+	private void setHelpMessages(SimpleFileAssetModel model) {
 		_titleLabel.setText(
 				"Set the properties of the '" + model.getType() + "' file. Required fields are denoted by '*'.");
 		_helpText.setText(model.getHelp());

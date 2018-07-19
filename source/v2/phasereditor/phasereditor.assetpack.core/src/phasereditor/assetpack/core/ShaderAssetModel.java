@@ -28,7 +28,7 @@ import org.json.JSONObject;
  * @author arian
  *
  */
-public class ShaderAssetModel extends TextAssetModel {
+public class ShaderAssetModel extends SimpleFileAssetModel {
 
 	
 	public ShaderAssetModel(JSONObject jsonDoc, AssetSectionModel section) throws JSONException {
@@ -36,7 +36,7 @@ public class ShaderAssetModel extends TextAssetModel {
 	}
 
 	public ShaderAssetModel(String key, AssetSectionModel section) {
-		super(key, AssetType.shader, section);
+		super(key, AssetType.glsl, section);
 	}
 
 }

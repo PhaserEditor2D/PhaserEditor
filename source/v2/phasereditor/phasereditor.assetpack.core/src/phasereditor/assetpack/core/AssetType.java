@@ -23,6 +23,7 @@ package phasereditor.assetpack.core;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,10 +37,45 @@ import phasereditor.inspect.core.jsdoc.PhaserMethod;
 import phasereditor.inspect.core.jsdoc.PhaserType;
 
 public enum AssetType implements IAssetPackEelement, IAdaptable {
-	image("png"), spritesheet("png"), atlas("json"), atlasXML("xml"), multiatlas("json"), audio("mp3"), audioSprite(
-			"json"), video("mp4"), tilemapCSV("csv"), tilemapTiledJSON("json"), tilemapWeltmeister(
-					"json"), bitmapFont("xml"), physics(
-							"json"), text("txt"), json("json"), xml("xml"), script("js"), shader("glsl"), binary("");
+	image("png"),
+
+	spritesheet("png"),
+
+	atlas("json"),
+
+	atlasXML("xml"),
+
+	multiatlas("json"),
+
+	audio("mp3"),
+
+	audioSprite("json"),
+
+	video("mp4"),
+
+	tilemapCSV("csv"),
+
+	tilemapTiledJSON("json"),
+
+	tilemapWeltmeister("json"),
+
+	bitmapFont("xml"), 
+	
+	physics("json"), 
+	
+	text("txt"), 
+	
+	json("json"), 
+	
+	xml("xml"), 
+	
+	script("js"),
+	
+	html("html"),
+	
+	glsl("glsl"), 
+	
+	binary("");
 
 	private AssetType(String fileExt) {
 		_fileExt = fileExt;
@@ -66,6 +102,7 @@ public enum AssetType implements IAssetPackEelement, IAdaptable {
 		for (var value : values()) {
 			_allowedNames.add(value.name());
 		}
+		_allowedNames.removeAll(List.of(video.name(), physics.name()));
 	}
 
 	public static boolean isTypeSupported(String name) {
