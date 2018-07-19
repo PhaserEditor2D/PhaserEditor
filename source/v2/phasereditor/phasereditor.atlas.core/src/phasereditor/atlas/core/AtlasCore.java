@@ -25,6 +25,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -34,7 +35,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 public class AtlasCore {
 	public static final String TEXTURE_ATLAS_MULTI = "TEXTURE_ATLAS_MULTI";
@@ -68,12 +68,10 @@ public class AtlasCore {
 	 * @return If the content has an atlas JSON format, or null if it does not.
 	 * @see #isAtlasXMLFormat(InputStream)
 	 */
-	public static String getAtlasJSONFormat(InputStream contents) {
+	public static String getAtlasJSONFormat(String contents) {
 		try {
 			// try json format
-			JSONTokener tokener = new JSONTokener(new InputStreamReader(contents));
-			JSONObject obj = new JSONObject(tokener);
-
+			JSONObject obj = new JSONObject(contents);
 			{
 				Object jsonTextures = obj.opt("textures");
 				if (jsonTextures != null && jsonTextures instanceof JSONArray) {
@@ -85,10 +83,10 @@ public class AtlasCore {
 			if (frames instanceof JSONArray) {
 				return TEXTURE_ATLAS_JSON_ARRAY;
 			}
-			
+
 			return TEXTURE_ATLAS_JSON_HASH;
 		} catch (JSONException e) {
-			// no json
+			// e.printStackTrace();
 		}
 		return null;
 	}
@@ -131,19 +129,17 @@ public class AtlasCore {
 	 * @return The atlas format, or null if it is not an atlas.
 	 * @throws CoreException
 	 *             If error.
+	 * @throws IOException
 	 * @see #TEXTURE_ATLAS_JSON_ARRAY
 	 * @see #TEXTURE_ATLAS_JSON_HASH
 	 * @see #TEXTURE_ATLAS_XML_STARLING
 	 */
-	public static String getAtlasFormat(IFile file) throws CoreException {
+	public static String getAtlasFormat(IFile file) throws Exception {
 		String format = null;
 		String ext = file.getFileExtension().toLowerCase();
 		if (ext.equals("json")) {
-			try (InputStream input = file.getContents()) {
-				format = getAtlasJSONFormat(input);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			var str = new String(Files.readAllBytes(file.getLocation().toFile().toPath()));
+			format = getAtlasJSONFormat(str);
 		} else if (ext.equals("xml")) {
 			try (InputStream input = file.getContents()) {
 				if (isAtlasXMLFormat(input)) {

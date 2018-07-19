@@ -243,7 +243,7 @@ public class AtlasAssetEditorComp extends Composite {
 						if (format != null) {
 							asset.setFormat(format);
 						}
-					} catch (CoreException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}

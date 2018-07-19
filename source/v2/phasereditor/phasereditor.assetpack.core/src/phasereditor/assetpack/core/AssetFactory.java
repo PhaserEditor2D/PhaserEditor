@@ -267,6 +267,30 @@ public abstract class AssetFactory {
 				return asset;
 			}
 		});
+		
+		cache(new AssetFactory(AssetType.scenePlugin) {
+
+			@Override
+			public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
+				return new ScenePluginAssetModel(jsonData, section);
+			}
+
+			@Override
+			public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
+				AssetPackModel pack = section.getPack();
+				var asset = new ScenePluginAssetModel(key, section);
+				List<IFile> files = pack.discoverTextFiles(new String[] { "js" });
+				IFile file = pack.pickFile(files);
+				if (file != null) {
+					String newKey = pack.createKey(file);
+					asset.setKey(newKey);
+					asset.setUrl(ProjectCore.getAssetUrl(file));
+					asset.setSystemKey("plugin" + newKey.substring(0, 1).toUpperCase() + newKey.substring(1));
+					asset.setSceneKey(newKey);
+				}
+				return asset;
+			}
+		});
 
 		cache(new HtmlAssetFactory());
 	}

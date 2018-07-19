@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.properties;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -33,7 +34,6 @@ import org.eclipse.swt.widgets.Composite;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.atlas.core.AtlasCore;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.properties.PGridSection;
@@ -71,7 +71,7 @@ public class AtlasAssetPGridModel extends BaseAssetPGridModel<AtlasAssetModel> {
 
 			@Override
 			public CellEditor createCellEditor(Composite parent, Object element) {
-				return new ImageUrlCellEditor(parent, getAsset(), a -> ((ImageAssetModel) a).getUrl());
+				return new ImageUrlCellEditor(parent, getAsset(), a -> ((AtlasAssetModel) a).getTextureURL());
 			}
 		});
 
@@ -89,10 +89,12 @@ public class AtlasAssetPGridModel extends BaseAssetPGridModel<AtlasAssetModel> {
 						if (format != null) {
 							asset.setFormat(format);
 						}
-					} catch (CoreException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
+				
+				asset.build(new ArrayList<>());
 			}
 
 			@Override
@@ -121,7 +123,7 @@ public class AtlasAssetPGridModel extends BaseAssetPGridModel<AtlasAssetModel> {
 
 				String title = type == AssetType.atlasXML ? "atlas XML" : "atlas JSON";
 
-				return new FileUrlCellEditor(parent, getAsset(), getUrl, discoverFiles, title);
+				return new UrlCellEditor(parent, getAsset(), getUrl, discoverFiles, title);
 			}
 		});
 

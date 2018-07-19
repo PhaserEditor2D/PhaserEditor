@@ -299,13 +299,13 @@ public class AssetPackCore {
 				String format;
 				try {
 					format = AtlasCore.getAtlasFormat(t);
-
+					
 					if (format != null && Set.of(formats).contains(format)) {
 						return Boolean.TRUE;
 					}
 
 					return Boolean.FALSE;
-				} catch (CoreException e) {
+				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
 			}

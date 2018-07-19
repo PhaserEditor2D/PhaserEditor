@@ -275,7 +275,7 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 		Rectangle b = getClientArea();
 		int area = b.width * b.height;
 		int count = _frames.size() * 2;
-		_frameSize = (int) Math.sqrt((area - count * 5) / count);
+		_frameSize = count == 0? 1 : (int) Math.sqrt((area - count * 5) / count);
 		if (_frameSize < 32) {
 			_frameSize = 32;
 		}

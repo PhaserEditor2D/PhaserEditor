@@ -38,7 +38,7 @@ import phasereditor.assetpack.ui.AssetPackUI;
  * @author arian
  *
  */
-public class FileUrlCellEditor extends DialogCellEditor {
+public class UrlCellEditor extends DialogCellEditor {
 
 	private AssetModel _asset;
 	private Function<AssetModel, String> _getUrl;
@@ -46,7 +46,7 @@ public class FileUrlCellEditor extends DialogCellEditor {
 	private String _dialogTitle;
 	private String _currentValue;
 
-	public FileUrlCellEditor(Composite parent, AssetModel asset, Function<AssetModel, String> getUrl,
+	public UrlCellEditor(Composite parent, AssetModel asset, Function<AssetModel, String> getUrl,
 			Supplier<List<IFile>> discoverFiles, String dialogTitle) {
 		super(parent);
 		_asset = asset;
@@ -64,16 +64,14 @@ public class FileUrlCellEditor extends DialogCellEditor {
 
 		List<IFile> files = _discoverFiles.get();
 
-		String result = AssetPackUI.browseAssetFile(pack, _dialogTitle /* "atlas JSON/XML" */, urlFile, files,
+		String result = AssetPackUI.browseAssetFile(pack, _dialogTitle, urlFile, files,
 				cellEditorWindow.getShell(), null);
 
 		if (result == null) {
 			result = _currentValue;
 		}
 
-		IFile file = _asset.getFileFromUrl(result);
-
-		return file;
+		return result;
 	}
 
 }
