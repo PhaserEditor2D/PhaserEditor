@@ -21,10 +21,14 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.properties;
 
+import java.util.List;
+
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.Composite;
 
 import phasereditor.assetpack.core.PluginAssetModel;
+import phasereditor.assetpack.core.ScenePluginAssetModel;
 import phasereditor.ui.properties.PGridBooleanProperty;
 import phasereditor.ui.properties.PGridStringProperty;
 
@@ -61,7 +65,15 @@ public class PluginAssetPGridModel extends BaseAssetPGridModel<PluginAssetModel>
 
 					@Override
 					public CellEditor createCellEditor(Composite parent, Object element) {
-						return new PluginUrlCellEditor(parent, getAsset());
+						return new UrlCellEditor(parent, asset, a -> ((ScenePluginAssetModel) a).getUrl(), () -> {
+							try {
+								return getAsset().getPack()
+										.discoverFiles(f -> f.getFullPath().getFileExtension().equals("js"));
+							} catch (CoreException e) {
+								e.printStackTrace();
+								return List.of();
+							}
+						}, "plugin");
 					}
 				},
 

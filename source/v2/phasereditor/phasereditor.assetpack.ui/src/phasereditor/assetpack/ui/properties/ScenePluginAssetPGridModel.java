@@ -71,7 +71,7 @@ public class ScenePluginAssetPGridModel extends BaseAssetPGridModel<ScenePluginA
 								e.printStackTrace();
 								return List.of();
 							}
-						}, "Scene Plugin");
+						}, "scenePlugin");
 					}
 				},
 
