@@ -366,7 +366,7 @@ public class AssetPackUI {
 			}
 		}
 
-		return "";
+		return null;
 	}
 
 	public static String browseAudioUrl(AssetPackModel packModel, List<IFile> curAudioFiles, List<IFile> audioFiles,
