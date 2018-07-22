@@ -21,21 +21,17 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core;
 
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import phasereditor.atlas.core.AtlasFrame;
-import phasereditor.ui.PhaserEditorUI;
 
 /**
  * @author arian
@@ -135,7 +131,7 @@ public class MultiAtlasAssetModel extends AssetModel {
 					JSONObject jsonFrame = jsonFrames.getJSONObject(i);
 
 					Frame frame = new Frame(i, textureFilename);
-					frame.update(AtlasFrame.fromArrayItem(jsonFrame));
+					frame.update(AtlasFrame.fromArrayItem(i, jsonFrame));
 
 					String path = getPath();
 					if (path == null) {
@@ -176,14 +172,12 @@ public class MultiAtlasAssetModel extends AssetModel {
 
 	public class Frame extends AtlasFrame implements IAssetElementModel, IAssetFrameModel {
 
-		private int _index;
 		private IFile _imageFile;
 		private String _textureFilename;
 		private String _textureUrl;
 
 		public Frame(int index, String textureFilename) {
-			super();
-			_index = index;
+			super(index);
 			_textureFilename = textureFilename;
 		}
 
@@ -206,15 +200,6 @@ public class MultiAtlasAssetModel extends AssetModel {
 		@Override
 		public MultiAtlasAssetModel getAsset() {
 			return MultiAtlasAssetModel.this;
-		}
-
-		@Override
-		public FrameData getFrameData() {
-			FrameData data = new FrameData(_index);
-			data.src = new Rectangle(getFrameX(), getFrameY(), getFrameW(), getFrameH());
-			data.dst = new Rectangle(getSpriteX(), getSpriteY(), getSpriteW(), getSpriteH());
-			data.srcSize = new Point(getSourceW(), getSourceH());
-			return data;
 		}
 
 		@Override

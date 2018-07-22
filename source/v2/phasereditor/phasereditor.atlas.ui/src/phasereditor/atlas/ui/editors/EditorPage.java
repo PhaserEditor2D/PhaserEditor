@@ -61,8 +61,8 @@ public class EditorPage extends ArrayList<TexturePackerEditorFrame> implements I
 
 	public void sortByIndexes() {
 		sort((a, b) -> {
-			int i1 = a.getRegionIndex();
-			int i2 = b.getRegionIndex();
+			int i1 = a.getIndex();
+			int i2 = b.getIndex();
 			return Integer.compare(i1 == -1 ? Integer.MAX_VALUE : i1, i2 == -1 ? Integer.MAX_VALUE : i2);
 		});
 		

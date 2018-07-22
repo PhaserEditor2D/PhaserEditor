@@ -27,8 +27,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import phasereditor.assetpack.core.FrameData;
 import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.atlas.core.FrameData;
 
 public class QuickFramePreviewComp extends Composite {
 	private Label _resolutionLabel;

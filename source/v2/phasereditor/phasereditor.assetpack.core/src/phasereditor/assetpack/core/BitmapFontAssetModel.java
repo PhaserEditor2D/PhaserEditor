@@ -31,6 +31,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import phasereditor.atlas.core.FrameData;
 import phasereditor.bmpfont.core.BitmapFontModel;
 import phasereditor.ui.PhaserEditorUI;
 

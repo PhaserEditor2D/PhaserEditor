@@ -40,15 +40,10 @@ public class TexturePackerEditorFrame extends AtlasFrame implements IAdaptable {
 
 	private PGridModel _gridModel;
 	private String _regionFilename;
-	private int _regionIndex;
 
 	public TexturePackerEditorFrame(String regionFilename, int regionIndex) {
+		super(regionIndex);
 		_regionFilename = regionFilename;
-		_regionIndex = regionIndex;
-	}
-	
-	public int getRegionIndex() {
-		return _regionIndex;
 	}
 	
 	public String getRegionFilename() {

@@ -25,10 +25,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import phasereditor.assetpack.core.AssetModel;
-import phasereditor.assetpack.core.FrameData;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.atlas.core.FrameData;
 import phasereditor.canvas.core.BaseSpriteModel;
 import phasereditor.canvas.core.ButtonSpriteModel;
 import phasereditor.canvas.ui.editors.ObjectCanvas;

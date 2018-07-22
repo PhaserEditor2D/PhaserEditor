@@ -127,8 +127,8 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 			ZoomCalculator calc = calc();
 
 			for (AtlasFrame item : _frames) {
-				Rectangle r = calc.imageToScreen(item.getFrameX(), item.getFrameY(), item.getSpriteW(),
-						item.getSpriteH());
+				Rectangle src = item.getFrameData().src;
+				Rectangle r = calc.imageToScreen(src);
 				list.add(r);
 			}
 		}

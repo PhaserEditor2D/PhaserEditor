@@ -27,8 +27,8 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import phasereditor.assetpack.core.FrameData;
 import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.atlas.core.FrameData;
 import phasereditor.ui.ImageCache;
 
 /**

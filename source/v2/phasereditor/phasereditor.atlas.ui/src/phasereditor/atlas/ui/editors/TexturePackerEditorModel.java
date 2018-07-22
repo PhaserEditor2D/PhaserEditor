@@ -235,7 +235,7 @@ public class TexturePackerEditorModel implements IAdaptable {
 					writeFrameJsonData(frame, jsonFrame);
 					jsonFrame.put("name", frame.getName());
 					jsonFrame.put("regionFilename", frame.getRegionFilename());
-					jsonFrame.put("regionIndex", frame.getRegionIndex());
+					jsonFrame.put("regionIndex", frame.getIndex());
 				}
 			}
 		}

@@ -31,7 +31,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,6 +44,7 @@ import org.yaml.snakeyaml.Yaml;
 
 import phasereditor.atlas.core.AtlasCore;
 import phasereditor.atlas.core.AtlasFrame;
+import phasereditor.atlas.core.FrameData;
 import phasereditor.ui.PhaserEditorUI;
 
 public class AtlasAssetModel extends AssetModel {
@@ -139,11 +139,10 @@ public class AtlasAssetModel extends AssetModel {
 
 	public class Frame extends AtlasFrame implements IAssetElementModel, IAssetFrameModel {
 		private final AtlasAssetModel _asset;
-		private int _index;
 
 		public Frame(AtlasAssetModel asset, int index) {
+			super(index);
 			_asset = asset;
-			_index = index;
 		}
 
 		@Override
@@ -153,21 +152,14 @@ public class AtlasAssetModel extends AssetModel {
 
 		@Override
 		public FrameData getFrameData() {
-			FrameData data = new FrameData(_index);
-			data.src = new Rectangle(getFrameX(), getFrameY(), getFrameW(), getFrameH());
-			data.dst = new Rectangle(getSpriteX(), getSpriteY(), getSpriteW(), getSpriteH());
-			data.srcSize = new Point(getSourceW(), getSourceH());
 
-			Rectangle size;
-			if (isBottomUp() && (size = getImageSize()) != null) {
-				data.src = new Rectangle(getFrameX(), size.height - getFrameY() - getFrameH(), getFrameW(),
-						getFrameH());
-				data.dst = new Rectangle(getSpriteX(), getSpriteY(), getSpriteW(), getSpriteH());
-				data.srcSize = new Point(getSourceW(), getSourceH());
-			} else {
-				data.src = new Rectangle(getFrameX(), getFrameY(), getFrameW(), getFrameH());
-				data.dst = new Rectangle(getSpriteX(), getSpriteY(), getSpriteW(), getSpriteH());
-				data.srcSize = new Point(getSourceW(), getSourceH());
+			FrameData data = super.getFrameData();
+
+			if (isBottomUp()) {
+				var size = getImageSize();
+				if (size != null) {
+					data.src.y = size.height - data.src.y - data.src.height;
+				}
 			}
 
 			return data;
@@ -229,7 +221,7 @@ public class AtlasAssetModel extends AssetModel {
 					for (int i = 0; i < array.length(); i++) {
 						JSONObject item = array.getJSONObject(i);
 						Frame fi = new Frame(this, i);
-						fi.update(AtlasFrame.fromArrayItem(item));
+						fi.update(AtlasFrame.fromArrayItem(i, item));
 						list.add(fi);
 					}
 				} else {
@@ -239,7 +231,7 @@ public class AtlasAssetModel extends AssetModel {
 					for (String k : frames.keySet()) {
 						JSONObject item = frames.getJSONObject(k);
 						Frame fi = new Frame(this, i);
-						fi.update(AtlasFrame.fromHashItem(k, item));
+						fi.update(AtlasFrame.fromHashItem(i, k, item));
 						list.add(fi);
 						i++;
 					}
@@ -250,11 +242,11 @@ public class AtlasAssetModel extends AssetModel {
 				try (FileInputStream input = new FileInputStream(ioFile)) {
 					Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(input);
 					NodeList elems = doc.getElementsByTagName("SubTexture");
-					for (int j = 0; j < elems.getLength(); j++) {
-						Node elem = elems.item(j);
+					for (int i = 0; i < elems.getLength(); i++) {
+						Node elem = elems.item(i);
 						if (elem.getNodeType() == Node.ELEMENT_NODE) {
-							Frame fi = new Frame(this, j);
-							fi.update(AtlasFrame.fromXMLItem((Element) elem));
+							Frame fi = new Frame(this, i);
+							fi.update(AtlasFrame.fromXMLItem(i, (Element) elem));
 							list.add(fi);
 						}
 					}
@@ -271,7 +263,7 @@ public class AtlasAssetModel extends AssetModel {
 					for (int i = 0; i < data3.size(); i++) {
 						var item = (Map) data3.get(i);
 						Frame fi = new Frame(this, i);
-						fi.update(AtlasFrame.fromUnitySprite(item));
+						fi.update(AtlasFrame.fromUnitySprite(i, item));
 						list.add(fi);
 					}
 				}

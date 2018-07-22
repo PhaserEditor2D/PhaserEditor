@@ -23,6 +23,8 @@ package phasereditor.atlas.core;
 
 import java.util.Map;
 
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.json.JSONObject;
 import org.w3c.dom.Element;
 
@@ -39,9 +41,10 @@ public class AtlasFrame {
 	private int _sourceW;
 	private int _sourceH;
 	private boolean _bottomUp;
+	private int _index;
 
-	public static AtlasFrame fromXMLItem(Element node) {
-		AtlasFrame fi = new AtlasFrame();
+	public static AtlasFrame fromXMLItem(int index, Element node) {
+		AtlasFrame fi = new AtlasFrame(index);
 		fi.setName(node.getAttribute("name"));
 		fi.setFrameX(Integer.parseInt(node.getAttribute("x")));
 		fi.setFrameY(Integer.parseInt(node.getAttribute("y")));
@@ -66,15 +69,15 @@ public class AtlasFrame {
 		return fi;
 	}
 
-	public static AtlasFrame fromArrayItem(JSONObject jsonItem) {
-		AtlasFrame fi = new AtlasFrame();
+	public static AtlasFrame fromArrayItem(int index, JSONObject jsonItem) {
+		AtlasFrame fi = new AtlasFrame(index);
 		fi._name = jsonItem.getString("filename");
 		updateFrameFromJSON(fi, jsonItem);
 		return fi;
 	}
 
-	public static AtlasFrame fromHashItem(String name, JSONObject jsonItem) {
-		AtlasFrame fi = new AtlasFrame();
+	public static AtlasFrame fromHashItem(int index, String name, JSONObject jsonItem) {
+		AtlasFrame fi = new AtlasFrame(index);
 		fi._name = name;
 		updateFrameFromJSON(fi, jsonItem);
 		return fi;
@@ -117,8 +120,8 @@ public class AtlasFrame {
 	}
 
 	@SuppressWarnings({ "rawtypes", "boxing" })
-	public static AtlasFrame fromUnitySprite(Map yaml) {
-		AtlasFrame fi = new AtlasFrame();
+	public static AtlasFrame fromUnitySprite(int index, Map yaml) {
+		AtlasFrame fi = new AtlasFrame(index);
 
 		fi.setName((String) yaml.get("name"));
 		
@@ -161,7 +164,8 @@ public class AtlasFrame {
 		_bottomUp = frame._bottomUp;
 	}
 
-	public AtlasFrame() {
+	public AtlasFrame(int index) {
+		_index = index;
 	}
 
 	public String getName() {
@@ -258,5 +262,17 @@ public class AtlasFrame {
 
 	public void setSourceH(int sourceH) {
 		_sourceH = sourceH;
+	}
+	
+	public int getIndex() {
+		return _index;
+	}
+	
+	public FrameData getFrameData() {
+		FrameData data = new FrameData(_index);
+		data.src = new Rectangle(getFrameX(), getFrameY(), getFrameW(), getFrameH());
+		data.dst = new Rectangle(getSpriteX(), getSpriteY(), getSpriteW(), getSpriteH());
+		data.srcSize = new Point(getSourceW(), getSourceH());
+		return data;
 	}
 }
