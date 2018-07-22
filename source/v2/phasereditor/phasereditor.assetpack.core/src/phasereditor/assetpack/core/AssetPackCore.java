@@ -283,6 +283,8 @@ public class AssetPackCore {
 					return false;
 				case tilemapTiledJSON:
 					return isTilemapJSONFile(file);
+				case tilemapImpact:
+					return isTilemapImpactFile(file);
 				default:
 					return false;
 				}
@@ -463,6 +465,24 @@ public class AssetPackCore {
 		}
 	}
 
+	public static boolean isTilemapImpactFile(IFile file) {
+		if (!file.exists()) {
+			return false;
+		}
+
+		try {
+			IContentDescription desc = file.getContentDescription();
+			if (desc == null) {
+				return false;
+			}
+			IContentType contentType = desc.getContentType();
+			String id = contentType.getId();
+			return id.equals(TilemapImpactDescriber.CONTENT_TYPE_ID);
+		} catch (CoreException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	/**
 	 * Check if the given content has an Asset Pack format.
 	 * 
@@ -502,6 +522,17 @@ public class AssetPackCore {
 			obj.getJSONArray("tilesets");
 			obj.getDouble("tileheight");
 			obj.getDouble("tilewidth");
+			return null;
+		} catch (JSONException e) {
+			return e.getMessage();
+		}
+	}
+	
+	public static String isTilemapImpactContent(InputStream contents) {
+		try {
+			JSONTokener tokener = new JSONTokener(new InputStreamReader(contents));
+			JSONObject obj = new JSONObject(tokener);
+			obj.getJSONArray("layer");
 			return null;
 		} catch (JSONException e) {
 			return e.getMessage();

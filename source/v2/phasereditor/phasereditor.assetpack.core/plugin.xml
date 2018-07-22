@@ -18,6 +18,13 @@
             id="phasereditor.assetpack.tilemapJson"
             name="Phaser Tilemap">
       </content-type>
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            describer="phasereditor.assetpack.core.TilemapImpactDescriber"
+            file-extensions="json"
+            id="phasereditor.assetpack.tilemapImpact"
+            name="Impact Tilemap">
+      </content-type>
    </extension>
   <extension
         point="phasereditor.project.core.buildParticipant">

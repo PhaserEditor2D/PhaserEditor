@@ -70,10 +70,15 @@ public class TilemapSpriteNode extends Pane implements ISpriteNode {
 	}
 
 	public void updateContent() {
-		if (getModel().getAssetKey().isCSVFormat()) {
+		switch (getModel().getAssetKey().getType()) {
+		case tilemapCSV:
 			createMap_CSV();
-		} else {
+			break;
+		case tilemapTiledJSON:
 			createMap_JSON();
+			break;
+		default:
+			break;
 		}
 	}
 

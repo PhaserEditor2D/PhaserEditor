@@ -162,7 +162,7 @@ public abstract class AssetFactory {
 
 		cache(new TilemapAssetFactory(AssetType.tilemapTiledJSON));
 
-		cache(new TilemapAssetFactory(AssetType.tilemapWeltmeister));
+		cache(new TilemapAssetFactory(AssetType.tilemapImpact));
 
 		cache(new AssetFactory(AssetType.bitmapFont) {
 			@Override

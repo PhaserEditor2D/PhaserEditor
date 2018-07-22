@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.ImageAssetModel.Frame;
@@ -53,7 +54,7 @@ public class TilemapSpriteControl extends BaseSpriteControl<TilemapSpriteModel> 
 	@Override
 	public double getTextureWidth() {
 		TilemapAssetModel asset = getModel().getAssetKey();
-		if (asset.isCSVFormat()) {
+		if (asset.getType() == AssetType.tilemapCSV) {
 			int[][] map = asset.getCsvData();
 			if (map.length > 0) {
 				return map[0].length * getModel().getTileWidth();
@@ -65,7 +66,7 @@ public class TilemapSpriteControl extends BaseSpriteControl<TilemapSpriteModel> 
 	@Override
 	public double getTextureHeight() {
 		TilemapAssetModel asset = getModel().getAssetKey();
-		if (asset.isCSVFormat()) {
+		if (asset.getType() == AssetType.tilemapCSV) {
 			int[][] map = asset.getCsvData();
 			if (map.length > 0) {
 				return map.length * getModel().getTileHeight();

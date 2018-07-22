@@ -140,12 +140,16 @@ public class TilemapAssetModel extends AssetModel {
 		_csvData = new int[0][0];
 		_tilemapJSON = new TilemapJSON();
 
-		if (isJSONFormat()) {
-			buildTilemapJSON();
-		} else {
+		switch (getType()) {
+		case tilemapCSV:
 			buildTilemapCSV();
+			break;
+		case tilemapTiledJSON:
+			buildTilemapTiledJSON();
+			break;
+		default:
+			break;
 		}
-
 	}
 
 	@SuppressWarnings("boxing")
@@ -219,7 +223,7 @@ public class TilemapAssetModel extends AssetModel {
 		return _csvData;
 	}
 
-	private void buildTilemapJSON() {
+	private void buildTilemapTiledJSON() {
 		TilemapJSON tilemap = new TilemapJSON();
 		try {
 			String data = null;
@@ -297,14 +301,6 @@ public class TilemapAssetModel extends AssetModel {
 
 	public IFile getUrlFile() {
 		return getFileFromUrl(_url);
-	}
-
-	public boolean isJSONFormat() {
-		return getType() == AssetType.tilemapTiledJSON;
-	}
-
-	public boolean isCSVFormat() {
-		return getType() == AssetType.tilemapCSV;
 	}
 
 	@Override

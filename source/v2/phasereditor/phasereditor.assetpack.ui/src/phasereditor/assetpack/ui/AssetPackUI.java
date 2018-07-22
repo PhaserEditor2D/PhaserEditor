@@ -73,6 +73,7 @@ import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
+import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
@@ -803,7 +804,7 @@ public class AssetPackUI {
 
 				@Override
 				public boolean isSupported(Object info) {
-					return info instanceof TilemapAssetModel && ((TilemapAssetModel) info).isJSONFormat();
+					return info instanceof TilemapAssetModel && ((TilemapAssetModel) info).getType() == AssetType.tilemapTiledJSON;
 				}
 			});
 
@@ -818,7 +819,7 @@ public class AssetPackUI {
 
 				@Override
 				public boolean isSupported(Object info) {
-					return info instanceof TilemapAssetModel && ((TilemapAssetModel) info).isCSVFormat();
+					return info instanceof TilemapAssetModel && ((TilemapAssetModel) info).getType() == AssetType.tilemapCSV;
 				}
 			});
 

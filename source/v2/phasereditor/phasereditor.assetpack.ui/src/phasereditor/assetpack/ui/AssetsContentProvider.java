@@ -135,19 +135,16 @@ public class AssetsContentProvider implements ITreeContentProvider {
 					return spritemap.toArray();
 				}
 				case atlas:
-				case atlasXML: 
+				case atlasXML:
 				case unityAtlas:
 				case multiatlas:
 				case spritesheet:
 					return asset.getSubElements().toArray();
-				case tilemapCSV: {
+				case tilemapTiledJSON: {
 					TilemapAssetModel tilemapAsset = (TilemapAssetModel) asset;
-					if (tilemapAsset.isJSONFormat()) {
-						TilemapJSON tilemap = tilemapAsset.getTilemapJSON();
-						return new Object[] { new Container("Layers", tilemap.getLayers().toArray()),
-								new Container("Tilesets", tilemap.getTilesets().toArray()) };
-					}
-					return new Object[0];
+					TilemapJSON tilemap = tilemapAsset.getTilemapJSON();
+					return new Object[] { new Container("Layers", tilemap.getLayers().toArray()),
+							new Container("Tilesets", tilemap.getTilesets().toArray()) };
 				}
 				case physics: {
 					List<PhysicsAssetModel.SpriteData> sprites = ((PhysicsAssetModel) asset).getSprites();

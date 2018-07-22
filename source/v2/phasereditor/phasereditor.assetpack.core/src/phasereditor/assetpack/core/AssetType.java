@@ -61,7 +61,7 @@ public enum AssetType implements IAssetPackEelement, IAdaptable {
 
 	tilemapTiledJSON("json"),
 
-	tilemapWeltmeister("json"),
+	tilemapImpact("json"),
 
 	bitmapFont("xml"), 
 	
