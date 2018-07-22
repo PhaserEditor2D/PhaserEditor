@@ -880,6 +880,8 @@ public class AssetPackCore {
 			return new String[] { AtlasCore.TEXTURE_ATLAS_MULTI };
 		case atlasXML:
 			return new String[] { AtlasCore.TEXTURE_ATLAS_XML_STARLING };
+		case unityAtlas:
+			return new String[] {AtlasCore.TEXTURE_ATLAS_UNITY};
 		default:
 			return new String[] { AtlasCore.TEXTURE_ATLAS_JSON_HASH, AtlasCore.TEXTURE_ATLAS_JSON_ARRAY };
 		}

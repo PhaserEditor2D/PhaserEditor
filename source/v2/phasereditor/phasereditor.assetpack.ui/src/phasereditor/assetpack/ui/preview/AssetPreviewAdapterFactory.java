@@ -79,6 +79,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 				return createAudioSpritePreviewAdpter();
 			case atlas:
 			case atlasXML:
+			case unityAtlas:
 				return createAtlasPreviewAdapter();
 			case multiatlas:
 				return createMultiAtlasPreviewAdapter();

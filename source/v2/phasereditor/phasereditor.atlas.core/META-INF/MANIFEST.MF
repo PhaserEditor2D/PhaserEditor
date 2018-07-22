@@ -14,5 +14,26 @@ Require-Bundle: org.eclipse.ui,
  phasereditor.project.core;bundle-version="1.5.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-9
 Bundle-ActivationPolicy: lazy
-Export-Package: phasereditor.atlas.core
+Export-Package: org.yaml.snakeyaml,
+ org.yaml.snakeyaml.composer,
+ org.yaml.snakeyaml.constructor,
+ org.yaml.snakeyaml.emitter,
+ org.yaml.snakeyaml.error,
+ org.yaml.snakeyaml.events,
+ org.yaml.snakeyaml.extensions.compactnotation,
+ org.yaml.snakeyaml.external.biz.base64Coder,
+ org.yaml.snakeyaml.external.com.google.gdata.util.common.base,
+ org.yaml.snakeyaml.introspector,
+ org.yaml.snakeyaml.nodes,
+ org.yaml.snakeyaml.parser,
+ org.yaml.snakeyaml.reader,
+ org.yaml.snakeyaml.representer,
+ org.yaml.snakeyaml.resolver,
+ org.yaml.snakeyaml.scanner,
+ org.yaml.snakeyaml.serializer,
+ org.yaml.snakeyaml.tokens,
+ org.yaml.snakeyaml.util,
+ phasereditor.atlas.core
 Automatic-Module-Name: phasereditor.atlas.core
+Bundle-ClassPath: lib/snakeyaml-1.21.jar,
+ .

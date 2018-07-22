@@ -188,6 +188,8 @@ public abstract class AssetFactory {
 		cache(new AtlasAssetFactory(AssetType.atlas));
 
 		cache(new AtlasAssetFactory(AssetType.atlasXML));
+		
+		cache(new AtlasAssetFactory(AssetType.unityAtlas));
 
 		cache(new MultiAtlasAssetFactory());
 

@@ -50,7 +50,8 @@ public class TextureTreeContentProvider extends AssetsContentProvider {
 
 			List<Object> list = new ArrayList<>();
 
-			AssetType[] types = { AssetType.image, AssetType.spritesheet, AssetType.atlas, AssetType.atlasXML };
+			AssetType[] types = { AssetType.image, AssetType.spritesheet, AssetType.atlas, AssetType.atlasXML,
+					AssetType.multiatlas, AssetType.unityAtlas };
 
 			for (AssetType type : types) {
 				AssetGroupModel group = section.getGroup(type);

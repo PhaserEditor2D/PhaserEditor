@@ -28,6 +28,7 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
@@ -35,12 +36,14 @@ import org.eclipse.core.runtime.CoreException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.yaml.snakeyaml.Yaml;
 
 public class AtlasCore {
 	public static final String TEXTURE_ATLAS_MULTI = "TEXTURE_ATLAS_MULTI";
 	public static final String TEXTURE_ATLAS_JSON_ARRAY = "TEXTURE_ATLAS_JSON_ARRAY";
 	public static final String TEXTURE_ATLAS_JSON_HASH = "TEXTURE_ATLAS_JSON_HASH";
 	public static final String TEXTURE_ATLAS_XML_STARLING = "TEXTURE_ATLAS_XML_STARLING";
+	public static final String TEXTURE_ATLAS_UNITY = "TEXTURE_ATLAS_UNITY";
 
 	private static final Set<String> IMG_EXTS = new HashSet<>(Arrays.asList("png", "jpg", "gif", "bmp"));
 
@@ -67,6 +70,7 @@ public class AtlasCore {
 	 *            The content to test.
 	 * @return If the content has an atlas JSON format, or null if it does not.
 	 * @see #isAtlasXMLFormat(InputStream)
+	 * @see #isAtlasUnityFormat(InputStream)
 	 */
 	public static String getAtlasJSONFormat(String contents) {
 		try {
@@ -122,6 +126,37 @@ public class AtlasCore {
 	}
 
 	/**
+	 * Check if the given content has a Unity atlas format
+	 * {@link AtlasAssetModel#TEXTURE_ATLAS_UNITY}.
+	 * 
+	 * @param contents
+	 *            The content to test.
+	 * @return If the content has an atlas XML format.
+	 * @see #getAtlasJSONFormat(InputStream)
+	 */
+	@SuppressWarnings("rawtypes")
+	public static boolean isAtlasUnityFormat(InputStream contents) {
+		try {
+			Yaml yaml = new Yaml();
+			var map = (Map) yaml.load(contents);
+
+			map = (Map) map.get("TextureImporter");
+
+			if (map == null) {
+				return false;
+			}
+
+			map = (Map) map.get("spriteSheet");
+
+			return map != null;
+		} catch (Exception e) {
+			// nothing
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	/**
 	 * Return the atlas format of the file, or null if it is not an atlas.
 	 * 
 	 * @param file
@@ -144,6 +179,14 @@ public class AtlasCore {
 			try (InputStream input = file.getContents()) {
 				if (isAtlasXMLFormat(input)) {
 					return TEXTURE_ATLAS_XML_STARLING;
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else if (ext.equals("meta")) {
+			try (InputStream input = file.getContents()) {
+				if (isAtlasUnityFormat(input)) {
+					return TEXTURE_ATLAS_UNITY;
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

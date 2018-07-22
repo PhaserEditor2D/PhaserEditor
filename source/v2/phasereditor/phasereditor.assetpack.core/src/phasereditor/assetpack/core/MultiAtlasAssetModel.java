@@ -22,6 +22,7 @@
 package phasereditor.assetpack.core;
 
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,9 +116,7 @@ public class MultiAtlasAssetModel extends AssetModel {
 			{
 				IFile file = getFileFromUrl(_url);
 				if (file != null && file.exists()) {
-					try (InputStream input = file.getContents()) {
-						content = PhaserEditorUI.readString(input);
-					}
+					content = new String(Files.readAllBytes(file.getLocation().toFile().toPath()));
 				}
 			}
 

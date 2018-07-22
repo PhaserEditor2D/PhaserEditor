@@ -24,13 +24,11 @@ package phasereditor.ui;
 import static java.lang.System.out;
 
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -889,16 +887,6 @@ public class PhaserEditorUI {
 		ImageIO.write(img, "png", memory);
 		Image result = new Image(Display.getCurrent(), new ByteArrayInputStream(memory.toByteArray()));
 		return result;
-	}
-
-	public static String readString(InputStream input) throws IOException {
-		StringBuilder sb = new StringBuilder();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-		String line;
-		while ((line = reader.readLine()) != null) {
-			sb.append(line + "\n");
-		}
-		return sb.toString();
 	}
 
 	public static String getNameFromFilename(String name) {

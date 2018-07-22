@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.atlas.core;
 
+import java.util.Map;
+
 import org.json.JSONObject;
 import org.w3c.dom.Element;
 
@@ -36,6 +38,7 @@ public class AtlasFrame {
 	private int _spriteH;
 	private int _sourceW;
 	private int _sourceH;
+	private boolean _bottomUp;
 
 	public static AtlasFrame fromXMLItem(Element node) {
 		AtlasFrame fi = new AtlasFrame();
@@ -44,6 +47,7 @@ public class AtlasFrame {
 		fi.setFrameY(Integer.parseInt(node.getAttribute("y")));
 		fi.setFrameW(Integer.parseInt(node.getAttribute("width")));
 		fi.setFrameH(Integer.parseInt(node.getAttribute("height")));
+
 		fi.setSpriteX(0);
 		fi.setSpriteY(0);
 		fi.setSpriteW(fi.getFrameW());
@@ -112,6 +116,32 @@ public class AtlasFrame {
 		}
 	}
 
+	@SuppressWarnings({ "rawtypes", "boxing" })
+	public static AtlasFrame fromUnitySprite(Map yaml) {
+		AtlasFrame fi = new AtlasFrame();
+
+		fi.setName((String) yaml.get("name"));
+		
+		fi.setBottomUp(true);
+
+		var yamlRect = (Map) yaml.get("rect");
+
+		fi.setFrameX((int) yamlRect.get("x"));
+		fi.setFrameY((int) yamlRect.get("y"));
+		fi.setFrameW((int) yamlRect.get("width"));
+		fi.setFrameH((int) yamlRect.get("height"));
+
+		fi.setSpriteX(0);
+		fi.setSpriteY(0);
+		fi.setSpriteW(fi.getFrameW());
+		fi.setSpriteH(fi.getFrameH());
+		
+		fi.setSourceW(fi.getFrameW());
+		fi.setSourceH(fi.getFrameH());
+
+		return fi;
+	}
+
 	public void update(AtlasFrame frame) {
 		_frameH = frame._frameH;
 		_frameW = frame._frameW;
@@ -127,6 +157,8 @@ public class AtlasFrame {
 		_sourceH = frame._sourceH;
 
 		_name = frame._name;
+		
+		_bottomUp = frame._bottomUp;
 	}
 
 	public AtlasFrame() {
@@ -139,7 +171,15 @@ public class AtlasFrame {
 	public void setName(String name) {
 		_name = name;
 	}
+	
+	public boolean isBottomUp() {
+		return _bottomUp;
+	}
 
+	public void setBottomUp(boolean bottomUp) {
+		_bottomUp = bottomUp;
+	}
+	
 	public int getFrameX() {
 		return _frameX;
 	}

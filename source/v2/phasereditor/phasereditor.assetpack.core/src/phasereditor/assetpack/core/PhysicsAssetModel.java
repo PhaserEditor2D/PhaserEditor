@@ -22,6 +22,7 @@
 package phasereditor.assetpack.core;
 
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,9 +114,7 @@ public class PhysicsAssetModel extends AssetModel {
 			if (data == null) {
 				IFile file = getFileFromUrl(_url);
 				if (file != null && file.exists()) {
-					try (InputStream input = file.getContents()) {
-						data = PhaserEditorUI.readString(input);
-					}
+					data = new String(Files.readAllBytes(file.getLocation().toFile().toPath()));
 				}
 			}
 			if (data != null) {

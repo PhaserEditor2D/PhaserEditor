@@ -45,6 +45,8 @@ public enum AssetType implements IAssetPackEelement, IAdaptable {
 
 	atlasXML("xml"),
 
+	unityAtlas("meta"),
+	
 	multiatlas("json"),
 
 	audio("mp3"),

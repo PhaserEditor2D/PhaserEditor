@@ -222,7 +222,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 				return img;
 			}
 		}
-		
+
 		if (element instanceof MultiAtlasAssetModel.Frame) {
 			var frame = (MultiAtlasAssetModel.Frame) element;
 			var file = frame.getImageFile();
@@ -291,8 +291,12 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 	private Image getAtlasFrameImage(AtlasFrame frame, IFile imageFile) {
 		if (imageFile != null) {
 			try {
-				Rectangle src = new Rectangle(frame.getFrameX(), frame.getFrameY(), frame.getFrameW(),
-						frame.getFrameH());
+				Rectangle src;
+				if (frame instanceof AtlasAssetModel.Frame) {
+					src = ((AtlasAssetModel.Frame) frame).getFrameData().src;
+				} else {
+					src = new Rectangle(frame.getFrameX(), frame.getFrameY(), frame.getFrameW(), frame.getFrameH());
+				}
 				return _cache.getIcon(imageFile, src, _iconSize, null);
 			} catch (Exception e) {
 				e.printStackTrace();

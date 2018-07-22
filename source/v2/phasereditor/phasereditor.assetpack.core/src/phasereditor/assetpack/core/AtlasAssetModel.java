@@ -21,10 +21,11 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -35,10 +36,12 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.yaml.snakeyaml.Yaml;
 
 import phasereditor.atlas.core.AtlasCore;
 import phasereditor.atlas.core.AtlasFrame;
@@ -50,6 +53,7 @@ public class AtlasAssetModel extends AssetModel {
 	private String _atlasURL;
 	private String _format;
 	private List<Frame> _frames;
+	private Rectangle _imageSize;
 
 	{
 		_format = AtlasCore.TEXTURE_ATLAS_JSON_ARRAY;
@@ -86,7 +90,7 @@ public class AtlasAssetModel extends AssetModel {
 			return new IFile[] { textureFile, atlasFile };
 		}
 
-		return new IFile[] { textureFile, atlasFile, getFileFromUrl(_normalMap)};
+		return new IFile[] { textureFile, atlasFile, getFileFromUrl(_normalMap) };
 	}
 
 	public IFile getTextureFile() {
@@ -133,7 +137,7 @@ public class AtlasAssetModel extends AssetModel {
 		firePropertyChange("format");
 	}
 
-	public static class Frame extends AtlasFrame implements IAssetElementModel, IAssetFrameModel {
+	public class Frame extends AtlasFrame implements IAssetElementModel, IAssetFrameModel {
 		private final AtlasAssetModel _asset;
 		private int _index;
 
@@ -153,6 +157,19 @@ public class AtlasAssetModel extends AssetModel {
 			data.src = new Rectangle(getFrameX(), getFrameY(), getFrameW(), getFrameH());
 			data.dst = new Rectangle(getSpriteX(), getSpriteY(), getSpriteW(), getSpriteH());
 			data.srcSize = new Point(getSourceW(), getSourceH());
+
+			Rectangle size;
+			if (isBottomUp() && (size = getImageSize()) != null) {
+				data.src = new Rectangle(getFrameX(), size.height - getFrameY() - getFrameH(), getFrameW(),
+						getFrameH());
+				data.dst = new Rectangle(getSpriteX(), getSpriteY(), getSpriteW(), getSpriteH());
+				data.srcSize = new Point(getSourceW(), getSourceH());
+			} else {
+				data.src = new Rectangle(getFrameX(), getFrameY(), getFrameW(), getFrameH());
+				data.dst = new Rectangle(getSpriteX(), getSpriteY(), getSpriteW(), getSpriteH());
+				data.srcSize = new Point(getSourceW(), getSourceH());
+			}
+
 			return data;
 		}
 
@@ -160,6 +177,17 @@ public class AtlasAssetModel extends AssetModel {
 		public IFile getImageFile() {
 			return _asset.getTextureFile();
 		}
+	}
+
+	public Rectangle getImageSize() {
+		if (getType() == AssetType.unityAtlas) {
+			var file = getTextureFile();
+			if (file != null && file.exists()) {
+				Rectangle size = PhaserEditorUI.getImageBounds(file);
+				_imageSize = size;
+			}
+		}
+		return _imageSize;
 	}
 
 	public List<Frame> getAtlasFrames() {
@@ -174,62 +202,81 @@ public class AtlasAssetModel extends AssetModel {
 		return getAtlasFrames();
 	}
 
+	@SuppressWarnings("rawtypes")
 	private synchronized void buildFrames() {
+
+		_imageSize = null;
+		getImageSize();
 
 		// TODO: use AtlasCore.readAtlasFrames(..) method.
 
 		List<Frame> list = new ArrayList<>();
 		try {
-			String data = null;
 			IFile file = getFileFromUrl(_atlasURL);
-			if (file != null && file.exists()) {
-				try (InputStream input = file.getContents()) {
-					data = PhaserEditorUI.readString(input);
-				}
-			}
-
-			if (data == null) {
+			if (file == null || !file.exists()) {
 				_frames = list;
 				return;
 			}
 
+			File ioFile = file.getLocation().toFile();
+
 			JSONObject obj;
-			switch (_format) {
-			case AtlasCore.TEXTURE_ATLAS_JSON_ARRAY:
-				obj = new JSONObject(data);
-				JSONArray array = obj.getJSONArray("frames");
-				for (int i = 0; i < array.length(); i++) {
-					JSONObject item = array.getJSONObject(i);
-					Frame fi = new Frame(this, i);
-					fi.update(AtlasFrame.fromArrayItem(item));
-					list.add(fi);
+			switch (getType()) {
+			case atlas: {
+				if (AtlasCore.TEXTURE_ATLAS_JSON_ARRAY.equals(_format)) {
+					obj = new JSONObject(new JSONTokener(ioFile));
+					JSONArray array = obj.getJSONArray("frames");
+					for (int i = 0; i < array.length(); i++) {
+						JSONObject item = array.getJSONObject(i);
+						Frame fi = new Frame(this, i);
+						fi.update(AtlasFrame.fromArrayItem(item));
+						list.add(fi);
+					}
+				} else {
+					obj = new JSONObject(new JSONTokener(ioFile));
+					JSONObject frames = obj.getJSONObject("frames");
+					int i = 0;
+					for (String k : frames.keySet()) {
+						JSONObject item = frames.getJSONObject(k);
+						Frame fi = new Frame(this, i);
+						fi.update(AtlasFrame.fromHashItem(k, item));
+						list.add(fi);
+						i++;
+					}
 				}
 				break;
-			case AtlasCore.TEXTURE_ATLAS_JSON_HASH:
-				obj = new JSONObject(data);
-				JSONObject frames = obj.getJSONObject("frames");
-				int i = 0;
-				for (String k : frames.keySet()) {
-					JSONObject item = frames.getJSONObject(k);
-					Frame fi = new Frame(this, i);
-					fi.update(AtlasFrame.fromHashItem(k, item));
-					list.add(fi);
-					i++;
+			}
+			case atlasXML: {
+				try (FileInputStream input = new FileInputStream(ioFile)) {
+					Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(input);
+					NodeList elems = doc.getElementsByTagName("SubTexture");
+					for (int j = 0; j < elems.getLength(); j++) {
+						Node elem = elems.item(j);
+						if (elem.getNodeType() == Node.ELEMENT_NODE) {
+							Frame fi = new Frame(this, j);
+							fi.update(AtlasFrame.fromXMLItem((Element) elem));
+							list.add(fi);
+						}
+					}
 				}
 				break;
-			case AtlasCore.TEXTURE_ATLAS_XML_STARLING:
-				Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-						.parse(new ByteArrayInputStream(data.getBytes()));
-				NodeList elems = doc.getElementsByTagName("SubTexture");
-				for (int j = 0; j < elems.getLength(); j++) {
-					Node elem = elems.item(j);
-					if (elem.getNodeType() == Node.ELEMENT_NODE) {
-						Frame fi = new Frame(this, j);
-						fi.update(AtlasFrame.fromXMLItem((Element) elem));
+			}
+			case unityAtlas: {
+				try (var input = new FileInputStream(ioFile)) {
+					var yaml = new Yaml();
+					var data = (Map) yaml.load(input);
+					Map data1 = (Map) data.get("TextureImporter");
+					Map data2 = (Map) data1.get("spriteSheet");
+					var data3 = (List) data2.get("sprites");
+					for (int i = 0; i < data3.size(); i++) {
+						var item = (Map) data3.get(i);
+						Frame fi = new Frame(this, i);
+						fi.update(AtlasFrame.fromUnitySprite(item));
 						list.add(fi);
 					}
 				}
 				break;
+			}
 			default:
 				break;
 			}
@@ -237,6 +284,14 @@ public class AtlasAssetModel extends AssetModel {
 			e.printStackTrace();
 		}
 		_frames = list;
+
+		{
+			IFile file = getTextureFile();
+			if (file != null && file.exists()) {
+				Rectangle size = PhaserEditorUI.getImageBounds(file);
+				_imageSize = size;
+			}
+		}
 	}
 
 	@Override

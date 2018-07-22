@@ -36,12 +36,9 @@ import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AssetType;
-import phasereditor.assetpack.core.AtlasAssetModel;
-import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.assetpack.core.AudioSpriteAssetModel;
 import phasereditor.assetpack.core.AudioSpriteAssetModel.AssetAudioSprite;
 import phasereditor.assetpack.core.IAssetElementModel;
-import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel.TilemapJSON;
@@ -138,14 +135,9 @@ public class AssetsContentProvider implements ITreeContentProvider {
 					return spritemap.toArray();
 				}
 				case atlas:
-				case atlasXML: {
-					List<Frame> frames = ((AtlasAssetModel) asset).getAtlasFrames();
-					return frames.toArray();
-				}
-				case multiatlas: {
-					var frames = ((MultiAtlasAssetModel) asset).getSubElements();
-					return frames.toArray();
-				}
+				case atlasXML: 
+				case unityAtlas:
+				case multiatlas:
 				case spritesheet:
 					return asset.getSubElements().toArray();
 				case tilemapCSV: {
