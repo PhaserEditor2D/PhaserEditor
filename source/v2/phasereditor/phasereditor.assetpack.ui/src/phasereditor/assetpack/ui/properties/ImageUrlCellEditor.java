@@ -57,7 +57,7 @@ public class ImageUrlCellEditor extends DialogCellEditor {
 		try {
 			AssetPackModel pack = _asset.getPack();
 			IFile urlFile = _asset.getFileFromUrl(_getUrl.apply(_asset));
-			List<IFile> imageFiles = pack.discoverImageFiles();
+			List<IFile> imageFiles = discoverImageFiles(pack);
 			String result = AssetPackUI.browseImageUrl(pack, "", urlFile, imageFiles,
 					cellEditorWindow.getShell());
 			if (result == null) {
@@ -68,6 +68,11 @@ public class ImageUrlCellEditor extends DialogCellEditor {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+	}
+
+	@SuppressWarnings("static-method")
+	protected List<IFile> discoverImageFiles(AssetPackModel pack) throws CoreException {
+		return pack.discoverImageFiles();
 	}
 
 }

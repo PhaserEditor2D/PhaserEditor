@@ -136,6 +136,10 @@ public class AssetPackCore {
 	public static boolean isImage(IResource resource) {
 		return resource instanceof IFile && _imageExtensions.contains(resource.getFullPath().getFileExtension());
 	}
+	
+	public static boolean isSvg(IResource resource) {
+		return resource instanceof IFile && resource.getFullPath().getFileExtension().toLowerCase().equals("svg");
+	}
 
 	public static boolean isShader(IResource resource) {
 		return resource instanceof IFile && _shaderExtensions.contains(resource.getFullPath().getFileExtension());
@@ -218,6 +222,10 @@ public class AssetPackCore {
 	 */
 	public static List<IFile> discoverImageFiles(IContainer folder) throws CoreException {
 		return discoverFiles(folder, AssetPackCore::isImage);
+	}
+	
+	public static List<IFile> discoverSvgFiles(IContainer folder) throws CoreException {
+		return discoverFiles(folder, AssetPackCore::isSvg);
 	}
 
 	/**

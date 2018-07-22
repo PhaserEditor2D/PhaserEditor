@@ -39,6 +39,8 @@ import phasereditor.inspect.core.jsdoc.PhaserType;
 public enum AssetType implements IAssetPackEelement, IAdaptable {
 	image("png"),
 
+	svg("svg"),
+	
 	spritesheet("png"),
 
 	atlas("json"),

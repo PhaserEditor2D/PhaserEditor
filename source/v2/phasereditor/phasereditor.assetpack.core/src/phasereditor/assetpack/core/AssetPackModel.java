@@ -289,6 +289,10 @@ public final class AssetPackModel {
 	public List<IFile> discoverImageFiles() throws CoreException {
 		return AssetPackCore.discoverImageFiles(getDiscoverFolder());
 	}
+	
+	public List<IFile> discoverSvgFiles() throws CoreException {
+		return AssetPackCore.discoverSvgFiles(getDiscoverFolder());
+	}
 
 	public List<IFile> discoverTilemapFiles(AssetType tilemapType) throws CoreException {
 		return AssetPackCore.discoverTilemapFiles(getDiscoverFolder(), tilemapType);
@@ -423,6 +427,10 @@ public final class AssetPackModel {
 	 */
 	public IFile pickImageFile() throws CoreException {
 		return pickFile(discoverImageFiles());
+	}
+	
+	public IFile pickSvgFile() throws CoreException {
+		return pickFile(discoverSvgFiles());
 	}
 
 	/**

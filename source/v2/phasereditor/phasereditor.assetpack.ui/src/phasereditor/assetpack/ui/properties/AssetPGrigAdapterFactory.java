@@ -14,6 +14,7 @@ import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.PluginAssetModel;
 import phasereditor.assetpack.core.ScenePluginAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
+import phasereditor.assetpack.core.SvgAssetModel;
 import phasereditor.assetpack.core.SimpleFileAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.ui.properties.PGridModel;
@@ -33,6 +34,8 @@ public class AssetPGrigAdapterFactory implements IAdapterFactory {
 				return new AssetGroupPGridModel((AssetGroupModel) obj);
 			} else if (obj instanceof ImageAssetModel) {
 				return new ImageAssetPGridModel((ImageAssetModel) obj);
+			} else if (obj instanceof SvgAssetModel) {
+				return new SvgAssetPGridModel((SvgAssetModel) obj);
 			} else if (obj instanceof SpritesheetAssetModel) {
 				return new SpritesheetAssetPGridModel((SpritesheetAssetModel) obj);
 			} else if (obj instanceof AtlasAssetModel) {

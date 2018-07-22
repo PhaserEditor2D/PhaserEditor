@@ -60,6 +60,25 @@ public abstract class AssetFactory {
 				return new ImageAssetModel(jsonData, section);
 			}
 		});
+		
+		cache(new AssetFactory(AssetType.svg) {
+			@Override
+			public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
+				AssetPackModel pack = section.getPack();
+				var asset = new SvgAssetModel(key, section);
+				IFile file = pack.pickSvgFile();
+				if (file != null) {
+					asset.setKey(pack.createKey(file));
+					asset.setUrl(ProjectCore.getAssetUrl(file));
+				}
+				return asset;
+			}
+
+			@Override
+			public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
+				return new SvgAssetModel(jsonData, section);
+			}
+		});
 
 		cache(new AssetFactory(AssetType.spritesheet) {
 			@Override
