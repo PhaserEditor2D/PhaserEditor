@@ -46,7 +46,7 @@ public interface IEditorSharedImages {
 	String IMG_METHPUB_OBJ = "icons/methpub_obj.png";
 	String IMG_PACKAGE_ADD = "icons/package_add.png";
 	String IMG_PACKAGE_SEARCH = "icons/box.png";
-	String IMG_PACKAGE = "icons/box.png";
+	String IMG_BOX = "icons/box.png";
 	String IMG_PHASER_SHIP = "icons/phaser-ship.png";
 	String IMG_TEMPLATE_OBJ = "icons/template_obj.png";
 	String IMG_WORLD = "icons/world.png";

@@ -310,7 +310,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 	}
 
 	public static Image getPackageImage() {
-		return EditorSharedImages.getImage(IMG_PACKAGE);
+		return EditorSharedImages.getImage(IMG_BOX);
 	}
 
 	public static Image getSectionImage() {
