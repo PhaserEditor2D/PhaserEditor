@@ -32,9 +32,6 @@ import phasereditor.ui.properties.PGridStringProperty;
 public class BaseAssetPGridModel<T extends AssetModel> extends PGridModel {
 	private T _asset;
 
-	/**
-	 * @param asset
-	 */
 	public BaseAssetPGridModel(T asset) {
 		super();
 		_asset = asset;

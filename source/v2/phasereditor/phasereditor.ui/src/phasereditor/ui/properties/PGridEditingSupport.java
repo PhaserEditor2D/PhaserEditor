@@ -194,9 +194,9 @@ public class PGridEditingSupport extends EditingSupport {
 		getViewer().refresh(element);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unused" })
+	@SuppressWarnings({ "static-method", "unchecked", "rawtypes" })
 	protected void executeChangePropertyValueOperation(Object value, PGridProperty prop) {
-		// nothing in the default implementation
+		prop.setValue(value, true);
 	}
 
 }

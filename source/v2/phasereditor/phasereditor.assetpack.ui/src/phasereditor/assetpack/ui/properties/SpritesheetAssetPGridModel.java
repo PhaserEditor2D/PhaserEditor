@@ -25,10 +25,8 @@ import java.util.ArrayList;
 
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.PlatformUI;
 
 import phasereditor.assetpack.core.SpritesheetAssetModel;
-import phasereditor.assetpack.ui.editors.AssetPackEditor;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.inspect.core.jsdoc.PhaserJsdocModel;
 import phasereditor.ui.properties.PGridNumberProperty;
@@ -53,10 +51,6 @@ public class SpritesheetAssetPGridModel extends BaseAssetPGridModel<SpritesheetA
 			public void setValue(String value, boolean notify) {
 				getAsset().setUrl(value);
 				getAsset().build(new ArrayList<>());
-
-				if (notify) {
-					updateEditorFromPropertyChange();
-				}
 			}
 
 			@Override
@@ -81,10 +75,6 @@ public class SpritesheetAssetPGridModel extends BaseAssetPGridModel<SpritesheetA
 			@Override
 			public void setValue(String value, boolean notify) {
 				getAsset().setNormalMap(value);
-
-				if (notify) {
-					updateEditorFromPropertyChange();
-				}
 			}
 
 			@Override
@@ -124,10 +114,6 @@ public class SpritesheetAssetPGridModel extends BaseAssetPGridModel<SpritesheetA
 			public void setValue(Double value, boolean notify) {
 				getAsset().setFrameWidth(value.intValue());
 				getAsset().build(new ArrayList<>());
-
-				if (notify) {
-					updateEditorFromPropertyChange();
-				}
 			}
 
 			@Override
@@ -148,10 +134,6 @@ public class SpritesheetAssetPGridModel extends BaseAssetPGridModel<SpritesheetA
 			public void setValue(Double value, boolean notify) {
 				getAsset().setFrameHeight(value.intValue());
 				getAsset().build(new ArrayList<>());
-
-				if (notify) {
-					updateEditorFromPropertyChange();
-				}
 			}
 
 			@Override
@@ -172,11 +154,6 @@ public class SpritesheetAssetPGridModel extends BaseAssetPGridModel<SpritesheetA
 			public void setValue(Double value, boolean notify) {
 				getAsset().setStartFrame(value.intValue());
 				getAsset().build(new ArrayList<>());
-
-				if (notify) {
-					updateEditorFromPropertyChange();
-				}
-				
 			}
 
 			@Override
@@ -202,10 +179,6 @@ public class SpritesheetAssetPGridModel extends BaseAssetPGridModel<SpritesheetA
 			public void setValue(Double value, boolean notify) {
 				getAsset().setEndFrame(value.intValue());
 				getAsset().build(new ArrayList<>());
-				
-				if (notify) {
-					updateEditorFromPropertyChange();
-				}
 			}
 
 			@Override
@@ -231,10 +204,6 @@ public class SpritesheetAssetPGridModel extends BaseAssetPGridModel<SpritesheetA
 			public void setValue(Double value, boolean notify) {
 				getAsset().setSpacing(value.intValue());
 				getAsset().build(new ArrayList<>());
-
-				if (notify) {
-					updateEditorFromPropertyChange();
-				}
 			}
 
 			@Override
@@ -255,10 +224,6 @@ public class SpritesheetAssetPGridModel extends BaseAssetPGridModel<SpritesheetA
 			public void setValue(Double value, boolean notify) {
 				getAsset().setMargin(value.intValue());
 				getAsset().build(new ArrayList<>());
-
-				if (notify) {
-					updateEditorFromPropertyChange();
-				}
 			}
 
 			@Override
@@ -270,11 +235,4 @@ public class SpritesheetAssetPGridModel extends BaseAssetPGridModel<SpritesheetA
 		getSections().add(section);
 
 	}
-
-	protected static void updateEditorFromPropertyChange() {
-		AssetPackEditor editor = (AssetPackEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-				.getActivePage().getActiveEditor();
-		editor.refresh();
-	}
-
 }
