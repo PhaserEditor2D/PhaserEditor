@@ -100,7 +100,7 @@ public final class AssetPackModel {
 					String extension = jsonNewSection.optString("extension", null);
 					String defaultType = jsonNewSection.optString("defaultType", null);
 					String path = jsonNewSection.optString("path", "");
-					
+
 					if (path.length() > 0 && !path.endsWith("/")) {
 						path += "/";
 					}
@@ -289,9 +289,14 @@ public final class AssetPackModel {
 	public List<IFile> discoverImageFiles() throws CoreException {
 		return AssetPackCore.discoverImageFiles(getDiscoverFolder());
 	}
-	
+
 	public List<IFile> discoverSvgFiles() throws CoreException {
 		return AssetPackCore.discoverSvgFiles(getDiscoverFolder());
+	}
+
+	@SuppressWarnings("boxing")
+	public List<IFile> discoverJsonFiles() throws CoreException {
+		return discoverFiles(f -> "json".equals(f.getFullPath().getFileExtension()));
 	}
 
 	public List<IFile> discoverTilemapFiles(AssetType tilemapType) throws CoreException {
@@ -428,7 +433,7 @@ public final class AssetPackModel {
 	public IFile pickImageFile() throws CoreException {
 		return pickFile(discoverImageFiles());
 	}
-	
+
 	public IFile pickSvgFile() throws CoreException {
 		return pickFile(discoverSvgFiles());
 	}
@@ -492,7 +497,8 @@ public final class AssetPackModel {
 
 	/**
 	 * Pick a tilemap file that is not used.
-	 * @param tilemapType 
+	 * 
+	 * @param tilemapType
 	 * 
 	 * @return The non used tilemap file or null if there is not anyone available.
 	 * @throws CoreException
@@ -526,21 +532,20 @@ public final class AssetPackModel {
 			setDirty(true);
 		}
 	}
-	
+
 	public void removeAllSections(List<AssetSectionModel> sections, boolean notify) {
 		_sections.removeAll(sections);
 		if (notify) {
 			setDirty(true);
 		}
 	}
-	
+
 	public void addAllSections(int index, List<AssetSectionModel> sections, boolean notify) {
 		_sections.addAll(index, sections);
 		if (notify) {
 			setDirty(true);
 		}
 	}
-	
 
 	public List<AssetSectionModel> getSections() {
 		return Collections.unmodifiableList(_sections);

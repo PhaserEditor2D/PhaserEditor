@@ -2,6 +2,7 @@ package phasereditor.assetpack.ui.properties;
 
 import org.eclipse.core.runtime.IAdapterFactory;
 
+import phasereditor.assetpack.core.AnimationAssetModel;
 import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AtlasAssetModel;
@@ -19,7 +20,7 @@ import phasereditor.assetpack.core.SimpleFileAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.ui.properties.PGridModel;
 
-public class AssetPGrigAdapterFactory implements IAdapterFactory {
+public class AssetPGridAdapterFactory implements IAdapterFactory {
 
 	private static final Class<?>[] LIST = { PGridModel.class };
 
@@ -58,6 +59,8 @@ public class AssetPGrigAdapterFactory implements IAdapterFactory {
 				return new PluginAssetPGridModel((PluginAssetModel) obj);
 			} else if (obj instanceof ScenePluginAssetModel) {
 				return new ScenePluginAssetPGridModel((ScenePluginAssetModel) obj);
+			} else if (obj instanceof AnimationAssetModel) {
+				return new AnimationAssetPGridModel((AnimationAssetModel) obj);
 			}
 		}
 		return null;

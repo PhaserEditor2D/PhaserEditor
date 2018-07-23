@@ -51,7 +51,7 @@
       </factory>
       <factory
             adaptableType="phasereditor.assetpack.core.IAssetPackEelement"
-            class="phasereditor.assetpack.ui.properties.AssetPGrigAdapterFactory">
+            class="phasereditor.assetpack.ui.properties.AssetPGridAdapterFactory">
          <adapter
                type="phasereditor.ui.properties.PGridModel">
          </adapter>

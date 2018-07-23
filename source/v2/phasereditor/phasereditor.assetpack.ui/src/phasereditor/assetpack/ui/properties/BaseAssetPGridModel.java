@@ -45,7 +45,7 @@ public class BaseAssetPGridModel<T extends AssetModel> extends PGridModel {
 	}
 
 	protected PGridStringProperty createKeyProperty() {
-		return new PGridStringProperty("key", "key", getAsset().getHelp("key")) {
+		return new PGridStringProperty(getAsset().getId(), "key", getAsset().getHelp("key")) {
 
 			@Override
 			public String getValue() {

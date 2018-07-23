@@ -51,6 +51,8 @@ public enum AssetType implements IAssetPackEelement, IAdaptable {
 	
 	multiatlas("json"),
 
+	animation("json"),
+
 	audio("mp3"),
 
 	audioSprite("json"),
@@ -62,7 +64,7 @@ public enum AssetType implements IAssetPackEelement, IAdaptable {
 	tilemapTiledJSON("json"),
 
 	tilemapImpact("json"),
-
+	
 	bitmapFont("xml"), 
 	
 	physics("json"), 

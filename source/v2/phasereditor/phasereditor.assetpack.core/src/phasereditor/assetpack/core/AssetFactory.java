@@ -60,7 +60,7 @@ public abstract class AssetFactory {
 				return new ImageAssetModel(jsonData, section);
 			}
 		});
-		
+
 		cache(new AssetFactory(AssetType.svg) {
 			@Override
 			public AssetModel createAsset(String key, AssetSectionModel section) throws Exception {
@@ -77,6 +77,25 @@ public abstract class AssetFactory {
 			@Override
 			public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
 				return new SvgAssetModel(jsonData, section);
+			}
+		});
+
+		cache(new AssetFactory(AssetType.animation) {
+			@Override
+			public AnimationAssetModel createAsset(String key, AssetSectionModel section) throws Exception {
+				AssetPackModel pack = section.getPack();
+				var asset = new AnimationAssetModel(key, section);
+				IFile file = pack.pickFile(pack.discoverJsonFiles());
+				if (file != null) {
+					asset.setKey(pack.createKey(file));
+					asset.setUrl(ProjectCore.getAssetUrl(file));
+				}
+				return asset;
+			}
+
+			@Override
+			public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
+				return new AnimationAssetModel(jsonData, section);
 			}
 		});
 
@@ -207,7 +226,7 @@ public abstract class AssetFactory {
 		cache(new AtlasAssetFactory(AssetType.atlas));
 
 		cache(new AtlasAssetFactory(AssetType.atlasXML));
-		
+
 		cache(new AtlasAssetFactory(AssetType.unityAtlas));
 
 		cache(new MultiAtlasAssetFactory());
@@ -288,7 +307,7 @@ public abstract class AssetFactory {
 				return asset;
 			}
 		});
-		
+
 		cache(new AssetFactory(AssetType.scenePlugin) {
 
 			@Override
