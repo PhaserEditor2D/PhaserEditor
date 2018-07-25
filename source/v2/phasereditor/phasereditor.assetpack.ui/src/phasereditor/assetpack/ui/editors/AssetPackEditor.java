@@ -422,6 +422,10 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 				}
 			});
 			viewer.setLabelProvider(AssetLabelProvider.GLOBAL_16);
+			var col = new TreeViewerColumn(getViewer(), SWT.NONE);
+			col.getColumn().setWidth(1000);
+
+			col.setLabelProvider(new SectionColumnLabelProvider());
 
 			initDragAndDrop(viewer);
 		}
@@ -604,6 +608,42 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 			cell.setStyleRanges(styles);
 			cell.setText(text);
 			cell.setImage(AssetLabelProvider.GLOBAL_16.getImage(item.getType()));
+		}
+	}
+	public class SectionColumnLabelProvider extends StyledCellLabelProvider {
+		@Override
+		public void update(ViewerCell cell) {
+			Color counterColor = JFaceResources.getColorRegistry().get(JFacePreferences.COUNTER_COLOR);
+			Color decorationsColor = JFaceResources.getColorRegistry().get(JFacePreferences.DECORATIONS_COLOR);
+
+			var item = (AssetSectionModel) cell.getElement();
+
+			int countAssets = item.getAssets().size();
+
+			String text;
+			StyleRange[] styles;
+
+			String name = item.getKey();
+			if (countAssets > 0) {
+				text = name + " (" + countAssets + ")";
+				int start = name.length();
+				int len = text.length() - start;
+
+				var style1 = new StyleRange(0, start, null, null);
+				var style2 = new StyleRange(start, len, counterColor, null);
+				styles = new StyleRange[] { style1, style2 };
+			} else {
+				text = name;
+
+				var style = new StyleRange(0, text.length(), decorationsColor, null);
+				style.fontStyle = SWT.ITALIC;
+
+				styles = new StyleRange[] { style };
+			}
+
+			cell.setStyleRanges(styles);
+			cell.setText(text);
+			cell.setImage(AssetLabelProvider.GLOBAL_16.getImage(item));
 		}
 	}
 
