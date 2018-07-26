@@ -27,13 +27,13 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.Composite;
 
-import phasereditor.assetpack.core.AnimationAssetModel;
+import phasereditor.assetpack.core.AnimationsAssetModel;
 import phasereditor.ui.properties.PGridSection;
 import phasereditor.ui.properties.PGridStringProperty;
 
-public class AnimationAssetPGridModel extends BaseAssetPGridModel<AnimationAssetModel> {
+public class AnimationAssetPGridModel extends BaseAssetPGridModel<AnimationsAssetModel> {
 
-	public AnimationAssetPGridModel(AnimationAssetModel asset) {
+	public AnimationAssetPGridModel(AnimationsAssetModel asset) {
 		super(asset);
 
 		PGridSection section = new PGridSection("Animation");
@@ -58,7 +58,7 @@ public class AnimationAssetPGridModel extends BaseAssetPGridModel<AnimationAsset
 
 			@Override
 			public CellEditor createCellEditor(Composite parent, Object element) {
-				return new UrlCellEditor(parent, getAsset(), a -> ((AnimationAssetModel) a).getUrl(), () -> {
+				return new UrlCellEditor(parent, getAsset(), a -> ((AnimationsAssetModel) a).getUrl(), () -> {
 					try {
 						return getAsset().getPack().discoverJsonFiles();
 					} catch (CoreException e) {

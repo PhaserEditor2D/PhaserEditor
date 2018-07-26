@@ -31,6 +31,8 @@ import java.util.Set;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
+import phasereditor.assetpack.core.AnimationsAssetModel;
+import phasereditor.assetpack.core.AnimationsAssetModel.AnimationElement;
 import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
@@ -150,9 +152,16 @@ public class AssetsContentProvider implements ITreeContentProvider {
 					List<PhysicsAssetModel.SpriteData> sprites = ((PhysicsAssetModel) asset).getSprites();
 					return sprites.toArray();
 				}
+				case animation: {
+					return ((AnimationsAssetModel) asset).getSubElements().toArray();
+				}
 				default:
 					break;
 				}
+			}
+			
+			if (parentElement instanceof AnimationElement) {
+				return ((AnimationElement) parentElement).getAnimation().getFrames().toArray();
 			}
 		}
 

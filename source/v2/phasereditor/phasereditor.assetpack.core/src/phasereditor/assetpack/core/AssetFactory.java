@@ -82,9 +82,9 @@ public abstract class AssetFactory {
 
 		cache(new AssetFactory(AssetType.animation) {
 			@Override
-			public AnimationAssetModel createAsset(String key, AssetSectionModel section) throws Exception {
+			public AnimationsAssetModel createAsset(String key, AssetSectionModel section) throws Exception {
 				AssetPackModel pack = section.getPack();
-				var asset = new AnimationAssetModel(key, section);
+				var asset = new AnimationsAssetModel(key, section);
 				IFile file = pack.pickFile(pack.discoverJsonFiles());
 				if (file != null) {
 					asset.setKey(pack.createKey(file));
@@ -95,7 +95,7 @@ public abstract class AssetFactory {
 
 			@Override
 			public AssetModel createAsset(JSONObject jsonData, AssetSectionModel section) throws Exception {
-				return new AnimationAssetModel(jsonData, section);
+				return new AnimationsAssetModel(jsonData, section);
 			}
 		});
 

@@ -87,7 +87,9 @@ import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.VideoAssetModel;
+import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.ui.editors.AssetPackEditor;
+import phasereditor.assetpack.ui.preview.AnimationFrameInformationControl;
 import phasereditor.assetpack.ui.preview.AssetFrameInformationControl;
 import phasereditor.assetpack.ui.preview.AtlasAssetInformationControl;
 import phasereditor.assetpack.ui.preview.AudioAssetInformationControl;
@@ -760,6 +762,21 @@ public class AssetPackUI {
 				@Override
 				public boolean isSupported(Object info) {
 					return info instanceof AtlasFrame && info instanceof IAssetFrameModel;
+				}
+			});
+			
+			// animation frame
+			
+			_informationControlCreators.add(new ICustomInformationControlCreator() {
+
+				@Override
+				public IInformationControl createInformationControl(Shell parent) {
+					return new AnimationFrameInformationControl(parent);
+				}
+
+				@Override
+				public boolean isSupported(Object info) {
+					return info instanceof AnimationFrameModel;
 				}
 			});
 

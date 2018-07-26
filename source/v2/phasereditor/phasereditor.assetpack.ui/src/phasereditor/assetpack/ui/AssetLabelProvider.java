@@ -46,6 +46,7 @@ import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel.Frame;
+import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetElementModel;
@@ -285,6 +286,11 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 			return getFileTypeImage();
 		}
 
+		if (element instanceof AnimationFrameModel) {
+			AnimationFrameModel frame = (AnimationFrameModel) element;
+			return getImage(frame.getFrame());
+		}
+
 		return getFolderImage();
 	}
 
@@ -365,6 +371,14 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 
 		if (element instanceof Container) {
 			return ((Container) element).name;
+		}
+
+		if (element instanceof AnimationFrameModel) {
+			AnimationFrameModel frame = (AnimationFrameModel) element;
+			if (frame.getFrameName() == null) {
+				return frame.getTextureKey();
+			}
+			return frame.getFrameName() + " - " + frame.getTextureKey();
 		}
 
 		return super.getText(element);

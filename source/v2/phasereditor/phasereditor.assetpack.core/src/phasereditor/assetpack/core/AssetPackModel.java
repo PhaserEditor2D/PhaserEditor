@@ -54,6 +54,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import phasereditor.assetpack.core.AssetPackCore.PackDelta;
+import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
 import phasereditor.bmpfont.core.JsonBitmapFontContentType;
 import phasereditor.bmpfont.core.XmlBitmapFontContentType;
 import phasereditor.project.core.ProjectCore;
@@ -559,6 +560,38 @@ public final class AssetPackModel {
 			}
 		}
 		return list;
+	}
+
+	public IAssetFrameModel findFrame(String textureKey, Object frameName) {
+		for (var asset : getAssets()) {
+			if (asset.getKey().equals(textureKey)) {
+				if (asset instanceof ImageAssetModel) {
+					return ((ImageAssetModel) asset).getFrame();
+				} else if (asset instanceof AtlasAssetModel) {
+					for (var atlasFrame : ((AtlasAssetModel) asset).getSubElements()) {
+						if (atlasFrame.getKey().equals(frameName)) {
+							return atlasFrame;
+						}
+					}
+				} else if (asset instanceof MultiAtlasAssetModel) {
+					for (var atlasFrame : ((MultiAtlasAssetModel) asset).getSubElements()) {
+						if (atlasFrame.getKey().equals(frameName)) {
+							return atlasFrame;
+						}
+					}
+				} else if (asset instanceof SpritesheetAssetModel) {
+					if (frameName instanceof Integer) {
+						int index = ((Integer) frameName).intValue();
+						List<FrameModel> spritesheetFrames = ((SpritesheetAssetModel) asset).getFrames();
+						if (index >= spritesheetFrames.size()) {
+							return null;
+						}
+						spritesheetFrames.get(index);
+					}
+				}
+			}
+		}
+		return null;
 	}
 
 	public AssetSectionModel findSection(String key) {

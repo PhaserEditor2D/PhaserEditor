@@ -2,7 +2,7 @@ package phasereditor.assetpack.ui.properties;
 
 import org.eclipse.core.runtime.IAdapterFactory;
 
-import phasereditor.assetpack.core.AnimationAssetModel;
+import phasereditor.assetpack.core.AnimationsAssetModel;
 import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AtlasAssetModel;
@@ -59,8 +59,8 @@ public class AssetPGridAdapterFactory implements IAdapterFactory {
 				return new PluginAssetPGridModel((PluginAssetModel) obj);
 			} else if (obj instanceof ScenePluginAssetModel) {
 				return new ScenePluginAssetPGridModel((ScenePluginAssetModel) obj);
-			} else if (obj instanceof AnimationAssetModel) {
-				return new AnimationAssetPGridModel((AnimationAssetModel) obj);
+			} else if (obj instanceof AnimationsAssetModel) {
+				return new AnimationAssetPGridModel((AnimationsAssetModel) obj);
 			}
 		}
 		return null;
