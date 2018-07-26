@@ -53,11 +53,11 @@ public class AssetMoveProcessor extends MoveProcessor {
 	protected final AssetPackEditor _editor;
 	private AssetSectionModel _dstSection;
 
-	public AssetMoveProcessor(AssetModel[] assets, AssetPackEditor editor) {
+	public AssetMoveProcessor(AssetSectionModel section, AssetModel[] assets, AssetPackEditor editor) {
 		super();
 		_editor = editor;
 		_assets = assets;
-		_dstSection = assets[0].getSection();
+		_dstSection = section;
 	}
 
 	@Override

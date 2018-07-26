@@ -140,7 +140,7 @@ public class AssetPackUI {
 		return result;
 	}
 
-	public static void launchMoveWizard(IStructuredSelection selection) {
+	public static void launchMoveWizard(AssetSectionModel section, IStructuredSelection selection) {
 		Object[] selarray = selection.toArray();
 
 		AssetModel[] assets = new AssetModel[selarray.length];
@@ -152,11 +152,11 @@ public class AssetPackUI {
 
 		AssetPackEditor editor = activePart instanceof AssetPackEditor ? (AssetPackEditor) activePart : null;
 
-		AssetMoveWizard wizard = new AssetMoveWizard(new MoveRefactoring(new AssetMoveProcessor(assets, editor)));
+		AssetMoveWizard wizard = new AssetMoveWizard(new MoveRefactoring(new AssetMoveProcessor(section, assets, editor)));
 
 		RefactoringWizardOpenOperation op = new RefactoringWizardOpenOperation(wizard);
 		try {
-			op.run(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Delete Asset");
+			op.run(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Move Assets");
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}

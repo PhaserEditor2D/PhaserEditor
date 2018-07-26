@@ -466,9 +466,8 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 					return performSectionDrop(array);
 				}
-
+				
 				private boolean performAssetModelDrop(Object[] array) {
-
 					AssetPackModel pack = getModel();
 					var moving = List.of(array)
 
@@ -488,13 +487,16 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 
 					var section = pack.getSections().get(_target);
 
-					for (var asset : moving) {
-						asset.getSection().removeAsset(asset, false);
-					}
-
-					section.addAllAssets(0, moving, true);
-
-					AssetPackEditor.this.refresh();
+					AssetPackUI.launchMoveWizard(section, new StructuredSelection(moving));
+					
+					
+//					for (var asset : moving) {
+//						asset.getSection().removeAsset(asset, false);
+//					}
+//
+//					section.addAllAssets(0, moving, true);
+//
+//					AssetPackEditor.this.refresh();
 
 					return true;
 				}

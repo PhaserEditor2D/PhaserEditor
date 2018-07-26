@@ -85,6 +85,7 @@ public class AssetMoveWizardPage extends UserInputWizardPage {
 				validatePage();
 			}
 		});
+		_viewer.setSelection(new StructuredSelection(fRefactoringProcessor.getDstSection()));
 		
 		validatePage();
 
