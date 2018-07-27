@@ -32,7 +32,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 import phasereditor.assetpack.core.AnimationsAssetModel;
-import phasereditor.assetpack.core.AnimationsAssetModel.AnimationElement;
+import phasereditor.assetpack.core.AnimationsAssetModel.AnimationAssetElementModel;
 import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
@@ -160,8 +160,8 @@ public class AssetsContentProvider implements ITreeContentProvider {
 				}
 			}
 			
-			if (parentElement instanceof AnimationElement) {
-				return ((AnimationElement) parentElement).getAnimation().getFrames().toArray();
+			if (parentElement instanceof AnimationAssetElementModel) {
+				return ((AnimationAssetElementModel) parentElement).getAnimation().getFrames().toArray();
 			}
 		}
 

@@ -41,7 +41,7 @@ import phasereditor.assetpack.core.animations.AnimationsModel;
 public class AnimationsAssetModel extends AssetModel {
 	private String _url;
 	private String _dataKey;
-	private List<AnimationElement> _animationElements;
+	private List<AnimationAssetElementModel> _animationElements;
 
 	public AnimationsAssetModel(JSONObject jsonData, AssetSectionModel section) throws JSONException {
 		super(jsonData, section);
@@ -119,12 +119,10 @@ public class AnimationsAssetModel extends AssetModel {
 				_animationElements = new ArrayList<>();
 
 				for (var anim : animationsModel.getAnimations()) {
-					_animationElements.add(new AnimationElement(anim));
+					_animationElements.add(new AnimationAssetElementModel(anim));
 				}
 
-				for (var animElement : _animationElements) {
-					animElement.build(problems);
-				}
+				buildAnimationFrames(problems);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -133,7 +131,18 @@ public class AnimationsAssetModel extends AssetModel {
 	}
 
 	@Override
-	public List<AnimationElement> getSubElements() {
+	public void buildSecondPass(List<IStatus> problems) {
+		buildAnimationFrames(problems);
+	}
+
+	private void buildAnimationFrames(List<IStatus> problems) {
+		for (var animElement : _animationElements) {
+			animElement.build(problems);
+		}
+	}
+
+	@Override
+	public List<AnimationAssetElementModel> getSubElements() {
 		if (_animationElements == null) {
 			build(new ArrayList<>());
 		}
@@ -141,10 +150,10 @@ public class AnimationsAssetModel extends AssetModel {
 		return _animationElements;
 	}
 
-	public class AnimationElement implements IAssetElementModel {
+	public class AnimationAssetElementModel implements IAssetElementModel {
 		private AnimationModel _animation;
 
-		public AnimationElement(AnimationModel animation) {
+		public AnimationAssetElementModel(AnimationModel animation) {
 			super();
 			_animation = animation;
 		}
@@ -155,20 +164,22 @@ public class AnimationsAssetModel extends AssetModel {
 				var textureKey = animFrame.getTextureKey();
 				var frameName = animFrame.getFrameName();
 
-				var packs = AssetPackCore.getAssetPackModels(getPack().getFile().getProject());
-				for (var pack : packs) {
-					var frame = pack.findFrame(textureKey, frameName);
-					if (frame != null) {
-						animFrame.setFrame(frame);
+				var frame = getPack().findFrame(textureKey, frameName);
+
+				if (frame == null) {
+					var packs = AssetPackCore.getAssetPackModels(getPack().getFile().getProject());
+					for (var pack : packs) {
+						frame = pack.findFrame(textureKey, frameName);
 					}
 				}
 
-				if (animFrame.getFrame() == null) {
+				if (frame == null) {
 					problems.add(errorStatus(
 							"Cannot find the frame '" + frameName + "' in the texture '" + textureKey + "'."));
 				}
-			}
 
+				animFrame.setFrame(frame);
+			}
 		}
 
 		public AnimationModel getAnimation() {

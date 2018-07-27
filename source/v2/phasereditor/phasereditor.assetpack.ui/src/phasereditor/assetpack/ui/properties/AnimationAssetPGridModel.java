@@ -21,9 +21,11 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.properties;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.Composite;
 
@@ -44,6 +46,7 @@ public class AnimationAssetPGridModel extends BaseAssetPGridModel<AnimationsAsse
 			@Override
 			public void setValue(String value, boolean notify) {
 				getAsset().setUrl(value);
+				buildAsset();
 			}
 
 			@Override
@@ -74,6 +77,7 @@ public class AnimationAssetPGridModel extends BaseAssetPGridModel<AnimationsAsse
 			@Override
 			public void setValue(String value, boolean notify) {
 				getAsset().setDataKey(value);
+				buildAsset();
 			}
 
 			@Override
@@ -89,6 +93,12 @@ public class AnimationAssetPGridModel extends BaseAssetPGridModel<AnimationsAsse
 
 		getSections().add(section);
 
+	}
+
+	void buildAsset() {
+		ArrayList<IStatus> problems = new ArrayList<>();
+		getAsset().build(problems);
+		getAsset().buildSecondPass(problems);
 	}
 
 }

@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2018 Arian Fornaris
+// Copyright (c) 2015 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -19,59 +19,40 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.core.animations;
+package phasereditor.assetpack.ui.preview;
 
-import org.json.JSONObject;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 
-import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.AnimationsAssetModel.AnimationAssetElementModel;
+import phasereditor.assetpack.ui.animations.AnimationCanvas;
+import phasereditor.ui.info.BaseInformationControl;
 
-public class AnimationFrameModel {
-	private IAssetFrameModel _frame;
-	private String _textureKey;
-	private Object _frameName;
-	private int _duration;
+public class AnimationInformationControl extends BaseInformationControl {
 
-	public AnimationFrameModel() {
-
+	public AnimationInformationControl(Shell parentShell) {
+		super(parentShell);
 	}
 
-	public AnimationFrameModel(JSONObject jsonData) {
-		this();
-		_textureKey = jsonData.getString("key");
-		// a frame based on an image only needs the key
-		_frameName = jsonData.opt("frame");
-		_duration = jsonData.optInt("duration");
+	@Override
+	protected Control createContent2(Composite parentComp) {
+		return new AnimationCanvas(parentComp, SWT.NONE);
 	}
 
-	public IAssetFrameModel getFrame() {
-		return _frame;
+	@Override
+	protected void updateContent(Control control, Object model) {
+		var comp = (AnimationCanvas) control;
+		var element = (AnimationAssetElementModel) model;
+		comp.setModel(element.getAnimation());
+		comp.play();
 	}
 
-	public void setFrame(IAssetFrameModel frame) {
-		_frame = frame;
-	}
+	@Override
+	protected void disposeControl(Control control) {
+		((AnimationCanvas) control).stop();
 
-	public Object getFrameName() {
-		return _frameName;
-	}
-
-	public void setFrameName(Object frameName) {
-		_frameName = frameName;
-	}
-
-	public String getTextureKey() {
-		return _textureKey;
-	}
-
-	public void setTextureKey(String textureKey) {
-		_textureKey = textureKey;
-	}
-	
-	public int getDuration() {
-		return _duration;
-	}
-	
-	public void setDuration(int duration) {
-		_duration = duration;
+		super.disposeControl(control);
 	}
 }

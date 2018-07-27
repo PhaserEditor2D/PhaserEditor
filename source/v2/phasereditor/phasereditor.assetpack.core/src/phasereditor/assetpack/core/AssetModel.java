@@ -160,7 +160,7 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 	public String getKey() {
 		return _key;
 	}
-	
+
 	public String getId() {
 		return getPack().getName() + "." + getSection().getKey() + "." + _key;
 	}
@@ -226,7 +226,7 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 
 		return file;
 	}
-	
+
 	public IFolder getFolderFromUrl(String url) {
 		if (url == null || url.length() == 0) {
 			return null;
@@ -331,6 +331,17 @@ public abstract class AssetModel implements IAssetKey, IAdaptable {
 
 		internalBuild(problems);
 
+	}
+
+	/**
+	 * A second pass build. Asset models that uses other assets should link them in
+	 * a second pass because at a first pass it is possible the assets are not
+	 * ready.
+	 * 
+	 * @param problems
+	 */
+	public void buildSecondPass(List<IStatus> problems) {
+		// nothing
 	}
 
 	protected abstract void internalBuild(List<IStatus> problems);

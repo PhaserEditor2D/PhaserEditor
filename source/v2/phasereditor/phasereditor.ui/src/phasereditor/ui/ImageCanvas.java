@@ -48,7 +48,7 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 	private int _offsetX;
 	private int _offsetY;
 	private float _scale = 1;
-	private Rectangle _viewport;
+	protected Rectangle _viewport;
 	private boolean _fitWindow;
 
 	public static class ZoomCalculator {

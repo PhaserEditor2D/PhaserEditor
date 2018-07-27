@@ -955,6 +955,7 @@ public class AssetPackEditor extends EditorPart implements IGotoMarker, IShowInS
 		try {
 			// we create a model copy detached from the AssetCore registry.
 			_model = new AssetPackModel(file);
+			_model.build();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);

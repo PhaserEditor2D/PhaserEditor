@@ -193,9 +193,16 @@ public final class AssetPackModel {
 		out.println("Build asset pack " + getFile().getLocation());
 
 		List<IStatus> problems = new ArrayList<>();
+		
 		for (AssetSectionModel section : _sections) {
 			for (AssetModel model : section.getAssets()) {
 				model.build(problems);
+			}
+		}
+		
+		for (AssetSectionModel section : _sections) {
+			for (AssetModel model : section.getAssets()) {
+				model.buildSecondPass(problems);
 			}
 		}
 
