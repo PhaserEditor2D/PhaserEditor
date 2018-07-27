@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPersistableElement;
 
+import phasereditor.assetpack.core.AnimationsAssetModel.AnimationAssetElementModel;
 import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetModelFactory;
@@ -84,7 +85,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			case multiatlas:
 				return createMultiAtlasPreviewAdapter();
 			case tilemapCSV:
-					return createTilemapCSVPreviewAdapter();
+				return createTilemapCSVPreviewAdapter();
 			case tilemapTiledJSON:
 				return createTilemapJSONPreviewAdapter();
 			case bitmapFont:
@@ -98,11 +99,13 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			return createSpritesheetFramePreviewAdapter();
 		} else if (adaptable instanceof IAssetFrameModel && adaptable instanceof AtlasFrame) {
 			return createAtlasFramePreviewAdapter();
+		} else if (adaptable instanceof AnimationAssetElementModel) {
+			return createAnimationPreviewAdapter();
 		}
 		return null;
 	}
 
-	private static abstract class AssetModelPreviewFactory implements IPreviewFactory {
+	protected static abstract class AssetModelPreviewFactory implements IPreviewFactory {
 
 		public AssetModelPreviewFactory() {
 		}
@@ -316,6 +319,32 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 		};
 	}
 
+	private static IPreviewFactory createAnimationPreviewAdapter() {
+		return new AssetModelPreviewFactory() {
+
+			@Override
+			public void updateControl(Control preview, Object element) {
+				var comp = (AnimationPreviewComp) preview;
+				comp.setModel(((AnimationAssetElementModel) element).getAnimation());
+			}
+
+			@Override
+			public Control createControl(Composite previewContainer) {
+				return new AnimationPreviewComp(previewContainer, SWT.NONE);
+			}
+
+			@Override
+			public boolean canReusePreviewControl(Control c, Object elem) {
+				return c instanceof AnimationPreviewComp && elem instanceof AnimationAssetElementModel;
+			}
+
+			@Override
+			public void updateToolBar(IToolBarManager toolbar, Control preview) {
+				((AnimationPreviewComp) preview).createToolBar(toolbar);
+			}
+		};
+	}
+
 	private static IPreviewFactory createAtlasFramePreviewAdapter() {
 		return new AssetModelPreviewFactory() {
 
@@ -369,7 +398,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			}
 		};
 	}
-	
+
 	private static IPreviewFactory createMultiAtlasPreviewAdapter() {
 		return new AssetModelPreviewFactory() {
 

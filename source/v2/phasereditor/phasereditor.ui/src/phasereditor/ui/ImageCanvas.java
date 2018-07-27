@@ -352,7 +352,15 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 	}
 
 	protected ZoomCalculator calc() {
-		ZoomCalculator c = new ZoomCalculator(_viewport.width, _viewport.height);
+		int w = 1;
+		int h = 1;
+		
+		if (_viewport != null) {
+			w = _viewport.width;
+			h = _viewport.height;
+		}
+		
+		ZoomCalculator c = new ZoomCalculator(w, h);
 		c.offsetX = _offsetX;
 		c.offsetY = _offsetY;
 		c.scale = _scale;

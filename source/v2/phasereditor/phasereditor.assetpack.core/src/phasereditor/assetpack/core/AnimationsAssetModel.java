@@ -173,7 +173,7 @@ public class AnimationsAssetModel extends AssetModel {
 
 				if (frame != null) {
 					animFrame.setFrame(frame);
-					break;
+					continue;
 				}
 
 				frame = getPack().findFrame(textureKey, frameName);

@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
+import phasereditor.assetpack.core.AnimationsAssetModel.AnimationAssetElementModel;
 import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.atlas.core.AtlasFrame;
@@ -35,6 +36,8 @@ public class AssetElementPreviewAdapterFactory extends AssetPreviewAdapterFactor
 			if (adaptable instanceof SpritesheetAssetModel.FrameModel) {
 				obj = adaptable;
 			} else if (adaptable instanceof AtlasFrame) {
+				obj = adaptable;
+			} else if (adaptable instanceof AnimationAssetElementModel) {
 				obj = adaptable;
 			} else {
 				obj = ((IAssetElementModel) adaptable).getAsset();

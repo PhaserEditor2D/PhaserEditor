@@ -43,7 +43,9 @@ public class ImageCanvas_Zoom_FitWindow_Action extends Action {
 	@Override
 	public void run() {
 		IZoomable canvas = getImageCanvas();
-		canvas.resetZoom();
+		if (canvas != null) {
+			canvas.resetZoom();
+		}
 	}
 
 	public IZoomable getImageCanvas() {

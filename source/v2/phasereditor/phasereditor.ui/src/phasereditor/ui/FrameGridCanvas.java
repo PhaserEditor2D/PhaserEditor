@@ -342,6 +342,29 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 	}
 
 	public interface IFrameProvider {
+		IFrameProvider NULL = new IFrameProvider() {
+			
+			@Override
+			public String getFrameTooltip(int index) {
+				return null;
+			}
+			
+			@Override
+			public Rectangle getFrameRectangle(int index) {
+				return null;
+			}
+			
+			@Override
+			public IFile getFrameImageFile(int index) {
+				return null;
+			}
+			
+			@Override
+			public int getFrameCount() {
+				return 0;
+			}
+		};
+
 		public int getFrameCount();
 
 		public Rectangle getFrameRectangle(int index);
