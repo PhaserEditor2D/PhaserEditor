@@ -39,6 +39,8 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
+import phasereditor.assetpack.core.AnimationsAssetModel;
+import phasereditor.assetpack.core.AnimationsAssetModel.AnimationAssetElementModel;
 import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
@@ -46,7 +48,6 @@ import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel.Frame;
-import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.AudioAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetElementModel;
@@ -56,6 +57,8 @@ import phasereditor.assetpack.core.ScriptAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.VideoAssetModel;
+import phasereditor.assetpack.core.animations.AnimationFrameModel;
+import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.AssetsContentProvider.Container;
 import phasereditor.atlas.core.AtlasData;
 import phasereditor.atlas.core.AtlasFrame;
@@ -266,16 +269,8 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 			return getGroupImage();
 		}
 
-		if (element instanceof AssetModel) {
-			return getKeyImage();
-		}
-
 		if (element instanceof AssetPackModel) {
 			return getPackageImage();
-		}
-
-		if (element instanceof IAssetElementModel) {
-			return getElementImage();
 		}
 
 		if (element instanceof AtlasData) {
@@ -285,10 +280,34 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 		if (element instanceof AssetType) {
 			return getFileTypeImage();
 		}
-
+		
+		if (element instanceof AnimationsAssetModel) {
+			return EditorSharedImages.getImage(IEditorSharedImages.IMG_FRAME_ANIMATION);
+		}
+		
+		if (element instanceof AnimationAssetElementModel) {
+			AnimationModel animation = ((AnimationAssetElementModel) element).getAnimation();
+			var frames = animation.getFrames();
+			if (!frames.isEmpty()) {
+				var frame = frames.get((int) (frames.size() * 0.3));
+				return getImage(frame.getFrame());
+			}
+		}
+		
 		if (element instanceof AnimationFrameModel) {
 			AnimationFrameModel frame = (AnimationFrameModel) element;
 			return getImage(frame.getFrame());
+		}
+		
+		
+		// Keep this at the end!!!
+		
+		if (element instanceof AssetModel) {
+			return getKeyImage();
+		}
+		
+		if (element instanceof IAssetElementModel) {
+			return getElementImage();
 		}
 
 		return getFolderImage();
