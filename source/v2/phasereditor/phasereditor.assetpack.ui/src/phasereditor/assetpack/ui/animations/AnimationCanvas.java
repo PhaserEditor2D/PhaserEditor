@@ -107,14 +107,17 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 		var animationFrame = animationFrames.get(index);
 		var textureFrame = animationFrame.getFrame();
 		if (textureFrame == null) {
-			setImageViewport(null);
-			setImageFile((IFile) null);
+			_viewport = null;
+			_image = null;
 		} else {
 			var fd = textureFrame.getFrameData();
 			_image = loadImage(textureFrame.getImageFile());
 			_viewport = fd.src;
 		}
-		redraw();
+
+		if (!isDisposed()) {
+			redraw();
+		}
 	}
 
 	class IndexTransition extends Transition {
