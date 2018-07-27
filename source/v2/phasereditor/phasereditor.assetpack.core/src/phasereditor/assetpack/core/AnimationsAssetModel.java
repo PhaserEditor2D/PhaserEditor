@@ -23,7 +23,9 @@ package phasereditor.assetpack.core;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IStatus;
@@ -159,12 +161,22 @@ public class AnimationsAssetModel extends AssetModel {
 		}
 
 		public void build(List<IStatus> problems) {
+			Map<String, IAssetFrameModel> cache = new HashMap<>();
+
 			for (var animFrame : _animation.getFrames()) {
 
 				var textureKey = animFrame.getTextureKey();
 				var frameName = animFrame.getFrameName();
 
-				var frame = getPack().findFrame(textureKey, frameName);
+				var cacheKey = frameName + "@" + textureKey;
+				var frame = cache.get(cacheKey);
+
+				if (frame != null) {
+					animFrame.setFrame(frame);
+					break;
+				}
+
+				frame = getPack().findFrame(textureKey, frameName);
 
 				if (frame == null) {
 					var packs = AssetPackCore.getAssetPackModels(getPack().getFile().getProject());
@@ -176,6 +188,8 @@ public class AnimationsAssetModel extends AssetModel {
 				if (frame == null) {
 					problems.add(errorStatus(
 							"Cannot find the frame '" + frameName + "' in the texture '" + textureKey + "'."));
+				} else {
+					cache.put(cacheKey, frame);
 				}
 
 				animFrame.setFrame(frame);
