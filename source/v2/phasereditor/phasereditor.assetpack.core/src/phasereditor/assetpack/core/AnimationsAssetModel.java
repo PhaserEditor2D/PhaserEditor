@@ -33,6 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.core.animations.AnimationsModel;
 
@@ -43,7 +44,8 @@ import phasereditor.assetpack.core.animations.AnimationsModel;
 public class AnimationsAssetModel extends AssetModel {
 	private String _url;
 	private String _dataKey;
-	private List<AnimationAssetElementModel> _animationElements;
+	private AnimationsModel_in_AssetPack _animationsModel;
+	private List<AnimationModel_in_AssetPack> _animations;
 
 	public AnimationsAssetModel(JSONObject jsonData, AssetSectionModel section) throws JSONException {
 		super(jsonData, section);
@@ -94,7 +96,8 @@ public class AnimationsAssetModel extends AssetModel {
 	public void internalBuild(List<IStatus> problems) {
 		validateUrl(problems, "url", _url);
 
-		_animationElements = new ArrayList<>();
+		_animationsModel = null;
+		_animations = List.of();
 
 		IFile file = getUrlFile();
 
@@ -116,15 +119,9 @@ public class AnimationsAssetModel extends AssetModel {
 					throw e;
 				}
 
-				var animationsModel = new AnimationsModel(jsonData);
-
-				_animationElements = new ArrayList<>();
-
-				for (var anim : animationsModel.getAnimations()) {
-					_animationElements.add(new AnimationAssetElementModel(anim));
-				}
-
-				buildAnimationFrames(problems);
+				_animationsModel = new AnimationsModel_in_AssetPack(jsonData);
+				_animationsModel.build(problems);
+				_animations = _animationsModel.getAnimations_in_AssetPack();
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -134,81 +131,107 @@ public class AnimationsAssetModel extends AssetModel {
 
 	@Override
 	public void buildSecondPass(List<IStatus> problems) {
-		buildAnimationFrames(problems);
-	}
-
-	private void buildAnimationFrames(List<IStatus> problems) {
-		for (var animElement : _animationElements) {
-			animElement.build(problems);
+		if (_animationsModel != null) {
+			_animationsModel.build(problems);
 		}
 	}
 
 	@Override
-	public List<AnimationAssetElementModel> getSubElements() {
-		if (_animationElements == null) {
+	public List<AnimationModel_in_AssetPack> getSubElements() {
+		if (_animationsModel == null) {
 			build(new ArrayList<>());
 		}
 
-		return _animationElements;
+		return _animations;
 	}
 
-	public class AnimationAssetElementModel implements IAssetElementModel {
-		private AnimationModel _animation;
+	public class AnimationsModel_in_AssetPack extends AnimationsModel {
 
-		public AnimationAssetElementModel(AnimationModel animation) {
-			super();
-			_animation = animation;
+		private List<AnimationModel_in_AssetPack> _animations_in_AssetPack;
+
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		public AnimationsModel_in_AssetPack(JSONObject jsonData) {
+			super(jsonData);
+			_animations_in_AssetPack = (List) getAnimations();
+		}
+
+		@Override
+		protected AnimationModel createAnimation(JSONObject jsonData) {
+			return new AnimationModel_in_AssetPack(jsonData);
+		}
+
+		public List<AnimationModel_in_AssetPack> getAnimations_in_AssetPack() {
+			return _animations_in_AssetPack;
 		}
 
 		public void build(List<IStatus> problems) {
-			Map<String, IAssetFrameModel> cache = new HashMap<>();
+			for (var anim : getAnimations()) {
+				Map<String, IAssetFrameModel> cache = new HashMap<>();
 
-			for (var animFrame : _animation.getFrames()) {
+				for (var animFrame : anim.getFrames()) {
 
-				var textureKey = animFrame.getTextureKey();
-				var frameName = animFrame.getFrameName();
+					var textureKey = animFrame.getTextureKey();
+					var frameName = animFrame.getFrameName();
 
-				var cacheKey = frameName + "@" + textureKey;
-				var frame = cache.get(cacheKey);
+					var cacheKey = frameName + "@" + textureKey;
+					var frame = cache.get(cacheKey);
 
-				if (frame != null) {
-					animFrame.setFrame(frame);
-					continue;
-				}
-
-				frame = getPack().findFrame(textureKey, frameName);
-
-				if (frame == null) {
-					var packs = AssetPackCore.getAssetPackModels(getPack().getFile().getProject());
-					for (var pack : packs) {
-						frame = pack.findFrame(textureKey, frameName);
+					if (frame != null) {
+						animFrame.setFrame(frame);
+						continue;
 					}
-				}
 
-				if (frame == null) {
-					problems.add(errorStatus(
-							"Cannot find the frame '" + frameName + "' in the texture '" + textureKey + "'."));
-				} else {
-					cache.put(cacheKey, frame);
-				}
+					frame = getPack().findFrame(textureKey, frameName);
 
-				animFrame.setFrame(frame);
+					if (frame == null) {
+						var packs = AssetPackCore.getAssetPackModels(getPack().getFile().getProject());
+						for (var pack : packs) {
+							frame = pack.findFrame(textureKey, frameName);
+						}
+					}
+
+					if (frame == null) {
+						problems.add(errorStatus(
+								"Cannot find the frame '" + frameName + "' in the texture '" + textureKey + "'."));
+					} else {
+						cache.put(cacheKey, frame);
+					}
+
+					animFrame.setFrame(frame);
+
+				}
 			}
 		}
+	}
 
-		public AnimationModel getAnimation() {
-			return _animation;
+	public class AnimationModel_in_AssetPack extends AnimationModel implements IAssetElementModel {
+
+		public AnimationModel_in_AssetPack(JSONObject jsonData) {
+			super(jsonData);
+		}
+
+		@Override
+		protected AnimationFrameModel createAnimationFrame(JSONObject jsonData) {
+			return new AnimationFrameModel_in_AssetPack(jsonData);
 		}
 
 		@Override
 		public String getName() {
-			return _animation.getKey();
+			return this.getKey();
 		}
 
 		@Override
-		public AnimationsAssetModel getAsset() {
+		public AssetModel getAsset() {
 			return AnimationsAssetModel.this;
 		}
+	}
+
+	public class AnimationFrameModel_in_AssetPack extends AnimationFrameModel {
+
+		public AnimationFrameModel_in_AssetPack(JSONObject jsonData) {
+			super(jsonData);
+		}
+
 	}
 
 	@Override

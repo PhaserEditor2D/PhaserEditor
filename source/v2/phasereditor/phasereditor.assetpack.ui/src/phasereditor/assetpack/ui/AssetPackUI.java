@@ -68,7 +68,6 @@ import com.subshell.snippets.jface.tooltip.tooltipsupport.TableViewerInformation
 import com.subshell.snippets.jface.tooltip.tooltipsupport.Tooltips;
 import com.subshell.snippets.jface.tooltip.tooltipsupport.TreeViewerInformationProvider;
 
-import phasereditor.assetpack.core.AnimationsAssetModel.AnimationAssetElementModel;
 import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackCore;
@@ -89,6 +88,7 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.VideoAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
+import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.editors.AssetPackEditor;
 import phasereditor.assetpack.ui.preview.AnimationFrameInformationControl;
 import phasereditor.assetpack.ui.preview.AnimationInformationControl;
@@ -793,7 +793,7 @@ public class AssetPackUI {
 
 				@Override
 				public boolean isSupported(Object info) {
-					return info instanceof AnimationAssetElementModel;
+					return info instanceof AnimationModel;
 				}
 			});
 

@@ -68,7 +68,7 @@ public class AnimationModel {
 				jsonFrame.put("key", defaultTextureKey);
 			}
 
-			var frame = new AnimationFrameModel(jsonFrame);
+			var frame = createAnimationFrame(jsonFrame);
 			_frames.add(frame);
 		}
 
@@ -101,6 +101,11 @@ public class AnimationModel {
 		_showOnStart = jsonData.optBoolean("showOnStart", false);
 		_hideOnComplete = jsonData.optBoolean("hideOnComplete", false);
 		_skipMissedFrames = jsonData.optBoolean("skipMissedFrames", true);
+	}
+
+	@SuppressWarnings("static-method")
+	protected AnimationFrameModel createAnimationFrame(JSONObject jsonData) {
+		return new AnimationFrameModel(jsonData);
 	}
 
 	public String getKey() {

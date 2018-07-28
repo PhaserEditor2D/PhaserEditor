@@ -21,9 +21,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
-import phasereditor.assetpack.core.AnimationsAssetModel.AnimationAssetElementModel;
 import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
+import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.atlas.core.AtlasFrame;
 
 @SuppressWarnings("rawtypes")
@@ -37,7 +37,7 @@ public class AssetElementPreviewAdapterFactory extends AssetPreviewAdapterFactor
 				obj = adaptable;
 			} else if (adaptable instanceof AtlasFrame) {
 				obj = adaptable;
-			} else if (adaptable instanceof AnimationAssetElementModel) {
+			} else if (adaptable instanceof AnimationModel) {
 				obj = adaptable;
 			} else {
 				obj = ((IAssetElementModel) adaptable).getAsset();

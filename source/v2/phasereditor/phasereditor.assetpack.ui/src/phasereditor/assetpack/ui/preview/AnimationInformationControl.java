@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import phasereditor.assetpack.core.AnimationsAssetModel.AnimationAssetElementModel;
+import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.animations.AnimationCanvas;
 import phasereditor.ui.info.BaseInformationControl;
 
@@ -44,8 +44,7 @@ public class AnimationInformationControl extends BaseInformationControl {
 	@Override
 	protected void updateContent(Control control, Object model) {
 		var comp = (AnimationCanvas) control;
-		var element = (AnimationAssetElementModel) model;
-		comp.setModel(element.getAnimation());
+		comp.setModel((AnimationModel) model);
 		comp.play();
 	}
 

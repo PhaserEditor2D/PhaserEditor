@@ -33,7 +33,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPersistableElement;
 
-import phasereditor.assetpack.core.AnimationsAssetModel.AnimationAssetElementModel;
 import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetModelFactory;
@@ -52,6 +51,7 @@ import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.VideoAssetModel;
+import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.atlas.core.AtlasFrame;
 import phasereditor.audiosprite.ui.GdxMusicControl;
@@ -99,7 +99,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			return createSpritesheetFramePreviewAdapter();
 		} else if (adaptable instanceof IAssetFrameModel && adaptable instanceof AtlasFrame) {
 			return createAtlasFramePreviewAdapter();
-		} else if (adaptable instanceof AnimationAssetElementModel) {
+		} else if (adaptable instanceof AnimationModel) {
 			return createAnimationPreviewAdapter();
 		}
 		return null;
@@ -325,7 +325,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			@Override
 			public void updateControl(Control preview, Object element) {
 				var comp = (AnimationPreviewComp) preview;
-				comp.setModel(((AnimationAssetElementModel) element).getAnimation());
+				comp.setModel((AnimationModel) element);
 			}
 
 			@Override
@@ -335,7 +335,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 
 			@Override
 			public boolean canReusePreviewControl(Control c, Object elem) {
-				return c instanceof AnimationPreviewComp && elem instanceof AnimationAssetElementModel;
+				return c instanceof AnimationPreviewComp && elem instanceof AnimationModel;
 			}
 
 			@Override

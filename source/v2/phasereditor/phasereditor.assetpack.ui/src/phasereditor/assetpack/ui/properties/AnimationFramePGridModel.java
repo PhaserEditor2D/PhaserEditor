@@ -23,8 +23,7 @@ package phasereditor.assetpack.ui.properties;
 
 import java.util.function.Supplier;
 
-import phasereditor.assetpack.core.AnimationsAssetModel.AnimationAssetElementModel;
-import phasereditor.assetpack.core.animations.AnimationModel;
+import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.properties.PGridInfoProperty;
 import phasereditor.ui.properties.PGridModel;
@@ -33,35 +32,21 @@ import phasereditor.ui.properties.PGridModel;
  * @author arian
  *
  */
-public class AnimationAssetElementPGridModel extends PGridModel {
-	private AnimationAssetElementModel _animationElement;
+public class AnimationFramePGridModel extends PGridModel {
 	private String _id;
 
-	public AnimationAssetElementPGridModel(AnimationAssetElementModel animationElement) {
+	public AnimationFramePGridModel(AnimationFrameModel frameModel) {
 		super();
-		_animationElement = animationElement;
 
-		_id = animationElement.getAsset().getId() + "." + animationElement.getKey();
+		_id = frameModel.getTextureKey() + "." + frameModel.getFrame();
 
-		addSection("AnimationConfig",
+		addSection("AnimationFrameConfig",
 
-				prop("key", getAnimation()::getKey),
+				prop("textureKey", frameModel::getTextureKey),
 
-				prop("duration", getAnimation()::getDuration),
+				prop("frame", frameModel::getFrameName),
 
-				prop("frameRate", getAnimation()::getFrameRate),
-
-				prop("delay", getAnimation()::getDelay),
-
-				prop("repeatDelay", getAnimation()::getRepeatDelay),
-
-				prop("yoyo", getAnimation()::isYoyo),
-
-				prop("showOnStart", getAnimation()::isShowOnStart),
-
-				prop("hideOnComplete", getAnimation()::isHideOnComplete),
-
-				prop("skipMissedFrames", getAnimation()::isSkipMissedFrames)
+				prop("duration", frameModel::getDuration)
 
 		);
 	}
@@ -71,14 +56,6 @@ public class AnimationAssetElementPGridModel extends PGridModel {
 	}
 
 	private static String help(String field) {
-		return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Animations.Animation." + field);
-	}
-
-	public AnimationModel getAnimation() {
-		return _animationElement.getAnimation();
-	}
-
-	public AnimationAssetElementModel getAnimationElement() {
-		return _animationElement;
+		return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Animations.AnimationFrame." + field);
 	}
 }

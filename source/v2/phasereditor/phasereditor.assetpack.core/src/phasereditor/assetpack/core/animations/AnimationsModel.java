@@ -37,20 +37,24 @@ public class AnimationsModel {
 	public AnimationsModel() {
 		_animations = new ArrayList<>();
 	}
-	
+
 	public AnimationsModel(JSONObject jsonData) {
 		this();
-		
+
 		var jsonAnims = jsonData.getJSONArray("anims");
-		for(int i = 0; i < jsonAnims.length(); i++) {
+		for (int i = 0; i < jsonAnims.length(); i++) {
 			var jsonAnim = jsonAnims.getJSONObject(i);
-			var anim = new AnimationModel(jsonAnim);
+			var anim = createAnimation(jsonAnim);
 			_animations.add(anim);
 		}
 	}
-	
+
+	@SuppressWarnings("static-method")
+	protected AnimationModel createAnimation(JSONObject jsonData) {
+		return new AnimationModel(jsonData);
+	}
+
 	public List<AnimationModel> getAnimations() {
 		return _animations;
 	}
-
 }

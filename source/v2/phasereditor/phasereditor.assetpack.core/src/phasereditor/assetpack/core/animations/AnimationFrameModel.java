@@ -25,7 +25,7 @@ import org.json.JSONObject;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
 
-public class AnimationFrameModel {
+public class AnimationFrameModel{
 	private IAssetFrameModel _frame;
 	private String _textureKey;
 	private Object _frameName;

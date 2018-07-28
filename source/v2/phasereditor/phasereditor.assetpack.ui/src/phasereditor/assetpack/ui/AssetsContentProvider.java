@@ -32,7 +32,6 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 import phasereditor.assetpack.core.AnimationsAssetModel;
-import phasereditor.assetpack.core.AnimationsAssetModel.AnimationAssetElementModel;
 import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
@@ -44,6 +43,7 @@ import phasereditor.assetpack.core.IAssetElementModel;
 import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel.TilemapJSON;
+import phasereditor.assetpack.core.animations.AnimationModel;
 
 public class AssetsContentProvider implements ITreeContentProvider {
 	protected static final Object[] EMPTY = new Object[0];
@@ -160,8 +160,8 @@ public class AssetsContentProvider implements ITreeContentProvider {
 				}
 			}
 			
-			if (parentElement instanceof AnimationAssetElementModel) {
-				return ((AnimationAssetElementModel) parentElement).getAnimation().getFrames().toArray();
+			if (parentElement instanceof AnimationModel) {
+				return ((AnimationModel) parentElement).getFrames().toArray();
 			}
 		}
 

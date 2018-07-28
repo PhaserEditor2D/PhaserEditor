@@ -40,7 +40,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import phasereditor.assetpack.core.AnimationsAssetModel;
-import phasereditor.assetpack.core.AnimationsAssetModel.AnimationAssetElementModel;
 import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackModel;
@@ -285,8 +284,8 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 			return EditorSharedImages.getImage(IEditorSharedImages.IMG_FRAME_ANIMATION);
 		}
 		
-		if (element instanceof AnimationAssetElementModel) {
-			AnimationModel animation = ((AnimationAssetElementModel) element).getAnimation();
+		if (element instanceof AnimationModel) {
+			var animation = (AnimationModel) element;
 			var frames = animation.getFrames();
 			if (!frames.isEmpty()) {
 				var frame = frames.get((int) (frames.size() * 0.3));
