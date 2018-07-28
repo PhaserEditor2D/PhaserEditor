@@ -3,6 +3,7 @@ package phasereditor.assetpack.ui.properties;
 import org.eclipse.core.runtime.IAdapterFactory;
 
 import phasereditor.assetpack.core.AnimationsAssetModel;
+import phasereditor.assetpack.core.AnimationsAssetModel.AnimationFrameModel_in_AssetPack;
 import phasereditor.assetpack.core.AnimationsAssetModel.AnimationModel_in_AssetPack;
 import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetSectionModel;
@@ -19,6 +20,7 @@ import phasereditor.assetpack.core.SimpleFileAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.SvgAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
+import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.ui.properties.PGridModel;
 
 public class AssetPGridAdapterFactory implements IAdapterFactory {
@@ -64,6 +66,8 @@ public class AssetPGridAdapterFactory implements IAdapterFactory {
 				return new AnimationsAssetPGridModel((AnimationsAssetModel) obj);
 			} else if (obj instanceof AnimationModel_in_AssetPack) {
 				return new AnimationModel_in_AssetPack_PGridModel((AnimationModel_in_AssetPack) obj);
+			} else if (obj instanceof AnimationFrameModel_in_AssetPack) {
+				return new AnimationFramePGridModel((AnimationFrameModel) obj);
 			}
 		}
 		return null;

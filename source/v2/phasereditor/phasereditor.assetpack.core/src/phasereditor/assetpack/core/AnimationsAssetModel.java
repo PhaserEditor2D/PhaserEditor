@@ -226,12 +226,21 @@ public class AnimationsAssetModel extends AssetModel {
 		}
 	}
 
-	public class AnimationFrameModel_in_AssetPack extends AnimationFrameModel {
+	public class AnimationFrameModel_in_AssetPack extends AnimationFrameModel implements IAssetElementModel {
 
 		public AnimationFrameModel_in_AssetPack(JSONObject jsonData) {
 			super(jsonData);
 		}
 
+		@Override
+		public String getName() {
+			return this.getFrameName() + "." + this.getTextureKey();
+		}
+
+		@Override
+		public AssetModel getAsset() {
+			return AnimationsAssetModel.this;
+		}
 	}
 
 	@Override
