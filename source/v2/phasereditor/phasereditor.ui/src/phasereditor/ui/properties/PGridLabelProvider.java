@@ -49,7 +49,7 @@ public class PGridLabelProvider extends ColumnLabelProvider {
 	@Override
 	public Color getForeground(Object element) {
 		if (element instanceof PGridProperty) {
-			if (((PGridProperty<?>) element).isReadOnly()) {
+			if (((PGridProperty<?>) element).isReadOnly() && !(element instanceof PGridInfoProperty)) {
 				return _viewer.getControl().getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY);
 			}
 		}

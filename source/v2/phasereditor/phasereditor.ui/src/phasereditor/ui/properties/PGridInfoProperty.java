@@ -36,12 +36,12 @@ public class PGridInfoProperty extends PGridStringProperty {
 		_getter = getter;
 	}
 
-	public PGridInfoProperty(String name, String tooltip, Supplier<String> getter) {
+	public PGridInfoProperty(String name, String tooltip, Supplier<Object> getter) {
 		super(name, name, tooltip);
 		_getter = getter;
 	}
 
-	public PGridInfoProperty(String name, Supplier<String> getter) {
+	public PGridInfoProperty(String name, Supplier<Object> getter) {
 		super(name, name, name);
 		_getter = getter;
 	}

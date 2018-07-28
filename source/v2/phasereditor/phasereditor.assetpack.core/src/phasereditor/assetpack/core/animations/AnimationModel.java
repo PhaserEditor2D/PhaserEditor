@@ -30,13 +30,25 @@ public class AnimationModel {
 	private String _key;
 	private List<AnimationFrameModel> _frames;
 	private int _duration;
-	private int _frameRate;
-	private int _repeat; 
+	private double _frameRate;
+	private int _repeat;
+	private int _delay;
+	private int _repeatDelay;
+	private boolean _yoyo;
+	private boolean _showOnStart;
+	private boolean _hideOnComplete;
+	private boolean _skipMissedFrames;
 
 	public AnimationModel() {
 		_frames = new ArrayList<>();
 		_frameRate = 24;
 		_duration = 0;
+		_delay = 0;
+		_repeatDelay = 0;
+		_yoyo = false;
+		_showOnStart = false;
+		_hideOnComplete = false;
+		_skipMissedFrames = true;
 	}
 
 	public AnimationModel(JSONObject jsonData) {
@@ -64,25 +76,31 @@ public class AnimationModel {
 			// No duration or frameRate given, use default frameRate of 24fps
 			_frameRate = 24;
 			if (!_frames.isEmpty()) {
-				_duration = _frameRate / _frames.size() * 1000;
+				_duration = (int) (_frameRate / _frames.size() * 1000);
 			}
 		} else if (jsonData.has("duration") && !jsonData.has("frameRate")) {
 			// Duration given but no frameRate, so set the frameRate based on duration
 			// I.e. 12 frames in the animation, duration = 4000 ms
 			// So frameRate is 12 / (4000 / 1000) = 3 fps
 			this._duration = jsonData.getInt("duration");
-			_frameRate = _frames.size() / this._duration / 1000;
+			_frameRate = _frames.size() / ((double) this._duration / 1000);
 		} else {
 			_frameRate = jsonData.getInt("frameRate");
 			// frameRate given, derive duration from it (even if duration also specified)
 			// I.e. 15 frames in the animation, frameRate = 30 fps
 			// So duration is 15 / 30 = 0.5 * 1000 (half a second, or 500ms)
 			if (_frameRate > 0) {
-				_duration = (_frames.size() / _frameRate) * 1000;
+				_duration = (int) ((_frames.size() / _frameRate) * 1000);
 			}
 		}
-		
-		_repeat = jsonData.optInt("repeat");
+
+		_repeat = jsonData.optInt("repeat", 0);
+		_delay = jsonData.optInt("delay", 0);
+		_repeatDelay = jsonData.optInt("repeatDelay", 0);
+		_yoyo = jsonData.optBoolean("yoyo", false);
+		_showOnStart = jsonData.optBoolean("showOnStart", false);
+		_hideOnComplete = jsonData.optBoolean("hideOnComplete", false);
+		_skipMissedFrames = jsonData.optBoolean("skipMissedFrames", true);
 	}
 
 	public String getKey() {
@@ -92,28 +110,72 @@ public class AnimationModel {
 	public List<AnimationFrameModel> getFrames() {
 		return _frames;
 	}
-	
+
 	public int getDuration() {
 		return _duration;
 	}
-	
+
 	public void setDuration(int duration) {
 		_duration = duration;
 	}
-	
-	public int getFrameRate() {
+
+	public double getFrameRate() {
 		return _frameRate;
 	}
 
-	public void setFrameRate(int frameRate) {
+	public void setFrameRate(double frameRate) {
 		_frameRate = frameRate;
 	}
-	
+
 	public int getRepeat() {
 		return _repeat;
 	}
-	
+
 	public void setRepeat(int repeat) {
 		_repeat = repeat;
+	}
+
+	public int getDelay() {
+		return _delay;
+	}
+
+	public void setDelay(int delay) {
+		_delay = delay;
+	}
+
+	public int getRepeatDelay() {
+		return _repeatDelay;
+	}
+
+	public void setRepeatDelay(int repeatDelay) {
+		_repeatDelay = repeatDelay;
+	}
+
+	public boolean isYoyo() {
+		return _yoyo;
+	}
+
+	public void setYoyo(boolean yoyo) {
+		_yoyo = yoyo;
+	}
+
+	public boolean isShowOnStart() {
+		return _showOnStart;
+	}
+
+	public void setShowOnStart(boolean showOnStart) {
+		_showOnStart = showOnStart;
+	}
+
+	public boolean isHideOnComplete() {
+		return _hideOnComplete;
+	}
+
+	public void setHideOnComplete(boolean hideOnComplete) {
+		_hideOnComplete = hideOnComplete;
+	}
+
+	public boolean isSkipMissedFrames() {
+		return _skipMissedFrames;
 	}
 }

@@ -33,9 +33,9 @@ import phasereditor.assetpack.core.AnimationsAssetModel;
 import phasereditor.ui.properties.PGridSection;
 import phasereditor.ui.properties.PGridStringProperty;
 
-public class AnimationAssetPGridModel extends BaseAssetPGridModel<AnimationsAssetModel> {
+public class AnimationsAssetPGridModel extends BaseAssetPGridModel<AnimationsAssetModel> {
 
-	public AnimationAssetPGridModel(AnimationsAssetModel asset) {
+	public AnimationsAssetPGridModel(AnimationsAssetModel asset) {
 		super(asset);
 
 		PGridSection section = new PGridSection("Animation");
