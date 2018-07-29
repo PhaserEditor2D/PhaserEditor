@@ -279,11 +279,11 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 		if (element instanceof AssetType) {
 			return getFileTypeImage();
 		}
-		
+
 		if (element instanceof AnimationsAssetModel) {
 			return EditorSharedImages.getImage(IEditorSharedImages.IMG_FRAME_ANIMATION);
 		}
-		
+
 		if (element instanceof AnimationModel) {
 			var animation = (AnimationModel) element;
 			var frames = animation.getFrames();
@@ -292,19 +292,18 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 				return getImage(frame.getFrame());
 			}
 		}
-		
+
 		if (element instanceof AnimationFrameModel) {
 			AnimationFrameModel frame = (AnimationFrameModel) element;
 			return getImage(frame.getFrame());
 		}
-		
-		
+
 		// Keep this at the end!!!
-		
+
 		if (element instanceof AssetModel) {
 			return getKeyImage();
 		}
-		
+
 		if (element instanceof IAssetElementModel) {
 			return getElementImage();
 		}
@@ -379,16 +378,8 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 			return frame.getIndex() + " " + frame.getAsset().getKey();
 		}
 
-		if (element instanceof IAssetElementModel) {
-			return ((IAssetElementModel) element).getName();
-		}
-
 		if (element instanceof AtlasData) {
 			return ((AtlasData) element).getFile().getName();
-		}
-
-		if (element instanceof Container) {
-			return ((Container) element).name;
 		}
 
 		if (element instanceof AnimationFrameModel) {
@@ -397,6 +388,16 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 				return frame.getTextureKey();
 			}
 			return frame.getFrameName() + " - " + frame.getTextureKey();
+		}
+
+		// keep this at the end!!!
+
+		if (element instanceof Container) {
+			return ((Container) element).name;
+		}
+
+		if (element instanceof IAssetElementModel) {
+			return ((IAssetElementModel) element).getName();
 		}
 
 		return super.getText(element);
