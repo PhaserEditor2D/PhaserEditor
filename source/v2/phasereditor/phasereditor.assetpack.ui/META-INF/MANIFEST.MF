@@ -38,6 +38,7 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-9
 Bundle-ActivationPolicy: lazy
 Export-Package: phasereditor.assetpack.ui,
+ phasereditor.assetpack.ui.animations,
  phasereditor.assetpack.ui.editors,
  phasereditor.assetpack.ui.preview,
  phasereditor.assetpack.ui.refactorings,

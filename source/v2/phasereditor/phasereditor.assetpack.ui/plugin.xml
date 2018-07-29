@@ -319,7 +319,7 @@
          point="phasereditor.project.core.buildParticipant">
       <participant
             handler="phasereditor.assetpack.ui.AssetPartsBuildParticipant"
-            id="phasereditor.assetpack.ui.participant3"
+            id="phasereditor.assetpack.ui.AssetPartsBuildParticipant"
             order="4">
       </participant>
    </extension>

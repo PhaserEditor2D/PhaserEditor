@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="phasereditor.animation.ui.AnimationsEditor"
+            icon="platform:/plugin/phasereditor.ui/icons/frame-animation.png"
+            id="phasereditor.animation.ui.AnimationsEditor"
+            name="Phaser Animations">
+         <contentTypeBinding
+               contentTypeId="phasereditor.assetpack.core.animations">
+         </contentTypeBinding>
+      </editor>
+   </extension>
+   <extension
+         point="phasereditor.project.core.buildParticipant">
+      <participant
+            handler="phasereditor.animation.ui.AnimationsEditorProjectBuildParticipant"
+            id="phasereditor.animation.ui.AnimationsEditorProjectBuildParticipant"
+            order="1000">
+      </participant>
+   </extension>
+</plugin>
