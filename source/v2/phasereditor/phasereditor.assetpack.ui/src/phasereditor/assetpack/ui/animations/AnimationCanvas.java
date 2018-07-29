@@ -21,16 +21,21 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.animations;
 
+import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.widgets.Composite;
 
+import javafx.animation.Animation.Status;
 import javafx.animation.Interpolator;
 import javafx.animation.Transition;
 import javafx.embed.swt.FXCanvas;
 import javafx.util.Duration;
+import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.ui.ImageCanvas;
 
@@ -69,6 +74,10 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 		}
 	}
 
+	public AnimationModel getModel() {
+		return _animModel;
+	}
+
 	public void setModel(AnimationModel model) {
 		_animModel = model;
 
@@ -89,9 +98,32 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 	}
 
 	private void createAnimation() {
-		int size = _animModel.getFrames().size();
-		_transition = new IndexTransition(Duration.seconds(size / (double) _animModel.getFrameRate()), size);
+		List<AnimationFrameModel> frames = _animModel.getFrames();
 
+		long totalDuration = _animModel.getDuration();
+
+		for (var frame : frames) {
+			if (frame.getDuration() > 0) {
+				totalDuration += frame.getDuration();
+			}
+		}
+
+		int size = frames.size();
+
+		double[] fractions = new double[size];
+
+		double time = 0;
+
+		double avgFrameTime = _animModel.getDuration() / size;
+
+		for (int i = 0; i < size; i++) {
+			fractions[i] = time / totalDuration;
+			time += avgFrameTime + frames.get(i).getDuration();
+		}
+
+		_transition = new IndexTransition(Duration.millis(totalDuration), fractions);
+		_transition.setDelay(Duration.millis(_animModel.getDelay()));
+		_transition.setAutoReverse(_animModel.isYoyo());
 		_transition.setCycleCount(_animModel.getRepeat());
 
 		_transition.play();
@@ -122,29 +154,56 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 
 	class IndexTransition extends Transition {
 
-		private int _length;
-		private int _last;
+		private int _currentIndex;
+		private double[] _fractions;
 
-		public IndexTransition(Duration duration, int length) {
+		public IndexTransition(Duration duration, double[] fractions) {
 			super();
 			setCycleDuration(duration);
 			setInterpolator(Interpolator.LINEAR);
-			_length = length;
-			_last = -1;
+			_fractions = fractions;
+			_currentIndex = -1;
 		}
 
 		@Override
 		protected void interpolate(double frac) {
-			int i = (int) (frac * _length);
-			if (i != _last) {
-				showFrame(i);
+			int index = 0;
+
+			for (int i = 0; i < _fractions.length; i++) {
+				if (frac > _fractions[i]) {
+					index = i;
+				} else {
+					break;
+				}
+			}
+
+			if (index != _currentIndex) {
+				showFrame(index);
 				if (!isDisposed()) {
 					redraw();
 				}
-				_last = i;
+				_currentIndex = index;
 			}
 		}
 
+		public int getCurrentIndex() {
+			return _currentIndex;
+		}
+
+	}
+
+	@Override
+	protected void customPaintControl(PaintEvent e) {
+		super.customPaintControl(e);
+
+		if (_animModel != null && _transition != null && _transition.getStatus() != Status.STOPPED) {
+			int i = _transition.getCurrentIndex() + 1;
+			if (i > 0 && !_animModel.getFrames().isEmpty()) {
+				double frac = i / (double) _animModel.getFrames().size();
+				int x = (int) (frac * e.width);
+				e.gc.drawLine(0, e.height - 2, x, e.height - 2);
+			}
+		}
 	}
 
 	@Override

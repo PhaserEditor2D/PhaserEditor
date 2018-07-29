@@ -53,6 +53,7 @@ public class AnimationPreviewComp extends Composite {
 	AnimationCanvas _animCanvas;
 	private ImageCanvas_Zoom_1_1_Action _zoom_1_1_action;
 	private ImageCanvas_Zoom_FitWindow_Action _zoom_fitWindow_action;
+	protected AnimationModel _animModel;
 
 	public AnimationPreviewComp(Composite parent, int style) {
 		super(parent, style);
@@ -70,9 +71,15 @@ public class AnimationPreviewComp extends Composite {
 	}
 
 	public void setModel(AnimationModel animModel) {
+		_animModel = animModel;
+
 		IFrameProvider provider = animModel == null ? IFrameProvider.NULL : new AnimationFrameProvider(animModel);
+
 		_gridCanvas.loadFrameProvider(provider);
-		_animCanvas.setModel(animModel);
+
+		if (getTopCanvas() == _animCanvas) {
+			_animCanvas.setModel(animModel);
+		}
 	}
 
 	private void updateActionsState() {
@@ -119,7 +126,11 @@ public class AnimationPreviewComp extends Composite {
 			@Override
 			public void run() {
 				moveTop(_animCanvas);
-				_animCanvas.play();
+				if (_animCanvas.getModel() == null) {
+					_animCanvas.setModel(_animModel);
+				} else {
+					_animCanvas.play();
+				}
 			}
 		};
 
