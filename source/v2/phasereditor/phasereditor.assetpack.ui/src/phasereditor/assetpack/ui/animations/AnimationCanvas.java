@@ -47,6 +47,7 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 
 	private AnimationModel _animModel;
 	private IndexTransition _transition;
+	private boolean _showProgress = true;
 	private static boolean _initFX;
 
 	public AnimationCanvas(Composite parent, int style) {
@@ -59,6 +60,8 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 			var temp = new FXCanvas(parent, SWT.NONE);
 			temp.dispose();
 		}
+		
+		_showProgress = true;
 	}
 
 	public void play() {
@@ -156,6 +159,7 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 
 		private int _currentIndex;
 		private double[] _fractions;
+		private double _frac;
 
 		public IndexTransition(Duration duration, double[] fractions) {
 			super();
@@ -167,6 +171,7 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 
 		@Override
 		protected void interpolate(double frac) {
+			_frac = frac;
 			int index = 0;
 
 			for (int i = 0; i < _fractions.length; i++) {
@@ -179,15 +184,24 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 
 			if (index != _currentIndex) {
 				showFrame(index);
-				if (!isDisposed()) {
-					redraw();
-				}
 				_currentIndex = index;
+			}
+
+			if (!isDisposed()) {
+				redraw();
 			}
 		}
 
 		public int getCurrentIndex() {
 			return _currentIndex;
+		}
+
+		public double getFraction() {
+			return _frac;
+		}
+
+		public double[] getFractions() {
+			return _fractions;
 		}
 
 	}
@@ -196,14 +210,35 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 	protected void customPaintControl(PaintEvent e) {
 		super.customPaintControl(e);
 
-		if (_animModel != null && _transition != null && _transition.getStatus() != Status.STOPPED) {
-			int i = _transition.getCurrentIndex() + 1;
-			if (i > 0 && !_animModel.getFrames().isEmpty()) {
-				double frac = i / (double) _animModel.getFrames().size();
-				int x = (int) (frac * e.width);
-				e.gc.drawLine(0, e.height - 2, x, e.height - 2);
+		if (_showProgress) {
+			if (_transition != null) {
+				e.gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_GREEN));
+				e.gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_RED));
+
+				e.gc.setLineWidth(3);
+
+				if (_animModel != null && _transition.getStatus() != Status.STOPPED) {
+					double frac = _transition.getFraction();
+					int x = (int) (frac * e.width);
+					e.gc.drawLine(0, e.height - 5, x, e.height - 5);
+				}
+
+				e.gc.setAlpha(110);
+
+				for (var frac : _transition.getFractions()) {
+					e.gc.fillOval((int) (frac * e.width) - 3, e.height - 3 - 5, 6, 6);
+				}
 			}
 		}
+
+	}
+	
+	public void setShowProgress(boolean showProgress) {
+		_showProgress = showProgress;
+	}
+	
+	public boolean isShowProgress() {
+		return _showProgress;
 	}
 
 	@Override
