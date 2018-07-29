@@ -136,7 +136,7 @@ public class AssetPackCore {
 	public static boolean isImage(IResource resource) {
 		return resource instanceof IFile && _imageExtensions.contains(resource.getFullPath().getFileExtension());
 	}
-	
+
 	public static boolean isSvg(IResource resource) {
 		return resource instanceof IFile && resource.getFullPath().getFileExtension().toLowerCase().equals("svg");
 	}
@@ -223,7 +223,7 @@ public class AssetPackCore {
 	public static List<IFile> discoverImageFiles(IContainer folder) throws CoreException {
 		return discoverFiles(folder, AssetPackCore::isImage);
 	}
-	
+
 	public static List<IFile> discoverSvgFiles(IContainer folder) throws CoreException {
 		return discoverFiles(folder, AssetPackCore::isSvg);
 	}
@@ -309,7 +309,7 @@ public class AssetPackCore {
 				String format;
 				try {
 					format = AtlasCore.getAtlasFormat(t);
-					
+
 					if (format != null && Set.of(formats).contains(format)) {
 						return Boolean.TRUE;
 					}
@@ -482,7 +482,7 @@ public class AssetPackCore {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	/**
 	 * Check if the given content has an Asset Pack format.
 	 * 
@@ -527,7 +527,7 @@ public class AssetPackCore {
 			return e.getMessage();
 		}
 	}
-	
+
 	public static String isTilemapImpactContent(InputStream contents) {
 		try {
 			JSONTokener tokener = new JSONTokener(new InputStreamReader(contents));
@@ -920,9 +920,40 @@ public class AssetPackCore {
 		case atlasXML:
 			return new String[] { AtlasCore.TEXTURE_ATLAS_XML_STARLING };
 		case unityAtlas:
-			return new String[] {AtlasCore.TEXTURE_ATLAS_UNITY};
+			return new String[] { AtlasCore.TEXTURE_ATLAS_UNITY };
 		default:
 			return new String[] { AtlasCore.TEXTURE_ATLAS_JSON_HASH, AtlasCore.TEXTURE_ATLAS_JSON_ARRAY };
 		}
+	}
+
+	public static boolean isAnimationsContentType(InputStream contents) {
+		try {
+			JSONObject jsonData = new JSONObject(new JSONTokener(contents));
+			jsonData.getJSONArray("anims");
+			return true;
+		} catch (Exception e) {
+			// nothing
+		}
+		return false;
+	}
+
+	public static boolean isAnimationsFile(IFile file) {
+		try {
+			
+			if (!file.getFileExtension().equals("json")) {
+				return false;
+			}
+			
+			var desc = file.getContentDescription();
+			if (desc != null) {
+				var contentType = desc.getContentType();
+				if (contentType != null) {
+					return contentType.getId().equals(AnimationsContentTypeDescriber.CONTENT_TYPE_ID);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 }

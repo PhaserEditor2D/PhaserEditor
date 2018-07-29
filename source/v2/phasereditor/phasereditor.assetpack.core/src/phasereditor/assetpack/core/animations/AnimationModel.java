@@ -27,6 +27,7 @@ import java.util.List;
 import org.json.JSONObject;
 
 public class AnimationModel {
+	
 	private String _key;
 	private List<AnimationFrameModel> _frames;
 	private int _duration;

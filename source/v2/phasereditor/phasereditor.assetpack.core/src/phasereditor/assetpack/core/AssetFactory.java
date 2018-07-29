@@ -85,7 +85,7 @@ public abstract class AssetFactory {
 			public AnimationsAssetModel createAsset(String key, AssetSectionModel section) throws Exception {
 				AssetPackModel pack = section.getPack();
 				var asset = new AnimationsAssetModel(key, section);
-				IFile file = pack.pickFile(pack.discoverJsonFiles());
+				IFile file = pack.pickFile(pack.discoverAnimationsFiles());
 				if (file != null) {
 					asset.setKey(pack.createKey(file));
 					asset.setUrl(ProjectCore.getAssetUrl(file));
