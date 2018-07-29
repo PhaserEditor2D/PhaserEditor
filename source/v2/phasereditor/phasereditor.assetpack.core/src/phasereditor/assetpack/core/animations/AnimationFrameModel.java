@@ -30,6 +30,7 @@ public class AnimationFrameModel{
 	private String _textureKey;
 	private Object _frameName;
 	private int _duration;
+	private double _computedFraction;
 
 	public AnimationFrameModel() {
 
@@ -73,5 +74,13 @@ public class AnimationFrameModel{
 	
 	public void setDuration(int duration) {
 		_duration = duration;
+	}
+
+	public void setComputedFraction(double fraction) {
+		_computedFraction = fraction;
+	}
+	
+	public double getComputedFraction() {
+		return _computedFraction;
 	}
 }

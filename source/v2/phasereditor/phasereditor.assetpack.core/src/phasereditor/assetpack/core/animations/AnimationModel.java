@@ -27,7 +27,7 @@ import java.util.List;
 import org.json.JSONObject;
 
 public class AnimationModel {
-	
+
 	private String _key;
 	private List<AnimationFrameModel> _frames;
 	private int _duration;
@@ -39,6 +39,7 @@ public class AnimationModel {
 	private boolean _showOnStart;
 	private boolean _hideOnComplete;
 	private boolean _skipMissedFrames;
+	private int _totalDuration;
 
 	public AnimationModel() {
 		_frames = new ArrayList<>();
@@ -102,6 +103,34 @@ public class AnimationModel {
 		_showOnStart = jsonData.optBoolean("showOnStart", false);
 		_hideOnComplete = jsonData.optBoolean("hideOnComplete", false);
 		_skipMissedFrames = jsonData.optBoolean("skipMissedFrames", true);
+
+		buildFractions();
+	}
+
+	public void buildFractions() {
+		_totalDuration = _duration;
+
+		for (var frame : _frames) {
+			if (frame.getDuration() > 0) {
+				_totalDuration += frame.getDuration();
+			}
+		}
+
+		int size = _frames.size();
+
+		double time = 0;
+
+		double avgFrameTime = _duration / size;
+
+		for (var frame : _frames) {
+			frame.setComputedFraction(time / _totalDuration);
+			time += avgFrameTime + frame.getDuration();
+		}
+
+	}
+	
+	public int getComputedTotalDuration() {
+		return _totalDuration;
 	}
 
 	@SuppressWarnings("static-method")

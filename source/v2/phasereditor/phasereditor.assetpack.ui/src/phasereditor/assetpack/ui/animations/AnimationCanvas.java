@@ -60,7 +60,7 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 			var temp = new FXCanvas(parent, SWT.NONE);
 			temp.dispose();
 		}
-		
+
 		_showProgress = true;
 	}
 
@@ -101,30 +101,8 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 	}
 
 	private void createAnimation() {
-		List<AnimationFrameModel> frames = _animModel.getFrames();
-
-		long totalDuration = _animModel.getDuration();
-
-		for (var frame : frames) {
-			if (frame.getDuration() > 0) {
-				totalDuration += frame.getDuration();
-			}
-		}
-
-		int size = frames.size();
-
-		double[] fractions = new double[size];
-
-		double time = 0;
-
-		double avgFrameTime = _animModel.getDuration() / size;
-
-		for (int i = 0; i < size; i++) {
-			fractions[i] = time / totalDuration;
-			time += avgFrameTime + frames.get(i).getDuration();
-		}
-
-		_transition = new IndexTransition(Duration.millis(totalDuration), fractions);
+		_animModel.buildFractions();
+		_transition = new IndexTransition(Duration.millis(_animModel.getComputedTotalDuration()));
 		_transition.setDelay(Duration.millis(_animModel.getDelay()));
 		_transition.setAutoReverse(_animModel.isYoyo());
 		_transition.setCycleCount(_animModel.getRepeat());
@@ -158,14 +136,12 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 	class IndexTransition extends Transition {
 
 		private int _currentIndex;
-		private double[] _fractions;
 		private double _frac;
 
-		public IndexTransition(Duration duration, double[] fractions) {
+		public IndexTransition(Duration duration) {
 			super();
 			setCycleDuration(duration);
 			setInterpolator(Interpolator.LINEAR);
-			_fractions = fractions;
 			_currentIndex = -1;
 		}
 
@@ -174,8 +150,17 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 			_frac = frac;
 			int index = 0;
 
-			for (int i = 0; i < _fractions.length; i++) {
-				if (frac > _fractions[i]) {
+			AnimationModel animModel = getModel();
+
+			if (animModel == null) {
+				return;
+			}
+
+			List<AnimationFrameModel> frames = animModel.getFrames();
+
+			for (int i = 0; i < frames.size(); i++) {
+				var frame = frames.get(i);
+				if (frac > frame.getComputedFraction()) {
 					index = i;
 				} else {
 					break;
@@ -199,11 +184,6 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 		public double getFraction() {
 			return _frac;
 		}
-
-		public double[] getFractions() {
-			return _fractions;
-		}
-
 	}
 
 	@Override
@@ -211,32 +191,38 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 		super.customPaintControl(e);
 
 		if (_showProgress) {
+
 			if (_transition != null) {
+
 				e.gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_GREEN));
 				e.gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_RED));
 
 				e.gc.setLineWidth(3);
 
-				if (_animModel != null && _transition.getStatus() != Status.STOPPED) {
-					double frac = _transition.getFraction();
-					int x = (int) (frac * e.width);
-					e.gc.drawLine(0, e.height - 5, x, e.height - 5);
-				}
+				if (_animModel != null) {
 
-				e.gc.setAlpha(110);
+					if (_transition.getStatus() != Status.STOPPED) {
+						double frac = _transition.getFraction();
+						int x = (int) (frac * e.width);
+						e.gc.drawLine(0, e.height - 5, x, e.height - 5);
+					}
 
-				for (var frac : _transition.getFractions()) {
-					e.gc.fillOval((int) (frac * e.width) - 3, e.height - 3 - 5, 6, 6);
+					e.gc.setAlpha(110);
+
+					for (var frame : _animModel.getFrames()) {
+						var frac = frame.getComputedFraction();
+						e.gc.fillOval((int) (frac * e.width) - 3, e.height - 3 - 5, 6, 6);
+					}
 				}
 			}
 		}
 
 	}
-	
+
 	public void setShowProgress(boolean showProgress) {
 		_showProgress = showProgress;
 	}
-	
+
 	public boolean isShowProgress() {
 		return _showProgress;
 	}
