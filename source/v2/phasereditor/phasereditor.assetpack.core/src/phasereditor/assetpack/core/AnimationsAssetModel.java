@@ -177,7 +177,7 @@ public class AnimationsAssetModel extends AssetModel {
 					var frame = cache.get(cacheKey);
 
 					if (frame != null) {
-						animFrame.setFrame(frame);
+						animFrame.setFrameAsset(frame);
 						continue;
 					}
 
@@ -197,7 +197,7 @@ public class AnimationsAssetModel extends AssetModel {
 						cache.put(cacheKey, frame);
 					}
 
-					animFrame.setFrame(frame);
+					animFrame.setFrameAsset(frame);
 
 				}
 			}

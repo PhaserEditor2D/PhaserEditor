@@ -64,7 +64,7 @@ public class AnimationsModel_in_Editor extends AnimationsModel {
 				var frame = cache.get(cacheKey);
 
 				if (frame != null) {
-					animFrame.setFrame(frame);
+					animFrame.setFrameAsset(frame);
 					continue;
 				}
 
@@ -83,7 +83,7 @@ public class AnimationsModel_in_Editor extends AnimationsModel {
 					cache.put(cacheKey, frame);
 				}
 
-				animFrame.setFrame(frame);
+				animFrame.setFrameAsset(frame);
 
 			}
 		}

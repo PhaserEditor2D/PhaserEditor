@@ -55,7 +55,7 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 	private List<Image> _images;
 	private int _frameSize;
 	private Rectangle _dst;
-	private Point origin;
+	private Point _origin;
 	private int _overIndex;
 	private List<String> _tooltips;
 	private boolean _fitWindow;
@@ -83,7 +83,7 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 				int index = -1;
 				for (int i = 0; i < _places.size(); i++) {
 					Rectangle place = _places.get(i);
-					if (place.contains(e.x, e.y - origin.y)) {
+					if (place.contains(e.x, e.y - _origin.y)) {
 						index = i;
 						break;
 					}
@@ -123,7 +123,7 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 			}
 		});
 
-		origin = new Point(0, 0);
+		_origin = new Point(0, 0);
 
 		final ScrollBar vBar = getVerticalBar();
 		vBar.addListener(SWT.Selection, e -> {
@@ -131,7 +131,7 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 				return;
 			}
 
-			origin.y = -vBar.getSelection();
+			_origin.y = -vBar.getSelection();
 			redraw();
 		});
 		addListener(SWT.Resize, e -> {
@@ -165,7 +165,7 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 		if (vSelection >= vPage) {
 			if (vPage <= 0)
 				vSelection = 0;
-			origin.y = -vSelection;
+			_origin.y = -vSelection;
 		}
 
 		redraw();
@@ -185,7 +185,7 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 		computeRects();
 
 		Transform tx = new Transform(getDisplay());
-		tx.translate(0, origin.y);
+		tx.translate(0, _origin.y);
 		gc.setTransform(tx);
 
 		for (int i = 0; i < _frames.size(); i++) {

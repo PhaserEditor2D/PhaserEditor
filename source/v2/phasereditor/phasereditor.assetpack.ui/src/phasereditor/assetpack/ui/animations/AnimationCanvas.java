@@ -49,6 +49,7 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 	private IndexTransition _transition;
 	private boolean _showProgress = true;
 	private static boolean _initFX;
+	Runnable _stepCallback;
 
 	public AnimationCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -77,10 +78,22 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 		}
 	}
 
+	public Runnable getStepCallback() {
+		return _stepCallback;
+	}
+	
+	public void setStepCallback(Runnable stepCallback) {
+		_stepCallback = stepCallback;
+	}
+	
+	public IndexTransition getTransition() {
+		return _transition;
+	}
+	
 	public AnimationModel getModel() {
 		return _animModel;
 	}
-
+	
 	public void setModel(AnimationModel model) {
 		_animModel = model;
 
@@ -118,7 +131,7 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 		}
 
 		var animationFrame = animationFrames.get(index);
-		var textureFrame = animationFrame.getFrame();
+		var textureFrame = animationFrame.getFrameAsset();
 		if (textureFrame == null) {
 			_viewport = null;
 			_image = null;
@@ -133,10 +146,10 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 		}
 	}
 
-	class IndexTransition extends Transition {
+	public class IndexTransition extends Transition {
 
 		private int _currentIndex;
-		private double _frac;
+		private double _currentFraction;
 
 		public IndexTransition(Duration duration) {
 			super();
@@ -147,7 +160,7 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 
 		@Override
 		protected void interpolate(double frac) {
-			_frac = frac;
+			_currentFraction = frac;
 			int index = 0;
 
 			AnimationModel animModel = getModel();
@@ -174,6 +187,9 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 
 			if (!isDisposed()) {
 				redraw();
+				if (_stepCallback != null) {
+					_stepCallback.run();
+				}
 			}
 		}
 
@@ -182,7 +198,7 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 		}
 
 		public double getFraction() {
-			return _frac;
+			return _currentFraction;
 		}
 	}
 
@@ -234,7 +250,7 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 
 	@Override
 	public void controlResized(ControlEvent e) {
-		resetZoom();
+		// resetZoom();
 	}
 
 }

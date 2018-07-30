@@ -47,7 +47,7 @@ public class AnimationFrameProvider implements IFrameProvider {
 
 	@Override
 	public Rectangle getFrameRectangle(int index) {
-		var frame = _model.getFrames().get(index).getFrame();
+		var frame = _model.getFrames().get(index).getFrameAsset();
 
 		if (frame == null) {
 			return null;
@@ -58,7 +58,7 @@ public class AnimationFrameProvider implements IFrameProvider {
 
 	@Override
 	public IFile getFrameImageFile(int index) {
-		var frame = _model.getFrames().get(index).getFrame();
+		var frame = _model.getFrames().get(index).getFrameAsset();
 
 		if (frame == null) {
 			return null;

@@ -21,23 +21,76 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.animation.ui;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.ScrollBar;
 
+import javafx.animation.Animation.Status;
 import phasereditor.ui.BaseImageCanvas;
 
 /**
  * @author arian
  *
  */
-public class AnimationTimelineCanvas extends BaseImageCanvas implements PaintListener {
+public class AnimationTimelineCanvas extends BaseImageCanvas implements PaintListener, MouseWheelListener {
 
 	private AnimationModel_in_Editor _animation;
+	private AnimationsEditor _editor;
+	private double _widthFactor;
+	private int _origin;
+	private int _fullWidth;
+	private boolean _updateScroll;
 
 	public AnimationTimelineCanvas(Composite parent, int style) {
-		super(parent, style);
+		super(parent, style | SWT.H_SCROLL | SWT.NO_REDRAW_RESIZE);
+
+		_widthFactor = 1;
+
 		addPaintListener(this);
+		addMouseWheelListener(this);
+
+		_origin = 0;
+
+		final ScrollBar hBar = getHorizontalBar();
+		hBar.addListener(SWT.Selection, e -> {
+			_origin = -hBar.getSelection();
+			redraw();
+		});
+
+		addListener(SWT.Resize, e -> {
+			_updateScroll = true;
+		});
+
+	}
+
+	void updateScroll() {
+		Rectangle client = getClientArea();
+		ScrollBar hBar = getHorizontalBar();
+		hBar.setMaximum(_fullWidth);
+		hBar.setThumb(Math.min(_fullWidth, client.width));
+		hBar.setVisible(_fullWidth > client.width);
+		int hPage = _fullWidth - client.width;
+		int hSelection = hBar.getSelection();
+		if (hSelection >= hPage) {
+			if (hPage <= 0) {
+				hSelection = 0;
+			}
+			_origin = -hSelection;
+		}
+	}
+
+	public void setEditor(AnimationsEditor editor) {
+		_editor = editor;
+	}
+
+	public AnimationsEditor getEditor() {
+		return _editor;
 	}
 
 	public void setAnimation(AnimationModel_in_Editor animation) {
@@ -49,7 +102,128 @@ public class AnimationTimelineCanvas extends BaseImageCanvas implements PaintLis
 		return _animation;
 	}
 
+	@Override
 	public void paintControl(PaintEvent e) {
+		if (_animation == null) {
+			return;
+		}
 
+		// TODO: autoscroll!!
+
+		// if (_editor != null) {
+		// var transition = _editor.getAnimationCanvas().getTransition();
+		// if (transition != null && transition.getStatus() != Status.STOPPED) {
+		// var frac = transition.getFraction();
+		// var x = (int) (_fullWidth * frac);
+		//
+		// var hBar = getHorizontalBar();
+		// var viewX = _origin + x;
+		//
+		// if (viewX > e.width) {
+		// hBar.setSelection(viewX);
+		// _origin -= viewX - e.width;
+		// } else if (viewX < 0) {
+		// hBar.setSelection(viewX);
+		// _origin -= viewX;
+		// }
+		// }
+		// }
+
+		if (_editor != null) {
+			var transition = _editor.getAnimationCanvas().getTransition();
+			if (transition != null && transition.getStatus() != Status.STOPPED) {
+				var frac = transition.getFraction();
+
+				var x = (int) (_fullWidth * frac);
+
+				var hBar = getHorizontalBar();
+				var viewX = _origin + x;
+
+				int thumb = hBar.getThumb();
+				if (viewX > e.width) {
+					var sel = x - thumb + e.width;
+					if (sel + thumb > _fullWidth) {
+						sel = _fullWidth - thumb;
+					}
+					hBar.setSelection(sel);
+					_origin = -sel;
+				} else if (viewX < 0) {
+					var sel = x - thumb + e.width;
+					if (sel < 0) {
+						sel = 0;
+					}
+					hBar.setSelection(sel);
+					_origin = -sel;
+				}
+			}
+		}
+
+		var gc = e.gc;
+
+		Transform tx = new Transform(getDisplay());
+		tx.translate(_origin, 0);
+		gc.setTransform(tx);
+
+		_fullWidth = (int) (e.width * _widthFactor);
+
+		int margin = 20;
+
+		int height = e.height - margin * 2;
+
+		for (var animFrame : _animation.getFrames()) {
+			var frame = animFrame.getFrameAsset();
+
+			if (frame == null) {
+				continue;
+			}
+
+			var img = loadImage(frame.getImageFile());
+			var src = frame.getFrameData().src;
+
+			var heightFactor = height / (float) src.height;
+
+			int keyWidth = (int) (src.width * heightFactor);
+
+			int x = (int) (animFrame.getComputedFraction() * _fullWidth) - keyWidth / 2;
+			if (x < 0) {
+				x = 0;
+			}
+
+			if (height > 0) {
+				gc.drawImage(img, src.x, src.y, src.width, src.height, x, margin, keyWidth, height);
+			}
+		}
+
+		if (_editor != null) {
+			var transition = _editor.getAnimationCanvas().getTransition();
+			if (transition != null && transition.getStatus() != Status.STOPPED) {
+				var frac = transition.getFraction();
+				var x = (int) (_fullWidth * frac);
+				gc.drawLine(x, 0, x, e.height);
+			}
+		}
+
+		if (_updateScroll) {
+			_updateScroll = false;
+			updateScroll();
+		}
+
+	}
+
+	@Override
+	public void mouseScrolled(MouseEvent e) {
+		if (e.count < 0) {
+			_widthFactor -= 0.2;
+		} else {
+			_widthFactor += 0.2;
+		}
+
+		if (_widthFactor < 0.2) {
+			_widthFactor = 0.1;
+		}
+
+		_updateScroll = true;
+
+		redraw();
 	}
 }

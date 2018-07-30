@@ -289,13 +289,13 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 			var frames = animation.getFrames();
 			if (!frames.isEmpty()) {
 				var frame = frames.get((int) (frames.size() * 0.3));
-				return getImage(frame.getFrame());
+				return getImage(frame.getFrameAsset());
 			}
 		}
 
 		if (element instanceof AnimationFrameModel) {
 			AnimationFrameModel frame = (AnimationFrameModel) element;
-			return getImage(frame.getFrame());
+			return getImage(frame.getFrameAsset());
 		}
 
 		// Keep this at the end!!!

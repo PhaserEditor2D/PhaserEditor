@@ -44,11 +44,11 @@ public class AnimationFrameModel{
 		_duration = jsonData.optInt("duration");
 	}
 
-	public IAssetFrameModel getFrame() {
+	public IAssetFrameModel getFrameAsset() {
 		return _frame;
 	}
 
-	public void setFrame(IAssetFrameModel frame) {
+	public void setFrameAsset(IAssetFrameModel frame) {
 		_frame = frame;
 	}
 

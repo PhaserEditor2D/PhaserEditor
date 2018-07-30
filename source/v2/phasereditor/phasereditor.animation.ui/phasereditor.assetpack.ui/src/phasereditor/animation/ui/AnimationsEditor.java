@@ -29,7 +29,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -39,7 +39,6 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.json.JSONObject;
 
-import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.animations.AnimationCanvas;
 import phasereditor.ui.FilteredContentOutlinePage;
@@ -52,9 +51,10 @@ public class AnimationsEditor extends EditorPart {
 
 	public static final String ID = "phasereditor.animation.ui.AnimationsEditor"; //$NON-NLS-1$
 	private AnimationsModel_in_Editor _model;
-	private AnimationCanvas _previewCanvas;
+	private AnimationCanvas _animCanvas;
 	Outliner _outliner;
 	ISelectionChangedListener _outlinerListener;
+	private AnimationTimelineCanvas _timelineCanvas;
 
 	public AnimationsEditor() {
 	}
@@ -66,9 +66,13 @@ public class AnimationsEditor extends EditorPart {
 	 */
 	@Override
 	public void createPartControl(Composite parent) {
-		Composite container = new Composite(parent, SWT.NONE);
-		container.setLayout(new FillLayout());
-		_previewCanvas = new AnimationCanvas(container, SWT.NONE);
+		SashForm sash = new SashForm(parent, SWT.VERTICAL);
+		_animCanvas = new AnimationCanvas(sash, SWT.BORDER);
+		_timelineCanvas = new AnimationTimelineCanvas(sash, SWT.BORDER);
+		_timelineCanvas.setEditor(this);
+		_animCanvas.setStepCallback(_timelineCanvas::redraw);
+		
+		sash.setWeights(new int[] { 2, 1 });
 
 		afterCreateWidgets();
 	}
@@ -79,7 +83,7 @@ public class AnimationsEditor extends EditorPart {
 
 	@Override
 	public void setFocus() {
-		_previewCanvas.setFocus();
+		_animCanvas.setFocus();
 	}
 
 	@Override
@@ -145,6 +149,10 @@ public class AnimationsEditor extends EditorPart {
 
 		return super.getAdapter(adapter);
 	}
+	
+	public AnimationCanvas getAnimationCanvas() {
+		return _animCanvas;
+	}
 
 	private Object getOutliner() {
 		if (_outliner == null) {
@@ -164,11 +172,18 @@ public class AnimationsEditor extends EditorPart {
 	protected void outliner_selectionChanged(SelectionChangedEvent event) {
 		var elem = event.getStructuredSelection().getFirstElement();
 		if (elem != null) {
-			if (_previewCanvas.getModel() == elem) {
-				_previewCanvas.play();
+			var anim = (AnimationModel_in_Editor) elem;
+
+			if (_animCanvas.getModel() == elem) {
+				_animCanvas.play();
 			} else {
-				_previewCanvas.setModel((AnimationModel) elem);
+				_animCanvas.setModel(anim);
 			}
+
+			if (_timelineCanvas.getAnimation() != anim) {
+				_timelineCanvas.setAnimation(anim);
+			}
+
 		}
 	}
 

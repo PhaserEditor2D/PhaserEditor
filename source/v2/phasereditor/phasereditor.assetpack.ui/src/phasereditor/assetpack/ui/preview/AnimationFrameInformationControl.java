@@ -43,7 +43,7 @@ public class AnimationFrameInformationControl extends BaseInformationControl {
 	@Override
 	protected void updateContent(Control control, Object model) {
 		var animFrame = (AnimationFrameModel) model;
-		var frame = animFrame.getFrame();
+		var frame = animFrame.getFrameAsset();
 		QuickFramePreviewComp comp = (QuickFramePreviewComp) control;
 		comp.setFrame(frame);
 	}
