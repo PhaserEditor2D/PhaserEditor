@@ -66,7 +66,6 @@ public class AnimationTimelineCanvas extends BaseImageCanvas implements PaintLis
 		addListener(SWT.Resize, e -> {
 			_updateScroll = true;
 		});
-
 	}
 
 	void updateScroll() {
@@ -108,31 +107,41 @@ public class AnimationTimelineCanvas extends BaseImageCanvas implements PaintLis
 			return;
 		}
 
-		if (_editor != null) {
-			var transition = _editor.getAnimationCanvas().getTransition();
-			if (transition != null && transition.getStatus() != Status.STOPPED) {
-				var frac = transition.getFraction();
+		{
+			// update scroll form animation progress
+			if (_editor != null) {
+				var transition = _editor.getAnimationCanvas().getTransition();
+				if (transition != null && transition.getStatus() != Status.STOPPED) {
+					var frac = transition.getFraction();
 
-				var x = (int) (_fullWidth * frac);
+					var x = (int) (_fullWidth * frac);
 
-				var hBar = getHorizontalBar();
-				var viewX = _origin + x;
+					var hBar = getHorizontalBar();
 
-				int thumb = hBar.getThumb();
-				if (viewX > e.width) {
-					var sel = x - thumb + e.width;
-					if (sel + thumb > _fullWidth) {
-						sel = _fullWidth - thumb;
-					}
-					hBar.setSelection(sel);
-					_origin = -sel;
-				} else if (viewX < 0) {
-					var sel = x - thumb + e.width;
+					int thumb = hBar.getThumb();
+					int sel = (int) ((_fullWidth - thumb) * frac);
+					
+					
 					if (sel < 0) {
 						sel = 0;
+					} else if (sel > _fullWidth - thumb) {
+						sel = _fullWidth - thumb;
 					}
+
 					hBar.setSelection(sel);
-					_origin = -sel;
+					
+					if (transition.getRate() > 0) {
+						_origin = -x + e.width / 2;
+					} else {
+						_origin = -x - e.width / 2; 
+					}
+					
+					int topleft = -_fullWidth + thumb;
+					if (_origin < topleft) {
+						_origin = topleft;
+					} else if (_origin > 0) {
+						_origin = 0;
+					}
 				}
 			}
 		}
