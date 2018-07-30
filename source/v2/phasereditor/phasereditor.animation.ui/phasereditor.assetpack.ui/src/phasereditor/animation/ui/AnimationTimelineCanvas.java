@@ -108,27 +108,6 @@ public class AnimationTimelineCanvas extends BaseImageCanvas implements PaintLis
 			return;
 		}
 
-		// TODO: autoscroll!!
-
-		// if (_editor != null) {
-		// var transition = _editor.getAnimationCanvas().getTransition();
-		// if (transition != null && transition.getStatus() != Status.STOPPED) {
-		// var frac = transition.getFraction();
-		// var x = (int) (_fullWidth * frac);
-		//
-		// var hBar = getHorizontalBar();
-		// var viewX = _origin + x;
-		//
-		// if (viewX > e.width) {
-		// hBar.setSelection(viewX);
-		// _origin -= viewX - e.width;
-		// } else if (viewX < 0) {
-		// hBar.setSelection(viewX);
-		// _origin -= viewX;
-		// }
-		// }
-		// }
-
 		if (_editor != null) {
 			var transition = _editor.getAnimationCanvas().getTransition();
 			if (transition != null && transition.getStatus() != Status.STOPPED) {
@@ -168,7 +147,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas implements PaintLis
 
 		int margin = 20;
 
-		int height = e.height - margin * 2;
+		int imgHeight = e.height - margin * 2;
 
 		for (var animFrame : _animation.getFrames()) {
 			var frame = animFrame.getFrameAsset();
@@ -180,18 +159,24 @@ public class AnimationTimelineCanvas extends BaseImageCanvas implements PaintLis
 			var img = loadImage(frame.getImageFile());
 			var src = frame.getFrameData().src;
 
-			var heightFactor = height / (float) src.height;
+			var heightFactor = imgHeight / (float) src.height;
 
 			int keyWidth = (int) (src.width * heightFactor);
 
-			int x = (int) (animFrame.getComputedFraction() * _fullWidth) - keyWidth / 2;
-			if (x < 0) {
-				x = 0;
+			int frameX = (int) (animFrame.getComputedFraction() * _fullWidth);
+
+			gc.drawLine(frameX, 0, frameX, e.height);
+
+			int imgX = frameX - keyWidth / 2;
+
+			if (imgX < 0) {
+				imgX = 0;
 			}
 
-			if (height > 0) {
-				gc.drawImage(img, src.x, src.y, src.width, src.height, x, margin, keyWidth, height);
+			if (imgHeight > 0) {
+				gc.drawImage(img, src.x, src.y, src.width, src.height, imgX, margin, keyWidth, imgHeight);
 			}
+
 		}
 
 		if (_editor != null) {
