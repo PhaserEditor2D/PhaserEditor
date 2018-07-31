@@ -43,8 +43,8 @@ import org.json.JSONObject;
 import phasereditor.animation.ui.properties.AnimationsPGridPage;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.animations.AnimationCanvas;
+import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.FilteredContentOutlinePage;
-import phasereditor.ui.properties.PGridPage;
 
 /**
  * @author arian
@@ -60,6 +60,8 @@ public class AnimationsEditor extends EditorPart {
 	private AnimationTimelineCanvas _timelineCanvas;
 
 	public AnimationsEditor() {
+		// force the start the project builders
+		ProjectCore.getBuildParticipants();
 	}
 
 	/**
@@ -74,7 +76,7 @@ public class AnimationsEditor extends EditorPart {
 		_timelineCanvas = new AnimationTimelineCanvas(sash, SWT.BORDER);
 		_timelineCanvas.setEditor(this);
 		_animCanvas.setStepCallback(_timelineCanvas::redraw);
-		
+
 		sash.setWeights(new int[] { 2, 1 });
 
 		afterCreateWidgets();
@@ -149,14 +151,14 @@ public class AnimationsEditor extends EditorPart {
 		if (adapter == IContentOutlinePage.class) {
 			return getOutliner();
 		}
-		
+
 		if (adapter == IPropertySheetPage.class) {
 			return new AnimationsPGridPage(this);
 		}
 
 		return super.getAdapter(adapter);
 	}
-	
+
 	public AnimationCanvas getAnimationCanvas() {
 		return _animCanvas;
 	}
