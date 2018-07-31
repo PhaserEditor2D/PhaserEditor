@@ -21,9 +21,18 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.animation.ui;
 
+import static java.lang.System.out;
+
 import java.util.List;
 
+import org.eclipse.jface.util.LocalSelectionTransfer;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.dnd.DropTargetAdapter;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
@@ -69,6 +78,38 @@ public class AnimationTimelineCanvas extends BaseImageCanvas implements PaintLis
 		addListener(SWT.Resize, e -> {
 			_updateScroll = true;
 		});
+		
+		init_DND_Support();
+	}
+
+	private void init_DND_Support() {
+		{
+			int options = DND.DROP_MOVE | DND.DROP_DEFAULT;
+			DropTarget target = new DropTarget(this, options);
+			Transfer[] types = { LocalSelectionTransfer.getTransfer() };
+			target.setTransfer(types);
+			target.addDropListener(new DropTargetAdapter() {
+
+				@Override
+				public void dragOver(DropTargetEvent event) {
+					out.println(event.x);
+				}
+				
+				@Override
+				public void drop(DropTargetEvent event) {
+					if (event.data instanceof Object[]) {
+						selectionDropped((Object[]) event.data);
+					}
+					if (event.data instanceof IStructuredSelection) {
+						selectionDropped(((IStructuredSelection) event.data).toArray());
+					}
+				}
+			});
+		}
+	}
+
+	protected void selectionDropped(Object[] data) {
+		
 	}
 
 	void updateScroll() {
