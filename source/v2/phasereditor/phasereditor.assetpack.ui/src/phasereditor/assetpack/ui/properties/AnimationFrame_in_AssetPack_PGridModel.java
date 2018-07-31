@@ -19,41 +19,43 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.animation.ui;
+package phasereditor.assetpack.ui.properties;
 
-import org.eclipse.core.runtime.IAdaptable;
-import org.json.JSONObject;
+import java.util.function.Supplier;
 
-import phasereditor.animation.ui.properties.AnimationModel_in_Editor_PGridModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
-import phasereditor.assetpack.core.animations.AnimationModel;
+import phasereditor.inspect.core.InspectCore;
+import phasereditor.ui.properties.PGridInfoProperty;
 import phasereditor.ui.properties.PGridModel;
 
 /**
  * @author arian
  *
  */
-public class AnimationModel_in_Editor extends AnimationModel implements IAdaptable {
+public class AnimationFrame_in_AssetPack_PGridModel extends PGridModel {
+	private String _id;
 
-	public AnimationModel_in_Editor() {
+	public AnimationFrame_in_AssetPack_PGridModel(AnimationFrameModel frameModel) {
 		super();
+
+		_id = frameModel.getTextureKey() + "." + frameModel.getFrameAsset();
+
+		addSection("AnimationFrameConfig",
+
+				prop("textureKey", frameModel::getTextureKey),
+
+				prop("frame", frameModel::getFrameName),
+
+				prop("duration", frameModel::getDuration)
+
+		);
 	}
 
-	public AnimationModel_in_Editor(JSONObject jsonData) {
-		super(jsonData);
+	private PGridInfoProperty prop(String field, Supplier<Object> getter) {
+		return new PGridInfoProperty(_id, field, help(field), getter);
 	}
 
-	@Override
-	protected AnimationFrameModel createAnimationFrame(JSONObject jsonData) {
-		return new AnimationFrameModel_in_Editor(jsonData);
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	public Object getAdapter(Class adapter) {
-		if (adapter == PGridModel.class) {
-			return new AnimationModel_in_Editor_PGridModel(this);
-		}
-		return null;
+	private static String help(String field) {
+		return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Animations.AnimationFrame." + field);
 	}
 }

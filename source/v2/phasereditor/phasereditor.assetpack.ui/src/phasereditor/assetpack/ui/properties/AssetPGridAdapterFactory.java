@@ -67,7 +67,7 @@ public class AssetPGridAdapterFactory implements IAdapterFactory {
 			} else if (obj instanceof AnimationModel_in_AssetPack) {
 				return new AnimationModel_in_AssetPack_PGridModel((AnimationModel_in_AssetPack) obj);
 			} else if (obj instanceof AnimationFrameModel_in_AssetPack) {
-				return new AnimationFramePGridModel((AnimationFrameModel) obj);
+				return new AnimationFrame_in_AssetPack_PGridModel((AnimationFrameModel) obj);
 			}
 		}
 		return null;

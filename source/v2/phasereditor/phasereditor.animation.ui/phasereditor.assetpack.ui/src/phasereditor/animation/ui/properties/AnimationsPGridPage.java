@@ -19,41 +19,37 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.animation.ui;
+package phasereditor.animation.ui.properties;
 
-import org.eclipse.core.runtime.IAdaptable;
-import org.json.JSONObject;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.ui.IWorkbenchPart;
 
-import phasereditor.animation.ui.properties.AnimationModel_in_Editor_PGridModel;
-import phasereditor.assetpack.core.animations.AnimationFrameModel;
-import phasereditor.assetpack.core.animations.AnimationModel;
-import phasereditor.ui.properties.PGridModel;
+import phasereditor.animation.ui.AnimationsEditor;
+import phasereditor.ui.properties.PGridPage;
 
 /**
  * @author arian
  *
  */
-public class AnimationModel_in_Editor extends AnimationModel implements IAdaptable {
+public class AnimationsPGridPage extends PGridPage {
 
-	public AnimationModel_in_Editor() {
-		super();
+	private AnimationsEditor _editor;
+
+	public AnimationsPGridPage(AnimationsEditor editor) {
+		super(true);
+		_editor = editor;
 	}
-
-	public AnimationModel_in_Editor(JSONObject jsonData) {
-		super(jsonData);
+	
+	public AnimationsEditor getEditor() {
+		return _editor;
 	}
-
+	
 	@Override
-	protected AnimationFrameModel createAnimationFrame(JSONObject jsonData) {
-		return new AnimationFrameModel_in_Editor(jsonData);
+	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+		super.selectionChanged(part, selection);
+		
+		var model = (BaseAnimationPGridModel) getGrid().getModel();
+		model.setPropertyPage(this);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	public Object getAdapter(Class adapter) {
-		if (adapter == PGridModel.class) {
-			return new AnimationModel_in_Editor_PGridModel(this);
-		}
-		return null;
-	}
 }

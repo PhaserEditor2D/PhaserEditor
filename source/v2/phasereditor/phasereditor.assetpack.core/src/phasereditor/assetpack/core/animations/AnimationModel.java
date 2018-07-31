@@ -128,7 +128,7 @@ public class AnimationModel {
 		}
 
 	}
-	
+
 	public int getComputedTotalDuration() {
 		return _totalDuration;
 	}
@@ -142,6 +142,10 @@ public class AnimationModel {
 		return _key;
 	}
 
+	public void setKey(String key) {
+		_key = key;
+	}
+
 	public List<AnimationFrameModel> getFrames() {
 		return _frames;
 	}
@@ -152,6 +156,7 @@ public class AnimationModel {
 
 	public void setDuration(int duration) {
 		_duration = duration;
+		_frameRate = _frames.size() / ((double) _duration / 1000);
 	}
 
 	public double getFrameRate() {
@@ -159,7 +164,8 @@ public class AnimationModel {
 	}
 
 	public void setFrameRate(double frameRate) {
-		_frameRate = frameRate;
+		_frameRate = Math.max(frameRate, 0);
+		_duration = (int) ((_frames.size() / _frameRate) * 1000);
 	}
 
 	public int getRepeat() {
@@ -212,5 +218,9 @@ public class AnimationModel {
 
 	public boolean isSkipMissedFrames() {
 		return _skipMissedFrames;
+	}
+
+	public void setSkipMissedFrames(boolean skipMissedFrames) {
+		_skipMissedFrames = skipMissedFrames;
 	}
 }

@@ -37,11 +37,14 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
+import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.json.JSONObject;
 
+import phasereditor.animation.ui.properties.AnimationsPGridPage;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.animations.AnimationCanvas;
 import phasereditor.ui.FilteredContentOutlinePage;
+import phasereditor.ui.properties.PGridPage;
 
 /**
  * @author arian
@@ -145,6 +148,10 @@ public class AnimationsEditor extends EditorPart {
 
 		if (adapter == IContentOutlinePage.class) {
 			return getOutliner();
+		}
+		
+		if (adapter == IPropertySheetPage.class) {
+			return new AnimationsPGridPage(this);
 		}
 
 		return super.getAdapter(adapter);

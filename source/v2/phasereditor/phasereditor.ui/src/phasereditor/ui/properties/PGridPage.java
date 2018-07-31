@@ -40,6 +40,7 @@ public class PGridPage extends Page implements IPropertySheetPage {
 	private PGrid _grid;
 	private boolean _alwaysExandAll;
 	public static final String PART = "part";
+	public static final String PGRID = "pgrid";
 
 	public PGridPage(boolean alwaysExpandAll) {
 		_alwaysExandAll = alwaysExpandAll;
@@ -56,6 +57,7 @@ public class PGridPage extends Page implements IPropertySheetPage {
 			PGridModel model = Adapters.adapt(elem, PGridModel.class);
 			if (model != null) {
 				model.getExtraData().put(PART, part);
+				model.getExtraData().put(PGRID, _grid);
 			}
 			_grid.setModel(model);
 		}

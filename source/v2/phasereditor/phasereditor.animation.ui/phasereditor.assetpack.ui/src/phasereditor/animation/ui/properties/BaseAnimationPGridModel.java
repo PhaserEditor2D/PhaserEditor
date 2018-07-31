@@ -19,43 +19,27 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.properties;
+package phasereditor.animation.ui.properties;
 
-import java.util.function.Supplier;
-
-import phasereditor.assetpack.core.animations.AnimationFrameModel;
-import phasereditor.inspect.core.InspectCore;
-import phasereditor.ui.properties.PGridInfoProperty;
 import phasereditor.ui.properties.PGridModel;
 
 /**
  * @author arian
  *
  */
-public class AnimationFramePGridModel extends PGridModel {
-	private String _id;
+public class BaseAnimationPGridModel extends PGridModel {
 
-	public AnimationFramePGridModel(AnimationFrameModel frameModel) {
-		super();
+	private AnimationsPGridPage _propertyPage;
 
-		_id = frameModel.getTextureKey() + "." + frameModel.getFrameAsset();
-
-		addSection("AnimationFrameConfig",
-
-				prop("textureKey", frameModel::getTextureKey),
-
-				prop("frame", frameModel::getFrameName),
-
-				prop("duration", frameModel::getDuration)
-
-		);
+	public void setPropertyPage(AnimationsPGridPage propertyPage) {
+		_propertyPage = propertyPage;
 	}
 
-	private PGridInfoProperty prop(String field, Supplier<Object> getter) {
-		return new PGridInfoProperty(_id, field, help(field), getter);
+	public AnimationsPGridPage getPropertyPage() {
+		return _propertyPage;
 	}
 
-	private static String help(String field) {
-		return InspectCore.getPhaserHelp().getMemberHelp("Phaser.Animations.AnimationFrame." + field);
+	protected void refreshGrid() {
+		_propertyPage.getGrid().refresh();
 	}
 }
