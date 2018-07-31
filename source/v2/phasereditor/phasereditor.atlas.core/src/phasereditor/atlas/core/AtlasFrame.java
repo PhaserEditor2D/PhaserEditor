@@ -28,6 +28,8 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.json.JSONObject;
 import org.w3c.dom.Element;
 
+import phasereditor.ui.FrameData;
+
 public class AtlasFrame {
 	private String _name;
 	private int _frameX;

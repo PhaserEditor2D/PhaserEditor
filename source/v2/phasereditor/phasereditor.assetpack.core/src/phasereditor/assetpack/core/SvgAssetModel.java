@@ -29,7 +29,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import phasereditor.atlas.core.FrameData;
+import phasereditor.ui.FrameData;
 
 public class SvgAssetModel extends AssetModel {
 

@@ -98,7 +98,7 @@ public abstract class ZoomCanvas extends Canvas implements PaintListener, IZooma
 		@Override
 		public void mouseMove(MouseEvent e) {
 			if (_startPoint != null) {
-				setOffsetX(_startOffset.x + e.x - _startPoint.x);
+				setPanOffsetX(_startOffset.x + e.x - _startPoint.x);
 				setOffsetY(_startOffset.y + e.y - _startPoint.y);
 				redraw();
 			}
@@ -147,7 +147,7 @@ public abstract class ZoomCanvas extends Canvas implements PaintListener, IZooma
 			float fx = (x2 - x1) / calc.imgWidth;
 			float fy = (y2 - y1) / calc.imgHeight;
 
-			setOffsetX((int) (calc.offsetX + calc.imgWidth * calc.scale * fx));
+			setPanOffsetX((int) (calc.offsetX + calc.imgWidth * calc.scale * fx));
 			setOffsetY((int) (calc.offsetY + calc.imgHeight * calc.scale * fy));
 
 			setScale(newScale);
@@ -228,7 +228,7 @@ public abstract class ZoomCanvas extends Canvas implements PaintListener, IZooma
 
 	protected void setScaleAndOffset(ZoomCalculator calc) {
 		setScale(calc.scale);
-		setOffsetX((int) calc.offsetX);
+		setPanOffsetX((int) calc.offsetX);
 		setOffsetY((int) calc.offsetY);
 	}
 
@@ -246,7 +246,7 @@ public abstract class ZoomCanvas extends Canvas implements PaintListener, IZooma
 	}
 
 	@Override
-	public void setOffsetX(int offsetX) {
+	public void setPanOffsetX(int offsetX) {
 		_offsetX = offsetX;
 	}
 

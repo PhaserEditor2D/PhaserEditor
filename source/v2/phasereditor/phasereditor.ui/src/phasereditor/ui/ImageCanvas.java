@@ -45,10 +45,11 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 	protected Image _image;
 	private Point _preferredSize;
 	private String _noImageMessage = "(no image)";
-	private int _offsetX;
-	private int _offsetY;
+	private int _panOffsetX;
+	private int _panOffsetY;
 	private float _scale = 1;
 	protected Rectangle _viewport;
+	protected FrameData _frameData;
 	private boolean _fitWindow;
 
 	public static class ZoomCalculator {
@@ -104,7 +105,7 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 		@Override
 		public void mouseMove(MouseEvent e) {
 			if (_startPoint != null) {
-				setOffsetX(_startOffset.x + e.x - _startPoint.x);
+				setPanOffsetX(_startOffset.x + e.x - _startPoint.x);
 				setOffsetY(_startOffset.y + e.y - _startPoint.y);
 				redraw();
 			}
@@ -123,7 +124,7 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 
 			if (e.button == 2) {
 				_startPoint = new Point(e.x, e.y);
-				_startOffset = new Point(getOffsetX(), getOffsetY());
+				_startOffset = new Point(getPanOffsetX(), getOffsetY());
 			}
 		}
 
@@ -153,7 +154,7 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 			float fx = (x2 - x1) / calc.imgWidth;
 			float fy = (y2 - y1) / calc.imgHeight;
 
-			setOffsetX((int) (calc.offsetX + calc.imgWidth * calc.scale * fx));
+			setPanOffsetX((int) (calc.offsetX + calc.imgWidth * calc.scale * fx));
 			setOffsetY((int) (calc.offsetY + calc.imgHeight * calc.scale * fy));
 
 			setScale(newScale);
@@ -223,7 +224,7 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 
 	protected void setScaleAndOffset(ZoomCalculator calc) {
 		setScale(calc.scale);
-		setOffsetX((int) calc.offsetX);
+		setPanOffsetX((int) calc.offsetX);
 		setOffsetY((int) calc.offsetY);
 	}
 
@@ -236,22 +237,22 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 		return _scale;
 	}
 
-	public int getOffsetX() {
-		return _offsetX;
+	public int getPanOffsetX() {
+		return _panOffsetX;
 	}
 
 	@Override
-	public void setOffsetX(int offsetX) {
-		_offsetX = offsetX;
+	public void setPanOffsetX(int offsetX) {
+		_panOffsetX = offsetX;
 	}
 
 	public int getOffsetY() {
-		return _offsetY;
+		return _panOffsetY;
 	}
 
 	@Override
 	public void setOffsetY(int offsetY) {
-		_offsetY = offsetY;
+		_panOffsetY = offsetY;
 	}
 
 	public String getNoImageMessage() {
@@ -265,11 +266,11 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 	public void setImageFile(IFile file) {
 		setImage(loadImage(file));
 	}
-	
+
 	public void setImageFile(IFile file, Rectangle viewport) {
 		setImage(loadImage(file), viewport);
 	}
-	
+
 	public void removeImage() {
 		setImage(null);
 	}
@@ -327,42 +328,66 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 			_fitWindow = false;
 			fitWindow();
 		}
-		
+
 		customPaintControl(e);
 	}
 
 	protected void customPaintControl(PaintEvent e) {
 		GC gc = e.gc;
 
-		Rectangle dst = getBounds();
-
 		if (_image == null) {
-			PhaserEditorUI.paintPreviewMessage(gc, dst, _noImageMessage);
+			PhaserEditorUI.paintPreviewMessage(gc, getBounds(), _noImageMessage);
 		} else {
-			Rectangle src = _viewport;
 
-			dst = new Rectangle(_offsetX, _offsetY, (int) (src.width * _scale), (int) (src.height * _scale));
+			Rectangle src;
+			Rectangle dst;
+			Rectangle bgDst;
+			Point size;
 
-			drawImageBackground(gc, dst);
+			{
+				Rectangle origDst;
+
+				if (_frameData == null) {
+					src = _viewport;
+					origDst = new Rectangle(0, 0, _viewport.width, _viewport.width);
+					size = new Point(_viewport.width, _viewport.height);
+				} else {
+					src = _frameData.src;
+					origDst = _frameData.dst;
+					size = _frameData.srcSize;
+				}
+
+				dst = new Rectangle((int) (_panOffsetX + origDst.x * _scale), (int) (_panOffsetY + origDst.y * _scale),
+						(int) (origDst.width * _scale), (int) (origDst.height * _scale));
+
+				bgDst = new Rectangle(_panOffsetX, _panOffsetY, (int) (size.x * _scale), (int) (size.y * _scale));
+			}
+
+			drawImageBackground(gc, bgDst);
 
 			drawImage(gc, src.x, src.y, src.width, src.height, dst.width, dst.height, dst.x, dst.y);
 
-			drawMore(gc, src.width, src.height, dst.width, dst.height, dst.x, dst.y);
+			drawMore(gc, src.width, src.height, bgDst.width, bgDst.height, bgDst.x, bgDst.y);
 		}
 	}
 
 	protected ZoomCalculator calc() {
 		int w = 1;
 		int h = 1;
-		
-		if (_viewport != null) {
-			w = _viewport.width;
-			h = _viewport.height;
+
+		if (_frameData == null) {
+			if (_viewport != null) {
+				w = _viewport.width;
+				h = _viewport.height;
+			}
+		} else {
+			w = _frameData.srcSize.x;
+			h = _frameData.srcSize.y;
 		}
-		
+
 		ZoomCalculator c = new ZoomCalculator(w, h);
-		c.offsetX = _offsetX;
-		c.offsetY = _offsetY;
+		c.offsetX = _panOffsetX;
+		c.offsetY = _panOffsetY;
 		c.scale = _scale;
 		return c;
 	}

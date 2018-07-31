@@ -122,9 +122,9 @@ import phasereditor.assetpack.ui.widgets.AudioResourceDialog;
 import phasereditor.assetpack.ui.widgets.ImageResourceDialog;
 import phasereditor.assetpack.ui.widgets.VideoResourceDialog;
 import phasereditor.atlas.core.AtlasFrame;
-import phasereditor.atlas.core.FrameData;
 import phasereditor.audio.core.AudioCore;
 import phasereditor.project.core.ProjectCore;
+import phasereditor.ui.FrameData;
 import phasereditor.ui.PhaserEditorUI;
 
 public class AssetPackUI {

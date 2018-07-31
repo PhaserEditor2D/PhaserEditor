@@ -308,7 +308,7 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 	}
 
 	@Override
-	public void setOffsetX(int i) {
+	public void setPanOffsetX(int i) {
 		//
 	}
 

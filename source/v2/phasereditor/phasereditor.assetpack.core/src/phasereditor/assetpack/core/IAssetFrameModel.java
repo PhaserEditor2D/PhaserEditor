@@ -23,7 +23,7 @@ package phasereditor.assetpack.core;
 
 import org.eclipse.core.resources.IFile;
 
-import phasereditor.atlas.core.FrameData;
+import phasereditor.ui.FrameData;
 
 /**
  * @author arian

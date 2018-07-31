@@ -32,7 +32,7 @@ public interface IZoomable {
 
 	public void setScale(float i);
 
-	public void setOffsetX(int i);
+	public void setPanOffsetX(int i);
 
 	public void setOffsetY(int i);
 }

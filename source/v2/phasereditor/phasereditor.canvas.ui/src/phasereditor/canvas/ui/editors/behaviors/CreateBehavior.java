@@ -39,7 +39,6 @@ import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
-import phasereditor.atlas.core.FrameData;
 import phasereditor.canvas.core.BaseObjectModel;
 import phasereditor.canvas.core.CanvasCore;
 import phasereditor.canvas.core.CanvasModelFactory;
@@ -58,6 +57,7 @@ import phasereditor.canvas.ui.shapes.GroupControl;
 import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.lic.LicCore;
+import phasereditor.ui.FrameData;
 
 /**
  * @author arian

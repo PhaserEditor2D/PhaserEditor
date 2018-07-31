@@ -45,7 +45,7 @@ public class ImageCanvas_Zoom_1_1_Action extends Action {
 	public void run() {
 		IZoomable canvas = getImageCanvas();
 		canvas.setScale(1);
-		canvas.setOffsetX(0);
+		canvas.setPanOffsetX(0);
 		canvas.setOffsetY(0);
 		canvas.redraw();
 	}

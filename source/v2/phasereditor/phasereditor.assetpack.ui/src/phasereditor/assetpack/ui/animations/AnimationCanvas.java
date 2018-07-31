@@ -81,19 +81,19 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 	public Runnable getStepCallback() {
 		return _stepCallback;
 	}
-	
+
 	public void setStepCallback(Runnable stepCallback) {
 		_stepCallback = stepCallback;
 	}
-	
+
 	public IndexTransition getTransition() {
 		return _transition;
 	}
-	
+
 	public AnimationModel getModel() {
 		return _animModel;
 	}
-	
+
 	public void setModel(AnimationModel model) {
 		_animModel = model;
 
@@ -133,12 +133,11 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 		var animationFrame = animationFrames.get(index);
 		var textureFrame = animationFrame.getFrameAsset();
 		if (textureFrame == null) {
-			_viewport = null;
 			_image = null;
+			_frameData = null;
 		} else {
-			var fd = textureFrame.getFrameData();
 			_image = loadImage(textureFrame.getImageFile());
-			_viewport = fd.src;
+			_frameData = textureFrame.getFrameData();
 		}
 
 		if (!isDisposed()) {

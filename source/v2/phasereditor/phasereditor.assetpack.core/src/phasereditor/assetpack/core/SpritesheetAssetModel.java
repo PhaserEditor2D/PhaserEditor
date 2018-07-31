@@ -35,7 +35,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import phasereditor.atlas.core.FrameData;
+import phasereditor.ui.FrameData;
 
 public class SpritesheetAssetModel extends AssetModel {
 

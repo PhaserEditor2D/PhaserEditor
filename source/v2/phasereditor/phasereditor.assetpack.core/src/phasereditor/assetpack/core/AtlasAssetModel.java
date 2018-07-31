@@ -44,7 +44,7 @@ import org.yaml.snakeyaml.Yaml;
 
 import phasereditor.atlas.core.AtlasCore;
 import phasereditor.atlas.core.AtlasFrame;
-import phasereditor.atlas.core.FrameData;
+import phasereditor.ui.FrameData;
 import phasereditor.ui.PhaserEditorUI;
 
 public class AtlasAssetModel extends AssetModel {

@@ -26,7 +26,7 @@ import org.json.JSONObject;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
-import phasereditor.atlas.core.FrameData;
+import phasereditor.ui.FrameData;
 
 /**
  * @author arian
