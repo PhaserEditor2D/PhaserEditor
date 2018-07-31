@@ -39,17 +39,19 @@ public class AnimationsPGridPage extends PGridPage {
 		super(true);
 		_editor = editor;
 	}
-	
+
 	public AnimationsEditor getEditor() {
 		return _editor;
 	}
-	
+
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		super.selectionChanged(part, selection);
-		
+
 		var model = (BaseAnimationPGridModel) getGrid().getModel();
-		model.setPropertyPage(this);
+		if (model != null) {
+			model.setPropertyPage(this);
+		}
 	}
 
 }
