@@ -45,6 +45,7 @@ import org.eclipse.swt.widgets.ScrollBar;
 import javafx.animation.Animation.Status;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.ui.BaseImageCanvas;
+import phasereditor.ui.FrameData;
 
 /**
  * @author arian
@@ -78,7 +79,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas implements PaintLis
 		addListener(SWT.Resize, e -> {
 			_updateScroll = true;
 		});
-		
+
 		init_DND_Support();
 	}
 
@@ -94,7 +95,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas implements PaintLis
 				public void dragOver(DropTargetEvent event) {
 					out.println(event.x);
 				}
-				
+
 				@Override
 				public void drop(DropTargetEvent event) {
 					if (event.data instanceof Object[]) {
@@ -109,7 +110,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas implements PaintLis
 	}
 
 	protected void selectionDropped(Object[] data) {
-		
+
 	}
 
 	void updateScroll() {
@@ -231,23 +232,26 @@ public class AnimationTimelineCanvas extends BaseImageCanvas implements PaintLis
 			}
 
 			var img = loadImage(frame.getImageFile());
-			var src = frame.getFrameData().src;
+			FrameData fd = frame.getFrameData();
 
 			double frameX = getFrameX(animFrame);
 			double frameX2 = i + 1 < frames.size() ? getFrameX(frames.get(i + 1)) : _fullWidth;
 			double frameWidth = frameX2 - frameX;
 
 			gc.setAlpha(60);
-			gc.setBackground(getDisplay().getSystemColor(i % 2 == 0? SWT.COLOR_BLUE : SWT.COLOR_GRAY));
+			gc.setBackground(getDisplay().getSystemColor(i % 2 == 0 ? SWT.COLOR_BLUE : SWT.COLOR_GRAY));
 			gc.fillRectangle((int) frameX, 0, (int) frameWidth, e.height);
 			gc.setAlpha(255);
 
 			if (frameHeight > 0) {
-				double imgH = src.height;
-				double imgW = src.width;
+				double imgW = fd.srcSize.x;
+				double imgH = fd.srcSize.y;
+				
 
-				imgW = imgW * (frameHeight / imgH);
-				imgH = frameHeight;
+				{
+					imgW = imgW * (frameHeight / imgH);
+					imgH = frameHeight;
+				}
 
 				// fix width, do not go beyond the global min frame width
 				if (imgW > globalMinFrameWidth) {
@@ -255,10 +259,18 @@ public class AnimationTimelineCanvas extends BaseImageCanvas implements PaintLis
 					imgW = globalMinFrameWidth;
 				}
 
-				var imgX = frameX + frameWidth / 2 - imgW / 2;
-				var imgY = margin + frameHeight / 2 - imgH / 2;
+				
+				double scaleX = imgW / fd.srcSize.x;
+				double scaleY = imgH / fd.srcSize.y;
+				
+				var imgX = frameX + frameWidth / 2 - imgW / 2 + fd.dst.x * scaleX;
+				var imgY = margin + frameHeight / 2 - imgH / 2 + fd.dst.y * scaleY;
 
-				gc.drawImage(img, src.x, src.y, src.width, src.height, (int) imgX, (int) imgY, (int) imgW, (int) imgH);
+				double imgDstW = fd.dst.width * scaleX;
+				double imgDstH = fd.dst.height * scaleY;
+
+				gc.drawImage(img, fd.src.x, fd.src.y, fd.src.width, fd.src.height, (int) imgX, (int) imgY,
+						(int) imgDstW, (int) imgDstH);
 			}
 
 		}
