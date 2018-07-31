@@ -34,21 +34,20 @@ public class SingleFrameCanvas extends ImageCanvas {
 
 	private IAssetFrameModel _model;
 
-
 	public SingleFrameCanvas(Composite parent, int style) {
 		super(parent, style);
 	}
 
-	
 	public void setModel(IAssetFrameModel model) {
 		_model = model;
 		if (_model == null) {
 			removeImage();
 		} else {
-			setImageFile(model.getImageFile(), model.getFrameData().src);
+			_image = loadImage(model.getImageFile());
+			_frameData = model.getFrameData();
 		}
 	}
-	
+
 	public IAssetFrameModel getModel() {
 		return _model;
 	}

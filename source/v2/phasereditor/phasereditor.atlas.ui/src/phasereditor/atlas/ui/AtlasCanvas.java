@@ -38,7 +38,6 @@ import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
@@ -63,15 +62,15 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 	@Override
 	protected void drawImage(GC gc, int srcX, int srcY, int srcW, int srcH, int dstW, int dstH, int dstX, int dstY) {
 		if (!_selectedFrames.isEmpty()) {
-			
+
 			PhaserEditorUI.paintPreviewBackground(gc, new Rectangle(dstX, dstY, dstW, dstH));
-			
+
 			gc.setAlpha(100);
-			
+
 			super.drawImage(gc, srcX, srcY, srcW, srcH, dstW, dstH, dstX, dstY);
-			
+
 			gc.setAlpha(255);
-			
+
 			return;
 		}
 
@@ -91,7 +90,7 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 		if (_frames != null && _image != null) {
 			GC gc = e.gc;
 
-			Color overColor = PhaserEditorUI.get_pref_Preview_Atlas_frameOverColor();
+			var overColor = PhaserEditorUI.get_pref_Preview_Atlas_frameOverColor();
 
 			gc.setForeground(overColor);
 

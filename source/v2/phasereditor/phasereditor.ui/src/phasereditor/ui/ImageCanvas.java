@@ -267,10 +267,6 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 		setImage(loadImage(file));
 	}
 
-	public void setImageFile(IFile file, Rectangle viewport) {
-		setImage(loadImage(file), viewport);
-	}
-
 	public void removeImage() {
 		setImage(null);
 	}
@@ -349,7 +345,7 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 
 				if (_frameData == null) {
 					src = _viewport;
-					origDst = new Rectangle(0, 0, _viewport.width, _viewport.width);
+					origDst = new Rectangle(0, 0, _viewport.width, _viewport.height);
 					size = new Point(_viewport.width, _viewport.height);
 				} else {
 					src = _frameData.src;

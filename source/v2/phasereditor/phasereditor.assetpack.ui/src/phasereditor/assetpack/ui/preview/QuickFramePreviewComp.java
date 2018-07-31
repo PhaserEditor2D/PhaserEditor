@@ -56,8 +56,9 @@ public class QuickFramePreviewComp extends Composite {
 			_resolutionLabel.setText("(empty)");
 		} else {
 			_canvas.setModel(frame);
+			_canvas.resetZoom();
 			FrameData fd = frame.getFrameData();
-			_resolutionLabel.setText(fd.src.width + "x" + fd.src.height);
+			_resolutionLabel.setText(fd.srcSize.x + "x" + fd.srcSize.y);
 		}
 	}
 
