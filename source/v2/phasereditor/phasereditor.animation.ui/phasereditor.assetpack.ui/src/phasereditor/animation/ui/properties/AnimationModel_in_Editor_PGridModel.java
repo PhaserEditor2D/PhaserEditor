@@ -45,7 +45,7 @@ public class AnimationModel_in_Editor_PGridModel extends BaseAnimationPGridModel
 
 		addSection("Animation",
 
-				new PGridStringProperty(_id, "key", "<tooltip>") {
+				new PGridStringProperty(_id, "key", help("key")) {
 
 					@Override
 					public void setValue(String value, boolean notify) {
@@ -102,7 +102,25 @@ public class AnimationModel_in_Editor_PGridModel extends BaseAnimationPGridModel
 					}
 				},
 
-				
+				new PGridNumberProperty(_id, "-totalDuration",
+						"A computed duration based on the duration plus all the extra frame's durations. This is not part of the Phaser API.") {
+
+					@Override
+					public Double getValue() {
+						return (double) anim.getComputedTotalDuration();
+					}
+
+					@Override
+					public boolean isModified() {
+						return anim.getDuration() != anim.getComputedTotalDuration();
+					}
+
+					@Override
+					public boolean isReadOnly() {
+						return true;
+					}
+				},
+
 				new PGridNumberProperty(_id, "delay", help("delay"), true) {
 
 					@Override
