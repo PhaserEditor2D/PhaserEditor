@@ -40,6 +40,8 @@ import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseWheelListener;
@@ -63,7 +65,7 @@ import phasereditor.ui.FrameData;
  *
  */
 public class AnimationTimelineCanvas extends BaseImageCanvas
-		implements PaintListener, MouseWheelListener, MouseListener, DragSourceListener {
+		implements PaintListener, MouseWheelListener, MouseListener, DragSourceListener, KeyListener {
 
 	private AnimationModel_in_Editor _animation;
 	private AnimationsEditor _editor;
@@ -74,6 +76,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 	int _dropIndex;
 	protected boolean _dropping;
 	private Set<AnimationFrameModel_in_Editor> _selectedFrames = new LinkedHashSet<>();
+	private AnimationFrameModel_in_Editor _lastSelectedFrame;
 
 	public AnimationTimelineCanvas(Composite parent, int style) {
 		super(parent, style | SWT.H_SCROLL | SWT.NO_REDRAW_RESIZE);
@@ -82,6 +85,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 
 		addPaintListener(this);
 		addMouseWheelListener(this);
+		addKeyListener(this);
 
 		_origin = 0;
 
@@ -127,6 +131,10 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 
 				@Override
 				public void drop(DropTargetEvent event) {
+					if (getAnimation() == null) {
+						return;
+					}
+
 					if (event.data instanceof Object[]) {
 						selectionDropped((Object[]) event.data);
 					}
@@ -144,6 +152,11 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 
 	public Collection<AnimationFrameModel_in_Editor> getSelectedFrames() {
 		return _selectedFrames;
+	}
+
+	public void clearSelection() {
+		_selectedFrames = new LinkedHashSet<>();
+		redraw();
 	}
 
 	protected void updateDropPosition(int displayX) {
@@ -283,6 +296,9 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 
 	public void setAnimation(AnimationModel_in_Editor animation) {
 		_animation = animation;
+
+		_selectedFrames = new LinkedHashSet<>();
+
 		redraw();
 	}
 
@@ -528,24 +544,56 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 
 	@Override
 	public void mouseUp(MouseEvent e) {
+		if (e.button != 1) {
+			return;
+		}
+
 		var x = -_origin + e.x;
 		var frame = getFrameAtX(x);
 
 		if (frame != null) {
+
 			if ((e.stateMask & SWT.CTRL) != 0) {
+
+				// control pressed
+
 				if (_selectedFrames.contains(frame)) {
 					_selectedFrames.remove(frame);
 				} else {
 					_selectedFrames.add(frame);
 				}
+
+			} else if ((e.stateMask & SWT.SHIFT) != 0 && !_selectedFrames.isEmpty()) {
+
+				// select the whole range
+
+				List<AnimationFrameModel> frames = _animation.getFrames();
+
+				int a = frames.indexOf(_lastSelectedFrame);
+				int b = frames.indexOf(frame);
+
+				int from = Math.min(a, b);
+				int to = Math.max(a, b);
+
+				_selectedFrames = new LinkedHashSet<>();
+
+				for (int i = from; i <= to; i++) {
+					_selectedFrames.add((AnimationFrameModel_in_Editor) frames.get(i));
+				}
+
 			} else {
+
 				// just select that frame
+
 				_selectedFrames = new LinkedHashSet<>();
 				_selectedFrames.add(frame);
+
 			}
 
 			updateSelectionProvider();
 		}
+
+		_lastSelectedFrame = frame;
 
 		redraw();
 	}
@@ -588,5 +636,24 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 	@Override
 	public void dragFinished(DragSourceEvent event) {
 		// nothing
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (e.keyCode == SWT.CR || e.keyCode == SWT.LF || e.character == 13) {
+			if (!_selectedFrames.isEmpty()) {
+				var frame = _selectedFrames.iterator().next();
+				_editor.getAnimationCanvas().showFrame(getFrameIndex(frame));
+			}
+		}
+	}
+
+	private int getFrameIndex(AnimationFrameModel_in_Editor frame) {
+		return _animation.getFrames().indexOf(frame);
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		//
 	}
 }

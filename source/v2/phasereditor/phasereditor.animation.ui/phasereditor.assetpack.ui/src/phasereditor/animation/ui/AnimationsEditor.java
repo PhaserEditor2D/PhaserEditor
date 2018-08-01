@@ -30,9 +30,12 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -87,7 +90,7 @@ public class AnimationsEditor extends EditorPart {
 
 	private void afterCreateWidgets() {
 		getEditorSite().setSelectionProvider(new ISelectionProvider() {
-			
+
 			private ISelection _selection;
 			private ListenerList<ISelectionChangedListener> _listeners = new ListenerList<>();
 
@@ -95,24 +98,36 @@ public class AnimationsEditor extends EditorPart {
 			public void setSelection(ISelection selection) {
 				_selection = selection;
 				var event = new SelectionChangedEvent(this, selection);
-				for(var l : _listeners) {
+				for (var l : _listeners) {
 					l.selectionChanged(event);
 				}
 			}
-			
+
 			@Override
 			public void removeSelectionChangedListener(ISelectionChangedListener listener) {
 				_listeners.remove(listener);
 			}
-			
+
 			@Override
 			public ISelection getSelection() {
 				return _selection;
 			}
-			
+
 			@Override
 			public void addSelectionChangedListener(ISelectionChangedListener listener) {
 				_listeners.add(listener);
+			}
+		});
+
+		_animCanvas.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				var anim = getTimelineCanvas().getAnimation();
+
+				if (anim != null) {
+					getTimelineCanvas().clearSelection();
+					getEditorSite().getSelectionProvider().setSelection(new StructuredSelection(anim));
+				}
 			}
 		});
 	}
@@ -194,6 +209,10 @@ public class AnimationsEditor extends EditorPart {
 		return _animCanvas;
 	}
 
+	public AnimationTimelineCanvas getTimelineCanvas() {
+		return _timelineCanvas;
+	}
+
 	private Object createOutliner() {
 		if (_outliner == null) {
 			_outliner = new Outliner();
@@ -208,7 +227,7 @@ public class AnimationsEditor extends EditorPart {
 		}
 		return _outliner;
 	}
-	
+
 	public Outliner getOutliner() {
 		return _outliner;
 	}

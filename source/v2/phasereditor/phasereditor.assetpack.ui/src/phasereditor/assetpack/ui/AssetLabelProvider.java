@@ -281,16 +281,19 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 		}
 
 		if (element instanceof AnimationsAssetModel) {
-			return EditorSharedImages.getImage(IEditorSharedImages.IMG_FRAME_ANIMATION);
+			return getAnimationIcon();
 		}
 
 		if (element instanceof AnimationModel) {
 			var animation = (AnimationModel) element;
 			var frames = animation.getFrames();
-			if (!frames.isEmpty()) {
-				var frame = frames.get((int) (frames.size() * 0.3));
-				return getImage(frame.getFrameAsset());
+
+			if (frames.isEmpty()) {
+				return getAnimationIcon();
 			}
+
+			var frame = frames.get((int) (frames.size() * 0.3));
+			return getImage(frame.getFrameAsset());
 		}
 
 		if (element instanceof AnimationFrameModel) {
@@ -309,6 +312,10 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 		}
 
 		return getFolderImage();
+	}
+
+	public static Image getAnimationIcon() {
+		return EditorSharedImages.getImage(IEditorSharedImages.IMG_FRAME_ANIMATION);
 	}
 
 	private Image getAtlasFrameImage(AtlasFrame frame, IFile imageFile) {
@@ -381,7 +388,7 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 		if (element instanceof AtlasData) {
 			return ((AtlasData) element).getFile().getName();
 		}
-		
+
 		if (element instanceof AnimationModel) {
 			return ((AnimationModel) element).getKey();
 		}
