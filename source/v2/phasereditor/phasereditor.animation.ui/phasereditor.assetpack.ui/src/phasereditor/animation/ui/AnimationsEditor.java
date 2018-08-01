@@ -24,7 +24,10 @@ package phasereditor.animation.ui;
 import java.io.InputStream;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.ListenerList;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -83,7 +86,35 @@ public class AnimationsEditor extends EditorPart {
 	}
 
 	private void afterCreateWidgets() {
-		// nothing for now
+		getEditorSite().setSelectionProvider(new ISelectionProvider() {
+			
+			private ISelection _selection;
+			private ListenerList<ISelectionChangedListener> _listeners = new ListenerList<>();
+
+			@Override
+			public void setSelection(ISelection selection) {
+				_selection = selection;
+				var event = new SelectionChangedEvent(this, selection);
+				for(var l : _listeners) {
+					l.selectionChanged(event);
+				}
+			}
+			
+			@Override
+			public void removeSelectionChangedListener(ISelectionChangedListener listener) {
+				_listeners.remove(listener);
+			}
+			
+			@Override
+			public ISelection getSelection() {
+				return _selection;
+			}
+			
+			@Override
+			public void addSelectionChangedListener(ISelectionChangedListener listener) {
+				_listeners.add(listener);
+			}
+		});
 	}
 
 	@Override
@@ -196,7 +227,6 @@ public class AnimationsEditor extends EditorPart {
 			if (_timelineCanvas.getAnimation() != anim) {
 				_timelineCanvas.setAnimation(anim);
 			}
-
 		}
 	}
 

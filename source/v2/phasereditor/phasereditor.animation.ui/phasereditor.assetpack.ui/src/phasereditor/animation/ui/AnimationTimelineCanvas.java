@@ -98,6 +98,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 		init_DND_Support();
 
 		initMouseSupport();
+
 	}
 
 	private void initMouseSupport() {
@@ -141,7 +142,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 		}
 	}
 
-	Collection<AnimationFrameModel_in_Editor> getSelectedFrames() {
+	public Collection<AnimationFrameModel_in_Editor> getSelectedFrames() {
 		return _selectedFrames;
 	}
 
@@ -239,6 +240,11 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 		}
 
 		_animation.buildFractions();
+
+		// We do this to update the duration based on the frameRate. The idea is that we
+		// can change the number of frames but we should keep the same frame rate and
+		// change the whole duration.
+		_animation.setFrameRate(_animation.getFrameRate());
 
 		if (restart) {
 			_editor.getAnimationCanvas().play();
@@ -379,15 +385,19 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 			var selected = _selectedFrames.contains(animFrame);
 
 			if (selected) {
-				gc.setAlpha(i % 2 == 0 ? 200 : 150);
+				gc.setAlpha(100);
 				gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_BLUE));
 			} else {
 				gc.setAlpha(60);
-				gc.setBackground(getDisplay().getSystemColor(i % 2 == 0 ? SWT.COLOR_GREEN : SWT.COLOR_GRAY));
+				gc.setBackground(getDisplay().getSystemColor(i % 2 == 0 ? SWT.COLOR_WHITE : SWT.COLOR_GRAY));
 			}
 
 			gc.fillRectangle((int) frameX, 0, (int) frameWidth, e.height);
 			gc.setAlpha(255);
+
+			if (selected) {
+				gc.drawRectangle((int) frameX, 0, (int) frameWidth, e.height - 1);
+			}
 
 			if (frameHeight > 0) {
 				double imgW = fd.srcSize.x;
@@ -541,7 +551,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 	}
 
 	private void updateSelectionProvider() {
-
+		_editor.getEditorSite().getSelectionProvider().setSelection(new StructuredSelection(_selectedFrames.toArray()));
 	}
 
 	@Override
