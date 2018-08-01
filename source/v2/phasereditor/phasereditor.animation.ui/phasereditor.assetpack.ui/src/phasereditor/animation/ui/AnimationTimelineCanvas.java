@@ -21,19 +21,27 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.animation.ui;
 
-import static java.lang.System.out;
-
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSource;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -43,7 +51,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ScrollBar;
 
 import javafx.animation.Animation.Status;
+import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
+import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.ui.BaseImageCanvas;
 import phasereditor.ui.FrameData;
 
@@ -51,7 +62,8 @@ import phasereditor.ui.FrameData;
  * @author arian
  *
  */
-public class AnimationTimelineCanvas extends BaseImageCanvas implements PaintListener, MouseWheelListener {
+public class AnimationTimelineCanvas extends BaseImageCanvas
+		implements PaintListener, MouseWheelListener, MouseListener, DragSourceListener {
 
 	private AnimationModel_in_Editor _animation;
 	private AnimationsEditor _editor;
@@ -59,6 +71,9 @@ public class AnimationTimelineCanvas extends BaseImageCanvas implements PaintLis
 	private int _origin;
 	private int _fullWidth;
 	private boolean _updateScroll;
+	int _dropIndex;
+	protected boolean _dropping;
+	private Set<AnimationFrameModel_in_Editor> _selectedFrames = new LinkedHashSet<>();
 
 	public AnimationTimelineCanvas(Composite parent, int style) {
 		super(parent, style | SWT.H_SCROLL | SWT.NO_REDRAW_RESIZE);
@@ -81,6 +96,12 @@ public class AnimationTimelineCanvas extends BaseImageCanvas implements PaintLis
 		});
 
 		init_DND_Support();
+
+		initMouseSupport();
+	}
+
+	private void initMouseSupport() {
+		addMouseListener(this);
 	}
 
 	private void init_DND_Support() {
@@ -93,7 +114,14 @@ public class AnimationTimelineCanvas extends BaseImageCanvas implements PaintLis
 
 				@Override
 				public void dragOver(DropTargetEvent event) {
-					out.println(event.x);
+					_dropping = true;
+					updateDropPosition(event.x);
+				}
+
+				@Override
+				public void dragLeave(DropTargetEvent event) {
+					_dropping = false;
+					redraw();
 				}
 
 				@Override
@@ -106,11 +134,121 @@ public class AnimationTimelineCanvas extends BaseImageCanvas implements PaintLis
 					}
 				}
 			});
+
+			DragSource source = new DragSource(this, DND.DROP_MOVE | DND.DROP_DEFAULT);
+			source.setTransfer(new Transfer[] { TextTransfer.getInstance(), LocalSelectionTransfer.getTransfer() });
+			source.addDragListener(this);
+		}
+	}
+
+	Collection<AnimationFrameModel_in_Editor> getSelectedFrames() {
+		return _selectedFrames;
+	}
+
+	protected void updateDropPosition(int displayX) {
+
+		var x = -_origin + displayX - toDisplay(0, 0).x;
+
+		int newDropIndex = 0;
+
+		var frames = _animation.getFrames();
+
+		int size = frames.size();
+
+		for (int i = 0; i < size; i++) {
+
+			double x1 = getFrameX(i);
+			double x2;
+
+			if (i + 1 < size) {
+				x2 = getFrameX(i + 1);
+			} else {
+				x2 = _fullWidth;
+			}
+
+			double middle = (x1 + x2) / 2;
+
+			if (x > middle) {
+				newDropIndex = i + 1;
+			}
+		}
+
+		if (newDropIndex != _dropIndex) {
+			_dropIndex = newDropIndex;
+			redraw();
 		}
 	}
 
 	protected void selectionDropped(Object[] data) {
 
+		if (_animation == null) {
+			// TODO: maybe we just have to create a new animation!
+			return;
+		}
+
+		var restart = !_editor.getAnimationCanvas().isStopped();
+
+		_editor.getAnimationCanvas().stop();
+
+		List<AnimationFrameModel_in_Editor> framesFromAssets = new ArrayList<>();
+		List<AnimationFrameModel_in_Editor> framesFromTimeline = new ArrayList<>();
+
+		var frames = _animation.getFrames();
+
+		for (var obj : data) {
+			IAssetFrameModel frame = null;
+
+			if (obj instanceof IAssetFrameModel) {
+				frame = (IAssetFrameModel) obj;
+			} else if (obj instanceof ImageAssetModel) {
+				frame = ((ImageAssetModel) obj).getFrame();
+			} else if (frames.contains(obj)) {
+				framesFromTimeline.add((AnimationFrameModel_in_Editor) obj);
+			}
+
+			if (frame != null) {
+				var animFrame = new AnimationFrameModel_in_Editor();
+				animFrame.setFrameAsset(frame);
+				framesFromAssets.add(animFrame);
+			}
+		}
+
+		if (framesFromAssets.isEmpty()) {
+			// the frames are from the timeline, this is a move
+			if (_dropIndex == frames.size()) {
+				// just move the frames and add them to the end
+				frames.removeAll(framesFromTimeline);
+				frames.addAll(framesFromTimeline);
+			} else {
+				var pivotFrame = frames.get(_dropIndex);
+				framesFromTimeline.remove(pivotFrame);
+				frames.removeAll(framesFromTimeline);
+				int i = frames.indexOf(pivotFrame);
+				if (i == -1) {
+					i = 0;
+				}
+				frames.addAll(i, framesFromTimeline);
+			}
+		} else {
+			// the frames are created by dropping assets
+			if (_dropIndex == frames.size()) {
+				frames.addAll(framesFromAssets);
+			} else {
+				frames.addAll(_dropIndex, framesFromAssets);
+			}
+		}
+
+		_animation.buildFractions();
+
+		if (restart) {
+			_editor.getAnimationCanvas().play();
+		}
+
+		if (_editor.getOutliner() != null) {
+			_editor.getOutliner().refresh();
+		}
+
+		redraw();
 	}
 
 	void updateScroll() {
@@ -202,7 +340,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas implements PaintLis
 
 		int frameHeight = e.height - margin * 2;
 
-		List<AnimationFrameModel> frames = _animation.getFrames();
+		var frames = _animation.getFrames();
 
 		var globalMinFrameWidth = Double.MAX_VALUE;
 
@@ -238,15 +376,22 @@ public class AnimationTimelineCanvas extends BaseImageCanvas implements PaintLis
 			double frameX2 = i + 1 < frames.size() ? getFrameX(frames.get(i + 1)) : _fullWidth;
 			double frameWidth = frameX2 - frameX;
 
-			gc.setAlpha(60);
-			gc.setBackground(getDisplay().getSystemColor(i % 2 == 0 ? SWT.COLOR_BLUE : SWT.COLOR_GRAY));
+			var selected = _selectedFrames.contains(animFrame);
+
+			if (selected) {
+				gc.setAlpha(i % 2 == 0 ? 200 : 150);
+				gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_BLUE));
+			} else {
+				gc.setAlpha(60);
+				gc.setBackground(getDisplay().getSystemColor(i % 2 == 0 ? SWT.COLOR_GREEN : SWT.COLOR_GRAY));
+			}
+
 			gc.fillRectangle((int) frameX, 0, (int) frameWidth, e.height);
 			gc.setAlpha(255);
 
 			if (frameHeight > 0) {
 				double imgW = fd.srcSize.x;
 				double imgH = fd.srcSize.y;
-				
 
 				{
 					imgW = imgW * (frameHeight / imgH);
@@ -259,10 +404,9 @@ public class AnimationTimelineCanvas extends BaseImageCanvas implements PaintLis
 					imgW = globalMinFrameWidth;
 				}
 
-				
 				double scaleX = imgW / fd.srcSize.x;
 				double scaleY = imgH / fd.srcSize.y;
-				
+
 				var imgX = frameX + frameWidth / 2 - imgW / 2 + fd.dst.x * scaleX;
 				var imgY = margin + frameHeight / 2 - imgH / 2 + fd.dst.y * scaleY;
 
@@ -273,6 +417,20 @@ public class AnimationTimelineCanvas extends BaseImageCanvas implements PaintLis
 						(int) imgDstW, (int) imgDstH);
 			}
 
+		}
+
+		if (_dropping) {
+			int x;
+			if (_dropIndex == frames.size()) {
+				x = _fullWidth;
+			} else {
+				x = getFrameX(_dropIndex);
+			}
+			var lw = gc.getLineWidth();
+			gc.setLineWidth(3);
+			gc.setAlpha(255);
+			gc.drawLine(x, 0, x, e.height);
+			gc.setLineWidth(lw);
 		}
 
 		if (_editor != null) {
@@ -295,6 +453,42 @@ public class AnimationTimelineCanvas extends BaseImageCanvas implements PaintLis
 		return (int) (animFrame.getComputedFraction() * _fullWidth);
 	}
 
+	private int getFrameX(int index) {
+		return getFrameX(_animation.getFrames().get(index));
+	}
+
+	private int getFrameIndex(int x) {
+		if (x > _fullWidth) {
+			return -1;
+		}
+
+		int result = -1;
+
+		int i = 0;
+
+		for (var frame : _animation.getFrames()) {
+			var fx = getFrameX(frame);
+
+			if (x >= fx) {
+				result = i;
+			} else {
+				break;
+			}
+
+			i++;
+		}
+
+		return result;
+	}
+
+	AnimationFrameModel_in_Editor getFrameAtX(int x) {
+		int i = getFrameIndex(x);
+		if (i == -1) {
+			return null;
+		}
+		return (AnimationFrameModel_in_Editor) _animation.getFrames().get(i);
+	}
+
 	@Override
 	public void mouseScrolled(MouseEvent e) {
 		if (e.count < 0) {
@@ -310,5 +504,79 @@ public class AnimationTimelineCanvas extends BaseImageCanvas implements PaintLis
 		_updateScroll = true;
 
 		redraw();
+	}
+
+	@Override
+	public void mouseDoubleClick(MouseEvent e) {
+		// nothing
+	}
+
+	@Override
+	public void mouseDown(MouseEvent e) {
+		// nothing
+	}
+
+	@Override
+	public void mouseUp(MouseEvent e) {
+		var x = -_origin + e.x;
+		var frame = getFrameAtX(x);
+
+		if (frame != null) {
+			if ((e.stateMask & SWT.CTRL) != 0) {
+				if (_selectedFrames.contains(frame)) {
+					_selectedFrames.remove(frame);
+				} else {
+					_selectedFrames.add(frame);
+				}
+			} else {
+				// just select that frame
+				_selectedFrames = new LinkedHashSet<>();
+				_selectedFrames.add(frame);
+			}
+
+			updateSelectionProvider();
+		}
+
+		redraw();
+	}
+
+	private void updateSelectionProvider() {
+
+	}
+
+	@Override
+	public void dragStart(DragSourceEvent event) {
+		LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
+		var selectedFrames = getSelectedFrames();
+
+		var frame = getFrameAtX(event.x);
+
+		if (frame == null) {
+			event.doit = false;
+			return;
+		}
+
+		if (selectedFrames.contains(frame)) {
+			event.image = AssetLabelProvider.GLOBAL_48.getImage(selectedFrames.iterator().next());
+			transfer.setSelection(new StructuredSelection(selectedFrames.toArray()));
+		} else {
+			transfer.setSelection(new StructuredSelection(frame));
+			event.image = AssetLabelProvider.GLOBAL_48.getImage(frame);
+			_selectedFrames = new LinkedHashSet<>();
+			updateSelectionProvider();
+		}
+	}
+
+	@Override
+	public void dragSetData(DragSourceEvent event) {
+		var frames = getSelectedFrames();
+		if (!frames.isEmpty()) {
+			event.data = frames.iterator().next().getFrameName();
+		}
+	}
+
+	@Override
+	public void dragFinished(DragSourceEvent event) {
+		// nothing
 	}
 }

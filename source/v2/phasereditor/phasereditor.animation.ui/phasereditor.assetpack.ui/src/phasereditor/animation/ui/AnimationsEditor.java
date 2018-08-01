@@ -149,7 +149,7 @@ public class AnimationsEditor extends EditorPart {
 	public Object getAdapter(Class adapter) {
 
 		if (adapter == IContentOutlinePage.class) {
-			return getOutliner();
+			return createOutliner();
 		}
 
 		if (adapter == IPropertySheetPage.class) {
@@ -163,7 +163,7 @@ public class AnimationsEditor extends EditorPart {
 		return _animCanvas;
 	}
 
-	private Object getOutliner() {
+	private Object createOutliner() {
 		if (_outliner == null) {
 			_outliner = new Outliner();
 			_outlinerListener = new ISelectionChangedListener() {
@@ -175,6 +175,10 @@ public class AnimationsEditor extends EditorPart {
 			};
 			_outliner.addSelectionChangedListener(_outlinerListener);
 		}
+		return _outliner;
+	}
+	
+	public Outliner getOutliner() {
 		return _outliner;
 	}
 

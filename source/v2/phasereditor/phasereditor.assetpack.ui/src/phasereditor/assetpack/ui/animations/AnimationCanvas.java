@@ -207,31 +207,35 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 
 		if (_showProgress) {
 
-			if (_transition != null) {
+			paintProgressLine(e);
+		}
 
-				e.gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_GREEN));
-				e.gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_RED));
+	}
 
-				e.gc.setLineWidth(3);
+	private void paintProgressLine(PaintEvent e) {
+		if (_transition != null) {
 
-				if (_animModel != null) {
+			e.gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_GREEN));
+			e.gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_RED));
 
-					if (_transition.getStatus() != Status.STOPPED) {
-						double frac = _transition.getFraction();
-						int x = (int) (frac * e.width);
-						e.gc.drawLine(0, e.height - 5, x, e.height - 5);
-					}
+			e.gc.setLineWidth(3);
 
-					e.gc.setAlpha(110);
+			if (_animModel != null) {
 
-					for (var frame : _animModel.getFrames()) {
-						var frac = frame.getComputedFraction();
-						e.gc.fillOval((int) (frac * e.width) - 3, e.height - 3 - 5, 6, 6);
-					}
+				if (_transition.getStatus() != Status.STOPPED) {
+					double frac = _transition.getFraction();
+					int x = (int) (frac * e.width);
+					e.gc.drawLine(0, e.height - 5, x, e.height - 5);
+				}
+
+				e.gc.setAlpha(110);
+
+				for (var frame : _animModel.getFrames()) {
+					var frac = frame.getComputedFraction();
+					e.gc.fillOval((int) (frac * e.width) - 3, e.height - 3 - 5, 6, 6);
 				}
 			}
 		}
-
 	}
 
 	public void setShowProgress(boolean showProgress) {
@@ -250,6 +254,10 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 	@Override
 	public void controlResized(ControlEvent e) {
 		// resetZoom();
+	}
+
+	public boolean isStopped() {
+		return _transition == null || _transition.getStatus() == Status.STOPPED;
 	}
 
 }
