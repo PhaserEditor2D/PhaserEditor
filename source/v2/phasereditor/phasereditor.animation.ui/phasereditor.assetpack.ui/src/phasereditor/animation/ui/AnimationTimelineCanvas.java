@@ -264,6 +264,12 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 			}
 		}
 
+		if (_editor.getAnimationCanvas().getImage() == null) {
+			if (!frames.isEmpty()) {
+				_editor.getAnimationCanvas().showFrame(0);
+			}
+		}
+		
 		_animation.buildTiming();
 
 		// We do this to update the duration based on the frameRate. The idea is that we

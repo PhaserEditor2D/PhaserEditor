@@ -53,6 +53,7 @@ import org.json.JSONObject;
 
 import javafx.animation.Animation.Status;
 import phasereditor.animation.ui.properties.AnimationsPGridPage;
+import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.animations.AnimationCanvas;
 import phasereditor.assetpack.ui.animations.AnimationCanvas.IndexTransition;
@@ -155,7 +156,7 @@ public class AnimationsEditor extends EditorPart {
 				}
 			}
 		});
-
+		_animCanvas.setNoImageMessage("");
 	}
 
 	private ToolBar createToolbar(Composite parent) {
@@ -195,8 +196,12 @@ public class AnimationsEditor extends EditorPart {
 
 			@Override
 			public void run() {
-				if (getAnimationCanvas().getModel() != null) {
+				AnimationModel model = getAnimationCanvas().getModel();
+				if (model != null) {
 					getAnimationCanvas().stop();
+					if (!model.getFrames().isEmpty()) {
+						getAnimationCanvas().showFrame(0);
+					}
 				}
 				getTimelineCanvas().redraw();
 				getAnimationCanvas().redraw();
