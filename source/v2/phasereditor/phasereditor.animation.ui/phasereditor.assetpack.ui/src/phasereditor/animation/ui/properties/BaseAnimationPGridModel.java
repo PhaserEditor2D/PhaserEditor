@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.animation.ui.properties;
 
+import phasereditor.animation.ui.AnimationsEditor;
 import phasereditor.ui.properties.PGridModel;
 
 /**
@@ -41,5 +42,19 @@ public class BaseAnimationPGridModel extends PGridModel {
 
 	protected void refreshGrid() {
 		_propertyPage.getGrid().refresh();
+	}
+
+	public AnimationsEditor getEditor() {
+		return _propertyPage.getEditor();
+	}
+
+	protected void updateAndRestartAnimation() {
+		AnimationsEditor editor = getEditor();
+		var anim = editor.getTimelineCanvas().getAnimation();
+		anim.buildTiming();
+		editor.getTimelineCanvas().redraw();
+		if (!editor.getAnimationCanvas().isStopped()) {
+			editor.getAnimationCanvas().play();
+		}
 	}
 }

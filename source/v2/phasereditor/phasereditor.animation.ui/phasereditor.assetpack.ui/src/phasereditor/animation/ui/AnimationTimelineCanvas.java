@@ -55,6 +55,7 @@ import org.eclipse.swt.widgets.ScrollBar;
 import javafx.animation.Animation.Status;
 import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.ui.BaseImageCanvas;
@@ -193,6 +194,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 		}
 	}
 
+	@SuppressWarnings("boxing")
 	protected void selectionDropped(Object[] data) {
 
 		if (_animation == null) {
@@ -221,8 +223,18 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 			}
 
 			if (frame != null) {
-				var animFrame = new AnimationFrameModel_in_Editor();
+				var animFrame = new AnimationFrameModel_in_Editor(_animation);
 				animFrame.setFrameAsset(frame);
+				animFrame.setTextureKey(frame.getAsset().getKey());
+
+				if (frame.getAsset() instanceof ImageAssetModel) {
+					// nothing
+				} else if (frame instanceof SpritesheetAssetModel.FrameModel) {
+					animFrame.setFrameName(((SpritesheetAssetModel.FrameModel) frame).getIndex());
+				} else {
+					animFrame.setFrameName(frame.getKey());
+				}
+
 				framesFromAssets.add(animFrame);
 			}
 		}
@@ -252,7 +264,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 			}
 		}
 
-		_animation.buildFractions();
+		_animation.buildTiming();
 
 		// We do this to update the duration based on the frameRate. The idea is that we
 		// can change the number of frames but we should keep the same frame rate and
@@ -548,6 +560,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 			return;
 		}
 
+		var updateLastSelectionFrame = true;
 		var x = -_origin + e.x;
 		var frame = getFrameAtX(x);
 
@@ -581,6 +594,8 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 					_selectedFrames.add((AnimationFrameModel_in_Editor) frames.get(i));
 				}
 
+				updateLastSelectionFrame = false;
+
 			} else {
 
 				// just select that frame
@@ -593,7 +608,9 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 			updateSelectionProvider();
 		}
 
-		_lastSelectedFrame = frame;
+		if (updateLastSelectionFrame) {
+			_lastSelectedFrame = frame;
+		}
 
 		redraw();
 	}

@@ -104,10 +104,10 @@ public class AnimationModel {
 		_hideOnComplete = jsonData.optBoolean("hideOnComplete", false);
 		_skipMissedFrames = jsonData.optBoolean("skipMissedFrames", true);
 
-		buildFractions();
+		buildTiming();
 	}
 
-	public void buildFractions() {
+	public void buildTiming() {
 		_totalDuration = _duration;
 
 		for (var frame : _frames) {

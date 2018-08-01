@@ -114,7 +114,7 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 	}
 
 	private void createAnimation() {
-		_animModel.buildFractions();
+		_animModel.buildTiming();
 		_transition = new IndexTransition(Duration.millis(_animModel.getComputedTotalDuration()));
 		_transition.setDelay(Duration.millis(_animModel.getDelay()));
 		_transition.setAutoReverse(_animModel.isYoyo());

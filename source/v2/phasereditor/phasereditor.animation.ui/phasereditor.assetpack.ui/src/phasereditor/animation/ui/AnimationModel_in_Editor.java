@@ -45,7 +45,7 @@ public class AnimationModel_in_Editor extends AnimationModel implements IAdaptab
 
 	@Override
 	protected AnimationFrameModel createAnimationFrame(JSONObject jsonData) {
-		return new AnimationFrameModel_in_Editor(jsonData);
+		return new AnimationFrameModel_in_Editor(this, jsonData);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
