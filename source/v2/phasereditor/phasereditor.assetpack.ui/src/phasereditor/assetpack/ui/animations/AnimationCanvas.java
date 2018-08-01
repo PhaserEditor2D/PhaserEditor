@@ -78,6 +78,12 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 		}
 	}
 
+	public void pause() {
+		if (_transition != null) {
+			_transition.pause();
+		}
+	}
+
 	public Runnable getStepCallback() {
 		return _stepCallback;
 	}
@@ -95,6 +101,10 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 	}
 
 	public void setModel(AnimationModel model) {
+		setModel(model, true);
+	}
+
+	public void setModel(AnimationModel model, boolean autoPlay) {
 		_animModel = model;
 
 		if (_transition != null) {
@@ -110,7 +120,9 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 
 		resetZoom();
 
-		createAnimation();
+		if (autoPlay) {
+			createAnimation();
+		}
 	}
 
 	private void createAnimation() {
@@ -259,5 +271,4 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 	public boolean isStopped() {
 		return _transition == null || _transition.getStatus() == Status.STOPPED;
 	}
-
 }

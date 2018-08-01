@@ -66,6 +66,7 @@ public interface IEditorSharedImages {
 	String IMG_MONITOR_EDIT = "icons/monitor_edit.png";
 	String IMG_ROTATE = "icons/arrow-rotate-clockwise.png";
 	String IMG_PLAY = "icons/control_play.png";
+	String IMG_PAUSE = "icons/control_pause.png";
 	String IMG_STOP = "icons/control_stop.png";
 	String IMG_FRAME_ANIMATION = "icons/frame-animation.png";
 	String IMG_NEW_VIEW = "platform:/plugin/org.eclipse.ui.views/icons/full/elcl16/new.png";

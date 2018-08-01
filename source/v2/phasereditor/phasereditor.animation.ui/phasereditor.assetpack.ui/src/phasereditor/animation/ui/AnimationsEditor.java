@@ -25,6 +25,8 @@ import java.io.InputStream;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ListenerList;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -36,7 +38,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
@@ -46,11 +51,15 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.json.JSONObject;
 
+import javafx.animation.Animation.Status;
 import phasereditor.animation.ui.properties.AnimationsPGridPage;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.animations.AnimationCanvas;
+import phasereditor.assetpack.ui.animations.AnimationCanvas.IndexTransition;
 import phasereditor.project.core.ProjectCore;
+import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredContentOutlinePage;
+import phasereditor.ui.IEditorSharedImages;
 
 /**
  * @author arian
@@ -64,6 +73,9 @@ public class AnimationsEditor extends EditorPart {
 	Outliner _outliner;
 	ISelectionChangedListener _outlinerListener;
 	private AnimationTimelineCanvas _timelineCanvas;
+	private Action _playAction;
+	private Action _pauseAction;
+	private Action _stopAction;
 
 	public AnimationsEditor() {
 		// force the start the project builders
@@ -78,9 +90,22 @@ public class AnimationsEditor extends EditorPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		SashForm sash = new SashForm(parent, SWT.VERTICAL);
-		_animCanvas = new AnimationCanvas(sash, SWT.BORDER);
+
+		Composite topComp = new Composite(sash, SWT.BORDER);
+		GridLayout layout = new GridLayout(1, false);
+		layout.verticalSpacing = 0;
+		layout.marginWidth = 0;
+		layout.marginHeight = 0;
+		topComp.setLayout(layout);
+
+		_animCanvas = new AnimationCanvas(topComp, SWT.NONE);
+		_animCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+		createToolbar(topComp);
+
 		_timelineCanvas = new AnimationTimelineCanvas(sash, SWT.BORDER);
 		_timelineCanvas.setEditor(this);
+
 		_animCanvas.setStepCallback(_timelineCanvas::redraw);
 
 		sash.setWeights(new int[] { 2, 1 });
@@ -130,6 +155,60 @@ public class AnimationsEditor extends EditorPart {
 				}
 			}
 		});
+
+	}
+
+	private ToolBar createToolbar(Composite parent) {
+		ToolBarManager manager = new ToolBarManager(SWT.BORDER);
+
+		_playAction = new Action("Play", EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_PLAY)) {
+
+			@Override
+			public void run() {
+				if (getAnimationCanvas().getModel() != null) {
+					IndexTransition transition = getAnimationCanvas().getTransition();
+					if (transition != null && transition.getStatus() == Status.PAUSED) {
+						transition.play();
+					} else {
+						getAnimationCanvas().play();
+					}
+				}
+				getTimelineCanvas().redraw();
+				getAnimationCanvas().redraw();
+			}
+		};
+
+		_pauseAction = new Action("Pause", EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_PAUSE)) {
+
+			@Override
+			public void run() {
+				if (getAnimationCanvas().getModel() != null) {
+					getAnimationCanvas().pause();
+				}
+				getTimelineCanvas().redraw();
+				getAnimationCanvas().redraw();
+			}
+
+		};
+
+		_stopAction = new Action("Stop", EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_STOP)) {
+
+			@Override
+			public void run() {
+				if (getAnimationCanvas().getModel() != null) {
+					getAnimationCanvas().stop();
+				}
+				getTimelineCanvas().redraw();
+				getAnimationCanvas().redraw();
+			}
+
+		};
+
+		manager.add(_playAction);
+		manager.add(_pauseAction);
+		manager.add(_stopAction);
+
+		return manager.createControl(parent);
 	}
 
 	@Override
@@ -237,11 +316,7 @@ public class AnimationsEditor extends EditorPart {
 		if (elem != null) {
 			var anim = (AnimationModel_in_Editor) elem;
 
-			if (_animCanvas.getModel() == elem) {
-				_animCanvas.play();
-			} else {
-				_animCanvas.setModel(anim);
-			}
+			_animCanvas.setModel(anim, false);
 
 			if (_timelineCanvas.getAnimation() != anim) {
 				_timelineCanvas.setAnimation(anim);
