@@ -24,14 +24,22 @@ package phasereditor.animation.ui;
 import static java.lang.System.out;
 
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.jface.dialogs.IInputValidator;
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -39,6 +47,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.MouseAdapter;
@@ -58,6 +67,7 @@ import org.json.JSONObject;
 
 import javafx.animation.Animation.Status;
 import phasereditor.animation.ui.properties.AnimationsPGridPage;
+import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.animations.AnimationCanvas;
 import phasereditor.assetpack.ui.animations.AnimationCanvas.IndexTransition;
@@ -168,6 +178,101 @@ public class AnimationsEditor extends EditorPart {
 		_animCanvas.setPlaybackCallback(this::animationStatusChanged);
 
 		disableToolbar();
+
+		createContextMenu();
+	}
+
+	protected final void openNewAnimationDialog() {
+		InputDialog dlg = new InputDialog(getAnimationCanvas().getShell(), "New Animation",
+				"Enter the name of the new animation.", "walk", new IInputValidator() {
+
+					@Override
+					public String isValid(String newText) {
+						if (getModel().getAnimations().stream().filter(a -> a.getKey().equals(newText)).findFirst()
+								.isPresent()) {
+							return "That name is used by other animation.";
+						}
+						return null;
+					}
+				});
+
+		if (dlg.open() == Window.OK) {
+
+			var anim = new AnimationModel_in_Editor(getModel());
+
+			anim.setKey(dlg.getValue());
+
+			getModel().getAnimations().add(anim);
+
+			StructuredSelection sel = new StructuredSelection(anim);
+
+			if (_outliner != null) {
+				_outliner.refresh();
+				_outliner.getViewer().setSelection(sel);
+			}
+
+			loadAnimation(anim);
+
+			getEditorSite().getSelectionProvider().setSelection(sel);
+		}
+	}
+
+	private void createContextMenu() {
+		MenuManager menuManager = new MenuManager();
+		menuManager.addMenuListener(new IMenuListener() {
+
+			@Override
+			public void menuAboutToShow(IMenuManager manager) {
+				manager.removeAll();
+				manager.add(new Action("New Animation",
+						EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_FRAME_ANIMATION)) {
+					@Override
+					public void run() {
+						openNewAnimationDialog();
+					}
+				});
+				manager.add(new Separator());
+				for (var anim : getModel().getAnimations()) {
+					manager.add(new Action(anim.getKey()) {
+						{
+							setImageDescriptor(
+									ImageDescriptor.createFromImage(AssetLabelProvider.GLOBAL_16.getImage(anim)));
+						}
+
+						@Override
+						public void run() {
+							StructuredSelection sel = new StructuredSelection(anim);
+
+							if (_outliner != null) {
+								_outliner.getViewer().setSelection(sel);
+							}
+
+							loadAnimation((AnimationModel_in_Editor) anim);
+						}
+					});
+				}
+
+				AnimationModel currentAnim = getAnimationCanvas().getModel();
+
+				if (currentAnim != null) {
+					manager.add(new Separator());
+					try {
+						manager.add(new Action("Delete", ImageDescriptor.createFromURL(
+								new URL("platform:/plugin/org.eclipse.ui/icons/full/etool16/delete_edit.png"))) {
+							@Override
+							public void run() {
+								deleteAnimations(List.of((AnimationModel_in_Editor) currentAnim));
+							}
+						});
+					} catch (MalformedURLException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+
+		var menu = menuManager.createContextMenu(_animCanvas);
+		_animCanvas.setMenu(menu);
 	}
 
 	private void disableToolbar() {
@@ -392,7 +497,7 @@ public class AnimationsEditor extends EditorPart {
 		}
 	}
 
-	private void loadAnimation(AnimationModel_in_Editor anim) {
+	protected void loadAnimation(AnimationModel_in_Editor anim) {
 		if (anim == null) {
 			for (var btn : _playbackActions) {
 				btn.setChecked(false);
