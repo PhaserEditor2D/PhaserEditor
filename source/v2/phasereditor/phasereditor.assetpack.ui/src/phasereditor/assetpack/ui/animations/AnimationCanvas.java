@@ -155,7 +155,7 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 			_transition.statusProperty().removeListener(_statusListener);
 		}
 		
-		_animModel.buildTiming();
+		_animModel.buildTimeline();
 		
 		_transition = new IndexTransition(Duration.millis(_animModel.getComputedTotalDuration()));
 		

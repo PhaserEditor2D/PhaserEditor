@@ -104,10 +104,13 @@ public class AnimationModel {
 		_hideOnComplete = jsonData.optBoolean("hideOnComplete", false);
 		_skipMissedFrames = jsonData.optBoolean("skipMissedFrames", true);
 
-		buildTiming();
+		buildTimeline();
 	}
 
-	public void buildTiming() {
+	public void buildTimeline() {
+		// recompute duration from the frame rate
+		setFrameRate(_frameRate);
+
 		_totalDuration = _duration;
 
 		for (var frame : _frames) {
@@ -136,10 +139,6 @@ public class AnimationModel {
 			}
 
 		}
-
-		// recompute duration, that changes if some frames are added or removed
-		setFrameRate(_frameRate);
-
 	}
 
 	public int getComputedTotalDuration() {

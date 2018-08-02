@@ -99,7 +99,7 @@ public class AnimationFrameModel_in_Editor_PGridModel extends BaseAnimationPGrid
 					@Override
 					public void setValue(Double value, boolean notify) {
 						getFrame().setDuration(value.intValue());
-						getAnimation().buildTiming();
+						getAnimation().buildTimeline();
 						refreshGrid();
 						updateAndRestartAnimation();
 					}

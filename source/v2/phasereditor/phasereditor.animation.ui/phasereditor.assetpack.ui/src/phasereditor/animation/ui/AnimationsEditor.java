@@ -507,7 +507,7 @@ public class AnimationsEditor extends EditorPart {
 
 		var animation = _animCanvas.getModel();
 		animation.getFrames().removeAll(frames);
-		animation.buildTiming();
+		animation.buildTimeline();
 
 		if (running) {
 			_animCanvas.play();

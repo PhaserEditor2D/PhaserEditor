@@ -59,7 +59,7 @@ public class BaseAnimationPGridModel extends PGridModel {
 
 		var anim = editor.getTimelineCanvas().getAnimation();
 
-		anim.buildTiming();
+		anim.buildTimeline();
 
 		editor.getTimelineCanvas().redraw();
 
