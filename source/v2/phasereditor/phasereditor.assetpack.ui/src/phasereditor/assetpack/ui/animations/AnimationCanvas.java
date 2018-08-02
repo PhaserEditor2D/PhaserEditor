@@ -22,6 +22,7 @@
 package phasereditor.assetpack.ui.animations;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
@@ -33,6 +34,8 @@ import org.eclipse.swt.widgets.Composite;
 import javafx.animation.Animation.Status;
 import javafx.animation.Interpolator;
 import javafx.animation.Transition;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.embed.swt.FXCanvas;
 import javafx.util.Duration;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
@@ -49,7 +52,9 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 	private IndexTransition _transition;
 	private boolean _showProgress = true;
 	private static boolean _initFX;
-	Runnable _stepCallback;
+	protected Runnable _stepCallback;
+	protected Consumer<Status> _playbackCallback;
+	private ChangeListener<? super Status> _statusListener;
 
 	public AnimationCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -92,6 +97,14 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 		_stepCallback = stepCallback;
 	}
 
+	public Consumer<Status> getPlaybackCallback() {
+		return _playbackCallback;
+	}
+	
+	public void setPlaybackCallback(Consumer<Status> playbackCallback) {
+		_playbackCallback = playbackCallback;
+	}
+	
 	public IndexTransition getTransition() {
 		return _transition;
 	}
@@ -126,12 +139,23 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 	}
 
 	private void createAnimation() {
+		if (_statusListener == null) {
+			_statusListener = new ChangeListener<>() {
+
+				@Override
+				public void changed(ObservableValue<? extends Status> observable, Status oldValue, Status newValue) {
+					if (_playbackCallback != null) {
+						_playbackCallback.accept(newValue);
+					}
+				}
+			};
+		}
 		_animModel.buildTiming();
 		_transition = new IndexTransition(Duration.millis(_animModel.getComputedTotalDuration()));
 		_transition.setDelay(Duration.millis(_animModel.getDelay()));
 		_transition.setAutoReverse(_animModel.isYoyo());
 		_transition.setCycleCount(_animModel.getRepeat());
-
+		_transition.statusProperty().addListener(_statusListener);
 		_transition.play();
 	}
 
@@ -271,4 +295,5 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 	public boolean isStopped() {
 		return _transition == null || _transition.getStatus() == Status.STOPPED;
 	}
+
 }

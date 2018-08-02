@@ -26,6 +26,7 @@ import java.io.InputStream;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -53,7 +54,6 @@ import org.json.JSONObject;
 
 import javafx.animation.Animation.Status;
 import phasereditor.animation.ui.properties.AnimationsPGridPage;
-import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.animations.AnimationCanvas;
 import phasereditor.assetpack.ui.animations.AnimationCanvas.IndexTransition;
@@ -77,6 +77,7 @@ public class AnimationsEditor extends EditorPart {
 	private Action _playAction;
 	private Action _pauseAction;
 	private Action _stopAction;
+	private Action[] _playbackActions = { _playAction, _pauseAction, _stopAction };
 
 	public AnimationsEditor() {
 		// force the start the project builders
@@ -106,8 +107,6 @@ public class AnimationsEditor extends EditorPart {
 
 		_timelineCanvas = new AnimationTimelineCanvas(sash, SWT.BORDER);
 		_timelineCanvas.setEditor(this);
-
-		_animCanvas.setStepCallback(_timelineCanvas::redraw);
 
 		sash.setWeights(new int[] { 2, 1 });
 
@@ -157,35 +156,86 @@ public class AnimationsEditor extends EditorPart {
 			}
 		});
 		_animCanvas.setNoImageMessage("");
+		_animCanvas.setStepCallback(_timelineCanvas::redraw);
+		_animCanvas.setPlaybackCallback(this::animationStatusChanged);
+
+		for (var btn : _playbackActions) {
+			btn.setEnabled(false);
+		}
+	}
+
+	private void animationStatusChanged(Status status) {
+
+		AnimationCanvas animCanvas = getAnimationCanvas();
+		var anim = animCanvas.getModel();
+		var frames = anim.getFrames();
+
+		switch (status) {
+		case RUNNING:
+			_playAction.setChecked(true);
+			_pauseAction.setChecked(false);
+			break;
+		case STOPPED:
+			if (!frames.isEmpty()) {
+				animCanvas.showFrame(0);
+			}
+			_playAction.setChecked(false);
+			_pauseAction.setEnabled(false);
+			break;
+		case PAUSED:
+			_playAction.setChecked(false);
+			_pauseAction.setChecked(true);
+			break;
+		default:
+			break;
+		}
+
+		_playAction.setEnabled(!_playAction.isChecked());
+		_pauseAction.setEnabled(_playAction.isChecked());
+		_stopAction.setEnabled(_playAction.isChecked() || _pauseAction.isChecked());
 	}
 
 	private ToolBar createToolbar(Composite parent) {
 		ToolBarManager manager = new ToolBarManager(SWT.BORDER);
 
-		_playAction = new Action("Play", EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_PLAY)) {
+		_playAction = new Action("Play", IAction.AS_CHECK_BOX) {
+			{
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_PLAY));
+			}
 
 			@Override
 			public void run() {
-				if (getAnimationCanvas().getModel() != null) {
-					IndexTransition transition = getAnimationCanvas().getTransition();
-					if (transition != null && transition.getStatus() == Status.PAUSED) {
+				AnimationCanvas canvas = getAnimationCanvas();
+				IndexTransition transition = canvas.getTransition();
+				if (transition != null) {
+					switch (transition.getStatus()) {
+					case PAUSED:
 						transition.play();
-					} else {
-						getAnimationCanvas().play();
+						break;
+					case STOPPED:
+						canvas.play();
+						break;
+					default:
+						break;
 					}
+					transition.play();
+				} else {
+					canvas.play();
 				}
+
 				getTimelineCanvas().redraw();
-				getAnimationCanvas().redraw();
+				canvas.redraw();
 			}
 		};
 
-		_pauseAction = new Action("Pause", EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_PAUSE)) {
+		_pauseAction = new Action("Pause", IAction.AS_CHECK_BOX) {
+			{
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_PAUSE));
+			}
 
 			@Override
 			public void run() {
-				if (getAnimationCanvas().getModel() != null) {
-					getAnimationCanvas().pause();
-				}
+				getAnimationCanvas().pause();
 				getTimelineCanvas().redraw();
 				getAnimationCanvas().redraw();
 			}
@@ -196,13 +246,7 @@ public class AnimationsEditor extends EditorPart {
 
 			@Override
 			public void run() {
-				AnimationModel model = getAnimationCanvas().getModel();
-				if (model != null) {
-					getAnimationCanvas().stop();
-					if (!model.getFrames().isEmpty()) {
-						getAnimationCanvas().showFrame(0);
-					}
-				}
+				getAnimationCanvas().stop();
 				getTimelineCanvas().redraw();
 				getAnimationCanvas().redraw();
 			}
@@ -212,6 +256,8 @@ public class AnimationsEditor extends EditorPart {
 		manager.add(_playAction);
 		manager.add(_pauseAction);
 		manager.add(_stopAction);
+
+		_playbackActions = new Action[] { _playAction, _pauseAction, _stopAction };
 
 		return manager.createControl(parent);
 	}
@@ -320,12 +366,20 @@ public class AnimationsEditor extends EditorPart {
 		var elem = event.getStructuredSelection().getFirstElement();
 		if (elem != null) {
 			var anim = (AnimationModel_in_Editor) elem;
+			loadAnimation(anim);
+		}
+	}
 
-			_animCanvas.setModel(anim, false);
+	private void loadAnimation(AnimationModel_in_Editor anim) {
+		_animCanvas.setModel(anim, false);
 
-			if (_timelineCanvas.getAnimation() != anim) {
-				_timelineCanvas.setAnimation(anim);
-			}
+		for (var btn : _playbackActions) {
+			btn.setChecked(false);
+			btn.setEnabled(btn == _playAction);
+		}
+
+		if (_timelineCanvas.getAnimation() != anim) {
+			_timelineCanvas.setAnimation(anim);
 		}
 	}
 
