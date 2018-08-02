@@ -125,8 +125,14 @@ public class AnimationModel {
 			double avgFrameTime = _duration / size;
 
 			for (var frame : _frames) {
+
 				frame.setComputedFraction(time / _totalDuration);
-				time += avgFrameTime + frame.getDuration();
+
+				double frameRealDuration = avgFrameTime + frame.getDuration();
+
+				frame.setComputedDuration((int) frameRealDuration);
+
+				time += frameRealDuration;
 			}
 
 		}

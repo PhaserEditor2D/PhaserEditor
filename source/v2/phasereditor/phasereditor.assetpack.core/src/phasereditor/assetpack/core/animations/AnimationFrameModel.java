@@ -31,6 +31,7 @@ public class AnimationFrameModel{
 	private Object _frameName;
 	private int _duration;
 	private double _computedFraction;
+	private int _computedDuration;
 
 	public AnimationFrameModel() {
 
@@ -82,5 +83,13 @@ public class AnimationFrameModel{
 	
 	public double getComputedFraction() {
 		return _computedFraction;
+	}
+
+	public int getComputedDuration() {
+		return _computedDuration;
+	}
+	
+	public void setComputedDuration(int computedDuration) {
+		_computedDuration = computedDuration;
 	}
 }

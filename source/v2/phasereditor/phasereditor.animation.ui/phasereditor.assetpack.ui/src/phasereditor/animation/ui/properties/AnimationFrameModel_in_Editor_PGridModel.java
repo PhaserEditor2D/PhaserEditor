@@ -24,8 +24,8 @@ package phasereditor.animation.ui.properties;
 import phasereditor.animation.ui.AnimationFrameModel_in_Editor;
 import phasereditor.animation.ui.AnimationModel_in_Editor;
 import phasereditor.inspect.core.InspectCore;
-import phasereditor.ui.properties.PGridInfoProperty;
 import phasereditor.ui.properties.PGridNumberProperty;
+import phasereditor.ui.properties.PGridStringProperty;
 
 /**
  * @author arian
@@ -46,17 +46,61 @@ public class AnimationFrameModel_in_Editor_PGridModel extends BaseAnimationPGrid
 
 		addSection("Frame",
 
-				new PGridInfoProperty("key", help("key"), getFrame()::getTextureKey),
+				new PGridStringProperty(id, "key", help("key")) {
 
-				new PGridInfoProperty("frame", help("frame"), () -> {
-					return getFrame().getFrameName() == null ? "" : getFrame().getFrameName();
-				}),
+					@Override
+					public String getValue() {
+						return getFrame().getTextureKey();
+					}
+
+					@Override
+					public boolean isModified() {
+						return false;
+					}
+
+					@Override
+					public void setValue(String value, boolean notify) {
+						//
+					}
+					
+					@Override
+					public boolean isReadOnly() {
+						return true;
+					}
+
+				},
+
+				new PGridStringProperty(id, "frame", help("frame")) {
+
+					@Override
+					public String getValue() {
+						return getFrame().getFrameName() == null ? "" : getFrame().getFrameName().toString();
+					}
+
+					@Override
+					public boolean isModified() {
+						return false;
+					}
+
+					@Override
+					public void setValue(String value, boolean notify) {
+						//
+					}
+					
+					@Override
+					public boolean isReadOnly() {
+						return true;
+					}
+
+				},
 
 				new PGridNumberProperty(id, "duration", help("duration"), true) {
 
 					@Override
 					public void setValue(Double value, boolean notify) {
 						getFrame().setDuration(value.intValue());
+						getAnimation().buildTiming();
+						refreshGrid();
 						updateAndRestartAnimation();
 					}
 
@@ -68,6 +112,25 @@ public class AnimationFrameModel_in_Editor_PGridModel extends BaseAnimationPGrid
 					@Override
 					public boolean isModified() {
 						return getFrame().getDuration() != 0;
+					}
+				},
+
+				new PGridNumberProperty(id, "-realDuration",
+						"The computed duration of the frame. It is the frameRate-based duration plus the extra duration set in the 'duration' property.\nNOTE: This is not part of the Phaser API.") {
+
+					@Override
+					public Double getValue() {
+						return (double) getFrame().getComputedDuration();
+					}
+
+					@Override
+					public boolean isModified() {
+						return getFrame().getDuration() != 0;
+					}
+
+					@Override
+					public boolean isReadOnly() {
+						return true;
 					}
 				}
 

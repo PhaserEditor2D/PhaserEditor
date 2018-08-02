@@ -102,8 +102,8 @@ public class AnimationModel_in_Editor_PGridModel extends BaseAnimationPGridModel
 					}
 				},
 
-				new PGridNumberProperty(_id, "-totalDuration",
-						"A computed duration based on the duration plus all the extra frame's durations. This is not part of the Phaser API.") {
+				new PGridNumberProperty(_id, "-realDuration",
+						"A computed duration based on the duration plus all the extra frame's durations.\nNOTE: This is not part of the Phaser API.") {
 
 					@Override
 					public Double getValue() {
