@@ -137,6 +137,9 @@ public class AnimationModel {
 
 		}
 
+		// recompute duration, that changes if some frames are added or removed
+		setFrameRate(_frameRate);
+
 	}
 
 	public int getComputedTotalDuration() {

@@ -21,4 +21,19 @@
             order="1000">
       </participant>
    </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="phasereditor.animation.ui.handlers.DeleteAnimationSelectionHandler"
+            commandId="org.eclipse.ui.edit.delete">
+         <activeWhen>
+            <with
+                  variable="activeEditorId">
+               <equals
+                     value="phasereditor.animation.ui.AnimationsEditor">
+               </equals>
+            </with>
+         </activeWhen>
+      </handler>
+   </extension>
 </plugin>

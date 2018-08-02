@@ -24,6 +24,7 @@ package phasereditor.animation.ui;
 import static java.lang.System.out;
 
 import java.io.InputStream;
+import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ListenerList;
@@ -392,6 +393,21 @@ public class AnimationsEditor extends EditorPart {
 	}
 
 	private void loadAnimation(AnimationModel_in_Editor anim) {
+		if (anim == null) {
+			for (var btn : _playbackActions) {
+				btn.setChecked(false);
+				btn.setEnabled(false);
+			}
+
+			_zoom_1_1_action.setEnabled(false);
+			_zoom_fitWindow_action.setEnabled(false);
+
+			_animCanvas.setModel(null);
+			_timelineCanvas.setAnimation(null);
+
+			return;
+		}
+
 		_animCanvas.setModel(anim, false);
 
 		for (var btn : _playbackActions) {
@@ -462,6 +478,53 @@ public class AnimationsEditor extends EditorPart {
 		_model.build();
 		if (_outliner != null) {
 			_outliner.refresh();
+		}
+	}
+
+	public void deleteAnimations(List<AnimationModel_in_Editor> animations) {
+		_model.getAnimations().removeAll(animations);
+		if (_outliner != null) {
+			_outliner.refresh();
+		}
+
+		if (animations.contains(_animCanvas.getModel())) {
+			var anim = _model.getAnimations().isEmpty() ? null : _model.getAnimations().get(0);
+			loadAnimation((AnimationModel_in_Editor) anim);
+
+			if (_outliner != null) {
+				_outliner.setSelection(anim == null ? StructuredSelection.EMPTY : new StructuredSelection(anim));
+			}
+
+			getEditorSite().getSelectionProvider().setSelection(StructuredSelection.EMPTY);
+		}
+	}
+
+	public void deleteFrames(List<AnimationFrameModel_in_Editor> frames) {
+
+		boolean running = !_animCanvas.isStopped();
+
+		_animCanvas.stop();
+
+		var animation = _animCanvas.getModel();
+		animation.getFrames().removeAll(frames);
+		animation.buildTiming();
+
+		if (running) {
+			_animCanvas.play();
+		} else {
+			if (!animation.getFrames().isEmpty()) {
+				_animCanvas.showFrame(0);
+			}
+		}
+
+		_timelineCanvas.getSelectedFrames().clear();
+		_timelineCanvas.redraw();
+
+		StructuredSelection sel = new StructuredSelection(animation);
+		getEditorSite().getSelectionProvider().setSelection(StructuredSelection.EMPTY);
+		
+		if (_outliner != null) {
+			_outliner.setSelection(sel);
 		}
 	}
 }

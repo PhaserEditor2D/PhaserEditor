@@ -44,6 +44,10 @@ public class AnimationFrameModel_in_Editor extends AnimationFrameModel implement
 		super(jsonData);
 		_anim = anim;
 	}
+	
+	public AnimationModel_in_Editor getAnimation() {
+		return _anim;
+	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override

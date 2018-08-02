@@ -45,10 +45,14 @@ public class AnimationsModel_in_Editor extends AnimationsModel {
 		super(jsonData);
 		_editor = editor;
 	}
+	
+	public AnimationsEditor getEditor() {
+		return _editor;
+	}
 
 	@Override
 	protected AnimationModel createAnimation(JSONObject jsonData) {
-		return new AnimationModel_in_Editor(jsonData);
+		return new AnimationModel_in_Editor(this, jsonData);
 	}
 
 	public void build() {
