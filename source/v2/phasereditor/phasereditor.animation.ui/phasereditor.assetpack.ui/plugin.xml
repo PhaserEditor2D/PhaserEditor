@@ -47,5 +47,34 @@
             </with>
          </activeWhen>
       </handler>
+      <handler
+            class="phasereditor.animation.ui.handlers.PlayPauseAnimationHandler"
+            commandId="phasereditor.animation.ui.playPauseAnimation">
+         <activeWhen>
+            <with
+                  variable="activePartId">
+               <equals
+                     value="phasereditor.animation.ui.AnimationsEditor">
+               </equals>
+            </with>
+         </activeWhen>
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="phasereditor.ui.phaserCategory"
+            id="phasereditor.animation.ui.playPauseAnimation"
+            name="Play/Pause the current animation">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="phasereditor.animation.ui.playPauseAnimation"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="SPACE">
+      </key>
    </extension>
 </plugin>

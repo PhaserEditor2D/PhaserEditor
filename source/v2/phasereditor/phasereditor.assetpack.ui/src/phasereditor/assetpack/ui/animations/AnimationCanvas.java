@@ -100,11 +100,11 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 	public Consumer<Status> getPlaybackCallback() {
 		return _playbackCallback;
 	}
-	
+
 	public void setPlaybackCallback(Consumer<Status> playbackCallback) {
 		_playbackCallback = playbackCallback;
 	}
-	
+
 	public IndexTransition getTransition() {
 		return _transition;
 	}
@@ -150,20 +150,20 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 				}
 			};
 		}
-		
+
 		if (_transition != null) {
 			_transition.statusProperty().removeListener(_statusListener);
 		}
-		
+
 		_animModel.buildTimeline();
-		
+
 		_transition = new IndexTransition(Duration.millis(_animModel.getComputedTotalDuration()));
-		
+
 		_transition.setDelay(Duration.millis(_animModel.getDelay()));
 		_transition.setAutoReverse(_animModel.isYoyo());
 		_transition.setCycleCount(_animModel.getRepeat());
 		_transition.statusProperty().addListener(_statusListener);
-		
+
 		_transition.play();
 	}
 
@@ -302,6 +302,31 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 
 	public boolean isStopped() {
 		return _transition == null || _transition.getStatus() == Status.STOPPED;
+	}
+
+	public void playOrPause() {
+		if (_animModel == null) {
+			return;
+		}
+
+		if (_transition == null) {
+			play();
+			return;
+		}
+
+		switch (_transition.getStatus()) {
+		case RUNNING:
+			_transition.pause();
+			break;
+		case PAUSED:
+			_transition.play();
+			break;
+		case STOPPED:
+			play();
+			break;
+		default:
+			break;
+		}
 	}
 
 }

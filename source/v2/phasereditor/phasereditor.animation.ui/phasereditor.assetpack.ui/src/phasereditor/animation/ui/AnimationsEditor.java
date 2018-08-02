@@ -522,9 +522,13 @@ public class AnimationsEditor extends EditorPart {
 
 		StructuredSelection sel = new StructuredSelection(animation);
 		getEditorSite().getSelectionProvider().setSelection(StructuredSelection.EMPTY);
-		
+
 		if (_outliner != null) {
 			_outliner.setSelection(sel);
 		}
+	}
+
+	public void playOrPause() {
+		_animCanvas.playOrPause();
 	}
 }
