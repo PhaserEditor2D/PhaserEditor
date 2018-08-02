@@ -35,5 +35,17 @@
             </with>
          </activeWhen>
       </handler>
+      <handler
+            class="phasereditor.animation.ui.handlers.SelectAllFramesHandler"
+            commandId="org.eclipse.ui.edit.selectAll">
+         <activeWhen>
+            <with
+                  variable="activePartId">
+               <equals
+                     value="phasereditor.animation.ui.AnimationsEditor">
+               </equals>
+            </with>
+         </activeWhen>
+      </handler>
    </extension>
 </plugin>

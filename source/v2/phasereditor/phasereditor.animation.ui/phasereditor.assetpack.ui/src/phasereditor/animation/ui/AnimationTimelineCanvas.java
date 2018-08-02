@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -269,7 +270,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 				_editor.getAnimationCanvas().showFrame(0);
 			}
 		}
-		
+
 		_animation.buildTiming();
 
 		// We do this to update the duration based on the frameRate. The idea is that we
@@ -676,5 +677,18 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 	@Override
 	public void keyReleased(KeyEvent e) {
 		//
+	}
+
+	public void selectAll() {
+		if (_animation == null) {
+			return;
+		}
+
+		_selectedFrames = new LinkedHashSet<>(_animation.getFrames().stream()
+				.map(f -> (AnimationFrameModel_in_Editor) f).collect(Collectors.toList()));
+		
+		updateSelectionProvider();
+
+		redraw();
 	}
 }
