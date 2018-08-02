@@ -24,8 +24,6 @@ package phasereditor.animation.ui;
 import static java.lang.System.out;
 
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -59,7 +57,9 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.internal.Workbench;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
@@ -256,17 +256,13 @@ public class AnimationsEditor extends EditorPart {
 
 				if (currentAnim != null) {
 					manager.add(new Separator());
-					try {
-						manager.add(new Action("Delete", ImageDescriptor.createFromURL(
-								new URL("platform:/plugin/org.eclipse.ui/icons/full/etool16/delete_edit.png"))) {
-							@Override
-							public void run() {
-								deleteAnimations(List.of((AnimationModel_in_Editor) currentAnim));
-							}
-						});
-					} catch (MalformedURLException e) {
-						e.printStackTrace();
-					}
+					manager.add(new Action("Delete", Workbench.getInstance().getSharedImages()
+							.getImageDescriptor(ISharedImages.IMG_ETOOL_DELETE)) {
+						@Override
+						public void run() {
+							deleteAnimations(List.of((AnimationModel_in_Editor) currentAnim));
+						}
+					});
 				}
 			}
 		});
@@ -280,8 +276,8 @@ public class AnimationsEditor extends EditorPart {
 			btn.setEnabled(false);
 		}
 
-		_zoom_1_1_action.setEnabled(true);
-		_zoom_fitWindow_action.setEnabled(true);
+		_zoom_1_1_action.setEnabled(false);
+		_zoom_fitWindow_action.setEnabled(false);
 	}
 
 	private void animationStatusChanged(Status status) {

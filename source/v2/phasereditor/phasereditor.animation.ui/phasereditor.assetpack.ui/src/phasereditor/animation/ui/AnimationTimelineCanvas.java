@@ -280,7 +280,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 		if (_editor.getOutliner() != null) {
 			_editor.getOutliner().refresh();
 		}
-
+		
 		redraw();
 	}
 
