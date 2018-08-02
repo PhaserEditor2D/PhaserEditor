@@ -62,7 +62,7 @@ public class AnimationFrameModel_in_Editor_PGridModel extends BaseAnimationPGrid
 					public void setValue(String value, boolean notify) {
 						//
 					}
-					
+
 					@Override
 					public boolean isReadOnly() {
 						return true;
@@ -86,7 +86,7 @@ public class AnimationFrameModel_in_Editor_PGridModel extends BaseAnimationPGrid
 					public void setValue(String value, boolean notify) {
 						//
 					}
-					
+
 					@Override
 					public boolean isReadOnly() {
 						return true;

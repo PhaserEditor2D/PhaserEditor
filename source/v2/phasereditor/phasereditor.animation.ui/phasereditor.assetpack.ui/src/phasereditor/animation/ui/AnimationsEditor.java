@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -63,6 +64,8 @@ import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredContentOutlinePage;
 import phasereditor.ui.IEditorSharedImages;
+import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
+import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 
 /**
  * @author arian
@@ -80,6 +83,8 @@ public class AnimationsEditor extends EditorPart {
 	private Action _pauseAction;
 	private Action _stopAction;
 	private Action[] _playbackActions = { _playAction, _pauseAction, _stopAction };
+	private ImageCanvas_Zoom_1_1_Action _zoom_1_1_action;
+	private ImageCanvas_Zoom_FitWindow_Action _zoom_fitWindow_action;
 
 	public AnimationsEditor() {
 		// force the start the project builders
@@ -161,9 +166,16 @@ public class AnimationsEditor extends EditorPart {
 		_animCanvas.setStepCallback(_timelineCanvas::redraw);
 		_animCanvas.setPlaybackCallback(this::animationStatusChanged);
 
+		disableToolbar();
+	}
+
+	private void disableToolbar() {
 		for (var btn : _playbackActions) {
 			btn.setEnabled(false);
 		}
+
+		_zoom_1_1_action.setEnabled(true);
+		_zoom_fitWindow_action.setEnabled(true);
 	}
 
 	private void animationStatusChanged(Status status) {
@@ -256,9 +268,15 @@ public class AnimationsEditor extends EditorPart {
 
 		};
 
+		_zoom_1_1_action = new ImageCanvas_Zoom_1_1_Action(_animCanvas);
+		_zoom_fitWindow_action = new ImageCanvas_Zoom_FitWindow_Action(_animCanvas);
+
 		manager.add(_playAction);
 		manager.add(_pauseAction);
 		manager.add(_stopAction);
+		manager.add(new Separator());
+		manager.add(_zoom_1_1_action);
+		manager.add(_zoom_fitWindow_action);
 
 		_playbackActions = new Action[] { _playAction, _pauseAction, _stopAction };
 
@@ -384,6 +402,9 @@ public class AnimationsEditor extends EditorPart {
 		if (_timelineCanvas.getAnimation() != anim) {
 			_timelineCanvas.setAnimation(anim);
 		}
+
+		_zoom_1_1_action.setEnabled(true);
+		_zoom_fitWindow_action.setEnabled(true);
 	}
 
 	class Outliner extends FilteredContentOutlinePage {
