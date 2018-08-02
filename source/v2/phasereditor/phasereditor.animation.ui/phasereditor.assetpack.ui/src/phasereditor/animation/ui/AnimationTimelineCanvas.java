@@ -266,7 +266,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 		}
 
 		_animation.buildTimeline();
-		
+
 		if (_editor.getAnimationCanvas().getImage() == null) {
 			if (!frames.isEmpty()) {
 				_editor.getAnimationCanvas().showFrame(0);
@@ -662,7 +662,23 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// nothing
+		switch (e.keyCode) {
+		case SWT.ARROW_LEFT:
+			shiftSelection(-1);
+			break;
+		case SWT.ARROW_RIGHT:
+			// select next frame
+			shiftSelection(1);
+			break;
+		case SWT.HOME:
+			//TODO: scroll to the start
+			break;
+		case SWT.END:
+			//TODO: scroll to the end
+			break;
+		default:
+			break;
+		}
 	}
 
 	private int getFrameIndex(AnimationFrameModel_in_Editor frame) {
@@ -671,7 +687,37 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		//
+		// nothing
+	}
+
+	private void shiftSelection(int dir) {
+
+		if (_lastSelectedFrame == null) {
+			return;
+		}
+
+		List<AnimationFrameModel> frames = _animation.getFrames();
+
+		if (frames.isEmpty()) {
+			return;
+		}
+
+		if (_lastSelectedFrame != null) {
+			int i = getFrameIndex(_lastSelectedFrame);
+			int j = i + dir;
+			if (j >= 0 && j < frames.size()) {
+				_selectedFrames = new LinkedHashSet<>();
+				_lastSelectedFrame = (AnimationFrameModel_in_Editor) frames.get(j);
+				_selectedFrames.add(_lastSelectedFrame);
+
+				getEditor().getAnimationCanvas().showFrame(j);
+
+				updateSelectionProvider();
+
+				redraw();
+			}
+		}
+
 	}
 
 	public void selectAll() {
@@ -681,7 +727,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 
 		_selectedFrames = new LinkedHashSet<>(_animation.getFrames().stream()
 				.map(f -> (AnimationFrameModel_in_Editor) f).collect(Collectors.toList()));
-		
+
 		updateSelectionProvider();
 
 		redraw();
