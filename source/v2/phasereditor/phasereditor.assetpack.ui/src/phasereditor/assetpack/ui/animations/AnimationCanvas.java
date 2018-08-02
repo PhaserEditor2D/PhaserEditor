@@ -74,7 +74,7 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 		if (_transition != null) {
 			_transition.stop();
 		}
-		createAnimation();
+		startNewAnimation();
 	}
 
 	public void stop() {
@@ -134,11 +134,11 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 		resetZoom();
 
 		if (autoPlay) {
-			createAnimation();
+			startNewAnimation();
 		}
 	}
 
-	private void createAnimation() {
+	private void startNewAnimation() {
 		if (_statusListener == null) {
 			_statusListener = new ChangeListener<>() {
 
@@ -150,12 +150,20 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 				}
 			};
 		}
+		
+		if (_transition != null) {
+			_transition.statusProperty().removeListener(_statusListener);
+		}
+		
 		_animModel.buildTiming();
+		
 		_transition = new IndexTransition(Duration.millis(_animModel.getComputedTotalDuration()));
+		
 		_transition.setDelay(Duration.millis(_animModel.getDelay()));
 		_transition.setAutoReverse(_animModel.isYoyo());
 		_transition.setCycleCount(_animModel.getRepeat());
 		_transition.statusProperty().addListener(_statusListener);
+		
 		_transition.play();
 	}
 

@@ -552,7 +552,10 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 
 	@Override
 	public void mouseDoubleClick(MouseEvent e) {
-		// nothing
+		if (!_selectedFrames.isEmpty()) {
+			var frame = _selectedFrames.iterator().next();
+			_editor.getAnimationCanvas().showFrame(getFrameIndex(frame));
+		}
 	}
 
 	@Override
@@ -663,12 +666,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.keyCode == SWT.CR || e.keyCode == SWT.LF || e.character == 13) {
-			if (!_selectedFrames.isEmpty()) {
-				var frame = _selectedFrames.iterator().next();
-				_editor.getAnimationCanvas().showFrame(getFrameIndex(frame));
-			}
-		}
+		// nothing
 	}
 
 	private int getFrameIndex(AnimationFrameModel_in_Editor frame) {

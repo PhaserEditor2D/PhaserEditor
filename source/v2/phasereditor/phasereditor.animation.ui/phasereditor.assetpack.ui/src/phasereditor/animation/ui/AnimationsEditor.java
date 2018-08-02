@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.animation.ui;
 
+import static java.lang.System.out;
+
 import java.io.InputStream;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -166,6 +168,8 @@ public class AnimationsEditor extends EditorPart {
 
 	private void animationStatusChanged(Status status) {
 
+		out.println("status: " + status);
+
 		AnimationCanvas animCanvas = getAnimationCanvas();
 		var anim = animCanvas.getModel();
 		var frames = anim.getFrames();
@@ -180,7 +184,7 @@ public class AnimationsEditor extends EditorPart {
 				animCanvas.showFrame(0);
 			}
 			_playAction.setChecked(false);
-			_pauseAction.setEnabled(false);
+			_pauseAction.setChecked(false);
 			break;
 		case PAUSED:
 			_playAction.setChecked(false);
@@ -207,7 +211,9 @@ public class AnimationsEditor extends EditorPart {
 			public void run() {
 				AnimationCanvas canvas = getAnimationCanvas();
 				IndexTransition transition = canvas.getTransition();
-				if (transition != null) {
+				if (transition == null) {
+					canvas.play();
+				} else {
 					switch (transition.getStatus()) {
 					case PAUSED:
 						transition.play();
@@ -218,9 +224,6 @@ public class AnimationsEditor extends EditorPart {
 					default:
 						break;
 					}
-					transition.play();
-				} else {
-					canvas.play();
 				}
 
 				getTimelineCanvas().redraw();
