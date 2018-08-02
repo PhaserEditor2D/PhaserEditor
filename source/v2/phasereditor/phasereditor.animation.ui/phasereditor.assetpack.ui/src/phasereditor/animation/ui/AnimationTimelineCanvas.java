@@ -333,33 +333,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 				if (transition != null && transition.getStatus() != Status.STOPPED) {
 					var frac = transition.getFraction();
 
-					var x = (int) (_fullWidth * frac);
-
-					var hBar = getHorizontalBar();
-
-					int thumb = hBar.getThumb();
-					int sel = (int) ((_fullWidth - thumb) * frac);
-
-					if (sel < 0) {
-						sel = 0;
-					} else if (sel > _fullWidth - thumb) {
-						sel = _fullWidth - thumb;
-					}
-
-					hBar.setSelection(sel);
-
-					if (transition.getRate() > 0) {
-						_origin = -x + e.width / 2;
-					} else {
-						_origin = -x - e.width / 2;
-					}
-
-					int topleft = -_fullWidth + thumb;
-					if (_origin < topleft) {
-						_origin = topleft;
-					} else if (_origin > 0) {
-						_origin = 0;
-					}
+					scrollTo(frac, transition.getRate());
 				}
 			}
 		}
@@ -487,6 +461,39 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 			updateScroll();
 		}
 
+	}
+
+	private void scrollTo(double frac, double rate) {
+
+		var x = (int) (_fullWidth * frac);
+
+		var hBar = getHorizontalBar();
+
+		int thumb = hBar.getThumb();
+		int sel = (int) ((_fullWidth - thumb) * frac);
+
+		if (sel < 0) {
+			sel = 0;
+		} else if (sel > _fullWidth - thumb) {
+			sel = _fullWidth - thumb;
+		}
+
+		hBar.setSelection(sel);
+
+		var b = getClientArea();
+
+		if (rate > 0) {
+			_origin = -x + b.width / 2;
+		} else {
+			_origin = -x - b.width / 2;
+		}
+
+		int topleft = -_fullWidth + thumb;
+		if (_origin < topleft) {
+			_origin = topleft;
+		} else if (_origin > 0) {
+			_origin = 0;
+		}
 	}
 
 	private int getFrameX(AnimationFrameModel animFrame) {
@@ -671,10 +678,10 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 			shiftSelection(1);
 			break;
 		case SWT.HOME:
-			//TODO: scroll to the start
+			// TODO: scroll to the start
 			break;
 		case SWT.END:
-			//TODO: scroll to the end
+			// TODO: scroll to the end
 			break;
 		default:
 			break;
@@ -714,6 +721,9 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 
 				updateSelectionProvider();
 
+				scrollTo(_lastSelectedFrame.getComputedFraction(), 1);
+				updateScroll();
+				
 				redraw();
 			}
 		}
