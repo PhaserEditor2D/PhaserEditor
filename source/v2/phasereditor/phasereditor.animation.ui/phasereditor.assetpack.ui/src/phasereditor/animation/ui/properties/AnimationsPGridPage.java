@@ -22,6 +22,7 @@
 package phasereditor.animation.ui.properties;
 
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchPart;
 
 import phasereditor.animation.ui.AnimationsEditor;
@@ -42,6 +43,12 @@ public class AnimationsPGridPage extends PGridPage {
 
 	public AnimationsEditor getEditor() {
 		return _editor;
+	}
+
+	@Override
+	public void createControl(Composite parent) {
+		super.createControl(parent);
+		getGrid().setOnChanged(_editor::setDirty);
 	}
 
 	@Override

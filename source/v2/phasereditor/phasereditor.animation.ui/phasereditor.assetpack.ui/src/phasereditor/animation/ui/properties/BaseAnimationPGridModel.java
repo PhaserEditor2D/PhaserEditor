@@ -48,7 +48,7 @@ public class BaseAnimationPGridModel extends PGridModel {
 	public AnimationsEditor getEditor() {
 		return _propertyPage.getEditor();
 	}
-
+	
 	protected void updateAndRestartAnimation() {
 		AnimationsEditor editor = getEditor();
 

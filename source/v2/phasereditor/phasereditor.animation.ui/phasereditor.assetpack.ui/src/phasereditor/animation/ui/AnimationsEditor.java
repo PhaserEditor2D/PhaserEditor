@@ -23,9 +23,13 @@ package phasereditor.animation.ui;
 
 import static java.lang.System.out;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.action.Action;
@@ -63,6 +67,7 @@ import org.eclipse.ui.internal.Workbench;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import javafx.animation.Animation.Status;
@@ -96,6 +101,7 @@ public class AnimationsEditor extends EditorPart {
 	private Action[] _playbackActions = { _playAction, _pauseAction, _stopAction };
 	private ImageCanvas_Zoom_1_1_Action _zoom_1_1_action;
 	private ImageCanvas_Zoom_FitWindow_Action _zoom_fitWindow_action;
+	private boolean _dirty;
 
 	public AnimationsEditor() {
 		// force the start the project builders
@@ -214,6 +220,8 @@ public class AnimationsEditor extends EditorPart {
 			loadAnimation(anim);
 
 			getEditorSite().getSelectionProvider().setSelection(sel);
+
+			setDirty();
 		}
 	}
 
@@ -392,7 +400,20 @@ public class AnimationsEditor extends EditorPart {
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		// Do the Save operation
+		var file = getEditorInput().getFile();
+
+		try (ByteArrayInputStream source = new ByteArrayInputStream(_model.toJSON().toString(2).getBytes())) {
+
+			file.setContents(source, IResource.FORCE, null);
+
+			_dirty = false;
+
+			firePropertyChange(PROP_DIRTY);
+
+		} catch (JSONException | CoreException | IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
@@ -435,7 +456,12 @@ public class AnimationsEditor extends EditorPart {
 
 	@Override
 	public boolean isDirty() {
-		return false;
+		return _dirty;
+	}
+
+	public void setDirty() {
+		_dirty = true;
+		firePropertyChange(PROP_DIRTY);
 	}
 
 	@Override
@@ -584,6 +610,7 @@ public class AnimationsEditor extends EditorPart {
 
 	public void deleteAnimations(List<AnimationModel_in_Editor> animations) {
 		_model.getAnimations().removeAll(animations);
+
 		if (_outliner != null) {
 			_outliner.refresh();
 		}
@@ -598,6 +625,8 @@ public class AnimationsEditor extends EditorPart {
 
 			getEditorSite().getSelectionProvider().setSelection(StructuredSelection.EMPTY);
 		}
+
+		setDirty();
 	}
 
 	public void deleteFrames(List<AnimationFrameModel_in_Editor> frames) {
@@ -627,6 +656,8 @@ public class AnimationsEditor extends EditorPart {
 		if (_outliner != null) {
 			_outliner.setSelection(sel);
 		}
+
+		setDirty();
 	}
 
 	public void playOrPause() {

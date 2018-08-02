@@ -25,7 +25,7 @@ import org.json.JSONObject;
 
 import phasereditor.assetpack.core.IAssetFrameModel;
 
-public class AnimationFrameModel{
+public class AnimationFrameModel {
 	private IAssetFrameModel _frame;
 	private String _textureKey;
 	private Object _frameName;
@@ -42,7 +42,21 @@ public class AnimationFrameModel{
 		_textureKey = jsonData.getString("key");
 		// a frame based on an image only needs the key
 		_frameName = jsonData.opt("frame");
-		_duration = jsonData.optInt("duration");
+		_duration = jsonData.optInt("duration", 0);
+	}
+
+	public JSONObject toJSON() {
+		var jsonData = new JSONObject();
+
+		jsonData.put("key", _textureKey);
+
+		if (_frameName != null) {
+			jsonData.put("frame", _frameName);
+		}
+
+		jsonData.put("duration", _duration, 0);
+
+		return jsonData;
 	}
 
 	public IAssetFrameModel getFrameAsset() {
@@ -68,11 +82,11 @@ public class AnimationFrameModel{
 	public void setTextureKey(String textureKey) {
 		_textureKey = textureKey;
 	}
-	
+
 	public int getDuration() {
 		return _duration;
 	}
-	
+
 	public void setDuration(int duration) {
 		_duration = duration;
 	}
@@ -80,7 +94,7 @@ public class AnimationFrameModel{
 	public void setComputedFraction(double fraction) {
 		_computedFraction = fraction;
 	}
-	
+
 	public double getComputedFraction() {
 		return _computedFraction;
 	}
@@ -88,7 +102,7 @@ public class AnimationFrameModel{
 	public int getComputedDuration() {
 		return _computedDuration;
 	}
-	
+
 	public void setComputedDuration(int computedDuration) {
 		_computedDuration = computedDuration;
 	}

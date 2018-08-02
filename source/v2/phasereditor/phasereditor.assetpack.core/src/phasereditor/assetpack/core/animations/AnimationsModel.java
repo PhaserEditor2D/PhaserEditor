@@ -24,6 +24,7 @@ package phasereditor.assetpack.core.animations;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -56,5 +57,23 @@ public class AnimationsModel {
 
 	public List<AnimationModel> getAnimations() {
 		return _animations;
+	}
+
+	public JSONObject toJSON() {
+		var jsonData = new JSONObject();
+		var jsonAnimations = new JSONArray();
+		jsonData.put("anims", jsonAnimations);
+		
+		for(var anim : _animations) {
+			var jsonAnim = anim.toJSON();
+			jsonAnimations.put(jsonAnim);
+		}
+		
+		var jsonMeta = new JSONObject();
+		jsonMeta.put("app", "Phaser Editor v2");
+		jsonMeta.put("contentType", "Phaser v3 Animations");
+		jsonData.put("meta", jsonMeta);
+
+		return jsonData;
 	}
 }

@@ -24,6 +24,7 @@ package phasereditor.assetpack.core.animations;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class AnimationModel {
@@ -105,6 +106,28 @@ public class AnimationModel {
 		_skipMissedFrames = jsonData.optBoolean("skipMissedFrames", true);
 
 		buildTimeline();
+	}
+
+	public JSONObject toJSON() {
+		var jsonData = new JSONObject();
+
+		jsonData.put("key", _key);
+		jsonData.put("frameRate", _frameRate);
+		jsonData.put("repeat", _repeat, 0);
+		jsonData.put("repeatDelay", _repeatDelay, 0);
+		jsonData.put("yoyo", _yoyo, false);
+		jsonData.put("showOnStart", _showOnStart, false);
+		jsonData.put("hideOnComplete", _hideOnComplete, true);
+		jsonData.put("skipMissedFrames", _skipMissedFrames, true);
+
+		var jsonFrames = new JSONArray();
+		jsonData.put("frames", jsonFrames);
+		
+		for(var frame : _frames) {
+			jsonFrames.put(frame.toJSON());
+		}
+
+		return jsonData;
 	}
 
 	public void buildTimeline() {
