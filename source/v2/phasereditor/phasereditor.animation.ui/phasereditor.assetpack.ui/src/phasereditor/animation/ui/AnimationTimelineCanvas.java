@@ -281,6 +281,8 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 			_editor.getOutliner().refresh();
 		}
 		
+		_editor.setDirty();
+		
 		redraw();
 	}
 
