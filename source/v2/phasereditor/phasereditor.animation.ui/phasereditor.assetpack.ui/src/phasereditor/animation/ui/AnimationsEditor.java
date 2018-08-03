@@ -301,19 +301,22 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		out.println("status: " + status);
 
-		AnimationCanvas animCanvas = getAnimationCanvas();
-		var anim = animCanvas.getModel();
-		var frames = anim.getFrames();
-
 		switch (status) {
 		case RUNNING:
 			_playAction.setChecked(true);
 			_pauseAction.setChecked(false);
 			break;
 		case STOPPED:
-			if (!frames.isEmpty()) {
-				animCanvas.showFrame(0);
-			}
+			// TODO: do we really want to do this? it breaks the animation, it looks like
+			// the first frame is actually the last frame of the animation.
+			//
+			// AnimationCanvas animCanvas = getAnimationCanvas();
+			// var anim = animCanvas.getModel();
+			// var frames = anim.getFrames();
+			//
+			// if (!frames.isEmpty()) {
+			// animCanvas.showFrame(0);
+			// }
 			_playAction.setChecked(false);
 			_pauseAction.setChecked(false);
 			break;
@@ -612,7 +615,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 	public void build() {
 		_animCanvas.stop();
-		
+
 		_model.build();
 
 		if (_outliner != null) {
@@ -623,7 +626,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		if (model != null) {
 			_animCanvas.setModel(model, false);
 		}
-		_timelineCanvas.redraw();
+		_timelineCanvas.setAnimation(_timelineCanvas.getAnimation());
 	}
 
 	public void deleteAnimations(List<AnimationModel_in_Editor> animations) {
