@@ -5,7 +5,9 @@ import static phasereditor.ui.PhaserEditorUI.swtRun;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.ui.PlatformUI;
 
 import phasereditor.project.core.IProjectBuildParticipant;
@@ -21,6 +23,10 @@ public class AnimationsEditorProjectBuildParticipant implements IProjectBuildPar
 	}
 
 	private static void rebuildEditors() {
+		rebuildEditors(null);
+	}
+
+	private static void rebuildEditors(IResourceDelta delta) {
 		swtRun(new Runnable() {
 
 			@Override
@@ -30,7 +36,28 @@ public class AnimationsEditorProjectBuildParticipant implements IProjectBuildPar
 					if (ref.getId().equals(AnimationsEditor.ID)) {
 						var editor = (AnimationsEditor) ref.getEditor(false);
 						if (editor != null) {
-							editor.build();
+							if (delta == null) {
+								editor.build();
+							} else {
+								var file = editor.getEditorInput().getFile();
+								var doit = new boolean[] { true };
+								try {
+									delta.accept(d -> {
+										IResource resource = d.getResource();
+										if (file.equals(resource)) {
+											doit[0] = false;
+											return false;
+										}
+										return true;
+									});
+								} catch (CoreException e) {
+									e.printStackTrace();
+								}
+
+								if (doit[0]) {
+									editor.build();
+								}
+							}
 						}
 					}
 				}
@@ -45,7 +72,7 @@ public class AnimationsEditorProjectBuildParticipant implements IProjectBuildPar
 
 	@Override
 	public void build(IProject project, IResourceDelta delta, Map<String, Object> env) {
-		rebuildEditors();
+		rebuildEditors(delta);
 	}
 
 	@Override

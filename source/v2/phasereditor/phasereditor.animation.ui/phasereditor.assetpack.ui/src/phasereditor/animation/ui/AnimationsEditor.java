@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ListenerList;
@@ -61,6 +60,8 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IPersistableEditor;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.internal.Workbench;
@@ -87,7 +88,7 @@ import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
  * @author arian
  *
  */
-public class AnimationsEditor extends EditorPart {
+public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 	public static final String ID = "phasereditor.animation.ui.AnimationsEditor"; //$NON-NLS-1$
 	private AnimationsModel_in_Editor _model;
@@ -102,6 +103,7 @@ public class AnimationsEditor extends EditorPart {
 	private ImageCanvas_Zoom_1_1_Action _zoom_1_1_action;
 	private ImageCanvas_Zoom_FitWindow_Action _zoom_fitWindow_action;
 	private boolean _dirty;
+	private String _initialAnimtionKey;
 
 	public AnimationsEditor() {
 		// force the start the project builders
@@ -186,6 +188,13 @@ public class AnimationsEditor extends EditorPart {
 		disableToolbar();
 
 		createContextMenu();
+
+		if (_initialAnimtionKey != null) {
+			var anim = _model.getAnimations().stream().filter(a -> a.getKey().equals(_initialAnimtionKey)).findFirst();
+			if (anim.isPresent()) {
+				loadAnimation((AnimationModel_in_Editor) anim.get());
+			}
+		}
 	}
 
 	protected final void openNewAnimationDialog() {
@@ -404,7 +413,7 @@ public class AnimationsEditor extends EditorPart {
 
 		try (ByteArrayInputStream source = new ByteArrayInputStream(_model.toJSON().toString(2).getBytes())) {
 
-			file.setContents(source, IResource.FORCE, null);
+			file.setContents(source, true, false, monitor);
 
 			_dirty = false;
 
@@ -602,10 +611,19 @@ public class AnimationsEditor extends EditorPart {
 	}
 
 	public void build() {
+		_animCanvas.stop();
+		
 		_model.build();
+
 		if (_outliner != null) {
 			_outliner.refresh();
 		}
+
+		AnimationModel model = _animCanvas.getModel();
+		if (model != null) {
+			_animCanvas.setModel(model, false);
+		}
+		_timelineCanvas.redraw();
 	}
 
 	public void deleteAnimations(List<AnimationModel_in_Editor> animations) {
@@ -662,5 +680,18 @@ public class AnimationsEditor extends EditorPart {
 
 	public void playOrPause() {
 		_animCanvas.playOrPause();
+	}
+
+	@Override
+	public void saveState(IMemento memento) {
+		var anim = getAnimationCanvas().getModel();
+		if (anim != null) {
+			memento.putString("animation", anim.getKey());
+		}
+	}
+
+	@Override
+	public void restoreState(IMemento memento) {
+		_initialAnimtionKey = memento.getString("animation");
 	}
 }

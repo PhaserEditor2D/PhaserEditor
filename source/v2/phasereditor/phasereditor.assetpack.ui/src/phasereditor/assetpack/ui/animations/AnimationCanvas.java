@@ -55,6 +55,7 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 	protected Runnable _stepCallback;
 	protected Consumer<Status> _playbackCallback;
 	private ChangeListener<? super Status> _statusListener;
+	private int _currentFrame;
 
 	public AnimationCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -184,9 +185,15 @@ public class AnimationCanvas extends ImageCanvas implements ControlListener {
 			_frameData = textureFrame.getFrameData();
 		}
 
+		_currentFrame = index;
+		
 		if (!isDisposed()) {
 			redraw();
 		}
+	}
+	
+	public int getCurrentFrame() {
+		return _currentFrame;
 	}
 
 	public class IndexTransition extends Transition {

@@ -159,6 +159,8 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 	protected IProject[] build(int kind, Map<String, String> args, IProgressMonitor monitor) throws CoreException {
 		IProject project = getProject();
 
+		IResourceDelta delta = getDelta(project);
+		
 		boolean fullBuild = kind == FULL_BUILD;
 		if (fullBuild) {
 			out.println("PhaserProjectBuilder.fullBuild (start) [" + project.getName() + "]");
@@ -181,7 +183,7 @@ public class PhaserProjectBuilder extends IncrementalProjectBuilder {
 				if (fullBuild) {
 					participant.fullBuild(project, env);
 				} else {
-					participant.build(project, getDelta(project), env);
+					participant.build(project, delta, env);
 				}
 				monitor.worked(1);
 			} catch (Exception e) {
