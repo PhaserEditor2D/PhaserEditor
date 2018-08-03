@@ -142,7 +142,7 @@ public class AnimationsFileWizardPage extends WizardNewFileCreationPage {
 	protected InputStream getInitialContents() {
 		AnimationsModel model = new AnimationsModel();
 		
-		AnimationModel anim = new AnimationModel();
+		AnimationModel anim = new AnimationModel(model);
 		anim.setKey("walk");
 		anim.setFrameRate(4);
 		model.getAnimations().add(anim);

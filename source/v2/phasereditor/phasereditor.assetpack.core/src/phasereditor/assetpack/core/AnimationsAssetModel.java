@@ -157,7 +157,7 @@ public class AnimationsAssetModel extends AssetModel {
 
 		@Override
 		protected AnimationModel createAnimation(JSONObject jsonData) {
-			return new AnimationModel_in_AssetPack(jsonData);
+			return new AnimationModel_in_AssetPack(this, jsonData);
 		}
 
 		public List<AnimationModel_in_AssetPack> getAnimations_in_AssetPack() {
@@ -206,8 +206,8 @@ public class AnimationsAssetModel extends AssetModel {
 
 	public class AnimationModel_in_AssetPack extends AnimationModel implements IAssetElementModel {
 
-		public AnimationModel_in_AssetPack(JSONObject jsonData) {
-			super(jsonData);
+		public AnimationModel_in_AssetPack(AnimationsModel_in_AssetPack animations, JSONObject jsonData) {
+			super(animations, jsonData);
 		}
 
 		@Override

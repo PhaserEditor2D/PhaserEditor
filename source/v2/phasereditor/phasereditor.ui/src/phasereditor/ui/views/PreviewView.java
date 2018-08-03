@@ -23,9 +23,8 @@ package phasereditor.ui.views;
 
 import static java.lang.System.currentTimeMillis;
 
+import org.eclipse.core.runtime.Adapters;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.core.runtime.IAdapterManager;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.help.HelpSystem;
 import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
@@ -238,9 +237,7 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 			setPartName("Preview");
 			updateTitleImage = true;
 		} else {
-			IAdapterManager adapterManager = Platform.getAdapterManager();
-
-			IPreviewFactory factory = adapterManager.getAdapter(elem, IPreviewFactory.class);
+			IPreviewFactory factory = Adapters.adapt(elem, IPreviewFactory.class);
 			if (factory != null) {
 				// try to reuse some of the already created controls
 				for (Control c : _previewContainer.getChildren()) {

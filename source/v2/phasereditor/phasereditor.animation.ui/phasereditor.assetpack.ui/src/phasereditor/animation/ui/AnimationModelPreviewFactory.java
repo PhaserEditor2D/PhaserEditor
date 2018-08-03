@@ -21,53 +21,61 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.animation.ui;
 
-import org.json.JSONObject;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IPersistableElement;
 
-import phasereditor.animation.ui.properties.AnimationModel_in_Editor_PGridModel;
-import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
-import phasereditor.ui.properties.PGridModel;
+import phasereditor.assetpack.ui.preview.AnimationPreviewComp;
 import phasereditor.ui.views.IPreviewFactory;
 
 /**
  * @author arian
  *
  */
-public class AnimationModel_in_Editor extends AnimationModel {
+public class AnimationModelPreviewFactory implements IPreviewFactory {
 
-
-	public AnimationModel_in_Editor(AnimationsModel_in_Editor animations) {
-		super(animations);
-	}
-
-	public AnimationModel_in_Editor(AnimationsModel_in_Editor animations, JSONObject jsonData) {
-		super(animations, jsonData);
+	@Override
+	public boolean canReusePreviewControl(Control c, Object elem) {
+		return c instanceof AnimationPreviewComp && elem instanceof AnimationModel;
 	}
 
 	@Override
-	protected AnimationFrameModel createAnimationFrame(JSONObject jsonData) {
-		return new AnimationFrameModel_in_Editor(this, jsonData);
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	public Object getAdapter(Class adapter) {
-		
-		if (adapter == PGridModel.class) {
-			return new AnimationModel_in_Editor_PGridModel(this);
-		} else if (adapter == IPreviewFactory.class) {
-			return new AnimationModelPreviewFactory();
-		}
-		
-		return super.getAdapter(adapter);
-	}
-
-	public AnimationsEditor getEditor() {
-		return getAnimations().getEditor();
+	public Control createControl(Composite previewContainer) {
+		return new AnimationPreviewComp(previewContainer, SWT.NONE);
 	}
 
 	@Override
-	public AnimationsModel_in_Editor getAnimations() {
-		return (AnimationsModel_in_Editor) super.getAnimations();
+	public void updateControl(Control preview, Object element) {
+		((AnimationPreviewComp) preview).setModel((AnimationModel) element);
 	}
+
+	@Override
+	public void updateToolBar(IToolBarManager toolbar, Control preview) {
+		((AnimationPreviewComp) preview).createToolBar(toolbar);
+	}
+
+	@Override
+	public String getTitle(Object element) {
+		return ((AnimationModel) element).getKey();
+	}
+
+	@Override
+	public IPersistableElement getPersistable(Object elem) {
+		return (AnimationModel_in_Editor) elem;
+	}
+
+	@Override
+	public void savePreviewControl(Control previewControl, IMemento memento) {
+		//
+	}
+
+	@Override
+	public void initPreviewControl(Control previewControl, IMemento initialMemento) {
+		//
+	}
+
 }

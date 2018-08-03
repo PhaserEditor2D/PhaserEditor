@@ -68,6 +68,7 @@ import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
 import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.core.animations.AnimationsModel;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.atlas.core.AtlasData;
 import phasereditor.canvas.core.CanvasFile;
@@ -126,12 +127,14 @@ public class AssetExplorer extends ViewPart {
 		Object elem = ((IStructuredSelection) _viewer.getSelection()).getFirstElement();
 		IFile file = null;
 
-		if (elem instanceof CanvasFile) {
+		if (elem instanceof IFile) {
+			file = (IFile) elem;
+		} else if (elem instanceof CanvasFile) {
 			file = ((CanvasFile) elem).getFile();
 		} else if (elem instanceof AtlasData) {
 			file = ((AtlasData) elem).getFile();
-		} else if (elem instanceof IFile) {
-			file = (IFile) elem;
+		} else if (elem instanceof AnimationsModel) {
+			file = ((AnimationsModel) elem).getFile();
 		}
 
 		if (file != null) {

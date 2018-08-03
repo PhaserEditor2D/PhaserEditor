@@ -26,7 +26,6 @@ import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
@@ -44,9 +43,11 @@ import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.preference.JFacePreferences;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -54,6 +55,10 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSourceAdapter;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
@@ -72,7 +77,6 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import javafx.animation.Animation.Status;
 import phasereditor.animation.ui.properties.AnimationsPGridPage;
@@ -485,9 +489,8 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		setPartName(file.getName());
 
-		try (InputStream contents = file.getContents()) {
-			JSONObject jsonData = JSONObject.read(contents);
-			_model = new AnimationsModel_in_Editor(this, jsonData);
+		try {
+			_model = new AnimationsModel_in_Editor(this);
 			_model.build();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -620,7 +623,31 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 			viewer.setContentProvider(new OutlinerContentProvider());
 			viewer.setInput(getModel());
 
+			init_DnD();
+
 			// viewer.getControl().setMenu(getMenuManager().createContextMenu(viewer.getControl()));
+		}
+
+		private void init_DnD() {
+			int operations = DND.DROP_DEFAULT | DND.DROP_MOVE;
+			Transfer[] transfers = new Transfer[] { LocalSelectionTransfer.getTransfer() };
+			getTreeViewer().addDragSupport(operations, transfers, new DragSourceAdapter() {
+
+				private Object[] _data;
+
+				@Override
+				public void dragStart(DragSourceEvent event) {
+					LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
+					_data = ((IStructuredSelection) getViewer().getSelection()).toArray();
+					transfer.setSelection(new StructuredSelection(_data));
+				}
+
+				@Override
+				public void dragSetData(DragSourceEvent event) {
+					event.data = _data;
+				}
+			});
+
 		}
 
 		@Override

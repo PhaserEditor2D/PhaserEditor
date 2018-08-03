@@ -24,10 +24,13 @@ package phasereditor.assetpack.core.animations;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IPersistableElement;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class AnimationModel {
+public class AnimationModel implements IAdaptable, IPersistableElement {
 
 	private String _key;
 	private List<AnimationFrameModel> _frames;
@@ -41,9 +44,10 @@ public class AnimationModel {
 	private boolean _hideOnComplete;
 	private boolean _skipMissedFrames;
 	private int _totalDuration;
+	private AnimationsModel _animations;
 
-	
-	public AnimationModel() {
+	public AnimationModel(AnimationsModel animations) {
+		_animations = animations;
 		_frames = new ArrayList<>();
 		_frameRate = 24;
 		_duration = 0;
@@ -54,9 +58,9 @@ public class AnimationModel {
 		_hideOnComplete = false;
 		_skipMissedFrames = true;
 	}
-	
-	public AnimationModel(JSONObject jsonData) {
-		this();
+
+	public AnimationModel(AnimationsModel animations, JSONObject jsonData) {
+		this(animations);
 
 		_key = jsonData.getString("key");
 
@@ -123,12 +127,16 @@ public class AnimationModel {
 
 		var jsonFrames = new JSONArray();
 		jsonData.put("frames", jsonFrames);
-		
-		for(var frame : _frames) {
+
+		for (var frame : _frames) {
 			jsonFrames.put(frame.toJSON());
 		}
 
 		return jsonData;
+	}
+
+	public AnimationsModel getAnimations() {
+		return _animations;
 	}
 
 	public void buildTimeline() {
@@ -258,5 +266,25 @@ public class AnimationModel {
 
 	public void setSkipMissedFrames(boolean skipMissedFrames) {
 		_skipMissedFrames = skipMissedFrames;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getAdapter(Class<T> adapter) {
+		if (adapter == IPersistableElement.class) {
+			return (T) this;
+		}
+		return null;
+	}
+
+	@Override
+	public void saveState(IMemento memento) {
+		memento.putString("file", getAnimations().getFile().getFullPath().toPortableString());
+		memento.putString("key", getKey());
+	}
+
+	@Override
+	public String getFactoryId() {
+		return "phasereditor.animation.ui.animationFactory";
 	}
 }

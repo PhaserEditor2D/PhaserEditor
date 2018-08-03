@@ -41,8 +41,8 @@ public class AnimationsModel_in_Editor extends AnimationsModel {
 
 	private AnimationsEditor _editor;
 
-	public AnimationsModel_in_Editor(AnimationsEditor editor, JSONObject jsonData) {
-		super(jsonData);
+	public AnimationsModel_in_Editor(AnimationsEditor editor) throws Exception {
+		super(editor.getEditorInput().getFile());
 		_editor = editor;
 	}
 	

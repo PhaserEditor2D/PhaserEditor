@@ -125,4 +125,11 @@
             label="sprite">
       </keyword>
    </extension>
+   <extension
+         point="org.eclipse.ui.elementFactories">
+      <factory
+            class="phasereditor.animation.ui.AnimationModelElementFactory"
+            id="phasereditor.animation.ui.animationFactory">
+      </factory>
+   </extension>
 </plugin>

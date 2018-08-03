@@ -40,7 +40,7 @@ public class AnimationsModel {
 	public AnimationsModel() {
 		_animations = new ArrayList<>();
 	}
-	
+
 	public AnimationsModel(JSONObject jsonData) {
 		this();
 
@@ -51,23 +51,22 @@ public class AnimationsModel {
 			_animations.add(anim);
 		}
 	}
-	
+
 	public AnimationsModel(IFile file) throws Exception {
 		this(JSONObject.read(file));
 		_file = file;
 	}
-	
+
 	public IFile getFile() {
 		return _file;
 	}
-	
+
 	public void setFile(IFile file) {
 		_file = file;
 	}
 
-	@SuppressWarnings("static-method")
 	protected AnimationModel createAnimation(JSONObject jsonData) {
-		return new AnimationModel(jsonData);
+		return new AnimationModel(this, jsonData);
 	}
 
 	public List<AnimationModel> getAnimations() {
@@ -78,17 +77,26 @@ public class AnimationsModel {
 		var jsonData = new JSONObject();
 		var jsonAnimations = new JSONArray();
 		jsonData.put("anims", jsonAnimations);
-		
-		for(var anim : _animations) {
+
+		for (var anim : _animations) {
 			var jsonAnim = anim.toJSON();
 			jsonAnimations.put(jsonAnim);
 		}
-		
+
 		var jsonMeta = new JSONObject();
 		jsonMeta.put("app", "Phaser Editor v2");
 		jsonMeta.put("contentType", "Phaser v3 Animations");
 		jsonData.put("meta", jsonMeta);
 
 		return jsonData;
+	}
+
+	public AnimationModel getAnimation(String key) {
+		for (var anim : _animations) {
+			if (anim.getKey().equals(key)) {
+				return anim;
+			}
+		}
+		return null;
 	}
 }
