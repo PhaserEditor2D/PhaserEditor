@@ -333,6 +333,25 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		_stopAction.setEnabled(_playAction.isChecked() || _pauseAction.isChecked());
 	}
 
+	public void gridPropertyChanged() {
+
+		setDirty();
+
+		var running = !_animCanvas.isStopped();
+
+		_animCanvas.stop();
+
+		var anim = _timelineCanvas.getAnimation();
+
+		anim.buildTimeline();
+
+		_timelineCanvas.redraw();
+
+		if (running) {
+			_animCanvas.play();
+		}
+	}
+
 	private ToolBar createToolbar(Composite parent) {
 		ToolBarManager manager = new ToolBarManager(SWT.BORDER);
 
@@ -696,5 +715,11 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	@Override
 	public void restoreState(IMemento memento) {
 		_initialAnimtionKey = memento.getString("animation");
+	}
+
+	public void refreshOutline() {
+		if (_outliner != null) {
+			_outliner.refresh();
+		}
 	}
 }

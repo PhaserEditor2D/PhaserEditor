@@ -50,6 +50,7 @@ public class AnimationModel_in_Editor_PGridModel extends BaseAnimationPGridModel
 					@Override
 					public void setValue(String value, boolean notify) {
 						anim.setKey(value);
+						getEditor().refreshOutline();
 					}
 
 					@Override

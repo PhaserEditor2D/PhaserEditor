@@ -101,7 +101,6 @@ public class AnimationFrameModel_in_Editor_PGridModel extends BaseAnimationPGrid
 						getFrame().setDuration(value.intValue());
 						getAnimation().buildTimeline();
 						refreshGrid();
-						updateAndRestartAnimation();
 					}
 
 					@Override

@@ -48,7 +48,7 @@ public class AnimationsPGridPage extends PGridPage {
 	@Override
 	public void createControl(Composite parent) {
 		super.createControl(parent);
-		getGrid().setOnChanged(_editor::setDirty);
+		getGrid().setOnChanged(_editor::gridPropertyChanged);
 	}
 
 	@Override

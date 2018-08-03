@@ -22,7 +22,6 @@
 package phasereditor.animation.ui.properties;
 
 import phasereditor.animation.ui.AnimationsEditor;
-import phasereditor.assetpack.ui.animations.AnimationCanvas;
 import phasereditor.ui.properties.PGridModel;
 
 /**
@@ -47,24 +46,5 @@ public class BaseAnimationPGridModel extends PGridModel {
 
 	public AnimationsEditor getEditor() {
 		return _propertyPage.getEditor();
-	}
-	
-	protected void updateAndRestartAnimation() {
-		AnimationsEditor editor = getEditor();
-
-		AnimationCanvas animCanvas = editor.getAnimationCanvas();
-		var running = !animCanvas.isStopped();
-
-		animCanvas.stop();
-
-		var anim = editor.getTimelineCanvas().getAnimation();
-
-		anim.buildTimeline();
-
-		editor.getTimelineCanvas().redraw();
-
-		if (running) {
-			animCanvas.play();
-		}
 	}
 }
