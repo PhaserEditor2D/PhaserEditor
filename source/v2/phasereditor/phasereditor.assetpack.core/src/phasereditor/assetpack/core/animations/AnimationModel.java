@@ -22,13 +22,18 @@
 package phasereditor.assetpack.core.animations;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPersistableElement;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.IAssetFrameModel;
 
 public class AnimationModel implements IAdaptable, IPersistableElement {
 
@@ -281,10 +286,44 @@ public class AnimationModel implements IAdaptable, IPersistableElement {
 	public void saveState(IMemento memento) {
 		memento.putString("file", getAnimations().getFile().getFullPath().toPortableString());
 		memento.putString("key", getKey());
+
+		// save all the asset packs used, so we can load them at the restore phase
 	}
 
 	@Override
 	public String getFactoryId() {
-		return "phasereditor.animation.ui.animationFactory";
+		return AnimationModelElementFactory.ID;
+	}
+
+	public void build() {
+		Map<String, IAssetFrameModel> cache = new HashMap<>();
+
+		for (var animFrame : _frames) {
+
+			var textureKey = animFrame.getTextureKey();
+			var frameName = animFrame.getFrameName();
+
+			var cacheKey = frameName + "@" + textureKey;
+			var frame = cache.get(cacheKey);
+
+			if (frame != null) {
+				animFrame.setFrameAsset(frame);
+				continue;
+			}
+
+			var packs = AssetPackCore.getAssetPackModels(getAnimations().getFile().getProject());
+			for (var pack : packs) {
+				frame = pack.findFrame(textureKey, frameName);
+			}
+
+			if (frame != null) {
+				cache.put(cacheKey, frame);
+			}
+
+			animFrame.setFrameAsset(frame);
+
+		}
+
+		buildTimeline();
 	}
 }

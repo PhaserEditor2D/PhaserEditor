@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Control;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.animations.AnimationCanvas;
 import phasereditor.assetpack.ui.animations.AnimationFrameProvider;
+import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FrameGridCanvas;
 import phasereditor.ui.FrameGridCanvas.IFrameProvider;
@@ -67,19 +68,35 @@ public class AnimationPreviewComp extends Composite {
 	}
 
 	private void afterCreateWidgets() {
+
+		// force the start the project builders
+		ProjectCore.getBuildParticipants();
+
 		moveTop(_gridCanvas);
 	}
 
 	public void setModel(AnimationModel animModel) {
 		_animModel = animModel;
 
-		IFrameProvider provider = animModel == null ? IFrameProvider.NULL : new AnimationFrameProvider(animModel);
-
-		_gridCanvas.loadFrameProvider(provider);
-
 		if (getTopCanvas() == _animCanvas) {
 			_animCanvas.setModel(animModel);
 		}
+
+		if (animModel == null) {
+			_gridCanvas.loadFrameProvider(IFrameProvider.NULL);
+			return;
+		}
+
+		for (var anim : _animModel.getFrames()) {
+			var asset = anim.getFrameAsset();
+			if (asset == null) {
+				// just do not show this model, it has not resolved frames.
+				_gridCanvas.loadFrameProvider(IFrameProvider.NULL);
+				return;
+			}
+		}
+
+		_gridCanvas.loadFrameProvider(new AnimationFrameProvider(animModel));
 	}
 
 	private void updateActionsState() {

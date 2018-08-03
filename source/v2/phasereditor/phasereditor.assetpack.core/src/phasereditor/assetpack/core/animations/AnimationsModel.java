@@ -99,4 +99,10 @@ public class AnimationsModel {
 		}
 		return null;
 	}
+	
+	public void build() {
+		for (var anim : getAnimations()) {
+			anim.build();
+		}
+	}
 }

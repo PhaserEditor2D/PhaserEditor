@@ -21,15 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.animation.ui;
 
-import static java.lang.System.out;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.json.JSONObject;
 
-import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.core.animations.AnimationsModel;
 
@@ -53,43 +46,5 @@ public class AnimationsModel_in_Editor extends AnimationsModel {
 	@Override
 	protected AnimationModel createAnimation(JSONObject jsonData) {
 		return new AnimationModel_in_Editor(this, jsonData);
-	}
-
-	public void build() {
-		for (var anim : getAnimations()) {
-			Map<String, IAssetFrameModel> cache = new HashMap<>();
-
-			for (var animFrame : anim.getFrames()) {
-
-				var textureKey = animFrame.getTextureKey();
-				var frameName = animFrame.getFrameName();
-
-				var cacheKey = frameName + "@" + textureKey;
-				var frame = cache.get(cacheKey);
-
-				if (frame != null) {
-					animFrame.setFrameAsset(frame);
-					continue;
-				}
-
-				var packs = AssetPackCore.getAssetPackModels(_editor.getEditorInput().getFile().getProject());
-				for (var pack : packs) {
-					frame = pack.findFrame(textureKey, frameName);
-				}
-
-				if (frame == null) {
-					// problems.add(errorStatus(
-					// "Cannot find the frame '" + frameName + "' in the texture '" + textureKey +
-					// "'."));
-					out.println("AssetPackEditor: Cannot find the frame '" + frameName + "' in the texture '"
-							+ textureKey + "'.");
-				} else {
-					cache.put(cacheKey, frame);
-				}
-
-				animFrame.setFrameAsset(frame);
-
-			}
-		}
 	}
 }

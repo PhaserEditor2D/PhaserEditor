@@ -1,4 +1,4 @@
-package phasereditor.animation.ui;
+package phasereditor.assetpack.core.animations;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -11,7 +11,7 @@ import phasereditor.assetpack.core.animations.AnimationsModel;
 
 public class AnimationModelElementFactory implements IElementFactory {
 
-	public static final String ID = "phasereditor.animation.ui.animationFactory";
+	public static final String ID = "phasereditor.assetpack.core.animationFactory";
 	
 	@Override
 	public IAdaptable createElement(IMemento memento) {

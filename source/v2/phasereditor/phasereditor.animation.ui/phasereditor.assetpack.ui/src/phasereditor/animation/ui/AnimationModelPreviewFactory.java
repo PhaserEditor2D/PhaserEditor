@@ -65,7 +65,7 @@ public class AnimationModelPreviewFactory implements IPreviewFactory {
 
 	@Override
 	public IPersistableElement getPersistable(Object elem) {
-		return (AnimationModel_in_Editor) elem;
+		return (AnimationModel) elem;
 	}
 
 	@Override

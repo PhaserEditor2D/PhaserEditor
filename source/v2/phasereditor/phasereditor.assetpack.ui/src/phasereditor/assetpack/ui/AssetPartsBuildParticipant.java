@@ -3,6 +3,7 @@ package phasereditor.assetpack.ui;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.util.Map;
+import java.util.function.Consumer;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -22,6 +23,7 @@ import phasereditor.assetpack.core.AssetPackBuildParticipant;
 import phasereditor.assetpack.core.AssetPackCore.PackDelta;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.editors.AssetPackEditor;
 import phasereditor.project.core.IProjectBuildParticipant;
 import phasereditor.ui.views.PreviewView;
@@ -29,30 +31,55 @@ import phasereditor.ui.views.PreviewView;
 public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 
 	public AssetPartsBuildParticipant() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void startupOnInitialize(IProject project, Map<String, Object> env) {
-		// nothing
+		refresh_at_startup();
 	}
 
 	@Override
 	public void clean(IProject project, Map<String, Object> env) {
-		refreshParts();
+		refresh_because_a_change();
 	}
 
 	@Override
 	public void fullBuild(IProject project, Map<String, Object> env) {
-		refreshParts();
-	}
-	
-	@Override
-	public void projectDeleted(IProject project, Map<String, Object> env) {
-		refreshParts();
+		refresh_because_a_change();
 	}
 
-	private static void refreshParts() {
+	@Override
+	public void projectDeleted(IProject project, Map<String, Object> env) {
+		refresh_because_a_change();
+	}
+
+	private static void refresh_at_startup() {
+		refresh(view -> {
+			var elem = view.getPreviewElement();
+			if (elem instanceof AnimationModel) {
+				refreshAnimationPreview(view, (AnimationModel) elem);
+			}
+		});
+	}
+
+	private static void refresh_because_a_change() {
+		refresh(view -> {
+			var elem = view.getPreviewElement();
+			if (elem instanceof IAssetKey) {
+				view.preview(((IAssetKey) elem).getSharedVersion());
+			} else if (elem instanceof IFile) {
+				if (!((IFile) elem).exists()) {
+					elem = null;
+				}
+				view.preview(elem);
+			} else if (elem instanceof AnimationModel) {
+				refreshAnimationPreview(view, (AnimationModel) elem);
+			}
+		});
+
+	}
+
+	private static void refresh(Consumer<PreviewView> consumer) {
 		swtRun(new Runnable() {
 
 			@Override
@@ -75,26 +102,17 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 						if (view == null) {
 							continue;
 						}
-						
-						Object elem = view.getPreviewElement();
 
-						if (elem != null) {
-							if (elem instanceof IAssetKey) {
-								view.preview(((IAssetKey) elem).getSharedVersion());
-							} else if (elem instanceof IFile) {
-								if (!((IFile) elem).exists()) {
-									elem = null;
-								}
-								view.preview(elem);
-							}
+						if (view.getPreviewElement() != null) {
+							consumer.accept(view);
 						}
+
 					}
 				}
 
 			}
 
 		});
-
 	}
 
 	@Override
@@ -115,7 +133,7 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 				buildPreviewViews(delta, refs);
 
 				PackDelta packDelta = AssetPackBuildParticipant.getData(env);
-				
+
 				buildAssetPackEditors(delta, packDelta, page);
 			}
 
@@ -230,6 +248,11 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 		if (shared.getAsset().touched(resourceDelta)) {
 			view.preview(elem);
 		}
+	}
+
+	static void refreshAnimationPreview(PreviewView view, AnimationModel anim) {
+		anim.getAnimations().build();
+		view.preview(anim);
 	}
 
 }

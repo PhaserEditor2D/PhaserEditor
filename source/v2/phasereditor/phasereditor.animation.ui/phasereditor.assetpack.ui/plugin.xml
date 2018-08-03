@@ -126,10 +126,13 @@
       </keyword>
    </extension>
    <extension
-         point="org.eclipse.ui.elementFactories">
+         point="org.eclipse.core.runtime.adapters">
       <factory
-            class="phasereditor.animation.ui.AnimationModelElementFactory"
-            id="phasereditor.animation.ui.animationFactory">
+            adaptableType="phasereditor.assetpack.core.animations.AnimationModel"
+            class="phasereditor.animation.ui.AnimationModelAdapterFactory">
+         <adapter
+               type="phasereditor.ui.views.IPreviewFactory">
+         </adapter>
       </factory>
    </extension>
 </plugin>

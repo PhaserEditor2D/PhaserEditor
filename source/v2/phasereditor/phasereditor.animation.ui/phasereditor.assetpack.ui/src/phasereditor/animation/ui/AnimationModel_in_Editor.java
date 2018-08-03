@@ -27,7 +27,6 @@ import phasereditor.animation.ui.properties.AnimationModel_in_Editor_PGridModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.ui.properties.PGridModel;
-import phasereditor.ui.views.IPreviewFactory;
 
 /**
  * @author arian
@@ -55,8 +54,6 @@ public class AnimationModel_in_Editor extends AnimationModel {
 		
 		if (adapter == PGridModel.class) {
 			return new AnimationModel_in_Editor_PGridModel(this);
-		} else if (adapter == IPreviewFactory.class) {
-			return new AnimationModelPreviewFactory();
 		}
 		
 		return super.getAdapter(adapter);

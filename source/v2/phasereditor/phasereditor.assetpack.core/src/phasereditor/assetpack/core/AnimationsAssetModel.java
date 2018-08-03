@@ -36,6 +36,7 @@ import org.json.JSONTokener;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.core.animations.AnimationsModel;
+import phasereditor.ui.views.IPreviewFactory;
 
 /**
  * @author arian
@@ -201,6 +202,7 @@ public class AnimationsAssetModel extends AssetModel {
 
 				}
 			}
+
 		}
 	}
 
@@ -223,6 +225,15 @@ public class AnimationsAssetModel extends AssetModel {
 		@Override
 		public AssetModel getAsset() {
 			return AnimationsAssetModel.this;
+		}
+
+		@Override
+		public <T> T getAdapter(Class<T> adapter) {
+			if (adapter == IPreviewFactory.class) {
+				// do not use the default implementation
+				return null;
+			}
+			return super.getAdapter(adapter);
 		}
 	}
 
