@@ -189,11 +189,21 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		createContextMenu();
 
+		AnimationModel_in_Editor anim = null;
+
+		if (!_model.getAnimations().isEmpty()) {
+			anim = (AnimationModel_in_Editor) _model.getAnimations().get(0);
+		}
+
 		if (_initialAnimtionKey != null) {
-			var anim = _model.getAnimations().stream().filter(a -> a.getKey().equals(_initialAnimtionKey)).findFirst();
-			if (anim.isPresent()) {
-				loadAnimation((AnimationModel_in_Editor) anim.get());
+			var opt = _model.getAnimations().stream().filter(a -> a.getKey().equals(_initialAnimtionKey)).findFirst();
+			if (opt.isPresent()) {
+				anim = (AnimationModel_in_Editor) opt.get();
 			}
+		}
+
+		if (anim != null) {
+			loadAnimation(anim);
 		}
 	}
 
@@ -265,6 +275,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 							}
 
 							loadAnimation((AnimationModel_in_Editor) anim);
+							getEditorSite().getSelectionProvider().setSelection(sel);
 						}
 					});
 				}
