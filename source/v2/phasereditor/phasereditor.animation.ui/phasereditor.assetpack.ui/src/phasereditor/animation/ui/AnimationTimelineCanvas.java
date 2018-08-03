@@ -157,7 +157,14 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 	}
 
 	public void clearSelection() {
+		if (_animation == null) {
+			return;
+		}
+
 		_selectedFrames = new LinkedHashSet<>();
+
+		getEditor().getEditorSite().getSelectionProvider().setSelection(new StructuredSelection(_animation));
+
 		redraw();
 	}
 
@@ -280,9 +287,9 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 		if (_editor.getOutliner() != null) {
 			_editor.getOutliner().refresh();
 		}
-		
+
 		_editor.setDirty();
-		
+
 		redraw();
 	}
 
@@ -671,12 +678,20 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+
+		switch (e.character) {
+		case SWT.ESC:
+			clearSelection();
+			break;
+		default:
+			break;
+		}
+
 		switch (e.keyCode) {
 		case SWT.ARROW_LEFT:
 			shiftSelection(-1);
 			break;
 		case SWT.ARROW_RIGHT:
-			// select next frame
 			shiftSelection(1);
 			break;
 		case SWT.HOME:
@@ -725,7 +740,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 
 				scrollTo(_lastSelectedFrame.getComputedFraction(), 1);
 				updateScroll();
-				
+
 				redraw();
 			}
 		}

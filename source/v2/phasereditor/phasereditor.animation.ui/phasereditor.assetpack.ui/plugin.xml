@@ -7,7 +7,7 @@
             class="phasereditor.animation.ui.AnimationsEditor"
             icon="platform:/plugin/phasereditor.ui/icons/frame-animation.png"
             id="phasereditor.animation.ui.AnimationsEditor"
-            name="Phaser Animations">
+            name="Animations Editor">
          <contentTypeBinding
                contentTypeId="phasereditor.assetpack.core.animations">
          </contentTypeBinding>
@@ -76,5 +76,33 @@
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="SPACE">
       </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            class="phasereditor.animation.ui.wizards.NewAnimationsFileWizard"
+            finalPerspective="phasereditor.ide.ui.perspective"
+            icon="platform:/plugin/phasereditor.ui/icons/frame-animation.png"
+            id="phasereditor.animation.ui.newAnimationsFile"
+            name="Animations File">
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="*">
+         <newWizardShortcut
+               id="phasereditor.animation.ui.newAnimationsFile">
+         </newWizardShortcut>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.navigatorContent">
+      <commonWizard
+            menuGroupId="phaser.new.other"
+            type="new"
+            wizardId="phasereditor.animation.ui.newAnimationsFile">
+         <enablement></enablement>
+      </commonWizard>
    </extension>
 </plugin>

@@ -22,6 +22,7 @@
 package phasereditor.animation.ui;
 
 import static java.lang.System.out;
+import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -177,7 +178,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 				if (anim != null) {
 					getTimelineCanvas().clearSelection();
-					getEditorSite().getSelectionProvider().setSelection(new StructuredSelection(anim));
 				}
 			}
 		});
@@ -537,6 +537,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	private Object createOutliner() {
 		if (_outliner == null) {
 			_outliner = new Outliner();
+
 			_outlinerListener = new ISelectionChangedListener() {
 
 				@Override
@@ -545,7 +546,16 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 				}
 			};
 			_outliner.addSelectionChangedListener(_outlinerListener);
+		} else {
+			_outliner.refresh();
 		}
+
+		if (_timelineCanvas.getAnimation() != null) {
+			swtRun(() -> {
+				_outliner.setSelection(new StructuredSelection(_timelineCanvas.getAnimation()));
+			});
+		}
+
 		return _outliner;
 	}
 
