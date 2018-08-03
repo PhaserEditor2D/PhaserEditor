@@ -86,6 +86,7 @@ public class AssetExplorer extends ViewPart {
 	// private AssetExplorerListLabelProvider _listLabelProvider;
 	// private AssetExplorerListContentProvider _listContentProvider;
 	static String ROOT = "root";
+	static String ANIMATIONS_NODE = "Animations";
 	static String ATLAS_NODE = "Atlas";
 	static String CANVAS_NODE = "Canvas";
 	static String PACK_NODE = "Pack";

@@ -42,6 +42,7 @@ public class AnimationModel {
 	private boolean _skipMissedFrames;
 	private int _totalDuration;
 
+	
 	public AnimationModel() {
 		_frames = new ArrayList<>();
 		_frameRate = 24;
@@ -53,7 +54,7 @@ public class AnimationModel {
 		_hideOnComplete = false;
 		_skipMissedFrames = true;
 	}
-
+	
 	public AnimationModel(JSONObject jsonData) {
 		this();
 

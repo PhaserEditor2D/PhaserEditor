@@ -37,8 +37,13 @@
         point="phasereditor.project.core.buildParticipant">
      <participant
            handler="phasereditor.assetpack.core.AssetPackBuildParticipant"
-           id="phasereditor.assetpack.core.participant1"
+           id="phasereditor.assetpack.core.assetpackbuilder"
            order="1">
+     </participant>
+     <participant
+           handler="phasereditor.assetpack.core.animations.AnimationsFileBuilderParticipant"
+           id="phasereditor.assetpack.core.animationsbuilder"
+           order="0">
      </participant>
   </extension>
   <extension

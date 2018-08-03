@@ -58,6 +58,7 @@ import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.VideoAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
+import phasereditor.assetpack.core.animations.AnimationsModel;
 import phasereditor.assetpack.ui.AssetsContentProvider.Container;
 import phasereditor.atlas.core.AtlasData;
 import phasereditor.atlas.core.AtlasFrame;
@@ -283,6 +284,10 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 		if (element instanceof AnimationsAssetModel) {
 			return getAnimationIcon();
 		}
+		
+		if (element instanceof AnimationsModel) {
+			return getAnimationIcon();
+		}
 
 		if (element instanceof AnimationModel) {
 			var animation = (AnimationModel) element;
@@ -387,6 +392,13 @@ public class AssetLabelProvider extends LabelProvider implements IEditorSharedIm
 
 		if (element instanceof AtlasData) {
 			return ((AtlasData) element).getFile().getName();
+		}
+
+		if (element instanceof AnimationsModel) {
+			IFile file = ((AnimationsModel) element).getFile();
+			if (file != null) {
+				return file.getName();
+			}
 		}
 
 		if (element instanceof AnimationModel) {

@@ -335,6 +335,15 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 			return;
 		}
 
+		if (_animation.getFrames().isEmpty()) {
+			String msg = "Please, drop some frames here, from the Assets window.";
+			var b = e.gc.textExtent(msg);
+			int x = Math.max(0, e.width / 2 - b.x / 2);
+			int y = e.height / 2 - b.y / 2;
+			e.gc.drawText(msg, x, y);
+			return;
+		}
+
 		{
 			// update scroll form animation progress
 			if (_editor != null) {

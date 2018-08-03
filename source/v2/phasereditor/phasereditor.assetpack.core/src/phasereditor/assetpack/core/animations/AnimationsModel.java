@@ -24,6 +24,7 @@ package phasereditor.assetpack.core.animations;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -34,11 +35,12 @@ import org.json.JSONObject;
 public class AnimationsModel {
 
 	private List<AnimationModel> _animations;
+	private IFile _file;
 
 	public AnimationsModel() {
 		_animations = new ArrayList<>();
 	}
-
+	
 	public AnimationsModel(JSONObject jsonData) {
 		this();
 
@@ -48,6 +50,19 @@ public class AnimationsModel {
 			var anim = createAnimation(jsonAnim);
 			_animations.add(anim);
 		}
+	}
+	
+	public AnimationsModel(IFile file) throws Exception {
+		this(JSONObject.read(file));
+		_file = file;
+	}
+	
+	public IFile getFile() {
+		return _file;
+	}
+	
+	public void setFile(IFile file) {
+		_file = file;
 	}
 
 	@SuppressWarnings("static-method")

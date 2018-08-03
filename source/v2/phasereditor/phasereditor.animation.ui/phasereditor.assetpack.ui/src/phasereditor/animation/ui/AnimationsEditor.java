@@ -41,7 +41,9 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.preference.JFacePreferences;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -184,6 +186,12 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		_animCanvas.setNoImageMessage("");
 		_animCanvas.setStepCallback(_timelineCanvas::redraw);
 		_animCanvas.setPlaybackCallback(this::animationStatusChanged);
+		_animCanvas.addPaintListener(e -> {
+			if (_animCanvas.getModel() != null) {
+				e.gc.setForeground(JFaceResources.getColorRegistry().get(JFacePreferences.DECORATIONS_COLOR));
+				e.gc.drawText(_animCanvas.getModel().getKey(), 0, 0, true);
+			}
+		});
 
 		disableToolbar();
 

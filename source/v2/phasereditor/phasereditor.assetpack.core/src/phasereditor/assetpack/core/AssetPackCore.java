@@ -60,6 +60,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import phasereditor.assetpack.core.animations.AnimationsFileDataCache;
 import phasereditor.atlas.core.AtlasCore;
 import phasereditor.audiosprite.core.AudioSpriteCore;
 import phasereditor.lic.LicCore;
@@ -540,6 +541,7 @@ public class AssetPackCore {
 	}
 
 	protected static Map<IFile, AssetPackModel> _filePackMap = new HashMap<>();
+	private static AnimationsFileDataCache _animationsFileCache;
 
 	public static List<AssetPackModel> getAssetPackModels(IProject project) {
 		synchronized (_filePackMap) {
@@ -939,11 +941,11 @@ public class AssetPackCore {
 
 	public static boolean isAnimationsFile(IFile file) {
 		try {
-			
+
 			if (!file.getFileExtension().equals("json")) {
 				return false;
 			}
-			
+
 			var desc = file.getContentDescription();
 			if (desc != null) {
 				var contentType = desc.getContentType();
@@ -955,5 +957,12 @@ public class AssetPackCore {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	public static AnimationsFileDataCache getAnimationsFileCache() {
+		if (_animationsFileCache == null) {
+			_animationsFileCache = new AnimationsFileDataCache();
+		}
+		return _animationsFileCache;
 	}
 }

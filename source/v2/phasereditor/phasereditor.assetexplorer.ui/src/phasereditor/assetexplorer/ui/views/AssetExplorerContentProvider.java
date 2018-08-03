@@ -121,9 +121,15 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 		_projectInContent = activeProjet;
 
 		if (parent == AssetExplorer.ROOT) {
-			return new Object[] { AssetExplorer.ATLAS_NODE, AssetExplorer.PACK_NODE, AssetExplorer.CANVAS_NODE };
+			return new Object[] { AssetExplorer.ANIMATIONS_NODE, AssetExplorer.ATLAS_NODE, AssetExplorer.PACK_NODE, AssetExplorer.CANVAS_NODE };
 		}
 
+		if (parent == AssetExplorer.ANIMATIONS_NODE) {
+			if (activeProjet != null) {
+				return AssetPackCore.getAnimationsFileCache().getProjectData(activeProjet).toArray();
+			}
+		}
+		
 		if (parent == AssetExplorer.ATLAS_NODE) {
 			if (activeProjet != null) {
 				return AtlasCore.getAtlasFileCache().getProjectData(activeProjet).toArray();
