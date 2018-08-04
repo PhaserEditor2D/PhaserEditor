@@ -21,8 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
-import static java.util.stream.Collectors.toList;
-
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -121,44 +119,6 @@ public class AtlasAssetPreviewComp extends Composite {
 				@Override
 				public void dragSetData(DragSourceEvent event) {
 					event.data = _canvas.getOverFrame().getName();
-				}
-			});
-		}
-
-		{
-			DragSource dragSource = new DragSource(_gridCanvas, DND.DROP_MOVE | DND.DROP_DEFAULT);
-			dragSource.setTransfer(new Transfer[] { TextTransfer.getInstance(), LocalSelectionTransfer.getTransfer() });
-			dragSource.addDragListener(new DragSourceAdapter() {
-
-				@Override
-				public void dragStart(DragSourceEvent event) {
-					ISelection sel = getSelection();
-					if (sel.isEmpty()) {
-						event.doit = false;
-						return;
-					}
-					event.image = AssetLabelProvider.GLOBAL_48.getImage(((StructuredSelection) sel).getFirstElement());
-					LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
-					transfer.setSelection(sel);
-				}
-
-				private ISelection getSelection() {
-					int index = _gridCanvas.getOverIndex();
-
-					if (index == -1) {
-						return StructuredSelection.EMPTY;
-					}
-
-					List<Frame> frames = getSortedFrames();
-					Frame frame = frames.get(index);
-					return new StructuredSelection(frame);
-				}
-
-				@Override
-				public void dragSetData(DragSourceEvent event) {
-					int index = _gridCanvas.getOverIndex();
-					Frame frame = getModel().getAtlasFrames().get(index);
-					event.data = frame.getName();
 				}
 			});
 		}
@@ -341,11 +301,4 @@ public class AtlasAssetPreviewComp extends Composite {
 		updateActionsState();
 	}
 
-	/**
-	 * @return
-	 */
-	private List<Frame> getSortedFrames() {
-		return getModel().getAtlasFrames().stream()
-				.sorted((f1, f2) -> f1.getKey().toLowerCase().compareTo(f2.getKey().toLowerCase())).collect(toList());
-	}
 }

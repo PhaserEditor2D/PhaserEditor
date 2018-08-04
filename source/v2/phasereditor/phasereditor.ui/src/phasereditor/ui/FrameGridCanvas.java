@@ -26,7 +26,15 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.util.LocalSelectionTransfer;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSource;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.DragSourceListener;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -48,11 +56,13 @@ import phasereditor.ui.ImageCanvas.ZoomCalculator;
  * @author arian
  *
  */
-public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, IZoomable {
+public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, IZoomable, DragSourceListener {
 
 	private List<Rectangle> _frames;
 	private List<Rectangle> _places;
 	private List<Image> _images;
+	private List<Object> _objects;
+	private List<IFile> _files;
 	private int _frameSize;
 	private Rectangle _dst;
 	private Point _origin;
@@ -146,6 +156,16 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 	private void afterCreateWidgets() {
 		// scrollable canvas do not get the right style
 		PhaserEditorUI.forceApplyCompositeStyle(this);
+		
+		init_DND();
+	}
+
+	private void init_DND() {
+		{
+			DragSource dragSource = new DragSource(this, DND.DROP_MOVE | DND.DROP_DEFAULT);
+			dragSource.setTransfer(new Transfer[] { TextTransfer.getInstance(), LocalSelectionTransfer.getTransfer() });
+			dragSource.addDragListener(this);
+		}
 	}
 
 	void updateScroll() {
@@ -275,7 +295,7 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 		Rectangle b = getClientArea();
 		int area = b.width * b.height;
 		int count = _frames.size() * 2;
-		_frameSize = count == 0? 1 : (int) Math.sqrt((area - count * 5) / count);
+		_frameSize = count == 0 ? 1 : (int) Math.sqrt((area - count * 5) / count);
 		if (_frameSize < 32) {
 			_frameSize = 32;
 		}
@@ -325,10 +345,13 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 			var file = provider.getFrameImageFile(i);
 			var image = loadImage(file);
 			var tooltip = provider.getFrameTooltip(i);
+			var object = provider.getFrameObject(i);
 
 			_frames.add(frame);
 			_images.add(image);
 			_tooltips.add(tooltip);
+			_objects.add(object);
+			_files.add(file);
 
 		}
 
@@ -339,29 +362,69 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 		_frames = new ArrayList<>();
 		_images = new ArrayList<>();
 		_tooltips = new ArrayList<>();
+		_objects = new ArrayList<>();
+		_files = new ArrayList<>();
+	}
+	
+	@Override
+	public void dragStart(DragSourceEvent event) {
+		int index = getOverIndex();
+
+		if (index == -1) {
+			event.doit = false;
+			return;
+		}
+		
+		var file = _files.get(index);
+		var src = _frames.get(index);
+		var object = _objects.get(index);
+		
+		
+		event.image = PhaserEditorUI.scaleImage_DND(file, src);
+
+		LocalSelectionTransfer.getTransfer().setSelection(new StructuredSelection(object));
+	}
+
+	@Override
+	public void dragSetData(DragSourceEvent event) {
+		int index = getOverIndex();
+		var object = _objects.get(index);
+		event.data = "" + object;
+	}
+
+	@Override
+	public void dragFinished(DragSourceEvent event) {
+		if (event.image != null) {
+			event.image.dispose();
+		}
 	}
 
 	public interface IFrameProvider {
 		IFrameProvider NULL = new IFrameProvider() {
-			
+
 			@Override
 			public String getFrameTooltip(int index) {
 				return null;
 			}
-			
+
 			@Override
 			public Rectangle getFrameRectangle(int index) {
 				return null;
 			}
-			
+
 			@Override
 			public IFile getFrameImageFile(int index) {
 				return null;
 			}
-			
+
 			@Override
 			public int getFrameCount() {
 				return 0;
+			}
+
+			@Override
+			public Object getFrameObject(int index) {
+				return null;
 			}
 		};
 
@@ -372,6 +435,8 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 		public IFile getFrameImageFile(int index);
 
 		public String getFrameTooltip(int index);
+
+		public Object getFrameObject(int index);
 
 	}
 }

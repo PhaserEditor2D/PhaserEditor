@@ -21,16 +21,11 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
-import static java.util.stream.Collectors.toList;
-
-import java.util.List;
-
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.util.LocalSelectionTransfer;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -40,7 +35,6 @@ import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -84,44 +78,6 @@ public class MultiAtlasAssetPreviewComp extends Composite {
 
 		_spritesList = new FilteredTree(this, SWT.MULTI, new PatternFilter2(), true);
 		_gridCanvas = new FrameGridCanvas(this, SWT.NONE);
-
-		{
-			DragSource dragSource = new DragSource(_gridCanvas, DND.DROP_MOVE | DND.DROP_DEFAULT);
-			dragSource.setTransfer(new Transfer[] { TextTransfer.getInstance(), LocalSelectionTransfer.getTransfer() });
-			dragSource.addDragListener(new DragSourceAdapter() {
-
-				@Override
-				public void dragStart(DragSourceEvent event) {
-					ISelection sel = getSelection();
-					if (sel.isEmpty()) {
-						event.doit = false;
-						return;
-					}
-					event.image = AssetLabelProvider.GLOBAL_48.getImage(((StructuredSelection) sel).getFirstElement());
-					LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
-					transfer.setSelection(sel);
-				}
-
-				private ISelection getSelection() {
-					int index = _gridCanvas.getOverIndex();
-
-					if (index == -1) {
-						return StructuredSelection.EMPTY;
-					}
-
-					var frames = getSortedFrames();
-					var frame = frames.get(index);
-					return new StructuredSelection(frame);
-				}
-
-				@Override
-				public void dragSetData(DragSourceEvent event) {
-					int index = _gridCanvas.getOverIndex();
-					var frame = getModel().getSubElements().get(index);
-					event.data = frame.getName();
-				}
-			});
-		}
 
 		{
 			Transfer[] types = { LocalSelectionTransfer.getTransfer(), TextTransfer.getInstance() };
@@ -271,10 +227,5 @@ public class MultiAtlasAssetPreviewComp extends Composite {
 		toolbar.add(_zoom_fitWindow_action);
 
 		updateActionsState();
-	}
-
-	private List<MultiAtlasAssetModel.Frame> getSortedFrames() {
-		return getModel().getSubElements().stream()
-				.sorted((f1, f2) -> f1.getKey().toLowerCase().compareTo(f2.getKey().toLowerCase())).collect(toList());
 	}
 }

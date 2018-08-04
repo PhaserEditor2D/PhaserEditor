@@ -54,13 +54,13 @@ public class MultiAtlasFrameProvider implements IFrameProvider {
 
 	@Override
 	public Rectangle getFrameRectangle(int index) {
-		return _frames.get(index).getFrameData().src;
+		return getFrameObject(index).getFrameData().src;
 	}
 
 	@Override
 	public IFile getFrameImageFile(int index) {
-		MultiAtlasAssetModel.Frame frame = _frames.get(index);
-		IFile file = frame.getAsset().getFileFromUrl(frame.getTextureUrl());
+		var frame = getFrameObject(index);
+		var file = frame.getAsset().getFileFromUrl(frame.getTextureUrl());
 		return file;
 	}
 
@@ -69,4 +69,8 @@ public class MultiAtlasFrameProvider implements IFrameProvider {
 		return _frames.size();
 	}
 
+	@Override
+	public MultiAtlasAssetModel.Frame getFrameObject(int index) {
+		return _frames.get(index);
+	}
 }

@@ -58,7 +58,7 @@ public class AtlasAssetFramesProvider implements IFrameProvider {
 
 	@Override
 	public Rectangle getFrameRectangle(int index) {
-		return _frames.get(index).getFrameData().src;
+		return getFrameObject(index).getFrameData().src;
 	}
 
 	@Override
@@ -70,6 +70,11 @@ public class AtlasAssetFramesProvider implements IFrameProvider {
 	public String getFrameTooltip(int index) {
 		var rect = getFrameRectangle(index);
 		return rect.width + "x" + rect.height;
+	}
+
+	@Override
+	public Frame getFrameObject(int index) {
+		return  _frames.get(index);
 	}
 
 }

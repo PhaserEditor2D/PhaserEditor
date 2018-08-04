@@ -25,21 +25,11 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.util.LocalSelectionTransfer;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
-import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.dnd.DragSource;
-import org.eclipse.swt.dnd.DragSourceAdapter;
-import org.eclipse.swt.dnd.DragSourceEvent;
-import org.eclipse.swt.dnd.TextTransfer;
-import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.EditorSharedImages;
@@ -49,7 +39,6 @@ import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.IZoomable;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
-import phasereditor.ui.PhaserEditorUI;
 
 /**
  * @author arian
@@ -83,68 +72,6 @@ public class AnimationPreviewComp extends Composite {
 
 		moveTop(_gridCanvas);
 
-		init_DND();
-	}
-
-	private void init_DND() {
-		{
-			DragSource dragSource = new DragSource(_gridCanvas, DND.DROP_MOVE | DND.DROP_DEFAULT);
-			dragSource.setTransfer(new Transfer[] { TextTransfer.getInstance(), LocalSelectionTransfer.getTransfer() });
-			dragSource.addDragListener(new DragSourceAdapter() {
-
-				@Override
-				public void dragStart(DragSourceEvent event) {
-					ISelection sel = getSelection();
-					if (sel.isEmpty()) {
-						event.doit = false;
-						return;
-					}
-					// TODO: we should do something with the image!!!! maybe just create a new image
-					// and the dispose it, when the drop stops. This technique could be used in all
-					// the Preview widgets, maybe it is the best!
-					//
-					// event.image = AssetLabelProvider.GLOBAL_48.getImage(((StructuredSelection)
-					// sel).getFirstElement());
-
-					var anim = (AnimationFrameModel) ((StructuredSelection) sel).getFirstElement();
-					var asset = anim.getFrameAsset();
-					if (asset != null) {
-						var file = asset.getImageFile();
-						var fd = asset.getFrameData();
-						event.image = PhaserEditorUI.scaleImage_DND(file, fd.src);
-					}
-
-					LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
-					transfer.setSelection(sel);
-				}
-
-				private ISelection getSelection() {
-					int index = _gridCanvas.getOverIndex();
-
-					if (index == -1) {
-						return StructuredSelection.EMPTY;
-					}
-
-					var frame = _animModel.getFrames().get(index);
-
-					return new StructuredSelection(frame);
-				}
-
-				@Override
-				public void dragSetData(DragSourceEvent event) {
-					int index = _gridCanvas.getOverIndex();
-					var frame = _animModel.getFrames().get(index);
-					event.data = frame.getFrameName() == null ? frame.getTextureKey() : frame.getFrameName();
-				}
-
-				@Override
-				public void dragFinished(DragSourceEvent event) {
-					if (event.image != null) {
-						event.image.dispose();
-					}
-				}
-			});
-		}
 	}
 
 	public void setModel(AnimationModel animModel) {

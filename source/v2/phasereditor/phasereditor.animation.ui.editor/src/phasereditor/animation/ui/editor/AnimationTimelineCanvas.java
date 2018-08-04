@@ -61,6 +61,7 @@ import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.ui.BaseImageCanvas;
 import phasereditor.ui.FrameData;
+import phasereditor.ui.PhaserEditorUI;
 
 /**
  * @author arian
@@ -678,7 +679,12 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 			transfer.setSelection(new StructuredSelection(selectedFrames.toArray()));
 		} else {
 			transfer.setSelection(new StructuredSelection(frame));
-			event.image = AssetLabelProvider.GLOBAL_48.getImage(frame);
+			IAssetFrameModel assetFrame = frame.getFrameAsset();
+
+			if (assetFrame != null) {
+				event.image = PhaserEditorUI.scaleImage_DND(assetFrame.getImageFile(), assetFrame.getFrameData().src);
+			}
+
 			_selectedFrames = new LinkedHashSet<>();
 			updateSelectionProvider();
 		}
@@ -694,7 +700,9 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 
 	@Override
 	public void dragFinished(DragSourceEvent event) {
-		// nothing
+		if (event.image != null) {
+			event.image.dispose();
+		}
 	}
 
 	@Override
