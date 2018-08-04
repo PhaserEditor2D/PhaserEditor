@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.util.LocalSelectionTransfer;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
@@ -35,6 +36,8 @@ import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -55,8 +58,9 @@ import phasereditor.ui.ImageCanvas.ZoomCalculator;
  * @author arian
  *
  */
+@SuppressWarnings("boxing")
 public class FrameGridCanvas extends BaseImageCanvas
-		implements PaintListener, IZoomable, DragSourceListener, MouseMoveListener, MouseWheelListener, MouseListener {
+		implements PaintListener, IZoomable, DragSourceListener, MouseMoveListener, MouseWheelListener, MouseListener, KeyListener {
 
 	private List<Rectangle> _frames;
 	private List<Rectangle> _places;
@@ -82,8 +86,8 @@ public class FrameGridCanvas extends BaseImageCanvas
 
 		addMouseMoveListener(this);
 		addMouseWheelListener(this);
-
 		addMouseListener(this);
+		addKeyListener(this);
 
 		_origin = new Point(0, 0);
 
@@ -143,7 +147,6 @@ public class FrameGridCanvas extends BaseImageCanvas
 		redraw();
 	}
 
-	@SuppressWarnings("boxing")
 	@Override
 	public void paintControl(PaintEvent e) {
 		if (_fitWindow) {
@@ -168,7 +171,7 @@ public class FrameGridCanvas extends BaseImageCanvas
 				gc.setBackground(PhaserEditorUI.get_pref_Preview_Spritesheet_selectionColor());
 				gc.setAlpha(100);
 				gc.fillRectangle(place);
-				
+
 				gc.setAlpha(255);
 			} else {
 				PhaserEditorUI.paintPreviewBackground(gc, place);
@@ -180,7 +183,7 @@ public class FrameGridCanvas extends BaseImageCanvas
 				gc.drawImage(image, frame.x, frame.y, frame.width, frame.height, place.x, place.y, place.width,
 						place.height);
 			}
-			
+
 			if (i == _overIndex || selected) {
 				gc.drawRectangle(place);
 			}
@@ -337,11 +340,28 @@ public class FrameGridCanvas extends BaseImageCanvas
 
 		var file = _files.get(index);
 		var src = _frames.get(index);
-		var object = _objects.get(index);
+
+		ISelection sel = null;
+
+		if (_selectedIndexes.contains(index)) {
+			sel = new StructuredSelection(getSelectedObjects());
+		} else {
+			sel = new StructuredSelection(_objects.get(index));
+			_selectedIndexes = new ArrayList<>();
+			redraw();
+		}
 
 		event.image = PhaserEditorUI.scaleImage_DND(file, src);
 
-		LocalSelectionTransfer.getTransfer().setSelection(new StructuredSelection(object));
+		LocalSelectionTransfer.getTransfer().setSelection(sel);
+	}
+
+	private List<Object> getSelectedObjects() {
+		var list = new ArrayList<>();
+		for (int i : _selectedIndexes) {
+			list.add(_objects.get(i));
+		}
+		return list;
 	}
 
 	@Override
@@ -399,7 +419,6 @@ public class FrameGridCanvas extends BaseImageCanvas
 	private List<Integer> _selectedIndexes = new ArrayList<>();
 	private int _lastSelectedIndex;
 
-	@SuppressWarnings("boxing")
 	@Override
 	public void mouseUp(MouseEvent e) {
 		if (e.button != 1) {
@@ -410,8 +429,9 @@ public class FrameGridCanvas extends BaseImageCanvas
 
 		int index = _overIndex;
 
-		if (index != -1) {
-
+		if (index == -1) {
+			_selectedIndexes = new ArrayList<>();
+		} else {
 			if ((e.stateMask & SWT.CTRL) != 0) {
 
 				// control pressed
@@ -459,6 +479,14 @@ public class FrameGridCanvas extends BaseImageCanvas
 		redraw();
 	}
 
+	public void selectAll() {
+		_selectedIndexes = new ArrayList<>();
+		for (int i = 0; i < _frames.size(); i++) {
+			_selectedIndexes.add(i);
+		}
+		redraw();
+	}
+
 	@Override
 	public void mouseDown(MouseEvent e) {
 		//
@@ -466,6 +494,41 @@ public class FrameGridCanvas extends BaseImageCanvas
 
 	@Override
 	public void mouseDoubleClick(MouseEvent e) {
+		//
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		switch (e.character) {
+		case SWT.ESC:
+			_lastSelectedIndex = -1;
+			_selectedIndexes = new ArrayList<>();
+			redraw();
+			break;
+		default:
+			break;
+		}
+
+		switch (e.keyCode) {
+		case SWT.ARROW_LEFT:
+			// shiftSelection(-1);
+			break;
+		case SWT.ARROW_RIGHT:
+			// shiftSelection(1);
+			break;
+		case SWT.HOME:
+			// TODO: scroll to the start
+			break;
+		case SWT.END:
+			// TODO: scroll to the end
+			break;
+		default:
+			break;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
 		//
 	}
 
