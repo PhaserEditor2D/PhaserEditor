@@ -94,7 +94,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 				}
 			}
 		};
-		getActivePage().addPartListener(_partListener);
+		 getActivePage().addPartListener(_partListener);
 	}
 
 	private static IWorkbenchPage getActivePage() {
@@ -109,7 +109,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 
 	@Override
 	public void dispose() {
-		getActivePage().removePartListener(_partListener);
+		 getActivePage().removePartListener(_partListener);
 
 		super.dispose();
 	}

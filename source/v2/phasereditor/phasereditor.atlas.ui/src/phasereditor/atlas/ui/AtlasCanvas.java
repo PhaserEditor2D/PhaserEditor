@@ -24,8 +24,8 @@ package phasereditor.atlas.ui;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -35,49 +35,61 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
 import phasereditor.atlas.core.AtlasFrame;
+import phasereditor.ui.FrameCanvasUtils;
 import phasereditor.ui.ImageCanvas;
 import phasereditor.ui.PhaserEditorUI;
 
-public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMoveListener, ISelectionProvider {
+public class AtlasCanvas extends ImageCanvas implements ControlListener, ISelectionProvider {
 
 	private List<? extends AtlasFrame> _frames;
 	private List<Rectangle> _framesRects;
-	private AtlasFrame _overFrame;
-	private List<String> _tooltips;
+	private FrameCanvasUtils _utils;
 
+	@SuppressWarnings("synthetic-access")
 	public AtlasCanvas(Composite parent, int style) {
 		super(parent, style);
 		addControlListener(this);
-		addMouseMoveListener(this);
-	}
-
-	@Override
-	protected void drawImage(GC gc, int srcX, int srcY, int srcW, int srcH, int dstW, int dstH, int dstX, int dstY) {
-		if (!_selectedFrames.isEmpty()) {
-
-			PhaserEditorUI.paintPreviewBackground(gc, new Rectangle(dstX, dstY, dstW, dstH));
-
-			gc.setAlpha(100);
-
-			super.drawImage(gc, srcX, srcY, srcW, srcH, dstW, dstH, dstX, dstY);
-
-			gc.setAlpha(255);
-
-			return;
-		}
-
-		super.drawImage(gc, srcX, srcY, srcW, srcH, dstW, dstH, dstX, dstY);
-
-		// gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
-		// gc.drawRectangle(dstX, dstY, dstW, dstH);
+		
+		
+		_utils = new FrameCanvasUtils(this) {
+			
+			@Override
+			public Point getRealPosition(int x, int y) {
+				return new Point(x, y);
+			}
+			
+			@Override
+			public Rectangle getPaintFrame(int index) {
+				return _framesRects.get(index);
+			}
+			
+			@Override
+			public Rectangle getImageFrame(int index) {
+				return _frames.get(index).getFrameData().src;
+			}
+			
+			@Override
+			public IFile getImageFile(int index) {
+				return _file;
+			}
+			
+			@Override
+			public int getFramesCount() {
+				return _frames.size();
+			}
+			
+			@Override
+			public Object getFrameObject(int index) {
+				return _frames.get(index);
+			}
+		};
 	}
 
 	@Override
@@ -90,27 +102,27 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 		if (_frames != null && _image != null) {
 			GC gc = e.gc;
 
-			var overColor = PhaserEditorUI.get_pref_Preview_Atlas_frameOverColor();
-
-			gc.setForeground(overColor);
-
 			int i = 0;
 			ZoomCalculator calc = calc();
 			for (Rectangle r : _framesRects) {
-				AtlasFrame frame = _frames.get(i);
-				boolean theFrameIsSelected = _selectedFrames.contains(frame);
+				@SuppressWarnings("boxing")
+				boolean selected = _utils.getSelectedIndexes().contains(i);
 
-				if (theFrameIsSelected) {
+				if (selected) {
+					gc.setBackground(PhaserEditorUI.get_pref_Preview_Spritesheet_selectionColor());
+					gc.fillRectangle(r);
+					
 					gc.setClipping(r);
 					Rectangle src = _image.getBounds();
 					Rectangle dst = calc.imageToScreen(src);
 					gc.drawImage(_image, src.x, src.y, src.width, src.height, dst.x, dst.y, dst.width, dst.height);
 					gc.setClipping((Rectangle) null);
+					
 					gc.drawRectangle(r);
 
 				}
 
-				if (theFrameIsSelected || frame == _overFrame) {
+				if (selected || i == _utils.getOverIndex()) {
 					gc.drawRectangle(r);
 				}
 
@@ -144,7 +156,7 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 	}
 
 	public AtlasFrame getOverFrame() {
-		return _overFrame;
+		return _frames.get(_utils.getOverIndex());
 	}
 
 	@Override
@@ -157,35 +169,9 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 		generateFramesRects();
 	}
 
-	@Override
-	public void mouseMove(MouseEvent e) {
-		AtlasFrame frame = null;
-		int i = 0;
-		if (_framesRects != null) {
-			for (Rectangle r : _framesRects) {
-				if (r.contains(e.x, e.y)) {
-					frame = _frames.get(i);
-					break;
-				}
-				i++;
-			}
-		}
-		if (frame != _overFrame) {
-			_overFrame = frame;
-			if (_tooltips != null && frame != null) {
-				setToolTipText(_tooltips.get(i));
-			}
-			redraw();
-		}
-	}
-
-	public void setTooltips(List<String> tooltips) {
-		_tooltips = tooltips;
-	}
-
 	private ListenerList<ISelectionChangedListener> _selectionListeners = new ListenerList<>();
 	private IStructuredSelection _selection;
-	private Set<AtlasFrame> _selectedFrames = new HashSet<>();
+	private IFile _file;
 
 	@Override
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
@@ -197,30 +183,46 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener, MouseMo
 		_selectionListeners.remove(listener);
 	}
 
+	@SuppressWarnings("boxing")
 	@Override
 	public void setSelection(ISelection selection) {
-		_selectedFrames = new HashSet<>();
+		HashSet<AtlasFrame> selectedFrames = new HashSet<>();
 
 		HashSet<AtlasFrame> frameSet = new HashSet<>(_frames);
 
+		List<Integer> list = new ArrayList<>();
+		
 		for (Object elem : ((IStructuredSelection) selection).toArray()) {
 			if (frameSet.contains(elem)) {
-				_selectedFrames.add((AtlasFrame) elem);
+				AtlasFrame frame = (AtlasFrame) elem;
+				selectedFrames.add(frame);
+				list.add(_frames.indexOf(frame));
 			}
 		}
 
-		_selection = new StructuredSelection(_selectedFrames.toArray());
+		_selection = new StructuredSelection(selectedFrames.toArray());
 
 		SelectionChangedEvent event = new SelectionChangedEvent(this, _selection);
 
 		for (ISelectionChangedListener l : _selectionListeners) {
 			l.selectionChanged(event);
 		}
+		
+		_utils.setSelectedIndexes(list);
 	}
 
 	@Override
 	public IStructuredSelection getSelection() {
 		return _selection;
 	}
-
+	
+	@Override
+	public void setImageFile(IFile file) {
+		super.setImageFile(file);
+		_file = file;
+	}
+	
+	public void selectAll() {
+		_utils.selectAll();
+	}
 }

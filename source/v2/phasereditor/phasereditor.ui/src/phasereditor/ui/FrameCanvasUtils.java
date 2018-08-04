@@ -50,7 +50,8 @@ import org.eclipse.swt.widgets.Canvas;
  *
  */
 @SuppressWarnings("boxing")
-public abstract class FrameCanvasUtils implements MouseMoveListener, MouseWheelListener, MouseListener, KeyListener, DragSourceListener {
+public abstract class FrameCanvasUtils
+		implements MouseMoveListener, MouseWheelListener, MouseListener, KeyListener, DragSourceListener {
 
 	private int _overIndex;
 	private Canvas _canvas;
@@ -67,7 +68,7 @@ public abstract class FrameCanvasUtils implements MouseMoveListener, MouseWheelL
 		canvas.addMouseWheelListener(this);
 		canvas.addMouseListener(this);
 		canvas.addKeyListener(this);
-		
+
 		init_DND();
 	}
 
@@ -78,11 +79,11 @@ public abstract class FrameCanvasUtils implements MouseMoveListener, MouseWheelL
 	public abstract Point getRealPosition(int x, int y);
 
 	public abstract Object getFrameObject(int index);
-	
+
 	public abstract IFile getImageFile(int index);
-	
+
 	public abstract Rectangle getImageFrame(int index);
-	
+
 	public int getOverIndex() {
 		return _overIndex;
 	}
@@ -118,6 +119,10 @@ public abstract class FrameCanvasUtils implements MouseMoveListener, MouseWheelL
 
 	public List<Integer> getSelectedIndexes() {
 		return _selectedIndexes;
+	}
+
+	public void setSelectedIndexes(List<Integer> indexes) {
+		_selectedIndexes = new ArrayList<>(indexes);
 	}
 
 	public List<Object> getSelectedObjects() {
@@ -266,7 +271,7 @@ public abstract class FrameCanvasUtils implements MouseMoveListener, MouseWheelL
 	public void emptySelection() {
 		_selectedIndexes = new ArrayList<>();
 	}
-	
+
 	private void init_DND() {
 		{
 			DragSource dragSource = new DragSource(_canvas, DND.DROP_MOVE | DND.DROP_DEFAULT);
@@ -274,7 +279,7 @@ public abstract class FrameCanvasUtils implements MouseMoveListener, MouseWheelL
 			dragSource.addDragListener(this);
 		}
 	}
-	
+
 	@Override
 	public void dragStart(DragSourceEvent event) {
 		int index = getOverIndex();

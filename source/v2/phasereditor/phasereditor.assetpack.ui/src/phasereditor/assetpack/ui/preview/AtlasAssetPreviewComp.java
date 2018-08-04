@@ -29,7 +29,6 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.util.LocalSelectionTransfer;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -39,7 +38,6 @@ import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -90,38 +88,6 @@ public class AtlasAssetPreviewComp extends Composite {
 		_canvas = new AtlasCanvas(this, SWT.NONE);
 		_spritesList = new FilteredTree(this, SWT.MULTI, new PatternFilter2(), true);
 		_gridCanvas = new FrameGridCanvas(this, SWT.NONE);
-
-		{
-			DragSource dragSource = new DragSource(_canvas, DND.DROP_MOVE | DND.DROP_DEFAULT);
-			dragSource.setTransfer(new Transfer[] { TextTransfer.getInstance(), LocalSelectionTransfer.getTransfer() });
-			dragSource.addDragListener(new DragSourceAdapter() {
-
-				@Override
-				public void dragStart(DragSourceEvent event) {
-					ISelection sel = getSelection();
-					if (sel.isEmpty()) {
-						event.doit = false;
-						return;
-					}
-					event.image = AssetLabelProvider.GLOBAL_48.getImage(((StructuredSelection) sel).getFirstElement());
-					LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
-					transfer.setSelection(sel);
-				}
-
-				private ISelection getSelection() {
-					if (_canvas.getOverFrame() == null) {
-						return StructuredSelection.EMPTY;
-					}
-
-					return new StructuredSelection(_canvas.getOverFrame());
-				}
-
-				@Override
-				public void dragSetData(DragSourceEvent event) {
-					event.data = _canvas.getOverFrame().getName();
-				}
-			});
-		}
 
 		{
 			Transfer[] types = { LocalSelectionTransfer.getTransfer(), TextTransfer.getInstance() };
