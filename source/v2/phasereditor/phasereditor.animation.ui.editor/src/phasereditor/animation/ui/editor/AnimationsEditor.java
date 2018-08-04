@@ -84,6 +84,7 @@ import phasereditor.animation.ui.AnimationCanvas.IndexTransition;
 import phasereditor.animation.ui.editor.properties.AnimationsPGridPage;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
+import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredContentOutlinePage;
@@ -624,6 +625,8 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 			viewer.setLabelProvider(AssetLabelProvider.GLOBAL_16);
 			viewer.setContentProvider(new OutlinerContentProvider());
 			viewer.setInput(getModel());
+			
+			AssetPackUI.installAssetTooltips(viewer);
 
 			init_DnD();
 
