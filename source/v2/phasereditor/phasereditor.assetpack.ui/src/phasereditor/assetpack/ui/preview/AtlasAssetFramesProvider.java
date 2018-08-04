@@ -30,7 +30,7 @@ import org.eclipse.swt.graphics.Rectangle;
 
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel.Frame;
-import phasereditor.ui.FrameGridCanvas.IFrameProvider;
+import phasereditor.ui.IFrameProvider;
 
 /**
  * @author arian

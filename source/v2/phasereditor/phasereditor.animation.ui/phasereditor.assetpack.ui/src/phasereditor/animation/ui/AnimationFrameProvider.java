@@ -26,7 +26,7 @@ import org.eclipse.swt.graphics.Rectangle;
 
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
-import phasereditor.ui.FrameGridCanvas.IFrameProvider;
+import phasereditor.ui.IFrameProvider;
 
 /**
  * @author arian

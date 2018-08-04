@@ -313,6 +313,7 @@ public class PhaserEditorUI {
 		return _PREF_PROP_PREVIEW_SPRITESHEET_SELECTION_COLOR;
 	}
 
+	@Deprecated
 	public static Color get_pref_Preview_Atlas_frameOverColor() {
 		return _PREF_PROP_PREVIEW_ATLAS_FRAME_OVER_COLOR;
 	}

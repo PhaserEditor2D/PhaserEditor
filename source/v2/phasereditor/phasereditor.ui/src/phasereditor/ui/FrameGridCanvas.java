@@ -35,13 +35,12 @@ import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -56,7 +55,8 @@ import phasereditor.ui.ImageCanvas.ZoomCalculator;
  * @author arian
  *
  */
-public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, IZoomable, DragSourceListener {
+public class FrameGridCanvas extends BaseImageCanvas
+		implements PaintListener, IZoomable, DragSourceListener, MouseMoveListener, MouseWheelListener, MouseListener {
 
 	private List<Rectangle> _frames;
 	private List<Rectangle> _places;
@@ -80,58 +80,10 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 
 		addPaintListener(this);
 
-		addMouseMoveListener(new MouseMoveListener() {
+		addMouseMoveListener(this);
+		addMouseWheelListener(this);
 
-			@SuppressWarnings("synthetic-access")
-			@Override
-			public void mouseMove(MouseEvent e) {
-				if (_places == null) {
-					return;
-				}
-
-				int old = _overIndex;
-				int index = -1;
-				for (int i = 0; i < _places.size(); i++) {
-					Rectangle place = _places.get(i);
-					if (place.contains(e.x, e.y - _origin.y)) {
-						index = i;
-						break;
-					}
-				}
-				if (old != index) {
-					_overIndex = index;
-					if (index != -1 && _tooltips != null) {
-						String tooltip = _tooltips.get(_overIndex);
-						if (tooltip != null) {
-							setToolTipText(tooltip);
-						}
-					}
-					redraw();
-				}
-			}
-		});
-		addMouseWheelListener(new MouseWheelListener() {
-
-			@Override
-			public void mouseScrolled(MouseEvent e) {
-				double f = e.count < 0 ? 0.8 : 1.2;
-				int newSize = (int) (getFrameSize() * f);
-				if (newSize == getFrameSize()) {
-					newSize = e.button < 0 ? 1 : newSize * 2;
-				}
-				setFrameSize(newSize);
-				updateScroll();
-			}
-		});
-
-		addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-				if (!isFocusControl()) {
-					setFocus();
-				}
-			}
-		});
+		addMouseListener(this);
 
 		_origin = new Point(0, 0);
 
@@ -156,7 +108,7 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 	private void afterCreateWidgets() {
 		// scrollable canvas do not get the right style
 		PhaserEditorUI.forceApplyCompositeStyle(this);
-		
+
 		init_DND();
 	}
 
@@ -191,6 +143,7 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 		redraw();
 	}
 
+	@SuppressWarnings("boxing")
 	@Override
 	public void paintControl(PaintEvent e) {
 		if (_fitWindow) {
@@ -200,8 +153,6 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 
 		GC gc = e.gc;
 
-		Color overColor = PhaserEditorUI.get_pref_Preview_Atlas_frameOverColor();
-
 		computeRects();
 
 		Transform tx = new Transform(getDisplay());
@@ -209,19 +160,28 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 		gc.setTransform(tx);
 
 		for (int i = 0; i < _frames.size(); i++) {
-			Rectangle frame = _frames.get(i);
-			Rectangle place = _places.get(i);
+			var frame = _frames.get(i);
+			var place = _places.get(i);
+			var selected = _selectedIndexes.contains(i);
 
-			PhaserEditorUI.paintPreviewBackground(gc, place);
+			if (selected) {
+				gc.setBackground(PhaserEditorUI.get_pref_Preview_Spritesheet_selectionColor());
+				gc.setAlpha(100);
+				gc.fillRectangle(place);
+				
+				gc.setAlpha(255);
+			} else {
+				PhaserEditorUI.paintPreviewBackground(gc, place);
+			}
+
 			Image image = _images.get(i);
 
 			if (image != null) {
 				gc.drawImage(image, frame.x, frame.y, frame.width, frame.height, place.x, place.y, place.width,
 						place.height);
 			}
-
-			if (i == _overIndex) {
-				gc.setForeground(overColor);
+			
+			if (i == _overIndex || selected) {
 				gc.drawRectangle(place);
 			}
 		}
@@ -365,7 +325,7 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 		_objects = new ArrayList<>();
 		_files = new ArrayList<>();
 	}
-	
+
 	@Override
 	public void dragStart(DragSourceEvent event) {
 		int index = getOverIndex();
@@ -374,12 +334,11 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 			event.doit = false;
 			return;
 		}
-		
+
 		var file = _files.get(index);
 		var src = _frames.get(index);
 		var object = _objects.get(index);
-		
-		
+
 		event.image = PhaserEditorUI.scaleImage_DND(file, src);
 
 		LocalSelectionTransfer.getTransfer().setSelection(new StructuredSelection(object));
@@ -399,44 +358,115 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 		}
 	}
 
-	public interface IFrameProvider {
-		IFrameProvider NULL = new IFrameProvider() {
+	@Override
+	public void mouseMove(MouseEvent e) {
+		if (_places == null) {
+			return;
+		}
 
-			@Override
-			public String getFrameTooltip(int index) {
-				return null;
+		int old = _overIndex;
+		int index = -1;
+		for (int i = 0; i < _places.size(); i++) {
+			Rectangle place = _places.get(i);
+			if (place.contains(e.x, e.y - _origin.y)) {
+				index = i;
+				break;
 			}
-
-			@Override
-			public Rectangle getFrameRectangle(int index) {
-				return null;
+		}
+		if (old != index) {
+			_overIndex = index;
+			if (index != -1 && _tooltips != null) {
+				String tooltip = _tooltips.get(_overIndex);
+				if (tooltip != null) {
+					setToolTipText(tooltip);
+				}
 			}
-
-			@Override
-			public IFile getFrameImageFile(int index) {
-				return null;
-			}
-
-			@Override
-			public int getFrameCount() {
-				return 0;
-			}
-
-			@Override
-			public Object getFrameObject(int index) {
-				return null;
-			}
-		};
-
-		public int getFrameCount();
-
-		public Rectangle getFrameRectangle(int index);
-
-		public IFile getFrameImageFile(int index);
-
-		public String getFrameTooltip(int index);
-
-		public Object getFrameObject(int index);
-
+			redraw();
+		}
 	}
+
+	@Override
+	public void mouseScrolled(MouseEvent e) {
+		double f = e.count < 0 ? 0.8 : 1.2;
+		int newSize = (int) (getFrameSize() * f);
+		if (newSize == getFrameSize()) {
+			newSize = e.button < 0 ? 1 : newSize * 2;
+		}
+		setFrameSize(newSize);
+		updateScroll();
+	}
+
+	private List<Integer> _selectedIndexes = new ArrayList<>();
+	private int _lastSelectedIndex;
+
+	@SuppressWarnings("boxing")
+	@Override
+	public void mouseUp(MouseEvent e) {
+		if (e.button != 1) {
+			return;
+		}
+
+		var updateLastSelectionFrame = true;
+
+		int index = _overIndex;
+
+		if (index != -1) {
+
+			if ((e.stateMask & SWT.CTRL) != 0) {
+
+				// control pressed
+
+				if (_selectedIndexes.contains(index)) {
+					_selectedIndexes.remove(index);
+				} else {
+					_selectedIndexes.add(index);
+				}
+
+			} else if ((e.stateMask & SWT.SHIFT) != 0 && !_selectedIndexes.isEmpty()) {
+
+				// select the whole range
+
+				int a = _lastSelectedIndex;
+				int b = index;
+
+				int from = Math.min(a, b);
+				int to = Math.max(a, b);
+
+				_selectedIndexes = new ArrayList<>();
+
+				for (int i = from; i <= to; i++) {
+					_selectedIndexes.add(i);
+				}
+
+				updateLastSelectionFrame = false;
+
+			} else {
+
+				// just select that frame
+
+				_selectedIndexes = new ArrayList<>();
+				_selectedIndexes.add(index);
+
+			}
+
+			// updateSelectionProvider();
+		}
+
+		if (updateLastSelectionFrame) {
+			_lastSelectedIndex = index;
+		}
+
+		redraw();
+	}
+
+	@Override
+	public void mouseDown(MouseEvent e) {
+		//
+	}
+
+	@Override
+	public void mouseDoubleClick(MouseEvent e) {
+		//
+	}
+
 }

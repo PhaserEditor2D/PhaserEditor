@@ -421,7 +421,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 
 			if (selected) {
 				gc.setAlpha(100);
-				gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_BLUE));
+				gc.setBackground(PhaserEditorUI.get_pref_Preview_Spritesheet_selectionColor());
 			} else {
 				gc.setAlpha(60);
 				gc.setBackground(getDisplay().getSystemColor(i % 2 == 0 ? SWT.COLOR_WHITE : SWT.COLOR_GRAY));
