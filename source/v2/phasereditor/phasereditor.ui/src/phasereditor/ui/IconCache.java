@@ -23,11 +23,7 @@ package phasereditor.ui;
 
 import static java.lang.System.currentTimeMillis;
 
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,14 +33,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.imageio.ImageIO;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Display;
-
-import phasereditor.ui.ImageCanvas.ZoomCalculator;
 
 /**
  * A cache for images read from files. If the file is modified the cache is
@@ -62,34 +53,6 @@ public class IconCache {
 		_timeCache = new HashMap<>();
 		_imgCache = new HashMap<>();
 		_extraDispose = new ArrayList<>();
-	}
-
-	private static Image scaleImage(String filepath, Rectangle src, int newSize, BufferedImage overlay) {
-		try {
-			BufferedImage swingimg = ImageIO.read(new File(filepath));
-			BufferedImage swingimg2 = new BufferedImage(newSize, newSize, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g2 = swingimg2.createGraphics();
-			Rectangle src2 = src == null ? new Rectangle(0, 0, swingimg.getWidth(), swingimg.getHeight()) : src;
-
-			ZoomCalculator calc = new ZoomCalculator(src2.width, src2.height);
-			calc.fit(newSize, newSize);
-			// Rectangle z = PhaserEditorUI.computeImageZoom(src2, new
-			// Rectangle(0, 0, newSize, newSize));
-			Rectangle z = calc.imageToScreen(0, 0, src2.width, src2.height);
-			g2.drawImage(swingimg, z.x, z.y, z.x + z.width, z.y + z.height, src2.x, src2.y, src2.x + src2.width,
-					src2.y + src2.height, null);
-			if (overlay != null) {
-				g2.drawImage(overlay, 0, 0, null);
-			}
-			g2.dispose();
-			ByteArrayOutputStream memory = new ByteArrayOutputStream();
-			ImageIO.write(swingimg2, "png", memory);
-			Image img = new Image(Display.getCurrent(), new ByteArrayInputStream(memory.toByteArray()));
-			return img;
-		} catch (IOException e) {
-			// e.printStackTrace();
-			return null;
-		}
 	}
 
 	public Image getIcon(Path file, int iconSize, BufferedImage overlay) {
@@ -139,7 +102,7 @@ public class IconCache {
 
 		_timeCache.put(k, Long.valueOf(t0));
 		try {
-			Image img = scaleImage(filepath, src, newSize, overlay);
+			Image img = PhaserEditorUI.scaleImage(filepath, src, newSize, overlay);
 
 			if (img == null) {
 				return null;

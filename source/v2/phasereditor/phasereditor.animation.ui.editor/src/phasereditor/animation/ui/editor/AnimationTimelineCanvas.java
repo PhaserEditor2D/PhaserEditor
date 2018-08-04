@@ -214,40 +214,52 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 
 		_editor.getAnimationCanvas().stop();
 
-		List<AnimationFrameModel_in_Editor> framesFromAssets = new ArrayList<>();
+		List<AnimationFrameModel_in_Editor> framesFromTheOutside = new ArrayList<>();
 		List<AnimationFrameModel_in_Editor> framesFromTimeline = new ArrayList<>();
 
 		var frames = _animation.getFrames();
 
 		for (var obj : data) {
 			IAssetFrameModel frame = null;
+			AnimationFrameModel_in_Editor inEditorFrame = null;
+			AnimationFrameModel_in_Editor alienFrame = null;
 
 			if (obj instanceof IAssetFrameModel) {
 				frame = (IAssetFrameModel) obj;
 			} else if (obj instanceof ImageAssetModel) {
 				frame = ((ImageAssetModel) obj).getFrame();
 			} else if (frames.contains(obj)) {
-				framesFromTimeline.add((AnimationFrameModel_in_Editor) obj);
+				inEditorFrame = (AnimationFrameModel_in_Editor) obj;
+			} else if (obj instanceof AnimationFrameModel) {
+				AnimationFrameModel anim = (AnimationFrameModel) obj;
+				alienFrame = new AnimationFrameModel_in_Editor(_animation, anim.toJSON());
+				alienFrame.setFrameAsset(anim.getFrameAsset());
 			}
 
 			if (frame != null) {
-				var animFrame = new AnimationFrameModel_in_Editor(_animation);
-				animFrame.setFrameAsset(frame);
-				animFrame.setTextureKey(frame.getAsset().getKey());
+				alienFrame = new AnimationFrameModel_in_Editor(_animation);
+				alienFrame.setFrameAsset(frame);
+				alienFrame.setTextureKey(frame.getAsset().getKey());
 
 				if (frame.getAsset() instanceof ImageAssetModel) {
 					// nothing
 				} else if (frame instanceof SpritesheetAssetModel.FrameModel) {
-					animFrame.setFrameName(((SpritesheetAssetModel.FrameModel) frame).getIndex());
+					alienFrame.setFrameName(((SpritesheetAssetModel.FrameModel) frame).getIndex());
 				} else {
-					animFrame.setFrameName(frame.getKey());
+					alienFrame.setFrameName(frame.getKey());
 				}
+			}
 
-				framesFromAssets.add(animFrame);
+			if (alienFrame != null) {
+				framesFromTheOutside.add(alienFrame);
+			}
+
+			if (inEditorFrame != null) {
+				framesFromTimeline.add(inEditorFrame);
 			}
 		}
 
-		if (framesFromAssets.isEmpty()) {
+		if (framesFromTheOutside.isEmpty()) {
 			// the frames are from the timeline, this is a move
 			if (_dropIndex == frames.size()) {
 				// just move the frames and add them to the end
@@ -266,9 +278,9 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 		} else {
 			// the frames are created by dropping assets
 			if (_dropIndex == frames.size()) {
-				frames.addAll(framesFromAssets);
+				frames.addAll(framesFromTheOutside);
 			} else {
-				frames.addAll(_dropIndex, framesFromAssets);
+				frames.addAll(_dropIndex, framesFromTheOutside);
 			}
 		}
 

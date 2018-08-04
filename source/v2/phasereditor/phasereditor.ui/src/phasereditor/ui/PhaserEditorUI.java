@@ -23,6 +23,7 @@ package phasereditor.ui;
 
 import static java.lang.System.out;
 
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -114,6 +115,7 @@ import org.eclipse.ui.internal.misc.StringMatcher;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import phasereditor.ui.ImageCanvas.ZoomCalculator;
 import phasereditor.ui.editors.StringEditorInput;
 import phasereditor.ui.views.PreviewView;
 
@@ -880,6 +882,54 @@ public class PhaserEditorUI {
 		int dstY = (controlHeight - dstH) / 2;
 
 		return new Rectangle(dstX, dstY, dstW, dstH);
+	}
+	
+	public static Image scaleImage_DND(IFile file, Rectangle src) {
+		int maxSize = 256;
+		int minSize = 64;
+		
+		int srcSize = Math.max(src.width, src.height);
+		
+		int newSize = Math.min(maxSize, srcSize);
+		newSize = Math.max(newSize, minSize);
+
+		
+		return scaleImage(file.getLocation().toPortableString(), src, newSize, null);
+	}
+	
+	public static Image scaleImage(IFile file, Rectangle src, int newSize, BufferedImage overlay) {
+		return scaleImage(file.getLocation().toPortableString(), src, newSize, overlay);
+	}
+	
+	
+	public static Image scaleImage(String filepath, Rectangle src, int newSize, BufferedImage overlay) {
+		try {
+			BufferedImage swingimg = ImageIO.read(new File(filepath));
+			BufferedImage swingimg2 = new BufferedImage(newSize, newSize, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2 = swingimg2.createGraphics();
+			Rectangle src2 = src == null ? new Rectangle(0, 0, swingimg.getWidth(), swingimg.getHeight()) : src;
+
+			ZoomCalculator calc = new ZoomCalculator(src2.width, src2.height);
+			calc.fit(newSize, newSize);
+			
+			Rectangle z = calc.imageToScreen(0, 0, src2.width, src2.height);
+			
+			g2.drawImage(swingimg, z.x, z.y, z.x + z.width, z.y + z.height, src2.x, src2.y, src2.x + src2.width,
+					src2.y + src2.height, null);
+			
+			if (overlay != null) {
+				g2.drawImage(overlay, 0, 0, null);
+			}
+			
+			g2.dispose();
+			
+			var img = image_Swing_To_SWT(swingimg2);
+			
+			return img;
+		} catch (IOException e) {
+			// e.printStackTrace();
+			return null;
+		}
 	}
 
 	public static Image image_Swing_To_SWT(BufferedImage img) throws IOException {
