@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015 Arian Fornaris
+// Copyright (c) 2015, 2018 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -19,39 +19,50 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.preview;
+package phasereditor.animation.ui.model;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IPersistableElement;
+import org.json.JSONObject;
 
+import phasereditor.animation.ui.AnimationModelPreviewFactory;
 import phasereditor.assetpack.core.animations.AnimationModel;
-import phasereditor.assetpack.ui.animations.AnimationCanvas;
-import phasereditor.ui.info.BaseInformationControl;
+import phasereditor.assetpack.core.animations.AnimationsModel;
+import phasereditor.ui.views.IPreviewFactory;
 
-public class AnimationInformationControl extends BaseInformationControl {
+/**
+ * @author arian
+ *
+ */
 
-	public AnimationInformationControl(Shell parentShell) {
-		super(parentShell);
+public class AnimationModel_Persistable extends AnimationModel implements IPersistableElement {
+
+	public AnimationModel_Persistable(AnimationsModel animations, JSONObject jsonData) {
+		super(animations, jsonData);
+	}
+
+	public AnimationModel_Persistable(AnimationsModel animations) {
+		super(animations);
 	}
 
 	@Override
-	protected Control createContent2(Composite parentComp) {
-		return new AnimationCanvas(parentComp, SWT.NONE);
+	@SuppressWarnings("unchecked")
+	public <T> T getAdapter(Class<T> adapter) {
+		if (adapter == IPreviewFactory.class) {
+			return (T) new AnimationModelPreviewFactory();
+		}
+		return null;
 	}
 
 	@Override
-	protected void updateContent(Control control, Object model) {
-		var comp = (AnimationCanvas) control;
-		comp.setModel((AnimationModel) model);
-		comp.play();
+	public void saveState(IMemento memento) {
+		memento.putString("file", getAnimations().getFile().getFullPath().toPortableString());
+		memento.putString("key", getKey());
+		memento.putString("dataKey", getAnimations().getDataKey());
 	}
 
 	@Override
-	protected void disposeControl(Control control) {
-		((AnimationCanvas) control).stop();
-
-		super.disposeControl(control);
+	public String getFactoryId() {
+		return AnimationModelElementFactory.ID;
 	}
 }

@@ -29,6 +29,7 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.ui.IPersistableElement;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -36,7 +37,6 @@ import org.json.JSONTokener;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.core.animations.AnimationsModel;
-import phasereditor.ui.views.IPreviewFactory;
 
 /**
  * @author arian
@@ -107,11 +107,11 @@ public class AnimationsAssetModel extends AssetModel {
 				var jsonData = new JSONObject(new JSONTokener(input));
 
 				try {
-
+					var jsonData2 = jsonData;
 					if (_dataKey != null && _dataKey.trim().length() > 0) {
 						var keys = _dataKey.split("\\.");
 						for (var key : keys) {
-							jsonData = jsonData.getJSONObject(key);
+							jsonData2 = jsonData2.getJSONObject(key);
 						}
 					}
 				} catch (Exception e) {
@@ -120,7 +120,8 @@ public class AnimationsAssetModel extends AssetModel {
 					throw e;
 				}
 
-				_animationsModel = new AnimationsModel_in_AssetPack(jsonData);
+				_animationsModel = new AnimationsModel_in_AssetPack(file, jsonData, _dataKey);
+				_animationsModel.setFile(file);
 				_animationsModel.build(problems);
 				_animations = _animationsModel.getAnimations_in_AssetPack();
 
@@ -151,8 +152,9 @@ public class AnimationsAssetModel extends AssetModel {
 		private List<AnimationModel_in_AssetPack> _animations_in_AssetPack;
 
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		public AnimationsModel_in_AssetPack(JSONObject jsonData) {
-			super(jsonData);
+		public AnimationsModel_in_AssetPack(IFile file, JSONObject jsonData, String dataKey) {
+			super(jsonData, dataKey);
+			setFile(file);
 			_animations_in_AssetPack = (List) getAnimations();
 		}
 
@@ -229,10 +231,12 @@ public class AnimationsAssetModel extends AssetModel {
 
 		@Override
 		public <T> T getAdapter(Class<T> adapter) {
-			if (adapter == IPreviewFactory.class) {
-				// do not use the default implementation
+
+			// do not use the default animation model persistable element.
+			if (adapter == IPersistableElement.class) {
 				return null;
 			}
+
 			return super.getAdapter(adapter);
 		}
 	}

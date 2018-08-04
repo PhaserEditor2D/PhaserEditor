@@ -1,4 +1,4 @@
-package phasereditor.animation.ui;
+package phasereditor.animation.ui.editor;
 
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 

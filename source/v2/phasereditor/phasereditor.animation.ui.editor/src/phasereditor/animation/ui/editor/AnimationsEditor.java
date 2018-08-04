@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.animation.ui;
+package phasereditor.animation.ui.editor;
 
 import static java.lang.System.out;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
@@ -79,11 +79,11 @@ import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.json.JSONException;
 
 import javafx.animation.Animation.Status;
-import phasereditor.animation.ui.properties.AnimationsPGridPage;
+import phasereditor.animation.ui.AnimationCanvas;
+import phasereditor.animation.ui.AnimationCanvas.IndexTransition;
+import phasereditor.animation.ui.editor.properties.AnimationsPGridPage;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
-import phasereditor.assetpack.ui.animations.AnimationCanvas;
-import phasereditor.assetpack.ui.animations.AnimationCanvas.IndexTransition;
 import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredContentOutlinePage;
@@ -563,7 +563,9 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		if (_timelineCanvas.getAnimation() != null) {
 			swtRun(() -> {
-				_outliner.setSelection(new StructuredSelection(_timelineCanvas.getAnimation()));
+				if (_outliner != null) {
+					_outliner.setSelection(new StructuredSelection(_timelineCanvas.getAnimation()));
+				}
 			});
 		}
 

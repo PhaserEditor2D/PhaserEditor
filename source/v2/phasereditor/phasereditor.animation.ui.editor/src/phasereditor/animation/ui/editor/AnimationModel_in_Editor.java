@@ -19,21 +19,22 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.animation.ui;
+package phasereditor.animation.ui.editor;
 
 import org.json.JSONObject;
 
-import phasereditor.animation.ui.properties.AnimationModel_in_Editor_PGridModel;
+import phasereditor.animation.ui.AnimationModelPreviewFactory;
+import phasereditor.animation.ui.editor.properties.AnimationModel_in_Editor_PGridModel;
+import phasereditor.animation.ui.model.AnimationModel_Persistable;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
-import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.ui.properties.PGridModel;
+import phasereditor.ui.views.IPreviewFactory;
 
 /**
  * @author arian
  *
  */
-public class AnimationModel_in_Editor extends AnimationModel {
-
+public class AnimationModel_in_Editor extends AnimationModel_Persistable {
 
 	public AnimationModel_in_Editor(AnimationsModel_in_Editor animations) {
 		super(animations);
@@ -51,11 +52,13 @@ public class AnimationModel_in_Editor extends AnimationModel {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Object getAdapter(Class adapter) {
-		
+
 		if (adapter == PGridModel.class) {
 			return new AnimationModel_in_Editor_PGridModel(this);
+		} else if (adapter == IPreviewFactory.class) {
+			return new AnimationModelPreviewFactory();
 		}
-		
+
 		return super.getAdapter(adapter);
 	}
 
@@ -67,4 +70,5 @@ public class AnimationModel_in_Editor extends AnimationModel {
 	public AnimationsModel_in_Editor getAnimations() {
 		return (AnimationsModel_in_Editor) super.getAnimations();
 	}
+
 }

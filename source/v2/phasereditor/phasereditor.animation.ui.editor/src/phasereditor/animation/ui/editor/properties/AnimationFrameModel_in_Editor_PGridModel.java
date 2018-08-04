@@ -19,10 +19,10 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.animation.ui.properties;
+package phasereditor.animation.ui.editor.properties;
 
-import phasereditor.animation.ui.AnimationFrameModel_in_Editor;
-import phasereditor.animation.ui.AnimationModel_in_Editor;
+import phasereditor.animation.ui.editor.AnimationFrameModel_in_Editor;
+import phasereditor.animation.ui.editor.AnimationModel_in_Editor;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.ui.properties.PGridNumberProperty;
 import phasereditor.ui.properties.PGridStringProperty;

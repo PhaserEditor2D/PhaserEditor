@@ -57,11 +57,4 @@
            type="phasereditor.project.core.problem">
      </super>
   </extension>
-  <extension
-        point="org.eclipse.ui.elementFactories">
-     <factory
-           class="phasereditor.assetpack.core.animations.AnimationModelElementFactory"
-           id="phasereditor.assetpack.core.animationFactory">
-     </factory>
-  </extension>
 </plugin>

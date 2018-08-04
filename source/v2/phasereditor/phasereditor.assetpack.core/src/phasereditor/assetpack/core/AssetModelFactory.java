@@ -29,7 +29,7 @@ import org.eclipse.ui.IMemento;
 
 public class AssetModelFactory implements IElementFactory {
 
-	public static final String FACTORY_ID = "phasereditor.assetpack.AssetModelFactory";
+	public static final String ID = "phasereditor.assetpack.AssetModelFactory";
 
 	@Override
 	public IAdaptable createElement(IMemento memento) {

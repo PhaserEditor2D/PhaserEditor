@@ -291,6 +291,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <feature id="phasereditor.chains" version="1.5.0.20180307"/>
       <feature id="phasereditor.bmpfont" version="1.5.0.20180307"/>
       <feature id="phasereditor.bluesky" version="2.0.0.20180410"/>
+      <feature id="phasereditor.animations" version="2.0.0"/>
       <feature id="org.eclipse.jgit"/>
       <feature id="org.eclipse.egit"/>
    </features>

@@ -51,7 +51,8 @@ import phasereditor.assetpack.core.PhysicsAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.TilemapAssetModel;
 import phasereditor.assetpack.core.VideoAssetModel;
-import phasereditor.assetpack.core.animations.AnimationModel;
+import phasereditor.animation.ui.AnimationModelPreviewFactory;
+import phasereditor.assetpack.core.AnimationsAssetModel.AnimationModel_in_AssetPack;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.atlas.core.AtlasFrame;
 import phasereditor.audiosprite.ui.GdxMusicControl;
@@ -99,13 +100,13 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			return createSpritesheetFramePreviewAdapter();
 		} else if (adaptable instanceof IAssetFrameModel && adaptable instanceof AtlasFrame) {
 			return createAtlasFramePreviewAdapter();
-		} else if (adaptable instanceof AnimationModel) {
+		} else if (adaptable instanceof AnimationModel_in_AssetPack) {
 			return createAnimationPreviewAdapter();
 		}
 		return null;
 	}
 
-	protected static abstract class AssetModelPreviewFactory implements IPreviewFactory {
+	public static abstract class AssetModelPreviewFactory implements IPreviewFactory {
 
 		public AssetModelPreviewFactory() {
 		}
@@ -152,18 +153,12 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 
 		@Override
 		public String getTitle(Object element) {
-			AssetModel asset;
-			String title = "";
 			if (element instanceof IAssetElementModel) {
 				IAssetElementModel assetElem = (IAssetElementModel) element;
-				title = " (" + assetElem.getName() + ")";
-				asset = assetElem.getAsset();
-
-			} else {
-				asset = (AssetModel) element;
+				return assetElem.getKey() + " (" + assetElem.getAsset().getKey() + ")";
 			}
-			title = asset.getKey() + title;
-			return title;
+
+			return ((AssetModel) element).getKey();
 		}
 
 		@Override
@@ -196,7 +191,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 
 				@Override
 				public String getFactoryId() {
-					return AssetModelFactory.FACTORY_ID;
+					return AssetModelFactory.ID;
 				}
 			};
 		}
@@ -315,32 +310,6 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 			@Override
 			public void savePreviewControl(Control preview, IMemento memento) {
 				((TilemapCSVAssetPreviewComp) preview).saveState(memento);
-			}
-		};
-	}
-
-	private static IPreviewFactory createAnimationPreviewAdapter() {
-		return new AssetModelPreviewFactory() {
-
-			@Override
-			public void updateControl(Control preview, Object element) {
-				var comp = (AnimationPreviewComp) preview;
-				comp.setModel((AnimationModel) element);
-			}
-
-			@Override
-			public Control createControl(Composite previewContainer) {
-				return new AnimationPreviewComp(previewContainer, SWT.NONE);
-			}
-
-			@Override
-			public boolean canReusePreviewControl(Control c, Object elem) {
-				return c instanceof AnimationPreviewComp && elem instanceof AnimationModel;
-			}
-
-			@Override
-			public void updateToolBar(IToolBarManager toolbar, Control preview) {
-				((AnimationPreviewComp) preview).createToolBar(toolbar);
 			}
 		};
 	}
@@ -599,6 +568,34 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 				((ImageAssetPreviewComp) preview).createToolBar(toolbar);
 			}
 		};
+	}
+
+	private static IPreviewFactory createAnimationPreviewAdapter() {
+		return new AssetModelPreviewFactory() {
+			private AnimationModelPreviewFactory _factory = new AnimationModelPreviewFactory();
+
+			@Override
+			public void updateControl(Control preview, Object element) {
+				_factory.updateControl(preview, element);
+			}
+
+			@Override
+			public Control createControl(Composite previewContainer) {
+				return _factory.createControl(previewContainer);
+			}
+
+			@Override
+			public boolean canReusePreviewControl(Control c, Object elem) {
+				return _factory.canReusePreviewControl(c, elem);
+			}
+
+			@Override
+			public void updateToolBar(IToolBarManager toolbar, Control preview) {
+				_factory.updateToolBar(toolbar, preview);
+			}
+
+		};
+
 	}
 
 	@Override

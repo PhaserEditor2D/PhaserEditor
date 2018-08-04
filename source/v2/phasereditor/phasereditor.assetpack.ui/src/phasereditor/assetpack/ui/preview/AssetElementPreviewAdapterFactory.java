@@ -33,12 +33,14 @@ public class AssetElementPreviewAdapterFactory extends AssetPreviewAdapterFactor
 		if (adaptable instanceof IAssetElementModel) {
 			Object obj;
 
-			if (adaptable instanceof SpritesheetAssetModel.FrameModel) {
+			if (adaptable instanceof SpritesheetAssetModel.FrameModel
+
+					|| adaptable instanceof AtlasFrame
+
+					|| adaptable instanceof AnimationModel) {
+
 				obj = adaptable;
-			} else if (adaptable instanceof AtlasFrame) {
-				obj = adaptable;
-			} else if (adaptable instanceof AnimationModel) {
-				obj = adaptable;
+
 			} else {
 				obj = ((IAssetElementModel) adaptable).getAsset();
 			}

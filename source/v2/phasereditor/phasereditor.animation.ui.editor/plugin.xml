@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="phasereditor.animation.ui.editor.AnimationsEditor"
+            icon="platform:/plugin/phasereditor.ui/icons/frame-animation.png"
+            id="phasereditor.animation.ui.AnimationsEditor"
+            name="Animations Editor">
+         <contentTypeBinding
+               contentTypeId="phasereditor.assetpack.core.animations">
+         </contentTypeBinding>
+      </editor>
+   </extension>
+   <extension
+         point="phasereditor.project.core.buildParticipant">
+      <participant
+            handler="phasereditor.animation.ui.editor.AnimationsEditorProjectBuildParticipant"
+            id="phasereditor.animation.ui.AnimationsEditorProjectBuildParticipant"
+            order="1000">
+      </participant>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="phasereditor.animation.ui.editor.handlers.DeleteAnimationSelectionHandler"
+            commandId="org.eclipse.ui.edit.delete">
+         <activeWhen>
+            <with
+                  variable="activeEditorId">
+               <equals
+                     value="phasereditor.animation.ui.AnimationsEditor">
+               </equals>
+            </with>
+         </activeWhen>
+      </handler>
+      <handler
+            class="phasereditor.animation.ui.editor.handlers.SelectAllFramesHandler"
+            commandId="org.eclipse.ui.edit.selectAll">
+         <activeWhen>
+            <with
+                  variable="activePartId">
+               <equals
+                     value="phasereditor.animation.ui.AnimationsEditor">
+               </equals>
+            </with>
+         </activeWhen>
+      </handler>
+      <handler
+            class="phasereditor.animation.ui.editor.handlers.PlayPauseAnimationHandler"
+            commandId="phasereditor.animation.ui.playPauseAnimation">
+         <activeWhen>
+            <with
+                  variable="activePartId">
+               <equals
+                     value="phasereditor.animation.ui.AnimationsEditor">
+               </equals>
+            </with>
+         </activeWhen>
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="phasereditor.ui.phaserCategory"
+            id="phasereditor.animation.ui.playPauseAnimation"
+            name="Play/Pause the current animation">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="phasereditor.animation.ui.playPauseAnimation"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="SPACE">
+      </key>
+   </extension>
+   
+     <extension
+        point="org.eclipse.ui.elementFactories">
+     <factory
+           class="phasereditor.animation.ui.model.AnimationModelElementFactory"
+           id="phasereditor.animation.ui.model.animationFactory">
+     </factory>
+  </extension>
+   
+
+</plugin>

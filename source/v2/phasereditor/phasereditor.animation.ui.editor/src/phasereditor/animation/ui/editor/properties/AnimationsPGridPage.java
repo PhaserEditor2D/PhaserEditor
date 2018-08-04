@@ -19,32 +19,46 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.animation.ui.properties;
+package phasereditor.animation.ui.editor.properties;
 
-import phasereditor.animation.ui.AnimationsEditor;
-import phasereditor.ui.properties.PGridModel;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IWorkbenchPart;
+
+import phasereditor.animation.ui.editor.AnimationsEditor;
+import phasereditor.ui.properties.PGridPage;
 
 /**
  * @author arian
  *
  */
-public class BaseAnimationPGridModel extends PGridModel {
+public class AnimationsPGridPage extends PGridPage {
 
-	private AnimationsPGridPage _propertyPage;
+	private AnimationsEditor _editor;
 
-	public void setPropertyPage(AnimationsPGridPage propertyPage) {
-		_propertyPage = propertyPage;
-	}
-
-	public AnimationsPGridPage getPropertyPage() {
-		return _propertyPage;
-	}
-
-	protected void refreshGrid() {
-		_propertyPage.getGrid().refresh();
+	public AnimationsPGridPage(AnimationsEditor editor) {
+		super(true);
+		_editor = editor;
 	}
 
 	public AnimationsEditor getEditor() {
-		return _propertyPage.getEditor();
+		return _editor;
 	}
+
+	@Override
+	public void createControl(Composite parent) {
+		super.createControl(parent);
+		getGrid().setOnChanged(_editor::gridPropertyChanged);
+	}
+
+	@Override
+	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+		super.selectionChanged(part, selection);
+
+		var model = (BaseAnimationPGridModel) getGrid().getModel();
+		if (model != null) {
+			model.setPropertyPage(this);
+		}
+	}
+
 }

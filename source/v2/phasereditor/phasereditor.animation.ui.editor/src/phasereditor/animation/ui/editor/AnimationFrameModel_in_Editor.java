@@ -19,32 +19,43 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.animation.ui;
+package phasereditor.animation.ui.editor;
 
+import org.eclipse.core.runtime.IAdaptable;
 import org.json.JSONObject;
 
-import phasereditor.assetpack.core.animations.AnimationModel;
-import phasereditor.assetpack.core.animations.AnimationsModel;
+import phasereditor.animation.ui.editor.properties.AnimationFrameModel_in_Editor_PGridModel;
+import phasereditor.assetpack.core.animations.AnimationFrameModel;
+import phasereditor.ui.properties.PGridModel;
 
 /**
  * @author arian
  *
  */
-public class AnimationsModel_in_Editor extends AnimationsModel {
+public class AnimationFrameModel_in_Editor extends AnimationFrameModel implements IAdaptable {
 
-	private AnimationsEditor _editor;
+	private AnimationModel_in_Editor _anim;
 
-	public AnimationsModel_in_Editor(AnimationsEditor editor) throws Exception {
-		super(editor.getEditorInput().getFile());
-		_editor = editor;
+	public AnimationFrameModel_in_Editor(AnimationModel_in_Editor anim) {
+		_anim = anim;
+	}
+
+	public AnimationFrameModel_in_Editor(AnimationModel_in_Editor anim, JSONObject jsonData) {
+		super(jsonData);
+		_anim = anim;
 	}
 	
-	public AnimationsEditor getEditor() {
-		return _editor;
+	public AnimationModel_in_Editor getAnimation() {
+		return _anim;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	protected AnimationModel createAnimation(JSONObject jsonData) {
-		return new AnimationModel_in_Editor(this, jsonData);
+	public Object getAdapter(Class adapter) {
+		if (adapter == PGridModel.class) {
+			return new AnimationFrameModel_in_Editor_PGridModel(_anim, this);
+		}
+		return null;
 	}
+
 }

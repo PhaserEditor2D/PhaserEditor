@@ -26,8 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPersistableElement;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,7 +35,7 @@ import org.json.JSONObject;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.IAssetFrameModel;
 
-public class AnimationModel implements IAdaptable, IPersistableElement {
+public class AnimationModel implements IAdaptable {
 
 	private String _key;
 	private List<AnimationFrameModel> _frames;
@@ -282,19 +282,6 @@ public class AnimationModel implements IAdaptable, IPersistableElement {
 		return null;
 	}
 
-	@Override
-	public void saveState(IMemento memento) {
-		memento.putString("file", getAnimations().getFile().getFullPath().toPortableString());
-		memento.putString("key", getKey());
-
-		// save all the asset packs used, so we can load them at the restore phase
-	}
-
-	@Override
-	public String getFactoryId() {
-		return AnimationModelElementFactory.ID;
-	}
-
 	public void build() {
 		Map<String, IAssetFrameModel> cache = new HashMap<>();
 
@@ -311,7 +298,8 @@ public class AnimationModel implements IAdaptable, IPersistableElement {
 				continue;
 			}
 
-			var packs = AssetPackCore.getAssetPackModels(getAnimations().getFile().getProject());
+			IFile file = getAnimations().getFile();
+			var packs = AssetPackCore.getAssetPackModels(file.getProject());
 			for (var pack : packs) {
 				frame = pack.findFrame(textureKey, frameName);
 			}

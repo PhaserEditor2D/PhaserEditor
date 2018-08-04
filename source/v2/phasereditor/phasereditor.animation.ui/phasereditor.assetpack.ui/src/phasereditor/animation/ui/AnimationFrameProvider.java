@@ -19,46 +19,57 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.animation.ui.properties;
+package phasereditor.animation.ui;
 
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.swt.graphics.Rectangle;
 
-import phasereditor.animation.ui.AnimationsEditor;
-import phasereditor.ui.properties.PGridPage;
+import phasereditor.assetpack.core.animations.AnimationModel;
+import phasereditor.ui.FrameGridCanvas.IFrameProvider;
 
 /**
  * @author arian
  *
  */
-public class AnimationsPGridPage extends PGridPage {
+public class AnimationFrameProvider implements IFrameProvider {
 
-	private AnimationsEditor _editor;
+	private AnimationModel _model;
 
-	public AnimationsPGridPage(AnimationsEditor editor) {
-		super(true);
-		_editor = editor;
-	}
-
-	public AnimationsEditor getEditor() {
-		return _editor;
+	public AnimationFrameProvider(AnimationModel model) {
+		super();
+		_model = model;
 	}
 
 	@Override
-	public void createControl(Composite parent) {
-		super.createControl(parent);
-		getGrid().setOnChanged(_editor::gridPropertyChanged);
+	public int getFrameCount() {
+		return _model.getFrames().size();
 	}
 
 	@Override
-	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		super.selectionChanged(part, selection);
+	public Rectangle getFrameRectangle(int index) {
+		var frame = _model.getFrames().get(index).getFrameAsset();
 
-		var model = (BaseAnimationPGridModel) getGrid().getModel();
-		if (model != null) {
-			model.setPropertyPage(this);
+		if (frame == null) {
+			return null;
 		}
+
+		return frame.getFrameData().src;
+	}
+
+	@Override
+	public IFile getFrameImageFile(int index) {
+		var frame = _model.getFrames().get(index).getFrameAsset();
+
+		if (frame == null) {
+			return null;
+		}
+
+		return frame.getImageFile();
+	}
+
+	@Override
+	public String getFrameTooltip(int index) {
+		return null;
 	}
 
 }

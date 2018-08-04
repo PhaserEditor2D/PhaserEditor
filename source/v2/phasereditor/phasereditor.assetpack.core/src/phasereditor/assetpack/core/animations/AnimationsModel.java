@@ -36,15 +36,27 @@ public class AnimationsModel {
 
 	private List<AnimationModel> _animations;
 	private IFile _file;
+	private String _dataKey;
 
 	public AnimationsModel() {
 		_animations = new ArrayList<>();
 	}
 
-	public AnimationsModel(JSONObject jsonData) {
+	public AnimationsModel(JSONObject jsonData, String dataKey) {
 		this();
+		
+		_dataKey = dataKey;
+		
+		var jsonData2 = jsonData;
 
-		var jsonAnims = jsonData.getJSONArray("anims");
+		if (dataKey != null && dataKey.trim().length() > 0) {
+			var keys = dataKey.split("\\.");
+			for (var key : keys) {
+				jsonData2 = jsonData2.getJSONObject(key);
+			}
+		}
+
+		var jsonAnims = jsonData2.getJSONArray("anims");
 		for (int i = 0; i < jsonAnims.length(); i++) {
 			var jsonAnim = jsonAnims.getJSONObject(i);
 			var anim = createAnimation(jsonAnim);
@@ -52,9 +64,21 @@ public class AnimationsModel {
 		}
 	}
 
+	public AnimationsModel(JSONObject jsonData) {
+		this(jsonData, null);
+	}
+
 	public AnimationsModel(IFile file) throws Exception {
-		this(JSONObject.read(file));
+		this(file, null);
+	}
+
+	public AnimationsModel(IFile file, String dataKey) throws Exception {
+		this(JSONObject.read(file), dataKey);
 		_file = file;
+	}
+	
+	public String getDataKey() {
+		return _dataKey;
 	}
 
 	public IFile getFile() {
@@ -99,7 +123,7 @@ public class AnimationsModel {
 		}
 		return null;
 	}
-	
+
 	public void build() {
 		for (var anim : getAnimations()) {
 			anim.build();

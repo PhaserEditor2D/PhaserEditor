@@ -1,4 +1,4 @@
-package phasereditor.animation.ui.handlers;
+package phasereditor.animation.ui.editor.handlers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,9 +8,9 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import phasereditor.animation.ui.AnimationFrameModel_in_Editor;
-import phasereditor.animation.ui.AnimationModel_in_Editor;
-import phasereditor.animation.ui.AnimationsEditor;
+import phasereditor.animation.ui.editor.AnimationFrameModel_in_Editor;
+import phasereditor.animation.ui.editor.AnimationModel_in_Editor;
+import phasereditor.animation.ui.editor.AnimationsEditor;
 
 public class DeleteAnimationSelectionHandler extends AbstractHandler {
 

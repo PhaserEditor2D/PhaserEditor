@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.animation.ui;
 
+import org.eclipse.core.runtime.Adapters;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -29,7 +30,6 @@ import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPersistableElement;
 
 import phasereditor.assetpack.core.animations.AnimationModel;
-import phasereditor.assetpack.ui.preview.AnimationPreviewComp;
 import phasereditor.ui.views.IPreviewFactory;
 
 /**
@@ -60,12 +60,13 @@ public class AnimationModelPreviewFactory implements IPreviewFactory {
 
 	@Override
 	public String getTitle(Object element) {
-		return ((AnimationModel) element).getKey();
+		AnimationModel anim = (AnimationModel) element;
+		return anim.getKey() + " (" + anim.getAnimations().getFile().getName() + ")";
 	}
 
 	@Override
 	public IPersistableElement getPersistable(Object elem) {
-		return (AnimationModel) elem;
+		return Adapters.adapt(elem, IPersistableElement.class);
 	}
 
 	@Override

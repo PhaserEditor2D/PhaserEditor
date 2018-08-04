@@ -19,57 +19,32 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.assetpack.ui.animations;
+package phasereditor.animation.ui.editor;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.swt.graphics.Rectangle;
+import org.json.JSONObject;
 
-import phasereditor.assetpack.core.animations.AnimationModel;
-import phasereditor.ui.FrameGridCanvas.IFrameProvider;
+import phasereditor.assetpack.core.animations.AnimationsModel;
 
 /**
  * @author arian
  *
  */
-public class AnimationFrameProvider implements IFrameProvider {
+public class AnimationsModel_in_Editor extends AnimationsModel {
 
-	private AnimationModel _model;
+	private AnimationsEditor _editor;
 
-	public AnimationFrameProvider(AnimationModel model) {
-		super();
-		_model = model;
+	public AnimationsModel_in_Editor(AnimationsEditor editor) throws Exception {
+		super(editor.getEditorInput().getFile());
+		_editor = editor;
+	}
+	
+	public AnimationsEditor getEditor() {
+		return _editor;
 	}
 
 	@Override
-	public int getFrameCount() {
-		return _model.getFrames().size();
+	protected AnimationModel_in_Editor createAnimation(JSONObject jsonData) {
+		return new AnimationModel_in_Editor(this, jsonData);
 	}
-
-	@Override
-	public Rectangle getFrameRectangle(int index) {
-		var frame = _model.getFrames().get(index).getFrameAsset();
-
-		if (frame == null) {
-			return null;
-		}
-
-		return frame.getFrameData().src;
-	}
-
-	@Override
-	public IFile getFrameImageFile(int index) {
-		var frame = _model.getFrames().get(index).getFrameAsset();
-
-		if (frame == null) {
-			return null;
-		}
-
-		return frame.getImageFile();
-	}
-
-	@Override
-	public String getFrameTooltip(int index) {
-		return null;
-	}
-
+	
 }

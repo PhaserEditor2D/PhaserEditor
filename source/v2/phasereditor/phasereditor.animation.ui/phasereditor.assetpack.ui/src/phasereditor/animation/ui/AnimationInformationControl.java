@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015, 2018 Arian Fornaris
+// Copyright (c) 2015 Arian Fornaris
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -21,41 +21,36 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.animation.ui;
 
-import org.eclipse.core.runtime.IAdaptable;
-import org.json.JSONObject;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 
-import phasereditor.animation.ui.properties.AnimationFrameModel_in_Editor_PGridModel;
-import phasereditor.assetpack.core.animations.AnimationFrameModel;
-import phasereditor.ui.properties.PGridModel;
+import phasereditor.assetpack.core.animations.AnimationModel;
+import phasereditor.ui.info.BaseInformationControl;
 
-/**
- * @author arian
- *
- */
-public class AnimationFrameModel_in_Editor extends AnimationFrameModel implements IAdaptable {
+public class AnimationInformationControl extends BaseInformationControl {
 
-	private AnimationModel_in_Editor _anim;
-
-	public AnimationFrameModel_in_Editor(AnimationModel_in_Editor anim) {
-		_anim = anim;
+	public AnimationInformationControl(Shell parentShell) {
+		super(parentShell);
 	}
 
-	public AnimationFrameModel_in_Editor(AnimationModel_in_Editor anim, JSONObject jsonData) {
-		super(jsonData);
-		_anim = anim;
-	}
-	
-	public AnimationModel_in_Editor getAnimation() {
-		return _anim;
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public Object getAdapter(Class adapter) {
-		if (adapter == PGridModel.class) {
-			return new AnimationFrameModel_in_Editor_PGridModel(_anim, this);
-		}
-		return null;
+	protected Control createContent2(Composite parentComp) {
+		return new AnimationCanvas(parentComp, SWT.NONE);
 	}
 
+	@Override
+	protected void updateContent(Control control, Object model) {
+		var comp = (AnimationCanvas) control;
+		comp.setModel((AnimationModel) model);
+		comp.play();
+	}
+
+	@Override
+	protected void disposeControl(Control control) {
+		((AnimationCanvas) control).stop();
+
+		super.disposeControl(control);
+	}
 }
