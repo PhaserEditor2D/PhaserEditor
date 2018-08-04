@@ -59,8 +59,8 @@ import phasereditor.ui.ImageCanvas.ZoomCalculator;
  *
  */
 @SuppressWarnings("boxing")
-public class FrameGridCanvas extends BaseImageCanvas
-		implements PaintListener, IZoomable, DragSourceListener, MouseMoveListener, MouseWheelListener, MouseListener, KeyListener {
+public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, IZoomable, DragSourceListener,
+		MouseMoveListener, MouseWheelListener, MouseListener, KeyListener {
 
 	private List<Rectangle> _frames;
 	private List<Rectangle> _places;
@@ -511,10 +511,10 @@ public class FrameGridCanvas extends BaseImageCanvas
 
 		switch (e.keyCode) {
 		case SWT.ARROW_LEFT:
-			// shiftSelection(-1);
+			 shiftSelection(-1);
 			break;
 		case SWT.ARROW_RIGHT:
-			// shiftSelection(1);
+			 shiftSelection(1);
 			break;
 		case SWT.HOME:
 			// TODO: scroll to the start
@@ -530,6 +530,28 @@ public class FrameGridCanvas extends BaseImageCanvas
 	@Override
 	public void keyReleased(KeyEvent e) {
 		//
+	}
+
+	private void shiftSelection(int dir) {
+
+		if (_lastSelectedIndex == -1) {
+			return;
+		}
+
+		if (_frames.isEmpty()) {
+			return;
+		}
+
+		int i = _lastSelectedIndex;
+		int j = i + dir;
+		if (j >= 0 && j < _frames.size()) {
+			_selectedIndexes = new ArrayList<>();
+			_selectedIndexes.add(j);
+			_lastSelectedIndex = j;
+
+			redraw();
+		}
+
 	}
 
 }
