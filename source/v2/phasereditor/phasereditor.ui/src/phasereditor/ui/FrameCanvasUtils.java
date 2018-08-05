@@ -94,6 +94,10 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 
 	@Override
 	public void mouseMove(MouseEvent e) {
+		updateOverIndex(e);
+	}
+
+	public void updateOverIndex(MouseEvent e) {
 		if (getFramesCount() == 0) {
 			return;
 		}

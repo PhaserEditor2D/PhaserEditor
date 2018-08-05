@@ -341,8 +341,12 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 		if (newSize == getFrameSize()) {
 			newSize = e.button < 0 ? 1 : newSize * 2;
 		}
+		
 		setFrameSize(newSize);
+		
 		updateScroll();
+		
+		_utils.updateOverIndex(e);
 	}
 	
 	public void selectAll() {
