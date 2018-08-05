@@ -57,7 +57,7 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 	private int _overIndex;
 	private Canvas _canvas;
 
-	public FrameCanvasUtils(Canvas canvas) {
+	public FrameCanvasUtils(Canvas canvas, boolean addDragAndDropSupport) {
 		super(true);
 
 		_canvas = canvas;
@@ -71,7 +71,9 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		canvas.addMouseListener(this);
 		canvas.addKeyListener(this);
 
-		init_DND();
+		if (addDragAndDropSupport) {
+			addDragAndDropSupport();
+		}
 	}
 
 	public abstract int getFramesCount();
@@ -168,6 +170,15 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 
 	@Override
 	public void mouseUp(MouseEvent e) {
+		updateSelectionWithMouseEvent(e);
+	}
+
+	@Override
+	public void mouseDown(MouseEvent e) {
+		//
+	}
+
+	private void updateSelectionWithMouseEvent(MouseEvent e) {
 		if (e.button != 1) {
 			return;
 		}
@@ -234,11 +245,6 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		}
 		_canvas.redraw();
 		updateSelectionProvider();
-	}
-
-	@Override
-	public void mouseDown(MouseEvent e) {
-		//
 	}
 
 	@Override
@@ -310,7 +316,7 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		_selectedIndexes = new ArrayList<>();
 	}
 
-	private void init_DND() {
+	public void addDragAndDropSupport() {
 		{
 			DragSource dragSource = new DragSource(_canvas, DND.DROP_MOVE | DND.DROP_DEFAULT);
 			dragSource.setTransfer(new Transfer[] { TextTransfer.getInstance(), LocalSelectionTransfer.getTransfer() });

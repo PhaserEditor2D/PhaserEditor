@@ -60,7 +60,7 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 	private boolean _fitWindow;
 	private FrameCanvasUtils _utils;
 
-	public FrameGridCanvas(Composite parent, int style) {
+	public FrameGridCanvas(Composite parent, int style, boolean addDragAndDropSupport) {
 		super(parent, style | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL | SWT.NO_REDRAW_RESIZE);
 
 		_frames = Collections.emptyList();
@@ -71,7 +71,7 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 
 		addMouseWheelListener(this);
 
-		_utils = new FrameCanvasUtils(this) {
+		_utils = new FrameCanvasUtils(this, addDragAndDropSupport) {
 
 			@Override
 			public Point getRealPosition(int x, int y) {

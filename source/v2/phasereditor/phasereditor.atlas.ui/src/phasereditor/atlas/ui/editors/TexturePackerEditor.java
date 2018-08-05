@@ -117,8 +117,7 @@ import phasereditor.ui.IconCache;
 import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.properties.PGridPage;
 
-public class TexturePackerEditor extends EditorPart
-		implements IEditorSharedImages, IResourceChangeListener {
+public class TexturePackerEditor extends EditorPart implements IEditorSharedImages, IResourceChangeListener {
 
 	public static final String ID = "phasereditor.atlas.ui.editors.TexturePackerEditor"; //$NON-NLS-1$
 
@@ -346,9 +345,12 @@ public class TexturePackerEditor extends EditorPart
 					addTree((IContainer) e, files);
 				}
 			}
-			_model.addImageFiles(files);
 
-			build(true);
+			if (!files.isEmpty()) {
+				_model.addImageFiles(files);
+
+				build(true);
+			}
 		}
 	}
 
@@ -819,9 +821,9 @@ public class TexturePackerEditor extends EditorPart
 	}
 
 	private AtlasCanvas createAtlasCanvas(Composite parent) {
-		AtlasCanvas canvas = new AtlasCanvas(parent, SWT.NONE);
+		AtlasCanvas canvas = new AtlasCanvas(parent, SWT.NONE, false);
 		ISelectionChangedListener listener = new ISelectionChangedListener() {
-			
+
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				updateSelection_from_Canvas_to_Outliner(canvas);
@@ -1129,7 +1131,7 @@ public class TexturePackerEditor extends EditorPart
 	private Object createOutliner() {
 		if (_outliner == null) {
 			_outlinerSelectionListener = new ISelectionChangedListener() {
-				
+
 				@Override
 				public void selectionChanged(SelectionChangedEvent event) {
 					updateSelection_from_Outline_to_Canvas();
@@ -1141,7 +1143,6 @@ public class TexturePackerEditor extends EditorPart
 		return _outliner;
 	}
 
-	
 	public void updateSelection_from_Outline_to_Canvas() {
 		IStructuredSelection selection = (IStructuredSelection) _outliner.getSelection();
 
@@ -1155,10 +1156,9 @@ public class TexturePackerEditor extends EditorPart
 
 		for (int i = 0; i < _tabsFolder.getItemCount(); i++) {
 			AtlasCanvas canvas = getAtlasCanvas(i);
-			
-			
+
 			canvas.setSelection(selection, false);
-			
+
 			canvas.redraw();
 			if (_canvasClicked == null) {
 				if (!canvas.getSelection().isEmpty()) {
@@ -1175,7 +1175,7 @@ public class TexturePackerEditor extends EditorPart
 
 		_canvasClicked = null;
 	}
-	
+
 	private void selectTab(int i) {
 		_tabsFolder.setSelection(i);
 		repaintTab(i);

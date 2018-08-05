@@ -77,7 +77,7 @@ public class MultiAtlasAssetPreviewComp extends Composite {
 		setLayout(new StackLayout());
 
 		_spritesList = new FilteredTree(this, SWT.MULTI, new PatternFilter2(), true);
-		_gridCanvas = new FrameGridCanvas(this, SWT.NONE);
+		_gridCanvas = new FrameGridCanvas(this, SWT.NONE, false);
 
 		{
 			Transfer[] types = { LocalSelectionTransfer.getTransfer(), TextTransfer.getInstance() };

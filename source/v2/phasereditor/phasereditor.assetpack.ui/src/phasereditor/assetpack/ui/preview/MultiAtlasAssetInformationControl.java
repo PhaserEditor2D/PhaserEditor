@@ -38,7 +38,7 @@ public class MultiAtlasAssetInformationControl extends BaseInformationControl {
 
 	@Override
 	protected Control createContent2(Composite parentComp) {
-		return new FrameGridCanvas(parentComp, SWT.NONE);
+		return new FrameGridCanvas(parentComp, SWT.NONE, false);
 	}
 
 	@Override

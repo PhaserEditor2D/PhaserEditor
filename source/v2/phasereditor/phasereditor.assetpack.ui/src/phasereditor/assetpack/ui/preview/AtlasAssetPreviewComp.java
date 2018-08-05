@@ -85,9 +85,9 @@ public class AtlasAssetPreviewComp extends Composite {
 
 		setLayout(new StackLayout());
 
-		_canvas = new AtlasCanvas(this, SWT.NONE);
+		_canvas = new AtlasCanvas(this, SWT.NONE, true);
 		_spritesList = new FilteredTree(this, SWT.MULTI, new PatternFilter2(), true);
-		_gridCanvas = new FrameGridCanvas(this, SWT.NONE);
+		_gridCanvas = new FrameGridCanvas(this, SWT.NONE, true);
 
 		{
 			Transfer[] types = { LocalSelectionTransfer.getTransfer(), TextTransfer.getInstance() };

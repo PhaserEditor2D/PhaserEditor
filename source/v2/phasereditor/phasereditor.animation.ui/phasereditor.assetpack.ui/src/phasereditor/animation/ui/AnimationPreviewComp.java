@@ -59,7 +59,7 @@ public class AnimationPreviewComp extends Composite {
 
 		setLayout(new StackLayout());
 
-		_gridCanvas = new FrameGridCanvas(this, SWT.NONE);
+		_gridCanvas = new FrameGridCanvas(this, SWT.NONE, true);
 		_animCanvas = new AnimationCanvas(this, SWT.NONE);
 
 		afterCreateWidgets();
