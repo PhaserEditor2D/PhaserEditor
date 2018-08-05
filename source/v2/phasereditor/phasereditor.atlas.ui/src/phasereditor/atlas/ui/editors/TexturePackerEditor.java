@@ -32,11 +32,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.resources.IContainer;
@@ -82,8 +80,6 @@ import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
@@ -122,7 +118,7 @@ import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.properties.PGridPage;
 
 public class TexturePackerEditor extends EditorPart
-		implements IEditorSharedImages, IResourceChangeListener, ISelectionChangedListener {
+		implements IEditorSharedImages, IResourceChangeListener {
 
 	public static final String ID = "phasereditor.atlas.ui.editors.TexturePackerEditor"; //$NON-NLS-1$
 
@@ -140,6 +136,8 @@ public class TexturePackerEditor extends EditorPart
 	private MenuManager _menuManager;
 
 	private AtlasCanvas _canvasClicked;
+
+	ISelectionChangedListener _outlinerSelectionListener;
 
 	public TexturePackerEditor() {
 		_guessLastOutputFiles = new ArrayList<>();
@@ -320,7 +318,7 @@ public class TexturePackerEditor extends EditorPart
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
 
 		if (_outliner != null) {
-			_outliner.removeSelectionChangedListener(this);
+			_outliner.removeSelectionChangedListener(_outlinerSelectionListener);
 		}
 
 		try {
@@ -822,63 +820,34 @@ public class TexturePackerEditor extends EditorPart
 
 	private AtlasCanvas createAtlasCanvas(Composite parent) {
 		AtlasCanvas canvas = new AtlasCanvas(parent, SWT.NONE);
-		canvas.addMouseListener(new MouseAdapter() {
+		ISelectionChangedListener listener = new ISelectionChangedListener() {
+			
 			@Override
-			public void mouseUp(MouseEvent e) {
-				if (e.button == 1) {
-
-					boolean control = (e.stateMask & SWT.MOD1) != 0;
-
-					canvasClicked(canvas, control);
-				}
+			public void selectionChanged(SelectionChangedEvent event) {
+				updateSelection_from_Canvas_to_Outliner(canvas);
 			}
-		});
+		};
+		canvas.addSelectionChangedListener(listener);
+		canvas.addDisposeListener(e -> canvas.removeSelectionChangedListener(listener));
 
 		canvas.setMenu(_menuManager.createContextMenu(canvas));
 
 		return canvas;
 	}
 
-	protected void canvasClicked(AtlasCanvas canvas, boolean controlPressed) {
+	protected void updateSelection_from_Canvas_to_Outliner(AtlasCanvas canvas) {
 		_canvasClicked = canvas;
 
-		TexturePackerEditorFrame frame = (TexturePackerEditorFrame) canvas.getOverFrame();
+		var selection = canvas.getSelection();
 
-		IStructuredSelection selection;
-
-		@SuppressWarnings("unchecked")
-		Set<Object> currentSelection = new HashSet<>(
-				((IStructuredSelection) _selectionProvider.getSelection()).toList());
-
-		if (frame == null) {
-			if (controlPressed) {
-				selection = (IStructuredSelection) _selectionProvider.getSelection();
-			} else {
-				selection = StructuredSelection.EMPTY;
-			}
-		} else {
-			if (controlPressed) {
-				if (currentSelection.contains(frame)) {
-					currentSelection.remove(frame);
-				} else {
-					currentSelection.add(frame);
-				}
-				selection = new StructuredSelection(currentSelection.toArray());
-			} else {
-				selection = new StructuredSelection(frame);
-			}
+		if (_outliner != null) {
+			_outliner.getViewer().expandAll();
+			_outliner.removeSelectionChangedListener(_outlinerSelectionListener);
+			_outliner.setSelection(selection);
+			_outliner.addSelectionChangedListener(_outlinerSelectionListener);
 		}
 
-		if (selection != _selectionProvider.getSelection()) {
-			canvas.setSelection(selection);
-			canvas.redraw();
-
-			if (_outliner != null) {
-				_outliner.setSelection(selection);
-			}
-
-			_selectionProvider.setSelection(selection);
-		}
+		_selectionProvider.setSelection(selection);
 	}
 
 	private void addMainTab() {
@@ -1103,7 +1072,7 @@ public class TexturePackerEditor extends EditorPart
 
 		@Override
 		public void dispose() {
-			getTreeViewer().removeSelectionChangedListener(TexturePackerEditor.this);
+			getTreeViewer().removeSelectionChangedListener(_outlinerSelectionListener);
 			TexturePackerEditor.this._outliner = null;
 			super.dispose();
 		}
@@ -1159,15 +1128,22 @@ public class TexturePackerEditor extends EditorPart
 	 */
 	private Object createOutliner() {
 		if (_outliner == null) {
+			_outlinerSelectionListener = new ISelectionChangedListener() {
+				
+				@Override
+				public void selectionChanged(SelectionChangedEvent event) {
+					updateSelection_from_Outline_to_Canvas();
+				}
+			};
 			_outliner = new TexturePackerContentOutlinePage();
-			_outliner.addSelectionChangedListener(this);
+			_outliner.addSelectionChangedListener(_outlinerSelectionListener);
 		}
 		return _outliner;
 	}
 
-	@Override
-	public void selectionChanged(SelectionChangedEvent event) {
-		IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+	
+	public void updateSelection_from_Outline_to_Canvas() {
+		IStructuredSelection selection = (IStructuredSelection) _outliner.getSelection();
 
 		Object elem = selection.getFirstElement();
 
@@ -1179,7 +1155,10 @@ public class TexturePackerEditor extends EditorPart
 
 		for (int i = 0; i < _tabsFolder.getItemCount(); i++) {
 			AtlasCanvas canvas = getAtlasCanvas(i);
-			canvas.setSelection(selection);
+			
+			
+			canvas.setSelection(selection, false);
+			
 			canvas.redraw();
 			if (_canvasClicked == null) {
 				if (!canvas.getSelection().isEmpty()) {
@@ -1195,10 +1174,8 @@ public class TexturePackerEditor extends EditorPart
 		}
 
 		_canvasClicked = null;
-
-		_selectionProvider.setSelection(event.getSelection());
 	}
-
+	
 	private void selectTab(int i) {
 		_tabsFolder.setSelection(i);
 		repaintTab(i);

@@ -27,6 +27,7 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
@@ -50,13 +51,14 @@ import org.eclipse.swt.widgets.Canvas;
  *
  */
 @SuppressWarnings("boxing")
-public abstract class FrameCanvasUtils
+public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		implements MouseMoveListener, MouseWheelListener, MouseListener, KeyListener, DragSourceListener {
 
 	private int _overIndex;
 	private Canvas _canvas;
 
 	public FrameCanvasUtils(Canvas canvas) {
+		super(true);
 
 		_canvas = canvas;
 
@@ -121,16 +123,47 @@ public abstract class FrameCanvasUtils
 		return _selectedIndexes;
 	}
 
-	public void setSelectedIndexes(List<Integer> indexes) {
-		_selectedIndexes = new ArrayList<>(indexes);
-	}
-
 	public List<Object> getSelectedObjects() {
 		var list = new ArrayList<>();
 		for (int i : _selectedIndexes) {
 			list.add(getFrameObject(i));
 		}
 		return list;
+	}
+
+	private void updateSelectionProvider() {
+		setSelectionList(getSelectedObjects());
+	}
+
+	public void setSelection(ISelection sel, boolean fireChanged) {
+		var b = isAutoFireSelectionChanged();
+		setAutoFireSelectionChanged(fireChanged);
+		setSelection(sel);
+		setAutoFireSelectionChanged(b);
+	}
+
+	@Override
+	public void setSelection(ISelection sel) {
+		if (sel instanceof IStructuredSelection) {
+			var array = ((IStructuredSelection) sel).toArray();
+			var indexlist = new ArrayList<Integer>();
+			var objlist = new ArrayList<>();
+
+			for (var obj : array) {
+				for (int i = 0; i < getFramesCount(); i++) {
+					var frameObj = getFrameObject(i);
+					if (obj != null && obj.equals(frameObj)) {
+						indexlist.add(i);
+						objlist.add(obj);
+					}
+				}
+			}
+
+			_lastSelectedIndex = -1;
+			_selectedIndexes = indexlist;
+
+			super.setSelection(new StructuredSelection(objlist));
+		}
 	}
 
 	@Override
@@ -183,12 +216,13 @@ public abstract class FrameCanvasUtils
 
 			}
 
-			// updateSelectionProvider();
 		}
 
 		if (updateLastSelectionFrame) {
 			_lastSelectedIndex = index;
 		}
+
+		updateSelectionProvider();
 
 		_canvas.redraw();
 	}
@@ -199,6 +233,7 @@ public abstract class FrameCanvasUtils
 			_selectedIndexes.add(i);
 		}
 		_canvas.redraw();
+		updateSelectionProvider();
 	}
 
 	@Override
@@ -218,6 +253,7 @@ public abstract class FrameCanvasUtils
 			_lastSelectedIndex = -1;
 			emptySelection();
 			_canvas.redraw();
+			updateSelectionProvider();
 			break;
 		default:
 			break;
@@ -265,6 +301,8 @@ public abstract class FrameCanvasUtils
 
 			_canvas.redraw();
 		}
+
+		updateSelectionProvider();
 
 	}
 
@@ -320,5 +358,4 @@ public abstract class FrameCanvasUtils
 			event.image.dispose();
 		}
 	}
-
 }
