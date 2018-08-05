@@ -59,12 +59,12 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener {
 			}
 
 			@Override
-			public Rectangle getPaintFrame(int index) {
+			public Rectangle getRenderImageDstFrame(int index) {
 				return _framesRects[index];
 			}
 
 			@Override
-			public Rectangle getImageFrame(int index) {
+			public Rectangle getRenderImageSrcFrame(int index) {
 				AtlasFrame frame = _frames.get(index);
 				return frame.getFrameData().src;
 			}

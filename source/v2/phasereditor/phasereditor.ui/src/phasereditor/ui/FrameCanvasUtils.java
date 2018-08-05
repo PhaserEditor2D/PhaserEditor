@@ -78,7 +78,13 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 
 	public abstract int getFramesCount();
 
-	public abstract Rectangle getPaintFrame(int index);
+	public abstract Rectangle getRenderImageSrcFrame(int index);
+	
+	public abstract Rectangle getRenderImageDstFrame(int index);
+	
+	public Rectangle getSelectionFrameArea(int index) {
+		return getRenderImageDstFrame(index);
+	}
 
 	public abstract Point getRealPosition(int x, int y);
 
@@ -86,7 +92,6 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 
 	public abstract IFile getImageFile(int index);
 
-	public abstract Rectangle getImageFrame(int index);
 
 	public int getOverIndex() {
 		return _overIndex;
@@ -105,8 +110,8 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		int old = _overIndex;
 		int index = -1;
 		for (int i = 0; i < getFramesCount(); i++) {
-			Rectangle place = getPaintFrame(i);
-			if (place.contains(getRealPosition(e.x, e.y))) {
+			Rectangle rect = getSelectionFrameArea(i);
+			if (rect.contains(getRealPosition(e.x, e.y))) {
 				index = i;
 				break;
 			}
@@ -165,7 +170,6 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 				}
 			}
 
-			_lastSelectedIndex = -1;
 			_selectedIndexes = indexlist;
 
 			super.setSelection(new StructuredSelection(objlist));
@@ -338,7 +342,7 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		}
 
 		var file = getImageFile(index);
-		var src = getImageFrame(index);
+		var src = getRenderImageSrcFrame(index);
 
 		ISelection sel = null;
 

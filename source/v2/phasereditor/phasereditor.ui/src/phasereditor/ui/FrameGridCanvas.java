@@ -48,8 +48,10 @@ import phasereditor.ui.ImageCanvas.ZoomCalculator;
 @SuppressWarnings({ "boxing", "synthetic-access" })
 public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, IZoomable, MouseWheelListener {
 
-	private List<Rectangle> _frames;
-	private List<Rectangle> _places;
+	private static final int SINGLE_COLUMN_LAYOUT_WIDTH = 64;
+	private List<Rectangle> _renderImageSrcFrames;
+	private List<Rectangle> _renderImageDstFrames;
+	private List<Rectangle> _selectionFrameArea;
 	private List<Image> _images;
 	private List<Object> _objects;
 	private List<IFile> _files;
@@ -59,11 +61,12 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 	private List<String> _tooltips;
 	private boolean _fitWindow;
 	private FrameCanvasUtils _utils;
+	private boolean _singleColumnLayout;
 
 	public FrameGridCanvas(Composite parent, int style, boolean addDragAndDropSupport) {
 		super(parent, style | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL | SWT.NO_REDRAW_RESIZE);
 
-		_frames = Collections.emptyList();
+		_renderImageSrcFrames = Collections.emptyList();
 		_images = Collections.emptyList();
 		_frameSize = 64;
 
@@ -80,12 +83,22 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 
 			@Override
 			public int getFramesCount() {
-				return _places.size();
+				return _renderImageSrcFrames.size();
 			}
 
 			@Override
-			public Rectangle getPaintFrame(int index) {
-				return _places.get(index);
+			public Rectangle getRenderImageSrcFrame(int index) {
+				return _renderImageSrcFrames.get(index);
+			}
+
+			@Override
+			public Rectangle getRenderImageDstFrame(int index) {
+				return _renderImageDstFrames.get(index);
+			}
+			
+			@Override
+			public Rectangle getSelectionFrameArea(int index) {
+				return _selectionFrameArea.get(index);
 			}
 
 			@Override
@@ -98,10 +111,6 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 				return _files.get(index);
 			}
 
-			@Override
-			public Rectangle getImageFrame(int index) {
-				return _frames.get(index);
-			}
 		};
 
 		_origin = new Point(0, 0);
@@ -167,30 +176,30 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 		tx.translate(0, _origin.y);
 		gc.setTransform(tx);
 
-		for (int i = 0; i < _frames.size(); i++) {
-			var frame = _frames.get(i);
-			var place = _places.get(i);
+		for (int i = 0; i < _renderImageSrcFrames.size(); i++) {
+			var frame = _renderImageSrcFrames.get(i);
+			var selRect = _selectionFrameArea.get(i);
 			var selected = _utils.getSelectedIndexes().contains(i);
 
 			if (selected) {
 				gc.setBackground(PhaserEditorUI.get_pref_Preview_frameSelectionColor());
 				gc.setAlpha(100);
-				gc.fillRectangle(place);
-
+				gc.fillRectangle(selRect);
 				gc.setAlpha(255);
 			} else {
-				PhaserEditorUI.paintPreviewBackground(gc, place);
+				PhaserEditorUI.paintPreviewBackground(gc, selRect);
 			}
 
 			Image image = _images.get(i);
 
 			if (image != null) {
-				gc.drawImage(image, frame.x, frame.y, frame.width, frame.height, place.x, place.y, place.width,
-						place.height);
+				var dst = _renderImageDstFrames.get(i);
+				gc.drawImage(image, frame.x, frame.y, frame.width, frame.height, dst.x, dst.y, dst.width,
+						dst.height);
 			}
 
 			if (i == _utils.getOverIndex() || selected) {
-				gc.drawRectangle(place);
+				gc.drawRectangle(selRect);
 			}
 		}
 	}
@@ -208,19 +217,29 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 		int x = 0;
 		int y = 0;
 
-		_places = new ArrayList<>();
+		_renderImageDstFrames = new ArrayList<>();
+		_selectionFrameArea = new ArrayList<>();
 
-		for (Rectangle frame : _frames) {
+		int maxWidth = b.width;
+		_singleColumnLayout = _frameSize <= SINGLE_COLUMN_LAYOUT_WIDTH;
+
+		if (_singleColumnLayout) {
+			maxWidth = SINGLE_COLUMN_LAYOUT_WIDTH;
+		}
+
+		for (Rectangle frame : _renderImageSrcFrames) {
 
 			ZoomCalculator c = new ZoomCalculator(frame.width, frame.height);
 			c.fit(_frameSize, _frameSize);
 
-			Rectangle place = new Rectangle(x + (int) c.offsetX, y + (int) c.offsetY, (int) (frame.width * c.scale),
+			Rectangle dst = new Rectangle(x + (int) c.offsetX, y + (int) c.offsetY, (int) (frame.width * c.scale),
 					(int) (frame.height * c.scale));
-			_places.add(place);
+
+			_renderImageDstFrames.add(dst);
+
 			x += S + _frameSize;
 
-			if (x + box > b.width) {
+			if (x + box > maxWidth) {
 				y += box;
 				x = 0;
 			}
@@ -229,7 +248,7 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 		Point min = new Point(Integer.MAX_VALUE, Integer.MAX_VALUE);
 		Point max = new Point(Integer.MIN_VALUE, Integer.MIN_VALUE);
 
-		for (Rectangle place : _places) {
+		for (Rectangle place : _renderImageDstFrames) {
 			min.x = Math.min(min.x, place.x);
 			min.y = Math.min(min.y, place.y);
 			max.x = Math.max(max.x, place.x + place.width);
@@ -238,8 +257,8 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 
 		x = 0;
 		y = 0;
-		if (max.x < b.width) {
-			x = (b.width - max.x - min.x) / 2;
+		if (max.x < maxWidth) {
+			x = (maxWidth - max.x - min.x) / 2;
 		}
 		if (max.y < b.height) {
 			y = (b.height - max.y - min.y) / 2;
@@ -247,9 +266,19 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 
 		_dst = new Rectangle(x, y, max.x - min.x, max.y - min.y);
 
-		for (Rectangle place : _places) {
+		for (Rectangle place : _renderImageDstFrames) {
 			place.x += x;
 			place.y += y;
+		}
+
+		for (var dst : _renderImageDstFrames) {
+			Rectangle r;
+			if (_singleColumnLayout) {
+				r = new Rectangle(dst.x, dst.y, b.width, dst.height);
+			} else {
+				r = dst;
+			}
+			_selectionFrameArea.add(r);
 		}
 	}
 
@@ -262,7 +291,7 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 	protected void fitWindow() {
 		Rectangle b = getClientArea();
 		int area = b.width * b.height;
-		int count = _frames.size() * 2;
+		int count = _renderImageSrcFrames.size() * 2;
 		_frameSize = count == 0 ? 1 : (int) Math.sqrt((area - count * 5) / count);
 		if (_frameSize < 32) {
 			_frameSize = 32;
@@ -275,7 +304,7 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 	}
 
 	public List<Rectangle> getFrames() {
-		return _frames;
+		return _renderImageSrcFrames;
 	}
 
 	public int getFrameSize() {
@@ -315,7 +344,7 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 			var tooltip = provider.getFrameTooltip(i);
 			var object = provider.getFrameObject(i);
 
-			_frames.add(frame);
+			_renderImageSrcFrames.add(frame);
 			_images.add(image);
 			_tooltips.add(tooltip);
 			_objects.add(object);
@@ -327,7 +356,7 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 	}
 
 	private void resetFramesData() {
-		_frames = new ArrayList<>();
+		_renderImageSrcFrames = new ArrayList<>();
 		_images = new ArrayList<>();
 		_tooltips = new ArrayList<>();
 		_objects = new ArrayList<>();
@@ -336,19 +365,28 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 
 	@Override
 	public void mouseScrolled(MouseEvent e) {
+		
+		if (_singleColumnLayout) {
+			return;
+		}
+		
 		double f = e.count < 0 ? 0.8 : 1.2;
 		int newSize = (int) (getFrameSize() * f);
 		if (newSize == getFrameSize()) {
 			newSize = e.button < 0 ? 1 : newSize * 2;
 		}
-		
+
+		if (newSize < SINGLE_COLUMN_LAYOUT_WIDTH) {
+			newSize = SINGLE_COLUMN_LAYOUT_WIDTH;
+		}
+
 		setFrameSize(newSize);
-		
+
 		updateScroll();
-		
+
 		_utils.updateOverIndex(e);
 	}
-	
+
 	public void selectAll() {
 		_utils.selectAll();
 	}
