@@ -51,6 +51,7 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 	protected Rectangle _viewport;
 	protected FrameData _frameData;
 	private boolean _fitWindow;
+	private IFile _imageFile;
 
 	public static class ZoomCalculator {
 		public float imgWidth;
@@ -264,7 +265,16 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 	}
 
 	public void setImageFile(IFile file) {
-		setImage(loadImage(file));
+		setImageFile(file, loadImage(file));
+	}
+	
+	public void setImageFile(IFile file, Image image) {
+		_imageFile = file;
+		setImage(image);
+	}
+	
+	public final IFile getImageFile() {
+		return _imageFile;
 	}
 
 	public void removeImage() {

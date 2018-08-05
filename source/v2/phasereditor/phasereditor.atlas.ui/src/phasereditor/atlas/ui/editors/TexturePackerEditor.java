@@ -527,7 +527,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 					List<EditorPage> oldEditorPages = _model.getPages();
 
-					List<EditorPage> editorPages = new ArrayList<>();
+					List<EditorPage> newEditorPages = new ArrayList<>();
 
 					ImageLoader loader = new ImageLoader();
 
@@ -539,9 +539,10 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 						ImageData[] imgData = loader.load(textureFile.getAbsolutePath());
 						Image img = new Image(Display.getDefault(), imgData[0]);
 
-						EditorPage editorPage = new EditorPage(_model, editorPages.size());
+						int index = newEditorPages.size();
+						EditorPage newEditorPage = new EditorPage(_model, index);
 
-						editorPage.setImage(img);
+						newEditorPage.setImage(img);
 
 						for (Region region : regions) {
 							if (region.page == packerPage) {
@@ -576,25 +577,25 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 								frame.setSourceW(region.originalWidth);
 								frame.setSourceH(region.originalHeight);
 
-								editorPage.add(frame);
+								newEditorPage.add(frame);
 							}
 
 						}
 
 						if (settings.useIndexes) {
-							editorPage.sortByIndexes();
+							newEditorPage.sortByIndexes();
 						}
 
-						editorPages.add(editorPage);
+						newEditorPages.add(newEditorPage);
 					}
 
+					_model.setPages(newEditorPages);
+					
 					for (EditorPage page : _model.getPages()) {
 						String atlasImageName = _model.getAtlasImageName(page.getIndex());
 						IFile file = _model.getFile().getParent().getFile(new Path(atlasImageName));
 						page.setImageFile(file);
 					}
-
-					_model.setPages(editorPages);
 
 					monitor.worked(1);
 
@@ -803,8 +804,8 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 			item.setText(page.getName());
 
 			AtlasCanvas canvas = createAtlasCanvas(_tabsFolder);
-			canvas.setImageFile(page.getImageFile());
-			canvas.setFrames(page);
+			canvas.setImageFile(page.getImageFile(), page.getImage());
+			canvas.setFrames(new ArrayList<>(page));
 
 			item.setControl(canvas);
 		}
@@ -822,6 +823,9 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 	private AtlasCanvas createAtlasCanvas(Composite parent) {
 		AtlasCanvas canvas = new AtlasCanvas(parent, SWT.NONE, false);
+		// we handle the cache
+		canvas.setDisableCanche(true);
+		
 		ISelectionChangedListener listener = new ISelectionChangedListener() {
 
 			@Override

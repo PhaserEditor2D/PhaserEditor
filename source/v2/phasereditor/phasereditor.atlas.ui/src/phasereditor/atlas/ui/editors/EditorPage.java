@@ -118,15 +118,15 @@ public class EditorPage extends ArrayList<TexturePackerEditorFrame> implements I
 		return _image;
 	}
 
-	public void dispose() {
-		_image.dispose();
-	}
-
 	public void setImageFile(IFile imageFile) {
 		_imageFile = imageFile;
 	}
 
 	public IFile getImageFile() {
 		return _imageFile;
+	}
+
+	public void dispose() {
+		_image.dispose();
 	}
 }

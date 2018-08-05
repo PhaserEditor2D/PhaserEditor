@@ -49,6 +49,7 @@ public class BaseImageCanvas extends Canvas {
 	private static Map<File, Image> _fileImageMap;
 	private static List<BaseImageCanvas> _gobalCanvases;
 	private Collection<ImageRef> _references;
+	private boolean _disableCanche;
 	private static Set<Image> _globalGarbageImages;
 
 	static {
@@ -72,6 +73,8 @@ public class BaseImageCanvas extends Canvas {
 	public BaseImageCanvas(Composite parent, int style) {
 		super(parent, style);
 
+		_disableCanche = false;
+		
 		_gobalCanvases.add(this);
 
 		_references = new ArrayList<>();
@@ -79,6 +82,15 @@ public class BaseImageCanvas extends Canvas {
 		addDisposeListener(this::widgetDisposed);
 	}
 
+	
+	public boolean isDisableCanche() {
+		return _disableCanche;
+	}
+	
+	public void setDisableCanche(boolean disableCanche) {
+		_disableCanche = disableCanche;
+	}
+	
 	@SuppressWarnings("unused")
 	private void widgetDisposed(DisposeEvent e) {
 		if (PlatformUI.getWorkbench().isClosing()) {
@@ -100,6 +112,11 @@ public class BaseImageCanvas extends Canvas {
 	protected Image loadImage(File file) {
 		if (file == null || !file.exists()) {
 			return null;
+		}
+		
+		if (_disableCanche) {
+			Image image = new Image(getDisplay(), file.getAbsolutePath());
+			return image;
 		}
 
 		collectGarbage();

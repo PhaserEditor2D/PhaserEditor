@@ -21,7 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.atlas.ui;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -43,13 +42,13 @@ import phasereditor.ui.PhaserEditorUI;
 public class AtlasCanvas extends ImageCanvas implements ControlListener {
 
 	private List<? extends AtlasFrame> _frames;
-	private List<Rectangle> _framesRects;
+	private Rectangle[] _framesRects;
 	private FrameCanvasUtils _utils;
 
 	@SuppressWarnings("synthetic-access")
 	public AtlasCanvas(Composite parent, int style, boolean addDragAndDropSupport) {
 		super(parent, style);
-		
+
 		addControlListener(this);
 
 		_utils = new FrameCanvasUtils(this, addDragAndDropSupport) {
@@ -61,12 +60,13 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener {
 
 			@Override
 			public Rectangle getPaintFrame(int index) {
-				return _framesRects.get(index);
+				return _framesRects[index];
 			}
 
 			@Override
 			public Rectangle getImageFrame(int index) {
-				return _frames.get(index).getFrameData().src;
+				AtlasFrame frame = _frames.get(index);
+				return frame.getFrameData().src;
 			}
 
 			@Override
@@ -84,6 +84,9 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener {
 				return _frames.get(index);
 			}
 		};
+
+		_frames = List.of();
+		_framesRects = new Rectangle[0];
 	}
 
 	@Override
@@ -93,7 +96,7 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener {
 
 		super.customPaintControl(e);
 
-		if (_frames != null && _image != null) {
+		if (_image != null) {
 			GC gc = e.gc;
 
 			int i = 0;
@@ -128,18 +131,18 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener {
 	}
 
 	private void generateFramesRects() {
-		List<Rectangle> list = new ArrayList<>();
 
-		if (_frames != null && _image != null) {
-			ZoomCalculator calc = calc();
+		_framesRects = new Rectangle[_frames.size()];
 
-			for (AtlasFrame item : _frames) {
-				Rectangle src = item.getFrameData().src;
-				Rectangle r = calc.imageToScreen(src);
-				list.add(r);
-			}
+		ZoomCalculator calc = calc();
+
+		int i = 0;
+		for (AtlasFrame item : _frames) {
+			Rectangle src = item.getFrameData().src;
+			Rectangle r = calc.imageToScreen(src);
+			_framesRects[i] = r;
+			i++;
 		}
-		_framesRects = list;
 	}
 
 	public void setFrames(List<? extends AtlasFrame> frames) {
@@ -178,10 +181,9 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener {
 
 	}
 
-	/*public ISelectionProvider getSelectionProvider() {
-		return _utils;
-	}
-	*/
+	/*
+	 * public ISelectionProvider getSelectionProvider() { return _utils; }
+	 */
 
 	@Override
 	public void setImageFile(IFile file) {
