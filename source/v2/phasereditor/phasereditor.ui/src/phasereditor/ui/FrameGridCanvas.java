@@ -173,7 +173,7 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 			var selected = _utils.getSelectedIndexes().contains(i);
 
 			if (selected) {
-				gc.setBackground(PhaserEditorUI.get_pref_Preview_Spritesheet_selectionColor());
+				gc.setBackground(PhaserEditorUI.get_pref_Preview_frameSelectionColor());
 				gc.setAlpha(100);
 				gc.fillRectangle(place);
 

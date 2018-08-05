@@ -56,9 +56,6 @@ public class SpritesheetPreviewPreferencePage extends FieldEditorPreferencePage 
 
 		addField(new ColorFieldEditor(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR, "Frame label color",
 				group));
-
-		addField(new ColorFieldEditor(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_SELECTION_COLOR,
-				"Selected frame background color", group));
 	}
 
 	private static Composite createGroup(Composite parent) {

@@ -138,12 +138,6 @@
             id="phasereditor.ui.previewTilemap"
             name="Tilemap">
       </page>
-      <page
-            category="phasereditor.ui.previewPrefPage"
-            class="phasereditor.ui.prefs.AtlasPreferencesPage"
-            id="phasereditor.ui.previewAtlas"
-            name="Atlas">
-      </page>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">

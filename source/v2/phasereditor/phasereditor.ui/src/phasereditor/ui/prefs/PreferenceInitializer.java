@@ -36,11 +36,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR,
 				StringConverter.asString(_RED));
 		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR, StringConverter.asString(_YELLOW));
-		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_SPRITESHEET_SELECTION_COLOR, StringConverter.asString(_BLUE));
-		
-		// atlas
-
-		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_ATLAS_FRAME_OVER_COLOR, StringConverter.asString(_RED));
+		store.setDefault(PhaserEditorUI.PREF_PROP_PREVIEW_FRAME_SELECTION_COLOR, StringConverter.asString(_BLUE));
 		
 		// tilemap
 		

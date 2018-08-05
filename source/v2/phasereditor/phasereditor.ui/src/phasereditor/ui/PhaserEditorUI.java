@@ -143,15 +143,12 @@ public class PhaserEditorUI {
 	public static final String PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR = "phasereditor.ui.preview.spritesheetBorderColor";
 	public static final String PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS = "phasereditor.ui.preview.spritesheetPaintLabels";
 	public static final String PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR = "phasereditor.ui.preview.spritesheetLabelsColor";
-	public static final String PREF_PROP_PREVIEW_SPRITESHEET_SELECTION_COLOR = "phasereditor.ui.preview.spritesheetSelectionColor";
+	public static final String PREF_PROP_PREVIEW_FRAME_SELECTION_COLOR = "phasereditor.ui.preview.frameSelectionColor";
 	private static boolean _PREF_PROP_PREVIEW_SPRITESHEET_PAINT_FRAMES = true;
 	public static Color _PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR;
 	private static boolean _PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS = true;
 	public static Color _PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR;
-	public static Color _PREF_PROP_PREVIEW_SPRITESHEET_SELECTION_COLOR;
-
-	public static final String PREF_PROP_PREVIEW_ATLAS_FRAME_OVER_COLOR = "phasereditor.ui.preview.atlasFrameOverColor";
-	public static Color _PREF_PROP_PREVIEW_ATLAS_FRAME_OVER_COLOR;
+	public static Color _PREF_PROP_PREVIEW_FRAME_SELECTION_COLOR;
 
 	public static final String PREF_PROP_PREVIEW_TILEMAP_OVER_TILE_BORDER_COLOR = "phasereditor.ui.preview.tilemapOverTileBorderColor";
 	public static final String PREF_PROP_PREVIEW_TILEMAP_LABELS_COLOR = "phasereditor.ui.preview.tilemapLabelsColor";
@@ -198,14 +195,10 @@ public class PhaserEditorUI {
 			_PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR = SWTResourceManager.getColor(rgb);
 			rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR));
 			_PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR = SWTResourceManager.getColor(rgb);
-			rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_PREVIEW_SPRITESHEET_SELECTION_COLOR));
-			_PREF_PROP_PREVIEW_SPRITESHEET_SELECTION_COLOR = SWTResourceManager.getColor(rgb);
+			rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_PREVIEW_FRAME_SELECTION_COLOR));
+			_PREF_PROP_PREVIEW_FRAME_SELECTION_COLOR = SWTResourceManager.getColor(rgb);
 		}
 
-		{
-			RGB rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_PREVIEW_ATLAS_FRAME_OVER_COLOR));
-			_PREF_PROP_PREVIEW_ATLAS_FRAME_OVER_COLOR = SWTResourceManager.getColor(rgb);
-		}
 		{
 			RGB rgb = StringConverter
 					.asRGB(getPreferenceStore().getString(PREF_PROP_PREVIEW_TILEMAP_OVER_TILE_BORDER_COLOR));
@@ -251,15 +244,9 @@ public class PhaserEditorUI {
 			case PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR:
 				_PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR = SWTResourceManager.getColor(getRGBFromPrefEvent(event));
 				break;
-			case PREF_PROP_PREVIEW_SPRITESHEET_SELECTION_COLOR:
-				_PREF_PROP_PREVIEW_SPRITESHEET_SELECTION_COLOR = SWTResourceManager
+			case PREF_PROP_PREVIEW_FRAME_SELECTION_COLOR:
+				_PREF_PROP_PREVIEW_FRAME_SELECTION_COLOR = SWTResourceManager
 						.getColor(getRGBFromPrefEvent(event));
-				break;
-
-			// atlas
-
-			case PREF_PROP_PREVIEW_ATLAS_FRAME_OVER_COLOR:
-				_PREF_PROP_PREVIEW_ATLAS_FRAME_OVER_COLOR = SWTResourceManager.getColor(getRGBFromPrefEvent(event));
 				break;
 
 			// tilemap
@@ -309,13 +296,8 @@ public class PhaserEditorUI {
 		return _PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR;
 	}
 
-	public static Color get_pref_Preview_Spritesheet_selectionColor() {
-		return _PREF_PROP_PREVIEW_SPRITESHEET_SELECTION_COLOR;
-	}
-
-	@Deprecated
-	public static Color get_pref_Preview_Atlas_frameOverColor() {
-		return _PREF_PROP_PREVIEW_ATLAS_FRAME_OVER_COLOR;
+	public static Color get_pref_Preview_frameSelectionColor() {
+		return _PREF_PROP_PREVIEW_FRAME_SELECTION_COLOR;
 	}
 
 	public static Color get_pref_Preview_Tilemap_overTileBorderColor() {
