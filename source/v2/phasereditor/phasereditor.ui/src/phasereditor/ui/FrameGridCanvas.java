@@ -213,8 +213,10 @@ public class FrameGridCanvas extends BaseImageCanvas
 
 			}
 
-			if (i == _utils.getOverIndex() || selected) {
-				gc.drawRectangle(selRect);
+			if (!_listLayout) {
+				if (i == _utils.getOverIndex() || selected) {
+					gc.drawRectangle(selRect);
+				}
 			}
 		}
 
