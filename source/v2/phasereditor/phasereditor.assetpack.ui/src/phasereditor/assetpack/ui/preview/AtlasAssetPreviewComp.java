@@ -30,7 +30,6 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -73,33 +72,6 @@ public class AtlasAssetPreviewComp extends Composite {
 		_gridCanvas = new FrameGridCanvas(this, SWT.NONE, true);
 
 		afterCreateWidgets();
-	}
-
-	static class AtlasContentProvider implements ITreeContentProvider {
-
-		@Override
-		public Object[] getElements(Object inputElement) {
-			return getChildren(inputElement);
-		}
-
-		@Override
-		public Object[] getChildren(Object parentElement) {
-			if (parentElement instanceof AtlasAssetModel) {
-				return ((AtlasAssetModel) parentElement).getAtlasFrames().toArray();
-			}
-
-			return new Object[] {};
-		}
-
-		@Override
-		public Object getParent(Object element) {
-			return null;
-		}
-
-		@Override
-		public boolean hasChildren(Object element) {
-			return false;
-		}
 	}
 
 	private void afterCreateWidgets() {

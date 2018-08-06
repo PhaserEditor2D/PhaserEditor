@@ -51,6 +51,7 @@ import phasereditor.ui.ImageCanvas.ZoomCalculator;
 public class FrameGridCanvas extends BaseImageCanvas
 		implements PaintListener, IZoomable, MouseWheelListener, KeyListener {
 
+	private static int S = 5;
 	private List<Rectangle> _renderImageSrcFrames;
 	private List<Rectangle> _renderImageDstFrames;
 	private List<Rectangle> _selectionFrameArea;
@@ -201,7 +202,12 @@ public class FrameGridCanvas extends BaseImageCanvas
 				var image = _images.get(i);
 
 				if (image != null) {
-					gc.drawImage(image, src.x, src.y, src.width, src.height, dst.x, dst.y, dst.width, dst.height);
+					if (_listLayout) {
+						int y = dst.y + (_frameSize + S - dst.height) / 2;
+						gc.drawImage(image, src.x, src.y, src.width, src.height, dst.x, y, dst.width, dst.height);
+					} else {
+						gc.drawImage(image, src.x, src.y, src.width, src.height, dst.x, dst.y, dst.width, dst.height);
+					}
 				}
 
 			}
@@ -239,7 +245,6 @@ public class FrameGridCanvas extends BaseImageCanvas
 
 		Rectangle b = getClientArea();
 
-		int S = 5;
 		int box = _frameSize + S;
 
 		{
