@@ -173,8 +173,9 @@ public class AssetExplorer extends ViewPart {
 		Object elem = ((IStructuredSelection) _viewer.getSelection()).getFirstElement();
 		IFile file = null;
 
+		var provider = (AssetExplorerContentProvider) _viewer.getContentProvider();
+		
 		if (elem instanceof IProject) {
-			var provider = (AssetExplorerContentProvider) _viewer.getContentProvider();
 			provider.setFocusInProject((IProject) elem);
 			_viewer.refresh();
 		} else if (elem instanceof IFile) {
@@ -185,6 +186,8 @@ public class AssetExplorer extends ViewPart {
 			file = ((AtlasData) elem).getFile();
 		} else if (elem instanceof AnimationsModel) {
 			file = ((AnimationsModel) elem).getFile();
+		} else if (elem instanceof New) {
+			((New) elem).openWizard(provider.getProjectInContent());
 		}
 
 		if (file != null) {

@@ -22,43 +22,81 @@
 package phasereditor.assetexplorer.ui.views;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.ui.INewWizard;
+import org.eclipse.ui.PlatformUI;
+
+import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.ui.wizards.NewAssetPackWizard;
+import phasereditor.project.ui.wizards.NewPhaserProjectWizard;
 
 /**
  * @author arian
  *
  */
 public class New {
-	private Object _node;
+	private Object _parent;
 
-	public static Object[] children(Object node, Object[] list) {
-		return children(node, List.of(list));
+	public static Object[] children(Object parent, Object[] list) {
+		return children(parent, List.of(list));
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static Object[] children(Object node, List list) {
+	public static Object[] children(Object parent, List list) {
 		var list2 = new ArrayList(list);
-		list2.add(0, new New(node));
+		list2.add(0, new New(parent));
 		return list2.toArray();
 	}
 
-	public New(Object node) {
+	public New(Object parent) {
 		super();
-		_node = node;
+		_parent = parent;
 	}
 
-	/**
-	 * A node like the {@link AssetExplorer.ATLAS_NODE}.
-	 * 
-	 * @return
-	 */
-	public Object getNode() {
-		return _node;
+	public Object getParent() {
+		return _parent;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "New...";
+	}
+
+	private static Comparator<IFile> getNewerFileComp = (a,
+			b) -> -Long.compare(a.getLocalTimeStamp(), b.getLocalTimeStamp());
+
+	public void openWizard(IProject project) {
+		INewWizard wizard = null;
+		IStructuredSelection sel = null;
+
+		var wb = PlatformUI.getWorkbench();
+
+		if (_parent == AssetExplorer.PROJECTS_NODE) {
+			wizard = new NewPhaserProjectWizard();
+		} else if (_parent == AssetExplorer.PACK_NODE) {
+			wizard = new NewAssetPackWizard();
+			var packs = AssetPackCore.getAssetPackModels(project);
+			if (packs.isEmpty()) {
+				sel = new StructuredSelection(project);
+			} else {
+				var file = packs.stream().map(p -> p.getFile()).sorted(getNewerFileComp).findFirst().get();
+				sel = new StructuredSelection(file.getParent());
+			}
+		}
+
+		if (wizard != null) {
+			wizard.init(wb, sel);
+			var shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+			var dlg = new WizardDialog(shell, wizard);
+			dlg.open();
+		}
 	}
 
 }
