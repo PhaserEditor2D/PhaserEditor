@@ -274,9 +274,11 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		}
 
 		switch (e.keyCode) {
+		case SWT.ARROW_UP:
 		case SWT.ARROW_LEFT:
 			shiftSelection(-1);
 			break;
+		case SWT.ARROW_DOWN:
 		case SWT.ARROW_RIGHT:
 			shiftSelection(1);
 			break;
