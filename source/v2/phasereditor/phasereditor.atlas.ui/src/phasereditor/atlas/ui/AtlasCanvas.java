@@ -102,8 +102,10 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener {
 			int i = 0;
 			ZoomCalculator calc = calc();
 			for (Rectangle r : _framesRects) {
-				@SuppressWarnings("boxing")
-				boolean selected = _utils.getSelectedIndexes().contains(i);
+				
+				var obj = _frames.get(i);
+				
+				boolean selected = _utils.isSelected(obj);
 
 				if (selected) {
 					gc.setAlpha(100);
@@ -121,7 +123,7 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener {
 
 				}
 
-				if (selected || i == _utils.getOverIndex()) {
+				if (selected || _utils.isOver(obj)) {
 					gc.drawRectangle(r);
 				}
 
@@ -155,13 +157,7 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener {
 	}
 
 	public AtlasFrame getOverFrame() {
-		int index = _utils.getOverIndex();
-
-		if (index == -1) {
-			return null;
-		}
-
-		return _frames.get(index);
+		return (AtlasFrame) _utils.getOverObject();
 	}
 
 	@Override

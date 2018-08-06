@@ -46,7 +46,7 @@ import phasereditor.ui.ImageCanvas.ZoomCalculator;
  * @author arian
  *
  */
-@SuppressWarnings({ "boxing", "synthetic-access" })
+@SuppressWarnings({ "synthetic-access" })
 public class FrameGridCanvas extends BaseImageCanvas
 		implements PaintListener, IZoomable, MouseWheelListener, KeyListener {
 
@@ -208,10 +208,11 @@ public class FrameGridCanvas extends BaseImageCanvas
 		gc.setTransform(tx);
 
 		for (int i = 0; i < _visibleCount; i++) {
+			var obj = _visibleObjects.get(i);
 			var src = _visibleRenderImageSrcFrames.get(i);
 			var area = _visibleRenderSelectionFrameAreas.get(i);
 
-			var selected = _utils.getSelectedIndexes().contains(i);
+			var selected = _utils.isSelected(obj);
 
 			if (selected) {
 				gc.setBackground(PhaserEditorUI.get_pref_Preview_frameSelectionColor());
@@ -239,7 +240,7 @@ public class FrameGridCanvas extends BaseImageCanvas
 			}
 
 			if (!_listLayout) {
-				if (i == _utils.getOverIndex() || selected) {
+				if (selected || _utils.isOver(obj)) {
 					gc.drawRectangle(area);
 				}
 			}
@@ -255,7 +256,8 @@ public class FrameGridCanvas extends BaseImageCanvas
 					var fg = gc.getForeground();
 
 					{
-						var selected = _utils.getSelectedIndexes().contains(i);
+						var selected = _utils.isSelectedIndex(i);
+
 						if (selected) {
 							gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT));
 						}
@@ -429,10 +431,6 @@ public class FrameGridCanvas extends BaseImageCanvas
 
 	public void setFrameSize(int frameSize) {
 		_frameSize = frameSize;
-	}
-
-	public int getOverIndex() {
-		return _utils.getOverIndex();
 	}
 
 	@Override

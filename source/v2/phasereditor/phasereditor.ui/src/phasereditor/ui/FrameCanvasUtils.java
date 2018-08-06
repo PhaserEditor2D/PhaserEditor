@@ -50,11 +50,12 @@ import org.eclipse.swt.widgets.Canvas;
  * @author arian
  *
  */
-@SuppressWarnings("boxing")
 public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		implements MouseMoveListener, MouseWheelListener, MouseListener, KeyListener, DragSourceListener {
 
-	private int _overIndex;
+	private List<Object> _selectedObjects;
+	private Object _lastSelectedObject;
+	private Object _overObject;
 	private Canvas _canvas;
 
 	public FrameCanvasUtils(Canvas canvas, boolean addDragAndDropSupport) {
@@ -62,9 +63,9 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 
 		_canvas = canvas;
 
-		_overIndex = -1;
+		_overObject = null;
 
-		emptySelection();
+		_selectedObjects = new ArrayList<>();
 
 		canvas.addMouseMoveListener(this);
 		canvas.addMouseWheelListener(this);
@@ -79,9 +80,9 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 	public abstract int getFramesCount();
 
 	public abstract Rectangle getRenderImageSrcFrame(int index);
-	
+
 	public abstract Rectangle getRenderImageDstFrame(int index);
-	
+
 	public Rectangle getSelectionFrameArea(int index) {
 		return getRenderImageDstFrame(index);
 	}
@@ -92,9 +93,39 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 
 	public abstract IFile getImageFile(int index);
 
-
 	public int getOverIndex() {
-		return _overIndex;
+		return indexOf(_overObject);
+	}
+
+	public Object getOverObject() {
+		return _overObject;
+	}
+
+	public boolean isSelected(Object obj) {
+		return _selectedObjects.contains(obj);
+	}
+
+	public boolean isSelectedIndex(int i) {
+		var obj = getFrameObject(i);
+		return obj != null && _selectedObjects.contains(obj);
+	}
+
+	public boolean isOver(Object obj) {
+		return _overObject != null && _overObject == obj;
+	}
+
+	private int indexOf(Object obj) {
+		if (obj == null) {
+			return -1;
+		}
+
+		for (int i = 0; i < getFramesCount(); i++) {
+			var obj2 = getFrameObject(i);
+			if (obj == obj2) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	@Override
@@ -107,17 +138,17 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 			return;
 		}
 
-		int old = _overIndex;
-		int index = -1;
+		var old = _overObject;
+		Object newObj = null;
 		for (int i = 0; i < getFramesCount(); i++) {
 			Rectangle rect = getSelectionFrameArea(i);
 			if (rect.contains(getRealPosition(e.x, e.y))) {
-				index = i;
+				newObj = getFrameObject(i);
 				break;
 			}
 		}
-		if (old != index) {
-			_overIndex = index;
+		if (old != newObj) {
+			_overObject = newObj;
 			_canvas.redraw();
 		}
 	}
@@ -127,23 +158,12 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		// nothing
 	}
 
-	private List<Integer> _selectedIndexes;
-	private int _lastSelectedIndex;
-
-	public List<Integer> getSelectedIndexes() {
-		return _selectedIndexes;
-	}
-
 	public List<Object> getSelectedObjects() {
-		var list = new ArrayList<>();
-		for (int i : _selectedIndexes) {
-			list.add(getFrameObject(i));
-		}
-		return list;
+		return _selectedObjects;
 	}
 
 	private void updateSelectionProvider() {
-		setSelectionList(getSelectedObjects());
+		super.setSelection(new StructuredSelection(getSelectedObjects()));
 	}
 
 	public void setSelection(ISelection sel, boolean fireChanged) {
@@ -156,23 +176,21 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 	@Override
 	public void setSelection(ISelection sel) {
 		if (sel instanceof IStructuredSelection) {
-			var array = ((IStructuredSelection) sel).toArray();
-			var indexlist = new ArrayList<Integer>();
-			var objlist = new ArrayList<>();
+			var selArray = ((IStructuredSelection) sel).toArray();
+			var list = new ArrayList<>();
 
-			for (var obj : array) {
+			for (var obj : selArray) {
 				for (int i = 0; i < getFramesCount(); i++) {
 					var frameObj = getFrameObject(i);
-					if (obj != null && obj.equals(frameObj)) {
-						indexlist.add(i);
-						objlist.add(obj);
+					if (obj == frameObj) {
+						list.add(obj);
 					}
 				}
 			}
 
-			_selectedIndexes = indexlist;
+			_selectedObjects = list;
 
-			super.setSelection(new StructuredSelection(objlist));
+			super.setSelection(new StructuredSelection(list));
 		}
 	}
 
@@ -193,52 +211,52 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 
 		var updateLastSelectionFrame = true;
 
-		int index = _overIndex;
-
-		if (index == -1) {
-			emptySelection();
+		if (_overObject == null) {
+			// it clicked away, so remove all selected objects, including those not shown by
+			// the filter.
+			_selectedObjects = new ArrayList<>();
 		} else {
 			if ((e.stateMask & SWT.CTRL) != 0) {
 
 				// control pressed
 
-				if (_selectedIndexes.contains(index)) {
-					_selectedIndexes.remove(index);
+				if (_selectedObjects.contains(_overObject)) {
+					_selectedObjects.remove(_overObject);
 				} else {
-					_selectedIndexes.add(index);
+					_selectedObjects.add(_overObject);
 				}
 
-			} else if ((e.stateMask & SWT.SHIFT) != 0 && !_selectedIndexes.isEmpty()) {
+			} else if ((e.stateMask & SWT.SHIFT) != 0 && !_selectedObjects.isEmpty()) {
 
 				// select the whole range
 
-				int a = _lastSelectedIndex;
-				int b = index;
+				int a = _lastSelectedObject == null? 0 : indexOf(_lastSelectedObject);
+				int b = indexOf(_overObject);
 
 				int from = Math.min(a, b);
 				int to = Math.max(a, b);
 
-				emptySelection();
+				// clear all the selected objects, including those hidden by the filtering.
+				_selectedObjects = new ArrayList<>();
 
 				for (int i = from; i <= to; i++) {
-					_selectedIndexes.add(i);
+					_selectedObjects.add(getFrameObject(i));
 				}
 
 				updateLastSelectionFrame = false;
 
 			} else {
 
-				// just select that frame
-
-				emptySelection();
-				_selectedIndexes.add(index);
+				// Just select that frame. In this case we are not interested on keep selected
+				// filtered objects.
+				_selectedObjects = new ArrayList<>(List.of(_overObject));
 
 			}
 
 		}
 
 		if (updateLastSelectionFrame) {
-			_lastSelectedIndex = index;
+			_lastSelectedObject = _overObject;
 		}
 
 		updateSelectionProvider();
@@ -246,10 +264,22 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		_canvas.redraw();
 	}
 
-	public void selectAll() {
-		emptySelection();
+	private void clearSelection() {
+		// We do not clear all the selected objects because it is possible that some of
+		// them are filtered off, so we need to keep them.
+		// To clear the selection then we remove just those visible objects.
 		for (int i = 0; i < getFramesCount(); i++) {
-			_selectedIndexes.add(i);
+			var obj = getFrameObject(i);
+			_selectedObjects.remove(obj);
+		}
+	}
+
+	public void selectAll() {
+		// clear all selected objects, including those are not visible
+		_selectedObjects = new ArrayList<>();
+
+		for (int i = 0; i < getFramesCount(); i++) {
+			_selectedObjects.add(getFrameObject(i));
 		}
 		_canvas.redraw();
 		updateSelectionProvider();
@@ -264,8 +294,8 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 	public void keyPressed(KeyEvent e) {
 		switch (e.character) {
 		case SWT.ESC:
-			_lastSelectedIndex = -1;
-			emptySelection();
+			_lastSelectedObject = null;
+			clearSelection();
 			_canvas.redraw();
 			updateSelectionProvider();
 			break;
@@ -300,7 +330,7 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 
 	private void shiftSelection(int dir) {
 
-		if (_lastSelectedIndex == -1) {
+		if (_lastSelectedObject == null) {
 			return;
 		}
 
@@ -308,22 +338,21 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 			return;
 		}
 
-		int i = _lastSelectedIndex;
+		int i = indexOf(_lastSelectedObject);
 		int j = i + dir;
 		if (j >= 0 && j < getFramesCount()) {
-			emptySelection();
-			_selectedIndexes.add(j);
-			_lastSelectedIndex = j;
+
+			clearSelection();
+
+			Object obj = getFrameObject(j);
+			_selectedObjects.add(obj);
+			_lastSelectedObject = obj;
 
 			_canvas.redraw();
 		}
 
 		updateSelectionProvider();
 
-	}
-
-	public void emptySelection() {
-		_selectedIndexes = new ArrayList<>();
 	}
 
 	public void addDragAndDropSupport() {
@@ -336,23 +365,23 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 
 	@Override
 	public void dragStart(DragSourceEvent event) {
-		int index = getOverIndex();
 
-		if (index == -1) {
+		if (_overObject == null) {
 			event.doit = false;
 			return;
 		}
 
+		int index = indexOf(_overObject);
 		var file = getImageFile(index);
 		var src = getRenderImageSrcFrame(index);
 
 		ISelection sel = null;
 
-		if (_selectedIndexes.contains(index)) {
-			sel = new StructuredSelection(getSelectedObjects());
+		if (_selectedObjects.contains(_overObject)) {
+			sel = new StructuredSelection(_selectedObjects);
 		} else {
-			sel = new StructuredSelection(getFrameObject(index));
-			emptySelection();
+			sel = new StructuredSelection(_overObject);
+			clearSelection();
 			_canvas.redraw();
 		}
 
@@ -363,9 +392,7 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 
 	@Override
 	public void dragSetData(DragSourceEvent event) {
-		int index = getOverIndex();
-		var object = getFrameObject(index);
-		event.data = "" + object;
+		event.data = "" + _overObject;
 	}
 
 	@Override
