@@ -33,6 +33,7 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.PlatformUI;
 
+import phasereditor.animation.ui.wizards.NewAnimationsFileWizard;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.ui.wizards.NewAssetPackWizard;
 import phasereditor.project.ui.wizards.NewPhaserProjectWizard;
@@ -74,7 +75,7 @@ public class New {
 
 	public void openWizard(IProject project) {
 		INewWizard wizard = null;
-		IStructuredSelection sel = null;
+		IStructuredSelection sel = new StructuredSelection(project);
 
 		var wb = PlatformUI.getWorkbench();
 
@@ -83,13 +84,18 @@ public class New {
 		} else if (_parent == AssetExplorer.PACK_NODE) {
 			wizard = new NewAssetPackWizard();
 			var packs = AssetPackCore.getAssetPackModels(project);
-			if (packs.isEmpty()) {
-				sel = new StructuredSelection(project);
-			} else {
+			if (!packs.isEmpty()) {
 				var file = packs.stream().map(p -> p.getFile()).sorted(getNewerFileComp).findFirst().get();
 				sel = new StructuredSelection(file.getParent());
 			}
-		}
+		} else if (_parent == AssetExplorer.ANIMATIONS_NODE) {
+			wizard = new NewAnimationsFileWizard();
+			var models = AssetPackCore.getAnimationsFileCache().getProjectData(project);
+			if (!models.isEmpty()) {
+				var file = models.stream().map(a -> a.getFile()).sorted(getNewerFileComp).findFirst().get();
+				sel = new StructuredSelection(file.getParent());
+			}
+		} 
 
 		if (wizard != null) {
 			wizard.init(wb, sel);

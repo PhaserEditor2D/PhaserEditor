@@ -59,10 +59,16 @@ public class AnimationsFileWizardPage extends WizardNewFileCreationPage {
 		super.initialPopulateContainerNameField();
 
 		IPath fullPath = getContainerFullPath();
+
 		if (fullPath != null && fullPath.segmentCount() > 0) {
 			IProject project = ProjectCore.getProjectFromPath(fullPath);
 
 			IPath webPath = ProjectCore.getWebContentPath(project);
+			
+			if (webPath != null && webPath.isPrefixOf(fullPath)) {
+				return;
+			}
+			
 			IPath assetsPath;
 
 			if (webPath == null) {
