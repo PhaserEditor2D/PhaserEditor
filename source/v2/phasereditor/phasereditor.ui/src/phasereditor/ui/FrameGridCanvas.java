@@ -27,6 +27,8 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
@@ -46,9 +48,10 @@ import phasereditor.ui.ImageCanvas.ZoomCalculator;
  *
  */
 @SuppressWarnings({ "boxing", "synthetic-access" })
-public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, IZoomable, MouseWheelListener {
+public class FrameGridCanvas extends BaseImageCanvas
+		implements PaintListener, IZoomable, MouseWheelListener, KeyListener {
 
-	private static final int SINGLE_COLUMN_LAYOUT_WIDTH = 64;
+	private int _listIconSize = 32;
 	private List<Rectangle> _renderImageSrcFrames;
 	private List<Rectangle> _renderImageDstFrames;
 	private List<Rectangle> _selectionFrameArea;
@@ -61,7 +64,7 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 	private List<String> _tooltips;
 	private boolean _fitWindow;
 	private FrameCanvasUtils _utils;
-	private boolean _singleColumnLayout;
+	private boolean _listLayout;
 
 	public FrameGridCanvas(Composite parent, int style, boolean addDragAndDropSupport) {
 		super(parent, style | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL | SWT.NO_REDRAW_RESIZE);
@@ -95,7 +98,7 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 			public Rectangle getRenderImageDstFrame(int index) {
 				return _renderImageDstFrames.get(index);
 			}
-			
+
 			@Override
 			public Rectangle getSelectionFrameArea(int index) {
 				return _selectionFrameArea.get(index);
@@ -136,6 +139,8 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 	private void afterCreateWidgets() {
 		// scrollable canvas do not get the right style
 		PhaserEditorUI.forceApplyCompositeStyle(this);
+
+		addKeyListener(this);
 	}
 
 	void updateScroll() {
@@ -177,8 +182,9 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 		gc.setTransform(tx);
 
 		for (int i = 0; i < _renderImageSrcFrames.size(); i++) {
-			var frame = _renderImageSrcFrames.get(i);
+			var src = _renderImageSrcFrames.get(i);
 			var selRect = _selectionFrameArea.get(i);
+
 			var selected = _utils.getSelectedIndexes().contains(i);
 
 			if (selected) {
@@ -190,21 +196,54 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 				PhaserEditorUI.paintPreviewBackground(gc, selRect);
 			}
 
-			Image image = _images.get(i);
-
-			if (image != null) {
+			{
 				var dst = _renderImageDstFrames.get(i);
-				gc.drawImage(image, frame.x, frame.y, frame.width, frame.height, dst.x, dst.y, dst.width,
-						dst.height);
+
+				var image = _images.get(i);
+
+				if (image != null) {
+					gc.drawImage(image, src.x, src.y, src.width, src.height, dst.x, dst.y, dst.width, dst.height);
+				}
+
 			}
 
 			if (i == _utils.getOverIndex() || selected) {
 				gc.drawRectangle(selRect);
 			}
 		}
+
+		if (_listLayout) {
+			for (var r : _selectionFrameArea) {
+				String str = "name";
+				var size = gc.stringExtent(str);
+				gc.drawText(str, _frameSize + 20, r.y + r.height / 2 - size.y / 2, true);
+			}
+		}
+
+	}
+
+	public boolean isListLayout() {
+		return _listLayout;
+	}
+
+	public void setListLayout(boolean singleColumnLayout) {
+		_listLayout = singleColumnLayout;
+		updateScroll();
+		redraw();
+	}
+
+	public void setListLayoutIconSize(int listLayoutIconSize) {
+		_listIconSize = listLayoutIconSize;
+		updateScroll();
+		redraw();
+	}
+
+	public int getListLayoutIconSize() {
+		return _listIconSize;
 	}
 
 	private void computeRects() {
+
 		if (_images.isEmpty()) {
 			return;
 		}
@@ -214,71 +253,77 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 		int S = 5;
 		int box = _frameSize + S;
 
-		int x = 0;
-		int y = 0;
+		{
 
-		_renderImageDstFrames = new ArrayList<>();
-		_selectionFrameArea = new ArrayList<>();
+			int x = 0;
+			int y = 0;
 
-		int maxWidth = b.width;
-		_singleColumnLayout = _frameSize <= SINGLE_COLUMN_LAYOUT_WIDTH;
+			_renderImageDstFrames = new ArrayList<>();
+			_selectionFrameArea = new ArrayList<>();
 
-		if (_singleColumnLayout) {
-			maxWidth = SINGLE_COLUMN_LAYOUT_WIDTH;
-		}
+			int maxWidth = b.width;
 
-		for (Rectangle frame : _renderImageSrcFrames) {
+			if (_listLayout) {
+				maxWidth = _listIconSize;
+			}
 
-			ZoomCalculator c = new ZoomCalculator(frame.width, frame.height);
-			c.fit(_frameSize, _frameSize);
+			for (Rectangle frame : _renderImageSrcFrames) {
 
-			Rectangle dst = new Rectangle(x + (int) c.offsetX, y + (int) c.offsetY, (int) (frame.width * c.scale),
-					(int) (frame.height * c.scale));
+				ZoomCalculator c = new ZoomCalculator(frame.width, frame.height);
+				c.fit(_frameSize, _frameSize);
 
-			_renderImageDstFrames.add(dst);
+				Rectangle dst = new Rectangle(x + (int) c.offsetX, y + (int) c.offsetY, (int) (frame.width * c.scale),
+						(int) (frame.height * c.scale));
 
-			x += S + _frameSize;
+				_renderImageDstFrames.add(dst);
 
-			if (x + box > maxWidth) {
-				y += box;
-				x = 0;
+				x += S + _frameSize;
+
+				if (x + box > maxWidth) {
+					y += box;
+					x = 0;
+				}
+			}
+
+			Point min = new Point(Integer.MAX_VALUE, Integer.MAX_VALUE);
+			Point max = new Point(Integer.MIN_VALUE, Integer.MIN_VALUE);
+
+			for (Rectangle place : _renderImageDstFrames) {
+				min.x = Math.min(min.x, place.x);
+				min.y = Math.min(min.y, place.y);
+				max.x = Math.max(max.x, place.x + place.width);
+				max.y = Math.max(max.y, place.y + place.height);
+			}
+
+			x = 0;
+			y = 0;
+			if (max.x < maxWidth) {
+				x = (maxWidth - max.x - min.x) / 2;
+			}
+			if (max.y < b.height) {
+				y = (b.height - max.y - min.y) / 2;
+			}
+
+			_dst = new Rectangle(x, y, max.x - min.x, max.y - min.y);
+
+			for (Rectangle place : _renderImageDstFrames) {
+				place.x += x;
+				place.y += y;
 			}
 		}
 
-		Point min = new Point(Integer.MAX_VALUE, Integer.MAX_VALUE);
-		Point max = new Point(Integer.MIN_VALUE, Integer.MIN_VALUE);
-
-		for (Rectangle place : _renderImageDstFrames) {
-			min.x = Math.min(min.x, place.x);
-			min.y = Math.min(min.y, place.y);
-			max.x = Math.max(max.x, place.x + place.width);
-			max.y = Math.max(max.y, place.y + place.height);
-		}
-
-		x = 0;
-		y = 0;
-		if (max.x < maxWidth) {
-			x = (maxWidth - max.x - min.x) / 2;
-		}
-		if (max.y < b.height) {
-			y = (b.height - max.y - min.y) / 2;
-		}
-
-		_dst = new Rectangle(x, y, max.x - min.x, max.y - min.y);
-
-		for (Rectangle place : _renderImageDstFrames) {
-			place.x += x;
-			place.y += y;
-		}
-
-		for (var dst : _renderImageDstFrames) {
-			Rectangle r;
-			if (_singleColumnLayout) {
-				r = new Rectangle(dst.x, dst.y, b.width, dst.height);
+		{
+			if (_listLayout) {
+				int i = 0;
+				for (var dst : _renderImageDstFrames) {
+					dst.y = i * box;
+					var r = new Rectangle(0, dst.y, b.width, box);
+					_selectionFrameArea.add(r);
+					i++;
+				}
 			} else {
-				r = dst;
+				_selectionFrameArea = new ArrayList<>(_renderImageDstFrames);
 			}
-			_selectionFrameArea.add(r);
 		}
 	}
 
@@ -365,26 +410,51 @@ public class FrameGridCanvas extends BaseImageCanvas implements PaintListener, I
 
 	@Override
 	public void mouseScrolled(MouseEvent e) {
-		
-		if (_singleColumnLayout) {
+		if (_listLayout) {
 			return;
 		}
-		
-		double f = e.count < 0 ? 0.8 : 1.2;
+
+		int dir = e.count;
+
+		zoom(dir);
+
+		_utils.updateOverIndex(e);
+	}
+
+	private void zoom(int dir) {
+		double f = dir < 0 ? 0.8 : 1.2;
 		int newSize = (int) (getFrameSize() * f);
 		if (newSize == getFrameSize()) {
-			newSize = e.button < 0 ? 1 : newSize * 2;
+			newSize = dir < 0 ? 1 : newSize * 2;
 		}
 
-		if (newSize < SINGLE_COLUMN_LAYOUT_WIDTH) {
-			newSize = SINGLE_COLUMN_LAYOUT_WIDTH;
+		if (newSize < 16) {
+			newSize = 16;
 		}
 
 		setFrameSize(newSize);
 
 		updateScroll();
+	}
 
-		_utils.updateOverIndex(e);
+	@Override
+	public void keyPressed(KeyEvent e) {
+		switch (e.keyCode) {
+		case SWT.KEYPAD_ADD:
+			zoom(1);
+			break;
+		case SWT.KEYPAD_SUBTRACT:
+			zoom(-1);
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		//
 	}
 
 	public void selectAll() {

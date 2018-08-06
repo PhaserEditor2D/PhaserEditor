@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
+import static phasereditor.ui.PhaserEditorUI.swtRun;
+
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -28,30 +30,14 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.util.LocalSelectionTransfer;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
-import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.dnd.DragSourceAdapter;
-import org.eclipse.swt.dnd.DragSourceEvent;
-import org.eclipse.swt.dnd.TextTransfer;
-import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.dialogs.FilteredTree;
-import org.json.JSONArray;
 
-import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel.Frame;
-import phasereditor.assetpack.core.IAssetKey;
-import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.atlas.ui.AtlasCanvas;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FrameGridCanvas;
@@ -59,14 +45,12 @@ import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.IZoomable;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
-import phasereditor.ui.PatternFilter2;
 
 @SuppressWarnings("synthetic-access")
 public class AtlasAssetPreviewComp extends Composite {
 	static final Object NO_SELECTION = "none";
 
-	private FilteredTree _spritesList;
-	private AtlasCanvas _canvas;
+	private AtlasCanvas _atlasCanvas;
 	private AtlasAssetModel _model;
 	private FrameGridCanvas _gridCanvas;
 
@@ -85,35 +69,8 @@ public class AtlasAssetPreviewComp extends Composite {
 
 		setLayout(new StackLayout());
 
-		_canvas = new AtlasCanvas(this, SWT.NONE, true);
-		_spritesList = new FilteredTree(this, SWT.MULTI, new PatternFilter2(), true);
+		_atlasCanvas = new AtlasCanvas(this, SWT.NONE, true);
 		_gridCanvas = new FrameGridCanvas(this, SWT.NONE, true);
-
-		{
-			Transfer[] types = { LocalSelectionTransfer.getTransfer(), TextTransfer.getInstance() };
-			_spritesList.getViewer().addDragSupport(DND.DROP_MOVE | DND.DROP_DEFAULT, types, new DragSourceAdapter() {
-
-				private Object[] _data;
-
-				@Override
-				public void dragStart(DragSourceEvent event) {
-					LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
-					_data = ((IStructuredSelection) _spritesList.getViewer().getSelection()).toArray();
-					transfer.setSelection(new StructuredSelection(_data));
-				}
-
-				@Override
-				public void dragSetData(DragSourceEvent event) {
-					JSONArray array = new JSONArray();
-					for (Object elem : _data) {
-						if (elem instanceof IAssetKey) {
-							array.put(AssetPackCore.getAssetJSONReference((IAssetKey) elem));
-						}
-					}
-					event.data = array.toString();
-				}
-			});
-		}
 
 		afterCreateWidgets();
 	}
@@ -146,10 +103,6 @@ public class AtlasAssetPreviewComp extends Composite {
 	}
 
 	private void afterCreateWidgets() {
-		TreeViewer viewer = _spritesList.getViewer();
-		viewer.setContentProvider(new AtlasContentProvider());
-		viewer.setLabelProvider(AssetLabelProvider.GLOBAL_64);
-
 		moveTop(_gridCanvas);
 	}
 
@@ -158,8 +111,8 @@ public class AtlasAssetPreviewComp extends Composite {
 		layout.topControl = control;
 		layout();
 
-		updateActionsState();
-
+		swtRun(this::updateActionsState);
+		
 		control.setFocus();
 	}
 
@@ -170,34 +123,24 @@ public class AtlasAssetPreviewComp extends Composite {
 
 		StackLayout layout = (StackLayout) getLayout();
 		Control control = layout.topControl;
-		_zoom_1_1_action.setEnabled(control == _canvas);
-		_zoom_fitWindow_action.setEnabled(control != _spritesList);
+		_zoom_1_1_action.setEnabled(control == _atlasCanvas);
+		_zoom_fitWindow_action.setEnabled(control == _atlasCanvas);
 
-		_tilesAction.setChecked(control == _gridCanvas);
-		_textureAction.setChecked(control == _canvas);
-		_listAction.setChecked(control == _spritesList);
+		_tilesAction.setChecked(!_gridCanvas.isListLayout());
+		_listAction.setChecked(_gridCanvas.isListLayout());
+		_textureAction.setChecked(control == _atlasCanvas);
 	}
 
 	public void setModel(AtlasAssetModel model) {
 		_model = model;
 		String url = model.getTextureURL();
 		IFile file = model.getFileFromUrl(url);
-		_canvas.setImageFile(file);
+		_atlasCanvas.setImageFile(file);
 
 		List<Frame> frames = model.getAtlasFrames();
 
-		_canvas.setFrames(frames);
-		_canvas.redraw();
-
-		_spritesList.getViewer().setInput(model);
-		// sort frames by name
-		_spritesList.getViewer().setComparator(new ViewerComparator() {
-			@Override
-			public int compare(Viewer viewer, Object e1, Object e2) {
-				return ((AtlasAssetModel.Frame) e1).getKey().toLowerCase()
-						.compareTo(((AtlasAssetModel.Frame) e2).getKey().toLowerCase());
-			}
-		});
+		_atlasCanvas.setFrames(frames);
+		_atlasCanvas.redraw();
 
 		_gridCanvas.loadFrameProvider(new AtlasAssetFramesProvider(model));
 		_gridCanvas.resetZoom();
@@ -208,7 +151,7 @@ public class AtlasAssetPreviewComp extends Composite {
 	}
 
 	public AtlasCanvas getAtlasCanvas() {
-		return _canvas;
+		return _atlasCanvas;
 	}
 
 	public void createToolBar(IToolBarManager toolbar) {
@@ -221,6 +164,7 @@ public class AtlasAssetPreviewComp extends Composite {
 			@Override
 			public void run() {
 				moveTop(_gridCanvas);
+				_gridCanvas.setListLayout(false);
 			}
 		};
 		_textureAction = new Action("Texture", IAction.AS_CHECK_BOX) {
@@ -230,7 +174,7 @@ public class AtlasAssetPreviewComp extends Composite {
 
 			@Override
 			public void run() {
-				moveTop(_canvas);
+				moveTop(_atlasCanvas);
 			}
 		};
 		_listAction = new Action("List", IAction.AS_CHECK_BOX) {
@@ -240,7 +184,8 @@ public class AtlasAssetPreviewComp extends Composite {
 
 			@Override
 			public void run() {
-				moveTop(_spritesList);
+				moveTop(_gridCanvas);
+				_gridCanvas.setListLayout(true);
 			}
 		};
 
@@ -250,7 +195,7 @@ public class AtlasAssetPreviewComp extends Composite {
 
 		toolbar.add(new Separator());
 
-		_zoom_1_1_action = new ImageCanvas_Zoom_1_1_Action(_canvas);
+		_zoom_1_1_action = new ImageCanvas_Zoom_1_1_Action(_atlasCanvas);
 		_zoom_fitWindow_action = new ImageCanvas_Zoom_FitWindow_Action() {
 			@Override
 			public IZoomable getImageCanvas() {
@@ -258,7 +203,7 @@ public class AtlasAssetPreviewComp extends Composite {
 				if (top instanceof IZoomable) {
 					return (IZoomable) top;
 				}
-				return _canvas;
+				return _atlasCanvas;
 			}
 		};
 		toolbar.add(_zoom_1_1_action);
