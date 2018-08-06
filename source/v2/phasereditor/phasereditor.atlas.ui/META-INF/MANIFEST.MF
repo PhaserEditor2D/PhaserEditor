@@ -25,5 +25,6 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.108.0",
  phasereditor.libgdx,
  phasereditor.project.core,
  org.eclipse.ui.views;bundle-version="3.9.0"
-Export-Package: phasereditor.atlas.ui
+Export-Package: phasereditor.atlas.ui,
+ phasereditor.atlas.ui.wizards
 Automatic-Module-Name: phasereditor.atlas.ui

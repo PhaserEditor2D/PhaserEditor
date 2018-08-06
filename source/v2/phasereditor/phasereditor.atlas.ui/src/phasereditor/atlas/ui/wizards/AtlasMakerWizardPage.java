@@ -25,6 +25,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -35,6 +36,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
 import phasereditor.atlas.ui.editors.TexturePackerEditorModel;
+import phasereditor.project.core.ProjectCore;
 
 public class AtlasMakerWizardPage extends WizardNewFileCreationPage {
 	public AtlasMakerWizardPage(IStructuredSelection selection, String title, String description) {
@@ -46,6 +48,42 @@ public class AtlasMakerWizardPage extends WizardNewFileCreationPage {
 	@Override
 	public String getFileExtension() {
 		return "atlas";
+	}
+	
+	/**
+	 * This method is overridden to set the selected folder to WebContent folder
+	 * if the current selection is outside the WebContent folder.
+	 */
+	@Override
+	protected void initialPopulateContainerNameField() {
+		super.initialPopulateContainerNameField();
+
+		IPath fullPath = getContainerFullPath();
+
+		if (fullPath != null && fullPath.segmentCount() > 0) {
+			IProject project = ProjectCore.getProjectFromPath(fullPath);
+
+			IPath webPath = ProjectCore.getWebContentPath(project);
+			
+			if (webPath != null && webPath.isPrefixOf(fullPath)) {
+				return;
+			}
+			
+			IPath assetsPath;
+
+			if (webPath == null) {
+				// this can happen in non Phaser projects.
+				assetsPath = project.getFullPath();
+			} else {
+				assetsPath = webPath.append("assets");
+			}
+
+			if (!ResourcesPlugin.getWorkspace().getRoot().getFolder(assetsPath).exists()) {
+				assetsPath = webPath;
+			}
+
+			setContainerFullPath(assetsPath);
+		}
 	}
 
 	/**

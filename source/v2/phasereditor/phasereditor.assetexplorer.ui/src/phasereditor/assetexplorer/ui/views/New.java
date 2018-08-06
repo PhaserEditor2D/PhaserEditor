@@ -36,6 +36,13 @@ import org.eclipse.ui.PlatformUI;
 import phasereditor.animation.ui.wizards.NewAnimationsFileWizard;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.ui.wizards.NewAssetPackWizard;
+import phasereditor.atlas.core.AtlasCore;
+import phasereditor.atlas.ui.wizards.NewAtlasMakerWizard;
+import phasereditor.canvas.core.CanvasCore;
+import phasereditor.canvas.core.CanvasType;
+import phasereditor.canvas.ui.wizards.NewWizard_Group;
+import phasereditor.canvas.ui.wizards.NewWizard_Sprite;
+import phasereditor.canvas.ui.wizards.NewWizard_State;
 import phasereditor.project.ui.wizards.NewPhaserProjectWizard;
 
 /**
@@ -95,7 +102,49 @@ public class New {
 				var file = models.stream().map(a -> a.getFile()).sorted(getNewerFileComp).findFirst().get();
 				sel = new StructuredSelection(file.getParent());
 			}
-		} 
+		} else if (_parent == AssetExplorer.ATLAS_NODE) {
+			wizard = new NewAtlasMakerWizard();
+			var models = AtlasCore.getAtlasFileCache().getProjectData(project);
+			if (!models.isEmpty()) {
+				var file = models.stream().map(a -> a.getFile()).sorted(getNewerFileComp).findFirst().get();
+				sel = new StructuredSelection(file.getParent());
+			}
+		} else if (_parent instanceof CanvasType) {
+			var type = (CanvasType) _parent;
+
+			switch (type) {
+			case SPRITE:
+				wizard = new NewWizard_Sprite();
+				break;
+			case GROUP:
+				wizard = new NewWizard_Group();
+				break;
+			case STATE:
+				wizard = new NewWizard_State();
+				break;
+
+			default:
+				break;
+			}
+
+			var models = CanvasCore.getCanvasFileCache().getProjectData(project);
+			if (!models.isEmpty()) {
+				// look for the newer Canvas file of the same type
+				var optFile = models.stream().filter(m -> m.getType() == type).map(a -> a.getFile())
+						.sorted(getNewerFileComp).findFirst();
+				IFile file = null;
+
+				if (optFile.isPresent()) {
+					// ok, there is one, get it.
+					file = optFile.get();
+				} else {
+					// there is not a canvas file of the same type, then get the newer of any type
+					file = models.stream().map(a -> a.getFile()).sorted(getNewerFileComp).findFirst().get();
+				}
+
+				sel = new StructuredSelection(file.getParent());
+			}
+		}
 
 		if (wizard != null) {
 			wizard.init(wb, sel);
