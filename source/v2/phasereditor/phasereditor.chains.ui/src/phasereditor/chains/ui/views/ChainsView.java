@@ -105,10 +105,11 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 	protected Font _italic;
 	protected Font _font;
 	protected Font _codeFont;
-	protected Color _secondaryColor;
+	protected Color _decorationsColor;
 	protected ITheme _theme;
 	protected IGrammar _grammar;
 	protected Color _matchBorderColor;
+	private Color _quelifierColor;
 
 	class ChainsStyledCellLabelProvider extends StyledCellLabelProvider {
 
@@ -171,7 +172,8 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 
 		_codeFont = JFaceResources.getFont(JFaceResources.TEXT_FONT);
 
-		_secondaryColor = JFaceResources.getColorRegistry().get(JFacePreferences.DECORATIONS_COLOR);
+		_decorationsColor = JFaceResources.getColorRegistry().get(JFacePreferences.DECORATIONS_COLOR);
+		_quelifierColor = JFaceResources.getColorRegistry().get(JFacePreferences.QUALIFIER_COLOR);
 		_matchBorderColor = JFaceResources.getColorRegistry().get(JFacePreferences.COUNTER_COLOR);
 
 		_grammar = TMEclipseRegistryPlugin.getGrammarRegistryManager().getGrammarForScope("source.js");
@@ -473,7 +475,7 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 				int index = chain.getReturnTypeIndex();
 				if (index > 0) {
 					int len = chain.getDisplay().length() - index;
-					returnTypeRange = new StyleRange(index, len, _secondaryColor, null);
+					returnTypeRange = new StyleRange(index, len, _decorationsColor, null);
 				}
 			}
 
@@ -508,7 +510,7 @@ public class ChainsView extends ViewPart implements IPropertyChangeListener {
 			}
 
 			StyleRange secondaryRange = new StyleRange(secondaryColorIndex, text.length() - secondaryColorIndex,
-					_secondaryColor, null);
+					_quelifierColor, null);
 
 			List<StyleRange> ranges = new ArrayList<>();
 
