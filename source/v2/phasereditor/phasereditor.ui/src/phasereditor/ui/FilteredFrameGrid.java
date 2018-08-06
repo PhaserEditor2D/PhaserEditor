@@ -22,6 +22,7 @@
 package phasereditor.ui;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -34,26 +35,34 @@ import org.eclipse.swt.widgets.Text;
 public class FilteredFrameGrid extends Composite {
 
 	private FrameGridCanvas _canvas;
-	private Text _filterText;
+	protected Text _filterText;
+	protected ModifyListener _textChanged;
 
 	public FilteredFrameGrid(Composite parent, int style, boolean addDragAndDropSupport) {
 		super(parent, style);
 
 		setLayout(new GridLayout(1, false));
-		
-		_filterText = new Text(this, SWT.BORDER);
+
+		_filterText = new Text(this, SWT.SINGLE | SWT.BORDER | SWT.SEARCH | SWT.ICON_CANCEL);
 		_filterText.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-		_filterText.addModifyListener(e -> {
-				_canvas.filter(_filterText.getText());
-			}
-		);
+		_filterText.setMessage("type filter text");
+
+		_textChanged = e -> {
+			_canvas.filter(_filterText.getText());
+		};
 		
+		_filterText.addModifyListener(_textChanged);
+
 		_canvas = new FrameGridCanvas(this, SWT.NONE, addDragAndDropSupport);
 		_canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 	}
 
 	public FrameGridCanvas getCanvas() {
 		return _canvas;
+	}
+
+	protected Text getFilterText() {
+		return _filterText;
 	}
 
 }
