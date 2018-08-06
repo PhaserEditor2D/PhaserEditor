@@ -51,14 +51,14 @@ public class FrameGridCanvas extends BaseImageCanvas
 		implements PaintListener, IZoomable, MouseWheelListener, KeyListener {
 
 	private static int S = 5;
-	
+
 	private List<Rectangle> _visibleRenderSelectionFrameAreas;
-	
+
 	private List<Rectangle> _renderImageSrcFrames;
 	private List<Rectangle> _visibleRenderImageSrcFrames;
-	
+
 	private List<Rectangle> _visibleRenderImageDstFrames;
-	
+
 	private List<String> _labels;
 	private List<String> _visibleLabels;
 
@@ -191,7 +191,7 @@ public class FrameGridCanvas extends BaseImageCanvas
 			_fitWindow = false;
 			fitWindow();
 		}
-		
+
 		if (_nextFilterText != null) {
 			getVerticalBar().setSelection(0);
 			_origin.y = 0;
@@ -251,7 +251,19 @@ public class FrameGridCanvas extends BaseImageCanvas
 				String str = _visibleLabels.get(i);
 				if (str != null) {
 					var size = gc.stringExtent(str);
-					gc.drawText(str, _frameSize + 20, r.y + r.height / 2 - size.y / 2, true);
+
+					var fg = gc.getForeground();
+
+					{
+						var selected = _utils.getSelectedIndexes().contains(i);
+						if (selected) {
+							gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT));
+						}
+
+						gc.drawText(str, _frameSize + 20, r.y + r.height / 2 - size.y / 2, true);
+					}
+
+					gc.setForeground(fg);
 				}
 				i++;
 			}
@@ -269,7 +281,7 @@ public class FrameGridCanvas extends BaseImageCanvas
 			for (int i = 0; i < _visibleMap.length; i++) {
 				_visibleMap[i] = matches(_filter, _labels.get(i));
 			}
-		}		
+		}
 	}
 
 	public boolean isListLayout() {
@@ -440,9 +452,9 @@ public class FrameGridCanvas extends BaseImageCanvas
 
 	public void loadFrameProvider(IFrameProvider provider) {
 		resetFramesData();
-		
+
 		_total = provider.getFrameCount();
-		
+
 		for (int i = 0; i < _total; i++) {
 			var frame = provider.getFrameRectangle(i);
 			var file = provider.getFrameImageFile(i);
