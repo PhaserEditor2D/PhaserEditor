@@ -150,15 +150,15 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 		if (parent == AssetExplorer.PROJECTS_NODE) {
 			var projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 			var current = activeProjet;
-			return Arrays.stream(projects).filter(p -> current != p).toArray();
+			return New.children(parent, Arrays.stream(projects).filter(p -> current != p).toArray());
 		}
 
 		if (parent == AssetExplorer.ANIMATIONS_NODE) {
-			return AssetPackCore.getAnimationsFileCache().getProjectData(activeProjet).toArray();
+			return New.children(parent, AssetPackCore.getAnimationsFileCache().getProjectData(activeProjet));
 		}
 
 		if (parent == AssetExplorer.ATLAS_NODE) {
-			return AtlasCore.getAtlasFileCache().getProjectData(activeProjet).toArray();
+			return New.children(parent, AtlasCore.getAtlasFileCache().getProjectData(activeProjet));
 		}
 
 		if (parent == AssetExplorer.CANVAS_NODE) {
@@ -188,7 +188,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 				}
 			}
 
-			return list.toArray();
+			return New.children(parent, list);
 		}
 
 		if (parent instanceof CanvasType) {
@@ -206,7 +206,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 				return a.getFile().getName().compareTo(b.getFile().getName());
 			});
 
-			return list.toArray();
+			return New.children(parent, list);
 		}
 
 		if (parent instanceof CanvasFile) {

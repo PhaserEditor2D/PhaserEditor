@@ -33,18 +33,25 @@ import org.eclipse.help.HelpSystem;
 import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.preference.JFacePreferences;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.StyledCellLabelProvider;
+import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.TreeViewerColumn;
+import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -86,12 +93,12 @@ public class AssetExplorer extends ViewPart {
 	// private AssetExplorerContentProvider _treeContentProvider;
 	// private AssetExplorerListLabelProvider _listLabelProvider;
 	// private AssetExplorerListContentProvider _listContentProvider;
-	static String ROOT = "root";
-	static String ANIMATIONS_NODE = "Animations Files";
-	static String ATLAS_NODE = "Textures Packer Files";
-	static String CANVAS_NODE = "Canvas Files";
-	static String PACK_NODE = "Pack Files";
-	static String PROJECTS_NODE = "Other Projects";
+	public static String ROOT = "root";
+	public static String ANIMATIONS_NODE = "Animations Files";
+	public static String ATLAS_NODE = "Textures Packer Files";
+	public static String CANVAS_NODE = "Canvas Files";
+	public static String PACK_NODE = "Pack Files";
+	public static String PROJECTS_NODE = "Other Projects";
 
 	public AssetExplorer() {
 		super();
@@ -119,9 +126,47 @@ public class AssetExplorer extends ViewPart {
 		_contentProvider = new AssetExplorerContentProvider();
 		_viewer.setContentProvider(_contentProvider);
 		_viewer.setLabelProvider(new AssetExplorerLabelProvider());
-
+		var col = new TreeViewerColumn(_viewer, SWT.NONE);
+		col.setLabelProvider(createStyledLabelProvider());
+		_viewer.getTree().addControlListener(new ControlAdapter() {
+			@Override
+			public void controlResized(ControlEvent e) {
+				col.getColumn().setWidth(((Tree) e.widget).getBounds().width);
+			}
+		});
 		afterCreateWidgets();
 
+	}
+
+	private static StyledCellLabelProvider createStyledLabelProvider() {
+		return new StyledCellLabelProvider() {
+			@Override
+			public void update(ViewerCell cell) {
+				var base = (AssetExplorerLabelProvider) getViewer().getLabelProvider();
+
+				Object obj = cell.getElement();
+
+				String text = base.getText(obj);
+
+				StyledString str = new StyledString();
+
+				if (obj instanceof New) {
+					str.append(text, StyledString.createColorRegistryStyler(JFacePreferences.ACTIVE_HYPERLINK_COLOR, null));
+				} else {
+					str.append(text);
+				}
+
+				cell.setText(str.getString());
+				cell.setStyleRanges(str.getStyleRanges());
+				cell.setImage(base.getImage(obj));
+
+				super.update(cell);
+			}
+		};
+	}
+
+	public TreeViewer getViewer() {
+		return _viewer;
 	}
 
 	protected void handleDoubleClick() {

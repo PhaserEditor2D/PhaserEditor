@@ -64,17 +64,21 @@ class AssetExplorerLabelProvider extends LabelProvider {
 		if (element == AssetExplorer.CANVAS_NODE) {
 			return AssetLabelProvider.getFolderImage();
 		}
-		
+
 		if (element == AssetExplorer.PACK_NODE) {
 			return AssetLabelProvider.getFolderImage();
 		}
-		
+
 		if (element instanceof CanvasType) {
 			return AssetLabelProvider.getFolderImage();
 		}
 
 		if (element instanceof CanvasFile) {
 			return CanvasUI.getCanvasFileIcon((CanvasFile) element, AssetLabelProvider.GLOBAL_16);
+		}
+
+		if (element instanceof New) {
+			return EditorSharedImages.getImage(IEditorSharedImages.IMG_ADD);
 		}
 
 		return AssetLabelProvider.GLOBAL_16.getImage(element);
