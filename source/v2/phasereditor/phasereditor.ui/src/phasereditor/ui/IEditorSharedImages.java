@@ -56,6 +56,7 @@ public interface IEditorSharedImages {
 	String IMG_MONITOR = "icons/monitor.png";
 	String IMG_PALETTE = "icons/palette.png";
 	String IMG_APPLICATION_SIDE_TREE = "icons/application_side_tree.png";
+	String IMG_APPLICATION_SPLIT = "icons/application_split.png";
 	String IMG_SETTINGS = "icons/wrench.png";
 	String IMG_PREVIEW_PATTERN = "icons/preview-pattern.png";
 	String IMG_ZOOM_RESTORE = "icons/zoom_default.png";

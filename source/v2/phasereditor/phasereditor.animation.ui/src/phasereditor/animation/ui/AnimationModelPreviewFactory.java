@@ -41,22 +41,22 @@ public class AnimationModelPreviewFactory implements IPreviewFactory {
 
 	@Override
 	public boolean canReusePreviewControl(Control c, Object elem) {
-		return c instanceof AnimationWithTimelineComp && elem instanceof AnimationModel;
+		return c instanceof AnimationPreviewComp && elem instanceof AnimationModel;
 	}
 
 	@Override
 	public Control createControl(Composite previewContainer) {
-		return new AnimationWithTimelineComp(previewContainer, SWT.NONE);
+		return new AnimationPreviewComp(previewContainer, SWT.NONE);
 	}
 
 	@Override
 	public void updateControl(Control preview, Object element) {
-		((AnimationWithTimelineComp) preview).setModel((AnimationModel) element);
+		((AnimationPreviewComp) preview).setModel((AnimationModel) element);
 	}
 
 	@Override
 	public void updateToolBar(IToolBarManager toolbar, Control preview) {
-		((AnimationWithTimelineComp) preview).createToolBar(toolbar);
+		((AnimationPreviewComp) preview).createToolBar(toolbar);
 	}
 
 	@Override

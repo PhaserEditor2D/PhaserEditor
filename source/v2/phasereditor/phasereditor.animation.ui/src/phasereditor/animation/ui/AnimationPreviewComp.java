@@ -47,7 +47,7 @@ import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
  * @author arian
  *
  */
-public class AnimationWithTimelineComp extends SashForm {
+public class AnimationPreviewComp extends SashForm {
 
 	private AnimationCanvas _animationCanvas;
 	private AnimationTimelineCanvas _timelineCanvas;
@@ -58,8 +58,9 @@ public class AnimationWithTimelineComp extends SashForm {
 	private ImageCanvas_Zoom_1_1_Action _zoom_1_1_action;
 	private ImageCanvas_Zoom_FitWindow_Action _zoom_fitWindow_action;
 	private Action[] _playbackActions;
+	private Action _showTimeline;
 
-	public AnimationWithTimelineComp(Composite parent, int style) {
+	public AnimationPreviewComp(Composite parent, int style) {
 		super(parent, SWT.VERTICAL | style);
 
 		_animationCanvas = new AnimationCanvas(this, SWT.NONE);
@@ -67,11 +68,10 @@ public class AnimationWithTimelineComp extends SashForm {
 		_timelineCanvas.setAnimationCanvas(_animationCanvas);
 
 		setWeights(new int[] { 2, 1 });
-		
-		afterCreateWidgets();
-		
-	}
 
+		afterCreateWidgets();
+
+	}
 
 	private void afterCreateWidgets() {
 		_animationCanvas.addMouseListener(new MouseAdapter() {
@@ -95,11 +95,9 @@ public class AnimationWithTimelineComp extends SashForm {
 		});
 	}
 
-
 	public void setModel(AnimationModel model) {
 		_model = model;
-		
-		
+
 		if (_model == null) {
 			for (var btn : _playbackActions) {
 				btn.setChecked(false);
@@ -128,8 +126,7 @@ public class AnimationWithTimelineComp extends SashForm {
 
 		_zoom_1_1_action.setEnabled(true);
 		_zoom_fitWindow_action.setEnabled(true);
-		
-		
+
 		_animationCanvas.setModel(model);
 		_timelineCanvas.setModel(model);
 	}
@@ -182,7 +179,7 @@ public class AnimationWithTimelineComp extends SashForm {
 		_pauseAction.setEnabled(_playAction.isChecked());
 		_stopAction.setEnabled(_playAction.isChecked() || _pauseAction.isChecked());
 	}
-	
+
 	private void disableToolbar() {
 		for (var btn : _playbackActions) {
 			btn.setEnabled(false);
@@ -191,7 +188,7 @@ public class AnimationWithTimelineComp extends SashForm {
 		_zoom_1_1_action.setEnabled(false);
 		_zoom_fitWindow_action.setEnabled(false);
 	}
-	
+
 	public void createToolBar(IToolBarManager manager) {
 
 		_playAction = new Action("Play", IAction.AS_CHECK_BOX) {
@@ -248,7 +245,19 @@ public class AnimationWithTimelineComp extends SashForm {
 
 		};
 
-		
+		_showTimeline = new Action("Timeline",
+				EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_APPLICATION_SPLIT)) {
+			@Override
+			public void run() {
+				if (getMaximizedControl() == null) {
+					setMaximizedControl(getAnimationCanvas());
+				} else {
+					setMaximizedControl(null);
+				}
+			}
+		};
+		_showTimeline.setChecked(true);
+
 		_zoom_1_1_action = new ImageCanvas_Zoom_1_1_Action(_animationCanvas);
 		_zoom_fitWindow_action = new ImageCanvas_Zoom_FitWindow_Action(_animationCanvas);
 
@@ -256,11 +265,13 @@ public class AnimationWithTimelineComp extends SashForm {
 		manager.add(_pauseAction);
 		manager.add(_stopAction);
 		manager.add(new Separator());
+		manager.add(_showTimeline);
+		manager.add(new Separator());
 		manager.add(_zoom_1_1_action);
 		manager.add(_zoom_fitWindow_action);
 
 		_playbackActions = new Action[] { _playAction, _pauseAction, _stopAction };
-		
+
 		disableToolbar();
 	}
 
