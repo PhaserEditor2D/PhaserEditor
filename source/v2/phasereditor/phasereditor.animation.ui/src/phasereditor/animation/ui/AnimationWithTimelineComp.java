@@ -248,6 +248,7 @@ public class AnimationWithTimelineComp extends SashForm {
 
 		};
 
+		
 		_zoom_1_1_action = new ImageCanvas_Zoom_1_1_Action(_animationCanvas);
 		_zoom_fitWindow_action = new ImageCanvas_Zoom_FitWindow_Action(_animationCanvas);
 
