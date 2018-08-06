@@ -72,10 +72,19 @@ public class AnimationFrameProvider implements IFrameProvider {
 	public String getFrameTooltip(int index) {
 		return null;
 	}
-	
+
 	@Override
 	public AnimationFrameModel getFrameObject(int index) {
-		return  _model.getFrames().get(index);
+		return _model.getFrames().get(index);
+	}
+
+	@Override
+	public String getFrameLabel(int index) {
+		var frame = getFrameObject(index).getFrameAsset();
+		if (frame == null) {
+			return null;
+		}
+		return frame.getKey();
 	}
 
 }

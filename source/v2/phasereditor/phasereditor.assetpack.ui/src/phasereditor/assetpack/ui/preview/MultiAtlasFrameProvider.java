@@ -73,4 +73,13 @@ public class MultiAtlasFrameProvider implements IFrameProvider {
 	public MultiAtlasAssetModel.Frame getFrameObject(int index) {
 		return _frames.get(index);
 	}
+
+	@Override
+	public String getFrameLabel(int index) {
+		var frame = _frames.get(index);
+		if (frame == null) {
+			return null;
+		}
+		return frame.getKey();
+	}
 }

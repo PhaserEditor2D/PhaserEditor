@@ -31,7 +31,7 @@ public interface IFrameProvider {
 		public String getFrameTooltip(int index) {
 			return null;
 		}
-
+		
 		@Override
 		public Rectangle getFrameRectangle(int index) {
 			return null;
@@ -51,6 +51,11 @@ public interface IFrameProvider {
 		public Object getFrameObject(int index) {
 			return null;
 		}
+
+		@Override
+		public String getFrameLabel(int index) {
+			return null;
+		}
 	};
 
 	public int getFrameCount();
@@ -62,5 +67,7 @@ public interface IFrameProvider {
 	public String getFrameTooltip(int index);
 
 	public Object getFrameObject(int index);
+	
+	public String getFrameLabel(int index);
 
 }

@@ -22,7 +22,6 @@
 package phasereditor.ui;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -55,6 +54,7 @@ public class FrameGridCanvas extends BaseImageCanvas
 	private List<Rectangle> _renderImageSrcFrames;
 	private List<Rectangle> _renderImageDstFrames;
 	private List<Rectangle> _selectionFrameArea;
+	private List<String> _labels;
 	private List<Image> _images;
 	private List<Object> _objects;
 	private List<IFile> _files;
@@ -69,8 +69,9 @@ public class FrameGridCanvas extends BaseImageCanvas
 	public FrameGridCanvas(Composite parent, int style, boolean addDragAndDropSupport) {
 		super(parent, style | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL | SWT.NO_REDRAW_RESIZE);
 
-		_renderImageSrcFrames = Collections.emptyList();
-		_images = Collections.emptyList();
+		_renderImageSrcFrames = List.of();
+		_images = List.of();
+		_labels = List.of();
 		_frameSize = 64;
 
 		addPaintListener(this);
@@ -218,10 +219,14 @@ public class FrameGridCanvas extends BaseImageCanvas
 		}
 
 		if (_listLayout) {
+			int i = 0;
 			for (var r : _selectionFrameArea) {
-				String str = "name";
-				var size = gc.stringExtent(str);
-				gc.drawText(str, _frameSize + 20, r.y + r.height / 2 - size.y / 2, true);
+				String str = _labels.get(i);
+				if (str != null) {
+					var size = gc.stringExtent(str);
+					gc.drawText(str, _frameSize + 20, r.y + r.height / 2 - size.y / 2, true);
+				}
+				i++;
 			}
 		}
 
@@ -238,7 +243,6 @@ public class FrameGridCanvas extends BaseImageCanvas
 	}
 
 	private void computeRects() {
-
 		if (_images.isEmpty()) {
 			return;
 		}
@@ -253,7 +257,6 @@ public class FrameGridCanvas extends BaseImageCanvas
 			int y = 0;
 
 			_renderImageDstFrames = new ArrayList<>();
-			_selectionFrameArea = new ArrayList<>();
 
 			int maxWidth = b.width;
 
@@ -308,6 +311,7 @@ public class FrameGridCanvas extends BaseImageCanvas
 
 		{
 			if (_listLayout) {
+				_selectionFrameArea = new ArrayList<>();
 				int i = 0;
 				for (var dst : _renderImageDstFrames) {
 					dst.y = i * box;
@@ -382,12 +386,14 @@ public class FrameGridCanvas extends BaseImageCanvas
 			var image = loadImage(file);
 			var tooltip = provider.getFrameTooltip(i);
 			var object = provider.getFrameObject(i);
+			var label = provider.getFrameLabel(i);
 
 			_renderImageSrcFrames.add(frame);
 			_images.add(image);
 			_tooltips.add(tooltip);
 			_objects.add(object);
 			_files.add(file);
+			_labels.add(label);
 
 		}
 
@@ -396,10 +402,13 @@ public class FrameGridCanvas extends BaseImageCanvas
 
 	private void resetFramesData() {
 		_renderImageSrcFrames = new ArrayList<>();
+		_renderImageDstFrames = new ArrayList<>();
+		_selectionFrameArea = new ArrayList<>();
 		_images = new ArrayList<>();
 		_tooltips = new ArrayList<>();
 		_objects = new ArrayList<>();
 		_files = new ArrayList<>();
+		_labels = new ArrayList<>();
 	}
 
 	@Override

@@ -74,7 +74,15 @@ public class AtlasAssetFramesProvider implements IFrameProvider {
 
 	@Override
 	public Frame getFrameObject(int index) {
-		return  _frames.get(index);
+		return _frames.get(index);
 	}
 
+	@Override
+	public String getFrameLabel(int index) {
+		var frame = _frames.get(index);
+		if (frame == null) {
+			return null;
+		}
+		return frame.getKey();
+	}
 }
