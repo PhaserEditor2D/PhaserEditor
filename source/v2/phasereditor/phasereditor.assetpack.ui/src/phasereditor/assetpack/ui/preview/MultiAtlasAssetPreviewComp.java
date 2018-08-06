@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Control;
 
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.ui.EditorSharedImages;
-import phasereditor.ui.FrameGridCanvas;
+import phasereditor.ui.FilteredFrameGrid;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 
@@ -43,7 +43,7 @@ public class MultiAtlasAssetPreviewComp extends Composite {
 	static final Object NO_SELECTION = "none";
 
 	private MultiAtlasAssetModel _model;
-	private FrameGridCanvas _gridCanvas;
+	private FilteredFrameGrid _filteredGrid;
 
 	private Action _tilesAction;
 
@@ -55,14 +55,14 @@ public class MultiAtlasAssetPreviewComp extends Composite {
 		super(parent, style);
 
 		setLayout(new StackLayout());
-
-		_gridCanvas = new FrameGridCanvas(this, SWT.NONE, true);
+		
+		_filteredGrid = new FilteredFrameGrid(this, SWT.NONE, true);
 
 		afterCreateWidgets();
 	}
 
 	private void afterCreateWidgets() {
-		moveTop(_gridCanvas);
+		moveTop(_filteredGrid);
 	}
 
 	private void moveTop(Control control) {
@@ -76,15 +76,16 @@ public class MultiAtlasAssetPreviewComp extends Composite {
 	}
 
 	private void updateActionsState() {
-		_zoom_fitWindow_action.setEnabled(!_gridCanvas.isListLayout());
-		_tilesAction.setChecked(!_gridCanvas.isListLayout());
-		_listAction.setChecked(_gridCanvas.isListLayout());
+		var canvas = _filteredGrid.getCanvas();
+		_zoom_fitWindow_action.setEnabled(!canvas.isListLayout());
+		_tilesAction.setChecked(!canvas.isListLayout());
+		_listAction.setChecked(canvas.isListLayout());
 	}
 
 	public void setModel(MultiAtlasAssetModel model) {
 		_model = model;
-		_gridCanvas.loadFrameProvider(new MultiAtlasFrameProvider(model));
-		_gridCanvas.resetZoom();
+		_filteredGrid.getCanvas().loadFrameProvider(new MultiAtlasFrameProvider(model));
+		_filteredGrid.getCanvas().resetZoom();
 	}
 
 	public MultiAtlasAssetModel getModel() {
@@ -100,8 +101,8 @@ public class MultiAtlasAssetPreviewComp extends Composite {
 
 			@Override
 			public void run() {
-				moveTop(_gridCanvas);
-				_gridCanvas.setListLayout(false);
+				moveTop(_filteredGrid);
+				_filteredGrid.getCanvas().setListLayout(false);
 			}
 		};
 		
@@ -112,11 +113,12 @@ public class MultiAtlasAssetPreviewComp extends Composite {
 
 			@Override
 			public void run() {
-				moveTop(_gridCanvas);
-				if (_gridCanvas.getFrameSize() < 32) {
-					_gridCanvas.setFrameSize(32);
+				moveTop(_filteredGrid);
+				var _canvas = _filteredGrid.getCanvas();
+				if (_canvas.getFrameSize() < 32) {
+					_canvas.setFrameSize(32);
 				}
-				_gridCanvas.setListLayout(true);
+				_canvas.setListLayout(true);
 			}
 		};
 
@@ -125,7 +127,7 @@ public class MultiAtlasAssetPreviewComp extends Composite {
 
 		toolbar.add(new Separator());
 
-		_zoom_fitWindow_action = new ImageCanvas_Zoom_FitWindow_Action(_gridCanvas);
+		_zoom_fitWindow_action = new ImageCanvas_Zoom_FitWindow_Action(_filteredGrid.getCanvas());
 		toolbar.add(_zoom_fitWindow_action);
 
 		updateActionsState();
