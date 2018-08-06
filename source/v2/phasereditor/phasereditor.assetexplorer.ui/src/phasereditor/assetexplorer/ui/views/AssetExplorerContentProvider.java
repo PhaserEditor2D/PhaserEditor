@@ -24,6 +24,7 @@ package phasereditor.assetexplorer.ui.views;
 import static java.lang.System.out;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -53,10 +54,11 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 	IPartListener _partListener;
 	private TreeViewer _viewer;
 	private IProject _projectInContent;
+	private IProject _focusInProject;
 
 	public AssetExplorerContentProvider() {
 		super(true);
-		
+
 		_partListener = new IPartListener() {
 
 			@Override
@@ -94,7 +96,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 				}
 			}
 		};
-		 getActivePage().addPartListener(_partListener);
+		getActivePage().addPartListener(_partListener);
 	}
 
 	private static IWorkbenchPage getActivePage() {
@@ -109,7 +111,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 
 	@Override
 	public void dispose() {
-		 getActivePage().removePartListener(_partListener);
+		getActivePage().removePartListener(_partListener);
 
 		super.dispose();
 	}
@@ -118,32 +120,53 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 	public Object[] getChildren(Object parent) {
 		IProject activeProjet = getActiveProject();
 
+		if (_focusInProject != null) {
+			activeProjet = _focusInProject;
+		}
+
 		_projectInContent = activeProjet;
 
 		if (parent == AssetExplorer.ROOT) {
-			return new Object[] { AssetExplorer.ANIMATIONS_NODE, AssetExplorer.ATLAS_NODE, AssetExplorer.PACK_NODE, AssetExplorer.CANVAS_NODE };
+
+			if (activeProjet == null) {
+				return ResourcesPlugin.getWorkspace().getRoot().getProjects();
+			}
+
+			return new Object[] {
+
+					AssetExplorer.CANVAS_NODE,
+
+					AssetExplorer.ANIMATIONS_NODE,
+
+					AssetExplorer.ATLAS_NODE,
+
+					AssetExplorer.PACK_NODE,
+
+					AssetExplorer.PROJECTS_NODE
+
+			};
+		}
+
+		if (parent == AssetExplorer.PROJECTS_NODE) {
+			var projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+			var current = activeProjet;
+			return Arrays.stream(projects).filter(p -> current != p).toArray();
 		}
 
 		if (parent == AssetExplorer.ANIMATIONS_NODE) {
-			if (activeProjet != null) {
-				return AssetPackCore.getAnimationsFileCache().getProjectData(activeProjet).toArray();
-			}
+			return AssetPackCore.getAnimationsFileCache().getProjectData(activeProjet).toArray();
 		}
-		
+
 		if (parent == AssetExplorer.ATLAS_NODE) {
-			if (activeProjet != null) {
-				return AtlasCore.getAtlasFileCache().getProjectData(activeProjet).toArray();
-			}
+			return AtlasCore.getAtlasFileCache().getProjectData(activeProjet).toArray();
 		}
 
 		if (parent == AssetExplorer.CANVAS_NODE) {
 			List<Object> list = new ArrayList<>();
 
-			if (activeProjet != null) {
-				list.add(CanvasType.SPRITE);
-				list.add(CanvasType.GROUP);
-				list.add(CanvasType.STATE);
-			}
+			list.add(CanvasType.SPRITE);
+			list.add(CanvasType.GROUP);
+			list.add(CanvasType.STATE);
 
 			return list.toArray();
 		}
@@ -155,7 +178,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 
 			for (IProject project : workspace.getRoot().getProjects()) {
 
-				if (activeProjet != null && activeProjet != project) {
+				if (activeProjet != project) {
 					continue;
 				}
 
@@ -168,24 +191,22 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 			return list.toArray();
 		}
 
-		if (activeProjet != null) {
-			if (parent instanceof CanvasType) {
-				List<CanvasFile> cfiles = CanvasCore.getCanvasFileCache().getProjectData(activeProjet);
+		if (parent instanceof CanvasType) {
+			List<CanvasFile> cfiles = CanvasCore.getCanvasFileCache().getProjectData(activeProjet);
 
-				List<CanvasFile> list = new ArrayList<>();
+			List<CanvasFile> list = new ArrayList<>();
 
-				for (CanvasFile cfile : cfiles) {
-					if (cfile.getType() == parent) {
-						list.add(cfile);
-					}
+			for (CanvasFile cfile : cfiles) {
+				if (cfile.getType() == parent) {
+					list.add(cfile);
 				}
-
-				list.sort((a, b) -> {
-					return a.getFile().getName().compareTo(b.getFile().getName());
-				});
-
-				return list.toArray();
 			}
+
+			list.sort((a, b) -> {
+				return a.getFile().getName().compareTo(b.getFile().getName());
+			});
+
+			return list.toArray();
 		}
 
 		if (parent instanceof CanvasFile) {
@@ -211,20 +232,13 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 			return list.toArray();
 		}
 
-		if (parent instanceof IProject) {
-			List<AssetPackModel> list = AssetPackCore.getAssetPackModels((IProject) parent);
-			return list.toArray();
-		}
-
-		if (activeProjet == null && parent instanceof AssetPackModel) {
-			return EMPTY;
+		if (parent instanceof AssetPackModel) {
+			return ((AssetPackModel) parent).getSections().toArray();
 		}
 
 		if (parent instanceof AssetsContentProvider.Container) {
 			return ((Container) parent).children;
 		}
-
-		
 
 		return super.getChildren(parent);
 	}
@@ -248,6 +262,10 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 		return _projectInContent;
 	}
 
+	public void setFocusInProject(IProject project) {
+		_focusInProject = project;
+	}
+
 	Object _lastToken = null;
 
 	void refreshViewer() {
@@ -265,6 +283,11 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 			_viewer.refresh();
 
 			IProject project = getActiveProject();
+
+			if (project != null) {
+				_focusInProject = null;
+			}
+
 			if (project != _lastToken) {
 				_viewer.expandToLevel(4);
 				_lastToken = project;

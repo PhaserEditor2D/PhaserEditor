@@ -98,8 +98,8 @@ public class AtlasAssetPreviewComp extends Composite {
 		_zoom_1_1_action.setEnabled(control == _atlasCanvas);
 		_zoom_fitWindow_action.setEnabled(control == _atlasCanvas);
 
-		_tilesAction.setChecked(!_gridCanvas.isListLayout());
-		_listAction.setChecked(_gridCanvas.isListLayout());
+		_tilesAction.setChecked(control == _gridCanvas && !_gridCanvas.isListLayout());
+		_listAction.setChecked(control == _gridCanvas && _gridCanvas.isListLayout());
 		_textureAction.setChecked(control == _atlasCanvas);
 	}
 

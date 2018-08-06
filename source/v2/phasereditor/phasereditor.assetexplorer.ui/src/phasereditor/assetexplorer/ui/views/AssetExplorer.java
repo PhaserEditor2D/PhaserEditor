@@ -87,10 +87,11 @@ public class AssetExplorer extends ViewPart {
 	// private AssetExplorerListLabelProvider _listLabelProvider;
 	// private AssetExplorerListContentProvider _listContentProvider;
 	static String ROOT = "root";
-	static String ANIMATIONS_NODE = "Animations";
-	static String ATLAS_NODE = "Atlas";
-	static String CANVAS_NODE = "Canvas";
-	static String PACK_NODE = "Pack";
+	static String ANIMATIONS_NODE = "Animations Files";
+	static String ATLAS_NODE = "Textures Packer Files";
+	static String CANVAS_NODE = "Canvas Files";
+	static String PACK_NODE = "Pack Files";
+	static String PROJECTS_NODE = "Other Projects";
 
 	public AssetExplorer() {
 		super();
@@ -110,7 +111,7 @@ public class AssetExplorer extends ViewPart {
 		_viewer.addDoubleClickListener(new IDoubleClickListener() {
 			@Override
 			public void doubleClick(DoubleClickEvent event) {
-				showSelectionInEditor();
+				handleDoubleClick();
 			}
 		});
 		Tree tree = _viewer.getTree();
@@ -123,11 +124,15 @@ public class AssetExplorer extends ViewPart {
 
 	}
 
-	protected void showSelectionInEditor() {
+	protected void handleDoubleClick() {
 		Object elem = ((IStructuredSelection) _viewer.getSelection()).getFirstElement();
 		IFile file = null;
 
-		if (elem instanceof IFile) {
+		if (elem instanceof IProject) {
+			var provider = (AssetExplorerContentProvider) _viewer.getContentProvider();
+			provider.setFocusInProject((IProject) elem);
+			_viewer.refresh();
+		} else if (elem instanceof IFile) {
 			file = (IFile) elem;
 		} else if (elem instanceof CanvasFile) {
 			file = ((CanvasFile) elem).getFile();
