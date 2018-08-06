@@ -32,6 +32,7 @@ import org.eclipse.ui.IPersistableElement;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.ui.views.IPreviewFactory;
 
+
 /**
  * @author arian
  *
@@ -40,22 +41,22 @@ public class AnimationModelPreviewFactory implements IPreviewFactory {
 
 	@Override
 	public boolean canReusePreviewControl(Control c, Object elem) {
-		return c instanceof AnimationPreviewComp && elem instanceof AnimationModel;
+		return c instanceof AnimationWithTimelineComp && elem instanceof AnimationModel;
 	}
 
 	@Override
 	public Control createControl(Composite previewContainer) {
-		return new AnimationPreviewComp(previewContainer, SWT.NONE);
+		return new AnimationWithTimelineComp(previewContainer, SWT.NONE);
 	}
 
 	@Override
 	public void updateControl(Control preview, Object element) {
-		((AnimationPreviewComp) preview).setModel((AnimationModel) element);
+		((AnimationWithTimelineComp) preview).setModel((AnimationModel) element);
 	}
 
 	@Override
 	public void updateToolBar(IToolBarManager toolbar, Control preview) {
-		((AnimationPreviewComp) preview).createToolBar(toolbar);
+		((AnimationWithTimelineComp) preview).createToolBar(toolbar);
 	}
 
 	@Override
@@ -80,3 +81,52 @@ public class AnimationModelPreviewFactory implements IPreviewFactory {
 	}
 
 }
+
+///**
+// * @author arian
+// *
+// */
+//public class AnimationModelPreviewFactory implements IPreviewFactory {
+//
+//	@Override
+//	public boolean canReusePreviewControl(Control c, Object elem) {
+//		return c instanceof AnimationPreviewComp && elem instanceof AnimationModel;
+//	}
+//
+//	@Override
+//	public Control createControl(Composite previewContainer) {
+//		return new AnimationPreviewComp(previewContainer, SWT.NONE);
+//	}
+//
+//	@Override
+//	public void updateControl(Control preview, Object element) {
+//		((AnimationPreviewComp) preview).setModel((AnimationModel) element);
+//	}
+//
+//	@Override
+//	public void updateToolBar(IToolBarManager toolbar, Control preview) {
+//		((AnimationPreviewComp) preview).createToolBar(toolbar);
+//	}
+//
+//	@Override
+//	public String getTitle(Object element) {
+//		AnimationModel anim = (AnimationModel) element;
+//		return anim.getKey() + " (" + anim.getAnimations().getFile().getName() + ")";
+//	}
+//
+//	@Override
+//	public IPersistableElement getPersistable(Object elem) {
+//		return Adapters.adapt(elem, IPersistableElement.class);
+//	}
+//
+//	@Override
+//	public void savePreviewControl(Control previewControl, IMemento memento) {
+//		//
+//	}
+//
+//	@Override
+//	public void initPreviewControl(Control previewControl, IMemento initialMemento) {
+//		//
+//	}
+//
+//}

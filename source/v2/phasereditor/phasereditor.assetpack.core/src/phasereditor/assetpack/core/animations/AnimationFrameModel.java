@@ -32,6 +32,7 @@ public class AnimationFrameModel {
 	private int _duration;
 	private double _computedFraction;
 	private int _computedDuration;
+	private AnimationModel _animation;
 
 	public AnimationFrameModel() {
 
@@ -43,6 +44,20 @@ public class AnimationFrameModel {
 		// a frame based on an image only needs the key
 		_frameName = jsonData.opt("frame");
 		_duration = jsonData.optInt("duration", 0);
+	}
+
+	public AnimationFrameModel(AnimationModel animation, JSONObject jsonData) {
+		this(jsonData);
+		_animation = animation;
+	}
+	
+	public AnimationFrameModel(AnimationModel animation) {
+		this();
+		_animation = animation;
+	}
+
+	public AnimationModel getAnimation() {
+		return _animation;
 	}
 
 	public JSONObject toJSON() {

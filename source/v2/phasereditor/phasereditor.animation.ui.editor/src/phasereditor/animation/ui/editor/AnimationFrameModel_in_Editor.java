@@ -34,26 +34,25 @@ import phasereditor.ui.properties.PGridModel;
  */
 public class AnimationFrameModel_in_Editor extends AnimationFrameModel implements IAdaptable {
 
-	private AnimationModel_in_Editor _anim;
 
 	public AnimationFrameModel_in_Editor(AnimationModel_in_Editor anim) {
-		_anim = anim;
+		super(anim);
 	}
 
 	public AnimationFrameModel_in_Editor(AnimationModel_in_Editor anim, JSONObject jsonData) {
-		super(jsonData);
-		_anim = anim;
+		super(anim, jsonData);
 	}
 	
+	@Override
 	public AnimationModel_in_Editor getAnimation() {
-		return _anim;
+		return (AnimationModel_in_Editor) super.getAnimation();
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Object getAdapter(Class adapter) {
 		if (adapter == PGridModel.class) {
-			return new AnimationFrameModel_in_Editor_PGridModel(_anim, this);
+			return new AnimationFrameModel_in_Editor_PGridModel(getAnimation(), this);
 		}
 		return null;
 	}
