@@ -39,7 +39,7 @@ import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel.Frame;
 import phasereditor.atlas.ui.AtlasCanvas;
 import phasereditor.ui.EditorSharedImages;
-import phasereditor.ui.FrameGridCanvas;
+import phasereditor.ui.FilteredFrameGrid;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.IZoomable;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
@@ -51,7 +51,6 @@ public class AtlasAssetPreviewComp extends Composite {
 
 	private AtlasCanvas _atlasCanvas;
 	private AtlasAssetModel _model;
-	private FrameGridCanvas _gridCanvas;
 
 	private Action _textureAction;
 
@@ -63,19 +62,21 @@ public class AtlasAssetPreviewComp extends Composite {
 
 	private ImageCanvas_Zoom_FitWindow_Action _zoom_fitWindow_action;
 
+	private FilteredFrameGrid _filteredGrid;
+
 	public AtlasAssetPreviewComp(Composite parent, int style) {
 		super(parent, style);
 
 		setLayout(new StackLayout());
 
 		_atlasCanvas = new AtlasCanvas(this, SWT.NONE, true);
-		_gridCanvas = new FrameGridCanvas(this, SWT.NONE, true);
+		_filteredGrid = new FilteredFrameGrid(this, SWT.NONE, true);
 
 		afterCreateWidgets();
 	}
 
 	private void afterCreateWidgets() {
-		moveTop(_gridCanvas);
+		moveTop(_filteredGrid);
 	}
 
 	private void moveTop(Control control) {
@@ -98,8 +99,8 @@ public class AtlasAssetPreviewComp extends Composite {
 		_zoom_1_1_action.setEnabled(control == _atlasCanvas);
 		_zoom_fitWindow_action.setEnabled(control == _atlasCanvas);
 
-		_tilesAction.setChecked(control == _gridCanvas && !_gridCanvas.isListLayout());
-		_listAction.setChecked(control == _gridCanvas && _gridCanvas.isListLayout());
+		_tilesAction.setChecked(control == _filteredGrid && !_filteredGrid.getCanvas().isListLayout());
+		_listAction.setChecked(control == _filteredGrid && _filteredGrid.getCanvas().isListLayout());
 		_textureAction.setChecked(control == _atlasCanvas);
 	}
 
@@ -114,8 +115,8 @@ public class AtlasAssetPreviewComp extends Composite {
 		_atlasCanvas.setFrames(frames);
 		_atlasCanvas.redraw();
 
-		_gridCanvas.loadFrameProvider(new AtlasAssetFramesProvider(model));
-		_gridCanvas.resetZoom();
+		_filteredGrid.getCanvas().loadFrameProvider(new AtlasAssetFramesProvider(model));
+		_filteredGrid.getCanvas().resetZoom();
 	}
 
 	public AtlasAssetModel getModel() {
@@ -135,8 +136,8 @@ public class AtlasAssetPreviewComp extends Composite {
 
 			@Override
 			public void run() {
-				moveTop(_gridCanvas);
-				_gridCanvas.setListLayout(false);
+				moveTop(_filteredGrid);
+				_filteredGrid.getCanvas().setListLayout(false);
 			}
 		};
 		_textureAction = new Action("Texture", IAction.AS_CHECK_BOX) {
@@ -156,11 +157,12 @@ public class AtlasAssetPreviewComp extends Composite {
 
 			@Override
 			public void run() {
-				moveTop(_gridCanvas);
-				if (_gridCanvas.getFrameSize() < 32) {
-					_gridCanvas.setFrameSize(32);
+				moveTop(_filteredGrid);
+				var canvas = _filteredGrid.getCanvas();
+				if (canvas.getFrameSize() < 32) {
+					canvas.setFrameSize(32);
 				}
-				_gridCanvas.setListLayout(true);
+				canvas.setListLayout(true);
 			}
 		};
 

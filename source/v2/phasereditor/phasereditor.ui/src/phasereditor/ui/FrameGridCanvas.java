@@ -51,20 +51,38 @@ public class FrameGridCanvas extends BaseImageCanvas
 		implements PaintListener, IZoomable, MouseWheelListener, KeyListener {
 
 	private static int S = 5;
+	
+	private List<Rectangle> _visibleRenderSelectionFrameAreas;
+	
 	private List<Rectangle> _renderImageSrcFrames;
-	private List<Rectangle> _renderImageDstFrames;
-	private List<Rectangle> _selectionFrameArea;
+	private List<Rectangle> _visibleRenderImageSrcFrames;
+	
+	private List<Rectangle> _visibleRenderImageDstFrames;
+	
 	private List<String> _labels;
+	private List<String> _visibleLabels;
+
 	private List<Image> _images;
+	private List<Image> _visibleImages;
+
 	private List<Object> _objects;
+	private List<Object> _visibleObjects;
+
 	private List<IFile> _files;
+	private List<IFile> _visibleFiles;
+
 	private int _frameSize;
 	private Rectangle _dst;
 	private Point _origin;
-	private List<String> _tooltips;
+
 	private boolean _fitWindow;
 	private FrameCanvasUtils _utils;
 	private boolean _listLayout;
+	private String _filter;
+	private boolean[] _visibleMap;
+	private int _visibleCount;
+	private int _total;
+	private String _nextFilterText;
 
 	public FrameGridCanvas(Composite parent, int style, boolean addDragAndDropSupport) {
 		super(parent, style | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL | SWT.NO_REDRAW_RESIZE);
@@ -87,32 +105,32 @@ public class FrameGridCanvas extends BaseImageCanvas
 
 			@Override
 			public int getFramesCount() {
-				return _renderImageSrcFrames.size();
+				return _visibleCount;
 			}
 
 			@Override
 			public Rectangle getRenderImageSrcFrame(int index) {
-				return _renderImageSrcFrames.get(index);
+				return _visibleRenderImageSrcFrames.get(index);
 			}
 
 			@Override
 			public Rectangle getRenderImageDstFrame(int index) {
-				return _renderImageDstFrames.get(index);
+				return _visibleRenderImageDstFrames.get(index);
 			}
 
 			@Override
 			public Rectangle getSelectionFrameArea(int index) {
-				return _selectionFrameArea.get(index);
+				return _visibleRenderSelectionFrameAreas.get(index);
 			}
 
 			@Override
 			public Object getFrameObject(int index) {
-				return _objects.get(index);
+				return _visibleObjects.get(index);
 			}
 
 			@Override
 			public IFile getImageFile(int index) {
-				return _files.get(index);
+				return _visibleFiles.get(index);
 			}
 
 		};
@@ -173,6 +191,13 @@ public class FrameGridCanvas extends BaseImageCanvas
 			_fitWindow = false;
 			fitWindow();
 		}
+		
+		if (_nextFilterText != null) {
+			getVerticalBar().setSelection(0);
+			_origin.y = 0;
+			buildFilterMap(_nextFilterText);
+			_nextFilterText = null;
+		}
 
 		GC gc = e.gc;
 
@@ -182,25 +207,25 @@ public class FrameGridCanvas extends BaseImageCanvas
 		tx.translate(0, _origin.y);
 		gc.setTransform(tx);
 
-		for (int i = 0; i < _renderImageSrcFrames.size(); i++) {
-			var src = _renderImageSrcFrames.get(i);
-			var selRect = _selectionFrameArea.get(i);
+		for (int i = 0; i < _visibleCount; i++) {
+			var src = _visibleRenderImageSrcFrames.get(i);
+			var area = _visibleRenderSelectionFrameAreas.get(i);
 
 			var selected = _utils.getSelectedIndexes().contains(i);
 
 			if (selected) {
 				gc.setBackground(PhaserEditorUI.get_pref_Preview_frameSelectionColor());
 				gc.setAlpha(100);
-				gc.fillRectangle(selRect);
+				gc.fillRectangle(area);
 				gc.setAlpha(255);
 			} else {
-				PhaserEditorUI.paintPreviewBackground(gc, selRect);
+				PhaserEditorUI.paintPreviewBackground(gc, area);
 			}
 
 			{
-				var dst = _renderImageDstFrames.get(i);
+				var dst = _visibleRenderImageDstFrames.get(i);
 
-				var image = _images.get(i);
+				var image = _visibleImages.get(i);
 
 				if (image != null) {
 					if (_listLayout) {
@@ -215,15 +240,15 @@ public class FrameGridCanvas extends BaseImageCanvas
 
 			if (!_listLayout) {
 				if (i == _utils.getOverIndex() || selected) {
-					gc.drawRectangle(selRect);
+					gc.drawRectangle(area);
 				}
 			}
 		}
 
 		if (_listLayout) {
 			int i = 0;
-			for (var r : _selectionFrameArea) {
-				String str = _labels.get(i);
+			for (var r : _visibleRenderSelectionFrameAreas) {
+				String str = _visibleLabels.get(i);
 				if (str != null) {
 					var size = gc.stringExtent(str);
 					gc.drawText(str, _frameSize + 20, r.y + r.height / 2 - size.y / 2, true);
@@ -232,6 +257,19 @@ public class FrameGridCanvas extends BaseImageCanvas
 			}
 		}
 
+	}
+
+	private void buildFilterMap(String text) {
+		if (text.trim().length() == 0) {
+			_visibleMap = null;
+		} else {
+			_filter = text;
+			_visibleMap = new boolean[_total];
+
+			for (int i = 0; i < _visibleMap.length; i++) {
+				_visibleMap[i] = matches(_filter, _labels.get(i));
+			}
+		}		
 	}
 
 	public boolean isListLayout() {
@@ -258,7 +296,15 @@ public class FrameGridCanvas extends BaseImageCanvas
 			int x = 0;
 			int y = 0;
 
-			_renderImageDstFrames = new ArrayList<>();
+			_visibleRenderImageDstFrames = new ArrayList<>();
+
+			_visibleRenderImageSrcFrames = new ArrayList<>();
+			_visibleObjects = new ArrayList<>();
+			_visibleFiles = new ArrayList<>();
+			_visibleImages = new ArrayList<>();
+			_visibleLabels = new ArrayList<>();
+
+			_visibleCount = 0;
 
 			int maxWidth = b.width;
 
@@ -266,15 +312,21 @@ public class FrameGridCanvas extends BaseImageCanvas
 				maxWidth = _frameSize;
 			}
 
-			for (Rectangle frame : _renderImageSrcFrames) {
+			for (int i = 0; i < _total; i++) {
+				var src = _renderImageSrcFrames.get(i);
 
-				ZoomCalculator c = new ZoomCalculator(frame.width, frame.height);
+				if (!isVisible(i)) {
+					continue;
+				}
+
+				ZoomCalculator c = new ZoomCalculator(src.width, src.height);
 				c.fit(_frameSize, _frameSize);
 
-				Rectangle dst = new Rectangle(x + (int) c.offsetX, y + (int) c.offsetY, (int) (frame.width * c.scale),
-						(int) (frame.height * c.scale));
+				Rectangle dst = new Rectangle(x + (int) c.offsetX, y + (int) c.offsetY, (int) (src.width * c.scale),
+						(int) (src.height * c.scale));
 
-				_renderImageDstFrames.add(dst);
+				_visibleRenderImageDstFrames.add(dst);
+				_visibleRenderImageSrcFrames.add(src);
 
 				x += S + _frameSize;
 
@@ -282,12 +334,19 @@ public class FrameGridCanvas extends BaseImageCanvas
 					y += box;
 					x = 0;
 				}
+
+				_visibleObjects.add(_objects.get(i));
+				_visibleFiles.add(_files.get(i));
+				_visibleImages.add(_images.get(i));
+				_visibleLabels.add(_labels.get(i));
+
+				_visibleCount++;
 			}
 
 			Point min = new Point(Integer.MAX_VALUE, Integer.MAX_VALUE);
 			Point max = new Point(Integer.MIN_VALUE, Integer.MIN_VALUE);
 
-			for (Rectangle place : _renderImageDstFrames) {
+			for (Rectangle place : _visibleRenderImageDstFrames) {
 				min.x = Math.min(min.x, place.x);
 				min.y = Math.min(min.y, place.y);
 				max.x = Math.max(max.x, place.x + place.width);
@@ -305,7 +364,7 @@ public class FrameGridCanvas extends BaseImageCanvas
 
 			_dst = new Rectangle(x, y, max.x - min.x, max.y - min.y);
 
-			for (Rectangle place : _renderImageDstFrames) {
+			for (Rectangle place : _visibleRenderImageDstFrames) {
 				place.x += x;
 				place.y += y;
 			}
@@ -313,16 +372,16 @@ public class FrameGridCanvas extends BaseImageCanvas
 
 		{
 			if (_listLayout) {
-				_selectionFrameArea = new ArrayList<>();
+				_visibleRenderSelectionFrameAreas = new ArrayList<>();
 				int i = 0;
-				for (var dst : _renderImageDstFrames) {
+				for (var dst : _visibleRenderImageDstFrames) {
 					dst.y = i * box;
 					var r = new Rectangle(0, dst.y, b.width, box);
-					_selectionFrameArea.add(r);
+					_visibleRenderSelectionFrameAreas.add(r);
 					i++;
 				}
 			} else {
-				_selectionFrameArea = new ArrayList<>(_renderImageDstFrames);
+				_visibleRenderSelectionFrameAreas = new ArrayList<>(_visibleRenderImageDstFrames);
 			}
 		}
 	}
@@ -336,7 +395,7 @@ public class FrameGridCanvas extends BaseImageCanvas
 	protected void fitWindow() {
 		Rectangle b = getClientArea();
 		int area = b.width * b.height;
-		int count = _renderImageSrcFrames.size() * 2;
+		int count = _visibleCount * 2;
 		_frameSize = count == 0 ? 1 : (int) Math.sqrt((area - count * 5) / count);
 		if (_frameSize < 32) {
 			_frameSize = 32;
@@ -381,36 +440,48 @@ public class FrameGridCanvas extends BaseImageCanvas
 
 	public void loadFrameProvider(IFrameProvider provider) {
 		resetFramesData();
-
-		for (int i = 0; i < provider.getFrameCount(); i++) {
+		
+		_total = provider.getFrameCount();
+		
+		for (int i = 0; i < _total; i++) {
 			var frame = provider.getFrameRectangle(i);
 			var file = provider.getFrameImageFile(i);
 			var image = loadImage(file);
-			var tooltip = provider.getFrameTooltip(i);
 			var object = provider.getFrameObject(i);
 			var label = provider.getFrameLabel(i);
 
 			_renderImageSrcFrames.add(frame);
 			_images.add(image);
-			_tooltips.add(tooltip);
 			_objects.add(object);
 			_files.add(file);
 			_labels.add(label);
 
 		}
 
+		_visibleImages = _images;
+		_visibleObjects = _objects;
+		_visibleFiles = _files;
+		_visibleLabels = _labels;
+		_visibleCount = _total;
+
 		resetZoom();
 	}
 
 	private void resetFramesData() {
 		_renderImageSrcFrames = new ArrayList<>();
-		_renderImageDstFrames = new ArrayList<>();
-		_selectionFrameArea = new ArrayList<>();
+		_visibleRenderImageDstFrames = new ArrayList<>();
+		_visibleRenderSelectionFrameAreas = new ArrayList<>();
+
 		_images = new ArrayList<>();
-		_tooltips = new ArrayList<>();
 		_objects = new ArrayList<>();
 		_files = new ArrayList<>();
 		_labels = new ArrayList<>();
+
+		_visibleImages = _images;
+		_visibleObjects = _objects;
+		_visibleFiles = _files;
+		_visibleLabels = _labels;
+		_visibleCount = 0;
 	}
 
 	@Override
@@ -464,5 +535,23 @@ public class FrameGridCanvas extends BaseImageCanvas
 
 	public void selectAll() {
 		_utils.selectAll();
+	}
+
+	public void filter(String text) {
+		_nextFilterText = text;
+		redraw();
+	}
+
+	private static boolean matches(String filter, String label) {
+		if (label != null) {
+			if (label.toLowerCase().contains(filter.toLowerCase())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isVisible(int i) {
+		return _visibleMap == null || _visibleMap[i];
 	}
 }
