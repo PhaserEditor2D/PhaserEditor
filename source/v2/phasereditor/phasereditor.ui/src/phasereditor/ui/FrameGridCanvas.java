@@ -51,7 +51,6 @@ import phasereditor.ui.ImageCanvas.ZoomCalculator;
 public class FrameGridCanvas extends BaseImageCanvas
 		implements PaintListener, IZoomable, MouseWheelListener, KeyListener {
 
-	private int _listIconSize = 32;
 	private List<Rectangle> _renderImageSrcFrames;
 	private List<Rectangle> _renderImageDstFrames;
 	private List<Rectangle> _selectionFrameArea;
@@ -232,16 +231,6 @@ public class FrameGridCanvas extends BaseImageCanvas
 		redraw();
 	}
 
-	public void setListLayoutIconSize(int listLayoutIconSize) {
-		_listIconSize = listLayoutIconSize;
-		updateScroll();
-		redraw();
-	}
-
-	public int getListLayoutIconSize() {
-		return _listIconSize;
-	}
-
 	private void computeRects() {
 
 		if (_images.isEmpty()) {
@@ -264,7 +253,7 @@ public class FrameGridCanvas extends BaseImageCanvas
 			int maxWidth = b.width;
 
 			if (_listLayout) {
-				maxWidth = _listIconSize;
+				maxWidth = _frameSize;
 			}
 
 			for (Rectangle frame : _renderImageSrcFrames) {
@@ -410,7 +399,7 @@ public class FrameGridCanvas extends BaseImageCanvas
 
 	@Override
 	public void mouseScrolled(MouseEvent e) {
-		if (_listLayout) {
+		if (_listLayout && (e.stateMask & SWT.SHIFT) == 0) {
 			return;
 		}
 

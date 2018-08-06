@@ -112,7 +112,7 @@ public class AtlasAssetPreviewComp extends Composite {
 		layout();
 
 		swtRun(this::updateActionsState);
-		
+
 		control.setFocus();
 	}
 
@@ -185,6 +185,9 @@ public class AtlasAssetPreviewComp extends Composite {
 			@Override
 			public void run() {
 				moveTop(_gridCanvas);
+				if (_gridCanvas.getFrameSize() < 32) {
+					_gridCanvas.setFrameSize(32);
+				}
 				_gridCanvas.setListLayout(true);
 			}
 		};
