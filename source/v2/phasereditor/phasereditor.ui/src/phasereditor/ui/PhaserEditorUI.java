@@ -868,6 +868,10 @@ public class PhaserEditorUI {
 	}
 	
 	public static Image scaleImage_DND(IFile file, Rectangle src) {
+		return scaleImage_DND(file.getLocation().toPortableString(), src);
+	}
+	
+	public static Image scaleImage_DND(String filepath, Rectangle src) {
 		int maxSize = 256;
 		int minSize = 64;
 		
@@ -877,7 +881,7 @@ public class PhaserEditorUI {
 		newSize = Math.max(newSize, minSize);
 
 		
-		return scaleImage(file.getLocation().toPortableString(), src, newSize, null);
+		return scaleImage(filepath, src, newSize, null);
 	}
 	
 	public static Image scaleImage(IFile file, Rectangle src, int newSize, BufferedImage overlay) {

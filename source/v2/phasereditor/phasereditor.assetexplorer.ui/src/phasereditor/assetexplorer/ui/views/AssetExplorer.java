@@ -75,7 +75,10 @@ import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AssetSectionModel;
+import phasereditor.assetpack.core.IAssetFrameModel;
 import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationsModel;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.atlas.core.AtlasData;
@@ -84,6 +87,7 @@ import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.ui.FilteredTree2;
 import phasereditor.ui.PatternFilter2;
+import phasereditor.ui.PhaserEditorUI;
 
 public class AssetExplorer extends ViewPart {
 	public static final String ID = "phasereditor.assetpack.views.assetExplorer";
@@ -152,7 +156,8 @@ public class AssetExplorer extends ViewPart {
 				StyledString str = new StyledString();
 
 				if (obj instanceof NewWizardLancher) {
-					str.append(text, StyledString.createColorRegistryStyler(JFacePreferences.ACTIVE_HYPERLINK_COLOR, null));
+					str.append(text,
+							StyledString.createColorRegistryStyler(JFacePreferences.ACTIVE_HYPERLINK_COLOR, null));
 				} else {
 					str.append(text);
 				}
@@ -175,7 +180,7 @@ public class AssetExplorer extends ViewPart {
 		IFile file = null;
 
 		var provider = (AssetExplorerContentProvider) _viewer.getContentProvider();
-		
+
 		if (elem instanceof IProject) {
 			provider.forceToFocuseOnProject((IProject) elem);
 			_viewer.refresh();
@@ -219,29 +224,7 @@ public class AssetExplorer extends ViewPart {
 
 		// drag and drop
 
-		Transfer[] types = { LocalSelectionTransfer.getTransfer(), TextTransfer.getInstance() };
-		_viewer.addDragSupport(DND.DROP_MOVE | DND.DROP_DEFAULT, types, new DragSourceAdapter() {
-
-			private Object[] _data;
-
-			@Override
-			public void dragStart(DragSourceEvent event) {
-				LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
-				_data = ((IStructuredSelection) _viewer.getSelection()).toArray();
-				transfer.setSelection(new StructuredSelection(_data));
-			}
-
-			@Override
-			public void dragSetData(DragSourceEvent event) {
-				JSONArray array = new JSONArray();
-				for (Object elem : _data) {
-					if (elem instanceof IAssetKey) {
-						array.put(AssetPackCore.getAssetJSONReference((IAssetKey) elem));
-					}
-				}
-				event.data = array.toString();
-			}
-		});
+		init_DND();
 
 		// selection provider
 
@@ -270,6 +253,73 @@ public class AssetExplorer extends ViewPart {
 		IActionBars actionBars = getViewSite().getActionBars();
 		actionBars.setGlobalActionHandler(ActionFactory.UNDO.getId(), new UndoActionHandler(getSite(), undoContext));
 		actionBars.setGlobalActionHandler(ActionFactory.REDO.getId(), new RedoActionHandler(getSite(), undoContext));
+	}
+
+	private void init_DND() {
+		Transfer[] types = { LocalSelectionTransfer.getTransfer(), TextTransfer.getInstance() };
+		_viewer.addDragSupport(DND.DROP_MOVE | DND.DROP_DEFAULT, types, new DragSourceAdapter() {
+
+			private Object[] _data;
+			private boolean _disposeImage;
+
+			@Override
+			public void dragStart(DragSourceEvent event) {
+				LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
+				_data = ((IStructuredSelection) _viewer.getSelection()).toArray();
+				transfer.setSelection(new StructuredSelection(_data));
+
+				_disposeImage = false;
+
+				for (var obj : _data) {
+					IAssetFrameModel frame = null;
+
+					if (obj instanceof IAssetFrameModel) {
+						frame = (IAssetFrameModel) obj;
+					} else if (obj instanceof ImageAssetModel) {
+						frame = ((ImageAssetModel) obj).getFrame();
+					} else if (obj instanceof AnimationFrameModel) {
+						frame = ((AnimationFrameModel) obj).getFrameAsset();
+					} else if (obj instanceof CanvasFile) {
+						var file = ((CanvasFile) obj).getFile();
+						var path = CanvasUI.getCanvasScreenshotFile(file, true);
+						var filepath = path.toString();
+						var src = PhaserEditorUI.getImageBounds(filepath);
+						event.image = PhaserEditorUI.scaleImage_DND(filepath, src);
+						_disposeImage = true;
+						break;
+					}
+
+					if (frame != null) {
+						var file = frame.getImageFile();
+						var fd = frame.getFrameData();
+						if (file != null && fd != null) {
+							event.image = PhaserEditorUI.scaleImage_DND(frame.getImageFile(), fd.src);
+							_disposeImage = true;
+							break;
+						}
+					}
+
+				}
+			}
+
+			@Override
+			public void dragSetData(DragSourceEvent event) {
+				JSONArray array = new JSONArray();
+				for (Object elem : _data) {
+					if (elem instanceof IAssetKey) {
+						array.put(AssetPackCore.getAssetJSONReference((IAssetKey) elem));
+					}
+				}
+				event.data = array.toString();
+			}
+
+			@Override
+			public void dragFinished(DragSourceEvent event) {
+				if (_disposeImage && event.image != null) {
+					event.image.dispose();
+				}
+			}
+		});
 	}
 
 	@Override
