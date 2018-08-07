@@ -23,15 +23,7 @@ package phasereditor.assetpack.ui.preview;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.util.LocalSelectionTransfer;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.dnd.DragSource;
-import org.eclipse.swt.dnd.DragSourceAdapter;
-import org.eclipse.swt.dnd.DragSourceEvent;
-import org.eclipse.swt.dnd.TextTransfer;
-import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -41,16 +33,17 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.ui.FrameCanvasUtils;
 import phasereditor.ui.ImageCanvas;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 
-@SuppressWarnings("synthetic-access")
 public class ImageAssetPreviewComp extends Composite {
 
 	private ImageCanvas _canvas;
 	private Label _resolutionLabel;
 	private ImageAssetModel _model;
+	private FrameCanvasUtils _utils;
 
 	/**
 	 * Create the composite.
@@ -81,21 +74,46 @@ public class ImageAssetPreviewComp extends Composite {
 	}
 
 	private void afterCreateWidgets() {
-		DragSource dragSource = new DragSource(_canvas, DND.DROP_MOVE | DND.DROP_DEFAULT);
-		dragSource.setTransfer(new Transfer[] { TextTransfer.getInstance(), LocalSelectionTransfer.getTransfer() });
-		dragSource.addDragListener(new DragSourceAdapter() {
+		_utils = new FrameCanvasUtils(_canvas, true) {
 
 			@Override
-			public void dragStart(DragSourceEvent event) {
-				LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
-				transfer.setSelection(new StructuredSelection(_model));
+			public Rectangle getRenderImageSrcFrame(int index) {
+				return getModel().getFrame().getFrameData().src;
 			}
 
 			@Override
-			public void dragSetData(DragSourceEvent event) {
-				event.data = _model.getKey();
+			public Rectangle getRenderImageDstFrame(int index) {
+				var area = getCanvas().getImageRenderArea();
+				if (area == null) {
+					area = getCanvas().getImageDimension();
+				}
+				return area;
 			}
-		});
+
+			@Override
+			public Point getRealPosition(int x, int y) {
+				return new Point(x, y);
+			}
+
+			@Override
+			public IFile getImageFile(int index) {
+				return getModel().getUrlFile();
+			}
+
+			@Override
+			public int getFramesCount() {
+				return getModel() == null ? 0 : 1;
+			}
+
+			@Override
+			public Object getFrameObject(int index) {
+				return getModel();
+			}
+		};
+	}
+
+	public FrameCanvasUtils getUtils() {
+		return _utils;
 	}
 
 	public void setModel(ImageAssetModel model) {
@@ -116,6 +134,10 @@ public class ImageAssetPreviewComp extends Composite {
 
 	public ImageAssetModel getModel() {
 		return _model;
+	}
+	
+	public ImageCanvas getCanvas() {
+		return _canvas;
 	}
 
 	public void createToolBar(IToolBarManager toolbar) {

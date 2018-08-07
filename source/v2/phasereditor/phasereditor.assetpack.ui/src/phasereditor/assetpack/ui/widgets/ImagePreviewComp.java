@@ -42,6 +42,7 @@ public class ImagePreviewComp extends Composite {
 	private Label _resolutionLabel;
 	private ImageCanvas _canvas;
 	private IFile _file;
+	private Rectangle _imageBounds;
 
 	/**
 	 * Create the composite.
@@ -60,6 +61,7 @@ public class ImagePreviewComp extends Composite {
 		_resolutionLabel = new Label(this, SWT.CENTER);
 		GridData ld = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
 		_resolutionLabel.setLayoutData(ld);
+		
 	}
 
 	public void destroyResolutionLabel() {
@@ -90,10 +92,13 @@ public class ImagePreviewComp extends Composite {
 			}
 		}
 
+		_imageBounds = null;
+
 		Image img = _canvas.getImage();
+		
 		if (img != null) {
-			Rectangle b = img.getBounds();
-			String str = "Image Size: " + b.width + "x" + b.height + "\n";
+			_imageBounds = img.getBounds();
+			String str = "Image Size: " + _imageBounds.width + "x" + _imageBounds.height + "\n";
 			if (_file == null) {
 				str += "File: " + filepath;
 			} else {

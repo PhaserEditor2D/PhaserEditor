@@ -58,7 +58,7 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 	private Object _overObject;
 	private Canvas _canvas;
 
-	public FrameCanvasUtils(Canvas canvas, boolean addDragAndDropSupport) {
+	public FrameCanvasUtils(Canvas canvas, boolean initDND) {
 		super(true);
 
 		_canvas = canvas;
@@ -72,8 +72,8 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		canvas.addMouseListener(this);
 		canvas.addKeyListener(this);
 
-		if (addDragAndDropSupport) {
-			addDragAndDropSupport();
+		if (initDND) {
+			init_DND();
 		}
 	}
 
@@ -355,7 +355,7 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 
 	}
 
-	public void addDragAndDropSupport() {
+	public void init_DND() {
 		{
 			DragSource dragSource = new DragSource(_canvas, DND.DROP_MOVE | DND.DROP_DEFAULT);
 			dragSource.setTransfer(new Transfer[] { TextTransfer.getInstance(), LocalSelectionTransfer.getTransfer() });

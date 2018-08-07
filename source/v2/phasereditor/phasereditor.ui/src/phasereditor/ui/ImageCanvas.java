@@ -52,6 +52,7 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 	protected FrameData _frameData;
 	private boolean _fitWindow;
 	private IFile _imageFile;
+	protected Rectangle _imageRenderArea;
 
 	public static class ZoomCalculator {
 		public float imgWidth;
@@ -327,6 +328,10 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 	public Rectangle getImageViewport() {
 		return _viewport;
 	}
+	
+	public Rectangle getImageRenderArea() {
+		return _imageRenderArea;
+	}
 
 	@Override
 	public final void paintControl(PaintEvent e) {
@@ -346,7 +351,6 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 		} else {
 
 			Rectangle src;
-			Rectangle dst;
 			Rectangle bgDst;
 			Point size;
 
@@ -363,7 +367,7 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 					size = _frameData.srcSize;
 				}
 
-				dst = new Rectangle((int) (_panOffsetX + origDst.x * _scale), (int) (_panOffsetY + origDst.y * _scale),
+				_imageRenderArea = new Rectangle((int) (_panOffsetX + origDst.x * _scale), (int) (_panOffsetY + origDst.y * _scale),
 						(int) (origDst.width * _scale), (int) (origDst.height * _scale));
 
 				bgDst = new Rectangle(_panOffsetX, _panOffsetY, (int) (size.x * _scale), (int) (size.y * _scale));
@@ -371,7 +375,7 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 
 			drawImageBackground(gc, bgDst);
 
-			drawImage(gc, src.x, src.y, src.width, src.height, dst.width, dst.height, dst.x, dst.y);
+			drawImage(gc, src.x, src.y, src.width, src.height, _imageRenderArea.width, _imageRenderArea.height, _imageRenderArea.x, _imageRenderArea.y);
 			
 			gc.setAntialias(SWT.ON);
 

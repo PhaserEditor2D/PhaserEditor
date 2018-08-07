@@ -84,7 +84,7 @@ public class FrameGridCanvas extends BaseImageCanvas
 	private int _total;
 	private String _nextFilterText;
 
-	public FrameGridCanvas(Composite parent, int style, boolean addDragAndDropSupport) {
+	public FrameGridCanvas(Composite parent, int style, boolean initDND) {
 		super(parent, style | SWT.DOUBLE_BUFFERED | SWT.V_SCROLL | SWT.NO_REDRAW_RESIZE);
 
 		_renderImageSrcFrames = List.of();
@@ -96,7 +96,7 @@ public class FrameGridCanvas extends BaseImageCanvas
 
 		addMouseWheelListener(this);
 
-		_utils = new FrameCanvasUtils(this, addDragAndDropSupport) {
+		_utils = new FrameCanvasUtils(this, initDND) {
 
 			@Override
 			public Point getRealPosition(int x, int y) {
