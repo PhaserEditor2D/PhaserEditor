@@ -63,8 +63,8 @@ public class AnimationPreviewComp extends SashForm {
 	public AnimationPreviewComp(Composite parent, int style) {
 		super(parent, SWT.VERTICAL | style);
 
-		_animationCanvas = new AnimationCanvas(this, SWT.NONE);
-		_timelineCanvas = new AnimationTimelineCanvas(this, SWT.NONE);
+		_animationCanvas = new AnimationCanvas(this, SWT.BORDER);
+		_timelineCanvas = new AnimationTimelineCanvas(this, SWT.BORDER);
 		_timelineCanvas.setAnimationCanvas(_animationCanvas);
 
 		setWeights(new int[] { 2, 1 });

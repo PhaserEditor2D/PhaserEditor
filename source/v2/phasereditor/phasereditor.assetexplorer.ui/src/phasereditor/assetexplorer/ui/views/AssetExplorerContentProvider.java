@@ -22,6 +22,7 @@
 package phasereditor.assetexplorer.ui.views;
 
 import static java.lang.System.out;
+import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +42,13 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 
+import phasereditor.assetexplorer.ui.views.newactions.NewAnimationWizardLauncher;
+import phasereditor.assetexplorer.ui.views.newactions.NewAssetPackWizardLauncher;
+import phasereditor.assetexplorer.ui.views.newactions.NewAtlasWizardLauncher;
+import phasereditor.assetexplorer.ui.views.newactions.NewCanvasWizardLauncher;
+import phasereditor.assetexplorer.ui.views.newactions.NewExampleProjectWizardLauncher;
+import phasereditor.assetexplorer.ui.views.newactions.NewProjectWizardLauncher;
+import phasereditor.assetexplorer.ui.views.newactions.NewWizardLancher;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.ui.AssetsContentProvider;
@@ -129,7 +137,11 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 		if (parent == AssetExplorer.ROOT) {
 
 			if (activeProjet == null) {
-				return ResourcesPlugin.getWorkspace().getRoot().getProjects();
+				List<Object> list = new ArrayList<>();
+				list.add(new NewProjectWizardLauncher());
+				list.add(new NewExampleProjectWizardLauncher());
+				list.addAll(List.of(ResourcesPlugin.getWorkspace().getRoot().getProjects()));
+				return list.toArray();
 			}
 
 			return new Object[] {
@@ -150,15 +162,22 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 		if (parent == AssetExplorer.PROJECTS_NODE) {
 			var projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 			var current = activeProjet;
-			return New.children(parent, Arrays.stream(projects).filter(p -> current != p).toArray());
+			var list = new ArrayList<>();
+			list.add(new NewProjectWizardLauncher());
+			list.add(new NewExampleProjectWizardLauncher());
+			list.addAll(Arrays.stream(projects).filter(p -> current != p).collect(toList()));
+			return list.toArray();
+
 		}
 
 		if (parent == AssetExplorer.ANIMATIONS_NODE) {
-			return New.children(parent, AssetPackCore.getAnimationsFileCache().getProjectData(activeProjet));
+			return NewWizardLancher.children(new NewAnimationWizardLauncher(),
+					AssetPackCore.getAnimationsFileCache().getProjectData(activeProjet));
 		}
 
 		if (parent == AssetExplorer.ATLAS_NODE) {
-			return New.children(parent, AtlasCore.getAtlasFileCache().getProjectData(activeProjet));
+			return NewWizardLancher.children(new NewAtlasWizardLauncher(),
+					AtlasCore.getAtlasFileCache().getProjectData(activeProjet));
 		}
 
 		if (parent == AssetExplorer.CANVAS_NODE) {
@@ -188,7 +207,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 				}
 			}
 
-			return New.children(parent, list);
+			return NewWizardLancher.children(new NewAssetPackWizardLauncher(), list);
 		}
 
 		if (parent instanceof CanvasType) {
@@ -206,7 +225,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 				return a.getFile().getName().compareTo(b.getFile().getName());
 			});
 
-			return New.children(parent, list);
+			return NewWizardLancher.children(new NewCanvasWizardLauncher((CanvasType) parent), list);
 		}
 
 		if (parent instanceof CanvasFile) {

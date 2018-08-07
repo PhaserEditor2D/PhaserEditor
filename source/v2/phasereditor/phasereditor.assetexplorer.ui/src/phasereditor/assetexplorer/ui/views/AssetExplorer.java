@@ -70,6 +70,7 @@ import org.eclipse.ui.part.ViewPart;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import phasereditor.assetexplorer.ui.views.newactions.NewWizardLancher;
 import phasereditor.assetpack.core.AssetGroupModel;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AssetPackModel;
@@ -95,7 +96,7 @@ public class AssetExplorer extends ViewPart {
 	// private AssetExplorerListContentProvider _listContentProvider;
 	public static String ROOT = "root";
 	public static String ANIMATIONS_NODE = "Animations Files";
-	public static String ATLAS_NODE = "Textures Packer Files";
+	public static String ATLAS_NODE = "Texture Packer Files";
 	public static String CANVAS_NODE = "Canvas Files";
 	public static String PACK_NODE = "Pack Files";
 	public static String PROJECTS_NODE = "Other Projects";
@@ -150,7 +151,7 @@ public class AssetExplorer extends ViewPart {
 
 				StyledString str = new StyledString();
 
-				if (obj instanceof New) {
+				if (obj instanceof NewWizardLancher) {
 					str.append(text, StyledString.createColorRegistryStyler(JFacePreferences.ACTIVE_HYPERLINK_COLOR, null));
 				} else {
 					str.append(text);
@@ -186,8 +187,8 @@ public class AssetExplorer extends ViewPart {
 			file = ((AtlasData) elem).getFile();
 		} else if (elem instanceof AnimationsModel) {
 			file = ((AnimationsModel) elem).getFile();
-		} else if (elem instanceof New) {
-			((New) elem).openWizard(provider.getProjectInContent());
+		} else if (elem instanceof NewWizardLancher) {
+			((NewWizardLancher) elem).openWizard(provider.getProjectInContent());
 		}
 
 		if (file != null) {
