@@ -22,6 +22,7 @@ import org.eclipse.ui.navigator.resources.ProjectExplorer;
 
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.canvas.ui.CanvasUI;
+import phasereditor.project.core.ProjectCore;
 
 @SuppressWarnings("hiding")
 public class IDEStartup implements IStartup {
@@ -29,6 +30,9 @@ public class IDEStartup implements IStartup {
 	@Override
 	public void earlyStartup() {
 		Display.getDefault().asyncExec(IDEStartup::registerWorkbenchListeners);
+
+		// force to start the project builders.
+		ProjectCore.getBuildParticipants();
 	}
 
 	private static void registerWorkbenchListeners() {

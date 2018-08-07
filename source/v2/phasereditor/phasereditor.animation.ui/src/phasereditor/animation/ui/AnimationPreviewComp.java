@@ -74,6 +74,7 @@ public class AnimationPreviewComp extends SashForm {
 	}
 
 	private void afterCreateWidgets() {
+		
 		_animationCanvas.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {

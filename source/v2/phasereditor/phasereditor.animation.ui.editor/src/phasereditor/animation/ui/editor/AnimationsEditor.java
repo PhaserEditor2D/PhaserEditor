@@ -85,7 +85,6 @@ import phasereditor.animation.ui.editor.properties.AnimationsPGridPage;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
-import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredContentOutlinePage;
 import phasereditor.ui.IEditorSharedImages;
@@ -114,8 +113,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	private String _initialAnimtionKey;
 
 	public AnimationsEditor() {
-		// force the start the project builders
-		ProjectCore.getBuildParticipants();
 	}
 
 	/**
