@@ -71,18 +71,25 @@ public class AnimationModel implements IAdaptable {
 
 		var defaultTextureKey = jsonData.optString("defaultTextureKey", null);
 
-		// TODO: missing parse frames provided by a string literal (spritesheet).
+		var jsonFramesObj = jsonData.get("frames");
 
-		var jsonFrames = jsonData.getJSONArray("frames");
+		if (jsonFramesObj instanceof JSONArray) {
 
-		for (int i = 0; i < jsonFrames.length(); i++) {
-			var jsonFrame = jsonFrames.getJSONObject(i);
-			if (!jsonFrame.has("key") && defaultTextureKey != null) {
-				jsonFrame.put("key", defaultTextureKey);
+			var jsonFramesArray = jsonData.getJSONArray("frames");
+
+			for (int i = 0; i < jsonFramesArray.length(); i++) {
+				var jsonFrame = jsonFramesArray.getJSONObject(i);
+				if (!jsonFrame.has("key") && defaultTextureKey != null) {
+					jsonFrame.put("key", defaultTextureKey);
+				}
+
+				var frame = createAnimationFrame(jsonFrame);
+				_frames.add(frame);
 			}
-
-			var frame = createAnimationFrame(jsonFrame);
-			_frames.add(frame);
+		} else {
+			// At the moment, we do not support to load spritesheet frames by providing only
+			// the spritesheet key. As alternative the user has to write the frames by using
+			// the texture key and the frame index.
 		}
 
 		if (!jsonData.has("duration") && !jsonData.has("frameRate")) {
