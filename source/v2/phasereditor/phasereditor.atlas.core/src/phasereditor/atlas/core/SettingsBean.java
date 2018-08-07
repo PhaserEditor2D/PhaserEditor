@@ -48,7 +48,7 @@ public class SettingsBean extends Settings implements Cloneable {
 		limitMemory = false;
 		flattenPaths = false;
 		useIndexes = false;
-		multiatlas = false;
+		multiatlas = true;
 	}
 
 	public void update(SettingsBean settings) {
@@ -138,7 +138,7 @@ public class SettingsBean extends Settings implements Cloneable {
 		// avoid scale
 		// avoid scaleSuffix
 		atlasExtension = obj.optString("atlasExtension", ".atlas");
-		multiatlas = obj.optBoolean("multiatlas", false);
+		multiatlas = obj.optBoolean("multiatlas", true);
 	}
 
 	public void write(JSONObject obj) {
