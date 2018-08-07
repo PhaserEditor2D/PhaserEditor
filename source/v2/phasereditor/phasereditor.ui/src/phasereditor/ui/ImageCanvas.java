@@ -372,6 +372,8 @@ public class ImageCanvas extends BaseImageCanvas implements PaintListener, IZoom
 			drawImageBackground(gc, bgDst);
 
 			drawImage(gc, src.x, src.y, src.width, src.height, dst.width, dst.height, dst.x, dst.y);
+			
+			gc.setAntialias(SWT.ON);
 
 			drawMore(gc, src.width, src.height, bgDst.width, bgDst.height, bgDst.x, bgDst.y);
 		}

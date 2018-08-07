@@ -24,7 +24,6 @@ package phasereditor.ui;
 import static java.lang.System.out;
 
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -901,11 +900,6 @@ public class PhaserEditorUI {
 			calc.fit(newSize, newSize);
 			
 			Rectangle z = calc.imageToScreen(0, 0, src2.width, src2.height);
-			
-			// disable antialias on pixel-art (<32) images.
-			if (src2.width <= 32 && src2.height <= 32) {
-				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-			}
 			
 			g2.drawImage(swingimg, z.x, z.y, z.x + z.width, z.y + z.height, src2.x, src2.y, src2.x + src2.width,
 					src2.y + src2.height, null);
