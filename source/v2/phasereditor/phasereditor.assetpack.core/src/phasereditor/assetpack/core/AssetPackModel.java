@@ -597,7 +597,7 @@ public final class AssetPackModel {
 						if (index >= spritesheetFrames.size()) {
 							return null;
 						}
-						spritesheetFrames.get(index);
+						return spritesheetFrames.get(index);
 					}
 				}
 			}
