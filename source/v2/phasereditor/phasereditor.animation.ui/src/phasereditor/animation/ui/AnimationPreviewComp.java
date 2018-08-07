@@ -120,15 +120,15 @@ public class AnimationPreviewComp extends SashForm {
 			btn.setEnabled(btn == _playAction);
 		}
 
-		if (_timelineCanvas.getModel() != _model) {
+		if (_timelineCanvas.getModel() == _model) {
+			_timelineCanvas.redraw();
+		} else {
 			_timelineCanvas.setModel(_model);
 		}
 
 		_zoom_1_1_action.setEnabled(true);
 		_zoom_fitWindow_action.setEnabled(true);
 
-		_animationCanvas.setModel(model);
-		_timelineCanvas.setModel(model);
 	}
 
 	public AnimationModel getModel() {
