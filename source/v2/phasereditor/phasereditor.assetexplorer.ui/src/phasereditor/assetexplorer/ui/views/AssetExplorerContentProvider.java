@@ -62,7 +62,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 	IPartListener _partListener;
 	private TreeViewer _viewer;
 	private IProject _projectInContent;
-	private IProject _focusInProject;
+	private IProject _forceToFocuseOnProject;
 
 	public AssetExplorerContentProvider() {
 		super(true);
@@ -128,11 +128,17 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 	public Object[] getChildren(Object parent) {
 		IProject activeProjet = getActiveProject();
 
-		if (_focusInProject != null) {
-			activeProjet = _focusInProject;
+		if (_forceToFocuseOnProject != null && _forceToFocuseOnProject.exists()) {
+			activeProjet = _forceToFocuseOnProject;
 		}
 
-		_projectInContent = activeProjet;
+		if (activeProjet == null) {
+			if (_projectInContent != null && _projectInContent.exists()) {
+				activeProjet = _projectInContent;
+			}
+		} else {
+			_projectInContent = activeProjet;
+		}
 
 		if (parent == AssetExplorer.ROOT) {
 
@@ -281,8 +287,8 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 		return _projectInContent;
 	}
 
-	public void setFocusInProject(IProject project) {
-		_focusInProject = project;
+	public void forceToFocuseOnProject(IProject project) {
+		_forceToFocuseOnProject = project;
 	}
 
 	Object _lastToken = null;
@@ -302,10 +308,6 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 			_viewer.refresh();
 
 			IProject project = getActiveProject();
-
-			if (project != null) {
-				_focusInProject = null;
-			}
 
 			if (project != _lastToken) {
 				_viewer.expandToLevel(4);

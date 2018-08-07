@@ -177,8 +177,9 @@ public class AssetExplorer extends ViewPart {
 		var provider = (AssetExplorerContentProvider) _viewer.getContentProvider();
 		
 		if (elem instanceof IProject) {
-			provider.setFocusInProject((IProject) elem);
+			provider.forceToFocuseOnProject((IProject) elem);
 			_viewer.refresh();
+			_viewer.expandToLevel(3);
 		} else if (elem instanceof IFile) {
 			file = (IFile) elem;
 		} else if (elem instanceof CanvasFile) {
