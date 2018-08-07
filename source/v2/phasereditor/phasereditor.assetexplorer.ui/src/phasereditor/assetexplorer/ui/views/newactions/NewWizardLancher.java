@@ -33,8 +33,6 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
-import phasereditor.canvas.core.CanvasType;
-
 /**
  * @author arian
  *
@@ -57,21 +55,6 @@ public abstract class NewWizardLancher {
 
 	public NewWizardLancher(String label) {
 		_label = label;
-	}
-
-	public static String getLabel(CanvasType type) {
-		switch (type) {
-		case SPRITE:
-			return "New Sprite File...";
-		case GROUP:
-			return "New Group File...";
-		case STATE:
-			return "new State File...";
-		default:
-			break;
-		}
-
-		return "New...";
 	}
 
 	public void setLabel(String label) {

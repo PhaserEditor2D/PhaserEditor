@@ -46,6 +46,21 @@ public class NewCanvasWizardLauncher extends NewWizardLancher {
 		_type = type;
 	}
 
+	public static String getLabel(CanvasType type) {
+		switch (type) {
+		case SPRITE:
+			return "New Sprite Prefab File...";
+		case GROUP:
+			return "New Group Prefab File...";
+		case STATE:
+			return "New State File...";
+		default:
+			break;
+		}
+
+		return "New...";
+	}
+	
 	@Override
 	protected INewWizard getWizard() {
 		switch (_type) {
