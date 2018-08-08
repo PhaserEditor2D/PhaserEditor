@@ -23,6 +23,8 @@ package phasereditor.assetpack.ui.properties;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -41,6 +43,8 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListDialog;
 
+import phasereditor.assetpack.core.AssetModel;
+import phasereditor.assetpack.core.AssetType;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.inspect.core.InspectCore;
 import phasereditor.project.core.ProjectCore;
@@ -59,7 +63,41 @@ public class MultiAtlasAssetPGridModel extends BaseAssetPGridModel<MultiAtlasAss
 		PGridSection section = new PGridSection("Multi Atlas");
 
 		section.add(createKeyProperty());
+		
+		section.add(new PGridStringProperty(getAsset().getId(), "atlasURL", InspectCore.getPhaserHelp().getMemberHelp("Phaser.Loader.FileTypes.MultiAtlasFileConfig.atlasURL")) {
+			
+			@Override
+			public void setValue(String value, boolean notify) {
+				getAsset().setUrl(value);
+				getAsset().build(new ArrayList<>());
+			}
+			
+			@Override
+			public boolean isModified() {
+				return true;
+			}
+			
+			@Override
+			public String getValue() {
+				return getAsset().getUrl();
+			}
+			
+			@Override
+			public CellEditor createCellEditor(Composite parent, Object element) {
+				Function<AssetModel, String> getUrl = a -> ((MultiAtlasAssetModel) a).getUrl();
 
+				Supplier<List<IFile>> discoverFiles = () -> {
+					try {
+						return getAsset().getPack().discoverAtlasFiles(AssetType.multiatlas);
+					} catch (CoreException e) {
+						throw new RuntimeException(e);
+					}
+				};
+
+				return new UrlCellEditor(parent, getAsset(), getUrl, discoverFiles, "multiatlas");
+			}
+		});
+		
 		section.add(new PGridStringProperty("path", "path",
 				InspectCore.getPhaserHelp().getMemberHelp("Phaser.Loader.FileTypes.MultiAtlasFileConfig.path")) {
 
