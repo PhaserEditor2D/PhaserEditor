@@ -56,8 +56,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.menus.CommandContributionItem;
-import org.eclipse.ui.menus.CommandContributionItemParameter;
 import org.eclipse.ui.part.IShowInTarget;
 import org.eclipse.ui.part.ShowInContext;
 import org.eclipse.ui.part.ViewPart;
@@ -328,8 +326,13 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 				}
 			});
 
-			toolbar.add(new CommandContributionItem(new CommandContributionItemParameter(getSite(), "refresh",
-					"org.eclipse.ui.file.refresh", CommandContributionItem.STYLE_PUSH)));
+			toolbar.add(new Action("Refresh", EditorSharedImages
+					.getImageDescriptor("platform:/plugin/org.eclipse.ui/icons/full/elcl16/refresh_nav.png")) {
+				@Override
+				public void run() {
+					refresh();
+				}
+			});
 		}
 
 		toolbar.add(new Action("Open New Preview Window") {
@@ -354,6 +357,8 @@ public class PreviewView extends ViewPart implements IShowInTarget {
 				}
 			}
 		});
+
+		toolbar.update(true);
 	}
 
 	public Object getPreviewElement() {

@@ -19,18 +19,6 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="phasereditor.ui.handlers.RefreshPreviewHandler"
-            commandId="org.eclipse.ui.file.refresh">
-         <activeWhen>
-            <with
-                  variable="activePartId">
-               <equals
-                     value="phasereditor.ui.preview">
-               </equals>
-            </with>
-         </activeWhen>
-      </handler>
-      <handler
             class="phasereditor.ui.handlers.ShowSourceCodeHandler"
             commandId="phasereditor.ui.showSourceCode">
          <activeWhen>
