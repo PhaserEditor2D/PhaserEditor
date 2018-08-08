@@ -28,6 +28,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -459,5 +461,51 @@ public class ProjectCore {
 		IProject project = res.getProject();
 
 		return getProjectLanguage(project);
+	}
+
+	public static boolean areFilesAffectedByDelta(IResourceDelta delta, Collection<IFile> files) {
+		boolean[] touched = { false };
+
+		for (IFile used : files) {
+			if (used == null) {
+				continue;
+			}
+
+			try {
+				delta.accept(d -> {
+					IResource resource = d.getResource();
+
+					if (used.equals(resource)) {
+						touched[0] = true;
+						return false;
+					}
+
+					IPath movedTo = d.getMovedToPath();
+					IPath movedFrom = d.getMovedFromPath();
+
+					if (movedTo != null) {
+						if (used.getFullPath().equals(movedTo)) {
+							touched[0] = true;
+							return false;
+						}
+					}
+
+					if (movedFrom != null) {
+						if (used.getFullPath().equals(movedFrom)) {
+							touched[0] = true;
+							return false;
+						}
+					}
+
+					return true;
+				});
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
+			if (touched[0]) {
+				return true;
+			}
+		}
+		return touched[0];
 	}
 }

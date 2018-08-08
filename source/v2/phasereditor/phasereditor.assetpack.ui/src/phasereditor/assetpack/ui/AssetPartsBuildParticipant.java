@@ -18,14 +18,17 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
+import phasereditor.animation.ui.model.AnimationsModel_Persistable;
 import phasereditor.assetpack.core.AssetModel;
 import phasereditor.assetpack.core.AssetPackBuildParticipant;
 import phasereditor.assetpack.core.AssetPackCore.PackDelta;
 import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.animations.AnimationModel;
+import phasereditor.assetpack.core.animations.AnimationsModel;
 import phasereditor.assetpack.ui.editors.AssetPackEditor;
 import phasereditor.project.core.IProjectBuildParticipant;
+import phasereditor.project.core.ProjectCore;
 import phasereditor.ui.views.PreviewView;
 
 public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
@@ -205,7 +208,10 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 
 				if (elem != null) {
 					if (elem instanceof IAssetKey) {
-						updatePreview(delta, view, elem);
+						updateAssetPreview(delta, view, (IAssetKey) elem);
+						continue;
+					} else if (elem instanceof AnimationModel) {
+						updateAnimationPreview(delta, view, (AnimationModel) elem);
 						continue;
 					}
 				}
@@ -236,8 +242,33 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 		}
 	}
 
-	private static void updatePreview(IResourceDelta resourceDelta, PreviewView view, Object elem) {
-		IAssetKey key = (IAssetKey) elem;
+	private static void updateAnimationPreview(IResourceDelta delta, PreviewView view, AnimationModel oldAnim) {
+
+		var files = oldAnim.computeUsedFiles();
+
+		boolean touched = ProjectCore.areFilesAffectedByDelta(delta, files);
+
+		if (touched) {
+			AnimationsModel oldAnims = oldAnim.getAnimations();
+			IFile file = oldAnims.getFile();
+
+			if (file.exists()) {
+				try {
+					var newAnims = new AnimationsModel_Persistable(file, oldAnims.getDataKey());
+					var newAnim = newAnims.getAnimation(oldAnim.getKey());
+					newAnim.build();
+					view.preview(newAnim);
+					return;
+				} catch (Exception e) {
+					// an error trying to recover the updated version
+				}
+			}
+
+			view.preview(null);
+		}
+	}
+
+	private static void updateAssetPreview(IResourceDelta delta, PreviewView view, IAssetKey key) {
 		IAssetKey shared = key.getSharedVersion();
 
 		if (shared != key) {
@@ -245,8 +276,8 @@ public class AssetPartsBuildParticipant implements IProjectBuildParticipant {
 			return;
 		}
 
-		if (shared.getAsset().touched(resourceDelta)) {
-			view.preview(elem);
+		if (shared.getAsset().touched(delta)) {
+			view.preview(key);
 		}
 	}
 

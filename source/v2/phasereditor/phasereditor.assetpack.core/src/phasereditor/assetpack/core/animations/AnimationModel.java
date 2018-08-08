@@ -23,8 +23,10 @@ package phasereditor.assetpack.core.animations;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdaptable;
@@ -320,5 +322,26 @@ public class AnimationModel implements IAdaptable {
 		}
 
 		buildTimeline();
+	}
+
+	public Set<IFile> computeUsedFiles() {
+		var result = new HashSet<IFile>();
+
+		var mainFile = getAnimations().getFile();
+		result.add(mainFile);
+
+		for (var animFrame : getFrames()) {
+			var assetFrame = animFrame.getFrameAsset();
+			if (assetFrame != null) {
+				var files = assetFrame.getAsset().computeUsedFiles();
+				for (var file : files) {
+					if (file != null) {
+						result.add(file);
+					}
+				}
+			}
+		}
+
+		return result;
 	}
 }

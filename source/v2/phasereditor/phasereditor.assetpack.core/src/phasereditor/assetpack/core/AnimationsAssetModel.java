@@ -60,7 +60,16 @@ public class AnimationsAssetModel extends AssetModel {
 
 	@Override
 	public IFile[] computeUsedFiles() {
-		return new IFile[] { getFileFromUrl(_url) };
+
+		List<IFile> list = new ArrayList<>();
+		list.add(getUrlFile());
+		
+		if (_animationsModel != null) {
+			var files = _animationsModel.computeUsedFiles();
+			list.addAll(files);
+		}
+
+		return list.toArray(new IFile[list.size()]);
 	}
 
 	@Override

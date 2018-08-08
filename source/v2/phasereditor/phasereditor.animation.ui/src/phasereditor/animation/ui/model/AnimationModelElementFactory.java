@@ -6,10 +6,6 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.ui.IElementFactory;
 import org.eclipse.ui.IMemento;
-import org.json.JSONObject;
-
-import phasereditor.assetpack.core.animations.AnimationModel;
-import phasereditor.assetpack.core.animations.AnimationsModel;
 
 public class AnimationModelElementFactory implements IElementFactory {
 
@@ -24,12 +20,7 @@ public class AnimationModelElementFactory implements IElementFactory {
 		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(path));
 		if (file.exists()) {
 			try {
-				var anims = new AnimationsModel(file, dataKey) {
-					@Override
-					protected AnimationModel createAnimation(JSONObject jsonData) {
-						return new AnimationModel_Persistable(this, jsonData);
-					}
-				};
+				var anims = new AnimationsModel_Persistable(file, dataKey);
 				var anim = anims.getAnimation(key);
 				return anim;
 			} catch (Exception e) {

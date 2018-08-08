@@ -22,7 +22,9 @@
 package phasereditor.assetpack.core.animations;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.json.JSONArray;
@@ -44,9 +46,9 @@ public class AnimationsModel {
 
 	public AnimationsModel(JSONObject jsonData, String dataKey) {
 		this();
-		
+
 		_dataKey = dataKey;
-		
+
 		var jsonData2 = jsonData;
 
 		if (dataKey != null && dataKey.trim().length() > 0) {
@@ -76,7 +78,7 @@ public class AnimationsModel {
 		this(JSONObject.read(file), dataKey);
 		_file = file;
 	}
-	
+
 	public String getDataKey() {
 		return _dataKey;
 	}
@@ -128,5 +130,20 @@ public class AnimationsModel {
 		for (var anim : getAnimations()) {
 			anim.build();
 		}
+	}
+
+	public Set<IFile> computeUsedFiles() {
+		var result = new HashSet<IFile>();
+
+		if (_file != null) {
+			result.add(_file);
+		}
+
+		for (var anim : _animations) {
+			var animFiles = anim.computeUsedFiles();
+			result.addAll(animFiles);
+		}
+
+		return result;
 	}
 }
