@@ -26,7 +26,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.INewWizard;
 
-import phasereditor.animation.ui.wizards.NewAnimationsFileWizard;
+import phasereditor.animation.ui.editor.wizards.NewAnimationsFileWizard;
 import phasereditor.assetpack.core.AssetPackCore;
 
 /**

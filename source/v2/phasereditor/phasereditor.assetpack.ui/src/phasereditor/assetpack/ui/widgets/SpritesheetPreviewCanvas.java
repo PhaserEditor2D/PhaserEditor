@@ -56,6 +56,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 
 	public SpritesheetPreviewCanvas(Composite parent, int style) {
 		super(parent, style);
+		
 		setPreferredSize(new Point(100, 100));
 		addMouseMoveListener(this);
 		addMouseListener(this);
@@ -64,6 +65,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 		FontData fd = getFont().getFontData()[0];
 		_font = new Font(getDisplay(), new FontData(fd.getName(), fd.getHeight(), SWT.BOLD));
 		setFont(_font);
+		
 	}
 
 	@Override

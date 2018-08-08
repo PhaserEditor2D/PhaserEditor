@@ -19,7 +19,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.animation.ui.wizards;
+package phasereditor.animation.ui.editor.wizards;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -33,7 +33,7 @@ import org.eclipse.ui.ide.IDE;
 public class NewAnimationsFileWizard extends Wizard implements INewWizard {
 
 	private IStructuredSelection _selection;
-	private AnimationsFileWizardPage _page;
+	private AnimationsFileWizardPage _filePage;
 	private IWorkbenchPage _windowPage;
 
 	public NewAnimationsFileWizard() {
@@ -42,8 +42,8 @@ public class NewAnimationsFileWizard extends Wizard implements INewWizard {
 
 	@Override
 	public void addPages() {
-		_page = new AnimationsFileWizardPage(_selection);
-		addPage(_page);
+		_filePage = new AnimationsFileWizardPage(_selection);
+		addPage(_filePage);
 	}
 
 	@Override
@@ -57,14 +57,14 @@ public class NewAnimationsFileWizard extends Wizard implements INewWizard {
 		boolean performedOK = false;
 
 		// no file extension specified so add default extension
-		String fileName = _page.getFileName();
+		String fileName = _filePage.getFileName();
 		if (fileName.lastIndexOf('.') == -1) {
 			String newFileName = fileName + ".json";
-			_page.setFileName(newFileName);
+			_filePage.setFileName(newFileName);
 		}
 
 		// create a new empty file
-		IFile file = _page.createNewFile();
+		IFile file = _filePage.createNewFile();
 		// if there was problem with creating file, it will be null, so make
 		// sure to check
 		if (file != null) {

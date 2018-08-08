@@ -26,7 +26,6 @@ import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
@@ -86,10 +85,13 @@ import javafx.animation.Animation.Status;
 import phasereditor.animation.ui.AnimationCanvas;
 import phasereditor.animation.ui.AnimationCanvas.IndexTransition;
 import phasereditor.animation.ui.editor.properties.AnimationsPGridPage;
+import phasereditor.animation.ui.editor.wizards.AssetsSplitter;
+import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
-import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
@@ -253,47 +255,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		String initialName = "untitled";
 
-		if (frames != null) {
-			var names = new ArrayList<String>();
-
-			for (var frame : frames) {
-				var asset = frame.getFrameAsset();
-				if (asset != null) {
-					var framename = asset.getKey();
-					if (asset instanceof SpritesheetAssetModel.FrameModel) {
-						framename = asset.getAsset().getKey();
-					}
-					names.add(framename);
-				}
-			}
-
-			var nameBuilder = new StringBuilder();
-			var testName = names.iterator().next();
-
-			for (int testIndex = 0; testIndex < testName.length(); testIndex++) {
-
-				int countMatches = 0;
-
-				var testChar = testName.charAt(testIndex);
-
-				for (var name : names) {
-					if (testIndex < name.length() && name.charAt(testIndex) == testChar) {
-						countMatches++;
-					}
-				}
-				
-				if (countMatches >= names.size() * 0.75) {
-					nameBuilder.append(testChar);
-				} else {
-					break;
-				}
-			}
-			
-			if (nameBuilder.length() > 3) {
-				initialName = nameBuilder.toString();
-			}
-		}
-
 		InputDialog dlg = new InputDialog(getAnimationCanvas().getShell(), "New Animation",
 				"Enter the name of the new animation.", initialName, new IInputValidator() {
 
@@ -317,7 +278,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 			}
 
 			getModel().getAnimations().add(anim);
-			
+
 			anim.buildTimeline();
 
 			StructuredSelection sel = new StructuredSelection(anim);
@@ -864,53 +825,79 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 	@SuppressWarnings("boxing")
 	public void createAnimationWithDrop(Object[] data) {
-		List<AnimationFrameModel_in_Editor> framesFromTheOutside = new ArrayList<>();
 
-		var _animation = (AnimationModel_in_Editor) getAnimationCanvas().getModel();
+		var openFirstAnim = _model.getAnimations().isEmpty();
 
-		var frames = _animation == null ? List.of() : _animation.getFrames();
+		var splitter = new AssetsSplitter();
 
 		for (var obj : data) {
-			IAssetFrameModel frame = null;
-			AnimationFrameModel_in_Editor alienFrame = null;
-
-			if (obj instanceof IAssetFrameModel) {
-				frame = (IAssetFrameModel) obj;
+			if (obj instanceof AtlasAssetModel) {
+				splitter.addAll(((AtlasAssetModel) obj).getSubElements());
+			} else if (obj instanceof MultiAtlasAssetModel) {
+				splitter.addAll(((MultiAtlasAssetModel) obj).getSubElements());
+			} else if (obj instanceof IAssetFrameModel) {
+				splitter.add((IAssetKey) obj);
 			} else if (obj instanceof ImageAssetModel) {
-				frame = ((ImageAssetModel) obj).getFrame();
-			} else if (frames.contains(obj)) {
-				// in editor frames, do not use them
-			} else if (obj instanceof AnimationFrameModel) {
-				AnimationFrameModel anim = (AnimationFrameModel) obj;
-				alienFrame = new AnimationFrameModel_in_Editor(_animation, anim.toJSON());
-				alienFrame.setFrameAsset(anim.getFrameAsset());
+				splitter.add(((ImageAssetModel) obj).getFrame());
 			}
+		}
 
-			if (frame != null) {
-				alienFrame = new AnimationFrameModel_in_Editor(_animation);
-				alienFrame.setFrameAsset(frame);
-				alienFrame.setTextureKey(frame.getAsset().getKey());
+		var result = splitter.split();
+
+		for (var group : result) {
+			out.println(group.getPrefix());
+			for (var asset : group.getAssets()) {
+				out.println("  " + asset.getKey());
+			}
+		}
+
+		for (var group : result) {
+			var anim = new AnimationModel_in_Editor(_model);
+			anim.setKey(group.getPrefix());
+			_model.getAnimations().add(anim);
+
+			for (var frame : group.getAssets()) {
+
+				var animFrame = new AnimationFrameModel_in_Editor(anim);
+				animFrame.setFrameAsset((IAssetFrameModel) frame);
+				animFrame.setTextureKey(frame.getAsset().getKey());
 
 				if (frame.getAsset() instanceof ImageAssetModel) {
 					// nothing
 				} else if (frame instanceof SpritesheetAssetModel.FrameModel) {
-					alienFrame.setFrameName(((SpritesheetAssetModel.FrameModel) frame).getIndex());
+					animFrame.setFrameName(((SpritesheetAssetModel.FrameModel) frame).getIndex());
 				} else {
-					alienFrame.setFrameName(frame.getKey());
+					animFrame.setFrameName(frame.getKey());
 				}
+
+				anim.getFrames().add(animFrame);
 			}
 
-			if (alienFrame != null) {
-				framesFromTheOutside.add(alienFrame);
+			anim.buildTimeline();
+		}
+
+		if (_outliner != null) {
+			_outliner.refresh();
+		}
+
+		if (openFirstAnim) {
+
+			if (!_model.getAnimations().isEmpty()) {
+				var anim = (AnimationModel_in_Editor) _model.getAnimations().get(0);
+
+				StructuredSelection sel = new StructuredSelection(anim);
+
+				if (_outliner != null) {
+					_outliner.getViewer().setSelection(sel);
+				}
+
+				loadAnimation(anim);
+
+				getEditorSite().getSelectionProvider().setSelection(sel);
 			}
 
 		}
 
-		if (framesFromTheOutside.isEmpty()) {
-			return;
-		}
-
-		openNewAnimationDialog(framesFromTheOutside);
-
+		setDirty();
 	}
 }

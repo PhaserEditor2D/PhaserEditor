@@ -2,52 +2,5 @@
 <?eclipse version="3.2"?>
 <plugin>
    
-   <extension
-         point="org.eclipse.ui.newWizards">
-      <wizard
-            class="phasereditor.animation.ui.wizards.NewAnimationsFileWizard"
-            finalPerspective="phasereditor.ide.ui.perspective"
-            icon="platform:/plugin/phasereditor.ui/icons/frame-animation.png"
-            id="phasereditor.animation.ui.newAnimationsFile"
-            name="Animations File">
-         <description>
-            Creates a new Animations JSON file.
-         </description>
-         <keywordReference
-               id="phasereditor.animation.ui.keyword1">
-         </keywordReference>
-         <keywordReference
-               id="phasereditor.animation.ui.keyword2">
-         </keywordReference>
-      </wizard>
-   </extension>
-   <extension
-         point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension
-            targetID="*">
-         <newWizardShortcut
-               id="phasereditor.animation.ui.newAnimationsFile">
-         </newWizardShortcut>
-      </perspectiveExtension>
-   </extension>
-   <extension
-         point="org.eclipse.ui.navigator.navigatorContent">
-      <commonWizard
-            menuGroupId="phaser.new.other"
-            type="new"
-            wizardId="phasereditor.animation.ui.newAnimationsFile">
-         <enablement></enablement>
-      </commonWizard>
-   </extension>
-   <extension
-         point="org.eclipse.ui.keywords">
-      <keyword
-            id="phasereditor.animation.ui.keyword1"
-            label="animation">
-      </keyword>
-      <keyword
-            id="phasereditor.animation.ui.keyword2"
-            label="sprite">
-      </keyword>
-   </extension>
+   
 </plugin>

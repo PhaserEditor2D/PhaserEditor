@@ -30,7 +30,9 @@ public class DeleteAnimationSelectionHandler extends AbstractHandler {
 					animations.add((AnimationModel_in_Editor) obj);
 				}
 			} else if (obj instanceof AnimationFrameModel_in_Editor) {
-				if (((AnimationFrameModel_in_Editor) obj).getAnimation().getEditor() == editor) {
+				AnimationModel_in_Editor anim = ((AnimationFrameModel_in_Editor) obj).getAnimation();
+				AnimationsEditor animEditor = anim.getEditor();
+				if (animEditor == editor) {
 					frames.add((AnimationFrameModel_in_Editor) obj);
 				}
 			}

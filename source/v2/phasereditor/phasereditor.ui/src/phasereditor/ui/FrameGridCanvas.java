@@ -160,6 +160,8 @@ public class FrameGridCanvas extends BaseImageCanvas
 		PhaserEditorUI.forceApplyCompositeStyle(this);
 
 		addKeyListener(this);
+
+		resetFramesData();
 	}
 
 	void updateScroll() {
@@ -447,8 +449,12 @@ public class FrameGridCanvas extends BaseImageCanvas
 	public void setOffsetY(int i) {
 		//
 	}
-
+	
 	public void loadFrameProvider(IFrameProvider provider) {
+		loadFrameProvider(provider, true);
+	}
+
+	public void loadFrameProvider(IFrameProvider provider, boolean resetZoom) {
 		resetFramesData();
 
 		_total = provider.getFrameCount();
@@ -474,7 +480,11 @@ public class FrameGridCanvas extends BaseImageCanvas
 		_visibleLabels = _labels;
 		_visibleCount = _total;
 
-		resetZoom();
+		if (resetZoom) {
+			resetZoom();
+		} else {
+			redraw();
+		}
 	}
 
 	private void resetFramesData() {
@@ -492,6 +502,9 @@ public class FrameGridCanvas extends BaseImageCanvas
 		_visibleFiles = _files;
 		_visibleLabels = _labels;
 		_visibleCount = 0;
+
+		_origin.x = 0;
+		getVerticalBar().setSelection(0);
 	}
 
 	@Override
