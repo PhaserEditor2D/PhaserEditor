@@ -311,6 +311,9 @@ public class AnimationModel implements IAdaptable {
 			var packs = AssetPackCore.getAssetPackModels(file.getProject());
 			for (var pack : packs) {
 				frame = pack.findFrame(textureKey, frameName);
+				if (frame != null) {
+					break;
+				}
 			}
 
 			if (frame != null) {
