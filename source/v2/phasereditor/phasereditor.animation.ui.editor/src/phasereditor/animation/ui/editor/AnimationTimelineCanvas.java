@@ -134,10 +134,6 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 
 				@Override
 				public void drop(DropTargetEvent event) {
-					if (getAnimation() == null) {
-						return;
-					}
-
 					if (event.data instanceof Object[]) {
 						selectionDropped((Object[]) event.data);
 					}
@@ -207,7 +203,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 	protected void selectionDropped(Object[] data) {
 
 		if (_animation == null) {
-			// TODO: maybe we just have to create a new animation!
+			_editor.createAnimationWithDrop(data);
 			return;
 		}
 

@@ -26,6 +26,7 @@ import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
@@ -58,6 +59,9 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.dnd.DropTargetAdapter;
+import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -82,6 +86,10 @@ import javafx.animation.Animation.Status;
 import phasereditor.animation.ui.AnimationCanvas;
 import phasereditor.animation.ui.AnimationCanvas.IndexTransition;
 import phasereditor.animation.ui.editor.properties.AnimationsPGridPage;
+import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.ImageAssetModel;
+import phasereditor.assetpack.core.SpritesheetAssetModel;
+import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.AssetPackUI;
@@ -215,11 +223,79 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		if (anim != null) {
 			loadAnimation(anim);
 		}
+
+		init_DND_Support();
 	}
 
-	protected final void openNewAnimationDialog() {
+	private void init_DND_Support() {
+		{
+			int options = DND.DROP_MOVE | DND.DROP_DEFAULT;
+			DropTarget target = new DropTarget(_animCanvas, options);
+			Transfer[] types = { LocalSelectionTransfer.getTransfer() };
+			target.setTransfer(types);
+			target.addDropListener(new DropTargetAdapter() {
+
+				@Override
+				public void drop(DropTargetEvent event) {
+					if (event.data instanceof Object[]) {
+						createAnimationWithDrop((Object[]) event.data);
+					}
+
+					if (event.data instanceof IStructuredSelection) {
+						createAnimationWithDrop(((IStructuredSelection) event.data).toArray());
+					}
+				}
+			});
+		}
+	}
+
+	protected final void openNewAnimationDialog(List<AnimationFrameModel_in_Editor> frames) {
+
+		String initialName = "untitled";
+
+		if (frames != null) {
+			var names = new ArrayList<String>();
+
+			for (var frame : frames) {
+				var asset = frame.getFrameAsset();
+				if (asset != null) {
+					var framename = asset.getKey();
+					if (asset instanceof SpritesheetAssetModel.FrameModel) {
+						framename = asset.getAsset().getKey();
+					}
+					names.add(framename);
+				}
+			}
+
+			var nameBuilder = new StringBuilder();
+			var testName = names.iterator().next();
+
+			for (int testIndex = 0; testIndex < testName.length(); testIndex++) {
+
+				int countMatches = 0;
+
+				var testChar = testName.charAt(testIndex);
+
+				for (var name : names) {
+					if (testIndex < name.length() && name.charAt(testIndex) == testChar) {
+						countMatches++;
+					}
+				}
+				
+				if (countMatches >= names.size() * 0.75) {
+					nameBuilder.append(testChar);
+				} else {
+					break;
+				}
+			}
+			
+			if (nameBuilder.length() > 3) {
+				initialName = nameBuilder.toString();
+			}
+		}
+
 		InputDialog dlg = new InputDialog(getAnimationCanvas().getShell(), "New Animation",
-				"Enter the name of the new animation.", "walk", new IInputValidator() {
+				"Enter the name of the new animation.", initialName, new IInputValidator() {
 
 					@Override
 					public String isValid(String newText) {
@@ -236,8 +312,13 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 			var anim = new AnimationModel_in_Editor(getModel());
 
 			anim.setKey(dlg.getValue());
+			if (frames != null) {
+				anim.getFrames().addAll(frames);
+			}
 
 			getModel().getAnimations().add(anim);
+			
+			anim.buildTimeline();
 
 			StructuredSelection sel = new StructuredSelection(anim);
 
@@ -265,7 +346,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 						EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_FRAME_ANIMATION)) {
 					@Override
 					public void run() {
-						openNewAnimationDialog();
+						openNewAnimationDialog(null);
 					}
 				});
 				manager.add(new Separator());
@@ -622,7 +703,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 			viewer.setLabelProvider(AssetLabelProvider.GLOBAL_16);
 			viewer.setContentProvider(new OutlinerContentProvider());
 			viewer.setInput(getModel());
-			
+
 			AssetPackUI.installAssetTooltips(viewer);
 
 			init_DnD();
@@ -779,5 +860,57 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		if (_outliner != null) {
 			_outliner.refresh();
 		}
+	}
+
+	@SuppressWarnings("boxing")
+	public void createAnimationWithDrop(Object[] data) {
+		List<AnimationFrameModel_in_Editor> framesFromTheOutside = new ArrayList<>();
+
+		var _animation = (AnimationModel_in_Editor) getAnimationCanvas().getModel();
+
+		var frames = _animation == null ? List.of() : _animation.getFrames();
+
+		for (var obj : data) {
+			IAssetFrameModel frame = null;
+			AnimationFrameModel_in_Editor alienFrame = null;
+
+			if (obj instanceof IAssetFrameModel) {
+				frame = (IAssetFrameModel) obj;
+			} else if (obj instanceof ImageAssetModel) {
+				frame = ((ImageAssetModel) obj).getFrame();
+			} else if (frames.contains(obj)) {
+				// in editor frames, do not use them
+			} else if (obj instanceof AnimationFrameModel) {
+				AnimationFrameModel anim = (AnimationFrameModel) obj;
+				alienFrame = new AnimationFrameModel_in_Editor(_animation, anim.toJSON());
+				alienFrame.setFrameAsset(anim.getFrameAsset());
+			}
+
+			if (frame != null) {
+				alienFrame = new AnimationFrameModel_in_Editor(_animation);
+				alienFrame.setFrameAsset(frame);
+				alienFrame.setTextureKey(frame.getAsset().getKey());
+
+				if (frame.getAsset() instanceof ImageAssetModel) {
+					// nothing
+				} else if (frame instanceof SpritesheetAssetModel.FrameModel) {
+					alienFrame.setFrameName(((SpritesheetAssetModel.FrameModel) frame).getIndex());
+				} else {
+					alienFrame.setFrameName(frame.getKey());
+				}
+			}
+
+			if (alienFrame != null) {
+				framesFromTheOutside.add(alienFrame);
+			}
+
+		}
+
+		if (framesFromTheOutside.isEmpty()) {
+			return;
+		}
+
+		openNewAnimationDialog(framesFromTheOutside);
+
 	}
 }
