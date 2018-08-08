@@ -19,58 +19,49 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
-package phasereditor.ui;
+package phasereditor.assetpack.ui.preview;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.graphics.Rectangle;
 
-public interface IFrameProvider {
-	IFrameProvider NULL = new IFrameProvider() {
+import phasereditor.assetpack.core.SpritesheetAssetModel;
+import phasereditor.ui.IFrameProvider;
 
-		@Override
-		public String getFrameTooltip(int index) {
-			return null;
-		}
+/**
+ * @author arian
+ *
+ */
+public class SpritesheetAssetFrameProvider implements IFrameProvider {
 
-		@Override
-		public Rectangle getFrameRectangle(int index) {
-			return null;
-		}
+	private SpritesheetAssetModel _model;
 
-		@Override
-		public IFile getFrameImageFile(int index) {
-			return null;
-		}
-
-		@Override
-		public int getFrameCount() {
-			return 0;
-		}
-
-		@Override
-		public Object getFrameObject(int index) {
-			return null;
-		}
-
-		@Override
-		public String getFrameLabel(int index) {
-			return null;
-		}
-	};
-
-	public int getFrameCount();
-
-	public Rectangle getFrameRectangle(int index);
-
-	public IFile getFrameImageFile(int index);
-
-	@SuppressWarnings("unused")
-	default String getFrameTooltip(int index) {
-		return null;
+	public SpritesheetAssetFrameProvider(SpritesheetAssetModel model) {
+		_model = model;
 	}
 
-	public Object getFrameObject(int index);
+	@Override
+	public int getFrameCount() {
+		return _model.getFrames().size();
+	}
 
-	public String getFrameLabel(int index);
+	@Override
+	public Rectangle getFrameRectangle(int index) {
+		return getFrameObject(index).getFrameData().src;
+	}
+
+	@Override
+	public IFile getFrameImageFile(int index) {
+		return _model.getUrlFile();
+	}
+
+	@Override
+	public SpritesheetAssetModel.FrameModel getFrameObject(int index) {
+		return _model.getFrames().get(index);
+	}
+
+	@Override
+	public String getFrameLabel(int index) {
+		return index + " - " + _model.getKey();
+	}
 
 }

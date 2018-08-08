@@ -21,11 +21,13 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
+import static phasereditor.ui.PhaserEditorUI.swtRun;
+
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IMenuCreator;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.util.LocalSelectionTransfer;
@@ -39,32 +41,33 @@ import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.ToolItem;
 
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
 import phasereditor.assetpack.ui.widgets.SpritesheetPreviewCanvas;
-import phasereditor.canvas.core.AnimationModel;
 import phasereditor.ui.EditorSharedImages;
+import phasereditor.ui.FrameGridCanvas;
 import phasereditor.ui.IEditorSharedImages;
-import phasereditor.ui.ImageCanvas;
+import phasereditor.ui.IFrameProvider;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
-import phasereditor.ui.animations.FrameAnimationCanvas;
 
+@SuppressWarnings("synthetic-access")
 public class SpritesheetAssetPreviewComp extends Composite {
 
 	SpritesheetPreviewCanvas _sheetCanvas;
+
+	private FrameGridCanvas _gridCanvas;
+
+	private Action _textureAction;
+
+	private Action _tilesAction;
+
+	private Action _listAction;
 
 	public SpritesheetAssetPreviewComp(Composite parent, int style) {
 		super(parent, style);
@@ -102,7 +105,7 @@ public class SpritesheetAssetPreviewComp extends Composite {
 			}
 		});
 
-		_animCanvas = new FrameAnimationCanvas(this, SWT.NONE);
+		_gridCanvas = new FrameGridCanvas(this, SWT.NONE, true);
 
 		afterCreateWidgets();
 
@@ -114,30 +117,9 @@ public class SpritesheetAssetPreviewComp extends Composite {
 
 	private SpritesheetAssetModel _model;
 
-	private SpritesheetAnimationModel _canvasAnimModel;
+	private ImageCanvas_Zoom_1_1_Action _zoom_1_1_action;
 
-	private AnimationModel _animModel;
-
-	protected void playButtonPressed() {
-		StackLayout layout = (StackLayout) getLayout();
-
-		if (isSheetInTheTop()) {
-			layout.topControl = _animCanvas;
-			_animCanvas.stop();
-			updateAnimationModels();
-			_animCanvas.play();
-		} else {
-			layout.topControl = _sheetCanvas;
-			_animCanvas.stop();
-		}
-
-		layout();
-	}
-
-	private boolean isSheetInTheTop() {
-		StackLayout layout = (StackLayout) getLayout();
-		return layout.topControl == _sheetCanvas;
-	}
+	private ImageCanvas_Zoom_FitWindow_Action _zoom_fitWindow_action;
 
 	public void setModel(SpritesheetAssetModel model) {
 		_model = model;
@@ -161,160 +143,94 @@ public class SpritesheetAssetPreviewComp extends Composite {
 		}
 
 		{
-			updateAnimationModels();
-			_animCanvas.stop();
+			// frames
+			var provider = _model == null ? IFrameProvider.NULL : new SpritesheetAssetFrameProvider(_model);
+			_gridCanvas.loadFrameProvider(provider);
 		}
 
 		((StackLayout) getLayout()).topControl = _sheetCanvas;
+
 		layout();
-	}
 
-	private void updateAnimationModels() {
-		List<FrameModel> frames;
-
-		List<FrameModel> selection = getSelectedFrames();
-
-		if (!selection.isEmpty()) {
-			frames = selection;
-		} else {
-			frames = _model.getFrames();
-		}
-
-		int fps = 5;
-		if (_animModel != null) {
-			fps = _animModel.getFrameRate();
-		}
-		_animModel = new AnimationModel("noname");
-		_animModel.getFrames().addAll(frames);
-		_animModel.setFrameRate(fps);
-		_animModel.setLoop(true);
-		_canvasAnimModel = new SpritesheetAnimationModel(_animModel);
-		_animCanvas.setModel(_canvasAnimModel);
+		updateActionsState();
 	}
 
 	public SpritesheetAssetModel getModel() {
 		return _model;
 	}
 
-	public void setFps(int fps) {
-		_canvasAnimModel.setFrameRates(fps);
-		if (!isSheetInTheTop()) {
-			_animCanvas.play();
-		}
+	private void moveTop(Control control) {
+		StackLayout layout = (StackLayout) getLayout();
+		layout.topControl = control;
+		layout();
+
+		swtRun(this::updateActionsState);
+
+		control.setFocus();
 	}
 
-	private Action _playAction;
-	private FrameAnimationCanvas _animCanvas;
+	private void updateActionsState() {
+		StackLayout layout = (StackLayout) getLayout();
+		Control control = layout.topControl;
 
-	private Action _setFpsAction;
+		_zoom_1_1_action.setEnabled(control == _sheetCanvas);
+		_zoom_fitWindow_action.setEnabled(control == _sheetCanvas);
 
-	public Menu _menu;
+		_tilesAction.setChecked(control == _gridCanvas && !_gridCanvas.isListLayout());
+		_listAction.setChecked(control == _gridCanvas && _gridCanvas.isListLayout());
+		_textureAction.setChecked(control == _sheetCanvas);
+	}
 
 	public void createToolBar(IToolBarManager toolbar) {
 
-		// play buttons
+		_tilesAction = new Action("Tiles", IAction.AS_CHECK_BOX) {
+			{
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_APPLICATION_TILE));
+			}
 
-		_playAction = new Action("Play") {
 			@Override
 			public void run() {
-				boolean b = getText().equals("Play");
-				setText(b ? "Stop" : "Play");
-				setImageDescriptor(b ? EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_STOP)
-						: EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_PLAY));
-				playButtonPressed();
+				moveTop(_gridCanvas);
+				_gridCanvas.setListLayout(false);
 			}
 		};
-		_playAction.setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_PLAY));
-		toolbar.add(_playAction);
-
-		// settings
-
-		class FpsAction extends Action implements IMenuCreator {
-			FpsAction() {
-				super("Set Frames Per Second (FPS)", AS_DROP_DOWN_MENU);
-				setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_CONTROL_EQUALIZER));
-				setMenuCreator(this);
+		_textureAction = new Action("Texture", IAction.AS_CHECK_BOX) {
+			{
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_IMAGES));
 			}
 
 			@Override
-			public void dispose() {
-				if (_menu != null) {
-					_menu.dispose();
-				}
+			public void run() {
+				moveTop(_sheetCanvas);
 			}
-
-			@SuppressWarnings("synthetic-access")
-			@Override
-			public Menu getMenu(Control parent) {
-				if (_menu != null) {
-					_menu.dispose();
-				}
-				int[] fpsList = new int[6 + 2];
-				for (int i = 0; i < 6; i++) {
-					fpsList[i + 2] = (i + 1) * 10;
-				}
-				fpsList[0] = 1;
-				fpsList[1] = 5;
-
-				_menu = new Menu(parent);
-				for (int i : fpsList) {
-					final int fps = i;
-					MenuItem item = new MenuItem(_menu, SWT.CHECK);
-					item.setText(Integer.toString(fps));
-					item.addSelectionListener(new SelectionAdapter() {
-						@Override
-						public void widgetSelected(SelectionEvent e) {
-							setFps(fps);
-						}
-					});
-					if (i == _animModel.getFrameRate()) {
-						item.setSelection(true);
-					}
-				}
-
-				return _menu;
+		};
+		_listAction = new Action("List", IAction.AS_CHECK_BOX) {
+			{
+				setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_APPLICATION_LIST));
 			}
 
 			@Override
-			public Menu getMenu(Menu parent) {
-				return null;
+			public void run() {
+				moveTop(_gridCanvas);
+				if (_gridCanvas.getFrameSize() < 32) {
+					_gridCanvas.setFrameSize(32);
+				}
+				_gridCanvas.setListLayout(true);
 			}
+		};
 
-			@Override
-			public void runWithEvent(Event event) {
-				ToolItem item = (ToolItem) event.widget;
-				Rectangle rect = item.getBounds();
-				Point pt = item.getParent().toDisplay(new Point(rect.x, rect.y));
-				Menu menu = getMenu(item.getParent());
-				menu.setLocation(pt.x, pt.y + rect.height);
-				menu.setVisible(true);
-			}
-
-		}
-
-		_setFpsAction = new FpsAction();
-		toolbar.add(_setFpsAction);
+		toolbar.add(_textureAction);
+		toolbar.add(_tilesAction);
+		toolbar.add(_listAction);
 
 		toolbar.add(new Separator());
-		toolbar.add(new ImageCanvas_Zoom_1_1_Action() {
 
-			@Override
-			public ImageCanvas getImageCanvas() {
-				return (ImageCanvas) ((StackLayout) getLayout()).topControl;
-			}
-		});
-		toolbar.add(new ImageCanvas_Zoom_FitWindow_Action() {
+		_zoom_1_1_action = new ImageCanvas_Zoom_1_1_Action(_sheetCanvas);
+		_zoom_fitWindow_action = new ImageCanvas_Zoom_FitWindow_Action(_sheetCanvas);
 
-			@Override
-			public ImageCanvas getImageCanvas() {
-				return (ImageCanvas) ((StackLayout) getLayout()).topControl;
-			}
-		});
+		toolbar.add(_zoom_1_1_action);
+		toolbar.add(_zoom_fitWindow_action);
 
-	}
-
-	public void stopAnimation() {
-		_animCanvas.stop();
 	}
 
 	List<FrameModel> getSelectedFrames() {

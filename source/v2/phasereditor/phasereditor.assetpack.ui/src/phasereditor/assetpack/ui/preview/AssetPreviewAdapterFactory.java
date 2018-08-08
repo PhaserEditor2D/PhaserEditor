@@ -513,7 +513,7 @@ public class AssetPreviewAdapterFactory implements IAdapterFactory {
 
 			@Override
 			public void hiddenControl(Control preview) {
-				((SpritesheetAssetPreviewComp) preview).stopAnimation();
+				//
 			}
 		};
 	}
