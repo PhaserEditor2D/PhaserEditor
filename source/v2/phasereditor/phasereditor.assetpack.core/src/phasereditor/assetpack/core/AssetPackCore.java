@@ -23,6 +23,7 @@ package phasereditor.assetpack.core;
 
 import static java.lang.System.err;
 import static java.lang.System.out;
+import static java.util.stream.Collectors.toList;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -964,5 +965,10 @@ public class AssetPackCore {
 			_animationsFileCache = new AnimationsFileDataCache();
 		}
 		return _animationsFileCache;
+	}
+
+	public static <T extends IAssetKey> List<T> sortAssets(List<T> assets) {
+		return assets.stream().sorted((f1, f2) -> f1.getKey().toLowerCase().compareTo(f2.getKey().toLowerCase()))
+				.collect(toList());
 	}
 }

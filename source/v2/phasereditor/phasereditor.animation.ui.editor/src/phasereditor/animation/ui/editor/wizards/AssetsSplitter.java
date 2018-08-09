@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import phasereditor.assetpack.core.IAssetKey;
+import phasereditor.assetpack.core.SpritesheetAssetModel;
 
 /**
  * @author arian
@@ -73,8 +74,14 @@ public class AssetsSplitter {
 		// first, remove all trailing non alphabet chars
 		for (var obj : _assets) {
 			var name = obj.getKey();
-			var newName = removeTrailingSpaces(name);
-			prefixes.add(obj.getAsset().getKey() + " - " + newName);
+
+			if (obj instanceof SpritesheetAssetModel.FrameModel) {
+				name = obj.getAsset().getKey();
+				prefixes.add(name);
+			} else {
+				var newName = removeTrailingSpaces(name);
+				prefixes.add(obj.getAsset().getKey() + " - " + newName);
+			}
 		}
 
 		var map = new HashMap<String, AssetsGroup>();

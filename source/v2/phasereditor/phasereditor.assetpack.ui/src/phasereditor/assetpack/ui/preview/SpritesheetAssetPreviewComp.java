@@ -45,6 +45,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
@@ -93,7 +94,7 @@ public class SpritesheetAssetPreviewComp extends Composite {
 			}
 
 			private ISelection getSelection() {
-				return new StructuredSelection(getSelectedFrames());
+				return new StructuredSelection(AssetPackCore.sortAssets(getSelectedFrames()));
 			}
 
 			@Override

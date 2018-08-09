@@ -835,6 +835,8 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 				splitter.addAll(((AtlasAssetModel) obj).getSubElements());
 			} else if (obj instanceof MultiAtlasAssetModel) {
 				splitter.addAll(((MultiAtlasAssetModel) obj).getSubElements());
+			} else if (obj instanceof SpritesheetAssetModel) {
+				splitter.addAll(((SpritesheetAssetModel) obj).getFrames());
 			} else if (obj instanceof IAssetFrameModel) {
 				splitter.add((IAssetKey) obj);
 			} else if (obj instanceof ImageAssetModel) {
