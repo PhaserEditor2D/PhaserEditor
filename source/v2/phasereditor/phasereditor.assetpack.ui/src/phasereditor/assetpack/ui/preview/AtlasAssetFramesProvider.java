@@ -21,8 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
-import static java.util.stream.Collectors.toList;
-
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -45,9 +44,7 @@ public class AtlasAssetFramesProvider implements IFrameProvider {
 	public AtlasAssetFramesProvider(AtlasAssetModel asset) {
 		super();
 		_asset = asset;
-		var frames = asset.getAtlasFrames();
-		_frames = frames.stream().sorted((f1, f2) -> f1.getKey().toLowerCase().compareTo(f2.getKey().toLowerCase()))
-				.collect(toList());
+		_frames = new ArrayList<>(asset.getAtlasFrames());
 		_file = _asset.getTextureFile();
 	}
 

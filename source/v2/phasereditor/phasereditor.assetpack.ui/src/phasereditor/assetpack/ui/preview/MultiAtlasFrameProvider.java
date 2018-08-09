@@ -21,8 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
-import static java.util.stream.Collectors.toList;
-
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -42,9 +41,7 @@ public class MultiAtlasFrameProvider implements IFrameProvider {
 
 	public MultiAtlasFrameProvider(MultiAtlasAssetModel model) {
 		super();
-		_frames = model.getSubElements();
-		_frames = _frames.stream().sorted((f1, f2) -> f1.getKey().toLowerCase().compareTo(f2.getKey().toLowerCase()))
-				.collect(toList());
+		_frames = new ArrayList<>(model.getSubElements());
 	}
 
 	@Override

@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core;
 
+import static java.util.stream.Collectors.toList;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -275,7 +277,11 @@ public class AtlasAssetModel extends AssetModel {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		_frames = list;
+
+		// sort frames
+		
+		_frames = list.stream().sorted((f1, f2) -> f1.getKey().toLowerCase().compareTo(f2.getKey().toLowerCase()))
+				.collect(toList());
 
 		{
 			IFile file = getTextureFile();
