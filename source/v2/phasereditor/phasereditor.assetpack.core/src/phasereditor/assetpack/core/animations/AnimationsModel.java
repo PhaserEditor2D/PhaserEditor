@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.core.animations;
 
+import static java.util.stream.Collectors.toSet;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -124,6 +126,21 @@ public class AnimationsModel {
 			}
 		}
 		return null;
+	}
+
+	public String getNewAnimationName(String name) {
+		var names = _animations.stream().map(a -> a.getKey()).collect(toSet());
+
+		var newName = name;
+
+		int i = 1;
+
+		while (names.contains(newName)) {
+			newName = name + "_" + i;
+			i++;
+		}
+
+		return newName;
 	}
 
 	public void build() {

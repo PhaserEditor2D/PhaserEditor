@@ -307,10 +307,14 @@ public class AssetExplorer extends ViewPart {
 				JSONArray array = new JSONArray();
 				for (Object elem : _data) {
 					if (elem instanceof IAssetKey) {
-						array.put(AssetPackCore.getAssetJSONReference((IAssetKey) elem));
+						array.put(((IAssetKey) elem).getKey());
 					}
 				}
-				event.data = array.toString();
+				if (array.length() == 1) {
+					event.data = array.getString(0);
+				} else {
+					event.data = array.toString();
+				}
 			}
 
 			@Override

@@ -203,7 +203,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 	protected void selectionDropped(Object[] data) {
 
 		if (_animation == null) {
-			_editor.createAnimationWithDrop(data);
+			_editor.createAnimationsWithDrop(data);
 			return;
 		}
 

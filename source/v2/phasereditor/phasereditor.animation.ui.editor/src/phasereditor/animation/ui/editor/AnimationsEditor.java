@@ -240,11 +240,11 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 				@Override
 				public void drop(DropTargetEvent event) {
 					if (event.data instanceof Object[]) {
-						createAnimationWithDrop((Object[]) event.data);
+						createAnimationsWithDrop((Object[]) event.data);
 					}
 
 					if (event.data instanceof IStructuredSelection) {
-						createAnimationWithDrop(((IStructuredSelection) event.data).toArray());
+						createAnimationsWithDrop(((IStructuredSelection) event.data).toArray());
 					}
 				}
 			});
@@ -824,7 +824,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	}
 
 	@SuppressWarnings("boxing")
-	public void createAnimationWithDrop(Object[] data) {
+	public void createAnimationsWithDrop(Object[] data) {
 
 		var openFirstAnim = _model.getAnimations().isEmpty();
 
@@ -853,7 +853,11 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		for (var group : result) {
 			var anim = new AnimationModel_in_Editor(_model);
-			anim.setKey(group.getPrefix());
+
+			_model.getAnimation(group.getPrefix());
+
+			anim.setKey(_model.getNewAnimationName(group.getPrefix()));
+
 			_model.getAnimations().add(anim);
 
 			for (var frame : group.getAssets()) {
@@ -875,6 +879,10 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 			anim.buildTimeline();
 		}
+
+		// sort animations
+		
+		_model.getAnimations().sort((a, b) -> a.getKey().compareTo(b.getKey()));
 
 		if (_outliner != null) {
 			_outliner.refresh();
