@@ -66,7 +66,7 @@ import phasereditor.ui.PhaserEditorUI;
  * @author arian
  *
  */
-public class AnimationTimelineCanvas extends BaseImageCanvas
+public class AnimationTimelineCanvas_Preview extends BaseImageCanvas
 		implements PaintListener, MouseWheelListener, MouseListener, DragSourceListener, KeyListener {
 
 	private AnimationModel _model;
@@ -80,7 +80,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 	private AnimationFrameModel _lastSelectedFrame;
 	private AnimationCanvas _animCanvas;
 
-	public AnimationTimelineCanvas(Composite parent, int style) {
+	public AnimationTimelineCanvas_Preview(Composite parent, int style) {
 		super(parent, style | SWT.H_SCROLL | SWT.NO_REDRAW_RESIZE);
 
 		_widthFactor = 1;
@@ -405,18 +405,15 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 			var selected = _selectedFrames.contains(animFrame);
 
 			if (selected) {
-				gc.setAlpha(100);
-				gc.setBackground(PhaserEditorUI.get_pref_Preview_frameSelectionColor());
-			} else {
-				gc.setAlpha(60);
-				gc.setBackground(getDisplay().getSystemColor(i % 2 == 0 ? SWT.COLOR_WHITE : SWT.COLOR_GRAY));
+				gc.setBackground(PhaserEditorUI.getListSelectionColor());
+				gc.fillRectangle((int) frameX, 0, (int) frameWidth, e.height);
 			}
 
-			gc.fillRectangle((int) frameX, 0, (int) frameWidth, e.height);
-			gc.setAlpha(255);
-
-			if (selected) {
-				gc.drawRectangle((int) frameX, 0, (int) frameWidth, e.height - 1);
+			{
+				gc.setAlpha(60);
+				gc.setBackground(getDisplay().getSystemColor(i % 2 == 0 ? SWT.COLOR_WHITE : SWT.COLOR_GRAY));
+				gc.fillRectangle((int) frameX, 0, (int) frameWidth, e.height);
+				gc.setAlpha(255);
 			}
 
 			if (frameHeight > 0) {
@@ -662,7 +659,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 		if (assetFrame != null) {
 			PhaserEditorUI.set_DND_Image(event, assetFrame.getImageFile(), assetFrame.getFrameData().src);
 		}
-		
+
 		if (selectedFrames.contains(frame)) {
 			transfer.setSelection(new StructuredSelection(selectedFrames.toArray()));
 		} else {

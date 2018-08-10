@@ -416,19 +416,19 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 
 			var selected = _selectedFrames.contains(animFrame);
 
-			if (selected) {
-				gc.setAlpha(100);
-				gc.setBackground(PhaserEditorUI.get_pref_Preview_frameSelectionColor());
-			} else {
-				gc.setAlpha(60);
-				gc.setBackground(getDisplay().getSystemColor(i % 2 == 0 ? SWT.COLOR_WHITE : SWT.COLOR_GRAY));
-			}
-
-			gc.fillRectangle((int) frameX, 0, (int) frameWidth, e.height);
-			gc.setAlpha(255);
-
-			if (selected) {
-				gc.drawRectangle((int) frameX, 0, (int) frameWidth, e.height - 1);
+			{
+				if (selected) {
+					 gc.setBackground(PhaserEditorUI.getListSelectionColor());
+					gc.fillRectangle((int) frameX, 0, (int) frameWidth, e.height);
+				} 
+				
+				{
+					gc.setAlpha(60);
+					gc.setBackground(i % 2 == 0 ? getDisplay().getSystemColor( SWT.COLOR_WHITE) : PhaserEditorUI.get_pref_Preview_PatternColor());
+					gc.fillRectangle((int) frameX, 0, (int) frameWidth, e.height);
+					gc.setAlpha(255);
+				}
+				
 			}
 
 			if (frameHeight > 0) {
@@ -470,7 +470,6 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 			}
 			var lw = gc.getLineWidth();
 			gc.setLineWidth(3);
-			gc.setAlpha(255);
 			gc.drawLine(x, 0, x, e.height);
 			gc.setLineWidth(lw);
 		}

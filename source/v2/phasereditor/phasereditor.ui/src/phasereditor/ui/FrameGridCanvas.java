@@ -199,7 +199,7 @@ public class FrameGridCanvas extends BaseImageCanvas
 			_origin.y = 0;
 			buildFilterMap(_nextFilterText);
 			_nextFilterText = null;
-			
+
 			updateScroll();
 		}
 
@@ -219,12 +219,12 @@ public class FrameGridCanvas extends BaseImageCanvas
 			var selected = _utils.isSelected(obj);
 
 			if (selected) {
-				gc.setBackground(PhaserEditorUI.get_pref_Preview_frameSelectionColor());
-				gc.setAlpha(100);
+				gc.setBackground(PhaserEditorUI.getListSelectionColor());
 				gc.fillRectangle(area);
-				gc.setAlpha(255);
-			} else {
-				PhaserEditorUI.paintPreviewBackground(gc, area);
+			}
+
+			if (_listLayout) {
+				PhaserEditorUI.paintListItemBackground(gc, i, area);
 			}
 
 			{
@@ -458,7 +458,7 @@ public class FrameGridCanvas extends BaseImageCanvas
 
 	public void loadFrameProvider(IFrameProvider provider, boolean resetZoom) {
 		resetFramesData();
-		
+
 		_total = provider.getFrameCount();
 
 		for (int i = 0; i < _total; i++) {
@@ -504,7 +504,7 @@ public class FrameGridCanvas extends BaseImageCanvas
 		_visibleFiles = _files;
 		_visibleLabels = _labels;
 		_visibleCount = 0;
-		
+
 		_nextFilterText = null;
 		_visibleMap = null;
 

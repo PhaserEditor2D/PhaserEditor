@@ -56,12 +56,8 @@ public class PreviewPreferencePage extends FieldEditorPreferencePage implements 
 
 			addField(new ColorFieldEditor(PhaserEditorUI.PREF_PROP_PREVIEW_IMG_PAINT_BG_SOLID_COLOR, "Solid color",
 					group));
-			addField(new ColorFieldEditor(PhaserEditorUI.PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1, "Pattern color 1",
+			addField(new ColorFieldEditor(PhaserEditorUI.PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1, "Pattern color",
 					group));
-			addField(new ColorFieldEditor(PhaserEditorUI.PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_2, "Pattern color 2",
-					group));
-			addField(new ColorFieldEditor(PhaserEditorUI.PREF_PROP_PREVIEW_FRAME_SELECTION_COLOR,
-					"Selected frame background color", group));
 		}
 
 	}

@@ -30,6 +30,7 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
@@ -56,7 +57,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 
 	public SpritesheetPreviewCanvas(Composite parent, int style) {
 		super(parent, style);
-		
+
 		setPreferredSize(new Point(100, 100));
 		addMouseMoveListener(this);
 		addMouseListener(this);
@@ -65,7 +66,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 		FontData fd = getFont().getFontData()[0];
 		_font = new Font(getDisplay(), new FontData(fd.getName(), fd.getHeight(), SWT.BOLD));
 		setFont(_font);
-		
+
 	}
 
 	@Override
@@ -74,14 +75,65 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 		_font.dispose();
 	}
 
+	@Override
+	protected void customPaintControl(PaintEvent e) {
+
+		if (_spritesheet != null && _image != null) {
+			Rectangle imgBounds = _image.getBounds();
+			_rects = AssetPackUI.generateSpriteSheetRects(_spritesheet, imgBounds);
+		} else {
+			_rects = List.of();
+		}
+
+		super.customPaintControl(e);
+	}
+
 	@SuppressWarnings("boxing")
+	@Override
+	protected void drawImageBackground(GC gc, Rectangle b) {
+		if (_spritesheet == null || _rects.isEmpty()) {
+			return;
+		}
+
+		if (PhaserEditorUI.isPreviewBackgroundSolidColor()) {
+			PhaserEditorUI.paintPreviewBackground(gc, b);
+		}
+
+		Color selectionColor = PhaserEditorUI.getListSelectionColor();
+
+		ZoomCalculator calc = calc();
+
+		int i = 0;
+		for (FrameData fd : _rects) {
+			calc.imgWidth = fd.src.width;
+			calc.imgHeight = fd.src.height;
+
+			Rectangle r = calc.imageToScreen(fd.dst);
+			Rectangle r2 = new Rectangle(r.x, r.y, r.width + 1, r.height + 1);
+
+			if (_selectedFrames.contains(fd.index)) {
+				gc.setBackground(selectionColor);
+				gc.fillRectangle(r2);
+				gc.setAlpha(255);
+			}
+
+			var frame = _spritesheet.getFrames().get(i++);
+			PhaserEditorUI.paintListItemBackground(gc, frame.getColumn() + frame.getRow(), r2);
+
+		}
+
+		if (!PhaserEditorUI.isPreviewBackgroundSolidColor()) {
+			PhaserEditorUI.paintPreviewBackground(gc, b);
+		}
+
+	}
+
 	@Override
 	protected void drawMore(GC gc, int srcW, int srcH, int dstW, int dstH, int dstX, int dstY) {
 		if (_spritesheet == null) {
 			return;
 		}
 
-		SpritesheetAssetModel spritesheet = _spritesheet;
 		Rectangle canvasBounds = getBounds();
 		Rectangle imgBounds = _image.getBounds();
 
@@ -90,9 +142,7 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 		Color borderColor = PhaserEditorUI.get_pref_Preview_Spritesheet_borderColor();
 		Color labelsColor = PhaserEditorUI.get_pref_Preview_Spritesheet_labelsColor();
 		Color colorBlack = getDisplay().getSystemColor(SWT.COLOR_BLACK);
-		Color selectionColor = PhaserEditorUI.get_pref_Preview_frameSelectionColor();
 
-		_rects = AssetPackUI.generateSpriteSheetRects(spritesheet, imgBounds);
 		if (_rects.isEmpty()) {
 			PhaserEditorUI.paintPreviewMessage(gc, canvasBounds, "Cannot compute the grid.");
 		} else {
@@ -104,13 +154,6 @@ public class SpritesheetPreviewCanvas extends ImageCanvas implements MouseMoveLi
 				calc.imgHeight = fd.src.height;
 
 				Rectangle r = calc.imageToScreen(fd.dst);
-
-				if (_selectedFrames.contains(fd.index)) {
-					gc.setAlpha(100);
-					gc.setBackground(selectionColor);
-					gc.fillRectangle(r.x, r.y, r.width, r.height);
-					gc.setAlpha(255);
-				}
 
 				if (!fd.visible) {
 					gc.setAlpha(200);

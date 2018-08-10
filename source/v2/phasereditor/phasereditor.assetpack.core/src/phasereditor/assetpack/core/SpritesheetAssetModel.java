@@ -206,12 +206,24 @@ public class SpritesheetAssetModel extends AssetModel {
 		public Rectangle _bounds;
 		private SpritesheetAssetModel _asset;
 		private int _index;
+		private int _row;
+		private int _column;
 
-		public FrameModel(SpritesheetAssetModel asset, int index, Rectangle bounds) {
+		public FrameModel(SpritesheetAssetModel asset, int index, int row, int column, Rectangle bounds) {
 			super();
 			_asset = asset;
 			_index = index;
+			_row = row;
+			_column = column;
 			_bounds = bounds;
+		}
+
+		public int getColumn() {
+			return _column;
+		}
+
+		public int getRow() {
+			return _row;
 		}
 
 		@Override
@@ -280,6 +292,8 @@ public class SpritesheetAssetModel extends AssetModel {
 			int end = getEndFrame() < 0 ? Integer.MAX_VALUE : getEndFrame();
 
 			int i = 0;
+			int row = 0;
+			int column = 0;
 			int x = margin;
 			int y = margin;
 			while (true) {
@@ -288,15 +302,21 @@ public class SpritesheetAssetModel extends AssetModel {
 				}
 
 				if (i >= start) {
-					FrameModel frame = new FrameModel(this, i, new Rectangle(x, y, w, h));
+					FrameModel frame = new FrameModel(this, i, row, column, new Rectangle(x, y, w, h));
 					list.add(frame);
 				}
 
+				column++;
+
 				x += w + spacing;
+
 				if (x >= b.width) {
 					x = margin;
 					y += h + spacing;
+					column = 0;
+					row++;
 				}
+
 				i++;
 			}
 		} finally {

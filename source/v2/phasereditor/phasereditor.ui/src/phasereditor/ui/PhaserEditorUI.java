@@ -135,21 +135,17 @@ public class PhaserEditorUI {
 
 	public static final String PREF_PROP_PREVIEW_IMG_PAINT_BG_SOLID_COLOR = "phasereditor.ui.preview.imageBackgroundSolidColor";
 	public static final String PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1 = "phasereditor.ui.preview.imageBackgroundColor1";
-	public static final String PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_2 = "phasereditor.ui.preview.imageBackgroundColor2";
 	public static Color _PREF_PROP_PREVIEW_IMG_PAINT_BG_SOLID_COLOR;
 	public static Color _PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1;
-	public static Color _PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_2;
 
 	public static final String PREF_PROP_PREVIEW_SPRITESHEET_PAINT_FRAMES = "phasereditor.ui.preview.spritesheetPaintFrames";
 	public static final String PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR = "phasereditor.ui.preview.spritesheetBorderColor";
 	public static final String PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS = "phasereditor.ui.preview.spritesheetPaintLabels";
 	public static final String PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR = "phasereditor.ui.preview.spritesheetLabelsColor";
-	public static final String PREF_PROP_PREVIEW_FRAME_SELECTION_COLOR = "phasereditor.ui.preview.frameSelectionColor";
 	private static boolean _PREF_PROP_PREVIEW_SPRITESHEET_PAINT_FRAMES = true;
 	public static Color _PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR;
 	private static boolean _PREF_PROP_PREVIEW_SPRITESHEET_PAINT_LABELS = true;
 	public static Color _PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR;
-	public static Color _PREF_PROP_PREVIEW_FRAME_SELECTION_COLOR;
 
 	public static final String PREF_PROP_PREVIEW_TILEMAP_OVER_TILE_BORDER_COLOR = "phasereditor.ui.preview.tilemapOverTileBorderColor";
 	public static final String PREF_PROP_PREVIEW_TILEMAP_LABELS_COLOR = "phasereditor.ui.preview.tilemapLabelsColor";
@@ -179,8 +175,6 @@ public class PhaserEditorUI {
 			_PREF_PROP_PREVIEW_IMG_PAINT_BG_SOLID_COLOR = SWTResourceManager.getColor(rgb);
 			rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1));
 			_PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1 = SWTResourceManager.getColor(rgb);
-			rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_2));
-			_PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_2 = SWTResourceManager.getColor(rgb);
 		}
 
 		{
@@ -196,8 +190,6 @@ public class PhaserEditorUI {
 			_PREF_PROP_PREVIEW_SPRITESHEET_FRAMES_BORDER_COLOR = SWTResourceManager.getColor(rgb);
 			rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR));
 			_PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR = SWTResourceManager.getColor(rgb);
-			rgb = StringConverter.asRGB(getPreferenceStore().getString(PREF_PROP_PREVIEW_FRAME_SELECTION_COLOR));
-			_PREF_PROP_PREVIEW_FRAME_SELECTION_COLOR = SWTResourceManager.getColor(rgb);
 		}
 
 		{
@@ -224,9 +216,6 @@ public class PhaserEditorUI {
 			case PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1:
 				_PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1 = SWTResourceManager.getColor(getRGBFromPrefEvent(event));
 				break;
-			case PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_2:
-				_PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_2 = SWTResourceManager.getColor(getRGBFromPrefEvent(event));
-				break;
 
 			// spritesheet
 
@@ -244,10 +233,6 @@ public class PhaserEditorUI {
 				break;
 			case PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR:
 				_PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR = SWTResourceManager.getColor(getRGBFromPrefEvent(event));
-				break;
-			case PREF_PROP_PREVIEW_FRAME_SELECTION_COLOR:
-				_PREF_PROP_PREVIEW_FRAME_SELECTION_COLOR = SWTResourceManager
-						.getColor(getRGBFromPrefEvent(event));
 				break;
 
 			// tilemap
@@ -295,10 +280,6 @@ public class PhaserEditorUI {
 
 	public static Color get_pref_Preview_Spritesheet_labelsColor() {
 		return _PREF_PROP_PREVIEW_SPRITESHEET_LABELS_COLOR;
-	}
-
-	public static Color get_pref_Preview_frameSelectionColor() {
-		return _PREF_PROP_PREVIEW_FRAME_SELECTION_COLOR;
 	}
 
 	public static Color get_pref_Preview_Tilemap_overTileBorderColor() {
@@ -381,6 +362,10 @@ public class PhaserEditorUI {
 			((Shell) widget).setBackgroundMode(SWT.INHERIT_DEFAULT);
 		}
 		engine.applyStyles(widget, true);
+	}
+
+	public static Color getListSelectionColor() {
+		return Display.getDefault().getSystemColor(SWT.COLOR_LIST_SELECTION);
 	}
 
 	public static void setThemeClass(Object widget, String className) {
@@ -695,7 +680,15 @@ public class PhaserEditorUI {
 	}
 
 	public static void paintPreviewBackground(GC gc, Rectangle rect) {
-		paintPreviewBackground(gc, rect, 25);
+		paintPreviewBackground(gc, rect, 32);
+	}
+
+	public static boolean isPreviewBackgroundSolidColor() {
+		return PREF_PROP_COLOR_DIALOG_TYPE.equals(PREF_VALUE_PREVIEW_IMG_PAINT_BG_TYPE_ONE_COLOR);
+	}
+
+	public static Color get_pref_Preview_PatternColor() {
+		return _PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1;
 	}
 
 	public static void paintPreviewBackground(GC gc, Rectangle bounds, int space) {
@@ -709,20 +702,24 @@ public class PhaserEditorUI {
 		case PREF_VALUE_PREVIEW_IMG_PAINT_BG_TYPE_TWO_COLORS:
 			Rectangle oldClip = gc.getClipping();
 			gc.setClipping(bounds);
+			gc.setBackground(_PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1);
+
 			int nx = bounds.width / space + 2;
 			int ny = bounds.height / space + 2;
+
+			gc.setAlpha(60);
+
 			for (int x = -1; x < nx; x++) {
 				for (int y = 0; y < ny; y++) {
 					int fx = bounds.x / space * space + x * space;
 					int fy = bounds.y / space * space + y * space;
 					if ((fx / space + fy / space) % 2 == 0) {
-						gc.setBackground(_PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_1);
-					} else {
-						gc.setBackground(_PREF_PROP_PREVIEW_IMG_PAINT_BG_COLOR_2);
+						gc.fillRectangle(fx, fy, space, space);
 					}
-					gc.fillRectangle(fx, fy, space, space);
 				}
 			}
+
+			gc.setAlpha(255);
 			gc.setClipping(oldClip);
 			break;
 		default:
@@ -867,38 +864,36 @@ public class PhaserEditorUI {
 
 		return new Rectangle(dstX, dstY, dstW, dstH);
 	}
-	
+
 	public static void set_DND_Image(DragSourceEvent e, IFile file, Rectangle src) {
 		Image image = scaleImage_DND(file.getLocation().toPortableString(), src);
 		e.image = image;
 		if (image != null) {
-			e.offsetX = src.width/2;
-			e.offsetY = src.height/2;
+			e.offsetX = src.width / 2;
+			e.offsetY = src.height / 2;
 		}
 	}
-	
+
 	public static Image scaleImage_DND(IFile file, Rectangle src) {
 		return scaleImage_DND(file.getLocation().toPortableString(), src);
 	}
-	
+
 	public static Image scaleImage_DND(String filepath, Rectangle src) {
 		int maxSize = 256;
 		int minSize = 64;
-		
+
 		int srcSize = Math.max(src.width, src.height);
-		
+
 		int newSize = Math.min(maxSize, srcSize);
 		newSize = Math.max(newSize, minSize);
 
-		
 		return scaleImage(filepath, src, newSize, null);
 	}
-	
+
 	public static Image scaleImage(IFile file, Rectangle src, int newSize, BufferedImage overlay) {
 		return scaleImage(file.getLocation().toPortableString(), src, newSize, overlay);
 	}
-	
-	
+
 	public static Image scaleImage(String filepath, Rectangle src, int newSize, BufferedImage overlay) {
 		try {
 			BufferedImage swingimg = ImageIO.read(new File(filepath));
@@ -908,20 +903,20 @@ public class PhaserEditorUI {
 
 			ZoomCalculator calc = new ZoomCalculator(src2.width, src2.height);
 			calc.fit(newSize, newSize);
-			
+
 			Rectangle z = calc.imageToScreen(0, 0, src2.width, src2.height);
-			
+
 			g2.drawImage(swingimg, z.x, z.y, z.x + z.width, z.y + z.height, src2.x, src2.y, src2.x + src2.width,
 					src2.y + src2.height, null);
-			
+
 			if (overlay != null) {
 				g2.drawImage(overlay, 0, 0, null);
 			}
-			
+
 			g2.dispose();
-			
+
 			var img = image_Swing_To_SWT(swingimg2);
-			
+
 			return img;
 		} catch (IOException e) {
 			// e.printStackTrace();
@@ -1211,5 +1206,13 @@ public class PhaserEditorUI {
 		}
 
 		return null;
+	}
+
+	public static void paintListItemBackground(GC gc, int i, Rectangle rect) {
+		gc.setAlpha(60);
+		gc.setBackground(i % 2 == 0 ? gc.getDevice().getSystemColor(SWT.COLOR_WHITE)
+				: PhaserEditorUI.get_pref_Preview_PatternColor());
+		gc.fillRectangle(rect);
+		gc.setAlpha(255);
 	}
 }

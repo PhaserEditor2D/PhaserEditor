@@ -108,10 +108,8 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener {
 				boolean selected = _utils.isSelected(obj);
 
 				if (selected) {
-					gc.setAlpha(100);
-					gc.setBackground(PhaserEditorUI.get_pref_Preview_frameSelectionColor());
+					gc.setBackground(PhaserEditorUI.getListSelectionColor());
 					gc.fillRectangle(r);
-					gc.setAlpha(255);
 
 					gc.setClipping(r);
 					Rectangle src = _image.getBounds();
