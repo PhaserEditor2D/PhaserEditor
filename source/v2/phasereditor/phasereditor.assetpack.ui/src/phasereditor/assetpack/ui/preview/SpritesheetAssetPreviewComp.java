@@ -48,7 +48,7 @@ import org.eclipse.swt.widgets.Control;
 import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel.FrameModel;
-import phasereditor.assetpack.ui.AssetLabelProvider;
+import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.assetpack.ui.widgets.SpritesheetPreviewCanvas;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FrameGridCanvas;
@@ -88,9 +88,20 @@ public class SpritesheetAssetPreviewComp extends Composite {
 					event.doit = false;
 					return;
 				}
-				event.image = AssetLabelProvider.GLOBAL_48.getImage(((StructuredSelection) sel).getFirstElement());
+
+				var frame = (SpritesheetAssetModel.FrameModel) ((StructuredSelection) sel).getFirstElement();
+
+				AssetPackUI.set_DND_Image(event, frame);
+
 				LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
 				transfer.setSelection(sel);
+			}
+
+			@Override
+			public void dragFinished(DragSourceEvent event) {
+				if (event.image != null) {
+					event.image.dispose();
+				}
 			}
 
 			private ISelection getSelection() {

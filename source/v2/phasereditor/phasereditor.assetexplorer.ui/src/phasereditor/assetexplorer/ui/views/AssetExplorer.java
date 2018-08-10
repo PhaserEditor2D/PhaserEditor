@@ -290,13 +290,9 @@ public class AssetExplorer extends ViewPart {
 					}
 
 					if (frame != null) {
-						var file = frame.getImageFile();
-						var fd = frame.getFrameData();
-						if (file != null && fd != null) {
-							event.image = PhaserEditorUI.scaleImage_DND(frame.getImageFile(), fd.src);
-							_disposeImage = true;
-							break;
-						}
+						AssetPackUI.set_DND_Image(event, frame);
+						_disposeImage = true;
+						break;
 					}
 
 				}

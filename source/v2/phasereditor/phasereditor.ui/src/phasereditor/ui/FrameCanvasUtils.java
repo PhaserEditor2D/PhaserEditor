@@ -230,7 +230,7 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 
 				// select the whole range
 
-				int a = _lastSelectedObject == null? 0 : indexOf(_lastSelectedObject);
+				int a = _lastSelectedObject == null ? 0 : indexOf(_lastSelectedObject);
 				int b = indexOf(_overObject);
 
 				int from = Math.min(a, b);
@@ -385,7 +385,7 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 			_canvas.redraw();
 		}
 
-		event.image = PhaserEditorUI.scaleImage_DND(file, src);
+		PhaserEditorUI.set_DND_Image(event, file, src);
 
 		LocalSelectionTransfer.getTransfer().setSelection(sel);
 	}

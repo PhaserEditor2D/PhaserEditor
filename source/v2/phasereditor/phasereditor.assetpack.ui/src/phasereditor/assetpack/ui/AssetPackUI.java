@@ -46,6 +46,7 @@ import org.eclipse.ltk.core.refactoring.participants.DeleteRefactoring;
 import org.eclipse.ltk.core.refactoring.participants.MoveRefactoring;
 import org.eclipse.ltk.core.refactoring.participants.RenameRefactoring;
 import org.eclipse.ltk.ui.refactoring.RefactoringWizardOpenOperation;
+import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
@@ -902,5 +903,23 @@ public class AssetPackUI {
 	public static void showError(Exception e) {
 		e.printStackTrace();
 		StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e), StatusManager.SHOW);
+	}
+
+	public static Image scaleImage_DND(IAssetFrameModel frame) {
+
+		if (frame == null || frame.getImageFile() == null) {
+			return null;
+		}
+
+		return PhaserEditorUI.scaleImage_DND(frame.getImageFile(), frame.getFrameData().src);
+	}
+
+	public static void set_DND_Image(DragSourceEvent event, IAssetFrameModel frame) {
+		
+		if (frame == null || frame.getImageFile() == null) {
+			return;
+		}
+		
+		PhaserEditorUI.set_DND_Image(event, frame.getImageFile(), frame.getFrameData().src);
 	}
 }

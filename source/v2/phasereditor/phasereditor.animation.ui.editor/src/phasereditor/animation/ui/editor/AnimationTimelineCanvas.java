@@ -59,6 +59,7 @@ import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
+import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.BaseImageCanvas;
 import phasereditor.ui.FrameData;
 import phasereditor.ui.PhaserEditorUI;
@@ -678,7 +679,7 @@ public class AnimationTimelineCanvas extends BaseImageCanvas
 			IAssetFrameModel assetFrame = frame.getFrameAsset();
 
 			if (assetFrame != null) {
-				event.image = PhaserEditorUI.scaleImage_DND(assetFrame.getImageFile(), assetFrame.getFrameData().src);
+				AssetPackUI.set_DND_Image(event, assetFrame);
 			}
 
 			_selectedFrames = new LinkedHashSet<>();

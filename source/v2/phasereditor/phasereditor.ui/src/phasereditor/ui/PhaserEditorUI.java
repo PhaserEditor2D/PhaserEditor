@@ -80,6 +80,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
@@ -865,6 +866,15 @@ public class PhaserEditorUI {
 		int dstY = (controlHeight - dstH) / 2;
 
 		return new Rectangle(dstX, dstY, dstW, dstH);
+	}
+	
+	public static void set_DND_Image(DragSourceEvent e, IFile file, Rectangle src) {
+		Image image = scaleImage_DND(file.getLocation().toPortableString(), src);
+		e.image = image;
+		if (image != null) {
+			e.offsetX = src.width/2;
+			e.offsetY = src.height/2;
+		}
 	}
 	
 	public static Image scaleImage_DND(IFile file, Rectangle src) {
