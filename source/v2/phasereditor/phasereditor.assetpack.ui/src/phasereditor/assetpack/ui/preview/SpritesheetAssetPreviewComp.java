@@ -54,6 +54,7 @@ import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FrameGridCanvas;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.IFrameProvider;
+import phasereditor.ui.IZoomable;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 
@@ -186,7 +187,6 @@ public class SpritesheetAssetPreviewComp extends Composite {
 		Control control = layout.topControl;
 
 		_zoom_1_1_action.setEnabled(control == _sheetCanvas);
-		_zoom_fitWindow_action.setEnabled(control == _sheetCanvas);
 
 		_tilesAction.setChecked(control == _gridCanvas && !_gridCanvas.isListLayout());
 		_listAction.setChecked(control == _gridCanvas && _gridCanvas.isListLayout());
@@ -238,7 +238,13 @@ public class SpritesheetAssetPreviewComp extends Composite {
 		toolbar.add(new Separator());
 
 		_zoom_1_1_action = new ImageCanvas_Zoom_1_1_Action(_sheetCanvas);
-		_zoom_fitWindow_action = new ImageCanvas_Zoom_FitWindow_Action(_sheetCanvas);
+		_zoom_fitWindow_action = new ImageCanvas_Zoom_FitWindow_Action() {
+			@Override
+			public IZoomable getImageCanvas() {
+				var top = ((StackLayout) getLayout()).topControl;
+				return (IZoomable) top;
+			}
+		};
 
 		toolbar.add(_zoom_1_1_action);
 		toolbar.add(_zoom_fitWindow_action);

@@ -692,6 +692,26 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 				}
 			});
 
+			{
+				int options = DND.DROP_MOVE | DND.DROP_DEFAULT;
+				DropTarget target = new DropTarget(getTreeViewer().getTree(), options);
+				Transfer[] types = { LocalSelectionTransfer.getTransfer() };
+				target.setTransfer(types);
+				target.addDropListener(new DropTargetAdapter() {
+
+					@Override
+					public void drop(DropTargetEvent event) {
+						if (event.data instanceof Object[]) {
+							createAnimationsWithDrop((Object[]) event.data);
+						}
+
+						if (event.data instanceof IStructuredSelection) {
+							createAnimationsWithDrop(((IStructuredSelection) event.data).toArray());
+						}
+					}
+				});
+			}
+
 		}
 
 		@Override
@@ -883,7 +903,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		}
 
 		// sort animations
-		
+
 		_model.getAnimations().sort((a, b) -> a.getKey().compareTo(b.getKey()));
 
 		if (_outliner != null) {
