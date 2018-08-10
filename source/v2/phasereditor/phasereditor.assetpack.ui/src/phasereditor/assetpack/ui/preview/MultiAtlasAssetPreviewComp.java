@@ -84,8 +84,7 @@ public class MultiAtlasAssetPreviewComp extends Composite {
 
 	public void setModel(MultiAtlasAssetModel model) {
 		_model = model;
-		_filteredGrid.getCanvas().loadFrameProvider(new MultiAtlasFrameProvider(model));
-		_filteredGrid.getCanvas().resetZoom();
+		_filteredGrid.loadFrameProvider(new MultiAtlasFrameProvider(model));
 	}
 
 	public MultiAtlasAssetModel getModel() {

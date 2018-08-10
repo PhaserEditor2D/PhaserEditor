@@ -64,5 +64,10 @@ public class FilteredFrameGrid extends Composite {
 	protected Text getFilterText() {
 		return _filterText;
 	}
+	
+	public void loadFrameProvider(IFrameProvider provider) {
+		_canvas.loadFrameProvider(provider, true);
+		_filterText.setText("");
+	}
 
 }

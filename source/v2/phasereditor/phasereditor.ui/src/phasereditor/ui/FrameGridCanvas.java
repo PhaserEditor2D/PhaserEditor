@@ -199,6 +199,8 @@ public class FrameGridCanvas extends BaseImageCanvas
 			_origin.y = 0;
 			buildFilterMap(_nextFilterText);
 			_nextFilterText = null;
+			
+			updateScroll();
 		}
 
 		GC gc = e.gc;
@@ -449,14 +451,14 @@ public class FrameGridCanvas extends BaseImageCanvas
 	public void setOffsetY(int i) {
 		//
 	}
-	
+
 	public void loadFrameProvider(IFrameProvider provider) {
 		loadFrameProvider(provider, true);
 	}
 
 	public void loadFrameProvider(IFrameProvider provider, boolean resetZoom) {
 		resetFramesData();
-
+		
 		_total = provider.getFrameCount();
 
 		for (int i = 0; i < _total; i++) {
@@ -502,6 +504,9 @@ public class FrameGridCanvas extends BaseImageCanvas
 		_visibleFiles = _files;
 		_visibleLabels = _labels;
 		_visibleCount = 0;
+		
+		_nextFilterText = null;
+		_visibleMap = null;
 
 		_origin.x = 0;
 		getVerticalBar().setSelection(0);

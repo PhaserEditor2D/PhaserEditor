@@ -115,8 +115,7 @@ public class AtlasAssetPreviewComp extends Composite {
 		_atlasCanvas.setFrames(frames);
 		_atlasCanvas.redraw();
 
-		_filteredGrid.getCanvas().loadFrameProvider(new AtlasAssetFramesProvider(model));
-		_filteredGrid.getCanvas().resetZoom();
+		_filteredGrid.loadFrameProvider(new AtlasAssetFramesProvider(model));
 	}
 
 	public AtlasAssetModel getModel() {
