@@ -372,9 +372,7 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		}
 
 		int index = indexOf(_overObject);
-		var file = getImageFile(index);
-		var src = getRenderImageSrcFrame(index);
-
+		
 		ISelection sel = null;
 
 		if (_selectedObjects.contains(_overObject)) {
@@ -384,6 +382,9 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 			clearSelection();
 			_canvas.redraw();
 		}
+
+		var file = getImageFile(index);
+		var src = getRenderImageSrcFrame(index);
 
 		PhaserEditorUI.set_DND_Image(event, file, src);
 

@@ -33,7 +33,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
-import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.core.animations.AnimationsModel;
 import phasereditor.project.core.ProjectCore;
 
@@ -147,11 +146,6 @@ public class AnimationsFileWizardPage extends WizardNewFileCreationPage {
 	@Override
 	protected InputStream getInitialContents() {
 		AnimationsModel model = new AnimationsModel();
-		
-		AnimationModel anim = new AnimationModel(model);
-		anim.setKey("walk");
-		anim.setFrameRate(4);
-		model.getAnimations().add(anim);
 		
 		return new ByteArrayInputStream(model.toJSON().toString(2).getBytes());
 	}
