@@ -93,7 +93,7 @@ public class AnimationsModel {
 		_file = file;
 	}
 
-	protected AnimationModel createAnimation(JSONObject jsonData) {
+	public AnimationModel createAnimation(JSONObject jsonData) {
 		return new AnimationModel(this, jsonData);
 	}
 

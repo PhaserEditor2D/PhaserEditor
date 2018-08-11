@@ -192,7 +192,7 @@ public class AnimationModel implements IAdaptable {
 	}
 
 	@SuppressWarnings("static-method")
-	protected AnimationFrameModel createAnimationFrame(JSONObject jsonData) {
+	public AnimationFrameModel createAnimationFrame(JSONObject jsonData) {
 		return new AnimationFrameModel(jsonData);
 	}
 
@@ -346,5 +346,9 @@ public class AnimationModel implements IAdaptable {
 		}
 
 		return result;
+	}
+
+	public AnimationFrameModel createAnimationFrame() {
+		return new AnimationFrameModel(this);
 	}
 }

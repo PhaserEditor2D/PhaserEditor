@@ -38,7 +38,7 @@ public class AnimationsModel_Persistable extends AnimationsModel {
 	}
 	
 	@Override
-	protected AnimationModel createAnimation(JSONObject jsonData) {
+	public AnimationModel createAnimation(JSONObject jsonData) {
 		return new AnimationModel_Persistable(this, jsonData);
 	}
 

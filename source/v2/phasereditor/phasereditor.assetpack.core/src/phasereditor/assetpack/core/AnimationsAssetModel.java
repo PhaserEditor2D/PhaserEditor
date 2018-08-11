@@ -168,7 +168,7 @@ public class AnimationsAssetModel extends AssetModel {
 		}
 
 		@Override
-		protected AnimationModel createAnimation(JSONObject jsonData) {
+		public AnimationModel createAnimation(JSONObject jsonData) {
 			return new AnimationModel_in_AssetPack(this, jsonData);
 		}
 
@@ -224,7 +224,7 @@ public class AnimationsAssetModel extends AssetModel {
 		}
 
 		@Override
-		protected AnimationFrameModel createAnimationFrame(JSONObject jsonData) {
+		public AnimationFrameModel createAnimationFrame(JSONObject jsonData) {
 			return new AnimationFrameModel_in_AssetPack(jsonData);
 		}
 

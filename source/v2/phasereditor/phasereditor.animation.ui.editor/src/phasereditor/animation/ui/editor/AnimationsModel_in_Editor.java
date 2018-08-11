@@ -43,7 +43,7 @@ public class AnimationsModel_in_Editor extends AnimationsModel {
 	}
 
 	@Override
-	protected AnimationModel_in_Editor createAnimation(JSONObject jsonData) {
+	public AnimationModel_in_Editor createAnimation(JSONObject jsonData) {
 		return new AnimationModel_in_Editor(this, jsonData);
 	}
 	

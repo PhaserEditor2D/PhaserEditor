@@ -50,7 +50,7 @@ import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
 public class AnimationPreviewComp extends SashForm {
 
 	private AnimationCanvas _animationCanvas;
-	private AnimationTimelineCanvas_Preview _timelineCanvas;
+	private AnimationTimelineCanvas<AnimationModel> _timelineCanvas;
 	private AnimationModel _model;
 	private Action _playAction;
 	private Action _pauseAction;
@@ -64,7 +64,7 @@ public class AnimationPreviewComp extends SashForm {
 		super(parent, SWT.VERTICAL | style);
 
 		_animationCanvas = new AnimationCanvas(this, SWT.BORDER);
-		_timelineCanvas = new AnimationTimelineCanvas_Preview(this, SWT.BORDER);
+		_timelineCanvas = new AnimationTimelineCanvas<>(this, SWT.BORDER);
 		_timelineCanvas.setAnimationCanvas(_animationCanvas);
 
 		setWeights(new int[] { 2, 1 });
@@ -74,7 +74,7 @@ public class AnimationPreviewComp extends SashForm {
 	}
 
 	private void afterCreateWidgets() {
-		
+
 		_animationCanvas.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -140,7 +140,7 @@ public class AnimationPreviewComp extends SashForm {
 		return _animationCanvas;
 	}
 
-	public AnimationTimelineCanvas_Preview getTimelineCanvas() {
+	public AnimationTimelineCanvas<AnimationModel> getTimelineCanvas() {
 		return _timelineCanvas;
 	}
 

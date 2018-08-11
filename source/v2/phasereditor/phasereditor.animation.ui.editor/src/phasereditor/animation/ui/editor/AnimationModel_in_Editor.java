@@ -45,8 +45,13 @@ public class AnimationModel_in_Editor extends AnimationModel_Persistable {
 	}
 
 	@Override
-	protected AnimationFrameModel createAnimationFrame(JSONObject jsonData) {
+	public AnimationFrameModel createAnimationFrame(JSONObject jsonData) {
 		return new AnimationFrameModel_in_Editor(this, jsonData);
+	}
+	
+	@Override
+	public AnimationFrameModel createAnimationFrame() {
+		return new AnimationFrameModel_in_Editor(this);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

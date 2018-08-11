@@ -112,7 +112,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	private AnimationCanvas _animCanvas;
 	Outliner _outliner;
 	ISelectionChangedListener _outlinerListener;
-	private AnimationTimelineCanvas _timelineCanvas;
+	private AnimationTimelineCanvas_in_Editor _timelineCanvas;
 	private Action _playAction;
 	private Action _pauseAction;
 	private Action _stopAction;
@@ -146,7 +146,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		createToolbar(topComp);
 
-		_timelineCanvas = new AnimationTimelineCanvas(sash, SWT.BORDER);
+		_timelineCanvas = new AnimationTimelineCanvas_in_Editor(sash, SWT.BORDER);
 		_timelineCanvas.setEditor(this);
 
 		sash.setWeights(new int[] { 2, 1 });
@@ -188,7 +188,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		_animCanvas.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				var anim = getTimelineCanvas().getAnimation();
+				var anim = getTimelineCanvas().getModel();
 
 				if (anim != null) {
 					getTimelineCanvas().clearSelection();
@@ -404,7 +404,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		_animCanvas.stop();
 
-		var anim = _timelineCanvas.getAnimation();
+		var anim = _timelineCanvas.getModel();
 
 		anim.buildTimeline();
 
@@ -581,7 +581,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		return _animCanvas;
 	}
 
-	public AnimationTimelineCanvas getTimelineCanvas() {
+	public AnimationTimelineCanvas_in_Editor getTimelineCanvas() {
 		return _timelineCanvas;
 	}
 
@@ -601,10 +601,10 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 			_outliner.refresh();
 		}
 
-		if (_timelineCanvas.getAnimation() != null) {
+		if (_timelineCanvas.getModel() != null) {
 			swtRun(() -> {
 				if (_outliner != null) {
-					_outliner.setSelection(new StructuredSelection(_timelineCanvas.getAnimation()));
+					_outliner.setSelection(new StructuredSelection(_timelineCanvas.getModel()));
 				}
 			});
 		}
@@ -635,7 +635,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 			_zoom_fitWindow_action.setEnabled(false);
 
 			_animCanvas.setModel(null);
-			_timelineCanvas.setAnimation(null);
+			_timelineCanvas.setModel(null);
 
 			return;
 		}
@@ -647,8 +647,8 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 			btn.setEnabled(btn == _playAction);
 		}
 
-		if (_timelineCanvas.getAnimation() != anim) {
-			_timelineCanvas.setAnimation(anim);
+		if (_timelineCanvas.getModel() != anim) {
+			_timelineCanvas.setModel(anim);
 		}
 
 		_zoom_1_1_action.setEnabled(true);
@@ -765,7 +765,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		if (model != null) {
 			_animCanvas.setModel(model, false);
 		}
-		_timelineCanvas.setAnimation(_timelineCanvas.getAnimation());
+		_timelineCanvas.setModel(_timelineCanvas.getModel());
 	}
 
 	public void deleteAnimations(List<AnimationModel_in_Editor> animations) {

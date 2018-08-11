@@ -66,10 +66,10 @@ import phasereditor.ui.PhaserEditorUI;
  * @author arian
  *
  */
-public class AnimationTimelineCanvas_Preview extends BaseImageCanvas
+public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImageCanvas
 		implements PaintListener, MouseWheelListener, MouseListener, DragSourceListener, KeyListener {
 
-	private AnimationModel _model;
+	private T _model;
 	private double _widthFactor;
 	private int _origin;
 	private int _fullWidth;
@@ -80,7 +80,7 @@ public class AnimationTimelineCanvas_Preview extends BaseImageCanvas
 	private AnimationFrameModel _lastSelectedFrame;
 	private AnimationCanvas _animCanvas;
 
-	public AnimationTimelineCanvas_Preview(Composite parent, int style) {
+	public AnimationTimelineCanvas(Composite parent, int style) {
 		super(parent, style | SWT.H_SCROLL | SWT.NO_REDRAW_RESIZE);
 
 		_widthFactor = 1;
@@ -169,6 +169,9 @@ public class AnimationTimelineCanvas_Preview extends BaseImageCanvas
 	}
 
 	protected void updateDropPosition(int displayX) {
+		if (_model == null) {
+			return;
+		}
 
 		var x = -_origin + displayX - toDisplay(0, 0).x;
 
@@ -240,12 +243,12 @@ public class AnimationTimelineCanvas_Preview extends BaseImageCanvas
 				inEditorFrame = (AnimationFrameModel) obj;
 			} else if (obj instanceof AnimationFrameModel) {
 				AnimationFrameModel anim = (AnimationFrameModel) obj;
-				alienFrame = new AnimationFrameModel(_model, anim.toJSON());
+				alienFrame = getModel().createAnimationFrame(anim.toJSON());
 				alienFrame.setFrameAsset(anim.getFrameAsset());
 			}
 
 			if (frame != null) {
-				alienFrame = new AnimationFrameModel(_model);
+				alienFrame = getModel().createAnimationFrame();
 				alienFrame.setFrameAsset(frame);
 				alienFrame.setTextureKey(frame.getAsset().getKey());
 
@@ -317,7 +320,7 @@ public class AnimationTimelineCanvas_Preview extends BaseImageCanvas
 		}
 	}
 
-	public void setModel(AnimationModel model) {
+	public void setModel(T model) {
 		_model = model;
 
 		_selectedFrames = new LinkedHashSet<>();
@@ -325,7 +328,7 @@ public class AnimationTimelineCanvas_Preview extends BaseImageCanvas
 		redraw();
 	}
 
-	public AnimationModel getModel() {
+	public T getModel() {
 		return _model;
 	}
 
@@ -507,15 +510,15 @@ public class AnimationTimelineCanvas_Preview extends BaseImageCanvas
 		}
 	}
 
-	private int getFrameX(AnimationFrameModel animFrame) {
+	protected int getFrameX(AnimationFrameModel animFrame) {
 		return (int) (animFrame.getComputedFraction() * _fullWidth);
 	}
 
-	private int getFrameX(int index) {
+	protected int getFrameX(int index) {
 		return getFrameX(_model.getFrames().get(index));
 	}
 
-	private int getFrameIndex(int x) {
+	protected int getFrameIndex(int x) {
 		if (x > _fullWidth) {
 			return -1;
 		}
@@ -638,7 +641,7 @@ public class AnimationTimelineCanvas_Preview extends BaseImageCanvas
 		redraw();
 	}
 
-	private void updateSelectionProvider() {
+	protected void updateSelectionProvider() {
 		// _editor.getEditorSite().getSelectionProvider().setSelection(new
 		// StructuredSelection(_selectedFrames.toArray()));
 	}
