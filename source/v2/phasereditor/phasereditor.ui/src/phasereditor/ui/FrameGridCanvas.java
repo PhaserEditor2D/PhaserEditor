@@ -102,6 +102,11 @@ public class FrameGridCanvas extends BaseImageCanvas
 			public Point scrollPositionToReal(int x, int y) {
 				return new Point(x, y - _origin.y);
 			}
+			
+			@Override
+			public Point realPositionToScroll(int x, int y) {
+				return new Point(x, y + _origin.y);
+			}
 
 			@Override
 			public int getFramesCount() {

@@ -84,6 +84,8 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 	public abstract Rectangle getSelectionFrameArea(int index);
 
 	public abstract Point scrollPositionToReal(int x, int y);
+	
+	public abstract Point realPositionToScroll(int x, int y);
 
 	public abstract Object getFrameObject(int index);
 

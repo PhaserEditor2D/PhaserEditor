@@ -94,6 +94,11 @@ public class ImageAssetPreviewComp extends Composite {
 			public Point scrollPositionToReal(int x, int y) {
 				return new Point(x, y);
 			}
+			
+			@Override
+			public Point realPositionToScroll(int x, int y) {
+				return new Point(x, y);
+			}
 
 			@Override
 			public IFile getImageFile(int index) {

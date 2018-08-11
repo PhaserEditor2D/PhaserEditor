@@ -125,6 +125,11 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 			}
 
 			@Override
+			public Point realPositionToScroll(int x, int y) {
+				return new Point(x, y + _origin.y);
+			}
+			
+			@Override
 			public IFile getImageFile(int index) {
 				IAssetFrameModel asset = findAssetFor(index);
 

@@ -79,8 +79,11 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.json.JSONException;
 
+import com.subshell.snippets.jface.tooltip.tooltipsupport.Tooltips;
+
 import javafx.animation.Animation.Status;
 import phasereditor.animation.ui.AnimationCanvas;
+import phasereditor.animation.ui.AnimationListInformationControlProvider;
 import phasereditor.animation.ui.AnimationCanvas.IndexTransition;
 import phasereditor.animation.ui.FilteredAnimationsList;
 import phasereditor.animation.ui.editor.properties.AnimationsPGridPage;
@@ -93,6 +96,7 @@ import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
+import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
@@ -612,7 +616,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	}
 
 	protected void selectAnimation(AnimationModel_in_Editor anim) {
-		StructuredSelection selection = anim == null? StructuredSelection.EMPTY : new StructuredSelection(anim);
+		StructuredSelection selection = anim == null ? StructuredSelection.EMPTY : new StructuredSelection(anim);
 
 		if (_outliner == null) {
 
@@ -668,7 +672,10 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		@Override
 		public void createControl(Composite parent) {
 			_listCanvas = new FilteredAnimationsList<>(parent, SWT.NONE);
-			
+			Tooltips.install(_listCanvas.getCanvas(),
+					new AnimationListInformationControlProvider(_listCanvas.getCanvas()),
+					AssetPackUI.getInformationControlCreatorsForTooltips(), false);
+
 			{
 				int options = DND.DROP_MOVE | DND.DROP_DEFAULT;
 				DropTarget target = new DropTarget(_listCanvas.getCanvas(), options);
@@ -688,7 +695,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 					}
 				});
 			}
-			
+
 			_listCanvas.setModel(getModel());
 
 			for (var l : _initialListeners) {
@@ -735,8 +742,8 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 			if (_listCanvas == null) {
 				_initialListeners.remove(listener);
 				return;
-			} 
-			
+			}
+
 			_listCanvas.getUtils().removeSelectionChangedListener(listener);
 		}
 

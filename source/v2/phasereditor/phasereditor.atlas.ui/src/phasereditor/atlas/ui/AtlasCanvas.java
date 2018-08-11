@@ -59,6 +59,11 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener {
 			}
 			
 			@Override
+			public Point realPositionToScroll(int x, int y) {
+				return new Point(x, y);
+			}
+			
+			@Override
 			public Rectangle getSelectionFrameArea(int index) {
 				return _framesRects[index];
 			}
