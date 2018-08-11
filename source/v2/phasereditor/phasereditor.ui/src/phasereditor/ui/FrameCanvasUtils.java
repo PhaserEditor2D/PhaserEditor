@@ -81,13 +81,9 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 
 	public abstract Rectangle getRenderImageSrcFrame(int index);
 
-	public abstract Rectangle getRenderImageDstFrame(int index);
+	public abstract Rectangle getSelectionFrameArea(int index);
 
-	public Rectangle getSelectionFrameArea(int index) {
-		return getRenderImageDstFrame(index);
-	}
-
-	public abstract Point getRealPosition(int x, int y);
+	public abstract Point scrollPositionToReal(int x, int y);
 
 	public abstract Object getFrameObject(int index);
 
@@ -142,7 +138,7 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 		Object newObj = null;
 		for (int i = 0; i < getFramesCount(); i++) {
 			Rectangle rect = getSelectionFrameArea(i);
-			if (rect.contains(getRealPosition(e.x, e.y))) {
+			if (rect.contains(scrollPositionToReal(e.x, e.y))) {
 				newObj = getFrameObject(i);
 				break;
 			}

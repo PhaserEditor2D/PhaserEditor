@@ -28,14 +28,26 @@ import org.eclipse.swt.graphics.Rectangle;
  * @author arian
  *
  */
-public class FrameData {
+public class FrameData implements Cloneable {
 	public int index;
 	public boolean visible = true;
 	public Rectangle src;
 	public Rectangle dst;
 	public Point srcSize;
-	
+
 	public FrameData(int index) {
 		this.index = index;
+	}
+
+	@Override
+	public FrameData clone() {
+		
+		FrameData fd = new FrameData(index);
+		fd.visible = visible;
+		fd.src = new Rectangle(src.x, src.y, src.width, src.height);
+		fd.dst = new Rectangle(dst.x, dst.y, dst.width, dst.height);
+		fd.srcSize = new Point(srcSize.x, srcSize.y);
+
+		return fd;
 	}
 }

@@ -99,7 +99,7 @@ public class FrameGridCanvas extends BaseImageCanvas
 		_utils = new FrameCanvasUtils(this, initDND) {
 
 			@Override
-			public Point getRealPosition(int x, int y) {
+			public Point scrollPositionToReal(int x, int y) {
 				return new Point(x, y - _origin.y);
 			}
 
@@ -111,11 +111,6 @@ public class FrameGridCanvas extends BaseImageCanvas
 			@Override
 			public Rectangle getRenderImageSrcFrame(int index) {
 				return _visibleRenderImageSrcFrames.get(index);
-			}
-
-			@Override
-			public Rectangle getRenderImageDstFrame(int index) {
-				return _visibleRenderImageDstFrames.get(index);
 			}
 
 			@Override

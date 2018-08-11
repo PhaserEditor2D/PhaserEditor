@@ -367,6 +367,10 @@ public class PhaserEditorUI {
 	public static Color getListSelectionColor() {
 		return Display.getDefault().getSystemColor(SWT.COLOR_LIST_SELECTION);
 	}
+	
+	public static Color getListSelectionTextColor() {
+		return Display.getDefault().getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT);
+	}
 
 	public static void setThemeClass(Object widget, String className) {
 		IStylingEngine styledEngine = PlatformUI.getWorkbench().getService(IStylingEngine.class);
@@ -1209,10 +1213,45 @@ public class PhaserEditorUI {
 	}
 
 	public static void paintListItemBackground(GC gc, int i, Rectangle rect) {
+		paintListItemBackground(gc, i, rect.x, rect.y, rect.width, rect.height);
+	}
+
+	public static void paintListItemBackground(GC gc, int i, int x, int y, int w, int h) {
 		gc.setAlpha(60);
 		gc.setBackground(i % 2 == 0 ? gc.getDevice().getSystemColor(SWT.COLOR_WHITE)
 				: PhaserEditorUI.get_pref_Preview_PatternColor());
-		gc.fillRectangle(rect);
+		gc.fillRectangle(x, y, w, h);
 		gc.setAlpha(255);
+	}
+
+	public static void paintScaledImageInArea(GC gc, Image image, FrameData fd, Rectangle renderArea) {
+
+		int frameHeight = renderArea.height;
+		int frameWidth = renderArea.width;
+
+		double imgW = fd.srcSize.x;
+		double imgH = fd.srcSize.y;
+
+		// compute the right width
+		imgW = imgW * (frameHeight / imgH);
+		imgH = frameHeight;
+
+		// fix width if it goes beyond the area
+		if (imgW > frameWidth) {
+			imgH = imgH * (frameWidth / imgW);
+			imgW = frameWidth;
+		}
+
+		double scaleX = imgW / fd.srcSize.x;
+		double scaleY = imgH / fd.srcSize.y;
+
+		var imgX = renderArea.x + frameWidth / 2 - imgW / 2 + fd.dst.x * scaleX;
+		var imgY = renderArea.y + frameHeight / 2 - imgH / 2 + fd.dst.y * scaleY;
+
+		double imgDstW = fd.dst.width * scaleX;
+		double imgDstH = fd.dst.height * scaleY;
+
+		gc.drawImage(image, fd.src.x, fd.src.y, fd.src.width, fd.src.height, (int) imgX, (int) imgY, (int) imgDstW,
+				(int) imgDstH);
 	}
 }

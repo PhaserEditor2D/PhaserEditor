@@ -82,7 +82,7 @@ public class ImageAssetPreviewComp extends Composite {
 			}
 
 			@Override
-			public Rectangle getRenderImageDstFrame(int index) {
+			public Rectangle getSelectionFrameArea(int index) {
 				var area = getCanvas().getImageRenderArea();
 				if (area == null) {
 					area = getCanvas().getImageDimension();
@@ -91,7 +91,7 @@ public class ImageAssetPreviewComp extends Composite {
 			}
 
 			@Override
-			public Point getRealPosition(int x, int y) {
+			public Point scrollPositionToReal(int x, int y) {
 				return new Point(x, y);
 			}
 

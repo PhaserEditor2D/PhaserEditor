@@ -48,16 +48,12 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.dnd.DragSourceAdapter;
-import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
@@ -67,6 +63,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -77,6 +74,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.internal.Workbench;
 import org.eclipse.ui.part.EditorPart;
+import org.eclipse.ui.part.Page;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.json.JSONException;
@@ -84,6 +82,7 @@ import org.json.JSONException;
 import javafx.animation.Animation.Status;
 import phasereditor.animation.ui.AnimationCanvas;
 import phasereditor.animation.ui.AnimationCanvas.IndexTransition;
+import phasereditor.animation.ui.AnimationListCanvas;
 import phasereditor.animation.ui.editor.properties.AnimationsPGridPage;
 import phasereditor.animation.ui.editor.wizards.AssetsSplitter;
 import phasereditor.assetpack.core.AtlasAssetModel;
@@ -94,12 +93,11 @@ import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.assetpack.ui.AssetLabelProvider;
-import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.EditorSharedImages;
-import phasereditor.ui.FilteredContentOutlinePage;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.ImageCanvas_Zoom_1_1_Action;
 import phasereditor.ui.ImageCanvas_Zoom_FitWindow_Action;
+import phasereditor.ui.SelectionProviderImpl;
 
 /**
  * @author arian
@@ -660,62 +658,29 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		_zoom_fitWindow_action.setEnabled(true);
 	}
 
-	class Outliner extends FilteredContentOutlinePage {
-		@Override
-		public void createControl(Composite parent) {
-			super.createControl(parent);
+	class Outliner extends Page implements IContentOutlinePage, ISelectionChangedListener {
+		private AnimationListCanvas<AnimationsModel_in_Editor> _listCanvas;
+		private SelectionProviderImpl _selProvider;
 
-			TreeViewer viewer = getTreeViewer();
-			viewer.setLabelProvider(AssetLabelProvider.GLOBAL_16);
-			viewer.setContentProvider(new OutlinerContentProvider());
-			viewer.setInput(getModel());
-
-			AssetPackUI.installAssetTooltips(viewer);
-
-			init_DnD();
-
-			// viewer.getControl().setMenu(getMenuManager().createContextMenu(viewer.getControl()));
+		public Outliner() {
 		}
 
-		private void init_DnD() {
-			int operations = DND.DROP_DEFAULT | DND.DROP_MOVE;
-			Transfer[] transfers = new Transfer[] { LocalSelectionTransfer.getTransfer() };
-			getTreeViewer().addDragSupport(operations, transfers, new DragSourceAdapter() {
+		@Override
+		public void createControl(Composite parent) {
+			_listCanvas = new AnimationListCanvas<>(parent, SWT.NONE);
+			_listCanvas.setModel(getModel());
 
-				private Object[] _data;
-
-				@Override
-				public void dragStart(DragSourceEvent event) {
-					LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
-					_data = ((IStructuredSelection) getViewer().getSelection()).toArray();
-					transfer.setSelection(new StructuredSelection(_data));
-				}
-
-				@Override
-				public void dragSetData(DragSourceEvent event) {
-					event.data = _data;
-				}
-			});
-
-			{
-				int options = DND.DROP_MOVE | DND.DROP_DEFAULT;
-				DropTarget target = new DropTarget(getTreeViewer().getTree(), options);
-				Transfer[] types = { LocalSelectionTransfer.getTransfer() };
-				target.setTransfer(types);
-				target.addDropListener(new DropTargetAdapter() {
-
-					@Override
-					public void drop(DropTargetEvent event) {
-						if (event.data instanceof Object[]) {
-							createAnimationsWithDrop((Object[]) event.data);
-						}
-
-						if (event.data instanceof IStructuredSelection) {
-							createAnimationsWithDrop(((IStructuredSelection) event.data).toArray());
-						}
-					}
-				});
+			for (var l : _initialListeners) {
+				_listCanvas.getUtils().addSelectionChangedListener(l);
 			}
+
+			if (_initialSelection != null) {
+				_listCanvas.getUtils().setSelection(_initialSelection);
+				_listCanvas.redraw();
+			}
+
+			_initialListeners.clear();
+			_initialSelection = null;
 
 		}
 
@@ -725,36 +690,66 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 			AnimationsEditor.this._outliner = null;
 			super.dispose();
 		}
-	}
 
-	private static class OutlinerContentProvider implements ITreeContentProvider {
-
-		public OutlinerContentProvider() {
-		}
+		private ListenerList<ISelectionChangedListener> _initialListeners = new ListenerList<>();
+		private ISelection _initialSelection;
 
 		@Override
-		public Object[] getElements(Object inputElement) {
-			return getChildren(inputElement);
-		}
-
-		@Override
-		public Object[] getChildren(Object parentElement) {
-			if (parentElement instanceof AnimationsModel_in_Editor) {
-				return ((AnimationsModel_in_Editor) parentElement).getAnimations().toArray();
+		public void addSelectionChangedListener(ISelectionChangedListener listener) {
+			if (_listCanvas == null) {
+				_initialListeners.add(listener);
+				return;
 			}
-			return new Object[] {};
+
+			_listCanvas.getUtils().addSelectionChangedListener(listener);
 		}
 
 		@Override
-		public Object getParent(Object element) {
-			return null;
+		public ISelection getSelection() {
+			return _listCanvas.getUtils().getSelection();
 		}
 
 		@Override
-		public boolean hasChildren(Object element) {
-			return getChildren(element).length > 0;
+		public void removeSelectionChangedListener(ISelectionChangedListener listener) {
+			if (_listCanvas == null) {
+				_initialListeners.remove(listener);
+				return;
+			} 
+			
+			_listCanvas.getUtils().removeSelectionChangedListener(listener);
 		}
 
+		@Override
+		public void setSelection(ISelection selection) {
+			if (_listCanvas == null) {
+				_initialSelection = selection;
+				return;
+			}
+
+			_listCanvas.getUtils().setSelection(selection);
+			_listCanvas.redraw();
+		}
+
+		@Override
+		public void selectionChanged(SelectionChangedEvent event) {
+			_selProvider.fireSelectionChanged();
+		}
+
+		@Override
+		public Control getControl() {
+			return _listCanvas;
+		}
+
+		@Override
+		public void setFocus() {
+			_listCanvas.setFocus();
+		}
+
+		public void refresh() {
+			if (_listCanvas != null) {
+				_listCanvas.refresh();
+			}
+		}
 	}
 
 	public void build() {
