@@ -37,6 +37,7 @@ import org.eclipse.swt.widgets.Control;
 
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.AtlasAssetModel.Frame;
+import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.atlas.ui.AtlasCanvas;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredFrameGrid;
@@ -71,6 +72,7 @@ public class AtlasAssetPreviewComp extends Composite {
 
 		_atlasCanvas = new AtlasCanvas(this, SWT.NONE, true);
 		_filteredGrid = new FilteredFrameGrid(this, SWT.NONE, true);
+		AssetPackUI.installAssetTooltips(_filteredGrid);
 
 		afterCreateWidgets();
 	}

@@ -50,6 +50,7 @@ import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
@@ -125,7 +126,11 @@ import phasereditor.assetpack.ui.widgets.VideoResourceDialog;
 import phasereditor.atlas.core.AtlasFrame;
 import phasereditor.audio.core.AudioCore;
 import phasereditor.project.core.ProjectCore;
+import phasereditor.ui.CanvasUtilsInformationControlProvider;
+import phasereditor.ui.FilteredFrameGrid;
+import phasereditor.ui.FrameCanvasUtils;
 import phasereditor.ui.FrameData;
+import phasereditor.ui.FrameGridCanvas;
 import phasereditor.ui.PhaserEditorUI;
 
 public class AssetPackUI {
@@ -547,6 +552,22 @@ public class AssetPackUI {
 		}
 		return list;
 	}
+	
+	public static void installAssetTooltips(FilteredFrameGrid frameGrid) {
+		installAssetTooltips(frameGrid.getCanvas());
+	}
+	
+	public static void installAssetTooltips(FrameGridCanvas canvas) {
+		Tooltips.install(canvas, new CanvasUtilsInformationControlProvider(canvas.getUtils()),
+				AssetPackUI.getInformationControlCreatorsForTooltips(), false);
+
+	}
+
+	public static void installAssetTooltips(Control control, FrameCanvasUtils utils) {
+		Tooltips.install(control, new CanvasUtilsInformationControlProvider(utils),
+				AssetPackUI.getInformationControlCreatorsForTooltips(), false);
+
+	}
 
 	public static void installAssetTooltips(TreeViewer viewer) {
 		List<ICustomInformationControlCreator> creators = getInformationControlCreatorsForTooltips();
@@ -915,11 +936,11 @@ public class AssetPackUI {
 	}
 
 	public static void set_DND_Image(DragSourceEvent event, IAssetFrameModel frame) {
-		
+
 		if (frame == null || frame.getImageFile() == null) {
 			return;
 		}
-		
+
 		PhaserEditorUI.set_DND_Image(event, frame.getImageFile(), frame.getFrameData().src);
 	}
 }

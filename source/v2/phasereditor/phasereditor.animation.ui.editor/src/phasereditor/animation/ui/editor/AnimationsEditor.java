@@ -79,11 +79,8 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.json.JSONException;
 
-import com.subshell.snippets.jface.tooltip.tooltipsupport.Tooltips;
-
 import javafx.animation.Animation.Status;
 import phasereditor.animation.ui.AnimationCanvas;
-import phasereditor.animation.ui.AnimationListInformationControlProvider;
 import phasereditor.animation.ui.AnimationCanvas.IndexTransition;
 import phasereditor.animation.ui.FilteredAnimationsList;
 import phasereditor.animation.ui.editor.properties.AnimationsPGridPage;
@@ -672,9 +669,8 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		@Override
 		public void createControl(Composite parent) {
 			_listCanvas = new FilteredAnimationsList<>(parent, SWT.NONE);
-			Tooltips.install(_listCanvas.getCanvas(),
-					new AnimationListInformationControlProvider(_listCanvas.getCanvas()),
-					AssetPackUI.getInformationControlCreatorsForTooltips(), false);
+			
+			AssetPackUI.installAssetTooltips(_listCanvas.getCanvas(), _listCanvas.getUtils());
 
 			{
 				int options = DND.DROP_MOVE | DND.DROP_DEFAULT;

@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
+import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredFrameGrid;
 import phasereditor.ui.IEditorSharedImages;
@@ -55,8 +56,10 @@ public class MultiAtlasAssetPreviewComp extends Composite {
 		super(parent, style);
 
 		setLayout(new StackLayout());
-		
+
 		_filteredGrid = new FilteredFrameGrid(this, SWT.NONE, true);
+
+		AssetPackUI.installAssetTooltips(_filteredGrid);
 
 		afterCreateWidgets();
 	}
@@ -104,7 +107,7 @@ public class MultiAtlasAssetPreviewComp extends Composite {
 				_filteredGrid.getCanvas().setListLayout(false);
 			}
 		};
-		
+
 		_listAction = new Action("List", IAction.AS_CHECK_BOX) {
 			{
 				setImageDescriptor(EditorSharedImages.getImageDescriptor(IEditorSharedImages.IMG_APPLICATION_LIST));

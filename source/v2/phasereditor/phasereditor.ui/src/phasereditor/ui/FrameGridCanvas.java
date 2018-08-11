@@ -421,6 +421,10 @@ public class FrameGridCanvas extends BaseImageCanvas
 		updateScroll();
 	}
 
+	public FrameCanvasUtils getUtils() {
+		return _utils;
+	}
+	
 	public List<Image> getImages() {
 		return _images;
 	}

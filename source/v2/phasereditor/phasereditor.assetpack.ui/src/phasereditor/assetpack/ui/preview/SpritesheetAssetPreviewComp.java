@@ -119,6 +119,7 @@ public class SpritesheetAssetPreviewComp extends Composite {
 		});
 
 		_gridCanvas = new FrameGridCanvas(this, SWT.NONE, true);
+		AssetPackUI.installAssetTooltips(_gridCanvas);
 
 		afterCreateWidgets();
 
