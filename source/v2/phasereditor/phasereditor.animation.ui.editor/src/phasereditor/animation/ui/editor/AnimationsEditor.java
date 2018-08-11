@@ -281,16 +281,11 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 			anim.buildTimeline();
 
-			StructuredSelection sel = new StructuredSelection(anim);
-
 			if (_outliner != null) {
 				_outliner.refresh();
-				_outliner.getViewer().setSelection(sel);
 			}
 
-			loadAnimation(anim);
-
-			getEditorSite().getSelectionProvider().setSelection(sel);
+			selectAnimation(anim);
 
 			setDirty();
 		}
@@ -320,14 +315,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 						@Override
 						public void run() {
-							StructuredSelection sel = new StructuredSelection(anim);
-
-							if (_outliner != null) {
-								_outliner.getViewer().setSelection(sel);
-							}
-
-							loadAnimation((AnimationModel_in_Editor) anim);
-							getEditorSite().getSelectionProvider().setSelection(sel);
+							selectAnimation((AnimationModel_in_Editor) anim);
 						}
 					});
 				}
@@ -621,6 +609,23 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 		if (elem != null) {
 			var anim = (AnimationModel_in_Editor) elem;
 			loadAnimation(anim);
+			getEditorSite().getSelectionProvider().setSelection(new StructuredSelection(anim));
+		}
+	}
+
+	protected void selectAnimation(AnimationModel_in_Editor anim) {
+		StructuredSelection selection = new StructuredSelection(anim);
+
+		if (_outliner == null) {
+
+			loadAnimation(anim);
+
+			getEditorSite().getSelectionProvider().setSelection(selection);
+
+		} else {
+
+			_outliner.setSelection(selection);
+
 		}
 	}
 
@@ -777,13 +782,8 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		if (animations.contains(_animCanvas.getModel())) {
 			var anim = _model.getAnimations().isEmpty() ? null : _model.getAnimations().get(0);
-			loadAnimation((AnimationModel_in_Editor) anim);
 
-			if (_outliner != null) {
-				_outliner.setSelection(anim == null ? StructuredSelection.EMPTY : new StructuredSelection(anim));
-			}
-
-			getEditorSite().getSelectionProvider().setSelection(StructuredSelection.EMPTY);
+			selectAnimation((AnimationModel_in_Editor) anim);
 		}
 
 		setDirty();
@@ -809,13 +809,6 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		_timelineCanvas.getSelectedFrames().clear();
 		_timelineCanvas.redraw();
-
-		StructuredSelection sel = new StructuredSelection(animation);
-		getEditorSite().getSelectionProvider().setSelection(StructuredSelection.EMPTY);
-
-		if (_outliner != null) {
-			_outliner.setSelection(sel);
-		}
 
 		setDirty();
 	}
@@ -914,16 +907,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 			if (!_model.getAnimations().isEmpty()) {
 				var anim = (AnimationModel_in_Editor) _model.getAnimations().get(0);
-
-				StructuredSelection sel = new StructuredSelection(anim);
-
-				if (_outliner != null) {
-					_outliner.getViewer().setSelection(sel);
-				}
-
-				loadAnimation(anim);
-
-				getEditorSite().getSelectionProvider().setSelection(sel);
+				selectAnimation(anim);
 			}
 
 		}
