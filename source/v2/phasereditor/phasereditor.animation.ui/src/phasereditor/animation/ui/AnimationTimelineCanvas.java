@@ -365,7 +365,7 @@ public class AnimationTimelineCanvas<T extends AnimationModel> extends BaseImage
 
 		_fullWidth = (int) (e.width * _widthFactor);
 
-		int margin = 20;
+		int margin = 0;
 
 		int frameHeight = e.height - margin * 2;
 
