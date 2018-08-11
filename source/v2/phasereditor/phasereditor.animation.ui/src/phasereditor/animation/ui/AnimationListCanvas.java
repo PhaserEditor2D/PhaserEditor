@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.animation.ui;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +72,7 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 
 		addPaintListener(this);
 		addMouseWheelListener(this);
-		
+
 		_origin = new Point(0, 0);
 
 		final ScrollBar vBar = getVerticalBar();
@@ -81,7 +83,6 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 		addListener(SWT.Resize, e -> {
 			updateScroll();
 		});
-
 
 		_utils = new FrameCanvasUtils(this, true) {
 
@@ -145,11 +146,11 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 			}
 		};
 	}
-	
+
 	public FrameCanvasUtils getUtils() {
 		return _utils;
 	}
-	
+
 	public void selectAll() {
 		_utils.selectAll();
 	}
@@ -157,7 +158,7 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 	@SuppressWarnings("null")
 	@Override
 	public void paintControl(PaintEvent e) {
-		
+
 		if (_nextFilterText != null) {
 			getVerticalBar().setSelection(0);
 			_origin.y = 0;
@@ -166,9 +167,9 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 
 			updateScroll();
 		}
-		
+
 		var gc = e.gc;
-		
+
 		var tx = new Transform(getDisplay());
 		tx.translate(0, _origin.y);
 		gc.setTransform(tx);
@@ -189,13 +190,12 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 			} else {
 				gc.setForeground(getForeground());
 			}
-			
+
 			PhaserEditorUI.paintListItemBackground(gc, i, 0, _rowHeight * i, e.width, _rowHeight);
-			
 
 			int textOffset = textHeight + 5;
 			int imgHeight = _rowHeight - textOffset - 10;
-			
+
 			if (imgHeight >= 32) {
 				List<AnimationFrameModel> frames = anim.getFrames();
 
@@ -251,10 +251,11 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 		}
 	}
 
-	private void buildFilterMap(String nextFilterText) {
-		//TODO: implement this
+	private void buildFilterMap(String patten) {
+		_animations = getModel().getAnimations().stream()
+				.filter(a -> a.getKey().toLowerCase().contains(patten.toLowerCase())).collect(toList());
 	}
-	
+
 	public void filter(String pattern) {
 		_nextFilterText = pattern;
 		redraw();
@@ -284,41 +285,54 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 		_model = model;
 		refresh();
 	}
-	
+
 	public void refresh() {
 		if (_model == null) {
 			_animations = new ArrayList<>();
 		} else {
 			_animations = new ArrayList<>(_model.getAnimations());
 		}
-		redraw();
-	}
-	
-	@Override
-	public void mouseScrolled(MouseEvent e) {
-		if ((e.stateMask & SWT.SHIFT) == 0) {
-			return;
-		}
 		
-		double f = e.count < 0 ? 0.8 : 1.2;
-		_rowHeight = (int) (_rowHeight * f);
-		if (_rowHeight < 16) {
-			_rowHeight = 16;
-		}
 		
 		updateScroll();
 		
 		redraw();
 	}
-	
+
+	@Override
+	public void mouseScrolled(MouseEvent e) {
+		if ((e.stateMask & SWT.SHIFT) == 0) {
+			return;
+		}
+
+		double f = e.count < 0 ? 0.8 : 1.2;
+		_rowHeight = (int) (_rowHeight * f);
+		if (_rowHeight < 16) {
+			_rowHeight = 16;
+		}
+
+		updateScroll();
+
+		redraw();
+	}
+
 	protected Point _origin;
-	
+
 	void updateScroll() {
+		ScrollBar vBar = getVerticalBar();
+		
+		if (_animations.isEmpty()) {
+			vBar.setMaximum(0);
+			vBar.setSelection(0);
+			vBar.setThumb(0);
+			_origin.y = 0;
+			return;
+		}
+		
 		var b = getBounds();
 		b.height = _rowHeight * _animations.size();
 		Rectangle rect = b;
 		Rectangle client = getClientArea();
-		ScrollBar vBar = getVerticalBar();
 		vBar.setMaximum(rect.height);
 		vBar.setThumb(Math.min(rect.height, client.height));
 		int vPage = rect.height - client.height;

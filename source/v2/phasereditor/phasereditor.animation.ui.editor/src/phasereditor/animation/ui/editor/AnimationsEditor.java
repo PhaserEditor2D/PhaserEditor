@@ -82,7 +82,7 @@ import org.json.JSONException;
 import javafx.animation.Animation.Status;
 import phasereditor.animation.ui.AnimationCanvas;
 import phasereditor.animation.ui.AnimationCanvas.IndexTransition;
-import phasereditor.animation.ui.AnimationListCanvas;
+import phasereditor.animation.ui.FilteredAnimationsList;
 import phasereditor.animation.ui.editor.properties.AnimationsPGridPage;
 import phasereditor.animation.ui.editor.wizards.AssetsSplitter;
 import phasereditor.assetpack.core.AtlasAssetModel;
@@ -612,7 +612,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	}
 
 	protected void selectAnimation(AnimationModel_in_Editor anim) {
-		StructuredSelection selection = new StructuredSelection(anim);
+		StructuredSelection selection = anim == null? StructuredSelection.EMPTY : new StructuredSelection(anim);
 
 		if (_outliner == null) {
 
@@ -659,7 +659,7 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 	}
 
 	class Outliner extends Page implements IContentOutlinePage, ISelectionChangedListener {
-		private AnimationListCanvas<AnimationsModel_in_Editor> _listCanvas;
+		private FilteredAnimationsList<AnimationsModel_in_Editor> _listCanvas;
 		private SelectionProviderImpl _selProvider;
 
 		public Outliner() {
@@ -667,7 +667,28 @@ public class AnimationsEditor extends EditorPart implements IPersistableEditor {
 
 		@Override
 		public void createControl(Composite parent) {
-			_listCanvas = new AnimationListCanvas<>(parent, SWT.NONE);
+			_listCanvas = new FilteredAnimationsList<>(parent, SWT.NONE);
+			
+			{
+				int options = DND.DROP_MOVE | DND.DROP_DEFAULT;
+				DropTarget target = new DropTarget(_listCanvas.getCanvas(), options);
+				Transfer[] types = { LocalSelectionTransfer.getTransfer() };
+				target.setTransfer(types);
+				target.addDropListener(new DropTargetAdapter() {
+
+					@Override
+					public void drop(DropTargetEvent event) {
+						if (event.data instanceof Object[]) {
+							createAnimationsWithDrop((Object[]) event.data);
+						}
+
+						if (event.data instanceof IStructuredSelection) {
+							createAnimationsWithDrop(((IStructuredSelection) event.data).toArray());
+						}
+					}
+				});
+			}
+			
 			_listCanvas.setModel(getModel());
 
 			for (var l : _initialListeners) {
