@@ -557,6 +557,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		private List<TreeCanvasItem> _children;
 		private List<TreeCanvasItemAction> _actions;
 		private String _label;
+		private String _keywords;
 		private boolean _header;
 		private boolean _parentByNature;
 		int _depth;
@@ -569,6 +570,14 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			_children = new ArrayList<>();
 			_iconType = IconType.COMMON_ICON;
 			_actions = new ArrayList<>();
+		}
+
+		public String getKeywords() {
+			return _keywords;
+		}
+
+		public void setKeywords(String keywords) {
+			_keywords = keywords;
 		}
 
 		public int getIndex() {
@@ -736,8 +745,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 	}
 
 	private boolean performFilter(TreeCanvasItem item) {
-		boolean matches = _filterText == null || item.getLabel() == null
-				|| item.getLabel().toLowerCase().contains(_filterText);
+		boolean matches = matches(item);
 
 		var childrenMatches = false;
 
@@ -756,6 +764,11 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		}
 
 		return matches;
+	}
+
+	private boolean matches(TreeCanvasItem item) {
+		return _filterText == null || item.getLabel() == null || item.getLabel().toLowerCase().contains(_filterText)
+				|| (item.getKeywords() != null && item.getKeywords().contains(_filterText));
 	}
 
 	private void toggleItem(TreeCanvasItem item) {

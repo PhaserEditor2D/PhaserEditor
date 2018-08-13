@@ -21,23 +21,31 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui;
 
+import static java.util.stream.Collectors.joining;
+
+import java.util.LinkedHashSet;
+
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Point;
 
+import phasereditor.assetpack.core.AssetPackModel;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
+import phasereditor.assetpack.core.animations.AnimationsModel;
 import phasereditor.ui.FrameData;
-import phasereditor.ui.TreeCanvasViewer;
 import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.IconType;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
+import phasereditor.ui.TreeCanvasViewer;
 
 /**
  * @author arian
@@ -112,12 +120,58 @@ public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 			}
 		}
 
+		LinkedHashSet<String> keywords = new LinkedHashSet<>();
+
+		addKeywords(elem, keywords);
+
+		item.setKeywords(keywords.isEmpty() ? null : keywords.stream().collect(joining(",")));
+
 		if (file == null || fd == null) {
 			super.setItemIconProperties(item, elem);
 		} else {
 			item.setFrameData(fd);
 			item.setImageFile(file);
 			item.setIconType(IconType.IMAGE_FRAME);
+		}
+	}
+
+	@SuppressWarnings("static-method")
+	private void addKeywords(Object elem, LinkedHashSet<String> keywords) {
+		if (elem instanceof IAssetKey) {
+			var asset = ((IAssetKey) elem).getAsset();
+
+			if (asset instanceof ImageAssetModel) {
+				keywords.add("image");
+				keywords.add("texture");
+			}
+
+			if (asset instanceof SpritesheetAssetModel) {
+				keywords.add("texture");
+				keywords.add("spritesheet");
+			}
+
+			if (asset instanceof AtlasAssetModel || asset instanceof MultiAtlasAssetModel) {
+				keywords.add("texture");
+				keywords.add("atlas");
+			}
+
+			if (elem instanceof IAssetFrameModel) {
+				keywords.add("texture");
+				keywords.add("frame");
+			}
+
+		} 
+		
+		if (elem instanceof AnimationsModel || elem instanceof AnimationModel) {
+			keywords.add("animation");
+		}
+		
+		if (elem instanceof AssetPackModel) {
+			keywords.add("pack");
+		}
+		
+		if (elem instanceof IProject) {
+			keywords.add("project");
 		}
 	}
 
