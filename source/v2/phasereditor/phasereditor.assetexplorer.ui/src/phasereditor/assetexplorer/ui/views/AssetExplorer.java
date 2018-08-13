@@ -33,10 +33,6 @@ import org.eclipse.help.HelpSystem;
 import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.preference.JFacePreferences;
-import org.eclipse.jface.viewers.StyledCellLabelProvider;
-import org.eclipse.jface.viewers.StyledString;
-import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -71,6 +67,7 @@ import phasereditor.atlas.core.AtlasData;
 import phasereditor.canvas.core.CanvasFile;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.ui.CanvasUI;
+import phasereditor.ui.FilteredTreeCanvas;
 import phasereditor.ui.TreeCanvas;
 
 @SuppressWarnings("synthetic-access")
@@ -79,6 +76,7 @@ public class AssetExplorer extends ViewPart {
 	private AssetExplorerContentProvider _contentProvider;
 	private TreeCanvas _treeCanvas;
 	private IPartListener _partListener;
+	private FilteredTreeCanvas _filteredTreeCanvas;
 	// private AssetExplorerLabelProvider _treeLabelProvider;
 	// private AssetExplorerContentProvider _treeContentProvider;
 	// private AssetExplorerListLabelProvider _listLabelProvider;
@@ -98,8 +96,10 @@ public class AssetExplorer extends ViewPart {
 	public void createPartControl(Composite parent) {
 		_contentProvider = new AssetExplorerContentProvider();
 
-		_treeCanvas = new TreeCanvas(parent, SWT.NONE);
-		_treeCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		_filteredTreeCanvas = new FilteredTreeCanvas(parent, SWT.NONE);
+		_filteredTreeCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		
+		_treeCanvas = _filteredTreeCanvas.getCanvas();
 		_treeCanvas.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -111,34 +111,6 @@ public class AssetExplorer extends ViewPart {
 		});
 
 		afterCreateWidgets();
-	}
-
-	private static StyledCellLabelProvider createStyledLabelProvider() {
-		return new StyledCellLabelProvider() {
-			@Override
-			public void update(ViewerCell cell) {
-				var base = (AssetExplorerLabelProvider) getViewer().getLabelProvider();
-
-				Object obj = cell.getElement();
-
-				String text = base.getText(obj);
-
-				StyledString str = new StyledString();
-
-				if (obj instanceof NewWizardLancher) {
-					str.append(text,
-							StyledString.createColorRegistryStyler(JFacePreferences.ACTIVE_HYPERLINK_COLOR, null));
-				} else {
-					str.append(text);
-				}
-
-				cell.setText(str.getString());
-				cell.setStyleRanges(str.getStyleRanges());
-				cell.setImage(base.getImage(obj));
-
-				super.update(cell);
-			}
-		};
 	}
 
 	public TreeCanvas getTreeCanvas() {

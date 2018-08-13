@@ -27,7 +27,6 @@ import static phasereditor.ui.PhaserEditorUI.swtRun;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -64,6 +63,8 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 	private boolean _updateScroll;
 	private FrameCanvasUtils _utils;
 	protected TreeCanvasItemAction _overAction;
+	private String _filterText;
+	private HashSet<TreeCanvasItem> _filteredItems;
 
 	public TreeCanvas(Composite parent, int style) {
 		super(parent, style | SWT.V_SCROLL);
@@ -74,6 +75,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		_roots = List.of();
 		_visibleItems = List.of();
 		_items = List.of();
+		_filteredItems = new HashSet<>();
 
 		addPaintListener(this);
 		addMouseWheelListener(this);
@@ -199,11 +201,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 					if (item._toggleHitArea != null) {
 
 						if (item._toggleHitArea.contains(modelPoint)) {
-							item.setExpanded(!item.isExpanded());
-
-							updateVisibleItemsList();
-
-							redraw();
+							toggleItem(item);
 
 							return;
 						}
@@ -400,7 +398,11 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 		updateItemsList();
 
-		redraw();
+		if (_filterText != null) {
+			filter(_filterText);
+		} else {
+			redraw();
+		}
 	}
 
 	public List<TreeCanvasItem> getItems() {
@@ -411,10 +413,6 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		return _items.stream().filter(i -> i.isExpanded()).collect(toList());
 	}
 
-	public List<Object> getExpandedObjects() {
-		return _items.stream().filter(i -> i.isExpanded()).map(i -> i.getData()).collect(toList());
-	}
-
 	public void setExpandedObjects(List<Object> objects) {
 		var set = new HashSet<>(objects);
 		for (var item : _items) {
@@ -423,6 +421,10 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		}
 
 		updateVisibleItemsList();
+	}
+
+	public List<Object> getExpandedObjects() {
+		return _items.stream().filter(i -> i.isExpanded()).map(i -> i.getData()).collect(toList());
 	}
 
 	private void updateItemsList() {
@@ -440,29 +442,29 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 	}
 
 	private void updateVisibleItemsList() {
-
 		_visibleItems = new ArrayList<>();
 
 		for (var item : _roots) {
-			item._depth = 0;
-		}
-
-		var queue = new LinkedList<>(_roots);
-
-		while (!queue.isEmpty()) {
-			var item = queue.removeFirst();
-			item._index = _items.size();
-			_visibleItems.add(item);
-
-			if (item.isExpanded()) {
-				for (var child : item.getChildren()) {
-					child._depth = item._depth + 1;
-					queue.addFirst(child);
-				}
-			}
+			updateVisibleItemsList_rec(item, 0);
 		}
 
 		swtRun(this::requestUpdateScroll);
+	}
+
+	private void updateVisibleItemsList_rec(TreeCanvasItem item, int depth) {
+		if (_filteredItems.contains(item)) {
+			return;
+		}
+
+		item._depth = depth;
+
+		_visibleItems.add(item);
+
+		if (item.isExpanded()) {
+			for (var item2 : item.getChildren()) {
+				updateVisibleItemsList_rec(item2, depth + 1);
+			}
+		}
 	}
 
 	@Override
@@ -664,6 +666,10 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		public List<TreeCanvasItem> getChildren() {
 			return _children;
 		}
+
+		public boolean hasChildren() {
+			return !_children.isEmpty();
+		}
 	}
 
 	public void expandAll() {
@@ -684,6 +690,83 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		for (var item2 : item.getChildren()) {
 			expandAll(item2);
 		}
+	}
+
+	public void filter(String text) {
+		List<TreeCanvasItem> expanded = null;
+		if (text == null || text.equals("")) {
+			_filterText = null;
+			expanded = getExpandedItems();
+		} else {
+			_filterText = text.toLowerCase();
+		}
+
+		performFilter();
+
+		if (expanded != null) {
+			setExpandedItems(expanded);
+		}
+
+		updateVisibleItemsList();
+	}
+
+	public void setExpandedItems(List<TreeCanvasItem> expanded) {
+		for (var item : _items) {
+			item.setExpanded(false);
+		}
+		for (var item : expanded) {
+			item.setExpanded(true);
+		}
+	}
+
+	public void collapseAll() {
+		for (var item : _items) {
+			item.setExpanded(false);
+		}
+
+		updateVisibleItemsList();
+	}
+
+	private void performFilter() {
+		_filteredItems = new HashSet<>();
+
+		for (var item : _roots) {
+			performFilter(item);
+		}
+	}
+
+	private boolean performFilter(TreeCanvasItem item) {
+		boolean matches = _filterText == null || item.getLabel() == null
+				|| item.getLabel().toLowerCase().contains(_filterText);
+
+		var childrenMatches = false;
+
+		var children = item.getChildren();
+
+		for (var child : children) {
+			childrenMatches = performFilter(child) || childrenMatches;
+		}
+
+		item.setExpanded(childrenMatches);
+
+		matches = matches || childrenMatches;
+
+		if (!matches) {
+			_filteredItems.add(item);
+		}
+
+		return matches;
+	}
+
+	private void toggleItem(TreeCanvasItem item) {
+		item.setExpanded(!item.isExpanded());
+
+		// allways allow to expand an item, even if the children were filtered.
+		_filteredItems.removeAll(item.getChildren());
+
+		updateVisibleItemsList();
+
+		redraw();
 	}
 
 }

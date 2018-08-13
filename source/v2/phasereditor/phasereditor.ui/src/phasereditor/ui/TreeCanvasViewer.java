@@ -68,9 +68,9 @@ public class TreeCanvasViewer implements IEditorSharedImages {
 
 		_canvas.setRoots(roots);
 	}
-	
+
 	public void refreshLabels() {
-		for(var item : _canvas.getItems()) {
+		for (var item : _canvas.getItems()) {
 			refreshItem(item, item);
 		}
 	}
@@ -94,7 +94,7 @@ public class TreeCanvasViewer implements IEditorSharedImages {
 
 		for (var child : children) {
 			var item2 = buildItem(child);
-			item.getChildren().add(0, item2);
+			item.getChildren().add(item2);
 		}
 	}
 

@@ -1221,11 +1221,13 @@ public class PhaserEditorUI {
 	}
 
 	public static void paintListItemBackground(GC gc, int i, int x, int y, int w, int h) {
+		
 		gc.setAlpha(60);
 		gc.setBackground(i % 2 == 0 ? gc.getDevice().getSystemColor(SWT.COLOR_WHITE)
 				: PhaserEditorUI.get_pref_Preview_PatternColor());
 		gc.fillRectangle(x, y, w, h);
 		gc.setAlpha(255);
+		
 	}
 
 	public static void paintScaledImageInArea(GC gc, Image image, FrameData fd, Rectangle renderArea) {
