@@ -45,7 +45,6 @@ import org.eclipse.ui.PlatformUI;
 import phasereditor.assetexplorer.ui.views.newactions.NewAnimationWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewAssetPackWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewAtlasWizardLauncher;
-import phasereditor.assetexplorer.ui.views.newactions.NewCanvasWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewExampleProjectWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewProjectWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewWizardLancher;
@@ -231,7 +230,7 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 				return a.getFile().getName().compareTo(b.getFile().getName());
 			});
 
-			return NewWizardLancher.children(new NewCanvasWizardLauncher((CanvasType) parent), list);
+			return list.toArray();
 		}
 
 		if (parent instanceof CanvasFile) {

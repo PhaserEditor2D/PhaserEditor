@@ -45,6 +45,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
@@ -53,7 +54,6 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
@@ -88,12 +88,14 @@ import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.ui.FilteredTree2;
 import phasereditor.ui.PatternFilter2;
 import phasereditor.ui.PhaserEditorUI;
+import phasereditor.ui.TreeCanvas;
 
 public class AssetExplorer extends ViewPart {
 	public static final String ID = "phasereditor.assetpack.views.assetExplorer";
 	TreeViewer _viewer;
 	private FilteredTree _filteredTree;
 	private AssetExplorerContentProvider _contentProvider;
+	private TreeCanvas _treeCanvas;
 	// private AssetExplorerLabelProvider _treeLabelProvider;
 	// private AssetExplorerContentProvider _treeContentProvider;
 	// private AssetExplorerListLabelProvider _listLabelProvider;
@@ -109,16 +111,11 @@ public class AssetExplorer extends ViewPart {
 		super();
 	}
 
-	@SuppressWarnings("unused")
 	@Override
 	public void createPartControl(Composite parent) {
-		GridLayout gl_parent = new GridLayout(1, false);
-		gl_parent.marginWidth = 0;
-		gl_parent.marginHeight = 0;
-		parent.setLayout(gl_parent);
+		SashForm sash = new SashForm(parent, SWT.HORIZONTAL);
 
-		_filteredTree = new FilteredTree2(parent, SWT.MULTI, new PatternFilter2(), 4);
-		GridLayout gridLayout = (GridLayout) _filteredTree.getLayout();
+		_filteredTree = new FilteredTree2(sash, SWT.MULTI, new PatternFilter2(), 4);
 		_viewer = _filteredTree.getViewer();
 		_viewer.addDoubleClickListener(new IDoubleClickListener() {
 			@Override
@@ -126,8 +123,6 @@ public class AssetExplorer extends ViewPart {
 				handleDoubleClick();
 			}
 		});
-		Tree tree = _viewer.getTree();
-		tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		_contentProvider = new AssetExplorerContentProvider();
 		_viewer.setContentProvider(_contentProvider);
 		_viewer.setLabelProvider(new AssetExplorerLabelProvider());
@@ -139,6 +134,12 @@ public class AssetExplorer extends ViewPart {
 				col.getColumn().setWidth(((Tree) e.widget).getBounds().width);
 			}
 		});
+
+		_treeCanvas = new TreeCanvas(sash, SWT.BORDER);
+		_treeCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+		sash.setWeights(new int[] { 1, 1 });
+
 		afterCreateWidgets();
 
 	}
@@ -245,6 +246,8 @@ public class AssetExplorer extends ViewPart {
 
 		AssetPackUI.installAssetTooltips(_viewer);
 		CanvasUI.installCanvasTooltips(_viewer);
+		AssetPackUI.installAssetTooltips(_treeCanvas, _treeCanvas.getUtils());
+		CanvasUI.installCanvasTooltips(_treeCanvas, _treeCanvas.getUtils());
 
 		// undo context
 
@@ -354,6 +357,15 @@ public class AssetExplorer extends ViewPart {
 	}
 
 	public void refreshContent(IProject project) {
+
+		{
+			var converter = new AssetExplorerJFaceTreeCanvasAdapter(_contentProvider,
+					new AssetExplorerLabelProvider());
+			var roots = converter.build(ROOT);
+			_treeCanvas.setRoots(roots);
+			//_treeCanvas.expandAll();
+		}
+
 		out.println("Assets.refreshContent(" + project.getName() + ")");
 
 		IProject currentProject = _contentProvider.getProjectInContent();

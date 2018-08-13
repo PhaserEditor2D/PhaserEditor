@@ -36,6 +36,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import phasereditor.ui.FrameData;
+import phasereditor.ui.PhaserEditorUI;
 
 public class SpritesheetAssetModel extends AssetModel {
 
@@ -49,6 +50,7 @@ public class SpritesheetAssetModel extends AssetModel {
 	private String _normalMap;
 
 	private List<FrameModel> _frames;
+	private Rectangle _imageSize;
 
 	{
 		_startFrame = 0;
@@ -199,6 +201,8 @@ public class SpritesheetAssetModel extends AssetModel {
 	public void internalBuild(List<IStatus> problems) {
 		validateUrl(problems, "url", _url);
 
+		_imageSize = null;
+		
 		buildFrames();
 	}
 
@@ -257,6 +261,15 @@ public class SpritesheetAssetModel extends AssetModel {
 		public SpritesheetAssetModel getAsset() {
 			return _asset;
 		}
+	}
+
+	public Rectangle getImageSize() {
+		var file = getUrlFile();
+		if (file != null && file.exists()) {
+			Rectangle size = PhaserEditorUI.getImageBounds(file);
+			_imageSize = size;
+		}
+		return _imageSize;
 	}
 
 	private void buildFrames() {

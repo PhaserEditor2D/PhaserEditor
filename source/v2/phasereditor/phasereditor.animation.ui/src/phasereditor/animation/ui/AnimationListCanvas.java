@@ -120,12 +120,12 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 			}
 
 			@Override
-			public Point scrollPositionToReal(int x, int y) {
+			public Point viewToModel(int x, int y) {
 				return new Point(x, y - _origin.y);
 			}
 
 			@Override
-			public Point realPositionToScroll(int x, int y) {
+			public Point modelToView(int x, int y) {
 				return new Point(x, y + _origin.y);
 			}
 			

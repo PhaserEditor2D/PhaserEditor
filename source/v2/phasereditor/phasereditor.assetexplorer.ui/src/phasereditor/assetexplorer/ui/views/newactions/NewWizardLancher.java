@@ -60,6 +60,10 @@ public abstract class NewWizardLancher {
 	public void setLabel(String label) {
 		_label = label;
 	}
+	
+	public String getLabel() {
+		return _label;
+	}
 
 	@SuppressWarnings("static-method")
 	public int compare_getNewerFile(IResource a, IResource b) {

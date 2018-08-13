@@ -61,7 +61,7 @@ public class CanvasUtilsInformationControlProvider implements IInformationProvid
 
 		var rect = utils.getSelectionFrameArea(index);
 
-		var point = utils.realPositionToScroll(rect.x, rect.y);
+		var point = utils.modelToView(rect.x, rect.y);
 
 		return new Rectangle(location.x, location.y, rect.width - (location.x - point.x),
 				rect.height - (location.y - point.y));

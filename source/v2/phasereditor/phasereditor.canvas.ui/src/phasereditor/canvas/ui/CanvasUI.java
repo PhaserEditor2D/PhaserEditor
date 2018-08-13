@@ -56,6 +56,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
@@ -116,6 +117,8 @@ import phasereditor.canvas.ui.shapes.GroupNode;
 import phasereditor.canvas.ui.shapes.IObjectNode;
 import phasereditor.canvas.ui.shapes.ITextureChangeableControl;
 import phasereditor.project.core.ProjectCore;
+import phasereditor.ui.CanvasUtilsInformationControlProvider;
+import phasereditor.ui.FrameCanvasUtils;
 
 /**
  * @author arian
@@ -553,12 +556,18 @@ public class CanvasUI {
 				false);
 	}
 
+	public static void installCanvasTooltips(Control control, FrameCanvasUtils utils) {
+		Tooltips.install(control, new CanvasUtilsInformationControlProvider(utils),
+				CanvasUI.getCanvasTooltipsCreators(), false);
+
+	}
+
 	public static void installCanvasTooltips(TableViewer viewer) {
 		Tooltips.install(viewer.getControl(), new TableViewerInformationProvider(viewer), getCanvasTooltipsCreators(),
 				false);
 	}
 
-	private static List<ICustomInformationControlCreator> getCanvasTooltipsCreators() {
+	public static List<ICustomInformationControlCreator> getCanvasTooltipsCreators() {
 		List<ICustomInformationControlCreator> creators = new ArrayList<>();
 
 		creators.add(new ICustomInformationControlCreator() {

@@ -22,6 +22,8 @@
 package phasereditor.ui;
 
 public interface IEditorSharedImages {
+	String IMG_BULLET_EXPAND = "icons/bullet_toggle_plus.png";
+	String IMG_BULLET_COLLAPSE = "icons/bullet_toggle_minus.png";
 	String IMG_SHAPE = "icons/shape_square.png";
 	String IMG_SHAPE_GROUP_NODE = "icons/shape_node_group.png";
 	String IMG_ADD = "icons/add.png";

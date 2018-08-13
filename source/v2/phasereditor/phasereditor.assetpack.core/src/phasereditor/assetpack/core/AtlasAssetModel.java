@@ -172,12 +172,10 @@ public class AtlasAssetModel extends AssetModel {
 	}
 
 	public Rectangle getImageSize() {
-		if (getType() == AssetType.unityAtlas) {
-			var file = getTextureFile();
-			if (file != null && file.exists()) {
-				Rectangle size = PhaserEditorUI.getImageBounds(file);
-				_imageSize = size;
-			}
+		var file = getTextureFile();
+		if (file != null && file.exists()) {
+			Rectangle size = PhaserEditorUI.getImageBounds(file);
+			_imageSize = size;
 		}
 		return _imageSize;
 	}
@@ -277,7 +275,7 @@ public class AtlasAssetModel extends AssetModel {
 		}
 
 		// sort frames
-		
+
 		_frames = AssetPackCore.sortAssets(list);
 
 		{

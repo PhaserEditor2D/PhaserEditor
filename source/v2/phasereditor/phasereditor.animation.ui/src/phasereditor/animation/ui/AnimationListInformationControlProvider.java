@@ -44,7 +44,7 @@ public class AnimationListInformationControlProvider implements IInformationProv
 	@Override
 	public Object getInformation(Point location) {
 		FrameCanvasUtils utils = _canvas.getUtils();
-		var point = utils.scrollPositionToReal(location.x, location.y);
+		var point = utils.viewToModel(location.x, location.y);
 		int row = point.y / _canvas.getRowHeight();
 		var anim = utils.getFrameObject(row);
 		return anim;
@@ -54,13 +54,13 @@ public class AnimationListInformationControlProvider implements IInformationProv
 	public Rectangle getArea(Point location) {
 		FrameCanvasUtils utils = _canvas.getUtils();
 		
-		var realPoint = utils.scrollPositionToReal(location.x, location.y);
+		var realPoint = utils.viewToModel(location.x, location.y);
 		
 		int rowHeight = _canvas.getRowHeight();
 		
 		int row = realPoint.y / _canvas.getRowHeight();
 		
-		var scrollPoint = utils.realPositionToScroll(0, row * rowHeight);
+		var scrollPoint = utils.modelToView(0, row * rowHeight);
 		
 		Rectangle b = _canvas.getBounds();
 		

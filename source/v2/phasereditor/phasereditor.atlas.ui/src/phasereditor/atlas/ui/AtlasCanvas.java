@@ -54,12 +54,12 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener {
 		_utils = new FrameCanvasUtils(this, addDragAndDropSupport) {
 
 			@Override
-			public Point scrollPositionToReal(int x, int y) {
+			public Point viewToModel(int x, int y) {
 				return new Point(x, y);
 			}
 			
 			@Override
-			public Point realPositionToScroll(int x, int y) {
+			public Point modelToView(int x, int y) {
 				return new Point(x, y);
 			}
 			
