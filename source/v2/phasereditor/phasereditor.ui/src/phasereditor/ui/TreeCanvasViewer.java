@@ -33,15 +33,14 @@ import phasereditor.ui.TreeCanvas.TreeCanvasItem;
  * @author arian
  *
  */
-public class TreeCanvasViewerAdapter implements IEditorSharedImages {
+public class TreeCanvasViewer implements IEditorSharedImages {
 
 	private ITreeContentProvider _contentProvider;
 	private LabelProvider _labelProvider;
 	private Object _input;
 	private TreeCanvas _canvas;
 
-	public TreeCanvasViewerAdapter(TreeCanvas canvas, ITreeContentProvider contentProvider,
-			LabelProvider labelProvider) {
+	public TreeCanvasViewer(TreeCanvas canvas, ITreeContentProvider contentProvider, LabelProvider labelProvider) {
 		super();
 		_canvas = canvas;
 		_contentProvider = contentProvider;
@@ -50,14 +49,14 @@ public class TreeCanvasViewerAdapter implements IEditorSharedImages {
 
 	public void setInput(Object input) {
 		_input = input;
-		refresh();
+		refreshContent();
 	}
 
 	public Object getInput() {
 		return _input;
 	}
 
-	public void refresh() {
+	public void refreshContent() {
 		var roots = new ArrayList<TreeCanvasItem>();
 
 		if (_input != null) {
@@ -70,6 +69,12 @@ public class TreeCanvasViewerAdapter implements IEditorSharedImages {
 		_canvas.setRoots(roots);
 	}
 	
+	public void refreshLabels() {
+		for(var item : _canvas.getItems()) {
+			refreshItem(item, item);
+		}
+	}
+
 	public TreeCanvas getCanvas() {
 		return _canvas;
 	}
@@ -77,6 +82,12 @@ public class TreeCanvasViewerAdapter implements IEditorSharedImages {
 	private TreeCanvasItem buildItem(Object elem) {
 		var item = new TreeCanvasItem();
 
+		refreshItem(elem, item);
+
+		return item;
+	}
+
+	private void refreshItem(Object elem, TreeCanvasItem item) {
 		setItemProperties(item, elem);
 
 		var children = _contentProvider.getChildren(elem);
@@ -85,8 +96,6 @@ public class TreeCanvasViewerAdapter implements IEditorSharedImages {
 			var item2 = buildItem(child);
 			item.getChildren().add(0, item2);
 		}
-
-		return item;
 	}
 
 	protected void setItemProperties(TreeCanvasItem item, Object elem) {

@@ -33,7 +33,7 @@ import phasereditor.assetexplorer.ui.views.newactions.NewAssetPackWizardLauncher
 import phasereditor.assetexplorer.ui.views.newactions.NewAtlasWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewCanvasWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewWizardLancher;
-import phasereditor.assetpack.ui.AssetsTreeCanvasViewerAdapter;
+import phasereditor.assetpack.ui.AssetsTreeCanvasViewer;
 import phasereditor.canvas.core.CanvasFile;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.ui.CanvasUI;
@@ -48,9 +48,9 @@ import phasereditor.ui.TreeCanvas.TreeCanvasItemAction;
  * @author arian
  *
  */
-public class AssetExplorerTreeCanvasViewerAdapter extends AssetsTreeCanvasViewerAdapter {
+public class AssetExplorerTreeCanvasViewer extends AssetsTreeCanvasViewer {
 
-	public AssetExplorerTreeCanvasViewerAdapter(TreeCanvas canvas, ITreeContentProvider contentProvider,
+	public AssetExplorerTreeCanvasViewer(TreeCanvas canvas, ITreeContentProvider contentProvider,
 			LabelProvider labelProvider) {
 		super(canvas, contentProvider, labelProvider);
 	}

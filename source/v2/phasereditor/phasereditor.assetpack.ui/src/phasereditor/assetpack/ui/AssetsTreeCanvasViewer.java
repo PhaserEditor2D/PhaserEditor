@@ -34,7 +34,7 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.ui.FrameData;
-import phasereditor.ui.TreeCanvasViewerAdapter;
+import phasereditor.ui.TreeCanvasViewer;
 import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.IconType;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
@@ -43,9 +43,9 @@ import phasereditor.ui.TreeCanvas.TreeCanvasItem;
  * @author arian
  *
  */
-public class AssetsTreeCanvasViewerAdapter extends TreeCanvasViewerAdapter {
+public class AssetsTreeCanvasViewer extends TreeCanvasViewer {
 
-	public AssetsTreeCanvasViewerAdapter(TreeCanvas canvas, ITreeContentProvider contentProvider,
+	public AssetsTreeCanvasViewer(TreeCanvas canvas, ITreeContentProvider contentProvider,
 			LabelProvider labelProvider) {
 		super(canvas, contentProvider, labelProvider);
 	}

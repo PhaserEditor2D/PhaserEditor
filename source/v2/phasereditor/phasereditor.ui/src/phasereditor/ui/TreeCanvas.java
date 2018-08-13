@@ -21,10 +21,12 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
+import static java.util.stream.Collectors.toList;
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -54,6 +56,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 	private static final int ICON_AND_TEXT_SPACE = 5;
 	private List<TreeCanvasItem> _roots;
 	private List<TreeCanvasItem> _visibleItems;
+	private List<TreeCanvasItem> _items;
 	private int _indentSize;
 	private int _imageSize;
 	private int _fullHeight;
@@ -70,6 +73,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 		_roots = List.of();
 		_visibleItems = List.of();
+		_items = List.of();
 
 		addPaintListener(this);
 		addMouseWheelListener(this);
@@ -197,7 +201,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 						if (item._toggleHitArea.contains(modelPoint)) {
 							item.setExpanded(!item.isExpanded());
 
-							updateVisibleItems();
+							updateVisibleItemsList();
 
 							redraw();
 
@@ -287,7 +291,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 				var file = item.getImageFile();
 				var img = loadImage(file);
 				var fd = item.getFrameData();
-				
+
 				if (img != null) {
 					PhaserEditorUI.paintScaledImageInArea(gc, img, fd,
 							new Rectangle(x + 2, y + 2, _imageSize, _imageSize), false);
@@ -394,12 +398,49 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 	public void setRoots(List<TreeCanvasItem> roots) {
 		_roots = roots;
 
-		updateVisibleItems();
+		updateItemsList();
 
 		redraw();
 	}
 
-	private void updateVisibleItems() {
+	public List<TreeCanvasItem> getItems() {
+		return _items;
+	}
+
+	public List<TreeCanvasItem> getExpandedItems() {
+		return _items.stream().filter(i -> i.isExpanded()).collect(toList());
+	}
+
+	public List<Object> getExpandedObjects() {
+		return _items.stream().filter(i -> i.isExpanded()).map(i -> i.getData()).collect(toList());
+	}
+
+	public void setExpandedObjects(List<Object> objects) {
+		var set = new HashSet<>(objects);
+		for (var item : _items) {
+			var expanded = item.getData() != null && set.contains(item.getData());
+			item.setExpanded(expanded);
+		}
+
+		updateVisibleItemsList();
+	}
+
+	private void updateItemsList() {
+		_items = new ArrayList<>();
+
+		updateItemsList(_roots);
+
+	}
+
+	private void updateItemsList(List<TreeCanvasItem> items) {
+		for (var item : items) {
+			_items.add(item);
+			updateItemsList(item.getChildren());
+		}
+	}
+
+	private void updateVisibleItemsList() {
+
 		_visibleItems = new ArrayList<>();
 
 		for (var item : _roots) {
@@ -410,6 +451,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 		while (!queue.isEmpty()) {
 			var item = queue.removeFirst();
+			item._index = _items.size();
 			_visibleItems.add(item);
 
 			if (item.isExpanded()) {
@@ -516,6 +558,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		private boolean _header;
 		private boolean _parentByNature;
 		int _depth;
+		int _index;
 		private boolean _expanded;
 		int _y;
 		int _rowHeight;
@@ -524,6 +567,10 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			_children = new ArrayList<>();
 			_iconType = IconType.COMMON_ICON;
 			_actions = new ArrayList<>();
+		}
+
+		public int getIndex() {
+			return _index;
 		}
 
 		public boolean isParentByNature() {
@@ -625,7 +672,8 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			expandAll(item);
 		}
 
-		updateVisibleItems();
+		updateVisibleItemsList();
+
 		redraw();
 	}
 

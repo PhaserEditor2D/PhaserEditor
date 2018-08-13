@@ -23,6 +23,9 @@ package phasereditor.assetexplorer.ui.views;
 
 import static java.lang.System.out;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.commands.operations.IUndoContext;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -54,12 +57,19 @@ import org.eclipse.ui.ide.undo.WorkspaceUndoUtil;
 import org.eclipse.ui.operations.RedoActionHandler;
 import org.eclipse.ui.operations.UndoActionHandler;
 import org.eclipse.ui.part.ViewPart;
+import org.json.JSONObject;
 
 import phasereditor.assetexplorer.ui.views.newactions.NewWizardLancher;
+import phasereditor.assetpack.core.AssetGroupModel;
+import phasereditor.assetpack.core.AssetPackCore;
+import phasereditor.assetpack.core.AssetPackModel;
+import phasereditor.assetpack.core.AssetSectionModel;
+import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.animations.AnimationsModel;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.atlas.core.AtlasData;
 import phasereditor.canvas.core.CanvasFile;
+import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.ui.TreeCanvas;
 
@@ -142,7 +152,7 @@ public class AssetExplorer extends ViewPart {
 
 		if (elem instanceof IProject) {
 			provider.forceToFocuseOnProject((IProject) elem);
-			_treeCanvasAdapter.refresh();
+			_viewer.refreshContent();
 			// _treeCanvasAdapter.expandToLevel(3);
 		} else if (elem instanceof IFile) {
 			file = (IFile) elem;
@@ -202,9 +212,8 @@ public class AssetExplorer extends ViewPart {
 
 		// tree canvas
 
-		_treeCanvasAdapter = new AssetExplorerTreeCanvasViewerAdapter(_treeCanvas, _contentProvider,
-				new AssetExplorerLabelProvider());
-		_treeCanvasAdapter.setInput(ROOT);
+		_viewer = new AssetExplorerTreeCanvasViewer(_treeCanvas, _contentProvider, new AssetExplorerLabelProvider());
+		_viewer.setInput(ROOT);
 
 	}
 
@@ -250,7 +259,7 @@ public class AssetExplorer extends ViewPart {
 	}
 
 	Object _lastToken = null;
-	private AssetExplorerTreeCanvasViewerAdapter _treeCanvasAdapter;
+	private AssetExplorerTreeCanvasViewer _viewer;
 
 	void refreshViewer() {
 
@@ -262,12 +271,11 @@ public class AssetExplorer extends ViewPart {
 
 		try {
 			out.println("AssetExplorerContentProvider.refreshViewer()");
-			_treeCanvasAdapter.refresh();
 
 			IProject project = getActiveProject();
 
 			if (project != _lastToken) {
-				// _treeCanvas.expandToLevel(4);
+				refreshContent(project);
 				_lastToken = project;
 			}
 		} finally {
@@ -332,8 +340,6 @@ public class AssetExplorer extends ViewPart {
 
 	public void refreshContent(IProject project) {
 
-		_treeCanvasAdapter.setInput(ROOT);
-
 		out.println("Assets.refreshContent(" + project.getName() + ")");
 
 		IProject currentProject = _contentProvider.getProjectInContent();
@@ -352,57 +358,54 @@ public class AssetExplorer extends ViewPart {
 			return;
 		}
 
-		// _viewer.refresh();
+		var expanded = _treeCanvas.getExpandedObjects();
 
-		// Object[] expanded = _viewer.getVisibleExpandedElements();
-		//
-		// _viewer.getTree().setRedraw(false);
-		// try {
-		// _viewer.refresh();
-		//
-		// List<Object> toExpand = new ArrayList<>();
-		//
-		// for (Object obj : expanded) {
-		// if (obj instanceof IAssetKey) {
-		// IAssetKey key = ((IAssetKey) obj).getSharedVersion();
-		// toExpand.add(key);
-		// } else if (obj instanceof AssetGroupModel) {
-		// AssetPackModel oldPack = ((AssetGroupModel) obj).getSection().getPack();
-		// JSONObject ref = oldPack.getAssetJSONRefrence(obj);
-		// IFile file = oldPack.getFile();
-		// AssetPackModel newPack = AssetPackCore.getAssetPackModel(file, false);
-		// if (newPack != null) {
-		// Object obj2 = newPack.getElementFromJSONReference(ref);
-		// if (obj2 != null) {
-		// toExpand.add(obj2);
-		// }
-		// }
-		// } else if (obj instanceof AssetSectionModel) {
-		// AssetPackModel oldPack = ((AssetSectionModel) obj).getPack();
-		// JSONObject ref = oldPack.getAssetJSONRefrence(obj);
-		// IFile file = oldPack.getFile();
-		// AssetPackModel newPack = AssetPackCore.getAssetPackModel(file, false);
-		// if (newPack != null) {
-		// Object obj2 = newPack.getElementFromJSONReference(ref);
-		// toExpand.add(obj2);
-		// }
-		// } else if (obj instanceof AssetPackModel) {
-		// AssetPackModel newPack = AssetPackCore.getAssetPackModel(((AssetPackModel)
-		// obj).getFile(), false);
-		// toExpand.add(newPack);
-		// } else if (obj instanceof CanvasType) {
-		// toExpand.add(obj);
-		// } else {
-		// toExpand.add(obj);
-		// }
-		// }
-		// toExpand.remove(null);
-		// Object[] array = toExpand.toArray();
-		// _viewer.setExpandedElements(array);
-		//
-		// } finally {
-		// _viewer.getTree().setRedraw(true);
-		// }
+		try {
+			_treeCanvas.setRedraw(false);
+			
+			_viewer.refreshContent();
+
+			List<Object> toExpand = new ArrayList<>();
+
+			for (Object obj : expanded) {
+				if (obj instanceof IAssetKey) {
+					IAssetKey key = ((IAssetKey) obj).getSharedVersion();
+					toExpand.add(key);
+				} else if (obj instanceof AssetGroupModel) {
+					AssetPackModel oldPack = ((AssetGroupModel) obj).getSection().getPack();
+					JSONObject ref = oldPack.getAssetJSONRefrence(obj);
+					IFile file = oldPack.getFile();
+					AssetPackModel newPack = AssetPackCore.getAssetPackModel(file, false);
+					if (newPack != null) {
+						Object obj2 = newPack.getElementFromJSONReference(ref);
+						if (obj2 != null) {
+							toExpand.add(obj2);
+						}
+					}
+				} else if (obj instanceof AssetSectionModel) {
+					AssetPackModel oldPack = ((AssetSectionModel) obj).getPack();
+					JSONObject ref = oldPack.getAssetJSONRefrence(obj);
+					IFile file = oldPack.getFile();
+					AssetPackModel newPack = AssetPackCore.getAssetPackModel(file, false);
+					if (newPack != null) {
+						Object obj2 = newPack.getElementFromJSONReference(ref);
+						toExpand.add(obj2);
+					}
+				} else if (obj instanceof AssetPackModel) {
+					AssetPackModel newPack = AssetPackCore.getAssetPackModel(((AssetPackModel) obj).getFile(), false);
+					toExpand.add(newPack);
+				} else if (obj instanceof CanvasType) {
+					toExpand.add(obj);
+				} else {
+					toExpand.add(obj);
+				}
+			}
+			toExpand.remove(null);
+			_treeCanvas.setExpandedObjects(toExpand);
+
+		} finally {
+			_treeCanvas.setRedraw(true);
+		}
 	}
 
 }
