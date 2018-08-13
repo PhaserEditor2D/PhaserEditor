@@ -47,6 +47,7 @@ import org.eclipse.swt.widgets.ScrollBar;
 @SuppressWarnings("synthetic-access")
 public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseWheelListener {
 	private static final int ACTION_SPACE = 2;
+	private static final int ACTION_PADDING = 2;
 	private List<TreeCanvasItem> _roots;
 	private List<TreeCanvasItem> _visibleItems;
 	private int _indentSize;
@@ -55,6 +56,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 	private Point _origin;
 	private boolean _updateScroll;
 	private FrameCanvasUtils _utils;
+	protected TreeCanvasItemAction _overAction;
 
 	public TreeCanvas(Composite parent, int style) {
 		super(parent, style | SWT.V_SCROLL);
@@ -133,6 +135,33 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			}
 
 			@Override
+			public void mouseMove(MouseEvent e) {
+
+				_overAction = null;
+
+				int index = getOverIndex();
+
+				if (index != -1) {
+
+					var item = _visibleItems.get(index);
+
+					var modelPoint = _utils.viewToModel(e.x, e.y);
+
+					for (var action : item.getActions()) {
+						if (action._hitArea != null && action._hitArea.contains(modelPoint)) {
+
+							_overAction = action;
+							redraw();
+
+							break;
+						}
+					}
+				}
+
+				super.mouseMove(e);
+			}
+
+			@Override
 			public void mouseUp(MouseEvent e) {
 
 				int index = getOverIndex();
@@ -155,12 +184,9 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 							return;
 						}
 					}
-					
-					for (var action : item.getActions()) {
-						if (action._hitArea != null && action._hitArea.contains(modelPoint)) {
-							action.run(e);
-							return;
-						}
+
+					if (_overAction != null) {
+						_overAction.run(e);
 					}
 				}
 
@@ -250,11 +276,30 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 				for (int j = 0; j < actions.size(); j++) {
 					var action = actions.get(j);
 
-					if (action.getImage() != null) {
-						actionX -= 16 + ACTION_SPACE;
-						Rectangle r = new Rectangle(actionX, y + 2, 16, 16);
-						action._hitArea = r;
-						gc.drawImage(action.getImage(), action._hitArea.x, action._hitArea.y);
+					Image img = action.getImage();
+
+					if (img != null) {
+
+						int btnSize = 16 + ACTION_PADDING * 2;
+
+						actionX -= btnSize + ACTION_SPACE;
+
+						Rectangle btnArea = new Rectangle(actionX, y + 2, btnSize, btnSize);
+
+						action._hitArea = btnArea;
+
+						if (action == _overAction) {
+							gc.setAlpha(20);
+							gc.setBackground(getForeground());
+							gc.fillRoundRectangle(btnArea.x, btnArea.y, btnArea.width, btnArea.height, btnSize / 2,
+									btnSize / 2);
+							gc.setAlpha(40);
+							gc.drawRoundRectangle(btnArea.x, btnArea.y, btnArea.width, btnArea.height, btnSize / 2,
+									btnSize / 2);
+							gc.setAlpha(255);
+						}
+
+						gc.drawImage(img, btnArea.x + ACTION_PADDING, btnArea.y + ACTION_PADDING);
 					}
 				}
 			}
