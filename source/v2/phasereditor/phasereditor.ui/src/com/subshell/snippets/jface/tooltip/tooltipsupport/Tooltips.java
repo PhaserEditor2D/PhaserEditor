@@ -21,12 +21,15 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package com.subshell.snippets.jface.tooltip.tooltipsupport;
 
+import static java.lang.System.currentTimeMillis;
+
 import java.util.List;
 
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackAdapter;
+import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.widgets.Control;
 
 public class Tooltips {
@@ -45,24 +48,51 @@ public class Tooltips {
 	 * @param controlCreators
 	 *            information control creators to create the tooltips
 	 * @param takeFocusWhenVisible
-	 *            set to <code>true</code> if the information control should
-	 *            take focus when made visible
+	 *            set to <code>true</code> if the information control should take
+	 *            focus when made visible
 	 */
 	public static void install(Control control, IInformationProvider provider,
 			List<ICustomInformationControlCreator> controlCreators, boolean takeFocusWhenVisible) {
 		final InformationControlManager informationControlManager = new InformationControlManager(provider,
 				controlCreators, takeFocusWhenVisible);
-		//informationControlManager.setSizeConstraints(40, 12, false, true);
+		// informationControlManager.setSizeConstraints(40, 12, false, true);
 		informationControlManager.install(control);
+
+		class MyMouseListener extends MouseTrackAdapter implements MouseWheelListener {
+			private long _scrollTime;
+
+			@Override
+			public void mouseHover(MouseEvent event) {
+				
+				long hoverTime = currentTimeMillis();
+				
+				var d = hoverTime - _scrollTime;
+				
+				if (d > 1000) {
+					informationControlManager.showInformation();
+				}
+				
+			}
+
+			@Override
+			public void mouseScrolled(MouseEvent e) {
+				_scrollTime = currentTimeMillis();
+			}
+
+		}
+
+		var listener = new MyMouseListener();
+		control.addMouseWheelListener(listener);
+		control.addMouseTrackListener(listener);
 
 		// MouseListener to show the information when the user hovers a table
 		// item
-		control.addMouseTrackListener(new MouseTrackAdapter() {
-			@Override
-			public void mouseHover(MouseEvent event) {
-				informationControlManager.showInformation();
-			}
-		});
+		// control.addMouseTrackListener(new MouseTrackAdapter() {
+		// @Override
+		// public void mouseHover(MouseEvent event) {
+		// informationControlManager.showInformation();
+		// }
+		// });
 
 		// DisposeListener to uninstall the information control manager
 		control.addDisposeListener(new DisposeListener() {
