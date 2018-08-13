@@ -36,7 +36,7 @@ import phasereditor.assetpack.ui.wizards.NewAssetPackWizard;
 public class NewAssetPackWizardLauncher extends NewWizardLancher {
 
 	public NewAssetPackWizardLauncher() {
-		super("New Asset Pack File...");
+		super("Create a new Asset Pack file.");
 	}
 
 	@Override

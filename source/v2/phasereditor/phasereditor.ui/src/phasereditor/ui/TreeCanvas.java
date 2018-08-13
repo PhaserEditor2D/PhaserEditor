@@ -148,13 +148,26 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 					var modelPoint = _utils.viewToModel(e.x, e.y);
 
 					for (var action : item.getActions()) {
+
 						if (action._hitArea != null && action._hitArea.contains(modelPoint)) {
 
-							_overAction = action;
-							redraw();
+							if (_overAction != action) {
+								_overAction = action;
+								String tooltip = action.getTooltip();
+								if (tooltip == null) {
+									tooltip = "";
+								}
+
+								if (!tooltip.equals(getToolTipText())) {
+									setToolTipText(tooltip);
+								}
+
+								redraw();
+							}
 
 							break;
 						}
+
 					}
 				}
 

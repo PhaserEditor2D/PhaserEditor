@@ -36,7 +36,7 @@ import phasereditor.atlas.ui.wizards.NewAtlasMakerWizard;
 public class NewAtlasWizardLauncher extends NewWizardLancher {
 
 	public NewAtlasWizardLauncher() {
-		super("New Texture Packer File...");
+		super("Create a new Textures Packer file.");
 	}
 
 	@Override

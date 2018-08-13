@@ -21,9 +21,6 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetexplorer.ui.views.newactions;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -36,22 +33,11 @@ import org.eclipse.ui.PlatformUI;
 /**
  * @author arian
  *
- */
+ */	
 public abstract class NewWizardLancher {
 	private String _label;
 
 	protected abstract INewWizard getWizard();
-
-	public static Object[] children(NewWizardLancher launcher, Object[] list) {
-		return children(launcher, List.of(list));
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static Object[] children(NewWizardLancher launcher, List list) {
-		var list2 = new ArrayList(list);
-		list2.add(0, launcher);
-		return list2.toArray();
-	}
 
 	public NewWizardLancher(String label) {
 		_label = label;

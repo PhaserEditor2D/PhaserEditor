@@ -36,7 +36,7 @@ import phasereditor.assetpack.core.AssetPackCore;
 public class NewAnimationWizardLauncher extends NewWizardLancher {
 
 	public NewAnimationWizardLauncher() {
-		super("New Animation File...");
+		super("Create a new Animations file.");
 	}
 
 	@Override

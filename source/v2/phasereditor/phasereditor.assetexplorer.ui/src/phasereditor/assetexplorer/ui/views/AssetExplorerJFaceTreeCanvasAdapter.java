@@ -25,6 +25,9 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.events.MouseEvent;
 
+import phasereditor.assetexplorer.ui.views.newactions.NewAnimationWizardLauncher;
+import phasereditor.assetexplorer.ui.views.newactions.NewAssetPackWizardLauncher;
+import phasereditor.assetexplorer.ui.views.newactions.NewAtlasWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewCanvasWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewWizardLancher;
 import phasereditor.assetpack.ui.AssetsJFaceTreeCanvasAdapter;
@@ -51,6 +54,12 @@ public class AssetExplorerJFaceTreeCanvasAdapter extends AssetsJFaceTreeCanvasAd
 
 		if (elem instanceof CanvasType) {
 			actions.add(new NewWizardLauncherTreeItemAction(new NewCanvasWizardLauncher((CanvasType) elem)));
+		} else if (elem == AssetExplorer.ANIMATIONS_NODE) {
+			actions.add(new NewWizardLauncherTreeItemAction(new NewAnimationWizardLauncher()));
+		} else if (elem == AssetExplorer.ATLAS_NODE) {
+			actions.add(new NewWizardLauncherTreeItemAction(new NewAtlasWizardLauncher()));
+		} else if (elem == AssetExplorer.PACK_NODE) {
+			actions.add(new NewWizardLauncherTreeItemAction(new NewAssetPackWizardLauncher()));
 		}
 
 	}
