@@ -75,7 +75,9 @@ public class AssetExplorerJFaceTreeCanvasAdapter extends AssetsJFaceTreeCanvasAd
 
 				|| elem == AssetExplorer.ATLAS_NODE
 
-				|| elem == AssetExplorer.PACK_NODE) {
+				|| elem == AssetExplorer.PACK_NODE
+
+				|| elem == AssetExplorer.PROJECTS_NODE) {
 			item.setIcon(null);
 		}
 
@@ -108,6 +110,12 @@ public class AssetExplorerJFaceTreeCanvasAdapter extends AssetsJFaceTreeCanvasAd
 
 		if (elem == AssetExplorer.PACK_NODE) {
 			actions.add(new NewWizardLauncherTreeItemAction(new NewAssetPackWizardLauncher()));
+			item.setHeader(true);
+		}
+
+		if (elem == AssetExplorer.PROJECTS_NODE) {
+			// actions.add(new NewWizardLauncherTreeItemAction(new
+			// NewAssetPackWizardLauncher()));
 			item.setHeader(true);
 		}
 

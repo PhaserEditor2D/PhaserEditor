@@ -48,6 +48,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
  */
 @SuppressWarnings("synthetic-access")
 public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseWheelListener {
+	private static final int MIN_ROW_HEIGHT = 20;
 	private static final int ACTION_SPACE = 2;
 	private static final int ACTION_PADDING = 2;
 	private static final int ICON_AND_TEXT_SPACE = 5;
@@ -233,7 +234,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			int x = item.getDepth() * _indentSize + /* the expand/collapse icon */16;
 
 			int textX = x;
-			int rowHeight = 24;
+			int rowHeight = MIN_ROW_HEIGHT;
 
 			var isImageFrame = item.getIconType() == IconType.IMAGE_FRAME;
 			var icon = item.getIcon();
@@ -353,9 +354,13 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 							gc.drawRoundRectangle(btnArea.x, btnArea.y, btnArea.width, btnArea.height, btnSize / 2,
 									btnSize / 2);
 							gc.setAlpha(255);
+						} else {
+							gc.setAlpha(120);
 						}
 
 						gc.drawImage(img, btnArea.x + ACTION_PADDING, btnArea.y + ACTION_PADDING);
+						
+						gc.setAlpha(255);
 					}
 				}
 			}
@@ -434,8 +439,8 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 		double f = e.count < 0 ? 0.8 : 1.2;
 		_imageSize = (int) (_imageSize * f);
-		if (_imageSize < 16) {
-			_imageSize = 16;
+		if (_imageSize < MIN_ROW_HEIGHT) {
+			_imageSize = MIN_ROW_HEIGHT;
 		}
 
 		requestUpdateScroll();
