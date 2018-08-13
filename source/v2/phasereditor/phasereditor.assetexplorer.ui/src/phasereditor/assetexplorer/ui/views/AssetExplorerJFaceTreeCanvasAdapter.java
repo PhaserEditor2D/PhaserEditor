@@ -24,6 +24,9 @@ package phasereditor.assetexplorer.ui.views;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
 
 import phasereditor.assetexplorer.ui.views.newactions.NewAnimationWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewAssetPackWizardLauncher;
@@ -31,10 +34,13 @@ import phasereditor.assetexplorer.ui.views.newactions.NewAtlasWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewCanvasWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewWizardLancher;
 import phasereditor.assetpack.ui.AssetsJFaceTreeCanvasAdapter;
+import phasereditor.canvas.core.CanvasFile;
 import phasereditor.canvas.core.CanvasType;
+import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.ui.EditorSharedImages;
-import phasereditor.ui.TreeCanvas.TreeCanvasItemAction;
+import phasereditor.ui.TreeCanvas.IconType;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
+import phasereditor.ui.TreeCanvas.TreeCanvasItemAction;
 
 /**
  * @author arian
@@ -47,20 +53,91 @@ public class AssetExplorerJFaceTreeCanvasAdapter extends AssetsJFaceTreeCanvasAd
 	}
 
 	@Override
+	protected void setItemIconProperties(TreeCanvasItem item, Object elem) {
+
+		if (elem instanceof CanvasFile) {
+			var file = ((CanvasFile) elem).getFile();
+			var imgFile = CanvasUI.getCanvasScreenshotFile(file, false);
+
+			item.setExternalFile(imgFile);
+			item.setLabel(file.getName());
+			item.setIconType(IconType.IMAGE_FRAME);
+
+		} else {
+			super.setItemIconProperties(item, elem);
+		}
+
+		if (elem == AssetExplorer.CANVAS_NODE
+
+				|| elem instanceof CanvasType
+
+				|| elem == AssetExplorer.ANIMATIONS_NODE
+
+				|| elem == AssetExplorer.ATLAS_NODE
+
+				|| elem == AssetExplorer.PACK_NODE) {
+			item.setIcon(null);
+		}
+
+	}
+
+	@Override
 	protected void setItemProperties(TreeCanvasItem item, Object elem) {
 		super.setItemProperties(item, elem);
 
 		var actions = item.getActions();
 
+		if (elem == AssetExplorer.CANVAS_NODE) {
+			item.setHeader(true);
+		}
+
 		if (elem instanceof CanvasType) {
 			actions.add(new NewWizardLauncherTreeItemAction(new NewCanvasWizardLauncher((CanvasType) elem)));
-		} else if (elem == AssetExplorer.ANIMATIONS_NODE) {
-			actions.add(new NewWizardLauncherTreeItemAction(new NewAnimationWizardLauncher()));
-		} else if (elem == AssetExplorer.ATLAS_NODE) {
-			actions.add(new NewWizardLauncherTreeItemAction(new NewAtlasWizardLauncher()));
-		} else if (elem == AssetExplorer.PACK_NODE) {
-			actions.add(new NewWizardLauncherTreeItemAction(new NewAssetPackWizardLauncher()));
+			item.setHeader(true);
 		}
+
+		if (elem == AssetExplorer.ANIMATIONS_NODE) {
+			actions.add(new NewWizardLauncherTreeItemAction(new NewAnimationWizardLauncher()));
+			item.setHeader(true);
+		}
+
+		if (elem == AssetExplorer.ATLAS_NODE) {
+			actions.add(new NewWizardLauncherTreeItemAction(new NewAtlasWizardLauncher()));
+			item.setHeader(true);
+		}
+
+		if (elem == AssetExplorer.PACK_NODE) {
+			actions.add(new NewWizardLauncherTreeItemAction(new NewAssetPackWizardLauncher()));
+			item.setHeader(true);
+		}
+
+		if (elem instanceof CanvasFile) {
+			var canvasFile = (CanvasFile) elem;
+			actions.add(new TreeCanvasItemAction(EditorSharedImages.getImage(IMG_GENERIC_EDITOR), "Open source file.") {
+				@Override
+				public void run(MouseEvent event) {
+					var file = canvasFile.getFile();
+					var openFile = file.getProject()
+							.getFile(file.getProjectRelativePath().removeFileExtension().addFileExtension("ts"));
+
+					if (!openFile.exists()) {
+						openFile = file.getProject()
+								.getFile(file.getProjectRelativePath().removeFileExtension().addFileExtension("js"));
+						if (openFile.exists()) {
+							try {
+								IDE.openEditor(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage(),
+										openFile);
+							} catch (PartInitException e) {
+								throw new RuntimeException(e);
+							}
+						}
+					}
+
+				}
+			});
+		}
+
+		item.setParentByNature(item.isHeader());
 
 	}
 

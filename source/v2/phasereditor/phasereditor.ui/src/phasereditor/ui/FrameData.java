@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 
@@ -41,12 +42,22 @@ public class FrameData implements Cloneable {
 
 	@Override
 	public FrameData clone() {
-		
+
 		FrameData fd = new FrameData(index);
 		fd.visible = visible;
 		fd.src = new Rectangle(src.x, src.y, src.width, src.height);
 		fd.dst = new Rectangle(dst.x, dst.y, dst.width, dst.height);
 		fd.srcSize = new Point(srcSize.x, srcSize.y);
+
+		return fd;
+	}
+
+	public static FrameData fromImage(Image img) {
+		var fd = new FrameData(0);
+
+		fd.src = img.getBounds();
+		fd.dst = img.getBounds();
+		fd.srcSize = new Point(fd.src.width, fd.src.height);
 
 		return fd;
 	}

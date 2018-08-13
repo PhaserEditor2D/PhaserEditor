@@ -23,6 +23,7 @@ package phasereditor.ui;
 
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,6 +40,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ScrollBar;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 /**
  * @author arian
@@ -48,6 +50,7 @@ import org.eclipse.swt.widgets.ScrollBar;
 public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseWheelListener {
 	private static final int ACTION_SPACE = 2;
 	private static final int ACTION_PADDING = 2;
+	private static final int ICON_AND_TEXT_SPACE = 5;
 	private List<TreeCanvasItem> _roots;
 	private List<TreeCanvasItem> _visibleItems;
 	private int _indentSize;
@@ -136,6 +139,9 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 			@Override
 			public void mouseMove(MouseEvent e) {
+				if (getToolTipText() != null) {
+					setToolTipText(null);
+				}
 
 				_overAction = null;
 
@@ -237,9 +243,9 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 			if (isImageFrame) {
 				rowHeight = _imageSize + 4;
-				textX += _imageSize + 5;
+				textX += _imageSize + ICON_AND_TEXT_SPACE;
 			} else if (icon != null) {
-				textX += iconBounds.width + 5;
+				textX += iconBounds.width + ICON_AND_TEXT_SPACE;
 			}
 
 			if (selected) {
@@ -249,19 +255,45 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 			PhaserEditorUI.paintListItemBackground(gc, i, new Rectangle(0, y, e.width, rowHeight));
 
+			// paint text
+
 			String label = item.getLabel();
 
 			if (label != null) {
 				gc.setForeground(selected ? PhaserEditorUI.getListSelectionTextColor() : getForeground());
 				var extent = gc.textExtent(label);
+
+				if (item.isHeader()) {
+					gc.setFont(SWTResourceManager.getBoldFont(getFont()));
+				}
+
+				if (item.isParentByNature() && item.getChildren().isEmpty()) {
+					gc.setAlpha(125);
+				}
+
 				gc.drawText(label, textX, y + (rowHeight - extent.y) / 2, true);
+
+				gc.setAlpha(255);
+				gc.setFont(getFont());
 			}
 
-			if (isImageFrame) {
-				var file = item.getImageFile();
-				var fd = item.getFrameData();
+			// paint icon or image
 
-				Image img = loadImage(file);
+			if (isImageFrame) {
+
+				// paint image
+
+				Image img;
+				FrameData fd;
+
+				if (item.getExternalFile() == null) {
+					var file = item.getImageFile();
+					img = loadImage(file);
+					fd = item.getFrameData();
+				} else {
+					img = loadImage(item.getExternalFile().toFile());
+					fd = FrameData.fromImage(img);
+				}
 
 				if (img != null) {
 					PhaserEditorUI.paintScaledImageInArea(gc, img, fd,
@@ -269,8 +301,17 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 				}
 
 			} else if (icon != null) {
-				gc.drawImage(icon, x, y + (rowHeight - iconBounds.height) / 2);
+
+				// paint icon
+
+				if (item.isHeader()) {
+					gc.drawImage(icon, textX - 16 - ICON_AND_TEXT_SPACE, y + (rowHeight - iconBounds.height) / 2);
+				} else {
+					gc.drawImage(icon, x, y + (rowHeight - iconBounds.height) / 2);
+				}
 			}
+
+			// paint toogle
 
 			if (hasChildren) {
 				var path = item.isExpanded() ? IEditorSharedImages.IMG_BULLET_COLLAPSE
@@ -280,6 +321,8 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 				gc.drawImage(img, item._toggleHitArea.x, item._toggleHitArea.y);
 
 			}
+
+			// paint actions
 
 			{
 				var actions = item.getActions();
@@ -467,12 +510,15 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 		public Rectangle _toggleHitArea;
 		private Object _data;
 		private IFile _imageFile;
+		private Path _externalFile;
 		private FrameData _frameData;
 		private IconType _iconType;
 		private Image _icon;
 		private List<TreeCanvasItem> _children;
 		private List<TreeCanvasItemAction> _actions;
 		private String _label;
+		private boolean _header;
+		private boolean _parentByNature;
 		int _depth;
 		private boolean _expanded;
 		int _y;
@@ -482,6 +528,22 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			_children = new ArrayList<>();
 			_iconType = IconType.COMMON_ICON;
 			_actions = new ArrayList<>();
+		}
+
+		public boolean isParentByNature() {
+			return _parentByNature;
+		}
+
+		public void setParentByNature(boolean parentByNature) {
+			_parentByNature = parentByNature;
+		}
+
+		public boolean isHeader() {
+			return _header;
+		}
+
+		public void setHeader(boolean header) {
+			_header = header;
 		}
 
 		public List<TreeCanvasItemAction> getActions() {
@@ -542,6 +604,14 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 		public void setFrameData(FrameData frameData) {
 			_frameData = frameData;
+		}
+
+		public Path getExternalFile() {
+			return _externalFile;
+		}
+
+		public void setExternalFile(Path externalFile) {
+			_externalFile = externalFile;
 		}
 
 		public Image getIcon() {
