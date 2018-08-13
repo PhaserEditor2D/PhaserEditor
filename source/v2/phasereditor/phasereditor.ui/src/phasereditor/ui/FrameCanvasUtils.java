@@ -21,10 +21,10 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -89,7 +89,7 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 
 	public abstract Object getFrameObject(int index);
 
-	public abstract IFile getImageFile(int index);
+	public abstract File getImageFile(int index);
 
 	public int getOverIndex() {
 		return indexOf(_overObject);

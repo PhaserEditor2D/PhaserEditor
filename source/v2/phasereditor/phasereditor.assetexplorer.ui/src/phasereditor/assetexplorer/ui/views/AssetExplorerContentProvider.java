@@ -21,25 +21,13 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetexplorer.ui.views;
 
-import static java.lang.System.out;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IFileEditorInput;
-import org.eclipse.ui.IPartListener;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.PlatformUI;
 
 import phasereditor.assetexplorer.ui.views.newactions.NewExampleProjectWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewProjectWizardLauncher;
@@ -53,74 +41,16 @@ import phasereditor.canvas.core.CanvasType;
 
 class AssetExplorerContentProvider extends AssetsContentProvider {
 
-	IPartListener _partListener;
-	private TreeViewer _viewer;
 	private IProject _projectInContent;
 	private IProject _forceToFocuseOnProject;
 
 	public AssetExplorerContentProvider() {
 		super(true);
-
-		_partListener = new IPartListener() {
-
-			@Override
-			public void partOpened(IWorkbenchPart part) {
-				if (part instanceof IEditorPart) {
-					refreshViewer();
-				}
-			}
-
-			@Override
-			public void partDeactivated(IWorkbenchPart part) {
-				if (part instanceof IEditorPart) {
-					refreshViewer();
-				}
-			}
-
-			@Override
-			public void partClosed(IWorkbenchPart part) {
-				if (part instanceof IEditorPart) {
-					refreshViewer();
-				}
-			}
-
-			@Override
-			public void partBroughtToTop(IWorkbenchPart part) {
-				if (part instanceof IEditorPart) {
-					refreshViewer();
-				}
-			}
-
-			@Override
-			public void partActivated(IWorkbenchPart part) {
-				if (part instanceof IEditorPart) {
-					refreshViewer();
-				}
-			}
-		};
-		getActivePage().addPartListener(_partListener);
-	}
-
-	private static IWorkbenchPage getActivePage() {
-		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-	}
-
-	@Override
-	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		super.inputChanged(viewer, oldInput, newInput);
-		_viewer = (TreeViewer) viewer;
-	}
-
-	@Override
-	public void dispose() {
-		getActivePage().removePartListener(_partListener);
-
-		super.dispose();
 	}
 
 	@Override
 	public Object[] getChildren(Object parent) {
-		IProject activeProjet = getActiveProject();
+		IProject activeProjet = AssetExplorer.getActiveProject();
 
 		if (_forceToFocuseOnProject != null && _forceToFocuseOnProject.exists()) {
 			activeProjet = _forceToFocuseOnProject;
@@ -225,29 +155,6 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 			return list.toArray();
 		}
 
-//		if (parent instanceof CanvasFile) {
-//			List<IFile> list = new ArrayList<>();
-//
-//			CanvasFile canvasFile = (CanvasFile) parent;
-//			IFile file = canvasFile.getFile();
-//			String name = file.getName();
-//			name = name.substring(0, name.length() - ".canvas".length());
-//
-//			IFile srcFile = file.getParent().getFile(new org.eclipse.core.runtime.Path(name + ".js"));
-//
-//			if (srcFile.exists()) {
-//				list.add(srcFile);
-//			}
-//
-//			srcFile = file.getParent().getFile(new org.eclipse.core.runtime.Path(name + ".ts"));
-//
-//			if (srcFile.exists()) {
-//				list.add(srcFile);
-//			}
-//
-//			return list.toArray();
-//		}
-
 		if (parent instanceof AssetPackModel) {
 			return ((AssetPackModel) parent).getSections().toArray();
 		}
@@ -259,21 +166,6 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 		return super.getChildren(parent);
 	}
 
-	public static IProject getActiveProject() {
-		IProject activeProjet = null;
-		IEditorPart editor = getActivePage().getActiveEditor();
-		if (editor != null) {
-			IEditorInput input = editor.getEditorInput();
-			if (input instanceof IFileEditorInput) {
-				IFile file = ((IFileEditorInput) input).getFile();
-				activeProjet = file.getProject();
-			} else {
-				activeProjet = input.getAdapter(IProject.class);
-			}
-		}
-		return activeProjet;
-	}
-
 	public IProject getProjectInContent() {
 		return _projectInContent;
 	}
@@ -282,30 +174,4 @@ class AssetExplorerContentProvider extends AssetsContentProvider {
 		_forceToFocuseOnProject = project;
 	}
 
-	Object _lastToken = null;
-
-	void refreshViewer() {
-		if (PlatformUI.getWorkbench().isClosing()) {
-			return;
-		}
-
-		if (_viewer == null) {
-			return;
-		}
-
-		_viewer.getTree().setRedraw(false);
-		try {
-			out.println("AssetExplorerContentProvider.refreshViewer()");
-			_viewer.refresh();
-
-			IProject project = getActiveProject();
-
-			if (project != _lastToken) {
-				_viewer.expandToLevel(4);
-				_lastToken = project;
-			}
-		} finally {
-			_viewer.getTree().setRedraw(true);
-		}
-	}
 }

@@ -22,7 +22,6 @@
 package phasereditor.ui;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -34,26 +33,45 @@ import phasereditor.ui.TreeCanvas.TreeCanvasItem;
  * @author arian
  *
  */
-public class JFaceTreeCanvasAdapter implements IEditorSharedImages {
+public class TreeCanvasViewerAdapter implements IEditorSharedImages {
 
 	private ITreeContentProvider _contentProvider;
 	private LabelProvider _labelProvider;
+	private Object _input;
+	private TreeCanvas _canvas;
 
-	public JFaceTreeCanvasAdapter(ITreeContentProvider contentProvider, LabelProvider labelProvider) {
+	public TreeCanvasViewerAdapter(TreeCanvas canvas, ITreeContentProvider contentProvider,
+			LabelProvider labelProvider) {
 		super();
+		_canvas = canvas;
 		_contentProvider = contentProvider;
 		_labelProvider = labelProvider;
 	}
 
-	public List<TreeCanvasItem> build(Object input) {
+	public void setInput(Object input) {
+		_input = input;
+		refresh();
+	}
+
+	public Object getInput() {
+		return _input;
+	}
+
+	public void refresh() {
 		var roots = new ArrayList<TreeCanvasItem>();
 
-		for (Object elem : _contentProvider.getElements(input)) {
-			var item = buildItem(elem);
-			roots.add(item);
+		if (_input != null) {
+			for (Object elem : _contentProvider.getElements(_input)) {
+				var item = buildItem(elem);
+				roots.add(item);
+			}
 		}
 
-		return roots;
+		_canvas.setRoots(roots);
+	}
+	
+	public TreeCanvas getCanvas() {
+		return _canvas;
 	}
 
 	private TreeCanvasItem buildItem(Object elem) {

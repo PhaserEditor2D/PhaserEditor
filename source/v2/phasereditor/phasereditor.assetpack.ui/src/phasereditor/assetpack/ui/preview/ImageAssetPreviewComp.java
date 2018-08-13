@@ -21,6 +21,8 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.assetpack.ui.preview;
 
+import java.io.File;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
@@ -94,15 +96,16 @@ public class ImageAssetPreviewComp extends Composite {
 			public Point viewToModel(int x, int y) {
 				return new Point(x, y);
 			}
-			
+
 			@Override
 			public Point modelToView(int x, int y) {
 				return new Point(x, y);
 			}
 
 			@Override
-			public IFile getImageFile(int index) {
-				return getModel().getUrlFile();
+			public File getImageFile(int index) {
+				IFile file = getModel().getUrlFile();
+				return file == null ? null : file.getLocation().toFile();
 			}
 
 			@Override
@@ -140,7 +143,7 @@ public class ImageAssetPreviewComp extends Composite {
 	public ImageAssetModel getModel() {
 		return _model;
 	}
-	
+
 	public ImageCanvas getCanvas() {
 		return _canvas;
 	}

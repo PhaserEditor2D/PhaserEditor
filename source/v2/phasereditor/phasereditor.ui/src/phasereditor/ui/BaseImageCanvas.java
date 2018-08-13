@@ -102,14 +102,14 @@ public class BaseImageCanvas extends Canvas {
 		this._references = new ArrayList<>();
 	}
 
-	protected Image loadImage(IFile file) {
+	public Image loadImage(IFile file) {
 		if (file == null) {
 			return null;
 		}
 		return loadImage(file.getLocation().toFile());
 	}
 
-	protected Image loadImage(File file) {
+	public Image loadImage(File file) {
 		if (file == null || !file.exists()) {
 			return null;
 		}

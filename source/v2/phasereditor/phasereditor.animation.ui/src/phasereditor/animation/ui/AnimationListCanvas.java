@@ -23,6 +23,7 @@ package phasereditor.animation.ui;
 
 import static java.util.stream.Collectors.toList;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,14 +131,16 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 			}
 			
 			@Override
-			public IFile getImageFile(int index) {
+			public File getImageFile(int index) {
 				IAssetFrameModel asset = findAssetFor(index);
 
 				if (asset == null) {
 					return null;
 				}
 
-				return asset.getImageFile();
+				IFile file = asset.getImageFile();
+				
+				return file == null? null : file.getLocation().toFile();
 			}
 
 			@Override

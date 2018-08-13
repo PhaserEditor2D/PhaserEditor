@@ -34,7 +34,8 @@ import phasereditor.assetpack.core.SpritesheetAssetModel;
 import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationModel;
 import phasereditor.ui.FrameData;
-import phasereditor.ui.JFaceTreeCanvasAdapter;
+import phasereditor.ui.TreeCanvasViewerAdapter;
+import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.IconType;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 
@@ -42,11 +43,11 @@ import phasereditor.ui.TreeCanvas.TreeCanvasItem;
  * @author arian
  *
  */
-public class AssetsJFaceTreeCanvasAdapter extends JFaceTreeCanvasAdapter {
+public class AssetsTreeCanvasViewerAdapter extends TreeCanvasViewerAdapter {
 
-	public AssetsJFaceTreeCanvasAdapter(ITreeContentProvider contentProvider,
+	public AssetsTreeCanvasViewerAdapter(TreeCanvas canvas, ITreeContentProvider contentProvider,
 			LabelProvider labelProvider) {
-		super(contentProvider, labelProvider);
+		super(canvas, contentProvider, labelProvider);
 	}
 
 	@Override

@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.atlas.ui;
 
+import java.io.File;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -75,7 +76,7 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener {
 			}
 
 			@Override
-			public IFile getImageFile(int index) {
+			public File getImageFile(int index) {
 				return _file;
 			}
 
@@ -173,21 +174,17 @@ public class AtlasCanvas extends ImageCanvas implements ControlListener {
 		generateFramesRects();
 	}
 
-	private IFile _file;
+	private File _file;
 
 	public void setSelection(IStructuredSelection sel, boolean fireChanged) {
 		_utils.setSelection(sel, fireChanged);
 
 	}
 
-	/*
-	 * public ISelectionProvider getSelectionProvider() { return _utils; }
-	 */
-
 	@Override
 	public void setImageFile(IFile file) {
 		super.setImageFile(file);
-		_file = file;
+		_file = file == null? null : file.getLocation().toFile();
 	}
 
 	public void selectAll() {

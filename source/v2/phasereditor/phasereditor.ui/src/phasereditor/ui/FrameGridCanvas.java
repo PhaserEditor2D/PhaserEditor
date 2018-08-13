@@ -21,6 +21,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 package phasereditor.ui;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,7 +103,7 @@ public class FrameGridCanvas extends BaseImageCanvas
 			public Point viewToModel(int x, int y) {
 				return new Point(x, y - _origin.y);
 			}
-			
+
 			@Override
 			public Point modelToView(int x, int y) {
 				return new Point(x, y + _origin.y);
@@ -129,8 +130,9 @@ public class FrameGridCanvas extends BaseImageCanvas
 			}
 
 			@Override
-			public IFile getImageFile(int index) {
-				return _visibleFiles.get(index);
+			public File getImageFile(int index) {
+				IFile file = _visibleFiles.get(index);
+				return file == null ? null : file.getLocation().toFile();
 			}
 
 		};
@@ -424,7 +426,7 @@ public class FrameGridCanvas extends BaseImageCanvas
 	public FrameCanvasUtils getUtils() {
 		return _utils;
 	}
-	
+
 	public List<Image> getImages() {
 		return _images;
 	}

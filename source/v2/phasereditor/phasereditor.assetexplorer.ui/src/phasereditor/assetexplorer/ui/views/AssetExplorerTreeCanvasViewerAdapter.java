@@ -33,11 +33,13 @@ import phasereditor.assetexplorer.ui.views.newactions.NewAssetPackWizardLauncher
 import phasereditor.assetexplorer.ui.views.newactions.NewAtlasWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewCanvasWizardLauncher;
 import phasereditor.assetexplorer.ui.views.newactions.NewWizardLancher;
-import phasereditor.assetpack.ui.AssetsJFaceTreeCanvasAdapter;
+import phasereditor.assetpack.ui.AssetsTreeCanvasViewerAdapter;
 import phasereditor.canvas.core.CanvasFile;
 import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.ui.CanvasUI;
 import phasereditor.ui.EditorSharedImages;
+import phasereditor.ui.FrameData;
+import phasereditor.ui.TreeCanvas;
 import phasereditor.ui.TreeCanvas.IconType;
 import phasereditor.ui.TreeCanvas.TreeCanvasItem;
 import phasereditor.ui.TreeCanvas.TreeCanvasItemAction;
@@ -46,10 +48,11 @@ import phasereditor.ui.TreeCanvas.TreeCanvasItemAction;
  * @author arian
  *
  */
-public class AssetExplorerJFaceTreeCanvasAdapter extends AssetsJFaceTreeCanvasAdapter {
+public class AssetExplorerTreeCanvasViewerAdapter extends AssetsTreeCanvasViewerAdapter {
 
-	public AssetExplorerJFaceTreeCanvasAdapter(ITreeContentProvider contentProvider, LabelProvider labelProvider) {
-		super(contentProvider, labelProvider);
+	public AssetExplorerTreeCanvasViewerAdapter(TreeCanvas canvas, ITreeContentProvider contentProvider,
+			LabelProvider labelProvider) {
+		super(canvas, contentProvider, labelProvider);
 	}
 
 	@Override
@@ -59,7 +62,12 @@ public class AssetExplorerJFaceTreeCanvasAdapter extends AssetsJFaceTreeCanvasAd
 			var file = ((CanvasFile) elem).getFile();
 			var imgFile = CanvasUI.getCanvasScreenshotFile(file, false);
 
-			item.setExternalFile(imgFile);
+			if (imgFile != null) {
+				item.setImageFile(imgFile.toFile());
+				var img = getCanvas().loadImage(item.getImageFile());
+				item.setFrameData(FrameData.fromImage(img));
+			}
+
 			item.setLabel(file.getName());
 			item.setIconType(IconType.IMAGE_FRAME);
 

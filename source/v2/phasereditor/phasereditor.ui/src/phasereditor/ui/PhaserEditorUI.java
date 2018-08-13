@@ -870,7 +870,11 @@ public class PhaserEditorUI {
 	}
 
 	public static void set_DND_Image(DragSourceEvent e, IFile file, Rectangle src) {
-		Image image = scaleImage_DND(file.getLocation().toPortableString(), src);
+		set_DND_Image(e, file == null ? null : file.getLocation().toFile(), src);
+	}
+
+	public static void set_DND_Image(DragSourceEvent e, File file, Rectangle src) {
+		Image image = scaleImage_DND(file.getAbsolutePath(), src);
 		e.image = image;
 		if (image != null) {
 			e.offsetX = src.width / 2;
@@ -1234,8 +1238,8 @@ public class PhaserEditorUI {
 		int frameHeight = renderArea.height;
 		int frameWidth = renderArea.width;
 
-		double imgW = blankSpaces? fd.srcSize.x : fd.src.width;
-		double imgH = blankSpaces? fd.srcSize.y : fd.src.height;
+		double imgW = blankSpaces ? fd.srcSize.x : fd.src.width;
+		double imgH = blankSpaces ? fd.srcSize.y : fd.src.height;
 
 		// compute the right width
 		imgW = imgW * (frameHeight / imgH);
@@ -1247,8 +1251,8 @@ public class PhaserEditorUI {
 			imgW = frameWidth;
 		}
 
-		double scaleX = imgW / (blankSpaces? fd.srcSize.x : fd.src.width);
-		double scaleY = imgH / (blankSpaces? fd.srcSize.y : fd.src.height);
+		double scaleX = imgW / (blankSpaces ? fd.srcSize.x : fd.src.width);
+		double scaleY = imgH / (blankSpaces ? fd.srcSize.y : fd.src.height);
 
 		var imgX = renderArea.x + frameWidth / 2 - imgW / 2 + (blankSpaces ? fd.dst.x : 0) * scaleX;
 		var imgY = renderArea.y + frameHeight / 2 - imgH / 2 + (blankSpaces ? fd.dst.y : 0) * scaleY;

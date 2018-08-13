@@ -23,9 +23,6 @@ package phasereditor.assetexplorer.ui.views;
 
 import static java.lang.System.out;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.commands.operations.IUndoContext;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -34,68 +31,44 @@ import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.preference.JFacePreferences;
-import org.eclipse.jface.util.LocalSelectionTransfer;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.StyledString;
-import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.dnd.DragSourceAdapter;
-import org.eclipse.swt.dnd.DragSourceEvent;
-import org.eclipse.swt.dnd.TextTransfer;
-import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.events.ControlAdapter;
-import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IPartListener;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.ide.undo.WorkspaceUndoUtil;
 import org.eclipse.ui.operations.RedoActionHandler;
 import org.eclipse.ui.operations.UndoActionHandler;
 import org.eclipse.ui.part.ViewPart;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import phasereditor.assetexplorer.ui.views.newactions.NewWizardLancher;
-import phasereditor.assetpack.core.AssetGroupModel;
-import phasereditor.assetpack.core.AssetPackCore;
-import phasereditor.assetpack.core.AssetPackModel;
-import phasereditor.assetpack.core.AssetSectionModel;
-import phasereditor.assetpack.core.IAssetFrameModel;
-import phasereditor.assetpack.core.IAssetKey;
-import phasereditor.assetpack.core.ImageAssetModel;
-import phasereditor.assetpack.core.animations.AnimationFrameModel;
 import phasereditor.assetpack.core.animations.AnimationsModel;
 import phasereditor.assetpack.ui.AssetPackUI;
 import phasereditor.atlas.core.AtlasData;
 import phasereditor.canvas.core.CanvasFile;
-import phasereditor.canvas.core.CanvasType;
 import phasereditor.canvas.ui.CanvasUI;
-import phasereditor.ui.FilteredTree2;
-import phasereditor.ui.PatternFilter2;
-import phasereditor.ui.PhaserEditorUI;
 import phasereditor.ui.TreeCanvas;
 
+@SuppressWarnings("synthetic-access")
 public class AssetExplorer extends ViewPart {
 	public static final String ID = "phasereditor.assetpack.views.assetExplorer";
-	TreeViewer _viewer;
-	private FilteredTree _filteredTree;
 	private AssetExplorerContentProvider _contentProvider;
 	private TreeCanvas _treeCanvas;
+	private IPartListener _partListener;
 	// private AssetExplorerLabelProvider _treeLabelProvider;
 	// private AssetExplorerContentProvider _treeContentProvider;
 	// private AssetExplorerListLabelProvider _listLabelProvider;
@@ -113,35 +86,21 @@ public class AssetExplorer extends ViewPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		SashForm sash = new SashForm(parent, SWT.HORIZONTAL);
-
-		_filteredTree = new FilteredTree2(sash, SWT.MULTI, new PatternFilter2(), 4);
-		_viewer = _filteredTree.getViewer();
-		_viewer.addDoubleClickListener(new IDoubleClickListener() {
-			@Override
-			public void doubleClick(DoubleClickEvent event) {
-				handleDoubleClick();
-			}
-		});
 		_contentProvider = new AssetExplorerContentProvider();
-		_viewer.setContentProvider(_contentProvider);
-		_viewer.setLabelProvider(new AssetExplorerLabelProvider());
-		var col = new TreeViewerColumn(_viewer, SWT.NONE);
-		col.setLabelProvider(createStyledLabelProvider());
-		_viewer.getTree().addControlListener(new ControlAdapter() {
+
+		_treeCanvas = new TreeCanvas(parent, SWT.NONE);
+		_treeCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		_treeCanvas.addMouseListener(new MouseAdapter() {
 			@Override
-			public void controlResized(ControlEvent e) {
-				col.getColumn().setWidth(((Tree) e.widget).getBounds().width);
+			public void mouseDoubleClick(MouseEvent e) {
+				var elem = getTreeCanvas().getUtils().getOverObject();
+				if (elem != null) {
+					handleDoubleClick(elem);
+				}
 			}
 		});
-
-		_treeCanvas = new TreeCanvas(sash, SWT.BORDER);
-		_treeCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
-		sash.setWeights(new int[] { 1, 1 });
 
 		afterCreateWidgets();
-
 	}
 
 	private static StyledCellLabelProvider createStyledLabelProvider() {
@@ -172,20 +131,19 @@ public class AssetExplorer extends ViewPart {
 		};
 	}
 
-	public TreeViewer getViewer() {
-		return _viewer;
+	public TreeCanvas getTreeCanvas() {
+		return _treeCanvas;
 	}
 
-	protected void handleDoubleClick() {
-		Object elem = ((IStructuredSelection) _viewer.getSelection()).getFirstElement();
+	private void handleDoubleClick(Object elem) {
 		IFile file = null;
 
-		var provider = (AssetExplorerContentProvider) _viewer.getContentProvider();
+		var provider = _contentProvider;
 
 		if (elem instanceof IProject) {
 			provider.forceToFocuseOnProject((IProject) elem);
-			_viewer.refresh();
-			_viewer.expandToLevel(3);
+			_treeCanvasAdapter.refresh();
+			// _treeCanvasAdapter.expandToLevel(3);
 		} else if (elem instanceof IFile) {
 			file = (IFile) elem;
 		} else if (elem instanceof CanvasFile) {
@@ -210,42 +168,23 @@ public class AssetExplorer extends ViewPart {
 	}
 
 	private void afterCreateWidgets() {
-		// _treeLabelProvider = new AssetExplorerLabelProvider();
-		// _treeContentProvider = new AssetExplorerContentProvider();
-		// _listLabelProvider = new AssetExplorerListLabelProvider();
-		// _listContentProvider = new AssetExplorerListContentProvider();
-
-		// _viewer.setLabelProvider(_treeLabelProvider);
-		// _viewer.setContentProvider(_treeContentProvider);
-
-		// content
-
-		_viewer.setInput(ROOT);
-		_viewer.expandToLevel(1);
-
-		// drag and drop
-
-		init_DND();
 
 		// selection provider
 
-		getViewSite().setSelectionProvider(_viewer);
+		getViewSite().setSelectionProvider(_treeCanvas.getUtils());
 
 		{
 
 			// menu
 			MenuManager manager = new MenuManager();
-			Tree tree = _viewer.getTree();
-			Menu menu = manager.createContextMenu(tree);
-			tree.setMenu(menu);
+			Menu menu = manager.createContextMenu(_treeCanvas);
+			_treeCanvas.setMenu(menu);
 
-			getViewSite().registerContextMenu(manager, _viewer);
+			getViewSite().registerContextMenu(manager, _treeCanvas.getUtils());
 		}
 
 		// tooltips
 
-		AssetPackUI.installAssetTooltips(_viewer);
-		CanvasUI.installCanvasTooltips(_viewer);
 		AssetPackUI.installAssetTooltips(_treeCanvas, _treeCanvas.getUtils());
 		CanvasUI.installCanvasTooltips(_treeCanvas, _treeCanvas.getUtils());
 
@@ -256,78 +195,113 @@ public class AssetExplorer extends ViewPart {
 		IActionBars actionBars = getViewSite().getActionBars();
 		actionBars.setGlobalActionHandler(ActionFactory.UNDO.getId(), new UndoActionHandler(getSite(), undoContext));
 		actionBars.setGlobalActionHandler(ActionFactory.REDO.getId(), new RedoActionHandler(getSite(), undoContext));
+
+		// parts listener
+
+		initPartListener();
+
+		// tree canvas
+
+		_treeCanvasAdapter = new AssetExplorerTreeCanvasViewerAdapter(_treeCanvas, _contentProvider,
+				new AssetExplorerLabelProvider());
+		_treeCanvasAdapter.setInput(ROOT);
+
 	}
 
-	private void init_DND() {
-		Transfer[] types = { LocalSelectionTransfer.getTransfer(), TextTransfer.getInstance() };
-		_viewer.addDragSupport(DND.DROP_MOVE | DND.DROP_DEFAULT, types, new DragSourceAdapter() {
-
-			private Object[] _data;
-			private boolean _disposeImage;
+	private void initPartListener() {
+		_partListener = new IPartListener() {
 
 			@Override
-			public void dragStart(DragSourceEvent event) {
-				LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
-				_data = ((IStructuredSelection) _viewer.getSelection()).toArray();
-				transfer.setSelection(new StructuredSelection(_data));
-
-				_disposeImage = false;
-
-				for (var obj : _data) {
-					IAssetFrameModel frame = null;
-
-					if (obj instanceof IAssetFrameModel) {
-						frame = (IAssetFrameModel) obj;
-					} else if (obj instanceof ImageAssetModel) {
-						frame = ((ImageAssetModel) obj).getFrame();
-					} else if (obj instanceof AnimationFrameModel) {
-						frame = ((AnimationFrameModel) obj).getFrameAsset();
-					} else if (obj instanceof CanvasFile) {
-						var file = ((CanvasFile) obj).getFile();
-						var path = CanvasUI.getCanvasScreenshotFile(file, true);
-						var filepath = path.toString();
-						var src = PhaserEditorUI.getImageBounds(filepath);
-						event.image = PhaserEditorUI.scaleImage_DND(filepath, src);
-						_disposeImage = true;
-						break;
-					}
-
-					if (frame != null) {
-						AssetPackUI.set_DND_Image(event, frame);
-						_disposeImage = true;
-						break;
-					}
-
+			public void partOpened(IWorkbenchPart part) {
+				if (part instanceof IEditorPart) {
+					refreshViewer();
 				}
 			}
 
 			@Override
-			public void dragSetData(DragSourceEvent event) {
-				JSONArray array = new JSONArray();
-				for (Object elem : _data) {
-					if (elem instanceof IAssetKey) {
-						array.put(((IAssetKey) elem).getKey());
-					}
-				}
-				if (array.length() == 1) {
-					event.data = array.getString(0);
-				} else {
-					event.data = array.toString();
+			public void partDeactivated(IWorkbenchPart part) {
+				if (part instanceof IEditorPart) {
+					refreshViewer();
 				}
 			}
 
 			@Override
-			public void dragFinished(DragSourceEvent event) {
-				if (_disposeImage && event.image != null) {
-					event.image.dispose();
+			public void partClosed(IWorkbenchPart part) {
+				if (part instanceof IEditorPart) {
+					refreshViewer();
 				}
 			}
-		});
+
+			@Override
+			public void partBroughtToTop(IWorkbenchPart part) {
+				if (part instanceof IEditorPart) {
+					refreshViewer();
+				}
+			}
+
+			@Override
+			public void partActivated(IWorkbenchPart part) {
+				if (part instanceof IEditorPart) {
+					refreshViewer();
+				}
+			}
+		};
+		getViewSite().getPage().addPartListener(_partListener);
+	}
+
+	Object _lastToken = null;
+	private AssetExplorerTreeCanvasViewerAdapter _treeCanvasAdapter;
+
+	void refreshViewer() {
+
+		if (PlatformUI.getWorkbench().isClosing()) {
+			return;
+		}
+
+		_treeCanvas.setRedraw(false);
+
+		try {
+			out.println("AssetExplorerContentProvider.refreshViewer()");
+			_treeCanvasAdapter.refresh();
+
+			IProject project = getActiveProject();
+
+			if (project != _lastToken) {
+				// _treeCanvas.expandToLevel(4);
+				_lastToken = project;
+			}
+		} finally {
+			_treeCanvas.setRedraw(true);
+		}
+
+	}
+
+	public static IProject getActiveProject() {
+		IProject activeProjet = null;
+		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		if (editor != null) {
+			IEditorInput input = editor.getEditorInput();
+			if (input instanceof IFileEditorInput) {
+				IFile file = ((IFileEditorInput) input).getFile();
+				activeProjet = file.getProject();
+			} else {
+				activeProjet = input.getAdapter(IProject.class);
+			}
+		}
+		return activeProjet;
+	}
+
+	@Override
+	public void dispose() {
+
+		getViewSite().getPage().removePartListener(_partListener);
+
+		super.dispose();
 	}
 
 	@Override
 	public void setFocus() {
-		_viewer.getTree().setFocus();
+		_treeCanvas.setFocus();
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -358,13 +332,7 @@ public class AssetExplorer extends ViewPart {
 
 	public void refreshContent(IProject project) {
 
-		{
-			var converter = new AssetExplorerJFaceTreeCanvasAdapter(_contentProvider,
-					new AssetExplorerLabelProvider());
-			var roots = converter.build(ROOT);
-			_treeCanvas.setRoots(roots);
-			//_treeCanvas.expandAll();
-		}
+		_treeCanvasAdapter.setInput(ROOT);
 
 		out.println("Assets.refreshContent(" + project.getName() + ")");
 
@@ -376,7 +344,7 @@ public class AssetExplorer extends ViewPart {
 		}
 		out.println("  Perfom refresh");
 
-		if (_viewer.getControl().isDisposed()) {
+		if (_treeCanvas.isDisposed()) {
 			return;
 		}
 
@@ -386,54 +354,55 @@ public class AssetExplorer extends ViewPart {
 
 		// _viewer.refresh();
 
-		Object[] expanded = _viewer.getVisibleExpandedElements();
-
-		_viewer.getTree().setRedraw(false);
-		try {
-			_viewer.refresh();
-
-			List<Object> toExpand = new ArrayList<>();
-
-			for (Object obj : expanded) {
-				if (obj instanceof IAssetKey) {
-					IAssetKey key = ((IAssetKey) obj).getSharedVersion();
-					toExpand.add(key);
-				} else if (obj instanceof AssetGroupModel) {
-					AssetPackModel oldPack = ((AssetGroupModel) obj).getSection().getPack();
-					JSONObject ref = oldPack.getAssetJSONRefrence(obj);
-					IFile file = oldPack.getFile();
-					AssetPackModel newPack = AssetPackCore.getAssetPackModel(file, false);
-					if (newPack != null) {
-						Object obj2 = newPack.getElementFromJSONReference(ref);
-						if (obj2 != null) {
-							toExpand.add(obj2);
-						}
-					}
-				} else if (obj instanceof AssetSectionModel) {
-					AssetPackModel oldPack = ((AssetSectionModel) obj).getPack();
-					JSONObject ref = oldPack.getAssetJSONRefrence(obj);
-					IFile file = oldPack.getFile();
-					AssetPackModel newPack = AssetPackCore.getAssetPackModel(file, false);
-					if (newPack != null) {
-						Object obj2 = newPack.getElementFromJSONReference(ref);
-						toExpand.add(obj2);
-					}
-				} else if (obj instanceof AssetPackModel) {
-					AssetPackModel newPack = AssetPackCore.getAssetPackModel(((AssetPackModel) obj).getFile(), false);
-					toExpand.add(newPack);
-				} else if (obj instanceof CanvasType) {
-					toExpand.add(obj);
-				} else {
-					toExpand.add(obj);
-				}
-			}
-			toExpand.remove(null);
-			Object[] array = toExpand.toArray();
-			_viewer.setExpandedElements(array);
-
-		} finally {
-			_viewer.getTree().setRedraw(true);
-		}
+		// Object[] expanded = _viewer.getVisibleExpandedElements();
+		//
+		// _viewer.getTree().setRedraw(false);
+		// try {
+		// _viewer.refresh();
+		//
+		// List<Object> toExpand = new ArrayList<>();
+		//
+		// for (Object obj : expanded) {
+		// if (obj instanceof IAssetKey) {
+		// IAssetKey key = ((IAssetKey) obj).getSharedVersion();
+		// toExpand.add(key);
+		// } else if (obj instanceof AssetGroupModel) {
+		// AssetPackModel oldPack = ((AssetGroupModel) obj).getSection().getPack();
+		// JSONObject ref = oldPack.getAssetJSONRefrence(obj);
+		// IFile file = oldPack.getFile();
+		// AssetPackModel newPack = AssetPackCore.getAssetPackModel(file, false);
+		// if (newPack != null) {
+		// Object obj2 = newPack.getElementFromJSONReference(ref);
+		// if (obj2 != null) {
+		// toExpand.add(obj2);
+		// }
+		// }
+		// } else if (obj instanceof AssetSectionModel) {
+		// AssetPackModel oldPack = ((AssetSectionModel) obj).getPack();
+		// JSONObject ref = oldPack.getAssetJSONRefrence(obj);
+		// IFile file = oldPack.getFile();
+		// AssetPackModel newPack = AssetPackCore.getAssetPackModel(file, false);
+		// if (newPack != null) {
+		// Object obj2 = newPack.getElementFromJSONReference(ref);
+		// toExpand.add(obj2);
+		// }
+		// } else if (obj instanceof AssetPackModel) {
+		// AssetPackModel newPack = AssetPackCore.getAssetPackModel(((AssetPackModel)
+		// obj).getFile(), false);
+		// toExpand.add(newPack);
+		// } else if (obj instanceof CanvasType) {
+		// toExpand.add(obj);
+		// } else {
+		// toExpand.add(obj);
+		// }
+		// }
+		// toExpand.remove(null);
+		// Object[] array = toExpand.toArray();
+		// _viewer.setExpandedElements(array);
+		//
+		// } finally {
+		// _viewer.getTree().setRedraw(true);
+		// }
 	}
 
 }

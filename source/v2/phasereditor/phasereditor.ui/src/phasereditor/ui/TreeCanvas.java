@@ -23,7 +23,7 @@ package phasereditor.ui;
 
 import static phasereditor.ui.PhaserEditorUI.swtRun;
 
-import java.nio.file.Path;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -117,7 +117,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			}
 
 			@Override
-			public IFile getImageFile(int index) {
+			public File getImageFile(int index) {
 				var item = _visibleItems.get(index);
 
 				if (item.getIconType() == IconType.IMAGE_FRAME) {
@@ -284,18 +284,10 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 				// paint image
 
-				Image img;
-				FrameData fd;
-
-				if (item.getExternalFile() == null) {
-					var file = item.getImageFile();
-					img = loadImage(file);
-					fd = item.getFrameData();
-				} else {
-					img = loadImage(item.getExternalFile().toFile());
-					fd = FrameData.fromImage(img);
-				}
-
+				var file = item.getImageFile();
+				var img = loadImage(file);
+				var fd = item.getFrameData();
+				
 				if (img != null) {
 					PhaserEditorUI.paintScaledImageInArea(gc, img, fd,
 							new Rectangle(x + 2, y + 2, _imageSize, _imageSize), false);
@@ -359,7 +351,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 						}
 
 						gc.drawImage(img, btnArea.x + ACTION_PADDING, btnArea.y + ACTION_PADDING);
-						
+
 						gc.setAlpha(255);
 					}
 				}
@@ -514,8 +506,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 	public static class TreeCanvasItem {
 		public Rectangle _toggleHitArea;
 		private Object _data;
-		private IFile _imageFile;
-		private Path _externalFile;
+		private File _imageFile;
 		private FrameData _frameData;
 		private IconType _iconType;
 		private Image _icon;
@@ -595,12 +586,16 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			_data = data;
 		}
 
-		public IFile getImageFile() {
+		public File getImageFile() {
 			return _imageFile;
 		}
 
-		public void setImageFile(IFile imageFile) {
+		public void setImageFile(File imageFile) {
 			_imageFile = imageFile;
+		}
+
+		public void setImageFile(IFile file) {
+			setImageFile(file.getLocation().toFile());
 		}
 
 		public FrameData getFrameData() {
@@ -609,14 +604,6 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 
 		public void setFrameData(FrameData frameData) {
 			_frameData = frameData;
-		}
-
-		public Path getExternalFile() {
-			return _externalFile;
-		}
-
-		public void setExternalFile(Path externalFile) {
-			_externalFile = externalFile;
 		}
 
 		public Image getIcon() {
@@ -650,4 +637,5 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			expandAll(item2);
 		}
 	}
+
 }
