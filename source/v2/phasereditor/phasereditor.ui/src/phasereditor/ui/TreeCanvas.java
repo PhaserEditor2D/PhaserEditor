@@ -105,6 +105,23 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 			}
 
 			@Override
+			public boolean isInformationControlValidPosition(int index, int x, int y) {
+				var item = _visibleItems.get(index);
+				
+				if (item._toggleHitArea != null && item._toggleHitArea.contains(x, y)) {
+					return false;
+				}
+				
+				for(var action : item.getActions()) {
+					if (action._hitArea.contains(x, y)) {
+						return false;
+					}
+				}
+				
+				return true;
+			}
+			
+			@Override
 			public Rectangle getSelectionFrameArea(int index) {
 				var item = _visibleItems.get(index);
 				var b = getBounds();
@@ -143,6 +160,7 @@ public class TreeCanvas extends BaseImageCanvas implements PaintListener, MouseW
 				var item = _visibleItems.get(index);
 				return item._data;
 			}
+			
 
 			@Override
 			public void mouseMove(MouseEvent e) {

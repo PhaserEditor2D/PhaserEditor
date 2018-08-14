@@ -104,7 +104,6 @@ public class AnimationListCanvas<T extends AnimationsModel> extends BaseImageCan
 				return asset.getFrameData().src;
 			}
 
-			@SuppressWarnings("synthetic-access")
 			private IAssetFrameModel findAssetFor(int index) {
 				IAssetFrameModel frame = null;
 				Image image = null;

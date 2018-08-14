@@ -32,36 +32,41 @@ import com.subshell.snippets.jface.tooltip.tooltipsupport.IInformationProvider;
  */
 public class CanvasUtilsInformationControlProvider implements IInformationProvider {
 
-	private FrameCanvasUtils utils;
+	private FrameCanvasUtils _utils;
 
 	public CanvasUtilsInformationControlProvider(FrameCanvasUtils utils) {
 		super();
-		this.utils = utils;
+		this._utils = utils;
 	}
 
 	@Override
 	public Object getInformation(Point location) {
-
-		var index = utils.getOverIndex();
+		var index = _utils.getOverIndex();
 
 		if (index == -1) {
 			return null;
 		}
+		
+		var modelPoint = _utils.viewToModel(location.x, location.y);
+		
+		if (!_utils.isInformationControlValidPosition(index, modelPoint.x, modelPoint.y)) {
+			return null;
+		}
 
-		return utils.getFrameObject(index);
+		return _utils.getFrameObject(index);
 	}
 
 	@Override
 	public Rectangle getArea(Point location) {
-		var index = utils.getOverIndex();
+		var index = _utils.getOverIndex();
 
 		if (index == -1) {
 			return null;
 		}
 
-		var rect = utils.getSelectionFrameArea(index);
+		var rect = _utils.getSelectionFrameArea(index);
 
-		var point = utils.modelToView(rect.x, rect.y);
+		var point = _utils.modelToView(rect.x, rect.y);
 
 		return new Rectangle(location.x, location.y, rect.width - (location.x - point.x),
 				rect.height - (location.y - point.y));

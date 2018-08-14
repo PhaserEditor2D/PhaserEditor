@@ -90,7 +90,12 @@ public abstract class FrameCanvasUtils extends SelectionProviderImpl
 	public abstract Object getFrameObject(int index);
 
 	public abstract File getImageFile(int index);
-
+	
+	@SuppressWarnings({ "static-method", "unused" })
+	public boolean isInformationControlValidPosition(int index, int x, int y) {
+		return true;
+	}
+	
 	public int getOverIndex() {
 		return indexOf(_overObject);
 	}
